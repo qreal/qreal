@@ -41,6 +41,13 @@ IdList BaseGraphTransformationUnit::elementsFromActiveDiagram() const
 
 bool BaseGraphTransformationUnit::checkRuleMatching()
 {
+	IdList const elements = elementsFromActiveDiagram();
+
+	return checkRuleMatching(elements);
+}
+
+bool BaseGraphTransformationUnit::checkRuleMatching(IdList const &elements)
+{
 	mMatch = QHash<Id, Id>();
 	bool isMatched = false;
 
@@ -53,7 +60,6 @@ bool BaseGraphTransformationUnit::checkRuleMatching()
 
 	mNodesHavingOutsideLinks.append(startElem);
 
-	IdList const elements = elementsFromActiveDiagram();
 	foreach (Id const &element, elements) {
 		if (compareElements(element, startElem)) {
 			mCurrentMatchedGraphInRule.clear();

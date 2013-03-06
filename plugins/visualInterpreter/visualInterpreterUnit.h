@@ -60,6 +60,8 @@ protected:
 
 	/// Checks current diagram for being semantics model
 	bool isSemanticsEditor() const;
+	
+	bool checkRuleMatching();
 
 	/// Checks rule application conditions on the found matches
 	bool checkApplicationCondition(QString const &ruleName);

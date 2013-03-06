@@ -54,6 +54,17 @@ bool VisualInterpreterUnit::isSemanticsEditor() const
 	return mInterpretersInterface.activeDiagram().editor().contains("Semantics");
 }
 
+bool VisualInterpreterUnit::checkRuleMatching()
+{
+	if (mNodesWithControlMark.contains(mCurrentRuleName)) {
+		IdList const elements = mCurrentNodesWithControlMark;
+		return BaseGraphTransformationUnit::checkRuleMatching(elements);
+	} else {
+		IdList const elements = elementsFromActiveDiagram();
+		return BaseGraphTransformationUnit::checkRuleMatching(elements);
+	}
+}
+
 void VisualInterpreterUnit::initBeforeSemanticsLoading()
 {
 	mRules.clear();
@@ -325,6 +336,16 @@ bool VisualInterpreterUnit::checkApplicationConditionPython(QHash<Id, Id> const 
 
 Id VisualInterpreterUnit::startElement() const
 {
+	if (mNodesWithControlMark.contains(mCurrentRuleName)) {
+		foreach (Id const &element, *mNodesWithControlMark.value(mCurrentRuleName)) {
+			if (!hasProperty(element, "semanticsStatus") ||
+					property(element, "semanticsStatus").toString() != "@new@")
+			{
+				return element;
+			}
+		}
+	}
+	
 	IdList const elementsInRule = children(mRuleToFind);
 
 	foreach (Id const &element, elementsInRule) {
@@ -493,7 +514,7 @@ void VisualInterpreterUnit::moveControlFlow()
 		foreach (Id const &id, *(mNodesWithNewControlMark.value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
 			mInterpretersInterface.highlight(node, false);
-			mCurrentNodesWithControlMark.append(node);
+			mCurrentNodesWithControlMark.prepend(node);
 		}
 	}
 }
@@ -578,20 +599,20 @@ bool VisualInterpreterUnit::makeStep()
 
 bool VisualInterpreterUnit::compareElements(Id const &first, Id const &second) const
 {
-	bool result = BaseGraphTransformationUnit::compareElements(first, second);
+	bool result = true;
 
 	if (mNodesWithControlMark.contains(mCurrentRuleName)) {
 		if (mNodesWithControlMark.value(mCurrentRuleName)->contains(second)) {
-			result = result && mCurrentNodesWithControlMark.contains(first);
+			result = mCurrentNodesWithControlMark.contains(first);
 		}
 		if (mCurrentNodesWithControlMark.contains(first)) {
-			result = result && mNodesWithControlMark.value(mCurrentRuleName)->contains(second);
+			result = mNodesWithControlMark.value(mCurrentRuleName)->contains(second);
 		}
-	} else if (result && mCurrentNodesWithControlMark.contains(first)) {
+	} else if (mCurrentNodesWithControlMark.contains(first)) {
 		return false;
 	}
 
-	return result;
+	return result && BaseGraphTransformationUnit::compareElements(first, second);
 }
 
 bool VisualInterpreterUnit::compareElementTypesAndProperties(Id const &first, Id const &second) const

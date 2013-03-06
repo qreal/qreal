@@ -27,8 +27,11 @@ public:
 
 protected:
 
-	/// Fixes first element and starts checking process
-	bool checkRuleMatching();
+	/// Finds first element and starts checking process
+	bool virtual checkRuleMatching();
+
+	/// Finds first element in specified elements and starts checking process
+	bool checkRuleMatching(IdList const &elements);
 
 	/// Checks rule matching recursively accordingly to given initial data
 	bool checkRuleMatchingRecursively();
