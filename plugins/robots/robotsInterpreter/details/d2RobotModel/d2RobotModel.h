@@ -18,7 +18,7 @@ namespace d2Model {
 int const oneReciprocalTime = 500;
 int const onePercentReciprocalSpeed = 44000;
 int const multiplicator = 8;
-int const touchSensorStrokeIncrement = 7;
+int const touchSensorStrokeIncrement = 10;
 
 class D2RobotModel : public QObject, public RobotModelInterface
 {
