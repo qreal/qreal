@@ -79,3 +79,10 @@ void SettingsManager::initDefaultValues()
 		mDefaultValues.insert(key, values.value(key));
 	}
 }
+
+void SettingsManager::clearSettings()
+{
+	instance()->mSettings.clear();
+	instance()->mData.clear();
+	instance()->mDefaultValues.clear();
+}

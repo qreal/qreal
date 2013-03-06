@@ -64,6 +64,7 @@ public:
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);
+	void setTitlesVisible(bool visible);
 
 signals:
 	void switchFolding(bool);

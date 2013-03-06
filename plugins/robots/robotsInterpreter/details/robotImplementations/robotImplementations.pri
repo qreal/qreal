@@ -64,6 +64,6 @@ SOURCES += \
 	details/robotImplementations/nullRobotModelImplementation.cpp \
 	details/robotImplementations/unrealRobotModelImplementation.cpp \
 	details/robotImplementations/sensorsConfigurer.cpp \
-	details/robotImplementations/sensorImplementations/bluetoothLightSensorImolementation.cpp \
+	details/robotImplementations/sensorImplementations/bluetoothLightSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/nullLightSensorImplementation.cpp \
-	details/robotImplementations/sensorImplementations/unrealLightSensorImplementation.cpp
+	details/robotImplementations/sensorImplementations/unrealLightSensorImplementation.cpp \

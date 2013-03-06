@@ -46,43 +46,22 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>%2/bin/nxt-tools/upload.sh</origin>
+                            <origin>%1/bin/nxt-tools/upload.sh</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/bin/nxt-tools/flash.bat</origin>
+                            <origin>%1/bin/nxt-tools/flash.bat</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/bin/nxt-tools/upload.bat</origin>
+                            <origin>%1/bin/nxt-tools/upload.bat</origin>
                         </distributionFile>
                         <distributionDirectory>
-                            <origin>%2/bin/nxt-tools/bin</origin>
+                            <origin>%1/bin/nxt-tools/GNUARM</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>%2/bin/nxt-tools/dev</origin>
+                            <origin>%1/bin/nxt-tools/nexttool</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>%2/bin/nxt-tools/etc</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>%2/bin/nxt-tools/GNUARM</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>%2/bin/nxt-tools/lib</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>%2/bin/nxt-tools/nexttool</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>%2/bin/nxt-tools/nxtOSEK</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>%2/bin/nxt-tools/tmp</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>%2/bin/nxt-tools/usr</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>%2/bin/nxt-tools/var</origin>
+                            <origin>%1/bin/nxt-tools/nxtOSEK</origin>
                         </distributionDirectory>
                     </distributionFileList>
                 </folder>
@@ -109,8 +88,8 @@
     </componentList>
     <preInstallationActionList>
         <registryGet>
-            <key>HKEY_CURRENT_USER\Software\SPbSU\QReal</key>
-            <name>installDir</name>
+            <key>HKEY_LOCAL_MACHINE\Software\SPbSU\QReal Robots</key>
+            <name>Location</name>
             <variable>qrealdir</variable>
         </registryGet>
         <if>
@@ -153,7 +132,7 @@
     </postUninstallationActionList>
     <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
-    <vendor>SPSU</vendor>
+    <vendor>SPbSU</vendor>
     <parameterList>
         <directoryParameter>
             <name>installdir</name>
