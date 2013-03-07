@@ -1,6 +1,7 @@
-#include "wallItem.h"
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QStyleOptionGraphicsItem>
+
+#include "wallItem.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -9,7 +10,7 @@ using namespace graphicsUtils;
 WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	: LineItem(begin, end)
 	, mDragged(false)
-	, mImage(QImage(":/icons/wall.png"))
+	, mImage(QImage(":/icons/2d_wall.png"))
 {
 	setPrivateData();
 }
@@ -44,8 +45,9 @@ void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* optio
 
 void WallItem::drawExtractionForItem(QPainter *painter)
 {
-	if (!isSelected())
+	if (!isSelected()) {
 		return;
+	}
 
 	painter->setPen(QPen(Qt::green));
 	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, drift);
@@ -55,33 +57,25 @@ void WallItem::drawExtractionForItem(QPainter *painter)
 void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
-	mDragged = true;
+	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-	QPointF oldPos = pos();
+	QPointF const oldPos = pos();
 	QGraphicsItem::mouseMoveEvent(event);
-	if (mDragged) {
-		emit wallDragged(realShape(), oldPos);
+	// Items under cursor cannot be dragged when adding new item,
+	// but it mustn`t confuse the case when item is unmovable
+	// because overapped with robot
+	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
+		emit wallDragged(this, realShape(), oldPos);
 	}
+	event->accept();
 }
 
 bool WallItem::isDragged()
 {
 	return mDragged;
-}
-
-void WallItem::toStopWall(bool isNeedStop, QPointF const& oldPos)
-{
-	if (mDragged) {
-		if (isNeedStop) {
-			setPos(oldPos);
-			setFlag(ItemIsMovable, false);
-		} else {
-			setFlag(ItemIsMovable, true);
-		}
-	}
 }
 
 void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
@@ -104,4 +98,9 @@ void WallItem::deserializePenBrush(QDomElement const &element)
 {
 	Q_UNUSED(element)
 	setPrivateData();
+}
+
+void WallItem::onOverlappedWithRobot(bool overlapped)
+{
+	mOverlappedWithRobot = overlapped;
 }

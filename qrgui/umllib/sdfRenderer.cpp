@@ -1,11 +1,11 @@
 #include "sdfRenderer.h"
 
-#include <QtGui/QMessageBox>
-#include <QtGui/QFont>
-#include <QtGui/QIcon>
 #include <QtCore/QLineF>
 #include <QtCore/QTime>
 #include <QtCore/QDebug>
+#include <QtGui/QApplication>
+#include <QtGui/QFont>
+#include <QtGui/QIcon>
 
 using namespace qReal;
 

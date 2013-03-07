@@ -1,17 +1,22 @@
+#include <QtCore/QDebug>
+#include <time.h>
+
 #include "usbRobotCommunicationThread.h"
 
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
 #include "../tracer.h"
+#include "../../../../qrkernel/settingsManager.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
 
 unsigned const packetHeaderSize = 3;
 
-UsbRobotCommunicationThread::UsbRobotCommunicationThread():
-	mActive(false), mNXTHandle(0)
+UsbRobotCommunicationThread::UsbRobotCommunicationThread()
+	: mActive(false), mNXTHandle(0)
 	, mKeepAliveTimer(new QTimer(this))
+	, mStopped(false)
 {
 	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 }
@@ -31,6 +36,10 @@ void UsbRobotCommunicationThread::connect(QString const &portName)
 {
 	Q_UNUSED(portName);
 
+	if (!mFantom.isAvailable()) {
+		return;
+	}
+
 	char resNamePC[10000];
 	unsigned long nxtIterator;
 
@@ -44,6 +53,9 @@ void UsbRobotCommunicationThread::connect(QString const &portName)
 			QString resName = QString(resNamePC);
 			if (resName.toUpper().contains("USB")) {
 				break;
+			}
+			if (mStopped) {
+				return;
 			}
 		}
 		if (status == kStatusNoError) {
@@ -72,7 +84,8 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 	}
 }
 
-void UsbRobotCommunicationThread::send(QByteArray const &buffer, unsigned const responseSize, QByteArray &outputBuffer)
+void UsbRobotCommunicationThread::send(QByteArray const &buffer
+		, unsigned const responseSize, QByteArray &outputBuffer)
 {
 	Tracer::debug(tracer::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
 
@@ -126,6 +139,9 @@ void UsbRobotCommunicationThread::reconnect(QString const &portName)
 
 void UsbRobotCommunicationThread::disconnect()
 {
+	if (!mFantom.isAvailable()) {
+		return;
+	}
 	mKeepAliveTimer->stop();
 	int status = 0;
 	mFantom.nFANTOM100_destroyNXT(mNXTHandle, status);
@@ -133,14 +149,9 @@ void UsbRobotCommunicationThread::disconnect()
 	emit disconnected();
 }
 
-void UsbRobotCommunicationThread::sendI2C(QObject *addressee
-		, QByteArray const &buffer, unsigned const responseSize
-		, inputPort::InputPortEnum const &port)
+void UsbRobotCommunicationThread::allowLongJobs(bool allow)
 {
-	Q_UNUSED(addressee)
-	Q_UNUSED(buffer)
-	Q_UNUSED(responseSize)
-	Q_UNUSED(port)
+	mStopped = !allow;
 }
 
 void UsbRobotCommunicationThread::debugPrint(QByteArray const &buffer, bool out)
@@ -173,5 +184,24 @@ void UsbRobotCommunicationThread::checkForConnection()
 
 bool UsbRobotCommunicationThread::isResponseNeeded(QByteArray const &buffer)
 {
-	return buffer[2] == 0;
+	return buffer.size() >= 3 && buffer[2] == 0;
+}
+
+void UsbRobotCommunicationThread::checkConsistency()
+{
+	robotModelType::robotModelTypeEnum const typeOfRobotModel =
+			static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel").toInt());
+	if (typeOfRobotModel != robotModelType::real) {
+		return;
+	}
+
+	if (!mFantom.isAvailable()) {
+		QString const fantomDownloadLink = qReal::SettingsManager::value("fantomDownloadLink").toString();
+		QString errorMessage = tr("Fantom Driver is unavailable. Usb connection to robot is impossible.");
+		if (!fantomDownloadLink.isEmpty()) {
+			// TODO: make link clickable
+			errorMessage += tr(" You can download Fantom Driver on ") + fantomDownloadLink;
+		}
+		emit errorOccured(errorMessage);
+	}
 }

@@ -15,6 +15,7 @@
 
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
+#include "details/sensorsConfigurationWidget.h"
 
 namespace qReal {
 namespace interpreters {
@@ -55,6 +56,9 @@ public:
 
 	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
 	void disableD2ModelWidgetRunStopButtons();
+
+	WatchListWindow *watchWindow() const;
+	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
 public slots:
 	void connectToRobot();
@@ -111,7 +115,7 @@ private:
 
 	robotModelType::robotModelTypeEnum mImplementationType;
 
-	watchListWindow *mWatchListWindow;
+	WatchListWindow *mWatchListWindow;
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;

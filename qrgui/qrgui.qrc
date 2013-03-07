@@ -67,6 +67,10 @@
         <file>icons/widgetsEditor/cancel.png</file>
         <file>icons/widgetsEditor/ok.png</file>
         <file>icons/widgetsEditor/outerBindings.png</file>
+        <file>icons/open.png</file>
+        <file>icons/save.png</file>
+        <file>icons/full_screen.png</file>
+        <file>icons/save_as.png</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>

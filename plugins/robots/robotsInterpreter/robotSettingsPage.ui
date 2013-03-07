@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>400</height>
+    <height>409</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -57,58 +57,6 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QGroupBox" name="sensorsSettingsGroupBox">
-     <property name="title">
-      <string>Sensors Settings</string>
-     </property>
-     <layout class="QFormLayout" name="formLayout_5">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="port1Label">
-        <property name="text">
-         <string>Port 1:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="port1ComboBox"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="port2Label">
-        <property name="text">
-         <string>Port 2:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="port2ComboBox"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="port3Label">
-        <property name="text">
-         <string>Port 3:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="port3ComboBox"/>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="port4Label">
-        <property name="text">
-         <string>Port 4:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QComboBox" name="port4ComboBox"/>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="2" column="0">
     <widget class="QGroupBox" name="robotModelGroupBox">
      <property name="title">
@@ -146,7 +94,7 @@
     </widget>
    </item>
    <item row="2" column="1">
-    <widget class="QGroupBox" name="robotModelGroupBox_2">
+    <widget class="QGroupBox" name="communicationTypeGroupBox">
      <property name="title">
       <string>Type of Communication</string>
      </property>
@@ -174,7 +122,7 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2">
+   <item row="4" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -186,6 +134,29 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QGroupBox" name="sensorsSettingsGroupBox">
+     <property name="title">
+      <string>Sensors Settings</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QGroupBox" name="elementsGroupBox">
+     <property name="title">
+      <string>Elements</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="textVisibleCheckBox">
+        <property name="text">
+         <string>Text visible</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

@@ -1,3 +1,5 @@
+#include <QtCore/QMetaType>
+
 #include "robotCommunicator.h"
 
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
@@ -8,6 +10,7 @@ RobotCommunicator::RobotCommunicator(QString const &portName)
 		: mPortName(portName)
 		, mRobotCommunicationThreadObject(NULL)
 {
+	qRegisterMetaType<inputPort::InputPortEnum>("inputPort::InputPortEnum");
 }
 
 RobotCommunicator::~RobotCommunicator()

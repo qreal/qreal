@@ -76,7 +76,6 @@ void Element::initTitles()
 	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
 }
 
-
 void Element::singleSelectionState(const bool singleSelected) {
 	if (singleSelected) {
 		selectionState(true);
@@ -115,4 +114,11 @@ void Element::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsProxyWidget::mouseReleaseEvent(event);
 	QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void Element::setTitlesVisible(bool visible)
+{
+	foreach (ElementTitle * const title, mTitles) {
+		title->setVisible(visible);
+	}
 }

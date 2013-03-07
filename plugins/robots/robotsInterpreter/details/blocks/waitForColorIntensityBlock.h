@@ -30,9 +30,9 @@ private slots:
 	void timerTimeout();
 
 private:
-	robotParts::ColorSensor *mColorSensor;  // Doesn't have ownership
 	RobotModel const * const mRobotModel;
 	QTimer mActiveWaitingTimer;
+	inputPort::InputPortEnum mPort;
 
 	void stop();
 };

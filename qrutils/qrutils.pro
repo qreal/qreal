@@ -49,3 +49,6 @@ include(invocationUtils/invocationUtils.pri)
 
 # Small framework for creating widgets with navigation
 include(navigationUtils/navigationUtils.pri)
+
+# Math Utils
+include(mathUtils/mathUtils.pri)

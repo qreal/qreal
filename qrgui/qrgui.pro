@@ -59,7 +59,7 @@ include (generators/generators.pri)
 # The code from the Internet
 include (thirdparty/thirdparty.pri)
 
-# Plugin managment
+# Plugin management
 include (pluginManager/pluginManager.pri)
 
 # Graphical and logical models

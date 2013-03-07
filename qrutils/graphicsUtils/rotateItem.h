@@ -1,11 +1,14 @@
 #pragma once
+
 #include <QtGui/QGraphicsItem>
+
 #include "../utilsDeclSpec.h"
+#include "abstractItem.h"
 
 namespace graphicsUtils
 {
 
-class QRUTILS_EXPORT RotateInterface
+class QRUTILS_EXPORT RotateItem : public AbstractItem
 {
 public:
 	virtual void rotate(double angle) = 0;
@@ -14,8 +17,6 @@ public:
 	virtual double rotateAngle() const = 0;
 	virtual void setSelected(bool isSelected) = 0;
 	virtual void checkSelection() = 0;
-protected:
-	QPointF mPreviousScenePos;
 };
 
 }

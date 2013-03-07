@@ -5,7 +5,7 @@ HEADERS += \
 	$$PWD/abstractItemView.h \
 	$$PWD/rectangleImpl.h \
 	$$PWD/pointImpl.h \
-	$$PWD/rotateInterface.h \
+	$$PWD/rotateItem.h \
 	$$PWD/colorlisteditor.h \
 	$$PWD/stylusImpl.h \
 	$$PWD/layoutHandlers/layoutTypes.h \
@@ -22,7 +22,7 @@ SOURCES += \
 	$$PWD/pointImpl.cpp \
 	$$PWD/colorlisteditor.cpp \
 	$$PWD/stylusImpl.cpp \
-	$$PWD/rotateInterface.cpp \
+	$$PWD/rotateItem.cpp \
 	$$PWD/layoutHandlers/layoutHandler.cpp \
 	$$PWD/layoutHandlers/linearLayoutHandler.cpp \
 	$$PWD/layoutHandlers/layoutHandlerFactory.cpp \
