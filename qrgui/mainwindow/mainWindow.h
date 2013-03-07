@@ -23,6 +23,7 @@
 #include "../pluginManager/toolPluginManager.h"
 #include "../models/logicalModelAssistApi.h"
 #include "../view/propertyEditorView.h"
+#include "../controller/controller.h"
 
 #include "../dialogs/preferencesDialog.h"
 #include "../dialogs/findReplaceDialog.h"
@@ -62,12 +63,13 @@ public:
 	~MainWindow();
 
 	EditorManager *manager();
-	EditorView *getCurrentTab();
-	ListenerManager *listenerManager();
-	models::Models *models();
-	PropertyEditorView *propertyEditor();
-	QTreeView *graphicalModelExplorer();
-	QTreeView *logicalModelExplorer();
+	EditorView *getCurrentTab() const;
+	ListenerManager *listenerManager() const;
+	models::Models *models() const;
+	Controller *controller() const;
+	PropertyEditorView *propertyEditor() const;
+	QTreeView *graphicalModelExplorer() const;
+	QTreeView *logicalModelExplorer() const;
 	PropertyEditorModel &propertyModel();
 	ToolPluginManager &toolManager();
 
@@ -315,6 +317,7 @@ private:
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 
 	models::Models *mModels;
+	Controller *mController;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;

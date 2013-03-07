@@ -16,6 +16,8 @@ HEADERS += view/editorView.h \
 	view/gestures/sorts.h \
 	view/sceneCustomizationInterface.h \
 	view/sceneCustomizer.h \
+	view/commands/createElementCommand.h \
+	view/commands/createRemoveCommandImplementation.h \
 
 SOURCES += view/editorView.cpp \
 	view/editorViewScene.cpp \
@@ -30,3 +32,5 @@ SOURCES += view/editorView.cpp \
 	view/gestures/rectanglegesturesmanager.cpp \
 	view/gestures/nearestposgridgesturesmanager.cpp \
 	view/sceneCustomizer.cpp \
+	view/commands/createElementCommand.cpp \
+	view/commands/createRemoveCommandImplementation.cpp \

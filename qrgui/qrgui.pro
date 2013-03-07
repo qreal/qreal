@@ -50,8 +50,14 @@ include (dialogs/dialogs.pri)
 # Main window
 include (mainwindow/mainwindow.pri)
 
+# Graphical and logical models
+include (models/models.pri)
+
 # View
 include (view/view.pri)
+
+# Controller
+include (controller/controller.pri)
 
 # Built-in generators
 include (generators/generators.pri)
@@ -61,9 +67,6 @@ include (thirdparty/thirdparty.pri)
 
 # Plugin management
 include (pluginManager/pluginManager.pri)
-
-# Graphical and logical models
-include (models/models.pri)
 
 # Interfaces for plugins, used by qrxc and qrmc
 include (editorPluginInterface/editorPluginInterface.pri)

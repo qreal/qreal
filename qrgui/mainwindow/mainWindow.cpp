@@ -52,6 +52,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 		: mUi(new Ui::MainWindowUi)
 		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
 		, mModels(NULL)
+		, mController(new Controller)
 		, mEditorManager()
 		, mListenerManager(NULL)
 		, mPropertyModel(mEditorManager)
@@ -160,6 +161,9 @@ void MainWindow::connectActions()
 	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
 	connect(mUi->actionPasteReference, SIGNAL(triggered()), this, SLOT(pasteCopyOfLogical()));
 
+	connect(mUi->actionUndo, SIGNAL(triggered()), mController, SLOT(undo()));
+	connect(mUi->actionRedo, SIGNAL(triggered()), mController, SLOT(redo()));
+
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
 	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
@@ -247,6 +251,7 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
 	delete mModels;
+	delete mController;
 	delete mCodeTabManager;
 	delete mFindReplaceDialog;
 	delete mFindHelper;
@@ -646,6 +651,7 @@ void MainWindow::deleteElementFromScene(QPersistentModelIndex const &index)
 
 void MainWindow::deleteFromScene(QGraphicsItem *target)
 {
+	// TODO: move it into command
 	Element *elem = dynamic_cast<Element *>(target);
 	if (!elem) {
 		return;
@@ -815,7 +821,7 @@ bool MainWindow::pluginLoaded(QString const &pluginName)
 	return mEditorManager.editors().contains(Id(pluginName));
 }
 
-EditorView * MainWindow::getCurrentTab()
+EditorView * MainWindow::getCurrentTab() const
 {
 	return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
 }
@@ -1201,27 +1207,32 @@ void MainWindow::cropSceneToItems()
 	}
 }
 
-ListenerManager *MainWindow::listenerManager()
+ListenerManager *MainWindow::listenerManager() const
 {
 	return mListenerManager;
 }
 
-models::Models *MainWindow::models()
+models::Models *MainWindow::models() const
 {
 	return mModels;
 }
 
-PropertyEditorView *MainWindow::propertyEditor()
+Controller *MainWindow::controller() const
+{
+	return mController;
+}
+
+PropertyEditorView *MainWindow::propertyEditor() const
 {
 	return mUi->propertyEditor;
 }
 
-QTreeView *MainWindow::graphicalModelExplorer()
+QTreeView *MainWindow::graphicalModelExplorer() const
 {
 	return mUi->graphicalModelExplorer;
 }
 
-QTreeView *MainWindow::logicalModelExplorer()
+QTreeView *MainWindow::logicalModelExplorer() const
 {
 	return mUi->logicalModelExplorer;
 }

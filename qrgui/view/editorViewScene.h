@@ -6,6 +6,7 @@
 
 #include "../../qrkernel/roles.h"
 #include "../umllib/nodeElement.h"
+#include "../controller/controller.h"
 #include "gestures/mouseMovementManager.h"
 
 #include "editorViewMVIface.h"
@@ -91,7 +92,6 @@ public slots:
 	void cropToItems();
 
 signals:
-	void elementCreated(qReal::Id const &id);
 	void zoomIn();
 	void zoomOut();
 
@@ -215,6 +215,7 @@ private:
 	qReal::EditorView *mView;
 
 	qReal::MainWindow *mWindow;
+	qReal::Controller *mController;
 
 	QList<QAction *> mContextMenuActions;
 

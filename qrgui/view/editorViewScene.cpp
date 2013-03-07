@@ -11,7 +11,10 @@
 #include "editorView.h"
 #include "../mainwindow/mainWindow.h"
 
+#include "commands/createElementCommand.h"
+
 using namespace qReal;
+using namespace qReal::commands;
 
 EditorViewScene::EditorViewScene(QObject *parent)
 		: QGraphicsScene(parent)
@@ -476,8 +479,13 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	Id parentId = newParent ? newParent->id() : mMVIface->rootId();
 
-	//inserting new node into edge
-	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+	// Inserting new node into edge
+	CreateElementCommand *createCommand = new CreateElementCommand(
+				mMVIface->graphicalAssistApi(), parentId, id
+				, isFromLogicalModel, name, position);
+	mController->execute(createCommand);
+	Id insertedNodeId = createCommand->result();
+	// TODO: create command for it
 	if (dynamic_cast<NodeElement*>(e)) {
 		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
 	}
@@ -493,8 +501,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	if (e) {
 		delete e;
 	}
-
-	emit elementCreated(id);
 }
 
 void EditorViewScene::insertNodeIntoEdge(qReal::Id const &insertedNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
@@ -1355,13 +1361,11 @@ qReal::Id EditorViewScene::rootItemId() const
 void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
+	mController = mWindow->controller();
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()
 			<< mWindow->actionCopyElementsOnDiagram()
 			<< mWindow->actionPasteOnDiagram() << mWindow->actionPasteCopyOfLogical();
-	// TODO: what is it?
-	//	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
-	//	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));
 }
 
 qReal::MainWindow *EditorViewScene::mainWindow() const
