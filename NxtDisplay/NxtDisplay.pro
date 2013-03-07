@@ -13,8 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    nxtdisplay.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    nxtdisplay.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    nxtdisplay.ui

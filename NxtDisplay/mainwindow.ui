@@ -6,73 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>202</width>
-    <height>278</height>
+    <width>218</width>
+    <height>303</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="centralButton">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>110</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="leftButton">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>110</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="rightButton">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>110</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="lowerButton">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>160</y>
-      <width>41</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>202</width>
+     <width>218</width>
      <height>21</height>
     </rect>
    </property>
