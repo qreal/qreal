@@ -216,19 +216,19 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 		}
 	}
 
-	if (node == NULL) {
-		if (mHighlightNode != NULL) {
-			mHighlightNode->erasePlaceholder(true);
+	if (!node) {
+		if (mHighlightNode) {
+			mHighlightNode->layoutFactory()->handleDragLeave();
 		}
 		return;
 	}
 
 	NodeElement *prevHighlighted = mHighlightNode;
-	QGraphicsRectItem *placeholder = getPlaceholder();
-	node->drawPlaceholder(placeholder, event->scenePos());
+	QPointF const parentPos = node->mapFromScene(event->scenePos());
+	node->layoutFactory()->handleDragMove(NULL, parentPos);
 	mHighlightNode = node;
 	if (prevHighlighted != mHighlightNode && prevHighlighted != NULL) {
-		prevHighlighted->erasePlaceholder(true);
+		prevHighlighted->layoutFactory()->handleDragLeave();
 	}
 }
 
@@ -283,7 +283,7 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_UNUSED(event);
 	if (mHighlightNode != NULL) {
-		mHighlightNode->erasePlaceholder(true);
+		mHighlightNode->layoutFactory()->handleDragLeave();
 		mHighlightNode = NULL;
 	}
 }
@@ -300,7 +300,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode != NULL) {
-		mHighlightNode->erasePlaceholder(true);
+		mHighlightNode->layoutFactory()->handleDragLeave();
 		mHighlightNode = NULL;
 	}
 }
@@ -447,11 +447,10 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 			}
 		}
 
-		if(newParent && dynamic_cast<NodeElement*>(newParent)){
+		if (newParent && dynamic_cast<NodeElement*>(newParent)) {
 			if (!canBeContainedBy(newParent->id(), id)) {
-				QString text;
-				text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
-				QMessageBox::critical(0, "Error!", text);
+				QString const text = tr("Element of type \"%1\" can not be a child of \"%2\"");
+				QMessageBox::critical(0, "Error!", text.arg(id.element(), newParent->id().element()));
 				return;
 			}
 
@@ -473,13 +472,13 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
 	}
 
-	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
-	if (parentNode != NULL) {
-		Element *nextNode = parentNode->getPlaceholderNextElement();
-		if (nextNode != NULL) {
-			mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
-		}
-	}
+//	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
+//	if (parentNode != NULL) {
+//		Element *nextNode = parentNode->getPlaceholderNextElement();
+//		if (nextNode != NULL) {
+//			mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
+//		}
+//	}
 
 	if (e) {
 		delete e;

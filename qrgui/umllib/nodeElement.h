@@ -14,15 +14,17 @@
 #include "sdfRenderer.h"
 #include "element.h"
 #include "edgeElement.h"
+#include "serializationData.h"
+
 #include "embedded/linkers/embeddedLinker.h"
-#include "../editorPluginInterface/elementImpl.h"
 #include "embedded/linkers/embeddedLinker.h"
 
 #include "private/sceneGridHandler.h"
 #include "private/umlPortHandler.h"
 #include "private/portHandler.h"
+#include "private/nodeElementLayoutFactory.h"
 
-#include "serializationData.h"
+#include "../editorPluginInterface/elementImpl.h"
 
 class WidgetsHelper;
 
@@ -124,6 +126,8 @@ public:
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
 
+	layouts::NodeElementLayoutFactory *layoutFactory() const;
+
 	virtual void deleteFromScene();
 
 	QList<EdgeElement *> const edgeList() const;
@@ -141,6 +145,8 @@ public slots:
 
 private slots:
 	void updateNodeEdges();
+	// Sets QReal-engine geometry to Qt-engine one
+	void synchronizeGeometries();
 
 private:
 	enum DragState {
@@ -188,7 +194,7 @@ private:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
+	virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
 	virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
@@ -257,6 +263,7 @@ private:
 
 	NodeData mData;
 
+	layouts::NodeElementLayoutFactory *mLayoutFactory;
 	WidgetsHelper *mWidgetsHelper;
 
 	int mTimeOfUpdate;

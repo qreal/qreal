@@ -8,6 +8,10 @@ HEADERS += \
 	$$PWD/rotateInterface.h \
 	$$PWD/colorlisteditor.h \
 	$$PWD/stylusImpl.h \
+	$$PWD/layoutHandlers/layoutTypes.h \
+	$$PWD/layoutHandlers/layoutHandler.h \
+	$$PWD/layoutHandlers/linearLayoutHandler.h \
+	$$PWD/layoutHandlers/layoutHandlerFactory.h \
 
 SOURCES += \
 	$$PWD/abstractItem.cpp \
@@ -19,3 +23,6 @@ SOURCES += \
 	$$PWD/colorlisteditor.cpp \
 	$$PWD/stylusImpl.cpp \
 	$$PWD/rotateInterface.cpp \
+	$$PWD/layoutHandlers/layoutHandler.cpp \
+	$$PWD/layoutHandlers/linearLayoutHandler.cpp \
+	$$PWD/layoutHandlers/layoutHandlerFactory.cpp \

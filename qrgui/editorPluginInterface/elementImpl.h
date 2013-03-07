@@ -118,6 +118,8 @@ public:
 	virtual bool hasMovableChildren() const = 0;
 	virtual bool minimizesToChildren() const = 0;
 	virtual bool maximizesChildren() const = 0;
+	virtual QString layout() const = 0;
+	virtual QString layoutBinding() const = 0;
 
 	virtual bool isPort() const = 0;
 	virtual bool hasPin() const = 0;

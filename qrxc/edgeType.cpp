@@ -210,6 +210,8 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tbool maximizesChildren() const { return false; }\n"
 	<< "\t\tbool isPort() const { return false; }\n"
 	<< "\t\tbool hasPin() const { return false; }\n"
+	<< "\t\tQString layout() const { return QString(); }\n"
+	<< "\t\tQString layoutBinding() const { return QString(); }\n"
 	<< "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n"
 	<< "\t\t\tlist << 0 << 0 << 0 << 0;\n"

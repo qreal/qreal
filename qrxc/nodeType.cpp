@@ -415,6 +415,9 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t\t}\n";
 	}
 
+	ContainerProperties *containerProperties = mContainerProperties ?
+			mContainerProperties : new ContainerProperties;
+
 	out() << "\t\t}\n\n"
 	<< "\t\tbool isNode() const\n\t\t{\n"
 	<< "\t\t\treturn true;\n"
@@ -429,27 +432,27 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\t}\n\n"
 
 	<< "\t\tbool isSortingContainer() const\n\t\t{\n"
-	<< (mContainerProperties.isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< (containerProperties->isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
 	<< "\t\tint sizeOfForestalling() const\n\t\t{\n"
-	<< "\t\t\treturn " + QString::number(mContainerProperties.sizeOfForestalling) + ";\n"
+	<< "\t\t\treturn " + QString::number(containerProperties->sizeOfForestalling) + ";\n"
 	<< "\t\t}\n\n"
 
 	<< "\t\tint sizeOfChildrenForestalling() const\n\t\t{\n"
-	<< "\t\t\treturn " << QString::number(mContainerProperties.sizeOfChildrenForestalling) << ";\n"
+	<< "\t\t\treturn " << QString::number(containerProperties->sizeOfChildrenForestalling) << ";\n"
 	<< "\t\t}\n\n"
 
 	<< "\t\tbool hasMovableChildren() const\n\t\t{\n"
-	<< (mContainerProperties.hasMovableChildren ?  "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< (containerProperties->hasMovableChildren ?  "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
 	<< "\t\tbool minimizesToChildren() const\n\t\t{\n"
-	<< (mContainerProperties.minimizesToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< (containerProperties->minimizesToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
 	<< "\t\tbool maximizesChildren() const\n\t\t{\n"
-	<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< (containerProperties->maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
 	<< "\t\tbool isDividable() const\n\t\t{\n\t\t\treturn false;\n\t\t}\n\n"
@@ -479,6 +482,18 @@ void NodeType::generateCode(OutFile &out)
 		out() << "QStringList();";
 	}
 	out() << "\n\t\t}\n\n";
+
+	out() << "\t\tQString layout() const\n\t\t{\n";
+	out() << "\t\t\treturn \"" << containerProperties->layout << "\";\n";
+	out() << "\t\t}\n\n";
+
+	out() << "\t\tQString layoutBinding() const\n\t\t{\n";
+	out() << "\t\t\treturn \"" << containerProperties->layoutBinding << "\";\n";
+	out() << "\t\t}\n\n";
+
+	if (!mContainerProperties) {
+		delete containerProperties;
+	}
 
 	out() << "\tprivate:\n";
 	if (!mBonusContextMenuFields.empty()) {

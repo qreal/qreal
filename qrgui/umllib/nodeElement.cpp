@@ -35,6 +35,8 @@ NodeElement::NodeElement(ElementImpl* impl)
 	, mConnectionInProgress(false)
 	, mPlaceholder(NULL)
 	, mHighlightedNode(NULL)
+	, mLayoutFactory(new layouts::NodeElementLayoutFactory(impl->layoutBinding(), this))
+	, mWidgetsHelper(new WidgetsHelper(this))
 	, mTimeOfUpdate(0)
 	, mTimer(new QTimer(this))
 {
@@ -45,7 +47,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	mPortRenderer = new SdfRenderer();
 	mRenderer = new SdfRenderer();
-	mWidgetsHelper = new WidgetsHelper(this);
+
 	ElementTitleFactory factory;
 	QList<ElementTitleInterface*> titles;
 
@@ -70,7 +72,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mSwitchGridAction.setCheckable(true);
 	connect(&mSwitchGridAction, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
 
-	foreach (QString bonusField, mElementImpl->bonusContextMenuFields()) {
+	foreach (QString const &bonusField, mElementImpl->bonusContextMenuFields()) {
 		mBonusContextMenuActions.push_back(new ContextMenuAction(bonusField, this));
 	}
 
@@ -80,6 +82,9 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateNodeEdges()));
 	setGeom(mContents);
+
+	connect(this, SIGNAL(geometryChanged()), this, SLOT(synchronizeGeometries()));
+	mLayoutFactory->setPropertyValue(impl->layout());
 }
 
 NodeElement::~NodeElement()
@@ -420,11 +425,12 @@ void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
 	// mHighlightedNode == newParent, but it's unapplicable here because
 	// of element could be moved inside his parent
 
-	if (newParent != NULL) {
+	if (newParent) {
 		mHighlightedNode = newParent;
-		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), mouseScenePos);
+		QPointF const nodePos = mHighlightedNode->mapFromScene(mouseScenePos);
+		mHighlightedNode->layoutFactory()->handleDragMove(this, nodePos);
 	} else if (mHighlightedNode != NULL) {
-		mHighlightedNode->erasePlaceholder(true);
+		mHighlightedNode->layoutFactory()->handleDragLeave();
 		mHighlightedNode = NULL;
 	}
 }
@@ -575,18 +581,12 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (!isPort() && (flags() & ItemIsMovable)) {
 		if (mHighlightedNode) {
 			NodeElement *newParent = mHighlightedNode;
-			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
-			mHighlightedNode->erasePlaceholder(false);
-			// commented because of bug with double event sending (see #204)
-	//		mHighlightedNode = NULL;
 
 			QPointF newPos = mapToItem(newParent, mapFromScene(scenePos()));
 			mGraphicalAssistApi->changeParent(id(), newParent->id(), newPos);
-			setPos(newPos);
 
-			if (insertBefore != NULL) {
-				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
-			}
+			mHighlightedNode->layoutFactory()->handleDropEvent(this, newPos);
+			setGeom(geometry());
 
 			newParent->resize();
 
@@ -1274,5 +1274,17 @@ void NodeElement::updateNodeEdges()
 	arrangeLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->adjustNeighborLinks();
+	}
+}
+
+layouts::NodeElementLayoutFactory *NodeElement::layoutFactory() const
+{
+	return mLayoutFactory;
+}
+
+void NodeElement::synchronizeGeometries()
+{
+	if (mContents != geometry()) {
+		setGeom(geometry());
 	}
 }

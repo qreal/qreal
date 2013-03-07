@@ -16,6 +16,8 @@ GraphicType::ContainerProperties::ContainerProperties()
 	, hasMovableChildren(true)
 	, minimizesToChildren(false)
 	, maximizesChildren(false)
+	, layout("None")
+	, layoutBinding("")
 {
 }
 
@@ -31,8 +33,12 @@ GraphicType::ResolvingHelper::~ResolvingHelper()
 }
 
 GraphicType::GraphicType(Diagram *diagram)
-	: Type(false, diagram), mVisible(false)
-	, mWidth(-1), mHeight(-1), mResolving(false)
+	: Type(false, diagram)
+	, mVisible(false)
+	, mWidth(-1)
+	, mHeight(-1)
+	, mContainerProperties(NULL)
+	, mResolving(false)
 {
 }
 
@@ -200,32 +206,37 @@ bool GraphicType::initContainerProperties()
 		return true;
 	}
 
+	mContainerProperties = new ContainerProperties;
 	for (QDomElement childElement = containerPropertiesElement.firstChildElement();
 		!childElement.isNull();
 		childElement = childElement.nextSiblingElement()) {
 
 		if (childElement.tagName() == "sortContainer") {
-			mContainerProperties.isSortingContainer = true;
+			mContainerProperties->isSortingContainer = true;
 		} else if (childElement.tagName() == "forestalling") {
 			QString const sizeAttribute = childElement.attribute("size");
 			bool isSizeOk = false;
-			mContainerProperties.sizeOfForestalling = sizeAttribute.toInt(&isSizeOk);
+			mContainerProperties->sizeOfForestalling = sizeAttribute.toInt(&isSizeOk);
 			if (!isSizeOk) {
 				return false;
 			}
 		} else if (childElement.tagName() == "childrenForestalling") {
 			QString const sizeAttribute = childElement.attribute("size");
 			bool isSizeOk = false;
-			mContainerProperties.sizeOfChildrenForestalling = sizeAttribute.toInt(&isSizeOk);
+			mContainerProperties->sizeOfChildrenForestalling = sizeAttribute.toInt(&isSizeOk);
 			if (!isSizeOk) {
 				return false;
 			}
 		} else if (childElement.tagName() == "minimizeToChildren") {
-			mContainerProperties.minimizesToChildren = true;
+			mContainerProperties->minimizesToChildren = true;
 		} else if (childElement.tagName() == "banChildrenMove") {
-			mContainerProperties.hasMovableChildren = false;
+			mContainerProperties->hasMovableChildren = false;
 		} else if (childElement.tagName() == "maximizeChildren") {
-			mContainerProperties.maximizesChildren = true;
+			mContainerProperties->maximizesChildren = true;
+		} else if (childElement.tagName() == "layout") {
+			mContainerProperties->layout = childElement.attribute("value");
+		} else if (childElement.tagName() == "layoutBinding") {
+			mContainerProperties->layoutBinding = childElement.attribute("value");
 		}
 	}
 
@@ -367,6 +378,9 @@ bool GraphicType::resolve()
 			}
 			mContains.append(gParent->mContains);
 			mContains.removeDuplicates();
+			if (gParent->mContainerProperties && !mContainerProperties) {
+				mContainerProperties = gParent->mContainerProperties;
+			}
 		}
 	}
 

@@ -10,6 +10,7 @@ class QGraphicsItem;
 class EditorViewScene;
 
 class Element;
+class NodeElement;
 
 namespace qReal {
 
@@ -54,14 +55,6 @@ private slots:
 private:
 	typedef QPair<QPersistentModelIndex, Element*> IndexElementPair;
 
-	EditorViewScene *mScene;
-	qReal::EditorView *mView;
-	models::GraphicalModelAssistApi *mGraphicalAssistApi;
-	models::LogicalModelAssistApi *mLogicalAssistApi;
-
-	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
-	QSet<IndexElementPair> mItems;
-
 	QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers);
 
 	int horizontalOffset() const;
@@ -78,6 +71,15 @@ private:
 	void removeItem(QPersistentModelIndex const &index);
 
 	void clearItems();
+
+	EditorViewScene *mScene;
+	qReal::EditorView *mView;
+	models::GraphicalModelAssistApi *mGraphicalAssistApi;
+	models::LogicalModelAssistApi *mLogicalAssistApi;
+
+	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
+	QSet<IndexElementPair> mItems;
+
 };
 
 }

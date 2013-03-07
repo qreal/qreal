@@ -144,13 +144,13 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->setPos(ePos);	//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
 			elem->setId(currentId);
 
-	/*commented out because of real sizes of elements are incorrectly changing here into initial sizes*/
-//			NodeElement* nodeElement = dynamic_cast<NodeElement*>(elem);
-//			if (nodeElement)
-//				nodeElement->storeGeometry();
-
-			if (item(parent) != NULL) {
-				elem->setParentItem(item(parent));
+			Element *parentElem = item(parent);
+			if (parentElem) {
+				elem->setParentItem(parentElem);
+				NodeElement *parentNode = dynamic_cast<NodeElement *>(parentElem);
+				if (elem && parentNode) {
+					parentNode->layoutFactory()->handleDropEvent(elem, ePos);
+				}
 				QModelIndex next = current.sibling(current.row() + 1, 0);
 				if(next.isValid() && item(next) != NULL) {
 					elem->stackBefore(item(next));
@@ -181,7 +181,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				elem->setSelected(true);
 			}
 
-			NodeElement* nodeElem = dynamic_cast<NodeElement*>(elem);
+			NodeElement *nodeElem = dynamic_cast<NodeElement*>(elem);
 			if (nodeElem && currentId.element() == "Class" &&
 				mGraphicalAssistApi->children(currentId).empty())
 			{
@@ -203,8 +203,9 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
 
 		NodeElement * nodeElement = dynamic_cast<NodeElement*>(elem);
-		if (nodeElement)
+		if (nodeElement) {
 			nodeElement->alignToGrid();
+		}
 	}
 
 	foreach (QGraphicsItem *item, mScene->items()) {

@@ -48,6 +48,8 @@ protected:
 		bool hasMovableChildren;
 		bool minimizesToChildren;
 		bool maximizesChildren;
+		QString layout;
+		QString layoutBinding;
 	};
 
 	void copyFields(GraphicType *type) const;
@@ -66,7 +68,7 @@ protected:
 	bool mIsIconWidgetBased;
 	QList<Label*> mLabels;
 	QStringList mContains;
-	ContainerProperties mContainerProperties;
+	ContainerProperties *mContainerProperties; // Takes ownership
 	QStringList mConnections;
 	QStringList mUsages;
 	QList<PossibleEdge> mPossibleEdges;

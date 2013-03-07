@@ -13,7 +13,7 @@ class WidgetsHelper : public WidgetsHelperInterface
 	Q_OBJECT
 
 public:
-	explicit WidgetsHelper(NodeElement *element = 0);
+	explicit WidgetsHelper(NodeElement * const element = 0 /* Accepts ownership on this */);
 	virtual ~WidgetsHelper();
 
 	QWidget *widget() const;
@@ -27,6 +27,7 @@ public:
 
 private:
 	void initEnumEditors();
+	void initLayoutFactoryPropertyEditor();
 
 	NodeElement *mElement;
 	EditorManager const *mEditorManager;

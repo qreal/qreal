@@ -4,13 +4,26 @@
 #include "../../elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.h"
 #include "../../../qrutils/xmlUtils.h"
 
-WidgetsHelper::WidgetsHelper(NodeElement *element)
+WidgetsHelper::WidgetsHelper(NodeElement * const element)
 	: mElement(element), mEditorManager(NULL), mWidget(NULL)
 {
+	setParent(element);
+	initLayoutFactoryPropertyEditor();
 }
 
 WidgetsHelper::~WidgetsHelper()
 {
+}
+
+void WidgetsHelper::initLayoutFactoryPropertyEditor()
+{
+	if (!mElement) {
+		return;
+	}
+	layouts::NodeElementLayoutFactory *factory = mElement->layoutFactory();
+	if (!factory->binding().isEmpty()) {
+		mPropertyEditors.insertMulti(factory->binding(), factory);
+	}
 }
 
 bool WidgetsHelper::initWidget(QString const &filename)
@@ -20,6 +33,7 @@ bool WidgetsHelper::initWidget(QString const &filename)
 		return false;
 	}
 	mPropertyEditors.clear();
+	initLayoutFactoryPropertyEditor();
 	QList<PropertyEditorInterface *> editors;
 	mWidget = qReal::widgetsEdit::WidgetsEditor::deserializeWidget(document, editors);
 	if (!mWidget) {
