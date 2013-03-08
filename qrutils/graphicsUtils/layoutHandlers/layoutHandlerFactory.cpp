@@ -38,7 +38,7 @@ LayoutHandler *LayoutHandlerFactory::currentHandler() const
 
 bool LayoutHandlerFactory::hasLayout() const
 {
-	return currentType() == none;
+	return currentType() != none;
 }
 
 void LayoutHandlerFactory::setType(LayoutType type)

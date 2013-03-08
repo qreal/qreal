@@ -107,7 +107,7 @@ QList<QGraphicsLayoutItem *> LayoutHandler::childrenWithoutLayout() const
 	QList<QGraphicsLayoutItem *> result;
 	foreach (QGraphicsItem *item, mItem->childItems()) {
 		QGraphicsLayoutItem *layoutItem = dynamic_cast<QGraphicsLayoutItem *>(item);
-		bool const inLayout = layoutItem->parentLayoutItem()
+		bool const inLayout = layoutItem && layoutItem->parentLayoutItem()
 				&& layoutItem->parentLayoutItem()->isLayout();
 		if (layoutItem && !inLayout) {
 			result << layoutItem;

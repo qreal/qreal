@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtGui/QGraphicsLayout>
 #include <QtGui/QGraphicsProxyWidget>
 
 #include "../../utilsDeclSpec.h"

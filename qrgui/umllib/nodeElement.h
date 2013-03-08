@@ -218,6 +218,8 @@ private:
 
 	void initEmbeddedLinkers();
 
+	bool inLayout() const;
+
 	ContextMenuAction mSwitchGridAction;
 
 	bool mPortsVisible;

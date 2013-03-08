@@ -556,7 +556,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 	delUnusedLines();
 
-	if (SettingsManager::value("ActivateGrid").toBool() || mSwitchGridAction.isChecked()) {
+	if ((SettingsManager::value("ActivateGrid").toBool()
+			|| mSwitchGridAction.isChecked()) && !inLayout())
+	{
 		alignToGrid();
 	}
 
@@ -1298,4 +1300,10 @@ void NodeElement::synchronizeGeometries()
 	if (mContents != geometry()) {
 		setGeom(geometry());
 	}
+}
+
+bool NodeElement::inLayout() const
+{
+	NodeElement *parent= dynamic_cast<NodeElement *>(parentItem());
+	return parent && parent->layoutFactory()->hasLayout();
 }
