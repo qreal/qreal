@@ -28,12 +28,12 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		: QObject(parent)
 		, mD2ModelWidget(NULL)
 		, mTimeline(new Timeline(this))
-        , mNoiseGen()
-        , mNeedSync(false)
-        , mNeedSensorNoise(false)
+		, mNoiseGen()
+		, mNeedSync(false)
+		, mNeedSensorNoise(false)
 {
 	mAngle = 0;
-    mNoiseGen.setApproximationLevel(12);
+	mNoiseGen.setApproximationLevel(12);
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
 	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()), Qt::UniqueConnection);
 	initPosition();
@@ -159,27 +159,27 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
 {
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
-    int const res = mWorldModel.sonarReading(neededPosDir.first, neededPosDir.second);
+	int const res = mWorldModel.sonarReading(neededPosDir.first, neededPosDir.second);
 
-    return mNeedSensorNoise ? spoilSonarReading(res) : res;
+	return mNeedSensorNoise ? spoilSonarReading(res) : res;
 }
 
 int D2RobotModel::spoilSonarReading(int const distance) const
 {
-    qreal const ran = mNoiseGen.generate(
-                    mNoiseGen.getApproximationLevel()
-                    , spoilSonarDispersion
-                );
-    int res = round(distance + ran);
+	qreal const ran = mNoiseGen.generate(
+					mNoiseGen.getApproximationLevel()
+					, spoilSonarDispersion
+				);
+	int res = round(distance + ran);
 
-    if (res < 0) {
-        res = 0;
-    }
-    if (res > 255) {
-        res = 255;
-    }
+	if (res < 0) {
+		res = 0;
+	}
+	if (res > 255) {
+		res = 255;
+	}
 
-    return res;
+	return res;
 }
 
 int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
@@ -190,7 +190,7 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 	unsigned long* data = (unsigned long*) image.bits();
 	int const n = image.byteCount() / 4;
 	for (int i = 0; i < n; ++i) {
-        unsigned long color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
+		unsigned long color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
 		countsColor[color] ++;
 	}
 
@@ -212,35 +212,35 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 
 unsigned long D2RobotModel::spoilColor(unsigned long const color) const
 {
-    qreal const ran = mNoiseGen.generate(
-                    mNoiseGen.getApproximationLevel()
-                    , spoilColorDispersion
-                );
-    int r = round(((color >> 16) & 0xFF) + ran);
-    int g = round(((color >> 8) & 0xFF) + ran);
-    int b = round(((color >> 0) & 0xFF) + ran);
-    int const a = (color >> 24) & 0xFF;
+	qreal const ran = mNoiseGen.generate(
+					mNoiseGen.getApproximationLevel()
+					, spoilColorDispersion
+				);
+	int r = round(((color >> 16) & 0xFF) + ran);
+	int g = round(((color >> 8) & 0xFF) + ran);
+	int b = round(((color >> 0) & 0xFF) + ran);
+	int const a = (color >> 24) & 0xFF;
 
-    if(r < 0) {
-        r = 0;
+	if(r < 0) {
+		r = 0;
+	}
+	if(g < 0) {
+		g = 0;
+	}
+	if(b < 0) {
+		b = 0;
+	}
+	if(r > 255) {
+		r = 255;
     }
-    if(g < 0) {
-        g = 0;
-    }
-    if(b < 0) {
-        b = 0;
-    }
-    if(r > 255) {
-        r = 255;
-    }
-    if(g > 255) {
-        g = 255;
-    }
-    if(b > 255) {
-        b = 255;
-    }
+	if(g > 255) {
+		g = 255;
+	}
+	if(b > 255) {
+		b = 255;
+	}
 
-    return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
+	return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
 }
 
 QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
@@ -345,10 +345,10 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 	int const n = image.numBytes() / 4;
 
 	for (int i = 0; i < n; ++i) {
-        int const color = mNeedSensorNoise ? spoilLight(data[i]) : data[i];
-        int const b = (color >> 0) & 0xFF;
-        int const g = (color >> 8) & 0xFF;
-        int const r = (color >> 16) & 0xFF;
+		int const color = mNeedSensorNoise ? spoilLight(data[i]) : data[i];
+		int const b = (color >> 0) & 0xFF;
+		int const g = (color >> 8) & 0xFF;
+		int const r = (color >> 16) & 0xFF;
 		// brightness in [0..256]
 		int const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
@@ -359,17 +359,17 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 
 unsigned long D2RobotModel::spoilLight(unsigned long const color) const
 {
-    qreal const ran = mNoiseGen.generate(
-                    mNoiseGen.getApproximationLevel()
-                    , spoilLightDispersion
-                );
-    if (ran > (1.0 - percentSaltPepperNoise / 100.0)) {
-        return white;
-    } else if (ran < (-1.0 + percentSaltPepperNoise / 100.0)) {
-        return black;
-    }
+	qreal const ran = mNoiseGen.generate(
+					mNoiseGen.getApproximationLevel()
+					, spoilLightDispersion
+				);
+	if (ran > (1.0 - percentSaltPepperNoise / 100.0)) {
+		return white;
+	} else if (ran < (-1.0 + percentSaltPepperNoise / 100.0)) {
+		return black;
+	}
 
-    return color;
+	return color;
 }
 
 

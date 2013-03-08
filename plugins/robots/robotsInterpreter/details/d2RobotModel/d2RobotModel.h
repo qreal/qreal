@@ -95,9 +95,9 @@ private:
 	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const;
 
 	void synchronizePositions();
-    unsigned long spoilColor(unsigned long const color) const;
-    unsigned long spoilLight(unsigned long const color) const;
-    int spoilSonarReading(int const distance) const;
+	unsigned long spoilColor(unsigned long const color) const;
+	unsigned long spoilLight(unsigned long const color) const;
+	int spoilSonarReading(int const distance) const;
 
 	D2ModelWidget *mD2ModelWidget;
 	Motor *mMotorA;
@@ -113,9 +113,9 @@ private:
 	WorldModel mWorldModel;
 	Timeline *mTimeline;
 	qreal mSpeedFactor;
-    mathUtils::GaussNoise mNoiseGen;
+	mathUtils::GaussNoise mNoiseGen;
 	bool mNeedSync;
-    bool mNeedSensorNoise;
+	bool mNeedSensorNoise;
 };
 
 }

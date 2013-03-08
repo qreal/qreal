@@ -13,8 +13,8 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 {
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
-    connect(mUi->approximationLevelSpinBox, SIGNAL(valueChanged(int)), this, SLOT(approximationLevelSpinBoxChanged(int)));
-    connect(mUi->enableNoiseCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableNoiseCheckBoxChecked(bool)));
+	connect(mUi->approximationLevelSpinBox, SIGNAL(valueChanged(int)), this, SLOT(approximationLevelSpinBoxChanged(int)));
+	connect(mUi->enableNoiseCheckBox, SIGNAL(toggled(bool)), this, SLOT(enableNoiseCheckBoxChecked(bool)));
 	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
 	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
 	connect(mUi->bluetoothRadioButton, SIGNAL(toggled(bool)), this, SLOT(bluetoothCommunucationToggled()));
@@ -57,8 +57,8 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	}
 
 	mUi->manualComPortCheckbox->setChecked(SettingsManager::value("manualComPortCheckboxChecked").toBool());
-    mUi->enableNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
-    mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
+	mUi->enableNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
+	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
 
 	QVBoxLayout *sensorsLayout = new QVBoxLayout;
 	sensorsLayout->addWidget(mSensorsWidget);
@@ -148,12 +148,12 @@ void PreferencesRobotSettingsPage::bluetoothCommunucationToggled()
 
 void PreferencesRobotSettingsPage::enableNoiseCheckBoxChecked(bool state)
 {
-    SettingsManager::setValue("enableNoiseOfSensors", state);
+	SettingsManager::setValue("enableNoiseOfSensors", state);
 }
 
 void PreferencesRobotSettingsPage::approximationLevelSpinBoxChanged(int value)
 {
-    SettingsManager::setValue("approximationLevel", value);
+	SettingsManager::setValue("approximationLevel", value);
 }
 
 void PreferencesRobotSettingsPage::manualComPortCheckboxChecked(bool state)
