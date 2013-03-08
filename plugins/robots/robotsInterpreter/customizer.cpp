@@ -39,6 +39,12 @@ void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWi
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
 }
 
+void Customizer::placeGraphicsWatch(QWidget *graphicsWatch)
+{
+	QDockWidget *graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
+	mDockInterface->addDockWidget(Qt::RightDockWidgetArea, graphWatchDock);
+}
+
 QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const
 {
 	QDockWidget *dock = new QDockWidget(title);

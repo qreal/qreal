@@ -17,6 +17,8 @@
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 #include "details/sensorsConfigurationWidget.h"
 
+#include "graphicsWatcher/realTimePlot.h"
+
 namespace qReal {
 namespace interpreters {
 namespace robots {
@@ -58,6 +60,9 @@ public:
 	void disableD2ModelWidgetRunStopButtons();
 
 	WatchListWindow *watchWindow() const;
+
+	RealTimePlot *graphicsWatchWindow() const;
+
 	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
 public slots:
@@ -118,6 +123,8 @@ private:
 	robotModelType::robotModelTypeEnum mImplementationType;
 
 	WatchListWindow *mWatchListWindow;
+
+	RealTimePlot *mGraphicsWatch;
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;

@@ -23,6 +23,7 @@ public:
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface);
 
 	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
+	void placeGraphicsWatch(QWidget *graphicsWatch);
 
 private:
 	QDockWidget *produceDockWidget(QString const &title, QWidget *content) const;
