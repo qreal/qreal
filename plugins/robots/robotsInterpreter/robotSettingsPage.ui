@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>409</height>
+    <height>514</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -122,7 +122,14 @@
      </layout>
     </widget>
    </item>
-   <item row="4" column="0" colspan="2">
+   <item row="1" column="0" colspan="2">
+    <widget class="QGroupBox" name="sensorsSettingsGroupBox">
+     <property name="title">
+      <string>Sensors Settings</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -135,14 +142,7 @@
      </property>
     </spacer>
    </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QGroupBox" name="sensorsSettingsGroupBox">
-     <property name="title">
-      <string>Sensors Settings</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0" colspan="2">
+   <item row="5" column="0" colspan="2">
     <widget class="QGroupBox" name="elementsGroupBox">
      <property name="title">
       <string>Elements</string>
@@ -152,6 +152,51 @@
        <widget class="QCheckBox" name="textVisibleCheckBox">
         <property name="text">
          <string>Text visible</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QGroupBox" name="noiseSensorsGroupBox">
+     <property name="title">
+      <string>Noise of sensors</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="margin">
+       <number>9</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="enableNoiseCheckBox">
+        <property name="text">
+         <string>Enable noise</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="approximationLevelSpinBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimum">
+         <number>12</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>4</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="approximationLabel">
+        <property name="text">
+         <string>Approximation</string>
         </property>
        </widget>
       </item>

@@ -35,6 +35,16 @@ void GaussNoise::setDispersion(qreal const variance)
     mDispersion = variance;
 }
 
+unsigned int GaussNoise::getApproximationLevel() const
+{
+    return mApproximationLevel;
+}
+
+qreal GaussNoise::getDispersion() const
+{
+    return mDispersion;
+}
+
 qreal GaussNoise::genBody(unsigned int const approximationLevel, qreal const variance) const
 {
     qreal x = 0.0;
