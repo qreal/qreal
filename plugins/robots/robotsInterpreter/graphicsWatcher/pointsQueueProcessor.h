@@ -1,9 +1,17 @@
 #pragma once
 
-#include <qglobal.h>
-#include <QList>
-#include <QPointF>
-#include <limits>
+#include <QtCore/QList>
+#include <QtCore/QPointF>
+#include <c++/limits>
+
+namespace qReal
+{
+namespace interpreters
+{
+namespace robots
+{
+namespace sensorsGraph
+{
 
 //! @class PointsQueueProcessor provides all necessary transformations with points
 /*! Features: scaling by search of peaks on plot
@@ -18,19 +26,19 @@ public:
 	  @param viewPortHeight takes amplitude for graphics without top and bottom bounds
 	  @param leftLimit takes sceneRect.left() for deleting out_to_date points
 	*/
-	PointsQueueProcessor(qreal const viewPortHeight, qreal const mLeftLimit);
+	PointsQueueProcessor(qreal const viewPortHeight, qreal const leftLimit);
 	~PointsQueueProcessor();
 
 	void addNewValue(qreal const newValue);
 	void clearData();
 
 	//! Shifts left points queue to animate plot
-	/*! use this func on each iterate
+	/*! use this func on each iteration
 	  @param step one shift in pixels
 	*/
 	void makeShiftLeft(const qreal step);
 
-	//! function scaled plot with current pics
+	//! function scales plot with current peaks
 	/*! This is part of autoscaling machine
 		It might be a good idea to run this func ones per 2-5 sec.
 	*/
@@ -38,28 +46,30 @@ public:
 
 	//! get new position for KeyPoint
 	QPointF &latestPosition();
-	qreal latestValue();
+	qreal latestValue() const;
 
 	//! get points data to draw a plot
 	QList<QPointF> *pointsBase();
 
-	qreal minLimit();
-	qreal maxLimit();
+	qreal minLimit() const;
+	qreal maxLimit() const;
 
 	qreal absoluteValueToPoint(qreal const value) const;
 	qreal pointToAbsoluteValue(qreal const yValue, qreal const minValue, qreal const maxValue) const;
 
-
 protected:
+	void recalcPointsQueue(qreal const oldMin, qreal const oldMax);
+
 	QList<QPointF> mPointsQueue;
 	qreal mMinCurrent;
 	qreal mMaxCurrent;
 	QPointF mNextToDraw;
 	qreal mGraphHeight;
 	qreal mLeftLimit;
-
-	void recalcPointsQueue(qreal const oldMin, qreal const oldMax);
-
-
 };
+
+}
+}
+}
+}
 

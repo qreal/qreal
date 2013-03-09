@@ -1,7 +1,9 @@
 #include "pointsQueueProcessor.h"
 
-PointsQueueProcessor::PointsQueueProcessor(const qreal viewPortHeight, const qreal leftLimit) :
-	mMinCurrent(0)
+using namespace qReal::interpreters::robots::sensorsGraph;
+
+PointsQueueProcessor::PointsQueueProcessor(const qreal viewPortHeight, const qreal leftLimit)
+	: mMinCurrent(0)
 	, mMaxCurrent(1)
 	, mNextToDraw(QPointF(0, -80))
 	, mGraphHeight(viewPortHeight)
@@ -14,10 +16,10 @@ PointsQueueProcessor::~PointsQueueProcessor()
 	mPointsQueue.clear();
 }
 
-void PointsQueueProcessor::addNewValue(const qreal newValue)
+void PointsQueueProcessor::addNewValue(qreal const newValue)
 {
-	qreal oldMax = mMaxCurrent;
-	qreal oldMin = mMinCurrent;
+	qreal const oldMax = mMaxCurrent;
+	qreal const oldMin = mMinCurrent;
 	if (newValue > mMaxCurrent) {
 		mMaxCurrent = newValue;
 	}
@@ -33,9 +35,9 @@ void PointsQueueProcessor::addNewValue(const qreal newValue)
 	mPointsQueue.append(QPointF(0, absoluteValueToPoint(newValue)));
 }
 
-void PointsQueueProcessor::recalcPointsQueue(const qreal oldMin, const qreal oldMax)
+void PointsQueueProcessor::recalcPointsQueue(qreal const oldMin, qreal const oldMax)
 {
-	qreal currentValue;
+	qreal currentValue = 0;
 	for (int i = 0; i < mPointsQueue.size(); i++) {
 		currentValue = pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax);
 		mPointsQueue[i].setY(absoluteValueToPoint(currentValue));
@@ -55,7 +57,9 @@ void PointsQueueProcessor::makeShiftLeft(qreal const step)
 
 qreal PointsQueueProcessor::absoluteValueToPoint(qreal const value) const
 {
-	return ((value - mMinCurrent) / (mMaxCurrent - mMinCurrent) * mGraphHeight + 10) * (-1);
+	int const verticalBounds = 10;
+	int const invertCoordSys = -1;
+	return ((value - mMinCurrent) / (mMaxCurrent - mMinCurrent) * mGraphHeight + verticalBounds) * invertCoordSys;
 }
 
 qreal PointsQueueProcessor::pointToAbsoluteValue(const qreal yValue, const qreal minValue
@@ -76,7 +80,7 @@ QPointF &PointsQueueProcessor::latestPosition()
 	return mNextToDraw;
 }
 
-qreal PointsQueueProcessor::latestValue()
+qreal PointsQueueProcessor::latestValue() const
 {
 	return pointToAbsoluteValue(mNextToDraw.y(), mMinCurrent, mMaxCurrent);
 }
@@ -88,9 +92,9 @@ QList<QPointF> *PointsQueueProcessor::pointsBase()
 
 void PointsQueueProcessor::checkPeaks()
 {
-	qreal oldMin = mMinCurrent;
-	qreal oldMax = mMaxCurrent;
-//	mMinCurrent = std::numeric_limits<qreal>::max();
+	qreal const oldMin = mMinCurrent;
+	qreal const oldMax = mMaxCurrent;
+
 	mMaxCurrent = std::numeric_limits<qreal>::min();
 
 	for (int i = 0; i < mPointsQueue.size(); i++) {
@@ -105,12 +109,12 @@ void PointsQueueProcessor::checkPeaks()
 	recalcPointsQueue(oldMin, oldMax);
 }
 
-qreal PointsQueueProcessor::minLimit()
+qreal PointsQueueProcessor::minLimit() const
 {
 	return mMinCurrent;
 }
 
-qreal PointsQueueProcessor::maxLimit()
+qreal PointsQueueProcessor::maxLimit() const
 {
 	return mMaxCurrent;
 }

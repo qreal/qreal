@@ -1,13 +1,12 @@
 #include "keyPoint.h"
 
-KeyPoint::KeyPoint() :
-	mVisualArea(QRectF(-10, -10, 10, 10))
+using namespace qReal::interpreters::robots::sensorsGraph;
+
+KeyPoint::KeyPoint() : mVisualArea(QRectF(-10, -10, 10, 10))
 {
 	setCacheMode(DeviceCoordinateCache);
 	setZValue(1000);
 }
-
-
 
 QRectF KeyPoint::boundingRect() const
 {
@@ -16,6 +15,9 @@ QRectF KeyPoint::boundingRect() const
 
 void KeyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	Q_UNUSED(option)
+	Q_UNUSED(widget)
+
 	painter->setPen(Qt::NoPen);
 
 	QRadialGradient gradient(0, 0, 10);
@@ -29,4 +31,3 @@ void KeyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	painter->setPen(Qt::NoPen);
 	painter->drawEllipse(mVisualArea);
 }
-

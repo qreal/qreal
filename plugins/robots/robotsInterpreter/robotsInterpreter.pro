@@ -33,10 +33,10 @@ HEADERS += \
 	details/realTimer.h \
 	details/sensorsConfigurationWidget.h \
     details/nullTimer.h \
-    graphicsWatcher/sensorGraph.h \
-    graphicsWatcher/realTimePlot.h \
     graphicsWatcher/pointsQueueProcessor.h \
-    graphicsWatcher/keyPoint.h
+    graphicsWatcher/keyPoint.h \
+    graphicsWatcher/sensorsGraph.h \
+    graphicsWatcher/sensorViewer.h
 
 SOURCES += \
 	robotsPlugin.cpp \
@@ -55,17 +55,17 @@ SOURCES += \
 	details/realTimer.cpp \
 	details/sensorsConfigurationWidget.cpp \
     details/nullTimer.cpp \
-    graphicsWatcher/sensorGraph.cpp \
-    graphicsWatcher/realTimePlot.cpp \
     graphicsWatcher/pointsQueueProcessor.cpp \
-    graphicsWatcher/keyPoint.cpp
+    graphicsWatcher/keyPoint.cpp \
+    graphicsWatcher/sensorsGraph.cpp \
+    graphicsWatcher/sensorViewer.cpp
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
 	watchListWindow.ui \
 	details/sensorsConfigurationWidget.ui \
-    graphicsWatcher/realTimePlot.ui
+    graphicsWatcher/sensorsGraph.ui
 
 RESOURCES += \
 	robotsInterpreter.qrc \
@@ -80,9 +80,4 @@ include(details/robotImplementations/robotImplementations.pri)
 
 include(details/robotParts/robotParts.pri)
 
-OTHER_FILES += \
-    graphicsWatcher/zoomOut_btn.png \
-    graphicsWatcher/zoomIn_btn.png \
-    graphicsWatcher/stop_btn.png \
-    graphicsWatcher/start_btn.png \
-    graphicsWatcher/reset_btn.png
+OTHER_FILES +=

@@ -1,14 +1,15 @@
-#include "sensorGraph.h"
+#include "sensorViewer.h"
 
-SensorGraph::SensorGraph(QWidget *parent) :
-	QGraphicsView(parent)
+using namespace qReal::interpreters::robots::sensorsGraph;
+
+SensorViewer::SensorViewer(QWidget *parent)
+	: QGraphicsView(parent)
 	, mPenBrush(QBrush(Qt::yellow))
 	, fpsDelay(50)
 	, autoScaleInterval(4000)
 	, updateOutputInterval(1000)
 	, stepSize(2)
 	, zoomRate(2)
-	, mIsZoomed(false)
 	, mScaleCoefficient(0)
 	, mAutoScaleTimer(0)
 	, mUpdateCurrValueTimer(0)
@@ -19,7 +20,7 @@ SensorGraph::SensorGraph(QWidget *parent) :
 	connect(&visualTimer, SIGNAL(timeout()), this, SLOT(visualTimerEvent()));
 }
 
-SensorGraph::~SensorGraph()
+SensorViewer::~SensorViewer()
 {
 	scene->removeItem(mainPoint);
 	delete pointsDataProcessor;
@@ -27,7 +28,7 @@ SensorGraph::~SensorGraph()
 	delete scene;
 }
 
-void SensorGraph::initGraphicsOutput()
+void SensorViewer::initGraphicsOutput()
 {
 	scene = new QGraphicsScene(this);
 	scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -35,8 +36,9 @@ void SensorGraph::initGraphicsOutput()
 
 	setScene(scene);
 	setRenderHint(QPainter::Antialiasing, false);
+	setDragMode(QGraphicsView::ScrollHandDrag);
 
-	/// This makes information on left side actual
+	//! This makes information on left side actual
 	setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
@@ -46,27 +48,24 @@ void SensorGraph::initGraphicsOutput()
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-
 	mainPoint = new KeyPoint;
 	scene->addItem(mainPoint);
 
 	pointsDataProcessor = new PointsQueueProcessor(scene->sceneRect().height() - 20, scene->sceneRect().left());
 }
 
-
-void SensorGraph::startJob()
+void SensorViewer::startJob()
 {
 	visualTimer.start(fpsDelay);
 }
 
-void SensorGraph::stopJob()
+void SensorViewer::stopJob()
 {
 	visualTimer.stop();
 }
 
-void SensorGraph::clear()
+void SensorViewer::clear()
 {
-
 	pointsDataProcessor->clearData();
 
 	foreach (QGraphicsItem *item, scene->items()) {
@@ -80,19 +79,14 @@ void SensorGraph::clear()
 	//! why matrix().reset() doesnt work ?
 	QMatrix defaultMatrix ;
 	setMatrix(defaultMatrix);
-
-	mIsZoomed = false;
 }
 
-
-
-void SensorGraph::setNextValue(qreal newValue)
+void SensorViewer::setNextValue(qreal const newValue)
 {
 	pointsDataProcessor->addNewValue(newValue);
 }
 
-
-void SensorGraph::drawNextFrame()
+void SensorViewer::drawNextFrame()
 {
 	mainPoint->setPos(pointsDataProcessor->latestPosition());
 
@@ -104,19 +98,19 @@ void SensorGraph::drawNextFrame()
 		if (curLine == NULL) {
 			continue;
 		}
-        delete curLine;
+		delete curLine;
 	}
 
 	QPen regularPen = QPen(mPenBrush, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 	QLineF quantOfGraph;
 	for (int i = 0; i < pointsDataProcessor->pointsBase()->size() - 1; i++) {
 		quantOfGraph = QLineF(pointsDataProcessor->pointsBase()->at(i)
-		, pointsDataProcessor->pointsBase()->at(i + 1));
+				, pointsDataProcessor->pointsBase()->at(i + 1));
 		scene->addLine(quantOfGraph, regularPen);
 	}
 }
 
-void SensorGraph::visualTimerEvent()
+void SensorViewer::visualTimerEvent()
 {
 	drawNextFrame();
 	if (++mAutoScaleTimer * fpsDelay == autoScaleInterval) {
@@ -129,7 +123,7 @@ void SensorGraph::visualTimerEvent()
 	}
 }
 
-void SensorGraph::drawBackground(QPainter *painter, const QRectF &rect)
+void SensorViewer::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	QRectF sceneRect = this->sceneRect();
 
@@ -143,8 +137,7 @@ void SensorGraph::drawBackground(QPainter *painter, const QRectF &rect)
 	painter->drawRect(scene->sceneRect());
 
 	//! Text display section
-	QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
-					50, 50);
+	QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4, 50, 50);
 	QString maxDisplay(QString::number(pointsDataProcessor->maxLimit()));
 	QString minDisplay(QString::number(pointsDataProcessor->minLimit()));
 	QString currentDisplay(QString::number(mOutputValue));
@@ -161,17 +154,7 @@ void SensorGraph::drawBackground(QPainter *painter, const QRectF &rect)
 	Q_UNUSED(rect);
 }
 
-void SensorGraph::mouseReleaseEvent(QMouseEvent *event)
-{
-	if (mIsZoomed) {
-		zoomOut();
-	} else {
-		zoomIn();
-	}
-	mIsZoomed = !mIsZoomed;
-}
-
-void SensorGraph::zoomIn()
+void SensorViewer::zoomIn()
 {
 	if (mScaleCoefficient > 5) {
 		return;
@@ -182,7 +165,7 @@ void SensorGraph::zoomIn()
 	mScaleCoefficient++;
 }
 
-void SensorGraph::zoomOut()
+void SensorViewer::zoomOut()
 {
 	if (mScaleCoefficient == 0) {
 		return;
@@ -193,7 +176,7 @@ void SensorGraph::zoomOut()
 	mScaleCoefficient--;
 }
 
-void SensorGraph::onSensorChange(const int newSensorIndex)
+void SensorViewer::onSensorChange(const int newSensorIndex)
 {
 	clear();
 	switch(newSensorIndex)

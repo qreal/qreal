@@ -4,41 +4,41 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QToolButton>
 #include <QtGui/QComboBox>
-#include <QTimer>
+#include <QtCore/QTimer>
 
 #include "../../../qrutils/expressionsParser/expressionsParser.h"
-#include "sensorGraph.h"
+#include "sensorViewer.h"
 
 namespace Ui {
-class RealTimePlot;
+class SensorsGraph;
 }
 
-class RealTimePlot : public QWidget
+//! @class SensorsGraph is widget to show sensors state
+class SensorsGraph : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit RealTimePlot(utils::ExpressionsParser const *parser, QWidget *parent = 0);
-	~RealTimePlot();
+	explicit SensorsGraph(utils::ExpressionsParser const *parser, QWidget *parent = 0);
+	~SensorsGraph();
 
 public slots:
-	void sensorOne(qreal const value);
-	void sensorTwo(qreal const value);
-	void sensorThree(qreal const value);
-	void sensorFour(qreal const value);
+	void sensorsInput(int const port, qreal const value);
 	void setMainSensor(int const newSlotIndex);
 	void startJob();
 	void stopJob();
-
 
 protected:
 	void initGui();
 	void setupToolElements();
 	void makeConnections();
 
+private slots:
+	void updateValues();
+
 private:
-	Ui::RealTimePlot *mUi;
-	SensorGraph *mPlotFrame;
+	Ui::SensorsGraph *mUi;
+	qReal::interpreters::robots::sensorsGraph::SensorViewer *mPlotFrame;
 	QVBoxLayout mToolLayout;
 	QToolButton mStopButton;
 	QToolButton mStartButton;
@@ -50,9 +50,4 @@ private:
 	utils::ExpressionsParser const *mParser;
 	int const mUpdateRate;
 	int mCurrentSlot;
-
-private slots:
-	void updateValues();
-
 };
-

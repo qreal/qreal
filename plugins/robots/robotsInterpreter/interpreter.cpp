@@ -60,7 +60,7 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 
 	mWatchListWindow = new WatchListWindow(mParser, mInterpretersInterface->windowWidget());
 
-	mGraphicsWatch = new RealTimePlot(mParser, mInterpretersInterface->windowWidget());
+	mGraphicsWatch = new SensorsGraph(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
@@ -429,7 +429,7 @@ WatchListWindow *Interpreter::watchWindow() const
 	return mWatchListWindow;
 }
 
-RealTimePlot *Interpreter::graphicsWatchWindow() const
+SensorsGraph *Interpreter::graphicsWatchWindow() const
 {
 	return mGraphicsWatch;
 }

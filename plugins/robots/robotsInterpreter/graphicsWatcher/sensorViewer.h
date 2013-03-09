@@ -1,24 +1,31 @@
 #pragma once
 
-#include <QGraphicsView>
-#include <QTimer>
-#include <QPainter>
+#include <QtGui/QGraphicsView>
+#include <QtCore/QTimer>
+#include <QtGui/QPainter>
 
 #include "keyPoint.h"
 #include "pointsQueueProcessor.h"
 
-class SensorGraph : public QGraphicsView
+namespace qReal
+{
+namespace interpreters
+{
+namespace robots
+{
+namespace sensorsGraph
+{
+
+class SensorViewer : public QGraphicsView
 {
 	Q_OBJECT
 
 public:
-	SensorGraph(QWidget *parent = 0);
-	~SensorGraph();
-
-signals:
+	SensorViewer(QWidget *parent = 0);
+	~SensorViewer();
 
 public slots:
-	void setNextValue(qreal newValue);
+	void setNextValue(qreal const newValue);
 	void startJob();
 	void stopJob();
 	void clear();
@@ -29,9 +36,11 @@ public slots:
 protected:
 	void drawNextFrame();
 	void drawBackground(QPainter *painter, const QRectF &rect);
-	void mouseReleaseEvent(QMouseEvent *event);
 
 	void initGraphicsOutput();
+
+private slots:
+	void visualTimerEvent();
 
 private:
 	QGraphicsScene *scene;
@@ -46,18 +55,14 @@ private:
 	const int updateOutputInterval; //! current output value in bottom-right
 	const int stepSize;
 	const int zoomRate;
-	bool mIsZoomed;
 	int mScaleCoefficient;
 	int mAutoScaleTimer;
 	int mUpdateCurrValueTimer;
 	qreal mOutputValue;
-
-
-	/// debug
-	qreal debugValue;
-
-private slots:
-	void visualTimerEvent();
-
 };
+
+}
+}
+}
+}
 

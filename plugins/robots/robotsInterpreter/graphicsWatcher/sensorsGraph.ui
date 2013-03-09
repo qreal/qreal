@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RealTimePlot</class>
- <widget class="QWidget" name="RealTimePlot">
+ <class>SensorsGraph</class>
+ <widget class="QWidget" name="SensorsGraph">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,7 +23,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>RealTimePlot</string>
+   <string>SensorsGraph</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">

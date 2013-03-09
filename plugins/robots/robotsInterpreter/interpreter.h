@@ -17,7 +17,7 @@
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 #include "details/sensorsConfigurationWidget.h"
 
-#include "graphicsWatcher/realTimePlot.h"
+#include "graphicsWatcher/sensorsGraph.h"
 
 namespace qReal {
 namespace interpreters {
@@ -61,7 +61,7 @@ public:
 
 	WatchListWindow *watchWindow() const;
 
-	RealTimePlot *graphicsWatchWindow() const;
+	SensorsGraph *graphicsWatchWindow() const;
 
 	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
@@ -124,7 +124,7 @@ private:
 
 	WatchListWindow *mWatchListWindow;
 
-	RealTimePlot *mGraphicsWatch;
+	SensorsGraph *mGraphicsWatch;
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;
