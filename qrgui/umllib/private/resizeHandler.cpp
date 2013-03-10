@@ -15,7 +15,6 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 {
 	newContents.moveTo(0, 0);
 
-	sortChildrenIfNeeded();
 	gripeIfMinimizesToChildrenContainer(newContents);
 
 	if (!mResizingNode->isFolded()) {
@@ -48,43 +47,6 @@ qreal ResizeHandler::maxChildWidth() const
 	return maxChildWidthValue;
 }
 
-void ResizeHandler::sortChildrenIfNeeded() const
-{
-	if (!mElementImpl->isSortingContainer()) {
-		return;
-	}
-
-	int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
-	qreal curChildY = sizeOfForestalling + mTitlePadding;
-	qreal const maxChildWidthValue = maxChildWidth();
-
-	foreach (QGraphicsItem * const childItem, mResizingNode->childItems()) {
-		QGraphicsRectItem * const placeholder = mResizingNode->placeholder();
-
-		if(placeholder != NULL && childItem == placeholder) {
-			QRectF const rect(sizeOfForestalling, curChildY,
-					maxChildWidthValue, placeholder->rect().height());
-			placeholder->setRect(rect);
-			curChildY += placeholder->rect().height() + mChildSpacing;
-		}
-
-		NodeElement * const curItem = dynamic_cast<NodeElement* const>(childItem);
-		if (!curItem) {
-			continue;
-		}
-
-		qreal const necessaryWidth =
-				mElementImpl->maximizesChildren()
-				? maxChildWidthValue
-				: curItem->contentsRect().width();
-		QRectF const rect(sizeOfForestalling, curChildY, necessaryWidth, curItem->contentsRect().height());
-
-		curItem->setGeom(rect);
-		curItem->storeGeometry();
-		curChildY += curItem->contentsRect().height() + mElementImpl->sizeOfChildrenForestalling() + mChildSpacing;
-	}
-}
-
 void ResizeHandler::gripeIfMinimizesToChildrenContainer(QRectF &contents) const
 {
 	if (mElementImpl->minimizesToChildren()) {
@@ -114,17 +76,6 @@ void ResizeHandler::normalizeSize(QRectF &newContents) const
 
 void ResizeHandler::resizeAccordingToChildren(QRectF &newContents, QPointF &newPos) const
 {
-	/*
-	* AAAA!!! Who knows why is this code existed????!!!
-	*
-	foreach (QGraphicsItem *childItem, childItems()) {
-		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem && curItem->isPort() && newContents != mContents) {
-			curItem->resizeChild(newContents, mContents);
-		}
-	}
-	*/
-
 	/// Vector of minimum negative XY child deflection from top left corner.
 	QPointF const childDeflectionVector = childDeflection();
 

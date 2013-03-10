@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsLayout>
+#include <QtGui/QGraphicsLinearLayout>
 #include <QtGui/QGraphicsProxyWidget>
 
 #include "../../utilsDeclSpec.h"
@@ -27,9 +27,13 @@ public:
 
 	virtual void setEnabled(bool enabled);
 
+	void setOuterMargin(int left, int top, int right, int bottom);
+	void setLayoutMargin(int left, int top, int right, int bottom);
+
 protected:
 	LayoutHandler(QGraphicsWidget *layoutHost /* Takes ownership on this */);
 
+	QGraphicsLayoutItem const *placeholder() const;
 	void nullifyLayout();
 
 	/// Implementation must place @param item into target layout into target position;
@@ -52,12 +56,23 @@ protected:
 
 private:
 	void initPlaceholder();
-	void drawPlaceholder(QPointF const &position);
+	void drawPlaceholder(QPointF const &position, QGraphicsLayoutItem const *prototype);
 	void erasePlaceholder();
+
+	void initLayoutWrapper();
 
 	bool mEnabled;
 	QGraphicsProxyWidget *mPlaceholder;
 	QGraphicsLayout *mLayout;
+	QGraphicsLinearLayout *mLayoutWrapper;
+	int mWrapperLeftMargin;
+	int mWrapperTopMargin;
+	int mWrapperRightMargin;
+	int mWrapperBottomMargin;
+	int mLeftMargin;
+	int mTopMargin;
+	int mRightMargin;
+	int mBottomMargin;
 };
 
 }

@@ -83,6 +83,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	setGeom(mContents);
 
 	connect(this, SIGNAL(geometryChanged()), this, SLOT(synchronizeGeometries()));
+	mLayoutFactory->configure(impl);
 	mLayoutFactory->setPropertyValue(impl->layout());
 }
 
@@ -458,7 +459,9 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		// it is needed for sendEvent() to every isSelected element thro scene
 		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent(event);
-		alignToGrid();
+		if (!inLayout()) {
+			alignToGrid();
+		}
 		newPos = pos();
 
 	} else if (mElementImpl->isResizeable()) {

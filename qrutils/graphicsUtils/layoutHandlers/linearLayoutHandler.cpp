@@ -40,13 +40,19 @@ int LinearLayoutHandler::cellToAdd(QPointF const &position)
 {
 	int const cellsCount = mLayout->count();
 	qreal const searchValue = actualDimension(position);
+	int placeholdersCount = 0;
 	for (int row = 0; row < cellsCount; ++row) {
-		QRectF const currentGeometry = mLayout->itemAt(row)->geometry();
-		if (searchValue < actualDimension(currentGeometry.bottomRight())) {
-			return row;
+		// else we get "hopping" placeholder
+		if (mLayout->itemAt(row) != placeholder()) {
+			QRectF const currentGeometry = mLayout->itemAt(row)->geometry();
+			if (searchValue < actualDimension(currentGeometry.bottomRight())) {
+				return row - placeholdersCount;
+			}
+		} else {
+			++placeholdersCount;
 		}
 	}
-	return cellsCount;
+	return cellsCount - placeholdersCount;
 }
 
 int LinearLayoutHandler::actualDimension(QPointF const &point) const

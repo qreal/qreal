@@ -8,6 +8,7 @@ LayoutHandlerFactory::LayoutHandlerFactory(QGraphicsWidget *layoutHost)
 	, mVerticalHandler(new LinearLayoutHandler(Qt::Vertical, layoutHost))
 	, mHorizontalHandler(new LinearLayoutHandler(Qt::Horizontal, layoutHost))
 	, mGridHandler(NULL)
+	, mHasPreferences(false)
 {
 }
 
@@ -87,7 +88,34 @@ void LayoutHandlerFactory::handleDragLeave()
 void LayoutHandlerFactory::handleDropEvent(QGraphicsLayoutItem *draggedItem, QPointF const &position)
 {
 	LayoutHandler *curHandler = currentHandler();
+	if (mHasPreferences && draggedItem) {
+		draggedItem->setSizePolicy(mHorizontalPolicy, mVerticalPolicy);
+		// TODO: make it customizable if needed
+		draggedItem->setPreferredSize(draggedItem->geometry().size());
+	}
 	if (curHandler) {
 		curHandler->handleDropEvent(draggedItem, position);
 	}
+}
+
+void LayoutHandlerFactory::forceChindrenSizePolicy(QSizePolicy::Policy horizontalPolicy
+		, QSizePolicy::Policy verticalPolicy)
+{
+	mHasPreferences = true;
+	mHorizontalPolicy = horizontalPolicy;
+	mVerticalPolicy = verticalPolicy;
+}
+
+void LayoutHandlerFactory::setOuterMargin(int left, int top, int right, int bottom)
+{
+	mVerticalHandler->setOuterMargin(left, top, right, bottom);
+	mHorizontalHandler->setOuterMargin(left, top, right, bottom);
+//	mGridHandler->setOuterMargin(left, top, right, bottom);
+}
+
+void LayoutHandlerFactory::setLayoutMargin(int left, int top, int right, int bottom)
+{
+	mVerticalHandler->setLayoutMargin(left, top, right, bottom);
+	mHorizontalHandler->setLayoutMargin(left, top, right, bottom);
+//	mGridHandler->setLayoutMargin(left, top, right, bottom);
 }

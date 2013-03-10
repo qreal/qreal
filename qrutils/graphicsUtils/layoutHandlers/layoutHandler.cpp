@@ -11,8 +11,22 @@ LayoutHandler::LayoutHandler(QGraphicsWidget *layoutHost)
 	: QObject(layoutHost)
 	, mItem(layoutHost)
 	, mEnabled(false)
+	, mLayoutWrapper(NULL)
+	, mWrapperLeftMargin(0)
+	, mWrapperTopMargin(0)
+	, mWrapperRightMargin(0)
+	, mWrapperBottomMargin(0)
+	, mLeftMargin(0)
+	, mTopMargin(0)
+	, mRightMargin(0)
+	, mBottomMargin(0)
 {
 	initPlaceholder();
+}
+
+QGraphicsLayoutItem const *LayoutHandler::placeholder() const
+{
+	return mPlaceholder;
 }
 
 void LayoutHandler::initPlaceholder()
@@ -40,7 +54,7 @@ void LayoutHandler::handleDragEnter(QGraphicsLayoutItem const *draggedItem
 	if (!mEnabled) {
 		return;
 	}
-	drawPlaceholder(position);
+	drawPlaceholder(position, draggedItem);
 }
 
 void LayoutHandler::handleDragMove(QGraphicsLayoutItem const *draggedItem
@@ -49,7 +63,7 @@ void LayoutHandler::handleDragMove(QGraphicsLayoutItem const *draggedItem
 	if (!mEnabled) {
 		return;
 	}
-	drawPlaceholder(position);
+	drawPlaceholder(position, draggedItem);
 }
 
 void LayoutHandler::handleDragLeave()
@@ -74,12 +88,30 @@ void LayoutHandler::setEnabled(bool enabled)
 {
 	mEnabled = enabled;
 	if (enabled && (mItem->layout() != mLayout || !mLayout)) {
+		initLayoutWrapper();
 		mLayout = generateLayout();
-		mItem->setLayout(mLayout);
+		mLayout->setContentsMargins(mLeftMargin, mTopMargin, mRightMargin, mBottomMargin);
+		mLayoutWrapper->addItem(mLayout);
 		placeChildrenWithoutLayout();
 	} else {
 		nullifyLayout();
 	}
+}
+
+void LayoutHandler::setOuterMargin(int left, int top, int right, int bottom)
+{
+	mWrapperLeftMargin = left;
+	mWrapperTopMargin = top;
+	mWrapperRightMargin = right;
+	mWrapperBottomMargin = bottom;
+}
+
+void LayoutHandler::setLayoutMargin(int left, int top, int right, int bottom)
+{
+	mLeftMargin = left;
+	mTopMargin = top;
+	mRightMargin = right;
+	mBottomMargin = bottom;
 }
 
 void LayoutHandler::nullifyLayout()
@@ -89,8 +121,17 @@ void LayoutHandler::nullifyLayout()
 	}
 }
 
-void LayoutHandler::drawPlaceholder(QPointF const &position)
+void LayoutHandler::drawPlaceholder(QPointF const &position
+		, QGraphicsLayoutItem const *prototype)
 {
+	if (prototype) {
+		mPlaceholder->setSizePolicy(prototype->sizePolicy().horizontalPolicy()
+			, prototype->sizePolicy().verticalPolicy());
+		mPlaceholder->setPreferredSize(prototype->preferredSize());
+	} else {
+		mPlaceholder->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+		mPlaceholder->setPreferredSize(DEFAULT_PLACEHOLDER_SIZE);
+	}
 	addItemTo(mPlaceholder, position);
 	mPlaceholder->setVisible(true);
 }
@@ -100,6 +141,14 @@ void LayoutHandler::erasePlaceholder()
 	removeItem(mPlaceholder);
 	mPlaceholder->setParentItem(0);
 	mPlaceholder->setVisible(false);
+}
+
+void LayoutHandler::initLayoutWrapper()
+{
+	mLayoutWrapper = new QGraphicsLinearLayout(Qt::Vertical);
+	mLayoutWrapper->setContentsMargins(mWrapperLeftMargin, mWrapperTopMargin
+			, mWrapperRightMargin, mWrapperBottomMargin);
+	mItem->setLayout(mLayoutWrapper);
 }
 
 QList<QGraphicsLayoutItem *> LayoutHandler::childrenWithoutLayout() const

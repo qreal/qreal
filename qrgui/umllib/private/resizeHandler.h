@@ -35,12 +35,6 @@ private:
 	static int const mMinSize = 10;
 
 	/**
-	 * Sorts child items in case node has
-	 * sortChildren container property.
-	 */
-	void sortChildrenIfNeeded() const;
-
-	/**
 	 * Returns maximum of child item widths.
 	 * @return Maximum of child widths.
 	 */

@@ -29,6 +29,14 @@ public:
 	void handleDragLeave();
 	void handleDropEvent(QGraphicsLayoutItem *draggedItem, QPointF const &position);
 
+	/// All chilren added by this layout manager after this method call
+	/// will have specified policy
+	void forceChindrenSizePolicy(QSizePolicy::Policy horizontalPolicy
+			, QSizePolicy::Policy verticalPolicy);
+
+	void setOuterMargin(int left, int top, int right, int bottom);
+	void setLayoutMargin(int left, int top, int right, int bottom);
+
 public slots:
 	virtual void setType(LayoutType type);
 
@@ -39,6 +47,10 @@ private:
 	LinearLayoutHandler *mVerticalHandler;
 	LinearLayoutHandler *mHorizontalHandler;
 	LayoutHandler *mGridHandler;
+
+	bool mHasPreferences;
+	QSizePolicy::Policy mVerticalPolicy;
+	QSizePolicy::Policy mHorizontalPolicy;
 };
 
 }
