@@ -79,6 +79,24 @@
     </message>
 </context>
 <context>
+    <name>ChooseTypeDialog</name>
+    <message utf8="true">
+        <location filename="dialogs/chooseTypeDialog.ui" line="14"/>
+        <source>Выберите тип добавляемого элемента:</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="dialogs/chooseTypeDialog.ui" line="29"/>
+        <source>Сущность</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="dialogs/chooseTypeDialog.ui" line="36"/>
+        <source>Связь</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>CompilerForm</name>
     <message>
         <source>Form</source>
@@ -267,6 +285,115 @@
     <message>
         <source>Minimize</source>
         <translation type="obsolete">Удалить все точки</translation>
+    </message>
+</context>
+<context>
+    <name>EdgePropertiesDialog</name>
+    <message utf8="true">
+        <location filename="dialogs/edgePropertiesDialog.ui" line="14"/>
+        <source>Свойства связи:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="26"/>
+        <source>name: *</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="49"/>
+        <source>labelText:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="72"/>
+        <source>labelType:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="86"/>
+        <source>Dynamic text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="91"/>
+        <source>Static text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="105"/>
+        <source>lineType:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="119"/>
+        <source>solidLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="124"/>
+        <source>dashLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="129"/>
+        <source>dotLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="143"/>
+        <source>beginType:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="160"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="216"/>
+        <source>no_arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="165"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="221"/>
+        <source>open_arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="170"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="226"/>
+        <source>empty_arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="175"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="231"/>
+        <source>filled_arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="180"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="236"/>
+        <source>empty_rhomb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="185"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="241"/>
+        <source>filled_rhomb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="199"/>
+        <source>endType:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="255"/>
+        <source>OK</source>
+        <translation>ОК</translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="268"/>
+        <source>* Need to be filled</source>
+        <translation>* Обязательно для заполнения</translation>
     </message>
 </context>
 <context>
@@ -3067,6 +3194,26 @@
     </message>
 </context>
 <context>
+    <name>qReal::ChooseTypeDialog</name>
+    <message>
+        <source>Choose type of adding element:</source>
+        <translation type="obsolete">Выберите тип добавляемого элемента:</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::EdgePropertiesDialog</name>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.cpp" line="24"/>
+        <source>Error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.cpp" line="24"/>
+        <source>All required properties should be filled!</source>
+        <translation>Все обязательные свойства должны быть заполнены!</translation>
+    </message>
+</context>
+<context>
     <name>qReal::EditPropertiesDialog</name>
     <message>
         <location filename="dialogs/editPropertiesDialog.cpp" line="46"/>
@@ -3375,9 +3522,8 @@
 <context>
     <name>qReal::PaletteTreeWidget</name>
     <message>
-        <location filename="mainwindow/paletteTreeWidget.cpp" line="15"/>
         <source>Add Element</source>
-        <translation>Добавить элемент</translation>
+        <translation type="obsolete">Добавить элемент</translation>
     </message>
 </context>
 <context>
@@ -3630,6 +3776,21 @@
     </message>
 </context>
 <context>
+    <name>qReal::gui::ChooseTypeDialog</name>
+    <message>
+        <location filename="dialogs/chooseTypeDialog.cpp" line="28"/>
+        <location filename="dialogs/chooseTypeDialog.cpp" line="30"/>
+        <source>Enter the element name:</source>
+        <translation>Введите имя элемента:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/chooseTypeDialog.cpp" line="28"/>
+        <location filename="dialogs/chooseTypeDialog.cpp" line="30"/>
+        <source>Element name:</source>
+        <translation>Имя элемента:</translation>
+    </message>
+</context>
+<context>
     <name>qReal::gui::DraggableElement</name>
     <message>
         <location filename="mainwindow/draggableElement.cpp" line="80"/>
@@ -3741,6 +3902,14 @@
         <location filename="mainwindow/paletteTree.cpp" line="274"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::gui::PaletteTreeWidget</name>
+    <message>
+        <location filename="mainwindow/paletteTreeWidget.cpp" line="27"/>
+        <source>Add Element</source>
+        <translation>Добавить элемент</translation>
     </message>
 </context>
 <context>

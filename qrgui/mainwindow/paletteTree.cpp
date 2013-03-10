@@ -141,7 +141,7 @@ void PaletteTree::addEditorElements(EditorManagerInterface *editorManagerProxy, 
 
 	mComboBox->addItem(mEditorManagerProxy->friendlyName(diagram));
 
-	QTreeWidget *editorTree = new PaletteTreeWidget(this, mEditorManagerProxy);
+	QTreeWidget *editorTree = new PaletteTreeWidget(this, mMainWindow, mEditorManagerProxy);
 	editorTree->setHeaderHidden(true);
 	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
@@ -278,7 +278,7 @@ void PaletteTree::createPaletteTree()
 
 	mLayout->addLayout(hLayout);
 
-	mTree = new PaletteTreeWidget(this, mEditorManagerProxy);
+	mTree = new PaletteTreeWidget(this, mMainWindow, mEditorManagerProxy);
 	mTree->setHeaderHidden(true);
 	mLayout->addWidget(mTree);
 	mSettings = new QSettings("QReal", "PaletteItems");

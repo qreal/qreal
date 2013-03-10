@@ -91,6 +91,9 @@ namespace qReal {
 		void updateShape(Id const &id, QString const &graphics) const;
 		void deleteElement(MainWindow *mainWindow, Id const &id) const;
 		bool isRootDiagramNode(Id const &id) const;
+		void addNodeElement(Id const &diagram, QString const &name) const;
+		void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
+							QString const &lineType, QString const &beginType, QString const &endType) const;
 	private:
 		QStringList mPluginsLoaded;
 		QMap<QString, QString> mPluginFileName;

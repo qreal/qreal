@@ -1,7 +1,8 @@
 #include <QtCore/QCoreApplication>
+#include <QtCore/QtDebug>
+#include <QtCore/QUuid>
 #include <QtGui/QMessageBox>
 #include <QtGui/QIcon>
-#include <QtCore/QtDebug>
 
 #include "interpreterEditorManager.h"
 #include "../../qrkernel/ids.h"
@@ -744,6 +745,47 @@ bool InterpreterEditorManager::isRootDiagramNode(Id const &id) const
 	Id const metaId = repoAndMetaId.second;
 	QPair<Id, Id> editorAndDiagram = getEditorAndDiagram(repo, metaId);
 	return repo->stringProperty(editorAndDiagram.second, "nodeName") == repo->name(metaId);
+}
+
+void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &name) const
+{
+	QString const shape = "<graphics>\n    <picture sizex=\"168\" sizey=\"111\">\n    <rectangle fill=\"#ffffff\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" stroke-width=\"0\" x1=\"1\" y2=\"107\" fill-style=\"none\" x2=\"125\"/>\n    </picture>\n    <labels>\n    <label x=\"41\" y=\"43\" textBinded=\"name\"/>\n    </labels>\n    <ports>\n    <pointPort x=\"2\" y=\"52\"/>\n    <pointPort x=\"134\" y=\"56\"/>\n    <linePort>\n    <start startx=\"29\" starty=\"110\"/>\n    <end endx=\"95\" endy=\"111\"/>\n    </linePort>\n    </ports>\n</graphics>\n";
+	QPair<qrRepo::RepoApi*, Id> repoAndDiagram = getRepoAndDiagram(diagram.editor(), diagram.diagram());
+	qrRepo::RepoApi * const repo = repoAndDiagram.first;
+	Id const diag = repoAndDiagram.second;
+	Id const nodeId("MetaEditor", "MetaEditor", "MetaEntityNode", QUuid::createUuid().toString());
+	repo->addChild(diag, nodeId);
+
+	repo->setProperty(nodeId, "name", name);
+	repo->setProperty(nodeId, "displayedName", name);
+	repo->setProperty(nodeId, "shape", shape);
+	repo->setProperty(nodeId, "links", "");
+	repo->setProperty(nodeId, "isResizeable", "true");
+	repo->setProperty(nodeId, "isPin", "false");
+	repo->setProperty(nodeId, "isAction", "false");
+}
+
+void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
+					QString const &lineType, QString const &beginType, QString const &endType) const
+{
+	QPair<qrRepo::RepoApi*, Id> repoAndDiagram = getRepoAndDiagram(diagram.editor(), diagram.diagram());
+	qrRepo::RepoApi * const repo = repoAndDiagram.first;
+	Id const diag = repoAndDiagram.second;
+	Id edgeId("MetaEditor", "MetaEditor", "MetaEntityEdge", QUuid::createUuid().toString());
+	repo->addChild(diag, edgeId);
+	Id associationId("MetaEditor", "MetaEditor", "MetaEntityAssociation", QUuid::createUuid().toString());
+	repo->addChild(edgeId, associationId);
+
+	repo->setProperty(edgeId, "name", name);
+	repo->setProperty(edgeId, "displayedName", name);
+	repo->setProperty(edgeId, "labelText", labelText);
+	repo->setProperty(edgeId, "labelType", labelType);
+	repo->setProperty(edgeId, "lineType", lineType);
+	repo->setProperty(edgeId, "links", "");
+
+	repo->setProperty(associationId, "name", name + "Association");
+	repo->setProperty(associationId, "beginType", beginType);
+	repo->setProperty(associationId, "endType", endType);
 }
 
 //unsupported method

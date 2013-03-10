@@ -546,3 +546,10 @@ bool EditorManager::isRootDiagramNode(Id const &id) const
 {
 	return false;
 }
+
+void EditorManager::addNodeElement(Id const &diagram, QString const &name) const
+{}
+
+void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
+					QString const &lineType, QString const &beginType, QString const &endType) const
+{}

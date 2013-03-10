@@ -113,3 +113,15 @@ SOURCES += \
 
 FORMS += \
 	mainwindow/shapeEdit/shapeEdit.ui \
+
+
+
+
+
+
+
+
+
+
+
+

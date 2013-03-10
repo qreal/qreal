@@ -253,6 +253,17 @@ bool ProxyEditorManager::isRootDiagramNode(Id const &id) const
 	return mProxyManager->isRootDiagramNode(id);
 }
 
+void ProxyEditorManager::addNodeElement(Id const &diagram, QString const &name) const
+{
+	mProxyManager->addNodeElement(diagram, name);
+}
+
+void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
+					QString const &lineType, QString const &beginType, QString const &endType) const
+{
+	mProxyManager->addEdgeElement(diagram, name, labelText, labelType, lineType, beginType, endType);
+}
+
 //unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {
