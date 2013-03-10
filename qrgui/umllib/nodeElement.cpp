@@ -145,20 +145,24 @@ void NodeElement::setName(QString const &value)
 
 void NodeElement::setGeom(QRectF const &geom)
 {
+	QSizeF const size = geom.size();
+	QSizeF const realSize = QSizeF(qMax(size.width(), minimumWidth())
+			, qMax(size.height(), minimumHeight()));
+	QRectF const realGeom(geom.topLeft(), realSize);
 	prepareGeometryChange();
-	setPos(geom.topLeft());
-	if (geom.isValid()) {
-		mContents = geom.translated(-geom.topLeft());
+	setPos(realGeom.topLeft());
+	if (realGeom.isValid()) {
+		mContents = realGeom.translated(-realGeom.topLeft());
 	}
 	mTransform.reset();
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
 
 	foreach (ElementTitle * const title, mTitles) {
-		title->transform(geom);
+		title->transform(realGeom);
 	}
 
-	QGraphicsProxyWidget::setGeometry(geom);
+	QGraphicsProxyWidget::setGeometry(realGeom);
 }
 
 void NodeElement::setPos(QPointF const &pos)

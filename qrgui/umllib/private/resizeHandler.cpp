@@ -17,7 +17,7 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 
 	gripeIfMinimizesToChildrenContainer(newContents);
 
-	if (!mResizingNode->isFolded()) {
+	if (!mResizingNode->isFolded() && !mResizingNode->layoutFactory()->hasLayout()) {
 		resizeAccordingToChildren(newContents, newPos);
 	}
 	normalizeSize(newContents);

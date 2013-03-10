@@ -54,12 +54,20 @@ protected:
 
 	QGraphicsWidget *mItem;
 
+private slots:
+	/// Tells Qt layout manager about current item size for correct
+	/// items alignmet. Nobody knows why Qt managers don`t sync sizes itself
+	void synchronizeSizes();
+
+	/// Tells our layout host not to shrink when layout minimum reached
+	void synchronizeMinimalSizes();
+
 private:
 	void initPlaceholder();
 	void drawPlaceholder(QPointF const &position, QGraphicsLayoutItem const *prototype);
 	void erasePlaceholder();
 
-	void initLayoutWrapper();
+	void reinitLayouts();
 
 	bool mEnabled;
 	QGraphicsProxyWidget *mPlaceholder;

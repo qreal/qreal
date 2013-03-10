@@ -82,17 +82,14 @@ void LayoutHandler::handleDropEvent(QGraphicsLayoutItem *draggedItem
 	}
 	addItemTo(draggedItem, position);
 	erasePlaceholder();
+	synchronizeMinimalSizes();
 }
 
 void LayoutHandler::setEnabled(bool enabled)
 {
 	mEnabled = enabled;
 	if (enabled && (mItem->layout() != mLayout || !mLayout)) {
-		initLayoutWrapper();
-		mLayout = generateLayout();
-		mLayout->setContentsMargins(mLeftMargin, mTopMargin, mRightMargin, mBottomMargin);
-		mLayoutWrapper->addItem(mLayout);
-		placeChildrenWithoutLayout();
+		reinitLayouts();
 	} else {
 		nullifyLayout();
 	}
@@ -119,6 +116,7 @@ void LayoutHandler::nullifyLayout()
 	if (mItem->layout()) {
 		mItem->setLayout(NULL);
 	}
+	disconnect(this, SLOT(synchronizeSizes()));
 }
 
 void LayoutHandler::drawPlaceholder(QPointF const &position
@@ -143,12 +141,18 @@ void LayoutHandler::erasePlaceholder()
 	mPlaceholder->setVisible(false);
 }
 
-void LayoutHandler::initLayoutWrapper()
+void LayoutHandler::reinitLayouts()
 {
 	mLayoutWrapper = new QGraphicsLinearLayout(Qt::Vertical);
 	mLayoutWrapper->setContentsMargins(mWrapperLeftMargin, mWrapperTopMargin
 			, mWrapperRightMargin, mWrapperBottomMargin);
 	mItem->setLayout(mLayoutWrapper);
+	mLayout = generateLayout();
+	mLayout->setContentsMargins(mLeftMargin, mTopMargin, mRightMargin, mBottomMargin);
+	mLayoutWrapper->addItem(mLayout);
+	placeChildrenWithoutLayout();
+	synchronizeSizes();
+	connect(mItem, SIGNAL(geometryChanged()), this, SLOT(synchronizeSizes()));
 }
 
 QList<QGraphicsLayoutItem *> LayoutHandler::childrenWithoutLayout() const
@@ -163,4 +167,24 @@ QList<QGraphicsLayoutItem *> LayoutHandler::childrenWithoutLayout() const
 		}
 	}
 	return result;
+}
+
+void LayoutHandler::synchronizeSizes()
+{
+	QSizeF const size = mItem->geometry().size();
+	QSizeF const innerSize = QSizeF
+				( size.width() - mWrapperLeftMargin - mWrapperRightMargin
+				, size.height() - mWrapperTopMargin - mWrapperBottomMargin);
+	mLayoutWrapper->setPreferredSize(size);
+	mLayout->setPreferredSize(innerSize);
+	synchronizeMinimalSizes();
+}
+
+void LayoutHandler::synchronizeMinimalSizes()
+{
+	QSizeF const innerSize = mLayout->minimumSize();
+	QSizeF const outerSize = QSizeF
+			( innerSize.width() + mWrapperLeftMargin + mWrapperRightMargin
+			, innerSize.height() + mWrapperTopMargin + mWrapperBottomMargin);
+	mItem->setMinimumSize(outerSize);
 }
