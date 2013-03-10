@@ -146,7 +146,7 @@ public slots:
 
 private slots:
 	void updateNodeEdges();
-	// Sets QReal-engine geometry to Qt-engine one
+	/// Sets QReal-engine geometry to Qt-engine one
 	void synchronizeGeometries();
 
 private:

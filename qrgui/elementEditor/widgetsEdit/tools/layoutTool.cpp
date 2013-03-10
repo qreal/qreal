@@ -109,7 +109,9 @@ void LayoutTool::deserializeWidget(QWidget *parent, QDomElement const &element
 	} else if (layoutType == "NoLayout") {
 		widgetLayout = NULL;
 	}
-	widget()->setLayout(widgetLayout);
+	if (widgetLayout) {
+		widget()->setLayout(widgetLayout);
+	}
 	mLayoutToolProxy->invalidateLayoutMargin();
 }
 

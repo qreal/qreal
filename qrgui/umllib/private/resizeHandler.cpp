@@ -17,7 +17,12 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 
 	gripeIfMinimizesToChildrenContainer(newContents);
 
-	if (!mResizingNode->isFolded() && !mResizingNode->layoutFactory()->hasLayout()) {
+	if (!mResizingNode->isFolded() &&
+		// if element has layout then we must not ban children shrinking,
+		// but not in case of sorting container
+			(!mResizingNode->layoutFactory()->hasLayout()
+			|| mElementImpl->isSortingContainer()))
+	{
 		resizeAccordingToChildren(newContents, newPos);
 	}
 	normalizeSize(newContents);
@@ -140,7 +145,7 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 	int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 
 	foreach (const QGraphicsItem * const childItem, mResizingNode->childItems()) {
-		QRectF curChildItemBoundingRect = childBoundingRect(childItem, contents);
+		QRectF curChildItemBoundingRect = childBoundingRect(childItem);
 
 		if (curChildItemBoundingRect.width() == 0 || curChildItemBoundingRect.height() == 0) {
 			continue;
@@ -154,26 +159,16 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 						, contents.left()));
 		contents.setRight(qMax(curChildItemBoundingRect.right() + sizeOfForestalling
 						, contents.right()));
-		contents.setTop(qMin(curChildItemBoundingRect.top() - sizeOfForestalling
+		contents.setTop(qMin(curChildItemBoundingRect.top() - sizeOfForestalling - mTitlePadding
 						, contents.top()));
-		contents.setBottom(qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling
+		contents.setBottom(qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling + mTitlePadding
 						, contents.bottom()));
 	}
 }
 
-QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, QRectF const &contents) const
+QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem) const
 {
 	QRectF boundingRect;
-
-	if (childItem == mResizingNode->placeholder()) {
-		boundingRect = childItem->boundingRect();
-
-		int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
-		boundingRect.setLeft(contents.left() + sizeOfForestalling);
-		boundingRect.setRight(contents.right() - sizeOfForestalling);
-
-		return boundingRect;
-	}
 
 	const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
 	if (curItem && !curItem->isPort()) {

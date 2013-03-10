@@ -27,6 +27,8 @@ public:
 
 	void configure(ElementImpl * const impl);
 
+	void processBeforeFirstPlacing(QGraphicsItem *element);
+
 private:
 	/// Padding that reserves space for title.
 	static int const titlePadding = 25;
@@ -36,6 +38,7 @@ private:
 	LayoutType stringToType(QString const &stringType);
 
 	QString mBinding;
+	int mForestallingSize;
 };
 
 }

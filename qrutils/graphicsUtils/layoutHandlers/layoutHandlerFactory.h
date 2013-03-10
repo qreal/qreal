@@ -16,7 +16,8 @@ class QRUTILS_EXPORT LayoutHandlerFactory : public QObject
 	Q_OBJECT
 
 public:
-	LayoutHandlerFactory(QGraphicsWidget *layoutHost /* Accepts ownership on this */);
+	explicit LayoutHandlerFactory(QGraphicsWidget *layoutHost /* Accepts ownership on this */);
+	virtual ~LayoutHandlerFactory() {}
 
 	LayoutHandler *handler(LayoutType type) const;
 

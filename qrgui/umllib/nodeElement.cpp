@@ -84,7 +84,6 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	connect(this, SIGNAL(geometryChanged()), this, SLOT(synchronizeGeometries()));
 	mLayoutFactory->configure(impl);
-	mLayoutFactory->setPropertyValue(impl->layout());
 }
 
 NodeElement::~NodeElement()
@@ -386,7 +385,9 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::alignToGrid()
 {
-	mGrid->alignToGrid();
+	if (!inLayout()) {
+		mGrid->alignToGrid();
+	}
 }
 
 void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
@@ -463,9 +464,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		// it is needed for sendEvent() to every isSelected element thro scene
 		Element::mouseMoveEvent(event);
 		mGrid->mouseMoveEvent(event);
-		if (!inLayout()) {
-			alignToGrid();
-		}
+		alignToGrid();
 		newPos = pos();
 
 	} else if (mElementImpl->isResizeable()) {
@@ -563,9 +562,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 	delUnusedLines();
 
-	if ((SettingsManager::value("ActivateGrid").toBool()
-			|| mSwitchGridAction.isChecked()) && !inLayout())
-	{
+	if (SettingsManager::value("ActivateGrid").toBool() || mSwitchGridAction.isChecked()) {
 		alignToGrid();
 	}
 
@@ -1107,15 +1104,6 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 		changeFoldState();
 	}
 
-	/*
-	QRectF newContents = mContents;
-//	newContents.moveTo(pos());
-	QRectF itemContents = item->mContents;
-	itemContents.moveTo(item->pos() - pos());
-
-	newContents = newContents.united(itemContents);
-	resize(mContents.unite(newContents));
- */
 	resize();
 }
 
@@ -1311,6 +1299,6 @@ void NodeElement::synchronizeGeometries()
 
 bool NodeElement::inLayout() const
 {
-	NodeElement *parent= dynamic_cast<NodeElement *>(parentItem());
+	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
 	return parent && parent->layoutFactory()->hasLayout();
 }

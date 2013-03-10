@@ -148,22 +148,21 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 		if (elem) {
-			// setting position before parent definition 'itemChange' to work correctly
-			elem->setPos(ePos);
 			elem->setId(currentId);
 
 			Element *parentElem = item(parent);
 			if (parentElem) {
-				elem->setParentItem(parentElem);
 				NodeElement *parentNode = dynamic_cast<NodeElement *>(parentElem);
-				if (elem && parentNode) {
+				if (elem && parentNode && parentNode->layoutFactory()->hasLayout()) {
+					parentNode->layoutFactory()->processBeforeFirstPlacing(elem);
 					parentNode->layoutFactory()->handleDropEvent(elem, ePos);
-				}
-				QModelIndex next = current.sibling(current.row() + 1, 0);
-				if(next.isValid() && item(next) != NULL) {
-					elem->stackBefore(item(next));
+				} else {
+					// setting position before parent definition 'itemChange' to work correctly
+					elem->setPos(ePos);
+					elem->setParentItem(parentElem);
 				}
 			} else {
+				elem->setPos(ePos);
 				mScene->addItem(elem);
 			}
 			setItem(current, elem);

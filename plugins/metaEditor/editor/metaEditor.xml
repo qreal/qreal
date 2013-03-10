@@ -261,6 +261,7 @@
 							<banChildrenMove/>
 							<forestalling size="25"/>
 							<childrenForestalling size="5"/>
+							<layout value="Vertical"/>
 						</properties>
 					</container>
 				</logic>
@@ -301,6 +302,7 @@
 							<banChildrenMove/>
 							<forestalling size="5"/>
 							<childrenForestalling size="5"/>
+							<layout value="Vertical"/>
 						</properties>
 					</container>
 				</logic>
