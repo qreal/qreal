@@ -116,6 +116,8 @@ void LayoutHandler::nullifyLayout()
 	if (mItem->layout()) {
 		mItem->setLayout(NULL);
 	}
+	mLayout = NULL;
+	mLayoutWrapper = NULL;
 	disconnect(this, SLOT(synchronizeSizes()));
 }
 
@@ -175,9 +177,11 @@ void LayoutHandler::synchronizeSizes()
 	QSizeF const innerSize = QSizeF
 				( size.width() - mWrapperLeftMargin - mWrapperRightMargin
 				, size.height() - mWrapperTopMargin - mWrapperBottomMargin);
-	mLayoutWrapper->setPreferredSize(size);
-	mLayout->setPreferredSize(innerSize);
-	synchronizeMinimalSizes();
+	if (mLayout && mLayoutWrapper) {
+		mLayoutWrapper->setPreferredSize(size);
+		mLayout->setPreferredSize(innerSize);
+		synchronizeMinimalSizes();
+	}
 }
 
 void LayoutHandler::synchronizeMinimalSizes()
