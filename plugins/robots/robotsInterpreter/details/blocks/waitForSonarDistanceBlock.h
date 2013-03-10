@@ -30,7 +30,6 @@ private slots:
 	void timerTimeout();
 
 private:
-	robotParts::SonarSensor *mSonarSensor;  // Doesn't have ownership
 	RobotModel const * const mRobotModel;
 	QTimer mActiveWaitingTimer;
 

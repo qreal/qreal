@@ -7,7 +7,6 @@ HEADERS += \
 	mainwindow/error.h \
 	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
-	mainwindow/helpBrowser.h \
 	mainwindow/paletteTree.h \
 	mainwindow/findManager.h \
 	mainwindow/dotRunner.h \
@@ -20,6 +19,7 @@ HEADERS += \
 	mainwindow/projectManager/autosaver.h \
 	mainwindow/externBrowser.h \
 	mainwindow/textEdit.h \
+	mainwindow/mainWindowDockInterface.h \
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -27,7 +27,6 @@ SOURCES += \
 	mainwindow/errorReporter.cpp \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp \
-	mainwindow/helpBrowser.cpp \
 	mainwindow/paletteTree.cpp \
 	mainwindow/findManager.cpp \
 	mainwindow/dotRunner.cpp \
