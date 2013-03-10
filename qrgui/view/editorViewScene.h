@@ -72,6 +72,7 @@ public:
     void moveDownFromElem(NodeElement* node, QPointF const &scenePos, qreal shift, QList<NodeElement*> elements); //QList<NodeElement*> moved){
 
     NodeElement* getNodeById(qReal::Id const &itemId);
+    EdgeElement* getEdgeById(qReal::Id const &itemId);
 
     void deleteElementFromEdge(qReal::Id const &nodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos);
     QList<EdgeElement*> getInEdges(NodeElement* node);
@@ -199,9 +200,7 @@ private:
 	inline bool isArrow(int key);
 
 	void moveSelectedItems(int direction);
-	QPointF offsetByDirection(int direction);
-    EdgeElement* getEdgeById(qReal::Id const &itemId);
-
+    QPointF offsetByDirection(int direction);
 
 	Element *mLastCreatedWithEdge;
 

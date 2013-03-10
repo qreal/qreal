@@ -29,7 +29,7 @@ namespace qReal {
 		~EditorManager();
 
 		IdList editors() const;
-		IdList diagrams(Id const &editor) const;
+        IdList diagrams(Id const &editor) const;
         IdList groups(Id const &diagram);
         Pattern getPatternByName (QString str) const;
         QList<QString> getPatternNames() const;
@@ -79,7 +79,7 @@ namespace qReal {
 		bool isGraphicalElementNode(const Id &id) const;
 
 	private:
-		QStringList mPluginsLoaded;
+        QStringList mPluginsLoaded;
         QList<Pattern> mDiagramGroups;
         QMap<QString, Pattern> mGroups;
 		QMap<QString, QString> mPluginFileName;
