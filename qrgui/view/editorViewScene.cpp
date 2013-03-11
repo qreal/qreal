@@ -574,6 +574,7 @@ void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
                 mainWindow()->deleteElementFromDiagram(edge->id());
 
                 moveDownFromElem(getNodeById(insertedLastNodeId), scenePos, direction, shift, elements);
+                moveDownFromElem(getNodeById(insertedFirstNodeId), scenePos, direction, shift, elements);
 
                 break;
             }
@@ -619,11 +620,11 @@ void EditorViewScene::moveDownFromElem(NodeElement* node, QPointF const &scenePo
     if (direction.x() != 0 || direction.y() != 0){
         for (int i = 0; i < destinations.length(); i++){
             if (!moved.contains(destinations.at(i))){
-                if (destinations.at(i)->pos().y() >= scenePos.y() || destinations.at(i)->pos().x() >= scenePos.x()){// and about position
-                    if(direction.x() == 0 || shift.y() < shift.x()*Sign(direction.x())*(direction.y()/direction.x()))
-                        destinations.at(i)->setPos(destinations.at(i)->pos().x() + shift.y()* Sign(direction.y())*direction.x()/direction.y(), destinations.at(i)->pos().y() + Sign(direction.y())*shift.y());
+                if (destinations.at(i)->pos().y() >= scenePos.y()){// and about position
+                    if(direction.x() == 0 || shift.y() < shift.x()*Sign(direction.x())*Sign(direction.y())*(direction.y()/direction.x()))
+                        destinations.at(i)->setPos(destinations.at(i)->pos().x() + shift.y()* direction.x()/direction.y(), destinations.at(i)->pos().y() + shift.y());
                     else
-                        destinations.at(i)->setPos(destinations.at(i)->pos().x() + Sign(direction.x())* shift.x(), destinations.at(i)->pos().y() + shift.x()*Sign(direction.x())*direction.y()/direction.x());
+                        destinations.at(i)->setPos(destinations.at(i)->pos().x() + Sign(direction.x())*Sign(direction.y())* shift.x(), destinations.at(i)->pos().y() + shift.x()*Sign(direction.x())*Sign(direction.y())*direction.y()/direction.x());
 
                     arrangeNodeLinks(destinations.at(i));
                 }
