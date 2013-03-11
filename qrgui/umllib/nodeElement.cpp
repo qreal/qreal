@@ -558,7 +558,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
     QList<NodeElement*> element;
     element.append(this);
-    evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos(), 0, element);
+    evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos(), QPointF(0,0), element);
 
 	// we should use mHighlightedNode to determine if there is a highlighted node
 	// insert current element into them and set mHighlightedNode to NULL

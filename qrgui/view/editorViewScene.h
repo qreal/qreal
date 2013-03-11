@@ -66,10 +66,13 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-    void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos, qreal shift, QList<NodeElement*> elements);
+    void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos, QPointF shift, QList<NodeElement*> elements);
 
     QList<NodeElement*> getNeibors(NodeElement* node);
-    void moveDownFromElem(NodeElement* node, QPointF const &scenePos, qreal shift, QList<NodeElement*> elements); //QList<NodeElement*> moved){
+    void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF direction, QPointF shift, QList<NodeElement*> elements); //QList<NodeElement*> moved){
+
+    void reConnectLink(EdgeElement * edgeElem);
+    void arrangeNodeLinks(NodeElement* node);
 
     NodeElement* getNodeById(qReal::Id const &itemId);
     EdgeElement* getEdgeById(qReal::Id const &itemId);
