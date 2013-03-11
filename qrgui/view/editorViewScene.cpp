@@ -411,6 +411,7 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scen
 
 	return objectId;
 }
+
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents)
 {
     QByteArray itemData = mimeData->data("application/x-real-uml-data");
@@ -476,7 +477,8 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
         qreal maxY = 0;
         qreal minX = 0;
         qreal maxX = 0;
-
+        qreal sizeX = 160;
+        qreal sizeY = 120;
 
         foreach (GroupNode node, pattern.getNodes()){
             Id const element(id.editor(), id.diagram(), node.type, QUuid::createUuid().toString());
@@ -506,8 +508,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
             reConnectLink(getEdgeById(element));
         }
 
-        shift = maxY-minY;
-        QPointF shiftXY = QPointF(maxX-minX, maxY-minY);
+        QPointF shiftXY = QPointF(maxX-minX + sizeX, maxY-minY + sizeY);
         insertElementIntoEdge(nodes.value(pattern.getInNode()), nodes.value(pattern.getOutNode()), parentId, isFromLogicalModel, scenePos, shiftXY, elements);
 
     }
@@ -516,7 +517,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
         //inserting new node into edge
         if (dynamic_cast<NodeElement*>(e)) {
             elements.append(getNodeById(newElemId));
-            insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, scenePos, QPointF(0,0), elements);
+            insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, scenePos, QPointF(160, 120), elements);
         }
     }
 
@@ -565,8 +566,10 @@ void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
 
                 reConnectLink(getEdgeById(newEdge2));
 
-                QPointF fromP = previouslyConnectedFrom->portPos(mMVIface->graphicalAssistApi()->fromPort(edge->id()));
-                QPointF toP = previouslyConnectedTo->portPos(mMVIface->graphicalAssistApi()->toPort(edge->id()));
+     //           QPointF fromP = previouslyConnectedFrom->portPos(mMVIface->graphicalAssistApi()->fromPort(edge->id()));
+     //           QPointF toP = previouslyConnectedTo->portPos(mMVIface->graphicalAssistApi()->toPort(edge->id()));
+                QPointF fromP = previouslyConnectedFrom->pos();
+                QPointF toP = previouslyConnectedTo->pos();
                 QPointF direction = QPointF(toP.x()- fromP.x(), toP.y()- fromP.y());
                 mainWindow()->deleteElementFromDiagram(edge->id());
 
@@ -576,28 +579,6 @@ void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
             }
         }
     }
-}
-
-void EditorViewScene::reConnectLink(EdgeElement * edgeElem){
-    if (edgeElem->src()) {
-        arrangeNodeLinks(edgeElem->src());
-    }
-    if (edgeElem->dst()) {
-        arrangeNodeLinks(edgeElem->dst());
-    }
-}
-
-void EditorViewScene::arrangeNodeLinks(NodeElement* node){
-    node->arrangeLinks();
-    foreach (EdgeElement* nodeEdge, node->edgeList()) {
-        nodeEdge->adjustNeighborLinks();
-        nodeEdge->correctArrow();
-        nodeEdge->correctInception();
-        nodeEdge->setGraphicApiPos();
-        nodeEdge->saveConfiguration(QPointF());
-    }
-    node->arrangeLinks();
-    node->adjustLinks();
 }
 
 void EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
@@ -637,11 +618,11 @@ void EditorViewScene::moveDownFromElem(NodeElement* node, QPointF const &scenePo
     QList<NodeElement*> destinations = getNeibors(node);
     if (direction.x() != 0 || direction.y() != 0){
         for (int i = 0; i < destinations.length(); i++){
-            if (!moved.contains(destinations.at(i)) && destinations.at(i)->pos().y() >= scenePos.y()){// and about position
+            if (!moved.contains(destinations.at(i)) && (destinations.at(i)->pos().y() >= scenePos.y() || destinations.at(i)->pos().x() >= scenePos.x())){// and about position
                 if(direction.x() == 0 || shift.y() < shift.x()*direction.y()/direction.x())
-                    destinations.at(i)->setPos(destinations.at(i)->pos().x() + (shift.y() + 50)* direction.x()/direction.y(), destinations.at(i)->pos().y() + shift.y() + 50);
+                    destinations.at(i)->setPos(destinations.at(i)->pos().x() + shift.y()* direction.x()/direction.y(), destinations.at(i)->pos().y() + shift.y());
                 else
-                    destinations.at(i)->setPos(destinations.at(i)->pos().x() + shift.x() + 80, destinations.at(i)->pos().y() + (shift.x() + 80)*direction.y()/direction.x());
+                    destinations.at(i)->setPos(destinations.at(i)->pos().x() + shift.x(), destinations.at(i)->pos().y() + shift.x()*direction.y()/direction.x());
 
                 arrangeNodeLinks(destinations.at(i));
                 moved.append(destinations.at(i));
@@ -649,6 +630,28 @@ void EditorViewScene::moveDownFromElem(NodeElement* node, QPointF const &scenePo
             }
         }
     }
+}
+
+void EditorViewScene::reConnectLink(EdgeElement * edgeElem){
+    if (edgeElem->src()) {
+        arrangeNodeLinks(edgeElem->src());
+    }
+    if (edgeElem->dst()) {
+        arrangeNodeLinks(edgeElem->dst());
+    }
+}
+
+void EditorViewScene::arrangeNodeLinks(NodeElement* node){
+    node->arrangeLinks();
+    foreach (EdgeElement* nodeEdge, node->edgeList()) {
+        nodeEdge->adjustNeighborLinks();
+        nodeEdge->correctArrow();
+        nodeEdge->correctInception();
+        nodeEdge->setGraphicApiPos();
+        nodeEdge->saveConfiguration(QPointF());
+    }
+    node->arrangeLinks();
+    node->adjustLinks();
 }
 
 NodeElement* EditorViewScene::getNodeById(qReal::Id const &itemId){
