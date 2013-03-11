@@ -37,6 +37,8 @@ private:
 
 	LayoutType stringToType(QString const &stringType);
 
+	int upperMargin(int const baseMargin) const;
+
 	QString mBinding;
 	int mForestallingSize;
 };

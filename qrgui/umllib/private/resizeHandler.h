@@ -98,6 +98,8 @@ private:
 	 */
 	void printChildPos() const;
 
+	int upperForestalling() const;
+
 	/// Node that is actually dealt with.
 	NodeElement * const mResizingNode;
 

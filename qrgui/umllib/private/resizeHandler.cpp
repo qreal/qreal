@@ -159,9 +159,9 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 						, contents.left()));
 		contents.setRight(qMax(curChildItemBoundingRect.right() + sizeOfForestalling
 						, contents.right()));
-		contents.setTop(qMin(curChildItemBoundingRect.top() - sizeOfForestalling - mTitlePadding
+		contents.setTop(qMin(curChildItemBoundingRect.top() - upperForestalling()
 						, contents.top()));
-		contents.setBottom(qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling + mTitlePadding
+		contents.setBottom(qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling
 						, contents.bottom()));
 	}
 }
@@ -176,4 +176,10 @@ QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem) c
 	}
 
 	return boundingRect;
+}
+
+int ResizeHandler::upperForestalling() const
+{
+	int const forestalling = mElementImpl->sizeOfForestalling();
+	return forestalling ? forestalling + mTitlePadding : 0;
 }

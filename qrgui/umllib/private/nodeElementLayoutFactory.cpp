@@ -37,7 +37,7 @@ void NodeElementLayoutFactory::configure(ElementImpl *const impl)
 	mForestallingSize = impl->sizeOfForestalling();
 	int const outerMargin = impl->sizeOfForestalling();
 	int const innerMargin = impl->sizeOfChildrenForestalling();
-	setOuterMargin(outerMargin, outerMargin + titlePadding
+	setOuterMargin(outerMargin, upperMargin(outerMargin)
 		, outerMargin, outerMargin);
 	setLayoutMargin(0, innerMargin/2, 0, innerMargin/2);
 	setPropertyValue(impl->layout());
@@ -60,5 +60,10 @@ LayoutType NodeElementLayoutFactory::stringToType(QString const &stringType)
 
 void NodeElementLayoutFactory::processBeforeFirstPlacing(QGraphicsItem *element)
 {
-	element->setPos(mForestallingSize, mForestallingSize + titlePadding);
+	element->setPos(mForestallingSize, upperMargin(mForestallingSize));
+}
+
+int NodeElementLayoutFactory::upperMargin(int const baseMargin) const
+{
+	return baseMargin ? baseMargin + titlePadding : 0;
 }
