@@ -477,8 +477,8 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
         qreal maxY = 0;
         qreal minX = 0;
         qreal maxX = 0;
-        qreal sizeX = 160;
-        qreal sizeY = 120;
+        qreal sizeX = 80;
+        qreal sizeY = 60;
 
         foreach (GroupNode node, pattern.getNodes()){
             Id const element(id.editor(), id.diagram(), node.type, QUuid::createUuid().toString());
@@ -517,7 +517,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
         //inserting new node into edge
         if (dynamic_cast<NodeElement*>(e)) {
             elements.append(getNodeById(newElemId));
-            insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, scenePos, QPointF(160, 120), elements);
+            insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, scenePos, QPointF(80, 60), elements);
         }
     }
 
@@ -618,18 +618,25 @@ void EditorViewScene::moveDownFromElem(NodeElement* node, QPointF const &scenePo
     QList<NodeElement*> destinations = getNeibors(node);
     if (direction.x() != 0 || direction.y() != 0){
         for (int i = 0; i < destinations.length(); i++){
-            if (!moved.contains(destinations.at(i)) && (destinations.at(i)->pos().y() >= scenePos.y() || destinations.at(i)->pos().x() >= scenePos.x())){// and about position
-                if(direction.x() == 0 || shift.y() < shift.x()*direction.y()/direction.x())
-                    destinations.at(i)->setPos(destinations.at(i)->pos().x() + shift.y()* direction.x()/direction.y(), destinations.at(i)->pos().y() + shift.y());
-                else
-                    destinations.at(i)->setPos(destinations.at(i)->pos().x() + shift.x(), destinations.at(i)->pos().y() + shift.x()*direction.y()/direction.x());
+            if (!moved.contains(destinations.at(i))){
+                if (destinations.at(i)->pos().y() >= scenePos.y() || destinations.at(i)->pos().x() >= scenePos.x()){// and about position
+                    if(direction.x() == 0 || shift.y() < shift.x()*Sign(direction.x())*(direction.y()/direction.x()))
+                        destinations.at(i)->setPos(destinations.at(i)->pos().x() + shift.y()* Sign(direction.y())*direction.x()/direction.y(), destinations.at(i)->pos().y() + Sign(direction.y())*shift.y());
+                    else
+                        destinations.at(i)->setPos(destinations.at(i)->pos().x() + Sign(direction.x())* shift.x(), destinations.at(i)->pos().y() + shift.x()*Sign(direction.x())*direction.y()/direction.x());
 
-                arrangeNodeLinks(destinations.at(i));
+                    arrangeNodeLinks(destinations.at(i));
+                }
                 moved.append(destinations.at(i));
                 moveDownFromElem(destinations.at(i), scenePos, direction, shift, moved);
             }
         }
     }
+}
+
+qreal EditorViewScene::Sign(qreal x){
+    if (x >= 0) return 1;
+    return -1;
 }
 
 void EditorViewScene::reConnectLink(EdgeElement * edgeElem){

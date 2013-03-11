@@ -73,6 +73,8 @@ public:
 
     void reConnectLink(EdgeElement * edgeElem);
     void arrangeNodeLinks(NodeElement* node);
+    qreal Sign(qreal x);
+
 
     NodeElement* getNodeById(qReal::Id const &itemId);
     EdgeElement* getEdgeById(qReal::Id const &itemId);
