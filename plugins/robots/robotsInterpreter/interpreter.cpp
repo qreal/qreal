@@ -409,6 +409,11 @@ void Interpreter::setConnectRobotAction(QAction *actionConnect)
 	mActionConnectToRobot = actionConnect;
 }
 
+void Interpreter::setNoiseSettings()
+{
+	mD2RobotModel->setNoiseSettings();
+}
+
 void Interpreter::reportError(QString const &message)
 {
 	mInterpretersInterface->errorReporter()->addError(message);

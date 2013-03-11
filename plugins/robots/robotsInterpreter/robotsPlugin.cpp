@@ -179,10 +179,11 @@ interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produce
 void RobotsPlugin::rereadSettings()
 {
 	setTitlesVisibility();
+	mInterpreter.setNoiseSettings();
 }
 
 void RobotsPlugin::setTitlesVisibility()
 {
-	bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();
+    bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();
 	mSceneCustomizer->setTitlesVisible(titlesVisible);
 }

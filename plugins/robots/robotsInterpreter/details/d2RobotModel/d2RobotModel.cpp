@@ -1,5 +1,6 @@
 #include "d2RobotModel.h"
 #include "../tracer.h"
+#include "../../../qrkernel/settingsManager.h"
 #include "../../../../../qrutils/mathUtils/gaussNoise.h"
 
 using namespace qReal::interpreters::robots;
@@ -19,7 +20,7 @@ unsigned long const magenta = 0xFFFF00FF;
 unsigned const touchSensorPressedSignal = 1;
 unsigned const touchSensorNotPressedSignal = 0;
 
-qreal const spoilColorDispersion = 0.5;
+qreal const spoilColorDispersion = 0.6;
 qreal const spoilLightDispersion = 0.3;
 qreal const spoilSonarDispersion = 1.5;
 qreal const percentSaltPepperNoise = 20.0;
@@ -30,10 +31,10 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		, mTimeline(new Timeline(this))
 		, mNoiseGen()
 		, mNeedSync(false)
-		, mNeedSensorNoise(false)
+		, mNeedSensorNoise(SettingsManager::value("enableNoiseOfSensors").toBool())
 {
 	mAngle = 0;
-	mNoiseGen.setApproximationLevel(12);
+	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
 	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()), Qt::UniqueConnection);
 	initPosition();
@@ -553,4 +554,10 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 Timeline *D2RobotModel::timeline() const
 {
 	return mTimeline;
+}
+
+void D2RobotModel::setNoiseSettings()
+{
+	mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
+	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 }

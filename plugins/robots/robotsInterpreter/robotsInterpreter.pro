@@ -56,7 +56,7 @@ FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
 	watchListWindow.ui \
-	details/sensorsConfigurationWidget.ui \
+	details/sensorsConfigurationWidget.ui
 
 RESOURCES += \
 	robotsInterpreter.qrc \

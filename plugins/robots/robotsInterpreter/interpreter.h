@@ -51,6 +51,8 @@ public:
 	/// Assigning a value to the field mActionConnectToRobot
 	void setConnectRobotAction(QAction *actionConnect);
 
+	void setNoiseSettings();
+
 	/// Enable Run and Stop buttons on 2d model widget
 	void enableD2ModelWidgetRunStopButtons();
 

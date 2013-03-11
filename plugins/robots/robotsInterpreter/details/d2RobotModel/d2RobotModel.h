@@ -54,6 +54,8 @@ public:
 
 	Timeline *timeline() const;
 
+	void setNoiseSettings();
+
 	enum ATime {
 		DoInf,
 		DoByLimit,

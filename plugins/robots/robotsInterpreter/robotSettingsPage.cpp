@@ -124,6 +124,16 @@ robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotMo
 	}
 }
 
+int PreferencesRobotSettingsPage::approximationLevel() const
+{
+	return mUi->approximationLevelSpinBox->value();
+}
+
+bool PreferencesRobotSettingsPage::enableNoise() const
+{
+	return mUi->enableNoiseCheckBox->checkState() == Qt::Checked;
+}
+
 bool PreferencesRobotSettingsPage::textVisible() const
 {
 	return mUi->textVisibleCheckBox->checkState() == Qt::Checked;
@@ -139,6 +149,7 @@ QString PreferencesRobotSettingsPage::selectedCommunication() const
 void PreferencesRobotSettingsPage::activatedUnrealModel(bool checked)
 {
 	mUi->bluetoothSettingsGroupBox->setEnabled(!checked && mUi->bluetoothRadioButton->isChecked());
+	mUi->noiseSensorsGroupBox->setEnabled(checked);
 }
 
 void PreferencesRobotSettingsPage::bluetoothCommunucationToggled()
@@ -193,6 +204,8 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("bluetoothPortName", selectedPortName());
 	SettingsManager::setValue("valueOfCommunication", selectedCommunication());
 	SettingsManager::setValue("showTitlesForRobots", textVisible());
+	SettingsManager::setValue("enableNoiseOfSensors", enableNoise());
+	SettingsManager::setValue("approximationLevel", approximationLevel());
 	mSensorsWidget->save();
 	emit saved();
 }
