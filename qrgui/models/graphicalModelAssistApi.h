@@ -79,6 +79,9 @@ public:
 	bool hasRootDiagrams() const;
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
+
+	void removeElement(Id const &graphicalId);
+
 signals:
 	void nameChanged(Id const &id);
 

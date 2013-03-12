@@ -8,10 +8,10 @@ namespace qReal
 namespace commands
 {
 
-class CreateElementCommand : public AbstractCommand
+class RemoveElementCommand : public AbstractCommand
 {
 public:
-	CreateElementCommand(
+	RemoveElementCommand(
 			models::LogicalModelAssistApi *logicalApi
 			, models::GraphicalModelAssistApi *graphicalApi
 			, Id const &parent
@@ -20,15 +20,12 @@ public:
 			, QString const &name
 			, QPointF const &position);
 
-	Id result() const;
-
 protected:
 	virtual bool execute();
 	virtual bool restoreState();
 
 private:
 	CreateRemoveCommandImplementation mImpl;
-	Id mResult;
 };
 
 }

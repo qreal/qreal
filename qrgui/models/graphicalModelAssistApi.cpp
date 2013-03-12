@@ -1,4 +1,3 @@
-//#include "details/graphicalModel.h"
 #include "graphicalModelAssistApi.h"
 #include "../../qrkernel/exception/exception.h"
 #include <QtCore/QUuid>
@@ -234,4 +233,10 @@ int GraphicalModelAssistApi::childrenOfRootDiagram() const
 int GraphicalModelAssistApi::childrenOfDiagram(const Id &parent) const
 {
 	return mModelsAssistApi.childrenOfDiagram(parent);
+}
+
+void GraphicalModelAssistApi::removeElement(Id const &graphicalId)
+{
+	QPersistentModelIndex const index = indexById(graphicalId);
+	mGraphicalModel.removeRow(index.row(), index.parent());
 }

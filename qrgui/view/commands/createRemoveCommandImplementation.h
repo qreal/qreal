@@ -11,7 +11,8 @@ class CreateRemoveCommandImplementation
 {
 public:
 	CreateRemoveCommandImplementation(
-			models::GraphicalModelAssistApi *api
+			models::LogicalModelAssistApi *logicalApi
+			, models::GraphicalModelAssistApi *graphicalApi
 			, Id const &parent
 			, Id const &id
 			, bool isFromLogicalModel
@@ -22,7 +23,8 @@ public:
 	void remove();
 
 private:
-	models::GraphicalModelAssistApi *mApi;
+	models::LogicalModelAssistApi *mLogicalApi; // Doesn`t take ownership
+	models::GraphicalModelAssistApi *mGraphicalApi; // Doesn`t take ownership
 	Id mParent;
 	Id mId;
 	bool mIsFromLogicalModel;

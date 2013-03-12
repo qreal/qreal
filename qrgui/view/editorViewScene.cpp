@@ -481,19 +481,19 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	// Inserting new node into edge
 	CreateElementCommand *createCommand = new CreateElementCommand(
-				mMVIface->graphicalAssistApi(), parentId, id
-				, isFromLogicalModel, name, position);
+				mMVIface->logicalAssistApi(), mMVIface->graphicalAssistApi(),
+				parentId, id, isFromLogicalModel, name, position);
 	mController->execute(createCommand);
-	Id insertedNodeId = createCommand->result();
+	Id const insertedNodeId = createCommand->result();
 	// TODO: create command for it
 	if (dynamic_cast<NodeElement*>(e)) {
 		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
 	}
 
 	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
-	if (parentNode != NULL) {
+	if (parentNode) {
 		Element *nextNode = parentNode->getPlaceholderNextElement();
-		if (nextNode != NULL) {
+		if (nextNode) {
 			mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 		}
 	}

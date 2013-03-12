@@ -62,6 +62,8 @@ public:
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
 
+	void removeElement(Id const &logicalId);
+
 private:
 	details::ModelsAssistApi mModelsAssistApi;
 	details::LogicalModel &mLogicalModel;

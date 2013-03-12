@@ -27,6 +27,8 @@ public slots:
 	bool redo();
 
 private:
+	bool execute(commands::AbstractCommand *command, bool clearStack);
+
 	void clear(QStack<commands::AbstractCommand *> &stack);
 
 	QStack<commands::AbstractCommand *> mExecutedCommands;

@@ -2,8 +2,6 @@
 
 #include "graphicalModel.h"
 
-#include <QtCore/QDebug>
-
 using namespace qReal;
 using namespace models::details;
 using namespace modelsImplementation;
@@ -38,4 +36,3 @@ void LogicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int start
 	}
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
-

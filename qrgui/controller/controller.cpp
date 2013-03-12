@@ -15,10 +15,17 @@ Controller::~Controller()
 
 bool Controller::execute(commands::AbstractCommand *command)
 {
+	return execute(command, true);
+}
+
+bool Controller::execute(commands::AbstractCommand *command, bool clearStack)
+{
 	bool const result = (*command)();
 	if (result) {
 		mExecutedCommands.push(command);
-		clear(mUndoneCommands);
+		if (clearStack) {
+			clear(mUndoneCommands);
+		}
 	}
 	return result;
 }
@@ -41,7 +48,7 @@ bool Controller::redo()
 	if (mUndoneCommands.isEmpty()) {
 		return true;
 	}
-	return execute(mUndoneCommands.pop());
+	return execute(mUndoneCommands.pop(), false);
 }
 
 void Controller::clear(QStack<AbstractCommand *> &stack)

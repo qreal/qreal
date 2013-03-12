@@ -4,13 +4,15 @@
 using namespace qReal::commands;
 
 CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
-		models::GraphicalModelAssistApi *api
+		models::LogicalModelAssistApi *logicalApi
+		, models::GraphicalModelAssistApi *graphicalApi
 		, const Id &parent
 		, const Id &id
 		, bool isFromLogicalModel
 		, const QString &name
 		, const QPointF &position)
-	: mApi(api)
+	: mLogicalApi(logicalApi)
+	, mGraphicalApi(graphicalApi)
 	, mParent(parent)
 	, mId(id)
 	, mIsFromLogicalModel(isFromLogicalModel)
@@ -21,9 +23,14 @@ CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
 
 Id CreateRemoveCommandImplementation::create()
 {
-	return mApi->createElement(mParent, mId, mIsFromLogicalModel, mName, mPosition);
+	return mGraphicalApi->createElement(mParent, mId, mIsFromLogicalModel, mName, mPosition);
 }
 
 void CreateRemoveCommandImplementation::remove()
 {
+	if (mIsFromLogicalModel) {
+		mLogicalApi->removeElement(mId);
+	} else {
+		mGraphicalApi->removeElement(mId);
+	}
 }

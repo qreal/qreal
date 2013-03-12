@@ -32,6 +32,8 @@ public:
 	virtual bool hasRootDiagrams() const = 0;
 	virtual int childrenOfRootDiagram() const = 0;
 	virtual int childrenOfDiagram(const Id &parent) const = 0;
+
+	virtual void removeElement(Id const &id) = 0;
 };
 
 }

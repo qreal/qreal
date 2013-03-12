@@ -2,10 +2,15 @@
 
 using namespace qReal::commands;
 
-CreateElementCommand::CreateElementCommand(models::GraphicalModelAssistApi *api
-		, const Id &parent, const Id &id, bool isFromLogicalModel
-		, const QString &name, const QPointF &position)
-	: mImpl(api, parent, id, isFromLogicalModel, name, position)
+CreateElementCommand::CreateElementCommand(
+		models::LogicalModelAssistApi *logicalApi
+		, models::GraphicalModelAssistApi *graphicalApi
+		, Id const &parent
+		, Id const &id
+		, bool isFromLogicalModel
+		, QString const &name
+		, QPointF const &position)
+	: mImpl(logicalApi, graphicalApi, parent, id, isFromLogicalModel, name, position)
 {
 }
 
