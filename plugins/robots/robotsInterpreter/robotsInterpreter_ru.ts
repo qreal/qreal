@@ -336,7 +336,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="robotSettingsPage.ui" line="154"/>
         <source>Text visible</source>
-        <translation>Показывать текст под пиктограммой</translation>
+		<translation>Показывать текст под пиктограммой</translation>
+    </message>
+    <message>
+		<location filename="robotSettingsPage.ui" line="164"/>
+		<source>Noise of sensors</source>
+		<translation>Шум сенсоров</translation>
+    </message>
+    <message>
+		<location filename="robotSettingsPage.ui" line="173"/>
+		<source>Enable noise</source>
+		<translation>Включить шум</translation>
+    </message>
+    <message>
+		<location filename="robotSettingsPage.ui" line="199"/>
+		<source>Approximation</source>
+		<translation>Уровень приближения</translation>
     </message>
 </context>
 <context>

@@ -1,3 +1,4 @@
+#include "stdio.h"
 #include "d2RobotModel.h"
 #include "../tracer.h"
 #include "../../../qrkernel/settingsManager.h"
@@ -20,8 +21,8 @@ unsigned long const magenta = 0xFFFF00FF;
 unsigned const touchSensorPressedSignal = 1;
 unsigned const touchSensorNotPressedSignal = 0;
 
-qreal const spoilColorDispersion = 0.6;
-qreal const spoilLightDispersion = 0.3;
+qreal const spoilColorDispersion = 2.0;
+qreal const spoilLightDispersion = 1.0;
 qreal const spoilSonarDispersion = 1.5;
 qreal const percentSaltPepperNoise = 20.0;
 
@@ -558,6 +559,6 @@ Timeline *D2RobotModel::timeline() const
 
 void D2RobotModel::setNoiseSettings()
 {
-	mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
+    mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 }

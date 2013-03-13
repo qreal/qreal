@@ -184,6 +184,6 @@ void RobotsPlugin::rereadSettings()
 
 void RobotsPlugin::setTitlesVisibility()
 {
-    bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();
+	bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();
 	mSceneCustomizer->setTitlesVisible(titlesVisible);
 }

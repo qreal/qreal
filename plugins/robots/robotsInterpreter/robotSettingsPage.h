@@ -51,7 +51,7 @@ private:
 	sensorType::SensorTypeEnum selectedPort3Sensor() const;
 	sensorType::SensorTypeEnum selectedPort4Sensor() const;
 	robotModelType::robotModelTypeEnum selectedRobotModel() const;
-    bool textVisible() const;
+	bool textVisible() const;
 	bool enableNoise() const;
 	int approximationLevel() const;
 
