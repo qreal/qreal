@@ -1,4 +1,3 @@
-#include "stdio.h"
 #include "d2RobotModel.h"
 #include "../tracer.h"
 #include "../../../qrkernel/settingsManager.h"
@@ -559,6 +558,6 @@ Timeline *D2RobotModel::timeline() const
 
 void D2RobotModel::setNoiseSettings()
 {
-    mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
+	mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 }
