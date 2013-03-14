@@ -582,33 +582,34 @@ void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
     }
 }
 
-void EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos)
+void EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId)
+
 {
     QList<EdgeElement*> inEdges = getInEdges(getNodeById(nodeId));
     QList<EdgeElement*> outEdges = getOutEdges(getNodeById(nodeId));
     if (inEdges.count() == 1){
         NodeElement* node =  inEdges.at(0)->src();
         foreach(EdgeElement* edge, outEdges){
-            Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
-            mMVIface->graphicalAssistApi()->createElement(parentId, newEdge, isFromLogicalModel, "flow", scenePos);
-            mMVIface->graphicalAssistApi()->setFrom(newEdge, node->id());
-            mMVIface->graphicalAssistApi()->setTo(newEdge, edge->dst()->id());
+    //        Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
+   //         mMVIface->graphicalAssistApi()->createElement(parentId, newEdge, isFromLogicalModel, "flow", scenePos);
+            mMVIface->graphicalAssistApi()->setFrom(edge->id(), node->id());
+ //           mMVIface->graphicalAssistApi()->setTo(newEdge, edge->dst()->id());
             getNodeById(edge->dst()->id())->connectLinksToPorts();
+            reConnectLink(edge);
 
-            mainWindow()->deleteElementFromDiagram(edge->id());
+ //           mainWindow()->deleteElementFromDiagram(edge->id());
         }
         mainWindow()->deleteElementFromDiagram(inEdges.at(0)->id());
     } else{
     if (outEdges.count() == 1){
         NodeElement* node =  outEdges.at(0)->dst();
         foreach(EdgeElement* edge, inEdges){
-            Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
-            mMVIface->graphicalAssistApi()->createElement(parentId, newEdge, isFromLogicalModel, "flow", scenePos);
-            mMVIface->graphicalAssistApi()->setFrom(newEdge, edge->src()->id());
-            mMVIface->graphicalAssistApi()->setTo(newEdge, node->id());
+//            Id const newEdge(edge->id().editor(), edge->id().diagram(), edge->id().element(), QUuid::createUuid().toString());
+//            mMVIface->graphicalAssistApi()->createElement(parentId, newEdge, isFromLogicalModel, "flow", scenePos);
+//            mMVIface->graphicalAssistApi()->setFrom(newEdge, edge->src()->id());
+            mMVIface->graphicalAssistApi()->setTo(edge->id(), node->id());
             getNodeById(node->id())->connectLinksToPorts();
-
-            mainWindow()->deleteElementFromDiagram(edge->id());
+            reConnectLink(edge);
         }
         mainWindow()->deleteElementFromDiagram(outEdges.at(0)->id());
     }

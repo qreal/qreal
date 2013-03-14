@@ -79,9 +79,11 @@ public:
     NodeElement* getNodeById(qReal::Id const &itemId);
     EdgeElement* getEdgeById(qReal::Id const &itemId);
 
-    void deleteElementFromEdge(qReal::Id const &nodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos);
     QList<EdgeElement*> getInEdges(NodeElement* node);
     QList<EdgeElement*> getOutEdges(NodeElement* node);
+
+    void deleteElementFromEdge(qReal::Id const &nodeId);
+
 
     void itemSelectUpdate();
 
