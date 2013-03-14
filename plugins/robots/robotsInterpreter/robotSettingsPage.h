@@ -34,8 +34,6 @@ protected:
 	void changeEvent(QEvent *e);
 
 private slots:
-	void approximationLevelSpinBoxChanged(int value);
-	void enableNoiseCheckBoxChecked(bool state);
 	void activatedUnrealModel(bool checked);
 	void bluetoothCommunucationToggled();
 	void manualComPortCheckboxChecked(bool state);
