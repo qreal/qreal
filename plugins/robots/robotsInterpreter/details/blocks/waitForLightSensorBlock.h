@@ -30,6 +30,8 @@ private slots:
 	void timerTimeout();
 
 private:
+	static const int maxValue = 1023;
+
 	inputPort::InputPortEnum mPort;
 	RobotModel const * const mRobotModel;
 	QTimer mActiveWaitingTimer;

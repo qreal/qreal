@@ -19,7 +19,7 @@ public:
 	void setSensor(inputPort::InputPortEnum const &port
 			, sensorType::SensorTypeEnum const &type
 			, QPointF const &position
-			, qreal const &direction, const bool sticked);
+			, qreal const &direction);
 
 	void setPosition(inputPort::InputPortEnum const &port, QPointF const &position);
 	QPointF position(inputPort::InputPortEnum const &port) const;
@@ -33,17 +33,13 @@ public:
 	void serialize(QDomElement &robot, QDomDocument &document) const;
 	void deserialize(QDomElement const &element);
 
-	bool stickedToItem(inputPort::InputPortEnum const port) const;
-	void onStickedToItem(inputPort::InputPortEnum const port, bool sticked);
-
 private:
 	class SensorInfo
 	{
 	public:
 		SensorInfo();
 		SensorInfo(QPointF const &position, qreal direction
-				, sensorType::SensorTypeEnum const &sensorType
-				, bool const sticked);
+				, sensorType::SensorTypeEnum const &sensorType);
 
 		QPointF position() const;
 		void setPosition(QPointF const &position);
@@ -51,16 +47,12 @@ private:
 		qreal direction() const;
 		void setDirection(qreal direction);
 
-		bool stickedToRobot() const;
-		void setStickedToRobot(bool sticked);
-
 		sensorType::SensorTypeEnum type() const;
 
 	private:
 		QPointF mPosition;
 		qreal mDirection;
 		sensorType::SensorTypeEnum mSensorType;
-		bool mStickedToRobot;
 	};
 
 	QVector<SensorInfo> mSensors;

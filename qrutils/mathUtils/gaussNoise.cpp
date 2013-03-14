@@ -9,7 +9,8 @@
 using namespace mathUtils;
 
 GaussNoise::GaussNoise()
-	: mApproximationLevel(12), mDispersion(1.0)
+	: mApproximationLevel(defaultApproximationLevel)
+	, mDispersion(defaultDispersion)
 {
 	qsrand(time(0));
 }

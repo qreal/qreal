@@ -134,10 +134,7 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPortEnum const port) const
 {
 	QPointF const position = mSensorsConfiguration.position(port);
-	qreal direction = mSensorsConfiguration.direction(port);
-	if (mSensorsConfiguration.stickedToItem(port)) {
-		direction += mAngle;
-	}
+	qreal direction = mSensorsConfiguration.direction(port) + mAngle;
 	return QPair<QPointF, qreal>(position, direction);
 }
 
@@ -150,9 +147,12 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 	}
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
+	qreal const width = sensorWidth / 2.0;
+	QRectF const scanningRect = QRectF(sensorPosition.x() - width
+			, sensorPosition.y() - width, 2 * width, 2 * width);
 	QPainterPath sensorPath;
-	sensorPath.addRect(sensorPosition.x(), sensorPosition.y(), sensorWidth, sensorWidth);
-	bool const res = mWorldModel.checkCollision(sensorPath, 6);
+	sensorPath.addRect(scanningRect);
+	bool const res = mWorldModel.checkCollision(sensorPath, touchSensorStrokeIncrement);
 
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
@@ -188,7 +188,7 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 	QImage const image = printColorSensor(port);
 	QHash<unsigned long, int> countsColor;
 
-	unsigned long* data = (unsigned long*) image.bits();
+	unsigned long *data = (unsigned long *) image.bits();
 	int const n = image.byteCount() / 4;
 	for (int i = 0; i < n; ++i) {
 		unsigned long color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
@@ -336,13 +336,13 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 
 int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 {
-	// Must return 1024 on white and 0 on black
+	// Must return 1023 on white and 0 on black
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
 	QImage const image = printColorSensor(port);
 
 	unsigned long sum = 0;
-	unsigned long* data = (unsigned long*) image.bits();
+	unsigned long *data = (unsigned long *) image.bits();
 	int const n = image.numBytes() / 4;
 
 	for (int i = 0; i < n; ++i) {
@@ -353,7 +353,7 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 		// brightness in [0..256]
 		int const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-		sum += 4 * brightness;
+		sum += 4 * brightness; // 4 = max sensor value / max brightness value
 	}
 	return sum / n; // Average by whole region
 }

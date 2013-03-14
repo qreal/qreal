@@ -145,6 +145,14 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 private:
+	static const int defaultPenWidth = 15;
+
+	static const int indexOfNoneSensor = 0;
+	static const int indexOfTouchSensor = 1;
+	static const int indexOfColorSensor = 2;
+	static const int indexOfSonarSensor = 3;
+	static const int indexOfLightSensor = 4;
+
 	void connectUiButtons();
 	void initButtonGroups();
 	void setHighlightOneButton(QAbstractButton const *oneButton);
@@ -228,9 +236,6 @@ private:
 
 	/** @brief Type of current sensor that we add */
 	sensorType::SensorTypeEnum mCurrentSensorType;
-
-	/** @brief Amount of buttons on left panel */
-	int const mButtonsCount;
 
 	/** @brief List of flags showing which panel button is active now*/
 	QList<bool> mButtonFlags;

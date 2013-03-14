@@ -31,6 +31,9 @@ public:
 	GaussNoise operator >> (qreal &left);
 
 private:
+	static const int defaultApproximationLevel = 12;
+	static const qreal defaultDispersion = 1.0;
+
 	/// Body of function 'generate'. Uses for various realizations of 'generate'
 	qreal genBody(unsigned int const approximationLevel, qreal const variance) const;
 

@@ -37,7 +37,7 @@ void WaitForLightSensorBlock::run()
 void WaitForLightSensorBlock::responseSlot(int reading)
 {
 	int const targetPercents = evaluate("Percents").toInt();
-	reading = reading * 100 / 1023;
+	reading = reading * 100 / maxValue; // Converting value into percents
 
 	QString const sign = stringProperty("Sign");
 	if ((sign == QString::fromUtf8("равно")) && (reading != targetPercents)) {
