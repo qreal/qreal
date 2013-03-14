@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QStack>
 
-#include "abstractCommand.h"
+#include "commands/abstractCommand.h"
 
 namespace qReal
 {
@@ -27,7 +27,7 @@ public slots:
 	bool redo();
 
 private:
-	bool execute(commands::AbstractCommand *command, bool clearStack);
+	bool execPrivate(commands::AbstractCommand *command, bool clearStack);
 
 	void clear(QStack<commands::AbstractCommand *> &stack);
 

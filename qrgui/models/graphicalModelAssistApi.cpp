@@ -238,5 +238,7 @@ int GraphicalModelAssistApi::childrenOfDiagram(const Id &parent) const
 void GraphicalModelAssistApi::removeElement(Id const &graphicalId)
 {
 	QPersistentModelIndex const index = indexById(graphicalId);
-	mGraphicalModel.removeRow(index.row(), index.parent());
+	if (graphicalRepoApi().exist(graphicalId) && index.isValid()) {
+		mGraphicalModel.removeRow(index.row(), index.parent());
+	}
 }

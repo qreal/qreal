@@ -464,5 +464,3 @@ bool EditorManager::isGraphicalElementNode(const Id &id) const
 	}
 	return impl->isNode();
 }
-
-

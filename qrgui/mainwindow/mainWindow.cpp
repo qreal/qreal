@@ -28,6 +28,8 @@
 #include "../models/models.h"
 #include "../view/editorView.h"
 #include "../view/sceneCustomizer.h"
+#include "../controller/commands/removeElementCommand.h"
+#include "../controller/commands/doNothingCommand.h"
 #include "../umllib/element.h"
 #include "../dialogs/pluginDialog.h"
 #include "../dialogs/checkoutDialog.h"
@@ -45,6 +47,7 @@
 #include "dotRunner.h"
 
 using namespace qReal;
+using namespace qReal::commands;
 
 QString const unsavedDir = "unsaved";
 
@@ -523,61 +526,168 @@ void MainWindow::reportOperation(invocation::LongOperation *operation)
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
 {
-	QModelIndex const index = isLogicalModel
-			? (mUi->logicalModelExplorer->currentIndex())
-			: (mUi->graphicalModelExplorer->currentIndex());
-
-	if (!index.isValid()) {
-		qDebug() << "Index in deleteFromExplorer(); isn't valid";
+	if (isLogicalModel) {
+		QModelIndex const index = mUi->logicalModelExplorer->currentIndex();
+		if (index.isValid()) {
+			mController->execute(logicalDeleteCommand(index));
+		}
 		return;
 	}
 
-	EditorView const * const view = getCurrentTab();
-	EditorViewScene* scene = NULL;
-	if (view) {
-		scene = dynamic_cast<EditorViewScene*>(view->scene());
+	Id const id = mModels->graphicalModelAssistApi().idByIndex(
+			mUi->graphicalModelExplorer->currentIndex());
+	if (id == Id()) {
+		return;
 	}
 
-	IdList graphicalIdList;
-	if (isLogicalModel) {
-		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
-		graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
-		removeReferences(logicalId);
-	} else {
-		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
-		graphicalIdList.append(graphicalId);
-	}
+	IdList itemsToDelete;
+	itemsToDelete << id;
+	deleteItems(itemsToDelete);
 
-	QList<NodeElement*> itemsToArrangeLinks;
-	foreach (Id const &graphicalId, graphicalIdList) {
-		bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
-		if (scene && !tabClosed) {
-			QGraphicsItem const * const item = scene->getElem(graphicalId);
-			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
-			if (edge) {
-				itemsToArrangeLinks.append(edge->src());
-				itemsToArrangeLinks.append(edge->dst());
+//	IdList graphicalIdList;
+//	if (isLogicalModel) {
+//		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
+//		graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+//		removeReferences(logicalId);
+//	} else {
+//		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
+//		graphicalIdList.append(graphicalId);
+//	}
+//	QList<NodeElement*> itemsToArrangeLinks;
+//	foreach (Id const &graphicalId, graphicalIdList) {
+//		bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
+//		if (scene && !tabClosed) {
+//			QGraphicsItem const * const item = scene->getElem(graphicalId);
+//			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
+//			if (edge) {
+//				itemsToArrangeLinks.append(edge->src());
+//				itemsToArrangeLinks.append(edge->dst());
+//			}
+//		}
+//	}
+
+//	PropertyEditorModel* propertyEditorModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
+//	if (propertyEditorModel && propertyEditorModel->isCurrentIndex(index)) {
+//		propertyEditorModel->clearModelIndexes();
+//		mUi->propertyEditor->setRootIndex(QModelIndex());
+//	}
+
+//	foreach (NodeElement *item, itemsToArrangeLinks) {
+//		if (item) {
+//			item->arrangeLinks();
+//		}
+//	}
+}
+
+void MainWindow::deleteItems(QList<QGraphicsItem *> &itemsToDelete)
+{
+	QList<QGraphicsItem *> itemsToUpdate;
+	QList<QGraphicsItem *> itemsToDeleteNoUpdate;
+
+	DoNothingCommand *multipleRemoveCommand = new DoNothingCommand;
+
+	// QGraphicsScene::selectedItems() returns items in no particular order,
+	// so we should handle parent-child relationships manually
+	while (!itemsToDelete.isEmpty()) {
+		QGraphicsItem *currentItem = itemsToDelete.at(0);
+
+		// delete possible children
+		foreach (QGraphicsItem *child, currentItem->childItems()) {
+			NodeElement* node = dynamic_cast<NodeElement*>(child);
+			if (node) {
+				itemsToDeleteNoUpdate.append(node);
+			}
+			itemsToDelete.removeAll(child);
+			multipleRemoveCommand->addPreAction(graphicalDeleteCommand(child));
+		}
+
+		EdgeElement* edge = dynamic_cast<EdgeElement*>(currentItem);
+		if (edge) {
+			if (edge->src() && !itemsToUpdate.contains(edge->src())) {
+				itemsToUpdate.append(edge->src());
+			}
+			if (edge->dst() && !itemsToUpdate.contains(edge->dst())) {
+				itemsToUpdate.append(edge->dst());
+			}
+		} else {
+			NodeElement* node = dynamic_cast<NodeElement*>(currentItem);
+			if (node) {
+				itemsToDeleteNoUpdate.append(currentItem);
 			}
 		}
+
+		// delete the item itself
+		itemsToDelete.removeAll(currentItem);
+		multipleRemoveCommand->addPreAction(graphicalDeleteCommand(currentItem));
 	}
 
-	PropertyEditorModel* propertyEditorModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
-	if (propertyEditorModel && propertyEditorModel->isCurrentIndex(index)) {
-		propertyEditorModel->clearModelIndexes();
-		mUi->propertyEditor->setRootIndex(QModelIndex());
-	}
+	mController->execute(multipleRemoveCommand);
+//	// correcting unremoved edges
+//	foreach (QGraphicsItem* item, itemsToUpdate) {
+	//		if (!itemsToDeleteNoUpdate.contains(item)) {
+	//			NodeElement* node = dynamic_cast <NodeElement*> (item);
+	//			if (node) {
+	//				node->arrangeLinks();
+	//				node->adjustLinks();
+	//			}
+	//		}
+	//	}
+}
 
-	if (isLogicalModel) {
-		mModels->logicalModel()->removeRow(index.row(), index.parent());
-	} else {
-		mModels->graphicalModel()->removeRow(index.row(), index.parent());
-	}
+void MainWindow::deleteItems(IdList &itemsToDelete)
+{
+	IdList itemsToUpdate;
+	IdList itemsToDeleteNoUpdate;
+	// QGraphicsScene::selectedItems() returns items in no particular order,
+	// so we should handle parent-child relationships manually
 
-	foreach (NodeElement *item, itemsToArrangeLinks) {
-		if (item) {
-			item->arrangeLinks();
+	DoNothingCommand *multipleRemoveCommand = new DoNothingCommand;
+
+	while (!itemsToDelete.isEmpty()) {
+		Id const currentItem = itemsToDelete.at(0);
+
+		// delete possible children
+		IdList const children = mModels->graphicalModelAssistApi().children(currentItem);
+		foreach (Id const &child, children) {
+			bool const childIsNode = mEditorManager.isGraphicalElementNode(child);
+			if (childIsNode) {
+				itemsToDeleteNoUpdate.append(child);
+			}
+			itemsToDelete.removeAll(child);
+			// Child remove commands will be added in currentItem delete command
 		}
+
+		bool const isEdge = !mEditorManager.isGraphicalElementNode(currentItem);
+		if (isEdge) {
+			Id const src = mModels->graphicalModelAssistApi().from(currentItem);
+			if (src != Id() && !itemsToUpdate.contains(src)) {
+				itemsToUpdate.append(src);
+			}
+			Id const dst = mModels->graphicalModelAssistApi().to(currentItem);
+			if (dst != Id() && !itemsToUpdate.contains(dst)) {
+				itemsToUpdate.append(dst);
+			}
+		} else {
+			itemsToDeleteNoUpdate.append(currentItem);
+		}
+
+		// delete the item itself
+		itemsToDelete.removeAll(currentItem);
+		multipleRemoveCommand->addPreAction(graphicalDeleteCommand(currentItem));
 	}
+
+	multipleRemoveCommand->removeDuplicates();
+	mController->execute(multipleRemoveCommand);
+//	// correcting unremoved edges
+//	foreach (QGraphicsItem* item, itemsToUpdate) {
+	//		if (!itemsToDeleteNoUpdate.contains(item)) {
+	//			NodeElement* node = dynamic_cast <NodeElement*> (item);
+	//			if (node) {
+	//				node->arrangeLinks();
+	//				node->adjustLinks();
+	//			}
+	//		}
+	//	}
 }
 
 void MainWindow::removeReferences(Id const &id)
@@ -589,82 +699,109 @@ void MainWindow::removeReferences(Id const &id)
 void MainWindow::deleteFromScene()
 {
 	QList<QGraphicsItem *> itemsToDelete = getCurrentTab()->scene()->selectedItems();
-	QList<QGraphicsItem *> itemsToUpdate;
-	QList<QGraphicsItem *> itemsToDeleteNoUpdate;
-	// QGraphicsScene::selectedItems() returns items in no particular order,
-	// so we should handle parent-child relationships manually
-
-	while (!itemsToDelete.isEmpty()) {
-		QGraphicsItem *currentItem = itemsToDelete.at(0);
-
-		// delete possible children
-		foreach (QGraphicsItem *child, currentItem->childItems()) {
-			NodeElement* node = dynamic_cast <NodeElement*> (child);
-			if (node) {
-				itemsToDeleteNoUpdate.append(node);
-			}
-			itemsToDelete.removeAll(child);
-			deleteFromScene(child);
-		}
-
-		EdgeElement* edge = dynamic_cast <EdgeElement*> (currentItem);
-		if (edge) {
-			if (edge->src() && !itemsToUpdate.contains(edge->src())) {
-				itemsToUpdate.append(edge->src());
-			}
-			if (edge->dst() && !itemsToUpdate.contains(edge->dst())) {
-				itemsToUpdate.append(edge->dst());
-			}
-		} else {
-			NodeElement* node = dynamic_cast <NodeElement*> (currentItem);
-			if (node) {
-				itemsToDeleteNoUpdate.append(currentItem);
-			}
-		}
-
-		// delete the item itself
-		itemsToDelete.removeAll(currentItem);
-		deleteFromScene(currentItem);
-	}
-
-	// correcting unremoved edges
-	foreach (QGraphicsItem* item, itemsToUpdate) {
-		if (!itemsToDeleteNoUpdate.contains(item)) {
-			NodeElement* node = dynamic_cast <NodeElement*> (item);
-			if (node) {
-				node->arrangeLinks();
-				node->adjustLinks();
-			}
+	IdList idsToDelete;
+	foreach (QGraphicsItem const *item, itemsToDelete) {
+		Element const *element = dynamic_cast<Element const *>(item);
+		if (element) {
+			idsToDelete << element->id();
 		}
 	}
+
+	deleteItems(idsToDelete);
 }
 
-void MainWindow::deleteElementFromScene(QPersistentModelIndex const &index)
-{
-	PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
-	if (propertyEditorModel->isCurrentIndex(index)) {
-		propertyEditorModel->clearModelIndexes();
-	}
-	mUi->propertyEditor->setRootIndex(QModelIndex());
-	mModels->graphicalModel()->removeRow(index.row(), index.parent());
-}
+//void MainWindow::deleteElementFromScene(QPersistentModelIndex const &index)
+//{
+//	PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
+//	if (propertyEditorModel->isCurrentIndex(index)) {
+//		propertyEditorModel->clearModelIndexes();
+//	}
+//	mUi->propertyEditor->setRootIndex(QModelIndex());
+//	mModels->graphicalModel()->removeRow(index.row(), index.parent());
+//}
 
-void MainWindow::deleteFromScene(QGraphicsItem *target)
+AbstractCommand *MainWindow::logicalDeleteCommand(QGraphicsItem *target)
 {
-	// TODO: move it into command
 	Element *elem = dynamic_cast<Element *>(target);
-	if (!elem) {
-		return;
+	if (!elem || elem->id() == Id()) {
+		return NULL;
+	}
+	return logicalDeleteCommand(elem->id());
+}
+
+AbstractCommand *MainWindow::graphicalDeleteCommand(QGraphicsItem *target)
+{
+	Element *elem = dynamic_cast<Element *>(target);
+	if (!elem || elem->id() == Id()) {
+		return NULL;
+	}
+	return graphicalDeleteCommand(elem->id());
+
+//	QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
+//	if (index.isValid()) {
+//		elem->deleteFromScene();
+//		deleteElementFromScene(index);
+//	}
+//	if (getCurrentTab() && getCurrentTab()->scene()) {
+//		getCurrentTab()->scene()->invalidate();
+//	}
+}
+
+AbstractCommand *MainWindow::logicalDeleteCommand(QModelIndex const &index)
+{
+	Id const id = mModels->logicalModelAssistApi().idByIndex(index);
+	return logicalDeleteCommand(id);
+}
+
+AbstractCommand *MainWindow::graphicalDeleteCommand(QModelIndex const &index)
+{
+	Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
+	return graphicalDeleteCommand(id);
+}
+
+commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
+{
+	// Logical deletion is equal to all its graphical parts deletion
+	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
+
+	if (graphicalIds.isEmpty()) {
+		return new RemoveElementCommand(
+				&mModels->logicalModelAssistApi()
+				, &mModels->graphicalModelAssistApi()
+				, mModels->logicalRepoApi().parent(id)
+				, Id()
+				, id
+				, true
+				, mModels->graphicalModelAssistApi().name(id)
+				, mModels->graphicalModelAssistApi().position(id)
+				);
 	}
 
-	QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
-	if (index.isValid()) {
-		elem->deleteFromScene();
-		deleteElementFromScene(index);
+	DoNothingCommand *result = new DoNothingCommand;
+	foreach (Id const &graphicalId, graphicalIds) {
+		result->addPreAction(graphicalDeleteCommand(graphicalId));
 	}
-	if (getCurrentTab() && getCurrentTab()->scene()) {
-		getCurrentTab()->scene()->invalidate();
+	return result;
+}
+
+commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
+{
+	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
+	AbstractCommand *result =  new RemoveElementCommand(
+				&mModels->logicalModelAssistApi()
+				, &mModels->graphicalModelAssistApi()
+				, mModels->logicalRepoApi().parent(logicalId)
+				, mModels->graphicalRepoApi().parent(id)
+				, id
+				, false
+				, mModels->graphicalModelAssistApi().name(id)
+				, mModels->graphicalModelAssistApi().position(id)
+				);
+	IdList const children = mModels->graphicalModelAssistApi().children(id);
+	foreach (Id const &child, children) {
+		result->addPreAction(graphicalDeleteCommand(child));
 	}
+	return result;
 }
 
 void MainWindow::deleteFromDiagram()
@@ -672,7 +809,7 @@ void MainWindow::deleteFromDiagram()
 	if (mModels->graphicalModel()) {
 		if (mUi->graphicalModelExplorer->hasFocus()) {
 			deleteFromExplorer(false);
-		} else if (getCurrentTab() != NULL && getCurrentTab()->hasFocus()) {
+		} else if (getCurrentTab() && getCurrentTab()->hasFocus()) {
 			deleteFromScene();
 		}
 	}
@@ -682,7 +819,7 @@ void MainWindow::deleteFromDiagram()
 		}
 	}
 
-	if (getCurrentTab() != NULL && getCurrentTab()->scene() != NULL) {
+	if (getCurrentTab() && getCurrentTab()->scene()) {
 		getCurrentTab()->scene()->invalidate();
 	}
 }

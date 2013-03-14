@@ -188,7 +188,12 @@ private slots:
 	void parseJavaLibraries();
 	void applySettings();
 
-	void deleteFromScene(QGraphicsItem *target);
+	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);
+	commands::AbstractCommand *graphicalDeleteCommand(QGraphicsItem *target);
+	commands::AbstractCommand *logicalDeleteCommand(QModelIndex const &index);
+	commands::AbstractCommand *graphicalDeleteCommand(QModelIndex const &index);
+	commands::AbstractCommand *logicalDeleteCommand(Id const &index);
+	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
 
 	void deleteFromDiagram();
 	void copyElementsOnDiagram();
@@ -231,7 +236,7 @@ private slots:
 	void updatePaletteIcons();
 
 private:
-	void deleteElementFromScene(QPersistentModelIndex const &index);
+//	void deleteElementFromScene(QPersistentModelIndex const &index);
 	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
@@ -252,6 +257,10 @@ private:
 
 	virtual void closeEvent(QCloseEvent *event);
 	void deleteFromExplorer(bool isLogicalModel);
+
+	void deleteItems(QList<QGraphicsItem *> &itemsToDelete);
+	void deleteItems(IdList &itemsToDelete);
+
 	void keyPressEvent(QKeyEvent *event);
 
 	QString getSaveFileName(const QString &dialogWindowTitle);

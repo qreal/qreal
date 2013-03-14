@@ -11,7 +11,7 @@
 #include "editorView.h"
 #include "../mainwindow/mainWindow.h"
 
-#include "commands/createElementCommand.h"
+#include "../controller/commands/createElementCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -481,8 +481,14 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	// Inserting new node into edge
 	CreateElementCommand *createCommand = new CreateElementCommand(
-				mMVIface->logicalAssistApi(), mMVIface->graphicalAssistApi(),
-				parentId, id, isFromLogicalModel, name, position);
+				mMVIface->logicalAssistApi()
+				, mMVIface->graphicalAssistApi()
+				, mMVIface->rootId()
+				, parentId
+				, id
+				, isFromLogicalModel
+				, name
+				, position);
 	mController->execute(createCommand);
 	Id const insertedNodeId = createCommand->result();
 	// TODO: create command for it

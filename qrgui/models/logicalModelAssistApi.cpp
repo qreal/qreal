@@ -236,5 +236,8 @@ void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference)
 void LogicalModelAssistApi::removeElement(Id const &logicalId)
 {
 	QPersistentModelIndex const index = indexById(logicalId);
-	mLogicalModel.removeRow(index.row(), index.parent());
+	if (logicalRepoApi().exist(logicalId) && index.isValid()) {
+		removeReferencesTo(logicalId);
+		mLogicalModel.removeRow(index.row(), index.parent());
+	}
 }

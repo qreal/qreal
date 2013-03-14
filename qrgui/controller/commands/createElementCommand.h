@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../controller/abstractCommand.h"
+#include "abstractCommand.h"
 #include "createRemoveCommandImplementation.h"
 
 namespace qReal
@@ -14,7 +14,8 @@ public:
 	CreateElementCommand(
 			models::LogicalModelAssistApi *logicalApi
 			, models::GraphicalModelAssistApi *graphicalApi
-			, Id const &parent
+			, Id const &logicalParent
+			, Id const &graphicalParent
 			, Id const &id
 			, bool isFromLogicalModel
 			, QString const &name

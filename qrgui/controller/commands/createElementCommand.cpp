@@ -5,12 +5,14 @@ using namespace qReal::commands;
 CreateElementCommand::CreateElementCommand(
 		models::LogicalModelAssistApi *logicalApi
 		, models::GraphicalModelAssistApi *graphicalApi
-		, Id const &parent
+		, Id const &logicalParent
+		, Id const &graphicalParent
 		, Id const &id
 		, bool isFromLogicalModel
 		, QString const &name
 		, QPointF const &position)
-	: mImpl(logicalApi, graphicalApi, parent, id, isFromLogicalModel, name, position)
+	: mImpl(logicalApi, graphicalApi, logicalParent, graphicalParent, id
+			, isFromLogicalModel, name, position)
 {
 }
 

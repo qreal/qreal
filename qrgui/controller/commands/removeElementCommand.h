@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../../controller/abstractCommand.h"
+#include "abstractCommand.h"
 #include "createRemoveCommandImplementation.h"
+#include "../../umllib/element.h"
 
 namespace qReal
 {
@@ -14,11 +15,22 @@ public:
 	RemoveElementCommand(
 			models::LogicalModelAssistApi *logicalApi
 			, models::GraphicalModelAssistApi *graphicalApi
-			, Id const &parent
+			, Id const &logicalParent
+			, Id const &graphicalParent
 			, Id const &id
 			, bool isFromLogicalModel
 			, QString const &name
 			, QPointF const &position);
+
+	RemoveElementCommand(
+			models::LogicalModelAssistApi *logicalApi
+			, models::GraphicalModelAssistApi *graphicalApi
+			, const Id &logicalParent
+			, const Id &graphicalParent
+			, bool isFromLogicalModel
+			, Element *element);
+
+	virtual bool equals(AbstractCommand const &other) const;
 
 protected:
 	virtual bool execute();
