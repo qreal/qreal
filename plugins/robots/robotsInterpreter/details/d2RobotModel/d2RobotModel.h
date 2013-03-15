@@ -100,6 +100,7 @@ private:
 	void synchronizePositions();
 	unsigned long spoilColor(unsigned long const color) const;
 	unsigned long spoilLight(unsigned long const color) const;
+	int varySpeed(int const speed) const;
 	int spoilSonarReading(int const distance) const;
 
 	D2ModelWidget *mD2ModelWidget;

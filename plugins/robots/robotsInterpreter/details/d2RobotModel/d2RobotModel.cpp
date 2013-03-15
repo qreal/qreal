@@ -23,6 +23,7 @@ unsigned const touchSensorNotPressedSignal = 0;
 qreal const spoilColorDispersion = 2.0;
 qreal const spoilLightDispersion = 1.0;
 qreal const spoilSonarDispersion = 0.025;
+qreal const varySpeedDispersion = 0.05;
 qreal const percentSaltPepperNoise = 20.0;
 
 D2RobotModel::D2RobotModel(QObject *parent)
@@ -85,7 +86,7 @@ void D2RobotModel::setBeep(unsigned freq, unsigned time)
 
 void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 {
-	mMotors[port]->speed = speed;
+	mMotors[port]->speed = mNeedSensorNoise ? varySpeed(speed) : speed;
 	mMotors[port]->degrees = degrees;
 	mMotors[port]->isUsed = true;
 	if (degrees == 0) {
@@ -94,6 +95,24 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 		mMotors[port]->activeTimeType = DoByLimit;
 	}
 	mTurnoverMotors[port] = 0;
+}
+
+int D2RobotModel::varySpeed(const int speed) const
+{
+	qreal const ran = mNoiseGen.generate(
+					mNoiseGen.getApproximationLevel()
+					, varySpeedDispersion
+				);
+	int res = round(speed * (1 + ran));
+
+	if (res > 100) {
+		res = 100;
+	}
+	if (res < -100) {
+		res = -100;
+	}
+
+	return res;
 }
 
 void D2RobotModel::countMotorTurnover()
