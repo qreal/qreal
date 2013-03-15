@@ -1,14 +1,12 @@
 #include <QtGui/QApplication>
 
-#include "mainwindow.h"
-#include "nxtdisplay.h"
+#include "nxtDisplay.h"
 
-int main(int argc, char *argv[]){
-    QApplication a(argc, argv);
-    MainWindow w;
-    NxtDisplay x;
-    w.show();
-    x.show();
-    
-    return a.exec();
+int main(int argc, char *argv[])
+{
+	QApplication a(argc, argv);
+	NxtDisplay x;
+	x.show();
+
+	return a.exec();
 }

@@ -8,16 +8,18 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = NxtDisplay
+TARGET = nxtDisplay
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    nxtdisplay.cpp
+SOURCES += main.cpp \
+    nxtDisplay.cpp
 
-HEADERS  += mainwindow.h \
-    nxtdisplay.h
+HEADERS  += \
+    nxtDisplay.h
 
-FORMS    += mainwindow.ui \
-    nxtdisplay.ui
+FORMS    += \
+    nxtDisplay.ui
+
+RESOURCES += \
+    images.qrc

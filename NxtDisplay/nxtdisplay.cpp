@@ -1,29 +1,34 @@
-#include "nxtdisplay.h"
+#include "nxtDisplay.h"
 #include "ui_nxtdisplay.h"
 
-NxtDisplay::NxtDisplay(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::NxtDisplay)
+NxtDisplay::NxtDisplay(QWidget *parent)
+	: QWidget(parent)
+	, mUI(new Ui::NxtDisplay)
 {
-    ui->setupUi(this);
+	mUI->setupUi(this);
 }
 
-NxtDisplay::~NxtDisplay(){
-    delete ui;
+NxtDisplay::~NxtDisplay()
+{
+	delete mUI;
 }
 
-void NxtDisplay::on_leftButton_clicked(){
-    emit left();
+void NxtDisplay::onLeftButtonClicked()
+{
+	emit left();
 }
 
-void NxtDisplay::on_centralButton_clicked(){
-    emit central();
+void NxtDisplay::onCentralButtonClicked()
+{
+	emit central();
 }
 
-void NxtDisplay::on_rightButton_clicked(){
-    emit right();
+void NxtDisplay::onRightButtonClicked()
+{
+	emit right();
 }
 
-void NxtDisplay::on_bottomButton_clicked(){
-    emit bottom();
+void NxtDisplay::onBottomButtonClicked()
+{
+	emit bottom();
 }

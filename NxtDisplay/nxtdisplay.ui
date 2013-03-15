@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>157</width>
-    <height>212</height>
+    <width>140</width>
+    <height>193</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,7 +17,36 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>NxtDisplay</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton#bottomButton{
+	border-image: url(:/buttons/bottomButton.bmp);
+}
+QPushButton#bottomButton:pressed{
+	border-image: url(:/buttons/bottomButtonPressed.bmp);
+}
+QPushButton#centralButton{
+	border-image: url(:/buttons/centralButton.bmp);
+}
+QPushButton#centralButton:pressed{
+	border-image: url(:/buttons/centralButtonPressed.bmp);
+}
+QPushButton#leftButton{
+	border-image: url(:/buttons/leftButton.bmp);
+}
+QPushButton#leftButton:pressed{
+	border-image: url(:/buttons/leftButtonPressed.bmp);
+}
+QPushButton#rightButton{
+	border-image: url(:/buttons/rightButton.bmp);
+}
+QPushButton#rightButton:pressed{
+	border-image: url(:/buttons/rightButtonPressed.bmp);
+}</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <property name="leftMargin">
@@ -45,8 +74,20 @@
          <verstretch>1</verstretch>
         </sizepolicy>
        </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="text">
         <string/>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -58,8 +99,23 @@
          <verstretch>1</verstretch>
         </sizepolicy>
        </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="text">
         <string/>
+       </property>
+       <property name="shortcut">
+        <string/>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -71,8 +127,23 @@
          <verstretch>1</verstretch>
         </sizepolicy>
        </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="text">
         <string/>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -84,6 +155,10 @@
          <verstretch>2</verstretch>
         </sizepolicy>
        </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(141, 141, 106);
+</string>
+       </property>
       </widget>
      </item>
      <item row="1" column="1">
@@ -94,8 +169,26 @@
          <verstretch>1</verstretch>
         </sizepolicy>
        </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="text">
         <string/>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
+       </property>
+       <property name="autoExclusive">
+        <bool>false</bool>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
