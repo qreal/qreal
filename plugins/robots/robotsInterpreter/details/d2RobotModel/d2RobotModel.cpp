@@ -272,7 +272,7 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 
 int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 {
-	// Must return 1023 on white and 0 on black
+	// Must return 1023 on white and 0 on black normalized to percents
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
 	QImage const image = printColorSensor(port);
@@ -290,7 +290,8 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 
 		sum += 4 * brightness; // 4 = max sensor value / max brightness value
 	}
-	return sum / n; // Average by whole region
+	qreal const rawValue = sum / n; // Average by whole region
+	return rawValue * 100 / maxLightSensorValur; // Normalizing to percents
 }
 
 void D2RobotModel::startInit()
