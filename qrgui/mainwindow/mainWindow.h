@@ -236,7 +236,6 @@ private slots:
 	void updatePaletteIcons();
 
 private:
-//	void deleteElementFromScene(QPersistentModelIndex const &index);
 	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
@@ -256,9 +255,8 @@ private:
 	QListWidget* createSaveListWidget();
 
 	virtual void closeEvent(QCloseEvent *event);
-	void deleteFromExplorer(bool isLogicalModel);
 
-	void deleteItems(QList<QGraphicsItem *> &itemsToDelete);
+	void deleteFromExplorer(bool isLogicalModel);
 	void deleteItems(IdList &itemsToDelete);
 
 	void keyPressEvent(QKeyEvent *event);

@@ -3,58 +3,87 @@
 using namespace qReal;
 using namespace qReal::commands;
 
-Controller::Controller()
+void Controller::setActiveDiagram(Id const &diagramId)
 {
-}
-
-Controller::~Controller()
-{
-	clear(mExecutedCommands);
-	clear(mUndoneCommands);
-}
-
-bool Controller::execute(commands::AbstractCommand *command)
-{
-	return execPrivate(command, true);
-}
-
-bool Controller::execPrivate(commands::AbstractCommand *command, bool clearStack)
-{
-	bool const result = (*command)();
-	if (result) {
-		mExecutedCommands.push(command);
-		if (clearStack) {
-			clear(mUndoneCommands);
-		}
+	if (diagramId != Id()) {
+		setActiveStack(mStacks[diagramId.toString()]);
+	} else {
+		setActiveStack(NULL);
 	}
-	return result;
 }
 
-bool Controller::undo()
+void Controller::execute(commands::AbstractCommand *command)
 {
-	if (mExecutedCommands.isEmpty()) {
-		return true;
+	UndoStack *activeStack = activeUndoStack();
+	if (activeStack) {
+		activeStack->execute(command);
 	}
-	AbstractCommand *lastCommand = mExecutedCommands.pop();
-	bool const result = lastCommand->undo();
-	if (result) {
-		mUndoneCommands.push(lastCommand);
-	}
-	return result;
 }
 
-bool Controller::redo()
+void Controller::execute(commands::AbstractCommand *command, Id const &diagramid)
 {
-	if (mUndoneCommands.isEmpty()) {
-		return true;
+	UndoStack *activeStack = mStacks[diagramid.toString()];
+	if (activeStack) {
+		activeStack->execute(command);
 	}
-	return execPrivate(mUndoneCommands.pop(), false);
 }
 
-void Controller::clear(QStack<AbstractCommand *> &stack)
+void Controller::diagramOpened(Id const &diagramId)
 {
-	foreach (AbstractCommand * const command, stack) {
-		delete command;
+	if (diagramId == Id()) {
+		return;
 	}
-	stack.clear();
+	UndoStack *stack = new UndoStack;
+	mStacks.insert(diagramId.toString(), stack);
+	addStack(stack);
+}
+
+void Controller::diagramClosed(Id const &diagramId)
+{
+	if (diagramId == Id() || !mStacks.keys().contains(diagramId.toString())) {
+		return;
+	}
+	UndoStack *stackToRemove = mStacks[diagramId.toString()];
+	mStacks.remove(diagramId.toString());
+	removeStack(stackToRemove);
+}
+
+QUndoStack *Controller::activeStack() const
+{
+	return QUndoGroup::activeStack();
+}
+
+void Controller::addStack(QUndoStack *stack)
+{
+	QUndoGroup::addStack(stack);
+}
+
+void Controller::setActiveStack(QUndoStack *stack)
+{
+	QUndoGroup::setActiveStack(stack);
+}
+
+QList<QUndoStack *> Controller::stacks() const
+{
+	return QUndoGroup::stacks();
+}
+
+QString Controller::undoText() const
+{
+	return QUndoGroup::undoText();
+}
+
+QString Controller::redoText() const
+{
+	return QUndoGroup::redoText();
+}
+
+void Controller::removeStack(QUndoStack *stack)
+{
+	QUndoGroup::removeStack(stack);
+}
+
+UndoStack *Controller::activeUndoStack() const
+{
+	return dynamic_cast<UndoStack *>(activeStack());
 }

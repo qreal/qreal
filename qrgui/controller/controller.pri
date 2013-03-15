@@ -5,6 +5,8 @@ HEADERS += \
 	controller/commands/createElementCommand.h \
 	controller/commands/createRemoveCommandImplementation.h \
 	controller/commands/removeElementCommand.h \
+    controller/commands/changePropertyCommand.h \
+    controller/undoStack.h
 
 SOURCES += \
 	controller/controller.cpp \
@@ -13,3 +15,5 @@ SOURCES += \
 	controller/commands/createElementCommand.cpp \
 	controller/commands/createRemoveCommandImplementation.cpp \
 	controller/commands/removeElementCommand.cpp \
+    controller/commands/changePropertyCommand.cpp \
+    controller/undoStack.cpp

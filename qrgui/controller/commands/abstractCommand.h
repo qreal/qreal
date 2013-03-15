@@ -1,20 +1,21 @@
 #pragma once
 
 #include <QtCore/QList>
+#include <QtGui/QUndoCommand>
 
 namespace qReal
 {
 namespace commands
 {
 
-class AbstractCommand
+class AbstractCommand : public QUndoCommand
 {
 public:
 	AbstractCommand();
 	virtual ~AbstractCommand();
 
-	bool operator()();
-	bool undo();
+	void redo();
+	void undo();
 
 	/// Adds @param command into a list of commands to be executed
 	/// before this command

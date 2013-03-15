@@ -19,26 +19,24 @@ AbstractCommand::~AbstractCommand()
 	}
 }
 
-bool AbstractCommand::operator()()
+void AbstractCommand::redo()
 {
 	if (mExecuted) {
-		return false;
+		return;
 	}
 	executeDirect(mPreActions);
 	mExecuted = execute();
 	executeDirect(mPostActions);
-	return mExecuted;
 }
 
-bool AbstractCommand::undo()
+void AbstractCommand::undo()
 {
 	if (!mExecuted) {
-		return false;
+		return;
 	}
 	executeReverse(mPostActions);
 	mExecuted = !restoreState();
 	executeReverse(mPreActions);
-	return !mExecuted;
 }
 
 void AbstractCommand::addPreAction(AbstractCommand * const command)
@@ -59,7 +57,7 @@ void AbstractCommand::executeDirect(QList<AbstractCommand *> const &list)
 {
 	QListIterator<AbstractCommand *> iterator(list);
 	while (iterator.hasNext()) {
-		(*iterator.next())();
+		iterator.next()->redo();
 	}
 }
 
