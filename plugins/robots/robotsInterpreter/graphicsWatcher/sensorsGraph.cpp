@@ -7,7 +7,6 @@ SensorsGraph::SensorsGraph(const utils::ExpressionsParser *parser, QWidget *pare
 	: QWidget(parent)
 	, mUi(new Ui::SensorsGraph)
 	, mParser(parser)
-	, mUpdateRate(50)
 	, mCurrentSlot(0)
 {
 	mUi->setupUi(this);
@@ -22,6 +21,23 @@ SensorsGraph::~SensorsGraph()
 {
 	delete mPlotFrame;
 	delete mUi;
+}
+
+void SensorsGraph::addTrackingObject(int const index, QString const inParserName, QString const displayName)
+{
+	TrackObject newObject(index, inParserName, displayName);
+	if (mWatchList.contains(newObject))
+		mWatchList.removeOne(newObject);
+
+	mWatchList.append(newObject);
+	watchListChanged();
+}
+
+void SensorsGraph::removeTracking(const int index)
+{
+	TrackObject temp(index);
+	mWatchList.removeOne(temp);
+	watchListChanged();
 }
 
 void SensorsGraph::initGui()
@@ -45,10 +61,10 @@ void SensorsGraph::setupToolElements()
 {
 	QSize iconSize(20, 20);
 
-	mStopButton.setIcon(QPixmap(":/icons/stop_btn.png"));
+	mStopButton.setIcon(QPixmap(":/icons/robots_stop.png"));
 	mStopButton.setIconSize(iconSize);
 
-	mStartButton.setIcon(QPixmap(":/icons/start_btn.png"));
+	mStartButton.setIcon(QPixmap(":/icons/robots_run.png"));
 	mStartButton.setIconSize(iconSize);
 
 	mResetButton.setIcon(QPixmap(":/icons/reset_btn.png"));
@@ -59,11 +75,6 @@ void SensorsGraph::setupToolElements()
 
 	mZoomOutButton.setIcon(QPixmap(":/icons/zoomOut_btn.png"));
 	mZoomOutButton.setIconSize(iconSize);
-
-	mSlotComboBox.addItem(tr("Sensor 1"), 0);
-	mSlotComboBox.addItem(tr("Sensor 2"), 1);
-	mSlotComboBox.addItem(tr("Sensor 3"), 2);
-	mSlotComboBox.addItem(tr("Sensor 4"), 3);
 }
 
 void SensorsGraph::makeConnections()
@@ -74,34 +85,48 @@ void SensorsGraph::makeConnections()
 	connect(&mZoomInButton, SIGNAL(clicked()), mPlotFrame, SLOT(zoomIn()));
 	connect(&mZoomOutButton, SIGNAL(clicked()), mPlotFrame, SLOT(zoomOut()));
 	connect(&mSlotComboBox, SIGNAL(currentIndexChanged(int)), mPlotFrame, SLOT(onSensorChange(int)));
-	connect(&mSlotComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setMainSensor(int)));
+	connect(&mSlotComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setCurrentSensor(int)));
 }
 
-void SensorsGraph::sensorsInput(int const port, qreal const value)
+void SensorsGraph::watchListChanged()
 {
-	if (mCurrentSlot == port)
+	mSlotComboBox.clear();
+	if (mWatchList.isEmpty())
+		return;
+
+	foreach (TrackObject const &item, mWatchList) {
+		mSlotComboBox.addItem(tr(item.displayName.toUtf8()), item.index);
+	}
+}
+
+void SensorsGraph::sensorsInput(int const slotIndex, qreal const value)
+{
+	if (mCurrentSlot == slotIndex)
 		mPlotFrame->setNextValue(value);
 }
 
-void SensorsGraph::setMainSensor(const int newSlotIndex)
+void SensorsGraph::setCurrentSensor(const int newSlotIndex)
 {
 	mCurrentSlot = newSlotIndex;
 }
 
 void SensorsGraph::startJob()
 {
+	if (mWatchList.isEmpty())
+		return;
 	mUpdateTimer.start(mUpdateRate);
 	mPlotFrame->startJob();
 }
 
 void SensorsGraph::updateValues()
 {
+	int const notExists = -1;
 	QMap<QString, QString> *variables = mParser->getVariablesForWatch();
 
-	int const sensorsCount = 4;
-	for (int i = 0; i < sensorsCount; i++) {
-		sensorsInput(i, variables->value(QString("Sensor") + QString::number(i + 1)).toDouble());
-	}
+	TrackObject currentObject(mCurrentSlot);
+	int index = mWatchList.indexOf(currentObject);
+	if (index != notExists)
+		sensorsInput(mCurrentSlot, variables->value(mWatchList.at(index).inParserName).toDouble());
 
 	delete variables;
 }

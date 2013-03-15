@@ -258,6 +258,11 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 	if (mConnected) {
 		mRobotModel->configureSensors(port1, port2, port3, port4);
 	}
+
+	mGraphicsWatch->addTrackingObject(0, QString("Sensor1"), portUserName(port1));
+	mGraphicsWatch->addTrackingObject(1, QString("Sensor2"), portUserName(port2));
+	mGraphicsWatch->addTrackingObject(2, QString("Sensor3"), portUserName(port3));
+	mGraphicsWatch->addTrackingObject(3, QString("Sensor4"), portUserName(port4));
 }
 
 void Interpreter::addThread(details::Thread * const thread)
@@ -368,6 +373,24 @@ void Interpreter::resetVariables()
 	responseSlot2(resetValue);
 	responseSlot3(resetValue);
 	responseSlot4(resetValue);
+}
+
+QString Interpreter::portUserName(sensorType::SensorTypeEnum const portType)
+{
+	int const sensorTypeCount = 11;
+	QString const portNames[sensorTypeCount] = {
+			tr("unused")
+			, tr("touchBoolean")
+			, tr("touchRaw")
+			, tr("sonar")
+			, tr("light")
+			, tr("colorFull")
+			, tr("colorRed")
+			, tr("colorGreen")
+			, tr("colorBlue")
+			, tr("colorNone")
+			, tr("encoder")};
+	return portNames[static_cast<int>(portType)];
 }
 
 void Interpreter::connectToRobot()

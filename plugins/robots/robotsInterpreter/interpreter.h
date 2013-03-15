@@ -97,6 +97,7 @@ private:
 	void addThread(details::Thread * const thread);
 	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
 	void resetVariables();
+	QString portUserName(sensorType::SensorTypeEnum const portType);
 
 	enum InterpreterState {
 		interpreting

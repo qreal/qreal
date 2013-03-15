@@ -2,7 +2,7 @@
 
 #include <QtCore/QList>
 #include <QtCore/QPointF>
-#include <c++/limits>
+#include <limits>
 
 namespace qReal
 {
@@ -45,7 +45,7 @@ public:
 	void checkPeaks();
 
 	//! get new position for KeyPoint
-	QPointF &latestPosition();
+    QPointF latestPosition() const;
 	qreal latestValue() const;
 
 	//! get points data to draw a plot

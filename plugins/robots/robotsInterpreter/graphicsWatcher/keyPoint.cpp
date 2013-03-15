@@ -4,7 +4,7 @@ using namespace qReal::interpreters::robots::sensorsGraph;
 
 KeyPoint::KeyPoint() : mVisualArea(QRectF(-10, -10, 10, 10))
 {
-	setCacheMode(DeviceCoordinateCache);
+	setCacheMode(NoCache);
 	setZValue(1000);
 }
 

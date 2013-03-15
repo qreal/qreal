@@ -75,7 +75,7 @@ void PointsQueueProcessor::clearData()
 	mPointsQueue.clear();
 }
 
-QPointF &PointsQueueProcessor::latestPosition()
+QPointF PointsQueueProcessor::latestPosition() const
 {
 	return mNextToDraw;
 }
@@ -96,6 +96,7 @@ void PointsQueueProcessor::checkPeaks()
 	qreal const oldMax = mMaxCurrent;
 
 	mMaxCurrent = std::numeric_limits<qreal>::min();
+	mMinCurrent = std::numeric_limits<qreal>::max();
 
 	for (int i = 0; i < mPointsQueue.size(); i++) {
 		if (pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax) > mMaxCurrent) {

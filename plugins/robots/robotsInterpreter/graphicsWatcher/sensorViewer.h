@@ -21,7 +21,7 @@ class SensorViewer : public QGraphicsView
 	Q_OBJECT
 
 public:
-	SensorViewer(QWidget *parent = 0);
+	explicit SensorViewer(QWidget *parent = 0);
 	~SensorViewer();
 
 public slots:
@@ -43,18 +43,21 @@ private slots:
 	void visualTimerEvent();
 
 private:
-	QGraphicsScene *scene;
-	QTimer visualTimer;
-	QList<QPointF> pointsQueue;
+	QGraphicsScene *mScene;
+	QTimer mVisualTimer;
 	KeyPoint *mainPoint;
-	PointsQueueProcessor *pointsDataProcessor;
+	PointsQueueProcessor *mPointsDataProcessor;
 	QBrush mPenBrush;
 
-	const int fpsDelay;
-	const int autoScaleInterval;
-	const int updateOutputInterval; //! current output value in bottom-right
-	const int stepSize;
-	const int zoomRate;
+	static int const fpsDelay = 50;
+	//! @variable autoScaleInterval time in milliseconds
+	static int const autoScaleInterval = 4000;
+	//! update interval of current value
+	static int const updateOutputInterval = 800;
+	//! shift in pixels each frame
+	static int const stepSize = 2;
+	//! zoom coefficent
+	static int const zoomRate = 2;
 	int mScaleCoefficient;
 	int mAutoScaleTimer;
 	int mUpdateCurrValueTimer;

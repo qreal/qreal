@@ -5,11 +5,6 @@ using namespace qReal::interpreters::robots::sensorsGraph;
 SensorViewer::SensorViewer(QWidget *parent)
 	: QGraphicsView(parent)
 	, mPenBrush(QBrush(Qt::yellow))
-	, fpsDelay(50)
-	, autoScaleInterval(4000)
-	, updateOutputInterval(1000)
-	, stepSize(2)
-	, zoomRate(2)
 	, mScaleCoefficient(0)
 	, mAutoScaleTimer(0)
 	, mUpdateCurrValueTimer(0)
@@ -17,83 +12,82 @@ SensorViewer::SensorViewer(QWidget *parent)
 {
 	initGraphicsOutput();
 
-	connect(&visualTimer, SIGNAL(timeout()), this, SLOT(visualTimerEvent()));
+	connect(&mVisualTimer, SIGNAL(timeout()), this, SLOT(visualTimerEvent()));
 }
 
 SensorViewer::~SensorViewer()
 {
-	scene->removeItem(mainPoint);
-	delete pointsDataProcessor;
+	mScene->removeItem(mainPoint);
+	delete mPointsDataProcessor;
 	delete mainPoint;
-	delete scene;
+	delete mScene;
 }
 
 void SensorViewer::initGraphicsOutput()
 {
-	scene = new QGraphicsScene(this);
-	scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-	scene->setSceneRect(-200, -160, 205, 160);
+	mScene = new QGraphicsScene(this);
+	mScene->setItemIndexMethod(QGraphicsScene::NoIndex);
+	mScene->setSceneRect(-200, -160, 205, 160);
 
-	setScene(scene);
+	setScene(mScene);
 	setRenderHint(QPainter::Antialiasing, false);
 	setDragMode(QGraphicsView::ScrollHandDrag);
 
-	//! This makes information on left side actual
+    // This makes information on left side actual
 	setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	setCacheMode(CacheNone);
-	setRenderHint(QPainter::Antialiasing);
 	setMinimumSize(205, 160);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	mainPoint = new KeyPoint;
-	scene->addItem(mainPoint);
+	mScene->addItem(mainPoint);
 
-	pointsDataProcessor = new PointsQueueProcessor(scene->sceneRect().height() - 20, scene->sceneRect().left());
+	mPointsDataProcessor = new PointsQueueProcessor(mScene->sceneRect().height() - 20, mScene->sceneRect().left());
 }
 
 void SensorViewer::startJob()
 {
-	visualTimer.start(fpsDelay);
+	mVisualTimer.start(fpsDelay);
 }
 
 void SensorViewer::stopJob()
 {
-	visualTimer.stop();
+	mVisualTimer.stop();
 }
 
 void SensorViewer::clear()
 {
-	pointsDataProcessor->clearData();
+	mPointsDataProcessor->clearData();
 
-	foreach (QGraphicsItem *item, scene->items()) {
+	foreach (QGraphicsItem *item, mScene->items()) {
 		QGraphicsLineItem *curLine = qgraphicsitem_cast<QGraphicsLineItem *>(item);
 		if (curLine == NULL) {
 			continue;
 		}
-		scene->removeItem(curLine);
+		mScene->removeItem(curLine);
 	}
 
-	//! why matrix().reset() doesnt work ?
+	// why matrix().reset() doesnt work ?
 	QMatrix defaultMatrix ;
 	setMatrix(defaultMatrix);
 }
 
 void SensorViewer::setNextValue(qreal const newValue)
 {
-	pointsDataProcessor->addNewValue(newValue);
+	mPointsDataProcessor->addNewValue(newValue);
 }
 
 void SensorViewer::drawNextFrame()
 {
-	mainPoint->setPos(pointsDataProcessor->latestPosition());
+	mainPoint->setPos(mPointsDataProcessor->latestPosition());
 
-	//! shifting lines left
-	pointsDataProcessor->makeShiftLeft(stepSize);
+	// shifting lines left
+	mPointsDataProcessor->makeShiftLeft(stepSize);
 
-	foreach (QGraphicsItem *item, scene->items()) {
+	foreach (QGraphicsItem *item, mScene->items()) {
 		QGraphicsLineItem *curLine = qgraphicsitem_cast<QGraphicsLineItem *>(item);
 		if (curLine == NULL) {
 			continue;
@@ -103,10 +97,10 @@ void SensorViewer::drawNextFrame()
 
 	QPen regularPen = QPen(mPenBrush, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 	QLineF quantOfGraph;
-	for (int i = 0; i < pointsDataProcessor->pointsBase()->size() - 1; i++) {
-		quantOfGraph = QLineF(pointsDataProcessor->pointsBase()->at(i)
-				, pointsDataProcessor->pointsBase()->at(i + 1));
-		scene->addLine(quantOfGraph, regularPen);
+	for (int i = 0; i < mPointsDataProcessor->pointsBase()->size() - 1; i++) {
+		quantOfGraph = QLineF(mPointsDataProcessor->pointsBase()->at(i)
+				, mPointsDataProcessor->pointsBase()->at(i + 1));
+		mScene->addLine(quantOfGraph, regularPen);
 	}
 }
 
@@ -115,32 +109,33 @@ void SensorViewer::visualTimerEvent()
 	drawNextFrame();
 	if (++mAutoScaleTimer * fpsDelay == autoScaleInterval) {
 		mAutoScaleTimer = 0;
-		pointsDataProcessor->checkPeaks();
+		mPointsDataProcessor->checkPeaks();
 	}
 	if (++mUpdateCurrValueTimer * fpsDelay == updateOutputInterval) {
 		mUpdateCurrValueTimer = 0;
-		mOutputValue = pointsDataProcessor->latestValue();
+		mOutputValue = mPointsDataProcessor->latestValue();
 	}
 }
 
 void SensorViewer::drawBackground(QPainter *painter, const QRectF &rect)
 {
+	int const digAfterDot = 1;
 	QRectF sceneRect = this->sceneRect();
 
-	//! Fill section
+	// Fill section
 	QLinearGradient gradient(sceneRect.bottomLeft(), sceneRect.topRight());
 	gradient.setColorAt(0, Qt::black);
 	gradient.setColorAt(1, Qt::darkGreen);
-	painter->fillRect(scene->sceneRect(), gradient);
+	painter->fillRect(mScene->sceneRect(), gradient);
 	painter->setBrush(Qt::NoBrush);
 	painter->setBrush(Qt::CrossPattern);
-	painter->drawRect(scene->sceneRect());
+	painter->drawRect(mScene->sceneRect());
 
-	//! Text display section
+	// Text display section
 	QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4, 50, 50);
-	QString maxDisplay(QString::number(pointsDataProcessor->maxLimit()));
-	QString minDisplay(QString::number(pointsDataProcessor->minLimit()));
-	QString currentDisplay(QString::number(mOutputValue));
+	QString maxDisplay(QString::number(mPointsDataProcessor->maxLimit(), 'f', digAfterDot));
+	QString minDisplay(QString::number(mPointsDataProcessor->minLimit(), 'f', digAfterDot));
+	QString currentDisplay(QString::number(mOutputValue, 'f', digAfterDot));
 
 	QFont font = painter->font();
 	font.setBold(true);
@@ -149,14 +144,15 @@ void SensorViewer::drawBackground(QPainter *painter, const QRectF &rect)
 	painter->setPen(Qt::lightGray);
 	painter->drawText(textRect.translated(2, 2), maxDisplay);
 	painter->drawText(textRect.translated(2, sceneRect.height() - 20), minDisplay);
-	painter->drawText(textRect.translated(sceneRect.width() - 30, sceneRect.height() - 20), currentDisplay);
+	painter->drawText(textRect.translated(sceneRect.width() - 35, sceneRect.height() - 20), currentDisplay);
 	painter->setPen(Qt::black);
 	Q_UNUSED(rect);
 }
 
 void SensorViewer::zoomIn()
 {
-	if (mScaleCoefficient > 5) {
+	int const maxZoomDegree = 5;
+	if (mScaleCoefficient > maxZoomDegree) {
 		return;
 	}
 	QMatrix outputMatrix = matrix();
@@ -167,7 +163,8 @@ void SensorViewer::zoomIn()
 
 void SensorViewer::zoomOut()
 {
-	if (mScaleCoefficient == 0) {
+	int const noZoom = 0;
+	if (mScaleCoefficient == noZoom) {
 		return;
 	}
 	QMatrix outputMatrix = matrix();
