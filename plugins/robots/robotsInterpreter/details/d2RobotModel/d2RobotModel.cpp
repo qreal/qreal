@@ -22,7 +22,7 @@ unsigned const touchSensorNotPressedSignal = 0;
 
 qreal const spoilColorDispersion = 2.0;
 qreal const spoilLightDispersion = 1.0;
-qreal const spoilSonarDispersion = 1.5;
+qreal const spoilSonarDispersion = 0.025;
 qreal const percentSaltPepperNoise = 20.0;
 
 D2RobotModel::D2RobotModel(QObject *parent)
@@ -171,7 +171,8 @@ int D2RobotModel::spoilSonarReading(int const distance) const
 					mNoiseGen.getApproximationLevel()
 					, spoilSonarDispersion
 				);
-	int res = round(distance + ran);
+
+	int res = round(distance * (1 + ran));
 
 	if (res < 0) {
 		res = 0;
