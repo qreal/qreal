@@ -127,6 +127,8 @@ QString EditorGenerator::calculateEditorPath(QString const &pathToFile, QString 
 	if (pluginDir.absoluteFilePath().count() > 2 && pluginDir.absoluteFilePath()[1] == ':') {
 		// Remove drive letter on Windows.
 		result += pluginDir.absoluteFilePath().remove(0, 2);
+	} else {
+		result += pluginDir.absoluteFilePath();
 	}
 
 	return result;
