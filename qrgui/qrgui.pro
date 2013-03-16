@@ -37,6 +37,7 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 }
 
 LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
+LIBS += -L../bin/thirdparty -lqscintilla2
 
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
