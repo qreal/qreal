@@ -12,14 +12,14 @@ LayoutHandler::LayoutHandler(QGraphicsWidget *layoutHost)
 	, mItem(layoutHost)
 	, mEnabled(false)
 	, mLayoutWrapper(NULL)
-	, mWrapperLeftMargin(0)
-	, mWrapperTopMargin(0)
-	, mWrapperRightMargin(0)
-	, mWrapperBottomMargin(0)
-	, mLeftMargin(0)
-	, mTopMargin(0)
-	, mRightMargin(0)
-	, mBottomMargin(0)
+	, mWrapperLeftMargin(DEFAULT_LAYOUT_MARGIN)
+	, mWrapperTopMargin(DEFAULT_LAYOUT_MARGIN)
+	, mWrapperRightMargin(DEFAULT_LAYOUT_MARGIN)
+	, mWrapperBottomMargin(DEFAULT_LAYOUT_MARGIN)
+	, mLeftMargin(DEFAULT_LAYOUT_MARGIN)
+	, mTopMargin(DEFAULT_LAYOUT_MARGIN)
+	, mRightMargin(DEFAULT_LAYOUT_MARGIN)
+	, mBottomMargin(DEFAULT_LAYOUT_MARGIN)
 {
 	initPlaceholder();
 }
@@ -80,8 +80,8 @@ void LayoutHandler::handleDropEvent(QGraphicsLayoutItem *draggedItem
 	if (!mEnabled) {
 		return;
 	}
-	addItemTo(draggedItem, position);
 	erasePlaceholder();
+	addItemTo(draggedItem, position);
 	synchronizeMinimalSizes();
 }
 

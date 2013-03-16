@@ -4,6 +4,7 @@
 
 #include "layoutTypes.h"
 #include "linearLayoutHandler.h"
+#include "gridLayoutHandler.h"
 #include "../../utilsDeclSpec.h"
 
 namespace qReal
@@ -47,7 +48,7 @@ private:
 	LayoutType mCurrentType;
 	LinearLayoutHandler *mVerticalHandler;
 	LinearLayoutHandler *mHorizontalHandler;
-	LayoutHandler *mGridHandler;
+	GridLayoutHandler *mGridHandler;
 
 	bool mHasPreferences;
 	QSizePolicy::Policy mVerticalPolicy;

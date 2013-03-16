@@ -37,9 +37,13 @@ void NodeElementLayoutFactory::configure(ElementImpl *const impl)
 	mForestallingSize = impl->sizeOfForestalling();
 	int const outerMargin = impl->sizeOfForestalling();
 	int const innerMargin = impl->sizeOfChildrenForestalling();
-	setOuterMargin(outerMargin, upperMargin(outerMargin)
-		, outerMargin, outerMargin);
-	setLayoutMargin(0, innerMargin/2, 0, innerMargin/2);
+	if (outerMargin) {
+		setOuterMargin(outerMargin, upperMargin(outerMargin)
+			, outerMargin, outerMargin);
+	}
+	if (innerMargin) {
+		setLayoutMargin(0, innerMargin/2, 0, innerMargin/2);
+	}
 	setPropertyValue(impl->layout());
 }
 

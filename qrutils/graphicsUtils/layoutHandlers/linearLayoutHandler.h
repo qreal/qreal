@@ -10,7 +10,7 @@ namespace qReal
 namespace layouts
 {
 
-/// Layout manager wrapped for linear layout
+/// Layout manager wrapper for linear layout
 class QRUTILS_EXPORT LinearLayoutHandler : public LayoutHandler
 {
 	Q_OBJECT
@@ -27,9 +27,9 @@ protected:
 	virtual void placeChildrenWithoutLayout();
 
 private:
-	int cellToAdd(QPointF const &position);
+	int cellToAdd(QPointF const &position) const;
 	int actualDimension(QPointF const &point) const;
-	int indexOf(QGraphicsLayoutItem * const item);
+	int indexOf(QGraphicsLayoutItem * const item) const;
 
 	Qt::Orientation mOrientation;
 	QGraphicsLinearLayout *mLayout;

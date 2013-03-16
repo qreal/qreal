@@ -36,7 +36,7 @@ QGraphicsLayout *LinearLayoutHandler::generateLayout()
 	return mLayout;
 }
 
-int LinearLayoutHandler::cellToAdd(QPointF const &position)
+int LinearLayoutHandler::cellToAdd(QPointF const &position) const
 {
 	int const cellsCount = mLayout->count();
 	qreal const searchValue = actualDimension(position);
@@ -60,7 +60,7 @@ int LinearLayoutHandler::actualDimension(QPointF const &point) const
 	return mOrientation == Qt::Horizontal ? point.x() : point.y();
 }
 
-int LinearLayoutHandler::indexOf(QGraphicsLayoutItem * const item)
+int LinearLayoutHandler::indexOf(QGraphicsLayoutItem * const item) const
 {
 	int const count = mLayout->count();
 	for (int i = 0; i < count; ++i) {

@@ -11,6 +11,7 @@ namespace layouts
 {
 
 QSizeF const DEFAULT_PLACEHOLDER_SIZE = QSizeF(50, 50);
+int const DEFAULT_LAYOUT_MARGIN = 5;
 
 /// Base class for all NodeElement layout managers
 class QRUTILS_EXPORT LayoutHandler : public QObject

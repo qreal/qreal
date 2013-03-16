@@ -7,7 +7,7 @@ LayoutHandlerFactory::LayoutHandlerFactory(QGraphicsWidget *layoutHost)
 	, mCurrentType(none)
 	, mVerticalHandler(new LinearLayoutHandler(Qt::Vertical, layoutHost))
 	, mHorizontalHandler(new LinearLayoutHandler(Qt::Horizontal, layoutHost))
-	, mGridHandler(NULL)
+	, mGridHandler(new GridLayoutHandler(layoutHost))
 	, mHasPreferences(false)
 {
 }
@@ -110,12 +110,12 @@ void LayoutHandlerFactory::setOuterMargin(int left, int top, int right, int bott
 {
 	mVerticalHandler->setOuterMargin(left, top, right, bottom);
 	mHorizontalHandler->setOuterMargin(left, top, right, bottom);
-//	mGridHandler->setOuterMargin(left, top, right, bottom);
+	mGridHandler->setOuterMargin(left, top, right, bottom);
 }
 
 void LayoutHandlerFactory::setLayoutMargin(int left, int top, int right, int bottom)
 {
 	mVerticalHandler->setLayoutMargin(left, top, right, bottom);
 	mHorizontalHandler->setLayoutMargin(left, top, right, bottom);
-//	mGridHandler->setLayoutMargin(left, top, right, bottom);
+	mGridHandler->setLayoutMargin(left, top, right, bottom);
 }
