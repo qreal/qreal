@@ -90,7 +90,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			type = QVariant::Bool;
 		} else if (typeName == "string") {
 			type = QVariant::String;
-		} else if (typeName == "directory_path") {
+		} else if (typeName == "directorypath") {
 			isButton = true;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
@@ -158,7 +158,7 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 		mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
 	} else {
 		QString const typeName = mModel->typeName(index).toLower();
-		if (typeName == "directory_path") {
+		if (typeName == "directorypath") {
 			QString startPath;
 			if (propertyValue.isEmpty()) {
 				startPath = qApp->applicationDirPath();
