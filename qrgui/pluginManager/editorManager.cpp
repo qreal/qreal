@@ -98,6 +98,7 @@ bool EditorManager::unloadPlugin(const QString &pluginName)
 		mPluginFileName.remove(pluginName);
 		mPluginsLoaded.removeAll(pluginName);
 		if (!loader->unload()) {
+			qDebug() << "Plugin unloading failed: " << loader->errorString();
 			delete loader;
 			return false;
 		}

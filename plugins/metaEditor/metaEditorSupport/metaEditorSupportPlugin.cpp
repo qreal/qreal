@@ -284,9 +284,14 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 		}
 	}
 
-	if (progress->value() != 100) {
+	if (progress->value() == 20) {
+		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot qmake new editor"));
+	} else if (progress->value() == 60) {
+		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot make new editor"));
+	} else if (progress->value() == 80) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new editor"));
 	}
+
 	progress->setValue(100);
 	progress->close();
 	delete progress;
