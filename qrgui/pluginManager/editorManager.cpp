@@ -83,7 +83,7 @@ bool EditorManager::loadPlugin(const QString &pluginName)
 		}
 	}
 
-	qDebug() << "Plugin loading failed: " << loader->errorString();
+	QMessageBox::warning(NULL, tr("error"), tr("Plugin loading failed: ") + loader->errorString());
 	loader->unload();
 	delete loader;
 	return false;
@@ -98,7 +98,7 @@ bool EditorManager::unloadPlugin(const QString &pluginName)
 		mPluginFileName.remove(pluginName);
 		mPluginsLoaded.removeAll(pluginName);
 		if (!loader->unload()) {
-			qDebug() << "Plugin unloading failed: " << loader->errorString();
+			QMessageBox::warning(NULL, tr("error"), tr("Plugin unloading failed: ") + loader->errorString());
 			delete loader;
 			return false;
 		}
