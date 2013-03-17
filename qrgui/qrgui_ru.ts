@@ -558,7 +558,7 @@
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="512"/>
+        <location filename="mainwindow/mainWindow.ui" line="524"/>
         <source>Mouse gestures</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -602,102 +602,102 @@
         <translation>Вывод</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="480"/>
+        <location filename="mainwindow/mainWindow.ui" line="488"/>
         <source>Ctrl+Shift+S</source>
         <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="556"/>
+        <location filename="mainwindow/mainWindow.ui" line="568"/>
         <source>Generate and build</source>
         <translation>Сгенерировать и собрать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="559"/>
+        <location filename="mainwindow/mainWindow.ui" line="571"/>
         <source>Ctrl+F9</source>
         <translation>Ctrl+F9</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="564"/>
-        <location filename="mainwindow/mainWindow.ui" line="567"/>
+        <location filename="mainwindow/mainWindow.ui" line="576"/>
+        <location filename="mainwindow/mainWindow.ui" line="579"/>
         <source>Set breakpoints</source>
         <translation>Точки останова</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="570"/>
+        <location filename="mainwindow/mainWindow.ui" line="582"/>
         <source>Ctrl+F3</source>
         <translation>Ctrl+F3</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="575"/>
+        <location filename="mainwindow/mainWindow.ui" line="587"/>
         <source>Cont</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="578"/>
+        <location filename="mainwindow/mainWindow.ui" line="590"/>
         <source>Ctrl+F6</source>
         <translation>Ctrl+F6</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="583"/>
+        <location filename="mainwindow/mainWindow.ui" line="595"/>
         <source>Configure</source>
         <translation>Сконфигурировать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="586"/>
+        <location filename="mainwindow/mainWindow.ui" line="598"/>
         <source>Ctrl+F2</source>
         <translation>Ctrl+F2</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="618"/>
+        <location filename="mainwindow/mainWindow.ui" line="634"/>
         <source>Import...</source>
         <translation>Импортировать...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="621"/>
+        <location filename="mainwindow/mainWindow.ui" line="637"/>
         <source>Import QReal project into current.</source>
         <translation>Импортировать проект QReal в текущий</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="636"/>
+        <location filename="mainwindow/mainWindow.ui" line="652"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="641"/>
+        <location filename="mainwindow/mainWindow.ui" line="657"/>
         <source>Find and replace</source>
         <translation>Найти и заменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="646"/>
-        <location filename="mainwindow/mainWindow.ui" line="649"/>
+        <location filename="mainwindow/mainWindow.ui" line="662"/>
+        <location filename="mainwindow/mainWindow.ui" line="665"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="652"/>
+        <location filename="mainwindow/mainWindow.ui" line="668"/>
         <source>Ctrl+C</source>
         <translation>Ctrl+C</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="657"/>
-        <location filename="mainwindow/mainWindow.ui" line="660"/>
+        <location filename="mainwindow/mainWindow.ui" line="673"/>
+        <location filename="mainwindow/mainWindow.ui" line="676"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="663"/>
+        <location filename="mainwindow/mainWindow.ui" line="679"/>
         <source>Ctrl+V</source>
         <translation>Ctrl+V</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="668"/>
-        <location filename="mainwindow/mainWindow.ui" line="671"/>
+        <location filename="mainwindow/mainWindow.ui" line="684"/>
+        <location filename="mainwindow/mainWindow.ui" line="687"/>
         <source>Paste only graphical copy</source>
         <oldsource>Paste copy of logical element</oldsource>
         <translation>Вставить только графическую копию</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="674"/>
+        <location filename="mainwindow/mainWindow.ui" line="690"/>
         <source>Ctrl+Shift+V</source>
         <translation>Ctrl+Shift+V</translation>
     </message>
@@ -706,12 +706,12 @@
         <translation type="obsolete">Последние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="626"/>
+        <location filename="mainwindow/mainWindow.ui" line="642"/>
         <source>Save diagram as a picture...</source>
         <translation>Сохранить диаграмму как картинку...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="631"/>
+        <location filename="mainwindow/mainWindow.ui" line="647"/>
         <source>Close project</source>
         <translation>Закрыть проект</translation>
     </message>
@@ -858,7 +858,7 @@
         <translation type="obsolete">Генерировать в Java</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="472"/>
+        <location filename="mainwindow/mainWindow.ui" line="476"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
@@ -871,17 +871,17 @@
         <translation type="obsolete">Генерировать в Hascol</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="477"/>
+        <location filename="mainwindow/mainWindow.ui" line="485"/>
         <source>Save as...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="485"/>
+        <location filename="mainwindow/mainWindow.ui" line="497"/>
         <source>Open...</source>
         <translation>Открыть...</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="488"/>
+        <location filename="mainwindow/mainWindow.ui" line="500"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
@@ -898,7 +898,7 @@
         <translation type="obsolete">Импортировать библиотеки Java</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="499"/>
+        <location filename="mainwindow/mainWindow.ui" line="511"/>
         <source>Show grid</source>
         <translation>Показать сетку</translation>
     </message>
@@ -915,7 +915,7 @@
         <translation type="obsolete">Импортировать xml с метамоделью</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="507"/>
+        <location filename="mainwindow/mainWindow.ui" line="519"/>
         <source>Switch on grid</source>
         <translation>Включить сетку</translation>
     </message>
@@ -928,7 +928,7 @@
         <translation type="obsolete">Показать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="517"/>
+        <location filename="mainwindow/mainWindow.ui" line="529"/>
         <source>Preferences...</source>
         <translation>Настройки...</translation>
     </message>
@@ -941,22 +941,22 @@
         <translation type="obsolete">Генерировать редактор (qrmc)</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="528"/>
+        <location filename="mainwindow/mainWindow.ui" line="540"/>
         <source>Switch on alignment</source>
         <translation>Включить направляющие</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="539"/>
+        <location filename="mainwindow/mainWindow.ui" line="551"/>
         <source>Show alignment</source>
         <translation>Показать направляющие</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="544"/>
+        <location filename="mainwindow/mainWindow.ui" line="556"/>
         <source>Debug</source>
         <translation>Отладка</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="547"/>
+        <location filename="mainwindow/mainWindow.ui" line="559"/>
         <source>F9</source>
         <translation>F9</translation>
     </message>
@@ -993,12 +993,12 @@
         <translation type="obsolete">Отключить робота</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="591"/>
+        <location filename="mainwindow/mainWindow.ui" line="603"/>
         <source>New Diagram</source>
         <translation>Новая диаграмма</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="594"/>
+        <location filename="mainwindow/mainWindow.ui" line="606"/>
         <source>Create new diagram in a current model</source>
         <translation>Создать новую диаграмму в текущей модели</translation>
     </message>
@@ -1015,12 +1015,12 @@
         <translation type="obsolete">Ctrl+Shift+F12</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="610"/>
+        <location filename="mainwindow/mainWindow.ui" line="626"/>
         <source>New Project</source>
         <translation>Новый проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="613"/>
+        <location filename="mainwindow/mainWindow.ui" line="629"/>
         <source>Ctrl+Shift+N</source>
         <translation>Ctrl+Shift+N</translation>
     </message>
@@ -1061,13 +1061,13 @@
         <translation type="obsolete">Ctrl+F10</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="599"/>
-        <location filename="mainwindow/mainWindow.ui" line="602"/>
+        <location filename="mainwindow/mainWindow.ui" line="615"/>
+        <location filename="mainwindow/mainWindow.ui" line="618"/>
         <source>Fullscreen Mode</source>
         <translation>Полный экран</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.ui" line="605"/>
+        <location filename="mainwindow/mainWindow.ui" line="621"/>
         <source>Ctrl+Shift+F</source>
         <translation>Ctrl+Shift+F</translation>
     </message>
@@ -1850,6 +1850,14 @@
     <message>
         <source>Metatype</source>
         <translation type="obsolete">Метатип</translation>
+    </message>
+</context>
+<context>
+    <name>PropertyEditorView</name>
+    <message>
+        <location filename="view/propertyEditorView.cpp" line="168"/>
+        <source>Specify directory:</source>
+        <translation>Выберите каталог:</translation>
     </message>
 </context>
 <context>
@@ -2983,6 +2991,25 @@
     <message>
         <source>Specify COM port manually</source>
         <translation type="obsolete">Указать COM-порт вручную</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::EditorManager</name>
+    <message>
+        <location filename="pluginManager/editorManager.cpp" line="86"/>
+        <location filename="pluginManager/editorManager.cpp" line="101"/>
+        <source>error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="pluginManager/editorManager.cpp" line="86"/>
+        <source>Plugin loading failed: </source>
+        <translation>Загрузка плагина завершилась ошибкой: </translation>
+    </message>
+    <message>
+        <location filename="pluginManager/editorManager.cpp" line="101"/>
+        <source>Plugin unloading failed: </source>
+        <translation>Выгрузка плагина завершилась ошибкой: </translation>
     </message>
 </context>
 <context>
