@@ -9,7 +9,7 @@
 			<groupNode type = "DragonActionNode" name = "end" xPosition = "0" yPosition = "100"> </groupNode>
 			<groupEdge type = "DragonFlow" from = "start" to = "end"> </groupEdge>
 		</group>
-		<group name = "atom2">
+		<group name = "atom2" inNode = "all" outNode = "all">
 			<groupNode type = "DragonActionNode" name = "all" xPosition = "0" yPosition = "0"> </groupNode>
 		</group>
         </groups>	 
