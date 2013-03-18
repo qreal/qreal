@@ -253,15 +253,30 @@ bool ProxyEditorManager::isRootDiagramNode(Id const &id) const
 	return mProxyManager->isRootDiagramNode(id);
 }
 
-void ProxyEditorManager::addNodeElement(Id const &diagram, QString const &name) const
+void ProxyEditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
 {
-	mProxyManager->addNodeElement(diagram, name);
+	mProxyManager->addNodeElement(diagram, name, isRootDiagramNode);
 }
 
 void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
 					QString const &lineType, QString const &beginType, QString const &endType) const
 {
 	mProxyManager->addEdgeElement(diagram, name, labelText, labelType, lineType, beginType, endType);
+}
+
+QPair<Id, Id> ProxyEditorManager::createEditorAndDiagram(QString const &name) const
+{
+	return mProxyManager->createEditorAndDiagram(name);
+}
+
+void ProxyEditorManager::saveMetamodel(QString const &newMetamodelFileName)
+{
+	mProxyManager->saveMetamodel(newMetamodelFileName);
+}
+
+QString ProxyEditorManager::saveMetamodelFilePath() const
+{
+	return mProxyManager->saveMetamodelFilePath();
 }
 
 //unsupported methods:

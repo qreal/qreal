@@ -245,6 +245,7 @@ void ProjectManager::save()
 	// Do not change the method to saveAll - in the current implementation, an empty project in the repository is
 	// created to initialize the file name with an empty string, which allows the internal state of the file
 	// name = "" Attempt to save the project in this case result in trash
+	mMainWindow->proxyManager()->saveMetamodel("");
 	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePath);
 	refreshApplicationStateAfterSave();
 }
@@ -263,7 +264,8 @@ void ProjectManager::saveGenCode(QString const &text)
 
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
-	if (mSaveFilePath == SettingsManager::value("AutosaveFileName").toString()) {
+	if (mSaveFilePath.contains(SettingsManager::value("AutosaveFileName").toString(), Qt::CaseSensitive)
+		|| mSaveFilePath == mMainWindow->proxyManager()->saveMetamodelFilePath()) {
 		return suggestToSaveAs();
 	}
 	save();
@@ -272,6 +274,13 @@ bool ProjectManager::saveOrSuggestToSaveAs()
 
 bool ProjectManager::suggestToSaveAs()
 {
+	if (mMainWindow->proxyManager()->isInterpretationMode()) {
+		QString newMetamodelFileName = getSaveFileName(tr("Select file to save current metamodel to"));
+		if (newMetamodelFileName.isEmpty()) {
+			return false;
+		}
+		mMainWindow->proxyManager()->saveMetamodel(newMetamodelFileName);
+	}
 	return saveAs(getSaveFileName(tr("Select file to save current model to")));
 }
 

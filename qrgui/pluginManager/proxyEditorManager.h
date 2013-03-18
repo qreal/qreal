@@ -84,9 +84,12 @@ public:
 	void updateShape(Id const &id, QString const &graphics) const;
 	void deleteElement(MainWindow *mainWindow, Id const &id) const;
 	bool isRootDiagramNode(Id const &id) const;
-	void addNodeElement(Id const &diagram, QString const &name) const;
+	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const;
 	void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
 						QString const &lineType, QString const &beginType, QString const &endType) const;
+	QPair<Id, Id> createEditorAndDiagram(QString const &name) const;
+	void saveMetamodel(QString const &newMetamodelFileName);
+	QString saveMetamodelFilePath() const;
 	//unsupported methods:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;

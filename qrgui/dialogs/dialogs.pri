@@ -21,7 +21,8 @@ HEADERS += \
 	dialogs/propertiesDialog.h \
 	dialogs/editPropertiesDialog.h \
 	dialogs/chooseTypeDialog.h \
-	dialogs/edgePropertiesDialog.h
+	dialogs/edgePropertiesDialog.h \
+	dialogs/addNodeDialog.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -45,7 +46,8 @@ SOURCES += \
 	dialogs/propertiesDialog.cpp \
 	dialogs/editPropertiesDialog.cpp \
 	dialogs/chooseTypeDialog.cpp \
-	dialogs/edgePropertiesDialog.cpp
+	dialogs/edgePropertiesDialog.cpp \
+	dialogs/addNodeDialog.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \
@@ -60,4 +62,5 @@ FORMS += \
 	dialogs/propertiesDialog.ui \
 	dialogs/editPropertiesDialog.ui \
 	dialogs/chooseTypeDialog.ui \
-	dialogs/edgePropertiesDialog.ui
+	dialogs/edgePropertiesDialog.ui \
+	dialogs/addNodeDialog.ui

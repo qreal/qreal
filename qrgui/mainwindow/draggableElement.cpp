@@ -86,7 +86,7 @@ void DraggableElement::deleteElementPaletteActionTriggered()
 
 void DraggableElement::deleteElement()
 {
-	mMainWindow->clearSelectionOnTab(mDeletedElementId);
+	mMainWindow->clearSelectionOnTabs();
 	if (mIsRootDiagramNode) {
 		mMainWindow->closeDiagramTab(mDeletedElementId);
 	}

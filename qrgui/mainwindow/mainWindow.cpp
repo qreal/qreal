@@ -301,15 +301,19 @@ void MainWindow::closeDiagramTab(Id const &id)
 	}
 }
 
-void MainWindow::clearSelectionOnTab(Id const &id)
+void MainWindow::clearSelectionOnTabs()
 {
-	IdList const grIds = mModels->graphicalRepoApi().graphicalElements(id.type());
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
-		if (tab != NULL && static_cast<EditorViewScene *>(tab->mvIface()->scene())->getElem(grIds[0]) != NULL) {
+		if (tab != NULL) {
 			tab->scene()->clearSelection();
 		}
 	}
+}
+
+void MainWindow::addEditorElementsToPalette(const Id &editor, const Id &diagram)
+{
+	mUi->paletteTree->addEditorElements(mEditorManagerProxy, Id(editor), diagram);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)

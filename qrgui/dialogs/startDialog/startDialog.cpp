@@ -31,10 +31,15 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 	QCommandLinkButton *quitLink = new QCommandLinkButton(tr("&Quit QReal"));
 	QCommandLinkButton *openLink = new QCommandLinkButton(tr("&Open existing project"));
 	QCommandLinkButton *openIDLink = new QCommandLinkButton(tr("&Open interpreted diagram"));
+	QCommandLinkButton *createIDLink = new QCommandLinkButton(tr("&Create interpreted diagram"));
 
 	QHBoxLayout *openIDLinkLayout = new QHBoxLayout;
 	openIDLinkLayout->addWidget(openIDLink);
 	mInterpreterButton = openIDLink;
+
+	QHBoxLayout *createIDLinkLayout = new QHBoxLayout;
+	createIDLinkLayout->addWidget(createIDLink);
+	mCreateInterpreterButton = createIDLink;
 
 	QHBoxLayout *commandLinksLayout = new QHBoxLayout;
 	commandLinksLayout->addWidget(openLink);
@@ -43,6 +48,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(tabWidget);
 	mainLayout->addLayout(openIDLinkLayout);
+	mainLayout->addLayout(createIDLinkLayout);
 	mainLayout->addLayout(commandLinksLayout);
 
 	setLayout(mainLayout);
@@ -51,6 +57,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 	connect(openLink, SIGNAL(clicked()), this, SLOT(openExistingProject()));
 	connect(quitLink, SIGNAL(clicked()), this, SLOT(exitApp()));
 	connect(openIDLink, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
+	connect(createIDLink, SIGNAL(clicked()), this, SLOT(createInterpretedDiagram()));
 	connect(recentProjects, SIGNAL(userDataSelected(QString)), this, SLOT(openRecentProject(QString)));
 	connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
 }
@@ -58,6 +65,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 void StartDialog::setVisibleForInterpreterButton(bool const value)
 {
 	mInterpreterButton->setVisible(value);
+	mCreateInterpreterButton->setVisible(value);
 }
 
 void StartDialog::openRecentProject(QString const &fileName)
@@ -111,6 +119,29 @@ void StartDialog::openInterpretedDiagram()
 			mMainWindow->loadMetamodel();
 			mMainWindow->createDiagram(interpreterIdString);
 		}
+		forceClose();
+	} else {
+		show();
+		editorManagerProxy->setProxyManager(new EditorManager());
+	}
+}
+
+void StartDialog::createInterpretedDiagram()
+{
+	hide();
+	ProxyEditorManager *editorManagerProxy = mMainWindow->proxyManager();
+	editorManagerProxy->setProxyManager(new InterpreterEditorManager(""));
+	bool ok;
+	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
+	while (ok && name.isEmpty()) {
+		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
+	}
+	if (ok) {
+		QPair<Id, Id> editorAndDiagram = editorManagerProxy->createEditorAndDiagram(name);
+		mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
+		mMainWindow->models()->repoControlApi().exterminate();
+		mMainWindow->models()->reinit();
+		mMainWindow->loadMetamodel();
 		forceClose();
 	} else {
 		show();

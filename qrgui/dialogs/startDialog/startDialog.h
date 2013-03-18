@@ -30,6 +30,7 @@ private slots:
 	void createProjectWithDiagram(QString const &idString);
 	void exitApp();
 	void openInterpretedDiagram();
+	void createInterpretedDiagram();
 
 private:
 	static const QSize mMinimumSize;
@@ -37,6 +38,7 @@ private:
 	MainWindow *mMainWindow;
 	ProjectManager *mProjectManager;
 	QCommandLinkButton *mInterpreterButton;
+	QCommandLinkButton *mCreateInterpreterButton;
 };
 
 }

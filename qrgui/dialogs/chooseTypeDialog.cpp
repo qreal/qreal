@@ -1,5 +1,6 @@
 #include "chooseTypeDialog.h"
 #include "ui_chooseTypeDialog.h"
+#include "addNodeDialog.h"
 #include "edgePropertiesDialog.h"
 
 using namespace qReal;
@@ -24,16 +25,10 @@ ChooseTypeDialog::~ChooseTypeDialog()
 void ChooseTypeDialog::okButtonClicked() {
 	Id const diagram = mPaletteTree->currentEditor();
 	if (mUi->nodeRadioButton->isChecked()) {
-		bool ok;
-		QString name = QInputDialog::getText(this, tr("Enter the element name:"), tr("Element name:"), QLineEdit::Normal, "", &ok);
-		while (ok && name.isEmpty()) {
-			name = QInputDialog::getText(this, tr("Enter the element name:"), tr("Element name:"), QLineEdit::Normal, "", &ok);
-		}
-		if (ok) {
-			mEditorManagerProxy->addNodeElement(diagram, name);
-			mMainWindow->loadPlugins();
-		}
-	} else {
+		AddNodeDialog *nodeDialog = new AddNodeDialog(mMainWindow, diagram, mEditorManagerProxy);
+		nodeDialog->setModal(true);
+		nodeDialog->show();
+	} else if (mUi->edgeRadioButton->isChecked()) {
 		EdgePropertiesDialog *edgeDialog = new EdgePropertiesDialog(mMainWindow, diagram, mEditorManagerProxy);
 		edgeDialog->setModal(true);
 		edgeDialog->show();

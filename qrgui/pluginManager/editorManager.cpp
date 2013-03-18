@@ -547,9 +547,22 @@ bool EditorManager::isRootDiagramNode(Id const &id) const
 	return false;
 }
 
-void EditorManager::addNodeElement(Id const &diagram, QString const &name) const
+void EditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
 {}
 
 void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
 					QString const &lineType, QString const &beginType, QString const &endType) const
 {}
+
+QPair<Id, Id> EditorManager::createEditorAndDiagram(QString const &name) const
+{
+	return QPair<Id, Id>();
+}
+
+void EditorManager::saveMetamodel(QString const &newMetamodelFileName)
+{}
+
+QString EditorManager::saveMetamodelFilePath() const
+{
+	return "";
+}

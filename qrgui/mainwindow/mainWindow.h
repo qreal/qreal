@@ -118,7 +118,8 @@ public:
 	void loadMetamodel();
 	void loadPlugins();
 	void closeDiagramTab(Id const &id);
-	void clearSelectionOnTab(Id const &id);
+	void clearSelectionOnTabs();
+	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();

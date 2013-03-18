@@ -17,8 +17,9 @@
 using namespace qReal;
 using namespace utils;
 
-InterpreterEditorManager::InterpreterEditorManager(QString const fileName, QObject *parent)
+InterpreterEditorManager::InterpreterEditorManager(QString const &fileName, QObject *parent)
 	: QObject(parent)
+	, mMetamodelFile(fileName)
 {
 	qrRepo::RepoApi * const repo = new qrRepo::RepoApi(fileName);
 	mEditorRepoApi.insert("test", repo);
@@ -314,7 +315,7 @@ Id InterpreterEditorManager::findElementByType(QString const &type) const
 			foreach (Id diagram, repo->children(editor)) {
 				foreach (Id element, repo->children(diagram)) {
 					if (type == repo->name(element)) {
-						return Id(editor.id(), repo->name(diagram), repo->name(element));
+						return Id(repo->name(editor), repo->name(diagram), repo->name(element));
 					}
 				}
 			}
@@ -747,7 +748,7 @@ bool InterpreterEditorManager::isRootDiagramNode(Id const &id) const
 	return repo->stringProperty(editorAndDiagram.second, "nodeName") == repo->name(metaId);
 }
 
-void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &name) const
+void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
 {
 	QString const shape = "<graphics>\n    <picture sizex=\"168\" sizey=\"111\">\n    <rectangle fill=\"#ffffff\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" stroke-width=\"0\" x1=\"1\" y2=\"107\" fill-style=\"none\" x2=\"125\"/>\n    </picture>\n    <labels>\n    <label x=\"41\" y=\"43\" textBinded=\"name\"/>\n    </labels>\n    <ports>\n    <pointPort x=\"2\" y=\"52\"/>\n    <pointPort x=\"134\" y=\"56\"/>\n    <linePort>\n    <start startx=\"29\" starty=\"110\"/>\n    <end endx=\"95\" endy=\"111\"/>\n    </linePort>\n    </ports>\n</graphics>\n";
 	QPair<qrRepo::RepoApi*, Id> repoAndDiagram = getRepoAndDiagram(diagram.editor(), diagram.diagram());
@@ -756,6 +757,9 @@ void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &
 	Id const nodeId("MetaEditor", "MetaEditor", "MetaEntityNode", QUuid::createUuid().toString());
 	repo->addChild(diag, nodeId);
 
+	if (isRootDiagramNode) {
+		repo->setProperty(diag, "nodeName", name);
+	}
 	repo->setProperty(nodeId, "name", name);
 	repo->setProperty(nodeId, "displayedName", name);
 	repo->setProperty(nodeId, "shape", shape);
@@ -786,6 +790,36 @@ void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &
 	repo->setProperty(associationId, "name", name + "Association");
 	repo->setProperty(associationId, "beginType", beginType);
 	repo->setProperty(associationId, "endType", endType);
+}
+
+QPair<Id, Id> InterpreterEditorManager::createEditorAndDiagram(QString const &name) const
+{
+	Id editor("MetaEditor", "MetaEditor", "MetamodelDiagram",
+						QUuid::createUuid().toString());
+	Id diagram("MetaEditor", "MetaEditor", "MetaEditorDiagramNode",
+			QUuid::createUuid().toString());
+	qrRepo::RepoApi * const repo = mEditorRepoApi.value("test");
+	repo->addChild(Id::rootId(), editor);
+	repo->setProperty(editor, "name", name);
+	repo->setProperty(editor, "displayedName", name);
+	repo->addChild(editor, diagram);
+	repo->setProperty(diagram, "name", name);
+	repo->setProperty(diagram, "displayedName", name);
+	return qMakePair(Id(repo->name(editor)),  Id(repo->name(editor), repo->name(diagram)));
+}
+
+void InterpreterEditorManager::saveMetamodel(QString const &newMetamodelFileName)
+{
+	if (!newMetamodelFileName.isEmpty()) {
+		mEditorRepoApi.value("test")->saveTo(newMetamodelFileName);
+		mMetamodelFile = newMetamodelFileName;
+	} else {
+		mEditorRepoApi.value("test")->saveTo(mMetamodelFile);
+	}
+}
+
+QString InterpreterEditorManager::saveMetamodelFilePath() const {
+	return mMetamodelFile;
 }
 
 //unsupported method
