@@ -23,6 +23,7 @@ public:
 	~PreferencesRobotSettingsPage();
 
 	void save();
+	void restoreSettings();
 
 	QString selectedPortName() const;
 	QString selectedCommunication() const;

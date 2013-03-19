@@ -79,13 +79,13 @@ PreferencesRobotSettingsPage::~PreferencesRobotSettingsPage()
 void PreferencesRobotSettingsPage::changeEvent(QEvent *e)
 {
 	switch (e->type()) {
-	case QEvent::LanguageChange: {
-		mUi->retranslateUi(this);
-		mSensorsWidget->retranslateUi();
-		break;
-	}
-	default:
-		break;
+		case QEvent::LanguageChange: {
+			mUi->retranslateUi(this);
+			mSensorsWidget->retranslateUi();
+			break;
+		}
+		default:
+			break;
 	}
 }
 
@@ -196,6 +196,20 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("approximationLevel", approximationLevel());
 	mSensorsWidget->save();
 	emit saved();
+}
+void PreferencesRobotSettingsPage::restoreSettings()
+{
+	mUi->manualComPortCheckbox->setChecked(SettingsManager::value("manualComPortCheckboxChecked").toBool());
+	mUi->enableNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
+	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
+
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	initRobotModelType(typeOfRobotModel);
+
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
+	initTypeOfCommunication(typeOfCommunication);
+
+	mUi->textVisibleCheckBox->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
 }
 
 void PreferencesRobotSettingsPage::refreshPorts()
