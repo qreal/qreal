@@ -14,7 +14,7 @@
 #include "../../qrrepo/logicalRepoApi.h"
 #include "../../qrkernel/settingsManager.h"
 #include "pattern.h"
-#include "patternparser.h"
+#include "patternParser.h"
 
 class Element;
 

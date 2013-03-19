@@ -1,6 +1,6 @@
-#include "../../qrkernel/ids.h"
 #include <QtCore/QPointF>
 
+#include "../../qrkernel/ids.h"
 #include "pattern.h"
 
 using namespace qReal;
@@ -8,17 +8,17 @@ Pattern::Pattern()
 {
 }
 
-void Pattern::setEditor(QString editor)
+void Pattern::setEditor(const QString &editor)
 {
     mEditor = editor;
 }
 
-QString Pattern::editor()
+QString Pattern::editor() const
 {
     return mEditor;
 }
 
-void Pattern::setDiagram(QString diagram)
+void Pattern::setDiagram(const QString &diagram)
 {
     mDiagram = diagram;
 }
@@ -28,7 +28,7 @@ QString Pattern::diagram()
     return mDiagram;
 }
 
-void Pattern::setName(QString name)
+void Pattern::setName(const QString &name)
 {
     mGroupName = name;
 }

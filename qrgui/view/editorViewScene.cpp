@@ -566,8 +566,6 @@ void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
 
                 reConnectLink(getEdgeById(newEdge2));
 
-     //           QPointF fromP = previouslyConnectedFrom->portPos(mMVIface->graphicalAssistApi()->fromPort(edge->id()));
-     //           QPointF toP = previouslyConnectedTo->portPos(mMVIface->graphicalAssistApi()->toPort(edge->id()));
                 QPointF fromP = previouslyConnectedFrom->pos();
                 QPointF toP = previouslyConnectedTo->pos();
                 QPointF direction = QPointF(toP.x()- fromP.x(), toP.y()- fromP.y());
@@ -713,7 +711,6 @@ QList<NodeElement*> EditorViewScene::getNeibors(NodeElement *node){
     }
     return list;
 }
-//*/
 
 void EditorViewScene::copy()
 {

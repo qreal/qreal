@@ -1,4 +1,5 @@
-#include <QtXml>
+#include <QDomElement>
+#include <QDomDocument>
 #include <QtCore/QPointF>
 
 #include "patternParser.h"
@@ -34,7 +35,8 @@ void PatternParser::parseGroups(QString ed, QString diag)
         return;
     }
     for (QDomElement group = groups.firstChildElement("group"); !group.isNull();
-         group = group.nextSiblingElement("group")){
+		 group = group.nextSiblingElement("group")
+		 ){
         parseGroup(group);
     }
 }
@@ -51,11 +53,13 @@ void PatternParser::parseGroup(QDomElement group)
     pattern.setInNode(group.attribute("inNode"));
     pattern.setOutNode(group.attribute("outNode"));
     for (QDomElement node = group.firstChildElement("groupNode"); !node.isNull();
-         node = node.nextSiblingElement("groupNode")){
+		 node = node.nextSiblingElement("groupNode")
+		 ){
         parseNode(node, pattern);
     }
     for (QDomElement edge = group.firstChildElement("groupEdge"); !edge.isNull();
-         edge = edge.nextSiblingElement("groupEdge")){
+		 edge = edge.nextSiblingElement("groupEdge")
+		 ){
         parseEdge(edge, pattern);
     }
     pattern.setEditor(mEditor);
@@ -66,20 +70,13 @@ void PatternParser::parseGroup(QDomElement group)
 
 void PatternParser::parseNode(QDomElement node, Pattern &pattern)
 {
-    QString type = node.attribute("type");
-    QString name = node.attribute("name");
     float x = node.attribute("xPosition").toFloat();
     float y = node.attribute("yPosition").toFloat();
-    QPointF pos = QPointF(x,y);
-    pattern.addNode(type, name, pos);
+	QPointF const pos = QPointF(x,y);
+	pattern.addNode(node.attribute("type"), node.attribute("name"), pos);
 }
 
 void PatternParser::parseEdge(QDomElement edge, Pattern &pattern)
 {
-    QString type;
-    QString from, to;
-    type = edge.attribute("type");
-    from = edge.attribute("from");
-    to = edge.attribute("to");
-    pattern.addEdge(type, from, to);
+	pattern.addEdge(edge.attribute("type"), edge.attribute("from"), edge.attribute("to"));
 }

@@ -1,10 +1,9 @@
-#ifndef PATTERN_H
-#define PATTERN_H
+#pragma once
+
+#include <QtCore/QPointF>
 
 #include "../../qrkernel/ids.h"
-
 #include "pattern.h"
-#include <QtCore/QPointF>
 
 namespace qReal {
 class GroupNode{
@@ -25,12 +24,12 @@ class Pattern
 {
 public:
     Pattern();
-    void setName(QString name);
+	void setName(const QString &name);
     QString getName() const;
 
-    void setEditor(QString editor);
-    QString editor();
-    void setDiagram(QString diagram);
+	void setEditor(const QString &editor);
+	QString editor() const;
+	void setDiagram(const QString &diagram);
     QString diagram();
     void addNode(QString type, QString id, QPointF pos);
     void addEdge(QString type, QString from, QString to);
@@ -51,7 +50,4 @@ private:
     QString mOutNode;
 
 };
-
 }
-
-#endif // PATTERN_H
