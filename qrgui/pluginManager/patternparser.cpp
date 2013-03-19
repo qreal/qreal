@@ -12,14 +12,14 @@ PatternParser::PatternParser()
 {
 }
 
-void PatternParser::loadXml(QString xml)
+void PatternParser::loadXml(const QString &xml)
 {
     mXml = xml;
     mXml.replace("\\\"", "\"");
     mXml.replace("\\n", "\n");
 }
 
-void PatternParser::parseGroups(QString ed, QString diag)
+void PatternParser::parseGroups(const QString &ed, const QString &diag)
 {
     QDomDocument doc;
     if (mXml.isNull()){
@@ -48,10 +48,11 @@ QList<Pattern> PatternParser::getPatterns()
 
 void PatternParser::parseGroup(QDomElement group)
 {
-    Pattern pattern;
-    pattern.setName(group.attribute("name"));
-    pattern.setInNode(group.attribute("inNode"));
-    pattern.setOutNode(group.attribute("outNode"));
+	Pattern pattern; //= Pattern(mEditor, mDiagram,
+					//		  group.attribute("name"), group.attribute("inNode"), group.attribute("outNode"));
+	pattern.setName(group.attribute("name"));
+	pattern.setInNode(group.attribute("inNode"));
+	pattern.setOutNode(group.attribute("outNode"));
     for (QDomElement node = group.firstChildElement("groupNode"); !node.isNull();
 		 node = node.nextSiblingElement("groupNode")
 		 ){
@@ -61,10 +62,11 @@ void PatternParser::parseGroup(QDomElement group)
 		 edge = edge.nextSiblingElement("groupEdge")
 		 ){
         parseEdge(edge, pattern);
-    }
-    pattern.setEditor(mEditor);
-    pattern.setDiagram(mDiagram);
-    mPatterns.operator +=(pattern);
+	}
+	pattern.countSize();
+	pattern.setDiagram(mDiagram);
+	pattern.setEditor(mEditor);
+	mPatterns.operator +=(pattern);
 
 }
 

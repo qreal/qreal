@@ -11,14 +11,14 @@ class PatternParser
 {
 public:
     PatternParser();
-    void loadXml(QString xml);
-    void parseGroups(QString ed, QString diag);
+	void loadXml(const QString &xml);
+	void parseGroups(const QString &ed, const QString &diag);
     QList<Pattern> getPatterns();
 
 private:
     void parseGroup(QDomElement group);
-    void parseNode(QDomElement node, Pattern &pattern);
-    void parseEdge(QDomElement edge, Pattern &pattern);
+	void parseNode(QDomElement node, Pattern &pattern);
+	void parseEdge(QDomElement edge, Pattern &pattern);
 
 	QString mXml;
 	QString mEditor;

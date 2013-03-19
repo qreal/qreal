@@ -6,39 +6,45 @@
 #include "pattern.h"
 
 namespace qReal {
+
 class GroupNode{
 public:
-    QString type;
+	GroupNode(const QString &type, const QString &id, const QPointF &position);
+
+	QString type;
     QString id;
     QPointF position;
 };
 
 class GroupEdge{
 public:
+	GroupEdge(const QString &type, const QString &from, const QString &to);
+
     QString type;
     QString from;
     QString to;
 };
 
-class Pattern
-{
+class Pattern{
 public:
-    Pattern();
+	Pattern();
+//	Pattern(const QString &editor, const QString &diagram, const QString &name, const QString &inNode, const QString &outNode);
 	void setName(const QString &name);
     QString getName() const;
-
 	void setEditor(const QString &editor);
 	QString editor() const;
 	void setDiagram(const QString &diagram);
     QString diagram();
-    void addNode(QString type, QString id, QPointF pos);
-    void addEdge(QString type, QString from, QString to);
+	void addNode(const QString &type, const QString &id, const QPointF &pos);
+	void addEdge(const QString &type, const QString &from, const QString &to);
     QList<GroupNode> getNodes() const;
     QList<GroupEdge> getEdges() const;
-    void setInNode(QString id);
-    void setOutNode(QString id);
+	void setInNode(const QString &id);
+	void setOutNode(const QString &id);
     QString getInNode()const;
     QString getOutNode()const;
+	QPointF getSize() const;
+	void countSize();
 
 private:
     QString mGroupName;
@@ -47,7 +53,7 @@ private:
     QList<GroupNode> mNodes;
     QList<GroupEdge> mEdges;
     QString mInNode;
-    QString mOutNode;
-
+	QString mOutNode;
+	QPointF mSize;
 };
 }
