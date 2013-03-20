@@ -90,7 +90,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			type = QVariant::Bool;
 		} else if (typeName == "string") {
 			type = QVariant::String;
-		} else if (typeName == "directorypath") {
+		} else if (typeName == "code" || typeName == "directorypath") {
 			isButton = true;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
@@ -153,12 +153,14 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 	QPersistentModelIndex const actualIndex = mModel->modelIndex(index.row());
 
-	// there are only three type of buttons: shape, reference and path
+	// there are only four types of buttons: shape, reference, text and directory path
 	if (name == "shape") {
 		mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
 	} else {
 		QString const typeName = mModel->typeName(index).toLower();
-		if (typeName == "directorypath") {
+		if (typeName == "code") {
+			mMainWindow->openQscintillaTextEditor(actualIndex, role, propertyValue);
+		} else if (typeName == "directorypath") {
 			QString startPath;
 			if (propertyValue.isEmpty()) {
 				startPath = qApp->applicationDirPath();
