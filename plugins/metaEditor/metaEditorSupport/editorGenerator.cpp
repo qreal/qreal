@@ -94,10 +94,10 @@ QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
 			outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
 		}
 		outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
-		QString const relativeQrealSourcesPath = calculateRelativeQrealSourcesPath(pathToFile, pathToQRealSource);
-		outpro() << QString ("ROOT = %1\n").arg(relativeQrealSourcesPath);
+		QString const relativeQRealSourcesPath = calculateRelativeQRealSourcesPath(pathToFile, pathToQRealSource);
+		outpro() << QString ("ROOT = %1\n").arg(relativeQRealSourcesPath);
 		outpro() << "\n";
-		outpro() << QString("include (%1)").arg(relativeQrealSourcesPath + "/plugins/editorsSdk/editorsCommon.pri");
+		outpro() << QString("include (%1)").arg(relativeQRealSourcesPath + "/plugins/editorsSdk/editorsCommon.pri");
 	}
 	catch (char* e) {
 		mErrorReporter.addCritical(QObject::tr("incorrect file name"));
@@ -123,7 +123,7 @@ QString EditorGenerator::calculateEditorPath(QString const &pathToFile, QString 
 	return calculateRelativePath(qRealPluginsDir.absoluteFilePath(), pluginDir.absoluteFilePath());
 }
 
-QString EditorGenerator::calculateRelativeQrealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource)
+QString EditorGenerator::calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource)
 {
 	QFileInfo const pluginDir(pathToFile);
 	QFileInfo const sourcesDir(pathToQRealSource);
