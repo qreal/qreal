@@ -5,7 +5,7 @@
 using namespace qReal::commands;
 
 AbstractCommand::AbstractCommand()
-	: mExecuted(false)
+	: mExecuted(false), mRedoEnabled(true), mUndoEnabled(true)
 {
 }
 
@@ -21,6 +21,10 @@ AbstractCommand::~AbstractCommand()
 
 void AbstractCommand::redo()
 {
+	if (!mRedoEnabled) {
+		mExecuted = true;
+		return;
+	}
 	if (mExecuted) {
 		return;
 	}
@@ -31,12 +35,26 @@ void AbstractCommand::redo()
 
 void AbstractCommand::undo()
 {
+	if (!mUndoEnabled) {
+		mExecuted = false;
+		return;
+	}
 	if (!mExecuted) {
 		return;
 	}
 	executeReverse(mPostActions);
 	mExecuted = !restoreState();
 	executeReverse(mPreActions);
+}
+
+void AbstractCommand::setRedoEnabled(bool enabled)
+{
+	mRedoEnabled = enabled;
+}
+
+void AbstractCommand::setUndoEnabled(bool enabled)
+{
+	mUndoEnabled = enabled;
 }
 
 void AbstractCommand::addPreAction(AbstractCommand * const command)
@@ -46,10 +64,24 @@ void AbstractCommand::addPreAction(AbstractCommand * const command)
 	}
 }
 
+void AbstractCommand::insertPreAction(AbstractCommand * const command, int index)
+{
+	if (command) {
+		mPreActions.insert(index, command);
+	}
+}
+
 void AbstractCommand::addPostAction(AbstractCommand * const command)
 {
 	if (command) {
 		mPostActions << command;
+	}
+}
+
+void AbstractCommand::insertPostAction(AbstractCommand * const command, int index)
+{
+	if (command) {
+		mPostActions.insert(index, command);
 	}
 }
 

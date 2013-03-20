@@ -39,6 +39,16 @@ EditorView::~EditorView()
 	delete mScene;
 }
 
+EditorViewMViface *EditorView::mvIface() const
+{
+	return mMVIface;
+}
+
+EditorViewScene *EditorView::editorViewScene() const
+{
+	return mScene;
+}
+
 void EditorView::toggleAntialiasing(bool checked)
 {
 	setRenderHint(QPainter::Antialiasing, checked);

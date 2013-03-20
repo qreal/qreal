@@ -6,7 +6,13 @@ HEADERS += \
 	controller/commands/createRemoveCommandImplementation.h \
 	controller/commands/removeElementCommand.h \
     controller/commands/changePropertyCommand.h \
-    controller/undoStack.h
+    controller/undoStack.h \
+    controller/commands/elementCommand.h \
+    controller/commands/nodeElementCommand.h \
+    controller/commands/edgeElementCommand.h \
+    controller/commands/arrangeLinksCommand.h \
+    controller/commands/selectElementCommand.h \
+    controller/commands/updateElementCommand.h
 
 SOURCES += \
 	controller/controller.cpp \
@@ -16,4 +22,10 @@ SOURCES += \
 	controller/commands/createRemoveCommandImplementation.cpp \
 	controller/commands/removeElementCommand.cpp \
     controller/commands/changePropertyCommand.cpp \
-    controller/undoStack.cpp
+    controller/undoStack.cpp \
+    controller/commands/elementCommand.cpp \
+    controller/commands/nodeElementCommand.cpp \
+    controller/commands/edgeElementCommand.cpp \
+    controller/commands/arrangeLinksCommand.cpp \
+    controller/commands/selectElementCommand.cpp \
+    controller/commands/updateElementCommand.cpp

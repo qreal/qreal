@@ -29,7 +29,7 @@ class NodeElement : public Element
 	Q_OBJECT
 
 public:
-	NodeElement(ElementImpl *impl);
+	explicit NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
 	/**

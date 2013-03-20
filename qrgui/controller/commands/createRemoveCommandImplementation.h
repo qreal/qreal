@@ -34,6 +34,9 @@ private:
 	bool mIsFromLogicalModel;
 	QString mName;
 	QPointF mPosition;
+	QMap<QString, QVariant> mLogicalPropertiesSnapshot;
+	QMap<QString, QVariant> mGraphicalPropertiesSnapshot;
+	Id mOldLogicalId;
 };
 
 inline bool operator==(CreateRemoveCommandImplementation const &i1

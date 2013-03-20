@@ -17,13 +17,24 @@ public:
 	void redo();
 	void undo();
 
+	void setRedoEnabled(bool enabled);
+	void setUndoEnabled(bool enabled);
+
 	/// Adds @param command into a list of commands to be executed
 	/// before this command
 	void addPreAction(AbstractCommand * const command);
 
+	/// Adds @param command into a specified place of the list of commands
+	/// to be executed before this command
+	void insertPreAction(AbstractCommand * const command, int index);
+
 	/// Adds @param command into a list of commands to be executed
 	/// after this command
 	void addPostAction(AbstractCommand * const command);
+
+	/// Adds @param command into a specified place of the list of commands
+	/// to be executed after this command
+	void insertPostAction(AbstractCommand * const command, int index);
 
 	virtual bool equals(AbstractCommand const &other) const;
 
@@ -54,6 +65,8 @@ private:
 	void removeDuplicatesOn(QList<AbstractCommand *> &list);
 
 	bool mExecuted;
+	bool mRedoEnabled;
+	bool mUndoEnabled;
 	QList<AbstractCommand *> mPreActions;
 	QList<AbstractCommand *> mPostActions;
 };

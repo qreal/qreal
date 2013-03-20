@@ -179,7 +179,7 @@ void EditorViewScene::itemSelectUpdate()
 		item->setSelected(true);
 	}
 }
-Element *EditorViewScene::getElem(qReal::Id const &id)
+Element *EditorViewScene::getElem(qReal::Id const &id) const
 {
 	if (id == Id::rootId()) {
 		return NULL;

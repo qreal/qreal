@@ -28,8 +28,13 @@
 #include "../models/models.h"
 #include "../view/editorView.h"
 #include "../view/sceneCustomizer.h"
+
 #include "../controller/commands/removeElementCommand.h"
 #include "../controller/commands/doNothingCommand.h"
+#include "../controller/commands/arrangeLinksCommand.h"
+#include "../controller/commands/selectElementCommand.h"
+#include "../controller/commands/updateElementCommand.h"
+
 #include "../umllib/element.h"
 #include "../dialogs/pluginDialog.h"
 #include "../dialogs/checkoutDialog.h"
@@ -543,61 +548,21 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	IdList itemsToDelete;
 	itemsToDelete << id;
 	deleteItems(itemsToDelete);
-
-//	IdList graphicalIdList;
-//	if (isLogicalModel) {
-//		Id const logicalId = mModels->logicalModelAssistApi().idByIndex(index);
-//		graphicalIdList = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
-//		removeReferences(logicalId);
-//	} else {
-//		Id const graphicalId = mModels->graphicalModelAssistApi().idByIndex(index);
-//		graphicalIdList.append(graphicalId);
-//	}
-//	QList<NodeElement*> itemsToArrangeLinks;
-//	foreach (Id const &graphicalId, graphicalIdList) {
-//		bool const tabClosed = closeTab(mModels->graphicalModelAssistApi().indexById(graphicalId));
-//		if (scene && !tabClosed) {
-//			QGraphicsItem const * const item = scene->getElem(graphicalId);
-//			EdgeElement const * const edge = dynamic_cast<EdgeElement const *>(item);
-//			if (edge) {
-//				itemsToArrangeLinks.append(edge->src());
-//				itemsToArrangeLinks.append(edge->dst());
-//			}
-//		}
-//	}
-
-//	PropertyEditorModel* propertyEditorModel = dynamic_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
-//	if (propertyEditorModel && propertyEditorModel->isCurrentIndex(index)) {
-//		propertyEditorModel->clearModelIndexes();
-//		mUi->propertyEditor->setRootIndex(QModelIndex());
-//	}
-
-//	foreach (NodeElement *item, itemsToArrangeLinks) {
-//		if (item) {
-//			item->arrangeLinks();
-//		}
-//	}
 }
 
 void MainWindow::deleteItems(IdList &itemsToDelete)
 {
 	IdList itemsToUpdate;
-	IdList itemsToDeleteNoUpdate;
-	// QGraphicsScene::selectedItems() returns items in no particular order,
-	// so we should handle parent-child relationships manually
-
 	DoNothingCommand *multipleRemoveCommand = new DoNothingCommand;
 
+	// QGraphicsScene::selectedItems() returns items in no particular order,
+	// so we should handle parent-child relationships manually
 	while (!itemsToDelete.isEmpty()) {
 		Id const currentItem = itemsToDelete.at(0);
 
 		// delete possible children
 		IdList const children = mModels->graphicalModelAssistApi().children(currentItem);
 		foreach (Id const &child, children) {
-			bool const childIsNode = mEditorManager.isGraphicalElementNode(child);
-			if (childIsNode) {
-				itemsToDeleteNoUpdate.append(child);
-			}
 			itemsToDelete.removeAll(child);
 			// Child remove commands will be added in currentItem delete command
 		}
@@ -612,27 +577,16 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 			if (dst != Id() && !itemsToUpdate.contains(dst)) {
 				itemsToUpdate.append(dst);
 			}
+			multipleRemoveCommand->insertPreAction(graphicalDeleteCommand(currentItem), 0);
 		} else {
-			itemsToDeleteNoUpdate.append(currentItem);
+			multipleRemoveCommand->addPreAction(graphicalDeleteCommand(currentItem));
 		}
 
-		// delete the item itself
 		itemsToDelete.removeAll(currentItem);
-		multipleRemoveCommand->addPreAction(graphicalDeleteCommand(currentItem));
 	}
 
 	multipleRemoveCommand->removeDuplicates();
 	mController->execute(multipleRemoveCommand);
-//	// correcting unremoved edges
-//	foreach (QGraphicsItem* item, itemsToUpdate) {
-	//		if (!itemsToDeleteNoUpdate.contains(item)) {
-	//			NodeElement* node = dynamic_cast <NodeElement*> (item);
-	//			if (node) {
-	//				node->arrangeLinks();
-	//				node->adjustLinks();
-	//			}
-	//		}
-	//	}
 }
 
 void MainWindow::removeReferences(Id const &id)
@@ -671,15 +625,6 @@ AbstractCommand *MainWindow::graphicalDeleteCommand(QGraphicsItem *target)
 		return NULL;
 	}
 	return graphicalDeleteCommand(elem->id());
-
-//	QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
-//	if (index.isValid()) {
-//		elem->deleteFromScene();
-//		deleteElementFromScene(index);
-//	}
-//	if (getCurrentTab() && getCurrentTab()->scene()) {
-//		getCurrentTab()->scene()->invalidate();
-//	}
 }
 
 AbstractCommand *MainWindow::logicalDeleteCommand(QModelIndex const &index)
@@ -722,7 +667,7 @@ commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
 commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 {
 	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
-	AbstractCommand *result =  new RemoveElementCommand(
+	AbstractCommand *result = new RemoveElementCommand(
 				&mModels->logicalModelAssistApi()
 				, &mModels->graphicalModelAssistApi()
 				, mModels->logicalRepoApi().parent(logicalId)
@@ -734,8 +679,33 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 				);
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
 	foreach (Id const &child, children) {
-		result->addPreAction(graphicalDeleteCommand(child));
+		if (mEditorManager.isGraphicalElementNode(child)) {
+			result->addPreAction(graphicalDeleteCommand(child));
+		} else {
+			// Edges are deletted first
+			result->insertPreAction(graphicalDeleteCommand(child), 0);
+		}
 	}
+	// This will return selection and reinit property editor that loads incorrect
+	// property values because of its intermediate resetting
+	result->addPreAction(new SelectElementCommand(getCurrentTab(), id, true, true));
+
+	// correcting unremoved edges
+	ArrangeLinksCommand *arrangeCommand = new ArrangeLinksCommand(getCurrentTab(), id, true);
+	arrangeCommand->setRedoEnabled(false);
+	result->addPreAction(arrangeCommand);
+
+	UpdateElementCommand *updateCommand = new UpdateElementCommand(getCurrentTab(), id);
+	updateCommand->setRedoEnabled(false);
+	result->addPreAction(updateCommand);
+
+	IdList const links = mModels->graphicalRepoApi().links(id);
+	foreach (Id const &link, links) {
+		UpdateElementCommand *updateLinkCommand = new UpdateElementCommand(getCurrentTab(), link);
+		updateLinkCommand->setRedoEnabled(false);
+		result->addPreAction(updateLinkCommand);
+	}
+
 	return result;
 }
 

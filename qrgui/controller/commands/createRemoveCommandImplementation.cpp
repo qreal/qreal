@@ -26,20 +26,33 @@ CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
 Id CreateRemoveCommandImplementation::create()
 {
 	mId = mGraphicalApi->createElement(mGraphicalParent, mId
-			, mIsFromLogicalModel, mName, mPosition);
+			, mIsFromLogicalModel, mName, mPosition, mOldLogicalId);
+	if (!mGraphicalPropertiesSnapshot.isEmpty()) {
+		mGraphicalApi->setProperties(mId, mGraphicalPropertiesSnapshot);
+	}
+	Id const logicalId = mGraphicalApi->logicalId(mId);
+	if (mLogicalApi->logicalRepoApi().exist(logicalId)
+			&& !mLogicalPropertiesSnapshot.isEmpty()) {
+		mGraphicalApi->setProperties(logicalId, mLogicalPropertiesSnapshot);
+	}
 	return mId;
 }
 
 void CreateRemoveCommandImplementation::remove()
 {
 	if (mIsFromLogicalModel) {
+		mLogicalApi->removeReferencesTo(mId);
+		mLogicalApi->removeReferencesFrom(mId);
 		mLogicalApi->removeElement(mId);
 	} else {
+		mGraphicalPropertiesSnapshot = mGraphicalApi->properties(mId);
 		Id const logicalId = mGraphicalApi->logicalId(mId);
 		if (!mLogicalApi->logicalRepoApi().exist(logicalId)) {
 			mGraphicalApi->removeElement(mId);
 			return;
 		}
+		mOldLogicalId = logicalId;
+		mLogicalPropertiesSnapshot = mGraphicalApi->properties(logicalId);
 		IdList const graphicalIds = mGraphicalApi->graphicalIdsByLogicalId(logicalId);
 		mGraphicalApi->removeElement(mId);
 		// Checking that the only graphical part is our element itself
