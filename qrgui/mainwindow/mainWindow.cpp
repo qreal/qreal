@@ -920,8 +920,8 @@ void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, in
 	textEdit->setPythonLexer();
 	textEdit->setPythonEditorProperties();
 
-	connect(textEdit, SIGNAL(textSaved(QString const &, QPersistentModelIndex const &, int const &)),
-			this, SLOT(setData(QString const &, QPersistentModelIndex const &, int const &)));
+	connect(textEdit, SIGNAL(textSaved(QString const &, QPersistentModelIndex const &, int const &))
+			, this, SLOT(setData(QString const &, QPersistentModelIndex const &, int const &)));
 
 	mUi->tabs->addTab(textEdit, tr("Text Editor"));
 	mUi->tabs->setCurrentWidget(textEdit);
