@@ -17,6 +17,7 @@ class Controller : public QUndoGroup
 	Q_OBJECT
 
 public:
+	Controller();
 
 public slots:
 	/// Tells controller that user swithed to diagram with specified id as root
@@ -34,6 +35,16 @@ public slots:
 	/// Tells controller that user closed diagram with specified id
 	void diagramClosed(Id const &diagramId);
 
+	/// Tells controller that user saved project
+	void projectSaved();
+
+signals:
+	/// Emitted when at least one of the stacks has modifications
+	void modifiedChanged(bool modified);
+
+private slots:
+	void resetModifiedState();
+
 private:
 	UndoStack *activeUndoStack() const;
 
@@ -47,38 +58,7 @@ private:
 	void removeStack(QUndoStack *stack);
 
 	QMap<QString, UndoStack *> mStacks;
+	bool mModifiedState;
 };
-
-//class Controller : public QObject
-//{
-//	Q_OBJECT
-
-//public:
-//	Controller();
-//	~Controller();
-
-//public slots:
-//	/// Nullifies undo and redo stacks and save markers
-//	void reset();
-
-
-//signals:
-//	/// Emitted when undo stack becomes empty or opposite
-//	void canUndoChanged(bool canUndo);
-
-//	/// Emitted when redo stack becomes empty or opposite
-//	void canRedoChanged(bool canUndo);
-
-//	/// Emitted when undo stack reaches last save marker
-//	void modifiedChanged(bool modified);
-
-//private:
-//	bool execPrivate(commands::AbstractCommand *command, bool clearStack);
-
-//	void clear(QStack<commands::AbstractCommand *> &stack);
-
-//	QStack<commands::AbstractCommand *> mExecutedCommands;
-//	QStack<commands::AbstractCommand *> mUndoneCommands;
-//};
 
 }

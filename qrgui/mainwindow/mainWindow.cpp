@@ -134,7 +134,6 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
 			, this, mFindReplaceDialog);
 	initToolPlugins();
-	connectWindowTitle();
 	connectActions();
 	initExplorers();
 
@@ -201,6 +200,10 @@ void MainWindow::connectActions()
 			SLOT(changePaletteRepresentation()));
 	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged()),
 			&mPreferencesDialog, SLOT(changePaletteParameters()));
+
+	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
+	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
+	connect(mController, SIGNAL(modifiedChanged(bool)), mProjectManager, SLOT(setUnsavedIndicator(bool)));
 }
 
 void MainWindow::initActionsFromSettings()
@@ -460,7 +463,6 @@ void MainWindow::closeAllTabs()
 	for (int i = 0; i < tabCount; i++) {
 		closeTab(i);
 	}
-	disconnectWindowTitle();
 }
 
 void MainWindow::setReference(QString const &data, QPersistentModelIndex const &index, int const &role)
@@ -751,11 +753,6 @@ void MainWindow::pasteCopyOfLogical()
 	if (scene) {
 		scene->paste(true);
 	}
-}
-
-void MainWindow::modelsAreChanged()
-{
-	mProjectManager->setUnsavedIndicator(true);
 }
 
 void MainWindow::showAbout()
@@ -1801,49 +1798,6 @@ void MainWindow::saveDiagramAsAPicture()
 	QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
 	saveDiagramAsAPictureToFile(fileName);
 }
-
-void MainWindow::connectWindowTitle()
-{
-	connect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
-			, this, SLOT(modelsAreChanged()));
-	connect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
-			, this, SLOT(modelsAreChanged()));
-	connect(mModels->graphicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
-			, this, SLOT(modelsAreChanged()));
-	connect(mModels->logicalModel(), SIGNAL(rowsInserted ( const QModelIndex &, int, int))
-			, this, SLOT(modelsAreChanged()));
-	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
-			, this, SLOT(modelsAreChanged()));
-	connect(mModels->logicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
-			, this, SLOT(modelsAreChanged()));
-	connect(mModels->graphicalModel(), SIGNAL(rowsRemoved(const QModelIndex, int, int ))
-			, this, SLOT(modelsAreChanged()));
-	connect(mModels->logicalModel(), SIGNAL(rowsRemoved (const QModelIndex &, int , int ))
-			, this, SLOT(modelsAreChanged()));
-}
-
-void MainWindow::disconnectWindowTitle()
-{
-	disconnect(mModels->graphicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
-			, this, SLOT(modelsAreChanged()));
-	disconnect(mModels->logicalModel(), SIGNAL(dataChanged(QModelIndex,QModelIndex))
-			, this, SLOT(modelsAreChanged()));
-	disconnect(mModels->graphicalModel(), SIGNAL(rowsInserted (const QModelIndex &, int, int))
-			, this, SLOT(modelsAreChanged()));
-	disconnect(mModels->logicalModel(), SIGNAL(rowsInserted (const QModelIndex &, int, int))
-			, this, SLOT(modelsAreChanged()));
-	disconnect(mModels->graphicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
-			, this, SLOT(modelsAreChanged()));
-	disconnect(mModels->logicalModel(), SIGNAL(rowsMoved(const QModelIndex, int, int, const QModelIndex &, int ))
-			, this, SLOT(modelsAreChanged()));
-	disconnect(mModels->graphicalModel(), SIGNAL(rowsRemoved(const QModelIndex, int, int ))
-			, this, SLOT(modelsAreChanged()));
-	disconnect(mModels->logicalModel(), SIGNAL(rowsRemoved (const QModelIndex &, int , int ))
-			, this, SLOT(modelsAreChanged()));
-
-	mProjectManager->setUnsavedIndicator(false);
-}
-
 
 void MainWindow::changePaletteRepresentation()
 {

@@ -133,7 +133,6 @@ signals:
 
 public slots:
 	void deleteFromScene();
-	void modelsAreChanged();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
 	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
@@ -147,8 +146,6 @@ public slots:
 	void changePaletteRepresentation();
 	void closeAllTabs();
 	void refreshRecentProjectsList(QString const &fileName);
-	void connectWindowTitle();
-	void disconnectWindowTitle();
 	void createDiagram(QString const &idString);
 
 	void openFirstDiagram();

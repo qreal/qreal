@@ -14,11 +14,6 @@ public:
 
 	/// Executes @param command and takes ownership on it
 	void execute(commands::AbstractCommand *command);
-
-	/// Tells controller that all changes made were saved
-	void addSaveMarker();
-
-private:
 };
 
 }

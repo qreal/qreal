@@ -10,7 +10,3 @@ void UndoStack::execute(commands::AbstractCommand *command)
 {
 	push(command);
 }
-
-void UndoStack::addSaveMarker()
-{
-}

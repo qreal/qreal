@@ -3,6 +3,11 @@
 using namespace qReal;
 using namespace qReal::commands;
 
+Controller::Controller()
+	: mModifiedState(false)
+{
+}
+
 void Controller::setActiveDiagram(Id const &diagramId)
 {
 	if (diagramId != Id()) {
@@ -34,6 +39,7 @@ void Controller::diagramOpened(Id const &diagramId)
 		return;
 	}
 	UndoStack *stack = new UndoStack;
+	connect(stack, SIGNAL(cleanChanged(bool)), this, SLOT(resetModifiedState()));
 	mStacks.insert(diagramId.toString(), stack);
 	addStack(stack);
 }
@@ -46,6 +52,30 @@ void Controller::diagramClosed(Id const &diagramId)
 	UndoStack *stackToRemove = mStacks[diagramId.toString()];
 	mStacks.remove(diagramId.toString());
 	removeStack(stackToRemove);
+}
+
+void Controller::resetModifiedState()
+{
+	bool wasModified = false;
+	QList<QUndoStack *> const undoStacks = stacks();
+	foreach (QUndoStack *stack, undoStacks) {
+		if (!stack->isClean()) {
+			wasModified = true;
+			break;
+		}
+	}
+	if (wasModified != mModifiedState) {
+		mModifiedState = wasModified;
+		emit modifiedChanged(mModifiedState);
+	}
+}
+
+void Controller::projectSaved()
+{
+	QList<QUndoStack *> const undoStacks = stacks();
+	foreach (QUndoStack *stack, undoStacks) {
+		stack->setClean();
+	}
 }
 
 QUndoStack *Controller::activeStack() const
