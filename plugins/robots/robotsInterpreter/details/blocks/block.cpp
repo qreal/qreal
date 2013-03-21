@@ -57,7 +57,7 @@ bool Block::initNextBlocks()
 
 	if (links.count() == 1) {
 		Id const nextBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(links[0], id());
-		if (nextBlockId == Id()) {
+		if (nextBlockId == Id() || nextBlockId == Id::rootId()) {
 			error(tr("Outgoing link is not connected"));
 			return false;
 		}
