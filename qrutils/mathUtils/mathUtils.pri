@@ -1,5 +1,5 @@
 HEADERS += \
-	mathUtils/gaussNoise.h \
+	$$PWD/gaussNoise.h \
 
 SOURCES += \
-	mathUtils/gaussNoise.cpp \
+	$$PWD/gaussNoise.cpp \
