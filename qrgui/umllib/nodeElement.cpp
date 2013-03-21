@@ -1238,6 +1238,18 @@ QList<EdgeElement *> const NodeElement::edgeList() const
 	return mEdgeList;
 }
 
+QList<NodeElement *> const NodeElement::childNodes() const
+{
+	QList<NodeElement *> result;
+	foreach (QGraphicsItem *item, childItems()) {
+		NodeElement *child = dynamic_cast<NodeElement *>(item);
+		if (child) {
+			result << child;
+		}
+	}
+	return result;
+}
+
 void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
 {
 	Element::setAssistApi(graphicalAssistApi, logicalAssistApi);
