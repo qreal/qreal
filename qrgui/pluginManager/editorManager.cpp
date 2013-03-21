@@ -234,6 +234,13 @@ QIcon EditorManager::icon(const Id &id) const
 	return mPluginIface[id.editor()]->getIcon(engine);
 }
 
+QSize EditorManager::iconSize(Id const &id) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
+	return engine->preferedSize();
+}
+
 Element* EditorManager::graphicalObject(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));

@@ -377,12 +377,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Сенсор4</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="39"/>
+        <location filename="robotsPlugin.cpp" line="40"/>
         <source>2d model</source>
         <translation>2D модель</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="43"/>
+        <location filename="robotsPlugin.cpp" line="44"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
@@ -391,17 +391,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="47"/>
+        <location filename="robotsPlugin.cpp" line="48"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="51"/>
+        <location filename="robotsPlugin.cpp" line="52"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="57"/>
+        <location filename="robotsPlugin.cpp" line="58"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -410,7 +410,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="102"/>
+        <location filename="robotsPlugin.cpp" line="104"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -528,7 +528,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::RobotsPlugin</name>
     <message>
-        <location filename="robotsPlugin.cpp" line="107"/>
+        <location filename="robotsPlugin.cpp" line="109"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -617,17 +617,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::Block</name>
     <message>
-        <location filename="details/blocks/block.cpp" line="44"/>
+        <location filename="details/blocks/block.cpp" line="42"/>
+        <source>Control flow break detected, stopping</source>
+        <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
+    </message>
+    <message>
+        <location filename="details/blocks/block.cpp" line="49"/>
         <source>Too many outgoing links</source>
         <translation>Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="details/blocks/block.cpp" line="49"/>
+        <location filename="details/blocks/block.cpp" line="54"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
         <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="details/blocks/block.cpp" line="56"/>
+        <location filename="details/blocks/block.cpp" line="61"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
@@ -804,7 +809,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="details/blocks/waitForLightSensorBlock.cpp" line="26"/>
         <source>Light sensor is not configured on this port</source>
-        <translation type="unfinished">Сенсор cвета не сконфигурирован на этом порту</translation>
+        <translation>Сенсор cвета не сконфигурирован на этом порту</translation>
     </message>
 </context>
 <context>
@@ -826,18 +831,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="672"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="671"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="672"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="694"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="671"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="693"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="694"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="693"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>

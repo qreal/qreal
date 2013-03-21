@@ -87,7 +87,12 @@ class SdfIconEngineV2: public SdfIconEngineV2Interface
 {
 public:
 	SdfIconEngineV2(QString const &file);
+	QSize preferedSize() const;
+
+protected:
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
+
 private:
 	SdfRenderer mRenderer;
+	QSize mSize;
 };
