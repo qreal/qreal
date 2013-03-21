@@ -647,9 +647,9 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 	if (!elem) {
 		return;
 	}
-    if(dynamic_cast<NodeElement*>(elem)){
-        dynamic_cast<EditorViewScene*>(getCurrentTab()->scene())->deleteElementFromEdge(elem->id());
-    }
+	if(dynamic_cast<NodeElement*>(elem)){
+		dynamic_cast<EditorViewScene*>(getCurrentTab()->scene())->deleteElementFromEdge(elem->id());
+	}
 
 	QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
 	if (index.isValid()) {

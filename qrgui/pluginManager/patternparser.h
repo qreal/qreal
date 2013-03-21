@@ -10,13 +10,13 @@ namespace qReal {
 class PatternParser
 {
 public:
-    PatternParser();
+	PatternParser();
 	void loadXml(const QString &xml);
 	void parseGroups(const QString &ed, const QString &diag);
-    QList<Pattern> getPatterns();
+	QList<Pattern> getPatterns();
 
 private:
-    void parseGroup(QDomElement group);
+	void parseGroup(QDomElement group);
 	void parseNode(QDomElement node, Pattern &pattern);
 	void parseEdge(QDomElement edge, Pattern &pattern);
 

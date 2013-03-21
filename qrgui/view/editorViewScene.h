@@ -66,26 +66,26 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-    void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos, QPointF shift, QList<NodeElement*> elements);
+	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos, QPointF shift, QList<NodeElement*> elements);
 
-    QList<NodeElement*> getNeibors(NodeElement* node);
-    void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF direction, QPointF shift, QList<NodeElement*> elements); //QList<NodeElement*> moved){
+	QList<NodeElement*> getNeibors(NodeElement* node);
+	void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF direction, QPointF shift, QList<NodeElement*> elements); //QList<NodeElement*> moved){
 
-    void reConnectLink(EdgeElement * edgeElem);
-    void arrangeNodeLinks(NodeElement* node);
-    qreal Sign(qreal x);
-
-
-    NodeElement* getNodeById(qReal::Id const &itemId);
-    EdgeElement* getEdgeById(qReal::Id const &itemId);
-
-    QList<EdgeElement*> getInEdges(NodeElement* node);
-    QList<EdgeElement*> getOutEdges(NodeElement* node);
-
-    void deleteElementFromEdge(qReal::Id const &nodeId);
+	void reConnectLink(EdgeElement * edgeElem);
+	void arrangeNodeLinks(NodeElement* node);
+	qreal Sign(qreal x);
 
 
-    void itemSelectUpdate();
+	NodeElement* getNodeById(qReal::Id const &itemId);
+	EdgeElement* getEdgeById(qReal::Id const &itemId);
+
+	QList<EdgeElement*> getInEdges(NodeElement* node);
+	QList<EdgeElement*> getOutEdges(NodeElement* node);
+
+	void deleteElementFromEdge(qReal::Id const &nodeId);
+
+
+	void itemSelectUpdate();
 
 	/// update (for a beauty) all edges when tab is opening
 	void updateEdgesViaNodes();
@@ -207,7 +207,7 @@ private:
 	inline bool isArrow(int key);
 
 	void moveSelectedItems(int direction);
-    QPointF offsetByDirection(int direction);
+	QPointF offsetByDirection(int direction);
 
 	Element *mLastCreatedWithEdge;
 

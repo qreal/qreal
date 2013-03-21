@@ -29,10 +29,10 @@ namespace qReal {
 		~EditorManager();
 
 		IdList editors() const;
-        IdList diagrams(Id const &editor) const;
-        IdList groups(Id const &diagram);
-        Pattern getPatternByName (QString str) const;
-        QList<QString> getPatternNames() const;
+		IdList diagrams(Id const &editor) const;
+		IdList groups(Id const &diagram);
+		Pattern getPatternByName (QString str) const;
+		QList<QString> getPatternNames() const;
 		QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 		QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
 		QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
@@ -79,9 +79,9 @@ namespace qReal {
 		bool isGraphicalElementNode(const Id &id) const;
 
 	private:
-        QStringList mPluginsLoaded;
-        QList<Pattern> mDiagramGroups;
-        QMap<QString, Pattern> mGroups;
+		QStringList mPluginsLoaded;
+		QList<Pattern> mDiagramGroups;
+		QMap<QString, Pattern> mGroups;
 		QMap<QString, QString> mPluginFileName;
 		QMap<QString, EditorInterface *> mPluginIface;
 		QMap<QString, QPluginLoader *> mLoaders;

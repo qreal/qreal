@@ -29,74 +29,74 @@ Pattern::Pattern(){}
 
 void Pattern::setEditor(const QString &editor)
 {
-    mEditor = editor;
+	mEditor = editor;
 }
 
 QString Pattern::editor() const
 {
-    return mEditor;
+	return mEditor;
 }
 
 void Pattern::setDiagram(const QString &diagram)
 {
-    mDiagram = diagram;
+	mDiagram = diagram;
 }
 
 QString Pattern::diagram()
 {
-    return mDiagram;
+	return mDiagram;
 }
 
 void Pattern::setName(const QString &name)
 {
-    mGroupName = name;
+	mGroupName = name;
 }
 
 QString Pattern::getName() const
 {
-    return mGroupName;
+	return mGroupName;
 }
 
 void Pattern::addNode(const QString &type, const QString &id, const QPointF &pos)
 {
 	GroupNode newNode = GroupNode(type, id, pos);
-    mNodes.append(newNode);
+	mNodes.append(newNode);
 }
 
 void Pattern::addEdge(const QString &type, const QString &from, const QString &to)
 {
 	GroupEdge newEdge = GroupEdge(type, from, to);
-    mEdges.append(newEdge);
+	mEdges.append(newEdge);
 }
 
 QList<GroupNode> Pattern::getNodes() const
 {
-    return mNodes;
+	return mNodes;
 }
 
 QList<GroupEdge> Pattern::getEdges()const
 {
-    return mEdges;
+	return mEdges;
 }
 
 void Pattern::setInNode(const QString &id)
 {
-    mInNode = id;
+	mInNode = id;
 }
 
 void Pattern::setOutNode(const QString &id)
 {
-    mOutNode = id;
+	mOutNode = id;
 }
 
 QString Pattern::getInNode()const
 {
-    return mInNode;
+	return mInNode;
 }
 
 QString Pattern::getOutNode()const
 {
-    return mOutNode;
+	return mOutNode;
 }
 
 void Pattern::countSize(){
