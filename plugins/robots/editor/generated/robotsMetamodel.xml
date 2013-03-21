@@ -12,7 +12,7 @@
                 <value>3</value>
                 <value>4</value>
             </enum>
-            <enum name="GuardType">
+		    <enum name="GuardType">
                 <value>итерация</value>
                 <value></value>
                 <value>меньше 0</value>
@@ -75,7 +75,50 @@
                     </container>
                 </logic>
             </node>
-            <node displayedName="Конец" name="FinalNode">
+            <node displayedName="Ждать нажатия кнопок" name="WaitForButtons">
+                <graphics>
+                    <picture sizex="50" sizey="50">
+                        <image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+                    </picture>
+                    <labels>
+                        <label x="33" y="60" textBinded="RightButtonClicks"/>
+                        <label x="0" y="60" text="Количество нажатий правой кнопки"/>
+                        <label x="33" y="80" textBinded="LeftButtonClicks"/>
+                        <label x="0" y="80" text="Количество нажатий левой кнопки"/>
+						<label x="33" y="100" textBinded="CentralButtonClicks"/>
+                        <label x="0" y="100" text="Количество нажатий центральной кнопки"/>
+						<label x="33" y="120" textBinded="BottomButtonClicks"/>
+                        <label x="0" y="120" text="Количество нажатий нижней кнопки"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="5"/>
+                            <end endx="0" endy="45"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="5" starty="0"/>
+                            <end endx="45" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="50" starty="5"/>
+                            <end endx="50" endy="45"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="5" starty="50"/>
+                            <end endx="45" endy="50"/>
+                        </linePort>
+                    </ports>
+                    <nonResizeable/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                    </properties>
+                    <generalizations>
+                    </generalizations>
+                </logic>
+            </node>
+			<node displayedName="Конец" name="FinalNode">
                 <graphics>
                     <picture sizex="50" sizey="50">
                         <image y1="0" name="images/finalBlock.png" x1="0" y2="50" x2="50"/>
