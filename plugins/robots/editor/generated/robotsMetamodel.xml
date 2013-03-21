@@ -113,8 +113,21 @@
                 <logic>
                     <container/>
                     <properties>
+						<property displayedName="Количество нажатий правой кнопки" type="string" name="RightButtonClicks">
+                            <default>0</default>
+                        </property>
+						<property displayedName="Количество нажатий левой кнопки" type="string" name="LeftButtonClicks">
+                            <default>0</default>
+                        </property>
+						<property displayedName="Количество нажатий центральной кнопки" type="string" name="CentralButtonClicks">
+                            <default>0</default>
+                        </property>
+						<property displayedName="Количество нажатий нижней кнопки" type="string" name="BottomButtonClicks">
+                            <default>0</default>
+                        </property>
                     </properties>
                     <generalizations>
+                        <parent parentName="AbstractNode"/>
                     </generalizations>
                 </logic>
             </node>
