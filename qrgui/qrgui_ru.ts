@@ -1860,6 +1860,14 @@
     </message>
 </context>
 <context>
+    <name>PropertyEditorView</name>
+    <message>
+        <location filename="view/propertyEditorView.cpp" line="168"/>
+        <source>Specify directory:</source>
+        <translation>Выберите каталог:</translation>
+    </message>
+</context>
+<context>
     <name>PushButtonPropertyManager</name>
     <message>
         <location filename="view/pushButtonProperty.cpp" line="22"/>
@@ -2990,6 +2998,25 @@
     <message>
         <source>Specify COM port manually</source>
         <translation type="obsolete">Указать COM-порт вручную</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::EditorManager</name>
+    <message>
+        <location filename="pluginManager/editorManager.cpp" line="86"/>
+        <location filename="pluginManager/editorManager.cpp" line="101"/>
+        <source>error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="pluginManager/editorManager.cpp" line="86"/>
+        <source>Plugin loading failed: </source>
+        <translation>Загрузка плагина завершилась ошибкой: </translation>
+    </message>
+    <message>
+        <location filename="pluginManager/editorManager.cpp" line="101"/>
+        <source>Plugin unloading failed: </source>
+        <translation>Выгрузка плагина завершилась ошибкой: </translation>
     </message>
 </context>
 <context>
