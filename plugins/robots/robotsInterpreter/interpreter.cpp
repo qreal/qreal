@@ -60,7 +60,7 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 
 	mWatchListWindow = new WatchListWindow(mParser, mInterpretersInterface->windowWidget());
 
-	mGraphicsWatch = new SensorsGraph(mParser, mInterpretersInterface->windowWidget());
+	mGraphicsWatch = new sensorsGraph::SensorsGraph(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
@@ -259,10 +259,10 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 		mRobotModel->configureSensors(port1, port2, port3, port4);
 	}
 
-	mGraphicsWatch->addTrackingObject(0, QString("Sensor1"), portUserName(port1));
-	mGraphicsWatch->addTrackingObject(1, QString("Sensor2"), portUserName(port2));
-	mGraphicsWatch->addTrackingObject(2, QString("Sensor3"), portUserName(port3));
-	mGraphicsWatch->addTrackingObject(3, QString("Sensor4"), portUserName(port4));
+	mGraphicsWatch->addTrackingObject(0, QString("Sensor1"), SensorEnumerator::sensorName(port1));
+	mGraphicsWatch->addTrackingObject(1, QString("Sensor2"), SensorEnumerator::sensorName(port2));
+	mGraphicsWatch->addTrackingObject(2, QString("Sensor3"), SensorEnumerator::sensorName(port3));
+	mGraphicsWatch->addTrackingObject(3, QString("Sensor4"), SensorEnumerator::sensorName(port4));
 }
 
 void Interpreter::addThread(details::Thread * const thread)
@@ -375,24 +375,6 @@ void Interpreter::resetVariables()
 	responseSlot4(resetValue);
 }
 
-QString Interpreter::portUserName(sensorType::SensorTypeEnum const portType)
-{
-	int const sensorTypeCount = 11;
-	QString const portNames[sensorTypeCount] = {
-			tr("unused")
-			, tr("touchBoolean")
-			, tr("touchRaw")
-			, tr("sonar")
-			, tr("light")
-			, tr("colorFull")
-			, tr("colorRed")
-			, tr("colorGreen")
-			, tr("colorBlue")
-			, tr("colorNone")
-			, tr("encoder")};
-	return portNames[static_cast<int>(portType)];
-}
-
 void Interpreter::connectToRobot()
 {
 	if (mConnected) {
@@ -452,7 +434,7 @@ WatchListWindow *Interpreter::watchWindow() const
 	return mWatchListWindow;
 }
 
-SensorsGraph *Interpreter::graphicsWatchWindow() const
+sensorsGraph::SensorsGraph *Interpreter::graphicsWatchWindow() const
 {
 	return mGraphicsWatch;
 }

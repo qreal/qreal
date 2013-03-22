@@ -4,14 +4,10 @@
 #include <QtGui/QPainter>
 #include <QtGui/QRadialGradient>
 
-namespace qReal
-{
-namespace interpreters
-{
-namespace robots
-{
-namespace sensorsGraph
-{
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace sensorsGraph {
 
 //! @class KeyPoint It's yellow circle on plot, source of points
 class KeyPoint : public QGraphicsItem

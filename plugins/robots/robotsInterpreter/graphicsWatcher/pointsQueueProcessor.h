@@ -4,14 +4,10 @@
 #include <QtCore/QPointF>
 #include <limits>
 
-namespace qReal
-{
-namespace interpreters
-{
-namespace robots
-{
-namespace sensorsGraph
-{
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace sensorsGraph {
 
 //! @class PointsQueueProcessor provides all necessary transformations with points
 /*! Features: scaling by search of peaks on plot
@@ -44,8 +40,10 @@ public:
 	*/
 	void checkPeaks();
 
+	void setViewParams(qreal const viewPortHeight, qreal const leftLimit);
+
 	//! get new position for KeyPoint
-    QPointF latestPosition() const;
+	QPointF latestPosition() const;
 	qreal latestValue() const;
 
 	//! get points data to draw a plot
@@ -55,10 +53,14 @@ public:
 	qreal maxLimit() const;
 
 	qreal absoluteValueToPoint(qreal const value) const;
-	qreal pointToAbsoluteValue(qreal const yValue, qreal const minValue, qreal const maxValue) const;
+	qreal pointToAbsoluteValue(qreal const yValue, qreal const minValue
+			, qreal const maxValue, qreal const graphHeight) const;
+	qreal pointToAbsoluteValue(qreal const yValue) const;
 
 protected:
-	void recalcPointsQueue(qreal const oldMin, qreal const oldMax);
+	void recalcPointsQueue(qreal const oldMin, qreal const oldMax, qreal const oldViewHeight);
+	//! Removes last values if they have no difference
+	void filterLastValues();
 
 	QList<QPointF> mPointsQueue;
 	qreal mMinCurrent;

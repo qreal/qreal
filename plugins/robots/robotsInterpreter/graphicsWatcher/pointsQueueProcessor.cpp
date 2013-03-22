@@ -6,9 +6,8 @@ PointsQueueProcessor::PointsQueueProcessor(const qreal viewPortHeight, const qre
 	: mMinCurrent(0)
 	, mMaxCurrent(1)
 	, mNextToDraw(QPointF(0, -80))
-	, mGraphHeight(viewPortHeight)
-	, mLeftLimit(leftLimit)
 {
+	setViewParams(viewPortHeight, leftLimit);
 }
 
 PointsQueueProcessor::~PointsQueueProcessor()
@@ -28,19 +27,32 @@ void PointsQueueProcessor::addNewValue(qreal const newValue)
 	}
 
 	if (oldMax != mMaxCurrent || oldMin != mMinCurrent) {
-		recalcPointsQueue(oldMin, oldMax);
+		recalcPointsQueue(oldMin, oldMax, mGraphHeight);
 	}
 
 	mNextToDraw.setY(absoluteValueToPoint(newValue));
+	filterLastValues();
 	mPointsQueue.append(QPointF(0, absoluteValueToPoint(newValue)));
 }
 
-void PointsQueueProcessor::recalcPointsQueue(qreal const oldMin, qreal const oldMax)
+void PointsQueueProcessor::recalcPointsQueue(qreal const oldMin, qreal const oldMax, qreal const oldViewHeight)
 {
 	qreal currentValue = 0;
 	for (int i = 0; i < mPointsQueue.size(); i++) {
-		currentValue = pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax);
+		currentValue = pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax, oldViewHeight);
 		mPointsQueue[i].setY(absoluteValueToPoint(currentValue));
+	}
+}
+
+void PointsQueueProcessor::filterLastValues()
+{
+	if (mPointsQueue.size() < 2) {
+		return;
+	}
+
+	qreal const filterPixelDiff = 2;
+	if (qAbs(mPointsQueue.at(mPointsQueue.size() - 2).y() - mPointsQueue.last().y()) < filterPixelDiff) {
+		mPointsQueue.removeLast();
 	}
 }
 
@@ -48,7 +60,7 @@ void PointsQueueProcessor::makeShiftLeft(qreal const step)
 {
 	mPointsQueue.append(latestPosition());
 	for (int i = 0; i < mPointsQueue.size(); i++) {
-		mPointsQueue[i].setX(mPointsQueue[i].x() - step );
+		mPointsQueue[i].setX(mPointsQueue[i].x() - step);
 		if (mPointsQueue[i].x() < mLeftLimit) {
 			mPointsQueue.removeAt(i--);
 		}
@@ -62,10 +74,10 @@ qreal PointsQueueProcessor::absoluteValueToPoint(qreal const value) const
 	return ((value - mMinCurrent) / (mMaxCurrent - mMinCurrent) * mGraphHeight + verticalBounds) * invertCoordSys;
 }
 
-qreal PointsQueueProcessor::pointToAbsoluteValue(const qreal yValue, const qreal minValue
-		, const qreal maxValue) const
+qreal PointsQueueProcessor::pointToAbsoluteValue(qreal const yValue, qreal const minValue
+		, qreal const maxValue, qreal const graphHeight) const
 {
-	return (((maxValue - minValue) * (-yValue - 10)) / mGraphHeight) + minValue;
+	return (((maxValue - minValue) * (-yValue - 10)) / graphHeight) + minValue;
 }
 
 void PointsQueueProcessor::clearData()
@@ -82,7 +94,7 @@ QPointF PointsQueueProcessor::latestPosition() const
 
 qreal PointsQueueProcessor::latestValue() const
 {
-	return pointToAbsoluteValue(mNextToDraw.y(), mMinCurrent, mMaxCurrent);
+	return pointToAbsoluteValue(mNextToDraw.y(), mMinCurrent, mMaxCurrent, mGraphHeight);
 }
 
 QList<QPointF> *PointsQueueProcessor::pointsBase()
@@ -99,15 +111,23 @@ void PointsQueueProcessor::checkPeaks()
 	mMinCurrent = std::numeric_limits<qreal>::max();
 
 	for (int i = 0; i < mPointsQueue.size(); i++) {
-		if (pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax) > mMaxCurrent) {
-			mMaxCurrent = pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax);
+		if (pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax, mGraphHeight) > mMaxCurrent) {
+			mMaxCurrent = pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax, mGraphHeight);
 		}
-		if (pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax) < mMinCurrent) {
-			mMinCurrent = pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax);
+		if (pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax, mGraphHeight) < mMinCurrent) {
+			mMinCurrent = pointToAbsoluteValue(mPointsQueue[i].y(), oldMin, oldMax, mGraphHeight);
 		}
 	}
 
-	recalcPointsQueue(oldMin, oldMax);
+	recalcPointsQueue(oldMin, oldMax, mGraphHeight);
+}
+
+void PointsQueueProcessor::setViewParams(qreal const viewPortHeight, qreal const leftLimit)
+{
+	qreal const oldViewHeight = mGraphHeight;
+	mGraphHeight = viewPortHeight;
+	recalcPointsQueue(mMinCurrent, mMaxCurrent, oldViewHeight);
+	mLeftLimit = leftLimit;
 }
 
 qreal PointsQueueProcessor::minLimit() const

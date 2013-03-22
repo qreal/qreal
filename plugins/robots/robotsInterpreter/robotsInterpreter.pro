@@ -32,11 +32,11 @@ HEADERS += \
 	details/abstractTimer.h \
 	details/realTimer.h \
 	details/sensorsConfigurationWidget.h \
-    details/nullTimer.h \
-    graphicsWatcher/pointsQueueProcessor.h \
-    graphicsWatcher/keyPoint.h \
-    graphicsWatcher/sensorsGraph.h \
-    graphicsWatcher/sensorViewer.h
+	details/nullTimer.h \
+	graphicsWatcher/pointsQueueProcessor.h \
+	graphicsWatcher/keyPoint.h \
+	graphicsWatcher/sensorsGraph.h \
+	graphicsWatcher/sensorViewer.h
 
 SOURCES += \
 	robotsPlugin.cpp \
@@ -54,18 +54,19 @@ SOURCES += \
 	details/abstractTimer.cpp \
 	details/realTimer.cpp \
 	details/sensorsConfigurationWidget.cpp \
-    details/nullTimer.cpp \
-    graphicsWatcher/pointsQueueProcessor.cpp \
-    graphicsWatcher/keyPoint.cpp \
-    graphicsWatcher/sensorsGraph.cpp \
-    graphicsWatcher/sensorViewer.cpp
+	details/nullTimer.cpp \
+	graphicsWatcher/pointsQueueProcessor.cpp \
+	graphicsWatcher/keyPoint.cpp \
+	graphicsWatcher/sensorsGraph.cpp \
+	graphicsWatcher/sensorViewer.cpp \
+	sensorConstants.cpp
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
 	watchListWindow.ui \
 	details/sensorsConfigurationWidget.ui \
-    graphicsWatcher/sensorsGraph.ui
+	graphicsWatcher/sensorsGraph.ui
 
 RESOURCES += \
 	robotsInterpreter.qrc \

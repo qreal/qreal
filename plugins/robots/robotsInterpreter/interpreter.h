@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtGui/QMainWindow>
 
 #include "../../../qrkernel/ids.h"
 
@@ -61,7 +62,7 @@ public:
 
 	WatchListWindow *watchWindow() const;
 
-	SensorsGraph *graphicsWatchWindow() const;
+	sensorsGraph::SensorsGraph *graphicsWatchWindow() const;
 
 	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
@@ -97,7 +98,6 @@ private:
 	void addThread(details::Thread * const thread);
 	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
 	void resetVariables();
-	QString portUserName(sensorType::SensorTypeEnum const portType);
 
 	enum InterpreterState {
 		interpreting
@@ -125,7 +125,7 @@ private:
 
 	WatchListWindow *mWatchListWindow;
 
-	SensorsGraph *mGraphicsWatch;
+	sensorsGraph::SensorsGraph *mGraphicsWatch;
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;

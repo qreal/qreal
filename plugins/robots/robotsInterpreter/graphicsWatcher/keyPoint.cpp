@@ -18,6 +18,7 @@ void KeyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 	Q_UNUSED(option)
 	Q_UNUSED(widget)
 
+	painter->save();
 	painter->setPen(Qt::NoPen);
 
 	QRadialGradient gradient(0, 0, 10);
@@ -30,4 +31,5 @@ void KeyPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 	painter->setPen(Qt::NoPen);
 	painter->drawEllipse(mVisualArea);
+	painter->restore();
 }

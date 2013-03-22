@@ -7,14 +7,10 @@
 #include "keyPoint.h"
 #include "pointsQueueProcessor.h"
 
-namespace qReal
-{
-namespace interpreters
-{
-namespace robots
-{
-namespace sensorsGraph
-{
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace sensorsGraph {
 
 class SensorViewer : public QGraphicsView
 {
@@ -24,6 +20,8 @@ public:
 	explicit SensorViewer(QWidget *parent = 0);
 	~SensorViewer();
 
+	void resizeEvent(QResizeEvent *event = 0);
+
 public slots:
 	void setNextValue(qreal const newValue);
 	void startJob();
@@ -31,7 +29,7 @@ public slots:
 	void clear();
 	void zoomIn();
 	void zoomOut();
-	void onSensorChange(int const newSensorIndex);
+	void onSensorChange();
 
 protected:
 	void drawNextFrame();
@@ -51,7 +49,7 @@ private:
 
 	static int const fpsDelay = 50;
 	//! @variable autoScaleInterval time in milliseconds
-	static int const autoScaleInterval = 4000;
+	static int const autoScaleInterval = 3200;
 	//! update interval of current value
 	static int const updateOutputInterval = 800;
 	//! shift in pixels each frame

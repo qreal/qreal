@@ -23,6 +23,13 @@ SensorViewer::~SensorViewer()
 	delete mScene;
 }
 
+void SensorViewer::resizeEvent(QResizeEvent *event)
+{
+	Q_UNUSED(event);
+	mScene->setSceneRect(sceneRect());
+	mPointsDataProcessor->setViewParams(mScene->sceneRect().height() - 20, mScene->sceneRect().left());
+}
+
 void SensorViewer::initGraphicsOutput()
 {
 	mScene = new QGraphicsScene(this);
@@ -33,12 +40,11 @@ void SensorViewer::initGraphicsOutput()
 	setRenderHint(QPainter::Antialiasing, false);
 	setDragMode(QGraphicsView::ScrollHandDrag);
 
-    // This makes information on left side actual
+	// This makes information on left side actual
 	setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	setCacheMode(CacheNone);
-	setMinimumSize(205, 160);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -71,7 +77,7 @@ void SensorViewer::clear()
 	}
 
 	// why matrix().reset() doesnt work ?
-	QMatrix defaultMatrix ;
+	QMatrix defaultMatrix;
 	setMatrix(defaultMatrix);
 }
 
@@ -95,11 +101,11 @@ void SensorViewer::drawNextFrame()
 		delete curLine;
 	}
 
-	QPen regularPen = QPen(mPenBrush, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+	QPen const regularPen = QPen(mPenBrush, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 	QLineF quantOfGraph;
 	for (int i = 0; i < mPointsDataProcessor->pointsBase()->size() - 1; i++) {
 		quantOfGraph = QLineF(mPointsDataProcessor->pointsBase()->at(i)
-				, mPointsDataProcessor->pointsBase()->at(i + 1));
+							  , mPointsDataProcessor->pointsBase()->at(i + 1));
 		mScene->addLine(quantOfGraph, regularPen);
 	}
 }
@@ -173,34 +179,13 @@ void SensorViewer::zoomOut()
 	mScaleCoefficient--;
 }
 
-void SensorViewer::onSensorChange(const int newSensorIndex)
+void SensorViewer::onSensorChange()
 {
 	clear();
-	switch(newSensorIndex)
-	{
-	case 3:
-	{
+
+	if (mPenBrush.color().toCmyk() == QColor(Qt::yellow).toCmyk()) {
 		mPenBrush = QBrush(Qt::green);
-		break;
-	}
-	case 2:
-	{
-		mPenBrush = QBrush(Qt::red);
-		break;
-	}
-	case 1:
-	{
-		mPenBrush = QBrush(Qt::lightGray);
-		break;
-	}
-	case 0:
-	{
+	} else {
 		mPenBrush = QBrush(Qt::yellow);
-		break;
-	}
-	default:
-	{
-		mPenBrush = QBrush(Qt::yellow);
-	}
 	}
 }

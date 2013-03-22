@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>237</width>
+    <width>270</width>
     <height>250</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>205</width>
-    <height>200</height>
+    <width>150</width>
+    <height>150</height>
    </size>
   </property>
   <property name="font">
@@ -30,13 +30,16 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>211</width>
-     <height>151</height>
+     <width>251</width>
+     <height>221</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="mainLayout" columnminimumwidth="0">
+   <layout class="QGridLayout" name="mainLayout">
     <property name="sizeConstraint">
-     <enum>QLayout::SetFixedSize</enum>
+     <enum>QLayout::SetMinAndMaxSize</enum>
+    </property>
+    <property name="bottomMargin">
+     <number>10</number>
     </property>
    </layout>
   </widget>
