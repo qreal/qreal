@@ -88,7 +88,10 @@ class SdfIconEngineV2: public SdfIconEngineV2Interface
 public:
 	SdfIconEngineV2(QString const &file);
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
-	virtual QIconEngine *clone() const {}
+	virtual QIconEngine *clone() const
+	{
+		return NULL;
+	}
 private:
 	SdfRenderer mRenderer;
 };
