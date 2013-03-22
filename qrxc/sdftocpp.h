@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
 #include <QPen>
 #include <QBrush>
@@ -69,7 +69,7 @@ private:
 	bool while_condition(QString str, int i);
 };
 
-class SdfIconEngineV2: public QIconEngineV2
+class SdfIconEngineV2: public QIconEngine
 {
 public:
 	SdfIconEngineV2(QString const &file);

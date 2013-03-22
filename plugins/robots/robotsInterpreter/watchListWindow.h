@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QtCore/QTimer>
-#include <QtGui/QDialog>
-#include <QtGui/QDockWidget>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QDockWidget>
 
 #include "../../../qrutils/expressionsParser/expressionsParser.h"
 

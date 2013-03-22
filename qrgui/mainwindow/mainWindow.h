@@ -3,10 +3,10 @@
 #include <QtCore/QSignalMapper>
 #include <QtCore/QTranslator>
 #include <QtCore/QDir>
-#include <QtGui/QMainWindow>
-#include <QtGui/QSplashScreen>
-#include <QtGui/QProgressBar>
-#include <QtGui/QListWidget>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QSplashScreen>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QListWidget>
 #include <QtSql/QSqlDatabase>
 
 #include "mainWindowInterpretersInterface.h"

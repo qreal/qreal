@@ -1,16 +1,16 @@
 #pragma once
 
-#include <QTreeWidget>
+#include <QtWidgets/QTreeWidget>
 #include <QtCore/QHash>
 #include <QtCore/QSettings>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtGui/QIcon>
-#include <QtGui/QToolButton>
-#include <QtGui/QComboBox>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QVBoxLayout>
 #include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 namespace  qReal{
 namespace gui{

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsLineItem>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsLineItem>
 #include <QtCore/QSignalMapper>
 
 #include "../../qrkernel/roles.h"

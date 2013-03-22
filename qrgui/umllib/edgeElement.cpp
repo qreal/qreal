@@ -1,10 +1,10 @@
 /** @file edgeelement.cpp
  * 	@brief class for an edge on a diagram
  * */
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtGui/QStyle>
+#include <QtWidgets/QStyleOptionGraphicsItem>
+#include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 #include <QDebug>
 #include <math.h>
 
@@ -317,8 +317,8 @@ void EdgeElement::updateLongestPart()
 
 		QLineF longest(mLine[maxIdx], mLine[mLongPart + 1]);
 
-		if (mChaoticEdition)
-			title->rotate(-lineAngle(longest));
+//		if (mChaoticEdition)
+//			title->rotate(-lineAngle(longest));
 	}
 }
 

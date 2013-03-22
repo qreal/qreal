@@ -1,6 +1,6 @@
 #include "element.h"
 
-#include <QtGui>
+#include <QtWidgets>
 
 using namespace qReal;
 

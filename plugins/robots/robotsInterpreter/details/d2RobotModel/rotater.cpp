@@ -1,5 +1,5 @@
-#include <QtGui/QCursor>
-#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtWidgets/QCursor>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 #include <qmath.h>
 
 #include "rotater.h"

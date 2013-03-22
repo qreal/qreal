@@ -8,6 +8,8 @@ RCC_DIR = .moc
 
 LIBS += -L../../bin -lqrkernel -lqrutils
 
+QT += widgets
+
 TRANSLATIONS = visualInterpreter_ru.ts
 
 HEADERS = \

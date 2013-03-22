@@ -1,11 +1,11 @@
 #include "sdftocpp.h"
 
-#include <QMessageBox>
-#include <QFont>
-#include <QIcon>
-#include <QLineF>
-#include <QTime>
-#include <QDebug>
+#include <QtWidgets/QMessageBox>
+#include <QtGui/QFont>
+#include <QtGui/QIcon>
+#include <QtCore/QLineF>
+#include <QtCore/QTime>
+#include <QtCore/QDebug>
 
 SdfRenderer::SdfRenderer()
 	: mStartX(0), mStartY(0), mNeedScale(true)

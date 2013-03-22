@@ -1,5 +1,5 @@
-#include <QtGui/QTabWidget>
-#include <QtGui/QCommandLinkButton>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QCommandLinkButton>
 
 #include "startDialog.h"
 #include "suggestToCreateDiagramWidget.h"

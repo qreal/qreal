@@ -1,13 +1,13 @@
 #pragma once
 
-#include <QtGui/QWidget>
-#include <QtGui/QGraphicsRectItem>
-#include <QtGui/QPolygonF>
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGraphicsRectItem>
+#include <QtWidgets/QPolygonF>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtCore/QSignalMapper>
-#include <QtGui/QComboBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QButtonGroup>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QButtonGroup>
 
 #include "lineItem.h"
 #include "stylusItem.h"

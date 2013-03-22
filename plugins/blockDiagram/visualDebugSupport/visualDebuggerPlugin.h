@@ -25,6 +25,7 @@ class VisualDebuggerPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.visualDebugger.VisualDebuggerPlugin")
 
 public:
 	VisualDebuggerPlugin();

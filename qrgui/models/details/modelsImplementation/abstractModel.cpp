@@ -180,7 +180,8 @@ void AbstractModel::reinit()
 	mModelItems.clear();
 	delete mRootItem;
 	mRootItem = createModelItem(Id::rootId(), NULL);
-	reset();
+	beginResetModel();
+	endResetModel();
 	init();
 }
 

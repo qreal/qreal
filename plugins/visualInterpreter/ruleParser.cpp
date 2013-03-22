@@ -23,8 +23,8 @@ QString RuleParser::parseElemName(QString const &stream, int &pos)
 
 	QString const name = parseIdentifier(stream, pos);
 
-	if (!isPoint(stream.at(pos).toAscii())) {
-		error(unexpectedSymbol, QString::number(pos), ".", QString(stream.at(pos).toAscii()));
+	if (!isPoint(stream.at(pos).toLatin1())) {
+		error(unexpectedSymbol, QString::number(pos), ".", QString(stream.at(pos).toLatin1()));
 		return "";
 	}
 
@@ -144,14 +144,14 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 		return;
 	}
 
-	if (stream.at(pos).toAscii() == '"') {
+	if (stream.at(pos).toLatin1() == '"') {
 		pos++;
 		QString const value = stream.mid(pos, stream.indexOf("\"", pos) - pos);
 		pos += value.length();
 
-		if (stream.at(pos).toAscii() != '"') {
+		if (stream.at(pos).toLatin1() != '"') {
 			error(unexpectedSymbol, QString::number(pos)
-					, "\"", QString(stream.at(pos).toAscii()));
+					, "\"", QString(stream.at(pos).toLatin1()));
 			return;
 		}
 
@@ -187,7 +187,7 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 			value = "false";
 		}
 
-		QChar c = stream.at(pos + len).toAscii();
+		QChar c = stream.at(pos + len).toLatin1();
 		if (!isDigit(c) && !isLetter(c)) {
 			pos += len;
 			skip(stream, pos);
@@ -388,7 +388,7 @@ void RuleParser::parseVarPart(QString const &stream, int &pos)
 				pos += 7;
 			}
 			skip(stream, pos);
-			while (pos < stream.length() && stream.at(pos).toAscii() != ';') {
+			while (pos < stream.length() && stream.at(pos).toLatin1() != ';') {
 				skip(stream, pos);
 				QString const variable = parseIdentifier(stream, pos);
 				if (hasErrors()) {
@@ -400,7 +400,7 @@ void RuleParser::parseVarPart(QString const &stream, int &pos)
 				if (isEndOfStream(stream, pos)) {
 					return;
 				}
-				switch (stream.at(pos).toAscii()) {
+				switch (stream.at(pos).toLatin1()) {
 				case '=':
 					pos++;
 					skip(stream, pos);
@@ -416,10 +416,10 @@ void RuleParser::parseVarPart(QString const &stream, int &pos)
 						error(unexpectedEndOfStream, QString::number(pos + 1));
 						return;
 					}
-					if (stream.at(pos).toAscii() == ';') {
+					if (stream.at(pos).toLatin1() == ';') {
 						error(unexpectedSymbol, QString::number(pos + 1),
 								tr("\'letter"),
-								QString(stream.at(pos).toAscii())
+								QString(stream.at(pos).toLatin1())
 						);
 						return;
 					}

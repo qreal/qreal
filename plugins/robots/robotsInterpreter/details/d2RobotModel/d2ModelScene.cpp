@@ -1,5 +1,5 @@
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QKeyEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QKeyEvent>
 
 #include "d2ModelScene.h"
 

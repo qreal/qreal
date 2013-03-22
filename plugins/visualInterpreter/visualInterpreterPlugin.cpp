@@ -1,14 +1,12 @@
 #include "visualInterpreterPlugin.h"
 
 #include <QtCore/QProcess>
-#include <QtGui/QApplication>
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QFileDialog>
 
 #include "../../../qrutils/xmlUtils.h"
 #include "../../../qrutils/outFile.h"
 #include "../../../qrkernel/settingsManager.h"
-
-Q_EXPORT_PLUGIN2(visualInterpreter, qReal::visualInterpreter::VisualInterpreterPlugin)
 
 using namespace qReal;
 using namespace visualInterpreter;

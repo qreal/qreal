@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
 #include <QPen>
 #include <QBrush>
@@ -88,6 +88,7 @@ class SdfIconEngineV2: public SdfIconEngineV2Interface
 public:
 	SdfIconEngineV2(QString const &file);
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
+	virtual QIconEngine *clone() const {}
 private:
 	SdfRenderer mRenderer;
 };

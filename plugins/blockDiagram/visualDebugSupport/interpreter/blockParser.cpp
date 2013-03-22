@@ -34,7 +34,7 @@ void BlockParser::parseVarPart(QString const &stream, int &pos)
 				pos += 7;
 			}
 			skip(stream, pos);
-			while (pos < stream.length() && stream.at(pos).toAscii() != ';') {
+			while (pos < stream.length() && stream.at(pos).toLatin1() != ';') {
 				skip(stream, pos);
 				QString const variable = parseIdentifier(stream, pos);
 				if (hasErrors()) {
@@ -46,7 +46,7 @@ void BlockParser::parseVarPart(QString const &stream, int &pos)
 				if (isEndOfStream(stream, pos)) {
 					return;
 				}
-				switch (stream.at(pos).toAscii()) {
+				switch (stream.at(pos).toLatin1()) {
 				case '=':
 					pos++;
 					skip(stream, pos);
@@ -62,10 +62,10 @@ void BlockParser::parseVarPart(QString const &stream, int &pos)
 						error(unexpectedEndOfStream, QString::number(pos+1));
 						return;
 					}
-					if (stream.at(pos).toAscii() == ';') {
+					if (stream.at(pos).toLatin1() == ';') {
 						error(unexpectedSymbol, QString::number(pos + 1),
 								tr("\'letter"),
-								QString(stream.at(pos).toAscii())
+								QString(stream.at(pos).toLatin1())
 						);
 						return;
 					}

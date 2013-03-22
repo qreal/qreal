@@ -3,7 +3,7 @@
 #include <QtCore/QPoint>
 #include <QtCore/QList>
 #include <QtCore/QPair>
-#include <QtGui/QPolygon>
+#include <QtWidgets/QPolygon>
 #include <QtGui/QPainterPath>
 #include <QtXml/QDomDocument>
 

@@ -1,8 +1,8 @@
-#include <QtGui/QGraphicsTextItem>
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QGraphicsDropShadowEffect>
-#include <QtGui/QMenu>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QGraphicsTextItem>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QGraphicsDropShadowEffect>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMessageBox>
 
 #include "editorViewScene.h"
 #include "math.h"
@@ -976,7 +976,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	// Let scene update selection and perform other operations
-	QGraphicsItem* item = itemAt(mCurrentMousePos);
+	QGraphicsItem* item = itemAt(mCurrentMousePos, QTransform());
 	if (event->modifiers() & Qt::ControlModifier) {
 		if (item) {
 			QGraphicsScene::mousePressEvent(event);
@@ -994,7 +994,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		foreach (QGraphicsItem* item, *mSelectList) {
 			item->setSelected(true);
 		}
-		QGraphicsItem* item = itemAt(mCurrentMousePos);
+		QGraphicsItem* item = itemAt(mCurrentMousePos, QTransform());
 		if (item) {
 			item->setSelected(!mSelectList->contains(item));
 			if (item->isSelected()) {
@@ -1007,7 +1007,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	if (event->button() == Qt::LeftButton) {
 		mLeftButtonPressed = true;
-		QGraphicsItem *item = itemAt(event->scenePos());
+		QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
 		ElementTitle *title = dynamic_cast < ElementTitle *>(item);
 
 		if (title) { // check whether we accidently clicked on a title or not
@@ -1220,7 +1220,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			} else {
 				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem) {
-					Element *e = dynamic_cast<Element *>(itemAt(event->scenePos()));
+					Element *e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
 					if ((e && (nodeItem->id() != e->id())) || !e) {
 						sendEvent(item, event);
 					}
@@ -1302,14 +1302,14 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton && !event->modifiers()) {
 		// Double click on a title activates it
-		if (ElementTitle *title = dynamic_cast<ElementTitle*>(itemAt(event->scenePos()))) {
+		if (ElementTitle *title = dynamic_cast<ElementTitle*>(itemAt(event->scenePos(), QTransform()))) {
 			if (!title->hasFocus()) {  // Do not activate already activated item
 				event->accept();
 				title->startTextInteraction();
 				return;
 			}
 		}
-		else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos()))) {
+		else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
 			event->accept();
 			IdList outgoingLinks = mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId());
 			if (outgoingLinks.size() > 0) {
@@ -1327,7 +1327,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 
-	Element *e = dynamic_cast<Element *>(itemAt(event->scenePos()));
+	Element *e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
 	if (e && e->isSelected() && !event->modifiers()) {
 		mainWindow()->graphicalModelExplorer()->setFocus();
 		mView->ensureElementVisible(e);

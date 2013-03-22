@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPen>
 #include <QtGui/QBrush>
-#include <QtGui/QGraphicsView>
+#include <QtWidgets/QGraphicsView>
 #include <QtXml/QDomDocument>
 #include <QtCore/QPair>
 #include <QtCore/QList>

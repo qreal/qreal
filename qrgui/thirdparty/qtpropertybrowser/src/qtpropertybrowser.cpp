@@ -42,7 +42,7 @@
 #include <QtCore/QSet>
 #include <QtCore/QMap>
 #include <QtGui/QIcon>
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QLineEdit>
 
 #if defined(Q_CC_MSVC)
 #    pragma warning(disable: 4786) /* MS VS 6: truncating debug info after 255 characters */

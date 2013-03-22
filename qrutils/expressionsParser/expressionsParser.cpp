@@ -27,76 +27,76 @@ QMap<QString, QString>* ExpressionsParser::getVariablesForWatch() const
 
 bool ExpressionsParser::isDigit(const QChar &c) const
 {
-	char symbol = c.toAscii();
+	char symbol = c.toLatin1();
 	return '0' <= symbol && symbol <= '9';
 }
 
 bool ExpressionsParser::isSign(const QChar &c) const
 {
-	char symbol = c.toAscii();
+	char symbol = c.toLatin1();
 	return symbol == '-' || symbol == '+';
 }
 
 bool ExpressionsParser::isLetter(const QChar &c) const
 {
-	char symbol = c.toAscii();
+	char symbol = c.toLatin1();
 	return ('A' <= symbol && symbol <= 'Z') || ('a'<= symbol && symbol <= 'z');
 }
 
 bool ExpressionsParser::isExp(const QChar &c) const
 {
-	char symbol = c.toAscii();
+	char symbol = c.toLatin1();
 	return symbol == 'e' || symbol == 'E';
 }
 
 bool ExpressionsParser::isPoint(const QChar &c) const
 {
-	return c.toAscii() == '.';
+	return c.toLatin1() == '.';
 }
 
 bool ExpressionsParser::isRoundBracket(const QChar &c) const
 {
-	char symbol = c.toAscii();
+	char symbol = c.toLatin1();
 	return symbol == '(' || symbol == ')';
 }
 
 bool ExpressionsParser::isDisjunction(const QChar &c) const
 {
-	return c.toAscii() == '|';
+	return c.toLatin1() == '|';
 }
 
 bool ExpressionsParser::isConjunction(const QChar &c) const
 {
-	return c.toAscii() == '&';
+	return c.toLatin1() == '&';
 }
 
 bool ExpressionsParser::isComparison(const QChar &c) const
 {
-	char symbol = c.toAscii();
+	char symbol = c.toLatin1();
 	return symbol == '<' || symbol == '>';
 }
 
 bool ExpressionsParser::isArithmeticalMinusOrPlus(const QChar &c) const
 {
-	char symbol = c.toAscii();
+	char symbol = c.toLatin1();
 	return symbol == '-' || symbol == '+';
 }
 
 bool ExpressionsParser::isMultiplicationOrDivision(const QChar &c) const
 {
-	char symbol = c.toAscii();
+	char symbol = c.toLatin1();
 	return symbol == '*' || symbol == '/';
 }
 
 bool ExpressionsParser::isDelimiter(const QChar &c) const
 {
-	char symbol = c.toAscii();
+	char symbol = c.toLatin1();
 	return symbol == '\n' || symbol == '\r' || symbol == ' ' || symbol == '\t';
 }
 
 bool ExpressionsParser::isAssignment(const QChar &c) const
 {
-	return c.toAscii() == '=';
+	return c.toLatin1() == '=';
 }
 
 Number ExpressionsParser::parseNumber(const QString &stream, int &pos)
@@ -169,13 +169,13 @@ QString ExpressionsParser::parseIdentifier(const QString &stream, int &pos)
 void ExpressionsParser::skip(const QString &stream, int &pos) const
 {
 	while (pos < stream.length() &&
-		   (isDelimiter(stream.at(pos)) || stream.at(pos).toAscii() == '<' ))
+		   (isDelimiter(stream.at(pos)) || stream.at(pos).toLatin1() == '<' ))
 	{
 		if (isHtmlBrTag(stream, pos)) {
 			pos += 4;
 			return;
 		}
-		if (stream.at(pos).toAscii() == '<') {
+		if (stream.at(pos).toLatin1() == '<') {
 			return;
 		}
 		pos++;
@@ -185,10 +185,10 @@ void ExpressionsParser::skip(const QString &stream, int &pos) const
 bool ExpressionsParser::isHtmlBrTag(const QString &stream, int &pos) const
 {
 	if (pos + 3 < stream.length()) {
-		return stream.at(pos).toAscii() == '<'
-				&& stream.at(pos + 1).toAscii() == 'b'
-				&& stream.at(pos + 2).toAscii() == 'r'
-				&& stream.at(pos + 3).toAscii() == '>';
+		return stream.at(pos).toLatin1() == '<'
+				&& stream.at(pos + 1).toLatin1() == 'b'
+				&& stream.at(pos + 2).toLatin1() == 'r'
+				&& stream.at(pos + 3).toLatin1() == '>';
 	} else {
 		return false;
 	}
@@ -203,7 +203,7 @@ Number ExpressionsParser::parseTerm(const QString &stream, int &pos)
 		return Number();
 	}
 
-	switch (stream.at(pos).toAscii()) {
+	switch (stream.at(pos).toLatin1()) {
 	case '+':
 		pos++;
 		skip(stream, pos);
@@ -262,7 +262,7 @@ Number ExpressionsParser::parseMult(const QString &stream, int &pos)
 	Number res = parseTerm(stream, pos);
 	while (pos < stream.length() && isMultiplicationOrDivision(stream.at(pos))) {
 		pos++;
-		switch (stream.at(pos - 1).toAscii()) {
+		switch (stream.at(pos - 1).toLatin1()) {
 		case '*':
 			res *= parseTerm(stream, pos);
 			break;
@@ -279,7 +279,7 @@ Number ExpressionsParser::parseExpression(const QString &stream, int &pos)
 	Number res = parseMult(stream, pos);
 	while (pos < stream.length() && isArithmeticalMinusOrPlus(stream.at(pos))) {
 		pos++;
-		switch (stream.at(pos - 1).toAscii()) {
+		switch (stream.at(pos - 1).toLatin1()) {
 		case '+':
 			res += parseMult(stream, pos);
 			break;
@@ -361,7 +361,7 @@ bool ExpressionsParser::parseSingleComprasion(const QString &stream, int &pos)
 		return false;
 	}
 
-	switch (stream.at(pos).toAscii()) {
+	switch (stream.at(pos).toLatin1()) {
 	case '=':
 		pos++;
 		if (checkForEqual(stream, pos)) {
@@ -384,7 +384,7 @@ bool ExpressionsParser::parseSingleComprasion(const QString &stream, int &pos)
 		break;
 	case '<':
 		pos++;
-		if (pos < stream.length() && stream.at(pos).toAscii() == '=') {
+		if (pos < stream.length() && stream.at(pos).toLatin1() == '=') {
 			pos++;
 			right = parseExpression(stream, pos);
 			return left <= right;
@@ -395,7 +395,7 @@ bool ExpressionsParser::parseSingleComprasion(const QString &stream, int &pos)
 		break;
 	case '>':
 		pos++;
-		if (pos < stream.length() && stream.at(pos).toAscii() == '=') {
+		if (pos < stream.length() && stream.at(pos).toLatin1() == '=') {
 			pos++;
 			right = parseExpression(stream, pos);
 			return left >= right;
@@ -416,7 +416,7 @@ bool ExpressionsParser::parseDisjunction(const QString &stream, int &pos)
 	skip(stream, pos);
 	int index = stream.indexOf(')', pos);
 
-	switch (stream.at(pos).toAscii()) {
+	switch (stream.at(pos).toLatin1()) {
 	case '(':
 		if ((index < stream.indexOf('<', pos) || stream.indexOf('<', pos) == -1) &&
 				(index < stream.indexOf('>', pos) || stream.indexOf('>', pos) == -1) &&
@@ -555,7 +555,7 @@ bool ExpressionsParser::checkForOpeningBracket(const QString &stream, int &pos)
 	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
-	if (stream.at(pos).toAscii() != '(') {
+	if (stream.at(pos).toLatin1() != '(') {
 		error(unexpectedSymbol, QString::number(pos + 1), "(", QString(stream.at(pos)));
 		return false;
 	}
@@ -567,7 +567,7 @@ bool ExpressionsParser::checkForClosingBracket(const QString &stream, int &pos)
 	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
-	if (stream.at(pos).toAscii() != ')') {
+	if (stream.at(pos).toLatin1() != ')') {
 		error(unexpectedSymbol, QString::number(pos + 1), ")", QString(stream.at(pos)));
 		return false;
 	}
@@ -579,7 +579,7 @@ bool ExpressionsParser::checkForColon(const QString &stream, int &pos)
 	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
-	if (stream.at(pos).toAscii() != ';') {
+	if (stream.at(pos).toLatin1() != ';') {
 		error(unexpectedSymbol, QString::number(pos + 1), ";", QString(stream.at(pos)));
 		return false;
 	}
@@ -591,7 +591,7 @@ bool ExpressionsParser::checkForEqual(const QString &stream, int pos)
 	if (isEndOfStream(stream, pos)) {
 		return false;
 	}
-	if (stream.at(pos).toAscii() != '=') {
+	if (stream.at(pos).toLatin1() != '=') {
 		error(unexpectedSymbol, QString::number(pos + 1), "=", QString(stream.at(pos)));
 		return false;
 	}
