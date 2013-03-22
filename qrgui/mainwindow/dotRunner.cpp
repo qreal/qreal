@@ -24,15 +24,16 @@ void DotRunner::readFromProcess()
 	mData = mProcess.readAllStandardOutput();
 }
 
-void DotRunner::run(QString const &algorithm)
+bool DotRunner::run(QString const &algorithm)
 {
 	mAlgorithm = algorithm;
-	QFile data(mAbsolutePathToDotFiles + "/graph1.dot");
+	QFile data(mAbsolutePathToDotFiles + "/graph.dot");
 	if (data.open(QFile::WriteOnly | QFile::Truncate)) {
 		QTextStream outFile(&data);
 		outFile << "digraph G { \n";
-		if (mAlgorithm != "")
+		if (!mAlgorithm.isEmpty()) {
 			outFile << QString("rankdir=%1; \n").arg(mAlgorithm);
+		}
 		IdList const childrenId = mGraphicalModelApi.children(mDiagramId);
 		int index = 1;
 		foreach (Id id, childrenId) {
@@ -43,12 +44,19 @@ void DotRunner::run(QString const &algorithm)
 		}
 		outFile << "}";
 		data.close();
+		
 		mProcess.setWorkingDirectory(mAbsolutePathToDotFiles);
-		mProcess.start("dot.exe graph1.dot");
-		if (!mProcess.waitForFinished())
-			return;
+		QString const dotPath = SettingsManager::value("pathToDot").toString();
+		mProcess.start(dotPath + " graph.dot");
+		if (!mProcess.waitForFinished()) {
+			data.remove();
+			return false;
+		}
 		parseDOTCoordinates();
+		data.remove();
+		return true;
 	}
+	return false;
 }
 
 void DotRunner::writeGraphToDotFile(QTextStream &outFile, const Id &id)

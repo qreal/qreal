@@ -9,16 +9,22 @@ using namespace qReal::interpreters::robots;
 PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesRobotSettingsPage)
+		, mSensorsWidget(new details::SensorsConfigurationWidget(false))
 {
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
 
 	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
 	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
+	connect(mUi->bluetoothRadioButton, SIGNAL(toggled(bool)), this, SLOT(bluetoothCommunucationToggled()));
 	connect(mUi->manualComPortCheckbox, SIGNAL(toggled(bool)), this, SLOT(manualComPortCheckboxChecked(bool)));
 
+	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
+	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
+	connect(mUi->realModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
+
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
-	QString const defaultPortName = SettingsManager::value("bluetoothPortName", "").toString();
+	QString const defaultPortName = SettingsManager::value("bluetoothPortName").toString();
 
 	if (ports.isEmpty()) {
 		mUi->comPortComboBox->hide();
@@ -49,42 +55,19 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 		}
 	}
 
-	if (SettingsManager::value("manualComPortCheckboxChecked", "false").toBool()) {
-		mUi->manualComPortCheckbox->setChecked(true);
-	}
+	mUi->manualComPortCheckbox->setChecked(SettingsManager::value("manualComPortCheckboxChecked").toBool());
 
-	QStringList sensorNames;
-	sensorNames << tr("Unused")
-			<< tr("Touch sensor (boolean value)")
-			<< tr("Touch sensor (raw value)")
-			<< tr("Sonar sensor")
-			<< tr("Color sensor (full colors)")
-			<< tr("Color sensor (red)")
-			<< tr("Color sensor (green)")
-			<< tr("Color sensor (blue)")
-			<< tr("Color sensor (passive)")
-	;
+	QVBoxLayout *sensorsLayout = new QVBoxLayout;
+	sensorsLayout->addWidget(mSensorsWidget);
+	mUi->sensorsSettingsGroupBox->setLayout(sensorsLayout);
 
-	mUi->port1ComboBox->addItems(sensorNames);
-	mUi->port2ComboBox->addItems(sensorNames);
-	mUi->port3ComboBox->addItems(sensorNames);
-	mUi->port4ComboBox->addItems(sensorNames);
-
-	sensorType::SensorTypeEnum const port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType", "0").toInt());
-	sensorType::SensorTypeEnum const port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType", "0").toInt());
-	sensorType::SensorTypeEnum const port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType", "0").toInt());
-	sensorType::SensorTypeEnum const port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType", "0").toInt());
-
-	mUi->port1ComboBox->setCurrentIndex(port1);
-	mUi->port2ComboBox->setCurrentIndex(port2);
-	mUi->port3ComboBox->setCurrentIndex(port3);
-	mUi->port4ComboBox->setCurrentIndex(port4);
-
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel", "1").toInt());
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	initRobotModelType(typeOfRobotModel);
 
-	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
 	initTypeOfCommunication(typeOfCommunication);
+
+	mUi->textVisibleCheckBox->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
 }
 
 PreferencesRobotSettingsPage::~PreferencesRobotSettingsPage()
@@ -97,27 +80,7 @@ void PreferencesRobotSettingsPage::changeEvent(QEvent *e)
 	switch (e->type()) {
 	case QEvent::LanguageChange: {
 		mUi->retranslateUi(this);
-
-		QStringList sensorNames;
-		sensorNames << tr("Unused")
-				<< tr("Touch sensor (boolean value)")
-				<< tr("Touch sensor (raw value)")
-				<< tr("Sonar sensor")
-				<< tr("Color sensor (full colors)")
-				<< tr("Color sensor (red)")
-				<< tr("Color sensor (green)")
-				<< tr("Color sensor (blue)")
-				<< tr("Color sensor (passive)")
-		;
-
-		mUi->port1ComboBox->clear();
-		mUi->port2ComboBox->clear();
-		mUi->port3ComboBox->clear();
-		mUi->port4ComboBox->clear();
-		mUi->port1ComboBox->addItems(sensorNames);
-		mUi->port2ComboBox->addItems(sensorNames);
-		mUi->port3ComboBox->addItems(sensorNames);
-		mUi->port4ComboBox->addItems(sensorNames);
+		mSensorsWidget->retranslateUi();
 		break;
 	}
 	default:
@@ -138,12 +101,13 @@ void PreferencesRobotSettingsPage::initRobotModelType(robotModelType::robotModel
 	}
 }
 
-void PreferencesRobotSettingsPage::initTypeOfCommunication(QString type)
+void PreferencesRobotSettingsPage::initTypeOfCommunication(QString const &type)
 {
-	if (type == "bluetooth")
+	if (type == "bluetooth") {
 		mUi->bluetoothRadioButton->setChecked(true);
-	else
+	} else {
 		mUi->usbRadioButton->setChecked(true);
+	}
 }
 
 robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotModel() const
@@ -157,6 +121,11 @@ robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotMo
 	}
 }
 
+bool PreferencesRobotSettingsPage::textVisible() const
+{
+	return mUi->textVisibleCheckBox->checkState() == Qt::Checked;
+}
+
 QString PreferencesRobotSettingsPage::selectedCommunication() const
 {
 	return mUi->bluetoothRadioButton->isChecked()
@@ -166,13 +135,18 @@ QString PreferencesRobotSettingsPage::selectedCommunication() const
 
 void PreferencesRobotSettingsPage::activatedUnrealModel(bool checked)
 {
-	mUi->bluetoothSettingsGroupBox->setEnabled(!checked);
+	mUi->bluetoothSettingsGroupBox->setEnabled(!checked && mUi->bluetoothRadioButton->isChecked());
+}
+
+void PreferencesRobotSettingsPage::bluetoothCommunucationToggled()
+{
+	activatedUnrealModel(!mUi->realModelRadioButton->isChecked());
 }
 
 void PreferencesRobotSettingsPage::manualComPortCheckboxChecked(bool state)
 {
 	SettingsManager::setValue("manualComPortCheckboxChecked", state);
-	QString const defaultPortName = SettingsManager::value("bluetoothPortName", "").toString();
+	QString const defaultPortName = SettingsManager::value("bluetoothPortName").toString();
 
 	if (state) {
 		mUi->comPortComboBox->hide();
@@ -192,7 +166,7 @@ void PreferencesRobotSettingsPage::manualComPortCheckboxChecked(bool state)
 QString PreferencesRobotSettingsPage::selectedPortName() const
 {
 	if (!isVisible()) {
-		return SettingsManager::value("bluetoothPortName", "").toString();
+		return SettingsManager::value("bluetoothPortName").toString();
 	}
 
 	return mUi->comPortComboBox->isVisible()
@@ -200,33 +174,23 @@ QString PreferencesRobotSettingsPage::selectedPortName() const
 			: mUi->directInputComPortLineEdit->text();
 }
 
-sensorType::SensorTypeEnum PreferencesRobotSettingsPage::selectedPort1Sensor() const
-{
-	return static_cast<sensorType::SensorTypeEnum>(mUi->port1ComboBox->currentIndex());
-}
-
-sensorType::SensorTypeEnum PreferencesRobotSettingsPage::selectedPort2Sensor() const
-{
-	return static_cast<sensorType::SensorTypeEnum>(mUi->port2ComboBox->currentIndex());
-}
-
-sensorType::SensorTypeEnum PreferencesRobotSettingsPage::selectedPort3Sensor() const
-{
-	return static_cast<sensorType::SensorTypeEnum>(mUi->port3ComboBox->currentIndex());
-}
-
-sensorType::SensorTypeEnum PreferencesRobotSettingsPage::selectedPort4Sensor() const
-{
-	return static_cast<sensorType::SensorTypeEnum>(mUi->port4ComboBox->currentIndex());
-}
-
 void PreferencesRobotSettingsPage::save()
 {
 	SettingsManager::setValue("robotModel", selectedRobotModel());
 	SettingsManager::setValue("bluetoothPortName", selectedPortName());
-	SettingsManager::setValue("port1SensorType", selectedPort1Sensor());
-	SettingsManager::setValue("port2SensorType", selectedPort2Sensor());
-	SettingsManager::setValue("port3SensorType", selectedPort3Sensor());
-	SettingsManager::setValue("port4SensorType", selectedPort4Sensor());
 	SettingsManager::setValue("valueOfCommunication", selectedCommunication());
+	SettingsManager::setValue("showTitlesForRobots", textVisible());
+	mSensorsWidget->save();
+	emit saved();
+}
+
+void PreferencesRobotSettingsPage::refreshPorts()
+{
+	mSensorsWidget->refresh();
+}
+
+void PreferencesRobotSettingsPage::refreshCommunicationGroup()
+{
+	bool const communicationEnabled = mUi->realModelRadioButton->isChecked();
+	mUi->communicationTypeGroupBox->setEnabled(communicationEnabled);
 }

@@ -16,13 +16,18 @@ void EnginesForwardBlock::run()
 	Tracer::debug(tracer::blocks, "EnginesForwardBlock::run", "");
 	int const power = evaluate("Power").toInt();
 	int const tachoLimit = evaluate("TachoLimit").toInt();
+	bool const isTurnoverLimit = (tachoLimit != 0);
 	QVector<bool> ports = parsePorts();
-	if (ports[0])
-		mMotor1.on(power, tachoLimit);
-	if (ports[1])
-		mMotor2.on(power, tachoLimit);
-	if (ports[2])
-		mMotor3.on(power, tachoLimit);
+	for (int i = 0; i < 3; ++i) {
+		if (ports[i]) {
+			mMotors[i]->on(power, tachoLimit);
+			if (isTurnoverLimit) {
+				connect(mMotors[i], SIGNAL(motorTimeout()), this, SLOT(timeout()));
+			}
+		}
+	}
 
-	emit done(mNextBlock);
+	if (!isTurnoverLimit) {
+		emit done(mNextBlock);
+	}
 }

@@ -2,7 +2,7 @@
 
 #include <QtGui/QLineEdit>
 
-#include "../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
+#include "../../qrgui/dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
 	class visualInterpreterPreferencesPage;

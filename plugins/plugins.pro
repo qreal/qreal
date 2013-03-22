@@ -6,7 +6,7 @@ SUBDIRS	= \
 #	dragonDiagram/dragonDiagram.pro \
 	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
-#	exterminatus/exterminatus.pro \
+	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 #	network/network.pro \
@@ -14,7 +14,9 @@ SUBDIRS	= \
 #	parallel/parallel.pro \
 #	requirements/requirements.pro \
 #	robots/robots.pro \
+#	sbt/sbt.pro \
 #	testEditor/testEditor.pro \
+#	testInvocation/testInvocation.pro \
 #	ubiq/ubiq.pro \
 #	umlActivityDiagram/umlActivityDiagram.pro \
 #	umlClassDiagram/umlClassDiagram.pro \

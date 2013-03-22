@@ -26,6 +26,8 @@ namespace qReal {
 		void setMainWindow(qReal::MainWindow *mainWindow);
 		void setDrawSceneGrid(bool show);
 		void ensureElementVisible(Element const * const element);
+		void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
+		void setTitlesVisible(bool visible);
 
 	public slots:
 		void toggleAntialiasing(bool);
@@ -46,6 +48,7 @@ namespace qReal {
 		QPointF mMouseOldPosition;
 		bool mWheelPressed;
 		void checkGrid();
+		int mZoom;
 	};
 
 }

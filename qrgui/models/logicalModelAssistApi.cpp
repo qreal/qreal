@@ -32,7 +32,7 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 
 	Id const newElementId(type, QUuid::createUuid().toString());
 	QString const elementFriendlyName = mModelsAssistApi.editorManager().friendlyName(type);
-	mLogicalModel.addElementToModel(parent, newElementId, Id(), "(" + elementFriendlyName + ")", QPointF(0, 0));
+	mLogicalModel.addElementToModel(parent, newElementId, Id(), elementFriendlyName, QPointF(0, 0));
 	return newElementId;
 }
 
@@ -196,4 +196,39 @@ int LogicalModelAssistApi::childrenOfRootDiagram() const
 int LogicalModelAssistApi::childrenOfDiagram(const Id &parent) const
 {
 	return mModelsAssistApi.childrenOfDiagram(parent);
+}
+
+void LogicalModelAssistApi::removeReferencesTo(Id const &id)
+{
+	IdList backReferences = mLogicalModel.api().property(id, "backReferences").value<IdList>();
+
+	foreach (Id const &reference, backReferences) {
+		mLogicalModel.api().removeBackReference(id, reference);
+		removeReference(reference, id);
+	}
+}
+
+void LogicalModelAssistApi::removeReferencesFrom(Id const &id)
+{
+	QStringList referenceProperties = editorManager().getReferenceProperties(id.type());
+
+	foreach (QString const &property, referenceProperties) {
+		QString propertyString = mLogicalModel.api().property(id, property).toString();
+		if (!propertyString.isEmpty()) {
+			Id propertyValue = Id::loadFromString(propertyString);
+			mLogicalModel.api().removeBackReference(propertyValue, id);
+		}
+	}
+}
+
+void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference)
+{
+	QStringList referenceProperties = editorManager().getReferenceProperties(id.type());
+
+	foreach (QString const &propertyName, referenceProperties) {
+		QString stringData = mLogicalModel.api().property(id, propertyName).toString();
+		if (stringData == reference.toString()) {
+			mLogicalModel.mutableApi().setProperty(id, propertyName, "");
+		}
+	}
 }

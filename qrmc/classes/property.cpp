@@ -5,7 +5,7 @@
 
 using namespace qrmc;
 
-Property::Property(qrRepo::RepoApi *api, qReal::Id const &id) : mApi(api), mId(id)
+Property::Property(qrRepo::LogicalRepoApi *api, qReal::Id const &id) : mApi(api), mId(id)
 {
 
 }
@@ -23,24 +23,40 @@ bool Property::init()
 	if (mType.isEmpty()) {
 		qDebug() << "ERROR: empty type of property found";
 		return false;
+	} else {
+		qReal::IdList const listOfEnums = mApi->elementsByType("MetaEntityEnum");
+		foreach (qReal::Id const enumElement, listOfEnums) {
+			QString const nameOfEnumElement = mApi->name(enumElement);
+			if (nameOfEnumElement == mType) {
+				mIsEnum = true;
+			}
+		}
+		qReal::IdList const listOfNodes = mApi->elementsByType("MetaEntityNode");
+		foreach (qReal::Id const nodeElement, listOfNodes) {
+			QString const nameOfNodeElement = mApi->name(nodeElement);
+			if (nameOfNodeElement == mType) {
+				mIsReference = true;
+			}
+		}
 	}
 
+	mDisplayedName = mApi->stringProperty(mId, "displayedName");
 	mDefaultValue = mApi->stringProperty(mId, "defaultValue");
 	return true;
 }
 
 
-QString Property::name()
+QString Property::name() const
 {
 	return mName;
 }
 
-QString Property::type()
+QString Property::type() const
 {
 	return mType;
 }
 
-QString Property::defaultValue()
+QString Property::defaultValue() const
 {
 	return mDefaultValue;
 }
@@ -54,6 +70,7 @@ Property * Property::clone()
 	result->mIsReference = mIsReference;
 	result->mDescription = mDescription;
 	result->mDefaultValue = mDefaultValue;
+	result->mDisplayedName = mDisplayedName;
 	return result;
 }
 
@@ -73,6 +90,11 @@ bool Property::operator != (Property const &other) const
 	return !(other == *this);
 }
 
+bool Property::isReferenceProperty() const
+{
+	return mIsReference;
+}
+
 void Property::print() const
 {
 	qDebug() << "property"
@@ -81,7 +103,8 @@ void Property::print() const
 			<< "\t" << mIsEnum
 			<< "\t" << mIsReference
 			<< "\t" << mDescription
-			<< "\t" << mDefaultValue;
+			<< "\t" << mDefaultValue
+			<< "\t" << mDisplayedName;
 }
 
 QString Property::generatePropertyLine(const QString &lineTemplate) const
@@ -97,5 +120,12 @@ QString Property::generateDefaultsLine(const QString &lineTemplate) const
 		return "";
 	QString result = lineTemplate;
 	result.replace(propertyNameTag, mName).replace(propertyDefaultTag, mDefaultValue);
+	return result;
+}
+
+QString Property::generateDisplayedNameLine(const QString &lineTemplate) const
+{
+	QString result = lineTemplate;
+	result.replace(propertyNameTag, mName).replace(propertyDisplayedNameTag, mDisplayedName);
 	return result;
 }

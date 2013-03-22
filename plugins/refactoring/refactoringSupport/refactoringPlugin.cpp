@@ -39,7 +39,7 @@ void RefactoringPlugin::init(PluginConfigurator const &configurator)
 			, &configurator.mainWindowInterpretersInterface());
 	mRepoControlIFace = &configurator.repoControlInterface();
 	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
-	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", "").toString();
+	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation").toString();
 	mPathToRefactoringExamples = mQRealSourceFilesPath + "/plugins/refactoring/refactoringExamples/";
 
 	mRefactoringWindow = new RefactoringWindow(mMainWindowIFace->windowWidget());
@@ -159,10 +159,10 @@ void RefactoringPlugin::generateRefactoringMetamodel()
 	mMetamodelGeneratorSupport->saveMetamodelInFile(metamodel, editorPath + "/" + metamodelName + ".xml");
 
 	mMetamodelGeneratorSupport->loadPlugin(editorPath, metamodelName
-			, SettingsManager::value("pathToQmake", "").toString()
-			, SettingsManager::value("pathToMake", "").toString()
-			, SettingsManager::value("pluginExtension", "").toString()
-			, SettingsManager::value("prefix", "").toString()
+			, SettingsManager::value("pathToQmake").toString()
+			, SettingsManager::value("pathToMake").toString()
+			, SettingsManager::value("pluginExtension").toString()
+			, SettingsManager::value("prefix").toString()
 	);
 }
 
@@ -319,7 +319,12 @@ void RefactoringPlugin::addPaletteGroup(QDomDocument metamodel
 
 void RefactoringPlugin::arrangeElements(const QString &algorithm)
 {
-	mMainWindowIFace->arrangeElementsByDotRunner(algorithm, mQRealSourceFilesPath + "/qrgui/dotFiles");
+	if (SettingsManager::value("pathToDot").toString().isEmpty()) {
+		mErrorReporter->addCritical(tr("Path to dot is not specified"));
+		return;
+	}
+
+	mMainWindowIFace->arrangeElementsByDotRunner(algorithm, mQRealSourceFilesPath + "/bin");
 }
 
 void RefactoringPlugin::arrangeElementsBT()

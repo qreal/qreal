@@ -16,6 +16,7 @@ using namespace utils;
 
 VisualInterpreterPlugin::VisualInterpreterPlugin()
 	: mPreferencesPage(new VisualInterpreterPreferencesPage())
+	, mWatchListWindow(NULL)
 {
 	mAppTranslator.load(":/visualInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -60,6 +61,14 @@ QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 	connect(mInterpretAction, SIGNAL(triggered()), this, SLOT(interpret()));
 	mVisualInterpreterMenu->addAction(mInterpretAction);
 
+	mStopInterpretationAction = new QAction(tr("Stop interpretation"), NULL);
+	connect(mStopInterpretationAction, SIGNAL(triggered()), this, SLOT(stopInterpretation()));
+	mVisualInterpreterMenu->addAction(mStopInterpretationAction);
+
+	mWatchListAction = new QAction(tr("Show watch list"), NULL);
+	connect(mWatchListAction, SIGNAL(triggered()), this, SLOT(showWatchList()));
+	mVisualInterpreterMenu->addAction(mWatchListAction);
+
 	mActionInfos << visualInterpreterMenu;
 
 	return mActionInfos;
@@ -69,7 +78,7 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 {
 	QString editorMetamodelFilePath =
 			QFileDialog::getOpenFileName(NULL, tr("Specify editor metamodel:"));
-	QString qrealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", "").toString();
+	QString qrealSourceFilesPath = SettingsManager::value("qrealSourcesLocation").toString();
 
 	if (editorMetamodelFilePath.isEmpty() || qrealSourceFilesPath.isEmpty()) {
 		return;
@@ -81,7 +90,7 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 	QString const diagramName = diagram.attribute("name");
 	QString const displayedName = diagram.attribute("displayedName").isEmpty()
 			? diagramName
-			:diagram.attribute("displayedName");
+			: diagram.attribute("displayedName");
 
 	diagram.setAttribute("displayedName", displayedName + " Semantics");
 
@@ -102,10 +111,10 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel() const
 			+ "/" + metamodelName + ".xml");
 
 	mMetamodelGeneratorSupport->loadPlugin(editorPath, metamodelName
-			, SettingsManager::value("pathToQmake", "").toString()
-			, SettingsManager::value("pathToMake", "").toString()
-			, SettingsManager::value("pluginExtension", "").toString()
-			, SettingsManager::value("prefix", "").toString());
+			, SettingsManager::value("pathToQmake").toString()
+			, SettingsManager::value("pathToMake").toString()
+			, SettingsManager::value("pluginExtension").toString()
+			, SettingsManager::value("prefix").toString());
 }
 
 void VisualInterpreterPlugin::insertSemanticsStatesEnum(QDomDocument metamodel) const
@@ -336,4 +345,18 @@ void VisualInterpreterPlugin::loadSemantics()
 void VisualInterpreterPlugin::interpret()
 {
 	mVisualInterpreterUnit->interpret();
+}
+
+void VisualInterpreterPlugin::stopInterpretation()
+{
+	mVisualInterpreterUnit->stopInterpretation();
+}
+
+void VisualInterpreterPlugin::showWatchList()
+{
+	if (mWatchListWindow != NULL) {
+		mWatchListWindow->close();
+	}
+	mWatchListWindow = new watchListWindow(mVisualInterpreterUnit->ruleParser());
+	mWatchListWindow->show();
 }

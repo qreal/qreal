@@ -4,8 +4,11 @@
 #include <QtGui/QKeyEvent>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtGui/QApplication>
 
 #include <limits>
+
+using namespace qReal;
 
 Scene::Scene(graphicsUtils::AbstractView *view, QObject * parent)
 	:  AbstractScene(view, parent)
@@ -444,7 +447,7 @@ void Scene::addImage(QString const &fileName)
 	mItemType = image;
 	mFileName = fileName;
 
-	QString workingDirName = SettingsManager::value("workingDir").toString();
+	QString workingDirName = QFileInfo(QApplication::applicationFilePath()).absoluteDir().absolutePath();
 	QDir dir(workingDirName);
 	dir.mkdir("images");
 	mFileName = workingDirName + "/images/" + fileName.section('/', -1);

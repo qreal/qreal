@@ -15,6 +15,7 @@
 
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
+#include "details/sensorsConfigurationWidget.h"
 
 namespace qReal {
 namespace interpreters {
@@ -43,6 +44,7 @@ public:
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 	void closeD2ModelWidget();
+	void closeWatchList();
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
 
@@ -54,6 +56,9 @@ public:
 
 	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
 	void disableD2ModelWidgetRunStopButtons();
+
+	WatchListWindow *watchWindow() const;
+	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
 public slots:
 	void connectToRobot();
@@ -79,7 +84,15 @@ private slots:
 	/// actions when robot disconnect
 	void disconnectSlot();
 
+	void reportError(QString const &message);
+
 private:
+	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
+	Id const findStartingElement(Id const &diagram) const;
+	void addThread(details::Thread * const thread);
+	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
+	void resetVariables();
+
 	enum InterpreterState {
 		interpreting
 		, waitingForSensorsConfiguredToLaunch
@@ -104,15 +117,12 @@ private:
 
 	robotModelType::robotModelTypeEnum mImplementationType;
 
-	watchListWindow *mWatchListWindow;
+	WatchListWindow *mWatchListWindow;
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;
 
-	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
-	Id const findStartingElement(Id const &diagram) const;
-	void addThread(details::Thread * const thread);
-	void updateSensorValues (QString const &sensorVariableName, int sensorValue);
+	QString mLastCommunicationValue;
 };
 
 }

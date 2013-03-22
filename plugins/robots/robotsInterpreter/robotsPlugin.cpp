@@ -1,14 +1,15 @@
+#include <QtGui/QApplication>
 #include "robotsPlugin.h"
 #include "details/tracer.h"
-
-#include <QtGui/QApplication>
 
 Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
 
 using namespace qReal;
 using namespace interpreters::robots;
 
-const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+Id const oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
+int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
 		: mMainWindowInterpretersInterface(NULL)
@@ -20,7 +21,6 @@ RobotsPlugin::RobotsPlugin()
 		, mWatchListAction(NULL)
 		, mAppTranslator(new QTranslator())
 {
-//	details::Tracer::enableAll();
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
@@ -28,7 +28,6 @@ RobotsPlugin::RobotsPlugin()
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
 	initActions();
-
 }
 
 RobotsPlugin::~RobotsPlugin()
@@ -38,39 +37,40 @@ RobotsPlugin::~RobotsPlugin()
 
 void RobotsPlugin::initActions()
 {
-	m2dModelAction = new QAction(QObject::tr("2d model"), NULL);
+	m2dModelAction = new QAction(QIcon(":/icons/kcron.png"), QObject::tr("2d model"), NULL);
 	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
 	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
-	mRunAction = new QAction(QObject::tr("Run"), NULL);
+	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), NULL);
 	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
 	QObject::connect(mRunAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
 
-	mStopRobotAction = new QAction(QObject::tr("Stop robot"), NULL);
+	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), NULL);
 	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
 	QObject::connect(mStopRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(stopRobot()));
 
-	mConnectToRobotAction = new QAction(QObject::tr("Connect to robot"), NULL);
+	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), NULL);
 	mConnectToRobotAction->setCheckable(true);
 	ActionInfo connectToRobotActionInfo(mConnectToRobotAction, "interpreters", "tools");
 	mInterpreter.setConnectRobotAction(mConnectToRobotAction);
 	QObject::connect(mConnectToRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(connectToRobot()));
 
-	mRobotSettingsAction = new QAction(QObject::tr("Robot settings"), NULL);
+	mRobotSettingsAction = new QAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), NULL);
 	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools");
 	QObject::connect(mRobotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
-
-	mWatchListAction = new QAction(QObject::tr("Show watch list"), NULL);
-	ActionInfo watchListActionInfo(mWatchListAction, "interpreters", "tools");
-	QObject::connect(mWatchListAction, SIGNAL(triggered()), &mInterpreter, SLOT(showWatchList()));
 
 	QAction *separator = new QAction(NULL);
 	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
 	separator->setSeparator(true);
 
 	mActionInfos << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
-			<< connectToRobotActionInfo << separatorActionInfo << robotSettingsActionInfo
-			<< separatorActionInfo << watchListActionInfo;
+			<< connectToRobotActionInfo << separatorActionInfo << robotSettingsActionInfo;
+
+	//Set tabs, unused at the opening, enabled
+	QList<ActionInfo> unusedTab;
+	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo << connectToRobotActionInfo;
+	bool isTabEnable = false;
+	changeActiveTab(unusedTab, isTabEnable);
 }
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
@@ -80,6 +80,11 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 			, configurator.logicalModelApi()
 			, configurator.mainWindowInterpretersInterface());
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
+	mSceneCustomizer = &configurator.sceneCustomizer();
+	SettingsManager::setValue("IndexGrid", gridWidth);
+	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
+	rereadSettings();
+	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
 }
 
@@ -112,8 +117,11 @@ void RobotsPlugin::show2dModel()
 void RobotsPlugin::updateSettings()
 {
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized...");
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel", "1").toInt());
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
+	QString const portName = SettingsManager::value("bluetoothPortName").toString();
+	mInterpreter.setCommunicator(typeOfCommunication, portName);
 	mInterpreter.configureSensors(
 			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
@@ -121,31 +129,26 @@ void RobotsPlugin::updateSettings()
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
 	);
 	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::unreal);
+	mConnectToRobotAction->setVisible(typeOfRobotModel == robotModelType::real);
 	if (typeOfRobotModel == robotModelType::unreal) {
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopRobotAction);
 	} else {
 		mInterpreter.showD2ModelWidget(false);
 	}
 
-	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication", "bluetooth").toString();
-	QString const portName = SettingsManager::value("bluetoothPortName", "").toString();
-	mInterpreter.setCommunicator(typeOfCommunication, portName);
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Done updating settings");
 }
 
 void RobotsPlugin::closeNeededWidget()
 {
 	mInterpreter.closeD2ModelWidget();
+	mInterpreter.closeWatchList();
 }
 
 void RobotsPlugin::activeTabChanged(Id const & rootElementId)
 {
-	bool const enabled = rootElementId.type() == robotDiagramType;
-	foreach (ActionInfo const &actionInfo, mActionInfos) {
-		if (needToDisableWhenNotRobotsDiagram(actionInfo.action())) {
-			actionInfo.action()->setEnabled(enabled);
-		}
-	}
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
+	changeActiveTab(mActionInfos, enabled);
 	if (enabled) {
 		mInterpreter.enableD2ModelWidgetRunStopButtons();
 	} else {
@@ -153,7 +156,35 @@ void RobotsPlugin::activeTabChanged(Id const & rootElementId)
 	}
 }
 
+void RobotsPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
+{
+	foreach (ActionInfo const &actionInfo, info) {
+			actionInfo.action()->setEnabled(trigger);
+	}
+}
+
 bool RobotsPlugin::needToDisableWhenNotRobotsDiagram(QAction const * const action) const
 {
 	return action != mRobotSettingsAction && action != mConnectToRobotAction && action != m2dModelAction;
+}
+
+interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produceSensorsConfigurer() const
+{
+	interpreters::robots::details::SensorsConfigurationWidget *result =
+			new interpreters::robots::details::SensorsConfigurationWidget;
+	connect(mRobotSettingsPage, SIGNAL(saved()), result, SLOT(refresh()));
+	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
+	mInterpreter.connectSensorConfigurer(result);
+	return result;
+}
+
+void RobotsPlugin::rereadSettings()
+{
+	setTitlesVisibility();
+}
+
+void RobotsPlugin::setTitlesVisibility()
+{
+	bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();
+	mSceneCustomizer->setTitlesVisible(titlesVisible);
 }

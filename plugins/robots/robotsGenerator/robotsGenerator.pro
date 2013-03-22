@@ -14,12 +14,8 @@ RESOURCES = robotsGenerator.qrc
 
 HEADERS += \
 	robotsGeneratorPlugin.h \
-	nxtOSEK/nxtOSEKRobotGenerator.h \
-	nxtOSEK/smartLine.h \
-	nxtOSEK/nxtFlashTool.h \
 
 SOURCES += \
 	robotsGeneratorPlugin.cpp \
-	nxtOSEK/nxtOSEKRobotGenerator.cpp \
-	nxtOSEK/smartLine.cpp \
-	nxtOSEK/nxtFlashTool.cpp \
+
+include(nxtOSEK/nxtOsek.pri)
