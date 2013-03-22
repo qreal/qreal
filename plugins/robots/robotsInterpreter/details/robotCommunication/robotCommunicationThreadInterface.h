@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
 
-#include "../robotsInterpreter/sensorConstants.h"
+#include "../robotParts/sensor.h"
 #include "../robotCommandConstants.h"
 
 namespace qReal {

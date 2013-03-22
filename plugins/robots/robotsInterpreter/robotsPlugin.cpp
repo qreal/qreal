@@ -80,7 +80,8 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 			, configurator.mainWindowInterpretersInterface());
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();
-	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
+	mCustomizer.placeSensorsConfig(produceSensorsConfigurer());
+	mCustomizer.placeWatchPlugins(mInterpreter.watchWindow(), mInterpreter.graphicsWatchWindow());
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");

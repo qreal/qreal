@@ -59,6 +59,8 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	setRobotImplementation(modelType);
 
 	mWatchListWindow = new WatchListWindow(mParser, mInterpretersInterface->windowWidget());
+
+	mGraphicsWatch = new sensorsGraph::SensorsGraph(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
@@ -102,6 +104,8 @@ void Interpreter::interpret()
 	}
 
 	runTimer();
+
+	mGraphicsWatch->startJob();
 }
 
 void Interpreter::stopRobot()
@@ -114,17 +118,23 @@ void Interpreter::stopRobot()
 		mThreads.removeAll(thread);
 	}
 	mBlocksTable->setFailure();
+
+	mGraphicsWatch->stopJob();
 }
 
 void Interpreter::showWatchList()
 {
 	mWatchListWindow->show();
+	mGraphicsWatch->show();
 }
 
 void Interpreter::closeWatchList()
 {
 	if (mWatchListWindow) {
 		mWatchListWindow->setVisible(false);
+	}
+	if (mGraphicsWatch) {
+		mGraphicsWatch->setVisible(false);
 	}
 }
 
@@ -248,6 +258,11 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 	if (mConnected) {
 		mRobotModel->configureSensors(port1, port2, port3, port4);
 	}
+
+	mGraphicsWatch->addTrackingObject(0, QString("Sensor1"), SensorEnumerator::sensorName(port1));
+	mGraphicsWatch->addTrackingObject(1, QString("Sensor2"), SensorEnumerator::sensorName(port2));
+	mGraphicsWatch->addTrackingObject(2, QString("Sensor3"), SensorEnumerator::sensorName(port3));
+	mGraphicsWatch->addTrackingObject(3, QString("Sensor4"), SensorEnumerator::sensorName(port4));
 }
 
 void Interpreter::addThread(details::Thread * const thread)
@@ -417,6 +432,11 @@ void Interpreter::reportError(QString const &message)
 WatchListWindow *Interpreter::watchWindow() const
 {
 	return mWatchListWindow;
+}
+
+sensorsGraph::SensorsGraph *Interpreter::graphicsWatchWindow() const
+{
+	return mGraphicsWatch;
 }
 
 void Interpreter::connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const

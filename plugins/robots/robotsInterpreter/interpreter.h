@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtGui/QMainWindow>
 
 #include "../../../qrkernel/ids.h"
 
@@ -16,6 +17,8 @@
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 #include "details/sensorsConfigurationWidget.h"
+
+#include "graphicsWatcher/sensorsGraph.h"
 
 namespace qReal {
 namespace interpreters {
@@ -58,6 +61,9 @@ public:
 	void disableD2ModelWidgetRunStopButtons();
 
 	WatchListWindow *watchWindow() const;
+
+	sensorsGraph::SensorsGraph *graphicsWatchWindow() const;
+
 	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
 public slots:
@@ -118,6 +124,8 @@ private:
 	robotModelType::robotModelTypeEnum mImplementationType;
 
 	WatchListWindow *mWatchListWindow;
+
+	sensorsGraph::SensorsGraph *mGraphicsWatch;
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;

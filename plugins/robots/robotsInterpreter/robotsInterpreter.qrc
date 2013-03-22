@@ -23,5 +23,8 @@
         <file>icons/2d_ruler.png</file>
         <file>icons/2d_save.png</file>
         <file>icons/2d_target.png</file>
+        <file>icons/reset_btn.png</file>
+        <file>icons/zoomIn_btn.png</file>
+        <file>icons/zoomOut_btn.png</file>
     </qresource>
 </RCC>

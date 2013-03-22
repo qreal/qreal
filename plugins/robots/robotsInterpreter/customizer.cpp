@@ -31,12 +31,21 @@ void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	dockInterface->tabifyDockWidget(dockInterface->graphicalModelDock(), dockInterface->propertyEditorDock());
 }
 
-void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget)
+void Customizer::placeSensorsConfig(QWidget *sensorsWidget)
+{
+	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
+	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
+}
+
+void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch)
 {
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
 	watchWindow->setFloating(false);
-	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
-	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
+	QDockWidget *graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
+	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
+
+	mDockInterface->tabifyDockWidget(graphWatchDock, watchWindow);
+	graphWatchDock->resize(graphWatchDock->size());
 }
 
 QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const
