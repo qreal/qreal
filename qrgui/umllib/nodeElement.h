@@ -124,6 +124,7 @@ public:
 	virtual void deleteFromScene();
 
 	QList<EdgeElement *> const edgeList() const;
+	QList<NodeElement *> const childNodes() const;
 
 	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
@@ -211,8 +212,6 @@ private:
 	ContextMenuAction mSwitchGridAction;
 
 	bool mPortsVisible;
-
-	QList<NodeElement *> childs;
 
 	QRectF mContents;
 	QList<EdgeElement *> mEdgeList;

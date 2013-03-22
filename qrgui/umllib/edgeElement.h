@@ -167,6 +167,7 @@ private:
 	bool mIsDissectable;
 	int getPoint(const QPointF &location);
 	NodeElement *getNodeAt(const QPointF &position, bool isStart);
+	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const;
 	void updateLongestPart();
 	static QRectF getPortRect(QPointF const &point);
 
