@@ -22,7 +22,7 @@ public:
 	virtual QString aboutText() const;
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface);
 
-	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
+	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget, QWidget *nxtDisplay);
 
 private:
 	QDockWidget *produceDockWidget(QString const &title, QWidget *content) const;

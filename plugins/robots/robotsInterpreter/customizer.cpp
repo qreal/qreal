@@ -31,12 +31,14 @@ void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	dockInterface->tabifyDockWidget(dockInterface->graphicalModelDock(), dockInterface->propertyEditorDock());
 }
 
-void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget)
+void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget, QWidget *nxtDisplay)
 {
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
 	watchWindow->setFloating(false);
 	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
+	QDockWidget *nxtDisplayDock = produceDockWidget(QObject::tr("Nxt display"), nxtDisplay);
+	mDockInterface->tabifyDockWidget(mDockInterface->graphicalModelDock(), nxtDisplayDock);
 }
 
 QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const
