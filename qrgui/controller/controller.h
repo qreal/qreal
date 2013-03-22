@@ -46,6 +46,8 @@ private slots:
 	void resetModifiedState();
 
 private:
+	void execute(commands::AbstractCommand *command, UndoStack *stack);
+
 	UndoStack *activeUndoStack() const;
 
 	// Hiding some QUndoGroup functions

@@ -15,7 +15,11 @@
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
 
+#include "../controller/commands/changeParentCommand.h"
+#include "../controller/commands/resizeCommand.h"
+
 using namespace qReal;
+using namespace qReal::commands;
 
 NodeElement::NodeElement(ElementImpl* impl)
 	: Element(impl)
@@ -255,6 +259,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
+	mGeometryBeforeDrag = mContents;
+	mGeometryBeforeDrag.moveTo(pos());
 	if (isSelected()) {
 		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopLeft;
@@ -477,6 +483,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	evScene->insertNodeIntoEdge(id(), Id::rootId(), false, event->scenePos());
 
+	bool shouldProcessResize = true;
+
 	// we should use mHighlightedNode to determine if there is a highlighted node
 	// insert current element into them and set mHighlightedNode to NULL
 	// but because of mouseRelease twice triggering we can't do it
@@ -490,24 +498,35 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	//		mHighlightedNode = NULL;
 
 			QPointF newPos = mapToItem(newParent, mapFromScene(scenePos()));
-			mGraphicalAssistApi->changeParent(id(), newParent->id(), newPos);
+			AbstractCommand *parentCommand = changeParentCommand(newParent->id(), newPos);
+			mController->execute(parentCommand);
+			// Position change already processed in change parent command
+			shouldProcessResize = parentCommand == NULL;
 			setPos(newPos);
 
-			if (insertBefore != NULL) {
+			if (insertBefore) {
 				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
 			}
 
 			newParent->resize();
 
-			while (newParent != NULL) {
+			while (newParent) {
 				newParent->mContents = newParent->mContents.normalized();
 				newParent->storeGeometry();
 				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 			}
 		} else {
-			mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
+			AbstractCommand *parentCommand = changeParentCommand(evScene->rootItemId(), scenePos());
+			mController->execute(parentCommand);
+			// Position change already processed in change parent command
+			shouldProcessResize = parentCommand == NULL;
 		}
 	}
+	if (shouldProcessResize) {
+		resize(true);
+	}
+	mGeometryBeforeDrag = mContents;
+	mGeometryBeforeDrag.moveTo(pos());
 
 	arrangeLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
@@ -1127,20 +1146,25 @@ NodeData& NodeElement::data()
 	return mData;
 }
 
-void NodeElement::resize()
+void NodeElement::resize(bool registerCommand)
 {
-	resize(mContents, pos());
+	resize(mContents, pos(), registerCommand);
 }
 
-void NodeElement::resize(QRectF newContents)
+void NodeElement::resize(QRectF const &newContents, bool registerCommand)
 {
-	resize(newContents, pos());
+	resize(newContents, pos(), registerCommand);
 }
 
-void NodeElement::resize(QRectF newContents, QPointF newPos)
+void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool registerCommand)
 {
-	ResizeHandler handler(this, mElementImpl);
-	handler.resize(newContents, newPos);
+	if (registerCommand) {
+		mController->execute(resizeCommand(newContents, newPos
+				, mGeometryBeforeDrag, mGeometryBeforeDrag.topLeft()));
+	} else {
+		ResizeHandler handler(this);
+		handler.resize(newContents, newPos);
+	}
 }
 
 bool NodeElement::isFolded() const
@@ -1190,4 +1214,48 @@ void NodeElement::updateNodeEdges()
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->adjustNeighborLinks();
 	}
+}
+
+AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF const &position) const
+{
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	Element *oldParentElem = dynamic_cast<Element *>(parentItem());
+	Element *newParentElem = evScene->getElem(newParent);
+	QPointF const oldPos = mGeometryBeforeDrag.topLeft();
+	QPointF const newScenePos = newParentElem ? newParentElem->mapToScene(position) : position;
+	QPointF const oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
+	Id const oldParent = oldParentElem ? oldParentElem->id() : evScene->rootItemId();
+	if (oldParent == newParent) {
+		return NULL;
+	}
+	// Without pre-translating into new position parent gets wrong child coords
+	// when redo happens and resizes when he doesn`t need it.
+	// So we mush pre-translate child into new scene position first, but when
+	// it lays in some container it also resizes. So we need to change parent to
+	// root, then translate into a new position and change parent to a new one.
+	// Also that element itself doesn`t change position in change parent command
+	// so using teranslation command itself
+	ChangeParentCommand *changeParentToSceneCommand =
+			new ChangeParentCommand(mLogicalAssistApi, mGraphicalAssistApi, false
+					, id(), oldParent, evScene->rootItemId(), oldPos, oldScenePos);
+	AbstractCommand *translateCommand = resizeCommand(mContents, position
+			, mContents, oldScenePos);
+	ChangeParentCommand *result = new ChangeParentCommand(
+			mLogicalAssistApi, mGraphicalAssistApi, false
+			, id(), evScene->rootItemId(), newParent, position, position);
+	result->addPreAction(changeParentToSceneCommand);
+	result->addPreAction(translateCommand);
+	return result;
+}
+
+commands::AbstractCommand *NodeElement::resizeCommand(QRectF const &newContents
+		, QPointF const &newPos, QRectF const &oldContents, QPointF const &oldPos) const
+{
+	QRectF newContentsAndPos = newContents;
+	newContentsAndPos.moveTo(newPos);
+	QRectF oldContentsAndPos = oldContents;
+	oldContentsAndPos.moveTo(oldPos);
+	return newContentsAndPos == oldContentsAndPos ? NULL :
+			new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id()
+					, oldContentsAndPos, newContentsAndPos);
 }

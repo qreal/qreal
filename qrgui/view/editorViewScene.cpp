@@ -683,6 +683,7 @@ NodeElement *EditorViewScene::pasteGraphicalCopyOfNode(NodeData const &nodeData
 	NodeElement *newNode = dynamic_cast<NodeElement *>(mainWindow()->manager()->graphicalObject(newId));
 
 	newNode->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
+	newNode->setController(mainWindow()->controller());
 	newNode->setId(newId);
 
 	return newNode;
@@ -742,6 +743,7 @@ EdgeElement *EditorViewScene::pasteGraphicalCopyOfEdge(EdgeData const &edgeData)
 
 	EdgeElement *newEdge = dynamic_cast<EdgeElement *>(mainWindow()->manager()->graphicalObject(newId));
 	newEdge->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
+	newEdge->setController(mainWindow()->controller());
 	newEdge->setId(newId);
 
 	return newEdge;

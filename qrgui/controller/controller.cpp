@@ -19,17 +19,18 @@ void Controller::setActiveDiagram(Id const &diagramId)
 
 void Controller::execute(commands::AbstractCommand *command)
 {
-	UndoStack *activeStack = activeUndoStack();
-	if (activeStack) {
-		activeStack->execute(command);
-	}
+	execute(command, activeUndoStack());
 }
 
 void Controller::execute(commands::AbstractCommand *command, Id const &diagramid)
 {
-	UndoStack *activeStack = mStacks[diagramid.toString()];
-	if (activeStack) {
-		activeStack->execute(command);
+	execute(command, mStacks[diagramid.toString()]);
+}
+
+void Controller::execute(commands::AbstractCommand *command, UndoStack *stack)
+{
+	if (command && stack) {
+		stack->execute(command);
 	}
 }
 

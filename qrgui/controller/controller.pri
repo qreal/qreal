@@ -5,14 +5,16 @@ HEADERS += \
 	controller/commands/createElementCommand.h \
 	controller/commands/createRemoveCommandImplementation.h \
 	controller/commands/removeElementCommand.h \
-    controller/commands/changePropertyCommand.h \
-    controller/undoStack.h \
-    controller/commands/elementCommand.h \
-    controller/commands/nodeElementCommand.h \
-    controller/commands/edgeElementCommand.h \
-    controller/commands/arrangeLinksCommand.h \
-    controller/commands/selectElementCommand.h \
-    controller/commands/updateElementCommand.h
+	controller/commands/changePropertyCommand.h \
+	controller/undoStack.h \
+	controller/commands/elementCommand.h \
+	controller/commands/nodeElementCommand.h \
+	controller/commands/edgeElementCommand.h \
+	controller/commands/arrangeLinksCommand.h \
+	controller/commands/selectElementCommand.h \
+	controller/commands/updateElementCommand.h \
+	controller/commands/changeParentCommand.h \
+	controller/commands/resizeCommand.h
 
 SOURCES += \
 	controller/controller.cpp \
@@ -21,11 +23,13 @@ SOURCES += \
 	controller/commands/createElementCommand.cpp \
 	controller/commands/createRemoveCommandImplementation.cpp \
 	controller/commands/removeElementCommand.cpp \
-    controller/commands/changePropertyCommand.cpp \
-    controller/undoStack.cpp \
-    controller/commands/elementCommand.cpp \
-    controller/commands/nodeElementCommand.cpp \
-    controller/commands/edgeElementCommand.cpp \
-    controller/commands/arrangeLinksCommand.cpp \
-    controller/commands/selectElementCommand.cpp \
-    controller/commands/updateElementCommand.cpp
+	controller/commands/changePropertyCommand.cpp \
+	controller/undoStack.cpp \
+	controller/commands/elementCommand.cpp \
+	controller/commands/nodeElementCommand.cpp \
+	controller/commands/edgeElementCommand.cpp \
+	controller/commands/arrangeLinksCommand.cpp \
+	controller/commands/selectElementCommand.cpp \
+	controller/commands/updateElementCommand.cpp \
+	controller/commands/changeParentCommand.cpp \
+	controller/commands/resizeCommand.cpp

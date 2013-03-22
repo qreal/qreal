@@ -15,6 +15,8 @@
 #include "../models/graphicalModelAssistApi.h"
 #include "../models/logicalModelAssistApi.h"
 
+#include "../controller/controller.h"
+
 /** @brief size of a point port */
 const int kvadratik = 10;
 
@@ -57,6 +59,8 @@ public:
 	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
+	void setController(qReal::Controller *controller);
+
 	ElementImpl* elementImpl() const;
 	/// Perform element-specific actions before being deleted
 	virtual void deleteFromScene() = 0;
@@ -79,4 +83,5 @@ protected:
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
+	qReal::Controller *mController;
 };
