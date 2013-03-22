@@ -87,10 +87,10 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 
 void D2RobotModel::countMotorTurnover()
 {
-	foreach (Motor *motor, mMotors) {
-		int port = mMotors.key(motor);
-		qreal degrees = Timeline::timeInterval * 1.0 * motor->speed / oneReciprocalTime;
-		mTurnoverMotors[port] += degrees;
+	foreach (Motor * const motor, mMotors) {
+		int const port = mMotors.key(motor);
+		qreal const degrees = Timeline::timeInterval * 1.0 * motor->speed / oneReciprocalTime;
+		mTurnoverMotors[port] += qAbs(degrees);
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
 			motor->speed = 0;
 			motor->activeTimeType = End;
@@ -272,7 +272,7 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 
 int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 {
-	// Must return 1023 on white and 0 on black
+	// Must return 1023 on white and 0 on black normalized to percents
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
 	QImage const image = printColorSensor(port);
@@ -290,7 +290,8 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 
 		sum += 4 * brightness; // 4 = max sensor value / max brightness value
 	}
-	return sum / n; // Average by whole region
+	qreal const rawValue = sum / n; // Average by whole region
+	return rawValue * 100 / maxLightSensorValur; // Normalizing to percents
 }
 
 void D2RobotModel::startInit()

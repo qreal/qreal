@@ -41,6 +41,7 @@ namespace qReal {
 		QString propertyDescription(Id const &id, QString const &propertyName) const;
 		QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
 		QIcon icon(Id const &id) const;
+		QSize iconSize(Id const &id) const;
 		Element* graphicalObject(Id const &id) const;
 
 		IdList getContainedTypes(const Id &id) const;
