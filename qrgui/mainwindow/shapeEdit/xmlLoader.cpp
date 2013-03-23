@@ -288,7 +288,7 @@ void XmlLoader::readLine(QDomElement const &line)
 void XmlLoader::readEllipse(QDomElement const &ellipse)
 {
 	QRectF rect = readRectOfXandY(ellipse);
-	Ellipse* item = new Ellipse(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
+	QRealEllipse* item = new QRealEllipse(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	item->readPenBrush(ellipse);
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
@@ -308,7 +308,7 @@ void XmlLoader::readArch(QDomElement const &arch)
 void XmlLoader::readRectangle(QDomElement const &rectangle)
 {
 	QRectF rect = readRectOfXandY(rectangle);
-	Rectangle* item = new Rectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
+	QRealRectangle* item = new QRealRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	item->readPenBrush(rectangle);
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);

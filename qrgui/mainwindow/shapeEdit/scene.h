@@ -101,8 +101,8 @@ private:
 	bool mWaitMove;
 	int mCount;
 	Line *mLine;
-	Ellipse *mEllipse;
-	Rectangle *mRectangle;
+	QRealEllipse *mEllipse;
+	QRealRectangle *mRectangle;
 	Text *mText;
 	TextPicture *mTextPicture;
 	PointPort *mPointPort;
