@@ -7,8 +7,9 @@ Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
 using namespace qReal;
 using namespace interpreters::robots;
 
-const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
-const Id oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
+Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+Id const oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
+int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
 		: mMainWindowInterpretersInterface(NULL)
@@ -80,6 +81,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 			, configurator.mainWindowInterpretersInterface());
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();
+	SettingsManager::setValue("IndexGrid", gridWidth);
 	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));

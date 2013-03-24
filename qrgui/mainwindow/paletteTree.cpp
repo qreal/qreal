@@ -14,11 +14,13 @@ using namespace gui;
 
 EditorManager * PaletteTree::mEditorManager = NULL;
 
-PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &name
-		, const QString &description, const QIcon &icon, bool iconsOnly, QWidget *parent)
+PaletteTree::DraggableElement::DraggableElement(Id const &id, QString const &name
+		, QString const &description, QIcon const &icon, QSize const &preferedSize
+		, bool iconsOnly, QWidget *parent)
 	: QWidget(parent)
 	, mId(id)
 	, mIcon(icon)
+	, mPreferedSize(preferedSize)
 	, mText(name)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -42,6 +44,26 @@ PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &nam
 		setToolTip(modifiedDescription);
 	}
 	setCursor(Qt::OpenHandCursor);
+}
+
+QIcon PaletteTree::DraggableElement::icon() const
+{
+	return mIcon;
+}
+
+QString PaletteTree::DraggableElement::text() const
+{
+	return mText;
+}
+
+Id PaletteTree::DraggableElement::id() const
+{
+	return mId;
+}
+
+QSize PaletteTree::DraggableElement::iconsPreferedSize() const
+{
+	return mPreferedSize;
 }
 
 void PaletteTree::DraggableElement::setIconSize(int size)
@@ -95,10 +117,10 @@ void PaletteTree::DraggableElement::mousePressEvent(QMouseEvent *event)
 	QDrag *drag = new QDrag(this);
 	drag->setMimeData(mimeData);
 
-	QPixmap p = child->icon().pixmap(96, 96);
+	QPixmap const pixmap = child->icon().pixmap(child->iconsPreferedSize());
 
-	if (!p.isNull()) {
-		drag->setPixmap(child->icon().pixmap(96, 96));
+	if (!pixmap.isNull()) {
+		drag->setPixmap(pixmap);
 	}
 
 	if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction) {
@@ -116,19 +138,20 @@ PaletteTree::PaletteTree(QWidget *parent)
 }
 
 void PaletteTree::addItemType(const Id &id, const QString &name, const QString &description
-		, const QIcon &icon, QTreeWidget *tree, QTreeWidgetItem *parent)
+		, const QIcon &icon, QSize const preferedSize, QTreeWidget *tree, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
+	DraggableElement *element = new DraggableElement(id, name, description, icon, preferedSize, mIconsView);
 	parent->addChild(leaf);
 	tree->setItemWidget(leaf, 0, element);
 }
 
-void PaletteTree::addTopItemType(const Id &id, const QString &name
-		, const QString &description, const QIcon &icon, QTreeWidget *tree)
+void PaletteTree::addTopItemType(Id const &id, QString const &name
+		, QString const &description, QIcon const &icon
+		, QSize const preferedSize, QTreeWidget *tree)
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(id, name, description, icon, mIconsView);
+	DraggableElement *element = new DraggableElement(id, name, description, icon, preferedSize, mIconsView);
 	tree->addTopLevelItem(item);
 	tree->setItemWidget(item, 0, element);
 }
@@ -201,7 +224,9 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 		foreach (const Id &element, tmpIdList) {
 			addItemType(element, mEditorManager->friendlyName(element)
 					, mEditorManager->description(element)
-					, mEditorManager->icon(element), editorTree, item);
+					, mEditorManager->icon(element)
+					, mEditorManager->iconSize(element)
+					, editorTree, item);
 		}
 		return;
 	}
@@ -214,6 +239,7 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 					, mEditorManager->friendlyName(*it)
 					, mEditorManager->description(*it)
 					, mEditorManager->icon(*it)
+					, mEditorManager->iconSize(*it)
 					, true);
 			element->setToolTip(mEditorManager->friendlyName(*it));
 			layout->addWidget(element, count > 0 ? 50 : 0);
@@ -269,10 +295,12 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 			}
 		}
 	} else {
-		foreach (const Id &element, list) {
+		foreach (Id const &element, list) {
 			addTopItemType(element, mEditorManager->friendlyName(element)
 					, mEditorManager->description(element)
-					, mEditorManager->icon(element), editorTree);
+					, mEditorManager->icon(element)
+					, mEditorManager->iconSize(element)
+					, editorTree);
 		}
 	}
 	editorTree->hide();
