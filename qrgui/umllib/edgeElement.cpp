@@ -317,8 +317,9 @@ void EdgeElement::updateLongestPart()
 
 		QLineF longest(mLine[maxIdx], mLine[mLongPart + 1]);
 
-//		if (mChaoticEdition)
-//			title->rotate(-lineAngle(longest));
+		if (mChaoticEdition) {
+			title->setRotation(title->rotation() + (-lineAngle(longest)));
+		}
 	}
 }
 

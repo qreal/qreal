@@ -507,7 +507,7 @@ void XmlLoader::readPath(QDomElement const &element)
 		}
 	}
 	Path *item = new Path(path);
-//	item->translate(mDrift.x(), mDrift.y());
+	item->setTransform(QTransform::fromTranslate(mDrift.x(), mDrift.y()), true);
 	item->readPenBrush(elem);
 	mScene->addItem(item);
 	mScene->setZValue(item);
