@@ -20,7 +20,8 @@ HEADERS += \
 	mainwindow/projectManager/autosaver.h \
 	mainwindow/externBrowser.h \
 	mainwindow/draggableElement.h \
-	mainwindow/paletteTreeWidget.h
+	mainwindow/paletteTreeWidget.h \
+	mainwindow/qscintillaTextEdit.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -40,7 +41,8 @@ SOURCES += \
 	mainwindow/projectManager/autosaver.cpp \
 	mainwindow/macExternBrowser.cpp \
 	mainwindow/draggableElement.cpp \
-	mainwindow/paletteTreeWidget.cpp
+	mainwindow/paletteTreeWidget.cpp \
+	mainwindow/qscintillaTextEdit.cpp 
 
 win32 {
 	HEADERS += \
@@ -113,15 +115,4 @@ SOURCES += \
 
 FORMS += \
 	mainwindow/shapeEdit/shapeEdit.ui \
-
-
-
-
-
-
-
-
-
-
-
 

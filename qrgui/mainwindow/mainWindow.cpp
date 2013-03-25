@@ -40,6 +40,8 @@
 #include "../dialogs/startDialog/startDialog.h"
 #include "../dialogs/progressDialog/progressDialog.h"
 
+#include "qscintillaTextEdit.h"
+
 #include "dotRunner.h"
 
 using namespace qReal;
@@ -963,6 +965,24 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	setConnectActionZoomTo(shapeEdit);
 }
 
+void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue)
+{
+	gui::QScintillaTextEdit *textEdit = new gui::QScintillaTextEdit(index, role);
+	if (!propertyValue.isEmpty()) {
+		textEdit->setText(propertyValue.toUtf8());
+	}
+
+	textEdit->setPythonLexer();
+	textEdit->setPythonEditorProperties();
+
+	connect(textEdit, SIGNAL(textSaved(QString const &, QPersistentModelIndex const &, int const &))
+			, this, SLOT(setData(QString const &, QPersistentModelIndex const &, int const &)));
+
+	mUi->tabs->addTab(textEdit, tr("Text Editor"));
+	mUi->tabs->setCurrentWidget(textEdit);
+	setConnectActionZoomTo(textEdit);
+}
+
 // This method is for Interpreter
 void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy)
 {
@@ -975,7 +995,6 @@ void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, Edi
 	mUi->tabs->setCurrentWidget(shapeEdit);
 	setConnectActionZoomTo(shapeEdit);
 }
-
 void MainWindow::openShapeEditor()
 {
 	ShapeEdit * const shapeEdit = new ShapeEdit;

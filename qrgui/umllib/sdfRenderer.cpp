@@ -714,6 +714,7 @@ SdfIconEngineV2::SdfIconEngineV2(QString const &file)
 {
 	mRenderer.load(file);
 	mRenderer.noScale();
+	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
 }
 
 SdfIconEngineV2::SdfIconEngineV2(QDomDocument &document)
@@ -723,7 +724,7 @@ SdfIconEngineV2::SdfIconEngineV2(QDomDocument &document)
 }
 
 void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
-	QIcon::Mode mode, QIcon::State state)
+		QIcon::Mode mode, QIcon::State state)
 {
 	Q_UNUSED(mode)
 	Q_UNUSED(state)
@@ -738,16 +739,19 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
 	}
 	// Take picture aspect into account
 	QRect resRect = rect;
-	if (rh * pw < ph * rw)
-	{
-		resRect.setLeft(rect.left() + (rw-rh*pw/ph)/2);
-		resRect.setRight(rect.right() - (rw-rh*pw/ph)/2);
+	if (rh * pw < ph * rw) {
+		resRect.setLeft(rect.left() + (rw - rh * pw / ph) / 2);
+		resRect.setRight(rect.right() - (rw - rh * pw / ph) / 2);
 	}
-	if (rh * pw > ph * rw)
-	{
-		resRect.setTop(rect.top() + (rh-rw*ph/pw)/2);
-		resRect.setBottom(rect.bottom() - (rh-rw*ph/pw)/2);
+	if (rh * pw > ph * rw) {
+		resRect.setTop(rect.top() + (rh - rw * ph / pw) / 2);
+		resRect.setBottom(rect.bottom() - (rh - rw * ph / pw) / 2);
 	}
 	painter->setRenderHint(QPainter::Antialiasing, true);
 	mRenderer.render(painter, resRect);
+}
+
+QSize SdfIconEngineV2::preferedSize() const
+{
+	return mSize;
 }

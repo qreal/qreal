@@ -83,7 +83,7 @@ bool EditorManager::loadPlugin(const QString &pluginName)
 		}
 	}
 
-	qDebug() << "Plugin loading failed: " << loader->errorString();
+	QMessageBox::warning(NULL, tr("error"), tr("Plugin loading failed: ") + loader->errorString());
 	loader->unload();
 	delete loader;
 	return false;
@@ -98,6 +98,7 @@ bool EditorManager::unloadPlugin(const QString &pluginName)
 		mPluginFileName.remove(pluginName);
 		mPluginsLoaded.removeAll(pluginName);
 		if (!loader->unload()) {
+			QMessageBox::warning(NULL, tr("error"), tr("Plugin unloading failed: ") + loader->errorString());
 			delete loader;
 			return false;
 		}
@@ -231,6 +232,13 @@ QIcon EditorManager::icon(const Id &id) const
 	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
 	// QIcon will take ownership of engine, no need for us to delete
 	return mPluginIface[id.editor()]->getIcon(engine);
+}
+
+QSize EditorManager::iconSize(Id const &id) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
+	return engine->preferedSize();
 }
 
 Element* EditorManager::graphicalObject(const Id &id) const

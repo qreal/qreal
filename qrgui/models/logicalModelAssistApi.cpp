@@ -32,7 +32,7 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 
 	Id const newElementId(type, QUuid::createUuid().toString());
 	QString const elementFriendlyName = mModelsAssistApi.editorManagerInter()->friendlyName(type);
-	mLogicalModel.addElementToModel(parent, newElementId, Id(), "(" + elementFriendlyName + ")", QPointF(0, 0));
+	mLogicalModel.addElementToModel(parent, newElementId, Id(), elementFriendlyName, QPointF(0, 0));
 	return newElementId;
 }
 

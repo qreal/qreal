@@ -86,6 +86,7 @@ public:
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
+	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
 	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy);
 	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index, int const &role);
 	void openReferenceList(QPersistentModelIndex const &index
