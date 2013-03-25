@@ -1,0 +1,74 @@
+#include "reshapeEdgeCommand.h"
+
+using namespace qReal::commands;
+
+ReshapeEdgeCommand::ReshapeEdgeCommand(EdgeElement const *edge)
+	: EdgeElementCommand(dynamic_cast<EditorViewScene *>(edge->scene()), edge->id())
+{
+}
+
+bool ReshapeEdgeCommand::execute()
+{
+	if (!mTrackStopped) {
+		return true;
+	}
+	EdgeElementCommand::execute();
+	applyConfiguration(mNewConfiguration, mNewSrc, mNewDst);
+	return true;
+}
+
+bool ReshapeEdgeCommand::restoreState()
+{
+	if (!mTrackStopped) {
+		return true;
+	}
+	EdgeElementCommand::restoreState();
+	applyConfiguration(mOldConfiguration, mOldSrc, mOldDst);
+	return true;
+}
+
+void ReshapeEdgeCommand::startTracking()
+{
+	EdgeElementCommand::reinitElement();
+	TrackingEntity::startTracking();
+	saveConfiguration(mOldConfiguration, mOldSrc, mOldDst);
+}
+
+void ReshapeEdgeCommand::stopTracking()
+{
+	EdgeElementCommand::reinitElement();
+	TrackingEntity::stopTracking();
+	saveConfiguration(mNewConfiguration, mNewSrc, mNewDst);
+}
+
+void ReshapeEdgeCommand::saveConfiguration(QPolygonF &target, Id &src, Id &dst)
+{
+	if (mEdge) {
+		target = mEdge->line();
+		src = mEdge->src() ? mEdge->src()->id() : Id();
+		dst = mEdge->dst() ? mEdge->dst()->id() : Id();
+	}
+}
+
+void ReshapeEdgeCommand::applyConfiguration(QPolygonF const &configuration
+		, Id const &src, Id const &dst)
+{
+	if (!mEdge) {
+		return;
+	}
+	NodeElement *srcElem = dynamic_cast<NodeElement *>(elementById(src));
+	NodeElement *dstElem = dynamic_cast<NodeElement *>(elementById(dst));
+	mEdge->setLine(configuration);
+	mEdge->setSrc(srcElem);
+	mEdge->setDst(dstElem);
+	mEdge->connectToPort();
+	if (srcElem) {
+		srcElem->arrangeLinks();
+		srcElem->adjustLinks();
+	}
+	if (dstElem) {
+		dstElem->arrangeLinks();
+		dstElem->adjustLinks();
+	}
+	mEdge->scene()->update();
+}

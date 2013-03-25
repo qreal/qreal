@@ -10,6 +10,7 @@
 
 #include "edgeElement.h"
 #include "nodeElement.h"
+#include "private/reshapeEdgeCommand.h"
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
 
@@ -37,6 +38,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		, mModelUpdateIsCalled(false)
 		, mIsLoop(false)
 		, mIsVerticalChanging(false)
+		, mReshapeCommand(NULL)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -108,6 +110,12 @@ QRectF EdgeElement::boundingRect() const
 QPolygonF EdgeElement::line() const
 {
 	return mLine;
+}
+
+void EdgeElement::setLine(QPolygonF const &line)
+{
+	mLine = line;
+	saveConfiguration(QPointF());
 }
 
 static double lineAngle(const QLineF &line)
@@ -498,6 +506,10 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			return;
 		}
 	}
+
+	mReshapeCommand = new commands::ReshapeEdgeCommand(this);
+	mReshapeCommand->startTracking();
+
 	if (!SettingsManager::value("SquareLine").toBool() && (event->modifiers() & Qt::AltModifier)
 		&& (getPoint(event->pos()) != noPort) && (event->button() == Qt::LeftButton) && delPointActionIsPossible(event->pos()))
 	{
@@ -664,6 +676,11 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	setGraphicApiPos();
 	saveConfiguration(QPointF());
+
+	mReshapeCommand->stopTracking();
+	mController->execute(mReshapeCommand);
+	// Undo stack took ownership
+	mReshapeCommand = NULL;
 }
 
 qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const

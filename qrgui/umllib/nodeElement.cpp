@@ -527,6 +527,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (shouldProcessResize && mResizeCommand) {
 		mResizeCommand->stopTracking();
 		mController->execute(mResizeCommand);
+		// Undo stack took ownership
 		mResizeCommand = NULL;
 	}
 
