@@ -950,16 +950,15 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		createGoToSubmenu(goToMenu, tr("Backward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
 		createGoToSubmenu(goToMenu, tr("Uses"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
 		createGoToSubmenu(goToMenu, tr("Used in"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
-
-		if (mWindow->manager()->isInterpretationMode()) {
-			contextMenu.addSeparator();
-			QAction * const changePropertiesAction = contextMenu.addAction(tr("Change Properties"));
-			connect(changePropertiesAction, SIGNAL(triggered()), SLOT(changePropertiesActionTriggered()));
-			changePropertiesAction->setData(element->id().toVariant());
-			QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
-			connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearanceActionTriggered()));
-			changeAppearancePaletteAction->setData(element->id().toVariant());
-		}
+	}
+	if (mWindow->manager()->isInterpretationMode()) {
+		contextMenu.addSeparator();
+		QAction * const changePropertiesAction = contextMenu.addAction(tr("Change Properties"));
+		connect(changePropertiesAction, SIGNAL(triggered()), SLOT(changePropertiesActionTriggered()));
+		changePropertiesAction->setData(element->id().toVariant());
+		QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
+		connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearanceActionTriggered()));
+		changeAppearancePaletteAction->setData(element->id().toVariant());
 	}
 }
 
