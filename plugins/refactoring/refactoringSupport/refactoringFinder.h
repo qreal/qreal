@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../qrkernel/ids.h"
-#include "../../../qrutils/graphTransformation/baseGraphTransformationUnit.h"
+#include "../../../qrutils/graphUtils/baseGraphTransformationUnit.h"
 #include "../../../qrgui/mainwindow/errorReporter.h"
 #include "../../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
 
