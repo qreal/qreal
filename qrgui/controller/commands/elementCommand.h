@@ -27,9 +27,9 @@ protected:
 	virtual bool execute();
 	virtual bool restoreState();
 
-	Element *mElement;
+	Element *elementById(Id const &id);
 
-private:
+	Element *mElement;
 	EditorViewScene const *mScene;
 	Id mId;
 };

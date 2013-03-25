@@ -1,5 +1,4 @@
 #include "changeParentCommand.h"
-#include "resizeCommand.h"
 
 using namespace qReal::commands;
 

@@ -194,8 +194,6 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 
 		// it seems to be more appropriate to use childItem->pos() but it causes
 		// bad behaviour when dropping one element to another
-		qDebug() << mResizingNode->scenePos();
-		qDebug() << childItem->scenePos();
 		curChildItemBoundingRect.translate(childItem->scenePos() - mResizingNode->scenePos());
 
 		contents.setLeft(qMin(curChildItemBoundingRect.left() - sizeOfForestalling

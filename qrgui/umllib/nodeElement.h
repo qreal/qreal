@@ -24,6 +24,14 @@
 
 #include "serializationData.h"
 
+namespace qReal
+{
+namespace commands
+{
+class ResizeCommand;
+}
+}
+
 class NodeElement : public Element
 {
 	Q_OBJECT
@@ -162,21 +170,21 @@ private:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF const &newContents, QPointF const &newPos, bool registerCommand = false);
+	void resize(QRectF const &newContents, QPointF const &newPos);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
 	 * newPos equals to current position of node.
 	 * @param newContents Recommendation for new shape of node.
 	 */
-	void resize(QRectF const &newContents, bool registerCommand = false);
+	void resize(QRectF const &newContents);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
 	 * newPos equals to current position of node and
 	 * newContents equals to current shape (mContents).
 	 */
-	void resize(bool registerCommand = false);
+	void resize();
 
 	void disconnectEdges();
 
@@ -210,8 +218,6 @@ private:
 	void initEmbeddedLinkers();
 
 	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
-	commands::AbstractCommand *resizeCommand(QRectF const &newContents, QPointF const &newPos
-			, QRectF const &oldContents, QPointF const &oldPos) const;
 
 	ContextMenuAction mSwitchGridAction;
 
@@ -222,7 +228,7 @@ private:
 
 	DragState mDragState;
 	QPointF mDragPosition;
-	QRectF mGeometryBeforeDrag;
+	qReal::commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
 

@@ -14,9 +14,9 @@
 
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
+#include "private/resizeCommand.h"
 
 #include "../controller/commands/changeParentCommand.h"
-#include "../controller/commands/resizeCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -26,6 +26,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	, mSwitchGridAction(tr("Switch on grid"), this)
 	, mPortsVisible(false)
 	, mDragState(None)
+	, mResizeCommand(NULL)
 	, mIsFolded(false)
 	, mLeftPressed(false)
 	, mParentNodeElement(NULL)
@@ -259,8 +260,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	mGeometryBeforeDrag = mContents;
-	mGeometryBeforeDrag.moveTo(pos());
+	mResizeCommand = new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id());
+	mResizeCommand->startTracking();
 	if (isSelected()) {
 		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopLeft;
@@ -522,11 +523,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			shouldProcessResize = parentCommand == NULL;
 		}
 	}
-	if (shouldProcessResize) {
-		resize(true);
+	if (shouldProcessResize && mResizeCommand) {
+		mResizeCommand->stopTracking();
+		mController->execute(mResizeCommand);
+		mResizeCommand = NULL;
 	}
-	mGeometryBeforeDrag = mContents;
-	mGeometryBeforeDrag.moveTo(pos());
 
 	arrangeLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
@@ -1146,25 +1147,20 @@ NodeData& NodeElement::data()
 	return mData;
 }
 
-void NodeElement::resize(bool registerCommand)
+void NodeElement::resize()
 {
-	resize(mContents, pos(), registerCommand);
+	resize(mContents, pos());
 }
 
-void NodeElement::resize(QRectF const &newContents, bool registerCommand)
+void NodeElement::resize(QRectF const &newContents)
 {
-	resize(newContents, pos(), registerCommand);
+	resize(newContents, pos());
 }
 
-void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool registerCommand)
+void NodeElement::resize(QRectF const &newContents, QPointF const &newPos)
 {
-	if (registerCommand) {
-		mController->execute(resizeCommand(newContents, newPos
-				, mGeometryBeforeDrag, mGeometryBeforeDrag.topLeft()));
-	} else {
-		ResizeHandler handler(this);
-		handler.resize(newContents, newPos);
-	}
+	ResizeHandler handler(this);
+	handler.resize(newContents, newPos);
 }
 
 bool NodeElement::isFolded() const
@@ -1220,9 +1216,7 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 {
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	Element *oldParentElem = dynamic_cast<Element *>(parentItem());
-	Element *newParentElem = evScene->getElem(newParent);
-	QPointF const oldPos = mGeometryBeforeDrag.topLeft();
-	QPointF const newScenePos = newParentElem ? newParentElem->mapToScene(position) : position;
+	QPointF const oldPos = mResizeCommand->geometryBeforeDrag().topLeft();
 	QPointF const oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
 	Id const oldParent = oldParentElem ? oldParentElem->id() : evScene->rootItemId();
 	if (oldParent == newParent) {
@@ -1238,24 +1232,12 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 	ChangeParentCommand *changeParentToSceneCommand =
 			new ChangeParentCommand(mLogicalAssistApi, mGraphicalAssistApi, false
 					, id(), oldParent, evScene->rootItemId(), oldPos, oldScenePos);
-	AbstractCommand *translateCommand = resizeCommand(mContents, position
-			, mContents, oldScenePos);
+	AbstractCommand *translateCommand = ResizeCommand::create(this, mContents
+			, position, mContents, oldScenePos);
 	ChangeParentCommand *result = new ChangeParentCommand(
 			mLogicalAssistApi, mGraphicalAssistApi, false
 			, id(), evScene->rootItemId(), newParent, position, position);
 	result->addPreAction(changeParentToSceneCommand);
 	result->addPreAction(translateCommand);
 	return result;
-}
-
-commands::AbstractCommand *NodeElement::resizeCommand(QRectF const &newContents
-		, QPointF const &newPos, QRectF const &oldContents, QPointF const &oldPos) const
-{
-	QRectF newContentsAndPos = newContents;
-	newContentsAndPos.moveTo(newPos);
-	QRectF oldContentsAndPos = oldContents;
-	oldContentsAndPos.moveTo(oldPos);
-	return newContentsAndPos == oldContentsAndPos ? NULL :
-			new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id()
-					, oldContentsAndPos, newContentsAndPos);
 }

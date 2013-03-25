@@ -32,15 +32,18 @@ void ElementCommand::setId(Id const &id)
 
 bool ElementCommand::reinitElement()
 {
-	if (mScene) {
-		mElement = mScene->getElem(mId);
-	}
+	mElement = elementById(mId);
 	return mElement != NULL;
 }
 
 bool ElementCommand::restoreState()
 {
 	return reinitElement();
+}
+
+Element *ElementCommand::elementById(Id const &id)
+{
+	return mScene ? mScene->getElem(id) : NULL;
 }
 
 bool ElementCommand::execute()

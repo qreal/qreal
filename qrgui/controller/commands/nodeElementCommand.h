@@ -18,6 +18,8 @@ public:
 protected:
 	virtual bool reinitElement();
 
+	NodeElement *nodeById(Id const &id);
+
 	NodeElement *mNode;
 };
 

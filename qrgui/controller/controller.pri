@@ -14,7 +14,7 @@ HEADERS += \
 	controller/commands/selectElementCommand.h \
 	controller/commands/updateElementCommand.h \
 	controller/commands/changeParentCommand.h \
-	controller/commands/resizeCommand.h
+	controller/commands/trackingEntity.h \
 
 SOURCES += \
 	controller/controller.cpp \
@@ -32,4 +32,4 @@ SOURCES += \
 	controller/commands/selectElementCommand.cpp \
 	controller/commands/updateElementCommand.cpp \
 	controller/commands/changeParentCommand.cpp \
-	controller/commands/resizeCommand.cpp
+	controller/commands/trackingEntity.cpp \

@@ -18,3 +18,8 @@ bool NodeElementCommand::reinitElement()
 	mNode = dynamic_cast<NodeElement *>(mElement);
 	return mNode != NULL;
 }
+
+NodeElement *NodeElementCommand::nodeById(Id const &id)
+{
+	return dynamic_cast<NodeElement *>(elementById(id));
+}
