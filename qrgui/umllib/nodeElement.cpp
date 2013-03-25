@@ -15,6 +15,7 @@
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
 #include "private/resizeCommand.h"
+#include "private/foldCommand.h"
 
 #include "../controller/commands/changeParentCommand.h"
 
@@ -549,7 +550,7 @@ void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 
 	if (mElementImpl->isContainer()) {
-		changeFoldState();
+		mController->execute(new FoldCommand(this));
 	}
 }
 
@@ -1216,12 +1217,12 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 {
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	Element *oldParentElem = dynamic_cast<Element *>(parentItem());
-	QPointF const oldPos = mResizeCommand->geometryBeforeDrag().topLeft();
-	QPointF const oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
 	Id const oldParent = oldParentElem ? oldParentElem->id() : evScene->rootItemId();
 	if (oldParent == newParent) {
 		return NULL;
 	}
+	QPointF const oldPos = mResizeCommand->geometryBeforeDrag().topLeft();
+	QPointF const oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
 	// Without pre-translating into new position parent gets wrong child coords
 	// when redo happens and resizes when he doesn`t need it.
 	// So we mush pre-translate child into new scene position first, but when

@@ -139,6 +139,8 @@ public:
 
 	void setVisibleEmbeddedLinkers(bool const show);
 
+	void changeFoldState();
+
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);
@@ -207,7 +209,6 @@ private:
 	void recalculateHighlightedNode(QPointF const &mouseScenePos);
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
-	void changeFoldState();
 	void setLinksVisible(bool);
 
 	NodeElement *getNodeAt(QPointF const &position);
