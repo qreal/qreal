@@ -31,7 +31,7 @@ namespace qReal {
 		IdList editors() const;
 		IdList diagrams(Id const &editor) const;
 		IdList groups(Id const &diagram);
-		Pattern getPatternByName (QString str) const;
+		Pattern getPatternByName (QString const &str) const;
 		QList<QString> getPatternNames() const;
 		QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 		QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
@@ -46,6 +46,7 @@ namespace qReal {
 		QString propertyDescription(Id const &id, QString const &propertyName) const;
 		QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
 		QIcon icon(Id const &id) const;
+
 		Element* graphicalObject(Id const &id) const;
 
 		IdList getContainedTypes(const Id &id) const;

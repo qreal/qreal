@@ -479,7 +479,7 @@ QList<QString> EditorManager::getPatternNames() const
 	return mGroups.keys();
 }
 
-Pattern EditorManager::getPatternByName(QString str) const
+Pattern EditorManager::getPatternByName(const QString &str) const
 {
 	return mGroups.value(str);
 }
@@ -491,7 +491,7 @@ IdList EditorManager::groups(Id const &diagram)
 	parser.loadXml((mPluginIface.value(diagram.editor()))->getGroupsXML());
 	parser.parseGroups(diagram.editor(), diagram.diagram());
 	foreach(Pattern const &pattern, parser.getPatterns()){
-		mGroups.insert(pattern.getName(), pattern);
+		mGroups.insert(pattern.name(), pattern);
 	}
 	foreach (QString e, mGroups.keys()){
 			elements.append(Id(diagram.editor(), diagram.diagram(), e));

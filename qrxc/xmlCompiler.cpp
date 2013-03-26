@@ -718,7 +718,7 @@ void XmlCompiler::generateGroupsXML(OutFile &out)
 	out() << "QString " << mPluginName << "Plugin::getGroupsXML() const \n{\n";
 	QString result = "";
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams()){
-		if (diagram->getGroupsXML() != "")
+		if (!diagram->getGroupsXML().isEmpty())
 			result = result + diagram->getGroupsXML();
 	}
 	out() << "\treturn QString::fromUtf8(\"" << result << "\");\n"

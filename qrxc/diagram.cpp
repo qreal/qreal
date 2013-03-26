@@ -93,9 +93,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 			xml.replace("\"", "\\\"");
 			xml.replace("\n", "\\n");
 			mGroupsXML = xml;
-		}
-		else if (element.nodeName() == "enum")
-		{
+		} else if (element.nodeName() == "enum"){
 			Type *enumType = new EnumType();
 			if (!enumType->init(element, mDiagramName))
 			{
@@ -104,8 +102,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 				return false;
 			}
 			mTypes[enumType->qualifiedName()] = enumType;
-		} else if (element.nodeName() == "numeric")
-		{
+		} else if (element.nodeName() == "numeric"){
 			Type *numericType = new NumericType();
 			if (!numericType->init(element, mDiagramName))
 			{
@@ -114,8 +111,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 				return false;
 			}
 			mTypes[numericType->qualifiedName()] = numericType;
-		} else if (element.nodeName() == "string")
-		{
+		} else if (element.nodeName() == "string"){
 			Type *stringType = new StringType();
 			if (!stringType->init(element, mDiagramName))
 			{
@@ -125,8 +121,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 			}
 			mTypes[stringType->qualifiedName()] = stringType;
 		}
-		else
-		{
+		else {
 			qDebug() << "ERROR: unknown non graphic type" << element.nodeName();
 			return false;
 		}
@@ -222,7 +217,7 @@ QMap<QString, QString> Diagram::paletteGroupsDescriptions() const
 	return mPaletteGroupsDescriptions;
 }
 
-QString Diagram::getGroupsXML()
+QString Diagram::getGroupsXML() const
 {
 	return mGroupsXML;
 }

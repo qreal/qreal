@@ -9,7 +9,7 @@ namespace qReal {
 
 class GroupNode{
 public:
-	GroupNode(const QString &type, const QString &id, const QPointF &position);
+	GroupNode(QString const &type, QString const &id, QPointF const &position);
 
 	QString type;
 	QString id;
@@ -18,7 +18,7 @@ public:
 
 class GroupEdge{
 public:
-	GroupEdge(const QString &type, const QString &from, const QString &to);
+	GroupEdge(QString const &type, QString const &from, QString const &to);
 
 	QString type;
 	QString from;
@@ -28,22 +28,22 @@ public:
 class Pattern{
 public:
 	Pattern();
-//	Pattern(const QString &editor, const QString &diagram, const QString &name, const QString &inNode, const QString &outNode);
-	void setName(const QString &name);
-	QString getName() const;
-	void setEditor(const QString &editor);
+	Pattern(QString const &editor, QString const &diagram, QString const &name, QString const &inNode, QString const &outNode);
+	void setName(QString const &name);
+	QString name() const;
+	void setEditor(QString const &editor);
 	QString editor() const;
-	void setDiagram(const QString &diagram);
+	void setDiagram(QString const &diagram);
 	QString diagram();
-	void addNode(const QString &type, const QString &id, const QPointF &pos);
-	void addEdge(const QString &type, const QString &from, const QString &to);
-	QList<GroupNode> getNodes() const;
-	QList<GroupEdge> getEdges() const;
-	void setInNode(const QString &id);
-	void setOutNode(const QString &id);
-	QString getInNode()const;
-	QString getOutNode()const;
-	QPointF getSize() const;
+	void addNode(QString const &type, QString const &id, QPointF const &pos);
+	void addEdge(QString const &type, QString const &from, QString const &to);
+	QList<GroupNode> nodes() const;
+	QList<GroupEdge> edges() const;
+	void setInNode(QString const &id);
+	void setOutNode(QString const &id);
+	QString inNode()const;
+	QString outNode()const;
+	QPointF size() const;
 	void countSize();
 
 private:

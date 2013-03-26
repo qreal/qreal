@@ -21,7 +21,7 @@ public:
 	QString name() const;
 	QString nodeName() const;
 	QString displayedName() const;
-	QString getGroupsXML();
+	QString getGroupsXML() const;
 	QMap<QString, QStringList> paletteGroups() const;
 	QMap<QString, QString> paletteGroupsDescriptions() const;
 
