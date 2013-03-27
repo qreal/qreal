@@ -13,7 +13,7 @@ bool ReshapeEdgeCommand::execute()
 		return true;
 	}
 	EdgeElementCommand::execute();
-	applyConfiguration(mNewConfiguration, mNewSrc, mNewDst);
+	applyConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos);
 	return true;
 }
 
@@ -23,7 +23,7 @@ bool ReshapeEdgeCommand::restoreState()
 		return true;
 	}
 	EdgeElementCommand::restoreState();
-	applyConfiguration(mOldConfiguration, mOldSrc, mOldDst);
+	applyConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos);
 	return true;
 }
 
@@ -31,27 +31,29 @@ void ReshapeEdgeCommand::startTracking()
 {
 	EdgeElementCommand::reinitElement();
 	TrackingEntity::startTracking();
-	saveConfiguration(mOldConfiguration, mOldSrc, mOldDst);
+	saveConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos);
 }
 
 void ReshapeEdgeCommand::stopTracking()
 {
 	EdgeElementCommand::reinitElement();
 	TrackingEntity::stopTracking();
-	saveConfiguration(mNewConfiguration, mNewSrc, mNewDst);
+	saveConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos);
 }
 
-void ReshapeEdgeCommand::saveConfiguration(QPolygonF &target, Id &src, Id &dst)
+void ReshapeEdgeCommand::saveConfiguration(QPolygonF &target, Id &src, Id &dst
+		, QPointF &pos)
 {
 	if (mEdge) {
 		target = mEdge->line();
 		src = mEdge->src() ? mEdge->src()->id() : Id();
 		dst = mEdge->dst() ? mEdge->dst()->id() : Id();
+		pos = mEdge->pos();
 	}
 }
 
 void ReshapeEdgeCommand::applyConfiguration(QPolygonF const &configuration
-		, Id const &src, Id const &dst)
+		, Id const &src, Id const &dst, QPointF const &pos)
 {
 	if (!mEdge) {
 		return;
@@ -59,6 +61,7 @@ void ReshapeEdgeCommand::applyConfiguration(QPolygonF const &configuration
 	NodeElement *srcElem = dynamic_cast<NodeElement *>(elementById(src));
 	NodeElement *dstElem = dynamic_cast<NodeElement *>(elementById(dst));
 	mEdge->setLine(configuration);
+	mEdge->setPos(pos);
 	mEdge->setSrc(srcElem);
 	mEdge->setDst(dstElem);
 	mEdge->connectToPort();

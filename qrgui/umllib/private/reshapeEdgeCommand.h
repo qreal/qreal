@@ -22,11 +22,14 @@ protected:
 	bool restoreState();
 
 private:
-	void saveConfiguration(QPolygonF &target, Id &src, Id &dst);
-	void applyConfiguration(QPolygonF const &configuration, Id const &src, Id const &dst);
+	void saveConfiguration(QPolygonF &target, Id &src, Id &dst, QPointF &pos);
+	void applyConfiguration(QPolygonF const &configuration, Id const &src
+			, Id const &dst, QPointF const &pos);
 
 	QPolygonF mOldConfiguration;
 	QPolygonF mNewConfiguration;
+	QPointF mOldPos;
+	QPointF mNewPos;
 	Id mOldSrc;
 	Id mOldDst;
 	Id mNewSrc;
