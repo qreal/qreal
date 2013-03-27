@@ -25,7 +25,7 @@ void EllipseItem::setPrivateData()
 	mPen.setColor(Qt::blue);
 	mPen.setStyle(Qt::SolidLine);
 	mBrush.setColor(Qt::white);
-	mBrush.setStyle(Qt::SolidPattern);
+	mBrush.setStyle(Qt::NoBrush);
 }
 
 QRectF EllipseItem::calcNecessaryBoundingRect() const

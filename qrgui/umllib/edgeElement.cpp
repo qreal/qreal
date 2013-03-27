@@ -642,8 +642,6 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	Element::mouseReleaseEvent(event);
 
-	connectToPort();
-
 	if (mSrc) {
 		mSrc->setPortsVisible(false);
 	}
@@ -651,6 +649,8 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (mDst) {
 		mDst->setPortsVisible(false);
 	}
+
+	connectToPort();
 
 	delCloseLinePoints();
 
@@ -757,24 +757,37 @@ bool EdgeElement::removeOneLinePoints(int startingPoint)
 }
 
 // NOTE: using don`t forget about possible nodeElement`s overlaps (different Z-value)
+// connecting to the innermost node at the point
 NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 {
 	QPainterPath circlePath;
 	circlePath.addEllipse(mapToScene(position), 12, 12);
-	QList <QGraphicsItem*> items = scene()->items(circlePath);
+	QList<QGraphicsItem *> items = scene()->items(circlePath);
+
 	if (isStart && items.contains(mSrc)) {
-		return mSrc;
+		return innermostChild(items, mSrc);
 	}
 	if (!isStart && items.contains(mDst)) {
-		return mDst;
+		return innermostChild(items, mDst);
 	}
+
 	foreach (QGraphicsItem *item, items) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
 		if (e) {
-			return e;
+			return innermostChild(items, e);
 		}
 	}
 	return NULL;
+}
+
+NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const
+{
+	foreach (NodeElement *child, element->childNodes()) {
+		if (items.contains(child)) {
+			return innermostChild(items, child);
+		}
+	}
+	return element;
 }
 
 QList<ContextMenuAction*> EdgeElement::contextMenuActions(const QPointF &pos)

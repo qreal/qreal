@@ -7,8 +7,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
 WaitForLightSensorBlock::WaitForLightSensorBlock(details::RobotModel const * const robotModel)
-	: mLightSensor(NULL)
-	, mRobotModel(robotModel)
+	: mRobotModel(robotModel)
 {
 	// There is about 30 ms latency within robot bluetooth chip, so it is useless to
 	// read sensor too frequently.
@@ -19,44 +18,41 @@ WaitForLightSensorBlock::WaitForLightSensorBlock(details::RobotModel const * con
 
 void WaitForLightSensorBlock::run()
 {
-	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
-	mLightSensor = mRobotModel->lightSensor(port);
+	mPort = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
+	robotParts::LightSensor *lightSensor = mRobotModel->lightSensor(mPort);
 
-	if (!mLightSensor) {
+	if (!lightSensor) {
 		mActiveWaitingTimer.stop();
 		error(tr("Light sensor is not configured on this port"));
 		return;
 	}
 
-	connect(mLightSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
-	connect(mLightSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
+	connect(lightSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
+	connect(lightSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
 
-	mLightSensor->read();
+	lightSensor->read();
 	mActiveWaitingTimer.start();
 }
 
 void WaitForLightSensorBlock::responseSlot(int reading)
 {
 	int const targetPercents = evaluate("Percents").toInt();
+	reading = reading * 100 / maxValue; // Converting value into percents
 
 	QString const sign = stringProperty("Sign");
-	if ((sign == "равно") && (reading != targetPercents)) {
+	if ((sign == QString::fromUtf8("равно")) && (reading != targetPercents)) {
 		stop();
 	}
-	if ((sign == "больше") && (reading <= targetPercents)) {
+	if ((sign == QString::fromUtf8("больше")) && (reading <= targetPercents)) {
 		stop();
 	}
-	if ((sign == "меньше") && (reading >= targetPercents)) {
+	if ((sign == QString::fromUtf8("меньше")) && (reading >= targetPercents)) {
 		stop();
 	}
-	if ((sign == "не меньше") && (reading < targetPercents)) {
+	if ((sign == QString::fromUtf8("не меньше")) && (reading < targetPercents)) {
 		stop();
 	}
-	if ((sign == "не больше") && (reading > targetPercents)) {
-		stop();
-	}
-
-	if (targetPercents < reading) {
+	if ((sign == QString::fromUtf8("не больше")) && (reading > targetPercents)) {
 		stop();
 	}
 }
@@ -75,7 +71,7 @@ void WaitForLightSensorBlock::failureSlot()
 
 void WaitForLightSensorBlock::timerTimeout()
 {
-	mLightSensor->read();
+	mRobotModel->lightSensor(mPort)->read();
 }
 
 QList<Block::SensorPortPair> WaitForLightSensorBlock::usedSensors() const

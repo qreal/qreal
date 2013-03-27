@@ -75,14 +75,14 @@ QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() 
 	return result;
 }
 
-Customizer const *ToolPluginManager::customizer() const
+Customizer *ToolPluginManager::customizer() const
 {
 	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
 		if (toolPlugin->customizationInterface()) {
 			return toolPlugin->customizationInterface();
 		}
 	}
-	return &mCustomizer;
+	return const_cast<qReal::Customizer *>(&mCustomizer);
 }
 
 void ToolPluginManager::updateSettings()

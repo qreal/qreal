@@ -39,6 +39,8 @@ public:
 	virtual sensorImplementations::UnrealEncoderImplementation &encoderB();
 	virtual sensorImplementations::UnrealEncoderImplementation &encoderC();
 
+	virtual AbstractTimer *produceTimer();
+
 	virtual void startInterpretation();
 
 private slots:

@@ -7,8 +7,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
 WaitForColorIntensityBlock::WaitForColorIntensityBlock(details::RobotModel const * const robotModel)
-	: mColorSensor(NULL)
-	, mRobotModel(robotModel)
+	: mRobotModel(robotModel)
 {
 	// There is about 30 ms latency within robot bluetooth chip, so it is useless to
 	// read sensor too frequently.
@@ -19,19 +18,19 @@ WaitForColorIntensityBlock::WaitForColorIntensityBlock(details::RobotModel const
 
 void WaitForColorIntensityBlock::run()
 {
-	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
-	mColorSensor = mRobotModel->colorSensor(port);
+	mPort = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
+	robotParts::ColorSensor *colorSensor = mRobotModel->colorSensor(mPort);
 
-	if (!mColorSensor) {
+	if (!colorSensor) {
 		mActiveWaitingTimer.stop();
 		error(tr("Color sensor is not configured on this port or it is configured in a wrong mode (not \"Full color\" mode needed)"));
 		return;
 	}
 
-	connect(mColorSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
-	connect(mColorSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
+	connect(colorSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
+	connect(colorSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
 
-	mColorSensor->read();
+	colorSensor->read();
 	mActiveWaitingTimer.start();
 }
 
@@ -74,7 +73,10 @@ void WaitForColorIntensityBlock::failureSlot()
 
 void WaitForColorIntensityBlock::timerTimeout()
 {
-	mColorSensor->read();
+	robotParts::ColorSensor *colorSensor = mRobotModel->colorSensor(mPort);
+	if (colorSensor) {
+		colorSensor->read();
+	}
 }
 
 QList<Block::SensorPortPair> WaitForColorIntensityBlock::usedSensors() const

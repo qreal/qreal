@@ -2,6 +2,8 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
+CONFIG += warn_off
+
 qtpropertybrowser-uselib:!qtpropertybrowser-buildlib {
 	LIBS += -L$$QTPROPERTYBROWSER_LIBDIR -l$$QTPROPERTYBROWSER_LIBNAME
 } else {
