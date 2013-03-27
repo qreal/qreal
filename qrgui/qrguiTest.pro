@@ -1,4 +1,4 @@
-QT += svg xml
+QT += svg xml printsupport widgets
 
 CONFIG += rpath_libdirs help
 macx {

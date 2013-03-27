@@ -3,7 +3,7 @@ DEFINES += UNITTEST
 TEMPLATE = app
 CONFIG += console
 
-QT += xml gui
+QT += xml gui widgets printsupport
 
 DESTDIR = ../../bin/unittests
 TARGET = qrlibs_unittests
