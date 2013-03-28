@@ -40,7 +40,6 @@ SensorsGraph::SensorsGraph(const utils::ExpressionsParser *parser, QWidget *pare
 
 	mUpdateTimer.start(mUpdateRate);
 	connect(&mUpdateTimer, SIGNAL(timeout()), this, SLOT(updateValues()));
-	resizeEvent();
 	mPlotFrame->centerOn(mPlotFrame->sceneRect().center());
 }
 
@@ -68,7 +67,7 @@ void SensorsGraph::removeTracking(const int index)
 	watchListChanged();
 }
 
-void SensorsGraph::resizeEvent(QResizeEvent *event)
+void SensorsGraph::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);
 	qreal const verticalCoefficent = 0.8;

@@ -34,7 +34,8 @@ public:
 	void addTrackingObject(int const index, QString const &inParserName, QString const &displayName);
 	void removeTracking(int const index);
 
-	void resizeEvent(QResizeEvent *event = 0);
+	//! paintEvent makes resize operations
+	void paintEvent(QPaintEvent *event = 0);
 
 public slots:
 	void sensorsInput(int const slotIndex, qreal const value);

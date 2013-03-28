@@ -44,8 +44,7 @@ void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWa
 	QDockWidget *graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
 
-	mDockInterface->tabifyDockWidget(graphWatchDock, watchWindow);
-	graphWatchDock->resize(graphWatchDock->size());
+	mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);
 }
 
 QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const

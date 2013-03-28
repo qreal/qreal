@@ -219,6 +219,22 @@ void Interpreter::sensorsConfiguredSlot()
 	}
 }
 
+void Interpreter::updateGraphicWatchSensorsList()
+{
+	mGraphicsWatch->addTrackingObject(0, QString("Sensor1"),
+			SensorEnumerator::sensorName(static_cast<sensorType::SensorTypeEnum>
+			(SettingsManager::instance()->value("port1SensorType").toInt())));
+	mGraphicsWatch->addTrackingObject(1, QString("Sensor2"),
+			SensorEnumerator::sensorName(static_cast<sensorType::SensorTypeEnum>
+			(SettingsManager::instance()->value("port2SensorType").toInt())));
+	mGraphicsWatch->addTrackingObject(2, QString("Sensor3"),
+			SensorEnumerator::sensorName(static_cast<sensorType::SensorTypeEnum>
+			(SettingsManager::instance()->value("port3SensorType").toInt())));
+	mGraphicsWatch->addTrackingObject(3, QString("Sensor4"),
+			SensorEnumerator::sensorName(static_cast<sensorType::SensorTypeEnum>
+			(SettingsManager::instance()->value("port4SensorType").toInt())));
+}
+
 Id const Interpreter::findStartingElement(Id const &diagram) const
 {
 	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
@@ -259,10 +275,7 @@ void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
 		mRobotModel->configureSensors(port1, port2, port3, port4);
 	}
 
-	mGraphicsWatch->addTrackingObject(0, QString("Sensor1"), SensorEnumerator::sensorName(port1));
-	mGraphicsWatch->addTrackingObject(1, QString("Sensor2"), SensorEnumerator::sensorName(port2));
-	mGraphicsWatch->addTrackingObject(2, QString("Sensor3"), SensorEnumerator::sensorName(port3));
-	mGraphicsWatch->addTrackingObject(3, QString("Sensor4"), SensorEnumerator::sensorName(port4));
+	updateGraphicWatchSensorsList();
 }
 
 void Interpreter::addThread(details::Thread * const thread)

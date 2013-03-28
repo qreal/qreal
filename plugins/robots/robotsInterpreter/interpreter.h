@@ -72,6 +72,7 @@ public slots:
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
+	void updateGraphicWatchSensorsList();
 
 private slots:
 	void threadStopped();
