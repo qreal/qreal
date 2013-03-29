@@ -41,4 +41,5 @@ private:
 	QString mOldText;
 	QString mBinding;
 	Qt::GlobalColor mBackground;
+	bool mIsHard;
 };
