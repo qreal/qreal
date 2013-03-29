@@ -763,10 +763,30 @@ void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &
 	repo->setProperty(nodeId, "name", name);
 	repo->setProperty(nodeId, "displayedName", name);
 	repo->setProperty(nodeId, "shape", shape);
-	repo->setProperty(nodeId, "links", "");
 	repo->setProperty(nodeId, "isResizeable", "true");
 	repo->setProperty(nodeId, "isPin", "false");
 	repo->setProperty(nodeId, "isAction", "false");
+	foreach (Id const elem, repo->children(diag)) {
+		if (repo->name(elem) == "AbstractNode" && repo->isLogicalElement(elem)) {
+			IdList links;
+			Id const inheritanceLink("MetaEditor", "MetaEditor", "Inheritance", QUuid::createUuid().toString());
+			repo->addChild(nodeId, inheritanceLink);
+			repo->setProperty(inheritanceLink, "name", "Inheritance");
+			repo->setProperty(inheritanceLink, "from", elem.toVariant());
+			repo->setProperty(inheritanceLink, "to", nodeId.toVariant());
+			links << inheritanceLink;
+
+			Id const containerLink("MetaEditor", "MetaEditor", "Container", QUuid::createUuid().toString());
+			repo->addChild(nodeId, containerLink);
+			repo->setProperty(containerLink, "name", "Container");
+			repo->setProperty(containerLink, "from", nodeId.toVariant());
+			repo->setProperty(containerLink, "to", elem.toVariant());
+			links << containerLink;
+			repo->setProperty(nodeId, "links", IdListHelper::toVariant(links));
+			return;
+		}
+	}
+	repo->setProperty(nodeId, "links", "");
 }
 
 void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
@@ -805,6 +825,19 @@ QPair<Id, Id> InterpreterEditorManager::createEditorAndDiagram(QString const &na
 	repo->addChild(editor, diagram);
 	repo->setProperty(diagram, "name", name);
 	repo->setProperty(diagram, "displayedName", name);
+	Id const nodeId("MetaEditor", "MetaEditor", "MetaEntityNode", QUuid::createUuid().toString());
+	repo->addChild(diagram, nodeId);
+	repo->setProperty(nodeId, "name", "AbstractNode");
+	repo->setProperty(nodeId, "displayedName", "AbstractNode");
+	repo->setProperty(nodeId, "shape", "");
+//	Id const containerLink("MetaEditor", "MetaEditor", "Container", QUuid::createUuid().toString());
+//	repo->addChild(nodeId, containerLink);
+//	repo->setProperty(containerLink, "from", nodeId.toVariant());
+//	repo->setProperty(containerLink, "to", nodeId.toVariant());
+	repo->setProperty(nodeId, "links", "");
+	repo->setProperty(nodeId, "isResizeable", "true");
+	repo->setProperty(nodeId, "isPin", "false");
+	repo->setProperty(nodeId, "isAction", "false");
 	return qMakePair(Id(repo->name(editor)),  Id(repo->name(editor), repo->name(diagram)));
 }
 
