@@ -1,12 +1,12 @@
-#include "editorViewScene.h"
-#include "math.h"
-
 #include <QtGui/QGraphicsTextItem>
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QGraphicsDropShadowEffect>
 #include <QtGui/QMenu>
 #include <QtGui/QMessageBox>
 #include <QtGui/QIcon>
+
+#include "editorViewScene.h"
+#include "math.h"
 
 #include "editorViewMVIface.h"
 #include "editorView.h"
@@ -31,6 +31,7 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
 		, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
 		, mIsSelectEvent(false)
+		, mTitlesVisible(true)
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth").toInt()) / 100;
@@ -45,6 +46,15 @@ EditorViewScene::EditorViewScene(QObject *parent)
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 
 	mSelectList = new QList<QGraphicsItem *>();
+}
+
+void EditorViewScene::addItem(QGraphicsItem *item)
+{
+	Element *element = dynamic_cast<Element *>(item);
+	if (element) {
+		element->setTitlesVisible(mTitlesVisible);
+	}
+	QGraphicsScene::addItem(item);
 }
 
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
@@ -209,7 +219,7 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 	NodeElement *node = NULL;
 	foreach (QGraphicsItem *item, elements) {
 		NodeElement *el = dynamic_cast<NodeElement*>(item);
-		if(el != NULL){
+		if (el) {
 			if (canBeContainedBy(el->id(), id)) {
 				node = el;
 				break;
@@ -217,8 +227,8 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 		}
 	}
 
-	if (node == NULL) {
-		if (mHighlightNode != NULL) {
+	if (!node) {
+		if (mHighlightNode) {
 			mHighlightNode->erasePlaceholder(true);
 		}
 		return;
@@ -253,7 +263,7 @@ NodeElement *EditorViewScene::findNewParent(QPointF newParentInnerPoint, NodeEle
 		foreach (QGraphicsItem *item, items(newParentInnerPoint)) {
 			NodeElement *e = dynamic_cast<NodeElement *>(item);
 			if (e != NULL && e != node && !selected.contains(item)) {
-				// проверка, можно ли добавлять наш элемент в найденного родителя
+				// check if we can add element into found parent
 				if (canBeContainedBy(e->id(), id)) {
 					return e;
 				}
@@ -283,7 +293,7 @@ QGraphicsRectItem *EditorViewScene::getPlaceholder()
 void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_UNUSED(event);
-	if (mHighlightNode != NULL) {
+	if (mHighlightNode) {
 		mHighlightNode->erasePlaceholder(true);
 		mHighlightNode = NULL;
 	}
@@ -300,7 +310,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	}
 
 	createElement(event->mimeData(), event->scenePos());
-	if (mHighlightNode != NULL) {
+	if (mHighlightNode) {
 		mHighlightNode->erasePlaceholder(true);
 		mHighlightNode = NULL;
 	}
@@ -309,7 +319,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const
 {
 	bool allowed = false;
-	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
+	foreach (qReal::Id const &type, mWindow->manager()->getContainedTypes(container.type())) {
 		allowed = allowed || mWindow->manager()->isParentOf(candidate, type);
 	}
 	return allowed;
@@ -333,8 +343,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPoint
 	QSignalMapper *menuSignalMapper = new QSignalMapper();
 	toDelete.append(menuSignalMapper);
 
-	foreach(PossibleEdge pEdge, edge->getPossibleEdges()){
-		QString target;
+	foreach(PossibleEdge pEdge, edge->getPossibleEdges()) {
 		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
 		// and vice versa
 
@@ -397,7 +406,7 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scen
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId.toString();
 	QString pathToItem = Id::rootId().toString();
-	QString name = "(" + mWindow->manager()->friendlyName(typeId) + ")";
+	QString name = mWindow->manager()->friendlyName(typeId);
 	QPointF pos = QPointF(0, 0);
 	bool isFromLogicalModel = false;
 	stream << uuid;
@@ -811,7 +820,7 @@ void EditorViewScene::paste(bool isGraphicalCopy)
 
 	QHash<Id, Id> copiedIds = pasteNodes(nodesData, offset, isGraphicalCopy);
 
-	foreach (EdgeData data, edgesData) {
+	foreach (EdgeData const &data, edgesData) {
 		pasteEdge(data, isGraphicalCopy, copiedIds, offset);
 	}
 }
@@ -1777,6 +1786,17 @@ void EditorViewScene::updateEdgesViaNodes()
 				edge->correctInception();
 			}
 			node->adjustLinks();
+		}
+	}
+}
+
+void EditorViewScene::setTitlesVisible(bool visible)
+{
+	mTitlesVisible = visible;
+	foreach (QGraphicsItem *item, items()) {
+		Element *element = dynamic_cast<Element *>(item);
+		if (element) {
+			element->setTitlesVisible(visible);
 		}
 	}
 }

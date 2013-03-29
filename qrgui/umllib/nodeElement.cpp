@@ -1,4 +1,3 @@
-#include <QtCore/QDebug>
 #include <QtCore/QUuid>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
@@ -504,7 +503,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	resize(newContents, newPos);
-	qDebug() << newPos;
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(
@@ -525,10 +523,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mTimeOfUpdate++;
 	}
 	mTimer->start(400);
-
-//	if (mDragState == None) {
-//		alignToGrid();
-//	}
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -1244,6 +1238,18 @@ QRectF NodeElement::foldedContentsRect() const
 QList<EdgeElement *> const NodeElement::edgeList() const
 {
 	return mEdgeList;
+}
+
+QList<NodeElement *> const NodeElement::childNodes() const
+{
+	QList<NodeElement *> result;
+	foreach (QGraphicsItem *item, childItems()) {
+		NodeElement *child = dynamic_cast<NodeElement *>(item);
+		if (child) {
+			result << child;
+		}
+	}
+	return result;
 }
 
 void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
