@@ -722,7 +722,7 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
-	QDesktopServices::openUrl(QUrl("./help/index.html"));
+	QDesktopServices::openUrl(QUrl(QApplication::applicationDirPath() + "/help/index.html"));
 }
 
 void MainWindow::toggleShowSplash(bool show)

@@ -14,8 +14,8 @@ win32 {
 else {
 	QMAKE_POST_LINK = "mkdir ../../../../bin/images/;"\
 						" cp -r ../images/* ../../../../bin/images/ &&"\
-						" cp -r ../doc/html/* ../../../../bin/help/ &&"\
 						" mkdir ../../../../bin/help/;"\
+						" cp -r ../doc/html/* ../../../../bin/help/ &&"\
 						" cp ../doc/changelog.txt ../../../../bin &&"\
 						" mkdir ../../../../bin/examples/;"\
 						" cp -r ../../examples/* ../../../../bin/examples/"
