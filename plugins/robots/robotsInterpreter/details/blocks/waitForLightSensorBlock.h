@@ -30,9 +30,6 @@ protected slots:
 protected:
 	virtual robotParts::Sensor *sensor() const;
 	virtual QString name() const;
-
-private:
-	static const int maxValue = 1023;
 };
 }
 }
