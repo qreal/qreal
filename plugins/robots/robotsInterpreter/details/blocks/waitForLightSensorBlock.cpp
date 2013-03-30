@@ -14,7 +14,6 @@ WaitForLightSensorBlock::WaitForLightSensorBlock(details::RobotModel * const rob
 void WaitForLightSensorBlock::responseSlot(int reading)
 {
 	int const targetPercents = evaluate("Percents").toInt();
-	reading = reading * 100 / maxValue; // Converting value into percents
 	processResponce(reading, targetPercents);
 }
 
