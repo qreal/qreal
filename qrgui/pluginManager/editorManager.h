@@ -86,6 +86,8 @@ namespace qReal {
 		void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
 
 		bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child, QString const &parentDiagram, QString const &parent) const;
+
+		void getContainedTypes(Id const &id, IdList &result) const;
 	};
 
 }
