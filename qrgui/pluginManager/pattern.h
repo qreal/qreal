@@ -6,7 +6,7 @@
 #include "pattern.h"
 
 namespace qReal {
-
+class EditorManager;
 class GroupNode{
 public:
 	GroupNode(QString const &type, QString const &id, QPointF const &position);
@@ -44,7 +44,7 @@ public:
 	QString inNode()const;
 	QString outNode()const;
 	QPointF size() const;
-	void countSize();
+	void countSize(EditorManager *editorManager);
 
 private:
 	QString mGroupName;

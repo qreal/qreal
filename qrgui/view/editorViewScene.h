@@ -68,10 +68,17 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos, QPointF shift, QList<NodeElement*> elements);
+	void createSingleElement(Id const &id, QString const &name, Element *e
+							 , QPointF const &position, Id const &parentId, bool isFromLogicalModel);
+	void createGroupOfElements(Id const &id, QPointF const &position
+												, Id const &parentId, bool isFromLogicalModel);
+	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId
+							   , qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos
+							   , QPointF const &shift, QList<NodeElement*> elements);
 
 	QList<NodeElement*> getNeibors(NodeElement* node);
-	void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF direction, QPointF shift, QList<NodeElement*> elements); //QList<NodeElement*> moved){
+	void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF const &direction
+						  , QPointF const &shift, QList<NodeElement*> elements);
 
 	void reConnectLink(EdgeElement * edgeElem);
 	void arrangeNodeLinks(NodeElement* node);

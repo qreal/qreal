@@ -20,7 +20,7 @@ void PatternParser::loadXml(QString const &xml)
 	mXml.replace("\\n", "\n");
 }
 
-void PatternParser::parseGroups(const EditorManager &editorManager, QString const &ed, QString const &diag)
+void PatternParser::parseGroups(EditorManager * editorManager, QString const &editor, QString const &diagram)
 {
 
 	QDomDocument doc;
@@ -28,8 +28,9 @@ void PatternParser::parseGroups(const EditorManager &editorManager, QString cons
 		qDebug() << "ERROR: no xml-file to parse";
 		return;
 	}
-	mEditor = ed;
-	mDiagram = diag;
+	mEditorManager = editorManager;
+	mEditor = editor;
+	mDiagram = diagram;
 	doc.setContent(mXml);
 	QDomElement groups = doc.firstChildElement("groups");
 	if (groups.isNull()){
@@ -62,7 +63,7 @@ void PatternParser::parseGroup(QDomElement const &group)
 	{
 		parseEdge(edge, pattern);
 	}
-	pattern.countSize(editor);
+	pattern.countSize(mEditorManager);
 	mPatterns.operator +=(pattern);
 
 }

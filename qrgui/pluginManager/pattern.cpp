@@ -2,6 +2,7 @@
 
 #include "../../qrkernel/ids.h"
 #include "pattern.h"
+#include "editorManager.h"
 
 using namespace qReal;
 GroupNode::GroupNode(QString const &type, QString const &id, QPointF const &position)
@@ -104,7 +105,7 @@ QString Pattern::outNode() const
 	return mOutNode;
 }
 
-void Pattern::countSize()
+void Pattern::countSize(EditorManager * editorManager)
 {
 	qreal minY = 0;
 	qreal maxY = 0;
@@ -113,18 +114,18 @@ void Pattern::countSize()
 	foreach (GroupNode const &node, mNodes)
 	{
 		Id const element(mEditor, mDiagram, node.type, "");
-		QSize size;
+		QSize size = editorManager->iconSize(element);
 		if (minY > node.position.y()){
 			minY = node.position.y();
 		}
-		if (maxY < node.position.y()){
-			maxY = node.position.y();
+		if (maxY < node.position.y() + size.height()){
+			maxY = node.position.y() + size.height();
 		}
 		if (minX > node.position.x()){
 			minX = node.position.x();
 		}
-		if (maxX < node.position.x()){
-			maxX = node.position.x();
+		if (maxX < node.position.x() + size.width()){
+			maxX = node.position.x() + size.width();
 		}
 	}
 	mSize = QPointF(maxX-minX, maxY-minY);
