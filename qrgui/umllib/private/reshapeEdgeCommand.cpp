@@ -7,6 +7,11 @@ ReshapeEdgeCommand::ReshapeEdgeCommand(EdgeElement const *edge)
 {
 }
 
+ReshapeEdgeCommand::ReshapeEdgeCommand(EditorViewScene const *scene, Id const &id)
+	: EdgeElementCommand(scene, id)
+{
+}
+
 bool ReshapeEdgeCommand::execute()
 {
 	if (!mTrackStopped) {

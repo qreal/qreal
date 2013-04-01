@@ -17,6 +17,11 @@ namespace qReal {
 class EditorViewMViface;
 class EditorView;
 class MainWindow;
+
+namespace commands
+{
+class CreateElementCommand;
+}
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -31,8 +36,10 @@ public:
 
 	void clearScene();
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);
-	virtual qReal::Id createElement(const QString &, QPointF const &scenePos, bool searchForParents = true);
-	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents = true);
+	virtual qReal::Id createElement(const QString &, QPointF const &scenePos
+			, bool searchForParents = true, commands::CreateElementCommand **createCommand = 0);
+	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos
+			, bool searchForParents = true, commands::CreateElementCommand **createCommandPointer = 0);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there

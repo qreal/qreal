@@ -12,6 +12,7 @@
 #include "../mainwindow/mainWindow.h"
 
 #include "../controller/commands/createElementCommand.h"
+#include "../umllib/private/reshapeEdgeCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -397,7 +398,8 @@ qReal::Id EditorViewScene::createElement(const QString &str)
 	return result;
 }
 
-qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scenePos, bool searchForParents)
+qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scenePos
+		, bool searchForParents, CreateElementCommand **createCommand)
 {
 	Id typeId = Id::loadFromString(str);
 	Id objectId(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
@@ -418,13 +420,14 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scen
 	stream << isFromLogicalModel;
 
 	mimeData->setData(mimeType, data);
-	createElement(mimeData, scenePos, searchForParents);
+	createElement(mimeData, scenePos, searchForParents, createCommand);
 	delete mimeData;
 
 	return objectId;
 }
 
-void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents)
+void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos
+		, bool searchForParents, CreateElementCommand **createCommandPointer)
 {
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
@@ -489,6 +492,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 				, isFromLogicalModel
 				, name
 				, position);
+	if (createCommandPointer) {
+		(*createCommandPointer) = createCommand;
+	}
 	mController->execute(createCommand);
 	Id const insertedNodeId = createCommand->result();
 	// TODO: create command for it
@@ -1173,9 +1179,10 @@ void EditorViewScene::createEdge(const QString & idStr)
 {
 	QPointF start = mMouseMovementManager->firstPoint();
 	QPointF end = mMouseMovementManager->lastPoint();
-	Id id = createElement(idStr, start);
+	CreateElementCommand *createCommand;
+	Id const id = createElement(idStr, start, true, &createCommand);
 	Element *edgeElement = getElem(id);
-	EdgeElement *edge = dynamic_cast <EdgeElement *> (edgeElement);
+	EdgeElement *edge = dynamic_cast <EdgeElement *>(edgeElement);
 	edge->setSrc(NULL);
 	edge->setDst(NULL);
 
@@ -1193,6 +1200,11 @@ void EditorViewScene::createEdge(const QString & idStr)
 		edge->dst()->arrangeLinks();
 		edge->dst()->adjustLinks();
 	}
+	ReshapeEdgeCommand *reshapeEdgeCommand = new ReshapeEdgeCommand(this, id);
+	reshapeEdgeCommand->startTracking();
+	reshapeEdgeCommand->stopTracking();
+	reshapeEdgeCommand->setUndoEnabled(false);
+	createCommand->addPostAction(reshapeEdgeCommand);
 }
 
 void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

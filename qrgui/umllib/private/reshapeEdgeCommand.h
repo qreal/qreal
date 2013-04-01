@@ -12,6 +12,7 @@ class ReshapeEdgeCommand : public EdgeElementCommand, public TrackingEntity
 {
 public:
 	ReshapeEdgeCommand(EdgeElement const *edge);
+	ReshapeEdgeCommand(EditorViewScene const *scene, Id const &id);
 	virtual ~ReshapeEdgeCommand() {}
 
 	virtual void startTracking();

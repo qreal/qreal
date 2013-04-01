@@ -6,12 +6,12 @@ using namespace qReal::commands;
 CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
 		models::LogicalModelAssistApi *logicalApi
 		, models::GraphicalModelAssistApi *graphicalApi
-		, const Id &logicalParent
-		, const Id &graphicalParent
-		, const Id &id
+		, Id const &logicalParent
+		, Id const &graphicalParent
+		, Id const &id
 		, bool isFromLogicalModel
-		, const QString &name
-		, const QPointF &position)
+		, QString const &name
+		, QPointF const &position)
 	: mLogicalApi(logicalApi)
 	, mGraphicalApi(graphicalApi)
 	, mLogicalParent(logicalParent)
