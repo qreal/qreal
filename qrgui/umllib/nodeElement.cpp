@@ -1145,6 +1145,7 @@ void NodeElement::singleSelectionState(bool const singleSelected)
 {
 	initEmbeddedLinkers();
 	setVisibleEmbeddedLinkers(singleSelected);
+	setTitlesVisiblePrivate(singleSelected || mTitlesVisible);
 	Element::singleSelectionState(singleSelected);
 }
 

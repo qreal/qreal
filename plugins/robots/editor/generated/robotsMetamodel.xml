@@ -546,7 +546,7 @@
 					</picture>
 					<labels>
 						<label x="-35" y="-25" text="Громкость (%):" hard="true"/>
-						<label x="-35" y="60" text="Ждать завершения:"/>
+						<label x="-60" y="60" text="Ждать завершения:"/>
 						<label x="35" y="-25" textBinded="Volume" hard="true"/>
 						<label x="30" y="60" textBinded="WaitForCompletion"/>
 					</labels>
