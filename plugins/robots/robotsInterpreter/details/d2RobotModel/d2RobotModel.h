@@ -20,6 +20,7 @@ int const oneReciprocalTime = 500;
 int const onePercentReciprocalSpeed = 44000;
 int const multiplicator = 8;
 int const touchSensorStrokeIncrement = 10;
+int const maxLightSensorValur = 1023;
 
 class D2RobotModel : public QObject, public RobotModelInterface
 {
@@ -102,6 +103,7 @@ private:
 	unsigned long spoilLight(unsigned long const color) const;
 	int varySpeed(int const speed) const;
 	int spoilSonarReading(int const distance) const;
+	int truncateToInterval(int const a, int const b, int const res) const;
 
 	D2ModelWidget *mD2ModelWidget;
 	Motor *mMotorA;

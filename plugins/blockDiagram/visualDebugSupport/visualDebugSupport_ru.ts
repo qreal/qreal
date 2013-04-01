@@ -167,12 +167,12 @@ code file name:</oldsource>
 <context>
     <name>qReal::VisualDebuggerPreferencesPage</name>
     <message>
-        <location filename="visualDebuggerPreferencesPage.cpp" line="37"/>
+        <location filename="visualDebuggerPreferencesPage.cpp" line="33"/>
         <source>Specify directory:</source>
         <translation type="unfinished">Выберите каталог:</translation>
     </message>
     <message>
-        <location filename="visualDebuggerPreferencesPage.cpp" line="40"/>
+        <location filename="visualDebuggerPreferencesPage.cpp" line="36"/>
         <source>Specify file:</source>
         <translation type="unfinished">Выберите файл:</translation>
     </message>

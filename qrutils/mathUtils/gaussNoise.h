@@ -25,8 +25,8 @@ public:
 	/// Functions for working with properties
 	void setApproximationLevel(unsigned int const approximationLevel);
 	void setDispersion(qreal const variance);
-	unsigned int getApproximationLevel() const;
-	qreal getDispersion() const;
+	unsigned int approximationLevel() const;
+	qreal dispersion() const;
 
 	GaussNoise operator >> (qreal &left);
 

@@ -1297,7 +1297,7 @@
     </message>
     <message>
         <location filename="dialogs/preferencesDialog.cpp" line="51"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="115"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="128"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
@@ -1609,17 +1609,17 @@
         <translation>Выбрать шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="142"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="129"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="142"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="129"/>
         <source>You should restart QReal:Robots to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="142"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="129"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -1862,7 +1862,7 @@
 <context>
     <name>PropertyEditorView</name>
     <message>
-        <location filename="view/propertyEditorView.cpp" line="168"/>
+        <location filename="view/propertyEditorView.cpp" line="170"/>
         <source>Specify directory:</source>
         <translation>Выберите каталог:</translation>
     </message>
@@ -3048,7 +3048,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="718"/>
+        <location filename="mainwindow/mainWindow.cpp" line="720"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3073,16 +3073,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="743"/>
-        <location filename="mainwindow/mainWindow.cpp" line="761"/>
-        <location filename="mainwindow/mainWindow.cpp" line="779"/>
+        <location filename="mainwindow/mainWindow.cpp" line="745"/>
+        <location filename="mainwindow/mainWindow.cpp" line="763"/>
+        <location filename="mainwindow/mainWindow.cpp" line="781"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="745"/>
-        <location filename="mainwindow/mainWindow.cpp" line="763"/>
-        <location filename="mainwindow/mainWindow.cpp" line="781"/>
+        <location filename="mainwindow/mainWindow.cpp" line="747"/>
+        <location filename="mainwindow/mainWindow.cpp" line="765"/>
+        <location filename="mainwindow/mainWindow.cpp" line="783"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3187,37 +3187,42 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="779"/>
+        <location filename="mainwindow/mainWindow.cpp" line="781"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="781"/>
+        <location filename="mainwindow/mainWindow.cpp" line="783"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="906"/>
-        <location filename="mainwindow/mainWindow.cpp" line="914"/>
+        <location filename="mainwindow/mainWindow.cpp" line="908"/>
+        <location filename="mainwindow/mainWindow.cpp" line="934"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="926"/>
+        <source>Text Editor</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Select file to save current model to</source>
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1707"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1727"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1736"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1756"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1736"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1756"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3238,7 +3243,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1324"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1344"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3479,17 +3484,17 @@
 <context>
     <name>qReal::gui::PaletteTree</name>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="347"/>
+        <location filename="mainwindow/paletteTree.cpp" line="375"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="355"/>
+        <location filename="mainwindow/paletteTree.cpp" line="383"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="363"/>
+        <location filename="mainwindow/paletteTree.cpp" line="391"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>
