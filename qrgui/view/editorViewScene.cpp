@@ -505,9 +505,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 			}
 
 		}
-		foreach (NodeElement * node, elements){
-			node->setPos(node->pos().x() - size.x() / 2.0, node->pos().y());
-		}
+//		foreach (NodeElement * node, elements){
+//			node->setPos(node->pos().x() - size.x() / 2.0, node->pos().y());
+//		}
 		foreach (GroupEdge const &edge, pattern.edges()){
 			Id const element(id.editor(), id.diagram(), edge.type, QUuid::createUuid().toString());
 			mMVIface->graphicalAssistApi()-> createElement(parentId, element, isFromLogicalModel
@@ -524,8 +524,8 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 		Id newElemId = mMVIface->graphicalAssistApi()-> createElement(parentId, id, isFromLogicalModel
 																	  , name, position);
 
-		qreal xSize = mMVIface->graphicalAssistApi()->configuration(newElemId).boundingRect().size().width();
-		qreal ySize = mMVIface->graphicalAssistApi()->configuration(newElemId).boundingRect().size().height();
+		qreal xSize = editor.iconSize(newElemId).width();
+		qreal ySize = editor.iconSize(newElemId).height();
 		getNodeById(newElemId)->setPos(position.x()- xSize/2, position.y());
 
 		if (dynamic_cast<NodeElement*>(e)) {
@@ -624,29 +624,28 @@ void EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId)
 
 void EditorViewScene::moveDownFromElem(NodeElement* node, QPointF const &scenePos
 									   , QPointF direction, QPointF shift, QList<NodeElement*> moved){
-	QList<NodeElement*> destinations = getNeibors(node);
 	if (direction.x() == 0 && direction.y() == 0){
 		return;
 	}
+	QList<NodeElement*> destinations = getNeibors(node);
 	for (int i = 0; i < destinations.length(); i++){
-		if (moved.contains(destinations.at(i))){
-			break;
+		if (!moved.contains(destinations.at(i))){
+			if (destinations.at(i)->pos().y() >= scenePos.y()){
+				if(direction.x() == 0 || shift.y() < shift.x() * sign(direction.x()) * sign(direction.y())
+						*(direction.y() / direction.x()))
+					destinations.at(i)->setPos(destinations.at(i)->pos().x()
+											   + shift.y() * direction.x() / direction.y()
+											   , destinations.at(i)->pos().y() + shift.y());
+				else
+					destinations.at(i)->setPos(destinations.at(i)->pos().x()
+											   + sign(direction.x()) * sign(direction.y()) * shift.x()
+											   , destinations.at(i)->pos().y() + shift.x() * sign(direction.x())
+											   * sign(direction.y()) * direction.y() / direction.x());
+				arrangeNodeLinks(destinations.at(i));
+			}
+			moved.append(destinations.at(i));
+			moveDownFromElem(destinations.at(i), scenePos, direction, shift, moved);
 		}
-		if (destinations.at(i)->pos().y() >= scenePos.y()){
-			if(direction.x() == 0 || shift.y() < shift.x() * sign(direction.x()) * sign(direction.y())
-					*(direction.y() / direction.x()))
-				destinations.at(i)->setPos(destinations.at(i)->pos().x()
-										   + shift.y() * direction.x() / direction.y()
-										   , destinations.at(i)->pos().y() + shift.y());
-			else
-				destinations.at(i)->setPos(destinations.at(i)->pos().x()
-										   + sign(direction.x()) * sign(direction.y()) * shift.x()
-										   , destinations.at(i)->pos().y() + shift.x() * sign(direction.x())
-										   * sign(direction.y()) * direction.y() / direction.x());
-			arrangeNodeLinks(destinations.at(i));
-		}
-		moved.append(destinations.at(i));
-		moveDownFromElem(destinations.at(i), scenePos, direction, shift, moved);
 	}
 }
 

@@ -112,6 +112,8 @@ void Pattern::countSize()
 	qreal maxX = 0;
 	foreach (GroupNode const &node, mNodes)
 	{
+		Id const element(mEditor, mDiagram, node.type, "");
+		QSize size;
 		if (minY > node.position.y()){
 			minY = node.position.y();
 		}

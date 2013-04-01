@@ -497,7 +497,7 @@ IdList EditorManager::groups(Id const &diagram)
 	IdList elements;
 	PatternParser parser;
 	parser.loadXml((mPluginIface.value(diagram.editor()))->getGroupsXML());
-	parser.parseGroups(diagram.editor(), diagram.diagram());
+	parser.parseGroups(this, diagram.editor(), diagram.diagram());
 	foreach(Pattern const &pattern, parser.getPatterns()){
 		mGroups.insert(pattern.name(), pattern);
 	}

@@ -4,6 +4,7 @@
 
 #include "patternParser.h"
 #include "../../qrkernel/ids.h"
+#include "editorManager.h"
 #include "pattern.h"
 
 using namespace qReal;
@@ -19,15 +20,16 @@ void PatternParser::loadXml(QString const &xml)
 	mXml.replace("\\n", "\n");
 }
 
-void PatternParser::parseGroups(QString const &editor, QString const &diagram)
+void PatternParser::parseGroups(const EditorManager &editorManager, QString const &ed, QString const &diag)
 {
+
 	QDomDocument doc;
 	if (mXml.isNull()){
 		qDebug() << "ERROR: no xml-file to parse";
 		return;
 	}
-	mEditor = editor;
-	mDiagram = diagram;
+	mEditor = ed;
+	mDiagram = diag;
 	doc.setContent(mXml);
 	QDomElement groups = doc.firstChildElement("groups");
 	if (groups.isNull()){
@@ -60,7 +62,7 @@ void PatternParser::parseGroup(QDomElement const &group)
 	{
 		parseEdge(edge, pattern);
 	}
-	pattern.countSize();
+	pattern.countSize(editor);
 	mPatterns.operator +=(pattern);
 
 }
