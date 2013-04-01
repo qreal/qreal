@@ -76,6 +76,7 @@ protected:
 	qReal::Id mId;
 	ElementImpl* const mElementImpl;
 	QList<ElementTitle *> mTitles;
+	bool mTitlesVisible;
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
