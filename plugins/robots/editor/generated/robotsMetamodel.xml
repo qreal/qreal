@@ -1190,6 +1190,7 @@
 				<element name="WaitForEncoder"/>
 				<element name="WaitForColorIntensity"/>
 				<element name="WaitForLight"/>
+				<element name="WaitForButtons"/>
 			</group>
 			<group name="Алгоритмы">
 				<element name="IfBlock"/>

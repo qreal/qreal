@@ -32,7 +32,8 @@ HEADERS += \
 	details/abstractTimer.h \
 	details/realTimer.h \
 	details/sensorsConfigurationWidget.h \
-    details/nullTimer.h
+    details/nullTimer.h \
+    details/nxtDisplay.h
 
 SOURCES += \
 	robotsPlugin.cpp \
@@ -50,13 +51,15 @@ SOURCES += \
 	details/abstractTimer.cpp \
 	details/realTimer.cpp \
 	details/sensorsConfigurationWidget.cpp \
-    details/nullTimer.cpp
+    details/nullTimer.cpp \
+    details/nxtDisplay.cpp
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
 	watchListWindow.ui \
 	details/sensorsConfigurationWidget.ui \
+    details/nxtDisplay.ui
 
 RESOURCES += \
 	robotsInterpreter.qrc \

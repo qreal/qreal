@@ -9,6 +9,7 @@
 #include "robotSettingsPage.h"
 #include "customizer.h"
 #include "details/sensorsConfigurationWidget.h"
+#include "details/nxtDisplay.h"
 
 namespace qReal {
 namespace interpreters {

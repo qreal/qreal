@@ -1,6 +1,7 @@
 #include <QtGui/QApplication>
 #include "robotsPlugin.h"
 #include "details/tracer.h"
+#include "details/nxtDisplay.h"
 
 Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
 
@@ -82,7 +83,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();
 	SettingsManager::setValue("IndexGrid", gridWidth);
-	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
+	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer(), new NxtDisplay());
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");

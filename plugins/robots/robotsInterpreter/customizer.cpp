@@ -38,7 +38,7 @@ void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWi
 	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
 	QDockWidget *nxtDisplayDock = produceDockWidget(QObject::tr("Nxt display"), nxtDisplay);
-	mDockInterface->tabifyDockWidget(mDockInterface->graphicalModelDock(), nxtDisplayDock);
+	mDockInterface->tabifyDockWidget(mDockInterface->paletteDock(), nxtDisplayDock);
 }
 
 QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const
