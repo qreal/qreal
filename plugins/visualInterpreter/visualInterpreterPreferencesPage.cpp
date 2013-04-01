@@ -37,3 +37,8 @@ void VisualInterpreterPreferencesPage::save()
 	SettingsManager::setValue("qrealSourcesLocation", mUi->qrealSourcesLineEdit->text());
 }
 
+void VisualInterpreterPreferencesPage::restoreSettings()
+{
+	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation").toString());
+}
+

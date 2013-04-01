@@ -20,6 +20,7 @@ public:
 	~VisualInterpreterPreferencesPage();
 	
 	void save();
+	void restoreSettings();
 	
 private slots:
 	void setQRealSourcesLocation();

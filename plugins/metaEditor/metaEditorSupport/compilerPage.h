@@ -21,6 +21,7 @@ public:
 	~PreferencesCompilerPage();
 
 	void save();
+	void restoreSettings();
 
 protected:
 	void changeEvent(QEvent *e);

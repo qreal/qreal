@@ -20,6 +20,7 @@ public:
 	~VisualDebuggerPreferencesPage();
 	
 	void save();
+	void restoreSettings();
 	
 private slots:
 	
