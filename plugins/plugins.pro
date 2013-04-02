@@ -12,6 +12,7 @@ SUBDIRS	= \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \
+#        qUbiq/qUbiqEditor.pro \
 #	requirements/requirements.pro \
 #	robots/robots.pro \
 #	sbt/sbt.pro \
@@ -28,5 +29,5 @@ SUBDIRS	= \
 #	umlStateMachinesDiagram/umlStateMachinesDiagram.pro \
 #	umlTimingDiagram/umlTimingDiagram.pro \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
-	visualInterpreter/visualInterpreter.pro \
-	refactoring/refactoring.pro \
+#	visualInterpreter/visualInterpreter.pro \
+#	refactoring/refactoring.pro \

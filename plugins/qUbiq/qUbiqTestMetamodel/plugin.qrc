@@ -1,0 +1,21 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>generated/shapes/AbstractCommonNodeClass.sdf</file>
+	<file>generated/shapes/AbstractCommonNodePorts.sdf</file>
+	<file>generated/shapes/CommonEdgeClass.sdf</file>
+	<file>generated/shapes/InputSplitterClass.sdf</file>
+	<file>generated/shapes/InputSplitterPorts.sdf</file>
+	<file>generated/shapes/OutputSplitterClass.sdf</file>
+	<file>generated/shapes/OutputSplitterPorts.sdf</file>
+	<file>generated/shapes/QUbiqDiagramClass.sdf</file>
+	<file>generated/shapes/QUbiqDiagramPorts.sdf</file>
+	<file>generated/shapes/ReceiveFromDispatcherClass.sdf</file>
+	<file>generated/shapes/ReceiveFromDispatcherPorts.sdf</file>
+	<file>generated/shapes/ReceiveFromKeyboardClass.sdf</file>
+	<file>generated/shapes/ReceiveFromKeyboardPorts.sdf</file>
+	<file>generated/shapes/SendToDispatcherClass.sdf</file>
+	<file>generated/shapes/SendToDispatcherPorts.sdf</file>
+	<file>generated/shapes/StereotypeNodeClass.sdf</file>
+	<file>generated/shapes/StereotypeNodePorts.sdf</file>
+</qresource>
+</RCC>

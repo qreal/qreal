@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram displayedName="QUbiq Test Editor" nodeName="qUbiqDiagram" name="QUbiqTestEditor">
+        <graphicTypes>
+            <node displayedName="QUbiq Diagram" name="qUbiqDiagram">
+                <graphics>
+                    <picture sizex="103" sizey="101">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="100" fill-style="none" x2="102"/>
+                    </picture>
+                    <labels/>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="abstractCommonNode"/>
+                        <contains type="inputSplitter"/>
+                        <contains type="outputSplitter"/>
+                    </container>
+                </logic>
+            </node>
+            <node displayedName="Send message to dispatcher" name="sendToDispatcher">
+                <graphics>
+                    <picture sizex="162" sizey="56">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" stroke-width="0" x1="0" y2="2a" fill-style="none" x2="139"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="41a" stroke-width="0" x1="0" y2="42a" fill-style="none" x2="139"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="140" y2="21a" fill-style="none" x2="159"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="41a" stroke-width="0" x1="140" y2="22a" fill-style="none" x2="159"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="-1a" y2="41a" fill-style="none" x2="0a"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="39a" y2="41a" fill-style="none" x2="40a"/>
+                        <text i="0" font-fill="#000000" b="1" y1="27a" font-name="Times New Roman" x1="10a" u="0" font-size="25">D</text>
+                    </picture>
+                    <labels>
+                        <label x="45a" y="12a" textBinded="text"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="1a"/>
+                            <end endx="129" endy="2a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="41a"/>
+                            <end endx="129" endy="42a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="12a"/>
+                            <end endx="0" endy="31a"/>
+                        </linePort>
+                        <pointPort x="160" y="22a"/>
+                        <pointPort x="140" y="2a"/>
+                        <pointPort x="140" y="42a"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="abstractCommonNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Receive message from dispatcher" name="receiveFromDispatcher">
+                <graphics>
+                    <picture sizex="142" sizey="56">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" stroke-width="0" x1="1" y2="2a" fill-style="none" x2="139"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="41a" stroke-width="0" x1="1" y2="42a" fill-style="none" x2="139"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="139" y2="21a" fill-style="none" x2="120"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="41a" stroke-width="0" x1="139" y2="22a" fill-style="none" x2="120"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="-1a" y2="41a" fill-style="none" x2="0a"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="39a" y2="41a" fill-style="none" x2="40a"/>
+                        <text i="0" font-fill="#000000" b="1" y1="27a" font-name="Times New Roman" x1="10a" u="0" font-size="25">D</text>
+                    </picture>
+                    <labels>
+                        <label x="45a" y="12a" textBinded="text"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="1a"/>
+                            <end endx="129" endy="2a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="41a"/>
+                            <end endx="129" endy="42a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="12a"/>
+                            <end endx="0" endy="31a"/>
+                        </linePort>
+                        <pointPort x="120" y="22a"/>
+                        <pointPort x="140" y="2a"/>
+                        <pointPort x="140" y="42a"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="abstractCommonNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="abstractCommonNode">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Text" type="string" name="text"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Stereotype node" name="stereotypeNode">
+                <graphics>
+                    <picture sizex="125" sizey="70">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="0" y2="69a" fill-style="none" x2="124"/>
+                    </picture>
+                    <labels>
+                        <label x="10a" y="10a" textBinded="@##stereotype##@"/>
+                        <label x="10a" y="40a" textBinded="text"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="69a"/>
+                            <end endx="114" endy="70a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1a"/>
+                            <end endx="114" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="124" starty="10a"/>
+                            <end endx="125" endy="59a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10a"/>
+                            <end endx="0" endy="59a"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Stereotype" type="string" name="stereotype"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractCommonNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Receive message from keyboard" name="receiveFromKeyboard">
+                <graphics>
+                    <picture sizex="142" sizey="56">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="1a" stroke-width="0" x1="1" y2="2a" fill-style="none" x2="139"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="41a" stroke-width="0" x1="1" y2="42a" fill-style="none" x2="139"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="139" y2="21a" fill-style="none" x2="120"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="41a" stroke-width="0" x1="139" y2="22a" fill-style="none" x2="120"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="-1a" y2="41a" fill-style="none" x2="0a"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="39a" y2="41a" fill-style="none" x2="40a"/>
+                        <text i="0" font-fill="#000000" b="1" y1="27a" font-name="Times New Roman" x1="10a" u="0" font-size="25">K</text>
+                    </picture>
+                    <labels>
+                        <label x="45a" y="12a" textBinded="text"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="1a"/>
+                            <end endx="129" endy="2a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="41a"/>
+                            <end endx="129" endy="42a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="12a"/>
+                            <end endx="0" endy="31a"/>
+                        </linePort>
+                        <pointPort x="120" y="22a"/>
+                        <pointPort x="140" y="2a"/>
+                        <pointPort x="140" y="42a"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="abstractCommonNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Input splitter" name="inputSplitter">
+                <graphics>
+                    <picture sizex="80" sizey="16">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="9" stroke-width="13" x1="0" y2="10" fill-style="none" x2="79"/>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="40" y="2"/>
+                        <linePort>
+                            <start startx="10" starty="15"/>
+                            <end endx="69" endy="16"/>
+                        </linePort>
+                    </ports>
+                    <nonResizeable/>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Output splitter" name="outputSplitter">
+                <graphics>
+                    <picture sizex="80" sizey="16">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="5" stroke-width="13" x1="0" y2="6" fill-style="none" x2="79"/>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="40" y="14"/>
+                        <linePort>
+                            <start startx="10" starty="-1"/>
+                            <end endx="69" endy="0"/>
+                        </linePort>
+                    </ports>
+                    <nonResizeable/>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <edge displayedName="Link" name="commonEdge">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="no_arrow" beginType="no_arrow">
+                        <association beginName="begin" endName="end"/>
+                    </associations>
+                </logic>
+            </edge>
+        </graphicTypes>
+    </diagram>
+</metamodel>
