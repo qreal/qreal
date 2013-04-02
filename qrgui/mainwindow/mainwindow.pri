@@ -86,6 +86,7 @@ HEADERS += \
 	mainwindow/shapeEdit/textPicture.h \
 	mainwindow/shapeEdit/path.h \
 	mainwindow/shapeEdit/image.h \
+        mainwindow/shapeEdit/visibilityConditionsDialog.h \
 
 SOURCES += \
 	mainwindow/shapeEdit/shapeEdit.cpp \
@@ -106,6 +107,8 @@ SOURCES += \
 	mainwindow/shapeEdit/view.cpp \
 	mainwindow/shapeEdit/textPicture.cpp \
 	mainwindow/shapeEdit/image.cpp \
+        mainwindow/shapeEdit/visibilityConditionsDialog.cpp \
 
 FORMS += \
 	mainwindow/shapeEdit/shapeEdit.ui \
+        mainwindow/shapeEdit/visibilityConditionsDialog.ui \

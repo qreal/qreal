@@ -31,6 +31,12 @@ public:
 		bottomRightY
 	};
 
+	struct VisibilityCondition
+	{
+		QString property;
+		QString value;
+	};
+
 	Item(graphicsUtils::AbstractItem* parent = 0);
 	virtual Item* clone() = 0;
 	virtual void setItemZValue(int zValue);
@@ -58,7 +64,13 @@ public:
 	QString setScaleForDoc(int i, QRect const &rect);
 	QString setSingleScaleForDoc(int i, int x, int y);
 	virtual void setXandY(QDomElement& dom, QRectF const &rect);
+
+	QPair<QDomElement, Item::DomElementTypes> generateDom(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture) = 0;
+
+	void setVisibilityCondition(VisibilityCondition const &condition);
+	void setVisibilityCondition(QString const &property, QString const &value);
+	VisibilityCondition visibilityCondition();
 
 protected:
 	QList<QPair<ScalingPointState, QColor> > mListScalePoint;
@@ -66,4 +78,5 @@ protected:
 	DomElementTypes mDomElementType;
 	ScalingPointState mScalingState;
 	int mZValue;
+	VisibilityCondition mVisibilityCondition;
 };

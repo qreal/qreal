@@ -49,6 +49,8 @@ public:
 	void addStylus(bool checked);
 	void addNone(bool checked);
 
+	QList<Item *> selectedSceneItems();
+
 signals:
 	void noSelectedItems();
 	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
@@ -121,7 +123,6 @@ private:
 
 	void initListSelectedItemsForPaste();
 	QRectF selectedItemsBoundingRect() const;
-	QList<Item *> selectedSceneItems();
 	QList<TextPicture *> selectedTextPictureItems();
 	QPointF setCXandCY(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);

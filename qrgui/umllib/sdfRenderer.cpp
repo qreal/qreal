@@ -10,7 +10,7 @@
 using namespace qReal;
 
 SdfRenderer::SdfRenderer()
-	: mStartX(0), mStartY(0), mNeedScale(true)
+	: mStartX(0), mStartY(0), mNeedScale(true), mElementRepo(0)
 {
 	mWorkingDirName = SettingsManager::value("workingDir").toString();
 }
@@ -49,6 +49,11 @@ bool SdfRenderer::load(const QString &filename)
 	return true;
 }
 
+void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo)
+{
+	mElementRepo = elementRepo;
+}
+
 void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 {
 	current_size_x = static_cast<int>(bounds.width());
@@ -63,6 +68,10 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 		QDomElement elem = node.toElement();
 		if(!elem.isNull())
 		{
+			if (!checkShowConditions(elem)) {
+				node = node.nextSibling();
+				continue;
+			}
 			if (elem.tagName()=="line")
 			{
 				line(elem);
@@ -114,6 +123,22 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 		node = node.nextSibling();
 	}
 	this->painter = 0;
+}
+
+bool SdfRenderer::checkShowConditions(QDomElement const &element) const
+{
+	QDomNodeList showConditions = element.elementsByTagName("showIf");
+	if (showConditions.isEmpty() || !mElementRepo) {
+		return true;
+	}
+	for (int i = 0; i < showConditions.length(); ++i) {
+		QDomElement condition = showConditions.at(i).toElement();
+		QString propertyName = condition.attribute("property");
+		if (mElementRepo->logicalProperty(propertyName) != condition.attribute("value")) {
+			return false;
+		}
+	}
+	return true;
 }
 
 void SdfRenderer::line(QDomElement &element)

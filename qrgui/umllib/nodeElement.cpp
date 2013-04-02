@@ -45,7 +45,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	QList<StatPoint> pointPorts;
 	QList<StatLine> linePorts;
-	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer);
+	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
 
 	foreach (ElementTitleInterface *titleIface, titles) {

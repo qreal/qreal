@@ -5,11 +5,14 @@
 #include <QtGui/QPainter>
 #include <QtGui/QIconEngineV2>
 
+#include "elementRepoInterface.h"
+
 class SdfRendererInterface : public QObject
 {
 public:
 	virtual bool load (const QString &filename) = 0;
 	virtual void render(QPainter *painter, const QRectF &bounds) = 0;
+	virtual void setElementRepo(ElementRepoInterface *elementRepo) = 0;
 };
 
 class SdfIconEngineV2Interface : public QIconEngineV2

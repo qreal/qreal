@@ -910,7 +910,8 @@ void MainWindow::setSceneFont()
 
 void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(index, role);
+	ShapeEdit *shapeEdit = new ShapeEdit(dynamic_cast<models::details::LogicalModel *>(mModels->logicalModel())
+			, index, role);
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
 	}
