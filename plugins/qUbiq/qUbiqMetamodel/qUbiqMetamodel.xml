@@ -79,8 +79,8 @@
                 </graphics>
                 <logic>
                     <container>
-                        <contains type="variable"/>
                         <contains type="abstractHandlerNode"/>
+                        <contains type="variable"/>
                     </container>
                     <properties>
                         <property displayedName="Description" type="string" name="description"/>
@@ -120,8 +120,8 @@
                 </graphics>
                 <logic>
                     <container>
-                        <contains type="text"/>
                         <contains type="image"/>
+                        <contains type="text"/>
                     </container>
                     <properties>
                         <property displayedName="Text on button" type="string" name="buttonText"/>
@@ -160,7 +160,10 @@
                     </ports>
                 </graphics>
                 <logic>
-                    <container/>
+                    <container>
+                        <contains type="text"/>
+                        <contains type="image"/>
+                    </container>
                     <generalizations>
                         <parent parentName="button"/>
                     </generalizations>
