@@ -51,5 +51,7 @@ private:
 	void readLinePort(QDomElement const &linePort);
 	void readPointPort(QDomElement const &pointPort);
 
+	Item::VisibilityCondition readVisibility(QDomElement const &item);
+
 	bool isNotLCMZ(QString str, int i);
 };

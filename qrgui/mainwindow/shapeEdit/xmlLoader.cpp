@@ -281,6 +281,7 @@ void XmlLoader::readLine(QDomElement const &line)
 	Line* item = new Line(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), NULL);
 	item->readPenBrush(line);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(line));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -291,6 +292,7 @@ void XmlLoader::readEllipse(QDomElement const &ellipse)
 	Ellipse* item = new Ellipse(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	item->readPenBrush(ellipse);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(ellipse));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -301,6 +303,7 @@ void XmlLoader::readArch(QDomElement const &arch)
 	int spanAngle = arch.attribute("spanAngle", "0").toInt();
 	int startAngle = arch.attribute("startAngle", "0").toInt();
 	Arch* item = new Arch(rect, startAngle, spanAngle, NULL);
+	item->setVisibilityCondition(readVisibility(arch));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -311,6 +314,7 @@ void XmlLoader::readRectangle(QDomElement const &rectangle)
 	Rectangle* item = new Rectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	item->readPenBrush(rectangle);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(rectangle));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -324,6 +328,7 @@ void XmlLoader::readImage(QDomElement const &image)
 	Image* item = new Image(fullFileName, rect.left(), rect.top(), NULL);
 	item->setX2andY2(rect.right(), rect.bottom());
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(image));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -339,6 +344,7 @@ void XmlLoader::readStylus(QDomElement const &stylus)
 			QRectF rect = readRectOfXandY(type);
 			Line* item = new Line(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 			item->readPenBrush(type);
+			item->setVisibilityCondition(readVisibility(type));
 			stylusItem->addLineInList(item);
 			stylusItem->setPen(item->pen());
 			stylusItem->setBrush(item->brush());
@@ -346,6 +352,7 @@ void XmlLoader::readStylus(QDomElement const &stylus)
 		else
 			qDebug() << "Incorrect stylus tag";
 	}
+	stylusItem->setVisibilityCondition(readVisibility(stylus));
 	mScene->addItem(stylusItem);
 	mScene->setZValue(stylusItem);
 }
@@ -509,6 +516,7 @@ void XmlLoader::readPath(QDomElement const &element)
 	Path *item = new Path(path);
 	item->translate(mDrift.x(), mDrift.y());
 	item->readPenBrush(elem);
+	item->setVisibilityCondition(readVisibility(elem));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -540,6 +548,7 @@ void XmlLoader::readCurve(QDomElement const &curve)
 	}
 	Curve* item = new Curve(QPointF(x1, y1), QPointF(x2, y2), QPointF(x3, y3));
 	item->readPenBrush(curve);
+	item->setVisibilityCondition(readVisibility(curve));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -553,6 +562,7 @@ void XmlLoader::readText(QDomElement const &text)
 	TextPicture* item = new TextPicture(x, y, str);
 	item->readFont(text);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(text));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -571,6 +581,7 @@ void XmlLoader::readLabel(QDomElement const &label)
 	else
 		qDebug() << "Incorrect label tag";
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(label));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -592,6 +603,7 @@ void XmlLoader::readLinePort(QDomElement const &linePort)
 	QPair<QPointF, QPointF> rect = readLinePortOfXandY(start, end);
 	LinePort* item = new LinePort(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), NULL);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(linePort));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -601,6 +613,20 @@ void XmlLoader::readPointPort(QDomElement const &pointPort)
 	QPointF point = readXandY(pointPort);
 	PointPort* item = new PointPort(point.x(), point.y(), NULL);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(pointPort));
 	mScene->addItem(item);
 	mScene->setZValue(item);
+}
+
+Item::VisibilityCondition XmlLoader::readVisibility(QDomElement const &item)
+{
+	QDomElement visibility = item.elementsByTagName("showIf").item(0).toElement();
+	if (visibility.isNull()) {
+		return Item::VisibilityCondition();
+	}
+
+	Item::VisibilityCondition result;
+	result.property = visibility.attribute("property");
+	result.value = visibility.attribute("value");
+	return result;
 }
