@@ -4,17 +4,22 @@
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 
-#include "robotCommunicationThreadInterface.h"
+#include "robotCommunicationThreadBase.h"
 #include "../robotCommandConstants.h"
 #include "fantom.h"
 
 class QextSerialPort;
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
+namespace qReal
+{
+namespace interpreters
+{
+namespace robots
+{
+namespace details
+{
 
-class UsbRobotCommunicationThread : public RobotCommunicationThreadInterface
+class UsbRobotCommunicationThread : public RobotCommunicationThreadBase
 {
 	Q_OBJECT
 
@@ -27,8 +32,6 @@ public slots:
 	void connect(QString const &portName);
 	void reconnect(QString const &portName);
 	void disconnect();
-	void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
-			, inputPort::InputPortEnum const &port);
 	void allowLongJobs(bool allow = true);
 	void checkConsistency();
 
@@ -46,7 +49,8 @@ private:
 	bool isOpen();
 	static void debugPrint(QByteArray const &buffer, bool out);
 
-	void send(QByteArray const &buffer, unsigned const responseSize, QByteArray &outputBuffer);
+	void send(QByteArray const &buffer, unsigned const responseSize
+			, QByteArray &outputBuffer);
 
 	bool mActive;
 	unsigned long mNXTHandle;
@@ -58,6 +62,7 @@ private:
 	bool mStopped;
 };
 
+}
 }
 }
 }

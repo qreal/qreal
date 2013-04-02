@@ -32,9 +32,9 @@ bool Autoconfigurer::configure(Id const &diagram)
 
 	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
 
-	foreach (Id const child, children) {
+	foreach (Id const &child, children) {
 		blocks::Block const * const block = mBlocksTable->block(child);
-		foreach (blocks::Block::SensorPortPair sensorPortPair, block->usedSensors()) {
+		foreach (blocks::Block::SensorPortPair const &sensorPortPair, block->usedSensors()) {
 			sensorType::SensorTypeEnum const sensor = sensorPortPair.first;
 			int const port = sensorPortPair.second;
 			if (mUsedSensors[port] != sensorType::unused && mUsedSensors[port] != sensor) {

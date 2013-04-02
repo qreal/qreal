@@ -32,7 +32,7 @@ INCLUDEPATH += \
 	../thirdparty/gmock-1.6.0/include \
 	../thirdparty/gmock-1.6.0/gtest/include \
 
-LIBS += -L../bin/thirdparty/ -lgmock -lpthread
+LIBS += -L../bin/thirdparty/ -lgmock -lpthread -lqscintilla2
 
 TARGET = qrgui_unittests
 DESTDIR = ../bin/unittests

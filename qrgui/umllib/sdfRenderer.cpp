@@ -1,11 +1,11 @@
 #include "sdfRenderer.h"
 
-#include <QMessageBox>
-#include <QFont>
-#include <QIcon>
-#include <QLineF>
-#include <QTime>
-#include <QDebug>
+#include <QtCore/QLineF>
+#include <QtCore/QTime>
+#include <QtCore/QDebug>
+#include <QtGui/QApplication>
+#include <QtGui/QFont>
+#include <QtGui/QIcon>
 
 using namespace qReal;
 
@@ -256,6 +256,10 @@ void SdfRenderer::image_draw(QDomElement &element)
 	float x2 = x2_def(element);
 	float y2 = y2_def(element);
 	QString fileName = SettingsManager::value("pathToImages").toString() + "/" + element.attribute("name", "error");
+	// TODO: rewrite this ugly spike
+	if (fileName.startsWith("./")) {
+		fileName = QApplication::applicationDirPath() + "/" + fileName;
+	}
 
 	QPixmap pixmap;
 
@@ -728,10 +732,11 @@ SdfIconEngineV2::SdfIconEngineV2(QString const &file)
 {
 	mRenderer.load(file);
 	mRenderer.noScale();
+	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
 }
 
-void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
-	QIcon::Mode mode, QIcon::State state)
+void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect
+		, QIcon::Mode mode, QIcon::State state)
 {
 	Q_UNUSED(mode)
 	Q_UNUSED(state)
@@ -746,16 +751,19 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
 	}
 	// Take picture aspect into account
 	QRect resRect = rect;
-	if (rh * pw < ph * rw)
-	{
-		resRect.setLeft(rect.left() + (rw-rh*pw/ph)/2);
-		resRect.setRight(rect.right() - (rw-rh*pw/ph)/2);
+	if (rh * pw < ph * rw) {
+		resRect.setLeft(rect.left() + (rw - rh * pw / ph) / 2);
+		resRect.setRight(rect.right() - (rw - rh * pw / ph) / 2);
 	}
-	if (rh * pw > ph * rw)
-	{
-		resRect.setTop(rect.top() + (rh-rw*ph/pw)/2);
-		resRect.setBottom(rect.bottom() - (rh-rw*ph/pw)/2);
+	if (rh * pw > ph * rw) {
+		resRect.setTop(rect.top() + (rh - rw * ph / pw) / 2);
+		resRect.setBottom(rect.bottom() - (rh - rw * ph / pw) / 2);
 	}
 	painter->setRenderHint(QPainter::Antialiasing, true);
 	mRenderer.render(painter, resRect);
+}
+
+QSize SdfIconEngineV2::preferedSize() const
+{
+	return mSize;
 }

@@ -17,7 +17,8 @@ TRANSLATIONS = qrgui_ru.ts
 # workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
 # when fixed it would become possible to use QMAKE_LFLAGS_RPATH
 !macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$$PWD/../bin/"
+	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../bin/
+	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/thirdparty/
 }
 
 win32 {
@@ -37,6 +38,7 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 }
 
 LIBS += -L../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
+LIBS += -L../bin/thirdparty -lqscintilla2
 
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
@@ -59,7 +61,7 @@ include (generators/generators.pri)
 # The code from the Internet
 include (thirdparty/thirdparty.pri)
 
-# Plugin managment
+# Plugin management
 include (pluginManager/pluginManager.pri)
 
 # Graphical and logical models

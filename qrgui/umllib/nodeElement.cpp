@@ -1,4 +1,3 @@
-#include <QtCore/QDebug>
 #include <QtCore/QUuid>
 #include <QtGui/QStyle>
 #include <QtGui/QStyleOptionGraphicsItem>
@@ -504,7 +503,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	resize(newContents, newPos);
-	qDebug() << newPos;
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(
@@ -525,10 +523,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mTimeOfUpdate++;
 	}
 	mTimer->start(400);
-
-//	if (mDragState == None) {
-//		alignToGrid();
-//	}
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
