@@ -1234,7 +1234,7 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 	// it lays in some container it also resizes. So we need to change parent to
 	// root, then translate into a new position and change parent to a new one.
 	// Also that element itself doesn`t change position in change parent command
-	// so using teranslation command itself
+	// so using translation command
 	ChangeParentCommand *changeParentToSceneCommand =
 			new ChangeParentCommand(mLogicalAssistApi, mGraphicalAssistApi, false
 					, id(), oldParent, evScene->rootItemId(), oldPos, oldScenePos);
