@@ -1077,7 +1077,7 @@ void NodeElement::resizeChild(QRectF const &newContents, QRectF const &oldConten
 
 void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 {
-	if (mIsFolded && isItemAddedOrDeleted && (item != 0)) {
+	if (mIsFolded && isItemAddedOrDeleted && item) {
 		changeFoldState();
 	}
 
@@ -1095,6 +1095,8 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 
 void NodeElement::updateByNewParent()
 {
+	EditorViewScene *editorScene = dynamic_cast<EditorViewScene *>(scene());
+	editorScene->onElementParentChanged(this);
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (!parent || parent->mElementImpl->hasMovableChildren()) {
 		setFlag(ItemIsMovable, true);
@@ -1143,6 +1145,7 @@ void NodeElement::singleSelectionState(bool const singleSelected)
 {
 	initEmbeddedLinkers();
 	setVisibleEmbeddedLinkers(singleSelected);
+	setTitlesVisiblePrivate(singleSelected || mTitlesVisible);
 	Element::singleSelectionState(singleSelected);
 }
 

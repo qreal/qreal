@@ -87,10 +87,10 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 
 void D2RobotModel::countMotorTurnover()
 {
-	foreach (Motor *motor, mMotors) {
-		int port = mMotors.key(motor);
-		qreal degrees = Timeline::timeInterval * 1.0 * motor->speed / oneReciprocalTime;
-		mTurnoverMotors[port] += degrees;
+	foreach (Motor * const motor, mMotors) {
+		int const port = mMotors.key(motor);
+		qreal const degrees = Timeline::timeInterval * 1.0 * motor->speed / oneReciprocalTime;
+		mTurnoverMotors[port] += qAbs(degrees);
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
 			motor->speed = 0;
 			motor->activeTimeType = End;

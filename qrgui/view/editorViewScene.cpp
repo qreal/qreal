@@ -342,22 +342,46 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPoint
 	QSignalMapper *menuSignalMapper = new QSignalMapper();
 	toDelete.append(menuSignalMapper);
 
-	foreach(PossibleEdge pEdge, edge->getPossibleEdges()) {
+	QStringList targets;
+	QStringList const groups = mWindow->manager()->paletteGroups(node->id(), node->id());
+
+	foreach(PossibleEdge const &pEdge, edge->getPossibleEdges()) {
 		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
 		// and vice versa
-
-		QStringList targets;
 		if (mWindow->manager()->isParentOf(node->id(), pEdge.first.first)) {
 			targets << mWindow->manager()->getAllChildrenTypesOf(pEdge.first.second);
 		}
-
 		if (mWindow->manager()->isParentOf(node->id(), pEdge.first.second)) {
 			targets << mWindow->manager()->getAllChildrenTypesOf(pEdge.first.first);
 		}
+	}
 
-		foreach (QString target, targets.toSet()) { // QSet is used to remove duplicates
-			Id id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
-			QAction *element = new QAction(mWindow->manager()->friendlyName(id), createElemMenu);
+	QSet<QString> const targetsSet = targets.toSet();
+	QMap<QString, QString> targetsInGroups;
+	QStringList targetGroups;
+	bool const chaoticEdition = SettingsManager::value("ChaoticEdition").toBool();
+	foreach (QString const &group, groups) {
+		QStringList const groupsContents = mWindow->manager()->paletteGroupList(
+				node->id(), node->id(), group);
+		foreach (QString const &elementInGroup, groupsContents) {
+			if (targetsSet.contains(elementInGroup)) {
+				targetsInGroups.insertMulti(group, elementInGroup);
+				if (!targetGroups.contains(group) || chaoticEdition) {
+					targetGroups.append(group);
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < targetGroups.count(); ++i) {
+		if (i > 0) {
+			createElemMenu->addSeparator();
+		}
+		QStringList const targetsInGroup = targetsInGroups.values(targetGroups[i]);
+		foreach (QString const &target, targetsInGroup) {
+			Id const id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
+			QString const friendlyName = chaoticEdition ? "" : mWindow->manager()->friendlyName(id);
+			QAction *element = new QAction(friendlyName, createElemMenu);
 			// deleted as child of createElemMenu
 			createElemMenu->addAction(element);
 			QObject::connect(element,SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
@@ -1592,4 +1616,9 @@ void EditorViewScene::setTitlesVisible(bool visible)
 			element->setTitlesVisible(visible);
 		}
 	}
+}
+
+void EditorViewScene::onElementParentChanged(Element *element)
+{
+	element->setTitlesVisible(mTitlesVisible);
 }
