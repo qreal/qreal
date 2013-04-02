@@ -1,15 +1,400 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
     <namespace>UML 2.0</namespace>
-    <diagram displayedName="QUbiq Editor" nodeName="qUbiqDiagram" name="qUbiqEditor">
+    <diagram displayedName="QUbiq Logic Editor" nodeName="qUbiqLogicDiagram" name="qUbiqLogicEditor">
         <graphicTypes>
-            <node displayedName="QUbiq Diagram" name="qUbiqDiagram">
+            <node displayedName="Logic Diagram" name="qUbiqLogicDiagram">
                 <graphics>
-                    <picture sizex="153" sizey="114">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="113" fill-style="none" x2="152"/>
+                    <picture sizex="175" sizey="132">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="131" fill-style="none" x2="174"/>
                     </picture>
                     <labels>
-                        <label x="12" y="13" textBinded="name"/>
+                        <label x="7" y="7a" text="Logic Diagram"/>
+                        <label x="8" y="34a" textBinded="name"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+        </graphicTypes>
+    </diagram>
+    <diagram displayedName="QUbiq Presentation Editor" nodeName="qUbiqPresentationDiagram" name="qUbiqPresentationEditor">
+        <nonGraphicTypes>
+            <enum displayedName="Types of element" name="elementTypes">
+                <value>text</value>
+                <value>list</value>
+                <value>image</value>
+                <value>grid</value>
+                <value>number</value>
+            </enum>
+        </nonGraphicTypes>
+        <graphicTypes>
+            <node displayedName="PresentationDiagram" name="qUbiqPresentationDiagram">
+                <graphics>
+                    <picture sizex="175" sizey="132">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="131" fill-style="none" x2="174"/>
+                    </picture>
+                    <labels>
+                        <label x="7" y="7a" text="Presentation Diagram"/>
+                        <label x="8" y="34a" textBinded="name"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="abstractHandlerNode"/>
+                        <contains type="variable"/>
+                    </container>
+                </logic>
+            </node>
+            <node displayedName="Slide" name="slide">
+                <graphics>
+                    <picture sizex="150" sizey="120">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="119" fill-style="none" x2="149"/>
+                    </picture>
+                    <labels>
+                        <label x="10a" y="10a" text="SLIDE"/>
+                        <label x="50" y="10a" textBinded="name"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="119"/>
+                            <end endx="139" endy="120"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1"/>
+                            <end endx="139" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="149" starty="10"/>
+                            <end endx="150" endy="109"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="109"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="variable"/>
+                        <contains type="abstractHandlerNode"/>
+                    </container>
+                    <properties>
+                        <property displayedName="Description" type="string" name="description"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractHandlerNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Button" name="button">
+                <graphics>
+                    <picture sizex="110" sizey="40">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="109"/>
+                    </picture>
+                    <labels>
+                        <label x="60" y="10a" textBinded="name"/>
+                        <label x="10a" y="10a" text="BUTTON"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="39"/>
+                            <end endx="99" endy="40"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="109" starty="10"/>
+                            <end endx="110" endy="29"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1"/>
+                            <end endx="99" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="29"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="text"/>
+                        <contains type="image"/>
+                    </container>
+                    <properties>
+                        <property displayedName="Text on button" type="string" name="buttonText"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractHandlerNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Exit Button" name="exitButton">
+                <graphics>
+                    <picture sizex="130" sizey="40">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="129"/>
+                    </picture>
+                    <labels>
+                        <label x="80" y="10a" textBinded="name"/>
+                        <label x="10a" y="10a" text="EXIT BUTTON"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="39"/>
+                            <end endx="119" endy="40"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="129" starty="10"/>
+                            <end endx="130" endy="29"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1"/>
+                            <end endx="119" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="29"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="button"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="List" name="list">
+                <graphics>
+                    <picture sizex="110" sizey="40">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="109"/>
+                    </picture>
+                    <labels>
+                        <label x="40" y="10a" textBinded="name"/>
+                        <label x="10a" y="10a" text="LIST"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="39"/>
+                            <end endx="99" endy="40"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="109" starty="10"/>
+                            <end endx="110" endy="29"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1"/>
+                            <end endx="99" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="29"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="text"/>
+                        <contains type="image"/>
+                        <contains type="button"/>
+                    </container>
+                    <properties>
+                        <property displayedName="Count of elements" type="int" name="elementsCount"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractIsNullNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="abstractHandlerNode">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Handler" type="string" name="handler"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="abstractIsNullNode">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Is Null in begin" type="bool" name="isNull">
+                            <default>false</default>
+                        </property>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractHandlerNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Text" name="text">
+                <graphics>
+                    <picture sizex="110" sizey="40">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="109"/>
+                    </picture>
+                    <labels>
+                        <label x="50" y="10a" textBinded="name"/>
+                        <label x="10a" y="10a" text="TEXT"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="39"/>
+                            <end endx="99" endy="40"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="109" starty="10"/>
+                            <end endx="110" endy="29"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1"/>
+                            <end endx="99" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="29"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Text" type="string" name="text"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractIsNullNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Image" name="image">
+                <graphics>
+                    <picture sizex="110" sizey="40">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="109"/>
+                    </picture>
+                    <labels>
+                        <label x="60" y="10a" textBinded="name"/>
+                        <label x="10a" y="10a" text="IMAGE"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="39"/>
+                            <end endx="99" endy="40"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="109" starty="10"/>
+                            <end endx="110" endy="29"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1"/>
+                            <end endx="99" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="29"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Path to image" type="string" name="pathToImage"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractIsNullNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Grid" name="grid">
+                <graphics>
+                    <picture sizex="130" sizey="40">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="129"/>
+                    </picture>
+                    <labels>
+                        <label x="50" y="10a" textBinded="name"/>
+                        <label x="90" y="10a" textBinded="size"/>
+                        <label x="10a" y="10a" text="GRID"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="39"/>
+                            <end endx="119" endy="40"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="129" starty="10"/>
+                            <end endx="130" endy="29"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1"/>
+                            <end endx="119" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10"/>
+                            <end endx="0" endy="29"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="button"/>
+                        <contains type="text"/>
+                        <contains type="image"/>
+                    </container>
+                    <properties>
+                        <property displayedName="Dimension" type="string" name="size">
+                            <default>1x1</default>
+                        </property>
+                        <property displayedName="Id of element" type="string" name="elementId"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractHandlerNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Variable" name="variable">
+                <graphics>
+                    <picture sizex="81" sizey="85">
+                        <ellipse fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="84" fill-style="none" x2="80"/>
+                    </picture>
+                    <labels>
+                        <label x="22a" y="16a" textBinded="name"/>
+                        <label x="23a" y="47a" textBinded="type"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Type of variable" type="elementTypes" name="type">
+                            <default>text</default>
+                        </property>
+                        <property displayedName="Default value" type="string" name="defaultValue"/>
+                        <property displayedName="Description" type="string" name="description"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge displayedName="Transition Link" name="transitionLink">
+                <graphics>
+                    <lineType type="dashLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="begin" endName="end"/>
+                    </associations>
+                </logic>
+            </edge>
+        </graphicTypes>
+    </diagram>
+    <diagram displayedName="QUbiq Condition Editor" nodeName="qUbiqConditionDiagram" name="qUbiqConditionEditor">
+        <graphicTypes>
+            <node displayedName="Condition Diagram" name="qUbiqConditionDiagram">
+                <graphics>
+                    <picture sizex="176" sizey="133">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="132" fill-style="none" x2="175"/>
+                    </picture>
+                    <labels>
+                        <label x="7" y="7a" text="Condition Diagram"/>
+                        <label x="8" y="34a" textBinded="name"/>
                     </labels>
                     <ports/>
                 </graphics>

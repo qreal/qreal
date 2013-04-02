@@ -1,6 +1,31 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-	<file>generated/shapes/QUbiqDiagramClass.sdf</file>
-	<file>generated/shapes/QUbiqDiagramPorts.sdf</file>
+	<file>generated/shapes/QUbiqConditionDiagramClass.sdf</file>
+	<file>generated/shapes/QUbiqConditionDiagramPorts.sdf</file>
+	<file>generated/shapes/QUbiqLogicDiagramClass.sdf</file>
+	<file>generated/shapes/QUbiqLogicDiagramPorts.sdf</file>
+	<file>generated/shapes/AbstractHandlerNodeClass.sdf</file>
+	<file>generated/shapes/AbstractHandlerNodePorts.sdf</file>
+	<file>generated/shapes/AbstractIsNullNodeClass.sdf</file>
+	<file>generated/shapes/AbstractIsNullNodePorts.sdf</file>
+	<file>generated/shapes/ButtonClass.sdf</file>
+	<file>generated/shapes/ButtonPorts.sdf</file>
+	<file>generated/shapes/ExitButtonClass.sdf</file>
+	<file>generated/shapes/ExitButtonPorts.sdf</file>
+	<file>generated/shapes/GridClass.sdf</file>
+	<file>generated/shapes/GridPorts.sdf</file>
+	<file>generated/shapes/ImageClass.sdf</file>
+	<file>generated/shapes/ImagePorts.sdf</file>
+	<file>generated/shapes/ListClass.sdf</file>
+	<file>generated/shapes/ListPorts.sdf</file>
+	<file>generated/shapes/QUbiqPresentationDiagramClass.sdf</file>
+	<file>generated/shapes/QUbiqPresentationDiagramPorts.sdf</file>
+	<file>generated/shapes/SlideClass.sdf</file>
+	<file>generated/shapes/SlidePorts.sdf</file>
+	<file>generated/shapes/TextClass.sdf</file>
+	<file>generated/shapes/TextPorts.sdf</file>
+	<file>generated/shapes/TransitionLinkClass.sdf</file>
+	<file>generated/shapes/VariableClass.sdf</file>
+	<file>generated/shapes/VariablePorts.sdf</file>
 </qresource>
 </RCC>
