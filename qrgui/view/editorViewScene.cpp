@@ -328,7 +328,8 @@ bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id con
 	return allowed;
 }
 
-int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPointF const &scenePos)
+int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
+		, QPointF const &scenePos, commands::CreateElementCommand **createCommand)
 {
 	edge->setSelected(true);
 
@@ -382,18 +383,22 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPoint
 			result = -1;
 		} else if (!(executed->text() == tr("Discard"))) {
 			result = 1;
+			if (createCommand && mLastCreatedWithEdgeCommand) {
+				*createCommand = mLastCreatedWithEdgeCommand;
+			}
 		}
 	}
 
-	foreach(QObject *object, toDelete)
+	foreach(QObject *object, toDelete) {
 		delete object;
+	}
 
 	return result;
 }
 
 qReal::Id EditorViewScene::createElement(const QString &str)
 {
-	qReal::Id result = createElement(str, mCreatePoint);
+	qReal::Id result = createElement(str, mCreatePoint, true, &mLastCreatedWithEdgeCommand);
 	mLastCreatedWithEdge = getElem(result);
 	return result;
 }

@@ -35,7 +35,8 @@ public:
 	void addItem(QGraphicsItem *item);
 
 	void clearScene();
-	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);
+	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
+			, commands::CreateElementCommand **elementCommand = 0);
 	virtual qReal::Id createElement(const QString &, QPointF const &scenePos
 			, bool searchForParents = true, commands::CreateElementCommand **createCommand = 0);
 	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos
@@ -203,6 +204,7 @@ private:
 	QPointF offsetByDirection(int direction);
 
 	Element *mLastCreatedWithEdge;
+	commands::CreateElementCommand *mLastCreatedWithEdgeCommand;
 
 	bool mRightButtonPressed;
 	bool mLeftButtonPressed;

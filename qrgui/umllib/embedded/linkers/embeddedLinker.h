@@ -5,6 +5,7 @@
 
 #include "../../../../qrkernel/roles.h"
 #include "../../edgeElement.h"
+#include "../../../controller/commands/createElementCommand.h"
 
 class NodeElement;
 
@@ -58,4 +59,5 @@ private:
 
 	int mTimeOfUpdate;
 	QTimer *mTimer;
+	commands::CreateElementCommand *mCreateEdgeCommand;
 };
