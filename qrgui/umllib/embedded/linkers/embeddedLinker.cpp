@@ -295,6 +295,8 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				mEdge->setDst(target);
 				target->storeGeometry();
 			}
+		} else {
+			createElementFromMenuCommand = NULL;
 		}
 		if (result != -1) {
 			mEdge->connectToPort();
@@ -307,8 +309,12 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			reshapeEdge->startTracking();
 			reshapeEdge->stopTracking();
 			reshapeEdge->setUndoEnabled(false);
-			createElementFromMenuCommand->addPostAction(reshapeEdge);
-			mCreateEdgeCommand->addPostAction(createElementFromMenuCommand);
+			if (createElementFromMenuCommand) {
+				createElementFromMenuCommand->addPostAction(reshapeEdge);
+				mCreateEdgeCommand->addPostAction(createElementFromMenuCommand);
+			} else {
+				mCreateEdgeCommand->addPostAction(reshapeEdge);
+			}
 		}
 	}
 	mPressed = false;
