@@ -31,6 +31,7 @@ public:
 	virtual void rejectTracking();
 
 	QRectF geometryBeforeDrag() const;
+	bool modificationsHappened() const;
 
 protected:
 	bool execute();

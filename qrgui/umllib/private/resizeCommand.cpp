@@ -127,3 +127,8 @@ QRectF ResizeCommand::geometryBeforeDrag() const
 {
 	return mOldGeometrySnapshot[mId];
 }
+
+bool ResizeCommand::modificationsHappened() const
+{
+	return mOldGeometrySnapshot != mNewGeometrySnapshot;
+}
