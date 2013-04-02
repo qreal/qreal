@@ -118,7 +118,6 @@ MainWindow::MainWindow(const QString &fileToOpen)
 
 	splashScreen.setProgress(80);
 
-	mGesturesWidget = new GesturesWidget();
 	initActionsFromSettings();
 
 	splashScreen.setProgress(100);
@@ -262,7 +261,6 @@ MainWindow::~MainWindow()
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
-	delete mGesturesWidget;
 	delete mModels;
 	delete mController;
 	delete mCodeTabManager;
@@ -1402,7 +1400,7 @@ void MainWindow::setSwitchAlignment(bool isChecked)
 
 void MainWindow::showGestures()
 {
-	mGesturesWidget = new GesturesWidget(); // why create another one here?
+	mGesturesWidget = new GesturesWidget();
 	mUi->tabs->addTab(mGesturesWidget, tr("Gestures Show"));
 	mUi->tabs->setCurrentWidget(mGesturesWidget);
 	connect(mGesturesWidget, SIGNAL(currentElementChanged()), this, SIGNAL(currentIdealGestureChanged()));
