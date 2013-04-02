@@ -61,6 +61,14 @@ void ResizeCommand::resizeHierarchy(QMap<Id, QRectF> const &snapshot)
 		NodeElement *element = nodeById(id);
 		resize(element, snapshot[id]);
 	}
+	// Updating linker position
+	if (mScene->selectedItems().size() == 1) {
+		QGraphicsItem *selectedItem = mScene->selectedItems()[0];
+		NodeElement *selectedNode = dynamic_cast<NodeElement *>(selectedItem);
+		if (selectedNode) {
+			selectedNode->setVisibleEmbeddedLinkers(true);
+		}
+	}
 }
 
 void ResizeCommand::resize(NodeElement * const element, QRectF const &geometry)
