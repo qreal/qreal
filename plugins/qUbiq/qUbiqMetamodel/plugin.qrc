@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>generated/shapes/QUbiqDiagramClass.sdf</file>
+	<file>generated/shapes/QUbiqDiagramPorts.sdf</file>
+</qresource>
+</RCC>
