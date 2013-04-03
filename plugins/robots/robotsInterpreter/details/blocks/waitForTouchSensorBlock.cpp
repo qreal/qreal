@@ -7,8 +7,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
 WaitForTouchSensorBlock::WaitForTouchSensorBlock(details::RobotModel const * const robotModel)
-	: mTouchSensor(NULL)
-	, mRobotModel(robotModel)
+	: mRobotModel(robotModel)
 {
 	// There is about 30 ms latency within robot bluetooth chip, so it is useless to
 	// read sensor too frequently.
@@ -19,19 +18,19 @@ WaitForTouchSensorBlock::WaitForTouchSensorBlock(details::RobotModel const * con
 
 void WaitForTouchSensorBlock::run()
 {
-	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
-	mTouchSensor = mRobotModel->touchSensor(port);
+	mPort = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
+	robotParts::TouchSensor * const touchSensor = mRobotModel->touchSensor(mPort);
 
-	if (!mTouchSensor) {
+	if (!touchSensor) {
 		mActiveWaitingTimer.stop();
 		error(tr("Touch sensor is not configured on this port"));
 		return;
 	}
 
-	connect(mTouchSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
-	connect(mTouchSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
+	connect(touchSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
+	connect(touchSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
 
-	mTouchSensor->read();
+	touchSensor->read();
 	mActiveWaitingTimer.start();
 }
 
@@ -51,7 +50,7 @@ void WaitForTouchSensorBlock::failureSlot()
 
 void WaitForTouchSensorBlock::timerTimeout()
 {
-	mTouchSensor->read();
+	mRobotModel->touchSensor(mPort)->read();
 }
 
 QList<Block::SensorPortPair> WaitForTouchSensorBlock::usedSensors() const

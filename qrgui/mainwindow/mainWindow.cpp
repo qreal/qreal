@@ -27,6 +27,7 @@
 
 #include "../models/models.h"
 #include "../view/editorView.h"
+#include "../view/sceneCustomizer.h"
 #include "../umllib/element.h"
 #include "../dialogs/pluginDialog.h"
 #include "../dialogs/checkoutDialog.h"
@@ -41,13 +42,15 @@
 #include "../dialogs/startDialog/startDialog.h"
 #include "../dialogs/progressDialog/progressDialog.h"
 
+#include "qscintillaTextEdit.h"
+
 #include "dotRunner.h"
 
 using namespace qReal;
 
 QString const unsavedDir = "unsaved";
 
-MainWindow::MainWindow()
+MainWindow::MainWindow(const QString &fileToOpen)
 		: mUi(new Ui::MainWindowUi)
 		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
 		, mModels(NULL)
@@ -60,11 +63,11 @@ MainWindow::MainWindow()
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
-		, mHelpBrowser(NULL)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(this, mProjectManager))
+		, mSceneCustomizer(new SceneCustomizer(this))
 {
 	mUi->setupUi(this);
 	setWindowTitle("QReal");
@@ -128,7 +131,9 @@ MainWindow::MainWindow()
 	connectActions();
 	initExplorers();
 
-	mStartDialog->exec();
+	if (fileToOpen.isEmpty() || !mProjectManager->open(fileToOpen)) {
+		mStartDialog->exec();
+	}
 }
 
 void MainWindow::connectActions()
@@ -149,7 +154,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), mProjectManager, SLOT(openNewWithDiagram()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), mStartDialog, SLOT(exec()));
 
 	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
@@ -239,7 +244,6 @@ MainWindow::~MainWindow()
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
-	delete mHelpBrowser;
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
@@ -250,6 +254,7 @@ MainWindow::~MainWindow()
 	delete mFindHelper;
 	delete mProjectManager;
 	delete mStartDialog;
+	delete mSceneCustomizer;
 }
 
 EditorManager *MainWindow::manager()
@@ -397,7 +402,6 @@ void MainWindow::sceneSelectionChanged()
 		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(singleSelected->id());
 		if (index.isValid()) {
 			mUi->graphicalModelExplorer->setCurrentIndex(index);
-			mUi->graphicalModelExplorer->setFocus();
 		}
 	}
 }
@@ -582,6 +586,8 @@ void MainWindow::removeReferences(Id const &id)
 void MainWindow::deleteFromScene()
 {
 	QList<QGraphicsItem *> itemsToDelete = getCurrentTab()->scene()->selectedItems();
+	QList<QGraphicsItem *> itemsToUpdate;
+	QList<QGraphicsItem *> itemsToDeleteNoUpdate;
 	// QGraphicsScene::selectedItems() returns items in no particular order,
 	// so we should handle parent-child relationships manually
 
@@ -590,13 +596,43 @@ void MainWindow::deleteFromScene()
 
 		// delete possible children
 		foreach (QGraphicsItem *child, currentItem->childItems()) {
+			NodeElement* node = dynamic_cast <NodeElement*> (child);
+			if (node) {
+				itemsToDeleteNoUpdate.append(node);
+			}
 			itemsToDelete.removeAll(child);
 			deleteFromScene(child);
+		}
+
+		EdgeElement* edge = dynamic_cast <EdgeElement*> (currentItem);
+		if (edge) {
+			if (edge->src() && !itemsToUpdate.contains(edge->src())) {
+				itemsToUpdate.append(edge->src());
+			}
+			if (edge->dst() && !itemsToUpdate.contains(edge->dst())) {
+				itemsToUpdate.append(edge->dst());
+			}
+		} else {
+			NodeElement* node = dynamic_cast <NodeElement*> (currentItem);
+			if (node) {
+				itemsToDeleteNoUpdate.append(currentItem);
+			}
 		}
 
 		// delete the item itself
 		itemsToDelete.removeAll(currentItem);
 		deleteFromScene(currentItem);
+	}
+
+	// correcting unremoved edges
+	foreach (QGraphicsItem* item, itemsToUpdate) {
+		if (!itemsToDeleteNoUpdate.contains(item)) {
+			NodeElement* node = dynamic_cast <NodeElement*> (item);
+			if (node) {
+				node->arrangeLinks();
+				node->adjustLinks();
+			}
+		}
 	}
 }
 
@@ -681,33 +717,12 @@ void MainWindow::modelsAreChanged()
 
 void MainWindow::showAbout()
 {
-	QMessageBox::about(this, tr("About QReal"),
-			tr("<b>QReal<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>"));
+	QMessageBox::about(this, tr("About QReal"), mToolManager.customizer()->aboutText());
 }
 
 void MainWindow::showHelp()
 {
-	// FIXME: ":/qreal-robots.qhc" doesn't work for some reason
-	QHelpEngine * const helpEngine = new QHelpEngine("./qreal-robots.qhc");
-	helpEngine->setupData();
-
-	helpEngine->setCurrentFilter("QReal:Robots");
-
-	mHelpBrowser = new HelpBrowser(helpEngine);
-	mHelpBrowser->setSource(helpEngine->linksForIdentifier("QReal")["QReal:Robots"]);
-
-	QSplitter * const helpPanel = new QSplitter(Qt::Horizontal);
-	helpPanel->setGeometry(QRect(50, 50, 1000, 800));
-	helpPanel->setWindowTitle("QReal:Robots Help Center");
-	QIcon icon;
-	icon.addFile(QString::fromUtf8(":/icons/qreal.png"), QSize(), QIcon::Normal, QIcon::Off);
-	helpPanel->setWindowIcon(icon);
-	helpPanel->insertWidget(0, helpEngine->contentWidget());
-	helpPanel->insertWidget(1, mHelpBrowser);
-	helpPanel->setStretchFactor(1, 1);
-	helpPanel->show();
-
-	connect(helpEngine->contentWidget(), SIGNAL(linkActivated(const QUrl &)), mHelpBrowser, SLOT(setSource(const QUrl &)));
+	QDesktopServices::openUrl(QUrl("./help/index.html"));
 }
 
 void MainWindow::toggleShowSplash(bool show)
@@ -840,11 +855,6 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::initSettingsManager()
 {
-	QDir imagesDir(SettingsManager::value("pathToImages").toString());
-	if (!imagesDir.exists()) {
-		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
-	}
-
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir)) {
@@ -898,6 +908,24 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
 	setConnectActionZoomTo(shapeEdit);
+}
+
+void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue)
+{
+	gui::QScintillaTextEdit *textEdit = new gui::QScintillaTextEdit(index, role);
+	if (!propertyValue.isEmpty()) {
+		textEdit->setText(propertyValue.toUtf8());
+	}
+
+	textEdit->setPythonLexer();
+	textEdit->setPythonEditorProperties();
+
+	connect(textEdit, SIGNAL(textSaved(QString const &, QPersistentModelIndex const &, int const &))
+			, this, SLOT(setData(QString const &, QPersistentModelIndex const &, int const &)));
+
+	mUi->tabs->addTab(textEdit, tr("Text Editor"));
+	mUi->tabs->setCurrentWidget(textEdit);
+	setConnectActionZoomTo(textEdit);
 }
 
 void MainWindow::openShapeEditor()
@@ -1038,9 +1066,12 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
 		EditorView * const view = new EditorView(this);
+		mSceneCustomizer->customizeView(view);
 		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
+		// Focusing on scene top left corner
+		view->centerOn(view->scene()->sceneRect().topLeft());
 	}
 
 	// changing of palette active editor
@@ -1057,6 +1088,16 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 			i++;
 		}
 	}
+}
+
+void MainWindow::openFirstDiagram()
+{
+	Id const rootId = mModels->graphicalModelAssistApi().rootId();
+	IdList const diagrams = mModels->graphicalModelAssistApi().children(rootId);
+	if (diagrams.count() == 0) {
+		return;
+	}
+	openNewTab(mModels->graphicalModelAssistApi().indexById(diagrams[0]));
 }
 
 void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIndex)
@@ -1088,6 +1129,11 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 			, tab->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 
 	setShortcuts(tab);
+
+	EditorViewScene *scene = dynamic_cast<EditorViewScene *>(tab->scene());
+	if (scene) {
+		scene->updateEdgesViaNodes();
+	}
 }
 
 void MainWindow::setShortcuts(EditorView * const tab)
@@ -1376,7 +1422,7 @@ void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	Element* const element = scene->getElem(graphicalId);
 	scene->highlight(graphicalId, exclusive);
-	view->ensureElementVisible(element);
+	view->ensureElementVisible(element, 0, 0);
 }
 
 void MainWindow::dehighlight(Id const &graphicalId)
@@ -1418,8 +1464,17 @@ void MainWindow::updatePaletteIcons()
 
 void MainWindow::applySettings()
 {
-	getCurrentTab()->invalidateScene();
-	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
+	for (int i = 0; i < mUi->tabs->count(); i++) {
+		EditorView * const tab = static_cast<EditorView *>(mUi->tabs->widget(i));
+		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
+		if (scene) {
+			if (SettingsManager::value("SquareLine", false).toBool()) {
+				scene->updateEdgeElements();
+			}
+			scene->invalidate();
+		}
+	}
+	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
 }
 
 void MainWindow::setBackReference(QPersistentModelIndex const &index, QString const &data)
@@ -1473,6 +1528,13 @@ void MainWindow::fullscreen()
 		showDockWidget(mUi->propertyDock, "propertyEditor");
 		showDockWidget(mUi->errorDock, "errorReporter");
 	}
+	foreach (QDockWidget *dock, mAdditionalDocks) {
+		if (mIsFullscreen) {
+			hideDockWidget(dock, dock->windowTitle());
+		} else {
+			showDockWidget(dock, dock->windowTitle());
+		}
+	}
 }
 
 QString MainWindow::getNextDirName(QString const &name)
@@ -1501,6 +1563,7 @@ void MainWindow::initToolPlugins()
 			, mModels->logicalModelAssistApi()
 			, *this
 			, *mProjectManager
+			, *mSceneCustomizer
 			));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
@@ -1593,10 +1656,12 @@ QWidget *MainWindow::windowWidget()
 
 void MainWindow::initToolManager()
 {
-	if (mToolManager.customizer()) {
-		setWindowTitle(mToolManager.customizer()->windowTitle());
-		mUi->logicalModelDock->setVisible(mToolManager.customizer()->showLogicalModelExplorer());
-		setWindowIcon(mToolManager.customizer()->applicationIcon());
+	Customizer * const customizer = mToolManager.customizer();
+	if (customizer) {
+		setWindowTitle(customizer->windowTitle());
+		setWindowIcon(customizer->applicationIcon());
+		setVersion(customizer->productVersion());
+		customizer->customizeDocks(this);
 	}
 }
 
@@ -1780,4 +1845,58 @@ void MainWindow::updateActiveDiagram()
 	reinitModels();
 	activateItemOrDiagram(diagramId);
 	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
+}
+
+QDockWidget *MainWindow::logicalModelDock() const
+{
+	return mUi->logicalModelDock;
+}
+
+QDockWidget *MainWindow::graphicalModelDock() const
+{
+	return mUi->graphicalModelDock;
+}
+
+QDockWidget *MainWindow::propertyEditorDock() const
+{
+	return mUi->propertyDock;
+}
+
+QDockWidget *MainWindow::errorReporterDock() const
+{
+	return mUi->errorDock;
+}
+
+QDockWidget *MainWindow::paletteDock() const
+{
+	return mUi->paletteDock;
+}
+
+void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
+{
+	QMainWindow::tabifyDockWidget(first, second);
+}
+
+void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
+{
+	mAdditionalDocks << dockWidget;
+	QMainWindow::addDockWidget(area, dockWidget);
+}
+
+QListIterator<EditorView *> MainWindow::openedEditorViews() const
+{
+	QList<EditorView *> views;
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
+		EditorView *view = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (view) {
+			views << view;
+		}
+	}
+	return QListIterator<EditorView *>(views);
+}
+
+void MainWindow::setVersion(QString const &version)
+{
+	// TODO: update title
+	SettingsManager::setValue("version", version);
 }

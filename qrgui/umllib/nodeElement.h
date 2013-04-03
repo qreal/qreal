@@ -1,4 +1,3 @@
-
 /** @file nodeElement.h
  *  @brief class for an element object on a diagram
  * */
@@ -60,8 +59,11 @@ public:
 	/// Aligning the element to grid
 	void alignToGrid();
 
+	bool isContainer() const;
+
 	void storeGeometry();
 	virtual void setName(QString name);
+	//void shift(QPointF const &pos, EdgeElement* called);
 
 	QPointF const portPos(qreal id) const;
 	QPointF const nearestPort(QPointF const &location) const;
@@ -88,7 +90,7 @@ public:
 
 	//void resizeChild(QRectF const &newContents, QRectF const &oldContents);
 
-	virtual QList<ContextMenuAction *> contextMenuActions();
+	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
 	void switchAlignment(bool isSwitchedOn);
 	void showAlignment(bool isChecked);
 
@@ -97,7 +99,7 @@ public:
 	bool connectionInProgress();
 	void setConnectingState(bool arg);
 
-	void adjustLinks();
+	void adjustLinks(bool isDragging = false);
 	void arrangeLinearPorts();
 	void arrangeLinks();
 
@@ -122,15 +124,21 @@ public:
 	virtual void deleteFromScene();
 
 	QList<EdgeElement *> const edgeList() const;
+	QList<NodeElement *> const childNodes() const;
 
 	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
+
+	void setVisibleEmbeddedLinkers(bool const show);
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);
 	void switchGrid(bool isChecked);
 	NodeElement *copyAndPlaceOnDiagram(QPointF const &offset);
+
+private slots:
+	void updateNodeEdges();
 
 private:
 	enum DragState {
@@ -200,19 +208,10 @@ private:
 	void updateByNewParent();
 
 	void initEmbeddedLinkers();
-	void setVisibleEmbeddedLinkers(bool const show);
-
-	/**
-	 * Returns true if parent node is sorting container; otherwise returns false.
-	 * @return True if parent node is sorting container; otherwise returns false.
-	 */
-	bool isParentSortingContainer() const;
 
 	ContextMenuAction mSwitchGridAction;
 
 	bool mPortsVisible;
-
-	QList<NodeElement *> childs;
 
 	QRectF mContents;
 	QList<EdgeElement *> mEdgeList;
@@ -253,4 +252,7 @@ private:
 	NodeElement *mHighlightedNode;
 
 	NodeData mData;
+
+	int mTimeOfUpdate;
+	QTimer *mTimer;
 };

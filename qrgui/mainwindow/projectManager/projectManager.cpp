@@ -88,15 +88,24 @@ bool ProjectManager::open(QString const &fileName)
 	// the project, the autosave file may become incompatible with the application. This will lead to a fail on the
 	// next start. 2. autosavePauser was first starts a timer of Autosaver
 	Autosaver::Pauser autosavePauser = mAutosaver->pauser();
+	Q_UNUSED(autosavePauser)
 
 	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
-		return false;
+		if (fileName == "autosave.qrs") {
+			// Creating empty autosave.qrs file
+			QFile autosaveFile(mAutosaver->filePath());
+			autosaveFile.open(QIODevice::WriteOnly);
+			autosaveFile.close();
+		} else {
+			return false;
+		}
 	}
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Initializing is impossible without closing current project.
 	close();
 	mMainWindow->models()->repoControlApi().open(fileName);
 	mMainWindow->models()->reinit();
+	saveTemp();
 
 	if (!pluginsEnough()) {
 		// restoring the session
@@ -107,6 +116,7 @@ bool ProjectManager::open(QString const &fileName)
 			, mMainWindow->models()->graphicalModel());
 	mMainWindow->graphicalModelExplorer()->setModel(mMainWindow->models()->graphicalModel());
 	mMainWindow->logicalModelExplorer()->setModel(mMainWindow->models()->logicalModel());
+	mMainWindow->openFirstDiagram();
 
 	setSaveFilePath(fileName);
 	refreshApplicationStateAfterOpen();
@@ -138,7 +148,7 @@ bool ProjectManager::import(QString const &fileName)
 
 bool ProjectManager::saveFileExists(QString const &fileName)
 {
-	if (!QFile::exists(fileName)) {
+	if (!QFile::exists(fileName) && fileName != "autosave.qrs") {
 		QMessageBox fileNotFoundMessage(QMessageBox::Information, tr("File not found")
 				, tr("File ") + fileName + tr(" not found. Try again"), QMessageBox::Ok, mMainWindow);
 		fileNotFoundMessage.exec();
@@ -202,6 +212,7 @@ void ProjectManager::refreshTitleModifiedSuffix()
 
 bool ProjectManager::openNewWithDiagram()
 {
+	clearAutosaveFile();
 	if(!openEmptyWithSuggestToSaveChanges()) {
 		return false;
 	}
@@ -247,6 +258,12 @@ void ProjectManager::save()
 	refreshApplicationStateAfterSave();
 }
 
+void ProjectManager::saveTemp()
+{
+	mSaveFilePathTemp=SettingsManager::value("AutosaveTempFile").toString();
+	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePathTemp);
+}
+
 void ProjectManager::saveGenCode(QString const &text)
 {
 	utils::OutFile out("nxt-tools/example0/example0.c");
@@ -255,7 +272,7 @@ void ProjectManager::saveGenCode(QString const &text)
 
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
-	if (mSaveFilePath == mAutosaver->filePath()) {
+	if (mSaveFilePath == SettingsManager::value("AutosaveFileName").toString()) {
 		return suggestToSaveAs();
 	}
 	save();
@@ -309,4 +326,12 @@ void ProjectManager::setUnsavedIndicator(bool isUnsaved)
 {
 	mUnsavedIndicator = isUnsaved;
 	refreshTitleModifiedSuffix();
+}
+
+void ProjectManager::clearAutosaveFile()
+{
+	QFile tempFile(SettingsManager::value("AutosaveFileName").toString());
+	if (tempFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+		tempFile.close();
+	}
 }

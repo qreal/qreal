@@ -5,7 +5,7 @@
 #pragma once
 
 class NodeElement;
-class qReal::models::GraphicalModelAssistApi;
+// class qReal::models::GraphicalModelAssistApi; because warning
 
 class CopyHandler {
 public:

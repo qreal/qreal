@@ -1,6 +1,6 @@
 #include "realRobotModelImplementation.h"
-
 #include "../tracer.h"
+#include "../realTimer.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
@@ -68,8 +68,9 @@ void RealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const
 
 void RealRobotModelImplementation::addLightSensor(inputPort::InputPortEnum const &port)
 {
-//	sensorImplementations::BluetoothLightSensorImplementation *sensor = new sensorImplementations::BluetoothLightSensorImplementation(mRobotCommunicator, port);
-	//mSensorsConfigurer.configureSensor(sensor, port);
+	Q_UNUSED(port)
+	sensorImplementations::BluetoothLightSensorImplementation *sensor = new sensorImplementations::BluetoothLightSensorImplementation(mRobotCommunicator, port);
+	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void RealRobotModelImplementation::init()
@@ -153,4 +154,9 @@ void RealRobotModelImplementation::disconnectedSlot()
 	mSensorsConfigurer.lockConfiguring();
 	mIsConnected = false;
 	emit disconnected();
+}
+
+AbstractTimer *RealRobotModelImplementation::produceTimer()
+{
+	return new RealTimer;
 }

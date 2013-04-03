@@ -1,11 +1,11 @@
-#include "abstractItem.h"
-
 #include <QtGui/QPainter>
 #include <QtGui/QStyle>
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QStyleOptionGraphicsItem>
 #include <QtGui/QGraphicsSceneMouseEvent>
-#include <QDebug>
+#include <QtCore/QDebug>
+
+#include "abstractItem.h"
 
 using namespace graphicsUtils;
 
@@ -153,30 +153,33 @@ void AbstractItem::reshapeRectWithShift()
 {
 	qreal size = qMax(abs(mX2 - mX1), abs(mY2 - mY1));
 	if(mX2 > mX1) {
-		if (mY2 > mY1)
+		if (mY2 > mY1) {
 			setX2andY2(mX1 + size, mY1 + size);
-		else
+		} else {
 			setX2andY2(mX1 + size, mY1 - size);
+		}
 	} else {
-		if (mY2 > mY1)
+		if (mY2 > mY1) {
 			setX2andY2(mX1 - size, mY1 + size);
-		else
+		} else {
 			setX2andY2(mX1 - size, mY1 - size);
+		}
 	}
 }
 
 void AbstractItem::changeDragState(qreal x, qreal y)
 {
-	if (QRectF(QPointF(mX1 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
+	if (QRectF(mapToScene(mX1, mY1), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y))) {
 		mDragState = TopLeft;
-	else if (QRectF(QPointF(mX2 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
+	} else if (QRectF(mapToScene(mX2, mY2), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y))) {
 		mDragState = BottomRight;
-	else if (QRectF(QPointF(mX2 + scenePos().x(), mY1 + scenePos().y()), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
+	} else if (QRectF(mapToScene(mX2, mY1), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y))) {
 		mDragState = TopRight;
-	else if (QRectF(QPointF(mX1 + scenePos().x(), mY2 + scenePos().y()), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
+	} else if (QRectF(mapToScene(mX1, mY2), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y))) {
 		mDragState = BottomLeft;
-	else
+	} else {
 		mDragState = None;
+	}
 }
 
 AbstractItem::DragState AbstractItem::getDragState() const
@@ -188,8 +191,9 @@ void AbstractItem::calcResizeItem(QGraphicsSceneMouseEvent *event)
 {
 	qreal x = mapFromScene(event->scenePos()).x();
 	qreal y = mapFromScene(event->scenePos()).y();
-	if (mDragState != None)
+	if (mDragState != None) {
 		setFlag(QGraphicsItem::ItemIsMovable, false);
+	}
 	if (mDragState == TopLeft) {
 		setX1andY1(x, y);
 	} else if (mDragState == TopRight) {
@@ -203,9 +207,9 @@ void AbstractItem::calcResizeItem(QGraphicsSceneMouseEvent *event)
 
 void AbstractItem::resizeItem(QGraphicsSceneMouseEvent *event)
 {
-	if (mDragState != None)
+	if (mDragState != None) {
 		calcResizeItem(event);
-	else {
+	} else {
 		setFlag(QGraphicsItem::ItemIsMovable, true);
 	}
 }

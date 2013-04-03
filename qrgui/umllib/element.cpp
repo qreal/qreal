@@ -42,8 +42,9 @@ void Element::updateData()
 	setToolTip(mGraphicalAssistApi->toolTip(id()));
 }
 
-QList<ContextMenuAction*> Element::contextMenuActions()
+QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
 {
+	Q_UNUSED(pos)
 	return QList<ContextMenuAction*>();
 }
 
@@ -75,7 +76,6 @@ void Element::initTitles()
 	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
 }
 
-
 void Element::singleSelectionState(const bool singleSelected) {
 	if (singleSelected) {
 		selectionState(true);
@@ -95,4 +95,11 @@ void Element::selectionState(const bool selected) {
 ElementImpl* Element::elementImpl() const
 {
 	return mElementImpl;
+}
+
+void Element::setTitlesVisible(bool visible)
+{
+	foreach (ElementTitle * const title, mTitles) {
+		title->setVisible(visible);
+	}
 }

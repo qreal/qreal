@@ -52,7 +52,7 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
 
 	Id const newElementId(type, QUuid::createUuid().toString());
 	QString const elementFriendlyName = mModelsAssistApi.editorManager().friendlyName(type);
-	mGraphicalModel.addElementToModel(parent, newElementId, Id::rootId(), "(" + elementFriendlyName + ")", QPointF(0, 0));
+	mGraphicalModel.addElementToModel(parent, newElementId, Id::rootId(), elementFriendlyName, QPointF(0, 0));
 	return newElementId;
 }
 
@@ -218,7 +218,7 @@ QPersistentModelIndex GraphicalModelAssistApi::rootIndex() const
 
 Id GraphicalModelAssistApi::rootId() const
 {
-	return mModelsAssistApi.rootId();
+	return mGraphicalModel.rootId();
 }
 
 bool GraphicalModelAssistApi::hasRootDiagrams() const
