@@ -226,6 +226,10 @@ void SceneGridHandler::alignToGrid()
 
 	makeGridMovingX(myX1, coefX, indexGrid);
 	makeGridMovingY(myY1, coefY, indexGrid);
+
+	/*foreach(EdgeElement *edge, mNode->getEdges()) {
+		edge->alignToGrid(indexGrid);
+	}*/
 }
 
 void SceneGridHandler::drawGuides()
