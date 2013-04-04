@@ -1,25 +1,28 @@
-#include "textEdit.h"
+#include "qscintillaTextEdit.h"
 
 #include "../../thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpython.h"
 
 using namespace qReal;
 using namespace gui;
 
-TextEdit::TextEdit(QPersistentModelIndex const &index, int const &role) : mIndex(index), mRole(role)
+QScintillaTextEdit::QScintillaTextEdit(QPersistentModelIndex const &index
+		, int const &role)
+		: mIndex(index)
+		, mRole(role)
 {}
 
-TextEdit::~TextEdit()
+QScintillaTextEdit::~QScintillaTextEdit()
 {
 	emit textSaved(text(), mIndex, mRole);
 }
 
-void TextEdit::setPythonLexer()
+void QScintillaTextEdit::setPythonLexer()
 {
 	QsciLexerPython *lexer = new QsciLexerPython();
 	setLexer(lexer);
 }
 
-void TextEdit::setPythonEditorProperties()
+void QScintillaTextEdit::setPythonEditorProperties()
 {
 	// Current line highlighting
 	setCaretLineVisible(true);

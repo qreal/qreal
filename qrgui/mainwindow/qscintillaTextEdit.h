@@ -7,18 +7,18 @@
 namespace qReal {
 namespace gui {
 
-/// TextEdit is text editor widget based on QsciScintilla (Qt version of Scintilla project) which can highlight 
+/// QScintillaTextEdit is text editor widget based on QsciScintilla (Qt version of Scintilla project) which can highlight 
 /// source code on different textual programming languages, can do autocompletion and have lots of other functionalities
 /// of standart code editors.
-class TextEdit : public QsciScintilla
+class QScintillaTextEdit : public QsciScintilla
 {
 	Q_OBJECT
 
 public:
-	TextEdit(QPersistentModelIndex const &index, int const &role);
+	QScintillaTextEdit(QPersistentModelIndex const &index, int const &role);
 
 	/// Destructor which runs after closing the tab with text editor. Allows to save written text.
-	~TextEdit();
+	~QScintillaTextEdit();
 
 	/// Assigns widget to work with python code
 	void setPythonLexer();

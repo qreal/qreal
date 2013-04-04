@@ -18,8 +18,8 @@ HEADERS += \
 	mainwindow/referenceList.h \
 	mainwindow/projectManager/autosaver.h \
 	mainwindow/externBrowser.h \
-	mainwindow/textEdit.h \
 	mainwindow/mainWindowDockInterface.h \
+	mainwindow/qscintillaTextEdit.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -37,7 +37,7 @@ SOURCES += \
 	mainwindow/referenceList.cpp \
 	mainwindow/projectManager/autosaver.cpp \
 	mainwindow/macExternBrowser.cpp \
-	mainwindow/textEdit.cpp \
+	mainwindow/qscintillaTextEdit.cpp
 
 win32 {
 	HEADERS += \

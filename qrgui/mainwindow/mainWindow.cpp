@@ -42,9 +42,9 @@
 #include "../dialogs/startDialog/startDialog.h"
 #include "../dialogs/progressDialog/progressDialog.h"
 
-#include "dotRunner.h"
+#include "qscintillaTextEdit.h"
 
-#include "textEdit.h"
+#include "dotRunner.h"
 
 using namespace qReal;
 
@@ -892,24 +892,6 @@ void MainWindow::setSceneFont()
 	}
 }
 
-void MainWindow::openTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue)
-{
-	gui::TextEdit *textEdit = new gui::TextEdit(index, role);
-	if (!propertyValue.isEmpty()) {
-		textEdit->setText(propertyValue.toUtf8());
-	}
-
-	textEdit->setPythonLexer();
-	textEdit->setPythonEditorProperties();
-
-	connect(textEdit, SIGNAL(textSaved(QString const &, QPersistentModelIndex const &, int const &)),
-			this, SLOT(setData(QString const &, QPersistentModelIndex const &, int const &)));
-
-	mUi->tabs->addTab(textEdit, tr("Text Editor"));
-	mUi->tabs->setCurrentWidget(textEdit);
-	setConnectActionZoomTo(textEdit);
-}
-
 void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue)
 {
 	ShapeEdit *shapeEdit = new ShapeEdit(index, role);
@@ -926,6 +908,24 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
 	setConnectActionZoomTo(shapeEdit);
+}
+
+void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue)
+{
+	gui::QScintillaTextEdit *textEdit = new gui::QScintillaTextEdit(index, role);
+	if (!propertyValue.isEmpty()) {
+		textEdit->setText(propertyValue.toUtf8());
+	}
+
+	textEdit->setPythonLexer();
+	textEdit->setPythonEditorProperties();
+
+	connect(textEdit, SIGNAL(textSaved(QString const &, QPersistentModelIndex const &, int const &))
+			, this, SLOT(setData(QString const &, QPersistentModelIndex const &, int const &)));
+
+	mUi->tabs->addTab(textEdit, tr("Text Editor"));
+	mUi->tabs->setCurrentWidget(textEdit);
+	setConnectActionZoomTo(textEdit);
 }
 
 void MainWindow::openShapeEditor()

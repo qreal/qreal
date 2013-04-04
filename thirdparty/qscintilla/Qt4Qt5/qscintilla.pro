@@ -27,10 +27,11 @@
 !win32:VERSION = 8.0.2
 
 TEMPLATE = lib
-TARGET = ../../../bin/thirdparty/qscintilla2
-CONFIG += qt warn_off release dll thread
+DESTDIR = ../../../bin/thirdparty
+TARGET = qscintilla2
+CONFIG += qt warn_off staticlib thread
 INCLUDEPATH = . ../include ../lexlib ../src
-DEFINES = QSCINTILLA_MAKE_DLL QT SCI_LEXER
+DEFINES = STATIC_BUILD QT SCI_LEXER
 
 greaterThan(QT_MAJOR_VERSION, 4) {
 	QT += widgets
@@ -151,7 +152,7 @@ SOURCES = \
 	../src/Editor.cpp \
 	../src/ExternalLexer.cpp \
 	../src/Indicator.cpp \
-	 ../src/KeyMap.cpp \
+	../src/KeyMap.cpp \
 	../src/LineMarker.cpp \
 	../src/PerLine.cpp \
 	../src/PositionCache.cpp \
