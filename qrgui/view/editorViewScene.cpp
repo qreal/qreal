@@ -605,7 +605,7 @@ void EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId)
 			getNodeById(edge->dst()->id())->connectLinksToPorts();
 			reConnectLink(edge);
 		}
-		mainWindow()->deleteElementFromDiagram(inEdges.at(0)->id());
+//		mainWindow()->deleteElementFromDiagram(inEdges.at(0)->id());
 	} else if (outEdges.count() == 1){
 		NodeElement* node = outEdges.at(0)->dst();
 		foreach(EdgeElement* edge, inEdges){
@@ -613,7 +613,7 @@ void EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId)
 			getNodeById(node->id())->connectLinksToPorts();
 			reConnectLink(edge);
 		}
-		mainWindow()->deleteElementFromDiagram(outEdges.at(0)->id());
+//		mainWindow()->deleteElementFromDiagram(outEdges.at(0)->id());
 	}
 }
 
