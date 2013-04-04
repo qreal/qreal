@@ -174,7 +174,7 @@ bool EditorManager::isElement(const Id &id) const
 
 QString EditorManager::friendlyName(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+//	Q_ASSERT(mPluginsLoaded.contains(id.editor()));//qwerty
 
 	switch (id.idSize()) {
 	case 1:
@@ -184,7 +184,7 @@ QString EditorManager::friendlyName(const Id &id) const
 	case 3:
 		return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
 	default:
-		Q_ASSERT(!"Malformed Id");
+//		Q_ASSERT(!"Malformed Id");
 		return "";
 	}
 }

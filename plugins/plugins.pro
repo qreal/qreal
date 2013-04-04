@@ -12,7 +12,7 @@ SUBDIRS	= \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \
-#       qUbiq/qUbiqEditor.pro \
+#	qUbiq/qUbiqEditor.pro \
 #	requirements/requirements.pro \
 #	robots/robots.pro \
 #	sbt/sbt.pro \

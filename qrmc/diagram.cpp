@@ -49,7 +49,7 @@ bool Diagram::init()
 			mTypes[edgeType->name()] = edgeType;
 		} else if (id.element() == metaEntityImport) {
 			ImportSpecification import = {
-				mApi->stringProperty(id, "importedFrom") + "::" + mApi->stringProperty(id, "as"),
+				mApi->stringProperty(id, "importedFrom") + "::" + mApi->stringProperty(id, "name"),//qwerty_asd
 				mApi->stringProperty(id, "as"),
 				mApi->stringProperty(id, "displayedName"),
 			};

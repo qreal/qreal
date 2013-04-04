@@ -42,7 +42,15 @@ bool GraphicType::init(QString const &context)
 	foreach (Id const outLink, outLinks) {
 		if (outLink.element() == "Container") {
 			Id const elementId = mApi->to(outLink);
-			QString const typeName = mApi->name(elementId);
+			QString typeName = "";
+			QString const elementType = elementId.element();
+
+			if (elementType == "MetaEntityImport") { //qwerty_asd
+				typeName = mApi->property(elementId, "as").toString();
+			} else {
+				typeName = mApi->name(elementId);
+			}
+
 			mContains << typeName.split(",", QString::SkipEmptyParts);
 		} else if (outLink.element() == "Inheritance") {
 			Id const elementId = mApi->to(outLink);

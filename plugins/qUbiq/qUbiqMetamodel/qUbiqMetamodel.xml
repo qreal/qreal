@@ -32,12 +32,13 @@
         <graphicTypes>
             <node displayedName="Logic Diagram" name="qUbiqLogicDiagram">
                 <graphics>
-                    <picture sizex="174" sizey="131">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="130" fill-style="none" x2="173"/>
+                    <picture sizex="170" sizey="130">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="129" fill-style="none" x2="169"/>
                     </picture>
                     <labels>
-                        <label x="7" y="7a" text="Logic Diagram"/>
-                        <label x="8" y="34a" textBinded="handlerType"/>
+                        <label x="6a" y="6a" text="Logic Diagram"/>
+                        <label x="6a" y="30a" textBinded="handlerType"/>
+                        <label x="90a" y="6a" textBinded="name"/>
                     </labels>
                     <ports/>
                 </graphics>
@@ -47,6 +48,13 @@
                         <contains type="message"/>
                         <contains type="take"/>
                         <contains type="waitMessage"/>
+                        <contains type="variableInLogicEditor"/>
+                        <contains type="whileInLogicEditor"/>
+                        <contains type="forNodeInLogicEditor"/>
+                        <contains type="takeGridOrListElementsInLogicEditor"/>
+                        <contains type="returnInLogicEditor"/>
+                        <contains type="changeInLogicEditor"/>
+                        <contains type="ifNodeInLogicEditor"/>
                     </container>
                     <properties>
                         <property displayedName="Type of handler" type="handlerType" name="handlerType"/>
@@ -60,10 +68,10 @@
                     </picture>
                     <labels>
                         <label x="10a" y="10a" text="TAKE"/>
-                        <label x="10a" y="30a" text="from:"/>
+                        <label x="10a" y="35a" text="from:"/>
                         <label x="10a" y="60a" text="to:"/>
-                        <label x="50" y="30a" textBinded="takeFrom"/>
-                        <label x="50" y="60a" textBinded="takeTo"/>
+                        <label x="50a" y="35a" textBinded="takeFrom"/>
+                        <label x="50a" y="60a" textBinded="takeTo"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -139,8 +147,8 @@
                         <label x="10a" y="10a" text="MESSAGE"/>
                         <label x="10a" y="40a" text="type:"/>
                         <label x="10a" y="70a" text="to:"/>
-                        <label x="50" y="40a" textBinded="messageType"/>
-                        <label x="50" y="70a" textBinded="sentTo"/>
+                        <label x="50a" y="40a" textBinded="messageType"/>
+                        <label x="50a" y="70a" textBinded="sentTo"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -179,8 +187,8 @@
                         <label x="10a" y="10a" text="WAIT MESSAGE"/>
                         <label x="10a" y="40a" text="type:"/>
                         <label x="10a" y="70a" text="from:"/>
-                        <label x="50" y="40a" textBinded="waitMessageType"/>
-                        <label x="50" y="70a" textBinded="waitFrom"/>
+                        <label x="50a" y="40a" textBinded="waitMessageType"/>
+                        <label x="50a" y="70a" textBinded="waitFrom"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -209,18 +217,19 @@
                     </properties>
                 </logic>
             </node>
+            <import as="variableInLogicEditor" displayedName="Variable" name="qUbiqConditionEditor::variable"/>
+            <import as="changeInLogicEditor" displayedName="Change element" name="qUbiqConditionEditor::change"/>
+            <import as="returnInLogicEditor" displayedName="Return (bool value)" name="qUbiqConditionEditor::return"/>
+            <import as="ifNodeInLogicEditor" displayedName="If" name="qUbiqConditionEditor::ifNode"/>
+            <import as="whileInLogicEditor" displayedName="While" name="qUbiqConditionEditor::while"/>
+            <import as="forNodeInLogicEditor" displayedName="For" name="qUbiqConditionEditor::forNode"/>
+            <import as="takeGridOrListElementsInLogicEditor" displayedName="Take elements of grid or list" name="qUbiqConditionEditor::takeGridOrListElements"/>
+            <import as="conditionLinkInLogicEditor" displayedName="Conditional Link" name="qUbiqConditionEditor::conditionLink"/>
+            <import as="linkInLogicEditor" displayedName="Link" name="qUbiqConditionEditor::link"/>
+            <import as="cyclicLinkInLogicEditor" displayedName="Cyclic link" name="qUbiqConditionEditor::cyclicLink"/>
         </graphicTypes>
     </diagram>
     <diagram displayedName="QUbiq Presentation Editor" nodeName="qUbiqPresentationDiagram" name="qUbiqPresentationEditor">
-        <nonGraphicTypes>
-            <enum displayedName="Types of element" name="elementTypes">
-                <value>text</value>
-                <value>list</value>
-                <value>image</value>
-                <value>grid</value>
-                <value>number</value>
-            </enum>
-        </nonGraphicTypes>
         <graphicTypes>
             <node displayedName="PresentationDiagram" name="qUbiqPresentationDiagram">
                 <graphics>
@@ -236,7 +245,7 @@
                 <logic>
                     <container>
                         <contains type="abstractHandlerNode"/>
-                        <contains type="variable"/>
+                        <contains type="variableInPresentationEditor"/>
                     </container>
                 </logic>
             </node>
@@ -247,7 +256,7 @@
                     </picture>
                     <labels>
                         <label x="10a" y="10a" text="SLIDE"/>
-                        <label x="50" y="10a" textBinded="name"/>
+                        <label x="50a" y="10a" textBinded="name"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -271,7 +280,7 @@
                 <logic>
                     <container>
                         <contains type="abstractHandlerNode"/>
-                        <contains type="variable"/>
+                        <contains type="variableInPresentationEditor"/>
                     </container>
                     <properties>
                         <property displayedName="Description" type="string" name="description"/>
@@ -287,7 +296,7 @@
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="109"/>
                     </picture>
                     <labels>
-                        <label x="60" y="10a" textBinded="name"/>
+                        <label x="60a" y="10a" textBinded="name"/>
                         <label x="10a" y="10a" text="BUTTON"/>
                     </labels>
                     <ports>
@@ -328,7 +337,7 @@
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="129"/>
                     </picture>
                     <labels>
-                        <label x="80" y="10a" textBinded="name"/>
+                        <label x="80a" y="10a" textBinded="name"/>
                         <label x="10a" y="10a" text="EXIT BUTTON"/>
                     </labels>
                     <ports>
@@ -366,27 +375,10 @@
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="109"/>
                     </picture>
                     <labels>
-                        <label x="40" y="10a" textBinded="name"/>
+                        <label x="40a" y="10a" textBinded="name"/>
                         <label x="10a" y="10a" text="LIST"/>
                     </labels>
-                    <ports>
-                        <linePort>
-                            <start startx="10" starty="39"/>
-                            <end endx="99" endy="40"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="109" starty="10"/>
-                            <end endx="110" endy="29"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="10" starty="-1"/>
-                            <end endx="99" endy="0"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="-1" starty="10"/>
-                            <end endx="0" endy="29"/>
-                        </linePort>
-                    </ports>
+                    <ports/>
                 </graphics>
                 <logic>
                     <container>
@@ -429,27 +421,10 @@
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="109"/>
                     </picture>
                     <labels>
-                        <label x="50" y="10a" textBinded="name"/>
+                        <label x="50a" y="10a" textBinded="name"/>
                         <label x="10a" y="10a" text="TEXT"/>
                     </labels>
-                    <ports>
-                        <linePort>
-                            <start startx="10" starty="39"/>
-                            <end endx="99" endy="40"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="109" starty="10"/>
-                            <end endx="110" endy="29"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="10" starty="-1"/>
-                            <end endx="99" endy="0"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="-1" starty="10"/>
-                            <end endx="0" endy="29"/>
-                        </linePort>
-                    </ports>
+                    <ports/>
                 </graphics>
                 <logic>
                     <container/>
@@ -467,27 +442,10 @@
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="109"/>
                     </picture>
                     <labels>
-                        <label x="60" y="10a" textBinded="name"/>
+                        <label x="55a" y="10a" textBinded="name"/>
                         <label x="10a" y="10a" text="IMAGE"/>
                     </labels>
-                    <ports>
-                        <linePort>
-                            <start startx="10" starty="39"/>
-                            <end endx="99" endy="40"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="109" starty="10"/>
-                            <end endx="110" endy="29"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="10" starty="-1"/>
-                            <end endx="99" endy="0"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="-1" starty="10"/>
-                            <end endx="0" endy="29"/>
-                        </linePort>
-                    </ports>
+                    <ports/>
                 </graphics>
                 <logic>
                     <container/>
@@ -505,28 +463,11 @@
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="129"/>
                     </picture>
                     <labels>
-                        <label x="50" y="10a" textBinded="name"/>
+                        <label x="50a" y="10a" textBinded="name"/>
                         <label x="90" y="10a" textBinded="size"/>
                         <label x="10a" y="10a" text="GRID"/>
                     </labels>
-                    <ports>
-                        <linePort>
-                            <start startx="10" starty="39"/>
-                            <end endx="119" endy="40"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="129" starty="10"/>
-                            <end endx="130" endy="29"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="10" starty="-1"/>
-                            <end endx="119" endy="0"/>
-                        </linePort>
-                        <linePort>
-                            <start startx="-1" starty="10"/>
-                            <end endx="0" endy="29"/>
-                        </linePort>
-                    </ports>
+                    <ports/>
                 </graphics>
                 <logic>
                     <container>
@@ -545,6 +486,315 @@
                     </generalizations>
                 </logic>
             </node>
+            <edge displayedName="Transition Link" name="transitionLink">
+                <graphics>
+                    <lineType type="dashLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="transitionLinkBegin" endName="transitionLinkEnd"/>
+                    </associations>
+                </logic>
+            </edge>
+            <import as="variableInPresentationEditor" displayedName="Variable" name="qUbiqConditionEditor::variable"/>
+        </graphicTypes>
+    </diagram>
+    <diagram displayedName="QUbiq Condition Editor" nodeName="qUbiqConditionDiagram" name="qUbiqConditionEditor">
+        <nonGraphicTypes>
+            <enum displayedName="Bool value" name="boolValue">
+                <value>none</value>
+                <value>false</value>
+                <value>true</value>
+            </enum>
+            <enum displayedName="Types of element" name="elementTypes">
+                <value>text</value>
+                <value>list</value>
+                <value>image</value>
+                <value>grid</value>
+                <value>number</value>
+            </enum>
+        </nonGraphicTypes>
+        <graphicTypes>
+            <node displayedName="Condition Diagram" name="qUbiqConditionDiagram">
+                <graphics>
+                    <picture sizex="176" sizey="133">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="132" fill-style="none" x2="175"/>
+                    </picture>
+                    <labels>
+                        <label x="7" y="7a" text="Condition Diagram"/>
+                        <label x="8" y="34a" textBinded="name"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="return"/>
+                        <contains type="abstractGridOrListNode"/>
+                        <contains type="change"/>
+                        <contains type="abstractConditionalNode"/>
+                        <contains type="variable"/>
+                    </container>
+                </logic>
+            </node>
+            <node displayedName="Change element" name="change">
+                <graphics>
+                    <picture sizex="157" sizey="100">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="0" y2="99a" fill-style="none" x2="149"/>
+                    </picture>
+                    <labels>
+                        <label x="10a" y="10a" text="CHANGE"/>
+                        <label x="70a" y="10a" textBinded="elementId"/>
+                        <label x="80a" y="40a" textBinded="propertyName"/>
+                        <label x="80a" y="70a" textBinded="newValue"/>
+                        <label x="10a" y="40a" text="value name:"/>
+                        <label x="10a" y="70a" text="new value:"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="99a"/>
+                            <end endx="139" endy="100a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1a"/>
+                            <end endx="139" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="149" starty="10a"/>
+                            <end endx="150" endy="89a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10a"/>
+                            <end endx="0" endy="89a"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Element ID" type="string" name="elementId"/>
+                        <property displayedName="Name of property" type="string" name="propertyName"/>
+                        <property displayedName="New property value" type="string" name="newValue"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Take elements of grid or list" name="takeGridOrListElements">
+                <graphics>
+                    <picture sizex="224" sizey="100">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="0" y2="99a" fill-style="none" x2="219"/>
+                    </picture>
+                    <labels>
+                        <label x="10a" y="10a" text="GRID or LIST ELEMENTS of"/>
+                        <label x="160a" y="10a" textBinded="gridOrListId"/>
+                        <label x="10a" y="40a" text="by condition:"/>
+                        <label x="10a" y="70a" text="saved in:"/>
+                        <label x="100a" y="40a" textBinded="condition"/>
+                        <label x="100a" y="70a" textBinded="variableId"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="99a"/>
+                            <end endx="209" endy="100a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1a"/>
+                            <end endx="209" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="219" starty="10a"/>
+                            <end endx="220" endy="89a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10a"/>
+                            <end endx="0" endy="89a"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="By condition" type="string" name="condition"/>
+                        <property displayedName="Save in variable" type="string" name="variableId"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractGridOrListNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="Return (bool value)" name="return">
+                <graphics>
+                    <picture sizex="80" sizey="75">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="0a" y2="29a" fill-style="none" x2="79a"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="30a" stroke-width="0" x1="0" y2="74a" fill-style="none" x2="39a"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="30a" stroke-width="0" x1="79a" y2="74a" fill-style="none" x2="40a"/>
+                    </picture>
+                    <labels>
+                        <label x="15a" y="5a" text="RETURN"/>
+                        <label x="25a" y="35a" textBinded="value"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10a" starty="-1a"/>
+                            <end endx="69a" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="79a" starty="5a"/>
+                            <end endx="80a" endy="24a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1a" starty="5a"/>
+                            <end endx="0a" endy="24a"/>
+                        </linePort>
+                    </ports>
+                    <nonResizeable/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Return value" type="boolValue" name="value">
+                            <default>none</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <node name="abstractConditionalNode">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Condition" type="string" name="condition"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="IF" name="ifNode">
+                <graphics>
+                    <picture sizex="104" sizey="72">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="51" y2="34a" fill-style="none" x2="2"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="52" y2="34a" fill-style="none" x2="101"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="101" y2="69a" fill-style="none" x2="52"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="2" y2="69a" fill-style="none" x2="51"/>
+                    </picture>
+                    <labels>
+                        <label x="27" y="30a" textBinded="condition"/>
+                        <label x="47" y="5" text="IF"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="2" y="35a"/>
+                        <pointPort x="102" y="35a"/>
+                        <pointPort x="52" y="70a"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="abstractConditionalNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="While" name="while">
+                <graphics>
+                    <picture sizex="104" sizey="72">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="51" y2="34a" fill-style="none" x2="2"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="52" y2="34a" fill-style="none" x2="101"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="101" y2="69a" fill-style="none" x2="52"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="2" y2="69a" fill-style="none" x2="51"/>
+                    </picture>
+                    <labels>
+                        <label x="27" y="30a" textBinded="condition"/>
+                        <label x="35" y="5" text="WHILE"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="2" y="35a"/>
+                        <pointPort x="102" y="35a"/>
+                        <pointPort x="52" y="70a"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Counter ID" type="string" name="counterId"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractConditionalNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node displayedName="For" name="forNode">
+                <graphics>
+                    <picture sizex="104" sizey="72">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="51" y2="34a" fill-style="none" x2="2"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="52" y2="34a" fill-style="none" x2="101"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="101" y2="69a" fill-style="none" x2="52"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="2" y2="69a" fill-style="none" x2="51"/>
+                    </picture>
+                    <labels>
+                        <label x="22" y="30a" textBinded="gridOrListId"/>
+                        <label x="42" y="5" text="FOR"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="2" y="35a"/>
+                        <pointPort x="102" y="35a"/>
+                        <pointPort x="52" y="70a"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Counter ID by height" type="string" name="hCounterId"/>
+                        <property displayedName="Counter ID by width" type="string" name="wCounterId"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractGridOrListNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+            <node name="abstractGridOrListNode">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="ID of grid or list" type="string" name="gridOrListId"/>
+                    </properties>
+                </logic>
+            </node>
+            <edge displayedName="Link" name="link">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="linkBegin" endName="linkEnd"/>
+                    </associations>
+                </logic>
+            </edge>
+            <edge displayedName="Conditional Link" name="conditionLink">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label textBinded="boolValueStereotype"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="empty_arrow" beginType="no_arrow">
+                        <association beginName="conditionLinkBegin" endName="conditionLinkEnd"/>
+                    </associations>
+                    <properties>
+                        <property displayedName="Bool stereotype" type="boolValue" name="boolValueStereotype">
+                            <default>none</default>
+                        </property>
+                    </properties>
+                </logic>
+            </edge>
+            <edge displayedName="Cyclic link" name="cyclicLink">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label text="after"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="filled_arrow" beginType="no_arrow">
+                        <association beginName="cyclicLinkBegin" endName="cyclicLinkEnd"/>
+                    </associations>
+                </logic>
+            </edge>
             <node displayedName="Variable" name="variable">
                 <graphics>
                     <picture sizex="81" sizey="85">
@@ -562,38 +812,9 @@
                         <property displayedName="Type of variable" type="elementTypes" name="type">
                             <default>text</default>
                         </property>
-                        <property displayedName="Default value" type="string" name="defaultValue"/>
+                        <property displayedName="Current value" type="string" name="currentValue"/>
                         <property displayedName="Description" type="string" name="description"/>
                     </properties>
-                </logic>
-            </node>
-            <edge displayedName="Transition Link" name="transitionLink">
-                <graphics>
-                    <lineType type="dashLine"/>
-                </graphics>
-                <logic>
-                    <associations endType="open_arrow" beginType="no_arrow">
-                        <association beginName="begin" endName="end"/>
-                    </associations>
-                </logic>
-            </edge>
-        </graphicTypes>
-    </diagram>
-    <diagram displayedName="QUbiq Condition Editor" nodeName="qUbiqConditionDiagram" name="qUbiqConditionEditor">
-        <graphicTypes>
-            <node displayedName="Condition Diagram" name="qUbiqConditionDiagram">
-                <graphics>
-                    <picture sizex="176" sizey="133">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="132" fill-style="none" x2="175"/>
-                    </picture>
-                    <labels>
-                        <label x="7" y="7a" text="Condition Diagram"/>
-                        <label x="8" y="34a" textBinded="name"/>
-                    </labels>
-                    <ports/>
-                </graphics>
-                <logic>
-                    <container/>
                 </logic>
             </node>
         </graphicTypes>

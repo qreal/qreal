@@ -525,7 +525,7 @@ void EditorGenerator::setContainer(QDomElement &parent, Id const &id)
 				container.appendChild(contains);
 			} else if (typeName == "MetaEntityImport") {
 				QDomElement contains = mDocument.createElement("contains");
-				ensureCorrectness(elementId, contains, "type", mApi.stringProperty(elementId, "importedFrom") + "::" + mApi.name(elementId));
+				ensureCorrectness(elementId, contains, "type", mApi.stringProperty(elementId, "as"));//qwerty_asd /*mApi.stringProperty(elementId, "importedFrom") + "::" + */
 				container.appendChild(contains);
 			}
 		}

@@ -1,17 +1,55 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+	<file>generated/shapes/AbstractConditionalNodeClass.sdf</file>
+	<file>generated/shapes/AbstractConditionalNodePorts.sdf</file>
+	<file>generated/shapes/AbstractGridOrListNodeClass.sdf</file>
+	<file>generated/shapes/AbstractGridOrListNodePorts.sdf</file>
+	<file>generated/shapes/ChangeClass.sdf</file>
+	<file>generated/shapes/ChangePorts.sdf</file>
+	<file>generated/shapes/ConditionLinkClass.sdf</file>
+	<file>generated/shapes/CyclicLinkClass.sdf</file>
+	<file>generated/shapes/ForNodeClass.sdf</file>
+	<file>generated/shapes/ForNodePorts.sdf</file>
+	<file>generated/shapes/IfNodeClass.sdf</file>
+	<file>generated/shapes/IfNodePorts.sdf</file>
+	<file>generated/shapes/LinkClass.sdf</file>
 	<file>generated/shapes/QUbiqConditionDiagramClass.sdf</file>
 	<file>generated/shapes/QUbiqConditionDiagramPorts.sdf</file>
+	<file>generated/shapes/ReturnClass.sdf</file>
+	<file>generated/shapes/ReturnPorts.sdf</file>
+	<file>generated/shapes/TakeGridOrListElementsClass.sdf</file>
+	<file>generated/shapes/TakeGridOrListElementsPorts.sdf</file>
+	<file>generated/shapes/VariableClass.sdf</file>
+	<file>generated/shapes/VariablePorts.sdf</file>
+	<file>generated/shapes/WhileClass.sdf</file>
+	<file>generated/shapes/WhilePorts.sdf</file>
+	<file>generated/shapes/ChangeInLogicEditorClass.sdf</file>
+	<file>generated/shapes/ChangeInLogicEditorPorts.sdf</file>
+	<file>generated/shapes/ConditionLinkInLogicEditorClass.sdf</file>
+	<file>generated/shapes/CyclicLinkInLogicEditorClass.sdf</file>
+	<file>generated/shapes/ForNodeInLogicEditorClass.sdf</file>
+	<file>generated/shapes/ForNodeInLogicEditorPorts.sdf</file>
 	<file>generated/shapes/GoClass.sdf</file>
 	<file>generated/shapes/GoPorts.sdf</file>
+	<file>generated/shapes/IfNodeInLogicEditorClass.sdf</file>
+	<file>generated/shapes/IfNodeInLogicEditorPorts.sdf</file>
+	<file>generated/shapes/LinkInLogicEditorClass.sdf</file>
 	<file>generated/shapes/MessageClass.sdf</file>
 	<file>generated/shapes/MessagePorts.sdf</file>
 	<file>generated/shapes/QUbiqLogicDiagramClass.sdf</file>
 	<file>generated/shapes/QUbiqLogicDiagramPorts.sdf</file>
+	<file>generated/shapes/ReturnInLogicEditorClass.sdf</file>
+	<file>generated/shapes/ReturnInLogicEditorPorts.sdf</file>
 	<file>generated/shapes/TakeClass.sdf</file>
 	<file>generated/shapes/TakePorts.sdf</file>
+	<file>generated/shapes/TakeGridOrListElementsInLogicEditorClass.sdf</file>
+	<file>generated/shapes/TakeGridOrListElementsInLogicEditorPorts.sdf</file>
+	<file>generated/shapes/VariableInLogicEditorClass.sdf</file>
+	<file>generated/shapes/VariableInLogicEditorPorts.sdf</file>
 	<file>generated/shapes/WaitMessageClass.sdf</file>
 	<file>generated/shapes/WaitMessagePorts.sdf</file>
+	<file>generated/shapes/WhileInLogicEditorClass.sdf</file>
+	<file>generated/shapes/WhileInLogicEditorPorts.sdf</file>
 	<file>generated/shapes/AbstractHandlerNodeClass.sdf</file>
 	<file>generated/shapes/AbstractHandlerNodePorts.sdf</file>
 	<file>generated/shapes/AbstractIsNullNodeClass.sdf</file>
@@ -33,7 +71,7 @@
 	<file>generated/shapes/TextClass.sdf</file>
 	<file>generated/shapes/TextPorts.sdf</file>
 	<file>generated/shapes/TransitionLinkClass.sdf</file>
-	<file>generated/shapes/VariableClass.sdf</file>
-	<file>generated/shapes/VariablePorts.sdf</file>
+	<file>generated/shapes/VariableInPresentationEditorClass.sdf</file>
+	<file>generated/shapes/VariableInPresentationEditorPorts.sdf</file>
 </qresource>
 </RCC>
