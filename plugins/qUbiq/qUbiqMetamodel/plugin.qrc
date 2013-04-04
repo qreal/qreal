@@ -2,8 +2,16 @@
 <qresource>
 	<file>generated/shapes/QUbiqConditionDiagramClass.sdf</file>
 	<file>generated/shapes/QUbiqConditionDiagramPorts.sdf</file>
+	<file>generated/shapes/GoClass.sdf</file>
+	<file>generated/shapes/GoPorts.sdf</file>
+	<file>generated/shapes/MessageClass.sdf</file>
+	<file>generated/shapes/MessagePorts.sdf</file>
 	<file>generated/shapes/QUbiqLogicDiagramClass.sdf</file>
 	<file>generated/shapes/QUbiqLogicDiagramPorts.sdf</file>
+	<file>generated/shapes/TakeClass.sdf</file>
+	<file>generated/shapes/TakePorts.sdf</file>
+	<file>generated/shapes/WaitMessageClass.sdf</file>
+	<file>generated/shapes/WaitMessagePorts.sdf</file>
 	<file>generated/shapes/AbstractHandlerNodeClass.sdf</file>
 	<file>generated/shapes/AbstractHandlerNodePorts.sdf</file>
 	<file>generated/shapes/AbstractIsNullNodeClass.sdf</file>

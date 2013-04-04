@@ -2,20 +2,211 @@
 <metamodel xmlns="http://schema.real.com/schema/">
     <namespace>UML 2.0</namespace>
     <diagram displayedName="QUbiq Logic Editor" nodeName="qUbiqLogicDiagram" name="qUbiqLogicEditor">
+        <nonGraphicTypes>
+            <enum displayedName="Type of handler" name="handlerType">
+                <value>slide handler</value>
+                <value>list handler</value>
+                <value>button handler</value>
+                <value>grid handler</value>
+            </enum>
+            <enum displayedName="Type of memory" name="takeType">
+                <value>only unselected data</value>
+                <value>all data</value>
+                <value>only selected data</value>
+            </enum>
+            <enum displayedName="Type of sent message" name="sentMessageType">
+                <value>request game</value>
+                <value>request of playing field status</value>
+                <value>sent a playing field status</value>
+                <value>request a players list</value>
+            </enum>
+            <enum displayedName="Type of wait message" name="waitMessageType">
+                <value>response about playing field status</value>
+                <value>response to game request</value>
+            </enum>
+            <enum displayedName="Type of receiver" name="sentToType">
+                <value>server</value>
+                <value>other player</value>
+            </enum>
+        </nonGraphicTypes>
         <graphicTypes>
             <node displayedName="Logic Diagram" name="qUbiqLogicDiagram">
                 <graphics>
-                    <picture sizex="175" sizey="132">
-                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="131" fill-style="none" x2="174"/>
+                    <picture sizex="174" sizey="131">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="130" fill-style="none" x2="173"/>
                     </picture>
                     <labels>
                         <label x="7" y="7a" text="Logic Diagram"/>
-                        <label x="8" y="34a" textBinded="name"/>
+                        <label x="8" y="34a" textBinded="handlerType"/>
                     </labels>
                     <ports/>
                 </graphics>
                 <logic>
+                    <container>
+                        <contains type="go"/>
+                        <contains type="message"/>
+                        <contains type="take"/>
+                        <contains type="waitMessage"/>
+                    </container>
+                    <properties>
+                        <property displayedName="Type of handler" type="handlerType" name="handlerType"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Take" name="take">
+                <graphics>
+                    <picture sizex="150" sizey="90">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="0" y2="89a" fill-style="none" x2="149"/>
+                    </picture>
+                    <labels>
+                        <label x="10a" y="10a" text="TAKE"/>
+                        <label x="10a" y="30a" text="from:"/>
+                        <label x="10a" y="60a" text="to:"/>
+                        <label x="50" y="30a" textBinded="takeFrom"/>
+                        <label x="50" y="60a" textBinded="takeTo"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="89a"/>
+                            <end endx="139" endy="90a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1a"/>
+                            <end endx="139" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="149" starty="10a"/>
+                            <end endx="150" endy="79a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10a"/>
+                            <end endx="0" endy="79a"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
                     <container/>
+                    <properties>
+                        <property displayedName="To element ID" type="string" name="takeTo"/>
+                        <property displayedName="From element ID" type="string" name="takeFrom"/>
+                        <property displayedName="Type of memory" type="takeType" name="takeType">
+                            <default>all</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Go to slide" name="go">
+                <graphics>
+                    <picture sizex="110" sizey="40">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="0" y2="39a" fill-style="none" x2="109"/>
+                    </picture>
+                    <labels>
+                        <label x="50a" y="10a" textBinded="goto"/>
+                        <label x="10a" y="10a" text="GO to:"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="39a"/>
+                            <end endx="99" endy="40a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="109" starty="9a"/>
+                            <end endx="110" endy="10a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1a"/>
+                            <end endx="99" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10a"/>
+                            <end endx="0" endy="29a"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Gor to ID slide" type="string" name="goto"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Sent message" name="message">
+                <graphics>
+                    <picture sizex="140" sizey="100">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="0" y2="99a" fill-style="none" x2="139"/>
+                    </picture>
+                    <labels>
+                        <label x="10a" y="10a" text="MESSAGE"/>
+                        <label x="10a" y="40a" text="type:"/>
+                        <label x="10a" y="70a" text="to:"/>
+                        <label x="50" y="40a" textBinded="messageType"/>
+                        <label x="50" y="70a" textBinded="sentTo"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="99a"/>
+                            <end endx="129" endy="100a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1a"/>
+                            <end endx="129" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="139" starty="10a"/>
+                            <end endx="140" endy="89a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10a"/>
+                            <end endx="0" endy="89a"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Type of sent message" type="sentMessageType" name="messageType"/>
+                        <property displayedName="Reciever" type="sentToType" name="sentTo"/>
+                        <property displayedName="Additional text" type="string" name="additionalText"/>
+                    </properties>
+                </logic>
+            </node>
+            <node displayedName="Wait message" name="waitMessage">
+                <graphics>
+                    <picture sizex="142" sizey="100">
+                        <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="0" y2="99a" fill-style="none" x2="139"/>
+                    </picture>
+                    <labels>
+                        <label x="10a" y="10a" text="WAIT MESSAGE"/>
+                        <label x="10a" y="40a" text="type:"/>
+                        <label x="10a" y="70a" text="from:"/>
+                        <label x="50" y="40a" textBinded="waitMessageType"/>
+                        <label x="50" y="70a" textBinded="waitFrom"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10" starty="99a"/>
+                            <end endx="129" endy="100a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10" starty="-1a"/>
+                            <end endx="129" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="139" starty="10a"/>
+                            <end endx="140" endy="89a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="-1" starty="10a"/>
+                            <end endx="0" endy="89a"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Type of wait message" type="waitMessageType" name="waitMessageType"/>
+                        <property displayedName="Sender" type="sentToType" name="waitFrom"/>
+                    </properties>
                 </logic>
             </node>
         </graphicTypes>
