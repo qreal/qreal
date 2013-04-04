@@ -621,8 +621,8 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		prepareGeometryChange();
 
 		if (SettingsManager::value("ActivateGrid").toBool()) {
-				int const indexGrid = SettingsManager::value("IndexGrid").toInt();
-				mLine[mDragPoint] = alignedPoint(event->pos(), indexGrid);
+			int const indexGrid = SettingsManager::value("IndexGrid").toInt();
+			mLine[mDragPoint] = alignedPoint(event->pos(), indexGrid);
 		} else {
 			mLine[mDragPoint] = event->pos();
 		}
@@ -1088,6 +1088,10 @@ void EdgeElement::adjustLink(bool isDragging)
 			squarizeAndAdjustHandler(QPointF());
 		} else {
 			updateLongestPart();
+		}
+		if (SettingsManager::value("ActivateGrid").toBool()) {
+			int const indexGrid = SettingsManager::value("IndexGrid").toInt();
+			alignToGrid(indexGrid);
 		}
 	} else {
 		if (isSelected()) {
@@ -2001,9 +2005,14 @@ bool EdgeElement::isLoop()
 
 void EdgeElement::alignToGrid(int const indexGrid)
 {
+	prepareGeometryChange();
+
 	for(int i = 0; i < mLine.size(); i++) {
 		mLine[i] = alignedPoint(mLine[i], indexGrid);
 	}
+
+	update();
+	updateLongestPart();
 }
 qreal EdgeElement::alignedCoordinate(qreal coord, int coef, int const indexGrid) const
 {
