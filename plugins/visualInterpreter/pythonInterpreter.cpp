@@ -18,7 +18,6 @@ PythonInterpreter::PythonInterpreter(QObject *parent
 {
 	moveToThread(mThread);
 	connect(mInterpreterProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));
-	connect(mInterpreterProcess, SIGNAL(readyReadStandardError()), this, SLOT(readErrOutput()));
 }
 
 PythonInterpreter::~PythonInterpreter()
@@ -34,6 +33,8 @@ PythonInterpreter::~PythonInterpreter()
 bool PythonInterpreter::startPythonInterpreterProcess()
 {
 	if (mInterpreterProcess->pid() == 0) {
+		mInterpreterProcess->setProcessChannelMode(QProcess::MergedChannels);
+
 		mInterpreterProcess->start(mPythonPath, QStringList() << "-i");
 		if (!mInterpreterProcess->waitForStarted()) {
 			emit readyReadErrOutput(tr("Python path was set incorrectly"));
@@ -125,7 +126,7 @@ QHash<QPair<QString, QString>, QString> &PythonInterpreter::parseOutput(QString 
 void PythonInterpreter::parseOutput(QHash<QPair<QString, QString>, QString> &res, QString const &output, int &pos) const
 {
 	int const delimeterIndex = output.indexOf(PythonGenerator::delimeter, pos);
-	if (delimeterIndex == -1) {
+	if (delimeterIndex == -1 || output.indexOf("';") == -1) {
 		return;
 	}
 
@@ -158,18 +159,16 @@ void PythonInterpreter::readOutput()
 		continueStep();
 	} else {
 		QHash<QPair<QString, QString>, QString> output = parseOutput(outputString);
-		emit readyReadStdOutput(output);
-	}
-}
-
-void PythonInterpreter::readErrOutput()
-{
-	QByteArray const out = mInterpreterProcess->readAllStandardError();
-	QString output = QString(out);
-	output = output.replace(">>>", "").trimmed();
-	output = output.replace("...", "").trimmed();
-	if (!output.isEmpty() && output.indexOf("Python") == -1) {
-		mErrorOccured = true;
-		emit readyReadErrOutput(output);
+		if (!output.isEmpty()) {
+			emit readyReadStdOutput(output);
+		} else {
+			QString errorOutput = outputString;
+			errorOutput = errorOutput.replace(">>>", "").trimmed();
+			errorOutput = errorOutput.replace("...", "").trimmed();
+			if (!errorOutput.isEmpty() && errorOutput.indexOf("Python") == -1) {
+				mErrorOccured = true;
+				emit readyReadErrOutput(errorOutput);
+			}
+		}
 	}
 }

@@ -49,9 +49,6 @@ private slots:
 	/// Read python interpreter std output
 	void readOutput();
 
-	/// Read python interpreter error output
-	void readErrOutput();
-
 private:
 	bool startPythonInterpreterProcess();
 
