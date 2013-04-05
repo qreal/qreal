@@ -50,12 +50,12 @@
                         <contains type="waitMessage"/>
                         <contains type="variableInLogicEditor"/>
                         <contains type="whileInLogicEditor"/>
-                        <contains type="ifNodeInLogicEditor"/>
                         <contains type="changeInLogicEditor"/>
                         <contains type="returnInLogicEditor"/>
                         <contains type="takeGridOrListElementsInLogicEditor"/>
                         <contains type="forNodeInLogicEditor"/>
                         <contains type="outputSplitterInLogicEditor"/>
+                        <contains type="ifNodeInLogicEditor"/>
                     </container>
                     <properties>
                         <property displayedName="Type of handler" type="handlerType" name="handlerType"/>
@@ -226,9 +226,36 @@
             <import as="forNodeInLogicEditor" displayedName="For" name="qUbiqConditionEditor::forNode"/>
             <import as="takeGridOrListElementsInLogicEditor" displayedName="Take elements of grid or list" name="qUbiqConditionEditor::takeGridOrListElements"/>
             <import as="conditionLinkInLogicEditor" displayedName="Conditional Link" name="qUbiqConditionEditor::conditionLink"/>
-            <import as="linkInLogicEditor" displayedName="Link" name="qUbiqConditionEditor::link"/>
-            <import as="cyclicLinkInLogicEditor" displayedName="Cyclic link" name="qUbiqConditionEditor::cyclicLink"/>
             <import as="outputSplitterInLogicEditor" displayedName="Output splitter" name="qUbiqConditionEditor::outputSplitter"/>
+            <edge displayedName="Link" name="linkInLogicEditor">
+                <graphics>
+                    <lineType type="solidLine"/>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="no_arrow">
+                        <association beginName="linkBegin" endName="linkEnd"/>
+                    </associations>
+                </logic>
+            </edge>
+            <edge displayedName="Cyclic Link" name="cyclicLinkInLogicEditor">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label textBinded="cyclicValueStereotype"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="filled_arrow" beginType="no_arrow">
+                        <association beginName="cyclicLinkBegin" endName="cyclicLinkEnd"/>
+                    </associations>
+                    <properties>
+                        <property displayedName="Cyclic stereotype" type="cyclicValueInLogicEditor" name="cyclicValueStereotype">
+                            <default>next</default>
+                        </property>
+                    </properties>
+                </logic>
+            </edge>
+            <import as="cyclicValueInLogicEditor" displayedName="Cyclic values" name="qUbiqConditionEditor::cyclicValue"/>
         </graphicTypes>
     </diagram>
     <diagram displayedName="QUbiq Presentation Editor" nodeName="qUbiqPresentationDiagram" name="qUbiqPresentationEditor">
@@ -248,6 +275,8 @@
                     <container>
                         <contains type="abstractHandlerNode"/>
                         <contains type="variableInPresentationEditor"/>
+                        <contains type="text"/>
+                        <contains type="image"/>
                     </container>
                     <properties>
                         <property displayedName="Path to QReal Source" type="string" name="pathToQReal"/>
@@ -288,6 +317,8 @@
                     <container>
                         <contains type="abstractHandlerNode"/>
                         <contains type="variableInPresentationEditor"/>
+                        <contains type="text"/>
+                        <contains type="image"/>
                     </container>
                     <properties>
                         <property displayedName="Description" type="string" name="description"/>
@@ -528,6 +559,10 @@
                 <value>grid</value>
                 <value>number</value>
             </enum>
+            <enum displayedName="Cyclic values" name="cyclicValue">
+                <value>next</value>
+                <value>after</value>
+            </enum>
         </nonGraphicTypes>
         <graphicTypes>
             <node displayedName="Condition Diagram" name="qUbiqConditionDiagram">
@@ -550,6 +585,9 @@
                         <contains type="variable"/>
                         <contains type="outputSplitter"/>
                     </container>
+                    <properties>
+                        <property displayedName="Description" type="string" name="description"/>
+                    </properties>
                 </logic>
             </node>
             <node displayedName="Change element" name="change">
@@ -682,20 +720,21 @@
             </node>
             <node displayedName="IF" name="ifNode">
                 <graphics>
-                    <picture sizex="104" sizey="72">
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="51" y2="34a" fill-style="none" x2="2"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="52" y2="34a" fill-style="none" x2="101"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="101" y2="69a" fill-style="none" x2="52"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="2" y2="69a" fill-style="none" x2="51"/>
+                    <picture sizex="104" sizey="74">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="51" y2="36a" fill-style="none" x2="2"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="52" y2="36a" fill-style="none" x2="101"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="37a" stroke-width="0" x1="101" y2="71a" fill-style="none" x2="52"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="37a" stroke-width="0" x1="2" y2="71a" fill-style="none" x2="51"/>
                     </picture>
                     <labels>
-                        <label x="27" y="30a" textBinded="condition"/>
-                        <label x="47" y="5" text="IF"/>
+                        <label x="27" y="32a" textBinded="condition"/>
+                        <label x="47" y="7" text="IF"/>
                     </labels>
                     <ports>
-                        <pointPort x="2" y="35a"/>
-                        <pointPort x="102" y="35a"/>
-                        <pointPort x="52" y="70a"/>
+                        <pointPort x="52" y="2a"/>
+                        <pointPort x="2" y="37a"/>
+                        <pointPort x="102" y="37a"/>
+                        <pointPort x="52" y="72a"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -707,20 +746,21 @@
             </node>
             <node displayedName="While" name="while">
                 <graphics>
-                    <picture sizex="104" sizey="72">
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="51" y2="34a" fill-style="none" x2="2"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="52" y2="34a" fill-style="none" x2="101"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="101" y2="69a" fill-style="none" x2="52"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="2" y2="69a" fill-style="none" x2="51"/>
+                    <picture sizex="104" sizey="74">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="51" y2="36a" fill-style="none" x2="2"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="52" y2="36a" fill-style="none" x2="101"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="37a" stroke-width="0" x1="101" y2="71a" fill-style="none" x2="52"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="37a" stroke-width="0" x1="2" y2="71a" fill-style="none" x2="51"/>
                     </picture>
                     <labels>
-                        <label x="27" y="30a" textBinded="condition"/>
-                        <label x="35" y="5" text="WHILE"/>
+                        <label x="27" y="32a" textBinded="condition"/>
+                        <label x="35" y="7" text="WHILE"/>
                     </labels>
                     <ports>
-                        <pointPort x="2" y="35a"/>
-                        <pointPort x="102" y="35a"/>
-                        <pointPort x="52" y="70a"/>
+                        <pointPort x="52" y="2a"/>
+                        <pointPort x="2" y="37a"/>
+                        <pointPort x="102" y="37a"/>
+                        <pointPort x="52" y="72a"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -735,20 +775,21 @@
             </node>
             <node displayedName="For" name="forNode">
                 <graphics>
-                    <picture sizex="104" sizey="72">
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="51" y2="34a" fill-style="none" x2="2"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="52" y2="34a" fill-style="none" x2="101"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="101" y2="69a" fill-style="none" x2="52"/>
-                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="35a" stroke-width="0" x1="2" y2="69a" fill-style="none" x2="51"/>
+                    <picture sizex="104" sizey="74">
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="51" y2="36a" fill-style="none" x2="2"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="2a" stroke-width="0" x1="52" y2="36a" fill-style="none" x2="101"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="37a" stroke-width="0" x1="101" y2="71a" fill-style="none" x2="52"/>
+                        <line fill="#ffffff" stroke-style="solid" stroke="#000000" y1="37a" stroke-width="0" x1="2" y2="71a" fill-style="none" x2="51"/>
                     </picture>
                     <labels>
-                        <label x="22" y="30a" textBinded="gridOrListId"/>
-                        <label x="42" y="5" text="FOR"/>
+                        <label x="22" y="32a" textBinded="gridOrListId"/>
+                        <label x="42" y="7" text="FOR"/>
                     </labels>
                     <ports>
-                        <pointPort x="2" y="35a"/>
-                        <pointPort x="102" y="35a"/>
-                        <pointPort x="52" y="70a"/>
+                        <pointPort x="52" y="2a"/>
+                        <pointPort x="2" y="37a"/>
+                        <pointPort x="102" y="37a"/>
+                        <pointPort x="52" y="72a"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -802,13 +843,18 @@
                 <graphics>
                     <lineType type="solidLine"/>
                     <labels>
-                        <label text="after"/>
+                        <label textBinded="cyclicValueStereotype"/>
                     </labels>
                 </graphics>
                 <logic>
                     <associations endType="filled_arrow" beginType="no_arrow">
                         <association beginName="cyclicLinkBegin" endName="cyclicLinkEnd"/>
                     </associations>
+                    <properties>
+                        <property displayedName="Cyclic stereotype" type="cyclicValue" name="cyclicValueStereotype">
+                            <default>next</default>
+                        </property>
+                    </properties>
                 </logic>
             </edge>
             <node displayedName="Variable" name="variable">
