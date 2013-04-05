@@ -13,6 +13,8 @@
 	<file>generated/shapes/IfNodeClass.sdf</file>
 	<file>generated/shapes/IfNodePorts.sdf</file>
 	<file>generated/shapes/LinkClass.sdf</file>
+	<file>generated/shapes/OutputSplitterClass.sdf</file>
+	<file>generated/shapes/OutputSplitterPorts.sdf</file>
 	<file>generated/shapes/QUbiqConditionDiagramClass.sdf</file>
 	<file>generated/shapes/QUbiqConditionDiagramPorts.sdf</file>
 	<file>generated/shapes/ReturnClass.sdf</file>
@@ -36,6 +38,8 @@
 	<file>generated/shapes/LinkInLogicEditorClass.sdf</file>
 	<file>generated/shapes/MessageClass.sdf</file>
 	<file>generated/shapes/MessagePorts.sdf</file>
+	<file>generated/shapes/OutputSplitterInLogicEditorClass.sdf</file>
+	<file>generated/shapes/OutputSplitterInLogicEditorPorts.sdf</file>
 	<file>generated/shapes/QUbiqLogicDiagramClass.sdf</file>
 	<file>generated/shapes/QUbiqLogicDiagramPorts.sdf</file>
 	<file>generated/shapes/ReturnInLogicEditorClass.sdf</file>
@@ -54,6 +58,8 @@
 	<file>generated/shapes/AbstractHandlerNodePorts.sdf</file>
 	<file>generated/shapes/AbstractIsNullNodeClass.sdf</file>
 	<file>generated/shapes/AbstractIsNullNodePorts.sdf</file>
+	<file>generated/shapes/AbstractListsNodeClass.sdf</file>
+	<file>generated/shapes/AbstractListsNodePorts.sdf</file>
 	<file>generated/shapes/ButtonClass.sdf</file>
 	<file>generated/shapes/ButtonPorts.sdf</file>
 	<file>generated/shapes/ExitButtonClass.sdf</file>

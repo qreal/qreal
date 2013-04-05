@@ -50,11 +50,12 @@
                         <contains type="waitMessage"/>
                         <contains type="variableInLogicEditor"/>
                         <contains type="whileInLogicEditor"/>
-                        <contains type="forNodeInLogicEditor"/>
-                        <contains type="takeGridOrListElementsInLogicEditor"/>
-                        <contains type="returnInLogicEditor"/>
-                        <contains type="changeInLogicEditor"/>
                         <contains type="ifNodeInLogicEditor"/>
+                        <contains type="changeInLogicEditor"/>
+                        <contains type="returnInLogicEditor"/>
+                        <contains type="takeGridOrListElementsInLogicEditor"/>
+                        <contains type="forNodeInLogicEditor"/>
+                        <contains type="outputSplitterInLogicEditor"/>
                     </container>
                     <properties>
                         <property displayedName="Type of handler" type="handlerType" name="handlerType"/>
@@ -227,6 +228,7 @@
             <import as="conditionLinkInLogicEditor" displayedName="Conditional Link" name="qUbiqConditionEditor::conditionLink"/>
             <import as="linkInLogicEditor" displayedName="Link" name="qUbiqConditionEditor::link"/>
             <import as="cyclicLinkInLogicEditor" displayedName="Cyclic link" name="qUbiqConditionEditor::cyclicLink"/>
+            <import as="outputSplitterInLogicEditor" displayedName="Output splitter" name="qUbiqConditionEditor::outputSplitter"/>
         </graphicTypes>
     </diagram>
     <diagram displayedName="QUbiq Presentation Editor" nodeName="qUbiqPresentationDiagram" name="qUbiqPresentationEditor">
@@ -247,6 +249,11 @@
                         <contains type="abstractHandlerNode"/>
                         <contains type="variableInPresentationEditor"/>
                     </container>
+                    <properties>
+                        <property displayedName="Path to QReal Source" type="string" name="pathToQReal"/>
+                        <property displayedName="Program name" type="string" name="programName"/>
+                        <property displayedName="Path to generate" type="string" name="pathToGenerate"/>
+                    </properties>
                 </logic>
             </node>
             <node displayedName="Slide" name="slide">
@@ -292,11 +299,11 @@
             </node>
             <node displayedName="Button" name="button">
                 <graphics>
-                    <picture sizex="110" sizey="40">
+                    <picture sizex="121" sizey="40">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="109"/>
                     </picture>
                     <labels>
-                        <label x="60a" y="10a" textBinded="name"/>
+                        <label x="60a" y="10a" textBinded="buttonText"/>
                         <label x="10a" y="10a" text="BUTTON"/>
                     </labels>
                     <ports>
@@ -333,11 +340,11 @@
             </node>
             <node displayedName="Exit Button" name="exitButton">
                 <graphics>
-                    <picture sizex="130" sizey="40">
+                    <picture sizex="141" sizey="40">
                         <rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="39" fill-style="none" x2="129"/>
                     </picture>
                     <labels>
-                        <label x="80a" y="10a" textBinded="name"/>
+                        <label x="80a" y="10a" textBinded="buttonText"/>
                         <label x="10a" y="10a" text="EXIT BUTTON"/>
                     </labels>
                     <ports>
@@ -390,7 +397,7 @@
                         <property displayedName="Count of elements" type="int" name="elementsCount"/>
                     </properties>
                     <generalizations>
-                        <parent parentName="abstractIsNullNode"/>
+                        <parent parentName="abstractListsNode"/>
                     </generalizations>
                 </logic>
             </node>
@@ -410,9 +417,6 @@
                             <default>false</default>
                         </property>
                     </properties>
-                    <generalizations>
-                        <parent parentName="abstractHandlerNode"/>
-                    </generalizations>
                 </logic>
             </node>
             <node displayedName="Text" name="text">
@@ -479,10 +483,9 @@
                         <property displayedName="Dimension" type="string" name="size">
                             <default>1x1</default>
                         </property>
-                        <property displayedName="Id of element" type="string" name="elementId"/>
                     </properties>
                     <generalizations>
-                        <parent parentName="abstractHandlerNode"/>
+                        <parent parentName="abstractListsNode"/>
                     </generalizations>
                 </logic>
             </node>
@@ -497,6 +500,18 @@
                 </logic>
             </edge>
             <import as="variableInPresentationEditor" displayedName="Variable" name="qUbiqConditionEditor::variable"/>
+            <node name="abstractListsNode">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Id of element" type="string" name="elementId"/>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="abstractHandlerNode"/>
+                        <parent parentName="abstractIsNullNode"/>
+                    </generalizations>
+                </logic>
+            </node>
         </graphicTypes>
     </diagram>
     <diagram displayedName="QUbiq Condition Editor" nodeName="qUbiqConditionDiagram" name="qUbiqConditionEditor">
@@ -533,6 +548,7 @@
                         <contains type="change"/>
                         <contains type="abstractConditionalNode"/>
                         <contains type="variable"/>
+                        <contains type="outputSplitter"/>
                     </container>
                 </logic>
             </node>
@@ -815,6 +831,24 @@
                         <property displayedName="Current value" type="string" name="currentValue"/>
                         <property displayedName="Description" type="string" name="description"/>
                     </properties>
+                </logic>
+            </node>
+            <node displayedName="Output splitter" name="outputSplitter">
+                <graphics>
+                    <picture sizex="80" sizey="17">
+                        <rectangle fill="#000000" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="0" y2="14a" fill-style="solid" x2="79"/>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="40" y="15a"/>
+                        <linePort>
+                            <start startx="10" starty="-1a"/>
+                            <end endx="69" endy="0a"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
                 </logic>
             </node>
         </graphicTypes>
