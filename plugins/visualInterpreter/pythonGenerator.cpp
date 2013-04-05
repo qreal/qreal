@@ -201,7 +201,7 @@ QString PythonGenerator::createProperInitAndOutput(QString const &code, bool con
 			QString const variable = elemName + delimeter + propertyName;
 			QString const curPropertyValue = property(mMatch.value(idByName(elemName)), propertyName);
 
-			bool isStringProp = isStringProperty(idByName(elemName), propertyName);
+			bool isStringProp = isStringProperty(mMatch.value(idByName(elemName)), propertyName);
 			QString const propertyValue = isStringProp ? "'" + escape(curPropertyValue) + "'" : curPropertyValue;
 			QString const representationOfProperty = "'\\'' + str(" + variable + ") + '\\''";
 
