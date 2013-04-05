@@ -33,7 +33,7 @@ public:
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
 
-    virtual QPair<QString, PreferencesPage *> preferencesPage();
+	virtual QPair<QString, PreferencesPage *> preferencesPage();
 
 private slots:
 	/// generate and plugged refactoring metamodel, integrated with chosen metamodel (by user)
@@ -100,8 +100,7 @@ private:
 			, QDomElement &graphics, QString const &pathToRefactoringMetamodel);
 
 
-	QDomElement createPaletteElement(QString const &elementType
-            , QDomDocument metamodel, const QString &name);
+	QDomElement createPaletteElement(QString const &elementType, QDomDocument metamodel, const QString &name);
 	QDomElement metamodelPaletteGroup(QDomDocument metamodel
 			, const QDomNodeList &nodeList, const QDomNodeList &edgeList);
 
@@ -111,7 +110,7 @@ private:
 			, QString const &groupName, QStringList const &elementNameList);
 	void addElementsToMetamodelGroup(QDomDocument metamodel, const QDomNodeList &list
 			, QDomElement &metamodelGroup);
-    const QString nameForPaletteGroup(const QString &name);
+	const QString nameForPaletteGroup(const QString &name);
 	void arrangeElements(QString const &algorithm);
 	QList<QPair<Id, QPair<Id, bool> > > findOutsideSelectionLinks();
 	void removeUnnecessaryLinksFromSelected();

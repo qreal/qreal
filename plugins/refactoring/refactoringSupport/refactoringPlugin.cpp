@@ -294,7 +294,7 @@ QString const RefactoringPlugin::nameForPaletteGroup(QString const &name)
 	QString nameForPaletteGroup = name;
 	if (nameForPaletteGroup.length() > 0) {
 		if (nameForPaletteGroup.length() > 1) {
-		nameForPaletteGroup = nameForPaletteGroup.at(0).toUpper() + nameForPaletteGroup.mid(1);
+			nameForPaletteGroup = nameForPaletteGroup.at(0).toUpper() + nameForPaletteGroup.mid(1);
 		}
 		else {
 			nameForPaletteGroup = nameForPaletteGroup.at(0).toUpper();
@@ -369,8 +369,7 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 	if (mRefactoringFinder->refactoringRuleContainsSelectedSegment()) {
 		mSelectedElementsOnActiveDiagram = mMainWindowIFace->selectedElementsOnActiveDiagram();
 		foreach (Id const &selectedElement, mSelectedElementsOnActiveDiagram) {
-			QColor const color = QColor(SettingsManager::value("refactoringColor"
-					, "cyan").toString());
+			QColor const color = QColor(SettingsManager::value("refactoringColor", "cyan").toString());
 			bool isExclusive = false;
 			mMainWindowIFace->highlight(selectedElement, isExclusive, color);
 		}
@@ -393,8 +392,7 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 		}
 		foreach (Id const &id, mCurrentMatch.keys()) {
 			Id valueId = mCurrentMatch.value(id);
-			QColor const color = QColor(SettingsManager::value("refactoringColor"
-					, "cyan").toString());
+			QColor const color = QColor(SettingsManager::value("refactoringColor", "cyan").toString());
 			bool isExclusive = false;
 			mMainWindowIFace->highlight(valueId, isExclusive, color);
 		}
@@ -416,8 +414,7 @@ void RefactoringPlugin::findNextRefactoring()
 	} else {
 		mCurrentMatch = mMatches.takeFirst();
 		foreach (Id const &id, mCurrentMatch.keys()) {
-			QColor const color = QColor(SettingsManager::value("refactoringColor"
-					, "cyan").toString());
+			QColor const color = QColor(SettingsManager::value("refactoringColor", "cyan").toString());
 			bool isExclusive = false;
 			mMainWindowIFace->highlight(mCurrentMatch.value(id), isExclusive, color);
 		}
