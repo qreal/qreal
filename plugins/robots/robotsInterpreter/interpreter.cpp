@@ -280,7 +280,7 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 
 void Interpreter::runTimer()
 {
-	mTimer->start(200);
+	mTimer->start(1);
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()));
 	if (mRobotModel->sensor(inputPort::port1)) {
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)));
