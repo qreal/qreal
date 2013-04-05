@@ -285,7 +285,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mEdge->show();
 		int result = 0;
 
-		commands::CreateElementCommand *createElementFromMenuCommand;
+		commands::CreateElementCommand *createElementFromMenuCommand = NULL;
 		if (!under) {
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, &createElementFromMenuCommand);
 			NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
@@ -295,8 +295,6 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				mEdge->setDst(target);
 				target->storeGeometry();
 			}
-		} else {
-			createElementFromMenuCommand = NULL;
 		}
 		if (result != -1) {
 			mEdge->connectToPort();

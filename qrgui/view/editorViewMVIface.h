@@ -33,7 +33,7 @@ public:
 	bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
 	void setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi);
 	void setLogicalModel(QAbstractItemModel * const logicalModel);
-	Id rootId();
+	Id rootId() const;
 
 	EditorViewScene *scene() const;
 	models::GraphicalModelAssistApi *graphicalAssistApi() const;

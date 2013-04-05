@@ -48,7 +48,8 @@ public:
 	 */
 	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
 
-	QMap<QString, QVariant> properties();
+	QMap<QString, QVariant> graphicalProperties() const;
+	QMap<QString, QVariant> logicalProperties() const;
 
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w, SdfRenderer *portrenderer);
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);

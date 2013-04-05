@@ -119,9 +119,14 @@ NodeElement* NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
 	return copy;
 }
 
-QMap<QString, QVariant> NodeElement::properties()
+QMap<QString, QVariant> NodeElement::graphicalProperties() const
 {
 	return mGraphicalAssistApi->properties(id());
+}
+
+QMap<QString, QVariant> NodeElement::logicalProperties() const
+{
+	return mGraphicalAssistApi->properties(logicalId());
 }
 
 void NodeElement::setName(QString value)
@@ -1137,9 +1142,10 @@ NodeData& NodeElement::data()
 {
 	mData.id = id();
 	mData.logicalId = logicalId();
-	mData.properties = properties();
+	mData.logicalProperties = logicalProperties();
+	mData.graphicalProperties = graphicalProperties();
 	// new element should not have references to links connected to original source element
-	mData.properties["links"] = IdListHelper::toVariant(IdList());
+	mData.graphicalProperties["links"] = IdListHelper::toVariant(IdList());
 	mData.pos = mPos;
 	mData.contents = mContents;
 

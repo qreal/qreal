@@ -18,7 +18,7 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	, mGraphicalAssistApi(NULL)
 	, mLogicalAssistApi(NULL)
 {
-	mScene->mMVIface = this;
+	mScene->setMVIface(this);
 	mScene->mView = mView;
 }
 
@@ -113,7 +113,7 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 	reset();
 }
 
-Id EditorViewMViface::rootId()
+Id EditorViewMViface::rootId() const
 {
 	return mGraphicalAssistApi ? mGraphicalAssistApi->idByIndex(rootIndex()) : Id();
 }
