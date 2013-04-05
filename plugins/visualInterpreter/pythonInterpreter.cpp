@@ -118,6 +118,14 @@ void PythonInterpreter::setTempScriptPath(const QString &path)
 QHash<QPair<QString, QString>, QString> &PythonInterpreter::parseOutput(QString const &output) const
 {
 	int pos = 0;
+	int const delimeterIndex = output.indexOf(PythonGenerator::delimeter, pos);
+	if (output.contains(">>>")) {
+		while (output.indexOf(">>>", pos + 1) < delimeterIndex) {
+			pos = output.indexOf(">>>", pos + 1);
+		}
+		pos += 4;
+	}
+
 	QHash<QPair<QString, QString>, QString> *res = new QHash<QPair<QString, QString>, QString>();
 	parseOutput(*res, output, pos);
 	return *res;
