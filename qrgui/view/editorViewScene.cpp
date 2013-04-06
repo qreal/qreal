@@ -438,63 +438,62 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	in_stream >> pos;
 	in_stream >> isFromLogicalModel;
 
-	Element *newParent = NULL;
-	Element *e = NULL;
-
-	// TODO: make it simpler
 	Id id = Id::loadFromString(uuid);
 
-	if (searchForParents) {
-		// if element is node then we should look for parent for him
-		e = mWindow->manager()->graphicalObject(id);
-		if (dynamic_cast<NodeElement*>(e)) { // check if e is node
-			foreach (QGraphicsItem *item, items(scenePos)) {
-				NodeElement *el = dynamic_cast<NodeElement*>(item);
-				if (el && canBeContainedBy(el->id(), id)) {
-					newParent = el;
-					break;
-				}
-			}
-		}
-
-		if(newParent && dynamic_cast<NodeElement*>(newParent)){
-			if (!canBeContainedBy(newParent->id(), id)) {
-				QString text;
-				text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
-				QMessageBox::critical(0, "Error!", text);
-				return;
-			}
-
-			//temporary solution for chaotic changes of coordinates of created elements with edge menu
-			if (dynamic_cast<EdgeElement*>(newParent)) {
-				newParent = NULL;
-			}
-		}
-
-	}
-
-	QPointF const position = !newParent ? scenePos
-										: newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
-
-	Id parentId = newParent ? newParent->id() : mMVIface->rootId();
-
 	if(mMVIface->graphicalAssistApi()->editorManager().getPatternNames().contains(id.element())){
-		createGroupOfElements(id, position, parentId, isFromLogicalModel);
+		createGroupOfElements(id, scenePos, mMVIface->rootId(), isFromLogicalModel);
 	}
 	else {
-		createSingleElement(id, name, e, position, parentId, isFromLogicalModel);
-	}
+		Element *newParent = NULL;
+		Element *e = NULL;
 
-	NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
-	if (parentNode != NULL) {
-		Element *nextNode = parentNode->getPlaceholderNextElement();
-		if (nextNode != NULL) {
-			mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
+		if (searchForParents) {
+			// if element is node then we should look for parent for him
+			e = mWindow->manager()->graphicalObject(id);
+			if (dynamic_cast<NodeElement*>(e)) { // check if e is node
+				foreach (QGraphicsItem *item, items(scenePos)) {
+					NodeElement *el = dynamic_cast<NodeElement*>(item);
+					if (el && canBeContainedBy(el->id(), id)) {
+						newParent = el;
+						break;
+					}
+				}
+			}
+
+			if(newParent && dynamic_cast<NodeElement*>(newParent)){
+				if (!canBeContainedBy(newParent->id(), id)) {
+					QString text;
+					text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
+					QMessageBox::critical(0, "Error!", text);
+					return;
+				}
+
+				//temporary solution for chaotic changes of coordinates of created elements with edge menu
+				if (dynamic_cast<EdgeElement*>(newParent)) {
+					newParent = NULL;
+				}
+			}
+
+		}
+		QPointF const position = !newParent ? scenePos
+											: newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
+
+		Id parentId = newParent ? newParent->id() : mMVIface->rootId();
+
+		createSingleElement(id, name, e, position, parentId, isFromLogicalModel);
+
+		NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
+		if (parentNode != NULL) {
+			Element *nextNode = parentNode->getPlaceholderNextElement();
+			if (nextNode != NULL) {
+				mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
+			}
+		}
+		if (e) {
+			delete e;
 		}
 	}
-	if (e) {
-		delete e;
-	}
+
 	emit elementCreated(id);
 }
 
@@ -594,26 +593,34 @@ void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
 	}
 }
 
-void EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId)
+void EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId, QList<QGraphicsItem *> edgesToDelete)
 {
 	QList<EdgeElement*> inEdges = getInEdges(getNodeById(nodeId));
 	QList<EdgeElement*> outEdges = getOutEdges(getNodeById(nodeId));
-	if (inEdges.count() == 1){
+	if (inEdges.count() == 1 && !edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(inEdges.at(0)))
+			&& outEdges.count() > 0){
 		NodeElement* node = inEdges.at(0)->src();
-		foreach(EdgeElement* edge, outEdges){
-			mMVIface->graphicalAssistApi()->setFrom(edge->id(), node->id());
-			getNodeById(edge->dst()->id())->connectLinksToPorts();
-			reConnectLink(edge);
+		if (node){
+			foreach(EdgeElement* edge, outEdges){
+				mMVIface->graphicalAssistApi()->setFrom(edge->id(), node->id());
+				getNodeById(edge->dst()->id())->connectLinksToPorts();
+				reConnectLink(edge);
+			}
+			mainWindow()->deleteElementFromDiagram(inEdges.at(0)->id());
 		}
-//		mainWindow()->deleteElementFromDiagram(inEdges.at(0)->id());
-	} else if (outEdges.count() == 1){
+		return;
+	}
+	if (outEdges.count() == 1 && !edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(outEdges.at(0)))
+			&& inEdges.count() > 0){
 		NodeElement* node = outEdges.at(0)->dst();
-		foreach(EdgeElement* edge, inEdges){
-			mMVIface->graphicalAssistApi()->setTo(edge->id(), node->id());
-			getNodeById(node->id())->connectLinksToPorts();
-			reConnectLink(edge);
+		if (node){
+			foreach(EdgeElement* edge, inEdges){
+				mMVIface->graphicalAssistApi()->setTo(edge->id(), node->id());
+				getNodeById(node->id())->connectLinksToPorts();
+				reConnectLink(edge);
+			}
+			mainWindow()->deleteElementFromDiagram(outEdges.at(0)->id());
 		}
-//		mainWindow()->deleteElementFromDiagram(outEdges.at(0)->id());
 	}
 }
 
