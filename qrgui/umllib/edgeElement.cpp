@@ -2005,15 +2005,18 @@ bool EdgeElement::isLoop()
 
 void EdgeElement::alignToGrid(int const indexGrid)
 {
-	prepareGeometryChange();
+	if (mLine.size() >= 3) {
+		prepareGeometryChange();
 
-	for(int i = 0; i < mLine.size(); i++) {
-		mLine[i] = alignedPoint(mLine[i], indexGrid);
+		for(int i = 1; i < mLine.size() - 1; i++) {
+			mLine[i] = alignedPoint(mLine[i], indexGrid);
+		}
+
+		update();
+		updateLongestPart();
 	}
-
-	update();
-	updateLongestPart();
 }
+
 qreal EdgeElement::alignedCoordinate(qreal coord, int coef, int const indexGrid) const
 {
 	int const coefSign = coef != 0 ? coef / qAbs(coef) : 0;
@@ -2028,10 +2031,15 @@ qreal EdgeElement::alignedCoordinate(qreal coord, int coef, int const indexGrid)
 
 QPointF EdgeElement::alignedPoint(QPointF const point, int const indexGrid) const
 {
-	int coefX = static_cast<int>(point.x()) / indexGrid;
-	int coefY = static_cast<int>(point.y()) / indexGrid;
-	return QPointF(
-					alignedCoordinate(point.x(), coefX, indexGrid)
-					,alignedCoordinate(point.y(), coefY, indexGrid)
-					);
+	QPointF p = mapToScene(point);
+
+	int coefX = static_cast<int>(p.x()) / indexGrid;
+	int coefY = static_cast<int>(p.y()) / indexGrid;
+
+	p = QPointF(
+				alignedCoordinate(p.x(), coefX, indexGrid)
+				,alignedCoordinate(p.y(), coefY, indexGrid)
+				);
+
+	return mapFromScene(p);
 }
