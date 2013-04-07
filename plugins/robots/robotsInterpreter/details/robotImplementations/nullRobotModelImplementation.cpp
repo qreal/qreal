@@ -7,6 +7,7 @@ using namespace details::robotImplementations;
 NullRobotModelImplementation::NullRobotModelImplementation()
 	: AbstractRobotModelImplementation()
 	, mBrick()
+	, mDisplay()
 	, mMotorA(0)
 	, mMotorB(1)
 	, mMotorC(2)
@@ -23,6 +24,11 @@ NullRobotModelImplementation::NullRobotModelImplementation()
 brickImplementations::NullBrickImplementation &NullRobotModelImplementation::brick()
 {
 	return mBrick;
+}
+
+sensorImplementations::RealDisplayImplementation &NullRobotModelImplementation::display()
+{
+	return mDisplay;
 }
 
 sensorImplementations::NullTouchSensorImplementation *NullRobotModelImplementation::touchSensor(inputPort::InputPortEnum const &port) const

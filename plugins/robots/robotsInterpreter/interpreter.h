@@ -16,6 +16,7 @@
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 #include "details/sensorsConfigurationWidget.h"
+#include "details/nxtDisplay.h"
 
 namespace qReal {
 namespace interpreters {
@@ -47,6 +48,7 @@ public:
 	void closeWatchList();
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
+	void setDisplay(details::NxtDisplay *display);
 
 	/// Assigning a value to the field mActionConnectToRobot
 	void setConnectRobotAction(QAction *actionConnect);

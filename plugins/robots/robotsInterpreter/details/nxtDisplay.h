@@ -7,6 +7,10 @@ namespace Ui
 	class NxtDisplay;
 }
 
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace details {
 class NxtDisplay : public QWidget
 {
 	Q_OBJECT
@@ -15,18 +19,15 @@ public:
 	explicit NxtDisplay(QWidget *parent = 0);
 	~NxtDisplay();
     
-signals:
-	void left();
-	void right();
-	void bottom();
-	void central();
-
-private slots:
-	void onLeftButtonClicked();
-	void onCentralButtonClicked();
-	void onRightButtonClicked();
-	void onBottomButtonClicked();
+	bool leftButtonIsDown();
+	bool rightButtonIsDown();
+	bool centralButtonIsDown();
+	bool bottomButtonIsDown();
 
 private:
 	Ui::NxtDisplay *mUI;
 };
+}
+}
+}
+}

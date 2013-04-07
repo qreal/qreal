@@ -25,6 +25,7 @@ HEADERS += \
 	details/blocks/waitBlock.h \
 	details/blocks/waitForSensorBlock.h \
 	details/blocks/waitForColorSensorBlockBase.h \
+    details/blocks/waitForButtonsBlock.h
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -53,3 +54,4 @@ SOURCES +=\
 	details/blocks/waitBlock.cpp \
 	details/blocks/waitForSensorBlock.cpp \
 	details/blocks/waitForColorSensorBlockBase.cpp \
+    details/blocks/waitForButtonsBlock.cpp

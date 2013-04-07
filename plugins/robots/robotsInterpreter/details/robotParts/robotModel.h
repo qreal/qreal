@@ -3,6 +3,7 @@
 #include <QtCore/QVector>
 
 #include "brick.h"
+#include "display.h"
 #include "motor.h"
 #include "sensor.h"
 #include "touchSensor.h"
@@ -14,6 +15,7 @@
 #include "../robotImplementations/abstractRobotModelImplementation.h"
 
 #include "../robotImplementations/brickImplementations/abstractBrickImplementation.h"
+#include "../robotImplementations/sensorImplementations/abstractDisplayImplementation.h"
 #include "../robotImplementations/motorImplementations/abstractMotorImplementation.h"
 #include "../robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h"
 #include "../robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.h"
@@ -42,6 +44,7 @@ public:
 			, sensorType::SensorTypeEnum const &port4);
 
 	robotParts::Brick &brick();
+	robotParts::Display &display();
 	robotParts::TouchSensor *touchSensor(inputPort::InputPortEnum const &port) const;
 	robotParts::SonarSensor *sonarSensor(inputPort::InputPortEnum const &port) const;
 	robotParts::LightSensor *lightSensor(inputPort::InputPortEnum const &port) const;
@@ -81,6 +84,7 @@ private slots:
 private:
 	robotImplementations::AbstractRobotModelImplementation *mRobotImpl;  // Has ownership.
 	robotParts::Brick mBrick;
+	robotParts::Display mDisplay;
 	robotParts::Motor mMotorA;
 	robotParts::Motor mMotorB;
 	robotParts::Motor mMotorC;

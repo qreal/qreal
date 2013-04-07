@@ -9,6 +9,7 @@
 #include "blocks/dummyBlock.h"
 #include "blocks/waitForTouchSensorBlock.h"
 #include "blocks/waitForSonarDistanceBlock.h"
+#include "blocks/waitForButtonsBlock.h"
 #include "blocks/enginesForwardBlock.h"
 #include "blocks/enginesBackwardBlock.h"
 #include "blocks/enginesStopBlock.h"
@@ -89,6 +90,8 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new NullificationEncoderBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForLight")) {
 		newBlock = new WaitForLightSensorBlock(mRobotModel);
+	} else if (elementMetatypeIs(element, "WaitForButtons")) {
+		newBlock = new WaitForButtonsBlock(mRobotModel, mRobotModel->display());
 	} else {
 		newBlock = new DummyBlock();
 	}

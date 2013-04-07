@@ -7,6 +7,7 @@ Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
 
 using namespace qReal;
 using namespace interpreters::robots;
+using namespace interpreters::robots::details;
 
 Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
 Id const oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
@@ -83,10 +84,12 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();
 	SettingsManager::setValue("IndexGrid", gridWidth);
-	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer(), new NxtDisplay());
+	NxtDisplay *display = new NxtDisplay();
+	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer(), display);
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
+	mInterpreter.setDisplay(display);
 }
 
 qReal::Customizer* RobotsPlugin::customizationInterface()
@@ -183,6 +186,7 @@ void RobotsPlugin::rereadSettings()
 {
 	setTitlesVisibility();
 }
+
 
 void RobotsPlugin::setTitlesVisibility()
 {

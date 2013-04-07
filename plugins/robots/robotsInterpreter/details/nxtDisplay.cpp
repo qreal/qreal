@@ -1,5 +1,7 @@
 #include "nxtDisplay.h"
-#include "ui_nxtdisplay.h"
+#include "ui_nxtDisplay.h"
+
+using namespace qReal::interpreters::robots::details;
 
 NxtDisplay::NxtDisplay(QWidget *parent)
 	: QWidget(parent)
@@ -13,22 +15,18 @@ NxtDisplay::~NxtDisplay()
 	delete mUI;
 }
 
-void NxtDisplay::onLeftButtonClicked()
-{
-	emit left();
+bool NxtDisplay::leftButtonIsDown(){
+	return mUI->leftButton->isDown();
 }
 
-void NxtDisplay::onCentralButtonClicked()
-{
-	emit central();
+bool NxtDisplay::rightButtonIsDown(){
+	return mUI->rightButton->isDown();
 }
 
-void NxtDisplay::onRightButtonClicked()
-{
-	emit right();
+bool NxtDisplay::centralButtonIsDown(){
+	return mUI->centralButton->isDown();
 }
 
-void NxtDisplay::onBottomButtonClicked()
-{
-	emit bottom();
+bool NxtDisplay::bottomButtonIsDown(){
+	return mUI->bottomButton->isDown();
 }

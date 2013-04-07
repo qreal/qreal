@@ -5,6 +5,7 @@
 #include "brickImplementations/realBrickImplementation.h"
 #include "motorImplementations/realMotorImplementation.h"
 #include "sensorImplementations/bluetoothTouchSensorImplementation.h"
+#include "sensorImplementations/RealDisplayImplementation.h"
 #include "sensorImplementations/bluetoothSonarSensorImplementation.h"
 #include "sensorImplementations/bluetoothColorSensorImplementation.h"
 #include "sensorImplementations/bluetoothLightSensorImplementation.h"
@@ -27,6 +28,7 @@ public:
 	virtual void disconnectFromRobot();
 
 	virtual brickImplementations::RealBrickImplementation &brick();
+	virtual sensorImplementations::RealDisplayImplementation &display();
 	virtual sensorImplementations::BluetoothTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::BluetoothSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::BluetoothColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
@@ -52,6 +54,7 @@ private slots:
 private:
 	RobotCommunicator * const mRobotCommunicator;
 	brickImplementations::RealBrickImplementation mBrick;
+	sensorImplementations::RealDisplayImplementation mDisplay;
 	motorImplementations::RealMotorImplementation mMotorA;
 	motorImplementations::RealMotorImplementation mMotorB;
 	motorImplementations::RealMotorImplementation mMotorC;
