@@ -91,7 +91,7 @@ public:
 	QList<EdgeElement*> getInEdges(NodeElement* node);
 	QList<EdgeElement*> getOutEdges(NodeElement* node);
 
-	void deleteElementFromEdge(qReal::Id const &nodeId, QList<QGraphicsItem*> edgesToDelete);
+	EdgeElement* deleteElementFromEdge(qReal::Id const &nodeId, QList<QGraphicsItem*> edgesToDelete);
 
 
 	void itemSelectUpdate();
