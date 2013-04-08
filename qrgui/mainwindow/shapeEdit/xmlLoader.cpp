@@ -627,6 +627,8 @@ Item::VisibilityCondition XmlLoader::readVisibility(QDomElement const &item)
 
 	Item::VisibilityCondition result;
 	result.property = visibility.attribute("property");
+	result.sign = visibility.attribute("sign");
 	result.value = visibility.attribute("value");
+
 	return result;
 }

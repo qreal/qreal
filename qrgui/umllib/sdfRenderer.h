@@ -62,6 +62,7 @@ private:
 	ElementRepoInterface *mElementRepo;
 
 	bool checkShowConditions(QDomElement const &element) const;
+	bool checkCondition(QDomElement const &condition) const;
 
 	void line(QDomElement &element);
 	void ellipse(QDomElement &element);

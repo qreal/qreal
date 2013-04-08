@@ -34,7 +34,11 @@ public:
 	struct VisibilityCondition
 	{
 		QString property;
+		QString sign;
 		QString value;
+
+		bool operator==(VisibilityCondition const &other) const;
+		bool operator!=(VisibilityCondition const &other) const;
 	};
 
 	Item(graphicsUtils::AbstractItem* parent = 0);
@@ -69,7 +73,7 @@ public:
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture) = 0;
 
 	void setVisibilityCondition(VisibilityCondition const &condition);
-	void setVisibilityCondition(QString const &property, QString const &value);
+	void setVisibilityCondition(QString const &property, QString const &sign, QString const &value);
 	VisibilityCondition visibilityCondition();
 
 protected:

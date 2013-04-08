@@ -4,7 +4,6 @@
 #include "../../../qrutils/xmlUtils.h"
 #include "xmlLoader.h"
 #include "../../../qrutils/graphicsUtils/colorlisteditor.h"
-#include "visibilityConditionsDialog.h"
 
 #include <QtGui/QFileDialog>
 #include <QtGui/QGraphicsItem>
@@ -510,29 +509,43 @@ void ShapeEdit::visibilityButtonClicked()
 	if (selectedItems.isEmpty()) {
 		return;
 	}
-	VisibilityConditionsDialog vcDialog(getEnumValues(), selectedItems);
+	VisibilityConditionsDialog vcDialog(getProperties(), selectedItems);
 	vcDialog.exec();
 }
 
-QMap<QString, QStringList> ShapeEdit::getEnumValues() const
+QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties() const
 {
-	QMap<QString, QStringList> result;
+	typedef VisibilityConditionsDialog::PropertyInfo PropertyInfo;
+
+	QMap<QString, PropertyInfo> result;
 
 	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
 	qReal::IdList enums = repoApi->elementsByType("MetaEntityEnum");
 
 	foreach (qReal::Id child, repoApi->children(mModel->idByIndex(mIndex))) {
+		if (child.element() != "MetaEntity_Attribute") {
+			continue;
+		}
 		QString type = repoApi->stringProperty(child, "attributeType");
-		foreach (qReal::Id e, enums) {
-			if (!repoApi->isLogicalElement(e)) {
-				continue;
-			}
-			if (repoApi->name(e) == type) {
-				QStringList enumValues;
-				foreach (qReal::Id value, repoApi->children(e)) {
-					enumValues << repoApi->stringProperty(value, "valueName");
+		if (type == "int") {
+			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Int, QStringList()));
+		} else if (type == "bool") {
+			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Bool
+					, QStringList() << "true" << "false"));
+		} else if (type == "string") {
+			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::String, QStringList()));
+		} else {
+			foreach (qReal::Id e, enums) {
+				if (!repoApi->isLogicalElement(e)) {
+					continue;
 				}
-				result.insert(repoApi->name(child), enumValues);
+				if (repoApi->name(e) == type) {
+					QStringList enumValues;
+					foreach (qReal::Id value, repoApi->children(e)) {
+						enumValues << repoApi->stringProperty(value, "valueName");
+					}
+					result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Enum, enumValues));
+				}
 			}
 		}
 	}

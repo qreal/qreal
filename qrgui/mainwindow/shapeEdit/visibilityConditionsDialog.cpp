@@ -1,22 +1,23 @@
 #include <QPushButton>
+#include <QDebug>
 
 #include "visibilityConditionsDialog.h"
 #include "ui_visibilityConditionsDialog.h"
 
-VisibilityConditionsDialog::VisibilityConditionsDialog(QMap<QString, QStringList> const &enumValues
+VisibilityConditionsDialog::VisibilityConditionsDialog(QMap<QString, PropertyInfo> const &properties
 		, QList<Item *> const &items, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::VisibilityConditionsDialog)
-	, mEnumValues(enumValues), mItems(items)
+	, mProperties(properties), mItems(items)
 {
 	ui->setupUi(this);
 
 	ui->propertyComboBox->addItem(QString());
-	ui->propertyComboBox->addItems(enumValues.keys());
+	ui->propertyComboBox->addItems(properties.keys());
 
-	setIndices();
+	setWidgetValues();
 
-	connect(ui->propertyComboBox, SIGNAL(activated(QString const &)), this, SLOT(changeValues(QString const &)));
+	connect(ui->propertyComboBox, SIGNAL(activated(QString const &)), this, SLOT(changeProperty(QString const &)));
 	connect(ui->buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this, SLOT(okClicked()));
 }
 
@@ -25,26 +26,45 @@ VisibilityConditionsDialog::~VisibilityConditionsDialog()
 	delete ui;
 }
 
-void VisibilityConditionsDialog::changeValues(QString const &enumName)
+void VisibilityConditionsDialog::changeProperty(QString const &propertyName)
 {
-	ui->valueComboBox->clear();
-	ui->valueComboBox->addItems(mEnumValues[enumName]);
+	PropertyInfo propertyInfo = mProperties[propertyName];
+	ui->valueWidget->setPropertyInfo(propertyInfo);
+	changeOperators(propertyInfo.type);
+}
+
+void VisibilityConditionsDialog::changeOperators(Type type)
+{
+	QStringList operators;
+	operators << "=" << "!=";
+
+	if (type == Int) {
+		operators << ">" << "<" << ">=" << "<=";
+	} else if (type == String) {
+		operators << "=~";
+	}
+
+	ui->operatorComboBox->clear();
+	ui->operatorComboBox->addItems(operators);
 }
 
 void VisibilityConditionsDialog::okClicked()
 {
 	foreach (Item *item, mItems) {
-		item->setVisibilityCondition(ui->propertyComboBox->currentText(), ui->valueComboBox->currentText());
+		item->setVisibilityCondition(ui->propertyComboBox->currentText()
+				, ui->operatorComboBox->currentText(), ui->valueWidget->value());
 	}
 }
 
-void VisibilityConditionsDialog::setIndices()
+void VisibilityConditionsDialog::setWidgetValues()
 {
 	if (areValuesEqual()) {
-		ui->propertyComboBox->setCurrentIndex(
-					ui->propertyComboBox->findText(mItems.first()->visibilityCondition().property));
-		ui->valueComboBox->addItems(mEnumValues[ui->propertyComboBox->currentText()]);
-		ui->valueComboBox->setCurrentIndex(ui->valueComboBox->findText(mItems.first()->visibilityCondition().value));
+		Item::VisibilityCondition condition = mItems.first()->visibilityCondition();
+
+		ui->propertyComboBox->setCurrentIndex(ui->propertyComboBox->findText(condition.property));
+		changeProperty(ui->propertyComboBox->currentText());
+		ui->operatorComboBox->setCurrentIndex(ui->operatorComboBox->findText(condition.sign));
+		ui->valueWidget->setValue(condition.value);
 	}
 }
 
@@ -52,10 +72,13 @@ bool VisibilityConditionsDialog::areValuesEqual()
 {
 	Item::VisibilityCondition value = mItems.first()->visibilityCondition();
 	foreach (Item *item, mItems) {
-		if (item->visibilityCondition().property != value.property
-				|| item->visibilityCondition().value != value.value) {
+		if (item->visibilityCondition() != value) {
 			return false;
 		}
 	}
 	return true;
 }
+
+VisibilityConditionsDialog::PropertyInfo::PropertyInfo(VisibilityConditionsDialog::Type t, QStringList const &v)
+		: type(t), values(v)
+{}

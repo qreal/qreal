@@ -13,19 +13,30 @@ class VisibilityConditionsDialog : public QDialog
 	Q_OBJECT
 	
 public:
-	explicit VisibilityConditionsDialog(QMap<QString, QStringList> const &enumValues
+	enum Type { Enum, Int, Bool, String };
+	struct PropertyInfo
+	{
+		Type type;
+		QStringList values;
+
+		PropertyInfo() {}
+		PropertyInfo(Type t, QStringList const &v);
+	};
+
+	explicit VisibilityConditionsDialog(QMap<QString, PropertyInfo> const &enumValues
 			, QList<Item *> const &items, QWidget *parent = 0);
 	~VisibilityConditionsDialog();
 
 private slots:
-	void changeValues(QString const &enumName);
+	void changeProperty(QString const &propertyName);
 	void okClicked();
 
 private:
-	void setIndices();
+	void setWidgetValues();
 	bool areValuesEqual();
+	void changeOperators(Type type);
 
 	Ui::VisibilityConditionsDialog *ui;
-	QMap<QString, QStringList> mEnumValues;
+	QMap<QString, PropertyInfo> mProperties;
 	QList<Item *> mItems;
 };

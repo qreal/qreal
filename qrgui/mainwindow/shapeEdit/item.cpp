@@ -226,9 +226,10 @@ void Item::setVisibilityCondition(VisibilityCondition const &condition)
 	mVisibilityCondition = condition;
 }
 
-void Item::setVisibilityCondition(QString const &property, QString const &value)
+void Item::setVisibilityCondition(QString const &property, QString const &sign, QString const &value)
 {
 	mVisibilityCondition.property = property;
+	mVisibilityCondition.sign = sign;
 	mVisibilityCondition.value = value;
 }
 
@@ -245,8 +246,20 @@ QPair<QDomElement, Item::DomElementTypes> Item::generateDom(QDomDocument &docume
 		QDomElement visibility = document.createElement("showIf");
 		result.first.appendChild(visibility);
 		visibility.setAttribute("property", mVisibilityCondition.property);
+		visibility.setAttribute("sign", mVisibilityCondition.sign);
 		visibility.setAttribute("value", mVisibilityCondition.value);
 	}
 
 	return result;
+}
+
+bool Item::VisibilityCondition::operator==(Item::VisibilityCondition const &other) const
+{
+	return this->property == other.property && this->sign == other.sign
+			&& this->value == other.value;
+}
+
+bool Item::VisibilityCondition::operator!=(Item::VisibilityCondition const &other) const
+{
+	return !(*this == other);
 }

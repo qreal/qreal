@@ -6,6 +6,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
+#include <QRegExp>
 
 using namespace qReal;
 
@@ -131,14 +132,43 @@ bool SdfRenderer::checkShowConditions(QDomElement const &element) const
 	if (showConditions.isEmpty() || !mElementRepo) {
 		return true;
 	}
-	for (int i = 0; i < showConditions.length(); ++i) {
-		QDomElement condition = showConditions.at(i).toElement();
-		QString propertyName = condition.attribute("property");
-		if (mElementRepo->logicalProperty(propertyName) != condition.attribute("value")) {
+	for (uint i = 0; i < showConditions.length(); ++i) {
+		if (!checkCondition(showConditions.at(i).toElement())) {
 			return false;
 		}
 	}
 	return true;
+}
+
+bool SdfRenderer::checkCondition(QDomElement const &condition) const
+{
+	QString sign = condition.attribute("sign");
+	QString realValue = mElementRepo->logicalProperty(condition.attribute("property"));
+	QString conditionValue = condition.attribute("value");
+
+	if (sign == "=~") {
+		return QRegExp(conditionValue).exactMatch(realValue);
+	}
+	if (sign == ">") {
+		return realValue.toInt() > conditionValue.toInt();
+	}
+	if (sign == "<") {
+		return realValue.toInt() < conditionValue.toInt();
+	}
+	if (sign == ">=") {
+		return realValue.toInt() >= conditionValue.toInt();
+	}
+	if (sign == "<=") {
+		return realValue.toInt() <= conditionValue.toInt();
+	}
+	if (sign == "!=") {
+		return realValue != conditionValue;
+	}
+	if (sign == "=") {
+		return realValue == conditionValue;
+	}
+	qDebug() << "Unsupported logical operator \"" + sign + "\"";
+	return false;
 }
 
 void SdfRenderer::line(QDomElement &element)

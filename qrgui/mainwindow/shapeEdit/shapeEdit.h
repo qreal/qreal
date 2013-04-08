@@ -9,6 +9,7 @@
 #include "item.h"
 #include "../../../qrutils/graphicsUtils/abstractItemView.h"
 #include "../../models/details/logicalModel.h"
+#include "visibilityConditionsDialog.h"
 
 namespace Ui {
 	class ShapeEdit;
@@ -94,5 +95,5 @@ private:
 	void exportToXml(QString const &fileName);
 	QList<QDomElement> generateGraphics();
 
-	QMap<QString, QStringList> getEnumValues() const;
+	QMap<QString, VisibilityConditionsDialog::PropertyInfo> getProperties() const;
 };
