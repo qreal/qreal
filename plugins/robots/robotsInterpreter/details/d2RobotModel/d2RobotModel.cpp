@@ -122,8 +122,11 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 
 QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPortEnum const port) const
 {
-	QPointF const position = mSensorsConfiguration.position(port);
-	qreal direction = mSensorsConfiguration.direction(port) + mAngle;
+//	QPointF const position = mSensorsConfiguration.position(port);
+//	qreal direction = mSensorsConfiguration.direction(port) + mAngle;
+	QVector<SensorItem *> items = mD2ModelWidget->sensorItems();
+	QPointF const position = items[port]->scenePos();
+	qreal const direction = items[port]->rotation() + mAngle;
 	return QPair<QPointF, qreal>(position, direction);
 }
 
@@ -137,11 +140,15 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
 	qreal const width = sensorWidth / 2.0;
-	QRectF const scanningRect = QRectF(sensorPosition.x() - width
-			, sensorPosition.y() - width, 2 * width, 2 * width);
+	QRectF const scanningRect = QRectF(
+			  sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
+			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
+			, 2 * width + touchSensorStrokeIncrement
+			, 2 * width + touchSensorStrokeIncrement);
+
 	QPainterPath sensorPath;
 	sensorPath.addRect(scanningRect);
-	bool const res = mWorldModel.checkCollision(sensorPath, touchSensorStrokeIncrement);
+	bool const res = mWorldModel.checkCollision(sensorPath, touchSensorWallStrokeIncrement);
 
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
