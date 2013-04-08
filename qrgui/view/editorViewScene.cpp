@@ -593,60 +593,6 @@ void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
 	}
 }
 
-EdgeElement* EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId, QList<QGraphicsItem *> edgesToDelete)
-{
-	QList<EdgeElement*> inEdges = getInEdges(getNodeById(nodeId));
-	QList<EdgeElement*> outEdges = getOutEdges(getNodeById(nodeId));
-	EdgeElement* edgeToDelete = NULL;
-	if (inEdges.count() == 1 //&& !edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(inEdges.at(0)))
-			&& outEdges.count() > 0){
-		NodeElement* node = inEdges.at(0)->src();
-		if (node){
-			foreach(EdgeElement* edge, outEdges){
-				mMVIface->graphicalAssistApi()->setFrom(edge->id(), node->id());
-//				edge->newArrangeLink();
-				getNodeById(edge->dst()->id())->connectLinksToPorts();
-				getNodeById(edge->src()->id())->connectLinksToPorts();
-				reConnectLink(edge);//*/
-			}
-			node->arrangeLinks();
-			node->adjustLinks();
-//			if (!edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(inEdges.at(0))))
-//				mainWindow()->deleteFromScene(dynamic_cast<QGraphicsItem*>(inEdges.at(0)));
-			edgeToDelete = inEdges.at(0);
-		}
-		return edgeToDelete;
-	}
-	if (outEdges.count() == 1 //&& !edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(outEdges.at(0)))
-			&& inEdges.count() > 0){
-		NodeElement* node = outEdges.at(0)->dst();
-		if (node){
-			foreach(EdgeElement* edge, inEdges){
-/*				Id const newEdge2(edge->id().editor(), edge->id().diagram()
-								  , edge->id().element(), QUuid::createUuid().toString());
-				mMVIface->graphicalAssistApi()-> createElement(mMVIface->rootId(), newEdge2
-															   , false, "flow2", QPointF(0,0));
-				mMVIface->graphicalAssistApi()->setFrom(newEdge2, edge->src()->id());
-				mMVIface->graphicalAssistApi()->setTo(newEdge2, node->id());
-				node->connectLinksToPorts();
-
-				reConnectLink(getEdgeById(newEdge2));*/
-				mMVIface->graphicalAssistApi()->setTo(edge->id(), node->id());
-				edge->newArrangeLink();
-				getNodeById(node->id())->connectLinksToPorts();
-				reConnectLink(edge);//*/
-			}
-			node->arrangeLinks();
-			node->adjustLinks();
-			edgeToDelete = outEdges.at(0);
-//			if (!edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(outEdges.at(0))))
-//				mainWindow()->deleteElementFromDiagram(outEdges.at(0)->id());
-//				mainWindow()->deleteFromScene(dynamic_cast<QGraphicsItem*>(outEdges.at(0)));
-		}
-	}
-	return edgeToDelete;
-}
-
 void EditorViewScene::moveDownFromElem(NodeElement* node, QPointF const &scenePos
 									   , QPointF const &direction, QPointF const &shift
 									   , QList<NodeElement*> moved){
@@ -672,6 +618,49 @@ void EditorViewScene::moveDownFromElem(NodeElement* node, QPointF const &scenePo
 			}
 			moved.append(destinations.at(i));
 			moveDownFromElem(destinations.at(i), scenePos, direction, shift, moved);
+		}
+	}
+}//
+
+void EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId, QList<QGraphicsItem *> edgesToDelete)
+{
+	QList<EdgeElement*> inEdges = getInEdges(getNodeById(nodeId));
+	QList<EdgeElement*> outEdges = getOutEdges(getNodeById(nodeId));
+	if (inEdges.count() == 1 && !edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(inEdges.at(0)))
+			&& outEdges.count() > 0){
+		NodeElement* node = inEdges.at(0)->src();
+		bool wasRelinked = false;
+		if (node){
+			foreach(EdgeElement* edge, outEdges){
+				if (!edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(edge))){
+					mMVIface->graphicalAssistApi()->setFrom(edge->id(), node->id());
+					getNodeById(edge->dst()->id())->connectLinksToPorts();
+					reConnectLink(edge);
+					wasRelinked = true;
+				}
+			}
+			if (wasRelinked){
+				mainWindow()->deleteElementFromDiagram(inEdges.at(0)->id());
+			}
+		}
+		return;
+	}
+	if (outEdges.count() == 1 && !edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(outEdges.at(0)))
+			&& inEdges.count() > 0){
+		NodeElement* node = outEdges.at(0)->dst();
+		if (node){
+			bool wasRelinked = false;
+			foreach(EdgeElement* edge, inEdges){
+				if(!edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(edge))){
+					mMVIface->graphicalAssistApi()->setTo(edge->id(), node->id());
+					getNodeById(node->id())->connectLinksToPorts();
+					reConnectLink(edge);
+					wasRelinked = true;
+				}
+			}
+			if (wasRelinked){
+				mainWindow()->deleteElementFromDiagram(outEdges.at(0)->id());
+			}
 		}
 	}
 }

@@ -610,7 +610,7 @@ void MainWindow::deleteFromScene()
 	while (!nodesToDelete.isEmpty()){
 		QGraphicsItem *currentItem = nodesToDelete.at(0);
 		// delete possible children
-		/*foreach (QGraphicsItem *child, currentItem->childItems()) {
+		foreach (QGraphicsItem *child, currentItem->childItems()) {
 			NodeElement* node = dynamic_cast <NodeElement*> (child);
 			if (node) {
 				itemsToDeleteNoUpdate.append(node);
@@ -618,13 +618,11 @@ void MainWindow::deleteFromScene()
 			}
 			itemsToDelete.removeAll(child);
 			deleteFromScene(child);
-		}//*/
+		}
 
 		itemsToDeleteNoUpdate.append(currentItem);
 		NodeElement *node = dynamic_cast <NodeElement*>(nodesToDelete.at(0));
-		QGraphicsItem *edgeToDel = scene->deleteElementFromEdge(node->id(), edgesToDelete);
-		if (edgeToDel && !edgesToDelete.contains(edgeToDel))
-			edgesToDelete.append(edgeToDel);
+		scene->deleteElementFromEdge(node->id(), edgesToDelete);
 		nodesToDelete.removeAll(currentItem);
 		nodesToIndDelete.append(currentItem);
 		deleteFromScene(currentItem);
