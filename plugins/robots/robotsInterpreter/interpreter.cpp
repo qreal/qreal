@@ -29,6 +29,8 @@ Interpreter::Interpreter()
 	, mWatchListWindow(NULL)
 	, mActionConnectToRobot(NULL)
 {
+	Tracer::enableAll();
+	Tracer::setTarget(tracer::logFile);
 	mParser = NULL;
 	mBlocksTable = NULL;
 	mTimer = new QTimer();
