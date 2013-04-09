@@ -11,7 +11,7 @@ class SdfRendererInterface : public QObject
 {
 public:
 	virtual bool load (const QString &filename) = 0;
-	virtual void render(QPainter *painter, const QRectF &bounds) = 0;
+	virtual void render(QPainter *painter, const QRectF &bounds, bool isIcon = false) = 0;
 	virtual void setElementRepo(ElementRepoInterface *elementRepo) = 0;
 };
 

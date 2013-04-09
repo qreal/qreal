@@ -55,7 +55,7 @@ void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo)
 	mElementRepo = elementRepo;
 }
 
-void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
+void SdfRenderer::render(QPainter *painter, const QRectF &bounds, bool isIcon)
 {
 	current_size_x = static_cast<int>(bounds.width());
 	current_size_y = static_cast<int>(bounds.height());
@@ -69,7 +69,7 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 		QDomElement elem = node.toElement();
 		if(!elem.isNull())
 		{
-			if (!checkShowConditions(elem)) {
+			if (!checkShowConditions(elem, isIcon)) {
 				node = node.nextSibling();
 				continue;
 			}
@@ -126,9 +126,13 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 	this->painter = 0;
 }
 
-bool SdfRenderer::checkShowConditions(QDomElement const &element) const
+bool SdfRenderer::checkShowConditions(QDomElement const &element, bool isIcon) const
 {
 	QDomNodeList showConditions = element.elementsByTagName("showIf");
+	// a hack, need to be removed when there is another version of icons
+	if (!showConditions.isEmpty() && isIcon) {
+		return false;
+	}
 	if (showConditions.isEmpty() || !mElementRepo) {
 		return true;
 	}
@@ -790,7 +794,7 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect
 		resRect.setBottom(rect.bottom() - (rh - rw * ph / pw) / 2);
 	}
 	painter->setRenderHint(QPainter::Antialiasing, true);
-	mRenderer.render(painter, resRect);
+	mRenderer.render(painter, resRect, true);
 }
 
 QSize SdfIconEngineV2::preferedSize() const

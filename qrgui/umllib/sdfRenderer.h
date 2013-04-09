@@ -25,7 +25,7 @@ public:
 	~SdfRenderer();
 
 	bool load (const QString &filename);
-	void render(QPainter *painter, const QRectF &bounds);
+	void render(QPainter *painter, const QRectF &bounds, bool isIcon = false);
 	void noScale();
 
 	int pictureWidth() { return first_size_x; }
@@ -61,7 +61,7 @@ private:
 	bool mNeedScale;
 	ElementRepoInterface *mElementRepo;
 
-	bool checkShowConditions(QDomElement const &element) const;
+	bool checkShowConditions(QDomElement const &element, bool isIcon) const;
 	bool checkCondition(QDomElement const &condition) const;
 
 	void line(QDomElement &element);
