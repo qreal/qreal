@@ -75,6 +75,7 @@ void Interpreter::interpret()
 {
 	Tracer::debug(tracer::initialization, "Interpreter::interpret", "Preparing for interpretation");
 
+	mBlocksTable->clear();
 	mInterpretersInterface->errorReporter()->clear();
 
 	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();

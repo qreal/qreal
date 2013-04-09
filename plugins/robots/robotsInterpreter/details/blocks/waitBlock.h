@@ -29,7 +29,7 @@ protected slots:
 
 protected:
 	void processResponce(int reading, int targetValue);
-	void stop();
+	virtual void stop();
 
 	RobotModel * const mRobotModel;
 	QTimer mActiveWaitingTimer;
