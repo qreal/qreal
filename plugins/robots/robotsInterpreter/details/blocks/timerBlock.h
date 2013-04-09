@@ -4,6 +4,7 @@
 #include <QtCore/QTimer>
 
 #include "block.h"
+#include "../abstractTimer.h"
 
 namespace qReal {
 namespace interpreters {
@@ -16,13 +17,16 @@ class TimerBlock : public Block
 	Q_OBJECT
 
 public:
+	explicit TimerBlock(AbstractTimer * const timer /* Takes ownership */);
+	virtual ~TimerBlock() {}
+
 	virtual void run();
 
 private slots:
 	void timeout();
 
 private:
-	QTimer mTimer;
+	AbstractTimer * const mTimer;
 };
 
 }

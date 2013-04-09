@@ -7,6 +7,7 @@
 #include <QtCore/QSignalMapper>
 #include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
+#include <QtGui/QButtonGroup>
 
 #include "lineItem.h"
 #include "stylusItem.h"
@@ -18,25 +19,43 @@
 #include "rotater.h"
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 
-namespace Ui {
-class D2Form;
+namespace Ui
+{
+	class D2Form;
 }
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
-namespace details {
-namespace d2Model {
+namespace qReal
+{
+namespace interpreters
+{
+namespace robots
+{
+namespace details
+{
+namespace d2Model
+{
 
-namespace drawingAction {
-enum DrawingAction {
-	none,
-	wall,
-	line,
-	stylus,
-	port,
-	ellipse,
-	noneWordLoad
+namespace drawingAction
+{
+enum DrawingAction
+{
+	none = 0
+	, wall
+	, line
+	, stylus
+	, Port
+	, ellipse
+	, noneWordLoad
+};
+}
+
+namespace cursorType
+{
+enum CursorType
+{
+	NoDrag = 0
+	, hand
+	, multiselection
 };
 }
 
@@ -48,9 +67,9 @@ public:
 	~D2ModelWidget();
 	void init(bool isActive = true);
 	void close();
-	void draw(QPointF const &newCoord, qreal angle, QPointF const &dPoint);
+	void draw(QPointF const &newCoord, qreal angle);
 	void drawBeep(bool isNeededBeep);
-	QPolygonF const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
+	QPainterPath const robotBoundingPolygon(QPointF const &coord, qreal const &angle) const;
 
 	/// Get current scene position of mRobot
 	QPointF robotPos() const;
@@ -67,6 +86,7 @@ public:
 	void disableRunStopButtons();
 
 	D2ModelScene* scene();
+	void setRobotVisible(bool isVisible);
 	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
 
 	void closeEvent(QCloseEvent *event);
@@ -74,12 +94,15 @@ public:
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
+	/// Places in 2D model same sensors as selected in QReal settings
+	void syncronizeSensors();
 
 signals:
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
 
 protected:
 	void changeEvent(QEvent *e);
+	void showEvent(QShowEvent *e);
 
 private slots:
 	void addWall(bool on);
@@ -107,6 +130,13 @@ private slots:
 	void changePalette();
 
 	void changeSpeed(int curIndex);
+	void changeSensorType(inputPort::InputPortEnum const port
+			, sensorType::SensorTypeEnum const type);
+
+	void enableRobotFollowing(bool on);
+	void onHandCursorButtonToggled(bool on);
+	void onMultiselectionCursorButtonToggled(bool on);
+	void setCursorType(cursorType::CursorType cursor);
 
 signals:
 	void d2WasClosed();
@@ -115,7 +145,18 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 private:
+	static const int defaultPenWidth = 15;
+
+	static const int indexOfNoneSensor = 0;
+	static const int indexOfTouchSensor = 1;
+	static const int indexOfColorSensor = 2;
+	static const int indexOfSonarSensor = 3;
+	static const int indexOfLightSensor = 4;
+
 	void connectUiButtons();
+	void initButtonGroups();
+	void setHighlightOneButton(QAbstractButton const *oneButton);
+
 	void drawWalls();
 	void drawColorFields();
 	void drawInitialRobot();
@@ -143,7 +184,7 @@ private:
 	void reshapeStylus(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
-	void setValuePenColorComboBox(QColor penColor);
+	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoPalette();
@@ -152,12 +193,19 @@ private:
 	QList<graphicsUtils::AbstractItem *> selectedColorItems();
 	bool isColorItem(graphicsUtils::AbstractItem *item);
 
+	int sensorTypeToComboBoxIndex(sensorType::SensorTypeEnum const type);
+
+	void centerOnRobot();
+	QGraphicsView::DragMode cursorTypeToDragType(cursorType::CursorType type) const;
+	Qt::CursorShape cursorTypeToShape(cursorType::CursorType type) const;
+	void processDragMode(int mode);
+	void syncCursorButtons();
+
+	void onFirstShow();
+
 	Ui::D2Form *mUi;
 	D2ModelScene *mScene;
 	RobotItem *mRobot;
-
-	/// Holds graphic items that represent path of a robot, to be able to manipulate them
-	QList<QGraphicsItem *> mRobotPath;
 
 	/// Maximum number of calls to draw() when adding robot path element is skipped.
 	/// So, new path element is added every mMaxDrawCyclesBetweenPathElements times
@@ -180,12 +228,6 @@ private:
 	StylusItem *mCurrentStylus;
 	EllipseItem *mCurrentEllipse;
 
-	/** @brief Latest value of angle for drawing robot image */
-	qreal mAngleOld;
-
-	/** @brief Latest value of rotate point for drawing robot image */
-	QPointF mRotatePointOld;
-
 	/** @brief Signal mapper for handling addPortButtons' clicks */
 	QSignalMapper mPortsMapper;
 
@@ -195,20 +237,24 @@ private:
 	/** @brief Type of current sensor that we add */
 	sensorType::SensorTypeEnum mCurrentSensorType;
 
-	/** @brief Amount of buttons on left panel */
-	int const mButtonsCount;
-
 	/** @brief List of flags showing which panel button is active now*/
 	QList<bool> mButtonFlags;
 
 	/** @brief List of sensors, index is port of sensor */
 	QVector<SensorItem *> mSensors;
 
-	Rotater *mRotater;
-	QVector<Rotater *> mSensorRotaters;
-
 	int mWidth;
 
+	bool mClearing;
+	bool mRobotWasSelected;
+
+	QButtonGroup mButtonGroup;
+	QButtonGroup mCursorButtonGroup;
+
+	cursorType::CursorType mCursorType;
+	bool mFollowRobot;
+
+	bool mFirstShow;
 };
 
 }

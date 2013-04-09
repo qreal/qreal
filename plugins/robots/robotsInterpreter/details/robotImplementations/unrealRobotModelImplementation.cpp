@@ -1,6 +1,6 @@
 #include "unrealRobotModelImplementation.h"
-
 #include "../tracer.h"
+#include "../d2RobotModel/d2ModelTimer.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
@@ -145,4 +145,9 @@ void UnrealRobotModelImplementation::startInterpretation()
 {
 	mD2Model->showModelWidget();
 	mD2Model->startInit();
+}
+
+AbstractTimer *UnrealRobotModelImplementation::produceTimer()
+{
+	return new d2Model::D2ModelTimer(mD2Model->timeline());
 }

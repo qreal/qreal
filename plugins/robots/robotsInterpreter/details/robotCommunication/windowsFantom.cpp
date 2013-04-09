@@ -118,7 +118,6 @@ void Fantom::nFANTOM100_destroyNXT(unsigned long nxtHandle, int &status)
 }
 
 unsigned long Fantom::onDriverUnavailable()
-{	// Too loud
-	// throw RobotCommunicationException("Fantom driver is not available");
+{
 	return fantomDriverUnavailableResult;
 }

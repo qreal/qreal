@@ -52,3 +52,7 @@ PaintOldEdgeMode=true
 fantomDownloadLink=http://mindstorms.lego.com/en-us/support/files/Driver.aspx
 pathToImages=./images/iconset1
 AutosaveTempFile=tempFile
+robotModel=2
+2dFollowingRobot=false
+2dCursorType=1
+showTitlesForRobots=false

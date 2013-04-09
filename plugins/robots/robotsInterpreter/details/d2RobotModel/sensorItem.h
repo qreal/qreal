@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QtCore/QSet>
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QPainter>
 
@@ -7,7 +8,7 @@
 #include "rotater.h"
 #include "../../../../../qrutils/graphicsUtils/abstractItem.h"
 #include "../../../../../qrutils/graphicsUtils/pointImpl.h"
-#include "../../../../../qrutils/graphicsUtils/rotateInterface.h"
+#include "../../../../../qrutils/graphicsUtils/rotateItem.h"
 
 namespace qReal {
 namespace interpreters {
@@ -16,7 +17,7 @@ namespace details {
 namespace d2Model {
 
 /** @brief Class that represents robot port in 2D model */
-class SensorItem : public QObject, public graphicsUtils::AbstractItem, public graphicsUtils::RotateInterface
+class SensorItem : public QObject, public graphicsUtils::RotateItem
 {
 	Q_OBJECT
 public:
@@ -43,23 +44,26 @@ public:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
 	void setRotatePoint(QPointF rotatePoint);
-	void setDeltaBasePosition(QPointF const &delta, qreal dir);
-	void setBasePosition(QPointF const &pos, qreal dir);
+
+	void addStickyItem(QGraphicsItem *item);
+	void removeStickyItem(QGraphicsItem *item);
+
+	void onPositionChanged();
+	void onDirectionChanged();
 
 protected:
 	static int const size = 6;
 
+	QColor color() const;
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
 	SensorsConfiguration &mConfiguration;
 	inputPort::InputPortEnum const mPort;
-	QPointF mBasePos;
 	QPointF mRotatePoint;
-	qreal mBaseDir;
 	bool mDragged;
 	graphicsUtils::PointImpl mPointImpl;
 	Rotater *mRotater;
-
-	QColor color() const;
-	void setNewPosition(QPointF rotatePoint);
+	QSet<QGraphicsItem *> mStickyItems;
 };
 
 }
