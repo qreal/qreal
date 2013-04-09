@@ -270,7 +270,8 @@ void Interpreter::setRobotModel(details::RobotModel * const robotModel)
 	mRobotModel = robotModel;
 }
 
-void Interpreter::setDisplay(NxtDisplay *display){
+void Interpreter::setDisplay(NxtDisplay *display)
+{
 	mD2RobotModel->setDisplay(display);
 }
 

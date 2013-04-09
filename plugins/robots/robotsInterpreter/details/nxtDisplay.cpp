@@ -5,28 +5,28 @@ using namespace qReal::interpreters::robots::details;
 
 NxtDisplay::NxtDisplay(QWidget *parent)
 	: QWidget(parent)
-	, mUI(new Ui::NxtDisplay)
+	, mUi(new Ui::NxtDisplay)
 {
-	mUI->setupUi(this);
+	mUi->setupUi(this);
 }
 
 NxtDisplay::~NxtDisplay()
 {
-	delete mUI;
+	delete mUi;
 }
 
 bool NxtDisplay::leftButtonIsDown(){
-	return mUI->leftButton->isDown();
+	return mUi->leftButton->isDown();
 }
 
 bool NxtDisplay::rightButtonIsDown(){
-	return mUI->rightButton->isDown();
+	return mUi->rightButton->isDown();
 }
 
 bool NxtDisplay::centralButtonIsDown(){
-	return mUI->centralButton->isDown();
+	return mUi->centralButton->isDown();
 }
 
 bool NxtDisplay::bottomButtonIsDown(){
-	return mUI->bottomButton->isDown();
+	return mUi->bottomButton->isDown();
 }

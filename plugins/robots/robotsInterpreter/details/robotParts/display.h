@@ -1,4 +1,4 @@
-#include "../robotImplementations/sensorImplementations/abstractDisplayImplementation.h"
+#include "../robotImplementations/displayImplementations/abstractDisplayImplementation.h"
 
 namespace qReal {
 namespace interpreters {
@@ -10,14 +10,14 @@ class Display : public QObject
 {
 	Q_OBJECT
 public:
-	Display(robotImplementations::sensorImplementations::AbstractDisplayImplementation *displayImpl);
+	Display(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl);
 	virtual ~Display();
 	virtual void read();
-	robotImplementations::sensorImplementations::AbstractDisplayImplementation *displayImpl();
-	void setImplementation(robotImplementations::sensorImplementations::AbstractDisplayImplementation *displayImpl);
+	robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl();
+	void setImplementation(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl);
 
 protected:
-	robotImplementations::sensorImplementations::AbstractDisplayImplementation *mDisplayImpl;
+	robotImplementations::displayImplementations::AbstractDisplayImplementation *mDisplayImpl;
 };
 
 }

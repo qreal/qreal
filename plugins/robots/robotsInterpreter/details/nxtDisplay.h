@@ -25,7 +25,7 @@ public:
 	bool bottomButtonIsDown();
 
 private:
-	Ui::NxtDisplay *mUI;
+	Ui::NxtDisplay *mUi;
 };
 }
 }

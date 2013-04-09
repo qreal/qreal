@@ -2,7 +2,7 @@
 
 using namespace qReal::interpreters::robots;
 using namespace details;
-using namespace robotImplementations::sensorImplementations;
+using namespace robotImplementations::displayImplementations;
 
 AbstractDisplayImplementation::AbstractDisplayImplementation()
 {

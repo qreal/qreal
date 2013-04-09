@@ -35,7 +35,7 @@ brickImplementations::UnrealBrickImplementation &UnrealRobotModelImplementation:
 	return mBrick;
 }
 
-sensorImplementations::UnrealDisplayImplementation &UnrealRobotModelImplementation::display()
+displayImplementations::UnrealDisplayImplementation &UnrealRobotModelImplementation::display()
 {
 	return mDisplay;
 }

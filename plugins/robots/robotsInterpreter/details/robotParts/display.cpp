@@ -1,12 +1,13 @@
-#include "display.h"
 #include <QtCore/QDebug>
+
+#include "display.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
-using namespace robotImplementations::sensorImplementations;
+using namespace robotImplementations::displayImplementations;
 using namespace robotParts;
 
-Display::Display(robotImplementations::sensorImplementations::AbstractDisplayImplementation *displayImpl)
+Display::Display(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl)
 	: mDisplayImpl(displayImpl)
 {
 }
@@ -25,7 +26,7 @@ AbstractDisplayImplementation *Display::displayImpl()
 	return mDisplayImpl;
 }
 
-void Display::setImplementation(robotImplementations::sensorImplementations::AbstractDisplayImplementation *displayImpl)
+void Display::setImplementation(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl)
 {
 	mDisplayImpl = displayImpl;
 }

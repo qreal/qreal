@@ -10,7 +10,7 @@ namespace interpreters {
 namespace robots {
 namespace details {
 namespace robotImplementations {
-namespace sensorImplementations {
+namespace displayImplementations {
 class UnrealDisplayImplementation : public AbstractDisplayImplementation
 {
 	Q_OBJECT

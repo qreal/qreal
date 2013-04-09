@@ -1,4 +1,5 @@
 #include "waitForButtonsBlock.h"
+#include "../robotParts/robotModel.h"
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -16,6 +17,11 @@ void WaitForButtonsBlock::run()
 	mRightButtonClicks = 0;
 	mCentralButtonClicks = 0;
 	mBottomButtonClicks = 0;
+
+	mLeftWasDown = false;
+	mRightWasDown = false;
+	mCentralWasDown = false;
+	mBottomWasDown = false;
 
 	connect(mDisplay.displayImpl(), SIGNAL(response(bool,bool,bool,bool)), this, SLOT(responseSlot(bool,bool,bool,bool)));
 
@@ -36,17 +42,36 @@ QString WaitForButtonsBlock::name() const
 void WaitForButtonsBlock::responseSlot(bool leftIsDown, bool rightIsDown, bool centralIsDown, bool bottomIsDown)
 {
 	if(leftIsDown){
-		mLeftButtonClicks++;
+		mLeftWasDown = true;
 	}
+	if(mLeftWasDown && !leftIsDown){
+		mLeftButtonClicks++;
+		mLeftWasDown = false;
+	}
+
 	if(rightIsDown){
+		mRightWasDown = true;
+	}
+	if(mRightWasDown && !rightIsDown){
 		mRightButtonClicks++;
+		mRightWasDown = false;
 	}
 	if(centralIsDown){
+		mCentralWasDown = true;
+	}
+	if(mCentralWasDown && !centralIsDown){
 		mCentralButtonClicks++;
+		mCentralWasDown = false;
 	}
+
 	if(bottomIsDown){
-		mBottomButtonClicks++;
+		mBottomWasDown = true;
 	}
+	if(mBottomWasDown && !bottomIsDown){
+		mBottomButtonClicks++;
+		mBottomWasDown = false;
+	}
+
 
 	int const targetLeftButtonClicks = evaluate("LeftButtonClicks").toInt();
 	int const targetRightButtonClicks = evaluate("RightButtonClicks").toInt();

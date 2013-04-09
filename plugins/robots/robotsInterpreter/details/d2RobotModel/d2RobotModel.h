@@ -38,9 +38,9 @@ public:
 	D2ModelWidget *createModelWidget();
 	int readEncoder(int const port) const;
 	void resetEncoder(int const port);
+
 	void setDisplay(details::NxtDisplay *display);
 	details::NxtDisplay *display();
-	bool leftButtonIsDown();
 
 	int readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;

@@ -15,7 +15,7 @@
 #include "../robotImplementations/abstractRobotModelImplementation.h"
 
 #include "../robotImplementations/brickImplementations/abstractBrickImplementation.h"
-#include "../robotImplementations/sensorImplementations/abstractDisplayImplementation.h"
+#include "../robotImplementations/displayImplementations/abstractDisplayImplementation.h"
 #include "../robotImplementations/motorImplementations/abstractMotorImplementation.h"
 #include "../robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h"
 #include "../robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.h"

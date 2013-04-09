@@ -29,7 +29,7 @@ brickImplementations::RealBrickImplementation &RealRobotModelImplementation::bri
 	return mBrick;
 }
 
-sensorImplementations::RealDisplayImplementation &RealRobotModelImplementation::display()
+displayImplementations::RealDisplayImplementation &RealRobotModelImplementation::display()
 {
 	return mDisplay;
 }

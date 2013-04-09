@@ -1,4 +1,5 @@
 #pragma once
+
 #include "waitBlock.h"
 #include "../robotParts/robotModel.h"
 
@@ -13,7 +14,7 @@ namespace details
 namespace blocks
 {
 
-class WaitForButtonsBlock: public WaitBlock
+class WaitForButtonsBlock : public WaitBlock
 {
 	Q_OBJECT
 public:
@@ -33,9 +34,13 @@ private:
 	int mRightButtonClicks;
 	int mCentralButtonClicks;
 	int mBottomButtonClicks;
+
+	bool mLeftWasDown;
+	bool mRightWasDown;
+	bool mCentralWasDown;
+	bool mBottomWasDown;
+
 	robotParts::Display &mDisplay;
-
-
 };
 
 }

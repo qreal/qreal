@@ -1,21 +1,21 @@
 #pragma once
-#include <QtCore/QObject>
+
+#include "abstractDisplayImplementation.h"
 
 namespace qReal {
 namespace interpreters {
 namespace robots {
 namespace details {
 namespace robotImplementations {
-namespace sensorImplementations {
+namespace displayImplementations {
 
-
-class AbstractDisplayImplementation : public QObject
+class RealDisplayImplementation : public AbstractDisplayImplementation
 {
 	Q_OBJECT
 public:
-	AbstractDisplayImplementation();
-	virtual ~AbstractDisplayImplementation() {}
-	virtual void read() = 0;
+	RealDisplayImplementation();
+	virtual ~RealDisplayImplementation() {}
+	virtual void read();
 
 signals:
 	void response(bool leftIsPressed
@@ -30,3 +30,5 @@ signals:
 }
 }
 }
+
+

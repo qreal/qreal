@@ -1,7 +1,7 @@
 #include "realDisplayImplementation.h"
 
 using namespace qReal::interpreters::robots;
-using namespace details::robotImplementations::sensorImplementations;
+using namespace details::robotImplementations::displayImplementations;
 
 RealDisplayImplementation::RealDisplayImplementation()
 {
