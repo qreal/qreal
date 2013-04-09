@@ -122,11 +122,10 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 
 QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPortEnum const port) const
 {
-//	QPointF const position = mSensorsConfiguration.position(port);
-//	qreal direction = mSensorsConfiguration.direction(port) + mAngle;
 	QVector<SensorItem *> items = mD2ModelWidget->sensorItems();
-	QPointF const position = items[port]->scenePos();
-	qreal const direction = items[port]->rotation() + mAngle;
+	SensorItem *sensor = items[port];
+	QPointF const position = sensor ? sensor->scenePos() : QPointF();
+	qreal const direction = sensor ? items[port]->rotation() + mAngle : 0;
 	return QPair<QPointF, qreal>(position, direction);
 }
 
