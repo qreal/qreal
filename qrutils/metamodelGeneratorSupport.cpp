@@ -89,7 +89,7 @@ void MetamodelGeneratorSupport::loadPlugin(QString const &directoryName
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);
 		builder.start(pathToMake);
-		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
+		if (builder.waitForFinished()/* && (builder.exitCode() == 0)*/) {
 			progress->setValue(80);
 			if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "."
 					+ extension, normalizeDirName))

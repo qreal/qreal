@@ -1412,7 +1412,7 @@ QAction *MainWindow::actionPasteCopyOfLogical() const
 	return mUi->actionPasteReference;
 }
 
-void MainWindow::highlight(Id const &graphicalId, bool exclusive)
+void MainWindow::highlight(Id const &graphicalId, bool exclusive, QColor const &color)
 {
 	EditorView* const view = getCurrentTab();
 	if (!view) {
@@ -1421,8 +1421,8 @@ void MainWindow::highlight(Id const &graphicalId, bool exclusive)
 
 	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
 	Element* const element = scene->getElem(graphicalId);
-	scene->highlight(graphicalId, exclusive);
-	view->ensureElementVisible(element, 0, 0);
+	scene->highlight(graphicalId, exclusive, color);
+	view->ensureElementVisible(element);
 }
 
 void MainWindow::dehighlight(Id const &graphicalId)

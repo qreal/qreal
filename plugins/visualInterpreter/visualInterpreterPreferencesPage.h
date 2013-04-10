@@ -14,16 +14,18 @@ namespace qReal {
 class VisualInterpreterPreferencesPage : public PreferencesPage
 {
 	Q_OBJECT
-	
+
 public:
 	explicit VisualInterpreterPreferencesPage(QWidget *parent = 0);
 	~VisualInterpreterPreferencesPage();
-	
+
 	void save();
-	
+
 private slots:
 	void setQRealSourcesLocation();
-	
+	void setPythonPath();
+	void setTempScriptPath();
+
 private:
 	Ui::visualInterpreterPreferencesPage *mUi;
 };

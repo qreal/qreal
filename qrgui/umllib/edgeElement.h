@@ -245,4 +245,3 @@ private:
 
 	bool mIsVerticalChanging; // for squarize drawing
 };
-
