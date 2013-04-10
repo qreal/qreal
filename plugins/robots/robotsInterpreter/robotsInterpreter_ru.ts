@@ -146,6 +146,11 @@
         <translation>Остановить программу (Esc)</translation>
     </message>
     <message>
+        <location filename="details/d2RobotModel/d2Form.ui" line="705"/>
+        <source>Grid parameters</source>
+        <translation>Сетка</translation>
+    </message>
+    <message>
         <location filename="details/d2RobotModel/d2Form.ui" line="660"/>
         <source>Set speed</source>
         <translation>Установить скорость</translation>

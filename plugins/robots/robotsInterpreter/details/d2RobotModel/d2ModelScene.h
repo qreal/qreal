@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QtGui/QGraphicsScene>
+#include <QtGui/QPainter>
 #include "../../../../../qrutils/graphicsUtils/abstractScene.h"
+#include "../../../../../qrutils/graphicsUtils/griddrawer.h"
 
 namespace qReal {
 namespace interpreters {
@@ -23,6 +25,8 @@ public:
 	void forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
 	void forReleaseResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
 	void reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect);
+    void drawBackground ( QPainter * painter, const QRectF & rect );
+    graphicsUtils::GridDrawer *gd;
 
 signals:
 	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
