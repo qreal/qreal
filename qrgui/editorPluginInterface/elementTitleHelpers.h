@@ -7,6 +7,7 @@ class ElementTitleInterface : public QGraphicsTextItem
 public:
 	virtual void setBackground(Qt::GlobalColor const &background) = 0;
 	virtual void setScaling(bool scalingX, bool scalingY) = 0;
+	virtual void setHard(bool hard) = 0;
 };
 
 class ElementTitleFactoryInterface

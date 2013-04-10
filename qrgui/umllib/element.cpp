@@ -99,7 +99,13 @@ ElementImpl* Element::elementImpl() const
 
 void Element::setTitlesVisible(bool visible)
 {
+	mTitlesVisible = visible;
+	setTitlesVisiblePrivate(visible);
+}
+
+void Element::setTitlesVisiblePrivate(bool visible)
+{
 	foreach (ElementTitle * const title, mTitles) {
-		title->setVisible(visible);
+		title->setVisible(title->isHard() || visible);
 	}
 }
