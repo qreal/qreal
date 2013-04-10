@@ -29,6 +29,8 @@ Interpreter::Interpreter()
 	, mWatchListWindow(NULL)
 	, mActionConnectToRobot(NULL)
 {
+	Tracer::enableAll();
+	Tracer::setTarget(tracer::logFile);
 	mParser = NULL;
 	mBlocksTable = NULL;
 	mTimer = new QTimer();
@@ -73,6 +75,7 @@ void Interpreter::interpret()
 {
 	Tracer::debug(tracer::initialization, "Interpreter::interpret", "Preparing for interpretation");
 
+	mBlocksTable->clear();
 	mInterpretersInterface->errorReporter()->clear();
 
 	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
@@ -285,7 +288,7 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 
 void Interpreter::runTimer()
 {
-	mTimer->start(200);
+	mTimer->start(1);
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()));
 	if (mRobotModel->sensor(inputPort::port1)) {
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)));

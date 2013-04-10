@@ -13,6 +13,7 @@
 				<value>4</value>
 			</enum>
 			<enum name="GuardType">
+				<value></value>
 				<value>итерация</value>
 				<value>меньше 0</value>
 				<value>больше 0</value>

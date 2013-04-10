@@ -18,8 +18,8 @@ void WaitForSensorBlock::run()
 		return;
 	}
 
-	connect(sensorInstance->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
-	connect(sensorInstance->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
+	connect(sensorInstance->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)), Qt::UniqueConnection);
+	connect(sensorInstance->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()), Qt::UniqueConnection);
 
 	sensorInstance->read();
 	mActiveWaitingTimer.start();
@@ -40,4 +40,18 @@ void WaitForSensorBlock::timerTimeout()
 	if (sensorInstance) {
 		sensorInstance->read();
 	}
+}
+
+void WaitForSensorBlock::stop()
+{
+	disconnect(this, SLOT(responseSlot(int)));
+	disconnect(this, SLOT(failureSlot()));
+	WaitBlock::stop();
+}
+
+void WaitForSensorBlock::stopActiveTimerInBlock()
+{
+	disconnect(this, SLOT(responseSlot(int)));
+	disconnect(this, SLOT(failureSlot()));
+	WaitBlock::stopActiveTimerInBlock();
 }

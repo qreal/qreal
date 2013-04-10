@@ -24,6 +24,7 @@ public:
 
 	virtual void run();
 	virtual QList<Block::SensorPortPair> usedSensors() const;
+	virtual void stopActiveTimerInBlock();
 
 protected slots:
 	virtual void responseSlot(int reading) = 0;
@@ -32,6 +33,7 @@ protected slots:
 protected:
 	virtual robotParts::Sensor *sensor() const = 0;
 	virtual QString name() const = 0;
+	virtual void stop();
 
 	sensorType::SensorTypeEnum mType;
 	inputPort::InputPortEnum mPort;
