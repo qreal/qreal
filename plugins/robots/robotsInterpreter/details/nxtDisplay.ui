@@ -461,9 +461,6 @@ QPushButton#rightButton{
 }
 QPushButton#rightButton:pressed{
 	border-image: url(://icons/rightButtonPressed.bmp);
-}
-QWidget#NxtDisplay{
-	background-color: rgb(255, 255, 255);
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
