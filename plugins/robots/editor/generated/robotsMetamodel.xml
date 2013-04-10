@@ -1083,17 +1083,17 @@
 			<node displayedName="Ждать нажатия кнопок" name="WaitForButtons">
                 <graphics>
                     <picture sizex="50" sizey="50">
-                        <image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+                        <image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
                     </picture>
                     <labels>
-                        <label x="33" y="60" textBinded="RightButtonClicks"/>
-                        <label x="0" y="60" text="Количество нажатий правой кнопки"/>
-                        <label x="33" y="80" textBinded="LeftButtonClicks"/>
-                        <label x="0" y="80" text="Количество нажатий левой кнопки"/>
-						<label x="33" y="100" textBinded="CentralButtonClicks"/>
-                        <label x="0" y="100" text="Количество нажатий центральной кнопки"/>
-						<label x="33" y="120" textBinded="BottomButtonClicks"/>
-                        <label x="0" y="120" text="Количество нажатий нижней кнопки"/>
+                        <label x="36" y="60" textBinded="RightButtonClicks"/>
+                        <label x="0" y="60" text="Правая: "/>
+                        <label x="30" y="80" textBinded="LeftButtonClicks"/>
+                        <label x="0" y="80" text="Левая: "/>
+						<label x="60" y="100" textBinded="CentralButtonClicks"/>
+                        <label x="0" y="100" text="Центральная: "/>
+						<label x="36" y="120" textBinded="BottomButtonClicks"/>
+                        <label x="0" y="120" text="Нижняя: "/>
                     </labels>
                     <ports>
                         <linePort>
@@ -1118,16 +1118,16 @@
                 <logic>
                     <container/>
                     <properties>
-						<property displayedName="Количество нажатий правой кнопки" type="string" name="RightButtonClicks">
+						<property displayedName="Количество нажатий правой кнопки" type="int" name="RightButtonClicks">
                             <default>0</default>
                         </property>
-						<property displayedName="Количество нажатий левой кнопки" type="string" name="LeftButtonClicks">
+						<property displayedName="Количество нажатий левой кнопки" type="int" name="LeftButtonClicks">
                             <default>0</default>
                         </property>
-						<property displayedName="Количество нажатий центральной кнопки" type="string" name="CentralButtonClicks">
+						<property displayedName="Количество нажатий центральной кнопки" type="int" name="CentralButtonClicks">
                             <default>0</default>
                         </property>
-						<property displayedName="Количество нажатий нижней кнопки" type="string" name="BottomButtonClicks">
+						<property displayedName="Количество нажатий нижней кнопки" type="int" name="BottomButtonClicks">
                             <default>0</default>
                         </property>
                     </properties>

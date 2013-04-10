@@ -41,37 +41,10 @@ QString WaitForButtonsBlock::name() const
 
 void WaitForButtonsBlock::responseSlot(bool leftIsDown, bool rightIsDown, bool centralIsDown, bool bottomIsDown)
 {
-	if(leftIsDown){
-		mLeftWasDown = true;
-	}
-	if(mLeftWasDown && !leftIsDown){
-		mLeftButtonClicks++;
-		mLeftWasDown = false;
-	}
-
-	if(rightIsDown){
-		mRightWasDown = true;
-	}
-	if(mRightWasDown && !rightIsDown){
-		mRightButtonClicks++;
-		mRightWasDown = false;
-	}
-	if(centralIsDown){
-		mCentralWasDown = true;
-	}
-	if(mCentralWasDown && !centralIsDown){
-		mCentralButtonClicks++;
-		mCentralWasDown = false;
-	}
-
-	if(bottomIsDown){
-		mBottomWasDown = true;
-	}
-	if(mBottomWasDown && !bottomIsDown){
-		mBottomButtonClicks++;
-		mBottomWasDown = false;
-	}
-
+	clicksCounter(mLeftWasDown, leftIsDown, mLeftButtonClicks);
+	clicksCounter(mRightWasDown, rightIsDown, mRightButtonClicks);
+	clicksCounter(mCentralWasDown, centralIsDown, mCentralButtonClicks);
+	clicksCounter(mBottomWasDown, bottomIsDown, mBottomButtonClicks);
 
 	int const targetLeftButtonClicks = evaluate("LeftButtonClicks").toInt();
 	int const targetRightButtonClicks = evaluate("RightButtonClicks").toInt();
@@ -81,8 +54,18 @@ void WaitForButtonsBlock::responseSlot(bool leftIsDown, bool rightIsDown, bool c
 	if(mLeftButtonClicks >= targetLeftButtonClicks
 		&& mRightButtonClicks >= targetRightButtonClicks
 		&& mCentralButtonClicks >= targetCentralButtonClicks
-		&& mBottomButtonClicks >= targetBottomButtonClicks){
+		&& mBottomButtonClicks >= targetBottomButtonClicks) {
 		stop();
+	}
+}
+
+void WaitForButtonsBlock::clicksCounter(bool &buttonWasDown, bool buttonIsDown, int &clicks){
+	if(buttonIsDown) {
+		buttonWasDown = true;
+	}
+	if(buttonWasDown && !buttonIsDown) {
+		clicks++;
+		buttonWasDown = false;
 	}
 }
 

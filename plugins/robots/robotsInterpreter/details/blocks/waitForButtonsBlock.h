@@ -30,6 +30,8 @@ protected slots:
 	virtual void timerTimeout();
 
 private:
+	void clicksCounter(bool &buttonWasDown, bool buttonIsDown, int &clicks);
+
 	int mLeftButtonClicks;
 	int mRightButtonClicks;
 	int mCentralButtonClicks;

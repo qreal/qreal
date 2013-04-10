@@ -5,7 +5,7 @@
 #include "brickImplementations/realBrickImplementation.h"
 #include "motorImplementations/realMotorImplementation.h"
 #include "sensorImplementations/bluetoothTouchSensorImplementation.h"
-#include "displayImplementations/RealDisplayImplementation.h"
+#include "displayImplementations/realDisplayImplementation.h"
 #include "sensorImplementations/bluetoothSonarSensorImplementation.h"
 #include "sensorImplementations/bluetoothColorSensorImplementation.h"
 #include "sensorImplementations/bluetoothLightSensorImplementation.h"
