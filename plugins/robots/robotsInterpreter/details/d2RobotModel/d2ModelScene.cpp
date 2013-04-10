@@ -1,7 +1,10 @@
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QPainter>
 
 #include "d2ModelScene.h"
+#include "../../../../../qrutils/graphicsUtils/griddrawer.h"
+#include "../../../../../qrkernel/settingsManager.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -16,6 +19,7 @@ D2ModelScene::D2ModelScene(AbstractView *view, QObject *parent)
 	setEmptyRect(-500, -500, mSizeEmptyRectX, mSizeEmptyRectY);
 	setItemIndexMethod(NoIndex);
 	setEmptyPenBrushItems();
+    gd = new GridDrawer;
 }
 
 D2ModelScene::~D2ModelScene()
@@ -92,4 +96,18 @@ void D2ModelScene::keyPressEvent(QKeyEvent *event)
 	} else {
 		QGraphicsScene::keyPressEvent(event);
 	}
+}
+
+void D2ModelScene::drawBackground ( QPainter * painter, const QRectF & rect )
+{
+    if (SettingsManager::value("2dShowGrid").toBool()){
+        QGraphicsScene::drawBackground(painter, rect);
+        int cellSize = SettingsManager::value("2dGridCellSize").toInt();
+        gd -> drawGrid (painter, rect, cellSize);
+    }
+}
+
+void D2ModelScene::updateGrid()
+{
+    this->update();
 }

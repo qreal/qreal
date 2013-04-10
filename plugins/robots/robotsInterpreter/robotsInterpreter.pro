@@ -14,12 +14,13 @@ else:LIBS  += -lqextserialport
 TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
-	robotsPlugin.h \
+        robotsPlugin.h \
 	interpreter.h \
 	sensorConstants.h \
 	robotSettingsPage.h \
 	customizer.h \
 	watchListWindow.h \
+	gridParameters.h \
 	details/thread.h \
 	details/blocksFactory.h \
 	details/blocksTable.h \
@@ -34,12 +35,14 @@ HEADERS += \
 	details/sensorsConfigurationWidget.h \
     details/nullTimer.h
 
+
 SOURCES += \
 	robotsPlugin.cpp \
 	interpreter.cpp \
 	robotSettingsPage.cpp \
 	customizer.cpp \
 	watchListWindow.cpp\
+	gridParameters.cpp \
 	details/thread.cpp \
 	details/blocksTable.cpp \
 	details/blocksFactory.cpp \
@@ -52,10 +55,11 @@ SOURCES += \
 	details/sensorsConfigurationWidget.cpp \
     details/nullTimer.cpp
 
+
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
-	watchListWindow.ui \
+        watchListWindow.ui \
 	details/sensorsConfigurationWidget.ui \
 
 RESOURCES += \

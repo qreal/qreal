@@ -38,7 +38,6 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mFirstShow(true)
 {
 	setWindowIcon(QIcon(":/icons/kcron.png"));
-
 	initWidget();
 
 	connectUiButtons();
@@ -49,6 +48,8 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	connect(mScene, SIGNAL(itemDeleted(QGraphicsItem*)), this, SLOT(deleteItem(QGraphicsItem*)));
 
 	connect(mScene, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
+
+    connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(updateGrid()));
 
 	setCursorType(static_cast<cursorType::CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
