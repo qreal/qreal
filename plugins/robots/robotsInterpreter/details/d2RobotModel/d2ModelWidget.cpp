@@ -975,6 +975,11 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 	emit d2WasClosed();
 }
 
+QVector<SensorItem *> D2ModelWidget::sensorItems() const
+{
+	return mSensors;
+}
+
 void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 		, const QPointF &oldPos)
 {

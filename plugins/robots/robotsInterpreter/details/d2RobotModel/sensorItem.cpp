@@ -175,5 +175,6 @@ void SensorItem::onPositionChanged()
 
 void SensorItem::onDirectionChanged()
 {
+	mConfiguration.setPosition(mPort, scenePos().toPoint());
 	mConfiguration.setDirection(mPort, rotation());
 }

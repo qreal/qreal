@@ -71,6 +71,8 @@ signals:
 
 protected:
 	void initTitlesBy(QRectF const& contents);
+	/// Sets titles visibility without state registering
+	void setTitlesVisiblePrivate(bool visible);
 
 	bool mMoving;
 	qReal::Id mId;
