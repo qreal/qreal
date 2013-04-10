@@ -91,6 +91,8 @@ public:
 
 	void closeEvent(QCloseEvent *event);
 
+	QVector<SensorItem *> sensorItems() const;
+
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
