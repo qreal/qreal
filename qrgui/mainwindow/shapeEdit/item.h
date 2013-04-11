@@ -74,7 +74,7 @@ public:
 
 	void setVisibilityCondition(VisibilityCondition const &condition);
 	void setVisibilityCondition(QString const &property, QString const &sign, QString const &value);
-	VisibilityCondition visibilityCondition();
+	VisibilityCondition visibilityCondition() const;
 
 protected:
 	QList<QPair<ScalingPointState, QColor> > mListScalePoint;

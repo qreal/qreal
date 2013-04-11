@@ -19,8 +19,8 @@ HEADERS += \
 	mainwindow/projectManager/autosaver.h \
 	mainwindow/externBrowser.h \
 	mainwindow/mainWindowDockInterface.h \
-        mainwindow/qscintillaTextEdit.h \
-        mainwindow/shapeEdit/visibilityValueWidget.h
+	mainwindow/qscintillaTextEdit.h \
+	mainwindow/shapeEdit/visibilityValueWidget.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \

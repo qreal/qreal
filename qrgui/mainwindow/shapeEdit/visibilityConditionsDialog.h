@@ -33,7 +33,7 @@ private slots:
 
 private:
 	void setWidgetValues();
-	bool areValuesEqual();
+	bool areValuesEqual() const;
 	void changeOperators(Type type);
 
 	Ui::VisibilityConditionsDialog *ui;

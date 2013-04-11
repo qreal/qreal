@@ -233,7 +233,7 @@ void Item::setVisibilityCondition(QString const &property, QString const &sign, 
 	mVisibilityCondition.value = value;
 }
 
-Item::VisibilityCondition Item::visibilityCondition()
+Item::VisibilityCondition Item::visibilityCondition() const
 {
 	return mVisibilityCondition;
 }
@@ -242,7 +242,7 @@ QPair<QDomElement, Item::DomElementTypes> Item::generateDom(QDomDocument &docume
 {
 	QPair<QDomElement, Item::DomElementTypes> result = generateItem(document, topLeftPicture);
 
-	if (mVisibilityCondition.property != QString() && mVisibilityCondition.value != QString()) {
+	if (!mVisibilityCondition.property.isEmpty() && !mVisibilityCondition.value.isEmpty()) {
 		QDomElement visibility = document.createElement("showIf");
 		result.first.appendChild(visibility);
 		visibility.setAttribute("property", mVisibilityCondition.property);

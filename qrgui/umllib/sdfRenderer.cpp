@@ -152,27 +152,22 @@ bool SdfRenderer::checkCondition(QDomElement const &condition) const
 
 	if (sign == "=~") {
 		return QRegExp(conditionValue).exactMatch(realValue);
-	}
-	if (sign == ">") {
+	} else if (sign == ">") {
 		return realValue.toInt() > conditionValue.toInt();
-	}
-	if (sign == "<") {
+	} else if (sign == "<") {
 		return realValue.toInt() < conditionValue.toInt();
-	}
-	if (sign == ">=") {
+	} else if (sign == ">=") {
 		return realValue.toInt() >= conditionValue.toInt();
-	}
-	if (sign == "<=") {
+	} else if (sign == "<=") {
 		return realValue.toInt() <= conditionValue.toInt();
-	}
-	if (sign == "!=") {
+	} else if (sign == "!=") {
 		return realValue != conditionValue;
-	}
-	if (sign == "=") {
+	} else if (sign == "=") {
 		return realValue == conditionValue;
+	} else {
+		qDebug() << "Unsupported logical operator \"" + sign + "\"";
+		return false;
 	}
-	qDebug() << "Unsupported logical operator \"" + sign + "\"";
-	return false;
 }
 
 void SdfRenderer::line(QDomElement &element)

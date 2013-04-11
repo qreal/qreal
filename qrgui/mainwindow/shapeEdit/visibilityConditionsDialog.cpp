@@ -68,7 +68,7 @@ void VisibilityConditionsDialog::setWidgetValues()
 	}
 }
 
-bool VisibilityConditionsDialog::areValuesEqual()
+bool VisibilityConditionsDialog::areValuesEqual() const
 {
 	Item::VisibilityCondition value = mItems.first()->visibilityCondition();
 	foreach (Item *item, mItems) {
