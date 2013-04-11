@@ -20,11 +20,11 @@ unsigned const touchSensorNotPressedSignal = 0;
 D2RobotModel::D2RobotModel(QObject *parent)
 		: QObject(parent)
 		, mD2ModelWidget(NULL)
-		, mTimeline(new Timeline(this))
-		, mNeedSync(false)
 		, mMotorA(NULL)
 		, mMotorB(NULL)
 		, mMotorC(NULL)
+		, mTimeline(new Timeline(this))
+		, mNeedSync(false)
 {
 	mAngle = 0;
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
