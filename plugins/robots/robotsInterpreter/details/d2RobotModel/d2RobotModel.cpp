@@ -22,6 +22,9 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		, mD2ModelWidget(NULL)
 		, mTimeline(new Timeline(this))
 		, mNeedSync(false)
+		, mMotorA(NULL)
+		, mMotorB(NULL)
+		, mMotorC(NULL)
 {
 	mAngle = 0;
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
@@ -35,6 +38,15 @@ D2RobotModel::~D2RobotModel()
 
 void D2RobotModel::initPosition()
 {
+	if (mMotorA) {
+		delete mMotorA;
+	}
+	if (mMotorB) {
+		delete mMotorB;
+	}
+	if (mMotorC) {
+		delete mMotorC;
+	}
 	mMotorA = initMotor(5, 0, 0, 0, false);
 	mMotorB = initMotor(5, 0, 0, 1, false);
 	mMotorC = initMotor(5, 0, 0, 2, false);
