@@ -51,10 +51,11 @@
                         <contains type="variableInLogicEditor"/>
                         <contains type="whileInLogicEditor"/>
                         <contains type="changeInLogicEditor"/>
-                        <contains type="returnInLogicEditor"/>
                         <contains type="takeGridOrListElementsInLogicEditor"/>
                         <contains type="forNodeInLogicEditor"/>
                         <contains type="outputSplitterInLogicEditor"/>
+                        <contains type="returnInLogicEditor"/>
+                        <contains type="beginNodeInLogicEditor"/>
                         <contains type="ifNodeInLogicEditor"/>
                     </container>
                     <properties>
@@ -256,6 +257,7 @@
                 </logic>
             </edge>
             <import as="cyclicValueInLogicEditor" displayedName="Cyclic values" name="qUbiqConditionEditor::cyclicValue"/>
+            <import as="beginNodeInLogicEditor" displayedName="Begin node" name="qUbiqConditionEditor::beginNode"/>
         </graphicTypes>
     </diagram>
     <diagram displayedName="QUbiq Presentation Editor" nodeName="qUbiqPresentationDiagram" name="qUbiqPresentationEditor">
@@ -319,6 +321,7 @@
                         <contains type="variableInPresentationEditor"/>
                         <contains type="text"/>
                         <contains type="image"/>
+                        <contains type="beginNodeInPresentationEditor"/>
                     </container>
                     <properties>
                         <property displayedName="Description" type="string" name="description"/>
@@ -543,6 +546,7 @@
                     </generalizations>
                 </logic>
             </node>
+            <import as="beginNodeInPresentationEditor" displayedName="Begin node" name="qUbiqConditionEditor::beginNode"/>
         </graphicTypes>
     </diagram>
     <diagram displayedName="QUbiq Condition Editor" nodeName="qUbiqConditionDiagram" name="qUbiqConditionEditor">
@@ -584,6 +588,7 @@
                         <contains type="abstractConditionalNode"/>
                         <contains type="variable"/>
                         <contains type="outputSplitter"/>
+                        <contains type="beginNode"/>
                     </container>
                     <properties>
                         <property displayedName="Description" type="string" name="description"/>
@@ -881,17 +886,38 @@
             </node>
             <node displayedName="Output splitter" name="outputSplitter">
                 <graphics>
-                    <picture sizex="80" sizey="17">
+                    <picture sizex="80" sizey="15">
                         <rectangle fill="#000000" stroke-style="solid" stroke="#000000" y1="0a" stroke-width="0" x1="0" y2="14a" fill-style="solid" x2="79"/>
                     </picture>
                     <labels/>
                     <ports>
-                        <pointPort x="40" y="15a"/>
                         <linePort>
                             <start startx="10" starty="-1a"/>
                             <end endx="69" endy="0a"/>
                         </linePort>
+                        <linePort>
+                            <start startx="10" starty="14a"/>
+                            <end endx="69" endy="15a"/>
+                        </linePort>
                     </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                </logic>
+            </node>
+            <node displayedName="Begin node" name="beginNode">
+                <graphics>
+                    <picture sizex="38" sizey="38">
+                        <ellipse fill="#000000" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="3" y2="35" fill-style="solid" x2="35"/>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="2" y="19"/>
+                        <pointPort x="36" y="19"/>
+                        <pointPort x="19" y="36"/>
+                        <pointPort x="19" y="2"/>
+                    </ports>
+                    <nonResizeable/>
                 </graphics>
                 <logic>
                     <container/>

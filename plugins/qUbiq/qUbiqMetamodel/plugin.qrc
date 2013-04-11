@@ -4,6 +4,8 @@
 	<file>generated/shapes/AbstractConditionalNodePorts.sdf</file>
 	<file>generated/shapes/AbstractGridOrListNodeClass.sdf</file>
 	<file>generated/shapes/AbstractGridOrListNodePorts.sdf</file>
+	<file>generated/shapes/BeginNodeClass.sdf</file>
+	<file>generated/shapes/BeginNodePorts.sdf</file>
 	<file>generated/shapes/ChangeClass.sdf</file>
 	<file>generated/shapes/ChangePorts.sdf</file>
 	<file>generated/shapes/ConditionLinkClass.sdf</file>
@@ -25,6 +27,8 @@
 	<file>generated/shapes/VariablePorts.sdf</file>
 	<file>generated/shapes/WhileClass.sdf</file>
 	<file>generated/shapes/WhilePorts.sdf</file>
+	<file>generated/shapes/BeginNodeInLogicEditorClass.sdf</file>
+	<file>generated/shapes/BeginNodeInLogicEditorPorts.sdf</file>
 	<file>generated/shapes/ChangeInLogicEditorClass.sdf</file>
 	<file>generated/shapes/ChangeInLogicEditorPorts.sdf</file>
 	<file>generated/shapes/ConditionLinkInLogicEditorClass.sdf</file>
@@ -60,6 +64,8 @@
 	<file>generated/shapes/AbstractIsNullNodePorts.sdf</file>
 	<file>generated/shapes/AbstractListsNodeClass.sdf</file>
 	<file>generated/shapes/AbstractListsNodePorts.sdf</file>
+	<file>generated/shapes/BeginNodeInPresentationEditorClass.sdf</file>
+	<file>generated/shapes/BeginNodeInPresentationEditorPorts.sdf</file>
 	<file>generated/shapes/ButtonClass.sdf</file>
 	<file>generated/shapes/ButtonPorts.sdf</file>
 	<file>generated/shapes/ExitButtonClass.sdf</file>
