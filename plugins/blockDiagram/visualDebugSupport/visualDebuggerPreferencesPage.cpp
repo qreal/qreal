@@ -1,4 +1,4 @@
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QFileDialog>
 
 #include "visualDebuggerPreferencesPage.h"
 #include "ui_visualDebuggerPreferencesPage.h"

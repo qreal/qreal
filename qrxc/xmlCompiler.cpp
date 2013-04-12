@@ -149,6 +149,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
 		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"
+		<< "\tQ_PLUGIN_METADATA(IID \"" << mPluginName << "\")\n"
 		<< "\n"
 		<< "public:\n"
 		<< "\n"
@@ -261,7 +262,8 @@ void XmlCompiler::generateIncludes(OutFile &out)
 
 	mEditors[mCurrentEditor]->generateListenerIncludes(out);
 
-	out() << "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
+	out()
+		//<< "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
 		<< mPluginName << "Plugin::" << mPluginName << "Plugin()\n{\n"
 		<< "\tinitPlugin();\n"
 		<< "}\n\n";

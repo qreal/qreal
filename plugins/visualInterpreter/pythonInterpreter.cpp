@@ -43,7 +43,7 @@ bool PythonInterpreter::startPythonInterpreterProcess()
 
 		QString const scriptDir = mTempScriptPath.mid(0, mTempScriptPath.lastIndexOf("/"));
 		QString const scriptDirStr = "__script_dir__ = '" + scriptDir + "'\n";
-		mInterpreterProcess->write(scriptDirStr.toAscii());
+		mInterpreterProcess->write(scriptDirStr.toLatin1());
 		mInterpreterProcess->waitForBytesWritten();
 	}
 	return true;
@@ -72,9 +72,9 @@ bool PythonInterpreter::interpret(QString const &code, CodeType const codeType)
 		out() << actualCode;
 		out().flush();
 		QString const command = "execfile('" + mTempScriptPath + "')\n";
-		mInterpreterProcess->write(command.toAscii());
+		mInterpreterProcess->write(command.toLatin1());
 	} else {
-		mInterpreterProcess->write(actualCode.toAscii());
+		mInterpreterProcess->write(actualCode.toLatin1());
 	}
 
 	mInterpreterProcess->waitForBytesWritten();

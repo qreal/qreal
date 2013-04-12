@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QGraphicsView>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsView>
 #include <QtCore/QList>
 
 #include "view.h"
@@ -101,8 +101,8 @@ private:
 	bool mWaitMove;
 	int mCount;
 	Line *mLine;
-	Ellipse *mEllipse;
-	Rectangle *mRectangle;
+	QRealEllipse *mEllipse;
+	QRealRectangle *mRectangle;
 	Text *mText;
 	TextPicture *mTextPicture;
 	PointPort *mPointPort;

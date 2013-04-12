@@ -1,9 +1,9 @@
 #include "refactoringPlugin.h"
 
 #include <QtCore/QProcess>
-#include <QtGui/QFileDialog>
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
 
 #include "../../../qrutils/xmlUtils.h"
 #include "../../../qrutils/outFile.h"
@@ -13,8 +13,6 @@
 using namespace qReal;
 using namespace refactoring;
 using namespace utils;
-
-Q_EXPORT_PLUGIN2(refactoring, qReal::refactoring::RefactoringPlugin)
 
 RefactoringPlugin::RefactoringPlugin()
 	: mPreferencesPage(new RefactoringPreferencesPage())

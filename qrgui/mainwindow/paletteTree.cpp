@@ -1,10 +1,13 @@
 #include <QtCore/QUuid>
 #include <QtGui/QMouseEvent>
+#include <QtCore/QtAlgorithms>
+#include <QtWidgets/QVBoxLayout>
+#include <QtCore/QMimeData>
+#include <QtGui/QDrag>
+
+#include "../../qrkernel/settingsManager.h"
 #include "../../qrkernel/definitions.h"
 #include "paletteTree.h"
-#include <QtCore/QtAlgorithms>
-#include <QtGui/QVBoxLayout>
-#include "../../qrkernel/settingsManager.h"
 
 using namespace qReal;
 using namespace gui;

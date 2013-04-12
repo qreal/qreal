@@ -1,8 +1,8 @@
 #include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QStyleOptionGraphicsItem>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtCore/QDebug>
 
 #include "abstractItem.h"

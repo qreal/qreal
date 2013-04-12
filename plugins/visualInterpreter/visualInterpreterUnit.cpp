@@ -345,7 +345,7 @@ Id VisualInterpreterUnit::startElement() const
 			}
 		}
 	}
-	
+
 	IdList const elementsInRule = children(mRuleToFind);
 
 	foreach (Id const &element, elementsInRule) {
@@ -672,7 +672,7 @@ void VisualInterpreterUnit::processPythonInterpreterStdOutput(QHash<QPair<QStrin
 		}
 
 		setProperty(mMatches.first().value(mPythonGenerator->idByName(elemName))
-				, propName, QString::fromUtf8(value.toAscii()));
+				, propName, QString::fromUtf8(value.toLatin1()));
 	}
 
 	mPythonInterpreter->continueStep();

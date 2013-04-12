@@ -1,5 +1,5 @@
 #include <QtCore/QtPlugin>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "mainwindow/mainWindow.h"
 #include "thirdparty/windowsmodernstyle.h"

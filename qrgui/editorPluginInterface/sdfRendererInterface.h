@@ -12,7 +12,7 @@ public:
 	virtual void render(QPainter *painter, QRectF const &bounds) = 0;
 };
 
-class SdfIconEngineV2Interface : public QIconEngineV2
+class SdfIconEngineV2Interface : public QIconEngine
 {
 public:
 };

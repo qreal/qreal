@@ -1,7 +1,7 @@
 #include "editorManager.h"
 
 #include <QtCore/QCoreApplication>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
 
 #include "../../qrkernel/ids.h"

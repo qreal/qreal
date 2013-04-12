@@ -5,13 +5,13 @@
 #include "xmlLoader.h"
 #include "../../../qrutils/graphicsUtils/colorlisteditor.h"
 
-#include <QtGui/QFileDialog>
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QGraphicsItem>
 #include <QtCore/QList>
-#include <QtGui/QComboBox>
-#include <QtGui/QSpinBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QSpinBox>
 #include <QtGui/QImage>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 #include <QDebug>
 

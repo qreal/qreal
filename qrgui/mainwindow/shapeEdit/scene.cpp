@@ -4,7 +4,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include <limits>
 
@@ -173,7 +173,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	case ellipse :
 		setX1andY1(event);
-		mEllipse = new Ellipse(mX1, mY1, mX1, mY1, NULL);
+		mEllipse = new QRealEllipse(mX1, mY1, mX1, mY1, NULL);
 		mEllipse->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mEllipse);
 		setZValue(mEllipse);
@@ -182,7 +182,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	case rectangle :
 		setX1andY1(event);
-		mRectangle = new Rectangle(mX1, mY1, mX1, mY1, NULL);
+		mRectangle = new QRealRectangle(mX1, mY1, mX1, mY1, NULL);
 		mRectangle->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mRectangle);
 		setZValue(mRectangle);
@@ -229,7 +229,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	default:  // if we wait some resize
 		setX1andY1(event);
-		mGraphicsItem = dynamic_cast<graphicsUtils::AbstractItem *>(itemAt(event->scenePos()));
+		mGraphicsItem = dynamic_cast<graphicsUtils::AbstractItem *>(itemAt(event->scenePos(), QTransform()));
 		if (mGraphicsItem != NULL) {
 			mGraphicsItem->changeDragState(mX1, mY1);
 			Item *graphicsItem = dynamic_cast<Item *>(mGraphicsItem);

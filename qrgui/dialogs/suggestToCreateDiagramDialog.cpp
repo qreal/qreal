@@ -1,4 +1,4 @@
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QVBoxLayout>
 
 #include "suggestToCreateDiagramDialog.h"
 #include "../mainwindow/mainWindow.h"
