@@ -8,8 +8,8 @@
 class SdfRendererInterface : public QObject
 {
 public:
-	virtual bool load (const QString &filename) = 0;
-	virtual void render(QPainter *painter, const QRectF &bounds) = 0;
+	virtual bool load (QString const &filename) = 0;
+	virtual void render(QPainter *painter, QRectF const &bounds) = 0;
 };
 
 class SdfIconEngineV2Interface : public QIconEngineV2

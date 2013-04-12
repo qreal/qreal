@@ -495,7 +495,7 @@ QList<TextPicture *> Scene::selectedTextPictureItems()
 	return resList;
 }
 
-void Scene::changePenStyle(const QString &text)
+void Scene::changePenStyle(QString const &text)
 {
 	mPenStyleItems = text;
 	foreach (Item *item, selectedSceneItems())
@@ -511,7 +511,7 @@ void Scene::changePenWidth(int width)
 	update();
 }
 
-void Scene::changePenColor(const QString &text)
+void Scene::changePenColor(QString const &text)
 {
 	mPenColorItems = text;
 	foreach (Item *item, selectedSceneItems())
@@ -519,7 +519,7 @@ void Scene::changePenColor(const QString &text)
 	update();
 }
 
-void Scene::changeBrushStyle(const QString &text)
+void Scene::changeBrushStyle(QString const &text)
 {
 	mBrushStyleItems = text;
 	foreach (Item *item, selectedSceneItems())
@@ -527,7 +527,7 @@ void Scene::changeBrushStyle(const QString &text)
 	update();
 }
 
-void Scene::changeBrushColor(const QString &text)
+void Scene::changeBrushColor(QString const &text)
 {
 	mBrushColorItems = text;
 	foreach (Item *item, selectedSceneItems())
@@ -584,7 +584,7 @@ void Scene::changeFontPixelSize(int size)
 	update();
 }
 
-void Scene::changeFontColor(const QString & text)
+void Scene::changeFontColor(QString const &text)
 {
 	foreach (TextPicture *item, selectedTextPictureItems())
 		item->setFontColor(text);
@@ -612,7 +612,7 @@ void Scene::changeFontUnderline(bool isChecked)
 	update();
 }
 
-void Scene::changeTextName(const QString &name)
+void Scene::changeTextName(QString const &name)
 {
 	foreach (TextPicture *item, selectedTextPictureItems())
 		item->setTextName(name);

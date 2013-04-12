@@ -19,7 +19,7 @@ public:
 	explicit ShapeEdit(QWidget *parent = NULL);
 	ShapeEdit(QPersistentModelIndex const &index, int const &role);
 	graphicsUtils::AbstractView* getView();
-	void load(const QString &text);
+	void load(QString const &text);
 	~ShapeEdit();
 signals:
 	void shapeSaved(QString const &shape, QPersistentModelIndex const &index, int const &role);

@@ -55,7 +55,7 @@ void EditorView::toggleOpenGL(bool checked)
 
 void EditorView::zoomIn()
 {
-	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()){
+	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()) {
 		return;
 	}
 	setSceneRect(mScene->sceneRect());
@@ -70,7 +70,7 @@ void EditorView::zoomIn()
 
 void EditorView::zoomOut()
 {
-	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()){
+	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()) {
 		return;
 	}
 	setSceneRect(mScene->sceneRect());

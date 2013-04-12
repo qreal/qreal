@@ -34,7 +34,6 @@ public:
 	virtual void initTitles();
 
 	bool isDividable();
-	void newArrangeLink();
 	void adjustLink(bool isDragging = false);
 
 	/// use adjustLink() to all links that have with this general master

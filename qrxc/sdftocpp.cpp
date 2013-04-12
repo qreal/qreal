@@ -14,7 +14,7 @@ SdfRenderer::SdfRenderer()
 	toGen.setString(&toGenerator,QIODevice::ReadWrite);
 }
 
-SdfRenderer::SdfRenderer(const QString path)
+SdfRenderer::SdfRenderer(QString const path)
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
 	if (!load(path))
@@ -43,7 +43,7 @@ SdfRenderer::SdfRenderer(const QDomNode &bla)
 	first_size_y = docElem.attribute("sizey").toInt();
 }
 
-bool SdfRenderer::load(const QString &filename)
+bool SdfRenderer::load(QString const &filename)
 {
 	QFile file(filename);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))

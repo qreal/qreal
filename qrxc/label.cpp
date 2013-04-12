@@ -44,8 +44,8 @@ void Label::generateCodeForConstructor(OutFile &out)
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 
-	const QString scalingX = mX.isScalable() ? "true" : "false";
-	const QString scalingY = mY.isScalable() ? "true" : "false";
+	QString const scalingX = mX.isScalable() ? "true" : "false";
+	QString const scalingY = mY.isScalable() ? "true" : "false";
 	out() << "			" + titleName() + "->setScaling(" + scalingX + ", " + scalingY + ");\n";
 
 	// TODO: вынести отсюда в родительский класс.

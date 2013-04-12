@@ -33,7 +33,7 @@ class Scene : public graphicsUtils::AbstractScene
 public:
 	Scene(graphicsUtils::AbstractView *view, QObject *parent = 0);
 	QPoint centerEmpty();
-	void changeTextName(const QString &name);
+	void changeTextName(QString const &name);
 	void setZValue(Item* item);
 	void addImage(QString const &fileName);
 
@@ -57,17 +57,17 @@ signals:
 	void resetHighlightAllButtons();
 
 private slots:
-	void changePenStyle(const QString &text);
+	void changePenStyle(QString const &text);
 	void changePenWidth(int width);
-	void changePenColor(const QString &text);
-	void changeBrushStyle(const QString &text);
-	void changeBrushColor(const QString &text);
+	void changePenColor(QString const &text);
+	void changeBrushStyle(QString const &text);
+	void changeBrushColor(QString const &text);
 	void changePalette();
 	void changeFontPalette();
 
 	void changeFontFamily(const QFont& font);
 	void changeFontPixelSize(int size);
-	void changeFontColor(const QString & text);
+	void changeFontColor(QString const &text);
 	void changeFontItalic(bool isChecked);
 	void changeFontBold(bool isChecked);
 	void changeFontUnderline(bool isChecked);

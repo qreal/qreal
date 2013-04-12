@@ -130,7 +130,7 @@ void MetamodelGeneratorSupport::insertElementsInDiagramSublevel(QDomDocument met
 }
 
 void MetamodelGeneratorSupport::insertElementInDiagramSublevel(QDomDocument metamodel,
-		const QString &sublevelName, QDomElement const &element)
+		QString const &sublevelName, QDomElement const &element)
 {
 	QDomNodeList sublevels = metamodel.elementsByTagName(sublevelName);
 

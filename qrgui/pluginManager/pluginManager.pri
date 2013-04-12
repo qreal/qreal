@@ -4,11 +4,11 @@ HEADERS += \
 	pluginManager/listenerApi.h \
 	pluginManager/toolPluginManager.h \
 	pluginManager/pattern.h \
-	pluginManager/patternparser.h
+	pluginManager/patternParser.h
 
 SOURCES += \
 	pluginManager/editorManager.cpp \
 	pluginManager/listenerManager.cpp \
 	pluginManager/toolPluginManager.cpp \
 	pluginManager/pattern.cpp \
-	pluginManager/patternparser.cpp
+	pluginManager/patternParser.cpp

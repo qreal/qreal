@@ -4,8 +4,6 @@
 #include <QtCore/QPointF>
 
 #include "../../qrkernel/ids.h"
-
-//#include "editorManager.h"
 #include "pattern.h"
 
 namespace qReal {

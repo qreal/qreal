@@ -35,7 +35,7 @@ namespace qReal {
 		QList<QString> getPatternNames() const;
 		QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 		QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
-		QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
+		QString paletteGroupDescription(Id const &editor, const Id &diagram, QString const &group) const;
 		IdList elements(Id const &diagram) const;
 		bool loadPlugin(QString const &pluginName);
 		bool unloadPlugin(QString const &pluginName);
@@ -52,8 +52,8 @@ namespace qReal {
 		IdList getContainedTypes(const Id &id) const;
 		IdList getConnectedTypes(const Id &id) const;
 		IdList getUsedTypes(const Id &id) const;
-		QStringList getEnumValues(Id const &id, const QString &name) const;
-		QString getTypeName(Id const &id, const QString &name) const;
+		QStringList getEnumValues(Id const &id, QString const &name) const;
+		QString getTypeName(Id const &id, QString const &name) const;
 		QStringList getAllChildrenTypesOf(Id const &parent) const;
 
 		bool isEditor(Id const &id) const;

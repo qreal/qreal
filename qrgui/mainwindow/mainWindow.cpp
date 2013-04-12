@@ -50,7 +50,7 @@ using namespace qReal;
 
 QString const unsavedDir = "unsaved";
 
-MainWindow::MainWindow(const QString &fileToOpen)
+MainWindow::MainWindow(QString const &fileToOpen)
 		: mUi(new Ui::MainWindowUi)
 		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
 		, mModels(NULL)
@@ -438,7 +438,7 @@ void MainWindow::openRecentProjectsMenu()
 		mRecentProjectsMapper->setMapping(mRecentProjectsMenu->actions().last(), projectPath);
 	}
 
-	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(const QString &))
+	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(QString const &))
 			, mProjectManager, SLOT(openExisting(QString const &)));
 
 }
@@ -597,21 +597,21 @@ void MainWindow::deleteFromScene()
 
 	while (!itemsToDelete.isEmpty()) {
 		QGraphicsItem *currentItem = itemsToDelete.at(0);
-		if (dynamic_cast <EdgeElement*> (currentItem)) {
+		if (dynamic_cast<EdgeElement*>(currentItem)) {
 			edgesToDelete.append(currentItem);
 		} else {
-			if (dynamic_cast <NodeElement*> (currentItem)) {
+			if (dynamic_cast<NodeElement*>(currentItem)) {
 				nodesToDelete.append(currentItem);
 			}
 		}
 		itemsToDelete.removeAll(currentItem);
 	}
 
-	while (!nodesToDelete.isEmpty()){
+	while (!nodesToDelete.isEmpty()) {
 		QGraphicsItem *currentItem = nodesToDelete.at(0);
 		// delete possible children
 		foreach (QGraphicsItem *child, currentItem->childItems()) {
-			NodeElement* node = dynamic_cast <NodeElement*> (child);
+			NodeElement* node = dynamic_cast<NodeElement*>(child);
 			if (node) {
 				itemsToDeleteNoUpdate.append(node);
 				scene->deleteElementFromEdge(node->id(), currentItem->childItems());
@@ -621,16 +621,16 @@ void MainWindow::deleteFromScene()
 		}
 
 		itemsToDeleteNoUpdate.append(currentItem);
-		NodeElement *node = dynamic_cast <NodeElement*>(nodesToDelete.at(0));
+		NodeElement *node = dynamic_cast<NodeElement*>(nodesToDelete.at(0));
 		scene->deleteElementFromEdge(node->id(), edgesToDelete);
 		nodesToDelete.removeAll(currentItem);
 		nodesToIndDelete.append(currentItem);
 		deleteFromScene(currentItem);
 	}
 
-	while (!edgesToDelete.isEmpty()){
+	while (!edgesToDelete.isEmpty()) {
 		QGraphicsItem *currentItem = edgesToDelete.at(0);
-		EdgeElement *edge = dynamic_cast <EdgeElement*>(edgesToDelete.at(0));
+		EdgeElement *edge = dynamic_cast<EdgeElement*>(edgesToDelete.at(0));
 		if (edge->src() && !itemsToUpdate.contains(edge->src())) {
 			itemsToUpdate.append(edge->src());
 		}
@@ -643,7 +643,7 @@ void MainWindow::deleteFromScene()
 	// correcting unremoved edges
 	foreach (QGraphicsItem* item, itemsToUpdate) {
 		if (!itemsToDeleteNoUpdate.contains(item)) {
-			NodeElement* node = dynamic_cast <NodeElement*> (item);
+			NodeElement* node = dynamic_cast<NodeElement*> (item);
 			if (node) {
 				node->arrangeLinks();
 				node->adjustLinks();
@@ -651,85 +651,7 @@ void MainWindow::deleteFromScene()
 		}
 	}
 }
-//*/
-/*void MainWindow::deleteFromScene()
-{
-	QList<QGraphicsItem *> itemsToDelete = getCurrentTab()->scene()->selectedItems();
-	QList<QGraphicsItem *> edgesToDelete;
-	QList<QGraphicsItem *> itemsToUpdate;
-	QList<QGraphicsItem *> itemsToDeleteNoUpdate;
-	// QGraphicsScene::selectedItems() returns items in no particular order,
-	// so we should handle parent-child relationships manually
 
-	while (!itemsToDelete.isEmpty()) {
-		QGraphicsItem *currentItem = itemsToDelete.at(0);
-
-		// delete possible children
-		/*foreach (QGraphicsItem *child, currentItem->childItems()) {
-			NodeElement* node = dynamic_cast <NodeElement*> (child);
-			if (node) {
-				itemsToDeleteNoUpdate.append(node);
-				dynamic_cast<EditorViewScene*>(getCurrentTab()->scene())->deleteElementFromEdge(node->id());
-				foreach (EdgeElement* edge, node->getEdges()){
-					edgesToDelete.append(dynamic_cast <QGraphicsItem*>(edge));
-				}
-
-				itemsToDelete.removeAll(child);
-				deleteFromScene(child);
-			}
-			if (dynamic_cast <EdgeElement*> (child)){
-				edgesToDelete.append(child);
-				itemsToDelete.removeAll(child);
-			}
-		}
-
-		EdgeElement* edge = dynamic_cast <EdgeElement*> (currentItem);
-		if (edge) {
-			edgesToDelete.append(currentItem);
-			itemsToDelete.removeAll(currentItem);
-		} else {
-			NodeElement* node = dynamic_cast <NodeElement*> (currentItem);
-			if (node) {
-				itemsToDeleteNoUpdate.append(currentItem);
-				dynamic_cast<EditorViewScene*>(getCurrentTab()->scene())->deleteElementFromEdge(node->id());
-				foreach (EdgeElement* edge, node->getEdges()){
-					edgesToDelete.append(dynamic_cast <QGraphicsItem*>(edge));
-				}
-				dynamic_cast<EditorViewScene*>(getCurrentTab()->scene())->deleteElementFromEdge(node->id());
-			}
-			// delete the item itself
-			itemsToDelete.removeAll(currentItem);
-			deleteFromScene(currentItem);
-		}
-	}
-	while (!edgesToDelete.isEmpty()){
-		QGraphicsItem *currentItem = edgesToDelete.at(0);
-		EdgeElement* edge = dynamic_cast <EdgeElement*> (currentItem);
-		if (edge) {
-			if (edge->src() && !itemsToUpdate.contains(edge->src())) {
-				itemsToUpdate.append(edge->src());
-			}
-			if (edge->dst() && !itemsToUpdate.contains(edge->dst())) {
-				 itemsToUpdate.append(edge->dst());
-			}
-		}
-		// delete the item itself
-		edgesToDelete.removeAll(currentItem);
-		deleteFromScene(currentItem);
-	}//
-
-	// correcting unremoved edges
-	foreach (QGraphicsItem* item, itemsToUpdate) {
-		if (!itemsToDeleteNoUpdate.contains(item)) {
-			NodeElement* node = dynamic_cast <NodeElement*> (item);
-			if (node) {
-				node->arrangeLinks();
-				node->adjustLinks();
-			}
-		}
-	}
-}
-//*/
 void MainWindow::deleteElementFromScene(QPersistentModelIndex const &index)
 {
 	PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
@@ -1170,7 +1092,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 	// changing of palette active editor
 	if (SettingsManager::value("PaletteTabSwitching").toBool()) {
 		int i = 0;
-		foreach (const QString &name, mUi->paletteTree->editorsNames()) {
+		foreach (QString const &name, mUi->paletteTree->editorsNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
 			Id const diagramId = Id(id.editor(), id.diagram());
 			QString const diagramName = mEditorManager.friendlyName(diagramId);
@@ -1589,7 +1511,7 @@ void MainWindow::removeOldBackReference(QPersistentModelIndex const &index, int 
 	mModels->logicalRepoApi().removeBackReference(id, indexId);
 }
 
-void MainWindow::hideDockWidget(QDockWidget *dockWidget, const QString &name)
+void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString const &name)
 {
 	mDocksVisibility[name] = !dockWidget->isHidden();
 	if (mDocksVisibility[name]) {
@@ -1822,7 +1744,7 @@ void MainWindow::initRecentProjectsMenu()
 	connect(mRecentProjectsMenu, SIGNAL(aboutToShow()), this, SLOT(openRecentProjectsMenu()));
 }
 
-void MainWindow::saveDiagramAsAPictureToFile(const QString &fileName)
+void MainWindow::saveDiagramAsAPictureToFile(QString const &fileName)
 {
 	if (fileName.isEmpty()) {
 		return;
@@ -1902,7 +1824,7 @@ void MainWindow::changePaletteRepresentation()
 	}
 }
 
-void MainWindow::arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles)
+void MainWindow::arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles)
 {
 	Id const diagramId = activeDiagram();
 	DotRunner *runner = new DotRunner(diagramId

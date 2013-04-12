@@ -5,32 +5,24 @@
 #include "editorManager.h"
 
 using namespace qReal;
-GroupNode::GroupNode(QString const &type, QString const &id, QPointF const &position)
+GroupNode::GroupNode(QString const &typeArg, QString const &idArg, QPointF const &positionArg)
+		: type(typeArg), id(idArg), position(positionArg)
 {
-	this->type = type;
-	this->id = id;
-	this->position = position;
 }
 
-GroupEdge::GroupEdge(QString const &type, QString const &from, QString const &to)
+GroupEdge::GroupEdge(QString const &typeArg, QString const &fromArg, QString const &toArg)
+		: type(typeArg), from(fromArg), to(toArg)
 {
-	this->type = type;
-	this->from = from;
-	this->to = to;
 }
 
 Pattern::Pattern()
 {
 }
 
-Pattern::Pattern(QString const &editor, QString const &diagram,
-				 QString const &name, QString const &inNode, QString const &outNode)
+Pattern::Pattern(QString const &editor, QString const &diagram, QString const &name
+		, QString const &inNode, QString const &outNode)
+	: mEditor(editor), mDiagram(diagram), mGroupName(name), mInNode(inNode), mOutNode(outNode)
 {
-	mEditor = editor;
-	mDiagram = diagram;
-	mGroupName = name;
-	mInNode = inNode;
-	mOutNode = outNode;
 }
 
 void Pattern::setEditor(QString const &editor)
@@ -105,7 +97,7 @@ QString Pattern::outNode() const
 	return mOutNode;
 }
 
-void Pattern::countSize(EditorManager * editorManager)
+void Pattern::countSize(EditorManager *editorManager)
 {
 	qreal minY = 0;
 	qreal maxY = 0;
@@ -115,16 +107,16 @@ void Pattern::countSize(EditorManager * editorManager)
 	{
 		Id const element(mEditor, mDiagram, node.type, "");
 		QSize size = editorManager->iconSize(element);
-		if (minY > node.position.y()){
+		if (minY > node.position.y()) {
 			minY = node.position.y();
 		}
-		if (maxY < node.position.y() + size.height()){
+		if (maxY < node.position.y() + size.height()) {
 			maxY = node.position.y() + size.height();
 		}
-		if (minX > node.position.x()){
+		if (minX > node.position.x()) {
 			minX = node.position.x();
 		}
-		if (maxX < node.position.x() + size.width()){
+		if (maxX < node.position.x() + size.width()) {
 			maxX = node.position.x() + size.width();
 		}
 	}

@@ -554,7 +554,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	element.append(this);
 	QSize size = mGraphicalAssistApi->editorManager().iconSize(id());
 	evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos()
-								   , QPointF(size.width(), size.height()), element);
+			, QPointF(size.width(), size.height()), element);
 
 	// we should use mHighlightedNode to determine if there is a highlighted node
 	// insert current element into them and set mHighlightedNode to NULL
@@ -976,7 +976,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 	erasePlaceholder(false);
 	mPlaceholder = placeholder;
 	mPlaceholder->setParentItem(this);
-	if(nextItem != NULL){
+	if(nextItem != NULL) {
 		mPlaceholder->stackBefore(nextItem);
 	}
 
@@ -1005,11 +1005,11 @@ Element* NodeElement::getPlaceholderNextElement()
 void NodeElement::erasePlaceholder(bool redraw)
 {
 	setOpacity(1);
-	if(mPlaceholder != NULL){
+	if(mPlaceholder != NULL) {
 		delete mPlaceholder;
 		mPlaceholder = NULL;
 	}
-	if(redraw){
+	if(redraw) {
 		resize();
 	}
 }

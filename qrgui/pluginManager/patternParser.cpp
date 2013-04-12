@@ -51,8 +51,8 @@ QList<Pattern> PatternParser::getPatterns()
 
 void PatternParser::parseGroup(QDomElement const &group)
 {
-	Pattern pattern = Pattern(mEditor, mDiagram,
-							  group.attribute("name"), group.attribute("inNode"), group.attribute("outNode"));
+	Pattern pattern(mEditor, mDiagram, group.attribute("name"), group.attribute("inNode"), group.attribute("outNode"));
+
 	for (QDomElement node = group.firstChildElement("groupNode"); !node.isNull();
 		 node = node.nextSiblingElement("groupNode"))
 	{

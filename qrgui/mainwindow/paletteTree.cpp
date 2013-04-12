@@ -134,7 +134,7 @@ PaletteTree::PaletteTree(QWidget *parent)
 	createPaletteTree();
 }
 
-void PaletteTree::addItemType(const Id &id, const QString &name, const QString &description
+void PaletteTree::addItemType(const Id &id, QString const &name, QString const &description
 		, const QIcon &icon, QSize const preferedSize, QTreeWidget *tree, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
@@ -268,14 +268,14 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 	mCategories[diagram] = mEditorsTrees.size();
 
 	if (!mEditorManager->paletteGroups(editor, diagram).empty()) {
-		foreach (const QString &group, mEditorManager->paletteGroups(editor, diagram)) {
+		foreach (QString const &group, mEditorManager->paletteGroups(editor, diagram)) {
 			QTreeWidgetItem *item = new QTreeWidgetItem;
 			item->setText(0, group);
 			item->setToolTip(0, mEditorManager->paletteGroupDescription(editor, diagram, group));
 
 			IdList tmpIdList;
 
-			foreach (const QString &elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
+			foreach (QString const &elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
 				foreach (const Id &element, list) {
 					if (element.element() == elementName) {
 						tmpIdList.append (element);

@@ -105,8 +105,8 @@ public:
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
 
-	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
-	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
+	virtual void saveDiagramAsAPictureToFile(QString const &fileName);
+	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles);
 	virtual IdList selectedElementsOnActiveDiagram();
 	virtual void updateActiveDiagram();
 	virtual void deleteElementFromDiagram(Id const &id);
@@ -253,8 +253,8 @@ private:
 	void deleteFromExplorer(bool isLogicalModel);
 	void keyPressEvent(QKeyEvent *event);
 
-	QString getSaveFileName(const QString &dialogWindowTitle);
-	QString getOpenFileName(const QString &dialogWindowTitle);
+	QString getSaveFileName(QString const &dialogWindowTitle);
+	QString getOpenFileName(QString const &dialogWindowTitle);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
 	void selectItemInLogicalModel(Id const &id);

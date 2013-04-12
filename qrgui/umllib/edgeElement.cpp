@@ -74,10 +74,11 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 
 	QList<ElementTitleInterface*> titles;
 	mElementImpl->init(factory, titles);
-	foreach (ElementTitleInterface *titleIface, titles){
+	foreach (ElementTitleInterface *titleIface, titles) {
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
-		if (!title)
+		if (!title) {
 			continue;
+		}
 		title->init(boundingRect());
 		title->setParentItem(this);
 		mTitles.append(title);
@@ -666,24 +667,6 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	saveConfiguration(QPointF());
 }
 
-void EdgeElement::newArrangeLink(){
-	connectToPort();
-
-	delCloseLinePoints();
-
-	adjustNeighborLinks();
-	arrangeSrcAndDst();
-
-	correctArrow();
-	prepareGeometryChange();
-	correctInception();
-	adjustNeighborLinks();
-
-	setGraphicApiPos();
-	saveConfiguration(QPointF());
-}
-
-
 qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const
 {
 	qreal len = sqrt(((pos1.x() - pos2.x()) * (pos1.x() - pos2.x())) + ((pos1.y() - pos2.y()) * (pos1.y() - pos2.y())));
@@ -698,7 +681,7 @@ void EdgeElement::delClosePoints()
 			if (i != mLine.size() - 2) {
 				mLine.remove(i + 1);
 				i--;
-			} else if (i != 0){
+			} else if (i != 0) {
 				mLine.remove(i);
 				i = i - 2;
 			}

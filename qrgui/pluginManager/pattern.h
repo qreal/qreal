@@ -9,7 +9,7 @@ namespace qReal {
 class EditorManager;
 class GroupNode{
 public:
-	GroupNode(QString const &type, QString const &id, QPointF const &position);
+	GroupNode(QString const &typeArg, QString const &idArg, QPointF const &positionArg);
 
 	QString type;
 	QString id;
@@ -18,7 +18,7 @@ public:
 
 class GroupEdge{
 public:
-	GroupEdge(QString const &type, QString const &from, QString const &to);
+	GroupEdge(QString const &typeArg, QString const &fromArg, QString const &toArg);
 
 	QString type;
 	QString from;
