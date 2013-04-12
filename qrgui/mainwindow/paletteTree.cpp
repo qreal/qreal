@@ -1,10 +1,13 @@
 #include <QtCore/QUuid>
 #include <QtGui/QMouseEvent>
+#include <QtCore/QtAlgorithms>
+#include <QtWidgets/QVBoxLayout>
+#include <QtCore/QMimeData>
+#include <QtGui/QDrag>
+
+#include "../../qrkernel/settingsManager.h"
 #include "../../qrkernel/definitions.h"
 #include "paletteTree.h"
-#include <QtCore/QtAlgorithms>
-#include <QtGui/QVBoxLayout>
-#include "../../qrkernel/settingsManager.h"
 
 using namespace qReal;
 using namespace gui;
@@ -134,7 +137,7 @@ PaletteTree::PaletteTree(QWidget *parent)
 	createPaletteTree();
 }
 
-void PaletteTree::addItemType(const Id &id, const QString &name, const QString &description
+void PaletteTree::addItemType(const Id &id, QString const &name, QString const &description
 		, const QIcon &icon, QSize const preferedSize, QTreeWidget *tree, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
@@ -261,19 +264,21 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
 	IdList list = mEditorManager->elements(diagram);
+	IdList listGr = mEditorManager->groups(diagram);
+	list.append(listGr);
 	qSort(list.begin(), list.end(), idLessThan);
 
 	mCategories[diagram] = mEditorsTrees.size();
 
 	if (!mEditorManager->paletteGroups(editor, diagram).empty()) {
-		foreach (const QString &group, mEditorManager->paletteGroups(editor, diagram)) {
+		foreach (QString const &group, mEditorManager->paletteGroups(editor, diagram)) {
 			QTreeWidgetItem *item = new QTreeWidgetItem;
 			item->setText(0, group);
 			item->setToolTip(0, mEditorManager->paletteGroupDescription(editor, diagram, group));
 
 			IdList tmpIdList;
 
-			foreach (const QString &elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
+			foreach (QString const &elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
 				foreach (const Id &element, list) {
 					if (element.element() == elementName) {
 						tmpIdList.append (element);

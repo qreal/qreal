@@ -1,5 +1,5 @@
 #include <QCoreApplication>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "interpreter.h"
 

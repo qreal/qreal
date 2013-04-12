@@ -1,4 +1,4 @@
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QVBoxLayout>
 
 #include "listWidget.h"
 

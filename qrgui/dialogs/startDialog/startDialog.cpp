@@ -1,5 +1,5 @@
-#include <QtGui/QTabWidget>
-#include <QtGui/QCommandLinkButton>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QCommandLinkButton>
 
 #include "startDialog.h"
 #include "suggestToCreateDiagramWidget.h"
@@ -61,7 +61,7 @@ void StartDialog::openExistingProject()
 	}
 }
 
-void StartDialog::createProjectWithDiagram(const QString &idString)
+void StartDialog::createProjectWithDiagram(QString const &idString)
 {
 	mProjectManager->clearAutosaveFile();
 	mProjectManager->openEmptyWithSuggestToSaveChanges();

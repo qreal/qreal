@@ -5,7 +5,7 @@
 #include <QtCore/QProcess>
 #include <QtCore/QVariant>
 #include <QtCore/QPointF>
-#include <QtGui/QPolygon>
+#include <QtWidgets/QPolygon>
 #include <QtXml/QDomDocument>
 
 #include "math.h"

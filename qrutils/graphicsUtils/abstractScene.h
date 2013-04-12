@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 
 #include "abstractItemView.h"
 #include "abstractItem.h"

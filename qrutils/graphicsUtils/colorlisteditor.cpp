@@ -1,5 +1,6 @@
-#include <QtGui>
+#include <QtWidgets>
 #include "colorlisteditor.h"
+
 using namespace graphicsUtils;
 
 ColorListEditor::ColorListEditor(QWidget *widget) : QComboBox(widget)
@@ -14,7 +15,7 @@ void ColorListEditor::setColorList(QStringList const &colorList)
 
 QColor ColorListEditor::color() const
 {
-	return qVariantValue<QColor>(itemData(currentIndex(), Qt::DecorationRole));
+	return itemData(currentIndex(), Qt::DecorationRole).value<QColor>();
 }
 
 void ColorListEditor::setColor(QColor color)

@@ -1,6 +1,6 @@
-QT += svg xml
+QT += svg xml printsupport widgets help
 
-CONFIG += rpath_libdirs help
+CONFIG += rpath_libdirs
 macx {
 	CONFIG -= app_bundle
 }

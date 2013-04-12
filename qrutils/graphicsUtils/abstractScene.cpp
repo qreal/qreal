@@ -1,5 +1,5 @@
 #include <QtCore/QDebug>
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include "abstractScene.h"
 #include "abstractItem.h"
@@ -130,7 +130,7 @@ void AbstractScene::setDragMode(QGraphicsView::DragMode mode)
 void AbstractScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);
-	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
+	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
 	if (mGraphicsItem) {
 		mGraphicsItem->changeDragState(mX1, mY1);
 		if (mGraphicsItem->getDragState() != AbstractItem::None) {

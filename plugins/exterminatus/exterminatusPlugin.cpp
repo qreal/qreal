@@ -1,7 +1,5 @@
 #include "exterminatusPlugin.h"
 
-Q_EXPORT_PLUGIN2(exterminatus, exterminatus::ExterminatusPlugin)
-
 using namespace exterminatus;
 
 ExterminatusPlugin::ExterminatusPlugin()

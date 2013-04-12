@@ -1052,7 +1052,7 @@ class WindowsModernStylePlugin : public QStylePlugin
 {
 public: // overrides
 	QStringList keys() const;
-	QStyle* create( const QString& key );
+	QStyle* create( QString const &key );
 };
 
 QStringList WindowsModernStylePlugin::keys() const
@@ -1060,7 +1060,7 @@ QStringList WindowsModernStylePlugin::keys() const
 	return QStringList() << "WindowsModernStyle";
 }
 
-QStyle* WindowsModernStylePlugin::create( const QString& key )
+QStyle* WindowsModernStylePlugin::create( QString const &key )
 {
 	if ( key.toLower() == QLatin1String( "windowsmodernstyle" ) )
 		return new WindowsModernStyle();

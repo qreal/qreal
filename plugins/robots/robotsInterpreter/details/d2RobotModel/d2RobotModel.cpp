@@ -297,7 +297,7 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 
 	unsigned long sum = 0;
 	unsigned long *data = (unsigned long *) image.bits();
-	int const n = image.numBytes() / 4;
+	int const n = image.byteCount() / 4;
 
 	for (int i = 0; i < n; ++i) {
 		int const b = (data[i] >> 0) & 0xFF;

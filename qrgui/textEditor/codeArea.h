@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtGui/QSyntaxHighlighter>
-#include <QtGui/QPlainTextEdit>
+#include <QtWidgets/QPlainTextEdit>
 #include <QtCore/QObject>
 
 enum highlighterType {

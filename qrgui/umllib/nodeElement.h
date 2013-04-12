@@ -8,7 +8,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneHoverEvent>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QList>
 
 #include "sdfRenderer.h"

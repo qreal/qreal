@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QListWidget>
+#include <QtWidgets/QListWidget>
 #include "../../qrkernel/ids.h"
 #include "error.h"
 
