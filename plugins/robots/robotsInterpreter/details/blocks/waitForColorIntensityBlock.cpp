@@ -6,85 +6,14 @@ using namespace qReal;
 using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
-WaitForColorIntensityBlock::WaitForColorIntensityBlock(details::RobotModel const * const robotModel)
-	: mRobotModel(robotModel)
+WaitForColorIntensityBlock::WaitForColorIntensityBlock(details::RobotModel * const robotModel)
+	// Unchecked for now since it needs one of some different color sensor modes.
+	: WaitForColorSensorBlockBase(robotModel, sensorType::unused)
 {
-	// There is about 30 ms latency within robot bluetooth chip, so it is useless to
-	// read sensor too frequently.
-	mActiveWaitingTimer.setInterval(100);
-
-	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
-}
-
-void WaitForColorIntensityBlock::run()
-{
-	mPort = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
-	robotParts::ColorSensor *colorSensor = mRobotModel->colorSensor(mPort);
-
-	if (!colorSensor) {
-		mActiveWaitingTimer.stop();
-		error(tr("Color sensor is not configured on this port or it is configured in a wrong mode (not \"Full color\" mode needed)"));
-		return;
-	}
-
-	connect(colorSensor->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot(int)));
-	connect(colorSensor->sensorImpl(), SIGNAL(failure()), this, SLOT(failureSlot()));
-
-	colorSensor->read();
-	mActiveWaitingTimer.start();
-}
-
-void WaitForColorIntensityBlock::stop()
-{
-	mActiveWaitingTimer.stop();
-	emit done(mNextBlock);
 }
 
 void WaitForColorIntensityBlock::responseSlot(int reading)
 {
 	int const targetIntensity = evaluate("Intensity").toInt();
-
-	QString const sign = stringProperty("Sign");
-	if (sign == "равно")
-		if (reading != targetIntensity)
-			stop();
-	if (sign == "больше")
-		if (reading <= targetIntensity)
-			stop();
-	if (sign == "меньше")
-		if (reading >= targetIntensity)
-			stop();
-	if (sign == "не меньше")
-		if (reading < targetIntensity)
-			stop();
-	if (sign == "не больше")
-		if (reading > targetIntensity)
-			stop();
-
-	if (targetIntensity < reading)
-		stop();
-}
-
-void WaitForColorIntensityBlock::failureSlot()
-{
-	mActiveWaitingTimer.stop();
-	emit failure();
-}
-
-void WaitForColorIntensityBlock::timerTimeout()
-{
-	robotParts::ColorSensor *colorSensor = mRobotModel->colorSensor(mPort);
-	if (colorSensor) {
-		colorSensor->read();
-	}
-}
-
-QList<Block::SensorPortPair> WaitForColorIntensityBlock::usedSensors() const
-{
-	return QList<SensorPortPair>();  // Unchecked for now since it needs one of some different color sensor modes.
-}
-
-void WaitForColorIntensityBlock::stopActiveTimerInBlock()
-{
-	mActiveWaitingTimer.stop();
+	processResponce(reading, targetIntensity);
 }

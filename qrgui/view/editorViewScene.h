@@ -95,6 +95,7 @@ public:
 	void updateEdgesViaNodes();
 
 	void setTitlesVisible(bool visible);
+	void onElementParentChanged(Element *element);
 
 public slots:
 	qReal::Id createElement(QString const &type);

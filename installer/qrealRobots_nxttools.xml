@@ -113,6 +113,30 @@
                         <distributionDirectory>
                             <origin>%1/plugins/robots/editor/images</origin>
                         </distributionDirectory>
+                    </distributionFileList>
+                    <shortcutList>
+                        <shortcut>
+                            <comment></comment>
+                            <exec></exec>
+                            <icon>${installdir}/icon.ico</icon>
+                            <name>Run QReal-Robots</name>
+                            <path></path>
+                            <platforms>windows</platforms>
+                            <runAsAdmin>0</runAsAdmin>
+                            <runInTerminal>0</runInTerminal>
+                            <windowsExec>${installdir}/qrgui.exe</windowsExec>
+                            <windowsExecArgs></windowsExecArgs>
+                            <windowsIcon>${installdir}/icon.ico</windowsIcon>
+                            <windowsPath>${installdir}</windowsPath>
+                        </shortcut>
+                    </shortcutList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}/nxt-tools</destination>
+                    <name>nxttoolsdirectory</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
 						<!-- NXT Tools -->
                         <distributionFile>
                             <origin>%1/bin/nxt-tools/upload.sh</origin>
@@ -134,22 +158,6 @@
                         </distributionDirectory>
 						<!-- End NXT Tools -->
                     </distributionFileList>
-                    <shortcutList>
-                        <shortcut>
-                            <comment></comment>
-                            <exec></exec>
-                            <icon>${installdir}/icon.ico</icon>
-                            <name>Run QReal-Robots</name>
-                            <path></path>
-                            <platforms>windows</platforms>
-                            <runAsAdmin>0</runAsAdmin>
-                            <runInTerminal>0</runInTerminal>
-                            <windowsExec>${installdir}/qrgui.exe</windowsExec>
-                            <windowsExecArgs></windowsExecArgs>
-                            <windowsIcon>${installdir}/icon.ico</windowsIcon>
-                            <windowsPath>${installdir}</windowsPath>
-                        </shortcut>
-                    </shortcutList>
                 </folder>
                 <folder>
                     <description>Program Files</description>
