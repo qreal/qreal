@@ -57,4 +57,5 @@ robotModel=2
 2dCursorType=1
 showTitlesForRobots=false
 enableNoiseOfSensors=false
+enableNoiseOfMotors=false
 approximationLevel=12

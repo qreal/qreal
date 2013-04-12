@@ -33,6 +33,7 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		, mNoiseGen()
 		, mNeedSync(false)
 		, mNeedSensorNoise(SettingsManager::value("enableNoiseOfSensors").toBool())
+		, mNeedMotorNoise(SettingsManager::value("enableNoiseOfMotors").toBool())
 {
 	mAngle = 0;
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
@@ -86,7 +87,7 @@ void D2RobotModel::setBeep(unsigned freq, unsigned time)
 
 void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 {
-	mMotors[port]->speed = mNeedSensorNoise ? varySpeed(speed) : speed;
+	mMotors[port]->speed = mNeedMotorNoise ? varySpeed(speed) : speed;
 	mMotors[port]->degrees = degrees;
 	mMotors[port]->isUsed = true;
 	if (degrees == 0) {
@@ -103,11 +104,8 @@ int D2RobotModel::varySpeed(const int speed) const
 					mNoiseGen.approximationLevel()
 					, varySpeedDispersion
 				);
-	int res = round(speed * (1 + ran));
 
-	res = truncateToInterval(-100, 100, res);
-
-	return res;
+	return truncateToInterval(-100, 100, round(speed * (1 + ran)));
 }
 
 void D2RobotModel::countMotorTurnover()
@@ -186,11 +184,7 @@ int D2RobotModel::spoilSonarReading(int const distance) const
 					, spoilSonarDispersion
 				);
 
-	int res = round(distance * (1 + ran));
-
-	res = truncateToInterval(0, 255, res);
-
-	return res;
+	return truncateToInterval(0, 255, round(distance * (1 + ran)));
 }
 
 int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
@@ -468,7 +462,7 @@ void D2RobotModel::recalculateParams()
 {
 	// do nothing until robot gets back on the ground
 	if (!mD2ModelWidget->isRobotOnTheGround()) {
-        mNeedSync = true;
+		mNeedSync = true;
 		return;
 	}
 	synchronizePositions();
@@ -555,6 +549,7 @@ Timeline *D2RobotModel::timeline() const
 void D2RobotModel::setNoiseSettings()
 {
 	mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
+	mNeedMotorNoise = SettingsManager::value("enableNoiseOfMotors").toBool();
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 }
 

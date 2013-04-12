@@ -51,7 +51,8 @@ private:
 	sensorType::SensorTypeEnum selectedPort4Sensor() const;
 	robotModelType::robotModelTypeEnum selectedRobotModel() const;
 	bool textVisible() const;
-	bool enableNoise() const;
+	bool enableSensorNoise() const;
+	bool enableMotorNoise() const;
 	int approximationLevel() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;

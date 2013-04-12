@@ -122,6 +122,7 @@ private:
 	mathUtils::GaussNoise mNoiseGen;
 	bool mNeedSync;
 	bool mNeedSensorNoise;
+	bool mNeedMotorNoise;
 };
 
 }
