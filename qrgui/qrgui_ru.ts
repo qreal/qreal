@@ -343,7 +343,7 @@
     <name>EditorViewScene</name>
     <message>
         <location filename="view/editorViewScene.cpp" line="336"/>
-        <location filename="view/editorViewScene.cpp" line="379"/>
+        <location filename="view/editorViewScene.cpp" line="403"/>
         <source>Discard</source>
         <translation>Убрать меню</translation>
     </message>
@@ -353,47 +353,47 @@
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="929"/>
+        <location filename="view/editorViewScene.cpp" line="953"/>
         <source>Add connection</source>
         <translation>Добавить провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="936"/>
+        <location filename="view/editorViewScene.cpp" line="960"/>
         <source>Disconnect</source>
         <translation>Убрать провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="942"/>
+        <location filename="view/editorViewScene.cpp" line="966"/>
         <source>Add usage</source>
         <translation>Добавить использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="949"/>
+        <location filename="view/editorViewScene.cpp" line="973"/>
         <source>Delete usage</source>
         <translation>Убрать использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="955"/>
+        <location filename="view/editorViewScene.cpp" line="979"/>
         <source>Go to</source>
         <translation>Перейти</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="957"/>
+        <location filename="view/editorViewScene.cpp" line="981"/>
         <source>Forward connection</source>
         <translation>По провязке вперёд</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="958"/>
+        <location filename="view/editorViewScene.cpp" line="982"/>
         <source>Backward connection</source>
         <translation>По провязке назад</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="959"/>
+        <location filename="view/editorViewScene.cpp" line="983"/>
         <source>Uses</source>
         <translation>Использует</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="960"/>
+        <location filename="view/editorViewScene.cpp" line="984"/>
         <source>Used in</source>
         <translation>Используется в</translation>
     </message>
@@ -3073,16 +3073,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="745"/>
-        <location filename="mainwindow/mainWindow.cpp" line="763"/>
-        <location filename="mainwindow/mainWindow.cpp" line="781"/>
+        <location filename="mainwindow/mainWindow.cpp" line="746"/>
+        <location filename="mainwindow/mainWindow.cpp" line="764"/>
+        <location filename="mainwindow/mainWindow.cpp" line="782"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="747"/>
-        <location filename="mainwindow/mainWindow.cpp" line="765"/>
-        <location filename="mainwindow/mainWindow.cpp" line="783"/>
+        <location filename="mainwindow/mainWindow.cpp" line="748"/>
+        <location filename="mainwindow/mainWindow.cpp" line="766"/>
+        <location filename="mainwindow/mainWindow.cpp" line="784"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3187,23 +3187,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="781"/>
+        <location filename="mainwindow/mainWindow.cpp" line="782"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="783"/>
+        <location filename="mainwindow/mainWindow.cpp" line="784"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="908"/>
-        <location filename="mainwindow/mainWindow.cpp" line="934"/>
+        <location filename="mainwindow/mainWindow.cpp" line="909"/>
+        <location filename="mainwindow/mainWindow.cpp" line="935"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="926"/>
+        <location filename="mainwindow/mainWindow.cpp" line="927"/>
         <source>Text Editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3212,17 +3212,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1727"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1728"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1756"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1757"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1756"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1757"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3243,7 +3243,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1344"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1345"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>

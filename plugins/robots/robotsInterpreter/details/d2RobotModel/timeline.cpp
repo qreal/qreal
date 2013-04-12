@@ -8,6 +8,7 @@ Timeline::Timeline(QObject *parent)
 	: QObject(parent)
 	, mSpeedFactor(normalSpeedFactor)
 	, mCyclesCount(0)
+	, mIsStarted(false)
 {
 	connect(&mTimer, SIGNAL(timeout()), this, SLOT(onTimer()));
 	mTimer.setInterval(realTimeInterval);
@@ -15,7 +16,10 @@ Timeline::Timeline(QObject *parent)
 
 void Timeline::start()
 {
-	gotoNextFrame();
+	if (!mIsStarted) {
+		mIsStarted = true;
+		gotoNextFrame();
+	}
 }
 
 void Timeline::onTimer()

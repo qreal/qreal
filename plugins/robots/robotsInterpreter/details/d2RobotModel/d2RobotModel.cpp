@@ -29,6 +29,9 @@ qreal const percentSaltPepperNoise = 20.0;
 D2RobotModel::D2RobotModel(QObject *parent)
 		: QObject(parent)
 		, mD2ModelWidget(NULL)
+		, mMotorA(NULL)
+		, mMotorB(NULL)
+		, mMotorC(NULL)
 		, mTimeline(new Timeline(this))
 		, mNoiseGen()
 		, mNeedSync(false)
@@ -48,6 +51,15 @@ D2RobotModel::~D2RobotModel()
 
 void D2RobotModel::initPosition()
 {
+	if (mMotorA) {
+		delete mMotorA;
+	}
+	if (mMotorB) {
+		delete mMotorB;
+	}
+	if (mMotorC) {
+		delete mMotorC;
+	}
 	mMotorA = initMotor(5, 0, 0, 0, false);
 	mMotorB = initMotor(5, 0, 0, 1, false);
 	mMotorC = initMotor(5, 0, 0, 2, false);
@@ -110,10 +122,10 @@ int D2RobotModel::varySpeed(const int speed) const
 
 void D2RobotModel::countMotorTurnover()
 {
-	foreach (Motor *motor, mMotors) {
-		int port = mMotors.key(motor);
-		qreal degrees = Timeline::timeInterval * 1.0 * motor->speed / oneReciprocalTime;
-		mTurnoverMotors[port] += degrees;
+	foreach (Motor * const motor, mMotors) {
+		int const port = mMotors.key(motor);
+		qreal const degrees = Timeline::timeInterval * 1.0 * motor->speed / oneReciprocalTime;
+		mTurnoverMotors[port] += qAbs(degrees);
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
 			motor->speed = 0;
 			motor->activeTimeType = End;
@@ -145,8 +157,10 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 
 QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPortEnum const port) const
 {
-	QPointF const position = mSensorsConfiguration.position(port);
-	qreal direction = mSensorsConfiguration.direction(port) + mAngle;
+	QVector<SensorItem *> items = mD2ModelWidget->sensorItems();
+	SensorItem *sensor = items[port];
+	QPointF const position = sensor ? sensor->scenePos() : QPointF();
+	qreal const direction = sensor ? items[port]->rotation() + mAngle : 0;
 	return QPair<QPointF, qreal>(position, direction);
 }
 
@@ -160,11 +174,15 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	QPointF sensorPosition(neededPosDir.first);
 	qreal const width = sensorWidth / 2.0;
-	QRectF const scanningRect = QRectF(sensorPosition.x() - width
-			, sensorPosition.y() - width, 2 * width, 2 * width);
+	QRectF const scanningRect = QRectF(
+			  sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
+			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
+			, 2 * width + touchSensorStrokeIncrement
+			, 2 * width + touchSensorStrokeIncrement);
+
 	QPainterPath sensorPath;
 	sensorPath.addRect(scanningRect);
-	bool const res = mWorldModel.checkCollision(sensorPath, touchSensorStrokeIncrement);
+	bool const res = mWorldModel.checkCollision(sensorPath, touchSensorWallStrokeIncrement);
 
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
