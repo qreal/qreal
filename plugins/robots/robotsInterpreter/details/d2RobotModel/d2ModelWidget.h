@@ -2,12 +2,12 @@
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QGraphicsRectItem>
-#include <QtWidgets/QPolygonF>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
-#include <QtCore/QSignalMapper>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QButtonGroup>
+#include <QtGui/QPolygonF>
+#include <QtCore/QSignalMapper>
 
 #include "lineItem.h"
 #include "stylusItem.h"

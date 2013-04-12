@@ -2,8 +2,6 @@
 #include "robotsPlugin.h"
 #include "details/tracer.h"
 
-Q_EXPORT_PLUGIN2(robotsPlugin, qReal::interpreters::robots::RobotsPlugin)
-
 using namespace qReal;
 using namespace interpreters::robots;
 

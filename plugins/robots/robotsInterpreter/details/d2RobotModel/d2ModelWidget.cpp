@@ -1,6 +1,6 @@
 #include <QtCore/qmath.h>
 #include <QtWidgets/QFileDialog>
-#include <QtWidgets/QRegion>
+#include <QtGui/QRegion>
 
 #include "d2ModelWidget.h"
 #include "ui_d2Form.h"

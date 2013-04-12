@@ -3,8 +3,6 @@
 #include "robotsGeneratorPlugin.h"
 #include "nxtOSEK/nxtOSEKRobotGenerator.h"
 
-Q_EXPORT_PLUGIN2(robotsGeneratorPlugin, robots::generator::RobotsGeneratorPlugin)
-
 using namespace qReal;
 using namespace robots::generator;
 

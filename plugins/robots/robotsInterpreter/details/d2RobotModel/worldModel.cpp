@@ -1,4 +1,4 @@
-#include <QtWidgets/QTransform>
+#include <QtGui/QTransform>
 #include <QtCore/QStringList>
 
 #include "worldModel.h"
