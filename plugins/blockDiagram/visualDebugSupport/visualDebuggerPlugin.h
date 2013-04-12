@@ -34,57 +34,57 @@ public:
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
 	virtual void activeTabChanged(qReal::Id const &rootElementId);
-	
+
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 
 private slots:
-	
+
 	/// Start interpretation of block diagram in automatic mode
 	void debug();
-	
+
 	/// Make one step of interpretation
 	void debugSingleStep();
-	
+
 	/// Draws debugger (gdb) standart output
 	void drawDebuggerStdOutput(QString const &output);
-	
+
 	/// Draws debugger (gdb) error output
 	void drawDebuggerErrOutput(QString const &output);
-	
+
 	/// Generate code from block diagram and build it in executable file
 	void generateAndBuild();
-	
+
 	/// Start debugger process (gdb)
 	void startDebugger();
-	
+
 	/// Set executable file in debugger
 	void runProgramWithDebugger();
-	
+
 	/// Kill program within debugger
 	void killProgramWithDebugger();
-	
+
 	/// Terminate debugger process and close its thread
 	void closeDebuggerProcessAndThread();
-	
+
 	/// Place breakpoints in debugger at every element of block diagram
 	void placeBreakpointsInDebugger();
-	
+
 	/// Equivalent of 'gdb cont'
 	void goToNextBreakpoint();
-	
+
 	/// Equivalent of 'gdb next'
 	void goToNextInstruction();
-	
+
 	/// Set program to be debugged
 	void configureDebugger();
-	
+
 	/// Set breakpoint at main function in generated code (equivalent of 'break main')
 	void setBreakpointAtStart();
-	
+
 	/// Generate, build, start debugger, set program to be debugged,
 	/// set breakpoint at start and run it in debugger in automatic way
 	void startDebugging();
-	
+
 	/// Show watch list with all declared variables and its values. List updates
 	/// dynamically
 	void showWatchList();
@@ -93,7 +93,7 @@ private:
 	qReal::VisualDebugger *mVisualDebugger;
 	qReal::DebuggerConnector *mDebuggerConnector;
 	qReal::ErrorReporterInterface *mErrorReporter;
-	
+
 	QAction *mDebugAction;
 	QAction *mDebugSingleStepAction;
 	QAction *mGenerateAndBuildAction;
@@ -108,16 +108,16 @@ private:
 	QAction *mBreakMainAction;
 	QAction *mStartDebuggingAction;
 	QAction *mWatchListAction;
-	
+
 	QMenu *mVisualDebugMenu;
 	QMenu *mVisualDebugWithGdbMenu;
-	
+
 	QList<qReal::ActionInfo> mActionInfos;
-	
+
 	utils::watchListWindow *mWatchListWindow;
 	qReal::BlockParser *mParser;
 	qReal::VisualDebuggerPreferencesPage *mPreferencesPage;
-	
+
 	QTranslator mAppTranslator;
 };
 

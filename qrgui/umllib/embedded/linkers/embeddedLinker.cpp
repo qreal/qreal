@@ -226,7 +226,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (!scene) {
 			return;
 		}
-		const QString type = "qrm:/" + mMaster->id().editor() + "/" +
+		QString const type = "qrm:/" + mMaster->id().editor() + "/" +
 							 mMaster->id().diagram() + "/" + mEdgeType.element();
 		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
@@ -234,7 +234,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
 
-		if (mEdge){
+		if (mEdge) {
 			mMaster->setZValue(1);
 			mEdge->setSrc(mMaster);
 			mEdge->setDst(NULL);

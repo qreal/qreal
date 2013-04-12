@@ -90,7 +90,7 @@ void MetamodelGeneratorSupport::loadPlugin(QString const &directoryName
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);
 		builder.start(pathToMake);
-		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
+		if (builder.waitForFinished()/* && (builder.exitCode() == 0)*/) {
 			progress->setValue(80);
 			if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "."
 					+ extension, normalizeDirName))
@@ -131,7 +131,7 @@ void MetamodelGeneratorSupport::insertElementsInDiagramSublevel(QDomDocument met
 }
 
 void MetamodelGeneratorSupport::insertElementInDiagramSublevel(QDomDocument metamodel,
-		const QString &sublevelName, QDomElement const &element)
+		QString const &sublevelName, QDomElement const &element)
 {
 	QDomNodeList sublevels = metamodel.elementsByTagName(sublevelName);
 

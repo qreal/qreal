@@ -3,6 +3,8 @@ QT += xml
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../bin/plugins/
+
+OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RCC_DIR = .moc
 
@@ -18,12 +20,16 @@ HEADERS = \
 	visualInterpreterPreferencesPage.h \
 	ruleParser.h \
 	visualInterpreterUnit.h \
+	pythonInterpreter.h \
+	pythonGenerator.h
 
 SOURCES = \
 	visualInterpreterPlugin.cpp \
 	visualInterpreterPreferencesPage.cpp \
 	ruleParser.cpp \
 	visualInterpreterUnit.cpp \
+	pythonInterpreter.cpp \
+	pythonGenerator.cpp
 
 FORMS += \
 	visualInterpreterPreferencePage.ui \

@@ -1,7 +1,6 @@
-#include "debuggerConnector.h"
+#include <QtCore/QFile>
 
-#include <QFile>
-#include <QtCore/QDebug>
+#include "debuggerConnector.h"
 
 using namespace qReal;
 
@@ -87,8 +86,7 @@ void DebuggerConnector::startDebugger()
 		mDebuggerProcess->waitForStarted();
 		//mDebuggerProcess->waitForReadyRead();
 	} else {
-		emit readyReadErrOutput(tr("Debugger not found. ")
-				+ mDebuggerPath + tr(" was searched"));
+		emit readyReadErrOutput(tr("Debugger not found. ") + mDebuggerPath + tr(" was searched"));
 	}
 }
 
@@ -174,8 +172,7 @@ void DebuggerConnector::build()
 		}
 	} else {
 		mHasGccError = true;
-		emit readyReadErrOutput(tr("Source code file not found. ")
-				+ mWorkDir + mCodeFileName + tr(" was searched"));
+		emit readyReadErrOutput(tr("Source code file not found. ") + mWorkDir + mCodeFileName + tr(" was searched"));
 	}
 }
 

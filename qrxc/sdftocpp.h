@@ -17,11 +17,11 @@ class SdfRenderer : public QObject
 
 public:
 	SdfRenderer();
-	SdfRenderer(const QString path);
+	SdfRenderer(QString const path);
 	SdfRenderer(const QDomNode &bla);
 	~SdfRenderer();
 
-	bool load (const QString &filename);
+	bool load (QString const &filename);
 	QString render();
 	void noScale();
 

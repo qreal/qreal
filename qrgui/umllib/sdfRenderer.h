@@ -19,10 +19,10 @@ class SdfRenderer : public SdfRendererInterface
 
 public:
 	SdfRenderer();
-	SdfRenderer(const QString path);
+	SdfRenderer(QString const path);
 	~SdfRenderer();
 
-	bool load (const QString &filename);
+	bool load (QString const &filename);
 	void render(QPainter *painter, const QRectF &bounds);
 	void noScale();
 

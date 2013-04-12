@@ -74,10 +74,11 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 
 	QList<ElementTitleInterface*> titles;
 	mElementImpl->init(factory, titles);
-	foreach (ElementTitleInterface *titleIface, titles){
+	foreach (ElementTitleInterface *titleIface, titles) {
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
-		if (!title)
+		if (!title) {
 			continue;
+		}
 		title->init(boundingRect());
 		title->setParentItem(this);
 		mTitles.append(title);
@@ -681,7 +682,7 @@ void EdgeElement::delClosePoints()
 			if (i != mLine.size() - 2) {
 				mLine.remove(i + 1);
 				i--;
-			} else if (i != 0){
+			} else if (i != 0) {
 				mLine.remove(i);
 				i = i - 2;
 			}
