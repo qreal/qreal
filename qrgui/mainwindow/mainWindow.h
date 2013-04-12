@@ -86,9 +86,10 @@ public:
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
-	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index, int const &role);
-	void openReferenceList(QPersistentModelIndex const &index
-			, QString const &referenceType, QString const &propertyValue, int role);
+	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
+			, int const &role);
+	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue
+			, int role);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -112,7 +113,6 @@ public:
 	virtual void deleteElementFromDiagram(Id const &id);
 
 	virtual void reportOperation(invocation::LongOperation *operation);
-
 
 	virtual QDockWidget *logicalModelDock() const;
 	virtual QDockWidget *graphicalModelDock() const;
@@ -153,7 +153,6 @@ public slots:
 	void openFirstDiagram();
 
 private slots:
-
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
 

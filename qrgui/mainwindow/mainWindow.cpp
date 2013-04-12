@@ -124,8 +124,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManager);
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
-	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi()
-			, this, mFindReplaceDialog);
+	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
 	initToolPlugins();
 	connectWindowTitle();
 	connectActions();
@@ -148,8 +147,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionOpen, SIGNAL(triggered()), mProjectManager, SLOT(suggestToOpenExisting()));
 	connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
-	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()),
-			this, SLOT(saveDiagramAsAPicture()));
+	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
@@ -180,17 +178,12 @@ void MainWindow::connectActions()
 
 	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
-	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)),
-			mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
-	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)),
-			mFindHelper, SLOT(handleFindDialog(QStringList)));
-	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)),
-			mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
+	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
+	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
+	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
 
-	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this,
-			SLOT(changePaletteRepresentation()));
-	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged()),
-			&mPreferencesDialog, SLOT(changePaletteParameters()));
+	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this, SLOT(changePaletteRepresentation()));
+	connect(mUi->paletteTree, SIGNAL(paletteParametersChanged()), &mPreferencesDialog, SLOT(changePaletteParameters()));
 }
 
 void MainWindow::initActionsFromSettings()
@@ -354,11 +347,12 @@ void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
 {
 	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
 		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
-	} else {
-		IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
-		if (graphicalIds.count() == 0) {
-			return;
-		}
+		return;
+	}
+
+	// logical ID
+	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
+	if (graphicalIds.count() != 0) {
 		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(graphicalIds[0]), bl, isSetSel);
 	}
 }
@@ -440,7 +434,6 @@ void MainWindow::openRecentProjectsMenu()
 
 	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(QString const &))
 			, mProjectManager, SLOT(openExisting(QString const &)));
-
 }
 
 void MainWindow::closeAllTabs()
@@ -878,8 +871,9 @@ void MainWindow::initSettingsManager()
 
 	// Removal from the list of recent projects of non-existent files
 	QString recentExistProjects;
-	foreach (QString const &fileName, SettingsManager::value("recentProjects")
-			.toString().split(";", QString::SkipEmptyParts)) {
+	foreach (QString const &fileName
+			, SettingsManager::value("recentProjects").toString().split(";", QString::SkipEmptyParts))
+	{
 		if (QFile::exists(fileName)) {
 			recentExistProjects += fileName + ";";
 		}
@@ -917,8 +911,8 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	// Here we are going to actually modify model to set a value of a shape.
 	QAbstractItemModel *model = const_cast<QAbstractItemModel *>(index.model());
 	model->setData(index, propertyValue, role);
-	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &)),
-			this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
+	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &))
+			, this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
@@ -1154,13 +1148,15 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 void MainWindow::setShortcuts(EditorView * const tab)
 {
 	EditorViewScene *scene = dynamic_cast<EditorViewScene *>(tab->scene());
-	if (scene) {
-		// Add shortcut - select all
-		QAction *selectAction = new QAction(tab);
-		selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
-		connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
-		tab->addAction(selectAction);
+	if (!scene) {
+		return;
 	}
+
+	// Add shortcut - select all
+	QAction *selectAction = new QAction(tab);
+	selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
+	connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
+	tab->addAction(selectAction);
 }
 
 void MainWindow::currentTabChanged(int newIndex)
@@ -1573,13 +1569,8 @@ Id MainWindow::activeDiagram()
 
 void MainWindow::initToolPlugins()
 {
-	mToolManager.init(PluginConfigurator(mModels->repoControlApi()
-			, mModels->graphicalModelAssistApi()
-			, mModels->logicalModelAssistApi()
-			, *this
-			, *mProjectManager
-			, *mSceneCustomizer
-			));
+	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
@@ -1827,8 +1818,7 @@ void MainWindow::changePaletteRepresentation()
 void MainWindow::arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles)
 {
 	Id const diagramId = activeDiagram();
-	DotRunner *runner = new DotRunner(diagramId
-			, mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi()
+	DotRunner *runner = new DotRunner(diagramId, mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi()
 			, mEditorManager, absolutePathToDotFiles);
 	if (runner->run(algorithm)) {
 		updateActiveDiagram();
