@@ -1,5 +1,5 @@
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 
 #include "wallItem.h"
 

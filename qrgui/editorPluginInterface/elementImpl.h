@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QWidget>
-#include <QList>
-#include <QRectF>
-#include <QPointF>
-#include <QPainter>
+#include <QtWidgets/QWidget>
+#include <QtCore/QList>
+#include <QtCore/QRectF>
+#include <QtCore/QPointF>
+#include <QtGui/QPainter>
 #include "elementTitleHelpers.h"
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"

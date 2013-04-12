@@ -1,6 +1,7 @@
 #pragma once
-#include <QGraphicsView>
-#include <QKeyEvent>
+
+#include <QtWidgets/QGraphicsView>
+#include <QtGui/QKeyEvent>
 
 #include "../utilsDeclSpec.h"
 

@@ -3,7 +3,7 @@
 #include <QtCore/QLineF>
 #include <QtCore/QTime>
 #include <QtCore/QDebug>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
 #include <QRegExp>
@@ -16,7 +16,7 @@ SdfRenderer::SdfRenderer()
 	mWorkingDirName = SettingsManager::value("workingDir").toString();
 }
 
-SdfRenderer::SdfRenderer(const QString path)
+SdfRenderer::SdfRenderer(QString const path)
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
 	if (!load(path))
@@ -30,7 +30,7 @@ SdfRenderer::~SdfRenderer()
 {
 }
 
-bool SdfRenderer::load(const QString &filename)
+bool SdfRenderer::load(QString const &filename)
 {
 	QFile file(filename);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))

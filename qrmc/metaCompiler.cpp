@@ -65,7 +65,7 @@ bool MetaCompiler::compile(QString const &targetMetamodel)
 	return true;
 }
 
-bool MetaCompiler::changeDir(const QString &path)
+bool MetaCompiler::changeDir(QString const &path)
 {
 	if (!mDirectory.exists(path)) {
 		qDebug() << "cannot find directory " << path;
@@ -196,7 +196,7 @@ void MetaCompiler::generateCode()
 	return;
 }
 
-QString MetaCompiler::getTemplateUtils(const QString &tmpl) const
+QString MetaCompiler::getTemplateUtils(QString const &tmpl) const
 {
 	return mTemplateUtils[tmpl];
 }

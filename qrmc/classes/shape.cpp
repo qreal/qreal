@@ -12,7 +12,7 @@
 
 using namespace qrmc;
 
-Shape::Shape(const QString &shape) : mNode(NULL)
+Shape::Shape(QString const &shape) : mNode(NULL)
 {
 	init(shape)	;
 }
@@ -26,7 +26,7 @@ void Shape::setNode(GraphicType *node)
 	mNode = node;
 }
 
-void Shape::init(const QString &shape)
+void Shape::init(QString const &shape)
 {
 	if (shape.isEmpty())
 		return;
@@ -285,7 +285,7 @@ bool Shape::hasPorts() const
 	return !mPorts.isEmpty();
 }
 
-QString Shape::generateResourceLine(const QString &resourceTemplate) const
+QString Shape::generateResourceLine(QString const &resourceTemplate) const
 {
 	QString result;
 

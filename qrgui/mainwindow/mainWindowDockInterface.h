@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QDockWidget>
+#include <QtWidgets/QDockWidget>
 
 namespace qReal
 {

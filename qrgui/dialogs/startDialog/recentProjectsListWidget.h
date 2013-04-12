@@ -1,6 +1,6 @@
 #pragma once
-#include <QtGui/QListWidget>
-#include <QtGui/QDialog>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QDialog>
 
 #include "listWidget.h"
 

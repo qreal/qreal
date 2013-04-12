@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
 #include <QPen>
 #include <QBrush>
@@ -21,11 +21,11 @@ class SdfRenderer : public SdfRendererInterface
 
 public:
 	SdfRenderer();
-	SdfRenderer(const QString path);
+	SdfRenderer(QString const path);
 	~SdfRenderer();
 
-	bool load (const QString &filename);
-	void render(QPainter *painter, const QRectF &bounds, bool isIcon = false);
+	bool load (QString const &filename);
+	void render(QPainter *painter, QRectF const &bounds, bool isIcon = false);
 	void noScale();
 
 	int pictureWidth() { return first_size_x; }
@@ -99,7 +99,10 @@ public:
 
 protected:
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
-
+	virtual QIconEngine *clone() const
+	{
+		return NULL;
+	}
 private:
 	SdfRenderer mRenderer;
 	QSize mSize;

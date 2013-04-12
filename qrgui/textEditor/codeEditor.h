@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include "codeArea.h"
 
 namespace qReal {
@@ -11,7 +11,7 @@ class CodeEditor : public QMainWindow {
 
 	public:
 		CodeEditor(QWidget *parent = 0);
-		CodeEditor(const QString& filename, QWidget *parent = 0);
+		CodeEditor(QString const &filename, QWidget *parent = 0);
 
 		void setHighlightedLineNumbers(const QList<int>& lineNumbers);
 

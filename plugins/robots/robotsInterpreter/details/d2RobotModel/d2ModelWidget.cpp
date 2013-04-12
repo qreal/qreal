@@ -1,5 +1,5 @@
 #include <QtCore/qmath.h>
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QFileDialog>
 #include <QtGui/QRegion>
 
 #include "d2ModelWidget.h"
@@ -972,6 +972,11 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
 	emit d2WasClosed();
+}
+
+QVector<SensorItem *> D2ModelWidget::sensorItems() const
+{
+	return mSensors;
 }
 
 void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape

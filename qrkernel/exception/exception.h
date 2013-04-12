@@ -20,7 +20,7 @@ public:
 
 private:
 	/// Error message.
-	const QString mMessage;
+	QString const mMessage;
 };
 
 }

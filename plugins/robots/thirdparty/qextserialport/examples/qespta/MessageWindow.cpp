@@ -85,7 +85,7 @@ void MessageWindow::AppendMsgWrapper(QtMsgType type, const char* msg)
 	if (MessageWindow::MsgHandler != NULL)
 		return MessageWindow::MsgHandler->postMsgEvent(type, msg);
 	else
-		fprintf(stderr, MessageWindow::QtMsgToQString(type, msg).toAscii());
+		fprintf(stderr, MessageWindow::QtMsgToQString(type, msg).toLatin1());
 }
 
 void MessageWindow::customEvent(QEvent* event)

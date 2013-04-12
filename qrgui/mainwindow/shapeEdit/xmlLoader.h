@@ -11,8 +11,8 @@ class XmlLoader
 {
 public:
 	XmlLoader(Scene *scene);
-	void readString(const QString &text);
-	void readFile(const QString &fileName);
+	void readString(QString const &text);
+	void readFile(QString const &fileName);
 
 private:
 	QDomDocument mDocument;

@@ -1,13 +1,15 @@
 #pragma once
-#include "item.h"
+
 #include <QtGui/QPainter>
+
+#include "item.h"
 #include "../../../qrutils/graphicsUtils/rectangleImpl.h"
 
-class Rectangle : public Item
+class QRealRectangle : public Item
 {
 public:
-	Rectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
-	Rectangle(Rectangle const &other);
+	QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
+	QRealRectangle(QRealRectangle const &other);
 	virtual Item* clone();
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);

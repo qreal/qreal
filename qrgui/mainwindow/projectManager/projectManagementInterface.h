@@ -19,7 +19,7 @@ public:
 public slots:
 	/// Tries to open an existing file, prompts you to save changes, if any. Checks for the presence of a file and the
 	/// sufficiency of the plugins. In the event of any failure, leaving the project as is and returns false, o/w true.
-	virtual bool openExisting(const QString &fileName) = 0;
+	virtual bool openExisting(QString const &fileName) = 0;
 	/// Similarly @see openExisting(), but offers the user select a file (by a dialog)
 	virtual bool suggestToOpenExisting() = 0;
 	/// Creating a new project
@@ -37,8 +37,8 @@ public slots:
 	/// Save the project to the temporary file in set time period
 	virtual void saveTemp() = 0;
 	/// Save the project in the file with the name fileName, if it not empty (fileName). Otherwise return false only.
-	virtual bool saveAs(const QString &fileName) = 0;
-	/// Similarly @see saveAs(const QString &fileName), but offers the user specified file location (by a dialog)
+	virtual bool saveAs(QString const &fileName) = 0;
+	/// Similarly @see saveAs(QString const &fileName), but offers the user specified file location (by a dialog)
 	virtual bool suggestToSaveAs() = 0;
 	/// Similarly @see save(), if specified project-file, similarly @see suggestToSaveAs() o/w
 	virtual bool saveOrSuggestToSaveAs() = 0;
