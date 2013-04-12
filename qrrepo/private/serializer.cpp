@@ -40,10 +40,11 @@ void Serializer::setWorkingFile(QString const &workingFile)
 void Serializer::saveToDisk(QList<Object*> const &objects) const
 {
 	Q_ASSERT_X(!mWorkingFile.isEmpty()
-			, "Serializer::saveToDisk(...)"
-			, "may be Client of RepoApi (see Models constructor also) has been initialised with empty filename?");
+		, "Serializer::saveToDisk(...)"
+		, "may be Client of RepoApi (see Models constructor also) has been initialised with empty filename?");
 
 	foreach (Object *object, objects) {
+
 		QString filePath = createDirectory(object->id(), object->logicalId());
 
 		QDomDocument doc;

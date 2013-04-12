@@ -1,6 +1,6 @@
-#include "visualDebuggerPlugin.h"
-
 #include <QtGui/QApplication>
+
+#include "visualDebuggerPlugin.h"
 
 Q_EXPORT_PLUGIN2(visualDebugger, qReal::visualDebugger::VisualDebuggerPlugin)
 
@@ -11,12 +11,12 @@ using namespace utils;
 QString const blockDiagram = "BlockDiagram";
 
 VisualDebuggerPlugin::VisualDebuggerPlugin()
-		: mVisualDebugger(NULL),
-		mDebuggerConnector(NULL),
-		mErrorReporter(NULL),
-		mWatchListWindow(NULL),
-		mParser(NULL),
-		mPreferencesPage(new VisualDebuggerPreferencesPage())
+		: mVisualDebugger(NULL)
+		, mDebuggerConnector(NULL)
+		, mErrorReporter(NULL)
+		, mWatchListWindow(NULL)
+		, mParser(NULL)
+		, mPreferencesPage(new VisualDebuggerPreferencesPage())
 {
 	mAppTranslator.load(":/visualDebugSupport_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -31,11 +31,10 @@ void VisualDebuggerPlugin::init(PluginConfigurator const &configurator)
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
 	mParser = new BlockParser(mErrorReporter);
 
-	mVisualDebugger = new VisualDebugger(
-			configurator.logicalModelApi(),
-			configurator.graphicalModelApi(),
-			configurator.mainWindowInterpretersInterface(),
-			mParser
+	mVisualDebugger = new VisualDebugger(configurator.logicalModelApi()
+			, configurator.graphicalModelApi()
+			, configurator.mainWindowInterpretersInterface()
+			, mParser
 	);
 
 	mDebuggerConnector = new DebuggerConnector(this);
@@ -65,7 +64,6 @@ QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 	mWatchListAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_I));
 	connect(mWatchListAction, SIGNAL(triggered()), this, SLOT(showWatchList()));
 	mVisualDebugMenu->addAction(mWatchListAction);
-
 
 	mVisualDebugWithGdbMenu = new QMenu(tr("Visual debug (with gdb)"));
 	ActionInfo visualDebugWithGdbMenuInfo(mVisualDebugWithGdbMenu, "tools");
@@ -186,8 +184,7 @@ void VisualDebuggerPlugin::generateAndBuild()
 			mDebuggerConnector->build();
 
 			if (!mDebuggerConnector->hasBuildError()) {
-				mErrorReporter->addInformation(
-						tr("Code generated and builded successfully"));
+				mErrorReporter->addInformation(tr("Code generated and builded successfully"));
 			}
 		}
 	}

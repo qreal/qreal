@@ -1,4 +1,4 @@
-#include <QFileDialog>
+#include <QtGui/QFileDialog>
 
 #include "visualDebuggerPreferencesPage.h"
 #include "ui_visualDebuggerPreferencesPage.h"
@@ -8,8 +8,8 @@
 using namespace qReal;
 
 VisualDebuggerPreferencesPage::VisualDebuggerPreferencesPage(QWidget *parent)
-		: PreferencesPage(parent),
-		mUi(new Ui::VisualDebuggerPreferencesPage)
+		: PreferencesPage(parent)
+		, mUi(new Ui::VisualDebuggerPreferencesPage)
 {
 	mIcon = QIcon(":/icons/preferences/bug.png");
 

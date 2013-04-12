@@ -69,13 +69,7 @@
 		  </graphics>
 		  <logic>
 			<properties>
-			  <property type="reference" name="condition">
-			   <reference nameReference="ConditionNode"/>
-			  </property>
 			  <property type="string" name="process" />
-			  <property type="bool" name="finished">
-				<default>false</default>
-			  </property>
 			</properties>
 		  </logic>
 		</node>
@@ -147,11 +141,6 @@
 			</ports>
 		  </graphics>
 		  <logic>
-			<properties>
-			  <property type="bool" name="started">
-				<default>false</default>
-			  </property>
-			</properties>
 		  </logic>
 		</node>
 		<node displayedName="Condition Node" name="ConditionNode">
@@ -175,7 +164,6 @@
 		  <logic>
 			<properties>
 			  <property type="string" name="condition" />
-			  <property type="bool" name="flag" />
 			</properties>
 		  </logic>
 		</node>
