@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtCore/QString>
 #include <QtXml/QDomDocument>
-#include <QtGui/QButtonGroup>
+#include <QtWidgets/QButtonGroup>
 
 #include "scene.h"
 #include "item.h"

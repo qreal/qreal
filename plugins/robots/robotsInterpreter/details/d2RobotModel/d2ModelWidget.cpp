@@ -1,5 +1,5 @@
 #include <QtCore/qmath.h>
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QFileDialog>
 #include <QtGui/QRegion>
 
 #include "d2ModelWidget.h"

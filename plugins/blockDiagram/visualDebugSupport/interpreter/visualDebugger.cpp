@@ -419,9 +419,9 @@ void VisualDebugger::generateCode(Id const &id, QFile &codeFile)
 	if (id.element() == "Action") {
 		QString const code = getProperty(id, "process").toString();
 		if (code.mid(0,4) == "var ") {
-			codeFile.write(code.mid(4).toAscii());
+			codeFile.write(code.mid(4).toLatin1());
 		} else {
-			codeFile.write(code.toAscii());
+			codeFile.write(code.toLatin1());
 		}
 
 		codeFile.write("\n");

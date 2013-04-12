@@ -21,6 +21,7 @@ class VisualInterpreterPlugin : public QObject, public qReal::ToolPluginInterfac
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.visualInterpreter.VisualInterpreterPlugin")
 
 public:
 	VisualInterpreterPlugin();

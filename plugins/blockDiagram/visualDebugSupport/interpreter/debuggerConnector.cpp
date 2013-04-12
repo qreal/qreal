@@ -139,7 +139,7 @@ void DebuggerConnector::readBuilderStdOutput()
 
 void DebuggerConnector::sendCommand(QString const &command)
 {
-	mDebuggerProcess->write(command.toAscii());
+	mDebuggerProcess->write(command.toLatin1());
 	//mDebuggerProcess->waitForBytesWritten();
 }
 

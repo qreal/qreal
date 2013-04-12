@@ -1,10 +1,10 @@
 #include <QtCore/QUuid>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QStyleOptionGraphicsItem>
+#include <QtWidgets/QMessageBox>
 #include <QtGui/QTextCursor>
-#include <QtGui/QToolTip>
-#include <QtGui/QGraphicsDropShadowEffect>
+#include <QtWidgets/QToolTip>
+#include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include <math.h>
 

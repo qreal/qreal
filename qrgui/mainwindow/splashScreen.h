@@ -1,6 +1,6 @@
 #pragma once
-#include <QtGui/QProgressBar>
-#include <QtGui/QSplashScreen>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QSplashScreen>
 
 namespace qReal {
 

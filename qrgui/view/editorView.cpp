@@ -1,4 +1,4 @@
-#include <QtGui>
+#include <QtWidgets>
 
 #ifdef QT_OPENGL_LIB
 #include <QtOpenGL/QGLWidget>
@@ -110,14 +110,14 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 	if (mWheelPressed) {
 		if (mMouseOldPosition != QPointF()) {
 			QRectF rect = sceneRect();
-			qreal dx = (event->posF().x() - mMouseOldPosition.x());
-			qreal dy = (event->posF().y() - mMouseOldPosition.y());
+			qreal dx = (event->localPos().x() - mMouseOldPosition.x());
+			qreal dy = (event->localPos().y() - mMouseOldPosition.y());
 			rect.moveLeft(rect.left() - dx);
 			rect.moveTop(rect.top() - dy);
 			setSceneRect(rect);
 			translate(dx, dy);
 		}
-		mMouseOldPosition = event->posF();
+		mMouseOldPosition = event->localPos();
 	}
 	QGraphicsView::mouseMoveEvent(event);
 	if (event->buttons() & Qt::RightButton) {

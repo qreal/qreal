@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
 #include <QPen>
 #include <QBrush>
@@ -91,7 +91,10 @@ public:
 
 protected:
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
-
+	virtual QIconEngine *clone() const
+	{
+		return NULL;
+	}
 private:
 	SdfRenderer mRenderer;
 	QSize mSize;

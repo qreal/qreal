@@ -6,6 +6,8 @@ OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+QT += widgets
+
 LIBS += -L../../../bin -lqrkernel -lqrutils
 
 TRANSLATIONS = visualDebugSupport_ru.ts

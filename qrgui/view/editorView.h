@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsView>
+#include <QtWidgets/QGraphicsView>
 
 #include "editorViewScene.h"
 #include "editorViewMVIface.h"

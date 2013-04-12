@@ -1,8 +1,6 @@
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "visualDebuggerPlugin.h"
-
-Q_EXPORT_PLUGIN2(visualDebugger, qReal::visualDebugger::VisualDebuggerPlugin)
 
 using namespace qReal;
 using namespace visualDebugger;

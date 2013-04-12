@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QAction>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QAction>
 
 #include "../../qrkernel/ids.h"
 #include "../../qrkernel/settingsManager.h"

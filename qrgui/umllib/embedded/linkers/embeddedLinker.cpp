@@ -36,7 +36,7 @@ EmbeddedLinker::EmbeddedLinker()
 	setZValue(300);
 	setFlag(ItemStacksBehindParent, false);
 
-	setAcceptsHoverEvents(true);
+	setAcceptHoverEvents(true);
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdges()));
 }
@@ -279,7 +279,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (!mPressed && scene && mEdge) {
 		mEdge->hide();
 		QPointF const &eScenePos = event->scenePos();
-		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos));
+		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos, QTransform()));
 		mEdge->show();
 		int result = 0;
 
