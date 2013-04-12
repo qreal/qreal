@@ -68,7 +68,32 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-	void insertNodeIntoEdge(const qReal::Id &insertedNodeId, const qReal::Id &newParent, bool isFromLogicalModel,QPointF const &scenePos);
+	void createSingleElement(Id const &id, QString const &name, Element *e
+							 , QPointF const &position, Id const &parentId, bool isFromLogicalModel);
+	void createGroupOfElements(Id const &id, QPointF const &position
+												, Id const &parentId, bool isFromLogicalModel);
+	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId
+							   , qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos
+							   , QPointF const &shift, QList<NodeElement*> elements);
+
+	QList<NodeElement*> getNeibors(NodeElement* node);
+	void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF const &direction
+						  , QPointF const &shift, QList<NodeElement*> elements);
+
+	void reConnectLink(EdgeElement * edgeElem);
+	void arrangeNodeLinks(NodeElement* node);
+	qreal sign(qreal x);
+
+
+	NodeElement* getNodeById(qReal::Id const &itemId);
+	EdgeElement* getEdgeById(qReal::Id const &itemId);
+
+	QList<EdgeElement*> getInEdges(NodeElement* node);
+	QList<EdgeElement*> getOutEdges(NodeElement* node);
+
+	void deleteElementFromEdge(qReal::Id const &nodeId, QList<QGraphicsItem*> edgesToDelete);
+
+
 	void itemSelectUpdate();
 
 	/// update (for a beauty) all edges when tab is opening

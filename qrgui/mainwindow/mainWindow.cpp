@@ -585,7 +585,77 @@ void MainWindow::removeReferences(Id const &id)
 
 void MainWindow::deleteFromScene()
 {
+	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
+	QList<QGraphicsItem *> itemsToDelete = scene->selectedItems();
+	QList<QGraphicsItem *> nodesToDelete;
+	QList<QGraphicsItem *> nodesToIndDelete;
+	QList<QGraphicsItem *> edgesToDelete;
+	QList<QGraphicsItem *> itemsToUpdate;
+	QList<QGraphicsItem *> itemsToDeleteNoUpdate;
+	// QGraphicsScene::selectedItems() returns items in no particular order,
+	// so we should handle parent-child relationships manually
+
+	while (!itemsToDelete.isEmpty()) {
+		QGraphicsItem *currentItem = itemsToDelete.at(0);
+		if (dynamic_cast <EdgeElement*> (currentItem)) {
+			edgesToDelete.append(currentItem);
+		} else {
+			if (dynamic_cast <NodeElement*> (currentItem)) {
+				nodesToDelete.append(currentItem);
+			}
+		}
+		itemsToDelete.removeAll(currentItem);
+	}
+
+	while (!nodesToDelete.isEmpty()){
+		QGraphicsItem *currentItem = nodesToDelete.at(0);
+		// delete possible children
+		foreach (QGraphicsItem *child, currentItem->childItems()) {
+			NodeElement* node = dynamic_cast <NodeElement*> (child);
+			if (node) {
+				itemsToDeleteNoUpdate.append(node);
+				scene->deleteElementFromEdge(node->id(), currentItem->childItems());
+			}
+			itemsToDelete.removeAll(child);
+			deleteFromScene(child);
+		}
+
+		itemsToDeleteNoUpdate.append(currentItem);
+		NodeElement *node = dynamic_cast <NodeElement*>(nodesToDelete.at(0));
+		scene->deleteElementFromEdge(node->id(), edgesToDelete);
+		nodesToDelete.removeAll(currentItem);
+		nodesToIndDelete.append(currentItem);
+		deleteFromScene(currentItem);
+	}
+
+	while (!edgesToDelete.isEmpty()){
+		QGraphicsItem *currentItem = edgesToDelete.at(0);
+		EdgeElement *edge = dynamic_cast <EdgeElement*>(edgesToDelete.at(0));
+		if (edge->src() && !itemsToUpdate.contains(edge->src())) {
+			itemsToUpdate.append(edge->src());
+		}
+		if (edge->dst() && !itemsToUpdate.contains(edge->dst())) {
+			itemsToUpdate.append(edge->dst());
+		}
+		edgesToDelete.removeAll(currentItem);
+		deleteFromScene(currentItem);
+	}
+	// correcting unremoved edges
+	foreach (QGraphicsItem* item, itemsToUpdate) {
+		if (!itemsToDeleteNoUpdate.contains(item)) {
+			NodeElement* node = dynamic_cast <NodeElement*> (item);
+			if (node) {
+				node->arrangeLinks();
+				node->adjustLinks();
+			}
+		}
+	}
+}
+//*/
+/*void MainWindow::deleteFromScene()
+{
 	QList<QGraphicsItem *> itemsToDelete = getCurrentTab()->scene()->selectedItems();
+	QList<QGraphicsItem *> edgesToDelete;
 	QList<QGraphicsItem *> itemsToUpdate;
 	QList<QGraphicsItem *> itemsToDeleteNoUpdate;
 	// QGraphicsScene::selectedItems() returns items in no particular order,
@@ -595,34 +665,58 @@ void MainWindow::deleteFromScene()
 		QGraphicsItem *currentItem = itemsToDelete.at(0);
 
 		// delete possible children
-		foreach (QGraphicsItem *child, currentItem->childItems()) {
+		/*foreach (QGraphicsItem *child, currentItem->childItems()) {
 			NodeElement* node = dynamic_cast <NodeElement*> (child);
 			if (node) {
 				itemsToDeleteNoUpdate.append(node);
+				dynamic_cast<EditorViewScene*>(getCurrentTab()->scene())->deleteElementFromEdge(node->id());
+				foreach (EdgeElement* edge, node->getEdges()){
+					edgesToDelete.append(dynamic_cast <QGraphicsItem*>(edge));
+				}
+
+				itemsToDelete.removeAll(child);
+				deleteFromScene(child);
 			}
-			itemsToDelete.removeAll(child);
-			deleteFromScene(child);
+			if (dynamic_cast <EdgeElement*> (child)){
+				edgesToDelete.append(child);
+				itemsToDelete.removeAll(child);
+			}
 		}
 
+		EdgeElement* edge = dynamic_cast <EdgeElement*> (currentItem);
+		if (edge) {
+			edgesToDelete.append(currentItem);
+			itemsToDelete.removeAll(currentItem);
+		} else {
+			NodeElement* node = dynamic_cast <NodeElement*> (currentItem);
+			if (node) {
+				itemsToDeleteNoUpdate.append(currentItem);
+				dynamic_cast<EditorViewScene*>(getCurrentTab()->scene())->deleteElementFromEdge(node->id());
+				foreach (EdgeElement* edge, node->getEdges()){
+					edgesToDelete.append(dynamic_cast <QGraphicsItem*>(edge));
+				}
+				dynamic_cast<EditorViewScene*>(getCurrentTab()->scene())->deleteElementFromEdge(node->id());
+			}
+			// delete the item itself
+			itemsToDelete.removeAll(currentItem);
+			deleteFromScene(currentItem);
+		}
+	}
+	while (!edgesToDelete.isEmpty()){
+		QGraphicsItem *currentItem = edgesToDelete.at(0);
 		EdgeElement* edge = dynamic_cast <EdgeElement*> (currentItem);
 		if (edge) {
 			if (edge->src() && !itemsToUpdate.contains(edge->src())) {
 				itemsToUpdate.append(edge->src());
 			}
 			if (edge->dst() && !itemsToUpdate.contains(edge->dst())) {
-				itemsToUpdate.append(edge->dst());
-			}
-		} else {
-			NodeElement* node = dynamic_cast <NodeElement*> (currentItem);
-			if (node) {
-				itemsToDeleteNoUpdate.append(currentItem);
+				 itemsToUpdate.append(edge->dst());
 			}
 		}
-
 		// delete the item itself
-		itemsToDelete.removeAll(currentItem);
+		edgesToDelete.removeAll(currentItem);
 		deleteFromScene(currentItem);
-	}
+	}//
 
 	// correcting unremoved edges
 	foreach (QGraphicsItem* item, itemsToUpdate) {
@@ -635,7 +729,7 @@ void MainWindow::deleteFromScene()
 		}
 	}
 }
-
+//*/
 void MainWindow::deleteElementFromScene(QPersistentModelIndex const &index)
 {
 	PropertyEditorModel* propertyEditorModel = static_cast<PropertyEditorModel*>(mUi->propertyEditor->model());
@@ -652,7 +746,6 @@ void MainWindow::deleteFromScene(QGraphicsItem *target)
 	if (!elem) {
 		return;
 	}
-
 	QPersistentModelIndex const index = mModels->graphicalModelAssistApi().indexById(elem->id());
 	if (index.isValid()) {
 		Element * const element = dynamic_cast<Element *>(elem);

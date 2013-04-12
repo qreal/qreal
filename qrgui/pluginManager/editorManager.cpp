@@ -182,7 +182,12 @@ QString EditorManager::friendlyName(const Id &id) const
 	case 2:
 		return mPluginIface[id.editor()]->diagramName(id.diagram());
 	case 3:
-		return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
+		if (mGroups.keys().contains(id.element())){
+			return id.element();
+		}
+		else{
+			return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
+		}
 	default:
 		Q_ASSERT(!"Malformed Id");
 		return "";
@@ -192,8 +197,12 @@ QString EditorManager::friendlyName(const Id &id) const
 QString EditorManager::description(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	if (id.idSize() != 3)
+	if (id.idSize() != 3){
 		return "";
+	}
+	if (mGroups.keys().contains(id.element())){
+		return id.element();
+	}
 	return mPluginIface[id.editor()]->elementDescription(id.diagram(), id.element());
 }
 
@@ -471,6 +480,31 @@ bool EditorManager::isGraphicalElementNode(const Id &id) const
 		return false;
 	}
 	return impl->isNode();
+}
+
+QList<QString> EditorManager::getPatternNames() const
+{
+	return mGroups.keys();
+}
+
+Pattern EditorManager::getPatternByName(const QString &str) const
+{
+	return mGroups.value(str);
+}
+
+IdList EditorManager::groups(Id const &diagram)
+{
+	IdList elements;
+	PatternParser parser;
+	parser.loadXml((mPluginIface.value(diagram.editor()))->getGroupsXML());
+	parser.parseGroups(this, diagram.editor(), diagram.diagram());
+	foreach(Pattern const &pattern, parser.getPatterns()){
+		mGroups.insert(pattern.name(), pattern);
+	}
+	foreach (QString e, mGroups.keys()){
+			elements.append(Id(diagram.editor(), diagram.diagram(), e));
+	}
+	return elements;
 }
 
 

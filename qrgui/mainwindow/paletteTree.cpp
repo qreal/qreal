@@ -261,6 +261,8 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
 	IdList list = mEditorManager->elements(diagram);
+	IdList listGr = mEditorManager->groups(diagram);
+	list.append(listGr);
 	qSort(list.begin(), list.end(), idLessThan);
 
 	mCategories[diagram] = mEditorsTrees.size();

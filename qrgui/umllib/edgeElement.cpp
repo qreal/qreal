@@ -666,6 +666,24 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	saveConfiguration(QPointF());
 }
 
+void EdgeElement::newArrangeLink(){
+	connectToPort();
+
+	delCloseLinePoints();
+
+	adjustNeighborLinks();
+	arrangeSrcAndDst();
+
+	correctArrow();
+	prepareGeometryChange();
+	correctInception();
+	adjustNeighborLinks();
+
+	setGraphicApiPos();
+	saveConfiguration(QPointF());
+}
+
+
 qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const
 {
 	qreal len = sqrt(((pos1.x() - pos2.x()) * (pos1.x() - pos2.x())) + ((pos1.y() - pos2.y()) * (pos1.y() - pos2.y())));
