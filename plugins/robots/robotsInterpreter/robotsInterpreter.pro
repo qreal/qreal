@@ -1,4 +1,4 @@
-QT += xml
+QT += xml widgets
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -8,8 +8,8 @@ RCC_DIR = .moc
 
 LIBS += -L../../../bin -lqrkernel -lqrutils
 
-CONFIG(debug, debug|release):LIBS  += -lqextserialportd
-else:LIBS  += -lqextserialport
+debug:LIBS  += -L../../../bin -lqextserialportd
+else:LIBS += -L../../../bin -lqextserialport
 
 TRANSLATIONS = robotsInterpreter_ru.ts
 
@@ -32,7 +32,7 @@ HEADERS += \
 	details/abstractTimer.h \
 	details/realTimer.h \
 	details/sensorsConfigurationWidget.h \
-    details/nullTimer.h
+	details/nullTimer.h
 
 SOURCES += \
 	robotsPlugin.cpp \
@@ -50,13 +50,15 @@ SOURCES += \
 	details/abstractTimer.cpp \
 	details/realTimer.cpp \
 	details/sensorsConfigurationWidget.cpp \
-    details/nullTimer.cpp
+	details/nullTimer.cpp \
+
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
 	watchListWindow.ui \
 	details/sensorsConfigurationWidget.ui
+
 
 RESOURCES += \
 	robotsInterpreter.qrc \

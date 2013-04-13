@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QMenu>
 
 namespace qReal {
 

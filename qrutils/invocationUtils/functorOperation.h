@@ -8,6 +8,8 @@
 
 using namespace invocation::details;
 
+#define QT_TYPENAME typename
+
 namespace invocation
 {
 

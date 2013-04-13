@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QModelIndex>
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 #include "preferencesPages/preferencesPage.h"
 

@@ -18,6 +18,7 @@ class RobotsGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.robots.generator.RobotsGeneratorPlugin")
 
 public:
 	RobotsGeneratorPlugin();

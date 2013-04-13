@@ -1862,7 +1862,11 @@
 <context>
     <name>PropertyEditorView</name>
     <message>
+<<<<<<< HEAD
         <location filename="view/propertyEditorView.cpp" line="170"/>
+=======
+        <location filename="view/propertyEditorView.cpp" line="177"/>
+>>>>>>> trunc/robots
         <source>Specify directory:</source>
         <translation>Выберите каталог:</translation>
     </message>
@@ -3073,16 +3077,28 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="mainwindow/mainWindow.cpp" line="746"/>
         <location filename="mainwindow/mainWindow.cpp" line="764"/>
         <location filename="mainwindow/mainWindow.cpp" line="782"/>
+=======
+        <location filename="mainwindow/mainWindow.cpp" line="745"/>
+        <location filename="mainwindow/mainWindow.cpp" line="763"/>
+        <location filename="mainwindow/mainWindow.cpp" line="781"/>
+>>>>>>> trunc/robots
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="mainwindow/mainWindow.cpp" line="748"/>
         <location filename="mainwindow/mainWindow.cpp" line="766"/>
         <location filename="mainwindow/mainWindow.cpp" line="784"/>
+=======
+        <location filename="mainwindow/mainWindow.cpp" line="747"/>
+        <location filename="mainwindow/mainWindow.cpp" line="765"/>
+        <location filename="mainwindow/mainWindow.cpp" line="783"/>
+>>>>>>> trunc/robots
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3187,18 +3203,36 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="mainwindow/mainWindow.cpp" line="782"/>
+=======
+        <location filename="mainwindow/mainWindow.cpp" line="781"/>
+>>>>>>> trunc/robots
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="mainwindow/mainWindow.cpp" line="784"/>
+=======
+        <location filename="mainwindow/mainWindow.cpp" line="783"/>
+>>>>>>> trunc/robots
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="mainwindow/mainWindow.cpp" line="909"/>
         <location filename="mainwindow/mainWindow.cpp" line="935"/>
+=======
+        <location filename="mainwindow/mainWindow.cpp" line="926"/>
+        <source>Text Editor</source>
+        <translation>Текстовый редактор</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="908"/>
+        <location filename="mainwindow/mainWindow.cpp" line="934"/>
+>>>>>>> trunc/robots
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3212,17 +3246,29 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="mainwindow/mainWindow.cpp" line="1728"/>
+=======
+        <location filename="mainwindow/mainWindow.cpp" line="1727"/>
+>>>>>>> trunc/robots
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="mainwindow/mainWindow.cpp" line="1757"/>
+=======
+        <location filename="mainwindow/mainWindow.cpp" line="1756"/>
+>>>>>>> trunc/robots
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="mainwindow/mainWindow.cpp" line="1757"/>
+=======
+        <location filename="mainwindow/mainWindow.cpp" line="1756"/>
+>>>>>>> trunc/robots
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3243,7 +3289,11 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="mainwindow/mainWindow.cpp" line="1345"/>
+=======
+        <location filename="mainwindow/mainWindow.cpp" line="1344"/>
+>>>>>>> trunc/robots
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3343,19 +3393,19 @@
     </message>
     <message>
         <location filename="mainwindow/projectManager/projectManager.cpp" line="152"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="305"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="306"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
         <location filename="mainwindow/projectManager/projectManager.cpp" line="153"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="306"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="307"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
         <location filename="mainwindow/projectManager/projectManager.cpp" line="153"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="306"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="307"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
@@ -3372,13 +3422,13 @@
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="284"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="285"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="302"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="317"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="303"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="318"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>

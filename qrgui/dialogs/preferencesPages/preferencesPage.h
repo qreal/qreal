@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtGui/QIcon>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 /// Abstract class for preferences page
 class PreferencesPage : public QWidget

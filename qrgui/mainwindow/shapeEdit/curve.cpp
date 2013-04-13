@@ -1,5 +1,5 @@
 #include "curve.h"
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 	:Path(QPainterPath(start))
