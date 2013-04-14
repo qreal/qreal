@@ -25,6 +25,8 @@ RobotsPlugin::RobotsPlugin()
 
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
+	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
+
 	initActions();
 }
 

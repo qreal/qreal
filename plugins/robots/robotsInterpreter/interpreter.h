@@ -62,6 +62,10 @@ public:
 	WatchListWindow *watchWindow() const;
 	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
+signals:
+	void noiseSettingsChanged();
+	void noiseSettingsChangedBy2DModelWidget();
+
 public slots:
 	void connectToRobot();
 	void interpret();

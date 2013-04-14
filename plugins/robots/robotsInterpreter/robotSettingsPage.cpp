@@ -90,6 +90,13 @@ void PreferencesRobotSettingsPage::changeEvent(QEvent *e)
 	}
 }
 
+void PreferencesRobotSettingsPage::rereadNoiseSettings()
+{
+	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
+	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
+}
+
+
 void PreferencesRobotSettingsPage::initRobotModelType(robotModelType::robotModelTypeEnum type)
 {
 	if (type == robotModelType::null) {

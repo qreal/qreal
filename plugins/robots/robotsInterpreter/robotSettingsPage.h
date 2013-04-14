@@ -34,6 +34,9 @@ signals:
 protected:
 	void changeEvent(QEvent *e);
 
+public slots:
+	void rereadNoiseSettings();
+
 private slots:
 	void activatedUnrealModel(bool checked);
 	void bluetoothCommunucationToggled();
