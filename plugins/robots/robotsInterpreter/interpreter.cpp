@@ -60,7 +60,7 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	Tracer::debug(tracer::initialization, "Interpreter::init", "Going to set robot implementation, model type is " + DebugHelper::toString(modelType));
 	setRobotImplementation(modelType);
 
-	mWatchListWindow = new WatchListWindow(mParser, mInterpretersInterface->windowWidget());
+	mWatchListWindow = new utils::WatchListWindow(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
@@ -103,8 +103,6 @@ void Interpreter::interpret()
 	if (!configurer.configure(currentDiagramId)) {
 		return;
 	}
-
-	runTimer();
 }
 
 void Interpreter::stopRobot()
@@ -201,6 +199,8 @@ void Interpreter::sensorsConfiguredSlot()
 
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;
+
+		runTimer();
 
 		Tracer::debug(tracer::initialization, "Interpreter::sensorsConfiguredSlot", "Starting interpretation");
 		mRobotModel->startInterpretation();
@@ -419,7 +419,7 @@ void Interpreter::reportError(QString const &message)
 	mInterpretersInterface->errorReporter()->addError(message);
 }
 
-WatchListWindow *Interpreter::watchWindow() const
+utils::WatchListWindow *Interpreter::watchWindow() const
 {
 	return mWatchListWindow;
 }

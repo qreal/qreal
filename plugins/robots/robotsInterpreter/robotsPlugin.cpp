@@ -115,7 +115,7 @@ void RobotsPlugin::show2dModel()
 void RobotsPlugin::updateSettings()
 {
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized...");
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel").toInt());
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
 	QString const portName = SettingsManager::value("bluetoothPortName").toString();

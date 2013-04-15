@@ -99,7 +99,7 @@ private:
 
 	qReal::VisualInterpreterUnit *mVisualInterpreterUnit;
 	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
-	utils::watchListWindow *mWatchListWindow;
+	utils::WatchListWindow *mWatchListWindow;
 
 	QTranslator mAppTranslator;
 };
