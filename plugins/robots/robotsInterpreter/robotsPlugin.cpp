@@ -40,10 +40,12 @@ void RobotsPlugin::initActions()
 	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
 	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), NULL);
+	mRunAction->setShortcut(QKeySequence(Qt::Key_F5));
 	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
 	QObject::connect(mRunAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
 
 	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), NULL);
+	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
 	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
 	QObject::connect(mStopRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(stopRobot()));
 
