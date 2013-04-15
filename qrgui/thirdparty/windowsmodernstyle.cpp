@@ -57,6 +57,12 @@ typedef HRESULT (WINAPI* PtrGetCurrentThemeName)( OUT LPWSTR pszThemeFileName, i
 static PtrIsAppThemed pIsAppThemed = NULL;
 static PtrGetCurrentThemeName pGetCurrentThemeName = NULL;
 
+// :(
+#define QWindowsVistaStyle QProxyStyle
+#define QWindowsXPStyle QProxyStyle
+#define QWindowsStyle QProxyStyle
+
+
 static void resolveSymbols()
 {
 	static bool tried = false;
@@ -1077,7 +1083,7 @@ QObject* qt_plugin_instance_windowsmodernstyle()
 	return instance;
 }
 
-Q_IMPORT_PLUGIN( windowsmodernstyle )
+//Q_IMPORT_PLUGIN( windowsmodernstyle )
 
 #else
 

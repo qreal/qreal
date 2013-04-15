@@ -51,6 +51,7 @@ private:
 	int mSpeedFactor;
 	int mCyclesCount;
 	qint64 mFrameStartTimestamp;
+	bool mIsStarted;
 };
 
 }

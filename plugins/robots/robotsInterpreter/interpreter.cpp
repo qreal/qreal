@@ -75,7 +75,6 @@ void Interpreter::interpret()
 {
 	Tracer::debug(tracer::initialization, "Interpreter::interpret", "Preparing for interpretation");
 
-	mBlocksTable->clear();
 	mInterpretersInterface->errorReporter()->clear();
 
 	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
@@ -89,6 +88,7 @@ void Interpreter::interpret()
 		return;
 	}
 
+	mBlocksTable->clear();
 	mState = waitingForSensorsConfiguredToLaunch;
 	mBlocksTable->setIdleForBlocks();
 
@@ -283,8 +283,10 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 
 void Interpreter::runTimer()
 {
-	mTimer->start(1);
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()));
+	if (!mTimer->isActive()) {
+		mTimer->start(10);
+		connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
+	}
 	if (mRobotModel->sensor(inputPort::port1)) {
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)));
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
