@@ -367,6 +367,9 @@ void Interpreter::resetVariables()
 
 void Interpreter::connectToRobot()
 {
+	if (mState == interpreting) {
+		return;
+	}
 	if (mConnected) {
 		mRobotModel->stopRobot();
 		mRobotModel->disconnectFromRobot();
