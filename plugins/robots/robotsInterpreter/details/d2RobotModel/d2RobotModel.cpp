@@ -20,6 +20,9 @@ unsigned const touchSensorNotPressedSignal = 0;
 D2RobotModel::D2RobotModel(QObject *parent)
 		: QObject(parent)
 		, mD2ModelWidget(NULL)
+		, mMotorA(NULL)
+		, mMotorB(NULL)
+		, mMotorC(NULL)
 		, mTimeline(new Timeline(this))
 		, mNeedSync(false)
 {
@@ -35,6 +38,15 @@ D2RobotModel::~D2RobotModel()
 
 void D2RobotModel::initPosition()
 {
+	if (mMotorA) {
+		delete mMotorA;
+	}
+	if (mMotorB) {
+		delete mMotorB;
+	}
+	if (mMotorC) {
+		delete mMotorC;
+	}
 	mMotorA = initMotor(5, 0, 0, 0, false);
 	mMotorB = initMotor(5, 0, 0, 1, false);
 	mMotorC = initMotor(5, 0, 0, 2, false);
@@ -285,7 +297,7 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 
 	unsigned long sum = 0;
 	unsigned long *data = (unsigned long *) image.bits();
-	int const n = image.numBytes() / 4;
+	int const n = image.byteCount() / 4;
 
 	for (int i = 0; i < n; ++i) {
 		int const b = (data[i] >> 0) & 0xFF;

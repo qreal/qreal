@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QDialog>
-#include <QtGui>
+#include <QtWidgets>
 
 class CheckoutDialog : public QDialog
 {

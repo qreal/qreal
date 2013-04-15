@@ -1,4 +1,4 @@
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
 
@@ -6,6 +6,9 @@
 #include "../../../../../qrutils/graphicsUtils/griddrawer.h"
 #include "../../../../../qrkernel/settingsManager.h"
 
+using namespace qReal::interpreters::robots;
+using namespace details::d2Model;
+using namespace graphicsUtils;
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
@@ -19,7 +22,7 @@ D2ModelScene::D2ModelScene(AbstractView *view, QObject *parent)
 	setEmptyRect(-500, -500, mSizeEmptyRectX, mSizeEmptyRectY);
 	setItemIndexMethod(NoIndex);
 	setEmptyPenBrushItems();
-    gd = new GridDrawer;
+	gd = new GridDrawer;
 }
 
 D2ModelScene::~D2ModelScene()
@@ -47,7 +50,7 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);
-	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
+	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
 	if (mGraphicsItem) {
 		mGraphicsItem->changeDragState(mX1, mY1);
 		if (mGraphicsItem->getDragState() != AbstractItem::None) {
@@ -100,14 +103,14 @@ void D2ModelScene::keyPressEvent(QKeyEvent *event)
 
 void D2ModelScene::drawBackground ( QPainter * painter, const QRectF & rect )
 {
-    if (SettingsManager::value("2dShowGrid").toBool()){
-        QGraphicsScene::drawBackground(painter, rect);
-        int cellSize = SettingsManager::value("2dGridCellSize").toInt();
-        gd -> drawGrid (painter, rect, cellSize);
-    }
+	if (SettingsManager::value("2dShowGrid").toBool()){
+		QGraphicsScene::drawBackground(painter, rect);
+		int cellSize = SettingsManager::value("2dGridCellSize").toInt();
+		gd -> drawGrid (painter, rect, cellSize);
+	}
 }
 
 void D2ModelScene::updateGrid()
 {
-    this->update();
+	this->update();
 }

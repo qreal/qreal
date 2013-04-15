@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 #include <QtGui/QPainter>
 #include "../../../../../qrutils/graphicsUtils/abstractScene.h"
 #include "../../../../../qrutils/graphicsUtils/griddrawer.h"
@@ -25,11 +25,12 @@ public:
 	void forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
 	void forReleaseResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
 	void reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect);
-    void drawBackground ( QPainter * painter, const QRectF & rect );
-    graphicsUtils::GridDrawer *gd;
+	void drawBackground ( QPainter * painter, const QRectF & rect );
+	graphicsUtils::GridDrawer *gd;
+
 
 public slots:
-    void updateGrid();
+	void updateGrid();
 
 signals:
 	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);

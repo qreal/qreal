@@ -1,7 +1,7 @@
 #include "lineItem.h"
 #include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -72,6 +72,49 @@ void LineItem::reshapeRectWithShift()
 		setX2andY2(res.first, res.second);
 	} else
 		AbstractItem::reshapeRectWithShift();
+}
+
+void LineItem::reshapeWithGrid(int indexGrid)
+{
+	int coefX = static_cast<int>(mX2) / indexGrid;
+	int coefY = static_cast<int>(mY2) / indexGrid;
+
+	if (abs(mY2)>abs(mX2))
+	{
+		setX2andY2(
+					mX1
+					,alignedCoordinate(mY2, coefY, indexGrid)
+					);
+	} else {
+		setX2andY2(
+					alignedCoordinate(mX2, coefX, indexGrid)
+					, mY1
+					);
+	}
+
+}
+
+void LineItem::setBeginCoordinatesWithGrid(int indexGrid)
+{
+	int coefX = static_cast<int>(mX1) / indexGrid;
+	int coefY = static_cast<int>(mY1) / indexGrid;
+
+	setX1andY1(
+					alignedCoordinate(mX1, coefX, indexGrid)
+					,alignedCoordinate(mY1, coefY, indexGrid)
+					);
+}
+
+qreal LineItem::alignedCoordinate(qreal coord, int coef, int const indexGrid) const
+{
+	int const coefSign = coef != 0 ? coef / qAbs(coef) : 0;
+
+	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid) {
+		return coef * indexGrid;
+	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) < indexGrid) {
+		return (coef + coefSign) * indexGrid;
+	}
+	return coord;
 }
 
 QDomElement LineItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)

@@ -1,10 +1,10 @@
 /** @file edgeelement.cpp
  * 	@brief class for an edge on a diagram
  * */
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtGui/QStyle>
+#include <QtWidgets/QStyleOptionGraphicsItem>
+#include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 #include <QDebug>
 #include <math.h>
 
@@ -74,10 +74,11 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 
 	QList<ElementTitleInterface*> titles;
 	mElementImpl->init(factory, titles);
-	foreach (ElementTitleInterface *titleIface, titles){
+	foreach (ElementTitleInterface *titleIface, titles) {
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
-		if (!title)
+		if (!title) {
 			continue;
+		}
 		title->init(boundingRect());
 		title->setParentItem(this);
 		mTitles.append(title);
@@ -317,8 +318,9 @@ void EdgeElement::updateLongestPart()
 
 		QLineF longest(mLine[maxIdx], mLine[mLongPart + 1]);
 
-		if (mChaoticEdition)
-			title->rotate(-lineAngle(longest));
+		if (mChaoticEdition) {
+			title->setRotation(title->rotation() + (-lineAngle(longest)));
+		}
 	}
 }
 
@@ -680,7 +682,7 @@ void EdgeElement::delClosePoints()
 			if (i != mLine.size() - 2) {
 				mLine.remove(i + 1);
 				i--;
-			} else if (i != 0){
+			} else if (i != 0) {
 				mLine.remove(i);
 				i = i - 2;
 			}

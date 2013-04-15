@@ -13,7 +13,8 @@ BaseGraphTransformationUnit::BaseGraphTransformationUnit(
 {
 	mDefaultProperties = (QSet<QString>()
 		<< "from" << "incomingConnections" << "incomingUsages" << "links"
-		<< "name" << "outgoingConnections" << "outgoingUsages" << "to");
+		<< "name" << "outgoingConnections" << "outgoingUsages" << "to"
+			<< "fromPort" << "toPort");
 }
 
 BaseGraphTransformationUnit::~BaseGraphTransformationUnit()
@@ -22,36 +23,56 @@ BaseGraphTransformationUnit::~BaseGraphTransformationUnit()
 
 IdList BaseGraphTransformationUnit::elementsFromActiveDiagram() const
 {
+	unsigned const validIdSize = 4;
 	Id const activeDiagram = mInterpretersInterface.activeDiagram();
-	return children(activeDiagram);
+	if (activeDiagram.idSize() < validIdSize) {
+		mInterpretersInterface.errorReporter()->addError(tr("no current diagram"));
+		return IdList();
+	}
+	IdList const activeDiagramElements = children(activeDiagram);
+	IdList activeDiagramGraphicalElements;
+	foreach (Id const &id, activeDiagramElements) {
+		if (mGraphicalModelApi.isGraphicalId(id)) {
+			activeDiagramGraphicalElements.append(id);
+		}
+	}
+	return activeDiagramGraphicalElements;
 }
 
 bool BaseGraphTransformationUnit::checkRuleMatching()
 {
-	mMatch = new QHash<Id, Id>();
+	IdList const elements = elementsFromActiveDiagram();
+
+	return checkRuleMatching(elements);
+}
+
+bool BaseGraphTransformationUnit::checkRuleMatching(IdList const &elements)
+{
+	mMatch = QHash<Id, Id>();
 	bool isMatched = false;
 
 	Id const startElem = startElement();
 	if (startElem == Id::rootId()) {
-		report(tr("Rule '") + property(mRuleToFind, "ruleName").toString() +
-				tr("' has not any appropriate nodes"), true);
+		report(tr("Rule '") + property(mRuleToFind, "ruleName").toString() + tr("' has not any appropriate nodes"), true);
 		mHasRuleSyntaxErr = true;
 		return false;
 	}
 
 	mNodesHavingOutsideLinks.append(startElem);
 
-	IdList const elements = elementsFromActiveDiagram();
 	foreach (Id const &element, elements) {
 		if (compareElements(element, startElem)) {
 			mCurrentMatchedGraphInRule.clear();
+			mCurrentMatchedGraphInModel.clear();
 			mNodesHavingOutsideLinks.clear();
-			mMatch->clear();
+			mMatch.clear();
 			mPos = 0;
 
 			mCurrentMatchedGraphInRule.append(startElem);
+			mCurrentMatchedGraphInModel.append(element);
 			mNodesHavingOutsideLinks.append(startElem);
-			mMatch->insert(startElem, element);
+
+			mMatch.insert(startElem, element);
 
 			if (checkRuleMatchingRecursively()) {
 				isMatched = true;
@@ -65,7 +86,7 @@ bool BaseGraphTransformationUnit::checkRuleMatching()
 bool BaseGraphTransformationUnit::checkRuleMatchingRecursively()
 {
 	if (mNodesHavingOutsideLinks.length() == mPos) {
-		QHash<Id, Id> currentMatch = *(mMatch);
+		QHash<Id, Id> currentMatch = mMatch;
 		mMatches.append(currentMatch);
 		return true;
 	}
@@ -76,41 +97,45 @@ bool BaseGraphTransformationUnit::checkRuleMatchingRecursively()
 	Id const linkInRule = outsideLink(nodeInRule);
 
 	if (linkInRule != Id::rootId()) {
-		Id const linkEndInR = linkEndInRule(linkInRule, nodeInRule);
-		if (linkEndInR == Id::rootId()) {
-			report(tr("Rule '") + property(mRuleToFind, "ruleName").toString() +
-					tr("' has unconnected link"), true);
+		Id const linkEndInRuleElement = linkEndInRule(linkInRule, nodeInRule);
+		if (linkEndInRuleElement == Id::rootId()) {
+			report(tr("Rule '") + property(mRuleToFind, "ruleName").toString() + tr("' has unconnected link"), true);
 			mHasRuleSyntaxErr = true;
 			return false;
 		}
 
-		Id const nodeInModel = mMatch->value(nodeInRule);
-		IdList const lnksInModel = properLinks(nodeInModel, linkInRule);
+		Id const nodeInModel = mMatch.value(nodeInRule);
+		IdList const linksInModel = properLinks(nodeInModel, linkInRule);
 
-		QHash<Id, Id> *matchBackup = mMatch;
-		IdList *nodesHavingOutsideLinksBackup = &mNodesHavingOutsideLinks;
-		IdList *currentMatchedGraphInRuleBackup = &mCurrentMatchedGraphInRule;
+		QHash<Id, Id> matchBackup = mMatch;
+		IdList nodesHavingOutsideLinksBackup = mNodesHavingOutsideLinks;
+		IdList currentMatchedGraphInRuleBackup = mCurrentMatchedGraphInRule;
+		IdList currentMatchedGraphInModelBackup = mCurrentMatchedGraphInModel;
 		int const posBackup = mPos;
 
-		foreach (Id const &linkInModel, lnksInModel) {
-			Id const linkEndInM = linkEndInModel(linkInModel, nodeInModel);
-			if (checkNodeForAddingToMatch(linkEndInM, linkEndInR)) {
+		foreach (Id const &linkInModel, linksInModel) {
+			Id const linkEndInModelElement = linkEndInModel(linkInModel, nodeInModel);
+			if (checkNodeForAddingToMatch(linkEndInModelElement, linkEndInRuleElement)) {
 				if (checkRuleMatchingRecursively()) {
 					isMatched = true;
-					mMatch = new QHash<Id, Id>();
-					foreach (Id const id, matchBackup->keys()) {
-						mMatch->insert(id, matchBackup->value(id));
+					mMatch = QHash<Id, Id>();
+					foreach (Id const id, matchBackup.keys()) {
+						mMatch.insert(id, matchBackup.value(id));
 					}
 
-					mNodesHavingOutsideLinks = *(new IdList());
-					foreach (Id const id, *nodesHavingOutsideLinksBackup) {
+					mNodesHavingOutsideLinks = IdList();
+					foreach (Id const id, nodesHavingOutsideLinksBackup) {
 						mNodesHavingOutsideLinks.append(id);
 					}
-
-					mCurrentMatchedGraphInRule = *(new IdList());
-					foreach (Id const id, *currentMatchedGraphInRuleBackup) {
+					mCurrentMatchedGraphInRule = IdList();
+					foreach (Id const id, currentMatchedGraphInRuleBackup) {
 						mCurrentMatchedGraphInRule.append(id);
 					}
+					mCurrentMatchedGraphInModel = IdList();
+					foreach (Id const id, currentMatchedGraphInModelBackup) {
+						mCurrentMatchedGraphInModel.append(id);
+					}
+
 					mPos = posBackup;
 				} else {
 					rollback();
@@ -124,8 +149,7 @@ bool BaseGraphTransformationUnit::checkRuleMatchingRecursively()
 	}
 }
 
-bool BaseGraphTransformationUnit::checkNodeForAddingToMatch(Id const &nodeInModel,
-		Id const &nodeInRule)
+bool BaseGraphTransformationUnit::checkNodeForAddingToMatch(Id const &nodeInModel, Id const &nodeInRule)
 {
 	if (nodeInModel == Id::rootId()) {
 		return false;
@@ -136,9 +160,10 @@ bool BaseGraphTransformationUnit::checkNodeForAddingToMatch(Id const &nodeInMode
 	bool res = checkExistingLinks(nodeInModel, nodeInRule, linksToAddToMatch);
 
 	if (res) {
-		mMatch->unite(*linksToAddToMatch);
-		mMatch->insert(nodeInRule, nodeInModel);
+		mMatch.unite(*linksToAddToMatch);
+		mMatch.insert(nodeInRule, nodeInModel);
 		mCurrentMatchedGraphInRule.append(nodeInRule);
+		mCurrentMatchedGraphInModel.append(nodeInModel);
 		mNodesHavingOutsideLinks.append(nodeInRule);
 	}
 
@@ -148,15 +173,21 @@ bool BaseGraphTransformationUnit::checkNodeForAddingToMatch(Id const &nodeInMode
 bool BaseGraphTransformationUnit::checkExistingLinks(Id const &nodeInModel,
 		Id const &nodeInRule, QHash<Id, Id> *linksToAddInMatch)
 {
-	IdList const lnksInRule = linksInRule(nodeInRule);
+	IdList const linksInRuleElement = linksInRule(nodeInRule);
 
-	foreach (Id const &linkInRule, lnksInRule) {
+	foreach (Id const &linkInRule, linksInRuleElement) {
 		Id const linkEndInR = linkEndInRule(linkInRule, nodeInRule);
 		if (mCurrentMatchedGraphInRule.contains(linkEndInR)) {
-			Id const properLinkInModel = properLink(nodeInModel, linkInRule, linkEndInR);
+			Id properLinkInModel = properLink(nodeInModel, linkInRule, linkEndInR);
 			if (properLinkInModel == Id::rootId()) {
 				return false;
 			} else {
+				if (mLogicalModelApi.logicalRepoApi().isLogicalElement(properLinkInModel)) {
+					IdList const properGraphicalLinks = mGraphicalModelApi.graphicalIdsByLogicalId(properLinkInModel);
+					if (!properGraphicalLinks.isEmpty()) {
+						properLinkInModel = properGraphicalLinks.first();
+					}
+				}
 				linksToAddInMatch->insert(linkInRule, properLinkInModel);
 			}
 		}
@@ -169,8 +200,9 @@ void BaseGraphTransformationUnit::rollback()
 {
 	Id const nodeToRemove = mCurrentMatchedGraphInRule.last();
 
-	mMatch->remove(nodeToRemove);
+	mMatch.remove(nodeToRemove);
 	mCurrentMatchedGraphInRule.removeLast();
+	mCurrentMatchedGraphInModel.removeLast();
 	mNodesHavingOutsideLinks.removeLast();
 	if (mPos == mNodesHavingOutsideLinks.length()) {
 		mPos--;
@@ -178,7 +210,7 @@ void BaseGraphTransformationUnit::rollback()
 
 	IdList const links = linksToMatchedSubgraph(nodeToRemove);
 	foreach (Id const &link, links) {
-		mMatch->remove(link);
+		mMatch.remove(link);
 	}
 }
 
@@ -231,8 +263,15 @@ Id BaseGraphTransformationUnit::properLink(Id const &nodeInModel, Id const &link
 	IdList const lnksInModel = linksInModel(nodeInModel);
 	foreach (Id const &linkInModel, lnksInModel) {
 		if (compareLinks(linkInModel, linkInRule)) {
-			Id const linkEndInM = linkEndInModel(linkInModel, nodeInModel);
-			if (linkEndInM == mMatch->value(linkEndInR)) {
+			Id linkEndInM = linkEndInModel(linkInModel, nodeInModel);
+			if (!mLogicalModelApi.isLogicalId(linkEndInM)) {
+				linkEndInM = mGraphicalModelApi.logicalId(linkEndInM);
+			}
+			Id linkEndInRValue = mMatch.value(linkEndInR);
+			if (!mLogicalModelApi.isLogicalId(linkEndInRValue)) {
+				linkEndInRValue = mGraphicalModelApi.logicalId(linkEndInRValue);
+			}
+			if (linkEndInM == linkEndInRValue) {
 				return linkInModel;
 			}
 		}
@@ -246,8 +285,16 @@ IdList BaseGraphTransformationUnit::properLinks(Id const &nodeInModel, Id const 
 	IdList result;
 	IdList const lnksInModel = linksInModel(nodeInModel);
 	foreach (Id const &linkInModel, lnksInModel) {
+		if (mCurrentMatchedGraphInModel.contains(linkEndInModel(linkInModel, nodeInModel))) {
+			continue;
+		}
+
 		if (compareLinks(linkInModel, linkInRule)) {
-			result.append(linkInModel);
+			if (!mLogicalModelApi.isLogicalId(linkInModel)) {
+				result.append(linkInModel);
+			} else {
+				result.append(mGraphicalModelApi.graphicalIdsByLogicalId(linkInModel));
+			}
 		}
 	}
 	return result;
@@ -255,21 +302,35 @@ IdList BaseGraphTransformationUnit::properLinks(Id const &nodeInModel, Id const 
 
 bool BaseGraphTransformationUnit::compareLinks(Id const &first,Id const &second) const
 {
-	Id const idTo1 = toInModel(first);
+	Id  idTo1 = toInModel(first);
 	Id const idTo2 = toInRule(second);
-	Id const idFrom1 = fromInModel(first);
+	Id idFrom1 = fromInModel(first);
 	Id const idFrom2 = fromInRule(second);
 
 	bool result = compareElementTypesAndProperties(first, second)
 			&& compareElements(idTo1, idTo2)
 			&& compareElements(idFrom1, idFrom2);
 
-	if (mMatch->contains(idTo2)) {
-		result = result && mMatch->value(idTo2) == idTo1;
+	if (mMatch.contains(idTo2)) {
+		Id matchTo = mMatch.value(idTo2);
+		if (!mLogicalModelApi.isLogicalId(matchTo)) {
+			matchTo = mGraphicalModelApi.logicalId(matchTo);
+		}
+		if (!mLogicalModelApi.isLogicalId(idTo1)) {
+			idTo1 = mGraphicalModelApi.logicalId(idTo1);
+		}
+		result = result && matchTo == idTo1;
 	}
 
-	if (mMatch->contains(idFrom2)) {
-		result = result && mMatch->value(idFrom2) == idFrom1;
+	if (mMatch.contains(idFrom2)) {
+		Id matchTo = mMatch.value(idFrom2);
+		if (!mLogicalModelApi.isLogicalId(matchTo)) {
+			matchTo = mGraphicalModelApi.logicalId(matchTo);
+		}
+		if (!mLogicalModelApi.isLogicalId(idFrom1)) {
+			idFrom1 = mGraphicalModelApi.logicalId(idFrom1);
+		}
+		result = result && matchTo == idFrom1;
 	}
 
 	return result;
@@ -285,10 +346,8 @@ bool BaseGraphTransformationUnit::compareElementTypesAndProperties(Id const &fir
 {
 	if (first.element() == second.element() && first.diagram() == second.diagram()) {
 		QHash<QString, QVariant> secondProperties = properties(second);
-
 		foreach (QString const &key, secondProperties.keys()) {
 			QVariant const value = secondProperties.value(key);
-
 			if (value.toString().isEmpty()) {
 				continue;
 			}
@@ -309,8 +368,7 @@ bool BaseGraphTransformationUnit::hasProperty(Id const &id, QString const &prope
 	if (mLogicalModelApi.isLogicalId(id)) {
 		return mLogicalModelApi.logicalRepoApi().hasProperty(id, propertyName);
 	} else {
-		return mLogicalModelApi.logicalRepoApi().hasProperty(
-				mGraphicalModelApi.logicalId(id), propertyName);
+		return mLogicalModelApi.logicalRepoApi().hasProperty(mGraphicalModelApi.logicalId(id), propertyName);
 	}
 }
 
@@ -354,8 +412,7 @@ void BaseGraphTransformationUnit::setProperty(Id const &id, QString const &prope
 	if (mLogicalModelApi.isLogicalId(id)) {
 		mLogicalModelApi.mutableLogicalRepoApi().setProperty(id, propertyName, value);
 	}
-	mLogicalModelApi.mutableLogicalRepoApi().setProperty(
-				mGraphicalModelApi.logicalId(id), propertyName, value);
+	mLogicalModelApi.mutableLogicalRepoApi().setProperty(mGraphicalModelApi.logicalId(id), propertyName, value);
 }
 
 bool BaseGraphTransformationUnit::isEdgeInModel(Id const &element) const
@@ -370,42 +427,90 @@ bool BaseGraphTransformationUnit::isEdgeInRule(Id const &element) const
 
 Id BaseGraphTransformationUnit::toInModel(Id const &id) const
 {
-	return mLogicalModelApi.logicalRepoApi().to(id);
+	Id result;
+	if (mLogicalModelApi.isLogicalId(id)) {
+		result = mLogicalModelApi.logicalRepoApi().to(id);
+	} else {
+		result = mLogicalModelApi.logicalRepoApi().to(mGraphicalModelApi.logicalId(id));
+	}
+	if (!mGraphicalModelApi.graphicalIdsByLogicalId(result).isEmpty()) {
+		result = mGraphicalModelApi.graphicalIdsByLogicalId(result).first();
+	}
+	return result;
 }
 
 Id BaseGraphTransformationUnit::fromInModel(Id const &id) const
 {
-	return mLogicalModelApi.logicalRepoApi().from(id);
+	Id result;
+	if (mLogicalModelApi.isLogicalId(id)) {
+		result = mLogicalModelApi.logicalRepoApi().from(id);
+	} else {
+		result = mLogicalModelApi.logicalRepoApi().from(mGraphicalModelApi.logicalId(id));
+	}
+	if (!mGraphicalModelApi.graphicalIdsByLogicalId(result).isEmpty()) {
+		result = mGraphicalModelApi.graphicalIdsByLogicalId(result).first();
+	}
+	return result;
 }
 
 Id BaseGraphTransformationUnit::toInRule(Id const &id) const
 {
-	return mLogicalModelApi.logicalRepoApi().to(id);
+	Id result;
+	if (mLogicalModelApi.isLogicalId(id)) {
+		result = mLogicalModelApi.logicalRepoApi().to(id);
+	} else {
+		result = mLogicalModelApi.logicalRepoApi().to(mGraphicalModelApi.logicalId(id));
+	}
+	if (!mGraphicalModelApi.graphicalIdsByLogicalId(result).isEmpty()) {
+		result = mGraphicalModelApi.graphicalIdsByLogicalId(result).first();
+	}
+	return result;
 }
 
 Id BaseGraphTransformationUnit::fromInRule(Id const &id) const
 {
-	return mLogicalModelApi.logicalRepoApi().from(id);
+	Id result;
+	if (mLogicalModelApi.isLogicalId(id)) {
+		result = mLogicalModelApi.logicalRepoApi().from(id);
+	} else {
+		result = mLogicalModelApi.logicalRepoApi().from(mGraphicalModelApi.logicalId(id));
+	}
+	if (!mGraphicalModelApi.graphicalIdsByLogicalId(result).isEmpty()) {
+		result = mGraphicalModelApi.graphicalIdsByLogicalId(result).first();
+	}
+	return result;
 }
 
 IdList BaseGraphTransformationUnit::linksInModel(Id const &id) const
 {
-	return mLogicalModelApi.logicalRepoApi().links(id);
+	if (mLogicalModelApi.isLogicalId(id)) {
+		return mLogicalModelApi.logicalRepoApi().links(id);
+	}
+	return mLogicalModelApi.logicalRepoApi().links(mGraphicalModelApi.logicalId(id));
 }
 
 IdList BaseGraphTransformationUnit::linksInRule(Id const &id) const
 {
-	return mLogicalModelApi.logicalRepoApi().links(id);
+	if (mLogicalModelApi.isLogicalId(id)) {
+		return mLogicalModelApi.logicalRepoApi().links(id);
+	}
+	return mLogicalModelApi.logicalRepoApi().links(mGraphicalModelApi.logicalId(id));
 }
 
 IdList BaseGraphTransformationUnit::outgoingLinks(Id const &id) const
 {
-	return mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
+	if (mLogicalModelApi.isLogicalId(id)) {
+		return mLogicalModelApi.logicalRepoApi().outgoingLinks(id);
+	}
+	return mLogicalModelApi.logicalRepoApi().outgoingLinks(mGraphicalModelApi.logicalId(id));
 }
 
 IdList BaseGraphTransformationUnit::incomingLinks(Id const &id) const
 {
-	return mLogicalModelApi.logicalRepoApi().incomingLinks(id);
+	if (mLogicalModelApi.isLogicalId(id)) {
+		return mLogicalModelApi.logicalRepoApi().incomingLinks(id);
+	}
+	return mLogicalModelApi.logicalRepoApi().incomingLinks(mGraphicalModelApi.logicalId(id));
 }
 
 IdList BaseGraphTransformationUnit::children(Id const &id) const

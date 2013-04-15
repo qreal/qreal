@@ -1,6 +1,6 @@
 #pragma once
 #include <QtCore/QString>
-#include <QtGui/QGraphicsTextItem>
+#include <QtWidgets/QGraphicsTextItem>
 
 class ElementTitleInterface : public QGraphicsTextItem
 {

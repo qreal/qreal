@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QProgressDialog>
+#include <QtWidgets/QProgressDialog>
 
 #include "progressBar.h"
 

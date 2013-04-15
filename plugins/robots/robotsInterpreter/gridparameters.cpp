@@ -1,8 +1,8 @@
 #include "gridParameters.h"
-#include <QtGui/QSlider>
-#include <QtGui/QCheckBox>
-#include <QtGui/QGroupBox>
-#include <QtGui/QLabel>
+#include <QtWidgets/QSlider>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
 #include <QString>
 #include "../../../qrkernel/settingsManager.h"
 
@@ -28,6 +28,7 @@ gridParameters::gridParameters(QWidget *parent)
     connect(showGridCheckBox, SIGNAL(toggled(bool)), cellSize, SLOT(setEnabled(bool)));
     connect(showGridCheckBox, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
     connect(cellSize, SIGNAL(valueChanged(int)), this, SLOT(setCellSize(int)));
+	showGridCheckBox->setTristate(false);
 }
 
 gridParameters:: ~gridParameters()

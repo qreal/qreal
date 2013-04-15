@@ -1,5 +1,5 @@
 #include <QtCore/qmath.h>
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QFileDialog>
 #include <QtGui/QRegion>
 
 #include "d2ModelWidget.h"
@@ -38,6 +38,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mFirstShow(true)
 {
 	setWindowIcon(QIcon(":/icons/kcron.png"));
+
 	initWidget();
 
 	connectUiButtons();
@@ -49,7 +50,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 
 	connect(mScene, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 
-    connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(updateGrid()));
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(updateGrid()));
 
 	setCursorType(static_cast<cursorType::CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -94,6 +95,7 @@ void D2ModelWidget::initWidget()
 
 void D2ModelWidget::connectUiButtons()
 {
+
 	connect(mUi->ellipseButton, SIGNAL(toggled(bool)), this, SLOT(addEllipse(bool)));
 	connect(mUi->stylusButton, SIGNAL(toggled(bool)), this, SLOT(addStylus(bool)));
 	connect(mUi->lineButton, SIGNAL(toggled(bool)), this, SLOT(addLine(bool)));
@@ -165,7 +167,7 @@ void D2ModelWidget::changeSpeed(int curIndex)
 
 void D2ModelWidget::init(bool isActive)
 {
-	if (!isActive){
+	if (!isActive) {
 		hide();
 		return;
 	}
@@ -183,8 +185,8 @@ void D2ModelWidget::init(bool isActive)
 
 void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
 {
-	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()));
-	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()));
+	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
+	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
 }
 
 void D2ModelWidget::drawInitialRobot()
@@ -479,12 +481,20 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 	if (mCurrentWall) {
 		QPointF oldPos = mCurrentWall->end();
 		mCurrentWall->setX2andY2(pos.x(), pos.y());
-		if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
-			mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
+		if (SettingsManager::value("2dShowGrid").toBool())
+		{
+			mCurrentWall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+			mCurrentWall->reshapeWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+		} else {
+
+			if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
+				mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
+			}
+			if (event->modifiers() & Qt::ShiftModifier) {
+				mCurrentWall->reshapeRectWithShift();
+			}
 		}
-		if (event->modifiers() & Qt::ShiftModifier) {
-			mCurrentWall->reshapeRectWithShift();
-		}
+
 	}
 }
 
@@ -975,6 +985,11 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 	emit d2WasClosed();
 }
 
+QVector<SensorItem *> D2ModelWidget::sensorItems() const
+{
+	return mSensors;
+}
+
 void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 		, const QPointF &oldPos)
 {
@@ -1080,3 +1095,4 @@ void D2ModelWidget::syncronizeSensors()
 	changeSensorType(inputPort::port4, port4);
 	addPort(3);
 }
+

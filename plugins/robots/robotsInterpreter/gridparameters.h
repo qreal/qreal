@@ -1,8 +1,8 @@
 #pragma once
-#include <QtGui/QSlider>
-#include <QtGui/QCheckBox>
-#include <QtGui/QGroupBox>
-#include <QtGui/QLabel>
+#include <QtWidgets/QSlider>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QLabel>
 #include <QObject>
 
 class gridParameters

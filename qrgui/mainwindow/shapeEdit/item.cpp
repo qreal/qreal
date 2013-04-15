@@ -2,8 +2,8 @@
 #include "math.h"
 
 #include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtCore/QList>
 
 Item::Item(graphicsUtils::AbstractItem* parent)

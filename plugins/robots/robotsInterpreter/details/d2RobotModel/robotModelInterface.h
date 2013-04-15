@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include "sensorsConfiguration.h"
 
 namespace qReal {

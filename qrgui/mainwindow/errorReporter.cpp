@@ -1,5 +1,5 @@
-#include <QtGui/QMessageBox>
-#include <QtGui/QDockWidget>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QDockWidget>
 
 #include "errorReporter.h"
 #include "errorListWidget.h"

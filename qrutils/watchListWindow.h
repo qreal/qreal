@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QDialog>
-#include <QTimer>
+#include <QtWidgets/QDialog>
+#include <QtCore/QTimer>
 
 #include "expressionsParser/expressionsParser.h"
 
