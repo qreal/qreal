@@ -1,5 +1,5 @@
 #include <QtCore/qmath.h>
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QFileDialog>
 #include <QtGui/QRegion>
 
 #include "d2ModelWidget.h"
@@ -164,7 +164,7 @@ void D2ModelWidget::changeSpeed(int curIndex)
 
 void D2ModelWidget::init(bool isActive)
 {
-	if (!isActive){
+	if (!isActive) {
 		hide();
 		return;
 	}
@@ -182,8 +182,8 @@ void D2ModelWidget::init(bool isActive)
 
 void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
 {
-	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()));
-	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()));
+	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
+	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
 }
 
 void D2ModelWidget::drawInitialRobot()

@@ -81,6 +81,7 @@ protected:
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
 	virtual void addLightSensor(inputPort::InputPortEnum const &port) = 0;
+	virtual void nullifySensor(inputPort::InputPortEnum port);
 
 	/// Connect to robot if connection doesn't established
 	virtual void connectRobot();

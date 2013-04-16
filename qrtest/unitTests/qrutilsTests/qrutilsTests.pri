@@ -1,5 +1,5 @@
 SOURCES += \
-	qrutilsTests/expressionsParser/expressionParserTest.cpp \
+	qrutilsTests/expressionsParser/expressionsParserTest.cpp \
 	qrutilsTests/expressionsParser/numberTest.cpp \
 	qrutilsTests/metamodelGeneratorSupportTest.cpp \
 	qrutilsTests/inFileTest.cpp \
@@ -7,5 +7,5 @@ SOURCES += \
 	qrutilsTests/xmlUtilsTest.cpp \
 
 HEADERS += \
-	qrutilsTests/expressionsParser/expressionParserTest.h \
+	qrutilsTests/expressionsParser/expressionsParserTest.h \
 	qrutilsTests/metamodelGeneratorSupportTest.h \

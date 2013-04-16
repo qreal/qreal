@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 
 #include "../utilsDeclSpec.h"
 #include "abstractItem.h"

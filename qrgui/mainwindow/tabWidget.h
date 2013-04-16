@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QTabWidget>
+#include <QtWidgets/QTabWidget>
 
 namespace qReal {
 namespace gui {

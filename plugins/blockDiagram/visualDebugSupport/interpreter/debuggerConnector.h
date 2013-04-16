@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QString>
-#include <QThread>
-#include <QProcess>
+#include <QtCore/QString>
+#include <QtCore/QThread>
+#include <QtCore/QProcess>
 
 #include "../../../qrkernel/settingsManager.h"
 
@@ -17,24 +17,24 @@ class DebuggerConnector : public QObject
 public:
 	explicit DebuggerConnector(QObject *parent);
 	~DebuggerConnector();
-	
+
 	/// Run debugger connector entity in other thread
 	void run();
 	void startDebugger();
 	bool isDebuggerRunning();
-	
+
 	/// Build executable file from generated sources
 	void build();
-	
+
 	/// Has problems with gcc build process
 	bool hasBuildError();
-	
+
 	/// Send command to the debugger
 	void sendCommand(QString const &command);
-	
+
 	/// Terminate debugger process
 	void finishProcess();
-	
+
 	/// Set program to be debugged
 	void configure();
 
@@ -46,16 +46,16 @@ signals:
 private slots:
 	/// Read debugger output
 	void readOutput();
-	
+
 	/// Read debugger error output
 	void readErrOutput();
-	
+
 	/// Read builder output
 	void readBuilderErrOutput();
-	
+
 	/// Read builder error output
 	void readBuilderStdOutput();
-	
+
 private:
 	void setDebuggerPath(QString const &path);
 	void setBuilderPath(QString const &path);

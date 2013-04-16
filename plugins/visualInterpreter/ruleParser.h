@@ -16,7 +16,13 @@ public:
 
 	/// Parse and interpret textual part of rule and perform changes
 	/// on model elements by using match hash map
-	bool parseRule(QString const &stream, QHash<Id, Id> *mMatch);
+	bool parseRule(QString const &stream, QHash<Id, Id> const &mMatch);
+
+	/// Parse and interpret application condition of the rule
+	bool parseApplicationCondition(QString const &stream, QHash<Id, Id> const &mMatch);
+
+	/// Interpret code, represented as string (can't contain attributes of model elements)
+	void parseStringCode(QString const &stream);
 
 	/// Set matched rule id for showing if its textual part has errors
 	void setRuleId(Id const &id);
@@ -26,14 +32,14 @@ private:
 	virtual void parseVarPart(QString const &stream, int &pos);
 
 	/// Parse and interpret one rule command (which are separated by colon)
-	void parseRuleCommand(QString const &stream, int &pos, QHash<Id, Id> *mMatch);
+	void parseRuleCommand(QString const &stream, int &pos, QHash<Id, Id> const &mMatch);
 
 	/// Parse and interpret command which has run(name.property) function
 	/// (to interpret some commands inside given element)
-	void parseRunFunction(QString const &stream, int &pos, QHash<Id, Id> *mMatch);
+	void parseRunFunction(QString const &stream, int &pos, QHash<Id, Id> const &mMatch);
 
 	/// Parse and interpret command which contains change of some element's property
-	void parsePropertyChange(QString const &stream, int &pos, QHash<Id, Id> *mMatch);
+	void parsePropertyChange(QString const &stream, int &pos, QHash<Id, Id> const &mMatch);
 
 	/// Parse element name which will be changed in this command
 	QString parseElemName(QString const &stream, int &pos);
@@ -48,7 +54,7 @@ private:
 	virtual void checkForVariable(QString const &nameOfVariable, int &index);
 
 	/// Get id of element in model which corresponds to element in rule which has given name
-	Id elementByName(QString const &name, QHash<Id, Id> *mMatch);
+	Id elementByName(QString const &name, QHash<Id, Id> const &mMatch);
 
 	/// Functions for working with properties of elements on model
 	void setProperty(Id const &id, QString const &propertyName, QVariant const &value);

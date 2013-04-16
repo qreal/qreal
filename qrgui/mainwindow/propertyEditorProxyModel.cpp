@@ -153,7 +153,7 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 //QString PropertyEditorModel::typeName(const QModelIndex &index) const
 //{
 //	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-//	if (im){
+//	if (im) {
 //		return im->getTypeName(targetObject, roleByIndex(index.row()));
 //	}
 //	return QString();
@@ -171,7 +171,9 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 	mTargetLogicalModel = sourceLogicalModel;
 	mTargetGraphicalModel = sourceGraphicalModel;
 
+	beginResetModel();
 	mFields.clear();
+	endResetModel();
 
 	if (mTargetLogicalModel)
 		connect(mTargetLogicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &)),
@@ -180,20 +182,19 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 	if (mTargetGraphicalModel)
 		connect(mTargetGraphicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &)),
 				this, SLOT(rereadData(QModelIndex const &, QModelIndex const &)));
-
-	reset();
 }
 
 void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 		, QModelIndex const &graphicalModelIndex)
 {
+	beginResetModel();
 	mFields.clear();
+	endResetModel();
 
 	mTargetLogicalObject = logicalModelIndex;
 	mTargetGraphicalObject = graphicalModelIndex;
 
 	if (!isValid()) {
-		reset();
 		return;
 	}
 
@@ -223,7 +224,8 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 
 //	mFields << Field(tr("Metatype"), metatypePseudoattribute);
 
-	reset();
+	beginResetModel();
+	endResetModel();
 }
 
 void PropertyEditorModel::clearModelIndexes()

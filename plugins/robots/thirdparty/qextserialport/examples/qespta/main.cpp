@@ -1,29 +1,30 @@
 /**
  * @file main.cpp
  * @brief Main file.
- * @author Micha³ Policht
+ * @author Micha? Policht
  */
 
 #include <QApplication>
-#include <../../src/qextserialport.h>
-
-#include "defs.h"
 #include "MainWindow.h"
 #include "MessageWindow.h"
 
 
 int main(int argc, char *argv[])
 {
-	int exec;
-
-	QApplication app(argc, argv);
+    QApplication app(argc, argv);
+    //! [0]
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
     //redirect debug messages to the MessageWindow dialog
-	qInstallMsgHandler(MessageWindow::AppendMsgWrapper);
+    qInstallMsgHandler(MessageWindow::AppendMsgWrapper);
+#else
+    qInstallMessageHandler(MessageWindow::AppendMsgWrapper);
+#endif
+    //! [0]
 
-	MainWindow mainWindow(APP_TITLE);
-	mainWindow.show();
-	exec = app.exec();
-	return exec;
+    MainWindow mainWindow;
+    mainWindow.show();
+
+    return app.exec();
 }
 
 

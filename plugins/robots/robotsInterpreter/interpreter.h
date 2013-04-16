@@ -11,7 +11,7 @@
 #include "details/blocksTable.h"
 #include "details/d2RobotModel/d2RobotModel.h"
 
-#include "watchListWindow.h"
+#include "../../../qrutils/watchListWindow.h"
 
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
@@ -59,7 +59,7 @@ public:
 	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
 	void disableD2ModelWidgetRunStopButtons();
 
-	WatchListWindow *watchWindow() const;
+	utils::WatchListWindow *watchWindow() const;
 	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
 public slots:
@@ -119,7 +119,7 @@ private:
 
 	robotModelType::robotModelTypeEnum mImplementationType;
 
-	WatchListWindow *mWatchListWindow;
+	utils::WatchListWindow *mWatchListWindow;
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;

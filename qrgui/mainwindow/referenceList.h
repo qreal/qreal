@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtGui/QDialog>
-#include <QtGui/QListWidgetItem>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QListWidgetItem>
 #include <QtCore/QModelIndex>
 
 #include "../../qrkernel/ids.h"

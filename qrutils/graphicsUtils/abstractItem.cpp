@@ -1,8 +1,8 @@
 #include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QStyleOptionGraphicsItem>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtCore/QDebug>
 
 #include "abstractItem.h"
@@ -232,7 +232,7 @@ void AbstractItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsItem::mousePressEvent(event);
 }
 
-void AbstractItem::setPenStyle(const QString& text)
+void AbstractItem::setPenStyle(QString const &text)
 {
 	if (text == "Solid")
 		mPen.setStyle(Qt::SolidLine);
@@ -253,12 +253,12 @@ void AbstractItem::setPenWidth(int width)
 	mPen.setWidth(width);
 }
 
-void AbstractItem::setPenColor(const QString& text)
+void AbstractItem::setPenColor(QString const &text)
 {
 	mPen.setColor(QColor(text));
 }
 
-void AbstractItem::setBrushStyle(const QString& text)
+void AbstractItem::setBrushStyle(QString const &text)
 {
 	if (text == "Solid")
 		mBrush.setStyle(Qt::SolidPattern);
@@ -266,26 +266,26 @@ void AbstractItem::setBrushStyle(const QString& text)
 		mBrush.setStyle(Qt::NoBrush);
 }
 
-void AbstractItem::setBrushColor(const QString& text)
+void AbstractItem::setBrushColor(QString const &text)
 {
 	mBrush.setColor(QColor(text));
 }
 
-void AbstractItem::setPen(const QString& penStyle, int width, const QString& penColor)
+void AbstractItem::setPen(QString const &penStyle, int width, QString const &penColor)
 {
 	setPenStyle(penStyle);
 	setPenWidth(width);
 	setPenColor(penColor);
 }
 
-void AbstractItem::setBrush(const QString& brushStyle, const QString& brushColor)
+void AbstractItem::setBrush(QString const &brushStyle, QString const &brushColor)
 {
 	setBrushStyle(brushStyle);
 	setBrushColor(brushColor);
 }
 
-void AbstractItem::setPenBrush(const QString& penStyle, int width, const QString& penColor
-		 , const QString& brushStyle, const QString& brushColor)
+void AbstractItem::setPenBrush(QString const &penStyle, int width, QString const &penColor
+		 , QString const &brushStyle, QString const &brushColor)
 {
 	setPen(penStyle, width, penColor);
 	setBrush(brushStyle, brushColor);

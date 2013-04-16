@@ -2,7 +2,7 @@
 
 #include <QtCore/QList>
 
-#include <QtGui/QGraphicsLineItem>
+#include <QtWidgets/QGraphicsLineItem>
 #include <QtGui/QPen>
 
 class NodeElement;
