@@ -23,7 +23,7 @@ unsigned const touchSensorNotPressedSignal = 0;
 qreal const spoilColorDispersion = 2.0;
 qreal const spoilLightDispersion = 1.0;
 qreal const spoilSonarDispersion = 0.025;
-qreal const varySpeedDispersion = 0.05;
+qreal const varySpeedDispersion = 0.0125;
 qreal const percentSaltPepperNoise = 20.0;
 
 D2RobotModel::D2RobotModel(QObject *parent)
@@ -99,7 +99,7 @@ void D2RobotModel::setBeep(unsigned freq, unsigned time)
 
 void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 {
-	mMotors[port]->speed = mNeedMotorNoise ? varySpeed(speed) : speed;
+	mMotors[port]->speed = speed;
 	mMotors[port]->degrees = degrees;
 	mMotors[port]->isUsed = true;
 	if (degrees == 0) {
@@ -419,8 +419,11 @@ void D2RobotModel::countNewCoord()
 		}
 	}
 
-	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / onePercentReciprocalSpeed * multiplicator;
-	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / onePercentReciprocalSpeed * multiplicator;
+	int const sspeed1 = mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
+	int const sspeed2 = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
+
+	qreal const vSpeed = sspeed1 * 2 * M_PI * motor1->radius * 1.0 / onePercentReciprocalSpeed * multiplicator;
+	qreal const uSpeed = sspeed2 * 2 * M_PI * motor2->radius * 1.0 / onePercentReciprocalSpeed * multiplicator;
 
 	qreal deltaY = 0;
 	qreal deltaX = 0;
