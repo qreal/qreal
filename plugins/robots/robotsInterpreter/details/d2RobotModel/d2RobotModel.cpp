@@ -22,7 +22,7 @@ unsigned const touchSensorNotPressedSignal = 0;
 
 qreal const spoilColorDispersion = 2.0;
 qreal const spoilLightDispersion = 1.0;
-qreal const spoilSonarDispersion = 0.025;
+qreal const spoilSonarDispersion = 1.5;
 qreal const varySpeedDispersion = 0.0125;
 qreal const percentSaltPepperNoise = 20.0;
 
@@ -110,7 +110,7 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	mTurnoverMotors[port] = 0;
 }
 
-int D2RobotModel::varySpeed(const int speed) const
+int D2RobotModel::varySpeed(int const speed) const
 {
 	qreal const ran = mNoiseGen.generate(
 					mNoiseGen.approximationLevel()
@@ -202,7 +202,7 @@ int D2RobotModel::spoilSonarReading(int const distance) const
 					, spoilSonarDispersion
 				);
 
-	return truncateToInterval(0, 255, round(distance * (1 + ran)));
+	return truncateToInterval(0, 255, round(distance + ran));
 }
 
 int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
