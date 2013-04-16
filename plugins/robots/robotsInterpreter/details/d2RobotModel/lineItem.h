@@ -28,6 +28,7 @@ public:
 
 	virtual void reshapeWithGrid(int indexGrid);
 	virtual void setBeginCoordinatesWithGrid(int indexGrid);
+	virtual void setEndCoordinatesWithGrid(int indexGrid);
 
 	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserialize(QDomElement const &element);
@@ -40,6 +41,7 @@ protected:
 	graphicsUtils::LineImpl mLineImpl;
 	int mCornerRadius;
 	QString mSerializeName;
+	int cellNumb;
 };
 }
 }

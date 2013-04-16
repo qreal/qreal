@@ -12,7 +12,7 @@ void GridDrawer::drawGrid(QPainter *painter, const QRectF &rect, int const index
 	qreal const sceneX = rect.x();
 	qreal const sceneY = rect.y();
 
-	int const indent = 100; // should be enough
+	int const indent = (300/indexGrid)*indexGrid; // now enough
 
 	int startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid - indent;
 	int endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid + indent;

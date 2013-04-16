@@ -140,6 +140,8 @@ private slots:
 	void onMultiselectionCursorButtonToggled(bool on);
 	void setCursorType(cursorType::CursorType cursor);
 
+	void allignWalls();
+
 signals:
 	void d2WasClosed();
 

@@ -29,6 +29,7 @@ gridParameters::gridParameters(QWidget *parent)
     connect(showGridCheckBox, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
     connect(cellSize, SIGNAL(valueChanged(int)), this, SLOT(setCellSize(int)));
 	showGridCheckBox->setTristate(false);
+	qReal::SettingsManager::setValue("2dShowGrid", false);
 }
 
 gridParameters:: ~gridParameters()
