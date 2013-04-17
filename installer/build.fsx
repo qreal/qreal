@@ -23,7 +23,7 @@ let autodetectQt =
 
     let rec findQt (list : string list) =
         match list with
-        | h::t when h.Contains "Qt" && h.Contains "Desktop" && h.Contains "bin" -> h 
+        | h::t when h.Contains "Qt" && h.Contains "mingw" && h.Contains "bin" -> h 
         | h::t -> findQt t
         | _ -> ""
         
