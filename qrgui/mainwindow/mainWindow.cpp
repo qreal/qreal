@@ -14,6 +14,8 @@
 #include <QtSvg/QSvgGenerator>
 #include <QtCore/QDebug>
 #include <QtWidgets/QAbstractButton>
+#include <QtWidgets/QAction>
+#include <QtGui/QKeySequence>
 
 #include "mainWindow.h"
 #include "ui_mainWindow.h"
@@ -46,6 +48,9 @@
 
 #include "dotRunner.h"
 
+#include "hotKeyManager/hotKeyManager.h"
+#include "hotKeyManager/hotKeyAction.h"
+
 using namespace qReal;
 
 QString const unsavedDir = "unsaved";
@@ -73,6 +78,13 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	setWindowTitle("QReal");
 	initSettingsManager();
 	registerMetaTypes();
+
+	HotKeyAction *cmdClose = new HotKeyAction();
+
+	cmdClose->setShortcut(QKeySequence(Qt::ALT + Qt::Key_X));
+	connect(cmdClose, SIGNAL(pressed()), this, SLOT(close()));
+
+	HotKeyManager::setCommand("Close", "Close app", cmdClose);
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setProgress(5);

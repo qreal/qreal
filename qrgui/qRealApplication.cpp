@@ -1,23 +1,24 @@
 #include "qRealApplication.h"
+#include "hotKeyManager/hotKeyManager.h"
 
 #include <QtCore/QEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QWheelEvent>
+#include <QtCore/QDebug>
+
+using namespace qReal;
 
 QRealApplication::QRealApplication(int &argc, char **argv)
 	: QApplication(argc, argv)
 {
 }
 
-bool QRealApplication::event(QEvent *event)
+
+bool QRealApplication::notify(QObject *receiver, QEvent *event)
 {
-	switch (event->type()) {
-		case QEvent::KeyPress:
-		case QEvent::KeyRelease:
-			return true;
-		case QEvent::Wheel:
-			return true;
-		default:
-			return QApplication::event(event);
+	if (event->type() == QEvent::KeyPress) {
+		HotKeyManager::doShortCut(static_cast<QKeyEvent *> (event));
+		return true;
 	}
+	return QApplication::notify(receiver, event);
 }
