@@ -5,6 +5,7 @@
 #include "preferencesPages/editorPage.h"
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/featuresPage.h"
+#include "../hotKeyManager/hotKeyManagerPage.h"
 
 using namespace qReal;
 
@@ -30,6 +31,7 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 //	PreferencesPage *featuresPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
+	PreferencesPage *hotKeyManagerPage = new  PreferencesHotKeyManagerPage(ui->pageContentWigdet);
 
 	connect(ui->listWidget, SIGNAL(clicked(QModelIndex))
 			, this, SLOT(chooseTab(const QModelIndex &)));
@@ -49,6 +51,7 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	registerPage(tr("Debugger"), debuggerPage);
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
+	registerPage(tr("Shortcuts"), hotKeyManagerPage);
 
 	int const currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	ui->listWidget->setCurrentRow(currentTab);
