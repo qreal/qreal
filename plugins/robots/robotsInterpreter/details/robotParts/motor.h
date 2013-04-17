@@ -23,6 +23,10 @@ public:
 	virtual void resetMotorPosition(bool relative);
 	robotImplementations::motorImplementations::AbstractMotorImplementation &motorImpl();
 	void setImplementation(robotImplementations::motorImplementations::AbstractMotorImplementation *motorImpl);
+
+signals:
+	void motorTimeout();
+
 private:
 	outputPort::OutputPortEnum mPort;
 	robotImplementations::motorImplementations::AbstractMotorImplementation *mMotorImpl;  // Doesn't have ownership.

@@ -2,7 +2,7 @@
 #include <QPointF>
 #include <QString>
 
-static const QString strBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static QString const strBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 KeyManager::KeyManager()
 {

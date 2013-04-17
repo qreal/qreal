@@ -18,7 +18,7 @@ GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 	mResolvingFlag = true;
 }
 
-GraphicType::GraphicType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id)
+GraphicType::GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
 	: Type(false, diagram, api, id), mResolving(false)
 {
 }
@@ -35,23 +35,40 @@ bool GraphicType::init(QString const &context)
 	if (mApi->hasProperty(mId, "shape"))
 		mIsVisible = !mApi->stringProperty(mId, "shape").isEmpty();
 
-	mContains << (mApi->hasProperty(mId, "container")
-					  ? mApi->stringProperty(mId, "container").split(",", QString::SkipEmptyParts)
-					  : QStringList());
+	if (mApi->hasProperty(mId, "RequestBody"))
+		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
+
+	IdList const outLinks = mApi->outgoingLinks(mId);
+	foreach (Id const outLink, outLinks) {
+		if (outLink.element() == "Container") {
+			Id const elementId = mApi->to(outLink);
+			QString const typeName = mApi->name(elementId);
+			mContains << typeName.split(",", QString::SkipEmptyParts);
+		} else if (outLink.element() == "Inheritance") {
+			Id const elementId = mApi->to(outLink);
+			QString const childName = mApi->name(elementId);
+			if (!mChildren.contains(childName)) {
+				mChildren << childName.split(",", QString::SkipEmptyParts);
+			}
+		}
+	}
+
+	IdList const inLinks = mApi->incomingLinks(mId);
+	foreach (Id const inLink, inLinks) {
+		if (inLink.element() == "Inheritance") {
+			Id const elementId = mApi->from(inLink);
+			QString const parentName = mApi->name(elementId);
+			if (!mParents.contains(parentName)) {
+				mParents << parentName.split(",", QString::SkipEmptyParts);
+			}
+		}
+	}
 
 	foreach(Id id, mApi->children(mId)) {
 		if (!mApi->isLogicalElement(id))
 			continue;
 
-		if (id.element() == metaEntityParent) {
-			QString parentName = mApi->name(id);
-			if (!mParents.contains(parentName))
-				mParents.append(parentName);
-			else {
-				qDebug() << "ERROR: parent of node" << qualifiedName() << "duplicated";
-				return false;
-			}
-		} else if (id.element() == metaEntityAttribute) {
+		if (id.element() == metaEntityAttribute) {
 			Property *property = new Property(mApi, id);
 			if (!property->init()) {
 				delete property;
@@ -206,7 +223,7 @@ bool GraphicType::isGraphicalType() const
 	return mIsVisible;
 }
 
-QString GraphicType::generateProperties(const QString &lineTemplate) const
+QString GraphicType::generateProperties(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -227,7 +244,7 @@ QString GraphicType::generateProperties(const QString &lineTemplate) const
 	return propertiesString;
 }
 
-QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
+QString GraphicType::generatePropertyDefaults(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -240,10 +257,56 @@ QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
 	return defaultsString;
 }
 
-QString GraphicType::generateContainers(const QString &lineTemplate) const
+QString GraphicType::generatePropertyDisplayedNames(QString const &lineTemplate) const
+{
+	if (!mIsVisible)
+		return "";
+	QString displayedNamesString;
+	foreach (Property *property, mProperties) {
+		QString tmp = property->generateDisplayedNameLine(lineTemplate);
+		if (!tmp.isEmpty()) {
+			displayedNamesString += tmp.replace(elementNameTag, name()).replace(diagramNameTag, mContext) + endline;
+		}
+	}
+	return displayedNamesString;
+}
+
+QString GraphicType::generateReferenceProperties(QString const &lineTemplate) const
+{
+	if (!mIsVisible)
+		return "";
+	QString referencePropertiesString = lineTemplate;
+	QString referencePropertiesList = "";
+	foreach (Property const *const property, mProperties) {
+		if (property->isReferenceProperty()) {
+			referencePropertiesList = referencePropertiesList + " << "  + "\"" + property->name() + "\"";
+		}
+	}
+	if (referencePropertiesList.isEmpty()) {
+		return "";
+	} else {
+		referencePropertiesString.replace(referencePropertiesListTag, referencePropertiesList).replace(elementNameTag, name());
+		return referencePropertiesString;
+	}
+}
+
+QString GraphicType::generateParents(QString const &lineTemplate) const
+{
+	QString parentsMapString;
+	QString const diagramName = mContext + "::";
+	QString parentName = qualifiedName().remove(diagramName);
+	foreach (QString const child, mChildren) {
+		QString tmp = lineTemplate;
+		parentsMapString += tmp.replace(parentNameTag, parentName).replace(childNameTag, child).replace(diagramNameTag, mContext) + endline;
+	}
+	return parentsMapString;
+}
+
+QString GraphicType::generateContainers(QString const &lineTemplate) const
 {
 	if (!isGraphicalType() || mContains.isEmpty())
 		return "";
+
 	QString containersList;
 	QString line = lineTemplate;
 	foreach(QString contains, mContains) {
@@ -253,7 +316,7 @@ QString GraphicType::generateContainers(const QString &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateConnections(const QString &lineTemplate) const
+QString GraphicType::generateConnections(QString const &lineTemplate) const
 {
 	if (!isGraphicalType() || mConnections.isEmpty())
 		return "";
@@ -266,7 +329,7 @@ QString GraphicType::generateConnections(const QString &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateUsages(const QString &lineTemplate) const
+QString GraphicType::generateUsages(QString const &lineTemplate) const
 {
 	if (!isGraphicalType() || mUsages.isEmpty())
 		return "";
@@ -279,13 +342,13 @@ QString GraphicType::generateUsages(const QString &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateEnums(const QString &lineTemplate) const
+QString GraphicType::generateEnums(QString const &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";
 }
 
-QString GraphicType::generatePossibleEdges(const QString &lineTemplate) const
+QString GraphicType::generatePossibleEdges(QString const &lineTemplate) const
 {
 	if (mPossibleEdges.isEmpty())
 		return "";

@@ -52,7 +52,7 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
 
 	Id const newElementId(type, QUuid::createUuid().toString());
 	QString const elementFriendlyName = mModelsAssistApi.editorManager().friendlyName(type);
-	mGraphicalModel.addElementToModel(parent, newElementId, Id::rootId(), "(" + elementFriendlyName + ")", QPointF(0, 0));
+	mGraphicalModel.addElementToModel(parent, newElementId, Id::rootId(), elementFriendlyName, QPointF(0, 0));
 	return newElementId;
 }
 
@@ -79,6 +79,16 @@ void GraphicalModelAssistApi::changeParent(Id const &element, Id const &parent, 
 void GraphicalModelAssistApi::copyProperties(Id const &dest, Id const &src)
 {
 	mGraphicalModel.mutableApi().copyProperties(dest, src);
+}
+
+QMap<QString, QVariant> GraphicalModelAssistApi::properties(Id const &id)
+{
+	return mGraphicalModel.mutableApi().properties(id);
+}
+
+void GraphicalModelAssistApi::setProperties(Id const &id, QMap<QString, QVariant> const &properties)
+{
+	mGraphicalModel.mutableApi().setProperties(id, properties);
 }
 
 void GraphicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
@@ -208,7 +218,7 @@ QPersistentModelIndex GraphicalModelAssistApi::rootIndex() const
 
 Id GraphicalModelAssistApi::rootId() const
 {
-	return mModelsAssistApi.rootId();
+	return mGraphicalModel.rootId();
 }
 
 bool GraphicalModelAssistApi::hasRootDiagrams() const

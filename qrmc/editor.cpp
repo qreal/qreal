@@ -10,7 +10,7 @@
 using namespace qReal;
 using namespace qrmc;
 
-Editor::Editor(MetaCompiler *metaCompiler, qrRepo::RepoApi *api, const qReal::Id &id)
+Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
 	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
 {
 	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
@@ -165,7 +165,7 @@ QString Editor::name()
 
 void Editor::generate(QString const &headerTemplate, QString const &sourceTemplate,
 					QString const &nodeTemplate, QString const &edgeTemplate,
-					QString const & elementsHeaderTemplate, QString const &resourceTemplate,
+					QString const &elementsHeaderTemplate, QString const &resourceTemplate,
 					QString const &projectTemplate, QMap<QString, QString> const &utils)
 {
 	qDebug() << "generating plugin " << mName;
@@ -204,6 +204,7 @@ bool Editor::generatePluginHeader(QString const &hdrTemplate)
 
 	headerTemplate.replace(metamodelNameTag, NameNormalizer::normalize(mName)); // header requires just plugin name customization
 	QTextStream out(&pluginHeaderFile);
+	out.setCodec("UTF-8");
 	out << headerTemplate;
 	pluginHeaderFile.close();
 
@@ -231,22 +232,26 @@ bool Editor::generatePluginSource()
 	generateDiagramsMap();
 	generateDiagramNodeNamesMap();
 	generateNamesMap();
+	generatePropertyDisplayedNamesMap();
 	generateMouseGesturesMap();
 	generatePropertiesMap();
 	generatePropertyDefaultsMap();
 	generateElementsFactory();
 	generateContainers();
+	generateReferenceProperties();
 	generateConnections();
 	generateUsages();
 	generateIsNodeOrEdge();
 	generateEnums();
 	generatePossibleEdges();
+	generateParentsMap();
 
 	// inserting plugin name all over the template
 	mSourceTemplate.replace(metamodelNameTag,  NameNormalizer::normalize(mName));
 
 	// template is ready, writing it into a file
 	QTextStream out(&pluginSourceFile);
+	out.setCodec("UTF-8");
 	out << mSourceTemplate;
 	pluginSourceFile.close();
 	return true;
@@ -283,6 +288,7 @@ bool Editor::generateElementsClasses()
 						.replace(edgesListTag, generatedEdges);
 	// template is ready, writing it into a file
 	QTextStream out(&file);
+	out.setCodec("UTF-8");
 	out << mElementsHeaderTemplate;
 	file.close();
 	return true;
@@ -299,9 +305,6 @@ bool Editor::generateResourceFile(QString const &resourceTemplate)
 	if (!dir.exists(mName))
 		dir.mkdir(mName);
 	dir.cd(mName);
-	if (!dir.exists(shapesDir))
-		dir.mkdir(shapesDir);
-	dir.cd(shapesDir);
 
 	QString fileName = dir.absoluteFilePath(resourceFileName);
 	QFile file(fileName);
@@ -321,13 +324,14 @@ bool Editor::generateResourceFile(QString const &resourceTemplate)
 
 	// template is ready, writing it into a file
 	QTextStream out(&file);
+	out.setCodec("UTF-8");
 	out << resourceGenerated;
 	file.close();
 	return true;
 
 }
 
-bool Editor::generateProjectFile(const QString &proTemplate)
+bool Editor::generateProjectFile(QString const &proTemplate)
 {
 	QString projectTemplate = proTemplate;
 	qDebug() << "generating project file for " << mName;
@@ -348,6 +352,7 @@ bool Editor::generateProjectFile(const QString &proTemplate)
 
 	projectTemplate.replace(metamodelNameTag, mName); // .pro-file requires just plugin name customization
 	QTextStream out(&file);
+	out.setCodec("UTF-8");
 	out << projectTemplate;
 	file.close();
 
@@ -362,7 +367,7 @@ void Editor::generateDiagramsMap()
 	foreach(Diagram *diagram, mDiagrams) {
 		QString newline = line;
 		initNameMapBody += newline.replace(diagramDisplayedNameTag, diagram->displayedName())
-								.replace(diagramNameTag, diagram->name()) + endline;
+				.replace(diagramNameTag, diagram->name()) + endline;
 	}
 	// inserting generated lines into main template
 	mSourceTemplate.replace(initDiagramNameMapLineTag, initNameMapBody);
@@ -373,7 +378,7 @@ void Editor::generateDiagramNodeNamesMap()
 	// preparing template for diagramNodeNameMap inits
 	QString initNodeNameMapBody = "";
 	QString const line = mUtilsTemplate[initDiagramNodeNameMapLineTag];
-	foreach(Diagram *diagram, mDiagrams)	{
+	foreach(Diagram *diagram, mDiagrams) {
 		QString newline = line;
 		initNodeNameMapBody += newline.replace(diagramNodeNameTag, diagram->nodeName())
 								.replace(diagramNameTag, diagram->name()) + endline;
@@ -416,10 +421,31 @@ public:
 	}
 };
 
+class Editor::PropertyDisplayedNamesGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generatePropertyDisplayedNamesMap(lineTemplate);
+	}
+};
+
+class Editor::ParentsMapGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateParentsMap(lineTemplate);
+	}
+};
+
 class Editor::ContainersGenerator: public Editor::MethodGenerator {
 public:
 	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
 		return diagram->generateContainers(lineTemplate);
+	}
+};
+
+class Editor::ReferencePropertiesGenerator: public Editor::MethodGenerator {
+public:
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
+		return diagram->generateReferenceProperties(lineTemplate);
 	}
 };
 
@@ -458,7 +484,7 @@ public:
 	}
 };
 
-void Editor::generatePluginMethod(const QString &tag, const MethodGenerator &generator)
+void Editor::generatePluginMethod(QString const &tag, const MethodGenerator &generator)
 {
 	QString body = "";
 	QString const line = mUtilsTemplate[tag].replace("\\n", "\n");
@@ -473,6 +499,16 @@ void Editor::generatePluginMethod(const QString &tag, const MethodGenerator &gen
 void Editor::generateNamesMap()
 {
 	generatePluginMethod(initElementNameMapLineTag, NamesGenerator());
+}
+
+void Editor::generatePropertyDisplayedNamesMap()
+{
+	generatePluginMethod(initPropertyDisplayedNamesTag, PropertyDisplayedNamesGenerator());
+}
+
+void Editor::generateParentsMap()
+{
+	generatePluginMethod(initParentsMapLineTag, ParentsMapGenerator());
 }
 
 void Editor::generateMouseGesturesMap()
@@ -493,6 +529,11 @@ void Editor::generatePropertyDefaultsMap()
 void Editor::generateContainers()
 {
 	generatePluginMethod(getContainersLineTag, ContainersGenerator());
+}
+
+void Editor::generateReferenceProperties()
+{
+	generatePluginMethod(getReferencePropertiesLineTag, ReferencePropertiesGenerator());
 }
 
 void Editor::generateConnections()

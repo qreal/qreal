@@ -1,12 +1,12 @@
 #include "element.h"
 
-#include <QtGui>
+#include <QtWidgets>
 
 using namespace qReal;
 
-Element::Element()
+Element::Element(ElementImpl* elementImpl)
 	: mMoving(false)
-	, mElementImpl(NULL)
+	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(NULL)
 	, mGraphicalAssistApi(NULL)
 {
@@ -42,8 +42,9 @@ void Element::updateData()
 	setToolTip(mGraphicalAssistApi->toolTip(id()));
 }
 
-QList<ContextMenuAction*> Element::contextMenuActions()
+QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
 {
+	Q_UNUSED(pos)
 	return QList<ContextMenuAction*>();
 }
 
@@ -75,7 +76,6 @@ void Element::initTitles()
 	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
 }
 
-
 void Element::singleSelectionState(const bool singleSelected) {
 	if (singleSelected) {
 		selectionState(true);
@@ -89,5 +89,23 @@ void Element::selectionState(const bool selected) {
 	}
 	if (!selected) {
 		singleSelectionState(false);
+	}
+}
+
+ElementImpl* Element::elementImpl() const
+{
+	return mElementImpl;
+}
+
+void Element::setTitlesVisible(bool visible)
+{
+	mTitlesVisible = visible;
+	setTitlesVisiblePrivate(visible);
+}
+
+void Element::setTitlesVisiblePrivate(bool visible)
+{
+	foreach (ElementTitle * const title, mTitles) {
+		title->setVisible(title->isHard() || visible);
 	}
 }

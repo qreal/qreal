@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QTranslator>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "../../../qrkernel/ids.h"
 #include "../../../qrutils/metamodelGeneratorSupport.h"
@@ -25,6 +25,7 @@ class RefactoringPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.refactoring.RefactoringPlugin")
 
 public:
 	RefactoringPlugin();
@@ -100,8 +101,7 @@ private:
 			, QDomElement &graphics, QString const &pathToRefactoringMetamodel);
 
 
-	QDomElement createPaletteElement(QString const &elementType
-			, QDomDocument metamodel, const QString &displayedName);
+	QDomElement createPaletteElement(QString const &elementType, QDomDocument metamodel, const QString &name);
 	QDomElement metamodelPaletteGroup(QDomDocument metamodel
 			, const QDomNodeList &nodeList, const QDomNodeList &edgeList);
 
@@ -111,7 +111,7 @@ private:
 			, QString const &groupName, QStringList const &elementNameList);
 	void addElementsToMetamodelGroup(QDomDocument metamodel, const QDomNodeList &list
 			, QDomElement &metamodelGroup);
-
+	const QString nameForPaletteGroup(const QString &name);
 	void arrangeElements(QString const &algorithm);
 	QList<QPair<Id, QPair<Id, bool> > > findOutsideSelectionLinks();
 	void removeUnnecessaryLinksFromSelected();

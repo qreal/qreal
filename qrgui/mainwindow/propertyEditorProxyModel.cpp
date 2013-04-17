@@ -129,7 +129,7 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 		modelChanged = false;
 
 	if (modelChanged)
-		dataChanged(index, index);
+		emit dataChanged(index, index);
 
 	return modelChanged;
 }
@@ -153,7 +153,7 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 //QString PropertyEditorModel::typeName(const QModelIndex &index) const
 //{
 //	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-//	if (im){
+//	if (im) {
 //		return im->getTypeName(targetObject, roleByIndex(index.row()));
 //	}
 //	return QString();
@@ -171,7 +171,9 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 	mTargetLogicalModel = sourceLogicalModel;
 	mTargetGraphicalModel = sourceGraphicalModel;
 
+	beginResetModel();
 	mFields.clear();
+	endResetModel();
 
 	if (mTargetLogicalModel)
 		connect(mTargetLogicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &)),
@@ -180,27 +182,30 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 	if (mTargetGraphicalModel)
 		connect(mTargetGraphicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &)),
 				this, SLOT(rereadData(QModelIndex const &, QModelIndex const &)));
-
-	reset();
 }
 
 void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 		, QModelIndex const &graphicalModelIndex)
 {
+	beginResetModel();
 	mFields.clear();
+	endResetModel();
 
 	mTargetLogicalObject = logicalModelIndex;
 	mTargetGraphicalObject = graphicalModelIndex;
 
 	if (!isValid()) {
-		reset();
 		return;
 	}
 
-	mFields << Field(tr("Name"), namePseudoattribute);
+	Id const logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
+	if (logicalId.editor() == "MetaEditor") {
+		mFields << Field("name", namePseudoattribute);
+	} else {
+		mFields << Field(tr("Name"), namePseudoattribute);
+	}
 
 	if (logicalModelIndex != QModelIndex()) {
-		Id const logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
 		QStringList const logicalProperties = mEditorManager.getPropertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {
@@ -219,7 +224,8 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 
 //	mFields << Field(tr("Metatype"), metatypePseudoattribute);
 
-	reset();
+	beginResetModel();
+	endResetModel();
 }
 
 void PropertyEditorModel::clearModelIndexes()
@@ -258,15 +264,30 @@ int PropertyEditorModel::roleByIndex(int row) const
 
 QString PropertyEditorModel::typeName(QModelIndex const &index) const
 {
-	Id id;
-	switch (mFields[index.row()].attributeClass) {
-	case logicalAttribute:
-		id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-		break;
-	case graphicalAttribute:
-		id = mTargetGraphicalObject.data(roles::idRole).value<Id>();
-	default:
-		return "";  // Non-logical and non-graphical attributes have no type by default
+	Id id = idByIndex(index);
+	if (id == Id()) {
+		return "";
 	}
 	return mEditorManager.getTypeName(id, mFields[index.row()].fieldName);
+}
+
+bool PropertyEditorModel::isReference(QModelIndex const &index, QString const &propertyName)
+{
+	Id id = idByIndex(index);
+	if (id == Id()) {
+		return false;
+	}
+	return mEditorManager.getReferenceProperties(id.type()).contains(propertyName);
+}
+
+Id PropertyEditorModel::idByIndex(QModelIndex const &index) const
+{
+	switch (mFields[index.row()].attributeClass) {
+		case logicalAttribute:
+			return mTargetLogicalObject.data(roles::idRole).value<Id>();
+		case graphicalAttribute:
+			return mTargetGraphicalObject.data(roles::idRole).value<Id>();
+		default:
+			return Id();
+	}
 }

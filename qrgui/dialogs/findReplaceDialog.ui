@@ -104,6 +104,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="mByRegExp">
+         <property name="text">
+          <string>by regular expression</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="mSensitivity">
          <property name="text">
           <string>case sensitivity</string>

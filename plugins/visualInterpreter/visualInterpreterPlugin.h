@@ -2,11 +2,12 @@
 
 #include <QtCore/QTranslator>
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrutils/metamodelGeneratorSupport.h"
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
-#include "../../../qrgui/mainwindow/errorReporter.h"
+#include "../../qrkernel/ids.h"
+#include "../../qrutils/metamodelGeneratorSupport.h"
+#include "../../qrutils/watchListWindow.h"
+#include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
+#include "../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "../../qrgui/mainwindow/errorReporter.h"
 
 #include "visualInterpreterPreferencesPage.h"
 #include "visualInterpreterUnit.h"
@@ -20,6 +21,7 @@ class VisualInterpreterPlugin : public QObject, public qReal::ToolPluginInterfac
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.visualInterpreter.VisualInterpreterPlugin")
 
 public:
 	VisualInterpreterPlugin();
@@ -31,8 +33,13 @@ public:
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 
 private slots:
+	void generateMetamodels() const;
+	
 	/// Generate, compile and load semantics editor for specified metamodel
-	void generateSemanticsMetamodel() const;
+	void generateSemanticsMetamodel(QString const &editorMetamodelFilePath, QString const &qrealSourceFilesPath) const;
+
+	/// Generate, compile and load editor for specified metamodel with new 'id' attribute
+	void generateEditorMetamodel(QString const &editorMetamodelFilePath, QString const &qrealSourceFilesPath) const;
 
 	/// Load semantics model from current opened diagram
 	void loadSemantics();
@@ -40,15 +47,22 @@ private slots:
 	/// Make one step according to semantics (find match, delete, create and replace elements)
 	void interpret();
 
+	/// Stops interpretation
+	void stopInterpretation();
+
+	/// Show watch list with all declared variables and its values. List updates
+	/// dynamically
+	void showWatchList();
+
 private:
-	/// Insert possible semantics state of elements into semantics metamodel
-	void insertSemanticsStatesEnum(QDomDocument metamodel) const;
+	/// Insert some semantics enums into semantics metamodel
+	void insertSemanticsEnums(QDomDocument metamodel, QString const &name, QStringList const &values) const;
 
 	/// Add special semantics state property to all existing elements
 	void insertSematicsStateProperty(QDomDocument metamodel) const;
 
 	/// Add to specific elements semantics state property (different approach for nodes and edges)
-	void insertSematicsStatePropertyInSpecificElemType(QDomDocument metamodel
+	void insertSemanticsStatePropertiesInSpecificElemType(QDomDocument metamodel
 			, QDomNodeList const &nodes, bool isNode) const;
 
 	/// Insert in graphic types of semantics metamodel specific elements
@@ -57,14 +71,25 @@ private:
 	/// Groups elements in semantics editor
 	void insertPaletteGroups(QDomDocument metamodel, QString const &diagramDisplayedName) const;
 
+	/// Add 'id' property to all elements in metamodel
+	void insertIdPropertyToBasicElements(QDomDocument metamodel) const;
+
+	/// Add to specific elements 'id' property
+	void insertIdPropertyInSpecificElemType(QDomDocument metamodel, QDomNodeList const &nodes) const;
+
+	/// Remove default values of all properties
+	void removePropertyDefaultValues(QDomDocument metamodel) const;
+
 	/// Delete directory (which was used for generate and compile semantics editor)
-	void removeDirectory(const QString &dirName);
+	void removeDirectory(QString const &dirName);
 
 	qReal::ErrorReporterInterface *mErrorReporter;
 
 	QAction *mGenerateAndLoadSemanticsEditorAction;
 	QAction *mLoadSemanticsAction;
 	QAction *mInterpretAction;
+	QAction *mStopInterpretationAction;
+	QAction *mWatchListAction;
 
 	QMenu *mVisualInterpreterMenu;
 
@@ -74,6 +99,7 @@ private:
 
 	qReal::VisualInterpreterUnit *mVisualInterpreterUnit;
 	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
+	utils::WatchListWindow *mWatchListWindow;
 
 	QTranslator mAppTranslator;
 };

@@ -4,7 +4,7 @@
 
 using namespace qrmc;
 
-NonGraphicType::NonGraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id)
+NonGraphicType::NonGraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id)
 	: Type(true, diagram, api, id)
 {}
 
@@ -32,6 +32,24 @@ QString NonGraphicType::generateProperties(QString const &lineTemplate) const
 QString NonGraphicType::generatePropertyDefaults(QString const &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate)
+	return "";
+}
+
+QString NonGraphicType::generatePropertyDisplayedNames(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate)
+	return "";
+}
+
+QString NonGraphicType::generateReferenceProperties(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate);
+	return "";
+}
+
+QString NonGraphicType::generateParents(QString const &lineTemplate) const
+{
+	Q_UNUSED(lineTemplate);
 	return "";
 }
 
@@ -66,19 +84,19 @@ QString NonGraphicType::generatePossibleEdges(QString const &lineTemplate) const
 	return "";
 }
 
-QString NonGraphicType::generateNodeClass(const QString &classTemplate)
+QString NonGraphicType::generateNodeClass(QString const &classTemplate)
 {
 	Q_UNUSED(classTemplate)
 	return "";
 }
 
-QString NonGraphicType::generateEdgeClass(const QString &classTemplate) const
+QString NonGraphicType::generateEdgeClass(QString const &classTemplate) const
 {
 	Q_UNUSED(classTemplate)
 	return "";
 }
 
-QString NonGraphicType::generateResourceLine(const QString &resourceTemplate) const
+QString NonGraphicType::generateResourceLine(QString const &resourceTemplate) const
 {
 	Q_UNUSED(resourceTemplate)
 	return "";

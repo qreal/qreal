@@ -16,12 +16,15 @@ SensorsConfigurer::SensorsConfigurer()
 
 SensorsConfigurer::~SensorsConfigurer()
 {
-	foreach (sensorImplementations::AbstractSensorImplementation *sensor, mPendingSensors)
-		if (sensor != NULL && sensor != mConfiguredSensors[sensor->port()])
+	foreach (sensorImplementations::AbstractSensorImplementation *sensor, mPendingSensors) {
+		if (sensor != NULL && sensor != mConfiguredSensors[sensor->port()]) {
 			delete sensor;
+		}
+	}
 
-	foreach (sensorImplementations::AbstractSensorImplementation *sensor, mConfiguredSensors)
+	foreach (sensorImplementations::AbstractSensorImplementation *sensor, mConfiguredSensors) {
 		delete sensor;
+	}
 }
 
 void SensorsConfigurer::configureSensor(sensorImplementations::AbstractSensorImplementation *sensor, inputPort::InputPortEnum const &port)
@@ -31,8 +34,9 @@ void SensorsConfigurer::configureSensor(sensorImplementations::AbstractSensorImp
 		|| mConfiguredSensors[sensor->port()] == NULL
 		|| sensor->type() != mConfiguredSensors[sensor->port()]->type())
 	{
-		if (mConfiguredSensors[port] != mPendingSensors[port])
+		if (mConfiguredSensors[port] != mPendingSensors[port]) {
 			delete mPendingSensors[port];
+		}
 		mPendingSensors[port] = sensor;
 	}
 	reconfigureSensors();
@@ -51,15 +55,16 @@ void SensorsConfigurer::unlockConfiguring()
 	reconfigureSensors();
 }
 
-sensorImplementations::AbstractSensorImplementation * SensorsConfigurer::sensor(inputPort::InputPortEnum const &port) const
+sensorImplementations::AbstractSensorImplementation * SensorsConfigurer::sensor(inputPort::InputPortEnum port) const
 {
 	return mConfiguredSensors[port];
 }
 
 void SensorsConfigurer::reconfigureSensors()
 {
-	if (mLocked)
+	if (mLocked) {
 		return;
+	}
 
 	Tracer::debug(tracer::initialization, "SensorsConfigurer::reconfigureSensors", "Going to reconfigure sensors");
 	mSensorsToConfigure = 0;
@@ -86,9 +91,20 @@ void SensorsConfigurer::reconfigureSensors()
 		Tracer::debug(tracer::initialization, "SensorsConfigurer::reconfigureSensors", "No need to wait for a response, sending allSensorsReconfigured signal now.");
 		emit allSensorsConfigured();
 	} else {
-		foreach (int const &i, sensorsToConfigure) {
+		foreach (int i, sensorsToConfigure) {
 			mConfiguredSensors[i]->configure();
 		}
+	}
+}
+
+void SensorsConfigurer::nullifySensor(inputPort::InputPortEnum port)
+{
+	if (mConfiguredSensors[port]) {
+		if (mPendingSensors[port] == mConfiguredSensors[port]) {
+			mPendingSensors[port] = NULL;
+		}
+		delete mConfiguredSensors[port];
+		mConfiguredSensors[port] = 0;
 	}
 }
 

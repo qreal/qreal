@@ -76,14 +76,14 @@ void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 	foreach (AbstractModelItem *item,  mModelItems.values()) {
 		GraphicalModelItem *graphicalItem = static_cast<GraphicalModelItem *>(item);
 		if (graphicalItem->logicalId() == logicalId) {
-			mApi.setName(graphicalItem->id(), name);
+			setNewName(graphicalItem->id(), name);
 			emit dataChanged(index(graphicalItem), index(graphicalItem));
 		}
 	}
 }
 
 void GraphicalModel::addElementToModel(const Id &parent, const Id &id
-		, const Id &logicalId, const QString &name, const QPointF &position)
+		, const Id &logicalId, QString const &name, const QPointF &position)
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
@@ -102,7 +102,7 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 }
 
 void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
-		, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+		, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 
@@ -166,8 +166,7 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 		switch (role) {
 		case Qt::DisplayRole:
 		case Qt::EditRole:
-			mApi.setName(item->id(), value.toString());
-			emit nameChanged(item->id());
+			setNewName(item->id(), value.toString());
 			break;
 		case roles::positionRole:
 			mApi.setPosition(item->id(), value);
@@ -202,6 +201,12 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 	return false;
 }
 
+void GraphicalModel::setNewName(Id const &id, QString const newValue)
+{
+	mApi.setName(id, newValue);
+	emit nameChanged(id);
+}
+
 void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
 {
 	if (!parent.isValid() || element.parent() == parent) {
@@ -225,6 +230,10 @@ void GraphicalModel::changeParent(QModelIndex const &element, QModelIndex const 
 		mApi.setPosition(elementItem->id(), position);
 		mApi.setConfiguration(elementItem->id(), configuration);
 		endMoveRows();
+
+		if (parent.row() != element.row()) {
+			emit dataChanged(parent, element);
+		}
 	}
 }
 

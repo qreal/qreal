@@ -13,6 +13,7 @@ SUBDIRS = \
 	plugins \
 	qrkernel \
 	qrutils \
+	thirdparty \
 
 qrutils.depends = qrkernel
 qrrepo.depends = qrkernel qrutils
@@ -27,6 +28,7 @@ qrgui.depends = \
 	qrutils \
 	qrkernel \
 	qrmc \
+	thirdparty \
 
 plugins.depends = \
 	qrxc \
@@ -35,3 +37,23 @@ plugins.depends = \
 	qrkernel \
 	qrmc \
 
+infile(qrtest/unitTests/unittestDeclaration.cfg, UNIT_TEST, TRUE) {
+	SUBDIRS += \
+		qrtest \
+		qrxcTest \
+		qrguiTest \
+
+	qrtest.depends = \
+		thirdparty \
+
+	qrxcTest.file = qrxc/qrxcTest.pro
+	qrguiTest.file = qrgui/qrguiTest.pro
+
+	qrxcTest.depends = \
+		qrxc \
+		thirdparty \
+
+	qrguiTest.depends = \
+		qrgui \
+		thirdparty \
+}

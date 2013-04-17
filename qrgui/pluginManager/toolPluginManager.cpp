@@ -1,6 +1,6 @@
-#include "toolPluginManager.h"
+#include <QtWidgets/QApplication>
 
-#include <QtGui/QApplication>
+#include "toolPluginManager.h"
 
 using namespace qReal;
 
@@ -28,9 +28,12 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 				mLoaders << loader;
 			}
 			else {
+				// TODO: Does not work on linux. See editorManager.cpp for more details.
+				// loader->unload();
 				delete loader;
 			}
 		} else {
+			loader->unload();
 			delete loader;
 		}
 	}
@@ -72,14 +75,14 @@ QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() 
 	return result;
 }
 
-Customizer const *ToolPluginManager::customizer() const
+Customizer *ToolPluginManager::customizer() const
 {
 	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
 		if (toolPlugin->customizationInterface()) {
 			return toolPlugin->customizationInterface();
 		}
 	}
-	return &mCustomizer;
+	return const_cast<qReal::Customizer *>(&mCustomizer);
 }
 
 void ToolPluginManager::updateSettings()
@@ -94,4 +97,9 @@ void ToolPluginManager::activeTabChanged(Id const & rootElementId)
 	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
 		toolPlugin->activeTabChanged(rootElementId);
 	}
+}
+
+QList<ToolPluginInterface *> ToolPluginManager::getPlugins()
+{
+	return mPlugins;
 }

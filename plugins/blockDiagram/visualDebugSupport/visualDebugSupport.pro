@@ -1,26 +1,30 @@
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../../bin/plugins/
+
+OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RCC_DIR = .moc
+
+QT += widgets
 
 LIBS += -L../../../bin -lqrkernel -lqrutils
 
 TRANSLATIONS = visualDebugSupport_ru.ts
 
 HEADERS = \
-	visualDebuggerPlugin.h \
-	visualDebuggerPreferencesPage.h \
-	../../../qrgui/dialogs/preferencesPages/preferencesPage.h
+	$$PWD/visualDebuggerPlugin.h \
+	$$PWD/visualDebuggerPreferencesPage.h \
+	$$PWD/../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 
 SOURCES = \
-	visualDebuggerPlugin.cpp \
-	visualDebuggerPreferencesPage.cpp
+	$$PWD/visualDebuggerPlugin.cpp \
+	$$PWD/visualDebuggerPreferencesPage.cpp \
 
 FORMS += \
-	visualDebuggerPreferencesPage.ui
+	$$PWD/visualDebuggerPreferencesPage.ui \
 
 RESOURCES += \
-	visualDebugger.qrc
+	$$PWD/visualDebugger.qrc \
 
 include(interpreter/interpreter.pri)

@@ -1,5 +1,5 @@
 #pragma once
-#include <QPushButton>
+#include <QtWidgets/QPushButton>
 
 #include "../thirdparty/qtpropertybrowser/src/qtvariantproperty.h"
 #include "../thirdparty/qtpropertybrowser/src/qteditorfactory.h"

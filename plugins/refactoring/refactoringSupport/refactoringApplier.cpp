@@ -1,10 +1,12 @@
 #include "refactoringApplier.h"
+#include <QtCore/QDebug>
 
 using namespace qReal;
 
 QSet<QString> const defaultProperties = (QSet<QString>()
 		<< "from" << "incomingConnections" << "incomingUsages" << "links"
 		<< "name" << "outgoingConnections" << "outgoingUsages" << "to");
+QSet<QString> const refactoringElements = (QSet<QString>() << "Element" << "Link" << "BeforeBlock" << "AfterBlock");
 
 RefactoringApplier::RefactoringApplier(
 		LogicalModelAssistInterface &logicalModelApi
@@ -226,17 +228,39 @@ void RefactoringApplier::changePropertiesInModel(Id const &changeFromId, Id cons
 
 void RefactoringApplier::changeElementInModel(const Id &changeFromId, const Id &changeToId)
 {
-	Q_UNUSED(changeFromId);
-	Q_UNUSED(changeToId);
+	if (mLogicalModelApi.isLogicalId(changeFromId)) {
+		return;
+	}
+	if (!refactoringElements.contains(changeToId.element())) {
+		IdList const inLinks = mGraphicalModelApi.mutableGraphicalRepoApi().incomingLinks(changeFromId);
+		IdList const outLinks = mGraphicalModelApi.mutableGraphicalRepoApi().outgoingLinks(changeFromId);
+		Id const parentId = mGraphicalModelApi.mutableGraphicalRepoApi().parent(changeFromId);
+		QVariant const position = mGraphicalModelApi.mutableGraphicalRepoApi().position(changeFromId);
+		bool const isFromLogicalModel = false;
+		QString const refactoringsMetamodel = "RefactoringsMetamodel";
+		QString newEditor = changeToId.editor();
+		newEditor.chop(refactoringsMetamodel.length());
+		Id const newId = Id(newEditor, changeToId.diagram(), changeToId.element(), QUuid::createUuid().toString());
+		Id const newElementId = mGraphicalModelApi.createElement(parentId, newId
+				, isFromLogicalModel, "ololo", position.toPointF());
+		foreach (Id idLink, inLinks) {
+			mGraphicalModelApi.mutableGraphicalRepoApi().setTo(idLink, newElementId);
+		}
+		foreach (Id idLink, outLinks) {
+			mGraphicalModelApi.mutableGraphicalRepoApi().setFrom(idLink, newElementId);
+		}
+		mGraphicalModelApi.mutableGraphicalRepoApi().removeChild(parentId, changeFromId);
+		mGraphicalModelApi.mutableGraphicalRepoApi().removeElement(changeFromId);
+	}
 }
 
 void RefactoringApplier::setProperty(Id const &id, QString const &propertyName
 		, QVariant const &value) const
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
-		return mLogicalModelApi.logicalRepoApi().setProperty(id, propertyName, value);
+		return mLogicalModelApi.mutableLogicalRepoApi().setProperty(id, propertyName, value);
 	} else {
-		return mLogicalModelApi.logicalRepoApi().setProperty(
+		return mLogicalModelApi.mutableLogicalRepoApi().setProperty(
 				mGraphicalModelApi.logicalId(id), propertyName, value);
 	}
 }

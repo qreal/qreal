@@ -3,6 +3,8 @@
 
 #include <QtCore/QDebug>
 
+using namespace qReal;
+
 XmlLoader::XmlLoader(Scene *scene)
 {
 	mScene = scene;
@@ -27,14 +29,14 @@ void XmlLoader::initListScalePoint()
 	mListScalePoint.push_back(QPair<Item::ScalingPointState, QColor>(Item::bottomRightY, QColor(Qt::black)));
 }
 
-void XmlLoader::readString(const QString &text)
+void XmlLoader::readString(QString const &text)
 {
 	mReadFile = false;
 	mDocument.setContent(text);
 	readDocument();
 }
 
-void XmlLoader::readFile(const QString &fileName)
+void XmlLoader::readFile(QString const &fileName)
 {
 	mReadFile = true;
 	mDocument = utils::xmlUtils::loadDocument(fileName);
@@ -286,7 +288,7 @@ void XmlLoader::readLine(QDomElement const &line)
 void XmlLoader::readEllipse(QDomElement const &ellipse)
 {
 	QRectF rect = readRectOfXandY(ellipse);
-	Ellipse* item = new Ellipse(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
+	QRealEllipse* item = new QRealEllipse(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	item->readPenBrush(ellipse);
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
@@ -306,7 +308,7 @@ void XmlLoader::readArch(QDomElement const &arch)
 void XmlLoader::readRectangle(QDomElement const &rectangle)
 {
 	QRectF rect = readRectOfXandY(rectangle);
-	Rectangle* item = new Rectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
+	QRealRectangle* item = new QRealRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	item->readPenBrush(rectangle);
 	item->setListScalePoint(mListScalePoint);
 	mScene->addItem(item);
@@ -505,7 +507,7 @@ void XmlLoader::readPath(QDomElement const &element)
 		}
 	}
 	Path *item = new Path(path);
-	item->translate(mDrift.x(), mDrift.y());
+	item->setTransform(QTransform::fromTranslate(mDrift.x(), mDrift.y()), true);
 	item->readPenBrush(elem);
 	mScene->addItem(item);
 	mScene->setZValue(item);

@@ -11,6 +11,7 @@ public:
 	QString type() const;
 	QString defaultValue() const;
 	QString description() const;
+	bool isReferenceProperty() const;
 	Property *clone();
 	bool operator == (Property const &other) const;
 	bool operator != (Property const &other) const;
