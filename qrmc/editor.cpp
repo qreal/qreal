@@ -165,7 +165,7 @@ QString Editor::name()
 
 void Editor::generate(QString const &headerTemplate, QString const &sourceTemplate,
 					QString const &nodeTemplate, QString const &edgeTemplate,
-					QString const & elementsHeaderTemplate, QString const &resourceTemplate,
+					QString const &elementsHeaderTemplate, QString const &resourceTemplate,
 					QString const &projectTemplate, QMap<QString, QString> const &utils)
 {
 	qDebug() << "generating plugin " << mName;
@@ -331,7 +331,7 @@ bool Editor::generateResourceFile(QString const &resourceTemplate)
 
 }
 
-bool Editor::generateProjectFile(const QString &proTemplate)
+bool Editor::generateProjectFile(QString const &proTemplate)
 {
 	QString projectTemplate = proTemplate;
 	qDebug() << "generating project file for " << mName;
@@ -423,14 +423,14 @@ public:
 
 class Editor::PropertyDisplayedNamesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
 		return diagram->generatePropertyDisplayedNamesMap(lineTemplate);
 	}
 };
 
 class Editor::ParentsMapGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
 		return diagram->generateParentsMap(lineTemplate);
 	}
 };
@@ -444,7 +444,7 @@ public:
 
 class Editor::ReferencePropertiesGenerator: public Editor::MethodGenerator {
 public:
-	virtual QString generate(Diagram *diagram, const QString &lineTemplate) const {
+	virtual QString generate(Diagram *diagram, QString const &lineTemplate) const {
 		return diagram->generateReferenceProperties(lineTemplate);
 	}
 };
@@ -484,7 +484,7 @@ public:
 	}
 };
 
-void Editor::generatePluginMethod(const QString &tag, const MethodGenerator &generator)
+void Editor::generatePluginMethod(QString const &tag, const MethodGenerator &generator)
 {
 	QString body = "";
 	QString const line = mUtilsTemplate[tag].replace("\\n", "\n");

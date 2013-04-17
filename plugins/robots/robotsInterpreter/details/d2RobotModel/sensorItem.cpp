@@ -1,5 +1,5 @@
 #include <QtGui/QCursor>
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include "sensorItem.h"
 
@@ -175,5 +175,6 @@ void SensorItem::onPositionChanged()
 
 void SensorItem::onDirectionChanged()
 {
+	mConfiguration.setPosition(mPort, scenePos().toPoint());
 	mConfiguration.setDirection(mPort, rotation());
 }

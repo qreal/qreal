@@ -198,12 +198,12 @@ QList<QGraphicsItem *> SceneGridHandler::getAdjancedNodes() const
 	// verical
 	QList<QGraphicsItem *> listX = mNode->scene()->items(nodeScenePos.x(), 0
 			, contentsRect.width(), widthLineY
-			, Qt::IntersectsItemBoundingRect);
+			, Qt::IntersectsItemBoundingRect, Qt::SortOrder(), QTransform());
 
 	// horizontal
 	QList<QGraphicsItem *> listY = mNode->scene()->items(0, nodeScenePos.y()
 			, widthLineX, contentsRect.height()
-			, Qt::IntersectsItemBoundingRect);
+			, Qt::IntersectsItemBoundingRect, Qt::SortOrder(), QTransform());
 
 	return listX + listY;
 }

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QWidget>
-#include <QGraphicsScene>
-#include <QList>
-#include <QPoint>
-#include <QString>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGraphicsScene>
+#include <QtCore/QList>
+#include <QtCore/QPoint>
+#include <QtCore/QString>
 #include "../../mainwindow/gesturesPainterInterface.h"
 
 namespace Ui {

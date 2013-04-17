@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QProgressBar>
+#include <QtWidgets/QProgressBar>
 
 #include "../../../qrutils/invocationUtils/longOperation.h"
 

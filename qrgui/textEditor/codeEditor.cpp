@@ -11,7 +11,7 @@ CodeEditor::CodeEditor(QWidget *parent): QMainWindow(parent), mCodeArea(this)
 	setCentralWidget(&mCodeArea);
 }
 
-CodeEditor::CodeEditor(const QString& filename, QWidget *parent): QMainWindow(parent), mCodeArea(this) {
+CodeEditor::CodeEditor(QString const &filename, QWidget *parent): QMainWindow(parent), mCodeArea(this) {
 	setCentralWidget(&mCodeArea);
 	QFile file(filename);
 	QTextStream *inStream = 0;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsTextItem>
+#include <QtWidgets/QGraphicsTextItem>
 #include "../editorPluginInterface/elementTitleHelpers.h"
 
 class ElementTitle;
@@ -18,10 +18,15 @@ class ElementTitle : public ElementTitleInterface
 public:
 	ElementTitle(qreal x, qreal y, QString const &text);
 	ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly);
+	virtual ~ElementTitle() {}
+
 	void init(QRectF const& contents);
 	void setBackground(Qt::GlobalColor const &background);
 	void setScaling(bool scalingX, bool scalingY);
-	~ElementTitle() {}
+
+	bool isHard() const;
+	virtual void setHard(bool hard);
+
 	void startTextInteraction();
 	void transform(QRectF const& contents);
 	void setTitleFont();
@@ -41,4 +46,5 @@ private:
 	QString mOldText;
 	QString mBinding;
 	Qt::GlobalColor mBackground;
+	bool mIsHard;
 };

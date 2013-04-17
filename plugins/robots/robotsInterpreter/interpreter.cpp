@@ -1,5 +1,5 @@
 #include <QCoreApplication>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 #include "interpreter.h"
 
@@ -29,6 +29,8 @@ Interpreter::Interpreter()
 	, mWatchListWindow(NULL)
 	, mActionConnectToRobot(NULL)
 {
+	Tracer::enableAll();
+	Tracer::setTarget(tracer::logFile);
 	mParser = NULL;
 	mBlocksTable = NULL;
 	mTimer = new QTimer();
@@ -58,7 +60,7 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	Tracer::debug(tracer::initialization, "Interpreter::init", "Going to set robot implementation, model type is " + DebugHelper::toString(modelType));
 	setRobotImplementation(modelType);
 
-	mWatchListWindow = new WatchListWindow(mParser, mInterpretersInterface->windowWidget());
+	mWatchListWindow = new utils::WatchListWindow(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
@@ -86,6 +88,7 @@ void Interpreter::interpret()
 		return;
 	}
 
+	mBlocksTable->clear();
 	mState = waitingForSensorsConfiguredToLaunch;
 	mBlocksTable->setIdleForBlocks();
 
@@ -100,8 +103,6 @@ void Interpreter::interpret()
 	if (!configurer.configure(currentDiagramId)) {
 		return;
 	}
-
-	runTimer();
 }
 
 void Interpreter::stopRobot()
@@ -199,6 +200,8 @@ void Interpreter::sensorsConfiguredSlot()
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;
 
+		runTimer();
+
 		Tracer::debug(tracer::initialization, "Interpreter::sensorsConfiguredSlot", "Starting interpretation");
 		mRobotModel->startInterpretation();
 
@@ -280,8 +283,10 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 
 void Interpreter::runTimer()
 {
-	mTimer->start(200);
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()));
+	if (!mTimer->isActive()) {
+		mTimer->start(10);
+		connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
+	}
 	if (mRobotModel->sensor(inputPort::port1)) {
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)));
 		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
@@ -362,6 +367,9 @@ void Interpreter::resetVariables()
 
 void Interpreter::connectToRobot()
 {
+	if (mState == interpreting) {
+		return;
+	}
 	if (mConnected) {
 		mRobotModel->stopRobot();
 		mRobotModel->disconnectFromRobot();
@@ -414,7 +422,7 @@ void Interpreter::reportError(QString const &message)
 	mInterpretersInterface->errorReporter()->addError(message);
 }
 
-WatchListWindow *Interpreter::watchWindow() const
+utils::WatchListWindow *Interpreter::watchWindow() const
 {
 	return mWatchListWindow;
 }
