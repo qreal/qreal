@@ -484,8 +484,8 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 		mCurrentWall->setX2andY2(pos.x(), pos.y());
 		if (SettingsManager::value("2dShowGrid").toBool())
 		{
-			mCurrentWall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
-			mCurrentWall->reshapeWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+			mCurrentWall->reshapeBeginWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+			mCurrentWall->reshapeEndWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 		} else {
 
 			if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {

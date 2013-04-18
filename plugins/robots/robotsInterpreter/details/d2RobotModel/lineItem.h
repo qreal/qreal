@@ -25,8 +25,11 @@ public:
 
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void reshapeRectWithShift();
+	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event, int indexGrid);
 
-	virtual void reshapeWithGrid(int indexGrid);
+	virtual void resizeBeginWithGrid(int indexGrid);
+	virtual void reshapeBeginWithGrid(int indexGrid);
+	virtual void reshapeEndWithGrid(int indexGrid);
 	virtual void setBeginCoordinatesWithGrid(int indexGrid);
 	virtual void setEndCoordinatesWithGrid(int indexGrid);
 
@@ -41,7 +44,10 @@ protected:
 	graphicsUtils::LineImpl mLineImpl;
 	int mCornerRadius;
 	QString mSerializeName;
-	int cellNumb;
+	int cellNumbX1;
+	int cellNumbY1;
+	int cellNumbX2;
+	int cellNumbY2;
 };
 }
 }

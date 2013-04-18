@@ -18,7 +18,10 @@ LineItem::LineItem(QPointF const &begin, QPointF const &end, int cornerRadius)
 	mY2 = end.y();
 	setFlags(ItemIsSelectable | ItemIsMovable);
 	setPrivateData();
-	cellNumb = 0;
+	cellNumbX1 = 0;
+	cellNumbY1 = 0;
+	cellNumbX2 = 0;
+	cellNumbY2 = 0;
 }
 
 void LineItem::setPrivateData()
@@ -59,7 +62,25 @@ QPainterPath LineItem::shape() const
 void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	if (mDragState == TopLeft || mDragState == BottomRight)
-		AbstractItem::resizeItem(event);
+		calcResizeItem(event, 50);
+}
+
+void LineItem::calcResizeItem(QGraphicsSceneMouseEvent *event, int indexGrid)
+{
+	qreal x = mapFromScene(event->scenePos()).x();
+	qreal y = mapFromScene(event->scenePos()).y();
+	if (mDragState != None) {
+		setFlag(QGraphicsItem::ItemIsMovable, false);
+	}
+	if (mDragState == TopLeft) {
+		mX1 = x;
+		mY1 = y;
+		resizeBeginWithGrid(indexGrid);
+	} else if (mDragState == BottomRight) {
+		mX2 = x;
+		mY2 = y;
+		reshapeEndWithGrid(indexGrid);
+	}
 }
 
 void LineItem::reshapeRectWithShift()
@@ -76,7 +97,30 @@ void LineItem::reshapeRectWithShift()
 		AbstractItem::reshapeRectWithShift();
 }
 
-void LineItem::reshapeWithGrid(int indexGrid)
+void LineItem::resizeBeginWithGrid(int indexGrid)
+{
+	int coefX = static_cast<int>(mX1) / indexGrid;
+	int coefY = static_cast<int>(mY1) / indexGrid;
+
+	if (abs(mY2-mY1)>abs(mX2-mX1))
+	{
+		setX1andY1(
+					mX2
+					,alignedCoordinate(mY1, coefY, indexGrid)
+					);
+	} else {
+		setX1andY1(
+					alignedCoordinate(mX1, coefX, indexGrid)
+					, mY2
+					);
+	}
+	cellNumbX1 = mX1 / indexGrid;
+	cellNumbY1 = mY1 / indexGrid;
+
+
+}
+
+void LineItem::reshapeEndWithGrid(int indexGrid)
 {
 	int coefX = static_cast<int>(mX2) / indexGrid;
 	int coefY = static_cast<int>(mY2) / indexGrid;
@@ -93,11 +137,13 @@ void LineItem::reshapeWithGrid(int indexGrid)
 					, mY1
 					);
 	}
-	cellNumb = ((mX2-mX1) + (mY2-mY1)) / indexGrid;
+	cellNumbX2 = mX2 / indexGrid;
+	cellNumbY2 = mY2 / indexGrid;
+
 
 }
 
-void LineItem::setBeginCoordinatesWithGrid(int indexGrid)
+void LineItem::reshapeBeginWithGrid(int indexGrid)
 {
 	int coefX = static_cast<int> (mX1) / indexGrid;
 	int coefY = static_cast<int> (mY1) / indexGrid;
@@ -105,25 +151,31 @@ void LineItem::setBeginCoordinatesWithGrid(int indexGrid)
 				alignedCoordinate(mX1, coefX, indexGrid)
 				,alignedCoordinate(mY1, coefY, indexGrid)
 					);
+	cellNumbX1 = mX1 / indexGrid;
+	cellNumbY1 = mY1 / indexGrid;
+}
+
+void LineItem::setBeginCoordinatesWithGrid(int indexGrid)
+{
+	int coefX =cellNumbX1;
+	int coefY =cellNumbY1;
+
+	setX1andY1(
+				coefX * indexGrid
+				,coefY * indexGrid
+				);
+
 }
 
 void LineItem::setEndCoordinatesWithGrid(int indexGrid)
 {
-	int coefX = cellNumb;
-	int coefY = cellNumb;
+	int coefX =cellNumbX2;
+	int coefY =cellNumbY2;
 
-	if (abs(mY2-mY1)>abs(mX2-mX1))
-	{
-		setX2andY2(
-					mX1
-					,alignedCoordinate(mY2, coefY, indexGrid)
-					);
-	} else {
-		setX2andY2(
-					alignedCoordinate(mX2, coefX, indexGrid)
-					, mY1
-					);
-	}
+	setX2andY2(
+				coefX * indexGrid
+				,coefY * indexGrid
+				);
 }
 
 qreal LineItem::alignedCoordinate(qreal coord, int coef, int const indexGrid) const
