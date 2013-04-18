@@ -79,6 +79,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	initSettingsManager();
 	registerMetaTypes();
 
+
 	HotKeyAction *cmdClose = new HotKeyAction();
 
 	cmdClose->setShortcut(QKeySequence(Qt::ALT + Qt::Key_X));
@@ -92,6 +93,12 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	connect(cmdCloseTabs, SIGNAL(pressed()), this, SLOT(closeAllTabs()));
 
 	HotKeyManager::setCommand("CloseTabs", "Close tabs", cmdCloseTabs);
+
+	HotKeyManager::addShortcut("Close", QKeySequence(Qt::ALT + Qt::Key_F4));
+	HotKeyManager::addShortcut("Close", QKeySequence(Qt::CTRL + Qt::Key_C), MouseWheelUp);
+	HotKeyManager::addShortcut("CloseTabs", QKeySequence(Qt::ALT), MouseMBClick);
+	HotKeyManager::resetShortcuts("Close");
+
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setProgress(5);

@@ -4,6 +4,7 @@
 #include <QtCore/QEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QWheelEvent>
+#include <QtGui/QMouseEvent>
 #include <QtCore/QDebug>
 
 using namespace qReal;
@@ -16,9 +17,22 @@ QRealApplication::QRealApplication(int &argc, char **argv)
 
 bool QRealApplication::notify(QObject *receiver, QEvent *event)
 {
-	if (event->type() == QEvent::KeyPress) {
-		HotKeyManager::doShortCut(static_cast<QKeyEvent *> (event));
-		return true;
+	switch(event->type()) {
+		case QEvent::KeyPress: {
+			HotKeyManager::doShortcut(static_cast<QKeyEvent *> (event));
+			return true;
+		}
+		case QEvent::KeyRelease: {
+			HotKeyManager::clearCurrentKeySeq();
+			return true;
+		}
+		case QEvent::Wheel:
+			HotKeyManager::doShortcut(static_cast<QWheelEvent *> (event));
+			return true;
+		case QEvent::MouseButtonPress:
+			HotKeyManager::doShortcut(static_cast<QMouseEvent *> (event));
+		default: {
+			return QApplication::notify(receiver, event);
+		}
 	}
-	return QApplication::notify(receiver, event);
 }
