@@ -16,9 +16,9 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 
 	mPluginsDir.cd("plugins");
 
-	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
+	foreach (QString const &fileName, mPluginsDir.entryList(QDir::Files)) {
 		// TODO: Free memory
-		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
+		QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader->instance();
 
 		if (plugin) {
@@ -26,8 +26,7 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 			if (toolPlugin) {
 				mPlugins << toolPlugin;
 				mLoaders << loader;
-			}
-			else {
+			} else {
 				// TODO: Does not work on linux. See editorManager.cpp for more details.
 				// loader->unload();
 				delete loader;
