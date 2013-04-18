@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QAbstractItemView>
+
 #include "../models/graphicalModelAssistApi.h"
 #include "../models/logicalModelAssistApi.h"
 

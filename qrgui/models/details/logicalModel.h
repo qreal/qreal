@@ -21,7 +21,7 @@ class GraphicalModel;
 
 class LogicalModel : public modelsImplementation::AbstractModel
 {
-	Q_OBJECT;
+	Q_OBJECT
 
 public:
 	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManager const &editorManager);
@@ -34,6 +34,7 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 	virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
+	void changeParent(Id const &parentId, Id const &childId);
 	qrRepo::LogicalRepoApi const &api() const;
 	qrRepo::LogicalRepoApi &mutableApi() const;
 	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
@@ -53,7 +54,7 @@ private:
 
 	virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
 	void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
-						   modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
+						   modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position);
 	QString pathToItem(modelsImplementation::AbstractModelItem const * const item) const;
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child);
 };

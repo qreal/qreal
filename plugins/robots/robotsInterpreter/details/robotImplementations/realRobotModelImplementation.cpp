@@ -1,6 +1,6 @@
 #include "realRobotModelImplementation.h"
-
 #include "../tracer.h"
+#include "../realTimer.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
@@ -43,6 +43,11 @@ sensorImplementations::BluetoothColorSensorImplementation *RealRobotModelImpleme
 	return dynamic_cast<sensorImplementations::BluetoothColorSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
+sensorImplementations::BluetoothLightSensorImplementation *RealRobotModelImplementation::lightSensor(inputPort::InputPortEnum const &port) const
+{
+	return dynamic_cast<sensorImplementations::BluetoothLightSensorImplementation *>(mSensorsConfigurer.sensor(port));
+}
+
 void RealRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
 	sensorImplementations::BluetoothTouchSensorImplementation *sensor = new sensorImplementations::BluetoothTouchSensorImplementation(mRobotCommunicator, port);
@@ -58,6 +63,13 @@ void RealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const
 void RealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType)
 {
 	sensorImplementations::BluetoothColorSensorImplementation *sensor = new sensorImplementations::BluetoothColorSensorImplementation(mRobotCommunicator, port, mode, sensorType);
+	mSensorsConfigurer.configureSensor(sensor, port);
+}
+
+void RealRobotModelImplementation::addLightSensor(inputPort::InputPortEnum const &port)
+{
+	Q_UNUSED(port)
+	sensorImplementations::BluetoothLightSensorImplementation *sensor = new sensorImplementations::BluetoothLightSensorImplementation(mRobotCommunicator, port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
@@ -142,4 +154,9 @@ void RealRobotModelImplementation::disconnectedSlot()
 	mSensorsConfigurer.lockConfiguring();
 	mIsConnected = false;
 	emit disconnected();
+}
+
+AbstractTimer *RealRobotModelImplementation::produceTimer()
+{
+	return new RealTimer;
 }

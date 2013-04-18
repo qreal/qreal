@@ -26,7 +26,7 @@ void myMessageOutput(QtMsgType type, const char *msg)
 
 int main(int argc, char *argv[])
 {
-	qInstallMsgHandler(myMessageOutput);
+	qInstallMessageHandler(myMessageOutput);
 	QCoreApplication app(argc, argv);
 
 //	qDebug() << "Running " + args.join(" ");
@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
 	QString workingCopyDir = argv[1];
 //	QString workingCopyDir = "../qrgui/save";
 
-	MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc/", workingCopyDir);
+	qrRepo::RepoApi *mRepoApi = new qrRepo::RepoApi(workingCopyDir);
+	MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc/", mRepoApi);
 	if (!metaCompiler.compile()) {
 		qDebug() << "compilation failed";
 		return 1;

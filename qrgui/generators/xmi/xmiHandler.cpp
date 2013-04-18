@@ -86,8 +86,8 @@ void XmiHandler::serializeObject(QDomElement &parent, Id const &id, Id const &pa
 	QString typeOfTag = "";
 	QList<StringPair> additionalParams;
 
-	QString const objectType = mApi.typeName(id);
-	QString const parentType = mApi.typeName(parentId);
+	QString const objectType = id.element();
+	QString const parentType = parentId.element();
 
 	if (objectType == "krnnDiagram") {
 		typeOfTag = "ownedMember";
@@ -109,7 +109,7 @@ void XmiHandler::serializeObject(QDomElement &parent, Id const &id, Id const &pa
 		} else
 			addError("unable to serrialize object " + objectType + " with id: " + id.toString() + ". Move it inside some cnClass");
 	} else if (objectType == "cnClassField") {
-		if (parentType == "cnClass"){
+		if (parentType == "cnClass") {
 			typeOfTag = "ownedAttribute";
 			typeOfElem = "uml:Property";
 		} else
@@ -185,7 +185,7 @@ void XmiHandler::serializeObject(QDomElement &parent, Id const &id, Id const &pa
 
 QDomElement XmiHandler::serializeOutcomingLink(Id const &id)
 {
-	QString linkType = mApi.typeName(id);
+	QString linkType = id.element();
 	QDomElement result;
 
 	// kernel diagram
@@ -230,7 +230,7 @@ QDomElement XmiHandler::serializeOutcomingLink(Id const &id)
 QDomElement XmiHandler::serializeIncomingLink(Id const &id)
 {
 	QDomElement result;
-	if (mApi.typeName(id) == "ceDependency")
+	if (id.element() == "ceDependency")
 		result = createDomElementWithIdRef("supplierDependency", id.toString());
 	return result;
 }
@@ -257,7 +257,7 @@ QDomElement XmiHandler::createOwnedEnd(QString const &direction, Id const &id, I
 QDomElement XmiHandler::serializeLink(Id const &id)
 {
 	QString visibility = "";
-	QString linkType = mApi.typeName(id);
+	QString linkType = id.element();
 
 	QDomElement result = createDomElement("ownedMember", id.toString());
 
@@ -291,7 +291,7 @@ QDomElement XmiHandler::serializeLink(Id const &id)
 
 			result.appendChild(toOwnedEnd);
 		}
-	} else if (linkType == "ceDependency"){
+	} else if (linkType == "ceDependency") {
 		result.setAttribute("xmi:type", "uml:Dependency");
 
 		if (!visibility.isEmpty())

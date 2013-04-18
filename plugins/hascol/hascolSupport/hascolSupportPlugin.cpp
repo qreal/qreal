@@ -1,7 +1,7 @@
 #include "hascolSupportPlugin.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QFileDialog>
 
 #include "hascolGenerator.h"
 #include "hascolParser.h"

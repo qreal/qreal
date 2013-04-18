@@ -1363,7 +1363,7 @@ QString JavaHandler::getComment(Id const &id)
 
 QString JavaHandler::objectType(Id const &id)
 {
-	return mApi.typeName(id);
+	return id.element();
 }
 
 bool JavaHandler::isTypeSuitable(QString const &type) const

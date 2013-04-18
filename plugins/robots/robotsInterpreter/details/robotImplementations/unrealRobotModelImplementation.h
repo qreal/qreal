@@ -6,6 +6,7 @@
 #include "sensorImplementations/unrealTouchSensorImplementation.h"
 #include "sensorImplementations/unrealSonarSensorImplementation.h"
 #include "sensorImplementations/unrealColorSensorImplementation.h"
+#include "sensorImplementations/unrealLightSensorImplementation.h"
 #include "sensorImplementations/unrealEncoderImplementation.h"
 #include "../d2RobotModel/d2RobotModel.h"
 
@@ -28,6 +29,7 @@ public:
 	virtual sensorImplementations::UnrealTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::UnrealSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::UnrealColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
+	virtual sensorImplementations::UnrealLightSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const;
 
 	virtual motorImplementations::UnrealMotorImplementation &motorA();
 	virtual motorImplementations::UnrealMotorImplementation &motorB();
@@ -36,6 +38,8 @@ public:
 	virtual sensorImplementations::UnrealEncoderImplementation &encoderA();
 	virtual sensorImplementations::UnrealEncoderImplementation &encoderB();
 	virtual sensorImplementations::UnrealEncoderImplementation &encoderC();
+
+	virtual AbstractTimer *produceTimer();
 
 	virtual void startInterpretation();
 
@@ -57,6 +61,7 @@ private:
 
 	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
+	virtual void addLightSensor(inputPort::InputPortEnum const &port);
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
 };
 

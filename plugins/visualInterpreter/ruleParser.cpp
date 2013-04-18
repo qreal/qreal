@@ -3,8 +3,8 @@
 using namespace qReal;
 using namespace utils;
 
-RuleParser::RuleParser(LogicalModelAssistInterface const &logicalModelApi
-		, GraphicalModelAssistInterface const &graphicalModelApi
+RuleParser::RuleParser(LogicalModelAssistInterface &logicalModelApi
+		, GraphicalModelAssistInterface &graphicalModelApi
 		, ErrorReporterInterface* errorReporter)
 		: ExpressionsParser(errorReporter)
 		, mLogicalModelApi(logicalModelApi)
@@ -23,8 +23,8 @@ QString RuleParser::parseElemName(QString const &stream, int &pos)
 
 	QString const name = parseIdentifier(stream, pos);
 
-	if (!isPoint(stream.at(pos).toAscii())) {
-		error(unexpectedSymbol, QString::number(pos), ".", QString(stream.at(pos).toAscii()));
+	if (!isPoint(stream.at(pos).toLatin1())) {
+		error(unexpectedSymbol, QString::number(pos), ".", QString(stream.at(pos).toLatin1()));
 		return "";
 	}
 
@@ -53,7 +53,7 @@ void RuleParser::checkForClosingBracketAndColon(QString const &stream, int &pos)
 	pos++;
 }
 
-void RuleParser::parseRunFunction(QString const &stream, int &pos, QHash<Id, Id> *mMatch)
+void RuleParser::parseRunFunction(QString const &stream, int &pos, QHash<Id, Id> const &mMatch)
 {
 	pos += 4;
 
@@ -83,7 +83,7 @@ void RuleParser::parseRunFunction(QString const &stream, int &pos, QHash<Id, Id>
 
 // TODO: refactor this!
 void RuleParser::parsePropertyChange(QString const &stream, int &pos,
-		QHash<Id, Id> *mMatch)
+		QHash<Id, Id> const &mMatch)
 {
 	QString const name = parseElemName(stream, pos);
 	if (hasErrors()) {
@@ -144,14 +144,14 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 		return;
 	}
 
-	if (stream.at(pos).toAscii() == '"') {
+	if (stream.at(pos).toLatin1() == '"') {
 		pos++;
 		QString const value = stream.mid(pos, stream.indexOf("\"", pos) - pos);
 		pos += value.length();
 
-		if (stream.at(pos).toAscii() != '"') {
+		if (stream.at(pos).toLatin1() != '"') {
 			error(unexpectedSymbol, QString::number(pos)
-					, "\"", QString(stream.at(pos).toAscii()));
+					, "\"", QString(stream.at(pos).toLatin1()));
 			return;
 		}
 
@@ -187,7 +187,7 @@ void RuleParser::parsePropertyChange(QString const &stream, int &pos,
 			value = "false";
 		}
 
-		QChar c = stream.at(pos + len).toAscii();
+		QChar c = stream.at(pos + len).toLatin1();
 		if (!isDigit(c) && !isLetter(c)) {
 			pos += len;
 			skip(stream, pos);
@@ -276,7 +276,7 @@ bool RuleParser::checkForLogicalConst(QString const &stream, int &pos)
 	return (stream.mid(pos, 4) == "true" || stream.mid(pos, 5) == "false");
 }
 
-void RuleParser::parseRuleCommand(QString const &stream, int &pos, QHash<Id, Id> *mMatch)
+void RuleParser::parseRuleCommand(QString const &stream, int &pos, QHash<Id, Id> const &mMatch)
 {
 	if (stream.mid(pos, 4) == "run(") {
 		parseRunFunction(stream, pos, mMatch);
@@ -292,7 +292,7 @@ void RuleParser::parseRuleCommand(QString const &stream, int &pos, QHash<Id, Id>
 	}
 }
 
-bool RuleParser::parseRule(QString const &stream, QHash<Id, Id> *mMatch)
+bool RuleParser::parseRule(QString const &stream, QHash<Id, Id> const &mMatch)
 {
 	mCurrentId = mRuleId;
 	int pos = 0;
@@ -310,11 +310,44 @@ bool RuleParser::parseRule(QString const &stream, QHash<Id, Id> *mMatch)
 	return !hasErrors();
 }
 
-Id RuleParser::elementByName(QString const &name, QHash<Id, Id> *mMatch)
+bool RuleParser::parseApplicationCondition(QString const &stream, QHash<Id, Id> const &mMatch)
 {
-	foreach (Id const &elem, mMatch->keys()) {
+	QString appCond = stream;
+	int pos = appCond.indexOf("cond(");
+	while (pos > -1) {
+		int posBackup = pos;
+		pos = pos + 5;
+		QString const name = parseElemName(appCond, pos);
+		QString const prop = parseElemProperty(appCond, pos);
+
+		Id const elem = elementByName(name, mMatch);
+		QString const cond = property(elem, prop).toString();
+
+		appCond = appCond.mid(0, posBackup) + "(" + cond + appCond.mid(pos);
+
+		pos = appCond.indexOf("cond(");
+	}
+	pos = 0;
+	return parseConditionHelper(appCond, pos);
+}
+
+void RuleParser::parseStringCode(QString const &stream)
+{
+	int pos = 0;
+
+	parseVarPart(stream, pos);
+
+	while (pos < stream.length() && !hasErrors()) {
+		parseCommand(stream, pos);
+		skip(stream, pos);
+	}
+}
+
+Id RuleParser::elementByName(QString const &name, QHash<Id, Id> const &mMatch)
+{
+	foreach (Id const &elem, mMatch.keys()) {
 		if (mLogicalModelApi.logicalRepoApi().name(elem) == name) {
-			return mMatch->value(elem);
+			return mMatch.value(elem);
 		}
 	}
 
@@ -325,14 +358,14 @@ void RuleParser::setProperty(Id const &id, QString const &propertyName, QVariant
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
 		if (mLogicalModelApi.logicalRepoApi().hasProperty(id, propertyName)) {
-			mLogicalModelApi.logicalRepoApi().setProperty(id, propertyName, value);
+			mLogicalModelApi.mutableLogicalRepoApi().setProperty(id, propertyName, value);
 		} else {
 			error(unknownElementProperty);
 		}
 	} else {
 		Id const logId = mGraphicalModelApi.logicalId(id);
 		if (mLogicalModelApi.logicalRepoApi().hasProperty(logId, propertyName)) {
-			mLogicalModelApi.logicalRepoApi().setProperty(logId, propertyName, value);
+			mLogicalModelApi.mutableLogicalRepoApi().setProperty(logId, propertyName, value);
 		} else {
 			error(unknownElementProperty);
 		}
@@ -388,7 +421,7 @@ void RuleParser::parseVarPart(QString const &stream, int &pos)
 				pos += 7;
 			}
 			skip(stream, pos);
-			while (pos < stream.length() && stream.at(pos).toAscii() != ';') {
+			while (pos < stream.length() && stream.at(pos).toLatin1() != ';') {
 				skip(stream, pos);
 				QString const variable = parseIdentifier(stream, pos);
 				if (hasErrors()) {
@@ -400,7 +433,7 @@ void RuleParser::parseVarPart(QString const &stream, int &pos)
 				if (isEndOfStream(stream, pos)) {
 					return;
 				}
-				switch (stream.at(pos).toAscii()) {
+				switch (stream.at(pos).toLatin1()) {
 				case '=':
 					pos++;
 					skip(stream, pos);
@@ -416,10 +449,10 @@ void RuleParser::parseVarPart(QString const &stream, int &pos)
 						error(unexpectedEndOfStream, QString::number(pos + 1));
 						return;
 					}
-					if (stream.at(pos).toAscii() == ';') {
+					if (stream.at(pos).toLatin1() == ';') {
 						error(unexpectedSymbol, QString::number(pos + 1),
 								tr("\'letter"),
-								QString(stream.at(pos).toAscii())
+								QString(stream.at(pos).toLatin1())
 						);
 						return;
 					}

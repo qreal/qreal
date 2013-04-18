@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QLineEdit>
 
 #include "../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
 
@@ -26,6 +26,8 @@ protected:
 
 private slots:
 	void setQRealSourcesLocation();
+	void changeDefaultDotPath();
+	void setDotPathManually();
 
 private:
 	Ui::refactoringPreferencesPage *mUi;

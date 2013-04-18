@@ -1,6 +1,7 @@
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QStyleOptionGraphicsItem>
+
 #include "wallItem.h"
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QStyleOptionGraphicsItem>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -9,7 +10,7 @@ using namespace graphicsUtils;
 WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	: LineItem(begin, end)
 	, mDragged(false)
-	, mImage(QImage(":/icons/wall.png"))
+	, mImage(QImage(":/icons/2d_wall.png"))
 {
 	setPrivateData();
 }
@@ -19,10 +20,10 @@ void WallItem::setPrivateData()
 	setZValue(1);
 
 	mPen.setWidth(10);
-
+	mPen.setStyle(Qt::NoPen);
 	mBrush.setStyle(Qt::SolidPattern);
 	mBrush.setTextureImage(mImage);
-	mPen.setStyle(Qt::NoPen);
+	mSerializeName = "wall";
 }
 
 QPointF WallItem::begin()
@@ -44,8 +45,9 @@ void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* optio
 
 void WallItem::drawExtractionForItem(QPainter *painter)
 {
-	if (!isSelected())
+	if (!isSelected()) {
 		return;
+	}
 
 	painter->setPen(QPen(Qt::green));
 	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, drift);
@@ -55,20 +57,50 @@ void WallItem::drawExtractionForItem(QPainter *painter)
 void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
-	mDragged = true;
+	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
+	QPointF const oldPos = pos();
 	QGraphicsItem::mouseMoveEvent(event);
-	if (mDragged) {
-//		mConfiguration.setPosition(mPort, (event->scenePos() - mBasePos).toPoint());
-//		setPos(mBasePos + mConfiguration.position(mPort));
+	// Items under cursor cannot be dragged when adding new item,
+	// but it mustn`t confuse the case when item is unmovable
+	// because overapped with robot
+	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
+		emit wallDragged(this, realShape(), oldPos);
 	}
+	event->accept();
+}
+
+bool WallItem::isDragged()
+{
+	return mDragged;
 }
 
 void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsItem::mouseReleaseEvent(event);
 	mDragged = false;
+}
+
+QDomElement WallItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
+{
+	QDomElement wallNode = document.createElement(mSerializeName);
+	wallNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
+			+ ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
+	wallNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
+			+ ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
+	return wallNode;
+}
+
+void WallItem::deserializePenBrush(QDomElement const &element)
+{
+	Q_UNUSED(element)
+	setPrivateData();
+}
+
+void WallItem::onOverlappedWithRobot(bool overlapped)
+{
+	mOverlappedWithRobot = overlapped;
 }

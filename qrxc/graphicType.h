@@ -24,7 +24,7 @@ public:
 	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out);
 	virtual void generatePropertyDescriptionMapping(utils::OutFile &out);
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst);
-	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst);
+	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst, bool isReference);
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateConnections(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst);

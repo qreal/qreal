@@ -86,8 +86,9 @@ AbstractModelItem *LogicalModel::createModelItem(Id const &id, AbstractModelItem
 
 void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 {
-	if (mApi.name(logicalId) == name)
+	if ((logicalId == Id()) || (mApi.name(logicalId) == name)) {
 		return;
+	}
 	mApi.setName(logicalId, name);
 	emit dataChanged(indexById(logicalId), indexById(logicalId));
 }
@@ -134,7 +135,7 @@ QString LogicalModel::pathToItem(AbstractModelItem const *item) const
 }
 
 void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId
-		, const QString &name, const QPointF &position)
+		, QString const &name, const QPointF &position)
 {
 	if (mModelItems.contains(id))
 		return;
@@ -156,7 +157,7 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 }
 
 void LogicalModel::initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem
-		, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+		, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position)
 {
 	Q_UNUSED(position)
 
@@ -265,6 +266,13 @@ void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &p
 
 		endMoveRows();
 	}
+}
+
+void LogicalModel::changeParent(const Id &parentId, const Id &childId)
+{
+	QModelIndex parentIndex = mLogicalAssistApi->indexById(parentId);
+	QModelIndex childIndex = mLogicalAssistApi->indexById(childId);
+	changeParent(childIndex, parentIndex, QPointF());
 }
 
 void LogicalModel::stackBefore(const QModelIndex &element, const QModelIndex &sibling)

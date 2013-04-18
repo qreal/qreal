@@ -21,6 +21,10 @@ HEADERS += \
 	details/blocks/ifBlock.h \
 	details/blocks/waitForEncoderBlock.h \
 	details/blocks/nullificationEncoderBlock.h \
+	details/blocks/waitForLightSensorBlock.h \
+	details/blocks/waitBlock.h \
+	details/blocks/waitForSensorBlock.h \
+	details/blocks/waitForColorSensorBlockBase.h \
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -45,3 +49,7 @@ SOURCES +=\
 	details/blocks/ifBlock.cpp \
 	details/blocks/waitForEncoderBlock.cpp \
 	details/blocks/nullificationEncoderBlock.cpp \
+	details/blocks/waitForLightSensorBlock.cpp \
+	details/blocks/waitBlock.cpp \
+	details/blocks/waitForSensorBlock.cpp \
+	details/blocks/waitForColorSensorBlockBase.cpp \

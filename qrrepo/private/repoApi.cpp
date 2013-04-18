@@ -1,13 +1,14 @@
 #include "../repoApi.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 using namespace qrRepo;
 using namespace qrRepo::details;
 using namespace qReal;
 
-RepoApi::RepoApi(QString const &workingDirectory)
+RepoApi::RepoApi(QString const &workingDirectory, bool ignoreAutosave)
 		: mClient(workingDirectory)
+		, mIgnoreAutosave(ignoreAutosave)
 {
 }
 
@@ -27,14 +28,20 @@ IdList RepoApi::children(Id const &id) const
 	return mClient.children(id);
 }
 
-IdList RepoApi::findElementsByName(QString const &name, bool sensitivity) const
+void RepoApi::printDebug()
 {
-	return mClient.findElementsByName(name, sensitivity);
+	mClient.printDebug();
 }
 
-qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity) const
+IdList RepoApi::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
 {
-	return mClient.elementsByPropertyContent(propertyContent, sensitivity);
+	return mClient.findElementsByName(name, sensitivity, regExpression);
+}
+
+qReal::IdList RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity,
+		bool regExpression) const
+{
+	return mClient.elementsByPropertyContent(propertyContent, sensitivity, regExpression);
 }
 
 void RepoApi::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
@@ -245,11 +252,6 @@ qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 	return result;
 }
 
-QString RepoApi::typeName(Id const &id) const
-{
-	return id.element();
-}
-
 QVariant RepoApi::property(Id const &id, QString const &propertyName) const
 {
 	return mClient.property(id, propertyName);
@@ -261,7 +263,7 @@ QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 	return mClient.property(id, propertyName).toString();
 }
 
-void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value) const
+void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
 {
 	mClient.setProperty(id, propertyName, value);
 }
@@ -276,9 +278,29 @@ void RepoApi::copyProperties(const Id &dest, const Id &src)
 	mClient.copyProperties(dest, src);
 }
 
+QMap<QString, QVariant> RepoApi::properties(Id const &id)
+{
+	return mClient.properties(id);
+}
+
+void RepoApi::setProperties(Id const &id, QMap<QString, QVariant> const &properties)
+{
+	mClient.setProperties(id, properties);
+}
+
 bool RepoApi::hasProperty(Id const &id, QString const &propertyName) const
 {
 	return mClient.hasProperty(id, propertyName);
+}
+
+void RepoApi::setBackReference(Id const &id, Id const &reference) const
+{
+	mClient.setBackReference(id, reference);
+}
+
+void RepoApi::removeBackReference(Id const &id, Id const &reference) const
+{
+	mClient.removeBackReference(id, reference);
 }
 
 Id RepoApi::from(Id const &id) const
@@ -387,8 +409,10 @@ void RepoApi::saveAll() const
 
 void RepoApi::saveTo(QString const &workingFile)
 {
-	mClient.setWorkingFile(workingFile);
-	mClient.saveAll();
+	if (!mIgnoreAutosave) {
+		mClient.setWorkingFile(workingFile);
+		mClient.saveAll();
+	}
 }
 
 void RepoApi::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
@@ -481,7 +505,7 @@ IdList RepoApi::graphicalElements(Id const &type) const
 	return result;
 }
 
-IdList RepoApi::elementsByType(QString const &type, bool sensitivity) const
+IdList RepoApi::elementsByType(QString const &type, bool sensitivity, bool regExpression) const
 {
 	Qt::CaseSensitivity caseSensitivity;
 
@@ -491,17 +515,29 @@ IdList RepoApi::elementsByType(QString const &type, bool sensitivity) const
 		caseSensitivity = Qt::CaseInsensitive;
 	}
 
+	QRegExp *regExp = new QRegExp(type,caseSensitivity);
+
 	IdList result;
-	foreach (Id id, mClient.elements()) {
-		if (id.element().contains(type, caseSensitivity))
-			result.append(id);
+
+	if (regExpression) {
+		foreach (Id id, mClient.elements()) {
+			if (id.element().contains(*regExp)) {
+				result.append(id);
+			}
+		}
+	} else {
+		foreach (Id id, mClient.elements()) {
+			if (id.element().contains(type, caseSensitivity)) {
+				result.append(id);
+			}
+		}
 	}
 	return result;
 }
 
-qReal::IdList RepoApi::elementsByProperty(QString const &property, bool sensitivity) const
+qReal::IdList RepoApi::elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const
 {
-	return mClient.elementsByProperty(property, sensitivity);
+	return mClient.elementsByProperty(property, sensitivity, regExpression);
 }
 
 int RepoApi::elementsCount() const

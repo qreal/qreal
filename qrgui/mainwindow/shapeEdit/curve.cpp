@@ -1,5 +1,5 @@
 #include "curve.h"
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 	:Path(QPainterPath(start))
@@ -131,12 +131,13 @@ void  Curve::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal y = mapFromScene(event->scenePos()).y();
 	if (mDragState != None)
 		setFlag(QGraphicsItem::ItemIsMovable, false);
-	if (mDragState == TopLeft)
+	if (mDragState == TopLeft) {
 		setX1andY1(x, y);
-	else if (mDragState == BottomRight)
+	} else if (mDragState == BottomRight) {
 		setX2andY2(x, y);
-	else if (mDragState == Ctrl)
+	} else if (mDragState == Ctrl) {
 		setCXandCY(x, y);
+	}
 }
 
 QPair<QDomElement, Item::DomElementTypes> Curve::generateItem(QDomDocument &document, QPoint const &topLeftPicture)

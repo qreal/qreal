@@ -6,9 +6,11 @@
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/featuresPage.h"
 
+using namespace qReal;
+
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-		: QDialog(parent)
-		, ui(new Ui::PreferencesDialog)
+	: QDialog(parent)
+	, ui(new Ui::PreferencesDialog)
 {
 	ui->setupUi(this);
 }
@@ -20,7 +22,7 @@ PreferencesDialog::~PreferencesDialog()
 }
 
 void PreferencesDialog::init(QAction * const showGridAction, QAction * const showAlignmentAction
-	,QAction * const activateGridAction, QAction * const activateAlignmentAction)
+	, QAction * const activateGridAction, QAction * const activateAlignmentAction)
 {
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(ui->pageContentWigdet);
 	PreferencesPage *debuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
@@ -29,15 +31,18 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
 
-	connect(ui->listWidget, SIGNAL(clicked(const QModelIndex &)), this, SLOT(chooseTab(const QModelIndex &)));
+	connect(ui->listWidget, SIGNAL(clicked(QModelIndex))
+			, this, SLOT(chooseTab(const QModelIndex &)));
+	connect(ui->listWidget, SIGNAL(activated(const QModelIndex &))
+			, this, SLOT(chooseTab(const QModelIndex &)));
 	connect(ui->applyButton, SIGNAL(clicked()), this, SLOT(applyChanges()));
 	connect(ui->okButton, SIGNAL(clicked()), this, SLOT(saveAndClose()));
 	connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 
 	connect(editorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
 	connect(editorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
-	connect(editorPage, SIGNAL(paletteRepresentationChanged()), this,
-		SIGNAL(paletteRepresentationChanged()));
+	connect(editorPage, SIGNAL(paletteRepresentationChanged()), this
+		, SIGNAL(paletteRepresentationChanged()));
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
 	registerPage(tr("Behaviour"), behaviourPage);
@@ -45,15 +50,16 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
 
-	int currentTab = SettingsManager::value("currentPreferencesTab").toInt();
+	int const currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	ui->listWidget->setCurrentRow(currentTab);
 	chooseTab(ui->listWidget->currentIndex());
 }
 
 void PreferencesDialog::applyChanges()
 {
-	foreach (PreferencesPage *page, mCustomPages.values())
+	foreach (PreferencesPage *page, mCustomPages.values()) {
 		page->save();
+	}
 
 	emit settingsApplied();
 }

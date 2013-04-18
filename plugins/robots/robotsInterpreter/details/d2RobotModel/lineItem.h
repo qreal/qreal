@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
 #include <QtXml/QDomDocument>
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
@@ -17,7 +17,7 @@ class LineItem : public QObject, public ColorFieldItem
 	Q_OBJECT
 
 public:
-	LineItem(QPointF begin, QPointF end);
+	LineItem(QPointF const &begin, QPointF const &end, int cornerRadius = 0);
 	QPainterPath shape() const;
 	virtual QRectF boundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
@@ -26,16 +26,15 @@ public:
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void reshapeRectWithShift();
 
-
-        virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserialize(QDomElement const &element);
-        void setSerializeName(QString name);
+	virtual void deserializePenBrush(QDomElement const &element);
+	void setSerializeName(QString name);
 
 protected:
 	void setPrivateData();
 	graphicsUtils::LineImpl mLineImpl;
-
-private:
+	int mCornerRadius;
 	QString mSerializeName;
 };
 }

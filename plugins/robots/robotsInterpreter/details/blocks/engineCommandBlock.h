@@ -20,10 +20,11 @@ public:
 	EngineCommandBlock(robotParts::Motor &motor1, robotParts::Motor &motor2, robotParts::Motor &motor3);
 	virtual void run() = 0;
 
+protected slots:
+	void timeout();
+
 protected:
-	robotParts::Motor &mMotor1;
-	robotParts::Motor &mMotor2;
-	robotParts::Motor &mMotor3;
+	QVector<robotParts::Motor *> mMotors;  // Doesn't have ownership.
 
 	QVector<bool> parsePorts();
 };

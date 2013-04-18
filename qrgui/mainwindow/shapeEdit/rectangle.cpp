@@ -1,6 +1,6 @@
 #include "rectangle.h"
 
-Rectangle::Rectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
+QRealRectangle::QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	:Item(parent), mRectangleImpl()
 {
 	mNeedScalingRect = true;
@@ -13,7 +13,7 @@ Rectangle::Rectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	mY2 = y2;
 }
 
-Rectangle::Rectangle(Rectangle const &other)
+QRealRectangle::QRealRectangle(QRealRectangle const &other)
 	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -28,25 +28,25 @@ Rectangle::Rectangle(Rectangle const &other)
 	setPos(other.x(), other.y());
 }
 
-Item* Rectangle::clone()
+Item* QRealRectangle::clone()
 {
-	Rectangle* item = new Rectangle(*this);
+	QRealRectangle* item = new QRealRectangle(*this);
 	return item;
 }
 
-QRectF Rectangle::boundingRect() const
+QRectF QRealRectangle::boundingRect() const
 {
 	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, scalingDrift);
 }
 
-void Rectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void QRealRectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	mRectangleImpl.drawRectItem(painter, mX1, mY1, mX2, mY2);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Rectangle::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> QRealRectangle::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement rectangle = setPenBrushToDoc(document, "rectangle");
 	setXandY(rectangle, sceneBoundingRectCoord(topLeftPicture));

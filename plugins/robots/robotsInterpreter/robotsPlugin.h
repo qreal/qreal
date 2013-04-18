@@ -8,6 +8,7 @@
 #include "interpreter.h"
 #include "robotSettingsPage.h"
 #include "customizer.h"
+#include "details/sensorsConfigurationWidget.h"
 
 namespace qReal {
 namespace interpreters {
@@ -17,6 +18,7 @@ class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.robots.interpreters.robots.RobotsPlugin")
 
 public:
 	RobotsPlugin();
@@ -36,10 +38,14 @@ public:
 private slots:
 	void showRobotSettings();
 	void show2dModel();
+	void rereadSettings();
 
 private:
 	/// Initializes and connects actions, fills action info list
 	void initActions();
+
+	/// Disable/enable tab in QList<ActionInfo> info
+	void changeActiveTab(QList<ActionInfo> const &info, bool const &trigger);
 
 	/// Tells whether we need to disable or enable particular action on tab change.
 	/// For example, we shall be able to access robot settings regardless of currently
@@ -47,6 +53,10 @@ private:
 	/// @param action Action to be checked
 	/// @returns True, if action shall be disabled when current diagram is not robots
 	bool needToDisableWhenNotRobotsDiagram(QAction const * const action) const;
+
+	void setTitlesVisibility();
+
+	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
@@ -87,6 +97,8 @@ private:
 
 	/// Plugin translator object
 	QTranslator *mAppTranslator;  // Has ownership
+
+	SceneCustomizationInterface *mSceneCustomizer;  // Does not have ownership
 };
 
 }

@@ -1,14 +1,15 @@
 #include "lineItem.h"
 #include <QtGui/QPainter>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
-LineItem::LineItem(QPointF begin, QPointF end)
+LineItem::LineItem(QPointF const &begin, QPointF const &end, int cornerRadius)
 	: mLineImpl()
+	, mCornerRadius(cornerRadius)
 {
 	mX1 = begin.x();
 	mY1 = begin.y();
@@ -75,10 +76,12 @@ void LineItem::reshapeRectWithShift()
 
 QDomElement LineItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
 {
-        QDomElement lineNode = setPenBrushToDoc(document, mSerializeName);
-        lineNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x()) + ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
-        lineNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x()) + ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
-        return lineNode;
+	QDomElement lineNode = setPenBrushToDoc(document, mSerializeName);
+	lineNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
+			+ ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
+	lineNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
+			+ ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
+	return lineNode;
 }
 
 void LineItem::deserialize(QDomElement const &element)
@@ -100,10 +103,15 @@ void LineItem::deserialize(QDomElement const &element)
 	mX2 = end.x();
 	mY2 = end.y();
 
+	deserializePenBrush(element);
+}
+
+void LineItem::deserializePenBrush(QDomElement const &element)
+{
 	readPenBrush(element);
 }
 
 void LineItem::setSerializeName(QString name)
 {
-    mSerializeName = name;
+	mSerializeName = name;
 }

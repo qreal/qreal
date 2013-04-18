@@ -16,14 +16,17 @@ namespace qrmc {
 	class GraphicType : public Type
 	{
 	public:
-		GraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
+		GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 		virtual ~GraphicType();
 		virtual bool init(QString const &context);
 		virtual bool resolve();
 
 		virtual bool isGraphicalType() const;
-		virtual QString generateProperties(const QString &lineTemplate) const;
+		virtual QString generateProperties(QString const &lineTemplate) const;
 		virtual QString generatePropertyDefaults(QString const &namesTemplate) const;
+		virtual QString generatePropertyDisplayedNames(QString const &lineTemplate) const;
+		virtual QString generateReferenceProperties(QString const &lineTemplate) const;
+		virtual QString generateParents(QString const &lineTemplate) const;
 		virtual QString generateContainers(QString const &lineTemplate) const;
 		virtual QString generateConnections(QString const &lineTemplate) const;
 		virtual QString generateUsages(QString const &lineTemplate) const;
@@ -48,6 +51,7 @@ namespace qrmc {
 		};
 
 		QStringList mParents;
+		QStringList mChildren;
 		bool mIsVisible;
 		int mWidth;
 		int mHeight;

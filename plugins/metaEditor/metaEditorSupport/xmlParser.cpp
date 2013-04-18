@@ -4,7 +4,7 @@
 #include <QtCore/QUuid>
 #include <QtCore/QPointF>
 #include <QtCore/QProcess>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QtGui/QPolygonF>
 #include <QtXml/QDomDocument>
 

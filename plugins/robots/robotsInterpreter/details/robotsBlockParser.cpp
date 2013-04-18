@@ -82,7 +82,7 @@ bool RobotsBlockParser::checkForUsingReservedVariables(const QString &nameOfVari
 bool RobotsBlockParser::isLetter(const QChar &symbol)
 {
 	QString rus = QString::fromUtf8("РђР°Р‘Р±Р’РІР“РіР”РґР•РµРЃС‘Р–Р¶Р—Р·РРёР™Р№РљРєР›Р»РњРјРќРЅРћРѕРџРїР СЂРЎСЃРўС‚РЈСѓР¤С„РҐС…Р¦С†Р§С‡РЁС€Р©С‰Р¬СЊР«С‹Р™Р№Р­СЌР®СЋРЇСЏ");
-	char symbolChar = symbol.toAscii();
+	char symbolChar = symbol.toLatin1();
 	return (('A'<=symbolChar && symbolChar<='Z') || ('a'<=symbolChar && symbolChar<='z') || (rus.contains(symbol)));
 }
 
@@ -92,7 +92,8 @@ void RobotsBlockParser::setReservedVariables()
 	Number value = Number(3.14, Number::doubleType);
 	mVariables.insert(pi, value);
 	for (int i = 1; i <= 4; ++i) {
-		QString variable = QObject::tr("Sensor") + QString::number(i);
+		// TODO: restore QObject::tr("Sensor") when russian variable names would be supported
+		QString const variable = "Sensor" + QString::number(i);
 		mVariables.insert(variable, Number(0, Number::intType));
 		mReservedVariables.append(variable);
 	}
