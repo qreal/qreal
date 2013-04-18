@@ -1,3 +1,4 @@
+
 #include "sensorItem.h"
 #include <QtGui/QCursor>
 #include <QtGui/QGraphicsSceneMouseEvent>
