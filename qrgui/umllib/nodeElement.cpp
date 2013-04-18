@@ -638,9 +638,11 @@ void NodeElement::initEmbeddedLinkers()
 		usedEdges.insert(type.second);
 	}
 	setVisibleEmbeddedLinkers(true);
-	foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
-		embeddedLinker->initTitle();
-	}
+
+	// TODO: make it customizable
+	// foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
+	// embeddedLinker->initTitle();
+	// }
 }
 
 void NodeElement::setVisibleEmbeddedLinkers(bool const show)
