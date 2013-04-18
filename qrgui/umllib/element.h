@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QAction>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QAction>
 
 #include "../../qrkernel/ids.h"
 #include "../../qrkernel/settingsManager.h"
@@ -75,11 +75,14 @@ signals:
 
 protected:
 	void initTitlesBy(QRectF const& contents);
+	/// Sets titles visibility without state registering
+	void setTitlesVisiblePrivate(bool visible);
 
 	bool mMoving;
 	qReal::Id mId;
 	ElementImpl* const mElementImpl;
 	QList<ElementTitle *> mTitles;
+	bool mTitlesVisible;
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;

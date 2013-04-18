@@ -36,7 +36,7 @@ void EnumType::print()
 	qDebug() << "enum type" << mName;
 }
 
-QString EnumType::generateEnums(const QString &lineTemplate) const
+QString EnumType::generateEnums(QString const &lineTemplate) const
 {
 	QString enums;
 	QString line = lineTemplate;

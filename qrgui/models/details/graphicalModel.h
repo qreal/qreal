@@ -53,7 +53,7 @@ private:
 	void setNewName(Id const &id, QString const newValue);
 	virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
 	void initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,
-						   modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position);
+						   modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position);
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child);
 };
 }

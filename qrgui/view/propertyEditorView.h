@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QMap>
-#include <QtGui/QAbstractItemView>
+#include <QtWidgets/QAbstractItemView>
 #include <QtGui/QResizeEvent>
 
 #include "../mainwindow/propertyEditorProxyModel.h"

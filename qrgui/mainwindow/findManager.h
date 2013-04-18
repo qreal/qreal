@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QObject>
-#include <QtGui>
+#include <QtWidgets>
 #include "mainWindowInterpretersInterface.h"
 #include "../models/logicalModelAssistApi.h"
 #include "../../qrgui/dialogs/findReplaceDialog.h"

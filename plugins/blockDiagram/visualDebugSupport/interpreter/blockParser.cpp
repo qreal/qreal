@@ -14,16 +14,16 @@ void BlockParser::parseVarPart(QString const &stream, int &pos)
 	if (stream.mid(pos, 4).compare("var ") == 0) {
 		pos += 4;
 		skip(stream, pos);
-		if (!isEndOfStream(stream, pos) &&
-				stream.mid(pos, 4).compare("int ") != 0 && stream.mid(pos, 7).compare("double ") != 0)
+		if (!isEndOfStream(stream, pos)
+				&& stream.mid(pos, 4).compare("int ") != 0 && stream.mid(pos, 7).compare("double ") != 0)
 		{
 			error(unexpectedSymbol, QString::number(pos + 1), tr("int\' or \'double"), stream.at(pos));
 			return;
 		}
 
-		while (pos < stream.length() &&
-				(stream.mid(pos, 4).compare("int ") == 0 ||
-				stream.mid(pos, 7).compare("double ") == 0) )
+		while (pos < stream.length()
+				&& (stream.mid(pos, 4).compare("int ") == 0
+				|| stream.mid(pos, 7).compare("double ") == 0))
 		{
 			Number::Type curType;
 			if (stream.mid(pos, 4).compare("int ") == 0) {
@@ -34,7 +34,7 @@ void BlockParser::parseVarPart(QString const &stream, int &pos)
 				pos += 7;
 			}
 			skip(stream, pos);
-			while (pos < stream.length() && stream.at(pos).toAscii() != ';') {
+			while (pos < stream.length() && stream.at(pos).toLatin1() != ';') {
 				skip(stream, pos);
 				QString const variable = parseIdentifier(stream, pos);
 				if (hasErrors()) {
@@ -46,7 +46,7 @@ void BlockParser::parseVarPart(QString const &stream, int &pos)
 				if (isEndOfStream(stream, pos)) {
 					return;
 				}
-				switch (stream.at(pos).toAscii()) {
+				switch (stream.at(pos).toLatin1()) {
 				case '=':
 					pos++;
 					skip(stream, pos);
@@ -62,10 +62,10 @@ void BlockParser::parseVarPart(QString const &stream, int &pos)
 						error(unexpectedEndOfStream, QString::number(pos+1));
 						return;
 					}
-					if (stream.at(pos).toAscii() == ';') {
+					if (stream.at(pos).toLatin1() == ';') {
 						error(unexpectedSymbol, QString::number(pos + 1),
 								tr("\'letter"),
-								QString(stream.at(pos).toAscii())
+								QString(stream.at(pos).toLatin1())
 						);
 						return;
 					}

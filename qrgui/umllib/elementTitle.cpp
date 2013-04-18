@@ -9,7 +9,8 @@
 using namespace qReal;
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
-	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(""), mBackground(Qt::transparent)
+	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false)
+	, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false)
 {
 	setTitleFont();
 	setPos(x, y);
@@ -18,7 +19,8 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
 }
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly)
-	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(binding), mBackground(Qt::transparent)
+	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false)
+	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
 {
 	setTitleFont();
 	setPos(x, y);
@@ -55,6 +57,16 @@ void ElementTitle::setScaling(bool scalingX, bool scalingY)
 void ElementTitle::setBackground(Qt::GlobalColor const &background)
 {
 	mBackground = background;
+}
+
+bool ElementTitle::isHard() const
+{
+	return mIsHard;
+}
+
+void ElementTitle::setHard(bool hard)
+{
+	mIsHard = hard;
 }
 
 void ElementTitle::focusOutEvent(QFocusEvent *event)

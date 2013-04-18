@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QUndoStack>
+#include <QtWidgets/QUndoStack>
 
 #include "commands/abstractCommand.h"
 

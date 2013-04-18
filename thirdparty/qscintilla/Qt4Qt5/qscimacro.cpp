@@ -109,7 +109,7 @@ bool QsciMacro::load(const QString &asc)
                 break;
             }
 
-            QByteArray ba = fields[f++].toAscii();
+            QByteArray ba = fields[f++].toLatin1();
             const char *sp = ba.data();
 
             if (!sp)

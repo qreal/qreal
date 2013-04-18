@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QStack>
-#include <QtGui/QUndoGroup>
+#include <QtWidgets/QUndoGroup>
 
 #include "undoStack.h"
 #include "commands/abstractCommand.h"

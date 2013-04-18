@@ -7,7 +7,7 @@
 
 namespace qrTest {
 
-class ExpressionParserTest : public testing::Test {
+class ExpressionsParserTest : public testing::Test {
 
 protected:
 	virtual void SetUp();

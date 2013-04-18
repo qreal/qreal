@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QList>
-#include <QtGui/QUndoCommand>
+#include <QtWidgets/QUndoCommand>
 
 namespace qReal
 {

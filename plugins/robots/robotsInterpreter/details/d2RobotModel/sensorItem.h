@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QSet>
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
 
 #include "sensorsConfiguration.h"
