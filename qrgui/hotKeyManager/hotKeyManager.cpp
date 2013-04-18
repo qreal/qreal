@@ -39,7 +39,7 @@ bool HotKeyManager::setShortcut(QString id, QKeySequence keyseq)
 
 void HotKeyManager::doShortCut(QKeyEvent *keyevent)
 {
-	QKeySequence const keyseq = QKeySequence(keyevent->modifiers() + keyevent->key());;
+	QKeySequence const keyseq = QKeySequence(keyevent->modifiers() + keyevent->key());
 
 	instance()->findShortcut(keyseq.toString());
 }

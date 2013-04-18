@@ -1862,11 +1862,7 @@
 <context>
     <name>PropertyEditorView</name>
     <message>
-<<<<<<< HEAD
         <location filename="view/propertyEditorView.cpp" line="170"/>
-=======
-        <location filename="view/propertyEditorView.cpp" line="177"/>
->>>>>>> trunc/robots
         <source>Specify directory:</source>
         <translation>Выберите каталог:</translation>
     </message>

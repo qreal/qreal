@@ -86,6 +86,13 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	HotKeyManager::setCommand("Close", "Close app", cmdClose);
 
+	HotKeyAction *cmdCloseTabs = new HotKeyAction();
+
+	cmdCloseTabs->setShortcut(QKeySequence(Qt::ALT + Qt::SHIFT + Qt::Key_T));
+	connect(cmdCloseTabs, SIGNAL(pressed()), this, SLOT(closeAllTabs()));
+
+	HotKeyManager::setCommand("CloseTabs", "Close tabs", cmdCloseTabs);
+
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setProgress(5);
 
