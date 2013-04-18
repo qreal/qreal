@@ -5,7 +5,8 @@
 #include <QtCore/QDebug>
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
- {
+{
+	Q_UNUSED(context)
 	const char *msg = message.toLatin1().data();
 	switch (type) {
 		case QtDebugMsg:

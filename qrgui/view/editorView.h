@@ -42,6 +42,9 @@ namespace qReal {
 		virtual void mousePressEvent(QMouseEvent *event);
 		virtual void scrollContentsBy(int dx, int dy);
 
+		virtual void keyPressEvent(QKeyEvent *event);
+		virtual void keyReleaseEvent(QKeyEvent *event);
+
 	private:
 		EditorViewMViface *mMVIface;
 		EditorViewScene *mScene;
