@@ -1698,12 +1698,14 @@ void EditorViewScene::deleteGesture()
 
 void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 {
-	if (wheelEvent->delta() > 0) {
-		emit zoomIn();
-	} else {
-		emit zoomOut();
+	if (wheelEvent->modifiers() == Qt::ControlModifier) {
+		if (wheelEvent->delta() > 0) {
+			emit zoomIn();
+		} else {
+			emit zoomOut();
+		}
+		wheelEvent->accept();
 	}
-	wheelEvent->accept();
 	return;
 }
 
