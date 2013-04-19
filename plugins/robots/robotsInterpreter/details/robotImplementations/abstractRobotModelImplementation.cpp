@@ -77,6 +77,7 @@ void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnu
 {
 	switch (sensorType) {
 	case sensorType::unused:
+		nullifySensor(port);
 		break;
 	case sensorType::touchBoolean:
 		addTouchSensor(port);
@@ -139,4 +140,10 @@ void AbstractRobotModelImplementation::connectRobot()
 
 void AbstractRobotModelImplementation::disconnectFromRobot()
 {
+}
+
+void AbstractRobotModelImplementation::nullifySensor(inputPort::InputPortEnum port)
+{
+	Tracer::debug(tracer::initialization, "AbstractRobotModelImplementation::nullifySensor", "Nullifying sensor on port " + QString::number(port));
+	mSensorsConfigurer.nullifySensor(port);
 }
