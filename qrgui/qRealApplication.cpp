@@ -14,6 +14,10 @@ QRealApplication::QRealApplication(int &argc, char **argv)
 {
 }
 
+void QRealApplication::nothing()
+{
+	qDebug() << "ok";
+}
 
 bool QRealApplication::notify(QObject *receiver, QEvent *event)
 {

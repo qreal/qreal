@@ -1,29 +1,37 @@
 #pragma once
 
-#include <QtWidgets/QAction>
 #include <QtCore/QString>
-#include <QtCore/QHash>
+#include <QtCore/QObject>
+#include <QtGui/QKeySequence>
 
 #include "hotKeyManagerTypes.h"
 
 namespace qReal {
 
-class HotKeyAction : public QAction
+class HotKeyAction : public QObject
 {
 	Q_OBJECT
 public:
-	explicit HotKeyAction(QObject *parent = 0);
+	explicit HotKeyAction();
 	
 	void press();
-	void resetMouseShortcuts();
-	void addNewMouseShortcut(QString const keyseq, MouseShortcuts msc);
-	QList<QPair<QString, MouseShortcuts> > mouseShortcuts();
+
+	void addShortcut(QString const shortcut);
+	void addShortcut(QKeySequence keyseq);
+	void addShortcut(QKeySequence keyseq, MouseShortcuts mouseShortcut);
+
+	static QString sequence(QKeySequence keyseq, MouseShortcuts msc);
+	QList<QString> shortcuts();
+	QString description();
+	void setDescription(QString const descr);
+	void resetShortcuts();
 
 signals:
 	void pressed();
 
 private:
-	QList<QPair<QString, MouseShortcuts> > mMouseShortcuts;
+	QString mDescription;
+	QList<QString> mShortcuts;
 };
 
 }

@@ -1,13 +1,12 @@
 #include "hotKeyManager.h"
 
-
-#include <QtWidgets/QAction>
 #include <QtCore/QDebug>
+#include <QtCore/QString>
+#include <QtGui/QKeySequence>
 
 using namespace qReal;
 
-HotKeyAction::HotKeyAction(QObject *parent)
-	: QAction(parent)
+HotKeyAction::HotKeyAction()
 {
 }
 
@@ -15,18 +14,56 @@ void HotKeyAction::press()
 {
 	emit pressed();
 }
-void HotKeyAction::resetMouseShortcuts()
+
+void HotKeyAction::addShortcut(QString const shortcut)
 {
-	mMouseShortcuts.clear();
+	mShortcuts.append(shortcut);
 }
 
-void HotKeyAction::addNewMouseShortcut(QString const keyseq, MouseShortcuts msc)
+void HotKeyAction::addShortcut(QKeySequence keyseq)
 {
-	mMouseShortcuts.append(QPair<QString, MouseShortcuts> (keyseq, msc));
+	mShortcuts.append(keyseq.toString());
 }
 
-QList<QPair<QString, MouseShortcuts> > HotKeyAction::mouseShortcuts()
+void HotKeyAction::addShortcut(QKeySequence keyseq, MouseShortcuts mouseShortcut)
 {
-	return mMouseShortcuts;
+	mShortcuts.append(sequence(keyseq,mouseShortcut));
 }
+
+QList<QString> HotKeyAction::shortcuts()
+{
+	return mShortcuts;
+}
+
+QString HotKeyAction::sequence(QKeySequence keyseq, MouseShortcuts msc)
+{
+	switch(msc) {
+		case MouseLBClick:
+			return keyseq.toString() + "+" + "LBC";
+		case MouseRBClick:
+			return keyseq.toString() + "+" + "RBC";
+		case MouseMBClick:
+			return keyseq.toString() + "+" + "MBC";
+		case MouseWheelUp:
+			return keyseq.toString() + "+" + "WUP";
+		case MouseWheelDown:
+			return keyseq.toString() + "+" + "WDN";
+	}
+}
+
+QString HotKeyAction::description()
+{
+	return mDescription;
+}
+
+void HotKeyAction::setDescription(const QString descr)
+{
+	mDescription = descr;
+}
+
+void HotKeyAction::resetShortcuts()
+{
+	mShortcuts.clear();
+}
+
 

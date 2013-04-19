@@ -36,26 +36,26 @@ public:
 	static void doShortcut(QMouseEvent *mouseevent);
 
 	static void clearCurrentKeySeq();
-	static void resetShortcuts(QString const id);
+
+	static void resetCmdShortcuts(QString const id);
 
 private:
 	HotKeyManager();
 
 	void setCmd(QString const id, HotKeyAction *cmd);
-	bool addNewShortcut(QString const id, QKeySequence keyseq);
 	bool addNewShortcut(QString const id, QString const shortcut);
-	bool addNewMouseShortcut(QString const id, QString const keyseq, MouseShortcuts mouseShortcut);
+	bool addShortcut(QString const id, QString const shortcut);
 	void findShortcut(QString const shortcut);
-	void findShortcut(MouseShortcuts msc);
 	void setCurrentKeySeq(QKeySequence keyseq);
-	void resetKeyboardShortcuts(QString const id);
-	void resetMouseShortcuts(QString const id);
+	QString sequence(QString const keyseq, MouseShortcuts msc);
+	QKeySequence currentKeySeq();
+	void resetShortcuts(QString const id);
 
 	static HotKeyManager* mInstance;
 	QKeySequence mCurrentKeySeq;
 	QHash<QString, HotKeyAction *> mCmds;
 	QHash<QString, QString> mShortCuts;
-	QHash<QString, QHash<MouseShortcuts, QString> > mMouseShortcuts;
+	//QHash<QString, QHash<MouseShortcuts, QString> > mMouseShortcuts;
 };
 
 }

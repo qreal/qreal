@@ -82,23 +82,22 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	HotKeyAction *cmdClose = new HotKeyAction();
 
-	cmdClose->setShortcut(QKeySequence(Qt::ALT + Qt::Key_X));
+	cmdClose->addShortcut(QKeySequence(Qt::ALT + Qt::Key_B));
 	connect(cmdClose, SIGNAL(pressed()), this, SLOT(close()));
 
 	HotKeyManager::setCommand("Close", "Close app", cmdClose);
+	HotKeyManager::addShortcut("Close", QKeySequence(Qt::ALT + Qt::Key_Backspace));
+	HotKeyManager::addShortcut("Close", QKeySequence(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_C), MouseWheelUp);
+
+	HotKeyManager::resetCmdShortcuts("Close");
 
 	HotKeyAction *cmdCloseTabs = new HotKeyAction();
 
-	cmdCloseTabs->setShortcut(QKeySequence(Qt::ALT + Qt::SHIFT + Qt::Key_T));
+	cmdCloseTabs->addShortcut(QKeySequence(Qt::ALT + Qt::SHIFT + Qt::Key_T));
 	connect(cmdCloseTabs, SIGNAL(pressed()), this, SLOT(closeAllTabs()));
 
 	HotKeyManager::setCommand("CloseTabs", "Close tabs", cmdCloseTabs);
-
-	HotKeyManager::addShortcut("Close", QKeySequence(Qt::ALT + Qt::Key_F4));
-	HotKeyManager::addShortcut("Close", QKeySequence(Qt::CTRL + Qt::Key_C), MouseWheelUp);
 	HotKeyManager::addShortcut("CloseTabs", QKeySequence(Qt::ALT), MouseMBClick);
-	HotKeyManager::resetShortcuts("Close");
-
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setProgress(5);
