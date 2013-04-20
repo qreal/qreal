@@ -49,7 +49,6 @@
 #include "dotRunner.h"
 
 #include "hotKeyManager/hotKeyManager.h"
-#include "hotKeyManager/hotKeyAction.h"
 
 using namespace qReal;
 
@@ -79,25 +78,35 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	initSettingsManager();
 	registerMetaTypes();
 
+	QKeySequence seq(Qt::ALT + Qt::Key_M);
 
-	HotKeyAction *cmdClose = new HotKeyAction();
+	/*QAction *action = new QAction(this);
 
-	cmdClose->addShortcut(QKeySequence(Qt::ALT + Qt::Key_B));
-	connect(cmdClose, SIGNAL(pressed()), this, SLOT(close()));
+	action->setShortcut(seq);
 
-	HotKeyManager::setCommand("Close", "Close app", cmdClose);
-	HotKeyManager::addShortcut("Close", QKeySequence(Qt::ALT + Qt::Key_Backspace));
-	HotKeyManager::addShortcut("Close", QKeySequence(Qt::CTRL + Qt::ALT + Qt::SHIFT + Qt::Key_C), MouseWheelUp);
+	action->setShortcutContext(Qt::ApplicationShortcut);
 
-	HotKeyManager::resetCmdShortcuts("Close");
+	connect(action, SIGNAL(triggered()), this, SLOT(close()));
 
-	HotKeyAction *cmdCloseTabs = new HotKeyAction();
+	this->addAction(action);
 
-	cmdCloseTabs->addShortcut(QKeySequence(Qt::ALT + Qt::SHIFT + Qt::Key_T));
-	connect(cmdCloseTabs, SIGNAL(pressed()), this, SLOT(closeAllTabs()));
+	HotKeyManager::setCommand("Close", "Close window", action);
+	HotKeyManager::setShortcut("Close", QKeySequence(Qt::CTRL + Qt::Key_X));
+	HotKeyManager::setShortcut("Close", Qt::ALT, MouseWU);
+	//HotKeyManager::resetCmdShortcuts("Close");*/
 
-	HotKeyManager::setCommand("CloseTabs", "Close tabs", cmdCloseTabs);
-	HotKeyManager::addShortcut("CloseTabs", QKeySequence(Qt::ALT), MouseMBClick);
+	QAction *closeTabs = new QAction(this);
+
+	closeTabs->setShortcut(QKeySequence(Qt::ALT + Qt::Key_T));
+
+	closeTabs->setShortcutContext(Qt::ApplicationShortcut);
+
+	connect(closeTabs, SIGNAL(triggered()), this, SLOT(closeAllTabs()));
+
+	this->addAction(closeTabs);
+
+	HotKeyManager::setCommand("CloseTabs", "Close tabs", closeTabs);
+	HotKeyManager::delCommand("CloseTabs");
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setProgress(5);

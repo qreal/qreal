@@ -2,10 +2,10 @@
 #include "hotKeyManager/hotKeyManager.h"
 
 #include <QtCore/QEvent>
+#include <QtGui/QActionEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QWheelEvent>
-#include <QtGui/QMouseEvent>
-#include <QtCore/QDebug>
+#include <QtGui/QKeySequence>
 
 using namespace qReal;
 
@@ -14,29 +14,22 @@ QRealApplication::QRealApplication(int &argc, char **argv)
 {
 }
 
-void QRealApplication::nothing()
-{
-	qDebug() << "ok";
-}
 
 bool QRealApplication::notify(QObject *receiver, QEvent *event)
 {
 	switch(event->type()) {
-		case QEvent::KeyPress: {
-			HotKeyManager::doShortcut(static_cast<QKeyEvent *> (event));
-			return true;
-		}
+		case QEvent::KeyPress:
 		case QEvent::KeyRelease: {
-			HotKeyManager::clearCurrentKeySeq();
-			return true;
+			HotKeyManager::setCurrentModifier(QKeySequence(static_cast<QKeyEvent *>(event)->modifiers()).toString());
+			break;
 		}
 		case QEvent::Wheel:
-			HotKeyManager::doShortcut(static_cast<QWheelEvent *> (event));
-			return true;
-		case QEvent::MouseButtonPress:
-			HotKeyManager::doShortcut(static_cast<QMouseEvent *> (event));
+		case QEvent::MouseButtonPress:{
+			HotKeyManager::doShortcut(event);
+			break;
+		}
 		default: {
-			return QApplication::notify(receiver, event);
 		}
 	}
+	return QApplication::notify(receiver, event);
 }

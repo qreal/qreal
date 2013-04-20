@@ -1,13 +1,10 @@
 HEADERS += \
     hotKeyManager/hotKeyManagerPage.h \
-    hotKeyManager/hotKeyManager.h \
-    hotKeyManager/hotKeyAction.h \
-    hotKeyManager/hotKeyManagerTypes.h
+    hotKeyManager/hotKeyManager.h
 
 SOURCES += \
     hotKeyManager/hotKeyManagerPage.cpp \
-    hotKeyManager/hotKeyManager.cpp \
-    hotKeyManager/hotKeyAction.cpp
+    hotKeyManager/hotKeyManager.cpp
 
 FORMS += \
     hotKeyManager/hotKeyManagerPage.ui
