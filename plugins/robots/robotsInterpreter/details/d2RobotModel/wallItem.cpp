@@ -3,6 +3,9 @@
 
 #include "wallItem.h"
 
+#include "../../../../../qrkernel/settingsManager.h"
+#include "d2ModelScene.h"
+
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
@@ -13,6 +16,9 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	, mImage(QImage(":/icons/2d_wall.png"))
 {
 	setPrivateData();
+	setAcceptDrops(true);
+	qreal x1;
+	qreal y1;
 }
 
 void WallItem::setPrivateData()
@@ -58,12 +64,26 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
+	x1 = abs(mX1 - event->scenePos().x());
+	y1 = abs(mY1 - event->scenePos().y());
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	QPointF const oldPos = pos();
-	QGraphicsItem::mouseMoveEvent(event);
+	if (SettingsManager::value("2dShowGrid").toBool())
+	{
+		QPointF pos = event->scenePos();
+		qreal deltaX = (mX1 - mX2);
+		qreal deltaY = (mY1 - mY2);
+		mX1 = pos.x() - x1;
+		mY1 = pos.y() - y1;
+
+		this->reshapeBeginWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+		this->setDraggedEndWithGrid(deltaX, deltaY);
+	} else {
+		QGraphicsItem::mouseMoveEvent(event);
+	}
 	// Items under cursor cannot be dragged when adding new item,
 	// but it mustn`t confuse the case when item is unmovable
 	// because overapped with robot
@@ -104,3 +124,14 @@ void WallItem::onOverlappedWithRobot(bool overlapped)
 {
 	mOverlappedWithRobot = overlapped;
 }
+
+int WallItem::sign(qreal x)
+{
+	if (x<0)
+		return -1;
+	else if (x>0)
+		return 1;
+	else
+		return 0;
+}
+

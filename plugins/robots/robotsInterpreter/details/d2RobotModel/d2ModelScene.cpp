@@ -5,6 +5,8 @@
 #include "d2ModelScene.h"
 #include "../../../../../qrutils/graphicsUtils/griddrawer.h"
 #include "../../../../../qrkernel/settingsManager.h"
+#include "typeinfo"
+#include "wallItem.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -84,7 +86,7 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &re
 		}
 		mGraphicsItem->resizeItem(event);
 
-		if (mGraphicsItem->realShape().intersects(rect)) {
+		if (mGraphicsItem->realShape().intersects(rect) && dynamic_cast<WallItem *> (mGraphicsItem) != NULL) {
 			mGraphicsItem->reverseOldResizingItem(oldBegin, oldEnd);
 		}
 	}

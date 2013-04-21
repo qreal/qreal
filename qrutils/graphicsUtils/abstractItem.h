@@ -20,6 +20,7 @@ namespace graphicsUtils
 
 class QRUTILS_EXPORT AbstractItem : public QGraphicsItem
 {
+
 public:
 	enum DragState {
 		None,

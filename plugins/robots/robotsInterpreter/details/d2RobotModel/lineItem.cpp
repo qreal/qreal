@@ -3,6 +3,8 @@
 #include <math.h>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>
+#include "../../../../../qrkernel/settingsManager.h"
+
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -61,8 +63,13 @@ QPainterPath LineItem::shape() const
 
 void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 {
-	if (mDragState == TopLeft || mDragState == BottomRight)
-		calcResizeItem(event, 50);
+	if ((SettingsManager::value("2dShowGrid").toBool()) && (mDragState == TopLeft || mDragState == BottomRight) && (strcmp(this->metaObject()->className(), "qReal::interpreters::robots::details::d2Model::WallItem")==0)){
+		calcResizeItem(event, SettingsManager::value("2dGridCellSize").toInt());
+	}
+	else if (mDragState == TopLeft || mDragState == BottomRight)
+		AbstractItem::resizeItem(event);
+	else
+		setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
 void LineItem::calcResizeItem(QGraphicsSceneMouseEvent *event, int indexGrid)
@@ -175,6 +182,14 @@ void LineItem::setEndCoordinatesWithGrid(int indexGrid)
 	setX2andY2(
 				coefX * indexGrid
 				,coefY * indexGrid
+				);
+}
+
+void LineItem::setDraggedEndWithGrid(qreal x, qreal y)
+{
+	setX2andY2(
+				mX1 - x
+				, mY1 - y
 				);
 }
 

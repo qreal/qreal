@@ -32,6 +32,7 @@ public:
 	virtual void reshapeEndWithGrid(int indexGrid);
 	virtual void setBeginCoordinatesWithGrid(int indexGrid);
 	virtual void setEndCoordinatesWithGrid(int indexGrid);
+	virtual void setDraggedEndWithGrid(qreal x, qreal y);
 
 	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserialize(QDomElement const &element);
