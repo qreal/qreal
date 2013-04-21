@@ -222,7 +222,7 @@ QList<SmartLine> &NxtOSEKRobotGenerator::terminateCode()
 	return mTerminateCode;
 }
 
-qrRepo::RepoApi const * const NxtOSEKRobotGenerator::api() const
+qrRepo::RepoApi const *NxtOSEKRobotGenerator::api() const
 {
 	return mApi;
 }

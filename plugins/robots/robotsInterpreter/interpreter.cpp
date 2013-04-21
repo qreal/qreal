@@ -284,6 +284,7 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 void Interpreter::runTimer()
 {
 	if (!mTimer->isActive()) {
+		readSensorValues();
 		mTimer->start(10);
 		connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
 	}

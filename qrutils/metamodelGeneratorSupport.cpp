@@ -171,7 +171,7 @@ QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(QDomDoc
 	QStringList result;
 	if (graphicTypes.length() > 0) {
 		QDomNodeList children = graphicTypes.at(0).childNodes();
-		for (unsigned i = 0; i < children.length(); i++) {
+		for (int i = 0; i < children.length(); i++) {
 			result.push_back(children.at(i).toElement().attribute(type));
 		}
 	}
@@ -204,7 +204,7 @@ void MetamodelGeneratorSupport::generateProFile(QDomDocument metamodel,
 
 	if (include.length() > 0) {
 		outpro() << "QREAL_XML_DEPENDS = ";
-		for (unsigned i = 0; i < include.length(); i++) {
+		for (int i = 0; i < include.length(); i++) {
 			QString const includePath = ".." +
 					mergePaths(
 							baseMetamodelPath.mid(0, baseMetamodelPath.lastIndexOf("/")),
