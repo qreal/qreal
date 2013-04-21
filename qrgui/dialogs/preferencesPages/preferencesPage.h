@@ -22,6 +22,7 @@ public:
 
 	/// This method will be called on pressing "Apply" or "Ok"
 	virtual void save() = 0;
+	virtual void restoreSettings() = 0;
 
 	/// This method will be called when need to get icon on label in form
 	virtual QIcon getIcon() const

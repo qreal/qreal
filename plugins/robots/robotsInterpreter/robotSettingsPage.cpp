@@ -13,7 +13,6 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 {
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
-
 	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
 	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(activatedUnrealModel(bool)));
 	connect(mUi->bluetoothRadioButton, SIGNAL(toggled(bool)), this, SLOT(bluetoothCommunucationToggled()));
@@ -56,6 +55,9 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	}
 
 	mUi->manualComPortCheckbox->setChecked(SettingsManager::value("manualComPortCheckboxChecked").toBool());
+	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
+	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
+	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
 
 	QVBoxLayout *sensorsLayout = new QVBoxLayout;
 	sensorsLayout->addWidget(mSensorsWidget);
@@ -78,15 +80,22 @@ PreferencesRobotSettingsPage::~PreferencesRobotSettingsPage()
 void PreferencesRobotSettingsPage::changeEvent(QEvent *e)
 {
 	switch (e->type()) {
-	case QEvent::LanguageChange: {
-		mUi->retranslateUi(this);
-		mSensorsWidget->retranslateUi();
-		break;
-	}
-	default:
-		break;
+		case QEvent::LanguageChange: {
+			mUi->retranslateUi(this);
+			mSensorsWidget->retranslateUi();
+			break;
+		}
+		default:
+			break;
 	}
 }
+
+void PreferencesRobotSettingsPage::rereadNoiseSettings()
+{
+	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
+	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
+}
+
 
 void PreferencesRobotSettingsPage::initRobotModelType(robotModelType::robotModelTypeEnum type)
 {
@@ -121,6 +130,21 @@ robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotMo
 	}
 }
 
+int PreferencesRobotSettingsPage::approximationLevel() const
+{
+	return mUi->approximationLevelSpinBox->value();
+}
+
+bool PreferencesRobotSettingsPage::enableSensorNoise() const
+{
+	return mUi->enableSensorNoiseCheckBox->checkState() == Qt::Checked;
+}
+
+bool PreferencesRobotSettingsPage::enableMotorNoise() const
+{
+	return mUi->enableMotorNoiseCheckBox->checkState() == Qt::Checked;
+}
+
 bool PreferencesRobotSettingsPage::textVisible() const
 {
 	return mUi->textVisibleCheckBox->checkState() == Qt::Checked;
@@ -136,6 +160,7 @@ QString PreferencesRobotSettingsPage::selectedCommunication() const
 void PreferencesRobotSettingsPage::activatedUnrealModel(bool checked)
 {
 	mUi->bluetoothSettingsGroupBox->setEnabled(!checked && mUi->bluetoothRadioButton->isChecked());
+	mUi->noiseSensorsGroupBox->setEnabled(checked);
 }
 
 void PreferencesRobotSettingsPage::bluetoothCommunucationToggled()
@@ -180,8 +205,26 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("bluetoothPortName", selectedPortName());
 	SettingsManager::setValue("valueOfCommunication", selectedCommunication());
 	SettingsManager::setValue("showTitlesForRobots", textVisible());
+	SettingsManager::setValue("enableNoiseOfSensors", enableSensorNoise());
+	SettingsManager::setValue("enableNoiseOfMotors", enableMotorNoise());
+	SettingsManager::setValue("approximationLevel", approximationLevel());
 	mSensorsWidget->save();
 	emit saved();
+}
+void PreferencesRobotSettingsPage::restoreSettings()
+{
+	mUi->manualComPortCheckbox->setChecked(SettingsManager::value("manualComPortCheckboxChecked").toBool());
+	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
+	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
+	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
+
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	initRobotModelType(typeOfRobotModel);
+
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
+	initTypeOfCommunication(typeOfCommunication);
+
+	mUi->textVisibleCheckBox->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
 }
 
 void PreferencesRobotSettingsPage::refreshPorts()

@@ -43,33 +43,34 @@
     <name>QObject</name>
     <message>
         <location filename="editorGenerator.cpp" line="45"/>
-        <source>no directory to generated code or relative path to QReal Source Files</source>
-        <translation>не указана папка для сгенерированного редактора или относительный путь до исходных файлов QReal</translation>
+        <source>no directory to generated code or path to QReal Source Files</source>
+        <oldsource>no directory to generated code or relative path to QReal Source Files</oldsource>
+        <translation type="unfinished">не указана папка для сгенерированного редактора или относительный путь до исходных файлов QReal</translation>
     </message>
     <message>
-        <location filename="editorGenerator.cpp" line="101"/>
+        <location filename="editorGenerator.cpp" line="103"/>
         <source>incorrect file name</source>
         <translation>Неверное имя файла</translation>
     </message>
     <message>
-        <location filename="editorGenerator.cpp" line="222"/>
+        <location filename="editorGenerator.cpp" line="239"/>
         <source>not filled name/importedFrom</source>
         <translation>Не заполнено имя</translation>
     </message>
     <message>
-        <location filename="editorGenerator.cpp" line="293"/>
+        <location filename="editorGenerator.cpp" line="310"/>
         <source>Incorrect label type</source>
         <translation>Некорректый тип записи</translation>
     </message>
     <message>
-        <location filename="editorGenerator.cpp" line="564"/>
+        <location filename="editorGenerator.cpp" line="581"/>
         <source>not filled %1
 </source>
         <translation>Не заполнено поле %1</translation>
     </message>
     <message>
-        <location filename="editorGenerator.cpp" line="85"/>
-        <location filename="editorGenerator.cpp" line="572"/>
+        <location filename="editorGenerator.cpp" line="86"/>
+        <location filename="editorGenerator.cpp" line="589"/>
         <source>wrong name
 </source>
         <translation>Неверное имя</translation>
@@ -127,9 +128,9 @@
         <location filename="metaEditorSupportPlugin.cpp" line="167"/>
         <location filename="metaEditorSupportPlugin.cpp" line="190"/>
         <location filename="metaEditorSupportPlugin.cpp" line="200"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="252"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="271"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="297"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="244"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="287"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="289"/>
         <source>error</source>
         <translation>Ошибка</translation>
     </message>
@@ -154,18 +155,26 @@
         <translation>Выберите .xml для импорта</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="252"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="244"/>
         <source>please, fill compiler settings</source>
         <translation>Пожалуйста, заполните настройки компилятора в окне &quot;Настройки&quot;</translation>
     </message>
     <message>
-        <location filename="metaEditorSupportPlugin.cpp" line="271"/>
+        <location filename="metaEditorSupportPlugin.cpp" line="287"/>
+        <source>cannot qmake new editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="metaEditorSupportPlugin.cpp" line="289"/>
+        <source>cannot make new editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>cannot unload plugin</source>
-        <translation>Не удалось выгрузить старый плагин</translation>
+        <translation type="obsolete">Не удалось выгрузить старый плагин</translation>
     </message>
     <message>
         <location filename="metaEditorSupportPlugin.cpp" line="190"/>
-        <location filename="metaEditorSupportPlugin.cpp" line="297"/>
         <source>cannot load new editor</source>
         <translation>Не удалось загрузить новый редактор</translation>
     </message>

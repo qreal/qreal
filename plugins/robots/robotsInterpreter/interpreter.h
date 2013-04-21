@@ -51,6 +51,8 @@ public:
 	/// Assigning a value to the field mActionConnectToRobot
 	void setConnectRobotAction(QAction *actionConnect);
 
+	void setNoiseSettings();
+
 	/// Enable Run and Stop buttons on 2d model widget
 	void enableD2ModelWidgetRunStopButtons();
 
@@ -59,6 +61,10 @@ public:
 
 	utils::WatchListWindow *watchWindow() const;
 	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
+
+signals:
+	void noiseSettingsChanged();
+	void noiseSettingsChangedBy2DModelWidget();
 
 public slots:
 	void connectToRobot();
