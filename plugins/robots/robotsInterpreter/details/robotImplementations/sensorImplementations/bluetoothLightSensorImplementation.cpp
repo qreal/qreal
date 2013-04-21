@@ -6,6 +6,8 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
+int const maxLightValue = 1023;
+
 BluetoothLightSensorImplementation::BluetoothLightSensorImplementation(RobotCommunicator *robotCommunicationInterface
 		, inputPort::InputPortEnum const &port)
 	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::light, lowLevelSensorType::LIGHT_ACTIVE, sensorMode::RAWMODE, port)
@@ -41,5 +43,5 @@ void BluetoothLightSensorImplementation::sensorSpecificProcessResponse(QByteArra
 	mState = idle;
 	int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 	Tracer::debug(tracer::sensors, "BluetoothLightSensorImplementation::sensorSpecificProcessResponse", QString::number(sensorValue));
-	emit response(sensorValue);
+	emit response(sensorValue * 100 / maxLightValue);
 }

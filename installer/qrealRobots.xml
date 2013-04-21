@@ -72,34 +72,61 @@
                             <origin>%1/bin/help</origin>
                         </distributionDirectory>
                         <distributionFile>
-                            <origin>%2/QtNetwork4.dll</origin>
+                            <origin>%2/Qt5Network.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtCLucene4.dll</origin>
+                            <origin>%2/Qt5CLucene.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtHelp4.dll</origin>
+                            <origin>%2/Qt5Help.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtSql4.dll</origin>
+                            <origin>%2/Qt5Sql.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtCore4.dll</origin>
+                            <origin>%2/Qt5Core.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtGui4.dll</origin>
+                            <origin>%2/Qt5Gui.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtSvg4.dll</origin>
+                            <origin>%2/Qt5Widgets.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/../../../../../mingw/bin/mingwm10.dll</origin>
+                            <origin>%2/Qt5Svg.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtXml4.dll</origin>
+                            <origin>%2/Qt5Xml.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2//../../../../../mingw/bin/libgcc_s_dw2-1.dll</origin>
+                            <origin>%2/Qt5PrintSupport.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/icuin49.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libgcc_s_sjlj-1.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libwinpthread-1.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libstdc++-6.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/icuuc49.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/icudt49.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libGLESv2.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libEGL.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/D3DCompiler_43.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>%1/installer/icon.ico</origin>
@@ -143,7 +170,17 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>%2/../plugins/sqldrivers/qsqlite4.dll</origin>
+                            <origin>%2/../plugins/sqldrivers/qsqlite.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <destination>${installdir}/platforms</destination>
+                    <name>platformswindows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>%2/../plugins/platforms/qwindows.dll</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
