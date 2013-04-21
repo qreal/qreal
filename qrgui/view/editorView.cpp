@@ -172,8 +172,27 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 void EditorView::scrollContentsBy(int dx, int dy)
 {
 	QGraphicsView::scrollContentsBy(dx, dy);
-	if (mScene->getNeedDrawGrid())
+	if (mScene->getNeedDrawGrid()) {
 		mScene->invalidate();
+	}
+}
+
+void EditorView::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Space) {
+		setDragMode(QGraphicsView::ScrollHandDrag);
+	} else {
+		QGraphicsView::keyPressEvent(event);
+	}
+}
+
+void EditorView::keyReleaseEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Space) {
+		setDragMode(QGraphicsView::RubberBandDrag);
+	} else {
+		QGraphicsView::keyPressEvent(event);
+	}
 }
 
 void EditorView::invalidateScene()

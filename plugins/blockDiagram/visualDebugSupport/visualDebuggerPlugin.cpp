@@ -146,7 +146,7 @@ void VisualDebuggerPlugin::showWatchList()
 	if (mWatchListWindow != NULL) {
 		mWatchListWindow->close();
 	}
-	mWatchListWindow = new watchListWindow(mParser);
+	mWatchListWindow = new WatchListWindow(mParser);
 	mWatchListWindow->show();
 }
 
