@@ -2,6 +2,8 @@
 
 #include "../dialogs/preferencesPages/preferencesPage.h"
 
+#include <QtGui/QKeySequence>
+
 namespace Ui {
 	class hotKeyManagerPage;
 }
@@ -16,7 +18,15 @@ public:
 
 	void save();
 	void restoreSettings();
-	
+
+	void loadHotKeys();
+
+private slots:
+	void activateShortcutLineEdit(int row, int column);
+	void newShortcut(QKeySequence keyseq);
+
 private:
+	int mCurrentRow;
+
 	Ui::hotKeyManagerPage *mUi;
 };

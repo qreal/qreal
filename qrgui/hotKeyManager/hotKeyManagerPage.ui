@@ -49,11 +49,26 @@
       </item>
       <item row="0" column="0" colspan="4">
        <widget class="QTableWidget" name="hotKeysTable">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
         <property name="showGrid">
          <bool>false</bool>
         </property>
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -146,8 +161,14 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLineEdit" name="shortcutLineEdit">
+       <widget class="ShortcutEdit" name="shortcutLineEdit">
         <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="dragEnabled">
+         <bool>false</bool>
+        </property>
+        <property name="readOnly">
          <bool>false</bool>
         </property>
        </widget>
@@ -173,6 +194,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ShortcutEdit</class>
+   <extends>QLineEdit</extends>
+   <header>../hotKeyManager/shortcutEdit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

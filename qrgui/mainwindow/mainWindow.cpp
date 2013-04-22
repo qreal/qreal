@@ -77,10 +77,10 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	setWindowTitle("QReal");
 	initSettingsManager();
 	registerMetaTypes();
-
+	//
 	QKeySequence seq(Qt::ALT + Qt::Key_M);
 
-	/*QAction *action = new QAction(this);
+	QAction *action = new QAction(this);
 
 	action->setShortcut(seq);
 
@@ -90,9 +90,9 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	this->addAction(action);
 
-	HotKeyManager::setCommand("Close", "Close window", action);
-	HotKeyManager::setShortcut("Close", QKeySequence(Qt::CTRL + Qt::Key_X));
-	HotKeyManager::setShortcut("Close", Qt::ALT, MouseWU);
+	HotKeyManager::setCommand("Exit", "Close program", action);
+	HotKeyManager::setShortcut("Exit", QKeySequence(Qt::CTRL + Qt::Key_X));
+	HotKeyManager::setShortcut("Exit", Qt::ALT, MouseWU);
 	//HotKeyManager::resetCmdShortcuts("Close");*/
 
 	QAction *closeTabs = new QAction(this);
@@ -105,8 +105,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	this->addAction(closeTabs);
 
-	HotKeyManager::setCommand("CloseTabs", "Close tabs", closeTabs);
-	HotKeyManager::delCommand("CloseTabs");
+	HotKeyManager::setCommand("Close.Tabs", "Close all opened tabs", closeTabs);
+	//
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setProgress(5);
