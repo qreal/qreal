@@ -61,9 +61,9 @@ HEADERS += \
 	elementEditor/widgetsEdit/tools/propertyEditor.h \
 	elementEditor/widgetsEdit/propertyBinding/propertyBinder.h \
 	elementEditor/elementEditor.h \
-    elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.h \
-    elementEditor/widgetsEdit/private/outerBindingsDialog.h \
-    elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.h
+	elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.h \
+	elementEditor/widgetsEdit/private/outerBindingsDialog.h \
+	elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.h
 
 SOURCES += \
 	elementEditor/common/startPage.cpp \
@@ -127,11 +127,11 @@ SOURCES += \
 	elementEditor/widgetsEdit/tools/propertyEditor.cpp \
 	elementEditor/widgetsEdit/propertyBinding/propertyBinder.cpp \
 	elementEditor/elementEditor.cpp \
-    elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.cpp \
-    elementEditor/widgetsEdit/private/outerBindingsDialog.cpp \
-    elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.cpp
+	elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.cpp \
+	elementEditor/widgetsEdit/private/outerBindingsDialog.cpp \
+	elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.cpp
 
 FORMS += \
 	elementEditor/shapeEdit/shapeEdit.ui \
 	elementEditor/widgetsEdit/widgetsEditor.ui \
-    elementEditor/widgetsEdit/private/outerBindongsDialog.ui
+	elementEditor/widgetsEdit/private/outerBindongsDialog.ui

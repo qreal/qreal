@@ -167,7 +167,6 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			}
 			setItem(current, elem);
 			elem->updateData();
-			elem->connectToPort();
 			elem->checkConnectionsToPort();
 			elem->initPossibleEdges();
 			elem->initTitles();

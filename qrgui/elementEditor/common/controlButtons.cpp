@@ -21,11 +21,11 @@ ControlButtons::ControlButtons(bool forShapeEditor, bool isIconEditor)
 	}
 	QPushButton *save = createButton(tr("Save")
 		, ":/icons/widgetsEditor/save.png");
-	QPushButton *saveAsImage= createOnlyFor(true, tr("Save as image...")
+	QPushButton *saveAsImage = createOnlyFor(true, tr("Save as image...")
 		, ":/icons/widgetsEditor/saveAsImage.png");
-	QPushButton *saveToDisk= createButton(tr("Save to disk as XML...")
+	QPushButton *saveToDisk = createButton(tr("Save to disk as XML...")
 		, ":/icons/widgetsEditor/saveToDisk.png");
-	QPushButton *loadFromDisk= createButton(tr("Load from disk...")
+	QPushButton *loadFromDisk = createButton(tr("Load from disk...")
 		, ":/icons/widgetsEditor/loadFromDisk.png");
 	QPushButton *switchToWidgets = createOnlyFor(true, tr("Switch to widgets")
 		, ":/icons/widgetsEditor/widgetIcon.png");
@@ -34,7 +34,9 @@ ControlButtons::ControlButtons(bool forShapeEditor, bool isIconEditor)
 	if (!isIconEditor) {
 		QPushButton *outerBindings = createOnlyFor(false, tr("Outer bindings...")
 			, ":/icons/widgetsEditor/outerBindings.png");
-		connect(outerBindings, SIGNAL(clicked()), this, SIGNAL(outerBindingsClicked()));
+		if (outerBindings) {
+			connect(outerBindings, SIGNAL(clicked()), this, SIGNAL(outerBindingsClicked()));
+		}
 	}
 	QPushButton *switchToShape = createOnlyFor(false, tr("Switch to shape")
 		, ":/icons/widgetsEditor/shapeIcon.png");
