@@ -33,8 +33,8 @@ public:
 	/// Sets a new shortcut to existing command
 	/// @param id Command id
 	/// @param keyseq Shortcut
-	static bool setShortcut(QString const id, QKeySequence keyseq);
-	static bool setShortcut(QString const id, Qt::Modifier mod, MouseButtons mb);
+	static bool setShortcut(QString const id, QKeySequence const keyseq);
+	static bool setShortcut(QString const id, QKeySequence const mod, MouseButtons mb);
 
 	static void resetCmdShortcuts(QString const id);
 	static void resetAllCmdsShortcuts();
@@ -51,8 +51,8 @@ private:
 
 	void registerCommand(QString const id, QAction *cmd);
 
-	bool registerShortcut(QString const id, QKeySequence keyseq);
-	bool registerShortcut(QString const id, Qt::Modifier mod, MouseButtons mb);
+	bool registerShortcut(QString const id, QKeySequence const keyseq);
+	bool registerShortcut(QString const id, QKeySequence const mod, MouseButtons mb);
 	void registerShortcut(QString const id, QString const shortcut);
 
 	void findShortcut(QString const shortcut);
