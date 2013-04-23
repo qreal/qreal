@@ -143,6 +143,15 @@ void RobotModel::startInterpretation()
 	return mRobotImpl->startInterpretation();
 }
 
+void RobotModel::nullifySensors()
+{
+	for (int port = 0; port< 4; ++port) {
+		if (mSensors[port]) {
+			mSensors[port]->nullify();
+		}
+	}
+}
+
 void RobotModel::connectedSlot(bool success)
 {
 	Tracer::debug(tracer::initialization, "RobotModel::connectedSlot", QString("Model connection status: %1").arg(success));

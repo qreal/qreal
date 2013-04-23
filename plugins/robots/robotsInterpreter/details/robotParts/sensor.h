@@ -21,6 +21,7 @@ public:
 	virtual void read();
 	robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl();
 	void setImplementation(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl);
+	void nullify();
 
 protected:
 	inputPort::InputPortEnum mPort;
