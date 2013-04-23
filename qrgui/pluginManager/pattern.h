@@ -47,9 +47,9 @@ public:
 	void countSize(EditorManager *editorManager);
 
 private:
-	QString mGroupName;
 	QString mEditor;
 	QString mDiagram;
+	QString mGroupName;
 	QList<GroupNode> mNodes;
 	QList<GroupEdge> mEdges;
 	QString mInNode;

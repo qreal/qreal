@@ -46,7 +46,7 @@ void XmlLoader::readFile(QString const &fileName)
 void XmlLoader::readDocument()
 {
 	QDomNodeList const graphics = mDocument.elementsByTagName("graphics");
-	for (unsigned i = 0; i < graphics.length(); ++i) {
+	for (int i = 0; i < graphics.length(); ++i) {
 		QDomElement graphic = graphics.at(i).toElement();
 		readGraphics(graphic);
 	}
@@ -59,7 +59,7 @@ void XmlLoader::readGraphics(QDomElement const &graphic)
 	int sizePictureX = 0;
 	int sizePictureY = 0;
 
-	for (unsigned i = 0; i < graphicAttributes.length(); ++i) {
+	for (int i = 0; i < graphicAttributes.length(); ++i) {
 		QDomElement type = graphicAttributes.at(i).toElement();
 		if (type.tagName() == "picture") {
 			sizePictureX = (type.attribute("sizex", "")).toInt();
@@ -92,7 +92,7 @@ void XmlLoader::readPicture(QDomElement const &picture)
 {
 	QDomNodeList pictureAttributes = picture.childNodes();
 
-	for (unsigned i = 0; i < pictureAttributes.length(); ++i) {
+	for (int i = 0; i < pictureAttributes.length(); ++i) {
 		QDomElement type = pictureAttributes.at(i).toElement();
 		if (type.tagName() == "line")
 			readLine(type);
@@ -121,7 +121,7 @@ void XmlLoader::readLabels(QDomElement const &label)
 {
 	QDomNodeList labelAttributes = label.childNodes();
 
-	for (unsigned i = 0; i < labelAttributes.length(); ++i) {
+	for (int i = 0; i < labelAttributes.length(); ++i) {
 		QDomElement type = labelAttributes.at(i).toElement();
 		if (type.tagName() == "label")
 			readLabel(type);
@@ -134,7 +134,7 @@ void XmlLoader::readPorts(QDomElement const &port)
 {
 	QDomNodeList portAttributes = port.childNodes();
 
-	for (unsigned i = 0; i < portAttributes.length(); ++i) {
+	for (int i = 0; i < portAttributes.length(); ++i) {
 		QDomElement type = portAttributes.at(i).toElement();
 		if (type.tagName() == "linePort")
 			readLinePort(type);
@@ -333,7 +333,7 @@ void XmlLoader::readStylus(QDomElement const &stylus)
 	QDomNodeList stylusAttributes = stylus.childNodes();
 
 	Stylus* stylusItem = new Stylus(0, 0, NULL);
-	for (unsigned i = 0; i < stylusAttributes.length(); ++i) {
+	for (int i = 0; i < stylusAttributes.length(); ++i) {
 		QDomElement type = stylusAttributes.at(i).toElement();
 		if (type.tagName() == "line") {
 			QRectF rect = readRectOfXandY(type);
@@ -522,7 +522,7 @@ void XmlLoader::readCurve(QDomElement const &curve)
 	qreal y2 = 0;
 	qreal x3 = 0;
 	qreal y3 = 0;
-	for (unsigned i = 0; i < curveAttributes.length(); ++i) {
+	for (int i = 0; i < curveAttributes.length(); ++i) {
 		QDomElement type = curveAttributes.at(i).toElement();
 		if (type.tagName() == "start") {
 			x1 = (type.attribute("startx", "0")).toDouble() + mDrift.x();
@@ -580,7 +580,7 @@ void XmlLoader::readLinePort(QDomElement const &linePort)
 	QDomNodeList linePortAttributes = linePort.childNodes();
 	QDomElement start;
 	QDomElement end;
-	for (unsigned i = 0; i < linePortAttributes.length(); ++i) {
+	for (int i = 0; i < linePortAttributes.length(); ++i) {
 		QDomElement type = linePortAttributes.at(i).toElement();
 		if (type.tagName() == "start")
 			start = type;

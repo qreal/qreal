@@ -11,6 +11,7 @@
 #include "simpleElements/waitForColorIntensityBlockGenerator.h"
 #include "simpleElements/balanceGenerator.h"
 #include "simpleElements/waitForLightBlockGenerator.h"
+#include "simpleElements/waitForButtonsBlockGenerator.h"
 #include "simpleElements/waitForSonarBlockGenerator.h"
 #include "simpleElements/waitForEncoderBlockGenerator.h"
 #include "simpleElements/waitForTouchSensorBlockGenerator.h"
@@ -56,6 +57,8 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 		return new BalanceInitGenerator();
 	} else if (elementType == "VariableInit") {
 		return new VariableInitGenerator();
+	} else if (elementType == "WaitForButtons") {
+		return new WaitForButtonsBlockGenerator();
 	}
 
 	return new InitialNodeGenerator();
