@@ -38,9 +38,6 @@ public:
 
 	void setMasterItem(graphicsUtils::RotateItem *masterItem);
 
-
-	qreal orientWithShift(qreal x1, qreal y1, qreal x2, qreal y2);
-
 private:
 	int mLength;
 	graphicsUtils::RotateItem *mMaster;

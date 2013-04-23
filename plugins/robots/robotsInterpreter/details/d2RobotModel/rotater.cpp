@@ -142,8 +142,3 @@ void Rotater::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mouseReleaseEvent(event);
 }
-
-qreal Rotater::orientWithShift(qreal x1, qreal y1, qreal x2, qreal y2)
-{
-	return 1;
-}
