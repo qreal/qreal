@@ -23,6 +23,7 @@ public:
 	~PreferencesRobotSettingsPage();
 
 	void save();
+	void restoreSettings();
 
 	QString selectedPortName() const;
 	QString selectedCommunication() const;
@@ -32,6 +33,9 @@ signals:
 
 protected:
 	void changeEvent(QEvent *e);
+
+public slots:
+	void rereadNoiseSettings();
 
 private slots:
 	void activatedUnrealModel(bool checked);
@@ -50,6 +54,9 @@ private:
 	sensorType::SensorTypeEnum selectedPort4Sensor() const;
 	robotModelType::robotModelTypeEnum selectedRobotModel() const;
 	bool textVisible() const;
+	bool enableSensorNoise() const;
+	bool enableMotorNoise() const;
+	int approximationLevel() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 	details::SensorsConfigurationWidget *mSensorsWidget;

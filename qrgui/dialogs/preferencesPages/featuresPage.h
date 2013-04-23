@@ -15,6 +15,7 @@ public:
 	~PreferencesFeaturesPage();
 
 	void save();
+	void restoreSettings();
 
 protected:
 	void changeEvent(QEvent *e);

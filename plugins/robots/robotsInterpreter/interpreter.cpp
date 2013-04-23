@@ -38,6 +38,8 @@ Interpreter::Interpreter()
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
 
+	connect(mD2ModelWidget, SIGNAL(noiseSettingsChanged()), this, SIGNAL(noiseSettingsChangedBy2DModelWidget()));
+	connect(this, SIGNAL(noiseSettingsChanged()), mD2ModelWidget, SLOT(rereadNoiseSettings()));
 	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
 	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
@@ -417,6 +419,12 @@ void Interpreter::setCommunicator(QString const &valueOfCommunication, QString c
 void Interpreter::setConnectRobotAction(QAction *actionConnect)
 {
 	mActionConnectToRobot = actionConnect;
+}
+
+void Interpreter::setNoiseSettings()
+{
+	mD2RobotModel->setNoiseSettings();
+	emit noiseSettingsChanged();
 }
 
 void Interpreter::reportError(QString const &message)

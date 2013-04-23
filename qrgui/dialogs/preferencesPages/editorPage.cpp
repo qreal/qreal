@@ -37,23 +37,10 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mUi->indexGridSlider->setVisible(false);
 	mUi->label_20->setVisible(false);
 
-	mUi->showGridCheckBox->setChecked(SettingsManager::value("ShowGrid").toBool());
-	mUi->showAlignmentCheckBox->setChecked(SettingsManager::value("ShowAlignment").toBool());
-	mUi->activateGridCheckBox->setChecked(SettingsManager::value("ActivateGrid").toBool());
-	mUi->activateAlignmentCheckBox->setChecked(SettingsManager::value("ActivateAlignment").toBool());
-	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent").toInt());
-	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize").toInt());
-	mUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor").toInt());
-
 	mUi->gridWidthSlider->setValue(mWidthGrid);
 	mUi->indexGridSlider->setValue(mIndexGrid);
-	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());
-	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont").toBool());
 
-	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation").toInt());
-	paletteComboBoxClicked(mUi->paletteComboBox->currentIndex());
-	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount").toInt());
-	mFont = SettingsManager::value("CurrentFont").toString();
+	restoreSettings();
 }
 
 PreferencesEditorPage::~PreferencesEditorPage()
@@ -144,6 +131,26 @@ void PreferencesEditorPage::save()
 		mFontButtonWasPressed = false;
 	}
 }
+
+void PreferencesEditorPage::restoreSettings()
+{
+	mUi->showGridCheckBox->setChecked(SettingsManager::value("ShowGrid").toBool());
+	mUi->showAlignmentCheckBox->setChecked(SettingsManager::value("ShowAlignment").toBool());
+	mUi->activateGridCheckBox->setChecked(SettingsManager::value("ActivateGrid").toBool());
+	mUi->activateAlignmentCheckBox->setChecked(SettingsManager::value("ActivateAlignment").toBool());
+	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent").toInt());
+	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize").toInt());
+	mUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor").toInt());
+
+	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());
+	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont").toBool());
+
+	mUi->paletteComboBox->setCurrentIndex(SettingsManager::value("PaletteRepresentation").toInt());
+	paletteComboBoxClicked(mUi->paletteComboBox->currentIndex());
+	mUi->paletteSpinBox->setValue(SettingsManager::value("PaletteIconsInARowCount").toInt());
+	mFont = SettingsManager::value("CurrentFont").toString();
+}
+
 void PreferencesEditorPage::paletteComboBoxClicked(int index)
 {
 	mUi->paletteSpinBox->setEnabled((bool)index);
