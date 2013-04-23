@@ -1,8 +1,9 @@
 #include "metamodelGeneratorSupport.h"
 
-#include <QProcess>
-#include <QApplication>
-#include <QProgressBar>
+#include <QtCore/QProcess>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QDesktopWidget>
 
 #include "xmlUtils.h"
 #include "outFile.h"
@@ -89,7 +90,7 @@ void MetamodelGeneratorSupport::loadPlugin(QString const &directoryName
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);
 		builder.start(pathToMake);
-		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
+		if (builder.waitForFinished()/* && (builder.exitCode() == 0)*/) {
 			progress->setValue(80);
 			if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "."
 					+ extension, normalizeDirName))
@@ -130,7 +131,7 @@ void MetamodelGeneratorSupport::insertElementsInDiagramSublevel(QDomDocument met
 }
 
 void MetamodelGeneratorSupport::insertElementInDiagramSublevel(QDomDocument metamodel,
-		const QString &sublevelName, QDomElement const &element)
+		QString const &sublevelName, QDomElement const &element)
 {
 	QDomNodeList sublevels = metamodel.elementsByTagName(sublevelName);
 
@@ -170,7 +171,7 @@ QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(QDomDoc
 	QStringList result;
 	if (graphicTypes.length() > 0) {
 		QDomNodeList children = graphicTypes.at(0).childNodes();
-		for (unsigned i = 0; i < children.length(); i++) {
+		for (int i = 0; i < children.length(); i++) {
 			result.push_back(children.at(i).toElement().attribute(type));
 		}
 	}
@@ -203,7 +204,7 @@ void MetamodelGeneratorSupport::generateProFile(QDomDocument metamodel,
 
 	if (include.length() > 0) {
 		outpro() << "QREAL_XML_DEPENDS = ";
-		for (unsigned i = 0; i < include.length(); i++) {
+		for (int i = 0; i < include.length(); i++) {
 			QString const includePath = ".." +
 					mergePaths(
 							baseMetamodelPath.mid(0, baseMetamodelPath.lastIndexOf("/")),

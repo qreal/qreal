@@ -48,6 +48,8 @@ private:
 	void setStringsForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
 	static void copyImages(QString const &pathToFile);
 	static QString calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource);
+	static QString calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource);
+	static QString calculateRelativePath(QString const &pathOne, QString const &pathTwo);
 
 	qrRepo::LogicalRepoApi const &mApi;
 	QDomDocument mDocument;

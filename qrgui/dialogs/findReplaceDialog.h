@@ -1,8 +1,9 @@
 #pragma once
 
-#include <QWidget>
-#include <QtGui>
-#include <QDialog>
+#include <QtWidgets/QWidget>
+#include <QtWidgets>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QCheckBox>
 #include <QtCore/QSignalMapper>
 #include "../models/logicalModelAssistApi.h"
 

@@ -377,12 +377,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Сенсор4</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="39"/>
+        <location filename="robotsPlugin.cpp" line="40"/>
         <source>2d model</source>
         <translation>2D модель</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="43"/>
+        <location filename="robotsPlugin.cpp" line="44"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
@@ -391,17 +391,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="47"/>
+        <location filename="robotsPlugin.cpp" line="48"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="51"/>
+        <location filename="robotsPlugin.cpp" line="52"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="57"/>
+        <location filename="robotsPlugin.cpp" line="58"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -410,7 +410,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="102"/>
+        <location filename="robotsPlugin.cpp" line="104"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -528,7 +528,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::RobotsPlugin</name>
     <message>
-        <location filename="robotsPlugin.cpp" line="107"/>
+        <location filename="robotsPlugin.cpp" line="109"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -617,17 +617,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::Block</name>
     <message>
-        <location filename="details/blocks/block.cpp" line="44"/>
+        <location filename="details/blocks/block.cpp" line="42"/>
+        <source>Control flow break detected, stopping</source>
+        <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
+    </message>
+    <message>
+        <location filename="details/blocks/block.cpp" line="49"/>
         <source>Too many outgoing links</source>
         <translation>Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="details/blocks/block.cpp" line="49"/>
+        <location filename="details/blocks/block.cpp" line="54"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
         <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="details/blocks/block.cpp" line="56"/>
+        <location filename="details/blocks/block.cpp" line="61"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
@@ -748,37 +753,36 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForColorBlock</name>
     <message>
-        <location filename="details/blocks/waitForColorBlock.cpp" line="27"/>
         <source>Color sensor is not configured on this port or it is configured in a wrong mode (&quot;Full color&quot; mode needed)</source>
-        <translation>Сенсор цвета не сконфигурирован на данном порту, или сконфигурирован в неподходящем режиме (нужен режим НЕ &quot;полные цвета&quot;)</translation>
+        <translation type="obsolete">Сенсор цвета не сконфигурирован на данном порту, или сконфигурирован в неподходящем режиме (нужен режим НЕ &quot;полные цвета&quot;)</translation>
     </message>
     <message>
-        <location filename="details/blocks/waitForColorBlock.cpp" line="43"/>
+        <location filename="details/blocks/waitForColorBlock.cpp" line="19"/>
         <source>Black</source>
         <translation>Чёрный</translation>
     </message>
     <message>
-        <location filename="details/blocks/waitForColorBlock.cpp" line="45"/>
+        <location filename="details/blocks/waitForColorBlock.cpp" line="21"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="details/blocks/waitForColorBlock.cpp" line="47"/>
+        <location filename="details/blocks/waitForColorBlock.cpp" line="23"/>
         <source>Green</source>
         <translation>Зелёный</translation>
     </message>
     <message>
-        <location filename="details/blocks/waitForColorBlock.cpp" line="49"/>
+        <location filename="details/blocks/waitForColorBlock.cpp" line="25"/>
         <source>Yellow</source>
         <translation>Жёлтый</translation>
     </message>
     <message>
-        <location filename="details/blocks/waitForColorBlock.cpp" line="51"/>
+        <location filename="details/blocks/waitForColorBlock.cpp" line="27"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="details/blocks/waitForColorBlock.cpp" line="53"/>
+        <location filename="details/blocks/waitForColorBlock.cpp" line="29"/>
         <source>White</source>
         <translation>Белый</translation>
     </message>
@@ -786,15 +790,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForColorIntensityBlock</name>
     <message>
-        <location filename="details/blocks/waitForColorIntensityBlock.cpp" line="26"/>
         <source>Color sensor is not configured on this port or it is configured in a wrong mode (not &quot;Full color&quot; mode needed)</source>
-        <translation>Сенсор цвета не сконфигурирован на данном порту, или сконфигурирован в неподходящем режиме (нужен режим НЕ &quot;полные цвета&quot;)</translation>
+        <translation type="obsolete">Сенсор цвета не сконфигурирован на данном порту, или сконфигурирован в неподходящем режиме (нужен режим НЕ &quot;полные цвета&quot;)</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::blocks::WaitForColorSensorBlockBase</name>
+    <message>
+        <location filename="details/blocks/waitForColorSensorBlockBase.cpp" line="18"/>
+        <source>Color sensor</source>
+        <translation>Сенсор цвета</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForEncoderBlock</name>
     <message>
-        <location filename="details/blocks/waitForEncoderBlock.cpp" line="31"/>
+        <location filename="details/blocks/waitForEncoderBlock.cpp" line="27"/>
         <source>Encoder sensor is not configured on this port </source>
         <translation>Энкодер не сконфигурирован на этом порту</translation>
     </message>
@@ -802,42 +813,62 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForLightSensorBlock</name>
     <message>
-        <location filename="details/blocks/waitForLightSensorBlock.cpp" line="26"/>
         <source>Light sensor is not configured on this port</source>
-        <translation type="unfinished">Сенсор cвета не сконфигурирован на этом порту</translation>
+        <translation type="obsolete">Сенсор cвета не сконфигурирован на этом порту</translation>
+    </message>
+    <message>
+        <location filename="details/blocks/waitForLightSensorBlock.cpp" line="27"/>
+        <source>Light sensor</source>
+        <translation>Сенсор света</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::blocks::WaitForSensorBlock</name>
+    <message>
+        <location filename="details/blocks/waitForSensorBlock.cpp" line="17"/>
+        <source>%1 is not configured on port %2</source>
+        <translation>%1 не сконфигурирован на порту %2</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForSonarDistanceBlock</name>
     <message>
-        <location filename="details/blocks/waitForSonarDistanceBlock.cpp" line="26"/>
         <source>Sonar sensor is not configured on this port</source>
-        <translation>Сенсор расстояния не сконфигурирован на этом порту</translation>
+        <translation type="obsolete">Сенсор расстояния не сконфигурирован на этом порту</translation>
+    </message>
+    <message>
+        <location filename="details/blocks/waitForSonarDistanceBlock.cpp" line="27"/>
+        <source>Sonar sensor</source>
+        <translation>Сенсор расстояния</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForTouchSensorBlock</name>
     <message>
-        <location filename="details/blocks/waitForTouchSensorBlock.cpp" line="26"/>
         <source>Touch sensor is not configured on this port</source>
-        <translation>Сенсор касания не сконфигурирован на этом порту</translation>
+        <translation type="obsolete">Сенсор касания не сконфигурирован на этом порту</translation>
+    </message>
+    <message>
+        <location filename="details/blocks/waitForTouchSensorBlock.cpp" line="21"/>
+        <source>Touch sensor</source>
+        <translation>Сенсор касания</translation>
     </message>
 </context>
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="672"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="671"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="672"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="694"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="671"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="693"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="694"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="693"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>

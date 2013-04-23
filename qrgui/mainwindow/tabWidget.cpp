@@ -1,7 +1,7 @@
 #include "tabWidget.h"
 
 #include <QtGui/QMouseEvent>
-#include <QtGui/QTabBar>
+#include <QtWidgets/QTabBar>
 
 using namespace qReal::gui;
 

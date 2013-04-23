@@ -3,8 +3,8 @@
 #include <QtCore/QPoint>
 #include <QtCore/QList>
 #include <QtCore/QPair>
-#include <QtGui/QPolygon>
 #include <QtGui/QPainterPath>
+#include <QtGui/QPolygon>
 #include <QtXml/QDomDocument>
 
 #include "../../sensorConstants.h"

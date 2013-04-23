@@ -34,7 +34,6 @@ private slots:
 private:
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	blocks::Block *mCurrentBlock;  // Doesn't have ownership
-	BlocksTable &mBlocksTable;
 };
 
 }

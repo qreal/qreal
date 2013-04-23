@@ -1,6 +1,6 @@
 TEMPLATE = lib
 
-QT += xml
+QT += xml widgets
 
 DESTDIR = ../bin
 

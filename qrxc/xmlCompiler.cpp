@@ -154,6 +154,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
 		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"
+		<< "\tQ_PLUGIN_METADATA(IID \"" << mPluginName << "\")\n"
 		<< "\n"
 		<< "public:\n"
 		<< "\n"
@@ -189,6 +190,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QStringList getReferenceProperties(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QStringList getEnumValues(QString name) const;\n"
+		<< "\tvirtual QString getGroupsXML() const;\n"
 		<< "\tvirtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QString editorName() const;\n"
@@ -246,6 +248,7 @@ void XmlCompiler::generatePluginSource()
 	generateUsages(out);
 	generatePossibleEdges(out);
 	generateNodesAndEdges(out);
+	generateGroupsXML(out);
 	generateEnumValues(out);
 	generatePropertyTypesRequests(out);
 	generatePropertyDefaultsRequests(out);
@@ -264,7 +267,8 @@ void XmlCompiler::generateIncludes(OutFile &out)
 
 	mEditors[mCurrentEditor]->generateListenerIncludes(out);
 
-	out() << "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
+	out()
+		//<< "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
 		<< mPluginName << "Plugin::" << mPluginName << "Plugin()\n{\n"
 		<< "\tinitPlugin();\n"
 		<< "}\n\n";
@@ -739,6 +743,18 @@ void XmlCompiler::generateResourceFile()
 	out() << mResources
 		<< "</qresource>\n"
 		<< "</RCC>\n";
+}
+
+void XmlCompiler::generateGroupsXML(OutFile &out)
+{
+	out() << "QString " << mPluginName << "Plugin::getGroupsXML() const \n{\n";
+	QString result = "";
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams()){
+		if (!diagram->getGroupsXML().isEmpty())
+			result = result + diagram->getGroupsXML();
+	}
+	out() << "\treturn QString::fromUtf8(\"" << result << "\");\n"
+		<< "}\n\n";
 }
 
 void XmlCompiler::generateEnumValues(OutFile &out)

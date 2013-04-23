@@ -1,16 +1,16 @@
 #pragma once
 
-#include <QTreeWidget>
+#include <QtWidgets/QTreeWidget>
 #include <QtCore/QHash>
 #include <QtCore/QSettings>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtGui/QIcon>
-#include <QtGui/QToolButton>
-#include <QtGui/QComboBox>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QVBoxLayout>
 #include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 namespace  qReal{
 namespace gui{
@@ -27,21 +27,24 @@ public:
 	  @param name Item name.
 	  @param description Item description.
 	  @param icon Item icon.
+	  @param preferedSize Item`s icon prefered size.
 	  @param tree Editor's tree.
 	  @param parent Parent of item's group.
 	*/
 	void addItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon,QTreeWidget *tree, QTreeWidgetItem *parent);
+			, QIcon const &icon, QSize const preferedSize
+			, QTreeWidget *tree, QTreeWidgetItem *parent);
 
 	/** Adds top item type to some editor's tree.
 	  @param id Item id.
 	  @param name Item name.
 	  @param description Item description.
 	  @param icon Item icon.
+	  @param preferedSize Item`s icon prefered size.
 	  @param tree Editor's tree.
 	*/
 	void addTopItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon,QTreeWidget *tree);
+			, QIcon const &icon, QSize const preferedSize, QTreeWidget *tree);
 
 	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
@@ -105,33 +108,28 @@ private:
 	public:
 			DraggableElement(Id const &id, QString const &name
 					, QString const &description
-					, QIcon const &icon, bool iconsOnly, QWidget *parent = NULL);
+					, QIcon const &icon
+					, QSize const &iconsPreferedSize
+					, bool iconsOnly
+					, QWidget *parent = NULL);
 
-			QIcon icon() const
-			{
-				return mIcon;
-			}
-
-			QString text() const
-			{
-				return mText;
-			}
-
-			Id id() const
-			{
-				return mId;
-			}
+			QIcon icon() const;
+			QString text() const;
+			Id id() const;
+			QSize iconsPreferedSize() const;
 
 			void setIconSize(int size);
 
 	private:
-			Id mId;
-			QIcon mIcon;
-			QString mText;
-			QLabel *mLabel;
 			virtual void dragEnterEvent(QDragEnterEvent *event);
 			virtual void dropEvent(QDropEvent *event);
 			virtual void mousePressEvent(QMouseEvent *event);
+
+			Id mId;
+			QIcon mIcon;
+			QSize mPreferedSize;
+			QString mText;
+			QLabel *mLabel;
 	};
 
 	/// Returns maximum count of items in all rows of widget

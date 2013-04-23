@@ -1,13 +1,13 @@
 #pragma once
 
-#include <QtGui/QWidget>
-#include <QtGui/QGraphicsRectItem>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGraphicsRectItem>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QButtonGroup>
 #include <QtGui/QPolygonF>
-#include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtCore/QSignalMapper>
-#include <QtGui/QComboBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QButtonGroup>
 
 #include "lineItem.h"
 #include "stylusItem.h"
@@ -90,6 +90,8 @@ public:
 	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
 
 	void closeEvent(QCloseEvent *event);
+
+	QVector<SensorItem *> sensorItems() const;
 
 public slots:
 	void update();

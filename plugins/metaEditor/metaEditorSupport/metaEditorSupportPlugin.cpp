@@ -1,9 +1,9 @@
 #include <QtCore/QProcess>
-#include <QtGui/QApplication>
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
-#include <QtGui/QProgressBar>
-#include <QtGui/QDesktopWidget>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QDesktopWidget>
 
 #include "metaEditorSupportPlugin.h"
 
@@ -12,8 +12,6 @@
 
 #include "editorGenerator.h"
 #include "xmlParser.h"
-
-Q_EXPORT_PLUGIN2(metaEditorSupportPlugin, metaEditor::MetaEditorSupportPlugin)
 
 using namespace qReal;
 using namespace metaEditor;
@@ -229,14 +227,6 @@ void MetaEditorSupportPlugin::parseEditorXml()
 	mMainWindowInterface->reinitModels();
 }
 
-void MetaEditorSupportPlugin::deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName)
-{
-	QFile filePro(directoryName + "/" + fileBaseName + ".pro");
-	QFile fileXml(directoryName + "/" + fileBaseName + ".xml");
-	filePro.remove();
-	fileXml.remove();
-}
-
 void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 		, QPair<QString, QString> const &metamodelNames
 		, QString const &commandFirst
@@ -270,8 +260,6 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	progress->setValue(5);
 
 	if (!mMainWindowInterface->unloadPlugin(normalizeDirName)) {
-		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot unload plugin"));
-		deleteGeneratedFiles(directoryName, normalizerMetamodelName);
 		progress->close();
 		delete progress;
 		return;
@@ -295,10 +283,12 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 		}
 	}
 
-	if (progress->value() != 100) {
-		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new editor"));
-		deleteGeneratedFiles(directoryName, normalizerMetamodelName);
+	if (progress->value() == 20) {
+		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot qmake new editor"));
+	} else if (progress->value() == 60) {
+		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot make new editor"));
 	}
+
 	progress->setValue(100);
 	progress->close();
 	delete progress;

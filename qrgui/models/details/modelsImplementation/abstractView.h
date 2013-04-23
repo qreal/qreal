@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QAbstractItemView>
+#include <QtWidgets/QAbstractItemView>
 
 #include "abstractModel.h"
 

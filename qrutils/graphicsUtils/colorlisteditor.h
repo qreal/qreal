@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QComboBox>
+#include <QtWidgets/QComboBox>
 
 #include "../utilsDeclSpec.h"
 

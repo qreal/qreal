@@ -88,7 +88,8 @@ int RobotCommunicationThreadBase::i2cBytesReady(inputPort::InputPortEnum port)
 	QByteArray result;
 	send(command, lsGetStatusResponseSize, result);
 
-	if (result.isEmpty() || result[4] != errorCode::success) {
+	// static_cats<int> prevents a warning about operator != ambiguity
+	if (result.isEmpty() || static_cast<int>(result[4]) != errorCode::success) {
 		return 0;
 	} else {
 		return result[5];

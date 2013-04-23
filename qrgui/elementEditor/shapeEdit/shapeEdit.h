@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtCore/QString>
 #include <QtXml/QDomDocument>
-#include <QtGui/QButtonGroup>
+#include <QtWidgets/QButtonGroup>
 
 #include "scene.h"
 #include "item.h"
@@ -16,8 +16,7 @@ namespace Ui {
 	class ShapeEdit;
 }
 
-class ShapeEdit : public QWidget, public navigation::NavigationPageWithMenu
-{
+class ShapeEdit : public QWidget {
 	Q_OBJECT
 public:
 	ShapeEdit(bool isIconEditor, QWidget *parent = NULL);

@@ -28,6 +28,7 @@ qrgui.depends = \
 	qrutils \
 	qrkernel \
 	qrmc \
+	thirdparty \
 
 plugins.depends = \
 	qrxc \

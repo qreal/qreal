@@ -1,9 +1,9 @@
 #include "propertyEditorDelegate.h"
 #include "propertyEditorProxyModel.h"
 #include <QtCore/QDebug>
-#include <QtGui/QComboBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QPushButton>
 
 #include "mainWindow.h"
 #include "openShapeEditorButton.h"

@@ -90,7 +90,7 @@ void Stylus::drawScalingRects(QPainter* painter)
 	mStylusImpl.drawScalingRects(painter);
 }
 
-void Stylus::setPenStyle(const QString& text)
+void Stylus::setPenStyle(QString const &text)
 {
 	Item::setPenStyle(text);
 	mStylusImpl.setPenStyle(mAbstractListLine, text);
@@ -102,19 +102,19 @@ void Stylus::setPenWidth(int width)
 	mStylusImpl.setPenWidth(mAbstractListLine, width);
 }
 
-void Stylus::setPenColor(const QString& text)
+void Stylus::setPenColor(QString const &text)
 {
 	Item::setPenColor(text);
 	mStylusImpl.setPenColor(mAbstractListLine, text);
 }
 
-void Stylus::setBrushStyle(const QString& text)
+void Stylus::setBrushStyle(QString const &text)
 {
 	Item::setBrushStyle(text);
 	mStylusImpl.setBrushStyle(mAbstractListLine, text);
 }
 
-void Stylus::setBrushColor(const QString& text)
+void Stylus::setBrushColor(QString const &text)
 {
 	Item::setBrushColor(text);
 	mStylusImpl.setBrushColor(mAbstractListLine, text);

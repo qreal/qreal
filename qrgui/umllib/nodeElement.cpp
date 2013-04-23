@@ -1,13 +1,10 @@
 #include <QtCore/QUuid>
-#include <QtGui/QStyle>
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QStyleOptionGraphicsItem>
+#include <QtWidgets/QMessageBox>
 #include <QtGui/QTextCursor>
-#include <QtGui/QToolTip>
-#include <QtCore/QDebug>
-#include <QtCore/QUuid>
-
-#include <QtGui/QGraphicsDropShadowEffect>
+#include <QtWidgets/QToolTip>
+#include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include <math.h>
 
@@ -144,10 +141,6 @@ void NodeElement::setName(QString const &value)
 
 void NodeElement::setGeom(QRectF const &geom)
 {
-	QSizeF const size = geom.size();
-	QSizeF const realSize = QSizeF(qMax(size.width(), minimumWidth())
-			, qMax(size.height(), minimumHeight()));
-	QRectF const realGeom(geom.topLeft(), realSize);
 	prepareGeometryChange();
 	setPos(realGeom.topLeft());
 	if (realGeom.isValid()) {
@@ -577,7 +570,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-	evScene->insertNodeIntoEdge(id(), Id::rootId(), false, event->scenePos());
+	QList<NodeElement*> element;
+	element.append(this);
+	QSize size = mGraphicalAssistApi->editorManager().iconSize(id());
+	evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos()
+			, QPointF(size.width(), size.height()), element);
 
 	// we should use mHighlightedNode to determine if there is a highlighted node
 	// insert current element into them and set mHighlightedNode to NULL
@@ -699,9 +696,11 @@ void NodeElement::initEmbeddedLinkers()
 		usedEdges.insert(type.second);
 	}
 	setVisibleEmbeddedLinkers(true);
-	foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
-		embeddedLinker->initTitle();
-	}
+
+	// TODO: make it customizable
+	// foreach (EmbeddedLinker* embeddedLinker, mEmbeddedLinkers) {
+	// embeddedLinker->initTitle();
+	// }
 }
 
 void NodeElement::setVisibleEmbeddedLinkers(bool const show)
@@ -767,7 +766,7 @@ void NodeElement::updateData()
 		storeGeometry();
 		mMoving = false;
 		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygon newpoly = mGraphicalAssistApi->configuration(id()); // why is it empty?
+		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
@@ -995,7 +994,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, const QPointF 
 	erasePlaceholder(false);
 	mPlaceholder = placeholder;
 	mPlaceholder->setParentItem(this);
-	if(nextItem != NULL){
+	if(nextItem != NULL) {
 		mPlaceholder->stackBefore(nextItem);
 	}
 
@@ -1024,11 +1023,11 @@ Element* NodeElement::getPlaceholderNextElement()
 void NodeElement::erasePlaceholder(bool redraw)
 {
 	setOpacity(1);
-	if(mPlaceholder != NULL){
+	if(mPlaceholder != NULL) {
 		delete mPlaceholder;
 		mPlaceholder = NULL;
 	}
-	if(redraw){
+	if(redraw) {
 		resize();
 	}
 }
@@ -1100,7 +1099,7 @@ void NodeElement::resizeChild(QRectF const &newContents, QRectF const &oldConten
 
 void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 {
-	if (mIsFolded && isItemAddedOrDeleted && (item != 0)) {
+	if (mIsFolded && isItemAddedOrDeleted && item) {
 		changeFoldState();
 	}
 
@@ -1157,6 +1156,7 @@ void NodeElement::singleSelectionState(bool const singleSelected)
 {
 	initEmbeddedLinkers();
 	setVisibleEmbeddedLinkers(singleSelected);
+	setTitlesVisiblePrivate(singleSelected || mTitlesVisible);
 	Element::singleSelectionState(singleSelected);
 }
 

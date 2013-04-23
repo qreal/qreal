@@ -5,10 +5,10 @@
 #pragma once
 
 #include <QtGui/QKeyEvent>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QGraphicsSceneHoverEvent>
-#include <QtGui/QWidget>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneHoverEvent>
+#include <QtWidgets/QWidget>
 #include <QtCore/QList>
 
 #include "sdfRenderer.h"
@@ -17,6 +17,7 @@
 #include "serializationData.h"
 
 #include "embedded/linkers/embeddedLinker.h"
+#include "../editorPluginInterface/elementImpl.h"
 #include "embedded/linkers/embeddedLinker.h"
 
 #include "private/sceneGridHandler.h"

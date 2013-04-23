@@ -1,10 +1,10 @@
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "splashScreen.h"
 
 using namespace qReal;
 
-const QString SplashScreen::pixmapFilePath = ":/icons/kroki3.PNG";
+QString const SplashScreen::pixmapFilePath = ":/icons/kroki3.PNG";
 const Qt::WindowFlags SplashScreen::windowFlags = Qt::SplashScreen | Qt::WindowStaysOnTopHint;
 
 SplashScreen::SplashScreen(bool isVisible)

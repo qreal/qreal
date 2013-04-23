@@ -3,7 +3,7 @@
 #include <QtCore/QLineF>
 #include <QtCore/QTime>
 #include <QtCore/QDebug>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
 
@@ -15,7 +15,7 @@ SdfRenderer::SdfRenderer()
 	initWorkingDir();
 }
 
-SdfRenderer::SdfRenderer(const QString path)
+SdfRenderer::SdfRenderer(QString const path)
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
 	if (!load(path)) {
@@ -228,6 +228,10 @@ void SdfRenderer::image_draw(QDomElement &element)
 	qreal const x2 = x2_def(element);
 	qreal const y2 = y2_def(element);
 	QString const fileName = SettingsManager::value("pathToImages").toString() + "/" + element.attribute("name", "error");
+	// TODO: rewrite this ugly spike
+	if (fileName.startsWith("./")) {
+		fileName = QApplication::applicationDirPath() + "/" + fileName;
+	}
 
 	QPixmap pixmap;
 
@@ -662,13 +666,18 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
 	// Take picture aspect into account
 	QRect resRect = rect;
 	if (rh * pw < ph * rw) {
-		resRect.setLeft(rect.left() + (rw-rh*pw/ph)/2);
-		resRect.setRight(rect.right() - (rw-rh*pw/ph)/2);
+		resRect.setLeft(rect.left() + (rw - rh * pw / ph) / 2);
+		resRect.setRight(rect.right() - (rw - rh * pw / ph) / 2);
 	}
 	if (rh * pw > ph * rw) {
-		resRect.setTop(rect.top() + (rh-rw*ph/pw)/2);
-		resRect.setBottom(rect.bottom() - (rh-rw*ph/pw)/2);
+		resRect.setTop(rect.top() + (rh - rw * ph / pw) / 2);
+		resRect.setBottom(rect.bottom() - (rh - rw * ph / pw) / 2);
 	}
 	painter->setRenderHint(QPainter::Antialiasing, true);
 	mRenderer.render(painter, resRect);
+}
+
+QSize SdfIconEngineV2::preferedSize() const
+{
+	return mSize;
 }

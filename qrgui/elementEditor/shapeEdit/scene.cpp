@@ -4,7 +4,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include <limits>
 
@@ -179,7 +179,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	case ellipse :
 		setX1andY1(event);
-		mEllipse = new Ellipse(mX1, mY1, mX1, mY1, NULL);
+		mEllipse = new QRealEllipse(mX1, mY1, mX1, mY1, NULL);
 		mEllipse->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mEllipse);
 		setZValue(mEllipse);
@@ -188,7 +188,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	case rectangle :
 		setX1andY1(event);
-		mRectangle = new Rectangle(mX1, mY1, mX1, mY1, NULL);
+		mRectangle = new QRealRectangle(mX1, mY1, mX1, mY1, NULL);
 		mRectangle->setPenBrush(mPenStyleItems, mPenWidthItems, mPenColorItems, mBrushStyleItems, mBrushColorItems);
 		addItem(mRectangle);
 		setZValue(mRectangle);
@@ -235,7 +235,7 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		break;
 	default:  // if we wait some resize
 		setX1andY1(event);
-		mGraphicsItem = dynamic_cast<graphicsUtils::AbstractItem *>(itemAt(event->scenePos()));
+		mGraphicsItem = dynamic_cast<graphicsUtils::AbstractItem *>(itemAt(event->scenePos(), QTransform()));
 		if (mGraphicsItem) {
 			mGraphicsItem->changeDragState(mX1, mY1);
 			Item *graphicsItem = dynamic_cast<Item *>(mGraphicsItem);
@@ -519,7 +519,7 @@ QList<TextPicture *> Scene::selectedTextPictureItems()
 	return resList;
 }
 
-void Scene::changePenStyle(const QString &text)
+void Scene::changePenStyle(QString const &text)
 {
 	mPenStyleItems = text;
 	foreach (Item *item, selectedSceneItems()) {
@@ -537,7 +537,7 @@ void Scene::changePenWidth(int width)
 	update();
 }
 
-void Scene::changePenColor(const QString &text)
+void Scene::changePenColor(QString const &text)
 {
 	mPenColorItems = text;
 	foreach (Item *item, selectedSceneItems()) {
@@ -546,7 +546,7 @@ void Scene::changePenColor(const QString &text)
 	update();
 }
 
-void Scene::changeBrushStyle(const QString &text)
+void Scene::changeBrushStyle(QString const &text)
 {
 	mBrushStyleItems = text;
 	foreach (Item *item, selectedSceneItems()) {
@@ -555,7 +555,7 @@ void Scene::changeBrushStyle(const QString &text)
 	update();
 }
 
-void Scene::changeBrushColor(const QString &text)
+void Scene::changeBrushColor(QString const &text)
 {
 	mBrushColorItems = text;
 	foreach (Item *item, selectedSceneItems()) {
@@ -614,7 +614,7 @@ void Scene::changeFontPixelSize(int size)
 	update();
 }
 
-void Scene::changeFontColor(const QString & text)
+void Scene::changeFontColor(QString const &text)
 {
 	foreach (TextPicture *item, selectedTextPictureItems()) {
 		item->setFontColor(text);
@@ -646,7 +646,7 @@ void Scene::changeFontUnderline(bool isChecked)
 	update();
 }
 
-void Scene::changeTextName(const QString &name)
+void Scene::changeTextName(QString const &name)
 {
 	foreach (TextPicture *item, selectedTextPictureItems()) {
 		item->setTextName(name);

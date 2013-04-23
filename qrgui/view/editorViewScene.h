@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsLineItem>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsLineItem>
 #include <QtCore/QSignalMapper>
 
 #include "../../qrkernel/roles.h"
@@ -30,7 +30,7 @@ public:
 
 	void clearScene();
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);
-	virtual qReal::Id createElement(const QString &, QPointF const &scenePos, bool searchForParents = true);
+	virtual qReal::Id createElement(QString const &, QPointF const &scenePos, bool searchForParents = true);
 	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents = true);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
@@ -54,8 +54,7 @@ public:
 
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent);
 
-	void highlight(qReal::Id const &graphicalId, bool exclusive = true
-			, QColor const &color = Qt::red);
+	void highlight(qReal::Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
 	void dehighlight(qReal::Id const &graphicalId);
 	void dehighlight();
 
@@ -68,16 +67,38 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-	void insertNodeIntoEdge(const qReal::Id &insertedNodeId, const qReal::Id &newParent, bool isFromLogicalModel,QPointF const &scenePos);
+	void createSingleElement(Id const &id, QString const &name, Element *e, QPointF const &position
+			, Id const &parentId, bool isFromLogicalModel);
+	void createGroupOfElements(Id const &id, QPointF const &position, Id const &parentId, bool isFromLogicalModel);
+	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId
+			, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos, QPointF const &shift
+			, QList<NodeElement*> elements);
+
+	QList<NodeElement*> getNeibors(NodeElement* node);
+	void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF const &direction
+			, QPointF const &shift, QList<NodeElement*> elements);
+
+	void reConnectLink(EdgeElement * edgeElem);
+	void arrangeNodeLinks(NodeElement* node);
+
+	NodeElement* getNodeById(qReal::Id const &itemId);
+	EdgeElement* getEdgeById(qReal::Id const &itemId);
+
+	QList<EdgeElement*> getInEdges(NodeElement* node);
+	QList<EdgeElement*> getOutEdges(NodeElement* node);
+
+	void deleteElementFromEdge(qReal::Id const &nodeId, QList<QGraphicsItem*> edgesToDelete);
+
 	void itemSelectUpdate();
 
 	/// update (for a beauty) all edges when tab is opening
 	void updateEdgesViaNodes();
 
 	void setTitlesVisible(bool visible);
+	void onElementParentChanged(Element *element);
 
 public slots:
-	qReal::Id createElement(const QString &type);
+	qReal::Id createElement(QString const &type);
 	// TODO: get rid of it here
 	void copy();
 	void paste(bool logicalCopy);
@@ -192,6 +213,8 @@ private:
 
 	inline bool isArrow(int key);
 	bool isInputWidgetFocused() const;
+
+	static qreal sign(qreal x);
 
 	void moveSelectedItems(int direction);
 	QPointF offsetByDirection(int direction);

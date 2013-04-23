@@ -27,8 +27,11 @@ public:
 
 protected:
 
-	/// Fixes first element and starts checking process
-	bool checkRuleMatching();
+	/// Finds first element and starts checking process
+	bool virtual checkRuleMatching();
+
+	/// Finds first element in specified elements and starts checking process
+	bool checkRuleMatching(IdList const &elements);
 
 	/// Checks rule matching recursively accordingly to given initial data
 	bool checkRuleMatchingRecursively();
@@ -107,7 +110,7 @@ protected:
 	IdList children(Id const &id) const;
 
 	/// Reports message to the main system
-	void report(QString const &message, bool isError) const;
+	virtual void report(QString const &message, bool isError) const;
 
 	/// Hold highlight for some time in ms
 	void pause(int const &time);
@@ -122,13 +125,16 @@ protected:
 
 	/// Match map: key - id in rule diagram, value - id in diagram
 	/// which will be transformed
-	QHash<Id, Id> *mMatch;
+	QHash<Id, Id> mMatch;
 
 	/// List contains all matches of rule
 	QList<QHash<Id, Id> > mMatches;
 
 	/// Nodes of rule subgraph which matched model subgraph at current step
 	IdList mCurrentMatchedGraphInRule;
+
+	/// Nodes of model subgraph which matched model subgraph at current step
+	IdList mCurrentMatchedGraphInModel;
 
 	/// Nodes which have links
 	IdList mNodesHavingOutsideLinks;

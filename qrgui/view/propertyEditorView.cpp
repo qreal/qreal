@@ -100,6 +100,8 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			type = QVariant::Size;
 		}  else if (typeName == "sizef") {
 			type = QVariant::SizeF;
+		} else if (typeName == "code" || typeName == "directorypath") {
+			isButton = true;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
 		} else {
@@ -161,12 +163,25 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 	QPersistentModelIndex const actualIndex = mModel->modelIndex(index.row());
 
-	// there are only two type of buttons: shape and reference
+	// there are only four types of buttons: shape, reference, text and directory path
 	if (name == "shape") {
 		mMainWindow->openElementEditor(actualIndex, role, propertyValue);
 	} else {
-		QString const typeName = mModel->typeName(index);
-		mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
+		QString const typeName = mModel->typeName(index).toLower();
+		if (typeName == "code") {
+			mMainWindow->openQscintillaTextEditor(actualIndex, role, propertyValue);
+		} else if (typeName == "directorypath") {
+			QString startPath;
+			if (propertyValue.isEmpty()) {
+				startPath = qApp->applicationDirPath();
+			} else {
+				startPath = propertyValue;
+			}
+			QString const location = QFileDialog::getExistingDirectory(this, tr("Specify directory:"), startPath);
+			mModel->setData(index, location);
+		} else {
+			mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
+		}
 	}
 }
 
@@ -186,7 +201,6 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 			value = values.at(intValue);
 		}
 	}
-//	value = QVariant(value.toString());
 	mModel->setData(index, value);
 }
 

@@ -41,7 +41,7 @@ qreal GaussNoise::genBody(unsigned int const approximationLevel, qreal const var
 	qreal x = 0.0;
 
 	for (unsigned int i = 0; i < approximationLevel; ++i) {
-		x += static_cast<qreal>(qrand()) / (RAND_MAX + 1);
+		x += static_cast<qreal>(qrand()) / static_cast<unsigned int>(RAND_MAX) + 1;
 	}
 
 	x -= approximationLevel * mu;

@@ -1,10 +1,10 @@
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QGraphicsItem>
 #include <QtCore/QList>
-#include <QtGui/QFileDialog>
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QComboBox>
-#include <QtGui/QSpinBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QSpinBox>
 #include <QtGui/QImage>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 #include "shapeEdit.h"
 #include "ui_shapeEdit.h"
@@ -71,15 +71,15 @@ void ShapeEdit::init()
 	connect(mUi->stylusButton, SIGNAL(clicked(bool)), this, SLOT(addStylus(bool)));
 	connect(mUi->addImageButton, SIGNAL(clicked(bool)), this, SLOT(addImage(bool)));
 
-	connect(mUi->penStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenStyle(const QString &)));
+	connect(mUi->penStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenStyle(QString const &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
-	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenColor(const QString &)));
-	connect(mUi->brushStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeBrushStyle(const QString &)));
-	connect(mUi->brushColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeBrushColor(const QString &)));
+	connect(mUi->penColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenColor(QString const &)));
+	connect(mUi->brushStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeBrushStyle(QString const &)));
+	connect(mUi->brushColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeBrushColor(QString const &)));
 
 	connect(mUi->textFamilyFontComboBox, SIGNAL(currentFontChanged(const QFont&)), mScene, SLOT(changeFontFamily(const QFont&)));
 	connect(mUi->textPixelSizeSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changeFontPixelSize(int)));
-	connect(mUi->textColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeFontColor(const QString &)));
+	connect(mUi->textColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeFontColor(QString const &)));
 	connect(mUi->textEditField, SIGNAL(textChanged()), this, SLOT(changeTextName()));
 	connect(mUi->italicCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontItalic(bool)));
 	connect(mUi->boldCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontBold(bool)));
@@ -88,9 +88,12 @@ void ShapeEdit::init()
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
 	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
-	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
-	connect(this, SIGNAL(openSignal()), this, SLOT(open()));
+	connect(mUi->saveAsPictureButton, SIGNAL(clicked()), this, SLOT(savePicture()));
+	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 	connect(this, SIGNAL(saveToXmlSignal()), this, SLOT(saveToXml()));
+	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
+	connect(mUi->openButton, SIGNAL(clicked()), this, SLOT(open()));
+	connect(this, SIGNAL(openSignal()), this, SLOT(open()));
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
 	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &)), this, SLOT(setItemPalette(QPen const&, QBrush const&)));
@@ -320,7 +323,7 @@ void ShapeEdit::open()
 	loader.readFile(fileName);
 }
 
-void ShapeEdit::load(const QString &text)
+void ShapeEdit::load(QString const &text)
 {
 	QDomDocument document;
 	document.setContent(text);
