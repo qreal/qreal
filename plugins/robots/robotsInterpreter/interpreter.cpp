@@ -285,7 +285,7 @@ void Interpreter::runTimer()
 {
 	if (!mTimer->isActive()) {
 		readSensorValues();
-		mTimer->start(10);
+		mTimer->start(50);
 		connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
 	}
 	if (mRobotModel->sensor(inputPort::port1)) {
