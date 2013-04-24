@@ -2,6 +2,10 @@
 <qresource>
 	<file>generated/shapes/AbstractNodeClass.sdf</file>
 	<file>generated/shapes/AbstractNodePorts.sdf</file>
+	<file>generated/shapes/BalanceClass.sdf</file>
+	<file>generated/shapes/BalancePorts.sdf</file>
+	<file>generated/shapes/BalanceInitClass.sdf</file>
+	<file>generated/shapes/BalanceInitPorts.sdf</file>
 	<file>generated/shapes/BeepClass.sdf</file>
 	<file>generated/shapes/BeepPorts.sdf</file>
 	<file>generated/shapes/ControlFlowClass.sdf</file>
@@ -23,8 +27,6 @@
 	<file>generated/shapes/FunctionPorts.sdf</file>
 	<file>generated/shapes/IfBlockClass.sdf</file>
 	<file>generated/shapes/IfBlockPorts.sdf</file>
-	<file>generated/shapes/InitialBlockClass.sdf</file>
-	<file>generated/shapes/InitialBlockPorts.sdf</file>
 	<file>generated/shapes/InitialNodeClass.sdf</file>
 	<file>generated/shapes/InitialNodePorts.sdf</file>
 	<file>generated/shapes/LoopClass.sdf</file>
@@ -41,12 +43,16 @@
 	<file>generated/shapes/SubprogramRobotsPorts.sdf</file>
 	<file>generated/shapes/TimerClass.sdf</file>
 	<file>generated/shapes/TimerPorts.sdf</file>
+	<file>generated/shapes/VariableInitClass.sdf</file>
+	<file>generated/shapes/VariableInitPorts.sdf</file>
 	<file>generated/shapes/WaitForColorClass.sdf</file>
 	<file>generated/shapes/WaitForColorPorts.sdf</file>
 	<file>generated/shapes/WaitForColorIntensityClass.sdf</file>
 	<file>generated/shapes/WaitForColorIntensityPorts.sdf</file>
 	<file>generated/shapes/WaitForEncoderClass.sdf</file>
 	<file>generated/shapes/WaitForEncoderPorts.sdf</file>
+	<file>generated/shapes/WaitForLightClass.sdf</file>
+	<file>generated/shapes/WaitForLightPorts.sdf</file>
 	<file>generated/shapes/WaitForSonarDistanceClass.sdf</file>
 	<file>generated/shapes/WaitForSonarDistancePorts.sdf</file>
 	<file>generated/shapes/WaitForTouchSensorClass.sdf</file>

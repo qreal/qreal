@@ -10,6 +10,7 @@ class RobotsMetamodelPlugin : public QObject, public qReal::EditorInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::EditorInterface)
+	Q_PLUGIN_METADATA(IID "RobotsMetamodel")
 
 public:
 
@@ -23,6 +24,7 @@ public:
 	virtual void initDescriptionMap();
 	virtual void initParentsMap();
 	virtual void initPaletteGroupsMap();
+	virtual void initPaletteGroupsDescriptionMap();
 
 	virtual QString id() const { return "RobotsMetamodel"; }
 
@@ -42,7 +44,9 @@ public:
 	virtual QString getPropertyType(QString const &element, QString const &property) const;
 	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;
 	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;
+	virtual QStringList getReferenceProperties(QString const &diagram, QString const &element) const;
 	virtual QStringList getEnumValues(QString name) const;
+	virtual QString getGroupsXML() const;
 	virtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const;
 
 	virtual QString editorName() const;
@@ -60,6 +64,7 @@ public:
 
 	virtual QStringList diagramPaletteGroups(QString const &diagram) const;
 	virtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const;
+	virtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const;
 
 private:
 	QMap<QString, QIcon> iconMap;
@@ -74,5 +79,6 @@ private:
 	QMap<QString, QMap<QString, QString> > elementMouseGesturesMap;
 	QMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;  // Maps diagram and element to a list of diagram-element pairs of parents (generalization relation).
 	QMap<QString, QMap<QString, QStringList > > paletteGroupsMap;  // Maps element`s lists of all palette groups.
+	QMap<QString, QMap<QString, QString > > paletteGroupsDescriptionMap; 
 };
 

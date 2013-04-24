@@ -36,15 +36,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -54,74 +54,547 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return true;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
+		{
+			return QStringList();
+		}
+
+	private:
+		SdfRendererInterface *mRenderer;
+	};
+
+	class Balance : public ElementImpl
+	{
+	public:
+		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+
+		void init(QRectF &contents, QList<StatPoint> &pointPorts,
+							QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+							SdfRendererInterface *portRenderer)
+		{
+			Q_UNUSED(pointPorts);
+			mRenderer = renderer;
+			mRenderer->load(QString(":/generated/shapes/BalanceClass.sdf"));
+			portRenderer->load(QString(":/generated/shapes/BalancePorts.sdf"));
+			contents.setWidth(50);
+			contents.setHeight(50);
+			{
+				StatLine ln;
+				ln.line = QLineF(0, 0.1, 0, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 0, 0.9, 0);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(1, 0.1, 1, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 1, 0.9, 1);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			title_1 = factory.createTitle(0.66, 1.2, "port", false);
+			title_1->setBackground(Qt::transparent);
+			title_1->setScaling(false, false);
+			title_1->setHard(false);
+			title_1->setFlags(0);
+			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_1);
+			title_2 = factory.createTitle(-1.14, 1.2, QString::fromUtf8("Порт гироскопа:"));
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setHard(false);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
+			title_3 = factory.createTitle(0.66, 1.6, "forward", false);
+			title_3->setBackground(Qt::transparent);
+			title_3->setScaling(false, false);
+			title_3->setHard(false);
+			title_3->setFlags(0);
+			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_3);
+			title_4 = factory.createTitle(-1.3, 1.6, QString::fromUtf8("Значение forward:"));
+			title_4->setBackground(Qt::transparent);
+			title_4->setScaling(false, false);
+			title_4->setHard(false);
+			title_4->setFlags(0);
+			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_4);
+			title_5 = factory.createTitle(0.66, 2, "turn", false);
+			title_5->setBackground(Qt::transparent);
+			title_5->setScaling(false, false);
+			title_5->setHard(false);
+			title_5->setFlags(0);
+			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_5);
+			title_6 = factory.createTitle(-0.94, 2, QString::fromUtf8("Значение turn:"));
+			title_6->setBackground(Qt::transparent);
+			title_6->setScaling(false, false);
+			title_6->setHard(false);
+			title_6->setFlags(0);
+			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_6);
+			title_7 = factory.createTitle(0.66, 2.4, "gyroOffset", false);
+			title_7->setBackground(Qt::transparent);
+			title_7->setScaling(false, false);
+			title_7->setHard(false);
+			title_7->setFlags(0);
+			title_7->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_7);
+			title_8 = factory.createTitle(-2.16, 2.4, QString::fromUtf8("Значение для калибровки:"));
+			title_8->setBackground(Qt::transparent);
+			title_8->setScaling(false, false);
+			title_8->setHard(false);
+			title_8->setFlags(0);
+			title_8->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_8);
+			title_9 = factory.createTitle(0.66, 2.8, "port1", false);
+			title_9->setBackground(Qt::transparent);
+			title_9->setScaling(false, false);
+			title_9->setHard(false);
+			title_9->setFlags(0);
+			title_9->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_9);
+			title_10 = factory.createTitle(-1.68, 2.8, QString::fromUtf8("Порт первого мотора:"));
+			title_10->setBackground(Qt::transparent);
+			title_10->setScaling(false, false);
+			title_10->setHard(false);
+			title_10->setFlags(0);
+			title_10->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_10);
+			title_11 = factory.createTitle(0.66, 3.2, "port2", false);
+			title_11->setBackground(Qt::transparent);
+			title_11->setScaling(false, false);
+			title_11->setHard(false);
+			title_11->setFlags(0);
+			title_11->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_11);
+			title_12 = factory.createTitle(-1.68, 3.2, QString::fromUtf8("Порт второго мотора:"));
+			title_12->setBackground(Qt::transparent);
+			title_12->setScaling(false, false);
+			title_12->setHard(false);
+			title_12->setFlags(0);
+			title_12->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_12);
+			title_13 = factory.createTitle(0.66, 3.6, "pwm1", false);
+			title_13->setBackground(Qt::transparent);
+			title_13->setScaling(false, false);
+			title_13->setHard(false);
+			title_13->setFlags(0);
+			title_13->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_13);
+			title_14 = factory.createTitle(-4.26, 3.6, QString::fromUtf8("Выходное значение мощности первого мотора:"));
+			title_14->setBackground(Qt::transparent);
+			title_14->setScaling(false, false);
+			title_14->setHard(false);
+			title_14->setFlags(0);
+			title_14->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_14);
+			title_15 = factory.createTitle(0.66, 4, "pwm2", false);
+			title_15->setBackground(Qt::transparent);
+			title_15->setScaling(false, false);
+			title_15->setHard(false);
+			title_15->setFlags(0);
+			title_15->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_15);
+			title_16 = factory.createTitle(-4.26, 4, QString::fromUtf8("Выходное значение мощности второго мотора:"));
+			title_16->setBackground(Qt::transparent);
+			title_16->setScaling(false, false);
+			title_16->setHard(false);
+			title_16->setFlags(0);
+			title_16->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_16);
+		}
+
+		 ElementImpl *clone() { return NULL; }
+		~Balance() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+
+		int getPenWidth() const { return 0; }
+
+		QColor getPenColor() const { return QColor(); }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+		bool hasPorts() const
+		{
+			return true;
+		}
+
+		void updateData(ElementRepoInterface *repo) const
+		{
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("port")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("forward")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("turn")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_7->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("gyroOffset")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_9->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("port1")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_11->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("port2")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_13->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("pwm1")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_15->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("pwm2")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+		}
+
+		bool isNode() const
+		{
+			return true;
+		}
+
+		bool isResizeable() const
+		{
+			return false;
+		}
+
+		bool isContainer() const
+		{
+			return false;
+		}
+
+		bool isSortingContainer() const
+		{
+			return false;
+		}
+
+		int sizeOfForestalling() const
+		{
+			return 0;
+		}
+
+		int sizeOfChildrenForestalling() const
+		{
+			return 0;
+		}
+
+		bool hasMovableChildren() const
+		{
+			return true;
+		}
+
+		bool minimizesToChildren() const
+		{
+			return false;
+		}
+
+		bool maximizesChildren() const
+		{
+			return false;
+		}
+
+		bool isDividable() const
+		{
+			return false;
+		}
+
+		bool isPort() const
+		{
+			return false;
+		}
+
+		bool hasPin() const
+		{
+			return false;
+		}
+
+		QList<double> border() const
+		{
+			QList<double> list;
+			list << 0 << 0 << 0 << 0;
+			return list;
+		}
+
+		QStringList bonusContextMenuFields() const
+		{
+			return QStringList();
+		}
+
+	private:
+		SdfRendererInterface *mRenderer;
+		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
+		ElementTitleInterface *title_3;
+		ElementTitleInterface *title_4;
+		ElementTitleInterface *title_5;
+		ElementTitleInterface *title_6;
+		ElementTitleInterface *title_7;
+		ElementTitleInterface *title_8;
+		ElementTitleInterface *title_9;
+		ElementTitleInterface *title_10;
+		ElementTitleInterface *title_11;
+		ElementTitleInterface *title_12;
+		ElementTitleInterface *title_13;
+		ElementTitleInterface *title_14;
+		ElementTitleInterface *title_15;
+		ElementTitleInterface *title_16;
+	};
+
+	class BalanceInit : public ElementImpl
+	{
+	public:
+		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+
+		void init(QRectF &contents, QList<StatPoint> &pointPorts,
+							QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+							SdfRendererInterface *portRenderer)
+		{
+			Q_UNUSED(pointPorts);
+			Q_UNUSED(titles);
+			Q_UNUSED(factory);
+			mRenderer = renderer;
+			mRenderer->load(QString(":/generated/shapes/BalanceInitClass.sdf"));
+			portRenderer->load(QString(":/generated/shapes/BalanceInitPorts.sdf"));
+			contents.setWidth(50);
+			contents.setHeight(50);
+			{
+				StatLine ln;
+				ln.line = QLineF(0, 0.1, 0, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 0, 0.9, 0);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(1, 0.1, 1, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 1, 0.9, 1);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+		}
+
+		 ElementImpl *clone() { return NULL; }
+		~BalanceInit() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+
+		int getPenWidth() const { return 0; }
+
+		QColor getPenColor() const { return QColor(); }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+		bool hasPorts() const
+		{
+			return true;
+		}
+
+		void updateData(ElementRepoInterface *repo) const
+		{
+			Q_UNUSED(repo);
+		}
+
+		bool isNode() const
+		{
+			return true;
+		}
+
+		bool isResizeable() const
+		{
+			return false;
+		}
+
+		bool isContainer() const
+		{
+			return false;
+		}
+
+		bool isSortingContainer() const
+		{
+			return false;
+		}
+
+		int sizeOfForestalling() const
+		{
+			return 0;
+		}
+
+		int sizeOfChildrenForestalling() const
+		{
+			return 0;
+		}
+
+		bool hasMovableChildren() const
+		{
+			return true;
+		}
+
+		bool minimizesToChildren() const
+		{
+			return false;
+		}
+
+		bool maximizesChildren() const
+		{
+			return false;
+		}
+
+		bool isDividable() const
+		{
+			return false;
+		}
+
+		bool isPort() const
+		{
+			return false;
+		}
+
+		bool hasPin() const
+		{
+			return false;
+		}
+
+		QList<double> border() const
+		{
+			QList<double> list;
+			list << 0 << 0 << 0 << 0;
+			return list;
+		}
+
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -190,18 +663,34 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(-1.8, 1.2, QString::fromUtf8("Ждать завершения:"));
+			title_1 = factory.createTitle(-0.7, -0.5, QString::fromUtf8("Громкость (%):"));
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(0.6, 1.2, "WaitForCompletion", false);
+			title_2 = factory.createTitle(-1.2, 1.2, QString::fromUtf8("Ждать завершения:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(false);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
+			title_3 = factory.createTitle(0.7, -0.5, "Volume", false);
+			title_3->setBackground(Qt::transparent);
+			title_3->setScaling(false, false);
+			title_3->setHard(true);
+			title_3->setFlags(0);
+			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_3);
+			title_4 = factory.createTitle(0.6, 1.2, "WaitForCompletion", false);
+			title_4->setBackground(Qt::transparent);
+			title_4->setScaling(false, false);
+			title_4->setHard(false);
+			title_4->setFlags(0);
+			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_4);
 		}
 
 		 ElementImpl *clone() { return NULL; }
@@ -212,15 +701,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -228,77 +717,79 @@
 		void updateData(ElementRepoInterface *repo) const
 		{
 			Q_UNUSED(repo);
-			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("WaitForCompletion")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Volume")).replace("\n", "<br>"));
+			title_4->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("WaitForCompletion")).replace("\n", "<br>"));
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -307,6 +798,8 @@
 		SdfRendererInterface *mRenderer;
 		ElementTitleInterface *title_1;
 		ElementTitleInterface *title_2;
+		ElementTitleInterface *title_3;
+		ElementTitleInterface *title_4;
 	};
 
 	class ControlFlow : public ElementImpl {
@@ -320,6 +813,7 @@
 			title_1 = factory.createTitle(0, 0, "Guard", false);
 			title_1->setBackground(Qt::white);
 			title_1->setScaling(false, false);
+			title_1->setHard(false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
@@ -329,29 +823,29 @@
 
 		ElementImpl *clone() { return NULL; }
 		void paint(QPainter *, QRectF &){}
-		bool isNode() { return false; }
-		bool isResizeable() { return true; }
-		bool isContainer() { return false; }
-		bool isDividable() { return false; }
-		bool isSortingContainer() { return false; }
-		int sizeOfForestalling() { return 0; }
-		int sizeOfChildrenForestalling() { return 0; }
-		bool hasMovableChildren() { return false; }
-		bool minimizesToChildren() { return false; }
-		bool maximizesChildren() { return false; }
-		bool isPort() { return false; }
-		bool hasPin() { return false; }
-		QList<double> border()
+		bool isNode() const { return false; }
+		bool isResizeable() const { return true; }
+		bool isContainer() const { return false; }
+		bool isDividable() const { return false; }
+		bool isSortingContainer() const { return false; }
+		int sizeOfForestalling() const { return 0; }
+		int sizeOfChildrenForestalling() const { return 0; }
+		bool hasMovableChildren() const { return false; }
+		bool minimizesToChildren() const { return false; }
+		bool maximizesChildren() const { return false; }
+		bool isPort() const { return false; }
+		bool hasPin() const { return false; }
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
-		bool hasPorts() { return false; }
-		int getPenWidth() { return 1; }
-		QColor getPenColor() { return QColor(0,0,0); }
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
-		QStringList bonusContextMenuFields()
+		bool hasPorts() const { return false; }
+		int getPenWidth() const { return 1; }
+		QColor getPenColor() const { return QColor(0,0,0); }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -419,15 +913,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -437,74 +931,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return true;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -542,15 +1036,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -560,74 +1054,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return true;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -696,39 +1190,45 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Ports", false);
+			title_1 = factory.createTitle(0.66, -0.5, "Ports", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(-0.1, 1.2, QString::fromUtf8("Порты:"));
+			title_2 = factory.createTitle(-0.16, -0.5, QString::fromUtf8("Порты:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createTitle(0.66, 1.6, "Power", false);
+			title_3 = factory.createTitle(0.66, 1.2, "Power", false);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
+			title_3->setHard(false);
 			title_3->setFlags(0);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createTitle(-1, 1.6, QString::fromUtf8("Мощность (%):"));
+			title_4 = factory.createTitle(-1, 1.2, QString::fromUtf8("Мощность (%):"));
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
+			title_4->setHard(false);
 			title_4->setFlags(0);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createTitle(0.66, 2, "TachoLimit", false);
+			title_5 = factory.createTitle(0.66, 1.6, "TachoLimit", false);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
+			title_5->setHard(false);
 			title_5->setFlags(0);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createTitle(-2, 2, QString::fromUtf8("Предел оборотов (град):"));
+			title_6 = factory.createTitle(-2, 1.6, QString::fromUtf8("Предел оборотов (град):"));
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
+			title_6->setHard(false);
 			title_6->setFlags(0);
 			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_6);
@@ -742,15 +1242,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -765,74 +1265,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -907,39 +1407,45 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Ports", false);
+			title_1 = factory.createTitle(0.66, -0.5, "Ports", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(-0.1, 1.2, QString::fromUtf8("Порты:"));
+			title_2 = factory.createTitle(-0.16, -0.5, QString::fromUtf8("Порты:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createTitle(0.66, 1.6, "Power", false);
+			title_3 = factory.createTitle(0.66, 1.2, "Power", false);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
+			title_3->setHard(false);
 			title_3->setFlags(0);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createTitle(-1, 1.6, QString::fromUtf8("Мощность (%):"));
+			title_4 = factory.createTitle(-1, 1.2, QString::fromUtf8("Мощность (%):"));
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
+			title_4->setHard(false);
 			title_4->setFlags(0);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createTitle(0.66, 2, "TachoLimit", false);
+			title_5 = factory.createTitle(0.66, 1.6, "TachoLimit", false);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
+			title_5->setHard(false);
 			title_5->setFlags(0);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createTitle(-2, 2, QString::fromUtf8("Предел оборотов (град):"));
+			title_6 = factory.createTitle(-2, 1.6, QString::fromUtf8("Предел оборотов (град):"));
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
+			title_6->setHard(false);
 			title_6->setFlags(0);
 			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_6);
@@ -953,15 +1459,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -976,74 +1482,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -1118,15 +1624,17 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Ports", false);
+			title_1 = factory.createTitle(0.66, -0.5, "Ports", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(-0.1, 1.2, QString::fromUtf8("Порты:"));
+			title_2 = factory.createTitle(-0.1, -0.5, QString::fromUtf8("Порты:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
@@ -1140,15 +1648,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -1159,74 +1667,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -1309,15 +1817,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -1327,74 +1835,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -1475,15 +1983,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -1493,74 +2001,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -1632,12 +2140,14 @@
 			title_1 = factory.createTitle(-0.74, 1.2, QString::fromUtf8("Функция:"));
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
 			title_2 = factory.createTitle(0.3, 1.2, "Body", false);
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(false);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
@@ -1651,15 +2161,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -1670,74 +2180,74 @@
 			title_2->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Body")).replace("\n", "<br>"));
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -1811,12 +2321,14 @@
 			title_1 = factory.createTitle(0.66, 1.2, "Condition", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
 			title_2 = factory.createTitle(-0.5, 1.2, QString::fromUtf8("Условие:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(false);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
@@ -1830,15 +2342,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -1849,74 +2361,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -1925,233 +2437,6 @@
 		SdfRendererInterface *mRenderer;
 		ElementTitleInterface *title_1;
 		ElementTitleInterface *title_2;
-	};
-
-	class InitialBlock : public ElementImpl
-	{
-	public:
-		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
-
-		void init(QRectF &contents, QList<StatPoint> &pointPorts,
-							QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
-							SdfRendererInterface *portRenderer)
-		{
-			Q_UNUSED(pointPorts);
-			mRenderer = renderer;
-			mRenderer->load(QString(":/generated/shapes/InitialBlockClass.sdf"));
-			portRenderer->load(QString(":/generated/shapes/InitialBlockPorts.sdf"));
-			contents.setWidth(50);
-			contents.setHeight(50);
-			{
-				StatLine ln;
-				ln.line = QLineF(0, 0.1, 0, 0.9);
-				ln.prop_x1 = false;
-				ln.prop_y1 = false; 
-				ln.prop_x2 = false; 
-				ln.prop_y2 = false; 
-				ln.initWidth = 50;
-				ln.initHeight = 50;
-				linePorts << ln;
-			};
-			{
-				StatLine ln;
-				ln.line = QLineF(0.1, 0, 0.9, 0);
-				ln.prop_x1 = false;
-				ln.prop_y1 = false; 
-				ln.prop_x2 = false; 
-				ln.prop_y2 = false; 
-				ln.initWidth = 50;
-				ln.initHeight = 50;
-				linePorts << ln;
-			};
-			{
-				StatLine ln;
-				ln.line = QLineF(1, 0.1, 1, 0.9);
-				ln.prop_x1 = false;
-				ln.prop_y1 = false; 
-				ln.prop_x2 = false; 
-				ln.prop_y2 = false; 
-				ln.initWidth = 50;
-				ln.initHeight = 50;
-				linePorts << ln;
-			};
-			{
-				StatLine ln;
-				ln.line = QLineF(0.1, 1, 0.9, 1);
-				ln.prop_x1 = false;
-				ln.prop_y1 = false; 
-				ln.prop_x2 = false; 
-				ln.prop_y2 = false; 
-				ln.initWidth = 50;
-				ln.initHeight = 50;
-				linePorts << ln;
-			};
-			title_1 = factory.createTitle(0.66, 1.2, "port_1", false);
-			title_1->setBackground(Qt::transparent);
-			title_1->setScaling(false, false);
-			title_1->setFlags(0);
-			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title_1);
-			title_2 = factory.createTitle(-0.2, 1.2, QString::fromUtf8("Порт 1:"));
-			title_2->setBackground(Qt::transparent);
-			title_2->setScaling(false, false);
-			title_2->setFlags(0);
-			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title_2);
-			title_3 = factory.createTitle(0.66, 1.6, "port_2", false);
-			title_3->setBackground(Qt::transparent);
-			title_3->setScaling(false, false);
-			title_3->setFlags(0);
-			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title_3);
-			title_4 = factory.createTitle(-0.2, 1.6, QString::fromUtf8("Порт 2:"));
-			title_4->setBackground(Qt::transparent);
-			title_4->setScaling(false, false);
-			title_4->setFlags(0);
-			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title_4);
-			title_5 = factory.createTitle(0.66, 2, "port_3", false);
-			title_5->setBackground(Qt::transparent);
-			title_5->setScaling(false, false);
-			title_5->setFlags(0);
-			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title_5);
-			title_6 = factory.createTitle(-0.2, 2, QString::fromUtf8("Порт 3:"));
-			title_6->setBackground(Qt::transparent);
-			title_6->setScaling(false, false);
-			title_6->setFlags(0);
-			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title_6);
-			title_7 = factory.createTitle(0.66, 2.4, "port_4", false);
-			title_7->setBackground(Qt::transparent);
-			title_7->setScaling(false, false);
-			title_7->setFlags(0);
-			title_7->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title_7);
-			title_8 = factory.createTitle(-0.2, 2.4, QString::fromUtf8("Порт 4:"));
-			title_8->setBackground(Qt::transparent);
-			title_8->setScaling(false, false);
-			title_8->setFlags(0);
-			title_8->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title_8);
-		}
-
-		 ElementImpl *clone() { return NULL; }
-		~InitialBlock() {}
-
-		void paint(QPainter *painter, QRectF &contents)
-		{
-			mRenderer->render(painter, contents);
-		}
-
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
-
-		int getPenWidth() { return 0; }
-
-		QColor getPenColor() { return QColor(); }
-
-		void drawStartArrow(QPainter *) const {}
-		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
-		{
-			return true;
-		}
-
-		void updateData(ElementRepoInterface *repo) const
-		{
-			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("port_1")).replace("\n", "<br>"));
-			Q_UNUSED(repo);
-			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("port_2")).replace("\n", "<br>"));
-			Q_UNUSED(repo);
-			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("port_3")).replace("\n", "<br>"));
-			Q_UNUSED(repo);
-			title_7->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("port_4")).replace("\n", "<br>"));
-			Q_UNUSED(repo);
-		}
-
-		bool isNode()
-		{
-			return true;
-		}
-
-		bool isResizeable()
-		{
-			return false;
-		}
-
-		bool isContainer()
-		{
-			return false;
-		}
-
-		bool isSortingContainer()
-		{
-			return false;
-		}
-
-		int sizeOfForestalling()
-		{
-			return 0;
-		}
-
-		int sizeOfChildrenForestalling()
-		{
-			return 0;
-		}
-
-		bool hasMovableChildren()
-		{
-			return true;
-		}
-
-		bool minimizesToChildren()
-		{
-			return false;
-		}
-
-		bool maximizesChildren()
-		{
-			return false;
-		}
-
-		bool isDividable()
-		{
-			return false;
-		}
-
-		bool isPort()
-		{
-			return false;
-		}
-
-		bool hasPin()
-		{
-			return false;
-		}
-
-		QList<double> border()
-		{
-			QList<double> list;
-			list << 0 << 0 << 0 << 0;
-			return list;
-		}
-
-		QStringList bonusContextMenuFields()
-		{
-			return QStringList();
-		}
-
-	private:
-		SdfRendererInterface *mRenderer;
-		ElementTitleInterface *title_1;
-		ElementTitleInterface *title_2;
-		ElementTitleInterface *title_3;
-		ElementTitleInterface *title_4;
-		ElementTitleInterface *title_5;
-		ElementTitleInterface *title_6;
-		ElementTitleInterface *title_7;
-		ElementTitleInterface *title_8;
 	};
 
 	class InitialNode : public ElementImpl
@@ -2226,15 +2511,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -2244,74 +2529,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -2380,15 +2665,17 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Iterations", false);
+			title_1 = factory.createTitle(0.66, -0.5, "Iterations", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(-0.74, 1.2, QString::fromUtf8("Итераций:"));
+			title_2 = factory.createTitle(-0.74, -0.5, QString::fromUtf8("Итераций:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
@@ -2402,15 +2689,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -2421,74 +2708,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -2559,15 +2846,17 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Port", false);
+			title_1 = factory.createTitle(0.66, -0.5, "Port", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(0, 1.2, QString::fromUtf8("Порт:"));
+			title_2 = factory.createTitle(0, -0.5, QString::fromUtf8("Порт:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
@@ -2581,15 +2870,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -2600,74 +2889,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -2738,42 +3027,62 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(-1.34, 1.2, QString::fromUtf8("Частота (Гц):"));
+			title_1 = factory.createTitle(-0.7, -0.5, QString::fromUtf8("Частота (Гц):"));
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(-1.36, 1.6, QString::fromUtf8("Длительность (мс):"));
+			title_2 = factory.createTitle(-0.7, 1.2, QString::fromUtf8("Громкость (%):"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(false);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createTitle(0.9, 1.22, "Frequency", false);
+			title_3 = factory.createTitle(-1.36, 1.6, QString::fromUtf8("Длительность (мс):"));
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
+			title_3->setHard(false);
 			title_3->setFlags(0);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createTitle(0.9, 1.68, "Duration", false);
+			title_4 = factory.createTitle(-1.36, 2, QString::fromUtf8("Ждать завершения:"));
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
+			title_4->setHard(false);
 			title_4->setFlags(0);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createTitle(-1.36, 2, QString::fromUtf8("Ждать завершения:"));
+			title_5 = factory.createTitle(0.8, -0.5, "Frequency", false);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
+			title_5->setHard(true);
 			title_5->setFlags(0);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createTitle(0.9, 2, "WaitForCompletion", false);
+			title_6 = factory.createTitle(0.9, 1.2, "Volume", false);
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
+			title_6->setHard(false);
 			title_6->setFlags(0);
 			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_6);
+			title_7 = factory.createTitle(0.9, 1.6, "Duration", false);
+			title_7->setBackground(Qt::transparent);
+			title_7->setScaling(false, false);
+			title_7->setHard(false);
+			title_7->setFlags(0);
+			title_7->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_7);
+			title_8 = factory.createTitle(0.9, 2, "WaitForCompletion", false);
+			title_8->setBackground(Qt::transparent);
+			title_8->setScaling(false, false);
+			title_8->setHard(false);
+			title_8->setFlags(0);
+			title_8->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_8);
 		}
 
 		 ElementImpl *clone() { return NULL; }
@@ -2784,15 +3093,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -2801,80 +3110,82 @@
 		{
 			Q_UNUSED(repo);
 			Q_UNUSED(repo);
-			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Frequency")).replace("\n", "<br>"));
-			title_4->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Duration")).replace("\n", "<br>"));
 			Q_UNUSED(repo);
-			title_6->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("WaitForCompletion")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Frequency")).replace("\n", "<br>"));
+			title_6->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Volume")).replace("\n", "<br>"));
+			title_7->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Duration")).replace("\n", "<br>"));
+			title_8->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("WaitForCompletion")).replace("\n", "<br>"));
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -2887,6 +3198,8 @@
 		ElementTitleInterface *title_4;
 		ElementTitleInterface *title_5;
 		ElementTitleInterface *title_6;
+		ElementTitleInterface *title_7;
+		ElementTitleInterface *title_8;
 	};
 
 	class RobotsDiagramNode : public ElementImpl
@@ -2944,6 +3257,7 @@
 			title_1 = factory.createTitle(0.205882, 0.0588235, "name", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
@@ -2957,15 +3271,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -2975,74 +3289,74 @@
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->name()).replace("\n", "<br>"));
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return true;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return true;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -3081,15 +3395,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -3099,74 +3413,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return true;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -3238,6 +3552,7 @@
 			title_1 = factory.createTitle(0.1, 1.2, "name", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(false);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
@@ -3251,15 +3566,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -3269,74 +3584,74 @@
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->name()).replace("\n", "<br>"));
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -3406,15 +3721,17 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Delay", false);
+			title_1 = factory.createTitle(1, -0.5, "Delay", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(-0.94, 1.2, QString::fromUtf8("Задержка (мс):"));
+			title_2 = factory.createTitle(-0.6, -0.5, QString::fromUtf8("Задержка (мс):"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
@@ -3428,15 +3745,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -3447,74 +3764,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -3523,6 +3840,205 @@
 		SdfRendererInterface *mRenderer;
 		ElementTitleInterface *title_1;
 		ElementTitleInterface *title_2;
+	};
+
+	class VariableInit : public ElementImpl
+	{
+	public:
+		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+
+		void init(QRectF &contents, QList<StatPoint> &pointPorts,
+							QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+							SdfRendererInterface *portRenderer)
+		{
+			Q_UNUSED(pointPorts);
+			mRenderer = renderer;
+			mRenderer->load(QString(":/generated/shapes/VariableInitClass.sdf"));
+			portRenderer->load(QString(":/generated/shapes/VariableInitPorts.sdf"));
+			contents.setWidth(50);
+			contents.setHeight(50);
+			{
+				StatLine ln;
+				ln.line = QLineF(0, 0.1, 0, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 0, 0.9, 0);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(1, 0.1, 1, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 1, 0.9, 1);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			title_1 = factory.createTitle(0.66, 1.2, "variable", false);
+			title_1->setBackground(Qt::transparent);
+			title_1->setScaling(false, false);
+			title_1->setHard(false);
+			title_1->setFlags(0);
+			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_1);
+			title_2 = factory.createTitle(-1.2, 1.2, QString::fromUtf8("Переменная:"));
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setHard(false);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
+			title_3 = factory.createTitle(0.66, 1.6, "value", false);
+			title_3->setBackground(Qt::transparent);
+			title_3->setScaling(false, false);
+			title_3->setHard(false);
+			title_3->setFlags(0);
+			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_3);
+			title_4 = factory.createTitle(-1.3, 1.6, QString::fromUtf8("Значение:"));
+			title_4->setBackground(Qt::transparent);
+			title_4->setScaling(false, false);
+			title_4->setHard(false);
+			title_4->setFlags(0);
+			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_4);
+		}
+
+		 ElementImpl *clone() { return NULL; }
+		~VariableInit() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+
+		int getPenWidth() const { return 0; }
+
+		QColor getPenColor() const { return QColor(); }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+		bool hasPorts() const
+		{
+			return true;
+		}
+
+		void updateData(ElementRepoInterface *repo) const
+		{
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("variable")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("value")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+		}
+
+		bool isNode() const
+		{
+			return true;
+		}
+
+		bool isResizeable() const
+		{
+			return false;
+		}
+
+		bool isContainer() const
+		{
+			return false;
+		}
+
+		bool isSortingContainer() const
+		{
+			return false;
+		}
+
+		int sizeOfForestalling() const
+		{
+			return 0;
+		}
+
+		int sizeOfChildrenForestalling() const
+		{
+			return 0;
+		}
+
+		bool hasMovableChildren() const
+		{
+			return true;
+		}
+
+		bool minimizesToChildren() const
+		{
+			return false;
+		}
+
+		bool maximizesChildren() const
+		{
+			return false;
+		}
+
+		bool isDividable() const
+		{
+			return false;
+		}
+
+		bool isPort() const
+		{
+			return false;
+		}
+
+		bool hasPin() const
+		{
+			return false;
+		}
+
+		QList<double> border() const
+		{
+			QList<double> list;
+			list << 0 << 0 << 0 << 0;
+			return list;
+		}
+
+		QStringList bonusContextMenuFields() const
+		{
+			return QStringList();
+		}
+
+	private:
+		SdfRendererInterface *mRenderer;
+		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
+		ElementTitleInterface *title_3;
+		ElementTitleInterface *title_4;
 	};
 
 	class WaitForColor : public ElementImpl
@@ -3585,27 +4101,31 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Port", false);
+			title_1 = factory.createTitle(0.66, -0.5, "Port", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(0, 1.2, QString::fromUtf8("Порт:"));
+			title_2 = factory.createTitle(0, -0.5, QString::fromUtf8("Порт:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createTitle(0.66, 1.6, "Color", false);
+			title_3 = factory.createTitle(0.66, 1.2, "Color", false);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
+			title_3->setHard(false);
 			title_3->setFlags(0);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createTitle(0, 1.6, QString::fromUtf8("Цвет:"));
+			title_4 = factory.createTitle(0, 1.2, QString::fromUtf8("Цвет:"));
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
+			title_4->setHard(false);
 			title_4->setFlags(0);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
@@ -3619,15 +4139,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -3640,74 +4160,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -3780,39 +4300,45 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Port", false);
+			title_1 = factory.createTitle(0.66, -0.5, "Port", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(0, 1.2, QString::fromUtf8("Порт:"));
+			title_2 = factory.createTitle(0, -0.5, QString::fromUtf8("Порт:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createTitle(0.66, 1.6, "Intensity", false);
+			title_3 = factory.createTitle(0.66, 1.2, "Intensity", false);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
+			title_3->setHard(false);
 			title_3->setFlags(0);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createTitle(-1, 1.6, QString::fromUtf8("Интенсивность:"));
+			title_4 = factory.createTitle(-1, 1.2, QString::fromUtf8("Интенсивность:"));
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
+			title_4->setHard(false);
 			title_4->setFlags(0);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createTitle(0.66, 2, "Sign", false);
+			title_5 = factory.createTitle(0.66, 1.6, "Sign", false);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
+			title_5->setHard(false);
 			title_5->setFlags(0);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createTitle(-1.6, 2, QString::fromUtf8("Считанное значение:"));
+			title_6 = factory.createTitle(-1.6, 1.6, QString::fromUtf8("Считанное значение:"));
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
+			title_6->setHard(false);
 			title_6->setFlags(0);
 			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_6);
@@ -3826,15 +4352,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -3849,74 +4375,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -3991,27 +4517,31 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Port", false);
+			title_1 = factory.createTitle(0.66, -0.5, "Port", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(0, 1.2, QString::fromUtf8("Порт:"));
+			title_2 = factory.createTitle(0, -0.5, QString::fromUtf8("Порт:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createTitle(0.66, 1.6, "TachoLimit", false);
+			title_3 = factory.createTitle(0.66, 1.2, "TachoLimit", false);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
+			title_3->setHard(false);
 			title_3->setFlags(0);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createTitle(-1.2, 1.6, QString::fromUtf8("Предел оборотов:"));
+			title_4 = factory.createTitle(-1.2, 1.2, QString::fromUtf8("Предел оборотов:"));
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
+			title_4->setHard(false);
 			title_4->setFlags(0);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
@@ -4025,15 +4555,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -4046,74 +4576,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -4124,6 +4654,223 @@
 		ElementTitleInterface *title_2;
 		ElementTitleInterface *title_3;
 		ElementTitleInterface *title_4;
+	};
+
+	class WaitForLight : public ElementImpl
+	{
+	public:
+		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+
+		void init(QRectF &contents, QList<StatPoint> &pointPorts,
+							QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+							SdfRendererInterface *portRenderer)
+		{
+			Q_UNUSED(pointPorts);
+			mRenderer = renderer;
+			mRenderer->load(QString(":/generated/shapes/WaitForLightClass.sdf"));
+			portRenderer->load(QString(":/generated/shapes/WaitForLightPorts.sdf"));
+			contents.setWidth(50);
+			contents.setHeight(50);
+			{
+				StatLine ln;
+				ln.line = QLineF(0, 0.1, 0, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 0, 0.9, 0);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(1, 0.1, 1, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 1, 0.9, 1);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			title_1 = factory.createTitle(0.66, -0.5, "Port", false);
+			title_1->setBackground(Qt::transparent);
+			title_1->setScaling(false, false);
+			title_1->setHard(true);
+			title_1->setFlags(0);
+			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_1);
+			title_2 = factory.createTitle(0, -0.5, QString::fromUtf8("Порт:"));
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setHard(true);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
+			title_3 = factory.createTitle(0.66, 1.2, "Percents", false);
+			title_3->setBackground(Qt::transparent);
+			title_3->setScaling(false, false);
+			title_3->setHard(false);
+			title_3->setFlags(0);
+			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_3);
+			title_4 = factory.createTitle(-0.52, 1.2, QString::fromUtf8("Проценты:"));
+			title_4->setBackground(Qt::transparent);
+			title_4->setScaling(false, false);
+			title_4->setHard(false);
+			title_4->setFlags(0);
+			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_4);
+			title_5 = factory.createTitle(0.66, 1.6, "Sign", false);
+			title_5->setBackground(Qt::transparent);
+			title_5->setScaling(false, false);
+			title_5->setHard(false);
+			title_5->setFlags(0);
+			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_5);
+			title_6 = factory.createTitle(-1.6, 1.6, QString::fromUtf8("Считанное значение:"));
+			title_6->setBackground(Qt::transparent);
+			title_6->setScaling(false, false);
+			title_6->setHard(false);
+			title_6->setFlags(0);
+			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_6);
+		}
+
+		 ElementImpl *clone() { return NULL; }
+		~WaitForLight() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+
+		int getPenWidth() const { return 0; }
+
+		QColor getPenColor() const { return QColor(); }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+		bool hasPorts() const
+		{
+			return true;
+		}
+
+		void updateData(ElementRepoInterface *repo) const
+		{
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Port")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Percents")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Sign")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+		}
+
+		bool isNode() const
+		{
+			return true;
+		}
+
+		bool isResizeable() const
+		{
+			return false;
+		}
+
+		bool isContainer() const
+		{
+			return false;
+		}
+
+		bool isSortingContainer() const
+		{
+			return false;
+		}
+
+		int sizeOfForestalling() const
+		{
+			return 0;
+		}
+
+		int sizeOfChildrenForestalling() const
+		{
+			return 0;
+		}
+
+		bool hasMovableChildren() const
+		{
+			return true;
+		}
+
+		bool minimizesToChildren() const
+		{
+			return false;
+		}
+
+		bool maximizesChildren() const
+		{
+			return false;
+		}
+
+		bool isDividable() const
+		{
+			return false;
+		}
+
+		bool isPort() const
+		{
+			return false;
+		}
+
+		bool hasPin() const
+		{
+			return false;
+		}
+
+		QList<double> border() const
+		{
+			QList<double> list;
+			list << 0 << 0 << 0 << 0;
+			return list;
+		}
+
+		QStringList bonusContextMenuFields() const
+		{
+			return QStringList();
+		}
+
+	private:
+		SdfRendererInterface *mRenderer;
+		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
+		ElementTitleInterface *title_3;
+		ElementTitleInterface *title_4;
+		ElementTitleInterface *title_5;
+		ElementTitleInterface *title_6;
 	};
 
 	class WaitForSonarDistance : public ElementImpl
@@ -4186,39 +4933,45 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Port", false);
+			title_1 = factory.createTitle(0.66, -0.5, "Port", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(0, 1.2, QString::fromUtf8("Порт:"));
+			title_2 = factory.createTitle(0, -0.5, QString::fromUtf8("Порт:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createTitle(0.66, 1.6, "Distance", false);
+			title_3 = factory.createTitle(0.66, 1.2, "Distance", false);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
+			title_3->setHard(false);
 			title_3->setFlags(0);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createTitle(-1.1, 1.6, QString::fromUtf8("Расстояние (см):"));
+			title_4 = factory.createTitle(-1.1, 1.2, QString::fromUtf8("Расстояние (см):"));
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
+			title_4->setHard(false);
 			title_4->setFlags(0);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createTitle(0.66, 2, "Sign", false);
+			title_5 = factory.createTitle(0.66, 1.6, "Sign", false);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
+			title_5->setHard(false);
 			title_5->setFlags(0);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createTitle(-1.6, 2, QString::fromUtf8("Считанное значение:"));
+			title_6 = factory.createTitle(-1.6, 1.6, QString::fromUtf8("Считанное значение:"));
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
+			title_6->setHard(false);
 			title_6->setFlags(0);
 			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_6);
@@ -4232,15 +4985,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -4255,74 +5008,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
@@ -4397,15 +5150,17 @@
 				ln.initHeight = 50;
 				linePorts << ln;
 			};
-			title_1 = factory.createTitle(0.66, 1.2, "Port", false);
+			title_1 = factory.createTitle(0.66, -0.5, "Port", false);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
+			title_1->setHard(true);
 			title_1->setFlags(0);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createTitle(0, 1.2, QString::fromUtf8("Порт:"));
+			title_2 = factory.createTitle(0, -0.5, QString::fromUtf8("Порт:"));
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
+			title_2->setHard(true);
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
@@ -4419,15 +5174,15 @@
 			mRenderer->render(painter, contents);
 		}
 
-		Qt::PenStyle getPenStyle() { return Qt::SolidLine; }
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
 
-		int getPenWidth() { return 0; }
+		int getPenWidth() const { return 0; }
 
-		QColor getPenColor() { return QColor(); }
+		QColor getPenColor() const { return QColor(); }
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts()
+		bool hasPorts() const
 		{
 			return true;
 		}
@@ -4438,74 +5193,74 @@
 			Q_UNUSED(repo);
 		}
 
-		bool isNode()
+		bool isNode() const
 		{
 			return true;
 		}
 
-		bool isResizeable()
+		bool isResizeable() const
 		{
 			return false;
 		}
 
-		bool isContainer()
+		bool isContainer() const
 		{
 			return false;
 		}
 
-		bool isSortingContainer()
+		bool isSortingContainer() const
 		{
 			return false;
 		}
 
-		int sizeOfForestalling()
+		int sizeOfForestalling() const
 		{
 			return 0;
 		}
 
-		int sizeOfChildrenForestalling()
+		int sizeOfChildrenForestalling() const
 		{
 			return 0;
 		}
 
-		bool hasMovableChildren()
+		bool hasMovableChildren() const
 		{
 			return true;
 		}
 
-		bool minimizesToChildren()
+		bool minimizesToChildren() const
 		{
 			return false;
 		}
 
-		bool maximizesChildren()
+		bool maximizesChildren() const
 		{
 			return false;
 		}
 
-		bool isDividable()
+		bool isDividable() const
 		{
 			return false;
 		}
 
-		bool isPort()
+		bool isPort() const
 		{
 			return false;
 		}
 
-		bool hasPin()
+		bool hasPin() const
 		{
 			return false;
 		}
 
-		QList<double> border()
+		QList<double> border() const
 		{
 			QList<double> list;
 			list << 0 << 0 << 0 << 0;
 			return list;
 		}
 
-		QStringList bonusContextMenuFields()
+		QStringList bonusContextMenuFields() const
 		{
 			return QStringList();
 		}
