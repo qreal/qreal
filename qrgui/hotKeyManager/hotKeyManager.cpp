@@ -62,7 +62,7 @@ void HotKeyManager::resetAllCmdsShortcuts()
 
 void HotKeyManager::doShortcut(QEvent *event)
 {
-	MouseButtons mb = MouseRB;
+	MouseButtons mb = None;
 	switch(event->type()) {
 		case QEvent::Wheel: {
 			mb = static_cast<QWheelEvent *>(event)->delta() > 0 ? MouseWU : MouseWD;
@@ -70,19 +70,22 @@ void HotKeyManager::doShortcut(QEvent *event)
 		}
 		case QEvent::MouseButtonPress: {
 			switch(static_cast<QMouseEvent *>(event)->button()) {
-			case Qt::RightButton:
-				mb = MouseRB;
-				break;
-			case Qt::LeftButton:
-				mb = MouseLB;
-				break;
-			case Qt::MiddleButton:
-				mb = MouseMB;
-			default:
-				break;
+				case Qt::RightButton:
+					mb = MouseRB;
+					break;
+				case Qt::LeftButton:
+					mb = MouseLB;
+					break;
+				case Qt::MiddleButton:
+					mb = MouseMB;
+					break;
+				default:
+					return;
 			}
+			break;
 		}
 		default: {
+			return;
 		}
 	}
 
@@ -154,7 +157,7 @@ void HotKeyManager::registerShortcut(QString const id, QString const shortcut)
 
 void HotKeyManager::findShortcut(QString const shortcut)
 {
-	if (mShortcuts.contains(shortcut)) {
+	if (mShortcuts.contains(shortcut) && mCmds[mShortcuts.value(shortcut)]->parentWidget()->isActiveWindow()) {
 		mCmds[mShortcuts.value(shortcut)]->trigger();
 	}
 }

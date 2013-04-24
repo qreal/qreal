@@ -19,14 +19,19 @@ public:
 	void save();
 	void restoreSettings();
 
-	void loadHotKeys();
+	//void mousePressEvent(QMouseEvent *event);
 
 private slots:
-	void activateShortcutLineEdit(int row, int column);
-	void newShortcut(QKeySequence keyseq);
+	void activateShortcutLineEdit(int const row, int const column);
+	void newModifiers(QString const modifiers);
+	void newKey(QString const key);
 
 private:
-	int mCurrentRow;
+	void loadHotKeys();
+	void updateCurrentRow(QString const shortcut);
 
 	Ui::hotKeyManagerPage *mUi;
+
+	int mCurrentRow;
+	QString mCurrentModifiers;
 };

@@ -92,7 +92,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	HotKeyManager::setCommand("Exit", "Close program", action);
 	HotKeyManager::setShortcut("Exit", QKeySequence(Qt::CTRL + Qt::Key_X));
-	HotKeyManager::setShortcut("Exit", QKeySequence(Qt::ALT), MouseWU);
+	HotKeyManager::setShortcut("Exit", QKeySequence(Qt::ALT+Qt::SHIFT), MouseWU);
 	//HotKeyManager::resetCmdShortcuts("Close");*/
 
 	QAction *closeTabs = new QAction(this);

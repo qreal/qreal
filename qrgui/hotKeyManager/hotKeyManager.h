@@ -10,7 +10,8 @@ namespace qReal {
 
 enum MouseButtons
 {
-	MouseLB
+	None
+	, MouseLB
 	, MouseRB
 	, MouseMB
 	, MouseWU
@@ -46,6 +47,8 @@ public:
 	static QHash<QString, QAction *> commands();
 	static QHash<QString, QString> cmdsShortcuts();
 
+	static QString sequence(QString const mod, MouseButtons mb);
+
 private:
 	HotKeyManager();
 
@@ -56,8 +59,6 @@ private:
 	void registerShortcut(QString const id, QString const shortcut);
 
 	void findShortcut(QString const shortcut);
-
-	QString sequence(QString const mod, MouseButtons mb);
 
 	void setCurrMod(QString const mod);
 	QString currentModifier();

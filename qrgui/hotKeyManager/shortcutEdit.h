@@ -9,8 +9,9 @@ class ShortcutEdit : public QLineEdit
 public:
 	explicit ShortcutEdit(QObject *parent = 0);
 
-	bool event(QEvent * event);
+	bool event(QEvent *event);
 	
 signals:
-	void newShortcut(QKeySequence keyseq);
+	void newKey(QString const key);
+	void newModifiers(QString const modifiers);
 };
