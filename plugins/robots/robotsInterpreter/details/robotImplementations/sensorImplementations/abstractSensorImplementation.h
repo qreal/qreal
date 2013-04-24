@@ -20,6 +20,7 @@ public:
 	inputPort::InputPortEnum port() const;
 	sensorType::SensorTypeEnum type() const;
 	virtual void configure() = 0;
+	virtual void nullify();
 
 signals:
 	void response(int reading);

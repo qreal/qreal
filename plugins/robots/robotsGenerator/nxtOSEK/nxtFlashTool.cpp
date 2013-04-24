@@ -113,7 +113,7 @@ void NxtFlashTool::readNxtUploadData()
 	   to determine in which state we are (to show appropriate error if something goes wrong)
 	*/
 
-	foreach (QString error, output) {
+	foreach (QString const &error, output) {
 		if (error.contains("Removing ")) {
 			mUploadState = clean;
 		} else if (error.contains("Compiling ")) {
