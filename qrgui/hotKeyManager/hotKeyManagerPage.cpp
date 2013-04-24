@@ -15,7 +15,7 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 	: PreferencesPage(parent)
 	, mUi(new Ui::hotKeyManagerPage)
 	, mCurrentRow(-1)
-	, mCurrentModifiers("")
+	, mCurrentModifiers(Qt::NoModifier)
 {
 	mUi->setupUi(this);
 
@@ -23,13 +23,13 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 
 	connect(mUi->hotKeysTable, SIGNAL(cellEntered(int,int)), this, SLOT(activateShortcutLineEdit(int,int)));
 	connect(mUi->hotKeysTable, SIGNAL(cellClicked(int,int)), this, SLOT(activateShortcutLineEdit(int,int)));
-	connect(mUi->shortcutLineEdit, SIGNAL(newModifiers(QString)), this, SLOT(newModifiers(QString)));
-	connect(mUi->shortcutLineEdit, SIGNAL(newKey(QString)), this, SLOT(newKey(QString)));
+	connect(mUi->shortcutLineEdit, SIGNAL(newModifiers(Qt::KeyboardModifiers)), this, SLOT(newModifiers(Qt::KeyboardModifiers)));
+	connect(mUi->shortcutLineEdit, SIGNAL(newKey(int)), this, SLOT(newKey(int)));
 
 	loadHotKeys();
 }
 
-PreferencesHotKeyManagerPage::~ PreferencesHotKeyManagerPage()
+PreferencesHotKeyManagerPage::~PreferencesHotKeyManagerPage()
 {
 	delete mUi;
 }
@@ -44,20 +44,22 @@ void PreferencesHotKeyManagerPage::restoreSettings()
 
 }
 
-/*void PreferencesHotKeyManagerPage::mousePressEvent(QMouseEvent *event)
+void PreferencesHotKeyManagerPage::mousePressEvent(QMouseEvent *event)
 {
-	MouseButtons mb = None;
-	qDebug() << "ok";
+	/*MouseButtons mb = None;
 
 	switch(event->button()) {
 		case Qt::RightButton:
 			mb = MouseRB;
+			qDebug() << "RB";
 			break;
 		case Qt::LeftButton:
 			mb = MouseLB;
+			qDebug() << "LB";
 			break;
 		case Qt::MiddleButton:
 			mb = MouseMB;
+			qDebug() << "MB";
 			break;
 		default:
 			return;
@@ -71,8 +73,8 @@ void PreferencesHotKeyManagerPage::restoreSettings()
 		}
 		mUi->shortcutLineEdit->setFocus();
 		mCurrentModifiers = "";
-	}
-}*/
+	}*/
+}
 
 void PreferencesHotKeyManagerPage::loadHotKeys()
 {
@@ -106,20 +108,20 @@ void PreferencesHotKeyManagerPage::activateShortcutLineEdit(int const row, int c
 	mUi->shortcutLineEdit->setEnabled(true);
 }
 
-void PreferencesHotKeyManagerPage::newModifiers(QString const modifiers)
+void PreferencesHotKeyManagerPage::newModifiers(Qt::KeyboardModifiers modifiers)
 {
 	mCurrentModifiers = modifiers;
 }
 
-void PreferencesHotKeyManagerPage::newKey(QString const key)
+void PreferencesHotKeyManagerPage::newKey(int const key)
 {
 	if (mCurrentRow != -1) {
 		if (HotKeyManager::setShortcut
 					(mUi->hotKeysTable->item(mCurrentRow, 0)->text()
 					 , QKeySequence(mCurrentModifiers + key))) {
-			updateCurrentRow(mCurrentModifiers + key);
+			updateCurrentRow(QKeySequence(mCurrentModifiers + key).toString());
 		}
-		mCurrentModifiers = "";
+		mCurrentModifiers = Qt::NoModifier;
 	}
 }
 

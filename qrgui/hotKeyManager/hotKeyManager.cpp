@@ -89,7 +89,7 @@ void HotKeyManager::doShortcut(QEvent *event)
 		}
 	}
 
-	instance()->findShortcut(instance()->sequence(instance()->currentModifier(), mb));
+	instance()->findShortcut(sequence(instance()->currentModifier(), mb));
 }
 
 void HotKeyManager::setCurrentModifier(QString const mod)

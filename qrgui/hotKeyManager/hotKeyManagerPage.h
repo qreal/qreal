@@ -14,17 +14,17 @@ class PreferencesHotKeyManagerPage : public PreferencesPage
 	
 public:
 	explicit  PreferencesHotKeyManagerPage(QWidget *parent = 0);
-	~ PreferencesHotKeyManagerPage();
+	~PreferencesHotKeyManagerPage();
 
 	void save();
 	void restoreSettings();
 
-	//void mousePressEvent(QMouseEvent *event);
+	void mousePressEvent(QMouseEvent *event);
 
 private slots:
 	void activateShortcutLineEdit(int const row, int const column);
-	void newModifiers(QString const modifiers);
-	void newKey(QString const key);
+	void newModifiers(Qt::KeyboardModifiers modifiers);
+	void newKey(int const key);
 
 private:
 	void loadHotKeys();
@@ -33,5 +33,5 @@ private:
 	Ui::hotKeyManagerPage *mUi;
 
 	int mCurrentRow;
-	QString mCurrentModifiers;
+	Qt::KeyboardModifiers mCurrentModifiers;
 };

@@ -16,14 +16,16 @@ bool ShortcutEdit::event(QEvent *event)
 	if (event->type() == QEvent::KeyPress) {
 		QKeyEvent *keyevent = static_cast<QKeyEvent *> (event);
 		QKeySequence keyseq;
+		qDebug() << Qt::SHIFT + Qt::ALT;
 		switch(keyevent->key()) {
-			case 16777248: //Shift modifier
-			case 16777249: //Ctrl modifier
-			case 16777251: //Alt modifier
-				emit newModifiers(QKeySequence(keyevent->modifiers()).toString());
+			case Qt::Key_Shift:
+			case Qt::Key_Control:
+			case Qt::Key_Alt:
+			case Qt::Key_AltGr:
+				emit newModifiers(keyevent->modifiers());
 				break;
 			default:
-				emit newKey(QKeySequence(keyevent->key()).toString());
+				emit newKey(keyevent->key());
 		}
 		return true;
 	}
