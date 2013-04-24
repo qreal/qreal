@@ -15,8 +15,7 @@ bool ShortcutEdit::event(QEvent *event)
 {
 	if (event->type() == QEvent::KeyPress) {
 		QKeyEvent *keyevent = static_cast<QKeyEvent *> (event);
-		QKeySequence keyseq;
-		qDebug() << Qt::SHIFT + Qt::ALT;
+
 		switch(keyevent->key()) {
 			case Qt::Key_Shift:
 			case Qt::Key_Control:

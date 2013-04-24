@@ -25,6 +25,7 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 	connect(mUi->hotKeysTable, SIGNAL(cellClicked(int,int)), this, SLOT(activateShortcutLineEdit(int,int)));
 	connect(mUi->shortcutLineEdit, SIGNAL(newModifiers(Qt::KeyboardModifiers)), this, SLOT(newModifiers(Qt::KeyboardModifiers)));
 	connect(mUi->shortcutLineEdit, SIGNAL(newKey(int)), this, SLOT(newKey(int)));
+	connect(mUi->resetShortcutPushButton, SIGNAL(pressed()), this, SLOT(resetShortcuts()));
 
 	loadHotKeys();
 }
@@ -44,9 +45,9 @@ void PreferencesHotKeyManagerPage::restoreSettings()
 
 }
 
-void PreferencesHotKeyManagerPage::mousePressEvent(QMouseEvent *event)
+/*void PreferencesHotKeyManagerPage::mousePressEvent(QMouseEvent *event)
 {
-	/*MouseButtons mb = None;
+	MouseButtons mb = None;
 
 	switch(event->button()) {
 		case Qt::RightButton:
@@ -65,15 +66,22 @@ void PreferencesHotKeyManagerPage::mousePressEvent(QMouseEvent *event)
 			return;
 	}
 
-	if (mCurrentRow != -1 && mCurrentModifiers != "") {
+	if (mCurrentRow != -1 && mCurrentModifiers != Qt::NoModifier) {
+		qDebug() << QKeySequence(mCurrentModifiers);
 		if (HotKeyManager::setShortcut
 					(mUi->hotKeysTable->item(mCurrentRow, 0)->text()
 					 , QKeySequence(mCurrentModifiers), mb)) {
-			updateCurrentRow(HotKeyManager::sequence(mCurrentModifiers, mb));
+			updateCurrentRow(HotKeyManager::sequence(QKeySequence(mCurrentModifiers).toString(), mb));
 		}
 		mUi->shortcutLineEdit->setFocus();
-		mCurrentModifiers = "";
-	}*/
+		mCurrentModifiers = Qt::NoModifier;
+	}
+}*/
+
+void PreferencesHotKeyManagerPage::resetShortcuts()
+{
+	HotKeyManager::resetCmdShortcuts(mUi->hotKeysTable->item(mCurrentRow, 0)->text());
+	clearCurrentRow();
 }
 
 void PreferencesHotKeyManagerPage::loadHotKeys()
@@ -130,4 +138,11 @@ void PreferencesHotKeyManagerPage::updateCurrentRow(QString const shortcut)
 	QTableWidgetItem *item = mUi->hotKeysTable->item(mCurrentRow, 2);
 	item->setText(item->text() + shortcut + ", ");
 	mUi->shortcutLineEdit->setText(item->text());
+}
+
+void PreferencesHotKeyManagerPage::clearCurrentRow()
+{
+	QTableWidgetItem *item = mUi->hotKeysTable->item(mCurrentRow, 2);
+	item->setText("");
+	mUi->shortcutLineEdit->setText("");
 }
