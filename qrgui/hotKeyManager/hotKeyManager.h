@@ -70,6 +70,7 @@ private:
 	void resetAllShortcutsPrivate();
 
 	void deleteCommandPrivate(QString const &id);
+	bool isPrefix(QString const &keyseq);
 
 	QHash<QString, QAction *> cmds();
 	QHash<QString, QString> shortcuts();

@@ -90,6 +90,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	HotKeyManager::setCommand("Exit", "Close program", action);
 	HotKeyManager::setShortcut("Exit", QKeySequence(Qt::CTRL + Qt::Key_X));
+	HotKeyManager::setShortcut("Exit", QKeySequence(Qt::SHIFT + Qt::Key_X));
 	HotKeyManager::setShortcut("Exit", QKeySequence(Qt::ALT+Qt::SHIFT), MouseWU);
 	//HotKeyManager::resetCmdShortcuts("Close");*/
 
@@ -104,8 +105,9 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	this->addAction(closeTabs);
 
 	HotKeyManager::setCommand("Close.Tabs", "Close all opened tabs", closeTabs);
-	HotKeyManager::setShortcut("Close.Tabs", QKeySequence(Qt::SHIFT + Qt::Key_X, Qt::ALT + Qt::Key_Q));
-	HotKeyManager::setShortcut("Exit", QKeySequence(Qt::SHIFT + Qt::Key_X, Qt::ALT + Qt::Key_Q));
+	HotKeyManager::setShortcut("Close.Tabs", QKeySequence(Qt::SHIFT + Qt::Key_Z, Qt::ALT + Qt::Key_Q));
+	qDebug() << HotKeyManager::setShortcut("Close.Tabs", QKeySequence(Qt::SHIFT + Qt::Key_X, Qt::ALT + Qt::Key_U));
+
 	//
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());

@@ -120,7 +120,7 @@ bool HotKeyManager::registerShortcut(QString const &id, QKeySequence const &keys
 	if (mCmds.contains(id)) {
 		QString const shortcut = keyseq.toString();
 
-		if (!mShortcuts.contains(shortcut)) {
+		if (!isPrefix(shortcut)) {
 			mShortcuts[shortcut] = id;
 			QList<QKeySequence> seqs = mCmds[id]->shortcuts();
 			seqs.append(keyseq);
@@ -147,7 +147,7 @@ bool HotKeyManager::registerShortcut(QString const &id, QKeySequence const &mod,
 
 void HotKeyManager::registerShortcut(QString const &id, QString const &shortcut)
 {
-	if (!mShortcuts.contains(shortcut)) {
+	if (!isPrefix(shortcut)) {
 		mShortcuts[shortcut] = id;
 	}
 }
@@ -198,7 +198,7 @@ void HotKeyManager::resetShortcutsPrivate(QString const &id)
 	if (mCmds.contains(id)) {
 		QList<QString> shortcuts = mShortcuts.keys(id);
 
-		foreach(QString shortcut, shortcuts) {
+		foreach (QString shortcut, shortcuts) {
 			mShortcuts.remove(shortcut);
 		}
 
@@ -210,7 +210,7 @@ void HotKeyManager::resetAllShortcutsPrivate()
 {
 	QList<QAction *> cmds = mCmds.values();
 
-	foreach(QAction *cmd, cmds) {
+	foreach (QAction *cmd, cmds) {
 		cmd->setShortcuts(QList<QKeySequence>());
 	}
 
@@ -232,4 +232,20 @@ QHash<QString, QAction *> HotKeyManager::cmds()
 QHash<QString, QString> HotKeyManager::shortcuts()
 {
 	return mShortcuts;
+}
+
+bool HotKeyManager::isPrefix(QString const &keyseq)
+{
+	QStringList seqlist = keyseq.split(", ");
+	QString prefix;
+
+	foreach (QString const &seq, seqlist) {
+		prefix += seq;
+		if (mShortcuts.contains(prefix)) {
+			return true;
+		}
+		prefix += ", ";
+	}
+
+	return false;
 }
