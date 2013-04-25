@@ -72,34 +72,61 @@
                             <origin>%1/bin/help</origin>
                         </distributionDirectory>
                         <distributionFile>
-                            <origin>%2/QtNetwork4.dll</origin>
+                            <origin>%2/Qt5Network.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtCLucene4.dll</origin>
+                            <origin>%2/Qt5CLucene.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtHelp4.dll</origin>
+                            <origin>%2/Qt5Help.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtSql4.dll</origin>
+                            <origin>%2/Qt5Sql.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtCore4.dll</origin>
+                            <origin>%2/Qt5Core.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtGui4.dll</origin>
+                            <origin>%2/Qt5Gui.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtSvg4.dll</origin>
+                            <origin>%2/Qt5Widgets.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/../../../../../mingw/bin/mingwm10.dll</origin>
+                            <origin>%2/Qt5Svg.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2/QtXml4.dll</origin>
+                            <origin>%2/Qt5Xml.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%2//../../../../../mingw/bin/libgcc_s_dw2-1.dll</origin>
+                            <origin>%2/Qt5PrintSupport.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/icuin49.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libgcc_s_sjlj-1.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libwinpthread-1.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libstdc++-6.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/icuuc49.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/icudt49.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libGLESv2.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libEGL.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/D3DCompiler_43.dll</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>%1/installer/icon.ico</origin>
@@ -131,13 +158,13 @@
                         </shortcut>
                     </shortcutList>
                 </folder>
+                <!-- NXT Tools -->
                 <folder>
                     <description>Program Files</description>
                     <destination>${installdir}/nxt-tools</destination>
                     <name>nxttoolsdirectory</name>
                     <platforms>windows</platforms>
                     <distributionFileList>
-						<!-- NXT Tools -->
                         <distributionFile>
                             <origin>%1/bin/nxt-tools/upload.sh</origin>
                         </distributionFile>
@@ -156,9 +183,12 @@
                         <distributionDirectory>
                             <origin>%1/bin/nxt-tools/nxtOSEK</origin>
                         </distributionDirectory>
-						<!-- End NXT Tools -->
+                        <distributionDirectory>
+                            <origin>%1/bin/nxt-tools/cygwin</origin>
+                        </distributionDirectory>
                     </distributionFileList>
                 </folder>
+                <!-- End NXT Tools -->
                 <folder>
                     <description>Program Files</description>
                     <destination>${installdir}</destination>
@@ -171,7 +201,17 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>%2/../plugins/sqldrivers/qsqlite4.dll</origin>
+                            <origin>%2/../plugins/sqldrivers/qsqlite.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <destination>${installdir}/platforms</destination>
+                    <name>platformswindows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>%2/../plugins/platforms/qwindows.dll</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -250,33 +290,15 @@
             <program>${installdir}/qrgui.exe</program>
             <programArguments>--clear-conf</programArguments>
         </runProgram>
-        <addEnvironmentVariable>
-            <name>GNUARM_ROOT</name>
-            <scope>user</scope>
-            <value>/GNUARM</value>
-        </addEnvironmentVariable>
-        <addEnvironmentVariable>
-            <name>NEXTTOOL_ROOT</name>
-            <scope>user</scope>
-            <value>/nexttool</value>
-        </addEnvironmentVariable>
     </postInstallationActionList>
     <postUninstallationActionList>
         <deleteFile>
             <path>${windows_folder_desktopdirectory}/QReal-Robots.lnk</path>
         </deleteFile>
         <registryDelete>
-            <key>HKEY_LOCAL_MACHINE\Software\SPbSU\QReal Robots</key>
-            <name>Location</name>
+            <key>HKEY_CURRENT_USER\Software\SPbSU\QReal</key>
+            <name>installDir</name>
         </registryDelete>
-        <deleteEnvironmentVariable>
-            <name>GNUARM_ROOT</name>
-            <scope>user</scope>
-        </deleteEnvironmentVariable>
-        <deleteEnvironmentVariable>
-            <name>NEXTTOOL_ROOT</name>
-            <scope>user</scope>
-        </deleteEnvironmentVariable>
     </postUninstallationActionList>
     <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
@@ -304,4 +326,3 @@
         </directoryParameter>
     </parameterList>
 </project>
-

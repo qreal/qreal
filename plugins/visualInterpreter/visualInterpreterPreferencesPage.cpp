@@ -61,3 +61,8 @@ void VisualInterpreterPreferencesPage::save()
 	SettingsManager::setValue("generationTimeout", mUi->genTimeoutSpinBox->value());
 }
 
+void VisualInterpreterPreferencesPage::restoreSettings()
+{
+	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation").toString());
+}
+

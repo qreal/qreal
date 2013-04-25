@@ -38,6 +38,8 @@ Interpreter::Interpreter()
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
 
+	connect(mD2ModelWidget, SIGNAL(noiseSettingsChanged()), this, SIGNAL(noiseSettingsChangedBy2DModelWidget()));
+	connect(this, SIGNAL(noiseSettingsChanged()), mD2ModelWidget, SLOT(rereadNoiseSettings()));
 	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
 	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
@@ -60,7 +62,7 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	Tracer::debug(tracer::initialization, "Interpreter::init", "Going to set robot implementation, model type is " + DebugHelper::toString(modelType));
 	setRobotImplementation(modelType);
 
-	mWatchListWindow = new WatchListWindow(mParser, mInterpretersInterface->windowWidget());
+	mWatchListWindow = new utils::WatchListWindow(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
@@ -103,8 +105,6 @@ void Interpreter::interpret()
 	if (!configurer.configure(currentDiagramId)) {
 		return;
 	}
-
-	runTimer();
 }
 
 void Interpreter::stopRobot()
@@ -202,6 +202,8 @@ void Interpreter::sensorsConfiguredSlot()
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;
 
+		runTimer();
+
 		Tracer::debug(tracer::initialization, "Interpreter::sensorsConfiguredSlot", "Starting interpretation");
 		mRobotModel->startInterpretation();
 
@@ -283,25 +285,27 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 
 void Interpreter::runTimer()
 {
-	if (!mTimer->isActive()) {
-		mTimer->start(10);
-		connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
-	}
 	if (mRobotModel->sensor(inputPort::port1)) {
-		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)));
-		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
+		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)), Qt::UniqueConnection);
+		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
 	}
 	if (mRobotModel->sensor(inputPort::port2)) {
-		connect(mRobotModel->sensor(inputPort::port2)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot2(int)));
-		connect(mRobotModel->sensor(inputPort::port2)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
+		connect(mRobotModel->sensor(inputPort::port2)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot2(int)), Qt::UniqueConnection);
+		connect(mRobotModel->sensor(inputPort::port2)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
 	}
 	if (mRobotModel->sensor(inputPort::port3)) {
-		connect(mRobotModel->sensor(inputPort::port3)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot3(int)));
-		connect(mRobotModel->sensor(inputPort::port3)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
+		connect(mRobotModel->sensor(inputPort::port3)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot3(int)), Qt::UniqueConnection);
+		connect(mRobotModel->sensor(inputPort::port3)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
 	}
 	if (mRobotModel->sensor(inputPort::port4)) {
-		connect(mRobotModel->sensor(inputPort::port4)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot4(int)));
-		connect(mRobotModel->sensor(inputPort::port4)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()));
+		connect(mRobotModel->sensor(inputPort::port4)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot4(int)), Qt::UniqueConnection);
+		connect(mRobotModel->sensor(inputPort::port4)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
+	}
+	mRobotModel->nullifySensors();
+	if (!mTimer->isActive()) {
+		readSensorValues();
+		mTimer->start(25);
+		connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
 	}
 }
 
@@ -367,6 +371,9 @@ void Interpreter::resetVariables()
 
 void Interpreter::connectToRobot()
 {
+	if (mState == interpreting) {
+		return;
+	}
 	if (mConnected) {
 		mRobotModel->stopRobot();
 		mRobotModel->disconnectFromRobot();
@@ -414,12 +421,18 @@ void Interpreter::setConnectRobotAction(QAction *actionConnect)
 	mActionConnectToRobot = actionConnect;
 }
 
+void Interpreter::setNoiseSettings()
+{
+	mD2RobotModel->setNoiseSettings();
+	emit noiseSettingsChanged();
+}
+
 void Interpreter::reportError(QString const &message)
 {
 	mInterpretersInterface->errorReporter()->addError(message);
 }
 
-WatchListWindow *Interpreter::watchWindow() const
+utils::WatchListWindow *Interpreter::watchWindow() const
 {
 	return mWatchListWindow;
 }

@@ -20,7 +20,7 @@ public:
 	~VisualDebuggerPreferencesPage();
 
 	void save();
-
+	void restoreSettings();
 private slots:
 
 	/// Set path to builder (like gcc)

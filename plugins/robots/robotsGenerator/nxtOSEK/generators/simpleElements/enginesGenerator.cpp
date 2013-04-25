@@ -40,11 +40,11 @@ QList<SmartLine> EnginesGenerator::convertElementIntoDirectCommand(NxtOSEKRobotG
 
 	foreach (QString const &enginePort, portsToEngineNames(nxtGen->api()->stringProperty(logicElementId, "Ports"))) {
 
-		result.append(SmartLine("nxt_motor_set_speed(NXT_PORT_"
+		result.append(SmartLine("nxt_motor_set_speed("
 				+ enginePort + ", "
 				+ signRotate + power + ", "
 				+ brakeMode + ");", elementId));
-		addInitAndTerminateCode(nxtGen, elementId, "NXT_PORT_" + enginePort);
+		addInitAndTerminateCode(nxtGen, elementId, enginePort);
 	}
 
 	return result;

@@ -108,7 +108,7 @@ void NxtOSEKRobotGenerator::generateMakeFile(
 	resultMakeFile.close();
 
 	if (toGenerateIsEmpty) {
-		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node or Initial Block"));
+		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
 	}
 }
 
@@ -116,6 +116,7 @@ void NxtOSEKRobotGenerator::insertCode(
 		QString const &resultCode
 		, QString const &resultInitCode
 		, QString const &resultTerminateCode
+		, QString const &resultIsrHooksCode
 		, QString const &curInitialNodeNumber)
 {
 	if (mBalancerIsActivated) {
@@ -125,7 +126,8 @@ void NxtOSEKRobotGenerator::insertCode(
 	}
 	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@").replace("@@VARIABLES@@"
 			, generateVariableString() + "\n" + "@@VARIABLES@@").replace("@@INITHOOKS@@"
-			, resultInitCode).replace("@@TERMINATEHOOKS@@", resultTerminateCode);
+			, resultInitCode).replace("@@TERMINATEHOOKS@@", resultTerminateCode)
+			.replace("@@USERISRHOOKS@@", resultIsrHooksCode);
 	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
 	mResultOil.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
 }
@@ -167,7 +169,6 @@ void NxtOSEKRobotGenerator::generate()
 
 	IdList toGenerate;
 	toGenerate << mApi->elementsByType("InitialNode");
-	toGenerate << mApi->elementsByType("InitialBlock");
 
 	int curInitialNodeNumber = 0;
 	QString const projectName = "example" + QString::number(curInitialNodeNumber);
@@ -177,14 +178,15 @@ void NxtOSEKRobotGenerator::generate()
 
 	QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
 
+	bool generationOccured = false;
 	foreach (Id const &curInitialNode, toGenerate) {
 		if (!mApi->isGraphicalElement(curInitialNode)) {
 			continue;
 		}
-
 		if (mApi->parent(curInitialNode) != mDiagram) {
 			continue;
 		}
+		generationOccured = true;
 
 		initializeFields(resultTaskTemplate, curInitialNode);
 
@@ -196,6 +198,10 @@ void NxtOSEKRobotGenerator::generate()
 		curInitialNodeNumber++;
 	}
 
+	if (!generationOccured) {
+		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
+		return;
+	}
 	outputInCAndOilFile(projectName, projectDir, toGenerate);
 }
 
@@ -222,29 +228,19 @@ QList<SmartLine> &NxtOSEKRobotGenerator::terminateCode()
 	return mTerminateCode;
 }
 
+QList<SmartLine> &NxtOSEKRobotGenerator::isrHooksCode()
+{
+	return mIsrHooksCode;
+}
+
 qrRepo::RepoApi const *NxtOSEKRobotGenerator::api() const
 {
 	return mApi;
 }
 
-QByteArray &NxtOSEKRobotGenerator::portValue1()
+interpreters::robots::sensorType::SensorTypeEnum NxtOSEKRobotGenerator::portValue(int port) const
 {
-	return mPortValue1;
-}
-
-QByteArray &NxtOSEKRobotGenerator::portValue2()
-{
-	return mPortValue2;
-}
-
-QByteArray &NxtOSEKRobotGenerator::portValue3()
-{
-	return mPortValue3;
-}
-
-QByteArray &NxtOSEKRobotGenerator::portValue4()
-{
-	return mPortValue4;
+	return static_cast<interpreters::robots::sensorType::SensorTypeEnum>(SettingsManager::value("port" + QString::number(port) + "SensorType").toInt());
 }
 
 ErrorReporterInterface &NxtOSEKRobotGenerator::errorReporter()
@@ -299,8 +295,10 @@ void NxtOSEKRobotGenerator::addResultCodeInCFile(int curInitialNodeNumber)
 	resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
 	QString resultTerminateCode;
 	resultTerminateCode = addTabAndEndOfLine(mTerminateCode, resultTerminateCode);
+	QString resultIsrHooksCode;
+	resultIsrHooksCode = addTabAndEndOfLine(mIsrHooksCode, resultIsrHooksCode);
 	resultCode = "TASK(OSEK_Task_Number_" + QString::number(curInitialNodeNumber) +")\n{\n" + resultCode + "}";
-	insertCode(resultCode, resultInitCode, resultTerminateCode, QString::number(curInitialNodeNumber));
+	insertCode(resultCode, resultInitCode, resultTerminateCode, resultIsrHooksCode, QString::number(curInitialNodeNumber));
 }
 
 void NxtOSEKRobotGenerator::outputInCAndOilFile(QString const projectName, QString const projectDir

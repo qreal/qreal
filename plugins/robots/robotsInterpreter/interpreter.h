@@ -11,7 +11,7 @@
 #include "details/blocksTable.h"
 #include "details/d2RobotModel/d2RobotModel.h"
 
-#include "watchListWindow.h"
+#include "../../../qrutils/watchListWindow.h"
 
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
@@ -51,14 +51,20 @@ public:
 	/// Assigning a value to the field mActionConnectToRobot
 	void setConnectRobotAction(QAction *actionConnect);
 
+	void setNoiseSettings();
+
 	/// Enable Run and Stop buttons on 2d model widget
 	void enableD2ModelWidgetRunStopButtons();
 
 	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
 	void disableD2ModelWidgetRunStopButtons();
 
-	WatchListWindow *watchWindow() const;
+	utils::WatchListWindow *watchWindow() const;
 	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
+
+signals:
+	void noiseSettingsChanged();
+	void noiseSettingsChangedBy2DModelWidget();
 
 public slots:
 	void connectToRobot();
@@ -117,7 +123,7 @@ private:
 
 	robotModelType::robotModelTypeEnum mImplementationType;
 
-	WatchListWindow *mWatchListWindow;
+	utils::WatchListWindow *mWatchListWindow;
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;

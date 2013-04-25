@@ -19,7 +19,6 @@ HEADERS += \
 	sensorConstants.h \
 	robotSettingsPage.h \
 	customizer.h \
-	watchListWindow.h \
 	gridParameters.h \
 	details/thread.h \
 	details/blocksFactory.h \
@@ -60,7 +59,6 @@ SOURCES += \
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
-        watchListWindow.ui \
 	details/sensorsConfigurationWidget.ui \
 
 

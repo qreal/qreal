@@ -63,13 +63,19 @@ QPainterPath LineItem::shape() const
 
 void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 {
-	if ((SettingsManager::value("2dShowGrid").toBool()) && (mDragState == TopLeft || mDragState == BottomRight) && (strcmp(this->metaObject()->className(), "qReal::interpreters::robots::details::d2Model::WallItem")==0)){
-		calcResizeItem(event, SettingsManager::value("2dGridCellSize").toInt());
+	if (event->modifiers() & Qt::ShiftModifier) {
+		mX2=event->scenePos().x();
+		mY2=event->scenePos().y();
+		this->reshapeRectWithShift();
+	} else {
+		if ((SettingsManager::value("2dShowGrid").toBool()) && (mDragState == TopLeft || mDragState == BottomRight) && (strcmp(this->metaObject()->className(), "qReal::interpreters::robots::details::d2Model::WallItem")==0)){
+			calcResizeItem(event, SettingsManager::value("2dGridCellSize").toInt());
+		}
+		else if (mDragState == TopLeft || mDragState == BottomRight)
+			AbstractItem::resizeItem(event);
+		else
+			setFlag(QGraphicsItem::ItemIsMovable, true);
 	}
-	else if (mDragState == TopLeft || mDragState == BottomRight)
-		AbstractItem::resizeItem(event);
-	else
-		setFlag(QGraphicsItem::ItemIsMovable, true);
 }
 
 void LineItem::calcResizeItem(QGraphicsSceneMouseEvent *event, int indexGrid)

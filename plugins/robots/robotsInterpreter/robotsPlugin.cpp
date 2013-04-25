@@ -25,6 +25,8 @@ RobotsPlugin::RobotsPlugin()
 
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
+	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
+
 	initActions();
 }
 
@@ -40,10 +42,12 @@ void RobotsPlugin::initActions()
 	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
 	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), NULL);
+	mRunAction->setShortcut(QKeySequence(Qt::Key_F5));
 	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
 	QObject::connect(mRunAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
 
 	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), NULL);
+	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
 	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
 	QObject::connect(mStopRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(stopRobot()));
 
@@ -115,7 +119,7 @@ void RobotsPlugin::show2dModel()
 void RobotsPlugin::updateSettings()
 {
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized...");
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel").toInt());
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
 	QString const portName = SettingsManager::value("bluetoothPortName").toString();
@@ -179,6 +183,7 @@ interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produce
 void RobotsPlugin::rereadSettings()
 {
 	setTitlesVisibility();
+	mInterpreter.setNoiseSettings();
 }
 
 void RobotsPlugin::setTitlesVisibility()

@@ -60,3 +60,6 @@ robotModel=2
 showTitlesForRobots=false
 2dShowGrid=false
 2dGridCellSize=50
+enableNoiseOfSensors=false
+enableNoiseOfMotors=false
+approximationLevel=12

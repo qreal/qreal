@@ -43,32 +43,39 @@
 <context>
     <name>CheckoutDialog</name>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="20"/>
         <source>&amp;Browse...</source>
-        <translation type="obsolete">&amp;Просмотр...</translation>
+        <translation type="unfinished">&amp;Просмотр...</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="21"/>
         <source>Subversion place</source>
-        <translation type="obsolete">Место в SVNе</translation>
+        <translation type="unfinished">Место в SVNе</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="22"/>
         <source>Checkout to directory:</source>
-        <translation type="obsolete">Чекаут в папку:</translation>
+        <translation type="unfinished">Чекаут в папку:</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="25"/>
         <source>Ok</source>
-        <translation type="obsolete">ОК</translation>
+        <translation type="unfinished">ОК</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="26"/>
         <source>Cancel</source>
-        <translation type="obsolete">Отмена</translation>
+        <translation type="unfinished">Отмена</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="45"/>
         <source>Checkout options</source>
-        <translation type="obsolete">Настройки чекаута</translation>
+        <translation type="unfinished">Настройки чекаута</translation>
     </message>
     <message>
+        <location filename="dialogs/checkoutdialog.cpp" line="51"/>
         <source>Select directory</source>
-        <translation type="obsolete">Выбор папки</translation>
+        <translation type="unfinished">Выбор папки</translation>
     </message>
 </context>
 <context>
@@ -336,7 +343,7 @@
     <name>EditorViewScene</name>
     <message>
         <location filename="view/editorViewScene.cpp" line="336"/>
-        <location filename="view/editorViewScene.cpp" line="379"/>
+        <location filename="view/editorViewScene.cpp" line="403"/>
         <source>Discard</source>
         <translation>Убрать меню</translation>
     </message>
@@ -346,47 +353,47 @@
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="929"/>
+        <location filename="view/editorViewScene.cpp" line="1169"/>
         <source>Add connection</source>
         <translation>Добавить провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="936"/>
+        <location filename="view/editorViewScene.cpp" line="1175"/>
         <source>Disconnect</source>
         <translation>Убрать провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="942"/>
+        <location filename="view/editorViewScene.cpp" line="1180"/>
         <source>Add usage</source>
         <translation>Добавить использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="949"/>
+        <location filename="view/editorViewScene.cpp" line="1186"/>
         <source>Delete usage</source>
         <translation>Убрать использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="955"/>
+        <location filename="view/editorViewScene.cpp" line="1191"/>
         <source>Go to</source>
         <translation>Перейти</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="957"/>
+        <location filename="view/editorViewScene.cpp" line="1193"/>
         <source>Forward connection</source>
         <translation>По провязке вперёд</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="958"/>
+        <location filename="view/editorViewScene.cpp" line="1194"/>
         <source>Backward connection</source>
         <translation>По провязке назад</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="959"/>
+        <location filename="view/editorViewScene.cpp" line="1195"/>
         <source>Uses</source>
         <translation>Использует</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="960"/>
+        <location filename="view/editorViewScene.cpp" line="1196"/>
         <source>Used in</source>
         <translation>Используется в</translation>
     </message>
@@ -1290,7 +1297,7 @@
     </message>
     <message>
         <location filename="dialogs/preferencesDialog.cpp" line="51"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="115"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="128"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
@@ -1602,17 +1609,17 @@
         <translation>Выбрать шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="142"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="129"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="142"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="129"/>
         <source>You should restart QReal:Robots to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="142"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="129"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -1835,7 +1842,7 @@
         <translation type="obsolete">имя</translation>
     </message>
     <message>
-        <location filename="mainwindow/propertyEditorProxyModel.cpp" line="204"/>
+        <location filename="mainwindow/propertyEditorProxyModel.cpp" line="205"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
@@ -1855,7 +1862,7 @@
 <context>
     <name>PropertyEditorView</name>
     <message>
-        <location filename="view/propertyEditorView.cpp" line="177"/>
+        <location filename="view/propertyEditorView.cpp" line="170"/>
         <source>Specify directory:</source>
         <translation>Выберите каталог:</translation>
     </message>
@@ -1974,15 +1981,15 @@
 <context>
     <name>QtBoolEdit</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="228"/>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="238"/>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="263"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="233"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="243"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="268"/>
         <source>True</source>
         <translation> </translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="238"/>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="263"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="243"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="268"/>
         <source>False</source>
         <translation> </translation>
     </message>
@@ -1990,12 +1997,12 @@
 <context>
     <name>QtBoolPropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="1529"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="1678"/>
         <source>True</source>
         <translation> </translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="1530"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="1679"/>
         <source>False</source>
         <translation> </translation>
     </message>
@@ -2003,7 +2010,7 @@
 <context>
     <name>QtCharEdit</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="1601"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="1675"/>
         <source>Clear Char</source>
         <translation>Очистить</translation>
     </message>
@@ -2011,7 +2018,7 @@
 <context>
     <name>QtColorEditWidget</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2219"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2289"/>
         <source>...</source>
         <translation></translation>
     </message>
@@ -2019,22 +2026,22 @@
 <context>
     <name>QtColorPropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6259"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6375"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6267"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6383"/>
         <source>Green</source>
         <translation>Зелёный</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6275"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6391"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6283"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6399"/>
         <source>Alpha</source>
         <translation>Прозрачность</translation>
     </message>
@@ -2042,97 +2049,97 @@
 <context>
     <name>QtCursorDatabase</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="57"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="58"/>
         <source>Arrow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="59"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="60"/>
         <source>Up Arrow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="61"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="62"/>
         <source>Cross</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="63"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="64"/>
         <source>Wait</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="65"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="66"/>
         <source>IBeam</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="67"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="68"/>
         <source>Size Vertical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="69"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="70"/>
         <source>Size Horizontal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="71"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="72"/>
         <source>Size Backslash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="73"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="74"/>
         <source>Size Slash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="75"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="76"/>
         <source>Size All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="77"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="78"/>
         <source>Blank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="79"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="80"/>
         <source>Split Vertical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="81"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="82"/>
         <source>Split Horizontal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="83"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="84"/>
         <source>Pointing Hand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="85"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="86"/>
         <source>Forbidden</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="87"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="88"/>
         <source>Open Hand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="89"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="90"/>
         <source>Closed Hand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="91"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="92"/>
         <source>What&apos;s This</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="93"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="94"/>
         <source>Busy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2140,12 +2147,12 @@
 <context>
     <name>QtFontEditWidget</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2428"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2498"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2448"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qteditorfactory.cpp" line="2518"/>
         <source>Select Font</source>
         <translation>Выбрать шрифт</translation>
     </message>
@@ -2153,37 +2160,37 @@
 <context>
     <name>QtFontPropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5933"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6049"/>
         <source>Family</source>
         <translation>Семейство</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5946"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6062"/>
         <source>Point Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5954"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6070"/>
         <source>Bold</source>
         <translation>Полужирный</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5961"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6077"/>
         <source>Italic</source>
         <translation>Наклонный</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5968"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6084"/>
         <source>Underline</source>
         <translation>Подчёркнутый</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5975"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6091"/>
         <source>Strikeout</source>
         <translation>Зачёркнутый</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5982"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="6098"/>
         <source>Kerning</source>
         <translation>Кернинг</translation>
     </message>
@@ -2191,7 +2198,7 @@
 <context>
     <name>QtKeySequenceEdit</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="323"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="328"/>
         <source>Clear Shortcut</source>
         <translation>Очистить</translation>
     </message>
@@ -2199,17 +2206,17 @@
 <context>
     <name>QtLocalePropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2449"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2565"/>
         <source>%1, %2</source>
         <translation>%1, %2</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2502"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2618"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2510"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2626"/>
         <source>Country</source>
         <translation>Страна</translation>
     </message>
@@ -2217,17 +2224,17 @@
 <context>
     <name>QtPointFPropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2919"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3035"/>
         <source>(%1, %2)</source>
         <translation>(%1, %2)</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2990"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3106"/>
         <source>X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2998"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3114"/>
         <source>Y</source>
         <translation></translation>
     </message>
@@ -2235,17 +2242,17 @@
 <context>
     <name>QtPointPropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2679"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2795"/>
         <source>(%1, %2)</source>
         <translation>(%1, %2)</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2716"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2832"/>
         <source>X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2723"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="2839"/>
         <source>Y</source>
         <translation></translation>
     </message>
@@ -2253,12 +2260,12 @@
 <context>
     <name>QtPropertyBrowserUtils</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="178"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="187"/>
         <source>[%1, %2, %3] (%4)</source>
         <translation>[%1, %2, %3] (%4)</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="208"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="214"/>
         <source>[%1, %2]</source>
         <translation>[%1, %2]</translation>
     </message>
@@ -2266,27 +2273,27 @@
 <context>
     <name>QtRectFPropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4424"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4540"/>
         <source>[(%1, %2), %3 x %4]</source>
         <translation>[(%1, %2), %3 x %4]</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4580"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4696"/>
         <source>X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4588"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4704"/>
         <source>Y</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4596"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4712"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4605"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4721"/>
         <source>Height</source>
         <translation>Высота</translation>
     </message>
@@ -2294,27 +2301,27 @@
 <context>
     <name>QtRectPropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3994"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4110"/>
         <source>[(%1, %2), %3 x %4]</source>
         <translation>[(%1, %2), %3 x %4]</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4114"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4230"/>
         <source>X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4121"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4237"/>
         <source>Y</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4128"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4244"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4136"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="4252"/>
         <source>Height</source>
         <translation>Высота</translation>
     </message>
@@ -2322,17 +2329,17 @@
 <context>
     <name>QtSizeFPropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3602"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3718"/>
         <source>%1 x %2</source>
         <translation>%1 x %2</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3732"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3848"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3741"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3857"/>
         <source>Height</source>
         <translation>Высота</translation>
     </message>
@@ -2340,33 +2347,33 @@
 <context>
     <name>QtSizePolicyPropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5445"/>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5446"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5561"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5562"/>
         <source>&lt;Invalid&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5447"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5563"/>
         <source>[%1, %2, %3, %4]</source>
         <translation>[%1, %2, %3, %4]</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5492"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5608"/>
         <source>Horizontal Policy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5501"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5617"/>
         <source>Vertical Policy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5510"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5626"/>
         <source>Horizontal Stretch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5518"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="5634"/>
         <source>Vertical Stretch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2374,17 +2381,17 @@
 <context>
     <name>QtSizePropertyManager</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3238"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3354"/>
         <source>%1 x %2</source>
         <translation>%1 x %2</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3334"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3450"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3342"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="3458"/>
         <source>Height</source>
         <translation>Высота</translation>
     </message>
@@ -2392,12 +2399,12 @@
 <context>
     <name>QtTreePropertyBrowser</name>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qttreepropertybrowser.cpp" line="476"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qttreepropertybrowser.cpp" line="477"/>
         <source>Property</source>
         <translation>Свойство</translation>
     </message>
     <message>
-        <location filename="thirdparty/qtpropertybrowser/src/qttreepropertybrowser.cpp" line="477"/>
+        <location filename="thirdparty/qtpropertybrowser/src/qttreepropertybrowser.cpp" line="478"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
@@ -3041,7 +3048,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="720"/>
+        <location filename="mainwindow/mainWindow.cpp" line="728"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3066,16 +3073,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="745"/>
-        <location filename="mainwindow/mainWindow.cpp" line="763"/>
-        <location filename="mainwindow/mainWindow.cpp" line="781"/>
+        <location filename="mainwindow/mainWindow.cpp" line="754"/>
+        <location filename="mainwindow/mainWindow.cpp" line="772"/>
+        <location filename="mainwindow/mainWindow.cpp" line="790"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="747"/>
-        <location filename="mainwindow/mainWindow.cpp" line="765"/>
-        <location filename="mainwindow/mainWindow.cpp" line="783"/>
+        <location filename="mainwindow/mainWindow.cpp" line="756"/>
+        <location filename="mainwindow/mainWindow.cpp" line="774"/>
+        <location filename="mainwindow/mainWindow.cpp" line="792"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3180,23 +3187,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="781"/>
+        <location filename="mainwindow/mainWindow.cpp" line="790"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="783"/>
+        <location filename="mainwindow/mainWindow.cpp" line="792"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="926"/>
+        <location filename="mainwindow/mainWindow.cpp" line="936"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="908"/>
-        <location filename="mainwindow/mainWindow.cpp" line="934"/>
+        <location filename="mainwindow/mainWindow.cpp" line="918"/>
+        <location filename="mainwindow/mainWindow.cpp" line="944"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3205,17 +3212,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1727"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1734"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1756"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1763"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1756"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1763"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3236,7 +3243,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1344"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1356"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3266,12 +3273,14 @@
 <context>
     <name>qReal::PluginDialog</name>
     <message>
+        <location filename="dialogs/plugindialog.cpp" line="26"/>
         <source>OK</source>
-        <translation type="obsolete">ОК</translation>
+        <translation type="unfinished">ОК</translation>
     </message>
     <message>
+        <location filename="dialogs/plugindialog.cpp" line="51"/>
         <source>Plugin Information</source>
-        <translation type="obsolete">Информация о плагинах</translation>
+        <translation type="unfinished">Информация о плагинах</translation>
     </message>
 </context>
 <context>
@@ -3475,17 +3484,17 @@
 <context>
     <name>qReal::gui::PaletteTree</name>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="375"/>
+        <location filename="mainwindow/paletteTree.cpp" line="380"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="383"/>
+        <location filename="mainwindow/paletteTree.cpp" line="388"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="391"/>
+        <location filename="mainwindow/paletteTree.cpp" line="396"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>
