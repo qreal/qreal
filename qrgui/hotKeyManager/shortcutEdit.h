@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QLineEdit>
+#include <QtWidgets/QLineEdit>
 #include <QtGui/QKeySequence>
 
 class ShortcutEdit : public QLineEdit

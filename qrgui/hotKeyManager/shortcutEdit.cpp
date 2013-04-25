@@ -1,10 +1,10 @@
-#include "shortcutEdit.h"
 #include "QtWidgets/QLineEdit"
 #include <QtCore/QEvent>
 #include <QtCore/QDebug>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QKeySequence>
 
+#include "shortcutEdit.h"
 
 ShortcutEdit::ShortcutEdit(QObject *parent)
 	: QLineEdit(static_cast<QWidget *> (parent))

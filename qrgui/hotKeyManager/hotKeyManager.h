@@ -21,57 +21,59 @@ enum MouseButtons
 class HotKeyManager
 {
 public:
-	static HotKeyManager* instance();
+	static HotKeyManager& instance();
 
 	/// Sets a new command. Connect (on signal triggered()) and key sequence are made by component.
 	/// @param id Command id.
 	/// @param label Short description of command
 	/// @param cmd QAction object which contains shortcut and with whom connection is performed.
-	static void setCommand(QString const id, QString const label, QAction *cmd);
+	static void setCommand(QString const &id, QString const &label, QAction *cmd);
 
-	static void delCommand(QString const id);
+	static void deleteCommand(QString const &id);
 
 	/// Sets a new shortcut to existing command
 	/// @param id Command id
 	/// @param keyseq Shortcut
-	static bool setShortcut(QString const id, QKeySequence const keyseq);
-	static bool setShortcut(QString const id, QKeySequence const mod, MouseButtons mb);
+	static bool setShortcut(QString const &id, QKeySequence const &keyseq);
+	static bool setShortcut(QString const &id, QKeySequence const &mod, MouseButtons mb);
 
-	static void resetCmdShortcuts(QString const id);
-	static void resetAllCmdsShortcuts();
+	static void resetShortcuts(const QString &id);
+	static void resetAllShortcuts();
 
 	static void doShortcut(QEvent *event);
 
-	static void setCurrentModifier(QString const mod);
+	static void setCurrentModifier(QString const &mod);
 
 	static QHash<QString, QAction *> commands();
 	static QHash<QString, QString> cmdsShortcuts();
 
-	static QString sequence(QString const mod, MouseButtons mb);
+	static QString sequence(QString const &mod, MouseButtons mb);
 
 private:
 	HotKeyManager();
+	HotKeyManager(HotKeyManager const&);
 
-	void registerCommand(QString const id, QAction *cmd);
+	void operator=(HotKeyManager const&);
 
-	bool registerShortcut(QString const id, QKeySequence const keyseq);
-	bool registerShortcut(QString const id, QKeySequence const mod, MouseButtons mb);
-	void registerShortcut(QString const id, QString const shortcut);
+	void registerCommand(QString const &id, QAction *cmd);
 
-	void findShortcut(QString const shortcut);
+	bool registerShortcut(QString const &id, QKeySequence const &keyseq);
+	bool registerShortcut(QString const &id, QKeySequence const &mod, MouseButtons mb);
+	void registerShortcut(QString const &id, QString const &shortcut);
 
-	void setCurrMod(QString const mod);
+	void findShortcut(QString const &shortcut);
+
+	void setCurrentModifierPrivate(QString const &mod);
 	QString currentModifier();
 
-	void resetShortcuts(QString const id);
-	void resetAllShortcuts();
+	void resetShortcutsPrivate(QString const &id);
+	void resetAllShortcutsPrivate();
 
-	void delCmd(QString const id);
+	void deleteCommandPrivate(QString const &id);
 
 	QHash<QString, QAction *> cmds();
 	QHash<QString, QString> shortcuts();
 
-	static HotKeyManager* mInstance;
 	QString mCurrentModifer;
 	QHash<QString, QAction *> mCmds;
 	QHash<QString, QString> mShortcuts;

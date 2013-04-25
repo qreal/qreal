@@ -1,11 +1,11 @@
-#include "qRealApplication.h"
-#include "hotKeyManager/hotKeyManager.h"
-
 #include <QtCore/QEvent>
 #include <QtGui/QActionEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QWheelEvent>
 #include <QtGui/QKeySequence>
+
+#include "qRealApplication.h"
+#include "hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 

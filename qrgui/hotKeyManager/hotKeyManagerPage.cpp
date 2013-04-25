@@ -1,13 +1,13 @@
-#include "hotKeyManagerPage.h"
-#include "ui_hotKeyManagerPage.h"
-#include "hotKeyManager.h"
-
 #include <QtWidgets/QAction>
 #include <QtCore/QString>
 #include <QtCore/QHash>
 #include <QtGui/QKeySequence>
 #include <QtCore/QDebug>
 #include <QtGui/QWheelEvent>
+
+#include "hotKeyManagerPage.h"
+#include "ui_hotKeyManagerPage.h"
+#include "hotKeyManager.h"
 
 using namespace qReal;
 
@@ -80,7 +80,7 @@ void PreferencesHotKeyManagerPage::restoreSettings()
 
 void PreferencesHotKeyManagerPage::resetShortcuts()
 {
-	HotKeyManager::resetCmdShortcuts(mUi->hotKeysTable->item(mCurrentRow, 0)->text());
+	HotKeyManager::resetShortcuts(mUi->hotKeysTable->item(mCurrentRow, 0)->text());
 	clearCurrentRow();
 }
 

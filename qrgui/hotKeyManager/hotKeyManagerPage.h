@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../dialogs/preferencesPages/preferencesPage.h"
-
 #include <QtGui/QKeySequence>
+
+#include "../dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
 	class hotKeyManagerPage;

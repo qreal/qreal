@@ -1,5 +1,3 @@
-#include "hotKeyManager.h"
-
 #include <QtCore/QString>
 #include <QtCore/QHash>
 #include <QtWidgets/QAction>
@@ -10,54 +8,53 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QWheelEvent>
 
-using namespace qReal;
+#include "hotKeyManager.h"
 
-HotKeyManager* HotKeyManager::mInstance = 0;
+using namespace qReal;
 
 HotKeyManager::HotKeyManager()
 	: mCurrentModifer("")
 {
 }
 
-HotKeyManager* HotKeyManager::instance()
+HotKeyManager& HotKeyManager::instance()
 {
-	if (mInstance == 0) {
-		mInstance = new HotKeyManager();
-	}
-	return mInstance;
+	static HotKeyManager instance;
+
+	return instance;
 }
 
-void HotKeyManager::setCommand(QString const id, QString const label, QAction *cmd)
+void HotKeyManager::setCommand(const QString &id, const QString &label, QAction *cmd)
 {
 	cmd->setWhatsThis(label);
 
-	instance()->registerCommand(id, cmd);
+	instance().registerCommand(id, cmd);
 }
 
-void HotKeyManager::delCommand(QString const id)
+void HotKeyManager::deleteCommand(QString const &id)
 {
-	resetCmdShortcuts(id);
-	instance()->delCmd(id);
+	resetShortcuts(id);
+	instance().deleteCommandPrivate(id);
 }
 
-bool HotKeyManager::setShortcut(QString const id, QKeySequence const keyseq)
+bool HotKeyManager::setShortcut(QString const &id, QKeySequence const &keyseq)
 {
-	return instance()->registerShortcut(id, keyseq);
+	return instance().registerShortcut(id, keyseq);
 }
 
-bool HotKeyManager::setShortcut(QString const id, QKeySequence const mod, MouseButtons mb)
+bool HotKeyManager::setShortcut(QString const &id, QKeySequence const &mod, MouseButtons mb)
 {
-	return instance()->registerShortcut(id, mod, mb);
+	return instance().registerShortcut(id, mod, mb);
 }
 
-void HotKeyManager::resetCmdShortcuts(QString const id)
+void HotKeyManager::resetShortcuts(QString const &id)
 {
-	instance()->resetShortcuts(id);
+	instance().resetShortcutsPrivate(id);
 }
 
-void HotKeyManager::resetAllCmdsShortcuts()
+void HotKeyManager::resetAllShortcuts()
 {
-	instance()->resetAllShortcuts();
+	instance().resetAllShortcutsPrivate();
 }
 
 void HotKeyManager::doShortcut(QEvent *event)
@@ -89,36 +86,36 @@ void HotKeyManager::doShortcut(QEvent *event)
 		}
 	}
 
-	instance()->findShortcut(sequence(instance()->currentModifier(), mb));
+	instance().findShortcut(sequence(instance().currentModifier(), mb));
 }
 
-void HotKeyManager::setCurrentModifier(QString const mod)
+void HotKeyManager::setCurrentModifier(const QString &mod)
 {
-	instance()->setCurrMod(mod);
+	instance().setCurrentModifierPrivate(mod);
 }
 
 QHash<QString, QAction *> HotKeyManager::commands()
 {
-	return instance()->cmds();
+	return instance().cmds();
 }
 
 QHash<QString, QString> HotKeyManager::cmdsShortcuts()
 {
-	return instance()->shortcuts();
+	return instance().shortcuts();
 }
 
-void HotKeyManager::registerCommand(QString const id, QAction *cmd)
+void HotKeyManager::registerCommand(const QString &id, QAction *cmd)
 {
 	QList<QKeySequence> shortcuts = cmd->shortcuts();
 
-	foreach(QKeySequence shortcut, shortcuts) {
-		instance()->registerShortcut(id, shortcut.toString());
+	foreach (QKeySequence const &shortcut, shortcuts) {
+		instance().registerShortcut(id, shortcut.toString());
 	}
 
 	mCmds[id] = cmd;
 }
 
-bool HotKeyManager::registerShortcut(QString const id, QKeySequence const keyseq)
+bool HotKeyManager::registerShortcut(QString const &id, QKeySequence const &keyseq)
 {
 	if (mCmds.contains(id)) {
 		QString const shortcut = keyseq.toString();
@@ -134,7 +131,7 @@ bool HotKeyManager::registerShortcut(QString const id, QKeySequence const keyseq
 	return false;
 }
 
-bool HotKeyManager::registerShortcut(QString const id, QKeySequence const mod, MouseButtons mb)
+bool HotKeyManager::registerShortcut(QString const &id, QKeySequence const &mod, MouseButtons mb)
 {
 	if (mCmds.contains(id)) {
 		QString const shortcut = sequence(mod.toString(), mb);
@@ -148,21 +145,21 @@ bool HotKeyManager::registerShortcut(QString const id, QKeySequence const mod, M
 	return false;
 }
 
-void HotKeyManager::registerShortcut(QString const id, QString const shortcut)
+void HotKeyManager::registerShortcut(QString const &id, QString const &shortcut)
 {
 	if (!mShortcuts.contains(shortcut)) {
 		mShortcuts[shortcut] = id;
 	}
 }
 
-void HotKeyManager::findShortcut(QString const shortcut)
+void HotKeyManager::findShortcut(QString const &shortcut)
 {
 	if (mShortcuts.contains(shortcut) && mCmds[mShortcuts.value(shortcut)]->parentWidget()->isActiveWindow()) {
 		mCmds[mShortcuts.value(shortcut)]->trigger();
 	}
 }
 
-QString HotKeyManager::sequence(QString const mod, MouseButtons mb)
+QString HotKeyManager::sequence(const QString &mod, MouseButtons mb)
 {
 	QString seq = mod;
 
@@ -186,7 +183,7 @@ QString HotKeyManager::sequence(QString const mod, MouseButtons mb)
 	return seq;
 }
 
-void HotKeyManager::setCurrMod(QString const mod)
+void HotKeyManager::setCurrentModifierPrivate(QString const &mod)
 {
 	mCurrentModifer = mod;
 }
@@ -196,7 +193,7 @@ QString HotKeyManager::currentModifier()
 	return mCurrentModifer;
 }
 
-void HotKeyManager::resetShortcuts(QString const id)
+void HotKeyManager::resetShortcutsPrivate(QString const &id)
 {
 	if (mCmds.contains(id)) {
 		QList<QString> shortcuts = mShortcuts.keys(id);
@@ -209,7 +206,7 @@ void HotKeyManager::resetShortcuts(QString const id)
 	}
 }
 
-void HotKeyManager::resetAllShortcuts()
+void HotKeyManager::resetAllShortcutsPrivate()
 {
 	QList<QAction *> cmds = mCmds.values();
 
@@ -220,7 +217,7 @@ void HotKeyManager::resetAllShortcuts()
 	mShortcuts.clear();
 }
 
-void HotKeyManager::delCmd(QString const id)
+void HotKeyManager::deleteCommandPrivate(QString const &id)
 {
 	if (mCmds.contains(id)) {
 		mCmds.remove(id);
