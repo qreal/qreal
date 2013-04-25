@@ -169,7 +169,6 @@ void NxtOSEKRobotGenerator::generate()
 
 	IdList toGenerate;
 	toGenerate << mApi->elementsByType("InitialNode");
-	toGenerate << mApi->elementsByType("InitialBlock");
 
 	int curInitialNodeNumber = 0;
 	QString const projectName = "example" + QString::number(curInitialNodeNumber);
