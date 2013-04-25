@@ -426,17 +426,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="48"/>
+        <location filename="robotsPlugin.cpp" line="49"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="52"/>
+        <location filename="robotsPlugin.cpp" line="54"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="58"/>
+        <location filename="robotsPlugin.cpp" line="60"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -445,7 +445,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="104"/>
+        <location filename="robotsPlugin.cpp" line="106"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -496,12 +496,12 @@ p, li { white-space: pre-wrap; }
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="183"/>
+        <location filename="interpreter.cpp" line="181"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="187"/>
+        <location filename="interpreter.cpp" line="185"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
@@ -563,7 +563,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::RobotsPlugin</name>
     <message>
-        <location filename="robotsPlugin.cpp" line="109"/>
+        <location filename="robotsPlugin.cpp" line="111"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -747,32 +747,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::LoopBlock</name>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="35"/>
+        <location filename="details/blocks/loopBlock.cpp" line="34"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="40"/>
+        <location filename="details/blocks/loopBlock.cpp" line="39"/>
         <source>iteration</source>
         <translation>итерация</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="45"/>
+        <location filename="details/blocks/loopBlock.cpp" line="44"/>
         <source>Two links marked as &quot;iteration&quot; found</source>
         <translation>Найдено две связи, помеченные как &quot;итерация&quot;</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="53"/>
+        <location filename="details/blocks/loopBlock.cpp" line="52"/>
         <source>Two outgoing links to a next element found</source>
         <translation>Найдено две исходящие связи к следующему элементу</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="60"/>
+        <location filename="details/blocks/loopBlock.cpp" line="59"/>
         <source>There must be a link with property &quot;Guard&quot; set as &quot;iteration&quot;</source>
         <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в &quot;итерация&quot;</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="65"/>
+        <location filename="details/blocks/loopBlock.cpp" line="64"/>
         <source>There must be a non-marked outgoing link</source>
         <translation>Должна быть непомеченная исходящая связь</translation>
     </message>
@@ -911,19 +911,16 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>watchListWindow</name>
     <message>
-        <location filename="watchListWindow.ui" line="38"/>
         <source>Watch List</source>
-        <translation>Список переменных</translation>
+        <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="watchListWindow.ui" line="85"/>
         <source>Name</source>
-        <translation>Имя</translation>
+        <translation type="obsolete">Имя</translation>
     </message>
     <message>
-        <location filename="watchListWindow.ui" line="90"/>
         <source>Value</source>
-        <translation>Значение</translation>
+        <translation type="obsolete">Значение</translation>
     </message>
 </context>
 </TS>

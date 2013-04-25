@@ -108,7 +108,7 @@ void NxtOSEKRobotGenerator::generateMakeFile(
 	resultMakeFile.close();
 
 	if (toGenerateIsEmpty) {
-		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node or Initial Block"));
+		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
 	}
 }
 
@@ -178,14 +178,15 @@ void NxtOSEKRobotGenerator::generate()
 
 	QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
 
+	bool generationOccured = false;
 	foreach (Id const &curInitialNode, toGenerate) {
 		if (!mApi->isGraphicalElement(curInitialNode)) {
 			continue;
 		}
-
 		if (mApi->parent(curInitialNode) != mDiagram) {
 			continue;
 		}
+		generationOccured = true;
 
 		initializeFields(resultTaskTemplate, curInitialNode);
 
@@ -197,6 +198,10 @@ void NxtOSEKRobotGenerator::generate()
 		curInitialNodeNumber++;
 	}
 
+	if (!generationOccured) {
+		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
+		return;
+	}
 	outputInCAndOilFile(projectName, projectDir, toGenerate);
 }
 

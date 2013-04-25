@@ -29,7 +29,7 @@ public:
 
 private slots:
 	/// Calls code generator
-	void generateRobotSourceCode();
+	bool generateRobotSourceCode();
 
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
 	void flashRobot();
