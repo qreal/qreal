@@ -20,7 +20,7 @@ protected:
 	void variableAnalysis(QByteArray const &code);
 
 private:
-	QByteArray replaceSensorVariables(QByteArray portValue) const;
+	QByteArray replaceSensorVariables(qReal::interpreters::robots::sensorType::SensorTypeEnum portValue) const;
 	bool mGenerateToInit;
 };
 

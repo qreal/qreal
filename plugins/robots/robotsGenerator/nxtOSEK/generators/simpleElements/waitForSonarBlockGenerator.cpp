@@ -29,9 +29,8 @@ QList<SmartLine> WaitForSonarBlockGenerator::convertElementIntoDirectCommand(Nxt
 			, "Sign").toUtf8()));
 	QString const condition = inequalitySign + " " + distance;
 
-	result.append(SmartLine("while (!(ecrobot_get_sonar_sensor(" + port + ")"
-			+ condition + "))", elementId));
-	result.append(SmartLine("{", elementId));
+	result.append(SmartLine("while (!(ecrobot_get_sonar_sensor(" + port + ") "
+			+ condition + ")) {", elementId));
 	result.append(SmartLine("}", elementId));
 
 	addInitAndTerminateCode(nxtGen, port, elementId);

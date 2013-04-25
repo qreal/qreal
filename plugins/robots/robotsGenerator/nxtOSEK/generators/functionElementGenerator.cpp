@@ -41,18 +41,21 @@ void FunctionElementGenerator::variableAnalysis(QByteArray const &code)
 	}
 }
 
-QByteArray FunctionElementGenerator::replaceSensorVariables(QByteArray portValue) const
+QByteArray FunctionElementGenerator::replaceSensorVariables(qReal::interpreters::robots::sensorType::SensorTypeEnum portValue) const
 {
-	if ((portValue == "Сенсор цвета (красный)")
-			|| (portValue == "Сенсор цвета (зеленый)")
-			|| (portValue == "Сенсор цвета (синий)")
-			|| (portValue == "Сенсор цвета (все цвета)")
-			|| (portValue == "Сенсор цвета (пассивный)")) {
+	switch (portValue) {
+	case qReal::interpreters::robots::sensorType::colorRed:
+	case qReal::interpreters::robots::sensorType::colorGreen:
+	case qReal::interpreters::robots::sensorType::colorBlue:
+	case qReal::interpreters::robots::sensorType::colorFull:
+	case qReal::interpreters::robots::sensorType::colorNone:
+		return "ecrobot_get_nxtcolorsensor_light(NXT_PORT_S";
+	case qReal::interpreters::robots::sensorType::sonar:
+		return "ecrobot_get_sonar_sensor(NXT_PORT_S";
+	case qReal::interpreters::robots::sensorType::light:
 		return "ecrobot_get_light_sensor(NXT_PORT_S";
-	} else if (portValue == "Ультразвуковой сенсор") {
-			 return "ecrobot_get_sonar_sensor(NXT_PORT_S";
-	} else {
-			 return "ecrobot_get_touch_sensor(NXT_PORT_S";
+	default:
+		return "ecrobot_get_touch_sensor(NXT_PORT_S";
 	}
 }
 
@@ -63,11 +66,10 @@ QList<SmartLine> FunctionElementGenerator::convertBlockIntoCode()
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
 	QByteArray byteFuncCode = mNxtGen->api()->stringProperty(logicElementId, "Body").toUtf8();
-
-	byteFuncCode.replace("Sensor1", replaceSensorVariables(mNxtGen->portValue1()) + "1)");
-	byteFuncCode.replace("Sensor2", replaceSensorVariables(mNxtGen->portValue2()) + "2)");
-	byteFuncCode.replace("Sensor3", replaceSensorVariables(mNxtGen->portValue3()) + "3)");
-	byteFuncCode.replace("Sensor4", replaceSensorVariables(mNxtGen->portValue4()) + "4)");
+	byteFuncCode.replace("Sensor1", replaceSensorVariables(mNxtGen->portValue(1)) + "1)");
+	byteFuncCode.replace("Sensor2", replaceSensorVariables(mNxtGen->portValue(2)) + "2)");
+	byteFuncCode.replace("Sensor3", replaceSensorVariables(mNxtGen->portValue(3)) + "3)");
+	byteFuncCode.replace("Sensor4", replaceSensorVariables(mNxtGen->portValue(4)) + "4)");
 
 	variableAnalysis(byteFuncCode);
 	QString const funcCode = QString::fromUtf8(byteFuncCode);

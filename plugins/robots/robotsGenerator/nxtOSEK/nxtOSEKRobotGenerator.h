@@ -8,6 +8,7 @@
 #include "../../../../qrkernel/ids.h"
 #include "../../../../qrrepo/repoApi.h"
 #include "../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../../robotsInterpreter/sensorConstants.h"
 
 #include "generators/abstractElementGenerator.h"
 #include "smartLine.h"
@@ -28,12 +29,14 @@ public:
 	QList<SmartLine> &variables();
 	QList<SmartLine> &initCode();
 	QList<SmartLine> &terminateCode();
+	QList<SmartLine> &isrHooksCode();
 	qrRepo::RepoApi const *api() const;
 
-	QByteArray &portValue1();
-	QByteArray &portValue2();
-	QByteArray &portValue3();
-	QByteArray &portValue4();
+	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue(int port) const;
+	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue1() const;
+	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue2() const;
+	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue3() const;
+	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue4() const;
 
 	qReal::ErrorReporterInterface &errorReporter();
 	qReal::Id &previousElement();
@@ -51,6 +54,7 @@ private:
 			QString const &resultCode
 			, QString const &resultInitCode
 			, QString const &resultTerminateCode
+			, QString const &resultIsrHooksCode
 			, QString const &curInitialNodeNumber);
 	void deleteResidualLabels(QString const &projectName);
 	void generateMakeFile(bool const &toGenerateIsEmpty, QString const &projectName, QString const &projectDir);
@@ -77,11 +81,7 @@ private:
 	QList< QList<SmartLine> > mGeneratedStringSet;
 	QList<SmartLine> mInitCode;
 	QList<SmartLine> mTerminateCode;
-
-	QByteArray mPortValue1;
-	QByteArray mPortValue2;
-	QByteArray mPortValue3;
-	QByteArray mPortValue4;
+	QList<SmartLine> mIsrHooksCode;
 
 	/// Set of elements that have been already observed, but can create a regular loop (If blocks, Loop etc)
 	QStack<qReal::Id> mPreviousLoopElements;
