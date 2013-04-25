@@ -106,7 +106,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	HotKeyManager::setCommand("Close.Tabs", "Close all opened tabs", closeTabs);
 	HotKeyManager::setShortcut("Close.Tabs", QKeySequence(Qt::SHIFT + Qt::Key_Z, Qt::ALT + Qt::Key_Q));
-	qDebug() << HotKeyManager::setShortcut("Close.Tabs", QKeySequence(Qt::SHIFT + Qt::Key_X, Qt::ALT + Qt::Key_U));
+	HotKeyManager::setShortcut("Close.Tabs", QKeySequence(Qt::SHIFT + Qt::Key_X, Qt::ALT + Qt::Key_U));
 
 	//
 
@@ -475,8 +475,9 @@ void MainWindow::openRecentProjectsMenu()
 void MainWindow::closeAllTabs()
 {
 	int const tabCount = mUi->tabs->count();
+
 	for (int i = 0; i < tabCount; i++) {
-		closeTab(i);
+		closeTab(0);
 	}
 	disconnectWindowTitle();
 }
