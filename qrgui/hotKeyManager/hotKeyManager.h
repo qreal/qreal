@@ -23,11 +23,11 @@ class HotKeyManager
 public:
 	static HotKeyManager& instance();
 
-	/// Sets a new command. Connect (on signal triggered()) and key sequence are made by component.
+	/// Sets a new command. Connect (on signal triggered()) and key sequences are made by component.
 	/// @param id Command id.
 	/// @param label Short description of command
-	/// @param cmd QAction object which contains shortcut and with whom connection is performed.
-	static void setCommand(QString const &id, QString const &label, QAction *cmd);
+	/// @param command QAction object which contains shortcuts and with whom connection is performed.
+	static void setCommand(QString const &id, QString const &label, QAction *command);
 
 	static void deleteCommand(QString const &id);
 
@@ -35,7 +35,7 @@ public:
 	/// @param id Command id
 	/// @param keyseq Shortcut
 	static bool setShortcut(QString const &id, QKeySequence const &keyseq);
-	static bool setShortcut(QString const &id, QKeySequence const &mod, MouseButtons mb);
+	static bool setShortcut(QString const &id, QKeySequence const &modifier, MouseButtons mousebutton);
 
 	static void resetShortcuts(QString const &id);
 	static void resetAllShortcuts();
@@ -43,12 +43,12 @@ public:
 
 	static void doShortcut(QEvent *event);
 
-	static void setCurrentModifier(QString const &mod);
+	static void setCurrentModifier(QString const &modifier);
 
 	static QHash<QString, QAction *> commands();
 	static QHash<QString, QString> shortcuts();
 
-	static QString sequence(QString const &mod, MouseButtons mb);
+	static QString sequence(QString const &modifier, MouseButtons mousebutton);
 
 private:
 	HotKeyManager();
@@ -56,15 +56,15 @@ private:
 
 	void operator=(HotKeyManager const&);
 
-	void registerCommand(QString const &id, QAction *cmd);
+	void registerCommand(QString const &id, QAction *command);
 
 	bool registerShortcut(QString const &id, QKeySequence const &keyseq);
-	bool registerShortcut(QString const &id, QKeySequence const &mod, MouseButtons mb);
+	bool registerShortcut(QString const &id, QKeySequence const &modifier, MouseButtons mousebutton);
 	void registerShortcut(QString const &id, QString const &shortcut);
 
 	void findShortcut(QString const &shortcut);
 
-	void setCurrentModifierPrivate(QString const &mod);
+	void setCurrentModifierPrivate(QString const &modifier);
 	QString currentModifier();
 
 	void resetShortcutsPrivate(QString const &id);

@@ -141,7 +141,6 @@ void PreferencesHotKeyManagerPage::newKey(int const key)
 				HotKeyManager::deleteShortcut(mCurrentId, mCurrentItem->text());
 
 				if (HotKeyManager::setShortcut(mCurrentId, QKeySequence(shortcut))) {
-					qDebug() << shortcut;
 					mCurrentItem->setText(shortcut);
 					mUi->shortcutLineEdit->setText(mCurrentItem->text());
 				} else {

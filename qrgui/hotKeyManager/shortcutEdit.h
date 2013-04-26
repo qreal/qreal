@@ -7,7 +7,7 @@ class ShortcutEdit : public QLineEdit
 {
 	Q_OBJECT
 public:
-	explicit ShortcutEdit(QObject *parent = 0);
+	explicit ShortcutEdit(QWidget *parent = 0);
 
 	bool event(QEvent *event);
 	

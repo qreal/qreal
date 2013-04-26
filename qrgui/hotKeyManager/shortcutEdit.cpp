@@ -6,8 +6,8 @@
 
 #include "shortcutEdit.h"
 
-ShortcutEdit::ShortcutEdit(QObject *parent)
-	: QLineEdit(static_cast<QWidget *> (parent))
+ShortcutEdit::ShortcutEdit(QWidget *parent)
+	: QLineEdit(parent)
 {
 }
 
