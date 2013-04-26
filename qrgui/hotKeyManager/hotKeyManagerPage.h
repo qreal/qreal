@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtGui/QKeySequence>
+#include <QtWidgets/QTableWidgetItem>
 
 #include "../dialogs/preferencesPages/preferencesPage.h"
 
@@ -19,21 +20,20 @@ public:
 	void save();
 	void restoreSettings();
 
-	//void mousePressEvent(QMouseEvent *event);
-
 private slots:
+	void doubleClicked(int const row, int const column);
 	void activateShortcutLineEdit(int const row, int const column);
 	void newModifiers(Qt::KeyboardModifiers modifiers);
 	void newKey(int const key);
 	void resetShortcuts();
+	void resetAllShortcuts();
 
 private:
 	void loadHotKeys();
-	void updateCurrentRow(QString const shortcut);
-	void clearCurrentRow();
 
 	Ui::hotKeyManagerPage *mUi;
 
-	int mCurrentRow;
+	QString mCurrentId;
+	QTableWidgetItem *mCurrentItem;
 	Qt::KeyboardModifiers mCurrentModifiers;
 };

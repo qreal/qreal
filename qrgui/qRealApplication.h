@@ -9,5 +9,5 @@ class QRealApplication : public QApplication
 
 public:
 	QRealApplication(int &argc, char **argv);
-	bool notify ( QObject *receiver, QEvent *event);
+	bool notify(QObject *receiver, QEvent *event);
 };

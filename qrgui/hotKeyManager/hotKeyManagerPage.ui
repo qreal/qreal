@@ -59,7 +59,7 @@
          <enum>QAbstractItemView::SingleSelection</enum>
         </property>
         <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
+         <enum>QAbstractItemView::SelectItems</enum>
         </property>
         <property name="showGrid">
          <bool>false</bool>
@@ -80,7 +80,7 @@
          <number>0</number>
         </property>
         <property name="columnCount">
-         <number>3</number>
+         <number>5</number>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
          <number>100</number>
@@ -109,7 +109,17 @@
         </column>
         <column>
          <property name="text">
-          <string>Shortcut</string>
+          <string>Shortcut 1</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Shortcut 2</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Shortcut 3</string>
          </property>
         </column>
        </widget>
