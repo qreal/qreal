@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QLineEdit>
 
 #include "tool.h"
 #include "../private/toolController.h"

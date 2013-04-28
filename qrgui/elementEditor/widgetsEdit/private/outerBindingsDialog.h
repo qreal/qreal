@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QtGui/QDialog>
-#include <QtGui/QTableWidgetItem>
-#include <QtGui/QComboBox>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QTableWidgetItem>
+#include <QtWidgets/QComboBox>
 
 #include "../propertyBinding/propertyProxyBase.h"
 

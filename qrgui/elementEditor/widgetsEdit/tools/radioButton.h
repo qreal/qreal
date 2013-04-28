@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QRadioButton>
+#include <QtWidgets/QRadioButton>
 
 #include "abstractButton.h"
 #include "../private/toolController.h"

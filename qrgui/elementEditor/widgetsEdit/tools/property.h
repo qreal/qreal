@@ -2,8 +2,8 @@
 
 #include "../../qtpropertybrowser/src/QtVariantProperty"
 
-#include <QObject>
-#include <QString>
+#include <QtCore/QObject>
+#include <QtCore/QString>
 
 namespace qReal
 {
@@ -13,8 +13,8 @@ namespace widgetsEdit
 class Property
 {
 public:
-	Property(QString const &name = "", int type = 0,
-			 QtVariantProperty *qtProperty = NULL);
+	Property(QString const &name = "", int type = 0
+			, QtVariantProperty *qtProperty = NULL);
 
 	QString name() const;
 	void setName(QString const &name);

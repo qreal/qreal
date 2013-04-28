@@ -2,7 +2,7 @@
 
 #include <QtCore/QDebug>
 #include <QtXml/QDomElement>
-#include <QtGui/QGraphicsProxyWidget>
+#include <QtWidgets/QGraphicsProxyWidget>
 #include <QtGui/QIcon>
 
 #include "../private/toolController.h"

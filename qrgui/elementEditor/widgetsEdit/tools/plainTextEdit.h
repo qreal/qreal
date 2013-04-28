@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QPlainTextEdit>
+#include <QtWidgets/QPlainTextEdit>
 
 #include "abstractScrollArea.h"
 #include "../private/toolController.h"

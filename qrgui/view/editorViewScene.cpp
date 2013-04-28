@@ -481,7 +481,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 					}
 				}
 			}
-		}
 
 			if(newParent && dynamic_cast<NodeElement*>(newParent)) {
 				if (!canBeContainedBy(newParent->id(), id)) {
@@ -497,24 +496,34 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 				}
 			}
 
-			//temporary solution for chaotic changes of coordinates of created elements with edge menu
-			if (dynamic_cast<EdgeElement*>(newParent)) {
-				newParent = NULL;
-			}
 		}
+		QPointF const position = !newParent ? scenePos
+				: newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
 
+		Id const parentId = newParent ? newParent->id() : mMVIface->rootId();
+		createSingleElement(id, name, e, position, parentId, isFromLogicalModel);
+
+		if (e) {
+			delete e;
+		}
 	}
 
-	QPointF const position = !newParent ? scenePos : newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
+	emit elementCreated(id);
+}
 
-	Id parentId = newParent ? newParent->id() : mMVIface->rootId();
-
-	//inserting new node into edge
-	Id insertedNodeId = mMVIface->graphicalAssistApi()->createElement(parentId, id, isFromLogicalModel, name, position);
+void EditorViewScene::createSingleElement(Id const &id, QString const &name, Element * e
+		, QPointF const &position, Id const &parentId, bool isFromLogicalModel)
+{
+	QList<NodeElement*> elements;
+	Id newElemId = mMVIface->graphicalAssistApi()-> createElement(parentId, id, isFromLogicalModel , name, position);
 	if (dynamic_cast<NodeElement*>(e)) {
-		insertNodeIntoEdge(insertedNodeId, parentId, isFromLogicalModel, scenePos);
+		QSize size = mMVIface->graphicalAssistApi()->editorManager().iconSize(newElemId);
+		getNodeById(newElemId)->setPos(position.x()- size.width()/2, position.y());
+		elements.append(getNodeById(newElemId));
+		insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, position
+				, QPointF(size.width(), size.height()), elements);
 	}
-
+}
 void EditorViewScene::createGroupOfElements(qReal::Id const &id, QPointF const &position, qReal::Id const&parentId
 		, bool isFromLogicalModel)
 {

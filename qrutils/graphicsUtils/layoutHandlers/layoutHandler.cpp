@@ -1,7 +1,7 @@
-#include <QtGui/QWidget>
 #include <QtGui/QPalette>
-#include <QtGui/QGraphicsProxyWidget>
-#include <QtGui/QGraphicsDropShadowEffect>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGraphicsProxyWidget>
+#include <QtWidgets/QGraphicsDropShadowEffect>
 
 #include "layoutHandler.h"
 

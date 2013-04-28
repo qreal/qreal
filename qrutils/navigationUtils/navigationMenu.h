@@ -1,10 +1,10 @@
 #pragma once
 
 #include <QtCore/QList>
-#include <QtGui/QFrame>
-#include <QtGui/QPushButton>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QStackedLayout>
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QStackedLayout>
 
 #include "../utilsDeclSpec.h"
 

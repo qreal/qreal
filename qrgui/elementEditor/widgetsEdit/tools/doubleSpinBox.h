@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QDoubleSpinBox>
+#include <QtWidgets/QDoubleSpinBox>
 
 #include "abstractSpinBox.h"
 #include "../private/toolController.h"

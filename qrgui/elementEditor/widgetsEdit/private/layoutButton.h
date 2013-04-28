@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QPushButton>
+#include <QtWidgets/QPushButton>
 #include <QtGui/QIcon>
 
 #include "../tools/layoutHelpers/layoutTypes.h"

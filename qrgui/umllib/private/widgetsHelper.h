@@ -42,6 +42,7 @@ class WtfIconEngineV2: public SdfIconEngineV2Interface
 public:
 	WtfIconEngineV2(QString const &fileName);
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
+	virtual QIconEngine *clone() const;
 
 private:
 	QPixmap mPixmap;

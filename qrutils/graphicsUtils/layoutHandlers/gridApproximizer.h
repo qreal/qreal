@@ -2,7 +2,7 @@
 
 #include <QtCore/QRectF>
 #include <QtCore/QPair>
-#include <QtGui/QGraphicsGridLayout>
+#include <QtWidgets/QGraphicsGridLayout>
 
 #include "gridIndex.h"
 

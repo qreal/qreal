@@ -1,4 +1,4 @@
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtGui/QPainter>
 
 #include "linearLayoutHelper.h"

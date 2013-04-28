@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QDebug>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "rootWidget.h"
 #include "layoutTool.h"

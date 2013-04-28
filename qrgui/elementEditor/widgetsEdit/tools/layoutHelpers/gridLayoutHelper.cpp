@@ -1,6 +1,6 @@
 #include <QtCore/QDebug>
+#include <QtWidgets/QWidget>
 #include <QtGui/QPainter>
-#include <QtGui/QWidget>
 
 #include "gridLayoutHelper.h"
 

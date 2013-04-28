@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QPushButton>
+#include <QtWidgets/QPushButton>
 
 #include "abstractButton.h"
 #include "../private/toolController.h"

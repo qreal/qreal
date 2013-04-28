@@ -1,4 +1,5 @@
 #include <QtGui/QMouseEvent>
+#include <QtGui/QDrag>
 
 #include "toolList.h"
 #include "toolFactory.h"

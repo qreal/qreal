@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QAbstractSpinBox>
+#include <QtWidgets/QAbstractSpinBox>
 
 #include "tool.h"
 #include "../private/toolController.h"

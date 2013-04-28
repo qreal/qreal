@@ -4,7 +4,7 @@
 #include <QtCore/QPair>
 #include <QtCore/QListIterator>
 #include <QtGui/QPixmap>
-#include <QtGui/QListWidgetItem>
+#include <QtWidgets/QListWidgetItem>
 
 #include "../tools/tool.h"
 #include "../tools/root.h"

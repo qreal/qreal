@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtGui/QWidget>
-#include <QtGui/QGraphicsProxyWidget>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGraphicsProxyWidget>
 #include <QtCore/QPersistentModelIndex>
 
 #include "tools/tool.h"

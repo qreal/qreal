@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGroupBox>
+#include <QtWidgets/QGroupBox>
 
 #include "layoutTool.h"
 

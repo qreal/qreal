@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "../../qrutils/navigationUtils/navigationView.h"
 #include "common/templateDocumentBuilder.h"

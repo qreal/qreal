@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QString>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 
 #include "../../../umllib/nodeElement.h"
 #include "../../../editorPluginInterface/propertyEditorInterface.h"

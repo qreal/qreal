@@ -1,7 +1,7 @@
 #include <QtCore/QDebug>
 #include <QtXml/QDomDocument>
-#include <QtGui/QComboBox>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QPushButton>
 
 #include "trigger.h"
 #include "triggerWidget.h"

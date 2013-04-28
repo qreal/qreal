@@ -4,7 +4,7 @@
 #include <QtCore/QRect>
 #include <QtCore/QSize>
 #include <QtCore/QDate>
-#include <QtGui/QSizePolicy>
+#include <QtWidgets/QSizePolicy>
 
 #include "xmlUtils.h"
 

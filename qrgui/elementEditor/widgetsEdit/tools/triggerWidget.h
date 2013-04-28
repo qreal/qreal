@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QtGui/QWidget>
-#include <QtGui/QComboBox>
-#include <QtGui/QStackedLayout>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QStackedLayout>
 
 #include "trigger.h"
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QtCore/QMap>
-#include <QtGui/QWidget>
-#include <QtGui/QStackedLayout>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QStackedLayout>
 
 #include "../utilsDeclSpec.h"
 #include "navigationController.h"

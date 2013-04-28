@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsLinearLayout>
+#include <QtWidgets/QGraphicsLinearLayout>
 
 #include "../layoutTool.h"
 #include "layoutHelperBase.h"

@@ -16,8 +16,11 @@
 using namespace utils;
 
 ShapeEdit::ShapeEdit(bool isIconEditor, QWidget *parent)
-	: QWidget(parent), mIsIconEditor(isIconEditor)
-	, mUi(new Ui::ShapeEdit), mDocumentBuilder(NULL)
+	: QWidget(parent)
+	, navigation::NavigationPageWithMenu()
+	, mIsIconEditor(isIconEditor)
+	, mUi(new Ui::ShapeEdit)
+	, mDocumentBuilder(NULL)
 {
 	init();
 }
@@ -88,11 +91,7 @@ void ShapeEdit::init()
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
 	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
-	connect(mUi->saveAsPictureButton, SIGNAL(clicked()), this, SLOT(savePicture()));
-	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 	connect(this, SIGNAL(saveToXmlSignal()), this, SLOT(saveToXml()));
-	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
-	connect(mUi->openButton, SIGNAL(clicked()), this, SLOT(open()));
 	connect(this, SIGNAL(openSignal()), this, SLOT(open()));
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));

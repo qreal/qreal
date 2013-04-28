@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtGui/QGraphicsLinearLayout>
-#include <QtGui/QGraphicsProxyWidget>
+#include <QtWidgets/QGraphicsLinearLayout>
+#include <QtWidgets/QGraphicsProxyWidget>
 
 #include "../../utilsDeclSpec.h"
 

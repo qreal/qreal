@@ -1,7 +1,7 @@
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsSceneDragDropEvent>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsSceneDragDropEvent>
+#include <QtWidgets/QGraphicsLinearLayout>
 #include <QtGui/QPainter>
-#include <QtGui/QGraphicsLinearLayout>
 
 #include "layoutTool.h"
 #include "../private/toolFactory.h"

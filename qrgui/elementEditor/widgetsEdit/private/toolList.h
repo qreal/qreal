@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtGui/QListWidget>
-#include <QtGui/QListWidgetItem>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QListWidgetItem>
 
 #include "../tools/tool.h"
 

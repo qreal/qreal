@@ -1,6 +1,6 @@
 #include <QtGui/QIcon>
-#include <QtGui/QPushButton>
-#include <QtGui/QGridLayout>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QGridLayout>
 
 #include "startPage.h"
 

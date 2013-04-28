@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QAbstractScrollArea>
+#include <QtWidgets/QAbstractScrollArea>
 
 #include "frame.h"
 

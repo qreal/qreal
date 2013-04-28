@@ -16,7 +16,8 @@ namespace Ui {
 	class ShapeEdit;
 }
 
-class ShapeEdit : public QWidget {
+class ShapeEdit : public QWidget, public navigation::NavigationPageWithMenu
+{
 	Q_OBJECT
 public:
 	ShapeEdit(bool isIconEditor, QWidget *parent = NULL);

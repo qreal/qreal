@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QAbstractButton>
+#include <QtWidgets/QAbstractButton>
 
 #include "tool.h"
 #include "../private/toolController.h"

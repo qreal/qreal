@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QPushButton>
 
 #include "../../../qrutils/navigationUtils/navigationMenu.h"
 

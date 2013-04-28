@@ -1,4 +1,4 @@
-#include <QtGui/QGroupBox>
+#include <QtWidgets/QGroupBox>
 
 #include "root.h"
 

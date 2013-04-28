@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 #include "frame.h"
 #include "../private/toolController.h"

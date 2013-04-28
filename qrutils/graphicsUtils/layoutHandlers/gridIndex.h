@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsGridLayout>
+#include <QtWidgets/QGraphicsGridLayout>
 
 #include "../../utilsDeclSpec.h"
 

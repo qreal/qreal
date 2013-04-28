@@ -164,3 +164,8 @@ void WtfIconEngineV2::paint(QPainter *painter, QRect const &rect
 	painter->setRenderHint(QPainter::Antialiasing, true);
 	painter->drawPixmap(resRect, mPixmap);
 }
+
+QIconEngine *WtfIconEngineV2::clone() const
+{
+	return NULL;
+}

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtGui/QWidget>
-#include <QtGui/QGraphicsLinearLayout>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGraphicsLinearLayout>
 
 #include "tool.h"
 #include "layoutTool.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QVector>
-#include <QtGui/QGraphicsGridLayout>
+#include <QtWidgets/QGraphicsGridLayout>
 
 #include "../layoutTool.h"
 #include "layoutHelperBase.h"

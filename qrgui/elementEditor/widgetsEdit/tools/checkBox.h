@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QCheckBox>
+#include <QtWidgets/QCheckBox>
 
 #include "abstractButton.h"
 #include "../private/toolController.h"

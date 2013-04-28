@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QFrame>
+#include <QtWidgets/QFrame>
 
 #include "layoutTool.h"
 

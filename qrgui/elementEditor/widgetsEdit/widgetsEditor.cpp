@@ -1,8 +1,8 @@
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtGui/QKeyEvent>
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 #include <QtXml/QDomDocument>
 
 #include "widgetsEditor.h"

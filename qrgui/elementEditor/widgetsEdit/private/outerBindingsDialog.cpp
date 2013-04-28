@@ -1,5 +1,5 @@
 #include <QtCore/QMetaProperty>
-#include <QtGui/QFileDialog>
+#include <QtWidgets/QFileDialog>
 
 #include "outerBindingsDialog.h"
 #include "ui_outerBindongsDialog.h"

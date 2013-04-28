@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QScrollArea>
+#include <QtWidgets/QScrollArea>
 
 #include "abstractScrollArea.h"
 

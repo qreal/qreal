@@ -1,8 +1,8 @@
 #pragma once
 
 #include <QtCore/QDebug>
-#include <QtGui/QLayout>
-#include <QtGui/QGraphicsColorizeEffect>
+#include <QtWidgets/QLayout>
+#include <QtWidgets/QGraphicsColorizeEffect>
 
 #include "tool.h"
 

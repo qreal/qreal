@@ -139,7 +139,7 @@ void NodeElement::setName(QString const &value)
 	mGraphicalAssistApi->setName(id(), value);
 }
 
-void NodeElement::setGeom(QRectF const &geom)
+void NodeElement::setGeom(QRectF const &realGeom)
 {
 	prepareGeometryChange();
 	setPos(realGeom.topLeft());
