@@ -111,8 +111,7 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal const dalpha = len < eps ? 0 : acos((x1 * x2 + y1 * y2) / len);
 	qreal const alpha =  len < eps ? 0 : acos((1 * x2 + 0 * y2) / len1);
 	if (event->modifiers() & Qt::ShiftModifier) {
-		mMaster->rotate(mMaster->rotation() - sign * (alpha - fmod (alpha, M_PI/4))*180 / M_PI);
-		printf("%f", dalpha);
+		mMaster->rotate(mMaster->rotation() - sign * (alpha - fmod (alpha, M_PI/4)) * 180 / M_PI);
 	} else {
 		mMaster->rotate(mMaster->rotation() - sign * dalpha * 180 / M_PI);
 	}

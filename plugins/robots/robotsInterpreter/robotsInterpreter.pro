@@ -14,12 +14,11 @@ else:LIBS += -L../../../bin -lqextserialport
 TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
-        robotsPlugin.h \
+robotsPlugin.h \
 	interpreter.h \
 	sensorConstants.h \
 	robotSettingsPage.h \
 	customizer.h \
-	gridParameters.h \
 	details/thread.h \
 	details/blocksFactory.h \
 	details/blocksTable.h \
@@ -32,7 +31,8 @@ HEADERS += \
 	details/abstractTimer.h \
 	details/realTimer.h \
 	details/sensorsConfigurationWidget.h \
-	details/nullTimer.h
+	details/nullTimer.h \
+    gridParameters.h
 
 
 SOURCES += \

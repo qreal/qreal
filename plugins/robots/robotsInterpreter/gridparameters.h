@@ -5,25 +5,25 @@
 #include <QtWidgets/QLabel>
 #include <QObject>
 
-class gridParameters
-        : public QGroupBox
+class GridParameters
+		: public QGroupBox
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit gridParameters(QWidget *parent = 0);
-    ~gridParameters();
+	explicit GridParameters(QWidget *parent = 0);
+	~GridParameters();
 
 public slots:
-    void showGrid(bool isGridEnabled);
-    void setCellSize(int cellSizeValue);
+	void showGrid(bool isGridEnabled);
+	void setCellSize(int cellSizeValue);
 
 signals:
-    void parametersChanged();
+	void parametersChanged();
 
 private:
-	QSlider *cellSize;
-    QCheckBox *showGridCheckBox;
-    QLabel *cellSizeLabel;
+	QSlider *mCellSize;
+	QCheckBox *mShowGridCheckBox;
+	QLabel *mCellSizeLabel;
 };
 

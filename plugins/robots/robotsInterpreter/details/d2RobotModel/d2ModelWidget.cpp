@@ -100,7 +100,6 @@ void D2ModelWidget::initWidget()
 
 void D2ModelWidget::connectUiButtons()
 {
-
 	connect(mUi->enableMotorNoiseCheckBox, SIGNAL(toggled(bool)), this, SLOT(changeNoiseSettings()));
 	connect(mUi->enableSensorNoiseCheckBox, SIGNAL(toggled(bool)), this, SLOT(changeNoiseSettings()));
 
@@ -500,7 +499,6 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 			mCurrentWall->reshapeBeginWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 			mCurrentWall->reshapeEndWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 		} else {
-
 			if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
 				mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
 			}

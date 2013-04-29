@@ -9,7 +9,7 @@ namespace graphicsUtils
 class QRUTILS_EXPORT GridDrawer
 {
 public:
-	void drawGrid(QPainter *painter, const QRectF &rect, const int indexGrid);
 	GridDrawer();
+	void drawGrid(QPainter *painter, const QRectF &rect, const int indexGrid);
 };
 }

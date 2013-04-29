@@ -14,11 +14,12 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	: LineItem(begin, end)
 	, mDragged(false)
 	, mImage(QImage(":/icons/2d_wall.png"))
+	, mOldX1(0)
+	, mOldY1(0)
+
 {
 	setPrivateData();
 	setAcceptDrops(true);
-	qreal x1;
-	qreal y1;
 }
 
 void WallItem::setPrivateData()
@@ -64,21 +65,19 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
-	x1 = abs(mX1 - event->scenePos().x());
-	y1 = abs(mY1 - event->scenePos().y());
+	mOldX1 = qAbs(mX1 - event->scenePos().x());
+	mOldY1 = qAbs(mY1 - event->scenePos().y());
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	QPointF const oldPos = pos();
-	if (SettingsManager::value("2dShowGrid").toBool())
-	{
-		QPointF pos = event->scenePos();
-		qreal deltaX = (mX1 - mX2);
-		qreal deltaY = (mY1 - mY2);
-		mX1 = pos.x() - x1;
-		mY1 = pos.y() - y1;
-
+	if (SettingsManager::value("2dShowGrid").toBool() && mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)){
+		QPointF const pos = event->scenePos();
+		qreal const deltaX = (mX1 - mX2);
+		qreal const deltaY = (mY1 - mY2);
+		mX1 = pos.x() - mOldX1;
+		mY1 = pos.y() - mOldY1;
 		this->reshapeBeginWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 		this->setDraggedEndWithGrid(deltaX, deltaY);
 	} else {
@@ -124,14 +123,3 @@ void WallItem::onOverlappedWithRobot(bool overlapped)
 {
 	mOverlappedWithRobot = overlapped;
 }
-
-int WallItem::sign(qreal x)
-{
-	if (x<0)
-		return -1;
-	else if (x>0)
-		return 1;
-	else
-		return 0;
-}
-

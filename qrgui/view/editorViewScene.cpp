@@ -1658,8 +1658,7 @@ void EditorViewScene::deleteUsageActionTriggered()
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (mNeedDrawGrid) {
-		mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
-
+		mWidthOfGrid  = SettingsManager::value("GridWidth").toDouble() / 100;
 		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		drawGrid(painter, rect);
 	}

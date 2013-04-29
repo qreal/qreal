@@ -167,7 +167,6 @@ void AbstractItem::reshapeRectWithShift()
 	}
 }
 
-
 void AbstractItem::changeDragState(qreal x, qreal y)
 {
 	if (QRectF(mapToScene(mX1, mY1), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y))) {

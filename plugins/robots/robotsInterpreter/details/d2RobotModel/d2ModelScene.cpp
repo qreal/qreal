@@ -17,6 +17,7 @@ using namespace graphicsUtils;
 
 D2ModelScene::D2ModelScene(AbstractView *view, QObject *parent)
 		: AbstractScene(view, parent)
+		, mGridDrawer(new GridDrawer)
 {
 	mFirstPenWidth = 6;
 	mSizeEmptyRectX = 1000;
@@ -24,7 +25,6 @@ D2ModelScene::D2ModelScene(AbstractView *view, QObject *parent)
 	setEmptyRect(-500, -500, mSizeEmptyRectX, mSizeEmptyRectY);
 	setItemIndexMethod(NoIndex);
 	setEmptyPenBrushItems();
-	gd = new GridDrawer;
 }
 
 D2ModelScene::~D2ModelScene()
@@ -79,14 +79,14 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &re
 {
 	setX2andY2(event);
 	if (mGraphicsItem) {
-		QPointF oldBegin = mGraphicsItem->getX1andY1();
-		QPointF oldEnd = mGraphicsItem->getX2andY2();
-		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
-			mView->setDragMode(QGraphicsView::NoDrag);
-		}
-		mGraphicsItem->resizeItem(event);
+			QPointF oldBegin = mGraphicsItem->getX1andY1();
+			QPointF oldEnd = mGraphicsItem->getX2andY2();
+			if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
+				mView->setDragMode(QGraphicsView::NoDrag);
+			}
+			mGraphicsItem->resizeItem(event);
 
-		if (mGraphicsItem->realShape().intersects(rect) && dynamic_cast<WallItem *> (mGraphicsItem) != NULL) {
+		if (mGraphicsItem->realShape().intersects(rect) && dynamic_cast<WallItem *> (mGraphicsItem)) {
 			mGraphicsItem->reverseOldResizingItem(oldBegin, oldEnd);
 		}
 	}
@@ -103,12 +103,14 @@ void D2ModelScene::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void D2ModelScene::drawBackground ( QPainter * painter, const QRectF & rect )
+void D2ModelScene::drawBackground(QPainter *painter, const QRectF &rect )
 {
 	if (SettingsManager::value("2dShowGrid").toBool()){
+		mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
+		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		QGraphicsScene::drawBackground(painter, rect);
-		int cellSize = SettingsManager::value("2dGridCellSize").toInt();
-		gd -> drawGrid (painter, rect, cellSize);
+		int const cellSize = SettingsManager::value("2dGridCellSize").toInt();
+		mGridDrawer->drawGrid(painter, rect, cellSize);
 	}
 }
 

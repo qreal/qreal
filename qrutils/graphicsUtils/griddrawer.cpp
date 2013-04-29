@@ -14,16 +14,16 @@ void GridDrawer::drawGrid(QPainter *painter, const QRectF &rect, int const index
 
 	int const indent = (300/indexGrid)*indexGrid; // now enough
 
-	int startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid - indent;
-	int endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid + indent;
-	int startY = static_cast<int>(sceneY + 10) / indexGrid * indexGrid - indent;
-	int endY = static_cast<int>(sceneY + rect.height() - 10) / indexGrid * indexGrid + indent;
+	int const startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid - indent;
+	int const endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid + indent;
+	int const startY = static_cast<int>(sceneY + 10) / indexGrid * indexGrid - indent;
+	int const endY = static_cast<int>(sceneY + rect.height() - 10) / indexGrid * indexGrid + indent;
 	for (int i = startX; i <= endX; i = i + indexGrid) {
-		QLineF line(i, startY, i, endY);
+		QLineF const line(i, startY, i, endY);
 		painter->drawLine(line);
 	}
 	for (int i = startY; i <= endY; i = i + indexGrid) {
-		QLineF line(startX, i, endX, i);
+		QLineF const line(startX, i, endX, i);
 		painter->drawLine(line);
 	}
 }
