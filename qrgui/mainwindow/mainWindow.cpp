@@ -125,12 +125,19 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManager);
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
-	initToolPlugins();
 	connectWindowTitle();
 	connectActions();
 	initExplorers();
 
+	// So now we are going to load plugins. The problem is that if we will do it
+	// here then we have some problems with correct main window initialization
+	// beacuse of total event loop blocking by plugins. So waiting for main
+	// window initialization complete and then loading plugins.
+	QTimer::singleShot(0, this, SLOT(initToolPlugins()));
+
 	if (fileToOpen.isEmpty() || !mProjectManager->open(fileToOpen)) {
+		// Centering dialog inside main window
+		mStartDialog->move(geometry().center() - mStartDialog->rect().center());
 		mStartDialog->exec();
 	}
 }

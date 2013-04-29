@@ -413,7 +413,6 @@ void Interpreter::setCommunicator(QString const &valueOfCommunication, QString c
 
 	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
 	mRobotCommunication->setPortName(portName);
-	connectToRobot();
 }
 
 void Interpreter::setConnectRobotAction(QAction *actionConnect)
