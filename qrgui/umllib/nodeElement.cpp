@@ -1058,7 +1058,9 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 void NodeElement::updateByNewParent()
 {
 	EditorViewScene *editorScene = dynamic_cast<EditorViewScene *>(scene());
-	editorScene->onElementParentChanged(this);
+	if (editorScene) {
+		editorScene->onElementParentChanged(this);
+	}
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (!parent || parent->mElementImpl->hasMovableChildren()) {
 		setFlag(ItemIsMovable, true);

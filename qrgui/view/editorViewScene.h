@@ -87,10 +87,14 @@ public:
 			, Id const &parentId, bool isFromLogicalModel
 			, commands::CreateElementCommand **createCommandPointer = NULL
 			, bool executeImmediately = true);
-	void createGroupOfElements(Id const &id, QPointF const &position, Id const &parentId, bool isFromLogicalModel);
-	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId
-			, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos, QPointF const &shift
-			, QList<NodeElement*> elements);
+	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
+			, qReal::Id const &insertedLastNodeId
+			, qReal::Id const &parentId
+			, bool isFromLogicalModel
+			, QPointF const &scenePos
+			, QPointF const &shift
+			, QList<NodeElement*> elements
+			, commands::AbstractCommand *parentCommand = NULL);
 
 	QList<NodeElement*> getNeibors(NodeElement* node);
 	void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF const &direction

@@ -1,4 +1,4 @@
-#include <QtWidgets>/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtGui/QClipboard>
 
 #include "pasteGroupCommand.h"

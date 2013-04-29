@@ -94,7 +94,7 @@ bool PythonInterpreter::interpret(QString const &code, CodeType const codeType)
 
 void PythonInterpreter::terminateProcess()
 {
-	if (mInterpreterProcess->pid() > 0) {
+	if (mInterpreterProcess->pid()) {
 		mInterpreterProcess->terminate();
 		deleteTempFile();
 	}

@@ -26,14 +26,14 @@ public:
 	bool equals(CreateRemoveCommandImplementation const &other) const;
 
 private:
-	models::LogicalModelAssistApi *mLogicalApi; // Doesn`t take ownership
-	models::GraphicalModelAssistApi *mGraphicalApi; // Doesn`t take ownership
-	Id mLogicalParent;
-	Id mGraphicalParent;
+	models::LogicalModelAssistApi * const mLogicalApi; // Doesn`t take ownership
+	models::GraphicalModelAssistApi * const mGraphicalApi; // Doesn`t take ownership
+	Id const mLogicalParent;
+	Id const mGraphicalParent;
 	Id mId;
-	bool mIsFromLogicalModel;
-	QString mName;
-	QPointF mPosition;
+	bool const mIsFromLogicalModel;
+	QString const mName;
+	QPointF const mPosition;
 	QMap<QString, QVariant> mLogicalPropertiesSnapshot;
 	QMap<QString, QVariant> mGraphicalPropertiesSnapshot;
 	Id mOldLogicalId;
