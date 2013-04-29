@@ -1,6 +1,6 @@
-#include "element.h"
-
 #include <QtWidgets>
+
+#include "element.h"
 
 using namespace qReal;
 
@@ -9,6 +9,7 @@ Element::Element(ElementImpl* elementImpl)
 	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(NULL)
 	, mGraphicalAssistApi(NULL)
+	, mController(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 		ItemClipsToShape | ItemSendsGeometryChanges);
@@ -62,6 +63,11 @@ void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssi
 {
 	mGraphicalAssistApi = graphicalAssistApi;
 	mLogicalAssistApi = logicalAssistApi;
+}
+
+void Element::setController(Controller *controller)
+{
+	mController = controller;
 }
 
 void Element::initTitlesBy(QRectF const& contents)

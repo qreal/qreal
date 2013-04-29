@@ -11,6 +11,7 @@
 
 #include "../../../view/editorViewScene.h"
 #include "../../../mainwindow/mainWindow.h"
+#include "../../private/reshapeEdgeCommand.h"
 
 using namespace qReal;
 
@@ -227,7 +228,8 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 							 mMaster->id().diagram() + "/" + mEdgeType.element();
 		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
-			Id edgeId = scene->createElement(type, event->scenePos()); // FIXME: I am raw. return strange pos() and inside me a small trash
+			// FIXME: I am raw. return strange pos() and inside me a small trash
+			Id edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand);
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
 
@@ -280,8 +282,9 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mEdge->show();
 		int result = 0;
 
+		commands::CreateElementCommand *createElementFromMenuCommand = NULL;
 		if (!under) {
-			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos);
+			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, &createElementFromMenuCommand);
 			NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
 			if (result == -1) {
 				mEdge = NULL;
@@ -296,6 +299,17 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			mEdge->correctArrow();
 			mEdge->correctInception();
 			mEdge->adjustNeighborLinks();
+			// This will restore edge state after undo/redo
+			commands::ReshapeEdgeCommand *reshapeEdge = new commands::ReshapeEdgeCommand(mEdge);
+			reshapeEdge->startTracking();
+			reshapeEdge->stopTracking();
+			reshapeEdge->setUndoEnabled(false);
+			if (createElementFromMenuCommand) {
+				createElementFromMenuCommand->addPostAction(reshapeEdge);
+				mCreateEdgeCommand->addPostAction(createElementFromMenuCommand);
+			} else {
+				mCreateEdgeCommand->addPostAction(reshapeEdge);
+			}
 		}
 	}
 	mPressed = false;
