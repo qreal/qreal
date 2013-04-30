@@ -95,8 +95,8 @@ public:
 	bool isLoop();
 
 	void alignToGrid(int const indexGrid);
-	qreal alignedCoordinate(qreal coord, int coef, int const indexGrid) const;
-	QPointF alignedPoint(QPointF const point, int const indexGrid) const;
+	qreal alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const;
+	QPointF alignedPoint(QPointF const &point, int const indexGrid) const;
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
