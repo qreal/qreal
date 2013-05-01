@@ -22,7 +22,6 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 
 	mUi->hotKeysTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
-	connect(mUi->hotKeysTable, SIGNAL(cellEntered(int,int)), this, SLOT(activateShortcutLineEdit(int,int)));
 	connect(mUi->hotKeysTable, SIGNAL(cellClicked(int,int)), this, SLOT(activateShortcutLineEdit(int,int)));
 	connect(mUi->hotKeysTable, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(doubleClicked(int,int)));
 	connect(mUi->shortcutLineEdit, SIGNAL(newModifiers(Qt::KeyboardModifiers)), this, SLOT(newModifiers(Qt::KeyboardModifiers)));
@@ -30,6 +29,7 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 	connect(mUi->resetShortcutPushButton, SIGNAL(pressed()), this, SLOT(resetShortcuts()));
 	connect(mUi->resetAllPushButton, SIGNAL(pressed()), this, SLOT(resetAllShortcuts()));
 
+	initTable();
 	loadHotKeys();
 }
 
@@ -61,6 +61,7 @@ void PreferencesHotKeyManagerPage::resetAllShortcuts()
 {
 	HotKeyManager::resetAllShortcuts();
 	mUi->hotKeysTable->clearContents();
+	initTable();
 	loadHotKeys();
 }
 
@@ -71,23 +72,33 @@ void PreferencesHotKeyManagerPage::loadHotKeys()
 
 	QHash<QString, QAction *>::iterator i;
 	int k;
-
 	for (i = cmds.begin(), k = 0; i != cmds.end(); ++i, ++k) {
 		QStringList sequences = shortcuts.keys(i.key());
 
-		mUi->hotKeysTable->setRowCount(k + 1);
-
-		mUi->hotKeysTable->setItem(k, 0, new QTableWidgetItem(i.key()));
-		mUi->hotKeysTable->setItem(k, 1, new QTableWidgetItem(i.value()->whatsThis()));
+		mUi->hotKeysTable->item(k, 0)->setText(i.key());
+		mUi->hotKeysTable->item(k, 1)->setText(i.value()->whatsThis());
 
 		int j = 0;
 
 		foreach (QString const &sequence, sequences) {
-			mUi->hotKeysTable->setItem(k, 2 + j, new QTableWidgetItem(sequence));
+			mUi->hotKeysTable->item(k, 2 + j)->setText(sequence);
 			j++;
 			if (j == 3) {
 				break;
 			}
+		}
+	}
+}
+
+void PreferencesHotKeyManagerPage::initTable()
+{
+	int const rows = HotKeyManager::commands().size();
+
+	mUi->hotKeysTable->setRowCount(rows);
+
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < 5; ++j) {
+			mUi->hotKeysTable->setItem(i, j, new QTableWidgetItem(""));
 		}
 	}
 }
@@ -102,18 +113,15 @@ void PreferencesHotKeyManagerPage::activateShortcutLineEdit(int const row, int c
 {
 	if (column > 1) {
 		mCurrentId = mUi->hotKeysTable->item(row, 0)->text();
-		if (!mUi->hotKeysTable->item(row, column)) {
-			mCurrentItem =  new QTableWidgetItem("");
-			mUi->hotKeysTable->setItem(row, column, mCurrentItem);
-		} else {
-			mCurrentItem = mUi->hotKeysTable->item(row, column);
-		}
+		mCurrentItem = mUi->hotKeysTable->item(row, column);
 
 		mUi->shortcutLineEdit->setText(mCurrentItem->text());
 		mUi->shortcutLineEdit->setEnabled(true);
 
+		setTextColor(mCurrentItem->textColor());
+
 		if (HotKeyManager::setShortcut(mCurrentId, mCurrentItem->text())) {
-			mCurrentItem->setTextColor(Qt::black);
+			setTextColor(Qt::black);
 		}
 	} else {
 		mCurrentId = "";
@@ -132,9 +140,9 @@ void PreferencesHotKeyManagerPage::newKey(int const key)
 	if (mCurrentId != "") {
 		if (mCurrentItem->text() == "") {
 			if (HotKeyManager::setShortcut(mCurrentId, QKeySequence(mCurrentModifiers + key))) {
-				mCurrentItem->setTextColor(Qt::black);
+				setTextColor(Qt::black);
 			} else {
-				mCurrentItem->setTextColor(Qt::red);
+				setTextColor(Qt::red);
 			}
 			mCurrentItem->setText(QKeySequence(mCurrentModifiers + key).toString());
 			mUi->shortcutLineEdit->setText(mCurrentItem->text());
@@ -152,18 +160,28 @@ void PreferencesHotKeyManagerPage::newKey(int const key)
 				}
 
 				if (HotKeyManager::setShortcut(mCurrentId, QKeySequence(shortcut))) {
-					mCurrentItem->setTextColor(Qt::black);
+					setTextColor(Qt::black);
+					mCurrentItem->setText(shortcut);
+					mUi->shortcutLineEdit->setText(mCurrentItem->text());
 				} else {
 					HotKeyManager::setShortcut(mCurrentId,  mCurrentItem->text());
 
-					if (parts != 2) {
-						mCurrentItem->setTextColor(Qt::red);
+					if (parts < 2) {
+						setTextColor(Qt::red);
+						mCurrentItem->setText(shortcut);
+						mUi->shortcutLineEdit->setText(mCurrentItem->text());
 					}
 				}
-				mCurrentItem->setText(shortcut);
-				mUi->shortcutLineEdit->setText(mCurrentItem->text());
 			}
 		}
 		mCurrentModifiers = Qt::NoModifier;
 	}
+}
+
+void PreferencesHotKeyManagerPage::setTextColor(QColor const &color)
+{
+	mCurrentItem->setTextColor(color);
+	QPalette palette;
+	palette.setColor(QPalette::Text, color);
+	mUi->shortcutLineEdit->setPalette(palette);
 }

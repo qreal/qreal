@@ -30,6 +30,8 @@ private slots:
 
 private:
 	void loadHotKeys();
+	void initTable();
+	void setTextColor(QColor const &color);
 
 	Ui::hotKeyManagerPage *mUi;
 
