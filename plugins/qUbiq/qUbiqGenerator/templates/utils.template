@@ -10,6 +10,12 @@
 			Screen.Content = Create@@toFormName@@();
 		}
 ==========
+@@oneOnExitButtonClickedDescription@@
+		void On@@buttonName@@Clicked()
+		{
+			Exit();
+		}
+==========
 @@oneVariableDeclaration@@
 	public static @@variableType@@ @@variableName@@ {get; set;}
 ==========

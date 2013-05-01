@@ -39,14 +39,23 @@ private:
 				, onButtonClickedDescriptions(curOnButtonClickedDescriptions){}
 	};
 
+	struct NeededStringsForOneSlideDescription {
+		QString oneFormDescription;
+		QString onButtonDescription;
+	};
+
 	bool isCorrectedName(QString const &name);
 	void initGeneratingFiles();
-	void saveGeneratedFiles();
 	void generateVariables();
 	void generatePresentationDiagrams();
 	void generateLogicDiagrams();
+	void saveGeneratedFiles();
 	void generateAndSaveCSProject();
+
 	NeededStringsForPresentationDiagram generateMainForms(qReal::Id const &diagram);
+	QString countStartFormName(qReal::Id const &diagram);
+	NeededStringsForOneSlideDescription countFormWithButtonDescription(qReal::Id const &form);
+	QString countOnButtonDescription(qReal::Id const &button);
 	void generateHandlers(qReal::Id const &diagram);
 
 	QString mProgramName;

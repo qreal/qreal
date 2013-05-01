@@ -98,7 +98,7 @@ void Generator::generateLogicDiagrams()
 	QList<Id> logicElementList= mApi.elementsByType("qUbiqLogicDiagram");
 	logicElementList.append(mApi.elementsByType("qUbiqConditionDiagram"));
 	foreach (Id const &diagram, logicElementList) {
-		if (!mApi.isLogicalElement(diagram) || mApi.parent(diagram) != Id::rootId()) {
+		if (!mApi.isLogicalElement(diagram)) {
 			continue;
 		}
 		generateHandlers(diagram);
@@ -140,7 +140,94 @@ void Generator::generateVariables()
 
 Generator::NeededStringsForPresentationDiagram Generator::generateMainForms(Id const &diagram)
 {
-	return Generator::NeededStringsForPresentationDiagram("", "", "");
+	NeededStringsForPresentationDiagram result = NeededStringsForPresentationDiagram("", "", "");
+	result.startFormName = countStartFormName(diagram);
+
+	foreach (Id const &form, mApi.elementsByType("slide")) {
+		if (!mApi.isLogicalElement(form) || mApi.parent(form) != diagram) {
+			continue;
+		}
+		NeededStringsForOneSlideDescription oneSlideWithButton = countFormWithButtonDescription(form);
+		result.formsDescription += oneSlideWithButton.oneFormDescription;
+		result.onButtonClickedDescriptions += oneSlideWithButton.onButtonDescription;
+	}
+
+	return result;
+}
+
+QString Generator::countStartFormName(Id const &diagram)
+{
+	QString startForm = "";
+	bool existsBeginForm = false;
+	foreach (Id const &begin, mApi.elementsByType("beginNode")) {
+		if (existsBeginForm || !mApi.isLogicalElement(begin) || mApi.parent(begin) != diagram) {
+			continue;
+		}
+
+		foreach (Id const &beginNode, mApi.outgoingNodes(begin)) {
+			if (existsBeginForm || !mApi.isLogicalElement(beginNode)) {
+				continue;
+			}
+			startForm = mApi.name(beginNode);
+			existsBeginForm = true;
+		}
+	}
+	return startForm;
+}
+
+Generator::NeededStringsForOneSlideDescription Generator::countFormWithButtonDescription(Id const &form)
+{
+	NeededStringsForOneSlideDescription result;
+
+	QList<Id> buttonList= mApi.elementsByType("button");
+	foreach (Id const &button, buttonList) {
+		if (!mApi.isLogicalElement(button) || mApi.parent(button) != form) {
+			continue;
+		}
+		result.onButtonDescription += countOnButtonDescription(button);
+	}
+
+	QString formCreation = "qwerty";
+	QList<Id> elementList= mApi.elementsByType("list");
+	elementList.append(mApi.elementsByType("text"));
+	elementList.append(mApi.elementsByType("image"));
+	elementList.append(mApi.elementsByType("grid"));
+	elementList.append(buttonList);
+	foreach (Id const &element, elementList) {
+		if (!mApi.isLogicalElement(element) || mApi.parent(element) != form) {
+			continue;
+		}
+	}
+
+	result.oneFormDescription = mTemplateUtils["@@oneCreateFormDescription@@"];
+	result.oneFormDescription.replace("@@formName@@", mApi.name(form));
+	result.oneFormDescription.replace("@@formCreation@@", formCreation);
+	return result;
+}
+
+QString Generator::countOnButtonDescription(Id const &button)
+{
+	QString result;
+
+	if ((button.element().compare("ExitButton", Qt::CaseInsensitive)) == 0) {
+		result = mTemplateUtils["@@oneOnExitButtonClickedDescription@@"];
+	} else {
+		QString toFormName = "";
+		bool existsToForm = false;
+		foreach (Id const &toNode, mApi.outgoingNodes(button)) {
+			if (existsToForm || !mApi.isLogicalElement(toNode)) {
+				continue;
+			}
+			toFormName = mApi.name(toNode);
+			existsToForm = true;
+		}
+
+		result = mTemplateUtils["@@oneOnButtonClickedDescription@@"];
+		result.replace("@@toFormName@@", toFormName);
+	}
+
+	result.replace("@@buttonName@@", mApi.name(button));
+	return result;
 }
 
 void Generator::generateHandlers(Id const &diagram)
