@@ -73,6 +73,8 @@ private:
 
 	void deleteCommandPrivate(QString const &id);
 	bool hasPrefixOf(QString const &keyseq);
+	void addPrefixes(QString const &keyseq);
+	void deletePrefixes(QString const &keyseq);
 
 	QHash<QString, QAction *> commandsPrivate();
 	QHash<QString, QString> shortcutsPrivate();
@@ -80,6 +82,7 @@ private:
 	QString mCurrentModifer;
 	QHash<QString, QAction *> mCommands;
 	QHash<QString, QString> mShortcuts;
+	QHash<QString, int> mPrefixes;
 };
 
 }

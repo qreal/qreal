@@ -125,6 +125,7 @@ bool HotKeyManager::registerShortcut(QString const &id, QKeySequence const &keys
 		QString const shortcut = keyseq.toString();
 
 		if (!hasPrefixOf(shortcut)) {
+			addPrefixes(shortcut);
 			mShortcuts[shortcut] = id;
 			mCommands[id]->setShortcuts(mCommands[id]->shortcuts() << keyseq);
 			return true;
@@ -139,6 +140,7 @@ bool HotKeyManager::registerShortcut(QString const &id, QKeySequence const &modi
 		QString const shortcut = sequence(modifier.toString(), mousebutton);
 
 		if (!mShortcuts.contains(shortcut)) {
+			addPrefixes(shortcut);
 			mShortcuts[shortcut] = id;
 			return true;
 		}
@@ -150,6 +152,7 @@ bool HotKeyManager::registerShortcut(QString const &id, QKeySequence const &modi
 void HotKeyManager::registerShortcut(QString const &id, QString const &shortcut)
 {
 	if (!hasPrefixOf(shortcut)) {
+		addPrefixes(shortcut);
 		mShortcuts[shortcut] = id;
 	}
 }
@@ -201,6 +204,7 @@ void HotKeyManager::resetShortcutsPrivate(QString const &id)
 		QList<QString> shortcuts = mShortcuts.keys(id);
 
 		foreach (QString const &shortcut, shortcuts) {
+			deletePrefixes(shortcut);
 			mShortcuts.remove(shortcut);
 		}
 
@@ -217,11 +221,13 @@ void HotKeyManager::resetAllShortcutsPrivate()
 	}
 
 	mShortcuts.clear();
+	mPrefixes.clear();
 }
 
 void HotKeyManager::deleteShortcutPrivate(const QString &id, const QString &shortcut)
 {
 	mShortcuts.remove(shortcut);
+	deletePrefixes(shortcut);
 	//if == "" then shortcut with mouse
 	if (QKeySequence(shortcut).toString() != "" ) {
 		QList<QKeySequence> shortcuts = mCommands[id]->shortcuts();
@@ -250,16 +256,49 @@ QHash<QString, QString> HotKeyManager::shortcutsPrivate()
 
 bool HotKeyManager::hasPrefixOf(QString const &keyseq)
 {
+	if (!mPrefixes.contains(keyseq)) {
+		QStringList seqlist = keyseq.split(", ");
+		QString prefix;
+
+		foreach (QString const &seq, seqlist) {
+			prefix += seq;
+			if (mShortcuts.contains(prefix) || mShortcuts.contains(seq)) {
+				return true;
+			}
+			prefix += ", ";
+		}
+		return false;
+	}
+	return true;
+}
+
+void HotKeyManager::addPrefixes(QString const &keyseq)
+{
 	QStringList seqlist = keyseq.split(", ");
 	QString prefix;
 
 	foreach (QString const &seq, seqlist) {
 		prefix += seq;
-		if (mShortcuts.contains(prefix)) {
-			return true;
+		if (mPrefixes.contains(prefix)) {
+			++mPrefixes[prefix];
+		} else {
+			mPrefixes[prefix] = 1;
 		}
 		prefix += ", ";
 	}
+}
 
-	return false;
+void HotKeyManager::deletePrefixes(QString const &keyseq)
+{
+	QStringList seqlist = keyseq.split(", ");
+	QString prefix;
+
+	foreach (QString const &seq, seqlist) {
+		prefix += seq;
+		--mPrefixes[prefix];
+		if (mPrefixes.value(prefix) == 0) {
+			mPrefixes.remove(prefix);
+		}
+		prefix += ", ";
+	}
 }

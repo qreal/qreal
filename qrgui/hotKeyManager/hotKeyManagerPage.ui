@@ -55,17 +55,11 @@
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::SingleSelection</enum>
-        </property>
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectItems</enum>
         </property>
         <property name="showGrid">
          <bool>false</bool>
-        </property>
-        <property name="gridStyle">
-         <enum>Qt::SolidLine</enum>
         </property>
         <property name="sortingEnabled">
          <bool>true</bool>

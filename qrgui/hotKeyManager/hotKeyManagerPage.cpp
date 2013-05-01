@@ -111,6 +111,10 @@ void PreferencesHotKeyManagerPage::activateShortcutLineEdit(int const row, int c
 
 		mUi->shortcutLineEdit->setText(mCurrentItem->text());
 		mUi->shortcutLineEdit->setEnabled(true);
+
+		if (HotKeyManager::setShortcut(mCurrentId, mCurrentItem->text())) {
+			mCurrentItem->setTextColor(Qt::black);
+		}
 	} else {
 		mCurrentId = "";
 		mUi->shortcutLineEdit->clear();
@@ -128,24 +132,36 @@ void PreferencesHotKeyManagerPage::newKey(int const key)
 	if (mCurrentId != "") {
 		if (mCurrentItem->text() == "") {
 			if (HotKeyManager::setShortcut(mCurrentId, QKeySequence(mCurrentModifiers + key))) {
-				mCurrentItem->setText(QKeySequence(mCurrentModifiers + key).toString());
-				mUi->shortcutLineEdit->setText(mCurrentItem->text());
+				mCurrentItem->setTextColor(Qt::black);
+			} else {
+				mCurrentItem->setTextColor(Qt::red);
 			}
+			mCurrentItem->setText(QKeySequence(mCurrentModifiers + key).toString());
+			mUi->shortcutLineEdit->setText(mCurrentItem->text());
 		} else {
-			if (mCurrentItem->text().count(',') != 3) {
+			int const parts = mCurrentItem->text().count(',');
+
+			if (parts != 3) {
 				QString const shortcut = QString("%1, %2").arg(
 									mCurrentItem->text()
 									, QKeySequence(mCurrentModifiers + key).toString()
 								);
 
-				HotKeyManager::deleteShortcut(mCurrentId, mCurrentItem->text());
+				if (mCurrentItem->textColor() == Qt::black) {
+					HotKeyManager::deleteShortcut(mCurrentId, mCurrentItem->text());
+				}
 
 				if (HotKeyManager::setShortcut(mCurrentId, QKeySequence(shortcut))) {
-					mCurrentItem->setText(shortcut);
-					mUi->shortcutLineEdit->setText(mCurrentItem->text());
+					mCurrentItem->setTextColor(Qt::black);
 				} else {
 					HotKeyManager::setShortcut(mCurrentId,  mCurrentItem->text());
+
+					if (parts != 2) {
+						mCurrentItem->setTextColor(Qt::red);
+					}
 				}
+				mCurrentItem->setText(shortcut);
+				mUi->shortcutLineEdit->setText(mCurrentItem->text());
 			}
 		}
 		mCurrentModifiers = Qt::NoModifier;
