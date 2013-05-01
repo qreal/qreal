@@ -179,7 +179,7 @@ Generator::NeededStringsForOneSlideDescription Generator::countFormWithButtonDes
 {
 	NeededStringsForOneSlideDescription result;
 
-	QList<Id> buttonList= mApi.elementsByType("button");
+	QList<Id> buttonList = mApi.elementsByType("button");
 	foreach (Id const &button, buttonList) {
 		if (!mApi.isLogicalElement(button) || mApi.parent(button) != form) {
 			continue;
@@ -187,21 +187,92 @@ Generator::NeededStringsForOneSlideDescription Generator::countFormWithButtonDes
 		result.onButtonDescription += countOnButtonDescription(button);
 	}
 
-	QString formCreation = "qwerty";
+	QStringList slideSize = mApi.property(form, "slideSize").toString().split('x');
+	QString oneFormDescription = mTemplateUtils["@@oneCreateFormDescription@@"];
+	oneFormDescription.replace("@@formName@@", mApi.name(form));
+	oneFormDescription.replace("@@width@@", slideSize.at(1));
+	oneFormDescription.replace("@@height@@", slideSize.at(0));
+	oneFormDescription.replace("@@mainGridFilling@@", countMainGridFilling(form));
+
+	result.oneFormDescription = oneFormDescription;
+	return result;
+}
+
+QString Generator::countMainGridFilling(Id const &form)
+{
+	QString mainGridFilling = "";
 	QList<Id> elementList= mApi.elementsByType("list");
 	elementList.append(mApi.elementsByType("text"));
 	elementList.append(mApi.elementsByType("image"));
 	elementList.append(mApi.elementsByType("grid"));
-	elementList.append(buttonList);
+	elementList.append(mApi.elementsByType("button"));
+	int i = 0;
 	foreach (Id const &element, elementList) {
 		if (!mApi.isLogicalElement(element) || mApi.parent(element) != form) {
 			continue;
 		}
-	}
 
-	result.oneFormDescription = mTemplateUtils["@@oneCreateFormDescription@@"];
-	result.oneFormDescription.replace("@@formName@@", mApi.name(form));
-	result.oneFormDescription.replace("@@formCreation@@", formCreation);
+		QString currentElement = "";
+		if ((element.element().compare("text", Qt::CaseInsensitive)) == 0) {
+			currentElement = countTextDeclaration(element);
+		} else if ((element.element().compare("image", Qt::CaseInsensitive)) == 0) {
+			currentElement = countImageDeclaration(element);
+		} else if ((element.element().compare("list", Qt::CaseInsensitive)) == 0) {
+			currentElement = countListDeclaration(element);
+		} else if ((element.element().compare("grid", Qt::CaseInsensitive)) == 0) {
+			currentElement = countGridDeclaration(element);
+		} else { // i.e. 'button' and 'exitButton'
+			currentElement = countButtonDeclaration(element);
+		}
+
+		QStringList position = mApi.property(element, "position").toString().split(':');
+		currentElement.replace("@@x@@", position.at(1));
+		currentElement.replace("@@y@@", position.at(0));
+		currentElement.replace("@@tail@@", QString::number(i));
+
+		mainGridFilling += currentElement;
+		i++;
+	}
+	return mainGridFilling;
+}
+
+QString Generator::countButtonDeclaration(Id const &button)
+{
+	QString result;
+	result = mTemplateUtils["@@buttonDeclaration@@"];
+	result.replace("@@buttonName@@", mApi.name(button));
+	return result;
+}
+
+QString Generator::countTextDeclaration(Id const &element) //qwerty_TODO
+{
+	QString result;
+	result = mTemplateUtils["@@textDeclaration@@"];
+	result.replace("@@text@@", mApi.property(element, "text").toString());
+	return result;
+}
+
+QString Generator::countImageDeclaration(Id const &element) //qwerty_TODO
+{
+	QString result;
+	result = mTemplateUtils["@@imageDeclaration@@"];
+	result.replace("@@pathToImage@@", mApi.property(element, "pathToImage").toString());
+	return result;
+}
+
+QString Generator::countListDeclaration(Id const &element) //qwerty_TODO
+{
+	Q_UNUSED(element)
+	QString result;
+	result = mTemplateUtils["@@listDeclaration@@"];
+	return result;
+}
+
+QString Generator::countGridDeclaration(Id const &element) //qwerty_TODO
+{
+	Q_UNUSED(element)
+	QString result;
+	result = mTemplateUtils["@@gridDeclaration@@"];
 	return result;
 }
 

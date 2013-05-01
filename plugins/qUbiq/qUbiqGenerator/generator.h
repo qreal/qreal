@@ -56,6 +56,12 @@ private:
 	QString countStartFormName(qReal::Id const &diagram);
 	NeededStringsForOneSlideDescription countFormWithButtonDescription(qReal::Id const &form);
 	QString countOnButtonDescription(qReal::Id const &button);
+	QString countMainGridFilling(qReal::Id const &form);
+	QString countButtonDeclaration(qReal::Id const &button);
+	QString countTextDeclaration(qReal::Id const &element);
+	QString countImageDeclaration(qReal::Id const &element);
+	QString countListDeclaration(qReal::Id const &element);
+	QString countGridDeclaration(qReal::Id const &element);
 	void generateHandlers(qReal::Id const &diagram);
 
 	QString mProgramName;

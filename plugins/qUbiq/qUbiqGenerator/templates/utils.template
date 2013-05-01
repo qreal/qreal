@@ -1,8 +1,34 @@
 @@oneCreateFormDescription@@
 		private VisualElement Create@@formName@@()
 		{
-			@@formCreation@@
+			var mainGrid = new Grid(@@width@@, @@height@@)
+            {
+                Margin = new Thickness(5, 5, 5, 5),
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+@@mainGridFilling@@
+			return mainGrid;
 		}
+==========
+@@buttonDeclaration@@
+			var button_@@tail@@ = new Button(@@x@@, @@y@@, this);
+			button_@@tail@@.Clicked += On@@buttonName@@Clicked;
+			mainGrid[@@x@@, @@y@@] = button_@@tail@@;
+==========
+@@textDeclaration@@
+			mainGrid[@@x@@, @@y@@] = "@@text@@";
+==========
+@@imageDeclaration@@
+			mainGrid[@@x@@, @@y@@] = Image("@@pathToImage@@");
+==========
+@@listDeclaration@@
+			var list_@@tail@@ = new List();
+			mainGrid[@@x@@, @@y@@] = list_@@tail@@;
+==========
+@@gridDeclaration@@
+			var grid_@@tail@@ = new Grid();
+			mainGrid[@@x@@, @@y@@] = grid_@@tail@@;
 ==========
 @@oneOnButtonClickedDescription@@
 		void On@@buttonName@@Clicked()
