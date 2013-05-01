@@ -112,8 +112,12 @@ void PreferencesHotKeyManagerPage::doubleClicked(const int row, const int column
 void PreferencesHotKeyManagerPage::activateShortcutLineEdit(int const row, int const column)
 {
 	if (column > 1) {
+		if (mCurrentItem != NULL) {
+			mCurrentItem->setBackgroundColor(Qt::white);
+		}
 		mCurrentId = mUi->hotKeysTable->item(row, 0)->text();
 		mCurrentItem = mUi->hotKeysTable->item(row, column);
+		mCurrentItem->setBackgroundColor(Qt::lightGray);
 
 		mUi->shortcutLineEdit->setText(mCurrentItem->text());
 		mUi->shortcutLineEdit->setEnabled(true);
