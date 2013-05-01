@@ -244,11 +244,21 @@ QString Generator::countButtonDeclaration(Id const &button)
 	return result;
 }
 
-QString Generator::countTextDeclaration(Id const &element) //qwerty_TODO
+QString Generator::countTextDeclaration(Id const &element)
 {
 	QString result;
+	QString text = mApi.property(element, "text").toString();
+	if (text.contains('%')) {
+		QStringList textList = text.split('%');
+		for (int i = 1; i < textList.size(); i += 2) {
+			QString variableName = textList.at(i);
+			QString newText = "\" + " + mProgramName + "Variables." + variableName + ".ToString() + \" ";
+			text.replace("%" + variableName + "%", newText);
+		}
+	}
+
 	result = mTemplateUtils["@@textDeclaration@@"];
-	result.replace("@@text@@", mApi.property(element, "text").toString());
+	result.replace("@@text@@", text);
 	return result;
 }
 
