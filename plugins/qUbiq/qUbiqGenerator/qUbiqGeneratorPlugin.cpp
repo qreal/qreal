@@ -44,11 +44,10 @@ void QUbiqGeneratorPlugin::generate()
 			continue;
 		}
 
-		QString pathToQReal = mLogicalModel->logicalRepoApi().property(diagram, "pathToQReal").toString();
 		QString programName = mLogicalModel->logicalRepoApi().property(diagram, "programName").toString();
 		QString pathToGenerate = mLogicalModel->logicalRepoApi().property(diagram, "pathToGenerate").toString();
 
-		mGenerator = new Generator(pathToGenerate, pathToQReal, programName, *mLogicalModel, *mErrorReporter);
+		mGenerator = new Generator(pathToGenerate, programName, *mLogicalModel, *mErrorReporter);
 		mGenerator->generate();
 	}
 }

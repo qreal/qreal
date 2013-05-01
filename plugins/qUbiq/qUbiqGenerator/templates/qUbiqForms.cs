@@ -15,8 +15,8 @@ namespace @@programName@@
             WaitForInput("7890\r");            
         }
 		
-		@@createFormDescriptions@@
+@@createFormDescriptions@@
 		
-		@@onButtonClickedDescriptions@@
+@@onButtonClickedDescriptions@@
     }
 }

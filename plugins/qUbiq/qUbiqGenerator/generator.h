@@ -15,7 +15,6 @@ public:
 	  @param errorReporter Object to return errors to.
 	  */
 	Generator(QString const &outputDirPath
-			, QString const &pathToQReal
 			, QString const &programName
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
@@ -31,19 +30,25 @@ private:
 		QString startFormName;
 		QString formsDescription;
 		QString onButtonClickedDescriptions;
+
+		NeededStringsForPresentationDiagram(QString curStartFormName
+											, QString curFormsDescription
+											, QString curOnButtonClickedDescriptions)
+				: startFormName(curStartFormName)
+				, formsDescription(curFormsDescription)
+				, onButtonClickedDescriptions(curOnButtonClickedDescriptions){}
 	};
 
 	bool isCorrectedName(QString const &name);
 	void initGeneratingFiles();
 	void saveGeneratedFiles();
+	void generateVariables();
 	void generatePresentationDiagrams();
 	void generateLogicDiagrams();
 	void generateAndSaveCSProject();
-	QString generateVariables(qReal::Id const &diagram);
 	NeededStringsForPresentationDiagram generateMainForms(qReal::Id const &diagram);
 	void generateHandlers(qReal::Id const &diagram);
 
-	QString mPathToQReal;
 	QString mProgramName;
 	QVector<QString> mCompileIncludeFiles;
 

@@ -1,18 +1,18 @@
 @@oneCreateFormDescription@@
-	private VisualElement Create@@formName@@()
-	{
-		@@formCreation@@
-	}
+		private VisualElement Create@@formName@@()
+		{
+			@@formCreation@@
+		}
 ==========
 @@oneOnButtonClickedDescription@@
-	void On@@buttonName@@Clicked()
-	{
-		Screen.Content = Create@@toFormName@@();
-	}
+		void On@@buttonName@@Clicked()
+		{
+			Screen.Content = Create@@toFormName@@();
+		}
 ==========
 @@oneVariableDeclaration@@
 	public static @@variableType@@ @@variableName@@ {get; set;}
 ==========
 @@oneCompileInclude@@
-    <Compile Include="@@fileName@@.cs" />
+    <Compile Include="@@fileName@@" />
 ==========

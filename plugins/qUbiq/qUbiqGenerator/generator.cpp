@@ -15,15 +15,13 @@ QString const templateFfileNameCSProj = "qUbiqCSProject.cs";
 /// Generation target file
 
 Generator::Generator(QString const &outputDirPath
-		, QString const &pathToQReal
 		, QString const &programName
 		, qReal::LogicalModelAssistInterface const &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
 		)
-	: AbstractGenerator(templateDir, outputDirPath + "/" + programName, logicalModel, errorReporter)
-	, mPathToQReal(pathToQReal + "/.."), mProgramName(programName)
+	: AbstractGenerator(templateDir, QString(outputDirPath + "/" + programName).replace("\\", "/"), logicalModel, errorReporter)
+	, mProgramName(programName)
 {
-	mPathToQReal.replace("\\", "/");
 }
 
 Generator::~Generator()
@@ -66,6 +64,7 @@ void Generator::generate()
 	}
 
 	initGeneratingFiles();
+	generateVariables();
 	generatePresentationDiagrams();
 	generateLogicDiagrams();
 	saveGeneratedFiles();
@@ -77,55 +76,71 @@ void Generator::generatePresentationDiagrams()
 	QString startFormName = "";
 	QString formsDescription = "";
 	QString onButtonClickedDescriptions = "";
-	QString variablesDeclaration = "";
 
 	foreach (Id const &diagram, mApi.elementsByType("qUbiqPresentationDiagram")) {
 		if (!mApi.isLogicalElement(diagram) || mApi.parent(diagram) != Id::rootId()) {
 			continue;
 		}
 		NeededStringsForPresentationDiagram currentForms = generateMainForms(diagram);
-		QString currentVariables = generateVariables(diagram);
-
 		startFormName = currentForms.startFormName;
 		formsDescription += currentForms.formsDescription;
 		onButtonClickedDescriptions += currentForms.onButtonClickedDescriptions;
-		variablesDeclaration += currentVariables;
 	}
 
 	mResultForms.replace("@@programName@@", mProgramName);
 	mResultForms.replace("@@startFormName@@", startFormName);
 	mResultForms.replace("@@createFormDescriptions@@", formsDescription);
 	mResultForms.replace("@@onButtonClickedDescriptions@@", onButtonClickedDescriptions);
-
-	mResultVariables.replace("@@programName@@", mProgramName);
-	mResultVariables.replace("@@variableDeclarations@@", variablesDeclaration);
 }
 
 void Generator::generateLogicDiagrams()
 {
-	QString variablesDeclaration = "";
-
 	QList<Id> logicElementList= mApi.elementsByType("qUbiqLogicDiagram");
 	logicElementList.append(mApi.elementsByType("qUbiqConditionDiagram"));
 	foreach (Id const &diagram, logicElementList) {
 		if (!mApi.isLogicalElement(diagram) || mApi.parent(diagram) != Id::rootId()) {
 			continue;
 		}
-		QString currentVariables = generateVariables(diagram);
-		generateHandlers(diagram); //qwerty_TODO
-		variablesDeclaration += currentVariables;
+		generateHandlers(diagram);
+	}
+}
+
+void Generator::generateVariables()
+{
+	QString variablesDeclaration = "";
+
+	foreach (Id const &variable, mApi.elementsByType("variable")) {
+		if (!mApi.isLogicalElement(variable)) {
+			continue;
+		}
+		QString currentVariable = mTemplateUtils["@@oneVariableDeclaration@@"];
+		QString variableType = mApi.property(variable, "type").toString();
+
+		QString realVariableType = "";
+		if (variableType == "text") {
+			realVariableType = "string";
+		} else if (variableType == "list") {
+			realVariableType = "List"; //qwerty_what
+		} else if (variableType == "image") {
+			realVariableType = "Image";
+		} else if (variableType == "grid") {
+			realVariableType = "Grid";
+		} else if (variableType == "number") {
+			realVariableType = "int";
+		}
+
+		currentVariable.replace("@@variableName@@", mApi.name(variable));
+		currentVariable.replace("@@variableType@@", realVariableType);
+		variablesDeclaration += currentVariable;
 	}
 
 	mResultVariables.replace("@@programName@@", mProgramName);
 	mResultVariables.replace("@@variableDeclarations@@", variablesDeclaration);
 }
 
-QString Generator::generateVariables(Id const &diagram)
-{
-}
-
 Generator::NeededStringsForPresentationDiagram Generator::generateMainForms(Id const &diagram)
 {
+	return Generator::NeededStringsForPresentationDiagram("", "", "");
 }
 
 void Generator::generateHandlers(Id const &diagram)

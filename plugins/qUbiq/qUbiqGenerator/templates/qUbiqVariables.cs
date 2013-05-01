@@ -4,6 +4,6 @@ namespace @@programName@@
     
     public static class @@programName@@Variables
     {
-		@@variableDeclarations@@
+@@variableDeclarations@@
 	}
 }
