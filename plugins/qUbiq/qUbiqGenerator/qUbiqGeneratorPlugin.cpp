@@ -26,7 +26,6 @@ void QUbiqGeneratorPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mLogicalModel = &configurator.logicalModelApi();
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
-//	mGenerator.init(configurator.logicalModelApi(), *configurator.mainWindowInterpretersInterface().errorReporter());
 }
 
 QList<ActionInfo> QUbiqGeneratorPlugin::actions()
@@ -40,13 +39,16 @@ QList<ActionInfo> QUbiqGeneratorPlugin::actions()
 
 void QUbiqGeneratorPlugin::generate()
 {
-//	foreach (qReal::Id const &metamodel, mLogicalModel->logicalRepoApi().elementsByType("MetamodelConstraints")) {
-//		if (!mLogicalModel->logicalRepoApi().isLogicalElement(metamodel)) {
-//			continue;
-//		}
-//		mGenerator.generate(metamodel);
-//	}
+	foreach (qReal::Id const &diagram, mLogicalModel->logicalRepoApi().elementsByType("qUbiqPresentationDiagram")) {
+		if (!mLogicalModel->logicalRepoApi().isLogicalElement(diagram)) {
+			continue;
+		}
 
-	mGenerator = new Generator(QString(), QString(), QString(), *mLogicalModel, *mErrorReporter, QString());
-	mGenerator->generate();
+		QString pathToQReal = mLogicalModel->logicalRepoApi().property(diagram, "pathToQReal").toString();
+		QString programName = mLogicalModel->logicalRepoApi().property(diagram, "programName").toString();
+		QString pathToGenerate = mLogicalModel->logicalRepoApi().property(diagram, "pathToGenerate").toString();
+
+		mGenerator = new Generator(pathToGenerate, pathToQReal, programName, *mLogicalModel, *mErrorReporter);
+		mGenerator->generate();
+	}
 }

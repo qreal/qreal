@@ -14,12 +14,11 @@ public:
 	  @param logicalModel Logical model reference.
 	  @param errorReporter Object to return errors to.
 	  */
-	Generator(QString const &templateDirPath
-			, QString const &outputDirPath
+	Generator(QString const &outputDirPath
 			, QString const &pathToQReal
+			, QString const &programName
 			, qReal::LogicalModelAssistInterface const &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
-			, QString const &diagramName
 			);
 
 	virtual ~Generator();
@@ -29,8 +28,20 @@ public:
 
 private:
 	bool isCorrectedName(QString const &name);
+	void initGeneratedStrings();
+	void generatePresentationDiagrams();
+	void generateLogicDiagrams();
+	void generateCSProject();
+	QString generateVariables(qReal::Id const &diagram);
+	QString generateMainForms(qReal::Id const &diagram);
+	QString generateHandlers(qReal::Id const &diagram);
+
 	QString mPathToQReal;
-	QString mDiagramName;
+	QString mProgramName;
+
+	QString mResultForms;
+	QString mResultVariables;
+	QString mResultCSProject;
 };
 
 }
