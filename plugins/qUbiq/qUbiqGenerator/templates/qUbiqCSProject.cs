@@ -7,8 +7,8 @@
     <ProjectGuid>{EDD4B358-2977-4F91-B9C1-7F81EF09F4EC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XOGame</RootNamespace>
-    <AssemblyName>XOGame</AssemblyName>
+    <RootNamespace>@@programName@@</RootNamespace>
+    <AssemblyName>@@programName@@</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

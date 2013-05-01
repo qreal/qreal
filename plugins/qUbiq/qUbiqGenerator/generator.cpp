@@ -8,9 +8,9 @@ using namespace qReal;
 using namespace utils;
 
 QString const templateDir = "./templates";
-QString const fileNameForms = "qUbiqForms.cs";
-QString const fileNameVariables = "qUbiqVariables.cs";
-QString const fileNameCSProj = "qUbiqCSProject.cs";
+QString const templateFileNameForms = "qUbiqForms.cs";
+QString const templateFileNameVariables = "qUbiqVariables.cs";
+QString const templateFfileNameCSProj = "qUbiqCSProject.cs";
 
 /// Generation target file
 
@@ -37,11 +37,22 @@ bool Generator::isCorrectedName(QString const &name)
 	return patten.exactMatch(name);
 }
 
-void Generator::initGeneratedStrings()
+void Generator::initGeneratingFiles()
 {
-	loadTemplateFromFile(fileNameForms, mResultForms);
-	loadTemplateFromFile(fileNameVariables, mResultVariables);
-	loadTemplateFromFile(fileNameCSProj, mResultCSProject);
+	loadTemplateFromFile(templateFileNameForms, mResultForms);
+	loadTemplateFromFile(templateFileNameVariables, mResultVariables);
+}
+
+void Generator::saveGeneratedFiles()
+{
+	QString formsFileName = QString(mProgramName + "Forms.cs");
+	QString variablesFileName = QString(mProgramName + "Variables.cs");
+
+	saveOutputFile(formsFileName, mResultForms);
+	saveOutputFile(variablesFileName, mResultVariables);
+
+	mCompileIncludeFiles.append(formsFileName);
+	mCompileIncludeFiles.append(variablesFileName);
 }
 
 void Generator::generate()
@@ -54,52 +65,91 @@ void Generator::generate()
 		return;
 	}
 
-	initGeneratedStrings();
+	initGeneratingFiles();
 	generatePresentationDiagrams();
 	generateLogicDiagrams();
-	generateCSProject();
+	saveGeneratedFiles();
+	generateAndSaveCSProject();
 }
 
 void Generator::generatePresentationDiagrams()
 {
+	QString startFormName = "";
+	QString formsDescription = "";
+	QString onButtonClickedDescriptions = "";
+	QString variablesDeclaration = "";
+
 	foreach (Id const &diagram, mApi.elementsByType("qUbiqPresentationDiagram")) {
 		if (!mApi.isLogicalElement(diagram) || mApi.parent(diagram) != Id::rootId()) {
 			continue;
 		}
-		generateMainForms(diagram);
-		generateVariables(diagram);
+		NeededStringsForPresentationDiagram currentForms = generateMainForms(diagram);
+		QString currentVariables = generateVariables(diagram);
+
+		startFormName = currentForms.startFormName;
+		formsDescription += currentForms.formsDescription;
+		onButtonClickedDescriptions += currentForms.onButtonClickedDescriptions;
+		variablesDeclaration += currentVariables;
 	}
+
+	mResultForms.replace("@@programName@@", mProgramName);
+	mResultForms.replace("@@startFormName@@", startFormName);
+	mResultForms.replace("@@createFormDescriptions@@", formsDescription);
+	mResultForms.replace("@@onButtonClickedDescriptions@@", onButtonClickedDescriptions);
+
+	mResultVariables.replace("@@programName@@", mProgramName);
+	mResultVariables.replace("@@variableDeclarations@@", variablesDeclaration);
 }
 
 void Generator::generateLogicDiagrams()
 {
+	QString variablesDeclaration = "";
+
 	QList<Id> logicElementList= mApi.elementsByType("qUbiqLogicDiagram");
 	logicElementList.append(mApi.elementsByType("qUbiqConditionDiagram"));
 	foreach (Id const &diagram, logicElementList) {
 		if (!mApi.isLogicalElement(diagram) || mApi.parent(diagram) != Id::rootId()) {
 			continue;
 		}
-		generateVariables(diagram);
-		generateHandlers(diagram);
+		QString currentVariables = generateVariables(diagram);
+		generateHandlers(diagram); //qwerty_TODO
+		variablesDeclaration += currentVariables;
 	}
+
+	mResultVariables.replace("@@programName@@", mProgramName);
+	mResultVariables.replace("@@variableDeclarations@@", variablesDeclaration);
 }
 
 QString Generator::generateVariables(Id const &diagram)
 {
 }
 
-QString Generator::generateMainForms(Id const &diagram)
+Generator::NeededStringsForPresentationDiagram Generator::generateMainForms(Id const &diagram)
 {
 }
 
-QString Generator::generateHandlers(Id const &diagram)
+void Generator::generateHandlers(Id const &diagram)
 {
 	Q_UNUSED(diagram)
-	//qwerty_for future
+	//qwerty_TODO_for future
 }
 
-void Generator::generateCSProject()
+void Generator::generateAndSaveCSProject()
 {
-	//qwerty_without handlers
+	QString resultCSProject;
+	loadTemplateFromFile(templateFfileNameCSProj, resultCSProject);
+
+	QString compileIncludes = "";
+	foreach (QString fileName, mCompileIncludeFiles)
+	{
+		QString oneCompileIncludeTemplate = mTemplateUtils["@@oneCompileInclude@@"];
+		oneCompileIncludeTemplate.replace("@@fileName@@", fileName);
+		compileIncludes += oneCompileIncludeTemplate;
+	}
+
+	resultCSProject.replace("@@programName@@", mProgramName);
+	resultCSProject.replace("@@compileIncludes@@", compileIncludes);
+
+	saveOutputFile(QString(mProgramName + ".csproj"), resultCSProject);
 }
 

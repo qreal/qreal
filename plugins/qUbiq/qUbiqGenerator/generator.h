@@ -27,21 +27,28 @@ public:
 	void generate();
 
 private:
+	struct NeededStringsForPresentationDiagram {
+		QString startFormName;
+		QString formsDescription;
+		QString onButtonClickedDescriptions;
+	};
+
 	bool isCorrectedName(QString const &name);
-	void initGeneratedStrings();
+	void initGeneratingFiles();
+	void saveGeneratedFiles();
 	void generatePresentationDiagrams();
 	void generateLogicDiagrams();
-	void generateCSProject();
+	void generateAndSaveCSProject();
 	QString generateVariables(qReal::Id const &diagram);
-	QString generateMainForms(qReal::Id const &diagram);
-	QString generateHandlers(qReal::Id const &diagram);
+	NeededStringsForPresentationDiagram generateMainForms(qReal::Id const &diagram);
+	void generateHandlers(qReal::Id const &diagram);
 
 	QString mPathToQReal;
 	QString mProgramName;
+	QVector<QString> mCompileIncludeFiles;
 
 	QString mResultForms;
 	QString mResultVariables;
-	QString mResultCSProject;
 };
 
 }
