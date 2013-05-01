@@ -27,6 +27,8 @@
 	<file>generated/shapes/VariablePorts.sdf</file>
 	<file>generated/shapes/WhileClass.sdf</file>
 	<file>generated/shapes/WhilePorts.sdf</file>
+	<file>generated/shapes/AbstractMessageClass.sdf</file>
+	<file>generated/shapes/AbstractMessagePorts.sdf</file>
 	<file>generated/shapes/BeginNodeInLogicEditorClass.sdf</file>
 	<file>generated/shapes/BeginNodeInLogicEditorPorts.sdf</file>
 	<file>generated/shapes/ChangeInLogicEditorClass.sdf</file>
@@ -64,6 +66,8 @@
 	<file>generated/shapes/AbstractIsNullNodePorts.sdf</file>
 	<file>generated/shapes/AbstractListsNodeClass.sdf</file>
 	<file>generated/shapes/AbstractListsNodePorts.sdf</file>
+	<file>generated/shapes/AbstractSlideElementClass.sdf</file>
+	<file>generated/shapes/AbstractSlideElementPorts.sdf</file>
 	<file>generated/shapes/BeginNodeInPresentationEditorClass.sdf</file>
 	<file>generated/shapes/BeginNodeInPresentationEditorPorts.sdf</file>
 	<file>generated/shapes/ButtonClass.sdf</file>

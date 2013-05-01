@@ -23,10 +23,12 @@
             <enum displayedName="Type of wait message" name="waitMessageType">
                 <value>response about playing field status</value>
                 <value>response to game request</value>
+                <value>pressing on a keyboard</value>
             </enum>
             <enum displayedName="Type of receiver" name="sentToType">
                 <value>server</value>
                 <value>other player</value>
+                <value>keyboard</value>
             </enum>
         </nonGraphicTypes>
         <graphicTypes>
@@ -50,13 +52,13 @@
                         <contains type="waitMessage"/>
                         <contains type="variableInLogicEditor"/>
                         <contains type="whileInLogicEditor"/>
+                        <contains type="ifNodeInLogicEditor"/>
                         <contains type="changeInLogicEditor"/>
+                        <contains type="beginNodeInLogicEditor"/>
                         <contains type="takeGridOrListElementsInLogicEditor"/>
                         <contains type="forNodeInLogicEditor"/>
                         <contains type="outputSplitterInLogicEditor"/>
                         <contains type="returnInLogicEditor"/>
-                        <contains type="beginNodeInLogicEditor"/>
-                        <contains type="ifNodeInLogicEditor"/>
                     </container>
                     <properties>
                         <property displayedName="Type of handler" type="handlerType" name="handlerType"/>
@@ -176,8 +178,10 @@
                     <properties>
                         <property displayedName="Type of sent message" type="sentMessageType" name="messageType"/>
                         <property displayedName="Reciever" type="sentToType" name="sentTo"/>
-                        <property displayedName="Additional text" type="string" name="additionalText"/>
                     </properties>
+                    <generalizations>
+                        <parent parentName="abstractMessage"/>
+                    </generalizations>
                 </logic>
             </node>
             <node displayedName="Wait message" name="waitMessage">
@@ -217,6 +221,9 @@
                         <property displayedName="Type of wait message" type="waitMessageType" name="waitMessageType"/>
                         <property displayedName="Sender" type="sentToType" name="waitFrom"/>
                     </properties>
+                    <generalizations>
+                        <parent parentName="abstractMessage"/>
+                    </generalizations>
                 </logic>
             </node>
             <import as="variableInLogicEditor" displayedName="Variable" name="qUbiqConditionEditor::variable"/>
@@ -258,6 +265,14 @@
             </edge>
             <import as="cyclicValueInLogicEditor" displayedName="Cyclic values" name="qUbiqConditionEditor::cyclicValue"/>
             <import as="beginNodeInLogicEditor" displayedName="Begin node" name="qUbiqConditionEditor::beginNode"/>
+            <node name="abstractMessage">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Additional text" type="string" name="additionalText"/>
+                    </properties>
+                </logic>
+            </node>
         </graphicTypes>
     </diagram>
     <diagram displayedName="QUbiq Presentation Editor" nodeName="qUbiqPresentationDiagram" name="qUbiqPresentationEditor">
@@ -281,7 +296,6 @@
                         <contains type="image"/>
                     </container>
                     <properties>
-                        <property displayedName="Path to QReal Source" type="string" name="pathToQReal"/>
                         <property displayedName="Program name" type="string" name="programName"/>
                         <property displayedName="Path to generate" type="string" name="pathToGenerate"/>
                     </properties>
@@ -295,6 +309,7 @@
                     <labels>
                         <label x="10a" y="10a" text="SLIDE"/>
                         <label x="50a" y="10a" textBinded="name"/>
+                        <label x="100" y="10a" textBinded="slideSize"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -325,6 +340,9 @@
                     </container>
                     <properties>
                         <property displayedName="Description" type="string" name="description"/>
+                        <property displayedName="Size of slide" type="string" name="slideSize">
+                            <default>1x1</default>
+                        </property>
                     </properties>
                     <generalizations>
                         <parent parentName="abstractHandlerNode"/>
@@ -369,6 +387,7 @@
                     </properties>
                     <generalizations>
                         <parent parentName="abstractHandlerNode"/>
+                        <parent parentName="abstractSlideElement"/>
                     </generalizations>
                 </logic>
             </node>
@@ -451,6 +470,9 @@
                             <default>false</default>
                         </property>
                     </properties>
+                    <generalizations>
+                        <parent parentName="abstractSlideElement"/>
+                    </generalizations>
                 </logic>
             </node>
             <node displayedName="Text" name="text">
@@ -547,6 +569,16 @@
                 </logic>
             </node>
             <import as="beginNodeInPresentationEditor" displayedName="Begin node" name="qUbiqConditionEditor::beginNode"/>
+            <node name="abstractSlideElement">
+                <logic>
+                    <container/>
+                    <properties>
+                        <property displayedName="Position on slide" type="string" name="position">
+                            <default>1:1</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
         </graphicTypes>
     </diagram>
     <diagram displayedName="QUbiq Condition Editor" nodeName="qUbiqConditionDiagram" name="qUbiqConditionEditor">
