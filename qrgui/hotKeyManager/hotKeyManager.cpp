@@ -262,7 +262,7 @@ bool HotKeyManager::hasPrefixOf(QString const &keyseq)
 
 		foreach (QString const &seq, seqlist) {
 			prefix += seq;
-			if (mShortcuts.contains(prefix) || mShortcuts.contains(seq)) {
+			if (mShortcuts.contains(prefix)) {
 				return true;
 			}
 			prefix += ", ";
