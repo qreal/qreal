@@ -51,9 +51,13 @@ void PreferencesHotKeyManagerPage::restoreSettings()
 void PreferencesHotKeyManagerPage::resetShortcuts()
 {
 	if (mCurrentId != "") {
-		HotKeyManager::deleteShortcut(mCurrentId, mCurrentItem->text());
+		if (mCurrentItem->textColor() == Qt::black) {
+			HotKeyManager::deleteShortcut(mCurrentId, mCurrentItem->text());
+		}
+
 		mCurrentItem->setText("");
 		mUi->shortcutLineEdit->setText("");
+		setTextColor(Qt::black);
 	}
 }
 
@@ -99,6 +103,7 @@ void PreferencesHotKeyManagerPage::initTable()
 	for (int i = 0; i < rows; ++i) {
 		for (int j = 0; j < 5; ++j) {
 			mUi->hotKeysTable->setItem(i, j, new QTableWidgetItem(""));
+			mUi->hotKeysTable->item(i, j)->setTextColor(Qt::black);
 		}
 	}
 }
