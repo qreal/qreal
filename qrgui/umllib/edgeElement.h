@@ -94,7 +94,7 @@ public:
 
 	bool isLoop();
 
-	void alignToGrid(int const indexGrid);
+	void alignToGrid();
 	qreal alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const;
 	QPointF alignedPoint(QPointF const &point, int const indexGrid) const;
 

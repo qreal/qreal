@@ -1090,11 +1090,6 @@ void EdgeElement::adjustLink(bool isDragging)
 			squarizeAndAdjustHandler(QPointF());
 		} else {
 			updateLongestPart();
-
-			if (SettingsManager::value("ActivateGrid").toBool()) {
-				int const indexGrid = SettingsManager::value("IndexGrid").toInt();
-				alignToGrid(indexGrid);
-			}
 		}
 	} else {
 		if (isSelected()) {
@@ -2006,15 +2001,16 @@ bool EdgeElement::isLoop()
 	return mIsLoop;
 }
 
-void EdgeElement::alignToGrid(int const indexGrid)
+void EdgeElement::alignToGrid()
 {
 	if (mLine.size() >= 3 && !SettingsManager::value("SquareLine").toBool()) {
+		int const indexGrid = SettingsManager::value("IndexGrid").toInt();
+
 		prepareGeometryChange();
 
 		for (int i = 1; i < mLine.size() - 1; ++i) {
 			mLine[i] = alignedPoint(mLine[i], indexGrid);
 		}
-
 
 		update();
 		updateLongestPart();

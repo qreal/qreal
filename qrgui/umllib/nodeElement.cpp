@@ -598,6 +598,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
 		edge->saveConfiguration(QPointF());
+		if (SettingsManager::value("ActivateGrid").toBool() && !SettingsManager::value("SquareLine").toBool()) {
+			edge->alignToGrid();
+		}
 	}
 
 	mDragState = None;
