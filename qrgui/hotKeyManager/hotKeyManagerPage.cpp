@@ -29,6 +29,10 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 	connect(mUi->resetShortcutPushButton, SIGNAL(pressed()), this, SLOT(resetShortcuts()));
 	connect(mUi->resetAllPushButton, SIGNAL(pressed()), this, SLOT(resetAllShortcuts()));
 
+	int const rows = HotKeyManager::commands().size();
+
+	mUi->hotKeysTable->setRowCount(rows);
+
 	initTable();
 	loadHotKeys();
 }
@@ -63,6 +67,9 @@ void PreferencesHotKeyManagerPage::resetShortcuts()
 
 void PreferencesHotKeyManagerPage::resetAllShortcuts()
 {
+	mCurrentItem = NULL;
+	mCurrentId = "";
+
 	HotKeyManager::resetAllShortcuts();
 	mUi->hotKeysTable->clearContents();
 	initTable();
@@ -96,14 +103,9 @@ void PreferencesHotKeyManagerPage::loadHotKeys()
 
 void PreferencesHotKeyManagerPage::initTable()
 {
-	int const rows = HotKeyManager::commands().size();
-
-	mUi->hotKeysTable->setRowCount(rows);
-
-	for (int i = 0; i < rows; ++i) {
+	for (int i = 0; i < mUi->hotKeysTable->rowCount(); ++i) {
 		for (int j = 0; j < 5; ++j) {
 			mUi->hotKeysTable->setItem(i, j, new QTableWidgetItem(""));
-			mUi->hotKeysTable->item(i, j)->setTextColor(Qt::black);
 		}
 	}
 }
@@ -120,6 +122,7 @@ void PreferencesHotKeyManagerPage::activateShortcutLineEdit(int const row, int c
 		if (mCurrentItem != NULL) {
 			mCurrentItem->setBackgroundColor(Qt::white);
 		}
+
 		mCurrentId = mUi->hotKeysTable->item(row, 0)->text();
 		mCurrentItem = mUi->hotKeysTable->item(row, column);
 		mCurrentItem->setBackgroundColor(Qt::lightGray);
