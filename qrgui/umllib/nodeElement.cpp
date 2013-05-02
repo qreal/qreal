@@ -316,6 +316,16 @@ void NodeElement::switchGrid(bool isChecked)
 {
 	mGrid->setGridMode(isChecked);
 	mSwitchGridAction.setChecked(isChecked);
+
+	if (isChecked) {
+		alignToGrid();
+
+		if (!SettingsManager::value("SquareLine").toBool()) {
+			foreach (EdgeElement* edge, mEdgeList) {
+				edge->alignToGrid();
+			}
+		}
+	}
 }
 
 void NodeElement::delUnusedLines()
