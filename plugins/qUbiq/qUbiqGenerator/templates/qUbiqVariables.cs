@@ -1,9 +1,9 @@
 namespace @@programName@@
 {
-    using System;
+	using System;
     
-    public static class @@programName@@Variables
-    {
+	public static class @@programName@@Variables
+	{
 @@variableDeclarations@@
 	}
 }

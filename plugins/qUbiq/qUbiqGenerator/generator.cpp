@@ -10,7 +10,7 @@ using namespace utils;
 QString const templateDir = "./templates";
 QString const templateFileNameForms = "qUbiqForms.cs";
 QString const templateFileNameVariables = "qUbiqVariables.cs";
-QString const templateFfileNameCSProj = "qUbiqCSProject.cs";
+QString const templateFfileNameCSProj = "qUbiqCSProject.csproj";
 
 /// Generation target file
 

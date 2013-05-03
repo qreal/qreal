@@ -2,22 +2,22 @@
 		private VisualElement Create@@formName@@()
 		{
 			var mainGrid = new Grid(@@width@@, @@height@@)
-            {
-                Margin = new Thickness(5, 5, 5, 5),
-                VerticalAlignment = VerticalAlignment.Stretch,
-                HorizontalAlignment = HorizontalAlignment.Stretch
-            };
+			{
+				Margin = new Thickness(5, 5, 5, 5),
+				VerticalAlignment = VerticalAlignment.Stretch,
+				HorizontalAlignment = HorizontalAlignment.Stretch
+			};
 @@mainGridFilling@@
 			return mainGrid;
 		}
 ==========
 @@buttonDeclaration@@
-			var button_@@tail@@ = new Button(@@x@@, @@y@@, this);
-			button_@@tail@@.Clicked += On@@buttonName@@Clicked;
+			var button_@@tail@@ = new Button();
+			button_@@tail@@.Pressed += On@@buttonName@@Clicked;
 			mainGrid[@@x@@, @@y@@] = button_@@tail@@;
 ==========
 @@textDeclaration@@
-			mainGrid[@@x@@, @@y@@] = "@@text@@";
+			mainGrid[@@x@@, @@y@@] = new TextBlock() { Text = "@@text@@" };
 ==========
 @@imageDeclaration@@
 			mainGrid[@@x@@, @@y@@] = Image("@@pathToImage@@");
@@ -31,7 +31,7 @@
 			mainGrid[@@x@@, @@y@@] = grid_@@tail@@;
 ==========
 @@oneOnButtonClickedDescription@@
-		void On@@buttonName@@Clicked()
+		void On@@buttonName@@Clicked(object sender, EventArgs args)
 		{
 			Screen.Content = Create@@toFormName@@();
 		}
@@ -43,7 +43,7 @@
 		}
 ==========
 @@oneVariableDeclaration@@
-	public static @@variableType@@ @@variableName@@ {get; set;}
+		public static @@variableType@@ @@variableName@@ {get; set;}
 ==========
 @@oneCompileInclude@@
     <Compile Include="@@fileName@@" />

@@ -38,8 +38,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-      <Compile Include="XOProgramForms.cs" />
-    <Compile Include="XOProgramVariables.cs" />
+  	<Compile Include="XOProgramForms.cs" />
+	<Compile Include="XOProgramVariables.cs" />
 
   </ItemGroup>
   <ItemGroup>
