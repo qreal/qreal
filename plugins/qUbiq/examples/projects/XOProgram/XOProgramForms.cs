@@ -15,6 +15,18 @@ namespace XOProgram
 			WaitForInput("7890\r");            
 		}
 		
+		private VisualElement CreateExitForm()
+		{
+			var mainGrid = new Grid(1, 3)
+			{
+				Margin = new Thickness(5, 5, 5, 5),
+				VerticalAlignment = VerticalAlignment.Stretch,
+				HorizontalAlignment = HorizontalAlignment.Stretch
+			};
+			mainGrid[1, 1] = new TextBlock() { Text = "That's all" };
+			return mainGrid;
+		}
+		
 		private VisualElement CreateMainSlide_01()
 		{
 			var mainGrid = new Grid(1, 3)
@@ -92,7 +104,7 @@ namespace XOProgram
 		
 		void OnExitButton_01Clicked()
 		{
-			Exit();
+			Screen.Content = CreateExitForm();
 		}
 		void OnPlayButtonClicked(object sender, EventArgs args)
 		{
@@ -100,11 +112,11 @@ namespace XOProgram
 		}
 		void OnExitButton_04Clicked()
 		{
-			Exit();
+			Screen.Content = CreateExitForm();
 		}
 		void OnNewPlayButtonClicked(object sender, EventArgs args)
 		{
-			Screen.Content = CreateExitButton_02();
+			Screen.Content = CreateSlide_02();
 		}
 		void OnGiveUpButtonClicked(object sender, EventArgs args)
 		{
@@ -112,7 +124,7 @@ namespace XOProgram
 		}
 		void OnExitButton_02Clicked()
 		{
-			Exit();
+			Screen.Content = CreateExitForm();
 		}
 		void OnOkButtonClicked(object sender, EventArgs args)
 		{

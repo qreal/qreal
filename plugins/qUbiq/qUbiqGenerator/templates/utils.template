@@ -39,7 +39,7 @@
 @@oneOnExitButtonClickedDescription@@
 		void On@@buttonName@@Clicked()
 		{
-			Exit();
+			Screen.Content = CreateExitForm();
 		}
 ==========
 @@oneVariableDeclaration@@
