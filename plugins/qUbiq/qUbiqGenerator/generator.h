@@ -30,18 +30,22 @@ private:
 		QString startFormName;
 		QString formsDescription;
 		QString onButtonClickedDescriptions;
-
 		NeededStringsForPresentationDiagram(QString curStartFormName
 											, QString curFormsDescription
 											, QString curOnButtonClickedDescriptions)
-				: startFormName(curStartFormName)
-				, formsDescription(curFormsDescription)
-				, onButtonClickedDescriptions(curOnButtonClickedDescriptions){}
+						: startFormName(curStartFormName)
+						, formsDescription(curFormsDescription)
+						, onButtonClickedDescriptions(curOnButtonClickedDescriptions){}
 	};
 
 	struct NeededStringsForOneSlideDescription {
 		QString oneFormDescription;
 		QString onButtonDescription;
+	};
+
+	struct NeededStringsForOneElementDeclaration {
+		QString elemetCreation;
+		QString elementName;
 	};
 
 	bool isCorrectedName(QString const &name);
@@ -58,11 +62,13 @@ private:
 	QString countOnButtonDescription(qReal::Id const &button);
 	QString countMainGridFilling(qReal::Id const &form);
 	QString countButtonDeclaration(qReal::Id const &button);
+	QString countButtonDeclarationWithHandler(qReal::Id const &button);
 	QString countTextDeclaration(qReal::Id const &element);
 	QString countImageDeclaration(qReal::Id const &element);
 	QString countListDeclaration(qReal::Id const &element);
 	QString countGridDeclaration(qReal::Id const &element);
-	void generateHandlers(qReal::Id const &diagram);
+	NeededStringsForOneElementDeclaration countOneElementDeclarationForLists(qReal::Id const &element, int tail);
+	QString generateHandlers(qReal::Id const &diagram);
 
 	QString mProgramName;
 	QVector<QString> mCompileIncludeFiles;

@@ -7,28 +7,49 @@
 				VerticalAlignment = VerticalAlignment.Stretch,
 				HorizontalAlignment = HorizontalAlignment.Stretch
 			};
-@@mainGridFilling@@
-			return mainGrid;
+@@mainGridFilling@@			return mainGrid;
 		}
+==========
+@@elementDeclaration@@
+@@elemetCreation@@			mainGrid[@@x@@, @@y@@] = @@elementName@@_@@tail@@;
+
 ==========
 @@buttonDeclaration@@
 			var button_@@tail@@ = new Button();
 			button_@@tail@@.Pressed += On@@buttonName@@Clicked;
-			mainGrid[@@x@@, @@y@@] = button_@@tail@@;
+==========
+@@buttonDeclarationWithHandler@@
+			var button_@@tail@@ = new Button();
+					button_@@tail@@.Pressed += By@@handlerName@@Handler;
 ==========
 @@textDeclaration@@
-			mainGrid[@@x@@, @@y@@] = new TextBlock() { Text = "@@text@@" };
+			var text_@@tail@@ = new TextBlock() { Text = "@@text@@" };
 ==========
 @@imageDeclaration@@
-			mainGrid[@@x@@, @@y@@] = Image("@@pathToImage@@");
+			var image_@@tail@@ = new Image(new System.Drawing.Bitmap(@"@@pathToImage@@"));
+			var imageBlock_@@tail@@ = new ImageBlock(image);
 ==========
 @@listDeclaration@@
-			var list_@@tail@@ = new List();
-			mainGrid[@@x@@, @@y@@] = list_@@tail@@;
+			var list_@@tail@@ = new ListBox();
+@@listFillings@@
+==========
+@@listFilling@@
+@@listItemCreation@@			list_@@tail@@.Append(@@listItemName@@_@@tail@@_@@itemTail@@);
 ==========
 @@gridDeclaration@@
-			var grid_@@tail@@ = new Grid();
-			mainGrid[@@x@@, @@y@@] = grid_@@tail@@;
+			var grid_@@tail@@ = new Grid(@@w@@, @@h@@)
+			{
+				Margin = new Thickness(5, 5, 5, 5),
+				VerticalAlignment = VerticalAlignment.Stretch,
+				HorizontalAlignment = HorizontalAlignment.Stretch
+			};
+			for (int i = 0; i < @@w@@; ++i)
+			{
+				for (int j = 0; j < @@h@@; ++j)
+				{
+		@@gridItemCreation@@					grid_@@tail@@[i, j] = @@gridItemName@@_@@tail@@_@@itemTail@@;
+				}
+			}
 ==========
 @@oneOnButtonClickedDescription@@
 		void On@@buttonName@@Clicked(object sender, EventArgs args)
@@ -37,9 +58,15 @@
 		}
 ==========
 @@oneOnExitButtonClickedDescription@@
-		void On@@buttonName@@Clicked()
+		void On@@buttonName@@Clicked(object sender, EventArgs args)
 		{
 			Screen.Content = CreateExitForm();
+		}
+==========
+@@oneHandlerDescription@@
+		void By@@handlerName@@Handler(object sender, EventArgs args)
+		{
+			// TODO
 		}
 ==========
 @@oneVariableDeclaration@@

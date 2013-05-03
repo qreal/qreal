@@ -38,7 +38,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-  @@compileIncludes@@
+@@compileIncludes@@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CSharpExtension, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -54,6 +54,7 @@
       <HintPath>$(UBIQ_HOME)\MApp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+	<Reference Include="System.Drawing" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -59,7 +59,7 @@ void Generator::generate()
 	mErrorReporter.clearErrors();
 
 	if (!isCorrectedName(mProgramName)) {
-		mErrorReporter.addCritical("Program name is not correct");
+		mErrorReporter.addError("Program name is not correct");
 		return;
 	}
 
@@ -97,12 +97,15 @@ void Generator::generateLogicDiagrams()
 {
 	QList<Id> logicElementList= mApi.elementsByType("qUbiqLogicDiagram");
 	logicElementList.append(mApi.elementsByType("qUbiqConditionDiagram"));
+
+	QString handlerDescriptions = "";
 	foreach (Id const &diagram, logicElementList) {
 		if (!mApi.isLogicalElement(diagram)) {
 			continue;
 		}
-		generateHandlers(diagram);
+		handlerDescriptions += generateHandlers(diagram);
 	}
+	mResultForms.replace("@@handlerDescriptions@@", handlerDescriptions);
 }
 
 void Generator::generateVariables()
@@ -120,7 +123,7 @@ void Generator::generateVariables()
 		if (variableType == "text") {
 			realVariableType = "string";
 		} else if (variableType == "list") {
-			realVariableType = "List"; //qwerty_what
+			realVariableType = "List<VisualElement>";
 		} else if (variableType == "image") {
 			realVariableType = "Image";
 		} else if (variableType == "grid") {
@@ -212,23 +215,32 @@ QString Generator::countMainGridFilling(Id const &form)
 			continue;
 		}
 
-		QString currentElement = "";
+		QString elementCreation = "";
+		QString elementName = "";
 		if ((element.element().compare("text", Qt::CaseInsensitive)) == 0) {
-			currentElement = countTextDeclaration(element);
+			elementCreation = countTextDeclaration(element);
+			elementName = "text";
 		} else if ((element.element().compare("image", Qt::CaseInsensitive)) == 0) {
-			currentElement = countImageDeclaration(element);
+			elementCreation = countImageDeclaration(element);
+			elementName = "imageBlock";
 		} else if ((element.element().compare("list", Qt::CaseInsensitive)) == 0) {
-			currentElement = countListDeclaration(element);
+			elementCreation = countListDeclaration(element);
+			elementName = "list";
 		} else if ((element.element().compare("grid", Qt::CaseInsensitive)) == 0) {
-			currentElement = countGridDeclaration(element);
+			elementCreation = countGridDeclaration(element);
+			elementName = "grid";
 		} else { // i.e. 'button' and 'exitButton'
-			currentElement = countButtonDeclaration(element);
+			elementCreation = countButtonDeclaration(element);
+			elementName = "button";
 		}
 
+		QString currentElement = mTemplateUtils["@@elementDeclaration@@"];
+		currentElement.replace("@@elemetCreation@@", elementCreation);
+		currentElement.replace("@@elementName@@", elementName);
+		currentElement.replace("@@tail@@", QString::number(i));
 		QStringList position = mApi.property(element, "position").toString().split(':');
 		currentElement.replace("@@x@@", position.at(1));
 		currentElement.replace("@@y@@", position.at(0));
-		currentElement.replace("@@tail@@", QString::number(i));
 
 		mainGridFilling += currentElement;
 		i++;
@@ -238,9 +250,15 @@ QString Generator::countMainGridFilling(Id const &form)
 
 QString Generator::countButtonDeclaration(Id const &button)
 {
-	QString result;
-	result = mTemplateUtils["@@buttonDeclaration@@"];
+	QString result = mTemplateUtils["@@buttonDeclaration@@"];
 	result.replace("@@buttonName@@", mApi.name(button));
+	return result;
+}
+
+QString Generator::countButtonDeclarationWithHandler(Id const &button)
+{
+	QString result = mTemplateUtils["@@buttonDeclarationWithHandler@@"];
+	result.replace("@@handlerName@@", mApi.property(button, "handler").toString());
 	return result;
 }
 
@@ -262,27 +280,86 @@ QString Generator::countTextDeclaration(Id const &element)
 	return result;
 }
 
-QString Generator::countImageDeclaration(Id const &element) //qwerty_TODO
+QString Generator::countImageDeclaration(Id const &element)
 {
-	QString result;
-	result = mTemplateUtils["@@imageDeclaration@@"];
+	QString result = mTemplateUtils["@@imageDeclaration@@"];
 	result.replace("@@pathToImage@@", mApi.property(element, "pathToImage").toString());
 	return result;
 }
 
-QString Generator::countListDeclaration(Id const &element) //qwerty_TODO
+Generator::NeededStringsForOneElementDeclaration Generator::countOneElementDeclarationForLists(Id const &element, int tail)
 {
-	Q_UNUSED(element)
-	QString result;
-	result = mTemplateUtils["@@listDeclaration@@"];
+	NeededStringsForOneElementDeclaration result;
+	QString elementCreation = "";
+	QString elementName = "";
+	if ((element.element().compare("text", Qt::CaseInsensitive)) == 0) {
+		elementCreation = countTextDeclaration(element);
+		elementName = "text";
+	} else if ((element.element().compare("image", Qt::CaseInsensitive)) == 0) {
+		elementCreation = countImageDeclaration(element);
+		elementName = "imageBlock";
+	} else if ((element.element().compare("button", Qt::CaseInsensitive)) == 0){
+		elementCreation = countButtonDeclarationWithHandler(element);
+		elementName = "button";
+	} else {
+		mErrorReporter.addError("Invalid item in the List or Grid", element);
+	}
+	elementCreation.replace("@@tail@@", "@@tail@@_" + QString::number(tail));
+	result.elemetCreation = elementCreation;
+	result.elementName = elementName;
 	return result;
 }
 
-QString Generator::countGridDeclaration(Id const &element) //qwerty_TODO
+QString Generator::countListDeclaration(Id const &element)
 {
-	Q_UNUSED(element)
-	QString result;
-	result = mTemplateUtils["@@gridDeclaration@@"];
+	QString result = mTemplateUtils["@@listDeclaration@@"];
+
+	QString listFillings;
+	int elementsCount = mApi.property(element, "elementsCount").toInt();
+	IdList children = mApi.children(element);
+
+	if (children.size() > elementsCount) {
+		mErrorReporter.addError("Count of List elements is less than count of List children", element);
+	} else {
+		int i = 0;
+		while (i < elementsCount) {
+			foreach (Id const &child, children) {
+				if (i >= elementsCount) {
+					break;
+				}
+				NeededStringsForOneElementDeclaration currentElement = countOneElementDeclarationForLists(child, i);
+				QString currentListFilling = mTemplateUtils["@@listFilling@@"];
+				currentListFilling.replace("@@listItemCreation@@", currentElement.elemetCreation);
+				currentListFilling.replace("@@listItemName@@", currentElement.elementName);
+				currentListFilling.replace("@@itemTail@@", QString::number(i));
+				listFillings += currentListFilling;
+				i++;
+			}
+		}
+	}
+
+	result.replace("@@listFillings@@", listFillings);
+	return result;
+}
+
+QString Generator::countGridDeclaration(Id const &element)
+{
+	QString result = mTemplateUtils["@@gridDeclaration@@"];
+	IdList children = mApi.children(element);
+
+	if (children.size() != 1) {
+		mErrorReporter.addError("Incorrect number of Grid children", element);
+	} else {
+		Id child = children.at(0);
+		NeededStringsForOneElementDeclaration currentElement = countOneElementDeclarationForLists(child, 0);
+		result.replace("@@gridItemCreation@@", currentElement.elemetCreation);
+		result.replace("@@gridItemName@@", currentElement.elementName);
+		result.replace("@@itemTail@@", QString::number(0));
+	}
+
+	QStringList gridSize = mApi.property(element, "size").toString().split('x');
+	result.replace("@@w@@", gridSize.at(1));
+	result.replace("@@h@@", gridSize.at(0));
 	return result;
 }
 
@@ -311,10 +388,15 @@ QString Generator::countOnButtonDescription(Id const &button)
 	return result;
 }
 
-void Generator::generateHandlers(Id const &diagram)
+QString Generator::generateHandlers(Id const &diagram)
 {
-	Q_UNUSED(diagram)
 	//qwerty_TODO_for future
+	QString result = "";
+	if ((diagram.element().compare("qUbiqLogicDiagram", Qt::CaseInsensitive)) == 0) {
+		result = mTemplateUtils["@@oneHandlerDescription@@"];
+		result.replace("@@handlerName@@", mApi.name(diagram));
+	}
+	return result;
 }
 
 void Generator::generateAndSaveCSProject()

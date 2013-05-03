@@ -28,7 +28,7 @@ namespace @@programName@@
 		}
 		
 @@createFormDescriptions@@
-		
 @@onButtonClickedDescriptions@@
+@@handlerDescriptions@@
 	}
 }
