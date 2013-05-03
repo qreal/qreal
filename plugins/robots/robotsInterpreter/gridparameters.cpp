@@ -2,19 +2,20 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QGridLayout>
 #include <QString>
-#include "GridParameters.h"
+#include "gridParameters.h"
 #include "../../../qrkernel/settingsManager.h"
 
 GridParameters::GridParameters(QWidget *parent)
 	: QGroupBox(parent)
 {
+	QGridLayout *layout = new QGridLayout(this);
+
 	mShowGridCheckBox = new QCheckBox(this);
 	mShowGridCheckBox->setText(tr("Show grid"));
-	mShowGridCheckBox->setGeometry(QRect(10, 20, 70, 17));
 
 	mCellSize = new QSlider(this);
-	mCellSize->setGeometry(QRect(10, 50, 131, 19));
 	mCellSize->setOrientation(Qt::Horizontal);
 	mCellSize->setMinimum(50);
 	mCellSize->setMaximum(200);
@@ -23,14 +24,21 @@ GridParameters::GridParameters(QWidget *parent)
 
 	mCellSizeLabel = new QLabel(this);
 	mCellSizeLabel->setText(tr("Cell size"));
-	mCellSizeLabel->setGeometry(QRect(50, 40, 46, 13));
+
+	layout->addWidget(mShowGridCheckBox, 0, 0);
+	layout->addWidget(mCellSizeLabel, 1, 0);
+	layout->addWidget(mCellSize, 1, 1);
+	layout->setContentsMargins(5, 5, 5, 5);
 
 	connect(mShowGridCheckBox, SIGNAL(toggled(bool)), mCellSize, SLOT(setEnabled(bool)));
 	connect(mShowGridCheckBox, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
 	connect(mCellSize, SIGNAL(valueChanged(int)), this, SLOT(setCellSize(int)));
+
 	mShowGridCheckBox->setTristate(false);
 	qReal::SettingsManager::setValue("2dShowGrid", false);
 	qReal::SettingsManager::setValue("2dGridCellSize", 50);
+
+	setLayout(layout);
 }
 
 GridParameters:: ~GridParameters()

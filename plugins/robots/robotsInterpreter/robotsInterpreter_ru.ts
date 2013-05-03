@@ -282,7 +282,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="gridParameters.cpp" line="25"/>
-        <source>Cell size</source>
+        <source>Cell size.dgfsgh</source>
+        <oldsource>Cell size.kdgjkldfg</oldsource>
         <translation>Размер ячейки</translation>
     </message>
 </context>
