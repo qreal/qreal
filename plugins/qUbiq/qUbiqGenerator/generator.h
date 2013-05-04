@@ -55,6 +55,7 @@ private:
 	void generateLogicDiagrams();
 	void saveGeneratedFiles();
 	void generateAndSaveCSProject();
+	void saveAppConfig();
 
 	NeededStringsForPresentationDiagram generateMainForms(qReal::Id const &diagram);
 	QString countStartFormName(qReal::Id const &diagram);

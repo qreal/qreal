@@ -10,7 +10,8 @@ using namespace utils;
 QString const templateDir = "./templates";
 QString const templateFileNameForms = "qUbiqForms.cs";
 QString const templateFileNameVariables = "qUbiqVariables.cs";
-QString const templateFfileNameCSProj = "qUbiqCSProject.csproj";
+QString const templateFileNameCSProj = "qUbiqCSProject.csproj";
+QString const templateFileNameAppConfig = "qUbiqApp.config";
 
 /// Generation target file
 
@@ -69,6 +70,7 @@ void Generator::generate()
 	generateLogicDiagrams();
 	saveGeneratedFiles();
 	generateAndSaveCSProject();
+	saveAppConfig();
 }
 
 void Generator::generatePresentationDiagrams()
@@ -402,7 +404,7 @@ QString Generator::generateHandlers(Id const &diagram)
 void Generator::generateAndSaveCSProject()
 {
 	QString resultCSProject;
-	loadTemplateFromFile(templateFfileNameCSProj, resultCSProject);
+	loadTemplateFromFile(templateFileNameCSProj, resultCSProject);
 
 	QString compileIncludes = "";
 	foreach (QString fileName, mCompileIncludeFiles)
@@ -416,5 +418,12 @@ void Generator::generateAndSaveCSProject()
 	resultCSProject.replace("@@compileIncludes@@", compileIncludes);
 
 	saveOutputFile(QString(mProgramName + ".csproj"), resultCSProject);
+}
+
+void Generator::saveAppConfig()
+{
+	QString resultAppConfig;
+	loadTemplateFromFile(templateFileNameAppConfig, resultAppConfig);
+	saveOutputFile("App.config", resultAppConfig);
 }
 
