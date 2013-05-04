@@ -22,8 +22,9 @@ Number RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &
 	}
 	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
 	for (int i = 0; i < (exprs.length() - 1); ++i) {
-		if (mHasParseErrors)
+		if (mHasParseErrors) {
 			return Number(0, Number::intType);
+		}
 		int position = 0;
 		QString expr = exprs[i];
 		skip(expr, position);
@@ -43,8 +44,9 @@ void RobotsBlockParser::functionBlockParseProcess(const QString &stream, int &po
 {
 	mCurrentId = curId;
 
-	if (isEmpty(stream, pos))
+	if (isEmpty(stream, pos)) {
 		error(emptyProcess);
+	}
 
 	bool hasParseErrorsFlag = false;
 
