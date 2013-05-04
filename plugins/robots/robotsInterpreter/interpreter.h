@@ -79,10 +79,14 @@ private slots:
 	void runTimer();
 	void readSensorValues();
 	void slotFailure();
+
 	void responseSlot1(int sensorValue);
 	void responseSlot2(int sensorValue);
 	void responseSlot3(int sensorValue);
 	void responseSlot4(int sensorValue);
+	void responseSlotA(int encoderValue);
+	void responseSlotB(int encoderValue);
+	void responseSlotC(int encoderValue);
 
 	void connectedSlot(bool success);
 	void sensorsConfiguredSlot();

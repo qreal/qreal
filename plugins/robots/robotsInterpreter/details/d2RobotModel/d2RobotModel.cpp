@@ -107,7 +107,6 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	} else {
 		mMotors[port]->activeTimeType = DoByLimit;
 	}
-	mTurnoverMotors[port] = 0;
 }
 
 int D2RobotModel::varySpeed(int const speed) const

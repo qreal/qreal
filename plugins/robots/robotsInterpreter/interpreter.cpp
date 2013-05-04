@@ -301,6 +301,14 @@ void Interpreter::runTimer()
 		connect(mRobotModel->sensor(inputPort::port4)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot4(int)), Qt::UniqueConnection);
 		connect(mRobotModel->sensor(inputPort::port4)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
 	}
+
+	connect(mRobotModel->encoderA().encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlotA(int)), Qt::UniqueConnection);
+	connect(mRobotModel->encoderA().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
+	connect(mRobotModel->encoderB().encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlotB(int)), Qt::UniqueConnection);
+	connect(mRobotModel->encoderB().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
+	connect(mRobotModel->encoderC().encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlotC(int)), Qt::UniqueConnection);
+	connect(mRobotModel->encoderC().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
+
 	mRobotModel->nullifySensors();
 	if (!mTimer->isActive()) {
 		readSensorValues();
@@ -327,6 +335,10 @@ void Interpreter::readSensorValues()
 	if (mRobotModel->sensor(inputPort::port4)) {
 		mRobotModel->sensor(inputPort::port4)->read();
 	}
+
+	mRobotModel->encoderA().read();
+	mRobotModel->encoderB().read();
+	mRobotModel->encoderC().read();
 }
 
 void Interpreter::slotFailure()
@@ -352,6 +364,21 @@ void Interpreter::responseSlot3(int sensorValue)
 void Interpreter::responseSlot4(int sensorValue)
 {
 	updateSensorValues("Sensor4", sensorValue);
+}
+
+void Interpreter::responseSlotA(int encoderValue)
+{
+	updateSensorValues("EncoderA", encoderValue);
+}
+
+void Interpreter::responseSlotB(int encoderValue)
+{
+	updateSensorValues("EncoderB", encoderValue);
+}
+
+void Interpreter::responseSlotC(int encoderValue)
+{
+	updateSensorValues("EncoderC", encoderValue);
 }
 
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
