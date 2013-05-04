@@ -4,7 +4,7 @@ using namespace robots::generator;
 
 FunctionElementGenerator::FunctionElementGenerator(NxtOSEKRobotGenerator *generator
 		, qReal::Id const &elementId, bool const &generateToInit)
-		: SimpleElementGenerator(generator, elementId), mGenerateToInit(generateToInit)
+	: SimpleElementGenerator(generator, elementId), mGenerateToInit(generateToInit)
 {
 }
 
@@ -59,6 +59,11 @@ QByteArray FunctionElementGenerator::replaceSensorVariables(qReal::interpreters:
 	}
 }
 
+QByteArray FunctionElementGenerator::replaceEncoderVariables() const
+{
+	return "nxt_motor_get_count(NXT_PORT_";
+}
+
 QList<SmartLine> FunctionElementGenerator::convertBlockIntoCode()
 {
 	QList<SmartLine> result;
@@ -71,10 +76,14 @@ QList<SmartLine> FunctionElementGenerator::convertBlockIntoCode()
 	byteFuncCode.replace("Sensor3", replaceSensorVariables(mNxtGen->portValue(3)) + "3)");
 	byteFuncCode.replace("Sensor4", replaceSensorVariables(mNxtGen->portValue(4)) + "4)");
 
+	byteFuncCode.replace("EncoderA", replaceEncoderVariables() + "A)");
+	byteFuncCode.replace("EncoderB", replaceEncoderVariables() + "B)");
+	byteFuncCode.replace("EncoderC", replaceEncoderVariables() + "C)");
+
 	variableAnalysis(byteFuncCode);
 	QString const funcCode = QString::fromUtf8(byteFuncCode);
 
-	foreach (QString const &str, funcCode.split(';')) {
+	foreach (QString const &str, funcCode.split(';', QString::SkipEmptyParts)) {
 		result.append(SmartLine(str.trimmed() + ";", mElementId));
 	}
 

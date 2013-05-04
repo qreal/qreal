@@ -21,6 +21,8 @@ protected:
 
 private:
 	QByteArray replaceSensorVariables(qReal::interpreters::robots::sensorType::SensorTypeEnum portValue) const;
+	QByteArray replaceEncoderVariables() const;
+
 	bool mGenerateToInit;
 };
 
