@@ -1,11 +1,10 @@
-#include "pythonGenerator.h"
-#include "../../qrutils/outFile.h"
+#include "textCodeGenerator.h"
 
 using namespace qReal;
 
-QString const PythonGenerator::delimeter = "_visint_";
+QString const TextCodeGenerator::delimeter = "_visint_";
 
-PythonGenerator::PythonGenerator(LogicalModelAssistInterface &logicalModelApi
+TextCodeGenerator::TextCodeGenerator(LogicalModelAssistInterface &logicalModelApi
 		, GraphicalModelAssistInterface &graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface)
 		: mInterpretersInterface(interpretersInterface)
@@ -15,18 +14,18 @@ PythonGenerator::PythonGenerator(LogicalModelAssistInterface &logicalModelApi
 {
 }
 
-void PythonGenerator::setRule(Id const &rule)
+void TextCodeGenerator::setRule(Id const &rule)
 {
 	mRule = rule;
 	mRuleElements = mGraphicalModelApi.graphicalRepoApi().children(mRule);
 }
 
-void PythonGenerator::setMatch(QHash<Id, Id> const &match)
+void TextCodeGenerator::setMatch(QHash<Id, Id> const &match)
 {
 	mMatch = match;
 }
 
-QString PythonGenerator::generateScript(bool const isApplicationCondition)
+QString TextCodeGenerator::generateScript(bool const isApplicationCondition)
 {
 	QString code = property(mRule, isApplicationCondition ? "applicationCondition" : "procedure");
 	collectPropertiesUsageAndMethodsInvocation(code);
@@ -36,8 +35,7 @@ QString PythonGenerator::generateScript(bool const isApplicationCondition)
 
 	collectPropertiesUsageAndMethodsInvocation(code);
 
-	QString const script = "#!/usr/bin/python\n# -*- coding: utf-8 -*-\n\n"
-			+ createProperInitAndOutput(replacePropertiesUsage(code), isApplicationCondition);
+	QString const script = createProperInitAndOutput(replacePropertiesUsage(code), isApplicationCondition);
 
 	mPropertiesUsage.clear();
 	mMethodsInvocation.clear();
@@ -45,7 +43,7 @@ QString PythonGenerator::generateScript(bool const isApplicationCondition)
 	return script;
 }
 
-bool PythonGenerator::hasElementName(QString const &name) const
+bool TextCodeGenerator::hasElementName(QString const &name) const
 {
 	foreach (Id const &id, mRuleElements) {
 		if (property(id, "name") == name) {
@@ -55,7 +53,7 @@ bool PythonGenerator::hasElementName(QString const &name) const
 	return false;
 }
 
-Id PythonGenerator::idByName(QString const &name) const
+Id TextCodeGenerator::idByName(QString const &name) const
 {
 	foreach (Id const &id, mRuleElements) {
 		if (property(id, "name") == name) {
@@ -65,7 +63,7 @@ Id PythonGenerator::idByName(QString const &name) const
 	return Id::rootId();
 }
 
-bool PythonGenerator::hasProperty(Id const &element, QString const &propertyName) const
+bool TextCodeGenerator::hasProperty(Id const &element, QString const &propertyName) const
 {
 	if (mLogicalModelApi.isLogicalId(element)) {
 		return mLogicalModelApi.logicalRepoApi().hasProperty(element, propertyName);
@@ -75,22 +73,12 @@ bool PythonGenerator::hasProperty(Id const &element, QString const &propertyName
 	}
 }
 
-QString PythonGenerator::property(Id const &element, QString const &propertyName) const
+QString TextCodeGenerator::property(Id const &element, QString const &propertyName) const
 {
-	QVariant result = propertyVariant(element, propertyName);
-
-	QString res = result.toString();
-	if (res == "true") {
-		res = "True";
-	}
-	if (res == "false") {
-		res = "False";
-	}
-
-	return res;
+	return propertyVariant(element, propertyName).toString();
 }
 
-QVariant PythonGenerator::propertyVariant(Id const &element, QString const &propertyName) const
+QVariant TextCodeGenerator::propertyVariant(Id const &element, QString const &propertyName) const
 {
 	if (mLogicalModelApi.isLogicalId(element)) {
 		return mLogicalModelApi.logicalRepoApi().property(element, propertyName);
@@ -98,7 +86,7 @@ QVariant PythonGenerator::propertyVariant(Id const &element, QString const &prop
 	return mLogicalModelApi.logicalRepoApi().property(mGraphicalModelApi.logicalId(element), propertyName);
 }
 
-bool PythonGenerator::isStringProperty(Id const &element, QString const &propertyName) const
+bool TextCodeGenerator::isStringProperty(Id const &element, QString const &propertyName) const
 {
 	QVariant result = propertyVariant(element, propertyName);
 
@@ -111,7 +99,7 @@ bool PythonGenerator::isStringProperty(Id const &element, QString const &propert
 	return !isInt && !isBool;
 }
 
-void PythonGenerator::collectPropertiesUsageAndMethodsInvocation(QString const &code)
+void TextCodeGenerator::collectPropertiesUsageAndMethodsInvocation(QString const &code)
 {
 	int pos = 0;
 	while (pos < code.length()) {
@@ -148,7 +136,7 @@ void PythonGenerator::collectPropertiesUsageAndMethodsInvocation(QString const &
 	}
 }
 
-QString PythonGenerator::replacePropertiesUsage(QString const &code) const
+QString TextCodeGenerator::replacePropertiesUsage(QString const &code) const
 {
 	QString res = code;
 	foreach (QString const &elemName, mPropertiesUsage.keys()) {
@@ -159,7 +147,7 @@ QString PythonGenerator::replacePropertiesUsage(QString const &code) const
 	return res;
 }
 
-QString PythonGenerator::replaceMethodsInvocation(QString const &code) const
+QString TextCodeGenerator::replaceMethodsInvocation(QString const &code) const
 {
 	QString result = code;
 	QString funcDefs = "";
@@ -173,7 +161,7 @@ QString PythonGenerator::replaceMethodsInvocation(QString const &code) const
 	return funcDefs + result;
 }
 
-QString PythonGenerator::substituteElementProperties(QString const &code) const
+QString TextCodeGenerator::substituteElementProperties(QString const &code) const
 {
 	QString result = code;
 
@@ -192,61 +180,7 @@ QString PythonGenerator::substituteElementProperties(QString const &code) const
 	return result;
 }
 
-QString PythonGenerator::createProperInitAndOutput(QString const &code, bool const isApplicationCondition) const
-{
-	QString init = "";
-	QString output = "print ''";
-	foreach (QString const &elemName, mPropertiesUsage.keys()) {
-		foreach (QString const &propertyName, *mPropertiesUsage.value(elemName)) {
-			QString const variable = elemName + delimeter + propertyName;
-			QString const curPropertyValue = property(mMatch.value(idByName(elemName)), propertyName);
-
-			bool isStringProp = isStringProperty(mMatch.value(idByName(elemName)), propertyName);
-			QString const propertyValue = isStringProp ? "'" + escape(curPropertyValue) + "'" : curPropertyValue;
-			QString const representationOfProperty = "'\\'' + str(" + variable + ") + '\\''";
-
-			init += variable + "=" + propertyValue + "; ";
-			output += " + '" + variable + "=' + " + representationOfProperty + " + ';'";
-		}
-	}
-	if (!isApplicationCondition) {
-		return init + "\n\n" + code + "\n\n" + output;
-	} else {
-		return init + "\n\nprint " + code;
-	}
-}
-
-QString PythonGenerator::createBehaviourFunction(QString const &elementName, QString const &propertyName) const
-{
-	QString result = properElementProperty(elementName, propertyName);
-	result = "def " + elementName + delimeter + propertyName + "():\n" + result + "\n\n";
-
-	return result;
-}
-
-QString PythonGenerator::properElementProperty(QString const &elementName, QString const &propertyName) const
-{
-	QString propertyValue = property(mMatch.value(idByName(elementName)), propertyName);
-
-	int pos = propertyValue.indexOf("this.");
-	QString globalVariableDef = "  ";
-	while (pos != -1) {
-		pos += 4;
-		QString const propName = parseIdentifier(propertyValue, pos, true);
-		if (hasProperty(idByName(elementName), propName)) {
-			globalVariableDef += ("global " + elementName + delimeter + propName + ";\n  ");
-		}
-		pos = propertyValue.indexOf("this.", pos);
-	}
-
-	propertyValue.replace("this.", elementName + ".");
-	propertyValue.replace("this@", elementName + "@");
-	propertyValue.replace("\n", "\n  ");
-
-	return globalVariableDef + propertyValue;
-}
-
-QString PythonGenerator::parseIdentifier(QString const &stream, int pos, bool leftToRight) const
+QString TextCodeGenerator::parseIdentifier(QString const &stream, int pos, bool leftToRight) const
 {
 	int curPos = leftToRight ? pos + 1 : pos - 1;
 
@@ -257,12 +191,12 @@ QString PythonGenerator::parseIdentifier(QString const &stream, int pos, bool le
 	return leftToRight ? stream.mid(pos + 1, curPos - pos - 1) : stream.mid(curPos + 1, pos - curPos - 1);
 }
 
-bool PythonGenerator::isCorrectIdentifierSymbol(QChar const c) const
+bool TextCodeGenerator::isCorrectIdentifierSymbol(QChar const c) const
 {
 	return ('0' <= c && c <= '9') || ('A' <= c && c <= 'Z') || ('a'<= c && c <= 'z') || c == '_';
 }
 
-QString PythonGenerator::escape(QString const &string) const
+QString TextCodeGenerator::escape(QString const &string) const
 {
 	QString result = string;
 
