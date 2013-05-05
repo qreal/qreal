@@ -20,6 +20,7 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 	mIndex = index;
 	mBackground = element.attribute("background", nodeLabel ? "transparent" : "white");
 	mIsHard = element.attribute("hard", "false").toLower().trimmed() == "true";
+	mIsPlainText = element.attribute("isPlainText", "false").toLower().trimmed() == "true";
 	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {
 		qDebug() << "ERROR: can't parse label";
 		return false;
@@ -97,8 +98,13 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		}
 		resultStr = resultStr.mid(3);
 	}
-	out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
-		+ (mCenter == "true" ? "<center>%1</center>" : "<b>%1</b>") + "\").arg(" + resultStr + ").replace(\"\\n\", \"<br>\"));\n";
+	if (mIsPlainText) {
+		out() << QString("\t\t\t%1->setPlainText(%2);\n")
+				.arg(titleName(), resultStr);
+	} else {
+		out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
+			+ (mCenter == "true" ? "<center>%1</center>" : "<b>%1</b>") + "\").arg(" + resultStr + ").replace(\"\\n\", \"<br>\"));\n";
+	}
 }
 
 void Label::generateCodeForFields(OutFile &out)
