@@ -117,7 +117,7 @@ QHash<QPair<QString, QString>, QString> &PythonInterpreter::parseOutput(QString 
 {
 	int pos = 0;
 	int const delimeterIndex = output.indexOf(TextCodeGenerator::delimeter, pos);
-	if (output.contains(">>>")) {
+	if (output.contains(">>>") && output.indexOf(">>>", pos) < delimeterIndex) {
 		while (output.indexOf(">>>", pos + 1) < delimeterIndex) {
 			pos = output.indexOf(">>>", pos + 1);
 		}
