@@ -2,6 +2,7 @@
 
 #include "../../../../../qrkernel/ids.h"
 #include "../smartLine.h"
+#include "../../../robotsInterpreter/sensorConstants.h"
 
 namespace robots {
 namespace generator {
@@ -28,8 +29,14 @@ protected:
 	virtual bool preGenerationCheck() = 0;
 	virtual bool nextElementsGeneration() = 0;
 
+	void replaceSensorAndEncoderVariables(QString &target);
+
 	NxtOSEKRobotGenerator *mNxtGen;
 	qReal::Id mElementId;
+
+private:
+	QString replaceSensorVariables(qReal::interpreters::robots::sensorType::SensorTypeEnum portValue) const;
+	QString replaceEncoderVariables() const;
 };
 
 }
