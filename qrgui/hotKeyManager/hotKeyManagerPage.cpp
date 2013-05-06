@@ -11,6 +11,10 @@
 
 using namespace qReal;
 
+int const maxShortcutParts = 3; // Actually, 3 = number of commas in string (= 4 shortcut parts)
+								// e.g. "Ctrl+X, Alt+V, Shift+G, Ctrl+Y"
+int const maxShortcuts = 3; // Max number of shortcuts which we can set to one command
+
 PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 	: PreferencesPage(parent)
 	, mUi(new Ui::hotKeyManagerPage)
@@ -54,7 +58,7 @@ void PreferencesHotKeyManagerPage::restoreSettings()
 
 void PreferencesHotKeyManagerPage::resetShortcuts()
 {
-	if (mCurrentId != "") {
+	if (!mCurrentId.isEmpty()) {
 		if (mCurrentItem->textColor() == Qt::black) {
 			HotKeyManager::deleteShortcut(mCurrentId, mCurrentItem->text());
 		}
@@ -83,6 +87,7 @@ void PreferencesHotKeyManagerPage::loadHotKeys()
 
 	QHash<QString, QAction *>::iterator i;
 	int k;
+
 	for (i = cmds.begin(), k = 0; i != cmds.end(); ++i, ++k) {
 		QStringList sequences = shortcuts.keys(i.key());
 
@@ -94,7 +99,8 @@ void PreferencesHotKeyManagerPage::loadHotKeys()
 		foreach (QString const &sequence, sequences) {
 			mUi->hotKeysTable->item(k, 2 + j)->setText(sequence);
 			j++;
-			if (j == 3) {
+
+			if (j == maxShortcuts) {
 				break;
 			}
 		}
@@ -104,7 +110,8 @@ void PreferencesHotKeyManagerPage::loadHotKeys()
 void PreferencesHotKeyManagerPage::initTable()
 {
 	for (int i = 0; i < mUi->hotKeysTable->rowCount(); ++i) {
-		for (int j = 0; j < 5; ++j) {
+		// first column - name of command, second - short description, rest - shortcuts
+		for (int j = 0; j < 2 + maxShortcuts; ++j) {
 			mUi->hotKeysTable->setItem(i, j, new QTableWidgetItem(""));
 		}
 	}
@@ -118,8 +125,9 @@ void PreferencesHotKeyManagerPage::doubleClicked(const int row, const int column
 
 void PreferencesHotKeyManagerPage::activateShortcutLineEdit(int const row, int const column)
 {
+	// Columns with shortcuts start from index 2
 	if (column > 1) {
-		if (mCurrentItem != NULL) {
+		if (mCurrentItem) {
 			mCurrentItem->setBackgroundColor(Qt::white);
 		}
 
@@ -149,8 +157,8 @@ void PreferencesHotKeyManagerPage::newModifiers(Qt::KeyboardModifiers modifiers)
 
 void PreferencesHotKeyManagerPage::newKey(int const key)
 {
-	if (mCurrentId != "") {
-		if (mCurrentItem->text() == "") {
+	if (!mCurrentId.isEmpty()) {
+		if (mCurrentItem->text().isEmpty()) {
 			if (HotKeyManager::setShortcut(mCurrentId, QKeySequence(mCurrentModifiers + key))) {
 				setTextColor(Qt::black);
 			} else {
@@ -161,7 +169,7 @@ void PreferencesHotKeyManagerPage::newKey(int const key)
 		} else {
 			int const parts = mCurrentItem->text().count(',');
 
-			if (parts != 3) {
+			if (parts != maxShortcutParts) {
 				QString const shortcut = QString("%1, %2").arg(
 									mCurrentItem->text()
 									, QKeySequence(mCurrentModifiers + key).toString()
@@ -178,7 +186,7 @@ void PreferencesHotKeyManagerPage::newKey(int const key)
 				} else {
 					HotKeyManager::setShortcut(mCurrentId,  mCurrentItem->text());
 
-					if (parts < 2) {
+					if (parts < maxShortcutParts - 1) {
 						setTextColor(Qt::red);
 						mCurrentItem->setText(shortcut);
 						mUi->shortcutLineEdit->setText(mCurrentItem->text());
@@ -186,7 +194,6 @@ void PreferencesHotKeyManagerPage::newKey(int const key)
 				}
 			}
 		}
-		mCurrentModifiers = Qt::NoModifier;
 	}
 }
 

@@ -229,7 +229,7 @@ void HotKeyManager::deleteShortcutPrivate(const QString &id, const QString &shor
 	mShortcuts.remove(shortcut);
 	deletePrefixes(shortcut);
 	//if == "" then shortcut with mouse
-	if (QKeySequence(shortcut).toString() != "" ) {
+	if (!QKeySequence(shortcut).toString().isEmpty()) {
 		QList<QKeySequence> shortcuts = mCommands[id]->shortcuts();
 
 		shortcuts.removeOne(shortcut);

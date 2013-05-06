@@ -13,7 +13,7 @@ ShortcutEdit::ShortcutEdit(QWidget *parent)
 
 bool ShortcutEdit::event(QEvent *event)
 {
-	if (event->type() == QEvent::KeyPress) {
+	if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
 		QKeyEvent *keyevent = static_cast<QKeyEvent *> (event);
 
 		switch(keyevent->key()) {
@@ -24,7 +24,9 @@ bool ShortcutEdit::event(QEvent *event)
 				emit newModifiers(keyevent->modifiers());
 				break;
 			default:
-				emit newKey(keyevent->key());
+				if (event->type() == QEvent::KeyPress) {
+					emit newKey(keyevent->key());
+				}
 		}
 		return true;
 	}
