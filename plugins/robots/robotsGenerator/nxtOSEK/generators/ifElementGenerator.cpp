@@ -166,14 +166,14 @@ bool IfElementGenerator::areOutgoingLinksCorrect(
 {
 	Id const positiveBranchElement = mNxtGen->api()->to(mNxtGen->api()->logicalId(positiveBranchGraphicalId));
 	if (positiveBranchElement == Id::rootId()) {
-		mNxtGen->errorReporter().addError(tr("If block ") + mElementId.toString() + tr(" has no 2 correct branches!"\
+		mNxtGen->errorReporter().addError(QObject::tr("If block ") + mElementId.toString() + QObject::tr(" has no 2 correct branches!"\
 				" May be you need to connect one of them to some diagram element."), mElementId);
 		return false;
 	}
 
 	Id const negativeBranchElement = mNxtGen->api()->to(negativeBranchGraphicalId);
 	if (negativeBranchElement == Id::rootId()) {
-		mNxtGen->errorReporter().addError(tr("If block ") + mElementId.toString() + tr(" has no 2 correct branches!"\
+		mNxtGen->errorReporter().addError(QObject::tr("If block ") + mElementId.toString() + QObject::tr(" has no 2 correct branches!"\
 				" May be you need to connect one of them to some diagram element."), mElementId);
 		return false;
 	}
@@ -206,11 +206,11 @@ void IfElementGenerator::displaysSuitableError(QPair<bool, qReal::Id> const posi
 {
 	if (positiveBranchCheck.second != negativeBranchCheck.second) {
 		mNxtGen->errorReporter().addError(
-				tr("This diagram isn't structed diagram,"\
+				QObject::tr("This diagram isn't structed diagram,"\
 				" because there are IF block with 2 back arrows!"), mElementId);
 	} else {
 		//TODO: repair for case with merged branches
-		mNxtGen->errorReporter().addError(tr("Generator JUST does not work in this case."), mElementId);
+		mNxtGen->errorReporter().addError(QObject::tr("Generator JUST does not work in this case."), mElementId);
 	}
 }
 
