@@ -3,10 +3,10 @@
 #include <QtCore/QLineF>
 #include <QtCore/QTime>
 #include <QtCore/QDebug>
+#include <QtCore/QRegExp>
 #include <QtWidgets/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
-#include <QRegExp>
 
 using namespace qReal;
 
@@ -136,7 +136,7 @@ bool SdfRenderer::checkShowConditions(QDomElement const &element, bool isIcon) c
 	if (showConditions.isEmpty() || !mElementRepo) {
 		return true;
 	}
-	for (uint i = 0; i < showConditions.length(); ++i) {
+	for (int i = 0; i < showConditions.length(); ++i) {
 		if (!checkCondition(showConditions.at(i).toElement())) {
 			return false;
 		}

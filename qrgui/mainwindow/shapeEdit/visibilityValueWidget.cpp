@@ -1,9 +1,7 @@
 #include "visibilityValueWidget.h"
 
-#include <QComboBox>
-#include <QSpinBox>
-#include <QLineEdit>
-#include <QDebug>
+#include <QtWidgets/QSpinBox>
+#include <QtWidgets/QLineEdit>
 
 VisibilityValueWidget::VisibilityValueWidget(QWidget *parent)
 	: QWidget(parent), mWidget(0)

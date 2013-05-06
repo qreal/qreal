@@ -1,5 +1,4 @@
-#include <QPushButton>
-#include <QDebug>
+#include <QtWidgets/QPushButton>
 
 #include "visibilityConditionsDialog.h"
 #include "ui_visibilityConditionsDialog.h"

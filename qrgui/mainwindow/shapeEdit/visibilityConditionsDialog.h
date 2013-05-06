@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QDialog>
-#include <QMap>
+#include <QtWidgets/QDialog>
+#include <QtCore/QMap>
 #include "item.h"
 
 namespace Ui {
@@ -11,7 +11,7 @@ class VisibilityConditionsDialog;
 class VisibilityConditionsDialog : public QDialog
 {
 	Q_OBJECT
-	
+
 public:
 	enum Type { Enum, Int, Bool, String };
 	struct PropertyInfo

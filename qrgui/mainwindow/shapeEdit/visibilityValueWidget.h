@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QWidget>
-#include <QComboBox>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QComboBox>
 
 #include "visibilityConditionsDialog.h"
 
@@ -16,9 +16,9 @@ public:
 	void setValue(QString const &value);
 	QString value() const;
 signals:
-	
+
 public slots:
-	
+
 private:
 	void makeWidget(VisibilityConditionsDialog::Type type);
 	void addValues(QStringList const &values);
