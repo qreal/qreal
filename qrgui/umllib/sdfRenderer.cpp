@@ -3,6 +3,7 @@
 #include <QtCore/QLineF>
 #include <QtCore/QTime>
 #include <QtCore/QDebug>
+#include <QtCore/QRegExp>
 #include <QtWidgets/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
@@ -10,7 +11,7 @@
 using namespace qReal;
 
 SdfRenderer::SdfRenderer()
-	: mStartX(0), mStartY(0), mNeedScale(true)
+	: mStartX(0), mStartY(0), mNeedScale(true), mElementRepo(0)
 {
 	mWorkingDirName = SettingsManager::value("workingDir").toString();
 }
@@ -49,7 +50,12 @@ bool SdfRenderer::load(QString const &filename)
 	return true;
 }
 
-void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
+void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo)
+{
+	mElementRepo = elementRepo;
+}
+
+void SdfRenderer::render(QPainter *painter, const QRectF &bounds, bool isIcon)
 {
 	current_size_x = static_cast<int>(bounds.width());
 	current_size_y = static_cast<int>(bounds.height());
@@ -63,6 +69,10 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 		QDomElement elem = node.toElement();
 		if(!elem.isNull())
 		{
+			if (!checkShowConditions(elem, isIcon)) {
+				node = node.nextSibling();
+				continue;
+			}
 			if (elem.tagName()=="line")
 			{
 				line(elem);
@@ -114,6 +124,50 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 		node = node.nextSibling();
 	}
 	this->painter = 0;
+}
+
+bool SdfRenderer::checkShowConditions(QDomElement const &element, bool isIcon) const
+{
+	QDomNodeList showConditions = element.elementsByTagName("showIf");
+	// a hack, need to be removed when there is another version of icons
+	if (!showConditions.isEmpty() && isIcon) {
+		return false;
+	}
+	if (showConditions.isEmpty() || !mElementRepo) {
+		return true;
+	}
+	for (int i = 0; i < showConditions.length(); ++i) {
+		if (!checkCondition(showConditions.at(i).toElement())) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool SdfRenderer::checkCondition(QDomElement const &condition) const
+{
+	QString sign = condition.attribute("sign");
+	QString realValue = mElementRepo->logicalProperty(condition.attribute("property"));
+	QString conditionValue = condition.attribute("value");
+
+	if (sign == "=~") {
+		return QRegExp(conditionValue).exactMatch(realValue);
+	} else if (sign == ">") {
+		return realValue.toInt() > conditionValue.toInt();
+	} else if (sign == "<") {
+		return realValue.toInt() < conditionValue.toInt();
+	} else if (sign == ">=") {
+		return realValue.toInt() >= conditionValue.toInt();
+	} else if (sign == "<=") {
+		return realValue.toInt() <= conditionValue.toInt();
+	} else if (sign == "!=") {
+		return realValue != conditionValue;
+	} else if (sign == "=") {
+		return realValue == conditionValue;
+	} else {
+		qDebug() << "Unsupported logical operator \"" + sign + "\"";
+		return false;
+	}
 }
 
 void SdfRenderer::line(QDomElement &element)
@@ -735,7 +789,7 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect
 		resRect.setBottom(rect.bottom() - (rh - rw * ph / pw) / 2);
 	}
 	painter->setRenderHint(QPainter::Antialiasing, true);
-	mRenderer.render(painter, resRect);
+	mRenderer.render(painter, resRect, true);
 }
 
 QSize SdfIconEngineV2::preferedSize() const

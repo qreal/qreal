@@ -220,3 +220,46 @@ void Item::setXandY(QDomElement& dom, QRectF const &rect)
 	dom.setAttribute("y2", setScaleForDoc(7, rect.toRect()));
 	dom.setAttribute("x2", setScaleForDoc(3, rect.toRect()));
 }
+
+void Item::setVisibilityCondition(VisibilityCondition const &condition)
+{
+	mVisibilityCondition = condition;
+}
+
+void Item::setVisibilityCondition(QString const &property, QString const &sign, QString const &value)
+{
+	mVisibilityCondition.property = property;
+	mVisibilityCondition.sign = sign;
+	mVisibilityCondition.value = value;
+}
+
+Item::VisibilityCondition Item::visibilityCondition() const
+{
+	return mVisibilityCondition;
+}
+
+QPair<QDomElement, Item::DomElementTypes> Item::generateDom(QDomDocument &document, const QPoint &topLeftPicture)
+{
+	QPair<QDomElement, Item::DomElementTypes> result = generateItem(document, topLeftPicture);
+
+	if (!mVisibilityCondition.property.isEmpty() && !mVisibilityCondition.value.isEmpty()) {
+		QDomElement visibility = document.createElement("showIf");
+		result.first.appendChild(visibility);
+		visibility.setAttribute("property", mVisibilityCondition.property);
+		visibility.setAttribute("sign", mVisibilityCondition.sign);
+		visibility.setAttribute("value", mVisibilityCondition.value);
+	}
+
+	return result;
+}
+
+bool Item::VisibilityCondition::operator==(Item::VisibilityCondition const &other) const
+{
+	return this->property == other.property && this->sign == other.sign
+			&& this->value == other.value;
+}
+
+bool Item::VisibilityCondition::operator!=(Item::VisibilityCondition const &other) const
+{
+	return !(*this == other);
+}
