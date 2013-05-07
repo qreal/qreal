@@ -133,28 +133,32 @@ void PythonInterpreter::readOutput()
 {
 	QByteArray const out = mInterpreterProcess->readAllStandardOutput();
 	QString const outputString = QString(out);
-	if (outputString.isEmpty()) {
+
+	QString reducedOutput = QString(outputString);
+	reducedOutput = reducedOutput.replace(">>>", "").trimmed();
+	reducedOutput = reducedOutput.replace("...", "").trimmed();
+
+	if (reducedOutput.isEmpty()) {
 		return;
 	}
 
 	mErrorOccured = false;
-	if (outputString == "True\n") {
+	if (reducedOutput == "True\n" || reducedOutput == "True") {
 		mApplicationConditionResult = true;
 		continueStep();
-	} else if (outputString == "False\n") {
+	} else if (reducedOutput == "False\n"  || reducedOutput == "False") {
 		mApplicationConditionResult = false;
+		continueStep();
+	} else if (reducedOutput == "empty reaction") {
 		continueStep();
 	} else {
 		QHash<QPair<QString, QString>, QString> output = parseOutput(outputString);
 		if (!output.isEmpty()) {
 			emit readyReadStdOutput(output, TextCodeInterpreter::python);
 		} else {
-			QString errorOutput = outputString;
-			errorOutput = errorOutput.replace(">>>", "").trimmed();
-			errorOutput = errorOutput.replace("...", "").trimmed();
-			if (!errorOutput.isEmpty() && errorOutput.indexOf("Python") == -1) {
+			if (!reducedOutput.isEmpty() && reducedOutput.indexOf("Python") == -1 && reducedOutput.indexOf("copyright") == -1) {
 				mErrorOccured = true;
-				emit readyReadErrOutput(errorOutput);
+				emit readyReadErrOutput(reducedOutput);
 			}
 		}
 	}

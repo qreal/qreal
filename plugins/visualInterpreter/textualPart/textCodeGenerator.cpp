@@ -93,8 +93,8 @@ bool TextCodeGenerator::isStringProperty(Id const &element, QString const &prope
 	bool isInt = false;
 	result.toInt(&isInt);
 
-	bool isBool = false;
-	result.toInt(&isBool);
+	QString const boolResult = result.toString().toLower();
+	bool isBool = boolResult == "true" || boolResult == "false";
 
 	return !isInt && !isBool;
 }

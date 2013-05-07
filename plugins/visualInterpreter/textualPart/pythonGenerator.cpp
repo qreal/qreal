@@ -35,19 +35,25 @@ QString PythonGenerator::createProperInitAndOutput(QString const &code, bool con
 {
 	QString init = "";
 	QString output = "print ''";
-	foreach (QString const &elemName, mPropertiesUsage.keys()) {
-		foreach (QString const &propertyName, *mPropertiesUsage.value(elemName)) {
-			QString const variable = elemName + delimeter + propertyName;
-			QString const curPropertyValue = property(mMatch.value(idByName(elemName)), propertyName);
 
-			bool isStringProp = isStringProperty(mMatch.value(idByName(elemName)), propertyName);
-			QString const propertyValue = isStringProp ? "'" + escape(curPropertyValue) + "'" : curPropertyValue;
-			QString const representationOfProperty = "'\\'' + str(" + variable + ") + '\\''";
-
-			init += variable + "=" + propertyValue + "; ";
-			output += " + '" + variable + "=' + " + representationOfProperty + " + ';'";
+	if (mPropertiesUsage.keys().isEmpty()) {
+		output += " + 'empty reaction'";
+	} else {
+		foreach (QString const &elemName, mPropertiesUsage.keys()) {
+			foreach (QString const &propertyName, *mPropertiesUsage.value(elemName)) {
+				QString const variable = elemName + delimeter + propertyName;
+				QString const curPropertyValue = property(mMatch.value(idByName(elemName)), propertyName);
+	
+				bool isStringProp = isStringProperty(mMatch.value(idByName(elemName)), propertyName);
+				QString const propertyValue = isStringProp ? "'" + escape(curPropertyValue) + "'" : curPropertyValue;
+				QString const representationOfProperty = "'\\'' + str(" + variable + ") + '\\''";
+	
+				init += variable + "=" + propertyValue + "; ";
+				output += " + '" + variable + "=' + " + representationOfProperty + " + ';'";
+			}
 		}
 	}
+
 	if (!isApplicationCondition) {
 		return init + "\n\n" + code + "\n\n" + output;
 	} else {

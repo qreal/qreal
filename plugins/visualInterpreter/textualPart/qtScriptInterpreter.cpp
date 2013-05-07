@@ -10,7 +10,10 @@ QtScriptInterpreter::QtScriptInterpreter(QObject *parent) : TextCodeInterpreter(
 bool QtScriptInterpreter::interpret(QString const &code, CodeType const codeType)
 {
 	QString const output = mEngine.evaluate(code).toString();
-	processOutput(output);
+
+	if (codeType != initialization) {
+		processOutput(output);
+	}
 
 	if (codeType == applicationCondition) {
 		return mApplicationConditionResult && !mErrorOccured;
