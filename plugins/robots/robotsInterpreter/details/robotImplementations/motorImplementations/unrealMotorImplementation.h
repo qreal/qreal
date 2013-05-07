@@ -16,9 +16,9 @@ class UnrealMotorImplementation : public AbstractMotorImplementation
 	Q_OBJECT
 public:
 	UnrealMotorImplementation(int const port, d2Model::D2RobotModel *d2Model);
-	virtual void on(int speed);
-	virtual void on(int speed, long unsigned int degrees);
-	virtual void stop();
+	virtual void on(int speed, bool breakMode = true);
+	virtual void on(int speed, long unsigned int degrees, bool breakMode = true);
+	virtual void stop(bool breakMode = true);
 	virtual void off();
 	virtual void resetMotorPosition(bool relative);
 private:

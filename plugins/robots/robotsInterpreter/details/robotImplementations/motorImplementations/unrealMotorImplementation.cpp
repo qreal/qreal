@@ -8,19 +8,21 @@ UnrealMotorImplementation::UnrealMotorImplementation(int const port, d2Model::D2
 {
 }
 
-void UnrealMotorImplementation::on(int speed)
+void UnrealMotorImplementation::on(int speed, bool breakMode)
 {
-	on(speed, 0);
+	on(speed, 0, breakMode);
 }
 
-void UnrealMotorImplementation::on(int speed, long unsigned int degrees)
+void UnrealMotorImplementation::on(int speed, long unsigned int degrees, bool breakMode)
 {
+	Q_UNUSED(breakMode)
 	mD2Model->setNewMotor(speed, degrees, mPort);
 	connect(mD2Model, SIGNAL(d2MotorTimeout()), this, SIGNAL(motorImplTimeout()));
 }
 
-void UnrealMotorImplementation::stop()
+void UnrealMotorImplementation::stop(bool breakMode)
 {
+	Q_UNUSED(breakMode)
 	mD2Model->setNewMotor(0, 0, mPort);
 }
 

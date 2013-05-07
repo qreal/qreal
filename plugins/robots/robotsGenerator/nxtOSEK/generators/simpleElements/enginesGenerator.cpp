@@ -32,14 +32,11 @@ QList<SmartLine> EnginesGenerator::convertElementIntoDirectCommand(NxtOSEKRobotG
 {
 	QList<SmartLine> result;
 	QString const power = nxtGen->api()->stringProperty(logicElementId, "Power");
-	QByteArray brakeMode = "1";
-	QString signRotate = "";
-	if (mEngineType == "EnginesBackward") {
-		signRotate = "-";
-	}
+	QString const brakeModeRaw = nxtGen->api()->stringProperty(logicElementId, "Mode");
+	QByteArray const brakeMode = brakeModeRaw == QString::fromUtf8("скользить") ? "0" : "1";
+	QString const signRotate = mEngineType == "EnginesBackward" ? "-" : "";
 
 	foreach (QString const &enginePort, portsToEngineNames(nxtGen->api()->stringProperty(logicElementId, "Ports"))) {
-
 		result.append(SmartLine("nxt_motor_set_speed("
 				+ enginePort + ", "
 				+ signRotate + power + ", "
