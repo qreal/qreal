@@ -1,5 +1,4 @@
 #include "visualInterpreterUnit.h"
-#include <QtScript>
 
 using namespace qReal;
 
