@@ -194,6 +194,12 @@
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="скользить" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="тормозить" property="Mode" sign="="/>
+						</rectangle>
 					</picture>
 					<labels>
 						<label x="33" y="-25" textBinded="Ports" hard="true"/>
@@ -232,6 +238,12 @@
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="скользить" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="тормозить" property="Mode" sign="="/>
+						</rectangle>
 					</picture>
 					<labels>
 						<label x="33" y="-25" textBinded="Ports" hard="true"/>

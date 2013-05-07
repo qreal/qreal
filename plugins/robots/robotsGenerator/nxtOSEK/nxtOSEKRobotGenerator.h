@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QString>
-#include <QPair>
-#include <QMap>
-#include <QStack>
+#include <QtCore/QString>
+#include <QtCore/QPair>
+#include <QtCore/QMap>
+#include <QtCore/QStack>
 
 #include "../../../../qrkernel/ids.h"
 #include "../../../../qrrepo/repoApi.h"
@@ -12,12 +12,14 @@
 
 #include "generators/abstractElementGenerator.h"
 #include "smartLine.h"
+#include "generators/variables.h"
 
 namespace robots {
 namespace generator {
 
 /// Class for generate a nxtOSEK code from Robot Language Diagram.
-class NxtOSEKRobotGenerator {
+class NxtOSEKRobotGenerator
+{
 public:
 	NxtOSEKRobotGenerator(qReal::Id const &diagram, qrRepo::RepoControlInterface &api, qReal::ErrorReporterInterface &errorReporter, QString const &destinationPath = "");
 	NxtOSEKRobotGenerator(QString const &pathToRepo, qReal::ErrorReporterInterface &errorReporter, QString const &destinationPath = "");
@@ -26,7 +28,7 @@ public:
 
 	/// main method that starts a code generation.
 	void generate();
-	QList<SmartLine> &variables();
+	Variables &variables();
 	QList<SmartLine> &initCode();
 	QList<SmartLine> &terminateCode();
 	QList<SmartLine> &isrHooksCode();
@@ -60,13 +62,12 @@ private:
 	void generateMakeFile(bool const &toGenerateIsEmpty, QString const &projectName, QString const &projectDir);
 	void generateFilesForBalancer(QString const &projectDir);
 	QString addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode);
-	QString generateVariableString();
 	void addResultCodeInCFile(int curInitialNodeNumber);
 	void outputInCAndOilFile(QString const projectName, QString const projectDir, qReal::IdList toGenerate);
 	void initializeFields(QString resultTaskTemplate, qReal::Id curInitialNode);
 
 	/// Loads templates and creates output directory.
-	void initializeGeneration(const QString projectDir);
+	void initializeGeneration(QString const &projectDir);
 
 	QString mResultOil;
 	QString mResultString;
@@ -91,9 +92,9 @@ private:
 	 * Mapped element with lists in mGeneratedStringSet
 	 * QString in this case is qReal::Id string presentation.
 	 */
-	QMap< QString, QStack<int> > mElementToStringListNumbers;
+	QMap<QString, QStack<int> > mElementToStringListNumbers;
 
-	QList<SmartLine> mVariables;
+	Variables mVariables;
 	int mVariablePlaceInGenStrSet;
 
 	qReal::ErrorReporterInterface &mErrorReporter;

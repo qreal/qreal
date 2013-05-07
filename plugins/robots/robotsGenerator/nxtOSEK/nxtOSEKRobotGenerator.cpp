@@ -48,17 +48,6 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 	}
 }
 
-QString NxtOSEKRobotGenerator::generateVariableString()
-{
-	QString res;
-	foreach (SmartLine const &curVariable, mVariables) {
-		if (!curVariable.text().contains(" ")) {
-			res = res + "static int " + curVariable.text() + ";\n";
-		}
-	}
-	return "\n" + res;
-}
-
 QString NxtOSEKRobotGenerator::addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode)
 {
 	foreach (SmartLine const &curLine, lineList) {
@@ -125,7 +114,7 @@ void NxtOSEKRobotGenerator::insertCode(
 		mResultString.replace("@@BALANCER@@", "");
 	}
 	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@").replace("@@VARIABLES@@"
-			, generateVariableString() + "\n" + "@@VARIABLES@@").replace("@@INITHOOKS@@"
+			, mVariables.generateVariableString() + "\n" + "@@VARIABLES@@").replace("@@INITHOOKS@@"
 			, resultInitCode).replace("@@TERMINATEHOOKS@@", resultTerminateCode)
 			.replace("@@USERISRHOOKS@@", resultIsrHooksCode);
 	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
@@ -167,8 +156,7 @@ void NxtOSEKRobotGenerator::generate()
 		return;
 	}
 
-	IdList toGenerate;
-	toGenerate << mApi->elementsByType("InitialNode");
+	IdList toGenerate(mApi->elementsByType("InitialNode"));
 
 	int curInitialNodeNumber = 0;
 	QString const projectName = "example" + QString::number(curInitialNodeNumber);
@@ -205,7 +193,7 @@ void NxtOSEKRobotGenerator::generate()
 	outputInCAndOilFile(projectName, projectDir, toGenerate);
 }
 
-void NxtOSEKRobotGenerator::initializeGeneration(QString const projectDir)
+void NxtOSEKRobotGenerator::initializeGeneration(QString const &projectDir)
 {
 	createProjectDir(projectDir);
 
@@ -213,7 +201,7 @@ void NxtOSEKRobotGenerator::initializeGeneration(QString const projectDir)
 	mResultOil = utils::InFile::readAll(":/nxtOSEK/templates/template.oil");
 }
 
-QList<SmartLine> &NxtOSEKRobotGenerator::variables()
+Variables &NxtOSEKRobotGenerator::variables()
 {
 	return mVariables;
 }
@@ -321,7 +309,7 @@ void NxtOSEKRobotGenerator::initializeFields(QString resultTaskTemplate, Id cons
 	mGeneratedStringSet.append(QList<SmartLine>()); //first list for variable initialization
 	mVariablePlaceInGenStrSet = 0;
 	mElementToStringListNumbers.clear();
-	mVariables.clear();
+	mVariables.reinit(mApi);
 	mPreviousElement = curInitialNode;
 	mBalancerIsActivated = false;
 }

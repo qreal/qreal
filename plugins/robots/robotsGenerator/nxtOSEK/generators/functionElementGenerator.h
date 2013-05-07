@@ -17,7 +17,6 @@ public:
 
 protected:
 	virtual QList<SmartLine> convertBlockIntoCode();
-	void variableAnalysis(QString const &code);
 
 private:
 	bool mGenerateToInit;
