@@ -284,9 +284,8 @@ IdList EditorManager::getContainedTypes(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	IdList result;
-	foreach (QString type, mPluginIface[id.editor()]->getTypesContainedBy(id.element())) {
-		result.append(Id(type));
-	}
+	getContainedTypes(id, result);
+
 	return result;
 }
 
@@ -452,6 +451,20 @@ bool EditorManager::isParentOf(EditorInterface const *plugin, QString const &chi
 	}
 
 	return res;
+}
+
+void EditorManager::getContainedTypes(Id const &id, IdList &result) const
+{
+	foreach (QString type, mPluginIface[id.editor()]->getTypesContainedBy(id.element())) {
+		result.append(Id(type));
+	}
+
+	QList<QPair<QString, QString> > parents = mPluginIface[id.editor()]->getParentsOf(id.diagram(), id.element());
+
+	typedef QPair<QString, QString> StringPair;
+	foreach (StringPair const pair, parents) {
+		getContainedTypes(Id(id.editor(), pair.first, pair.second), result);
+	}
 }
 
 QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
