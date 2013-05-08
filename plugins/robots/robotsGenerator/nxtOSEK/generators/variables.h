@@ -15,7 +15,7 @@ enum VariableType
 	, intType
 };
 
-class Variables : QMap<QString, VariableType>
+class Variables
 {
 public:
 	Variables();
@@ -23,6 +23,8 @@ public:
 	/// Tries to infer types for all variables declared in all function blocks
 	/// on the specified diagram
 	void reinit(qrRepo::RepoApi *api);
+
+	/// Returns global variables declarations string
 	QString generateVariableString() const;
 
 	/// Returns given expression if it has int type or casts it to int otherwise
@@ -60,6 +62,8 @@ private:
 	bool isLetter(QChar const &c) const;
 
 	QString castToInt(QString const &expression) const;
+
+	QMap<QString, VariableType> mVariables;
 };
 
 }

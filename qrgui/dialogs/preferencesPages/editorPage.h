@@ -18,7 +18,7 @@ public:
 	/// Sets value to palette combo box and spin box respectively/
 	void changePaletteParameters();
 	void save();
-	void restoreSettings();
+	virtual void restoreSettings();
 
 protected:
 	void changeEvent(QEvent *e);

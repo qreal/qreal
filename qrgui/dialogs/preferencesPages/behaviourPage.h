@@ -15,7 +15,7 @@ public:
 	~PreferencesBehaviourPage();
 
 	void save();
-	void restoreSettings();
+	virtual void restoreSettings();
 
 protected:
 	void changeEvent(QEvent *e);

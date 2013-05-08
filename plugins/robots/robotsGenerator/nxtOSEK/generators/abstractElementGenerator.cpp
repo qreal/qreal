@@ -24,37 +24,41 @@ void AbstractElementGenerator::createListsForIncomingConnections()
 	}
 }
 
-void AbstractElementGenerator::replaceSensorAndEncoderVariables(QString &target)
+QString AbstractElementGenerator::replaceSensorAndEncoderVariables(QString const &expression) const
 {
-	target.replace("Sensor1", replaceSensorVariables(mNxtGen->portValue(1)) + "1)");
-	target.replace("Sensor2", replaceSensorVariables(mNxtGen->portValue(2)) + "2)");
-	target.replace("Sensor3", replaceSensorVariables(mNxtGen->portValue(3)) + "3)");
-	target.replace("Sensor4", replaceSensorVariables(mNxtGen->portValue(4)) + "4)");
+	QString result = expression;
+	for (int i = 1; i <= 4; ++i) {
+		result.replace("Sensor" + QString::number(i), sensorExpression(i));
+	}
 
-	target.replace("EncoderA", replaceEncoderVariables() + "A)");
-	target.replace("EncoderB", replaceEncoderVariables() + "B)");
-	target.replace("EncoderC", replaceEncoderVariables() + "C)");
+	result.replace("EncoderA", encoderExpression() + "A)");
+	result.replace("EncoderB", encoderExpression() + "B)");
+	result.replace("EncoderC", encoderExpression() + "C)");
+	return result;
 }
 
-QString AbstractElementGenerator::replaceSensorVariables(qReal::interpreters::robots::sensorType::SensorTypeEnum portValue) const
+QString AbstractElementGenerator::sensorExpression(int port) const
 {
+	QString const portString = QString::number(port);
+	qReal::interpreters::robots::sensorType::SensorTypeEnum const portValue =
+			mNxtGen->portValue(port);
 	switch (portValue) {
 	case qReal::interpreters::robots::sensorType::colorRed:
 	case qReal::interpreters::robots::sensorType::colorGreen:
 	case qReal::interpreters::robots::sensorType::colorBlue:
 	case qReal::interpreters::robots::sensorType::colorFull:
 	case qReal::interpreters::robots::sensorType::colorNone:
-		return "ecrobot_get_nxtcolorsensor_light(NXT_PORT_S";
+		return "ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + portString + ") * 100 / 1023";
 	case qReal::interpreters::robots::sensorType::sonar:
-		return "ecrobot_get_sonar_sensor(NXT_PORT_S";
+		return "ecrobot_get_sonar_sensor(NXT_PORT_S" + portString + ")";
 	case qReal::interpreters::robots::sensorType::light:
-		return "ecrobot_get_light_sensor(NXT_PORT_S";
+		return "ecrobot_get_light_sensor(NXT_PORT_S" + portString + ") * 100 / 1023";
 	default:
-		return "ecrobot_get_touch_sensor(NXT_PORT_S";
+		return "ecrobot_get_touch_sensor(NXT_PORT_S" + portString + ")";
 	}
 }
 
-QString AbstractElementGenerator::replaceEncoderVariables() const
+QString AbstractElementGenerator::encoderExpression() const
 {
 	return "nxt_motor_get_count(NXT_PORT_";
 }

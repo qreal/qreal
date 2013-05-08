@@ -47,8 +47,7 @@ QList<SmartLine> WaitForColorBlockGenerator::convertElementIntoDirectCommand(Nxt
 	if (!colorNxtType.isEmpty()) {
 		QString portStr = QString::number(port);
 		result.append(SmartLine("while (ecrobot_get_nxtcolorsensor_id(NXT_PORT_S" + portStr
-				+ ") != " + colorNxtType + ")", elementId));
-		result.append(SmartLine("{", elementId));
+				+ ") != " + colorNxtType + ") {", elementId));
 		result.append(SmartLine("}", elementId));
 		addInitAndTerminateCode(nxtGen, portStr, colorNxtType, elementId);
 	}

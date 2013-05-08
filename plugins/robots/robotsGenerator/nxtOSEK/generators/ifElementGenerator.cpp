@@ -15,7 +15,7 @@ QList<SmartLine> IfElementGenerator::addLoopCodeInPrefixForm()
 {
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 	QString condition = mNxtGen->api()->property(logicElementId, "Condition").toString();
-	replaceSensorAndEncoderVariables(condition);
+	condition = replaceSensorAndEncoderVariables(condition);
 
 	return QList<SmartLine>() << SmartLine("while (" + condition + ") {"
 			, mElementId, SmartLine::increase); //TODO;
@@ -130,7 +130,7 @@ bool IfElementGenerator::nextElementsGeneration()
 
 	//TODO: save number of new created list
 	QString condition = mNxtGen->api()->property(logicElementId, "Condition").toString();
-	replaceSensorAndEncoderVariables(condition);
+	condition = replaceSensorAndEncoderVariables(condition);
 	addNeededCondition(condition, outgoingLinks, conditionArrowNum);
 
 	bool isPositiveBranchReturnsToBackElems = false;

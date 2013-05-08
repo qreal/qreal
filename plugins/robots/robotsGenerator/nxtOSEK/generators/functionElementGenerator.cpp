@@ -15,7 +15,7 @@ QList<SmartLine> FunctionElementGenerator::convertBlockIntoCode()
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
 	QString funcCode = mNxtGen->api()->stringProperty(logicElementId, "Body").toUtf8();
-	replaceSensorAndEncoderVariables(funcCode);
+	funcCode = replaceSensorAndEncoderVariables(funcCode);
 
 	foreach (QString const &str, funcCode.split(';', QString::SkipEmptyParts)) {
 		result.append(SmartLine(str.trimmed() + ";", mElementId));

@@ -9,10 +9,10 @@ Variables::Variables()
 
 void Variables::reinit(qrRepo::RepoApi *api)
 {
-	clear();
+	mVariables.clear();
 	QMap<QString, VariableType> const reservedVars = reservedVariables();
 	foreach (QString const &var, reservedVars.keys()) {
-		insert(var, reservedVars[var]);
+		mVariables.insert(var, reservedVars[var]);
 	}
 	QStringList expressions;
 	IdList const blocks = api->elementsByType("Function");
@@ -32,19 +32,21 @@ QString Variables::generateVariableString() const
 	QString result = "\n";
 
 	foreach (QString const &intConst, intConsts.keys()) {
-		result += QString("static const int %1 = %2;\n").arg(intConst, QString::number(intConsts[intConst]));
+		result += QString("static const int %1 = %2;\n").arg(intConst
+				, QString::number(intConsts[intConst]));
 	}
 	foreach (QString const &floatConst, floatConsts.keys()) {
-		result += QString("static const float %1 = %2;\n").arg(floatConst, QString::number(floatConsts[floatConst]));
+		result += QString("static const float %1 = %2;\n").arg(floatConst
+				, QString::number(floatConsts[floatConst]));
 	}
 
-	foreach (QString const &curVariable, keys()) {
+	foreach (QString const &curVariable, mVariables.keys()) {
 		if (reservedNames.contains(curVariable)) {
 			continue;
 		}
 		// If any of code pathes decided that this variable has int type
 		// then it has int one. Unknown types are maximal ones (float)
-		QString const type = value(curVariable) == intType ? "int" : "float";
+		QString const type = mVariables.value(curVariable) == intType ? "int" : "float";
 		result += QString("static %1 %2;\n").arg(type, curVariable);
 	}
 	return result;
@@ -65,7 +67,7 @@ void Variables::inferTypes(QStringList const &expressions)
 			continue;
 		}
 		// Marking that we have this variable initializes among given expressions
-		insert(variable, unknown);
+		mVariables.insert(variable, unknown);
 		variableGroups.insert(variable, QStringList());
 		QStringList const initializationList = rawGroups.value(variable);
 		bool allInts = true;
@@ -164,18 +166,18 @@ QMap<QString, VariableType> Variables::reservedVariables() const
 
 void Variables::assignType(QString const &name, VariableType type)
 {
-	if (!contains(name)) {
-		insert(name, type);
+	if (!mVariables.contains(name)) {
+		mVariables.insert(name, type);
 		return;
 	}
-	VariableType const oldType = value(name);
+	VariableType const oldType = mVariables.value(name);
 	switch (oldType) {
 	case unknown:
-		insert(name, type);
+		mVariables.insert(name, type);
 		break;
 	case intType:
 		if (type == floatType) {
-			insert(name, floatType);
+			mVariables.insert(name, floatType);
 		}
 		break;
 	default:
@@ -192,7 +194,7 @@ VariableType Variables::participatingVariables(QString const &expression, QStrin
 	bool metVariables = false;
 
 	foreach (QString const &token, tokens) {
-		bool ok;
+		bool ok = false;
 		token.toInt(&ok);
 		if (ok) {
 			continue;
@@ -245,8 +247,8 @@ void Variables::startDeepInference(QMap<QString, QStringList> &dependencies)
 	while (!dependencies.isEmpty() && somethingChanged) {
 		somethingChanged = false;
 		// Stage I: substituting all known types
-		foreach (QString const &varName, keys()) {
-			VariableType const currentType = value(varName);
+		foreach (QString const &varName, mVariables.keys()) {
+			VariableType const currentType = mVariables.value(varName);
 			switch (currentType) {
 			case intType:
 				removeDependenciesFrom(dependencies, varName);
@@ -323,7 +325,7 @@ QString Variables::expressionToInt(QString const &expression) const
 		return castToInt(expression);
 	}
 	foreach (QString const &variable, variables) {
-		if (value(variable) != intType) {
+		if (mVariables.value(variable) != intType) {
 			return castToInt(expression);
 		}
 	}

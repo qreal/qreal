@@ -15,7 +15,7 @@ public:
 	~PreferencesMiscellaniousPage();
 
 	void save();
-	void restoreSettings();
+	virtual void restoreSettings();
 
 signals:
 	void iconsetChanged();
