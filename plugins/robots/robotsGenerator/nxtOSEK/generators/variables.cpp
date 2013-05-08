@@ -188,7 +188,7 @@ VariableType Variables::participatingVariables(QString const &expression, QStrin
 {
 	// Performing quick processing of the expression, no parsing with syntax checking.
 	// So syntax erros may cause incorrect inferrer work
-	QStringList const tokens = expression.split(QRegExp("[\\s\\+\\-\\*/\\(\\)\\%]+"));
+	QStringList const tokens = expression.split(QRegExp("[\\s\\+\\-\\*/\\(\\)\\%]+"), QString::SkipEmptyParts);
 	bool metVariables = false;
 
 	foreach (QString const &token, tokens) {
