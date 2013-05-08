@@ -25,6 +25,9 @@ public:
 	void reinit(qrRepo::RepoApi *api);
 	QString generateVariableString() const;
 
+	/// Returns given expression if it has int type or casts it to int otherwise
+	QString expressionToInt(QString const &expression) const;
+
 private:
 	QMap<QString, VariableType> nonGenerableReservedVariables() const;
 	QMap<QString, int> intConstants() const;
@@ -43,18 +46,20 @@ private:
 	/// in the expression. Returns int or float type if expression has
 	/// pre-determined type (for example, contains only int constants or one float)
 	/// or unknown else
-	VariableType participatingVariables(QString const &expression, QStringList &currentNames);
+	VariableType participatingVariables(QString const &expression, QStringList &currentNames) const;
 
 	/// Invokes inference process
 	void startDeepInference(QMap<QString, QStringList> &dependencies);
 	QStringList dependentFrom(QMap<QString, QStringList> const &dependencies
 			, QString const variable) const;
 	bool removeDependenciesFrom(QMap<QString, QStringList> &dependencies
-			, QString const variable);
+			, QString const variable) const;
 
-	bool isIdentifier(QString const &token);
+	bool isIdentifier(QString const &token) const;
 	bool isDigit(QChar const &c) const;
 	bool isLetter(QChar const &c) const;
+
+	QString castToInt(QString const &expression) const;
 };
 
 }

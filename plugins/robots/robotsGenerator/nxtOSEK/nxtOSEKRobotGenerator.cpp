@@ -251,6 +251,12 @@ void NxtOSEKRobotGenerator::setGeneratedStringSet(int key, QList<SmartLine> cons
 	mGeneratedStringSet[key] = list;
 }
 
+QString NxtOSEKRobotGenerator::intExpression(Id const &id, QString const &propertyName) const
+{
+	QString const expression = mApi->stringProperty(id, propertyName);
+	return mVariables.expressionToInt(expression);
+}
+
 QMap<QString, QStack<int> > &NxtOSEKRobotGenerator::elementToStringListNumbers()
 {
 	return mElementToStringListNumbers;

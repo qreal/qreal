@@ -50,6 +50,9 @@ public:
 	void setGeneratedStringSet(int key, QList<SmartLine> const &list);
 	bool mBalancerIsActivated;
 
+	/// Returns string property treated as expression and casts it to int if nessesary
+	QString intExpression(qReal::Id const &id, QString const &propertyName) const;
+
 private:
 	void createProjectDir(QString const &projectDir);
 	void insertCode(

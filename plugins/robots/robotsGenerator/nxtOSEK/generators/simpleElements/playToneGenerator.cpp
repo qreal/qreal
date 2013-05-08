@@ -16,9 +16,9 @@ QList<SmartLine> PlayToneGenerator::convertElementIntoDirectCommand(NxtOSEKRobot
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;
-	QString const frequency = nxtGen->api()->stringProperty(logicElementId, "Frequency");
-	QString const duration = nxtGen->api()->stringProperty(logicElementId, "Duration");
-	QString const volume = nxtGen->api()->stringProperty(logicElementId, "Volume");
+	QString const frequency = nxtGen->intExpression(logicElementId, "Frequency");
+	QString const duration = nxtGen->intExpression(logicElementId, "Duration");
+	QString const volume = nxtGen->intExpression(logicElementId, "Volume");
 	result.append(SmartLine(QString("ecrobot_sound_tone(%1, %2, %3);").arg(
 			(frequency.trimmed().isEmpty() ? defaultFrequency : frequency)
 			, (duration.trimmed().isEmpty() ? defaultDuration : duration)

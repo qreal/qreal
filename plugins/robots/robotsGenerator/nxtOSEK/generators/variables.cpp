@@ -184,7 +184,7 @@ void Variables::assignType(QString const &name, VariableType type)
 	}
 }
 
-VariableType Variables::participatingVariables(QString const &expression, QStringList &currentNames)
+VariableType Variables::participatingVariables(QString const &expression, QStringList &currentNames) const
 {
 	// Performing quick processing of the expression, no parsing with syntax checking.
 	// So syntax erros may cause incorrect inferrer work
@@ -214,7 +214,7 @@ VariableType Variables::participatingVariables(QString const &expression, QStrin
 	return metVariables ? unknown : intType;
 }
 
-bool Variables::isIdentifier(QString const &token)
+bool Variables::isIdentifier(QString const &token) const
 {
 	if (token.isEmpty() || !isLetter(token[0])) {
 		return false;
@@ -295,7 +295,7 @@ QStringList Variables::dependentFrom(QMap<QString, QStringList> const &dependenc
 }
 
 bool Variables::removeDependenciesFrom(QMap<QString, QStringList> &dependencies
-		, QString const variable)
+		, QString const variable) const
 {
 	bool somethingChanged = false;
 	foreach (QString const &key, dependencies.keys()) {
@@ -307,4 +307,31 @@ bool Variables::removeDependenciesFrom(QMap<QString, QStringList> &dependencies
 		}
 	}
 	return somethingChanged;
+}
+
+QString Variables::expressionToInt(QString const &expression) const
+{
+	if (expression.isEmpty()) {
+		return expression;
+	}
+	QStringList variables;
+	VariableType const type = participatingVariables(expression, variables);
+	if (type == intType) {
+		return expression;
+	}
+	if (type == floatType) {
+		return castToInt(expression);
+	}
+	foreach (QString const &variable, variables) {
+		if (value(variable) != intType) {
+			return castToInt(expression);
+		}
+	}
+	// All constants and variables in expression have int type => expression too
+	return expression;
+}
+
+QString Variables::castToInt(QString const &expression) const
+{
+	return QString("(int)(%1)").arg(expression);
 }
