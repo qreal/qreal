@@ -24,10 +24,11 @@ public:
 	QPainterPath shape() const;
 
 private:
-	WorldModel const &mWorldModel;
-
 	/// Returns scanning region of a sensor as painter path, in relative to sensor coordinates
 	QPainterPath scanningRegion() const;
+
+	WorldModel const &mWorldModel;
+	QImage const mIcon;
 };
 
 }

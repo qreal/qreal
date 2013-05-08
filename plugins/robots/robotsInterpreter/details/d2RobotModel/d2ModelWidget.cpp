@@ -820,14 +820,11 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 
 	sensor->addStickyItem(mRobot);
 
-	// Setting sensor rotaters only for sonar
-	if (mRobotModel->configuration().type(port) == sensorType::sonar) {
-		Rotater * const rotater = new Rotater();
-		rotater->setMasterItem(sensor);
-		rotater->setVisible(false);
-		sensor->setRotater(rotater);
-		sensor->setRotation(mRobotModel->configuration().direction(port));
-	}
+	Rotater * const rotater = new Rotater();
+	rotater->setMasterItem(sensor);
+	rotater->setVisible(false);
+	sensor->setRotater(rotater);
+	sensor->setRotation(mRobotModel->configuration().direction(port));
 
 	sensor->setParentItem(mRobot);
 	sensor->setPos(mRobot->mapFromScene(mRobotModel->configuration().position(port)));
