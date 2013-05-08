@@ -6,7 +6,6 @@
 #include "simpleElements/playToneGenerator.h"
 #include "simpleElements/finalNodeGenerator.h"
 #include "simpleElements/nullificationEncoderGenerator.h"
-#include "simpleElements/initialBlockGenerator.h"
 #include "simpleElements/waitForColorBlockGenerator.h"
 #include "simpleElements/waitForColorIntensityBlockGenerator.h"
 #include "simpleElements/balanceGenerator.h"
@@ -37,8 +36,6 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 		return new FinalNodeGenerator();
 	} else if (elementType == "NullificationEncoder") {
 		return new NullificationEncoderGenerator();
-	} else if (elementType == "InitialBlock") {
-		return new InitialBlockGenerator();
 	} else if (elementType == "WaitForColor") {
 		return new WaitForColorBlockGenerator();
 	} else if (elementType == "WaitForColorIntensity") {

@@ -153,6 +153,8 @@ public slots:
 	void openFirstDiagram();
 
 private slots:
+	void initToolPlugins();
+
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
 
@@ -291,8 +293,6 @@ private:
 	void showDockWidget(QDockWidget *dockWidget, QString const &name);
 
 	QString getNextDirName(QString const &name);
-
-	void initToolPlugins();
 
 	void initMiniMap();
 	void initToolManager();

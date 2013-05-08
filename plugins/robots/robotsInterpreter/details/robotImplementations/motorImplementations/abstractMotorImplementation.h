@@ -14,9 +14,9 @@ class AbstractMotorImplementation : public QObject
 	Q_OBJECT
 public:
 	AbstractMotorImplementation(int const port);
-	virtual void on(int speed) = 0;
-	virtual void on(int speed, long unsigned int degrees) = 0;
-	virtual void stop() = 0;
+	virtual void on(int speed, bool breakMode = true) = 0;
+	virtual void on(int speed, long unsigned int degrees, bool breakMode = true) = 0;
+	virtual void stop(bool breakMode = true) = 0;
 	virtual void off() = 0;
 	virtual void resetMotorPosition(bool relative) = 0;
 	void setPort(int const port);

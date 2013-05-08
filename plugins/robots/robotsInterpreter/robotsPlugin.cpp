@@ -27,6 +27,8 @@ RobotsPlugin::RobotsPlugin()
 
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
+	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
+
 	initActions();
 }
 
@@ -185,6 +187,7 @@ interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produce
 void RobotsPlugin::rereadSettings()
 {
 	setTitlesVisibility();
+	mInterpreter.setNoiseSettings();
 }
 
 

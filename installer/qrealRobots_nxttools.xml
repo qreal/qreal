@@ -158,7 +158,7 @@
                         </shortcut>
                     </shortcutList>
                 </folder>
-				<!-- NXT Tools -->
+                <!-- NXT Tools -->
                 <folder>
                     <description>Program Files</description>
                     <destination>${installdir}/nxt-tools</destination>
@@ -183,9 +183,12 @@
                         <distributionDirectory>
                             <origin>%1/bin/nxt-tools/nxtOSEK</origin>
                         </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>%1/bin/nxt-tools/cygwin</origin>
+                        </distributionDirectory>
                     </distributionFileList>
                 </folder>
-				<!-- End NXT Tools -->
+                <!-- End NXT Tools -->
                 <folder>
                     <description>Program Files</description>
                     <destination>${installdir}</destination>

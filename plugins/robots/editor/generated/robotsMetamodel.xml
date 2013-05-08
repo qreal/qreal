@@ -15,9 +15,8 @@
 			<enum name="GuardType">
 				<value></value>
 				<value>итерация</value>
-				<value>меньше 0</value>
-				<value>больше 0</value>
-				<value>равно 0</value>
+				<value>истина</value>
+				<value>ложь</value>
 			</enum>
 			<enum name="Color">
 				<value></value>
@@ -195,14 +194,18 @@
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="скользить" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="тормозить" property="Mode" sign="="/>
+						</rectangle>
 					</picture>
 					<labels>
 						<label x="33" y="-25" textBinded="Ports" hard="true"/>
 						<label x="-8" y="-25" text="Порты:" hard="true"/>
 						<label x="33" y="60" textBinded="Power"/>
 						<label x="-50" y="60" text="Мощность (%):"/>
-						<label x="33" y="80" textBinded="TachoLimit"/>
-						<label x="-100" y="80" text="Предел оборотов (град):"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -235,14 +238,18 @@
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="скользить" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="тормозить" property="Mode" sign="="/>
+						</rectangle>
 					</picture>
 					<labels>
 						<label x="33" y="-25" textBinded="Ports" hard="true"/>
 						<label x="-8" y="-25" text="Порты:" hard="true"/>
 						<label x="33" y="60" textBinded="Power"/>
 						<label x="-50" y="60" text="Мощность (%):"/>
-						<label x="33" y="80" textBinded="TachoLimit"/>
-						<label x="-100" y="80" text="Предел оборотов (град):"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -278,8 +285,8 @@
 						<property displayedName="Мощность (%)" type="string" name="Power">
 							<default>100</default>
 						</property>
-						<property displayedName="Предел оборотов (гр.)" type="string" name="TachoLimit">
-							<default>0</default>
+						<property displayedName="Режим" type="BreakEngineMode" name="Mode">
+							<default>тормозить</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1046,7 +1053,7 @@
 						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="60" textBinded="Condition"/>
+						<label x="33" y="60" textBinded="Condition" isPlainText="true" />
 						<label x="-25" y="60" text="Условие:"/>
 					</labels>
 					<ports>

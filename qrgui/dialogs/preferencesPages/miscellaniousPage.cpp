@@ -17,19 +17,9 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 
 //	mUi->chaoticEditionCheckBox->setChecked(SettingsManager::value("ChaoticEdition").toBool());
 
-	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing").toBool());
-	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
-	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL").toBool());
-	mUi->squareLineModeCheckBox->setChecked(SettingsManager::value("SquareLine").toBool());
-
-	mUi->paintOldLineCheckBox->setChecked(SettingsManager::value("PaintOldEdgeMode").toBool());
 	mUi->colorComboBox->addItems(QColor::colorNames());
-	QString curColor = SettingsManager::value("oldLineColor").toString();
-	int curColorIndex = mUi->colorComboBox->findText(curColor);
-	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 
-	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
-	mUi->imagesPathEdit->setText(mLastIconsetPath);
+	restoreSettings();
 }
 
 PreferencesMiscellaniousPage::~PreferencesMiscellaniousPage()
@@ -71,4 +61,21 @@ void PreferencesMiscellaniousPage::save()
 	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {
 		emit iconsetChanged();
 	}
+}
+
+void PreferencesMiscellaniousPage::restoreSettings()
+{
+	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing").toBool());
+	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
+	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL").toBool());
+	mUi->squareLineModeCheckBox->setChecked(SettingsManager::value("SquareLine").toBool());
+
+	mUi->paintOldLineCheckBox->setChecked(SettingsManager::value("PaintOldEdgeMode").toBool());
+
+	QString curColor = SettingsManager::value("oldLineColor").toString();
+	int curColorIndex = mUi->colorComboBox->findText(curColor);
+	mUi->colorComboBox->setCurrentIndex(curColorIndex);
+
+	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
+	mUi->imagesPathEdit->setText(mLastIconsetPath);
 }

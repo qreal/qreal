@@ -7,6 +7,7 @@ SonarSensorItem::SonarSensorItem(WorldModel const &worldModel
 		, SensorsConfiguration &configuration, inputPort::InputPortEnum port)
 	: SensorItem(configuration, port)
 	, mWorldModel(worldModel)
+	, mIcon(":/icons/sensors/2d_sonar.png")
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 }
@@ -16,33 +17,35 @@ void SonarSensorItem::drawItem(QPainter *painter, QStyleOptionGraphicsItem const
 	Q_UNUSED(style)
 	Q_UNUSED(widget)
 
-	QBrush brush;
-	brush.setColor(color());
-	brush.setStyle(Qt::SolidPattern);
-
-	QRectF rect(-size, -size, size * 2, size * 2);
-
-	painter->setBrush(brush);
-	painter->setOpacity(0.5);
-	painter->setPen(color());
-	painter->drawEllipse(rect.adjusted(1, 1, -1, -1));
-
+	painter->save();
 	painter->setOpacity(0.2);
 	painter->setBrush(Qt::black);
-	painter->drawPath(shape());
+	painter->drawPath(scanningRegion());
+	painter->restore();
+
+	SensorItem::drawItem(painter, style, widget);
 }
 
 void SonarSensorItem::drawExtractionForItem(QPainter *painter)
 {
-	if (!isSelected())
+	if (!isSelected()) {
 		return;
-	painter->setPen(QPen(Qt::black));
+	}
+
+	SensorItem::drawExtractionForItem(painter);
+
+	painter->save();
+	QPen const pen = QPen(Qt::black);
+	painter->setPen(pen);
+	painter->setOpacity(0.7);
+	painter->setRenderHints(painter->renderHints() | QPainter::Antialiasing);
 	painter->drawPath(shape());
+	painter->restore();
 }
 
 QRectF SonarSensorItem::boundingRect() const
 {
-	return scanningRegion().boundingRect().adjusted(-5, -5, 5, 5);
+	return scanningRegion().boundingRect().adjusted(-20, -10, 20, 10);
 }
 
 QPainterPath SonarSensorItem::scanningRegion() const
@@ -52,7 +55,7 @@ QPainterPath SonarSensorItem::scanningRegion() const
 
 QPainterPath SonarSensorItem::shape() const
 {
-	QPainterPath path = scanningRegion();
-	path.addEllipse(QRectF(-size, -size, size * 2, size * 2));
-	return path;
+	QPainterPath result = scanningRegion();
+	result.addRect(mBoundingRect);
+	return result;
 }

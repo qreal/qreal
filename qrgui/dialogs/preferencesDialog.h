@@ -28,6 +28,7 @@ public:
 
 protected:
 	void changeEvent(QEvent *e);
+	void closeEvent(QCloseEvent *e);
 
 signals:
 	void gridChanged();
@@ -41,6 +42,7 @@ public slots:
 private slots:
 	void cancel();
 	void applyChanges();
+	void restoreSettings();
 	void saveAndClose();
 	void chooseTab(const QModelIndex &);
 

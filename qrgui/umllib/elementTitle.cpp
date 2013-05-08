@@ -15,7 +15,6 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
 	setTitleFont();
 	setPos(x, y);
 	setHtml(text);
-
 }
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly)

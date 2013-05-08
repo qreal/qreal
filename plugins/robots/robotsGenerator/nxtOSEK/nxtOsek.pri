@@ -15,7 +15,6 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/playToneGenerator.h \
 	nxtOSEK/generators/simpleElements/finalNodeGenerator.h \
 	nxtOSEK/generators/simpleElements/nullificationEncoderGenerator.h \
-	nxtOSEK/generators/simpleElements/initialBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/waitForColorBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/waitForColorIntensityBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/balanceGenerator.h \
@@ -29,7 +28,11 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/initialNodeGenerator.h \
 	nxtOSEK/generators/simpleElements/enginesGenerator.h \
 	nxtOSEK/generators/listsmartline.h \
+<<<<<<< HEAD
     nxtOSEK/generators/simpleElements/waitForButtonsBlockGenerator.h
+=======
+	nxtOSEK/generators/variables.h \
+>>>>>>> trunc/robots
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
@@ -48,7 +51,6 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/playToneGenerator.cpp \
 	nxtOSEK/generators/simpleElements/finalNodeGenerator.cpp \
 	nxtOSEK/generators/simpleElements/nullificationEncoderGenerator.cpp \
-	nxtOSEK/generators/simpleElements/initialBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/waitForColorBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/waitForColorIntensityBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/balanceGenerator.cpp \
@@ -62,4 +64,8 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/initialNodeGenerator.cpp \
 	nxtOSEK/generators/simpleElements/enginesGenerator.cpp \
 	nxtOSEK/generators/listsmartline.cpp \
+<<<<<<< HEAD
     nxtOSEK/generators/simpleElements/waitForButtonsBlockGenerator.cpp
+=======
+	nxtOSEK/generators/variables.cpp \
+>>>>>>> trunc/robots

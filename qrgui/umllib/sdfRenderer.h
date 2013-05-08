@@ -10,8 +10,10 @@
 #include <QTextStream>
 #include <QtGui/QIconEngine>
 #include <QDebug>
+
 #include "../editorPluginInterface/sdfRendererInterface.h"
 #include "../../qrkernel/settingsManager.h"
+#include "../editorPluginInterface/elementRepoInterface.h"
 
 class SdfRenderer : public SdfRendererInterface
 {
@@ -23,11 +25,13 @@ public:
 	~SdfRenderer();
 
 	bool load (QString const &filename);
-	void render(QPainter *painter, const QRectF &bounds);
+	void render(QPainter *painter, QRectF const &bounds, bool isIcon = false);
 	void noScale();
 
 	int pictureWidth() { return first_size_x; }
 	int pictureHeight() { return first_size_y; }
+
+	void setElementRepo(ElementRepoInterface *elementRepo);
 
 private:
 	QString mWorkingDirName;
@@ -55,6 +59,10 @@ private:
 	 * coords, is useful for rendering icons. default is true
 	**/
 	bool mNeedScale;
+	ElementRepoInterface *mElementRepo;
+
+	bool checkShowConditions(QDomElement const &element, bool isIcon) const;
+	bool checkCondition(QDomElement const &condition) const;
 
 	void line(QDomElement &element);
 	void ellipse(QDomElement &element);

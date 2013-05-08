@@ -8,7 +8,11 @@
 #include "robotModelInterface.h"
 #include "worldModel.h"
 #include "timeline.h"
+<<<<<<< HEAD
 #include "../details/nxtDisplay.h"
+=======
+#include "../../../../../qrutils/mathUtils/gaussNoise.h"
+>>>>>>> trunc/robots
 
 namespace qReal {
 namespace interpreters {
@@ -60,6 +64,8 @@ public:
 
 	Timeline *timeline() const;
 
+	void setNoiseSettings();
+
 	enum ATime {
 		DoInf,
 		DoByLimit,
@@ -101,6 +107,11 @@ private:
 	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const;
 
 	void synchronizePositions();
+	unsigned long spoilColor(unsigned long const color) const;
+	unsigned long spoilLight(unsigned long const color) const;
+	int varySpeed(int const speed) const;
+	int spoilSonarReading(int const distance) const;
+	int truncateToInterval(int const a, int const b, int const res) const;
 
 	D2ModelWidget *mD2ModelWidget;
 	Motor *mMotorA;
@@ -117,7 +128,10 @@ private:
 	WorldModel mWorldModel;
 	Timeline *mTimeline;
 	qreal mSpeedFactor;
+	mathUtils::GaussNoise mNoiseGen;
 	bool mNeedSync;
+	bool mNeedSensorNoise;
+	bool mNeedMotorNoise;
 };
 
 }
