@@ -30,6 +30,9 @@ public:
 	virtual sensorImplementations::UnrealSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::UnrealColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::UnrealLightSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const;
+	//virtual sensorImplementations::AbstractSensorImplementation *soundSensor(inputPort::InputPortEnum const &port) const = 0;
+	//virtual sensorImplementations::AbstractSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const &port) const = 0;
+	//virtual sensorImplementations::AbstractSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const &port) const = 0;
 
 	virtual motorImplementations::UnrealMotorImplementation &motorA();
 	virtual motorImplementations::UnrealMotorImplementation &motorB();

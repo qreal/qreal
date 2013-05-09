@@ -63,6 +63,9 @@ INPUT(
 ./debug\waitBlock.o
 ./debug\waitForSensorBlock.o
 ./debug\waitForColorSensorBlockBase.o
+./debug\waitForSoundSensorBlock.o
+./debug\waitForGyroscopesensorBlock.o
+./debug\waitForAccelerometerBlock.o
 ./debug\abstractSensorImplementation.o
 ./debug\abstractEncoderImplementation.o
 ./debug\bluetoothSensorImplementation.o
@@ -96,6 +99,9 @@ INPUT(
 ./debug\bluetoothLightSensorImplementation.o
 ./debug\nullLightSensorImplementation.o
 ./debug\unrealLightSensorImplementation.o
+./debug\bluetoothSoundSensorImplementation.o
+./debug\bluetoothAccelerometerSensorImplementation.o
+./debug\bluetoothGyroscopeSensorImplementation.o
 ./debug\robotModel.o
 ./debug\touchSensor.o
 ./debug\sonarSensor.o
@@ -105,6 +111,7 @@ INPUT(
 ./debug\motor.o
 ./debug\brick.o
 ./debug\lightSensor.o
+./debug\soundSensor.o
 ./debug\qrc_robotsInterpreter.o
 ./debug\moc_robotsPlugin.o
 ./debug\moc_interpreter.o
@@ -156,9 +163,11 @@ INPUT(
 ./debug\moc_waitForLightSensorBlock.o
 ./debug\moc_waitBlock.o
 ./debug\moc_waitForSensorBlock.o
+./debug\moc_waitForSoundSensorBlock.o
+./debug\moc_waitforGyroscopeSensorBlock.o
+./debug\moc_waitForAccelerometerBlock.o
 ./debug\moc_abstractSensorImplementation.o
 ./debug\moc_abstractEncoderImplementation.o
-./debug\moc_bluetoothSensorImplementation.o
 ./debug\moc_bluetoothTouchSensorImplementation.o
 ./debug\moc_bluetoothSonarSensorImplementation.o
 ./debug\moc_bluetoothColorSensorImplementation.o
@@ -188,6 +197,9 @@ INPUT(
 ./debug\moc_sensorsConfigurer.o
 ./debug\moc_nullLightSensorImplementation.o
 ./debug\moc_unrealLightSensorImplementation.o
+./debug\moc_bluetoothSoundSensorImplementation.o
+./debug\moc_bluetoothSensorImplementation.o
+./debug\moc_bluetoothAccelerometerSensorImplementation.o
 ./debug\moc_robotModel.o
 ./debug\moc_brick.o
 ./debug\moc_motor.o
@@ -197,4 +209,5 @@ INPUT(
 ./debug\moc_colorSensor.o
 ./debug\moc_encoderSensor.o
 ./debug\moc_lightSensor.o
+./debug\moc_soundSensor.o
 );

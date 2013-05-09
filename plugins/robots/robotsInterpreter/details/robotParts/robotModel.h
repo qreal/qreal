@@ -10,6 +10,7 @@
 #include "colorSensor.h"
 #include "encoderSensor.h"
 #include "lightSensor.h"
+#include "soundSensor.h"
 #include "../../sensorConstants.h"
 #include "../robotImplementations/abstractRobotModelImplementation.h"
 
@@ -47,6 +48,7 @@ public:
 	robotParts::LightSensor *lightSensor(inputPort::InputPortEnum const &port) const;
 	robotParts::Sensor *sensor(inputPort::InputPortEnum const &port) const;
 	robotParts::ColorSensor *colorSensor(inputPort::InputPortEnum const &port) const;
+	robotParts::SoundSensor *soundSensor(inputPort::InputPortEnum const &port) const;
 
 	robotParts::Motor &motorA();
 	robotParts::Motor &motorB();

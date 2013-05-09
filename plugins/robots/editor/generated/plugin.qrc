@@ -45,16 +45,22 @@
 	<file>generated/shapes/TimerPorts.sdf</file>
 	<file>generated/shapes/VariableInitClass.sdf</file>
 	<file>generated/shapes/VariableInitPorts.sdf</file>
+	<file>generated/shapes/WaitForAccelerometerClass.sdf</file>
+	<file>generated/shapes/WaitForAccelerometerPorts.sdf</file>
 	<file>generated/shapes/WaitForColorClass.sdf</file>
 	<file>generated/shapes/WaitForColorPorts.sdf</file>
 	<file>generated/shapes/WaitForColorIntensityClass.sdf</file>
 	<file>generated/shapes/WaitForColorIntensityPorts.sdf</file>
 	<file>generated/shapes/WaitForEncoderClass.sdf</file>
 	<file>generated/shapes/WaitForEncoderPorts.sdf</file>
+	<file>generated/shapes/WaitForGyroscopeClass.sdf</file>
+	<file>generated/shapes/WaitForGyroscopePorts.sdf</file>
 	<file>generated/shapes/WaitForLightClass.sdf</file>
 	<file>generated/shapes/WaitForLightPorts.sdf</file>
 	<file>generated/shapes/WaitForSonarDistanceClass.sdf</file>
 	<file>generated/shapes/WaitForSonarDistancePorts.sdf</file>
+	<file>generated/shapes/WaitForSoundClass.sdf</file>
+	<file>generated/shapes/WaitForSoundPorts.sdf</file>
 	<file>generated/shapes/WaitForTouchSensorClass.sdf</file>
 	<file>generated/shapes/WaitForTouchSensorPorts.sdf</file>
 </qresource>

@@ -63,6 +63,9 @@ INPUT(
 ./release\waitBlock.o
 ./release\waitForSensorBlock.o
 ./release\waitForColorSensorBlockBase.o
+./release\waitForSoundSensorBlock.o
+./release\waitForGyroscopesensorBlock.o
+./release\waitForAccelerometerBlock.o
 ./release\abstractSensorImplementation.o
 ./release\abstractEncoderImplementation.o
 ./release\bluetoothSensorImplementation.o
@@ -96,6 +99,9 @@ INPUT(
 ./release\bluetoothLightSensorImplementation.o
 ./release\nullLightSensorImplementation.o
 ./release\unrealLightSensorImplementation.o
+./release\bluetoothSoundSensorImplementation.o
+./release\bluetoothAccelerometerSensorImplementation.o
+./release\bluetoothGyroscopeSensorImplementation.o
 ./release\robotModel.o
 ./release\touchSensor.o
 ./release\sonarSensor.o
@@ -105,6 +111,7 @@ INPUT(
 ./release\motor.o
 ./release\brick.o
 ./release\lightSensor.o
+./release\soundSensor.o
 ./release\qrc_robotsInterpreter.o
 ./release\moc_robotsPlugin.o
 ./release\moc_interpreter.o
@@ -156,9 +163,11 @@ INPUT(
 ./release\moc_waitForLightSensorBlock.o
 ./release\moc_waitBlock.o
 ./release\moc_waitForSensorBlock.o
+./release\moc_waitForSoundSensorBlock.o
+./release\moc_waitforGyroscopeSensorBlock.o
+./release\moc_waitForAccelerometerBlock.o
 ./release\moc_abstractSensorImplementation.o
 ./release\moc_abstractEncoderImplementation.o
-./release\moc_bluetoothSensorImplementation.o
 ./release\moc_bluetoothTouchSensorImplementation.o
 ./release\moc_bluetoothSonarSensorImplementation.o
 ./release\moc_bluetoothColorSensorImplementation.o
@@ -188,6 +197,9 @@ INPUT(
 ./release\moc_sensorsConfigurer.o
 ./release\moc_nullLightSensorImplementation.o
 ./release\moc_unrealLightSensorImplementation.o
+./release\moc_bluetoothSoundSensorImplementation.o
+./release\moc_bluetoothSensorImplementation.o
+./release\moc_bluetoothAccelerometerSensorImplementation.o
 ./release\moc_robotModel.o
 ./release\moc_brick.o
 ./release\moc_motor.o
@@ -197,4 +209,5 @@ INPUT(
 ./release\moc_colorSensor.o
 ./release\moc_encoderSensor.o
 ./release\moc_lightSensor.o
+./release\moc_soundSensor.o
 );

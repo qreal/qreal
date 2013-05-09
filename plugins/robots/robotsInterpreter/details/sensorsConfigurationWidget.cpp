@@ -43,6 +43,9 @@ void SensorsConfigurationWidget::reinitValues()
 			<< tr("Color sensor (green)")
 			<< tr("Color sensor (blue)")
 			<< tr("Color sensor (passive)")
+			<< tr("Sound sensor")
+			<< tr("gyroscope(passive)")
+			<< tr("aks(passive)")
 	;
 
 	mUi->port1ComboBox->clear();

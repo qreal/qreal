@@ -1,7 +1,6 @@
 HEADERS += \
 	details/robotImplementations/sensorImplementations/abstractSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/abstractEncoderImplementation.h \
-	details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothColorSensorImplementation.h \
@@ -31,7 +30,11 @@ HEADERS += \
 	details/robotImplementations/sensorsConfigurer.h \
 	details/robotImplementations/sensorImplementations/bluetoothLightSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/nullLightSensorImplementation.h \
-	details/robotImplementations/sensorImplementations/unrealLightSensorImplementation.h
+	details/robotImplementations/sensorImplementations/unrealLightSensorImplementation.h \
+    details/robotImplementations/sensorImplementations/bluetoothSoundSensorImplementation.h \
+    details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.h \
+    details/robotImplementations/sensorImplementations/bluetoothAccelerometerSensorImplementation.h \
+    details/robotImplementations/sensorImplementations/bluetoothGyroscopeSensorImplementation.h
 
 SOURCES += \
 	details/robotImplementations/sensorImplementations/abstractSensorImplementation.cpp \
@@ -67,3 +70,6 @@ SOURCES += \
 	details/robotImplementations/sensorImplementations/bluetoothLightSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/nullLightSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/unrealLightSensorImplementation.cpp \
+    details/robotImplementations/sensorImplementations/bluetoothSoundSensorImplementation.cpp \
+    details/robotImplementations/sensorImplementations/bluetoothAccelerometerSensorImplementation.cpp \
+    details/robotImplementations/sensorImplementations/bluetoothGyroscopeSensorImplementation.cpp

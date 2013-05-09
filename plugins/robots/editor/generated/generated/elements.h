@@ -4041,6 +4041,223 @@
 		ElementTitleInterface *title_4;
 	};
 
+	class WaitForAccelerometer : public ElementImpl
+	{
+	public:
+		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+
+		void init(QRectF &contents, QList<StatPoint> &pointPorts,
+							QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+							SdfRendererInterface *portRenderer)
+		{
+			Q_UNUSED(pointPorts);
+			mRenderer = renderer;
+			mRenderer->load(QString(":/generated/shapes/WaitForAccelerometerClass.sdf"));
+			portRenderer->load(QString(":/generated/shapes/WaitForAccelerometerPorts.sdf"));
+			contents.setWidth(50);
+			contents.setHeight(50);
+			{
+				StatLine ln;
+				ln.line = QLineF(0, 0.1, 0, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 0, 0.9, 0);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(1, 0.1, 1, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 1, 0.9, 1);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			title_1 = factory.createTitle(0.66, -0.5, "Port", false);
+			title_1->setBackground(Qt::transparent);
+			title_1->setScaling(false, false);
+			title_1->setHard(true);
+			title_1->setFlags(0);
+			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_1);
+			title_2 = factory.createTitle(0, -0.5, QString::fromUtf8("Порт:"));
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setHard(true);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
+			title_3 = factory.createTitle(0.66, 1.2, "Percents", false);
+			title_3->setBackground(Qt::transparent);
+			title_3->setScaling(false, false);
+			title_3->setHard(false);
+			title_3->setFlags(0);
+			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_3);
+			title_4 = factory.createTitle(-0.52, 1.2, QString::fromUtf8("Проценты:"));
+			title_4->setBackground(Qt::transparent);
+			title_4->setScaling(false, false);
+			title_4->setHard(false);
+			title_4->setFlags(0);
+			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_4);
+			title_5 = factory.createTitle(0.66, 1.6, "Sign", false);
+			title_5->setBackground(Qt::transparent);
+			title_5->setScaling(false, false);
+			title_5->setHard(false);
+			title_5->setFlags(0);
+			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_5);
+			title_6 = factory.createTitle(-1.6, 1.6, QString::fromUtf8("Считанное значение:"));
+			title_6->setBackground(Qt::transparent);
+			title_6->setScaling(false, false);
+			title_6->setHard(false);
+			title_6->setFlags(0);
+			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_6);
+		}
+
+		 ElementImpl *clone() { return NULL; }
+		~WaitForAccelerometer() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+
+		int getPenWidth() const { return 0; }
+
+		QColor getPenColor() const { return QColor(); }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+		bool hasPorts() const
+		{
+			return true;
+		}
+
+		void updateData(ElementRepoInterface *repo) const
+		{
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Port")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Percents")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Sign")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+		}
+
+		bool isNode() const
+		{
+			return true;
+		}
+
+		bool isResizeable() const
+		{
+			return false;
+		}
+
+		bool isContainer() const
+		{
+			return false;
+		}
+
+		bool isSortingContainer() const
+		{
+			return false;
+		}
+
+		int sizeOfForestalling() const
+		{
+			return 0;
+		}
+
+		int sizeOfChildrenForestalling() const
+		{
+			return 0;
+		}
+
+		bool hasMovableChildren() const
+		{
+			return true;
+		}
+
+		bool minimizesToChildren() const
+		{
+			return false;
+		}
+
+		bool maximizesChildren() const
+		{
+			return false;
+		}
+
+		bool isDividable() const
+		{
+			return false;
+		}
+
+		bool isPort() const
+		{
+			return false;
+		}
+
+		bool hasPin() const
+		{
+			return false;
+		}
+
+		QList<double> border() const
+		{
+			QList<double> list;
+			list << 0 << 0 << 0 << 0;
+			return list;
+		}
+
+		QStringList bonusContextMenuFields() const
+		{
+			return QStringList();
+		}
+
+	private:
+		SdfRendererInterface *mRenderer;
+		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
+		ElementTitleInterface *title_3;
+		ElementTitleInterface *title_4;
+		ElementTitleInterface *title_5;
+		ElementTitleInterface *title_6;
+	};
+
 	class WaitForColor : public ElementImpl
 	{
 	public:
@@ -4656,6 +4873,223 @@
 		ElementTitleInterface *title_4;
 	};
 
+	class WaitForGyroscope : public ElementImpl
+	{
+	public:
+		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+
+		void init(QRectF &contents, QList<StatPoint> &pointPorts,
+							QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+							SdfRendererInterface *portRenderer)
+		{
+			Q_UNUSED(pointPorts);
+			mRenderer = renderer;
+			mRenderer->load(QString(":/generated/shapes/WaitForGyroscopeClass.sdf"));
+			portRenderer->load(QString(":/generated/shapes/WaitForGyroscopePorts.sdf"));
+			contents.setWidth(50);
+			contents.setHeight(50);
+			{
+				StatLine ln;
+				ln.line = QLineF(0, 0.1, 0, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 0, 0.9, 0);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(1, 0.1, 1, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 1, 0.9, 1);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			title_1 = factory.createTitle(0.66, -0.5, "Port", false);
+			title_1->setBackground(Qt::transparent);
+			title_1->setScaling(false, false);
+			title_1->setHard(true);
+			title_1->setFlags(0);
+			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_1);
+			title_2 = factory.createTitle(0, -0.5, QString::fromUtf8("Порт:"));
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setHard(true);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
+			title_3 = factory.createTitle(0.66, 1.2, "Percents", false);
+			title_3->setBackground(Qt::transparent);
+			title_3->setScaling(false, false);
+			title_3->setHard(false);
+			title_3->setFlags(0);
+			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_3);
+			title_4 = factory.createTitle(-0.52, 1.2, QString::fromUtf8("Проценты:"));
+			title_4->setBackground(Qt::transparent);
+			title_4->setScaling(false, false);
+			title_4->setHard(false);
+			title_4->setFlags(0);
+			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_4);
+			title_5 = factory.createTitle(0.66, 1.6, "Sign", false);
+			title_5->setBackground(Qt::transparent);
+			title_5->setScaling(false, false);
+			title_5->setHard(false);
+			title_5->setFlags(0);
+			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_5);
+			title_6 = factory.createTitle(-1.6, 1.6, QString::fromUtf8("Считанное значение:"));
+			title_6->setBackground(Qt::transparent);
+			title_6->setScaling(false, false);
+			title_6->setHard(false);
+			title_6->setFlags(0);
+			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_6);
+		}
+
+		 ElementImpl *clone() { return NULL; }
+		~WaitForGyroscope() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+
+		int getPenWidth() const { return 0; }
+
+		QColor getPenColor() const { return QColor(); }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+		bool hasPorts() const
+		{
+			return true;
+		}
+
+		void updateData(ElementRepoInterface *repo) const
+		{
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Port")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Percents")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Sign")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+		}
+
+		bool isNode() const
+		{
+			return true;
+		}
+
+		bool isResizeable() const
+		{
+			return false;
+		}
+
+		bool isContainer() const
+		{
+			return false;
+		}
+
+		bool isSortingContainer() const
+		{
+			return false;
+		}
+
+		int sizeOfForestalling() const
+		{
+			return 0;
+		}
+
+		int sizeOfChildrenForestalling() const
+		{
+			return 0;
+		}
+
+		bool hasMovableChildren() const
+		{
+			return true;
+		}
+
+		bool minimizesToChildren() const
+		{
+			return false;
+		}
+
+		bool maximizesChildren() const
+		{
+			return false;
+		}
+
+		bool isDividable() const
+		{
+			return false;
+		}
+
+		bool isPort() const
+		{
+			return false;
+		}
+
+		bool hasPin() const
+		{
+			return false;
+		}
+
+		QList<double> border() const
+		{
+			QList<double> list;
+			list << 0 << 0 << 0 << 0;
+			return list;
+		}
+
+		QStringList bonusContextMenuFields() const
+		{
+			return QStringList();
+		}
+
+	private:
+		SdfRendererInterface *mRenderer;
+		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
+		ElementTitleInterface *title_3;
+		ElementTitleInterface *title_4;
+		ElementTitleInterface *title_5;
+		ElementTitleInterface *title_6;
+	};
+
 	class WaitForLight : public ElementImpl
 	{
 	public:
@@ -5003,6 +5437,223 @@
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Port")).replace("\n", "<br>"));
 			Q_UNUSED(repo);
 			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Distance")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Sign")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+		}
+
+		bool isNode() const
+		{
+			return true;
+		}
+
+		bool isResizeable() const
+		{
+			return false;
+		}
+
+		bool isContainer() const
+		{
+			return false;
+		}
+
+		bool isSortingContainer() const
+		{
+			return false;
+		}
+
+		int sizeOfForestalling() const
+		{
+			return 0;
+		}
+
+		int sizeOfChildrenForestalling() const
+		{
+			return 0;
+		}
+
+		bool hasMovableChildren() const
+		{
+			return true;
+		}
+
+		bool minimizesToChildren() const
+		{
+			return false;
+		}
+
+		bool maximizesChildren() const
+		{
+			return false;
+		}
+
+		bool isDividable() const
+		{
+			return false;
+		}
+
+		bool isPort() const
+		{
+			return false;
+		}
+
+		bool hasPin() const
+		{
+			return false;
+		}
+
+		QList<double> border() const
+		{
+			QList<double> list;
+			list << 0 << 0 << 0 << 0;
+			return list;
+		}
+
+		QStringList bonusContextMenuFields() const
+		{
+			return QStringList();
+		}
+
+	private:
+		SdfRendererInterface *mRenderer;
+		ElementTitleInterface *title_1;
+		ElementTitleInterface *title_2;
+		ElementTitleInterface *title_3;
+		ElementTitleInterface *title_4;
+		ElementTitleInterface *title_5;
+		ElementTitleInterface *title_6;
+	};
+
+	class WaitForSound : public ElementImpl
+	{
+	public:
+		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+
+		void init(QRectF &contents, QList<StatPoint> &pointPorts,
+							QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
+							QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+							SdfRendererInterface *portRenderer)
+		{
+			Q_UNUSED(pointPorts);
+			mRenderer = renderer;
+			mRenderer->load(QString(":/generated/shapes/WaitForSoundClass.sdf"));
+			portRenderer->load(QString(":/generated/shapes/WaitForSoundPorts.sdf"));
+			contents.setWidth(50);
+			contents.setHeight(50);
+			{
+				StatLine ln;
+				ln.line = QLineF(0, 0.1, 0, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 0, 0.9, 0);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(1, 0.1, 1, 0.9);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			{
+				StatLine ln;
+				ln.line = QLineF(0.1, 1, 0.9, 1);
+				ln.prop_x1 = false;
+				ln.prop_y1 = false; 
+				ln.prop_x2 = false; 
+				ln.prop_y2 = false; 
+				ln.initWidth = 50;
+				ln.initHeight = 50;
+				linePorts << ln;
+			};
+			title_1 = factory.createTitle(0.66, -0.5, "Port", false);
+			title_1->setBackground(Qt::transparent);
+			title_1->setScaling(false, false);
+			title_1->setHard(true);
+			title_1->setFlags(0);
+			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_1);
+			title_2 = factory.createTitle(0, -0.5, QString::fromUtf8("Порт:"));
+			title_2->setBackground(Qt::transparent);
+			title_2->setScaling(false, false);
+			title_2->setHard(true);
+			title_2->setFlags(0);
+			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_2);
+			title_3 = factory.createTitle(0.66, 1.2, "Percents", false);
+			title_3->setBackground(Qt::transparent);
+			title_3->setScaling(false, false);
+			title_3->setHard(false);
+			title_3->setFlags(0);
+			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_3);
+			title_4 = factory.createTitle(-0.52, 1.2, QString::fromUtf8("Проценты:"));
+			title_4->setBackground(Qt::transparent);
+			title_4->setScaling(false, false);
+			title_4->setHard(false);
+			title_4->setFlags(0);
+			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_4);
+			title_5 = factory.createTitle(0.66, 1.6, "Sign", false);
+			title_5->setBackground(Qt::transparent);
+			title_5->setScaling(false, false);
+			title_5->setHard(false);
+			title_5->setFlags(0);
+			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_5);
+			title_6 = factory.createTitle(-1.6, 1.6, QString::fromUtf8("Считанное значение:"));
+			title_6->setBackground(Qt::transparent);
+			title_6->setScaling(false, false);
+			title_6->setHard(false);
+			title_6->setFlags(0);
+			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_6);
+		}
+
+		 ElementImpl *clone() { return NULL; }
+		~WaitForSound() {}
+
+		void paint(QPainter *painter, QRectF &contents)
+		{
+			mRenderer->render(painter, contents);
+		}
+
+		Qt::PenStyle getPenStyle() const { return Qt::SolidLine; }
+
+		int getPenWidth() const { return 0; }
+
+		QColor getPenColor() const { return QColor(); }
+
+		void drawStartArrow(QPainter *) const {}
+		void drawEndArrow(QPainter *) const {}
+		bool hasPorts() const
+		{
+			return true;
+		}
+
+		void updateData(ElementRepoInterface *repo) const
+		{
+			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Port")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Percents")).replace("\n", "<br>"));
 			Q_UNUSED(repo);
 			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Sign")).replace("\n", "<br>"));
 			Q_UNUSED(repo);

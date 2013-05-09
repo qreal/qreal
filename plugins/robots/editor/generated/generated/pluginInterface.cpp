@@ -44,11 +44,14 @@ void RobotsMetamodelPlugin::initNameMap()
 	elementsNameMap["RobotsDiagram"]["SubprogramRobots"] = QString::fromUtf8("Подпрограмма");
 	elementsNameMap["RobotsDiagram"]["Timer"] = QString::fromUtf8("Таймер");
 	elementsNameMap["RobotsDiagram"]["VariableInit"] = QString::fromUtf8("Инициализация переменной");
+	elementsNameMap["RobotsDiagram"]["WaitForAccelerometer"] = QString::fromUtf8("Ждать Акселерометр");
 	elementsNameMap["RobotsDiagram"]["WaitForColor"] = QString::fromUtf8("Ждать цвет");
 	elementsNameMap["RobotsDiagram"]["WaitForColorIntensity"] = QString::fromUtf8("Ждать интенсивность цвета");
 	elementsNameMap["RobotsDiagram"]["WaitForEncoder"] = QString::fromUtf8("Ждать энкодер");
+	elementsNameMap["RobotsDiagram"]["WaitForGyroscope"] = QString::fromUtf8("Ждать гироскоп");
 	elementsNameMap["RobotsDiagram"]["WaitForLight"] = QString::fromUtf8("Ждать свет");
 	elementsNameMap["RobotsDiagram"]["WaitForSonarDistance"] = QString::fromUtf8("Ждать сонар");
+	elementsNameMap["RobotsDiagram"]["WaitForSound"] = QString::fromUtf8("Ждать сенсор звука");
 	elementsNameMap["RobotsDiagram"]["WaitForTouchSensor"] = QString::fromUtf8("Ждать сенсор касания");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["Balance"]["forward"] = QString::fromUtf8("Значение forward");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["Balance"]["gyroOffset"] = QString::fromUtf8("Значение для калибровки (что бы это ни значило)");
@@ -80,6 +83,7 @@ void RobotsMetamodelPlugin::initNameMap()
 	propertiesDisplayedNamesMap["RobotsDiagram"]["Timer"]["Delay"] = QString::fromUtf8("Задержка");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["VariableInit"]["value"] = QString::fromUtf8("Значение");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["VariableInit"]["variable"] = QString::fromUtf8("Переменная");
+	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForAccelerometer"]["Port"] = QString::fromUtf8("Порт");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForColor"]["Color"] = QString::fromUtf8("Цвет");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForColor"]["Port"] = QString::fromUtf8("Порт");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForColorIntensity"]["Intensity"] = QString::fromUtf8("Интенсивность");
@@ -87,12 +91,14 @@ void RobotsMetamodelPlugin::initNameMap()
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForColorIntensity"]["Sign"] = QString::fromUtf8("Считанное значение");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForEncoder"]["Port"] = QString::fromUtf8("Порт");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForEncoder"]["TachoLimit"] = QString::fromUtf8("Предел оборотов");
+	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForGyroscope"]["Port"] = QString::fromUtf8("Порт");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForLight"]["Percents"] = QString::fromUtf8("Проценты");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForLight"]["Port"] = QString::fromUtf8("Порт");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForLight"]["Sign"] = QString::fromUtf8("Считанное значение");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForSonarDistance"]["Distance"] = QString::fromUtf8("Дистанция");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForSonarDistance"]["Port"] = QString::fromUtf8("Порт");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForSonarDistance"]["Sign"] = QString::fromUtf8("Считанное значение");
+	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForSound"]["Port"] = QString::fromUtf8("Порт");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForTouchSensor"]["Port"] = QString::fromUtf8("Порт");
 }
 
@@ -120,6 +126,9 @@ void RobotsMetamodelPlugin::initPaletteGroupsMap()
 	paletteGroupsMap[QString::fromUtf8("RobotsDiagram")][QString::fromUtf8("Ожидания")].append(QString::fromUtf8("WaitForEncoder"));
 	paletteGroupsMap[QString::fromUtf8("RobotsDiagram")][QString::fromUtf8("Ожидания")].append(QString::fromUtf8("WaitForColorIntensity"));
 	paletteGroupsMap[QString::fromUtf8("RobotsDiagram")][QString::fromUtf8("Ожидания")].append(QString::fromUtf8("WaitForLight"));
+	paletteGroupsMap[QString::fromUtf8("RobotsDiagram")][QString::fromUtf8("Ожидания")].append(QString::fromUtf8("WaitForSound"));
+	paletteGroupsMap[QString::fromUtf8("RobotsDiagram")][QString::fromUtf8("Ожидания")].append(QString::fromUtf8("WaitForGyroscope"));
+	paletteGroupsMap[QString::fromUtf8("RobotsDiagram")][QString::fromUtf8("Ожидания")].append(QString::fromUtf8("WaitForAccelerometer"));
 	paletteGroupsMap[QString::fromUtf8("RobotsDiagram")][QString::fromUtf8("Сегвей")].append(QString::fromUtf8("Balance"));
 	paletteGroupsMap[QString::fromUtf8("RobotsDiagram")][QString::fromUtf8("Сегвей")].append(QString::fromUtf8("BalanceInit"));
 }
@@ -140,14 +149,17 @@ void RobotsMetamodelPlugin::initPropertyMap()
 	propertyTypes["ControlFlow"]["Guard"] = "GuardType";
 	propertyTypes["Function"]["Init"] = "Bool";
 	propertyTypes["PlayTone"]["WaitForCompletion"] = "Bool";
+	propertyTypes["WaitForAccelerometer"]["Port"] = "SensorPort";
 	propertyTypes["WaitForColor"]["Color"] = "Color";
 	propertyTypes["WaitForColor"]["Port"] = "SensorPort";
 	propertyTypes["WaitForColorIntensity"]["Port"] = "SensorPort";
 	propertyTypes["WaitForColorIntensity"]["Sign"] = "DistanceSign";
+	propertyTypes["WaitForGyroscope"]["Port"] = "SensorPort";
 	propertyTypes["WaitForLight"]["Port"] = "SensorPort";
 	propertyTypes["WaitForLight"]["Sign"] = "DistanceSign";
 	propertyTypes["WaitForSonarDistance"]["Port"] = "SensorPort";
 	propertyTypes["WaitForSonarDistance"]["Sign"] = "DistanceSign";
+	propertyTypes["WaitForSound"]["Port"] = "SensorPort";
 	propertyTypes["WaitForTouchSensor"]["Port"] = "SensorPort";
 }
 
@@ -177,16 +189,19 @@ void RobotsMetamodelPlugin::initPropertyDefaultsMap()
 	propertyDefault["Timer"]["Delay"] = QString::fromUtf8("0");
 	propertyDefault["VariableInit"]["value"] = QString::fromUtf8("0");
 	propertyDefault["VariableInit"]["variable"] = QString::fromUtf8("0");
+	propertyDefault["WaitForAccelerometer"]["Port"] = QString::fromUtf8("1");
 	propertyDefault["WaitForColor"]["Port"] = QString::fromUtf8("1");
 	propertyDefault["WaitForColorIntensity"]["Intensity"] = QString::fromUtf8("0");
 	propertyDefault["WaitForColorIntensity"]["Port"] = QString::fromUtf8("1");
 	propertyDefault["WaitForColorIntensity"]["Sign"] = QString::fromUtf8("равно");
+	propertyDefault["WaitForGyroscope"]["Port"] = QString::fromUtf8("1");
 	propertyDefault["WaitForLight"]["Percents"] = QString::fromUtf8("0");
 	propertyDefault["WaitForLight"]["Port"] = QString::fromUtf8("1");
 	propertyDefault["WaitForLight"]["Sign"] = QString::fromUtf8("равно");
 	propertyDefault["WaitForSonarDistance"]["Distance"] = QString::fromUtf8("0");
 	propertyDefault["WaitForSonarDistance"]["Port"] = QString::fromUtf8("1");
 	propertyDefault["WaitForSonarDistance"]["Sign"] = QString::fromUtf8("равно");
+	propertyDefault["WaitForSound"]["Port"] = QString::fromUtf8("1");
 	propertyDefault["WaitForTouchSensor"]["Port"] = QString::fromUtf8("1");
 }
 
@@ -256,6 +271,9 @@ void RobotsMetamodelPlugin::initParentsMap()
 	parentsMap["RobotsDiagram"]["VariableInit"]
 		<< qMakePair(QString("RobotsDiagram"), QString("AbstractNode"))
 	;
+	parentsMap["RobotsDiagram"]["WaitForAccelerometer"]
+		<< qMakePair(QString("RobotsDiagram"), QString("SensorBlock"))
+	;
 	parentsMap["RobotsDiagram"]["WaitForColor"]
 		<< qMakePair(QString("RobotsDiagram"), QString("SensorBlock"))
 	;
@@ -265,10 +283,16 @@ void RobotsMetamodelPlugin::initParentsMap()
 	parentsMap["RobotsDiagram"]["WaitForEncoder"]
 		<< qMakePair(QString("RobotsDiagram"), QString("AbstractNode"))
 	;
+	parentsMap["RobotsDiagram"]["WaitForGyroscope"]
+		<< qMakePair(QString("RobotsDiagram"), QString("SensorBlock"))
+	;
 	parentsMap["RobotsDiagram"]["WaitForLight"]
 		<< qMakePair(QString("RobotsDiagram"), QString("SensorBlock"))
 	;
 	parentsMap["RobotsDiagram"]["WaitForSonarDistance"]
+		<< qMakePair(QString("RobotsDiagram"), QString("SensorBlock"))
+	;
+	parentsMap["RobotsDiagram"]["WaitForSound"]
 		<< qMakePair(QString("RobotsDiagram"), QString("SensorBlock"))
 	;
 	parentsMap["RobotsDiagram"]["WaitForTouchSensor"]
@@ -391,16 +415,22 @@ ElementImpl* RobotsMetamodelPlugin::getGraphicalObject(QString const &/*diagram*
 		return new Timer();
 	else if (element == "VariableInit")
 		return new VariableInit();
+	else if (element == "WaitForAccelerometer")
+		return new WaitForAccelerometer();
 	else if (element == "WaitForColor")
 		return new WaitForColor();
 	else if (element == "WaitForColorIntensity")
 		return new WaitForColorIntensity();
 	else if (element == "WaitForEncoder")
 		return new WaitForEncoder();
+	else if (element == "WaitForGyroscope")
+		return new WaitForGyroscope();
 	else if (element == "WaitForLight")
 		return new WaitForLight();
 	else if (element == "WaitForSonarDistance")
 		return new WaitForSonarDistance();
+	else if (element == "WaitForSound")
+		return new WaitForSound();
 	else if (element == "WaitForTouchSensor")
 		return new WaitForTouchSensor();
 	else {
@@ -467,16 +497,22 @@ QStringList RobotsMetamodelPlugin::getPropertyNames(QString const &/*diagram*/, 
 		result  << "Delay";
 	else if (element == "VariableInit")
 		result  << "value" << "variable";
+	else if (element == "WaitForAccelerometer")
+		result  << "Port";
 	else if (element == "WaitForColor")
 		result  << "Color" << "Port";
 	else if (element == "WaitForColorIntensity")
 		result  << "Intensity" << "Port" << "Sign";
 	else if (element == "WaitForEncoder")
 		result  << "Port" << "TachoLimit";
+	else if (element == "WaitForGyroscope")
+		result  << "Port";
 	else if (element == "WaitForLight")
 		result  << "Percents" << "Port" << "Sign";
 	else if (element == "WaitForSonarDistance")
 		result  << "Distance" << "Port" << "Sign";
+	else if (element == "WaitForSound")
+		result  << "Port";
 	else if (element == "WaitForTouchSensor")
 		result  << "Port";
 	return result;
@@ -523,15 +559,21 @@ QStringList RobotsMetamodelPlugin::getReferenceProperties(QString const &/*diagr
 ;
 	else if (element == "VariableInit")
 ;
+	else if (element == "WaitForAccelerometer")
+;
 	else if (element == "WaitForColor")
 ;
 	else if (element == "WaitForColorIntensity")
 ;
 	else if (element == "WaitForEncoder")
 ;
+	else if (element == "WaitForGyroscope")
+;
 	else if (element == "WaitForLight")
 ;
 	else if (element == "WaitForSonarDistance")
+;
+	else if (element == "WaitForSound")
 ;
 	else if (element == "WaitForTouchSensor")
 ;
@@ -629,15 +671,21 @@ int RobotsMetamodelPlugin::isNodeOrEdge(QString const &element) const
 		return 1;
 	else if (element == "VariableInit")
 		return 1;
+	else if (element == "WaitForAccelerometer")
+		return 1;
 	else if (element == "WaitForColor")
 		return 1;
 	else if (element == "WaitForColorIntensity")
 		return 1;
 	else if (element == "WaitForEncoder")
 		return 1;
+	else if (element == "WaitForGyroscope")
+		return 1;
 	else if (element == "WaitForLight")
 		return 1;
 	else if (element == "WaitForSonarDistance")
+		return 1;
+	else if (element == "WaitForSound")
 		return 1;
 	else if (element == "WaitForTouchSensor")
 		return 1;
@@ -651,28 +699,28 @@ QString RobotsMetamodelPlugin::getGroupsXML() const
 QStringList RobotsMetamodelPlugin::getEnumValues(QString name) const 
 {
 	QStringList result;
-	if (name == "DistanceSign")
-		result << QString::fromUtf8("равно") << QString::fromUtf8("больше") << QString::fromUtf8("меньше") << QString::fromUtf8("не меньше") << QString::fromUtf8("не больше");
+	if (name == "Bool")
+		result << QString::fromUtf8("false") << QString::fromUtf8("true");
+	else if (name == "Sensors")
+		result << QString::fromUtf8("Не используется") << QString::fromUtf8("Ультразвуковой сенсор") << QString::fromUtf8("Сенсор касания (булево значение)") << QString::fromUtf8("Сенсор касания (сырое значение)") << QString::fromUtf8("Сенсор цвета (все цвета)") << QString::fromUtf8("Сенсор цвета (красный)") << QString::fromUtf8("Сенсор цвета (зеленый)") << QString::fromUtf8("Сенсор цвета (синий)") << QString::fromUtf8("Сенсор цвета (пассивный)") << QString::fromUtf8("Сенсок звука") << QString::fromUtf8("Гироскоп") << QString::fromUtf8("Акселерометр");
 	else if (name == "AggregationKind")
 		result << QString::fromUtf8("none") << QString::fromUtf8("shared") << QString::fromUtf8("composite");
-	else if (name == "CallConcurrencyKind")
-		result << QString::fromUtf8("sequential") << QString::fromUtf8("guarded") << QString::fromUtf8("concurrent");
-	else if (name == "GuardType")
-		result << QString::fromUtf8("") << QString::fromUtf8("итерация") << QString::fromUtf8("меньше 0") << QString::fromUtf8("больше 0") << QString::fromUtf8("равно 0");
-	else if (name == "Sensors")
-		result << QString::fromUtf8("Не используется") << QString::fromUtf8("Ультразвуковой сенсор") << QString::fromUtf8("Сенсор касания (булево значение)") << QString::fromUtf8("Сенсор касания (сырое значение)") << QString::fromUtf8("Сенсор цвета (все цвета)") << QString::fromUtf8("Сенсор цвета (красный)") << QString::fromUtf8("Сенсор цвета (зеленый)") << QString::fromUtf8("Сенсор цвета (синий)") << QString::fromUtf8("Сенсор цвета (пассивный)");
-	else if (name == "VisibilityKind")
-		result << QString::fromUtf8("private") << QString::fromUtf8("protected") << QString::fromUtf8("public") << QString::fromUtf8("package");
-	else if (name == "Color")
-		result << QString::fromUtf8("") << QString::fromUtf8("Чёрный") << QString::fromUtf8("Синий") << QString::fromUtf8("Зелёный") << QString::fromUtf8("Жёлтый") << QString::fromUtf8("Красный") << QString::fromUtf8("Белый");
-	else if (name == "ParameterDirectionKind")
-		result << QString::fromUtf8("in") << QString::fromUtf8("inout") << QString::fromUtf8("out") << QString::fromUtf8("return");
-	else if (name == "Bool")
-		result << QString::fromUtf8("false") << QString::fromUtf8("true");
 	else if (name == "BreakEngineMode")
 		result << QString::fromUtf8("тормозить") << QString::fromUtf8("скользить");
+	else if (name == "DistanceSign")
+		result << QString::fromUtf8("равно") << QString::fromUtf8("больше") << QString::fromUtf8("меньше") << QString::fromUtf8("не меньше") << QString::fromUtf8("не больше");
+	else if (name == "VisibilityKind")
+		result << QString::fromUtf8("private") << QString::fromUtf8("protected") << QString::fromUtf8("public") << QString::fromUtf8("package");
+	else if (name == "ParameterDirectionKind")
+		result << QString::fromUtf8("in") << QString::fromUtf8("inout") << QString::fromUtf8("out") << QString::fromUtf8("return");
+	else if (name == "CallConcurrencyKind")
+		result << QString::fromUtf8("sequential") << QString::fromUtf8("guarded") << QString::fromUtf8("concurrent");
+	else if (name == "Color")
+		result << QString::fromUtf8("") << QString::fromUtf8("Чёрный") << QString::fromUtf8("Синий") << QString::fromUtf8("Зелёный") << QString::fromUtf8("Жёлтый") << QString::fromUtf8("Красный") << QString::fromUtf8("Белый");
 	else if (name == "SensorPort")
 		result << QString::fromUtf8("1") << QString::fromUtf8("2") << QString::fromUtf8("3") << QString::fromUtf8("4");
+	else if (name == "GuardType")
+		result << QString::fromUtf8("") << QString::fromUtf8("итерация") << QString::fromUtf8("меньше 0") << QString::fromUtf8("больше 0") << QString::fromUtf8("равно 0");
 	return result;
 }
 
