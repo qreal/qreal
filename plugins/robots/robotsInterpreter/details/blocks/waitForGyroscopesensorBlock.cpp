@@ -19,7 +19,7 @@ void WaitForGyroscopeSensorBlock::responseSlot(int reading)
 
 interpreters::robots::details::robotParts::Sensor *WaitForGyroscopeSensorBlock::sensor() const
 {
-	return mRobotModel->soundSensor(mPort);
+	return mRobotModel->gyroscopeSensor(mPort);
 }
 
 QString WaitForGyroscopeSensorBlock::name() const

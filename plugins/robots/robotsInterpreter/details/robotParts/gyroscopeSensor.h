@@ -1,10 +1,24 @@
-#ifndef GYROSCOPESENSOR_H
-#define GYROSCOPESENSOR_H
+#pragma once
 
-class GyroscopeSensor
+#include <QtCore/QObject>
+#include "sensor.h"
+#include "../../sensorConstants.h"
+
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace details {
+namespace robotParts {
+
+class GyroscopeSensor : public Sensor
 {
+	Q_OBJECT
 public:
-	GyroscopeSensor();
+	GyroscopeSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
 };
 
-#endif // GYROSCOPESENSOR_H
+}
+}
+}
+}
+}
