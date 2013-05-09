@@ -16,3 +16,24 @@ void UnrealDisplayImplementation::read()
 				  ,mD2Model->display()->centralButtonIsDown()
 				  ,mD2Model->display()->bottomButtonIsDown());
 }
+
+void UnrealDisplayImplementation::drawPixel(int x, int y)
+{
+
+}
+
+void UnrealDisplayImplementation::drawLine(int x1, int y1, int x2, int y2)
+{
+
+}
+
+void UnrealDisplayImplementation::drawCircle(int x, int y, int radius)
+{
+
+}
+
+void UnrealDisplayImplementation::printText(int x, int y, QString text)
+
+{
+
+}

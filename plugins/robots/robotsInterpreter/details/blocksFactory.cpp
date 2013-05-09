@@ -10,6 +10,10 @@
 #include "blocks/waitForTouchSensorBlock.h"
 #include "blocks/waitForSonarDistanceBlock.h"
 #include "blocks/waitForButtonsBlock.h"
+#include "blocks/drawPixelBlock.h"
+#include "blocks/drawLineBlock.h"
+#include "blocks/drawCircleBlock.h"
+#include "blocks/printTextBlock.h"
 #include "blocks/enginesForwardBlock.h"
 #include "blocks/enginesBackwardBlock.h"
 #include "blocks/enginesStopBlock.h"
@@ -92,6 +96,14 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new WaitForLightSensorBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForButtons")) {
 		newBlock = new WaitForButtonsBlock(mRobotModel, mRobotModel->display());
+	} else if (elementMetatypeIs(element, "DrawPixel")) {
+		newBlock = new DrawPixelBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "DrawLine")) {
+		newBlock = new DrawLineBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "DrawCircle")) {
+		newBlock = new DrawCircleBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "PrintText")) {
+		newBlock = new PrintTextBlock(mRobotModel->display());
 	} else {
 		newBlock = new DummyBlock();
 	}

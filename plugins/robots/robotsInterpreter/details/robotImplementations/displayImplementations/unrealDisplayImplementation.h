@@ -17,6 +17,10 @@ class UnrealDisplayImplementation : public AbstractDisplayImplementation
 public:
 	UnrealDisplayImplementation(d2Model::D2RobotModel *d2Model);
 	virtual void read();
+	virtual void drawPixel(int x, int y);
+	virtual void drawLine(int x1, int y1, int x2, int y2);
+	virtual void drawCircle(int x, int y, int radius);
+	virtual void printText(int x, int y, QString text);
 
 protected:
 	d2Model::D2RobotModel *mD2Model;

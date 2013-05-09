@@ -9,6 +9,10 @@
 #include "simpleElements/waitForColorBlockGenerator.h"
 #include "simpleElements/waitForColorIntensityBlockGenerator.h"
 #include "simpleElements/balanceGenerator.h"
+#include "simpleElements/drawPixelBlockGenerator.h"
+#include "simpleElements/drawLineBlockGenerator.h"
+#include "simpleElements/drawCircleBlockGenerator.h"
+#include "simpleElements/printTextBlockGenerator.h"
 #include "simpleElements/waitForLightBlockGenerator.h"
 #include "simpleElements/waitForButtonsBlockGenerator.h"
 #include "simpleElements/waitForSonarBlockGenerator.h"
@@ -56,6 +60,14 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 		return new VariableInitGenerator();
 	} else if (elementType == "WaitForButtons") {
 		return new WaitForButtonsBlockGenerator();
+	} else if (elementType == "DrawPixel") {
+		return new DrawPixelBlockGenerator();
+	} else if (elementType == "DrawLine") {
+		return new DrawLineBlockGenerator();
+	} else if (elementType == "DrawCircle") {
+		return new DrawCircleBlockGenerator();
+	} else if (elementType == "PrintText") {
+		return new PrintTextBlockGenerator();
 	}
 
 	return new InitialNodeGenerator();
