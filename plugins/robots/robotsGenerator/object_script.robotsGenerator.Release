@@ -30,6 +30,7 @@ INPUT(
 ./release\initialNodeGenerator.o
 ./release\enginesGenerator.o
 ./release\listsmartline.o
+./release\waitForSoundBlockGenerator.o
 ./release\qrc_robotsGenerator.o
 ./release\moc_robotsGeneratorPlugin.o
 ./release\moc_nxtFlashTool.o

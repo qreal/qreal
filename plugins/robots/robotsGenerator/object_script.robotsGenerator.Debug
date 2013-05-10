@@ -30,6 +30,7 @@ INPUT(
 ./debug\initialNodeGenerator.o
 ./debug\enginesGenerator.o
 ./debug\listsmartline.o
+./debug\waitForSoundBlockGenerator.o
 ./debug\qrc_robotsGenerator.o
 ./debug\moc_robotsGeneratorPlugin.o
 ./debug\moc_nxtFlashTool.o

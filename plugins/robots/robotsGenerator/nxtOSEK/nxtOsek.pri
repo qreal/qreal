@@ -28,7 +28,8 @@ HEADERS += \
 	nxtOSEK/generators/simpleElementFactory.h \
 	nxtOSEK/generators/simpleElements/initialNodeGenerator.h \
 	nxtOSEK/generators/simpleElements/enginesGenerator.h \
-	nxtOSEK/generators/listsmartline.h
+	nxtOSEK/generators/listsmartline.h \
+    nxtOSEK/generators/simpleElements/waitForSoundBlockGenerator.h
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
@@ -60,4 +61,5 @@ SOURCES += \
 	nxtOSEK/generators/simpleElementFactory.cpp \
 	nxtOSEK/generators/simpleElements/initialNodeGenerator.cpp \
 	nxtOSEK/generators/simpleElements/enginesGenerator.cpp \
-	nxtOSEK/generators/listsmartline.cpp
+	nxtOSEK/generators/listsmartline.cpp \
+    nxtOSEK/generators/simpleElements/waitForSoundBlockGenerator.cpp
