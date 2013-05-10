@@ -140,6 +140,15 @@ void RobotModel::sensorsConfiguredSlot()
 		case sensorType::light:
 			mSensors[port] = new robotParts::LightSensor(mRobotImpl->sensor(port), port);
 			break;
+		case sensorType::sound:
+			mSensors[port] = new robotParts::SoundSensor(mRobotImpl->sensor(port), port);
+			break;
+		case sensorType::gyroscope:
+			mSensors[port] = new robotParts::GyroscopeSensor(mRobotImpl->sensor(port), port);
+			break;
+		case sensorType::accelerometer:
+			mSensors[port] = new robotParts::AccelerometerSensor(mRobotImpl->sensor(port), port);
+			break;
 		default:
 			// TODO: Throw an exception
 			break;
