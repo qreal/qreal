@@ -113,6 +113,7 @@ INPUT(
 ./debug\lightSensor.o
 ./debug\soundSensor.o
 ./debug\gyroscopeSensor.o
+./debug\accelerometerSensor.o
 ./debug\qrc_robotsInterpreter.o
 ./debug\moc_robotsPlugin.o
 ./debug\moc_interpreter.o
@@ -212,4 +213,5 @@ INPUT(
 ./debug\moc_lightSensor.o
 ./debug\moc_soundSensor.o
 ./debug\moc_gyroscopeSensor.o
+./debug\moc_accelerometerSensor.o
 );

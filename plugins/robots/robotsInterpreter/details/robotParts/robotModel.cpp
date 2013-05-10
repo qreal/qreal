@@ -64,6 +64,11 @@ robotParts::GyroscopeSensor *RobotModel::gyroscopeSensor(const inputPort::InputP
 	return dynamic_cast<robotParts::GyroscopeSensor *>(mSensors[port]);
 }
 
+robotParts::AccelerometerSensor *RobotModel::accelerometerSensor(const inputPort::InputPortEnum &port) const
+{
+	return dynamic_cast<robotParts::AccelerometerSensor *>(mSensors[port]);
+}
+
 robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) const
 {
 	return mSensors[port];

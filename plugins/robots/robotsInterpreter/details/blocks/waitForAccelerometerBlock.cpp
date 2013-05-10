@@ -19,7 +19,7 @@ void WaitForAccelerometerSensorBlock::responseSlot(int reading)
 
 interpreters::robots::details::robotParts::Sensor *WaitForAccelerometerSensorBlock::sensor() const
 {
-	return mRobotModel->soundSensor(mPort);
+	return mRobotModel->accelerometerSensor(mPort);
 }
 
 QString WaitForAccelerometerSensorBlock::name() const

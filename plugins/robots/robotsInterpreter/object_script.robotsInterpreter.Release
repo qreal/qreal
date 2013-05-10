@@ -113,6 +113,7 @@ INPUT(
 ./release\lightSensor.o
 ./release\soundSensor.o
 ./release\gyroscopeSensor.o
+./release\accelerometerSensor.o
 ./release\qrc_robotsInterpreter.o
 ./release\moc_robotsPlugin.o
 ./release\moc_interpreter.o
@@ -212,4 +213,5 @@ INPUT(
 ./release\moc_lightSensor.o
 ./release\moc_soundSensor.o
 ./release\moc_gyroscopeSensor.o
+./release\moc_accelerometerSensor.o
 );
