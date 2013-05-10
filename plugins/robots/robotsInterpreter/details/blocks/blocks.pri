@@ -57,5 +57,5 @@ SOURCES +=\
 	details/blocks/waitForSensorBlock.cpp \
 	details/blocks/waitForColorSensorBlockBase.cpp \
     details/blocks/waitForSoundSensorBlock.cpp \
-    details/blocks/waitForGyroscopesensorBlock.cpp \
-    details/blocks/waitForAccelerometerBlock.cpp
+    details/blocks/waitForAccelerometerBlock.cpp \
+    details/blocks/waitForGyroscopeSensorBlock.cpp

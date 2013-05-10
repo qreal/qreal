@@ -31,6 +31,7 @@ INPUT(
 ./debug\enginesGenerator.o
 ./debug\listsmartline.o
 ./debug\waitForSoundBlockGenerator.o
+./debug\waitForGyroscopeBlockGenerator.o
 ./debug\qrc_robotsGenerator.o
 ./debug\moc_robotsGeneratorPlugin.o
 ./debug\moc_nxtFlashTool.o

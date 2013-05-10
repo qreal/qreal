@@ -64,8 +64,8 @@ INPUT(
 ./release\waitForSensorBlock.o
 ./release\waitForColorSensorBlockBase.o
 ./release\waitForSoundSensorBlock.o
-./release\waitForGyroscopesensorBlock.o
 ./release\waitForAccelerometerBlock.o
+./release\waitForGyroscopeSensorBlock.o
 ./release\abstractSensorImplementation.o
 ./release\abstractEncoderImplementation.o
 ./release\bluetoothSensorImplementation.o
