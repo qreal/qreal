@@ -30,7 +30,8 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/enginesGenerator.h \
 	nxtOSEK/generators/listsmartline.h \
     nxtOSEK/generators/simpleElements/waitForSoundBlockGenerator.h \
-    nxtOSEK/generators/simpleElements/waitForGyroscopeBlockGenerator.h
+    nxtOSEK/generators/simpleElements/waitForGyroscopeBlockGenerator.h \
+    nxtOSEK/generators/simpleElements/waitForAccelerometerBlockGenerator.h
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
@@ -64,4 +65,5 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/enginesGenerator.cpp \
 	nxtOSEK/generators/listsmartline.cpp \
     nxtOSEK/generators/simpleElements/waitForSoundBlockGenerator.cpp \
-    nxtOSEK/generators/simpleElements/waitForGyroscopeBlockGenerator.cpp
+    nxtOSEK/generators/simpleElements/waitForGyroscopeBlockGenerator.cpp \
+    nxtOSEK/generators/simpleElements/waitForAccelerometerBlockGenerator.cpp

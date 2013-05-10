@@ -16,6 +16,7 @@
 #include "simpleElements/waitForTouchSensorBlockGenerator.h"
 #include "simpleElements/waitForSoundBlockGenerator.h"
 #include "simpleElements/waitForGyroscopeBlockGenerator.h"
+#include "simpleElements/waitForAccelerometerBlockGenerator.h"
 #include "simpleElements/variableInitGenerator.h"
 #include "simpleElements/balanceInitGenerator.h"
 #include "simpleElements/initialNodeGenerator.h"
@@ -56,6 +57,8 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 		return new WaitForSoundBlockGenerator();
 	} else if (elementType == "WaitForGyroscope"){
 		return new WaitForGyroscopeBlockGenerator();
+	} else if (elementType == "WaitForAccelerometer"){
+		return new WaitForAccelerometerBlockGenerator();
 	} else if (elementType == "Balance") {
 		return new BalanceGenerator();
 	} else if (elementType == "BalanceInit") {

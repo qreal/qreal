@@ -32,6 +32,7 @@ INPUT(
 ./release\listsmartline.o
 ./release\waitForSoundBlockGenerator.o
 ./release\waitForGyroscopeBlockGenerator.o
+./release\waitForAccelerometerBlockGenerator.o
 ./release\qrc_robotsGenerator.o
 ./release\moc_robotsGeneratorPlugin.o
 ./release\moc_nxtFlashTool.o
