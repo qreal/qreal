@@ -37,7 +37,7 @@ void BluetoothGyroscopeSensorImplementation::read()
 void BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
-		Tracer::debug(tracer::sensors, "BluetoothSoundSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
+		Tracer::debug(tracer::sensors, "BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else {
 		mState = idle;
 		emit response(0xff & reading[14]);

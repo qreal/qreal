@@ -599,8 +599,8 @@
 					<labels>
 						<label x="33" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Percents"/>
-						<label x="-26" y="60" text="Проценты:"/>
+						<label x="33" y="60" textBinded="Degrees"/>
+						<label x="-26" y="60" text="Градусы:"/>
 						<label x="33" y="80" textBinded="Sign"/>
 						<label x="-80" y="80" text="Считанное значение:"/>
 					</labels>
@@ -627,7 +627,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Проценты" type="string" name="Percents">
+						<property displayedName="Градусы/сек" type="string" name="Degrees">
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
@@ -647,8 +647,8 @@
 					<labels>
 						<label x="33" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Percents"/>
-						<label x="-26" y="60" text="Проценты:"/>
+						<label x="33" y="60" textBinded="Acceleration"/>
+						<label x="-26" y="60" text="Ускорение:"/>
 						<label x="33" y="80" textBinded="Sign"/>
 						<label x="-80" y="80" text="Считанное значение:"/>
 					</labels>
@@ -675,7 +675,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Проценты" type="string" name="Percents">
+						<property displayedName="Ускорение" type="string" name="Acceleration">
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">

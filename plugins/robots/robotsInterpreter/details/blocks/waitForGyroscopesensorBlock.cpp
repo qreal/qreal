@@ -13,8 +13,8 @@ WaitForGyroscopeSensorBlock::WaitForGyroscopeSensorBlock(details::RobotModel * c
 
 void WaitForGyroscopeSensorBlock::responseSlot(int reading)
 {
-	int const targetPercents = evaluate("Percents").toInt();
-	processResponce(reading, targetPercents);
+	int const targetDegrees = evaluate("Degrees").toInt();
+	processResponce(reading, targetDegrees);
 }
 
 interpreters::robots::details::robotParts::Sensor *WaitForGyroscopeSensorBlock::sensor() const

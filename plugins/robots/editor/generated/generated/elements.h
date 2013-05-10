@@ -4115,14 +4115,14 @@
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createTitle(0.66, 1.2, "Percents", false);
+			title_3 = factory.createTitle(0.66, 1.2, "Acceleration", false);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
 			title_3->setFlags(0);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createTitle(-0.52, 1.2, QString::fromUtf8("Проценты:"));
+			title_4 = factory.createTitle(-0.52, 1.2, QString::fromUtf8("Ускорение:"));
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
 			title_4->setHard(false);
@@ -4170,7 +4170,7 @@
 		{
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Port")).replace("\n", "<br>"));
 			Q_UNUSED(repo);
-			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Percents")).replace("\n", "<br>"));
+			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Acceleration")).replace("\n", "<br>"));
 			Q_UNUSED(repo);
 			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Sign")).replace("\n", "<br>"));
 			Q_UNUSED(repo);
@@ -4947,14 +4947,14 @@
 			title_2->setFlags(0);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createTitle(0.66, 1.2, "Percents", false);
+			title_3 = factory.createTitle(0.66, 1.2, "Degrees", false);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
 			title_3->setFlags(0);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createTitle(-0.52, 1.2, QString::fromUtf8("Проценты:"));
+			title_4 = factory.createTitle(-0.52, 1.2, QString::fromUtf8("Градусы:"));
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
 			title_4->setHard(false);
@@ -5002,7 +5002,7 @@
 		{
 			title_1->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Port")).replace("\n", "<br>"));
 			Q_UNUSED(repo);
-			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Percents")).replace("\n", "<br>"));
+			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Degrees")).replace("\n", "<br>"));
 			Q_UNUSED(repo);
 			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Sign")).replace("\n", "<br>"));
 			Q_UNUSED(repo);

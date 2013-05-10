@@ -13,8 +13,8 @@ WaitForAccelerometerSensorBlock::WaitForAccelerometerSensorBlock(details::RobotM
 
 void WaitForAccelerometerSensorBlock::responseSlot(int reading)
 {
-	int const targetPercents = evaluate("Percents").toInt();
-	processResponce(reading, targetPercents);
+	int const targetAcceleration = evaluate("Acceleration").toInt();
+	processResponce(reading, targetAcceleration);
 }
 
 interpreters::robots::details::robotParts::Sensor *WaitForAccelerometerSensorBlock::sensor() const
