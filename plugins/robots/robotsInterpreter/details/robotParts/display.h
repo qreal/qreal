@@ -13,6 +13,10 @@ public:
 	Display(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl);
 	virtual ~Display();
 	virtual void read();
+	virtual void drawPixel(int x, int y);
+	virtual void drawLine(int x1, int y1, int x2, int y2);
+	virtual void drawCircle(int x, int y, int radius);
+	virtual void printText(int x, int y, QString text);
 	robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl();
 	void setImplementation(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl);
 

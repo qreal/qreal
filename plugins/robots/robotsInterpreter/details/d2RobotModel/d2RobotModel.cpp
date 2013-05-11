@@ -566,7 +566,6 @@ Timeline *D2RobotModel::timeline() const
 	return mTimeline;
 }
 
-<<<<<<< HEAD
 void D2RobotModel::setDisplay(details::NxtDisplay *display)
 {
 	mDisplay = display;
@@ -575,7 +574,8 @@ void D2RobotModel::setDisplay(details::NxtDisplay *display)
 details::NxtDisplay *D2RobotModel::display()
 {
 	return mDisplay;
-=======
+}
+
 void D2RobotModel::setNoiseSettings()
 {
 	mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
@@ -586,5 +586,5 @@ void D2RobotModel::setNoiseSettings()
 int D2RobotModel::truncateToInterval(int const a, int const b, int const res) const
 {
 	return (res >= a && res <= b) ? res : (res < a ? a : b);
->>>>>>> trunc/robots
+
 }

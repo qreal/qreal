@@ -21,6 +21,26 @@ void Display::read()
 	mDisplayImpl->read();
 }
 
+void Display::drawPixel(int x, int y)
+{
+	mDisplayImpl->drawPixel(x, y);
+}
+
+void Display::drawLine(int x1, int y1, int x2, int y2)
+{
+	mDisplayImpl->drawLine(x1, y1, x2, y2);
+}
+
+void Display::drawCircle(int x, int y, int radius)
+{
+	mDisplayImpl->drawCircle(x, y, radius);
+}
+
+void Display::printText(int x, int y, QString text)
+{
+	mDisplayImpl->printText(x, y, text);
+}
+
 AbstractDisplayImplementation *Display::displayImpl()
 {
 	return mDisplayImpl;

@@ -8,11 +8,8 @@
 #include "robotModelInterface.h"
 #include "worldModel.h"
 #include "timeline.h"
-<<<<<<< HEAD
 #include "../details/nxtDisplay.h"
-=======
 #include "../../../../../qrutils/mathUtils/gaussNoise.h"
->>>>>>> trunc/robots
 
 namespace qReal {
 namespace interpreters {

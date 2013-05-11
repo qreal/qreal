@@ -29,7 +29,7 @@ HEADERS += \
     details/blocks/drawPixelBlock.h \
     details/blocks/drawLineBlock.h \
     details/blocks/drawCircleBlock.h \
-    details/blocks/printTextBlock.h
+    details/blocks/printTextBlock.h \
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -62,4 +62,4 @@ SOURCES +=\
     details/blocks/drawPixelBlock.cpp \
     details/blocks/drawLineBlock.cpp \
     details/blocks/drawCircleBlock.cpp \
-    details/blocks/printTextBlock.cpp
+    details/blocks/printTextBlock.cpp \

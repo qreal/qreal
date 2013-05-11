@@ -28,16 +28,13 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/initialNodeGenerator.h \
 	nxtOSEK/generators/simpleElements/enginesGenerator.h \
 	nxtOSEK/generators/listsmartline.h \
-<<<<<<< HEAD \
-    nxtOSEK/generators/simpleElements/drawPixelBlockGenerator.h \
-    nxtOSEK/generators/simpleElements/waitForButtonsBlockGenerator.h \
-    nxtOSEK/generators/simpleElements/drawLineBlockGenerator.h \
-    nxtOSEK/generators/simpleElements/drawCircleBlockGenerator.h \
-    nxtOSEK/generators/simpleElements/printTextBlockGenerator.h
-    nxtOSEK/generators/simpleElements/waitForButtonsBlockGenerator.h
-=======
+        nxtOSEK/generators/simpleElements/drawPixelBlockGenerator.h \
+        nxtOSEK/generators/simpleElements/waitForButtonsBlockGenerator.h \
+        nxtOSEK/generators/simpleElements/drawLineBlockGenerator.h \
+        nxtOSEK/generators/simpleElements/drawCircleBlockGenerator.h \
+        nxtOSEK/generators/simpleElements/printTextBlockGenerator.h \
 	nxtOSEK/generators/variables.h \
->>>>>>> trunc/robots
+
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
@@ -69,13 +66,10 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/initialNodeGenerator.cpp \
 	nxtOSEK/generators/simpleElements/enginesGenerator.cpp \
 	nxtOSEK/generators/listsmartline.cpp \
-<<<<<<< HEAD \
-    nxtOSEK/generators/simpleElements/drawPixelBlockGenerator.cpp \
-    nxtOSEK/generators/simpleElements/waitForButtonsBlockGenerator.cpp \
-    nxtOSEK/generators/simpleElements/drawLineBlockGenerator.cpp \
-    nxtOSEK/generators/simpleElements/drawCircleBlockGenerator.cpp \
-    nxtOSEK/generators/simpleElements/printTextBlockGenerator.cpp
-    nxtOSEK/generators/simpleElements/waitForButtonsBlockGenerator.cpp
-=======
+        nxtOSEK/generators/simpleElements/drawPixelBlockGenerator.cpp \
+        nxtOSEK/generators/simpleElements/waitForButtonsBlockGenerator.cpp \
+        nxtOSEK/generators/simpleElements/drawLineBlockGenerator.cpp \
+        nxtOSEK/generators/simpleElements/drawCircleBlockGenerator.cpp \
+        nxtOSEK/generators/simpleElements/printTextBlockGenerator.cpp \
 	nxtOSEK/generators/variables.cpp \
->>>>>>> trunc/robots
+
