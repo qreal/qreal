@@ -4,6 +4,7 @@
 
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "../../../qrgui/toolPluginInterface/hotKeyActionInfo.h"
 
 #include "interpreter.h"
 #include "robotSettingsPage.h"
@@ -26,6 +27,7 @@ public:
 
 	virtual void init(PluginConfigurator const &configurator);
 	virtual QList<ActionInfo> actions();
+	virtual QList<HotKeyActionInfo> hotKeyActions();
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual qReal::Customizer* customizationInterface();
 	virtual void updateSettings();
@@ -43,6 +45,8 @@ private slots:
 private:
 	/// Initializes and connects actions, fills action info list
 	void initActions();
+
+	void initHotKeyActions();
 
 	/// Disable/enable tab in QList<ActionInfo> info
 	void changeActiveTab(QList<ActionInfo> const &info, bool const &trigger);
@@ -94,6 +98,8 @@ private:
 	/// List of action infos with plugin actions, for convenient initialization.
 	/// Contains all actions which already present as fields.
 	QList<qReal::ActionInfo> mActionInfos;
+
+	QList<HotKeyActionInfo> mHotKeyActionInfos;
 
 	/// Plugin translator object
 	QTranslator *mAppTranslator;  // Has ownership

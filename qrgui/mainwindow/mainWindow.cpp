@@ -77,19 +77,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	setWindowTitle("QReal");
 	initSettingsManager();
 	registerMetaTypes();
-	//
-	QAction *action = new QAction(this);
-	action->setShortcutContext(Qt::ApplicationShortcut);
-	connect(action, SIGNAL(triggered()), this, SLOT(close()));
-	this->addAction(action);
-	HotKeyManager::setCommand("Exit", "Close program", action);
-
-	QAction *closeTabs = new QAction(this);
-	closeTabs->setShortcutContext(Qt::ApplicationShortcut);
-	connect(closeTabs, SIGNAL(triggered()), this, SLOT(closeAllTabs()));
-	this->addAction(closeTabs);
-	HotKeyManager::setCommand("Close.Tabs", "Close all opened tabs", closeTabs);
-	//
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setProgress(5);
