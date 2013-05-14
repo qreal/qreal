@@ -16,9 +16,7 @@ namespace robots {
 namespace details {
 namespace d2Model {
 
-int const oneReciprocalTime = 500;
-int const onePercentReciprocalSpeed = 44000;
-int const multiplicator = 8;
+qreal const onePercentAngularVelocity = 0.0055;
 int const touchSensorWallStrokeIncrement = 10;
 int const touchSensorStrokeIncrement = 5;
 int const maxLightSensorValur = 1023;

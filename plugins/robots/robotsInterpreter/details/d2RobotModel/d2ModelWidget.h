@@ -17,6 +17,7 @@
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
+#include "timeline.h"
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 
 namespace Ui
@@ -144,6 +145,10 @@ private slots:
 
 	void changeNoiseSettings();
 
+	void startTimelineListening();
+	void stopTimelineListening();
+	void onTimelineTick();
+
 signals:
 	void d2WasClosed();
 
@@ -261,6 +266,7 @@ private:
 	bool mFollowRobot;
 
 	bool mFirstShow;
+	Timeline const * mTimeline;
 };
 
 }

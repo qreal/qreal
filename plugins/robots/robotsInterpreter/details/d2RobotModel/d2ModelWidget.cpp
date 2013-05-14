@@ -37,6 +37,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mWidth(defaultPenWidth)
 		, mClearing(false)
 		, mFirstShow(true)
+		, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
 {
 	setWindowIcon(QIcon(":/icons/kcron.png"));
 
@@ -62,6 +63,8 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	syncronizeSensors();
 
 	setFocus();
+
+	mUi->timelineBox->setSingleStep(Timeline::timeInterval * 0.001);
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -191,6 +194,8 @@ void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAct
 {
 	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
 	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
+	connect(runAction, SIGNAL(triggered()), this, SLOT(startTimelineListening()));
+	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTimelineListening()));
 }
 
 void D2ModelWidget::drawInitialRobot()
@@ -620,7 +625,6 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
 		break;
 	}
-	mScene->update();
 }
 
 void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
@@ -675,7 +679,6 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	mUi->stylusButton->setChecked(false);
 	mUi->ellipseButton->setChecked(false);
 	mScene->setMoveFlag(mouseEvent);
-	mScene->update();
 }
 
 void D2ModelWidget::saveWorldModel()
@@ -1024,6 +1027,22 @@ void D2ModelWidget::changeNoiseSettings()
 	static_cast<D2RobotModel *> (mRobotModel)->setNoiseSettings();
 
 	emit noiseSettingsChanged();
+}
+
+void D2ModelWidget::startTimelineListening()
+{
+	mUi->timelineBox->setValue(0);
+	connect(mTimeline, SIGNAL(tick()), this, SLOT(onTimelineTick()), Qt::UniqueConnection);
+}
+
+void D2ModelWidget::stopTimelineListening()
+{
+	disconnect(mTimeline, SIGNAL(tick()), this, SLOT(onTimelineTick()));
+}
+
+void D2ModelWidget::onTimelineTick()
+{
+	mUi->timelineBox->stepBy(1);
 }
 
 QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(cursorType::CursorType type) const

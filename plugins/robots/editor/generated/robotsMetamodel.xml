@@ -502,8 +502,8 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Задержка" type="string" name="Delay">
-							<default>0</default>
+						<property displayedName="Задержка (мс)" type="string" name="Delay">
+							<default>1000</default>
 						</property>
 					</properties>
 					<generalizations>
