@@ -17,7 +17,7 @@ public:
 
 protected:
 	virtual QList<SmartLine> convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		   , qReal::Id const elementId, qReal::Id const logicElementId) = 0;
+		, qReal::Id const elementId, qReal::Id const logicElementId) = 0;
 	virtual QList<QString> portsToEngineNames(QString const &portsProperty) const;
 	virtual QString transformSign(QString const &sign) const;
 };

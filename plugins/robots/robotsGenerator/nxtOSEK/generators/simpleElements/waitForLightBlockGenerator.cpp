@@ -33,8 +33,7 @@ QList<SmartLine> WaitForLightBlockGenerator::convertElementIntoDirectCommand(Nxt
 	QString const condition = inequalitySign + " " + percents;
 
 	result.append(SmartLine("while (!(ecrobot_get_light_sensor(" + port
-			+ ") " + condition + "))", elementId));
-	result.append(SmartLine("{", elementId));
+			+ ") * 100 / 1023 " + condition + ")) {", elementId));
 	result.append(SmartLine("}", elementId));
 
 	addInitAndTerminateCode(nxtGen, port, elementId);

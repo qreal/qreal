@@ -28,8 +28,8 @@ public:
 	virtual QList<qReal::ActionInfo> actions();
 
 private slots:
-	/// Calls code generator
-	void generateRobotSourceCode();
+	/// Calls code generator. Returns true if operation was successfull.
+	bool generateRobotSourceCode();
 
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
 	void flashRobot();
