@@ -105,10 +105,10 @@ void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnu
 	case sensorType::light:
 		addLightSensor(port);
 		break;
-	/*case sensorType::sound:
+	case sensorType::sound:
 		addSoundSensor(port);
 		break;
-	case sensorType::accelerometer:
+	/*ase sensorType::accelerometer:
 		addAccelerometrSensor(port);
 		break;
 	case sensorType::gyroscope:

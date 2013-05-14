@@ -1,6 +1,5 @@
-
-#include <QtCore/QTimer>
-#include "abstractSoundImplementation.h"
+#pragma once
+#include "nullSensorImplementation.h"
 
 namespace qReal {
 namespace interpreters {
@@ -9,19 +8,13 @@ namespace details {
 namespace robotImplementations {
 namespace sensorImplementations {
 
-class NullEncoderImplementation : public AbstractSoundImplementation
+class NullSoundSensorImplementation : public NullSensorImplementation
 {
 	Q_OBJECT
 public:
-	NullSoundImplementation(outputPort::OutputPortEnum const &port);
-	virtual void read();
-	virtual void nullificate();
-
+	NullSoundSensorImplementation(inputPort::InputPortEnum const &port);
 protected slots:
 	virtual void timerTimeout();
-
-private:
-	QTimer mActiveWaitingTimer;
 };
 
 }

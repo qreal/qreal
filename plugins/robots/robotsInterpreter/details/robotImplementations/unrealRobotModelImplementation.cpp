@@ -53,6 +53,10 @@ sensorImplementations::UnrealLightSensorImplementation *UnrealRobotModelImplemen
 {
 	return dynamic_cast<sensorImplementations::UnrealLightSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
+sensorImplementations::UnrealSoundSensorImplementation *UnrealRobotModelImplementation::soundSensor(const inputPort::InputPortEnum &port) const
+{
+	return dynamic_cast<sensorImplementations::UnrealSoundSensorImplementation *>(mSensorsConfigurer.sensor(port));
+}
 
 void UnrealRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
@@ -80,6 +84,13 @@ void UnrealRobotModelImplementation::addLightSensor(inputPort::InputPortEnum con
 {
 	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::addLightSensor", "Configuring light sensor on port " + QString::number(port));
 	sensorImplementations::UnrealLightSensorImplementation *sensor = new sensorImplementations::UnrealLightSensorImplementation(port, mD2Model);
+	mSensorsConfigurer.configureSensor(sensor, port);
+}
+
+void UnrealRobotModelImplementation::addSoundSensor(const inputPort::InputPortEnum &port)
+{
+	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::addSoundSensor", "Configuring light sensor on port " + QString::number(port));
+	sensorImplementations::UnrealSoundSensorImplementation *sensor = new sensorImplementations::UnrealSoundSensorImplementation(port, mD2Model);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 

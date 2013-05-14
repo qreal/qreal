@@ -8,12 +8,12 @@ namespace details {
 namespace robotImplementations {
 namespace sensorImplementations {
 
-class UnrealTouchSensorImplementation : public UnrealSensorImplementation
+class UnrealSoundSensorImplementation : public UnrealSensorImplementation
 {
 	Q_OBJECT
-
 public:
-	UnrealTouchSensorImplementation(inputPort::InputPortEnum const &port, d2Model::D2RobotModel *d2Model);
+
+	UnrealSoundSensorImplementation(inputPort::InputPortEnum const &port, d2Model::D2RobotModel *d2Model);
 	virtual void read();
 };
 

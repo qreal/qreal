@@ -45,6 +45,11 @@ sensorImplementations::NullLightSensorImplementation *NullRobotModelImplementati
 	return dynamic_cast<sensorImplementations::NullLightSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
+sensorImplementations::NullSoundSensorImplementation *NullRobotModelImplementation::soundSensor(const inputPort::InputPortEnum &port) const
+{
+	return dynamic_cast<sensorImplementations::NullSoundSensorImplementation *>(mSensorsConfigurer.sensor(port));
+}
+
 void NullRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
 	sensorImplementations::NullTouchSensorImplementation *sensor = new sensorImplementations::NullTouchSensorImplementation(port);
@@ -67,6 +72,12 @@ void NullRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const
 void NullRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const &port)
 {
 	sensorImplementations::NullSonarSensorImplementation *sensor = new sensorImplementations::NullSonarSensorImplementation(port);
+	mSensorsConfigurer.configureSensor(sensor, port);
+}
+
+void NullRobotModelImplementation::addSoundSensor(const inputPort::InputPortEnum &port)
+{
+	sensorImplementations::NullSoundSensorImplementation *sensor = new sensorImplementations::NullSoundSensorImplementation(port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 

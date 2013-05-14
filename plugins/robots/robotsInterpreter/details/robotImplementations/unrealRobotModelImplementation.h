@@ -8,6 +8,7 @@
 #include "sensorImplementations/unrealColorSensorImplementation.h"
 #include "sensorImplementations/unrealLightSensorImplementation.h"
 #include "sensorImplementations/unrealEncoderImplementation.h"
+#include "sensorImplementations/unrealSoundSensorImplementation.h"
 #include "../d2RobotModel/d2RobotModel.h"
 
 namespace qReal {
@@ -30,7 +31,7 @@ public:
 	virtual sensorImplementations::UnrealSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::UnrealColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::UnrealLightSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const;
-	//virtual sensorImplementations::AbstractSensorImplementation *soundSensor(inputPort::InputPortEnum const &port) const = 0;
+	virtual sensorImplementations::UnrealSoundSensorImplementation *soundSensor(inputPort::InputPortEnum const &port) const;
 	//virtual sensorImplementations::AbstractSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const &port) const = 0;
 	//virtual sensorImplementations::AbstractSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const &port) const = 0;
 
@@ -66,6 +67,7 @@ private:
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
 	virtual void addLightSensor(inputPort::InputPortEnum const &port);
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
+	virtual void addSoundSensor(const inputPort::InputPortEnum &port);
 };
 
 }
