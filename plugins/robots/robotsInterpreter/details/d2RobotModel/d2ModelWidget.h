@@ -99,10 +99,13 @@ public slots:
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
 	/// Places in 2D model same sensors as selected in QReal settings
 	void syncronizeSensors();
+	/// Synchronizes noise settings in 2D model window with global ones
 	void rereadNoiseSettings();
 
 signals:
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
+	/// Emitted when such features as motor or sensor noise were
+	///enabled or disabled by user
 	void noiseSettingsChanged();
 
 protected:

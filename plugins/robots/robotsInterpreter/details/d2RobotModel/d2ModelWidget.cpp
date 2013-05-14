@@ -1024,7 +1024,7 @@ void D2ModelWidget::changeNoiseSettings()
 	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->checkState() == Qt::Checked);
 	SettingsManager::setValue("enableNoiseOfMotors", mUi->enableMotorNoiseCheckBox->checkState() == Qt::Checked);
 
-	static_cast<D2RobotModel *> (mRobotModel)->setNoiseSettings();
+	static_cast<D2RobotModel *>(mRobotModel)->setNoiseSettings();
 
 	emit noiseSettingsChanged();
 }
