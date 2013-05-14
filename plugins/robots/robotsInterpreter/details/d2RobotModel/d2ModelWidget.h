@@ -17,6 +17,7 @@
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
+#include "timeline.h"
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 
 namespace Ui
@@ -98,9 +99,14 @@ public slots:
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
 	/// Places in 2D model same sensors as selected in QReal settings
 	void syncronizeSensors();
+	/// Synchronizes noise settings in 2D model window with global ones
+	void rereadNoiseSettings();
 
 signals:
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
+	/// Emitted when such features as motor or sensor noise were
+	///enabled or disabled by user
+	void noiseSettingsChanged();
 
 protected:
 	void changeEvent(QEvent *e);
@@ -139,6 +145,12 @@ private slots:
 	void onHandCursorButtonToggled(bool on);
 	void onMultiselectionCursorButtonToggled(bool on);
 	void setCursorType(cursorType::CursorType cursor);
+
+	void changeNoiseSettings();
+
+	void startTimelineListening();
+	void stopTimelineListening();
+	void onTimelineTick();
 
 signals:
 	void d2WasClosed();
@@ -257,6 +269,7 @@ private:
 	bool mFollowRobot;
 
 	bool mFirstShow;
+	Timeline const * mTimeline;
 };
 
 }

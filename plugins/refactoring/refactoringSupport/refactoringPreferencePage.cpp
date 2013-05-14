@@ -16,8 +16,6 @@ RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent)
 
 	QString binFolder = qApp->applicationDirPath();
 
-	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation").toString());
-
 	connect(mUi->qrealSourcesPushButton, SIGNAL(clicked()), this, SLOT(setQRealSourcesLocation()));
 	connect(mUi->linuxRadioButton, SIGNAL(clicked()), this, SLOT(changeDefaultDotPath()));
 	connect(mUi->windowsRadioButton, SIGNAL(clicked()), this, SLOT(changeDefaultDotPath()));
@@ -25,19 +23,8 @@ RefactoringPreferencesPage::RefactoringPreferencesPage(QWidget *parent)
 	connect(mUi->browseDotPathPushButton, SIGNAL(clicked()), this, SLOT(setDotPathManually()));
 
 	mUi->colorComboBox->addItems(QColor::colorNames());
-	QString curColor = SettingsManager::value("refactoringColor").toString();
-	int curColorIndex = mUi->colorComboBox->findText(curColor);
-	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 
-	mUi->windowsRadioButton->setChecked(SettingsManager::value("dotWindowsChecked").toBool());
-	mUi->linuxRadioButton->setChecked(SettingsManager::value("dotLinuxChecked").toBool());
-	mUi->otherRadioButton->setChecked(SettingsManager::value("dotOtherChecked").toBool());
-	mUi->dotPathLineEdit->setText(SettingsManager::value("pathToDot").toString());
-
-	if (SettingsManager::value("dotOtherChecked").toBool()) {
-		mUi->dotPathLineEdit->setEnabled(true);
-		mUi->browseDotPathPushButton->setEnabled(true);
-	}
+	restoreSettings();
 }
 
 RefactoringPreferencesPage::~RefactoringPreferencesPage()
@@ -59,6 +46,25 @@ void RefactoringPreferencesPage::save()
 	SettingsManager::setValue("dotLinuxChecked", mUi->linuxRadioButton->isChecked());
 	SettingsManager::setValue("dotOtherChecked", mUi->otherRadioButton->isChecked());
 	SettingsManager::setValue("pathToDot", mUi->dotPathLineEdit->text());
+}
+
+void RefactoringPreferencesPage::restoreSettings()
+{
+	mUi->qrealSourcesLineEdit->setText(SettingsManager::value("qrealSourcesLocation").toString());
+
+	QString curColor = SettingsManager::value("refactoringColor").toString();
+	int curColorIndex = mUi->colorComboBox->findText(curColor);
+	mUi->colorComboBox->setCurrentIndex(curColorIndex);
+
+	mUi->windowsRadioButton->setChecked(SettingsManager::value("dotWindowsChecked").toBool());
+	mUi->linuxRadioButton->setChecked(SettingsManager::value("dotLinuxChecked").toBool());
+	mUi->otherRadioButton->setChecked(SettingsManager::value("dotOtherChecked").toBool());
+	mUi->dotPathLineEdit->setText(SettingsManager::value("pathToDot").toString());
+
+	if (SettingsManager::value("dotOtherChecked").toBool()) {
+		mUi->dotPathLineEdit->setEnabled(true);
+		mUi->browseDotPathPushButton->setEnabled(true);
+	}
 }
 
 void RefactoringPreferencesPage::changeEvent(QEvent *e)

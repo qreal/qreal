@@ -313,9 +313,12 @@ void ExpressionsParser::parseCommand(QString const &stream, int &pos)
 		pos++;
 		Number n = parseExpression(stream, pos);
 		if (!hasErrors()) {
-			Number::Type t1 = mVariables[variable].property("Type").toInt() ? Number::intType : Number::doubleType;
-			Number::Type t2 = n.property("Type").toInt() ? Number::intType : Number::doubleType;
-			if (t1==t2) {
+			bool const containsVariable = mVariables.keys().contains(variable);
+			Number::Type const t1 = containsVariable
+					? (mVariables[variable].property("Type").toInt() ? Number::intType : Number::doubleType)
+					: Number::intType;
+			Number::Type const t2 = n.property("Type").toInt() ? Number::intType : Number::doubleType;
+			if (!containsVariable || t1 == t2) {
 				mVariables[variable] = n;
 			} else {
 				if (t1 == Number::intType) {

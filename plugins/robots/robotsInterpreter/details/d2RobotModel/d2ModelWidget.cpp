@@ -3,6 +3,7 @@
 #include <QtGui/QRegion>
 
 #include "d2ModelWidget.h"
+#include "d2RobotModel.h"
 #include "ui_d2Form.h"
 
 #include "sensorItem.h"
@@ -36,12 +37,16 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mWidth(defaultPenWidth)
 		, mClearing(false)
 		, mFirstShow(true)
+		, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
 {
 	setWindowIcon(QIcon(":/icons/kcron.png"));
 
 	initWidget();
 
 	connectUiButtons();
+
+	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
+	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
 
 	connect(mScene, SIGNAL(mousePressed(QGraphicsSceneMouseEvent *)), this, SLOT(mousePressed(QGraphicsSceneMouseEvent*)));
 	connect(mScene, SIGNAL(mouseMoved(QGraphicsSceneMouseEvent*)), this, SLOT(mouseMoved(QGraphicsSceneMouseEvent*)));
@@ -58,6 +63,8 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	syncronizeSensors();
 
 	setFocus();
+
+	mUi->timelineBox->setSingleStep(Timeline::timeInterval * 0.001);
 }
 
 D2ModelWidget::~D2ModelWidget()
@@ -93,6 +100,9 @@ void D2ModelWidget::initWidget()
 
 void D2ModelWidget::connectUiButtons()
 {
+	connect(mUi->enableMotorNoiseCheckBox, SIGNAL(toggled(bool)), this, SLOT(changeNoiseSettings()));
+	connect(mUi->enableSensorNoiseCheckBox, SIGNAL(toggled(bool)), this, SLOT(changeNoiseSettings()));
+
 	connect(mUi->ellipseButton, SIGNAL(toggled(bool)), this, SLOT(addEllipse(bool)));
 	connect(mUi->stylusButton, SIGNAL(toggled(bool)), this, SLOT(addStylus(bool)));
 	connect(mUi->lineButton, SIGNAL(toggled(bool)), this, SLOT(addLine(bool)));
@@ -184,6 +194,8 @@ void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAct
 {
 	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
 	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
+	connect(runAction, SIGNAL(triggered()), this, SLOT(startTimelineListening()));
+	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTimelineListening()));
 }
 
 void D2ModelWidget::drawInitialRobot()
@@ -266,6 +278,12 @@ void D2ModelWidget::onFirstShow()
 {
 	syncronizeSensors();
 	mUi->speedComboBox->setCurrentIndex(1); // Normal speed
+}
+
+void D2ModelWidget::rereadNoiseSettings()
+{
+	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
+	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
 }
 
 bool D2ModelWidget::isRobotOnTheGround()
@@ -607,7 +625,6 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
 		break;
 	}
-	mScene->update();
 }
 
 void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
@@ -662,7 +679,6 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	mUi->stylusButton->setChecked(false);
 	mUi->ellipseButton->setChecked(false);
 	mScene->setMoveFlag(mouseEvent);
-	mScene->update();
 }
 
 void D2ModelWidget::saveWorldModel()
@@ -807,14 +823,11 @@ void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
 
 	sensor->addStickyItem(mRobot);
 
-	// Setting sensor rotaters only for sonar
-	if (mRobotModel->configuration().type(port) == sensorType::sonar) {
-		Rotater * const rotater = new Rotater();
-		rotater->setMasterItem(sensor);
-		rotater->setVisible(false);
-		sensor->setRotater(rotater);
-		sensor->setRotation(mRobotModel->configuration().direction(port));
-	}
+	Rotater * const rotater = new Rotater();
+	rotater->setMasterItem(sensor);
+	rotater->setVisible(false);
+	sensor->setRotater(rotater);
+	sensor->setRotation(mRobotModel->configuration().direction(port));
 
 	sensor->setParentItem(mRobot);
 	sensor->setPos(mRobot->mapFromScene(mRobotModel->configuration().position(port)));
@@ -1004,6 +1017,32 @@ void D2ModelWidget::setCursorType(cursorType::CursorType cursor)
 	qReal::SettingsManager::setValue("2dCursorType", cursor);
 	mUi->graphicsView->setDragMode(cursorTypeToDragType(cursor));
 	mUi->graphicsView->setCursor(cursorTypeToShape(cursor));
+}
+
+void D2ModelWidget::changeNoiseSettings()
+{
+	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->checkState() == Qt::Checked);
+	SettingsManager::setValue("enableNoiseOfMotors", mUi->enableMotorNoiseCheckBox->checkState() == Qt::Checked);
+
+	static_cast<D2RobotModel *>(mRobotModel)->setNoiseSettings();
+
+	emit noiseSettingsChanged();
+}
+
+void D2ModelWidget::startTimelineListening()
+{
+	mUi->timelineBox->setValue(0);
+	connect(mTimeline, SIGNAL(tick()), this, SLOT(onTimelineTick()), Qt::UniqueConnection);
+}
+
+void D2ModelWidget::stopTimelineListening()
+{
+	disconnect(mTimeline, SIGNAL(tick()), this, SLOT(onTimelineTick()));
+}
+
+void D2ModelWidget::onTimelineTick()
+{
+	mUi->timelineBox->stepBy(1);
 }
 
 QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(cursorType::CursorType type) const

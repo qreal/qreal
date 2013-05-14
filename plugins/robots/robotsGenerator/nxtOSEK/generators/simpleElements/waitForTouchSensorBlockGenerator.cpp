@@ -14,9 +14,8 @@ QList<SmartLine> WaitForTouchSensorBlockGenerator::convertElementIntoDirectComma
 
 	int const port = nxtGen->api()->stringProperty(logicElementId, "Port").toInt();
 
-	result.append(SmartLine("while (!ecrobot_get_touch_sensor(NXT_PORT_S" + QString::number(port) + "))"
+	result.append(SmartLine("while (!ecrobot_get_touch_sensor(NXT_PORT_S" + QString::number(port) + ")) {"
 			, elementId));
-	result.append(SmartLine("{", elementId));
 	result.append(SmartLine("}", elementId));
 
 	return result;
