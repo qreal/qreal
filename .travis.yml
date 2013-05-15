@@ -1,8 +1,10 @@
 language: cpp
 compiler: gcc
 install:
+  - sudo add-apt-repository ppa:canonical-qt5-edgers/qt5-proper
+  - sudo add-apt-repository ppa:ubuntu-sdk-team/ppa
   - sudo apt-get update
-  - sudo apt-get install libqt4-dev qt4-qmake qt4-dev-tools gdb
+  - sudo apt-get install qt-sdk gdb
 
 script:
   - cat /proc/cpuinfo
