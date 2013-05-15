@@ -31,6 +31,8 @@
         
         <!-- Hidden parameter that allows to configure NXT Tools inclusion. NXT Tools are not included by default. -->
         <stringParameter name="include_nxt_tools" value="no" ask="0" />
+
+        <!-- Hidden parameter that allows to build unattended installer. -->
         <stringParameter name="unattended" value="no" ask="0" />
     </parameterList>
 
