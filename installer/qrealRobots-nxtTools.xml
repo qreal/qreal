@@ -1,0 +1,38 @@
+<component>
+    <name>nxtTools</name>
+    <description>NXT Tools</description>
+    <canBeEdited>1</canBeEdited>
+    <selected>1</selected>
+    <show>1</show>
+    <folderList>
+        <folder>
+            <description>Program Files</description>
+            <destination>${installdir}/nxt-tools</destination>
+            <name>nxttoolsdirectory</name>
+            <platforms>windows</platforms>
+            <distributionFileList>
+                <distributionFile>
+                    <origin>%1/bin/nxt-tools/upload.sh</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/nxt-tools/flash.bat</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/nxt-tools/upload.bat</origin>
+                </distributionFile>
+                <distributionDirectory>
+                    <origin>%1/bin/nxt-tools/GNUARM</origin>
+                </distributionDirectory>
+                <distributionDirectory>
+                    <origin>%1/bin/nxt-tools/nexttool</origin>
+                </distributionDirectory>
+                <distributionDirectory>
+                    <origin>%1/bin/nxt-tools/nxtOSEK</origin>
+                </distributionDirectory>
+                <distributionDirectory>
+                    <origin>%1/bin/nxt-tools/cygwin</origin>
+                </distributionDirectory>
+            </distributionFileList>
+        </folder>
+    </folderList>
+</component>

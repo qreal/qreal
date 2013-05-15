@@ -12,9 +12,11 @@
 // C:\Libs\QtSDK\Desktop\Qt\4.7.3\mingw\bin
 
 let scriptName = fsi.CommandLineArgs.[1]
-let modifiedScriptName = (scriptName.Split '.').[0] + "-modified.xml"
-let installerScript = System.IO.File.ReadAllText scriptName
 
+let scriptsToPatch = 
+    let directoryInfo = System.IO.DirectoryInfo(".")
+    directoryInfo.GetFiles("*.xml") |> Seq.map (fun x -> x.Name)
+    
 let version = fsi.CommandLineArgs.[2]
 
 let autodetectQt = 
@@ -28,10 +30,27 @@ let autodetectQt =
         | _ -> ""
         
     pathes |> List.ofArray |> findQt
+    
+let modifyScriptName (scriptName : string) = (scriptName.Split '.').[0] + "-modified.xml"
+    
+let patch scriptName =
+    let modifiedScriptName = modifyScriptName scriptName
+    let installerScript = System.IO.File.ReadAllText scriptName
 
-let modifiedInstallerScript = installerScript.Replace("%1", "..").Replace("%2", autodetectQt).Replace("<version>%version%</version>", "<version>" + version + "</version>")
-System.IO.File.WriteAllText (modifiedScriptName, modifiedInstallerScript)
+    let modifiedInstallerScript = ref <| installerScript.Replace("%1", "..").Replace("%2", autodetectQt).Replace("<version>%version%</version>", "<version>" + version + "</version>")
+    
+    scriptsToPatch |> Seq.iter (
+        fun includedScriptName -> 
+            modifiedInstallerScript := (!modifiedInstallerScript).Replace("<include file=\"" + includedScriptName + "\" />", "<include file=\"" + (modifyScriptName includedScriptName) + "\" />")
+    )
+    
+    System.IO.File.WriteAllText (modifiedScriptName, !modifiedInstallerScript)
 
+scriptsToPatch |> Seq.iter patch
+    
+let modifiedScriptName = (scriptName.Split '.').[0] + "-modified.xml"
+let installerScript = System.IO.File.ReadAllText scriptName
+    
 let exec processName args =
     let psi = new System.Diagnostics.ProcessStartInfo(processName)
     psi.Arguments <- args
@@ -42,4 +61,4 @@ let exec processName args =
 
 exec "builder-cli.exe" ("build " + modifiedScriptName + " --verbose")
 
-System.IO.File.Delete modifiedScriptName
+scriptsToPatch |> Seq.iter (fun scriptName -> System.IO.File.Delete (modifyScriptName scriptName))
