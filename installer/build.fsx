@@ -19,6 +19,8 @@ let scriptsToPatch =
     
 let version = fsi.CommandLineArgs.[2]
 
+let installBuilderArgs = fsi.CommandLineArgs |> Seq.skip 3 |> Seq.fold (fun acc x -> acc + " " + x) ""
+
 let autodetectQt = 
     let pathVariable = System.Environment.GetEnvironmentVariable("PATH")
     let pathes = pathVariable.Split ';'
@@ -59,6 +61,6 @@ let exec processName args =
     p.WaitForExit()
     p.ExitCode
 
-exec "builder-cli.exe" ("build " + modifiedScriptName + " --verbose")
+exec "builder-cli.exe" ("build " + modifiedScriptName + " --verbose " + installBuilderArgs)
 
 scriptsToPatch |> Seq.iter (fun scriptName -> System.IO.File.Delete (modifyScriptName scriptName))

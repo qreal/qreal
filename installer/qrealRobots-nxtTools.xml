@@ -4,6 +4,14 @@
     <canBeEdited>1</canBeEdited>
     <selected>1</selected>
     <show>1</show>
+    <shouldPackRuleEvaluationLogic>and</shouldPackRuleEvaluationLogic>
+    <shouldPackRuleList>
+        <compareText>
+            <logic>equals</logic>
+            <text>${include_nxt_tools}</text>
+            <value>yes</value>
+        </compareText>
+    </shouldPackRuleList>
     <folderList>
         <folder>
             <description>Program Files</description>
