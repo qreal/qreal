@@ -147,15 +147,11 @@ void RobotsPlugin::closeNeededWidget()
 	mInterpreter.closeWatchList();
 }
 
-void RobotsPlugin::activeTabChanged(Id const & rootElementId)
+void RobotsPlugin::activeTabChanged(Id const &rootElementId)
 {
 	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
 	changeActiveTab(mActionInfos, enabled);
-	if (enabled) {
-		mInterpreter.enableD2ModelWidgetRunStopButtons();
-	} else {
-		mInterpreter.disableD2ModelWidgetRunStopButtons();
-	}
+	mInterpreter.onTabChanged(rootElementId, enabled);
 }
 
 void RobotsPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
@@ -176,6 +172,8 @@ interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produce
 			new interpreters::robots::details::SensorsConfigurationWidget;
 	connect(mRobotSettingsPage, SIGNAL(saved()), result, SLOT(refresh()));
 	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
+	connect(result, SIGNAL(saved()), &mInterpreter, SLOT(saveSensorConfiguration()));
+	connect(&mInterpreter, SIGNAL(sensorsConfigurationChanged()), result, SLOT(refresh()));
 	mInterpreter.connectSensorConfigurer(result);
 	return result;
 }
