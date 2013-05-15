@@ -117,7 +117,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
 
 	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
-	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(saveWorldModel()));
+	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(saveToRepo()));
 
 	connect(mUi->port1Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
 	mPortsMapper.setMapping(mUi->port1Box, inputPort::port1);
