@@ -18,8 +18,11 @@ public:
 	virtual void read();
 	virtual void drawPixel(int x, int y);
 	virtual void drawLine(int x1, int y1, int x2, int y2);
+	virtual void drawRect(int x, int y, int width, int height);
 	virtual void drawCircle(int x, int y, int radius);
 	virtual void printText(int x, int y, QString text);
+	virtual void clearScreen();
+	virtual void attachToPaintWidget();\
 
 signals:
 	void response(bool leftIsPressed

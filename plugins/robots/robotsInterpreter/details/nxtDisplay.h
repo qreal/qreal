@@ -2,6 +2,9 @@
 
 #include <QWidget>
 
+#include "../../../../qrutils/graphicsUtils/painterInterface.h"
+#include "../../../../qrutils/graphicsUtils/paintWidget.h"
+
 namespace Ui
 {
 	class NxtDisplay;
@@ -23,6 +26,10 @@ public:
 	bool rightButtonIsDown();
 	bool centralButtonIsDown();
 	bool bottomButtonIsDown();
+	virtual void setPainter(graphicsUtils::PainterInterface *p);
+	void repaintDisplay();
+	int displayWidth();
+	int displayHeight();
 
 private:
 	Ui::NxtDisplay *mUi;

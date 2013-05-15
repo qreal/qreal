@@ -27,3 +27,19 @@ void RealDisplayImplementation::drawCircle(int x, int y, int radius)
 void RealDisplayImplementation::printText(int x, int y, QString text)
 {
 }
+
+void RealDisplayImplementation::attachToPaintWidget()
+{
+
+}
+
+void RealDisplayImplementation::drawRect(int x, int y, int width, int height)
+{
+
+}
+
+void RealDisplayImplementation::clearScreen()
+{
+
+}
+

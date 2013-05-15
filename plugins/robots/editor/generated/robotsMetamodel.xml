@@ -1144,6 +1144,39 @@
                     </generalizations>
                 </logic>
             </node>
+			<node displayedName="Очистить экран" name="ClearScreen">
+                <graphics>
+                    <picture sizex="50" sizey="50">
+                        <image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+                    </picture>
+					<labels/>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="5"/>
+                            <end endx="0" endy="45"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="5" starty="0"/>
+                            <end endx="45" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="50" starty="5"/>
+                            <end endx="50" endy="45"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="5" starty="50"/>
+                            <end endx="45" endy="50"/>
+                        </linePort>
+                    </ports>
+                    <nonResizeable/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <generalizations>
+                        <parent parentName="AbstractNode"/>
+                    </generalizations>
+                </logic>
+            </node>
 			<node displayedName="Нарисовать точку" name="DrawPixel">
                 <graphics>
                     <picture sizex="50" sizey="50">
@@ -1238,6 +1271,62 @@
                             <default>0</default>
                         </property>
 						<property displayedName="Y2 координата" type="int" name="Y2CoordinateLine">
+                            <default>0</default>
+                        </property>
+                    </properties>
+                    <generalizations>
+                        <parent parentName="AbstractNode"/>
+                    </generalizations>
+                </logic>
+            </node>
+			<node displayedName="Нарисовать прямоугольник" name="DrawRect">
+                <graphics>
+                    <picture sizex="50" sizey="50">
+                        <image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+                    </picture>
+                    <labels>
+                        <label x="36" y="60" textBinded="XCoordinateRect"/>
+                        <label x="0" y="60" text="X: "/>
+                        <label x="30" y="80" textBinded="YCoordinateRect"/>
+                        <label x="0" y="80" text="Y: "/>
+						<label x="30" y="120" textBinded="WidthRect"/>
+                        <label x="0" y="120" text="Width: "/>
+						<label x="30" y="140" textBinded="HeightRect"/>
+                        <label x="0" y="140" text="Height: "/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="0" starty="5"/>
+                            <end endx="0" endy="45"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="5" starty="0"/>
+                            <end endx="45" endy="0"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="50" starty="5"/>
+                            <end endx="50" endy="45"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="5" starty="50"/>
+                            <end endx="45" endy="50"/>
+                        </linePort>
+                    </ports>
+                    <nonResizeable/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+						<property displayedName="X координата" type="int" name="XCoordinateRect">
+                            <default>0</default>
+                        </property>
+						<property displayedName="Y координата" type="int" name="YCoordinateRect">
+                            <default>0</default>
+                        </property>
+						<property displayedName="Ширина" type="int" name="WidthRect">
+                            <default>0</default>
+                        </property>
+						<property displayedName="Высота" type="int" name="HeightRect">
                             <default>0</default>
                         </property>
                     </properties>
@@ -1395,6 +1484,8 @@
 				<element name="Function"/>
 			</group>
 			<group name="Рисование на дисплее">
+				<element name="ClearScreen"/>
+				<element name="DrawRect"/>
 				<element name="DrawPixel"/>
 				<element name="DrawLine"/>
 				<element name="DrawCircle"/>

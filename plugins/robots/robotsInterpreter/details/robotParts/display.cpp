@@ -41,6 +41,21 @@ void Display::printText(int x, int y, QString text)
 	mDisplayImpl->printText(x, y, text);
 }
 
+void Display::drawRect(int x, int y, int width, int height)
+{
+	mDisplayImpl->drawRect(x, y, width, height);
+}
+
+void Display::clearScreen()
+{
+	mDisplayImpl->clearScreen();
+}
+
+void Display::attachToPaintWidget()
+{
+	mDisplayImpl->attachToPaintWidget();
+}
+
 AbstractDisplayImplementation *Display::displayImpl()
 {
 	return mDisplayImpl;

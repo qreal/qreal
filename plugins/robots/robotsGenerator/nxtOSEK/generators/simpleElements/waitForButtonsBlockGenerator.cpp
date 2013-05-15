@@ -12,7 +12,7 @@ QList<SmartLine> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(N
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;
-	QString condition;
+	QString condition = "";
 
 	int const enterButtonClicks = nxtGen->api()->stringProperty(logicElementId, "CentralButtonClicks").toInt();
 	int const runButtonClicks = nxtGen->api()->stringProperty(logicElementId, "BottomButtonClicks").toInt();
@@ -20,29 +20,39 @@ QList<SmartLine> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(N
 
 	if(runButtonClicks){
 		result.append(SmartLine("int runCounter = 0;", elementId));
-		result.append(SmartLine("bool runWasDown = false;", elementId));
-		condition = "runCounter < " + QString::number(runButtonClicks);
+		result.append(SmartLine("int runWasDown = 0;", elementId));
+		condition += "runCounter < " + QString::number(runButtonClicks);
 	}
 	if(enterButtonClicks){
 		result.append(SmartLine("int enterCounter = 0;", elementId));
-		result.append(SmartLine("bool enterWasDown = false;", elementId));
+		result.append(SmartLine("int enterWasDown = 0;", elementId));
 		if(runButtonClicks){
-			condition = condition + " || ";
+			condition += " || ";
 		}
-		condition = "enterCounter < " + QString::number(enterButtonClicks);
+		condition += "enterCounter < " + QString::number(enterButtonClicks);
 	}
 
 	if(runButtonClicks || enterButtonClicks){
-		result.append(SmartLine("while (" + condition + ") {", elementId));
+		result.append(SmartLine("while (" + condition + ") {", elementId, SmartLine::increase));
 		if(enterButtonClicks){
-			result.append(SmartLine("if (!ecrobot_is_ENTER_button_pressed() && enterWasDown) {enterCounter++; enterWasDown = false;}", elementId));
-			result.append(SmartLine("if (ecrobot_is_ENTER_button_pressed()) {enterWasDown = true;}", elementId));
+			result.append(SmartLine("if (!ecrobot_is_ENTER_button_pressed() && enterWasDown) {", elementId, SmartLine::increase));
+			result.append(SmartLine("enterCounter++;", elementId));
+			result.append(SmartLine("enterWasDown = 0;", elementId));
+			result.append(SmartLine("}", elementId, SmartLine::decrease));
+			result.append(SmartLine("if (ecrobot_is_ENTER_button_pressed()) {", elementId, SmartLine::increase));
+			result.append(SmartLine("enterWasDown = 1;", elementId));
+			result.append(SmartLine("}", elementId, SmartLine::decrease));
 		}
 		if(runButtonClicks){
-			result.append(SmartLine("if (!ecrobot_is_RUN_button_pressed() && runWasDown) {runCounter++; runWasDown = false;}", elementId));
-			result.append(SmartLine("if (ecrobot_is_RUN_button_pressed()) {runWasDown = true;}", elementId));
+			result.append(SmartLine("if (!ecrobot_is_RUN_button_pressed() && runWasDown) {", elementId, SmartLine::increase));
+			result.append(SmartLine("runCounter++;", elementId));
+			result.append(SmartLine("runWasDown = 0;", elementId));
+			result.append(SmartLine("}", elementId, SmartLine::decrease));
+			result.append(SmartLine("if (ecrobot_is_RUN_button_pressed()) {", elementId, SmartLine::increase));
+			result.append(SmartLine("runWasDown = 1;", elementId));
+			result.append(SmartLine("}", elementId, SmartLine::decrease));
 		}
-		result.append(SmartLine("}", elementId));
+		result.append(SmartLine("}", elementId, SmartLine::decrease));
 		return result;
 	}
 }

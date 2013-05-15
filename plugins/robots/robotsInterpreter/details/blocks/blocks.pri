@@ -30,6 +30,8 @@ HEADERS += \
     details/blocks/drawLineBlock.h \
     details/blocks/drawCircleBlock.h \
     details/blocks/printTextBlock.h \
+    details/blocks/drawRectBlock.h \
+    details/blocks/clearScreenBlock.h
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -63,3 +65,5 @@ SOURCES +=\
     details/blocks/drawLineBlock.cpp \
     details/blocks/drawCircleBlock.cpp \
     details/blocks/printTextBlock.cpp \
+    details/blocks/drawRectBlock.cpp \
+    details/blocks/clearScreenBlock.cpp

@@ -12,6 +12,8 @@
 #include "blocks/waitForButtonsBlock.h"
 #include "blocks/drawPixelBlock.h"
 #include "blocks/drawLineBlock.h"
+#include "blocks/drawRectBlock.h"
+#include "blocks/clearScreenBlock.h"
 #include "blocks/drawCircleBlock.h"
 #include "blocks/printTextBlock.h"
 #include "blocks/enginesForwardBlock.h"
@@ -104,6 +106,10 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new DrawCircleBlock(mRobotModel->display());
 	} else if (elementMetatypeIs(element, "PrintText")) {
 		newBlock = new PrintTextBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "DrawRect")) {
+		newBlock = new DrawRectBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "ClearScreen")) {
+		newBlock = new ClearScreenBlock(mRobotModel->display());
 	} else {
 		newBlock = new DummyBlock();
 	}
