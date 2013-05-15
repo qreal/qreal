@@ -106,6 +106,8 @@ INPUT(
 ./debug\unrealSoundSensorImplementation.o
 ./debug\nullGyroscopeSensorImplementations.o
 ./debug\unrealGyroscopeSensorImplementation.o
+./debug\nullAccelerometerSensorImplementation.o
+./debug\unrealAccelerometerSensorImplementation.o
 ./debug\robotModel.o
 ./debug\touchSensor.o
 ./debug\sonarSensor.o
@@ -210,6 +212,8 @@ INPUT(
 ./debug\moc_unrealSoundSensorImplementation.o
 ./debug\moc_nullGyroscopeSensorImplementations.o
 ./debug\moc_unrealGyroscopeSensorImplementation.o
+./debug\moc_nullAccelerometerSensorImplementation.o
+./debug\moc_unrealAccelerometerSensorImplementation.o
 ./debug\moc_robotModel.o
 ./debug\moc_brick.o
 ./debug\moc_motor.o

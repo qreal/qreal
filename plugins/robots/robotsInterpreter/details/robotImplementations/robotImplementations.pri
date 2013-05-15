@@ -38,7 +38,9 @@ HEADERS += \
     details/robotImplementations/sensorImplementations/nullSoundSensorImplementation.h \
     details/robotImplementations/sensorImplementations/unrealSoundSensorImplementation.h \
     details/robotImplementations/sensorImplementations/nullGyroscopeSensorImplementations.h \
-    details/robotImplementations/sensorImplementations/unrealGyroscopeSensorImplementation.h
+    details/robotImplementations/sensorImplementations/unrealGyroscopeSensorImplementation.h \
+    details/robotImplementations/sensorImplementations/nullAccelerometerSensorImplementation.h \
+    details/robotImplementations/sensorImplementations/unrealAccelerometerSensorImplementation.h
 
 SOURCES += \
 	details/robotImplementations/sensorImplementations/abstractSensorImplementation.cpp \
@@ -80,4 +82,6 @@ SOURCES += \
     details/robotImplementations/sensorImplementations/nullSoundSensorImplementation.cpp \
     details/robotImplementations/sensorImplementations/unrealSoundSensorImplementation.cpp \
     details/robotImplementations/sensorImplementations/nullGyroscopeSensorImplementations.cpp \
-    details/robotImplementations/sensorImplementations/unrealGyroscopeSensorImplementation.cpp
+    details/robotImplementations/sensorImplementations/unrealGyroscopeSensorImplementation.cpp \
+    details/robotImplementations/sensorImplementations/nullAccelerometerSensorImplementation.cpp \
+    details/robotImplementations/sensorImplementations/unrealAccelerometerSensorImplementation.cpp

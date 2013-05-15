@@ -10,6 +10,7 @@
 #include "sensorImplementations/nullSoundSensorImplementation.h"
 #include "sensorImplementations/nullEncoderImplementation.h"
 #include "sensorImplementations/nullGyroscopeSensorImplementations.h"
+#include "sensorImplementations/nullAccelerometerSensorImplementation.h"
 
 namespace qReal {
 namespace interpreters {
@@ -32,7 +33,7 @@ public:
 	virtual sensorImplementations::NullColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::NullLightSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::NullSoundSensorImplementation *soundSensor(inputPort::InputPortEnum const &port) const;
-	//virtual sensorImplementations::NullGyroscopeSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const &port) const;
+	virtual sensorImplementations::NullAccelerometerSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::NullGyroscopeSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const &port) const;
 
 	virtual motorImplementations::NullMotorImplementation &motorA();
@@ -66,6 +67,7 @@ private:
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
 	virtual void addSoundSensor(inputPort::InputPortEnum const &port);
 	virtual void addGyroscopeSensor(inputPort::InputPortEnum const &port);
+	virtual void addAccelerometerSensor(inputPort::InputPortEnum const &port);
 };
 
 }

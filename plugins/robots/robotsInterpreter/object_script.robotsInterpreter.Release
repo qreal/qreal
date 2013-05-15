@@ -106,6 +106,8 @@ INPUT(
 ./release\unrealSoundSensorImplementation.o
 ./release\nullGyroscopeSensorImplementations.o
 ./release\unrealGyroscopeSensorImplementation.o
+./release\nullAccelerometerSensorImplementation.o
+./release\unrealAccelerometerSensorImplementation.o
 ./release\robotModel.o
 ./release\touchSensor.o
 ./release\sonarSensor.o
@@ -210,6 +212,8 @@ INPUT(
 ./release\moc_unrealSoundSensorImplementation.o
 ./release\moc_nullGyroscopeSensorImplementations.o
 ./release\moc_unrealGyroscopeSensorImplementation.o
+./release\moc_nullAccelerometerSensorImplementation.o
+./release\moc_unrealAccelerometerSensorImplementation.o
 ./release\moc_robotModel.o
 ./release\moc_brick.o
 ./release\moc_motor.o
