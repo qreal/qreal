@@ -60,6 +60,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
 
+	drawInitialRobot();
 	syncronizeSensors();
 
 	setFocus();
@@ -116,6 +117,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
 
 	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(addPort(int)));
+	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(saveWorldModel()));
 
 	connect(mUi->port1Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
 	mPortsMapper.setMapping(mUi->port1Box, inputPort::port1);
@@ -405,22 +407,35 @@ void D2ModelWidget::addEllipse(bool on)
 	setHighlightOneButton(mUi->ellipseButton);
 }
 
-void D2ModelWidget::clearScene()
+void D2ModelWidget::clearScene(bool removeRobot)
 {
 	mClearing = true;
 	mWorldModel->clearScene();
-	removeSensor(inputPort::port1);
-	removeSensor(inputPort::port2);
-	removeSensor(inputPort::port3);
-	removeSensor(inputPort::port4);
-	int const noneSensorIndex = 0;
-	mUi->port1Box->setCurrentIndex(noneSensorIndex);
-	mUi->port2Box->setCurrentIndex(noneSensorIndex);
-	mUi->port3Box->setCurrentIndex(noneSensorIndex);
-	mUi->port4Box->setCurrentIndex(noneSensorIndex);
 	mRobotModel->clear();
-	mScene->clear();
-	drawInitialRobot();
+	if (removeRobot) {
+		removeSensor(inputPort::port1);
+		removeSensor(inputPort::port2);
+		removeSensor(inputPort::port3);
+		removeSensor(inputPort::port4);
+		int const noneSensorIndex = 0;
+		mUi->port1Box->setCurrentIndex(noneSensorIndex);
+		mUi->port2Box->setCurrentIndex(noneSensorIndex);
+		mUi->port3Box->setCurrentIndex(noneSensorIndex);
+		mUi->port4Box->setCurrentIndex(noneSensorIndex);
+		mScene->clear();
+		drawInitialRobot();
+	} else {
+		foreach (QGraphicsItem *item, mScene->items()) {
+			if (!dynamic_cast<RobotItem *>(item)
+					&& !dynamic_cast<SensorItem *>(item)
+					&& !dynamic_cast<Rotater *>(item)
+					&& !dynamic_cast<BeepItem *>(item)) {
+				mScene->removeItem(item);
+				delete item;
+			}
+		}
+	}
+
 	mClearing = false;
 }
 
@@ -679,6 +694,8 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	mUi->stylusButton->setChecked(false);
 	mUi->ellipseButton->setChecked(false);
 	mScene->setMoveFlag(mouseEvent);
+
+	saveToRepo();
 }
 
 void D2ModelWidget::saveWorldModel()
@@ -692,11 +709,7 @@ void D2ModelWidget::saveWorldModel()
 		saveFileName += ".xml";
 	}
 
-	QDomDocument save;
-	QDomElement root = save.createElement("root");
-	save.appendChild(root);
-	root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
-	mRobotModel->serialize(save);
+	QDomDocument const save = generateXml();
 
 	utils::OutFile saveFile(saveFileName);
 	saveFile() << "<?xml version='1.0' encoding='utf-8'?>\n";
@@ -711,28 +724,10 @@ void D2ModelWidget::loadWorldModel()
 		return;
 	}
 
-	clearScene();
+	clearScene(true);
 
 	QDomDocument const save = utils::xmlUtils::loadDocument(loadFileName);
-
-	QDomNodeList const worldList = save.elementsByTagName("world");
-	QDomNodeList const robotList = save.elementsByTagName("robot");
-	if (worldList.count() != 1 || robotList.count() != 1) {
-		// TODO: Report error
-		return;
-	}
-
-	mWorldModel->deserialize(worldList.at(0).toElement());
-	mRobotModel->deserialize(robotList.at(0).toElement());
-
-	for (int i = 0; i < 4; ++i) {
-		reinitSensor(static_cast<inputPort::InputPortEnum>(i));
-	}
-
-	mRobot->processPositionAndAngleChange();
-	mDrawingAction = drawingAction::noneWordLoad;
-	update();
-	mDrawingAction = drawingAction::none;
+	loadXml(save);
 }
 
 void D2ModelWidget::handleNewRobotPosition()
@@ -990,6 +985,43 @@ void D2ModelWidget::closeEvent(QCloseEvent *event)
 QVector<SensorItem *> D2ModelWidget::sensorItems() const
 {
 	return mSensors;
+}
+
+void D2ModelWidget::saveToRepo()
+{
+	emit modelChanged(generateXml());
+}
+
+QDomDocument D2ModelWidget::generateXml() const
+{
+	QDomDocument save;
+	QDomElement root = save.createElement("root");
+	save.appendChild(root);
+	root.appendChild(mWorldModel->serialize(save, QPoint(0, 0)));
+	mRobotModel->serialize(save);
+	return save;
+}
+
+void D2ModelWidget::loadXml(QDomDocument const &worldModel)
+{
+	QDomNodeList const worldList = worldModel.elementsByTagName("world");
+	QDomNodeList const robotList = worldModel.elementsByTagName("robot");
+	if (worldList.count() != 1 || robotList.count() != 1) {
+		// TODO: Report error
+		return;
+	}
+
+	mWorldModel->deserialize(worldList.at(0).toElement());
+	mRobotModel->deserialize(robotList.at(0).toElement());
+
+	for (int i = 0; i < 4; ++i) {
+		reinitSensor(static_cast<inputPort::InputPortEnum>(i));
+	}
+
+	mRobot->processPositionAndAngleChange();
+	mDrawingAction = drawingAction::noneWordLoad;
+	update();
+	mDrawingAction = drawingAction::none;
 }
 
 void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape

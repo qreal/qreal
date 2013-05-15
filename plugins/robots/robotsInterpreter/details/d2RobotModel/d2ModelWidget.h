@@ -94,6 +94,8 @@ public:
 
 	QVector<SensorItem *> sensorItems() const;
 
+	void loadXml(QDomDocument const &worldModel);
+
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
@@ -103,10 +105,16 @@ public slots:
 	void rereadNoiseSettings();
 
 signals:
+	void d2WasClosed();
+
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
 	/// Emitted when such features as motor or sensor noise were
 	///enabled or disabled by user
 	void noiseSettingsChanged();
+
+	/// Emitted each time when some user actions lead to world model modifications
+	/// @param xml World model description in xml format
+	void modelChanged(QDomDocument const &xml);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -117,7 +125,7 @@ private slots:
 	void addLine(bool on);
 	void addStylus(bool on);
 	void addEllipse(bool on);
-	void clearScene();
+	void clearScene(bool removeRobot = false);
 	void resetButtons();
 
 	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
@@ -130,6 +138,7 @@ private slots:
 
 	void handleNewRobotPosition();
 
+	void saveToRepo();
 	void saveWorldModel();
 	void loadWorldModel();
 
@@ -152,9 +161,6 @@ private slots:
 	void stopTimelineListening();
 	void onTimelineTick();
 
-signals:
-	void d2WasClosed();
-
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
@@ -174,6 +180,8 @@ private:
 	void drawWalls();
 	void drawColorFields();
 	void drawInitialRobot();
+
+	QDomDocument generateXml() const;
 
 	/** @brief Set active panel toggle button and deactivate all others */
 	void setActiveButton(int active);
