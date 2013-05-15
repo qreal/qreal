@@ -470,6 +470,9 @@ void D2ModelWidget::addPort(int const port)
 	if (!isVisible() && mFirstShow) {
 		return;
 	}
+	QPointF const sensorPos = mSensors[port]
+			? mSensors[port]->scenePos()
+			: mRobot->mapToScene(mRobot->boundingRect().center());
 	mCurrentPort = static_cast<inputPort::InputPortEnum>(port);
 
 	switch (currentComboBox()->currentIndex()){
@@ -498,8 +501,7 @@ void D2ModelWidget::addPort(int const port)
 	case 4:
 		mCurrentSensorType = sensorType::light;
 	}
-	QPointF const newpos = mRobot->mapToScene(mRobot->boundingRect().center());
-	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, newpos.toPoint(), 0);
+	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, sensorPos.toPoint(), 0);
 	reinitSensor(mCurrentPort);
 
 	resetButtons();
@@ -640,6 +642,8 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
 		break;
 	}
+
+	mScene->update();
 }
 
 void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
@@ -687,6 +691,7 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	default:
 		mScene->forReleaseResize(mouseEvent, mRobot->realBoundingRect());
+
 		break;
 	}
 	mUi->wallButton->setChecked(false);
@@ -695,6 +700,7 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	mUi->ellipseButton->setChecked(false);
 	mScene->setMoveFlag(mouseEvent);
 
+	mScene->update();
 	saveToRepo();
 }
 
