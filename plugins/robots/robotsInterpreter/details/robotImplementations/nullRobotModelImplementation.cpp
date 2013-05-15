@@ -50,6 +50,11 @@ sensorImplementations::NullSoundSensorImplementation *NullRobotModelImplementati
 	return dynamic_cast<sensorImplementations::NullSoundSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
+sensorImplementations::NullGyroscopeSensorImplementation *NullRobotModelImplementation::gyroscopeSensor(const inputPort::InputPortEnum &port) const
+{
+	return dynamic_cast<sensorImplementations::NullGyroscopeSensorImplementation *>(mSensorsConfigurer.sensor(port));
+}
+
 void NullRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
 {
 	sensorImplementations::NullTouchSensorImplementation *sensor = new sensorImplementations::NullTouchSensorImplementation(port);
@@ -78,6 +83,12 @@ void NullRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const
 void NullRobotModelImplementation::addSoundSensor(const inputPort::InputPortEnum &port)
 {
 	sensorImplementations::NullSoundSensorImplementation *sensor = new sensorImplementations::NullSoundSensorImplementation(port);
+	mSensorsConfigurer.configureSensor(sensor, port);
+}
+
+void NullRobotModelImplementation::addGyroscopeSensor(const inputPort::InputPortEnum &port)
+{
+	sensorImplementations::NullGyroscopeSensorImplementation *sensor = new sensorImplementations::NullGyroscopeSensorImplementation(port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
