@@ -31,16 +31,29 @@
         
         <!-- Hidden parameter that allows to configure NXT Tools inclusion. NXT Tools are not included by default. -->
         <stringParameter name="include_nxt_tools" value="no" ask="0" />
+        <stringParameter name="unattended" value="no" ask="0" />
     </parameterList>
 
-    <!-- Rename installer if NXT Tools are included -->
     <preBuildActionList>
+        <!-- Rename installer if NXT Tools are included -->
         <actionGroup>
             <actionList>
                 <setInstallerVariable name="project.installerFilename" value="${product_shortname}-${product_version}-with-nxt-tools-${platform_name}-installer.${platform_exec_suffix}"/>
             </actionList>
             <ruleList>
                 <compareText text="${include_nxt_tools}" logic="equals" value="yes"/>
+            </ruleList>
+        </actionGroup>
+        
+        <!-- Building of unattended installer -->
+        <actionGroup>
+            <actionList>
+                <setInstallerVariable name="project.defaultInstallationMode" value="unattended"/>
+                <setInstallerVariable name="project.unattendedModeUI" value="minimal"/>
+                <setInstallerVariable name="project.installerFilename" value="unattended-${project.installerFilename}"/>
+            </actionList>
+            <ruleList>
+                <compareText text="${unattended}" logic="equals" value="yes"/>
             </ruleList>
         </actionGroup>
     </preBuildActionList>
