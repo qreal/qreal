@@ -64,7 +64,7 @@
         <if>
             <actionList>
                 <showInfo>
-                    <text>QReal:Robots не установлена.</text>
+                    <text>QReal:Robots РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅР°.</text>
                 </showInfo>
                 <exit/>
             </actionList>
