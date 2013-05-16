@@ -50,6 +50,8 @@ void UnrealDisplayImplementation::clearScreen()
 	mLines.clear();
 	mRects.clear();
 	mCircles.clear();
+	mStrings.clear();
+	mStringPlaces.clear();
 	mD2Model->display()->repaintDisplay();
 }
 
@@ -74,7 +76,13 @@ void UnrealDisplayImplementation::drawCircle(int x, int y, int radius)
 
 void UnrealDisplayImplementation::printText(int x, int y, QString text)
 {
-
+	QString s = text;
+	QPoint p;
+	p.setX(x);
+	p.setY(y);
+	mStringPlaces.append(p);
+	mStrings.append(s);
+	mD2Model->display()->repaintDisplay();
 }
 
 void UnrealDisplayImplementation::paint(QPainter *painter)
@@ -83,9 +91,13 @@ void UnrealDisplayImplementation::paint(QPainter *painter)
 	double pixHeight = (double) mD2Model->display()->displayHeight() / 64;
 
 	QPen q;
+	QFont f;
+	f.setPixelSize(pixHeight*6);
 	q.setWidth((pixWidth+pixHeight)/2);
 	painter->setPen(q);
-	painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
+	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
+	painter->setFont(f);
+
 
 	QMutableListIterator<QLine> lines(mLines);
 	while(lines.hasNext()){
@@ -110,5 +122,14 @@ void UnrealDisplayImplementation::paint(QPainter *painter)
 		QRect r = rects.next();
 		painter->drawRect(r.x()*pixWidth, r.y()*pixHeight, r.width()*pixWidth, r.height()*pixHeight);
 	}
+
+	QMutableListIterator<QString> strings(mStrings);
+	QMutableListIterator<QPoint> strPlaces(mStringPlaces);
+	while(strings.hasNext() && strPlaces.hasNext()){
+		QString s = strings.next();
+		QPoint p = strPlaces.next();
+		painter->drawText(p.x()*pixWidth, p.y()*pixHeight, s);
+	}
+
 
 }

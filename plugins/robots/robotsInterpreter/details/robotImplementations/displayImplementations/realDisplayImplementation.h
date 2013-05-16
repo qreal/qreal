@@ -1,6 +1,8 @@
 #pragma once
 
 #include "abstractDisplayImplementation.h"
+#include "../../d2RobotModel/d2RobotModel.h"
+#include "../details/nxtDisplay.h"
 
 namespace qReal {
 namespace interpreters {
@@ -22,7 +24,7 @@ public:
 	virtual void drawCircle(int x, int y, int radius);
 	virtual void printText(int x, int y, QString text);
 	virtual void clearScreen();
-	virtual void attachToPaintWidget();\
+	virtual void attachToPaintWidget();
 
 signals:
 	void response(bool leftIsPressed

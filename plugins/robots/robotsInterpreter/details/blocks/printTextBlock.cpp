@@ -14,7 +14,7 @@ void PrintTextBlock::run()
 {
 	int const x = evaluate("XCoordinateText").toInt();
 	int const y = evaluate("YCoordinateText").toInt();
-	QString const text = evaluate("Text").toString();
+	QString const text = evaluate("PrintText").toString();
 	mDisplay.printText(x, y, text);
 	emit done(mNextBlock);
 }

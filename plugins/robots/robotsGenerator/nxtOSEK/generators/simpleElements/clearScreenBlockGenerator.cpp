@@ -13,7 +13,7 @@ QList<SmartLine> ClearScreenBlockGenerator::convertElementIntoDirectCommand(NxtO
 {
 	QList<SmartLine> result;
 
-	result.append("display_clear(0);");
+	result.append(SmartLine("display_clear(1);", elementId));
 
 	return result;
 }

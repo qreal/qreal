@@ -1396,7 +1396,7 @@
                         <label x="0" y="60" text="X: "/>
                         <label x="30" y="80" textBinded="YCoordinateText"/>
                         <label x="0" y="80" text="Y: "/>
-						<label x="30" y="120" textBinded="Text"/>
+						<label x="30" y="120" textBinded="PrintText"/>
                         <label x="0" y="120" text="Text: "/>
                     </labels>
                     <ports>
@@ -1428,8 +1428,7 @@
 						<property displayedName="Y координата" type="int" name="YCoordinateText">
                             <default>0</default>
                         </property>
-						<property displayedName="Текст" type="string" name="Text">
-                            <default>0</default>
+						<property displayedName="Текст" type="string" name="PrintText">
                         </property>
                     </properties>
                     <generalizations>

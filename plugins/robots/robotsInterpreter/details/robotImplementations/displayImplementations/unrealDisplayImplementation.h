@@ -36,6 +36,8 @@ protected:
 	QList<QPoint> mPoints;
 	QList<QRect> mCircles;
 	QList<QRect> mRects;
+	QList<QString> mStrings;
+	QList<QPoint> mStringPlaces;
 };
 }
 }
