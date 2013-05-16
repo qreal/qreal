@@ -44,8 +44,8 @@ public:
 	virtual sensorImplementations::AbstractSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *soundSensor(inputPort::InputPortEnum const &port) const = 0;
-//	virtual sensorImplementations::AbstractSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const &port) const = 0;
-//	virtual sensorImplementations::AbstractSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const &port) const = 0;
+	virtual sensorImplementations::AbstractSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const &port) const = 0;
+	virtual sensorImplementations::AbstractSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const &port) const = 0;
 
 	virtual motorImplementations::AbstractMotorImplementation &motorA() = 0;
 	virtual motorImplementations::AbstractMotorImplementation &motorB() = 0;
@@ -83,8 +83,8 @@ protected:
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
 	virtual void addLightSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addSoundSensor(inputPort::InputPortEnum const &port) = 0;
-//	virtual void addAccelerometrSensor(inputPort::InputPortEnum const &port) = 0;
-//	virtual void addGyroscopeSensor(inputPort::InputPortEnum const &port) = 0;
+	virtual void addAccelerometerSensor(inputPort::InputPortEnum const &port) = 0;
+	virtual void addGyroscopeSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void nullifySensor(inputPort::InputPortEnum port);
 
 	/// Connect to robot if connection doesn't established

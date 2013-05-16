@@ -88,7 +88,7 @@ void RealRobotModelImplementation::addSoundSensor(inputPort::InputPortEnum const
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void RealRobotModelImplementation::addAcceleratedeSensor(const inputPort::InputPortEnum &port)
+void RealRobotModelImplementation::addAccelerometerSensor(const inputPort::InputPortEnum &port)
 {
 	sensorImplementations::BluetoothAccelerometerSensorImplementation *sensor = new sensorImplementations::BluetoothAccelerometerSensorImplementation(mRobotCommunicator, port);
 	mSensorsConfigurer.configureSensor(sensor, port);

@@ -7,12 +7,13 @@ using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
 BluetoothGyroscopeSensorImplementation::BluetoothGyroscopeSensorImplementation(RobotCommunicator *robotCommunicationInterface
-																			   , inputPort::InputPortEnum port)
-																		   : BluetoothSensorImplementation(robotCommunicationInterface
-																		   , sensorType::sound, lowLevelSensorType::SOUND_DBA
-																		   , sensorMode::RAWMODE, port)
-																	   {
-																	   }
+	, inputPort::InputPortEnum port)
+	: BluetoothSensorImplementation(robotCommunicationInterface
+	, sensorType::sound, lowLevelSensorType::ANGLE
+	, sensorMode::RAWMODE, port)
+{
+}
+
 void BluetoothGyroscopeSensorImplementation::read()
 {
 	if (!mIsConfigured) {
@@ -34,6 +35,7 @@ void BluetoothGyroscopeSensorImplementation::read()
 	command[4] = mPort;
 	mRobotCommunicationInterface->send(this, command, 18);
 }
+
 void BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
