@@ -20,6 +20,8 @@ public:
 	inputPort::InputPortEnum port() const;
 	sensorType::SensorTypeEnum type() const;
 	virtual void configure() = 0;
+
+	/// Performs dummy sensor reading with 0 result; used for sensor variables nullification
 	virtual void nullify();
 
 signals:

@@ -77,6 +77,23 @@
 					<container>
 						<contains type="AbstractNode"/>
 					</container>
+					<properties>
+						<property displayedName="Модель мира" type="string" name="worldModel">
+							<default></default>
+						</property>
+						<property displayedName="Сенсор1" type="string" name="sensor1Value">
+							<default>0</default>
+						</property>
+						<property displayedName="Сенсор2" type="string" name="sensor2Value">
+							<default>0</default>
+						</property>
+						<property displayedName="Сенсор3" type="string" name="sensor3Value">
+							<default>0</default>
+						</property>
+						<property displayedName="Сенсор4" type="string" name="sensor4Value">
+							<default>0</default>
+						</property>
+					</properties>
 				</logic>
 			</node>
 			<node displayedName="Конец" name="FinalNode">
@@ -502,8 +519,8 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Задержка" type="string" name="Delay">
-							<default>0</default>
+						<property displayedName="Задержка (мс)" type="string" name="Delay">
+							<default>1000</default>
 						</property>
 					</properties>
 					<generalizations>

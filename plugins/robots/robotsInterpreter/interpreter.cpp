@@ -38,6 +38,7 @@ Interpreter::Interpreter()
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
 
+	connect(mD2ModelWidget, SIGNAL(modelChanged(QDomDocument)), this, SLOT(on2dModelChanged(QDomDocument)));
 	connect(mD2ModelWidget, SIGNAL(noiseSettingsChanged()), this, SIGNAL(noiseSettingsChangedBy2DModelWidget()));
 	connect(this, SIGNAL(noiseSettingsChanged()), mD2ModelWidget, SLOT(rereadNoiseSettings()));
 	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
@@ -47,7 +48,7 @@ Interpreter::Interpreter()
 	connect(mRobotCommunication, SIGNAL(errorOccured(QString)), this, SLOT(reportError(QString)));
 }
 
-void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
+void Interpreter::init(GraphicalModelAssistInterface &graphicalModelApi
 	, LogicalModelAssistInterface const &logicalModelApi
 	, qReal::gui::MainWindowInterpretersInterface &interpretersInterface)
 {
@@ -122,6 +123,22 @@ void Interpreter::stopRobot()
 void Interpreter::showWatchList()
 {
 	mWatchListWindow->show();
+}
+
+void Interpreter::onTabChanged(Id const &diagramId, bool enabled)
+{
+	if (enabled) {
+		Id const logicalId = mGraphicalModelApi->logicalId(diagramId);
+		QString const xml = mGraphicalModelApi->property(logicalId, "worldModel").toString();
+		QDomDocument worldModel;
+		worldModel.setContent(xml);
+		mD2ModelWidget->loadXml(worldModel);
+		loadSensorConfiguration(logicalId);
+		enableD2ModelWidgetRunStopButtons();
+	} else {
+		mD2ModelWidget->loadXml(QDomDocument());
+		disableD2ModelWidgetRunStopButtons();
+	}
 }
 
 void Interpreter::closeWatchList()
@@ -462,6 +479,58 @@ void Interpreter::setNoiseSettings()
 void Interpreter::reportError(QString const &message)
 {
 	mInterpretersInterface->errorReporter()->addError(message);
+}
+
+void Interpreter::on2dModelChanged(QDomDocument const &xml)
+{
+	Id const currentDiagramId = mInterpretersInterface->activeDiagram();
+	Id const logicalId = mGraphicalModelApi->logicalId(currentDiagramId);
+	if (logicalId != Id() && logicalId != Id::rootId()) {
+		mGraphicalModelApi->setProperty(logicalId, "worldModel", xml.toString(4));
+	}
+}
+
+void Interpreter::saveSensorConfiguration()
+{
+	Id const currentDiagramId = mInterpretersInterface->activeDiagram();
+	Id const logicalId = mGraphicalModelApi->logicalId(currentDiagramId);
+	if (logicalId != Id() && logicalId != Id::rootId()) {
+		int const sensor1Value = SettingsManager::value("port1SensorType").toInt();
+		int const sensor2Value = SettingsManager::value("port2SensorType").toInt();
+		int const sensor3Value = SettingsManager::value("port3SensorType").toInt();
+		int const sensor4Value = SettingsManager::value("port4SensorType").toInt();
+		mGraphicalModelApi->setProperty(logicalId, "sensor1Value", QString::number(sensor1Value));
+		mGraphicalModelApi->setProperty(logicalId, "sensor2Value", QString::number(sensor2Value));
+		mGraphicalModelApi->setProperty(logicalId, "sensor3Value", QString::number(sensor3Value));
+		mGraphicalModelApi->setProperty(logicalId, "sensor4Value", QString::number(sensor4Value));
+	}
+}
+
+void Interpreter::loadSensorConfiguration(Id const &diagramId)
+{
+	int const oldSensor1Value = SettingsManager::value("port1SensorType").toInt();
+	int const oldSensor2Value = SettingsManager::value("port2SensorType").toInt();
+	int const oldSensor3Value = SettingsManager::value("port3SensorType").toInt();
+	int const oldSensor4Value = SettingsManager::value("port4SensorType").toInt();
+
+	int const sensor1Value = mGraphicalModelApi->property(diagramId, "sensor1Value").toInt();
+	int const sensor2Value = mGraphicalModelApi->property(diagramId, "sensor2Value").toInt();
+	int const sensor3Value = mGraphicalModelApi->property(diagramId, "sensor3Value").toInt();
+	int const sensor4Value = mGraphicalModelApi->property(diagramId, "sensor4Value").toInt();
+
+	bool const somethingChanged = oldSensor1Value != sensor1Value
+			|| oldSensor2Value != sensor2Value
+			|| oldSensor3Value != sensor3Value
+			|| oldSensor4Value != sensor4Value;
+
+	SettingsManager::setValue("port1SensorType", sensor1Value);
+	SettingsManager::setValue("port2SensorType", sensor2Value);
+	SettingsManager::setValue("port3SensorType", sensor3Value);
+	SettingsManager::setValue("port4SensorType", sensor4Value);
+
+	if (somethingChanged) {
+		emit sensorsConfigurationChanged();
+	}
 }
 
 utils::WatchListWindow *Interpreter::watchWindow() const

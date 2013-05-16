@@ -1,3 +1,4 @@
-fsi.exe build.fsx qrealRobots_nxttools.xml %1
-rename QRealRobots-%1-windows-installer.exe QRealRobots-%1-with-nxt-tools-windows-installer.exe
+fsi.exe build.fsx qrealRobots.xml %1 --setvars include_nxt_tools=yes
 fsi.exe build.fsx qrealRobots.xml %1
+fsi.exe build.fsx qrealRobots.xml %1 --setvars include_nxt_tools=yes unattended=yes
+fsi.exe build.fsx qrealRobots.xml %1 --setvars unattended=yes

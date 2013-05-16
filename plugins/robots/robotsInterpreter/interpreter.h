@@ -30,7 +30,7 @@ public:
 	Interpreter();
 	virtual ~Interpreter();
 
-	virtual void init(GraphicalModelAssistInterface const &graphicalModelApi
+	virtual void init(GraphicalModelAssistInterface &graphicalModelApi
 			, LogicalModelAssistInterface const &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 	);
@@ -68,12 +68,16 @@ signals:
 	void noiseSettingsChanged();
 	void noiseSettingsChangedBy2DModelWidget();
 
+	void sensorsConfigurationChanged();
+
 public slots:
 	void connectToRobot();
 	void interpret();
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
+	void onTabChanged(Id const &diagramId, bool enabled);
+	void saveSensorConfiguration();
 
 private slots:
 	void threadStopped();
@@ -98,6 +102,9 @@ private slots:
 
 	void reportError(QString const &message);
 
+	void on2dModelChanged(QDomDocument const &xml);
+	void loadSensorConfiguration(Id const &diagramId);
+
 private:
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 	Id const findStartingElement(Id const &diagram) const;
@@ -111,7 +118,7 @@ private:
 		, idle
 	};
 
-	GraphicalModelAssistInterface const *mGraphicalModelApi;
+	GraphicalModelAssistInterface *mGraphicalModelApi;
 	LogicalModelAssistInterface const *mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
 
