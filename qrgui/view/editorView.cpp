@@ -31,6 +31,17 @@ EditorView::EditorView(QWidget *parent)
 	setMouseTracking(true);
 
 	setAlignment(Qt::AlignCenter);
+
+	QAction *zoomInAction = new QAction(this);
+	QAction *zoomOutAction = new QAction(this);
+	zoomInAction->setShortcuts(QList<QKeySequence>()
+			<< QKeySequence(Qt::CTRL + Qt::Key_Plus) // Ctrl++
+			<< QKeySequence(Qt::CTRL + Qt::Key_Equal)); // Ctrl+=
+	zoomOutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus)); // Ctrl+-
+	connect(zoomInAction, SIGNAL(triggered()), this, SLOT(zoomIn()));
+	connect(zoomOutAction, SIGNAL(triggered()), this, SLOT(zoomOut()));
+	addAction(zoomInAction);
+	addAction(zoomOutAction);
 }
 
 EditorView::~EditorView()
