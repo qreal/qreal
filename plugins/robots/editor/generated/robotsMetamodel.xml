@@ -1108,7 +1108,7 @@
 			<node displayedName="Ждать нажатия кнопок" name="WaitForButtons">
                 <graphics>
                     <picture sizex="50" sizey="50">
-                        <image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+                        <image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
                     </picture>
                     <labels>
                         <label x="36" y="60" textBinded="RightButtonClicks"/>
@@ -1164,7 +1164,7 @@
 			<node displayedName="Очистить экран" name="ClearScreen">
                 <graphics>
                     <picture sizex="50" sizey="50">
-                        <image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+                        <image y1="0" name="images/clearScreenBlock.png" x1="0" y2="50" x2="50"/>
                     </picture>
 					<labels/>
                     <ports>
@@ -1197,7 +1197,7 @@
 			<node displayedName="Нарисовать точку" name="DrawPixel">
                 <graphics>
                     <picture sizex="50" sizey="50">
-                        <image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+                        <image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
                     </picture>
                     <labels>
                         <label x="36" y="60" textBinded="XCoordinatePix"/>
@@ -1243,7 +1243,7 @@
 			<node displayedName="Нарисовать линию" name="DrawLine">
                 <graphics>
                     <picture sizex="50" sizey="50">
-                        <image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+                        <image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
                     </picture>
                     <labels>
                         <label x="36" y="60" textBinded="X1CoordinateLine"/>
@@ -1299,7 +1299,7 @@
 			<node displayedName="Нарисовать прямоугольник" name="DrawRect">
                 <graphics>
                     <picture sizex="50" sizey="50">
-                        <image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+                        <image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
                     </picture>
                     <labels>
                         <label x="36" y="60" textBinded="XCoordinateRect"/>
@@ -1355,7 +1355,7 @@
 			<node displayedName="Нарисовать круг" name="DrawCircle">
                 <graphics>
                     <picture sizex="50" sizey="50">
-                        <image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+                        <image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
                     </picture>
                     <labels>
                         <label x="36" y="60" textBinded="XCoordinateCircle"/>
@@ -1406,7 +1406,7 @@
 			<node displayedName="Напечатать текст" name="PrintText">
                 <graphics>
                     <picture sizex="50" sizey="50">
-                        <image y1="0" name="images/trollface.png" x1="0" y2="50" x2="50"/>
+                        <image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
                     </picture>
                     <labels>
                         <label x="36" y="60" textBinded="XCoordinateText"/>
