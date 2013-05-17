@@ -410,6 +410,9 @@
    <property name="text">
     <string>Zoom In</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
   </action>
   <action name="actionZoom_Out">
    <property name="icon">
@@ -418,6 +421,9 @@
    </property>
    <property name="text">
     <string>Zoom Out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
    </property>
   </action>
   <action name="actionAntialiasing">
