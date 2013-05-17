@@ -50,10 +50,10 @@ bool SdfRenderer::load(const QString &filename)
 	return true;
 }
 
-bool SdfRenderer::load(QDomDocument &document)
+bool SdfRenderer::load(QDomDocument const &document)
 {
 	doc = document;
-	QDomElement docElem = doc.firstChildElement("picture");
+	QDomElement const docElem = doc.firstChildElement("picture");
 	first_size_x = docElem.attribute("sizex").toInt();
 	first_size_y = docElem.attribute("sizey").toInt();
 

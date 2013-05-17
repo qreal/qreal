@@ -11,9 +11,9 @@
 using namespace qReal;
 
 PropertiesDialog::PropertiesDialog(MainWindow *mainWindow, QWidget *parent)
-	: QDialog(parent)
-	, mUi(new Ui::PropertiesDialog)
-	, mMainWindow(mainWindow)
+		: QDialog(parent)
+		, mUi(new Ui::PropertiesDialog)
+		, mMainWindow(mainWindow)
 {
 	mUi->setupUi(this);
 }
@@ -23,10 +23,10 @@ PropertiesDialog::~PropertiesDialog()
 	delete mUi;
 }
 
-QStringList PropertiesDialog::getPropertiesDisplayedNamesList(QStringList propertiesNames)
+QStringList PropertiesDialog::getPropertiesDisplayedNamesList(QStringList const &propertiesNames)
 {
 	QStringList propertiesDisplayedNames;
-	foreach (QString propertyName, propertiesNames) {
+	foreach (QString const &propertyName, propertiesNames) {
 		propertiesDisplayedNames << mInterperterEditorManager->propertyDisplayedName(mId, propertyName);
 	}
 	return propertiesDisplayedNames;
@@ -34,8 +34,8 @@ QStringList PropertiesDialog::getPropertiesDisplayedNamesList(QStringList proper
 
 void PropertiesDialog::updatePropertiesNamesList()
 {
-	QStringList propertiesNames = mInterperterEditorManager->getPropertyNames(mId);
-	QStringList propertiesDisplayedNames = getPropertiesDisplayedNamesList(propertiesNames);
+	QStringList const propertiesNames = mInterperterEditorManager->getPropertyNames(mId);
+	QStringList const propertiesDisplayedNames = getPropertiesDisplayedNamesList(propertiesNames);
 	if (mUi->PropertiesNamesList->count() < propertiesDisplayedNames.length()) {
 		mUi->PropertiesNamesList->addItem(propertiesDisplayedNames.last());
 	}
@@ -45,15 +45,16 @@ void PropertiesDialog::init(EditorManagerInterface* interperterEditorManager, Id
 {
 	mInterperterEditorManager = interperterEditorManager;
 	mId = id;
-	setWindowTitle(tr("Properties") + ": " + mInterperterEditorManager->friendlyName(mId));
-	QStringList propertiesNames = mInterperterEditorManager->getPropertyNames(mId);
-	QStringList propertiesDisplayedNames = getPropertiesDisplayedNamesList(propertiesNames);
+	setWindowTitle(tr("Properties: ") + mInterperterEditorManager->friendlyName(mId));
+	QStringList const propertiesNames = mInterperterEditorManager->getPropertyNames(mId);
+	QStringList const propertiesDisplayedNames = getPropertiesDisplayedNamesList(propertiesNames);
 	mUi->PropertiesNamesList->addItems(propertiesDisplayedNames);
 	mUi->PropertiesNamesList->setWrapping(true);
-	int size = propertiesNames.length();
+	int const size = propertiesNames.length();
 	for (int i = 0; i < size; i++) {
 		if (mInterperterEditorManager->isParentProperty(mId, propertiesNames[i])) {
-			mUi->PropertiesNamesList->findItems(propertiesDisplayedNames[i], Qt::MatchFixedString).first()->setFlags(Qt::NoItemFlags);
+			mUi->PropertiesNamesList->findItems(propertiesDisplayedNames[i],
+												Qt::MatchFixedString).first()->setFlags(Qt::NoItemFlags);
 		}
 	}
 
@@ -105,7 +106,8 @@ void PropertiesDialog::addProperty()
 {
 	qrRepo::LogicalRepoApi const &logicalRepoApi = mMainWindow->models()->logicalRepoApi();
 	if (checkElementOnDiagram(logicalRepoApi, mId)) {
-		QMessageBox::warning(this, tr("Warning"), tr("For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!"));
+		QMessageBox::warning(this, tr("Warning"),
+						tr("For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!"));
 	} else {
 		mUi->PropertiesNamesList->setCurrentItem(NULL);
 		change("");

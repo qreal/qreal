@@ -5,11 +5,12 @@
 using namespace qReal;
 using namespace utils;
 
-InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id metaId, Id id)
-	: mEditorRepoApi(repo), mId(metaId)
+InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId, Id const &id)
+		: mEditorRepoApi(repo), mId(metaId)
 {}
 
-void InterpreterElementImpl::initLabels(int width, int height, ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)
+void InterpreterElementImpl::initLabels(int width, int height, ElementTitleFactoryInterface &factory,
+		QList<ElementTitleInterface*> &titles)
 {
 	for (QDomElement element = mGraphics.firstChildElement("graphics").firstChildElement("labels").firstChildElement("label");
 		!element.isNull();
@@ -17,15 +18,15 @@ void InterpreterElementImpl::initLabels(int width, int height, ElementTitleFacto
 	{
 		ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x"), width);
 		ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y"), height);
-		QString center = element.attribute("center", "false");
-		QString text = element.attribute("text");
-		QString textBinded = element.attribute("textBinded");
-		QString readOnly = element.attribute("readOnly", "false");
-		QString background = element.attribute("background", "transparent");
+		QString const center = element.attribute("center", "false");
+		QString const text = element.attribute("text");
+		QString const textBinded = element.attribute("textBinded");
+		QString const readOnly = element.attribute("readOnly", "false");
+		QString const background = element.attribute("background", "transparent");
 		if ((text.isEmpty() && textBinded.isEmpty())) {
 			qDebug() << "ERROR: can't parse label";
 		} else {
-			ElementTitleInterface* title;
+			ElementTitleInterface *title;
 			if (text.isEmpty()) {
 				// Это бинденный лейбл, текст для него будет браться из репозитория
 				title = factory.createTitle(x.value(), y.value(), textBinded, readOnly == "true");
@@ -43,9 +44,10 @@ void InterpreterElementImpl::initLabels(int width, int height, ElementTitleFacto
 	}
 }
 
-void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc, QDomNode &portsPicture, int &width, int &height)
+void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc,
+		QDomNode &portsPicture, int &width, int &height)
 {
-	QDomNodeList pointPortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
+	QDomNodeList const pointPortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
 	for (int i = 0; i < pointPortsList.size(); i++) {
 		QDomElement portsElement1 = portsDoc.createElement("point");
 		portsElement1.setAttribute("stroke-width", 11);
@@ -63,14 +65,14 @@ void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDo
 		portsPicture.appendChild(portsElement2);
 		StatPoint pt;
 		QString x = pointPortsList.at(i).toElement().attribute("x");
-		if(x.endsWith("a")) {
+		if (x.endsWith("a")) {
 			pt.prop_x = true;
 			x.chop(1);
 		} else {
 			pt.prop_x = false;
 		}
 		QString y = pointPortsList.at(i).toElement().attribute("y");
-		if(y.endsWith("a")) {
+		if (y.endsWith("a")) {
 			pt.prop_y = true;
 			y.chop(1);
 		} else {
@@ -83,9 +85,10 @@ void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDo
 	}
 }
 
-void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc, QDomNode &portsPicture, int &width, int &height)
+void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc,
+		QDomNode &portsPicture, int &width, int &height)
 {
-	QDomNodeList linePortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
+	QDomNodeList const linePortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
 	for (int i = 0; i < linePortsList.size(); i++) {
 		QDomElement lineElement1 = portsDoc.createElement("line");
 		lineElement1.setAttribute("x1", linePortsList.at(i).firstChildElement("start").attribute("startx"));
@@ -107,28 +110,28 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 		portsPicture.appendChild(lineElement2);
 		StatLine ln;
 		QString x1 = linePortsList.at(i).firstChildElement("start").attribute("startx");
-		if(x1.endsWith("a")) {
+		if (x1.endsWith("a")) {
 			ln.prop_x1 = true;
 			x1.chop(1);
 		} else {
 			ln.prop_x1 = false;
 		}
 		QString y1 = linePortsList.at(i).firstChildElement("start").attribute("starty");
-		if(y1.endsWith("a")) {
+		if (y1.endsWith("a")) {
 			ln.prop_y1 = true;
 			y1.chop(1);
 		} else {
 			ln.prop_y1 = false;
 		}
 		QString x2 = linePortsList.at(i).firstChildElement("end").attribute("endx");
-		if(x2.endsWith("a")) {
+		if (x2.endsWith("a")) {
 			ln.prop_x2 = true;
 			x2.chop(1);
 		} else {
 			ln.prop_x2 = false;
 		}
 		QString y2 = linePortsList.at(i).firstChildElement("end").attribute("endy");
-		if(y2.endsWith("a")) {
+		if (y2.endsWith("a")) {
 			ln.prop_y2 = true;
 			y2.chop(1);
 		} else {
@@ -144,10 +147,10 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 	}
 }
 
-void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts,
-								  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-								  QList<ElementTitleInterface*> &titles,
-								  SdfRendererInterface *renderer, SdfRendererInterface *portRenderer)
+void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
+		, QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
+		, QList<ElementTitleInterface*> &titles
+		, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer)
 {
 	if (mId.element() == "MetaEntityNode") {
 		mGraphics.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
@@ -178,13 +181,12 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 	}
 }
 
-void InterpreterElementImpl:: init(ElementTitleFactoryInterface &factory,
-		QList<ElementTitleInterface*> &titles)
+void InterpreterElementImpl::init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)
 {
 	if (mId.element() == "MetaEntityEdge") {
 		QString labelText = mEditorRepoApi->stringProperty(mId, "labelText");
-		if (!(labelText.isEmpty())) {
-			QString labelType = mEditorRepoApi->stringProperty(mId, "labelType");
+		if (!labelText.isEmpty()) {
+			QString const labelType = mEditorRepoApi->stringProperty(mId, "labelType");
 			ElementTitleInterface* title = NULL;
 			if (labelType == "Static text") {
 				// Это статический лейбл, репозиторий ему не нужен
@@ -265,8 +267,8 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 				Q_UNUSED(repo);
 				return;
 			}
-			QStringList list = getListOfStr(edgeLabel.labelText);
-			QString resultStr = getResultStr(list, repo);
+			QStringList const list = getListOfStr(edgeLabel.labelText);
+			QString const resultStr = getResultStr(list, repo);
 			edgeLabel.title->setHtml(QString("<center>%1</center>").arg(resultStr).replace("\n", "<br>"));
 		}
 	}
@@ -278,9 +280,10 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 				Q_UNUSED(repo);
 				return;
 			}
-			QStringList list = getListOfStr(nodeLabel.textBinded);
-			QString resultStr = getResultStr(list, repo);
-			nodeLabel.title->setHtml(QString(nodeLabel.center == "true" ? "<center>%1</center>" : "<b>%1</b>").arg(resultStr).replace("\n", "<br>"));
+			QStringList const list = getListOfStr(nodeLabel.textBinded);
+			QString const resultStr = getResultStr(list, repo);
+			nodeLabel.title->setHtml(QString(nodeLabel.center == "true"
+					? "<center>%1</center>" : "<b>%1</b>").arg(resultStr).replace("\n", "<br>"));
 		}
 	}
 }
@@ -295,8 +298,8 @@ bool InterpreterElementImpl::hasPorts() const
 	if (mId.element() == "MetaEntityNode") {
 		QDomDocument portsDoc;
 		portsDoc.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
-		QDomNodeList pointPorts = portsDoc.elementsByTagName("pointPort");
-		QDomNodeList linePorts = portsDoc.elementsByTagName("linePort");
+		QDomNodeList const pointPorts = portsDoc.elementsByTagName("pointPort");
+		QDomNodeList const linePorts = portsDoc.elementsByTagName("linePort");
 		return !pointPorts.isEmpty() || !linePorts.isEmpty();
 	}
 	return false;
@@ -313,7 +316,7 @@ bool InterpreterElementImpl::isResizeable() const
 Qt::PenStyle InterpreterElementImpl::getPenStyle() const
 {
 	if (mId.element() == "MetaEntityEdge") {
-		QString QtStyle = "Qt::" + mEditorRepoApi->stringProperty(mId, "lineType").replace(0, 1, mEditorRepoApi->stringProperty(mId, "lineType").at(0).toUpper());
+		QString const QtStyle = "Qt::" + mEditorRepoApi->stringProperty(mId, "lineType").replace(0, 1, mEditorRepoApi->stringProperty(mId, "lineType").at(0).toUpper());
 		if (QtStyle != "") {
 			if (QtStyle == "Qt::NoPen") {
 				return Qt::NoPen;
@@ -344,12 +347,12 @@ Qt::PenStyle InterpreterElementImpl::getPenStyle() const
 int InterpreterElementImpl::getPenWidth() const
 {
 	if (mId.element() == "MetaEntityEdge") {
-		QDomElement lineWidthElement = mGraphics.firstChildElement("lineWidth");
+		QDomElement const lineWidthElement = mGraphics.firstChildElement("lineWidth");
 		if (lineWidthElement.isNull()) {
 			return 1;
 		}
 		else {
-			QString lineWidth = lineWidthElement.attribute("width");
+			QString const lineWidth = lineWidthElement.attribute("width");
 			if (lineWidth.isEmpty()) {
 				qDebug() << "ERROR: no width of line";
 				return false;
@@ -365,8 +368,9 @@ int InterpreterElementImpl::getPenWidth() const
 					qDebug() << "ERROR: line width is negative number";
 					return false;
 				}
-				else
+				else {
 					return lineWidthInt;
+				}
 			}
 		}
 	}
@@ -394,7 +398,7 @@ void InterpreterElementImpl::drawStartArrow(QPainter *painter) const
 		if (style.isEmpty()) {
 			style = "filled_arrow";
 		}
-		QBrush old = painter->brush();
+		QBrush const old = painter->brush();
 		QBrush brush;
 		brush.setStyle(Qt::SolidPattern);
 
@@ -433,8 +437,8 @@ void InterpreterElementImpl::drawEndArrow(QPainter *painter) const
 {
 	if (mId.element() == "MetaEntityEdge") {
 		QString style = "";
-		foreach (Id edgeChild, mEditorRepoApi->children(mId)) {
-			if(edgeChild.element() == "MetaEntityAssociation") {
+		foreach (Id const &edgeChild, mEditorRepoApi->children(mId)) {
+			if (edgeChild.element() == "MetaEntityAssociation") {
 				 style = mEditorRepoApi->stringProperty(edgeChild, "endType");
 			}
 		}
@@ -485,7 +489,8 @@ bool InterpreterElementImpl::isDividable() const
 
 bool InterpreterElementImpl::hasContainerProperty(QString const &property) const
 {
-	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+	QDomElement const propertiesElement =
+		mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
 		if (!propertiesElement.firstChildElement(property).isNull()) {
 			return true;
@@ -507,7 +512,8 @@ bool InterpreterElementImpl::isSortingContainer() const
 int InterpreterElementImpl::getSizeOfContainerProperty(QString const &property) const
 {
 	int size = 0;
-	QDomElement propertiesElement = mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+	QDomElement const propertiesElement =
+		mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
 		if (!propertiesElement.firstChildElement(property).isNull()) {
 			size = propertiesElement.firstChildElement(property).attribute("size").toInt();

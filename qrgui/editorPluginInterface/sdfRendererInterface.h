@@ -10,7 +10,7 @@ class SdfRendererInterface : public QObject
 {
 public:
 	virtual bool load (const QString &filename) = 0;
-	virtual bool load(QDomDocument &document) = 0;
+	virtual bool load(QDomDocument const &document) = 0;
 	virtual void render(QPainter *painter, const QRectF &bounds) = 0;
 };
 

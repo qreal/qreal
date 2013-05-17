@@ -99,21 +99,23 @@ void StartDialog::exitApp()
 void StartDialog::openInterpretedDiagram()
 {
 	hide();
-	QString fileName = mProjectManager->getOpenFileName(tr("Select file with metamodel to open"));
+	QString const fileName = mProjectManager->openFileName(tr("Select file with metamodel to open"));
 	ProxyEditorManager *editorManagerProxy = mMainWindow->proxyManager();
+
 	if (!fileName.isEmpty() && mProjectManager->open(fileName)) {
 		editorManagerProxy->setProxyManager(new InterpreterEditorManager(fileName));
 		QStringList interpreterDiagramsList;
-		foreach (Id editor, editorManagerProxy->editors()) {
-			foreach (Id diagram, editorManagerProxy->diagrams(editor)) {
+		foreach (Id const &editor, editorManagerProxy->editors()) {
+			foreach (Id const &diagram, editorManagerProxy->diagrams(editor)) {
 				QString const diagramNodeName = editorManagerProxy->diagramNodeName(editor.editor(), diagram.diagram());
 				if (diagramNodeName.isEmpty()) {
 					continue;
 				}
-				interpreterDiagramsList.append("qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
+				interpreterDiagramsList.append("qrm:/" + editor.editor() + "/"
+												+ diagram.diagram() + "/" + diagramNodeName);
 			}
 		}
-		foreach (QString interpreterIdString, interpreterDiagramsList) {
+		foreach (QString const &interpreterIdString, interpreterDiagramsList) {
 			mMainWindow->models()->repoControlApi().exterminate();
 			mMainWindow->models()->reinit();
 			mMainWindow->loadMetamodel();

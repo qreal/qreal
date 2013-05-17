@@ -49,7 +49,7 @@ bool ProjectManager::suggestToOpenExisting()
 	if (!suggestToSaveChangesOrCancel()) {
 		return false;
 	}
-	QString const fileName = getOpenFileName(tr("Open existing project"));
+	QString const fileName = openFileName(tr("Open existing project"));
 	if (fileName.isEmpty()) {
 		return false;
 	}
@@ -117,7 +117,7 @@ bool ProjectManager::open(QString const &fileName)
 
 bool ProjectManager::suggestToImport()
 {
-	return import(getOpenFileName(tr("Select file with a save to import")));
+	return import(openFileName(tr("Select file with a save to import")));
 }
 
 bool ProjectManager::import(QString const &fileName)
@@ -296,7 +296,7 @@ bool ProjectManager::saveAs(QString const &fileName)
 	return true;
 }
 
-QString ProjectManager::getOpenFileName(QString const &dialogWindowTitle)
+QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 {
 	QString fileName = QFileDialog::getOpenFileName(mMainWindow, dialogWindowTitle
 			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
@@ -306,7 +306,7 @@ QString ProjectManager::getOpenFileName(QString const &dialogWindowTitle)
 				, tr("File ") + fileName + tr(" not found. Try again"), QMessageBox::Ok, mMainWindow);
 		fileNotFoundMessage.exec();
 
-		fileName = getOpenFileName(dialogWindowTitle);
+		fileName = openFileName(dialogWindowTitle);
 	}
 	return fileName;
 }

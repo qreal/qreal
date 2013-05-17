@@ -42,7 +42,7 @@ SOURCES += \
 	mainwindow/macExternBrowser.cpp \
 	mainwindow/draggableElement.cpp \
 	mainwindow/paletteTreeWidget.cpp \
-	mainwindow/qscintillaTextEdit.cpp 
+	mainwindow/qscintillaTextEdit.cpp
 
 win32 {
 	HEADERS += \
@@ -115,4 +115,3 @@ SOURCES += \
 
 FORMS += \
 	mainwindow/shapeEdit/shapeEdit.ui \
-

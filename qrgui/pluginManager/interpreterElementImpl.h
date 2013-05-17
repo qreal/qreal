@@ -7,6 +7,7 @@
 #include <QRectF>
 #include <QPointF>
 #include <QPainter>
+
 #include "../editorPluginInterface/elementImpl.h"
 #include "../editorPluginInterface/elementTitleHelpers.h"
 #include "../editorPluginInterface/elementRepoInterface.h"
@@ -20,6 +21,7 @@ typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge
 typedef QPair<bool, qReal::Id> PossibleEdgeType;
 
 namespace qReal {
+
 struct EdgeLabel {
 	QString labelText;
 	QString labelType;
@@ -43,16 +45,16 @@ struct NodeLabel {
 class InterpreterElementImpl : public ElementImpl
 {
 public:
-	InterpreterElementImpl(qrRepo::RepoApi *repo, Id metaId, Id id);
+	InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId, Id const &id);
 	void initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc, QDomNode &portsPicture, int &width, int &height);
 	void initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc, QDomNode &portsPicture, int &width, int &height);
 	void initLabels(int width, int height, ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles);
-	void init(QRectF &contents, QList<StatPoint> &pointPorts,
-			  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-			  QList<ElementTitleInterface*> &titles,
-			  SdfRendererInterface *renderer, SdfRendererInterface *portRenderer);
-	void init(ElementTitleFactoryInterface &factory,
-			  QList<ElementTitleInterface*> &titles);
+	void init(QRectF &contents, QList<StatPoint> &pointPorts
+			, QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
+			, QList<ElementTitleInterface*> &titles
+			, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer);
+	void init(ElementTitleFactoryInterface &factory
+			, QList<ElementTitleInterface*> &titles);
 	void paint(QPainter *painter, QRectF &contents);
 	QStringList getListOfStr(QString const &labelText) const;
 	QString getResultStr(QStringList const &list, ElementRepoInterface *repo) const;

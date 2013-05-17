@@ -9,20 +9,22 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QLabel>
+
 #include "mainWindow.h"
 #include "../pluginManager/proxyEditorManager.h"
 #include "../../qrkernel/ids.h"
 
 namespace  qReal{
 namespace gui{
+
 /// Class for representing editor elements.
 class DraggableElement : public QWidget
 {
 	Q_OBJECT
 public:
 	DraggableElement(MainWindow *mainWindow, Id const &id, QString const &name
-					 , QString const &description
-					 , QIcon const &icon, bool iconsOnly, QWidget *parent = NULL);
+		, QString const &description
+		, QIcon const &icon, bool iconsOnly, QWidget *parent = NULL);
 
 	QIcon icon() const
 	{
@@ -41,6 +43,7 @@ public:
 
 	void setIconSize(int size);
 	void setEditorManagerProxy(EditorManagerInterface *editorManagerProxy);
+
 private slots:
 	void changePropertiesPaletteActionTriggered();
 	void changeAppearancePaletteActionTriggered();
@@ -48,6 +51,7 @@ private slots:
 	void deleteElement();
 	void checkElementForRootDiagramNode();
 	void checkElementForChildren();
+
 private:
 	Id mId;
 	QIcon mIcon;

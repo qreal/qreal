@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDialog>
+
 #include "../pluginManager/interpreterEditorManager.h"
 #include "../mainwindow/mainWindow.h"
 
@@ -18,16 +19,19 @@ public:
 	PropertiesDialog(MainWindow *mainWindow, QWidget *parent = 0);
 	~PropertiesDialog();
 	void init(EditorManagerInterface* interperterEditorManager, Id const &id);
+
 private slots:
 	void closeDialog();
 	void deleteProperty();
 	void addProperty();
 	void changeProperty();
 	void updatePropertiesNamesList();
+
 private:
-	QStringList getPropertiesDisplayedNamesList(QStringList propertiesNames);
+	QStringList getPropertiesDisplayedNamesList(QStringList const &propertiesNames);
 	void change(QString const &text);
 	bool checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id);
+
 	Ui::PropertiesDialog *mUi;
 	EditorManagerInterface *mInterperterEditorManager;
 	Id mId;

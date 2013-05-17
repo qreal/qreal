@@ -1,13 +1,14 @@
-#include "draggableElement.h"
 #include <QtCore/QUuid>
 #include <QtGui/QMouseEvent>
-#include "../../qrkernel/definitions.h"
-#include "paletteTree.h"
 #include <QtCore/QtAlgorithms>
 #include <QtGui/QVBoxLayout>
+
+#include "draggableElement.h"
+#include "mainWindow.h"
+#include "paletteTree.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../dialogs/propertiesDialog.h"
-#include "mainWindow.h"
+#include "../../qrkernel/definitions.h"
 #include "../view/editorView.h"
 #include "../view/editorViewScene.h"
 
@@ -16,11 +17,11 @@ using namespace gui;
 
 DraggableElement::DraggableElement(MainWindow *mainWindow, const Id &id, const QString &name
 		, const QString &description, const QIcon &icon, bool iconsOnly, QWidget *parent)
-	: QWidget(parent)
-	, mId(id)
-	, mIcon(icon)
-	, mText(name)
-	, mMainWindow(mainWindow)
+		: QWidget(parent)
+		, mId(id)
+		, mIcon(icon)
+		, mText(name)
+		, mMainWindow(mainWindow)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 4, 0, 4);

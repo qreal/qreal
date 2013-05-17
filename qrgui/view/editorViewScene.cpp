@@ -875,9 +875,9 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 	}
 
 	foreach (Id diagram, connectableDiagrams) {
-		Id diagramType = mMVIface->logicalAssistApi()->editorManagerInter()->findElementByType(diagram.element());
-		QString name = mMVIface->logicalAssistApi()->editorManagerInter()->friendlyName(diagramType);
-		QString editorName = mMVIface->logicalAssistApi()->editorManagerInter()->friendlyName(Id(diagramType.editor()));
+		Id const diagramType = mMVIface->logicalAssistApi()->editorManagerInter()->findElementByType(diagram.element());
+		QString const name = mMVIface->logicalAssistApi()->editorManagerInter()->friendlyName(diagramType);
+		QString const editorName = mMVIface->logicalAssistApi()->editorManagerInter()->friendlyName(Id(diagramType.editor()));
 		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
 		hasAnyActions = true;
 		connect(action, SIGNAL(triggered()), slot);
@@ -1123,8 +1123,9 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 	QList<QString> allLinks;
 	foreach (PossibleEdge const &possibleEdge, edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
-			&& possibleEdge.first.second.diagram() == child.id().diagram()
-			&& mainWindow()->manager()->isParentOf(child.id().editor(), child.id().diagram(), possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
+		&& possibleEdge.first.second.diagram() == child.id().diagram()
+		&& mainWindow()->manager()->isParentOf(child.id().editor(), child.id().diagram()
+		, possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
 		{
 			allLinks.push_back(possibleEdge.second.second.toString());
 		}

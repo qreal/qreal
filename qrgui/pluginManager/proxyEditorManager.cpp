@@ -3,7 +3,7 @@
 using namespace qReal;
 
 ProxyEditorManager::ProxyEditorManager(EditorManagerInterface *editorManagerInter)
-	: mProxyManager(editorManagerInter)
+		: mProxyManager(editorManagerInter)
 {}
 
 IdList ProxyEditorManager::editors() const
@@ -127,7 +127,7 @@ QStringList ProxyEditorManager::getPropertiesWithDefaultValues(Id const &id) con
 }
 
 IdList ProxyEditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-							  , qrRepo::GraphicalRepoApi const &graphicalApi) const
+		, qrRepo::GraphicalRepoApi const &graphicalApi) const
 {
 	return mProxyManager->checkNeededPlugins(logicalApi, graphicalApi);
 }
@@ -178,7 +178,8 @@ int ProxyEditorManager::isNodeOrEdge(QString const &editor, QString const &eleme
 	return mProxyManager->isNodeOrEdge(editor, element);
 }
 
-bool ProxyEditorManager::isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const
+bool ProxyEditorManager::isParentOf(QString const &editor, QString const &parentDiagram
+		, QString const &parentElement, QString const &childDiagram, QString const &childElement) const
 {
 	return mProxyManager->isParentOf(editor, parentDiagram, parentElement, childDiagram, childElement);
 }
@@ -218,7 +219,8 @@ void ProxyEditorManager::addProperty(Id const &id, QString const &propDisplayedN
 	mProxyManager->addProperty(id, propDisplayedName);
 }
 
-void ProxyEditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
+void ProxyEditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType
+		, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
 {
 	mProxyManager->updateProperties(id, property, propertyType, propertyDefaultValue, propertyDisplayedName);
 }

@@ -51,7 +51,7 @@ public:
 	QStringList getPropertiesWithDefaultValues(Id const &id) const;
 
 	IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-							  , qrRepo::GraphicalRepoApi const &graphicalApi) const;
+		, qrRepo::GraphicalRepoApi const &graphicalApi) const;
 	bool hasElement(Id const &element) const;
 
 	Id findElementByType(QString const &type) const;
@@ -77,7 +77,8 @@ public:
 	bool isParentProperty(Id const &id, QString const &propertyName) const;
 	void deleteProperty(QString const &propDisplayedName) const;
 	void addProperty(Id const &id, QString const &propDisplayedName) const;
-	void updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
+	void updateProperties(Id const &id, QString const &property, QString const &propertyType
+		, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
 	QString getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
 	IdList getChildren(Id const &parent) const;
 	QString getShape(Id const &id) const;
@@ -85,8 +86,8 @@ public:
 	void deleteElement(MainWindow *mainWindow, Id const &id) const;
 	bool isRootDiagramNode(Id const &id) const;
 	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const;
-	void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
-						QString const &lineType, QString const &beginType, QString const &endType) const;
+	void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
+		, QString const &lineType, QString const &beginType, QString const &endType) const;
 	QPair<Id, Id> createEditorAndDiagram(QString const &name) const;
 	void saveMetamodel(QString const &newMetamodelFileName);
 	QString saveMetamodelFilePath() const;
@@ -95,6 +96,7 @@ public:
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
 	virtual QStringList getReferenceProperties(Id const &id) const;
+
 private:
 	EditorManagerInterface *mProxyManager;
 };

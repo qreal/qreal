@@ -6,7 +6,8 @@ using namespace models;
 using namespace models::details;
 
 LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManagerInterface *editorManagerInter)
-	: mModelsAssistApi(logicalModel, editorManagerInter), mLogicalModel(logicalModel), mEditorManagerProxy(editorManagerInter)
+	: mModelsAssistApi(logicalModel, editorManagerInter)
+	, mLogicalModel(logicalModel), mEditorManagerProxy(editorManagerInter)
 {
 }
 

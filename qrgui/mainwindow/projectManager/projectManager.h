@@ -35,7 +35,7 @@ public:
 	bool suggestToSaveChangesOrCancel();
 	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
-	QString getOpenFileName(const QString &dialogWindowTitle);
+	QString openFileName(QString const &dialogWindowTitle) const;
 	QString saveFilePath() const;
 	void setSaveFilePath(QString const &filePath = "");
 	void saveGenCode(QString const &text);

@@ -1,5 +1,7 @@
 #pragma once
+
 #include <QtGui/QCommandLinkButton>
+
 #include "../managedClosableDialog.h"
 
 #include "../../mainwindow/projectManager/projectManager.h"

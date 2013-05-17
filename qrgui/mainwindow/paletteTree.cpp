@@ -1,13 +1,14 @@
 #include <QtCore/QUuid>
 #include <QtGui/QMouseEvent>
-#include "../../qrkernel/definitions.h"
-#include "paletteTree.h"
 #include <QtCore/QtAlgorithms>
 #include <QtGui/QVBoxLayout>
-#include "../../qrkernel/settingsManager.h"
-#include "../dialogs/propertiesDialog.h"
+
+#include "paletteTree.h"
 #include "draggableElement.h"
 #include "paletteTreeWidget.h"
+#include "../../qrkernel/definitions.h"
+#include "../../qrkernel/settingsManager.h"
+#include "../dialogs/propertiesDialog.h"
 
 using namespace qReal;
 using namespace gui;
@@ -15,8 +16,8 @@ using namespace gui;
 EditorManagerInterface * PaletteTree::mEditorManagerProxy = NULL;
 
 PaletteTree::PaletteTree(QWidget *parent)
-	: QWidget(parent)
-	, mCurrentEditor(0)
+		: QWidget(parent)
+		, mCurrentEditor(0)
 {
 	createPaletteTree();
 }
@@ -43,8 +44,7 @@ void PaletteTree::addTopItemType(const Id &id, const QString &name
 
 bool PaletteTree::idLessThan(const Id &s1, const Id &s2)
 {
-	return mEditorManagerProxy->friendlyName(s1).toLower() <
-			mEditorManagerProxy->friendlyName(s2).toLower();
+	return mEditorManagerProxy->friendlyName(s1).toLower() < mEditorManagerProxy->friendlyName(s2).toLower();
 }
 
 void PaletteTree::collapseChildren(QTreeWidgetItem *item)

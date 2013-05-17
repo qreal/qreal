@@ -20,6 +20,7 @@
 class Element;
 
 namespace qReal {
+
 class InterpreterEditorManager : public QObject, public EditorManagerInterface
 {
 	Q_OBJECT
@@ -57,7 +58,7 @@ public:
 	virtual QStringList getPropertiesWithDefaultValues(Id const &id) const;
 
 	IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-							  , qrRepo::GraphicalRepoApi const &graphicalApi) const;
+		, qrRepo::GraphicalRepoApi const &graphicalApi) const;
 	bool hasElement(Id const &element) const;
 
 	Id findElementByType(QString const &type) const;
@@ -71,16 +72,19 @@ public:
 	QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const;
 	QStringList elements(QString const &editor, QString const &diagram) const;
 	int isNodeOrEdge(QString const &editor, QString const &element) const;
-	bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const;
+	bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement,
+			QString const &childDiagram, QString const &childElement) const;
 	QString diagramName(QString const &editor, QString const &diagram) const;
 	QString diagramNodeName(QString const &editor, QString const &diagram) const;
 	bool isInterpretationMode() const;
 
 	bool isParentProperty(Id const &id, QString const &propertyName) const;
-	void deletePropertyInElement(qrRepo::RepoApi *repo, Id const &editor, Id const &diagram, QString const &propDisplayedName) const;
+	void deletePropertyInElement(qrRepo::RepoApi *repo, Id const &editor, Id const &diagram,
+			QString const &propDisplayedName) const;
 	void deleteProperty(QString const &propDisplayedName) const;
 	void addProperty(Id const &id, QString const &propDisplayedName) const;
-	void updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
+	void updateProperties(Id const &id, QString const &property, QString const &propertyType,
+			QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
 	QString getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
 	IdList getChildren(Id const &parent) const;
 	QString getShape(Id const &id) const;

@@ -9,6 +9,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QLabel>
+
 #include "mainWindow.h"
 #include "../pluginManager/proxyEditorManager.h"
 #include "../../qrkernel/ids.h"
@@ -107,11 +108,6 @@ private:
 	/// Change icon's sizes in widget
 	void resizeIcons();
 
-	/// EditorManager instance used to sort palette's content.
-	/// Made static to be used inside idLessThan()
-	static EditorManagerInterface *mEditorManagerProxy;
-	MainWindow *mMainWindow;
-
 	/// Forbids to make copies of the object.
 	explicit PaletteTree(const PaletteTree &paletteTree);
 
@@ -149,6 +145,11 @@ private:
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	*/
 	void loadEditors(EditorManagerInterface *editorManagerProxy);
+
+	/// EditorManager instance used to sort palette's content.
+	/// Made static to be used inside idLessThan()
+	static EditorManagerInterface *mEditorManagerProxy;
+	MainWindow *mMainWindow;
 
 	/// Hash table with editor ids.
 	QHash<Id, int> mCategories;
