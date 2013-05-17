@@ -294,11 +294,13 @@ void MainWindow::loadMetamodel()
 void MainWindow::closeDiagramTab(Id const &id)
 {
 	IdList const grIds = mModels->graphicalRepoApi().graphicalElements(id.type());
-	QModelIndex index = mModels->graphicalModelAssistApi().indexById(grIds[0]);
-	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
-		if (tab != NULL && tab->mvIface()->rootIndex() == index) {
-			mUi->tabs->removeTab(i);
+	if (!grIds.isEmpty()) {
+		QModelIndex index = mModels->graphicalModelAssistApi().indexById(grIds[0]);
+		for (int i = 0; i < mUi->tabs->count(); i++) {
+			EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+			if (tab != NULL && tab->mvIface()->rootIndex() == index) {
+				mUi->tabs->removeTab(i);
+			}
 		}
 	}
 }

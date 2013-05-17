@@ -103,6 +103,7 @@ private:
 	void setProperty(qrRepo::RepoApi* repo, Id const &id, QString const &property, QVariant const &propertyValue) const;
 	Id getElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const;
 	Id getDiagramOrElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &editor) const;
+	void setStandartConfigurations(qrRepo::RepoApi *repo, Id const &id, Id const &parent, const QString &name) const;
 	QPair<qrRepo::RepoApi*, Id> getRepoAndMetaId(Id const &id) const;
 	QPair<qrRepo::RepoApi*, Id> getRepoAndElement(QString const &editor, QString const &element) const;
 	QPair<qrRepo::RepoApi*, Id> getRepoAndDiagram(QString const &editor, QString const &diagram) const;

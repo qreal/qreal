@@ -732,9 +732,6 @@ void InterpreterEditorManager::deleteElement(MainWindow *mainWindow, Id const &i
 		QModelIndex index = mainWindow->models()->logicalModelAssistApi().indexById(logicalId);
 			mainWindow->models()->logicalModel()->removeRow(index.row(), index.parent());
 	}
-	foreach (Id link, repo->links(metaId)) {
-		repo->removeElement(link);
-	}
 	repo->removeChild(repo->parent(metaId), metaId);
 	repo->removeElement(metaId);
 }
@@ -748,11 +745,31 @@ bool InterpreterEditorManager::isRootDiagramNode(Id const &id) const
 	return repo->stringProperty(editorAndDiagram.second, "nodeName") == repo->name(metaId);
 }
 
+void InterpreterEditorManager::setStandartConfigurations(qrRepo::RepoApi *repo, Id const &id, Id const &parent, const QString &name) const
+{
+	repo->addChild(parent, id);
+	repo->setProperty(id, "name", name);
+	repo->setProperty(id, "displayedName", name);
+	repo->setFrom(id, Id::rootId());
+	repo->setTo(id, Id::rootId());
+	repo->setProperty(id, "fromPort", 0.0);
+	repo->setProperty(id, "toPort", 0.0);
+	repo->setProperty(id, "links", IdListHelper::toVariant(IdList()));
+	repo->setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
+	repo->setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
+	repo->setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
+	repo->setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
+
+	repo->setProperty(id, "position", QPointF(0,0));
+	repo->setProperty(id, "configuration", QVariant(QPolygon()));
+}
+
+
 void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
 {
 	QString const shape = "<graphics>\n    <picture sizex=\"168\" sizey=\"111\">\n    <rectangle fill=\"#ffffff\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" stroke-width=\"0\" x1=\"1\" y2=\"107\" fill-style=\"none\" x2=\"125\"/>\n    </picture>\n    <labels>\n    <label x=\"41\" y=\"43\" textBinded=\"name\"/>\n    </labels>\n    <ports>\n    <pointPort x=\"2\" y=\"52\"/>\n    <pointPort x=\"134\" y=\"56\"/>\n    <linePort>\n    <start startx=\"29\" starty=\"110\"/>\n    <end endx=\"95\" endy=\"111\"/>\n    </linePort>\n    </ports>\n</graphics>\n";
 	QPair<qrRepo::RepoApi*, Id> repoAndDiagram = getRepoAndDiagram(diagram.editor(), diagram.diagram());
-	qrRepo::RepoApi * const repo = repoAndDiagram.first;
+	qrRepo::RepoApi *repo = repoAndDiagram.first;
 	Id const diag = repoAndDiagram.second;
 	Id const nodeId("MetaEditor", "MetaEditor", "MetaEntityNode", QUuid::createUuid().toString());
 	repo->addChild(diag, nodeId);
@@ -766,27 +783,20 @@ void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &
 	repo->setProperty(nodeId, "isResizeable", "true");
 	repo->setProperty(nodeId, "isPin", "false");
 	repo->setProperty(nodeId, "isAction", "false");
+	repo->setProperty(nodeId, "links", IdListHelper::toVariant(IdList()));
 	foreach (Id const elem, repo->children(diag)) {
 		if (repo->name(elem) == "AbstractNode" && repo->isLogicalElement(elem)) {
-			IdList links;
 			Id const inheritanceLink("MetaEditor", "MetaEditor", "Inheritance", QUuid::createUuid().toString());
-			repo->addChild(nodeId, inheritanceLink);
-			repo->setProperty(inheritanceLink, "name", "Inheritance");
-			repo->setProperty(inheritanceLink, "from", elem.toVariant());
-			repo->setProperty(inheritanceLink, "to", nodeId.toVariant());
-			links << inheritanceLink;
+			setStandartConfigurations(repo, inheritanceLink, Id::rootId(), "Inheritance");
+			repo->setFrom(inheritanceLink, elem);
+			repo->setTo(inheritanceLink, nodeId);
 
 			Id const containerLink("MetaEditor", "MetaEditor", "Container", QUuid::createUuid().toString());
-			repo->addChild(nodeId, containerLink);
-			repo->setProperty(containerLink, "name", "Container");
-			repo->setProperty(containerLink, "from", nodeId.toVariant());
-			repo->setProperty(containerLink, "to", elem.toVariant());
-			links << containerLink;
-			repo->setProperty(nodeId, "links", IdListHelper::toVariant(links));
-			return;
+			setStandartConfigurations(repo, containerLink, Id::rootId(), "Container");
+			repo->setFrom(containerLink, nodeId);
+			repo->setTo(containerLink, elem);
 		}
 	}
-	repo->setProperty(nodeId, "links", "");
 }
 
 void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
@@ -830,14 +840,14 @@ QPair<Id, Id> InterpreterEditorManager::createEditorAndDiagram(QString const &na
 	repo->setProperty(nodeId, "name", "AbstractNode");
 	repo->setProperty(nodeId, "displayedName", "AbstractNode");
 	repo->setProperty(nodeId, "shape", "");
-//	Id const containerLink("MetaEditor", "MetaEditor", "Container", QUuid::createUuid().toString());
-//	repo->addChild(nodeId, containerLink);
-//	repo->setProperty(containerLink, "from", nodeId.toVariant());
-//	repo->setProperty(containerLink, "to", nodeId.toVariant());
-	repo->setProperty(nodeId, "links", "");
+	repo->setProperty(nodeId, "links", IdListHelper::toVariant(IdList()));
 	repo->setProperty(nodeId, "isResizeable", "true");
 	repo->setProperty(nodeId, "isPin", "false");
 	repo->setProperty(nodeId, "isAction", "false");
+	Id const containerLink("MetaEditor", "MetaEditor", "Container", QUuid::createUuid().toString());
+	setStandartConfigurations(repo, containerLink, Id::rootId(), "Container");
+	repo->setFrom(containerLink, nodeId);
+	repo->setTo(containerLink, nodeId);
 	return qMakePair(Id(repo->name(editor)),  Id(repo->name(editor), repo->name(diagram)));
 }
 
