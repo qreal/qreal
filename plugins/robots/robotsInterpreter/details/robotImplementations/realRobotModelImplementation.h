@@ -31,13 +31,13 @@ public:
 	virtual void disconnectFromRobot();
 
 	virtual brickImplementations::RealBrickImplementation &brick();
-	virtual sensorImplementations::BluetoothTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::BluetoothSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::BluetoothColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::BluetoothLightSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::BluetoothSoundSensorImplementation *soundSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::BluetoothAccelerometerSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::BluetoothGyroscopeSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const &port) const;
+	virtual sensorImplementations::BluetoothTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::BluetoothSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::BluetoothColorSensorImplementation *colorSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::BluetoothLightSensorImplementation *lightSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::BluetoothSoundSensorImplementation *soundSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::BluetoothAccelerometerSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::BluetoothGyroscopeSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const port) const;
 
 	virtual motorImplementations::RealMotorImplementation &motorA();
 	virtual motorImplementations::RealMotorImplementation &motorB();
@@ -67,15 +67,15 @@ private:
 	sensorImplementations::BluetoothEncoderImplementation mEncoderB;
 	sensorImplementations::BluetoothEncoderImplementation mEncoderC;
 
-	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
-	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
-	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
-	virtual void addLightSensor(inputPort::InputPortEnum const &port);
-	virtual void addSoundSensor(inputPort::InputPortEnum const &port);
-	virtual void addAccelerometerSensor(inputPort::InputPortEnum const &port);
-	virtual void addGyroscopeSensor(inputPort::InputPortEnum const &port);
+	virtual void addTouchSensor(inputPort::InputPortEnum const port);
+	virtual void addSonarSensor(inputPort::InputPortEnum const port);
+	virtual void addColorSensor(inputPort::InputPortEnum const port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
+	virtual void addLightSensor(inputPort::InputPortEnum const port);
+	virtual void addSoundSensor(inputPort::InputPortEnum const port);
+	virtual void addAccelerometerSensor(inputPort::InputPortEnum const port);
+	virtual void addGyroscopeSensor(inputPort::InputPortEnum const port);
 
-	void configureSensorImpl(inputPort::InputPortEnum const &port);
+	void configureSensorImpl(inputPort::InputPortEnum const port);
 };
 
 }

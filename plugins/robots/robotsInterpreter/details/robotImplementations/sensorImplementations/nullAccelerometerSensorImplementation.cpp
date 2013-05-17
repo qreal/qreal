@@ -2,7 +2,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-NullAccelerometerSensorImplementation::NullAccelerometerSensorImplementation(inputPort::InputPortEnum const &port)
+NullAccelerometerSensorImplementation::NullAccelerometerSensorImplementation(inputPort::InputPortEnum const port)
 	: NullSensorImplementation(port, sensorType::accelerometer)
 {
 }

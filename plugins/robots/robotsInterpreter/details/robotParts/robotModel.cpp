@@ -34,42 +34,42 @@ robotParts::Brick &RobotModel::brick()
 	return mBrick;
 }
 
-robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const &port) const
+robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::TouchSensor *>(mSensors[port]);
 }
 
-robotParts::SonarSensor *RobotModel::sonarSensor(inputPort::InputPortEnum const &port) const
+robotParts::SonarSensor *RobotModel::sonarSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::SonarSensor *>(mSensors[port]);
 }
 
-robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const &port) const
+robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::ColorSensor *>(mSensors[port]);
 }
 
-robotParts::LightSensor *RobotModel::lightSensor(inputPort::InputPortEnum const &port) const
+robotParts::LightSensor *RobotModel::lightSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::LightSensor *>(mSensors[port]);
 }
 
-robotParts::SoundSensor *RobotModel::soundSensor(inputPort::InputPortEnum const &port) const
+robotParts::SoundSensor *RobotModel::soundSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::SoundSensor *>(mSensors[port]);
 }
 
-robotParts::GyroscopeSensor *RobotModel::gyroscopeSensor(const inputPort::InputPortEnum &port) const
+robotParts::GyroscopeSensor *RobotModel::gyroscopeSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::GyroscopeSensor *>(mSensors[port]);
 }
 
-robotParts::AccelerometerSensor *RobotModel::accelerometerSensor(const inputPort::InputPortEnum &port) const
+robotParts::AccelerometerSensor *RobotModel::accelerometerSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::AccelerometerSensor *>(mSensors[port]);
 }
 
-robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) const
+robotParts::Sensor *RobotModel::sensor(inputPort::InputPortEnum const port) const
 {
 	return mSensors[port];
 }
@@ -98,7 +98,7 @@ void RobotModel::configureSensors(sensorType::SensorTypeEnum const &port1
 }
 
 void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
-		, inputPort::InputPortEnum const &port)
+		, inputPort::InputPortEnum const port)
 {
 	mRobotImpl->configureSensor(sensorType, port);
 }

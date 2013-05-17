@@ -14,7 +14,7 @@ class TouchSensor : public Sensor
 {
 	Q_OBJECT
 public:
-	TouchSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
+	TouchSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const port);
 };
 
 }

@@ -12,7 +12,7 @@ class NullAccelerometerSensorImplementation : public NullSensorImplementation
 {
 	Q_OBJECT
 public:
-	NullAccelerometerSensorImplementation(inputPort::InputPortEnum const &port);
+	NullAccelerometerSensorImplementation(inputPort::InputPortEnum const port);
 protected slots:
 	virtual void timerTimeout();
 };

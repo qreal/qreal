@@ -2,7 +2,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-NullSoundSensorImplementation::NullSoundSensorImplementation(inputPort::InputPortEnum const &port)
+NullSoundSensorImplementation::NullSoundSensorImplementation(inputPort::InputPortEnum const port)
 	: NullSensorImplementation(port, sensorType::sound)
 {
 }

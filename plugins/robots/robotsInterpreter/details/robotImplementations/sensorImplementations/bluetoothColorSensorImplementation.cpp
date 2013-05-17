@@ -8,7 +8,7 @@ using namespace robotImplementations::sensorImplementations;
 
 BluetoothColorSensorImplementation::BluetoothColorSensorImplementation(
 		RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const &port
+		, inputPort::InputPortEnum const port
 		, lowLevelSensorType::SensorTypeEnum mode
 		, sensorType::SensorTypeEnum const sensorType)
 	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType, mode, sensorMode::RAWMODE, port)
