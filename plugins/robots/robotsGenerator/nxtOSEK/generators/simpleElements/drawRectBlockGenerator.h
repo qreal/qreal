@@ -3,19 +3,19 @@
 #include "../../../../../../qrkernel/ids.h"
 #include "abstractSimpleElementGenerator.h"
 #include "../abstractElementGenerator.h"
+#include "drawBlockGenerator.h"
 
 namespace robots {
 namespace generator {
 class NxtOSEKRobotGenerator;
 
-class DrawRectBlockGenerator : public AbstractSimpleElementGenerator
+class DrawRectBlockGenerator : public DrawBlockGenerator
 {
 public:
 	DrawRectBlockGenerator();
 
 protected:
-	virtual QList<SmartLine> convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-			, qReal::Id const elementId, qReal::Id const logicElementId);
+	virtual void generateBmpFile(NxtOSEKRobotGenerator *nxtGen, QString name, qReal::Id const logicElementId);
 };
 }
 }

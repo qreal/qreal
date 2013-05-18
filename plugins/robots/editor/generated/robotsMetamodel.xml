@@ -1445,8 +1445,7 @@
 						<property displayedName="Y координата" type="int" name="YCoordinateText">
                             <default>0</default>
                         </property>
-						<property displayedName="Текст" type="string" name="PrintText">
-                        </property>
+						<property displayedName="Текст" type="string" name="PrintText"/>
                     </properties>
                     <generalizations>
                         <parent parentName="AbstractNode"/>

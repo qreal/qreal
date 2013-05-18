@@ -15,7 +15,11 @@ QList<SmartLine> PrintTextBlockGenerator::convertElementIntoDirectCommand(NxtOSE
 
 	int const x = nxtGen->api()->stringProperty(logicElementId, "XCoordinateText").toInt();
 	int const y = nxtGen->api()->stringProperty(logicElementId, "YCoordinateText").toInt();
-	QString const text = nxtGen->api()->stringProperty(logicElementId, "Text");
+	QString text = nxtGen->api()->stringProperty(logicElementId, "PrintText").toUtf8();
+
+	result.append(SmartLine("display_goto_xy(" + QString::number(x) + "," + QString::number(y) + ");", elementId));
+	result.append(SmartLine("display_string(\"" + text + "\");", elementId));
+	result.append(SmartLine("display_update();", elementId));
 
 	return result;
 }

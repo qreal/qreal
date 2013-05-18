@@ -10,6 +10,8 @@
 #include "simpleElements/waitForColorIntensityBlockGenerator.h"
 #include "simpleElements/balanceGenerator.h"
 #include "simpleElements/drawPixelBlockGenerator.h"
+#include "simpleElements/drawRectBlockGenerator.h"
+#include "simpleElements/clearScreenBlockGenerator.h"
 #include "simpleElements/drawLineBlockGenerator.h"
 #include "simpleElements/drawCircleBlockGenerator.h"
 #include "simpleElements/printTextBlockGenerator.h"
@@ -68,6 +70,10 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 		return new DrawCircleBlockGenerator();
 	} else if (elementType == "PrintText") {
 		return new PrintTextBlockGenerator();
+	} else if (elementType == "DrawRect") {
+		return new DrawRectBlockGenerator();
+	} else if (elementType == "ClearScreen") {
+		return new ClearScreenBlockGenerator();
 	}
 
 	return new InitialNodeGenerator();

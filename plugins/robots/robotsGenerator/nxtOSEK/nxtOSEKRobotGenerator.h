@@ -53,6 +53,12 @@ public:
 	/// Returns string property treated as expression and casts it to int if nessesary
 	QString intExpression(qReal::Id const &id, QString const &propertyName) const;
 
+	void addBmpFileName(QString name);
+	QString generateBmpFilesStringForC();
+	QString generateBmpFilesStringForMake();
+	void increaseBmpCounter();
+	int bmpFilesNumber();
+
 private:
 	void createProjectDir(QString const &projectDir);
 	void insertCode(
@@ -96,6 +102,9 @@ private:
 	 * QString in this case is qReal::Id string presentation.
 	 */
 	QMap<QString, QStack<int> > mElementToStringListNumbers;
+
+	QList<QString> mBmpFileNames;
+	int mBmpFilesCounter;
 
 	Variables mVariables;
 	int mVariablePlaceInGenStrSet;

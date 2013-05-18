@@ -114,6 +114,7 @@ void UnrealRobotModelImplementation::stopRobot()
 	mMotorA.off();
 	mMotorB.off();
 	mMotorC.off();
+	mDisplay.clearScreen();
 	mD2Model->stopRobot();
 }
 

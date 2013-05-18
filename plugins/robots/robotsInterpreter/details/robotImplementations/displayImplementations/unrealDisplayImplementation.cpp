@@ -1,6 +1,7 @@
+#include <QMutableListIterator>
+
 #include "unrealDisplayImplementation.h"
 #include "../details/nxtDisplay.h"
-//#include "../../../../../../qrutils/graphicsUtils/painterInterface.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::displayImplementations;
@@ -87,12 +88,22 @@ void UnrealDisplayImplementation::printText(int x, int y, QString text)
 
 void UnrealDisplayImplementation::paint(QPainter *painter)
 {
+	//painter->drawLine(10,10,30,30);
 	double pixWidth = (double) mD2Model->display()->displayWidth() / 100;
 	double pixHeight = (double) mD2Model->display()->displayHeight() / 64;
 
 	QPen q;
 	QFont f;
-	f.setPixelSize(pixHeight*6);
+	f.setPixelSize(pixHeight*8);
+
+	painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
+	QMutableListIterator<QPoint> points(mPoints);
+
+	while(points.hasNext()){
+		QPoint p = points.next();
+		painter->drawRect(p.x()*pixWidth, p.y()*pixHeight, pixWidth, pixHeight);
+	}
+
 	q.setWidth((pixWidth+pixHeight)/2);
 	painter->setPen(q);
 	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
@@ -103,12 +114,6 @@ void UnrealDisplayImplementation::paint(QPainter *painter)
 	while(lines.hasNext()){
 		QLine l = lines.next();
 		painter->drawLine(l.x1()*pixWidth, l.y1()*pixHeight, l.x2()*pixWidth, l.y2()*pixHeight);
-	}
-
-	QMutableListIterator<QPoint> points(mPoints);
-	while(points.hasNext()){
-		QPoint p = points.next();
-		painter->drawRect(p.x(),p.y(),pixWidth,pixHeight);
 	}
 
 	QMutableListIterator<QRect> circles(mCircles);
