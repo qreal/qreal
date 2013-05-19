@@ -1,5 +1,5 @@
 #pragma once
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include "../utilsDeclSpec.h"
 
 namespace graphicsUtils

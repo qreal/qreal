@@ -1,19 +1,17 @@
 #include "metaEditorSupportPlugin.h"
 
 #include <QtCore/QProcess>
-#include <QtGui/QApplication>
-#include <QtGui/QFileDialog>
-#include <QtGui/QMessageBox>
-#include <QtGui/QProgressBar>
-#include <QtGui/QDesktopWidget>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QDesktopWidget>
 
 #include "../../../qrkernel/settingsManager.h"
 #include "../../../qrmc/metaCompiler.h"
 
 #include "editorGenerator.h"
 #include "xmlParser.h"
-
-Q_EXPORT_PLUGIN2(metaEditorSupportPlugin, metaEditor::MetaEditorSupportPlugin)
 
 using namespace qReal;
 using namespace metaEditor;

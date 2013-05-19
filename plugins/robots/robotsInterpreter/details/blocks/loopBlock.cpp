@@ -13,8 +13,7 @@ LoopBlock::LoopBlock()
 void LoopBlock::run()
 {
 	--mIterations;
-	if (mIterations <= 0)
-	{
+	if (mIterations < 0) {
 		mFirstRun = true;
 		emit done(mNextBlock);
 	} else {

@@ -3,10 +3,10 @@
 #include <QtCore/QSignalMapper>
 #include <QtCore/QTranslator>
 #include <QtCore/QDir>
-#include <QtGui/QMainWindow>
-#include <QtGui/QSplashScreen>
-#include <QtGui/QProgressBar>
-#include <QtGui/QListWidget>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QSplashScreen>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QListWidget>
 #include <QtSql/QSqlDatabase>
 
 #include "../pluginManager/editorManagerInterface.h"
@@ -80,7 +80,7 @@ public:
 	QAction *actionPasteOnDiagram() const;
 	QAction *actionPasteCopyOfLogical() const;
 
-	virtual void highlight(Id const &graphicalId, bool exclusive = true);
+	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
@@ -88,9 +88,10 @@ public:
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
 	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy);
-	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index, int const &role);
-	void openReferenceList(QPersistentModelIndex const &index
-			, QString const &referenceType, QString const &propertyValue, int role);
+	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
+			, int const &role);
+	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue
+			, int role);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -107,8 +108,8 @@ public:
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
 
-	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
-	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
+	virtual void saveDiagramAsAPictureToFile(QString const &fileName);
+	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles);
 	virtual IdList selectedElementsOnActiveDiagram();
 	virtual void updateActiveDiagram();
 	virtual void deleteElementFromDiagram(Id const &id);
@@ -121,6 +122,18 @@ public:
 	void closeDiagramTab(Id const &id);
 	void clearSelectionOnTabs();
 	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
+
+	virtual QDockWidget *logicalModelDock() const;
+	virtual QDockWidget *graphicalModelDock() const;
+	virtual QDockWidget *propertyEditorDock() const;
+	virtual QDockWidget *errorReporterDock() const;
+	virtual QDockWidget *paletteDock() const;
+
+	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second);
+	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
+
+	QListIterator<EditorView *> openedEditorViews() const;
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
@@ -147,6 +160,7 @@ public slots:
 	void createDiagram(QString const &idString);
 
 private slots:
+	void initToolPlugins();
 
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
@@ -247,8 +261,8 @@ private:
 	void deleteFromExplorer(bool isLogicalModel);
 	void keyPressEvent(QKeyEvent *event);
 
-	QString getSaveFileName(const QString &dialogWindowTitle);
-	QString getOpenFileName(const QString &dialogWindowTitle);
+	QString getSaveFileName(QString const &dialogWindowTitle);
+	QString getOpenFileName(QString const &dialogWindowTitle);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
 	void selectItemInLogicalModel(Id const &id);
@@ -286,8 +300,6 @@ private:
 	void showDockWidget(QDockWidget *dockWidget, QString const &name);
 
 	QString getNextDirName(QString const &name);
-
-	void initToolPlugins();
 
 	void initMiniMap();
 	void initToolManager();

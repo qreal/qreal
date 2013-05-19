@@ -64,6 +64,7 @@ protected:
 	void error(QString const &message);
 
 	QVariant evaluate(QString const &propertyName);
+	bool evaluateBool(QString const &propertyName);
 
 private slots:
 	void finishedRunning();

@@ -1,6 +1,6 @@
 TEMPLATE = lib
 
-QT += xml
+QT += xml widgets
 
 DESTDIR = ../bin
 
@@ -16,7 +16,6 @@ HEADERS += \
 	$$PWD/outFile.h \
 	$$PWD/utilsDeclSpec.h \
 	$$PWD/xmlUtils.h \
-	$$PWD/ui_watchListWindow.h \
 	$$PWD/watchListWindow.h \
 	$$PWD/metamodelGeneratorSupport.h \
 	$$PWD/inFile.h \

@@ -1,7 +1,7 @@
 DESTDIR = ../bin
 
-QT += svg xml
-CONFIG += rpath_libdirs help
+QT += svg xml printsupport widgets help
+CONFIG += rpath_libdirs
 macx {
 	CONFIG -= app_bundle
 }

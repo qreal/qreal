@@ -1,11 +1,13 @@
 #include "xmlCompiler.h"
 
-#include <QCoreApplication>
-#include <QStringList>
-#include <QDebug>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QStringList>
+#include <QtCore/QDebug>
 
-void myMessageOutput(QtMsgType type, const char *msg)
- {
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
+{
+	Q_UNUSED(context)
+	const char *msg = message.toLatin1().data();
 	switch (type) {
 		case QtDebugMsg:
 			fprintf(stdout, "Debug: %s\n", msg);
@@ -24,7 +26,7 @@ void myMessageOutput(QtMsgType type, const char *msg)
 
 int main(int argc, char *argv[])
 {
-	qInstallMsgHandler(myMessageOutput);
+	qInstallMessageHandler(myMessageOutput);
 	QCoreApplication app(argc, argv);
 	QStringList args = app.arguments();
 

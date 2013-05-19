@@ -8,7 +8,6 @@ Thread::Thread(gui::MainWindowInterpretersInterface &interpretersInterface, Bloc
 		, Id const &initialNode)
 	: mInterpretersInterface(interpretersInterface)
 	, mCurrentBlock(NULL)
-	, mBlocksTable(blocksTable)
 {
 	mCurrentBlock = blocksTable.block(initialNode);
 }

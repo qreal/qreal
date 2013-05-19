@@ -4,9 +4,9 @@
 #include "GeometricForms.h"
 #include "mixedgesturesmanager.h"
 
-const QString comma = ", ";
-const QString pointDelimeter = " : ";
-const QString pathDelimeter = " | ";
+QString const comma = ", ";
+QString const pointDelimeter = " : ";
+QString const pathDelimeter = " | ";
 
 
 MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManagerInterface * editorManagerInter

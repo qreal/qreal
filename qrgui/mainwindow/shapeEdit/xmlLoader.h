@@ -11,8 +11,8 @@ class XmlLoader
 {
 public:
 	XmlLoader(Scene *scene);
-	void readString(const QString &text);
-	void readFile(const QString &fileName);
+	void readString(QString const &text);
+	void readFile(QString const &fileName);
 
 private:
 	QDomDocument mDocument;
@@ -50,6 +50,8 @@ private:
 	void readLabel(QDomElement const &label);
 	void readLinePort(QDomElement const &linePort);
 	void readPointPort(QDomElement const &pointPort);
+
+	Item::VisibilityCondition readVisibility(QDomElement const &item);
 
 	bool isNotLCMZ(QString str, int i);
 };

@@ -30,7 +30,7 @@ namespace qrmc {
 		bool load();
 		void generate(QString const &headerTemplate, QString const &sourceTemplate,
 					  QString const &nodeTemplate, QString const &edgeTemplate,
-					  QString const & elementsHeaderTemplate, QString const &resourceTemplate,
+					  QString const &elementsHeaderTemplate, QString const &resourceTemplate,
 					  QString const &projectTemplate, QMap<QString, QString> const &utils);
 
 		Type *findType(QString const &name);

@@ -8,6 +8,8 @@ RCC_DIR = .moc
 
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
 
+QT += widgets
+
 TRANSLATIONS = refactoringSupport_ru.ts
 
 HEADERS = \

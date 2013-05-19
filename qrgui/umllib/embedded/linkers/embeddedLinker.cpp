@@ -36,7 +36,7 @@ EmbeddedLinker::EmbeddedLinker()
 	setZValue(300);
 	setFlag(ItemStacksBehindParent, false);
 
-	setAcceptsHoverEvents(true);
+	setAcceptHoverEvents(true);
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdges()));
 }
@@ -137,44 +137,50 @@ bool EmbeddedLinker::isDirected()
 
 void EmbeddedLinker::takePosition(int index, int maxIndex)
 {
-	const float Pi = 3.141592;
-	QRectF bounding = mMaster->boundingRect();
+	qreal const pi = 3.141592;
+	QRectF const bounding = mMaster->boundingRect();
 
-	float top = bounding.topLeft().y();
-	float left = bounding.topLeft().x();
-	float right = bounding.bottomRight().x();
-	float bottom = bounding.bottomRight().y();
-	float height = bottom - top;
-	float width = right - left;
+	qreal const top = bounding.topLeft().y();
+	qreal const left = bounding.topLeft().x();
+	qreal const right = bounding.bottomRight().x();
+	qreal const bottom = bounding.bottomRight().y();
+	qreal const height = bottom - top;
+	qreal const width = right - left;
 
-	float angle = 2*Pi*index/maxIndex;
+	qreal const angle = 2 * pi * index / maxIndex;
 
 	int rW = width;
 	int rH = height;
-	if (rW < 150)
+	if (rW < 150) {
 		rW *= 1.5;
-	else
+	} else {
 		rW += 5;
-	if (rH < 150)
+	}
+	if (rH < 150) {
 		rH *= 1.5;
-	else
+	} else {
 		rH += 5;
+	}
 
-	float px = left + width/2 + rW*cos(angle - Pi/2)/2;
-	float py = bottom - height/2 + rH*sin(angle - Pi/2)/2;
+	// TODO: customize start angle
+	qreal const px = left + width / 2 + rW * cos(angle) / 2;
+	qreal const py = bottom - height / 2 + rH * sin(angle) / 2;
 
-	//if linker covers master node:
+	// if linker covers master node:
 
-	float min = py - top;
-	if (min > bottom - py)
+	qreal min = py - top;
+	if (min > bottom - py) {
 		min = bottom - py;
-	if (min > px - left)
+	}
+	if (min > px - left) {
 		min = px - left;
-	if (min > right - px)
+	}
+	if (min > right - px) {
 		min = right - px;
+	}
 
-	float fx;
-	float fy;
+	qreal fx;
+	qreal fy;
 	mIndent = SettingsManager::value("EmbeddedLinkerIndent").toFloat();
 	mIndent *= 0.8;
 	if (mIndent > 17) {
@@ -182,24 +188,15 @@ void EmbeddedLinker::takePosition(int index, int maxIndex)
 	}
 
 	//obviously, top != left != right != bottom
-	if ((bottom - py == min) || (py - top == min))
-	{
+	if ((bottom - py == min) || (py - top == min)) {
 		fx = px;
-		if (bottom - py == min)
-			fy = bottom + mIndent;
-		else
-			fy = top - mIndent;
-	}
-	else
-	{
+		fy = bottom - py == min ? bottom + mIndent : top - mIndent;
+	} else {
+		fx = right - px == min ? right + mIndent : left - mIndent;
 		fy = py;
-		if (right - px == min)
-			fx = right + mIndent;
-		else
-			fx = left - mIndent;
 	}
 
-	setPos(fx,fy);
+	setPos(fx, fy);
 }
 
 QRectF EmbeddedLinker::boundingRect() const {
@@ -226,7 +223,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (!scene) {
 			return;
 		}
-		const QString type = "qrm:/" + mMaster->id().editor() + "/" +
+		QString const type = "qrm:/" + mMaster->id().editor() + "/" +
 							 mMaster->id().diagram() + "/" + mEdgeType.element();
 		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
@@ -234,7 +231,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
 
-		if (mEdge){
+		if (mEdge) {
 			mMaster->setZValue(1);
 			mEdge->setSrc(mMaster);
 			mEdge->setDst(NULL);
@@ -279,7 +276,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (!mPressed && scene && mEdge) {
 		mEdge->hide();
 		QPointF const &eScenePos = event->scenePos();
-		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos));
+		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos, QTransform()));
 		mEdge->show();
 		int result = 0;
 

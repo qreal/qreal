@@ -11,10 +11,11 @@
 #include "details/blocksTable.h"
 #include "details/d2RobotModel/d2RobotModel.h"
 
-#include "watchListWindow.h"
+#include "../../../qrutils/watchListWindow.h"
 
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
+#include "details/sensorsConfigurationWidget.h"
 
 namespace qReal {
 namespace interpreters {
@@ -28,7 +29,7 @@ public:
 	Interpreter();
 	virtual ~Interpreter();
 
-	virtual void init(GraphicalModelAssistInterface const &graphicalModelApi
+	virtual void init(GraphicalModelAssistInterface &graphicalModelApi
 			, LogicalModelAssistInterface const &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 	);
@@ -50,11 +51,22 @@ public:
 	/// Assigning a value to the field mActionConnectToRobot
 	void setConnectRobotAction(QAction *actionConnect);
 
+	void setNoiseSettings();
+
 	/// Enable Run and Stop buttons on 2d model widget
 	void enableD2ModelWidgetRunStopButtons();
 
 	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
 	void disableD2ModelWidgetRunStopButtons();
+
+	utils::WatchListWindow *watchWindow() const;
+	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
+
+signals:
+	void noiseSettingsChanged();
+	void noiseSettingsChangedBy2DModelWidget();
+
+	void sensorsConfigurationChanged();
 
 public slots:
 	void connectToRobot();
@@ -62,6 +74,8 @@ public slots:
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
+	void onTabChanged(Id const &diagramId, bool enabled);
+	void saveSensorConfiguration();
 
 private slots:
 	void threadStopped();
@@ -69,10 +83,14 @@ private slots:
 	void runTimer();
 	void readSensorValues();
 	void slotFailure();
+
 	void responseSlot1(int sensorValue);
 	void responseSlot2(int sensorValue);
 	void responseSlot3(int sensorValue);
 	void responseSlot4(int sensorValue);
+	void responseSlotA(int encoderValue);
+	void responseSlotB(int encoderValue);
+	void responseSlotC(int encoderValue);
 
 	void connectedSlot(bool success);
 	void sensorsConfiguredSlot();
@@ -81,6 +99,9 @@ private slots:
 	void disconnectSlot();
 
 	void reportError(QString const &message);
+
+	void on2dModelChanged(QDomDocument const &xml);
+	void loadSensorConfiguration(Id const &diagramId);
 
 private:
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
@@ -95,7 +116,7 @@ private:
 		, idle
 	};
 
-	GraphicalModelAssistInterface const *mGraphicalModelApi;
+	GraphicalModelAssistInterface *mGraphicalModelApi;
 	LogicalModelAssistInterface const *mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
 
@@ -113,7 +134,7 @@ private:
 
 	robotModelType::robotModelTypeEnum mImplementationType;
 
-	watchListWindow *mWatchListWindow;
+	utils::WatchListWindow *mWatchListWindow;
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;

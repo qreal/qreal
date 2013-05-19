@@ -14,6 +14,8 @@
 #include "../../qrrepo/logicalRepoApi.h"
 #include "../../qrkernel/settingsManager.h"
 #include "editorManagerInterface.h"
+#include "pattern.h"
+#include "patternParser.h"
 
 class Element;
 
@@ -27,7 +29,9 @@ public:
 	explicit EditorManager(QObject *parent = NULL);
 
 	~EditorManager();
-
+	IdList groups(Id const &diagram);
+	Pattern getPatternByName (QString const &str) const;
+	QList<QString> getPatternNames() const;
 	IdList editors() const;
 	IdList diagrams(Id const &editor) const;
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
@@ -63,7 +67,7 @@ public:
 	virtual QStringList propertiesWithDefaultValues(Id const &id) const;
 
 	IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-							  , qrRepo::GraphicalRepoApi const &graphicalApi) const;
+			, qrRepo::GraphicalRepoApi const &graphicalApi) const;
 	bool hasElement(Id const &element) const;
 
 	Id findElementByType(QString const &type) const;
@@ -103,6 +107,9 @@ public:
 
 private:
 	QStringList mPluginsLoaded;
+	QMap<QString, QString> mPluginFileName;
+	QList<Pattern> mDiagramGroups;
+	QMap<QString, Pattern> mGroups;
 	QMap<QString, QString> mPluginFileName;
 	QMap<QString, EditorInterface *> mPluginIface;
 	QMap<QString, QPluginLoader *> mLoaders;

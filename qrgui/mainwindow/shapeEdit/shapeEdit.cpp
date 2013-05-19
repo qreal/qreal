@@ -5,13 +5,13 @@
 #include "xmlLoader.h"
 #include "../../../qrutils/graphicsUtils/colorlisteditor.h"
 
-#include <QtGui/QFileDialog>
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QGraphicsItem>
 #include <QtCore/QList>
-#include <QtGui/QComboBox>
-#include <QtGui/QSpinBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QSpinBox>
 #include <QtGui/QImage>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 #include <QDebug>
 
@@ -26,8 +26,8 @@ ShapeEdit::ShapeEdit(QWidget *parent)
 	connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
 }
 
-ShapeEdit::ShapeEdit(const QPersistentModelIndex &index, const int &role)
-	: QWidget(NULL), mUi(new Ui::ShapeEdit),mIndex(index), mRole(role)
+ShapeEdit::ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, const int &role)
+	: QWidget(NULL), mUi(new Ui::ShapeEdit), mModel(model), mIndex(index), mRole(role)
 {
 	init();
 	mUi->saveButton->setEnabled(true);
@@ -79,20 +79,21 @@ void ShapeEdit::init()
 	connect(mUi->stylusButton, SIGNAL(clicked(bool)), this, SLOT(addStylus(bool)));
 	connect(mUi->addImageButton, SIGNAL(clicked(bool)), this, SLOT(addImage(bool)));
 
-	connect(mUi->penStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenStyle(const QString &)));
+	connect(mUi->penStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenStyle(QString const &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
-	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changePenColor(const QString &)));
-	connect(mUi->brushStyleComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeBrushStyle(const QString &)));
-	connect(mUi->brushColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeBrushColor(const QString &)));
+	connect(mUi->penColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenColor(QString const &)));
+	connect(mUi->brushStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeBrushStyle(QString const &)));
+	connect(mUi->brushColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeBrushColor(QString const &)));
 
 	connect(mUi->textFamilyFontComboBox, SIGNAL(currentFontChanged(const QFont&)), mScene, SLOT(changeFontFamily(const QFont&)));
 	connect(mUi->textPixelSizeSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changeFontPixelSize(int)));
-	connect(mUi->textColorComboBox, SIGNAL(activated(const QString &)), mScene, SLOT(changeFontColor(const QString &)));
+	connect(mUi->textColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeFontColor(QString const &)));
 	connect(mUi->textEditField, SIGNAL(textChanged()), this, SLOT(changeTextName()));
 	connect(mUi->italicCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontItalic(bool)));
 	connect(mUi->boldCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontBold(bool)));
 	connect(mUi->underlineCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontUnderline(bool)));
 
+	connect(mUi->visibilityConditionsButton, SIGNAL(clicked()), this, SLOT(visibilityButtonClicked()));
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
 	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
@@ -216,7 +217,7 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 
 		Item* item = dynamic_cast<Item*>(graphicsItem);
 		if (item != NULL) {
-			QPair<QDomElement, Item::DomElementTypes> genItem = item->generateItem(mDocument, mTopLeftPicture);
+			QPair<QDomElement, Item::DomElementTypes> genItem = item->generateDom(mDocument, mTopLeftPicture);
 			QDomElement domItem = genItem.first;
 			Item::DomElementTypes domType = genItem.second;
 			switch (domType) {
@@ -327,7 +328,7 @@ void ShapeEdit::open()
 	loader.readFile(fileName);
 }
 
-void ShapeEdit::load(const QString &text)
+void ShapeEdit::load(QString const &text)
 {
 	if (text.isEmpty())
 		return;
@@ -528,4 +529,53 @@ void ShapeEdit::addStylus(bool checked)
 	mScene->addStylus(checked);
 	if (checked)
 		setHighlightOneButton(mUi->stylusButton);
+}
+
+void ShapeEdit::visibilityButtonClicked()
+{
+	QList<Item *> selectedItems = mScene->selectedSceneItems();
+	if (selectedItems.isEmpty()) {
+		return;
+	}
+	VisibilityConditionsDialog vcDialog(getProperties(), selectedItems);
+	vcDialog.exec();
+}
+
+QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties() const
+{
+	typedef VisibilityConditionsDialog::PropertyInfo PropertyInfo;
+
+	QMap<QString, PropertyInfo> result;
+
+	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
+	qReal::IdList enums = repoApi->elementsByType("MetaEntityEnum");
+
+	foreach (qReal::Id child, repoApi->children(mModel->idByIndex(mIndex))) {
+		if (child.element() != "MetaEntity_Attribute") {
+			continue;
+		}
+		QString type = repoApi->stringProperty(child, "attributeType");
+		if (type == "int") {
+			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Int, QStringList()));
+		} else if (type == "bool") {
+			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Bool
+					, QStringList() << "true" << "false"));
+		} else if (type == "string") {
+			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::String, QStringList()));
+		} else {
+			foreach (qReal::Id e, enums) {
+				if (!repoApi->isLogicalElement(e)) {
+					continue;
+				}
+				if (repoApi->name(e) == type) {
+					QStringList enumValues;
+					foreach (qReal::Id value, repoApi->children(e)) {
+						enumValues << repoApi->stringProperty(value, "valueName");
+					}
+					result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Enum, enumValues));
+				}
+			}
+		}
+	}
+	return result;
 }

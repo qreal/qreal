@@ -162,6 +162,17 @@ QVariant Block::evaluate(const QString &propertyName)
 	return value;
 }
 
+bool Block::evaluateBool(QString const &propertyName)
+{
+	int position = 0;
+	bool const value = mParser->parseCondition(stringProperty(propertyName), position, mGraphicalId);
+	if (mParser->hasErrors()) {
+		mParser->deselect();
+		emit failure();
+	}
+	return value;
+}
+
 void Block::stopActiveTimerInBlock()
 {
 }

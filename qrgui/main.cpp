@@ -1,3 +1,6 @@
+#include <QtCore/QtPlugin>
+#include <QtWidgets/QApplication>
+
 #include "mainwindow/mainWindow.h"
 #include "thirdparty/windowsmodernstyle.h"
 

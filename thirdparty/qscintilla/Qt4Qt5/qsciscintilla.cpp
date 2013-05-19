@@ -3199,7 +3199,7 @@ void QsciScintilla::handleStyleFontChange(const QFont &f, int style)
 // Set the font for a style.
 void QsciScintilla::setStylesFont(const QFont &f, int style)
 {
-    SendScintilla(SCI_STYLESETFONT, style, f.family().toAscii().data());
+    SendScintilla(SCI_STYLESETFONT, style, f.family().toLatin1().data());
     SendScintilla(SCI_STYLESETSIZE, style, f.pointSize());
     SendScintilla(SCI_STYLESETBOLD, style, f.bold());
     SendScintilla(SCI_STYLESETITALIC, style, f.italic());

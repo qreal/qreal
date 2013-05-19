@@ -1,13 +1,16 @@
 #include <QtCore/QUuid>
 #include <QtGui/QMouseEvent>
 #include <QtCore/QtAlgorithms>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QVBoxLayout>
+#include <QtCore/QMimeData>
+#include <QtGui/QDrag>
 
+#include "../../qrkernel/settingsManager.h"
+#include "../../qrkernel/definitions.h"
 #include "paletteTree.h"
+#include "../../qrkernel/settingsManager.h"
 #include "draggableElement.h"
 #include "paletteTreeWidget.h"
-#include "../../qrkernel/definitions.h"
-#include "../../qrkernel/settingsManager.h"
 #include "../dialogs/propertiesDialog.h"
 
 using namespace qReal;
@@ -22,7 +25,7 @@ PaletteTree::PaletteTree(QWidget *parent)
 	createPaletteTree();
 }
 
-void PaletteTree::addItemType(const Id &id, const QString &name, const QString &description
+void PaletteTree::addItemType(const Id &id, QString const &name, QString const &description
 		, const QIcon &icon, QTreeWidget *tree, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
@@ -146,6 +149,8 @@ void PaletteTree::addEditorElements(EditorManagerInterface *editorManagerProxy, 
 	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
 	IdList list = mEditorManagerProxy->elements(diagram);
+	IdList listGr = mEditorManager->groups(diagram);
+	list.append(listGr);
 	qSort(list.begin(), list.end(), idLessThan);
 
 	mCategories[diagram] = mEditorsTrees.size();

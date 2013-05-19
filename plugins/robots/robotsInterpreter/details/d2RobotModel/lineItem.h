@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
 #include <QtXml/QDomDocument>
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"

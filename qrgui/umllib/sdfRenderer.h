@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
 #include <QPen>
 #include <QBrush>
@@ -10,8 +10,10 @@
 #include <QTextStream>
 #include <QtGui/QIconEngine>
 #include <QDebug>
+
 #include "../editorPluginInterface/sdfRendererInterface.h"
 #include "../../qrkernel/settingsManager.h"
+#include "../editorPluginInterface/elementRepoInterface.h"
 
 class SdfRenderer : public SdfRendererInterface
 {
@@ -19,16 +21,17 @@ class SdfRenderer : public SdfRendererInterface
 
 public:
 	SdfRenderer();
-	SdfRenderer(const QString path);
+	SdfRenderer(QString const path);
 	~SdfRenderer();
 
-	bool load (const QString &filename);
+	bool load (QString const &filename);
 	bool load(QDomDocument const &document);
-	void render(QPainter *painter, const QRectF &bounds);
-	void noScale();
+	void render(QPainter *painter, QRectF const &bounds, bool isIcon = false);	void noScale();
 
 	int pictureWidth() { return first_size_x; }
 	int pictureHeight() { return first_size_y; }
+
+	void setElementRepo(ElementRepoInterface *elementRepo);
 
 private:
 	QString mWorkingDirName;
@@ -56,6 +59,10 @@ private:
 	 * coords, is useful for rendering icons. default is true
 	**/
 	bool mNeedScale;
+	ElementRepoInterface *mElementRepo;
+
+	bool checkShowConditions(QDomElement const &element, bool isIcon) const;
+	bool checkCondition(QDomElement const &condition) const;
 
 	void line(QDomElement &element);
 	void ellipse(QDomElement &element);
@@ -91,7 +98,10 @@ public:
 	SdfIconEngineV2(QDomDocument &document);
 	QSize preferedSize() const;
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
-
+	virtual QIconEngine *clone() const
+	{
+		return NULL;
+	}
 private:
 	SdfRenderer mRenderer;
 	QSize mSize;

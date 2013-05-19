@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QDialog>
-#include <QModelIndex>
+#include <QtCore/QModelIndex>
+#include <QtWidgets/QDialog>
 
 #include "preferencesPages/preferencesPage.h"
 
@@ -27,6 +27,7 @@ public:
 
 protected:
 	void changeEvent(QEvent *e);
+	void closeEvent(QCloseEvent *e);
 
 signals:
 	void gridChanged();
@@ -40,6 +41,7 @@ public slots:
 private slots:
 	void cancel();
 	void applyChanges();
+	void restoreSettings();
 	void saveAndClose();
 	void chooseTab(const QModelIndex &);
 

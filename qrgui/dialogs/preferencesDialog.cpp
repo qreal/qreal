@@ -60,18 +60,31 @@ void PreferencesDialog::applyChanges()
 	emit settingsApplied();
 }
 
+void PreferencesDialog::restoreSettings()
+{
+	foreach (PreferencesPage *page, mCustomPages.values()) {
+		page->restoreSettings();
+	}
+}
+
 void PreferencesDialog::changeEvent(QEvent *e)
 {
 	QDialog::changeEvent(e);
 	switch (e->type()) {
-	case QEvent::LanguageChange:
-		ui->retranslateUi(this);
-		foreach (PreferencesPage *page, mCustomPages.values())
-			page->changeEvent(e);
-		break;
-	default:
-		break;
+		case QEvent::LanguageChange:
+			ui->retranslateUi(this);
+			foreach (PreferencesPage *page, mCustomPages.values())
+				page->changeEvent(e);
+			break;
+		default:
+			break;
 	}
+}
+
+void PreferencesDialog::closeEvent(QCloseEvent *e)
+{
+	restoreSettings();
+	QDialog::closeEvent(e);
 }
 
 void PreferencesDialog::saveAndClose()

@@ -60,6 +60,8 @@ public:
 	bool needsConnection() const;
 	void startInterpretation();
 
+	void nullifySensors();
+
 	void nextBlockAfterInitial(bool success);
 signals:
 	void sensorsConfigured();

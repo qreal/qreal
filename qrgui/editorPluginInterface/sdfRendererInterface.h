@@ -6,15 +6,18 @@
 #include <QtGui/QIconEngineV2>
 #include <QtXml/QDomDocument>
 
+#include "elementRepoInterface.h"
+
 class SdfRendererInterface : public QObject
 {
 public:
-	virtual bool load (const QString &filename) = 0;
+	virtual bool load (QString const &filename) = 0;
 	virtual bool load(QDomDocument const &document) = 0;
-	virtual void render(QPainter *painter, const QRectF &bounds) = 0;
+	virtual void render(QPainter *painter, QRectF const &bounds, bool isIcon = false) = 0;
+	virtual void setElementRepo(ElementRepoInterface *elementRepo) = 0;
 };
 
-class SdfIconEngineV2Interface : public QIconEngineV2
+class SdfIconEngineV2Interface : public QIconEngine
 {
 public:
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 #include "../../../../../qrutils/graphicsUtils/abstractScene.h"
 
 namespace qReal {

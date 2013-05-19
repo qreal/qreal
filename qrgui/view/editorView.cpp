@@ -1,4 +1,4 @@
-#include <QtGui>
+#include <QtWidgets>
 
 #ifdef QT_OPENGL_LIB
 #include <QtOpenGL/QGLWidget>
@@ -55,7 +55,7 @@ void EditorView::toggleOpenGL(bool checked)
 
 void EditorView::zoomIn()
 {
-	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()){
+	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()) {
 		return;
 	}
 	setSceneRect(mScene->sceneRect());
@@ -70,7 +70,7 @@ void EditorView::zoomIn()
 
 void EditorView::zoomOut()
 {
-	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()){
+	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()) {
 		return;
 	}
 	setSceneRect(mScene->sceneRect());
@@ -110,14 +110,14 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 	if (mWheelPressed) {
 		if (mMouseOldPosition != QPointF()) {
 			QRectF rect = sceneRect();
-			qreal dx = (event->posF().x() - mMouseOldPosition.x());
-			qreal dy = (event->posF().y() - mMouseOldPosition.y());
+			qreal dx = (event->localPos().x() - mMouseOldPosition.x());
+			qreal dy = (event->localPos().y() - mMouseOldPosition.y());
 			rect.moveLeft(rect.left() - dx);
 			rect.moveTop(rect.top() - dy);
 			setSceneRect(rect);
 			translate(dx, dy);
 		}
-		mMouseOldPosition = event->posF();
+		mMouseOldPosition = event->localPos();
 	}
 	QGraphicsView::mouseMoveEvent(event);
 	if (event->buttons() & Qt::RightButton) {
@@ -172,8 +172,27 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 void EditorView::scrollContentsBy(int dx, int dy)
 {
 	QGraphicsView::scrollContentsBy(dx, dy);
-	if (mScene->getNeedDrawGrid())
+	if (mScene->getNeedDrawGrid()) {
 		mScene->invalidate();
+	}
+}
+
+void EditorView::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Space) {
+		setDragMode(QGraphicsView::ScrollHandDrag);
+	} else {
+		QGraphicsView::keyPressEvent(event);
+	}
+}
+
+void EditorView::keyReleaseEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Space) {
+		setDragMode(QGraphicsView::RubberBandDrag);
+	} else {
+		QGraphicsView::keyPressEvent(event);
+	}
 }
 
 void EditorView::invalidateScene()

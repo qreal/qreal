@@ -67,7 +67,7 @@ void StylusImpl::drawScalingRects(QPainter* painter)
 	Q_UNUSED(painter);
 }
 
-void StylusImpl::setPenStyle(QList<AbstractItem *> listLine, const QString& text)
+void StylusImpl::setPenStyle(QList<AbstractItem *> listLine, QString const &text)
 {
 	foreach (AbstractItem *line, listLine)
 		line->setPenStyle(text);
@@ -79,19 +79,19 @@ void StylusImpl::setPenWidth(QList<AbstractItem *> listLine, int width)
 		line->setPenWidth(width);
 }
 
-void StylusImpl::setPenColor(QList<AbstractItem *> listLine, const QString& text)
+void StylusImpl::setPenColor(QList<AbstractItem *> listLine, QString const &text)
 {
 	foreach (AbstractItem *line, listLine)
 		line->setPenColor(text);
 }
 
-void StylusImpl::setBrushStyle(QList<AbstractItem *> listLine, const QString& text)
+void StylusImpl::setBrushStyle(QList<AbstractItem *> listLine, QString const &text)
 {
 	foreach (AbstractItem *line, listLine)
 		line->setBrushStyle(text);
 }
 
-void StylusImpl::setBrushColor(QList<AbstractItem *> listLine, const QString& text)
+void StylusImpl::setBrushColor(QList<AbstractItem *> listLine, QString const &text)
 {
 	foreach (AbstractItem *line, listLine)
 		line->setBrushColor(text);

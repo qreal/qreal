@@ -46,13 +46,13 @@ QString EdgeType::generateIsNodeOrEdge(QString const &lineTemplate) const
 	return line;
 }
 
-QString EdgeType::generateNodeClass(const QString &classTemplate)
+QString EdgeType::generateNodeClass(QString const &classTemplate)
 {
 	Q_UNUSED(classTemplate)
 	return "";
 }
 
-QString EdgeType::generateEdgeClass(const QString &classTemplate) const
+QString EdgeType::generateEdgeClass(QString const &classTemplate) const
 {
 	QString edgeClass = classTemplate;
 	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
@@ -202,7 +202,7 @@ void EdgeType::initLabels()
 
 }
 
-QString EdgeType::generateResourceLine(const QString &resourceTemplate) const
+QString EdgeType::generateResourceLine(QString const &resourceTemplate) const
 {
 	QString line = resourceTemplate;
 	return line.replace(fileNameTag, name() + "Class.sdf") + endline;

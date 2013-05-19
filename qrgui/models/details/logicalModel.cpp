@@ -135,7 +135,7 @@ QString LogicalModel::pathToItem(AbstractModelItem const *item) const
 }
 
 void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &logicalId
-		, const QString &name, const QPointF &position)
+		, QString const &name, const QPointF &position)
 {
 	if (mModelItems.contains(id))
 		return;
@@ -157,7 +157,7 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 }
 
 void LogicalModel::initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem
-		, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+		, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position)
 {
 	Q_UNUSED(position)
 

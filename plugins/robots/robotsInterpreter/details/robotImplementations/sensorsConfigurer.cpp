@@ -55,7 +55,7 @@ void SensorsConfigurer::unlockConfiguring()
 	reconfigureSensors();
 }
 
-sensorImplementations::AbstractSensorImplementation * SensorsConfigurer::sensor(inputPort::InputPortEnum const &port) const
+sensorImplementations::AbstractSensorImplementation * SensorsConfigurer::sensor(inputPort::InputPortEnum port) const
 {
 	return mConfiguredSensors[port];
 }
@@ -94,6 +94,17 @@ void SensorsConfigurer::reconfigureSensors()
 		foreach (int const &i, sensorsToConfigure) {
 			mConfiguredSensors[i]->configure();
 		}
+	}
+}
+
+void SensorsConfigurer::nullifySensor(inputPort::InputPortEnum port)
+{
+	if (mConfiguredSensors[port]) {
+		if (mPendingSensors[port] == mConfiguredSensors[port]) {
+			mPendingSensors[port] = NULL;
+		}
+		delete mConfiguredSensors[port];
+		mConfiguredSensors[port] = 0;
 	}
 }
 

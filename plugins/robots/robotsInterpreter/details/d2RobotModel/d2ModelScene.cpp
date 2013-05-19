@@ -1,4 +1,4 @@
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 
 #include "d2ModelScene.h"
@@ -43,7 +43,7 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event, QRectF const &rect)
 {
 	setX1andY1(event);
-	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
+	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
 	if (mGraphicsItem) {
 		if (!mGraphicsItem->realShape().intersects(rect)) {
 			mGraphicsItem->changeDragState(mX1, mY1);

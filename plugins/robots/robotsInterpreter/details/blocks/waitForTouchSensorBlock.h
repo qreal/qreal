@@ -3,36 +3,33 @@
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 
-#include "block.h"
-#include "../robotParts/robotModel.h"
+#include "waitForSensorBlock.h"
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
-namespace details {
-namespace blocks {
+namespace qReal
+{
+namespace interpreters
+{
+namespace robots
+{
+namespace details
+{
+namespace blocks
+{
 
-class WaitForTouchSensorBlock : public Block
+class WaitForTouchSensorBlock : public WaitForSensorBlock
 {
 	Q_OBJECT
 
 public:
-	WaitForTouchSensorBlock(RobotModel const * const robotModel);
-	virtual void run();
+	explicit WaitForTouchSensorBlock(RobotModel * const robotModel);
+	virtual ~WaitForTouchSensorBlock() {}
 
-	virtual QList<SensorPortPair> usedSensors() const;
+protected slots:
+	virtual void responseSlot(int reading);
 
-	virtual void stopActiveTimerInBlock();
-
-private slots:
-	void responseSlot(int reading);
-	void failureSlot();
-	void timerTimeout();
-
-private:
-	robotParts::TouchSensor *mTouchSensor;  // Doesn't have ownership
-	RobotModel const * const mRobotModel;
-	QTimer mActiveWaitingTimer;
+protected:
+	virtual robotParts::Sensor *sensor() const;
+	virtual QString name() const;
 };
 
 }
