@@ -4,7 +4,6 @@
 
 #include "propertiesDialog.h"
 #include "ui_propertiesDialog.h"
-#include "editPropertiesDialog.h"
 #include "../view/editorView.h"
 #include "../view/editorViewScene.h"
 
@@ -14,6 +13,7 @@ PropertiesDialog::PropertiesDialog(MainWindow *mainWindow, QWidget *parent)
 		: QDialog(parent)
 		, mUi(new Ui::PropertiesDialog)
 		, mMainWindow(mainWindow)
+		, mEditPropertiesDialog(new EditPropertiesDialog)
 {
 	mUi->setupUi(this);
 }
@@ -34,7 +34,7 @@ QStringList PropertiesDialog::getPropertiesDisplayedNamesList(QStringList const 
 
 void PropertiesDialog::updatePropertiesNamesList()
 {
-	QStringList const propertiesNames = mInterperterEditorManager->getPropertyNames(mId);
+	QStringList const propertiesNames = mInterperterEditorManager->propertyNames(mId);
 	QStringList const propertiesDisplayedNames = getPropertiesDisplayedNamesList(propertiesNames);
 	if (mUi->PropertiesNamesList->count() < propertiesDisplayedNames.length()) {
 		mUi->PropertiesNamesList->addItem(propertiesDisplayedNames.last());
@@ -46,15 +46,15 @@ void PropertiesDialog::init(EditorManagerInterface* interperterEditorManager, Id
 	mInterperterEditorManager = interperterEditorManager;
 	mId = id;
 	setWindowTitle(tr("Properties: ") + mInterperterEditorManager->friendlyName(mId));
-	QStringList const propertiesNames = mInterperterEditorManager->getPropertyNames(mId);
+	QStringList const propertiesNames = mInterperterEditorManager->propertyNames(mId);
 	QStringList const propertiesDisplayedNames = getPropertiesDisplayedNamesList(propertiesNames);
 	mUi->PropertiesNamesList->addItems(propertiesDisplayedNames);
 	mUi->PropertiesNamesList->setWrapping(true);
 	int const size = propertiesNames.length();
 	for (int i = 0; i < size; i++) {
 		if (mInterperterEditorManager->isParentProperty(mId, propertiesNames[i])) {
-			mUi->PropertiesNamesList->findItems(propertiesDisplayedNames[i],
-												Qt::MatchFixedString).first()->setFlags(Qt::NoItemFlags);
+			mUi->PropertiesNamesList->findItems(propertiesDisplayedNames[i]
+					, Qt::MatchFixedString).first()->setFlags(Qt::NoItemFlags);
 		}
 	}
 
@@ -66,6 +66,7 @@ void PropertiesDialog::init(EditorManagerInterface* interperterEditorManager, Id
 
 void PropertiesDialog::closeDialog()
 {
+	delete mEditPropertiesDialog;
 	close();
 }
 
@@ -81,12 +82,12 @@ void PropertiesDialog::deleteProperty()
 
 void PropertiesDialog::change(QString const &text)
 {
-	EditPropertiesDialog *editPropertiesDialog = new EditPropertiesDialog();
-	editPropertiesDialog->init(mUi->PropertiesNamesList->item(mUi->PropertiesNamesList->currentRow()), mInterperterEditorManager, mId, text);
-	editPropertiesDialog->setModal(true);
-	editPropertiesDialog->show();
-	connect(editPropertiesDialog, SIGNAL(finished(int)), SLOT(updatePropertiesNamesList()));
+	mEditPropertiesDialog->init(mUi->PropertiesNamesList->item(mUi->PropertiesNamesList->currentRow()), mInterperterEditorManager, mId, text);
+	mEditPropertiesDialog->setModal(true);
+	mEditPropertiesDialog->show();
+	connect(mEditPropertiesDialog, SIGNAL(finished(int)), SLOT(updatePropertiesNamesList()));
 }
+
 
 bool PropertiesDialog::checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id)
 {
@@ -95,7 +96,7 @@ bool PropertiesDialog::checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, 
 	}
 	bool sign = !api.logicalElements(id).isEmpty();
 
-	foreach (Id nodeChild, mInterperterEditorManager->getChildren(id)) {
+	foreach (Id nodeChild, mInterperterEditorManager->children(id)) {
 		sign |= checkElementOnDiagram(api, nodeChild);
 	}
 
@@ -106,8 +107,8 @@ void PropertiesDialog::addProperty()
 {
 	qrRepo::LogicalRepoApi const &logicalRepoApi = mMainWindow->models()->logicalRepoApi();
 	if (checkElementOnDiagram(logicalRepoApi, mId)) {
-		QMessageBox::warning(this, tr("Warning"),
-						tr("For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!"));
+		QMessageBox::warning(this, tr("Warning")
+				, tr("For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!"));
 	} else {
 		mUi->PropertiesNamesList->setCurrentItem(NULL);
 		change("");

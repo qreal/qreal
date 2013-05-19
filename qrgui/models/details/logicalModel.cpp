@@ -64,7 +64,7 @@ void LogicalModel::checkProperties(Id const &id)
 {
 	if (!mEditorManagerInter->hasElement(id.type()))
 		return;
-	QStringList const propertiesThatShallBe = mEditorManagerInter->getPropertyNames(id.type());
+	QStringList const propertiesThatShallBe = mEditorManagerInter->propertyNames(id.type());
 	foreach (QString const property, propertiesThatShallBe)
 		if (!api().hasProperty(id, property))
 			mApi.setProperty(id, property, "");  // There shall be default value.
@@ -175,10 +175,10 @@ void LogicalModel::initializeElement(const Id &id, modelsImplementation::Abstrac
 	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 
-	QStringList const properties = mEditorManagerInter->getPropertyNames(id.type());
+	QStringList const properties = mEditorManagerInter->propertyNames(id.type());
 	foreach (QString const property, properties) {
 		// for those properties that doesn't have default values, plugin will return empty string
-		mApi.setProperty(id, property, mEditorManagerInter->getDefaultPropertyValue(id, property));
+		mApi.setProperty(id, property, mEditorManagerInter->defaultPropertyValue(id, property));
 	}
 
 	mModelItems.insert(id, item);

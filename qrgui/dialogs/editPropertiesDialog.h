@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QDialog>
-#include <QListWidgetItem>
+#include <QtGui/QDialog>
+#include <QtGui/QListWidgetItem>
 
 #include "../pluginManager/interpreterEditorManager.h"
 
@@ -11,6 +11,7 @@ namespace Ui {
 
 namespace qReal {
 
+/// Window where you can edit the attributes of the selected property
 class EditPropertiesDialog : public QDialog
 {
 	Q_OBJECT

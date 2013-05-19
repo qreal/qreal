@@ -42,23 +42,23 @@ public:
 	QIcon icon(Id const &id) const;
 	Element* graphicalObject(Id const &id) const;
 
-	IdList getContainedTypes(const Id &id) const;
-	IdList getConnectedTypes(const Id &id) const;
-	IdList getUsedTypes(const Id &id) const;
-	QStringList getEnumValues(Id const &id, const QString &name) const;
-	QString getTypeName(Id const &id, const QString &name) const;
-	QStringList getAllChildrenTypesOf(Id const &parent) const;
+	IdList containedTypes(const Id &id) const;
+	IdList connectedTypes(const Id &id) const;
+	IdList usedTypes(const Id &id) const;
+	QStringList enumValues(Id const &id, const QString &name) const;
+	QString typeName(Id const &id, const QString &name) const;
+	QStringList allChildrenTypesOf(Id const &parent) const;
 
 	bool isEditor(Id const &id) const;
 	bool isDiagram(Id const &id) const;
 	bool isElement(Id const &id) const;
 
-	virtual QStringList getPropertyNames(Id const &id) const;
-	virtual QString getDefaultPropertyValue(Id const &id, QString name) const;
-	virtual QStringList getPropertiesWithDefaultValues(Id const &id) const;
+	virtual QStringList propertyNames(Id const &id) const;
+	virtual QString defaultPropertyValue(Id const &id, QString name) const;
+	virtual QStringList propertiesWithDefaultValues(Id const &id) const;
 
 	IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-		, qrRepo::GraphicalRepoApi const &graphicalApi) const;
+			, qrRepo::GraphicalRepoApi const &graphicalApi) const;
 	bool hasElement(Id const &element) const;
 
 	Id findElementByType(QString const &type) const;
@@ -69,31 +69,31 @@ public:
 	bool isParentOf(Id const &child, Id const &parent) const;
 	bool isGraphicalElementNode(const Id &id) const;
 
-	QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const;
+	QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const;
 	QStringList elements(QString const &editor, QString const &diagram) const;
 	int isNodeOrEdge(QString const &editor, QString const &element) const;
-	bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement,
-			QString const &childDiagram, QString const &childElement) const;
+	bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement
+			, QString const &childDiagram, QString const &childElement) const;
 	QString diagramName(QString const &editor, QString const &diagram) const;
 	QString diagramNodeName(QString const &editor, QString const &diagram) const;
 	bool isInterpretationMode() const;
 
 	bool isParentProperty(Id const &id, QString const &propertyName) const;
-	void deletePropertyInElement(qrRepo::RepoApi *repo, Id const &editor, Id const &diagram,
-			QString const &propDisplayedName) const;
+	void deletePropertyInElement(qrRepo::RepoApi *repo, Id const &editor, Id const &diagram
+			, QString const &propDisplayedName) const;
 	void deleteProperty(QString const &propDisplayedName) const;
 	void addProperty(Id const &id, QString const &propDisplayedName) const;
-	void updateProperties(Id const &id, QString const &property, QString const &propertyType,
-			QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
-	QString getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
-	IdList getChildren(Id const &parent) const;
-	QString getShape(Id const &id) const;
+	void updateProperties(Id const &id, QString const &property, QString const &propertyType
+			, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
+	QString propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
+	IdList children(Id const &parent) const;
+	QString shape(Id const &id) const;
 	void updateShape(Id const &id, QString const &graphics) const;
 	void deleteElement(qReal::MainWindow *mainWindow, Id const &id) const;
 	bool isRootDiagramNode(Id const &id) const;
 	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const;
-	void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
-						QString const &lineType, QString const &beginType, QString const &endType) const;
+	void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
+			, QString const &lineType, QString const &beginType, QString const &endType) const;
 	QPair<Id, Id> createEditorAndDiagram(QString const &name) const;
 	void saveMetamodel(QString const &newMetamodelFileName);
 	QString saveMetamodelFilePath() const;
@@ -101,17 +101,17 @@ public:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
-	virtual QStringList getReferenceProperties(Id const &id) const;
+	virtual QStringList referenceProperties(Id const &id) const;
 
 private:
 	void setProperty(qrRepo::RepoApi* repo, Id const &id, QString const &property, QVariant const &propertyValue) const;
-	Id getElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const;
-	Id getDiagramOrElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &editor) const;
+	Id element(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const;
+	Id diagramOrElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &editor) const;
 	void setStandartConfigurations(qrRepo::RepoApi *repo, Id const &id, Id const &parent, const QString &name) const;
-	QPair<qrRepo::RepoApi*, Id> getRepoAndMetaId(Id const &id) const;
-	QPair<qrRepo::RepoApi*, Id> getRepoAndElement(QString const &editor, QString const &element) const;
-	QPair<qrRepo::RepoApi*, Id> getRepoAndDiagram(QString const &editor, QString const &diagram) const;
-	QPair<Id, Id> getEditorAndDiagram(qrRepo::RepoApi const * const repo, Id const &element) const;
+	QPair<qrRepo::RepoApi*, Id> repoAndMetaId(Id const &id) const;
+	QPair<qrRepo::RepoApi*, Id> repoAndElement(QString const &editor, QString const &element) const;
+	QPair<qrRepo::RepoApi*, Id> repoAndDiagram(QString const &editor, QString const &diagram) const;
+	QPair<Id, Id> editorAndDiagram(qrRepo::RepoApi const * const repo, Id const &element) const;
 	QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;
 	QString mMetamodelFile;
 
@@ -120,8 +120,8 @@ private:
 	class GetProperty;
 	class HasProperty;
 
-	QStringList getPropertiesFromParents(Id const &id, QString const &propertyName, CheckPropertyForParent const &checker) const;
-	QString getValueOfProperty(Id const &id, QString const &propertyName, QString const &value) const;
+	QStringList propertiesFromParents(Id const &id, QString const &propertyName, CheckPropertyForParent const &checker) const;
+	QString valueOfProperty(Id const &id, QString const &propertyName, QString const &value) const;
 };
 
 }

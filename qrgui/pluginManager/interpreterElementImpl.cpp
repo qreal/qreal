@@ -44,8 +44,8 @@ void InterpreterElementImpl::initLabels(int width, int height, ElementTitleFacto
 	}
 }
 
-void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc,
-		QDomNode &portsPicture, int &width, int &height)
+void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc
+		, QDomNode &portsPicture, int &width, int &height)
 {
 	QDomNodeList const pointPortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
 	for (int i = 0; i < pointPortsList.size(); i++) {
@@ -85,8 +85,8 @@ void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDo
 	}
 }
 
-void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc,
-		QDomNode &portsPicture, int &width, int &height)
+void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc
+		, QDomNode &portsPicture, int &width, int &height)
 {
 	QDomNodeList const linePortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
 	for (int i = 0; i < linePortsList.size(); i++) {
@@ -386,13 +386,13 @@ QColor InterpreterElementImpl::getPenColor() const
 	return QColor();
 }
 
-void InterpreterElementImpl::drawStartArrow(QPainter *painter) const
+void InterpreterElementImpl::drawArrow(QPainter *painter, QString const &type) const
 {
 	if (mId.element() == "MetaEntityEdge") {
 		QString style = "";
 		foreach (Id edgeChild, mEditorRepoApi->children(mId)) {
 			if(edgeChild.element() == "MetaEntityAssociation") {
-				 style = mEditorRepoApi->stringProperty(edgeChild, "beginType");
+				 style = mEditorRepoApi->stringProperty(edgeChild, type);
 			}
 		}
 		if (style.isEmpty()) {
@@ -433,51 +433,14 @@ void InterpreterElementImpl::drawStartArrow(QPainter *painter) const
 	}
 }
 
+void InterpreterElementImpl::drawStartArrow(QPainter *painter) const
+{
+	drawArrow(painter, "beginType");
+}
+
 void InterpreterElementImpl::drawEndArrow(QPainter *painter) const
 {
-	if (mId.element() == "MetaEntityEdge") {
-		QString style = "";
-		foreach (Id const &edgeChild, mEditorRepoApi->children(mId)) {
-			if (edgeChild.element() == "MetaEntityAssociation") {
-				 style = mEditorRepoApi->stringProperty(edgeChild, "endType");
-			}
-		}
-		if (style.isEmpty()) {
-			style = "filled_arrow";
-		}
-		QBrush old = painter->brush();
-		QBrush brush;
-		brush.setStyle(Qt::SolidPattern);
-
-		if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow") {
-			brush.setColor(Qt::white);
-		}
-		if (style == "filled_arrow" || style == "filled_rhomb") {
-			brush.setColor(Qt::black);
-		}
-		painter->setBrush(brush);
-
-		if (style == "empty_arrow" || style == "filled_arrow") {
-			static const QPointF points[] = {QPointF(0, 0), QPointF(-5, 10), QPointF(5, 10)};
-			painter->drawPolygon(points, 3);
-		}
-
-		if (style == "empty_rhomb" || style == "filled_rhomb") {
-			static const QPointF points[] = {QPointF(0, 0), QPointF(-5, 10), QPointF(0, 20), QPointF(5, 10)};
-			painter->drawPolygon(points, 4);
-		}
-
-		if (style == "open_arrow") {
-			static const QPointF points[] = {QPointF(-5, 10), QPointF(0, 0), QPointF(5, 10)};
-			painter->drawPolyline(points, 3);
-		}
-
-		if (style == "complex_arrow") {
-			static const QPointF points[] = {QPointF(-15, 30), QPointF(-10, 10), QPointF(0, 0), QPointF(10, 10), QPointF(15, 30), QPointF(0, 23), QPointF(-15, 30)};
-			painter->drawPolyline(points, 7);
-		}
-		painter->setBrush(old);
-	}
+	drawArrow(painter, "endType");
 }
 
 //unsupported methods:

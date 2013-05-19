@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QDialog>
-#include <QIcon>
+#include <QtGui/QDialog>
+#include <QtGui/QIcon>
 
 class QLabel;
 class QPushButton;

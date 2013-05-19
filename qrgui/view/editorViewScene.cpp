@@ -309,7 +309,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const
 {
 	bool allowed = false;
-	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
+	foreach (qReal::Id type, mWindow->manager()->containedTypes(container.type())){
 		allowed = allowed || mWindow->manager()->isParentOf(candidate, type);
 	}
 	return allowed;
@@ -340,11 +340,11 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPoint
 
 		QStringList targets;
 		if (mWindow->manager()->isParentOf(node->id(), pEdge.first.first)) {
-			targets << mWindow->manager()->getAllChildrenTypesOf(pEdge.first.second);
+			targets << mWindow->manager()->allChildrenTypesOf(pEdge.first.second);
 		}
 
 		if (mWindow->manager()->isParentOf(node->id(), pEdge.first.second)) {
-			targets << mWindow->manager()->getAllChildrenTypesOf(pEdge.first.first);
+			targets << mWindow->manager()->allChildrenTypesOf(pEdge.first.first);
 		}
 
 		foreach (QString target, targets.toSet()) { // QSet is used to remove duplicates
@@ -919,7 +919,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
 		createAddConnectionMenu(element, contextMenu, tr("Add connection")
-				, mWindow->manager()->getConnectedTypes(element->id().type())
+				, mWindow->manager()->connectedTypes(element->id().type())
 				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
 				, mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
 				, SLOT(connectActionTriggered())
@@ -932,7 +932,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 				);
 
 		createAddConnectionMenu(element, contextMenu, tr("Add usage")
-				, mWindow->manager()->getUsedTypes(element->id().type())
+				, mWindow->manager()->usedTypes(element->id().type())
 				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
 				, mMVIface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
 				, SLOT(addUsageActionTriggered())
@@ -1435,7 +1435,7 @@ void EditorViewScene::changeAppearanceActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	Id id = action->data().value<Id>();
-	QString propertyValue = mWindow->manager()->getShape(id);
+	QString propertyValue = mWindow->manager()->shape(id);
 	mWindow->openShapeEditor(id, propertyValue, mWindow->manager());
 }
 

@@ -1,12 +1,12 @@
 #pragma once
 
 #include <QtCore/QMap>
-#include <QWidget>
-#include <QList>
+#include <QtGui/QWidget>
+#include <QtCore/QList>
 #include <QtCore/QMap>
-#include <QRectF>
-#include <QPointF>
-#include <QPainter>
+#include <QtCore/QRectF>
+#include <QtCore/QPointF>
+#include <QtGui/QPainter>
 
 #include "../editorPluginInterface/elementImpl.h"
 #include "../editorPluginInterface/elementTitleHelpers.h"
@@ -42,6 +42,7 @@ struct NodeLabel {
 	{}
 };
 
+/// This class is for implementation the graphical representation of element
 class InterpreterElementImpl : public ElementImpl
 {
 public:
@@ -90,6 +91,8 @@ public:
 	QStringList bonusContextMenuFields() const;
 	void updateRendererContent(QString const &shape);
 private:
+	void drawArrow(QPainter *painter, QString const &type) const;
+
 	qrRepo::RepoApi* mEditorRepoApi;
 	Id mId;
 	SdfRendererInterface* mRenderer;

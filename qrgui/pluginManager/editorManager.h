@@ -46,21 +46,21 @@ public:
 	QSize iconSize(Id const &id) const;
 	Element* graphicalObject(Id const &id) const;
 
-	IdList getContainedTypes(const Id &id) const;
-	IdList getConnectedTypes(const Id &id) const;
-	IdList getUsedTypes(const Id &id) const;
-	QStringList getEnumValues(Id const &id, const QString &name) const;
-	QString getTypeName(Id const &id, const QString &name) const;
-	QStringList getAllChildrenTypesOf(Id const &parent) const;
+	IdList containedTypes(const Id &id) const;
+	IdList connectedTypes(const Id &id) const;
+	IdList usedTypes(const Id &id) const;
+	QStringList enumValues(Id const &id, const QString &name) const;
+	QString typeName(Id const &id, const QString &name) const;
+	QStringList allChildrenTypesOf(Id const &parent) const;
 
 	bool isEditor(Id const &id) const;
 	bool isDiagram(Id const &id) const;
 	bool isElement(Id const &id) const;
 
-	virtual QStringList getPropertyNames(Id const &id) const;
-	virtual QStringList getReferenceProperties(Id const &id) const;
-	virtual QString getDefaultPropertyValue(Id const &id, QString name) const;
-	virtual QStringList getPropertiesWithDefaultValues(Id const &id) const;
+	virtual QStringList propertyNames(Id const &id) const;
+	virtual QStringList referenceProperties(Id const &id) const;
+	virtual QString defaultPropertyValue(Id const &id, QString name) const;
+	virtual QStringList propertiesWithDefaultValues(Id const &id) const;
 
 	IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
 							  , qrRepo::GraphicalRepoApi const &graphicalApi) const;
@@ -74,9 +74,8 @@ public:
 	bool isParentOf(Id const &child, Id const &parent) const;
 	bool isGraphicalElementNode(const Id &id) const;
 
-
 	//new methods:
-	QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const;
+	QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const;
 	QStringList elements(QString const &editor, QString const &diagram) const;
 	int isNodeOrEdge(QString const &editor, QString const &element) const;
 	bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement,
@@ -89,9 +88,9 @@ public:
 	void addProperty(Id const &id, QString const &propDisplayedName) const;
 	void updateProperties(Id const &id, QString const &property, QString const &propertyType,
 						  QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
-	QString getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
-	IdList getChildren(Id const &parent) const;
-	QString getShape(Id const &id) const;
+	QString propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
+	IdList children(Id const &parent) const;
+	QString shape(Id const &id) const;
 	void updateShape(Id const &id, QString const &graphics) const;
 	void deleteElement(MainWindow *mainWindow, Id const &id) const;
 	bool isRootDiagramNode(Id const &id) const;

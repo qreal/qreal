@@ -70,7 +70,7 @@ void DraggableElement::changeAppearancePaletteActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	Id id = action->data().value<Id>();
-	QString propertyValue = mEditorManagerProxy->getShape(id);
+	QString propertyValue = mEditorManagerProxy->shape(id);
 	mMainWindow->openShapeEditor(id, propertyValue, mEditorManagerProxy);
 }
 
@@ -112,7 +112,7 @@ void DraggableElement::checkElementForRootDiagramNode()
 void DraggableElement::checkElementForChildren()
 {
 	mIsRootDiagramNode = false;
-	IdList const children = mEditorManagerProxy->getChildren(mDeletedElementId);
+	IdList const children = mEditorManagerProxy->children(mDeletedElementId);
 	if (!children.isEmpty()) {
 		QString childrenNames;
 		foreach (Id const child, children) {

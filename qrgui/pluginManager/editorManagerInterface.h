@@ -35,19 +35,19 @@ public:
 	virtual QIcon icon(Id const &id) const = 0;
 	virtual Element* graphicalObject(Id const &id) const = 0;
 
-	virtual IdList getContainedTypes(const Id &id) const = 0;
-	virtual IdList getConnectedTypes(const Id &id) const = 0;
-	virtual IdList getUsedTypes(const Id &id) const = 0;
-	virtual QStringList getEnumValues(Id const &id, const QString &name) const = 0;
-	virtual QString getTypeName(Id const &id, const QString &name) const = 0;
-	virtual QStringList getAllChildrenTypesOf(Id const &parent) const = 0;
+	virtual IdList containedTypes(const Id &id) const = 0;
+	virtual IdList connectedTypes(const Id &id) const = 0;
+	virtual IdList usedTypes(const Id &id) const = 0;
+	virtual QStringList enumValues(Id const &id, const QString &name) const = 0;
+	virtual QString typeName(Id const &id, const QString &name) const = 0;
+	virtual QStringList allChildrenTypesOf(Id const &parent) const = 0;
 	virtual bool isEditor(Id const &id) const = 0;
 	virtual bool isDiagram(Id const &id) const = 0;
 	virtual bool isElement(Id const &id) const = 0;
 
-	virtual QStringList getPropertyNames(Id const &id) const = 0;
-	virtual QString getDefaultPropertyValue(Id const &id, QString name) const = 0;
-	virtual QStringList getPropertiesWithDefaultValues(Id const &id) const = 0;
+	virtual QStringList propertyNames(Id const &id) const = 0;
+	virtual QString defaultPropertyValue(Id const &id, QString name) const = 0;
+	virtual QStringList propertiesWithDefaultValues(Id const &id) const = 0;
 
 	virtual IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
 							  , qrRepo::GraphicalRepoApi const &graphicalApi) const = 0;
@@ -64,7 +64,7 @@ public:
 	virtual bool isGraphicalElementNode(const Id &id) const = 0;
 
 	//new methods:
-	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &editor, QString const &element) const = 0;
+	virtual QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const = 0;
 	virtual QStringList elements(QString const &editor, QString const &diagram) const = 0;
 	virtual int isNodeOrEdge(QString const &editor, QString const &element) const = 0;
 	virtual bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const = 0;
@@ -75,9 +75,9 @@ public:
 	virtual void deleteProperty(QString const &propDisplayedName) const = 0;
 	virtual void addProperty(Id const &id, QString const &propDisplayedName) const = 0;
 	virtual void updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const = 0;
-	virtual QString getPropertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const = 0;
-	virtual IdList getChildren(Id const &parent) const = 0;
-	virtual QString getShape(Id const &id) const = 0;
+	virtual QString propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const = 0;
+	virtual IdList children(Id const &parent) const = 0;
+	virtual QString shape(Id const &id) const = 0;
 	virtual void updateShape(Id const &id, QString const &graphics) const = 0;
 	virtual void deleteElement(MainWindow *mainWindow, Id const &id) const = 0;
 	virtual bool isRootDiagramNode(Id const &id) const = 0;
@@ -91,7 +91,7 @@ public:
 	virtual QStringList paletteGroups(Id const &editor, Id const &diagram) const = 0;
 	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const = 0;
 	virtual QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const = 0;
-	virtual QStringList getReferenceProperties(Id const &id) const = 0;
+	virtual QStringList referenceProperties(Id const &id) const = 0;
 };
 
 }

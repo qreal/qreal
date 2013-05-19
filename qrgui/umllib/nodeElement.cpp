@@ -650,7 +650,7 @@ bool NodeElement::initPossibleEdges()
 	foreach (QString const &elementName, mGraphicalAssistApi->editorManagerInter()->elements(id().editor(),id().diagram())) {
 		int ne = mGraphicalAssistApi->editorManagerInter()->isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> const list =  mGraphicalAssistApi->editorManagerInter()->getPossibleEdges(id().editor(), elementName);
+			QList<StringPossibleEdge> const list =  mGraphicalAssistApi->editorManagerInter()->possibleEdges(id().editor(), elementName);
 			foreach(StringPossibleEdge pEdge, list) {
 				if (mGraphicalAssistApi->editorManagerInter()->isParentOf(id().editor(), id().diagram()
 						, pEdge.first.first, id().diagram(), id().element())

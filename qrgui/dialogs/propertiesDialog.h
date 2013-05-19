@@ -4,6 +4,7 @@
 
 #include "../pluginManager/interpreterEditorManager.h"
 #include "../mainwindow/mainWindow.h"
+#include "editPropertiesDialog.h"
 
 namespace Ui {
 	class PropertiesDialog;
@@ -11,6 +12,7 @@ namespace Ui {
 
 namespace qReal {
 
+/// Window where you can edit the properties of the selected item
 class PropertiesDialog : public QDialog
 {
 	Q_OBJECT
@@ -36,5 +38,6 @@ private:
 	EditorManagerInterface *mInterperterEditorManager;
 	Id mId;
 	MainWindow *mMainWindow;
+	EditPropertiesDialog *mEditPropertiesDialog;
 };
 }

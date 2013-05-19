@@ -147,7 +147,7 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
-	return mEditorManagerInter->getEnumValues(id, mFields[index.row()].fieldName);
+	return mEditorManagerInter->enumValues(id, mFields[index.row()].fieldName);
 }
 
 //QString PropertyEditorModel::typeName(const QModelIndex &index) const
@@ -205,7 +205,7 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 	}
 
 	if (logicalModelIndex != QModelIndex()) {
-		QStringList const logicalProperties = mEditorManagerInter->getPropertyNames(logicalId.type());
+		QStringList const logicalProperties = mEditorManagerInter->propertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {
 			mFields << Field(property, logicalAttribute, role);
@@ -266,7 +266,7 @@ QString PropertyEditorModel::typeName(QModelIndex const &index) const
 	if (id == Id()) {
 		return "";
 	}
-	return mEditorManagerInter->getTypeName(id, mFields[index.row()].fieldName);
+	return mEditorManagerInter->typeName(id, mFields[index.row()].fieldName);
 }
 
 bool PropertyEditorModel::isReference(QModelIndex const &index, QString const &propertyName)
@@ -275,7 +275,7 @@ bool PropertyEditorModel::isReference(QModelIndex const &index, QString const &p
 	if (id == Id()) {
 		return false;
 	}
-	return mEditorManagerInter->getReferenceProperties(id.type()).contains(propertyName);
+	return mEditorManagerInter->referenceProperties(id.type()).contains(propertyName);
 }
 
 Id PropertyEditorModel::idByIndex(QModelIndex const &index) const

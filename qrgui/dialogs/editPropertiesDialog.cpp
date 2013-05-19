@@ -20,21 +20,21 @@ EditPropertiesDialog::~EditPropertiesDialog()
 
 void EditPropertiesDialog::setupDefaultValues()
 {
-	mUi->attributeTypeEdit->setText(mInterperterEditorManager->getTypeName(mId, mPropertyName));
-	mUi->defaultValueEdit->setText(mInterperterEditorManager->getDefaultPropertyValue(mId, mPropertyName));
+	mUi->attributeTypeEdit->setText(mInterperterEditorManager->typeName(mId, mPropertyName));
+	mUi->defaultValueEdit->setText(mInterperterEditorManager->defaultPropertyValue(mId, mPropertyName));
 	mUi->displayedNameEdit->setText(mInterperterEditorManager->propertyDisplayedName(mId, mPropertyName));
 }
 
 void EditPropertiesDialog::mbCancel()
 {
-	mUi->attributeTypeEdit->setText(mInterperterEditorManager->getTypeName(mId, mPropertyName));
-	mUi->defaultValueEdit->setText(mInterperterEditorManager->getDefaultPropertyValue(mId, mPropertyName));
+	mUi->attributeTypeEdit->setText(mInterperterEditorManager->typeName(mId, mPropertyName));
+	mUi->defaultValueEdit->setText(mInterperterEditorManager->defaultPropertyValue(mId, mPropertyName));
 }
 
 void EditPropertiesDialog::updateProperties()
 {
-	mInterperterEditorManager->updateProperties(mId, mPropertyName, mUi->attributeTypeEdit->text(),
-									mUi->defaultValueEdit->text(), mUi->displayedNameEdit->text());
+	mInterperterEditorManager->updateProperties(mId, mPropertyName, mUi->attributeTypeEdit->text()
+		, mUi->defaultValueEdit->text(), mUi->displayedNameEdit->text());
 	if (mSelectedItem != NULL) {
 		mSelectedItem->setText(mInterperterEditorManager->propertyDisplayedName(mId, mPropertyName));
 	}
@@ -51,10 +51,10 @@ void EditPropertiesDialog::ok()
 			mInterperterEditorManager->addProperty(mId, mPropertyName);
 		}
 		if (windowTitle() != tr("Adding of new property:")
-			&& mInterperterEditorManager->getTypeName(mId, mPropertyName) != mUi->attributeTypeEdit->text()) {
-			QMessageBox *mb = new QMessageBox(tr("Warning:"),
-									tr("You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value."),
-									QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
+			&& mInterperterEditorManager->typeName(mId, mPropertyName) != mUi->attributeTypeEdit->text()) {
+			QMessageBox *mb = new QMessageBox(tr("Warning:")
+					, tr("You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.")
+					, QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
 			mb->button(QMessageBox::Ok)->setText(tr("Proceed anyway"));
 			mb->button(QMessageBox::Cancel)->setText(tr("Cancel the type conversion"));
 			mb->show();
@@ -66,12 +66,12 @@ void EditPropertiesDialog::ok()
 	}
 }
 
-void EditPropertiesDialog::init(QListWidgetItem *selectedItem, EditorManagerInterface* interperterEditorManager,
-								Id const &id, QString const &propertyName)
+void EditPropertiesDialog::init(QListWidgetItem *selectedItem, EditorManagerInterface* interperterEditorManager
+		, Id const &id, QString const &propertyName)
 {
 	mInterperterEditorManager = interperterEditorManager;
 	mId = id;
-	mPropertyName = mInterperterEditorManager->getPropertyNameByDisplayedName(mId, propertyName);
+	mPropertyName = mInterperterEditorManager->propertyNameByDisplayedName(mId, propertyName);
 	mSelectedItem = selectedItem;
 	if (propertyName.isEmpty()) {
 		setWindowTitle(tr("Adding of new property:"));

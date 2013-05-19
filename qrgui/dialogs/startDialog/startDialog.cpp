@@ -112,7 +112,7 @@ void StartDialog::openInterpretedDiagram()
 					continue;
 				}
 				interpreterDiagramsList.append("qrm:/" + editor.editor() + "/"
-												+ diagram.diagram() + "/" + diagramNodeName);
+						+ diagram.diagram() + "/" + diagramNodeName);
 			}
 		}
 		foreach (QString const &interpreterIdString, interpreterDiagramsList) {

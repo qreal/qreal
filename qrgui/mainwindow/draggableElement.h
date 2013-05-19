@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QTreeWidget>
+#include <QtGui/QTreeWidget>
 #include <QtCore/QHash>
 #include <QtCore/QSettings>
 #include <QtGui/QWidget>

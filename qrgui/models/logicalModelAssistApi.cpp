@@ -115,12 +115,12 @@ IdList LogicalModelAssistApi::diagramsFromList(IdList const &list) const
 
 IdList LogicalModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
 {
-	return diagramsFromList(editorManagerInter()->getConnectedTypes(element.type()));
+	return diagramsFromList(editorManagerInter()->connectedTypes(element.type()));
 }
 
 IdList LogicalModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
 {
-	return diagramsFromList(editorManagerInter()->getUsedTypes(element.type()));
+	return diagramsFromList(editorManagerInter()->usedTypes(element.type()));
 }
 
 void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName)
@@ -211,7 +211,7 @@ void LogicalModelAssistApi::removeReferencesTo(Id const &id)
 
 void LogicalModelAssistApi::removeReferencesFrom(Id const &id)
 {
-	QStringList referenceProperties = mEditorManagerProxy->getReferenceProperties(id.type());
+	QStringList referenceProperties = mEditorManagerProxy->referenceProperties(id.type());
 
 	foreach (QString const &property, referenceProperties) {
 		QString propertyString = mLogicalModel.api().property(id, property).toString();
@@ -224,7 +224,7 @@ void LogicalModelAssistApi::removeReferencesFrom(Id const &id)
 
 void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference)
 {
-	QStringList referenceProperties = mEditorManagerProxy->getReferenceProperties(id.type());
+	QStringList referenceProperties = mEditorManagerProxy->referenceProperties(id.type());
 
 	foreach (QString const &propertyName, referenceProperties) {
 		QString stringData = mLogicalModel.api().property(id, propertyName).toString();

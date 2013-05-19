@@ -100,7 +100,7 @@ QString AbstractModel::findPropertyName(Id const &id, int const role) const
 	//In case of a property described in element itself (in metamodel),
 	// role is simply an index of a property in a list of propertires.
 	// This convention must be obeyed everywhere, otherwise roles will shift.
-	QStringList properties = mEditorManagerInter->getPropertyNames(id.type());
+	QStringList properties = mEditorManagerInter->propertyNames(id.type());
 	Q_ASSERT(role - roles::customPropertiesBeginRole < properties.count());
 	return properties[role - roles::customPropertiesBeginRole];
 }
