@@ -1,6 +1,6 @@
-#include <QtGui/QStringListModel>
-#include <QtGui/QInputDialog>
-#include <QtGui/QMessageBox>
+#include <QtCore/QStringListModel>
+#include <QtWidgets/QInputDialog>
+#include <QtWidgets/QMessageBox>
 
 #include "propertiesDialog.h"
 #include "ui_propertiesDialog.h"

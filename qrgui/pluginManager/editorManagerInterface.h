@@ -13,6 +13,8 @@
 #include "../../qrrepo/graphicalRepoApi.h"
 #include "../../qrrepo/logicalRepoApi.h"
 #include "../../qrkernel/settingsManager.h"
+#include "pattern.h"
+#include "patternParser.h"
 
 class Element;
 
@@ -41,6 +43,7 @@ public:
 	virtual QStringList enumValues(Id const &id, const QString &name) const = 0;
 	virtual QString typeName(Id const &id, const QString &name) const = 0;
 	virtual QStringList allChildrenTypesOf(Id const &parent) const = 0;
+
 	virtual bool isEditor(Id const &id) const = 0;
 	virtual bool isDiagram(Id const &id) const = 0;
 	virtual bool isElement(Id const &id) const = 0;
@@ -92,6 +95,10 @@ public:
 	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const = 0;
 	virtual QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const = 0;
 	virtual QStringList referenceProperties(Id const &id) const = 0;
+	virtual IdList groups(Id const &diagram) = 0;
+	virtual Pattern getPatternByName (QString const &str) const = 0;
+	virtual QList<QString> getPatternNames() const = 0;
+	virtual QSize iconSize(Id const &id) const = 0;
 };
 
 }

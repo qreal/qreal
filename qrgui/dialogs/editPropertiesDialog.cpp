@@ -1,4 +1,4 @@
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 #include "editPropertiesDialog.h"
 #include "ui_editPropertiesDialog.h"

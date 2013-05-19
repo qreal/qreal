@@ -59,7 +59,7 @@ class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpreters
 	Q_OBJECT
 
 public:
-	MainWindow();
+	MainWindow(QString const &fileToOpen = QString());
 	~MainWindow();
 
 	EditorManagerInterface* manager();
@@ -350,6 +350,9 @@ private:
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;
 	StartDialog *mStartDialog;
+
+	SceneCustomizer *mSceneCustomizer;
+	QList<QDockWidget *> mAdditionalDocks;
 };
 
 }

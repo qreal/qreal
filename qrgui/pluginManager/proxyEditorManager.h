@@ -98,7 +98,10 @@ public:
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
 	virtual QStringList referenceProperties(Id const &id) const;
-
+	IdList groups(Id const &diagram);
+	Pattern getPatternByName (QString const &str) const;
+	QList<QString> getPatternNames() const;
+	QSize iconSize(Id const &id) const;
 private:
 	EditorManagerInterface *mProxyManager;
 };

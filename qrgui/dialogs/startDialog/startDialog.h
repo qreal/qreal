@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QCommandLinkButton>
+#include <QtWidgets/QCommandLinkButton>
 
 #include "../managedClosableDialog.h"
 

@@ -560,7 +560,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	QList<NodeElement*> element;
 	element.append(this);
-	QSize size = mGraphicalAssistApi->editorManager().iconSize(id());
+	QSize size = mGraphicalAssistApi->editorManagerInter()->iconSize(id());
 	evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos()
 			, QPointF(size.width(), size.height()), element);
 

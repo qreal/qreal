@@ -29,11 +29,12 @@ public:
 	explicit EditorManager(QObject *parent = NULL);
 
 	~EditorManager();
+
+	IdList editors() const;
+	IdList diagrams(Id const &editor) const;
 	IdList groups(Id const &diagram);
 	Pattern getPatternByName (QString const &str) const;
 	QList<QString> getPatternNames() const;
-	IdList editors() const;
-	IdList diagrams(Id const &editor) const;
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
@@ -110,7 +111,6 @@ private:
 	QMap<QString, QString> mPluginFileName;
 	QList<Pattern> mDiagramGroups;
 	QMap<QString, Pattern> mGroups;
-	QMap<QString, QString> mPluginFileName;
 	QMap<QString, EditorInterface *> mPluginIface;
 	QMap<QString, QPluginLoader *> mLoaders;
 

@@ -301,3 +301,23 @@ QStringList ProxyEditorManager::referenceProperties(const Id &id) const
 {
 	return mProxyManager->referenceProperties(id);
 }
+
+IdList ProxyEditorManager::groups(Id const &diagram)
+{
+	return mProxyManager->groups(diagram);
+}
+
+Pattern ProxyEditorManager::getPatternByName (QString const &str) const
+{
+	return mProxyManager->getPatternByName(str);
+}
+
+QList<QString> ProxyEditorManager::getPatternNames() const
+{
+	return mProxyManager->getPatternNames();
+}
+
+QSize ProxyEditorManager::iconSize(Id const &id) const
+{
+	return mProxyManager->iconSize(id);
+}

@@ -3,11 +3,11 @@
 #include <QtHelp/QHelpEngine>
 #include <QtHelp/QHelpContentWidget>
 #include <QtHelp/QHelpIndexModel>
-#include <QtGui/QTextBrowser>
+#include <QtWidgets/QTextBrowser>
 
 class HelpBrowser : public QTextBrowser
 {
-	Q_OBJECT;
+	Q_OBJECT
 
 public:
 	HelpBrowser(QHelpEngine *engine, QWidget *parent = 0);

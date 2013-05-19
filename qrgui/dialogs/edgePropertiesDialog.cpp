@@ -1,5 +1,5 @@
 #include <QtCore/QUuid>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 #include "edgePropertiesDialog.h"
 #include "ui_edgePropertiesDialog.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 #include <QtGui/QIcon>
 
 class QLabel;

@@ -903,3 +903,21 @@ QString InterpreterEditorManager::paletteGroupDescription(Id const &editor, cons
 {
 	return "";
 }
+
+IdList InterpreterEditorManager::groups(Id const &diagram)
+{
+	return IdList();
+}
+
+Pattern getPatternByName (QString const &str) const
+{
+	return Pattern();
+}
+
+QList<QString> getPatternNames() const {
+	return QList<QString>();
+}
+
+QSize iconSize(Id const &id) const {
+	return QSize();
+}

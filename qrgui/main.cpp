@@ -5,7 +5,7 @@
 #include "thirdparty/windowsmodernstyle.h"
 
 #include <QtCore/QtPlugin>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 using namespace qReal;
 

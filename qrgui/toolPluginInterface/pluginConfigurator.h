@@ -5,6 +5,7 @@
 #include "usedInterfaces/logicalModelAssistInterface.h"
 #include "../mainwindow/mainWindowInterpretersInterface.h"
 #include "../mainwindow/projectManager/projectManagementInterface.h"
+#include "../view/sceneCustomizationInterface.h"
 
 namespace qReal {
 
@@ -17,12 +18,14 @@ public:
 		, LogicalModelAssistInterface &logicalModelApi
 		, gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
 		, ProjectManagementInterface &projectManager
+		, SceneCustomizationInterface &sceneCustomizer
 	)
 		: mRepoControlInterface(repoControlInterface)
 		, mGraphicalModelApi(graphicalModelApi)
 		, mLogicalModelApi(logicalModelApi)
 		, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 		, mProjectManager(projectManager)
+		, mSceneCustomizer(sceneCustomizer)
 	{}
 
 	qrRepo::RepoControlInterface &repoControlInterface() const {
@@ -45,12 +48,19 @@ public:
 		return mProjectManager;
 	}
 
+	SceneCustomizationInterface &sceneCustomizer() const
+		{
+			return mSceneCustomizer;
+		}
+
 private:
 	qrRepo::RepoControlInterface &mRepoControlInterface;
 	GraphicalModelAssistInterface &mGraphicalModelApi;
 	LogicalModelAssistInterface &mLogicalModelApi;
 	gui::MainWindowInterpretersInterface &mMainWindowInterpretersInterface;
 	ProjectManagementInterface &mProjectManager;
+	SceneCustomizationInterface &mSceneCustomizer;
+
 };
 
 }
