@@ -8,7 +8,7 @@ using namespace robotImplementations::sensorImplementations;
 
 
 BluetoothAccelerometerSensorImplementation::BluetoothAccelerometerSensorImplementation(RobotCommunicator *robotCommunicationInterface
-	, inputPort::InputPortEnum port)
+	, inputPort::InputPortEnum const port)
 	 : BluetoothSensorImplementation(robotCommunicationInterface
 	 , sensorType::accelerometer, lowLevelSensorType::ANGLE
 	, sensorMode::RAWMODE, port)

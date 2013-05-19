@@ -8,7 +8,7 @@ using namespace robotImplementations::sensorImplementations;
 
 
 BluetoothSoundSensorImplementation::BluetoothSoundSensorImplementation(RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum port)
+		, inputPort::InputPortEnum const port)
 	: BluetoothSensorImplementation(robotCommunicationInterface
 	, sensorType::sound, lowLevelSensorType::SOUND_DBA
 	, sensorMode::RAWMODE, port)
@@ -42,7 +42,8 @@ void BluetoothSoundSensorImplementation::sensorSpecificProcessResponse(QByteArra
 	if (reading.isEmpty()) {
 		Tracer::debug(tracer::sensors, "BluetoothSoundSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else {
+		int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 		mState = idle;
-		emit response(0xff & reading[14]);
+		emit response(sensorValue);
 	}
 }

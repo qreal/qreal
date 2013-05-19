@@ -7,7 +7,7 @@ using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
 BluetoothGyroscopeSensorImplementation::BluetoothGyroscopeSensorImplementation(RobotCommunicator *robotCommunicationInterface
-	, inputPort::InputPortEnum port)
+	, inputPort::InputPortEnum const port)
 	: BluetoothSensorImplementation(robotCommunicationInterface
 	, sensorType::sound, lowLevelSensorType::ANGLE
 	, sensorMode::RAWMODE, port)
@@ -41,7 +41,8 @@ void BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse(const
 	if (reading.isEmpty()) {
 		Tracer::debug(tracer::sensors, "BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else {
+		int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 		mState = idle;
-		emit response(0xff & reading[14]);
+		emit response(sensorValue);
 	}
 }

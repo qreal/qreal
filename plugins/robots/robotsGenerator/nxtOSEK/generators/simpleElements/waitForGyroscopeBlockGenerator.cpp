@@ -32,7 +32,7 @@ QList<SmartLine> WaitForGyroscopeBlockGenerator::convertElementIntoDirectCommand
 
 	QString const condition = inequalitySign + " " + degrees;
 
-	result.append(SmartLine("while (!(ecrobot_get_gyroscope_sensor(" + port
+	result.append(SmartLine("while (!(ecrobot_get_gyro_sensor(" + port
 			+ ") " + condition + "))", elementId));
 	result.append(SmartLine("{", elementId));
 	result.append(SmartLine("}", elementId));

@@ -546,7 +546,7 @@
 			<node displayedName="Ждать сенсор звука" name="WaitForSound">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="-25" textBinded="Port" hard="true"/>
@@ -594,7 +594,7 @@
 			<node displayedName="Ждать гироскоп" name="WaitForGyroscope">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="-25" textBinded="Port" hard="true"/>
@@ -642,7 +642,7 @@
 			<node displayedName="Ждать Акселерометр" name="WaitForAccelerometer">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/waitForAccelerometerBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="33" y="-25" textBinded="Port" hard="true"/>
