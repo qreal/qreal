@@ -211,6 +211,19 @@ void EditorView::ensureElementVisible(Element const * const element)
 	}
 }
 
+void EditorView::ensureElementVisible(Element const * const element
+		, int xMargin, int yMargin)
+{
+	if (element) {
+		ensureVisible(element, xMargin, yMargin);
+	}
+}
+
+void EditorView::setTitlesVisible(bool visible)
+{
+	mScene->setTitlesVisible(visible);
+}
+
 EditorViewScene *EditorView::getEditorViewScene()
 {
 	return mScene;

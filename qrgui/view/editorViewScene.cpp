@@ -29,6 +29,7 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
 		, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
 		, mIsSelectEvent(false)
+		, mTitlesVisible(true)
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
 	mWidthOfGrid = static_cast<double>(SettingsManager::value("GridWidth").toInt()) / 100;
@@ -43,6 +44,15 @@ EditorViewScene::EditorViewScene(QObject *parent)
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 
 	mSelectList = new QList<QGraphicsItem *>();
+}
+
+void EditorViewScene::addItem(QGraphicsItem *item)
+{
+	Element *element = dynamic_cast<Element *>(item);
+	if (element) {
+		element->setTitlesVisible(mTitlesVisible);
+	}
+	QGraphicsScene::addItem(item);
 }
 
 void EditorViewScene::drawForeground(QPainter *painter, QRectF const &rect)
@@ -251,7 +261,7 @@ NodeElement *EditorViewScene::findNewParent(QPointF newParentInnerPoint, NodeEle
 		foreach (QGraphicsItem *item, items(newParentInnerPoint)) {
 			NodeElement *e = dynamic_cast<NodeElement *>(item);
 			if (e != NULL && e != node && !selected.contains(item)) {
-				// проверка, можно ли добавлять наш элемент в найденного родителя
+				// check if we can add element into found parent
 				if (canBeContainedBy(e->id(), id)) {
 					return e;
 				}
@@ -452,7 +462,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	Id id = Id::loadFromString(uuid);
 
-	if(mMVIface->graphicalAssistApi()->editorManager().getPatternNames().contains(id.element())) {
+	if(mMVIface->graphicalAssistApi()->editorManagerInter()->getPatternNames().contains(id.element())) {
 		createGroupOfElements(id, scenePos, mMVIface->rootId(), isFromLogicalModel);
 	} else {
 		Element *newParent = NULL;
@@ -514,7 +524,7 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, Ele
 	QList<NodeElement*> elements;
 	Id newElemId = mMVIface->graphicalAssistApi()-> createElement(parentId, id, isFromLogicalModel , name, position);
 	if (dynamic_cast<NodeElement*>(e)) {
-		QSize size = mMVIface->graphicalAssistApi()->editorManager().iconSize(newElemId);
+		QSize size = mMVIface->graphicalAssistApi()->editorManagerInter()->iconSize(newElemId);
 		getNodeById(newElemId)->setPos(position.x()- size.width()/2, position.y());
 		elements.append(getNodeById(newElemId));
 		insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, position
@@ -525,7 +535,7 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, Ele
 void EditorViewScene::createGroupOfElements(qReal::Id const &id, QPointF const &position, qReal::Id const&parentId
 		, bool isFromLogicalModel)
 {
-	Pattern const pattern = mMVIface->graphicalAssistApi()->editorManager().getPatternByName(id.element());
+	Pattern const pattern = mMVIface->graphicalAssistApi()->editorManagerInter()->getPatternByName(id.element());
 	QList<NodeElement*> elements;
 	QMap<QString, Id> nodes;
 	QPointF size = pattern.size();

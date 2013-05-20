@@ -7,7 +7,6 @@ HEADERS += \
 	mainwindow/error.h \
 	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
-	mainwindow/helpBrowser.h \
 	mainwindow/paletteTree.h \
 	mainwindow/findManager.h \
 	mainwindow/dotRunner.h \
@@ -30,7 +29,6 @@ SOURCES += \
 	mainwindow/errorReporter.cpp \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp \
-	mainwindow/helpBrowser.cpp \
 	mainwindow/paletteTree.cpp \
 	mainwindow/findManager.cpp \
 	mainwindow/dotRunner.cpp \
@@ -40,7 +38,6 @@ SOURCES += \
 	mainwindow/miniMap.cpp \
 	mainwindow/referenceList.cpp \
 	mainwindow/projectManager/autosaver.cpp \
-	mainwindow/macExternBrowser.cpp \
 	mainwindow/draggableElement.cpp \
 	mainwindow/paletteTreeWidget.cpp \
 	mainwindow/shapeEdit/visibilityValueWidget.cpp \

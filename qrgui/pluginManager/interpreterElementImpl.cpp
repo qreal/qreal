@@ -150,7 +150,8 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 		, QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
 		, QList<ElementTitleInterface*> &titles
-		, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer)
+		, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
+		, ElementRepoInterface *elementRepo)
 {
 	if (mId.element() == "MetaEntityNode") {
 		mGraphics.setContent(mEditorRepoApi->stringProperty(mId, "shape"));

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QMap>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtCore/QRectF>
@@ -53,7 +53,8 @@ public:
 	void init(QRectF &contents, QList<StatPoint> &pointPorts
 			, QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
 			, QList<ElementTitleInterface*> &titles
-			, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer);
+			, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
+			, ElementRepoInterface *elementRepo = 0);
 	void init(ElementTitleFactoryInterface &factory
 			, QList<ElementTitleInterface*> &titles);
 	void paint(QPainter *painter, QRectF &contents);

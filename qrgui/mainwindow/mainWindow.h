@@ -9,32 +9,35 @@
 #include <QtWidgets/QListWidget>
 #include <QtSql/QSqlDatabase>
 
+#include "mainWindowInterpretersInterface.h"
+#include "mainWindowDockInterface.h"
+#include "propertyEditorProxyModel.h"
+#include "gesturesPainterInterface.h"
+#include "findManager.h"
+#include "referenceList.h"
+
+#include "projectManager/projectManager.h"
+
 #include "../pluginManager/editorManagerInterface.h"
 #include "../pluginManager/editorManager.h"
 #include "../pluginManager/interpreterEditorManager.h"
 #include "../pluginManager/proxyEditorManager.h"
 #include "../pluginManager/toolPluginManager.h"
+#include "../models/logicalModelAssistApi.h"
+#include "../view/propertyEditorView.h"
+
+#include "../../qrgui/dialogs/preferencesDialog.h"
+#include "../../qrgui/dialogs/findReplaceDialog.h"
+#include "../dialogs/startDialog/startDialog.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
-#include "../view/propertyEditorView.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
-#include "mainWindowInterpretersInterface.h"
-#include "../../qrkernel/settingsManager.h"
-#include "../../qrgui/dialogs/preferencesDialog.h"
 
 #include "../textEditor/codeEditor.h"
-#include "helpBrowser.h"
 
-#include "../models/logicalModelAssistApi.h"
+#include "../../qrkernel/settingsManager.h"
 #include "../dialogs/suggestToCreateDiagramDialog.h"
-
-#include "../../qrgui/dialogs/findReplaceDialog.h"
-#include "findManager.h"
-
-#include "../dialogs/startDialog/startDialog.h"
-#include "projectManager/projectManager.h"
 #include "tabWidget.h"
-#include "referenceList.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -44,6 +47,7 @@ namespace qReal {
 
 class EditorView;
 class ListenerManager;
+class SceneCustomizer;
 
 namespace models {
 class Models;
@@ -54,7 +58,9 @@ class ErrorReporter;
 class PaletteTree;
 }
 
-class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
+class MainWindow : public QMainWindow
+		, public qReal::gui::MainWindowInterpretersInterface
+		, public qReal::gui::MainWindowDockInterface
 {
 	Q_OBJECT
 
@@ -159,6 +165,8 @@ public slots:
 	void disconnectWindowTitle();
 	void createDiagram(QString const &idString);
 
+	void openFirstDiagram();
+
 private slots:
 	void initToolPlugins();
 
@@ -251,8 +259,6 @@ private:
 	/// @param tab Tab to be initialized with shortcuts
 	void setShortcuts(EditorView * const tab);
 
-
-
 	void registerMetaTypes();
 
 	QListWidget* createSaveListWidget();
@@ -308,6 +314,8 @@ private:
 	void initExplorers();
 	void initRecentProjectsMenu();
 
+	void setVersion(QString const &version);
+
 	Ui::MainWindowUi *mUi;
 
 	/// elements & theirs ids
@@ -342,7 +350,6 @@ private:
 	QString mTempDir;
 	PreferencesDialog mPreferencesDialog;
 
-	HelpBrowser *mHelpBrowser;
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;

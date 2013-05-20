@@ -1,14 +1,14 @@
 #pragma once
 
-#include <QtGui/QTreeWidget>
+#include <QtWidgets/QTreeWidget>
 #include <QtCore/QHash>
 #include <QtCore/QSettings>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtGui/QIcon>
-#include <QtGui/QToolButton>
-#include <QtGui/QComboBox>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QLabel>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QLabel>
 
 #include "mainWindow.h"
 #include "../pluginManager/proxyEditorManager.h"

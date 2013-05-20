@@ -1,7 +1,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QtDebug>
 #include <QtCore/QUuid>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
 
 #include "interpreterEditorManager.h"
@@ -909,15 +909,15 @@ IdList InterpreterEditorManager::groups(Id const &diagram)
 	return IdList();
 }
 
-Pattern getPatternByName (QString const &str) const
+Pattern InterpreterEditorManager::getPatternByName (QString const &str) const
 {
 	return Pattern();
 }
 
-QList<QString> getPatternNames() const {
+QList<QString> InterpreterEditorManager::getPatternNames() const {
 	return QList<QString>();
 }
 
-QSize iconSize(Id const &id) const {
+QSize InterpreterEditorManager::iconSize(Id const &id) const {
 	return QSize();
 }

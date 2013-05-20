@@ -44,6 +44,7 @@
 #include "qscintillaTextEdit.h"
 
 #include "dotRunner.h"
+#include "../view/sceneCustomizer.h"
 
 using namespace qReal;
 
@@ -62,11 +63,11 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
-		, mHelpBrowser(NULL)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(this, mProjectManager))
+		, mSceneCustomizer(new SceneCustomizer(this))
 {
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
@@ -248,7 +249,6 @@ MainWindow::~MainWindow()
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
-	delete mHelpBrowser;
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
@@ -259,6 +259,7 @@ MainWindow::~MainWindow()
 	delete mFindHelper;
 	delete mProjectManager;
 	delete mStartDialog;
+	delete mSceneCustomizer;
 }
 
 EditorManagerInterface* MainWindow::manager()
@@ -1137,9 +1138,12 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
 		EditorView * const view = new EditorView(this);
+		mSceneCustomizer->customizeView(view);
 		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
+		// Focusing on scene top left corner
+		view->centerOn(view->scene()->sceneRect().topLeft());
 	}
 
 	// changing of palette active editor
@@ -1156,6 +1160,16 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 			i++;
 		}
 	}
+}
+
+void MainWindow::openFirstDiagram()
+{
+	Id const rootId = mModels->graphicalModelAssistApi().rootId();
+	IdList const diagrams = mModels->graphicalModelAssistApi().children(rootId);
+	if (diagrams.count() == 0) {
+		return;
+	}
+	openNewTab(mModels->graphicalModelAssistApi().indexById(diagrams[0]));
 }
 
 void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIndex)
@@ -1902,4 +1916,58 @@ void MainWindow::updateActiveDiagram()
 	reinitModels();
 	activateItemOrDiagram(diagramId);
 	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
+}
+
+QDockWidget *MainWindow::logicalModelDock() const
+{
+	return mUi->logicalModelDock;
+}
+
+QDockWidget *MainWindow::graphicalModelDock() const
+{
+	return mUi->graphicalModelDock;
+}
+
+QDockWidget *MainWindow::propertyEditorDock() const
+{
+	return mUi->propertyDock;
+}
+
+QDockWidget *MainWindow::errorReporterDock() const
+{
+	return mUi->errorDock;
+}
+
+QDockWidget *MainWindow::paletteDock() const
+{
+	return mUi->paletteDock;
+}
+
+void MainWindow::tabifyDockWidget(QDockWidget *first, QDockWidget *second)
+{
+	QMainWindow::tabifyDockWidget(first, second);
+}
+
+void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
+{
+	mAdditionalDocks << dockWidget;
+	QMainWindow::addDockWidget(area, dockWidget);
+}
+
+QListIterator<EditorView *> MainWindow::openedEditorViews() const
+{
+	QList<EditorView *> views;
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
+		EditorView *view = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (view) {
+			views << view;
+		}
+	}
+	return QListIterator<EditorView *>(views);
+}
+
+void MainWindow::setVersion(QString const &version)
+{
+	// TODO: update title
+	SettingsManager::setValue("version", version);
 }

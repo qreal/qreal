@@ -1,5 +1,5 @@
 #include <QtGui/QMouseEvent>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 
 #include "paletteTreeWidget.h"
 #include "../dialogs/chooseTypeDialog.h"

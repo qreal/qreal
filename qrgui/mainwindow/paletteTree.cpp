@@ -149,7 +149,7 @@ void PaletteTree::addEditorElements(EditorManagerInterface *editorManagerProxy, 
 	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
 	IdList list = mEditorManagerProxy->elements(diagram);
-	IdList listGr = mEditorManager->groups(diagram);
+	IdList listGr = mEditorManagerProxy->groups(diagram);
 	list.append(listGr);
 	qSort(list.begin(), list.end(), idLessThan);
 

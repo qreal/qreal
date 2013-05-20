@@ -10,7 +10,6 @@
 
 #include "editorViewMVIface.h"
 
-//const int indexGrid = 30; // distance between two lines in the grid
 const int arrowMoveOffset = 5;
 
 namespace qReal {
@@ -26,6 +25,8 @@ class EditorViewScene : public QGraphicsScene
 public:
 	explicit EditorViewScene(QObject *parent);
 	~EditorViewScene();
+
+	void addItem(QGraphicsItem *item);
 
 	void clearScene();
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);
@@ -272,4 +273,5 @@ private:
 	QList<QGraphicsItem* >* mSelectList;
 
 	bool mIsSelectEvent;
+	bool mTitlesVisible;
 };

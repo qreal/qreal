@@ -1,7 +1,7 @@
 #include <QtCore/QUuid>
 #include <QtGui/QMouseEvent>
 #include <QtCore/QtAlgorithms>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QVBoxLayout>
 
 #include "draggableElement.h"
 #include "mainWindow.h"

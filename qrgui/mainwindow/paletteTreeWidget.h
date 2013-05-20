@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QTreeWidget>
+#include <QtWidgets/QTreeWidget>
 
 #include "paletteTree.h"
 #include "../pluginManager/editorManagerInterface.h"

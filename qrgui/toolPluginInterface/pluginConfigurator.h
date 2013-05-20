@@ -28,15 +28,18 @@ public:
 		, mSceneCustomizer(sceneCustomizer)
 	{}
 
-	qrRepo::RepoControlInterface &repoControlInterface() const {
+	qrRepo::RepoControlInterface &repoControlInterface() const
+	{
 		return mRepoControlInterface;
 	}
 
-	GraphicalModelAssistInterface &graphicalModelApi() const {
+	GraphicalModelAssistInterface &graphicalModelApi() const
+	{
 		return mGraphicalModelApi;
 	}
 
-	LogicalModelAssistInterface &logicalModelApi() const {
+	LogicalModelAssistInterface &logicalModelApi() const
+	{
 		return mLogicalModelApi;
 	}
 
@@ -44,14 +47,15 @@ public:
 		return mMainWindowInterpretersInterface;
 	}
 
-	ProjectManagementInterface &projectManager() const {
+	ProjectManagementInterface &projectManager() const
+	{
 		return mProjectManager;
 	}
 
 	SceneCustomizationInterface &sceneCustomizer() const
-		{
-			return mSceneCustomizer;
-		}
+	{
+		return mSceneCustomizer;
+	}
 
 private:
 	qrRepo::RepoControlInterface &mRepoControlInterface;
