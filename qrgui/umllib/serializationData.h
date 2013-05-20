@@ -53,7 +53,8 @@ public:
 	Id id;
 	Id logicalId;
 
-	QMap<QString, QVariant> properties;
+	QMap<QString, QVariant> logicalProperties;
+	QMap<QString, QVariant> graphicalProperties;
 
 	Id parentId;
 

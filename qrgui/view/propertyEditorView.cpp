@@ -1,6 +1,6 @@
 #include "propertyEditorView.h"
 #include "../mainwindow/mainWindow.h"
-
+#include "../controller/commands/changePropertyCommand.h"
 
 PropertyEditorView::PropertyEditorView(QWidget *parent)
 		: QWidget(parent), mChangingPropertyValue(false)
@@ -10,6 +10,7 @@ PropertyEditorView::PropertyEditorView(QWidget *parent)
 		, mVariantFactory(NULL)
 		, mButtonManager(NULL)
 		, mButtonFactory(NULL)
+		, mController(NULL)
 {
 	mPropertyEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
@@ -27,6 +28,7 @@ void PropertyEditorView::init(qReal::MainWindow *mainWindow, qReal::models::Logi
 {
 	mMainWindow = mainWindow;
 	mLogicalModelAssistApi = logicalModelAssistApi; // unused
+	mController = mainWindow->controller();
 }
 
 /*
@@ -177,7 +179,9 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 {
-	if(mChangingPropertyValue) return;
+	if (mChangingPropertyValue) {
+		return;
+	}
 
 	QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(prop);
 	int propertyType = property->propertyType(),
@@ -192,7 +196,13 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 		}
 	}
 	value = QVariant(value.toString());
-	mModel->setData(index, value);
+	QVariant const oldValue = mModel->data(index);
+
+	// TODO: edit included Qt Property Browser framework or inherit new browser
+	// from it and create propertyCommited() and propertyCancelled() signal
+	qReal::commands::ChangePropertyCommand *changeCommand =
+			new qReal::commands::ChangePropertyCommand(mModel, index, oldValue, value);
+	mController->execute(changeCommand);
 }
 
 void PropertyEditorView::setPropertyValue(QtVariantProperty *property, const QVariant &value)

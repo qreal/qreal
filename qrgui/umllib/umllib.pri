@@ -12,7 +12,10 @@ HEADERS += umllib/edgeElement.h \
 	umllib/private/umlPortHandler.h \
 	umllib/private/borderChecker.h \
 	umllib/private/portHandler.h \
-	umllib/private/copyHandler.h
+	umllib/private/copyHandler.h \
+	umllib/private/resizeCommand.h \
+	umllib/private/foldCommand.h \
+	umllib/private/reshapeEdgeCommand.h \
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -28,10 +31,10 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/private/umlPortHandler.cpp \
 	umllib/private/borderChecker.cpp \
 	umllib/private/portHandler.cpp \
-	umllib/private/copyHandler.cpp
+	umllib/private/copyHandler.cpp \
+	umllib/private/resizeCommand.cpp \
+	umllib/private/foldCommand.cpp \
+	umllib/private/reshapeEdgeCommand.cpp \
 
 RESOURCES += \
-    umllib/contextIcons.qrc
-
-
-
+	umllib/contextIcons.qrc \
