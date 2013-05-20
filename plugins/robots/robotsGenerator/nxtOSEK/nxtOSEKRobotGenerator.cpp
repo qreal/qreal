@@ -159,6 +159,9 @@ void NxtOSEKRobotGenerator::generate()
 		return;
 	}
 
+	mUsesEnterButton = false;
+	mUsesRunButton = false;
+
 	IdList toGenerate(mApi->elementsByType("InitialNode"));
 
 	int curInitialNodeNumber = 0;
@@ -288,6 +291,18 @@ void NxtOSEKRobotGenerator::addResultCodeInCFile(int curInitialNodeNumber)
 		 resultCode = addTabAndEndOfLine(lineList, resultCode);
 	}
 
+	if(mUsesEnterButton){
+		resultCode = "\tint enterCounter = 0;\n\tint enterWasDown = 0;\n" + resultCode;
+	}
+
+	if(mUsesRunButton){
+		resultCode = "\tint runCounter = 0;\n\tint runWasDown = 0;\n" + resultCode;
+	}
+
+	if(mBmpFilesCounter){
+		resultCode = "\tU8 lcd[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\n\tU8 lcd_copy[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\n" + resultCode;
+	}
+
 	QString resultInitCode;
 	resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
 	QString resultTerminateCode;
@@ -360,4 +375,14 @@ void NxtOSEKRobotGenerator::increaseBmpCounter()
 int NxtOSEKRobotGenerator::bmpFilesNumber()
 {
 	return mBmpFilesCounter;
+}
+
+void NxtOSEKRobotGenerator::enterButtonUsed()
+{
+	mUsesEnterButton = true;
+}
+
+void NxtOSEKRobotGenerator::runButtonUsed()
+{
+	mUsesRunButton = true;
 }

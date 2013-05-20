@@ -58,6 +58,8 @@ public:
 	QString generateBmpFilesStringForMake();
 	void increaseBmpCounter();
 	int bmpFilesNumber();
+	void enterButtonUsed();
+	void runButtonUsed();
 
 private:
 	void createProjectDir(QString const &projectDir);
@@ -105,6 +107,8 @@ private:
 
 	QList<QString> mBmpFileNames;
 	int mBmpFilesCounter;
+	bool mUsesEnterButton;
+	bool mUsesRunButton;
 
 	Variables mVariables;
 	int mVariablePlaceInGenStrSet;

@@ -19,17 +19,19 @@ QList<SmartLine> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(N
 
 
 	if(runButtonClicks){
-		result.append(SmartLine("int runCounter = 0;", elementId));
-		result.append(SmartLine("int runWasDown = 0;", elementId));
+		result.append(SmartLine("runCounter = 0;", elementId));
+		result.append(SmartLine("runWasDown = 0;", elementId));
 		condition += "runCounter < " + QString::number(runButtonClicks);
+		nxtGen->runButtonUsed();
 	}
 	if(enterButtonClicks){
-		result.append(SmartLine("int enterCounter = 0;", elementId));
-		result.append(SmartLine("int enterWasDown = 0;", elementId));
+		result.append(SmartLine("enterCounter = 0;", elementId));
+		result.append(SmartLine("enterWasDown = 0;", elementId));
 		if(runButtonClicks){
 			condition += " || ";
 		}
 		condition += "enterCounter < " + QString::number(enterButtonClicks);
+		nxtGen->enterButtonUsed();
 	}
 
 	if(runButtonClicks || enterButtonClicks){

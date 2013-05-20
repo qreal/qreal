@@ -133,7 +133,7 @@ void UnrealDisplayImplementation::paint(QPainter *painter)
 	while(strings.hasNext() && strPlaces.hasNext()){
 		QString s = strings.next();
 		QPoint p = strPlaces.next();
-		painter->drawText(p.x()*pixWidth, p.y()*pixHeight, s);
+		painter->drawText(p.x()*pixWidth*100/16, p.y()*pixHeight*64/8, s);
 	}
 
 
