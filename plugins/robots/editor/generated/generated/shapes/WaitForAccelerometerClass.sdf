@@ -1,3 +1,3 @@
  <picture sizex="50" sizey="50">
-  <image y1="0" y2="50" x1="0" x2="50" name="images/waitForAccelerometerBlock.png"/>
+  <image x2="50" name="images/waitForAccelerometerBlock.png" y1="0" y2="50" x1="0"/>
  </picture>

@@ -4143,6 +4143,20 @@
 			title_6->setFlags(0);
 			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_6);
+			title_7 = factory.createTitle(0.66, 2, "Acceleration OS", false);
+			title_7->setBackground(Qt::transparent);
+			title_7->setScaling(false, false);
+			title_7->setHard(false);
+			title_7->setFlags(0);
+			title_7->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_7);
+			title_8 = factory.createTitle(-1.6, 2, QString::fromUtf8("Ускорение по оси:"));
+			title_8->setBackground(Qt::transparent);
+			title_8->setScaling(false, false);
+			title_8->setHard(false);
+			title_8->setFlags(0);
+			title_8->setTextInteractionFlags(Qt::NoTextInteraction);
+			titles.append(title_8);
 		}
 
 		 ElementImpl *clone() { return NULL; }
@@ -4173,6 +4187,8 @@
 			title_3->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Acceleration")).replace("\n", "<br>"));
 			Q_UNUSED(repo);
 			title_5->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Sign")).replace("\n", "<br>"));
+			Q_UNUSED(repo);
+			title_7->setHtml(QString("<b>%1</b>").arg(repo->logicalProperty("Acceleration OS")).replace("\n", "<br>"));
 			Q_UNUSED(repo);
 		}
 
@@ -4256,6 +4272,8 @@
 		ElementTitleInterface *title_4;
 		ElementTitleInterface *title_5;
 		ElementTitleInterface *title_6;
+		ElementTitleInterface *title_7;
+		ElementTitleInterface *title_8;
 	};
 
 	class WaitForColor : public ElementImpl

@@ -35,6 +35,12 @@
 				<value>не меньше</value>
 				<value>не больше</value>
 			</enum>
+			<enum name="Accelerations">
+				<value>oX</value>
+				<value>oY</value>
+				<value>oZ</value>
+				<value>Norm</value>
+			</enum>
 			<enum name="BreakEngineMode">
 				<value>тормозить</value>
 				<value>скользить</value>
@@ -651,6 +657,8 @@
 						<label x="-26" y="60" text="Ускорение:"/>
 						<label x="33" y="80" textBinded="Sign"/>
 						<label x="-80" y="80" text="Считанное значение:"/>
+						<label x="33" y="100" textBinded="Acceleration OS"/>						
+						<label x="-80" y="100" text="Ускорение по оси:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -680,6 +688,9 @@
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
 							<default>равно</default>
+						</property>
+						<property displayedName="Ускорение по оси" type="Accelerations" name="Acceleration OS">
+							<default>oX</default>
 						</property>
 					</properties>
 					<generalizations>

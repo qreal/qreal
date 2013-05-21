@@ -84,6 +84,7 @@ void RobotsMetamodelPlugin::initNameMap()
 	propertiesDisplayedNamesMap["RobotsDiagram"]["VariableInit"]["value"] = QString::fromUtf8("Значение");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["VariableInit"]["variable"] = QString::fromUtf8("Переменная");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForAccelerometer"]["Acceleration"] = QString::fromUtf8("Ускорение");
+	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForAccelerometer"]["Acceleration OS"] = QString::fromUtf8("Ускорение по оси");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForAccelerometer"]["Port"] = QString::fromUtf8("Порт");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForAccelerometer"]["Sign"] = QString::fromUtf8("Считанное значение");
 	propertiesDisplayedNamesMap["RobotsDiagram"]["WaitForColor"]["Color"] = QString::fromUtf8("Цвет");
@@ -155,6 +156,7 @@ void RobotsMetamodelPlugin::initPropertyMap()
 	propertyTypes["ControlFlow"]["Guard"] = "GuardType";
 	propertyTypes["Function"]["Init"] = "Bool";
 	propertyTypes["PlayTone"]["WaitForCompletion"] = "Bool";
+	propertyTypes["WaitForAccelerometer"]["Acceleration OS"] = "Accelerations";
 	propertyTypes["WaitForAccelerometer"]["Port"] = "SensorPort";
 	propertyTypes["WaitForAccelerometer"]["Sign"] = "DistanceSign";
 	propertyTypes["WaitForColor"]["Color"] = "Color";
@@ -199,6 +201,7 @@ void RobotsMetamodelPlugin::initPropertyDefaultsMap()
 	propertyDefault["VariableInit"]["value"] = QString::fromUtf8("0");
 	propertyDefault["VariableInit"]["variable"] = QString::fromUtf8("0");
 	propertyDefault["WaitForAccelerometer"]["Acceleration"] = QString::fromUtf8("0");
+	propertyDefault["WaitForAccelerometer"]["Acceleration OS"] = QString::fromUtf8("oX");
 	propertyDefault["WaitForAccelerometer"]["Port"] = QString::fromUtf8("1");
 	propertyDefault["WaitForAccelerometer"]["Sign"] = QString::fromUtf8("равно");
 	propertyDefault["WaitForColor"]["Port"] = QString::fromUtf8("1");
@@ -513,7 +516,7 @@ QStringList RobotsMetamodelPlugin::getPropertyNames(QString const &/*diagram*/, 
 	else if (element == "VariableInit")
 		result  << "value" << "variable";
 	else if (element == "WaitForAccelerometer")
-		result  << "Acceleration" << "Port" << "Sign";
+		result  << "Acceleration" << "Acceleration OS" << "Port" << "Sign";
 	else if (element == "WaitForColor")
 		result  << "Color" << "Port";
 	else if (element == "WaitForColorIntensity")
@@ -630,6 +633,8 @@ int RobotsMetamodelPlugin::isNodeOrEdge(QString const &element) const
 {
 	if (element == "AbstractNode")
 		return 1;
+	else if (element == "Accelerations")
+		return 0;
 	else if (element == "Balance")
 		return 1;
 	else if (element == "BalanceInit")
@@ -714,28 +719,30 @@ QString RobotsMetamodelPlugin::getGroupsXML() const
 QStringList RobotsMetamodelPlugin::getEnumValues(QString name) const 
 {
 	QStringList result;
-	if (name == "DistanceSign")
-		result << QString::fromUtf8("равно") << QString::fromUtf8("больше") << QString::fromUtf8("меньше") << QString::fromUtf8("не меньше") << QString::fromUtf8("не больше");
-	else if (name == "GuardType")
-		result << QString::fromUtf8("") << QString::fromUtf8("итерация") << QString::fromUtf8("меньше 0") << QString::fromUtf8("больше 0") << QString::fromUtf8("равно 0");
+	if (name == "SensorPort")
+		result << QString::fromUtf8("1") << QString::fromUtf8("2") << QString::fromUtf8("3") << QString::fromUtf8("4");
 	else if (name == "BreakEngineMode")
 		result << QString::fromUtf8("тормозить") << QString::fromUtf8("скользить");
-	else if (name == "Bool")
-		result << QString::fromUtf8("false") << QString::fromUtf8("true");
-	else if (name == "AggregationKind")
-		result << QString::fromUtf8("none") << QString::fromUtf8("shared") << QString::fromUtf8("composite");
-	else if (name == "VisibilityKind")
-		result << QString::fromUtf8("private") << QString::fromUtf8("protected") << QString::fromUtf8("public") << QString::fromUtf8("package");
-	else if (name == "CallConcurrencyKind")
-		result << QString::fromUtf8("sequential") << QString::fromUtf8("guarded") << QString::fromUtf8("concurrent");
+	else if (name == "DistanceSign")
+		result << QString::fromUtf8("равно") << QString::fromUtf8("больше") << QString::fromUtf8("меньше") << QString::fromUtf8("не меньше") << QString::fromUtf8("не больше");
 	else if (name == "Sensors")
 		result << QString::fromUtf8("Не используется") << QString::fromUtf8("Ультразвуковой сенсор") << QString::fromUtf8("Сенсор касания (булево значение)") << QString::fromUtf8("Сенсор касания (сырое значение)") << QString::fromUtf8("Сенсор цвета (все цвета)") << QString::fromUtf8("Сенсор цвета (красный)") << QString::fromUtf8("Сенсор цвета (зеленый)") << QString::fromUtf8("Сенсор цвета (синий)") << QString::fromUtf8("Сенсор цвета (пассивный)") << QString::fromUtf8("Сенсок звука") << QString::fromUtf8("Гироскоп") << QString::fromUtf8("Акселерометр");
-	else if (name == "SensorPort")
-		result << QString::fromUtf8("1") << QString::fromUtf8("2") << QString::fromUtf8("3") << QString::fromUtf8("4");
 	else if (name == "Color")
 		result << QString::fromUtf8("") << QString::fromUtf8("Чёрный") << QString::fromUtf8("Синий") << QString::fromUtf8("Зелёный") << QString::fromUtf8("Жёлтый") << QString::fromUtf8("Красный") << QString::fromUtf8("Белый");
+	else if (name == "GuardType")
+		result << QString::fromUtf8("") << QString::fromUtf8("итерация") << QString::fromUtf8("меньше 0") << QString::fromUtf8("больше 0") << QString::fromUtf8("равно 0");
 	else if (name == "ParameterDirectionKind")
 		result << QString::fromUtf8("in") << QString::fromUtf8("inout") << QString::fromUtf8("out") << QString::fromUtf8("return");
+	else if (name == "CallConcurrencyKind")
+		result << QString::fromUtf8("sequential") << QString::fromUtf8("guarded") << QString::fromUtf8("concurrent");
+	else if (name == "Accelerations")
+		result << QString::fromUtf8("oX") << QString::fromUtf8("oY") << QString::fromUtf8("oZ") << QString::fromUtf8("Norm");
+	else if (name == "VisibilityKind")
+		result << QString::fromUtf8("private") << QString::fromUtf8("protected") << QString::fromUtf8("public") << QString::fromUtf8("package");
+	else if (name == "AggregationKind")
+		result << QString::fromUtf8("none") << QString::fromUtf8("shared") << QString::fromUtf8("composite");
+	else if (name == "Bool")
+		result << QString::fromUtf8("false") << QString::fromUtf8("true");
 	return result;
 }
 
