@@ -1478,29 +1478,35 @@ QAction *MainWindow::actionPasteCopyOfLogical() const
 
 void MainWindow::highlight(Id const &graphicalId, bool exclusive, QColor const &color)
 {
-	EditorView* const view = getCurrentTab();
-	if (!view) {
-		return;
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
+		EditorView * const view = dynamic_cast<EditorView *>(mUi->tabs->widget(i));
+		if (!view) {
+			continue;
+		}
+		EditorViewScene * const scene = dynamic_cast<EditorViewScene *>(view->scene());
+		Element const * const element = scene->getElem(graphicalId);
+		if (element) {
+			scene->highlight(graphicalId, exclusive, color);
+			view->ensureElementVisible(element);
+		}
 	}
-
-	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
-	Element* const element = scene->getElem(graphicalId);
-	scene->highlight(graphicalId, exclusive, color);
-	view->ensureElementVisible(element);
 }
 
 void MainWindow::dehighlight(Id const &graphicalId)
 {
-	EditorView* const view = getCurrentTab();
-	if (!view) {
-		return;
-	}
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
+		EditorView * const view = dynamic_cast<EditorView *>(mUi->tabs->widget(i));
+		if (!view) {
+			continue;
+		}
 
-	EditorViewScene* const scene = dynamic_cast<EditorViewScene*>(view->scene());
-	if (graphicalId == Id()) {
-		scene->dehighlight();
-	} else {
-		scene->dehighlight(graphicalId);
+		EditorViewScene * const scene = dynamic_cast<EditorViewScene *>(view->scene());
+
+		if (graphicalId == Id()) {
+			scene->dehighlight();
+		} else {
+			scene->dehighlight(graphicalId);
+		}
 	}
 }
 
