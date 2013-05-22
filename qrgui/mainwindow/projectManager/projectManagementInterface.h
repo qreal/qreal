@@ -52,6 +52,10 @@ public:
 	virtual bool suggestToSaveChangesOrCancel() = 0;
 	virtual void setUnsavedIndicator(bool isUnsaved) = 0;
 	virtual void reinitAutosaver() = 0;
+
+signals:
+	void beforeOpen(QString const fileName);
+	void afterOpen(QString const fileName);
 };
 
 }

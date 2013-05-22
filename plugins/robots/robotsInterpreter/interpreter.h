@@ -12,6 +12,8 @@
 #include "details/d2RobotModel/d2RobotModel.h"
 
 #include "../../../qrutils/watchListWindow.h"
+#include "../../../qrgui/mainwindow/projectManager/projectManagementInterface.h"
+
 
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
@@ -32,6 +34,7 @@ public:
 	virtual void init(GraphicalModelAssistInterface &graphicalModelApi
 			, LogicalModelAssistInterface const &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, qReal::ProjectManagementInterface const &projectManager
 	);
 
 	details::RobotModel *robotModel();

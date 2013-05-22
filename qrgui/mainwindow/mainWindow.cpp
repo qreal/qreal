@@ -1,4 +1,3 @@
-
 #include <QtCore/QProcess>
 #include <QtWidgets/QDialog>
 #include <QtPrintSupport/QPrinter>
