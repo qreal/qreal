@@ -82,13 +82,13 @@ public:
 
 	// default destructor and copy constuctor are OK
 private:
+	/// Used only for debug. Checks that Id is correct.
+	bool checkIntegrity() const;
+
 	QString mEditor;
 	QString mDiagram;
 	QString mElement;
 	QString mId;
-
-	/// Used only for debug. Checks that Id is correct.
-	bool checkIntegrity() const;
 };
 
 /// Id equality operator. Ids are equal when all their parts are equal.
@@ -104,6 +104,12 @@ inline bool operator==(Id const &i1, Id const &i2)
 inline bool operator!=(Id const &i1, Id const &i2)
 {
 	return !(i1 == i2);
+}
+
+/// Comparison operator for using Id in maps
+inline bool operator<(Id const &i1, Id const &i2)
+{
+	return i1.toString() < i2.toString();
 }
 
 /// Hash function for Id for using it in QHash.

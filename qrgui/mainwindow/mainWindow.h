@@ -23,6 +23,7 @@
 #include "../pluginManager/toolPluginManager.h"
 #include "../models/logicalModelAssistApi.h"
 #include "../view/propertyEditorView.h"
+#include "../controller/controller.h"
 
 #include "../dialogs/preferencesDialog.h"
 #include "../dialogs/findReplaceDialog.h"
@@ -62,12 +63,13 @@ public:
 	~MainWindow();
 
 	EditorManager *manager();
-	EditorView *getCurrentTab();
-	ListenerManager *listenerManager();
-	models::Models *models();
-	PropertyEditorView *propertyEditor();
-	QTreeView *graphicalModelExplorer();
-	QTreeView *logicalModelExplorer();
+	EditorView *getCurrentTab() const;
+	ListenerManager *listenerManager() const;
+	models::Models *models() const;
+	Controller *controller() const;
+	PropertyEditorView *propertyEditor() const;
+	QTreeView *graphicalModelExplorer() const;
+	QTreeView *logicalModelExplorer() const;
 	PropertyEditorModel &propertyModel();
 	ToolPluginManager &toolManager();
 
@@ -132,7 +134,6 @@ signals:
 
 public slots:
 	void deleteFromScene();
-	void modelsAreChanged();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
 	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
@@ -146,8 +147,6 @@ public slots:
 	void changePaletteRepresentation();
 	void closeAllTabs();
 	void refreshRecentProjectsList(QString const &fileName);
-	void connectWindowTitle();
-	void disconnectWindowTitle();
 	void createDiagram(QString const &idString);
 
 	void openFirstDiagram();
@@ -188,7 +187,12 @@ private slots:
 	void parseJavaLibraries();
 	void applySettings();
 
-	void deleteFromScene(QGraphicsItem *target);
+	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);
+	commands::AbstractCommand *graphicalDeleteCommand(QGraphicsItem *target);
+	commands::AbstractCommand *logicalDeleteCommand(QModelIndex const &index);
+	commands::AbstractCommand *graphicalDeleteCommand(QModelIndex const &index);
+	commands::AbstractCommand *logicalDeleteCommand(Id const &index);
+	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
 
 	void deleteFromDiagram();
 	void copyElementsOnDiagram();
@@ -231,7 +235,6 @@ private slots:
 	void updatePaletteIcons();
 
 private:
-	void deleteElementFromScene(QPersistentModelIndex const &index);
 	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
@@ -251,7 +254,10 @@ private:
 	QListWidget* createSaveListWidget();
 
 	virtual void closeEvent(QCloseEvent *event);
+
 	void deleteFromExplorer(bool isLogicalModel);
+	void deleteItems(IdList &itemsToDelete);
+
 	void keyPressEvent(QKeyEvent *event);
 
 	QString getSaveFileName(QString const &dialogWindowTitle);
@@ -315,6 +321,7 @@ private:
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 
 	models::Models *mModels;
+	Controller *mController;
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;

@@ -2,12 +2,9 @@
 
 #include <algorithm>
 
-ResizeHandler::ResizeHandler(
-		NodeElement * const resizingNode
-		, ElementImpl * const elementImpl
-		)
+ResizeHandler::ResizeHandler(NodeElement * const resizingNode)
 	: mResizingNode(resizingNode)
-	, mElementImpl(elementImpl)
+	, mElementImpl(resizingNode->elementImpl())
 {
 }
 
@@ -96,7 +93,7 @@ void ResizeHandler::parentResizeCall() const
 {
 	NodeElement * const parItem = dynamic_cast<NodeElement* const>(mResizingNode->parentItem());
 	if (parItem) {
-		ResizeHandler const handler(parItem, parItem->elementImpl());
+		ResizeHandler const handler(parItem);
 		handler.resize(parItem->contentsRect(), parItem->pos());
 	}
 }

@@ -52,7 +52,7 @@
             <actionList>
                 <setInstallerVariable name="project.defaultInstallationMode" value="unattended"/>
                 <setInstallerVariable name="project.unattendedModeUI" value="minimal"/>
-                <setInstallerVariable name="project.installerFilename" value="unattended-${project.installerFilename}"/>
+                <setInstallerVariable name="project.installerFilename" value="auto-${project.installerFilename}"/>
             </actionList>
             <ruleList>
                 <compareText text="${unattended}" logic="equals" value="yes"/>

@@ -40,8 +40,8 @@ include(expressionsParser/expressionsParser.pri)
 # Graphical scene framework used in qrgui and plugins
 include(graphicsUtils/graphicsUtils.pri)
 
-# Stuff connected with graph transformation
-include(graphTransformation/graphTransformation.pri)
+# Stuff connected with graphs and trees
+include(graphUtils/graphUtils.pri)
 
 # Stuff for running long operations in different modes
 include(invocationUtils/invocationUtils.pri)

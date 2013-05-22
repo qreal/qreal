@@ -24,7 +24,7 @@ EditorManager::EditorManager(QObject *parent)
 
 	mPluginsDir.cd("plugins");
 
-	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
+	foreach (QString const &fileName, mPluginsDir.entryList(QDir::Files)) {
 		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader->instance();
 
@@ -54,12 +54,12 @@ EditorManager::EditorManager(QObject *parent)
 
 EditorManager::~EditorManager()
 {
-	foreach (QString id, mPluginIface.keys()) {
+	foreach (QString const &id, mPluginIface.keys()) {
 		delete mPluginIface[id];
 		mPluginIface.remove(id);
 	}
 
-	foreach (QString name, mLoaders.keys()) {
+	foreach (QString const &name, mLoaders.keys()) {
 		delete mLoaders[name];
 		mLoaders.remove(name);
 	}
@@ -111,7 +111,7 @@ bool EditorManager::unloadPlugin(QString const &pluginName)
 IdList EditorManager::editors() const
 {
 	IdList editors;
-	foreach (QString e, mPluginsLoaded) {
+	foreach (QString const &e, mPluginsLoaded) {
 		editors.append(Id(e));
 	}
 	return editors;
@@ -122,7 +122,7 @@ IdList EditorManager::diagrams(Id const &editor) const
 	IdList diagrams;
 	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
 
-	foreach (QString e, mPluginIface[editor.editor()]->diagrams()) {
+	foreach (QString const &e, mPluginIface[editor.editor()]->diagrams()) {
 		diagrams.append(Id(editor, e));
 	}
 	return diagrams;
@@ -149,8 +149,9 @@ IdList EditorManager::elements(Id const &diagram) const
 	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-	foreach (QString e, mPluginIface[diagram.editor()]->elements(diagram.diagram()))
+	foreach (QString const &e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
 		elements.append(Id(diagram.editor(), diagram.diagram(), e));
+	}
 	return elements;
 }
 
@@ -284,7 +285,7 @@ IdList EditorManager::getContainedTypes(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	IdList result;
-	foreach (QString type, mPluginIface[id.editor()]->getTypesContainedBy(id.element())) {
+	foreach (QString const &type, mPluginIface[id.editor()]->getTypesContainedBy(id.element())) {
 		result.append(Id(type));
 	}
 	return result;
@@ -297,7 +298,7 @@ IdList EditorManager::getConnectedTypes(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	IdList result;
-	foreach (QString type, mPluginIface[id.editor()]->getConnectedTypes(id.element())) {
+	foreach (QString const &type, mPluginIface[id.editor()]->getConnectedTypes(id.element())) {
 		// a hack caused by absence  of ID entity in editors generator
 		result.append(Id("?", "?", type));
 	}
@@ -312,7 +313,7 @@ IdList EditorManager::getUsedTypes(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	IdList result;
-	foreach (QString type, mPluginIface[id.editor()]->getUsedTypes(id.element())) {
+	foreach (QString const &type, mPluginIface[id.editor()]->getUsedTypes(id.element())) {
 		result.append(Id("?", "?", type));
 	}
 
@@ -362,7 +363,7 @@ void EditorManager::checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api
 		}
 	}
 
-	foreach (Id child, api.children(id)) {
+	foreach (Id const &child, api.children(id)) {
 		checkNeededPluginsRecursive(api, child, result);
 	}
 }
@@ -373,8 +374,8 @@ bool EditorManager::hasElement(Id const &elementId) const
 	if (!mPluginsLoaded.contains(elementId.editor()))
 		return false;
 	EditorInterface *editor = mPluginIface[elementId.editor()];
-	foreach (QString diagram, editor->diagrams()) {
-		foreach (QString element, editor->elements(diagram)) {
+	foreach (QString const &diagram, editor->diagrams()) {
+		foreach (QString const &element, editor->elements(diagram)) {
 			if (elementId.diagram() == diagram && elementId.element() == element) {
 				return true;
 			}
@@ -386,8 +387,8 @@ bool EditorManager::hasElement(Id const &elementId) const
 Id EditorManager::findElementByType(QString const &type) const
 {
 	foreach (EditorInterface *editor, mPluginIface.values()) {
-		foreach (QString diagram, editor->diagrams()) {
-			foreach (QString element, editor->elements(diagram)) {
+		foreach (QString const &diagram, editor->diagrams()) {
+			foreach (QString const &element, editor->elements(diagram)) {
 				if (type == element) {
 					return Id(editor->id(), diagram, element);
 				}
@@ -444,7 +445,7 @@ bool EditorManager::isParentOf(EditorInterface const *plugin, QString const &chi
 	QList<QPair<QString, QString> > list = plugin->getParentsOf(childDiagram, child);
 
 	bool res = false;
-	foreach (StringPair const pair, list) {
+	foreach (StringPair const &pair, list) {
 		if (pair.second == parent && pair.first == parentDiagram) {
 			return true;
 		}
@@ -463,7 +464,7 @@ QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
 
 	QStringList result;
 
-	foreach (Id const id, elements(parent)) {
+	foreach (Id const &id, elements(parent)) {
 		if (isParentOf(id, parent)) {
 			result << id.element();
 		}
@@ -500,10 +501,8 @@ IdList EditorManager::groups(Id const &diagram)
 	foreach(Pattern const &pattern, parser.getPatterns()) {
 		mGroups.insert(pattern.name(), pattern);
 	}
-	foreach (QString e, mGroups.keys()) {
-			elements.append(Id(diagram.editor(), diagram.diagram(), e));
+	foreach (QString const &e, mGroups.keys()) {
+		elements.append(Id(diagram.editor(), diagram.diagram(), e));
 	}
 	return elements;
 }
-
-

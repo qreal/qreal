@@ -1452,6 +1452,55 @@
                     </generalizations>
                 </logic>
             </node>
+			<node displayedName="Коментарий" name="CommentBlock">
+				<graphics>
+					<picture sizex="200" sizey="100">
+						<line y1="0" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="0" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="100" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="20" y2="100" fill="#ffffff" stroke="#000000" x1="200" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="0" fill="#ffffff" stroke="#000000" x1="0" x2="178" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="180" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="20" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+					</picture>
+					<labels>
+						<label x="20" y="20" textBinded="Comment" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="95"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="175" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="200" starty="25"/>
+							<end endx="200" endy="95"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="100"/>
+							<end endx="195" endy="100"/>
+						</linePort>
+						<linePort>
+							<start startx="180" starty="0"/>
+							<end endx="200" endy="20"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Комментарий" type="string" name="Comment">
+							<default>Введите текст...</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Подпрограмма" name="SubprogramRobots">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1521,6 +1570,7 @@
 				<element name="ControlFlow"/>
 				<element name="RobotsDiagramNode"/>
 				<element name="Loop"/>
+				<element name="CommentBlock"/>
 			</group>
 			<group name="Инициализация">
 				<element name="InitialNode"/>
