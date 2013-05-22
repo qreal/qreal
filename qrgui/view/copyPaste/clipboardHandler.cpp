@@ -27,7 +27,7 @@ void ClipboardHandler::copy()
 	QList<NodeElement *> nodes = getNodesForCopying();
 
 	QList<NodeData> nodesData = getNodesData(nodes);
-	QList<EdgeData> edgesData = getEdgesData(nodes);
+	QList<EdgeData> edgesData = getEdgesData();
 
 	pushDataToClipboard(nodesData, edgesData);
 }
@@ -68,16 +68,13 @@ void ClipboardHandler::addChildren(NodeElement *node, QList<NodeElement *> &node
 	}
 }
 
-QList<EdgeData> ClipboardHandler::getEdgesData(QList<NodeElement *> const &nodes)
+QList<EdgeData> ClipboardHandler::getEdgesData()
 {
 	QList<EdgeData> edgesData;
-	foreach (NodeElement* node, nodes) {
-		foreach (EdgeElement *edge, node->getEdges()) {
-			EdgeData& data = edge->data();
-			if (nodes.contains(edge->src()) && nodes.contains(edge->dst())
-					&& !edgesData.contains(data)) {
-				edgesData << data;
-			}
+	foreach (QGraphicsItem *item, mScene->selectedItems()) {
+		EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
+		if (edge) {
+			edgesData << edge->data();
 		}
 	}
 	return edgesData;

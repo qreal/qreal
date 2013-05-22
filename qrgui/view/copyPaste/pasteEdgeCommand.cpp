@@ -22,7 +22,7 @@ Id PasteEdgeCommand::pasteNewInstance()
 	Id resultId = mResult;
 	if (!mCreateCommand) {
 		Id const typeId = mEdgeData.id.type();
-		resultId = mScene->createElement(typeId.toString(), QPointF(), true, &mCreateCommand, false);
+		resultId = mScene->createElement(typeId.toString(), mEdgeData.pos + mOffset, true, &mCreateCommand, false);
 		mCreateCommand->redo();
 		mCopiedIds->insert(mEdgeData.id, resultId);
 		addPreAction(mCreateCommand);
@@ -68,9 +68,16 @@ void PasteEdgeCommand::restoreElement()
 	mMVIface->graphicalAssistApi()->setPosition(edgeId, mEdgeData.pos + mOffset);
 	mMVIface->graphicalAssistApi()->setConfiguration(edgeId, mEdgeData.configuration);
 
-	mMVIface->graphicalAssistApi()->setFrom(edgeId, newSrcId);
-	mMVIface->graphicalAssistApi()->setTo(edgeId, newDstId);
+	mMVIface->graphicalAssistApi()->setFrom(edgeId, newSrcId == Id() ? Id::rootId() : newSrcId);
+	mMVIface->graphicalAssistApi()->setTo(edgeId, newDstId == Id() ? Id::rootId() : newDstId);
 
 	mMVIface->graphicalAssistApi()->setFromPort(edgeId, mEdgeData.portFrom);
 	mMVIface->graphicalAssistApi()->setToPort(edgeId, mEdgeData.portTo);
+
+	EdgeElement *edge = mScene->getEdgeById(edgeId);
+	if (edge) {
+		edge->setPos(mEdgeData.pos + mOffset);
+		edge->setLine(mEdgeData.configuration);
+		edge->connectToPort();
+	}
 }

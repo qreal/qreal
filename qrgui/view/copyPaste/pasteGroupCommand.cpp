@@ -17,7 +17,6 @@ PasteGroupCommand::PasteGroupCommand(EditorViewScene *scene
 
 PasteGroupCommand::~PasteGroupCommand()
 {
-	delete mCopiedIds;
 }
 
 void PasteGroupCommand::prepareCommands()
@@ -26,11 +25,12 @@ void PasteGroupCommand::prepareCommands()
 	QList<EdgeData> edgesData;
 	pullDataFromClipboard(nodesData, edgesData);
 
-	if (nodesData.isEmpty()) {
+	if (nodesData.isEmpty() && edgesData.isEmpty()) {
 		return;
 	}
 
-	QPointF const offset = mScene->getMousePos() - nodesData[0].pos;
+	QPointF const originalPos = nodesData.isEmpty() ? edgesData[0].pos : nodesData[0].pos;
+	QPointF const offset = mScene->getMousePos() - originalPos;
 
 	mCopiedIds = preparePasteNodesCommands(nodesData, offset);
 
@@ -64,11 +64,13 @@ void PasteGroupCommand::preparePasteEdgeCommand(EdgeData const &edgeData, QPoint
 
 bool PasteGroupCommand::execute()
 {
+	// Execution happens in child commands
 	return true;
 }
 
 bool PasteGroupCommand::restoreState()
 {
+	// Restoration happens in child commands
 	return true;
 }
 

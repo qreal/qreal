@@ -1757,8 +1757,8 @@ EdgeData& EdgeElement::data()
 {
 	mData.id = id();
 	mData.logicalId = logicalId();
-	mData.srcId = src()->id();
-	mData.dstId = dst()->id();
+	mData.srcId = src() ? src()->id() : Id::rootId();
+	mData.dstId = dst() ? dst()->id() : Id::rootId();
 
 	mData.portFrom = mPortFrom;
 	mData.portTo = mPortTo;
