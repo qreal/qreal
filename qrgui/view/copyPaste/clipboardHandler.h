@@ -28,7 +28,7 @@ private:
 	void pushDataToClipboard(QList<NodeData> const &nodesData, QList<EdgeData> const &edgesData);
 	QList<NodeElement *> getNodesForCopying();
 	QList<NodeData> getNodesData(QList<NodeElement *> const &nodes);
-	QList<EdgeData> getEdgesData(QList<NodeElement *> const &nodes);
+	QList<EdgeData> getEdgesData();
 	void addChildren(NodeElement *node, QList<NodeElement *> &nodes);
 
 	EditorViewScene *mScene;
