@@ -54,8 +54,12 @@ public:
 	virtual void reinitAutosaver() = 0;
 
 signals:
-	void beforeOpen(QString const fileName);
-	void afterOpen(QString const fileName);
+	/// Emitted each time when project manager is going to open new project
+	/// @param fileName Project location
+	void beforeOpen(QString const &fileName);
+	/// Emitted each time when project manager has opened new project
+	/// @param fileName Opened project location
+	void afterOpen(QString const &fileName);
 };
 
 }
