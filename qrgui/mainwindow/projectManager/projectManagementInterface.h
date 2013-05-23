@@ -8,7 +8,7 @@
 namespace qReal
 {
 
-/// Interfase that provides all of the work load project from a file, stored in the project file, and so on
+/// Interface that provides all of the work load project from a file, stored in the project file, and so on
 class ProjectManagementInterface : public QObject
 {
 	Q_OBJECT
