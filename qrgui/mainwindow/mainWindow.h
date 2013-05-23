@@ -152,6 +152,8 @@ public slots:
 	void openFirstDiagram();
 
 private slots:
+	/// Diagram opening must happen after plugins initialization
+	void initPluginsAndStartDialog();
 	void initToolPlugins();
 
 	/// handler for menu 'button find' pressed
@@ -355,6 +357,9 @@ private:
 
 	SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
+
+	/// A field for storing file name passed as console argument
+	QString mInitialFileToOpen;
 };
 
 }

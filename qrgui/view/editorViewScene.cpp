@@ -560,14 +560,14 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, Ele
 	}
 	if (executeImmediately) {
 		mController->execute(createCommand);
-	}
-	Id const newElemId = createCommand->result();
-	if (dynamic_cast<NodeElement*>(e)) {
-		QSize const size = mMVIface->graphicalAssistApi()->editorManager().iconSize(newElemId);
-		getNodeById(newElemId)->setPos(position.x()- size.width()/2, position.y());
-		elements.append(getNodeById(newElemId));
-		insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, position
-				, QPointF(size.width(), size.height()), elements);
+		Id const newElemId = createCommand->result();
+		if (dynamic_cast<NodeElement*>(e)) {
+			QSize const size = mMVIface->graphicalAssistApi()->editorManager().iconSize(newElemId);
+			getNodeById(newElemId)->setPos(position.x()- size.width()/2, position.y());
+			elements.append(getNodeById(newElemId));
+			insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, position
+					, QPointF(size.width(), size.height()), elements);
+		}
 	}
 }
 
