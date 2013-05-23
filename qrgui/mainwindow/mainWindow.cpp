@@ -77,6 +77,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(this, mProjectManager))
 		, mSceneCustomizer(new SceneCustomizer(this))
+		, mInitialFileToOpen(fileToOpen)
 {
 	mUi->setupUi(this);
 	setWindowTitle("QReal");
@@ -140,13 +141,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// here then we have some problems with correct main window initialization
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
-	QTimer::singleShot(0, this, SLOT(initToolPlugins()));
-
-	if (fileToOpen.isEmpty() || !mProjectManager->open(fileToOpen)) {
-		// Centering dialog inside main window
-		mStartDialog->move(geometry().center() - mStartDialog->rect().center());
-		mStartDialog->exec();
-	}
+	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));
 }
 
 void MainWindow::connectActions()
@@ -1623,6 +1618,16 @@ QString MainWindow::getNextDirName(QString const &name)
 Id MainWindow::activeDiagram()
 {
 	return getCurrentTab() && getCurrentTab()->mvIface() ? getCurrentTab()->mvIface()->rootId() : Id();
+}
+
+void MainWindow::initPluginsAndStartDialog()
+{
+	initToolPlugins();
+	if (mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)) {
+		// Centering dialog inside main window
+		mStartDialog->move(geometry().center() - mStartDialog->rect().center());
+		mStartDialog->exec();
+	}
 }
 
 void MainWindow::initToolPlugins()
