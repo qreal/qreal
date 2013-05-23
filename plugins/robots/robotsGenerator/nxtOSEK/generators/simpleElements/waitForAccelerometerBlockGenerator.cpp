@@ -44,6 +44,7 @@ QList<SmartLine> WaitForAccelerometerBlockGenerator::convertElementIntoDirectCom
 	}
 	condition += inequalitySign + " " + acceleration;;
 
+	result.append(SmartLine("int[3] buf;",elementId));
 	result.append(SmartLine("while (!(ecrobot_get_accel_sensor(" + port +"" +", buf[3]"
 			+ ") "+ " && " + condition + "))", elementId));
 	result.append(SmartLine("{", elementId));

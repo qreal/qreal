@@ -42,6 +42,6 @@ void BluetoothAccelerometerSensorImplementation::sensorSpecificProcessResponse(c
 		Tracer::debug(tracer::sensors, "BluetoothAccelerometerSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else {
 		mState = idle;
-		emit response(0xff & reading[14]);
+		emit response((0xff & reading[14])<< 8 |(0xff & reading[15]));
 	}
 }

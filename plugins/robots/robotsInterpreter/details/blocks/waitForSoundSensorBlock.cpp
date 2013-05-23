@@ -13,7 +13,7 @@ WaitForSoundSensorBlock::WaitForSoundSensorBlock(details::RobotModel * const rob
 
 void WaitForSoundSensorBlock::responseSlot(int reading)
 {
-	int const targetPercents = evaluate("Percents").toInt();
+	int const targetPercents = evaluate("Volume").toInt();
 	processResponce(reading, targetPercents);
 }
 

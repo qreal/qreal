@@ -8,17 +8,6 @@ WaitForGyroscopeBlockGenerator::WaitForGyroscopeBlockGenerator()
 {
 }
 
-void WaitForGyroscopeBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen
-			, QString const &port, qReal::Id const elementId)
-{
-	QString const initCode = "ecrobot_set_gyroscope_sensor_active(" + port + ");";
-	if (!ListSmartLine::isContains(nxtGen->initCode(), initCode)) {
-		QString const terminateCode = "ecrobot_set_gyroscope_sensor_inactive(" + port + ");";
-		nxtGen->initCode().append(SmartLine(initCode, elementId));
-		nxtGen->terminateCode().append(SmartLine(terminateCode, elementId));
-	}
-}
-
 QList<SmartLine> WaitForGyroscopeBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
@@ -37,6 +26,5 @@ QList<SmartLine> WaitForGyroscopeBlockGenerator::convertElementIntoDirectCommand
 	result.append(SmartLine("{", elementId));
 	result.append(SmartLine("}", elementId));
 
-	addInitAndTerminateCode(nxtGen, port, elementId);
 	return result;
 }

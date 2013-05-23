@@ -557,8 +557,8 @@
 					<labels>
 						<label x="33" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Percents"/>
-						<label x="-26" y="60" text="Проценты:"/>
+						<label x="33" y="60" textBinded="Volume"/>
+						<label x="-26" y="60" text="Громкость:"/>
 						<label x="33" y="80" textBinded="Sign"/>
 						<label x="-80" y="80" text="Считанное значение:"/>
 					</labels>
@@ -585,7 +585,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Проценты" type="string" name="Percents">
+						<property displayedName="Громкость" type="string" name="Volume">
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
