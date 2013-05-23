@@ -723,7 +723,7 @@ p, li { white-space: pre-wrap; }
     <widget class="graphicsUtils::AbstractView" name="graphicsView"/>
    </item>
    <item row="0" column="3" rowspan="2">
-    <widget class="gridParameters" name="gridParametersBox">
+    <widget class="GridParameters" name="gridParametersBox">
      <property name="title">
       <string>Grid</string>
      </property>
@@ -743,7 +743,7 @@ p, li { white-space: pre-wrap; }
    <header>../../../qrutils/graphicsUtils/colorlisteditor.h</header>
   </customwidget>
   <customwidget>
-   <class>gridParameters</class>
+   <class>GridParameters</class>
    <extends>QGroupBox</extends>
    <header>gridparameters.h</header>
    <container>1</container>
