@@ -1214,7 +1214,7 @@
 				<element name="ControlFlow"/>
 				<element name="RobotsDiagramNode"/>
 				<element name="Loop"/>
-				<element name="CommentBlock"/>
+<!--				<element name="CommentBlock"/> -->
 			</group>
 			<group name="Инициализация">
 				<element name="InitialNode"/>
