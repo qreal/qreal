@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QList>
-#include <QPair>
+#include <QtCore/QList>
+#include <QtCore/QPair>
 
 #include "element.h"
 #include "../editorPluginInterface/elementImpl.h"
@@ -15,6 +15,14 @@ class NodeElement;
 /** @class EdgeElement
   * 	@brief class for an edge on a diagram
   * 	*/
+
+namespace qReal
+{
+namespace commands
+{
+class ReshapeEdgeCommand;
+}
+}
 
 class EdgeElement : public Element
 {
@@ -55,6 +63,7 @@ public:
 	NodeElement* otherSide(NodeElement const *node) const;
 	void removeLink(NodeElement const *from);
 	QPolygonF line() const;
+	void setLine(QPolygonF const &line);
 
 	/** @brief Get position of edge's start point*/
 	QPointF from() const;
@@ -244,4 +253,6 @@ private:
 	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst)
 
 	bool mIsVerticalChanging; // for squarize drawing
+
+	qReal::commands::ReshapeEdgeCommand *mReshapeCommand;
 };

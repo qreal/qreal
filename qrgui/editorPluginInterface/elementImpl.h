@@ -89,10 +89,11 @@ struct StatLine
 class ElementImpl {
 public:
 	virtual ~ElementImpl() {}
-	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts,
-					  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-					  QList<ElementTitleInterface*> &titles,
-					  SdfRendererInterface *renderer, SdfRendererInterface *portRenderer) = 0;
+	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts
+					  , QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
+					  , QList<ElementTitleInterface*> &title
+					  , SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
+					  , ElementRepoInterface *elementRepo = 0) = 0;
 	virtual void init(ElementTitleFactoryInterface &factory,
 					  QList<ElementTitleInterface*> &titles) = 0;
 	virtual void paint(QPainter *painter, QRectF &contents) = 0;

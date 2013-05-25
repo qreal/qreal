@@ -17,10 +17,8 @@ public:
 
 protected:
 	virtual QList<SmartLine> convertBlockIntoCode();
-	void variableAnalysis(QByteArray const &code);
 
 private:
-	QByteArray replaceSensorVariables(qReal::interpreters::robots::sensorType::SensorTypeEnum portValue) const;
 	bool mGenerateToInit;
 };
 

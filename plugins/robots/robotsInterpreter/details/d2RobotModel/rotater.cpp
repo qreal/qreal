@@ -27,6 +27,8 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 	mMaster = masterItem;
 
 	mLength = 30; //mMaster->horizontalRadius();//asd
+	mDrift = drift > mMaster->horizontalRadius() ? drift / 2 : drift;
+	mResizeDrift = drift > mMaster->horizontalRadius() ? resizeDrift / 2 : resizeDrift;
 
 	QRectF const rect = mMaster->rect();
 
@@ -34,9 +36,9 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 	setParentItem(mMaster);
 
 	// TODO: Dispose of hardcoding
-	mX1 = rect.width();
+	mX1 = rect.right();
 	// Placing rotater into the center of item`s rigth side
-	mY1 = rect.height() / 2 - 5;
+	mY1 = rect.y() + rect.height() / 2;
 	mX2 = mX1 + mLength;
 	mY2 = mY1;
 }
@@ -48,13 +50,13 @@ void Rotater::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style,
 
 	painter->setOpacity(0.5);
 	const int addLength = mLength / 3;
-	qreal angle = addAngle;
+	qreal const angle = addAngle;
 	// Must be equal to mLength
-	qreal checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));
-	qreal x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
-	qreal y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
-	QPointF first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0).rotate(angle).map(QPointF(x0, y0));
-	QPointF second = QTransform().translate(mX2 - x0, mY2 - y0).rotate(angle).translate(- mX2 + x0, - mY2 + y0).rotate(- angle).map(QPointF(x0, y0));
+	qreal const checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));
+	qreal const x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
+	qreal const y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
+	QPointF const first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0).rotate(angle).map(QPointF(x0, y0));
+	QPointF const second = QTransform().translate(mX2 - x0, mY2 - y0).rotate(angle).translate(- mX2 + x0, - mY2 + y0).rotate(- angle).map(QPointF(x0, y0));
 
 	mLineImpl.drawItem(painter, mX1, mY1, mX2, mY2);
 	mLineImpl.drawItem(painter, mX2, mY2, first.x(), first.y());
@@ -71,21 +73,13 @@ void Rotater::setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGrap
 
 void Rotater::drawExtractionForItem(QPainter* painter)
 {
-	int driftForRotater = drift;
-	if (drift > mMaster->horizontalRadius()) {
-		driftForRotater = drift / 2;
-	}
-	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, driftForRotater);
+	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, mDrift);
 	drawFieldForResizeItem(painter);
 }
 
 void Rotater::drawFieldForResizeItem(QPainter* painter)
 {
-	int resizeDriftForRotater = resizeDrift;
-	if (drift > mMaster->horizontalRadius()) {
-		resizeDriftForRotater = resizeDrift / 2;
-	}
-	painter->drawEllipse(QPointF(mX2, mY2), resizeDriftForRotater, resizeDriftForRotater);
+	painter->drawEllipse(QPointF(mX2, mY2), mResizeDrift, mResizeDrift);
 }
 
 QRectF Rotater::boundingRect() const

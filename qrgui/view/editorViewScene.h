@@ -6,7 +6,9 @@
 
 #include "../../qrkernel/roles.h"
 #include "../umllib/nodeElement.h"
+#include "../controller/controller.h"
 #include "gestures/mouseMovementManager.h"
+#include "copyPaste/clipboardHandler.h"
 
 #include "editorViewMVIface.h"
 
@@ -16,6 +18,11 @@ namespace qReal {
 class EditorViewMViface;
 class EditorView;
 class MainWindow;
+
+namespace commands
+{
+class CreateElementCommand;
+}
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -29,13 +36,21 @@ public:
 	void addItem(QGraphicsItem *item);
 
 	void clearScene();
-	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);
-	virtual qReal::Id createElement(QString const &, QPointF const &scenePos, bool searchForParents = true);
-	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents = true);
+
+	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
+			, commands::CreateElementCommand **elementCommand = 0);
+	virtual qReal::Id createElement(QString const &, QPointF const &scenePos
+			, bool searchForParents = true
+			, commands::CreateElementCommand **createCommand = 0
+			, bool executeImmediately = true);
+	virtual void createElement(QMimeData const *mimeData, QPointF const &scenePos
+			, bool searchForParents = true
+			, commands::CreateElementCommand **createCommandPointer = 0
+			, bool executeImmediately = true);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
-	virtual Element *getElem(qReal::Id const &id);
+	virtual Element *getElem(qReal::Id const &id) const;
 	Element *getElemAt(const QPointF &position);
 
 	virtual qReal::Id rootItemId() const;
@@ -63,16 +78,23 @@ public:
 	/// Deletes pixmap from scene's foreground
 	void deleteFromForeground(QPixmap *pixmap);
 
-	QPointF getMousePos();
+	QPointF getMousePos() const;
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-	void createSingleElement(Id const &id, QString const &name, Element *e, QPointF const &position
-			, Id const &parentId, bool isFromLogicalModel);
-	void createGroupOfElements(Id const &id, QPointF const &position, Id const &parentId, bool isFromLogicalModel);
-	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId
-			, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos, QPointF const &shift
-			, QList<NodeElement*> elements);
+	void createSingleElement(Id const &id, QString const &name
+			, Element *e, QPointF const &position
+			, Id const &parentId, bool isFromLogicalModel
+			, commands::CreateElementCommand **createCommandPointer = NULL
+			, bool executeImmediately = true);
+	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
+			, qReal::Id const &insertedLastNodeId
+			, qReal::Id const &parentId
+			, bool isFromLogicalModel
+			, QPointF const &scenePos
+			, QPointF const &shift
+			, QList<NodeElement*> elements
+			, commands::AbstractCommand *parentCommand = NULL);
 
 	QList<NodeElement*> getNeibors(NodeElement* node);
 	void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF const &direction
@@ -98,8 +120,8 @@ public:
 	void onElementParentChanged(Element *element);
 
 public slots:
-	qReal::Id createElement(QString const &type);
-	// TODO: get rid of it here
+	qReal::Id createElement(const QString &type);
+
 	void copy();
 	void paste(bool logicalCopy);
 
@@ -112,7 +134,6 @@ public slots:
 	void cropToItems();
 
 signals:
-	void elementCreated(qReal::Id const &id);
 	void zoomIn();
 	void zoomOut();
 
@@ -151,6 +172,8 @@ private slots:
 	void updateMovedElements();
 
 private:
+	void setMVIface(EditorViewMViface *mvIface);
+
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
 	void drawGesture();
 	void deleteGesture();
@@ -181,36 +204,6 @@ private:
 	void disableActions(Element *focusElement);
 	void enableActions();
 
-	QList<NodeElement *> getNodesForCopying();
-	QList<NodeData> getNodesData(QList<NodeElement *> const &nodes);
-	QList<EdgeData> getEdgesData(QList<NodeElement *> const &nodes);
-
-	void addChildren(NodeElement *node, QList<NodeElement *> &nodes);
-
-	void pushDataToClipboard(QList<NodeData> const &nodesData, QList<EdgeData> const &edgesData);
-	void pullDataFromClipboard(QList<NodeData> &nodesData, QList<EdgeData> &edgesData);
-
-	QHash<qReal::Id, qReal::Id> pasteNodes(QList<NodeData> &nodesData
-			, QPointF const &offset, bool isGraphicalCopy);
-	qReal::Id pasteNode(NodeData const &nodeData, bool isGraphicalCopy
-			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
-
-	NodeElement *pasteGraphicalCopyOfNode(NodeData const &nodeData, QPointF const &newPos);
-	NodeElement *pasteNewNode(NodeData const &data, QPointF const &newPos);
-
-	qReal::Id pasteEdge(EdgeData const &edgeData, bool isGraphicalCopy
-			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
-	EdgeElement *pasteGraphicalCopyOfEdge(EdgeData const &edgeData);
-	EdgeElement *pasteNewEdge(EdgeData const &edgeData);
-
-	void restoreNode(NodeElement *node, NodeData const &nodeData
-			, QHash<qReal::Id, qReal::Id> const &copiedIdsMap, QPointF const &pos);
-	void restoreEdge(EdgeElement *edge, EdgeData const &edgeData
-			, QHash<qReal::Id, qReal::Id> const &copiedIdsMap, QPointF const &pos);
-
-	QPointF getNewPos(NodeData const &nodeData
-			, QHash<qReal::Id, qReal::Id> const &copiedIds, QPointF const &offset);
-
 	inline bool isArrow(int key);
 
 	static qreal sign(qreal x);
@@ -219,6 +212,9 @@ private:
 	QPointF offsetByDirection(int direction);
 
 	Element *mLastCreatedWithEdge;
+	commands::CreateElementCommand *mLastCreatedWithEdgeCommand;
+
+	ClipboardHandler mClipboardHandler;
 
 	bool mRightButtonPressed;
 	bool mLeftButtonPressed;
@@ -228,7 +224,6 @@ private:
 	double mRealIndexGrid;
 
 	NodeElement *mHighlightNode;
-	QPointF newElementsPosition;
 
 	QList<QGraphicsItem *> mGesture;
 	/// list of pixmaps to be drawn on scene's foreground
@@ -238,13 +233,11 @@ private:
 	qReal::EditorView *mView;
 
 	qReal::MainWindow *mWindow;
+	qReal::Controller *mController;
 
 	QList<QAction *> mContextMenuActions;
 
-	QPointF mPrevPosition;
 	QPointF mCurrentMousePos;
-	QGraphicsItem *mPrevParent;
-
 	QPointF mCreatePoint;
 
 	MouseMovementManager *mMouseMovementManager;
@@ -265,11 +258,11 @@ private:
 	QGraphicsRectItem *mTopLeftCorner;
 	QGraphicsRectItem *mBottomRightCorner;
 
-	friend class qReal::EditorViewMViface;
-
 	/** @brief list of selected items for additional selection */
 	QList<QGraphicsItem* >* mSelectList;
 
 	bool mIsSelectEvent;
 	bool mTitlesVisible;
+
+	friend class qReal::EditorViewMViface;
 };

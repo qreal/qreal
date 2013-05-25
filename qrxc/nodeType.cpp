@@ -244,7 +244,7 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\tvoid init(QRectF &contents, QList<StatPoint> &pointPorts,\n"
 	<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
 	<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
-	<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer)\n\t\t{\n";
+	<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer, ElementRepoInterface *elementRepo)\n\t\t{\n";
 
 	if (!hasPointPorts())
 		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
@@ -257,7 +257,8 @@ void NodeType::generateCode(OutFile &out)
 	QFile sdfFile("generated/shapes/" + className + "Class.sdf");
 	if (sdfFile.exists()) {
 		out() << "\t\t\tmRenderer = renderer;\n"
-		"\t\t\tmRenderer->load(QString(\":/generated/shapes/" << className << "Class.sdf\"));\n";
+		"\t\t\tmRenderer->load(QString(\":/generated/shapes/" << className << "Class.sdf\"));\n"
+				<< "\t\t\tmRenderer->setElementRepo(elementRepo);\n";
 		hasSdf = true;
 	} else
 		out() << "\t\t\tQ_UNUSED(portRenderer);\n";
@@ -298,7 +299,8 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << (hasPorts ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
-	<< "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
+	<< "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n"
+	<< "\t\t\tmRenderer->setElementRepo(repo);\n";
 
 	if (mLabels.isEmpty())
 		out() << "\t\t\tQ_UNUSED(repo);\n";

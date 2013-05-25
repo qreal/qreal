@@ -18,10 +18,8 @@ namespace qReal {
 		explicit EditorView(QWidget *parent);
 		~EditorView();
 
-		EditorViewMViface * mvIface()
-		{
-			return mMVIface;
-		}
+		EditorViewMViface *mvIface() const;
+		EditorViewScene *editorViewScene() const;
 
 		void setMainWindow(qReal::MainWindow *mainWindow);
 		void setDrawSceneGrid(bool show);

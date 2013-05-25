@@ -21,6 +21,8 @@ public:
 	virtual void read();
 	robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl();
 	void setImplementation(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl);
+
+	/// Performs dummy sensor reading with 0 result; used for sensor variables nullification
 	void nullify();
 
 protected:

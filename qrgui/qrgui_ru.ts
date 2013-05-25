@@ -45,37 +45,37 @@
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="20"/>
         <source>&amp;Browse...</source>
-        <translation type="unfinished">&amp;Просмотр...</translation>
+        <translation>&amp;Просмотр...</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="21"/>
         <source>Subversion place</source>
-        <translation type="unfinished">Место в SVNе</translation>
+        <translation>Место в SVNе</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="22"/>
         <source>Checkout to directory:</source>
-        <translation type="unfinished">Чекаут в папку:</translation>
+        <translation>Чекаут в папку:</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="25"/>
         <source>Ok</source>
-        <translation type="unfinished">ОК</translation>
+        <translation>ОК</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="26"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="45"/>
         <source>Checkout options</source>
-        <translation type="unfinished">Настройки чекаута</translation>
+        <translation>Настройки чекаута</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="51"/>
         <source>Select directory</source>
-        <translation type="unfinished">Выбор папки</translation>
+        <translation>Выбор папки</translation>
     </message>
 </context>
 <context>
@@ -230,38 +230,38 @@
 <context>
     <name>EdgeElement</name>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="30"/>
+        <location filename="umllib/edgeElement.cpp" line="31"/>
         <source>Add point</source>
         <translation>Добавить точку</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="31"/>
+        <location filename="umllib/edgeElement.cpp" line="32"/>
         <source>Delete point</source>
         <translation>Удалить точку</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="32"/>
+        <location filename="umllib/edgeElement.cpp" line="33"/>
         <source>Squarize</source>
         <translation>Перерисовать под прямым углом</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="33"/>
+        <location filename="umllib/edgeElement.cpp" line="34"/>
         <source>Remove all points</source>
         <translation>Удалить все точки</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="34"/>
+        <location filename="umllib/edgeElement.cpp" line="35"/>
         <source>Remove segment</source>
         <translation>Удалить отрезок</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="35"/>
+        <location filename="umllib/edgeElement.cpp" line="36"/>
         <source>Reverse</source>
         <translatorcomment>Обратить и переприсоединить</translatorcomment>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="36"/>
+        <location filename="umllib/edgeElement.cpp" line="37"/>
         <source>Change drawing type</source>
         <translatorcomment>вертикальный/горизонтальный</translatorcomment>
         <translation>Изменить тип рисования </translation>
@@ -342,58 +342,58 @@
 <context>
     <name>EditorViewScene</name>
     <message>
-        <location filename="view/editorViewScene.cpp" line="336"/>
-        <location filename="view/editorViewScene.cpp" line="403"/>
+        <location filename="view/editorViewScene.cpp" line="348"/>
+        <location filename="view/editorViewScene.cpp" line="415"/>
         <source>Discard</source>
         <translation>Убрать меню</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="339"/>
+        <location filename="view/editorViewScene.cpp" line="351"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="1169"/>
+        <location filename="view/editorViewScene.cpp" line="952"/>
         <source>Add connection</source>
         <translation>Добавить провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="1175"/>
+        <location filename="view/editorViewScene.cpp" line="958"/>
         <source>Disconnect</source>
         <translation>Убрать провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="1180"/>
+        <location filename="view/editorViewScene.cpp" line="963"/>
         <source>Add usage</source>
         <translation>Добавить использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="1186"/>
+        <location filename="view/editorViewScene.cpp" line="969"/>
         <source>Delete usage</source>
         <translation>Убрать использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="1191"/>
+        <location filename="view/editorViewScene.cpp" line="974"/>
         <source>Go to</source>
         <translation>Перейти</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="1193"/>
+        <location filename="view/editorViewScene.cpp" line="976"/>
         <source>Forward connection</source>
         <translation>По провязке вперёд</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="1194"/>
+        <location filename="view/editorViewScene.cpp" line="977"/>
         <source>Backward connection</source>
         <translation>По провязке назад</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="1195"/>
+        <location filename="view/editorViewScene.cpp" line="978"/>
         <source>Uses</source>
         <translation>Использует</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="1196"/>
+        <location filename="view/editorViewScene.cpp" line="979"/>
         <source>Used in</source>
         <translation>Используется в</translation>
     </message>
@@ -562,7 +562,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="83"/>
         <source>&amp;Settings</source>
-        <translation>Настройки</translation>
+        <translation>&amp;Настройки</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="566"/>
@@ -677,7 +677,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="694"/>
         <source>Find</source>
-        <translation>Найти</translation>
+        <translation type="obsolete">Найти</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="699"/>
@@ -770,7 +770,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="402"/>
         <source>&amp;Quit</source>
-        <translation>Выход</translation>
+        <translation>В&amp;ыход</translation>
     </message>
     <message>
         <source>&amp;Connect</source>
@@ -893,6 +893,7 @@
         <translation>Сохранить как...</translation>
     </message>
     <message>
+
         <location filename="mainwindow/mainWindow.ui" line="536"/>
         <source>Open...</source>
         <translation>Открыть...</translation>
@@ -1131,7 +1132,7 @@
 <context>
     <name>NodeElement</name>
     <message>
-        <location filename="umllib/nodeElement.cpp" line="22"/>
+        <location filename="umllib/nodeElement.cpp" line="27"/>
         <source>Switch on grid</source>
         <translation>Включить сетку</translation>
     </message>
@@ -1872,7 +1873,7 @@
 <context>
     <name>PropertyEditorView</name>
     <message>
-        <location filename="view/propertyEditorView.cpp" line="170"/>
+        <location filename="view/propertyEditorView.cpp" line="172"/>
         <source>Specify directory:</source>
         <translation>Выберите каталог:</translation>
     </message>
@@ -2577,124 +2578,129 @@
         <translation>Рисовать линию</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="29"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="205"/>
         <source>Draw curve</source>
         <translation>Рисовать кривую</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="86"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="695"/>
         <source>Draw rectangle</source>
         <translation>Рисовать прямоугольник</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="127"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="69"/>
         <source>Draw ellipse</source>
         <translation>Рисовать эллипс</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="168"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="110"/>
         <source>Add static text</source>
         <translation>Добавить статический текст</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="209"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="151"/>
         <source>Add dynamic text</source>
         <translation>Добавить динамический текст</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="272"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="528"/>
         <source>Stylus</source>
         <translation>Стилус</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="313"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="657"/>
         <source>Add picture text</source>
         <translation>Добавить текст-картинку</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="345"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="569"/>
         <source>Add line port</source>
         <translation>Добавить линейный порт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="392"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="616"/>
         <source>Add point port</source>
         <translation>Добавить точечный порт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="454"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="267"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="481"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="294"/>
         <source>Family</source>
         <translation>Семейство</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="530"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="343"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="572"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="385"/>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="854"/>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="993"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="593"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="406"/>
         <source>Text format</source>
         <translation>Формат текста</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="605"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="418"/>
         <source>Italic</source>
         <translation>Наклонный</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="618"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="431"/>
         <source> Bold</source>
         <translation>Полужирный</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="631"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="444"/>
         <source>Underline</source>
         <translation>Подчёркнутый</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="653"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="466"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="673"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1069"/>
+        <source>VisibilityConditions</source>
+        <translation>Условия видимости</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="56"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="680"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="493"/>
         <source>Save to Xml</source>
         <translation>Сохранить в Xml</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="690"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="23"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="703"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="36"/>
         <source>Delete Item</source>
         <translation>Удалить элемент</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="716"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="49"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="723"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="486"/>
         <source>Save as picture</source>
         <translation>Сохранить как картинку</translation>
     </message>
@@ -2729,7 +2735,7 @@
         <translation>Картинка</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="269"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="270"/>
         <source>Saving</source>
         <translation>Сохранение</translation>
     </message>
@@ -2754,6 +2760,14 @@
     <message>
         <source>Switch on grid</source>
         <translation type="obsolete">Включить сетку</translation>
+    </message>
+</context>
+<context>
+    <name>VisibilityConditionsDialog</name>
+    <message>
+        <location filename="mainwindow/shapeEdit/visibilityConditionsDialog.ui" line="14"/>
+        <source>Specify conditions in which choosen element must be shown</source>
+        <translation>Укажите условия, при которых выбранный элемент будет показан</translation>
     </message>
 </context>
 <context>
@@ -3058,7 +3072,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="728"/>
+        <location filename="mainwindow/mainWindow.cpp" line="759"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3083,16 +3097,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="754"/>
-        <location filename="mainwindow/mainWindow.cpp" line="772"/>
-        <location filename="mainwindow/mainWindow.cpp" line="790"/>
+        <location filename="mainwindow/mainWindow.cpp" line="785"/>
+        <location filename="mainwindow/mainWindow.cpp" line="803"/>
+        <location filename="mainwindow/mainWindow.cpp" line="821"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="756"/>
-        <location filename="mainwindow/mainWindow.cpp" line="774"/>
-        <location filename="mainwindow/mainWindow.cpp" line="792"/>
+        <location filename="mainwindow/mainWindow.cpp" line="787"/>
+        <location filename="mainwindow/mainWindow.cpp" line="805"/>
+        <location filename="mainwindow/mainWindow.cpp" line="823"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3197,23 +3211,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="790"/>
+        <location filename="mainwindow/mainWindow.cpp" line="821"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="792"/>
+        <location filename="mainwindow/mainWindow.cpp" line="823"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="936"/>
+        <location filename="mainwindow/mainWindow.cpp" line="975"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="918"/>
-        <location filename="mainwindow/mainWindow.cpp" line="944"/>
+        <location filename="mainwindow/mainWindow.cpp" line="957"/>
+        <location filename="mainwindow/mainWindow.cpp" line="983"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3222,17 +3236,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1734"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1786"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1763"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1815"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1763"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1815"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3253,7 +3267,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1356"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1408"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3285,12 +3299,12 @@
     <message>
         <location filename="dialogs/plugindialog.cpp" line="26"/>
         <source>OK</source>
-        <translation type="unfinished">ОК</translation>
+        <translation>ОК</translation>
     </message>
     <message>
         <location filename="dialogs/plugindialog.cpp" line="51"/>
         <source>Plugin Information</source>
-        <translation type="unfinished">Информация о плагинах</translation>
+        <translation>Информация о плагинах</translation>
     </message>
 </context>
 <context>
@@ -3352,48 +3366,48 @@
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="152"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="306"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="151"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="304"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="153"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="307"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="152"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="305"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="153"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="307"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="152"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="305"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="163"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="162"/>
         <source>There are missing plugins</source>
         <translation>Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="164"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="163"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="285"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="283"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="303"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="318"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="301"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="316"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="207"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="205"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>

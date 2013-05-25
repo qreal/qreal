@@ -13,10 +13,9 @@ using namespace graphicsUtils;
 WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	: LineItem(begin, end)
 	, mDragged(false)
-	, mImage(QImage(":/icons/2d_wall.png"))
+	, mImage(":/icons/2d_wall.png")
 	, mOldX1(0)
 	, mOldY1(0)
-
 {
 	setPrivateData();
 	setAcceptDrops(true);

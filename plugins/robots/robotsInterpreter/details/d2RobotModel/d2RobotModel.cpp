@@ -60,9 +60,9 @@ void D2RobotModel::initPosition()
 	if (mMotorC) {
 		delete mMotorC;
 	}
-	mMotorA = initMotor(5, 0, 0, 0, false);
-	mMotorB = initMotor(5, 0, 0, 1, false);
-	mMotorC = initMotor(5, 0, 0, 2, false);
+	mMotorA = initMotor(robotWheelDiameterInPx / 2, 0, 0, 0, false);
+	mMotorB = initMotor(robotWheelDiameterInPx / 2, 0, 0, 1, false);
+	mMotorC = initMotor(robotWheelDiameterInPx / 2, 0, 0, 2, false);
 	setBeep(0, 0);
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 }
@@ -107,7 +107,6 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	} else {
 		mMotors[port]->activeTimeType = DoByLimit;
 	}
-	mTurnoverMotors[port] = 0;
 }
 
 int D2RobotModel::varySpeed(int const speed) const
@@ -124,8 +123,8 @@ void D2RobotModel::countMotorTurnover()
 {
 	foreach (Motor * const motor, mMotors) {
 		int const port = mMotors.key(motor);
-		qreal const degrees = Timeline::timeInterval * 1.0 * motor->speed / oneReciprocalTime;
-		mTurnoverMotors[port] += qAbs(degrees);
+		qreal const degrees = Timeline::timeInterval * motor->speed * onePercentAngularVelocity;
+		mTurnoverMotors[port] += degrees;
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
 			motor->speed = 0;
 			motor->activeTimeType = End;
@@ -422,8 +421,8 @@ void D2RobotModel::countNewCoord()
 	int const sspeed1 = mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
 	int const sspeed2 = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
 
-	qreal const vSpeed = sspeed1 * 2 * M_PI * motor1->radius * 1.0 / onePercentReciprocalSpeed * multiplicator;
-	qreal const uSpeed = sspeed2 * 2 * M_PI * motor2->radius * 1.0 / onePercentReciprocalSpeed * multiplicator;
+	qreal const vSpeed = sspeed1 * 2 * M_PI * motor1->radius * onePercentAngularVelocity / 360;
+	qreal const uSpeed = sspeed2 * 2 * M_PI * motor2->radius * onePercentAngularVelocity / 360;
 
 	qreal deltaY = 0;
 	qreal deltaX = 0;
@@ -432,7 +431,7 @@ void D2RobotModel::countNewCoord()
 	qreal const oldAngle = mAngle;
 	QPointF const oldPosition = mPos;
 
-	if (vSpeed != uSpeed) {
+	if (sspeed1 != sspeed2) {
 		qreal const vRadius = vSpeed * robotHeight / (vSpeed - uSpeed);
 		qreal const averageRadius = vRadius - robotHeight / 2;
 		qreal angularSpeed = 0;

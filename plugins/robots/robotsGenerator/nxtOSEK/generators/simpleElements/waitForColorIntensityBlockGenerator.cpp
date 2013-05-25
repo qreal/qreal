@@ -33,8 +33,7 @@ QList<SmartLine> WaitForColorIntensityBlockGenerator::convertElementIntoDirectCo
 	QString const condition = inequalitySign + " " + intensity;
 
 	result.append(SmartLine("while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + portStr
-			+ ") " + condition + "))", elementId));
-	result.append(SmartLine("{", elementId));
+			+ ") * 100 / 1023 " + condition + ")) {", elementId));
 	result.append(SmartLine("}", elementId));
 
 	addInitAndTerminateCode(nxtGen, "NXT_PORT_S" + portStr, elementId);

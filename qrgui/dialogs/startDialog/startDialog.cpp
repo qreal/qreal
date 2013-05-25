@@ -45,11 +45,6 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 	connect(quitLink, SIGNAL(clicked()), this, SLOT(exitApp()));
 	connect(recentProjects, SIGNAL(userDataSelected(QString)), this, SLOT(openRecentProject(QString)));
 	connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
-
-	if (mainWindow) {
-		// Centering dialog inside main window
-		move(mainWindow->geometry().center() - rect().center());
-	}
 }
 
 void StartDialog::openRecentProject(QString const &fileName)

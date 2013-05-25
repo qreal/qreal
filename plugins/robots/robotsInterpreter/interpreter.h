@@ -12,6 +12,8 @@
 #include "details/d2RobotModel/d2RobotModel.h"
 
 #include "../../../qrutils/watchListWindow.h"
+#include "../../../qrgui/mainwindow/projectManager/projectManagementInterface.h"
+
 
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
@@ -29,9 +31,10 @@ public:
 	Interpreter();
 	virtual ~Interpreter();
 
-	virtual void init(GraphicalModelAssistInterface const &graphicalModelApi
+	virtual void init(GraphicalModelAssistInterface &graphicalModelApi
 			, LogicalModelAssistInterface const &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, qReal::ProjectManagementInterface const &projectManager
 	);
 
 	details::RobotModel *robotModel();
@@ -66,12 +69,16 @@ signals:
 	void noiseSettingsChanged();
 	void noiseSettingsChangedBy2DModelWidget();
 
+	void sensorsConfigurationChanged();
+
 public slots:
 	void connectToRobot();
 	void interpret();
 	void stopRobot();
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
+	void onTabChanged(Id const &diagramId, bool enabled);
+	void saveSensorConfiguration();
 
 private slots:
 	void threadStopped();
@@ -79,10 +86,14 @@ private slots:
 	void runTimer();
 	void readSensorValues();
 	void slotFailure();
+
 	void responseSlot1(int sensorValue);
 	void responseSlot2(int sensorValue);
 	void responseSlot3(int sensorValue);
 	void responseSlot4(int sensorValue);
+	void responseSlotA(int encoderValue);
+	void responseSlotB(int encoderValue);
+	void responseSlotC(int encoderValue);
 
 	void connectedSlot(bool success);
 	void sensorsConfiguredSlot();
@@ -91,6 +102,9 @@ private slots:
 	void disconnectSlot();
 
 	void reportError(QString const &message);
+
+	void on2dModelChanged(QDomDocument const &xml);
+	void loadSensorConfiguration(Id const &diagramId);
 
 private:
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
@@ -105,7 +119,7 @@ private:
 		, idle
 	};
 
-	GraphicalModelAssistInterface const *mGraphicalModelApi;
+	GraphicalModelAssistInterface *mGraphicalModelApi;
 	LogicalModelAssistInterface const *mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
 

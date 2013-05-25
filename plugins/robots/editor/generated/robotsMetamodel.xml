@@ -15,9 +15,8 @@
 			<enum name="GuardType">
 				<value></value>
 				<value>итерация</value>
-				<value>меньше 0</value>
-				<value>больше 0</value>
-				<value>равно 0</value>
+				<value>истина</value>
+				<value>ложь</value>
 			</enum>
 			<enum name="Color">
 				<value></value>
@@ -78,6 +77,23 @@
 					<container>
 						<contains type="AbstractNode"/>
 					</container>
+					<properties>
+						<property displayedName="Модель мира" type="string" name="worldModel">
+							<default></default>
+						</property>
+						<property displayedName="Сенсор1" type="string" name="sensor1Value">
+							<default>0</default>
+						</property>
+						<property displayedName="Сенсор2" type="string" name="sensor2Value">
+							<default>0</default>
+						</property>
+						<property displayedName="Сенсор3" type="string" name="sensor3Value">
+							<default>0</default>
+						</property>
+						<property displayedName="Сенсор4" type="string" name="sensor4Value">
+							<default>0</default>
+						</property>
+					</properties>
 				</logic>
 			</node>
 			<node displayedName="Конец" name="FinalNode">
@@ -195,14 +211,18 @@
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="скользить" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="тормозить" property="Mode" sign="="/>
+						</rectangle>
 					</picture>
 					<labels>
 						<label x="33" y="-25" textBinded="Ports" hard="true"/>
 						<label x="-8" y="-25" text="Порты:" hard="true"/>
 						<label x="33" y="60" textBinded="Power"/>
 						<label x="-50" y="60" text="Мощность (%):"/>
-						<label x="33" y="80" textBinded="TachoLimit"/>
-						<label x="-100" y="80" text="Предел оборотов (град):"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -235,14 +255,18 @@
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="скользить" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="тормозить" property="Mode" sign="="/>
+						</rectangle>
 					</picture>
 					<labels>
 						<label x="33" y="-25" textBinded="Ports" hard="true"/>
 						<label x="-8" y="-25" text="Порты:" hard="true"/>
 						<label x="33" y="60" textBinded="Power"/>
 						<label x="-50" y="60" text="Мощность (%):"/>
-						<label x="33" y="80" textBinded="TachoLimit"/>
-						<label x="-100" y="80" text="Предел оборотов (град):"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -278,8 +302,8 @@
 						<property displayedName="Мощность (%)" type="string" name="Power">
 							<default>100</default>
 						</property>
-						<property displayedName="Предел оборотов (гр.)" type="string" name="TachoLimit">
-							<default>0</default>
+						<property displayedName="Режим" type="BreakEngineMode" name="Mode">
+							<default>тормозить</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -495,8 +519,8 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Задержка" type="string" name="Delay">
-							<default>0</default>
+						<property displayedName="Задержка (мс)" type="string" name="Delay">
+							<default>1000</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1046,7 +1070,7 @@
 						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="60" textBinded="Condition"/>
+						<label x="33" y="60" textBinded="Condition" isPlainText="true" />
 						<label x="-25" y="60" text="Условие:"/>
 					</labels>
 					<ports>
@@ -1074,6 +1098,55 @@
 					<properties>
 						<property displayedName="Условие" type="string" name="Condition">
 							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Коментарий" name="CommentBlock">
+				<graphics>
+					<picture sizex="200" sizey="100">
+						<line y1="0" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="0" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="100" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="20" y2="100" fill="#ffffff" stroke="#000000" x1="200" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="0" fill="#ffffff" stroke="#000000" x1="0" x2="178" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="0" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="180" fill-style="none" stroke-style="solid" stroke-width="0"/>
+						<line y1="20" y2="20" fill="#ffffff" stroke="#000000" x1="180" x2="200" fill-style="none" stroke-style="solid" stroke-width="0"/>
+					</picture>
+					<labels>
+						<label x="20" y="20" textBinded="Comment" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="95"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="175" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="200" starty="25"/>
+							<end endx="200" endy="95"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="100"/>
+							<end endx="195" endy="100"/>
+						</linePort>
+						<linePort>
+							<start startx="180" starty="0"/>
+							<end endx="200" endy="20"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Комментарий" type="string" name="Comment">
+							<default>Введите текст...</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1141,6 +1214,7 @@
 				<element name="ControlFlow"/>
 				<element name="RobotsDiagramNode"/>
 				<element name="Loop"/>
+<!--				<element name="CommentBlock"/> -->
 			</group>
 			<group name="Инициализация">
 				<element name="InitialNode"/>
