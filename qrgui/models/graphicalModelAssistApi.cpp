@@ -1,4 +1,3 @@
-//#include "details/graphicalModel.h"
 #include "graphicalModelAssistApi.h"
 #include "../../qrkernel/exception/exception.h"
 #include <QtCore/QUuid>
@@ -56,9 +55,11 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	return newElementId;
 }
 
-Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id
+		, bool isFromLogicalModel, QString const &name
+		, QPointF const &position, Id const &preferedLogicalId)
 {
-	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, name, position);
+	return mModelsAssistApi.createElement(parent, id, preferedLogicalId, isFromLogicalModel, name, position);
 }
 
 Id GraphicalModelAssistApi::copyElement(Id const &source)
@@ -228,7 +229,7 @@ QPersistentModelIndex GraphicalModelAssistApi::rootIndex() const
 
 Id GraphicalModelAssistApi::rootId() const
 {
-	return mModelsAssistApi.rootId();
+	return mGraphicalModel.rootId();
 }
 
 bool GraphicalModelAssistApi::hasRootDiagrams() const
@@ -244,4 +245,12 @@ int GraphicalModelAssistApi::childrenOfRootDiagram() const
 int GraphicalModelAssistApi::childrenOfDiagram(const Id &parent) const
 {
 	return mModelsAssistApi.childrenOfDiagram(parent);
+}
+
+void GraphicalModelAssistApi::removeElement(Id const &graphicalId)
+{
+	QPersistentModelIndex const index = indexById(graphicalId);
+	if (graphicalRepoApi().exist(graphicalId) && index.isValid()) {
+		mGraphicalModel.removeRow(index.row(), index.parent());
+	}
 }

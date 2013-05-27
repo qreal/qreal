@@ -9,6 +9,7 @@ HEADERS += \
 	pluginManager/proxyEditorManager.h \
 	pluginManager/pattern.h \
 	pluginManager/patternParser.h
+
 SOURCES += \
 	pluginManager/editorManager.cpp \
 	pluginManager/listenerManager.cpp \

@@ -37,9 +37,12 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	return newElementId;
 }
 
-Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id
+		, bool isFromLogicalModel, QString const &name
+		, QPointF const &position, const Id &preferedLogicalId)
 {
-	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, name, position);
+	Q_UNUSED(preferedLogicalId)
+	return mModelsAssistApi.createElement(parent, id, id, isFromLogicalModel, name, position);
 }
 
 void LogicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
@@ -231,5 +234,14 @@ void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference)
 		if (stringData == reference.toString()) {
 			mLogicalModel.mutableApi().setProperty(id, propertyName, "");
 		}
+	}
+}
+
+void LogicalModelAssistApi::removeElement(Id const &logicalId)
+{
+	QPersistentModelIndex const index = indexById(logicalId);
+	if (logicalRepoApi().exist(logicalId) && index.isValid()) {
+		removeReferencesTo(logicalId);
+		mLogicalModel.removeRow(index.row(), index.parent());
 	}
 }

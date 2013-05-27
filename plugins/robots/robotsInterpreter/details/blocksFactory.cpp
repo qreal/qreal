@@ -56,9 +56,9 @@ Block *BlocksFactory::block(Id const &element)
 	} else if (elementMetatypeIs(element, "FinalNode")) {
 		newBlock = new FinalBlock();
 	} else if (elementMetatypeIs(element, "Beep")) {
-		newBlock = new BeepBlock(mRobotModel->brick());
+		newBlock = new BeepBlock(mRobotModel->brick(), mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "Timer")) {
-		newBlock = new TimerBlock();
+		newBlock = new TimerBlock(mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
 		newBlock = new WaitForTouchSensorBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {

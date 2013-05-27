@@ -46,7 +46,8 @@ public:
 
 	QModelIndex indexById(Id const &id) const;
 	Id idByIndex(QModelIndex const &index) const;
-
+	Id rootId() const;
+	
 	void reinit();
 
 protected:

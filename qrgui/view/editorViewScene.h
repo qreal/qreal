@@ -6,6 +6,7 @@
 
 #include "../../qrkernel/roles.h"
 #include "../umllib/nodeElement.h"
+#include "../controller/controller.h"
 #include "gestures/mouseMovementManager.h"
 
 #include "editorViewMVIface.h"
@@ -16,6 +17,11 @@ namespace qReal {
 class EditorViewMViface;
 class EditorView;
 class MainWindow;
+
+namespace commands
+{
+class CreateElementCommand;
+}
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -29,13 +35,21 @@ public:
 	void addItem(QGraphicsItem *item);
 
 	void clearScene();
-	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos);
-	virtual qReal::Id createElement(QString const &, QPointF const &scenePos, bool searchForParents = true);
-	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos, bool searchForParents = true);
+
+	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
+			, commands::CreateElementCommand **elementCommand = 0);
+	virtual qReal::Id createElement(QString const &, QPointF const &scenePos
+			, bool searchForParents = true
+			, commands::CreateElementCommand **createCommand = 0
+			, bool executeImmediately = true);
+	virtual void createElement(const QMimeData *mimeData, QPointF const &scenePos
+			, bool searchForParents = true
+			, commands::CreateElementCommand **createCommandPointer = 0
+			, bool executeImmediately = true);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
-	virtual Element *getElem(qReal::Id const &id);
+	virtual Element *getElem(qReal::Id const &id) const;
 	Element *getElemAt(const QPointF &position);
 
 	virtual qReal::Id rootItemId() const;
@@ -67,12 +81,19 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-	void createSingleElement(Id const &id, QString const &name, Element *e, QPointF const &position
-			, Id const &parentId, bool isFromLogicalModel);
-	void createGroupOfElements(Id const &id, QPointF const &position, Id const &parentId, bool isFromLogicalModel);
-	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId, qReal::Id const &insertedLastNodeId
-			, qReal::Id const &parentId, bool isFromLogicalModel,QPointF const &scenePos, QPointF const &shift
-			, QList<NodeElement*> elements);
+	void createSingleElement(Id const &id, QString const &name
+			, Element *e, QPointF const &position
+			, Id const &parentId, bool isFromLogicalModel
+			, commands::CreateElementCommand **createCommandPointer = NULL
+			, bool executeImmediately = true);
+	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
+			, qReal::Id const &insertedLastNodeId
+			, qReal::Id const &parentId
+			, bool isFromLogicalModel
+			, QPointF const &scenePos
+			, QPointF const &shift
+			, QList<NodeElement*> elements
+			, commands::AbstractCommand *parentCommand = NULL);
 
 	QList<NodeElement*> getNeibors(NodeElement* node);
 	void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF const &direction
@@ -221,6 +242,7 @@ private:
 	QPointF offsetByDirection(int direction);
 
 	Element *mLastCreatedWithEdge;
+	commands::CreateElementCommand *mLastCreatedWithEdgeCommand;
 
 	bool mRightButtonPressed;
 	bool mLeftButtonPressed;
@@ -240,6 +262,7 @@ private:
 	qReal::EditorView *mView;
 
 	qReal::MainWindow *mWindow;
+	qReal::Controller *mController;
 
 	QList<QAction *> mContextMenuActions;
 

@@ -14,8 +14,9 @@ Thread::Thread(gui::MainWindowInterpretersInterface &interpretersInterface, Bloc
 
 Thread::~Thread()
 {
-	if (mCurrentBlock != NULL)
+	if (mCurrentBlock) {
 		mInterpretersInterface.dehighlight(mCurrentBlock->id());
+	}
 }
 
 void Thread::interpret()
@@ -27,11 +28,13 @@ void Thread::nextBlock(blocks::Block * const block)
 {
 	// This is a signal not from a current block of this thread.
 	// Other thread shall process it, we will just ignore.
-	if (sender() != NULL && sender() != mCurrentBlock)
+	if (sender() && sender() != mCurrentBlock) {
 		return;
+	}
 
-	if (sender() != NULL)
+	if (sender()) {
 		sender()->disconnect(this);
+	}
 
 	mInterpretersInterface.dehighlight(mCurrentBlock->id());
 

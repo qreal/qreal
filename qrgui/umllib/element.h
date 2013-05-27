@@ -15,6 +15,8 @@
 #include "../models/graphicalModelAssistApi.h"
 #include "../models/logicalModelAssistApi.h"
 
+#include "../controller/controller.h"
+
 /** @brief size of a point port */
 const int kvadratik = 10;
 
@@ -82,4 +84,5 @@ protected:
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
+	qReal::Controller *mController;
 };

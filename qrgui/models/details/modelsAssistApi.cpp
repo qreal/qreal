@@ -16,16 +16,17 @@ EditorManagerInterface const *ModelsAssistApi::editorManagerInter() const
 	return mEditorManagerInter;
 }
 
-Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id ModelsAssistApi::createElement(Id const &parent, Id const &id, Id const &logicalId
+		, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
 	Q_ASSERT(parent.idSize() == 4);
-	Id logicalId = Id::rootId();
 	Id newId = id;
+	Id realLogicalId = logicalId;
 	if (isFromLogicalModel) {
-		logicalId = id;
+		realLogicalId = id;
 		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
 	}
-	mModel.addElementToModel(parent, newId, logicalId, name, position);
+	mModel.addElementToModel(parent, newId, realLogicalId, name, position);
 	return newId;
 }
 

@@ -1,6 +1,3 @@
-#include "nodeElement.h"
-#include "../view/editorViewScene.h"
-#include <QtCore/QDebug>
 #include <QtCore/QUuid>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>
@@ -17,14 +14,20 @@
 
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
+#include "private/resizeCommand.h"
+#include "private/foldCommand.h"
+
+#include "../controller/commands/changeParentCommand.h"
 
 using namespace qReal;
+using namespace qReal::commands;
 
 NodeElement::NodeElement(ElementImpl* impl)
 	: Element(impl)
 	, mSwitchGridAction(tr("Switch on grid"), this)
 	, mPortsVisible(false)
 	, mDragState(None)
+	, mResizeCommand(NULL)
 	, mIsFolded(false)
 	, mLeftPressed(false)
 	, mParentNodeElement(NULL)
@@ -333,6 +336,8 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
+	mResizeCommand = new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id());
+	mResizeCommand->startTracking();
 	if (isSelected()) {
 		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopLeft;
@@ -506,7 +511,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	resize(newContents, newPos);
-	qDebug() << newPos;
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(
@@ -527,10 +531,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mTimeOfUpdate++;
 	}
 	mTimer->start(400);
-
-//	if (mDragState == None) {
-//		alignToGrid();
-//	}
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -564,6 +564,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos()
 			, QPointF(size.width(), size.height()), element);
 
+	bool shouldProcessResize = true;
+
 	// we should use mHighlightedNode to determine if there is a highlighted node
 	// insert current element into them and set mHighlightedNode to NULL
 	// but because of mouseRelease twice triggering we can't do it
@@ -577,7 +579,10 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	//		mHighlightedNode = NULL;
 
 			QPointF newPos = mapToItem(newParent, mapFromScene(scenePos()));
-			mGraphicalAssistApi->changeParent(id(), newParent->id(), newPos);
+			AbstractCommand *parentCommand = changeParentCommand(newParent->id(), newPos);
+			mController->execute(parentCommand);
+			// Position change already processed in change parent command
+			shouldProcessResize = parentCommand == NULL;
 			setPos(newPos);
 
 			if (insertBefore != NULL) {
@@ -592,8 +597,21 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 			}
 		} else {
-			mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
+			AbstractCommand *parentCommand = changeParentCommand(evScene->rootItemId(), scenePos());
+			mController->execute(parentCommand);
+			// Position change already processed in change parent command
+			shouldProcessResize = parentCommand == NULL;
 		}
+	}
+	if (shouldProcessResize && mResizeCommand) {
+		mResizeCommand->stopTracking();
+		if (mResizeCommand->modificationsHappened()) {
+			mController->execute(mResizeCommand);
+		} else {
+			delete mResizeCommand;
+		}
+		// Undo stack took ownership
+		mResizeCommand = NULL;
 	}
 
 	arrangeLinks();
@@ -1232,7 +1250,7 @@ void NodeElement::resize(QRectF newContents)
 
 void NodeElement::resize(QRectF newContents, QPointF newPos)
 {
-	ResizeHandler handler(this, mElementImpl);
+	ResizeHandler handler(this);
 	handler.resize(newContents, newPos);
 }
 
@@ -1256,6 +1274,18 @@ QList<EdgeElement *> const NodeElement::edgeList() const
 	return mEdgeList;
 }
 
+QList<NodeElement *> const NodeElement::childNodes() const
+{
+	QList<NodeElement *> result;
+	foreach (QGraphicsItem *item, childItems()) {
+		NodeElement *child = dynamic_cast<NodeElement *>(item);
+		if (child) {
+			result << child;
+		}
+	}
+	return result;
+}
+
 void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
 {
 	Element::setAssistApi(graphicalAssistApi, logicalAssistApi);
@@ -1271,6 +1301,36 @@ void NodeElement::updateNodeEdges()
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->adjustNeighborLinks();
 	}
+}
+
+AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF const &position) const
+{
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	Element *oldParentElem = dynamic_cast<Element *>(parentItem());
+	Id const oldParent = oldParentElem ? oldParentElem->id() : evScene->rootItemId();
+	if (oldParent == newParent) {
+		return NULL;
+	}
+	QPointF const oldPos = mResizeCommand->geometryBeforeDrag().topLeft();
+	QPointF const oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
+	// Without pre-translating into new position parent gets wrong child coords
+	// when redo happens and resizes when he doesn`t need it.
+	// So we mush pre-translate child into new scene position first, but when
+	// it lays in some container it also resizes. So we need to change parent to
+	// root, then translate into a new position and change parent to a new one.
+	// Also that element itself doesn`t change position in change parent command
+	// so using translation command
+	ChangeParentCommand *changeParentToSceneCommand =
+			new ChangeParentCommand(mLogicalAssistApi, mGraphicalAssistApi, false
+					, id(), oldParent, evScene->rootItemId(), oldPos, oldScenePos);
+	AbstractCommand *translateCommand = ResizeCommand::create(this, mContents
+			, position, mContents, oldScenePos);
+	ChangeParentCommand *result = new ChangeParentCommand(
+			mLogicalAssistApi, mGraphicalAssistApi, false
+			, id(), evScene->rootItemId(), newParent, position, position);
+	result->addPreAction(changeParentToSceneCommand);
+	result->addPreAction(translateCommand);
+	return result;
 }
 
 void NodeElement::updateShape(QString const &shape) const

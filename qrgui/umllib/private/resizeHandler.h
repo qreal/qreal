@@ -13,7 +13,7 @@ public:
 	 * @param resizingNode Node that is actually dealt with.
 	 * @param elementImpl ElementImpl of resizingNode.
 	 */
-	ResizeHandler(NodeElement * const resizingNode, ElementImpl * const elementImpl);
+	ResizeHandler(NodeElement * const resizingNode);
 
 	/**
 	 * Resizes node trying to use newContents as new shape

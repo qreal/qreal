@@ -34,6 +34,7 @@ void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 QList<ActionInfo> RobotsGeneratorPlugin::actions()
 {
 	mGenerateCodeAction.setText(tr("Generate code"));
+	mGenerateCodeAction.setIcon(QIcon(":/icons/robots_generate_nxt.png"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 

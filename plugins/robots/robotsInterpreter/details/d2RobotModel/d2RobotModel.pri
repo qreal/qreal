@@ -14,6 +14,8 @@ HEADERS += \
 	details/d2RobotModel/lineItem.h \
 	details/d2RobotModel/colorFieldItem.h \
 	details/d2RobotModel/ellipseItem.h \
+	details/d2RobotModel/timeline.h \
+	details/d2RobotModel/d2ModelTimer.h \
 
 SOURCES += \
 	details/d2RobotModel/d2ModelWidget.cpp \
@@ -30,3 +32,5 @@ SOURCES += \
 	details/d2RobotModel/lineItem.cpp \
 	details/d2RobotModel/colorFieldItem.cpp \
 	details/d2RobotModel/ellipseItem.cpp \
+	details/d2RobotModel/timeline.cpp \
+	details/d2RobotModel/d2ModelTimer.cpp \

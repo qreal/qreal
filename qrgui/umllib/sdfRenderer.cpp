@@ -296,7 +296,11 @@ void SdfRenderer::image_draw(QDomElement &element)
 	float x2 = x2_def(element);
 	float y2 = y2_def(element);
 	QString fileName = SettingsManager::value("pathToImages").toString() + "/" + element.attribute("name", "error");
-
+	// TODO: rewrite this ugly spike
+	if (fileName.startsWith("./")) {
+		fileName = QApplication::applicationDirPath() + "/" + fileName;
+	}
+	
 	QPixmap pixmap;
 
 	if(mMapFileImage.contains(fileName)) {

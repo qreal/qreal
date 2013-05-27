@@ -39,10 +39,13 @@ public:
 	virtual void deserialize(QDomElement const &element);
 
 private:
+	void recalculateProperties();
+
 	qreal mTmpX1;
 	qreal mTmpY1;
 	QList<AbstractItem *> mAbstractListLine;
 	graphicsUtils::StylusImpl mStylusImpl;
+	QRectF mBoundingRect;
 };
 }
 }

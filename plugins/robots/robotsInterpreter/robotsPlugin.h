@@ -8,6 +8,7 @@
 #include "interpreter.h"
 #include "robotSettingsPage.h"
 #include "customizer.h"
+#include "details/sensorsConfigurationWidget.h"
 
 namespace qReal {
 namespace interpreters {
@@ -37,6 +38,7 @@ public:
 private slots:
 	void showRobotSettings();
 	void show2dModel();
+	void rereadSettings();
 
 private:
 	/// Initializes and connects actions, fills action info list
@@ -51,6 +53,10 @@ private:
 	/// @param action Action to be checked
 	/// @returns True, if action shall be disabled when current diagram is not robots
 	bool needToDisableWhenNotRobotsDiagram(QAction const * const action) const;
+
+	void setTitlesVisibility();
+
+	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
@@ -91,6 +97,8 @@ private:
 
 	/// Plugin translator object
 	QTranslator *mAppTranslator;  // Has ownership
+
+	SceneCustomizationInterface *mSceneCustomizer;  // Does not have ownership
 };
 
 }

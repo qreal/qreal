@@ -335,11 +335,13 @@ Id InterpreterEditorManager::findElementByType(QString const &type) const
 
 bool InterpreterEditorManager::loadPlugin(QString const &pluginName)
 {
+	Q_UNUSED(pluginName);
 	return true;
 }
 
 bool InterpreterEditorManager::unloadPlugin(QString const &pluginName)
 {
+	Q_UNUSED(pluginName);
 	return true;
 }
 
@@ -391,7 +393,7 @@ QIcon InterpreterEditorManager::icon(Id const &id) const
 Element* InterpreterEditorManager::graphicalObject(Id const &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> repoAndMetaIdPair = repoAndMetaId(id);
-	InterpreterElementImpl *impl = new InterpreterElementImpl(repoAndMetaIdPair.first, repoAndMetaIdPair.second, id);
+	InterpreterElementImpl *impl = new InterpreterElementImpl(repoAndMetaIdPair.first, repoAndMetaIdPair.second);
 	if( !impl ){
 		qDebug() << "no impl";
 		return 0;
@@ -488,6 +490,8 @@ QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) 
 IdList InterpreterEditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
 		, qrRepo::GraphicalRepoApi const &graphicalApi) const
 {
+	Q_UNUSED(logicalApi);
+	Q_UNUSED(graphicalApi);
 	return IdList();
 }
 
@@ -505,6 +509,7 @@ bool InterpreterEditorManager::isDiagramNode(Id const &id) const
 
 bool InterpreterEditorManager::isGraphicalElementNode(const Id &id) const
 {
+	Q_UNUSED(id);
 	return false;
 }
 
@@ -886,31 +891,42 @@ QString InterpreterEditorManager::saveMetamodelFilePath() const {
 //unsupported method
 QStringList InterpreterEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {
+	Q_UNUSED(editor);
+	Q_UNUSED(diagram);
 	return QStringList();
 }
 
 QStringList InterpreterEditorManager::paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const
 {
+	Q_UNUSED(editor);
+	Q_UNUSED(diagram);
+	Q_UNUSED(group);
 	return QStringList();
 }
 
 QStringList InterpreterEditorManager::referenceProperties(const Id &id) const
 {
+	Q_UNUSED(id);
 	return QStringList();
 }
 
 QString InterpreterEditorManager::paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const
 {
+	Q_UNUSED(editor);
+	Q_UNUSED(diagram);
+	Q_UNUSED(group);
 	return "";
 }
 
 IdList InterpreterEditorManager::groups(Id const &diagram)
 {
+	Q_UNUSED(diagram);
 	return IdList();
 }
 
 Pattern InterpreterEditorManager::getPatternByName (QString const &str) const
 {
+	Q_UNUSED(str);
 	return Pattern();
 }
 
@@ -919,5 +935,6 @@ QList<QString> InterpreterEditorManager::getPatternNames() const {
 }
 
 QSize InterpreterEditorManager::iconSize(Id const &id) const {
+	Q_UNUSED(id);
 	return QSize();
 }

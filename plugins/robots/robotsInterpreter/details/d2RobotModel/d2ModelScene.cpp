@@ -40,16 +40,14 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	emit mouseMoved(mouseEvent);
 }
 
-void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event, QRectF const &rect)
+void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);
 	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
 	if (mGraphicsItem) {
-		if (!mGraphicsItem->realShape().intersects(rect)) {
-			mGraphicsItem->changeDragState(mX1, mY1);
-			if (mGraphicsItem->getDragState() != AbstractItem::None) {
-				mView->setDragMode(QGraphicsView::NoDrag);
-			}
+		mGraphicsItem->changeDragState(mX1, mY1);
+		if (mGraphicsItem->getDragState() != AbstractItem::None) {
+			mView->setDragMode(QGraphicsView::NoDrag);
 		}
 	}
 	update();

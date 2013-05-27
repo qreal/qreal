@@ -11,12 +11,13 @@ namespace Ui {
 	class PreferencesDialog;
 }
 
-class PreferencesDialog : public QDialog {
+class PreferencesDialog : public QDialog
+{
 	Q_OBJECT
 
 public:
 
-	PreferencesDialog(QWidget *parent = 0);
+	explicit PreferencesDialog(QWidget *parent = 0);
 	~PreferencesDialog();
 
 	void init(QAction * const showGridAction, QAction * const showAlignmentAction

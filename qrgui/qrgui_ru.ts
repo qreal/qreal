@@ -288,7 +288,7 @@
     <message>
         <location filename="umllib/edgeElement.cpp" line="31"/>
         <source>Squarize</source>
-        <translation>Сделать квадратным</translation>
+        <translation>Перерисовать под прямым углом</translation>
     </message>
     <message>
         <location filename="umllib/edgeElement.cpp" line="32"/>
@@ -298,17 +298,19 @@
     <message>
         <location filename="umllib/edgeElement.cpp" line="33"/>
         <source>Remove segment</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить отрезок</translation>
     </message>
     <message>
         <location filename="umllib/edgeElement.cpp" line="34"/>
         <source>Reverse</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Обратить и переприсоединить</translatorcomment>
+        <translation>Развернуть</translation>
     </message>
     <message>
         <location filename="umllib/edgeElement.cpp" line="35"/>
         <source>Change drawing type</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>вертикальный/горизонтальный</translatorcomment>
+        <translation>Изменить тип рисования </translation>
     </message>
     <message>
         <source>Minimize</source>
@@ -1887,12 +1889,13 @@
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="92"/>
         <source>Paint the old line</source>
-        <translation type="unfinished"></translation>
+        <oldsource>Paint the old line mode</oldsource>
+        <translation>Рисовать старую линию</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="112"/>
         <source>Color of old line:</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет старой линии:</translation>
     </message>
     <message>
         <source>Chaotic Edition</source>
@@ -2981,7 +2984,7 @@
     </message>
     <message>
         <source>Squarize</source>
-        <translation type="obsolete">Сделать квадратным</translation>
+        <translation type="obsolete">Перерисовать под прямым углом</translation>
     </message>
 </context>
 <context>

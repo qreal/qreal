@@ -550,58 +550,98 @@ bool EditorManager::isInterpretationMode() const
 
 bool EditorManager::isParentProperty(Id const &id, QString const &propertyName) const
 {
+	Q_UNUSED(id);
+	Q_UNUSED(propertyName);
 	return false;
 }
 
 void EditorManager::deleteProperty(QString const &propDisplayedName) const
-{}
+{
+	Q_UNUSED(propDisplayedName);
+}
 
 void EditorManager::addProperty(Id const &id, QString const &propDisplayedName) const
-{}
+{
+	Q_UNUSED(id);
+	Q_UNUSED(propDisplayedName);
+}
 
-void EditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
-{}
+void EditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType
+		, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
+{
+	Q_UNUSED(id);
+	Q_UNUSED(property);
+	Q_UNUSED(propertyType);
+	Q_UNUSED(propertyDefaultValue);
+	Q_UNUSED(propertyDisplayedName);
+}
 
 QString EditorManager::propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const
 {
+	Q_UNUSED(id);
+	Q_UNUSED(displayedPropertyName);
 	return "";
 }
 
 IdList EditorManager::children(Id const &parent) const
 {
+	Q_UNUSED(parent);
 	return IdList();
 }
 
 QString EditorManager::shape(Id const &id) const
 {
+	Q_UNUSED(id);
 	return "";
 }
 
 void EditorManager::updateShape(Id const &id, QString const &graphics) const
-{}
+{
+	Q_UNUSED(id);
+	Q_UNUSED(graphics);
+}
 
 void EditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
-{}
+{
+	Q_UNUSED(mainWindow);
+	Q_UNUSED(id);
+}
 
 bool EditorManager::isRootDiagramNode(Id const &id) const
 {
+	Q_UNUSED(id);
 	return false;
 }
 
 void EditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
-{}
+{
+	Q_UNUSED(diagram);
+	Q_UNUSED(name);
+	Q_UNUSED(isRootDiagramNode);
+}
 
 void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
 					QString const &lineType, QString const &beginType, QString const &endType) const
-{}
+{
+	Q_UNUSED(diagram);
+	Q_UNUSED(name);
+	Q_UNUSED(labelText);
+	Q_UNUSED(labelType);
+	Q_UNUSED(lineType);
+	Q_UNUSED(beginType);
+	Q_UNUSED(endType);
+}
 
 QPair<Id, Id> EditorManager::createEditorAndDiagram(QString const &name) const
 {
+	Q_UNUSED(name);
 	return QPair<Id, Id>();
 }
 
 void EditorManager::saveMetamodel(QString const &newMetamodelFileName)
-{}
+{
+	Q_UNUSED(newMetamodelFileName);
+}
 
 QString EditorManager::saveMetamodelFilePath() const
 {

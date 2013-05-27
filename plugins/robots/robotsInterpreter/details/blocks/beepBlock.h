@@ -5,6 +5,7 @@
 
 #include "block.h"
 #include "../robotParts/brick.h"
+#include "../abstractTimer.h"
 
 namespace qReal {
 namespace interpreters {
@@ -17,7 +18,7 @@ class BeepBlock : public Block
 	Q_OBJECT
 
 public:
-	BeepBlock(robotParts::Brick &brick);
+	BeepBlock(robotParts::Brick &brick, AbstractTimer *timer /* Takes ownership */);
 	virtual void run();
 
 private slots:
@@ -25,7 +26,7 @@ private slots:
 
 private:
 	robotParts::Brick &mBrick;
-	QTimer mTimer;
+	AbstractTimer *mTimer;
 };
 
 }

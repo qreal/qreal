@@ -43,7 +43,8 @@ public:
 		return mLogicalModelApi;
 	}
 
-	gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface() const {
+	gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface() const
+	{
 		return mMainWindowInterpretersInterface;
 	}
 
@@ -64,7 +65,6 @@ private:
 	gui::MainWindowInterpretersInterface &mMainWindowInterpretersInterface;
 	ProjectManagementInterface &mProjectManager;
 	SceneCustomizationInterface &mSceneCustomizer;
-
 };
 
 }

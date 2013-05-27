@@ -8,6 +8,8 @@ HEADERS += umllib/edgeElement.h \
 	umllib/embedded/linkers/embeddedLinkers.h \
 	umllib/serializationData.h \
 	umllib/private/sceneGridHandler.h \
+	umllib/private/reshapeEdgeCommand.h \
+	umllib/private/resizeCommand.h\
 	umllib/private/resizeHandler.h \
 	umllib/private/umlPortHandler.h \
 	umllib/private/borderChecker.h \
@@ -24,6 +26,8 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/embedded/linkers/embeddedLinkers.cpp \
 	umllib/serializationData.cpp \
 	umllib/private/sceneGridHandler.cpp \
+	umllib/private/reshapeEdgeCommand.cpp \
+	umllib/private/resizeCommand.cpp\
 	umllib/private/resizeHandler.cpp \
 	umllib/private/umlPortHandler.cpp \
 	umllib/private/borderChecker.cpp \
@@ -31,7 +35,7 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/private/copyHandler.cpp
 
 RESOURCES += \
-    umllib/contextIcons.qrc
+	umllib/contextIcons.qrc
 
 
 

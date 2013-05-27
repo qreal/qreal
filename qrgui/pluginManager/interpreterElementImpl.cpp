@@ -5,7 +5,7 @@
 using namespace qReal;
 using namespace utils;
 
-InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId, Id const &id)
+InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId)
 		: mEditorRepoApi(repo), mId(metaId)
 {}
 
@@ -153,6 +153,7 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 		, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
 		, ElementRepoInterface *elementRepo)
 {
+	Q_UNUSED(elementRepo);
 	if (mId.element() == "MetaEntityNode") {
 		mGraphics.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
 		QDomDocument classDoc;

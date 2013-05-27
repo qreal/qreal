@@ -5,11 +5,16 @@
 #include <QtCore/QModelIndex>
 
 #include "../../qrkernel/ids.h"
-#include "mainWindow.h"
 #include "../models/models.h"
 
-namespace Ui {
+namespace Ui
+{
 class ReferenceList;
+}
+
+namespace qReal
+{
+class MainWindow;
 }
 
 /** @brief ReferenceList is a widget which allows to edit reference properties

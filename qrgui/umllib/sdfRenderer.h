@@ -26,7 +26,8 @@ public:
 
 	bool load (QString const &filename);
 	bool load(QDomDocument const &document);
-	void render(QPainter *painter, QRectF const &bounds, bool isIcon = false);	void noScale();
+	void render(QPainter *painter, QRectF const &bounds, bool isIcon = false);
+	void noScale();
 
 	int pictureWidth() { return first_size_x; }
 	int pictureHeight() { return first_size_y; }

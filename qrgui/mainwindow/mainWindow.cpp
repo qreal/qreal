@@ -139,12 +139,11 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	QTimer::singleShot(0, this, SLOT(initToolPlugins()));
 
 	if (fileToOpen.isEmpty() || !mProjectManager->open(fileToOpen)) {
+		mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 		// Centering dialog inside main window
 		mStartDialog->move(geometry().center() - mStartDialog->rect().center());
 		mStartDialog->exec();
 	}
-	mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
-	mStartDialog->exec();
 }
 
 void MainWindow::connectActions()
@@ -1730,10 +1729,12 @@ QWidget *MainWindow::windowWidget()
 
 void MainWindow::initToolManager()
 {
-	if (mToolManager.customizer()) {
-		setWindowTitle(mToolManager.customizer()->windowTitle());
-		mUi->logicalModelDock->setVisible(mToolManager.customizer()->showLogicalModelExplorer());
-		setWindowIcon(mToolManager.customizer()->applicationIcon());
+	Customizer * const customizer = mToolManager.customizer();
+	if (customizer) {
+		setWindowTitle(customizer->windowTitle());
+		setWindowIcon(customizer->applicationIcon());
+		setVersion(customizer->productVersion());
+		customizer->customizeDocks(this);
 	}
 }
 

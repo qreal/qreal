@@ -24,6 +24,14 @@
 
 #include "serializationData.h"
 
+namespace qReal
+{
+namespace commands
+{
+class ResizeCommand;
+}
+}
+
 class NodeElement : public Element
 {
 	Q_OBJECT
@@ -124,6 +132,7 @@ public:
 	virtual void deleteFromScene();
 
 	QList<EdgeElement *> const edgeList() const;
+	QList<NodeElement *> const childNodes() const;
 
 	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
@@ -209,17 +218,18 @@ private:
 
 	void initEmbeddedLinkers();
 
+	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
+
 	ContextMenuAction mSwitchGridAction;
 
 	bool mPortsVisible;
-
-	QList<NodeElement *> childs;
 
 	QRectF mContents;
 	QList<EdgeElement *> mEdgeList;
 
 	DragState mDragState;
 	QPointF mDragPosition;
+	qReal::commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
 

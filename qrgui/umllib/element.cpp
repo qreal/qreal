@@ -76,7 +76,6 @@ void Element::initTitles()
 	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
 }
 
-
 void Element::singleSelectionState(const bool singleSelected) {
 	if (singleSelected) {
 		selectionState(true);

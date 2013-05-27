@@ -7,7 +7,7 @@
 #include "rotater.h"
 #include "../../../../../qrutils/graphicsUtils/abstractItem.h"
 #include "../../../../../qrutils/graphicsUtils/rectangleImpl.h"
-#include "../../../../../qrutils/graphicsUtils/rotateInterface.h"
+#include "../../../../../qrutils/graphicsUtils/rotateItem.h"
 #include "robotModelInterface.h"
 
 namespace qReal {
@@ -20,8 +20,21 @@ const qreal robotWidth = 50;
 const qreal robotHeight = 50;
 const QPointF rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 
+const qreal beepWavesSize = 120;
+
+class BeepItem : public QGraphicsItem
+{
+protected:
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	QRectF boundingRect() const;
+
+private:
+	void drawBeep(QPainter *painter);
+	void drawBeepArcs(QPainter *painter, QPointF const &center, qreal radius);
+};
+
 /** @brief Class that represents a robot in 2D model */
-class RobotItem : public QObject, public graphicsUtils::AbstractItem, public graphicsUtils::RotateInterface
+class RobotItem : public QObject, public graphicsUtils::RotateItem
 {
 	Q_OBJECT
 public:
@@ -33,9 +46,7 @@ public:
 	virtual void setSelected(bool isSelected);
 	void setRotater(Rotater *rotater);
 	virtual void checkSelection();
-	QPointF basePoint();
 
-	QPainterPath boundingShape() const;
 	virtual QRectF boundingRect() const;
 	virtual QRectF calcNecessaryBoundingRect() const;
 	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
@@ -59,26 +70,32 @@ public:
 	void setRobotModel(RobotModelInterface *robotModel);
 	void setNeededBeep(bool isNeededBeep);
 
+	void addSensorsShapes(QPainterPath &target);
+
+	void recoverDragStartPosition();
+
+	void processPositionChange();
+	void processPositionAndAngleChange();
+
+protected:
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
 signals:
 	void changedPosition();
 
 private:
-	void drawBeep(QPainter* painter);
+	void onLanded();
+
 	/** @brief Image of a robot drawn on scene */
 	QImage mImage;
-	QImage mBeepImage;
-	bool mNeededBeep;
+	// Takes ownership
+	BeepItem *mBeepItem;
 
 	/** @brief List of sensors added to robot */
 	QList<SensorItem *> mSensors;  // Does not have ownership
 
-	/** @brief Previous position of robot (used while dragging to update sensors positions)*/
-	qreal mPreviousAngle;
-	QPointF mPreviousPos;
-
-	QPointF mBasePoint;
-
 	bool mIsOnTheGround;
+	QPointF mDragStart;
 	Rotater *mRotater;
 	graphicsUtils::RectangleImpl mRectangleImpl;
 

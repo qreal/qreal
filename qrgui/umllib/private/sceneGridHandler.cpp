@@ -226,9 +226,6 @@ void SceneGridHandler::alignToGrid()
 
 	makeGridMovingX(myX1, coefX, indexGrid);
 	makeGridMovingY(myY1, coefY, indexGrid);
-
-//	myX1 = nodePos.x() + contentsRect.x();
-//	myY1 = nodePos.y() + contentsRect.y();
 }
 
 void SceneGridHandler::drawGuides()

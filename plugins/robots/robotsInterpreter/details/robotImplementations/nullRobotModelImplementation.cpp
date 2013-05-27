@@ -1,4 +1,6 @@
 #include "nullRobotModelImplementation.h"
+#include "../nullTimer.h"
+
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations;
 
@@ -119,4 +121,9 @@ sensorImplementations::NullEncoderImplementation &NullRobotModelImplementation::
 sensorImplementations::NullEncoderImplementation &NullRobotModelImplementation::encoderC()
 {
 	return mEncoderC;
+}
+
+details::AbstractTimer *NullRobotModelImplementation::produceTimer()
+{
+	return new details::NullTimer;
 }

@@ -7,7 +7,6 @@
 
 unsigned const keepAliveResponseSize = 9;
 unsigned const getFirmwareVersionResponseSize = 9;
-unsigned const lsGetStatusResponseSize = 6;
 
 using namespace qReal::interpreters::robots::details;
 
@@ -101,48 +100,7 @@ void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
 		emit response(addressee, QByteArray());
 		return;
 	}
-
-	QByteArray command(buffer.length() + 7, 0);
-	command[0] = buffer.length() + 5;
-	command[1] = 0x00;
-	command[2] = telegramType::directCommandNoResponse;
-	command[3] = commandCode::LSWRITE;
-	command[4] = port;
-	command[5] = buffer.length();
-	command[6] = responseSize;
-	for (int i = 0; i < buffer.length(); ++i) {
-		command[i + 7] = buffer[i];
-	}
-
-	send(command);
-
-	if (!waitForBytes(responseSize, port)) {
-		Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::sendI2C", "No response, connection error");
-		emit response(addressee, QByteArray());
-		return;
-	}
-
-	if (responseSize > 0) {
-		command.clear();
-		command.resize(5);
-
-		command[0] = 0x03;
-		command[1] = 0x00;
-		command[2] = telegramType::directCommandResponseRequired;
-		command[3] = commandCode::LSREAD;
-		command[4] = port;
-
-		send(command);
-
-		QByteArray const result = receive(22);
-		QByteArray decodedResult = result.right(result.length() - 5);
-
-		emit response(addressee, decodedResult);
-	} else {
-		// TODO: Correctly process empty required response
-		QByteArray result(1, 0);
-		emit response(addressee, result);
-	}
+	RobotCommunicationThreadBase::sendI2C(addressee, buffer, responseSize, port);
 }
 
 void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
@@ -150,37 +108,11 @@ void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 	Q_UNUSED(allow)
 }
 
-bool BluetoothRobotCommunicationThread::waitForBytes(int bytes, inputPort::InputPortEnum const &port) const
+void BluetoothRobotCommunicationThread::send(QByteArray const &buffer
+		, unsigned const responseSize, QByteArray &outputBuffer)
 {
-	time_t const startTime = clock();
-	do {
-		int const bytesReady = i2cBytesReady(port);
-		SleeperThread::msleep(10);
-		if (clock() - startTime > timeout)
-			return false;
-		if (bytesReady >= bytes)
-			return true;
-	} while (true);
-}
-
-int BluetoothRobotCommunicationThread::i2cBytesReady(inputPort::InputPortEnum const &port) const
-{
-	QByteArray command(5, 0);
-	command[0] = 0x03;
-	command[1] = 0x00;
-
-	command[2] = telegramType::directCommandResponseRequired;
-	command[3] = commandCode::LSGETSTATUS;
-	command[4] = port;
-
-	send(command);
-	QByteArray const result = receive(lsGetStatusResponseSize);
-
-	if (result.isEmpty() || result[4] != errorCode::success) {
-		return 0;
-	} else {
-		return result[5];
-	}
+	send(buffer);
+	outputBuffer = receive(responseSize);
 }
 
 void BluetoothRobotCommunicationThread::send(QByteArray const &buffer) const

@@ -7,8 +7,9 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
-LineItem::LineItem(QPointF begin, QPointF end)
+LineItem::LineItem(QPointF const &begin, QPointF const &end, int cornerRadius)
 	: mLineImpl()
+	, mCornerRadius(cornerRadius)
 {
 	mX1 = begin.x();
 	mY1 = begin.y();

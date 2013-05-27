@@ -46,7 +46,7 @@ struct NodeLabel {
 class InterpreterElementImpl : public ElementImpl
 {
 public:
-	InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId, Id const &id);
+	InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId);
 	void initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc, QDomNode &portsPicture, int &width, int &height);
 	void initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc, QDomNode &portsPicture, int &width, int &height);
 	void initLabels(int width, int height, ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles);

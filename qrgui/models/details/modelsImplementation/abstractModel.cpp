@@ -136,6 +136,11 @@ Id AbstractModel::idByIndex(QModelIndex const &index) const
 	return mModelItems.key(item);
 }
 
+Id AbstractModel::rootId() const
+{
+	return mRootItem->id();
+}
+
 bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent)
 {
 	Q_UNUSED(row)
