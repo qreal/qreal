@@ -100,6 +100,8 @@ bool ProjectManager::open(QString const &fileName)
 			return false;
 		}
 	}
+
+	emit beforeOpen(fileName);
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Initializing is impossible without closing current project.
 	close();
@@ -120,6 +122,8 @@ bool ProjectManager::open(QString const &fileName)
 
 	setSaveFilePath(fileName);
 	refreshApplicationStateAfterOpen();
+
+	emit afterOpen(fileName);
 
 	return true;
 }
@@ -142,7 +146,6 @@ bool ProjectManager::import(QString const &fileName)
 	// has diagrams for which there are no plugins
 	mMainWindow->models()->repoControlApi().importFromDisk(currentSaveFilePath);
 	mMainWindow->models()->reinit();
-	setUnsavedIndicator(true);
 	return true;
 }
 
@@ -184,7 +187,7 @@ void ProjectManager::refreshApplicationStateAfterSave()
 {
 	refreshApplicationStateAfterOpen();
 	if (mSaveFilePath != mAutosaver->filePath()) {
-		setUnsavedIndicator(false);
+		mMainWindow->controller()->projectSaved();
 	}
 }
 
@@ -196,7 +199,6 @@ void ProjectManager::refreshApplicationStateAfterOpen()
 
 void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 {
-	mMainWindow->connectWindowTitle();
 	QString const windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
 	mMainWindow->setWindowTitle(windowTitle + " " + mSaveFilePath);
 	refreshTitleModifiedSuffix();
@@ -326,7 +328,7 @@ QString ProjectManager::getSaveFileName(QString const &dialogWindowTitle)
 void ProjectManager::setUnsavedIndicator(bool isUnsaved)
 {
 	mUnsavedIndicator = isUnsaved;
-	refreshTitleModifiedSuffix();
+	refreshWindowTitleAccordingToSaveFile();
 }
 
 void ProjectManager::clearAutosaveFile()

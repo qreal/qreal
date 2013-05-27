@@ -9,5 +9,4 @@ UnrealSoundSensorImplementation::UnrealSoundSensorImplementation(inputPort::Inpu
 
 void UnrealSoundSensorImplementation::read()
 {
-	Q_UNUSED(this);
 }

@@ -9,5 +9,5 @@ UnrealGyroscopeSensorImplementation::UnrealGyroscopeSensorImplementation(inputPo
 
 void UnrealGyroscopeSensorImplementation::read()
 {
-	Q_UNUSED(this);
+
 }

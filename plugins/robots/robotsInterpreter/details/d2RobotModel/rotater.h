@@ -40,6 +40,8 @@ public:
 
 private:
 	int mLength;
+	int mDrift;
+	int mResizeDrift;
 	graphicsUtils::RotateItem *mMaster;
 	graphicsUtils::LineImpl mLineImpl;
 };

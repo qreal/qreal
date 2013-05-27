@@ -10,10 +10,9 @@ IfBlock::IfBlock()
 
 void IfBlock::run()
 {
-	int const expressionValue = evaluate("Condition").toInt();
-	if ((mCondition == tr("less than 0") && expressionValue < 0)
-			|| (mCondition == tr("greater than 0") && expressionValue > 0)
-			|| (mCondition == tr("equals to 0") && expressionValue == 0))
+	bool const expressionValue = evaluateBool("Condition");
+	if ((mCondition == QString::fromUtf8("истина") && expressionValue)
+			|| (mCondition == QString::fromUtf8("ложь") && !expressionValue))
 	{
 		emit done(mNextBlock);
 	} else {
@@ -28,7 +27,7 @@ bool IfBlock::initNextBlocks()
 
 	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
-	foreach (Id const linkId, links) {
+	foreach (Id const &linkId, links) {
 		Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
 		if (targetBlockId == Id()) {
 			error(tr("Outgoing link is not connected"));
@@ -37,9 +36,8 @@ bool IfBlock::initNextBlocks()
 
 		Block *targetBlock = mBlocksTable->block(targetBlockId);
 		QString const condition = stringProperty(linkId, "Guard").toLower();
-		if (condition == tr("less than 0")
-				|| condition == tr("greater than 0")
-				|| condition == tr("equals to 0"))
+		if (condition == QString::fromUtf8("истина")
+				|| condition == QString::fromUtf8("ложь"))
 		{
 			if (!thenFound) {
 				mNextBlock = targetBlock;

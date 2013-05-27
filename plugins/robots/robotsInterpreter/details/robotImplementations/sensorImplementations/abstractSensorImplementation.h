@@ -21,6 +21,9 @@ public:
 	sensorType::SensorTypeEnum type() const;
 	virtual void configure() = 0;
 
+	/// Performs dummy sensor reading with 0 result; used for sensor variables nullification
+	virtual void nullify();
+
 signals:
 	void response(int reading);
 	void failure();

@@ -31,4 +31,5 @@ private:
 	QString mBackground;
 	QString mCenter;
 	bool mIsHard;
+	bool mIsPlainText;
 };

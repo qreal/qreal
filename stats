@@ -1,0 +1,333 @@
+# On branch sensor
+# You have unmerged paths.
+#   (fix conflicts and run "git commit")
+#
+# Changes to be committed:
+#
+#	modified:   .travis.yml
+#	deleted:    installer/.project
+#	deleted:    installer/Doxyfile
+#	modified:   installer/build.fsx
+#	modified:   installer/buildRobots.bat
+#	deleted:    installer/buildinst.bat
+#	deleted:    installer/kroki.png
+#	deleted:    installer/kroki2.bmp
+#	modified:   installer/nxttools.xml
+#	new file:   installer/qrealRobots-main.xml
+#	new file:   installer/qrealRobots-nxtTools.xml
+#	modified:   installer/qrealRobots.xml
+#	deleted:    installer/qrealRobots_nxttools.xml
+#	deleted:    installer/rplcver.bat
+#	deleted:    installer/setup.nsi
+#	modified:   plugins/blockDiagram/visualDebugSupport/visualDebugSupport_ru.ts
+#	modified:   plugins/blockDiagram/visualDebugSupport/visualDebuggerPreferencesPage.cpp
+#	modified:   plugins/blockDiagram/visualDebugSupport/visualDebuggerPreferencesPage.h
+#	modified:   plugins/metaEditor/metaEditorSupport/compilerPage.cpp
+#	modified:   plugins/metaEditor/metaEditorSupport/compilerPage.h
+#	modified:   plugins/metaEditor/metaEditorSupport/metaEditorSupport_ru.ts
+#	modified:   plugins/refactoring/refactoringSupport/refactoringFinder.h
+#	modified:   plugins/refactoring/refactoringSupport/refactoringPreferencePage.cpp
+#	modified:   plugins/refactoring/refactoringSupport/refactoringPreferencePage.h
+#	modified:   plugins/refactoring/refactoringSupport/refactoringSupport_ru.ts
+#	modified:   plugins/robots/editor/doc/changelog.txt
+#	modified:   plugins/robots/editor/doc/html/version.js
+#	modified:   plugins/robots/editor/generated/robotsMetamodel.xml
+#	modified:   plugins/robots/examples/movingAlongTheLine.qrs
+#	modified:   plugins/robots/examples/touchObstacle.qrs
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/abstractElementGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/abstractElementGenerator.h
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/functionElementGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/functionElementGenerator.h
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/ifElementGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/ifElementGenerator.h
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElementFactory.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/abstractSimpleElementGenerator.h
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/beepGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/enginesGenerator.cpp
+#	deleted:    plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/initialBlockGenerator.cpp
+#	deleted:    plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/initialBlockGenerator.h
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/initialNodeGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/initialNodeGenerator.h
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/playToneGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/timerGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/variableInitGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/waitForColorBlockGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/waitForColorIntensityBlockGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/waitForEncoderBlockGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/waitForLightBlockGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/waitForSonarBlockGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/generators/simpleElements/waitForTouchSensorBlockGenerator.cpp
+#	new file:   plugins/robots/robotsGenerator/nxtOSEK/generators/variables.cpp
+#	new file:   plugins/robots/robotsGenerator/nxtOSEK/generators/variables.h
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/nxtFlashTool.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/nxtOSEKRobotGenerator.cpp
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/nxtOSEKRobotGenerator.h
+#	modified:   plugins/robots/robotsGenerator/nxtOSEK/templates/template.c
+#	modified:   plugins/robots/robotsGenerator/robotsGeneratorPlugin.cpp
+#	modified:   plugins/robots/robotsGenerator/robotsGeneratorPlugin.h
+#	modified:   plugins/robots/robotsGenerator/robotsGenerator_ru.qm
+#	modified:   plugins/robots/robotsGenerator/robotsGenerator_ru.ts
+#	modified:   plugins/robots/robotsInterpreter/customizer.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/blocks/block.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/blocks/block.h
+#	modified:   plugins/robots/robotsInterpreter/details/blocks/enginesBackwardBlock.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/blocks/enginesForwardBlock.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/blocks/ifBlock.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/blocks/loopBlock.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/d2Form.ui
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/d2ModelWidget.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/d2ModelWidget.h
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/d2RobotModel.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/d2RobotModel.h
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/rotater.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/rotater.h
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/sensorItem.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/sensorItem.h
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/sonarSensorItem.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/sonarSensorItem.h
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/timeline.h
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/wallItem.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/d2RobotModel/worldModel.h
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/motorImplementations/abstractMotorImplementation.h
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/motorImplementations/nullMotorImplementation.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/motorImplementations/nullMotorImplementation.h
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/motorImplementations/realMotorImplementation.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/motorImplementations/realMotorImplementation.h
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/motorImplementations/unrealMotorImplementation.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/motorImplementations/unrealMotorImplementation.h
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/sensorImplementations/abstractEncoderImplementation.h
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/sensorImplementations/abstractSensorImplementation.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/sensorImplementations/abstractSensorImplementation.h
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/sensorImplementations/bluetoothColorSensorImplementation.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/sensorImplementations/bluetoothEncoderImplementation.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/sensorImplementations/bluetoothLightSensorImplementation.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotImplementations/sensorImplementations/unrealEncoderImplementation.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotParts/motor.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotParts/motor.h
+#	modified:   plugins/robots/robotsInterpreter/details/robotParts/robotModel.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotParts/robotModel.h
+#	modified:   plugins/robots/robotsInterpreter/details/robotParts/sensor.cpp
+#	modified:   plugins/robots/robotsInterpreter/details/robotParts/sensor.h
+#	modified:   plugins/robots/robotsInterpreter/details/robotsBlockParser.cpp
+#	new file:   plugins/robots/robotsInterpreter/icons/sensors/2d_color.png
+#	new file:   plugins/robots/robotsInterpreter/icons/sensors/2d_light.png
+#	new file:   plugins/robots/robotsInterpreter/icons/sensors/2d_sonar.png
+#	new file:   plugins/robots/robotsInterpreter/icons/sensors/2d_touch.png
+#	modified:   plugins/robots/robotsInterpreter/interpreter.cpp
+#	modified:   plugins/robots/robotsInterpreter/interpreter.h
+#	modified:   plugins/robots/robotsInterpreter/robotSettingsPage.cpp
+#	modified:   plugins/robots/robotsInterpreter/robotSettingsPage.h
+#	modified:   plugins/robots/robotsInterpreter/robotSettingsPage.ui
+#	modified:   plugins/robots/robotsInterpreter/robotsInterpreter.qrc
+#	modified:   plugins/robots/robotsInterpreter/robotsInterpreter_ru.qm
+#	modified:   plugins/robots/robotsInterpreter/robotsInterpreter_ru.ts
+#	modified:   plugins/robots/robotsInterpreter/robotsPlugin.cpp
+#	modified:   plugins/robots/robotsInterpreter/robotsPlugin.h
+#	modified:   plugins/visualInterpreter/pythonInterpreter.cpp
+#	modified:   plugins/visualInterpreter/visualInterpreterPlugin.cpp
+#	modified:   plugins/visualInterpreter/visualInterpreterPreferencesPage.cpp
+#	modified:   plugins/visualInterpreter/visualInterpreterPreferencesPage.h
+#	modified:   plugins/visualInterpreter/visualInterpreterUnit.h
+#	new file:   qrgui/controller/commands/abstractCommand.cpp
+#	new file:   qrgui/controller/commands/abstractCommand.h
+#	new file:   qrgui/controller/commands/arrangeLinksCommand.cpp
+#	new file:   qrgui/controller/commands/arrangeLinksCommand.h
+#	new file:   qrgui/controller/commands/changeParentCommand.cpp
+#	new file:   qrgui/controller/commands/changeParentCommand.h
+#	new file:   qrgui/controller/commands/changePropertyCommand.cpp
+#	new file:   qrgui/controller/commands/changePropertyCommand.h
+#	new file:   qrgui/controller/commands/createElementCommand.cpp
+#	new file:   qrgui/controller/commands/createElementCommand.h
+#	new file:   qrgui/controller/commands/createGroupCommand.cpp
+#	new file:   qrgui/controller/commands/createGroupCommand.h
+#	new file:   qrgui/controller/commands/createRemoveCommandImplementation.cpp
+#	new file:   qrgui/controller/commands/createRemoveCommandImplementation.h
+#	new file:   qrgui/controller/commands/doNothingCommand.cpp
+#	new file:   qrgui/controller/commands/doNothingCommand.h
+#	new file:   qrgui/controller/commands/edgeElementCommand.cpp
+#	new file:   qrgui/controller/commands/edgeElementCommand.h
+#	new file:   qrgui/controller/commands/elementCommand.cpp
+#	new file:   qrgui/controller/commands/elementCommand.h
+#	new file:   qrgui/controller/commands/nodeElementCommand.cpp
+#	new file:   qrgui/controller/commands/nodeElementCommand.h
+#	new file:   qrgui/controller/commands/removeElementCommand.cpp
+#	new file:   qrgui/controller/commands/removeElementCommand.h
+#	new file:   qrgui/controller/commands/selectElementCommand.cpp
+#	new file:   qrgui/controller/commands/selectElementCommand.h
+#	new file:   qrgui/controller/commands/trackingEntity.cpp
+#	new file:   qrgui/controller/commands/trackingEntity.h
+#	new file:   qrgui/controller/commands/updateElementCommand.cpp
+#	new file:   qrgui/controller/commands/updateElementCommand.h
+#	new file:   qrgui/controller/controller.cpp
+#	new file:   qrgui/controller/controller.h
+#	new file:   qrgui/controller/controller.pri
+#	new file:   qrgui/controller/undoStack.cpp
+#	new file:   qrgui/controller/undoStack.h
+#	modified:   qrgui/dialogs/preferencesDialog.cpp
+#	modified:   qrgui/dialogs/preferencesDialog.h
+#	modified:   qrgui/dialogs/preferencesPages/behaviourPage.cpp
+#	modified:   qrgui/dialogs/preferencesPages/behaviourPage.h
+#	modified:   qrgui/dialogs/preferencesPages/debuggerPage.cpp
+#	modified:   qrgui/dialogs/preferencesPages/debuggerPage.h
+#	modified:   qrgui/dialogs/preferencesPages/editorPage.cpp
+#	modified:   qrgui/dialogs/preferencesPages/editorPage.h
+#	modified:   qrgui/dialogs/preferencesPages/featuresPage.cpp
+#	modified:   qrgui/dialogs/preferencesPages/featuresPage.h
+#	modified:   qrgui/dialogs/preferencesPages/miscellaniousPage.cpp
+#	modified:   qrgui/dialogs/preferencesPages/miscellaniousPage.h
+#	modified:   qrgui/dialogs/preferencesPages/preferencesPage.h
+#	modified:   qrgui/dialogs/startDialog/startDialog.cpp
+#	modified:   qrgui/editorPluginInterface/elementImpl.h
+#	modified:   qrgui/editorPluginInterface/sdfRendererInterface.h
+#	new file:   qrgui/icons/redo.png
+#	new file:   qrgui/icons/undo.png
+#	modified:   qrgui/mainwindow/mainWindow.cpp
+#	modified:   qrgui/mainwindow/mainWindow.h
+#	modified:   qrgui/mainwindow/mainWindow.ui
+#	modified:   qrgui/mainwindow/mainwindow.pri
+#	modified:   qrgui/mainwindow/projectManager/projectManagementInterface.h
+#	modified:   qrgui/mainwindow/projectManager/projectManager.cpp
+#	modified:   qrgui/mainwindow/projectManager/projectManager.h
+#	modified:   qrgui/mainwindow/shapeEdit/item.cpp
+#	modified:   qrgui/mainwindow/shapeEdit/item.h
+#	modified:   qrgui/mainwindow/shapeEdit/scene.h
+#	modified:   qrgui/mainwindow/shapeEdit/shapeEdit.cpp
+#	modified:   qrgui/mainwindow/shapeEdit/shapeEdit.h
+#	modified:   qrgui/mainwindow/shapeEdit/shapeEdit.ui
+#	new file:   qrgui/mainwindow/shapeEdit/visibilityConditionsDialog.cpp
+#	new file:   qrgui/mainwindow/shapeEdit/visibilityConditionsDialog.h
+#	new file:   qrgui/mainwindow/shapeEdit/visibilityConditionsDialog.ui
+#	new file:   qrgui/mainwindow/shapeEdit/visibilityValueWidget.cpp
+#	new file:   qrgui/mainwindow/shapeEdit/visibilityValueWidget.h
+#	modified:   qrgui/mainwindow/shapeEdit/xmlLoader.cpp
+#	modified:   qrgui/mainwindow/shapeEdit/xmlLoader.h
+#	modified:   qrgui/models/details/graphicalModel.cpp
+#	modified:   qrgui/models/details/logicalModelView.cpp
+#	modified:   qrgui/models/details/modelsAssistApi.cpp
+#	modified:   qrgui/models/details/modelsAssistApi.h
+#	modified:   qrgui/models/graphicalModelAssistApi.cpp
+#	modified:   qrgui/models/graphicalModelAssistApi.h
+#	modified:   qrgui/models/logicalModelAssistApi.cpp
+#	modified:   qrgui/models/logicalModelAssistApi.h
+#	modified:   qrgui/pluginManager/editorManager.cpp
+#	modified:   qrgui/qrgui.pro
+#	modified:   qrgui/qrgui.qrc
+#	modified:   qrgui/qrguiTest.pro
+#	modified:   qrgui/qrgui_ru.qm
+#	modified:   qrgui/qrgui_ru.ts
+#	modified:   qrgui/toolPluginInterface/toolPluginInterface.pri
+#	modified:   qrgui/toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h
+#	modified:   qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h
+#	modified:   qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h
+#	modified:   qrgui/umllib/edgeElement.cpp
+#	modified:   qrgui/umllib/edgeElement.h
+#	modified:   qrgui/umllib/element.cpp
+#	modified:   qrgui/umllib/element.h
+#	modified:   qrgui/umllib/elementTitle.cpp
+#	modified:   qrgui/umllib/embedded/linkers/embeddedLinker.cpp
+#	modified:   qrgui/umllib/embedded/linkers/embeddedLinker.h
+#	modified:   qrgui/umllib/nodeElement.cpp
+#	modified:   qrgui/umllib/nodeElement.h
+#	new file:   qrgui/umllib/private/foldCommand.cpp
+#	new file:   qrgui/umllib/private/foldCommand.h
+#	new file:   qrgui/umllib/private/reshapeEdgeCommand.cpp
+#	new file:   qrgui/umllib/private/reshapeEdgeCommand.h
+#	new file:   qrgui/umllib/private/resizeCommand.cpp
+#	new file:   qrgui/umllib/private/resizeCommand.h
+#	modified:   qrgui/umllib/private/resizeHandler.cpp
+#	modified:   qrgui/umllib/private/resizeHandler.h
+#	modified:   qrgui/umllib/sdfRenderer.cpp
+#	modified:   qrgui/umllib/sdfRenderer.h
+#	modified:   qrgui/umllib/serializationData.cpp
+#	modified:   qrgui/umllib/serializationData.h
+#	modified:   qrgui/umllib/umllib.pri
+#	new file:   qrgui/view/copyPaste/clipboardHandler.cpp
+#	new file:   qrgui/view/copyPaste/clipboardHandler.h
+#	new file:   qrgui/view/copyPaste/pasteCommand.cpp
+#	new file:   qrgui/view/copyPaste/pasteCommand.h
+#	new file:   qrgui/view/copyPaste/pasteEdgeCommand.cpp
+#	new file:   qrgui/view/copyPaste/pasteEdgeCommand.h
+#	new file:   qrgui/view/copyPaste/pasteGroupCommand.cpp
+#	new file:   qrgui/view/copyPaste/pasteGroupCommand.h
+#	new file:   qrgui/view/copyPaste/pasteNodeCommand.cpp
+#	new file:   qrgui/view/copyPaste/pasteNodeCommand.h
+#	modified:   qrgui/view/editorView.cpp
+#	modified:   qrgui/view/editorView.h
+#	modified:   qrgui/view/editorViewMVIface.cpp
+#	modified:   qrgui/view/editorViewMVIface.h
+#	modified:   qrgui/view/editorViewScene.cpp
+#	modified:   qrgui/view/editorViewScene.h
+#	modified:   qrgui/view/gestures/mouseMovementManager.cpp
+#	modified:   qrgui/view/propertyEditorView.cpp
+#	modified:   qrgui/view/propertyEditorView.h
+#	modified:   qrgui/view/view.pri
+#	modified:   qrkernel/ids.h
+#	modified:   qrkernel/settingsDefaultValues
+#	modified:   qrrepo/private/repoApi.cpp
+#	modified:   qrutils/expressionsParser/expressionsParser.cpp
+#	renamed:    qrutils/graphTransformation/baseGraphTransformationUnit.cpp -> qrutils/graphUtils/baseGraphTransformationUnit.cpp
+#	renamed:    qrutils/graphTransformation/baseGraphTransformationUnit.h -> qrutils/graphUtils/baseGraphTransformationUnit.h
+#	renamed:    qrutils/graphTransformation/graphTransformation.pri -> qrutils/graphUtils/graphUtils.pri
+#	new file:   qrutils/graphUtils/tree.cpp
+#	new file:   qrutils/graphUtils/tree.h
+#	modified:   qrutils/mathUtils/gaussNoise.cpp
+#	modified:   qrutils/mathUtils/gaussNoise.h
+#	modified:   qrxc/edgeType.cpp
+#	modified:   qrxc/label.cpp
+#	modified:   qrxc/label.h
+#	modified:   qrxc/nodeType.cpp
+#
+# Unmerged paths:
+#   (use "git add <file>..." to mark resolution)
+#
+#	both modified:      plugins/robots/robotsGenerator/nxtOSEK/nxtOsek.pri
+#	both modified:      qrutils/qrutils.pro
+#
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   plugins/robots/editor/generated/generated/shapes/BalanceClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/BalanceInitClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/BeepClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/EnginesBackwardClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/EnginesForwardClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/EnginesStopClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/FinalNodeClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/ForkClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/FunctionClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/IfBlockClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/InitialNodeClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/LoopClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/NullificationEncoderClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/PlayToneClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/RobotsDiagramNodeClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/SubprogramRobotsClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/TimerClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/VariableInitClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/WaitForAccelerometerClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/WaitForColorClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/WaitForColorIntensityClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/WaitForEncoderClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/WaitForGyroscopeClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/WaitForLightClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/WaitForSonarDistanceClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/WaitForSoundClass.sdf
+#	modified:   plugins/robots/editor/generated/generated/shapes/WaitForTouchSensorClass.sdf
+#	modified:   plugins/robots/robotsGenerator/object_script.robotsGenerator.Debug
+#	modified:   plugins/robots/robotsGenerator/object_script.robotsGenerator.Release
+#	modified:   qrgui/object_script.qrgui.Debug
+#	modified:   qrgui/object_script.qrgui.Release
+#	modified:   qrutils/object_script.qrutils.Debug
+#	modified:   qrutils/object_script.qrutils.Release
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	plugins/robots/editor/generated/generated/elements.h
+#	plugins/robots/editor/generated/generated/pluginInterface.cpp
+#	plugins/robots/editor/generated/generated/pluginInterface.h
+#	plugins/robots/editor/generated/generated/shapes/CommentBlockClass.sdf
+#	plugins/robots/editor/generated/generated/shapes/CommentBlockPorts.sdf
+#	plugins/robots/editor/generated/plugin.qrc
+#	stats

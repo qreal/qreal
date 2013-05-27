@@ -13,7 +13,7 @@ QList<SmartLine> VariableInitGenerator::convertElementIntoDirectCommand(NxtOSEKR
 	QList<SmartLine> result;
 
 	QString const variableName = nxtGen->api()->stringProperty(logicElementId, "variable");
-	QString const variableValue = nxtGen->api()->stringProperty(logicElementId, "value");
+	QString const variableValue = nxtGen->intExpression(logicElementId, "value");
 	result.append(SmartLine(variableName + " = " + variableValue + "; \n", elementId));
 
 	return result;

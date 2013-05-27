@@ -33,20 +33,20 @@ QList<SmartLine> WaitForAccelerometerBlockGenerator::convertElementIntoDirectCom
 
 	QString condition ;
 
-	if (os=="oX"){
-		condition += "buf[0]";
-	} else if (os=="oY"){
-		condition += "buf[1]";
-	} else if (os=="oZ"){
-		condition += "buf[2]";
+	if (os == "oX"){
+		condition.arg(condition, "buf[0]");
+	} else if (os == "oY"){
+		condition.arg(condition, "buf[1]");
+	} else if (os == "oZ"){
+		condition.arg(condition, "buf[2]");
 	} else {
-		condition += "sqrt(buf[0]*buf[0]+buf[1]*buf[1]+buf[2]*buf[2])";
+		condition.arg(condition, "sqrt(buf[0]*buf[0]+buf[1]*buf[1]+buf[2]*buf[2])");
 	}
 	condition += inequalitySign + " " + acceleration;;
 
 	result.append(SmartLine("int[3] buf;",elementId));
-	result.append(SmartLine("while (!(ecrobot_get_accel_sensor(" + port +"" +", buf[3]"
-			+ ") "+ " && " + condition + "))", elementId));
+	result.append(SmartLine("while (!(ecrobot_get_accel_sensor(" + port + "" + ", buf[3]"
+			+ ") " + " && " + condition + "))", elementId));
 	result.append(SmartLine("{", elementId));
 	result.append(SmartLine("}", elementId));
 

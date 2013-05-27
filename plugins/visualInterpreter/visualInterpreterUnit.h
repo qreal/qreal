@@ -2,7 +2,7 @@
 
 #include "../../qrgui/mainwindow/errorReporter.h"
 #include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
-#include "../../qrutils/graphTransformation/baseGraphTransformationUnit.h"
+#include "../../qrutils/graphUtils/baseGraphTransformationUnit.h"
 #include "ruleParser.h"
 #include "pythonGenerator.h"
 #include "pythonInterpreter.h"

@@ -185,7 +185,7 @@ void VisualInterpreterPlugin::insertSematicsStateProperty(QDomDocument metamodel
 void VisualInterpreterPlugin::insertSemanticsStatePropertiesInSpecificElemType(QDomDocument metamodel
 		, QDomNodeList const &nodes, bool isNode) const
 {
-	for (unsigned i = 0; i < nodes.length(); i++) {
+	for (int i = 0; i < nodes.length(); i++) {
 		QDomElement const elem = nodes.at(i).toElement();
 
 		QDomElement graphics = elem.elementsByTagName("graphics").at(0).toElement();
@@ -239,7 +239,7 @@ void VisualInterpreterPlugin::insertIdPropertyToBasicElements(QDomDocument metam
 
 void VisualInterpreterPlugin::insertIdPropertyInSpecificElemType(QDomDocument metamodel, QDomNodeList const &nodes) const
 {
-	for (unsigned i = 0; i < nodes.length(); i++) {
+	for (int i = 0; i < nodes.length(); i++) {
 		QDomElement const elem = nodes.at(i).toElement();
 
 		QDomElement logic = elem.elementsByTagName("logic").at(0).toElement();
@@ -265,7 +265,7 @@ void VisualInterpreterPlugin::insertIdPropertyInSpecificElemType(QDomDocument me
 void VisualInterpreterPlugin::removePropertyDefaultValues(QDomDocument metamodel) const
 {
 	QDomNodeList properties = metamodel.elementsByTagName("property");
-	for (unsigned i = 0; i < properties.length(); i++) {
+	for (int i = 0; i < properties.length(); i++) {
 		properties.at(i).removeChild(properties.at(i).toElement().elementsByTagName("default").at(0));
 	}
 }

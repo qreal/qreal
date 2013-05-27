@@ -66,6 +66,8 @@ public:
 	bool needsConnection() const;
 	void startInterpretation();
 
+	void nullifySensors();
+
 	void nextBlockAfterInitial(bool success);
 
 	/// Creates new timer for specific implementation. Doesn`t take ownership

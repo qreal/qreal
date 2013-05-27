@@ -26,3 +26,8 @@ sensorType::SensorTypeEnum AbstractSensorImplementation::type() const
 {
 	return mType;
 }
+
+void AbstractSensorImplementation::nullify()
+{
+	emit response(0);
+}

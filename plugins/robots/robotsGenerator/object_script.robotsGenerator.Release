@@ -16,7 +16,6 @@ INPUT(
 ./release\playToneGenerator.o
 ./release\finalNodeGenerator.o
 ./release\nullificationEncoderGenerator.o
-./release\initialBlockGenerator.o
 ./release\waitForColorBlockGenerator.o
 ./release\waitForColorIntensityBlockGenerator.o
 ./release\balanceGenerator.o
@@ -33,6 +32,7 @@ INPUT(
 ./release\waitForSoundBlockGenerator.o
 ./release\waitForGyroscopeBlockGenerator.o
 ./release\waitForAccelerometerBlockGenerator.o
+./release\variables.o
 ./release\qrc_robotsGenerator.o
 ./release\moc_robotsGeneratorPlugin.o
 ./release\moc_nxtFlashTool.o

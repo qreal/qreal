@@ -25,9 +25,9 @@ HEADERS += \
 	details/blocks/waitBlock.h \
 	details/blocks/waitForSensorBlock.h \
 	details/blocks/waitForColorSensorBlockBase.h \
-    details/blocks/waitForSoundSensorBlock.h \
-    details/blocks/waitforGyroscopeSensorBlock.h \
-    details/blocks/waitForAccelerometerBlock.h
+	details/blocks/waitForSoundSensorBlock.h \
+	details/blocks/waitforGyroscopeSensorBlock.h \
+	details/blocks/waitForAccelerometerBlock.h
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -56,6 +56,6 @@ SOURCES +=\
 	details/blocks/waitBlock.cpp \
 	details/blocks/waitForSensorBlock.cpp \
 	details/blocks/waitForColorSensorBlockBase.cpp \
-    details/blocks/waitForSoundSensorBlock.cpp \
-    details/blocks/waitForAccelerometerBlock.cpp \
-    details/blocks/waitForGyroscopeSensorBlock.cpp
+	details/blocks/waitForSoundSensorBlock.cpp \
+	details/blocks/waitForAccelerometerBlock.cpp \
+	details/blocks/waitForGyroscopeSensorBlock.cpp

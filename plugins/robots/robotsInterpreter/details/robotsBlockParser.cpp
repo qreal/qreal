@@ -3,6 +3,9 @@
 using namespace qReal;
 using namespace utils;
 
+QString const sensorVariablePerfix = QObject::tr("Sensor");
+QString const encoderVariablePerfix = QObject::tr("Encoder");
+
 RobotsBlockParser::RobotsBlockParser(ErrorReporterInterface *errorReporter)
 	: ExpressionsParser(errorReporter)
 {
@@ -19,8 +22,9 @@ Number RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &
 	}
 	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
 	for (int i = 0; i < (exprs.length() - 1); ++i) {
-		if (mHasParseErrors)
+		if (mHasParseErrors) {
 			return Number(0, Number::intType);
+		}
 		int position = 0;
 		QString expr = exprs[i];
 		skip(expr, position);
@@ -40,8 +44,9 @@ void RobotsBlockParser::functionBlockParseProcess(const QString &stream, int &po
 {
 	mCurrentId = curId;
 
-	if (isEmpty(stream, pos))
+	if (isEmpty(stream, pos)) {
 		error(emptyProcess);
+	}
 
 	bool hasParseErrorsFlag = false;
 
@@ -89,11 +94,15 @@ bool RobotsBlockParser::isLetter(const QChar &symbol)
 void RobotsBlockParser::setReservedVariables()
 {
 	QString const pi = "pi";
-	Number value = Number(3.14, Number::doubleType);
+	Number value = Number(3.14159265, Number::doubleType);
 	mVariables.insert(pi, value);
 	for (int i = 1; i <= 4; ++i) {
-		// TODO: restore QObject::tr("Sensor") when russian variable names would be supported
-		QString const variable = "Sensor" + QString::number(i);
+		QString const variable = sensorVariablePerfix + QString::number(i);
+		mVariables.insert(variable, Number(0, Number::intType));
+		mReservedVariables.append(variable);
+	}
+	for (int i = 0; i < 3; ++i) {
+		QString const variable = encoderVariablePerfix + ('A' + i);
 		mVariables.insert(variable, Number(0, Number::intType));
 		mReservedVariables.append(variable);
 	}

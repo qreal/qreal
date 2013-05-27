@@ -65,7 +65,7 @@ void RobotsGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool 
 	}
 }
 
-void RobotsGeneratorPlugin::generateRobotSourceCode()
+bool RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mProjectManager->save();
 
@@ -75,7 +75,7 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 	mMainWindowInterface->errorReporter()->clearErrors();
 	gen.generate();
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
-		return;
+		return false;
 	}
 
 	QFile file("nxt-tools/example0/example0.c");
@@ -87,6 +87,7 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 	if (inStream) {
 		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
 	}
+	return true;
 }
 
 void RobotsGeneratorPlugin::flashRobot()
@@ -103,8 +104,9 @@ void RobotsGeneratorPlugin::uploadProgram()
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-		generateRobotSourceCode();
-		mFlashTool->uploadProgram();
+		if (generateRobotSourceCode()) {
+			mFlashTool->uploadProgram();
+		}
 	}
 }
 

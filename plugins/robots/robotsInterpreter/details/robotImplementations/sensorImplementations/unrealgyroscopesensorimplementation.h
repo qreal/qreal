@@ -11,8 +11,8 @@ namespace sensorImplementations {
 class UnrealGyroscopeSensorImplementation : public UnrealSensorImplementation
 {
 	Q_OBJECT
-public:
 
+public:
 	UnrealGyroscopeSensorImplementation(inputPort::InputPortEnum const port, d2Model::D2RobotModel *d2Model);
 	virtual void read();
 };

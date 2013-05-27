@@ -32,3 +32,8 @@ void Sensor::setImplementation(robotImplementations::sensorImplementations::Abst
 	mSensorImpl = sensorImpl;
 	mSensorImpl->setPort(mPort);
 }
+
+void Sensor::nullify()
+{
+	mSensorImpl->nullify();
+}

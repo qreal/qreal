@@ -18,7 +18,7 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	, mGraphicalAssistApi(NULL)
 	, mLogicalAssistApi(NULL)
 {
-	mScene->mMVIface = this;
+	mScene->setMVIface(this);
 	mScene->mView = mView;
 }
 
@@ -113,7 +113,7 @@ void EditorViewMViface::setRootIndex(const QModelIndex &index)
 	reset();
 }
 
-Id EditorViewMViface::rootId()
+Id EditorViewMViface::rootId() const
 {
 	return mGraphicalAssistApi ? mGraphicalAssistApi->idByIndex(rootIndex()) : Id();
 }
@@ -143,6 +143,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
 		if (elem) {
 			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
+			elem->setController(mScene->mainWindow()->controller());
 		}
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();

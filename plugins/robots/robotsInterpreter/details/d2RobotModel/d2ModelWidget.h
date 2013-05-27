@@ -17,6 +17,7 @@
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
+#include "timeline.h"
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 
 namespace Ui
@@ -93,14 +94,27 @@ public:
 
 	QVector<SensorItem *> sensorItems() const;
 
+	void loadXml(QDomDocument const &worldModel);
+
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
 	/// Places in 2D model same sensors as selected in QReal settings
 	void syncronizeSensors();
+	/// Synchronizes noise settings in 2D model window with global ones
+	void rereadNoiseSettings();
 
 signals:
+	void d2WasClosed();
+
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
+	/// Emitted when such features as motor or sensor noise were
+	///enabled or disabled by user
+	void noiseSettingsChanged();
+
+	/// Emitted each time when some user actions lead to world model modifications
+	/// @param xml World model description in xml format
+	void modelChanged(QDomDocument const &xml);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -111,7 +125,7 @@ private slots:
 	void addLine(bool on);
 	void addStylus(bool on);
 	void addEllipse(bool on);
-	void clearScene();
+	void clearScene(bool removeRobot = false);
 	void resetButtons();
 
 	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
@@ -124,6 +138,7 @@ private slots:
 
 	void handleNewRobotPosition();
 
+	void saveToRepo();
 	void saveWorldModel();
 	void loadWorldModel();
 
@@ -140,8 +155,11 @@ private slots:
 	void onMultiselectionCursorButtonToggled(bool on);
 	void setCursorType(cursorType::CursorType cursor);
 
-signals:
-	void d2WasClosed();
+	void changeNoiseSettings();
+
+	void startTimelineListening();
+	void stopTimelineListening();
+	void onTimelineTick();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);
@@ -162,6 +180,8 @@ private:
 	void drawWalls();
 	void drawColorFields();
 	void drawInitialRobot();
+
+	QDomDocument generateXml() const;
 
 	/** @brief Set active panel toggle button and deactivate all others */
 	void setActiveButton(int active);
@@ -257,6 +277,7 @@ private:
 	bool mFollowRobot;
 
 	bool mFirstShow;
+	Timeline const * mTimeline;
 };
 
 }

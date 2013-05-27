@@ -18,6 +18,7 @@ INPUT(
 ./.obj\stylusImpl.o
 ./.obj\rotateItem.o
 ./.obj\baseGraphTransformationUnit.o
+./.obj\tree.o
 ./.obj\progress.o
 ./.obj\longOperation.o
 ./.obj\functorOperation.o

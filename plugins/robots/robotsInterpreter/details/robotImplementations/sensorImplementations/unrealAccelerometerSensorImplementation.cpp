@@ -9,5 +9,5 @@ UnrealAccelerometerSensorImplementation::UnrealAccelerometerSensorImplementation
 
 void UnrealAccelerometerSensorImplementation::read()
 {
-	Q_UNUSED(this);
+
 }
