@@ -1,7 +1,7 @@
 #include "elementTitle.h"
 
 #include <QtGui/QTextCursor>
-#include <QFontDatabase>
+#include <QtGui/QFontDatabase>
 
 #include "nodeElement.h"
 #include "edgeElement.h"
