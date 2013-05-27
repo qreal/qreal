@@ -13,11 +13,11 @@ public:
 
 protected:
 	virtual QList<SmartLine> convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-			, qReal::Id const elementId, qReal::Id const logicElementId);
+			, qReal::Id const &elementId, qReal::Id const &logicElementId);
 
 private:
 	void addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen
-			, QString const &port, qReal::Id const elementId);
+			, QString const &port, qReal::Id const &elementId);
 };
 }
 }

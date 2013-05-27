@@ -9,7 +9,7 @@ WaitForGyroscopeBlockGenerator::WaitForGyroscopeBlockGenerator()
 }
 
 QList<SmartLine> WaitForGyroscopeBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		, qReal::Id const elementId, qReal::Id const logicElementId)
+		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	QList<SmartLine> result;
 

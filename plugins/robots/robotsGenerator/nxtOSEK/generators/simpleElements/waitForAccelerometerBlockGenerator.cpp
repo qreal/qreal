@@ -9,7 +9,7 @@ WaitForAccelerometerBlockGenerator::WaitForAccelerometerBlockGenerator()
 }
 
 void WaitForAccelerometerBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen
-			, QString const &port, qReal::Id const elementId)
+			, QString const &port, qReal::Id const &elementId)
 {
 	QString const initCode = "ecrobot_init_accel_sensor(" + port + ");";
 	if (!ListSmartLine::isContains(nxtGen->initCode(), initCode)) {
@@ -20,7 +20,7 @@ void WaitForAccelerometerBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGen
 }
 
 QList<SmartLine> WaitForAccelerometerBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		, qReal::Id const elementId, qReal::Id const logicElementId)
+		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	QList<SmartLine> result;
 
