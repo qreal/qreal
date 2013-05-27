@@ -117,32 +117,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_8">
-     <property name="text">
-      <string>Suggestions</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QFrame" name="frame_6">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="diagramCreateCheckBox">
-        <property name="text">
-         <string>New diagram creating</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QLabel" name="label_41">
      <property name="text">
       <string>Warning window</string>
