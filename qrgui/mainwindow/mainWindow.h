@@ -150,6 +150,7 @@ public slots:
 	void createDiagram(QString const &idString);
 
 	void openFirstDiagram();
+	void closeTabsWithRemovedRootElements();
 
 private slots:
 	/// Diagram opening must happen after plugins initialization
