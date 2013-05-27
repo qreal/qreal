@@ -32,7 +32,7 @@
         <file>icons/collapseAll.png</file>
         <file>icons/expandAll.png</file>
         <file>icons/changeRepresentation.png</file>
-	<file>qt_ru.qm</file>
+        <file>qt_ru.qm</file>
         <file>icons/open.png</file>
         <file>icons/save.png</file>
         <file>icons/full_screen.png</file>
