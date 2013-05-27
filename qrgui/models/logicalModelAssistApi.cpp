@@ -39,7 +39,7 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 
 Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id
 		, bool isFromLogicalModel, QString const &name
-		, QPointF const &position, const Id &preferedLogicalId)
+		, QPointF const &position, Id const &preferedLogicalId)
 {
 	Q_UNUSED(preferedLogicalId)
 	return mModelsAssistApi.createElement(parent, id, id, isFromLogicalModel, name, position);

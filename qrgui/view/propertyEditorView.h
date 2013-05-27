@@ -1,10 +1,11 @@
 #pragma once
 
-#include <QtWidgets/QAbstractItemView>
 #include <QtCore/QMap>
+#include <QtWidgets/QAbstractItemView>
 #include <QtGui/QResizeEvent>
 
 #include "../mainwindow/propertyEditorProxyModel.h"
+#include "../controller/controller.h"
 
 #include "../thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h"
 #include "../models/logicalModelAssistApi.h"
@@ -66,4 +67,5 @@ private:
 	QtVariantEditorFactory *mVariantFactory;
 	PushButtonPropertyManager *mButtonManager;
 	PushButtonFactory *mButtonFactory;
+	qReal::Controller *mController;
 };

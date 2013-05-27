@@ -28,8 +28,8 @@ public:
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
 	Id createElement(Id const &parent, Id const &type);
 	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel
-		, QString const &name, QPointF const &position
-		, Id const &preferedLogicalId = Id());
+			, QString const &name, QPointF const &position
+			, Id const &preferedLogicalId = Id());
 	Id copyElement(Id const &source);
 	IdList children(Id const &element) const;
 	void changeParent(Id const &element, Id const &parent, QPointF const &position);

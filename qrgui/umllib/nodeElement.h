@@ -37,7 +37,7 @@ class NodeElement : public Element
 	Q_OBJECT
 
 public:
-	NodeElement(ElementImpl *impl);
+	explicit NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
 	/**
@@ -48,7 +48,8 @@ public:
 	 */
 	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
 
-	QMap<QString, QVariant> properties();
+	QMap<QString, QVariant> graphicalProperties() const;
+	QMap<QString, QVariant> logicalProperties() const;
 
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w, SdfRenderer *portrenderer);
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
@@ -140,6 +141,8 @@ public:
 	void setVisibleEmbeddedLinkers(bool const show);
 	void updateShape(QString const &shape) const;
 
+	void changeFoldState();
+
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);
@@ -171,14 +174,14 @@ private:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF newContents, QPointF newPos);
+	void resize(QRectF const &newContents, QPointF const &newPos);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
 	 * newPos equals to current position of node.
 	 * @param newContents Recommendation for new shape of node.
 	 */
-	void resize(QRectF newContents);
+	void resize(QRectF const &newContents);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
@@ -208,7 +211,6 @@ private:
 	void recalculateHighlightedNode(QPointF const &mouseScenePos);
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
-	void changeFoldState();
 	void setLinksVisible(bool);
 
 	NodeElement *getNodeAt(QPointF const &position);

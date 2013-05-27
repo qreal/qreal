@@ -11,7 +11,6 @@ public:
 	/**
 	 * Constructs a ResizeHandler.
 	 * @param resizingNode Node that is actually dealt with.
-	 * @param elementImpl ElementImpl of resizingNode.
 	 */
 	ResizeHandler(NodeElement * const resizingNode);
 

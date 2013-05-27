@@ -26,8 +26,8 @@ public:
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
 	Id createElement(Id const &parent, Id const &type);
 	Id createElement(Id const &parent, Id const &id
-		, bool isFromLogicalModel, QString const &name
-		, QPointF const &position, Id const &preferedLogicalId = Id());
+			, bool isFromLogicalModel, QString const &name
+			, QPointF const &position, Id const &preferedLogicalId = Id());
 	IdList children(Id const &element) const;
 	void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF());
 

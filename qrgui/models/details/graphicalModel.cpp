@@ -90,7 +90,7 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 
 	GraphicalModelItem *newGraphicalModelItem = NULL;
 	Id actualLogicalId = logicalId;
-	if (logicalId == Id::rootId()) {
+	if (logicalId == Id::rootId() || logicalId == Id()) {
 		AbstractModelItem *newItem = createModelItem(id, parentItem);
 		newGraphicalModelItem = static_cast<GraphicalModelItem *>(newItem);
 		actualLogicalId = newGraphicalModelItem->logicalId();

@@ -228,7 +228,8 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 							 mMaster->id().diagram() + "/" + mEdgeType.element();
 		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
-			Id edgeId = scene->createElement(type, event->scenePos()); // FIXME: I am raw. return strange pos() and inside me a small trash
+			// FIXME: I am raw. return strange pos() and inside me a small trash
+			Id edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand);
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
 

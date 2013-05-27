@@ -141,10 +141,10 @@ qReal::Id MouseMovementManager::getObject()
 	qReal::Id recognizedObject;
 	mGesturesManager->setKey(mPath);
 	mPath.clear();
-	double minDist = mGesturesManager->getMaxDistance(mElements.at(0).toString());
-	foreach (qReal::Id object, mElements) {
-		minDist = std::min(minDist, mGesturesManager->getMaxDistance(object.toString()));
-		double dist = mGesturesManager->getDistance(object.toString());
+	qreal minDist = INT_MAX;
+	foreach (qReal::Id const &object, mElements) {
+		minDist = qMin(minDist, mGesturesManager->getMaxDistance(object.toString()));
+		qreal dist = mGesturesManager->getDistance(object.toString());
 		if (dist < minDist) {
 			minDist = dist;
 			recognizedObject = object;

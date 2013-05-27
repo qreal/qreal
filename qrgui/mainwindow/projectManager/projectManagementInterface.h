@@ -8,7 +8,7 @@
 namespace qReal
 {
 
-/// Interfase that provides all of the work load project from a file, stored in the project file, and so on
+/// Interface that provides all of the work load project from a file, stored in the project file, and so on
 class ProjectManagementInterface : public QObject
 {
 	Q_OBJECT
@@ -52,6 +52,14 @@ public:
 	virtual bool suggestToSaveChangesOrCancel() = 0;
 	virtual void setUnsavedIndicator(bool isUnsaved) = 0;
 	virtual void reinitAutosaver() = 0;
+
+signals:
+	/// Emitted each time when project manager is going to open new project
+	/// @param fileName Project location
+	void beforeOpen(QString const &fileName);
+	/// Emitted each time when project manager has opened new project
+	/// @param fileName Opened project location
+	void afterOpen(QString const &fileName);
 };
 
 }
