@@ -63,10 +63,10 @@ public:
 	void nullifySensors();
 
 	void nextBlockAfterInitial(bool success);
-	
+
 	/// Creates new timer for specific implementation. Doesn`t take ownership
 	AbstractTimer *produceTimer();
-	
+
 signals:
 	void sensorsConfigured();
 	void connected(bool success);

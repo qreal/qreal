@@ -37,7 +37,6 @@ HEADERS += association.h \
 	type.h \
 	xmlCompiler.h \
 
-
 SOURCES += association.cpp \
 	diagram.cpp \
 	edgeType.cpp \
@@ -58,4 +57,3 @@ SOURCES += association.cpp \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
-
