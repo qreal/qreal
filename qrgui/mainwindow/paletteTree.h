@@ -8,13 +8,14 @@
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QVBoxLayout>
-#include "../pluginManager/editorManager.h"
-#include "../../qrkernel/ids.h"
 #include <QtWidgets/QLabel>
+
+#include "mainWindow.h"
+#include "../pluginManager/proxyEditorManager.h"
+#include "../../qrkernel/ids.h"
 
 namespace  qReal{
 namespace gui{
-
 /// Class for representing tree with editors elements.
 class PaletteTree: public QWidget
 {
@@ -27,31 +28,28 @@ public:
 	  @param name Item name.
 	  @param description Item description.
 	  @param icon Item icon.
-	  @param preferedSize Item`s icon prefered size.
 	  @param tree Editor's tree.
 	  @param parent Parent of item's group.
 	*/
 	void addItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon, QSize const preferedSize
-			, QTreeWidget *tree, QTreeWidgetItem *parent);
+			, QIcon const &icon,QTreeWidget *tree, QTreeWidgetItem *parent);
 
 	/** Adds top item type to some editor's tree.
 	  @param id Item id.
 	  @param name Item name.
 	  @param description Item description.
 	  @param icon Item icon.
-	  @param preferedSize Item`s icon prefered size.
 	  @param tree Editor's tree.
 	*/
 	void addTopItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon, QSize const preferedSize, QTreeWidget *tree);
+			, QIcon const &icon,QTreeWidget *tree);
 
 	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	  @param editor Editor
 	  @param diagram Diagram that corresponds to chosen editor.
 	*/
-	void addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram);
+	void addEditorElements(EditorManagerInterface *editorManagerProxy, const Id &editor, const Id &diagram);
 
 	/// Initialize connection editor's combobox with slot that sets active editor.
 	void initDone();
@@ -82,8 +80,9 @@ public:
 	  @param itemsCount Items count in a row.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	*/
-	void loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager);
+	void loadPalette(bool isIconsView, int itemsCount, EditorManagerInterface *editorManagerProxy);
 	~PaletteTree();
+	void initMainWindow(MainWindow *mainWindow);
 signals:
 	void paletteParametersChanged();
 public slots:
@@ -101,37 +100,6 @@ public slots:
 	/// Changes widget representation.
 	void changeRepresentation();
 private:
-
-	/// Class for representing editor elements.
-	class DraggableElement : public QWidget
-	{
-	public:
-			DraggableElement(Id const &id, QString const &name
-					, QString const &description
-					, QIcon const &icon
-					, QSize const &iconsPreferedSize
-					, bool iconsOnly
-					, QWidget *parent = NULL);
-
-			QIcon icon() const;
-			QString text() const;
-			Id id() const;
-			QSize iconsPreferedSize() const;
-
-			void setIconSize(int size);
-
-	private:
-			virtual void dragEnterEvent(QDragEnterEvent *event);
-			virtual void dropEvent(QDropEvent *event);
-			virtual void mousePressEvent(QMouseEvent *event);
-
-			Id mId;
-			QIcon mIcon;
-			QSize mPreferedSize;
-			QString mText;
-			QLabel *mLabel;
-	};
-
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
 
@@ -139,10 +107,6 @@ private:
 
 	/// Change icon's sizes in widget
 	void resizeIcons();
-
-	/// EditorManager instance used to sort palette's content.
-	/// Made static to be used inside idLessThan()
-	static EditorManager *mEditorManager;
 
 	/// Forbids to make copies of the object.
 	explicit PaletteTree(const PaletteTree &paletteTree);
@@ -180,7 +144,12 @@ private:
 	/** Fills palette tree by editors.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	*/
-	void loadEditors(EditorManager &editorManager);
+	void loadEditors(EditorManagerInterface *editorManagerProxy);
+
+	/// EditorManager instance used to sort palette's content.
+	/// Made static to be used inside idLessThan()
+	static EditorManagerInterface *mEditorManagerProxy;
+	MainWindow *mMainWindow;
 
 	/// Hash table with editor ids.
 	QHash<Id, int> mCategories;

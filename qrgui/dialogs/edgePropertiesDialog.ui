@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EdgePropertiesDialog</class>
+ <widget class="QDialog" name="EdgePropertiesDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>311</width>
+    <height>255</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Свойства связи:</string>
+  </property>
+  <widget class="QLabel" name="nameLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>name: *</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="nameEdit">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>10</y>
+     <width>201</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTextLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>labelText:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="labelTextEdit">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>40</y>
+     <width>201</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTypeLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>70</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>labelType:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="labelTypeComboBox">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>70</y>
+     <width>201</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Dynamic text</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Static text</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="lineTypeLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>100</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>lineType:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="lineTypeComboBox">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>100</y>
+     <width>201</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>solidLine</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>dashLine</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>dotLine</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="beginTypeLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>130</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>beginType:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="beginTypeComboBox">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>130</y>
+     <width>201</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>no_arrow</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>open_arrow</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>empty_arrow</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>filled_arrow</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>empty_rhomb</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>filled_rhomb</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="endTypeLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>160</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>endType:</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="endTypeComboBox">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>160</y>
+     <width>201</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>1</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>no_arrow</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>open_arrow</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>empty_arrow</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>filled_arrow</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>empty_rhomb</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>filled_rhomb</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="okPushButton">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>220</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>OK</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>220</y>
+     <width>211</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>* Need to be filled</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

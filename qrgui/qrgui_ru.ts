@@ -2,6 +2,34 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ru_RU" sourcelanguage="en">
 <context>
+    <name>AddNodeDialog</name>
+    <message utf8="true">
+        <location filename="dialogs/addNodeDialog.ui" line="14"/>
+        <source>Свойства сущности:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="dialogs/addNodeDialog.ui" line="20"/>
+        <source>name: *</source>
+        <translation type="unfinished">Имя: *</translation>
+    </message>
+    <message utf8="true">
+        <location filename="dialogs/addNodeDialog.ui" line="30"/>
+        <source>Сделать корневым элементом диаграммы</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="dialogs/addNodeDialog.ui" line="37"/>
+        <source>* Need to be filled</source>
+        <translation>* Обязательно для заполнения</translation>
+    </message>
+    <message>
+        <location filename="dialogs/addNodeDialog.ui" line="44"/>
+        <source>OK</source>
+        <translation>ОК</translation>
+    </message>
+</context>
+<context>
     <name>BehaviourForm</name>
     <message>
         <source>Form</source>
@@ -76,6 +104,24 @@
         <location filename="dialogs/checkoutdialog.cpp" line="51"/>
         <source>Select directory</source>
         <translation>Выбор папки</translation>
+    </message>
+</context>
+<context>
+    <name>ChooseTypeDialog</name>
+    <message utf8="true">
+        <location filename="dialogs/chooseTypeDialog.ui" line="14"/>
+        <source>Выберите тип добавляемого элемента:</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="dialogs/chooseTypeDialog.ui" line="29"/>
+        <source>Сущность</source>
+        <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="dialogs/chooseTypeDialog.ui" line="36"/>
+        <source>Связь</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -272,6 +318,151 @@
     </message>
 </context>
 <context>
+    <name>EdgePropertiesDialog</name>
+    <message utf8="true">
+        <location filename="dialogs/edgePropertiesDialog.ui" line="14"/>
+        <source>Свойства связи:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="26"/>
+        <source>name: *</source>
+        <translation type="unfinished">Имя: *</translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="49"/>
+        <source>labelText:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="72"/>
+        <source>labelType:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="86"/>
+        <source>Dynamic text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="91"/>
+        <source>Static text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="105"/>
+        <source>lineType:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="119"/>
+        <source>solidLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="124"/>
+        <source>dashLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="129"/>
+        <source>dotLine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="143"/>
+        <source>beginType:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="160"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="216"/>
+        <source>no_arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="165"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="221"/>
+        <source>open_arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="170"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="226"/>
+        <source>empty_arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="175"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="231"/>
+        <source>filled_arrow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="180"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="236"/>
+        <source>empty_rhomb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="185"/>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="241"/>
+        <source>filled_rhomb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="199"/>
+        <source>endType:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="255"/>
+        <source>OK</source>
+        <translation>ОК</translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.ui" line="268"/>
+        <source>* Need to be filled</source>
+        <translation>* Обязательно для заполнения</translation>
+    </message>
+</context>
+<context>
+    <name>EditPropertiesDialog</name>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation>Редактирование свойств</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="20"/>
+        <source>name: *</source>
+        <oldsource>name: </oldsource>
+        <translation>Имя: *</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="30"/>
+        <source>attributeType: *</source>
+        <oldsource>attributeType:</oldsource>
+        <translation>Тип: *</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="40"/>
+        <source>defaultValue: </source>
+        <oldsource>defaultValue:</oldsource>
+        <translation>Значение:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="57"/>
+        <source>* Need to be filled</source>
+        <translation>* Обязательно для заполнения</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.ui" line="50"/>
+        <source>OK</source>
+        <translation>ОК</translation>
+    </message>
+</context>
+<context>
     <name>EditorForm</name>
     <message>
         <source>Form</source>
@@ -396,6 +587,16 @@
         <location filename="view/editorViewScene.cpp" line="979"/>
         <source>Used in</source>
         <translation>Используется в</translation>
+    </message>
+    <message>
+        <location filename="view/editorViewScene.cpp" line="956"/>
+        <source>Change Properties</source>
+        <translation>Изменить свойства</translation>
+    </message>
+    <message>
+        <location filename="view/editorViewScene.cpp" line="959"/>
+        <source>Change Appearance</source>
+        <translation>Изменить внешний вид</translation>
     </message>
 </context>
 <context>
@@ -1343,8 +1544,8 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="51"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="128"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="48"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="111"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
@@ -1405,7 +1606,7 @@
         <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="50"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="47"/>
         <source>Miscellanious</source>
         <translation>Разное</translation>
     </message>
@@ -1435,7 +1636,7 @@
         <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="48"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="45"/>
         <source>Behaviour</source>
         <translation>Поведение</translation>
     </message>
@@ -1500,7 +1701,7 @@
         <translation type="obsolete">Префикс</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="49"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="46"/>
         <source>Debugger</source>
         <translation>Отладчик</translation>
     </message>
@@ -1852,6 +2053,38 @@
     <message>
         <source>Specify COM port manually</source>
         <translation type="obsolete">Указать COM-порт вручную</translation>
+    </message>
+</context>
+<context>
+    <name>PropertiesDialog</name>
+    <message>
+        <location filename="dialogs/propertiesDialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation>Свойства </translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.ui" line="44"/>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.ui" line="30"/>
+        <source>Add</source>
+        <translation>Добавить</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.ui" line="37"/>
+        <source>Change</source>
+        <translation>Изменить</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.ui" line="23"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="obsolete">Отмена</translation>
     </message>
 </context>
 <context>
@@ -2773,7 +3006,7 @@
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="270"/>
         <source>Saving</source>
-        <translation>Сохранение</translation>
+        <translation type="obsolete">Сохранение</translation>
     </message>
 </context>
 <context>
@@ -3080,6 +3313,94 @@
     </message>
 </context>
 <context>
+
+    <name>qReal::AddNodeDialog</name>
+    <message>
+        <location filename="dialogs/addNodeDialog.cpp" line="26"/>
+        <source>Error</source>
+        <translation type="unfinished">Ошибка</translation>
+    </message>
+    <message>
+        <location filename="dialogs/addNodeDialog.cpp" line="26"/>
+        <source>All required properties should be filled!</source>
+        <translation type="unfinished">Все обязательные свойства должны быть заполнены!</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ChooseTypeDialog</name>
+    <message>
+        <source>Choose type of adding element:</source>
+        <translation type="obsolete">Выберите тип добавляемого элемента:</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::EdgePropertiesDialog</name>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.cpp" line="29"/>
+        <source>Error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="dialogs/edgePropertiesDialog.cpp" line="29"/>
+        <source>All required properties should be filled!</source>
+        <translation>Все обязательные свойства должны быть заполнены!</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::EditPropertiesDialog</name>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="46"/>
+        <source>Error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="46"/>
+        <source>All required properties should be filled!</source>
+        <translation>Все обязательные свойства должны быть заполнены!</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="52"/>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="72"/>
+        <source>Adding of new property:</source>
+        <translation>Добавление нового свойства:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="53"/>
+        <source>Warning:</source>
+        <oldsource>Warning</oldsource>
+        <translation>Внимание:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="53"/>
+        <source>You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.</source>
+        <translation>Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства.</translation>
+    </message>
+    <message>
+        <source>You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value</source>
+        <translation type="obsolete">Вы изменили тип свойства. В случае  некорректного преобразования это может привести к обнулению существующего значения свойства</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="54"/>
+        <source>Proceed anyway</source>
+        <translation>Продолжить все равно</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="55"/>
+        <source>Cancel the type conversion</source>
+        <oldsource>Cancel the type cinversion</oldsource>
+        <translation>Отменить преобразование типа</translation>
+    </message>
+    <message>
+        <source>All properties should be filled!</source>
+        <translation type="obsolete">Необходимо заполнить все свойства!</translation>
+    </message>
+    <message>
+        <location filename="dialogs/editPropertiesDialog.cpp" line="74"/>
+        <source>Properties editor</source>
+        <translation>Редактирование свойства</translation>
+    </message>
+</context>
+<context>
     <name>qReal::ListWidget</name>
     <message>
         <location filename="dialogs/startDialog/listWidget.cpp" line="10"/>
@@ -3247,7 +3568,12 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="821"/>
+        <location filename="mainwindow/mainWindow.cpp" line="751"/>
+        <source>&lt;b&gt;QReal&lt;b&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;http://qreal.ru/&quot;&gt;http://qreal.ru/&lt;/a&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="832"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
@@ -3331,6 +3657,13 @@
     </message>
 </context>
 <context>
+    <name>qReal::PaletteTreeWidget</name>
+    <message>
+        <source>Add Element</source>
+        <translation type="obsolete">Добавить элемент</translation>
+    </message>
+</context>
+<context>
     <name>qReal::PluginDialog</name>
     <message>
         <location filename="dialogs/plugindialog.cpp" line="26"/>
@@ -3397,7 +3730,7 @@
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="129"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="120"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
@@ -3432,9 +3765,14 @@
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="283"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="278"/>
+        <source>Select file to save current metamodel to</source>
+        <translation>Выберите файл для сохранения метамодели</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="281"/>
         <source>Select file to save current model to</source>
-        <translation>Выберите файл для сохранения</translation>
+        <translation>Выберите файл для сохранения модели</translation>
     </message>
     <message>
         <location filename="mainwindow/projectManager/projectManager.cpp" line="301"/>
@@ -3449,9 +3787,60 @@
     </message>
 </context>
 <context>
+    <name>qReal::PropertiesDialog</name>
+    <message>
+        <location filename="dialogs/propertiesDialog.cpp" line="48"/>
+        <source>Properties</source>
+        <translation>Свойства</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.cpp" line="108"/>
+        <source>Warning</source>
+        <translation>Внимание</translation>
+    </message>
+    <message>
+        <location filename="dialogs/propertiesDialog.cpp" line="108"/>
+        <source>For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!</source>
+        <translation>Для добавления нового свойства со сцены и обозревателя логической модели должны быть удалены все элементы данного объекта и его наследников!</translation>
+    </message>
+    <message>
+        <source>For adding a new property, from the scene should be removed all the elements of the object and its inheritors!</source>
+        <translation type="obsolete">Для добавления нового свойства, со сцены должны быть удалены все элементы данного объекта и его наследников!</translation>
+    </message>
+    <message>
+        <source>For adding a new property from the scene should be removed all the elements of the object and its inheritors!</source>
+        <translation type="obsolete">Для добавления нового свойства со сцены должны быть удалены все элементы данного объекта и его наследников!</translation>
+    </message>
+    <message>
+        <source>New property</source>
+        <oldsource>New property:</oldsource>
+        <translation type="obsolete">Новое свойство</translation>
+    </message>
+    <message>
+        <source>Enter the property name:</source>
+        <translation type="obsolete">Введите имя свойства:</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="obsolete">Ошибка</translation>
+    </message>
+    <message>
+        <source>The property name can not be empty!</source>
+        <translation type="obsolete">Имя свойства не может быть пустым!</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ShapeEdit</name>
+    <message>
+        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="297"/>
+        <source>Saving</source>
+        <translation type="unfinished">Сохранение</translation>
+    </message>
+</context>
+<context>
     <name>qReal::StartDialog</name>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="42"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="55"/>
         <source>Start page</source>
         <oldsource>Start Page</oldsource>
         <translation>Начальная страница</translation>
@@ -3465,24 +3854,56 @@
         <translation type="obsolete">Новый проект на базе диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="22"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="23"/>
         <source>&amp;Recent projects</source>
         <translation>&amp;Недавние проекты</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="24"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="25"/>
         <source>&amp;New project with diagram</source>
         <translation>Новый проект на базе &amp;диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="30"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="31"/>
         <source>&amp;Quit QReal</source>
         <translation>&amp;Выйти из QReal</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="31"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="32"/>
         <source>&amp;Open existing project</source>
         <translation>&amp;Открыть проект</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="33"/>
+        <source>&amp;Open interpreted diagram</source>
+        <translation>Открыть интерпретируемую диаграмму</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="34"/>
+        <source>&amp;Create interpreted diagram</source>
+        <translation>&amp;Создать интерпретируемую диаграмму</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="102"/>
+        <source>Select file with metamodel to open</source>
+        <translation>Выберите файл метамодели для интерпретации</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="135"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="137"/>
+        <source>Enter the diagram name:</source>
+        <oldsource>Enter the editor name:</oldsource>
+        <translation>Введите имя диаграммы:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="135"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="137"/>
+        <source>diagram name:</source>
+        <translation>имя диаграммы:</translation>
+    </message>
+    <message>
+        <source>Editor name:</source>
+        <translation type="obsolete">имя диаграммы:</translation>
     </message>
     <message>
         <source>File not found</source>
@@ -3519,6 +3940,86 @@
     </message>
 </context>
 <context>
+    <name>qReal::gui::ChooseTypeDialog</name>
+    <message>
+        <source>Enter the element name:</source>
+        <translation type="obsolete">Введите имя элемента:</translation>
+    </message>
+    <message>
+        <source>Element name:</source>
+        <translation type="obsolete">Имя элемента:</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::gui::DraggableElement</name>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="80"/>
+        <source>Deleting an element: </source>
+        <translation>Удаление элемента: </translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="80"/>
+        <source>Do you really want to delete this item and all its graphical representation from the scene and from the palette?</source>
+        <translation>Вы действительно хотите удалить данный элемент  и все его графические представления со сцены и из палитры?</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="81"/>
+        <location filename="mainwindow/draggableElement.cpp" line="102"/>
+        <location filename="mainwindow/draggableElement.cpp" line="125"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="82"/>
+        <location filename="mainwindow/draggableElement.cpp" line="103"/>
+        <location filename="mainwindow/draggableElement.cpp" line="126"/>
+        <source>No</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="101"/>
+        <location filename="mainwindow/draggableElement.cpp" line="124"/>
+        <source>Warning</source>
+        <translation>Внимание</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="101"/>
+        <location filename="mainwindow/draggableElement.cpp" line="124"/>
+        <source>The deleted element </source>
+        <translation>Удаляемый элемент </translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="124"/>
+        <source> has inheritors:</source>
+        <translation> имеет наследников:</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="124"/>
+        <source>If you delete it, its properties will be removed from the elements-inheritors. Continue to delete?</source>
+        <translation>Если вы удалите его, то все унаследованные свойства будут удалены у его потомков. Продолжить удаление?</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="101"/>
+        <source> is the element of root digram. Continue to delete?</source>
+        <translation> является элементом корневой диаграммы. Продолжить удаление?</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="167"/>
+        <source>Change Properties</source>
+        <translation>Изменить свойства</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="170"/>
+        <source>Change Appearance</source>
+        <translation>Изменить внешний вид</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/draggableElement.cpp" line="173"/>
+        <source>Delete Element</source>
+        <translation>Удалить элемент</translation>
+    </message>
+</context>
+<context>
     <name>qReal::gui::ErrorReporter</name>
     <message>
         <location filename="mainwindow/errorReporter.cpp" line="149"/>
@@ -3544,19 +4045,31 @@
 <context>
     <name>qReal::gui::PaletteTree</name>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="380"/>
+        <source>Change Properties</source>
+        <translation type="obsolete">Изменить свойства</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/paletteTree.cpp" line="258"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="388"/>
+        <location filename="mainwindow/paletteTree.cpp" line="266"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="396"/>
+        <location filename="mainwindow/paletteTree.cpp" line="274"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::gui::PaletteTreeWidget</name>
+    <message>
+        <location filename="mainwindow/paletteTreeWidget.cpp" line="26"/>
+        <source>Add Element</source>
+        <translation>Добавить элемент</translation>
     </message>
 </context>
 <context>

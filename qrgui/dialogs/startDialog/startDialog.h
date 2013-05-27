@@ -1,7 +1,11 @@
 #pragma once
+
+#include <QtWidgets/QCommandLinkButton>
+
 #include "../managedClosableDialog.h"
 
 #include "../../mainwindow/projectManager/projectManager.h"
+#include "../../pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 
@@ -20,18 +24,23 @@ class StartDialog : public ManagedClosableDialog
 
 public:
 	explicit StartDialog(MainWindow *mainWindow, ProjectManager *projectManager);
+	void setVisibleForInterpreterButton(bool const value);
 
 private slots:
 	void openRecentProject(QString const &fileName);
 	void openExistingProject();
 	void createProjectWithDiagram(QString const &idString);
 	void exitApp();
+	void openInterpretedDiagram();
+	void createInterpretedDiagram();
 
 private:
 	static const QSize mMinimumSize;
 
 	MainWindow *mMainWindow;
 	ProjectManager *mProjectManager;
+	QCommandLinkButton *mInterpreterButton;
+	QCommandLinkButton *mCreateInterpreterButton;
 };
 
 }

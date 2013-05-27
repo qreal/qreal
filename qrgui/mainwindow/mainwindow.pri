@@ -18,7 +18,8 @@ HEADERS += \
 	mainwindow/referenceList.h \
 	mainwindow/projectManager/autosaver.h \
 	mainwindow/externBrowser.h \
-	mainwindow/mainWindowDockInterface.h \
+	mainwindow/draggableElement.h \
+	mainwindow/paletteTreeWidget.h \
 	mainwindow/qscintillaTextEdit.h \
 	mainwindow/shapeEdit/visibilityValueWidget.h
 
@@ -37,9 +38,10 @@ SOURCES += \
 	mainwindow/miniMap.cpp \
 	mainwindow/referenceList.cpp \
 	mainwindow/projectManager/autosaver.cpp \
-	mainwindow/macExternBrowser.cpp \
-	mainwindow/qscintillaTextEdit.cpp \
-	mainwindow/shapeEdit/visibilityValueWidget.cpp
+	mainwindow/draggableElement.cpp \
+	mainwindow/paletteTreeWidget.cpp \
+	mainwindow/shapeEdit/visibilityValueWidget.cpp \
+	mainwindow/qscintillaTextEdit.cpp
 
 win32 {
 	HEADERS += \

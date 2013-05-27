@@ -265,21 +265,21 @@ Element* EditorManager::graphicalObject(const Id &id) const
 	return  new EdgeElement(impl);
 }
 
-QStringList EditorManager::getPropertyNames(const Id &id) const
+QStringList EditorManager::propertyNames(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
 }
 
-QStringList EditorManager::getReferenceProperties(const Id &id) const
+QStringList EditorManager::referenceProperties(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getReferenceProperties(id.diagram(), id.element());
 }
 
-IdList EditorManager::getContainedTypes(const Id &id) const
+IdList EditorManager::containedTypes(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
@@ -291,7 +291,7 @@ IdList EditorManager::getContainedTypes(const Id &id) const
 	return result;
 }
 
-IdList EditorManager::getConnectedTypes(const Id &id) const
+IdList EditorManager::connectedTypes(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
 
@@ -306,7 +306,7 @@ IdList EditorManager::getConnectedTypes(const Id &id) const
 	return result;
 }
 
-IdList EditorManager::getUsedTypes(const Id &id) const
+IdList EditorManager::usedTypes(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
 
@@ -320,25 +320,25 @@ IdList EditorManager::getUsedTypes(const Id &id) const
 	return result;
 }
 
-QStringList EditorManager::getEnumValues(Id const &id, QString const &name) const
+QStringList EditorManager::enumValues(Id const &id, const QString &name) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	QString typeName = mPluginIface[id.editor()]->getPropertyType(id.element(), name);
 	return mPluginIface[id.editor()]->getEnumValues(typeName);
 }
 
-QString EditorManager::getTypeName(const Id &id, QString const &name) const
+QString EditorManager::typeName(const Id &id, const QString &name) const
 {
 	return mPluginIface[id.editor()]->getPropertyType(id.element(), name);
 }
 
-QString EditorManager::getDefaultPropertyValue(Id const &id, QString name) const
+QString EditorManager::defaultPropertyValue(Id const &id, QString name) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getPropertyDefaultValue(id.element(), name);
 }
 
-QStringList EditorManager::getPropertiesWithDefaultValues(Id const &id) const
+QStringList EditorManager::propertiesWithDefaultValues(Id const &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getPropertiesWithDefaultValues(id.element());
@@ -455,7 +455,7 @@ bool EditorManager::isParentOf(EditorInterface const *plugin, QString const &chi
 	return res;
 }
 
-QStringList EditorManager::getAllChildrenTypesOf(Id const &parent) const
+QStringList EditorManager::allChildrenTypesOf(Id const &parent) const
 {
 	EditorInterface const *plugin = mPluginIface[parent.editor()];
 	if (!plugin) {
@@ -505,4 +505,146 @@ IdList EditorManager::groups(Id const &diagram)
 		elements.append(Id(diagram.editor(), diagram.diagram(), e));
 	}
 	return elements;
+}
+//new methods with realization below:
+QList<StringPossibleEdge> EditorManager::possibleEdges(QString const &editor, QString const &element) const
+{
+	EditorInterface *editorInter = editorInterface(editor);
+	return editorInter->getPossibleEdges(element);
+}
+
+QStringList EditorManager::elements(QString const &editor, QString const &diagram) const
+{
+	EditorInterface *editorInter = editorInterface(editor);
+	return editorInter->elements(diagram);
+}
+
+int EditorManager::isNodeOrEdge(QString const &editor, QString const &element) const
+{
+	EditorInterface *editorInter = editorInterface(editor);
+	return editorInter->isNodeOrEdge(element);
+}
+
+bool EditorManager::isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement
+		, QString const &childDiagram, QString const &childElement) const
+{
+	EditorInterface *editorInter = editorInterface(editor);
+	return editorInter->isParentOf(parentDiagram, parentElement, childDiagram, childElement);
+}
+
+QString EditorManager::diagramName(QString const &editor, QString const &diagram) const
+{
+	EditorInterface *editorInter = editorInterface(editor);
+	return editorInter->diagramName(diagram);
+}
+
+QString EditorManager::diagramNodeName(QString const &editor, QString const &diagram) const
+{
+	EditorInterface *editorInter = editorInterface(editor);
+	return editorInter->diagramNodeName(diagram);
+}
+
+bool EditorManager::isInterpretationMode() const
+{
+	return false;
+}
+
+bool EditorManager::isParentProperty(Id const &id, QString const &propertyName) const
+{
+	Q_UNUSED(id);
+	Q_UNUSED(propertyName);
+	return false;
+}
+
+void EditorManager::deleteProperty(QString const &propDisplayedName) const
+{
+	Q_UNUSED(propDisplayedName);
+}
+
+void EditorManager::addProperty(Id const &id, QString const &propDisplayedName) const
+{
+	Q_UNUSED(id);
+	Q_UNUSED(propDisplayedName);
+}
+
+void EditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType
+		, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
+{
+	Q_UNUSED(id);
+	Q_UNUSED(property);
+	Q_UNUSED(propertyType);
+	Q_UNUSED(propertyDefaultValue);
+	Q_UNUSED(propertyDisplayedName);
+}
+
+QString EditorManager::propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const
+{
+	Q_UNUSED(id);
+	Q_UNUSED(displayedPropertyName);
+	return "";
+}
+
+IdList EditorManager::children(Id const &parent) const
+{
+	Q_UNUSED(parent);
+	return IdList();
+}
+
+QString EditorManager::shape(Id const &id) const
+{
+	Q_UNUSED(id);
+	return "";
+}
+
+void EditorManager::updateShape(Id const &id, QString const &graphics) const
+{
+	Q_UNUSED(id);
+	Q_UNUSED(graphics);
+}
+
+void EditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
+{
+	Q_UNUSED(mainWindow);
+	Q_UNUSED(id);
+}
+
+bool EditorManager::isRootDiagramNode(Id const &id) const
+{
+	Q_UNUSED(id);
+	return false;
+}
+
+void EditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
+{
+	Q_UNUSED(diagram);
+	Q_UNUSED(name);
+	Q_UNUSED(isRootDiagramNode);
+}
+
+void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
+					QString const &lineType, QString const &beginType, QString const &endType) const
+{
+	Q_UNUSED(diagram);
+	Q_UNUSED(name);
+	Q_UNUSED(labelText);
+	Q_UNUSED(labelType);
+	Q_UNUSED(lineType);
+	Q_UNUSED(beginType);
+	Q_UNUSED(endType);
+}
+
+QPair<Id, Id> EditorManager::createEditorAndDiagram(QString const &name) const
+{
+	Q_UNUSED(name);
+	return QPair<Id, Id>();
+}
+
+void EditorManager::saveMetamodel(QString const &newMetamodelFileName)
+{
+	Q_UNUSED(newMetamodelFileName);
+}
+
+QString EditorManager::saveMetamodelFilePath() const
+{
+	return "";
 }

@@ -8,18 +8,23 @@
 #include "scene.h"
 #include "item.h"
 #include "../../../qrutils/graphicsUtils/abstractItemView.h"
+#include "../../qrkernel/ids.h"
+#include "../pluginManager/editorManagerInterface.h"
+#include "ui_mainWindow.h"
 #include "../../models/details/logicalModel.h"
 #include "visibilityConditionsDialog.h"
-
 namespace Ui {
 	class ShapeEdit;
 }
+
+namespace qReal {
 
 class ShapeEdit : public QWidget {
 	Q_OBJECT
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
 	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role);
+	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow, EditorView *editorView);
 	graphicsUtils::AbstractView* getView();
 	void load(QString const &text);
 	~ShapeEdit();
@@ -70,6 +75,11 @@ private:
 	qReal::models::details::LogicalModel *mModel;
 	QPersistentModelIndex const mIndex;
 	int const mRole;
+	Id mId;
+	EditorManagerInterface *mEditorManagerProxy;
+	IdList mGraphicalElements;
+	MainWindow *mMainWindow;
+	EditorView *mEditorView;
 	void initButtonGroup();
 	void initFontPalette();
 	void initPalette();
@@ -97,3 +107,4 @@ private:
 
 	QMap<QString, VisibilityConditionsDialog::PropertyInfo> getProperties() const;
 };
+}

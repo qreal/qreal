@@ -35,7 +35,7 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="qReal::gui::TabWidget" name="tabs" native="true"/>
+     <widget class="qReal::gui::TabWidget" name="tabs"/>
     </item>
    </layout>
   </widget>
@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -526,10 +526,6 @@
    </property>
   </action>
   <action name="actionSave">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
-   </property>
    <property name="text">
     <string>Save</string>
    </property>
@@ -538,10 +534,6 @@
    </property>
   </action>
   <action name="actionSave_as">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/save_as.png</normaloff>:/icons/save_as.png</iconset>
-   </property>
    <property name="text">
     <string>Save as...</string>
    </property>
@@ -550,10 +542,6 @@
    </property>
   </action>
   <action name="actionOpen">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
-   </property>
    <property name="text">
     <string>Open...</string>
    </property>
@@ -671,10 +659,6 @@
    </property>
   </action>
   <action name="actionFullscreen">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/full_screen.png</normaloff>:/icons/full_screen.png</iconset>
-   </property>
    <property name="text">
     <string>Fullscreen Mode</string>
    </property>
@@ -799,18 +783,18 @@
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>TabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>../mainwindow/tabWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>MiniMap</class>
    <extends>QGraphicsView</extends>
    <header>../mainwindow/miniMap.h</header>
   </customwidget>
-  <customwidget>
-   <class>qReal::gui::TabWidget</class>
-   <extends>QWidget</extends>
-   <header>../mainwindow/tabWidget.h</header>
-  </customwidget>
  </customwidgets>
  <resources>
-  <include location="../qrgui.qrc"/>
   <include location="../qrgui.qrc"/>
  </resources>
  <connections/>

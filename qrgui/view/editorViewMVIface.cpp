@@ -6,7 +6,7 @@
 #include "editorViewScene.h"
 #include "../../qrkernel/definitions.h"
 #include "../umllib/element.h"
-#include "../pluginManager/editorManager.h"
+#include "../pluginManager/editorManagerInterface.h"
 #include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
@@ -320,11 +320,10 @@ models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 void EditorViewMViface::clearItems()
 {
 	QList<QGraphicsItem *> toRemove;
-	foreach (IndexElementPair const &pair, mItems) {
+	foreach (IndexElementPair const &pair, mItems)
 		if (!pair.second->parentItem()) {
 			toRemove.append(pair.second);
 		}
-	}
 	foreach (QGraphicsItem *item, toRemove) {
 		delete item;
 	}

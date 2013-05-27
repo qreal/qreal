@@ -17,7 +17,12 @@ HEADERS += \
 	dialogs/suggestToCreateDiagramDialog.h \
 	dialogs/managedClosableDialog.h \
 	dialogs/progressDialog/progressBar.h \
-	dialogs/progressDialog/progressDialog.h
+	dialogs/progressDialog/progressDialog.h \
+	dialogs/propertiesDialog.h \
+	dialogs/editPropertiesDialog.h \
+	dialogs/chooseTypeDialog.h \
+	dialogs/edgePropertiesDialog.h \
+	dialogs/addNodeDialog.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -37,7 +42,12 @@ SOURCES += \
 	dialogs/suggestToCreateDiagramDialog.cpp \
 	dialogs/managedClosableDialog.cpp \
 	dialogs/progressDialog/progressBar.cpp \
-	dialogs/progressDialog/progressDialog.cpp
+	dialogs/progressDialog/progressDialog.cpp \
+	dialogs/propertiesDialog.cpp \
+	dialogs/editPropertiesDialog.cpp \
+	dialogs/chooseTypeDialog.cpp \
+	dialogs/edgePropertiesDialog.cpp \
+	dialogs/addNodeDialog.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \
@@ -48,4 +58,9 @@ FORMS += \
 	dialogs/preferencesPages/debuggerPage.ui \
 	dialogs/preferencesPages/behaviourPage.ui \
 	dialogs/preferencesPages/featuresPage.ui \
-	dialogs/findReplaceDialog.ui
+	dialogs/findReplaceDialog.ui \
+	dialogs/propertiesDialog.ui \
+	dialogs/editPropertiesDialog.ui \
+	dialogs/chooseTypeDialog.ui \
+	dialogs/edgePropertiesDialog.ui \
+	dialogs/addNodeDialog.ui

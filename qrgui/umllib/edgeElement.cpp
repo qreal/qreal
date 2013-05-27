@@ -12,7 +12,6 @@
 #include "nodeElement.h"
 #include "private/reshapeEdgeCommand.h"
 #include "../view/editorViewScene.h"
-#include "../editorPluginInterface/editorInterface.h"
 
 using namespace qReal;
 
@@ -487,8 +486,7 @@ bool EdgeElement::initPossibleEdges()
 	QString editor = id().editor();
 	//TODO: do a code generation for diagrams
 	QString diagram = id().diagram();
-	EditorInterface * editorInterface = mGraphicalAssistApi->editorManager().editorInterface(editor);
-	QList<StringPossibleEdge> stringPossibleEdges = editorInterface->getPossibleEdges(id().element());
+	QList<StringPossibleEdge> stringPossibleEdges = mGraphicalAssistApi->editorManagerInter()->possibleEdges(editor, id().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges) {
 		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
 		Id(editor, diagram, pEdge.first.second));
@@ -781,7 +779,7 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 {
 	QPainterPath circlePath;
 	circlePath.addEllipse(mapToScene(position), 12, 12);
-	QList<QGraphicsItem *> items = scene()->items(circlePath);
+	QList <QGraphicsItem*> items = scene()->items(circlePath);
 
 	if (isStart && items.contains(mSrc)) {
 		return innermostChild(items, mSrc);
@@ -789,7 +787,6 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 	if (!isStart && items.contains(mDst)) {
 		return innermostChild(items, mDst);
 	}
-
 	foreach (QGraphicsItem *item, items) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
 		if (e) {

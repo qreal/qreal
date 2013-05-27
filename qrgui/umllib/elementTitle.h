@@ -21,7 +21,7 @@ public:
 	virtual ~ElementTitle() {}
 
 	void init(QRectF const& contents);
-	void setBackground(Qt::GlobalColor const &background);
+	void setBackground(QColor const &background);
 	void setScaling(bool scalingX, bool scalingY);
 
 	bool isHard() const;
@@ -45,6 +45,6 @@ private:
 	QPointF mPoint;
 	QString mOldText;
 	QString mBinding;
-	Qt::GlobalColor mBackground;
+	QColor mBackground;
 	bool mIsHard;
 };
