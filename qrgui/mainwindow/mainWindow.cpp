@@ -1205,6 +1205,7 @@ void MainWindow::currentTabChanged(int newIndex)
 
 	bool const isEditorTab = getCurrentTab() != NULL;
 
+	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	if (!isEditorTab) {
 		mToolManager.activeTabChanged(Id());
 	} else if (getCurrentTab()->mvIface() != NULL) {
@@ -1822,8 +1823,10 @@ void MainWindow::saveDiagramAsAPictureToFile(QString const &fileName)
 
 void MainWindow::saveDiagramAsAPicture()
 {
-	QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
-	saveDiagramAsAPictureToFile(fileName);
+	if (getCurrentTab()) {
+		QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
+		saveDiagramAsAPictureToFile(fileName);
+	}
 }
 
 void MainWindow::changePaletteRepresentation()
