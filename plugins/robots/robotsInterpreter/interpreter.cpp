@@ -50,7 +50,8 @@ Interpreter::Interpreter()
 
 void Interpreter::init(GraphicalModelAssistInterface &graphicalModelApi
 	, LogicalModelAssistInterface const &logicalModelApi
-	, qReal::gui::MainWindowInterpretersInterface &interpretersInterface)
+	, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+	, qReal::ProjectManagementInterface const &projectManager)
 {
 	mGraphicalModelApi = &graphicalModelApi;
 	mLogicalModelApi = &logicalModelApi;
@@ -58,6 +59,8 @@ void Interpreter::init(GraphicalModelAssistInterface &graphicalModelApi
 
 	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
 	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface->errorReporter(), mParser);
+
+	connect(&projectManager, SIGNAL(beforeOpen(QString)), this, SLOT(stopRobot()));
 
 	robotModelType::robotModelTypeEnum const modelType = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	Tracer::debug(tracer::initialization, "Interpreter::init", "Going to set robot implementation, model type is " + DebugHelper::toString(modelType));

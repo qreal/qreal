@@ -82,7 +82,8 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing plugin");
 	mInterpreter.init(configurator.graphicalModelApi()
 			, configurator.logicalModelApi()
-			, configurator.mainWindowInterpretersInterface());
+			, configurator.mainWindowInterpretersInterface()
+			, configurator.projectManager());
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();
 	SettingsManager::setValue("IndexGrid", gridWidth);

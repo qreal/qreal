@@ -100,6 +100,8 @@ bool ProjectManager::open(QString const &fileName)
 			return false;
 		}
 	}
+
+	emit beforeOpen(fileName);
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Initializing is impossible without closing current project.
 	close();
@@ -120,6 +122,8 @@ bool ProjectManager::open(QString const &fileName)
 
 	setSaveFilePath(fileName);
 	refreshApplicationStateAfterOpen();
+
+	emit afterOpen(fileName);
 
 	return true;
 }

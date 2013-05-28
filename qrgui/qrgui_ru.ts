@@ -45,37 +45,37 @@
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="20"/>
         <source>&amp;Browse...</source>
-        <translation type="unfinished">&amp;Просмотр...</translation>
+        <translation>&amp;Просмотр...</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="21"/>
         <source>Subversion place</source>
-        <translation type="unfinished">Место в SVNе</translation>
+        <translation>Место в SVNе</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="22"/>
         <source>Checkout to directory:</source>
-        <translation type="unfinished">Чекаут в папку:</translation>
+        <translation>Чекаут в папку:</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="25"/>
         <source>Ok</source>
-        <translation type="unfinished">ОК</translation>
+        <translation>ОК</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="26"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="45"/>
         <source>Checkout options</source>
-        <translation type="unfinished">Настройки чекаута</translation>
+        <translation>Настройки чекаута</translation>
     </message>
     <message>
         <location filename="dialogs/checkoutdialog.cpp" line="51"/>
         <source>Select directory</source>
-        <translation type="unfinished">Выбор папки</translation>
+        <translation>Выбор папки</translation>
     </message>
 </context>
 <context>
@@ -577,13 +577,13 @@
         <location filename="mainwindow/mainWindow.ui" line="93"/>
         <source>&amp;Tools</source>
         <oldsource>Tools</oldsource>
-        <translation type="unfinished">Инструменты</translation>
+        <translation>Инструм&amp;енты</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="99"/>
         <source>&amp;Edit</source>
         <oldsource>Edit</oldsource>
-        <translation type="unfinished">Правка</translation>
+        <translation>&amp;Правка</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="116"/>
@@ -613,12 +613,12 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="430"/>
         <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl++</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="442"/>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="537"/>
@@ -689,27 +689,28 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="716"/>
         <source>Find...</source>
-        <translation type="unfinished"></translation>
+        <translation>Найти...</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="763"/>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить</translation>
+
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="766"/>
         <source>Ctrl+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Z</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="775"/>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Повторить</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="778"/>
         <source>Ctrl+Shift+Z</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+Z</translation>
     </message>
     <message>
         <source>Find</source>
@@ -2708,7 +2709,7 @@
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1069"/>
         <source>VisibilityConditions</source>
-        <translation type="unfinished"></translation>
+        <translation>Условия видимости</translation>
     </message>
     <message>
         <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="56"/>
@@ -2803,7 +2804,7 @@
     <message>
         <location filename="mainwindow/shapeEdit/visibilityConditionsDialog.ui" line="14"/>
         <source>Specify conditions in which choosen element must be shown</source>
-        <translation type="unfinished"></translation>
+        <translation>Укажите условия, при которых выбранный элемент будет показан</translation>
     </message>
 </context>
 <context>
@@ -3335,12 +3336,12 @@
     <message>
         <location filename="dialogs/plugindialog.cpp" line="26"/>
         <source>OK</source>
-        <translation type="unfinished">ОК</translation>
+        <translation>ОК</translation>
     </message>
     <message>
         <location filename="dialogs/plugindialog.cpp" line="51"/>
         <source>Plugin Information</source>
-        <translation type="unfinished">Информация о плагинах</translation>
+        <translation>Информация о плагинах</translation>
     </message>
 </context>
 <context>
