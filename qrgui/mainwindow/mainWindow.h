@@ -283,6 +283,8 @@ private:
 	void setSwitchGrid(bool isChecked);
 	void setSwitchAlignment(bool isChecked);
 
+	void addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu);
+
 	void setIndexesOfPropertyEditor(Id const &id);
 
 	void setBackReference(QPersistentModelIndex const &index, QString const &data);
