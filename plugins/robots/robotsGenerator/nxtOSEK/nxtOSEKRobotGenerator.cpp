@@ -87,11 +87,11 @@ void NxtOSEKRobotGenerator::generateMakeFile(
 	if (mBalancerIsActivated) {
 		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@"
 		, "balancer_param.c \\").replace("@@BALANCER_LIB@@", "USER_LIB = nxtway_gs_balancer").replace("@@BMPFILES@@"
-		, generateBmpFilesStringForMake().toUtf8());
+		,  mImageGenerator.generateBmpFilesStringForMake().toUtf8());
 	} else {
 		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@"
 		, "").replace("@@BALANCER_LIB@@", "").replace("@@BMPFILES@@"
-		, generateBmpFilesStringForMake().toUtf8());;
+		, mImageGenerator.generateBmpFilesStringForMake().toUtf8());;
 		templateMakeFile.close();
 	}
 
@@ -119,7 +119,7 @@ void NxtOSEKRobotGenerator::insertCode(
 			, mVariables.generateVariableString() + "\n" + "@@VARIABLES@@").replace("@@INITHOOKS@@"
 			, resultInitCode).replace("@@TERMINATEHOOKS@@", resultTerminateCode)
 			.replace("@@USERISRHOOKS@@", resultIsrHooksCode).replace("@@BMPFILES@@"
-			, generateBmpFilesStringForC() + "@@BMPFILES@@");
+			, mImageGenerator.generateBmpFilesStringForC() + "@@BMPFILES@@");
 	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
 	mResultOil.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
 }
@@ -158,9 +158,6 @@ void NxtOSEKRobotGenerator::generate()
 		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
 		return;
 	}
-
-	mUsesEnterButton = false;
-	mUsesRunButton = false;
 
 	IdList toGenerate(mApi->elementsByType("InitialNode"));
 
@@ -291,18 +288,6 @@ void NxtOSEKRobotGenerator::addResultCodeInCFile(int curInitialNodeNumber)
 		 resultCode = addTabAndEndOfLine(lineList, resultCode);
 	}
 
-	if(mUsesEnterButton){
-		resultCode = "\tint enterCounter = 0;\n\tint enterWasDown = 0;\n" + resultCode;
-	}
-
-	if(mUsesRunButton){
-		resultCode = "\tint runCounter = 0;\n\tint runWasDown = 0;\n" + resultCode;
-	}
-
-	if(mBmpFilesCounter){
-		resultCode = "\tU8 lcd[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\n\tU8 lcd_copy[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\n" + resultCode;
-	}
-
 	QString resultInitCode;
 	resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
 	QString resultTerminateCode;
@@ -336,53 +321,10 @@ void NxtOSEKRobotGenerator::initializeFields(QString resultTaskTemplate, Id cons
 	mVariables.reinit(mApi);
 	mPreviousElement = curInitialNode;
 	mBalancerIsActivated = false;
-	mBmpFileNames.clear();
-	mBmpFilesCounter = 0;
+	mImageGenerator.reinit();
 }
 
-void NxtOSEKRobotGenerator::addBmpFileName(QString name)
+ImageGenerator &NxtOSEKRobotGenerator::imageGenerator()
 {
-	mBmpFileNames.append(name);
-}
-
-QString NxtOSEKRobotGenerator::generateBmpFilesStringForC()
-{
-	QString result = "";
-	QString str;
-	foreach(str, mBmpFileNames){
-		result += "EXTERNAL_BMP_DATA(" + str + ");\n";
-	}
-
-	return result;
-}
-
-QString NxtOSEKRobotGenerator::generateBmpFilesStringForMake()
-{
-	QString result = "BMP_SOURCES :=";
-	QString str;
-	foreach(str, mBmpFileNames){
-		result += " \\\n" + str + ".bmp";
-	}
-
-	return result;
-}
-
-void NxtOSEKRobotGenerator::increaseBmpCounter()
-{
-	mBmpFilesCounter++;
-}
-
-int NxtOSEKRobotGenerator::bmpFilesNumber()
-{
-	return mBmpFilesCounter;
-}
-
-void NxtOSEKRobotGenerator::enterButtonUsed()
-{
-	mUsesEnterButton = true;
-}
-
-void NxtOSEKRobotGenerator::runButtonUsed()
-{
-	mUsesRunButton = true;
+	return mImageGenerator;
 }

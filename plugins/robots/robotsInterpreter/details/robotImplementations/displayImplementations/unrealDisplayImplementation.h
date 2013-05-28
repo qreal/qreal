@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QList>
-#include <QLine>
+#include <QtCore/QList>
+#include <QtCore/QLine>
 
 #include "abstractDisplayImplementation.h"
 #include "../../robotCommandConstants.h"
@@ -15,6 +15,12 @@ namespace robots {
 namespace details {
 namespace robotImplementations {
 namespace displayImplementations {
+
+int const textPixelHeight = 8;
+int const textPixelWidth = 16;
+int const nxtDisplayHeight = 64;
+int const nxtDisplayWidth = 100;
+
 class UnrealDisplayImplementation : public AbstractDisplayImplementation, public graphicsUtils::PainterInterface
 {
 	Q_OBJECT

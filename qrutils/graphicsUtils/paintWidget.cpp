@@ -1,5 +1,3 @@
-#include <QMutableListIterator>
-
 #include "paintWidget.h"
 #include "painterInterface.h"
 
@@ -16,9 +14,8 @@ void PaintWidget::paintEvent(QPaintEvent *event)
 	QWidget::paintEvent(event);
 	QPainter *painter = new QPainter(this);
 
-	QMutableListIterator<PainterInterface*> i(mPainter);
-	while(i.hasNext()){
-		i.next()->paint(painter);
+	foreach(PainterInterface* i, mPainter) {
+		i->paint(painter);
 	}
 }
 

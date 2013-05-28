@@ -35,5 +35,6 @@
         <file>icons/sensors/2d_light.png</file>
         <file>icons/sensors/2d_sonar.png</file>
         <file>icons/sensors/2d_touch.png</file>
+        <file>icons/background.png</file>
     </qresource>
 </RCC>

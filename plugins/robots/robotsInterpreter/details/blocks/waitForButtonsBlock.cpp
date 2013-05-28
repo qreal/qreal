@@ -36,7 +36,7 @@ void WaitForButtonsBlock::timerTimeout()
 
 QString WaitForButtonsBlock::name() const
 {
-	return tr("Display");
+	return tr("Buttons");
 }
 
 void WaitForButtonsBlock::responseSlot(bool leftIsDown, bool rightIsDown, bool centralIsDown, bool bottomIsDown)
@@ -59,11 +59,12 @@ void WaitForButtonsBlock::responseSlot(bool leftIsDown, bool rightIsDown, bool c
 	}
 }
 
-void WaitForButtonsBlock::clicksCounter(bool &buttonWasDown, bool buttonIsDown, int &clicks){
-	if(buttonIsDown) {
+void WaitForButtonsBlock::clicksCounter(bool &buttonWasDown, bool buttonIsDown, int &clicks)
+{
+	if (buttonIsDown) {
 		buttonWasDown = true;
 	}
-	if(buttonWasDown && !buttonIsDown) {
+	if (buttonWasDown && !buttonIsDown) {
 		clicks++;
 		buttonWasDown = false;
 	}

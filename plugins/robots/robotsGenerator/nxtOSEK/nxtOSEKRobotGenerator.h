@@ -13,6 +13,7 @@
 #include "generators/abstractElementGenerator.h"
 #include "smartLine.h"
 #include "generators/variables.h"
+#include "generators/imageGenerator.h"
 
 namespace robots {
 namespace generator {
@@ -52,14 +53,7 @@ public:
 
 	/// Returns string property treated as expression and casts it to int if nessesary
 	QString intExpression(qReal::Id const &id, QString const &propertyName) const;
-
-	void addBmpFileName(QString name);
-	QString generateBmpFilesStringForC();
-	QString generateBmpFilesStringForMake();
-	void increaseBmpCounter();
-	int bmpFilesNumber();
-	void enterButtonUsed();
-	void runButtonUsed();
+	ImageGenerator &imageGenerator();
 
 private:
 	void createProjectDir(QString const &projectDir);
@@ -105,11 +99,6 @@ private:
 	 */
 	QMap<QString, QStack<int> > mElementToStringListNumbers;
 
-	QList<QString> mBmpFileNames;
-	int mBmpFilesCounter;
-	bool mUsesEnterButton;
-	bool mUsesRunButton;
-
 	Variables mVariables;
 	int mVariablePlaceInGenStrSet;
 
@@ -117,6 +106,8 @@ private:
 
 	/// Id of a diagram to generate.
 	qReal::Id mDiagram;
+
+	ImageGenerator mImageGenerator;
 };
 
 }

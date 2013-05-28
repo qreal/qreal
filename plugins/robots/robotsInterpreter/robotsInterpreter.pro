@@ -49,7 +49,7 @@ SOURCES += \
 	details/debugHelper.cpp \
 	details/abstractTimer.cpp \
 	details/realTimer.cpp \
-	details/sensorsConfigurationWidget.cpp \
+        details/sensorsConfigurationWidget.cpp \
         details/nullTimer.cpp \
         details/nxtDisplay.cpp \
 

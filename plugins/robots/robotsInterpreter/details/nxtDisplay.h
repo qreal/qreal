@@ -22,17 +22,21 @@ public:
 	explicit NxtDisplay(QWidget *parent = 0);
 	~NxtDisplay();
     
-	bool leftButtonIsDown();
-	bool rightButtonIsDown();
-	bool centralButtonIsDown();
-	bool bottomButtonIsDown();
+	bool leftButtonIsDown() const;
+	bool rightButtonIsDown() const;
+	bool centralButtonIsDown() const;
+	bool bottomButtonIsDown() const;
 	virtual void setPainter(graphicsUtils::PainterInterface *p);
 	void repaintDisplay();
-	int displayWidth();
-	int displayHeight();
+	int displayWidth() const;
+	int displayHeight() const;
+
+protected:
+	void paintEvent(QPaintEvent *);
 
 private:
 	Ui::NxtDisplay *mUi;
+	QImage mBackground;
 };
 }
 }

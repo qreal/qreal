@@ -188,7 +188,6 @@ void RobotsPlugin::rereadSettings()
 	mInterpreter.setNoiseSettings();
 }
 
-
 void RobotsPlugin::setTitlesVisibility()
 {
 	bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();

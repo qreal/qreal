@@ -586,5 +586,4 @@ void D2RobotModel::setNoiseSettings()
 int D2RobotModel::truncateToInterval(int const a, int const b, int const res) const
 {
 	return (res >= a && res <= b) ? res : (res < a ? a : b);
-
 }

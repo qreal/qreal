@@ -8,16 +8,12 @@ DrawRectBlockGenerator::DrawRectBlockGenerator()
 {
 }
 
-void DrawRectBlockGenerator::generateBmpFile(NxtOSEKRobotGenerator *nxtGen, QString name, qReal::Id const logicElementId)
+void DrawRectBlockGenerator::drawBmp(NxtOSEKRobotGenerator *nxtGen, qReal::Id const logicElementId, QPainter *p)
 {
-	int x = nxtGen->api()->stringProperty(logicElementId, "XCoordinateRect").toInt();
-	int y = nxtGen->api()->stringProperty(logicElementId, "YCoordinateRect").toInt();
-	int width = nxtGen->api()->stringProperty(logicElementId, "WidthRect").toInt();
-	int height = nxtGen->api()->stringProperty(logicElementId, "HeightRect").toInt();
+	int const x = nxtGen->api()->stringProperty(logicElementId, "XCoordinateRect").toInt();
+	int const y = nxtGen->api()->stringProperty(logicElementId, "YCoordinateRect").toInt();
+	int const width = nxtGen->api()->stringProperty(logicElementId, "WidthRect").toInt();
+	int const height = nxtGen->api()->stringProperty(logicElementId, "HeightRect").toInt();
 
-	QImage *im = new QImage(100, 64, QImage::Format_Mono);
-	QPainter *p = new QPainter(im);
-	p->eraseRect(0,0,100,64);
 	p->drawRect(x, y, width, height);
-	im->save("nxt-tools/example0/" + name + ".bmp", "BMP", -1);
 }
