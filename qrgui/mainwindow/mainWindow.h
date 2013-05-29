@@ -148,10 +148,17 @@ public slots:
 	void closeAllTabs();
 	void refreshRecentProjectsList(QString const &fileName);
 	void createDiagram(QString const &idString);
+	/// Creates project with specified root diagram
+	bool createProject(QString const &diagramIdString);
 
 	void openFirstDiagram();
 
 private slots:
+	/// Suggests user to select a root diagram for the new project
+	/// if more than one diagram loaded or creates project with the only diagram
+	/// as root otherwise
+	void createProject();
+
 	/// Diagram opening must happen after plugins initialization
 	void initPluginsAndStartDialog();
 	void initToolPlugins();
