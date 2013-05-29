@@ -79,6 +79,10 @@ namespace qReal {
 		bool isParentOf(Id const &child, Id const &parent) const;
 		bool isGraphicalElementNode(const Id &id) const;
 
+		/// Returns diagram id if only one diagram loaded or Id() otherwise
+		Id theOnlyDiagram() const;
+		QString diagramNodeNameString(Id const &editor, Id const &diagram) const;
+
 	private:
 		QStringList mPluginsLoaded;
 		QList<Pattern> mDiagramGroups;
