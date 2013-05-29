@@ -16,6 +16,8 @@ public:
 			, bool isGraphicalCopy);
 	virtual ~PasteGroupCommand();
 
+	bool isEmpty() const;
+
 protected:
 	bool execute();
 	bool restoreState();
@@ -31,6 +33,7 @@ private:
 	EditorViewMViface const *mMVIface;
 	bool const mIsGraphicalCopy;
 	QHash<Id, Id> *mCopiedIds;
+	bool mIsEmpty;
 };
 
 }
