@@ -61,17 +61,25 @@ void RobotsPlugin::initActions()
 	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools");
 	QObject::connect(mRobotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
 
+	QAction *titlesAction = new QAction(tr("Text under pictogram"), NULL);
+	titlesAction->setCheckable(true);
+	connect(titlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityChecked(bool)));
+	ActionInfo titlesActionInfo(titlesAction, "", "settings");
+
 	QAction *separator = new QAction(NULL);
 	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
 	separator->setSeparator(true);
 
-	mActionInfos << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
-			<< connectToRobotActionInfo << separatorActionInfo << robotSettingsActionInfo;
+	mActionInfos << d2ModelActionInfo << runActionInfo
+			<< stopRobotActionInfo << connectToRobotActionInfo
+			<< separatorActionInfo << robotSettingsActionInfo
+			<< titlesActionInfo;
 
 	//Set tabs, unused at the opening, enabled
-	QList<ActionInfo> unusedTab;
-	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo << connectToRobotActionInfo;
 	bool isTabEnable = false;
+	QList<ActionInfo> unusedTab;
+	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
+			<< connectToRobotActionInfo << titlesActionInfo;
 	changeActiveTab(unusedTab, isTabEnable);
 }
 
@@ -181,12 +189,18 @@ interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produce
 
 void RobotsPlugin::rereadSettings()
 {
-	setTitlesVisibility();
+	updateTitlesVisibility();
 	mInterpreter.setNoiseSettings();
 }
 
-void RobotsPlugin::setTitlesVisibility()
+void RobotsPlugin::titlesVisibilityChecked(bool checked)
 {
-	bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();
+	SettingsManager::setValue("showTitlesForRobots", checked);
+	updateTitlesVisibility();
+}
+
+void RobotsPlugin::updateTitlesVisibility()
+{
+	bool const titlesVisible = SettingsManager::value("showTitlesForRobots").toBool();
 	mSceneCustomizer->setTitlesVisible(titlesVisible);
 }

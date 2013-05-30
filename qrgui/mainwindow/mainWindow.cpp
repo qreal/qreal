@@ -1648,6 +1648,15 @@ void MainWindow::initPluginsAndStartDialog()
 	}
 }
 
+void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu)
+{
+	if (actionOrMenu.isAction()) {
+		target->addAction(actionOrMenu.action());
+	} else {
+		target->addMenu(actionOrMenu.menu());
+	}
+}
+
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
@@ -1668,11 +1677,9 @@ void MainWindow::initToolPlugins()
 
 	foreach (ActionInfo const action, actions) {
 		if (action.menuName() == "tools") {
-			if (action.isAction()) {
-				mUi->menuTools->addAction(action.action());
-			} else {
-				mUi->menuTools->addMenu(action.menu());
-			}
+			addActionOrSubmenu(mUi->menuTools, action);
+		} else if (action.menuName() == "settings") {
+			addActionOrSubmenu(mUi->menuSettings, action);
 		}
 	}
 
