@@ -79,57 +79,6 @@ void PaletteTree::DraggableElement::dropEvent(QDropEvent * /*event*/)
 {
 }
 
-void PaletteTree::DraggableElement::mousePressEvent(QMouseEvent *event)
-{
-	QWidget *atMouse = childAt(event->pos());
-	if (!atMouse || atMouse == this) {
-		return;
-	}
-
-	DraggableElement *child = dynamic_cast<DraggableElement *>(atMouse->parent());
-	if (!child) {
-		child = dynamic_cast<DraggableElement *>(atMouse);
-	}
-	if (!child) {
-		return;
-	}
-
-	Q_ASSERT(child->id().idSize() == 3);  // it should be element type
-
-	// new element's ID is being generated here
-	// may this epic event should take place in some more appropriate place
-
-	Id elementId(child->id(), QUuid::createUuid().toString());
-
-	QByteArray itemData;
-	bool isFromLogicalModel = false;
-
-	QDataStream stream(&itemData, QIODevice::WriteOnly);
-	stream << elementId.toString();  // uuid
-	stream << Id::rootId().toString();  // pathToItem
-	stream << QString(child->text());
-	stream << QPointF(0, 0);
-	stream << isFromLogicalModel;
-
-	QMimeData *mimeData = new QMimeData;
-	mimeData->setData("application/x-real-uml-data", itemData);
-
-	QDrag *drag = new QDrag(this);
-	drag->setMimeData(mimeData);
-
-	QPixmap const pixmap = child->icon().pixmap(child->iconsPreferedSize());
-
-	if (!pixmap.isNull()) {
-		drag->setPixmap(pixmap);
-	}
-
-	if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction) {
-		child->close();
-	} else {
-		child->show();
-	}
-}
-
 PaletteTree::PaletteTree(QWidget *parent)
 	: QWidget(parent)
 	, mCurrentEditor(0)
@@ -259,7 +208,7 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 
 	mComboBox->addItem(mEditorManager->friendlyName(diagram));
 
-	QTreeWidget *editorTree = new QTreeWidget(this);
+	TreeArea *editorTree = new TreeArea(this);
 	editorTree->setHeaderHidden(true);
 	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
@@ -400,7 +349,7 @@ void PaletteTree::createPaletteTree()
 
 	mLayout->addLayout(hLayout);
 
-	mTree = new QTreeWidget(this);
+	mTree = new TreeArea(this);
 	mTree->setHeaderHidden(true);
 	mLayout->addWidget(mTree);
 	mSettings = new QSettings("QReal", "PaletteItems");
@@ -536,6 +485,56 @@ void PaletteTree::changeRepresentation()
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
 	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
 	emit paletteParametersChanged();
+}
+
+PaletteTree::TreeArea::TreeArea(QWidget *parent)
+	: QTreeWidget(parent)
+{
+}
+
+void PaletteTree::TreeArea::mousePressEvent(QMouseEvent *event)
+{
+	QTreeWidget::mousePressEvent(event);
+	QTreeWidgetItem *item = itemAt(event->pos());
+	DraggableElement *child = item ? dynamic_cast<DraggableElement *>(itemWidget(item, 0)) : NULL;
+	if (!child) {
+		return;
+	}
+
+	Q_ASSERT(child->id().idSize() == 3);  // it should be element type
+
+	// new element's ID is being generated here
+	// may this epic event should take place in some more appropriate place
+
+	Id elementId(child->id(), QUuid::createUuid().toString());
+
+	QByteArray itemData;
+	bool isFromLogicalModel = false;
+
+	QDataStream stream(&itemData, QIODevice::WriteOnly);
+	stream << elementId.toString();  // uuid
+	stream << Id::rootId().toString();  // pathToItem
+	stream << QString(child->text());
+	stream << QPointF(0, 0);
+	stream << isFromLogicalModel;
+
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setData("application/x-real-uml-data", itemData);
+
+	QDrag *drag = new QDrag(this);
+	drag->setMimeData(mimeData);
+
+	QPixmap const pixmap = child->icon().pixmap(child->iconsPreferedSize());
+
+	if (!pixmap.isNull()) {
+		drag->setPixmap(pixmap);
+	}
+
+	if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction) {
+		child->close();
+	} else {
+		child->show();
+	}
 }
 
 void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager)
