@@ -672,6 +672,7 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 				, mModels->graphicalModelAssistApi().name(id)
 				, mModels->graphicalModelAssistApi().position(id)
 				);
+	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
 	foreach (Id const &child, children) {
 		if (mEditorManager.isGraphicalElementNode(child)) {
@@ -1141,11 +1142,27 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 void MainWindow::openFirstDiagram()
 {
 	Id const rootId = mModels->graphicalModelAssistApi().rootId();
-	IdList const diagrams = mModels->graphicalModelAssistApi().children(rootId);
-	if (diagrams.count() == 0) {
+	IdList const rootIds = mModels->graphicalModelAssistApi().children(rootId);
+	if (rootIds.count() == 0) {
 		return;
 	}
-	openNewTab(mModels->graphicalModelAssistApi().indexById(diagrams[0]));
+	openNewTab(mModels->graphicalModelAssistApi().indexById(rootIds[0]));
+}
+
+void MainWindow::closeTabsWithRemovedRootElements()
+{
+	Id const rootId = mModels->graphicalModelAssistApi().rootId();
+	IdList const rootIds = mModels->graphicalModelAssistApi().children(rootId);
+	int i = 0;
+	while (i < mUi->tabs->count()) {
+		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab && !rootIds.contains(tab->mvIface()->rootId())) {
+			closeTab(i);
+			break;
+		} else {
+			++i;
+		}
+	}
 }
 
 void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIndex)
