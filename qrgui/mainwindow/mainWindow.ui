@@ -131,10 +131,16 @@
    <addaction name="actionSave"/>
   </widget>
   <widget class="QDockWidget" name="minimapDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <property name="minimumSize">
     <size>
      <width>80</width>
-     <height>138</height>
+     <height>140</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -161,12 +167,25 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="MiniMap" name="minimapView"/>
+      <widget class="MiniMap" name="minimapView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
   </widget>
   <widget class="QDockWidget" name="paletteDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+     <horstretch>0</horstretch>
+     <verstretch>20</verstretch>
+    </sizepolicy>
+   </property>
    <property name="minimumSize">
     <size>
      <width>80</width>
@@ -197,7 +216,14 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="qReal::gui::PaletteTree" name="paletteTree"/>
+      <widget class="qReal::gui::PaletteTree" name="paletteTree">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>20</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
