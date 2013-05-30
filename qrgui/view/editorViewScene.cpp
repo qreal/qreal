@@ -1347,7 +1347,6 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	Element *e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
 	if (e && e->isSelected() && !event->modifiers()) {
 		mainWindow()->graphicalModelExplorer()->setFocus();
-		mView->ensureElementVisible(e);
 	}
 
 	QGraphicsScene::mouseDoubleClickEvent(event);
