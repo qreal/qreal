@@ -252,6 +252,9 @@ void NodeElement::switchGrid(bool isChecked)
 {
 	mGrid->setGridMode(isChecked);
 	mSwitchGridAction.setChecked(isChecked);
+	if (isChecked) {
+		alignToGrid();
+	}
 }
 
 void NodeElement::delUnusedLines()
@@ -670,6 +673,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
 	switch (change) {
 	case ItemPositionHasChanged:
+		alignToGrid();
 		adjustLinks(true);
 		return value;
 
