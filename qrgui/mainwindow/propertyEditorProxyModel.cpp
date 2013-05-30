@@ -199,11 +199,6 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 	}
 
 	Id const logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
-	if (logicalId.editor() == "MetaEditor") {
-		mFields << Field("name", namePseudoattribute);
-	} else {
-		mFields << Field(tr("Name"), namePseudoattribute);
-	}
 
 	if (logicalModelIndex != QModelIndex()) {
 		QStringList const logicalProperties = mEditorManager.getPropertyNames(logicalId.type());
