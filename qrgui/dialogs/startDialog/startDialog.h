@@ -1,5 +1,6 @@
 #pragma once
-#include "../managedClosableDialog.h"
+
+#include <QtWidgets/QDialog>
 
 #include "../../mainwindow/projectManager/projectManager.h"
 
@@ -14,21 +15,21 @@ class MainWindow;
  * projects or not), or create a new one and did not appear in the main window of application,
  * where there is no single project.
  */
-class StartDialog : public ManagedClosableDialog
+class StartDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit StartDialog(MainWindow *mainWindow, ProjectManager *projectManager);
+	StartDialog(MainWindow *mainWindow, ProjectManager *projectManager);
 
 private slots:
 	void openRecentProject(QString const &fileName);
 	void openExistingProject();
-	void createProjectWithDiagram(QString const &idString);
 	void exitApp();
+	void createProjectWithDiagram(QString const &idString);
 
 private:
-	static const QSize mMinimumSize;
+	static QSize const mMinimumSize;
 
 	MainWindow *mMainWindow;
 	ProjectManager *mProjectManager;

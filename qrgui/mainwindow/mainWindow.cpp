@@ -47,6 +47,7 @@
 
 #include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
+#include "../dialogs/suggestToCreateProjectDialog.h"
 #include "../dialogs/progressDialog/progressDialog.h"
 
 #include "qscintillaTextEdit.h"
@@ -161,7 +162,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), mStartDialog, SLOT(exec()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 
 	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
@@ -1437,6 +1438,29 @@ void MainWindow::createDiagram(QString const &idString)
 	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
 	mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
 	openNewTab(index);
+}
+
+bool MainWindow::createProject(QString const &diagramIdString)
+{
+	mProjectManager->clearAutosaveFile();
+	if (!mProjectManager->openEmptyWithSuggestToSaveChanges()) {
+		return false;
+	}
+	createDiagram(diagramIdString);
+	return true;
+}
+
+void MainWindow::createProject()
+{
+	Id const theOnlyDiagram = mEditorManager.theOnlyDiagram();
+	if (theOnlyDiagram == Id()) {
+		SuggestToCreateProjectDialog dialog(this);
+		dialog.exec();
+	} else {
+		Id const editor = manager()->editors()[0];
+		QString const diagramIdString = manager()->diagramNodeNameString(editor, theOnlyDiagram);
+		createProject(diagramIdString);
+	}
 }
 
 int MainWindow::getTabIndex(const QModelIndex &index)
