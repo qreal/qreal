@@ -399,6 +399,19 @@
     </message>
 </context>
 <context>
+    <name>ErrorListWidget</name>
+    <message>
+        <location filename="mainwindow/errorListWidget.cpp" line="36"/>
+        <source>Clear</source>
+        <translation>Очистить</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/errorListWidget.cpp" line="37"/>
+        <source>Copy</source>
+        <translation>Копировать</translation>
+    </message>
+</context>
+<context>
     <name>FindManager</name>
     <message>
         <location filename="mainwindow/findManager.cpp" line="25"/>
@@ -3108,7 +3121,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="759"/>
+        <location filename="mainwindow/mainWindow.cpp" line="753"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3133,16 +3146,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="785"/>
-        <location filename="mainwindow/mainWindow.cpp" line="803"/>
-        <location filename="mainwindow/mainWindow.cpp" line="821"/>
+        <location filename="mainwindow/mainWindow.cpp" line="779"/>
+        <location filename="mainwindow/mainWindow.cpp" line="797"/>
+        <location filename="mainwindow/mainWindow.cpp" line="815"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="787"/>
-        <location filename="mainwindow/mainWindow.cpp" line="805"/>
-        <location filename="mainwindow/mainWindow.cpp" line="823"/>
+        <location filename="mainwindow/mainWindow.cpp" line="781"/>
+        <location filename="mainwindow/mainWindow.cpp" line="799"/>
+        <location filename="mainwindow/mainWindow.cpp" line="817"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3247,23 +3260,23 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="821"/>
+        <location filename="mainwindow/mainWindow.cpp" line="815"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="823"/>
+        <location filename="mainwindow/mainWindow.cpp" line="817"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="975"/>
+        <location filename="mainwindow/mainWindow.cpp" line="969"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="957"/>
-        <location filename="mainwindow/mainWindow.cpp" line="983"/>
+        <location filename="mainwindow/mainWindow.cpp" line="951"/>
+        <location filename="mainwindow/mainWindow.cpp" line="977"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3272,17 +3285,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1786"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1796"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1815"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1825"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1815"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1825"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3303,7 +3316,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1408"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1402"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3397,53 +3410,53 @@
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="129"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="133"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="151"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="304"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="155"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="308"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="152"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="305"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="156"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="309"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="152"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="305"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="156"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="309"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="162"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="166"/>
         <source>There are missing plugins</source>
         <translation>Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="163"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="167"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="283"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="287"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="301"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="316"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="305"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="320"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="205"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="209"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>
@@ -3521,22 +3534,22 @@
 <context>
     <name>qReal::gui::ErrorReporter</name>
     <message>
-        <location filename="mainwindow/errorReporter.cpp" line="149"/>
+        <location filename="mainwindow/errorReporter.cpp" line="152"/>
         <source>INFORMATION:</source>
         <translation>ИНФОРМАЦИЯ:</translation>
     </message>
     <message>
-        <location filename="mainwindow/errorReporter.cpp" line="151"/>
+        <location filename="mainwindow/errorReporter.cpp" line="154"/>
         <source>WARNING:</source>
         <translation>ПРЕДУПРЕЖДЕНИЕ:</translation>
     </message>
     <message>
-        <location filename="mainwindow/errorReporter.cpp" line="153"/>
+        <location filename="mainwindow/errorReporter.cpp" line="156"/>
         <source>ERROR:</source>
         <translation>ОШИБКА:</translation>
     </message>
     <message>
-        <location filename="mainwindow/errorReporter.cpp" line="155"/>
+        <location filename="mainwindow/errorReporter.cpp" line="158"/>
         <source>CRITICAL:</source>
         <translation>КРИТИЧЕСКАЯ ОШИБКА:</translation>
     </message>

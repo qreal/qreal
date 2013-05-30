@@ -660,9 +660,13 @@ p, li { white-space: pre-wrap; }
         <translation>Драйвер Fantom недоступен. Usb-соединение с роботом невозможно.</translation>
     </message>
     <message>
-        <location filename="details/robotCommunication/usbRobotCommunicationThread.cpp" line="203"/>
+        <location filename="details/robotCommunication/usbRobotCommunicationThread.cpp" line="202"/>
+        <source> You can download Fantom Driver on &lt;a href=&apos;%1&apos;&gt;Lego website&lt;/a&gt;</source>
+        <translation>Вы можете скачать драйвера Fantom на &lt;a href=&apos;%1&apos;&gt;сайте Lego&lt;/a&gt;</translation>
+    </message>
+    <message>
         <source> You can download Fantom Driver on </source>
-        <translation>Вы можете скачать драйвер Fantom по адресу </translation>
+        <translation type="obsolete">Вы можете скачать драйвер Fantom по адресу </translation>
     </message>
 </context>
 <context>
