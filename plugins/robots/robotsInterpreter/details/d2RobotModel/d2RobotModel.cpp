@@ -558,6 +558,7 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 
 	configuration().deserialize(robotElement);
 
+	mNeedSync = false;
 	nextFragment();
 }
 

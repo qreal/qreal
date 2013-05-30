@@ -47,6 +47,7 @@
 
 #include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
+#include "../dialogs/suggestToCreateProjectDialog.h"
 #include "../dialogs/progressDialog/progressDialog.h"
 
 #include "qscintillaTextEdit.h"
@@ -161,7 +162,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), mStartDialog, SLOT(exec()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 
 	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
@@ -672,6 +673,7 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 				, mModels->graphicalModelAssistApi().name(id)
 				, mModels->graphicalModelAssistApi().position(id)
 				);
+	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
 	foreach (Id const &child, children) {
 		if (mEditorManager.isGraphicalElementNode(child)) {
@@ -1141,11 +1143,27 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 void MainWindow::openFirstDiagram()
 {
 	Id const rootId = mModels->graphicalModelAssistApi().rootId();
-	IdList const diagrams = mModels->graphicalModelAssistApi().children(rootId);
-	if (diagrams.count() == 0) {
+	IdList const rootIds = mModels->graphicalModelAssistApi().children(rootId);
+	if (rootIds.count() == 0) {
 		return;
 	}
-	openNewTab(mModels->graphicalModelAssistApi().indexById(diagrams[0]));
+	openNewTab(mModels->graphicalModelAssistApi().indexById(rootIds[0]));
+}
+
+void MainWindow::closeTabsWithRemovedRootElements()
+{
+	Id const rootId = mModels->graphicalModelAssistApi().rootId();
+	IdList const rootIds = mModels->graphicalModelAssistApi().children(rootId);
+	int i = 0;
+	while (i < mUi->tabs->count()) {
+		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab && !rootIds.contains(tab->mvIface()->rootId())) {
+			closeTab(i);
+			break;
+		} else {
+			++i;
+		}
+	}
 }
 
 void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIndex)
@@ -1205,6 +1223,7 @@ void MainWindow::currentTabChanged(int newIndex)
 
 	bool const isEditorTab = getCurrentTab() != NULL;
 
+	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	if (!isEditorTab) {
 		mToolManager.activeTabChanged(Id());
 	} else if (getCurrentTab()->mvIface() != NULL) {
@@ -1421,6 +1440,29 @@ void MainWindow::createDiagram(QString const &idString)
 	openNewTab(index);
 }
 
+bool MainWindow::createProject(QString const &diagramIdString)
+{
+	mProjectManager->clearAutosaveFile();
+	if (!mProjectManager->openEmptyWithSuggestToSaveChanges()) {
+		return false;
+	}
+	createDiagram(diagramIdString);
+	return true;
+}
+
+void MainWindow::createProject()
+{
+	Id const theOnlyDiagram = mEditorManager.theOnlyDiagram();
+	if (theOnlyDiagram == Id()) {
+		SuggestToCreateProjectDialog dialog(this);
+		dialog.exec();
+	} else {
+		Id const editor = manager()->editors()[0];
+		QString const diagramIdString = manager()->diagramNodeNameString(editor, theOnlyDiagram);
+		createProject(diagramIdString);
+	}
+}
+
 int MainWindow::getTabIndex(const QModelIndex &index)
 {
 	for (int i = 0; i < mUi->tabs->count(); ++i) {
@@ -1630,6 +1672,15 @@ void MainWindow::initPluginsAndStartDialog()
 	}
 }
 
+void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu)
+{
+	if (actionOrMenu.isAction()) {
+		target->addAction(actionOrMenu.action());
+	} else {
+		target->addMenu(actionOrMenu.menu());
+	}
+}
+
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
@@ -1650,11 +1701,9 @@ void MainWindow::initToolPlugins()
 
 	foreach (ActionInfo const action, actions) {
 		if (action.menuName() == "tools") {
-			if (action.isAction()) {
-				mUi->menuTools->addAction(action.action());
-			} else {
-				mUi->menuTools->addMenu(action.menu());
-			}
+			addActionOrSubmenu(mUi->menuTools, action);
+		} else if (action.menuName() == "settings") {
+			addActionOrSubmenu(mUi->menuSettings, action);
 		}
 	}
 
@@ -1822,8 +1871,10 @@ void MainWindow::saveDiagramAsAPictureToFile(QString const &fileName)
 
 void MainWindow::saveDiagramAsAPicture()
 {
-	QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
-	saveDiagramAsAPictureToFile(fileName);
+	if (getCurrentTab()) {
+		QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
+		saveDiagramAsAPictureToFile(fileName);
+	}
 }
 
 void MainWindow::changePaletteRepresentation()

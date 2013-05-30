@@ -17,7 +17,8 @@ HEADERS += \
 	dialogs/suggestToCreateDiagramDialog.h \
 	dialogs/managedClosableDialog.h \
 	dialogs/progressDialog/progressBar.h \
-	dialogs/progressDialog/progressDialog.h
+	dialogs/progressDialog/progressDialog.h \
+	dialogs/suggestToCreateProjectDialog.h \
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -37,7 +38,8 @@ SOURCES += \
 	dialogs/suggestToCreateDiagramDialog.cpp \
 	dialogs/managedClosableDialog.cpp \
 	dialogs/progressDialog/progressBar.cpp \
-	dialogs/progressDialog/progressDialog.cpp
+	dialogs/progressDialog/progressDialog.cpp \
+	dialogs/suggestToCreateProjectDialog.cpp \
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \

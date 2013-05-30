@@ -97,5 +97,8 @@ void ClipboardHandler::pushDataToClipboard(QList<NodeData> const &nodesData, QLi
 
 void ClipboardHandler::paste(bool isGraphicalCopy)
 {
-	mController->execute(new commands::PasteGroupCommand(mScene, mMVIface, isGraphicalCopy));
+	commands::PasteGroupCommand *pasteCommand = new commands::PasteGroupCommand(mScene, mMVIface, isGraphicalCopy);
+	if (!pasteCommand->isEmpty()) {
+		mController->execute(pasteCommand);
+	}
 }

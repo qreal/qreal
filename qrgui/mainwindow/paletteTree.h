@@ -84,8 +84,10 @@ public:
 	*/
 	void loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager);
 	~PaletteTree();
+
 signals:
 	void paletteParametersChanged();
+
 public slots:
 	/// Collapse all nodes of current tree.
 	void collapse();
@@ -100,6 +102,7 @@ public slots:
 
 	/// Changes widget representation.
 	void changeRepresentation();
+
 private:
 
 	/// Class for representing editor elements.
@@ -123,13 +126,21 @@ private:
 	private:
 			virtual void dragEnterEvent(QDragEnterEvent *event);
 			virtual void dropEvent(QDropEvent *event);
-			virtual void mousePressEvent(QMouseEvent *event);
 
 			Id mId;
 			QIcon mIcon;
 			QSize mPreferedSize;
 			QString mText;
 			QLabel *mLabel;
+	};
+
+	/// Represents an area where editor items are situated
+	class TreeArea : public QTreeWidget
+	{
+	public:
+		TreeArea(QWidget *parent = 0);
+	protected:
+		virtual void mousePressEvent(QMouseEvent *event);
 	};
 
 	/// Returns maximum count of items in all rows of widget
@@ -186,7 +197,7 @@ private:
 	QHash<Id, int> mCategories;
 
 	/// Pointer to current tree.
-	QTreeWidget *mTree;
+	TreeArea *mTree;
 
 	/// Button that collapses all nodes of current tree.
 	QToolButton *mCollapseAll;
@@ -198,7 +209,7 @@ private:
 	QToolButton *mChangeRepresentation;
 
 	/// Vector with all editor's trees.
-	QVector <QTreeWidget *> mEditorsTrees;
+	QVector <TreeArea *> mEditorsTrees;
 
 	/// Vector with all editor's names.
 	QVector <QString> mEditorsNames;

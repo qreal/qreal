@@ -482,6 +482,19 @@ bool EditorManager::isGraphicalElementNode(const Id &id) const
 	return impl->isNode();
 }
 
+Id EditorManager::theOnlyDiagram() const
+{
+	IdList const allEditors(editors());
+	return (allEditors.length() == 1 && diagrams(allEditors[0]).length() == 1)
+			? diagrams(allEditors[0])[0] : Id();
+}
+
+QString EditorManager::diagramNodeNameString(Id const &editor, Id const &diagram) const
+{
+	QString const diagramNodeName = editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
+	return QString("qrm:/%1/%2/%3").arg(editor.editor(), diagram.diagram(), diagramNodeName);
+}
+
 QList<QString> EditorManager::getPatternNames() const
 {
 	return mGroups.keys();
