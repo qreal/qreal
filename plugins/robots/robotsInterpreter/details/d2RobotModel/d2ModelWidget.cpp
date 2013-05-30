@@ -1010,6 +1010,7 @@ QDomDocument D2ModelWidget::generateXml() const
 
 void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 {
+	clearScene(true);
 	QDomNodeList const worldList = worldModel.elementsByTagName("world");
 	QDomNodeList const robotList = worldModel.elementsByTagName("robot");
 	if (worldList.count() != 1 || robotList.count() != 1) {
