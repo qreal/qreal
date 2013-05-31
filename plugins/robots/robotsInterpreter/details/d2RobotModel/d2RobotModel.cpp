@@ -406,7 +406,6 @@ void D2RobotModel::countBeep()
 
 void D2RobotModel::countNewCoord()
 {
-
 	Motor *motor1 = mMotorA;
 	Motor *motor2 = mMotorB;
 
