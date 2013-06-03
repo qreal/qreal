@@ -11,6 +11,12 @@
 // C:\Program Files\BitRock InstallBuilder for Qt 8.0.1\bin\builder-cli.exe
 // C:\Libs\QtSDK\Desktop\Qt\4.7.3\mingw\bin
 
+if fsi.CommandLineArgs.Length < 3 || not <| fsi.CommandLineArgs.[2].Contains "." then
+    printfn "%s\n%s\n%s\n" "it seems you did not specify version."
+            "Usage: fsi build.fsx <XML installer script name> <QReal version number>"
+            "Example: fsi build.fsx qrealRobots.xml 2.3.1"
+    exit 1
+
 let scriptName = fsi.CommandLineArgs.[1]
 
 let scriptsToPatch = 

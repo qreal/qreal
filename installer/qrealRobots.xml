@@ -60,6 +60,20 @@
             </ruleList>
         </actionGroup>
     </preBuildActionList>
+
+    <!-- Uninstalling previous version -->
+    <readyToInstallActionList>
+        <runProgram>
+            <program>./uninstall.exe</program>
+            <programArguments>--mode unattended</programArguments>
+            <workingDirectory>${installdir}</workingDirectory>
+            <ruleList>
+                <fileExists>
+                    <path>${installdir}/uninstall.exe</path>
+                </fileExists>
+            </ruleList>
+        </runProgram>        
+    </readyToInstallActionList>
     
     <!-- Installation components -->
     <componentList>
@@ -113,12 +127,28 @@
             <path>${windows_folder_desktopdirectory}/QReal-Robots.lnk</path>
         </deleteFile>
         
-        <!-- Removing program folder if needed -->
+        <!-- Removing program folder and all its contents if needed -->
         <showQuestion text="Вы хотите удалить всё содержимое папки QReal:Robots?" variable="remove_folder" />
+        <deleteFile>
+            <path>${installdir}/*</path>
+            <ruleList>
+                <ruleGroup ruleEvaluationLogic="or">
+                    <ruleList>
+                        <compareText text="${remove_folder}" value="yes" logic="equals" />
+                        <compareText text="${mode}" logic="equals" value="unattended"/>
+                    </ruleList>
+                </ruleGroup>
+            </ruleList>
+        </deleteFile>
         <deleteFile>
             <path>${installdir}</path>
             <ruleList>
-                <compareText text="${remove_folder}" value="yes" logic="equals" />
+                <ruleGroup ruleEvaluationLogic="or">
+                    <ruleList>
+                        <compareText text="${remove_folder}" value="yes" logic="equals" />
+                        <compareText text="${mode}" logic="equals" value="unattended"/>
+                    </ruleList>
+                </ruleGroup>
             </ruleList>
         </deleteFile>
     </postUninstallationActionList>
