@@ -633,10 +633,18 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 		mLine = mSavedLineForSquarize;
 		prepareGeometryChange();
+
 		mLine[mDragPoint] = event->pos();
+
 		if (SettingsManager::value("SquareLine").toBool()) {
 			squarizeAndAdjustHandler(QPointF());
+		} else {
+			if (SettingsManager::value("ActivateGrid").toBool()) {
+				int const indexGrid = SettingsManager::value("IndexGrid").toInt();
+				mLine[mDragPoint] = alignedPoint(event->pos(), indexGrid);
+			}
 		}
+
 		updateLongestPart();
 	}
 }
@@ -2008,4 +2016,44 @@ void EdgeElement::tuneForLinker()
 bool EdgeElement::isLoop()
 {
 	return mIsLoop;
+}
+
+void EdgeElement::alignToGrid()
+{
+	if (mLine.size() >= 3 && !SettingsManager::value("SquareLine").toBool()) {
+		int const indexGrid = SettingsManager::value("IndexGrid").toInt();
+
+		prepareGeometryChange();
+
+		for (int i = 1; i < mLine.size() - 1; ++i) {
+			mLine[i] = alignedPoint(mLine[i], indexGrid);
+		}
+
+		update();
+		updateLongestPart();
+	}
+}
+
+qreal EdgeElement::alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const
+{
+	int const coefSign = coef != 0 ? coef / qAbs(coef) : 0;
+
+	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid) {
+		return coef * indexGrid;
+	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) < indexGrid) {
+		return (coef + coefSign) * indexGrid;
+	}
+	return coord;
+}
+
+QPointF EdgeElement::alignedPoint(QPointF const &point, int const indexGrid) const
+{
+	QPointF p = mapToScene(point);
+
+	int const coefX = static_cast<int>(p.x()) / indexGrid;
+	int const coefY = static_cast<int>(p.y()) / indexGrid;
+
+	p = QPointF(alignedCoordinate(p.x(), coefX, indexGrid), alignedCoordinate(p.y(), coefY, indexGrid));
+
+	return mapFromScene(p);
 }
