@@ -66,6 +66,8 @@ protected:
 	QVariant evaluate(QString const &propertyName);
 	bool evaluateBool(QString const &propertyName);
 
+	QVector<bool> parseEnginePorts() const;
+
 private slots:
 	void finishedRunning();
 
