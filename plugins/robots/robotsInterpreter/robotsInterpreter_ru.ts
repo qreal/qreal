@@ -392,7 +392,7 @@ p, li { white-space: pre-wrap; }
         <translation>QReal:Robots</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="38"/>
+        <location filename="customizer.cpp" line="39"/>
         <source>Configure sensors</source>
         <translation>Настройки сенсоров</translation>
     </message>
@@ -492,6 +492,18 @@ p, li { white-space: pre-wrap; }
         <location filename="details/sensorsConfigurationWidget.ui" line="55"/>
         <source>Port 4:</source>
         <translation>Порт 4:</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::Customizer</name>
+    <message>
+        <source>Items</source>
+        <translation type="obsolete">Элементы</translation>
+    </message>
+    <message>
+        <location filename="customizer.cpp" line="32"/>
+        <source>Blocks</source>
+        <translation>Блоки</translation>
     </message>
 </context>
 <context>
