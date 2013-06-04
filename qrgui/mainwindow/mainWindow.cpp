@@ -72,7 +72,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
-		, mStartDialog(new StartDialog(this, mProjectManager))
+		, mStartDialog(new StartDialog(*this, *mProjectManager))
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
 {

@@ -27,7 +27,7 @@ public:
 	~AddNodeDialog();
 
 private slots:
-	void ok();
+	void okButtonClicked();
 
 private:
 	Ui::AddNodeDialog *mUi;

@@ -11,6 +11,7 @@ EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interperterEd
 		, mUi(new Ui::EditPropertiesDialog)
 		, mInterperterEditorManager(interperterEditorManager)
 		, mId(id)
+		, mMode(addNew)
 {
 	mUi->setupUi(this);
 }
@@ -20,14 +21,14 @@ EditPropertiesDialog::~EditPropertiesDialog()
 	delete mUi;
 }
 
-void EditPropertiesDialog::setupDefaultValues()
+void EditPropertiesDialog::initDefaultValues()
 {
 	mUi->attributeTypeEdit->setText(mInterperterEditorManager.typeName(mId, mPropertyName));
 	mUi->defaultValueEdit->setText(mInterperterEditorManager.defaultPropertyValue(mId, mPropertyName));
 	mUi->displayedNameEdit->setText(mInterperterEditorManager.propertyDisplayedName(mId, mPropertyName));
 }
 
-void EditPropertiesDialog::mbCancel()
+void EditPropertiesDialog::messageBoxCancel()
 {
 	mUi->attributeTypeEdit->setText(mInterperterEditorManager.typeName(mId, mPropertyName));
 	mUi->defaultValueEdit->setText(mInterperterEditorManager.defaultPropertyValue(mId, mPropertyName));
@@ -50,7 +51,7 @@ void EditPropertiesDialog::updateProperties()
 	done(QDialog::Accepted);
 }
 
-void EditPropertiesDialog::ok()
+void EditPropertiesDialog::okButtonClicked()
 {
 	if (mUi->attributeTypeEdit->text().isEmpty() || mUi->displayedNameEdit->text().isEmpty()) {
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
@@ -60,18 +61,18 @@ void EditPropertiesDialog::ok()
 			mInterperterEditorManager.addProperty(mId, mPropertyName);
 		}
 
-		if (windowTitle() != tr("Adding of new property:")
+		if (mMode == editExisting
 				&& mInterperterEditorManager.typeName(mId, mPropertyName) != mUi->attributeTypeEdit->text()
 				)
 		{
-			QMessageBox *mb = new QMessageBox(tr("Warning:")
+			QMessageBox messageBox(tr("Warning:")
 					, tr("You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.")
 					, QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
-			mb->button(QMessageBox::Ok)->setText(tr("Proceed anyway"));
-			mb->button(QMessageBox::Cancel)->setText(tr("Cancel the type conversion"));
-			mb->show();
-			connect(mb->button(QMessageBox::Cancel), SIGNAL(clicked()), this, SLOT(mbCancel()));
-			connect(mb->button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(updateProperties()));
+			messageBox.button(QMessageBox::Ok)->setText(tr("Proceed anyway"));
+			messageBox.button(QMessageBox::Cancel)->setText(tr("Cancel the type conversion"));
+			connect(messageBox.button(QMessageBox::Cancel), SIGNAL(clicked()), this, SLOT(messageBoxCancel()));
+			connect(messageBox.button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(updateProperties()));
+			messageBox.exec();
 		} else {
 			updateProperties();
 		}
@@ -84,12 +85,14 @@ void EditPropertiesDialog::changeProperty(QListWidgetItem *propertyItem, QString
 	mPropertyItem = propertyItem;
 
 	if (propertyName.isEmpty()) {
-		setWindowTitle(tr("Adding of new property:"));
+		setWindowTitle(tr("Add new property"));
+		mMode = addNew;
 	} else {
 		setWindowTitle(tr("Properties editor: ") + propertyName);
+		mMode = editExisting;
 	}
 
-	setupDefaultValues();
+	initDefaultValues();
 
-	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(ok()));
+	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
 }

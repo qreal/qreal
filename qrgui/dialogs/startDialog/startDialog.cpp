@@ -11,8 +11,8 @@ using namespace qReal;
 
 const QSize StartDialog::mMinimumSize = QSize(350, 200);
 
-StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
-		: ManagedClosableDialog(mainWindow, false)
+StartDialog::StartDialog(MainWindow &mainWindow, ProjectManager &projectManager)
+		: ManagedClosableDialog(&mainWindow, false)
 		, mMainWindow(mainWindow)
 		, mProjectManager(projectManager)
 {
@@ -21,7 +21,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 
 	RecentProjectsListWidget *recentProjects = new RecentProjectsListWidget(this);
 	tabWidget->addTab(recentProjects, tr("&Recent projects"));
-	SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(mMainWindow, this);
+	SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(&mMainWindow, this);
 	tabWidget->addTab(diagrams, tr("&New project with diagram"));
 
 	if (recentProjects->count() == 0) {
@@ -62,31 +62,37 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 	connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
 }
 
-void StartDialog::setVisibleForInterpreterButton(bool const value)
+StartDialog::~StartDialog()
 {
-	mInterpreterButton->setVisible(value);
-	mCreateInterpreterButton->setVisible(value);
+	delete mInterpreterButton;
+	delete mCreateInterpreterButton;
+}
+
+void StartDialog::setVisibleForInterpreterButton(bool const visible)
+{
+	mInterpreterButton->setVisible(visible);
+	mCreateInterpreterButton->setVisible(visible);
 }
 
 void StartDialog::openRecentProject(QString const &fileName)
 {
-	if (mProjectManager->open(fileName)) {
+	if (mProjectManager.open(fileName)) {
 		forceClose();
 	}
 }
 
 void StartDialog::openExistingProject()
 {
-	if (mProjectManager->suggestToOpenExisting()) {
+	if (mProjectManager.suggestToOpenExisting()) {
 		forceClose();
 	}
 }
 
 void StartDialog::createProjectWithDiagram(QString const &idString)
 {
-	mProjectManager->clearAutosaveFile();
-	mProjectManager->openEmptyWithSuggestToSaveChanges();
-	mMainWindow->createDiagram(idString);
+	mProjectManager.clearAutosaveFile();
+	mProjectManager.openEmptyWithSuggestToSaveChanges();
+	mMainWindow.createDiagram(idString);
 	forceClose();
 }
 
@@ -99,10 +105,10 @@ void StartDialog::exitApp()
 void StartDialog::openInterpretedDiagram()
 {
 	hide();
-	QString const fileName = mProjectManager->openFileName(tr("Select file with metamodel to open"));
-	ProxyEditorManager *editorManagerProxy = mMainWindow->proxyManager();
+	QString const fileName = mProjectManager.openFileName(tr("Select file with metamodel to open"));
+	ProxyEditorManager *editorManagerProxy = mMainWindow.proxyManager();
 
-	if (!fileName.isEmpty() && mProjectManager->open(fileName)) {
+	if (!fileName.isEmpty() && mProjectManager.open(fileName)) {
 		editorManagerProxy->setProxyManager(new InterpreterEditorManager(fileName));
 		QStringList interpreterDiagramsList;
 		foreach (Id const &editor, editorManagerProxy->editors()) {
@@ -116,10 +122,10 @@ void StartDialog::openInterpretedDiagram()
 			}
 		}
 		foreach (QString const &interpreterIdString, interpreterDiagramsList) {
-			mMainWindow->models()->repoControlApi().exterminate();
-			mMainWindow->models()->reinit();
-			mMainWindow->loadMetamodel();
-			mMainWindow->createDiagram(interpreterIdString);
+			mMainWindow.models()->repoControlApi().exterminate();
+			mMainWindow.models()->reinit();
+			mMainWindow.loadMetamodel();
+			mMainWindow.createDiagram(interpreterIdString);
 		}
 		forceClose();
 	} else {
@@ -131,7 +137,7 @@ void StartDialog::openInterpretedDiagram()
 void StartDialog::createInterpretedDiagram()
 {
 	hide();
-	ProxyEditorManager *editorManagerProxy = mMainWindow->proxyManager();
+	ProxyEditorManager *editorManagerProxy = mMainWindow.proxyManager();
 	editorManagerProxy->setProxyManager(new InterpreterEditorManager(""));
 	bool ok;
 	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
@@ -140,10 +146,10 @@ void StartDialog::createInterpretedDiagram()
 	}
 	if (ok) {
 		QPair<Id, Id> editorAndDiagram = editorManagerProxy->createEditorAndDiagram(name);
-		mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
-		mMainWindow->models()->repoControlApi().exterminate();
-		mMainWindow->models()->reinit();
-		mMainWindow->loadMetamodel();
+		mMainWindow.addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
+		mMainWindow.models()->repoControlApi().exterminate();
+		mMainWindow.models()->reinit();
+		mMainWindow.loadMetamodel();
 		forceClose();
 	} else {
 		show();

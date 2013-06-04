@@ -194,9 +194,10 @@ QString ProxyEditorManager::diagramNodeName(QString const &editor, QString const
 	return mProxyManager->diagramNodeName(editor, diagram);
 }
 
-void ProxyEditorManager::setProxyManager(EditorManagerInterface *editorManagerInter)
+void ProxyEditorManager::setProxyManager(EditorManagerInterface *editorManagerInterface)
 {
-	mProxyManager = editorManagerInter;
+	delete mProxyManager;
+	mProxyManager = editorManagerInterface;
 }
 
 bool ProxyEditorManager::isInterpretationMode() const

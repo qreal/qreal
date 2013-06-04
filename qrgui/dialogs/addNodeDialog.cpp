@@ -14,7 +14,7 @@ AddNodeDialog::AddNodeDialog(MainWindow &mainWindow, Id const &diagram, EditorMa
 		, mEditorManagerProxy(editorManagerProxy)
 {
 	mUi->setupUi(this);
-	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(ok()));
+	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
 }
 
 AddNodeDialog::~AddNodeDialog()
@@ -22,7 +22,7 @@ AddNodeDialog::~AddNodeDialog()
 	delete mUi;
 }
 
-void AddNodeDialog::ok()
+void AddNodeDialog::okButtonClicked()
 {
 	if (mUi->nameEdit->text().isEmpty()) {
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));

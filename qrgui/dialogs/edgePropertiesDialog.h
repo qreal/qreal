@@ -27,7 +27,7 @@ public:
 	~EdgePropertiesDialog();
 
 private slots:
-	void ok();
+	void okButtonClicked();
 
 private:
 	Ui::EdgePropertiesDialog *mUi;

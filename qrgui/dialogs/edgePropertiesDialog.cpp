@@ -16,7 +16,7 @@ EdgePropertiesDialog::EdgePropertiesDialog(MainWindow &mainWindow, Id const &dia
 		, mEditorManagerProxy(editorManagerProxy)
 {
 	mUi->setupUi(this);
-	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(ok()));
+	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
 }
 
 EdgePropertiesDialog::~EdgePropertiesDialog()
@@ -24,13 +24,21 @@ EdgePropertiesDialog::~EdgePropertiesDialog()
 	delete mUi;
 }
 
-void EdgePropertiesDialog::ok()
+void EdgePropertiesDialog::okButtonClicked()
 {
 	if (mUi->nameEdit->text().isEmpty()) {
 		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
 	} else {
-		mEditorManagerProxy.addEdgeElement(mDiagram, mUi->nameEdit->text(), mUi->labelTextEdit->text(), mUi->labelTypeComboBox->currentText(),
-				mUi->lineTypeComboBox->currentText(), mUi->beginTypeComboBox->currentText(), mUi->endTypeComboBox->currentText());
+		mEditorManagerProxy.addEdgeElement(
+				mDiagram
+				, mUi->nameEdit->text()
+				, mUi->labelTextEdit->text()
+				, mUi->labelTypeComboBox->currentText()
+				, mUi->lineTypeComboBox->currentText()
+				, mUi->beginTypeComboBox->currentText()
+				, mUi->endTypeComboBox->currentText()
+				);
+
 		mMainWindow.loadPlugins();
 		done(QDialog::Accepted);
 	}

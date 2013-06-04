@@ -43,6 +43,7 @@ PropertiesDialog::PropertiesDialog(MainWindow &mainWindow, EditorManagerInterfac
 
 PropertiesDialog::~PropertiesDialog()
 {
+	delete mEditPropertiesDialog;
 	delete mUi;
 }
 
@@ -66,7 +67,6 @@ void PropertiesDialog::updatePropertiesNamesList()
 
 void PropertiesDialog::closeDialog()
 {
-	delete mEditPropertiesDialog;
 	close();
 }
 

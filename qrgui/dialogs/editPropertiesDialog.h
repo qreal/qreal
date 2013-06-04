@@ -28,17 +28,24 @@ public:
 	void changeProperty(QListWidgetItem *propertyItem, QString const &propertyName);
 
 private slots:
-	void ok();
-	void mbCancel();
+	void okButtonClicked();
+	void messageBoxCancel();
 	void updateProperties();
 
 private:
-	void setupDefaultValues();
+	enum Mode
+	{
+		addNew
+		, editExisting
+	};
+
+	void initDefaultValues();
 
 	Ui::EditPropertiesDialog *mUi;
 	EditorManagerInterface &mInterperterEditorManager;
 	Id mId;
 	QString mPropertyName;
 	QListWidgetItem *mPropertyItem;
+	Mode mMode;
 };
 }

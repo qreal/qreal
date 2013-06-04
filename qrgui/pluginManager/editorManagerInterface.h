@@ -23,6 +23,8 @@ class MainWindow;
 class EditorManagerInterface
 {
 public:
+	virtual ~EditorManagerInterface() {}
+
 	virtual IdList editors() const = 0;
 	virtual IdList diagrams(Id const &editor) const = 0;
 	virtual IdList elements(Id const &diagram) const = 0;

@@ -23,8 +23,16 @@ class StartDialog : public ManagedClosableDialog
 	Q_OBJECT
 
 public:
-	explicit StartDialog(MainWindow *mainWindow, ProjectManager *projectManager);
-	void setVisibleForInterpreterButton(bool const value);
+	/// Constructor.
+	/// @param mainWindow QReal main window.
+	/// @param projectManager ProjectManager instance that shall handle all project operations.
+	explicit StartDialog(MainWindow &mainWindow, ProjectManager &projectManager);
+
+	/// Destructor.
+	~StartDialog();
+
+	/// Makes visible or invisible buttons related to metamodel interpreter.
+	void setVisibleForInterpreterButton(bool const visible);
 
 private slots:
 	void openRecentProject(QString const &fileName);
@@ -37,10 +45,10 @@ private slots:
 private:
 	static const QSize mMinimumSize;
 
-	MainWindow *mMainWindow;
-	ProjectManager *mProjectManager;
-	QCommandLinkButton *mInterpreterButton;
-	QCommandLinkButton *mCreateInterpreterButton;
+	MainWindow &mMainWindow;  // Does not have ownership.
+	ProjectManager &mProjectManager;  // Does not have ownership.
+	QCommandLinkButton *mInterpreterButton;  // Has ownership.
+	QCommandLinkButton *mCreateInterpreterButton;  // Has ownership.
 };
 
 }

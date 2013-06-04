@@ -19,7 +19,7 @@ class Element;
 
 namespace qReal {
 
-/// Proxy design pattern. For changing between generative and interpretive approach.
+/// Proxy for changing between generative and interpretive approach.
 class ProxyEditorManager : public EditorManagerInterface
 {
 public:
@@ -59,14 +59,12 @@ public:
 	Id findElementByType(QString const &type) const;
 	QList<ListenerInterface *> listeners() const;
 
-	//EditorInterface* editorInterface(QString const &editor) const;
-
 	bool isDiagramNode(Id const &id) const;
 
 	bool isParentOf(Id const &child, Id const &parent) const;
 	bool isGraphicalElementNode(const Id &id) const;
 
-	//new methods:
+	// new methods:
 	QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const;
 	QStringList elements(QString const &editor, QString const &diagram) const;
 	int isNodeOrEdge(QString const &editor, QString const &element) const;
@@ -74,7 +72,8 @@ public:
 	QString diagramName(QString const &editor, QString const &diagram) const;
 	QString diagramNodeName(QString const &editor, QString const &diagram) const;
 
-	void setProxyManager(EditorManagerInterface *editorManagerInter);
+	// Takes ownership.
+	void setProxyManager(EditorManagerInterface *editorManagerInterface);
 	bool isInterpretationMode() const;
 	bool isParentProperty(Id const &id, QString const &propertyName) const;
 	void deleteProperty(QString const &propDisplayedName) const;
@@ -93,7 +92,8 @@ public:
 	QPair<Id, Id> createEditorAndDiagram(QString const &name) const;
 	void saveMetamodel(QString const &newMetamodelFileName);
 	QString saveMetamodelFilePath() const;
-	//unsupported methods:
+
+	// unsupported methods:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
@@ -102,6 +102,7 @@ public:
 	Pattern getPatternByName (QString const &str) const;
 	QList<QString> getPatternNames() const;
 	QSize iconSize(Id const &id) const;
+
 private:
 	EditorManagerInterface *mProxyManager;
 };
