@@ -993,8 +993,8 @@
 						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
-						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="33" y="-25" textBinded="Ports" hard="true"/>
+						<label x="0" y="-25" text="Порты:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1019,7 +1019,7 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Порт" type="string" name="Port">
+						<property displayedName="Порты" type="string" name="Ports">
 							<default>A, B, C</default>
 						</property>
 					</properties>

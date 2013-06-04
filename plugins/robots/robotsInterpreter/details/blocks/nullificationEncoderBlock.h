@@ -17,11 +17,10 @@ class NullificationEncoderBlock : public Block
 	Q_OBJECT
 
 public:
-	NullificationEncoderBlock(RobotModel *  const robotModel);
+	NullificationEncoderBlock(RobotModel * const robotModel);
 	virtual void run();
 
 private:
-	robotParts::EncoderSensor * mEncoderSensor;  // Doesn't have ownership
 	RobotModel * const mRobotModel;
 };
 
