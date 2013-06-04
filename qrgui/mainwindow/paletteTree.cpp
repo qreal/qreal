@@ -263,7 +263,12 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 
 void PaletteTree::initDone()
 {
-	connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
+	if (mComboBox->count() == 1) {
+		// In case of empty combobox we do not hide it for user`s ensuring in items absence
+		mComboBox->hide();
+	} else {
+		connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
+	}
 	setActiveEditor(mSettings->value("CurrentIndex", 0).toInt());
 	resizeIcons();
 }
