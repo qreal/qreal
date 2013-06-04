@@ -617,13 +617,16 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	mRobot->checkSelection();
-	foreach (SensorItem *sensor, mSensors) {
-		if (sensor) {
-			sensor->checkSelection();
+	if (mouseEvent->buttons() & Qt::LeftButton) {
+		mRobot->checkSelection();
+		foreach (SensorItem *sensor, mSensors) {
+			if (sensor) {
+				sensor->checkSelection();
+			}
 		}
 	}
 
+	bool needUpdate = true;
 	processDragMode(mDrawingAction);
 	switch (mDrawingAction){
 	case drawingAction::wall:
@@ -639,11 +642,13 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		reshapeEllipse(mouseEvent);
 		break;
 	default:
+		needUpdate = false;
 		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
 		break;
 	}
-
-	mScene->update();
+	if (needUpdate) {
+		mScene->update();
+	}
 }
 
 void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
