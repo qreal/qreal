@@ -13,7 +13,7 @@ GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel,
 	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
 }
 
-EditorManagerInterface const *GraphicalModelAssistApi::editorManagerInter() const
+EditorManagerInterface const *GraphicalModelAssistApi::editorManagerInterface() const
 {
 	return mModelsAssistApi.editorManagerInter();
 }

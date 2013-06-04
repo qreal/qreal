@@ -22,8 +22,11 @@ class GraphicalModelAssistApi : public QObject, public GraphicalModelAssistInter
 	Q_OBJECT
 
 public:
-	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManagerInterface const *editorManagerInter);
-	EditorManagerInterface const *editorManagerInter() const;
+	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManagerInterface const *editorManagerInterface);
+
+	/// Interface for accessing metamodel information.
+	EditorManagerInterface const *editorManagerInterface() const;
+
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
 	Id createElement(Id const &parent, Id const &type);

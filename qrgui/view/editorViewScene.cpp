@@ -482,7 +482,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 	Id const id = Id::loadFromString(uuid);
 
-	if(mMVIface->graphicalAssistApi()->editorManagerInter()->getPatternNames().contains(id.element())) {
+	if(mMVIface->graphicalAssistApi()->editorManagerInterface()->getPatternNames().contains(id.element())) {
 		CreateGroupCommand *createGroupCommand = new CreateGroupCommand(
 				this, mMVIface->logicalAssistApi(), mMVIface->graphicalAssistApi()
 				, mMVIface->rootId(), mMVIface->rootId(), id, isFromLogicalModel, scenePos);
@@ -563,7 +563,7 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, Ele
 		mController->execute(createCommand);
 		Id const newElemId = createCommand->result();
 		if (dynamic_cast<NodeElement*>(e)) {
-			QSize const size = mMVIface->graphicalAssistApi()->editorManagerInter()->iconSize(newElemId);
+			QSize const size = mMVIface->graphicalAssistApi()->editorManagerInterface()->iconSize(newElemId);
 			getNodeById(newElemId)->setPos(position.x()- size.width()/2, position.y());
 			elements.append(getNodeById(newElemId));
 			insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, position

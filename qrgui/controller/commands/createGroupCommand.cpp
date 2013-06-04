@@ -18,7 +18,7 @@ CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 	, mId(id)
 	, mIsFromLogicalModel(isFromLogicalModel)
 	, mPosition(position)
-	, mPattern(graphicalApi->editorManagerInter()->getPatternByName(id.element()))
+	, mPattern(graphicalApi->editorManagerInterface()->getPatternByName(id.element()))
 {
 	QPointF size = mPattern.size();
 	foreach (GroupNode const &node, mPattern.nodes()) {

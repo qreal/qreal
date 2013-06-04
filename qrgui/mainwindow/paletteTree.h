@@ -16,31 +16,30 @@
 
 namespace  qReal{
 namespace gui{
-/// Class for representing tree with editors elements.
+
+/// Class for representing tree with elements of the editors.
 class PaletteTree: public QWidget
 {
 Q_OBJECT
 public:
 	explicit PaletteTree(QWidget *parent = 0);
 
-	/** Adds item type to some editor's tree.
-	  @param id Item id.
-	  @param name Item name.
-	  @param description Item description.
-	  @param icon Item icon.
-	  @param tree Editor's tree.
-	  @param parent Parent of item's group.
-	*/
+	/// Adds item type to some editor's tree.
+	/// @param id Item id.
+	/// @param name Item name.
+	/// @param description Item description.
+	/// @param icon Item icon.
+	/// @param tree Editor's tree.
+	/// @param parent Parent of item's group.
 	void addItemType(Id const &id, QString const &name, QString const &description
 			, QIcon const &icon,QTreeWidget *tree, QTreeWidgetItem *parent);
 
-	/** Adds top item type to some editor's tree.
-	  @param id Item id.
-	  @param name Item name.
-	  @param description Item description.
-	  @param icon Item icon.
-	  @param tree Editor's tree.
-	*/
+	/// Adds top item type to some editor's tree.
+	/// @param id Item id.
+	/// @param name Item name.
+	/// @param description Item description.
+	/// @param icon Item icon.
+	/// @param tree Editor's tree.
 	void addTopItemType(Id const &id, QString const &name, QString const &description
 			, QIcon const &icon,QTreeWidget *tree);
 

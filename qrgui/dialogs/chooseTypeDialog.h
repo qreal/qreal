@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 
 #include "../mainwindow/paletteTree.h"
 
@@ -9,22 +9,33 @@ class ChooseTypeDialog;
 }
 
 namespace qReal {
-namespace gui{
+namespace gui {
 
+/// Dialog for metatype selection.
 class ChooseTypeDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	ChooseTypeDialog(MainWindow *mainWindow, PaletteTree const *paletteTree, EditorManagerInterface const *editorManagerProxy, QWidget *parent = 0);
+
+	/// Constructor.
+	/// @param mainWindow Reference to QReal main window.
+	/// @param diagram Id of a diagram to which we will add new node or edge.
+	/// @param editorManagerProxy Editor manager.
+	ChooseTypeDialog(MainWindow &mainWindow, Id const &diagram, EditorManagerInterface const &editorManagerProxy);
+
+	/// Destructor.
 	~ChooseTypeDialog();
+
 private slots:
 	void okButtonClicked();
+
 private:
 	Ui::ChooseTypeDialog *mUi;
-	MainWindow *mMainWindow;
-	PaletteTree const *mPaletteTree;
-	EditorManagerInterface const *mEditorManagerProxy;
+	MainWindow &mMainWindow;
+	Id const mDiagram;
+	EditorManagerInterface const &mEditorManagerProxy;
 };
+
 }
 }
