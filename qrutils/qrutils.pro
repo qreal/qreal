@@ -12,7 +12,9 @@ LIBS += -L../bin -lqrkernel
 
 DEFINES += QRUTILS_LIBRARY
 
-TRANSLATIONS = qutils_ru.ts
+RESOURCES = qrutils.qrc
+
+TRANSLATIONS = qrutils_ru.ts
 
 HEADERS += \
 	$$PWD/outFile.h \
