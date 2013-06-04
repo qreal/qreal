@@ -1,5 +1,4 @@
 #include <QtWidgets/QTabWidget>
-#include <QtWidgets/QCommandLinkButton>
 
 #include "startDialog.h"
 #include "suggestToCreateDiagramWidget.h"
@@ -16,6 +15,7 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 		, mProjectManager(projectManager)
 {
 	setMinimumSize(mMinimumSize);
+	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 	QTabWidget *tabWidget = new QTabWidget;
 
@@ -38,17 +38,16 @@ StartDialog::StartDialog(MainWindow *mainWindow, ProjectManager *projectManager)
 		Id const editor = mMainWindow->manager()->editors()[0];
 		QString const diagramIdString = mMainWindow->manager()->diagramNodeNameString(editor, theOnlyDiagram);
 
-		QCommandLinkButton *newLink = new QCommandLinkButton(tr("&New project"));
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
+		QCommandLinkButton *newLink = createCommandButton(tr("New project")
+				, newProjectMapper, SLOT(map()), QKeySequence::New);
 		newProjectMapper->setMapping(newLink, diagramIdString);
 		connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
-		connect(newLink, SIGNAL(clicked()), newProjectMapper, SLOT(map()));
 		commandLinksLayout->addWidget(newLink);
 	}
 
-	QCommandLinkButton *openLink = new QCommandLinkButton(tr("&Open existing project"));
-	connect(openLink, SIGNAL(clicked()), this, SLOT(openExistingProject()));
-	commandLinksLayout->addWidget(openLink);
+	commandLinksLayout->addWidget(createCommandButton(tr("Open existing project")
+			, this, SLOT(openExistingProject()), QKeySequence::Open));
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(tabWidget);
@@ -80,6 +79,19 @@ void StartDialog::createProjectWithDiagram(QString const &idString)
 	if (mMainWindow->createProject(idString)) {
 		accept();
 	}
+}
+
+QCommandLinkButton *StartDialog::createCommandButton(QString const &text
+		, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey)
+{
+	QCommandLinkButton *result = new QCommandLinkButton(text);
+	connect(result, SIGNAL(clicked()), reciever, slot);
+	QAction *buttonAction = new QAction(this);
+	buttonAction->setShortcuts(standartHotkey);
+	connect(buttonAction, SIGNAL(triggered()), result, SLOT(animateClick()));
+	addAction(buttonAction);
+	result->setToolTip(QKeySequence(standartHotkey).toString());
+	return result;
 }
 
 void StartDialog::exitApp()
