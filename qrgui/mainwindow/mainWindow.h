@@ -180,14 +180,9 @@ private slots:
 
 	void updateTabName(Id const &id);
 
-	void settingsPlugins();
-
 	void showAbout();
 	void showHelp();
 
-	/// checks parameters for integrity,then importing it
-	/// @param fileName - *.qrs file to import
-	/// @return true - if all ok, false - if not ok
 	void fullscreen();
 	void openRecentProjectsMenu();
 

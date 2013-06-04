@@ -1,5 +1,4 @@
 HEADERS += \
-	dialogs/plugindialog.h \
 	dialogs/preferencesDialog.h \
 	dialogs/preferencesPages/behaviourPage.h \
 	dialogs/preferencesPages/debuggerPage.h \
@@ -24,7 +23,6 @@ HEADERS += \
 	dialogs/addNodeDialog.h
 
 SOURCES += \
-	dialogs/plugindialog.cpp \
 	dialogs/preferencesDialog.cpp \
 	dialogs/gesturesShow/gesturesWidget.cpp \
 	dialogs/preferencesPages/behaviourPage.cpp \

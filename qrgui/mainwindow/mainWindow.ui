@@ -35,7 +35,7 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="qReal::gui::TabWidget" name="tabs"/>
+     <widget class="qReal::gui::TabWidget" name="tabs" native="true"/>
     </item>
    </layout>
   </widget>
@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -506,14 +506,6 @@
     <string>About Qt...</string>
    </property>
   </action>
-  <action name="actionPlugins">
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Plugins...</string>
-   </property>
-  </action>
   <action name="actionShowSplash">
    <property name="checkable">
     <bool>true</bool>
@@ -783,18 +775,18 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>TabWidget</class>
-   <extends>QTabWidget</extends>
-   <header>../mainwindow/tabWidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>MiniMap</class>
    <extends>QGraphicsView</extends>
    <header>../mainwindow/miniMap.h</header>
   </customwidget>
+  <customwidget>
+   <class>qReal::gui::TabWidget</class>
+   <extends>QWidget</extends>
+   <header>../mainwindow/tabWidget.h</header>
+  </customwidget>
  </customwidgets>
  <resources>
+  <include location="../qrgui.qrc"/>
   <include location="../qrgui.qrc"/>
  </resources>
  <connections/>

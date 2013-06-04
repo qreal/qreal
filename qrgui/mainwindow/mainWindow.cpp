@@ -34,8 +34,6 @@
 #include "../controller/commands/updateElementCommand.h"
 
 #include "../umllib/element.h"
-#include "../dialogs/pluginDialog.h"
-#include "../dialogs/checkoutDialog.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../pluginManager/listenerManager.h"
@@ -175,7 +173,6 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
-	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
 	connect(mUi->actionShow_alignment, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
 	connect(mUi->actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
@@ -536,12 +533,6 @@ void MainWindow::makeSvg()
 
 	QPainter painter(&newSvg);
 	getCurrentTab()->scene()->render(&painter);
-}
-
-void MainWindow::settingsPlugins()
-{
-	PluginDialog dialog(mEditorManagerProxy, this);
-	dialog.exec();
 }
 
 void MainWindow::deleteElementFromDiagram(Id const &id)
