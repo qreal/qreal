@@ -77,6 +77,9 @@ public:
 	/// Set saved item index as current in ComboBox.
 	void setComboBoxIndex();
 
+	/// Saves selected editor and expanded groups into settings
+	void saveConfiguration();
+
 	/** Load palette and set some representation.
 	  @param isIconsView This variable corresponds to representation.
 	  @param itemsCount Items count in a row.
@@ -175,6 +178,9 @@ private:
 	*/
 	void expandChildren(QTreeWidgetItem *item);
 
+	/// Expands all children of given tree widget
+	void expand(QTreeWidget const *tree);
+
 	/// Creates all PaletteTree widgets.
 	void createPaletteTree();
 
@@ -222,9 +228,6 @@ private:
 
 	/// Current editor number.
 	int mCurrentEditor;
-
-	/// Stores info about expanded nodes in tree
-	QSettings *mSettings;
 
 	/// Representation flag
 	bool mIconsView;
