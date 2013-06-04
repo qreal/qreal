@@ -25,12 +25,10 @@ ChooseTypeDialog::~ChooseTypeDialog()
 void ChooseTypeDialog::okButtonClicked()
 {
 	if (mUi->nodeRadioButton->isChecked()) {
-		// TODO: Memleak?
 		AddNodeDialog *nodeDialog = new AddNodeDialog(mMainWindow, mDiagram, mEditorManagerProxy);
 		nodeDialog->setModal(true);
 		nodeDialog->show();
 	} else if (mUi->edgeRadioButton->isChecked()) {
-		// TODO: Memleak?
 		EdgePropertiesDialog *edgeDialog = new EdgePropertiesDialog(mMainWindow, mDiagram, mEditorManagerProxy);
 		edgeDialog->setModal(true);
 		edgeDialog->show();

@@ -6,20 +6,26 @@
 #include "../pluginManager/interpreterEditorManager.h"
 
 namespace Ui {
-	class EditPropertiesDialog;
+class EditPropertiesDialog;
 }
 
 namespace qReal {
 
-/// Window where you can edit the attributes of the selected property
+/// Window where you can edit the attributes of the selected property.
 class EditPropertiesDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit EditPropertiesDialog(QWidget *parent = 0);
+	/// Constructor.
+	/// @param parent Parent widget, who is responsible for deletion of this dialog.
+	explicit EditPropertiesDialog(EditorManagerInterface &interperterEditorManager, Id const &id, QWidget *parent);
+
+	/// Destructor.
 	~EditPropertiesDialog();
-	void init(QListWidgetItem *selectedItem, EditorManagerInterface* interperterEditorManager, Id const &id, QString const &propertyName);
+
+	/// Selects a property for editing.
+	void changeProperty(QListWidgetItem *propertyItem, QString const &propertyName);
 
 private slots:
 	void ok();
@@ -30,9 +36,9 @@ private:
 	void setupDefaultValues();
 
 	Ui::EditPropertiesDialog *mUi;
-	EditorManagerInterface *mInterperterEditorManager;
+	EditorManagerInterface &mInterperterEditorManager;
 	Id mId;
 	QString mPropertyName;
-	QListWidgetItem *mSelectedItem;
+	QListWidgetItem *mPropertyItem;
 };
 }

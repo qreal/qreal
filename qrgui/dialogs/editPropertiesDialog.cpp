@@ -6,9 +6,11 @@
 
 using namespace qReal;
 
-EditPropertiesDialog::EditPropertiesDialog(QWidget *parent)
+EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interperterEditorManager, Id const &id, QWidget *parent)
 		: QDialog(parent)
 		, mUi(new Ui::EditPropertiesDialog)
+		, mInterperterEditorManager(interperterEditorManager)
+		, mId(id)
 {
 	mUi->setupUi(this);
 }
@@ -20,25 +22,32 @@ EditPropertiesDialog::~EditPropertiesDialog()
 
 void EditPropertiesDialog::setupDefaultValues()
 {
-	mUi->attributeTypeEdit->setText(mInterperterEditorManager->typeName(mId, mPropertyName));
-	mUi->defaultValueEdit->setText(mInterperterEditorManager->defaultPropertyValue(mId, mPropertyName));
-	mUi->displayedNameEdit->setText(mInterperterEditorManager->propertyDisplayedName(mId, mPropertyName));
+	mUi->attributeTypeEdit->setText(mInterperterEditorManager.typeName(mId, mPropertyName));
+	mUi->defaultValueEdit->setText(mInterperterEditorManager.defaultPropertyValue(mId, mPropertyName));
+	mUi->displayedNameEdit->setText(mInterperterEditorManager.propertyDisplayedName(mId, mPropertyName));
 }
 
 void EditPropertiesDialog::mbCancel()
 {
-	mUi->attributeTypeEdit->setText(mInterperterEditorManager->typeName(mId, mPropertyName));
-	mUi->defaultValueEdit->setText(mInterperterEditorManager->defaultPropertyValue(mId, mPropertyName));
+	mUi->attributeTypeEdit->setText(mInterperterEditorManager.typeName(mId, mPropertyName));
+	mUi->defaultValueEdit->setText(mInterperterEditorManager.defaultPropertyValue(mId, mPropertyName));
 }
 
 void EditPropertiesDialog::updateProperties()
 {
-	mInterperterEditorManager->updateProperties(mId, mPropertyName, mUi->attributeTypeEdit->text()
-		, mUi->defaultValueEdit->text(), mUi->displayedNameEdit->text());
-	if (mSelectedItem != NULL) {
-		mSelectedItem->setText(mInterperterEditorManager->propertyDisplayedName(mId, mPropertyName));
+	mInterperterEditorManager.updateProperties(
+			mId
+			, mPropertyName
+			, mUi->attributeTypeEdit->text()
+			, mUi->defaultValueEdit->text()
+			, mUi->displayedNameEdit->text()
+			);
+
+	if (mPropertyItem != NULL) {
+		mPropertyItem->setText(mInterperterEditorManager.propertyDisplayedName(mId, mPropertyName));
 	}
-	done(1);
+
+	done(QDialog::Accepted);
 }
 
 void EditPropertiesDialog::ok()
@@ -48,10 +57,13 @@ void EditPropertiesDialog::ok()
 	} else {
 		if (mPropertyName.isEmpty()) {
 			mPropertyName = mUi->displayedNameEdit->text();
-			mInterperterEditorManager->addProperty(mId, mPropertyName);
+			mInterperterEditorManager.addProperty(mId, mPropertyName);
 		}
+
 		if (windowTitle() != tr("Adding of new property:")
-			&& mInterperterEditorManager->typeName(mId, mPropertyName) != mUi->attributeTypeEdit->text()) {
+				&& mInterperterEditorManager.typeName(mId, mPropertyName) != mUi->attributeTypeEdit->text()
+				)
+		{
 			QMessageBox *mb = new QMessageBox(tr("Warning:")
 					, tr("You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.")
 					, QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
@@ -66,18 +78,17 @@ void EditPropertiesDialog::ok()
 	}
 }
 
-void EditPropertiesDialog::init(QListWidgetItem *selectedItem, EditorManagerInterface* interperterEditorManager
-		, Id const &id, QString const &propertyName)
+void EditPropertiesDialog::changeProperty(QListWidgetItem *propertyItem, QString const &propertyName)
 {
-	mInterperterEditorManager = interperterEditorManager;
-	mId = id;
-	mPropertyName = mInterperterEditorManager->propertyNameByDisplayedName(mId, propertyName);
-	mSelectedItem = selectedItem;
+	mPropertyName = mInterperterEditorManager.propertyNameByDisplayedName(mId, propertyName);
+	mPropertyItem = propertyItem;
+
 	if (propertyName.isEmpty()) {
 		setWindowTitle(tr("Adding of new property:"));
 	} else {
 		setWindowTitle(tr("Properties editor: ") + propertyName);
 	}
+
 	setupDefaultValues();
 
 	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(ok()));

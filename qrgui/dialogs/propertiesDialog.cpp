@@ -13,7 +13,7 @@ PropertiesDialog::PropertiesDialog(MainWindow *mainWindow, QWidget *parent)
 		: QDialog(parent)
 		, mUi(new Ui::PropertiesDialog)
 		, mMainWindow(mainWindow)
-		, mEditPropertiesDialog(new EditPropertiesDialog)
+		, mEditPropertiesDialog(NULL)
 {
 	mUi->setupUi(this);
 }
@@ -45,6 +45,7 @@ void PropertiesDialog::init(EditorManagerInterface* interperterEditorManager, Id
 {
 	mInterperterEditorManager = interperterEditorManager;
 	mId = id;
+	mEditPropertiesDialog = new EditPropertiesDialog(*interperterEditorManager, id, mMainWindow);
 	setWindowTitle(tr("Properties: ") + mInterperterEditorManager->friendlyName(mId));
 	QStringList const propertiesNames = mInterperterEditorManager->propertyNames(mId);
 	QStringList const propertiesDisplayedNames = getPropertiesDisplayedNamesList(propertiesNames);
@@ -82,7 +83,7 @@ void PropertiesDialog::deleteProperty()
 
 void PropertiesDialog::change(QString const &text)
 {
-	mEditPropertiesDialog->init(mUi->PropertiesNamesList->item(mUi->PropertiesNamesList->currentRow()), mInterperterEditorManager, mId, text);
+	mEditPropertiesDialog->changeProperty(mUi->PropertiesNamesList->item(mUi->PropertiesNamesList->currentRow()), text);
 	mEditPropertiesDialog->setModal(true);
 	mEditPropertiesDialog->show();
 	connect(mEditPropertiesDialog, SIGNAL(finished(int)), SLOT(updatePropertiesNamesList()));
