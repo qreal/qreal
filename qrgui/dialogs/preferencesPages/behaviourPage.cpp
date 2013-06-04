@@ -36,7 +36,6 @@ void PreferencesBehaviourPage::save()
 {
 	SettingsManager::setValue("PaletteTabSwitching", mUi->paletteTabCheckBox->isChecked());
 	SettingsManager::setValue("arrangeLinks", mUi->arrangeLinksCheckBox->isChecked());
-	SettingsManager::setValue("warningWindow", mUi->warningWindowBox->isChecked());
 	SettingsManager::setValue("Autosave", mUi->autoSaveCheckBox->isChecked());
 	SettingsManager::setValue("AutosaveInterval", mUi->autoSaveSpinBox->value());
 	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
@@ -44,7 +43,6 @@ void PreferencesBehaviourPage::save()
 
 void PreferencesBehaviourPage::restoreSettings()
 {
-	mUi->warningWindowBox->setChecked(SettingsManager::value("warningWindow").toBool());
 	mUi->arrangeLinksCheckBox->setChecked(SettingsManager::value("arrangeLinks").toBool());
 	mUi->paletteTabCheckBox->setChecked(SettingsManager::value("PaletteTabSwitching").toBool());
 	mUi->autoSaveCheckBox->setChecked(SettingsManager::value("Autosave").toBool());
