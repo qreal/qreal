@@ -7,6 +7,8 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
+int const selectionDrift = 3;
+
 SensorItem::SensorItem(SensorsConfiguration &configuration
 		, inputPort::InputPortEnum port)
 	: RotateItem()
@@ -15,7 +17,9 @@ SensorItem::SensorItem(SensorsConfiguration &configuration
 	, mDragged(false)
 	, mPointImpl()
 	, mRotater(NULL)
-	, mBoundingRect(imageRect())
+	, mImageRect(imageRect())
+	, mBoundingRect(mImageRect.adjusted(-selectionDrift, -selectionDrift
+			, selectionDrift, selectionDrift))
 	, mImage(pathToImage())
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
@@ -40,7 +44,7 @@ void SensorItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *sty
 	painter->setRenderHints(painter->renderHints()
 			| QPainter::SmoothPixmapTransform
 			| QPainter::HighQualityAntialiasing);
-	painter->drawImage(mBoundingRect, mImage);
+	painter->drawImage(mImageRect, mImage);
 	painter->restore();
 }
 
@@ -55,7 +59,7 @@ void SensorItem::drawExtractionForItem(QPainter *painter)
 	painter->setPen(pen);
 	painter->setOpacity(0.7);
 	painter->setRenderHints(painter->renderHints() | QPainter::Antialiasing);
-	painter->drawRoundedRect(mBoundingRect.adjusted(-3, -3, 3, 3), 4, 4);
+	painter->drawRoundedRect(mBoundingRect, 4, 4);
 	painter->restore();
 }
 
@@ -151,7 +155,7 @@ void SensorItem::rotate(qreal angle)
 
 QRectF SensorItem::rect() const
 {
-	return mBoundingRect;
+	return mImageRect;
 }
 
 double SensorItem::rotateAngle() const

@@ -954,17 +954,6 @@ D2ModelScene* D2ModelWidget::scene()
 	return mScene;
 }
 
-void D2ModelWidget::setRobotVisible(bool isVisible)
-{
-	if (!isVisible) {
-		mRobotWasSelected = mRobot->isSelected();
-	}
-	mRobot->setVisible(isVisible);
-	if (isVisible) {
-		mRobot->setSelected(mRobotWasSelected);
-	}
-}
-
 void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisible)
 {
 	if (mSensors[port]) {
