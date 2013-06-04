@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QDialog>
+#include <QtWidgets/QCommandLinkButton>
 
 #include "../../mainwindow/projectManager/projectManager.h"
 
@@ -29,6 +30,9 @@ private slots:
 	void createProjectWithDiagram(QString const &idString);
 
 private:
+	QCommandLinkButton *createCommandButton(QString const &text
+			, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey);
+
 	static QSize const mMinimumSize;
 
 	MainWindow *mMainWindow;

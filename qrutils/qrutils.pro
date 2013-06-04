@@ -12,6 +12,10 @@ LIBS += -L../bin -lqrkernel
 
 DEFINES += QRUTILS_LIBRARY
 
+RESOURCES = qrutils.qrc
+
+TRANSLATIONS = qrutils_ru.ts
+
 HEADERS += \
 	$$PWD/outFile.h \
 	$$PWD/utilsDeclSpec.h \
