@@ -32,6 +32,8 @@ public:
 	void setTitleFont();
 
 protected:
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
 	virtual void focusOutEvent(QFocusEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
 
