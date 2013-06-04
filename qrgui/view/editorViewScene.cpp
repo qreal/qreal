@@ -18,6 +18,7 @@
 
 using namespace qReal;
 using namespace qReal::commands;
+using namespace qReal::gui;
 
 EditorViewScene::EditorViewScene(QObject *parent)
 		: QGraphicsScene(parent)
@@ -1450,8 +1451,7 @@ void EditorViewScene::changePropertiesActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	Id id = action->data().value<Id>();
-	PropertiesDialog *propDialog = new PropertiesDialog(mWindow);
-	propDialog->init(mWindow->manager(), id);
+	PropertiesDialog *propDialog = new PropertiesDialog(*mWindow, *(mWindow->manager()), id);
 	propDialog->setModal(true);
 	propDialog->show();
 }
@@ -1468,7 +1468,6 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	if (mNeedDrawGrid) {
 		mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
-
 		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		drawGrid(painter, rect);
 	}

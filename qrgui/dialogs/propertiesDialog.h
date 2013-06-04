@@ -7,10 +7,11 @@
 #include "editPropertiesDialog.h"
 
 namespace Ui {
-	class PropertiesDialog;
+class PropertiesDialog;
 }
 
 namespace qReal {
+namespace gui {
 
 /// Window where you can edit the properties of the selected item
 class PropertiesDialog : public QDialog
@@ -18,9 +19,14 @@ class PropertiesDialog : public QDialog
 	Q_OBJECT
 
 public:
-	PropertiesDialog(MainWindow *mainWindow, QWidget *parent = 0);
+	/// Constructor.
+	/// @param mainWindow Reference to QReal main window.
+	/// @param interperterEditorManager Editor manager.
+	/// @param id Id of current metamodel element in which we need to change properties.
+	PropertiesDialog(MainWindow &mainWindow, EditorManagerInterface &interperterEditorManager, Id const &id);
+
+	/// Destructor.
 	~PropertiesDialog();
-	void init(EditorManagerInterface* interperterEditorManager, Id const &id);
 
 private slots:
 	void closeDialog();
@@ -35,9 +41,11 @@ private:
 	bool checkElementOnDiagram(qrRepo::LogicalRepoApi const &api, Id &id);
 
 	Ui::PropertiesDialog *mUi;
-	EditorManagerInterface *mInterperterEditorManager;
+	EditorManagerInterface &mInterperterEditorManager;
 	Id mId;
-	MainWindow *mMainWindow;
-	EditPropertiesDialog *mEditPropertiesDialog;
+	MainWindow &mMainWindow;
+	EditPropertiesDialog *mEditPropertiesDialog; // Does not have ownership.
 };
+
+}
 }
