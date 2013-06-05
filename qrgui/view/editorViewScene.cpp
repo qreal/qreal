@@ -994,16 +994,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	// Let scene update selection and perform other operations
-	QGraphicsItem* item = itemAt(mCurrentMousePos, QTransform());
-	if (event->modifiers() & Qt::ControlModifier) {
-		if (item) {
-			QGraphicsScene::mousePressEvent(event);
-		}
-	} else {
-		QGraphicsScene::mousePressEvent(event);
-	}
-
 	if ((event->modifiers() & Qt::ControlModifier) && (event->buttons() & Qt::LeftButton) && !(event->buttons() & Qt::RightButton)) {
 		mIsSelectEvent = true;
 		mSelectList->append(selectedItems());
@@ -1022,15 +1012,19 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 				mSelectList->removeAll(item);
 			}
 		}
-	}
-
-	if (event->button() == Qt::LeftButton) {
+	} else if (event->button() == Qt::LeftButton) {
 		mLeftButtonPressed = true;
 		QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
 		ElementTitle *title = dynamic_cast < ElementTitle *>(item);
 
 		if (title) { // check whether we accidently clicked on a title or not
 			item = item->parentItem();
+		}
+		if (item) {
+			item->setSelected(true);
+			mSelectList->clear();
+			mSelectList->append(item);
+			event->accept();
 		}
 	} else {
 		if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
@@ -1039,6 +1033,17 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mRightButtonPressed = true;
 		}
 	}
+
+	// Let scene update selection and perform other operations
+	QGraphicsItem* item = itemAt(mCurrentMousePos, QTransform());
+	if (event->modifiers() & Qt::ControlModifier) {
+		if (item) {
+			QGraphicsScene::mousePressEvent(event);
+		}
+	} else {
+		QGraphicsScene::mousePressEvent(event);
+	}
+
 	redraw();
 
 	mShouldReparentItems = (selectedItems().size() > 0);
