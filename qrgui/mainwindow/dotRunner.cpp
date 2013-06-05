@@ -4,15 +4,18 @@
 
 using namespace qReal;
 
-DotRunner::DotRunner(Id const &diagramId
+DotRunner::DotRunner(
+		Id const &diagramId
 		, models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
-		, EditorManagerInterface const *editorManagerProxy, QString const &absolutePathToDotFiles)
+		, EditorManagerInterface const &editorManagerProxy
+		, QString const &absolutePathToDotFiles
+		)
 		: QObject(NULL)
 		, mDiagramId(diagramId)
 		, mGraphicalModelApi(graphicalModelApi)
 		, mLogicalModelApi(logicalModelApi)
-		, mEditorManagerInter(editorManagerProxy)
+		, mEditorManagerInterface(editorManagerProxy)
 		, mAlgorithm("")
 		, mAbsolutePathToDotFiles(absolutePathToDotFiles)
 {
@@ -37,7 +40,7 @@ bool DotRunner::run(QString const &algorithm)
 		IdList const childrenId = mGraphicalModelApi.children(mDiagramId);
 		int index = 1;
 		foreach (Id id, childrenId) {
-			if (mEditorManagerInter->isGraphicalElementNode(id)) {
+			if (mEditorManagerInterface.isGraphicalElementNode(id)) {
 				buildSubgraph(outFile, id, index);
 				writeGraphToDotFile(outFile, id);
 			}
@@ -67,7 +70,7 @@ void DotRunner::writeGraphToDotFile(QTextStream &outFile, const Id &id)
 	}
 	foreach (Id linkId, outgoingLinks) {
 		Id const elementId = mGraphicalModelApi.graphicalRepoApi().otherEntityFromLink(linkId, id);
-		if (mEditorManagerInter->isGraphicalElementNode(elementId)) {
+		if (mEditorManagerInterface.isGraphicalElementNode(elementId)) {
 			outFile << nameOfElement(id) << " -> " << nameOfElement(elementId) << ";\n";
 		}
 	}

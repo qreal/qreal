@@ -6,10 +6,10 @@
 
 using namespace qReal;
 
-EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interperterEditorManager, Id const &id, QWidget *parent)
+EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager, Id const &id, QWidget *parent)
 		: QDialog(parent)
 		, mUi(new Ui::EditPropertiesDialog)
-		, mInterperterEditorManager(interperterEditorManager)
+		, mInterperterEditorManager(interpreterEditorManager)
 		, mId(id)
 		, mMode(addNew)
 {
@@ -65,6 +65,7 @@ void EditPropertiesDialog::okButtonClicked()
 				&& mInterperterEditorManager.typeName(mId, mPropertyName) != mUi->attributeTypeEdit->text()
 				)
 		{
+			// TODO: Remove connects.
 			QMessageBox messageBox(tr("Warning:")
 					, tr("You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.")
 					, QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);

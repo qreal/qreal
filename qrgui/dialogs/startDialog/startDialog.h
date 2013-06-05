@@ -45,8 +45,8 @@ private slots:
 private:
 	static const QSize mMinimumSize;
 
-	MainWindow &mMainWindow;  // Does not have ownership.
-	ProjectManager &mProjectManager;  // Does not have ownership.
+	MainWindow &mMainWindow;
+	ProjectManager &mProjectManager;
 	QCommandLinkButton *mInterpreterButton;  // Has ownership.
 	QCommandLinkButton *mCreateInterpreterButton;  // Has ownership.
 };

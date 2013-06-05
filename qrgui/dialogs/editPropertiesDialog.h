@@ -18,13 +18,17 @@ class EditPropertiesDialog : public QDialog
 
 public:
 	/// Constructor.
+	/// @param interpreterEditorManager Editor manager.
+	/// @param id Id of an element for which we edit properties.
 	/// @param parent Parent widget, who is responsible for deletion of this dialog.
-	explicit EditPropertiesDialog(EditorManagerInterface &interperterEditorManager, Id const &id, QWidget *parent);
+	explicit EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager, Id const &id, QWidget *parent);
 
 	/// Destructor.
 	~EditPropertiesDialog();
 
 	/// Selects a property for editing.
+	/// @param propertyItem Item in a list of properties which we edit.
+	/// @param propertyName Name of a property which we edit.
 	void changeProperty(QListWidgetItem *propertyItem, QString const &propertyName);
 
 private slots:

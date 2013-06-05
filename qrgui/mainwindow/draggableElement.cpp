@@ -46,6 +46,21 @@ DraggableElement::DraggableElement(MainWindow *mainWindow, const Id &id, const Q
 	setCursor(Qt::OpenHandCursor);
 }
 
+QIcon DraggableElement::icon() const
+{
+	return mIcon;
+}
+
+QString DraggableElement::text() const
+{
+	return mText;
+}
+
+Id DraggableElement::id() const
+{
+	return mId;
+}
+
 void DraggableElement::setIconSize(int size)
 {
 	mLabel->setPixmap(mIcon.pixmap(size , size));
@@ -67,9 +82,9 @@ void DraggableElement::changePropertiesPaletteActionTriggered()
 
 void DraggableElement::changeAppearancePaletteActionTriggered()
 {
-	QAction *action = static_cast<QAction *>(sender());
-	Id id = action->data().value<Id>();
-	QString propertyValue = mEditorManagerProxy->shape(id);
+	QAction const * const action = static_cast<QAction *>(sender());
+	Id const id = action->data().value<Id>();
+	QString const propertyValue = mEditorManagerProxy->shape(id);
 	mMainWindow->openShapeEditor(id, propertyValue, mEditorManagerProxy);
 }
 
@@ -77,11 +92,20 @@ void DraggableElement::deleteElementPaletteActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	mDeletedElementId = action->data().value<Id>();
-	QMessageBox *mb = new QMessageBox(tr("Deleting an element: ") + mEditorManagerProxy->friendlyName(mDeletedElementId), tr("Do you really want to delete this item and all its graphical representation from the scene and from the palette?"), QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
-	mb->button(QMessageBox::Ok)->setText(tr("Yes"));
-	mb->button(QMessageBox::Cancel)->setText(tr("No"));
-	mb->show();
-	connect(mb->button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(checkElementForChildren()));
+	QMessageBox messageBox(
+			tr("Deleting an element: ") + mEditorManagerProxy->friendlyName(mDeletedElementId)
+			, tr("Do you really want to delete this item and all its graphical representation from the scene and from the palette?")
+			, QMessageBox::Warning
+			, QMessageBox::Ok
+			, QMessageBox::Cancel
+			, QMessageBox::NoButton
+			);
+
+	messageBox.button(QMessageBox::Ok)->setText(tr("Yes"));
+	messageBox.button(QMessageBox::Cancel)->setText(tr("No"));
+	if (messageBox.exec() == QMessageBox::Ok) {
+		checkElementForChildren();
+	}
 }
 
 void DraggableElement::deleteElement()

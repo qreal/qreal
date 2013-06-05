@@ -1265,6 +1265,7 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 	result->addPreAction(translateCommand);
 	return result;
 }
+
 void NodeElement::updateShape(QString const &shape) const
 {
 	mElementImpl->updateRendererContent(shape);

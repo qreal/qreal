@@ -847,10 +847,8 @@ void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &
 
 QPair<Id, Id> InterpreterEditorManager::createEditorAndDiagram(QString const &name) const
 {
-	Id editor("MetaEditor", "MetaEditor", "MetamodelDiagram",
-						QUuid::createUuid().toString());
-	Id diagram("MetaEditor", "MetaEditor", "MetaEditorDiagramNode",
-			QUuid::createUuid().toString());
+	Id editor("MetaEditor", "MetaEditor", "MetamodelDiagram", QUuid::createUuid().toString());
+	Id diagram("MetaEditor", "MetaEditor", "MetaEditorDiagramNode", QUuid::createUuid().toString());
 	qrRepo::RepoApi * const repo = mEditorRepoApi.value("test");
 	repo->addChild(Id::rootId(), editor);
 	repo->setProperty(editor, "name", name);
@@ -858,6 +856,7 @@ QPair<Id, Id> InterpreterEditorManager::createEditorAndDiagram(QString const &na
 	repo->addChild(editor, diagram);
 	repo->setProperty(diagram, "name", name);
 	repo->setProperty(diagram, "displayedName", name);
+	repo->setProperty(diagram, "nodeName", name);
 	Id const nodeId("MetaEditor", "MetaEditor", "MetaEntityNode", QUuid::createUuid().toString());
 	repo->addChild(diagram, nodeId);
 	repo->setProperty(nodeId, "name", "AbstractNode");

@@ -17,29 +17,30 @@
 namespace  qReal{
 namespace gui{
 
-/// Class for representing editor elements.
+/// Class for representing editor element on palette.
 class DraggableElement : public QWidget
 {
 	Q_OBJECT
+
 public:
-	DraggableElement(MainWindow *mainWindow, Id const &id, QString const &name
+	DraggableElement(
+		MainWindow *mainWindow
+		, Id const &id
+		, QString const &name
 		, QString const &description
-		, QIcon const &icon, bool iconsOnly, QWidget *parent = NULL);
+		, QIcon const &icon
+		, bool iconsOnly
+		, QWidget *parent = NULL
+		);
 
-	QIcon icon() const
-	{
-		return mIcon;
-	}
+	/// Icon of an element on palette.
+	QIcon icon() const;
 
-	QString text() const
-	{
-		return mText;
-	}
+	/// Name of an element on palette.
+	QString text() const;
 
-	Id id() const
-	{
-		return mId;
-	}
+	/// Id of an element.
+	Id id() const;
 
 	void setIconSize(int size);
 	void setEditorManagerProxy(EditorManagerInterface *editorManagerProxy);
@@ -50,20 +51,22 @@ private slots:
 	void deleteElementPaletteActionTriggered();
 	void deleteElement();
 	void checkElementForRootDiagramNode();
-	void checkElementForChildren();
 
 private:
 	Id mId;
 	QIcon mIcon;
 	QString mText;
 	QLabel *mLabel;
-	EditorManagerInterface *mEditorManagerProxy;
+	EditorManagerInterface *mEditorManagerProxy;  // Does not have ownership.
 	MainWindow *mMainWindow;
 	Id mDeletedElementId;
 	bool mIsRootDiagramNode;
+
 	virtual void dragEnterEvent(QDragEnterEvent *event);
 	virtual void dropEvent(QDropEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
+
+	void checkElementForChildren();
 };
 }
 }

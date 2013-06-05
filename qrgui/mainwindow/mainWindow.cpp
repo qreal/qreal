@@ -1885,8 +1885,14 @@ void MainWindow::changePaletteRepresentation()
 void MainWindow::arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles)
 {
 	Id const diagramId = activeDiagram();
-	DotRunner *runner = new DotRunner(diagramId, mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi()
-			, mEditorManagerProxy, absolutePathToDotFiles);
+	DotRunner *runner = new DotRunner(
+			diagramId
+			, mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi()
+			, *mEditorManagerProxy
+			, absolutePathToDotFiles
+			);
+
 	if (runner->run(algorithm)) {
 		updateActiveDiagram();
 	}
