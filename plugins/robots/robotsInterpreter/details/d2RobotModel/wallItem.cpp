@@ -84,7 +84,7 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		mCellNumbY1 = mY1/indexGrid;
 		mCellNumbX2 = mX2/indexGrid;
 		mCellNumbY2 = mY2/indexGrid;
-	} else {
+	} else if (mDragged){
 		QGraphicsItem::mouseMoveEvent(event);
 	}
 	// Items under cursor cannot be dragged when adding new item,
