@@ -73,7 +73,7 @@ public:
 	PropertyEditorModel &propertyModel();
 	ToolPluginManager &toolManager();
 
-	GesturesPainterInterface *gesturesPainter();
+	gestures::GesturesPainterInterface *gesturesPainter() const;
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
@@ -338,7 +338,7 @@ private:
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
-	GesturesWidget *mGesturesWidget;
+	gestures::GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
 
