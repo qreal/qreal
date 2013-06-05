@@ -76,7 +76,7 @@ private:
 	QPersistentModelIndex const mIndex;
 	int const mRole;
 	Id mId;
-	EditorManagerInterface *mEditorManagerProxy;
+	EditorManagerInterface *mEditorManager;
 	IdList mGraphicalElements;
 	MainWindow *mMainWindow;
 	EditorView *mEditorView;

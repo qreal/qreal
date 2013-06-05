@@ -41,7 +41,7 @@ public:
 	/// @param icon Item icon.
 	/// @param tree Editor's tree.
 	void addTopItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon,QTreeWidget *tree);
+			, QIcon const &icon, QTreeWidget *tree);
 
 	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.

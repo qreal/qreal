@@ -17,7 +17,7 @@ class PropertyEditorModel : public QAbstractTableModel
 	Q_OBJECT
 
 public:
-	explicit PropertyEditorModel(qReal::EditorManagerInterface const *editorManagerInter,
+	explicit PropertyEditorModel(qReal::EditorManagerInterface const *editorManagerInterface,
 			QObject *parent = 0);
 
 	int rowCount(const QModelIndex &index) const;
@@ -90,7 +90,7 @@ private:
 
 	QList<Field> mFields;
 
-	qReal::EditorManagerInterface const *mEditorManagerInter;
+	qReal::EditorManagerInterface const *mEditorManagerInterface;
 
 	bool isValid() const;
 };
