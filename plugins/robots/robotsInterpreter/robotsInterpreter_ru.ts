@@ -715,6 +715,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>qReal::interpreters::robots::details::blocks::CommentBlock</name>
+    <message>
+        <location filename="details/blocks/commentBlock.cpp" line="18"/>
+        <source>The comment block with incomming liks detected!</source>
+        <translation>Блок коментария не может иметь входящих связей!</translation>
+    </message>
+</context>
+<context>
     <name>qReal::interpreters::robots::details::blocks::ForkBlock</name>
     <message>
         <location filename="details/blocks/forkBlock.cpp" line="26"/>
@@ -816,9 +824,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::NullificationEncoderBlock</name>
     <message>
-        <location filename="details/blocks/nullificationEncoderBlock.cpp" line="22"/>
         <source>Wrong port to nullificate Encoder</source>
-        <translation>Неправильный порт для сброса энкодера</translation>
+        <translation type="obsolete">Неправильный порт для сброса энкодера</translation>
     </message>
 </context>
 <context>
@@ -928,18 +935,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="710"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="715"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="710"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="728"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="715"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="733"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="728"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="733"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>

@@ -4,8 +4,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="111"/>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="202"/>
+        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="100"/>
+        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="190"/>
         <source>There is nothing to generate, diagram doesn&apos;t have Initial Node</source>
         <translation>Генерация невозможна, на диаграмме нет начальных блоков</translation>
     </message>
@@ -20,9 +20,36 @@
         <translation>Обнаружено более 1 исходящей связи!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="166"/>
+        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="155"/>
         <source>There is no opened diagram</source>
         <translation>Сначала откройте диаграмму </translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/commentElementGenerator.cpp" line="27"/>
+        <source>The comment block with incomming liks detected!</source>
+        <translation>Блок коментария не может иметь входящих связей!</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="169"/>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="176"/>
+        <source>If block </source>
+        <translation>У условного блока </translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="169"/>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="176"/>
+        <source> has no 2 correct branches! May be you need to connect one of them to some diagram element.</source>
+        <translation> найдены не присоединенные ветки!</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="209"/>
+        <source>This diagram isn&apos;t structed diagram, because there are IF block with 2 back arrows!</source>
+        <translation>Диаграмма не структурная т.к. существует условный блок с двумя обратными стрелками!</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="213"/>
+        <source>Generator JUST does not work in this case.</source>
+        <translation>Данная диаграмма слишком сложна для генерации.</translation>
     </message>
 </context>
 <context>

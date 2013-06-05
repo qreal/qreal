@@ -8,7 +8,8 @@ namespace robots {
 namespace generator {
 
 /// Element generator factory that returns generator for diagram element Id.
-class SimpleElementFactory {
+class SimpleElementFactory
+{
 public:
 	static AbstractSimpleElementGenerator* generator(QString const elementType);
 };

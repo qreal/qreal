@@ -1217,7 +1217,7 @@
 				<element name="IfBlock"/>
 				<element name="ControlFlow"/>
 				<element name="Loop"/>
-<!--				<element name="CommentBlock"/> -->
+				<element name="CommentBlock"/>
 			</group>
 			<group name="Инициализация">
 				<element name="InitialNode"/>
