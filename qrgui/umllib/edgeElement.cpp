@@ -2034,26 +2034,15 @@ void EdgeElement::alignToGrid()
 	}
 }
 
-qreal EdgeElement::alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const
-{
-	int const coefSign = coef != 0 ? coef / qAbs(coef) : 0;
-
-	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid) {
-		return coef * indexGrid;
-	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) < indexGrid) {
-		return (coef + coefSign) * indexGrid;
-	}
-	return coord;
-}
-
 QPointF EdgeElement::alignedPoint(QPointF const &point, int const indexGrid) const
 {
-	QPointF p = mapToScene(point);
+	QPointF result = mapToScene(point);
 
-	int const coefX = static_cast<int>(p.x()) / indexGrid;
-	int const coefY = static_cast<int>(p.y()) / indexGrid;
+	int const coefX = static_cast<int>(result.x()) / indexGrid;
+	int const coefY = static_cast<int>(result.y()) / indexGrid;
 
-	p = QPointF(alignedCoordinate(p.x(), coefX, indexGrid), alignedCoordinate(p.y(), coefY, indexGrid));
+	result = QPointF(SceneGridHandler::alignedCoordinate(result.x(), coefX, indexGrid)
+			, SceneGridHandler::alignedCoordinate(result.y(), coefY, indexGrid));
 
-	return mapFromScene(p);
+	return mapFromScene(result);
 }
