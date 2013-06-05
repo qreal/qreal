@@ -106,7 +106,7 @@ void StartDialog::openInterpretedDiagram()
 {
 	hide();
 	QString const fileName = mProjectManager.openFileName(tr("Select file with metamodel to open"));
-	ProxyEditorManager *editorManagerProxy = mMainWindow.proxyManager();
+	ProxyEditorManager *editorManagerProxy = mMainWindow.editorManagerProxy();
 
 	if (!fileName.isEmpty() && mProjectManager.open(fileName)) {
 		editorManagerProxy->setProxyManager(new InterpreterEditorManager(fileName));
@@ -122,9 +122,10 @@ void StartDialog::openInterpretedDiagram()
 			}
 		}
 		foreach (QString const &interpreterIdString, interpreterDiagramsList) {
+			// TODO: ???
 			mMainWindow.models()->repoControlApi().exterminate();
 			mMainWindow.models()->reinit();
-			mMainWindow.loadMetamodel();
+			mMainWindow.loadPlugins();
 			mMainWindow.createDiagram(interpreterIdString);
 		}
 		forceClose();
@@ -137,19 +138,20 @@ void StartDialog::openInterpretedDiagram()
 void StartDialog::createInterpretedDiagram()
 {
 	hide();
-	ProxyEditorManager *editorManagerProxy = mMainWindow.proxyManager();
+	ProxyEditorManager *editorManagerProxy = mMainWindow.editorManagerProxy();
 	editorManagerProxy->setProxyManager(new InterpreterEditorManager(""));
-	bool ok;
+	bool ok = false;
 	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
 	while (ok && name.isEmpty()) {
 		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
 	}
+
 	if (ok) {
 		QPair<Id, Id> editorAndDiagram = editorManagerProxy->createEditorAndDiagram(name);
 		mMainWindow.addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
 		mMainWindow.models()->repoControlApi().exterminate();
 		mMainWindow.models()->reinit();
-		mMainWindow.loadMetamodel();
+		mMainWindow.loadPlugins();
 		forceClose();
 	} else {
 		show();

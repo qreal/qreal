@@ -69,7 +69,7 @@ public:
 	MainWindow(QString const &fileToOpen = QString());
 	~MainWindow();
 
-	EditorManagerInterface* manager();
+	EditorManagerInterface* editorManager();
 	EditorView *getCurrentTab() const;
 	ListenerManager *listenerManager() const;
 	models::Models *models() const;
@@ -124,11 +124,22 @@ public:
 
 	virtual void reportOperation(invocation::LongOperation *operation);
 
-	ProxyEditorManager *proxyManager();
-	void loadMetamodel();
+	/// Returns editor manager proxy, which allows to change editor manager implementation.
+	ProxyEditorManager *editorManagerProxy();
+
+	/// Loads (or reloads) available editor plugins and reinits palette.
 	void loadPlugins();
+
+	/// Closes tab having given id as root id. If there is no such tab, does nothing.
+	/// @param id Id of a diagram (root element) that we want to close.
 	void closeDiagramTab(Id const &id);
+
+	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();
+
+	/// Adds all elements from given diagram in a given editor to a palette.
+	/// @param editor Id of an editor we need to add elements from.
+	/// @param diagram Id of a diagram we need to add elements from.
 	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
 
 	virtual QDockWidget *logicalModelDock() const;

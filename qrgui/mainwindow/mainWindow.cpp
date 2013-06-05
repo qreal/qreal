@@ -264,7 +264,7 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 }
 
-EditorManagerInterface* MainWindow::manager()
+EditorManagerInterface* MainWindow::editorManager()
 {
 	return mEditorManagerProxy;
 }
@@ -293,18 +293,14 @@ void MainWindow::loadPlugins()
 			, mEditorManagerProxy);
 }
 
-void MainWindow::loadMetamodel()
-{
-	loadPlugins();
-}
-
 void MainWindow::closeDiagramTab(Id const &id)
 {
-	IdList const grIds = mModels->graphicalRepoApi().graphicalElements(id.type());
-	if (!grIds.isEmpty()) {
-		QModelIndex index = mModels->graphicalModelAssistApi().indexById(grIds[0]);
+	IdList const graphicalIds = mModels->graphicalRepoApi().graphicalElements(id.type());
+	if (!graphicalIds.isEmpty()) {
+		// TODO: Why only for first graphical element?
+		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(graphicalIds[0]);
 		for (int i = 0; i < mUi->tabs->count(); i++) {
-			EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+			EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
 			if (tab != NULL && tab->mvIface()->rootIndex() == index) {
 				mUi->tabs->removeTab(i);
 			}
@@ -315,16 +311,16 @@ void MainWindow::closeDiagramTab(Id const &id)
 void MainWindow::clearSelectionOnTabs()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
 		if (tab != NULL) {
 			tab->scene()->clearSelection();
 		}
 	}
 }
 
-void MainWindow::addEditorElementsToPalette(const Id &editor, const Id &diagram)
+void MainWindow::addEditorElementsToPalette(Id const &editor, Id const &diagram)
 {
-	mUi->paletteTree->addEditorElements(mEditorManagerProxy, Id(editor), diagram);
+	mUi->paletteTree->addEditorElements(mEditorManagerProxy, editor, diagram);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -776,8 +772,7 @@ void MainWindow::pasteCopyOfLogical()
 
 void MainWindow::showAbout()
 {
-	QMessageBox::about(this, tr("About QReal"),
-			tr("<b>QReal<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>"));
+	QMessageBox::about(this, tr("About QReal"), mToolManager.customizer()->aboutText());
 }
 
 void MainWindow::showHelp()
@@ -962,7 +957,7 @@ void MainWindow::setSceneFont()
 	}
 }
 
-//This method is better to rewrite
+// TODO: Unify overloads.
 void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue)
 {
 	ShapeEdit *shapeEdit = new ShapeEdit(dynamic_cast<models::details::LogicalModel *>(mModels->logicalModel())
@@ -976,6 +971,19 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	model->setData(index, propertyValue, role);
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &))
 			, this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
+
+	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
+	mUi->tabs->setCurrentWidget(shapeEdit);
+	setConnectActionZoomTo(shapeEdit);
+}
+
+// This method is for Interpreter.
+void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy)
+{
+	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab());
+	if (!propertyValue.isEmpty()) {
+		shapeEdit->load(propertyValue);
+	}
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
@@ -1000,18 +1008,6 @@ void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, in
 	setConnectActionZoomTo(textEdit);
 }
 
-// This method is for Interpreter
-void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy)
-{
-	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab());
-	if (!propertyValue.isEmpty()) {
-		shapeEdit->load(propertyValue);
-	}
-
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
-}
 void MainWindow::openShapeEditor()
 {
 	ShapeEdit * const shapeEdit = new ShapeEdit;
@@ -1451,7 +1447,7 @@ GesturesPainterInterface * MainWindow::gesturesPainter()
 	return mGesturesWidget;
 }
 
-ProxyEditorManager *MainWindow::proxyManager()
+ProxyEditorManager *MainWindow::editorManagerProxy()
 {
 	return mEditorManagerProxy;
 }

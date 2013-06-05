@@ -14,7 +14,7 @@
 #include "../pluginManager/proxyEditorManager.h"
 #include "../../qrkernel/ids.h"
 
-namespace  qReal{
+namespace qReal{
 namespace gui{
 
 /// Class for representing editor element on palette.
@@ -24,12 +24,13 @@ class DraggableElement : public QWidget
 
 public:
 	DraggableElement(
-		MainWindow *mainWindow
+		MainWindow &mainWindow
 		, Id const &id
 		, QString const &name
 		, QString const &description
 		, QIcon const &icon
 		, bool iconsOnly
+		, EditorManagerInterface &editorManagerProxy
 		, QWidget *parent = NULL
 		);
 
@@ -43,7 +44,6 @@ public:
 	Id id() const;
 
 	void setIconSize(int size);
-	void setEditorManagerProxy(EditorManagerInterface *editorManagerProxy);
 
 private slots:
 	void changePropertiesPaletteActionTriggered();
@@ -57,13 +57,11 @@ private:
 	QIcon mIcon;
 	QString mText;
 	QLabel *mLabel;
-	EditorManagerInterface *mEditorManagerProxy;  // Does not have ownership.
-	MainWindow *mMainWindow;
+	EditorManagerInterface &mEditorManagerProxy;  // Does not have ownership.
+	MainWindow &mMainWindow;
 	Id mDeletedElementId;
 	bool mIsRootDiagramNode;
 
-	virtual void dragEnterEvent(QDragEnterEvent *event);
-	virtual void dropEvent(QDropEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
 
 	void checkElementForChildren();

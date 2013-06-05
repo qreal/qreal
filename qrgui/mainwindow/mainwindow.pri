@@ -21,7 +21,7 @@ HEADERS += \
 	mainwindow/draggableElement.h \
 	mainwindow/paletteTreeWidget.h \
 	mainwindow/qscintillaTextEdit.h \
-	mainwindow/shapeEdit/visibilityValueWidget.h
+	mainwindow/shapeEdit/visibilityValueWidget.h \
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -41,7 +41,7 @@ SOURCES += \
 	mainwindow/draggableElement.cpp \
 	mainwindow/paletteTreeWidget.cpp \
 	mainwindow/shapeEdit/visibilityValueWidget.cpp \
-	mainwindow/qscintillaTextEdit.cpp
+	mainwindow/qscintillaTextEdit.cpp \
 
 win32 {
 	HEADERS += \
@@ -69,7 +69,7 @@ macx {
 
 FORMS += \
 	mainwindow/mainWindow.ui \
-	mainwindow/referenceList.ui
+	mainwindow/referenceList.ui \
 
 # Shape editor
 HEADERS += \

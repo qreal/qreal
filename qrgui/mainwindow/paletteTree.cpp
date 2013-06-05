@@ -29,8 +29,7 @@ void PaletteTree::addItemType(const Id &id, QString const &name, QString const &
 		, const QIcon &icon, QTreeWidget *tree, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(mMainWindow, id, name, description, icon, mIconsView);
-	element->setEditorManagerProxy(mEditorManagerProxy);
+	DraggableElement *element = new DraggableElement(*mMainWindow, id, name, description, icon, mIconsView, *mEditorManagerProxy);
 	parent->addChild(leaf);
 	tree->setItemWidget(leaf, 0, element);
 }
@@ -39,8 +38,7 @@ void PaletteTree::addTopItemType(const Id &id, const QString &name
 		, const QString &description, const QIcon &icon, QTreeWidget *tree)
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(mMainWindow, id, name, description, icon, mIconsView);
-	element->setEditorManagerProxy(mEditorManagerProxy);
+	DraggableElement *element = new DraggableElement(*mMainWindow, id, name, description, icon, mIconsView, *mEditorManagerProxy);
 	tree->addTopLevelItem(item);
 	tree->setItemWidget(item, 0, element);
 }
@@ -121,11 +119,16 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 		QHBoxLayout *layout = new QHBoxLayout;
 		int count = mItemsCountInARow;
 		for (; it != tmpIdList.end() && count-- > 0; ++it) {
-			DraggableElement *element = new DraggableElement(mMainWindow, *it
+			DraggableElement *element = new DraggableElement(
+					*mMainWindow
+					, *it
 					, mEditorManagerProxy->friendlyName(*it)
 					, mEditorManagerProxy->description(*it)
 					, mEditorManagerProxy->icon(*it)
-					, true);
+					, true
+					, *mEditorManagerProxy
+					);
+
 			element->setToolTip(mEditorManagerProxy->friendlyName(*it));
 			layout->addWidget(element, count > 0 ? 50 : 0);
 		}
@@ -148,29 +151,30 @@ void PaletteTree::addEditorElements(EditorManagerInterface *editorManagerProxy, 
 	editorTree->setHeaderHidden(true);
 	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
-	IdList list = mEditorManagerProxy->elements(diagram);
-	IdList listGr = mEditorManagerProxy->groups(diagram);
-	list.append(listGr);
-	qSort(list.begin(), list.end(), idLessThan);
+	IdList elements = mEditorManagerProxy->elements(diagram);
+	IdList groups = mEditorManagerProxy->groups(diagram);
+	elements.append(groups);
+	qSort(elements.begin(), elements.end(), idLessThan);
 
 	mCategories[diagram] = mEditorsTrees.size();
 
 	if (!mEditorManagerProxy->paletteGroups(editor, diagram).empty()) {
-		foreach (const QString &group, mEditorManagerProxy->paletteGroups(editor, diagram)) {
+		foreach (QString const &group, mEditorManagerProxy->paletteGroups(editor, diagram)) {
 			QTreeWidgetItem *item = new QTreeWidgetItem;
 			item->setText(0, group);
 			item->setToolTip(0, mEditorManagerProxy->paletteGroupDescription(editor, diagram, group));
 
 			IdList tmpIdList;
 
-			foreach (const QString &elementName, mEditorManagerProxy->paletteGroupList(editor, diagram, group)) {
-				foreach (const Id &element, list) {
+			foreach (QString const &elementName, mEditorManagerProxy->paletteGroupList(editor, diagram, group)) {
+				foreach (Id const &element, elements) {
 					if (element.element() == elementName) {
 						tmpIdList.append (element);
 						break;
 					}
 				}
 			}
+
 			qSort(tmpIdList.begin(), tmpIdList.end(), idLessThan);
 
 			addItemsRow(tmpIdList, editorTree, item);
@@ -182,7 +186,7 @@ void PaletteTree::addEditorElements(EditorManagerInterface *editorManagerProxy, 
 			}
 		}
 	} else {
-		foreach (const Id &element, list) {
+		foreach (Id const &element, elements) {
 			addTopItemType(element, mEditorManagerProxy->friendlyName(element)
 					, mEditorManagerProxy->description(element)
 					, mEditorManagerProxy->icon(element), editorTree);
@@ -345,8 +349,8 @@ void PaletteTree::setIconsView(bool iconsView)
 
 void PaletteTree::loadEditors(EditorManagerInterface *editorManagerProxy)
 {
-	foreach (Id const editor, editorManagerProxy->editors()) {
-		foreach (Id const diagram, editorManagerProxy->diagrams(editor)) {
+	foreach (Id const &editor, editorManagerProxy->editors()) {
+		foreach (Id const &diagram, editorManagerProxy->diagrams(editor)) {
 			addEditorElements(editorManagerProxy, editor, diagram);
 		}
 	}

@@ -95,7 +95,7 @@ void EmbeddedLinker::setDirected(const bool directed)
 
 void EmbeddedLinker::initTitle()
 {
-	EditorManagerInterface* editorManagerInter = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->manager();
+	EditorManagerInterface* editorManagerInter = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->editorManager();
 	QString edgeTypeFriendly = editorManagerInter->friendlyName(Id::loadFromString("qrm:/"+ mMaster->id().editor() + "/" + mMaster->id().diagram() + "/" + mEdgeType.element()));
 
 	float textWidth = edgeTypeFriendly.size()*10;
@@ -226,7 +226,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 		QString const type = "qrm:/" + mMaster->id().editor() + "/" +
 							 mMaster->id().diagram() + "/" + mEdgeType.element();
-		if (scene->mainWindow()->manager()->hasElement(Id::loadFromString(type))) {
+		if (scene->mainWindow()->editorManager()->hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
 			// FIXME: I am raw. return strange pos() and inside me a small trash
 			Id edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand);

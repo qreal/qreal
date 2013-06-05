@@ -32,7 +32,7 @@ public:
 	/// @param tree Editor's tree.
 	/// @param parent Parent of item's group.
 	void addItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon,QTreeWidget *tree, QTreeWidgetItem *parent);
+			, QIcon const &icon, QTreeWidget *tree, QTreeWidgetItem *parent);
 
 	/// Adds top item type to some editor's tree.
 	/// @param id Item id.

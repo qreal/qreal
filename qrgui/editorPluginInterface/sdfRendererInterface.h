@@ -17,6 +17,7 @@ public:
 	virtual void setElementRepo(ElementRepoInterface *elementRepo) = 0;
 };
 
+// TODO: ???
 class SdfIconEngineV2Interface : public QIconEngine
 {
 public:

@@ -15,12 +15,21 @@
 using namespace qReal;
 using namespace gui;
 
-DraggableElement::DraggableElement(MainWindow *mainWindow, const Id &id, const QString &name
-		, const QString &description, const QIcon &icon, bool iconsOnly, QWidget *parent)
+DraggableElement::DraggableElement(
+		MainWindow &mainWindow
+		, const Id &id
+		, const QString &name
+		, const QString &description
+		, const QIcon &icon
+		, bool iconsOnly
+		, EditorManagerInterface &editorManagerProxy
+		, QWidget *parent
+		)
 		: QWidget(parent)
 		, mId(id)
 		, mIcon(icon)
 		, mText(name)
+		, mEditorManagerProxy(editorManagerProxy)
 		, mMainWindow(mainWindow)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
@@ -66,16 +75,11 @@ void DraggableElement::setIconSize(int size)
 	mLabel->setPixmap(mIcon.pixmap(size , size));
 }
 
-void DraggableElement::setEditorManagerProxy(EditorManagerInterface *editorManagerProxy)
-{
-	mEditorManagerProxy = editorManagerProxy;
-}
-
 void DraggableElement::changePropertiesPaletteActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	Id id = action->data().value<Id>();
-	PropertiesDialog *propDialog = new PropertiesDialog(*mMainWindow, *mEditorManagerProxy, id);
+	PropertiesDialog *propDialog = new PropertiesDialog(mMainWindow, mEditorManagerProxy, id);
 	propDialog->setModal(true);
 	propDialog->show();
 }
@@ -84,8 +88,8 @@ void DraggableElement::changeAppearancePaletteActionTriggered()
 {
 	QAction const * const action = static_cast<QAction *>(sender());
 	Id const id = action->data().value<Id>();
-	QString const propertyValue = mEditorManagerProxy->shape(id);
-	mMainWindow->openShapeEditor(id, propertyValue, mEditorManagerProxy);
+	QString const propertyValue = mEditorManagerProxy.shape(id);
+	mMainWindow.openShapeEditor(id, propertyValue, &mEditorManagerProxy);
 }
 
 void DraggableElement::deleteElementPaletteActionTriggered()
@@ -93,7 +97,7 @@ void DraggableElement::deleteElementPaletteActionTriggered()
 	QAction *action = static_cast<QAction *>(sender());
 	mDeletedElementId = action->data().value<Id>();
 	QMessageBox messageBox(
-			tr("Deleting an element: ") + mEditorManagerProxy->friendlyName(mDeletedElementId)
+			tr("Deleting an element: ") + mEditorManagerProxy.friendlyName(mDeletedElementId)
 			, tr("Do you really want to delete this item and all its graphical representation from the scene and from the palette?")
 			, QMessageBox::Warning
 			, QMessageBox::Ok
@@ -110,23 +114,32 @@ void DraggableElement::deleteElementPaletteActionTriggered()
 
 void DraggableElement::deleteElement()
 {
-	mMainWindow->clearSelectionOnTabs();
+	mMainWindow.clearSelectionOnTabs();
 	if (mIsRootDiagramNode) {
-		mMainWindow->closeDiagramTab(mDeletedElementId);
+		mMainWindow.closeDiagramTab(mDeletedElementId);
 	}
-	mEditorManagerProxy->deleteElement(mMainWindow, mDeletedElementId);
-	mMainWindow->loadPlugins();
+	mEditorManagerProxy.deleteElement(&mMainWindow, mDeletedElementId);
+	mMainWindow.loadPlugins();
 }
 
 void DraggableElement::checkElementForRootDiagramNode()
 {
-	if (mEditorManagerProxy->isRootDiagramNode(mDeletedElementId)) {
+	if (mEditorManagerProxy.isRootDiagramNode(mDeletedElementId)) {
 		mIsRootDiagramNode = true;
-		QMessageBox *mb = new QMessageBox(tr("Warning"), tr("The deleted element ") + mEditorManagerProxy->friendlyName(mDeletedElementId) + tr(" is the element of root digram. Continue to delete?"), QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
-		mb->button(QMessageBox::Ok)->setText(tr("Yes"));
-		mb->button(QMessageBox::Cancel)->setText(tr("No"));
-		mb->show();
-		connect(mb->button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(deleteElement()));
+		QMessageBox messageBox(
+				tr("Warning")
+				, tr("The deleted element ") + mEditorManagerProxy.friendlyName(mDeletedElementId) + tr(" is the element of root digram. Continue to delete?")
+				, QMessageBox::Warning
+				, QMessageBox::Ok
+				, QMessageBox::Cancel
+				, QMessageBox::NoButton
+				);
+
+		messageBox.button(QMessageBox::Ok)->setText(tr("Yes"));
+		messageBox.button(QMessageBox::Cancel)->setText(tr("No"));
+		if (messageBox.exec() == QMessageBox::Ok) {
+			deleteElement();
+		}
 	} else {
 		deleteElement();
 	}
@@ -135,32 +148,38 @@ void DraggableElement::checkElementForRootDiagramNode()
 void DraggableElement::checkElementForChildren()
 {
 	mIsRootDiagramNode = false;
-	IdList const children = mEditorManagerProxy->children(mDeletedElementId);
+	IdList const children = mEditorManagerProxy.children(mDeletedElementId);
 	if (!children.isEmpty()) {
 		QString childrenNames;
 		foreach (Id const child, children) {
-			childrenNames += " " + mEditorManagerProxy->friendlyName(child) + ",";
+			childrenNames += " " + mEditorManagerProxy.friendlyName(child) + ",";
 		}
 		if (!childrenNames.isEmpty()) {
 			childrenNames.replace(childrenNames.length() - 1, 1, ".");
 		}
 
-		QMessageBox *mb = new QMessageBox(tr("Warning"), tr("The deleted element ") + mEditorManagerProxy->friendlyName(mDeletedElementId) + tr(" has inheritors:") + childrenNames + "\n" + tr("If you delete it, its properties will be removed from the elements-inheritors. Continue to delete?"), QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
-		mb->button(QMessageBox::Ok)->setText(tr("Yes"));
-		mb->button(QMessageBox::Cancel)->setText(tr("No"));
-		mb->show();
-		connect(mb->button(QMessageBox::Ok), SIGNAL(clicked()), this, SLOT(checkElementForRootDiagramNode()));
+		QMessageBox messageBox(
+				tr("Warning")
+				, tr("The deleted element ")
+						+ mEditorManagerProxy.friendlyName(mDeletedElementId)
+						+ tr(" has inheritors:")
+						+ childrenNames
+						+ "\n"
+						+ tr("If you delete it, its properties will be removed from the elements-inheritors. Continue to delete?")
+				, QMessageBox::Warning
+				, QMessageBox::Ok
+				, QMessageBox::Cancel
+				, QMessageBox::NoButton
+				);
+
+		messageBox.button(QMessageBox::Ok)->setText(tr("Yes"));
+		messageBox.button(QMessageBox::Cancel)->setText(tr("No"));
+		if (messageBox.exec() == QMessageBox::Ok) {
+			checkElementForRootDiagramNode();
+		}
 	} else {
 		checkElementForRootDiagramNode();
 	}
-}
-
-void DraggableElement::dragEnterEvent(QDragEnterEvent * /*event*/)
-{
-}
-
-void DraggableElement::dropEvent(QDropEvent * /*event*/)
-{
 }
 
 void DraggableElement::mousePressEvent(QMouseEvent *event)
@@ -186,7 +205,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 	Id elementId(child->id(), QUuid::createUuid().toString());
 
 	if (event->button() == Qt::RightButton) {
-		if (mEditorManagerProxy->isInterpretationMode()) {
+		if (mEditorManagerProxy.isInterpretationMode()) {
 			QMenu menu;
 			QAction * const changePropertiesPaletteAction = menu.addAction(tr("Change Properties"));
 			connect(changePropertiesPaletteAction, SIGNAL(triggered()), SLOT(changePropertiesPaletteActionTriggered()));

@@ -50,7 +50,7 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 	}
 
 	EdgeElement * const newEdge = dynamic_cast<EdgeElement *>(
-			mScene->mainWindow()->manager()->graphicalObject(resultId));
+			mScene->mainWindow()->editorManager()->graphicalObject(resultId));
 	newEdge->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
 	newEdge->setController(mScene->mainWindow()->controller());
 	newEdge->setId(resultId);

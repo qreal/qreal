@@ -140,7 +140,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
+		Element* elem = mScene->mainWindow()->editorManager()->graphicalObject(currentId);
 		if (elem) {
 			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
 			elem->setController(mScene->mainWindow()->controller());
