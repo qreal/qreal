@@ -87,14 +87,24 @@ QRectF Rotater::boundingRect() const
 	return mLineImpl.boundingRect(mX1, mY1, mX2, mY2, mPen.width(), drift);
 }
 
+//qreal Rotater::distance(qreal x1, qreal y1, qreal x2, qreal y2) const
+//{
+//	return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+//}
+
+//qreal Rotater::distance(QPointF const &p1, QPointF const &p2) const
+//{
+//	return distance(p1.x(), p1.y(), p2.x(), p2.y());
+//}
+
 void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 {
 	// Cosine theorem
-	qreal const x1 = event->pos().x();
-	qreal const y1 = event->pos().y();
-	qreal const x2 = event->lastPos().x();
-	qreal const y2 = event->lastPos().y();
-	qreal len = sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
+	qreal const x1 = event->pos().x() - mX1 / 2;
+	qreal const y1 = event->pos().y() - mY1 / 2;
+	qreal const x2 = event->lastPos().x() - mX1 / 2;
+	qreal const y2 = event->lastPos().y() - mY1 / 2;
+	qreal const len = sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
 
 	// Rotation sign is the sign of the vector product
 	qreal const vectorProduct = x1 * y2 - x2 * y1;
