@@ -1,6 +1,7 @@
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 
+#include "../../../../../qrkernel/settingsManager.h"
 #include "d2ModelScene.h"
 
 using namespace qReal::interpreters::robots;
@@ -24,8 +25,13 @@ D2ModelScene::~D2ModelScene()
 
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	QGraphicsScene::mousePressEvent(mouseEvent);
-	emit mousePressed(mouseEvent);
+	if (SettingsManager::value("ChaoticEdition").toBool()) {
+		emit mousePressed(mouseEvent);
+		QGraphicsScene::mousePressEvent(mouseEvent);
+	} else {
+		QGraphicsScene::mousePressEvent(mouseEvent);
+		emit mousePressed(mouseEvent);
+	}
 }
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
