@@ -501,47 +501,43 @@ IdList EditorManager::groups(Id const &diagram)
 	foreach(Pattern const &pattern, parser.getPatterns()) {
 		mGroups.insert(pattern.name(), pattern);
 	}
-	foreach (QString const &e, mGroups.keys()) {
-		elements.append(Id(diagram.editor(), diagram.diagram(), e));
+
+	foreach (QString const &group, mGroups.keys()) {
+		elements.append(Id(diagram.editor(), diagram.diagram(), group));
 	}
+
 	return elements;
 }
 
 QList<StringPossibleEdge> EditorManager::possibleEdges(QString const &editor, QString const &element) const
 {
-	EditorInterface *editorInterface = editorInterface(editor);
-	return editorInterface->getPossibleEdges(element);
+	return editorInterface(editor)->getPossibleEdges(element);
 }
 
 QStringList EditorManager::elements(QString const &editor, QString const &diagram) const
 {
-	EditorInterface *editorInterface = editorInterface(editor);
-	return editorInterface->elements(diagram);
+	return editorInterface(editor)->elements(diagram);
 }
 
 int EditorManager::isNodeOrEdge(QString const &editor, QString const &element) const
 {
-	EditorInterface *editorInterface = editorInterface(editor);
-	return editorInterface->isNodeOrEdge(element);
+	return editorInterface(editor)->isNodeOrEdge(element);
 }
 
 bool EditorManager::isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement
 		, QString const &childDiagram, QString const &childElement) const
 {
-	EditorInterface *editorInterface = editorInterface(editor);
-	return editorInterface->isParentOf(parentDiagram, parentElement, childDiagram, childElement);
+	return editorInterface(editor)->isParentOf(parentDiagram, parentElement, childDiagram, childElement);
 }
 
 QString EditorManager::diagramName(QString const &editor, QString const &diagram) const
 {
-	EditorInterface *editorInterface = editorInterface(editor);
-	return editorInterface->diagramName(diagram);
+	return editorInterface(editor)->diagramName(diagram);
 }
 
 QString EditorManager::diagramNodeName(QString const &editor, QString const &diagram) const
 {
-	EditorInterface *editorInterface = editorInterface(editor);
-	return editorInterface->diagramNodeName(diagram);
+	return editorInterface(editor)->diagramNodeName(diagram);
 }
 
 bool EditorManager::isInterpretationMode() const
