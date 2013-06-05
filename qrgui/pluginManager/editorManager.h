@@ -79,12 +79,11 @@ public:
 	bool isParentOf(Id const &child, Id const &parent) const;
 	bool isGraphicalElementNode(const Id &id) const;
 
-	//new methods:
 	QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const;
 	QStringList elements(QString const &editor, QString const &diagram) const;
 	int isNodeOrEdge(QString const &editor, QString const &element) const;
 	bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement,
-					QString const &childDiagram, QString const &childElement) const;
+			QString const &childDiagram, QString const &childElement) const;
 	QString diagramName(QString const &editor, QString const &diagram) const;
 	QString diagramNodeName(QString const &editor, QString const &diagram) const;
 	bool isInterpretationMode() const;
@@ -92,7 +91,7 @@ public:
 	void deleteProperty(QString const &propDisplayedName) const;
 	void addProperty(Id const &id, QString const &propDisplayedName) const;
 	void updateProperties(Id const &id, QString const &property, QString const &propertyType,
-						  QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
+			QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
 	QString propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
 	IdList children(Id const &parent) const;
 	QString shape(Id const &id) const;
@@ -101,7 +100,7 @@ public:
 	bool isRootDiagramNode(Id const &id) const;
 	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const;
 	void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
-						QString const &lineType, QString const &beginType, QString const &endType) const;
+			QString const &lineType, QString const &beginType, QString const &endType) const;
 	QPair<Id, Id> createEditorAndDiagram(QString const &name) const;
 	void saveMetamodel(QString const &newMetamodelFileName);
 	QString saveMetamodelFilePath() const;

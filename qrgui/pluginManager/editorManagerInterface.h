@@ -19,7 +19,9 @@
 class Element;
 
 namespace qReal {
+
 class MainWindow;
+
 class EditorManagerInterface
 {
 public:
@@ -61,14 +63,11 @@ public:
 	virtual Id findElementByType(QString const &type) const = 0;
 	virtual QList<ListenerInterface *> listeners() const = 0;
 
-	//virtual EditorInterface* editorInterface(QString const &editor) const = 0;
-
 	virtual bool isDiagramNode(Id const &id) const = 0;
 
 	virtual bool isParentOf(Id const &child, Id const &parent) const = 0;
 	virtual bool isGraphicalElementNode(const Id &id) const = 0;
 
-	//new methods:
 	virtual QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const = 0;
 	virtual QStringList elements(QString const &editor, QString const &diagram) const = 0;
 	virtual int isNodeOrEdge(QString const &editor, QString const &element) const = 0;
@@ -88,11 +87,10 @@ public:
 	virtual bool isRootDiagramNode(Id const &id) const = 0;
 	virtual void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const = 0;
 	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
-								QString const &lineType, QString const &beginType, QString const &endType) const = 0;
+			QString const &lineType, QString const &beginType, QString const &endType) const = 0;
 	virtual QPair<Id, Id> createEditorAndDiagram(QString const &name) const = 0;
 	virtual void saveMetamodel(QString const &newMetamodelFileName) = 0;
 	virtual QString saveMetamodelFilePath() const = 0;
-	//unsupported methods:
 	virtual QStringList paletteGroups(Id const &editor, Id const &diagram) const = 0;
 	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const = 0;
 	virtual QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const = 0;

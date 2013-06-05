@@ -911,9 +911,9 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 	}
 
 	foreach (Id diagram, connectableDiagrams) {
-		Id diagramType = mMVIface->logicalAssistApi()->editorManagerInter()->findElementByType(diagram.element());
-		QString name = mMVIface->logicalAssistApi()->editorManagerInter()->friendlyName(diagramType);
-		QString editorName = mMVIface->logicalAssistApi()->editorManagerInter()->friendlyName(Id(diagramType.editor()));
+		Id diagramType = mMVIface->logicalAssistApi()->editorManagerInterface()->findElementByType(diagram.element());
+		QString name = mMVIface->logicalAssistApi()->editorManagerInterface()->friendlyName(diagramType);
+		QString editorName = mMVIface->logicalAssistApi()->editorManagerInterface()->friendlyName(Id(diagramType.editor()));
 		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
 		hasAnyActions = true;
 		connect(action, SIGNAL(triggered()), slot);
@@ -1347,7 +1347,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 			} else {
 				IdList diagrams = mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId());
 				if (!diagrams.isEmpty()) {
-					Id diagramType = mMVIface->logicalAssistApi()->editorManagerInter()->findElementByType(diagrams[0].element());
+					Id diagramType = mMVIface->logicalAssistApi()->editorManagerInterface()->findElementByType(diagrams[0].element());
 					mMVIface->logicalAssistApi()->createConnected(element->logicalId(), diagramType);
 				}
 			}

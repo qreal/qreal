@@ -23,7 +23,7 @@ class AbstractModel : public QAbstractItemModel
 	Q_OBJECT
 
 public:
-	AbstractModel(EditorManagerInterface const *editorManagerInter);
+	AbstractModel(EditorManagerInterface const *editorManagerInterface);
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -39,7 +39,7 @@ public:
 	QPersistentModelIndex rootIndex() const;
 	//void initializeElement(Id const &id, details::AbstractModelItem *parentItem,
 	//		details::AbstractModelItem *item, QString const &name, QPointF const &position);
-	EditorManagerInterface const *editorManagerInter() const;
+	EditorManagerInterface const *editorManagerInterface() const;
 
 	/// Stacks item element before sibling (they should have the same parent)
 	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling) = 0;
@@ -51,7 +51,7 @@ public:
 	void reinit();
 
 protected:
-	EditorManagerInterface const *mEditorManagerInter;
+	EditorManagerInterface const *mEditorManagerInterface;
 	QHash<Id, AbstractModelItem *> mModelItems;
 	AbstractModelItem *mRootItem;
 

@@ -24,8 +24,8 @@ class AbstractModel;
 class ModelsAssistApi
 {
 public:
-	ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManagerInterface const *editorManagerInter);
-	EditorManagerInterface const *editorManagerInter() const;
+	ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManagerInterface const *editorManagerInterface);
+	EditorManagerInterface const *editorManagerInterface() const;
 	Id createElement(Id const &parent, Id const &id, Id const &logicalId
 			, bool isFromLogicalModel, QString const &name, QPointF const &position);
 
@@ -58,7 +58,7 @@ private:
 	ModelsAssistApi& operator =(ModelsAssistApi const &);
 
 	details::modelsImplementation::AbstractModel &mModel;
-	EditorManagerInterface const *mEditorManagerInter;
+	EditorManagerInterface const *mEditorManagerInterface;
 };
 }
 }

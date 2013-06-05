@@ -2,8 +2,8 @@
 
 using namespace qReal;
 
-ProxyEditorManager::ProxyEditorManager(EditorManagerInterface *editorManagerInter)
-		: mProxyManager(editorManagerInter)
+ProxyEditorManager::ProxyEditorManager(EditorManagerInterface *editorManagerInterface)
+		: mProxyManager(editorManagerInterface)
 {}
 
 IdList ProxyEditorManager::editors() const

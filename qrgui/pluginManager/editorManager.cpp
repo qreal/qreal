@@ -63,7 +63,6 @@ EditorManager::~EditorManager()
 		delete mLoaders[name];
 		mLoaders.remove(name);
 	}
-
 }
 
 bool EditorManager::loadPlugin(QString const &pluginName)
@@ -111,8 +110,8 @@ bool EditorManager::unloadPlugin(QString const &pluginName)
 IdList EditorManager::editors() const
 {
 	IdList editors;
-	foreach (QString const &e, mPluginsLoaded) {
-		editors.append(Id(e));
+	foreach (QString const &editor, mPluginsLoaded) {
+		editors.append(Id(editor));
 	}
 	return editors;
 }
@@ -122,9 +121,10 @@ IdList EditorManager::diagrams(Id const &editor) const
 	IdList diagrams;
 	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
 
-	foreach (QString const &e, mPluginIface[editor.editor()]->diagrams()) {
-		diagrams.append(Id(editor, e));
+	foreach (QString const &diagram, mPluginIface[editor.editor()]->diagrams()) {
+		diagrams.append(Id(editor, diagram));
 	}
+
 	return diagrams;
 }
 
@@ -299,7 +299,7 @@ IdList EditorManager::connectedTypes(const Id &id) const
 
 	IdList result;
 	foreach (QString const &type, mPluginIface[id.editor()]->getConnectedTypes(id.element())) {
-		// a hack caused by absence  of ID entity in editors generator
+		// a hack caused by absence of ID entity in editors generator
 		result.append(Id("?", "?", type));
 	}
 
@@ -506,42 +506,42 @@ IdList EditorManager::groups(Id const &diagram)
 	}
 	return elements;
 }
-//new methods with realization below:
+
 QList<StringPossibleEdge> EditorManager::possibleEdges(QString const &editor, QString const &element) const
 {
-	EditorInterface *editorInter = editorInterface(editor);
-	return editorInter->getPossibleEdges(element);
+	EditorInterface *editorInterface = editorInterface(editor);
+	return editorInterface->getPossibleEdges(element);
 }
 
 QStringList EditorManager::elements(QString const &editor, QString const &diagram) const
 {
-	EditorInterface *editorInter = editorInterface(editor);
-	return editorInter->elements(diagram);
+	EditorInterface *editorInterface = editorInterface(editor);
+	return editorInterface->elements(diagram);
 }
 
 int EditorManager::isNodeOrEdge(QString const &editor, QString const &element) const
 {
-	EditorInterface *editorInter = editorInterface(editor);
-	return editorInter->isNodeOrEdge(element);
+	EditorInterface *editorInterface = editorInterface(editor);
+	return editorInterface->isNodeOrEdge(element);
 }
 
 bool EditorManager::isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement
 		, QString const &childDiagram, QString const &childElement) const
 {
-	EditorInterface *editorInter = editorInterface(editor);
-	return editorInter->isParentOf(parentDiagram, parentElement, childDiagram, childElement);
+	EditorInterface *editorInterface = editorInterface(editor);
+	return editorInterface->isParentOf(parentDiagram, parentElement, childDiagram, childElement);
 }
 
 QString EditorManager::diagramName(QString const &editor, QString const &diagram) const
 {
-	EditorInterface *editorInter = editorInterface(editor);
-	return editorInter->diagramName(diagram);
+	EditorInterface *editorInterface = editorInterface(editor);
+	return editorInterface->diagramName(diagram);
 }
 
 QString EditorManager::diagramNodeName(QString const &editor, QString const &diagram) const
 {
-	EditorInterface *editorInter = editorInterface(editor);
-	return editorInter->diagramNodeName(diagram);
+	EditorInterface *editorInterface = editorInterface(editor);
+	return editorInterface->diagramNodeName(diagram);
 }
 
 bool EditorManager::isInterpretationMode() const

@@ -19,9 +19,9 @@ class LogicalModel;
 class LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
 {
 public:
-	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface *editorManagerInter);
+	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface *editorManagerInterface);
 	virtual ~LogicalModelAssistApi() {}
-	EditorManagerInterface const *editorManagerInter() const;
+	EditorManagerInterface const *editorManagerInterface() const;
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
 	Id createElement(Id const &parent, Id const &type);

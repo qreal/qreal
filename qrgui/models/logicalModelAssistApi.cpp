@@ -5,15 +5,15 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManagerInterface *editorManagerInter)
-	: mModelsAssistApi(logicalModel, editorManagerInter)
-	, mLogicalModel(logicalModel), mEditorManagerProxy(editorManagerInter)
+LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManagerInterface *editorManagerInterface)
+	: mModelsAssistApi(logicalModel, editorManagerInterface)
+	, mLogicalModel(logicalModel), mEditorManagerProxy(editorManagerInterface)
 {
 }
 
-EditorManagerInterface const *LogicalModelAssistApi::editorManagerInter() const
+EditorManagerInterface const *LogicalModelAssistApi::editorManagerInterface() const
 {
-	return mModelsAssistApi.editorManagerInter();
+	return mModelsAssistApi.editorManagerInterface();
 }
 
 qrRepo::LogicalRepoApi const &LogicalModelAssistApi::logicalRepoApi() const
@@ -32,7 +32,7 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	Q_ASSERT(parent.idSize() == 4);
 
 	Id const newElementId(type, QUuid::createUuid().toString());
-	QString const elementFriendlyName = mModelsAssistApi.editorManagerInter()->friendlyName(type);
+	QString const elementFriendlyName = mModelsAssistApi.editorManagerInterface()->friendlyName(type);
 	mLogicalModel.addElementToModel(parent, newElementId, Id(), elementFriendlyName, QPointF(0, 0));
 	return newElementId;
 }
@@ -85,7 +85,7 @@ Id LogicalModelAssistApi::createConnectedElement(Id const &source, Id const &ele
 {
 	Id element = createElement(Id::rootId(), elementType);
 	QString sourceName = mLogicalModel.data(mLogicalModel.indexById(source), Qt::DisplayRole).toString();
-	QString typeName = editorManagerInter()->friendlyName(elementType);
+	QString typeName = editorManagerInterface()->friendlyName(elementType);
 	mLogicalModel.setData(mLogicalModel.indexById(element), sourceName + " " + typeName, Qt::DisplayRole);
 	return element;
 }
@@ -118,12 +118,12 @@ IdList LogicalModelAssistApi::diagramsFromList(IdList const &list) const
 
 IdList LogicalModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
 {
-	return diagramsFromList(editorManagerInter()->connectedTypes(element.type()));
+	return diagramsFromList(editorManagerInterface()->connectedTypes(element.type()));
 }
 
 IdList LogicalModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
 {
-	return diagramsFromList(editorManagerInter()->usedTypes(element.type()));
+	return diagramsFromList(editorManagerInterface()->usedTypes(element.type()));
 }
 
 void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName)

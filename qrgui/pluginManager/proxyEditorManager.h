@@ -23,7 +23,7 @@ namespace qReal {
 class ProxyEditorManager : public EditorManagerInterface
 {
 public:
-	ProxyEditorManager(EditorManagerInterface *editorManagerInter);
+	ProxyEditorManager(EditorManagerInterface *editorManagerInterface);
 	IdList editors() const;
 	IdList diagrams(Id const &editor) const;
 	IdList elements(Id const &diagram) const;
