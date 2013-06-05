@@ -29,6 +29,7 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/enginesGenerator.h \
 	nxtOSEK/generators/listsmartline.h \
 	nxtOSEK/generators/variables.h \
+	nxtOSEK/generators/commentElementGenerator.h \
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
@@ -61,3 +62,4 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/enginesGenerator.cpp \
 	nxtOSEK/generators/listsmartline.cpp \
 	nxtOSEK/generators/variables.cpp \
+	nxtOSEK/generators/commentElementGenerator.cpp \

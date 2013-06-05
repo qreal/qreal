@@ -15,6 +15,8 @@ namespace blocks
 
 class WaitForColorSensorBlockBase : public WaitForSensorBlock
 {
+	Q_OBJECT
+
 public:
 	WaitForColorSensorBlockBase(RobotModel * const robotModel, sensorType::SensorTypeEnum type);
 	virtual ~WaitForColorSensorBlockBase() {}

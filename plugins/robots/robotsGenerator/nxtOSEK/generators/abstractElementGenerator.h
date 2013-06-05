@@ -10,7 +10,8 @@ namespace generator {
 class NxtOSEKRobotGenerator;
 
 /// AbstractElementGenerator - robot diagram element generator abstraction.
-class AbstractElementGenerator {
+class AbstractElementGenerator
+{
 public:
 	explicit AbstractElementGenerator(NxtOSEKRobotGenerator *mainGenerator, qReal::Id const &elementId);
 	virtual ~AbstractElementGenerator();
