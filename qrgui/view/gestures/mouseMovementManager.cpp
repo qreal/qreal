@@ -8,6 +8,7 @@ QString const comma = ", ";
 QString const pointDelimeter = " : ";
 QString const pathDelimeter = " | ";
 
+using namespace qReal::gestures;
 
 MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager *editorManager
 		, GesturesPainterInterface *gesturesPaintManager)
@@ -31,20 +32,18 @@ void MouseMovementManager::setGesturesPainter(GesturesPainterInterface *gestures
 
 void MouseMovementManager::drawIdealPath()
 {
-	QString currentElement = mGesturesPaintMan->currentElement();
-	foreach (qReal::Id const &element, mElements) {
-		if (element.element() == currentElement) {
-			QString paths = mEditorManager->mouseGesture(element);
-			mGesturesPaintMan->draw(stringToPath(paths));
-		}
+	Id const currentElement = mGesturesPaintMan->currentElement();
+	if (mElements.contains(currentElement)) {
+		QString const paths = mEditorManager->mouseGesture(currentElement);
+		mGesturesPaintMan->draw(stringToPath(paths));
 	}
 }
 
 void MouseMovementManager::printElements()
 {
-	QList<QString> elements;
-	foreach (qReal::Id const &element, mElements) {
-		elements.push_back(element.element());
+	QList<QPair<QString, Id> > elements;
+	foreach (Id const &element, mElements) {
+		elements << qMakePair(mEditorManager->friendlyName(element), element);
 	}
 	mGesturesPaintMan->setElements(elements);
 }

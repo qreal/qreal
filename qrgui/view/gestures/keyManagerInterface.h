@@ -1,10 +1,17 @@
 #pragma once
-#include <QString>
-#include <QPointF>
-#include <QList>
+
+#include <QtCore/QString>
+#include <QtCore/QPointF>
+#include <QtCore/QList>
+
+namespace qReal {
+namespace gestures {
 
 class IKeyManager
 {
 public:
 	virtual QString getKey(QList<QPoint> const &path) = 0;
 };
+
+}
+}
