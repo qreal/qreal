@@ -977,10 +977,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Порт" type="string" name="Port"/>
-						<property displayedName="Предел оборотов" type="string" name="TachoLimit">
+						<property displayedName="Порт" type="string" name="Port">
 							<default>B</default>
 						</property>
+						<property displayedName="Предел оборотов" type="string" name="TachoLimit"/>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
