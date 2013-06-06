@@ -715,6 +715,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>qReal::interpreters::robots::details::blocks::CommentBlock</name>
+    <message>
+        <location filename="details/blocks/commentBlock.cpp" line="18"/>
+        <source>The comment block with incomming liks detected!</source>
+        <translation>Блок коментария не может иметь входящих связей!</translation>
+    </message>
+</context>
+<context>
     <name>qReal::interpreters::robots::details::blocks::ForkBlock</name>
     <message>
         <location filename="details/blocks/forkBlock.cpp" line="26"/>

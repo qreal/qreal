@@ -41,14 +41,6 @@ signals:
 	void failure();
 
 protected:
-	Block *mNextBlock;  // Does not have ownership
-	GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
-	LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
-	BlocksTable *mBlocksTable;  // Does not have ownership
-
-	Id mGraphicalId;
-	RobotsBlockParser * mParser;
-
 	Block();
 
 	QVariant property(QString const &propertyName) const;
@@ -67,6 +59,14 @@ protected:
 	bool evaluateBool(QString const &propertyName);
 
 	QVector<bool> parseEnginePorts() const;
+
+	Block *mNextBlock;  // Does not have ownership
+	GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
+	LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
+	BlocksTable *mBlocksTable;  // Does not have ownership
+
+	Id mGraphicalId;
+	RobotsBlockParser * mParser;
 
 private slots:
 	void finishedRunning();
