@@ -29,6 +29,9 @@ public:
 
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
+	/// return coordinate aligned to grid
+	static qreal alignedCoordinate(qreal coord, int coef, int indexGrid);
+
 private:
 
 	/// returns list of elements lying in the same layer
@@ -52,9 +55,6 @@ private:
 
 	/// move element horizontally according to the grid
 	void makeGridMovingY(qreal myY, int coef, int indexGrid);
-
-	/// return coordinate aligned to grid
-	qreal alignedCoordinate(qreal coord, int coef, int indexGrid);
 
 	qreal recalculateX1() const;
 	qreal recalculateX2(qreal myX1) const;
