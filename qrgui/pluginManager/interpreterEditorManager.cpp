@@ -18,8 +18,8 @@ using namespace qReal;
 using namespace utils;
 
 InterpreterEditorManager::InterpreterEditorManager(QString const &fileName, QObject *parent)
-	: QObject(parent)
-	, mMetamodelFile(fileName)
+		: QObject(parent)
+		, mMetamodelFile(fileName)
 {
 	qrRepo::RepoApi * const repo = new qrRepo::RepoApi(fileName);
 	mEditorRepoApi.insert("test", repo);
@@ -32,6 +32,7 @@ Id InterpreterEditorManager::element(Id const &id, qrRepo::RepoApi const * const
 			return element;
 		}
 	}
+
 	return Id();
 }
 
@@ -47,6 +48,7 @@ Id InterpreterEditorManager::diagramOrElement(Id const &id, qrRepo::RepoApi cons
 			}
 		}
 	}
+
 	return Id();
 }
 
@@ -63,6 +65,7 @@ QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndMetaId(Id const &id
 			}
 		}
 	}
+
 	return QPair<qrRepo::RepoApi*, Id>();
 }
 
@@ -76,6 +79,7 @@ IdList InterpreterEditorManager::editors() const
 			}
 		}
 	}
+
 	return result;
 }
 
@@ -93,6 +97,7 @@ IdList InterpreterEditorManager::diagrams(const Id &editor) const
 			}
 		}
 	}
+
 	return result;
 }
 
@@ -112,6 +117,7 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 			}
 		}
 	}
+
 	return result;
 }
 
@@ -123,6 +129,7 @@ QString InterpreterEditorManager::friendlyName(const Id &id) const
 	{
 		return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "displayedName");
 	}
+
 	return repoAndMetaIdPair.first->name(repoAndMetaIdPair.second);
 }
 
@@ -144,6 +151,7 @@ QStringList InterpreterEditorManager::allChildrenTypesOf(Id const &parent) const
 	foreach (Id const &child, repoAndMetaIdPair.first->children(repoAndMetaIdPair.second)) {
 		result << child.element();
 	}
+
 	return result;
 }
 
@@ -175,6 +183,7 @@ bool InterpreterEditorManager::isParentOf(Id const &child, Id const &parent) con
 			}
 		}
 	}
+
 	return false;
 }
 
@@ -188,6 +197,7 @@ IdList InterpreterEditorManager::connectedTypes(Id const &id) const
 		QPair<Id, Id> editorAndDiagramPair = editorAndDiagram(repo, connectId);
 		result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(connectId));
 	}
+
 	return result;
 }
 
@@ -212,47 +222,55 @@ QString InterpreterEditorManager::mouseGesture(Id const &id) const
 	if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "path")) {
 		return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "path");
 	}
+
 	return "";
 }
 
 class InterpreterEditorManager::CheckPropertyForParent {
 public:
-	virtual QString strProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
+	virtual QString stringProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
 			, QString const &propertyName) const = 0;
 };
 
 class InterpreterEditorManager::CompareProperty: public InterpreterEditorManager::CheckPropertyForParent {
 public:
 	CompareProperty(QString value): mValue(value){}
-	virtual QString strProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
-			, QString const &propertyName) const {
+	virtual QString stringProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
+			, QString const &propertyName) const
+	{
 		if (repo->name(parentProperty) == propertyName) {
 			return repo->stringProperty(parentProperty, mValue);
 		}
+
 		return "";
 	}
+
 private:
 	QString mValue;
 };
 
 class InterpreterEditorManager::GetProperty: public InterpreterEditorManager::CheckPropertyForParent {
 public:
-	virtual QString strProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
-			, QString const &propertyName) const {
+	virtual QString stringProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
+			, QString const &propertyName) const
+	{
 		if (parentProperty.element() == propertyName) {
 			return repo->name(parentProperty);
 		}
+
 		return "";
 	}
 };
 
 class InterpreterEditorManager::HasProperty: public InterpreterEditorManager::CheckPropertyForParent {
 public:
-	virtual QString strProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
-			, QString const &propertyName) const {
+	virtual QString stringProperty(qrRepo::RepoApi const * const repo, Id const &parentProperty
+			, QString const &propertyName) const
+	{
 		if (repo->hasProperty(parentProperty, propertyName)) {
 			return repo->name(parentProperty);
 		}
+
 		return "";
 	}
 };
@@ -267,11 +285,12 @@ QStringList InterpreterEditorManager::propertiesFromParents(Id const &id
 	foreach (Id const &link , repo->incomingLinks(metaId)) {
 		if (link.element() == "Inheritance") {
 			foreach (Id const &parentProperty, repo->children(repo->otherEntityFromLink(link, metaId))) {
-				QString const strProperty = checker.strProperty(repo, parentProperty, propertyName);
+				QString const strProperty = checker.stringProperty(repo, parentProperty, propertyName);
 				if (!strProperty.isEmpty()) {
 					result << strProperty;
 				}
 			}
+
 			Id const metaChildParent = repo->otherEntityFromLink(link, metaId);
 			if (metaChildParent != Id::rootId()) {
 				QPair<Id, Id> editorAndDiagramPair = editorAndDiagram(repo, metaChildParent);
@@ -279,6 +298,7 @@ QStringList InterpreterEditorManager::propertiesFromParents(Id const &id
 			}
 		}
 	}
+
 	return result;
 }
 
@@ -292,6 +312,7 @@ QString InterpreterEditorManager::valueOfProperty(Id const &id, QString const &p
 	if (!parentsProperties.isEmpty()) {
 		valueOfProperty = parentsProperties.first();
 	}
+
 	foreach (Id const &property, repo->children(metaId)) {
 		if (repo->name(property) == propertyName) {
 			if (repo->hasProperty(property, value)) {
@@ -299,6 +320,7 @@ QString InterpreterEditorManager::valueOfProperty(Id const &id, QString const &p
 			}
 		}
 	}
+
 	return valueOfProperty;
 }
 
@@ -330,6 +352,7 @@ Id InterpreterEditorManager::findElementByType(QString const &type) const
 			}
 		}
 	}
+
 	throw Exception("No type " + type);
 }
 
@@ -351,6 +374,7 @@ QString InterpreterEditorManager::description(Id const &id) const
 	if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "description")) {
 		return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "description");
 	}
+
 	return "";
 }
 
@@ -382,9 +406,11 @@ QIcon InterpreterEditorManager::icon(Id const &id) const
 		graphics.setContent(repo->stringProperty(metaId, "shape"));
 		sdfElement = graphics.firstChildElement("graphics").firstChildElement("picture");
 	}
+
 	if (sdfElement.isNull()) {
 		return QIcon();
 	}
+
 	classDoc.appendChild(classDoc.importNode(sdfElement, true));
 	SdfIconEngineV2 *engine = new SdfIconEngineV2(classDoc);
 	return QIcon(engine);
@@ -398,9 +424,11 @@ Element* InterpreterEditorManager::graphicalObject(Id const &id) const
 		qDebug() << "no impl";
 		return 0;
 	}
+
 	if (impl->isNode()) {
 		return new NodeElement(impl);
 	}
+
 	return new EdgeElement(impl);
 }
 
@@ -418,6 +446,7 @@ IdList InterpreterEditorManager::containedTypes(const Id &id) const
 					 , repo->name(editorAndDiagramPair.second), repo->name(metaIdTo));
 		}
 	}
+
 	return containedTypes;
 }
 
@@ -432,6 +461,7 @@ IdList InterpreterEditorManager::usedTypes(const Id &id) const
 			usedTypes << repo->property(child, "type").value<Id>();
 		}
 	}
+
 	return usedTypes;
 }
 
@@ -448,6 +478,7 @@ QStringList InterpreterEditorManager::enumValues(Id const &id, const QString &na
 			}
 		}
 	}
+
 	return result;
 }
 
@@ -461,11 +492,13 @@ QStringList InterpreterEditorManager::propertyNames(Id const &id) const
 	if (!propertiesFromParentsList.isEmpty()) {
 		result << propertiesFromParentsList;
 	}
+
 	foreach (Id const &idProperty, repo->children(metaId)) {
 		if (idProperty.element() == "MetaEntity_Attribute") {
 			result << repo->name(idProperty);
 		}
 	}
+
 	return result;
 }
 
@@ -479,11 +512,13 @@ QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) 
 	if (!parentsPropertiesWithDefaultValues.isEmpty()) {
 		result << parentsPropertiesWithDefaultValues;
 	}
+
 	foreach (Id const &property, repo->children(metaId)) {
 		if (repo->hasProperty(property, "defaultName")) {
 			result << repo->name(property);
 		}
 	}
+
 	return result;
 }
 
@@ -528,6 +563,7 @@ QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndElement(QString con
 			}
 		}
 	}
+
 	return QPair<qrRepo::RepoApi*, Id>();
 }
 
@@ -544,6 +580,7 @@ QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndDiagram(QString con
 			}
 		}
 	}
+
 	return QPair<qrRepo::RepoApi*, Id>();
 }
 
@@ -558,6 +595,7 @@ QPair<Id, Id> InterpreterEditorManager::editorAndDiagram(qrRepo::RepoApi const *
 			}
 		}
 	}
+
 	return QPair<Id, Id>();
 }
 
@@ -579,6 +617,7 @@ QList<StringPossibleEdge> InterpreterEditorManager::possibleEdges(QString const 
 			}
 		}
 	}
+
 	return result;
 }
 
@@ -591,6 +630,7 @@ QStringList InterpreterEditorManager::elements(QString const &editor, QString co
 	foreach (Id const &element, repo->children(diag)) {
 		result.append(repo->name(element));
 	}
+
 	return result;
 }
 
@@ -601,9 +641,11 @@ int InterpreterEditorManager::isNodeOrEdge(QString const &editor, QString const 
 	if (elem.element() == "MetaEntityEdge") {
 		return -1;
 	}
+
 	if (elem.element() == "MetaEntityNode") {
 		return 1;
 	}
+
 	return 0;
 }
 
@@ -691,6 +733,7 @@ void InterpreterEditorManager::updateProperties(Id const &id, QString const &pro
 			propertyMetaId = prop;
 		}
 	}
+
 	setProperty(repoAndMetaIdPair.first, propertyMetaId, "attributeType", propertyType);
 	setProperty(repoAndMetaIdPair.first, propertyMetaId, "defaultValue", propertyDefaultValue);
 	setProperty(repoAndMetaIdPair.first, propertyMetaId, "displayedName", propertyDisplayedName);
@@ -706,6 +749,7 @@ QString InterpreterEditorManager::propertyNameByDisplayedName(Id const &id, QStr
 			propertyName = repoAndMetaIdPair.first->name(property);
 		}
 	}
+
 	return propertyName;
 }
 
@@ -822,8 +866,8 @@ void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &
 	}
 }
 
-void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
-					QString const &lineType, QString const &beginType, QString const &endType) const
+void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
+		, QString const &lineType, QString const &beginType, QString const &endType) const
 {
 	QPair<qrRepo::RepoApi*, Id> repoAndDiagramPair = repoAndDiagram(diagram.editor(), diagram.diagram());
 	qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
@@ -887,7 +931,6 @@ QString InterpreterEditorManager::saveMetamodelFilePath() const {
 	return mMetamodelFile;
 }
 
-//unsupported method
 QStringList InterpreterEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {
 	Q_UNUSED(editor);

@@ -97,7 +97,6 @@ public:
 	QPair<Id, Id> createEditorAndDiagram(QString const &name) const;
 	void saveMetamodel(QString const &newMetamodelFileName);
 	QString saveMetamodelFilePath() const;
-	//unsupported methods:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
