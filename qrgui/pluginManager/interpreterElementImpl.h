@@ -47,9 +47,6 @@ class InterpreterElementImpl : public ElementImpl
 {
 public:
 	InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId);
-	void initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc, QDomNode &portsPicture, int &width, int &height);
-	void initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc, QDomNode &portsPicture, int &width, int &height);
-	void initLabels(int width, int height, ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles);
 	void init(QRectF &contents, QList<StatPoint> &pointPorts
 			, QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
 			, QList<ElementTitleInterface*> &titles
@@ -58,8 +55,6 @@ public:
 	void init(ElementTitleFactoryInterface &factory
 			, QList<ElementTitleInterface*> &titles);
 	void paint(QPainter *painter, QRectF &contents);
-	QStringList getListOfStr(QString const &labelText) const;
-	QString getResultStr(QStringList const &list, ElementRepoInterface *repo) const;
 	void updateData(ElementRepoInterface *repo) const;
 	bool isNode() const;
 	bool hasPorts() const;
@@ -70,14 +65,12 @@ public:
 	void drawStartArrow(QPainter *painter) const;
 	void drawEndArrow(QPainter *painter) const;
 
-	//unsupported methods:
 	bool isDividable() const;
 
 	/*Container properties*/
 	bool hasContainerProperty(QString const &property) const;
 	bool isContainer() const;
 	bool isSortingContainer() const;
-	int getSizeOfContainerProperty(QString const &property) const;
 	int sizeOfForestalling() const;
 	int sizeOfChildrenForestalling() const;
 	bool hasMovableChildren() const;
@@ -91,12 +84,19 @@ public:
 
 	QStringList bonusContextMenuFields() const;
 	void updateRendererContent(QString const &shape);
+
 private:
+	void initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height);
+	void initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height);
+	void initLabels(int const &width, int const &height, ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles);
+	int getSizeOfContainerProperty(QString const &property) const;
+	QStringList getListOfStr(QString const &labelText) const;
+	QString getResultStr(QStringList const &list, ElementRepoInterface *repo) const;
 	void drawArrow(QPainter *painter, QString const &type) const;
 
-	qrRepo::RepoApi* mEditorRepoApi;
+	qrRepo::RepoApi *mEditorRepoApi;  // Doesn't have ownership.
 	Id mId;
-	SdfRendererInterface* mRenderer;
+	SdfRendererInterface *mRenderer;  // Doesn't have ownership.
 	QDomDocument mGraphics;
 	QList<NodeLabel> mNodeLabels;
 	QList<EdgeLabel> mEdgeLabels;

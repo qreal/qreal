@@ -7,31 +7,32 @@ using namespace utils;
 
 InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId)
 		: mEditorRepoApi(repo), mId(metaId)
-{}
+{
+}
 
-void InterpreterElementImpl::initLabels(int width, int height, ElementTitleFactoryInterface &factory,
-		QList<ElementTitleInterface*> &titles)
+void InterpreterElementImpl::initLabels(int const &width, int const &height, ElementTitleFactoryInterface &factory
+		, QList<ElementTitleInterface*> &titles)
 {
 	for (QDomElement element = mGraphics.firstChildElement("graphics").firstChildElement("labels").firstChildElement("label");
-		!element.isNull();
-		element = element.nextSiblingElement("label"))
+			!element.isNull();
+			element = element.nextSiblingElement("label"))
 	{
-		ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x"), width);
-		ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y"), height);
+		ScalableCoordinate const x = utils::ScalableItem::initCoordinate(element.attribute("x"), width);
+		ScalableCoordinate const y = utils::ScalableItem::initCoordinate(element.attribute("y"), height);
 		QString const center = element.attribute("center", "false");
 		QString const text = element.attribute("text");
 		QString const textBinded = element.attribute("textBinded");
 		QString const readOnly = element.attribute("readOnly", "false");
 		QString const background = element.attribute("background", "transparent");
-		if ((text.isEmpty() && textBinded.isEmpty())) {
+		if (text.isEmpty() && textBinded.isEmpty()) {
 			qDebug() << "ERROR: can't parse label";
 		} else {
-			ElementTitleInterface *title;
+			ElementTitleInterface *title = NULL;
 			if (text.isEmpty()) {
-				// Это бинденный лейбл, текст для него будет браться из репозитория
+				// It is a binded label, text for it will be taken from repository.
 				title = factory.createTitle(x.value(), y.value(), textBinded, readOnly == "true");
 			} else {
-				// Это статический лейбл, репозиторий ему не нужен
+				// This is a statical label, it does not need repository.
 				title = factory.createTitle(x.value(), y.value(), text);
 			}
 			title->setBackground(QColor(background));
@@ -45,7 +46,7 @@ void InterpreterElementImpl::initLabels(int width, int height, ElementTitleFacto
 }
 
 void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc
-		, QDomNode &portsPicture, int &width, int &height)
+		, QDomNode &portsPicture, int const &width, int const &height)
 {
 	QDomNodeList const pointPortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
 	for (int i = 0; i < pointPortsList.size(); i++) {
@@ -71,6 +72,7 @@ void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDo
 		} else {
 			pt.prop_x = false;
 		}
+
 		QString y = pointPortsList.at(i).toElement().attribute("y");
 		if (y.endsWith("a")) {
 			pt.prop_y = true;
@@ -78,6 +80,7 @@ void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDo
 		} else {
 			pt.prop_y = false;
 		}
+
 		pt.point = QPointF(x.toDouble() / static_cast<double>(width), y.toDouble() / static_cast<double>(height));
 		pt.initWidth = width;
 		pt.initHeight = height;
@@ -86,7 +89,7 @@ void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDo
 }
 
 void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc
-		, QDomNode &portsPicture, int &width, int &height)
+		, QDomNode &portsPicture, int const &width, int const &height)
 {
 	QDomNodeList const linePortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
 	for (int i = 0; i < linePortsList.size(); i++) {
@@ -116,6 +119,7 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 		} else {
 			ln.prop_x1 = false;
 		}
+
 		QString y1 = linePortsList.at(i).firstChildElement("start").attribute("starty");
 		if (y1.endsWith("a")) {
 			ln.prop_y1 = true;
@@ -123,6 +127,7 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 		} else {
 			ln.prop_y1 = false;
 		}
+
 		QString x2 = linePortsList.at(i).firstChildElement("end").attribute("endx");
 		if (x2.endsWith("a")) {
 			ln.prop_x2 = true;
@@ -130,6 +135,7 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 		} else {
 			ln.prop_x2 = false;
 		}
+
 		QString y2 = linePortsList.at(i).firstChildElement("end").attribute("endy");
 		if (y2.endsWith("a")) {
 			ln.prop_y2 = true;
@@ -137,6 +143,7 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 		} else {
 			ln.prop_y2 = false;
 		}
+
 		ln.line = QLineF(x1.toDouble() / static_cast<double>(width)
 				, y1.toDouble() / static_cast<double>(height)
 				, x2.toDouble() / static_cast<double>(width)
@@ -163,20 +170,23 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 			mRenderer = renderer;
 			mRenderer->load(classDoc);
 		}
+
 		int width = 0;
 		int height = 0;
 		if (!sdfElement.isNull()) {
 			width = sdfElement.attribute("sizex").toInt();
 			height = sdfElement.attribute("sizey").toInt();
 		}
+
 		QDomDocument portsDoc;
 		QDomNode portsPicture = portsDoc.importNode(sdfElement, false);
 		initPointPorts(pointPorts, portsDoc, portsPicture, width, height);
 		initLinePorts(linePorts, portsDoc, portsPicture, width, height);
 		portsDoc.appendChild(portsPicture);
-		if(!portsDoc.childNodes().isEmpty()) {
+		if (!portsDoc.childNodes().isEmpty()) {
 			portRenderer->load(portsDoc);
 		}
+
 		contents.setWidth(width);
 		contents.setHeight(height);
 		initLabels(width, height, factory, titles);
@@ -191,10 +201,10 @@ void InterpreterElementImpl::init(ElementTitleFactoryInterface &factory, QList<E
 			QString const labelType = mEditorRepoApi->stringProperty(mId, "labelType");
 			ElementTitleInterface* title = NULL;
 			if (labelType == "Static text") {
-				// Это статический лейбл, репозиторий ему не нужен
+				// This is a statical label, it does not need repository.
 				title = factory.createTitle(0, 0, labelText);
 			} else {
-				// Это бинденный лейбл, текст для него будет браться из репозитория
+				// It is a binded label, text for it will be taken from repository.
 				title = factory.createTitle(0, 0, labelText, false);
 			}
 			title->setBackground(QColor(Qt::white));
@@ -203,9 +213,6 @@ void InterpreterElementImpl::init(ElementTitleFactoryInterface &factory, QList<E
 			title->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title);
 			mEdgeLabels.append(EdgeLabel(labelText, labelType, title));
-		} else {
-			Q_UNUSED(titles);
-			Q_UNUSED(factory);
 		}
 	}
 }
@@ -228,6 +235,7 @@ QStringList InterpreterElementImpl::getListOfStr(QString const &labelText) const
 		list.append(str);
 		counter++;
 	}
+
 	return list;
 }
 
@@ -266,7 +274,6 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 		foreach (EdgeLabel edgeLabel, mEdgeLabels) {
 			if (edgeLabel.labelType == "Static text") {
 				// Static label
-				Q_UNUSED(repo);
 				return;
 			}
 			QStringList const list = getListOfStr(edgeLabel.labelText);
@@ -276,7 +283,7 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 	}
 
 	if (mId.element() == "MetaEntityNode") {
-		foreach (NodeLabel nodeLabel, mNodeLabels) {
+		foreach (NodeLabel const &nodeLabel, mNodeLabels) {
 			if (nodeLabel.textBinded.isEmpty()) {
 				// Static label
 				Q_UNUSED(repo);
@@ -322,69 +329,55 @@ Qt::PenStyle InterpreterElementImpl::getPenStyle() const
 		if (QtStyle != "") {
 			if (QtStyle == "Qt::NoPen") {
 				return Qt::NoPen;
-			}
-			if (QtStyle == "Qt::SolidLine") {
+			} else if (QtStyle == "Qt::SolidLine") {
 				return Qt::SolidLine;
-			}
-			if (QtStyle == "Qt::DashLine") {
+			} else if (QtStyle == "Qt::DashLine") {
 				return Qt::DashLine;
-			}
-			if (QtStyle == "Qt::DotLine") {
+			} else if (QtStyle == "Qt::DotLine") {
 				return Qt::DotLine;
-			}
-			if (QtStyle == "Qt::DashDotLine") {
+			} else if (QtStyle == "Qt::DashDotLine") {
 				return Qt::DashDotLine;
-			}
-			if (QtStyle == "Qt::DashDotDotLine") {
+			} else if (QtStyle == "Qt::DashDotDotLine") {
 				return Qt::DashDotDotLine;
-			}
-			if (QtStyle == "Qt::CustomDashLine") {
+			} else if (QtStyle == "Qt::CustomDashLine") {
 				return Qt::CustomDashLine;
 			}
 		}
 	}
+
 	return Qt::SolidLine;
 }
 
 int InterpreterElementImpl::getPenWidth() const
 {
-	if (mId.element() == "MetaEntityEdge") {
-		QDomElement const lineWidthElement = mGraphics.firstChildElement("lineWidth");
-		if (lineWidthElement.isNull()) {
-			return 1;
-		}
-		else {
-			QString const lineWidth = lineWidthElement.attribute("width");
-			if (lineWidth.isEmpty()) {
-				qDebug() << "ERROR: no width of line";
-				return false;
-			}
-			else {
-				bool success = true;
-				int lineWidthInt = lineWidth.toInt(&success);
-				if (!success) {
-					qDebug() << "ERROR: line width is not a number";
-					return false;
-				}
-				else if (lineWidthInt <= 0) {
-					qDebug() << "ERROR: line width is negative number";
-					return false;
-				}
-				else {
-					return lineWidthInt;
-				}
-			}
-		}
+	if (mId.element() != "MetaEntityEdge") {
+		return 0;
 	}
-	return 0;
+
+	QDomElement const lineWidthElement = mGraphics.firstChildElement("lineWidth");
+	if (lineWidthElement.isNull()) {
+		return 1;
+	}
+
+	QString const lineWidth = lineWidthElement.attribute("width");
+	if (lineWidth.isEmpty()) {
+		return 0;
+	}
+
+	bool success = true;
+	int const lineWidthInt = lineWidth.toInt(&success);
+	if (!success) {
+		return 0;
+	} else if (lineWidthInt <= 0) {
+		return 0;
+	} else {
+		return lineWidthInt;
+	}
 }
 
 QColor InterpreterElementImpl::getPenColor() const
 {
-	QColor lineColor;
-	if (mId.element() == "MetaEntityEdge") {
-		return QColor(lineColor.red(), lineColor.green(), lineColor.blue());
-	}
+	// TODO: Not too colorful.
 	return QColor();
 }
 
@@ -392,46 +385,43 @@ void InterpreterElementImpl::drawArrow(QPainter *painter, QString const &type) c
 {
 	if (mId.element() == "MetaEntityEdge") {
 		QString style = "";
-		foreach (Id edgeChild, mEditorRepoApi->children(mId)) {
-			if(edgeChild.element() == "MetaEntityAssociation") {
+		foreach (Id const &edgeChild, mEditorRepoApi->children(mId)) {
+			if (edgeChild.element() == "MetaEntityAssociation") {
 				 style = mEditorRepoApi->stringProperty(edgeChild, type);
 			}
 		}
+
 		if (style.isEmpty()) {
 			style = "filled_arrow";
 		}
-		QBrush const old = painter->brush();
+
+		QBrush const oldBrush = painter->brush();
 		QBrush brush;
 		brush.setStyle(Qt::SolidPattern);
 
 		if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow") {
 			brush.setColor(Qt::white);
-		}
-		if (style == "filled_arrow" || style == "filled_rhomb") {
+		} else if (style == "filled_arrow" || style == "filled_rhomb") {
 			brush.setColor(Qt::black);
 		}
+
 		painter->setBrush(brush);
 
 		if (style == "empty_arrow" || style == "filled_arrow") {
 			static const QPointF points[] = {QPointF(0, 0), QPointF(-5, 10), QPointF(5, 10)};
 			painter->drawPolygon(points, 3);
-		}
-
-		if (style == "empty_rhomb" || style == "filled_rhomb") {
+		} else if (style == "empty_rhomb" || style == "filled_rhomb") {
 			static const QPointF points[] = {QPointF(0, 0), QPointF(-5, 10), QPointF(0, 20), QPointF(5, 10)};
 			painter->drawPolygon(points, 4);
-		}
-
-		if (style == "open_arrow") {
+		} else if (style == "open_arrow") {
 			static const QPointF points[] = {QPointF(-5, 10), QPointF(0, 0), QPointF(5, 10)};
 			painter->drawPolyline(points, 3);
-		}
-
-		if (style == "complex_arrow") {
+		} else if (style == "complex_arrow") {
 			static const QPointF points[] = {QPointF(-15, 30), QPointF(-10, 10), QPointF(0, 0), QPointF(10, 10), QPointF(15, 30), QPointF(0, 23), QPointF(-15, 30)};
 			painter->drawPolyline(points, 7);
 		}
-		painter->setBrush(old);
+
+		painter->setBrush(oldBrush);
 	}
 }
 
@@ -445,22 +435,21 @@ void InterpreterElementImpl::drawEndArrow(QPainter *painter) const
 	drawArrow(painter, "endType");
 }
 
-//unsupported methods:
 bool InterpreterElementImpl::isDividable() const
 {
 	return true;
 }
 
-
 bool InterpreterElementImpl::hasContainerProperty(QString const &property) const
 {
 	QDomElement const propertiesElement =
-		mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+			mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
 		if (!propertiesElement.firstChildElement(property).isNull()) {
 			return true;
 		}
 	}
+
 	return false;
 }
 
@@ -478,12 +467,13 @@ int InterpreterElementImpl::getSizeOfContainerProperty(QString const &property) 
 {
 	int size = 0;
 	QDomElement const propertiesElement =
-		mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+			mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
 		if (!propertiesElement.firstChildElement(property).isNull()) {
 			size = propertiesElement.firstChildElement(property).attribute("size").toInt();
 		}
 	}
+
 	return size;
 }
 int InterpreterElementImpl::sizeOfForestalling() const
@@ -543,7 +533,6 @@ void InterpreterElementImpl::updateRendererContent(QString const &shape)
 	}
 }
 
-//TODO:
 QStringList InterpreterElementImpl::bonusContextMenuFields() const
 {
 	return QStringList();

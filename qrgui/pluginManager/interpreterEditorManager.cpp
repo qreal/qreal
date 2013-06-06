@@ -741,8 +741,8 @@ void InterpreterEditorManager::setProperty(qrRepo::RepoApi *repo, Id const &id,
 	repo->setProperty(id, property, propertyValue);
 }
 
-void InterpreterEditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType,
-		QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
+void InterpreterEditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType
+		, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	Id propertyMetaId;

@@ -10,12 +10,12 @@ ScalableCoordinate::ScalableCoordinate(qreal value, bool isScalable)
 	: mValue(value), mIsScalable(isScalable)
 {}
 
-qreal ScalableCoordinate::value()
+qreal ScalableCoordinate::value() const
 {
 	return mValue;
 }
 
-bool ScalableCoordinate::isScalable()
+bool ScalableCoordinate::isScalable() const
 {
 	return mIsScalable;
 }

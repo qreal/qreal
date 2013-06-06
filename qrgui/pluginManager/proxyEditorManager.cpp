@@ -3,322 +3,326 @@
 using namespace qReal;
 
 ProxyEditorManager::ProxyEditorManager(EditorManagerInterface *editorManagerInterface)
-		: mProxyManager(editorManagerInterface)
-{}
+		: mProxiedEditorManager(editorManagerInterface)
+{
+}
+
+ProxyEditorManager::~ProxyEditorManager()
+{
+	delete mProxiedEditorManager;
+}
 
 IdList ProxyEditorManager::editors() const
 {
-	return mProxyManager->editors();
+	return mProxiedEditorManager->editors();
 }
 
 IdList ProxyEditorManager::diagrams(Id const &editor) const
 {
-	return mProxyManager->diagrams(editor);
+	return mProxiedEditorManager->diagrams(editor);
 }
 
 IdList ProxyEditorManager::elements(Id const &diagram) const
 {
-	return mProxyManager->elements(diagram);
+	return mProxiedEditorManager->elements(diagram);
 }
 
 bool ProxyEditorManager::loadPlugin(QString const &pluginName)
 {
-	return mProxyManager->loadPlugin(pluginName);
+	return mProxiedEditorManager->loadPlugin(pluginName);
 }
 
 bool ProxyEditorManager::unloadPlugin(QString const &pluginName)
 {
-	return mProxyManager->unloadPlugin(pluginName);
+	return mProxiedEditorManager->unloadPlugin(pluginName);
 }
 
 QString ProxyEditorManager::mouseGesture(Id const &id) const
 {
-	return mProxyManager->mouseGesture(id);
+	return mProxiedEditorManager->mouseGesture(id);
 }
 
 QString ProxyEditorManager::friendlyName(Id const &id) const
 {
-	return mProxyManager->friendlyName(id);
+	return mProxiedEditorManager->friendlyName(id);
 }
 
 QString ProxyEditorManager::description(Id const &id) const
 {
-	return mProxyManager->description(id);
+	return mProxiedEditorManager->description(id);
 }
 
 QString ProxyEditorManager::propertyDescription(Id const &id, QString const &propertyName) const
 {
-	return mProxyManager->propertyDescription(id, propertyName);
+	return mProxiedEditorManager->propertyDescription(id, propertyName);
 }
 
 QString ProxyEditorManager::propertyDisplayedName(Id const &id, QString const &propertyName) const
 {
-	return mProxyManager->propertyDisplayedName(id, propertyName);
+	return mProxiedEditorManager->propertyDisplayedName(id, propertyName);
 }
 
 QIcon ProxyEditorManager::icon(Id const &id) const
 {
-	return mProxyManager->icon(id);
+	return mProxiedEditorManager->icon(id);
 }
 
 Element* ProxyEditorManager::graphicalObject(Id const &id) const
 {
-	return mProxyManager->graphicalObject(id);
+	return mProxiedEditorManager->graphicalObject(id);
 }
 
 IdList ProxyEditorManager::containedTypes(const Id &id) const
 {
-	return mProxyManager->containedTypes(id);
+	return mProxiedEditorManager->containedTypes(id);
 }
 
 IdList ProxyEditorManager::connectedTypes(const Id &id) const
 {
-	return mProxyManager->connectedTypes(id);
+	return mProxiedEditorManager->connectedTypes(id);
 }
 
 IdList ProxyEditorManager::usedTypes(const Id &id) const
 {
-	return mProxyManager->usedTypes(id);
+	return mProxiedEditorManager->usedTypes(id);
 }
 
 QStringList ProxyEditorManager::enumValues(Id const &id, const QString &name) const
 {
-	return mProxyManager->enumValues(id, name);
+	return mProxiedEditorManager->enumValues(id, name);
 }
 
 QString ProxyEditorManager::typeName(Id const &id, const QString &name) const
 {
-	return mProxyManager->typeName(id, name);
+	return mProxiedEditorManager->typeName(id, name);
 }
 
 QStringList ProxyEditorManager::allChildrenTypesOf(Id const &parent) const
 {
-	return mProxyManager->allChildrenTypesOf(parent);
+	return mProxiedEditorManager->allChildrenTypesOf(parent);
 }
 
 bool ProxyEditorManager::isEditor(Id const &id) const
 {
-	return mProxyManager->isEditor(id);
+	return mProxiedEditorManager->isEditor(id);
 }
 
 bool ProxyEditorManager::isDiagram(Id const &id) const
 {
-	return mProxyManager->isDiagram(id);
+	return mProxiedEditorManager->isDiagram(id);
 }
 
 bool ProxyEditorManager::isElement(Id const &id) const
 {
-	return mProxyManager->isElement(id);
+	return mProxiedEditorManager->isElement(id);
 }
 
 QStringList ProxyEditorManager::propertyNames(Id const &id) const
 {
-	return mProxyManager->propertyNames(id);
+	return mProxiedEditorManager->propertyNames(id);
 }
 
 QString ProxyEditorManager::defaultPropertyValue(Id const &id, QString name) const
 {
-	return mProxyManager->defaultPropertyValue(id, name);
+	return mProxiedEditorManager->defaultPropertyValue(id, name);
 }
 
 QStringList ProxyEditorManager::propertiesWithDefaultValues(Id const &id) const
 {
-	return mProxyManager->propertiesWithDefaultValues(id);
+	return mProxiedEditorManager->propertiesWithDefaultValues(id);
 }
 
 IdList ProxyEditorManager::checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
 		, qrRepo::GraphicalRepoApi const &graphicalApi) const
 {
-	return mProxyManager->checkNeededPlugins(logicalApi, graphicalApi);
+	return mProxiedEditorManager->checkNeededPlugins(logicalApi, graphicalApi);
 }
 
 bool ProxyEditorManager::hasElement(Id const &element) const
 {
-	return mProxyManager->hasElement(element);
+	return mProxiedEditorManager->hasElement(element);
 }
 
 Id ProxyEditorManager::findElementByType(QString const &type) const
 {
-	return mProxyManager->findElementByType(type);
+	return mProxiedEditorManager->findElementByType(type);
 }
 
 QList<ListenerInterface *> ProxyEditorManager::listeners() const
 {
-	return mProxyManager->listeners();
+	return mProxiedEditorManager->listeners();
 }
 
 bool ProxyEditorManager::isDiagramNode(Id const &id) const
 {
-	return mProxyManager->isDiagramNode(id);
+	return mProxiedEditorManager->isDiagramNode(id);
 }
 
 bool ProxyEditorManager::isParentOf(Id const &child, Id const &parent) const
 {
-	return mProxyManager->isParentOf(child, parent);
+	return mProxiedEditorManager->isParentOf(child, parent);
 }
 
 bool ProxyEditorManager::isGraphicalElementNode(const Id &id) const
 {
-	return mProxyManager->isGraphicalElementNode(id);
+	return mProxiedEditorManager->isGraphicalElementNode(id);
 }
 
-//new methods:
 QList<StringPossibleEdge> ProxyEditorManager::possibleEdges(QString const &editor, QString const &element) const
 {
-	return mProxyManager->possibleEdges(editor, element);
+	return mProxiedEditorManager->possibleEdges(editor, element);
 }
 
 QStringList ProxyEditorManager::elements(QString const &editor, QString const &diagram) const
 {
-	return mProxyManager->elements(editor, diagram);
+	return mProxiedEditorManager->elements(editor, diagram);
 }
 
 int ProxyEditorManager::isNodeOrEdge(QString const &editor, QString const &element) const
 {
-	return mProxyManager->isNodeOrEdge(editor, element);
+	return mProxiedEditorManager->isNodeOrEdge(editor, element);
 }
 
 bool ProxyEditorManager::isParentOf(QString const &editor, QString const &parentDiagram
 		, QString const &parentElement, QString const &childDiagram, QString const &childElement) const
 {
-	return mProxyManager->isParentOf(editor, parentDiagram, parentElement, childDiagram, childElement);
+	return mProxiedEditorManager->isParentOf(editor, parentDiagram, parentElement, childDiagram, childElement);
 }
 
 QString ProxyEditorManager::diagramName(QString const &editor, QString const &diagram) const
 {
-	return mProxyManager->diagramName(editor, diagram);
+	return mProxiedEditorManager->diagramName(editor, diagram);
 }
 
 QString ProxyEditorManager::diagramNodeName(QString const &editor, QString const &diagram) const
 {
-	return mProxyManager->diagramNodeName(editor, diagram);
+	return mProxiedEditorManager->diagramNodeName(editor, diagram);
 }
 
 void ProxyEditorManager::setProxyManager(EditorManagerInterface *editorManagerInterface)
 {
-	delete mProxyManager;
-	mProxyManager = editorManagerInterface;
+	delete mProxiedEditorManager;
+	mProxiedEditorManager = editorManagerInterface;
 }
 
 bool ProxyEditorManager::isInterpretationMode() const
 {
-	return mProxyManager->isInterpretationMode();
+	return mProxiedEditorManager->isInterpretationMode();
 }
 
 bool ProxyEditorManager::isParentProperty(Id const &id, QString const &propertyName) const
 {
-	return mProxyManager->isParentProperty(id, propertyName);
+	return mProxiedEditorManager->isParentProperty(id, propertyName);
 }
 
 void ProxyEditorManager::deleteProperty(QString const &propDisplayedName) const
 {
-	mProxyManager->deleteProperty(propDisplayedName);
+	mProxiedEditorManager->deleteProperty(propDisplayedName);
 }
 
 void ProxyEditorManager::addProperty(Id const &id, QString const &propDisplayedName) const
 {
-	mProxyManager->addProperty(id, propDisplayedName);
+	mProxiedEditorManager->addProperty(id, propDisplayedName);
 }
 
 void ProxyEditorManager::updateProperties(Id const &id, QString const &property, QString const &propertyType
 		, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const
 {
-	mProxyManager->updateProperties(id, property, propertyType, propertyDefaultValue, propertyDisplayedName);
+	mProxiedEditorManager->updateProperties(id, property, propertyType, propertyDefaultValue, propertyDisplayedName);
 }
 
 QString ProxyEditorManager::propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const
 {
-	return mProxyManager->propertyNameByDisplayedName(id, displayedPropertyName);
+	return mProxiedEditorManager->propertyNameByDisplayedName(id, displayedPropertyName);
 }
 
 IdList ProxyEditorManager::children(Id const &parent) const
 {
-	return mProxyManager->children(parent);
+	return mProxiedEditorManager->children(parent);
 }
 
 QString ProxyEditorManager::shape(Id const &id) const
 {
-	return mProxyManager->shape(id);
+	return mProxiedEditorManager->shape(id);
 }
 
 void ProxyEditorManager::updateShape(Id const &id, QString const &graphics) const
 {
-	mProxyManager->updateShape(id, graphics);
+	mProxiedEditorManager->updateShape(id, graphics);
 }
 
 void ProxyEditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
 {
-	mProxyManager->deleteElement(mainWindow, id);
+	mProxiedEditorManager->deleteElement(mainWindow, id);
 }
 
 bool ProxyEditorManager::isRootDiagramNode(Id const &id) const
 {
-	return mProxyManager->isRootDiagramNode(id);
+	return mProxiedEditorManager->isRootDiagramNode(id);
 }
 
 void ProxyEditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
 {
-	mProxyManager->addNodeElement(diagram, name, isRootDiagramNode);
+	mProxiedEditorManager->addNodeElement(diagram, name, isRootDiagramNode);
 }
 
 void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
 		, QString const &lineType, QString const &beginType, QString const &endType) const
 {
-	mProxyManager->addEdgeElement(diagram, name, labelText, labelType, lineType, beginType, endType);
+	mProxiedEditorManager->addEdgeElement(diagram, name, labelText, labelType, lineType, beginType, endType);
 }
 
 QPair<Id, Id> ProxyEditorManager::createEditorAndDiagram(QString const &name) const
 {
-	return mProxyManager->createEditorAndDiagram(name);
+	return mProxiedEditorManager->createEditorAndDiagram(name);
 }
 
 void ProxyEditorManager::saveMetamodel(QString const &newMetamodelFileName)
 {
-	mProxyManager->saveMetamodel(newMetamodelFileName);
+	mProxiedEditorManager->saveMetamodel(newMetamodelFileName);
 }
 
 QString ProxyEditorManager::saveMetamodelFilePath() const
 {
-	return mProxyManager->saveMetamodelFilePath();
+	return mProxiedEditorManager->saveMetamodelFilePath();
 }
 
-//unsupported methods:
 QStringList ProxyEditorManager::paletteGroups(Id const &editor, Id const &diagram) const
 {
-	return mProxyManager->paletteGroups(editor, diagram);
+	return mProxiedEditorManager->paletteGroups(editor, diagram);
 }
 
 QStringList ProxyEditorManager::paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const
 {
-	return mProxyManager->paletteGroupList(editor, diagram, group);
+	return mProxiedEditorManager->paletteGroupList(editor, diagram, group);
 }
 
 QString ProxyEditorManager::paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const
 {
-	return mProxyManager->paletteGroupDescription(editor, diagram, group);
+	return mProxiedEditorManager->paletteGroupDescription(editor, diagram, group);
 }
 
 QStringList ProxyEditorManager::referenceProperties(const Id &id) const
 {
-	return mProxyManager->referenceProperties(id);
+	return mProxiedEditorManager->referenceProperties(id);
 }
 
 IdList ProxyEditorManager::groups(Id const &diagram)
 {
-	return mProxyManager->groups(diagram);
+	return mProxiedEditorManager->groups(diagram);
 }
 
 Pattern ProxyEditorManager::getPatternByName (QString const &str) const
 {
-	return mProxyManager->getPatternByName(str);
+	return mProxiedEditorManager->getPatternByName(str);
 }
 
 QList<QString> ProxyEditorManager::getPatternNames() const
 {
-	return mProxyManager->getPatternNames();
+	return mProxiedEditorManager->getPatternNames();
 }
 
 QSize ProxyEditorManager::iconSize(Id const &id) const
 {
-	return mProxyManager->iconSize(id);
+	return mProxiedEditorManager->iconSize(id);
 }

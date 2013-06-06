@@ -24,6 +24,7 @@ class ProxyEditorManager : public EditorManagerInterface
 {
 public:
 	ProxyEditorManager(EditorManagerInterface *editorManagerInterface);
+	~ProxyEditorManager();
 	IdList editors() const;
 	IdList diagrams(Id const &editor) const;
 	IdList elements(Id const &diagram) const;
@@ -64,7 +65,6 @@ public:
 	bool isParentOf(Id const &child, Id const &parent) const;
 	bool isGraphicalElementNode(const Id &id) const;
 
-	// new methods:
 	QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const;
 	QStringList elements(QString const &editor, QString const &diagram) const;
 	int isNodeOrEdge(QString const &editor, QString const &element) const;
@@ -93,7 +93,6 @@ public:
 	void saveMetamodel(QString const &newMetamodelFileName);
 	QString saveMetamodelFilePath() const;
 
-	// unsupported methods:
 	QStringList paletteGroups(Id const &editor, Id const &diagram) const;
 	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
 	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
@@ -104,6 +103,6 @@ public:
 	QSize iconSize(Id const &id) const;
 
 private:
-	EditorManagerInterface *mProxyManager;
+	EditorManagerInterface *mProxiedEditorManager;  // Has ownership.
 };
 }
