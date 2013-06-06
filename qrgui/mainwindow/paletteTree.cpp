@@ -140,9 +140,9 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 	}
 }
 
-void PaletteTree::addEditorElements(EditorManagerInterface *editorManagerProxy, const Id &editor, const Id &diagram)
+void PaletteTree::addEditorElements(EditorManagerInterface &editorManagerProxy, const Id &editor, const Id &diagram)
 {
-	mEditorManagerProxy = editorManagerProxy;
+	mEditorManagerProxy = &editorManagerProxy;
 	mEditorsNames.push_back(mEditorManagerProxy->friendlyName(diagram));
 
 	mComboBox->addItem(mEditorManagerProxy->friendlyName(diagram));
@@ -347,10 +347,10 @@ void PaletteTree::setIconsView(bool iconsView)
 	mIconsView = iconsView;
 }
 
-void PaletteTree::loadEditors(EditorManagerInterface *editorManagerProxy)
+void PaletteTree::loadEditors(EditorManagerInterface &editorManagerProxy)
 {
-	foreach (Id const &editor, editorManagerProxy->editors()) {
-		foreach (Id const &diagram, editorManagerProxy->diagrams(editor)) {
+	foreach (Id const &editor, editorManagerProxy.editors()) {
+		foreach (Id const &diagram, editorManagerProxy.diagrams(editor)) {
 			addEditorElements(editorManagerProxy, editor, diagram);
 		}
 	}
@@ -383,6 +383,7 @@ void PaletteTree::resizeIcons()
 				if (!field) {
 					break;
 				}
+
 				foreach (QObject *child, field->children()) {
 					DraggableElement *element = dynamic_cast<DraggableElement*>(child);
 					if (element) {
@@ -408,6 +409,7 @@ int PaletteTree::maxItemsCountInARow() const
 			if (!field) {
 				break;
 			}
+
 			int itemsCount = field->children().count();
 			if (itemsCount > max) {
 				max = itemsCount;
@@ -430,10 +432,15 @@ void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManagerInt
 	if (mEditorManagerProxy) {
 		recreateTrees();
 	}
+
 	mIconsView = isIconsView;
 	mEditorManagerProxy = editorManagerProxy;
 	mItemsCountInARow = itemsCount;
-	loadEditors(editorManagerProxy);
+	if (mEditorManagerProxy) {
+		// TODO: Can it really be NULL?
+		loadEditors(*mEditorManagerProxy);
+	}
+
 	initDone();
 	setComboBoxIndex();
 }

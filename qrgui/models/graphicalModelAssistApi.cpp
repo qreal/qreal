@@ -7,13 +7,13 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManagerInterface const *editorManagerInterface)
+GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManagerInterface const &editorManagerInterface)
 		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManagerInterface)
 {
 	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
 }
 
-EditorManagerInterface const *GraphicalModelAssistApi::editorManagerInterface() const
+EditorManagerInterface const &GraphicalModelAssistApi::editorManagerInterface() const
 {
 	return mModelsAssistApi.editorManagerInterface();
 }
@@ -50,7 +50,7 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	Q_ASSERT(parent.idSize() == 4);
 
 	Id const newElementId(type, QUuid::createUuid().toString());
-	QString const elementFriendlyName = mModelsAssistApi.editorManagerInterface()->friendlyName(type);
+	QString const elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
 	mGraphicalModel.addElementToModel(parent, newElementId, Id::rootId(), elementFriendlyName, QPointF(0, 0));
 	return newElementId;
 }

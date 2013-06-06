@@ -165,7 +165,7 @@ bool ProjectManager::pluginsEnough()
 
 QString ProjectManager::missingPluginNames() const
 {
-	IdList missingPlugins = mMainWindow->editorManager()->checkNeededPlugins(
+	IdList missingPlugins = mMainWindow->editorManager().checkNeededPlugins(
 			mMainWindow->models()->logicalRepoApi(), mMainWindow->models()->graphicalRepoApi());
 	QString result;
 	foreach (Id const &id, missingPlugins) {
@@ -248,7 +248,7 @@ void ProjectManager::save()
 	// created to initialize the file name with an empty string, which allows the internal state of the file
 	// name = "" Attempt to save the project in this case result in
 	// qDebug() << "start save";
-	mMainWindow->editorManagerProxy()->saveMetamodel("");
+	mMainWindow->editorManagerProxy().saveMetamodel("");
 	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePath);
 	refreshApplicationStateAfterSave();
 }
@@ -268,7 +268,7 @@ void ProjectManager::saveGenCode(QString const &text)
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
 	if (mSaveFilePath.contains(SettingsManager::value("AutosaveFileName").toString(), Qt::CaseSensitive)
-		|| mSaveFilePath == mMainWindow->editorManagerProxy()->saveMetamodelFilePath()) {
+		|| mSaveFilePath == mMainWindow->editorManagerProxy().saveMetamodelFilePath()) {
 		return suggestToSaveAs();
 	}
 	save();
@@ -277,12 +277,12 @@ bool ProjectManager::saveOrSuggestToSaveAs()
 
 bool ProjectManager::suggestToSaveAs()
 {
-	if (mMainWindow->editorManagerProxy()->isInterpretationMode()) {
+	if (mMainWindow->editorManagerProxy().isInterpretationMode()) {
 		QString newMetamodelFileName = getSaveFileName(tr("Select file to save current metamodel to"));
 		if (newMetamodelFileName.isEmpty()) {
 			return false;
 		}
-		mMainWindow->editorManagerProxy()->saveMetamodel(newMetamodelFileName);
+		mMainWindow->editorManagerProxy().saveMetamodel(newMetamodelFileName);
 	}
 	return saveAs(getSaveFileName(tr("Select file to save current model to")));
 }

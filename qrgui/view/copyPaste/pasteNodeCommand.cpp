@@ -49,7 +49,7 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 	}
 
 	NodeElement * const newNode = dynamic_cast<NodeElement *>(
-			mScene->mainWindow()->editorManager()->graphicalObject(resultId));
+			mScene->mainWindow()->editorManager().graphicalObject(resultId));
 	newNode->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
 	newNode->setController(mScene->mainWindow()->controller());
 	newNode->setId(resultId);

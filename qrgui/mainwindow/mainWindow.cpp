@@ -60,7 +60,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
 		, mModels(NULL)
 		, mController(new Controller)
-		, mEditorManagerProxy(new ProxyEditorManager(new EditorManager()))
+		, mEditorManagerProxy(new EditorManager())
 		, mListenerManager(NULL)
 		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(NULL)
@@ -264,7 +264,7 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 }
 
-EditorManagerInterface* MainWindow::editorManager()
+EditorManagerInterface& MainWindow::editorManager()
 {
 	return mEditorManagerProxy;
 }
@@ -290,7 +290,7 @@ void MainWindow::loadPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
-			, mEditorManagerProxy);
+			, &mEditorManagerProxy);
 }
 
 void MainWindow::closeDiagramTab(Id const &id)
@@ -584,7 +584,7 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 			// Child remove commands will be added in currentItem delete command
 		}
 
-		bool const isEdge = !mEditorManagerProxy->isGraphicalElementNode(currentItem);
+		bool const isEdge = !mEditorManagerProxy.isGraphicalElementNode(currentItem);
 		if (isEdge) {
 			Id const src = mModels->graphicalModelAssistApi().from(currentItem);
 			if (src != Id() && !itemsToUpdate.contains(src)) {
@@ -696,7 +696,7 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 				);
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
 	foreach (Id const &child, children) {
-		if (mEditorManagerProxy->isGraphicalElementNode(child)) {
+		if (mEditorManagerProxy.isGraphicalElementNode(child)) {
 			result->addPreAction(graphicalDeleteCommand(child));
 		} else {
 			// Edges are deletted first
@@ -842,10 +842,10 @@ void MainWindow::parseJavaLibraries()
 
 bool MainWindow::unloadPlugin(QString const &pluginName)
 {
-	if (mEditorManagerProxy->editors().contains(Id(pluginName))) {
-		IdList const diagrams = mEditorManagerProxy->diagrams(Id(pluginName));
+	if (mEditorManagerProxy.editors().contains(Id(pluginName))) {
+		IdList const diagrams = mEditorManagerProxy.diagrams(Id(pluginName));
 
-		if (!mEditorManagerProxy->unloadPlugin(pluginName)) {
+		if (!mEditorManagerProxy.unloadPlugin(pluginName)) {
 			return false;
 		}
 		foreach (Id const &diagram, diagrams) {
@@ -857,11 +857,11 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 
 bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
-	if (!mEditorManagerProxy->loadPlugin(fileName)) {
+	if (!mEditorManagerProxy.loadPlugin(fileName)) {
 		return false;
 	}
 
-	foreach (Id const &diagram, mEditorManagerProxy->diagrams(Id(pluginName))) {
+	foreach (Id const &diagram, mEditorManagerProxy.diagrams(Id(pluginName))) {
 		mUi->paletteTree->addEditorElements(mEditorManagerProxy, Id(pluginName), diagram);
 	}
 
@@ -871,7 +871,7 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 
 bool MainWindow::pluginLoaded(QString const &pluginName)
 {
-	return mEditorManagerProxy->editors().contains(Id(pluginName));
+	return mEditorManagerProxy.editors().contains(Id(pluginName));
 }
 
 EditorView * MainWindow::getCurrentTab() const
@@ -1074,7 +1074,7 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (mEditorManagerProxy->isDiagramNode(id)) {
+	if (mEditorManagerProxy.isDiagramNode(id)) {
 		return;
 	}
 
@@ -1165,7 +1165,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		foreach (QString const &name, mUi->paletteTree->editorsNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
 			Id const diagramId = Id(id.editor(), id.diagram());
-			QString const diagramName = mEditorManagerProxy->friendlyName(diagramId);
+			QString const diagramName = mEditorManagerProxy.friendlyName(diagramId);
 			if (diagramName == name) {
 				mUi->paletteTree->setComboBoxIndex(i);
 				break;
@@ -1447,7 +1447,7 @@ GesturesPainterInterface * MainWindow::gesturesPainter()
 	return mGesturesWidget;
 }
 
-ProxyEditorManager *MainWindow::editorManagerProxy()
+ProxyEditorManager &MainWindow::editorManagerProxy()
 {
 	return mEditorManagerProxy;
 }
@@ -1885,7 +1885,7 @@ void MainWindow::arrangeElementsByDotRunner(QString const &algorithm, QString co
 			diagramId
 			, mModels->graphicalModelAssistApi()
 			, mModels->logicalModelAssistApi()
-			, *mEditorManagerProxy
+			, mEditorManagerProxy
 			, absolutePathToDotFiles
 			);
 

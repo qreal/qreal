@@ -48,7 +48,7 @@ public:
 	  @param editor Editor
 	  @param diagram Diagram that corresponds to chosen editor.
 	*/
-	void addEditorElements(EditorManagerInterface *editorManagerProxy, const Id &editor, const Id &diagram);
+	void addEditorElements(EditorManagerInterface &editorManagerProxy, const Id &editor, const Id &diagram);
 
 	/// Initialize connection editor's combobox with slot that sets active editor.
 	void initDone();
@@ -82,8 +82,10 @@ public:
 	void loadPalette(bool isIconsView, int itemsCount, EditorManagerInterface *editorManagerProxy);
 	~PaletteTree();
 	void initMainWindow(MainWindow *mainWindow);
+
 signals:
 	void paletteParametersChanged();
+
 public slots:
 	/// Collapse all nodes of current tree.
 	void collapse();
@@ -133,17 +135,15 @@ private:
 	/// Deletes all PaletteTree widgets.
 	void deletePaletteTree();
 
-	/** Adds group of editor's elements to appropriate tree to some top element.
-	  @param tmpList List with sorted group elements.
-	  @param editorTree Editor's tree
-	  @param item Editor's tree node for adding in it tmpList.
-	*/
+	/// Adds group of editor's elements to appropriate tree to some top element.
+	/// @param tmpList List with sorted group elements.
+	/// @param editorTree Editor's tree
+	/// @param item Editor's tree node for adding in it tmpList.
 	void addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, QTreeWidgetItem *item);
 
-	/** Fills palette tree by editors.
-	  @param editorManager Editor manager which all editors with elements are taken from.
-	*/
-	void loadEditors(EditorManagerInterface *editorManagerProxy);
+	/// Fills palette tree by editors.
+	/// @param editorManager Editor manager which all editors with elements are taken from.
+	void loadEditors(EditorManagerInterface &editorManagerProxy);
 
 	/// EditorManager instance used to sort palette's content.
 	/// Made static to be used inside idLessThan()

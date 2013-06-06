@@ -19,9 +19,9 @@ class LogicalModel;
 class LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
 {
 public:
-	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface *editorManagerInterface);
+	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface);
 	virtual ~LogicalModelAssistApi() {}
-	EditorManagerInterface const *editorManagerInterface() const;
+	EditorManagerInterface const &editorManagerInterface() const;
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
 	Id createElement(Id const &parent, Id const &type);
@@ -71,7 +71,7 @@ public:
 private:
 	details::ModelsAssistApi mModelsAssistApi;
 	details::LogicalModel &mLogicalModel;
-	EditorManagerInterface *mEditorManagerProxy;
+	EditorManagerInterface const &mEditorManager;
 
 	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden
 	LogicalModelAssistApi& operator =(LogicalModelAssistApi const &); // Assignment is forbidden also

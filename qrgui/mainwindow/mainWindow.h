@@ -69,7 +69,7 @@ public:
 	MainWindow(QString const &fileToOpen = QString());
 	~MainWindow();
 
-	EditorManagerInterface* editorManager();
+	EditorManagerInterface &editorManager();
 	EditorView *getCurrentTab() const;
 	ListenerManager *listenerManager() const;
 	models::Models *models() const;
@@ -125,7 +125,7 @@ public:
 	virtual void reportOperation(invocation::LongOperation *operation);
 
 	/// Returns editor manager proxy, which allows to change editor manager implementation.
-	ProxyEditorManager *editorManagerProxy();
+	ProxyEditorManager &editorManagerProxy();
 
 	/// Loads (or reloads) available editor plugins and reinits palette.
 	void loadPlugins();
@@ -343,7 +343,7 @@ private:
 
 	models::Models *mModels;
 	Controller *mController;
-	ProxyEditorManager *mEditorManagerProxy;
+	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;

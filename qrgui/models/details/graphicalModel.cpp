@@ -10,7 +10,7 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManagerInterface *editorManagerInterface)
+GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface)
 	: AbstractModel(editorManagerInterface), mLogicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
@@ -131,7 +131,7 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 		case Qt::EditRole:
 			return mApi.name(item->id());
 		case Qt::DecorationRole:
-			return mEditorManagerInterface->icon(item->id());
+			return mEditorManagerInterface.icon(item->id());
 		case roles::idRole:
 			return item->id().toVariant();
 		case roles::logicalIdRole:

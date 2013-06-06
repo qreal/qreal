@@ -490,7 +490,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	QList<NodeElement*> element;
 	element.append(this);
-	QSize size = mGraphicalAssistApi->editorManagerInterface()->iconSize(id());
+	QSize size = mGraphicalAssistApi->editorManagerInterface().iconSize(id());
 	evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos()
 			, QPointF(size.width(), size.height()), element);
 
@@ -599,14 +599,14 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	foreach (QString const &elementName, mGraphicalAssistApi->editorManagerInterface()->elements(id().editor(),id().diagram())) {
-		int ne = mGraphicalAssistApi->editorManagerInterface()->isNodeOrEdge(id().editor(), elementName);
+	foreach (QString const &elementName, mGraphicalAssistApi->editorManagerInterface().elements(id().editor(),id().diagram())) {
+		int ne = mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> const list =  mGraphicalAssistApi->editorManagerInterface()->possibleEdges(id().editor(), elementName);
+			QList<StringPossibleEdge> const list =  mGraphicalAssistApi->editorManagerInterface().possibleEdges(id().editor(), elementName);
 			foreach(StringPossibleEdge pEdge, list) {
-				if (mGraphicalAssistApi->editorManagerInterface()->isParentOf(id().editor(), id().diagram()
+				if (mGraphicalAssistApi->editorManagerInterface().isParentOf(id().editor(), id().diagram()
 						, pEdge.first.first, id().diagram(), id().element())
-						|| (mGraphicalAssistApi->editorManagerInterface()->isParentOf(id().editor(), id().diagram()
+						|| (mGraphicalAssistApi->editorManagerInterface().isParentOf(id().editor(), id().diagram()
 						, pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
 				{
 					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
