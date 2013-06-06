@@ -1,21 +1,23 @@
 #include "gesturesWidget.h"
 #include "ui_gesturesWidget.h"
 
-GesturesWidget::GesturesWidget(QWidget *parent) :
-	QWidget(parent),
-	ui(new Ui::GesturesWidget)
+using namespace qReal::gestures;
+
+GesturesWidget::GesturesWidget(QWidget *parent)
+	: QWidget(parent)
+	, mUi(new Ui::GesturesWidget)
 {
-	ui->setupUi(this);
-	mGestureScene = new QGraphicsScene(ui->graphicsView);
+	mUi->setupUi(this);
+	mGestureScene = new QGraphicsScene(mUi->graphicsView);
 	gestColor = Qt::blue;
-	ui->graphicsView->setScene(mGestureScene);
-	connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem *,QListWidgetItem *))
+	mUi->graphicsView->setScene(mGestureScene);
+	connect(mUi->listWidget, SIGNAL(currentItemChanged(QListWidgetItem *,QListWidgetItem *))
 			, this, SIGNAL(currentElementChanged()));
 }
 
 GesturesWidget::~GesturesWidget()
 {
-	delete ui;
+	delete mUi;
 }
 
 void GesturesWidget::draw(PathVector const &paths)
@@ -47,14 +49,19 @@ int GesturesWidget::coord(int previous, int next, int part)
 	return previous + (next - previous) * part / pointsAtSegment;
 }
 
-QString GesturesWidget::currentElement()
+qReal::Id GesturesWidget::currentElement() const
 {
-	return ui->listWidget->currentItem()->text();
+	return mUi->listWidget->currentItem()->data(Qt::UserRole).value<qReal::Id>();
 }
 
-void GesturesWidget::setElements(const QList<QString> &elements)
+void GesturesWidget::setElements(QList<QPair<QString, qReal::Id> > const &elements)
 {
-	ui->listWidget->clear();
-	ui->listWidget->addItems(elements);
+	mUi->listWidget->clear();
+	QListIterator<QPair<QString, qReal::Id> > iterator(elements);
+	while (iterator.hasNext()) {
+		QPair<QString, qReal::Id> const element(iterator.next());
+		QListWidgetItem *item = new QListWidgetItem(element.first);
+		item->setData(Qt::UserRole, QVariant::fromValue(element.second));
+		mUi->listWidget->addItem(item);
+	}
 }
-
