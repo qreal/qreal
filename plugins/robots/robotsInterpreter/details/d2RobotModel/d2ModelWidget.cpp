@@ -196,7 +196,6 @@ void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAct
 {
 	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
 	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
-	connect(runAction, SIGNAL(triggered()), this, SLOT(startTimelineListening()));
 	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTimelineListening()));
 }
 
