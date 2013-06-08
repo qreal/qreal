@@ -331,7 +331,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const
 {
 	bool allowed = false;
-	foreach (qReal::Id type, mWindow->editorManager().containedTypes(container.type())){
+	foreach (qReal::Id const &type, mWindow->editorManager().containedTypes(container.type())) {
 		allowed = allowed || mWindow->editorManager().isParentOf(candidate, type);
 	}
 
@@ -1451,18 +1451,18 @@ void EditorViewScene::deleteUsageActionTriggered()
 
 void EditorViewScene::changePropertiesActionTriggered()
 {
-	QAction *action = static_cast<QAction *>(sender());
-	Id id = action->data().value<Id>();
-	PropertiesDialog *propDialog = new PropertiesDialog(*mWindow, mWindow->editorManager(), id);
-	propDialog->setModal(true);
-	propDialog->show();
+	QAction const * const action = static_cast<QAction const *>(sender());
+	Id const id = action->data().value<Id>();
+	PropertiesDialog * const propertiesDialog = new PropertiesDialog(*mWindow, mWindow->editorManager(), id);
+	propertiesDialog->setModal(true);
+	propertiesDialog->show();
 }
 
 void EditorViewScene::changeAppearanceActionTriggered()
 {
-	QAction *action = static_cast<QAction *>(sender());
-	Id id = action->data().value<Id>();
-	QString propertyValue = mWindow->editorManager().shape(id);
+	QAction const * const action = static_cast<QAction const *>(sender());
+	Id const id = action->data().value<Id>();
+	QString const propertyValue = mWindow->editorManager().shape(id);
 	mWindow->openShapeEditor(id, propertyValue, &(mWindow->editorManager()));
 }
 

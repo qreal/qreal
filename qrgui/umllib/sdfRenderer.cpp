@@ -1,6 +1,5 @@
 #include "sdfRenderer.h"
 
-#include <QMessageBox>
 #include <QtCore/QLineF>
 #include <QtCore/QTime>
 #include <QtCore/QDebug>
@@ -300,7 +299,7 @@ void SdfRenderer::image_draw(QDomElement &element)
 	if (fileName.startsWith("./")) {
 		fileName = QApplication::applicationDirPath() + "/" + fileName;
 	}
-	
+
 	QPixmap pixmap;
 
 	if(mMapFileImage.contains(fileName)) {
@@ -775,7 +774,7 @@ SdfIconEngineV2::SdfIconEngineV2(QString const &file)
 	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
 }
 
-SdfIconEngineV2::SdfIconEngineV2(QDomDocument &document)
+SdfIconEngineV2::SdfIconEngineV2(QDomDocument const &document)
 {
 	mRenderer.load(document);
 	mRenderer.noScale();

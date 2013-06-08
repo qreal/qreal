@@ -233,8 +233,3 @@ void EditorView::setTitlesVisible(bool visible)
 {
 	mScene->setTitlesVisible(visible);
 }
-
-EditorViewScene *EditorView::getEditorViewScene()
-{
-	return mScene;
-}

@@ -779,14 +779,14 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 {
 	QPainterPath circlePath;
 	circlePath.addEllipse(mapToScene(position), 12, 12);
-	QList <QGraphicsItem*> items = scene()->items(circlePath);
+	QList<QGraphicsItem*> items = scene()->items(circlePath);
 
 	if (isStart && items.contains(mSrc)) {
 		return innermostChild(items, mSrc);
-	}
-	if (!isStart && items.contains(mDst)) {
+	} else if (!isStart && items.contains(mDst)) {
 		return innermostChild(items, mDst);
 	}
+
 	foreach (QGraphicsItem *item, items) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
 		if (e) {

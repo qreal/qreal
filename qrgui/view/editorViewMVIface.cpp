@@ -320,13 +320,16 @@ models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 void EditorViewMViface::clearItems()
 {
 	QList<QGraphicsItem *> toRemove;
-	foreach (IndexElementPair const &pair, mItems)
+	foreach (IndexElementPair const &pair, mItems) {
 		if (!pair.second->parentItem()) {
 			toRemove.append(pair.second);
 		}
-	foreach (QGraphicsItem *item, toRemove) {
+	}
+
+	foreach (QGraphicsItem * const item, toRemove) {
 		delete item;
 	}
+
 	mItems.clear();
 }
 

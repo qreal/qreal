@@ -26,7 +26,6 @@ namespace qReal {
 		void ensureElementVisible(Element const * const element);
 		void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
 		void setTitlesVisible(bool visible);
-		EditorViewScene *getEditorViewScene();
 
 	public slots:
 		void toggleAntialiasing(bool);

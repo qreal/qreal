@@ -96,7 +96,7 @@ class SdfIconEngineV2: public SdfIconEngineV2Interface
 {
 public:
 	SdfIconEngineV2(QString const &file);
-	SdfIconEngineV2(QDomDocument &document);
+	SdfIconEngineV2(QDomDocument const &document);
 	QSize preferedSize() const;
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
 	virtual QIconEngine *clone() const
