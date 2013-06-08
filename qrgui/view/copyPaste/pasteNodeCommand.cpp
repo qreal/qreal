@@ -65,6 +65,10 @@ void PasteNodeCommand::restoreElement()
 	if (mCopiedIds->contains(mNodeData.parentId)) {
 		mMVIface->graphicalAssistApi()->changeParent(mResult, mCopiedIds->value(mNodeData.parentId), mNewPos);
 	}
+	NodeElement *element = mScene->getNodeById(mResult);
+	if (element) {
+		element->updateData();
+	}
 }
 
 QPointF PasteNodeCommand::getNewPos() const

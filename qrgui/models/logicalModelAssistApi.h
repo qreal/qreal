@@ -42,8 +42,11 @@ public:
 	IdList diagramsAbleToBeUsedIn(Id const &element) const;
 	virtual void stackBefore(Id const &element, Id const &sibling);
 
-	void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
-	QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
+	virtual QVariant property(Id const &id, QString const &name) const;
+	virtual void setProperty(Id const &id, QString const &name, QVariant const &value);
+
+	virtual void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
+	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
 
 	bool isLogicalId(Id const &id) const;
 

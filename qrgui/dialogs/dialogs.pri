@@ -44,6 +44,7 @@ SOURCES += \
 	dialogs/managedClosableDialog.cpp \
 	dialogs/preferencesDialog.cpp \
 	dialogs/suggestToCreateDiagramDialog.cpp \
+	dialogs/suggestToCreateProjectDialog.cpp \
 
 FORMS += \
 	dialogs/gesturesShow/gesturesWidget.ui \

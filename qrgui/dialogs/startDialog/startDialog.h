@@ -1,8 +1,7 @@
 #pragma once
 
+#include <QtWidgets/QDialog>
 #include <QtWidgets/QCommandLinkButton>
-
-#include "../managedClosableDialog.h"
 
 #include "../../mainwindow/projectManager/projectManager.h"
 #include "../../pluginManager/editorManagerInterface.h"
@@ -18,7 +17,7 @@ class MainWindow;
  * projects or not), or create a new one and did not appear in the main window of application,
  * where there is no single project.
  */
-class StartDialog : public ManagedClosableDialog
+class StartDialog : public QDialog
 {
 	Q_OBJECT
 
@@ -37,13 +36,16 @@ public:
 private slots:
 	void openRecentProject(QString const &fileName);
 	void openExistingProject();
-	void createProjectWithDiagram(QString const &idString);
 	void exitApp();
 	void openInterpretedDiagram();
 	void createInterpretedDiagram();
+	void createProjectWithDiagram(QString const &idString);
 
 private:
-	static const QSize mMinimumSize;
+	QCommandLinkButton *createCommandButton(QString const &text
+			, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey);
+
+	static QSize const mMinimumSize;
 
 	MainWindow &mMainWindow;
 	ProjectManager &mProjectManager;

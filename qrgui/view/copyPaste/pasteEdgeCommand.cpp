@@ -79,5 +79,6 @@ void PasteEdgeCommand::restoreElement()
 		edge->setPos(mEdgeData.pos + mOffset);
 		edge->setLine(mEdgeData.configuration);
 		edge->connectToPort();
+		edge->updateData();
 	}
 }

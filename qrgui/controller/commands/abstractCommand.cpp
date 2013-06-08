@@ -31,6 +31,7 @@ void AbstractCommand::redo()
 	executeDirect(mPreActions);
 	mExecuted = execute();
 	executeDirect(mPostActions);
+	emit redoComplete(mExecuted);
 }
 
 void AbstractCommand::undo()
@@ -45,6 +46,7 @@ void AbstractCommand::undo()
 	executeReverse(mPostActions);
 	mExecuted = !restoreState();
 	executeReverse(mPreActions);
+	emit undoComplete(!mExecuted);
 }
 
 void AbstractCommand::setRedoEnabled(bool enabled)

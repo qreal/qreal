@@ -121,5 +121,86 @@ private:
 
 	bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child, QString const &parentDiagram, QString const &parent) const;
 };
+/*
+	class EditorManager : public QObject
+	{
+		Q_OBJECT
+
+	public:
+		explicit EditorManager(QObject *parent = NULL);
+
+		~EditorManager();
+
+		IdList editors() const;
+		IdList diagrams(Id const &editor) const;
+		IdList groups(Id const &diagram);
+		Pattern getPatternByName (QString const &str) const;
+		QList<QString> getPatternNames() const;
+		QStringList paletteGroups(Id const &editor, Id const &diagram) const;
+		QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
+		QString paletteGroupDescription(Id const &editor, const Id &diagram, QString const &group) const;
+		IdList elements(Id const &diagram) const;
+		bool loadPlugin(QString const &pluginName);
+		bool unloadPlugin(QString const &pluginName);
+
+		QString mouseGesture(Id const &id) const;
+		QString friendlyName(Id const &id) const;
+		QString description(Id const &id) const;
+		QString propertyDescription(Id const &id, QString const &propertyName) const;
+		QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
+		QIcon icon(Id const &id) const;
+		QSize iconSize(Id const &id) const;
+		Element* graphicalObject(Id const &id) const;
+
+		IdList getContainedTypes(const Id &id) const;
+		IdList getConnectedTypes(const Id &id) const;
+		IdList getUsedTypes(const Id &id) const;
+		QStringList getEnumValues(Id const &id, QString const &name) const;
+		QString getTypeName(Id const &id, QString const &name) const;
+		QStringList getAllChildrenTypesOf(Id const &parent) const;
+
+		bool isEditor(Id const &id) const;
+		bool isDiagram(Id const &id) const;
+		bool isElement(Id const &id) const;
+
+		virtual QStringList getPropertyNames(Id const &id) const;
+		virtual QStringList getReferenceProperties(Id const &id) const;
+		virtual QString getDefaultPropertyValue(Id const &id, QString name) const;
+		virtual QStringList getPropertiesWithDefaultValues(Id const &id) const;
+
+		IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
+				, qrRepo::GraphicalRepoApi const &graphicalApi) const;
+		bool hasElement(Id const &element) const;
+
+		Id findElementByType(QString const &type) const;
+		QList<ListenerInterface *> listeners() const;
+
+		EditorInterface* editorInterface(QString const &editor) const;
+
+		bool isDiagramNode(Id const &id) const;
+
+		bool isParentOf(Id const &child, Id const &parent) const;
+		bool isGraphicalElementNode(const Id &id) const;
+
+		/// Returns diagram id if only one diagram loaded or Id() otherwise
+		Id theOnlyDiagram() const;
+		QString diagramNodeNameString(Id const &editor, Id const &diagram) const;
+
+	private:
+		QStringList mPluginsLoaded;
+		QList<Pattern> mDiagramGroups;
+		QMap<QString, Pattern> mGroups;
+		QMap<QString, QString> mPluginFileName;
+		QMap<QString, EditorInterface *> mPluginIface;
+		QMap<QString, QPluginLoader *> mLoaders;
+
+		QDir mPluginsDir;
+		QStringList mPluginFileNames;
+
+		void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
+
+		bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child, QString const &parentDiagram, QString const &parent) const;
+	};
+*/
 
 }

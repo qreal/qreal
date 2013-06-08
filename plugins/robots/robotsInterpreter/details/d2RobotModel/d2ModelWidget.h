@@ -87,7 +87,6 @@ public:
 	void disableRunStopButtons();
 
 	D2ModelScene* scene();
-	void setRobotVisible(bool isVisible);
 	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
 
 	void closeEvent(QCloseEvent *event);

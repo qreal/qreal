@@ -1,5 +1,4 @@
 #include <QtWidgets/QTabWidget>
-#include <QtWidgets/QCommandLinkButton>
 
 #include "startDialog.h"
 #include "suggestToCreateDiagramWidget.h"
@@ -12,24 +11,28 @@ using namespace qReal;
 const QSize StartDialog::mMinimumSize = QSize(350, 200);
 
 StartDialog::StartDialog(MainWindow &mainWindow, ProjectManager &projectManager)
-		: ManagedClosableDialog(&mainWindow, false)
+		: QDialog(&mainWindow, false)
 		, mMainWindow(mainWindow)
 		, mProjectManager(projectManager)
 {
 	setMinimumSize(mMinimumSize);
+	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
 	QTabWidget *tabWidget = new QTabWidget;
 
 	RecentProjectsListWidget *recentProjects = new RecentProjectsListWidget(this);
 	tabWidget->addTab(recentProjects, tr("&Recent projects"));
-	SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(&mMainWindow, this);
-	tabWidget->addTab(diagrams, tr("&New project with diagram"));
 
-	if (recentProjects->count() == 0) {
-		tabWidget->setCurrentWidget(diagrams);
+	Id const theOnlyDiagram = mMainWindow->manager()->theOnlyDiagram();
+	if (theOnlyDiagram == Id()) {
+		SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(mMainWindow, this);
+		tabWidget->addTab(diagrams, tr("&New project with diagram"));
+		connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
+		if (recentProjects->count() == 0) {
+			tabWidget->setCurrentWidget(diagrams);
+		}
 	}
 
-	QCommandLinkButton *quitLink = new QCommandLinkButton(tr("&Quit QReal"));
-	QCommandLinkButton *openLink = new QCommandLinkButton(tr("&Open existing project"));
 	QCommandLinkButton *openIDLink = new QCommandLinkButton(tr("&Open interpreted diagram"));
 	QCommandLinkButton *createIDLink = new QCommandLinkButton(tr("&Create interpreted diagram"));
 
@@ -42,8 +45,21 @@ StartDialog::StartDialog(MainWindow &mainWindow, ProjectManager &projectManager)
 	mCreateInterpreterButton = createIDLink;
 
 	QHBoxLayout *commandLinksLayout = new QHBoxLayout;
-	commandLinksLayout->addWidget(openLink);
-	commandLinksLayout->addWidget(quitLink);
+
+	if (theOnlyDiagram != Id()) {
+		Id const editor = mMainWindow->manager()->editors()[0];
+		QString const diagramIdString = mMainWindow->manager()->diagramNodeNameString(editor, theOnlyDiagram);
+
+		QSignalMapper *newProjectMapper = new QSignalMapper(this);
+		QCommandLinkButton *newLink = createCommandButton(tr("New project")
+				, newProjectMapper, SLOT(map()), QKeySequence::New);
+		newProjectMapper->setMapping(newLink, diagramIdString);
+		connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
+		commandLinksLayout->addWidget(newLink);
+	}
+
+	commandLinksLayout->addWidget(createCommandButton(tr("Open existing project")
+			, this, SLOT(openExistingProject()), QKeySequence::Open));
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(tabWidget);
@@ -54,12 +70,11 @@ StartDialog::StartDialog(MainWindow &mainWindow, ProjectManager &projectManager)
 	setLayout(mainLayout);
 	setWindowTitle(tr("Start page"));
 
-	connect(openLink, SIGNAL(clicked()), this, SLOT(openExistingProject()));
-	connect(quitLink, SIGNAL(clicked()), this, SLOT(exitApp()));
 	connect(openIDLink, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
 	connect(createIDLink, SIGNAL(clicked()), this, SLOT(createInterpretedDiagram()));
+
 	connect(recentProjects, SIGNAL(userDataSelected(QString)), this, SLOT(openRecentProject(QString)));
-	connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
+	connect(this, SIGNAL(rejected()), this, SLOT(exitApp()));
 }
 
 StartDialog::~StartDialog()
@@ -76,29 +91,40 @@ void StartDialog::setVisibleForInterpreterButton(bool const visible)
 
 void StartDialog::openRecentProject(QString const &fileName)
 {
-	if (mProjectManager.open(fileName)) {
-		forceClose();
+	if (mProjectManager->open(fileName)) {
+		accept();
 	}
 }
 
 void StartDialog::openExistingProject()
 {
-	if (mProjectManager.suggestToOpenExisting()) {
-		forceClose();
+	if (mProjectManager->suggestToOpenExisting()) {
+		accept();
 	}
 }
 
 void StartDialog::createProjectWithDiagram(QString const &idString)
 {
-	mProjectManager.clearAutosaveFile();
-	mProjectManager.openEmptyWithSuggestToSaveChanges();
-	mMainWindow.createDiagram(idString);
-	forceClose();
+	if (mMainWindow->createProject(idString)) {
+		accept();
+	}
+}
+
+QCommandLinkButton *StartDialog::createCommandButton(QString const &text
+		, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey)
+{
+	QCommandLinkButton * const result = new QCommandLinkButton(text);
+	connect(result, SIGNAL(clicked()), reciever, slot);
+	QAction * const buttonAction = new QAction(this);
+	buttonAction->setShortcuts(standartHotkey);
+	connect(buttonAction, SIGNAL(triggered()), result, SLOT(animateClick()));
+	addAction(buttonAction);
+	result->setToolTip(QKeySequence(standartHotkey).toString());
+	return result;
 }
 
 void StartDialog::exitApp()
 {
-	forceClose();
 	qApp->closeAllWindows();
 }
 

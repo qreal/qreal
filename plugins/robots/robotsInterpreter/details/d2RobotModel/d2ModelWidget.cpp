@@ -617,13 +617,16 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	mRobot->checkSelection();
-	foreach (SensorItem *sensor, mSensors) {
-		if (sensor) {
-			sensor->checkSelection();
+	if (mouseEvent->buttons() & Qt::LeftButton) {
+		mRobot->checkSelection();
+		foreach (SensorItem *sensor, mSensors) {
+			if (sensor) {
+				sensor->checkSelection();
+			}
 		}
 	}
 
+	bool needUpdate = true;
 	processDragMode(mDrawingAction);
 	switch (mDrawingAction){
 	case drawingAction::wall:
@@ -639,11 +642,13 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		reshapeEllipse(mouseEvent);
 		break;
 	default:
+		needUpdate = false;
 		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
 		break;
 	}
-
-	mScene->update();
+	if (needUpdate) {
+		mScene->update();
+	}
 }
 
 void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
@@ -954,17 +959,6 @@ D2ModelScene* D2ModelWidget::scene()
 	return mScene;
 }
 
-void D2ModelWidget::setRobotVisible(bool isVisible)
-{
-	if (!isVisible) {
-		mRobotWasSelected = mRobot->isSelected();
-	}
-	mRobot->setVisible(isVisible);
-	if (isVisible) {
-		mRobot->setSelected(mRobotWasSelected);
-	}
-}
-
 void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisible)
 {
 	if (mSensors[port]) {
@@ -1010,6 +1004,7 @@ QDomDocument D2ModelWidget::generateXml() const
 
 void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 {
+	clearScene(true);
 	QDomNodeList const worldList = worldModel.elementsByTagName("world");
 	QDomNodeList const robotList = worldModel.elementsByTagName("robot");
 	if (worldList.count() != 1 || robotList.count() != 1) {

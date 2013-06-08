@@ -252,6 +252,16 @@ void NodeElement::switchGrid(bool isChecked)
 {
 	mGrid->setGridMode(isChecked);
 	mSwitchGridAction.setChecked(isChecked);
+	if (isChecked) {
+		alignToGrid();
+
+		// Align mode doesn`t work in a square mode
+		if (!SettingsManager::value("SquareLine").toBool()) {
+			foreach (EdgeElement * const edge, mEdgeList) {
+				edge->alignToGrid();
+			}
+		}
+	}
 }
 
 void NodeElement::delUnusedLines()
@@ -554,6 +564,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
 		edge->saveConfiguration(QPointF());
+		if (SettingsManager::value("ActivateGrid").toBool() && !SettingsManager::value("SquareLine").toBool()) {
+			edge->alignToGrid();
+		}
 	}
 
 	mDragState = None;
@@ -671,6 +684,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
 	switch (change) {
 	case ItemPositionHasChanged:
+		alignToGrid();
 		adjustLinks(true);
 		return value;
 

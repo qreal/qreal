@@ -3,25 +3,22 @@
 using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
-NullificationEncoderBlock::NullificationEncoderBlock(RobotModel *const robotModel)
-	:  mEncoderSensor(NULL)
-	,mRobotModel(robotModel)
+NullificationEncoderBlock::NullificationEncoderBlock(RobotModel * const robotModel)
+	: mRobotModel(robotModel)
 {
 }
 
 void NullificationEncoderBlock::run()
 {
-	QString const port = stringProperty("Port");
-	if (port.trimmed().toUpper() == "A")
-		mEncoderSensor = &mRobotModel->encoderA();
-	else if (port.trimmed().toUpper() == "B")
-		mEncoderSensor = &mRobotModel->encoderB();
-	else if (port.trimmed().toUpper() == "C")
-		mEncoderSensor = &mRobotModel->encoderC();
-	if (!mEncoderSensor) {
-		error(tr("Wrong port to nullificate Encoder"));
-		return;
+	QVector<bool> ports(parseEnginePorts());
+	if (ports[0]) {
+		mRobotModel->encoderA().nullificate();
 	}
-	mEncoderSensor->nullificate();
+	if (ports[1]) {
+		mRobotModel->encoderB().nullificate();
+	}
+	if (ports[2]) {
+		mRobotModel->encoderC().nullificate();
+	}
 	emit done(mNextBlock);
 }

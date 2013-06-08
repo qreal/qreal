@@ -74,6 +74,9 @@ public:
 	/// Set saved item index as current in ComboBox.
 	void setComboBoxIndex();
 
+	/// Saves selected editor and expanded groups into settings
+	void saveConfiguration();
+
 	/** Load palette and set some representation.
 	  @param isIconsView This variable corresponds to representation.
 	  @param itemsCount Items count in a row.
@@ -81,7 +84,10 @@ public:
 	*/
 	void loadPalette(bool isIconsView, int itemsCount, EditorManagerInterface *editorManagerProxy);
 	~PaletteTree();
+<<<<<<< HEAD
 	void initMainWindow(MainWindow *mainWindow);
+=======
+>>>>>>> master
 
 signals:
 	void paletteParametersChanged();
@@ -100,7 +106,50 @@ public slots:
 
 	/// Changes widget representation.
 	void changeRepresentation();
+
 private:
+<<<<<<< HEAD
+=======
+
+	/// Class for representing editor elements.
+	class DraggableElement : public QWidget
+	{
+	public:
+			DraggableElement(Id const &id, QString const &name
+					, QString const &description
+					, QIcon const &icon
+					, QSize const &iconsPreferedSize
+					, bool iconsOnly
+					, QWidget *parent = NULL);
+
+			QIcon icon() const;
+			QString text() const;
+			Id id() const;
+			QSize iconsPreferedSize() const;
+
+			void setIconSize(int size);
+
+	private:
+			virtual void dragEnterEvent(QDragEnterEvent *event);
+			virtual void dropEvent(QDropEvent *event);
+
+			Id mId;
+			QIcon mIcon;
+			QSize mPreferedSize;
+			QString mText;
+			QLabel *mLabel;
+	};
+
+	/// Represents an area where editor items are situated
+	class TreeArea : public QTreeWidget
+	{
+	public:
+		TreeArea(QWidget *parent = 0);
+	protected:
+		virtual void mousePressEvent(QMouseEvent *event);
+	};
+
+>>>>>>> master
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
 
@@ -129,6 +178,9 @@ private:
 	*/
 	void expandChildren(QTreeWidgetItem *item);
 
+	/// Expands all children of given tree widget
+	void expand(QTreeWidget const *tree);
+
 	/// Creates all PaletteTree widgets.
 	void createPaletteTree();
 
@@ -154,7 +206,7 @@ private:
 	QHash<Id, int> mCategories;
 
 	/// Pointer to current tree.
-	QTreeWidget *mTree;
+	TreeArea *mTree;
 
 	/// Button that collapses all nodes of current tree.
 	QToolButton *mCollapseAll;
@@ -166,7 +218,7 @@ private:
 	QToolButton *mChangeRepresentation;
 
 	/// Vector with all editor's trees.
-	QVector <QTreeWidget *> mEditorsTrees;
+	QVector <TreeArea *> mEditorsTrees;
 
 	/// Vector with all editor's names.
 	QVector <QString> mEditorsNames;
@@ -179,9 +231,6 @@ private:
 
 	/// Current editor number.
 	int mCurrentEditor;
-
-	/// Stores info about expanded nodes in tree
-	QSettings *mSettings;
 
 	/// Representation flag
 	bool mIconsView;

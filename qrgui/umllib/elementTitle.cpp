@@ -1,10 +1,10 @@
 #include "elementTitle.h"
 
 #include <QtGui/QTextCursor>
-#include <QFontDatabase>
 
 #include "nodeElement.h"
 #include "edgeElement.h"
+#include "private/fontCache.h"
 
 using namespace qReal;
 
@@ -25,16 +25,9 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOn
 	setPos(x, y);
 }
 
-void ElementTitle::setTitleFont() {
-	if (SettingsManager::value("CustomFont").toBool()) {
-		QFont font;
-		font.fromString(SettingsManager::value("CurrentFont").toString());
-		setFont(font);
-	} else {
-		int const fontId = QFontDatabase::addApplicationFont(QDir::currentPath() + "/DejaVuSansCondensed.ttf");
-		if (fontId != -1)
-			setFont(QFont(QFontDatabase::applicationFontFamilies(fontId).at(0), 7));
-	}
+void ElementTitle::setTitleFont()
+{
+	setFont(FontCache::instance()->titlesFont());
 }
 
 void ElementTitle::init(QRectF const& contents)
