@@ -54,3 +54,5 @@ include(graphUtils/graphUtils.pri)
 # Stuff for running long operations in different modes
 include(invocationUtils/invocationUtils.pri)
 
+# Math Utils
+include(mathUtils/mathUtils.pri)

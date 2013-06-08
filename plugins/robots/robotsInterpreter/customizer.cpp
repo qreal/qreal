@@ -24,6 +24,11 @@ QString Customizer::aboutText() const
 	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
 }
 
+bool Customizer::showInterpeterButton() const
+{
+	return false;
+}
+
 void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
 {
 	mDockInterface = dockInterface;
