@@ -223,10 +223,10 @@ bool ProjectManager::openEmptyWithSuggestToSaveChanges()
 
 void ProjectManager::suggestToCreateDiagram(bool isClosable)
 {
-	Id const theOnlyDiagram = mMainWindow->manager()->theOnlyDiagram();
+	Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
 	if (theOnlyDiagram != Id()) {
-		Id const editor = mMainWindow->manager()->editors()[0];
-		mMainWindow->createDiagram(mMainWindow->manager()->diagramNodeNameString(editor, theOnlyDiagram));
+		Id const editor = mMainWindow->editorManager().editors()[0];
+		mMainWindow->createDiagram(mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram));
 	} else {
 		SuggestToCreateDiagramDialog suggestDialog(mMainWindow, isClosable);
 		suggestDialog.exec();

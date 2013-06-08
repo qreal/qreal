@@ -23,9 +23,9 @@ StartDialog::StartDialog(MainWindow &mainWindow, ProjectManager &projectManager)
 	RecentProjectsListWidget *recentProjects = new RecentProjectsListWidget(this);
 	tabWidget->addTab(recentProjects, tr("&Recent projects"));
 
-	Id const theOnlyDiagram = mMainWindow->manager()->theOnlyDiagram();
+	Id const theOnlyDiagram = mMainWindow.editorManager().theOnlyDiagram();
 	if (theOnlyDiagram == Id()) {
-		SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(mMainWindow, this);
+		SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(&mMainWindow, this);
 		tabWidget->addTab(diagrams, tr("&New project with diagram"));
 		connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
 		if (recentProjects->count() == 0) {
@@ -47,8 +47,8 @@ StartDialog::StartDialog(MainWindow &mainWindow, ProjectManager &projectManager)
 	QHBoxLayout *commandLinksLayout = new QHBoxLayout;
 
 	if (theOnlyDiagram != Id()) {
-		Id const editor = mMainWindow->manager()->editors()[0];
-		QString const diagramIdString = mMainWindow->manager()->diagramNodeNameString(editor, theOnlyDiagram);
+		Id const editor = mMainWindow.editorManager().editors()[0];
+		QString const diagramIdString = mMainWindow.editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
 		QCommandLinkButton *newLink = createCommandButton(tr("New project")
@@ -91,21 +91,21 @@ void StartDialog::setVisibleForInterpreterButton(bool const visible)
 
 void StartDialog::openRecentProject(QString const &fileName)
 {
-	if (mProjectManager->open(fileName)) {
+	if (mProjectManager.open(fileName)) {
 		accept();
 	}
 }
 
 void StartDialog::openExistingProject()
 {
-	if (mProjectManager->suggestToOpenExisting()) {
+	if (mProjectManager.suggestToOpenExisting()) {
 		accept();
 	}
 }
 
 void StartDialog::createProjectWithDiagram(QString const &idString)
 {
-	if (mMainWindow->createProject(idString)) {
+	if (mMainWindow.createProject(idString)) {
 		accept();
 	}
 }
@@ -157,7 +157,7 @@ void StartDialog::openInterpretedDiagram()
 			mMainWindow.createDiagram(interpreterIdString);
 		}
 
-		forceClose();
+		accept();
 	} else {
 		show();
 		editorManagerProxy.setProxyManager(new EditorManager());
@@ -181,7 +181,7 @@ void StartDialog::createInterpretedDiagram()
 		mMainWindow.models()->repoControlApi().exterminate();
 		mMainWindow.models()->reinit();
 		mMainWindow.loadPlugins();
-		forceClose();
+		accept();
 	} else {
 		show();
 		editorManagerProxy.setProxyManager(new EditorManager());

@@ -21,6 +21,7 @@ HEADERS += \
 	dialogs/managedClosableDialog.h \
 	dialogs/preferencesDialog.h \
 	dialogs/suggestToCreateDiagramDialog.h \
+	dialogs/suggestToCreateProjectDialog.h \
 
 SOURCES += \
 	dialogs/gesturesShow/gesturesWidget.cpp \

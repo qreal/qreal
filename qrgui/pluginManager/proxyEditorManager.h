@@ -65,6 +65,10 @@ public:
 	bool isParentOf(Id const &child, Id const &parent) const;
 	bool isGraphicalElementNode(const Id &id) const;
 
+	/// Returns diagram id if only one diagram loaded or Id() otherwise
+	Id theOnlyDiagram() const;
+	QString diagramNodeNameString(Id const &editor, Id const &diagram) const;
+
 	QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const;
 	QStringList elements(QString const &editor, QString const &diagram) const;
 	int isNodeOrEdge(QString const &editor, QString const &element) const;

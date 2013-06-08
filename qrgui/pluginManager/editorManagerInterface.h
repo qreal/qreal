@@ -68,6 +68,10 @@ public:
 	virtual bool isParentOf(Id const &child, Id const &parent) const = 0;
 	virtual bool isGraphicalElementNode(const Id &id) const = 0;
 
+	/// Returns diagram id if only one diagram loaded or Id() otherwise
+	virtual Id theOnlyDiagram() const = 0;
+	virtual QString diagramNodeNameString(Id const &editor, Id const &diagram) const = 0;
+
 	virtual QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const = 0;
 	virtual QStringList elements(QString const &editor, QString const &diagram) const = 0;
 	virtual int isNodeOrEdge(QString const &editor, QString const &element) const = 0;

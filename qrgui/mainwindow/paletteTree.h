@@ -32,7 +32,8 @@ public:
 	/// @param tree Editor's tree.
 	/// @param parent Parent of item's group.
 	void addItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon, QTreeWidget *tree, QTreeWidgetItem *parent);
+			, QIcon const &icon, QSize const &preferredSize
+			, QTreeWidget *tree, QTreeWidgetItem *parent);
 
 	/// Adds top item type to some editor's tree.
 	/// @param id Item id.
@@ -41,7 +42,7 @@ public:
 	/// @param icon Item icon.
 	/// @param tree Editor's tree.
 	void addTopItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon, QTreeWidget *tree);
+			, QIcon const &icon, QSize const &preferredSize, QTreeWidget *tree);
 
 	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
@@ -84,10 +85,7 @@ public:
 	*/
 	void loadPalette(bool isIconsView, int itemsCount, EditorManagerInterface *editorManagerProxy);
 	~PaletteTree();
-<<<<<<< HEAD
 	void initMainWindow(MainWindow *mainWindow);
-=======
->>>>>>> master
 
 signals:
 	void paletteParametersChanged();
@@ -108,48 +106,6 @@ public slots:
 	void changeRepresentation();
 
 private:
-<<<<<<< HEAD
-=======
-
-	/// Class for representing editor elements.
-	class DraggableElement : public QWidget
-	{
-	public:
-			DraggableElement(Id const &id, QString const &name
-					, QString const &description
-					, QIcon const &icon
-					, QSize const &iconsPreferedSize
-					, bool iconsOnly
-					, QWidget *parent = NULL);
-
-			QIcon icon() const;
-			QString text() const;
-			Id id() const;
-			QSize iconsPreferedSize() const;
-
-			void setIconSize(int size);
-
-	private:
-			virtual void dragEnterEvent(QDragEnterEvent *event);
-			virtual void dropEvent(QDropEvent *event);
-
-			Id mId;
-			QIcon mIcon;
-			QSize mPreferedSize;
-			QString mText;
-			QLabel *mLabel;
-	};
-
-	/// Represents an area where editor items are situated
-	class TreeArea : public QTreeWidget
-	{
-	public:
-		TreeArea(QWidget *parent = 0);
-	protected:
-		virtual void mousePressEvent(QMouseEvent *event);
-	};
-
->>>>>>> master
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
 
@@ -199,14 +155,15 @@ private:
 
 	/// EditorManager instance used to sort palette's content.
 	/// Made static to be used inside idLessThan()
-	static EditorManagerInterface *mEditorManagerProxy;
+	static EditorManagerInterface *mEditorManager;
+
 	MainWindow *mMainWindow;
 
 	/// Hash table with editor ids.
 	QHash<Id, int> mCategories;
 
 	/// Pointer to current tree.
-	TreeArea *mTree;
+	QTreeWidget *mTree;
 
 	/// Button that collapses all nodes of current tree.
 	QToolButton *mCollapseAll;
@@ -218,7 +175,7 @@ private:
 	QToolButton *mChangeRepresentation;
 
 	/// Vector with all editor's trees.
-	QVector <TreeArea *> mEditorsTrees;
+	QVector <QTreeWidget *> mEditorsTrees;
 
 	/// Vector with all editor's names.
 	QVector <QString> mEditorsNames;

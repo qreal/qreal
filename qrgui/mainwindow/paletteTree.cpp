@@ -16,76 +16,7 @@
 using namespace qReal;
 using namespace gui;
 
-<<<<<<< HEAD
-EditorManagerInterface * PaletteTree::mEditorManagerProxy = NULL;
-=======
-EditorManager * PaletteTree::mEditorManager = NULL;
-
-PaletteTree::DraggableElement::DraggableElement(Id const &id, QString const &name
-		, QString const &description, QIcon const &icon, QSize const &preferedSize
-		, bool iconsOnly, QWidget *parent)
-	: QWidget(parent)
-	, mId(id)
-	, mIcon(icon)
-	, mPreferedSize(preferedSize)
-	, mText(name)
-{
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setContentsMargins(0, 4, 0, 4);
-
-	const int size = iconsOnly ? 50 : 30;
-	mLabel = new QLabel(this);
-	mLabel->setPixmap(mIcon.pixmap(size - 2, size - 2));
-	layout->addWidget(mLabel);
-	if (!iconsOnly) {
-		QLabel *text = new QLabel(this);
-		text->setText(mText);
-		layout->addWidget(text);
-		layout->addStretch();
-	}
-
-	setLayout(layout);
-	QString modifiedDescription = description;
-	if (!modifiedDescription.isEmpty()) {
-		modifiedDescription.insert(0, "<body>");  //turns alignment on
-		setToolTip(modifiedDescription);
-	}
-	setCursor(Qt::OpenHandCursor);
-}
-
-QIcon PaletteTree::DraggableElement::icon() const
-{
-	return mIcon;
-}
-
-QString PaletteTree::DraggableElement::text() const
-{
-	return mText;
-}
-
-Id PaletteTree::DraggableElement::id() const
-{
-	return mId;
-}
-
-QSize PaletteTree::DraggableElement::iconsPreferedSize() const
-{
-	return mPreferedSize;
-}
-
-void PaletteTree::DraggableElement::setIconSize(int size)
-{
-	mLabel->setPixmap(mIcon.pixmap(size , size));
-}
-
-void PaletteTree::DraggableElement::dragEnterEvent(QDragEnterEvent * /*event*/)
-{
-}
-
-void PaletteTree::DraggableElement::dropEvent(QDropEvent * /*event*/)
-{
-}
->>>>>>> master
+EditorManagerInterface * PaletteTree::mEditorManager = NULL;
 
 PaletteTree::PaletteTree(QWidget *parent)
 		: QWidget(parent)
@@ -95,26 +26,35 @@ PaletteTree::PaletteTree(QWidget *parent)
 }
 
 void PaletteTree::addItemType(const Id &id, QString const &name, QString const &description
-		, const QIcon &icon, QTreeWidget *tree, QTreeWidgetItem *parent)
+		, const QIcon &icon, QSize const &preferredSize, QTreeWidget *tree, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(*mMainWindow, id, name, description, icon, mIconsView, *mEditorManagerProxy);
+	DraggableElement *element = new DraggableElement(*mMainWindow, id, name
+			, description, icon, preferredSize
+			, mIconsView, *mEditorManager
+			);
+
 	parent->addChild(leaf);
 	tree->setItemWidget(leaf, 0, element);
 }
 
-void PaletteTree::addTopItemType(const Id &id, const QString &name
-		, const QString &description, const QIcon &icon, QTreeWidget *tree)
+void PaletteTree::addTopItemType(Id const &id, QString const &name
+		, QString const &description, QIcon const &icon
+		, QSize const &preferredSize, QTreeWidget *tree)
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(*mMainWindow, id, name, description, icon, mIconsView, *mEditorManagerProxy);
+	DraggableElement *element = new DraggableElement(*mMainWindow, id, name
+			, description, icon, preferredSize
+			, mIconsView, *mEditorManager
+			);
+
 	tree->addTopLevelItem(item);
 	tree->setItemWidget(item, 0, element);
 }
 
 bool PaletteTree::idLessThan(const Id &s1, const Id &s2)
 {
-	return mEditorManagerProxy->friendlyName(s1).toLower() < mEditorManagerProxy->friendlyName(s2).toLower();
+	return mEditorManager->friendlyName(s1).toLower() < mEditorManager->friendlyName(s2).toLower();
 }
 
 void PaletteTree::collapseChildren(QTreeWidgetItem *item)
@@ -182,9 +122,11 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 {
 	if (mItemsCountInARow == 1 || !mIconsView) {
 		foreach (const Id &element, tmpIdList) {
-			addItemType(element, mEditorManagerProxy->friendlyName(element)
-					, mEditorManagerProxy->description(element)
-					, mEditorManagerProxy->icon(element), editorTree, item);
+			addItemType(element, mEditorManager->friendlyName(element)
+					, mEditorManager->description(element)
+					, mEditorManager->icon(element)
+					, mEditorManager->iconSize(element)
+					, editorTree, item);
 		}
 		return;
 	}
@@ -196,14 +138,15 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 			DraggableElement *element = new DraggableElement(
 					*mMainWindow
 					, *it
-					, mEditorManagerProxy->friendlyName(*it)
-					, mEditorManagerProxy->description(*it)
-					, mEditorManagerProxy->icon(*it)
+					, mEditorManager->friendlyName(*it)
+					, mEditorManager->description(*it)
+					, mEditorManager->icon(*it)
+					, mEditorManager->iconSize(*it)
 					, true
-					, *mEditorManagerProxy
+					, *mEditorManager
 					);
 
-			element->setToolTip(mEditorManagerProxy->friendlyName(*it));
+			element->setToolTip(mEditorManager->friendlyName(*it));
 			layout->addWidget(element, count > 0 ? 50 : 0);
 		}
 		field->setLayout(layout);
@@ -216,47 +159,33 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 
 void PaletteTree::addEditorElements(EditorManagerInterface &editorManagerProxy, const Id &editor, const Id &diagram)
 {
-	mEditorManagerProxy = &editorManagerProxy;
-	mEditorsNames.push_back(mEditorManagerProxy->friendlyName(diagram));
+	mEditorManager = &editorManagerProxy;
+	mEditorsNames.push_back(mEditorManager->friendlyName(diagram));
 
-	mComboBox->addItem(mEditorManagerProxy->friendlyName(diagram));
+	mComboBox->addItem(mEditorManager->friendlyName(diagram));
 
-<<<<<<< HEAD
-	QTreeWidget *editorTree = new PaletteTreeWidget(*this, *mMainWindow, *mEditorManagerProxy);
-=======
-	TreeArea *editorTree = new TreeArea(this);
->>>>>>> master
+	QTreeWidget *editorTree = new PaletteTreeWidget(*this, *mMainWindow, *mEditorManager);
 	editorTree->setHeaderHidden(true);
 	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
-	IdList elements = mEditorManagerProxy->elements(diagram);
-	IdList groups = mEditorManagerProxy->groups(diagram);
+	IdList elements = mEditorManager->elements(diagram);
+	IdList groups = mEditorManager->groups(diagram);
 	elements.append(groups);
 	qSort(elements.begin(), elements.end(), idLessThan);
 
 	mCategories[diagram] = mEditorsTrees.size();
 
-<<<<<<< HEAD
-	if (!mEditorManagerProxy->paletteGroups(editor, diagram).empty()) {
-		foreach (QString const &group, mEditorManagerProxy->paletteGroups(editor, diagram)) {
-=======
 	if (!mEditorManager->paletteGroups(editor, diagram).empty()) {
 		int expandedCount = 0;
 		foreach (QString const &group, mEditorManager->paletteGroups(editor, diagram)) {
->>>>>>> master
 			QTreeWidgetItem *item = new QTreeWidgetItem;
 			item->setText(0, group);
-			item->setToolTip(0, mEditorManagerProxy->paletteGroupDescription(editor, diagram, group));
+			item->setToolTip(0, mEditorManager->paletteGroupDescription(editor, diagram, group));
 
 			IdList tmpIdList;
 
-<<<<<<< HEAD
-			foreach (QString const &elementName, mEditorManagerProxy->paletteGroupList(editor, diagram, group)) {
-				foreach (Id const &element, elements) {
-=======
 			foreach (QString const &elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
-				foreach (Id const &element, list) {
->>>>>>> master
+				foreach (Id const &element, elements) {
 					if (element.element() == elementName) {
 						tmpIdList.append(element);
 						break;
@@ -270,12 +199,8 @@ void PaletteTree::addEditorElements(EditorManagerInterface &editorManagerProxy, 
 
 			editorTree->addTopLevelItem(item);
 
-<<<<<<< HEAD
-			if (mSettings->value(mEditorManagerProxy->friendlyName(diagram) + group, 0).toBool()) {
-=======
 			if (SettingsManager::value(mEditorManager->friendlyName(diagram) + group, 0).toBool()) {
 				++expandedCount;
->>>>>>> master
 				editorTree->expandItem(item);
 			}
 		}
@@ -284,9 +209,11 @@ void PaletteTree::addEditorElements(EditorManagerInterface &editorManagerProxy, 
 		}
 	} else {
 		foreach (Id const &element, elements) {
-			addTopItemType(element, mEditorManagerProxy->friendlyName(element)
-					, mEditorManagerProxy->description(element)
-					, mEditorManagerProxy->icon(element), editorTree);
+			addTopItemType(element, mEditorManager->friendlyName(element)
+					, mEditorManager->description(element)
+					, mEditorManager->icon(element)
+					, mEditorManager->iconSize(element)
+					, editorTree);
 		}
 	}
 	editorTree->hide();
@@ -389,11 +316,8 @@ void PaletteTree::createPaletteTree()
 
 	mLayout->addLayout(hLayout);
 
-<<<<<<< HEAD
-	mTree = new PaletteTreeWidget(*this, *mMainWindow, *mEditorManagerProxy);
-=======
-	mTree = new TreeArea(this);
->>>>>>> master
+	mTree = new PaletteTreeWidget(*this, *mMainWindow, *mEditorManager);
+
 	mTree->setHeaderHidden(true);
 	mLayout->addWidget(mTree);
 	setMinimumWidth(200);
@@ -441,6 +365,7 @@ void PaletteTree::saveConfiguration()
 		}
 		diagramIndex++;
 	}
+
 	SettingsManager::setValue("CurrentIndex", mComboBox->currentIndex() >= 0 ? mComboBox->currentIndex() : 0);
 }
 
@@ -461,6 +386,7 @@ void PaletteTree::loadEditors(EditorManagerInterface &editorManagerProxy)
 			addEditorElements(editorManagerProxy, editor, diagram);
 		}
 	}
+
 	const int index = SettingsManager::value("CurrentIndex", 0).toInt();
 	SettingsManager::setValue("CurrentIndex", index >= 0 ? index : 0);
 }
@@ -527,78 +453,24 @@ int PaletteTree::maxItemsCountInARow() const
 
 void PaletteTree::changeRepresentation()
 {
-	loadPalette(!mIconsView, mItemsCountInARow, mEditorManagerProxy);
+	loadPalette(!mIconsView, mItemsCountInARow, mEditorManager);
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
 	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
 	emit paletteParametersChanged();
 }
 
-<<<<<<< HEAD
 void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManagerInterface *editorManagerProxy)
-=======
-PaletteTree::TreeArea::TreeArea(QWidget *parent)
-	: QTreeWidget(parent)
 {
-}
-
-void PaletteTree::TreeArea::mousePressEvent(QMouseEvent *event)
-{
-	QTreeWidget::mousePressEvent(event);
-	QTreeWidgetItem *item = itemAt(event->pos());
-	DraggableElement *child = item ? dynamic_cast<DraggableElement *>(itemWidget(item, 0)) : NULL;
-	if (!child) {
-		return;
-	}
-
-	Q_ASSERT(child->id().idSize() == 3);  // it should be element type
-
-	// new element's ID is being generated here
-	// may this epic event should take place in some more appropriate place
-
-	Id elementId(child->id(), QUuid::createUuid().toString());
-
-	QByteArray itemData;
-	bool isFromLogicalModel = false;
-
-	QDataStream stream(&itemData, QIODevice::WriteOnly);
-	stream << elementId.toString();  // uuid
-	stream << Id::rootId().toString();  // pathToItem
-	stream << QString(child->text());
-	stream << QPointF(0, 0);
-	stream << isFromLogicalModel;
-
-	QMimeData *mimeData = new QMimeData;
-	mimeData->setData("application/x-real-uml-data", itemData);
-
-	QDrag *drag = new QDrag(this);
-	drag->setMimeData(mimeData);
-
-	QPixmap const pixmap = child->icon().pixmap(child->iconsPreferedSize());
-
-	if (!pixmap.isNull()) {
-		drag->setPixmap(pixmap);
-	}
-
-	if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction) {
-		child->close();
-	} else {
-		child->show();
-	}
-}
-
-void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager)
->>>>>>> master
-{
-	if (mEditorManagerProxy) {
+	if (mEditorManager) {
 		recreateTrees();
 	}
 
 	mIconsView = isIconsView;
-	mEditorManagerProxy = editorManagerProxy;
+	mEditorManager = editorManagerProxy;
 	mItemsCountInARow = itemsCount;
-	if (mEditorManagerProxy) {
+	if (mEditorManager) {
 		// TODO: Can it really be NULL?
-		loadEditors(*mEditorManagerProxy);
+		loadEditors(*mEditorManager);
 	}
 
 	initDone();

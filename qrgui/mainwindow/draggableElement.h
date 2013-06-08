@@ -23,12 +23,12 @@ class DraggableElement : public QWidget
 	Q_OBJECT
 
 public:
-	DraggableElement(
-		MainWindow &mainWindow
+	DraggableElement(MainWindow &mainWindow
 		, Id const &id
 		, QString const &name
 		, QString const &description
 		, QIcon const &icon
+		, QSize const &preferredSize
 		, bool iconsOnly
 		, EditorManagerInterface &editorManagerProxy
 		, QWidget *parent = NULL
@@ -45,6 +45,8 @@ public:
 
 	void setIconSize(int size);
 
+	QSize iconsPreferredSize() const;
+
 private slots:
 	void changePropertiesPaletteActionTriggered();
 	void changeAppearancePaletteActionTriggered();
@@ -55,6 +57,7 @@ private slots:
 private:
 	Id mId;
 	QIcon mIcon;
+	QSize mPreferredSize;
 	QString mText;
 	QLabel *mLabel;
 	EditorManagerInterface &mEditorManagerProxy;  // Does not have ownership.

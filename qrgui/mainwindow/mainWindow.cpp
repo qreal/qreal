@@ -1494,13 +1494,13 @@ bool MainWindow::createProject(QString const &diagramIdString)
 
 void MainWindow::createProject()
 {
-	Id const theOnlyDiagram = mEditorManager.theOnlyDiagram();
+	Id const theOnlyDiagram = mEditorManagerProxy.theOnlyDiagram();
 	if (theOnlyDiagram == Id()) {
 		SuggestToCreateProjectDialog dialog(this);
 		dialog.exec();
 	} else {
-		Id const editor = manager()->editors()[0];
-		QString const diagramIdString = manager()->diagramNodeNameString(editor, theOnlyDiagram);
+		Id const editor = editorManager().editors()[0];
+		QString const diagramIdString = editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 		createProject(diagramIdString);
 	}
 }

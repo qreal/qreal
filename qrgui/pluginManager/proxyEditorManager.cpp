@@ -168,6 +168,16 @@ bool ProxyEditorManager::isGraphicalElementNode(const Id &id) const
 	return mProxiedEditorManager->isGraphicalElementNode(id);
 }
 
+Id ProxyEditorManager::theOnlyDiagram() const
+{
+	return mProxiedEditorManager->theOnlyDiagram();
+}
+
+QString ProxyEditorManager::diagramNodeNameString(Id const &editor, Id const &diagram) const
+{
+	return mProxiedEditorManager->diagramNodeNameString(editor, diagram);
+}
+
 QList<StringPossibleEdge> ProxyEditorManager::possibleEdges(QString const &editor, QString const &element) const
 {
 	return mProxiedEditorManager->possibleEdges(editor, element);

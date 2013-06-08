@@ -565,6 +565,19 @@ bool InterpreterEditorManager::isGraphicalElementNode(const Id &id) const
 	return false;
 }
 
+Id InterpreterEditorManager::theOnlyDiagram() const
+{
+	IdList const allEditors(editors());
+	return (allEditors.length() == 1 && diagrams(allEditors[0]).length() == 1)
+			? diagrams(allEditors[0])[0] : Id();
+}
+
+QString InterpreterEditorManager::diagramNodeNameString(Id const &editor, Id const &diagram) const
+{
+	QString const diagramNodeNameString = diagramNodeName(editor.editor(), diagram.diagram());
+	return QString("qrm:/%1/%2/%3").arg(editor.editor(), diagram.diagram(), diagramNodeNameString);
+}
+
 QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndElement(QString const &editor, QString const &element) const
 {
 	foreach (qrRepo::RepoApi * const repo, mEditorRepoApi.values()) {

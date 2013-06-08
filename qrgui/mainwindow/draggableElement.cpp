@@ -17,10 +17,11 @@ using namespace gui;
 
 DraggableElement::DraggableElement(
 		MainWindow &mainWindow
-		, const Id &id
-		, const QString &name
-		, const QString &description
-		, const QIcon &icon
+		, Id const &id
+		, QString const &name
+		, QString const &description
+		, QIcon const &icon
+		, QSize const &preferredSize
 		, bool iconsOnly
 		, EditorManagerInterface &editorManagerProxy
 		, QWidget *parent
@@ -28,6 +29,7 @@ DraggableElement::DraggableElement(
 		: QWidget(parent)
 		, mId(id)
 		, mIcon(icon)
+		, mPreferredSize(preferredSize)
 		, mText(name)
 		, mEditorManagerProxy(editorManagerProxy)
 		, mMainWindow(mainWindow)
@@ -68,6 +70,11 @@ QString DraggableElement::text() const
 Id DraggableElement::id() const
 {
 	return mId;
+}
+
+QSize DraggableElement::iconsPreferredSize() const
+{
+	return mPreferredSize;
 }
 
 void DraggableElement::setIconSize(int size)
