@@ -1,6 +1,6 @@
 #pragma once
 #include <QtXml/QDomDocument>
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include "../../../../../qrutils/graphicsUtils/abstractItem.h"
 
 namespace qReal {

@@ -20,11 +20,11 @@ public:
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawFieldForResizeItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);
-	virtual void setPenStyle(const QString& text);
+	virtual void setPenStyle(QString const &text);
 	virtual void setPenWidth(int width);
-	virtual void setPenColor(const QString& text);
-	virtual void setBrushStyle(const QString& text);
-	virtual void setBrushColor(const QString& text);
+	virtual void setPenColor(QString const &text);
+	virtual void setBrushStyle(QString const &text);
+	virtual void setBrushColor(QString const &text);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
 private:
 	qreal mTmpX1;

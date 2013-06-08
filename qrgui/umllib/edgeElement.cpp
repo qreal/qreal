@@ -1,15 +1,16 @@
 /** @file edgeelement.cpp
  * 	@brief class for an edge on a diagram
  * */
-#include <QtGui/QStyleOptionGraphicsItem>
-#include <QtGui/QStyle>
+#include <QtWidgets/QStyleOptionGraphicsItem>
+#include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
-#include <QtGui/QMenu>
+#include <QtWidgets/QMenu>
 #include <QDebug>
 #include <math.h>
 
 #include "edgeElement.h"
 #include "nodeElement.h"
+#include "private/reshapeEdgeCommand.h"
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
 
@@ -37,6 +38,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		, mModelUpdateIsCalled(false)
 		, mIsLoop(false)
 		, mIsVerticalChanging(false)
+		, mReshapeCommand(NULL)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -74,10 +76,11 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 
 	QList<ElementTitleInterface*> titles;
 	mElementImpl->init(factory, titles);
-	foreach (ElementTitleInterface *titleIface, titles){
+	foreach (ElementTitleInterface *titleIface, titles) {
 		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
-		if (!title)
+		if (!title) {
 			continue;
+		}
 		title->init(boundingRect());
 		title->setParentItem(this);
 		mTitles.append(title);
@@ -108,6 +111,12 @@ QRectF EdgeElement::boundingRect() const
 QPolygonF EdgeElement::line() const
 {
 	return mLine;
+}
+
+void EdgeElement::setLine(QPolygonF const &line)
+{
+	mLine = line;
+	saveConfiguration(QPointF());
 }
 
 static double lineAngle(const QLineF &line)
@@ -317,8 +326,9 @@ void EdgeElement::updateLongestPart()
 
 		QLineF longest(mLine[maxIdx], mLine[mLongPart + 1]);
 
-		if (mChaoticEdition)
-			title->rotate(-lineAngle(longest));
+		if (mChaoticEdition) {
+			title->setRotation(title->rotation() + (-lineAngle(longest)));
+		}
 	}
 }
 
@@ -498,6 +508,10 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			return;
 		}
 	}
+
+	mReshapeCommand = new commands::ReshapeEdgeCommand(this);
+	mReshapeCommand->startTracking();
+
 	if (!SettingsManager::value("SquareLine").toBool() && (event->modifiers() & Qt::AltModifier)
 		&& (getPoint(event->pos()) != noPort) && (event->button() == Qt::LeftButton) && delPointActionIsPossible(event->pos()))
 	{
@@ -619,10 +633,18 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 		mLine = mSavedLineForSquarize;
 		prepareGeometryChange();
+
 		mLine[mDragPoint] = event->pos();
+
 		if (SettingsManager::value("SquareLine").toBool()) {
 			squarizeAndAdjustHandler(QPointF());
+		} else {
+			if (SettingsManager::value("ActivateGrid").toBool()) {
+				int const indexGrid = SettingsManager::value("IndexGrid").toInt();
+				mLine[mDragPoint] = alignedPoint(event->pos(), indexGrid);
+			}
 		}
+
 		updateLongestPart();
 	}
 }
@@ -664,6 +686,11 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	setGraphicApiPos();
 	saveConfiguration(QPointF());
+
+	mReshapeCommand->stopTracking();
+	mController->execute(mReshapeCommand);
+	// Undo stack took ownership
+	mReshapeCommand = NULL;
 }
 
 qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const
@@ -680,7 +707,7 @@ void EdgeElement::delClosePoints()
 			if (i != mLine.size() - 2) {
 				mLine.remove(i + 1);
 				i--;
-			} else if (i != 0){
+			} else if (i != 0) {
 				mLine.remove(i);
 				i = i - 2;
 			}
@@ -1738,8 +1765,8 @@ EdgeData& EdgeElement::data()
 {
 	mData.id = id();
 	mData.logicalId = logicalId();
-	mData.srcId = src()->id();
-	mData.dstId = dst()->id();
+	mData.srcId = src() ? src()->id() : Id::rootId();
+	mData.dstId = dst() ? dst()->id() : Id::rootId();
 
 	mData.portFrom = mPortFrom;
 	mData.portTo = mPortTo;
@@ -1989,4 +2016,33 @@ void EdgeElement::tuneForLinker()
 bool EdgeElement::isLoop()
 {
 	return mIsLoop;
+}
+
+void EdgeElement::alignToGrid()
+{
+	if (mLine.size() >= 3 && !SettingsManager::value("SquareLine").toBool()) {
+		int const indexGrid = SettingsManager::value("IndexGrid").toInt();
+
+		prepareGeometryChange();
+
+		for (int i = 1; i < mLine.size() - 1; ++i) {
+			mLine[i] = alignedPoint(mLine[i], indexGrid);
+		}
+
+		update();
+		updateLongestPart();
+	}
+}
+
+QPointF EdgeElement::alignedPoint(QPointF const &point, int const indexGrid) const
+{
+	QPointF result = mapToScene(point);
+
+	int const coefX = static_cast<int>(result.x()) / indexGrid;
+	int const coefY = static_cast<int>(result.y()) / indexGrid;
+
+	result = QPointF(SceneGridHandler::alignedCoordinate(result.x(), coefX, indexGrid)
+			, SceneGridHandler::alignedCoordinate(result.y(), coefY, indexGrid));
+
+	return mapFromScene(result);
 }

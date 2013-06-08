@@ -24,6 +24,45 @@ void AbstractElementGenerator::createListsForIncomingConnections()
 	}
 }
 
+QString AbstractElementGenerator::replaceSensorAndEncoderVariables(QString const &expression) const
+{
+	QString result = expression;
+	for (int i = 1; i <= 4; ++i) {
+		result.replace("Sensor" + QString::number(i), sensorExpression(i));
+	}
+
+	result.replace("EncoderA", encoderExpression() + "A)");
+	result.replace("EncoderB", encoderExpression() + "B)");
+	result.replace("EncoderC", encoderExpression() + "C)");
+	return result;
+}
+
+QString AbstractElementGenerator::sensorExpression(int port) const
+{
+	QString const portString = QString::number(port);
+	qReal::interpreters::robots::sensorType::SensorTypeEnum const portValue =
+			mNxtGen->portValue(port);
+	switch (portValue) {
+	case qReal::interpreters::robots::sensorType::colorRed:
+	case qReal::interpreters::robots::sensorType::colorGreen:
+	case qReal::interpreters::robots::sensorType::colorBlue:
+	case qReal::interpreters::robots::sensorType::colorFull:
+	case qReal::interpreters::robots::sensorType::colorNone:
+		return "ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + portString + ") * 100 / 1023";
+	case qReal::interpreters::robots::sensorType::sonar:
+		return "ecrobot_get_sonar_sensor(NXT_PORT_S" + portString + ")";
+	case qReal::interpreters::robots::sensorType::light:
+		return "ecrobot_get_light_sensor(NXT_PORT_S" + portString + ") * 100 / 1023";
+	default:
+		return "ecrobot_get_touch_sensor(NXT_PORT_S" + portString + ")";
+	}
+}
+
+QString AbstractElementGenerator::encoderExpression() const
+{
+	return "nxt_motor_get_count(NXT_PORT_";
+}
+
 bool AbstractElementGenerator::generate()
 {
 	if (!preGenerationCheck()) {

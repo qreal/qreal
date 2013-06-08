@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 
 // saves cursor's position within the scene
 // could be useful to call Element's event handlers from the scene

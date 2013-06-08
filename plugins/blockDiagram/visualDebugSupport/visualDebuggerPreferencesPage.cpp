@@ -1,4 +1,4 @@
-#include <QFileDialog>
+#include <QtWidgets/QFileDialog>
 
 #include "visualDebuggerPreferencesPage.h"
 #include "ui_visualDebuggerPreferencesPage.h"
@@ -8,18 +8,14 @@
 using namespace qReal;
 
 VisualDebuggerPreferencesPage::VisualDebuggerPreferencesPage(QWidget *parent)
-		: PreferencesPage(parent),
-		mUi(new Ui::VisualDebuggerPreferencesPage)
+		: PreferencesPage(parent)
+		, mUi(new Ui::VisualDebuggerPreferencesPage)
 {
 	mIcon = QIcon(":/icons/preferences/bug.png");
 
 	mUi->setupUi(this);
 
-	mUi->builderPathLineEdit->setText(SettingsManager::value("builderPath").toString());
-	mUi->buildedFileNameLineEdit->setText(SettingsManager::value("buildedFileName").toString());
-	mUi->codeFileNameLineEdit->setText(SettingsManager::value("codeFileName").toString());
-	mUi->visDebWorkDirLineEdit->setText(SettingsManager::value("debugWorkingDirectory").toString());
-	mUi->debuggerPathLineEdit->setText(SettingsManager::value("debuggerPath").toString());
+	restoreSettings();
 
 	connect(mUi->builderPathPushButton, SIGNAL(clicked()), this, SLOT(setBuilderPath()));
 	connect(mUi->debuggerPathPushButton, SIGNAL(clicked()), this, SLOT(setDebuggerPath()));
@@ -69,4 +65,13 @@ void VisualDebuggerPreferencesPage::save()
 	SettingsManager::setValue("buildedFileName", mUi->buildedFileNameLineEdit->text());
 	SettingsManager::setValue("builderPath", mUi->builderPathLineEdit->text());
 	SettingsManager::setValue("debuggerPath", mUi->debuggerPathLineEdit->text());
+}
+
+void VisualDebuggerPreferencesPage::restoreSettings()
+{
+	mUi->builderPathLineEdit->setText(SettingsManager::value("builderPath").toString());
+	mUi->buildedFileNameLineEdit->setText(SettingsManager::value("buildedFileName").toString());
+	mUi->codeFileNameLineEdit->setText(SettingsManager::value("codeFileName").toString());
+	mUi->visDebWorkDirLineEdit->setText(SettingsManager::value("debugWorkingDirectory").toString());
+	mUi->debuggerPathLineEdit->setText(SettingsManager::value("debuggerPath").toString());
 }

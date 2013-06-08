@@ -162,6 +162,34 @@ QVariant Block::evaluate(const QString &propertyName)
 	return value;
 }
 
+bool Block::evaluateBool(QString const &propertyName)
+{
+	int position = 0;
+	bool const value = mParser->parseCondition(stringProperty(propertyName), position, mGraphicalId);
+	if (mParser->hasErrors()) {
+		mParser->deselect();
+		emit failure();
+	}
+	return value;
+}
+
+QVector<bool> Block::parseEnginePorts() const
+{
+	QString const ports = stringProperty("Ports");
+	QVector<bool> result(3, false);
+	QStringList splitted = ports.split(',', QString::SkipEmptyParts);
+	foreach (QString const &port, splitted) {
+		if (port.trimmed().toUpper() == "A") {
+			result[0] = true;
+		} else if (port.trimmed().toUpper() == "B") {
+			result[1] = true;
+		} else if (port.trimmed().toUpper() == "C") {
+			result[2] = true;
+		}
+	}
+	return result;
+}
+
 void Block::stopActiveTimerInBlock()
 {
 }

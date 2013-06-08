@@ -1,13 +1,15 @@
 #pragma once
 
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtCore/QString>
 #include <QtXml/QDomDocument>
-#include <QtGui/QButtonGroup>
+#include <QtWidgets/QButtonGroup>
 
 #include "scene.h"
 #include "item.h"
 #include "../../../qrutils/graphicsUtils/abstractItemView.h"
+#include "../../models/details/logicalModel.h"
+#include "visibilityConditionsDialog.h"
 
 namespace Ui {
 	class ShapeEdit;
@@ -17,9 +19,9 @@ class ShapeEdit : public QWidget {
 	Q_OBJECT
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
-	ShapeEdit(QPersistentModelIndex const &index, int const &role);
+	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role);
 	graphicsUtils::AbstractView* getView();
-	void load(const QString &text);
+	void load(QString const &text);
 	~ShapeEdit();
 signals:
 	void shapeSaved(QString const &shape, QPersistentModelIndex const &index, int const &role);
@@ -43,6 +45,8 @@ private slots:
 	void addLinePort(bool checked);
 	void addStylus(bool checked);
 
+	void visibilityButtonClicked();
+
 	void savePicture();
 	void saveToXml();
 	void save();
@@ -62,6 +66,8 @@ private:
 	QDomDocument mDocument;
 	QPoint mTopLeftPicture;
 	Ui::ShapeEdit *mUi;
+
+	qReal::models::details::LogicalModel *mModel;
 	QPersistentModelIndex const mIndex;
 	int const mRole;
 	void initButtonGroup();
@@ -88,4 +94,6 @@ private:
 	void generateDom();
 	void exportToXml(QString const &fileName);
 	QList<QDomElement> generateGraphics();
+
+	QMap<QString, VisibilityConditionsDialog::PropertyInfo> getProperties() const;
 };

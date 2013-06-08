@@ -3,14 +3,14 @@
 QDataStream &operator<< (QDataStream &out, NodeData const &data)
 {
 	out << data.id << data.logicalId << data.parentId << data.pos
-			<< data.contents << data.properties;
+			<< data.contents << data.graphicalProperties << data.logicalProperties;
 	return out;
 }
 
 QDataStream &operator>> (QDataStream &in, NodeData &data)
 {
 	in >> data.id >> data.logicalId >> data.parentId >> data.pos
-			>> data.contents >> data.properties;
+			>> data.contents >> data.graphicalProperties >> data.logicalProperties;
 	return in;
 }
 
@@ -32,9 +32,13 @@ QDataStream &operator>> (QDataStream &in, EdgeData &data)
 
 bool operator== (NodeData const &first, NodeData const &second)
 {
-	return first.id == second.id && first.parentId == second.parentId
-			&& first.pos == second.pos && first.properties == second.properties
-			&& first.contents == second.contents && first.logicalId == second.logicalId;
+	return first.id == second.id
+			&& first.parentId == second.parentId
+			&& first.pos == second.pos
+			&& first.logicalProperties == second.logicalProperties
+			&& first.graphicalProperties == second.graphicalProperties
+			&& first.contents == second.contents
+			&& first.logicalId == second.logicalId;
 }
 
 bool operator== (EdgeData const &first, EdgeData const &second)

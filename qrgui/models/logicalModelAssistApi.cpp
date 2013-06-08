@@ -36,9 +36,12 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	return newElementId;
 }
 
-Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id
+		, bool isFromLogicalModel, QString const &name
+		, QPointF const &position, Id const &preferedLogicalId)
 {
-	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, name, position);
+	Q_UNUSED(preferedLogicalId)
+	return mModelsAssistApi.createElement(parent, id, id, isFromLogicalModel, name, position);
 }
 
 void LogicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
@@ -120,6 +123,16 @@ IdList LogicalModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) con
 IdList LogicalModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
 {
 	return diagramsFromList(editorManager().getUsedTypes(element.type()));
+}
+
+QVariant LogicalModelAssistApi::property(Id const &id, QString const &name) const
+{
+	return mLogicalModel.mutableApi().property(id, name);
+}
+
+void LogicalModelAssistApi::setProperty(Id const &id, QString const &name, QVariant const &value)
+{
+	mLogicalModel.mutableApi().setProperty(id, name, value);
 }
 
 void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName)
@@ -230,5 +243,14 @@ void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference)
 		if (stringData == reference.toString()) {
 			mLogicalModel.mutableApi().setProperty(id, propertyName, "");
 		}
+	}
+}
+
+void LogicalModelAssistApi::removeElement(Id const &logicalId)
+{
+	QPersistentModelIndex const index = indexById(logicalId);
+	if (logicalRepoApi().exist(logicalId) && index.isValid()) {
+		removeReferencesTo(logicalId);
+		mLogicalModel.removeRow(index.row(), index.parent());
 	}
 }

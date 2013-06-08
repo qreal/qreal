@@ -15,7 +15,7 @@ public:
 	explicit ProjectManager(MainWindow *mainWindow);
 
 public slots:
-	bool openExisting(const QString &fileName);
+	bool openExisting(QString const &fileName);
 	bool suggestToOpenExisting();
 	bool openNewWithDiagram();
 	void suggestToCreateDiagram(bool isClosable = true);
@@ -25,15 +25,16 @@ public slots:
 
 	void save();
 	void saveTemp();
-	bool saveAs(const QString &fileName);
+	bool saveAs(QString const &fileName);
 	bool suggestToSaveAs();
 	bool saveOrSuggestToSaveAs();
+
+	void setUnsavedIndicator(bool isUnsaved);
 
 public:
 	bool openEmptyWithSuggestToSaveChanges();
 	bool open(QString const &fileName = "autosave.qrs");
 	bool suggestToSaveChangesOrCancel();
-	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
 	QString saveFilePath() const;
 	void setSaveFilePath(QString const &filePath = "");
@@ -41,7 +42,7 @@ public:
 	void clearAutosaveFile();
 
 private:
-	bool import(const QString &fileName);
+	bool import(QString const &fileName);
 	bool saveFileExists(QString const &fileName);
 	bool pluginsEnough();
 	QString missingPluginNames() const;
@@ -51,8 +52,8 @@ private:
 	void refreshApplicationStateAfterSave();
 	void refreshApplicationStateAfterOpen();
 	int suggestToSaveOrCancelMessage();
-	QString getOpenFileName(const QString &dialogWindowTitle);
-	QString getSaveFileName(const QString &dialogWindowTitle);
+	QString getOpenFileName(QString const &dialogWindowTitle);
+	QString getSaveFileName(QString const &dialogWindowTitle);
 
 	MainWindow *mMainWindow;
 	Autosaver *mAutosaver;

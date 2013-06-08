@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QSet>
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
 
 #include "sensorsConfiguration.h"
@@ -52,9 +52,10 @@ public:
 	void onDirectionChanged();
 
 protected:
-	static int const size = 6;
+	QRectF imageRect() const;
+	QString name() const;
+	QString pathToImage() const;
 
-	QColor color() const;
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 	SensorsConfiguration &mConfiguration;
@@ -64,6 +65,10 @@ protected:
 	graphicsUtils::PointImpl mPointImpl;
 	Rotater *mRotater;
 	QSet<QGraphicsItem *> mStickyItems;
+
+	QRectF const mImageRect;
+	QRectF const mBoundingRect;
+	QImage const mImage;
 };
 
 }

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <QtGui/QWidget>
-#include <QtGui/QGraphicsRectItem>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGraphicsRectItem>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QButtonGroup>
 #include <QtGui/QPolygonF>
-#include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtCore/QSignalMapper>
-#include <QtGui/QComboBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QButtonGroup>
 
 #include "lineItem.h"
 #include "stylusItem.h"
@@ -17,6 +17,7 @@
 #include "d2ModelScene.h"
 #include "robotItem.h"
 #include "rotater.h"
+#include "timeline.h"
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 
 namespace Ui
@@ -86,30 +87,50 @@ public:
 	void disableRunStopButtons();
 
 	D2ModelScene* scene();
-	void setRobotVisible(bool isVisible);
 	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
 
 	void closeEvent(QCloseEvent *event);
+
+	QVector<SensorItem *> sensorItems() const;
+
+	void loadXml(QDomDocument const &worldModel);
 
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
 	/// Places in 2D model same sensors as selected in QReal settings
 	void syncronizeSensors();
+	/// Synchronizes noise settings in 2D model window with global ones
+	void rereadNoiseSettings();
+	/// Starts 2D model time counter
+	void startTimelineListening();
+	/// Stops 2D model time counter
+	void stopTimelineListening();
 
 signals:
+	void d2WasClosed();
+
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
+	/// Emitted when such features as motor or sensor noise were
+	///enabled or disabled by user
+	void noiseSettingsChanged();
+
+	/// Emitted each time when some user actions lead to world model modifications
+	/// @param xml World model description in xml format
+	void modelChanged(QDomDocument const &xml);
 
 protected:
-	void changeEvent(QEvent *e);
-	void showEvent(QShowEvent *e);
+	virtual void changeEvent(QEvent *e);
+	virtual void showEvent(QShowEvent *e);
+	virtual void keyPressEvent(QKeyEvent *event);
+
 
 private slots:
 	void addWall(bool on);
 	void addLine(bool on);
 	void addStylus(bool on);
 	void addEllipse(bool on);
-	void clearScene();
+	void clearScene(bool removeRobot = false);
 	void resetButtons();
 
 	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
@@ -122,6 +143,7 @@ private slots:
 
 	void handleNewRobotPosition();
 
+	void saveToRepo();
 	void saveWorldModel();
 	void loadWorldModel();
 
@@ -138,11 +160,9 @@ private slots:
 	void onMultiselectionCursorButtonToggled(bool on);
 	void setCursorType(cursorType::CursorType cursor);
 
-signals:
-	void d2WasClosed();
+	void changeNoiseSettings();
 
-protected:
-	virtual void keyPressEvent(QKeyEvent *event);
+	void onTimelineTick();
 
 private:
 	static const int defaultPenWidth = 15;
@@ -160,6 +180,8 @@ private:
 	void drawWalls();
 	void drawColorFields();
 	void drawInitialRobot();
+
+	QDomDocument generateXml() const;
 
 	/** @brief Set active panel toggle button and deactivate all others */
 	void setActiveButton(int active);
@@ -255,6 +277,7 @@ private:
 	bool mFollowRobot;
 
 	bool mFirstShow;
+	Timeline const * mTimeline;
 };
 
 }

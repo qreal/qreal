@@ -108,14 +108,14 @@ void Property::print() const
 			<< "\t" << mDisplayedName;
 }
 
-QString Property::generatePropertyLine(const QString &lineTemplate) const
+QString Property::generatePropertyLine(QString const &lineTemplate) const
 {
 	QString result = lineTemplate;
 	result.replace(propertyNameTag, mName).replace(propertyTypeTag, NameNormalizer::normalize(mType));
 	return result;
 }
 
-QString Property::generateDefaultsLine(const QString &lineTemplate) const
+QString Property::generateDefaultsLine(QString const &lineTemplate) const
 {
 	if (mDefaultValue.isEmpty())
 		return "";
@@ -124,7 +124,7 @@ QString Property::generateDefaultsLine(const QString &lineTemplate) const
 	return result;
 }
 
-QString Property::generateDisplayedNameLine(const QString &lineTemplate) const
+QString Property::generateDisplayedNameLine(QString const &lineTemplate) const
 {
 	QString result = lineTemplate;
 	result.replace(propertyNameTag, mName).replace(propertyDisplayedNameTag, mDisplayedName);

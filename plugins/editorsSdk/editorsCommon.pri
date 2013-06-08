@@ -1,4 +1,4 @@
-QT += xml
+QT += xml widgets
 TEMPLATE =  lib
 CONFIG += plugin
 

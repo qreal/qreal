@@ -1,7 +1,7 @@
 #include "generators.h"
 
 #include <QtCore/QTranslator>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 Q_EXPORT_PLUGIN2(ainsPlugin, qReal::ains::AinsPlugin)
 

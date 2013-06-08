@@ -18,6 +18,7 @@ class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.robots.interpreters.robots.RobotsPlugin")
 
 public:
 	RobotsPlugin();
@@ -32,12 +33,13 @@ public:
 
 	/// Overriden to enable/disable related actions. For example, we can't run
 	/// a diagram which is not related to a plugin.
-	virtual void activeTabChanged(Id const & rootElementId);
+	virtual void activeTabChanged(Id const &rootElementId);
 
 private slots:
 	void showRobotSettings();
 	void show2dModel();
 	void rereadSettings();
+	void titlesVisibilityChecked(bool checked);
 
 private:
 	/// Initializes and connects actions, fills action info list
@@ -53,7 +55,7 @@ private:
 	/// @returns True, if action shall be disabled when current diagram is not robots
 	bool needToDisableWhenNotRobotsDiagram(QAction const * const action) const;
 
-	void setTitlesVisibility();
+	void updateTitlesVisibility();
 
 	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 

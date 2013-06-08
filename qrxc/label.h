@@ -30,4 +30,6 @@ private:
 	QString mReadOnly;
 	QString mBackground;
 	QString mCenter;
+	bool mIsHard;
+	bool mIsPlainText;
 };

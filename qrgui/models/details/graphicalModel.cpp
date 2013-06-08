@@ -83,14 +83,14 @@ void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 }
 
 void GraphicalModel::addElementToModel(const Id &parent, const Id &id
-		, const Id &logicalId, const QString &name, const QPointF &position)
+		, const Id &logicalId, QString const &name, const QPointF &position)
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
 
 	GraphicalModelItem *newGraphicalModelItem = NULL;
 	Id actualLogicalId = logicalId;
-	if (logicalId == Id::rootId()) {
+	if (logicalId == Id::rootId() || logicalId == Id()) {
 		AbstractModelItem *newItem = createModelItem(id, parentItem);
 		newGraphicalModelItem = static_cast<GraphicalModelItem *>(newItem);
 		actualLogicalId = newGraphicalModelItem->logicalId();
@@ -102,7 +102,7 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 }
 
 void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
-		, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+		, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 

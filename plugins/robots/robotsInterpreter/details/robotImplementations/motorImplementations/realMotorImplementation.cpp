@@ -8,21 +8,24 @@ RealMotorImplementation::RealMotorImplementation(int const port, RobotCommunicat
 {
 }
 
-void RealMotorImplementation::on(int speed)
+void RealMotorImplementation::on(int speed, bool breakMode)
 {
-	on(speed, 0);
+	on(speed, 0, breakMode);
 }
 
-void RealMotorImplementation::on(int speed, long unsigned int degrees)
+void RealMotorImplementation::on(int speed, long unsigned int degrees, bool breakMode)
 {
-	setOutputState(speed, motorMode::MOTORON | motorMode::BRAKE | motorMode::REGULATED
-			, regulationMode::REGULATION_MODE_MOTOR_SPEED, 100, runState::MOTOR_RUN_STATE_RUNNING, degrees);
+	int mode = motorMode::MOTORON | motorMode::REGULATED;
+	if (breakMode) {
+		mode |= motorMode::BRAKE;
+	}
+	setOutputState(speed, mode, regulationMode::REGULATION_MODE_MOTOR_SPEED
+			, 100, runState::MOTOR_RUN_STATE_RUNNING, degrees);
 }
 
-void RealMotorImplementation::stop()
+void RealMotorImplementation::stop(bool breakMode)
 {
-	setOutputState(0, motorMode::MOTORON | motorMode::BRAKE | motorMode::REGULATED
-			, regulationMode::REGULATION_MODE_MOTOR_SPEED, 100, runState::MOTOR_RUN_STATE_RUNNING, 0);
+	on(0, 0, breakMode);
 }
 
 void RealMotorImplementation::off()
@@ -32,8 +35,8 @@ void RealMotorImplementation::off()
 }
 
 void RealMotorImplementation::setOutputState(int speed, int mode
-		, regulationMode::RegulationModeEnum regulation, int turnRatio, runState::RunStateEnum runState
-		, unsigned long tachoLimit)
+		, regulationMode::RegulationModeEnum regulation, int turnRatio
+		, runState::RunStateEnum runState, unsigned long tachoLimit)
 {
 	QByteArray command(15, 0);
 	command[0] = 13;  // command length.

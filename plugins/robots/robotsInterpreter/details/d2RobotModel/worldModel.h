@@ -3,15 +3,17 @@
 #include <QtCore/QPoint>
 #include <QtCore/QList>
 #include <QtCore/QPair>
-#include <QtGui/QPolygon>
 #include <QtGui/QPainterPath>
+#include <QtGui/QPolygon>
 #include <QtXml/QDomDocument>
 
 #include "../../sensorConstants.h"
 #include "wallItem.h"
 #include "colorFieldItem.h"
 
-qreal const pixelsInCm = 16 / 5.6; // robot`s wheel length in px / its real length
+qreal const robotWheelDiameterInPx = 16;
+qreal const robotWheelDiameterInCm = 5.6;
+qreal const pixelsInCm = robotWheelDiameterInPx / robotWheelDiameterInCm;
 
 namespace qReal {
 namespace interpreters {

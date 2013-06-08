@@ -1,11 +1,13 @@
 #include <QtGui/QCursor>
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include "sensorItem.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
+
+int const selectionDrift = 3;
 
 SensorItem::SensorItem(SensorsConfiguration &configuration
 		, inputPort::InputPortEnum port)
@@ -15,6 +17,10 @@ SensorItem::SensorItem(SensorsConfiguration &configuration
 	, mDragged(false)
 	, mPointImpl()
 	, mRotater(NULL)
+	, mImageRect(imageRect())
+	, mBoundingRect(mImageRect.adjusted(-selectionDrift, -selectionDrift
+			, selectionDrift, selectionDrift))
+	, mImage(pathToImage())
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
 
@@ -34,15 +40,12 @@ void SensorItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *sty
 	Q_UNUSED(style)
 	Q_UNUSED(widget)
 
-	QBrush brush;
-	brush.setColor(color());
-	brush.setStyle(Qt::SolidPattern);
-
-	painter->setBrush(brush);
-	painter->setOpacity(0.5);
-	painter->setPen(color());
-
-	mPointImpl.drawItem(painter, 0, 0, size);
+	painter->save();
+	painter->setRenderHints(painter->renderHints()
+			| QPainter::SmoothPixmapTransform
+			| QPainter::HighQualityAntialiasing);
+	painter->drawImage(mImageRect, mImage);
+	painter->restore();
 }
 
 void SensorItem::drawExtractionForItem(QPainter *painter)
@@ -50,14 +53,19 @@ void SensorItem::drawExtractionForItem(QPainter *painter)
 	if (!isSelected()) {
 		return;
 	}
-	QPen pen = QPen(Qt::black);
+
+	painter->save();
+	QPen const pen = QPen(Qt::black);
 	painter->setPen(pen);
-	painter->drawEllipse(boundingRect());
+	painter->setOpacity(0.7);
+	painter->setRenderHints(painter->renderHints() | QPainter::Antialiasing);
+	painter->drawRoundedRect(mBoundingRect, 4, 4);
+	painter->restore();
 }
 
 QRectF SensorItem::boundingRect() const
 {
-	return mPointImpl.boundingRect(0, 0, size, 0);
+	return mBoundingRect;
 }
 
 void SensorItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
@@ -81,25 +89,53 @@ void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	mDragged = false;
 }
 
-QColor SensorItem::color() const
+QString SensorItem::name() const
 {
 	switch (mConfiguration.type(mPort)) {
 	case sensorType::touchBoolean:
-		return Qt::green;
+		return "touch";
+	case sensorType::colorFull:
+	case sensorType::colorNone:
+		return "color_empty";
+	case sensorType::colorBlue:
+		return "color_blue";
+	case sensorType::colorGreen:
+		return "color_green";
+	case sensorType::colorRed:
+		return "color_red";
+	case sensorType::sonar:
+		return "sonar";
+	case sensorType::light:
+		return "light";
+	default:
+		Q_ASSERT(!"Unknown sensor type");
+		return "";
+	}
+}
+
+QRectF SensorItem::imageRect() const
+{
+	switch (mConfiguration.type(mPort)) {
+	case sensorType::touchBoolean:
+		return QRectF(-12, -5, 25, 10);
 	case sensorType::colorFull:
 	case sensorType::colorNone:
 	case sensorType::colorBlue:
 	case sensorType::colorGreen:
 	case sensorType::colorRed:
-		return Qt::blue;
-	case sensorType::sonar:
-		return Qt::red;
 	case sensorType::light:
-		return Qt::darkYellow;
+		return QRectF(-6, -6, 12, 12);
+	case sensorType::sonar:
+		return QRectF(-20, -10, 40, 20);
 	default:
 		Q_ASSERT(!"Unknown sensor type");
-		return Qt::black;
+		return QRectF();
 	}
+}
+
+QString SensorItem::pathToImage() const
+{
+	return QString(":/icons/sensors/2d_%1.png").arg(name());
 }
 
 void SensorItem::changeDragState(qreal x, qreal y)
@@ -121,8 +157,7 @@ void SensorItem::rotate(qreal angle)
 
 QRectF SensorItem::rect() const
 {
-	QPointF pos = mConfiguration.position(mPort);
-	return  mPointImpl.boundingRect(pos.x(), pos.y(), size, 0);
+	return mImageRect;
 }
 
 double SensorItem::rotateAngle() const
@@ -175,5 +210,6 @@ void SensorItem::onPositionChanged()
 
 void SensorItem::onDirectionChanged()
 {
+	mConfiguration.setPosition(mPort, scenePos().toPoint());
 	mConfiguration.setDirection(mPort, rotation());
 }

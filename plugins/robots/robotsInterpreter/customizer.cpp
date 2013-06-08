@@ -16,7 +16,7 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	// TODO: other storage for it?
-	return "2.0.1";
+	return "2.3.1";
 }
 
 QString Customizer::aboutText() const
@@ -29,6 +29,7 @@ void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	mDockInterface = dockInterface;
 	dockInterface->logicalModelDock()->hide();
 	dockInterface->tabifyDockWidget(dockInterface->graphicalModelDock(), dockInterface->propertyEditorDock());
+	dockInterface->graphicalModelDock()->setWindowTitle(tr("Blocks"));
 }
 
 void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget)

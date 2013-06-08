@@ -8,6 +8,7 @@
 #include "robotModelInterface.h"
 #include "worldModel.h"
 #include "timeline.h"
+#include "../../../../../qrutils/mathUtils/gaussNoise.h"
 
 namespace qReal {
 namespace interpreters {
@@ -15,10 +16,9 @@ namespace robots {
 namespace details {
 namespace d2Model {
 
-int const oneReciprocalTime = 500;
-int const onePercentReciprocalSpeed = 44000;
-int const multiplicator = 8;
-int const touchSensorStrokeIncrement = 10;
+qreal const onePercentAngularVelocity = 0.0055;
+int const touchSensorWallStrokeIncrement = 10;
+int const touchSensorStrokeIncrement = 5;
 int const maxLightSensorValur = 1023;
 
 class D2RobotModel : public QObject, public RobotModelInterface
@@ -30,6 +30,7 @@ public:
 	~D2RobotModel();
 	virtual void clear();
 	void startInit();
+	void startInterpretation();
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
 	void setNewMotor(int speed, long unsigned int degrees, int const port);
@@ -54,6 +55,8 @@ public:
 	virtual void deserialize(const QDomElement &robotElement);
 
 	Timeline *timeline() const;
+
+	void setNoiseSettings();
 
 	enum ATime {
 		DoInf,
@@ -96,6 +99,11 @@ private:
 	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const;
 
 	void synchronizePositions();
+	unsigned long spoilColor(unsigned long const color) const;
+	unsigned long spoilLight(unsigned long const color) const;
+	int varySpeed(int const speed) const;
+	int spoilSonarReading(int const distance) const;
+	int truncateToInterval(int const a, int const b, int const res) const;
 
 	D2ModelWidget *mD2ModelWidget;
 	Motor *mMotorA;
@@ -111,7 +119,10 @@ private:
 	WorldModel mWorldModel;
 	Timeline *mTimeline;
 	qreal mSpeedFactor;
+	mathUtils::GaussNoise mNoiseGen;
 	bool mNeedSync;
+	bool mNeedSensorNoise;
+	bool mNeedMotorNoise;
 };
 
 }

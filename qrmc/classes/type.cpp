@@ -134,7 +134,7 @@ QString Type::generateMouseGestures(QString const &lineTemplate) const
 	return result;
 }
 
-QString Type::generateFactory(const QString &lineTemplate) const
+QString Type::generateFactory(QString const &lineTemplate) const
 {
 	if (!isGraphicalType())
 		return "";

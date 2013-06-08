@@ -1,4 +1,5 @@
 #include <QtCore/QFile>
+#include <QtCore/QVariant>
 
 #include "../../../qrkernel/ids.h"
 

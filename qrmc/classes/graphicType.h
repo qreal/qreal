@@ -22,7 +22,7 @@ namespace qrmc {
 		virtual bool resolve();
 
 		virtual bool isGraphicalType() const;
-		virtual QString generateProperties(const QString &lineTemplate) const;
+		virtual QString generateProperties(QString const &lineTemplate) const;
 		virtual QString generatePropertyDefaults(QString const &namesTemplate) const;
 		virtual QString generatePropertyDisplayedNames(QString const &lineTemplate) const;
 		virtual QString generateDescriptions(QString const &lineTemplate) const;

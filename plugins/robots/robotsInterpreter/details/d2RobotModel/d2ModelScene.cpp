@@ -1,6 +1,7 @@
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 
+#include "../../../../../qrkernel/settingsManager.h"
 #include "d2ModelScene.h"
 
 using namespace qReal::interpreters::robots;
@@ -24,8 +25,13 @@ D2ModelScene::~D2ModelScene()
 
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	QGraphicsScene::mousePressEvent(mouseEvent);
-	emit mousePressed(mouseEvent);
+	if (SettingsManager::value("ChaoticEdition").toBool()) {
+		emit mousePressed(mouseEvent);
+		QGraphicsScene::mousePressEvent(mouseEvent);
+	} else {
+		QGraphicsScene::mousePressEvent(mouseEvent);
+		emit mousePressed(mouseEvent);
+	}
 }
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -43,7 +49,7 @@ void D2ModelScene::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);
-	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
+	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
 	if (mGraphicsItem) {
 		mGraphicsItem->changeDragState(mX1, mY1);
 		if (mGraphicsItem->getDragState() != AbstractItem::None) {

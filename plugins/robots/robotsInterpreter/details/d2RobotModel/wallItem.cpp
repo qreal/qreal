@@ -1,5 +1,5 @@
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 
 #include "wallItem.h"
 
@@ -10,7 +10,7 @@ using namespace graphicsUtils;
 WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	: LineItem(begin, end)
 	, mDragged(false)
-	, mImage(QImage(":/icons/2d_wall.png"))
+	, mImage(":/icons/2d_wall.png")
 {
 	setPrivateData();
 }

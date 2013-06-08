@@ -1,6 +1,6 @@
-#include "element.h"
+#include <QtWidgets>
 
-#include <QtGui>
+#include "element.h"
 
 using namespace qReal;
 
@@ -9,6 +9,7 @@ Element::Element(ElementImpl* elementImpl)
 	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(NULL)
 	, mGraphicalAssistApi(NULL)
+	, mController(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 		ItemClipsToShape | ItemSendsGeometryChanges);
@@ -64,6 +65,11 @@ void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssi
 	mLogicalAssistApi = logicalAssistApi;
 }
 
+void Element::setController(Controller *controller)
+{
+	mController = controller;
+}
+
 void Element::initTitlesBy(QRectF const& contents)
 {
 	foreach (ElementTitle * const title, mTitles) {
@@ -99,7 +105,13 @@ ElementImpl* Element::elementImpl() const
 
 void Element::setTitlesVisible(bool visible)
 {
+	mTitlesVisible = visible;
+	setTitlesVisiblePrivate(visible);
+}
+
+void Element::setTitlesVisiblePrivate(bool visible)
+{
 	foreach (ElementTitle * const title, mTitles) {
-		title->setVisible(visible);
+		title->setVisible(title->isHard() || visible);
 	}
 }

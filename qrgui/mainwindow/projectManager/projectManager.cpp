@@ -100,6 +100,8 @@ bool ProjectManager::open(QString const &fileName)
 			return false;
 		}
 	}
+
+	emit beforeOpen(fileName);
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Initializing is impossible without closing current project.
 	close();
@@ -120,6 +122,8 @@ bool ProjectManager::open(QString const &fileName)
 
 	setSaveFilePath(fileName);
 	refreshApplicationStateAfterOpen();
+
+	emit afterOpen(fileName);
 
 	return true;
 }
@@ -142,7 +146,6 @@ bool ProjectManager::import(QString const &fileName)
 	// has diagrams for which there are no plugins
 	mMainWindow->models()->repoControlApi().importFromDisk(currentSaveFilePath);
 	mMainWindow->models()->reinit();
-	setUnsavedIndicator(true);
 	return true;
 }
 
@@ -184,7 +187,7 @@ void ProjectManager::refreshApplicationStateAfterSave()
 {
 	refreshApplicationStateAfterOpen();
 	if (mSaveFilePath != mAutosaver->filePath()) {
-		setUnsavedIndicator(false);
+		mMainWindow->controller()->projectSaved();
 	}
 }
 
@@ -196,7 +199,6 @@ void ProjectManager::refreshApplicationStateAfterOpen()
 
 void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 {
-	mMainWindow->connectWindowTitle();
 	QString const windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
 	mMainWindow->setWindowTitle(windowTitle + " " + mSaveFilePath);
 	refreshTitleModifiedSuffix();
@@ -230,8 +232,14 @@ bool ProjectManager::openEmptyWithSuggestToSaveChanges()
 
 void ProjectManager::suggestToCreateDiagram(bool isClosable)
 {
-	SuggestToCreateDiagramDialog suggestDialog(mMainWindow, isClosable);
-	suggestDialog.exec();
+	Id const theOnlyDiagram = mMainWindow->manager()->theOnlyDiagram();
+	if (theOnlyDiagram != Id()) {
+		Id const editor = mMainWindow->manager()->editors()[0];
+		mMainWindow->createDiagram(mMainWindow->manager()->diagramNodeNameString(editor, theOnlyDiagram));
+	} else {
+		SuggestToCreateDiagramDialog suggestDialog(mMainWindow, isClosable);
+		suggestDialog.exec();
+	}
 }
 
 void ProjectManager::close()
@@ -253,7 +261,8 @@ void ProjectManager::save()
 {
 	// Do not change the method to saveAll - in the current implementation, an empty project in the repository is
 	// created to initialize the file name with an empty string, which allows the internal state of the file
-	// name = "" Attempt to save the project in this case result in trash
+	// name = "" Attempt to save the project in this case result in
+	// qDebug() << "start save";
 	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePath);
 	refreshApplicationStateAfterSave();
 }
@@ -325,7 +334,7 @@ QString ProjectManager::getSaveFileName(QString const &dialogWindowTitle)
 void ProjectManager::setUnsavedIndicator(bool isUnsaved)
 {
 	mUnsavedIndicator = isUnsaved;
-	refreshTitleModifiedSuffix();
+	refreshWindowTitleAccordingToSaveFile();
 }
 
 void ProjectManager::clearAutosaveFile()

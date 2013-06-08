@@ -102,7 +102,7 @@ void TextPicture::setPoint(QPoint const &point)
 	setPos(point);
 }
 
-void TextPicture::setTextName(const QString &name)
+void TextPicture::setTextName(QString const &name)
 {
 	mText.setPlainText(name);
 }
@@ -117,7 +117,7 @@ void TextPicture::setFontPixelSize(int size)
 	mFont.setPixelSize(size);
 }
 
-void TextPicture::setFontColor(const QString & text)
+void TextPicture::setFontColor(QString const &text)
 {
 	mPen.setColor(QColor(text));
 }

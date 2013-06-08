@@ -1,5 +1,5 @@
 #include <QtGui/QCursor>
-#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 #include <qmath.h>
 
 #include "rotater.h"
@@ -27,6 +27,8 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 	mMaster = masterItem;
 
 	mLength = 30; //mMaster->horizontalRadius();//asd
+	mDrift = drift > mMaster->horizontalRadius() ? drift / 2 : drift;
+	mResizeDrift = drift > mMaster->horizontalRadius() ? resizeDrift / 2 : resizeDrift;
 
 	QRectF const rect = mMaster->rect();
 
@@ -34,9 +36,9 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 	setParentItem(mMaster);
 
 	// TODO: Dispose of hardcoding
-	mX1 = rect.width();
+	mX1 = rect.right();
 	// Placing rotater into the center of item`s rigth side
-	mY1 = rect.height() / 2 - 5;
+	mY1 = rect.y() + rect.height() / 2;
 	mX2 = mX1 + mLength;
 	mY2 = mY1;
 }
@@ -48,13 +50,13 @@ void Rotater::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style,
 
 	painter->setOpacity(0.5);
 	const int addLength = mLength / 3;
-	qreal angle = addAngle;
+	qreal const angle = addAngle;
 	// Must be equal to mLength
-	qreal checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));
-	qreal x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
-	qreal y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
-	QPointF first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0).rotate(angle).map(QPointF(x0, y0));
-	QPointF second = QTransform().translate(mX2 - x0, mY2 - y0).rotate(angle).translate(- mX2 + x0, - mY2 + y0).rotate(- angle).map(QPointF(x0, y0));
+	qreal const checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));
+	qreal const x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
+	qreal const y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
+	QPointF const first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0).rotate(angle).map(QPointF(x0, y0));
+	QPointF const second = QTransform().translate(mX2 - x0, mY2 - y0).rotate(angle).translate(- mX2 + x0, - mY2 + y0).rotate(- angle).map(QPointF(x0, y0));
 
 	mLineImpl.drawItem(painter, mX1, mY1, mX2, mY2);
 	mLineImpl.drawItem(painter, mX2, mY2, first.x(), first.y());
@@ -71,21 +73,13 @@ void Rotater::setPenBrushForExtraxtion(QPainter* painter, const QStyleOptionGrap
 
 void Rotater::drawExtractionForItem(QPainter* painter)
 {
-	int driftForRotater = drift;
-	if (drift > mMaster->horizontalRadius()) {
-		driftForRotater = drift / 2;
-	}
-	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, driftForRotater);
+	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, mDrift);
 	drawFieldForResizeItem(painter);
 }
 
 void Rotater::drawFieldForResizeItem(QPainter* painter)
 {
-	int resizeDriftForRotater = resizeDrift;
-	if (drift > mMaster->horizontalRadius()) {
-		resizeDriftForRotater = resizeDrift / 2;
-	}
-	painter->drawEllipse(QPointF(mX2, mY2), resizeDriftForRotater, resizeDriftForRotater);
+	painter->drawEllipse(QPointF(mX2, mY2), mResizeDrift, mResizeDrift);
 }
 
 QRectF Rotater::boundingRect() const
@@ -95,20 +89,33 @@ QRectF Rotater::boundingRect() const
 
 void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 {
-	// Cosine theorem
-	qreal const x1 = event->pos().x();
-	qreal const y1 = event->pos().y();
-	qreal const x2 = event->lastPos().x();
-	qreal const y2 = event->lastPos().y();
-	qreal len = sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
+	qreal const eps = 0.000000001;
+	QPointF const masterCenter(mMaster->mapToScene(mMaster->rect().center()));
+	QPointF const zeroRotationVector(mLength, 0);
 
-	// Rotation sign is the sign of the vector product
-	qreal const vectorProduct = x1 * y2 - x2 * y1;
-	int const sign = vectorProduct < 0 ? -1 : 1;
+	qreal const mouseX = event->scenePos().x() - masterCenter.x();
+	qreal const mouseY = event->scenePos().y() - masterCenter.y();
 
-	qreal const eps = 10e-8;
-	qreal const dalpha = len < eps ? 0 : acos((x1 * x2 + y1 * y2) / len);
-	mMaster->rotate(mMaster->rotation() - sign * dalpha * 180 / M_PI);
+	// Master rotation is signed angle between initial and mouse vector.
+	// Calculating it from theese vectors product and cosine theorem
+	qreal const vectorProduct = zeroRotationVector.x() * mouseY
+			- zeroRotationVector.y() * mouseX;
+	qreal const mouseVectorLength = sqrt(mouseX * mouseX + mouseY * mouseY);
+	if (mouseVectorLength < eps) {
+		return;
+	}
+
+	qreal const translationX = mouseX - zeroRotationVector.x();
+	qreal const translationY = mouseY - zeroRotationVector.y();
+	qreal const translation = translationX * translationX + translationY * translationY;
+
+	qreal const sin = vectorProduct / (mouseVectorLength * mLength);
+	bool const cosIsNegative = mouseVectorLength * mouseVectorLength + mLength * mLength < translation;
+
+	qreal const angleInWrongQuarter = asin(sin);
+	qreal const angle = cosIsNegative ? M_PI - angleInWrongQuarter : angleInWrongQuarter;
+
+	mMaster->rotate(angle * 180 / M_PI);
 }
 
 void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)

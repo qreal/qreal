@@ -1,6 +1,6 @@
-QT += svg xml
+QT += svg xml printsupport widgets help
 
-CONFIG += rpath_libdirs help
+CONFIG += rpath_libdirs
 macx {
 	CONFIG -= app_bundle
 }
@@ -42,6 +42,7 @@ include (umllib/umllib.pri)
 include (dialogs/dialogs.pri)
 include (mainwindow/mainwindow.pri)
 include (view/view.pri)
+include (controller/controller.pri)
 include (generators/generators.pri)
 include (thirdparty/thirdparty.pri)
 include (pluginManager/pluginManager.pri)

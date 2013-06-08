@@ -20,20 +20,20 @@ AbstractMotorImplementation &Motor::motorImpl()
 	return *mMotorImpl;
 }
 
-void Motor::on(int speed)
+void Motor::on(int speed, bool breakMode)
 {
-	mMotorImpl->on(speed);
+	mMotorImpl->on(speed, breakMode);
 }
 
-void Motor::on(int speed, long unsigned int degrees)
+void Motor::on(int speed, long unsigned int degrees, bool breakMode)
 {
-	mMotorImpl->on(speed, degrees);
+	mMotorImpl->on(speed, degrees, breakMode);
 	connect(mMotorImpl, SIGNAL(motorImplTimeout()), this, SIGNAL(motorTimeout()));
 }
 
-void Motor::stop()
+void Motor::stop(bool breakMode)
 {
-	mMotorImpl->stop();
+	mMotorImpl->stop(breakMode);
 }
 
 void Motor::off()

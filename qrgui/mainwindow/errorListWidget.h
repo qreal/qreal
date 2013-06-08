@@ -1,6 +1,7 @@
 #pragma once
 
-#include <QtGui/QListWidget>
+#include <QtWidgets/QListWidget>
+
 #include "../../qrkernel/ids.h"
 #include "error.h"
 
@@ -12,16 +13,24 @@ class ErrorListWidget : public QListWidget
 {
 	Q_OBJECT
 
-private slots:
-	void clickList();
-
 public:
 	explicit ErrorListWidget(QWidget *parent = NULL);
 	void init(qReal::MainWindow* mainWindow);
 	void highlightElement(QListWidgetItem* const item);
 
-private:
-	qReal::MainWindow* mMainWindow;
+signals:
+	void clearRequested();
 
+private slots:
+	void clickList();
+	void copyCurrentItem();
+	void showContextMenu(QPoint const &pos);
+
+private:
+
+	void initContextMenu();
+
+	qReal::MainWindow* mMainWindow;
+	QMenu *mContextMenu;
 };
 

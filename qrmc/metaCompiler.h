@@ -51,7 +51,7 @@ namespace qrmc {
 
 		QString mTargetMetamodel;
 
-		bool changeDir(const QString &path);
+		bool changeDir(QString const &path);
 		bool loadTemplateFromFile(QString const &templateFileName, QString &loadedTemplate);
 		bool loadPluginHeaderTemplate();
 		bool loadPluginSourceTemplate();

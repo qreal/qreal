@@ -23,7 +23,9 @@ public:
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
 	Id createElement(Id const &parent, Id const &type);
-	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
+	Id createElement(Id const &parent, Id const &id
+			, bool isFromLogicalModel, QString const &name
+			, QPointF const &position, Id const &preferedLogicalId = Id());
 	IdList children(Id const &element) const;
 	void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF());
 
@@ -38,8 +40,11 @@ public:
 	IdList diagramsAbleToBeUsedIn(Id const &element) const;
 	virtual void stackBefore(Id const &element, Id const &sibling);
 
-	void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
-	QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
+	virtual QVariant property(Id const &id, QString const &name) const;
+	virtual void setProperty(Id const &id, QString const &name, QVariant const &value);
+
+	virtual void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
+	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
 
 	bool isLogicalId(Id const &id) const;
 
@@ -61,6 +66,8 @@ public:
 	bool hasRootDiagrams() const;
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
+
+	void removeElement(Id const &logicalId);
 
 private:
 	details::ModelsAssistApi mModelsAssistApi;

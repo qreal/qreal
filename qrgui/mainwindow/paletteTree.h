@@ -1,16 +1,16 @@
 #pragma once
 
-#include <QTreeWidget>
+#include <QtWidgets/QTreeWidget>
 #include <QtCore/QHash>
 #include <QtCore/QSettings>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtGui/QIcon>
-#include <QtGui/QToolButton>
-#include <QtGui/QComboBox>
-#include <QtGui/QVBoxLayout>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QVBoxLayout>
 #include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
 namespace  qReal{
 namespace gui{
@@ -77,6 +77,9 @@ public:
 	/// Set saved item index as current in ComboBox.
 	void setComboBoxIndex();
 
+	/// Saves selected editor and expanded groups into settings
+	void saveConfiguration();
+
 	/** Load palette and set some representation.
 	  @param isIconsView This variable corresponds to representation.
 	  @param itemsCount Items count in a row.
@@ -84,8 +87,10 @@ public:
 	*/
 	void loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager);
 	~PaletteTree();
+
 signals:
 	void paletteParametersChanged();
+
 public slots:
 	/// Collapse all nodes of current tree.
 	void collapse();
@@ -100,6 +105,7 @@ public slots:
 
 	/// Changes widget representation.
 	void changeRepresentation();
+
 private:
 
 	/// Class for representing editor elements.
@@ -123,13 +129,21 @@ private:
 	private:
 			virtual void dragEnterEvent(QDragEnterEvent *event);
 			virtual void dropEvent(QDropEvent *event);
-			virtual void mousePressEvent(QMouseEvent *event);
 
 			Id mId;
 			QIcon mIcon;
 			QSize mPreferedSize;
 			QString mText;
 			QLabel *mLabel;
+	};
+
+	/// Represents an area where editor items are situated
+	class TreeArea : public QTreeWidget
+	{
+	public:
+		TreeArea(QWidget *parent = 0);
+	protected:
+		virtual void mousePressEvent(QMouseEvent *event);
 	};
 
 	/// Returns maximum count of items in all rows of widget
@@ -164,6 +178,9 @@ private:
 	*/
 	void expandChildren(QTreeWidgetItem *item);
 
+	/// Expands all children of given tree widget
+	void expand(QTreeWidget const *tree);
+
 	/// Creates all PaletteTree widgets.
 	void createPaletteTree();
 
@@ -186,7 +203,7 @@ private:
 	QHash<Id, int> mCategories;
 
 	/// Pointer to current tree.
-	QTreeWidget *mTree;
+	TreeArea *mTree;
 
 	/// Button that collapses all nodes of current tree.
 	QToolButton *mCollapseAll;
@@ -198,7 +215,7 @@ private:
 	QToolButton *mChangeRepresentation;
 
 	/// Vector with all editor's trees.
-	QVector <QTreeWidget *> mEditorsTrees;
+	QVector <TreeArea *> mEditorsTrees;
 
 	/// Vector with all editor's names.
 	QVector <QString> mEditorsNames;
@@ -211,9 +228,6 @@ private:
 
 	/// Current editor number.
 	int mCurrentEditor;
-
-	/// Stores info about expanded nodes in tree
-	QSettings *mSettings;
 
 	/// Representation flag
 	bool mIconsView;

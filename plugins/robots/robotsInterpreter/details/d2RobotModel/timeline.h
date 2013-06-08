@@ -18,7 +18,7 @@ class Timeline : public QObject
 	Q_OBJECT
 
 public:
-	static const int timeInterval = 2; // one cycle length
+	static const int timeInterval = 10; // one cycle length
 	static const int fps = 28; // frames per second
 	static const int frameLength = 1000 / fps;
 
@@ -51,6 +51,7 @@ private:
 	int mSpeedFactor;
 	int mCyclesCount;
 	qint64 mFrameStartTimestamp;
+	bool mIsStarted;
 };
 
 }

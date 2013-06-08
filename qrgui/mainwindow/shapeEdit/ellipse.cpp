@@ -1,6 +1,6 @@
 #include "ellipse.h"
 
-Ellipse::Ellipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
+QRealEllipse::QRealEllipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	:Item(parent), mRectangleImpl()
 {
 	mNeedScalingRect = true;
@@ -13,7 +13,7 @@ Ellipse::Ellipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 	mY2 = y2;
 }
 
-Ellipse::Ellipse(Ellipse const &other)
+QRealEllipse::QRealEllipse(QRealEllipse const &other)
 	:Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
@@ -28,25 +28,25 @@ Ellipse::Ellipse(Ellipse const &other)
 	setPos(other.x(), other.y());
 }
 
-Item* Ellipse::clone()
+Item* QRealEllipse::clone()
 {
-	Ellipse* item = new Ellipse(*this);
+	QRealEllipse* item = new QRealEllipse(*this);
 	return item;
 }
 
-QRectF Ellipse::boundingRect() const
+QRectF QRealEllipse::boundingRect() const
 {
 	return mRectangleImpl.boundingRect(mX1, mY1, mX2, mY2, scalingDrift);
 }
 
-void Ellipse::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void QRealEllipse::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	mRectangleImpl.drawEllipseItem(painter, mX1, mY1, mX2, mY2);
 }
 
-QPair<QDomElement, Item::DomElementTypes> Ellipse::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> QRealEllipse::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
 {
 	QDomElement ellipse = setPenBrushToDoc(document, "ellipse");
 	setXandY(ellipse, sceneBoundingRectCoord(topLeftPicture));
