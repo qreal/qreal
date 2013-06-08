@@ -3975,68 +3975,68 @@
 <context>
     <name>qReal::gui::DraggableElement</name>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="100"/>
+        <location filename="mainwindow/draggableElement.cpp" line="107"/>
         <source>Deleting an element: </source>
         <translation>Удаление элемента: </translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="101"/>
+        <location filename="mainwindow/draggableElement.cpp" line="108"/>
         <source>Do you really want to delete this item and all its graphical representation from the scene and from the palette?</source>
         <translation>Вы действительно хотите удалить данный элемент  и все его графические представления со сцены и из палитры?</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="108"/>
-        <location filename="mainwindow/draggableElement.cpp" line="138"/>
-        <location filename="mainwindow/draggableElement.cpp" line="175"/>
+        <location filename="mainwindow/draggableElement.cpp" line="115"/>
+        <location filename="mainwindow/draggableElement.cpp" line="145"/>
+        <location filename="mainwindow/draggableElement.cpp" line="182"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="109"/>
-        <location filename="mainwindow/draggableElement.cpp" line="139"/>
-        <location filename="mainwindow/draggableElement.cpp" line="176"/>
+        <location filename="mainwindow/draggableElement.cpp" line="116"/>
+        <location filename="mainwindow/draggableElement.cpp" line="146"/>
+        <location filename="mainwindow/draggableElement.cpp" line="183"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="130"/>
-        <location filename="mainwindow/draggableElement.cpp" line="162"/>
+        <location filename="mainwindow/draggableElement.cpp" line="137"/>
+        <location filename="mainwindow/draggableElement.cpp" line="169"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="131"/>
-        <location filename="mainwindow/draggableElement.cpp" line="163"/>
+        <location filename="mainwindow/draggableElement.cpp" line="138"/>
+        <location filename="mainwindow/draggableElement.cpp" line="170"/>
         <source>The deleted element </source>
         <translation>Удаляемый элемент </translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="165"/>
+        <location filename="mainwindow/draggableElement.cpp" line="172"/>
         <source> has inheritors:</source>
         <translation> имеет наследников:</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="168"/>
+        <location filename="mainwindow/draggableElement.cpp" line="175"/>
         <source>If you delete it, its properties will be removed from the elements-inheritors. Continue to delete?</source>
         <translation>Если вы удалите его, то все унаследованные свойства будут удалены у его потомков. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="131"/>
+        <location filename="mainwindow/draggableElement.cpp" line="138"/>
         <source> is the element of root digram. Continue to delete?</source>
         <translation> является элементом корневой диаграммы. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="210"/>
+        <location filename="mainwindow/draggableElement.cpp" line="217"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="213"/>
+        <location filename="mainwindow/draggableElement.cpp" line="220"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="216"/>
+        <location filename="mainwindow/draggableElement.cpp" line="223"/>
         <source>Delete Element</source>
         <translation>Удалить элемент</translation>
     </message>
@@ -4084,17 +4084,17 @@
         <translation type="obsolete">Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="369"/>
+        <location filename="mainwindow/paletteTree.cpp" line="296"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="377"/>
+        <location filename="mainwindow/paletteTree.cpp" line="304"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="385"/>
+        <location filename="mainwindow/paletteTree.cpp" line="312"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>
@@ -4102,7 +4102,7 @@
 <context>
     <name>qReal::gui::PaletteTreeWidget</name>
     <message>
-        <location filename="mainwindow/paletteTreeWidget.cpp" line="30"/>
+        <location filename="mainwindow/paletteTreeWidget.cpp" line="31"/>
         <source>Add Element</source>
         <translation>Добавить элемент</translation>
     </message>

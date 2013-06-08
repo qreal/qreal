@@ -8,7 +8,7 @@
 
 using namespace qReal;
 
-const QSize StartDialog::mMinimumSize = QSize(350, 200);
+const QSize StartDialog::mMinimumSize = QSize(400, 200);
 
 StartDialog::StartDialog(MainWindow &mainWindow, ProjectManager &projectManager)
 		: QDialog(&mainWindow, false)
