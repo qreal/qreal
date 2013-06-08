@@ -10,7 +10,7 @@
 #include "editorViewMVIface.h"
 #include "editorView.h"
 #include "../mainwindow/mainWindow.h"
-#include "../dialogs/propertiesDialog.h"
+#include "../dialogs/metamodelingOnFly/propertiesDialog.h"
 
 #include "../controller/commands/createElementCommand.h"
 #include "../controller/commands/createGroupCommand.h"

@@ -7,7 +7,7 @@
 #include "mainWindow.h"
 #include "paletteTree.h"
 #include "../../qrkernel/settingsManager.h"
-#include "../dialogs/propertiesDialog.h"
+#include "../dialogs/metamodelingOnFly/propertiesDialog.h"
 #include "../../qrkernel/definitions.h"
 #include "../view/editorView.h"
 #include "../view/editorViewScene.h"

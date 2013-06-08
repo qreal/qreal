@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Свойства связи:</string>
+   <string>Edge properties</string>
   </property>
   <widget class="QLabel" name="nameLabel">
    <property name="geometry">

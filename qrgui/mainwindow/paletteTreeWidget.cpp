@@ -2,7 +2,7 @@
 #include <QtWidgets/QMenu>
 
 #include "paletteTreeWidget.h"
-#include "../dialogs/chooseTypeDialog.h"
+#include "../dialogs/metamodelingOnFly/chooseTypeDialog.h"
 
 using namespace qReal;
 using namespace gui;

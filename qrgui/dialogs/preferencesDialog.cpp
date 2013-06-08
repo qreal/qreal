@@ -27,7 +27,6 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(ui->pageContentWigdet);
 	PreferencesPage *debuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
 	PreferencesPage *miscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
-//	PreferencesPage *featuresPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
 

@@ -11,7 +11,7 @@
 #include "../../qrkernel/settingsManager.h"
 #include "draggableElement.h"
 #include "paletteTreeWidget.h"
-#include "../dialogs/propertiesDialog.h"
+#include "../dialogs/metamodelingOnFly/propertiesDialog.h"
 
 using namespace qReal;
 using namespace gui;
