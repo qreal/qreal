@@ -13,26 +13,32 @@
 #include "mainWindowDockInterface.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
-#include "paletteTree.h"
 #include "findManager.h"
 #include "referenceList.h"
 
 #include "projectManager/projectManager.h"
 
+#include "../pluginManager/editorManagerInterface.h"
 #include "../pluginManager/editorManager.h"
+#include "../pluginManager/interpreterEditorManager.h"
+#include "../pluginManager/proxyEditorManager.h"
 #include "../pluginManager/toolPluginManager.h"
 #include "../models/logicalModelAssistApi.h"
 #include "../view/propertyEditorView.h"
 #include "../controller/controller.h"
 
-#include "../dialogs/preferencesDialog.h"
-#include "../dialogs/findReplaceDialog.h"
+#include "../../qrgui/dialogs/preferencesDialog.h"
+#include "../../qrgui/dialogs/findReplaceDialog.h"
 #include "../dialogs/startDialog/startDialog.h"
+#include "propertyEditorProxyModel.h"
+#include "gesturesPainterInterface.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 
 #include "../textEditor/codeEditor.h"
 
 #include "../../qrkernel/settingsManager.h"
+#include "../dialogs/suggestToCreateDiagramDialog.h"
+#include "tabWidget.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -50,6 +56,7 @@ class Models;
 
 namespace gui {
 class ErrorReporter;
+class PaletteTree;
 }
 
 class MainWindow : public QMainWindow
@@ -62,7 +69,7 @@ public:
 	MainWindow(QString const &fileToOpen = QString());
 	~MainWindow();
 
-	EditorManager *manager();
+	EditorManagerInterface &editorManager();
 	EditorView *getCurrentTab() const;
 	ListenerManager *listenerManager() const;
 	models::Models *models() const;
@@ -88,6 +95,7 @@ public:
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
+	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy);
 	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
 			, int const &role);
 	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue
@@ -115,6 +123,24 @@ public:
 	virtual void deleteElementFromDiagram(Id const &id);
 
 	virtual void reportOperation(invocation::LongOperation *operation);
+
+	/// Returns editor manager proxy, which allows to change editor manager implementation.
+	ProxyEditorManager &editorManagerProxy();
+
+	/// Loads (or reloads) available editor plugins and reinits palette.
+	void loadPlugins();
+
+	/// Closes tab having given id as root id. If there is no such tab, does nothing.
+	/// @param id Id of a diagram (root element) that we want to close.
+	void closeDiagramTab(Id const &id);
+
+	/// Clears selection on all opened tabs.
+	void clearSelectionOnTabs();
+
+	/// Adds all elements from given diagram in a given editor to a palette.
+	/// @param editor Id of an editor we need to add elements from.
+	/// @param diagram Id of a diagram we need to add elements from.
+	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
 
 	virtual QDockWidget *logicalModelDock() const;
 	virtual QDockWidget *graphicalModelDock() const;
@@ -173,14 +199,9 @@ private slots:
 
 	void updateTabName(Id const &id);
 
-	void settingsPlugins();
-
 	void showAbout();
 	void showHelp();
 
-	/// checks parameters for integrity,then importing it
-	/// @param fileName - *.qrs file to import
-	/// @return true - if all ok, false - if not ok
 	void fullscreen();
 	void openRecentProjectsMenu();
 
@@ -257,8 +278,6 @@ private:
 	/// @param tab Tab to be initialized with shortcuts
 	void setShortcuts(EditorView * const tab);
 
-	void loadPlugins();
-
 	void registerMetaTypes();
 
 	QListWidget* createSaveListWidget();
@@ -334,7 +353,7 @@ private:
 
 	models::Models *mModels;
 	Controller *mController;
-	EditorManager mEditorManager;
+	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
@@ -359,7 +378,6 @@ private:
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
-	qReal::gui::PaletteTree *mPaletteTree;
 
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;

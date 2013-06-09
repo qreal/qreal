@@ -6,7 +6,7 @@
 #include "editorViewScene.h"
 #include "../../qrkernel/definitions.h"
 #include "../umllib/element.h"
-#include "../pluginManager/editorManager.h"
+#include "../pluginManager/editorManagerInterface.h"
 #include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
@@ -140,7 +140,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
+		Element* elem = mScene->mainWindow()->editorManager().graphicalObject(currentId);
 		if (elem) {
 			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
 			elem->setController(mScene->mainWindow()->controller());
@@ -325,9 +325,11 @@ void EditorViewMViface::clearItems()
 			toRemove.append(pair.second);
 		}
 	}
-	foreach (QGraphicsItem *item, toRemove) {
+
+	foreach (QGraphicsItem * const item, toRemove) {
 		delete item;
 	}
+
 	mItems.clear();
 }
 
