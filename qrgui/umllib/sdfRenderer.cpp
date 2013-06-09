@@ -33,6 +33,7 @@ SdfRenderer::~SdfRenderer()
 bool SdfRenderer::load(QString const &filename)
 {
 	QFile file(filename);
+
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 
@@ -50,8 +51,17 @@ bool SdfRenderer::load(QString const &filename)
 	return true;
 }
 
-void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo)
+bool SdfRenderer::load(QDomDocument const &document)
 {
+	doc = document;
+	QDomElement const docElem = doc.firstChildElement("picture");
+	first_size_x = docElem.attribute("sizex").toInt();
+	first_size_y = docElem.attribute("sizey").toInt();
+
+	return true;
+}
+
+void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo){
 	mElementRepo = elementRepo;
 }
 
@@ -764,8 +774,14 @@ SdfIconEngineV2::SdfIconEngineV2(QString const &file)
 	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
 }
 
-void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect
-		, QIcon::Mode mode, QIcon::State state)
+SdfIconEngineV2::SdfIconEngineV2(QDomDocument const &document)
+{
+	mRenderer.load(document);
+	mRenderer.noScale();
+}
+
+void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
+		QIcon::Mode mode, QIcon::State state)
 {
 	Q_UNUSED(mode)
 	Q_UNUSED(state)

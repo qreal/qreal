@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -531,14 +531,6 @@
     <string>About Qt...</string>
    </property>
   </action>
-  <action name="actionPlugins">
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Plugins...</string>
-   </property>
-  </action>
   <action name="actionShowSplash">
    <property name="checkable">
     <bool>true</bool>
@@ -551,10 +543,6 @@
    </property>
   </action>
   <action name="actionSave">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
-   </property>
    <property name="text">
     <string>Save</string>
    </property>
@@ -563,10 +551,6 @@
    </property>
   </action>
   <action name="actionSave_as">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/save_as.png</normaloff>:/icons/save_as.png</iconset>
-   </property>
    <property name="text">
     <string>Save as...</string>
    </property>
@@ -575,10 +559,6 @@
    </property>
   </action>
   <action name="actionOpen">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
-   </property>
    <property name="text">
     <string>Open...</string>
    </property>
@@ -696,10 +676,6 @@
    </property>
   </action>
   <action name="actionFullscreen">
-   <property name="icon">
-    <iconset resource="../qrgui.qrc">
-     <normaloff>:/icons/full_screen.png</normaloff>:/icons/full_screen.png</iconset>
-   </property>
    <property name="text">
     <string>Fullscreen Mode</string>
    </property>
