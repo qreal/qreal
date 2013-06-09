@@ -96,10 +96,13 @@ QString SensorItem::name() const
 		return "touch";
 	case sensorType::colorFull:
 	case sensorType::colorNone:
+		return "color_empty";
 	case sensorType::colorBlue:
+		return "color_blue";
 	case sensorType::colorGreen:
+		return "color_green";
 	case sensorType::colorRed:
-		return "color";
+		return "color_red";
 	case sensorType::sonar:
 		return "sonar";
 	case sensorType::light:
@@ -120,11 +123,10 @@ QRectF SensorItem::imageRect() const
 	case sensorType::colorBlue:
 	case sensorType::colorGreen:
 	case sensorType::colorRed:
-		return QRectF(-12, -5, 25, 10);
+	case sensorType::light:
+		return QRectF(-6, -6, 12, 12);
 	case sensorType::sonar:
 		return QRectF(-20, -10, 40, 20);
-	case sensorType::light:
-		return QRectF(-12, -5, 25, 10);
 	default:
 		Q_ASSERT(!"Unknown sensor type");
 		return QRectF();

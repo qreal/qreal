@@ -242,7 +242,7 @@ private:
 	QPointF mCurrentMousePos;
 	QPointF mCreatePoint;
 
-	MouseMovementManager *mMouseMovementManager;
+	gestures::MouseMovementManager *mMouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
 

@@ -389,11 +389,18 @@ void D2RobotModel::startInit()
 	mTimeline->start();
 }
 
+void D2RobotModel::startInterpretation()
+{
+	startInit();
+	mD2ModelWidget->startTimelineListening();
+}
+
 void D2RobotModel::stopRobot()
 {
 	mMotorA->speed = 0;
 	mMotorB->speed = 0;
 	mMotorC->speed = 0;
+	mD2ModelWidget->stopTimelineListening();
 }
 
 void D2RobotModel::countBeep()

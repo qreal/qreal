@@ -196,7 +196,6 @@ void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAct
 {
 	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
 	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
-	connect(runAction, SIGNAL(triggered()), this, SLOT(startTimelineListening()));
 	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTimelineListening()));
 }
 
@@ -643,7 +642,9 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	default:
 		needUpdate = false;
-		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
+		if (mouseEvent->buttons() & Qt::LeftButton) {
+			mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
+		}
 		break;
 	}
 	if (needUpdate) {
@@ -1030,7 +1031,8 @@ void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 {
 	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
 	wall->onOverlappedWithRobot(isNeedStop);
-	if (wall->isDragged()) {
+	if (wall->isDragged() && ((mDrawingAction == drawingAction::none) ||
+			(mDrawingAction == drawingAction::wall && mCurrentWall == wall))) {
 		if (isNeedStop) {
 			wall->setPos(oldPos);
 		}

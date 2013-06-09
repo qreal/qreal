@@ -1,6 +1,10 @@
 #pragma once
+
 #include "abstractRecognizer.h"
 #include "GeometricForms.h"
+
+namespace qReal {
+namespace gestures {
 
 class RectangleGesturesManager : public GesturesRecognizer<double *>
 {
@@ -12,3 +16,6 @@ public:
 	double getDistance(double * const &key1, double * const &key2);
 	double *getKey(PathVector const & path);
 };
+
+}
+}

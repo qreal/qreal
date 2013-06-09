@@ -1,6 +1,8 @@
 #include "levenshteinDistance.h"
 #include <QtCore/QList>
 
+using namespace qReal::gestures;
+
 int LevenshteinDistance::getLevenshteinDistance(QString const &key1, QString const &key2)
 {
 	int const m = key1.size();

@@ -13,6 +13,8 @@
 #include <QString>
 #include <QMap>
 
+namespace qReal {
+namespace gestures {
 
 class MouseMovementManager
 {
@@ -51,3 +53,6 @@ private:
 	GesturesPainterInterface *mGesturesPaintMan;
 	GesturesManager *mGesturesManager;
 };
+
+}
+}

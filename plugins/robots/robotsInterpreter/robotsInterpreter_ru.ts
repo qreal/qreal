@@ -715,6 +715,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>qReal::interpreters::robots::details::blocks::CommentBlock</name>
+    <message>
+        <location filename="details/blocks/commentBlock.cpp" line="18"/>
+        <source>The comment block with incomming liks detected!</source>
+        <translation>Блок коментария не может иметь входящих связей!</translation>
+    </message>
+</context>
+<context>
     <name>qReal::interpreters::robots::details::blocks::ForkBlock</name>
     <message>
         <location filename="details/blocks/forkBlock.cpp" line="26"/>
@@ -783,32 +791,35 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::LoopBlock</name>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="34"/>
+        <location filename="details/blocks/loopBlock.cpp" line="31"/>
+        <source>There must be an outgoing link with property &lt;b&gt;Guard&lt;/b&gt; set as &lt;b&gt;iteration&lt;/b&gt;. See help, chapter &lt;i&gt;Programming&lt;/i&gt;</source>
+        <translation type="unfinished">Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Программирование&lt;/i&gt;</translation>
+    </message>
+    <message>
+        <location filename="details/blocks/loopBlock.cpp" line="36"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="39"/>
+        <location filename="details/blocks/loopBlock.cpp" line="41"/>
         <source>iteration</source>
         <translation>итерация</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="44"/>
+        <location filename="details/blocks/loopBlock.cpp" line="46"/>
         <source>Two links marked as &quot;iteration&quot; found</source>
         <translation>Найдено две связи, помеченные как &quot;итерация&quot;</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="52"/>
         <source>Two outgoing links to a next element found</source>
-        <translation>Найдено две исходящие связи к следующему элементу</translation>
+        <translation type="obsolete">Найдено две исходящие связи к следующему элементу</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="59"/>
         <source>There must be a link with property &quot;Guard&quot; set as &quot;iteration&quot;</source>
-        <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в &quot;итерация&quot;</translation>
+        <translation type="obsolete">Должна быть связь со свойством &quot;Условие&quot; установленным в &quot;итерация&quot;</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="64"/>
+        <location filename="details/blocks/loopBlock.cpp" line="66"/>
         <source>There must be a non-marked outgoing link</source>
         <translation>Должна быть непомеченная исходящая связь</translation>
     </message>
@@ -816,9 +827,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::NullificationEncoderBlock</name>
     <message>
-        <location filename="details/blocks/nullificationEncoderBlock.cpp" line="22"/>
         <source>Wrong port to nullificate Encoder</source>
-        <translation>Неправильный порт для сброса энкодера</translation>
+        <translation type="obsolete">Неправильный порт для сброса энкодера</translation>
     </message>
 </context>
 <context>
@@ -928,18 +938,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="710"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="715"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="710"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="728"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="715"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="733"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="728"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="733"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>
