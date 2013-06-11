@@ -1,10 +1,16 @@
 #include "kernel.h"
 #include "ecrobot_interface.h"
+#include <time.h>
+#include <stdlib.h>
+#include <math.h>
+
 @@BALANCER@@
+
 @@VARIABLES@@
 
 void ecrobot_device_initialize(void)
 {
+	srand(time(0));
 @@INITHOOKS@@
 }
 

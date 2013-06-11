@@ -1,7 +1,8 @@
 #include "abstractElementGenerator.h"
 
-#include "../nxtOSEKRobotGenerator.h"
+#include <QtCore/QRegExp>
 
+#include "../nxtOSEKRobotGenerator.h"
 #include "../elementGeneratorFactory.h"
 
 using namespace robots::generator;
@@ -34,6 +35,22 @@ QString AbstractElementGenerator::replaceSensorAndEncoderVariables(QString const
 	result.replace("EncoderA", encoderExpression() + "A)");
 	result.replace("EncoderB", encoderExpression() + "B)");
 	result.replace("EncoderC", encoderExpression() + "C)");
+	return result;
+}
+
+QString AbstractElementGenerator::replaceFunctionInvocations(QString const &expression) const
+{
+	QString result = expression;
+
+	QRegExp randomFunctionInvocationRegEx("random\\((.*)\\)");
+	int pos = randomFunctionInvocationRegEx.indexIn(result, 0);
+	while (pos != -1) {
+		QString const param = randomFunctionInvocationRegEx.cap(1);
+		result.replace(randomFunctionInvocationRegEx, "rand() % " + param);
+		pos += randomFunctionInvocationRegEx.matchedLength();
+		pos = randomFunctionInvocationRegEx.indexIn(result, pos);
+	}
+
 	return result;
 }
 
