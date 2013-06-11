@@ -1008,7 +1008,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	// Let scene update selection and perform other operations
-	QGraphicsItem* item = itemAt(mCurrentMousePos, QTransform());
+	QGraphicsItem const * const item = itemAt(mCurrentMousePos, QTransform());
 	if (event->modifiers() & Qt::ControlModifier) {
 		if (item) {
 			QGraphicsScene::mousePressEvent(event);
