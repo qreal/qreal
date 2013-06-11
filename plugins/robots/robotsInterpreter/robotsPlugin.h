@@ -45,17 +45,11 @@ private:
 	/// Initializes and connects actions, fills action info list
 	void initActions();
 
-	/// Disable/enable tab in QList<ActionInfo> info
-	void changeActiveTab(QList<ActionInfo> const &info, bool const &trigger);
-
-	/// Tells whether we need to disable or enable particular action on tab change.
-	/// For example, we shall be able to access robot settings regardless of currently
-	/// open diagram type, but we can't run UML Class diagram as robot program.
-	/// @param action Action to be checked
-	/// @returns True, if action shall be disabled when current diagram is not robots
-	bool needToDisableWhenNotRobotsDiagram(QAction const * const action) const;
-
 	void updateTitlesVisibility();
+
+	/// Updates "enabled" status of interpreter actions taking into account current tab,
+	/// selected robot model and so on.
+	void updateEnabledActions();
 
 	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 

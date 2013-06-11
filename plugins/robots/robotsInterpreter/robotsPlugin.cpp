@@ -129,7 +129,10 @@ void RobotsPlugin::updateSettings()
 {
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized...");
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
-	mInterpreter.setRobotModelType(typeOfRobotModel);
+	if (typeOfRobotModel != robotModelType::trik) {
+		mInterpreter.setRobotModelType(typeOfRobotModel);
+	}
+
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
 	mInterpreter.setCommunicator(typeOfCommunication);
 	mInterpreter.configureSensors(
@@ -139,12 +142,14 @@ void RobotsPlugin::updateSettings()
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
 	);
 	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::twoD);
-	mConnectToRobotAction->setVisible(typeOfRobotModel == robotModelType::nxt || typeOfRobotModel == robotModelType::trik);
+	mConnectToRobotAction->setVisible(typeOfRobotModel == robotModelType::nxt);
 	if (typeOfRobotModel == robotModelType::twoD) {
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopRobotAction);
 	} else {
 		mInterpreter.showD2ModelWidget(false);
 	}
+
+	updateEnabledActions();
 
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Done updating settings");
 }
@@ -157,21 +162,10 @@ void RobotsPlugin::closeNeededWidget()
 
 void RobotsPlugin::activeTabChanged(Id const &rootElementId)
 {
-	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
+	updateEnabledActions();
 	changeActiveTab(mActionInfos, enabled);
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
 	mInterpreter.onTabChanged(rootElementId, enabled);
-}
-
-void RobotsPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
-{
-	foreach (ActionInfo const &actionInfo, info) {
-			actionInfo.action()->setEnabled(trigger);
-	}
-}
-
-bool RobotsPlugin::needToDisableWhenNotRobotsDiagram(QAction const * const action) const
-{
-	return action != mRobotSettingsAction && action != mConnectToRobotAction && action != m2dModelAction;
 }
 
 interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produceSensorsConfigurer() const
@@ -202,4 +196,18 @@ void RobotsPlugin::updateTitlesVisibility()
 {
 	bool const titlesVisible = SettingsManager::value("showTitlesForRobots").toBool();
 	mSceneCustomizer->setTitlesVisible(titlesVisible);
+}
+
+void RobotsPlugin::updateEnabledActions()
+{
+	foreach (ActionInfo const &actionInfo, mActionInfos) {
+		actionInfo.action()->setEnabled(trigger);
+	}
+
+	Id const &rootElementId = mMainWindowInterpretersInterface->activeDiagram();
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+
+	mRunAction->setEnabled(typeOfRobotModel != robotModelType::trik && enabled);
+	mStopRobotAction->setEnabled(typeOfRobotModel != robotModelType::trik && enabled);
 }

@@ -60,7 +60,8 @@ AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(r
 		return realRobotModel(robotCommunication);
 	}
 
-	throw Exception("AbstractRobotModelImplementation::robotModel tried to create unknown robot model");
+	// TODO: Support TRIK model.
+	return nullRobotModel();
 }
 
 sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplementation::sensor(inputPort::InputPortEnum const &port)
