@@ -1007,6 +1007,16 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
+	// Let scene update selection and perform other operations
+	QGraphicsItem* item = itemAt(mCurrentMousePos, QTransform());
+	if (event->modifiers() & Qt::ControlModifier) {
+		if (item) {
+			QGraphicsScene::mousePressEvent(event);
+		}
+	} else {
+		QGraphicsScene::mousePressEvent(event);
+	}
+
 	if ((event->modifiers() & Qt::ControlModifier) && (event->buttons() & Qt::LeftButton) && !(event->buttons() & Qt::RightButton)) {
 		mIsSelectEvent = true;
 		mSelectList->append(selectedItems());
@@ -1045,16 +1055,6 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mMouseMovementManager->mousePress(event->scenePos());
 			mRightButtonPressed = true;
 		}
-	}
-
-	// Let scene update selection and perform other operations
-	QGraphicsItem* item = itemAt(mCurrentMousePos, QTransform());
-	if (event->modifiers() & Qt::ControlModifier) {
-		if (item) {
-			QGraphicsScene::mousePressEvent(event);
-		}
-	} else {
-		QGraphicsScene::mousePressEvent(event);
 	}
 
 	redraw();
