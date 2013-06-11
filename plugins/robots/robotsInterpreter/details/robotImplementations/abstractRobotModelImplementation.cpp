@@ -51,15 +51,16 @@ UnrealRobotModelImplementation *AbstractRobotModelImplementation::unrealRobotMod
 
 AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicator * const robotCommunication, d2Model::D2RobotModel *d2RobotModel)
 {
-	if (type == robotModelType::null) {
+	switch (type) {
+	case robotModelType::null:
 		return nullRobotModel();
-	} else if (type == robotModelType::unreal) {
+	case robotModelType::twoD:
 		return unrealRobotModel(d2RobotModel);
-	} else if (type == robotModelType::real) {
+	case robotModelType::nxt:
 		return realRobotModel(robotCommunication);
-	} else {
-		throw Exception("AbstractRobotModelImplementation::robotModel tried to create unknown robot model");
 	}
+
+	throw Exception("AbstractRobotModelImplementation::robotModel tried to create unknown robot model");
 }
 
 sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplementation::sensor(inputPort::InputPortEnum const &port)

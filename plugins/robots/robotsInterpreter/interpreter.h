@@ -49,7 +49,7 @@ public:
 	void closeD2ModelWidget();
 	void closeWatchList();
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
-	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
+	void setCommunicator(QString const &valueOfCommunication);
 
 	/// Assigning a value to the field mActionConnectToRobot
 	void setConnectRobotAction(QAction *actionConnect);

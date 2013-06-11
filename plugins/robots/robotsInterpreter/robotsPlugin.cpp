@@ -131,17 +131,16 @@ void RobotsPlugin::updateSettings()
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	mInterpreter.setRobotModelType(typeOfRobotModel);
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
-	QString const portName = SettingsManager::value("bluetoothPortName").toString();
-	mInterpreter.setCommunicator(typeOfCommunication, portName);
+	mInterpreter.setCommunicator(typeOfCommunication);
 	mInterpreter.configureSensors(
 			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
 			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
 	);
-	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::unreal);
-	mConnectToRobotAction->setVisible(typeOfRobotModel == robotModelType::real);
-	if (typeOfRobotModel == robotModelType::unreal) {
+	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::twoD);
+	mConnectToRobotAction->setVisible(typeOfRobotModel == robotModelType::nxt || typeOfRobotModel == robotModelType::trik);
+	if (typeOfRobotModel == robotModelType::twoD) {
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopRobotAction);
 	} else {
 		mInterpreter.showD2ModelWidget(false);

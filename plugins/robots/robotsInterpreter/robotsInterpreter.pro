@@ -1,4 +1,4 @@
-QT += xml widgets
+QT += xml widgets network
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -48,12 +48,10 @@ SOURCES += \
 	details/sensorsConfigurationWidget.cpp \
 	details/nullTimer.cpp \
 
-
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
 	details/sensorsConfigurationWidget.ui \
-
 
 RESOURCES += \
 	robotsInterpreter.qrc \

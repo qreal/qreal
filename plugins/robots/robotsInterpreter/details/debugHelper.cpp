@@ -9,10 +9,12 @@ QString DebugHelper::toString(robotModelType::robotModelTypeEnum const &modelTyp
 	{
 	case robotModelType::null:
 		return "null";
-	case robotModelType::real:
-		return "real";
-	case robotModelType::unreal:
-		return "d2Model";
+	case robotModelType::twoD:
+		return "twoD";
+	case robotModelType::nxt:
+		return "legoNxt";
+	case robotModelType::trik:
+		return "trik";
 	}
 	Q_ASSERT(!"Incorrect model type");
 	return "Incorrect model type";

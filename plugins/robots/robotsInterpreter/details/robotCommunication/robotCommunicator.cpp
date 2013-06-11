@@ -7,9 +7,8 @@
 
 using namespace qReal::interpreters::robots;
 
-RobotCommunicator::RobotCommunicator(QString const &portName)
-		: mPortName(portName)
-		, mRobotCommunicationThreadObject(NULL)
+RobotCommunicator::RobotCommunicator()
+		: mRobotCommunicationThreadObject(NULL)
 {
 	qRegisterMetaType<inputPort::InputPortEnum>("inputPort::InputPortEnum");
 }
@@ -35,21 +34,12 @@ void RobotCommunicator::sendI2C(QObject *addressee, QByteArray const &buffer
 
 void RobotCommunicator::connect()
 {
-	emit threadConnect(mPortName);
+	emit threadConnect();
 }
 
 void RobotCommunicator::disconnect()
 {
 	emit threadDisconnect();
-}
-
-void RobotCommunicator::setPortName(QString const &portName)
-{
-	bool needReconnect = portName != mPortName;
-	mPortName = portName;
-	if (needReconnect) {
-		emit threadReconnect(mPortName);
-	}
 }
 
 void RobotCommunicator::connectedSlot(bool success)
@@ -85,8 +75,8 @@ void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThre
 	mRobotCommunicationThreadObject->allowLongJobs();
 	mRobotCommunicationThread.start();
 
-	QObject::connect(this, SIGNAL(threadConnect(QString)), mRobotCommunicationThreadObject, SLOT(connect(QString)));
-	QObject::connect(this, SIGNAL(threadReconnect(QString)), mRobotCommunicationThreadObject, SLOT(reconnect(QString)));
+	QObject::connect(this, SIGNAL(threadConnect()), mRobotCommunicationThreadObject, SLOT(connect()));
+	QObject::connect(this, SIGNAL(threadReconnect()), mRobotCommunicationThreadObject, SLOT(reconnect()));
 	QObject::connect(this, SIGNAL(threadDisconnect()), mRobotCommunicationThreadObject, SLOT(disconnect()));
 	QObject::connect(this, SIGNAL(threadSend(QObject*, QByteArray, unsigned)), mRobotCommunicationThreadObject, SLOT(send(QObject*, QByteArray, unsigned)));
 	QObject::connect(this, SIGNAL(threadSendI2C(QObject*, QByteArray, unsigned, inputPort::InputPortEnum))

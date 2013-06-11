@@ -17,7 +17,7 @@ class RobotCommunicator : public QObject
 	Q_OBJECT
 
 public:
-	RobotCommunicator(QString const &portName);
+	RobotCommunicator();
 	~RobotCommunicator();
 
 	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
@@ -25,15 +25,14 @@ public:
 	virtual void connect();
 	virtual void disconnect();
 
-	void setPortName(QString const &portName);
 	void setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication);
 
 signals:
 	void threadSend(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	void threadSendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
 					, inputPort::InputPortEnum const &port);
-	void threadConnect(QString const &portName);
-	void threadReconnect(QString const &portName);
+	void threadConnect();
+	void threadReconnect();
 	void threadDisconnect();
 	void errorOccured(QString const &message);
 
@@ -48,7 +47,6 @@ private slots:
 	void onErrorOccured(QString const &message);
 
 private:
-	QString mPortName;
 	QThread mRobotCommunicationThread;
 	RobotCommunicationThreadInterface *mRobotCommunicationThreadObject;
 };

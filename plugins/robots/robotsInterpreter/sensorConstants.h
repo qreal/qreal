@@ -35,8 +35,9 @@ enum InputPortEnum {
 namespace robotModelType {
 enum robotModelTypeEnum {
 	null
-	, real
-	, unreal
+	, twoD
+	, nxt
+	, trik
 };
 }
 

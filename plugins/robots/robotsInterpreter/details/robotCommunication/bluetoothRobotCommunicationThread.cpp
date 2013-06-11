@@ -3,6 +3,7 @@
 
 #include "bluetoothRobotCommunicationThread.h"
 #include "../../../thirdparty/qextserialport/src/qextserialport.h"
+#include "../../../../../qrkernel/settingsManager.h"
 #include "../tracer.h"
 
 unsigned const keepAliveResponseSize = 9;
@@ -41,13 +42,14 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee
 	}
 }
 
-void BluetoothRobotCommunicationThread::connect(QString const &portName)
+void BluetoothRobotCommunicationThread::connect()
 {
 	if (mPort != NULL) {
 		disconnect();
 		SleeperThread::msleep(1000);  // Give port some time to close
 	}
 
+	QString const portName = SettingsManager::value("bluetoothPortName").toString();
 	mPort = new QextSerialPort(portName, QextSerialPort::Polling);
 	mPort->setBaudRate(BAUD9600);
 	mPort->setFlowControl(FLOW_OFF);
@@ -76,9 +78,9 @@ void BluetoothRobotCommunicationThread::connect(QString const &portName)
 	mKeepAliveTimer->start(500);
 }
 
-void BluetoothRobotCommunicationThread::reconnect(QString const &portName)
+void BluetoothRobotCommunicationThread::reconnect()
 {
-	connect(portName);
+	connect();
 }
 
 void BluetoothRobotCommunicationThread::disconnect()
