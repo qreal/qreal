@@ -1109,7 +1109,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Коментарий" name="CommentBlock" description="Блок с текстовыми заметками, которые игнорируются при генерации и интерпретации. Используйте его для повышения наглядности диаграммы.">
+			<node displayedName="Комментарий" name="CommentBlock" description="Блок с текстовыми заметками, которые игнорируются при генерации и интерпретации. Используйте его для повышения наглядности диаграммы.">
 				<graphics>
 					<picture sizex="200" sizey="100">
 						<line y1="0" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="0" fill-style="none" stroke-style="solid" stroke-width="0"/>
