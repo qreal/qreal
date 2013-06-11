@@ -30,7 +30,7 @@ class Element : public QObject, public QGraphicsItem, public ElementRepoInterfac
 
 public:
 	Element(ElementImpl* elementImpl);
-	
+
 	virtual ~Element() {}
 
 	void setId(qReal::Id &id);

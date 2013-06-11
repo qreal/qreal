@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EdgePropertiesDialog</class>
+ <widget class="QDialog" name="EdgePropertiesDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>311</width>
+    <height>255</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Edge properties</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="nameLabel">
+     <property name="text">
+      <string>name: *</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="nameEdit"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelTextLabel">
+     <property name="text">
+      <string>labelText:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="labelTextEdit"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="labelTypeLabel">
+     <property name="text">
+      <string>labelType:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="labelTypeComboBox">
+     <item>
+      <property name="text">
+       <string>Dynamic text</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Static text</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="lineTypeLabel">
+     <property name="text">
+      <string>lineType:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QComboBox" name="lineTypeComboBox">
+     <item>
+      <property name="text">
+       <string>solidLine</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>dashLine</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>dotLine</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="beginTypeLabel">
+     <property name="text">
+      <string>beginType:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QComboBox" name="beginTypeComboBox">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>no_arrow</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>open_arrow</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>empty_arrow</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>filled_arrow</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>empty_rhomb</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>filled_rhomb</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="endTypeLabel">
+     <property name="text">
+      <string>endType:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1">
+    <widget class="QComboBox" name="endTypeComboBox">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>no_arrow</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>open_arrow</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>empty_arrow</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>filled_arrow</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>empty_rhomb</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>filled_rhomb</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="12" column="0" colspan="2">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>* Need to be filled</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="1">
+    <widget class="QPushButton" name="okPushButton">
+     <property name="text">
+      <string>OK</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

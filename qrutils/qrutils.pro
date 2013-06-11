@@ -23,8 +23,10 @@ HEADERS += \
 	$$PWD/watchListWindow.h \
 	$$PWD/metamodelGeneratorSupport.h \
 	$$PWD/inFile.h \
+	$$PWD/scalableItem.h \
+	$$PWD/scalableCoordinate.h \
 	$$PWD/nameNormalizer.h \
-	$$PWD/generator/abstractGenerator.h
+	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -32,8 +34,10 @@ SOURCES += \
 	$$PWD/watchListWindow.cpp\
 	$$PWD/metamodelGeneratorSupport.cpp \
 	$$PWD/inFile.cpp \
+	$$PWD/scalableItem.cpp \
+	$$PWD/scalableCoordinate.cpp \
 	$$PWD/nameNormalizer.cpp \
-	$$PWD/generator/abstractGenerator.cpp
+	$$PWD/generator/abstractGenerator.cpp \
 
 FORMS += \
 	$$PWD/watchListWindow.ui
