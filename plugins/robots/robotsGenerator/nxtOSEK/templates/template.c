@@ -10,7 +10,7 @@
 
 void ecrobot_device_initialize(void)
 {
-	srand(time(0));
+	srand(systick_get_ms());
 @@INITHOOKS@@
 }
 

@@ -45,7 +45,7 @@ void SonarSensorItem::drawExtractionForItem(QPainter *painter)
 
 QRectF SonarSensorItem::boundingRect() const
 {
-	return scanningRegion().boundingRect().adjusted(-20, -10, 20, 10);
+	return scanningRegion().boundingRect().adjusted(-25, -15, 25, 15);
 }
 
 QPainterPath SonarSensorItem::scanningRegion() const
