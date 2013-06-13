@@ -22,7 +22,6 @@ public:
 	virtual void printText(int x, int y, QString const &text);
 	virtual void drawRect(int x, int y, int width, int height);
 	virtual void clearScreen();
-	virtual void attachToPaintWidget();
 	robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl();
 	void setImplementation(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl);
 

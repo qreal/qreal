@@ -51,11 +51,6 @@ void Display::clearScreen()
 	mDisplayImpl->clearScreen();
 }
 
-void Display::attachToPaintWidget()
-{
-	mDisplayImpl->attachToPaintWidget();
-}
-
 AbstractDisplayImplementation *Display::displayImpl()
 {
 	return mDisplayImpl;
