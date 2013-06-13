@@ -114,7 +114,6 @@ void UnrealRobotModelImplementation::stopRobot()
 	mMotorA.off();
 	mMotorB.off();
 	mMotorC.off();
-	mDisplay.clearScreen();
 	mD2Model->stopRobot();
 }
 
@@ -150,6 +149,7 @@ sensorImplementations::UnrealEncoderImplementation &UnrealRobotModelImplementati
 
 void UnrealRobotModelImplementation::startInterpretation()
 {
+	mDisplay.clearScreen();
 	mD2Model->showModelWidget();
 	mD2Model->startInterpretation();
 }
