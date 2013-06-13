@@ -5,7 +5,7 @@ using namespace graphicsUtils;
 
 PaintWidget::PaintWidget(QWidget *parent)
 	: QWidget(parent)
-	, mPainter()
+	, mPainters()
 {
 }
 
@@ -14,14 +14,12 @@ void PaintWidget::paintEvent(QPaintEvent *event)
 	QWidget::paintEvent(event);
 	QPainter *painter = new QPainter(this);
 
-	foreach(PainterInterface* i, mPainter) {
-		i->paint(painter);
+	foreach (PainterInterface *painterIface, mPainters) {
+		painterIface->paint(painter);
 	}
 }
 
-void PaintWidget::setPainter(PainterInterface *p)
+void PaintWidget::setPainter(PainterInterface *painter)
 {
-	mPainter.prepend(p);
+	mPainters.prepend(painter);
 }
-
-

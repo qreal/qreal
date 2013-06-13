@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <QtCore/QMap>
@@ -30,8 +29,14 @@ public:
 
 	/// Returns given expression if it has int type or casts it to int otherwise
 	QString expressionToInt(QString const &expression) const;
+
+	/// Must be called when enter button usage found
 	void enterButtonUsed();
+
+	/// Must be called when run button usage found
 	void runButtonUsed();
+
+	/// Must be called when image usage found
 	void hasImages();
 
 private:

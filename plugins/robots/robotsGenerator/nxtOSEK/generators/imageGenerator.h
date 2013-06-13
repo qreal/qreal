@@ -3,15 +3,17 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 
+/// Class responsible for everything with images genaration
 class ImageGenerator
 {
 public:
 	ImageGenerator();
-	void addBmpFileName(QString name);
+
+	void addBmpFileName(QString const &name);
 	QString generateBmpFilesStringForC() const;
 	QString generateBmpFilesStringForMake() const;
 	void increaseBmpCounter();
-	int bmpFilesNumber() const;
+	int bmpFilesCount() const;
 	void reinit();
 
 private:

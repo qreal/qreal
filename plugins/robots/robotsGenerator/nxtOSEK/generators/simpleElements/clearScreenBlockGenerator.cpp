@@ -12,7 +12,7 @@ QList<SmartLine> ClearScreenBlockGenerator::convertElementIntoDirectCommand(NxtO
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;
-	if(nxtGen->imageGenerator().bmpFilesNumber()) {
+	if(nxtGen->imageGenerator().bmpFilesCount()) {
 		result.append(SmartLine("memset(lcd, 0x00, sizeof(lcd));", elementId));
 		result.append(SmartLine("memset(lcd_copy, 0x00, sizeof(lcd));", elementId));
 	}

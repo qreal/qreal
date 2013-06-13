@@ -13,7 +13,7 @@ QList<SmartLine> DrawBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobo
 {
 	QList<SmartLine> result;
 
-	int const numb = nxtGen->imageGenerator().bmpFilesNumber();
+	int const numb = nxtGen->imageGenerator().bmpFilesCount();
 	QString const imageName = "Image_" + QString::number(numb);
 	nxtGen->imageGenerator().increaseBmpCounter();
 	nxtGen->imageGenerator().addBmpFileName(imageName);
@@ -21,16 +21,16 @@ QList<SmartLine> DrawBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobo
 
 	generateBmpFile(nxtGen, imageName, logicElementId);
 
-	if(numb) {
-		result.append(SmartLine("for(int _counter = 0; _counter < sizeof(lcd); _counter++) {", elementId, SmartLine::increase));
+	if (numb) {
+		result.append(SmartLine("for (int _counter = 0; _counter < sizeof(lcd); ++_counter) {", elementId, SmartLine::increase));
 		result.append(SmartLine("lcd_copy[_counter] = lcd[_counter];", elementId));
 		result.append(SmartLine("}", elementId, SmartLine::decrease));
 	}
 
 	result.append(SmartLine("ecrobot_bmp2lcd(BMP_DATA_START(" + imageName + "), lcd, 100, 64);", elementId));
 
-	if(numb) {
-		result.append(SmartLine("for(int _counter = 0; _counter < sizeof(lcd); _counter++) {", elementId, SmartLine::increase));
+	if (numb) {
+		result.append(SmartLine("for (int _counter = 0; _counter < sizeof(lcd); ++_counter) {", elementId, SmartLine::increase));
 		result.append(SmartLine("lcd[_counter] = lcd[_counter] | lcd_copy[_counter];", elementId));
 		result.append(SmartLine("}", elementId, SmartLine::decrease));
 	}

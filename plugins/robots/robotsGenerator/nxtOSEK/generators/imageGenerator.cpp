@@ -5,7 +5,7 @@ ImageGenerator::ImageGenerator()
 	reinit();
 }
 
-void ImageGenerator::addBmpFileName(QString name)
+void ImageGenerator::addBmpFileName(QString const &name)
 {
 	mBmpFileNames.append(name);
 }
@@ -24,7 +24,7 @@ QString ImageGenerator::generateBmpFilesStringForMake() const
 {
 	QString result = "BMP_SOURCES :=";
 
-	foreach(QString const &file, mBmpFileNames) {
+	foreach (QString const &file, mBmpFileNames) {
 		result += QString("\\\n%1.bmp").arg(file);
 	}
 
@@ -36,7 +36,7 @@ void ImageGenerator::increaseBmpCounter()
 	mBmpFilesCounter++;
 }
 
-int ImageGenerator::bmpFilesNumber() const
+int ImageGenerator::bmpFilesCount() const
 {
 	return mBmpFilesCounter;
 }

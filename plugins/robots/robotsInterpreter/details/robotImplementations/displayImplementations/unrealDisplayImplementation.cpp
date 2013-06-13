@@ -18,9 +18,9 @@ void UnrealDisplayImplementation::attachToPaintWidget()
 void UnrealDisplayImplementation::read()
 {
 	emit response(mD2Model->display()->leftButtonIsDown()
-				  ,mD2Model->display()->rightButtonIsDown()
-				  ,mD2Model->display()->centralButtonIsDown()
-				  ,mD2Model->display()->bottomButtonIsDown());
+		, mD2Model->display()->rightButtonIsDown()
+		, mD2Model->display()->centralButtonIsDown()
+		, mD2Model->display()->bottomButtonIsDown());
 }
 
 void UnrealDisplayImplementation::drawPixel(int x, int y)
@@ -58,7 +58,7 @@ void UnrealDisplayImplementation::drawCircle(int x, int y, int radius)
 	mD2Model->display()->repaintDisplay();
 }
 
-void UnrealDisplayImplementation::printText(int x, int y, QString text)
+void UnrealDisplayImplementation::printText(int x, int y, QString const &text)
 {
 	mStringPlaces << QPoint(x, y);
 	mStrings << text;
@@ -75,7 +75,7 @@ void UnrealDisplayImplementation::paint(QPainter *painter)
 	font.setPixelSize(pixHeight * textPixelHeight);
 
 	painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
-	foreach(QPoint const &point, mPoints) {
+	foreach (QPoint const &point, mPoints) {
 		painter->drawRect(point.x() * pixWidth, point.y() * pixHeight, pixWidth, pixHeight);
 	}
 
@@ -84,26 +84,24 @@ void UnrealDisplayImplementation::paint(QPainter *painter)
 	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
 	painter->setFont(font);
 
-	foreach(QLine const &line, mLines) {
+	foreach (QLine const &line, mLines) {
 		painter->drawLine(line.x1() * pixWidth, line.y1() * pixHeight, line.x2() * pixWidth, line.y2() * pixHeight);
 	}
 
-	foreach(QRect const &circle, mCircles) {
+	foreach (QRect const &circle, mCircles) {
 		painter->drawEllipse(circle.x() * pixWidth, circle.y() * pixHeight, circle.width() * pixWidth, circle.height() * pixHeight);
 	}
 
-	foreach(QRect const &rect, mRects) {
+	foreach (QRect const &rect, mRects) {
 		painter->drawRect(rect.x() * pixWidth, rect.y() * pixHeight, rect.width() * pixWidth, rect.height() * pixHeight);
 	}
 
 	QListIterator<QString> strings(mStrings);
 	QListIterator<QPoint> strPlaces(mStringPlaces);
-	while(strings.hasNext() && strPlaces.hasNext()){
+	while (strings.hasNext() && strPlaces.hasNext()) {
 		QString const str = strings.next();
 		QPoint const place = strPlaces.next();
 		painter->drawText(place.x() * pixWidth * nxtDisplayWidth / textPixelWidth
-						  , place.y() * pixHeight * nxtDisplayHeight / textPixelHeight, str);
+				, place.y() * pixHeight * nxtDisplayHeight / textPixelHeight, str);
 	}
-
-
 }

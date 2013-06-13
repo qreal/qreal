@@ -432,10 +432,11 @@ void Interpreter::connectToRobot()
 		mRobotModel->disconnectFromRobot();
 	} else {
 		mRobotModel->init();
-		configureSensors(static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
-						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
-						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
-						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
+		configureSensors(
+				  static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
+				, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
+				, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
+				, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
 	}
 	mActionConnectToRobot->setChecked(mConnected);
 }

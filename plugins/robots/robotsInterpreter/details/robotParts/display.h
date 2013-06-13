@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../robotImplementations/displayImplementations/abstractDisplayImplementation.h"
 
 namespace qReal {
@@ -10,13 +12,14 @@ class Display : public QObject
 {
 	Q_OBJECT
 public:
-	Display(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl);
+	explicit Display(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl);
 	virtual ~Display();
+
 	virtual void read();
 	virtual void drawPixel(int x, int y);
 	virtual void drawLine(int x1, int y1, int x2, int y2);
 	virtual void drawCircle(int x, int y, int radius);
-	virtual void printText(int x, int y, QString text);
+	virtual void printText(int x, int y, QString const &text);
 	virtual void drawRect(int x, int y, int width, int height);
 	virtual void clearScreen();
 	virtual void attachToPaintWidget();

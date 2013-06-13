@@ -26,7 +26,7 @@ brickImplementations::NullBrickImplementation &NullRobotModelImplementation::bri
 	return mBrick;
 }
 
-displayImplementations::RealDisplayImplementation &NullRobotModelImplementation::display()
+displayImplementations::NullDisplayImplementation &NullRobotModelImplementation::display()
 {
 	return mDisplay;
 }

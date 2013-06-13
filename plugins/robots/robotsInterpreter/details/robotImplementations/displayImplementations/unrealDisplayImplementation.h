@@ -26,12 +26,14 @@ class UnrealDisplayImplementation : public AbstractDisplayImplementation, public
 	Q_OBJECT
 public:
 	UnrealDisplayImplementation(d2Model::D2RobotModel *d2Model);
+	virtual ~UnrealDisplayImplementation() {}
+
 	virtual void read();
 	virtual void drawPixel(int x, int y);
 	virtual void drawLine(int x1, int y1, int x2, int y2);
 	virtual void drawRect(int x, int y, int width, int height);
 	virtual void drawCircle(int x, int y, int radius);
-	virtual void printText(int x, int y, QString text);
+	virtual void printText(int x, int y, QString const &text);
 	virtual void paint(QPainter *painter);
 	virtual void clearScreen();
 	virtual void attachToPaintWidget();

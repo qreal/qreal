@@ -36,7 +36,7 @@ void Display::drawCircle(int x, int y, int radius)
 	mDisplayImpl->drawCircle(x, y, radius);
 }
 
-void Display::printText(int x, int y, QString text)
+void Display::printText(int x, int y, QString const &text)
 {
 	mDisplayImpl->printText(x, y, text);
 }
@@ -65,4 +65,3 @@ void Display::setImplementation(robotImplementations::displayImplementations::Ab
 {
 	mDisplayImpl = displayImpl;
 }
-

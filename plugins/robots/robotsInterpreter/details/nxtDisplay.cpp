@@ -63,6 +63,5 @@ void NxtDisplay::paintEvent(QPaintEvent *event)
 {
 	QWidget::paintEvent(event);
 	QPainter *painter = new QPainter(this);
-	QRect r(0, 0, this->width(), this->height());
-	painter->drawImage(r, mBackground);
+	painter->drawImage(QRect(0, 0, width(), height()), mBackground);
 }

@@ -47,21 +47,21 @@ QString Variables::generateVariableString() const
 		if (reservedNames.contains(curVariable)) {
 			continue;
 		}
-		// If any of code pathes decided that this variable has int type
+		// If every code path decided that this variable has int type
 		// then it has int one. Unknown types are maximal ones (float)
 		QString const type = mVariables.value(curVariable) == intType ? "int" : "float";
 		result += QString("static %1 %2;\n").arg(type, curVariable);
 	}
 
-	if (mEnterButtonUsed){
+	if (mEnterButtonUsed) {
 		result = "int enterCounter;\nint enterWasDown;\n" + result;
 	}
 
-	if (mRunButtonUsed){
+	if (mRunButtonUsed) {
 		result = "int runCounter;\nint runWasDown;\n" + result;
 	}
 
-	if (mHasImages){
+	if (mHasImages) {
 		result = "U8 lcd[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\nU8 lcd_copy[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\n" + result;
 	}
 

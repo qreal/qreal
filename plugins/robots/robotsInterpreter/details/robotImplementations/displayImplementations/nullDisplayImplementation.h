@@ -9,13 +9,14 @@ namespace details {
 namespace robotImplementations {
 namespace displayImplementations {
 
-class RealDisplayImplementation : public AbstractDisplayImplementation
+class NullDisplayImplementation : public AbstractDisplayImplementation
 {
 	Q_OBJECT
 
 public:
-	RealDisplayImplementation();
-	virtual ~RealDisplayImplementation() {}
+	NullDisplayImplementation();
+	virtual ~NullDisplayImplementation() {}
+
 	virtual void read();
 	virtual void drawPixel(int x, int y);
 	virtual void drawLine(int x1, int y1, int x2, int y2);
@@ -36,5 +37,3 @@ signals:
 }
 }
 }
-
-

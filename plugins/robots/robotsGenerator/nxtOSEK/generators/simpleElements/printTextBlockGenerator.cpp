@@ -18,7 +18,7 @@ QList<SmartLine> PrintTextBlockGenerator::convertElementIntoDirectCommand(NxtOSE
 	QString text = nxtGen->api()->stringProperty(logicElementId, "PrintText").toUtf8();
 
 	result.append(SmartLine("display_goto_xy(" + QString::number(x) + "," + QString::number(y) + ");", elementId));
-	result.append(SmartLine("display_string(\"" + text + "\");", elementId));
+	result.append(SmartLine("display_string(\"" + text.replace("\"", "\\\"") + "\");", elementId));
 	result.append(SmartLine("display_update();", elementId));
 
 	return result;
