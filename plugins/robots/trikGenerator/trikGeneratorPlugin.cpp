@@ -6,7 +6,7 @@
 #include <QtCore/QDebug>
 
 #include "robotCommunication/tcpRobotCommunicator.h"
-#include "../../../../qrutils/outFile.h"
+#include "generator/trikRobotGenerator.h"
 
 using namespace qReal;
 using namespace robots::trikGenerator;
@@ -55,19 +55,17 @@ bool TrikGeneratorPlugin::generateCode()
 {
 	mProjectManager->save();
 
-//	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(),
-//			 *mRepoControlApi,
-//			 *mMainWindowInterface->errorReporter());
+	TrikRobotGenerator generator(mMainWindowInterface->activeDiagram()
+			, *mRepoControlApi
+			, *mMainWindowInterface->errorReporter()
+			);
+
 	mMainWindowInterface->errorReporter()->clearErrors();
-//	gen.generate();
+	generator.generate(currentProgramName());
+
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
 		return false;
 	}
-
-	utils::OutFile file(currentProgramName());
-	file() << "print(\"Kill all humans!\")" << endl;
-	file() << "brick.motor(1).setPower(100)" << endl;
-	file() << "brick.motor(2).setPower(100)" << endl;
 
 	QTextStream *inStream = NULL;
 	QFile inFile(currentProgramName());

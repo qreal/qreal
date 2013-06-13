@@ -19,3 +19,4 @@ SOURCES += \
 	trikGeneratorPlugin.cpp \
 
 include(robotCommunication/robotCommunication.pri)
+include(generator/generator.pri)
