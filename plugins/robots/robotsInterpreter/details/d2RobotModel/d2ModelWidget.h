@@ -87,7 +87,6 @@ public:
 	void disableRunStopButtons();
 
 	D2ModelScene* scene();
-	void setRobotVisible(bool isVisible);
 	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
 
 	void closeEvent(QCloseEvent *event);
@@ -103,6 +102,10 @@ public slots:
 	void syncronizeSensors();
 	/// Synchronizes noise settings in 2D model window with global ones
 	void rereadNoiseSettings();
+	/// Starts 2D model time counter
+	void startTimelineListening();
+	/// Stops 2D model time counter
+	void stopTimelineListening();
 
 signals:
 	void d2WasClosed();
@@ -117,8 +120,10 @@ signals:
 	void modelChanged(QDomDocument const &xml);
 
 protected:
-	void changeEvent(QEvent *e);
-	void showEvent(QShowEvent *e);
+	virtual void changeEvent(QEvent *e);
+	virtual void showEvent(QShowEvent *e);
+	virtual void keyPressEvent(QKeyEvent *event);
+
 
 private slots:
 	void addWall(bool on);
@@ -157,12 +162,7 @@ private slots:
 
 	void changeNoiseSettings();
 
-	void startTimelineListening();
-	void stopTimelineListening();
 	void onTimelineTick();
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *event);
 
 private:
 	static const int defaultPenWidth = 15;

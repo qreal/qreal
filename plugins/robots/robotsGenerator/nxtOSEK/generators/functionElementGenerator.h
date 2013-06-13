@@ -8,8 +8,9 @@
 namespace robots {
 namespace generator {
 
-/// Realization of AbstractElementGenerator for Function.
-class FunctionElementGenerator: public SimpleElementGenerator {
+/// Implementation of AbstractElementGenerator for Function.
+class FunctionElementGenerator : public SimpleElementGenerator
+{
 public:
 	explicit FunctionElementGenerator(NxtOSEKRobotGenerator *generator
 			, qReal::Id const &elementId

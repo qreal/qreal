@@ -34,11 +34,11 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/drawCircleBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/printTextBlockGenerator.h \
 	nxtOSEK/generators/variables.h \
+	nxtOSEK/generators/commentElementGenerator.h \
 	nxtOSEK/generators/simpleElements/drawRectBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/clearScreenBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/drawBlockGenerator.h \
-	nxtOSEK/generators/imageGenerator.h
-
+	nxtOSEK/generators/imageGenerator.h \
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
@@ -76,8 +76,8 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/drawCircleBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/printTextBlockGenerator.cpp \
 	nxtOSEK/generators/variables.cpp \
+	nxtOSEK/generators/commentElementGenerator.cpp \
 	nxtOSEK/generators/simpleElements/drawRectBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/clearScreenBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/drawBlockGenerator.cpp \
-	nxtOSEK/generators/imageGenerator.cpp
-
+	nxtOSEK/generators/imageGenerator.cpp \

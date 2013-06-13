@@ -17,6 +17,8 @@ namespace blocks
 
 class PrintTextBlock : public Block
 {
+	Q_OBJECT
+
 public:
 	PrintTextBlock(robotParts::Display &display);
 	virtual ~PrintTextBlock() {}

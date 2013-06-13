@@ -1,13 +1,13 @@
 #pragma once
 
 #include <QDomElement>
-#include "scalableItem.h"
+#include "../qrutils/scalableItem.h"
 
 namespace utils {
 	class OutFile;
 }
 
-class Port : public ScalableItem
+class Port : public utils::ScalableItem
 {
 public:
 	virtual bool init(QDomElement const &element, int width, int height) = 0;

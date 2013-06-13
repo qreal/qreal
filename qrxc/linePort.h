@@ -3,7 +3,7 @@
 #include <QDomElement>
 
 #include "port.h"
-#include "scalableCoordinate.h"
+#include "../qrutils/scalableCoordinate.h"
 
 namespace utils {
 	class OutFile;
@@ -17,10 +17,10 @@ public:
 	virtual Port* clone() const;
 
 private:
-	ScalableCoordinate mStartX;
-	ScalableCoordinate mStartY;
-	ScalableCoordinate mEndX;
-	ScalableCoordinate mEndY;
+	utils::ScalableCoordinate mStartX;
+	utils::ScalableCoordinate mStartY;
+	utils::ScalableCoordinate mEndX;
+	utils::ScalableCoordinate mEndY;
 	int mInitWidth;
 	int mInitHeight;
 };

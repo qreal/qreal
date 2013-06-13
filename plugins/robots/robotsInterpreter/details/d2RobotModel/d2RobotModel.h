@@ -31,6 +31,7 @@ public:
 	~D2RobotModel();
 	virtual void clear();
 	void startInit();
+	void startInterpretation();
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
 	void setNewMotor(int speed, long unsigned int degrees, int const port);

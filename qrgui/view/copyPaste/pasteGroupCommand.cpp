@@ -10,13 +10,19 @@ using namespace qReal::commands;
 PasteGroupCommand::PasteGroupCommand(EditorViewScene *scene
 		, EditorViewMViface const *mvIface
 		, bool isGraphicalCopy)
-	: mScene(scene), mMVIface(mvIface), mIsGraphicalCopy(isGraphicalCopy)
+	: mScene(scene), mMVIface(mvIface)
+	, mIsGraphicalCopy(isGraphicalCopy), mIsEmpty(false)
 {
 	prepareCommands();
 }
 
 PasteGroupCommand::~PasteGroupCommand()
 {
+}
+
+bool PasteGroupCommand::isEmpty() const
+{
+	return mIsEmpty;
 }
 
 void PasteGroupCommand::prepareCommands()
@@ -26,6 +32,7 @@ void PasteGroupCommand::prepareCommands()
 	pullDataFromClipboard(nodesData, edgesData);
 
 	if (nodesData.isEmpty() && edgesData.isEmpty()) {
+		mIsEmpty = true;
 		return;
 	}
 

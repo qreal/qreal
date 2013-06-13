@@ -270,9 +270,11 @@ QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 	painter.setPen(QPen(Qt::black));
 	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
 
+	bool const wasSelected = mD2ModelWidget->sensorItems()[port]->isSelected();
 	mD2ModelWidget->setSensorVisible(port, false);
 	mD2ModelWidget->scene()->render(&painter, QRectF(), scanningRect);
 	mD2ModelWidget->setSensorVisible(port, true);
+	mD2ModelWidget->sensorItems()[port]->setSelected(wasSelected);
 
 	return image;
 }
@@ -387,11 +389,18 @@ void D2RobotModel::startInit()
 	mTimeline->start();
 }
 
+void D2RobotModel::startInterpretation()
+{
+	startInit();
+	mD2ModelWidget->startTimelineListening();
+}
+
 void D2RobotModel::stopRobot()
 {
 	mMotorA->speed = 0;
 	mMotorB->speed = 0;
 	mMotorC->speed = 0;
+	mD2ModelWidget->stopTimelineListening();
 }
 
 void D2RobotModel::countBeep()
@@ -406,7 +415,6 @@ void D2RobotModel::countBeep()
 
 void D2RobotModel::countNewCoord()
 {
-
 	Motor *motor1 = mMotorA;
 	Motor *motor2 = mMotorB;
 
@@ -558,6 +566,7 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 
 	configuration().deserialize(robotElement);
 
+	mNeedSync = false;
 	nextFragment();
 }
 

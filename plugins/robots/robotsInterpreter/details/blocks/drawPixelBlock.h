@@ -17,6 +17,8 @@ namespace blocks
 
 class DrawPixelBlock : public Block
 {
+	Q_OBJECT
+
 public:
 	DrawPixelBlock(robotParts::Display &display);
 	virtual ~DrawPixelBlock() {}

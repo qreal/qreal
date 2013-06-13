@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>805</width>
+    <width>815</width>
     <height>580</height>
    </rect>
   </property>
@@ -104,8 +104,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>531</width>
-        <height>534</height>
+        <width>533</width>
+        <height>525</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -133,6 +133,7 @@
   </layout>
  </widget>
  <resources>
+  <include location="../qrgui.qrc"/>
   <include location="../qrgui.qrc"/>
  </resources>
  <connections/>

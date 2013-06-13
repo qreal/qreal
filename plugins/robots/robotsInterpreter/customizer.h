@@ -23,6 +23,7 @@ public:
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface);
 
 	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget, QWidget *nxtDisplay);
+	virtual bool showInterpeterButton() const;
 
 private:
 	QDockWidget *produceDockWidget(QString const &title, QWidget *content) const;

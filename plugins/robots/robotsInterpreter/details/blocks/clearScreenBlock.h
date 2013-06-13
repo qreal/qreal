@@ -17,6 +17,7 @@ namespace blocks
 
 class ClearScreenBlock : public Block
 {
+	Q_OBJECT
 public:
 	ClearScreenBlock(robotParts::Display &display);
 	virtual ~ClearScreenBlock() {}

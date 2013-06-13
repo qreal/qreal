@@ -199,8 +199,7 @@ void UsbRobotCommunicationThread::checkConsistency()
 		QString const fantomDownloadLink = qReal::SettingsManager::value("fantomDownloadLink").toString();
 		QString errorMessage = tr("Fantom Driver is unavailable. Usb connection to robot is impossible.");
 		if (!fantomDownloadLink.isEmpty()) {
-			// TODO: make link clickable
-			errorMessage += tr(" You can download Fantom Driver on ") + fantomDownloadLink;
+			errorMessage += tr(" You can download Fantom Driver on <a href='%1'>Lego website</a>").arg(fantomDownloadLink);
 		}
 		emit errorOccured(errorMessage);
 	}

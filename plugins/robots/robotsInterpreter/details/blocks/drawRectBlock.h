@@ -17,6 +17,8 @@ namespace blocks
 
 class DrawRectBlock : public Block
 {
+	Q_OBJECT
+
 public:
 	DrawRectBlock(robotParts::Display &display);
 	virtual ~DrawRectBlock() {}

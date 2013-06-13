@@ -196,7 +196,6 @@ void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAct
 {
 	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
 	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
-	connect(runAction, SIGNAL(triggered()), this, SLOT(startTimelineListening()));
 	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTimelineListening()));
 }
 
@@ -617,13 +616,16 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	mRobot->checkSelection();
-	foreach (SensorItem *sensor, mSensors) {
-		if (sensor) {
-			sensor->checkSelection();
+	if (mouseEvent->buttons() & Qt::LeftButton) {
+		mRobot->checkSelection();
+		foreach (SensorItem *sensor, mSensors) {
+			if (sensor) {
+				sensor->checkSelection();
+			}
 		}
 	}
 
+	bool needUpdate = true;
 	processDragMode(mDrawingAction);
 	switch (mDrawingAction){
 	case drawingAction::wall:
@@ -639,11 +641,15 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		reshapeEllipse(mouseEvent);
 		break;
 	default:
-		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
+		needUpdate = false;
+		if (mouseEvent->buttons() & Qt::LeftButton) {
+			mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
+		}
 		break;
 	}
-
-	mScene->update();
+	if (needUpdate) {
+		mScene->update();
+	}
 }
 
 void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
@@ -954,17 +960,6 @@ D2ModelScene* D2ModelWidget::scene()
 	return mScene;
 }
 
-void D2ModelWidget::setRobotVisible(bool isVisible)
-{
-	if (!isVisible) {
-		mRobotWasSelected = mRobot->isSelected();
-	}
-	mRobot->setVisible(isVisible);
-	if (isVisible) {
-		mRobot->setSelected(mRobotWasSelected);
-	}
-}
-
 void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisible)
 {
 	if (mSensors[port]) {
@@ -1010,6 +1005,7 @@ QDomDocument D2ModelWidget::generateXml() const
 
 void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 {
+	clearScene(true);
 	QDomNodeList const worldList = worldModel.elementsByTagName("world");
 	QDomNodeList const robotList = worldModel.elementsByTagName("robot");
 	if (worldList.count() != 1 || robotList.count() != 1) {
@@ -1035,7 +1031,8 @@ void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 {
 	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
 	wall->onOverlappedWithRobot(isNeedStop);
-	if (wall->isDragged()) {
+	if (wall->isDragged() && ((mDrawingAction == drawingAction::none) ||
+			(mDrawingAction == drawingAction::wall && mCurrentWall == wall))) {
 		if (isNeedStop) {
 			wall->setPos(oldPos);
 		}

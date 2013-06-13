@@ -103,6 +103,10 @@ public:
 
 	bool isLoop();
 
+	void alignToGrid();
+	qreal alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const;
+	QPointF alignedPoint(QPointF const &point, int const indexGrid) const;
+
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
