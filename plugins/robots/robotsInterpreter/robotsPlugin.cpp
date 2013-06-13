@@ -74,13 +74,6 @@ void RobotsPlugin::initActions()
 			<< stopRobotActionInfo << connectToRobotActionInfo
 			<< separatorActionInfo << robotSettingsActionInfo
 			<< titlesActionInfo;
-
-	//Set tabs, unused at the opening, enabled
-	bool isTabEnable = false;
-	QList<ActionInfo> unusedTab;
-	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
-			<< connectToRobotActionInfo << titlesActionInfo;
-	changeActiveTab(unusedTab, isTabEnable);
 }
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
@@ -96,6 +89,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
+	updateEnabledActions();
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
 }
 
@@ -163,7 +157,6 @@ void RobotsPlugin::closeNeededWidget()
 void RobotsPlugin::activeTabChanged(Id const &rootElementId)
 {
 	updateEnabledActions();
-	changeActiveTab(mActionInfos, enabled);
 	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
 	mInterpreter.onTabChanged(rootElementId, enabled);
 }
@@ -200,12 +193,13 @@ void RobotsPlugin::updateTitlesVisibility()
 
 void RobotsPlugin::updateEnabledActions()
 {
-	foreach (ActionInfo const &actionInfo, mActionInfos) {
-		actionInfo.action()->setEnabled(trigger);
-	}
-
 	Id const &rootElementId = mMainWindowInterpretersInterface->activeDiagram();
 	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
+
+	foreach (ActionInfo const &actionInfo, mActionInfos) {
+		actionInfo.action()->setEnabled(enabled);
+	}
+
 	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 
 	mRunAction->setEnabled(typeOfRobotModel != robotModelType::trik && enabled);
