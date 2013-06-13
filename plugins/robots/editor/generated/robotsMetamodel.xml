@@ -1147,16 +1147,16 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Количество нажатий правой кнопки" type="int" name="RightButtonClicks">
+						<property displayedName="Количество нажатий правой кнопки" type="string" name="RightButtonClicks">
 							<default>0</default>
 						</property>
-						<property displayedName="Количество нажатий левой кнопки" type="int" name="LeftButtonClicks">
+						<property displayedName="Количество нажатий левой кнопки" type="string" name="LeftButtonClicks">
 							<default>0</default>
 						</property>
-						<property displayedName="Количество нажатий центральной кнопки" type="int" name="CentralButtonClicks">
-							<default>0</default>
+						<property displayedName="Количество нажатий центральной кнопки" type="string" name="CentralButtonClicks">
+							<default>1</default>
 						</property>
-						<property displayedName="Количество нажатий нижней кнопки" type="int" name="BottomButtonClicks">
+						<property displayedName="Количество нажатий нижней кнопки" type="string" name="BottomButtonClicks">
 							<default>0</default>
 						</property>
 					</properties>
@@ -1289,10 +1289,10 @@
 							<default>0</default>
 						</property>
 						<property displayedName="X2 координата" type="int" name="X2CoordinateLine">
-							<default>0</default>
+							<default>10</default>
 						</property>
 						<property displayedName="Y2 координата" type="int" name="Y2CoordinateLine">
-							<default>0</default>
+							<default>10</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1345,10 +1345,10 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Ширина" type="int" name="WidthRect">
-							<default>0</default>
+							<default>5</default>
 						</property>
 						<property displayedName="Высота" type="int" name="HeightRect">
-							<default>0</default>
+							<default>5</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1399,7 +1399,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Радиус" type="int" name="CircleRadius">
-							<default>0</default>
+							<default>5</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1443,10 +1443,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="X координата" type="int" name="XCoordinateText">
+						<property displayedName="X координата" type="string" name="XCoordinateText">
 							<default>0</default>
 						</property>
-						<property displayedName="Y координата" type="int" name="YCoordinateText">
+						<property displayedName="Y координата" type="string" name="YCoordinateText">
 							<default>0</default>
 						</property>
 						<property displayedName="Текст" type="string" name="PrintText"/>

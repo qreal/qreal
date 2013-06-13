@@ -23,7 +23,7 @@ void Variables::reinit(qrRepo::RepoApi *api)
 	}
 	inferTypes(expressions);
 	mEnterButtonUsed = false;
-	mRunButtonUsed = false;
+	mCancelButtonUsed = false;
 	mHasImages = false;
 }
 
@@ -57,8 +57,8 @@ QString Variables::generateVariableString() const
 		result = "int enterCounter;\nint enterWasDown;\n" + result;
 	}
 
-	if (mRunButtonUsed) {
-		result = "int runCounter;\nint runWasDown;\n" + result;
+	if (mCancelButtonUsed) {
+		result = "int cancelCounter;\nint cancelWasDown;\n" + result;
 	}
 
 	if (mHasImages) {
@@ -359,9 +359,9 @@ void Variables::enterButtonUsed()
 	mEnterButtonUsed = true;
 }
 
-void Variables::runButtonUsed()
+void Variables::cancelButtonUsed()
 {
-	mRunButtonUsed = true;
+	mCancelButtonUsed = true;
 }
 
 void Variables::hasImages()

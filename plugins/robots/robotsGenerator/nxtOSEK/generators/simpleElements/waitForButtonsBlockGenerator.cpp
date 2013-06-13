@@ -14,28 +14,30 @@ QList<SmartLine> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(N
 	QList<SmartLine> result;
 	QString condition = "";
 
-	int const enterButtonClicks = nxtGen->api()->stringProperty(logicElementId, "CentralButtonClicks").toInt();
-	int const runButtonClicks = nxtGen->api()->stringProperty(logicElementId, "BottomButtonClicks").toInt();
+	QString const enterButtonClicks = nxtGen->intExpression(logicElementId, "CentralButtonClicks");
+	QString const cancelButtonClicks = nxtGen->intExpression(logicElementId, "BottomButtonClicks");
+	bool const listenEnter = !enterButtonClicks.isEmpty() && enterButtonClicks.trimmed() != "0";
+	bool const listenCancel = !cancelButtonClicks.isEmpty() && cancelButtonClicks.trimmed() != "0";
 
-	if (runButtonClicks) {
-		result.append(SmartLine("runCounter = 0;", elementId));
-		result.append(SmartLine("runWasDown = 0;", elementId));
-		condition += "runCounter < " + QString::number(runButtonClicks);
-		nxtGen->variables().runButtonUsed();
+	if (listenCancel) {
+		result.append(SmartLine("cancelCounter = 0;", elementId));
+		result.append(SmartLine("cancelWasDown = 0;", elementId));
+		condition += "cancelCounter < " + cancelButtonClicks;
+		nxtGen->variables().cancelButtonUsed();
 	}
-	if (enterButtonClicks) {
+	if (listenEnter) {
 		result.append(SmartLine("enterCounter = 0;", elementId));
 		result.append(SmartLine("enterWasDown = 0;", elementId));
-		if (runButtonClicks) {
+		if (listenCancel) {
 			condition += " || ";
 		}
-		condition += "enterCounter < " + QString::number(enterButtonClicks);
+		condition += "enterCounter < " + enterButtonClicks;
 		nxtGen->variables().enterButtonUsed();
 	}
 
-	if (runButtonClicks || enterButtonClicks) {
+	if (listenEnter || listenCancel) {
 		result.append(SmartLine("while (" + condition + ") {", elementId, SmartLine::increase));
-		if (enterButtonClicks) {
+		if (listenEnter) {
 			result.append(SmartLine("if (!ecrobot_is_ENTER_button_pressed() && enterWasDown) {", elementId, SmartLine::increase));
 			result.append(SmartLine("enterCounter++;", elementId));
 			result.append(SmartLine("enterWasDown = 0;", elementId));
@@ -44,13 +46,13 @@ QList<SmartLine> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(N
 			result.append(SmartLine("enterWasDown = 1;", elementId));
 			result.append(SmartLine("}", elementId, SmartLine::decrease));
 		}
-		if (runButtonClicks) {
-			result.append(SmartLine("if (!ecrobot_is_RUN_button_pressed() && runWasDown) {", elementId, SmartLine::increase));
-			result.append(SmartLine("runCounter++;", elementId));
-			result.append(SmartLine("runWasDown = 0;", elementId));
+		if (listenCancel) {
+			result.append(SmartLine("if (!ecrobot_is_RUN_button_pressed() && cancelWasDown) {", elementId, SmartLine::increase));
+			result.append(SmartLine("cancelCounter++;", elementId));
+			result.append(SmartLine("cancelWasDown = 0;", elementId));
 			result.append(SmartLine("}", elementId, SmartLine::decrease));
 			result.append(SmartLine("if (ecrobot_is_RUN_button_pressed()) {", elementId, SmartLine::increase));
-			result.append(SmartLine("runWasDown = 1;", elementId));
+			result.append(SmartLine("cancelWasDown = 1;", elementId));
 			result.append(SmartLine("}", elementId, SmartLine::decrease));
 		}
 		result.append(SmartLine("}", elementId, SmartLine::decrease));

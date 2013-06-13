@@ -13,11 +13,11 @@ QList<SmartLine> PrintTextBlockGenerator::convertElementIntoDirectCommand(NxtOSE
 {
 	QList<SmartLine> result;
 
-	int const x = nxtGen->api()->stringProperty(logicElementId, "XCoordinateText").toInt();
-	int const y = nxtGen->api()->stringProperty(logicElementId, "YCoordinateText").toInt();
+	QString const x = nxtGen->intExpression(logicElementId, "XCoordinateText");
+	QString const y = nxtGen->intExpression(logicElementId, "YCoordinateText");
 	QString text = nxtGen->api()->stringProperty(logicElementId, "PrintText").toUtf8();
 
-	result.append(SmartLine("display_goto_xy(" + QString::number(x) + "," + QString::number(y) + ");", elementId));
+	result.append(SmartLine("display_goto_xy(" + x + ", " + y + ");", elementId));
 	result.append(SmartLine("display_string(\"" + text.replace("\"", "\\\"") + "\");", elementId));
 	result.append(SmartLine("display_update();", elementId));
 

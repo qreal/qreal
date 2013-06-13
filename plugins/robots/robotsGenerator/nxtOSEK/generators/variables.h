@@ -34,7 +34,7 @@ public:
 	void enterButtonUsed();
 
 	/// Must be called when run button usage found
-	void runButtonUsed();
+	void cancelButtonUsed();
 
 	/// Must be called when image usage found
 	void hasImages();
@@ -73,7 +73,7 @@ private:
 	QString castToInt(QString const &expression) const;
 
 	QMap<QString, VariableType> mVariables;
-	bool mRunButtonUsed;
+	bool mCancelButtonUsed;
 	bool mEnterButtonUsed;
 	bool mHasImages;
 };
