@@ -14,7 +14,6 @@ namespace details
 namespace blocks
 {
 
-
 class ClearScreenBlock : public Block
 {
 	Q_OBJECT

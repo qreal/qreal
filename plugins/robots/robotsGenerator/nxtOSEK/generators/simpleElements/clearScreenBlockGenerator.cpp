@@ -11,6 +11,7 @@ ClearScreenBlockGenerator::ClearScreenBlockGenerator()
 QList<SmartLine> ClearScreenBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
+	Q_UNUSED(logicElementId)
 	QList<SmartLine> result;
 	if(nxtGen->imageGenerator().bmpFilesCount()) {
 		result.append(SmartLine("memset(lcd, 0x00, sizeof(lcd));", elementId));

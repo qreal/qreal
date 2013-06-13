@@ -1115,13 +1115,13 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="36" y="60" textBinded="RightButtonClicks"/>
+						<label x="60" y="60" textBinded="RightButtonClicks"/>
 						<label x="0" y="60" text="Правая: "/>
-						<label x="30" y="80" textBinded="LeftButtonClicks"/>
+						<label x="60" y="80" textBinded="LeftButtonClicks"/>
 						<label x="0" y="80" text="Левая: "/>
 						<label x="60" y="100" textBinded="CentralButtonClicks"/>
 						<label x="0" y="100" text="Центральная: "/>
-						<label x="36" y="120" textBinded="BottomButtonClicks"/>
+						<label x="60" y="120" textBinded="BottomButtonClicks"/>
 						<label x="0" y="120" text="Нижняя: "/>
 					</labels>
 					<ports>
@@ -1206,7 +1206,7 @@
 					<labels>
 						<label x="36" y="60" textBinded="XCoordinatePix"/>
 						<label x="0" y="60" text="X: "/>
-						<label x="30" y="80" textBinded="YCoordinatePix"/>
+						<label x="36" y="80" textBinded="YCoordinatePix"/>
 						<label x="0" y="80" text="Y: "/>
 					</labels>
 					<ports>
@@ -1252,12 +1252,12 @@
 					<labels>
 						<label x="36" y="60" textBinded="X1CoordinateLine"/>
 						<label x="0" y="60" text="X1: "/>
-						<label x="30" y="80" textBinded="Y1CoordinateLine"/>
+						<label x="36" y="80" textBinded="Y1CoordinateLine"/>
 						<label x="0" y="80" text="Y1: "/>
-						<label x="30" y="120" textBinded="X2CoordinateLine"/>
-						<label x="0" y="120" text="X2: "/>
-						<label x="30" y="140" textBinded="Y2CoordinateLine"/>
-						<label x="0" y="140" text="Y2: "/>
+						<label x="36" y="100" textBinded="X2CoordinateLine"/>
+						<label x="0" y="100" text="X2: "/>
+						<label x="36" y="120" textBinded="Y2CoordinateLine"/>
+						<label x="0" y="120" text="Y2: "/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1306,14 +1306,14 @@
 						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="36" y="60" textBinded="XCoordinateRect"/>
+						<label x="40" y="60" textBinded="XCoordinateRect"/>
 						<label x="0" y="60" text="X: "/>
-						<label x="30" y="80" textBinded="YCoordinateRect"/>
+						<label x="40" y="80" textBinded="YCoordinateRect"/>
 						<label x="0" y="80" text="Y: "/>
-						<label x="30" y="120" textBinded="WidthRect"/>
-						<label x="0" y="120" text="Width: "/>
-						<label x="30" y="140" textBinded="HeightRect"/>
-						<label x="0" y="140" text="Height: "/>
+						<label x="40" y="100" textBinded="WidthRect"/>
+						<label x="0" y="100" text="Ширина: "/>
+						<label x="40" y="120" textBinded="HeightRect"/>
+						<label x="0" y="120" text="Высота: "/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1364,10 +1364,10 @@
 					<labels>
 						<label x="36" y="60" textBinded="XCoordinateCircle"/>
 						<label x="0" y="60" text="X: "/>
-						<label x="30" y="80" textBinded="YCoordinateCircle"/>
+						<label x="36" y="80" textBinded="YCoordinateCircle"/>
 						<label x="0" y="80" text="Y: "/>
-						<label x="30" y="120" textBinded="RadiusCircle"/>
-						<label x="0" y="120" text="Radius: "/>
+						<label x="36" y="100" textBinded="CircleRadius"/>
+						<label x="0" y="100" text="Радиус: "/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1415,10 +1415,10 @@
 					<labels>
 						<label x="36" y="60" textBinded="XCoordinateText"/>
 						<label x="0" y="60" text="X: "/>
-						<label x="30" y="80" textBinded="YCoordinateText"/>
+						<label x="36" y="80" textBinded="YCoordinateText"/>
 						<label x="0" y="80" text="Y: "/>
-						<label x="30" y="120" textBinded="PrintText"/>
-						<label x="0" y="120" text="Text: "/>
+						<label x="36" y="100" textBinded="PrintText"/>
+						<label x="0" y="100" text="Текст: "/>
 					</labels>
 					<ports>
 						<linePort>

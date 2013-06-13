@@ -56,4 +56,5 @@ QList<SmartLine> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(N
 		result.append(SmartLine("}", elementId, SmartLine::decrease));
 		return result;
 	}
+	return result;
 }
