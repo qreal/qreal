@@ -1,4 +1,6 @@
+#include <string.h>
 #include "kernel.h"
+#include "kernel_id.h"
 #include "ecrobot_interface.h"
 @@BALANCER@@
 @@VARIABLES@@
@@ -18,5 +20,7 @@ void user_1ms_isr_type2(void)
 { 
 @@USERISRHOOKS@@
 }
+
+@@BMPFILES@@
 
 @@CODE@@

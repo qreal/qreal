@@ -695,6 +695,7 @@
         <location filename="mainwindow/mainWindow.ui" line="763"/>
         <source>Undo</source>
         <translation>Отменить</translation>
+
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="766"/>

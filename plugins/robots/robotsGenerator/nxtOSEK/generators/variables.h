@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <QtCore/QMap>
@@ -29,6 +30,9 @@ public:
 
 	/// Returns given expression if it has int type or casts it to int otherwise
 	QString expressionToInt(QString const &expression) const;
+	void enterButtonUsed();
+	void runButtonUsed();
+	void hasImages();
 
 private:
 	QMap<QString, VariableType> nonGenerableReservedVariables() const;
@@ -64,6 +68,9 @@ private:
 	QString castToInt(QString const &expression) const;
 
 	QMap<QString, VariableType> mVariables;
+	bool mRunButtonUsed;
+	bool mEnterButtonUsed;
+	bool mHasImages;
 };
 
 }

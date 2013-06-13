@@ -14,6 +14,7 @@ UnrealRobotModelImplementation::UnrealRobotModelImplementation(D2RobotModel *d2R
 	, mMotorA(0, d2RobotModel)
 	, mMotorB(1, d2RobotModel)
 	, mMotorC(2, d2RobotModel)
+	, mDisplay(d2RobotModel)
 	, mEncoderA(outputPort::port1, d2RobotModel)
 	, mEncoderB(outputPort::port2, d2RobotModel)
 	, mEncoderC(outputPort::port3, d2RobotModel)
@@ -32,6 +33,11 @@ UnrealRobotModelImplementation::UnrealRobotModelImplementation(D2RobotModel *d2R
 brickImplementations::UnrealBrickImplementation &UnrealRobotModelImplementation::brick()
 {
 	return mBrick;
+}
+
+displayImplementations::UnrealDisplayImplementation &UnrealRobotModelImplementation::display()
+{
+	return mDisplay;
 }
 
 sensorImplementations::UnrealTouchSensorImplementation *UnrealRobotModelImplementation::touchSensor(inputPort::InputPortEnum const &port) const
@@ -108,6 +114,7 @@ void UnrealRobotModelImplementation::stopRobot()
 	mMotorA.off();
 	mMotorB.off();
 	mMotorC.off();
+	mDisplay.clearScreen();
 	mD2Model->stopRobot();
 }
 

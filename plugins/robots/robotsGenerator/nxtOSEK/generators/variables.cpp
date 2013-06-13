@@ -22,6 +22,9 @@ void Variables::reinit(qrRepo::RepoApi *api)
 		}
 	}
 	inferTypes(expressions);
+	mEnterButtonUsed = false;
+	mRunButtonUsed = false;
+	mHasImages = false;
 }
 
 QString Variables::generateVariableString() const
@@ -49,6 +52,19 @@ QString Variables::generateVariableString() const
 		QString const type = mVariables.value(curVariable) == intType ? "int" : "float";
 		result += QString("static %1 %2;\n").arg(type, curVariable);
 	}
+
+	if (mEnterButtonUsed){
+		result = "int enterCounter;\nint enterWasDown;\n" + result;
+	}
+
+	if (mRunButtonUsed){
+		result = "int runCounter;\nint runWasDown;\n" + result;
+	}
+
+	if (mHasImages){
+		result = "U8 lcd[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\nU8 lcd_copy[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\n" + result;
+	}
+
 	return result;
 }
 
@@ -336,4 +352,19 @@ QString Variables::expressionToInt(QString const &expression) const
 QString Variables::castToInt(QString const &expression) const
 {
 	return QString("(int)(%1)").arg(expression);
+}
+
+void Variables::enterButtonUsed()
+{
+	mEnterButtonUsed = true;
+}
+
+void Variables::runButtonUsed()
+{
+	mRunButtonUsed = true;
+}
+
+void Variables::hasImages()
+{
+	mHasImages = true;
 }

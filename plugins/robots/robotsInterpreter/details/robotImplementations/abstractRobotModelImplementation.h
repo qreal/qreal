@@ -6,6 +6,7 @@
 #include "brickImplementations/abstractBrickImplementation.h"
 #include "motorImplementations/abstractMotorImplementation.h"
 #include "sensorImplementations/abstractSensorImplementation.h"
+#include "displayImplementations/abstractDisplayImplementation.h"
 #include "sensorImplementations/abstractEncoderImplementation.h"
 #include "../../sensorConstants.h"
 #include "../d2RobotModel/d2RobotModel.h"
@@ -39,6 +40,7 @@ public:
 	virtual void disconnectFromRobot();
 
 	virtual brickImplementations::AbstractBrickImplementation &brick() = 0;
+	virtual displayImplementations::AbstractDisplayImplementation &display() = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const = 0;

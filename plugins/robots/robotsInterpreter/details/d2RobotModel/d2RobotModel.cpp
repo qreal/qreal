@@ -566,6 +566,16 @@ Timeline *D2RobotModel::timeline() const
 	return mTimeline;
 }
 
+void D2RobotModel::setDisplay(details::NxtDisplay *display)
+{
+	mDisplay = display;
+}
+
+details::NxtDisplay *D2RobotModel::display()
+{
+	return mDisplay;
+}
+
 void D2RobotModel::setNoiseSettings()
 {
 	mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
