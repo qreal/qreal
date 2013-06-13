@@ -51,7 +51,6 @@ public:
 	void closeWatchList();
 	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
-	void setDisplay(details::NxtDisplay *display);
 
 	/// Assigning a value to the field mActionConnectToRobot
 	void setConnectRobotAction(QAction *actionConnect);

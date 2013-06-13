@@ -37,14 +37,12 @@ void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	dockInterface->graphicalModelDock()->setWindowTitle(tr("Blocks"));
 }
 
-void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget, QWidget *nxtDisplay)
+void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget)
 {
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
 	watchWindow->setFloating(false);
 	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
-	QDockWidget *nxtDisplayDock = produceDockWidget(QObject::tr("Nxt display"), nxtDisplay);
-	mDockInterface->tabifyDockWidget(mDockInterface->paletteDock(), nxtDisplayDock);
 }
 
 QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const

@@ -22,7 +22,7 @@ public:
 	virtual QString aboutText() const;
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface);
 
-	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget, QWidget *nxtDisplay);
+	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
 	virtual bool showInterpeterButton() const;
 
 private:

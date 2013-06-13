@@ -39,5 +39,7 @@
         <file>icons/rightButton.bmp</file>
         <file>icons/rightButtonPressed.bmp</file>
         <file>icons/background.png</file>
+        <file>icons/2d_right.png</file>
+        <file>icons/2d_left.png</file>
     </qresource>
 </RCC>

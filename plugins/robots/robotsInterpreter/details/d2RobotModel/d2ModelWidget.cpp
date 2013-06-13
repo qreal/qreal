@@ -18,7 +18,10 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
-D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent)
+QSize const displaySize(200, 300);
+
+D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
+	, NxtDisplay *nxtDisplay, QWidget *parent)
 		: QWidget(parent)
 		, mUi(new Ui::D2Form)
 		, mScene(NULL)
@@ -26,6 +29,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
 		, mRobotModel(robotModel)
 		, mWorldModel(worldModel)
+		, mNxtDisplay(nxtDisplay)
 		, mDrawingAction(drawingAction::none)
 		, mMouseClicksCount(0)
 		, mCurrentWall(NULL)
@@ -97,6 +101,11 @@ void D2ModelWidget::initWidget()
 	mUi->penColorComboBox->setColor(QColor("black"));
 
 	initButtonGroups();
+
+	mNxtDisplay->setMinimumSize(displaySize);
+	mNxtDisplay->setMaximumSize(displaySize);
+	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mNxtDisplay);
+	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
 }
 
 void D2ModelWidget::connectUiButtons()
@@ -133,6 +142,8 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->autoCenteringButton, SIGNAL(toggled(bool)), this, SLOT(enableRobotFollowing(bool)));
 	connect(mUi->handCursorButton, SIGNAL(toggled(bool)), this, SLOT(onHandCursorButtonToggled(bool)));
 	connect(mUi->multiselectionCursorButton, SIGNAL(toggled(bool)), this, SLOT(onMultiselectionCursorButtonToggled(bool)));
+
+	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
 }
 
 void D2ModelWidget::initButtonGroups()
@@ -1078,6 +1089,19 @@ void D2ModelWidget::stopTimelineListening()
 void D2ModelWidget::onTimelineTick()
 {
 	mUi->timelineBox->stepBy(1);
+}
+
+void D2ModelWidget::toggleDisplayVisibility()
+{
+	setDisplayVisibility(!mNxtDisplay->isVisible());
+}
+
+void D2ModelWidget::setDisplayVisibility(bool visible)
+{
+	mNxtDisplay->setVisible(visible);
+	QString const direction = visible ? "right" : "left";
+	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
+	SettingsManager::setValue("2d_displayVisible", visible);
 }
 
 QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(cursorType::CursorType type) const

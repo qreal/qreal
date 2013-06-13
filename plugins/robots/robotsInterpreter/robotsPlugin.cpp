@@ -77,7 +77,7 @@ void RobotsPlugin::initActions()
 			<< separatorActionInfo << robotSettingsActionInfo
 			<< titlesActionInfo;
 
-	//Set tabs, unused at the opening, enabled
+	// Set tabs, unused at the opening, enabled
 	bool isTabEnable = false;
 	QList<ActionInfo> unusedTab;
 	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
@@ -95,12 +95,10 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();
 	SettingsManager::setValue("IndexGrid", gridWidth);
-	NxtDisplay *display = new NxtDisplay();
-	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer(), display);
+	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
-	mInterpreter.setDisplay(display);
 }
 
 qReal::Customizer* RobotsPlugin::customizationInterface()

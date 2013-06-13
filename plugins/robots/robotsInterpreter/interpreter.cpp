@@ -293,11 +293,6 @@ interpreters::robots::details::RobotModel *Interpreter::robotModel()
 void Interpreter::setRobotModel(details::RobotModel * const robotModel)
 {
 	mRobotModel = robotModel;
-}
-
-void Interpreter::setDisplay(NxtDisplay *display)
-{
-	mD2RobotModel->setDisplay(display);
 	mRobotModel->display().attachToPaintWidget();
 }
 
