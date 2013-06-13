@@ -121,21 +121,6 @@ Variables &TrikRobotGenerator::variables()
 	return mVariables;
 }
 
-//QList<SmartLine> &TrikRobotGenerator::initCode()
-//{
-//	return mInitCode;
-//}
-
-//QList<SmartLine> &TrikRobotGenerator::terminateCode()
-//{
-//	return mTerminateCode;
-//}
-
-//QList<SmartLine> &TrikRobotGenerator::isrHooksCode()
-//{
-//	return mIsrHooksCode;
-//}
-
 qrRepo::RepoApi const *TrikRobotGenerator::api() const
 {
 	return mApi;
