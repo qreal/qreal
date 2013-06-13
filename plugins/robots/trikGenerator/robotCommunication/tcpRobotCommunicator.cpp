@@ -13,6 +13,11 @@ TcpRobotCommunicator::TcpRobotCommunicator()
 {
 }
 
+TcpRobotCommunicator::~TcpRobotCommunicator()
+{
+	disconnect();
+}
+
 bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 {
 	QString const fileContents = utils::InFile::readAll(programName);
@@ -48,7 +53,7 @@ void TcpRobotCommunicator::connect()
 	uint const port = qReal::SettingsManager::value("tcpPort").toUInt();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
-		qDebug() << "Unable to resolve %1. Check server address and try again";
+		qDebug() << "Unable to resolve host. Check server address and try again";
 		return;
 	}
 

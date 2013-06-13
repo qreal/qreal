@@ -18,9 +18,11 @@ class TrikGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
 
 public:
 	TrikGeneratorPlugin();
+
 	virtual ~TrikGeneratorPlugin();
 
 	virtual void init(qReal::PluginConfigurator const &configurator);
+
 	virtual QList<qReal::ActionInfo> actions();
 
 private slots:
@@ -37,6 +39,7 @@ private slots:
 	void runProgram();
 
 private:
+	/// Returns filename of a currently generated program.
 	QString currentProgramName() const;
 
 	/// Action that launches code generator

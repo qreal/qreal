@@ -16,10 +16,9 @@ protected:
 			, qReal::Id const elementId, qReal::Id const logicElementId);
 
 private:
-	void addInitAndTerminateCode(TrikRobotGenerator *nxtGen
-			, qReal::Id const elementId, QString const &enginePort);
 	QString mEngineType;
 
 };
+
 }
 }
