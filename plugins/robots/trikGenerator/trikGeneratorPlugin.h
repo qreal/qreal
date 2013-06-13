@@ -8,6 +8,8 @@
 namespace robots {
 namespace trikGenerator {
 
+/// Generation of QtScript program for TRIK, uploading and execution of a program.
+/// Uses settings "tcpServer" and "tcpPort" from RobotsInterpreter.
 class TrikGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
@@ -22,18 +24,21 @@ public:
 	virtual QList<qReal::ActionInfo> actions();
 
 private slots:
-	/// Calls code generator. Returns true if operation was successfull.
+	/// Calls code generator. Returns true if operation was successful.
 	bool generateCode();
 
 	/// Generates and uploads script to a robot. Program then can be launched manually or remotely
 	/// by runCommand. Program is stored on robot as a file next to scriptRunner and named
 	/// as <qReal save name>.qts.
-	void uploadProgram();
+	/// @returns True, if successful.
+	bool uploadProgram();
 
 	/// Runs currently opened program on a robot. Uploads it first.
 	void runProgram();
 
 private:
+	QString currentProgramName() const;
+
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;
 

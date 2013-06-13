@@ -1,9 +1,17 @@
 #include "trikGeneratorPlugin.h"
 
 #include <QtWidgets/QApplication>
+#include <QtCore/QFileInfo>
+
+#include <QtCore/QDebug>
+
+#include "robotCommunication/tcpRobotCommunicator.h"
+#include "../../../../qrutils/outFile.h"
 
 using namespace qReal;
 using namespace robots::trikGenerator;
+
+QString const scriptExtension = ".qts";
 
 TrikGeneratorPlugin::TrikGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
@@ -56,34 +64,48 @@ bool TrikGeneratorPlugin::generateCode()
 		return false;
 	}
 
-//	QFile file("nxt-tools/example0/example0.c");
-//	QTextStream *inStream = NULL;
-//	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//		inStream = new QTextStream(&file);
-//	}
+	utils::OutFile file(currentProgramName());
+	file() << "print(\"Kill all humans!\")" << endl;
+	file() << "brick.motor(1).setPower(100)" << endl;
+	file() << "brick.motor(2).setPower(100)" << endl;
 
-//	if (inStream) {
-//		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
-//	}
+	QTextStream *inStream = NULL;
+	QFile inFile(currentProgramName());
+	if (!inFile.isOpen() && inFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		inStream = new QTextStream(&inFile);
+	}
+
+	if (inStream) {
+		mMainWindowInterface->showInTextEditor(currentProgramName(), inStream->readAll());
+	}
+
 	return true;
 }
 
-void TrikGeneratorPlugin::uploadProgram()
+bool TrikGeneratorPlugin::uploadProgram()
 {
-//	if (!mNxtToolsPresent) {
-//		mMainWindowInterface->errorReporter()->addError(tr("flash.sh not found. Make sure it is present in QReal installation directory"));
-//	} else {
-//		mFlashTool->flashRobot();
-//	}
+	if (generateCode()) {
+		TcpRobotCommunicator communicator;
+		return communicator.uploadProgram(currentProgramName());
+	} else {
+		qDebug() << "Code generation failed, aborting";
+		return false;
+	}
 }
 
 void TrikGeneratorPlugin::runProgram()
 {
-//	if (!mNxtToolsPresent) {
-//		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
-//	} else {
-//		if (generateRobotSourceCode()) {
-//			mFlashTool->uploadProgram();
-//		}
-//	}
+	if (uploadProgram()) {
+		TcpRobotCommunicator communicator;
+		communicator.runProgram(currentProgramName());
+	} else {
+		qDebug() << "Program upload failed, aborting";
+	}
+}
+
+QString TrikGeneratorPlugin::currentProgramName() const
+{
+	QString const saveFileName = mRepoControlApi->workingFile();
+	QFileInfo const fileInfo(saveFileName);
+	return fileInfo.baseName() + scriptExtension;
 }

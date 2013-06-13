@@ -1,4 +1,4 @@
-QT += widgets xml
+QT += widgets network
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -17,3 +17,5 @@ HEADERS += \
 
 SOURCES += \
 	trikGeneratorPlugin.cpp \
+
+include(robotCommunication/robotCommunication.pri)
