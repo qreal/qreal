@@ -40,10 +40,6 @@ void RealDisplayImplementation::printText(int x, int y, QString const &text)
 	Q_UNUSED(text)
 }
 
-void RealDisplayImplementation::attachToPaintWidget()
-{
-}
-
 void RealDisplayImplementation::drawRect(int x, int y, int width, int height)
 {
 	Q_UNUSED(x)

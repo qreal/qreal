@@ -293,7 +293,6 @@ interpreters::robots::details::RobotModel *Interpreter::robotModel()
 void Interpreter::setRobotModel(details::RobotModel * const robotModel)
 {
 	mRobotModel = robotModel;
-	mRobotModel->display().attachToPaintWidget();
 }
 
 void Interpreter::setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl)

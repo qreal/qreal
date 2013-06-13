@@ -23,6 +23,7 @@ UnrealRobotModelImplementation::UnrealRobotModelImplementation(D2RobotModel *d2R
 	mActiveWaitingTimer.setSingleShot(true);
 	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
 	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
+	mDisplay.attachToPaintWidget();
 }
 
  UnrealRobotModelImplementation::~UnrealRobotModelImplementation()

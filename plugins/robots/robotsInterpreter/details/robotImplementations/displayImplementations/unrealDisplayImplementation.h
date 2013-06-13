@@ -36,7 +36,7 @@ public:
 	virtual void printText(int x, int y, QString const &text);
 	virtual void paint(QPainter *painter);
 	virtual void clearScreen();
-	virtual void attachToPaintWidget();
+	void attachToPaintWidget();
 
 protected:
 	d2Model::D2RobotModel *mD2Model;

@@ -40,10 +40,6 @@ void NullDisplayImplementation::printText(int x, int y, QString const &text)
 	Q_UNUSED(text)
 }
 
-void NullDisplayImplementation::attachToPaintWidget()
-{
-}
-
 void NullDisplayImplementation::drawRect(int x, int y, int width, int height)
 {
 	Q_UNUSED(x)

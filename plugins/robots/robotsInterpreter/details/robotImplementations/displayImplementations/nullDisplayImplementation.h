@@ -24,7 +24,6 @@ public:
 	virtual void drawCircle(int x, int y, int radius);
 	virtual void printText(int x, int y, QString const &text);
 	virtual void clearScreen();
-	virtual void attachToPaintWidget();
 
 signals:
 	void response(bool leftIsPressed, bool rightIsPressed
