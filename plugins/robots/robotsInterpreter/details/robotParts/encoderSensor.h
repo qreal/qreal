@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QtCore/QObject>
 #include "../robotImplementations/sensorImplementations/abstractEncoderImplementation.h"
 #include "../../sensorConstants.h"

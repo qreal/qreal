@@ -18,6 +18,7 @@
 #include "robotItem.h"
 #include "rotater.h"
 #include "timeline.h"
+#include "../nxtDisplay.h"
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 
 namespace Ui
@@ -64,7 +65,8 @@ class D2ModelWidget : public QWidget {
 	Q_OBJECT
 
 public:
-	D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent = 0);
+	D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
+			, NxtDisplay *nxtDisplay, QWidget *parent = 0);
 	~D2ModelWidget();
 	void init(bool isActive = true);
 	void close();
@@ -164,6 +166,8 @@ private slots:
 
 	void onTimelineTick();
 
+	void toggleDisplayVisibility();
+
 private:
 	static const int defaultPenWidth = 15;
 
@@ -180,6 +184,8 @@ private:
 	void drawWalls();
 	void drawColorFields();
 	void drawInitialRobot();
+
+	void setDisplayVisibility(bool visible);
 
 	QDomDocument generateXml() const;
 
@@ -237,6 +243,7 @@ private:
 
 	RobotModelInterface *mRobotModel;
 	WorldModel *mWorldModel;
+	NxtDisplay *mNxtDisplay;
 
 	/** @brief Current action (toggled button on left panel)*/
 	drawingAction::DrawingAction mDrawingAction;

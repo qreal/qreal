@@ -1,9 +1,11 @@
 #include <QtWidgets/QApplication>
 #include "robotsPlugin.h"
 #include "details/tracer.h"
+#include "details/nxtDisplay.h"
 
 using namespace qReal;
 using namespace interpreters::robots;
+using namespace interpreters::robots::details;
 
 Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
 Id const oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
@@ -75,7 +77,7 @@ void RobotsPlugin::initActions()
 			<< separatorActionInfo << robotSettingsActionInfo
 			<< titlesActionInfo;
 
-	//Set tabs, unused at the opening, enabled
+	// Set tabs, unused at the opening, enabled
 	bool isTabEnable = false;
 	QList<ActionInfo> unusedTab;
 	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
