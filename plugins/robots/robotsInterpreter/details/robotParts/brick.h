@@ -1,5 +1,5 @@
 #pragma once
-#pragma once
+
 #include <QtCore/QObject>
 #include "../robotImplementations/brickImplementations/abstractBrickImplementation.h"
 #include "../../../../../qrkernel/ids.h"
@@ -14,7 +14,7 @@ class Brick : public QObject
 {
 	Q_OBJECT
 public:
-	Brick(robotImplementations::brickImplementations::AbstractBrickImplementation *brickImpl);
+	explicit Brick(robotImplementations::brickImplementations::AbstractBrickImplementation *brickImpl);
 	~Brick();
 	void beep(unsigned time);
 	void playTone(unsigned freq, unsigned time);

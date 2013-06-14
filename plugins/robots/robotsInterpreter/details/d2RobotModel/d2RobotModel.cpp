@@ -32,6 +32,7 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		, mMotorA(NULL)
 		, mMotorB(NULL)
 		, mMotorC(NULL)
+		, mDisplay(new NxtDisplay)
 		, mTimeline(new Timeline(this))
 		, mNoiseGen()
 		, mNeedSync(false)
@@ -111,11 +112,7 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 
 int D2RobotModel::varySpeed(int const speed) const
 {
-	qreal const ran = mNoiseGen.generate(
-					mNoiseGen.approximationLevel()
-					, varySpeedDispersion
-				);
-
+	qreal const ran = mNoiseGen.generate(mNoiseGen.approximationLevel(), varySpeedDispersion);
 	return truncateToInterval(-100, 100, round(speed * (1 + ran)));
 }
 
@@ -150,7 +147,7 @@ SensorsConfiguration &D2RobotModel::configuration()
 
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
-	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel);
+	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel, mDisplay);
 	return mD2ModelWidget;
 }
 
@@ -329,14 +326,14 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 	QHashIterator<unsigned long, int> i(countsColor);
 	while(i.hasNext()) {
 		i.next();
-        unsigned long color = i.key();
-        if (color != white) {
-            int b = (color >> 0) & 0xFF;
-            int g = (color >> 8) & 0xFF;
-            int r = (color >> 16) & 0xFF;
-            qreal k = qSqrt(static_cast<qreal>(b * b + g * g + r * r)) / 500.0;
-            allWhite += static_cast<qreal>(i.value()) * k;
-        }
+		unsigned long color = i.key();
+		if (color != white) {
+			int b = (color >> 0) & 0xFF;
+			int g = (color >> 8) & 0xFF;
+			int r = (color >> 16) & 0xFF;
+			qreal k = qSqrt(static_cast<qreal>(b * b + g * g + r * r)) / 500.0;
+			allWhite += static_cast<qreal>(i.value()) * k;
+		}
 	}
 
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
@@ -573,6 +570,11 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 Timeline *D2RobotModel::timeline() const
 {
 	return mTimeline;
+}
+
+details::NxtDisplay *D2RobotModel::display()
+{
+	return mDisplay;
 }
 
 void D2RobotModel::setNoiseSettings()

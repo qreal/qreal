@@ -9,6 +9,7 @@ using namespace robotImplementations;
 RobotModel::RobotModel()
 	: mRobotImpl(new NullRobotModelImplementation)
 	, mBrick(&mRobotImpl->brick())
+	, mDisplay(&mRobotImpl->display())
 	, mMotorA(0, &mRobotImpl->motorA())
 	, mMotorB(1, &mRobotImpl->motorA())
 	, mMotorC(2, &mRobotImpl->motorA())
@@ -32,6 +33,11 @@ RobotModel::~RobotModel()
 robotParts::Brick &RobotModel::brick()
 {
 	return mBrick;
+}
+
+robotParts::Display &RobotModel::display()
+{
+	return mDisplay;
 }
 
 robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const &port) const
@@ -226,6 +232,7 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 	mEncoderC.setImplementation(&mRobotImpl->encoderC());
 
 	mBrick.setImplementation(&mRobotImpl->brick());
+	mDisplay.setImplementation(&mRobotImpl->display());
 
 	for (int i = 0; i < 4; ++i) {
 		if (mSensors[i] != NULL) {
