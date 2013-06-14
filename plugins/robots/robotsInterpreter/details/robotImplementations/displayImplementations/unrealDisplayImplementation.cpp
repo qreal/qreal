@@ -67,8 +67,8 @@ void UnrealDisplayImplementation::printText(int x, int y, QString const &text)
 
 void UnrealDisplayImplementation::paint(QPainter *painter)
 {
-	qreal const pixWidth = (qreal) mD2Model->display()->displayWidth() / nxtDisplayWidth;
-	qreal const pixHeight = (qreal) mD2Model->display()->displayHeight() / nxtDisplayHeight;
+	qreal const pixWidth = (mD2Model->display()->displayWidth() * 1.0) / nxtDisplayWidth;
+	qreal const pixHeight = (mD2Model->display()->displayHeight() * 1.0) / nxtDisplayHeight;
 
 	QPen pen;
 	QFont font;
