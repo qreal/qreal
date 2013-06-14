@@ -6,8 +6,9 @@
 using namespace qReal;
 using namespace robots::generator;
 
-LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen
-		, qReal::Id const &elementId): AbstractElementGenerator(emboxGen, elementId)
+LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *gen
+		, qReal::Id const &elementId)
+	: AbstractElementGenerator(gen, elementId)
 {
 }
 
@@ -70,7 +71,7 @@ QList<SmartLine> LoopElementGenerator::addLoopCodeInPrefixForm()
 {
 	QList<SmartLine> result;
 
-	qReal::Id const &logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 	result << SmartLine("for (int __iter__ = 0; __iter__ < "
 			+ mNxtGen->api()->property(logicElementId, "Iterations").toString()
 				+ "; __iter__++) {", mElementId, SmartLine::increase); //TODO

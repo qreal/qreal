@@ -40,7 +40,11 @@ HEADERS += \
 	details/robotImplementations/sensorImplementations/nullGyroscopeSensorImplementations.h \
 	details/robotImplementations/sensorImplementations/unrealGyroscopeSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/nullAccelerometerSensorImplementation.h \
-	details/robotImplementations/sensorImplementations/unrealAccelerometerSensorImplementation.h
+	details/robotImplementations/sensorImplementations/unrealAccelerometerSensorImplementation.h \
+	details/robotImplementations/displayImplementations/abstractDisplayImplementation.h \
+	details/robotImplementations/displayImplementations/realDisplayImplementation.h \
+	details/robotImplementations/displayImplementations/unrealDisplayImplementation.h \
+	details/robotImplementations/displayImplementations/nullDisplayImplementation.h
 
 SOURCES += \
 	details/robotImplementations/sensorImplementations/abstractSensorImplementation.cpp \
@@ -84,4 +88,8 @@ SOURCES += \
 	details/robotImplementations/sensorImplementations/nullGyroscopeSensorImplementations.cpp \
 	details/robotImplementations/sensorImplementations/unrealGyroscopeSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/nullAccelerometerSensorImplementation.cpp \
-	details/robotImplementations/sensorImplementations/unrealAccelerometerSensorImplementation.cpp
+	details/robotImplementations/sensorImplementations/unrealAccelerometerSensorImplementation.cpp \
+	details/robotImplementations/displayImplementations/abstractDisplayImplementation.cpp \
+	details/robotImplementations/displayImplementations/realDisplayImplementation.cpp \
+	details/robotImplementations/displayImplementations/unrealDisplayImplementation.cpp \
+	details/robotImplementations/displayImplementations/nullDisplayImplementation.cpp

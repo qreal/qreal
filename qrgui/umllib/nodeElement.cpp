@@ -252,6 +252,16 @@ void NodeElement::switchGrid(bool isChecked)
 {
 	mGrid->setGridMode(isChecked);
 	mSwitchGridAction.setChecked(isChecked);
+	if (isChecked) {
+		alignToGrid();
+
+		// Align mode doesn`t work in a square mode
+		if (!SettingsManager::value("SquareLine").toBool()) {
+			foreach (EdgeElement * const edge, mEdgeList) {
+				edge->alignToGrid();
+			}
+		}
+	}
 }
 
 void NodeElement::delUnusedLines()
@@ -490,7 +500,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	QList<NodeElement*> element;
 	element.append(this);
-	QSize size = mGraphicalAssistApi->editorManager().iconSize(id());
+	QSize size = mGraphicalAssistApi->editorManagerInterface().iconSize(id());
 	evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos()
 			, QPointF(size.width(), size.height()), element);
 
@@ -554,6 +564,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
 		edge->saveConfiguration(QPointF());
+		if (SettingsManager::value("ActivateGrid").toBool() && !SettingsManager::value("SquareLine").toBool()) {
+			edge->alignToGrid();
+		}
 	}
 
 	mDragState = None;
@@ -599,14 +612,15 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	EditorInterface const * const editorInterface = mGraphicalAssistApi->editorManager().editorInterface(id().editor());
-	foreach (QString elementName, editorInterface->elements(id().diagram())) {
-		int ne = editorInterface->isNodeOrEdge(elementName);
+	foreach (QString const &elementName, mGraphicalAssistApi->editorManagerInterface().elements(id().editor(),id().diagram())) {
+		int ne = mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> list = editorInterface->getPossibleEdges(elementName);
+			QList<StringPossibleEdge> const list =  mGraphicalAssistApi->editorManagerInterface().possibleEdges(id().editor(), elementName);
 			foreach(StringPossibleEdge pEdge, list) {
-				if (editorInterface->isParentOf(id().diagram(), pEdge.first.first, id().diagram(), id().element())
-						|| (editorInterface->isParentOf(id().diagram(), pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
+				if (mGraphicalAssistApi->editorManagerInterface().isParentOf(id().editor(), id().diagram()
+						, pEdge.first.first, id().diagram(), id().element())
+						|| (mGraphicalAssistApi->editorManagerInterface().isParentOf(id().editor(), id().diagram()
+						, pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
 				{
 					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
 					mPossibleEdges.insert(possibleEdge);
@@ -670,6 +684,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
 	switch (change) {
 	case ItemPositionHasChanged:
+		alignToGrid();
 		adjustLinks(true);
 		return value;
 
@@ -1263,4 +1278,9 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 	result->addPreAction(changeParentToSceneCommand);
 	result->addPreAction(translateCommand);
 	return result;
+}
+
+void NodeElement::updateShape(QString const &shape) const
+{
+	mElementImpl->updateRendererContent(shape);
 }

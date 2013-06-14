@@ -8,8 +8,9 @@ namespace qReal
 namespace commands
 {
 
-class AbstractCommand : public QUndoCommand
+class AbstractCommand : public QObject, public QUndoCommand
 {
+	Q_OBJECT
 public:
 	AbstractCommand();
 	virtual ~AbstractCommand();
@@ -42,6 +43,10 @@ public:
 	/// Removes duplicate closer to root, with search only in current subtree.
 	/// Root command is never removed
 	void removeDuplicates();
+
+signals:
+	void redoComplete(bool success);
+	void undoComplete(bool success);
 
 protected:
 	/// Returns operation success

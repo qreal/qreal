@@ -4,6 +4,8 @@
 
 static QString const strBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
+using namespace qReal::gestures;
+
 KeyManager::KeyManager()
 {
 }

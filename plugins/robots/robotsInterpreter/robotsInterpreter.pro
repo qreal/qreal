@@ -6,10 +6,7 @@ DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-LIBS += -L../../../bin -lqrkernel -lqrutils
-
-debug:LIBS  += -L../../../bin -lqextserialportd
-else:LIBS += -L../../../bin -lqextserialport
+LIBS += -L../../../bin -lqrkernel -lqrutils -lqextserialport
 
 TRANSLATIONS = robotsInterpreter_ru.ts
 
@@ -31,7 +28,8 @@ HEADERS += \
 	details/abstractTimer.h \
 	details/realTimer.h \
 	details/sensorsConfigurationWidget.h \
-	details/nullTimer.h
+	details/nullTimer.h \
+	details/nxtDisplay.h \
 
 SOURCES += \
 	robotsPlugin.cpp \
@@ -49,13 +47,14 @@ SOURCES += \
 	details/abstractTimer.cpp \
 	details/realTimer.cpp \
 	details/sensorsConfigurationWidget.cpp \
-	details/nullTimer.cpp
-
+	details/nullTimer.cpp \
+	details/nxtDisplay.cpp \
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
 	details/sensorsConfigurationWidget.ui \
+	details/nxtDisplay.ui \
 
 
 RESOURCES += \

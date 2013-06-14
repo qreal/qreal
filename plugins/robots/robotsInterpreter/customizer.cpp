@@ -16,7 +16,7 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	// TODO: other storage for it?
-	return "2.3.0";
+	return "2.3.2";
 }
 
 QString Customizer::aboutText() const
@@ -24,11 +24,17 @@ QString Customizer::aboutText() const
 	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
 }
 
+bool Customizer::showInterpeterButton() const
+{
+	return false;
+}
+
 void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
 {
 	mDockInterface = dockInterface;
 	dockInterface->logicalModelDock()->hide();
 	dockInterface->tabifyDockWidget(dockInterface->graphicalModelDock(), dockInterface->propertyEditorDock());
+	dockInterface->graphicalModelDock()->setWindowTitle(tr("Blocks"));
 }
 
 void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget)

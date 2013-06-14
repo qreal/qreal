@@ -139,6 +139,7 @@ public:
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 	void setVisibleEmbeddedLinkers(bool const show);
+	void updateShape(QString const &shape) const;
 
 	void changeFoldState();
 

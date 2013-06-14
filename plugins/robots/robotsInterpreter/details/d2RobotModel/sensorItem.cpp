@@ -7,6 +7,8 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
+int const selectionDrift = 3;
+
 SensorItem::SensorItem(SensorsConfiguration &configuration
 		, inputPort::InputPortEnum port)
 	: RotateItem()
@@ -15,7 +17,9 @@ SensorItem::SensorItem(SensorsConfiguration &configuration
 	, mDragged(false)
 	, mPointImpl()
 	, mRotater(NULL)
-	, mBoundingRect(imageRect())
+	, mImageRect(imageRect())
+	, mBoundingRect(mImageRect.adjusted(-selectionDrift, -selectionDrift
+			, selectionDrift, selectionDrift))
 	, mImage(pathToImage())
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
@@ -40,7 +44,7 @@ void SensorItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *sty
 	painter->setRenderHints(painter->renderHints()
 			| QPainter::SmoothPixmapTransform
 			| QPainter::HighQualityAntialiasing);
-	painter->drawImage(mBoundingRect, mImage);
+	painter->drawImage(mImageRect, mImage);
 	painter->restore();
 }
 
@@ -55,7 +59,7 @@ void SensorItem::drawExtractionForItem(QPainter *painter)
 	painter->setPen(pen);
 	painter->setOpacity(0.7);
 	painter->setRenderHints(painter->renderHints() | QPainter::Antialiasing);
-	painter->drawRoundedRect(mBoundingRect.adjusted(-3, -3, 3, 3), 4, 4);
+	painter->drawRoundedRect(mBoundingRect, 4, 4);
 	painter->restore();
 }
 
@@ -92,10 +96,13 @@ QString SensorItem::name() const
 		return "touch";
 	case sensorType::colorFull:
 	case sensorType::colorNone:
+		return "color_empty";
 	case sensorType::colorBlue:
+		return "color_blue";
 	case sensorType::colorGreen:
+		return "color_green";
 	case sensorType::colorRed:
-		return "color";
+		return "color_red";
 	case sensorType::sonar:
 		return "sonar";
 	case sensorType::light:
@@ -116,11 +123,10 @@ QRectF SensorItem::imageRect() const
 	case sensorType::colorBlue:
 	case sensorType::colorGreen:
 	case sensorType::colorRed:
-		return QRectF(-12, -5, 25, 10);
+	case sensorType::light:
+		return QRectF(-6, -6, 12, 12);
 	case sensorType::sonar:
 		return QRectF(-20, -10, 40, 20);
-	case sensorType::light:
-		return QRectF(-12, -5, 25, 10);
 	default:
 		Q_ASSERT(!"Unknown sensor type");
 		return QRectF();
@@ -151,7 +157,7 @@ void SensorItem::rotate(qreal angle)
 
 QRectF SensorItem::rect() const
 {
-	return mBoundingRect;
+	return mImageRect;
 }
 
 double SensorItem::rotateAngle() const

@@ -1,4 +1,5 @@
 #include "unrealAccelerometerSensorImplementation.h"
+
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
@@ -9,5 +10,5 @@ UnrealAccelerometerSensorImplementation::UnrealAccelerometerSensorImplementation
 
 void UnrealAccelerometerSensorImplementation::read()
 {
-
+	emit response(0);
 }

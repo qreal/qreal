@@ -8,6 +8,7 @@
 #include "robotModelInterface.h"
 #include "worldModel.h"
 #include "timeline.h"
+#include "../details/nxtDisplay.h"
 #include "../../../../../qrutils/mathUtils/gaussNoise.h"
 
 namespace qReal {
@@ -30,6 +31,7 @@ public:
 	~D2RobotModel();
 	virtual void clear();
 	void startInit();
+	void startInterpretation();
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
 	void setNewMotor(int speed, long unsigned int degrees, int const port);
@@ -37,6 +39,8 @@ public:
 	D2ModelWidget *createModelWidget();
 	int readEncoder(int const port) const;
 	void resetEncoder(int const port);
+
+	details::NxtDisplay *display();
 
 	int readTouchSensor(inputPort::InputPortEnum const port);
 	int readSonarSensor(inputPort::InputPortEnum const port) const;
@@ -109,6 +113,7 @@ private:
 	Motor *mMotorB;
 	Motor *mMotorC;
 	Beep mBeep;
+	details::NxtDisplay *mDisplay;
 	qreal mAngle;
 	QPointF mPos;
 	QPointF mRotatePoint;

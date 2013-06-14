@@ -161,6 +161,8 @@ private slots:
 	void disconnectActionTriggered();
 	void addUsageActionTriggered();
 	void deleteUsageActionTriggered();
+	void changePropertiesActionTriggered();
+	void changeAppearanceActionTriggered();
 	void printElementsOfRootDiagram();
 	void drawIdealGesture();
 	void initMouseMoveManager();
@@ -240,7 +242,7 @@ private:
 	QPointF mCurrentMousePos;
 	QPointF mCreatePoint;
 
-	MouseMovementManager *mMouseMovementManager;
+	gestures::MouseMovementManager *mMouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
 

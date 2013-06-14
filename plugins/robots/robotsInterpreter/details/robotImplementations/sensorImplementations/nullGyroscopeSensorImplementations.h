@@ -1,4 +1,5 @@
 #pragma once
+
 #include "nullSensorImplementation.h"
 
 namespace qReal {

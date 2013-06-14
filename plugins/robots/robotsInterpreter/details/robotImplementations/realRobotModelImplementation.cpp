@@ -10,6 +10,7 @@ RealRobotModelImplementation::RealRobotModelImplementation(RobotCommunicator * c
 	:  AbstractRobotModelImplementation()
 	, mRobotCommunicator(robotCommunicationInterface)
 	, mBrick(robotCommunicationInterface)
+	, mDisplay()
 	, mMotorA(0, robotCommunicationInterface), mMotorB(1, robotCommunicationInterface), mMotorC(2, robotCommunicationInterface)
 	, mEncoderA(robotCommunicationInterface, outputPort::port1), mEncoderB(robotCommunicationInterface, outputPort::port2), mEncoderC(robotCommunicationInterface, outputPort::port3)
 {
@@ -26,6 +27,11 @@ RealRobotModelImplementation::~RealRobotModelImplementation()
 brickImplementations::RealBrickImplementation &RealRobotModelImplementation::brick()
 {
 	return mBrick;
+}
+
+displayImplementations::RealDisplayImplementation &RealRobotModelImplementation::display()
+{
+	return mDisplay;
 }
 
 sensorImplementations::BluetoothTouchSensorImplementation *RealRobotModelImplementation::touchSensor(inputPort::InputPortEnum const port) const

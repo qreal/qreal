@@ -1,4 +1,5 @@
 #include "unrealGyroscopeSensorImplementation.h"
+
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
@@ -9,5 +10,5 @@ UnrealGyroscopeSensorImplementation::UnrealGyroscopeSensorImplementation(inputPo
 
 void UnrealGyroscopeSensorImplementation::read()
 {
-
+	emit response(0);
 }

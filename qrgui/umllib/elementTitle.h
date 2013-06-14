@@ -21,7 +21,7 @@ public:
 	virtual ~ElementTitle() {}
 
 	void init(QRectF const& contents);
-	void setBackground(Qt::GlobalColor const &background);
+	void setBackground(QColor const &background);
 	void setScaling(bool scalingX, bool scalingY);
 
 	bool isHard() const;
@@ -32,6 +32,8 @@ public:
 	void setTitleFont();
 
 protected:
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
 	virtual void focusOutEvent(QFocusEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
 
@@ -45,6 +47,6 @@ private:
 	QPointF mPoint;
 	QString mOldText;
 	QString mBinding;
-	Qt::GlobalColor mBackground;
+	QColor mBackground;
 	bool mIsHard;
 };

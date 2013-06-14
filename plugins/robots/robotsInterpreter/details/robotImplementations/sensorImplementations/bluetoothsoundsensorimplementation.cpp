@@ -6,6 +6,7 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
+int const soundMaxValue = 1023;
 
 BluetoothSoundSensorImplementation::BluetoothSoundSensorImplementation(RobotCommunicator *robotCommunicationInterface
 		, inputPort::InputPortEnum const port)
@@ -44,6 +45,6 @@ void BluetoothSoundSensorImplementation::sensorSpecificProcessResponse(QByteArra
 	} else {
 		int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 		mState = idle;
-		emit response(sensorValue);
+		emit response(sensorValue * 100 / soundMaxValue);
 	}
 }

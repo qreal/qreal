@@ -12,10 +12,11 @@ QList<SmartLine> FunctionElementGenerator::convertBlockIntoCode()
 {
 	QList<SmartLine> result;
 
-	qReal::Id const &logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
+	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
 	QString funcCode = mNxtGen->api()->stringProperty(logicElementId, "Body").toUtf8();
 	funcCode = replaceSensorAndEncoderVariables(funcCode);
+	funcCode = replaceFunctionInvocations(funcCode);
 
 	foreach (QString const &str, funcCode.split(';', QString::SkipEmptyParts)) {
 		result.append(SmartLine(str.trimmed() + ";", mElementId));

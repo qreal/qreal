@@ -1,4 +1,5 @@
 #pragma once
+
 #include "abstractMotorImplementation.h"
 
 namespace qReal {

@@ -1,4 +1,5 @@
 #include "unrealSoundSensorImplementation.h"
+
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
@@ -9,4 +10,5 @@ UnrealSoundSensorImplementation::UnrealSoundSensorImplementation(inputPort::Inpu
 
 void UnrealSoundSensorImplementation::read()
 {
+	emit response(0);
 }

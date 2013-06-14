@@ -39,20 +39,20 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0" colspan="3">
-       <widget class="QCheckBox" name="paletteTabCheckBox">
-        <property name="text">
-         <string>Palette tab switching</string>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="gestureDelaySpinBox">
+        <property name="maximum">
+         <number>100000</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="autoSaveCheckBox">
+      <item row="2" column="2">
+       <widget class="QLabel" name="gestureDelayTimeUnitLabel">
         <property name="text">
-         <string>Autosave</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>msec</string>
         </property>
        </widget>
       </item>
@@ -79,89 +79,27 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="arrangeLinksCheckBox">
+      <item row="0" column="0" colspan="3">
+       <widget class="QCheckBox" name="paletteTabCheckBox">
         <property name="text">
-         <string>Arrange Links</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>Palette tab switching</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="gestureDelayLabel">
         <property name="text">
          <string>Delay after gesture</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QSpinBox" name="gestureDelaySpinBox">
-        <property name="maximum">
-         <number>100000</number>
-        </property>
-        <property name="singleStep">
-         <number>10</number>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QLabel" name="gestureDelayTimeUnitLabel">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="autoSaveCheckBox">
         <property name="text">
-         <string>msec</string>
+         <string>Autosave</string>
         </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_8">
-     <property name="text">
-      <string>Suggestions</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QFrame" name="frame_6">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="diagramCreateCheckBox">
-        <property name="text">
-         <string>New diagram creating</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_41">
-     <property name="text">
-      <string>Warning window</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QFrame" name="frame_17">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="warningWindowBox">
-        <property name="text">
-         <string>Show window</string>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

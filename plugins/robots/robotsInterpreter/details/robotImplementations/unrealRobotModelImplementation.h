@@ -3,6 +3,7 @@
 #include "abstractRobotModelImplementation.h"
 #include "brickImplementations/unrealBrickImplementation.h"
 #include "motorImplementations/unrealMotorImplementation.h"
+#include "displayImplementations/unrealDisplayImplementation.h"
 #include "sensorImplementations/unrealTouchSensorImplementation.h"
 #include "sensorImplementations/unrealSonarSensorImplementation.h"
 #include "sensorImplementations/unrealColorSensorImplementation.h"
@@ -36,6 +37,7 @@ public:
 	virtual sensorImplementations::UnrealSoundSensorImplementation *soundSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::UnrealAccelerometerSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::UnrealGyroscopeSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const port) const;
+	virtual displayImplementations::UnrealDisplayImplementation &display();
 
 	virtual motorImplementations::UnrealMotorImplementation &motorA();
 	virtual motorImplementations::UnrealMotorImplementation &motorB();
@@ -61,6 +63,7 @@ private:
 	motorImplementations::UnrealMotorImplementation mMotorB;
 	motorImplementations::UnrealMotorImplementation mMotorC;
 
+	displayImplementations::UnrealDisplayImplementation mDisplay;
 	sensorImplementations::UnrealEncoderImplementation mEncoderA;
 	sensorImplementations::UnrealEncoderImplementation mEncoderB;
 	sensorImplementations::UnrealEncoderImplementation mEncoderC;

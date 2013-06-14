@@ -10,7 +10,8 @@ HEADERS += \
 	details/robotParts/lightSensor.h \
 	details/robotParts/soundSensor.h \
 	details/robotParts/gyroscopeSensor.h \
-	details/robotParts/accelerometerSensor.h
+	details/robotParts/accelerometerSensor.h \
+	details/robotParts/display.h \
 
 SOURCES += \
 	details/robotParts/robotModel.cpp \
@@ -24,4 +25,5 @@ SOURCES += \
 	details/robotParts/lightSensor.cpp \
 	details/robotParts/soundSensor.cpp \
 	details/robotParts/gyroscopeSensor.cpp \
-	details/robotParts/accelerometerSensor.cpp
+	details/robotParts/accelerometerSensor.cpp \
+	details/robotParts/display.cpp \

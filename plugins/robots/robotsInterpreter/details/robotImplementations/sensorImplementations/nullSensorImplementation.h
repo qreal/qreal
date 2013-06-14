@@ -1,5 +1,7 @@
 #pragma once
+
 #include <QtCore/QTimer>
+
 #include "abstractSensorImplementation.h"
 
 namespace qReal {

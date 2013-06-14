@@ -1,4 +1,5 @@
 #pragma once
+
 #include "unrealSensorImplementation.h"
 
 namespace qReal {

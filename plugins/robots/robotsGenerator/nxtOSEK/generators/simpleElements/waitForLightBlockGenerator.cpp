@@ -26,7 +26,7 @@ QList<SmartLine> WaitForLightBlockGenerator::convertElementIntoDirectCommand(Nxt
 
 	QString const port = "NXT_PORT_S" + nxtGen->api()->stringProperty(logicElementId, "Port");
 
-	QString const percents = nxtGen->api()->stringProperty(logicElementId, "Percents");
+	QString const percents = nxtGen->intExpression(logicElementId, "Percents");
 	QString const inequalitySign = transformSign(QString(nxtGen->api()->stringProperty(logicElementId
 			, "Sign").toUtf8()));
 

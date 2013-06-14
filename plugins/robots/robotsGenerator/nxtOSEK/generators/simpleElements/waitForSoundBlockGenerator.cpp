@@ -22,7 +22,7 @@ QList<SmartLine> WaitForSoundBlockGenerator::convertElementIntoDirectCommand(Nxt
 	QString const condition = inequalitySign + " " + volume;
 
 	result.append(SmartLine("while (!(ecrobot_get_sound_sensor(" + port
-			+ ") " + condition + "))", elementId));
+			+ ") * 100 / 1023 " + condition + "))", elementId));
 	result.append(SmartLine("{", elementId));
 	result.append(SmartLine("}", elementId));
 

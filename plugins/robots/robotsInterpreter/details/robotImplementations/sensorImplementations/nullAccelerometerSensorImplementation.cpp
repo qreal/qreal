@@ -1,4 +1,5 @@
 #include "nullAccelerometerSensorImplementation.h"
+
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
