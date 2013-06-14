@@ -326,11 +326,11 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 	QHashIterator<unsigned long, int> i(countsColor);
 	while(i.hasNext()) {
 		i.next();
-		unsigned long color = i.key();
+		unsigned long const color = i.key();
 		if (color != white) {
-			int b = (color >> 0) & 0xFF;
-			int g = (color >> 8) & 0xFF;
-			int r = (color >> 16) & 0xFF;
+			int const b = (color >> 0) & 0xFF;
+			int const g = (color >> 8) & 0xFF;
+			int const r = (color >> 16) & 0xFF;
 			qreal k = qSqrt(static_cast<qreal>(b * b + g * g + r * r)) / 500.0;
 			allWhite += static_cast<qreal>(i.value()) * k;
 		}

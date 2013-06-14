@@ -12,10 +12,10 @@ PaintWidget::PaintWidget(QWidget *parent)
 void PaintWidget::paintEvent(QPaintEvent *event)
 {
 	QWidget::paintEvent(event);
-	QPainter *painter = new QPainter(this);
+	QPainter painter(this);
 
-	foreach (PainterInterface *painterIface, mPainters) {
-		painterIface->paint(painter);
+	foreach (PainterInterface * const painterIface, mPainters) {
+		painterIface->paint(&painter);
 	}
 }
 

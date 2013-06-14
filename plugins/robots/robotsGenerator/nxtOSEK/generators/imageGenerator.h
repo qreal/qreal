@@ -3,7 +3,7 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 
-/// Class responsible for everything with images genaration
+/// Class responsible for everything with images generation
 class ImageGenerator
 {
 public:

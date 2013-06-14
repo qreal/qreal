@@ -62,6 +62,6 @@ int NxtDisplay::displayHeight() const
 void NxtDisplay::paintEvent(QPaintEvent *event)
 {
 	QWidget::paintEvent(event);
-	QPainter *painter = new QPainter(this);
-	painter->drawImage(QRect(0, 0, width(), height()), mBackground);
+	QPainter painter(this);
+	painter.drawImage(QRect(0, 0, width(), height()), mBackground);
 }

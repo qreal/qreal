@@ -7,18 +7,20 @@
 
 namespace graphicsUtils
 {
+
 class QRUTILS_EXPORT PaintWidget : public QWidget
 {
 	Q_OBJECT
 public:
 	explicit PaintWidget(QWidget *parent = 0);
 	void setPainter(PainterInterface *painter);
-	
+
 protected:
-	void paintEvent(QPaintEvent *);
+	void paintEvent(QPaintEvent *event);
 
 private:
 	QList<PainterInterface*> mPainters;
-	
+
 };
+
 }
