@@ -8,7 +8,7 @@ NullificationEncoderGenerator::NullificationEncoderGenerator()
 }
 
 QList<SmartLine> NullificationEncoderGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		, qReal::Id const elementId, qReal::Id const logicElementId)
+		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	QList<SmartLine> result;
 	QString const port = nxtGen->api()->stringProperty(logicElementId, "Port");

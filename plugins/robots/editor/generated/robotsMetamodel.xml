@@ -34,6 +34,12 @@
 				<value>не меньше</value>
 				<value>не больше</value>
 			</enum>
+			<enum name="Accelerations">
+				<value>oX</value>
+				<value>oY</value>
+				<value>oZ</value>
+				<value>Norm</value>
+			</enum>
 			<enum name="BreakEngineMode">
 				<value>тормозить</value>
 				<value>скользить</value>
@@ -48,6 +54,9 @@
 				<value>Сенсор цвета (зеленый)</value>
 				<value>Сенсор цвета (синий)</value>
 				<value>Сенсор цвета (пассивный)</value>
+				<value>Сенсок звука</value>
+				<value>Гироскоп</value>
+				<value>Акселерометр</value>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
@@ -559,6 +568,155 @@
 				</graphics>
 				<logic>
 					<container/>
+					<generalizations>
+						<parent parentName="SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать сенсор звука" name="WaitForSound">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="33" y="60" textBinded="Volume"/>
+						<label x="-26" y="60" text="Громкость:"/>
+						<label x="33" y="80" textBinded="Sign"/>
+						<label x="-80" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Громкость" type="string" name="Volume">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>равно</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать гироскоп" name="WaitForGyroscope">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="33" y="60" textBinded="Degrees"/>
+						<label x="-26" y="60" text="Градусы:"/>
+						<label x="33" y="80" textBinded="Sign"/>
+						<label x="-80" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Градусы/сек" type="string" name="Degrees">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>равно</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать Акселерометр" name="WaitForAccelerometer">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForAccelerometerBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="33" y="60" textBinded="Acceleration"/>
+						<label x="-26" y="60" text="Ускорение:"/>
+						<label x="33" y="80" textBinded="Sign"/>
+						<label x="-80" y="80" text="Считанное значение:"/>
+						<label x="33" y="100" textBinded="Acceleration OS"/>						
+						<label x="-80" y="100" text="Ускорение по оси:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ускорение" type="string" name="Acceleration">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>равно</default>
+						</property>
+						<property displayedName="Ускорение по оси" type="Accelerations" name="Acceleration OS">
+							<default>oX</default>
+						</property>
+					</properties>
 					<generalizations>
 						<parent parentName="SensorBlock"/>
 					</generalizations>
@@ -1208,6 +1366,9 @@
 				<element name="WaitForEncoder"/>
 				<element name="WaitForColorIntensity"/>
 				<element name="WaitForLight"/>
+				<element name="WaitForSound"/>
+				<element name="WaitForGyroscope"/>
+				<element name="WaitForAccelerometer"/>
 			</group>
 			<group name="Алгоритмы">
 				<element name="IfBlock"/>

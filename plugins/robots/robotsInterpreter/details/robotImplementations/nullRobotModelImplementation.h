@@ -7,7 +7,10 @@
 #include "sensorImplementations/nullSonarSensorImplementation.h"
 #include "sensorImplementations/nullColorSensorImplementation.h"
 #include "sensorImplementations/nullLightSensorImplementation.h"
+#include "sensorImplementations/nullSoundSensorImplementation.h"
 #include "sensorImplementations/nullEncoderImplementation.h"
+#include "sensorImplementations/nullGyroscopeSensorImplementations.h"
+#include "sensorImplementations/nullAccelerometerSensorImplementation.h"
 
 namespace qReal {
 namespace interpreters {
@@ -25,10 +28,13 @@ public:
 	virtual void stopRobot();
 
 	virtual brickImplementations::NullBrickImplementation &brick();
-	virtual sensorImplementations::NullTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::NullSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::NullColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::NullLightSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const;
+	virtual sensorImplementations::NullTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::NullSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::NullColorSensorImplementation *colorSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::NullLightSensorImplementation *lightSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::NullSoundSensorImplementation *soundSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::NullAccelerometerSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::NullGyroscopeSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const port) const;
 
 	virtual motorImplementations::NullMotorImplementation &motorA();
 	virtual motorImplementations::NullMotorImplementation &motorB();
@@ -55,10 +61,13 @@ private:
 	sensorImplementations::NullEncoderImplementation mEncoderB;
 	sensorImplementations::NullEncoderImplementation mEncoderC;
 
-	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
-	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
-	virtual void addLightSensor(inputPort::InputPortEnum const &port);
-	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
+	virtual void addTouchSensor(inputPort::InputPortEnum const port);
+	virtual void addSonarSensor(inputPort::InputPortEnum const port);
+	virtual void addLightSensor(inputPort::InputPortEnum const port);
+	virtual void addColorSensor(inputPort::InputPortEnum const port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
+	virtual void addSoundSensor(inputPort::InputPortEnum const port);
+	virtual void addGyroscopeSensor(inputPort::InputPortEnum const port);
+	virtual void addAccelerometerSensor(inputPort::InputPortEnum const port);
 };
 
 }

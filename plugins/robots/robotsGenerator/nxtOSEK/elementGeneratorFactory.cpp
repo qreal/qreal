@@ -17,7 +17,7 @@ AbstractElementGenerator* ElementGeneratorFactory::generator(
 	} else if (elementId.element() == "Loop") {
 		return new LoopElementGenerator(generator, elementId);
 	} else if (elementId.element() == "Function") {
-		qReal::Id const logicElementId = api.logicalId(elementId);
+		qReal::Id const &logicElementId = api.logicalId(elementId);
 		return new FunctionElementGenerator(generator, elementId, api.property(logicElementId, "Init").toBool());
 	}
 

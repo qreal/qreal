@@ -13,7 +13,7 @@ IfElementGenerator::IfElementGenerator(NxtOSEKRobotGenerator *emboxGen
 
 QList<SmartLine> IfElementGenerator::addLoopCodeInPrefixForm()
 {
-	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
+	qReal::Id const &logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 	QString condition = mNxtGen->api()->property(logicElementId, "Condition").toString();
 	condition = replaceSensorAndEncoderVariables(condition);
 
@@ -126,7 +126,7 @@ bool IfElementGenerator::nextElementsGeneration()
 	QVariant const guardProperty = mNxtGen->api()->property(logicalId, "Guard");
 	int const conditionArrowNum = guardProperty.toString().isEmpty() ? 1 : 0;
 
-	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
+	qReal::Id const &logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
 	//TODO: save number of new created list
 	QString condition = mNxtGen->api()->property(logicElementId, "Condition").toString();

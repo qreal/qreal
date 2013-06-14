@@ -7,7 +7,7 @@ using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
 BluetoothTouchSensorImplementation::BluetoothTouchSensorImplementation(RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const &port)
+		, inputPort::InputPortEnum const port)
 	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::touchBoolean, lowLevelSensorType::SWITCH, sensorMode::RAWMODE, port)
 {
 }

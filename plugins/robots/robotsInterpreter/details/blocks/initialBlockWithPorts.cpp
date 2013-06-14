@@ -14,7 +14,7 @@ void InitialBlockWithPorts::run()
 	mRobotModel.init();
 }
 
-QList<Block::SensorPortPair> InitialBlockWithPorts::sensorToPair(QString const port1Sensor, inputPort::InputPortEnum const &port) const
+QList<Block::SensorPortPair> InitialBlockWithPorts::sensorToPair(QString const port1Sensor, inputPort::InputPortEnum const port) const
 {
 	QList<SensorPortPair> result;
 	if (port1Sensor == QString::fromUtf8("Сенсор нажатия (булево значение)")) {

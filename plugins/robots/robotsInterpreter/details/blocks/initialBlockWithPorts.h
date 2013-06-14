@@ -20,7 +20,7 @@ public:
 	virtual void run();
 
 	virtual QList<SensorPortPair> usedSensors() const;
-	virtual QList<SensorPortPair> sensorToPair(QString const port1Sensor, inputPort::InputPortEnum const &port) const;
+	virtual QList<SensorPortPair> sensorToPair(QString const port1Sensor, inputPort::InputPortEnum const port) const;
 
 private slots:
 	void goToNextBlockSlot(bool success);

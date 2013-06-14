@@ -22,6 +22,9 @@
 #include "blocks/waitForEncoderBlock.h"
 #include "blocks/nullificationEncoderBlock.h"
 #include "blocks/waitForLightSensorBlock.h"
+#include "blocks/waitForSoundSensorBlock.h"
+#include "blocks/waitforGyroscopeSensorBlock.h"
+#include "blocks/waitForAccelerometerBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -89,6 +92,12 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new NullificationEncoderBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForLight")) {
 		newBlock = new WaitForLightSensorBlock(mRobotModel);
+	} else if (elementMetatypeIs(element, "WaitForSound")) {
+		newBlock = new WaitForSoundSensorBlock(mRobotModel);
+	}else if (elementMetatypeIs(element, "WaitForGyroscope")){
+		newBlock = new WaitForGyroscopeSensorBlock(mRobotModel);
+	} else if (elementMetatypeIs(element,"WaitForAccelerometer")){
+		newBlock = new WaitForAccelerometerSensorBlock(mRobotModel);
 	} else {
 		newBlock = new DummyBlock();
 	}
