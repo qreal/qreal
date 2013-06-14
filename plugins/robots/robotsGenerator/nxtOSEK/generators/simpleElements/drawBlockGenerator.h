@@ -24,7 +24,7 @@ protected:
 	virtual QList<SmartLine> convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 			, qReal::Id const elementId, qReal::Id const logicElementId);
 
-	virtual void generateBmpFile(NxtOSEKRobotGenerator *nxtGen, QString name, qReal::Id const logicElementId);
+	virtual void generateBmpFile(NxtOSEKRobotGenerator *nxtGen, QString const &name, qReal::Id const &logicElementId);
 	virtual void drawBmp(NxtOSEKRobotGenerator *nxtGen, qReal::Id const logicElementId, QPainter *p) = 0;
 };
 }
