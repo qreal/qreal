@@ -1,5 +1,5 @@
 #include <QtCore>
-#include "GridDrawer.h"
+#include "gridDrawer.h"
 
 using namespace graphicsUtils;
 
@@ -12,7 +12,7 @@ void GridDrawer::drawGrid(QPainter *painter, const QRectF &rect, int const index
 	qreal const sceneX = rect.x();
 	qreal const sceneY = rect.y();
 
-	int const indent = (300/indexGrid)*indexGrid; // now enough
+	int const indent = (300 / indexGrid) * indexGrid; // now enough
 
 	int const startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid - indent;
 	int const endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid + indent;

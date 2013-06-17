@@ -39,11 +39,6 @@ public:
 	virtual void deserializePenBrush(QDomElement const &element);
 	void setSerializeName(QString name);
 
-	int mCellNumbX1;
-	int mCellNumbY1;
-	int mCellNumbX2;
-	int mCellNumbY2;
-
 protected:
 	void setPrivateData();
 	qreal alignedCoordinate(qreal coord, int coef, int const indexGrid) const;
@@ -51,6 +46,10 @@ protected:
 	graphicsUtils::LineImpl mLineImpl;
 	QString mSerializeName;
 	int mCornerRadius;
+	int mCellNumbX1;
+	int mCellNumbY1;
+	int mCellNumbX2;
+	int mCellNumbY2;
 };
 }
 }

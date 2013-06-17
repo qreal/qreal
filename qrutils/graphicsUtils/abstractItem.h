@@ -83,16 +83,15 @@ public:
 	virtual QRectF sceneBoundingRectCoord(QPoint const &topLeftPicture);
 	void readPenBrush(QDomElement const &docItem);
 
-	qreal mX1;
-	qreal mY1;
-	qreal mX2;
-	qreal mY2;
-
 protected:
 	DragState mDragState;
 	QRectF mBoundingRect;
 	QPen mPen;
 	QBrush mBrush;
+	qreal mX1;
+	qreal mY1;
+	qreal mX2;
+	qreal mY2;
 	QGraphicsView *mView;
 };
 

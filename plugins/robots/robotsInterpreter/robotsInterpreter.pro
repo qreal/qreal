@@ -3,6 +3,7 @@ QT += xml widgets
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../../bin/plugins/
+OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RCC_DIR = .moc
 
@@ -32,7 +33,6 @@ robotsPlugin.h \
 	details/realTimer.h \
 	details/sensorsConfigurationWidget.h \
 	details/nullTimer.h \
-    gridParameters.h
 
 
 SOURCES += \
@@ -40,8 +40,6 @@ SOURCES += \
 	interpreter.cpp \
 	robotSettingsPage.cpp \
 	customizer.cpp \
-	watchListWindow.cpp\
-	gridParameters.cpp \
 	details/thread.cpp \
 	details/blocksTable.cpp \
 	details/blocksFactory.cpp \
@@ -53,8 +51,6 @@ SOURCES += \
 	details/realTimer.cpp \
 	details/sensorsConfigurationWidget.cpp \
 	details/nullTimer.cpp \
-
-
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \

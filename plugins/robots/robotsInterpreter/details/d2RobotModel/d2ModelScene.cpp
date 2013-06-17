@@ -3,7 +3,7 @@
 #include <QtGui/QPainter>
 
 #include "d2ModelScene.h"
-#include "../../../../../qrutils/graphicsUtils/griddrawer.h"
+#include "../../../../../qrutils/graphicsUtils/gridDrawer.h"
 #include "../../../../../qrkernel/settingsManager.h"
 #include "typeinfo"
 #include "wallItem.h"

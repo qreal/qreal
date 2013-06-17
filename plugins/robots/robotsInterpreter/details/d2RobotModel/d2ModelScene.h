@@ -3,7 +3,7 @@
 #include <QtWidgets/QGraphicsScene>
 #include <QtGui/QPainter>
 #include "../../../../../qrutils/graphicsUtils/abstractScene.h"
-#include "../../../../../qrutils/graphicsUtils/griddrawer.h"
+#include "../../../../../qrutils/graphicsUtils/gridDrawer.h"
 
 namespace qReal {
 namespace interpreters {
