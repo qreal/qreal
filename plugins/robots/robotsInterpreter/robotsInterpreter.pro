@@ -14,7 +14,7 @@ else:LIBS += -L../../../bin -lqextserialport
 TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
-	robotsPlugin.h \
+robotsPlugin.h \
 	interpreter.h \
 	sensorConstants.h \
 	robotSettingsPage.h \
@@ -31,7 +31,9 @@ HEADERS += \
 	details/abstractTimer.h \
 	details/realTimer.h \
 	details/sensorsConfigurationWidget.h \
-	details/nullTimer.h
+	details/nullTimer.h \
+    gridParameters.h
+
 
 SOURCES += \
 	robotsPlugin.cpp \
@@ -39,6 +41,7 @@ SOURCES += \
 	robotSettingsPage.cpp \
 	customizer.cpp \
 	watchListWindow.cpp\
+	gridParameters.cpp \
 	details/thread.cpp \
 	details/blocksTable.cpp \
 	details/blocksFactory.cpp \
@@ -50,6 +53,7 @@ SOURCES += \
 	details/realTimer.cpp \
 	details/sensorsConfigurationWidget.cpp \
 	details/nullTimer.cpp \
+
 
 
 FORMS += \

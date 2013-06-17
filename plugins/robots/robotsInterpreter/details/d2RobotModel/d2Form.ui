@@ -719,22 +719,6 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
-   <item row="0" column="2">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="2" rowspan="13" colspan="2">
-    <widget class="graphicsUtils::AbstractView" name="graphicsView"/>
-   </item>
    <item row="0" column="3">
     <widget class="QDoubleSpinBox" name="timelineBox">
      <property name="enabled">
@@ -763,6 +747,16 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </item>
+   <item row="3" column="2" rowspan="11" colspan="2">
+    <widget class="graphicsUtils::AbstractView" name="graphicsView"/>
+   </item>
+   <item row="0" column="2" rowspan="3">
+    <widget class="GridParameters" name="gridParametersBox">
+     <property name="title">
+      <string>Grid</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -775,6 +769,12 @@ p, li { white-space: pre-wrap; }
    <class>graphicsUtils::ColorListEditor</class>
    <extends>QComboBox</extends>
    <header>../../../qrutils/graphicsUtils/colorlisteditor.h</header>
+  </customwidget>
+  <customwidget>
+   <class>GridParameters</class>
+   <extends>QGroupBox</extends>
+   <header>gridparameters.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

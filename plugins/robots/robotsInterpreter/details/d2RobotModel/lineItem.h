@@ -25,17 +25,32 @@ public:
 
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 	virtual void reshapeRectWithShift();
+	virtual void calcResizeItem(QGraphicsSceneMouseEvent *event, int indexGrid);
+
+	virtual void resizeBeginWithGrid(int indexGrid);
+	virtual void reshapeEndWithGrid(int indexGrid);
+	virtual void reshapeBeginWithGrid(int indexGrid);
+	virtual void setBeginCoordinatesWithGrid(int indexGrid);
+	virtual void setEndCoordinatesWithGrid(int indexGrid);
+	virtual void setDraggedEndWithGrid(qreal x, qreal y);
 
 	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserialize(QDomElement const &element);
 	virtual void deserializePenBrush(QDomElement const &element);
 	void setSerializeName(QString name);
 
+	int mCellNumbX1;
+	int mCellNumbY1;
+	int mCellNumbX2;
+	int mCellNumbY2;
+
 protected:
 	void setPrivateData();
+	qreal alignedCoordinate(qreal coord, int coef, int const indexGrid) const;
+
 	graphicsUtils::LineImpl mLineImpl;
-	int mCornerRadius;
 	QString mSerializeName;
+	int mCornerRadius;
 };
 }
 }

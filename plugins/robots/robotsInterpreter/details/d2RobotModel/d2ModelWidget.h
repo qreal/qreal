@@ -155,6 +155,7 @@ private slots:
 	void onMultiselectionCursorButtonToggled(bool on);
 	void setCursorType(cursorType::CursorType cursor);
 
+	void allignWalls();
 	void changeNoiseSettings();
 
 	void startTimelineListening();

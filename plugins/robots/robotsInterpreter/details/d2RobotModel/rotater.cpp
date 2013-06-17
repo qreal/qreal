@@ -95,6 +95,7 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal const x2 = event->lastPos().x();
 	qreal const y2 = event->lastPos().y();
 	qreal len = sqrt((x1 * x1 + y1 * y1) * (x2 * x2 + y2 * y2));
+	qreal len1 = sqrt((1 * 1 + 0 * 0) * (x2 * x2 + y2 * y2));
 
 	// Rotation sign is the sign of the vector product
 	qreal const vectorProduct = x1 * y2 - x2 * y1;
@@ -102,7 +103,12 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 
 	qreal const eps = 10e-8;
 	qreal const dalpha = len < eps ? 0 : acos((x1 * x2 + y1 * y2) / len);
-	mMaster->rotate(mMaster->rotation() - sign * dalpha * 180 / M_PI);
+	qreal const alpha =  len < eps ? 0 : acos((1 * x2 + 0 * y2) / len1);
+	if (event->modifiers() & Qt::ShiftModifier) {
+		mMaster->rotate(mMaster->rotation() - sign * (alpha - fmod (alpha, M_PI/4)) * 180 / M_PI);
+	} else {
+		mMaster->rotate(mMaster->rotation() - sign * dalpha * 180 / M_PI);
+	}
 }
 
 void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)
