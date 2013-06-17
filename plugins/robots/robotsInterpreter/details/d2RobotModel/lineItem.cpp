@@ -4,7 +4,6 @@
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include "../../../../../qrkernel/settingsManager.h"
 
-
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
@@ -65,15 +64,16 @@ void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 	if (event->modifiers() & Qt::ShiftModifier) {
 		mX2=event->scenePos().x();
 		mY2=event->scenePos().y();
-		this->reshapeRectWithShift();
+		reshapeRectWithShift();
 	} else {
 		if ((SettingsManager::value("2dShowGrid").toBool()) && (mDragState == TopLeft || mDragState == BottomRight) && (strcmp(this->metaObject()->className(), "qReal::interpreters::robots::details::d2Model::WallItem")==0)){
 			calcResizeItem(event, SettingsManager::value("2dGridCellSize").toInt());
 		} else {
-			if (mDragState == TopLeft || mDragState == BottomRight)
+			if (mDragState == TopLeft || mDragState == BottomRight) {
 				AbstractItem::resizeItem(event);
-			else
+			} else {
 				setFlag(QGraphicsItem::ItemIsMovable, true);
+			}
 		}
 	}
 }
@@ -112,11 +112,10 @@ void LineItem::reshapeRectWithShift()
 
 void LineItem::resizeBeginWithGrid(int indexGrid)
 {
-	int coefX = static_cast<int>(mX1) / indexGrid;
-	int coefY = static_cast<int>(mY1) / indexGrid;
+	int const coefX = static_cast<int>(mX1) / indexGrid;
+	int const coefY = static_cast<int>(mY1) / indexGrid;
 
-	if (qAbs(mY2-mY1)>qAbs(mX2-mX1))
-	{
+	if (qAbs(mY2 - mY1) > qAbs(mX2 - mX1)) {
 		setX1andY1(mX2, alignedCoordinate(mY1, coefY, indexGrid));
 	} else {
 		setX1andY1(alignedCoordinate(mX1, coefX, indexGrid), mY2);
@@ -129,11 +128,10 @@ void LineItem::resizeBeginWithGrid(int indexGrid)
 
 void LineItem::reshapeEndWithGrid(int indexGrid)
 {
-	int coefX = static_cast<int>(mX2) / indexGrid;
-	int coefY = static_cast<int>(mY2) / indexGrid;
+	int const coefX = static_cast<int>(mX2) / indexGrid;
+	int const coefY = static_cast<int>(mY2) / indexGrid;
 
-	if (qAbs(mY2-mY1)>qAbs(mX2-mX1))
-	{
+	if (qAbs(mY2 - mY1) > qAbs(mX2 - mX1)) {
 		setX2andY2(mX1, alignedCoordinate(mY2, coefY, indexGrid));
 	} else {
 		setX2andY2(alignedCoordinate(mX2, coefX, indexGrid), mY1);
@@ -154,19 +152,12 @@ void LineItem::reshapeBeginWithGrid(int indexGrid)
 
 void LineItem::setBeginCoordinatesWithGrid(int indexGrid)
 {
-	int coefX = mCellNumbX1;
-	int coefY = mCellNumbY1;
-
-	setX1andY1(coefX * indexGrid, coefY * indexGrid);
-
+	setX1andY1(mCellNumbX1 * indexGrid, mCellNumbY1 * indexGrid);
 }
 
 void LineItem::setEndCoordinatesWithGrid(int indexGrid)
 {
-	int const coefX = mCellNumbX2;
-	int const coefY = mCellNumbY2;
-
-	setX2andY2(coefX * indexGrid,coefY * indexGrid);
+	setX2andY2(mCellNumbX2 * indexGrid, mCellNumbY2 * indexGrid);
 }
 
 void LineItem::setDraggedEndWithGrid(qreal x, qreal y)
@@ -176,7 +167,7 @@ void LineItem::setDraggedEndWithGrid(qreal x, qreal y)
 
 qreal LineItem::alignedCoordinate(qreal coord, int coef, int const indexGrid) const
 {
-	int const coefSign = coef != 0 ? coef / qAbs(coef) : 0;
+	int const coefSign = coef ? coef / qAbs(coef) : 0;
 
 	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid) {
 		return coef * indexGrid;

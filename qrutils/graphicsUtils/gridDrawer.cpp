@@ -7,7 +7,7 @@ GridDrawer::GridDrawer()
 {
 }
 
-void GridDrawer::drawGrid(QPainter *painter, const QRectF &rect, int const indexGrid)
+void GridDrawer::drawGrid(QPainter *painter, QRectF const &rect, int const indexGrid)
 {
 	qreal const sceneX = rect.x();
 	qreal const sceneY = rect.y();

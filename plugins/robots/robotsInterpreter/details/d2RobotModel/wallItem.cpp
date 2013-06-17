@@ -73,13 +73,13 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 	QPointF const oldPos = pos();
 	if (SettingsManager::value("2dShowGrid").toBool() && mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)){
 		QPointF const pos = event->scenePos();
-		int indexGrid = SettingsManager::value("2dGridCellSize").toInt();
+		int const indexGrid = SettingsManager::value("2dGridCellSize").toInt();
 		qreal const deltaX = (mX1 - mX2);
 		qreal const deltaY = (mY1 - mY2);
 		mX1 = pos.x() - mOldX1;
 		mY1 = pos.y() - mOldY1;
-		this->reshapeBeginWithGrid(indexGrid);
-		this->setDraggedEndWithGrid(deltaX, deltaY);
+		reshapeBeginWithGrid(indexGrid);
+		setDraggedEndWithGrid(deltaX, deltaY);
 		mCellNumbX1 = mX1/indexGrid;
 		mCellNumbY1 = mY1/indexGrid;
 		mCellNumbX2 = mX2/indexGrid;

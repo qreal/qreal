@@ -25,14 +25,14 @@ public:
 	void forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
 	void forReleaseResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
 	void reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect);
-	void drawBackground(QPainter *painter, const QRectF &rect);
+	void drawBackground(QPainter *painter, QRectF const &rect);
+
+public slots:
+	void updateGrid();
 
 private:
 	graphicsUtils::GridDrawer *mGridDrawer;
 	qreal mWidthOfGrid;
-
-public slots:
-	void updateGrid();
 
 signals:
 	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);

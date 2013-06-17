@@ -524,10 +524,9 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 {
 	QPointF const pos = event->scenePos();
 	if (mCurrentWall) {
-		QPointF oldPos = mCurrentWall->end();
+		QPointF const oldPos = mCurrentWall->end();
 		mCurrentWall->setX2andY2(pos.x(), pos.y());
-		if (SettingsManager::value("2dShowGrid").toBool())
-		{
+		if (SettingsManager::value("2dShowGrid").toBool()) {
 			mCurrentWall->reshapeBeginWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 			mCurrentWall->reshapeEndWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 		} else {
