@@ -828,7 +828,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="550"/>
         <source>Ctrl+S</source>
-        <translation>Ctrl+S</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="558"/>
@@ -838,7 +838,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="569"/>
         <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="637"/>
