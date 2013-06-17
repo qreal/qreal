@@ -819,9 +819,6 @@ p, li { white-space: pre-wrap; }
    </item>
    <item row="0" column="2">
     <widget class="GridParameters" name="gridParametersBox">
-     <property name="title">
-      <string>Grid</string>
-     </property>
     </widget>
    </item>
   </layout>
