@@ -32,6 +32,7 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		, mMotorA(NULL)
 		, mMotorB(NULL)
 		, mMotorC(NULL)
+		, mDisplay(new NxtDisplay)
 		, mTimeline(new Timeline(this))
 		, mNoiseGen()
 		, mNeedSync(false)
@@ -111,11 +112,7 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 
 int D2RobotModel::varySpeed(int const speed) const
 {
-	qreal const ran = mNoiseGen.generate(
-					mNoiseGen.approximationLevel()
-					, varySpeedDispersion
-				);
-
+	qreal const ran = mNoiseGen.generate(mNoiseGen.approximationLevel(), varySpeedDispersion);
 	return truncateToInterval(-100, 100, round(speed * (1 + ran)));
 }
 
@@ -150,7 +147,7 @@ SensorsConfiguration &D2RobotModel::configuration()
 
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
-	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel);
+	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel, mDisplay);
 	return mD2ModelWidget;
 }
 
@@ -270,9 +267,11 @@ QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 	painter.setPen(QPen(Qt::black));
 	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
 
+	bool const wasSelected = mD2ModelWidget->sensorItems()[port]->isSelected();
 	mD2ModelWidget->setSensorVisible(port, false);
 	mD2ModelWidget->scene()->render(&painter, QRectF(), scanningRect);
 	mD2ModelWidget->setSensorVisible(port, true);
+	mD2ModelWidget->sensorItems()[port]->setSelected(wasSelected);
 
 	return image;
 }
@@ -327,14 +326,14 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 	QHashIterator<unsigned long, int> i(countsColor);
 	while(i.hasNext()) {
 		i.next();
-        unsigned long color = i.key();
-        if (color != white) {
-            int b = (color >> 0) & 0xFF;
-            int g = (color >> 8) & 0xFF;
-            int r = (color >> 16) & 0xFF;
-            qreal k = qSqrt(static_cast<qreal>(b * b + g * g + r * r)) / 500.0;
-            allWhite += static_cast<qreal>(i.value()) * k;
-        }
+		unsigned long const color = i.key();
+		if (color != white) {
+			int const b = (color >> 0) & 0xFF;
+			int const g = (color >> 8) & 0xFF;
+			int const r = (color >> 16) & 0xFF;
+			qreal const k = qSqrt(static_cast<qreal>(b * b + g * g + r * r)) / 500.0;
+			allWhite += static_cast<qreal>(i.value()) * k;
+		}
 	}
 
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
@@ -387,11 +386,18 @@ void D2RobotModel::startInit()
 	mTimeline->start();
 }
 
+void D2RobotModel::startInterpretation()
+{
+	startInit();
+	mD2ModelWidget->startTimelineListening();
+}
+
 void D2RobotModel::stopRobot()
 {
 	mMotorA->speed = 0;
 	mMotorB->speed = 0;
 	mMotorC->speed = 0;
+	mD2ModelWidget->stopTimelineListening();
 }
 
 void D2RobotModel::countBeep()
@@ -406,7 +412,6 @@ void D2RobotModel::countBeep()
 
 void D2RobotModel::countNewCoord()
 {
-
 	Motor *motor1 = mMotorA;
 	Motor *motor2 = mMotorB;
 
@@ -558,12 +563,18 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 
 	configuration().deserialize(robotElement);
 
+	mNeedSync = false;
 	nextFragment();
 }
 
 Timeline *D2RobotModel::timeline() const
 {
 	return mTimeline;
+}
+
+details::NxtDisplay *D2RobotModel::display()
+{
+	return mDisplay;
 }
 
 void D2RobotModel::setNoiseSettings()

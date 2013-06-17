@@ -6,8 +6,9 @@
 using namespace qReal;
 using namespace robots::generator;
 
-LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen
-		, qReal::Id const &elementId): AbstractElementGenerator(emboxGen, elementId)
+LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *gen
+		, qReal::Id const &elementId)
+	: AbstractElementGenerator(gen, elementId)
 {
 }
 

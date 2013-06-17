@@ -59,7 +59,7 @@ macx:qesp_mac_framework {
     QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
 }
 
-win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
+# win32|mac:!wince*:!win32-msvc:!macx-xcode:CONFIG += debug_and_release build_all
 
 #For non-windows system, only depends on QtCore module
 unix:QT = core
@@ -72,11 +72,9 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     QESP_LIB_BASENAME = qextserialport
 }
 
-CONFIG(debug, debug|release) {
-	TARGET = qextserialportd
-} else {
-	TARGET = qextserialport
-}
+# TARGET is set as qextserialport regardless debug or release build mode, since it corresponds to conventions in QReal.
+# In future all QReal libraries shall be built separately in each configuration.
+TARGET = qextserialport
 
 DESTDIR = ../../../../bin
 

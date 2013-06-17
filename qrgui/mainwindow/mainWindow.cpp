@@ -20,14 +20,12 @@
 
 #include "errorReporter.h"
 
-#include "../editorPluginInterface/editorInterface.h"
 #include "shapeEdit/shapeEdit.h"
 #include "propertyEditorProxyModel.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 
 #include "../models/models.h"
 #include "../view/editorView.h"
-#include "../view/sceneCustomizer.h"
 
 #include "../controller/commands/removeElementCommand.h"
 #include "../controller/commands/doNothingCommand.h"
@@ -36,8 +34,6 @@
 #include "../controller/commands/updateElementCommand.h"
 
 #include "../umllib/element.h"
-#include "../dialogs/pluginDialog.h"
-#include "../dialogs/checkoutDialog.h"
 #include "../generators/xmi/xmiHandler.h"
 #include "../generators/java/javaHandler.h"
 #include "../pluginManager/listenerManager.h"
@@ -47,11 +43,13 @@
 
 #include "splashScreen.h"
 #include "../dialogs/startDialog/startDialog.h"
+#include "../dialogs/suggestToCreateProjectDialog.h"
 #include "../dialogs/progressDialog/progressDialog.h"
 
 #include "qscintillaTextEdit.h"
 
 #include "dotRunner.h"
+#include "../view/sceneCustomizer.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -63,9 +61,9 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
 		, mModels(NULL)
 		, mController(new Controller)
-		, mEditorManager()
+		, mEditorManagerProxy(new EditorManager())
 		, mListenerManager(NULL)
-		, mPropertyModel(mEditorManager)
+		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(NULL)
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(NULL)
@@ -75,16 +73,18 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
-		, mStartDialog(new StartDialog(this, mProjectManager))
+		, mStartDialog(new StartDialog(*this, *mProjectManager))
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
 {
 	mUi->setupUi(this);
+	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
 	initSettingsManager();
 	registerMetaTypes();
 
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
+	splashScreen.setVisible(false);
 	splashScreen.setProgress(5);
 
 	initRecentProjectsMenu();
@@ -99,6 +99,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	splashScreen.setProgress(40);
 
 	initDocks();
+	mModels = new models::Models("", mEditorManagerProxy);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -131,7 +132,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	}
 	splashScreen.close();
 
-	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManager);
+	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
 	connectActions();
@@ -141,8 +142,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// here then we have some problems with correct main window initialization
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
-	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));
-}
+	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));}
 
 void MainWindow::connectActions()
 {
@@ -161,9 +161,8 @@ void MainWindow::connectActions()
 	connect(mUi->actionMakeSvg, SIGNAL(triggered()), this, SLOT(makeSvg()));
 
 	connect(mUi->actionNew_Diagram, SIGNAL(triggered()), mProjectManager, SLOT(suggestToCreateDiagram()));
-	connect(mUi->actionNewProject, SIGNAL(triggered()), mStartDialog, SLOT(exec()));
+	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 
-	connect(mUi->actionImport, SIGNAL(triggered()), mProjectManager, SLOT(suggestToImport()));
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
 	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
 	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
@@ -174,7 +173,6 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
-	connect(mUi->actionPlugins, SIGNAL(triggered()), this, SLOT(settingsPlugins()));
 	connect(mUi->actionShow_grid, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
 	connect(mUi->actionShow_alignment, SIGNAL(toggled(bool)), this, SLOT(showAlignment(bool)));
 	connect(mUi->actionSwitch_on_grid, SIGNAL(toggled(bool)), this, SLOT(switchGrid(bool)));
@@ -253,6 +251,7 @@ MainWindow::~MainWindow()
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
+	mUi->paletteTree->saveConfiguration();
 	SettingsManager::instance()->saveData();
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
@@ -266,9 +265,9 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 }
 
-EditorManager *MainWindow::manager()
+EditorManagerInterface& MainWindow::editorManager()
 {
-	return &mEditorManager;
+	return mEditorManagerProxy;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -292,7 +291,37 @@ void MainWindow::loadPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
-			, mEditorManager);
+			, &mEditorManagerProxy);
+}
+
+void MainWindow::closeDiagramTab(Id const &id)
+{
+	IdList const graphicalIds = mModels->graphicalRepoApi().graphicalElements(id.type());
+	if (!graphicalIds.isEmpty()) {
+		// TODO: Why only for first graphical element?
+		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(graphicalIds[0]);
+		for (int i = 0; i < mUi->tabs->count(); i++) {
+			EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
+			if (tab != NULL && tab->mvIface()->rootIndex() == index) {
+				mUi->tabs->removeTab(i);
+			}
+		}
+	}
+}
+
+void MainWindow::clearSelectionOnTabs()
+{
+	for (int i = 0; i < mUi->tabs->count(); i++) {
+		EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
+		if (tab != NULL) {
+			tab->scene()->clearSelection();
+		}
+	}
+}
+
+void MainWindow::addEditorElementsToPalette(Id const &editor, Id const &diagram)
+{
+	mUi->paletteTree->addEditorElements(mEditorManagerProxy, editor, diagram);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -503,12 +532,6 @@ void MainWindow::makeSvg()
 	getCurrentTab()->scene()->render(&painter);
 }
 
-void MainWindow::settingsPlugins()
-{
-	PluginDialog dialog(mEditorManager , this);
-	dialog.exec();
-}
-
 void MainWindow::deleteElementFromDiagram(Id const &id)
 {
 	bool isLogical = mModels->logicalModelAssistApi().isLogicalId(id);
@@ -562,7 +585,7 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 			// Child remove commands will be added in currentItem delete command
 		}
 
-		bool const isEdge = !mEditorManager.isGraphicalElementNode(currentItem);
+		bool const isEdge = !mEditorManagerProxy.isGraphicalElementNode(currentItem);
 		if (isEdge) {
 			Id const src = mModels->graphicalModelAssistApi().from(currentItem);
 			if (src != Id() && !itemsToUpdate.contains(src)) {
@@ -672,9 +695,10 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 				, mModels->graphicalModelAssistApi().name(id)
 				, mModels->graphicalModelAssistApi().position(id)
 				);
+	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
 	foreach (Id const &child, children) {
-		if (mEditorManager.isGraphicalElementNode(child)) {
+		if (mEditorManagerProxy.isGraphicalElementNode(child)) {
 			result->addPreAction(graphicalDeleteCommand(child));
 		} else {
 			// Edges are deletted first
@@ -820,10 +844,10 @@ void MainWindow::parseJavaLibraries()
 
 bool MainWindow::unloadPlugin(QString const &pluginName)
 {
-	if (mEditorManager.editors().contains(Id(pluginName))) {
-		IdList const diagrams = mEditorManager.diagrams(Id(pluginName));
+	if (mEditorManagerProxy.editors().contains(Id(pluginName))) {
+		IdList const diagrams = mEditorManagerProxy.diagrams(Id(pluginName));
 
-		if (!mEditorManager.unloadPlugin(pluginName)) {
+		if (!mEditorManagerProxy.unloadPlugin(pluginName)) {
 			return false;
 		}
 		foreach (Id const &diagram, diagrams) {
@@ -835,20 +859,21 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 
 bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
-	if (!mEditorManager.loadPlugin(fileName)) {
+	if (!mEditorManagerProxy.loadPlugin(fileName)) {
 		return false;
 	}
 
-	foreach (Id const &diagram, mEditorManager.diagrams(Id(pluginName))) {
-		mUi->paletteTree->addEditorElements(mEditorManager, Id(pluginName), diagram);
+	foreach (Id const &diagram, mEditorManagerProxy.diagrams(Id(pluginName))) {
+		mUi->paletteTree->addEditorElements(mEditorManagerProxy, Id(pluginName), diagram);
 	}
+
 	mUi->paletteTree->initDone();
 	return true;
 }
 
 bool MainWindow::pluginLoaded(QString const &pluginName)
 {
-	return mEditorManager.editors().contains(Id(pluginName));
+	return mEditorManagerProxy.editors().contains(Id(pluginName));
 }
 
 EditorView * MainWindow::getCurrentTab() const
@@ -934,6 +959,7 @@ void MainWindow::setSceneFont()
 	}
 }
 
+// TODO: Unify overloads.
 void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue)
 {
 	ShapeEdit *shapeEdit = new ShapeEdit(dynamic_cast<models::details::LogicalModel *>(mModels->logicalModel())
@@ -947,6 +973,19 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	model->setData(index, propertyValue, role);
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &))
 			, this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
+
+	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
+	mUi->tabs->setCurrentWidget(shapeEdit);
+	setConnectActionZoomTo(shapeEdit);
+}
+
+// This method is for Interpreter.
+void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy)
+{
+	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab());
+	if (!propertyValue.isEmpty()) {
+		shapeEdit->load(propertyValue);
+	}
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
@@ -1037,7 +1076,7 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (mEditorManager.isDiagramNode(id)) {
+	if (mEditorManagerProxy.isDiagramNode(id)) {
 		return;
 	}
 
@@ -1128,7 +1167,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		foreach (QString const &name, mUi->paletteTree->editorsNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
 			Id const diagramId = Id(id.editor(), id.diagram());
-			QString const diagramName = mEditorManager.friendlyName(diagramId);
+			QString const diagramName = mEditorManagerProxy.friendlyName(diagramId);
 			if (diagramName == name) {
 				mUi->paletteTree->setComboBoxIndex(i);
 				break;
@@ -1141,11 +1180,27 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 void MainWindow::openFirstDiagram()
 {
 	Id const rootId = mModels->graphicalModelAssistApi().rootId();
-	IdList const diagrams = mModels->graphicalModelAssistApi().children(rootId);
-	if (diagrams.count() == 0) {
+	IdList const rootIds = mModels->graphicalModelAssistApi().children(rootId);
+	if (rootIds.count() == 0) {
 		return;
 	}
-	openNewTab(mModels->graphicalModelAssistApi().indexById(diagrams[0]));
+	openNewTab(mModels->graphicalModelAssistApi().indexById(rootIds[0]));
+}
+
+void MainWindow::closeTabsWithRemovedRootElements()
+{
+	Id const rootId = mModels->graphicalModelAssistApi().rootId();
+	IdList const rootIds = mModels->graphicalModelAssistApi().children(rootId);
+	int i = 0;
+	while (i < mUi->tabs->count()) {
+		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab && !rootIds.contains(tab->mvIface()->rootId())) {
+			closeTab(i);
+			break;
+		} else {
+			++i;
+		}
+	}
 }
 
 void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIndex)
@@ -1205,6 +1260,7 @@ void MainWindow::currentTabChanged(int newIndex)
 
 	bool const isEditorTab = getCurrentTab() != NULL;
 
+	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	if (!isEditorTab) {
 		mToolManager.activeTabChanged(Id());
 	} else if (getCurrentTab()->mvIface() != NULL) {
@@ -1398,16 +1454,21 @@ void MainWindow::setSwitchAlignment(bool isChecked)
 
 void MainWindow::showGestures()
 {
-	mGesturesWidget = new GesturesWidget();
+	mGesturesWidget = new gestures::GesturesWidget();
 	mUi->tabs->addTab(mGesturesWidget, tr("Gestures Show"));
 	mUi->tabs->setCurrentWidget(mGesturesWidget);
 	connect(mGesturesWidget, SIGNAL(currentElementChanged()), this, SIGNAL(currentIdealGestureChanged()));
 	emit gesturesShowed();
 }
 
-GesturesPainterInterface * MainWindow::gesturesPainter()
+gestures::GesturesPainterInterface * MainWindow::gesturesPainter() const
 {
 	return mGesturesWidget;
+}
+
+ProxyEditorManager &MainWindow::editorManagerProxy()
+{
+	return mEditorManagerProxy;
 }
 
 void MainWindow::createDiagram(QString const &idString)
@@ -1419,6 +1480,29 @@ void MainWindow::createDiagram(QString const &idString)
 	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
 	mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
 	openNewTab(index);
+}
+
+bool MainWindow::createProject(QString const &diagramIdString)
+{
+	mProjectManager->clearAutosaveFile();
+	if (!mProjectManager->openEmptyWithSuggestToSaveChanges()) {
+		return false;
+	}
+	createDiagram(diagramIdString);
+	return true;
+}
+
+void MainWindow::createProject()
+{
+	Id const theOnlyDiagram = mEditorManagerProxy.theOnlyDiagram();
+	if (theOnlyDiagram == Id()) {
+		SuggestToCreateProjectDialog dialog(this);
+		dialog.exec();
+	} else {
+		Id const editor = editorManager().editors()[0];
+		QString const diagramIdString = editorManager().diagramNodeNameString(editor, theOnlyDiagram);
+		createProject(diagramIdString);
+	}
 }
 
 int MainWindow::getTabIndex(const QModelIndex &index)
@@ -1532,7 +1616,8 @@ void MainWindow::applySettings()
 		EditorView * const tab = static_cast<EditorView *>(mUi->tabs->widget(i));
 		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
 		if (scene) {
-			if (SettingsManager::value("SquareLine", false).toBool()) {
+			if (SettingsManager::value("SquareLine", false).toBool()
+				|| SettingsManager::value("ActivateGrid").toBool()) {
 				scene->updateEdgeElements();
 			}
 			scene->invalidate();
@@ -1624,9 +1709,19 @@ void MainWindow::initPluginsAndStartDialog()
 {
 	initToolPlugins();
 	if (mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)) {
+		mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 		// Centering dialog inside main window
 		mStartDialog->move(geometry().center() - mStartDialog->rect().center());
 		mStartDialog->exec();
+	}
+}
+
+void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu)
+{
+	if (actionOrMenu.isAction()) {
+		target->addAction(actionOrMenu.action());
+	} else {
+		target->addMenu(actionOrMenu.menu());
 	}
 }
 
@@ -1650,11 +1745,9 @@ void MainWindow::initToolPlugins()
 
 	foreach (ActionInfo const action, actions) {
 		if (action.menuName() == "tools") {
-			if (action.isAction()) {
-				mUi->menuTools->addAction(action.action());
-			} else {
-				mUi->menuTools->addMenu(action.menu());
-			}
+			addActionOrSubmenu(mUi->menuTools, action);
+		} else if (action.menuName() == "settings") {
+			addActionOrSubmenu(mUi->menuSettings, action);
 		}
 	}
 
@@ -1822,8 +1915,10 @@ void MainWindow::saveDiagramAsAPictureToFile(QString const &fileName)
 
 void MainWindow::saveDiagramAsAPicture()
 {
-	QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
-	saveDiagramAsAPictureToFile(fileName);
+	if (getCurrentTab()) {
+		QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
+		saveDiagramAsAPictureToFile(fileName);
+	}
 }
 
 void MainWindow::changePaletteRepresentation()
@@ -1838,8 +1933,14 @@ void MainWindow::changePaletteRepresentation()
 void MainWindow::arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles)
 {
 	Id const diagramId = activeDiagram();
-	DotRunner *runner = new DotRunner(diagramId, mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi()
-			, mEditorManager, absolutePathToDotFiles);
+	DotRunner *runner = new DotRunner(
+			diagramId
+			, mModels->graphicalModelAssistApi()
+			, mModels->logicalModelAssistApi()
+			, mEditorManagerProxy
+			, absolutePathToDotFiles
+			);
+
 	if (runner->run(algorithm)) {
 		updateActiveDiagram();
 	}

@@ -8,8 +8,9 @@
 namespace robots {
 namespace generator {
 
-/// Realization of AbstractElementGenerator for If block.
-class IfElementGenerator : public AbstractElementGenerator {
+/// Implementation of AbstractElementGenerator for If block.
+class IfElementGenerator : public AbstractElementGenerator
+{
 public:
 	explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id const &elementId);
 

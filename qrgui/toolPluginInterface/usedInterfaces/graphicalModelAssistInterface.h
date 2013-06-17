@@ -25,9 +25,6 @@ public:
 	virtual IdList temporaryRemovedLinksNone(Id const &elem) const = 0;
 	virtual void removeTemporaryRemovedLinks(Id const &elem) = 0;
 
-	virtual QVariant property(Id const &id, QString const &name) const = 0;
-	virtual void setProperty(Id const &id, QString const &name, QVariant const &value) = 0;
-
 	virtual void setConfiguration(Id const &elem, QPolygon const &newValue) = 0;
 	virtual QPolygon configuration(Id const &elem) const = 0;
 

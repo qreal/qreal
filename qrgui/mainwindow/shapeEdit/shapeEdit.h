@@ -8,21 +8,29 @@
 #include "scene.h"
 #include "item.h"
 #include "../../../qrutils/graphicsUtils/abstractItemView.h"
+#include "../../qrkernel/ids.h"
+#include "../pluginManager/editorManagerInterface.h"
+#include "ui_mainWindow.h"
 #include "../../models/details/logicalModel.h"
 #include "visibilityConditionsDialog.h"
 
 namespace Ui {
-	class ShapeEdit;
+class ShapeEdit;
 }
+
+namespace qReal {
 
 class ShapeEdit : public QWidget {
 	Q_OBJECT
+
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
 	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role);
+	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow, EditorView *editorView);
+	~ShapeEdit();
 	graphicsUtils::AbstractView* getView();
 	void load(QString const &text);
-	~ShapeEdit();
+
 signals:
 	void shapeSaved(QString const &shape, QPersistentModelIndex const &index, int const &role);
 	void saveSignal();
@@ -60,16 +68,22 @@ private slots:
 	void resetHighlightAllButtons();
 
 private:
-	Scene *mScene;
+	Scene *mScene;  // Has ownership.
 	QGraphicsItemGroup mItemGroup;
-	QList<QAbstractButton *> mButtonGroup;
+	QList<QAbstractButton *> mButtonGroup;  // Doesn't have direct ownership (owned by mUi).
 	QDomDocument mDocument;
 	QPoint mTopLeftPicture;
-	Ui::ShapeEdit *mUi;
+	Ui::ShapeEdit *mUi;  // Has ownership.
 
-	qReal::models::details::LogicalModel *mModel;
+	qReal::models::details::LogicalModel *mModel;  // Doesn't have ownership.
 	QPersistentModelIndex const mIndex;
 	int const mRole;
+	Id mId;
+	EditorManagerInterface *mEditorManager;  // Doesn't have ownership.
+	IdList mGraphicalElements;
+	MainWindow *mMainWindow;  // Doesn't have ownership.
+	EditorView *mEditorView;  // Doesn't have ownership.
+
 	void initButtonGroup();
 	void initFontPalette();
 	void initPalette();
@@ -78,18 +92,18 @@ private:
 	void setHighlightOneButton(QAbstractButton *oneButton);
 
 	void setValuePenStyleComboBox(Qt::PenStyle penStyle);
-	void setValuePenColorComboBox(QColor penColor);
+	void setValuePenColorComboBox(QColor const &penColor);
 	void setValuePenWidthSpinBox(int width);
 	void setValueBrushStyleComboBox(Qt::BrushStyle brushStyle);
 	void setValueBrushColorComboBox(QColor brushColor);
 
 	void setValueTextFamilyFontComboBox(QFont const &fontItem);
 	void setValueTextPixelSizeSpinBox(int size);
-	void setValueTextColorComboBox(QColor penColor);
+	void setValueTextColorComboBox(QColor const &penColor);
 	void setValueItalicCheckBox(bool check);
 	void setValueBoldCheckBox(bool check);
 	void setValueUnderlineCheckBox(bool check);
-	void setValueTextNameLineEdit(QString const& name);
+	void setValueTextNameLineEdit(QString const &name);
 
 	void generateDom();
 	void exportToXml(QString const &fileName);
@@ -97,3 +111,4 @@ private:
 
 	QMap<QString, VisibilityConditionsDialog::PropertyInfo> getProperties() const;
 };
+}

@@ -9,6 +9,7 @@
 #include "robotSettingsPage.h"
 #include "customizer.h"
 #include "details/sensorsConfigurationWidget.h"
+#include "details/nxtDisplay.h"
 
 namespace qReal {
 namespace interpreters {
@@ -39,6 +40,7 @@ private slots:
 	void showRobotSettings();
 	void show2dModel();
 	void rereadSettings();
+	void titlesVisibilityChecked(bool checked);
 
 private:
 	/// Initializes and connects actions, fills action info list
@@ -54,7 +56,7 @@ private:
 	/// @returns True, if action shall be disabled when current diagram is not robots
 	bool needToDisableWhenNotRobotsDiagram(QAction const * const action) const;
 
-	void setTitlesVisibility();
+	void updateTitlesVisibility();
 
 	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 

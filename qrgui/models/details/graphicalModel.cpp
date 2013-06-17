@@ -10,12 +10,12 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager)
-	: AbstractModel(editorManager), mLogicalModelView(this), mApi(*repoApi)
+GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface)
+	: AbstractModel(editorManagerInterface), mLogicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	init();
-	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManager);
+	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManagerInterface);
 }
 
 GraphicalModel::~GraphicalModel()
@@ -131,7 +131,7 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 		case Qt::EditRole:
 			return mApi.name(item->id());
 		case Qt::DecorationRole:
-			return mEditorManager.icon(item->id());
+			return mEditorManagerInterface.icon(item->id());
 		case roles::idRole:
 			return item->id().toVariant();
 		case roles::logicalIdRole:

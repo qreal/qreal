@@ -25,9 +25,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	, QAction * const activateGridAction, QAction * const activateAlignmentAction)
 {
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(ui->pageContentWigdet);
-	PreferencesPage *debuggerPage = new PreferencesDebuggerPage(ui->pageContentWigdet);
+	// Debugger page removed due to #736
 	PreferencesPage *miscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
-//	PreferencesPage *featuresPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
 
@@ -46,7 +45,6 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
 	registerPage(tr("Behaviour"), behaviourPage);
-	registerPage(tr("Debugger"), debuggerPage);
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
 

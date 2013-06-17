@@ -18,7 +18,10 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
-D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent)
+QSize const displaySize(200, 300);
+
+D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
+	, NxtDisplay *nxtDisplay, QWidget *parent)
 		: QWidget(parent)
 		, mUi(new Ui::D2Form)
 		, mScene(NULL)
@@ -26,6 +29,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
 		, mRobotModel(robotModel)
 		, mWorldModel(worldModel)
+		, mNxtDisplay(nxtDisplay)
 		, mDrawingAction(drawingAction::none)
 		, mMouseClicksCount(0)
 		, mCurrentWall(NULL)
@@ -100,6 +104,11 @@ void D2ModelWidget::initWidget()
 	mUi->penColorComboBox->setColor(QColor("black"));
 
 	initButtonGroups();
+
+	mNxtDisplay->setMinimumSize(displaySize);
+	mNxtDisplay->setMaximumSize(displaySize);
+	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mNxtDisplay);
+	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
 }
 
 void D2ModelWidget::connectUiButtons()
@@ -136,6 +145,8 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->autoCenteringButton, SIGNAL(toggled(bool)), this, SLOT(enableRobotFollowing(bool)));
 	connect(mUi->handCursorButton, SIGNAL(toggled(bool)), this, SLOT(onHandCursorButtonToggled(bool)));
 	connect(mUi->multiselectionCursorButton, SIGNAL(toggled(bool)), this, SLOT(onMultiselectionCursorButtonToggled(bool)));
+
+	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
 }
 
 void D2ModelWidget::initButtonGroups()
@@ -199,7 +210,6 @@ void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAct
 {
 	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
 	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
-	connect(runAction, SIGNAL(triggered()), this, SLOT(startTimelineListening()));
 	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTimelineListening()));
 }
 
@@ -627,13 +637,16 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	mRobot->checkSelection();
-	foreach (SensorItem *sensor, mSensors) {
-		if (sensor) {
-			sensor->checkSelection();
+	if (mouseEvent->buttons() & Qt::LeftButton) {
+		mRobot->checkSelection();
+		foreach (SensorItem *sensor, mSensors) {
+			if (sensor) {
+				sensor->checkSelection();
+			}
 		}
 	}
 
+	bool needUpdate = true;
 	processDragMode(mDrawingAction);
 	switch (mDrawingAction){
 	case drawingAction::wall:
@@ -649,11 +662,15 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		reshapeEllipse(mouseEvent);
 		break;
 	default:
-		mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
+		needUpdate = false;
+		if (mouseEvent->buttons() & Qt::LeftButton) {
+			mScene->forMoveResize(mouseEvent, mRobot->realBoundingRect());
+		}
 		break;
 	}
-
-	mScene->update();
+	if (needUpdate) {
+		mScene->update();
+	}
 }
 
 void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
@@ -964,17 +981,6 @@ D2ModelScene* D2ModelWidget::scene()
 	return mScene;
 }
 
-void D2ModelWidget::setRobotVisible(bool isVisible)
-{
-	if (!isVisible) {
-		mRobotWasSelected = mRobot->isSelected();
-	}
-	mRobot->setVisible(isVisible);
-	if (isVisible) {
-		mRobot->setSelected(mRobotWasSelected);
-	}
-}
-
 void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisible)
 {
 	if (mSensors[port]) {
@@ -1020,6 +1026,7 @@ QDomDocument D2ModelWidget::generateXml() const
 
 void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 {
+	clearScene(true);
 	QDomNodeList const worldList = worldModel.elementsByTagName("world");
 	QDomNodeList const robotList = worldModel.elementsByTagName("robot");
 	if (worldList.count() != 1 || robotList.count() != 1) {
@@ -1045,7 +1052,8 @@ void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 {
 	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
 	wall->onOverlappedWithRobot(isNeedStop);
-	if (wall->isDragged()) {
+	if (wall->isDragged() && ((mDrawingAction == drawingAction::none) ||
+			(mDrawingAction == drawingAction::wall && mCurrentWall == wall))) {
 		if (isNeedStop) {
 			wall->setPos(oldPos);
 		}
@@ -1091,6 +1099,19 @@ void D2ModelWidget::stopTimelineListening()
 void D2ModelWidget::onTimelineTick()
 {
 	mUi->timelineBox->stepBy(1);
+}
+
+void D2ModelWidget::toggleDisplayVisibility()
+{
+	setDisplayVisibility(!mNxtDisplay->isVisible());
+}
+
+void D2ModelWidget::setDisplayVisibility(bool visible)
+{
+	mNxtDisplay->setVisible(visible);
+	QString const direction = visible ? "right" : "left";
+	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
+	SettingsManager::setValue("2d_displayVisible", visible);
 }
 
 QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(cursorType::CursorType type) const

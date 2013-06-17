@@ -2,6 +2,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
 
+#include "../../../../../qrkernel/settingsManager.h"
 #include "d2ModelScene.h"
 #include "../../../../../qrutils/graphicsUtils/gridDrawer.h"
 #include "../../../../../qrkernel/settingsManager.h"
@@ -33,8 +34,13 @@ D2ModelScene::~D2ModelScene()
 
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	QGraphicsScene::mousePressEvent(mouseEvent);
-	emit mousePressed(mouseEvent);
+	if (SettingsManager::value("ChaoticEdition").toBool()) {
+		emit mousePressed(mouseEvent);
+		QGraphicsScene::mousePressEvent(mouseEvent);
+	} else {
+		QGraphicsScene::mousePressEvent(mouseEvent);
+		emit mousePressed(mouseEvent);
+	}
 }
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)

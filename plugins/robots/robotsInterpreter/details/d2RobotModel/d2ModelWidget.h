@@ -18,6 +18,7 @@
 #include "robotItem.h"
 #include "rotater.h"
 #include "timeline.h"
+#include "../nxtDisplay.h"
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 
 namespace Ui
@@ -64,7 +65,8 @@ class D2ModelWidget : public QWidget {
 	Q_OBJECT
 
 public:
-	D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent = 0);
+	D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
+			, NxtDisplay *nxtDisplay, QWidget *parent = 0);
 	~D2ModelWidget();
 	void init(bool isActive = true);
 	void close();
@@ -87,7 +89,6 @@ public:
 	void disableRunStopButtons();
 
 	D2ModelScene* scene();
-	void setRobotVisible(bool isVisible);
 	void setSensorVisible(inputPort::InputPortEnum port, bool isVisible);
 
 	void closeEvent(QCloseEvent *event);
@@ -103,6 +104,10 @@ public slots:
 	void syncronizeSensors();
 	/// Synchronizes noise settings in 2D model window with global ones
 	void rereadNoiseSettings();
+	/// Starts 2D model time counter
+	void startTimelineListening();
+	/// Stops 2D model time counter
+	void stopTimelineListening();
 
 signals:
 	void d2WasClosed();
@@ -117,8 +122,10 @@ signals:
 	void modelChanged(QDomDocument const &xml);
 
 protected:
-	void changeEvent(QEvent *e);
-	void showEvent(QShowEvent *e);
+	virtual void changeEvent(QEvent *e);
+	virtual void showEvent(QShowEvent *e);
+	virtual void keyPressEvent(QKeyEvent *event);
+
 
 private slots:
 	void addWall(bool on);
@@ -158,12 +165,9 @@ private slots:
 	void allignWalls();
 	void changeNoiseSettings();
 
-	void startTimelineListening();
-	void stopTimelineListening();
 	void onTimelineTick();
 
-protected:
-	virtual void keyPressEvent(QKeyEvent *event);
+	void toggleDisplayVisibility();
 
 private:
 	static const int defaultPenWidth = 15;
@@ -181,6 +185,8 @@ private:
 	void drawWalls();
 	void drawColorFields();
 	void drawInitialRobot();
+
+	void setDisplayVisibility(bool visible);
 
 	QDomDocument generateXml() const;
 
@@ -238,6 +244,7 @@ private:
 
 	RobotModelInterface *mRobotModel;
 	WorldModel *mWorldModel;
+	NxtDisplay *mNxtDisplay;
 
 	/** @brief Current action (toggled button on left panel)*/
 	drawingAction::DrawingAction mDrawingAction;

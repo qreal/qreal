@@ -4,6 +4,8 @@
 
 const double mouseSpeed = 5;
 
+using namespace qReal::gestures;
+
 QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const &path)
 {
 	QList<QPoint> mousePath;

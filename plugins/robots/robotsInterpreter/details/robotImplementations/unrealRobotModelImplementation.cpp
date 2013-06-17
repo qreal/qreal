@@ -14,6 +14,7 @@ UnrealRobotModelImplementation::UnrealRobotModelImplementation(D2RobotModel *d2R
 	, mMotorA(0, d2RobotModel)
 	, mMotorB(1, d2RobotModel)
 	, mMotorC(2, d2RobotModel)
+	, mDisplay(d2RobotModel)
 	, mEncoderA(outputPort::port1, d2RobotModel)
 	, mEncoderB(outputPort::port2, d2RobotModel)
 	, mEncoderC(outputPort::port3, d2RobotModel)
@@ -22,6 +23,7 @@ UnrealRobotModelImplementation::UnrealRobotModelImplementation(D2RobotModel *d2R
 	mActiveWaitingTimer.setSingleShot(true);
 	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
 	connect(&mSensorsConfigurer, SIGNAL(allSensorsConfigured()), this, SLOT(sensorConfigurationDoneSlot()));
+	mDisplay.attachToPaintWidget();
 }
 
  UnrealRobotModelImplementation::~UnrealRobotModelImplementation()
@@ -32,6 +34,11 @@ UnrealRobotModelImplementation::UnrealRobotModelImplementation(D2RobotModel *d2R
 brickImplementations::UnrealBrickImplementation &UnrealRobotModelImplementation::brick()
 {
 	return mBrick;
+}
+
+displayImplementations::UnrealDisplayImplementation &UnrealRobotModelImplementation::display()
+{
+	return mDisplay;
 }
 
 sensorImplementations::UnrealTouchSensorImplementation *UnrealRobotModelImplementation::touchSensor(inputPort::InputPortEnum const &port) const
@@ -143,8 +150,9 @@ sensorImplementations::UnrealEncoderImplementation &UnrealRobotModelImplementati
 
 void UnrealRobotModelImplementation::startInterpretation()
 {
+	mDisplay.clearScreen();
 	mD2Model->showModelWidget();
-	mD2Model->startInit();
+	mD2Model->startInterpretation();
 }
 
 AbstractTimer *UnrealRobotModelImplementation::produceTimer()

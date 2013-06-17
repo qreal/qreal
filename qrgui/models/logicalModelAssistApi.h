@@ -3,10 +3,12 @@
 #include "details/logicalModel.h"
 #include "details/modelsAssistApi.h"
 #include "../toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "../pluginManager/proxyEditorManager.h"
 
 namespace qReal {
 
 class EditorManager;
+class EditorManagerInterface;
 
 namespace models {
 
@@ -17,9 +19,9 @@ class LogicalModel;
 class LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
 {
 public:
-	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManager const &editorManager);
+	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface);
 	virtual ~LogicalModelAssistApi() {}
-	EditorManager const &editorManager() const;
+	EditorManagerInterface const &editorManagerInterface() const;
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
 	Id createElement(Id const &parent, Id const &type);
@@ -40,8 +42,11 @@ public:
 	IdList diagramsAbleToBeUsedIn(Id const &element) const;
 	virtual void stackBefore(Id const &element, Id const &sibling);
 
-	void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
-	QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
+	virtual QVariant property(Id const &id, QString const &name) const;
+	virtual void setProperty(Id const &id, QString const &name, QVariant const &value);
+
+	virtual void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
+	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
 
 	bool isLogicalId(Id const &id) const;
 
@@ -69,6 +74,7 @@ public:
 private:
 	details::ModelsAssistApi mModelsAssistApi;
 	details::LogicalModel &mLogicalModel;
+	EditorManagerInterface const &mEditorManager;
 
 	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden
 	LogicalModelAssistApi& operator =(LogicalModelAssistApi const &); // Assignment is forbidden also

@@ -36,6 +36,7 @@ public:
 	bool open(QString const &fileName = "autosave.qrs");
 	bool suggestToSaveChangesOrCancel();
 	void reinitAutosaver();
+	QString openFileName(QString const &dialogWindowTitle) const;
 	QString saveFilePath() const;
 	void setSaveFilePath(QString const &filePath = "");
 	void saveGenCode(QString const &text);

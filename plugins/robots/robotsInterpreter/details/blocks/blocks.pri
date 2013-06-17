@@ -25,6 +25,14 @@ HEADERS += \
 	details/blocks/waitBlock.h \
 	details/blocks/waitForSensorBlock.h \
 	details/blocks/waitForColorSensorBlockBase.h \
+	details/blocks/commentBlock.h \
+	details/blocks/waitForButtonsBlock.h \
+	details/blocks/drawPixelBlock.h \
+	details/blocks/drawLineBlock.h \
+	details/blocks/drawCircleBlock.h \
+	details/blocks/printTextBlock.h \
+	details/blocks/drawRectBlock.h \
+	details/blocks/clearScreenBlock.h \
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -53,3 +61,11 @@ SOURCES +=\
 	details/blocks/waitBlock.cpp \
 	details/blocks/waitForSensorBlock.cpp \
 	details/blocks/waitForColorSensorBlockBase.cpp \
+	details/blocks/commentBlock.cpp \
+	details/blocks/waitForButtonsBlock.cpp \
+	details/blocks/drawPixelBlock.cpp \
+	details/blocks/drawLineBlock.cpp \
+	details/blocks/drawCircleBlock.cpp \
+	details/blocks/printTextBlock.cpp \
+	details/blocks/drawRectBlock.cpp \
+	details/blocks/clearScreenBlock.cpp \

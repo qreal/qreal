@@ -66,6 +66,7 @@ protected:
 	Rotater *mRotater;
 	QSet<QGraphicsItem *> mStickyItems;
 
+	QRectF const mImageRect;
 	QRectF const mBoundingRect;
 	QImage const mImage;
 };

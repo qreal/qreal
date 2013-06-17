@@ -6,6 +6,7 @@
     <leftImage>left.png</leftImage>
     <logoImage>logo.png</logoImage>
     <defaultLanguage>ru</defaultLanguage>
+    <disableSplashScreen>1</disableSplashScreen>
     <componentList>
         <component>
             <name>default</name>
