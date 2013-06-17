@@ -3,6 +3,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QtPlugin>
 #include <QtCore/QList>
+#include <QtWidgets/QAction>
 
 #include "../../qrrepo/repoControlInterface.h"
 #include "../dialogs/preferencesPages/preferencesPage.h"
@@ -10,6 +11,7 @@
 #include "customizer.h"
 #include "pluginConfigurator.h"
 #include "actionInfo.h"
+#include "hotKeyActionInfo.h"
 
 namespace qReal {
 
@@ -69,6 +71,11 @@ public:
 	virtual void activeTabChanged(Id const & rootElementId)
 	{
 		Q_UNUSED(rootElementId);
+	}
+
+	virtual QList<HotKeyActionInfo> hotKeyActions()
+	{
+		return QList<HotKeyActionInfo>();
 	}
 };
 
