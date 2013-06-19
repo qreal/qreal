@@ -7,8 +7,9 @@
 namespace robots {
 namespace generator {
 
-/// Realization of AbstractElementGenerator for Beep, Engines etc.
-class SimpleElementGenerator: public AbstractElementGenerator {
+/// Implementation of AbstractElementGenerator for Beep, Engines etc.
+class SimpleElementGenerator: public AbstractElementGenerator
+{
 public:
 	explicit SimpleElementGenerator(NxtOSEKRobotGenerator *mainGenerator, qReal::Id const &elementId);
 

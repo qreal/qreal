@@ -6,12 +6,14 @@
 #include "brickImplementations/abstractBrickImplementation.h"
 #include "motorImplementations/abstractMotorImplementation.h"
 #include "sensorImplementations/abstractSensorImplementation.h"
+#include "displayImplementations/abstractDisplayImplementation.h"
 #include "sensorImplementations/abstractEncoderImplementation.h"
 #include "../../sensorConstants.h"
 #include "../d2RobotModel/d2RobotModel.h"
 #include "../robotCommunication/robotCommunicationThreadInterface.h"
 #include "../robotCommunication/robotCommunicator.h"
 #include "sensorsConfigurer.h"
+#include "../abstractTimer.h"
 
 namespace qReal {
 namespace interpreters {
@@ -38,6 +40,7 @@ public:
 	virtual void disconnectFromRobot();
 
 	virtual brickImplementations::AbstractBrickImplementation &brick() = 0;
+	virtual displayImplementations::AbstractDisplayImplementation &display() = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const = 0;
 	virtual sensorImplementations::AbstractSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const = 0;
@@ -50,6 +53,8 @@ public:
 	virtual sensorImplementations::AbstractEncoderImplementation &encoderA() = 0;
 	virtual sensorImplementations::AbstractEncoderImplementation &encoderB() = 0;
 	virtual sensorImplementations::AbstractEncoderImplementation &encoderC() = 0;
+
+	virtual AbstractTimer *produceTimer() = 0;
 
 	virtual void configureSensor(sensorType::SensorTypeEnum const &sensorType
 			, inputPort::InputPortEnum const &port);
@@ -76,6 +81,7 @@ protected:
 	virtual void addSonarSensor(inputPort::InputPortEnum const &port) = 0;
 	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
 	virtual void addLightSensor(inputPort::InputPortEnum const &port) = 0;
+	virtual void nullifySensor(inputPort::InputPortEnum port);
 
 	/// Connect to robot if connection doesn't established
 	virtual void connectRobot();

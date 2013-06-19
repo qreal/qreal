@@ -1,4 +1,4 @@
-#include <QtGui>
+#include <QtWidgets>
 #include <QtCore/QDebug>
 
 #include "editorViewMVIface.h"
@@ -6,7 +6,7 @@
 #include "editorViewScene.h"
 #include "../../qrkernel/definitions.h"
 #include "../umllib/element.h"
-#include "../pluginManager/editorManager.h"
+#include "../pluginManager/editorManagerInterface.h"
 #include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
@@ -18,7 +18,7 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	, mGraphicalAssistApi(NULL)
 	, mLogicalAssistApi(NULL)
 {
-	mScene->mMVIface = this;
+	mScene->setMVIface(this);
 	mScene->mView = mView;
 }
 
@@ -46,16 +46,17 @@ bool EditorViewMViface::isDescendentOf(const QModelIndex &descendent, const QMod
 	QModelIndex prev;
 	QModelIndex curr = descendent;
 	do {
-		if (curr.parent() == ancestor)
+		if (curr.parent() == ancestor) {
 			return true;
+		}
 		prev = curr;
 		curr = curr.parent();
 	} while (curr != prev);
 	return false;
 }
 
-QModelIndex EditorViewMViface::moveCursor(QAbstractItemView::CursorAction,
-		Qt::KeyboardModifiers)
+QModelIndex EditorViewMViface::moveCursor(QAbstractItemView::CursorAction
+		, Qt::KeyboardModifiers)
 {
 	return QModelIndex();
 }
@@ -89,27 +90,30 @@ void EditorViewMViface::reset()
 	mScene->clearScene();
 	clearItems();
 
-	if (model() && model()->rowCount(QModelIndex()) == 0)
+	if (model() && model()->rowCount(QModelIndex()) == 0) {
 		mScene->setEnabled(false);
+	}
 
-	// so that our diagram be nicer
+	// Our diagram would be nicer
 	QGraphicsRectItem *rect = mScene->addRect(QRect(-1000, -1000, 2000, 2000));
 	mScene->removeItem(rect);
 	delete rect;
 
-	if (model())
+	if (model()) {
 		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1);
+	}
 }
 
 void EditorViewMViface::setRootIndex(const QModelIndex &index)
 {
-	if (index == rootIndex())
+	if (index == rootIndex()) {
 		return;
+	}
 	QAbstractItemView::setRootIndex(index);
 	reset();
 }
 
-Id EditorViewMViface::rootId()
+Id EditorViewMViface::rootId() const
 {
 	return mGraphicalAssistApi ? mGraphicalAssistApi->idByIndex(rootIndex()) : Id();
 }
@@ -120,36 +124,36 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		mScene->setEnabled(true);
 
 		QPersistentModelIndex current = model()->index(row, 0, parent);
-		if (!isDescendentOf(current, rootIndex()))
+		if (!isDescendentOf(current, rootIndex())) {
 			continue;
+		}
 		Id currentId = current.data(roles::idRole).value<Id>();
-		if (currentId == Id::rootId())
+		if (currentId == Id::rootId()) {
 			continue;
+		}
 		Id parentUuid;
-		if (parent != rootIndex())
+		if (parent != rootIndex()) {
 			parentUuid = parent.data(roles::idRole).value<Id>();
+		}
 		if (!parent.isValid()) {
 			setRootIndex(current);
 			continue;
 		}
 
-		Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
+		Element* elem = mScene->mainWindow()->editorManager().graphicalObject(currentId);
 		if (elem) {
 			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
+			elem->setController(mScene->mainWindow()->controller());
 		}
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 		if (elem) {
-			elem->setPos(ePos);	//задаем позицию до определения родителя для того, чтобы правильно отработал itemChange
+			// setting position before parent definition 'itemChange' to work correctly
+			elem->setPos(ePos);
 			elem->setId(currentId);
 
-	/*commented out because of real sizes of elements are incorrectly changing here into initial sizes*/
-//			NodeElement* nodeElement = dynamic_cast<NodeElement*>(elem);
-//			if (nodeElement)
-//				nodeElement->storeGeometry();
-
-			if (item(parent) != NULL) {
+			if (item(parent)) {
 				elem->setParentItem(item(parent));
 				QModelIndex next = current.sibling(current.row() + 1, 0);
 				if(next.isValid() && item(next) != NULL) {
@@ -164,8 +168,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->checkConnectionsToPort();
 			elem->initPossibleEdges();
 			elem->initTitles();
-//			elem->initEmbeddedControls();
-			//todo: нужно привести в порядок всякие init~()
+			// TODO: brush up init~()
 
 			bool isEdgeFromEmbeddedLinker = false;
 			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
@@ -199,13 +202,23 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				}
 			}
 		}
-		if (needToProcessChildren && model()->hasChildren(current))
+		if (needToProcessChildren && model()->hasChildren(current)) {
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
+		}
 
 		NodeElement * nodeElement = dynamic_cast<NodeElement*>(elem);
-		if (nodeElement)
+		if (nodeElement) {
 			nodeElement->alignToGrid();
+		}
 	}
+
+	foreach (QGraphicsItem *item, mScene->items()) {
+		NodeElement* node = dynamic_cast<NodeElement*>(item);
+		if (node) {
+			node->adjustLinks();
+		}
+	}
+
 	QAbstractItemView::rowsInserted(parent, start, end);
 }
 
@@ -213,7 +226,7 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 {
 	for (int row = start; row <= end; ++row) {
 		QModelIndex curr = model()->index(row, 0, parent);
-		if( item(curr) ){
+		if(item(curr)) {
 			mScene->removeItem(item(curr));
 			delete item(curr);
 		}
@@ -221,8 +234,9 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 	}
 
 	// elements from model are deleted after GUI ones
-	if (parent == QModelIndex() && model()->rowCount(parent) == start - end + 1)
+	if (parent == QModelIndex() && model()->rowCount(parent) == start - end + 1) {
 		mScene->setEnabled(false);
+	}
 
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
@@ -236,7 +250,7 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 
 	Element *movedElement = item(movedElementIndex),
 		*sibling = item(newSiblingIndex);
-	if (movedElement == NULL) {
+	if (!movedElement) {
 		// there's no such element on the scene already
 		// TODO: add element on the scene if there's no such element here, but there's in the model
 		// ignoring there cases now
@@ -280,9 +294,10 @@ void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
 	const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-		QModelIndex curr = topLeft.sibling(row, 0);
-		if (item(curr)) {
-			item(curr)->updateData();
+		QModelIndex const curr = topLeft.sibling(row, 0);
+		Element *element = item(curr);
+		if (element) {
+			element->updateData();
 		}
 	}
 }
@@ -305,19 +320,25 @@ models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 void EditorViewMViface::clearItems()
 {
 	QList<QGraphicsItem *> toRemove;
-	foreach (IndexElementPair pair, mItems)
-		if (!pair.second->parentItem())
+	foreach (IndexElementPair const &pair, mItems) {
+		if (!pair.second->parentItem()) {
 			toRemove.append(pair.second);
-	foreach (QGraphicsItem *item, toRemove)
+		}
+	}
+
+	foreach (QGraphicsItem * const item, toRemove) {
 		delete item;
+	}
+
 	mItems.clear();
 }
 
 Element *EditorViewMViface::item(QPersistentModelIndex const &index) const
 {
-	foreach (IndexElementPair pair, mItems) {
-		if (pair.first == index)
+	foreach (IndexElementPair const &pair, mItems) {
+		if (pair.first == index) {
 			return pair.second;
+		}
 	}
 	return NULL;
 }
@@ -325,15 +346,17 @@ Element *EditorViewMViface::item(QPersistentModelIndex const &index) const
 void EditorViewMViface::setItem(QPersistentModelIndex const &index, Element *item)
 {
 	IndexElementPair pair(index, item);
-	if (!mItems.contains(pair))
+	if (!mItems.contains(pair)) {
 		mItems.insert(pair);
+	}
 }
 
 void EditorViewMViface::removeItem(QPersistentModelIndex const &index)
 {
-	foreach (IndexElementPair pair, mItems) {
-		if (pair.first == index)
+	foreach (IndexElementPair const &pair, mItems) {
+		if (pair.first == index) {
 			mItems.remove(pair);
+		}
 	}
 }
 
@@ -355,11 +378,12 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 		QModelIndex const curr = topLeft.sibling(row, 0);
 		Id const logicalId = curr.data(roles::idRole).value<Id>();
 		IdList const graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
-		foreach (Id const graphicalId, graphicalIds) {
+		foreach (Id const &graphicalId, graphicalIds) {
 			QModelIndex const graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
 			Element *graphicalItem = item(graphicalIndex);
-			if (graphicalItem)
+			if (graphicalItem) {
 				graphicalItem->updateData();
+			}
 		}
 	}
 }

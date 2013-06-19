@@ -208,15 +208,15 @@
       </graphicTypes>
 	    <palette>
    <group name="Refactoring Rule Elements">
-    <element name="Refactoring Diagram"/>
-    <element name="From Before To After"/>
-    <element name="After Block"/>
-    <element name="Before Block"/>
+    <element name="RefactoringDiagramNode"/>
+    <element name="FromBeforeToAter"/>
+    <element name="AfterBlock"/>
+    <element name="BeforeBlock"/>
    </group>
    <group name="Basic Elements">
     <element name="Element"/>
     <element name="Link"/>
-    <element name="Selected segment"/>
+    <element name="SelectedSegment"/>
    </group>
   </palette>
     </diagram>

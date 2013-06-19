@@ -1,4 +1,5 @@
 #include "stylusImpl.h"
+
 using namespace graphicsUtils;
 
 StylusImpl::StylusImpl()
@@ -7,21 +8,23 @@ StylusImpl::StylusImpl()
 
 QRectF StylusImpl::searchMaxMinCoord(QList<AbstractItem *> listLine) const
 {
-	if(!listLine.isEmpty()) {
-		qreal maxX = (listLine.at(0))->realBoundingRect().right();
-		qreal minX = (listLine.at(0))->realBoundingRect().left();
-		qreal maxY = (listLine.at(0))->realBoundingRect().bottom();
-		qreal minY = (listLine.at(0))->realBoundingRect().top();
+	if (!listLine.isEmpty()) {
+		QRectF lineBounds = (listLine.at(0))->realBoundingRect();
+		qreal maxX = lineBounds.right();
+		qreal minX = lineBounds.left();
+		qreal maxY = lineBounds.bottom();
+		qreal minY = lineBounds.top();
 		foreach (AbstractItem *line, listLine) {
-			minX = qMin(line->realBoundingRect().left(), minX);
-			minY = qMin(line->realBoundingRect().top(), minY);
-			maxX = qMax(line->realBoundingRect().right(), maxX);
-			maxY = qMax(line->realBoundingRect().bottom(), maxY);
+			lineBounds = line->realBoundingRect();
+			minX = qMin(lineBounds.left(), minX);
+			minY = qMin(lineBounds.top(), minY);
+			maxX = qMax(lineBounds.right(), maxX);
+			maxY = qMax(lineBounds.bottom(), maxY);
 		}
 		return QRectF(minX, minY, maxX - minX, maxY - minY);
-	}
-	else
+	} else {
 		return QRectF(0, 0, 0, 0);
+	}
 }
 
 QPainterPath StylusImpl::shape(QList<AbstractItem *> listLine) const
@@ -67,7 +70,7 @@ void StylusImpl::drawScalingRects(QPainter* painter)
 	Q_UNUSED(painter);
 }
 
-void StylusImpl::setPenStyle(QList<AbstractItem *> listLine, const QString& text)
+void StylusImpl::setPenStyle(QList<AbstractItem *> listLine, QString const &text)
 {
 	foreach (AbstractItem *line, listLine)
 		line->setPenStyle(text);
@@ -79,19 +82,19 @@ void StylusImpl::setPenWidth(QList<AbstractItem *> listLine, int width)
 		line->setPenWidth(width);
 }
 
-void StylusImpl::setPenColor(QList<AbstractItem *> listLine, const QString& text)
+void StylusImpl::setPenColor(QList<AbstractItem *> listLine, QString const &text)
 {
 	foreach (AbstractItem *line, listLine)
 		line->setPenColor(text);
 }
 
-void StylusImpl::setBrushStyle(QList<AbstractItem *> listLine, const QString& text)
+void StylusImpl::setBrushStyle(QList<AbstractItem *> listLine, QString const &text)
 {
 	foreach (AbstractItem *line, listLine)
 		line->setBrushStyle(text);
 }
 
-void StylusImpl::setBrushColor(QList<AbstractItem *> listLine, const QString& text)
+void StylusImpl::setBrushColor(QList<AbstractItem *> listLine, QString const &text)
 {
 	foreach (AbstractItem *line, listLine)
 		line->setBrushColor(text);

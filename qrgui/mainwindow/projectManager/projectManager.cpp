@@ -49,7 +49,7 @@ bool ProjectManager::suggestToOpenExisting()
 	if (!suggestToSaveChangesOrCancel()) {
 		return false;
 	}
-	QString const fileName = getOpenFileName(tr("Open existing project"));
+	QString const fileName = openFileName(tr("Open existing project"));
 	if (fileName.isEmpty()) {
 		return false;
 	}
@@ -92,11 +92,14 @@ bool ProjectManager::open(QString const &fileName)
 	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
 		return false;
 	}
+
+	emit beforeOpen(fileName);
 	// There is no way to verify sufficiency plugins without initializing repository
 	// that is stored in the save file. Initializing is impossible without closing current project.
 	close();
 	mMainWindow->models()->repoControlApi().open(fileName);
 	mMainWindow->models()->reinit();
+	saveTemp();
 
 	if (!pluginsEnough()) {
 		// restoring the session
@@ -107,16 +110,19 @@ bool ProjectManager::open(QString const &fileName)
 			, mMainWindow->models()->graphicalModel());
 	mMainWindow->graphicalModelExplorer()->setModel(mMainWindow->models()->graphicalModel());
 	mMainWindow->logicalModelExplorer()->setModel(mMainWindow->models()->logicalModel());
+	mMainWindow->openFirstDiagram();
 
 	setSaveFilePath(fileName);
 	refreshApplicationStateAfterOpen();
+
+	emit afterOpen(fileName);
 
 	return true;
 }
 
 bool ProjectManager::suggestToImport()
 {
-	return import(getOpenFileName(tr("Select file with a save to import")));
+	return import(openFileName(tr("Select file with a save to import")));
 }
 
 bool ProjectManager::import(QString const &fileName)
@@ -132,7 +138,6 @@ bool ProjectManager::import(QString const &fileName)
 	// has diagrams for which there are no plugins
 	mMainWindow->models()->repoControlApi().importFromDisk(currentSaveFilePath);
 	mMainWindow->models()->reinit();
-	setUnsavedIndicator(true);
 	return true;
 }
 
@@ -161,7 +166,7 @@ bool ProjectManager::pluginsEnough()
 
 QString ProjectManager::missingPluginNames() const
 {
-	IdList missingPlugins = mMainWindow->manager()->checkNeededPlugins(
+	IdList missingPlugins = mMainWindow->editorManager().checkNeededPlugins(
 			mMainWindow->models()->logicalRepoApi(), mMainWindow->models()->graphicalRepoApi());
 	QString result;
 	foreach (Id const &id, missingPlugins) {
@@ -174,7 +179,7 @@ void ProjectManager::refreshApplicationStateAfterSave()
 {
 	refreshApplicationStateAfterOpen();
 	if (mSaveFilePath != mAutosaver->filePath()) {
-		setUnsavedIndicator(false);
+		mMainWindow->controller()->projectSaved();
 	}
 }
 
@@ -186,7 +191,6 @@ void ProjectManager::refreshApplicationStateAfterOpen()
 
 void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 {
-	mMainWindow->connectWindowTitle();
 	QString const windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
 	mMainWindow->setWindowTitle(windowTitle + " " + mSaveFilePath);
 	refreshTitleModifiedSuffix();
@@ -202,6 +206,7 @@ void ProjectManager::refreshTitleModifiedSuffix()
 
 bool ProjectManager::openNewWithDiagram()
 {
+	clearAutosaveFile();
 	if(!openEmptyWithSuggestToSaveChanges()) {
 		return false;
 	}
@@ -219,8 +224,14 @@ bool ProjectManager::openEmptyWithSuggestToSaveChanges()
 
 void ProjectManager::suggestToCreateDiagram(bool isClosable)
 {
-	SuggestToCreateDiagramDialog suggestDialog(mMainWindow, isClosable);
-	suggestDialog.exec();
+	Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
+	if (theOnlyDiagram != Id()) {
+		Id const editor = mMainWindow->editorManager().editors()[0];
+		mMainWindow->createDiagram(mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram));
+	} else {
+		SuggestToCreateDiagramDialog suggestDialog(mMainWindow, isClosable);
+		suggestDialog.exec();
+	}
 }
 
 void ProjectManager::close()
@@ -242,9 +253,17 @@ void ProjectManager::save()
 {
 	// Do not change the method to saveAll - in the current implementation, an empty project in the repository is
 	// created to initialize the file name with an empty string, which allows the internal state of the file
-	// name = "" Attempt to save the project in this case result in trash
+	// name = "" Attempt to save the project in this case result in
+	// qDebug() << "start save";
+	mMainWindow->editorManagerProxy().saveMetamodel("");
 	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePath);
 	refreshApplicationStateAfterSave();
+}
+
+void ProjectManager::saveTemp()
+{
+	mSaveFilePathTemp=SettingsManager::value("AutosaveTempFile").toString();
+	mMainWindow->models()->repoControlApi().saveTo(mSaveFilePathTemp);
 }
 
 void ProjectManager::saveGenCode(QString const &text)
@@ -255,7 +274,8 @@ void ProjectManager::saveGenCode(QString const &text)
 
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
-	if (mSaveFilePath == mAutosaver->filePath()) {
+	if (mSaveFilePath.contains(SettingsManager::value("AutosaveFileName").toString(), Qt::CaseSensitive)
+		|| mSaveFilePath == mMainWindow->editorManagerProxy().saveMetamodelFilePath()) {
 		return suggestToSaveAs();
 	}
 	save();
@@ -264,6 +284,13 @@ bool ProjectManager::saveOrSuggestToSaveAs()
 
 bool ProjectManager::suggestToSaveAs()
 {
+	if (mMainWindow->editorManagerProxy().isInterpretationMode()) {
+		QString newMetamodelFileName = getSaveFileName(tr("Select file to save current metamodel to"));
+		if (newMetamodelFileName.isEmpty()) {
+			return false;
+		}
+		mMainWindow->editorManagerProxy().saveMetamodel(newMetamodelFileName);
+	}
 	return saveAs(getSaveFileName(tr("Select file to save current model to")));
 }
 
@@ -279,7 +306,7 @@ bool ProjectManager::saveAs(QString const &fileName)
 	return true;
 }
 
-QString ProjectManager::getOpenFileName(QString const &dialogWindowTitle)
+QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 {
 	QString fileName = QFileDialog::getOpenFileName(mMainWindow, dialogWindowTitle
 			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
@@ -289,7 +316,7 @@ QString ProjectManager::getOpenFileName(QString const &dialogWindowTitle)
 				, tr("File ") + fileName + tr(" not found. Try again"), QMessageBox::Ok, mMainWindow);
 		fileNotFoundMessage.exec();
 
-		fileName = getOpenFileName(dialogWindowTitle);
+		fileName = openFileName(dialogWindowTitle);
 	}
 	return fileName;
 }
@@ -308,5 +335,13 @@ QString ProjectManager::getSaveFileName(QString const &dialogWindowTitle)
 void ProjectManager::setUnsavedIndicator(bool isUnsaved)
 {
 	mUnsavedIndicator = isUnsaved;
-	refreshTitleModifiedSuffix();
+	refreshWindowTitleAccordingToSaveFile();
+}
+
+void ProjectManager::clearAutosaveFile()
+{
+	QFile tempFile(SettingsManager::value("AutosaveFileName").toString());
+	if (tempFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+		tempFile.close();
+	}
 }

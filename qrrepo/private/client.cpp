@@ -24,7 +24,6 @@ void Client::init()
 
 Client::~Client()
 {
-	serializer.saveToDisk(mObjects.values());
 	serializer.clearWorkingDir();
 
 	foreach (Id id, mObjects.keys()) {
@@ -33,7 +32,7 @@ Client::~Client()
 	}
 }
 
-IdList Client::findElementsByName(const QString &name, bool sensitivity,
+IdList Client::findElementsByName(QString const &name, bool sensitivity,
 		bool regExpression) const
 {
 	Qt::CaseSensitivity caseSensitivity;
@@ -228,7 +227,7 @@ void Client::removeChild(const Id &id, const Id &child)
 	}
 }
 
-void Client::setProperty(const Id &id, const QString &name, const QVariant &value ) const
+void Client::setProperty(const Id &id, QString const &name, const QVariant &value ) const
 {
 	if (mObjects.contains(id)) {
 		Q_ASSERT(mObjects[id]->hasProperty(name)
@@ -255,7 +254,7 @@ void Client::setProperties(Id const &id, QMap<QString, QVariant> const &properti
 	mObjects[id]->setProperties(properties);
 }
 
-QVariant Client::property( const Id &id, const QString &name ) const
+QVariant Client::property( const Id &id, QString const &name ) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->property(name);
@@ -264,7 +263,7 @@ QVariant Client::property( const Id &id, const QString &name ) const
 	}
 }
 
-void Client::removeProperty( const Id &id, const QString &name )
+void Client::removeProperty( const Id &id, QString const &name )
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->removeProperty(name);
@@ -273,7 +272,7 @@ void Client::removeProperty( const Id &id, const QString &name )
 	}
 }
 
-bool Client::hasProperty(const Id &id, const QString &name, bool sensitivity, bool regExpression) const
+bool Client::hasProperty(const Id &id, QString const &name, bool sensitivity, bool regExpression) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->hasProperty(name, sensitivity, regExpression);

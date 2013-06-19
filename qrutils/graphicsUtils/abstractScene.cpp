@@ -1,6 +1,8 @@
+#include <QtCore/QDebug>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+
 #include "abstractScene.h"
 #include "abstractItem.h"
-#include <QtGui/QGraphicsSceneMouseEvent>
 
 using namespace graphicsUtils;
 
@@ -20,7 +22,7 @@ AbstractScene::AbstractScene(AbstractView *view, QObject *parent)
 {
 }
 
-graphicsUtils::AbstractView* AbstractScene::getMainView()
+graphicsUtils::AbstractView* AbstractScene::mainView()
 {
 	return mView;
 }
@@ -32,7 +34,7 @@ void AbstractScene::setEmptyRect(int x, int y, int w, int h)
 
 QRect AbstractScene::realItemsBoundingRect() const
 {
-	QRectF rect = itemsBoundingRect();
+	QRectF const rect = itemsBoundingRect();
 	int maxX = static_cast<int>(rect.left());
 	int maxY = static_cast<int>(rect.top());
 	int minY = static_cast<int>(rect.bottom());
@@ -41,8 +43,8 @@ QRect AbstractScene::realItemsBoundingRect() const
 
 	foreach (QGraphicsItem *graphicsItem, list) {
 		AbstractItem* item = dynamic_cast<AbstractItem*>(graphicsItem);
-		if (item != NULL) {
-			QRectF itemRect = item->realBoundingRect();
+		if (item) {
+			QRectF const itemRect = item->realBoundingRect();
 			maxX = qMax(static_cast<int>(itemRect.right()), maxX);
 			maxY = qMax(static_cast<int>(itemRect.bottom()), maxY);
 			minX = qMin(static_cast<int>(itemRect.left()), minX);
@@ -67,9 +69,10 @@ void AbstractScene::setX2andY2(QGraphicsSceneMouseEvent *event)
 void AbstractScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	if (mGraphicsItem != NULL) {
-		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None)
+	if (mGraphicsItem) {
+		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
+		}
 		mGraphicsItem->resizeItem(event);
 	}
 }
@@ -77,9 +80,10 @@ void AbstractScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 void AbstractScene::reshapeItem(QGraphicsSceneMouseEvent *event,graphicsUtils::AbstractItem *item)
 {
 	setX2andY2(event);
-	if (item != NULL) {
-		if (item->getDragState() != graphicsUtils::AbstractItem::None)
+	if (item) {
+		if (item->getDragState() != graphicsUtils::AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
+		}
 		item->resizeItem(event);
 	}
 }
@@ -89,30 +93,33 @@ void AbstractScene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 	QList<QGraphicsItem *> list = items(event->scenePos());
 	foreach (QGraphicsItem *graphicsItem, list){
 		AbstractItem *item = dynamic_cast<graphicsUtils::AbstractItem *>(graphicsItem);
-		if (item != NULL)
+		if (item) {
 			graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);
+		}
 	}
 }
 
-void AbstractScene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item)
+void AbstractScene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem *item)
 {
 	QList<QGraphicsItem *> list = items(event->scenePos());
 	foreach (QGraphicsItem *graphicsItem, list) {
 		AbstractItem *grItem = dynamic_cast<graphicsUtils::AbstractItem *>(graphicsItem);
-		if (grItem != NULL)
+		if (grItem) {
 			grItem->setFlag(QGraphicsItem::ItemIsMovable, false);
+		}
 	}
-	if (item!= NULL && item != mEmptyRect)
+	if (item && item != mEmptyRect) {
 		item->setFlag(QGraphicsItem::ItemIsMovable, true);
+	}
 }
 
 void AbstractScene::setDragMode(int itemsType)
 {
-	if (itemsType != 0) {
+	if (itemsType) {
 		mView->setDragMode(QGraphicsView::NoDrag);
-	}
-	else
+	} else {
 		mView->setDragMode(QGraphicsView::RubberBandDrag);
+	}
 }
 
 void AbstractScene::setDragMode(QGraphicsView::DragMode mode)
@@ -123,11 +130,12 @@ void AbstractScene::setDragMode(QGraphicsView::DragMode mode)
 void AbstractScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);
-	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos()));
-	if (mGraphicsItem != NULL) {
+	mGraphicsItem = dynamic_cast<AbstractItem *>(itemAt(event->scenePos(), QTransform()));
+	if (mGraphicsItem) {
 		mGraphicsItem->changeDragState(mX1, mY1);
-		if (mGraphicsItem->getDragState() != AbstractItem::None)
+		if (mGraphicsItem->getDragState() != AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
+		}
 	}
 	update();
 }
@@ -182,7 +190,7 @@ QString AbstractScene::convertPenToString(QPen const &pen)
 		penStyle = "Dash";
 		break;
 	case Qt::DashDotLine:
-		penStyle =  "DashDot";
+		penStyle = "DashDot";
 		break;
 	case Qt::DashDotDotLine:
 		penStyle = "DashDotDot";
@@ -198,12 +206,14 @@ QString AbstractScene::convertPenToString(QPen const &pen)
 
 QString AbstractScene::convertBrushToString(QBrush const &brush)
 {
-	QString brushStyle;
-	if (brush.style() == Qt::NoBrush)
-		brushStyle = "None";
-	if (brush.style() == Qt::SolidPattern)
-		brushStyle = "Solid";
-	return brushStyle;
+	switch (brush.style()) {
+	case Qt::NoBrush:
+		return "None";
+	case Qt::SolidPattern:
+		return "Solid";
+	default:
+		return QString();
+	}
 }
 
 QString AbstractScene::penStyleItems()

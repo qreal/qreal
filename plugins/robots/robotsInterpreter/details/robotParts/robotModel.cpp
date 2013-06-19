@@ -9,6 +9,7 @@ using namespace robotImplementations;
 RobotModel::RobotModel()
 	: mRobotImpl(new NullRobotModelImplementation)
 	, mBrick(&mRobotImpl->brick())
+	, mDisplay(&mRobotImpl->display())
 	, mMotorA(0, &mRobotImpl->motorA())
 	, mMotorB(1, &mRobotImpl->motorA())
 	, mMotorC(2, &mRobotImpl->motorA())
@@ -32,6 +33,11 @@ RobotModel::~RobotModel()
 robotParts::Brick &RobotModel::brick()
 {
 	return mBrick;
+}
+
+robotParts::Display &RobotModel::display()
+{
+	return mDisplay;
 }
 
 robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const &port) const
@@ -143,6 +149,15 @@ void RobotModel::startInterpretation()
 	return mRobotImpl->startInterpretation();
 }
 
+void RobotModel::nullifySensors()
+{
+	for (int port = 0; port < 4; ++port) {
+		if (mSensors[port]) {
+			mSensors[port]->nullify();
+		}
+	}
+}
+
 void RobotModel::connectedSlot(bool success)
 {
 	Tracer::debug(tracer::initialization, "RobotModel::connectedSlot", QString("Model connection status: %1").arg(success));
@@ -217,6 +232,7 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 	mEncoderC.setImplementation(&mRobotImpl->encoderC());
 
 	mBrick.setImplementation(&mRobotImpl->brick());
+	mDisplay.setImplementation(&mRobotImpl->display());
 
 	for (int i = 0; i < 4; ++i) {
 		if (mSensors[i] != NULL) {
@@ -238,4 +254,9 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 void RobotModel::nextBlockAfterInitial(bool success)
 {
 	emit goToNextBlock(success);
+}
+
+AbstractTimer *RobotModel::produceTimer()
+{
+	return mRobotImpl->produceTimer();
 }

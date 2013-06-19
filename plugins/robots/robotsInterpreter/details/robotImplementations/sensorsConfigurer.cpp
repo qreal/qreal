@@ -55,7 +55,7 @@ void SensorsConfigurer::unlockConfiguring()
 	reconfigureSensors();
 }
 
-sensorImplementations::AbstractSensorImplementation * SensorsConfigurer::sensor(inputPort::InputPortEnum const &port) const
+sensorImplementations::AbstractSensorImplementation * SensorsConfigurer::sensor(inputPort::InputPortEnum port) const
 {
 	return mConfiguredSensors[port];
 }
@@ -91,9 +91,20 @@ void SensorsConfigurer::reconfigureSensors()
 		Tracer::debug(tracer::initialization, "SensorsConfigurer::reconfigureSensors", "No need to wait for a response, sending allSensorsReconfigured signal now.");
 		emit allSensorsConfigured();
 	} else {
-		foreach (int const &i, sensorsToConfigure) {
+		foreach (int i, sensorsToConfigure) {
 			mConfiguredSensors[i]->configure();
 		}
+	}
+}
+
+void SensorsConfigurer::nullifySensor(inputPort::InputPortEnum port)
+{
+	if (mConfiguredSensors[port]) {
+		if (mPendingSensors[port] == mConfiguredSensors[port]) {
+			mPendingSensors[port] = NULL;
+		}
+		delete mConfiguredSensors[port];
+		mConfiguredSensors[port] = 0;
 	}
 }
 

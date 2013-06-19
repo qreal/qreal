@@ -1,6 +1,6 @@
-#include "element.h"
+#include <QtWidgets>
 
-#include <QtGui>
+#include "element.h"
 
 using namespace qReal;
 
@@ -9,6 +9,7 @@ Element::Element(ElementImpl* elementImpl)
 	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(NULL)
 	, mGraphicalAssistApi(NULL)
+	, mController(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 		ItemClipsToShape | ItemSendsGeometryChanges);
@@ -42,8 +43,9 @@ void Element::updateData()
 	setToolTip(mGraphicalAssistApi->toolTip(id()));
 }
 
-QList<ContextMenuAction*> Element::contextMenuActions()
+QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
 {
+	Q_UNUSED(pos)
 	return QList<ContextMenuAction*>();
 }
 
@@ -63,6 +65,11 @@ void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssi
 	mLogicalAssistApi = logicalAssistApi;
 }
 
+void Element::setController(Controller *controller)
+{
+	mController = controller;
+}
+
 void Element::initTitlesBy(QRectF const& contents)
 {
 	foreach (ElementTitle * const title, mTitles) {
@@ -74,7 +81,6 @@ void Element::initTitles()
 {
 	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
 }
-
 
 void Element::singleSelectionState(const bool singleSelected) {
 	if (singleSelected) {
@@ -95,4 +101,17 @@ void Element::selectionState(const bool selected) {
 ElementImpl* Element::elementImpl() const
 {
 	return mElementImpl;
+}
+
+void Element::setTitlesVisible(bool visible)
+{
+	mTitlesVisible = visible;
+	setTitlesVisiblePrivate(visible);
+}
+
+void Element::setTitlesVisiblePrivate(bool visible)
+{
+	foreach (ElementTitle * const title, mTitles) {
+		title->setVisible(title->isHard() || visible);
+	}
 }

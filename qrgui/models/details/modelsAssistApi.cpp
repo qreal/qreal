@@ -6,14 +6,14 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
-	: mModel(model), mEditorManager(editorManager), mConstraintsManager(constraintsManager)
+ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager)
+	: mModel(model), mEditorManagerInterface(editorManagerInterface), mConstraintsManager(constraintsManager)
 {
 }
 
-EditorManager const &ModelsAssistApi::editorManager() const
+EditorManagerInterface const &ModelsAssistApi::editorManagerInterface() const
 {
-	return mEditorManager;
+	return mEditorManagerInterface;
 }
 
 ConstraintsManager const &ModelsAssistApi::constraintsManager() const
@@ -21,16 +21,17 @@ ConstraintsManager const &ModelsAssistApi::constraintsManager() const
 	return mConstraintsManager;
 }
 
-Id ModelsAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id ModelsAssistApi::createElement(Id const &parent, Id const &id, Id const &logicalId
+		, bool isFromLogicalModel, QString const &name, QPointF const &position)
 {
 	Q_ASSERT(parent.idSize() == 4);
-	Id logicalId = Id::rootId();
 	Id newId = id;
+	Id realLogicalId = logicalId;
 	if (isFromLogicalModel) {
-		logicalId = id;
+		realLogicalId = id;
 		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
 	}
-	mModel.addElementToModel(parent, newId, logicalId, name, position);
+	mModel.addElementToModel(parent, newId, realLogicalId, name, position);
 	return newId;
 }
 
@@ -52,7 +53,7 @@ QVariant ModelsAssistApi::property(Id const &elem, int const role) const
 
 int ModelsAssistApi::roleIndexByName(Id const &elem, QString const &roleName) const
 {
-	QStringList const properties = editorManager().getPropertyNames(elem.type());
+	QStringList const properties = editorManagerInterface().propertyNames(elem.type());
 	return properties.indexOf(roleName) + roles::customPropertiesBeginRole;
 }
 

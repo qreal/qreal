@@ -4,17 +4,22 @@
 #include <QtCore/QThread>
 #include <QtCore/QTimer>
 
-#include "robotCommunicationThreadInterface.h"
+#include "robotCommunicationThreadBase.h"
 #include "../robotCommandConstants.h"
 #include "fantom.h"
 
 class QextSerialPort;
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
+namespace qReal
+{
+namespace interpreters
+{
+namespace robots
+{
+namespace details
+{
 
-class UsbRobotCommunicationThread : public RobotCommunicationThreadInterface
+class UsbRobotCommunicationThread : public RobotCommunicationThreadBase
 {
 	Q_OBJECT
 
@@ -27,23 +32,8 @@ public slots:
 	void connect(QString const &portName);
 	void reconnect(QString const &portName);
 	void disconnect();
-	void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
-			, inputPort::InputPortEnum const &port);
-
-private:
-	static const int kStatusNoError = 0;
-
-	bool isOpen();
-	static void debugPrint(QByteArray const &buffer, bool out);
-
-	void send(QByteArray const &buffer, unsigned const responseSize, QByteArray &outputBuffer);
-
-	bool mActive;
-	unsigned long mNXTHandle;
-	robotsInterpreter::robotCommunication::Fantom mFantom;
-
-	/// Timer that sends messages to robot to check that connection is still alive
-	QTimer *mKeepAliveTimer;
+	void allowLongJobs(bool allow = true);
+	void checkConsistency();
 
 private slots:
 	/// Checks if robot is connected
@@ -52,8 +42,27 @@ private slots:
 	/// Checks that message requires response or not.
 	/// @returns true, if there shall be a response.
 	static bool isResponseNeeded(QByteArray const &buffer);
+
+private:
+	static const int kStatusNoError = 0;
+
+	bool isOpen();
+	static void debugPrint(QByteArray const &buffer, bool out);
+
+	void send(QByteArray const &buffer, unsigned const responseSize
+			, QByteArray &outputBuffer);
+
+	bool mActive;
+	unsigned long mNXTHandle;
+	robotsInterpreter::robotCommunication::Fantom mFantom;
+
+	/// Timer that sends messages to robot to check that connection is still alive
+	QTimer *mKeepAliveTimer;
+
+	bool mStopped;
 };
 
+}
 }
 }
 }

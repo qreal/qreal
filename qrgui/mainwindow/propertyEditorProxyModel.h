@@ -6,18 +6,17 @@
 #include <QAbstractTableModel>
 #include <QtCore/QStringList>
 
-#include "../pluginManager/editorManager.h"
+#include "../pluginManager/editorManagerInterface.h"
 #include "../../qrrepo/logicalRepoApi.h"
 
-/** @class PropertyEditorModel
- *	@brief Модель редактора свойств
- * */
+/// Proxy model for property editor, maps single element from main model
+/// (logical or graphical) to a list model with element properties.
 class PropertyEditorModel : public QAbstractTableModel
 {
 	Q_OBJECT
 
 public:
-	explicit PropertyEditorModel(qReal::EditorManager const &editorManager,
+	explicit PropertyEditorModel(qReal::EditorManagerInterface const &editorManagerInterface,
 			QObject *parent = 0);
 
 	int rowCount(const QModelIndex &index) const;
@@ -93,7 +92,7 @@ private:
 
 	QList<Field> mFields;
 
-	qReal::EditorManager const &mEditorManager;
+	qReal::EditorManagerInterface const &mEditorManagerInterface;
 
 	bool isValid() const;
 };

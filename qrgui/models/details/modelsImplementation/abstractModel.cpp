@@ -6,8 +6,8 @@
 using namespace qReal;
 using namespace models::details::modelsImplementation;
 
-AbstractModel::AbstractModel(const EditorManager &editorManager, ConstraintsManager const &constraintsManager)
-	: mEditorManager(editorManager), mConstraintsManager(constraintsManager)
+AbstractModel::AbstractModel(const EditorManagerInterface &editorManagerInterface, ConstraintsManager const &constraintsManager)
+	: mEditorManagerInterface(editorManagerInterface), mConstraintsManager(constraintsManager)
 {
 }
 
@@ -100,7 +100,7 @@ QString AbstractModel::findPropertyName(Id const &id, int const role) const
 	//In case of a property described in element itself (in metamodel),
 	// role is simply an index of a property in a list of propertires.
 	// This convention must be obeyed everywhere, otherwise roles will shift.
-	QStringList properties = mEditorManager.getPropertyNames(id.type());
+	QStringList properties = mEditorManagerInterface.propertyNames(id.type());
 	Q_ASSERT(role - roles::customPropertiesBeginRole < properties.count());
 	return properties[role - roles::customPropertiesBeginRole];
 }
@@ -117,9 +117,9 @@ QStringList AbstractModel::mimeTypes() const
 	return types;
 }
 
-EditorManager const &AbstractModel::editorManager() const
+EditorManagerInterface const &AbstractModel::editorManagerInterface() const
 {
-	return mEditorManager;
+	return mEditorManagerInterface;
 }
 
 ConstraintsManager const &AbstractModel::constraintsManager() const
@@ -139,6 +139,11 @@ Id AbstractModel::idByIndex(QModelIndex const &index) const
 {
 	AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
 	return mModelItems.key(item);
+}
+
+Id AbstractModel::rootId() const
+{
+	return mRootItem->id();
 }
 
 bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent)
@@ -180,7 +185,8 @@ void AbstractModel::reinit()
 	mModelItems.clear();
 	delete mRootItem;
 	mRootItem = createModelItem(Id::rootId(), NULL);
-	reset();
+	beginResetModel();
+	endResetModel();
 	init();
 }
 

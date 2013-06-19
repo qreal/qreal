@@ -1,18 +1,20 @@
 #pragma once
-#include <QString>
-#include <QMap>
-#include <QWidget>
-#include <QMouseEvent>
+#include <QtCore/QString>
+#include <QtCore/QMap>
+#include <QtWidgets/QWidget>
+#include <QtGui/QMouseEvent>
+
 #include "GeometricForms.h"
-//#include "validpathcreator.h"
 #include "pathCorrector.h"
 #include "../../../qrkernel/ids.h"
-#include <QDebug>
+
+namespace qReal {
+namespace gestures {
 
 class GesturesManager
 {
 public:
-	virtual ~GesturesManager(){};
+	virtual ~GesturesManager() {}
 	virtual void initIdealGestures(QMap<QString, PathVector> const &objects) = 0;
 	virtual void setKey(const PathVector &path) = 0;
 	virtual double getMaxDistance(QString const &object) = 0;
@@ -26,7 +28,7 @@ template <typename TKey>
 public:
 	GesturesRecognizer(){}
 
-	virtual ~GesturesRecognizer(){};
+	virtual ~GesturesRecognizer() {}
 
 	double getDistance(QString const &item)
 	{
@@ -56,3 +58,6 @@ protected:
 	QMap<QString, TKey> mGestures;
 	//maybe to do several lists for multistroke gestures
 };
+
+}
+}

@@ -1,5 +1,9 @@
 #pragma once
+
 #include "GeometricForms.h"
+
+namespace qReal {
+namespace gestures {
 
 class Sorting
 {
@@ -89,3 +93,6 @@ private:
 		return minPos;
 	}
 };
+
+}
+}

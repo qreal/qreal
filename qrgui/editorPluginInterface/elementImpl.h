@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QWidget>
-#include <QList>
-#include <QRectF>
-#include <QPointF>
-#include <QPainter>
+#include <QtWidgets/QWidget>
+#include <QtCore/QList>
+#include <QtCore/QRectF>
+#include <QtCore/QPointF>
+#include <QtGui/QPainter>
 #include "elementTitleHelpers.h"
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
@@ -89,10 +89,11 @@ struct StatLine
 class ElementImpl {
 public:
 	virtual ~ElementImpl() {}
-	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts,
-					  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-					  QList<ElementTitleInterface*> &titles,
-					  SdfRendererInterface *renderer, SdfRendererInterface *portRenderer) = 0;
+	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts
+					  , QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
+					  , QList<ElementTitleInterface*> &title
+					  , SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
+					  , ElementRepoInterface *elementRepo = 0) = 0;
 	virtual void init(ElementTitleFactoryInterface &factory,
 					  QList<ElementTitleInterface*> &titles) = 0;
 	virtual void paint(QPainter *painter, QRectF &contents) = 0;
@@ -122,4 +123,10 @@ public:
 	virtual QList<double> border() const = 0;
 
 	virtual QStringList bonusContextMenuFields() const = 0;
+
+	/// Update shape of an element. Does nothing in case of generated editors, used by metamodel interpreter.
+	virtual void updateRendererContent(QString const &shape)
+	{
+		Q_UNUSED(shape);
+	}
 };

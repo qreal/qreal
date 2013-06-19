@@ -1,5 +1,5 @@
 #pragma once
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 namespace qReal {
 

@@ -5,8 +5,9 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
-	: mModelsAssistApi(logicalModel, editorManager, constraintsManager), mLogicalModel(logicalModel)
+LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager)
+	: mModelsAssistApi(logicalModel, editorManagerInterface, constraintsManager)
+	, mLogicalModel(logicalModel), mEditorManager(editorManagerInterface)
 {
 	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChangedInModelApi(Id)), this, SLOT(propertyChangedSlot(Id)));
 	QObject::connect(&mLogicalModel, SIGNAL(parentChanged(IdList)), this, SLOT(parentChangedSlot(IdList)));
@@ -35,9 +36,9 @@ void LogicalModelAssistApi::addedElementToModelSlot(Id const &element)
 	emit addedElementToModel(element);
 }
 
-EditorManager const &LogicalModelAssistApi::editorManager() const
+EditorManagerInterface const &LogicalModelAssistApi::editorManagerInterface() const
 {
-	return mModelsAssistApi.editorManager();
+	return mModelsAssistApi.editorManagerInterface();
 }
 
 ConstraintsManager const &LogicalModelAssistApi::constraintsManager() const
@@ -61,14 +62,17 @@ Id LogicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	Q_ASSERT(parent.idSize() == 4);
 
 	Id const newElementId(type, QUuid::createUuid().toString());
-	QString const elementFriendlyName = mModelsAssistApi.editorManager().friendlyName(type);
-	mLogicalModel.addElementToModel(parent, newElementId, Id(), "(" + elementFriendlyName + ")", QPointF(0, 0));
+	QString const elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
+	mLogicalModel.addElementToModel(parent, newElementId, Id(), elementFriendlyName, QPointF(0, 0));
 	return newElementId;
 }
 
-Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id LogicalModelAssistApi::createElement(Id const &parent, Id const &id
+		, bool isFromLogicalModel, QString const &name
+		, QPointF const &position, Id const &preferedLogicalId)
 {
-	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, name, position);
+	Q_UNUSED(preferedLogicalId)
+	return mModelsAssistApi.createElement(parent, id, id, isFromLogicalModel, name, position);
 }
 
 void LogicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
@@ -111,7 +115,7 @@ Id LogicalModelAssistApi::createConnectedElement(Id const &source, Id const &ele
 {
 	Id element = createElement(Id::rootId(), elementType);
 	QString sourceName = mLogicalModel.data(mLogicalModel.indexById(source), Qt::DisplayRole).toString();
-	QString typeName = editorManager().friendlyName(elementType);
+	QString typeName = editorManagerInterface().friendlyName(elementType);
 	mLogicalModel.setData(mLogicalModel.indexById(element), sourceName + " " + typeName, Qt::DisplayRole);
 	return element;
 }
@@ -144,12 +148,22 @@ IdList LogicalModelAssistApi::diagramsFromList(IdList const &list) const
 
 IdList LogicalModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
 {
-	return diagramsFromList(editorManager().getConnectedTypes(element.type()));
+	return diagramsFromList(editorManagerInterface().connectedTypes(element.type()));
 }
 
 IdList LogicalModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
 {
-	return diagramsFromList(editorManager().getUsedTypes(element.type()));
+	return diagramsFromList(editorManagerInterface().usedTypes(element.type()));
+}
+
+QVariant LogicalModelAssistApi::property(Id const &id, QString const &name) const
+{
+	return mLogicalModel.mutableApi().property(id, name);
+}
+
+void LogicalModelAssistApi::setProperty(Id const &id, QString const &name, QVariant const &value)
+{
+	mLogicalModel.mutableApi().setProperty(id, name, value);
 }
 
 void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName)
@@ -241,7 +255,7 @@ void LogicalModelAssistApi::removeReferencesTo(Id const &id)
 
 void LogicalModelAssistApi::removeReferencesFrom(Id const &id)
 {
-	QStringList referenceProperties = editorManager().getReferenceProperties(id.type());
+	QStringList referenceProperties = mEditorManager.referenceProperties(id.type());
 
 	foreach (QString const &property, referenceProperties) {
 		QString propertyString = mLogicalModel.api().property(id, property).toString();
@@ -254,12 +268,21 @@ void LogicalModelAssistApi::removeReferencesFrom(Id const &id)
 
 void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference)
 {
-	QStringList referenceProperties = editorManager().getReferenceProperties(id.type());
+	QStringList referenceProperties = mEditorManager.referenceProperties(id.type());
 
 	foreach (QString const &propertyName, referenceProperties) {
 		QString stringData = mLogicalModel.api().property(id, propertyName).toString();
 		if (stringData == reference.toString()) {
 			mLogicalModel.mutableApi().setProperty(id, propertyName, "");
 		}
+	}
+}
+
+void LogicalModelAssistApi::removeElement(Id const &logicalId)
+{
+	QPersistentModelIndex const index = indexById(logicalId);
+	if (logicalRepoApi().exist(logicalId) && index.isValid()) {
+		removeReferencesTo(logicalId);
+		mLogicalModel.removeRow(index.row(), index.parent());
 	}
 }

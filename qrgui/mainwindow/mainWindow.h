@@ -3,37 +3,43 @@
 #include <QtCore/QSignalMapper>
 #include <QtCore/QTranslator>
 #include <QtCore/QDir>
-#include <QtGui/QMainWindow>
-#include <QtGui/QSplashScreen>
-#include <QtGui/QProgressBar>
-#include <QtGui/QListWidget>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QSplashScreen>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QListWidget>
 #include <QtSql/QSqlDatabase>
 
-#include "../pluginManager/editorManager.h"
-#include "../pluginManager/toolPluginManager.h"
+#include "mainWindowInterpretersInterface.h"
+#include "mainWindowDockInterface.h"
 #include "../pluginManager/constraintsManager.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
-#include "../view/propertyEditorView.h"
-#include "../dialogs/gesturesShow/gesturesWidget.h"
-#include "mainWindowInterpretersInterface.h"
-#include "../../qrkernel/settingsManager.h"
-#include "../../qrgui/dialogs/preferencesDialog.h"
-
-#include "../textEditor/codeEditor.h"
-#include "helpBrowser.h"
-
-#include "../models/logicalModelAssistApi.h"
-
-#include "../../qrgui/dialogs/findReplaceDialog.h"
 #include "findManager.h"
+#include "referenceList.h"
 
-#include  "paletteTree.h"
-
-#include "../dialogs/startDialog/startDialog.h"
 #include "projectManager/projectManager.h"
 
-#include "referenceList.h"
+#include "../pluginManager/editorManagerInterface.h"
+#include "../pluginManager/editorManager.h"
+#include "../pluginManager/interpreterEditorManager.h"
+#include "../pluginManager/proxyEditorManager.h"
+#include "../pluginManager/toolPluginManager.h"
+#include "../models/logicalModelAssistApi.h"
+#include "../view/propertyEditorView.h"
+#include "../controller/controller.h"
+
+#include "../../qrgui/dialogs/preferencesDialog.h"
+#include "../../qrgui/dialogs/findReplaceDialog.h"
+#include "../dialogs/startDialog/startDialog.h"
+#include "propertyEditorProxyModel.h"
+#include "gesturesPainterInterface.h"
+#include "../dialogs/gesturesShow/gesturesWidget.h"
+
+#include "../textEditor/codeEditor.h"
+
+#include "../../qrkernel/settingsManager.h"
+#include "../dialogs/suggestToCreateDiagramDialog.h"
+#include "tabWidget.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -43,6 +49,7 @@ namespace qReal {
 
 class EditorView;
 class ListenerManager;
+class SceneCustomizer;
 
 namespace models {
 class Models;
@@ -50,27 +57,31 @@ class Models;
 
 namespace gui {
 class ErrorReporter;
+class PaletteTree;
 }
 
-class MainWindow : public QMainWindow, public qReal::gui::MainWindowInterpretersInterface
+class MainWindow : public QMainWindow
+		, public qReal::gui::MainWindowInterpretersInterface
+		, public qReal::gui::MainWindowDockInterface
 {
 	Q_OBJECT
 
 public:
-	MainWindow();
+	MainWindow(QString const &fileToOpen = QString());
 	~MainWindow();
 
-	EditorManager *manager();
-	EditorView *getCurrentTab();
-	ListenerManager *listenerManager();
-	models::Models *models();
-	PropertyEditorView *propertyEditor();
-	QTreeView *graphicalModelExplorer();
-	QTreeView *logicalModelExplorer();
+	EditorManagerInterface &editorManager();
+	EditorView *getCurrentTab() const;
+	ListenerManager *listenerManager() const;
+	models::Models *models() const;
+	Controller *controller() const;
+	PropertyEditorView *propertyEditor() const;
+	QTreeView *graphicalModelExplorer() const;
+	QTreeView *logicalModelExplorer() const;
 	PropertyEditorModel &propertyModel();
 	ToolPluginManager &toolManager();
 
-	GesturesPainterInterface *gesturesPainter();
+	gestures::GesturesPainterInterface *gesturesPainter() const;
 	QModelIndex rootIndex() const;
 
 	QAction *actionDeleteFromDiagram() const;
@@ -78,15 +89,18 @@ public:
 	QAction *actionPasteOnDiagram() const;
 	QAction *actionPasteCopyOfLogical() const;
 
-	virtual void highlight(Id const &graphicalId, bool exclusive = true);
+	virtual void highlight(Id const &graphicalId, bool exclusive = true, QColor const &color = Qt::red);
 	virtual void dehighlight(Id const &graphicalId);
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
-	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index, int const &role);
-	void openReferenceList(QPersistentModelIndex const &index
-			, QString const &referenceType, QString const &propertyValue, int role);
+	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
+	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy);
+	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
+			, int const &role);
+	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue
+			, int role);
 	virtual void openSettingsDialog(QString const &tab);
 
 	void showErrors(gui::ErrorReporter *reporter);
@@ -105,14 +119,42 @@ public:
 
 	virtual bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId);
 	virtual bool loadConstraintsPlugin(QString const &fileName);
-
-	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
-	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
+	virtual void saveDiagramAsAPictureToFile(QString const &fileName);
+	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles);
 	virtual IdList selectedElementsOnActiveDiagram();
 	virtual void updateActiveDiagram();
 	virtual void deleteElementFromDiagram(Id const &id);
 
 	virtual void reportOperation(invocation::LongOperation *operation);
+
+	/// Returns editor manager proxy, which allows to change editor manager implementation.
+	ProxyEditorManager &editorManagerProxy();
+
+	/// Loads (or reloads) available editor plugins and reinits palette.
+	void loadPlugins();
+
+	/// Closes tab having given id as root id. If there is no such tab, does nothing.
+	/// @param id Id of a diagram (root element) that we want to close.
+	void closeDiagramTab(Id const &id);
+
+	/// Clears selection on all opened tabs.
+	void clearSelectionOnTabs();
+
+	/// Adds all elements from given diagram in a given editor to a palette.
+	/// @param editor Id of an editor we need to add elements from.
+	/// @param diagram Id of a diagram we need to add elements from.
+	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
+
+	virtual QDockWidget *logicalModelDock() const;
+	virtual QDockWidget *graphicalModelDock() const;
+	virtual QDockWidget *propertyEditorDock() const;
+	virtual QDockWidget *errorReporterDock() const;
+	virtual QDockWidget *paletteDock() const;
+
+	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second);
+	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
+
+	QListIterator<EditorView *> openedEditorViews() const;
 
 signals:
 	void gesturesShowed();
@@ -121,7 +163,6 @@ signals:
 
 public slots:
 	void deleteFromScene();
-	void modelsAreChanged();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
 	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
@@ -135,15 +176,26 @@ public slots:
 	void changePaletteRepresentation();
 	void closeAllTabs();
 	void refreshRecentProjectsList(QString const &fileName);
-	void connectWindowTitle();
-	void disconnectWindowTitle();
 	void createDiagram(QString const &idString);
+	/// Creates project with specified root diagram
+	bool createProject(QString const &diagramIdString);
+
+	void openFirstDiagram();
+	void closeTabsWithRemovedRootElements();
 
 	void checkConstraints(Id const &id);
 	void checkConstraints(QModelIndex const &index);
 	void checkConstraints(IdList const &idList);
-
 private slots:
+	/// Suggests user to select a root diagram for the new project
+	/// if more than one diagram loaded or creates project with the only diagram
+	/// as root otherwise
+	void createProject();
+
+	/// Diagram opening must happen after plugins initialization
+	void initPluginsAndStartDialog();
+	void initToolPlugins();
+
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
 
@@ -153,14 +205,9 @@ private slots:
 
 	void updateTabName(Id const &id);
 
-	void settingsPlugins();
-
 	void showAbout();
 	void showHelp();
 
-	/// checks parameters for integrity,then importing it
-	/// @param fileName - *.qrs file to import
-	/// @return true - if all ok, false - if not ok
 	void fullscreen();
 	void openRecentProjectsMenu();
 
@@ -177,7 +224,12 @@ private slots:
 	void parseJavaLibraries();
 	void applySettings();
 
-	void deleteFromScene(QGraphicsItem *target);
+	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);
+	commands::AbstractCommand *graphicalDeleteCommand(QGraphicsItem *target);
+	commands::AbstractCommand *logicalDeleteCommand(QModelIndex const &index);
+	commands::AbstractCommand *graphicalDeleteCommand(QModelIndex const &index);
+	commands::AbstractCommand *logicalDeleteCommand(Id const &index);
+	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
 
 	void deleteFromDiagram();
 	void copyElementsOnDiagram();
@@ -220,7 +272,6 @@ private slots:
 	void updatePaletteIcons();
 
 private:
-	void deleteElementFromScene(QPersistentModelIndex const &index);
 
 	gui::Error::Severity severityByErrorType(CheckStatus::ErrorType const &errorType); //forCheckConstraints
 	void checkOwnConstraints(Id const &id);
@@ -240,20 +291,19 @@ private:
 	/// @param tab Tab to be initialized with shortcuts
 	void setShortcuts(EditorView * const tab);
 
-
-	void loadPlugins();
-
 	void registerMetaTypes();
 
 	QListWidget* createSaveListWidget();
 
 	virtual void closeEvent(QCloseEvent *event);
+
 	void deleteFromExplorer(bool isLogicalModel);
+	void deleteItems(IdList &itemsToDelete);
 	void deleteFromHighlightedElements(Element *element);
 	void keyPressEvent(QKeyEvent *event);
 
-	QString getSaveFileName(const QString &dialogWindowTitle);
-	QString getOpenFileName(const QString &dialogWindowTitle);
+	QString getSaveFileName(QString const &dialogWindowTitle);
+	QString getOpenFileName(QString const &dialogWindowTitle);
 	QString getWorkingFile(QString const &dialogWindowTitle, bool save);
 
 	void selectItemInLogicalModel(Id const &id);
@@ -272,6 +322,8 @@ private:
 	void setShowAlignment(bool isChecked);
 	void setSwitchGrid(bool isChecked);
 	void setSwitchAlignment(bool isChecked);
+
+	void addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu);
 
 	void setIndexesOfPropertyEditor(Id const &id);
 
@@ -292,14 +344,14 @@ private:
 
 	QString getNextDirName(QString const &name);
 
-	void initToolPlugins();
-
 	void initMiniMap();
 	void initToolManager();
 	void initTabs();
 	void initDocks();
 	void initExplorers();
 	void initRecentProjectsMenu();
+
+	void setVersion(QString const &version);
 
 	Ui::MainWindowUi *mUi;
 
@@ -313,12 +365,13 @@ private:
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 
 	models::Models *mModels;
-	EditorManager mEditorManager;
+	Controller *mController;
+	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
 	ConstraintsManager mConstraintsManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
-	GesturesWidget *mGesturesWidget;
+	gestures::GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
 
@@ -336,15 +389,19 @@ private:
 	QString mTempDir;
 	PreferencesDialog mPreferencesDialog;
 
-	HelpBrowser *mHelpBrowser;
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
 	QMenu *mRecentProjectsMenu;
-	qReal::gui::PaletteTree *mPaletteTree;
 
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;
 	StartDialog *mStartDialog;
+
+	SceneCustomizer *mSceneCustomizer;
+	QList<QDockWidget *> mAdditionalDocks;
+
+	/// A field for storing file name passed as console argument
+	QString mInitialFileToOpen;
 };
 
 }

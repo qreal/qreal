@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtGui/QGraphicsItem>
-#include <QtGui/QAction>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QAction>
 
 #include "../../qrkernel/ids.h"
 #include "../../qrkernel/settingsManager.h"
@@ -14,6 +14,8 @@
 
 #include "../models/graphicalModelAssistApi.h"
 #include "../models/logicalModelAssistApi.h"
+
+#include "../controller/controller.h"
 
 /** @brief size of a point port */
 const int kvadratik = 10;
@@ -28,7 +30,7 @@ class Element : public QObject, public QGraphicsItem, public ElementRepoInterfac
 
 public:
 	Element(ElementImpl* elementImpl);
-	
+
 	virtual ~Element() {}
 
 	void setId(qReal::Id &id);
@@ -43,7 +45,7 @@ public:
 
 	virtual void connectToPort() {}  // for edge
 	virtual void checkConnectionsToPort() {}  // for node
-	virtual QList<ContextMenuAction *> contextMenuActions();
+	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
 
 	virtual bool initPossibleEdges() = 0;
 	virtual void initTitles();
@@ -57,6 +59,8 @@ public:
 	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
+	void setController(qReal::Controller *controller);
+
 	ElementImpl* elementImpl() const;
 	/// Perform element-specific actions before being deleted
 	virtual void deleteFromScene() = 0;
@@ -64,18 +68,23 @@ public:
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);
+	void setTitlesVisible(bool visible);
 
 signals:
 	void switchFolding(bool);
 
 protected:
 	void initTitlesBy(QRectF const& contents);
+	/// Sets titles visibility without state registering
+	void setTitlesVisiblePrivate(bool visible);
 
 	bool mMoving;
 	qReal::Id mId;
 	ElementImpl* const mElementImpl;
 	QList<ElementTitle *> mTitles;
+	bool mTitlesVisible;
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
+	qReal::Controller *mController;
 };

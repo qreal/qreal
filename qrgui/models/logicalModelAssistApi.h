@@ -3,10 +3,12 @@
 #include "details/logicalModel.h"
 #include "details/modelsAssistApi.h"
 #include "../toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "../pluginManager/proxyEditorManager.h"
 
 namespace qReal {
 
 class EditorManager;
+class EditorManagerInterface;
 class ConstraintsManager;
 
 namespace models {
@@ -20,14 +22,16 @@ class LogicalModelAssistApi : public QObject, public qReal::LogicalModelAssistIn
 	Q_OBJECT
 
 public:
-	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager);
+	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager);
 	virtual ~LogicalModelAssistApi() {}
-	EditorManager const &editorManager() const;
+	EditorManagerInterface const &editorManagerInterface() const;
 	ConstraintsManager const &constraintsManager() const;
 	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
 	Id createElement(Id const &parent, Id const &type);
-	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
+	Id createElement(Id const &parent, Id const &id
+			, bool isFromLogicalModel, QString const &name
+			, QPointF const &position, Id const &preferedLogicalId = Id());
 	IdList children(Id const &element) const;
 	void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF());
 
@@ -42,8 +46,11 @@ public:
 	IdList diagramsAbleToBeUsedIn(Id const &element) const;
 	virtual void stackBefore(Id const &element, Id const &sibling);
 
-	void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
-	QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
+	virtual QVariant property(Id const &id, QString const &name) const;
+	virtual void setProperty(Id const &id, QString const &name, QVariant const &value);
+
+	virtual void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
+	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
 
 	bool isLogicalId(Id const &id) const;
 
@@ -66,6 +73,7 @@ public:
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
 
+	void removeElement(Id const &logicalId);
 public slots:
 	void propertyChangedSlot(Id const &elem);
 	void parentChangedSlot(IdList const &elements);
@@ -81,6 +89,7 @@ signals:
 private:
 	details::ModelsAssistApi mModelsAssistApi;
 	details::LogicalModel &mLogicalModel;
+	EditorManagerInterface const &mEditorManager;
 
 	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden
 	LogicalModelAssistApi& operator =(LogicalModelAssistApi const &); // Assignment is forbidden also

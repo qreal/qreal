@@ -15,7 +15,7 @@ namespace qrRepo {
 	class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
 	{
 	public:
-		explicit RepoApi(QString const &workingDirectory);
+		explicit RepoApi(QString const &workingDirectory, bool ignoreAutosave = false);
 		// Default destructor ok.
 
 		/// replacing property values that contains input value with new value
@@ -154,6 +154,7 @@ namespace qrRepo {
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
 
 		details::Client mClient;
+		bool mIgnoreAutosave;
 	};
 
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 #include "../../../../../qrutils/graphicsUtils/abstractScene.h"
 
 namespace qReal {
@@ -19,7 +19,7 @@ public:
 
 	void keyPressEvent(QKeyEvent *event);
 
-	void forPressResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
+	void forPressResize(QGraphicsSceneMouseEvent *event);
 	void forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
 	void forReleaseResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
 	void reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsView>
+#include <QtWidgets/QGraphicsView>
 
 #include "editorViewScene.h"
 #include "editorViewMVIface.h"
@@ -18,14 +18,14 @@ namespace qReal {
 		explicit EditorView(QWidget *parent);
 		~EditorView();
 
-		EditorViewMViface * mvIface()
-		{
-			return mMVIface;
-		}
+		EditorViewMViface *mvIface() const;
+		EditorViewScene *editorViewScene() const;
 
 		void setMainWindow(qReal::MainWindow *mainWindow);
 		void setDrawSceneGrid(bool show);
 		void ensureElementVisible(Element const * const element);
+		void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
+		void setTitlesVisible(bool visible);
 
 	public slots:
 		void toggleAntialiasing(bool);
@@ -39,6 +39,9 @@ namespace qReal {
 		virtual void mouseReleaseEvent(QMouseEvent *event);
 		virtual void mousePressEvent(QMouseEvent *event);
 		virtual void scrollContentsBy(int dx, int dy);
+
+		virtual void keyPressEvent(QKeyEvent *event);
+		virtual void keyReleaseEvent(QKeyEvent *event);
 
 	private:
 		EditorViewMViface *mMVIface;

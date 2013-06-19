@@ -1,7 +1,10 @@
 #pragma once
+
 #include <QtCore/QTimer>
+
 #include "abstractRobotModelImplementation.h"
 #include "brickImplementations/nullBrickImplementation.h"
+#include "displayImplementations/nullDisplayImplementation.h"
 #include "motorImplementations/nullMotorImplementation.h"
 #include "sensorImplementations/nullTouchSensorImplementation.h"
 #include "sensorImplementations/nullSonarSensorImplementation.h"
@@ -25,6 +28,7 @@ public:
 	virtual void stopRobot();
 
 	virtual brickImplementations::NullBrickImplementation &brick();
+	virtual displayImplementations::NullDisplayImplementation &display();
 	virtual sensorImplementations::NullTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::NullSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
 	virtual sensorImplementations::NullColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
@@ -38,6 +42,8 @@ public:
 	virtual sensorImplementations::NullEncoderImplementation &encoderB();
 	virtual sensorImplementations::NullEncoderImplementation &encoderC();
 
+	virtual AbstractTimer *produceTimer();
+
 private slots:
 	void timerTimeout();
 	void sensorConfigurationDoneSlot();
@@ -45,6 +51,7 @@ private slots:
 private:
 	QTimer mActiveWaitingTimer;
 	brickImplementations::NullBrickImplementation mBrick;
+	displayImplementations::NullDisplayImplementation mDisplay;
 	motorImplementations::NullMotorImplementation mMotorA;
 	motorImplementations::NullMotorImplementation mMotorB;
 	motorImplementations::NullMotorImplementation mMotorC;

@@ -2,13 +2,13 @@
 
 #include <QDomElement>
 #include <QtCore/QStringList>
-#include "scalableItem.h"
+#include "../qrutils/scalableItem.h"
 
 namespace utils {
 	class OutFile;
 }
 
-class Label : public ScalableItem
+class Label : public utils::ScalableItem
 {
 public:
 	bool init(QDomElement const &element, int index, bool nodeLabel, int width, int height);
@@ -22,12 +22,14 @@ private:
 	/// split the string into substrings wherever "##" occurs and return the list of those strings
 	QStringList getListOfStr(QString const &strToParse) const;
 
-	ScalableCoordinate mX;
-	ScalableCoordinate mY;
+	utils::ScalableCoordinate mX;
+	utils::ScalableCoordinate mY;
 	int mIndex;
 	QString mText;
 	QString mTextBinded;
 	QString mReadOnly;
 	QString mBackground;
 	QString mCenter;
+	bool mIsHard;
+	bool mIsPlainText;
 };

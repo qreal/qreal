@@ -1,4 +1,3 @@
-
 /** @file nodeElement.h
  *  @brief class for an element object on a diagram
  * */
@@ -9,7 +8,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsSceneHoverEvent>
-#include <QtGui/QWidget>
+#include <QtWidgets/QWidget>
 #include <QList>
 
 #include "sdfRenderer.h"
@@ -25,12 +24,20 @@
 
 #include "serializationData.h"
 
+namespace qReal
+{
+namespace commands
+{
+class ResizeCommand;
+}
+}
+
 class NodeElement : public Element
 {
 	Q_OBJECT
 
 public:
-	NodeElement(ElementImpl *impl);
+	explicit NodeElement(ElementImpl *impl);
 	virtual ~NodeElement();
 
 	/**
@@ -41,7 +48,8 @@ public:
 	 */
 	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
 
-	QMap<QString, QVariant> properties();
+	QMap<QString, QVariant> graphicalProperties() const;
+	QMap<QString, QVariant> logicalProperties() const;
 
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w, SdfRenderer *portrenderer);
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
@@ -60,8 +68,11 @@ public:
 	/// Aligning the element to grid
 	void alignToGrid();
 
+	bool isContainer() const;
+
 	void storeGeometry();
 	virtual void setName(QString name);
+	//void shift(QPointF const &pos, EdgeElement* called);
 
 	QPointF const portPos(qreal id) const;
 	QPointF const nearestPort(QPointF const &location) const;
@@ -88,7 +99,7 @@ public:
 
 	//void resizeChild(QRectF const &newContents, QRectF const &oldContents);
 
-	virtual QList<ContextMenuAction *> contextMenuActions();
+	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
 	void switchAlignment(bool isSwitchedOn);
 	void showAlignment(bool isChecked);
 
@@ -97,7 +108,7 @@ public:
 	bool connectionInProgress();
 	void setConnectingState(bool arg);
 
-	void adjustLinks();
+	void adjustLinks(bool isDragging = false);
 	void arrangeLinearPorts();
 	void arrangeLinks();
 
@@ -123,15 +134,24 @@ public:
 	void disconnectEdges();
 
 	QList<EdgeElement *> const edgeList() const;
+	QList<NodeElement *> const childNodes() const;
 
 	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
+
+	void setVisibleEmbeddedLinkers(bool const show);
+	void updateShape(QString const &shape) const;
+
+	void changeFoldState();
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);
 	void switchGrid(bool isChecked);
 	NodeElement *copyAndPlaceOnDiagram(QPointF const &offset);
+
+private slots:
+	void updateNodeEdges();
 
 private:
 	enum DragState {
@@ -155,14 +175,14 @@ private:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF newContents, QPointF newPos);
+	void resize(QRectF const &newContents, QPointF const &newPos);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
 	 * newPos equals to current position of node.
 	 * @param newContents Recommendation for new shape of node.
 	 */
-	void resize(QRectF newContents);
+	void resize(QRectF const &newContents);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
@@ -190,7 +210,6 @@ private:
 	void recalculateHighlightedNode(QPointF const &mouseScenePos);
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
-	void changeFoldState();
 	void setLinksVisible(bool);
 
 	NodeElement *getNodeAt(QPointF const &position);
@@ -199,25 +218,19 @@ private:
 	void updateByNewParent();
 
 	void initEmbeddedLinkers();
-	void setVisibleEmbeddedLinkers(bool const show);
 
-	/**
-	 * Returns true if parent node is sorting container; otherwise returns false.
-	 * @return True if parent node is sorting container; otherwise returns false.
-	 */
-	bool isParentSortingContainer() const;
+	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
 
 	ContextMenuAction mSwitchGridAction;
 
 	bool mPortsVisible;
-
-	QList<NodeElement *> childs;
 
 	QRectF mContents;
 	QList<EdgeElement *> mEdgeList;
 
 	DragState mDragState;
 	QPointF mDragPosition;
+	qReal::commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
 
@@ -252,4 +265,7 @@ private:
 	NodeElement *mHighlightedNode;
 
 	NodeData mData;
+
+	int mTimeOfUpdate;
+	QTimer *mTimer;
 };

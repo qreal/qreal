@@ -6,6 +6,8 @@ DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+QT += widgets
+
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrmc
 
 TRANSLATIONS = metaEditorSupport_ru.ts

@@ -20,23 +20,22 @@ public:
 	ErrorReporter();
 	ErrorReporter(ErrorListWidget* const errorListWidget, QDockWidget* const errorList);
 
-	void addInformation(QString const &message, Id const &position = Id::rootId());
-	void addWarning(QString const &message, Id const &position = Id::rootId());
-	void addError(QString const &message, Id const &position = Id::rootId());
-	void addCritical(QString const &message, Id const &position = Id::rootId());
+	virtual void addInformation(QString const &message, Id const &position = Id::rootId());
+	virtual void addWarning(QString const &message, Id const &position = Id::rootId());
+	virtual void addError(QString const &message, Id const &position = Id::rootId());
+	virtual void addCritical(QString const &message, Id const &position = Id::rootId());
+	virtual bool wereErrors();
+
 	bool showErrors(ErrorListWidget* const errorListWidget, QDockWidget* const errorList) const;
+	void updateVisibility(bool isVisible);
 
 	void addUniqueError(QString const &message, Error::Severity const &severity = Error::error, Id const &position = Id::rootId());
 	void delUniqueError(QString const &message, Error::Severity const &severity = Error::error, Id const &position = Id::rootId());
 	void delAllErrorOfElement(Id const &position);
 
+public slots:
 	virtual void clear();
 	virtual void clearErrors();
-
-	virtual bool wereErrors();
-
-public slots:
-	void updateVisibility(bool isVisible);
 
 private:
 	static QString severityMessage(Error const &error);

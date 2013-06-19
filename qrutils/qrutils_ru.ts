@@ -6,70 +6,127 @@
     <message>
         <location filename="expressionsParser/expressionsParser.cpp" line="616"/>
         <source>Unexpected end of stream at %1. Mb you forget &apos;;&apos;?</source>
-        <translation>РќРµРѕР¶РёРґР°РЅРЅС‹Р№ РєРѕРЅРµС† РїРѕС‚РѕРєР° РЅР° РїРѕР·РёС†РёРё %1. Р’РѕР·РјРѕР¶РЅРѕ РІС‹ Р·Р°Р±С‹Р»Рё &apos;;&apos;?</translation>
+        <translation>Неожиданный конец потока на позиции %1. Возможно вы забыли &apos;;&apos;?</translation>
     </message>
     <message>
         <location filename="expressionsParser/expressionsParser.cpp" line="620"/>
         <source>Unexpected symbol at %1 : expected %2, got %3</source>
-        <translation>РќРµРѕР¶РёРґР°РЅРЅС‹Р№ СЃРёРјРІРѕР» РЅР° РїРѕР·РёС†РёРё %1 : РѕР¶РёРґР°РµС‚СЃСЏ %2, РїРѕР»СѓС‡РµРЅРѕ %3  </translation>
+        <translation>Неожиданный символ на позиции %1 : ожидается %2, получено %3  </translation>
     </message>
     <message>
         <location filename="expressionsParser/expressionsParser.cpp" line="623"/>
         <source>Types mismatch at %1: %2 = %3. Possible loss of data</source>
-        <translation>РќРµСЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ С‚РёРїРѕРІ РЅР° РїРѕР·РёС†РёРё %1: %2 = %3. Р’РѕР·РјРѕР¶РЅР° РїРѕС‚РµСЂСЏ РґР°РЅРЅС‹С… </translation>
+        <translation>Несоответствие типов на позиции %1: %2 = %3. Возможна потеря данных </translation>
     </message>
     <message>
         <location filename="expressionsParser/expressionsParser.cpp" line="627"/>
         <source>Unknown identifier at %1 &apos; %2 &apos;</source>
-        <translation>РќРµРёР·РІРµСЃС‚РЅС‹Рµ РїРёРЅРґРµРЅС‚РёС„РёРєР°С‚РѕСЂС‹ %1 &apos; %2 &apos;  </translation>
+        <translation>Неизвестные пиндентификаторы %1 &apos; %2 &apos;  </translation>
     </message>
     <message>
         <location filename="expressionsParser/expressionsParser.cpp" line="630"/>
         <source>Empty process is unnecessary</source>
-        <translation>РќРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚РѕРіРѕ РїСЂРѕС†РµСЃСЃР°</translation>
+        <translation>Не может быть пустого процесса</translation>
     </message>
     <message>
         <location filename="expressionsParser/expressionsParser.cpp" line="634"/>
         <source>Condition can&apos;t be empty</source>
-        <translation>РЈСЃР»РѕРІРёРµ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСѓСЃС‚С‹Рј</translation>
+        <translation>Условие не может быть пустым</translation>
     </message>
     <message>
         <location filename="expressionsParser/expressionsParser.cpp" line="638"/>
         <source>Using reserved variable %1</source>
-        <translation>РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ Р·Р°СЂРµР·РµСЂРІРёСЂРѕРІР°РЅРЅРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№ %1 </translation>
+        <translation>Использование зарезервированной переменной %1 </translation>
     </message>
     <message>
         <location filename="expressionsParser/expressionsParser.cpp" line="642"/>
         <source>No value of expression</source>
-        <translation>РќРµС‚ Р·РЅР°С‡РµРЅРёСЏ РІС‹СЂР°Р¶РµРЅРёСЏ</translation>
+        <translation>Нет значения выражения</translation>
     </message>
     <message>
         <location filename="expressionsParser/expressionsParser.cpp" line="645"/>
         <source>Incorrect variable declaration: use function block for it</source>
-        <translation>РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ : РёСЃРїРѕР»СЊР·СѓР№С‚Рµ РґР»СЏ СЌС‚РѕРіРѕ С„СѓРЅРєС†РёРѕРЅР°Р»СЊРЅС‹Р№ Р±Р»РѕРє</translation>
+        <translation>Некорректное объявление переменной : используйте для этого функциональный блок</translation>
     </message>
     <message>
         <location filename="expressionsParser/expressionsParser.cpp" line="649"/>
         <source>Unexpected symbol after the end of expression</source>
-        <translation>РќРµРѕР¶РёРґР°РЅРЅС‹Р№ СЃРёРјРІРѕР» РІ РєРѕРЅС†Рµ РІС‹СЂР°Р¶РµРЅРёСЏ</translation>
+        <translation>Неожиданный символ в конце выражения</translation>
     </message>
     <message>
-        <location filename="generatorsUtils/abstractGenerator.cpp" line="47"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="652"/>
+        <source>Unknown element property used</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="expressionsParser/expressionsParser.cpp" line="656"/>
+        <source>Unknown element name used</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>qReal::BaseGraphTransformationUnit</name>
+    <message>
+        <location filename="graphUtils/baseGraphTransformationUnit.cpp" line="29"/>
+        <source>no current diagram</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="graphUtils/baseGraphTransformationUnit.cpp" line="56"/>
+        <location filename="graphUtils/baseGraphTransformationUnit.cpp" line="102"/>
+        <source>Rule &apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="graphUtils/baseGraphTransformationUnit.cpp" line="56"/>
+        <source>&apos; has not any appropriate nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="graphUtils/baseGraphTransformationUnit.cpp" line="102"/>
+        <source>&apos; has unconnected link</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>utils::MetamodelGeneratorSupport</name>
+    <message>
+        <location filename="metamodelGeneratorSupport.cpp" line="57"/>
+        <source>Please, fill compiler settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="metamodelGeneratorSupport.cpp" line="77"/>
+        <source>Cannot unload plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="metamodelGeneratorSupport.cpp" line="100"/>
+        <source>Cannot load new editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="metamodelGeneratorSupport.cpp" line="106"/>
+        <source>Cannot build new editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+      <location filename="generatorsUtils/abstractGenerator.cpp" line="47"/>
         <location filename="generatorsUtils/abstractGenerator.cpp" line="67"/>
         <location filename="generatorsUtils/abstractGenerator.cpp" line="110"/>
         <source>Cannot load file &quot;%1&quot;</source>
-        <translation>РќРµРІРѕР·РјРѕР¶РЅРѕ Р·Р°РіСЂСѓР·РёС‚СЊ С„Р°Р№Р» &quot;%1&quot; </translation>
+        <translation>Невозможно загрузить файл &quot;%1&quot; </translation>
     </message>
     <message>
         <location filename="generatorsUtils/abstractGenerator.cpp" line="146"/>
         <source>Cannot create directory %1</source>
         <oldsource>Can&apos;t create directory %1</oldsource>
-        <translation>РќРµРІРѕР·РјРѕР¶РЅРѕ СЃРѕР·РґР°С‚СЊ РґРёСЂРµРєС‚РѕСЂРёСЋ  %1</translation>
+        <translation>Невозможно создать директорию  %1</translation>
     </message>
     <message>
         <location filename="generatorsUtils/abstractGenerator.cpp" line="158"/>
         <source>Cannot open &quot;%1&quot;</source>
-        <translation>РќРµРІРѕР·РјРѕР¶РЅРѕ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р»  &quot;%1&quot; </translation>
+        <translation>Невозможно открыть файл  &quot;%1&quot; </translation>
     </message>
 </context>
 <context>
@@ -84,13 +141,13 @@
         <location filename="watchListWindow.ui" line="96"/>
         <location filename="ui_watchListWindow.h" line="74"/>
         <source>Name</source>
-        <translation>РРјСЏ</translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <location filename="watchListWindow.ui" line="101"/>
         <location filename="ui_watchListWindow.h" line="76"/>
         <source>Value</source>
-        <translation>Р—РЅР°С‡РµРЅРёРµ</translation>
+        <translation>Значение</translation>
     </message>
 </context>
 </TS>

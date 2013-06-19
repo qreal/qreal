@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QtCore/QDebug>
 #include <QtCore/QObject>
 
@@ -21,6 +22,9 @@ public:
 	virtual void read();
 	robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl();
 	void setImplementation(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl);
+
+	/// Performs dummy sensor reading with 0 result; used for sensor variables nullification
+	void nullify();
 
 protected:
 	inputPort::InputPortEnum mPort;

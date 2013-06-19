@@ -18,6 +18,7 @@ class RobotsGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.robots.generator.RobotsGeneratorPlugin")
 
 public:
 	RobotsGeneratorPlugin();
@@ -27,8 +28,8 @@ public:
 	virtual QList<qReal::ActionInfo> actions();
 
 private slots:
-	/// Calls code generator
-	void generateRobotSourceCode();
+	/// Calls code generator. Returns true if operation was successfull.
+	bool generateRobotSourceCode();
 
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
 	void flashRobot();

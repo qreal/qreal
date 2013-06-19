@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "../../qrkernel/settingsManager.h"
 #include "projectManager.h"
@@ -39,12 +39,13 @@ uint Autosaver::interval() const
 
 void Autosaver::save()
 {
-	mProjectManager->save();
+	mProjectManager->saveTemp();
 }
 
 QString Autosaver::filePath() const
 {
 	QString result;
+
 	if (SettingsManager::value("AutosaveFileName").toString().isEmpty()) {
 		return QApplication::applicationFilePath() + ".qrs";
 	}

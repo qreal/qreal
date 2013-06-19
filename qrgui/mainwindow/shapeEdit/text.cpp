@@ -1,7 +1,7 @@
 #include "text.h"
 
 #include <QtGui/QCursor>
-#include <QtGui/QStyleOptionGraphicsItem>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtGui/QPainter>
 #include <QtGui/QTextCursor>
 

@@ -10,12 +10,12 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, const EditorManager &editorManager, ConstraintsManager const &constraintsManager)
+GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager)
 	: AbstractModel(editorManager, constraintsManager), mLogicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	init();
-	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManager, constraintsManager);
+	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManagerInterface, constraintsManager);
 }
 
 GraphicalModel::~GraphicalModel()
@@ -83,14 +83,14 @@ void GraphicalModel::updateElements(Id const &logicalId, QString const &name)
 }
 
 void GraphicalModel::addElementToModel(const Id &parent, const Id &id
-		, const Id &logicalId, const QString &name, const QPointF &position)
+		, const Id &logicalId, QString const &name, const QPointF &position)
 {
 	Q_ASSERT_X(mModelItems.contains(parent), "addElementToModel", "Adding element to non-existing parent");
 	AbstractModelItem *parentItem = mModelItems[parent];
 
 	GraphicalModelItem *newGraphicalModelItem = NULL;
 	Id actualLogicalId = logicalId;
-	if (logicalId == Id::rootId()) {
+	if (logicalId == Id::rootId() || logicalId == Id()) {
 		AbstractModelItem *newItem = createModelItem(id, parentItem);
 		newGraphicalModelItem = static_cast<GraphicalModelItem *>(newItem);
 		actualLogicalId = newGraphicalModelItem->logicalId();
@@ -102,7 +102,7 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 }
 
 void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
-		, modelsImplementation::AbstractModelItem *item, const QString &name, const QPointF &position)
+		, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 
@@ -131,7 +131,7 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 		case Qt::EditRole:
 			return mApi.name(item->id());
 		case Qt::DecorationRole:
-			return mEditorManager.icon(item->id());
+			return mEditorManagerInterface.icon(item->id());
 		case roles::idRole:
 			return item->id().toVariant();
 		case roles::logicalIdRole:

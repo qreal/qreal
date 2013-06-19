@@ -9,6 +9,13 @@
 #include "blocks/dummyBlock.h"
 #include "blocks/waitForTouchSensorBlock.h"
 #include "blocks/waitForSonarDistanceBlock.h"
+#include "blocks/waitForButtonsBlock.h"
+#include "blocks/drawPixelBlock.h"
+#include "blocks/drawLineBlock.h"
+#include "blocks/drawRectBlock.h"
+#include "blocks/clearScreenBlock.h"
+#include "blocks/drawCircleBlock.h"
+#include "blocks/printTextBlock.h"
 #include "blocks/enginesForwardBlock.h"
 #include "blocks/enginesBackwardBlock.h"
 #include "blocks/enginesStopBlock.h"
@@ -22,6 +29,7 @@
 #include "blocks/waitForEncoderBlock.h"
 #include "blocks/nullificationEncoderBlock.h"
 #include "blocks/waitForLightSensorBlock.h"
+#include "blocks/commentBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -56,9 +64,9 @@ Block *BlocksFactory::block(Id const &element)
 	} else if (elementMetatypeIs(element, "FinalNode")) {
 		newBlock = new FinalBlock();
 	} else if (elementMetatypeIs(element, "Beep")) {
-		newBlock = new BeepBlock(mRobotModel->brick());
+		newBlock = new BeepBlock(mRobotModel->brick(), mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "Timer")) {
-		newBlock = new TimerBlock();
+		newBlock = new TimerBlock(mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
 		newBlock = new WaitForTouchSensorBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
@@ -89,6 +97,22 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new NullificationEncoderBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForLight")) {
 		newBlock = new WaitForLightSensorBlock(mRobotModel);
+	} else if (elementMetatypeIs(element, "CommentBlock")) {
+		newBlock = new CommentBlock();
+	} else if (elementMetatypeIs(element, "WaitForButtons")) {
+		newBlock = new WaitForButtonsBlock(mRobotModel, mRobotModel->display());
+	} else if (elementMetatypeIs(element, "DrawPixel")) {
+		newBlock = new DrawPixelBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "DrawLine")) {
+		newBlock = new DrawLineBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "DrawCircle")) {
+		newBlock = new DrawCircleBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "PrintText")) {
+		newBlock = new PrintTextBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "DrawRect")) {
+		newBlock = new DrawRectBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "ClearScreen")) {
+		newBlock = new ClearScreenBlock(mRobotModel->display());
 	} else {
 		newBlock = new DummyBlock();
 	}

@@ -4,8 +4,8 @@ SUBDIRS = \
 	editor \
 	robotsInterpreter \
 	robotsGenerator \
-	qextSerialPort \
+	qextserialport \
 	constraintsRobotsMetamodel/constraintsRobotsMetamodel.pro \
 
-qextSerialPort.file = thirdparty/qextserialport/qextserialport.pro
-robotsInterpreter.depends = qextSerialPort
+qextserialport.file = thirdparty/qextserialport/qextserialport.pro
+robotsInterpreter.depends = qextserialport

@@ -1,6 +1,6 @@
 #include "realRobotModelImplementation.h"
-
 #include "../tracer.h"
+#include "../realTimer.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
@@ -10,6 +10,7 @@ RealRobotModelImplementation::RealRobotModelImplementation(RobotCommunicator * c
 	:  AbstractRobotModelImplementation()
 	, mRobotCommunicator(robotCommunicationInterface)
 	, mBrick(robotCommunicationInterface)
+	, mDisplay()
 	, mMotorA(0, robotCommunicationInterface), mMotorB(1, robotCommunicationInterface), mMotorC(2, robotCommunicationInterface)
 	, mEncoderA(robotCommunicationInterface, outputPort::port1), mEncoderB(robotCommunicationInterface, outputPort::port2), mEncoderC(robotCommunicationInterface, outputPort::port3)
 {
@@ -26,6 +27,11 @@ RealRobotModelImplementation::~RealRobotModelImplementation()
 brickImplementations::RealBrickImplementation &RealRobotModelImplementation::brick()
 {
 	return mBrick;
+}
+
+displayImplementations::RealDisplayImplementation &RealRobotModelImplementation::display()
+{
+	return mDisplay;
 }
 
 sensorImplementations::BluetoothTouchSensorImplementation *RealRobotModelImplementation::touchSensor(inputPort::InputPortEnum const &port) const
@@ -68,8 +74,9 @@ void RealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const
 
 void RealRobotModelImplementation::addLightSensor(inputPort::InputPortEnum const &port)
 {
-//	sensorImplementations::BluetoothLightSensorImplementation *sensor = new sensorImplementations::BluetoothLightSensorImplementation(mRobotCommunicator, port);
-	//mSensorsConfigurer.configureSensor(sensor, port);
+	Q_UNUSED(port)
+	sensorImplementations::BluetoothLightSensorImplementation *sensor = new sensorImplementations::BluetoothLightSensorImplementation(mRobotCommunicator, port);
+	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void RealRobotModelImplementation::init()
@@ -153,4 +160,9 @@ void RealRobotModelImplementation::disconnectedSlot()
 	mSensorsConfigurer.lockConfiguring();
 	mIsConnected = false;
 	emit disconnected();
+}
+
+AbstractTimer *RealRobotModelImplementation::produceTimer()
+{
+	return new RealTimer;
 }

@@ -38,6 +38,11 @@ void Block::init(Id const &graphicalId
 
 bool Block::initNextBlocks()
 {
+	if (id() == Id() || id() == Id::rootId()) {
+		error(tr("Control flow break detected, stopping"));
+		return false;
+	}
+
 	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
 	if (links.count() > 1) {
@@ -52,7 +57,7 @@ bool Block::initNextBlocks()
 
 	if (links.count() == 1) {
 		Id const nextBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(links[0], id());
-		if (nextBlockId == Id()) {
+		if (nextBlockId == Id() || nextBlockId == Id::rootId()) {
 			error(tr("Outgoing link is not connected"));
 			return false;
 		}
@@ -68,8 +73,9 @@ Id const Block::id() const
 
 void Block::interpret()
 {
-	if ((mState == running) || (mState == failed))
+	if ((mState == running) || (mState == failed)) {
 		return;
+	}
 
 	mState = running;
 	bool result = initNextBlocks();
@@ -154,6 +160,34 @@ QVariant Block::evaluate(const QString &propertyName)
 		emit failure();
 	}
 	return value;
+}
+
+bool Block::evaluateBool(QString const &propertyName)
+{
+	int position = 0;
+	bool const value = mParser->parseCondition(stringProperty(propertyName), position, mGraphicalId);
+	if (mParser->hasErrors()) {
+		mParser->deselect();
+		emit failure();
+	}
+	return value;
+}
+
+QVector<bool> Block::parseEnginePorts() const
+{
+	QString const ports = stringProperty("Ports");
+	QVector<bool> result(3, false);
+	QStringList splitted = ports.split(',', QString::SkipEmptyParts);
+	foreach (QString const &port, splitted) {
+		if (port.trimmed().toUpper() == "A") {
+			result[0] = true;
+		} else if (port.trimmed().toUpper() == "B") {
+			result[1] = true;
+		} else if (port.trimmed().toUpper() == "C") {
+			result[2] = true;
+		}
+	}
+	return result;
 }
 
 void Block::stopActiveTimerInBlock()

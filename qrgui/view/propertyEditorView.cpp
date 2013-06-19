@@ -1,6 +1,6 @@
 #include "propertyEditorView.h"
 #include "../mainwindow/mainWindow.h"
-
+#include "../controller/commands/changePropertyCommand.h"
 
 PropertyEditorView::PropertyEditorView(QWidget *parent)
 		: QWidget(parent), mChangingPropertyValue(false)
@@ -10,6 +10,7 @@ PropertyEditorView::PropertyEditorView(QWidget *parent)
 		, mVariantFactory(NULL)
 		, mButtonManager(NULL)
 		, mButtonFactory(NULL)
+		, mController(NULL)
 {
 	mPropertyEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
@@ -27,6 +28,7 @@ void PropertyEditorView::init(qReal::MainWindow *mainWindow, qReal::models::Logi
 {
 	mMainWindow = mainWindow;
 	mLogicalModelAssistApi = logicalModelAssistApi; // unused
+	mController = mainWindow->controller();
 }
 
 /*
@@ -90,6 +92,8 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			type = QVariant::Bool;
 		} else if (typeName == "string") {
 			type = QVariant::String;
+		} else if (typeName == "code" || typeName == "directorypath") {
+			isButton = true;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
 		} else {
@@ -151,18 +155,33 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 	QPersistentModelIndex const actualIndex = mModel->modelIndex(index.row());
 
-	// there are only two type of buttons: shape and reference
+	// there are only four types of buttons: shape, reference, text and directory path
 	if (name == "shape") {
 		mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
 	} else {
-		QString typeName = mModel->typeName(index);
-		mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
+		QString const typeName = mModel->typeName(index).toLower();
+		if (typeName == "code") {
+			mMainWindow->openQscintillaTextEditor(actualIndex, role, propertyValue);
+		} else if (typeName == "directorypath") {
+			QString startPath;
+			if (propertyValue.isEmpty()) {
+				startPath = qApp->applicationDirPath();
+			} else {
+				startPath = propertyValue;
+			}
+			QString const location = QFileDialog::getExistingDirectory(this, tr("Specify directory:"), startPath);
+			mModel->setData(index, location);
+		} else {
+			mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
+		}
 	}
 }
 
 void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 {
-	if(mChangingPropertyValue) return;
+	if (mChangingPropertyValue) {
+		return;
+	}
 
 	QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(prop);
 	int propertyType = property->propertyType(),
@@ -177,7 +196,13 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 		}
 	}
 	value = QVariant(value.toString());
-	mModel->setData(index, value);
+	QVariant const oldValue = mModel->data(index);
+
+	// TODO: edit included Qt Property Browser framework or inherit new browser
+	// from it and create propertyCommited() and propertyCancelled() signal
+	qReal::commands::ChangePropertyCommand *changeCommand =
+			new qReal::commands::ChangePropertyCommand(mModel, index, oldValue, value);
+	mController->execute(changeCommand);
 }
 
 void PropertyEditorView::setPropertyValue(QtVariantProperty *property, const QVariant &value)

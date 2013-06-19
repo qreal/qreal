@@ -19,6 +19,8 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 	}
 	mIndex = index;
 	mBackground = element.attribute("background", nodeLabel ? "transparent" : "white");
+	mIsHard = element.attribute("hard", "false").toLower().trimmed() == "true";
+	mIsPlainText = element.attribute("isPlainText", "false").toLower().trimmed() == "true";
 	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {
 		qDebug() << "ERROR: can't parse label";
 		return false;
@@ -44,9 +46,10 @@ void Label::generateCodeForConstructor(OutFile &out)
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 
-	const QString scalingX = mX.isScalable() ? "true" : "false";
-	const QString scalingY = mY.isScalable() ? "true" : "false";
+	QString const scalingX = mX.isScalable() ? "true" : "false";
+	QString const scalingY = mY.isScalable() ? "true" : "false";
 	out() << "			" + titleName() + "->setScaling(" + scalingX + ", " + scalingY + ");\n";
+	out() << "			" + titleName() + "->setHard(" + (mIsHard ? "true" : "false") + ");\n";
 
 	// TODO: вынести отсюда в родительский класс.
 	out() << "			" + titleName() + "->setFlags(0);\n"
@@ -95,8 +98,13 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		}
 		resultStr = resultStr.mid(3);
 	}
-	out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
-		+ (mCenter == "true" ? "<center>%1</center>" : "<b>%1</b>") + "\").arg(" + resultStr + ").replace(\"\\n\", \"<br>\"));\n";
+	if (mIsPlainText) {
+		out() << QString("\t\t\t%1->setPlainText(%2);\n")
+				.arg(titleName(), resultStr);
+	} else {
+		out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
+			+ (mCenter == "true" ? "<center>%1</center>" : "<b>%1</b>") + "\").arg(" + resultStr + ").replace(\"\\n\", \"<br>\"));\n";
+	}
 }
 
 void Label::generateCodeForFields(OutFile &out)

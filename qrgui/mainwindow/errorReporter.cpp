@@ -1,5 +1,5 @@
-#include <QtGui/QMessageBox>
-#include <QtGui/QDockWidget>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QDockWidget>
 
 #include "errorReporter.h"
 #include "errorListWidget.h"
@@ -20,6 +20,7 @@ ErrorReporter::ErrorReporter(ErrorListWidget* const errorListWidget, QDockWidget
 	, mErrorList(errorList)
 	, mIsVisible(true)
 {
+	connect(mErrorListWidget, SIGNAL(clearRequested()), this, SLOT(clear()));
 }
 
 void ErrorReporter::updateVisibility(bool isVisible)
@@ -156,8 +157,8 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 	}
 
 	QListWidgetItem* item = new QListWidgetItem(errorListWidget);
-	QString message = error.timestamp() + " " + severityMessage(error) + " ";
-	message += error.message();
+	QString const message = QString(" <font color='gray'>%1</font> <u>%2</u> %3").arg(
+			error.timestamp(), severityMessage(error), error.message());
 	switch (error.severity()) {
 	case Error::information:
 		item->setIcon(QIcon(":/icons/information.png"));
@@ -174,10 +175,12 @@ void ErrorReporter::showError(Error const &error, ErrorListWidget* const errorLi
 	default:
 		throw new Exception("Incorrect total severity");
 	}
-	item->setText(" " + message.trimmed());
-	item->setTextAlignment(Qt::AlignVCenter);
+	QLabel *label = new QLabel(message.trimmed());
+	label->setAlignment(Qt::AlignVCenter);
+	label->setOpenExternalLinks(true);
 	item->setToolTip(error.position().toString());
 	errorListWidget->addItem(item);
+	errorListWidget->setItemWidget(item, label);
 	errorListWidget->setCurrentItem(item);
 }
 

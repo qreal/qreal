@@ -1,4 +1,3 @@
-//#include "details/graphicalModel.h"
 #include "graphicalModelAssistApi.h"
 #include "../../qrkernel/exception/exception.h"
 #include <QtCore/QUuid>
@@ -8,8 +7,8 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManager const &editorManager, ConstraintsManager const &constraintsManager)
-		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManager, constraintsManager)
+GraphicalModelAssistApi::GraphicalModelAssistApi(GraphicalModel &graphicalModel, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager)
+		: mGraphicalModel(graphicalModel), mModelsAssistApi(graphicalModel, editorManagerInterface, constraintsManager)
 {
 	connect(&mGraphicalModel, SIGNAL(nameChanged(Id)), this, SLOT(nameChangedSlot(Id)));
 }
@@ -19,9 +18,9 @@ void GraphicalModelAssistApi::nameChangedSlot(Id const &element)
 	emit nameChanged(element);
 }
 
-EditorManager const &GraphicalModelAssistApi::editorManager() const
+EditorManager const &GraphicalModelAssistApi::editorManagerInterface() const
 {
-	return mModelsAssistApi.editorManager();
+	return mModelsAssistApi.editorManagerInterface();
 }
 
 ConstraintsManager const &GraphicalModelAssistApi::constraintsManager() const
@@ -61,14 +60,16 @@ Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &type)
 	Q_ASSERT(parent.idSize() == 4);
 
 	Id const newElementId(type, QUuid::createUuid().toString());
-	QString const elementFriendlyName = mModelsAssistApi.editorManager().friendlyName(type);
-	mGraphicalModel.addElementToModel(parent, newElementId, Id::rootId(), "(" + elementFriendlyName + ")", QPointF(0, 0));
+	QString const elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
+	mGraphicalModel.addElementToModel(parent, newElementId, Id::rootId(), elementFriendlyName, QPointF(0, 0));
 	return newElementId;
 }
 
-Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position)
+Id GraphicalModelAssistApi::createElement(Id const &parent, Id const &id
+		, bool isFromLogicalModel, QString const &name
+		, QPointF const &position, Id const &preferedLogicalId)
 {
-	return mModelsAssistApi.createElement(parent, id, isFromLogicalModel, name, position);
+	return mModelsAssistApi.createElement(parent, id, preferedLogicalId, isFromLogicalModel, name, position);
 }
 
 Id GraphicalModelAssistApi::copyElement(Id const &source)
@@ -99,6 +100,16 @@ QMap<QString, QVariant> GraphicalModelAssistApi::properties(Id const &id)
 void GraphicalModelAssistApi::setProperties(Id const &id, QMap<QString, QVariant> const &properties)
 {
 	mGraphicalModel.mutableApi().setProperties(id, properties);
+}
+
+void GraphicalModelAssistApi::setProperty(Id const &id, QString const &name, QVariant const &value)
+{
+	mGraphicalModel.mutableApi().setProperty(id, name, value);
+}
+
+QVariant GraphicalModelAssistApi::property(Id const &id, QString const &name) const
+{
+	return mGraphicalModel.mutableApi().property(id, name);
 }
 
 void GraphicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)
@@ -228,7 +239,7 @@ QPersistentModelIndex GraphicalModelAssistApi::rootIndex() const
 
 Id GraphicalModelAssistApi::rootId() const
 {
-	return mModelsAssistApi.rootId();
+	return mGraphicalModel.rootId();
 }
 
 bool GraphicalModelAssistApi::hasRootDiagrams() const
@@ -244,4 +255,12 @@ int GraphicalModelAssistApi::childrenOfRootDiagram() const
 int GraphicalModelAssistApi::childrenOfDiagram(const Id &parent) const
 {
 	return mModelsAssistApi.childrenOfDiagram(parent);
+}
+
+void GraphicalModelAssistApi::removeElement(Id const &graphicalId)
+{
+	QPersistentModelIndex const index = indexById(graphicalId);
+	if (graphicalRepoApi().exist(graphicalId) && index.isValid()) {
+		mGraphicalModel.removeRow(index.row(), index.parent());
+	}
 }

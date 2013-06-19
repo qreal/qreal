@@ -16,6 +16,7 @@ class MetaEditorSupportPlugin : public QObject, public qReal::ToolPluginInterfac
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "metaEditor.MetaEditorSupportPlugin")
 
 public:
 	MetaEditorSupportPlugin();
@@ -46,8 +47,6 @@ private:
 			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
 			, QString const &prefix  ///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
 			);
-
-	void deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName);//qwerty_deleteFiles
 
 	/// Action that starts generation of .xml file with metamodel for qrxc
 	QAction mGenerateEditorForQrxcAction;

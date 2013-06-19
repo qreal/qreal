@@ -150,7 +150,7 @@ qreal SceneGridHandler::alignedCoordinate(qreal coord, int coef, int indexGrid)
 
 	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid / 2) {
 		return coef * indexGrid;
-	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) < indexGrid / 2) {
+	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) <= indexGrid / 2) {
 		return (coef + coefSign) * indexGrid;
 	}
 	return coord;
@@ -198,12 +198,12 @@ QList<QGraphicsItem *> SceneGridHandler::getAdjancedNodes() const
 	// verical
 	QList<QGraphicsItem *> listX = mNode->scene()->items(nodeScenePos.x(), 0
 			, contentsRect.width(), widthLineY
-			, Qt::IntersectsItemBoundingRect);
+			, Qt::IntersectsItemBoundingRect, Qt::SortOrder(), QTransform());
 
 	// horizontal
 	QList<QGraphicsItem *> listY = mNode->scene()->items(0, nodeScenePos.y()
 			, widthLineX, contentsRect.height()
-			, Qt::IntersectsItemBoundingRect);
+			, Qt::IntersectsItemBoundingRect, Qt::SortOrder(), QTransform());
 
 	return listX + listY;
 }
@@ -226,9 +226,6 @@ void SceneGridHandler::alignToGrid()
 
 	makeGridMovingX(myX1, coefX, indexGrid);
 	makeGridMovingY(myY1, coefY, indexGrid);
-
-	myX1 = nodePos.x() + contentsRect.x();
-	myY1 = nodePos.y() + contentsRect.y();
 }
 
 void SceneGridHandler::drawGuides()
@@ -298,7 +295,7 @@ void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event)
 	NodeElement *parItem = dynamic_cast<NodeElement*>(mNode->parentItem());
-	if (parItem != NULL) {
+	if (parItem) {
 		return;
 	}
 

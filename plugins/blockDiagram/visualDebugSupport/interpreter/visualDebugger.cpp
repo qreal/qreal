@@ -1,8 +1,8 @@
-#include "visualDebugger.h"
+#include <QtCore/QEventLoop>
+#include <QtCore/QTimer>
+#include <QtCore/QFile>
 
-#include <QEventLoop>
-#include <QTimer>
-#include <QFile>
+#include "visualDebugger.h"
 
 #include "../../../qrgui/mainwindow/propertyEditorProxyModel.h"
 #include "../../../qrgui/models/models.h"
@@ -45,8 +45,7 @@ QVariant VisualDebugger::getProperty(Id const &id, QString const &propertyName)
 		return mLogicalModelApi.logicalRepoApi().property(id, propertyName);
 	}
 
-	return mLogicalModelApi.logicalRepoApi().property(
-			mGraphicalModelApi.logicalId(id), propertyName);
+	return mLogicalModelApi.logicalRepoApi().property(mGraphicalModelApi.logicalId(id), propertyName);
 }
 
 void VisualDebugger::setDebugType(VisualDebugger::DebugType type)
@@ -67,9 +66,7 @@ void VisualDebugger::setDebugColor(QString const &color)
 void VisualDebugger::setCurrentDiagram()
 {
 	Id const currentDiagram = mInterpretersInterface.activeDiagram();
-	if (currentDiagram == mCurrentDiagram || Id::rootId() == mCurrentDiagram
-			|| Id::rootId() == mCurrentId)
-	{
+	if (currentDiagram == mCurrentDiagram || Id::rootId() == mCurrentDiagram || Id::rootId() == mCurrentId) {
 		mCurrentDiagram = currentDiagram;
 	} else {
 		mError = VisualDebugger::someDiagramIsRunning;
@@ -81,15 +78,13 @@ bool VisualDebugger::canDebug(DebugType type)
 	bool res = false;
 	switch (type) {
 		case VisualDebugger::singleStepDebug:
-			res = mDebugType != VisualDebugger::fullDebug
-					&& mDebugType != VisualDebugger::debugWithDebugger;
+			res = mDebugType != VisualDebugger::fullDebug && mDebugType != VisualDebugger::debugWithDebugger;
 			break;
 		case VisualDebugger::fullDebug:
 			res = mDebugType == VisualDebugger::noDebug;
 			break;
 		case VisualDebugger::debugWithDebugger:
-			res = mDebugType != VisualDebugger::fullDebug
-					&& mDebugType != VisualDebugger::singleStepDebug;
+			res = mDebugType != VisualDebugger::fullDebug && mDebugType != VisualDebugger::singleStepDebug;
 			break;
 		default:
 			res = false;
@@ -107,41 +102,34 @@ void VisualDebugger::error(ErrorType e)
 {
 	switch (e) {
 		case missingBeginNode:
-			mInterpretersInterface.errorReporter()->addCritical(
-					tr("The diagram doesn't have Initial Node"));
+			mInterpretersInterface.errorReporter()->addCritical(tr("The diagram doesn't have Initial Node"));
 			break;
 		case missingEndNode:
-			mInterpretersInterface.errorReporter()->addCritical(
-					tr("The diagram doesn't end with Final Node"));
+			mInterpretersInterface.errorReporter()->addCritical(tr("The diagram doesn't end with Final Node"));
 			break;
 		case missingEndOfLinkNode:
-			mInterpretersInterface.errorReporter()->addCritical(
-					tr("The diagram cann't end with edge"), mCurrentId);
+			mInterpretersInterface.errorReporter()->addCritical(tr("The diagram cann't end with edge"), mCurrentId);
 			break;
 		case endWithNotEndNode:
 			mInterpretersInterface.errorReporter()->addWarning(
-					tr("There are no links from this node and it mismatches Final Node"),
-					mCurrentId);
+					tr("There are no links from this node and it mismatches Final Node")
+					, mCurrentId);
 			break;
 		case missingValidLink:
-			mInterpretersInterface.errorReporter()->addCritical(
-					tr("The condition doesn't have valid link"), mCurrentId);
+			mInterpretersInterface.errorReporter()->addCritical(tr("The condition doesn't have valid link")
+					, mCurrentId);
 			break;
 		case someDiagramIsRunning:
-			mInterpretersInterface.errorReporter()->addCritical(
-					tr("Some diagram is already under debug"));
+			mInterpretersInterface.errorReporter()->addCritical(tr("Some diagram is already under debug"));
 			mError = VisualDebugger::noErrors;
 			return;
 			break;
 		case codeGenerationError:
-			mInterpretersInterface.errorReporter()->addCritical(
-					tr("Code generation failed"));
+			mInterpretersInterface.errorReporter()->addCritical(tr("Code generation failed"));
 			mHasCodeGenerationError = true;
 			break;
 		case incorrectUseOfLink:
-			mInterpretersInterface.errorReporter()->addCritical(
-						tr("Incorrect type of link used"),
-						mCurrentId);
+			mInterpretersInterface.errorReporter()->addCritical(tr("Incorrect type of link used"), mCurrentId);
 			break;
 		case noErrors:
 			return;
@@ -174,7 +162,7 @@ Id const VisualDebugger::findValidLink()
 		if (checkForIncorrectUseOfLink(link, "ControlFlow")) {
 			return Id::rootId();
 		}
-		
+
 		bool type = getProperty(link, "type").toBool();
 		if (type == condition) {
 			return link;
@@ -241,8 +229,7 @@ void VisualDebugger::deinitialize()
 void VisualDebugger::processAction()
 {
 	int pos = 0;
-	mBlockParser->parseProcess(getProperty(mCurrentId, "process").toString(),
-			pos, mCurrentId);
+	mBlockParser->parseProcess(getProperty(mCurrentId, "process").toString(), pos, mCurrentId);
 }
 
 void VisualDebugger::debug()
@@ -279,7 +266,7 @@ void VisualDebugger::debug()
 			if (checkForIncorrectUseOfLink(outLinks.at(0), "ConditionControlFlow")) {
 				return;
 			}
-			
+
 			doStep(outLinks.at(0));
 			if (mBlockParser->hasErrors()) {
 				deinitialize();
@@ -293,7 +280,7 @@ void VisualDebugger::debug()
 			error(VisualDebugger::missingEndOfLinkNode);
 			return;
 		}
-		
+
 		doStep(mLogicalModelApi.logicalRepoApi().to(mCurrentId));
 		if (mBlockParser->hasErrors()) {
 			deinitialize();
@@ -310,8 +297,7 @@ void VisualDebugger::debug()
 		return;
 	}
 
-	mInterpretersInterface.errorReporter()->addInformation(
-			tr("Debug finished successfully"));
+	mInterpretersInterface.errorReporter()->addInformation(tr("Debug finished successfully"));
 	deinitialize();
 	return;
 }
@@ -328,8 +314,7 @@ void VisualDebugger::debugSingleStep()
 	} else {
 		mBlockParser->setErrorReporter(mInterpretersInterface.errorReporter());
 
-		if (mCurrentId.element() == "ControlFlow" || 
-				mCurrentId.element() == "ConditionControlFlow")
+		if (mCurrentId.element() == "ControlFlow" || mCurrentId.element() == "ConditionControlFlow")
 		{
 			if (!hasEndOfLinkNode(mCurrentId)) {
 				error(VisualDebugger::missingEndOfLinkNode);
@@ -349,8 +334,7 @@ void VisualDebugger::debugSingleStep()
 			}
 
 			deinitialize();
-			mInterpretersInterface.errorReporter()->addInformation(
-					tr("Debug (single step) finished successfully"));
+			mInterpretersInterface.errorReporter()->addInformation(tr("Debug (single step) finished successfully"));
 
 			return ;
 		} else if (mCurrentId.element() == "ConditionNode") {
@@ -371,7 +355,7 @@ void VisualDebugger::debugSingleStep()
 			if (checkForIncorrectUseOfLink(outLinks.at(0), "ConditionControlFlow")) {
 				return;
 			}
-			
+
 			doStep(outLinks.at(0));
 
 			if (mBlockParser->hasErrors()) {
@@ -380,13 +364,11 @@ void VisualDebugger::debugSingleStep()
 			}
 		}
 
-		mInterpretersInterface.errorReporter()->addInformation(
-				tr("Debug (single step) finished successfully"));
+		mInterpretersInterface.errorReporter()->addInformation(tr("Debug (single step) finished successfully"));
 		return;
 	}
 
-	mInterpretersInterface.errorReporter()->addInformation(
-			tr("Debug (single step) finished successfully"));
+	mInterpretersInterface.errorReporter()->addInformation(tr("Debug (single step) finished successfully"));
 	return;
 }
 
@@ -422,7 +404,7 @@ void VisualDebugger::getConditionLinks(IdList const &outLinks, Id &falseEdge, Id
 			error(codeGenerationError);
 			return;
 		}
-		
+
 		bool type = getProperty(outLink, "type").toBool();
 		if (type) {
 			trueEdge = outLink;
@@ -437,9 +419,9 @@ void VisualDebugger::generateCode(Id const &id, QFile &codeFile)
 	if (id.element() == "Action") {
 		QString const code = getProperty(id, "process").toString();
 		if (code.mid(0,4) == "var ") {
-			codeFile.write(code.mid(4).toAscii());
+			codeFile.write(code.mid(4).toLatin1());
 		} else {
-			codeFile.write(code.toAscii());
+			codeFile.write(code.toLatin1());
 		}
 
 		codeFile.write("\n");
@@ -449,7 +431,7 @@ void VisualDebugger::generateCode(Id const &id, QFile &codeFile)
 				error(codeGenerationError);
 				return;
 			}
-			
+
 			generateCode(nextEdge, codeFile);
 		} else {
 			error(VisualDebugger::missingEndNode);
@@ -569,8 +551,7 @@ QList<int>* VisualDebugger::computeBreakpoints()
 	Id curId = mIdByLineCorrelation[line];
 
 	while (mIdByLineCorrelation[line].element() != "BlockFinalNode") {
-		while (mIdByLineCorrelation.contains(line) &&
-				curId.toString() == mIdByLineCorrelation[line].toString()) {
+		while (mIdByLineCorrelation.contains(line) && curId.toString() == mIdByLineCorrelation[line].toString()) {
 			line++;
 		}
 
