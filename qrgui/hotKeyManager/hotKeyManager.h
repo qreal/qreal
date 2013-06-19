@@ -52,7 +52,8 @@ public:
 
 private:
 	HotKeyManager();
-	HotKeyManager(HotKeyManager const&);
+	explicit HotKeyManager(HotKeyManager const&);
+	~HotKeyManager();
 
 	void operator=(HotKeyManager const&);
 
@@ -65,7 +66,7 @@ private:
 	void findShortcut(QString const &shortcut);
 
 	void setCurrentModifierPrivate(QString const &modifier);
-	QString currentModifier();
+	QString currentModifier() const;
 
 	void resetShortcutsPrivate(QString const &id);
 	void resetAllShortcutsPrivate();

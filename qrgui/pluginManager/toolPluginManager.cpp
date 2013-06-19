@@ -77,8 +77,7 @@ QList<HotKeyActionInfo> ToolPluginManager::hotKeyActions() const
 
 void ToolPluginManager::setHotKeyActions() const
 {
-	foreach (HotKeyActionInfo actionInfo, hotKeyActions())
-	{
+	foreach (HotKeyActionInfo const &actionInfo, hotKeyActions()) {
 		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
 	}
 }

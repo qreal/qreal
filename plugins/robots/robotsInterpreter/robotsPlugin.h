@@ -93,9 +93,8 @@ private:
 	/// Action that shows robots tab in settings dialog
 	QAction *mRobotSettingsAction;
 
-	/// Action that shows watch list that allows to see current values of variables in a program
-	/// and current sensor readings
-	QAction *mWatchListAction;
+	/// Action that shows or hides titles on diagram
+	QAction *mTitlesAction;
 
 	/// List of action infos with plugin actions, for convenient initialization.
 	/// Contains all actions which already present as fields.

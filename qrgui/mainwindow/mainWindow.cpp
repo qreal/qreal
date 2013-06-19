@@ -202,6 +202,8 @@ void MainWindow::connectActions()
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(modifiedChanged(bool)), mProjectManager, SLOT(setUnsavedIndicator(bool)));
+
+	setDefaultShortcuts();
 }
 
 void MainWindow::initActionsFromSettings()
@@ -886,7 +888,14 @@ EditorView * MainWindow::getCurrentTab() const
 	return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
 }
 
-void qReal::MainWindow::closeTab(int index)
+void MainWindow::closeCurrentTab()
+{
+	if (mUi->tabs->currentIndex() >= 0) {
+		closeTab(mUi->tabs->currentIndex());
+	}
+}
+
+void MainWindow::closeTab(int index)
 {
 	QWidget *widget = mUi->tabs->widget(index);
 	CodeArea *possibleCodeTab = static_cast<CodeArea *>(widget);
@@ -896,7 +905,7 @@ void qReal::MainWindow::closeTab(int index)
 			deletingCodeTab = diagram;
 		}
 	}
-	if (deletingCodeTab != NULL) {
+	if (deletingCodeTab) {
 		mCodeTabManager->remove(deletingCodeTab);
 	}
 
@@ -1256,6 +1265,51 @@ void MainWindow::setShortcuts(EditorView * const tab)
 	selectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_A));
 	connect(selectAction, SIGNAL(triggered()), scene, SLOT(selectAll()));
 	tab->addAction(selectAction);
+}
+
+void MainWindow::setDefaultShortcuts()
+{
+	QAction *closeCurrentTabAction = new QAction(this);
+	QAction *closeAllTabsAction = new QAction(this);
+	connect(closeCurrentTabAction, SIGNAL(triggered()), this, SLOT(closeCurrentTab()));
+	connect(closeAllTabsAction, SIGNAL(triggered()), this, SLOT(closeAllTabs()));
+	addAction(closeCurrentTabAction);
+	addAction(closeAllTabsAction);
+
+	closeCurrentTabAction->setShortcuts(QList<QKeySequence>()
+			<< QKeySequence(Qt::CTRL + Qt::Key_W)
+			<< QKeySequence(Qt::CTRL + Qt::Key_F4));
+	closeAllTabsAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_W));
+
+	mUi->actionUndo->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
+	mUi->actionRedo->setShortcuts(QList<QKeySequence>()
+			<< QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z)
+			<< QKeySequence(Qt::CTRL + Qt::Key_Y));
+
+	mUi->actionZoom_In->setShortcuts(QList<QKeySequence>()
+			<< QKeySequence(Qt::CTRL + Qt::Key_Equal)
+			<< QKeySequence(Qt::CTRL + Qt::Key_Plus));
+	mUi->actionZoom_Out->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
+
+	mUi->actionNewProject->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
+	mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
+
+	// TODO: bind Ctrl+P to print when it will be repaired
+	// TODO: bind Ctrl+F to find dialog when it will be repaired
+
+	HotKeyManager::setCommand("File.Open", tr("Open project"), mUi->actionOpen);
+	HotKeyManager::setCommand("File.Save", tr("Save project"), mUi->actionSave);
+	HotKeyManager::setCommand("File.SaveAs", tr("Save project as"), mUi->actionSave_as);
+	HotKeyManager::setCommand("File.NewProject", tr("New project"), mUi->actionNewProject);
+	HotKeyManager::setCommand("File.NewDiagram", tr("New diagram"), mUi->actionNew_Diagram);
+	HotKeyManager::setCommand("Editor.Undo", tr("Undo"), mUi->actionUndo);
+	HotKeyManager::setCommand("Editor.Redo", tr("Redo"), mUi->actionRedo);
+	HotKeyManager::setCommand("Editor.ZoomIn", tr("Zoom In"), mUi->actionZoom_In);
+	HotKeyManager::setCommand("Editor.ZoomOut", tr("Zoom Out"), mUi->actionZoom_Out);
+	HotKeyManager::setCommand("Editor.CloseCurrentTab", tr("Close current tab"), closeCurrentTabAction);
+	HotKeyManager::setCommand("Editor.CloseAllTabs", tr("Close all tabs"), closeAllTabsAction);
+	HotKeyManager::setCommand("Editor.Print", tr("Print"), mUi->actionPrint);
+	HotKeyManager::setCommand("Editor.Find", tr("Find"), mUi->actionFind);
 }
 
 void MainWindow::currentTabChanged(int newIndex)

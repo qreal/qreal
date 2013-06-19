@@ -16,7 +16,7 @@ bool ShortcutEdit::event(QEvent *event)
 	if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
 		QKeyEvent *keyevent = static_cast<QKeyEvent *> (event);
 
-		switch(keyevent->key()) {
+		switch (keyevent->key()) {
 			case Qt::Key_Shift:
 			case Qt::Key_Control:
 			case Qt::Key_Alt:

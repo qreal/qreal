@@ -5,14 +5,14 @@
 
 namespace qReal {
 
-class HotKeyActionInfo {
+class HotKeyActionInfo
+{
 public:
-	HotKeyActionInfo(QString const id, QString const label, QAction *action)
+	HotKeyActionInfo(QString const &id, QString const &label, QAction * const action)
 		: mAction(action)
 		, mId(id)
 		, mLabel(label)
 	{
-
 	}
 
 	QAction *action() const

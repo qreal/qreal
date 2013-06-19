@@ -86,10 +86,10 @@ void PreferencesDialog::changeEvent(QEvent *e)
 	}
 }
 
-void PreferencesDialog::closeEvent(QCloseEvent *e)
+void PreferencesDialog::showEvent(QShowEvent *e)
 {
 	restoreSettings();
-	QDialog::closeEvent(e);
+	QDialog::showEvent(e);
 }
 
 void PreferencesDialog::saveAndClose()

@@ -1,8 +1,8 @@
-#include <QtWidgets/QAction>
 #include <QtCore/QString>
 #include <QtCore/QHash>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QMessageBox>
 #include <QtGui/QKeySequence>
-#include <QtCore/QDebug>
 #include <QtGui/QWheelEvent>
 
 #include "hotKeyManagerPage.h"
@@ -23,22 +23,22 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 	, mCurrentModifiers(Qt::NoModifier)
 {
 	mUi->setupUi(this);
+	mIcon = QIcon(":/icons/hotkeys.png");
 
 	mUi->hotKeysTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+
+	// TODO: implement export/import
+	mUi->importPushButton->hide();
+	mUi->exportPushButton->hide();
 
 	connect(mUi->hotKeysTable, SIGNAL(cellClicked(int,int)), this, SLOT(activateShortcutLineEdit(int,int)));
 	connect(mUi->hotKeysTable, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(doubleClicked(int,int)));
 	connect(mUi->shortcutLineEdit, SIGNAL(newModifiers(Qt::KeyboardModifiers)), this, SLOT(newModifiers(Qt::KeyboardModifiers)));
 	connect(mUi->shortcutLineEdit, SIGNAL(newKey(int)), this, SLOT(newKey(int)));
-	connect(mUi->resetShortcutPushButton, SIGNAL(pressed()), this, SLOT(resetShortcuts()));
-	connect(mUi->resetAllPushButton, SIGNAL(pressed()), this, SLOT(resetAllShortcuts()));
+	connect(mUi->resetShortcutPushButton, SIGNAL(clicked()), this, SLOT(resetShortcuts()));
+	connect(mUi->resetAllPushButton, SIGNAL(clicked()), this, SLOT(resetAllShortcuts()));
 
-	int const rows = HotKeyManager::commands().size();
-
-	mUi->hotKeysTable->setRowCount(rows);
-
-	initTable();
-	loadHotKeys();
+	restoreSettings();
 }
 
 PreferencesHotKeyManagerPage::~PreferencesHotKeyManagerPage()
@@ -48,12 +48,14 @@ PreferencesHotKeyManagerPage::~PreferencesHotKeyManagerPage()
 
 void PreferencesHotKeyManagerPage::save()
 {
-
 }
 
 void PreferencesHotKeyManagerPage::restoreSettings()
 {
-
+	mUi->hotKeysTable->clearContents();
+	initTable();
+	loadHotKeys();
+	mUi->hotKeysTable->sortByColumn(0, Qt::AscendingOrder);
 }
 
 void PreferencesHotKeyManagerPage::resetShortcuts()
@@ -71,13 +73,14 @@ void PreferencesHotKeyManagerPage::resetShortcuts()
 
 void PreferencesHotKeyManagerPage::resetAllShortcuts()
 {
-	mCurrentItem = NULL;
-	mCurrentId = "";
+	if (QMessageBox::question(this, tr("Question"), tr("This will clear all "\
+			"current shortcuts. Are you sure?")) == QMessageBox::Yes) {
+		mCurrentItem = NULL;
+		mCurrentId = "";
 
-	HotKeyManager::resetAllShortcuts();
-	mUi->hotKeysTable->clearContents();
-	initTable();
-	loadHotKeys();
+		HotKeyManager::resetAllShortcuts();
+		restoreSettings();
+	}
 }
 
 void PreferencesHotKeyManagerPage::loadHotKeys()
@@ -89,18 +92,16 @@ void PreferencesHotKeyManagerPage::loadHotKeys()
 	int k;
 
 	for (i = cmds.begin(), k = 0; i != cmds.end(); ++i, ++k) {
-		QStringList sequences = shortcuts.keys(i.key());
+		QStringList const sequences = shortcuts.keys(i.key());
 
 		mUi->hotKeysTable->item(k, 0)->setText(i.key());
 		mUi->hotKeysTable->item(k, 1)->setText(i.value()->whatsThis());
 
 		int j = 0;
-
 		foreach (QString const &sequence, sequences) {
 			mUi->hotKeysTable->item(k, 2 + j)->setText(sequence);
-			j++;
 
-			if (j == maxShortcuts) {
+			if (++j >= maxShortcuts) {
 				break;
 			}
 		}
@@ -109,6 +110,9 @@ void PreferencesHotKeyManagerPage::loadHotKeys()
 
 void PreferencesHotKeyManagerPage::initTable()
 {
+	int const rows = HotKeyManager::commands().size();
+	mUi->hotKeysTable->setRowCount(rows);
+
 	for (int i = 0; i < mUi->hotKeysTable->rowCount(); ++i) {
 		// first column - name of command, second - short description, rest - shortcuts
 		for (int j = 0; j < 2 + maxShortcuts; ++j) {
