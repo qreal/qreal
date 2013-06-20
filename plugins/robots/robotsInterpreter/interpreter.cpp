@@ -185,6 +185,7 @@ void Interpreter::disableD2ModelWidgetRunStopButtons()
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType)
 {
 	mConnected = false;
+	mActionConnectToRobot->setChecked(false);
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
 	setRobotImplementation(robotImpl);
