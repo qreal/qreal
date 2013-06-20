@@ -1917,12 +1917,12 @@
 <context>
     <name>PreferencesHotKeyManagerPage</name>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.cpp" line="77"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.cpp" line="76"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.cpp" line="77"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.cpp" line="76"/>
         <source>This will clear all current shortcuts. Are you sure?</source>
         <translation>Все текущие настройки горячих клавиш будут удалены. Продолжить?</translation>
     </message>
@@ -3081,47 +3081,47 @@
         <translation>Экспорт...</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="105"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="102"/>
         <source>Command</source>
         <translation>Команда</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="110"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="107"/>
         <source>Label</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="115"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="112"/>
         <source>Shortcut 1</source>
         <translation>Сочетание 1</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="120"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="117"/>
         <source>Shortcut 2</source>
         <translation>Сочетание 2</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="125"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="122"/>
         <source>Shortcut 3</source>
         <translation>Сочетание 3</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="143"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="140"/>
         <source>Shortcut</source>
         <translation>Сочетание</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="133"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="130"/>
         <source>Reset All</source>
         <translation>Очистить все</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="149"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="146"/>
         <source>Reset</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="172"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="169"/>
         <source>Key sequence</source>
         <translation>Введите сочетание клавиш...</translation>
     </message>
@@ -3518,7 +3518,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="782"/>
+        <location filename="mainwindow/mainWindow.cpp" line="784"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3543,16 +3543,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="808"/>
-        <location filename="mainwindow/mainWindow.cpp" line="826"/>
-        <location filename="mainwindow/mainWindow.cpp" line="844"/>
+        <location filename="mainwindow/mainWindow.cpp" line="810"/>
+        <location filename="mainwindow/mainWindow.cpp" line="828"/>
+        <location filename="mainwindow/mainWindow.cpp" line="846"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="810"/>
-        <location filename="mainwindow/mainWindow.cpp" line="828"/>
-        <location filename="mainwindow/mainWindow.cpp" line="846"/>
+        <location filename="mainwindow/mainWindow.cpp" line="812"/>
+        <location filename="mainwindow/mainWindow.cpp" line="830"/>
+        <location filename="mainwindow/mainWindow.cpp" line="848"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3657,24 +3657,89 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="844"/>
+        <location filename="mainwindow/mainWindow.cpp" line="846"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="846"/>
+        <location filename="mainwindow/mainWindow.cpp" line="848"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1013"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1022"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="982"/>
-        <location filename="mainwindow/mainWindow.cpp" line="995"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1021"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1300"/>
+        <source>Open project</source>
+        <translation>Открыть проект</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1301"/>
+        <source>Save project</source>
+        <translation>Сохранить проект</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1302"/>
+        <source>Save project as</source>
+        <translation>Сохранить проект как</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1303"/>
+        <source>New project</source>
+        <translation>Создать проект</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1304"/>
+        <source>New diagram</source>
+        <translation>Создать диаграмму</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1305"/>
+        <source>Undo</source>
+        <translation>Отменить</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1306"/>
+        <source>Redo</source>
+        <translation>Повторить</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1307"/>
+        <source>Zoom In</source>
+        <translation>Приблизить</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1308"/>
+        <source>Zoom Out</source>
+        <translation>Отдалить</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1309"/>
+        <source>Close current tab</source>
+        <translation>Закрыть текущую вкладку</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1310"/>
+        <source>Close all tabs</source>
+        <translation>Закрыть все вкладки</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1311"/>
+        <source>Print</source>
+        <translation>Печать</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="1312"/>
+        <source>Find</source>
+        <translation>Найти</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.cpp" line="991"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1004"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1030"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3683,17 +3748,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1894"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1948"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1924"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1978"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1924"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1978"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3714,7 +3779,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1463"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1517"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
