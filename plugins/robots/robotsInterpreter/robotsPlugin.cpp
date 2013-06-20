@@ -18,7 +18,7 @@ RobotsPlugin::RobotsPlugin()
 		, mStopRobotAction(NULL)
 		, mConnectToRobotAction(NULL)
 		, mRobotSettingsAction(NULL)
-		, mWatchListAction(NULL)
+		, mTitlesAction(NULL)
 		, mAppTranslator(new QTranslator())
 {
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
@@ -30,6 +30,7 @@ RobotsPlugin::RobotsPlugin()
 	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
 
 	initActions();
+	initHotKeyActions();
 }
 
 RobotsPlugin::~RobotsPlugin()
@@ -44,12 +45,10 @@ void RobotsPlugin::initActions()
 	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
 	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), NULL);
-	mRunAction->setShortcut(QKeySequence(Qt::Key_F5));
 	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
 	QObject::connect(mRunAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
 
 	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), NULL);
-	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
 	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
 	QObject::connect(mStopRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(stopRobot()));
 
@@ -63,10 +62,10 @@ void RobotsPlugin::initActions()
 	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools");
 	QObject::connect(mRobotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
 
-	QAction *titlesAction = new QAction(tr("Text under pictogram"), NULL);
-	titlesAction->setCheckable(true);
-	connect(titlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityChecked(bool)));
-	ActionInfo titlesActionInfo(titlesAction, "", "settings");
+	mTitlesAction = new QAction(tr("Text under pictogram"), NULL);
+	mTitlesAction->setCheckable(true);
+	connect(mTitlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityChecked(bool)));
+	ActionInfo titlesActionInfo(mTitlesAction, "", "settings");
 
 	QAction *separator = new QAction(NULL);
 	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
@@ -83,6 +82,23 @@ void RobotsPlugin::initActions()
 	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
 			<< connectToRobotActionInfo << titlesActionInfo;
 	changeActiveTab(unusedTab, isTabEnable);
+}
+
+void RobotsPlugin::initHotKeyActions()
+{
+	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
+	mRunAction->setShortcut(QKeySequence(Qt::Key_F5));
+	m2dModelAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
+	mTitlesAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_T));
+
+	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModel", tr("Show 2d model"), m2dModelAction);
+	HotKeyActionInfo runActionInfo("Interpreter.Run", tr("Run interpreter"), mRunAction);
+	HotKeyActionInfo stopRobotActionInfo("Interpreter.Stop", tr("Stop interpreter"), mStopRobotAction);
+	// TODO: move it into engine
+	HotKeyActionInfo titlesActionInfo("Editor.ToggleTitles", tr("Toggle titles visibility"), mTitlesAction);
+
+	mHotKeyActionInfos << d2ModelActionInfo << runActionInfo
+			<< stopRobotActionInfo << titlesActionInfo;
 }
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
@@ -110,6 +126,11 @@ QList<ActionInfo> RobotsPlugin::actions()
 {
 	updateSettings();
 	return mActionInfos;
+}
+
+QList<HotKeyActionInfo> RobotsPlugin::hotKeyActions()
+{
+	return mHotKeyActionInfos;
 }
 
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()

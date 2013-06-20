@@ -4,6 +4,7 @@
 
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "../../../qrgui/toolPluginInterface/hotKeyActionInfo.h"
 #include "nxtOSEK/nxtFlashTool.h"
 
 
@@ -26,6 +27,7 @@ public:
 
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
+	virtual QList<qReal::HotKeyActionInfo> hotKeyActions();
 
 private slots:
 	/// Calls code generator. Returns true if operation was successfull.
@@ -45,6 +47,8 @@ private:
 
 	/// Disable/enable tab in QList<ActionInfo> info
 	void changeActiveTab(QList<qReal::ActionInfo> const &info, bool const &trigger);
+
+	void initHotKeyActions();
 
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;
@@ -72,6 +76,8 @@ private:
 
 	/// Flasher object
 	NxtFlashTool *mFlashTool;  // Has ownership
+
+	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 };
 
 }
