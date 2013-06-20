@@ -4,8 +4,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="100"/>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="190"/>
+        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="102"/>
+        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="193"/>
         <source>There is nothing to generate, diagram doesn&apos;t have Initial Node</source>
         <translation>Генерация невозможна, на диаграмме нет начальных блоков</translation>
     </message>
@@ -20,7 +20,7 @@
         <translation>Обнаружено более 1 исходящей связи!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="155"/>
+        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="158"/>
         <source>There is no opened diagram</source>
         <translation>Сначала откройте диаграмму </translation>
     </message>
@@ -106,17 +106,22 @@
         <translation>Не удалось загрузить программу в робота. Убедитесь, что QReal:Robots запущен с нужными правами</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="120"/>
+        <location filename="nxtOSEK/nxtFlashTool.cpp" line="122"/>
         <source>Could not upload program. Make sure the robot is connected and ON</source>
         <translation>Не удалось загрузить программу в робота. Убедитесь, что робот включен и подсоединен к компьютеру</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="122"/>
+        <location filename="nxtOSEK/nxtFlashTool.cpp" line="124"/>
         <source>Uploading completed successfully</source>
         <translation>Загрузка программы завершена успешно</translation>
     </message>
     <message>
         <location filename="nxtOSEK/nxtFlashTool.cpp" line="126"/>
+        <source>Compilation error occured. Please check your function blocks syntax. If you sure in their validness contact developers</source>
+        <translation>Произошла ошибка компиляции. Проверьте синтаксис выражений внутри блоков &quot;Функция&quot;. Если Вы уверены в их корректности, обратитесь к разработчикам</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/nxtFlashTool.cpp" line="130"/>
         <source>QReal requires superuser privileges to upload programs on NXT robot</source>
         <translation>Для загрузки программ в робота требуется запустить QReal:Robots с правами администратора</translation>
     </message>
@@ -124,27 +129,33 @@
 <context>
     <name>robots::generator::RobotsGeneratorPlugin</name>
     <message>
-        <location filename="robotsGeneratorPlugin.cpp" line="36"/>
+        <location filename="robotsGeneratorPlugin.cpp" line="37"/>
+        <location filename="robotsGeneratorPlugin.cpp" line="67"/>
         <source>Generate code</source>
         <translation>Генерировать код</translation>
     </message>
     <message>
-        <location filename="robotsGeneratorPlugin.cpp" line="41"/>
+        <location filename="robotsGeneratorPlugin.cpp" line="42"/>
         <source>Flash robot</source>
         <translation>Прошить</translation>
     </message>
     <message>
-        <location filename="robotsGeneratorPlugin.cpp" line="45"/>
+        <location filename="robotsGeneratorPlugin.cpp" line="46"/>
         <source>Upload program</source>
         <translation>Загрузить программу</translation>
     </message>
     <message>
-        <location filename="robotsGeneratorPlugin.cpp" line="96"/>
+        <location filename="robotsGeneratorPlugin.cpp" line="68"/>
+        <source>Upload program to robot</source>
+        <translation>Загрузить программу на робота</translation>
+    </message>
+    <message>
+        <location filename="robotsGeneratorPlugin.cpp" line="113"/>
         <source>flash.sh not found. Make sure it is present in QReal installation directory</source>
         <translation>Не найден скрипт flash.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
     </message>
     <message>
-        <location filename="robotsGeneratorPlugin.cpp" line="105"/>
+        <location filename="robotsGeneratorPlugin.cpp" line="122"/>
         <source>upload.sh not found. Make sure it is present in QReal installation directory</source>
         <translation>Не найден скрипт upload.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
     </message>

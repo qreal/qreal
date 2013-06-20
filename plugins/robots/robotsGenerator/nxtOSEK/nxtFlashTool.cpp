@@ -109,17 +109,21 @@ void NxtFlashTool::readNxtUploadData()
 			mUploadState = clean;
 		} else if (error.contains("Compiling ")) {
 			mUploadState = compile;
+		} else if (error.contains("recipe for target") && error.contains("failed")) {
+			mUploadState = compilationError;
 		} else if (error.contains("Generating binary image file")) {
 			mUploadState = link;
-		} else if (error.contains("Executing NeXTTool to upload")) {
+		} else if (error.contains("Executing NeXTTool to upload") && mUploadState != compilationError) {
 			mUploadState = uploadStart;
-		} else if (error.contains("_OSEK.rxe=")) {
+		} else if (error.contains("_OSEK.rxe=") && mUploadState != compilationError) {
 			mUploadState = flash;
 		} else if (error.contains("NeXTTool is terminated")) {
 			if (mUploadState == uploadStart) {
 				mErrorReporter->addError(tr("Could not upload program. Make sure the robot is connected and ON"));
 			} else if (mUploadState == flash) {
 				mErrorReporter->addInformation(tr("Uploading completed successfully"));
+			} else if (mUploadState == compilationError) {
+				mErrorReporter->addError(tr("Compilation error occured. Please check your function blocks syntax. If you sure in their validness contact developers"));
 			}
 			mUploadState = done;
 		} else if (error.contains("An unhandled exception occurred")) {
