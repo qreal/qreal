@@ -18,7 +18,7 @@ void GraphicalModelAssistApi::nameChangedSlot(Id const &element)
 	emit nameChanged(element);
 }
 
-EditorManager const &GraphicalModelAssistApi::editorManagerInterface() const
+EditorManagerInterface const &GraphicalModelAssistApi::editorManagerInterface() const
 {
 	return mModelsAssistApi.editorManagerInterface();
 }

@@ -1,14 +1,12 @@
 #include "constraintsGeneratorPlugin.h"
-#include <QtGui/QMessageBox>
-#include <QtGui/QProgressBar>
 #include <QtCore/QProcess>
-#include <QtGui/QFileDialog>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDesktopWidget>
 
 #include "../../../qrkernel/settingsManager.h"
-
-Q_EXPORT_PLUGIN2(ConstraintsGeneratorPlugin, constraints::generator::ConstraintsGeneratorPlugin)
 
 using namespace constraints::generator;
 using namespace qReal;
@@ -32,9 +30,9 @@ void ConstraintsGeneratorPlugin::init(PluginConfigurator const &configurator)
 
 QList<ActionInfo> ConstraintsGeneratorPlugin::actions()
 {
-	QAction * const generateAction = new QAction(QObject::tr("Generate constraints"), NULL);
+	QAction * const generateAction = new QAction(tr("Generate constraints"), NULL);
 	ActionInfo generateActionInfo(generateAction, "interpreters", "tools");
-	QObject::connect(generateAction, SIGNAL(triggered()), this, SLOT(generate()));
+	connect(generateAction, SIGNAL(triggered()), this, SLOT(generate()));
 
 	return QList<ActionInfo>() << generateActionInfo;
 }

@@ -12,6 +12,11 @@ ProxyEditorManager::~ProxyEditorManager()
 	delete mProxiedEditorManager;
 }
 
+ProxyEditorManager::MetaType ProxyEditorManager::metaTypeOfElement(qReal::Id const& element) const
+{
+	return mProxiedEditorManager->metaTypeOfElement(element);
+}
+
 IdList ProxyEditorManager::editors() const
 {
 	return mProxiedEditorManager->editors();

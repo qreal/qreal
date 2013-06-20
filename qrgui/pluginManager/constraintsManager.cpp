@@ -3,7 +3,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QPluginLoader>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 using namespace qReal;
 
@@ -97,7 +97,7 @@ QList<QString> ConstraintsManager::pluginsNames() const
 	return mPluginFileName.values();
 }
 
-QList<CheckStatus> ConstraintsManager::check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManager const &editorManager)
+QList<CheckStatus> ConstraintsManager::check(Id const &element, qrRepo::LogicalRepoApi const &logicalApi, EditorManagerInterface const &editorManager)
 {
 	QList<qReal::CheckStatus> checkings;
 	foreach (ConstraintsPluginInterface *constraintsInterface, mPluginIface.values()) {

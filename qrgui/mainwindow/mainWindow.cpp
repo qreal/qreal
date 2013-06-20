@@ -1,4 +1,4 @@
-#include <QtCore/QProcess>
+ï»¿#include <QtCore/QProcess>
 #include <QtWidgets/QDialog>
 #include <QtPrintSupport/QPrinter>
 #include <QtWidgets/QVBoxLayout>
@@ -99,7 +99,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	splashScreen.setProgress(40);
 
 	initDocks();
-	mModels = new models::Models("", mEditorManagerProxy);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -586,7 +585,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	IdList itemsToDelete;
 	itemsToDelete << id;
 	deleteItems(itemsToDelete);
-/*BUT : see my version*/ //qwerty_old
+/* BUT : see my version */ //qwerty_old
 }
 
 void MainWindow::deleteItems(IdList &itemsToDelete)
@@ -625,15 +624,15 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 	multipleRemoveCommand->removeDuplicates();
 	mController->execute(multipleRemoveCommand);
 
-	foreach (NodeElement *item, itemsToArrangeLinks) { // qwerty_old
+	/*foreach (NodeElement *item, itemsToArrangeLinks) { // qwerty_old
 		if (item) {
 			item->arrangeLinks();
-			checkConstraints(item->logicalId());//ïðîâåðÿåì íà îãðàíè÷åíèÿ ñâÿçàííûå ýëåìåíòû óäàëÿåìîãî ëèíêà â ëîãè÷åñêîé ìîäåëè
+			checkConstraints(item->logicalId());//Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð° Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ ÑÐ²ÑÐ·Ð°Ð½Ð½Ñ‹Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ ÑƒÐ´Ð°Ð»ÑÐµÐ¼Ð¾Ð³Ð¾ Ð»Ð¸Ð½ÐºÐ° Ð² Ð»Ð¾Ð³Ð¸Ñ‡ÐµÑÐºÐ¾Ð¹ Ð¼Ð¾Ð´ÐµÐ»Ð¸
 		}
 	}
 	if (parentIndex != mModels->logicalModelAssistApi().indexById(Id::rootId())) {
-		checkConstraints(parentIndex);//ïðîâåðÿåì íà îãðàíè÷åíèÿ ðîäèòåëÿ óäàëÿåìîãî ýëåìåíòà â ëîãè÷åñêîé ìîäåëè
-	}
+		checkConstraints(parentIndex);//Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð° Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ Ñ€Ð¾Ð´Ð¸Ñ‚ÐµÐ»Ñ ÑƒÐ´Ð°Ð»ÑÐµÐ¼Ð¾Ð³Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ð² Ð»Ð¾Ð³Ð¸Ñ‡ÐµÑÐºÐ¾Ð¹ Ð¼Ð¾Ð´ÐµÐ»Ð¸
+	}*/
 }
 
 void MainWindow::removeReferences(Id const &id)
@@ -672,7 +671,7 @@ AbstractCommand *MainWindow::graphicalDeleteCommand(QGraphicsItem *target)
 		return NULL;
 	}
 	return graphicalDeleteCommand(elem->id());
-/*BUT : see my version*/ //qwerty_old
+/* BUT : see my version */ //qwerty_old
 }
 
 AbstractCommand *MainWindow::logicalDeleteCommand(QModelIndex const &index)
@@ -2039,7 +2038,7 @@ void MainWindow::checkOwnConstraints(Id const &id)
 	Id const logicalId = mModels->logicalId(id);
 	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
 
-	QList<CheckStatus> checkStatusList = mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi(), mEditorManager);
+	QList<CheckStatus> checkStatusList = mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi(), mEditorManagerProxy);
 	bool checkStatus = true;
 	foreach (CheckStatus check, checkStatusList) {
 		gui::Error::Severity errorSeverity = severityByErrorType(check.errorType());
@@ -2070,7 +2069,7 @@ void MainWindow::checkOwnConstraints(Id const &id)
 
 void MainWindow::checkConstraints(Id const &id)
 {
-	EditorManagerInterface::MetaType metaType = mEditorManager.metaTypeOfElement(id);
+	EditorManagerInterface::MetaType metaType = mEditorManagerProxy.metaTypeOfElement(id);
 	checkOwnConstraints(id);
 	if (metaType == EditorManagerInterface::node) {
 		QModelIndex index = mModels->logicalModelAssistApi().indexById(id);

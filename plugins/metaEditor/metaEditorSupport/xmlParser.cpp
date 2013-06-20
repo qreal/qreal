@@ -63,7 +63,7 @@ void XmlParser::parseFile(const QString &fileName)
 
 	QDomNodeList const listeners = doc.elementsByTagName("listener");
 	int listenerPositionY = 100;
-	for (unsigned i = 0; i < listeners.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)listeners.length(); ++i) {
 		QDomElement listener = listeners.at(i).toElement();
 		Id id = initListener("(Listener)", listener.attribute("class", ""), listener.attribute("file", ""));
 		mApi.setProperty(id, "position", QPointF(0,listenerPositionY));
@@ -74,7 +74,7 @@ void XmlParser::parseFile(const QString &fileName)
 
 	mElementsColumn = ceil(sqrt(static_cast<qreal>(diagrams.length())));
 
-	for (unsigned i = 0; i < diagrams.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)diagrams.length(); ++i) {
 		QDomElement diagram = diagrams.at(i).toElement();
 		initDiagram(diagram, mMetamodel, diagram.attribute("name", "Unknown Diagram"),
 				diagram.attribute("displayedName", "Unknown Diagram"));
@@ -102,7 +102,7 @@ QStringList XmlParser::getIncludeList(const QString &fileName)
 
 	QDomNodeList const includeList = doc.elementsByTagName("include");
 	QStringList includeFilesList;
-	for (unsigned i = 0; i < includeList.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)includeList.length(); ++i) {
 		QDomElement include = includeList.at(i).toElement();
 		QFileInfo info(fileName);
 		QFileInfo name(include.text());
@@ -160,7 +160,7 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 	QDomNodeList const includeList = document.elementsByTagName("include");
 	QString includeListString = "";
 
-	for (unsigned i = 0; i < includeList.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)includeList.length(); ++i) {
 		QDomElement include = includeList.at(i).toElement();
 		includeListString += include.text() + ", ";
 	}
@@ -207,7 +207,7 @@ void XmlParser::createDiagramAttributes(const QDomElement &diagram, const Id &di
 {
 	QDomNodeList diagramAttributes = diagram.childNodes();
 
-	for (unsigned i = 0; i < diagramAttributes.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)diagramAttributes.length(); ++i) {
 		QDomElement type = diagramAttributes.at(i).toElement();
 		if (type.tagName() == "nonGraphicTypes")
 			createNonGraphicElements(type, diagramId);
@@ -223,7 +223,7 @@ void XmlParser::createNonGraphicElements(const QDomElement &type, const Id &diag
 {
 	QDomNodeList enums = type.childNodes();
 
-	for (unsigned i = 0; i < enums.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)enums.length(); ++i) {
 		QDomElement enumElement = enums.at(i).toElement();
 		if (enumElement.tagName() == "enum")
 			initEnum(enumElement, diagramId);
@@ -234,7 +234,7 @@ void XmlParser::createGraphicElements(const QDomElement &type, const Id &diagram
 {
 	QDomNodeList graphicElements = type.childNodes();
 
-	for (unsigned i = 0; i < graphicElements.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)graphicElements.length(); ++i) {
 		QDomElement graphicElement = graphicElements.at(i).toElement();
 		if (graphicElement.tagName() == "node")
 			initNode(graphicElement, diagramId);
@@ -310,7 +310,7 @@ void XmlParser::setEnumAttributes(const QDomElement &enumElement, const Id &enum
 {
 	QDomNodeList values = enumElement.childNodes();
 
-	for (unsigned i = 0; i < values.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)values.length(); ++i) {
 		QDomElement value = values.at(i).toElement();
 		if (value.tagName() == "value"){
 			Id valueId("MetaEditor", "MetaEditor", "MetaEntityValue",
@@ -328,7 +328,7 @@ void XmlParser::setNodeAttributes(const QDomElement &node, const Id &nodeId)
 {
 	QDomNodeList nodeList = node.childNodes();
 
-	for (unsigned i = 0; i < nodeList.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)nodeList.length(); ++i) {
 		QDomElement tag = nodeList.at(i).toElement();
 		if (tag.tagName() == "logic")
 			setNodeConfigurations(tag, nodeId);
@@ -347,7 +347,7 @@ void XmlParser::setEdgeAttributes(const QDomElement &edge, const Id &edgeId)
 {
 	QDomNodeList edgeList = edge.childNodes();
 
-	for (unsigned i = 0; i < edgeList.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)edgeList.length(); ++i) {
 		QDomElement tag = edgeList.at(i).toElement();
 		if (tag.tagName() == "graphics")
 			setLineType(tag, edgeId);
@@ -360,7 +360,7 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 {
 	QDomNodeList nodeAttributes = tag.childNodes();
 
-	for (unsigned i = 0; i < nodeAttributes.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)nodeAttributes.length(); ++i) {
 		QDomElement attribute = nodeAttributes.at(i).toElement();
 		if (attribute.tagName() == "generalizations")
 			setGeneralization(attribute, nodeId);
@@ -391,7 +391,7 @@ void XmlParser::setLineType(const QDomElement &tag, const Id &edgeId)
 	}
 	// quick workaround for #349, just saving a part of XML into `labels' property
 	// TODO: make it somehow more elegant
-	for(unsigned i = 0; i < graphics.length(); ++i){
+	for(unsigned i = 0; i < (unsigned)graphics.length(); ++i){
 		QDomElement element = graphics.at(i).toElement();
 		if (element.tagName() == "labels"){
 			QString labels;
@@ -406,7 +406,7 @@ void XmlParser::setEdgeConfigurations(const QDomElement &tag, const Id &edgeId)
 {
 	QDomNodeList edgeAttributes = tag.childNodes();
 
-	for (unsigned i = 0; i < edgeAttributes.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)edgeAttributes.length(); ++i) {
 		QDomElement attribute = edgeAttributes.at(i).toElement();
 		if (attribute.tagName() == "generalizations")
 			setGeneralization(attribute, edgeId);
@@ -424,7 +424,7 @@ void XmlParser::setGeneralization(const QDomElement &element, const Id &elementI
 	QDomNodeList generalizations = element.childNodes();
 	QStringList parents;
 
-	for (unsigned i = 0; i < generalizations.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)generalizations.length(); ++i) {
 		QDomElement generalization = generalizations.at(i).toElement();
 		if (generalization.tagName() == "parent")
 			parents.insert(0, generalization.attribute("parentName", ""));
@@ -436,7 +436,7 @@ void XmlParser::setProperties(const QDomElement &element, const Id &elementId)
 {
 	QDomNodeList properties = element.childNodes();
 
-	for (unsigned i = 0; i < properties.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)properties.length(); ++i) {
 		QDomElement property = properties.at(i).toElement();
 		if (property.tagName() == "property")
 			initProperty(property, elementId);
@@ -447,7 +447,7 @@ void XmlParser::setFields(const QDomElement &element, const Id &elementId)
 {
 	QDomNodeList fields = element.childNodes();
 
-	for (unsigned i = 0; i < fields.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)fields.length(); ++i) {
 		QDomElement field = fields.at(i).toElement();
 		if (field.tagName() == "field") {
 			Id fieldId("MetaEditor", "MetaEditor", "MetaEntityContextMenuField", QUuid::createUuid().toString());
@@ -461,7 +461,7 @@ void XmlParser::setContainers(const QDomElement &element, const Id &elementId)
 {
 	QDomNodeList containsElements = element.childNodes();
 	QStringList containers;
-	for (unsigned i = 0; i < containsElements.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)containsElements.length(); ++i) {
 		QDomElement contains = containsElements.at(i).toElement();
 		if (contains.tagName() == "contains") {
 			QString type = contains.attribute("type", "");
@@ -489,7 +489,7 @@ void XmlParser::setContainerProperties(const QDomElement &element, const Id &ele
 				"MetaEntityPropertiesAsContainer", QUuid::createUuid().toString());
 		setStandartConfigurations(containerProperties, elementId,
 				"properties", "");
-		for (unsigned i = 0; i < properties.length(); ++i) {
+		for (unsigned i = 0; i < (unsigned)properties.length(); ++i) {
 			QDomElement property = properties.at(i).toElement();
 			setBoolValuesForContainer("sortContainer", property, containerProperties);
 			setBoolValuesForContainer("minimizeToChildren", property, containerProperties);
@@ -518,7 +518,7 @@ void XmlParser::setConnections(const QDomElement &element, const Id &elementId)
 {
 	QDomNodeList connections = element.childNodes();
 
-	for (unsigned i = 0; i < connections.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)connections.length(); ++i) {
 		QDomElement connection = connections.at(i).toElement();
 		if (connection.tagName() == "connection")
 			initConnection(connection, elementId);
@@ -529,7 +529,7 @@ void XmlParser::setUsages(const QDomElement &element, const Id &elementId)
 {
 	QDomNodeList usages = element.childNodes();
 
-	for (unsigned i = 0; i < usages.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)usages.length(); ++i) {
 		QDomElement usage = usages.at(i).toElement();
 		if (usage.tagName() == "usage")
 			initUsage(usage, elementId);
@@ -557,7 +557,7 @@ void XmlParser::setPossibleEdges(const QDomElement &element, const Id &elementId
 {
 	QDomNodeList possibleEdges = element.childNodes();
 
-	for (unsigned i = 0; i < possibleEdges.length(); ++i) {
+	for (unsigned i = 0; i < (unsigned)possibleEdges.length(); ++i) {
 		QDomElement possibleEdge = possibleEdges.at(i).toElement();
 		if (possibleEdge.tagName() == "possibleEdge")
 			initPossibleEdge(possibleEdge, elementId);

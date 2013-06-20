@@ -11,7 +11,7 @@ using namespace models::details;
 using namespace modelsImplementation;
 
 GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager)
-	: AbstractModel(editorManager, constraintsManager), mLogicalModelView(this), mApi(*repoApi)
+	: AbstractModel(editorManagerInterface, constraintsManager), mLogicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	init();

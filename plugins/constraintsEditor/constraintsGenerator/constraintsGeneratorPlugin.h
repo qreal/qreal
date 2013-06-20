@@ -11,6 +11,7 @@ class ConstraintsGeneratorPlugin : public QObject, public qReal::ToolPluginInter
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "constraints.generator.ConstraintsGeneratorPlugin")
 
 public:
 	ConstraintsGeneratorPlugin();

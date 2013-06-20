@@ -4,27 +4,27 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="concreateGenerator.cpp" line="131"/>
+        <location filename="concreateGenerator.cpp" line="141"/>
         <source>Name of constraintNode not found!</source>
-        <translation>Не указано имя элемента задания ограничения</translation>
+        <translation>Не указано имя элемента задания ограничения!</translation>
     </message>
     <message>
-        <location filename="concreateGenerator.cpp" line="303"/>
+        <location filename="concreateGenerator.cpp" line="313"/>
         <source>LanguageName of conatraints diagram not found.</source>
-        <translation>Не указано languageName для диаграммы ограничений</translation>
+        <translation>Не указано languageName для диаграммы ограничений.</translation>
     </message>
     <message>
-        <location filename="concreateGenerator.cpp" line="475"/>
+        <location filename="concreateGenerator.cpp" line="485"/>
         <source>Value &quot;%1&quot; is not correct for property &apos;Count&apos;.</source>
         <translation>Значение &quot;%1&quot; свойства &apos;Count&apos; не корректно.</translation>
     </message>
     <message>
-        <location filename="concreateGenerator.cpp" line="621"/>
+        <location filename="concreateGenerator.cpp" line="632"/>
         <source>Metatype &quot;%1&quot; is not exist. Select &quot;node&quot; or &quot;edge&quot;.</source>
-        <translation>Не существует метатипа &quot;%1&quot;. Выберете &quot;node&quot; или &quot;edge&quot;</translation>
+        <translation>Не существует метатипа &quot;%1&quot;. Выберете &quot;node&quot; или &quot;edge&quot;.</translation>
     </message>
     <message>
-        <location filename="constraintsGeneratorPlugin.cpp" line="35"/>
+        <location filename="constraintsGeneratorPlugin.cpp" line="33"/>
         <source>Generate constraints</source>
         <translation>Генерировать плагин ограничений</translation>
     </message>
@@ -44,34 +44,34 @@
 <context>
     <name>constraints::generator::ConstraintsGeneratorPlugin</name>
     <message>
-        <location filename="constraintsGeneratorPlugin.cpp" line="59"/>
+        <location filename="constraintsGeneratorPlugin.cpp" line="57"/>
         <source>loading..</source>
         <translation>Загрузка..</translation>
     </message>
     <message>
-        <location filename="constraintsGeneratorPlugin.cpp" line="59"/>
+        <location filename="constraintsGeneratorPlugin.cpp" line="57"/>
         <source>Do you want to load generated constraints?</source>
-        <translation>Вы хотите загрузить сгенерированный плагин ограничений</translation>
+        <translation>Вы хотите загрузить сгенерированный плагин ограничений?</translation>
     </message>
     <message>
-        <location filename="constraintsGeneratorPlugin.cpp" line="88"/>
-        <location filename="constraintsGeneratorPlugin.cpp" line="105"/>
-        <location filename="constraintsGeneratorPlugin.cpp" line="131"/>
+        <location filename="constraintsGeneratorPlugin.cpp" line="86"/>
+        <location filename="constraintsGeneratorPlugin.cpp" line="103"/>
+        <location filename="constraintsGeneratorPlugin.cpp" line="129"/>
         <source>error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="constraintsGeneratorPlugin.cpp" line="88"/>
+        <location filename="constraintsGeneratorPlugin.cpp" line="86"/>
         <source>please, fill compiler settings</source>
         <translation>Пожалуйста, заполните настройки компилятора в окне &amp;quot;Настройки&amp;quot;</translation>
     </message>
     <message>
-        <location filename="constraintsGeneratorPlugin.cpp" line="105"/>
+        <location filename="constraintsGeneratorPlugin.cpp" line="103"/>
         <source>cannot unload plugin</source>
         <translation>Не удалось выгрузить старый плагин ограничений</translation>
     </message>
     <message>
-        <location filename="constraintsGeneratorPlugin.cpp" line="131"/>
+        <location filename="constraintsGeneratorPlugin.cpp" line="129"/>
         <source>cannot load new constraints plugin</source>
         <translation>Не удалось загрузить новый плагин ограничений</translation>
     </message>
@@ -89,7 +89,7 @@
         <location filename="generator.cpp" line="50"/>
         <source>Name of constraints model not found.
 </source>
-        <translation>Не указано имя модели ограничений</translation>
+        <translation>Не указано имя модели ограничений.</translation>
     </message>
     <message>
         <location filename="generator.cpp" line="53"/>

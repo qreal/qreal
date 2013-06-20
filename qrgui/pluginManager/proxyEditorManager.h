@@ -25,6 +25,8 @@ class ProxyEditorManager : public EditorManagerInterface
 public:
 	ProxyEditorManager(EditorManagerInterface *editorManagerInterface);
 	~ProxyEditorManager();
+
+	MetaType metaTypeOfElement(qReal::Id const& element) const;
 	IdList editors() const;
 	IdList diagrams(Id const &editor) const;
 	IdList elements(Id const &diagram) const;
