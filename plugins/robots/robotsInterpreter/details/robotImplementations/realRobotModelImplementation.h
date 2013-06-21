@@ -39,7 +39,7 @@ public:
 	virtual sensorImplementations::BluetoothColorSensorImplementation *colorSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::BluetoothLightSensorImplementation *lightSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::BluetoothSoundSensorImplementation *soundSensor(inputPort::InputPortEnum const port) const;
-	virtual sensorImplementations::BluetoothAccelerometerSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::BluetoothAccelerometerSensorImplementation *accelerometerSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::BluetoothGyroscopeSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const port) const;
 
 	virtual motorImplementations::RealMotorImplementation &motorA();

@@ -6,11 +6,12 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
-BluetoothGyroscopeSensorImplementation::BluetoothGyroscopeSensorImplementation(RobotCommunicator *robotCommunicationInterface
-	, inputPort::InputPortEnum const port)
+BluetoothGyroscopeSensorImplementation::BluetoothGyroscopeSensorImplementation(
+		RobotCommunicator *robotCommunicationInterface
+		, inputPort::InputPortEnum const port)
 	: BluetoothSensorImplementation(robotCommunicationInterface
-	, sensorType::sound, lowLevelSensorType::ANGLE
-	, sensorMode::RAWMODE, port)
+			, sensorType::sound, lowLevelSensorType::ANGLE
+			, sensorMode::RAWMODE, port)
 {
 }
 
@@ -36,7 +37,7 @@ void BluetoothGyroscopeSensorImplementation::read()
 	mRobotCommunicationInterface->send(this, command, 18);
 }
 
-void BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse(const QByteArray &reading)
+void BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	if (reading.isEmpty()) {
 		Tracer::debug(tracer::sensors, "BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");

@@ -4,7 +4,6 @@
 #include "blocks/timerBlock.h"
 #include "blocks/beepBlock.h"
 #include "blocks/initialBlock.h"
-#include "blocks/initialBlockWithPorts.h"
 #include "blocks/finalBlock.h"
 #include "blocks/dummyBlock.h"
 #include "blocks/waitForTouchSensorBlock.h"
@@ -62,8 +61,6 @@ Block *BlocksFactory::block(Id const &element)
 	Block * newBlock = NULL;
 	if (elementMetatypeIs(element, "InitialNode")) {
 		newBlock = new InitialBlock(*mRobotModel);
-	} else if (elementMetatypeIs(element, "InitialBlock")) {
-		newBlock = new InitialBlockWithPorts(*mRobotModel);
 	} else if (elementMetatypeIs(element, "FinalNode")) {
 		newBlock = new FinalBlock();
 	} else if (elementMetatypeIs(element, "Beep")) {
@@ -102,9 +99,9 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new WaitForLightSensorBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForSound")) {
 		newBlock = new WaitForSoundSensorBlock(mRobotModel);
-	}else if (elementMetatypeIs(element, "WaitForGyroscope")){
+	} else if (elementMetatypeIs(element, "WaitForGyroscope")) {
 		newBlock = new WaitForGyroscopeSensorBlock(mRobotModel);
-	} else if (elementMetatypeIs(element,"WaitForAccelerometer")){
+	} else if (elementMetatypeIs(element,"WaitForAccelerometer")) {
 		newBlock = new WaitForAccelerometerSensorBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "CommentBlock")) {
 		newBlock = new CommentBlock();

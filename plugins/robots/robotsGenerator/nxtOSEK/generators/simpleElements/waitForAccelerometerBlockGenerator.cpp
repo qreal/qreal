@@ -13,7 +13,7 @@ void WaitForAccelerometerBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGen
 {
 	QString const initCode = "ecrobot_init_accel_sensor(" + port + ");";
 	if (!ListSmartLine::isContains(nxtGen->initCode(), initCode)) {
-		QString const terminateCode = "ecrobot_term_accel_sensorr(" + port + ");";
+		QString const terminateCode = "ecrobot_term_accel_sensor(" + port + ");";
 		nxtGen->initCode().append(SmartLine(initCode, elementId));
 		nxtGen->terminateCode().append(SmartLine(terminateCode, elementId));
 	}

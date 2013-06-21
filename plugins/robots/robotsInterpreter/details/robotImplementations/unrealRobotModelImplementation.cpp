@@ -71,7 +71,7 @@ sensorImplementations::UnrealGyroscopeSensorImplementation *UnrealRobotModelImpl
 	return dynamic_cast<sensorImplementations::UnrealGyroscopeSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
-sensorImplementations::UnrealAccelerometerSensorImplementation *UnrealRobotModelImplementation::accelerometrSensor(const inputPort::InputPortEnum port) const
+sensorImplementations::UnrealAccelerometerSensorImplementation *UnrealRobotModelImplementation::accelerometerSensor(const inputPort::InputPortEnum port) const
 {
 	return dynamic_cast<sensorImplementations::UnrealAccelerometerSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }

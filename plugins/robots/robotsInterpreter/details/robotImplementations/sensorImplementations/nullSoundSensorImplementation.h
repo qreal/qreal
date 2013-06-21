@@ -12,8 +12,10 @@ namespace sensorImplementations {
 class NullSoundSensorImplementation : public NullSensorImplementation
 {
 	Q_OBJECT
+
 public:
 	NullSoundSensorImplementation(inputPort::InputPortEnum const port);
+
 protected slots:
 	virtual void timerTimeout();
 };

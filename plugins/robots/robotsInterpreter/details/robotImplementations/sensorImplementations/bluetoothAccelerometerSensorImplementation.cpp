@@ -6,12 +6,11 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
-
-BluetoothAccelerometerSensorImplementation::BluetoothAccelerometerSensorImplementation(RobotCommunicator *robotCommunicationInterface
-	, inputPort::InputPortEnum const port)
-	 : BluetoothSensorImplementation(robotCommunicationInterface
-	 , sensorType::accelerometer, lowLevelSensorType::ANGLE
-	, sensorMode::RAWMODE, port)
+BluetoothAccelerometerSensorImplementation::BluetoothAccelerometerSensorImplementation(
+		RobotCommunicator *robotCommunicationInterface, inputPort::InputPortEnum const port)
+	: BluetoothSensorImplementation(robotCommunicationInterface
+			, sensorType::accelerometer, lowLevelSensorType::ANGLE
+			, sensorMode::RAWMODE, port)
 {
 }
 
@@ -36,12 +35,13 @@ void BluetoothAccelerometerSensorImplementation::read()
 	command[4] = mPort;
 	mRobotCommunicationInterface->send(this, command, 18);
 }
+
 void BluetoothAccelerometerSensorImplementation::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
 		Tracer::debug(tracer::sensors, "BluetoothAccelerometerSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else {
 		mState = idle;
-		emit response((0xff & reading[14])<< 8 |(0xff & reading[15]));
+		emit response((0xff & reading[14]) << 8 | (0xff & reading[15]));
 	}
 }

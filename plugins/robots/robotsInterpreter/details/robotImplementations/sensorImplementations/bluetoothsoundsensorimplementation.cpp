@@ -8,11 +8,12 @@ using namespace robotImplementations::sensorImplementations;
 
 int const soundMaxValue = 1023;
 
-BluetoothSoundSensorImplementation::BluetoothSoundSensorImplementation(RobotCommunicator *robotCommunicationInterface
+BluetoothSoundSensorImplementation::BluetoothSoundSensorImplementation(
+		RobotCommunicator *robotCommunicationInterface
 		, inputPort::InputPortEnum const port)
 	: BluetoothSensorImplementation(robotCommunicationInterface
-	, sensorType::sound, lowLevelSensorType::SOUND_DBA
-	, sensorMode::RAWMODE, port)
+			, sensorType::sound, lowLevelSensorType::SOUND_DBA
+			, sensorMode::RAWMODE, port)
 {
 }
 

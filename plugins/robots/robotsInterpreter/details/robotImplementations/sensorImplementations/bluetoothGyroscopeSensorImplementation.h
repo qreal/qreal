@@ -13,11 +13,13 @@ class BluetoothGyroscopeSensorImplementation : public BluetoothSensorImplementat
 {
 public:
 	BluetoothGyroscopeSensorImplementation(RobotCommunicator *robotCommunicationInterface
-										   , inputPort::InputPortEnum port);
+			, inputPort::InputPortEnum port);
 	virtual void read();
+
 protected:
 	virtual void sensorSpecificProcessResponse(QByteArray const &reading);
 };
+
 }
 }
 }

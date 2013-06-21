@@ -59,7 +59,7 @@ sensorImplementations::BluetoothSoundSensorImplementation *RealRobotModelImpleme
 	return dynamic_cast<sensorImplementations::BluetoothSoundSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
-sensorImplementations::BluetoothAccelerometerSensorImplementation *RealRobotModelImplementation::accelerometrSensor(inputPort::InputPortEnum const port) const
+sensorImplementations::BluetoothAccelerometerSensorImplementation *RealRobotModelImplementation::accelerometerSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<sensorImplementations::BluetoothAccelerometerSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }

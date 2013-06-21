@@ -38,7 +38,7 @@ public:
 	virtual sensorImplementations::NullColorSensorImplementation *colorSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::NullLightSensorImplementation *lightSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::NullSoundSensorImplementation *soundSensor(inputPort::InputPortEnum const port) const;
-	virtual sensorImplementations::NullAccelerometerSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::NullAccelerometerSensorImplementation *accelerometerSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::NullGyroscopeSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const port) const;
 
 	virtual motorImplementations::NullMotorImplementation &motorA();

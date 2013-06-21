@@ -35,7 +35,7 @@ public:
 	virtual sensorImplementations::UnrealColorSensorImplementation *colorSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::UnrealLightSensorImplementation *lightSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::UnrealSoundSensorImplementation *soundSensor(inputPort::InputPortEnum const port) const;
-	virtual sensorImplementations::UnrealAccelerometerSensorImplementation *accelerometrSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::UnrealAccelerometerSensorImplementation *accelerometerSensor(inputPort::InputPortEnum const port) const;
 	virtual sensorImplementations::UnrealGyroscopeSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const port) const;
 	virtual displayImplementations::UnrealDisplayImplementation &display();
 

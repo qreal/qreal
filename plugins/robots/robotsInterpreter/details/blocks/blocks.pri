@@ -5,7 +5,6 @@ HEADERS += \
 	details/blocks/beepBlock.h \
 	details/blocks/playToneBlock.h \
 	details/blocks/initialBlock.h \
-	details/blocks/initialBlockWithPorts.h \
 	details/blocks/finalBlock.h \
 	details/blocks/waitForTouchSensorBlock.h \
 	details/blocks/waitForSonarDistanceBlock.h \
@@ -44,7 +43,6 @@ SOURCES +=\
 	details/blocks/beepBlock.cpp \
 	details/blocks/playToneBlock.cpp \
 	details/blocks/initialBlock.cpp \
-	details/blocks/initialBlockWithPorts.cpp \
 	details/blocks/finalBlock.cpp \
 	details/blocks/waitForTouchSensorBlock.cpp \
 	details/blocks/waitForSonarDistanceBlock.cpp \

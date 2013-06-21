@@ -35,28 +35,14 @@
 				<value>не больше</value>
 			</enum>
 			<enum name="Accelerations">
-				<value>oX</value>
-				<value>oY</value>
-				<value>oZ</value>
-				<value>Norm</value>
+				<value>ось x</value>
+				<value>ось y</value>
+				<value>ось z</value>
+				<value>норма</value>
 			</enum>
 			<enum name="BreakEngineMode">
 				<value>тормозить</value>
 				<value>скользить</value>
-			</enum>
-			<enum name="Sensors">
-				<value>Не используется</value>
-				<value>Ультразвуковой сенсор</value>
-				<value>Сенсор касания (булево значение)</value>
-				<value>Сенсор касания (сырое значение)</value>
-				<value>Сенсор цвета (все цвета)</value>
-				<value>Сенсор цвета (красный)</value>
-				<value>Сенсор цвета (зеленый)</value>
-				<value>Сенсор цвета (синий)</value>
-				<value>Сенсор цвета (пассивный)</value>
-				<value>Сенсок звука</value>
-				<value>Гироскоп</value>
-				<value>Акселерометр</value>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
@@ -669,7 +655,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Ждать Акселерометр" name="WaitForAccelerometer">
+			<node displayedName="Ждать акселерометр" name="WaitForAccelerometer">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForAccelerometerBlock.png" x1="0" y2="50" x2="50"/>
@@ -681,7 +667,7 @@
 						<label x="-26" y="60" text="Ускорение:"/>
 						<label x="33" y="80" textBinded="Sign"/>
 						<label x="-80" y="80" text="Считанное значение:"/>
-						<label x="33" y="100" textBinded="Acceleration OS"/>						
+						<label x="33" y="100" textBinded="AccelerationAxe"/>
 						<label x="-80" y="100" text="Ускорение по оси:"/>
 					</labels>
 					<ports>
@@ -713,8 +699,8 @@
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
 							<default>равно</default>
 						</property>
-						<property displayedName="Ускорение по оси" type="Accelerations" name="Acceleration OS">
-							<default>oX</default>
+						<property displayedName="Ускорение по оси" type="Accelerations" name="AccelerationAxe">
+							<default>X</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1737,7 +1723,6 @@
 			</group>
 			<group name="Инициализация">
 				<element name="InitialNode"/>
-				<element name="InitialBlock"/>
 				<element name="FinalNode"/>
 				<element name="NullificationEncoder"/>
 			</group>

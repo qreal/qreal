@@ -61,7 +61,7 @@ sensorImplementations::NullGyroscopeSensorImplementation *NullRobotModelImplemen
 	return dynamic_cast<sensorImplementations::NullGyroscopeSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
-sensorImplementations::NullAccelerometerSensorImplementation *NullRobotModelImplementation::accelerometrSensor(const inputPort::InputPortEnum port) const
+sensorImplementations::NullAccelerometerSensorImplementation *NullRobotModelImplementation::accelerometerSensor(const inputPort::InputPortEnum port) const
 {
 	return dynamic_cast<sensorImplementations::NullAccelerometerSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
