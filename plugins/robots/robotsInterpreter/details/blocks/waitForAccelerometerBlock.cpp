@@ -11,6 +11,10 @@ WaitForAccelerometerSensorBlock::WaitForAccelerometerSensorBlock(details::RobotM
 {
 }
 
+WaitForAccelerometerSensorBlock::~WaitForAccelerometerSensorBlock()
+{
+}
+
 void WaitForAccelerometerSensorBlock::responseSlot(int reading)
 {
 	int const targetAcceleration = evaluate("Acceleration").toInt();

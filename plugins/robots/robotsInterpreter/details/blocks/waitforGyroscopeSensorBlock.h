@@ -22,7 +22,7 @@ class WaitForGyroscopeSensorBlock : public WaitForSensorBlock
 
 public:
 	explicit WaitForGyroscopeSensorBlock(RobotModel * const robotModel);
-	virtual ~WaitForGyroscopeSensorBlock() {}
+	virtual ~WaitForGyroscopeSensorBlock();
 
 protected slots:
 	virtual void responseSlot(int reading);

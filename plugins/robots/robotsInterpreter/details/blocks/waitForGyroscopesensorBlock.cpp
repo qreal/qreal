@@ -11,6 +11,10 @@ WaitForGyroscopeSensorBlock::WaitForGyroscopeSensorBlock(details::RobotModel * c
 {
 }
 
+WaitForGyroscopeSensorBlock::~WaitForGyroscopeSensorBlock()
+{
+}
+
 void WaitForGyroscopeSensorBlock::responseSlot(int reading)
 {
 	int const targetDegrees = evaluate("Degrees").toInt();

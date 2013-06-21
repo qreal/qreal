@@ -22,7 +22,7 @@ class WaitForAccelerometerSensorBlock : public WaitForSensorBlock
 
 public:
 	explicit WaitForAccelerometerSensorBlock(RobotModel * const robotModel);
-	virtual ~WaitForAccelerometerSensorBlock() {}
+	virtual ~WaitForAccelerometerSensorBlock();
 
 protected slots:
 	virtual void responseSlot(int reading);
