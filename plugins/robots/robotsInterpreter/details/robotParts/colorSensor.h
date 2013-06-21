@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+
 #include "sensor.h"
 #include "../../sensorConstants.h"
 

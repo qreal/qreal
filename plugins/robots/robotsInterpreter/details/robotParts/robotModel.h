@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 
