@@ -41,10 +41,14 @@ public:
 
 	virtual brickImplementations::AbstractBrickImplementation &brick() = 0;
 	virtual displayImplementations::AbstractDisplayImplementation &display() = 0;
-	virtual sensorImplementations::AbstractSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const = 0;
-	virtual sensorImplementations::AbstractSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const = 0;
-	virtual sensorImplementations::AbstractSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const = 0;
-	virtual sensorImplementations::AbstractSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const = 0;
+
+	virtual sensorImplementations::AbstractSensorImplementation *touchSensor(inputPort::InputPortEnum const port) const = 0;
+	virtual sensorImplementations::AbstractSensorImplementation *sonarSensor(inputPort::InputPortEnum const port) const = 0;
+	virtual sensorImplementations::AbstractSensorImplementation *lightSensor(inputPort::InputPortEnum const port) const = 0;
+	virtual sensorImplementations::AbstractSensorImplementation *colorSensor(inputPort::InputPortEnum const port) const = 0;
+	virtual sensorImplementations::AbstractSensorImplementation *soundSensor(inputPort::InputPortEnum const port) const = 0;
+	virtual sensorImplementations::AbstractSensorImplementation *accelerometerSensor(inputPort::InputPortEnum const port) const = 0;
+	virtual sensorImplementations::AbstractSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const port) const = 0;
 
 	virtual motorImplementations::AbstractMotorImplementation &motorA() = 0;
 	virtual motorImplementations::AbstractMotorImplementation &motorB() = 0;
@@ -57,8 +61,8 @@ public:
 	virtual AbstractTimer *produceTimer() = 0;
 
 	virtual void configureSensor(sensorType::SensorTypeEnum const &sensorType
-			, inputPort::InputPortEnum const &port);
-	virtual sensorImplementations::AbstractSensorImplementation * sensor(inputPort::InputPortEnum const &port);
+			, inputPort::InputPortEnum const port);
+	virtual sensorImplementations::AbstractSensorImplementation * sensor(inputPort::InputPortEnum const port);
 
 	virtual bool needsConnection() const;
 	virtual void startInterpretation();
@@ -77,10 +81,13 @@ signals:
 	void disconnected();
 
 protected:
-	virtual void addTouchSensor(inputPort::InputPortEnum const &port) = 0;
-	virtual void addSonarSensor(inputPort::InputPortEnum const &port) = 0;
-	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
-	virtual void addLightSensor(inputPort::InputPortEnum const &port) = 0;
+	virtual void addTouchSensor(inputPort::InputPortEnum const port) = 0;
+	virtual void addSonarSensor(inputPort::InputPortEnum const port) = 0;
+	virtual void addColorSensor(inputPort::InputPortEnum const port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
+	virtual void addLightSensor(inputPort::InputPortEnum const port) = 0;
+	virtual void addSoundSensor(inputPort::InputPortEnum const port) = 0;
+	virtual void addAccelerometerSensor(inputPort::InputPortEnum const port) = 0;
+	virtual void addGyroscopeSensor(inputPort::InputPortEnum const port) = 0;
 	virtual void nullifySensor(inputPort::InputPortEnum port);
 
 	/// Connect to robot if connection doesn't established

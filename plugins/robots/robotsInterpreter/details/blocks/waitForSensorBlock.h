@@ -20,7 +20,7 @@ class WaitForSensorBlock : public WaitBlock
 
 public:
 	WaitForSensorBlock(RobotModel * const robotModel, sensorType::SensorTypeEnum type);
-	virtual ~WaitForSensorBlock() {}
+	virtual ~WaitForSensorBlock();
 
 	virtual void run();
 	virtual QList<Block::SensorPortPair> usedSensors() const;

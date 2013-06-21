@@ -70,6 +70,10 @@ QString AbstractElementGenerator::sensorExpression(int port) const
 		return "ecrobot_get_sonar_sensor(NXT_PORT_S" + portString + ")";
 	case qReal::interpreters::robots::sensorType::light:
 		return "ecrobot_get_light_sensor(NXT_PORT_S" + portString + ") * 100 / 1023";
+	case qReal::interpreters::robots::sensorType::sound:
+		return "ecrobot_get_sound_sensor(NXT_PORT_S" + portString + ") * 100 / 1023";
+	case qReal::interpreters::robots::sensorType::gyroscope:
+		return "ecrobot_get_gyro_sensor(NXT_PORT_S" + portString + ")";
 	default:
 		return "ecrobot_get_touch_sensor(NXT_PORT_S" + portString + ")";
 	}
