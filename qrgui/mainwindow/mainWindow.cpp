@@ -146,7 +146,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// here then we have some problems with correct main window initialization
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
-	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));}
+	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));
+}
 
 void MainWindow::connectActions()
 {
@@ -287,6 +288,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		event->ignore();
 		return;
 	}
+	mProjectManager->close();
 
 	SettingsManager::setValue("maximized", isMaximized());
 	SettingsManager::setValue("size", size());
@@ -1543,7 +1545,6 @@ void MainWindow::createDiagram(QString const &idString)
 
 bool MainWindow::createProject(QString const &diagramIdString)
 {
-	mProjectManager->clearAutosaveFile();
 	if (!mProjectManager->openEmptyWithSuggestToSaveChanges()) {
 		return false;
 	}
@@ -1767,7 +1768,9 @@ Id MainWindow::activeDiagram()
 void MainWindow::initPluginsAndStartDialog()
 {
 	initToolPlugins();
-	if (mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)) {
+	if (!mProjectManager->restoreIncorrectlyTerminated() &&
+			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
+	{
 		mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 		// Centering dialog inside main window
 		mStartDialog->move(geometry().center() - mStartDialog->rect().center());
