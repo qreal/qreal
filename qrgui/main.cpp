@@ -3,6 +3,7 @@
 
 #include "mainwindow/mainWindow.h"
 #include "thirdparty/windowsmodernstyle.h"
+#include "qRealApplication.h"
 
 using namespace qReal;
 
@@ -14,7 +15,7 @@ void clearConfig()
 
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
+	QRealApplication app(argc, argv);
 
 	QTranslator guiTranslator;
 	QTranslator utilsTranslator;
