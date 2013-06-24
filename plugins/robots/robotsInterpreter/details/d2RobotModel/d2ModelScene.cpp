@@ -17,7 +17,7 @@ using namespace graphicsUtils;
 
 D2ModelScene::D2ModelScene(AbstractView *view, QObject *parent)
 		: AbstractScene(view, parent)
-		, mGridDrawer(new GridDrawer)
+		, mGridDrawer()
 {
 	mFirstPenWidth = 6;
 	mSizeEmptyRectX = 1000;
@@ -110,12 +110,12 @@ void D2ModelScene::keyPressEvent(QKeyEvent *event)
 
 void D2ModelScene::drawBackground(QPainter *painter, QRectF const &rect )
 {
-	if (SettingsManager::value("2dShowGrid").toBool()){
+	if (SettingsManager::value("2dShowGrid").toBool()) {
 		mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
 		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		QGraphicsScene::drawBackground(painter, rect);
 		int const cellSize = SettingsManager::value("2dGridCellSize").toInt();
-		mGridDrawer->drawGrid(painter, rect, cellSize);
+		mGridDrawer.drawGrid(painter, rect, cellSize);
 	}
 }
 

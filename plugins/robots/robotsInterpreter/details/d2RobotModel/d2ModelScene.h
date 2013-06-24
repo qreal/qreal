@@ -31,7 +31,7 @@ public slots:
 	void updateGrid();
 
 private:
-	graphicsUtils::GridDrawer *mGridDrawer;
+	graphicsUtils::GridDrawer mGridDrawer;
 	qreal mWidthOfGrid;
 
 signals:

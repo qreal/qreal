@@ -1,8 +1,10 @@
-#include "lineItem.h"
 #include <QtGui/QPainter>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>
+
+#include "lineItem.h"
 #include "../../../../../qrkernel/settingsManager.h"
+#include "wallItem.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -66,7 +68,10 @@ void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 		mY2=event->scenePos().y();
 		reshapeRectWithShift();
 	} else {
-		if ((SettingsManager::value("2dShowGrid").toBool()) && (mDragState == TopLeft || mDragState == BottomRight) && (strcmp(this->metaObject()->className(), "qReal::interpreters::robots::details::d2Model::WallItem")==0)){
+		if (SettingsManager::value("2dShowGrid").toBool()
+				&& (mDragState == TopLeft || mDragState == BottomRight)
+				&& dynamic_cast<WallItem *>(this))
+		{
 			calcResizeItem(event, SettingsManager::value("2dGridCellSize").toInt());
 		} else {
 			if (mDragState == TopLeft || mDragState == BottomRight) {

@@ -60,7 +60,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	connect(mScene, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(updateGrid()));
-	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), this, SLOT(allignWalls()));
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), this, SLOT(alignWalls()));
 
 	setCursorType(static_cast<cursorType::CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
@@ -1192,9 +1192,9 @@ void D2ModelWidget::syncronizeSensors()
 	addPort(3);
 }
 
-void D2ModelWidget::allignWalls()
+void D2ModelWidget::alignWalls()
 {
-	foreach (WallItem *wall, mWorldModel->walls()) {
+	foreach (WallItem * const wall, mWorldModel->walls()) {
 		if (mScene->items().contains(wall)) {
 			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
