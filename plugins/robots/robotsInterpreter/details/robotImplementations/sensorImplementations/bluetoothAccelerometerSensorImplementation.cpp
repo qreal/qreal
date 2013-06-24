@@ -36,7 +36,7 @@ void BluetoothAccelerometerSensorImplementation::read()
 	mRobotCommunicationInterface->send(this, command, 18);
 }
 
-void BluetoothAccelerometerSensorImplementation::sensorSpecificProcessResponse(const QByteArray &reading)
+void BluetoothAccelerometerSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	if (reading.isEmpty()) {
 		Tracer::debug(tracer::sensors, "BluetoothAccelerometerSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");

@@ -22,7 +22,7 @@ class WaitForSoundSensorBlock : public WaitForSensorBlock
 
 public:
 	explicit WaitForSoundSensorBlock(RobotModel * const robotModel);
-	virtual ~WaitForSoundSensorBlock() {}
+	virtual ~WaitForSoundSensorBlock();
 
 protected slots:
 	virtual void responseSlot(int reading);

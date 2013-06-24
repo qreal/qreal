@@ -91,19 +91,19 @@ void NullRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void NullRobotModelImplementation::addSoundSensor(const inputPort::InputPortEnum port)
+void NullRobotModelImplementation::addSoundSensor(inputPort::InputPortEnum const port)
 {
 	sensorImplementations::NullSoundSensorImplementation *sensor = new sensorImplementations::NullSoundSensorImplementation(port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void NullRobotModelImplementation::addGyroscopeSensor(const inputPort::InputPortEnum port)
+void NullRobotModelImplementation::addGyroscopeSensor(inputPort::InputPortEnum const port)
 {
 	sensorImplementations::NullGyroscopeSensorImplementation *sensor = new sensorImplementations::NullGyroscopeSensorImplementation(port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void NullRobotModelImplementation::addAccelerometerSensor(const inputPort::InputPortEnum port)
+void NullRobotModelImplementation::addAccelerometerSensor(inputPort::InputPortEnum const port)
 {
 	sensorImplementations::NullAccelerometerSensorImplementation *sensor = new sensorImplementations::NullAccelerometerSensorImplementation(port);
 	mSensorsConfigurer.configureSensor(sensor, port);

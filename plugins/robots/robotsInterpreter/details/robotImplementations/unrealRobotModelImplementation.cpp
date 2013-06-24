@@ -61,17 +61,17 @@ sensorImplementations::UnrealLightSensorImplementation *UnrealRobotModelImplemen
 	return dynamic_cast<sensorImplementations::UnrealLightSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
-sensorImplementations::UnrealSoundSensorImplementation *UnrealRobotModelImplementation::soundSensor(const inputPort::InputPortEnum port) const
+sensorImplementations::UnrealSoundSensorImplementation *UnrealRobotModelImplementation::soundSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<sensorImplementations::UnrealSoundSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
-sensorImplementations::UnrealGyroscopeSensorImplementation *UnrealRobotModelImplementation::gyroscopeSensor(const inputPort::InputPortEnum port) const
+sensorImplementations::UnrealGyroscopeSensorImplementation *UnrealRobotModelImplementation::gyroscopeSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<sensorImplementations::UnrealGyroscopeSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
-sensorImplementations::UnrealAccelerometerSensorImplementation *UnrealRobotModelImplementation::accelerometerSensor(const inputPort::InputPortEnum port) const
+sensorImplementations::UnrealAccelerometerSensorImplementation *UnrealRobotModelImplementation::accelerometerSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<sensorImplementations::UnrealAccelerometerSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
@@ -105,21 +105,21 @@ void UnrealRobotModelImplementation::addLightSensor(inputPort::InputPortEnum con
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void UnrealRobotModelImplementation::addSoundSensor(const inputPort::InputPortEnum port)
+void UnrealRobotModelImplementation::addSoundSensor(inputPort::InputPortEnum const port)
 {
 	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::addSoundSensor", "Configuring light sensor on port " + QString::number(port));
 	sensorImplementations::UnrealSoundSensorImplementation *sensor = new sensorImplementations::UnrealSoundSensorImplementation(port, mD2Model);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void UnrealRobotModelImplementation::addGyroscopeSensor(const inputPort::InputPortEnum port)
+void UnrealRobotModelImplementation::addGyroscopeSensor(inputPort::InputPortEnum const port)
 {
 	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::addGyroscopeSensor", "Configuring gyroscope sensor on port " + QString::number(port));
 	sensorImplementations::UnrealGyroscopeSensorImplementation *sensor = new sensorImplementations::UnrealGyroscopeSensorImplementation(port, mD2Model);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void UnrealRobotModelImplementation::addAccelerometerSensor(const inputPort::InputPortEnum port)
+void UnrealRobotModelImplementation::addAccelerometerSensor(inputPort::InputPortEnum const port)
 {
 	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::addAccelerometerSensor", "Configuring accelerometer sensor on port " + QString::number(port));
 	sensorImplementations::UnrealAccelerometerSensorImplementation *sensor = new sensorImplementations::UnrealAccelerometerSensorImplementation(port, mD2Model);
