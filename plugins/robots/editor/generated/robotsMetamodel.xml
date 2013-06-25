@@ -1649,7 +1649,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Подпрограмма" name="SubprogramRobots">
+			<node displayedName="Подпрограмма" name="Subprogram">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/subprogramRobots.png" x1="0" y2="50" x2="50"/>
@@ -1682,6 +1682,9 @@
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
+					<explodesTo>
+						<target type="RobotsDiagram" makeReusable="true" requireImmediateLinkage="true"/>
+					</explodesTo>
 				</logic>
 			</node>
 		</graphicTypes>
@@ -1720,6 +1723,7 @@
 				<element name="ControlFlow"/>
 				<element name="Loop"/>
 				<element name="CommentBlock"/>
+				<element name="Subprogram"/>
 			</group>
 			<group name="Инициализация">
 				<element name="InitialNode"/>
