@@ -1,5 +1,5 @@
 #include "recentProjectsListWidget.h"
-#include "../../qrkernel/settingsManager.h"
+#include "../../../qrkernel/settingsManager.h"
 
 using namespace qReal;
 

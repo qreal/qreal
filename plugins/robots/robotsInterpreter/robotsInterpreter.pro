@@ -3,6 +3,7 @@ QT += xml widgets
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../../bin/plugins/
+OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RCC_DIR = .moc
 
@@ -11,7 +12,7 @@ LIBS += -L../../../bin -lqrkernel -lqrutils -lqextserialport
 TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
-	robotsPlugin.h \
+robotsPlugin.h \
 	interpreter.h \
 	sensorConstants.h \
 	robotSettingsPage.h \
@@ -36,7 +37,6 @@ SOURCES += \
 	interpreter.cpp \
 	robotSettingsPage.cpp \
 	customizer.cpp \
-	watchListWindow.cpp\
 	details/thread.cpp \
 	details/blocksTable.cpp \
 	details/blocksFactory.cpp \
