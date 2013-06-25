@@ -1,11 +1,12 @@
 #pragma once
 
-#include <QMap>
-#include <QString>
-#include <QDir>
+#include <QtCore/QMap>
+#include <QtCore/QString>
+#include <QtCore/QDir>
 
 class Editor;
 class Diagram;
+
 namespace utils {
 	class OutFile;
 }
@@ -21,12 +22,6 @@ public:
 	void addResource(QString const &resourceName);
 
 private:
-	QMap<QString, Editor*> mEditors;
-	QString mPluginName;
-	QString mResources;
-	QString mCurrentEditor;
-	QString mSourcesRootFolder;
-
 	void generateCode();
 	void generateElementClasses();
 	void generatePluginHeader();
@@ -39,6 +34,7 @@ private:
 	void generatePropertyDefaultsMap(utils::OutFile &out);
 	void generateDescriptionMappings(utils::OutFile &out);
 	void generateParentsMappings(utils::OutFile &out);
+	void generateExplosionsMappings(utils::OutFile &out);
 	void generateNameMappingsRequests(utils::OutFile &out);
 	void generateGraphicalObjectRequest(utils::OutFile &out);
 	void generateIsParentOfRequest(utils::OutFile &out);
@@ -68,4 +64,10 @@ private:
 	class EnumValuesGenerator;
 
 	void generateListMethod(utils::OutFile &out, QString const &signature, ListMethodGenerator const &generator);
+
+	QMap<QString, Editor *> mEditors;
+	QString mPluginName;
+	QString mResources;
+	QString mCurrentEditor;
+	QString mSourcesRootFolder;
 };

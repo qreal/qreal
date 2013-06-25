@@ -168,6 +168,13 @@ QStringList InterpreterEditorManager::allChildrenTypesOf(Id const &parent) const
 	return result;
 }
 
+QList<Explosion> InterpreterEditorManager::explosions(Id const &source) const
+{
+	// TODO: implement me
+	Q_UNUSED(source)
+	return QList<Explosion>();
+}
+
 bool InterpreterEditorManager::isParentOf(Id const &child, Id const &parent) const
 {
 	qrRepo::RepoApi const * const repoMetaModelChild = repoAndMetaId(child).first;

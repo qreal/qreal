@@ -32,6 +32,11 @@ void NonGraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
 	Q_UNUSED(out)
 }
 
+void NonGraphicType::generateExplosionsMap(OutFile &out)
+{
+	Q_UNUSED(out)
+}
+
 bool NonGraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 {
 	Q_UNUSED(out)
@@ -79,4 +84,3 @@ void NonGraphicType::generateMouseGesturesMap(utils::OutFile &out)
 {
 	Q_UNUSED(out);
 }
-

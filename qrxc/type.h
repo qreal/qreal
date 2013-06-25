@@ -45,6 +45,7 @@ public:
 	virtual void generatePropertyDefaults(utils::OutFile &out) = 0;
 	virtual void generatePropertyDescriptionMapping(utils::OutFile &out) = 0;
 	virtual void generateMouseGesturesMap(utils::OutFile &out) = 0;
+	virtual void generateExplosionsMap(utils::OutFile &out) = 0;
 
 protected:
 	void copyFields(Type *type) const;
