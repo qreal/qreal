@@ -43,8 +43,11 @@ protected:
 
 private:
 	bool mDragged;
-	QImage mImage;
 	bool mOverlappedWithRobot;
+	QImage mImage;
+
+	int mOldX1;
+	int mOldY1;
 };
 
 }

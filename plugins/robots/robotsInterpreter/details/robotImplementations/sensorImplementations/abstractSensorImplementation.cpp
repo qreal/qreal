@@ -4,7 +4,7 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
-AbstractSensorImplementation::AbstractSensorImplementation(inputPort::InputPortEnum const &port
+AbstractSensorImplementation::AbstractSensorImplementation(inputPort::InputPortEnum const port
 		, sensorType::SensorTypeEnum const &type)
 	: mPort(port)
 	, mState(idle)
@@ -12,7 +12,7 @@ AbstractSensorImplementation::AbstractSensorImplementation(inputPort::InputPortE
 {
 }
 
-void AbstractSensorImplementation::setPort(inputPort::InputPortEnum const &port)
+void AbstractSensorImplementation::setPort(inputPort::InputPortEnum const port)
 {
 	mPort = port;
 }

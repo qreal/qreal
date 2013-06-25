@@ -12,7 +12,7 @@ class UnrealSonarSensorImplementation : public UnrealSensorImplementation
 {
 	Q_OBJECT
 public:
-	UnrealSonarSensorImplementation(inputPort::InputPortEnum const &port, d2Model::D2RobotModel *d2Model);
+	UnrealSonarSensorImplementation(inputPort::InputPortEnum const port, d2Model::D2RobotModel *d2Model);
 	virtual void read();
 };
 
