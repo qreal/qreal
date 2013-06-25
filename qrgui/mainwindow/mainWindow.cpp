@@ -146,7 +146,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// here then we have some problems with correct main window initialization
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
-	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));}
+	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));
+}
 
 void MainWindow::connectActions()
 {

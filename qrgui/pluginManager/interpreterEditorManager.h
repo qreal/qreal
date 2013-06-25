@@ -50,6 +50,8 @@ public:
 	virtual QString typeName(Id const &id, const QString &name) const;
 	virtual QStringList allChildrenTypesOf(Id const &parent) const;
 
+	virtual QList<Explosion> explosions(Id const &source) const;
+
 	virtual bool isEditor(Id const &id) const;
 	virtual bool isDiagram(Id const &id) const;
 	virtual bool isElement(Id const &id) const;

@@ -472,6 +472,23 @@ QStringList EditorManager::allChildrenTypesOf(Id const &parent) const
 	return result;
 }
 
+QList<Explosion> EditorManager::explosions(Id const &source) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(source.editor()));
+	EditorInterface const *plugin = mPluginIface[source.editor()];
+	if (!plugin) {
+		return QList<Explosion>();
+	}
+	QList<Explosion> result;
+	typedef QPair<QPair<QString, QString>, QPair<bool, bool> > RawExplosion;
+	QList<RawExplosion> const rawExplosions = plugin->explosions(source.diagram(), source.element());
+	foreach (RawExplosion const &rawExplosion, rawExplosions) {
+		Id const target(source.editor(), rawExplosion.first.first, rawExplosion.first.second, "");
+		result << Explosion(source, target, rawExplosion.second.first, rawExplosion.second.second);
+	}
+	return result;
+}
+
 bool EditorManager::isGraphicalElementNode(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));

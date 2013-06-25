@@ -45,6 +45,9 @@ public:
 	QStringList enumValues(Id const &id, const QString &name) const;
 	QString typeName(Id const &id, const QString &name) const;
 	QStringList allChildrenTypesOf(Id const &parent) const;
+
+	QList<Explosion> explosions(Id const &source) const;
+
 	bool isEditor(Id const &id) const;
 	bool isDiagram(Id const &id) const;
 	bool isElement(Id const &id) const;
