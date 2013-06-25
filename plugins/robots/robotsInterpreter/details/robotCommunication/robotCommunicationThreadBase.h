@@ -24,7 +24,7 @@ public:
 
 	virtual void sendI2C(QObject *addressee, QByteArray const &buffer
 			, unsigned const responseSize
-			, inputPort::InputPortEnum const &port);
+			, inputPort::InputPortEnum const port);
 
 protected:
 	static int const i2cTimeout = 5000;

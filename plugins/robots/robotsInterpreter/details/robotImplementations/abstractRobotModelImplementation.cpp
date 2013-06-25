@@ -62,7 +62,7 @@ AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(r
 	}
 }
 
-sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplementation::sensor(inputPort::InputPortEnum const &port)
+sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplementation::sensor(inputPort::InputPortEnum const port)
 {
 	return mSensorsConfigurer.sensor(port);
 }
@@ -73,7 +73,7 @@ void AbstractRobotModelImplementation::init()
 }
 
 void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnum const &sensorType
-		, inputPort::InputPortEnum const &port)
+		, inputPort::InputPortEnum const port)
 {
 	switch (sensorType) {
 	case sensorType::unused:
@@ -104,6 +104,16 @@ void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnu
 		break;
 	case sensorType::light:
 		addLightSensor(port);
+		break;
+	case sensorType::sound:
+		addSoundSensor(port);
+		break;
+	case sensorType::accelerometer:
+		addAccelerometerSensor(port);
+		break;
+	case sensorType::gyroscope:
+		addGyroscopeSensor(port);
+		break;
 	default:
 		// TODO: Throw an exception
 		break;

@@ -601,6 +601,14 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Сенсор цвета (пассивный)</translation>
     </message>
     <message>
+        <source>Sound sensor</source>
+        <translation type="obsolete">Звуковой сенсор</translation>
+    </message>
+    <message>
+        <source>Gyroscope</source>
+        <translation type="obsolete">Гироскоп</translation>
+    </message>
+    <message>
         <source>Encoder</source>
         <translation type="obsolete">Энкодер</translation>
     </message>
@@ -700,6 +708,16 @@ p, li { white-space: pre-wrap; }
         <location filename="details/sensorsConfigurationWidget.cpp" line="45"/>
         <source>Color sensor (passive)</source>
         <translation>Сенсор цвета (пассивный)</translation>
+    </message>
+    <message>
+        <location filename="details/sensorsConfigurationWidget.cpp" line="46"/>
+        <source>Sound sensor</source>
+        <translation>Звуковой сенсор</translation>
+    </message>
+    <message>
+        <location filename="details/sensorsConfigurationWidget.cpp" line="47"/>
+        <source>Gyroscope</source>
+        <translation>Гироскоп</translation>
     </message>
     <message>
         <source>Encoder</source>
@@ -855,9 +873,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::InitialBlockWithPorts</name>
     <message>
-        <location filename="details/blocks/initialBlockWithPorts.cpp" line="61"/>
         <source>Can&apos;t connect to a robot.</source>
-        <translation>Не удалось подключиться к роботу.</translation>
+        <translation type="obsolete">Не удалось подключиться к роботу.</translation>
     </message>
 </context>
 <context>
@@ -909,6 +926,18 @@ p, li { white-space: pre-wrap; }
         <location filename="details/blocks/printTextBlock.cpp" line="25"/>
         <source>Display</source>
         <translation>Дисплей</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::blocks::WaitForAccelerometerSensorBlock</name>
+    <message>
+        <source>Sound sensor</source>
+        <translation type="obsolete">Звуковой сенсор</translation>
+    </message>
+    <message>
+        <location filename="details/blocks/waitForAccelerometerBlock.cpp" line="31"/>
+        <source>Accelerometer</source>
+        <translation>Акселерометр</translation>
     </message>
 </context>
 <context>
@@ -980,6 +1009,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>qReal::interpreters::robots::details::blocks::WaitForGyroscopeSensorBlock</name>
+    <message>
+        <location filename="details/blocks/waitForGyroscopeSensorBlock.cpp" line="31"/>
+        <source>Gyroscope</source>
+        <translation>Гироскоп</translation>
+    </message>
+</context>
+<context>
     <name>qReal::interpreters::robots::details::blocks::WaitForLightSensorBlock</name>
     <message>
         <source>Light sensor is not configured on this port</source>
@@ -994,7 +1031,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForSensorBlock</name>
     <message>
-        <location filename="details/blocks/waitForSensorBlock.cpp" line="17"/>
+        <location filename="details/blocks/waitForSensorBlock.cpp" line="21"/>
         <source>%1 is not configured on port %2</source>
         <translation>%1 не сконфигурирован на порту %2</translation>
     </message>
@@ -1009,6 +1046,14 @@ p, li { white-space: pre-wrap; }
         <location filename="details/blocks/waitForSonarDistanceBlock.cpp" line="27"/>
         <source>Sonar sensor</source>
         <translation>Сенсор расстояния</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::blocks::WaitForSoundSensorBlock</name>
+    <message>
+        <location filename="details/blocks/waitForSoundSensorBlock.cpp" line="31"/>
+        <source>Sound sensor</source>
+        <translation>Звуковой сенсор</translation>
     </message>
 </context>
 <context>
