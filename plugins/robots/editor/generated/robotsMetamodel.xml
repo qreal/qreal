@@ -356,7 +356,7 @@
 				<graphics>
 					<lineType type="solidLine"/>
 					<labels>
-						<label textBinded="Guard"/>
+						<label textBinded="Guard" hard="true"/>
 					</labels>
 				</graphics>
 				<logic>
