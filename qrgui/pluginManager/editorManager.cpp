@@ -299,35 +299,6 @@ IdList EditorManager::containedTypes(const Id &id) const
 	return result;
 }
 
-IdList EditorManager::connectedTypes(const Id &id) const
-{
-	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
-
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-
-	IdList result;
-	foreach (QString const &type, mPluginIface[id.editor()]->getConnectedTypes(id.element())) {
-		// a hack caused by absence of ID entity in editors generator
-		result.append(Id("?", "?", type));
-	}
-
-	return result;
-}
-
-IdList EditorManager::usedTypes(const Id &id) const
-{
-	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
-
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-
-	IdList result;
-	foreach (QString const &type, mPluginIface[id.editor()]->getUsedTypes(id.element())) {
-		result.append(Id("?", "?", type));
-	}
-
-	return result;
-}
-
 QStringList EditorManager::enumValues(Id const &id, const QString &name) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));

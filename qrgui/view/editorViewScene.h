@@ -145,11 +145,9 @@ protected:
 	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
-	void connectActionTriggered();
+	void addExplosionActionTriggered();
 	void goToActionTriggered();
-	void disconnectActionTriggered();
-	void addUsageActionTriggered();
-	void deleteUsageActionTriggered();
+	void removeExplosionActionTriggered();
 	void changePropertiesActionTriggered();
 	void changeAppearanceActionTriggered();
 	void printElementsOfRootDiagram();
@@ -181,13 +179,14 @@ private:
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
 	void createAddExplosionMenu(Element const * const element
 			, QMenu &contextMenu, QString const &menuName
-			, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
-			, qReal::IdList const &connectableDiagrams, const char *slot) const;
+			, QList<Explosion> const &explosions
+			, qReal::IdList const &alreadyConnectedElements
+			, char const *slot) const;
 
 	void createRemoveExplosionMenu(Element const * const element
 			, QMenu &contextMenu, QString const &menuName
 			, qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
-			, const char *slot) const;
+			, char const *slot) const;
 
 	void initContextMenu(Element *e, QPointF const &pos);
 	bool isEmptyClipboard();

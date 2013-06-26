@@ -25,8 +25,7 @@ public:
 
 	virtual QStringList getPropertiesWithDefaultValues(QString const &element) const = 0;
 	virtual QStringList getTypesContainedBy(QString const &element) const = 0;
-	virtual QStringList getConnectedTypes(QString const &element) const = 0;
-	virtual QStringList getUsedTypes(QString const &element) const = 0;
+	virtual QList<QPair<QPair<QString, QString>, QPair<bool, bool> > > explosions(QString const &diagram, QString const &element) const = 0;
 	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &element) const = 0;
 
 	virtual int isNodeOrEdge(QString const &element) const = 0;
@@ -56,8 +55,6 @@ public:
 	virtual QStringList diagramPaletteGroups(QString const &diagram) const = 0;
 	virtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const = 0;
 	virtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const = 0;
-
-	virtual QList<QPair<QPair<QString, QString>, QPair<bool, bool> > > explosions(QString const &diagram, QString const &element) const = 0;
 };
 
 }

@@ -173,9 +173,8 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QStringList getPropertiesWithDefaultValues(QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual QStringList getTypesContainedBy(QString const &element) const;\n"
-		<< "\tvirtual QStringList getConnectedTypes(QString const &element) const;\n"
-		<< "\tvirtual QStringList getUsedTypes(QString const &element) const;\n"
 		<< "\tvirtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const;\n"
+		<< "\tvirtual QList<QPair<QPair<QString, QString>, QPair<bool, bool> > > explosions(QString const &diagram, QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual int isNodeOrEdge(QString const &element) const; \n"
 		<< "\n"
@@ -205,8 +204,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QStringList diagramPaletteGroups(QString const &diagram) const;\n"
 		<< "\tvirtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const;\n"
 		<< "\tvirtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const;\n"
-		<< "\n"
-		<< "\tvirtual QList<QPair<QPair<QString, QString>, QPair<bool, bool> > > explosions(QString const &diagram, QString const &element) const;\n"
 		<< "\n"
 		<< "private:\n"
 		<< "\tQMap<QString, QIcon> mIconMap;\n"
@@ -242,8 +239,6 @@ void XmlCompiler::generatePluginSource()
 	generateProperties(out);
 	generateReferenceProperties(out);
 	generateContainedTypes(out);
-	generateConnections(out);
-	generateUsages(out);
 	generatePossibleEdges(out);
 	generateNodesAndEdges(out);
 	generateGroupsXML(out);
@@ -620,20 +615,6 @@ public:
 	}
 };
 
-class XmlCompiler::ConnectionsGenerator: public XmlCompiler::ListMethodGenerator {
-public:
-	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
-		return type->generateConnections(out, isNotFirst);
-	}
-};
-
-class XmlCompiler::UsagesGenerator: public XmlCompiler::ListMethodGenerator {
-public:
-	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
-		return type->generateUsages(out, isNotFirst);
-	}
-};
-
 class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator {
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
@@ -727,16 +708,6 @@ void XmlCompiler::generateReferenceProperties(OutFile &out)
 void XmlCompiler::generateContainedTypes(OutFile &out)
 {
 	generateListMethod(out, "getTypesContainedBy(QString const &element)", ContainedTypesGenerator());
-}
-
-void XmlCompiler::generateConnections(OutFile &out)
-{
-	generateListMethod(out, "getConnectedTypes(QString const &element)", ConnectionsGenerator());
-}
-
-void XmlCompiler::generateUsages(utils::OutFile &out)
-{
-	generateListMethod(out, "getUsedTypes(QString const &element)", UsagesGenerator());
 }
 
 void XmlCompiler::generateResourceFile()

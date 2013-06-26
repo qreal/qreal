@@ -69,7 +69,7 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 		}
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
-			&& initGraphics() && initLabels() && initConnections() && initUsages() && initPossibleEdges()
+			&& initGraphics() && initLabels() && initPossibleEdges()
 			&& initContainerProperties() && initBonusContextMenuFields() && initExplosions();
 	}
 	return false;
@@ -166,16 +166,6 @@ bool GraphicType::initTypeList(QString const &listName, QString const &listEleme
 bool GraphicType::initContainers()
 {
 	return initTypeList("container", "contains", mContains);
-}
-
-bool GraphicType::initConnections()
-{
-	return initTypeList("connections", "connection", mConnections);
-}
-
-bool GraphicType::initUsages()
-{
-	return initTypeList("usages", "usage", mUsages);
 }
 
 bool GraphicType::initBonusContextMenuFields()
@@ -585,16 +575,6 @@ QString GraphicType::resourceName(QString const &resourceType) const
 bool GraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)
 {
 	return generateListForElement(out, isNotFirst, mContains);
-}
-
-bool GraphicType::generateConnections(OutFile &out, bool isNotFirst)
-{
-	return generateListForElement(out, isNotFirst, mConnections);
-}
-
-bool GraphicType::generateUsages(OutFile &out, bool isNotFirst)
-{
-	return generateListForElement(out, isNotFirst, mUsages);
 }
 
 bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)

@@ -11,6 +11,10 @@ LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorM
 {
 }
 
+LogicalModelAssistApi::~LogicalModelAssistApi()
+{
+}
+
 EditorManagerInterface const &LogicalModelAssistApi::editorManagerInterface() const
 {
 	return mModelsAssistApi.editorManagerInterface();
@@ -71,60 +75,13 @@ void LogicalModelAssistApi::removeExplosion(Id const &source, Id const &destinat
 	mLogicalModel.mutableApi().removeExplosion(source, destination);
 }
 
-void LogicalModelAssistApi::addUsage(Id const &source, Id const &destination)
+void LogicalModelAssistApi::createWithExplosion(Id const &sourceElement, Id const &elementType)
 {
-	mLogicalModel.mutableApi().addUsage(source, destination);
-}
-
-void LogicalModelAssistApi::deleteUsage(Id const &source, Id const &destination)
-{
-	mLogicalModel.mutableApi().deleteUsage(source, destination);
-}
-
-Id LogicalModelAssistApi::createConnectedElement(Id const &source, Id const &elementType)
-{
-	Id element = createElement(Id::rootId(), elementType);
-	QString sourceName = mLogicalModel.data(mLogicalModel.indexById(source), Qt::DisplayRole).toString();
-	QString typeName = editorManagerInterface().friendlyName(elementType);
+	Id const element = createElement(Id::rootId(), elementType);
+	QString const sourceName = mLogicalModel.data(mLogicalModel.indexById(sourceElement), Qt::DisplayRole).toString();
+	QString const typeName = editorManagerInterface().friendlyName(elementType);
 	mLogicalModel.setData(mLogicalModel.indexById(element), sourceName + " " + typeName, Qt::DisplayRole);
-	return element;
-}
-
-Id LogicalModelAssistApi::createConnected(Id const &sourceElement, Id const &elementType)
-{
-	Id element = createConnectedElement(sourceElement, elementType);
 	addExplosion(sourceElement, element);
-}
-
-Id LogicalModelAssistApi::createUsed(Id const &sourceElement, Id const &elementType)
-{
-	Id element = createConnectedElement(sourceElement, elementType);
-	addUsage(sourceElement, element);
-	return element;
-}
-
-IdList LogicalModelAssistApi::diagramsFromList(IdList const &list) const
-{
-	// TODO: diagrams are kinda special, so we need the editor to be able to
-	// tell us whether this particular element is a diagram or not
-	IdList result;
-	foreach (Id type, list) {
-		if (type.element().split("_").back().contains("Diagram", Qt::CaseInsensitive)) {
-			if (!result.contains(type))
-				result.append(type);
-		}
-	}
-	return result;
-}
-
-IdList LogicalModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
-{
-	return diagramsFromList(editorManagerInterface().connectedTypes(element.type()));
-}
-
-IdList LogicalModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
-{
-	return diagramsFromList(editorManagerInterface().usedTypes(element.type()));
 }
 
 QVariant LogicalModelAssistApi::property(Id const &id, QString const &name) const

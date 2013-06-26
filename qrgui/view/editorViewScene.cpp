@@ -787,18 +787,18 @@ void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &n
 
 void EditorViewScene::createAddExplosionMenu(Element const * const element
 		, QMenu &contextMenu, QString const &menuName
-		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
-		, IdList const &connectableDiagrams, const char *slot) const
+		, QList<Explosion> const &explosions, IdList const &alreadyConnectedElements
+		, const char *slot) const
 {
 	bool hasAnyActions = false;
-	QMenu *addConnectionMenu = new QMenu(menuName);
+	QMenu *addExplosionMenu = new QMenu(menuName);
 
-	foreach (Id type, connectableTypes) {
-		foreach (Id elementId, mMVIface->logicalAssistApi()->logicalRepoApi().logicalElements(type)) {
+	foreach (Explosion const &explosion, explosions) {
+		foreach (Id const &elementId, mMVIface->logicalAssistApi()->logicalRepoApi().logicalElements(explosion.target())) {
 			if (alreadyConnectedElements.contains(elementId)) {
 				continue;
 			}
-			QAction *action = addConnectionMenu->addAction(mMVIface->logicalAssistApi()->logicalRepoApi().name(elementId));
+			QAction *action = addExplosionMenu->addAction(mMVIface->logicalAssistApi()->logicalRepoApi().name(elementId));
 			hasAnyActions = true;
 			connect(action, SIGNAL(triggered()), slot);
 			QList<QVariant> tag;
@@ -807,20 +807,19 @@ void EditorViewScene::createAddExplosionMenu(Element const * const element
 		}
 	}
 
-	foreach (Id diagram, connectableDiagrams) {
-		Id diagramType = mMVIface->logicalAssistApi()->editorManagerInterface().findElementByType(diagram.element());
-		QString name = mMVIface->logicalAssistApi()->editorManagerInterface().friendlyName(diagramType);
-		QString editorName = mMVIface->logicalAssistApi()->editorManagerInterface().friendlyName(Id(diagramType.editor()));
-		QAction *action = addConnectionMenu->addAction("New " + editorName + "/" + name);
+	foreach (Explosion const &explosion, explosions) {
+		Id const diagramType = mMVIface->logicalAssistApi()->editorManagerInterface().findElementByType(explosion.target().element());
+		QString const name = mMVIface->logicalAssistApi()->editorManagerInterface().friendlyName(diagramType);
+		QString const editorName = mMVIface->logicalAssistApi()->editorManagerInterface().friendlyName(Id(diagramType.editor()));
+		QAction *action = addExplosionMenu->addAction("New " + editorName + "/" + name);
 		hasAnyActions = true;
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
 		tag << element->logicalId().toVariant() << diagramType.toVariant();
 		action->setData(tag);
 	}
-	if (hasAnyActions || !connectableDiagrams.empty())
-	{
-		contextMenu.addMenu(addConnectionMenu);
+	if (hasAnyActions || !explosions.empty()) {
+		contextMenu.addMenu(addExplosionMenu);
 	}
 }
 
@@ -831,7 +830,7 @@ void EditorViewScene::createRemoveExplosionMenu(Element const * const element, Q
 	IdList list = outgoingConnections;
 	list.append(incomingConnections);
 
-	foreach (Id elementId, list) {
+	foreach (Id const &elementId, list) {
 		QAction *action = disconnectMenu->addAction(mMVIface->logicalAssistApi()->logicalRepoApi().name(elementId));
 		connect(action, SIGNAL(triggered()), slot);
 		QList<QVariant> tag;
@@ -845,6 +844,7 @@ void EditorViewScene::createRemoveExplosionMenu(Element const * const element, Q
 
 void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
 {
+<<<<<<< HEAD
 	if (mWindow->showConnectionRelatedMenus() || mWindow->showUsagesRelatedMenus()) {
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
@@ -877,6 +877,25 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		createGoToSubmenu(goToMenu, tr("Uses"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
 		createGoToSubmenu(goToMenu, tr("Used in"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
 	}
+=======
+	// menu items "connect to"
+	// TODO: move to elements, they can call the model and API themselves
+	createAddExplosionMenu(element, contextMenu, tr("Add connection")
+			, mWindow->editorManager().explosions(element->id().type())
+			, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingExplosions(element->logicalId())
+			, SLOT(addExplosionActionTriggered()));
+
+	createRemoveExplosionMenu(element, contextMenu, tr("Disconnect")
+			, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingExplosions(element->logicalId())
+			, mMVIface->logicalAssistApi()->logicalRepoApi().incomingExplosions(element->logicalId())
+			, SLOT(removeExplosionActionTriggered()));
+
+	QMenu * const goToMenu = contextMenu.addMenu(tr("Go to"));
+
+	createGoToSubmenu(goToMenu, tr("Forward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingExplosions(element->logicalId()));
+	createGoToSubmenu(goToMenu, tr("Backward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingExplosions(element->logicalId()));
+
+>>>>>>> Removed old connections/usages mechanism;
 	if (mWindow->editorManager().isInterpretationMode()) {
 		contextMenu.addSeparator();
 		QAction * const changePropertiesAction = contextMenu.addAction(tr("Change Properties"));
@@ -1245,10 +1264,10 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 					mainWindow()->activateItemOrDiagram(graphicalIdsOfOutgoingLinks[0]);
 				}
 			} else {
-				IdList diagrams = mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId());
-				if (!diagrams.isEmpty()) {
-					Id diagramType = mMVIface->logicalAssistApi()->editorManagerInterface().findElementByType(diagrams[0].element());
-					mMVIface->logicalAssistApi()->createConnected(element->logicalId(), diagramType);
+				QList<Explosion> const explosions = mWindow->editorManager().explosions(element->logicalId());
+				if (!explosions.isEmpty()) {
+					Id diagramType = mMVIface->logicalAssistApi()->editorManagerInterface().findElementByType(explosions[0].target().element());
+					mMVIface->logicalAssistApi()->createWithExplosion(element->logicalId(), diagramType);
 				}
 			}
 		}
@@ -1294,7 +1313,7 @@ qReal::MainWindow *EditorViewScene::mainWindow() const
 	return mWindow;
 }
 
-void EditorViewScene::connectActionTriggered()
+void EditorViewScene::addExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> connection = action->data().toList();
@@ -1303,6 +1322,7 @@ void EditorViewScene::connectActionTriggered()
 	if (!action->text().startsWith("New ")) {
 		mMVIface->logicalAssistApi()->addExplosion(source, destination);
 	} else {
+<<<<<<< HEAD
 		Id logicalId = mMVIface->logicalAssistApi()->createConnected(source, destination);
 		mMVIface->graphicalAssistApi()->createElement(Id::rootId(), logicalId, true
 				, mWindow->models()->logicalRepoApi().name(logicalId), QPointF(0, 0));
@@ -1321,6 +1341,9 @@ void EditorViewScene::addUsageActionTriggered()
 		Id logicalId = mMVIface->logicalAssistApi()->createUsed(source, destination);
 		mMVIface->graphicalAssistApi()->createElement(Id::rootId(), logicalId, true
 				, mWindow->models()->logicalRepoApi().name(logicalId), QPointF(0, 0));
+=======
+		mMVIface->logicalAssistApi()->createWithExplosion(source, destination);
+>>>>>>> Removed old connections/usages mechanism;
 	}
 }
 
@@ -1332,22 +1355,13 @@ void EditorViewScene::goToActionTriggered()
 	return;
 }
 
-void EditorViewScene::disconnectActionTriggered()
+void EditorViewScene::removeExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> connection = action->data().toList();
 	Id source = connection[0].value<Id>();
 	Id destination = connection[1].value<Id>();
 	mMVIface->logicalAssistApi()->removeExplosion(source, destination);
-}
-
-void EditorViewScene::deleteUsageActionTriggered()
-{
-	QAction *action = static_cast<QAction *>(sender());
-	QList<QVariant> connection = action->data().toList();
-	Id source = connection[0].value<Id>();
-	Id destination = connection[1].value<Id>();
-	mMVIface->logicalAssistApi()->deleteUsage(source, destination);
 }
 
 void EditorViewScene::changePropertiesActionTriggered()

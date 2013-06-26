@@ -25,13 +25,7 @@ public:
 
 	virtual void addExplosion(Id const &source, Id const &destination) = 0;
 	virtual void removeExplosion(Id const &source, Id const &destination) = 0;
-	virtual void addUsage(Id const &source, Id const &destination) = 0;
-	virtual void deleteUsage(Id const &source, Id const &destination) = 0;
-	virtual Id createConnected(Id const &sourceElement, Id const &elementType) = 0;
-	virtual Id createUsed(Id const &sourceElement, Id const &elementType) = 0;
-	virtual Id createConnectedElement(Id const &source, Id const &elementType) = 0;
-	virtual IdList diagramsAbleToBeConnectedTo(Id const &element) const = 0;
-	virtual IdList diagramsAbleToBeUsedIn(Id const &element) const = 0;
+	virtual void createWithExplosion(Id const &sourceElement, Id const &elementType) = 0;
 
 	virtual void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName) = 0;
 	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const = 0;

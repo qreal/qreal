@@ -40,7 +40,6 @@ public:
 	Element* graphicalObject(Id const &id) const;
 
 	IdList containedTypes(const Id &id) const;
-	IdList connectedTypes(const Id &id) const;
 	IdList usedTypes(const Id &id) const;
 	QStringList enumValues(Id const &id, const QString &name) const;
 	QString typeName(Id const &id, const QString &name) const;

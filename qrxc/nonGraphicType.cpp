@@ -59,20 +59,6 @@ bool NonGraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)
 	return false;
 }
 
-bool NonGraphicType::generateConnections(utils::OutFile &out, bool isNotFirst)
-{
-	Q_UNUSED(out)
-	Q_UNUSED(isNotFirst)
-	return false;
-}
-
-bool NonGraphicType::generateUsages(OutFile &out, bool isNotFirst)
-{
-	Q_UNUSED(out)
-	Q_UNUSED(isNotFirst)
-	return false;
-}
-
 bool NonGraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 {
 	Q_UNUSED(out)
