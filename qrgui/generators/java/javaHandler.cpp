@@ -97,7 +97,7 @@ QString JavaHandler::generateToJava(QString const &pathToDir)
 			}
 			if (objectType(aDiagram) == "ActivityDiagram_ActivityDiagramNode") {
 				//If there is no connected Class Methods it won't be serialized
-				IdList incomingConnections = mApi.incomingConnections(aDiagram);
+				IdList incomingConnections = mApi.incomingExplosions(aDiagram);
 				if (incomingConnections.isEmpty()) {
 					addError("Unable to serialize object " + objectType(aDiagram) + " with id: " + aDiagram.toString() + ". It is not connected to some class method.");
 				}
@@ -388,7 +388,7 @@ Id JavaHandler::findMergeNode(Id const &idDecisionNode)
 
 	//look for Merge Nodes connected with this Decision Node
 	IdList mergeNodes;
-	IdList incomingConnections = mApi.incomingConnections(idDecisionNode);
+	IdList incomingConnections = mApi.incomingExplosions(idDecisionNode);
 	foreach (Id aConnection, incomingConnections) {
 		if (aConnection.element() == "ActivityDiagram_MergeNode") {
 			mergeNodes.append(aConnection);
@@ -823,7 +823,7 @@ QString JavaHandler::serializeObject(Id const &id)
 
 		result += getConstraints(id);
 	} else if (objectType(id) == "ActivityDiagram_Action") {
-		IdList outgoingConnections = mApi.outgoingConnections(id);
+		IdList outgoingConnections = mApi.outgoingExplosions(id);
 		IdList activityDiagrams;
 		foreach (Id aConnection, outgoingConnections) {
 			if (aConnection.element() == "ActivityDiagram_ActivityDiagramNode") {
@@ -1181,8 +1181,8 @@ QString JavaHandler::getMethodCode(Id const &id)
 	QString result = "{\n";
 	mIndent++;
 
-	if (!mApi.outgoingConnections(id).isEmpty()) {
-		IdList outgoingConnections = mApi.outgoingConnections(id);
+	if (!mApi.outgoingExplosions(id).isEmpty()) {
+		IdList outgoingConnections = mApi.outgoingExplosions(id);
 		Id realizationDiagram;
 
 		int realizationsCount = 0;

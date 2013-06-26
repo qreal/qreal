@@ -23,8 +23,8 @@ public:
 	virtual IdList children(Id const &element) const = 0;
 	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF()) = 0;
 
-	virtual void connect(Id const &source, Id const &destination) = 0;
-	virtual void disconnect(Id const &source, Id const &destination) = 0;
+	virtual void addExplosion(Id const &source, Id const &destination) = 0;
+	virtual void removeExplosion(Id const &source, Id const &destination) = 0;
 	virtual void addUsage(Id const &source, Id const &destination) = 0;
 	virtual void deleteUsage(Id const &source, Id const &destination) = 0;
 	virtual Id createConnected(Id const &sourceElement, Id const &elementType) = 0;

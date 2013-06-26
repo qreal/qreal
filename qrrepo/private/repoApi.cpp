@@ -106,17 +106,17 @@ void RepoApi::removeElement(Id const &id)
 	removeLinkEnds("from", id);
 	removeLinkEnds("to", id);
 
-	if (hasProperty(id, "outgoingConnections")) {
-		IdList const connections = property(id, "outgoingConnections").value<IdList>();
-		foreach (Id const &target, connections) {
-			disconnect(id, target);
+	if (hasProperty(id, "outgoingExplosions")) {
+		IdList const explosions = property(id, "outgoingExplosions").value<IdList>();
+		foreach (Id const &target, explosions) {
+			removeExplosion(id, target);
 		}
 	}
 
-	if (hasProperty(id, "incomingConnections")) {
-		IdList const connections = property(id, "incomingConnections").value<IdList>();
-		foreach (Id const &source, connections) {
-			disconnect(source, id);
+	if (hasProperty(id, "incomingExplosions")) {
+		IdList const explosions = property(id, "incomingExplosions").value<IdList>();
+		foreach (Id const &source, explosions) {
+			removeExplosion(source, id);
 		}
 	}
 
@@ -185,26 +185,26 @@ IdList RepoApi::links(Id const &id) const
 	return incomingLinks(id) << outgoingLinks(id);
 }
 
-qReal::IdList RepoApi::outgoingConnections(qReal::Id const &id) const
+qReal::IdList RepoApi::outgoingExplosions(qReal::Id const &id) const
 {
-	return mClient.property(id, "outgoingConnections").value<IdList>();
+	return mClient.property(id, "outgoingExplosions").value<IdList>();
 }
 
-qReal::IdList RepoApi::incomingConnections(qReal::Id const &id) const
+qReal::IdList RepoApi::incomingExplosions(qReal::Id const &id) const
 {
-	return mClient.property(id, "incomingConnections").value<IdList>();
+	return mClient.property(id, "incomingExplosions").value<IdList>();
 }
 
-void RepoApi::connect(qReal::Id const &source, qReal::Id const &destination)
+void RepoApi::addExplosion(qReal::Id const &source, qReal::Id const &destination)
 {
-	addToIdList(source, "outgoingConnections", destination);
-	addToIdList(destination, "incomingConnections", source);
+	addToIdList(source, "outgoingExplosions", destination);
+	addToIdList(destination, "incomingExplosions", source);
 }
 
-void RepoApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
+void RepoApi::removeExplosion(qReal::Id const &source, qReal::Id const &destination)
 {
-	removeFromList(source, "outgoingConnections", destination);
-	removeFromList(destination, "incomingConnections", source);
+	removeFromList(source, "outgoingExplosions", destination);
+	removeFromList(destination, "incomingExplosions", source);
 }
 
 qReal::IdList RepoApi::outgoingUsages(qReal::Id const &id) const

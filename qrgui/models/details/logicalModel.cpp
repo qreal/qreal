@@ -170,8 +170,8 @@ void LogicalModel::initializeElement(const Id &id, modelsImplementation::Abstrac
 	mApi.setProperty(id, "from", Id::rootId().toVariant());
 	mApi.setProperty(id, "to", Id::rootId().toVariant());
 	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
+	mApi.setProperty(id, "outgoingExplosions", IdListHelper::toVariant(IdList()));
+	mApi.setProperty(id, "incomingExplosions", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 
