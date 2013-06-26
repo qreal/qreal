@@ -18,11 +18,6 @@ public:
 	virtual void addExplosion(qReal::Id const &source, qReal::Id const &destination) = 0;
 	virtual void removeExplosion(qReal::Id const &source, qReal::Id const &destination) = 0;
 
-	virtual qReal::IdList outgoingUsages(qReal::Id const &id) const = 0;
-	virtual qReal::IdList incomingUsages(qReal::Id const &id) const = 0;
-	virtual void addUsage(qReal::Id const &source, qReal::Id const &destination) = 0;
-	virtual void deleteUsage(qReal::Id const &source, qReal::Id const &destination) = 0;
-
 	virtual qReal::IdList logicalElements(qReal::Id const &type) const = 0;
 	virtual bool isLogicalElement(qReal::Id const &id) const = 0;
 

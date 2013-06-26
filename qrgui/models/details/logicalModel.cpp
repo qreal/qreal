@@ -172,8 +172,6 @@ void LogicalModel::initializeElement(const Id &id, modelsImplementation::Abstrac
 	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "outgoingExplosions", IdListHelper::toVariant(IdList()));
 	mApi.setProperty(id, "incomingExplosions", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 
 	QStringList const properties = mEditorManagerInterface.propertyNames(id.type());
 	foreach (QString const property, properties) {

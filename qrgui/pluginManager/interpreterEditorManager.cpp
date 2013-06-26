@@ -208,20 +208,6 @@ bool InterpreterEditorManager::isParentOf(Id const &child, Id const &parent) con
 	return false;
 }
 
-IdList InterpreterEditorManager::connectedTypes(Id const &id) const
-{
-	IdList result;
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	qrRepo::RepoApi const * const repo = repoAndMetaIdPair.first;
-	Id const metaId = repoAndMetaIdPair.second;
-	foreach (Id const &connectId, repo->connectedElements(metaId)) {
-		QPair<Id, Id> editorAndDiagramPair = editorAndDiagram(repo, connectId);
-		result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(connectId));
-	}
-
-	return result;
-}
-
 bool InterpreterEditorManager::isEditor(Id const &id) const
 {
 	return id.idSize() == 1;
@@ -472,21 +458,6 @@ IdList InterpreterEditorManager::containedTypes(Id const &id) const
 	}
 
 	return containedTypes;
-}
-
-IdList InterpreterEditorManager::usedTypes(Id const &id) const
-{
-	IdList usedTypes;
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	qrRepo::RepoApi const * const repo = repoAndMetaIdPair.first;
-	Id const metaId = repoAndMetaIdPair.second;
-	foreach (Id const &child, repo->children(metaId)) {
-		if (repo->name(child) == "MetaEntityUsage") {
-			usedTypes << repo->property(child, "type").value<Id>();
-		}
-	}
-
-	return usedTypes;
 }
 
 QStringList InterpreterEditorManager::enumValues(Id const &id, const QString &name) const

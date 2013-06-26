@@ -65,11 +65,6 @@ namespace qrRepo {
 		void addExplosion(qReal::Id const &source, qReal::Id const &destination);
 		void removeExplosion(qReal::Id const &source, qReal::Id const &destination);
 
-		qReal::IdList outgoingUsages(qReal::Id const &id) const;
-		qReal::IdList incomingUsages(qReal::Id const &id) const;
-		void addUsage(qReal::Id const &source, qReal::Id const &destination);
-		void deleteUsage(qReal::Id const &source, qReal::Id const &destination);
-
 		qReal::IdList connectedElements(qReal::Id const &id) const;
 		qReal::IdList outgoingConnectedElements(qReal::Id const &id) const;
 		qReal::IdList incomingConnectedElements(qReal::Id const &id) const;

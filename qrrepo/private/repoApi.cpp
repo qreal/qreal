@@ -120,20 +120,6 @@ void RepoApi::removeElement(Id const &id)
 		}
 	}
 
-	if (hasProperty(id, "outgoingUsages")) {
-		IdList const connections = property(id, "outgoingUsages").value<IdList>();
-		foreach (Id const &target, connections) {
-			deleteUsage(id, target);
-		}
-	}
-
-	if (hasProperty(id, "incomingUsages")) {
-		IdList const connections = property(id, "incomingUsages").value<IdList>();
-		foreach (Id const &source, connections) {
-			deleteUsage(source, id);
-		}
-	}
-
 	mClient.remove(id);
 }
 
@@ -207,28 +193,6 @@ void RepoApi::removeExplosion(qReal::Id const &source, qReal::Id const &destinat
 	removeFromList(destination, "incomingExplosions", source);
 }
 
-qReal::IdList RepoApi::outgoingUsages(qReal::Id const &id) const
-{
-	return mClient.property(id, "outgoingUsages").value<IdList>();
-}
-
-qReal::IdList RepoApi::incomingUsages(qReal::Id const &id) const
-{
-	return mClient.property(id, "incomingUsages").value<IdList>();
-}
-
-void RepoApi::addUsage(qReal::Id const &source, qReal::Id const &destination)
-{
-	addToIdList(source, "outgoingUsages", destination);
-	addToIdList(destination, "incomingUsages", source);
-}
-
-void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
-{
-	removeFromList(source, "outgoingUsages", destination);
-	removeFromList(destination, "incomingUsages", source);
-}
-
 qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
 {
 	qReal::IdList result = outgoingConnectedElements(id);
@@ -241,8 +205,6 @@ qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
 	qReal::IdList result;
 	foreach (qReal::Id curLink, outgoingLinks(id)) {
 		qReal::Id toElem = to(curLink);
-		//if (toElem == Id::rootId())
-		//	continue;
 
 		result.append(toElem);
 	}
@@ -254,8 +216,6 @@ qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 	qReal::IdList result;
 	foreach (qReal::Id curLink, incomingLinks(id)) {
 		qReal::Id fromElem = from(curLink);
-		//if (fromElem == Id::rootId())
-		//	continue;
 
 		result.append(fromElem);
 	}

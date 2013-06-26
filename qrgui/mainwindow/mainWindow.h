@@ -105,8 +105,6 @@ public:
 	void showErrors(gui::ErrorReporter *reporter);
 
 	/// Tells if we should display trace connections menu or not
-	bool showConnectionRelatedMenus() const;
-
 	virtual void showInTextEditor(QString const &title, QString const &text);
 	virtual void reinitModels();
 

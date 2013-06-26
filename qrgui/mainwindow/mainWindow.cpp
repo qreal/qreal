@@ -1835,11 +1835,6 @@ void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
 }
 
-bool MainWindow::showConnectionRelatedMenus() const
-{
-	return mToolManager.customizer()->showConnectionRelatedMenus();
-}
-
 void MainWindow::showInTextEditor(QString const &title, QString const &text)
 {
 	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {

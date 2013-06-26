@@ -41,12 +41,6 @@ public:
 		return "<b>QReal<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
 	}
 
-	/// Tells if we should show trace connections menu or not
-	virtual bool showConnectionRelatedMenus() const
-	{
-		return false;
-	}
-
 	/// Customizes docks placement and visibility. Default implementation does nothing
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	{

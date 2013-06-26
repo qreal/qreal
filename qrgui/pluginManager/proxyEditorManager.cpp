@@ -77,16 +77,6 @@ IdList ProxyEditorManager::containedTypes(const Id &id) const
 	return mProxiedEditorManager->containedTypes(id);
 }
 
-IdList ProxyEditorManager::connectedTypes(const Id &id) const
-{
-	return mProxiedEditorManager->connectedTypes(id);
-}
-
-IdList ProxyEditorManager::usedTypes(const Id &id) const
-{
-	return mProxiedEditorManager->usedTypes(id);
-}
-
 QStringList ProxyEditorManager::enumValues(Id const &id, const QString &name) const
 {
 	return mProxiedEditorManager->enumValues(id, name);

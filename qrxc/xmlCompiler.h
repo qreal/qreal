@@ -42,8 +42,6 @@ private:
 	void generateProperties(utils::OutFile &out);
 	void generateReferenceProperties(utils::OutFile &out);
 	void generateContainedTypes(utils::OutFile &out);
-	void generateConnections(utils::OutFile &out);
-	void generateUsages(utils::OutFile &out);
 	void generatePossibleEdges(utils::OutFile &out);
 	void generateNodesAndEdges(utils::OutFile &out);
 	void generateGroupsXML(utils::OutFile &out);
@@ -58,8 +56,6 @@ private:
 	class PropertiesGenerator;
 	class ReferencePropertiesGenerator;
 	class ContainedTypesGenerator;
-	class ConnectionsGenerator;
-	class UsagesGenerator;
 	class PossibleEdgesGenerator;
 	class EnumValuesGenerator;
 
