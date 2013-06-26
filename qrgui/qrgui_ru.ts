@@ -3392,6 +3392,25 @@
     </message>
 </context>
 <context>
+    <name>qReal::Autosaver</name>
+    <message>
+        <location filename="mainwindow/projectManager/autosaver.cpp" line="127"/>
+        <location filename="mainwindow/projectManager/autosaver.cpp" line="140"/>
+        <source>Question</source>
+        <translation>Вопрос</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/autosaver.cpp" line="149"/>
+        <source>More recent autosaved version of this file was found. Do you wish to open it instead?</source>
+        <translation>Похоже, что предыдущая сессия была некоррекно завершена. Найдена более свежая автосохраненная версия выбранного проекта. Открыть ее?</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/autosaver.cpp" line="155"/>
+        <source>It seems like the last application session was terminated in an unusial way. Do you wish to recover unsaved project?</source>
+        <translation>Похоже, что предыдущая сессия была некоррекно завершена. Открыть несохраненный проект?</translation>
+    </message>
+</context>
+<context>
     <name>qReal::ChooseTypeDialog</name>
     <message>
         <source>Choose type of adding element:</source>
@@ -3518,7 +3537,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="784"/>
+        <location filename="mainwindow/mainWindow.cpp" line="786"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3543,16 +3562,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="810"/>
-        <location filename="mainwindow/mainWindow.cpp" line="828"/>
-        <location filename="mainwindow/mainWindow.cpp" line="846"/>
+        <location filename="mainwindow/mainWindow.cpp" line="812"/>
+        <location filename="mainwindow/mainWindow.cpp" line="830"/>
+        <location filename="mainwindow/mainWindow.cpp" line="848"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="812"/>
-        <location filename="mainwindow/mainWindow.cpp" line="830"/>
-        <location filename="mainwindow/mainWindow.cpp" line="848"/>
+        <location filename="mainwindow/mainWindow.cpp" line="814"/>
+        <location filename="mainwindow/mainWindow.cpp" line="832"/>
+        <location filename="mainwindow/mainWindow.cpp" line="850"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3657,89 +3676,89 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="846"/>
+        <location filename="mainwindow/mainWindow.cpp" line="848"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="848"/>
+        <location filename="mainwindow/mainWindow.cpp" line="850"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1022"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1024"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1300"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1302"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1301"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1303"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1302"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1304"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1303"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1305"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1304"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1306"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1305"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1307"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1306"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1308"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1307"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1309"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1308"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1310"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1309"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1311"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1310"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1312"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1311"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1313"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1312"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1314"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="991"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1004"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1030"/>
+        <location filename="mainwindow/mainWindow.cpp" line="993"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1006"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1032"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3748,17 +3767,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1948"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1951"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1978"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1981"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1978"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1981"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3779,7 +3798,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1517"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1519"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3848,88 +3867,85 @@
 <context>
     <name>qReal::ProjectManager</name>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="52"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="51"/>
         <source>Open existing project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="77"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="76"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="78"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="77"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="79"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="78"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="80"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="79"/>
         <source>&amp;Discard</source>
         <translation>&amp;Не сохранять</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="81"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="80"/>
         <source>Do you want to save current project?</source>
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="125"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="134"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="147"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="315"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="357"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="148"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="316"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="358"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="148"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="316"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="358"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="158"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="165"/>
         <source>There are missing plugins</source>
         <translation>Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="159"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="166"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="288"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="304"/>
         <source>Select file to save current metamodel to</source>
         <translation>Выберите файл для сохранения метамодели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="294"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="310"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения модели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="312"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="327"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="329"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="341"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="201"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="211"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>

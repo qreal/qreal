@@ -27,14 +27,41 @@ public:
 	explicit Autosaver(ProjectManager *projectManager);
 	void reinit();
 	void stop();
-	QString filePath() const;
 	Pauser pauser();
 
+	QString autosaveFilePath() const;
+	QString autosaveFilePath(QString const &currentFilePath) const;
+	QString tempFilePath() const;
+	bool isAutosave(QString const &fileName) const;
+	bool isTempFile(QString const &fileName) const;
+	QString originalFile(QString const &fileName) const;
+
+	bool openTemp();
+	bool openAutosave(QString const &fileName);
+
+	bool removeTemp();
+	bool removeAutoSave();
+	bool removeAutoSave(QString const &fileName);
+
+	/// Performs search in project`s folder and tries to find autosaved version
+	/// of specified project. If such version was not found returns false.
+	/// Otherwise prompts user to recover the newest version.
+	/// Returns true if user agrees and autosave was opened successfully,
+	/// otherwise returns false.
+	bool checkAutoSavedVersion(QString const &originalProjectPath);
+
+	/// Similar to @see checkAutoSavedVersion, but searches for temp save
+	bool checkTempFile();
+
 private slots:
-	void save();
+	void saveAutoSave();
+	void saveTemp();
 
 private:
 	uint interval() const;
+	QString openAutosavePrompt() const;
+	QString openTempFilePrompt() const;
+	bool removeFile(QString const &fileName);
 
 	// if option AutosaveInterval in not specified
 	static uint const defaultInterval = 600;

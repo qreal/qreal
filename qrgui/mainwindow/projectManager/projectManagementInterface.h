@@ -34,8 +34,6 @@ public slots:
 
 	/// Save the project in the user file, if it specified. Otherwise save to autosave file
 	virtual void save() = 0;
-	/// Save the project to the temporary file in set time period
-	virtual void saveTemp() = 0;
 	/// Save the project in the file with the name fileName, if it not empty (fileName). Otherwise return false only.
 	virtual bool saveAs(QString const &fileName) = 0;
 	/// Similarly @see saveAs(QString const &fileName), but offers the user specified file location (by a dialog)
