@@ -30,7 +30,7 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	PreferencesPage *miscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
-	PreferencesPage *hotKeyManagerPage = new  PreferencesHotKeyManagerPage(ui->pageContentWigdet);
+	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(ui->pageContentWigdet);
 
 	connect(ui->listWidget, SIGNAL(clicked(QModelIndex))
 			, this, SLOT(chooseTab(const QModelIndex &)));
