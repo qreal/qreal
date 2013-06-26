@@ -1683,7 +1683,7 @@
 						<parent parentName="AbstractNode"/>
 					</generalizations>
 					<explodesTo>
-						<target type="RobotsDiagram" makeReusable="true" requireImmediateLinkage="true"/>
+						<target type="RobotsDiagramNode" makeReusable="true" requireImmediateLinkage="true"/>
 					</explodesTo>
 				</logic>
 			</node>
