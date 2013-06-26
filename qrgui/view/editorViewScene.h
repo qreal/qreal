@@ -10,7 +10,8 @@
 #include "gestures/mouseMovementManager.h"
 #include "copyPaste/clipboardHandler.h"
 
-#include "editorViewMVIface.h"
+#include "private/editorViewMVIface.h"
+#include "private/exploser.h"
 
 const int arrowMoveOffset = 5;
 
@@ -145,9 +146,6 @@ protected:
 	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
-	void addExplosionActionTriggered();
-	void goToActionTriggered();
-	void removeExplosionActionTriggered();
 	void changePropertiesActionTriggered();
 	void changeAppearanceActionTriggered();
 	void printElementsOfRootDiagram();
@@ -175,18 +173,6 @@ private:
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
-	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
-	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
-	void createAddExplosionMenu(Element const * const element
-			, QMenu &contextMenu, QString const &menuName
-			, QList<Explosion> const &explosions
-			, qReal::IdList const &alreadyConnectedElements
-			, char const *slot) const;
-
-	void createRemoveExplosionMenu(Element const * const element
-			, QMenu &contextMenu, QString const &menuName
-			, qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
-			, char const *slot) const;
 
 	void initContextMenu(Element *e, QPointF const &pos);
 	bool isEmptyClipboard();
@@ -251,6 +237,8 @@ private:
 
 	bool mIsSelectEvent;
 	bool mTitlesVisible;
+
+	Exploser *mExploser; // Takes ownership
 
 	friend class qReal::EditorViewMViface;
 };
