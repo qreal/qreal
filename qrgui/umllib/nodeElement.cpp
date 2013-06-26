@@ -816,8 +816,8 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style
 	}
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option,
-						QWidget*, SdfRenderer* portRenderer)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
+		, QWidget *, SdfRenderer* portRenderer)
 {
 	if (option->levelOfDetail >= 0.5) {
 		if (option->state & QStyle::State_Selected) {
@@ -997,76 +997,12 @@ bool NodeElement::canHavePorts()
 	return mElementImpl->hasPin();
 }
 
-/*
-void NodeElement::resizeChild(QRectF const &newContents, QRectF const &oldContents)
-{
-	if (!mParentNodeElement) {
-		QGraphicsItem* item = parentItem();
-		mParentNodeElement = dynamic_cast<NodeElement*>(item);
-	}
-
-	if (mPos == QPointF(0,0)) {
-		mPos = pos();
-	}
-	QList<double> list = mParentNodeElement->borderValues();
-	double const xHor = list[0];
-	double const yHor = list[1];
-	double const xVert = list[2];
-	double const yVert = list[3];
-	QPointF const posi = pos();
-
-	double const x = mPos.x() - oldContents.x();
-	double const y = mPos.y() - oldContents.y();
-
-	if (mParentNodeElement->checkLowerBorder(posi, xHor, yHor+5)) {
-		double const a = oldContents.x() + oldContents.width();
-		double const b = newContents.x() + newContents.width();
-		double const dy = newContents.height() - oldContents.height();
-		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
-	}
-
-	if (mParentNodeElement->checkUpperBorder(posi, xHor, yHor)) {
-		double const a = oldContents.x() + oldContents.width();
-		double const b = newContents.x() + newContents.width();
-		double const dy = 0;
-		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
-	}
-
-	if (mParentNodeElement->checkRightBorder(posi, xVert+5, yVert)) {
-		double const a = oldContents.y() + oldContents.height();
-		double const b = newContents.y() + newContents.height();
-		double const dx = newContents.width() - oldContents.width();
-		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
-	}
-	if (mParentNodeElement->checkLeftBorder(posi, xVert, yVert))
-	{
-		double const a = oldContents.y() + oldContents.height();
-		double const b = newContents.y() + newContents.height();
-		double const dx = 0;
-		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
-	}
-
-	setPos(mPos);
-	storeGeometry();
-	return;
-}
-*/
-
 void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 {
 	if (mIsFolded && isItemAddedOrDeleted && item) {
 		changeFoldState();
 	}
 
-	/*
-	QRectF newContents = mContents;
-//	newContents.moveTo(pos());
-	QRectF itemContents = item->mContents;
-	itemContents.moveTo(item->pos() - pos());
-
-	newContents = newContents.united(itemContents);
-	resize(mContents.unite(newContents));
- */
 	resize();
 }
 

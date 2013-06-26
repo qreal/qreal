@@ -1677,7 +1677,7 @@ void MainWindow::applySettings()
 		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
 		if (scene) {
 			if (SettingsManager::value("SquareLine", false).toBool()
-				|| SettingsManager::value("ActivateGrid").toBool()) {
+					|| SettingsManager::value("ActivateGrid").toBool()) {
 				scene->updateEdgeElements();
 			}
 			scene->invalidate();
