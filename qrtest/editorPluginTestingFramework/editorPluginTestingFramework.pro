@@ -1,4 +1,4 @@
-QT += xml
+QT += xml widgets
 
 CONFIG += console
 TARGET = editorPluginTestFramework
@@ -15,6 +15,8 @@ UI_DIR = .ui
 MOC_DIR = .moc
 RCC_DIR = .moc
 
+TRANSLATIONS = editorPluginTestingFramework_ru.ts
+
 LIBS += -L../../bin -lqrrepo -lqrkernel -lqrutils -lqrmc
 
 HEADERS += \
@@ -27,7 +29,8 @@ HEADERS += \
 	../../qrgui/mainwindow/errorReporter.h \
 	../../qrgui/mainwindow/error.h \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.h \
-	defs.h
+	defs.h \
+	htmlMaker.h
 
 SOURCES += \
 	mainClass.cpp \
@@ -39,7 +42,8 @@ SOURCES += \
 	qrxcLauncher.cpp \
 	../../qrgui/mainwindow/errorReporter.cpp \
 	../../qrgui/mainwindow/error.cpp \
-	../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp
+	../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp \
+	htmlMaker.cpp
 
 
 

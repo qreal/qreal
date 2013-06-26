@@ -1,16 +1,20 @@
 #pragma once
 
 #include <QtCore/QString>
+
 #include "../../qrgui/editorPluginInterface/editorInterface.h"
 
 namespace editorPluginTestingFramework {
 
 class MethodsTester
 {
+
 public:
 	MethodsTester(qReal::EditorInterface * const qrmcGeneratedPlugin, qReal::EditorInterface * const qrxcGeneratedPlugin);
 
 	void testMethods();
+
+	QList<QPair<QString, QString> > generateOutputList();
 
 private:
 	class StringGenerator;
@@ -51,10 +55,14 @@ private:
 
 	void testMethod(StringGenerator const &stringGenerator);
 
+	void generateOutputForOneMethod(StringGenerator const &stringGenerator);
+
 	static bool containsOnly(QString const &string, QChar const &symbol);
 
 	qReal::EditorInterface* mQrmcGeneratedPlugin;
 	qReal::EditorInterface* mQrxcGeneratedPlugin;
+
+	QList<QPair<QString, QString> > mGeneratedOutputList;
 };
 
 }

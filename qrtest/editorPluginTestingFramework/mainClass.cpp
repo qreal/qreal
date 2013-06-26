@@ -13,17 +13,25 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
 
-	launchQrmc(fileName, pathToQrmc);
-	compilePlugin(pathToQrmcGeneratedCode);
-	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrmcGeneratedPlugin);
-
 	launchQrxc(normalizedFileName);
 	compilePlugin(pathToQrxcGeneratedCode);
 	EditorInterface* const qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrxcGeneratedPlugin);
 
-	MethodsTester* const methodsTester = new MethodsTester(qrmcGeneratedPlugin, qrxcGeneratedPlugin);
+	launchQrmc(fileName, pathToQrmc);
+	compilePlugin(pathToQrmcGeneratedCode);
+	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrmcGeneratedPlugin);
 
-	methodsTester->testMethods();
+	if ((qrxcGeneratedPlugin != NULL) && (qrmcGeneratedPlugin != NULL)) {
+		MethodsTester* const methodsTester = new MethodsTester(qrmcGeneratedPlugin, qrxcGeneratedPlugin);
+
+		methodsTester->testMethods();
+
+		QList<QPair<QString, QString> > methodsTesterOutput = methodsTester->generateOutputList();
+		createHtml(methodsTesterOutput);
+	} else {
+		qDebug() << "Generation of plugins failed";
+	}
+
 }
 
 void MainClass::createFolder(QString const &path)
@@ -92,5 +100,10 @@ void MainClass::launchQrxc(QString const &fileName)
 EditorInterface* MainClass::loadedPlugin(QString const &fileName, QString const &pathToFile)
 {
 	return mPluginLoader.loadedPlugin(fileName, pathToFile);
+}
+
+void MainClass::createHtml(QList<QPair<QString, QString> > outputList)
+{
+	mHtmlMaker.makeHtml(outputList);
 }
 

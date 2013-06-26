@@ -19,4 +19,7 @@ QString const pathToQRealRootFromQrxc = "../../../../";
 QString const destDirForQrmc = "qrtest/binaries/plugins/qrmc";
 QString const destDirForQrxc = "qrtest/binaries/plugins/qrxc";
 
+QString const uncheckedMethod = "THIS METHOD HAS TO BE VERIFIED SOMEHOW!";
+QString const goodMethod = "Results are the same";
+
 }

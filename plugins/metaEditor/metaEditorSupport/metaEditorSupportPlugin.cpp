@@ -94,7 +94,8 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 					, SettingsManager::value("pathToQmake").toString()
 					, SettingsManager::value("pathToMake").toString()
 					, SettingsManager::value("pluginExtension").toString()
-					, SettingsManager::value("prefix").toString());
+					, SettingsManager::value("prefix").toString()
+					, SettingsManager::value("qmakeArguments").toString());
 		}
 	}
 	if (metamodelList.isEmpty()) {
@@ -155,7 +156,8 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 					, SettingsManager::value("pathToQmake").toString()
 					, SettingsManager::value("pathToMake").toString()
 					, SettingsManager::value("pluginExtension").toString()
-					, SettingsManager::value("prefix").toString());
+					, SettingsManager::value("prefix").toString()
+					, SettingsManager::value("qmakeArguments").toString());
 		}
 	}
 
@@ -201,7 +203,8 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 		, QString const &commandFirst
 		, QString const &commandSecond
 		, QString const &extension
-		, QString const &prefix)
+		, QString const &prefix
+		, QString const &qmakeArguments)
 {
 	int const progressBarWidth = 240;
 	int const progressBarHeight = 20;
@@ -238,7 +241,13 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 
 	QProcess builder;
 	builder.setWorkingDirectory(directoryName);
-	builder.start(commandFirst);
+	if (!qmakeArguments.isEmpty()) {
+		QStringList qmakeArgumentsList;
+		qmakeArgumentsList.append("CONFIG+=" + qmakeArguments);
+		builder.start(commandFirst, qmakeArgumentsList);
+	} else {
+		builder.start(commandFirst);
+	}
 
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);

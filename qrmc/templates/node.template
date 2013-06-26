@@ -7,10 +7,11 @@
 		void init(QRectF &contents, QList<StatPoint> &pointPorts,
 				QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
 				QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
-				SdfRendererInterface *portRenderer)
+				SdfRendererInterface *portRenderer, ElementRepoInterface *elementRepo)
 		{
 @@NodeUnusedArgs@@
 			mRenderer = renderer;
+			mRenderer->setElementRepo(elementRepo);
 @@NodeLoadShapeRenderer@@
 @@NodeLoadPortsRenderer@@
 @@NodeSetContents@@

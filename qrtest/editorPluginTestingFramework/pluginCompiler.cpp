@@ -12,7 +12,11 @@ void PluginCompiler::compilePlugin(QString const &directoryToCodeToCompile)
 {
 	QProcess builder;
 	builder.setWorkingDirectory(directoryToCodeToCompile);
-	builder.start(SettingsManager::value("pathToQmake").toString());
+
+	QStringList qmakeArgs;
+	qmakeArgs.append("CONFIG+=debug");
+
+	builder.start(SettingsManager::value("pathToQmake").toString(), qmakeArgs);
 	qDebug() << "qmake";
 	if (builder.waitForFinished() && builder.exitCode() == 0) {
 		builder.start(SettingsManager::value("pathToMake").toString());

@@ -1,3 +1,5 @@
+#include <QtWidgets/QFileDialog>
+
 #include "../../../qrkernel/settingsManager.h"
 #include "compilerPage.h"
 #include "ui_compilerPage.h"
@@ -12,17 +14,27 @@ PreferencesCompilerPage::PreferencesCompilerPage(QWidget *parent)
 	mIcon = QIcon(":/icons/tools.png");
 	mUi->setupUi(this);
 
+	initQRealSourcesLocation();
 	connect(mUi->linuxButton, SIGNAL(clicked()), this, SLOT(changeSystem()));
 	connect(mUi->windowsButton, SIGNAL(clicked()), this, SLOT(changeSystem()));
 	connect(mUi->otherButton, SIGNAL(clicked()), this, SLOT(changeSystem()));
 
+	connect(mUi->qrealSourcesPushButton, SIGNAL(clicked()), this, SLOT(setQRealSourcesLocation()));
+
 	restoreSettings();
-	mUi->pathToQRealSourceFiles->setText(SettingsManager::value("pathToQRealSourceFiles").toString());
 }
 
 PreferencesCompilerPage::~PreferencesCompilerPage()
 {
 	delete mUi;
+}
+
+void PreferencesCompilerPage::initQRealSourcesLocation()
+{
+	QString const binFolder = qApp->applicationDirPath();
+	QDir binDir(binFolder);
+	binDir.cdUp();
+	SettingsManager::setValue("pathToQRealSourceFiles", binDir.absolutePath());
 }
 
 void PreferencesCompilerPage::changeEvent(QEvent *e)
@@ -40,12 +52,18 @@ void PreferencesCompilerPage::changeSystem()
 {
 	if (mUi->linuxButton->isChecked()) {
 		initCompilersSettings("qmake", "make", "so", "lib");
+		mUi->configurationSettingsWidget->setEnabled(true);
+		initConfigurationSettings(configuration());
 	}
 	if (mUi->windowsButton->isChecked()) {
 		initCompilersSettings("qmake", "mingw32-make", "dll", "");
+		mUi->configurationSettingsWidget->setEnabled(true);
+		initConfigurationSettings(configuration());
 	}
 	if (mUi->otherButton->isChecked()) {
 		mUi->compilerSettingsWidget->setEnabled(true);
+		mUi->configurationSettingsWidget->setEnabled(false);
+		initConfigurationSettings("");
 	}
 }
 
@@ -59,6 +77,34 @@ void PreferencesCompilerPage::initCompilersSettings(QString const &pathToQmake,
 	mUi->compilerSettingsWidget->setEnabled(false);
 }
 
+void PreferencesCompilerPage::setQRealSourcesLocation()
+{
+	QString const location = QFileDialog::getExistingDirectory(this, tr("Specify directory:"));
+	mUi->pathToQRealSourceFiles->setText(location);
+}
+
+void PreferencesCompilerPage::setCheckedConfigurationButtons(QString const &configuration)
+{
+	mUi->debugButton->setChecked(configuration == "debug");
+	mUi->releaseButton->setChecked(configuration == "release");
+}
+
+void PreferencesCompilerPage::initConfigurationSettings(QString const &configuration)
+{
+	SettingsManager::setValue("qmakeArguments", configuration);
+}
+
+QString PreferencesCompilerPage::configuration() const
+{
+	if (mUi->debugButton->isChecked()) {
+		return "debug";
+	}
+	if (mUi->releaseButton->isChecked()) {
+		return "release";
+	}
+	return "";
+}
+
 void PreferencesCompilerPage::save()
 {
 	SettingsManager::setValue("windowsButton", mUi->windowsButton->isChecked());
@@ -69,6 +115,10 @@ void PreferencesCompilerPage::save()
 	SettingsManager::setValue("pluginExtension", mUi->pluginExtension->text());
 	SettingsManager::setValue("prefix", mUi->prefix->text());
 	SettingsManager::setValue("pathToQRealSourceFiles", mUi->pathToQRealSourceFiles->text());
+	SettingsManager::setValue("debug", mUi->debugButton->isChecked());
+	SettingsManager::setValue("release", mUi->releaseButton->isChecked());
+
+	initConfigurationSettings(configuration());
 }
 
 void PreferencesCompilerPage::restoreSettings()
@@ -80,4 +130,7 @@ void PreferencesCompilerPage::restoreSettings()
 	mUi->pathToMake->setText(SettingsManager::value("pathToMake").toString());
 	mUi->pluginExtension->setText(SettingsManager::value("pluginExtension").toString());
 	mUi->prefix->setText(SettingsManager::value("prefix").toString());
+	mUi->pathToQRealSourceFiles->setText(SettingsManager::value("pathToQRealSourceFiles").toString());
+	mUi->debugButton->setChecked(SettingsManager::value("debug").toBool());
+	mUi->releaseButton->setChecked(SettingsManager::value("release").toBool());
 }

@@ -29,17 +29,38 @@ void QrxcLauncher::launchQrxc(QString const &fileName)
 
 	QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
 
-	QString const &directoryToGeneratedCode = pathToQRealRootFromQrxc + destDirForQrxc;
-
-	if (!dir.exists(directoryToGeneratedCode)) {
-		dir.mkdir(directoryToGeneratedCode);
-	}
-
 	dir.mkpath(pathToQrxcGeneratedCode);
 	foreach (Id const &key, metamodelList.keys()) {
-		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key
-				, pathToQrxcGeneratedCode
-				, pathToQRealRootFromQrxc
-				, directoryToGeneratedCode);
+		if (mRepoApi->isLogicalElement(key)) {
+
+			QString const pathToQRealRoot = mRepoApi->stringProperty(key, "path to QReal Source Files");
+
+			QString const &directoryToGeneratedCode = generatePathToPlugin(pathToQRealRoot);
+
+			if (!dir.exists(directoryToGeneratedCode)) {
+				dir.mkdir(directoryToGeneratedCode);
+			}
+
+			QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key
+					, pathToQrxcGeneratedCode
+					, pathToQRealRoot
+					, directoryToGeneratedCode);
+		}
 	}
+}
+
+QString QrxcLauncher::generatePathToPlugin(QString const &pathToQRealRoot)
+{
+	QString result;
+
+	QString pathToEditorsSdk = pathToQRealRoot + "/plugins";
+	int const levels = pathToEditorsSdk.split("/", QString::SkipEmptyParts).count();
+
+	for (int i = 0; i < levels; i++) {
+		result += "../";
+	}
+
+	result += pathToQrxcGeneratedPlugin;
+
+	return result;
 }

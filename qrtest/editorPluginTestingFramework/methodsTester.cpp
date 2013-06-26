@@ -1,4 +1,5 @@
 #include <QtCore/QDebug>
+#include <QtWidgets/QApplication>
 
 #include "methodsTester.h"
 
@@ -493,6 +494,63 @@ void MethodsTester::testMethod(StringGenerator const &stringGenerator)
 	}
 
 	qDebug() << "\n";
+}
+
+void MethodsTester::generateOutputForOneMethod(StringGenerator const &stringGenerator)
+{
+	QString const &methodName = stringGenerator.methodName();
+
+	QString const &qrmcResult = stringGenerator.generateString(mQrmcGeneratedPlugin);
+	QString const &qrxcResult = stringGenerator.generateString(mQrxcGeneratedPlugin);
+
+	QString output = "";
+	if (qrmcResult == qrxcResult) {
+		output = "Results are the same";
+		if (containsOnly(qrmcResult, ' ') || (qrmcResult.isEmpty())) {
+			output = "THIS METHOD HAS TO BE VERIFIED SOMEHOW!";
+		}
+	} else {
+		QString const newLineTag = "|";
+		output = "Results are not the same" + newLineTag + "For qrmc: " +  qrmcResult
+				+ newLineTag + "For qrxc: " + qrxcResult;
+	}
+
+	QPair<QString, QString> resultPair = qMakePair(methodName, output);
+	mGeneratedOutputList.append(resultPair);
+}
+
+QList<QPair<QString, QString> > MethodsTester::generateOutputList()
+{
+	generateOutputForOneMethod(PropertiesWithDefaultValuesStringGenerator());
+	generateOutputForOneMethod(UsedTypesStringGenerator());
+	generateOutputForOneMethod(TypesContainedByStringGenerator());
+	generateOutputForOneMethod(ConnectedTypesStringGenerator());
+	generateOutputForOneMethod(GetPossibleEdgesStringGenerator());
+	generateOutputForOneMethod(IsNodeOrEdgeStringGenerator());
+
+	generateOutputForOneMethod(GetPropertyNamesStringGenerator());
+	generateOutputForOneMethod(GetReferencePropertiesStringGenerator());
+	generateOutputForOneMethod(GetParentsOfStringGenerator());
+
+	generateOutputForOneMethod(GetPropertyTypesStringGenerator());
+	generateOutputForOneMethod(GetPropertyDefaultValueStringGenerator());
+
+	generateOutputForOneMethod(DiagramNameStringGenerator());
+	generateOutputForOneMethod(DiagramNodeNameStringGenerator());
+
+	generateOutputForOneMethod(ElementNameStringGenerator());
+	generateOutputForOneMethod(ElementMouseGestureStringGenerator());
+	generateOutputForOneMethod(ElementDescriptionStringGenerator());
+
+	generateOutputForOneMethod(PropertyDisplayedNameStringGenerator());
+	generateOutputForOneMethod(PropertyDescriptionStringGenerator());
+
+	generateOutputForOneMethod(IsParentOfStringGenerator());
+
+	generateOutputForOneMethod(DiagramPaletteGroupListStringGenerator());
+	generateOutputForOneMethod(DiagramPaletteGroupDescriptionStringGenerator());
+
+	return mGeneratedOutputList;
 }
 
 bool MethodsTester::containsOnly(QString const &string, QChar const &symbol)

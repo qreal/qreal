@@ -3,8 +3,6 @@
 #include "elements.h"
 
 
-Q_EXPORT_PLUGIN2(qreal_editors, @@MetamodelName@@Plugin)
-
 @@MetamodelName@@Plugin::@@MetamodelName@@Plugin()
 {
 	initPlugin();
@@ -200,11 +198,17 @@ int @@MetamodelName@@Plugin::isNodeOrEdge(QString const &element) const
 @@IsNodeOrEdgeLine@@
 	return 0;
 }
+
 QStringList @@MetamodelName@@Plugin::getEnumValues(QString name) const
 {
 	QStringList result;
 @@GetEnumValuesLine@@
 	return result;
+}
+
+QString @@MetamodelName@@Plugin::getGroupsXML() const 
+{
+	return QString::fromUtf8(""); // temporary desicion
 }
 
 QString @@MetamodelName@@Plugin::getPropertyType(QString const &element, QString const &property) const

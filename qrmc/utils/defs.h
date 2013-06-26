@@ -68,6 +68,7 @@ QString const contextMenuItems = "@@ContextMenuItems@@";
 QString const itemsList = "@@ItemsList@@";
 QString const itemsValidList = "@@ItemsValidList@@";
 QString const itemsInvalidList = "@@ItemsInvalidList@@";
+QString const generatedGroupsXML = "@@GeneratedGroupsXML@@";
 
 QString const diagramNameTag = "@@DiagramName@@";
 QString const diagramNodeNameTag = "@@DiagramNodeName@@";

@@ -20,7 +20,7 @@ public:
 	QHash<qReal::Id, QString> getMetamodelList();
 	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId
 			, QString const &pathToFile
-			, QString const &pathToQRealSource
+			, QString const &pathToQrealRoot
 			, QString const &destDir = "");
 
 private:
@@ -50,8 +50,10 @@ private:
 	void setSizesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
 	static void copyImages(QString const &pathToFile);
 	static QString calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource);
-	static QString calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource);
+	static QString calculateRelativeQRealSourcesPath(QString const &pathToQRealSource);
 	static QString calculateRelativePath(QString const &pathOne, QString const &pathTwo);
+
+	static QString newMethodForCalculatingEditorPath(QString const &pathToFile);
 
 	qrRepo::LogicalRepoApi const &mApi;
 	QDomDocument mDocument;

@@ -26,7 +26,7 @@ void myMessageOutput(QtMsgType type, const char *msg)
 
 int main(int argc, char *argv[])
 {
-	qInstallMessageHandler(myMessageOutput);
+//	qInstallMessageHandler(myMessageOutput);
 	QCoreApplication app(argc, argv);
 
 //	qDebug() << "Running " + args.join(" ");

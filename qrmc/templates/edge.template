@@ -2,7 +2,7 @@
 	public:
 		void init(QRectF &, QList<StatPoint> &, QList<StatLine> &,
 				ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,
-				SdfRendererInterface *, SdfRendererInterface *) {}
+				SdfRendererInterface *, SdfRendererInterface *, ElementRepoInterface *) {}
 
 		void init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)
 		{

@@ -1,6 +1,8 @@
 TEMPLATE =  lib
 CONFIG += plugin
 
+QT += widgets
+
 MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj

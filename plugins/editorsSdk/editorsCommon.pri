@@ -41,7 +41,6 @@ win32 {
 	}
 }
 
-
 if (equals(QMAKE_CXX, "g++")) {
 	QMAKE_LFLAGS += -Wl,-E
 }

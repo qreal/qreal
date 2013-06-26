@@ -1,10 +1,13 @@
 #include "pluginLoader.h"
 #include <QtCore/QPluginLoader>
 #include <QtCore/QDir>
+
 #include "../../qrrepo/repoApi.h"
+#include "../../qrutils/nameNormalizer.h"
 
 using namespace qReal;
 using namespace editorPluginTestingFramework;
+using namespace utils;
 
 EditorInterface* PluginLoader::loadedPlugin(QString const &fileName, QString const &pathToFile)
 {
@@ -20,18 +23,22 @@ EditorInterface* PluginLoader::loadedPlugin(QString const &fileName, QString con
 	IdList const metamodels = mRepoApi->children(Id::rootId());
 
 	foreach (Id const &key, metamodels) {
-		QString const &pluginName = mRepoApi->stringProperty(key, "name") + ".dll";
-		QPluginLoader * const loader = new QPluginLoader(mPluginDir.absoluteFilePath(pluginName));
-		qDebug() << mPluginDir.absoluteFilePath(pluginName);
-		loader->load();
-		QObject *plugin = loader->instance();
+		if (mRepoApi->isLogicalElement(key)) {
+			QString const &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
+			QString const &pluginName = normalizedMetamodelName + ".dll";
 
-		if (plugin) {
-			qDebug() << "plugin is loaded";
-			EditorInterface * const iEditor = qobject_cast<EditorInterface *>(plugin);
-			return iEditor;
+			QPluginLoader * const loader = new QPluginLoader(mPluginDir.absoluteFilePath(pluginName));
+			qDebug() << mPluginDir.absoluteFilePath(pluginName);
+			loader->load();
+			QObject *plugin = loader->instance();
+
+			if (plugin) {
+				qDebug() << "plugin is loaded";
+				EditorInterface * const iEditor = qobject_cast<EditorInterface *>(plugin);
+				return iEditor;
+			}
+			qDebug() << "plugin is NOT loaded";
 		}
-		qDebug() << "plugin is NOT loaded";
 	}
 	return NULL;
 }

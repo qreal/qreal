@@ -10,6 +10,7 @@ class @@MetamodelName@@Plugin : public QObject, public qReal::EditorInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::EditorInterface)
+	Q_PLUGIN_METADATA(IID "@@MetamodelName@@")
 
 public:
 
@@ -51,6 +52,7 @@ public:
 	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;
 	virtual QStringList getReferenceProperties(QString const &/*diagram*/, QString const &element) const;
 	virtual QStringList getEnumValues(QString name) const;
+	virtual QString getGroupsXML() const;
 
 	virtual QString editorName() const;
 	virtual QString diagramName(QString const &diagram) const;
