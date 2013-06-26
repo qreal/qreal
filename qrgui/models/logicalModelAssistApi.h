@@ -31,8 +31,8 @@ public:
 	IdList children(Id const &element) const;
 	void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF());
 
-	void connect(Id const &source, Id const &destination);
-	void disconnect(Id const &source, Id const &destination);
+	void addExplosion(Id const &source, Id const &destination);
+	void removeExplosion(Id const &source, Id const &destination);
 	void addUsage(Id const &source, Id const &destination);
 	void deleteUsage(Id const &source, Id const &destination);
 	void createConnected(Id const &sourceElement, Id const &elementType);

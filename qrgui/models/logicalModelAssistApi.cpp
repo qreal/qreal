@@ -61,14 +61,14 @@ void LogicalModelAssistApi::changeParent(Id const &element, Id const &parent, QP
 	mLogicalModel.changeParent(mLogicalModel.indexById(element), mLogicalModel.indexById(parent), QPointF());
 }
 
-void LogicalModelAssistApi::connect(Id const &source, Id const &destination)
+void LogicalModelAssistApi::addExplosion(Id const &source, Id const &destination)
 {
-	mLogicalModel.mutableApi().connect(source, destination);
+	mLogicalModel.mutableApi().addExplosion(source, destination);
 }
 
-void LogicalModelAssistApi::disconnect(Id const &source, Id const &destination)
+void LogicalModelAssistApi::removeExplosion(Id const &source, Id const &destination)
 {
-	mLogicalModel.mutableApi().disconnect(source, destination);
+	mLogicalModel.mutableApi().removeExplosion(source, destination);
 }
 
 void LogicalModelAssistApi::addUsage(Id const &source, Id const &destination)
@@ -93,7 +93,7 @@ Id LogicalModelAssistApi::createConnectedElement(Id const &source, Id const &ele
 void LogicalModelAssistApi::createConnected(Id const &sourceElement, Id const &elementType)
 {
 	Id element = createConnectedElement(sourceElement, elementType);
-	connect(sourceElement, element);
+	addExplosion(sourceElement, element);
 }
 
 void LogicalModelAssistApi::createUsed(Id const &sourceElement, Id const &elementType)

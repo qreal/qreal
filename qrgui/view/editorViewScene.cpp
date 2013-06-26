@@ -890,7 +890,7 @@ void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &n
 	}
 }
 
-void EditorViewScene::createAddConnectionMenu(Element const * const element
+void EditorViewScene::createAddExplosionMenu(Element const * const element
 		, QMenu &contextMenu, QString const &menuName
 		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
 		, IdList const &connectableDiagrams, const char *slot) const
@@ -929,7 +929,7 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 	}
 }
 
-void EditorViewScene::createDisconnectMenu(Element const * const element, QMenu &contextMenu, QString const &menuName
+void EditorViewScene::createRemoveExplosionMenu(Element const * const element, QMenu &contextMenu, QString const &menuName
 		, IdList const &outgoingConnections, IdList const &incomingConnections, const char *slot) const
 {
 	QMenu *disconnectMenu = new QMenu(menuName);//contextMenu.addMenu(menuName);
@@ -953,32 +953,32 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 	if (mainWindow()->showConnectionRelatedMenus()) {
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
-		createAddConnectionMenu(element, contextMenu, tr("Add connection")
+		createAddExplosionMenu(element, contextMenu, tr("Add connection")
 				, mWindow->editorManager().connectedTypes(element->id().type())
-				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingExplosions(element->logicalId())
 				, mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
 				, SLOT(connectActionTriggered()));
 
-		createDisconnectMenu(element, contextMenu, tr("Disconnect")
-				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
-				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
+		createRemoveExplosionMenu(element, contextMenu, tr("Disconnect")
+				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingExplosions(element->logicalId())
+				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingExplosions(element->logicalId())
 				, SLOT(disconnectActionTriggered()));
 
-		createAddConnectionMenu(element, contextMenu, tr("Add usage")
+		createAddExplosionMenu(element, contextMenu, tr("Add usage")
 				, mWindow->editorManager().usedTypes(element->id().type())
 				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
 				, mMVIface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
 				, SLOT(addUsageActionTriggered()));
 
-		createDisconnectMenu(element, contextMenu, tr("Delete usage")
+		createRemoveExplosionMenu(element, contextMenu, tr("Delete usage")
 				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
 				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
 				, SLOT(deleteUsageActionTriggered()));
 
 		QMenu * const goToMenu = contextMenu.addMenu(tr("Go to"));
 
-		createGoToSubmenu(goToMenu, tr("Forward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
-		createGoToSubmenu(goToMenu, tr("Backward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
+		createGoToSubmenu(goToMenu, tr("Forward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingExplosions(element->logicalId()));
+		createGoToSubmenu(goToMenu, tr("Backward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingExplosions(element->logicalId()));
 		createGoToSubmenu(goToMenu, tr("Uses"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
 		createGoToSubmenu(goToMenu, tr("Used in"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
 	}
@@ -1345,7 +1345,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 		}
 		else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
 			event->accept();
-			IdList outgoingLinks = mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId());
+			IdList outgoingLinks = mMVIface->logicalAssistApi()->logicalRepoApi().outgoingExplosions(element->logicalId());
 			if (outgoingLinks.size() > 0) {
 				IdList graphicalIdsOfOutgoingLinks = mMVIface->graphicalAssistApi()->graphicalIdsByLogicalId(outgoingLinks[0]);
 				if (graphicalIdsOfOutgoingLinks.size() > 0) {
@@ -1408,7 +1408,7 @@ void EditorViewScene::connectActionTriggered()
 	Id source = connection[0].value<Id>();
 	Id destination = connection[1].value<Id>();
 	if (!action->text().startsWith("New ")) {
-		mMVIface->logicalAssistApi()->connect(source, destination);
+		mMVIface->logicalAssistApi()->addExplosion(source, destination);
 	} else {
 		mMVIface->logicalAssistApi()->createConnected(source, destination);
 	}
@@ -1441,7 +1441,7 @@ void EditorViewScene::disconnectActionTriggered()
 	QList<QVariant> connection = action->data().toList();
 	Id source = connection[0].value<Id>();
 	Id destination = connection[1].value<Id>();
-	mMVIface->logicalAssistApi()->disconnect(source, destination);
+	mMVIface->logicalAssistApi()->removeExplosion(source, destination);
 }
 
 void EditorViewScene::deleteUsageActionTriggered()

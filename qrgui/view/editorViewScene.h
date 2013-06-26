@@ -190,12 +190,12 @@ private:
 	void redraw();
 	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
-	void createAddConnectionMenu(Element const * const element
+	void createAddExplosionMenu(Element const * const element
 			, QMenu &contextMenu, QString const &menuName
 			, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
 			, qReal::IdList const &connectableDiagrams, const char *slot) const;
 
-	void createDisconnectMenu(Element const * const element
+	void createRemoveExplosionMenu(Element const * const element
 			, QMenu &contextMenu, QString const &menuName
 			, qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
 			, const char *slot) const;
