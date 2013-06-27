@@ -26,16 +26,14 @@ private slots:
 	void removeExplosionActionTriggered();
 
 private:
-	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
 	void createAddExplosionMenu(Element const * const element
-			, QMenu &contextMenu, QString const &menuName
-			, QList<Explosion> const &explosions
-			, qReal::IdList const &alreadyConnectedElements
+			, QMenu &contextMenu, QList<Explosion> const &explosions
+			, qReal::Id const &alreadyConnectedElement
 			, char const *slot) const;
 
 	void createRemoveExplosionMenu(Element const * const element
 			, QMenu &contextMenu, QString const &menuName
-			, qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
+			, qReal::Id const &outgoingConnection, qReal::IdList const &incomingConnections
 			, char const *slot) const;
 
 	MainWindow *mMainWindow; // Doesn`t take ownership

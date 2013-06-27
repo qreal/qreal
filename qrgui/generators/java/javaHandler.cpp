@@ -823,11 +823,13 @@ QString JavaHandler::serializeObject(Id const &id)
 
 		result += getConstraints(id);
 	} else if (objectType(id) == "ActivityDiagram_Action") {
-		IdList outgoingConnections = mApi.outgoingExplosions(id);
+		// Many many ears ago outgoingExplosions() had IdList return value.
+		// Remove this comment when it will be returned or with this class
+		Id outgoingConnection = mApi.outgoingExplosion(id);
 		IdList activityDiagrams;
-		foreach (Id aConnection, outgoingConnections) {
-			if (aConnection.element() == "ActivityDiagram_ActivityDiagramNode") {
-				activityDiagrams.append(aConnection);
+		if (outgoingConnection != Id()) {
+			if (outgoingConnection.element() == "ActivityDiagram_ActivityDiagramNode") {
+				activityDiagrams.append(outgoingConnection);
 			}
 		}
 
@@ -1181,16 +1183,14 @@ QString JavaHandler::getMethodCode(Id const &id)
 	QString result = "{\n";
 	mIndent++;
 
-	if (!mApi.outgoingExplosions(id).isEmpty()) {
-		IdList outgoingConnections = mApi.outgoingExplosions(id);
+	if (mApi.outgoingExplosion(id) != Id()) {
+		Id outgoingConnection = mApi.outgoingExplosion(id);
 		Id realizationDiagram;
 
 		int realizationsCount = 0;
-		foreach (Id aConnection, outgoingConnections) {
-			if (aConnection.element() == "ActivityDiagram_ActivityDiagramNode") {
-				realizationDiagram = aConnection;
-				realizationsCount++;
-			}
+		if (outgoingConnection.element() == "ActivityDiagram_ActivityDiagramNode") {
+			realizationDiagram = outgoingConnection;
+			realizationsCount++;
 		}
 
 		if (realizationsCount == 1) { //if everything is ok

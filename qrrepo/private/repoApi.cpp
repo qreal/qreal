@@ -171,9 +171,9 @@ IdList RepoApi::links(Id const &id) const
 	return incomingLinks(id) << outgoingLinks(id);
 }
 
-qReal::IdList RepoApi::outgoingExplosions(qReal::Id const &id) const
+qReal::Id RepoApi::outgoingExplosion(qReal::Id const &id) const
 {
-	return mClient.property(id, "outgoingExplosions").value<IdList>();
+	return mClient.property(id, "outgoingExplosion").value<Id>();
 }
 
 qReal::IdList RepoApi::incomingExplosions(qReal::Id const &id) const
@@ -183,13 +183,20 @@ qReal::IdList RepoApi::incomingExplosions(qReal::Id const &id) const
 
 void RepoApi::addExplosion(qReal::Id const &source, qReal::Id const &destination)
 {
-	addToIdList(source, "outgoingExplosions", destination);
+	Id const oldTarget = outgoingExplosion(source);
+	if (oldTarget == destination) {
+		return;
+	}
+	if (oldTarget != Id()) {
+		removeExplosion(source, oldTarget);
+	}
+	mClient.setProperty(source, "outgoingExplosion", destination.toVariant());
 	addToIdList(destination, "incomingExplosions", source);
 }
 
 void RepoApi::removeExplosion(qReal::Id const &source, qReal::Id const &destination)
 {
-	removeFromList(source, "outgoingExplosions", destination);
+	mClient.setProperty(source, "outgoingExplosion", Id().toVariant());
 	removeFromList(destination, "incomingExplosions", source);
 }
 

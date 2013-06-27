@@ -60,7 +60,7 @@ namespace qrRepo {
 		qReal::IdList incomingLinks(qReal::Id const &id) const;
 		qReal::IdList links(qReal::Id const &id) const;
 
-		qReal::IdList outgoingExplosions(qReal::Id const &id) const;
+		qReal::Id outgoingExplosion(qReal::Id const &id) const;
 		qReal::IdList incomingExplosions(qReal::Id const &id) const;
 		void addExplosion(qReal::Id const &source, qReal::Id const &destination);
 		void removeExplosion(qReal::Id const &source, qReal::Id const &destination);

@@ -1121,16 +1121,16 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 		}
 		else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
 			event->accept();
-			IdList outgoingLinks = mMVIface->logicalAssistApi()->logicalRepoApi().outgoingExplosions(element->logicalId());
-			if (outgoingLinks.size() > 0) {
-				IdList graphicalIdsOfOutgoingLinks = mMVIface->graphicalAssistApi()->graphicalIdsByLogicalId(outgoingLinks[0]);
+			Id const outgoingLink = mMVIface->logicalAssistApi()->logicalRepoApi().outgoingExplosion(element->logicalId());
+			if (outgoingLink != Id()) {
+				IdList const graphicalIdsOfOutgoingLinks = mMVIface->graphicalAssistApi()->graphicalIdsByLogicalId(outgoingLink);
 				if (graphicalIdsOfOutgoingLinks.size() > 0) {
 					mainWindow()->activateItemOrDiagram(graphicalIdsOfOutgoingLinks[0]);
 				}
 			} else {
 				QList<Explosion> const explosions = mWindow->editorManager().explosions(element->logicalId());
 				if (!explosions.isEmpty()) {
-					Id diagramType = mMVIface->logicalAssistApi()->editorManagerInterface().findElementByType(explosions[0].target().element());
+					Id const diagramType = mMVIface->logicalAssistApi()->editorManagerInterface().findElementByType(explosions[0].target().element());
 					mMVIface->logicalAssistApi()->createWithExplosion(element->logicalId(), diagramType);
 				}
 			}
@@ -1166,7 +1166,7 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	mWindow = mainWindow;
 	mController = mWindow->controller();
 	mClipboardHandler.setController(mController);
-	mExploser = new Exploser(mainWindow, mMVIface->logicalAssistApi(), this);
+	mExploser = new Exploser(mainWindow, &mainWindow->models()->logicalModelAssistApi(), this);
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()
 			<< mWindow->actionCopyElementsOnDiagram()
