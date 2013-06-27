@@ -11,27 +11,18 @@ Exploser::Exploser(MainWindow * const mainWindow
 {
 }
 
-void Exploser::createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const
-{
-	QMenu *menu = goToMenu->addMenu(name);
-	foreach (Id element, ids) {
-		QAction *action = menu->addAction(mLogicalApi->logicalRepoApi().name(element));
-		connect(action, SIGNAL(triggered()), SLOT(goToActionTriggered()));
-		action->setData(element.toVariant());
-	}
-}
-
 void Exploser::createAddExplosionMenu(Element const * const element
-		, QMenu &contextMenu, QString const &menuName
-		, QList<Explosion> const &explosions, IdList const &alreadyConnectedElements
-		, char const *slot) const
+		, QMenu &contextMenu, QList<Explosion> const &explosions
+		, Id const &alreadyConnectedElement, char const *slot) const
 {
 	bool hasAnyActions = false;
+	QString const menuName = alreadyConnectedElement == Id()
+			? tr("Add connection") : tr("Connect to other");
 	QMenu *addExplosionMenu = new QMenu(menuName);
 
 	foreach (Explosion const &explosion, explosions) {
 		foreach (Id const &elementId, mLogicalApi->logicalRepoApi().logicalElements(explosion.target())) {
-			if (alreadyConnectedElements.contains(elementId)) {
+			if (alreadyConnectedElement == elementId) {
 				continue;
 			}
 			QAction *action = addExplosionMenu->addAction(mLogicalApi->logicalRepoApi().name(elementId));
@@ -41,6 +32,10 @@ void Exploser::createAddExplosionMenu(Element const * const element
 			tag << element->logicalId().toVariant() << elementId.toVariant();
 			action->setData(tag);
 		}
+	}
+
+	if (hasAnyActions) {
+		addExplosionMenu->addSeparator();
 	}
 
 	foreach (Explosion const &explosion, explosions) {
@@ -54,17 +49,17 @@ void Exploser::createAddExplosionMenu(Element const * const element
 		tag << element->logicalId().toVariant() << diagramType.toVariant();
 		action->setData(tag);
 	}
-	if (hasAnyActions || !explosions.empty()) {
-		contextMenu.addMenu(addExplosionMenu);
-	}
+	contextMenu.addMenu(addExplosionMenu);
 }
 
 void Exploser::createRemoveExplosionMenu(Element const * const element, QMenu &contextMenu, QString const &menuName
-		, IdList const &outgoingConnections, IdList const &incomingConnections, const char *slot) const
+		, Id const &outgoingConnection, IdList const &incomingConnections, const char *slot) const
 {
-	QMenu *disconnectMenu = new QMenu(menuName);//contextMenu.addMenu(menuName);
-	IdList list = outgoingConnections;
-	list.append(incomingConnections);
+	QMenu *disconnectMenu = new QMenu(menuName);
+	IdList list = incomingConnections;
+	if (outgoingConnection != Id()) {
+		list.append(outgoingConnection);
+	}
 
 	foreach (Id const &elementId, list) {
 		QAction *action = disconnectMenu->addAction(mLogicalApi->logicalRepoApi().name(elementId));
@@ -80,22 +75,25 @@ void Exploser::createRemoveExplosionMenu(Element const * const element, QMenu &c
 
 void Exploser::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
 {
+	QList<Explosion> const explosions = mMainWindow->editorManager().explosions(element->id().type());
+	if (explosions.isEmpty() || (explosions.count() == 1 && explosions[0].requiresImmediateLinkage())) {
+		return;
+	}
+
 	// menu items "connect to"
 	// TODO: move to elements, they can call the model and API themselves
-	createAddExplosionMenu(element, contextMenu, tr("Add connection")
-			, mMainWindow->editorManager().explosions(element->id().type())
-			, mLogicalApi->logicalRepoApi().outgoingExplosions(element->logicalId())
+	createAddExplosionMenu(element, contextMenu, explosions
+			, mLogicalApi->logicalRepoApi().outgoingExplosion(element->logicalId())
 			, SLOT(addExplosionActionTriggered()));
 
 	createRemoveExplosionMenu(element, contextMenu, tr("Disconnect")
-			, mLogicalApi->logicalRepoApi().outgoingExplosions(element->logicalId())
+			, mLogicalApi->logicalRepoApi().outgoingExplosion(element->logicalId())
 			, mLogicalApi->logicalRepoApi().incomingExplosions(element->logicalId())
 			, SLOT(removeExplosionActionTriggered()));
 
-	QMenu * const goToMenu = contextMenu.addMenu(tr("Go to"));
-
-	createGoToSubmenu(goToMenu, tr("Forward connection"), mLogicalApi->logicalRepoApi().outgoingExplosions(element->logicalId()));
-	createGoToSubmenu(goToMenu, tr("Backward connection"), mLogicalApi->logicalRepoApi().incomingExplosions(element->logicalId()));
+//	QMenu * const goToMenu = contextMenu.addMenu(tr("Go to"));
+//	createGoToSubmenu(goToMenu, tr("Forward connection"), mLogicalApi->logicalRepoApi().outgoingExplosions(element->logicalId()));
+//	createGoToSubmenu(goToMenu, tr("Backward connection"), mLogicalApi->logicalRepoApi().incomingExplosions(element->logicalId()));
 
 	if (mMainWindow->editorManager().isInterpretationMode()) {
 		contextMenu.addSeparator();
