@@ -58,7 +58,10 @@ void TcpRobotCommunicator::connect()
 	}
 
 	mSocket.connectToHost(hostAddress, static_cast<quint16>(port));
-	mSocket.waitForConnected();
+	bool const result = mSocket.waitForConnected(5000);
+	if (!result) {
+		qDebug() << mSocket.errorString();
+	}
 }
 
 void TcpRobotCommunicator::disconnect()
