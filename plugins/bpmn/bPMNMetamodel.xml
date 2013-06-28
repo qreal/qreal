@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram nodeName="BPMN Diagram" name="BPMNDiagram" displayedName="BPMN Diagram">
+        <nonGraphicTypes>
+            <enum name="StartEventType" displayedName="Start Event Type">
+                <value>None</value>
+                <value>Message</value>
+                <value>Timer</value>
+                <value>Conditional</value>
+                <value>Multiple</value>
+            </enum>
+            <enum name="IntermediateEventType" displayedName="Intermediate Event Type">
+                <value>None</value>
+                <value>Receive Message</value>
+                <value>Send Message</value>
+                <value>Timer</value>
+                <value>Conditional</value>
+                <value>Multiple</value>
+            </enum>
+            <enum name="EndEventType" displayedName="End Event Type">
+                <value>Message</value>
+                <value>None</value>
+            </enum>
+            <enum name="GatewayType" displayedName="Gateway Type">
+                <value>Exclusive (Data Based)</value>
+                <value>Exclusive (Event Based)</value>
+                <value>Inclusive</value>
+                <value>Parallel</value>
+            </enum>
+            <enum name="LoopType" displayedName="Loop Type"/>
+            <enum name="TaskType" displayedName="Task Type"/>
+        </nonGraphicTypes>
+        <graphicTypes>
+            <node name="StartEvent" displayedName="Start Event">
+                <graphics>
+                    <picture sizex="100" sizey="100">
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="0" y2="100" fill-style="none" x1="0" x2="100"/>
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="30" y2="70" fill-style="none" x1="15" x2="85">
+                            <showIf value="Message" property="Type" sign="="/>
+                        </rectangle>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="30" y2="50" fill-style="none" x1="15" x2="50">
+                            <showIf value="Message" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="30" fill-style="none" x1="50" x2="85">
+                            <showIf value="Message" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="25" y2="45" fill-style="none" x1="50" x2="20">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="45" y2="75" fill-style="none" x1="20" x2="35">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="75" fill-style="none" x1="35" x2="65">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="45" fill-style="none" x1="65" x2="80">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="25" y2="45" fill-style="none" x1="50" x2="80">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </line>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="15" y2="85" fill-style="none" x1="15" x2="85">
+                            <showIf value="Timer" property="Type" sign="="/>
+                        </ellipse>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="20" fill-style="none" x1="50" x2="55">
+                            <showIf value="Timer" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="48" fill-style="none" x1="50" x2="75">
+                            <showIf value="Timer" property="Type" sign="="/>
+                        </line>
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="20" y2="80" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </rectangle>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="35" y2="35" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="50" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="65" y2="65" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </line>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="0" y="50"/>
+                        <pointPort x="50" y="0"/>
+                        <pointPort x="50" y="100"/>
+                        <pointPort x="100" y="50"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="StartEventType" name="Type" displayedName="Type">
+                            <default>None</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <node name="IntermediateEvent" displayedName="Intermediate Event">
+                <graphics>
+                    <picture sizex="100" sizey="100">
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="0" y2="100" fill-style="none" x1="0" x2="100"/>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="7" y2="93" fill-style="none" x1="7" x2="93"/>
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="30" y2="70" fill-style="none" x1="15" x2="85">
+                            <showIf value="Receive Message" property="Type" sign="="/>
+                        </rectangle>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="30" y2="50" fill-style="none" x1="15" x2="50">
+                            <showIf value="Receive Message" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="30" fill-style="none" x1="50" x2="85">
+                            <showIf value="Receive Message" property="Type" sign="="/>
+                        </line>
+                        <rectangle fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="2" y1="30" y2="70" fill-style="solid" x1="15" x2="85">
+                            <showIf value="Send Message" property="Type" sign="="/>
+                        </rectangle>
+                        <line fill="#ffffff" stroke="#ffffff" stroke-style="solid" stroke-width="2" y1="30" y2="50" fill-style="none" x1="15" x2="50">
+                            <showIf value="Send Message" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#ffffff" stroke-style="solid" stroke-width="2" y1="50" y2="30" fill-style="none" x1="50" x2="85">
+                            <showIf value="Send Message" property="Type" sign="="/>
+                        </line>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="15" y2="85" fill-style="none" x1="15" x2="85">
+                            <showIf value="Timer" property="Type" sign="="/>
+                        </ellipse>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="20" fill-style="none" x1="50" x2="55">
+                            <showIf value="Timer" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="48" fill-style="none" x1="50" x2="75">
+                            <showIf value="Timer" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="25" y2="45" fill-style="none" x1="50" x2="20">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="45" y2="75" fill-style="none" x1="20" x2="35">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="75" fill-style="none" x1="35" x2="65">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="45" fill-style="none" x1="65" x2="80">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="25" y2="45" fill-style="none" x1="50" x2="80">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </line>
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="20" y2="80" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </rectangle>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="35" y2="35" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="50" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="65" y2="65" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </line>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="0" y="50"/>
+                        <pointPort x="50" y="0"/>
+                        <pointPort x="50" y="100"/>
+                        <pointPort x="100" y="50"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="IntermediateEventType" name="Type" displayedName="Type">
+                            <default>None</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <node name="EndEvent" displayedName="End Event">
+                <graphics>
+                    <picture sizex="100" sizey="100">
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="10" y1="3" y2="97" fill-style="none" x1="3" x2="97"/>
+                        <rectangle fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="2" y1="30" y2="70" fill-style="solid" x1="15" x2="85">
+                            <showIf value="Message" property="Type" sign="="/>
+                        </rectangle>
+                        <line fill="#000000" stroke="#ffffff" stroke-style="solid" stroke-width="2" y1="30" y2="50" fill-style="solid" x1="15" x2="50">
+                            <showIf value="Message" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#ffffff" stroke-style="solid" stroke-width="2" y1="50" y2="30" fill-style="none" x1="50" x2="85">
+                            <showIf value="Message" property="Type" sign="="/>
+                        </line>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="0" y="50"/>
+                        <pointPort x="50" y="0"/>
+                        <pointPort x="50" y="100"/>
+                        <pointPort x="100" y="50"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="EndEventType" name="Type" displayedName="Type">
+                            <default>None</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Gateway" displayedName="Gateway">
+                <graphics>
+                    <picture sizex="110" sizey="110">
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="0" y2="55" fill-style="none" x1="55" x2="0"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="55" y2="110" fill-style="none" x1="0" x2="55"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="110" y2="55" fill-style="none" x1="55" x2="110"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="0" y2="55" fill-style="none" x1="55" x2="110"/>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="5" y1="22" y2="88" fill-style="none" x1="22" x2="88">
+                            <showIf value="Inclusive" property="Type" sign="="/>
+                        </ellipse>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="25" y2="85" fill-style="none" x1="25" x2="85">
+                            <showIf value="Exclusive (Event Based)" property="Type" sign="="/>
+                        </ellipse>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="20" y2="90" fill-style="none" x1="20" x2="90">
+                            <showIf value="Exclusive (Event Based)" property="Type" sign="="/>
+                        </ellipse>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="33" y2="52" fill-style="none" x1="55" x2="35">
+                            <showIf value="Exclusive (Event Based)" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="52" fill-style="none" x1="42" x2="35">
+                            <showIf value="Exclusive (Event Based)" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="75" fill-style="none" x1="42" x2="68">
+                            <showIf value="Exclusive (Event Based)" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="52" fill-style="none" x1="68" x2="75">
+                            <showIf value="Exclusive (Event Based)" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="33" y2="52" fill-style="none" x1="55" x2="75">
+                            <showIf value="Exclusive (Event Based)" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="6" y1="30" y2="80" fill-style="none" x1="55" x2="55">
+                            <showIf value="Parallel" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="6" y1="55" y2="55" fill-style="none" x1="30" x2="80">
+                            <showIf value="Parallel" property="Type" sign="="/>
+                        </line>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="0" y="55"/>
+                        <pointPort x="55" y="0"/>
+                        <pointPort x="55" y="110"/>
+                        <pointPort x="110" y="55"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="GatewayType" name="Type" displayedName="Type">
+                            <default>Exclusive (Data Based)</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Task" displayedName="Task">
+                <graphics>
+                    <picture sizex="210" sizey="160">
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="45" y2="115" fill-style="none" x1="18" x2="18"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="18" y2="18" fill-style="none" x1="45" x2="165"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="45" y2="115" fill-style="none" x1="192" x2="192"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="142" y2="142" fill-style="none" x1="45" x2="165"/>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="18" starty="45"/>
+                            <end endx="45" endy="18"/>
+                            <ctrl x="15" y="15"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="192" starty="45"/>
+                            <end endx="165" endy="18"/>
+                            <ctrl x="195" y="15"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="165" starty="142"/>
+                            <end endx="192" endy="115"/>
+                            <ctrl x="195" y="145"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="18" starty="115"/>
+                            <end endx="45" endy="142"/>
+                            <ctrl x="15" y="145"/>
+                        </curve>
+                    </picture>
+                    <labels>
+                        <label x="46" y="55" textBinded="Text"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="18" starty="45"/>
+                            <end endx="18" endy="115"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="45" starty="18"/>
+                            <end endx="165" endy="18"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="192" starty="45"/>
+                            <end endx="192" endy="115"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="45" starty="142"/>
+                            <end endx="165" endy="142"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="string" name="Text" displayedName="Text"/>
+                        <property type="LoopType" name="LoopType" displayedName="Loop Type">
+                            <default>No loop</default>
+                        </property>
+                        <property type="TaskType" name="TaskType" displayedName="Task Type">
+                            <default>Not specified</default>
+                        </property>
+                    </properties>
+                </logic>
+            </node>
+            <edge name="SequenceFlow" displayedName="Sequence Flow">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label textBinded="Text"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="filled_arrow" beginType="no_arrow">
+                        <association endName="end" beginName="start"/>
+                    </associations>
+                    <properties>
+                        <property type="string" displayedName="Text" name="Text"/>
+                    </properties>
+                </logic>
+            </edge>
+            <node name="Lane" displayedName="Lane">
+                <graphics>
+                    <picture sizex="450" sizey="150">
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="0" y1="0" y2="150" fill="#ffffff" x1="0" stroke="#000000" x2="450"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="0" y2="150" fill="#ffffff" x1="30a" stroke="#000000" x2="30a"/>
+                    </picture>
+                    <labels>
+                        <label x="10" y="33" textBinded="text"/>
+                    </labels>
+                    <ports/>
+                    <nonResizeable/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="EndEvent"/>
+                        <contains type="StartEvent"/>
+                        <contains type="IntermediateEvent"/>
+                        <contains type="Gateway"/>
+                        <contains type="Task"/>
+                    </container>
+                    <properties>
+                        <property name="text" displayedName="Text" type="string"/>
+                    </properties>
+                </logic>
+            </node>
+            <node name="Pool" displayedName="Pool">
+                <graphics>
+                    <picture sizex="450" sizey="150">
+                        <rectangle stroke-style="solid" fill-style="none" stroke-width="0" y1="0" fill="#ffffff" y2="150" stroke="#000000" x1="0" x2="450"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="0" fill="#ffffff" y2="150" stroke="#000000" x1="30a" x2="30a"/>
+                    </picture>
+                    <labels>
+                        <label x="2" y="46" textBinded="text"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                        <contains type="Lane"/>
+                        <properties>
+                            <forestalling size="0"/>
+                            <childrenForestalling size="0"/>
+                            <sortContainer/>
+                            <banChildrenMove/>
+                            <minimizeToChildren/>
+                            <maximizeChildren/>
+                        </properties>
+                    </container>
+                    <properties>
+                        <property name="text" displayedName="Text" type="string"/>
+                    </properties>
+                </logic>
+            </node>
+        </graphicTypes>
+    </diagram>
+</metamodel>
