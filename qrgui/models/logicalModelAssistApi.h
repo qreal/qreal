@@ -36,7 +36,6 @@ public:
 
 	virtual void addExplosion(Id const &source, Id const &destination);
 	virtual void removeExplosion(Id const &source, Id const &destination);
-	virtual void createWithExplosion(Id const &sourceElement, Id const &elementType);
 
 	virtual void stackBefore(Id const &element, Id const &sibling);
 

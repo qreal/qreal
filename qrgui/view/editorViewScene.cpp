@@ -1110,6 +1110,12 @@ QPointF EditorViewScene::getMousePos() const
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+	Element *e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
+	if (e && e->isSelected() && !event->modifiers()) {
+		mainWindow()->graphicalModelExplorer()->setFocus();
+	}
+	QGraphicsScene::mouseDoubleClickEvent(event);
+
 	if (event->button() == Qt::LeftButton && !event->modifiers()) {
 		// Double click on a title activates it
 		if (ElementTitle *title = dynamic_cast<ElementTitle*>(itemAt(event->scenePos(), QTransform()))) {
@@ -1121,28 +1127,9 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 		}
 		else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
 			event->accept();
-			Id const outgoingLink = mMVIface->logicalAssistApi()->logicalRepoApi().outgoingExplosion(element->logicalId());
-			if (outgoingLink != Id()) {
-				IdList const graphicalIdsOfOutgoingLinks = mMVIface->graphicalAssistApi()->graphicalIdsByLogicalId(outgoingLink);
-				if (graphicalIdsOfOutgoingLinks.size() > 0) {
-					mainWindow()->activateItemOrDiagram(graphicalIdsOfOutgoingLinks[0]);
-				}
-			} else {
-				QList<Explosion> const explosions = mWindow->editorManager().explosions(element->logicalId());
-				if (!explosions.isEmpty()) {
-					Id const diagramType = mMVIface->logicalAssistApi()->editorManagerInterface().findElementByType(explosions[0].target().element());
-					mMVIface->logicalAssistApi()->createWithExplosion(element->logicalId(), diagramType);
-				}
-			}
+			mExploser->handleDoubleClick(element->logicalId());
 		}
 	}
-
-	Element *e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
-	if (e && e->isSelected() && !event->modifiers()) {
-		mainWindow()->graphicalModelExplorer()->setFocus();
-	}
-
-	QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
 Element *EditorViewScene::getElemAt(QPointF const &position)
@@ -1166,7 +1153,8 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	mWindow = mainWindow;
 	mController = mWindow->controller();
 	mClipboardHandler.setController(mController);
-	mExploser = new Exploser(mainWindow, &mainWindow->models()->logicalModelAssistApi(), this);
+	mExploser = new Exploser(mainWindow, &mainWindow->models()->logicalModelAssistApi()
+			, &mainWindow->models()->graphicalModelAssistApi(), this);
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()
 			<< mWindow->actionCopyElementsOnDiagram()

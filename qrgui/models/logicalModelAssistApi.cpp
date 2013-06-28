@@ -75,15 +75,6 @@ void LogicalModelAssistApi::removeExplosion(Id const &source, Id const &destinat
 	mLogicalModel.mutableApi().removeExplosion(source, destination);
 }
 
-void LogicalModelAssistApi::createWithExplosion(Id const &sourceElement, Id const &elementType)
-{
-	Id const element = createElement(Id::rootId(), elementType);
-	QString const sourceName = mLogicalModel.data(mLogicalModel.indexById(sourceElement), Qt::DisplayRole).toString();
-	QString const typeName = editorManagerInterface().friendlyName(elementType);
-	mLogicalModel.setData(mLogicalModel.indexById(element), sourceName + " " + typeName, Qt::DisplayRole);
-	addExplosion(sourceElement, element);
-}
-
 QVariant LogicalModelAssistApi::property(Id const &id, QString const &name) const
 {
 	return mLogicalModel.mutableApi().property(id, name);
