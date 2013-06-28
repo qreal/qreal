@@ -65,7 +65,7 @@ void ReferenceList::initConnections()
 void ReferenceList::activateElement(QListWidgetItem *item)
 {
 	qReal::Id id = qReal::Id::loadFromString(item->data(Qt::UserRole).toString());
-	mWindow->activateItemOrDiagram(id, false, true);
+	mWindow->activateItemOrDiagram(id, true);
 }
 
 void ReferenceList::valueChanged()
@@ -86,5 +86,5 @@ QString ReferenceList::getNewValue()
 void ReferenceList::restoreSelected()
 {
 	qReal::Id indexId = mWindow->models()->logicalModelAssistApi().idByIndex(mIndex);
-	mWindow->activateItemOrDiagram(indexId, false, true);
+	mWindow->activateItemOrDiagram(indexId, true);
 }

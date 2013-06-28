@@ -160,8 +160,8 @@ public slots:
 	void deleteFromScene();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
-	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
-	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
+	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true);
+	void activateItemOrDiagram(QModelIndex const &idx, bool setSelected = true);
 	virtual void selectItem(Id const &id);
 	virtual void selectItemOrDiagram(Id const &graphicalId);
 

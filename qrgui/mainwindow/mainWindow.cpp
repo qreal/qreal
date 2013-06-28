@@ -359,10 +359,10 @@ void MainWindow::selectItem(Id const &id)
 
 void MainWindow::selectItemOrDiagram(Id const &graphicalId)
 {
-	activateItemOrDiagram(graphicalId, false, true);
+	activateItemOrDiagram(graphicalId, true);
 }
 
-void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isSetSel)
+void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool setSelected)
 {
 	QModelIndex const parent = idx.parent();
 	int const numTab = getTabIndex(idx);
@@ -382,10 +382,10 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isS
 			getCurrentTab()->mvIface()->setRootIndex(parent);
 			// select this item on diagram
 			getCurrentTab()->scene()->clearSelection();
-			Element * const e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElem(idx.data(roles::idRole).value<Id>());
+			EditorViewScene *scene = static_cast<EditorViewScene *>(getCurrentTab()->scene());
+			Element * const e = scene->getElem(idx.data(roles::idRole).value<Id>());
 			if (e) {
-				e->setColorRect(bl);
-				if (isSetSel) {
+				if (setSelected) {
 					e->setSelected(true);
 				}
 			} else {
@@ -395,17 +395,17 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isS
 	}
 }
 
-void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
+void MainWindow::activateItemOrDiagram(Id const &id, bool setSelected)
 {
 	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
-		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
+		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), setSelected);
 		return;
 	}
 
-	// logical ID
+	// id is logical ID
 	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
-	if (graphicalIds.count() != 0) {
-		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(graphicalIds[0]), bl, isSetSel);
+	if (graphicalIds.count()) {
+		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(graphicalIds[0]), setSelected);
 	}
 }
 
