@@ -16,8 +16,10 @@ class ResizeCommand : public NodeElementCommand, public TrackingEntity
 public:
 	/// Creating new instance of command in tracking-based style
 	ResizeCommand(EditorViewScene const *scene, Id const &id);
+
 	/// Creating new instance of command in tracking-based style
 	ResizeCommand(EditorView const *view, Id const &id);
+
 	/// Creating new instance of command in usial style
 	ResizeCommand(EditorViewScene const *scene, Id const &id
 			, QRectF const &oldGeometry, QRectF const &newGeometry);
@@ -39,10 +41,13 @@ protected:
 
 private:
 	void resize(NodeElement * const element, QRectF const &geometry);
+
 	/// Performs geometries snapshot for all selected items hierarchies
 	void makeCommonSnapshot(QMap<Id, QRectF> &target);
+
 	/// Performs geometries snapshot for specified item`s hierarchy: its parent and child items
 	void makeHierarchySnapshot(NodeElement *node, QMap<Id, QRectF> &target);
+
 	/// Performs geometries snapshot for specified item`s children
 	void makeChildrenSnapshot(NodeElement const *element, QMap<Id, QRectF> &target);
 

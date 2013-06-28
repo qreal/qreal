@@ -104,7 +104,7 @@ void ResizeCommand::makeCommonSnapshot(QMap<Id, QRectF> &target)
 {
 	/// This must be invoked even if we start element dragging when it isn`t selected
 	makeHierarchySnapshot(mNode, target);
-	QList<QGraphicsItem *> selectedItems = mNode->scene()->selectedItems();
+	QList<QGraphicsItem *> const selectedItems = mNode->scene()->selectedItems();
 	foreach (QGraphicsItem *item, selectedItems) {
 		NodeElement *node = dynamic_cast<NodeElement *>(item);
 		if (node && node != mNode) {
@@ -141,7 +141,6 @@ QRectF ResizeCommand::geometryOf(NodeElement const *element) const
 {
 	QRectF const geom = element->contentsRect();
 	return geom.translated(element->pos() - geom.topLeft());
-//	return element->contentsRect().translated(element->pos());
 }
 
 QRectF ResizeCommand::geometryBeforeDrag() const
