@@ -9,7 +9,7 @@ WaitForLightBlockGenerator::WaitForLightBlockGenerator()
 }
 
 void WaitForLightBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen
-			, QString const &port, qReal::Id const elementId)
+			, QString const &port, qReal::Id const &elementId)
 {
 	QString const initCode = "ecrobot_set_light_sensor_active(" + port + ");";
 	if (!ListSmartLine::isContains(nxtGen->initCode(), initCode)) {
@@ -20,13 +20,13 @@ void WaitForLightBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *
 }
 
 QList<SmartLine> WaitForLightBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		, qReal::Id const elementId, qReal::Id const logicElementId)
+		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	QList<SmartLine> result;
 
 	QString const port = "NXT_PORT_S" + nxtGen->api()->stringProperty(logicElementId, "Port");
 
-	QString const percents = nxtGen->api()->stringProperty(logicElementId, "Percents");
+	QString const percents = nxtGen->intExpression(logicElementId, "Percents");
 	QString const inequalitySign = transformSign(QString(nxtGen->api()->stringProperty(logicElementId
 			, "Sign").toUtf8()));
 

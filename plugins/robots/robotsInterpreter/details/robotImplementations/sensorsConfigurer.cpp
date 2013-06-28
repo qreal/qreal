@@ -27,7 +27,7 @@ SensorsConfigurer::~SensorsConfigurer()
 	}
 }
 
-void SensorsConfigurer::configureSensor(sensorImplementations::AbstractSensorImplementation *sensor, inputPort::InputPortEnum const &port)
+void SensorsConfigurer::configureSensor(sensorImplementations::AbstractSensorImplementation *sensor, inputPort::InputPortEnum const port)
 {
 	Tracer::debug(tracer::initialization, "SensorsConfigurer::configureSensor", "Configuring sensor on port " + QString::number(port));
 	if (sensor == NULL

@@ -21,7 +21,7 @@ public:
 	~RobotCommunicator();
 
 	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
-	virtual void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize, inputPort::InputPortEnum const &port);
+	virtual void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize, inputPort::InputPortEnum const port);
 	virtual void connect();
 	virtual void disconnect();
 
@@ -31,7 +31,7 @@ public:
 signals:
 	void threadSend(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	void threadSendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
-					, inputPort::InputPortEnum const &port);
+					, inputPort::InputPortEnum const port);
 	void threadConnect(QString const &portName);
 	void threadReconnect(QString const &portName);
 	void threadDisconnect();

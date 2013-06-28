@@ -9,7 +9,7 @@ ClearScreenBlockGenerator::ClearScreenBlockGenerator()
 }
 
 QList<SmartLine> ClearScreenBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		, qReal::Id const elementId, qReal::Id const logicElementId)
+		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	Q_UNUSED(logicElementId)
 	QList<SmartLine> result;

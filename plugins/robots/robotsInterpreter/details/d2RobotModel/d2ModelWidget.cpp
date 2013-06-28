@@ -59,6 +59,9 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 
 	connect(mScene, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(updateGrid()));
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), this, SLOT(alignWalls()));
+
 	setCursorType(static_cast<cursorType::CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
 	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
@@ -521,14 +524,20 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 {
 	QPointF const pos = event->scenePos();
 	if (mCurrentWall) {
-		QPointF oldPos = mCurrentWall->end();
+		QPointF const oldPos = mCurrentWall->end();
 		mCurrentWall->setX2andY2(pos.x(), pos.y());
-		if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
-			mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
+		if (SettingsManager::value("2dShowGrid").toBool()) {
+			mCurrentWall->reshapeBeginWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+			mCurrentWall->reshapeEndWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+		} else {
+			if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
+				mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
+			}
+			if (event->modifiers() & Qt::ShiftModifier) {
+				mCurrentWall->reshapeRectWithShift();
+			}
 		}
-		if (event->modifiers() & Qt::ShiftModifier) {
-			mCurrentWall->reshapeRectWithShift();
-		}
+
 	}
 }
 
@@ -1182,3 +1191,14 @@ void D2ModelWidget::syncronizeSensors()
 	changeSensorType(inputPort::port4, port4);
 	addPort(3);
 }
+
+void D2ModelWidget::alignWalls()
+{
+	foreach (WallItem * const wall, mWorldModel->walls()) {
+		if (mScene->items().contains(wall)) {
+			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+		}
+	}
+}
+
