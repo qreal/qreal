@@ -1968,6 +1968,9 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 					&& SettingsManager::value("SquareLine").toBool()) {
 				squarizeAndAdjustHandler(QPointF());
 			}
+			if (SettingsManager::value("ActivateGrid").toBool()) {
+				alignToGrid();
+			}
 		}
 		return value;
 	default:

@@ -9,6 +9,9 @@
 #include "sensorImplementations/unrealColorSensorImplementation.h"
 #include "sensorImplementations/unrealLightSensorImplementation.h"
 #include "sensorImplementations/unrealEncoderImplementation.h"
+#include "sensorImplementations/unrealSoundSensorImplementation.h"
+#include "sensorImplementations/unrealGyroscopeSensorImplementation.h"
+#include "sensorImplementations/unrealAccelerometerSensorImplementation.h"
 #include "../d2RobotModel/d2RobotModel.h"
 
 namespace qReal {
@@ -27,11 +30,14 @@ public:
 	virtual void stopRobot();
 
 	virtual brickImplementations::UnrealBrickImplementation &brick();
+	virtual sensorImplementations::UnrealTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::UnrealSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::UnrealColorSensorImplementation *colorSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::UnrealLightSensorImplementation *lightSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::UnrealSoundSensorImplementation *soundSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::UnrealAccelerometerSensorImplementation *accelerometerSensor(inputPort::InputPortEnum const port) const;
+	virtual sensorImplementations::UnrealGyroscopeSensorImplementation *gyroscopeSensor(inputPort::InputPortEnum const port) const;
 	virtual displayImplementations::UnrealDisplayImplementation &display();
-	virtual sensorImplementations::UnrealTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::UnrealSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::UnrealColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::UnrealLightSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const;
 
 	virtual motorImplementations::UnrealMotorImplementation &motorA();
 	virtual motorImplementations::UnrealMotorImplementation &motorB();
@@ -62,10 +68,13 @@ private:
 	sensorImplementations::UnrealEncoderImplementation mEncoderB;
 	sensorImplementations::UnrealEncoderImplementation mEncoderC;
 
-	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
-	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
-	virtual void addLightSensor(inputPort::InputPortEnum const &port);
-	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
+	virtual void addTouchSensor(inputPort::InputPortEnum const port);
+	virtual void addSonarSensor(inputPort::InputPortEnum const port);
+	virtual void addLightSensor(inputPort::InputPortEnum const port);
+	virtual void addColorSensor(inputPort::InputPortEnum const port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
+	virtual void addSoundSensor(const inputPort::InputPortEnum port);
+	virtual void addGyroscopeSensor(inputPort::InputPortEnum const port);
+	virtual void addAccelerometerSensor(inputPort::InputPortEnum const port);
 };
 
 }

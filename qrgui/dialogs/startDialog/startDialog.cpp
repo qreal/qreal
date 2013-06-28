@@ -3,8 +3,7 @@
 #include "startDialog.h"
 #include "suggestToCreateDiagramWidget.h"
 #include "recentProjectsListWidget.h"
-#include "../mainwindow/mainWindow.h"
-#include "../models/models.h"
+#include "../../mainwindow/mainWindow.h"
 
 using namespace qReal;
 

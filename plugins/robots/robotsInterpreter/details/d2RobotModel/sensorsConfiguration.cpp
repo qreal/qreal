@@ -10,7 +10,7 @@ SensorsConfiguration::SensorsConfiguration()
 	mSensors.resize(4);
 }
 
-void SensorsConfiguration::setSensor(inputPort::InputPortEnum const &port
+void SensorsConfiguration::setSensor(inputPort::InputPortEnum const port
 		, sensorType::SensorTypeEnum const &type
 		, QPointF const &position
 		, qreal const &direction)
@@ -18,32 +18,32 @@ void SensorsConfiguration::setSensor(inputPort::InputPortEnum const &port
 	mSensors[port] = SensorInfo(position, direction, type);
 }
 
-void SensorsConfiguration::setPosition(inputPort::InputPortEnum const &port, QPointF const &position)
+void SensorsConfiguration::setPosition(inputPort::InputPortEnum const port, QPointF const &position)
 {
 	mSensors[port].setPosition(position);
 }
 
-QPointF SensorsConfiguration::position(inputPort::InputPortEnum const &port) const
+QPointF SensorsConfiguration::position(inputPort::InputPortEnum const port) const
 {
 	return mSensors[port].position();
 }
 
-void SensorsConfiguration::setDirection(inputPort::InputPortEnum const &port, qreal direction)
+void SensorsConfiguration::setDirection(inputPort::InputPortEnum const port, qreal direction)
 {
 	mSensors[port].setDirection(direction);
 }
 
-qreal SensorsConfiguration::direction(inputPort::InputPortEnum const &port) const
+qreal SensorsConfiguration::direction(inputPort::InputPortEnum const port) const
 {
 	return mSensors[port].direction();
 }
 
-sensorType::SensorTypeEnum SensorsConfiguration::type(inputPort::InputPortEnum const &port) const
+sensorType::SensorTypeEnum SensorsConfiguration::type(inputPort::InputPortEnum const port) const
 {
 	return mSensors[port].type();
 }
 
-void SensorsConfiguration::clearSensor(inputPort::InputPortEnum const &port)
+void SensorsConfiguration::clearSensor(inputPort::InputPortEnum const port)
 {
 	mSensors[port] = SensorInfo();
 }

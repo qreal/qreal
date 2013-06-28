@@ -1615,6 +1615,9 @@ void EditorViewScene::updateEdgeElements()
 		EdgeElement* element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
 			element->redrawing(QPoint());
+			if (SettingsManager::value("ActivateGrid").toBool()) {
+				element->alignToGrid();
+			}
 		}
 	}
 }

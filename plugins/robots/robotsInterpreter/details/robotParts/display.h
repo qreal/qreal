@@ -11,6 +11,7 @@ namespace robotParts {
 class Display : public QObject
 {
 	Q_OBJECT
+
 public:
 	explicit Display(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl);
 	virtual ~Display();

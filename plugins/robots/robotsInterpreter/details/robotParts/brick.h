@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+
 #include "../robotImplementations/brickImplementations/abstractBrickImplementation.h"
 #include "../../../../../qrkernel/ids.h"
 
@@ -13,6 +14,7 @@ namespace robotParts {
 class Brick : public QObject
 {
 	Q_OBJECT
+
 public:
 	explicit Brick(robotImplementations::brickImplementations::AbstractBrickImplementation *brickImpl);
 	~Brick();
