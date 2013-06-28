@@ -51,15 +51,18 @@ void ResizeHandler::sortChildrenIfNeeded() const
 		return;
 	}
 
-	int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
-	qreal curChildY = sizeOfForestalling + mTitlePadding;
+    QVector<int> const sizeOfForestalling = mElementImpl->sizeOfForestalling();
+    int forestallingTop = sizeOfForestalling[1];
+    int forestallingLeft = sizeOfForestalling[0];
+
+    qreal curChildY = forestallingTop + mTitlePadding;
 	qreal const maxChildWidthValue = maxChildWidth();
 
 	foreach (QGraphicsItem * const childItem, mResizingNode->childItems()) {
 		QGraphicsRectItem * const placeholder = mResizingNode->placeholder();
 
 		if(placeholder != NULL && childItem == placeholder) {
-			QRectF const rect(sizeOfForestalling, curChildY,
+            QRectF const rect(forestallingLeft, curChildY,
 					maxChildWidthValue, placeholder->rect().height());
 			placeholder->setRect(rect);
 			curChildY += placeholder->rect().height() + mChildSpacing;
@@ -74,7 +77,7 @@ void ResizeHandler::sortChildrenIfNeeded() const
 				mElementImpl->maximizesChildren()
 				? maxChildWidthValue
 				: curItem->contentsRect().width();
-		QRectF const rect(sizeOfForestalling, curChildY, necessaryWidth, curItem->contentsRect().height());
+        QRectF const rect(forestallingLeft, curChildY, necessaryWidth, curItem->contentsRect().height());
 
 		curItem->setGeometry(rect);
 		curItem->storeGeometry();
@@ -135,7 +138,9 @@ void ResizeHandler::resizeAccordingToChildren(QRectF &newContents, QPointF &newP
 QPointF ResizeHandler::childDeflection() const
 {
 	QPointF childDeflectionVector = QPointF(0, 0);
-	int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
+    QVector<int> const sizeOfForestalling = mElementImpl->sizeOfForestalling();
+    int forestallingTop = sizeOfForestalling[1];
+    int forestallingLeft = sizeOfForestalling[0];
 
 	foreach (const QGraphicsItem * const childItem, mResizingNode->childItems()) {
 		const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
@@ -143,8 +148,8 @@ QPointF ResizeHandler::childDeflection() const
 			continue;
 		}
 
-		childDeflectionVector.setX(qMin(curItem->pos().x() - sizeOfForestalling, childDeflectionVector.x()));
-		childDeflectionVector.setY(qMin(curItem->pos().y() - sizeOfForestalling, childDeflectionVector.y()));
+        childDeflectionVector.setX(qMin(curItem->pos().x() - forestallingLeft, childDeflectionVector.x()));
+        childDeflectionVector.setY(qMin(curItem->pos().y() - forestallingTop, childDeflectionVector.y()));
 	}
 
 	return childDeflectionVector;
@@ -164,7 +169,9 @@ void ResizeHandler::printChildPos() const
 
 void ResizeHandler::moveChildren(QPointF const &shift) const
 {
-	qreal const sizeOfForestalling = mElementImpl->sizeOfForestalling();
+    QVector<int> const sizeOfForestalling = mElementImpl->sizeOfForestalling();
+    qreal forestallingTop = sizeOfForestalling[1];
+    qreal forestallingLeft = sizeOfForestalling[0];
 
 	foreach (QGraphicsItem * const childItem, mResizingNode->childItems()) {
 		NodeElement * const curItem = dynamic_cast<NodeElement * const>(childItem);
@@ -174,8 +181,8 @@ void ResizeHandler::moveChildren(QPointF const &shift) const
 
 		curItem->moveBy(shift.x(), shift.y());
 
-		QPointF pos(qMax(curItem->pos().x(), sizeOfForestalling)
-				, qMax(curItem->pos().y(), sizeOfForestalling));
+        QPointF pos(qMax(curItem->pos().x(), forestallingLeft)
+                , qMax(curItem->pos().y(), forestallingTop));
 		///returns object to the parent area
 		curItem->setPos(pos);
 	}
@@ -183,7 +190,7 @@ void ResizeHandler::moveChildren(QPointF const &shift) const
 
 void ResizeHandler::expandByChildren(QRectF &contents) const
 {
-	int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
+    QVector<int> const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 
 	foreach (const QGraphicsItem * const childItem, mResizingNode->childItems()) {
 		QRectF curChildItemBoundingRect = childBoundingRect(childItem, contents);
@@ -196,13 +203,13 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 		// bad behaviour when dropping one element to another
 		curChildItemBoundingRect.translate(childItem->scenePos() - mResizingNode->scenePos());
 
-		contents.setLeft(qMin(curChildItemBoundingRect.left() - sizeOfForestalling
+        contents.setLeft(qMin(curChildItemBoundingRect.left() - sizeOfForestalling[0]
 						, contents.left()));
-		contents.setRight(qMax(curChildItemBoundingRect.right() + sizeOfForestalling
+        contents.setRight(qMax(curChildItemBoundingRect.right() + sizeOfForestalling[2]
 						, contents.right()));
-		contents.setTop(qMin(curChildItemBoundingRect.top() - sizeOfForestalling
+        contents.setTop(qMin(curChildItemBoundingRect.top() - sizeOfForestalling[1]
 						, contents.top()));
-		contents.setBottom(qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling
+        contents.setBottom(qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling[3]
 						, contents.bottom()));
 	}
 }
@@ -214,9 +221,9 @@ QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, Q
 	if (childItem == mResizingNode->placeholder()) {
 		boundingRect = childItem->boundingRect();
 
-		int const sizeOfForestalling = mElementImpl->sizeOfForestalling();
-		boundingRect.setLeft(contents.left() + sizeOfForestalling);
-		boundingRect.setRight(contents.right() - sizeOfForestalling);
+        QVector<int> const sizeOfForestalling = mElementImpl->sizeOfForestalling();
+        boundingRect.setLeft(contents.left() + sizeOfForestalling[0]);
+        boundingRect.setRight(contents.right() - sizeOfForestalling[2]);
 
 		return boundingRect;
 	}

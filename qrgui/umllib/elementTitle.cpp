@@ -7,8 +7,8 @@
 
 using namespace qReal;
 
-ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
-	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false)
+ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation)
+    : mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
 	, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false)
 {
 	setTitleFont();
@@ -16,8 +16,8 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
 	setHtml(text);
 }
 
-ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly)
-	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false)
+ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
+    : mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
 	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
 {
 	setTitleFont();
@@ -157,14 +157,14 @@ void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	QGraphicsTextItem::paint(painter, option, widget);
 }
 
-ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y, QString const &text)
+ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y, QString const &text, qreal rotation)
 {
-	return new ElementTitle(x, y, text);
+    return new ElementTitle(x, y, text, rotation);
 }
 
-ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y,QString const &binding, bool readOnly)
+ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y,QString const &binding, bool readOnly, qreal rotation)
 {
-	return new ElementTitle(x, y, binding, readOnly);
+    return new ElementTitle(x, y, binding, readOnly, rotation);
 }
 
 void ElementTitle::transform(QRectF const& contents)
@@ -183,5 +183,7 @@ void ElementTitle::transform(QRectF const& contents)
 		y = mPoint.y() * contents.height();
 
 	setPos(x, y);
+
+    setRotation(mRotation);
 }
 

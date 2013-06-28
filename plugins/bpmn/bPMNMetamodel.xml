@@ -348,7 +348,7 @@
                         <line stroke-style="solid" fill-style="none" stroke-width="0" y1="0" y2="150" fill="#ffffff" x1="30a" stroke="#000000" x2="30a"/>
                     </picture>
                     <labels>
-                        <label x="10" y="33" textBinded="text"/>
+                        <label x="2" y="145" textBinded="text" rotation="-90"/>
                     </labels>
                     <ports/>
                     <nonResizeable/>
@@ -373,7 +373,7 @@
                         <line stroke-style="solid" fill-style="none" stroke-width="0" y1="0" fill="#ffffff" y2="150" stroke="#000000" x1="30a" x2="30a"/>
                     </picture>
                     <labels>
-                        <label x="2" y="46" textBinded="text"/>
+                        <label x="2" y="145" textBinded="text" rotation="-90"/>
                     </labels>
                     <ports/>
                 </graphics>
@@ -381,7 +381,7 @@
                     <container>
                         <contains type="Lane"/>
                         <properties>
-                            <forestalling size="0"/>
+                            <forestalling size="30,0,0,0"/>
                             <childrenForestalling size="0"/>
                             <sortContainer/>
                             <banChildrenMove/>
@@ -395,5 +395,22 @@
                 </logic>
             </node>
         </graphicTypes>
+        <palette>
+            <group name="Swimlanes">
+                <element name="Pool"/>
+                <element name="Lane"/>
+            </group>
+            <group name="Events">
+                <element name="StartEvent"/>
+                <element name="IntermediateEvent"/>
+                <element name="EndEvent"/>
+            </group>
+            <group name="Gateways">
+                <element name="Gateway"/>
+            </group>
+            <group name="Activities">
+                <element name="Task"/>
+            </group>
+        </palette>
     </diagram>
 </metamodel>

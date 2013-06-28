@@ -9,7 +9,7 @@
 
 using namespace utils;
 
-GraphicType::ContainerProperties::ContainerProperties() : isSortingContainer(false), sizeOfForestalling(0),
+GraphicType::ContainerProperties::ContainerProperties() : isSortingContainer(false), sizeOfForestalling(4, 0),
 	sizeOfChildrenForestalling(0), hasMovableChildren(true), minimizesToChildren(false), maximizesChildren(false)
 {}
 
@@ -198,7 +198,7 @@ bool GraphicType::initContainerProperties()
 		} else if (childElement.tagName() == "forestalling") {
 			QString sizeAttribute = childElement.attribute("size");
 			bool isSizeOk = false;
-			mContainerProperties.sizeOfForestalling = sizeAttribute.toInt(&isSizeOk);
+            mContainerProperties.sizeOfForestalling = toIntVector(sizeAttribute, &isSizeOk);
 			if (!isSizeOk)
 				return false;
 		} else if (childElement.tagName() == "childrenForestalling") {
@@ -595,4 +595,23 @@ void GraphicType::generateParentsMapping(utils::OutFile &out)
 		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\"" << NameNormalizer::normalize(parent) << "\"))\n";
 	}
 	out() << "\t;\n";
+}
+
+QVector<int> GraphicType::toIntVector(QString const &s, bool *isOk) const
+{
+    QStringList strings = s.split(',');
+    QVector<int> result(4, 0);
+
+    if (strings.size() != 4) {
+        *isOk = false;
+        return result;
+    }
+
+    for (int i = 0; i < 4; i++) {
+        result[i] = strings[i].toInt(isOk);
+        if (!*isOk)
+            return result;
+    }
+
+    return result;
 }

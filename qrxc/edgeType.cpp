@@ -214,7 +214,7 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tbool isContainer() const { return false; }\n"
 	<< "\t\tbool isDividable() const { return " << mIsDividable << "; }\n"
 	<< "\t\tbool isSortingContainer() const { return false; }\n"
-	<< "\t\tint sizeOfForestalling() const { return 0; }\n"
+    << "\t\tQVector<int> sizeOfForestalling() const { return QVector<int>(4, 0); }\n"
 	<< "\t\tint sizeOfChildrenForestalling() const { return 0; }\n"
 	<< "\t\tbool hasMovableChildren() const { return false; }\n"
 	<< "\t\tbool minimizesToChildren() const { return false; }\n"
