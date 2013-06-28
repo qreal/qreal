@@ -88,7 +88,7 @@ bool ProjectManager::open(QString const &fileName)
 	// file may become incompatible with the application. This will lead to
 	// a fail on the next start.
 	// 2. autosavePauser was first starts a timer of Autosaver
-	Autosaver::Pauser const autosavePauser = mAutosaver->pauser();
+	Autosaver::Pauser const autosavePauser(*mAutosaver);
 	Q_UNUSED(autosavePauser)
 
 	if (!fileName.isEmpty() && !saveFileExists(fileName)) {
@@ -202,7 +202,8 @@ void ProjectManager::refreshApplicationStateAfterOpen()
 void ProjectManager::refreshWindowTitleAccordingToSaveFile()
 {
 	QString const windowTitle = mMainWindow->toolManager().customizer()->windowTitle();
-	mMainWindow->setWindowTitle(windowTitle + " " + mSaveFilePath);
+	QString const saveFile = mAutosaver->isTempFile(mSaveFilePath) ? tr("Unsaved project") : mSaveFilePath;
+	mMainWindow->setWindowTitle(windowTitle + " " + saveFile);
 	refreshTitleModifiedSuffix();
 }
 

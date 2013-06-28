@@ -834,7 +834,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="550"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="558"/>
@@ -844,7 +844,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="569"/>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="637"/>
@@ -3902,17 +3902,22 @@
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="357"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="205"/>
+        <source>Unsaved project</source>
+        <translation>Несохраненный проект</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="358"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="358"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="359"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="358"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="359"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
@@ -3929,23 +3934,23 @@
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="304"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="305"/>
         <source>Select file to save current metamodel to</source>
         <translation>Выберите файл для сохранения метамодели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="310"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="311"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения модели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="329"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="341"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="330"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="342"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="211"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="212"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>
@@ -4001,7 +4006,7 @@
 <context>
     <name>qReal::StartDialog</name>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="71"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="70"/>
         <source>Start page</source>
         <oldsource>Start Page</oldsource>
         <translation>Начальная страница</translation>
@@ -4015,17 +4020,17 @@
         <translation type="obsolete">Новый проект на базе диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="24"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="23"/>
         <source>&amp;Recent projects</source>
         <translation>&amp;Недавние проекты</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="29"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="28"/>
         <source>&amp;New project with diagram</source>
         <translation>Новый проект на базе &amp;диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="54"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="53"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
@@ -4042,35 +4047,35 @@
         <translation type="obsolete">&amp;Открыть проект</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="36"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="35"/>
         <source>&amp;Open interpreted diagram</source>
         <translation>Открыть интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="37"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="36"/>
         <source>&amp;Create interpreted diagram</source>
         <translation>&amp;Создать интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="61"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="60"/>
         <source>Open existing project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="134"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="133"/>
         <source>Select file with metamodel to open</source>
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="173"/>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="175"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="172"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="174"/>
         <source>Enter the diagram name:</source>
         <oldsource>Enter the editor name:</oldsource>
         <translation>Введите имя диаграммы:</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="173"/>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="175"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="172"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="174"/>
         <source>diagram name:</source>
         <translation>имя диаграммы:</translation>
     </message>

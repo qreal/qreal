@@ -1,5 +1,8 @@
 #include "fileSystemUtils.h"
+
+#if defined(Q_OS_WIN)
 #include <windows.h>
+#endif
 
 using namespace qReal;
 
