@@ -4,7 +4,6 @@
 #include "blocks/timerBlock.h"
 #include "blocks/beepBlock.h"
 #include "blocks/initialBlock.h"
-#include "blocks/initialBlockWithPorts.h"
 #include "blocks/finalBlock.h"
 #include "blocks/dummyBlock.h"
 #include "blocks/waitForTouchSensorBlock.h"
@@ -29,6 +28,9 @@
 #include "blocks/waitForEncoderBlock.h"
 #include "blocks/nullificationEncoderBlock.h"
 #include "blocks/waitForLightSensorBlock.h"
+#include "blocks/waitForSoundSensorBlock.h"
+#include "blocks/waitforGyroscopeSensorBlock.h"
+#include "blocks/waitForAccelerometerBlock.h"
 #include "blocks/commentBlock.h"
 
 using namespace qReal;
@@ -59,8 +61,6 @@ Block *BlocksFactory::block(Id const &element)
 	Block * newBlock = NULL;
 	if (elementMetatypeIs(element, "InitialNode")) {
 		newBlock = new InitialBlock(*mRobotModel);
-	} else if (elementMetatypeIs(element, "InitialBlock")) {
-		newBlock = new InitialBlockWithPorts(*mRobotModel);
 	} else if (elementMetatypeIs(element, "FinalNode")) {
 		newBlock = new FinalBlock();
 	} else if (elementMetatypeIs(element, "Beep")) {
@@ -97,6 +97,12 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new NullificationEncoderBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForLight")) {
 		newBlock = new WaitForLightSensorBlock(mRobotModel);
+	} else if (elementMetatypeIs(element, "WaitForSound")) {
+		newBlock = new WaitForSoundSensorBlock(mRobotModel);
+	} else if (elementMetatypeIs(element, "WaitForGyroscope")) {
+		newBlock = new WaitForGyroscopeSensorBlock(mRobotModel);
+	} else if (elementMetatypeIs(element,"WaitForAccelerometer")) {
+		newBlock = new WaitForAccelerometerSensorBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "CommentBlock")) {
 		newBlock = new CommentBlock();
 	} else if (elementMetatypeIs(element, "WaitForButtons")) {

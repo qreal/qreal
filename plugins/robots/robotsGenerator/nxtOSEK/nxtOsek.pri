@@ -7,6 +7,11 @@ HEADERS += \
 	nxtOSEK/generators/functionElementGenerator.h \
 	nxtOSEK/generators/ifElementGenerator.h \
 	nxtOSEK/generators/loopElementGenerator.h \
+	nxtOSEK/generators/listsmartline.h \
+	nxtOSEK/generators/variables.h \
+	nxtOSEK/generators/commentElementGenerator.h \
+	nxtOSEK/generators/imageGenerator.h \
+	nxtOSEK/generators/simpleElementFactory.h \
 	nxtOSEK/generators/simpleElementGenerator.h \
 	nxtOSEK/generators/simpleElements/abstractSimpleElementGenerator.h \
 	nxtOSEK/generators/simpleElements/enginesStopGenerator.h \
@@ -24,21 +29,19 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/waitForTouchSensorBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/variableInitGenerator.h \
 	nxtOSEK/generators/simpleElements/balanceInitGenerator.h \
-	nxtOSEK/generators/simpleElementFactory.h \
 	nxtOSEK/generators/simpleElements/initialNodeGenerator.h \
 	nxtOSEK/generators/simpleElements/enginesGenerator.h \
-	nxtOSEK/generators/listsmartline.h \
+	nxtOSEK/generators/simpleElements/waitForSoundBlockGenerator.h \
+	nxtOSEK/generators/simpleElements/waitForGyroscopeBlockGenerator.h \
+	nxtOSEK/generators/simpleElements/waitForAccelerometerBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/drawPixelBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/waitForButtonsBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/drawLineBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/drawCircleBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/printTextBlockGenerator.h \
-	nxtOSEK/generators/variables.h \
-	nxtOSEK/generators/commentElementGenerator.h \
 	nxtOSEK/generators/simpleElements/drawRectBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/clearScreenBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/drawBlockGenerator.h \
-	nxtOSEK/generators/imageGenerator.h \
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
@@ -49,6 +52,11 @@ SOURCES += \
 	nxtOSEK/generators/functionElementGenerator.cpp \
 	nxtOSEK/generators/ifElementGenerator.cpp \
 	nxtOSEK/generators/loopElementGenerator.cpp \
+	nxtOSEK/generators/listsmartline.cpp \
+	nxtOSEK/generators/variables.cpp \
+	nxtOSEK/generators/imageGenerator.cpp \
+	nxtOSEK/generators/commentElementGenerator.cpp \
+	nxtOSEK/generators/simpleElementFactory.cpp \
 	nxtOSEK/generators/simpleElementGenerator.cpp \
 	nxtOSEK/generators/simpleElements/abstractSimpleElementGenerator.cpp \
 	nxtOSEK/generators/simpleElements/enginesStopGenerator.cpp \
@@ -66,18 +74,16 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/waitForTouchSensorBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/variableInitGenerator.cpp \
 	nxtOSEK/generators/simpleElements/balanceInitGenerator.cpp \
-	nxtOSEK/generators/simpleElementFactory.cpp \
 	nxtOSEK/generators/simpleElements/initialNodeGenerator.cpp \
 	nxtOSEK/generators/simpleElements/enginesGenerator.cpp \
-	nxtOSEK/generators/listsmartline.cpp \
+	nxtOSEK/generators/simpleElements/waitForSoundBlockGenerator.cpp \
+	nxtOSEK/generators/simpleElements/waitForGyroscopeBlockGenerator.cpp \
+	nxtOSEK/generators/simpleElements/waitForAccelerometerBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/drawPixelBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/waitForButtonsBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/drawLineBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/drawCircleBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/printTextBlockGenerator.cpp \
-	nxtOSEK/generators/variables.cpp \
-	nxtOSEK/generators/commentElementGenerator.cpp \
 	nxtOSEK/generators/simpleElements/drawRectBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/clearScreenBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/drawBlockGenerator.cpp \
-	nxtOSEK/generators/imageGenerator.cpp \

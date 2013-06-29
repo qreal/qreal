@@ -16,19 +16,19 @@ class SensorsConfiguration
 {
 public:
 	SensorsConfiguration();
-	void setSensor(inputPort::InputPortEnum const &port
+	void setSensor(inputPort::InputPortEnum const port
 			, sensorType::SensorTypeEnum const &type
 			, QPointF const &position
 			, qreal const &direction);
 
-	void setPosition(inputPort::InputPortEnum const &port, QPointF const &position);
-	QPointF position(inputPort::InputPortEnum const &port) const;
+	void setPosition(inputPort::InputPortEnum const port, QPointF const &position);
+	QPointF position(inputPort::InputPortEnum const port) const;
 
-	void setDirection(inputPort::InputPortEnum const &port, qreal direction);
-	qreal direction(inputPort::InputPortEnum const &port) const;
+	void setDirection(inputPort::InputPortEnum const port, qreal direction);
+	qreal direction(inputPort::InputPortEnum const port) const;
 
-	sensorType::SensorTypeEnum type(inputPort::InputPortEnum const &port) const;
-	void clearSensor(inputPort::InputPortEnum const &port);
+	sensorType::SensorTypeEnum type(inputPort::InputPortEnum const port) const;
+	void clearSensor(inputPort::InputPortEnum const port);
 
 	void serialize(QDomElement &robot, QDomDocument &document) const;
 	void deserialize(QDomElement const &element);

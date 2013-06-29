@@ -15,7 +15,7 @@ AbstractSimpleElementGenerator::~AbstractSimpleElementGenerator()
 }
 
 QList<SmartLine> AbstractSimpleElementGenerator::convertedCode(NxtOSEKRobotGenerator *nxtGen
-		, const qReal::Id elementId, const qReal::Id logicElementId)
+		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	QString const elementType = elementId.element();
 	AbstractSimpleElementGenerator *currentSimpleElement = SimpleElementFactory::generator(elementType);
