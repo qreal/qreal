@@ -777,7 +777,7 @@ void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
 	// Here's the point where all interested entities are notified about sensor deletion,
 	// so if this code gets broken or worked around, we'll have some almost undebuggable
 	// dangling pointers in scene and in robot item. But what could possibly go wrong?
-	if (!mSensors[port]) {
+	if (!mSensors[port] || !mRobot) {
 		return;
 	}
 
