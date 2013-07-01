@@ -339,6 +339,24 @@
                     <properties>
                         <property type="string" displayedName="Text" name="Text"/>
                     </properties>
+                    <possibleEdges>
+                        <possibleEdge beginName="StartEvent" directed="true" endName="EndEvent"/>
+                        <possibleEdge beginName="StartEvent" directed="true" endName="Gateway"/>
+                        <possibleEdge beginName="StartEvent" directed="true" endName="Task"/>
+                        <possibleEdge beginName="StartEvent" directed="true" endName="IntermediateEvent"/>
+                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="Task"/>
+                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="Gateway"/>
+                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="EndEvent"/>
+                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="IntermediateEvent"/>
+                        <possibleEdge beginName="Task" directed="true" endName="Task"/>
+                        <possibleEdge beginName="Task" directed="true" endName="Gateway"/>
+                        <possibleEdge beginName="Task" directed="true" endName="EndEvent"/>
+                        <possibleEdge beginName="Task" directed="true" endName="IntermediateEvent"/>
+                        <possibleEdge beginName="Gateway" directed="true" endName="Task"/>
+                        <possibleEdge beginName="Gateway" directed="true" endName="Gateway"/>
+                        <possibleEdge beginName="Gateway" directed="true" endName="EndEvent"/>
+                        <possibleEdge beginName="Gateway" directed="true" endName="IntermediateEvent"/>
+                    </possibleEdges>
                 </logic>
             </edge>
             <node name="Lane" displayedName="Lane">
@@ -410,6 +428,9 @@
             </group>
             <group name="Activities">
                 <element name="Task"/>
+            </group>
+            <group name="Flow Objects">
+                <element name="SequenceFlow"/>
             </group>
         </palette>
     </diagram>
