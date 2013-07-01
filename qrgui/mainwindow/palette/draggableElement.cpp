@@ -4,7 +4,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "draggableElement.h"
-#include "mainWindow.h"
+#include "../mainWindow.h"
 #include "paletteTree.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../dialogs/metamodelingOnFly/propertiesDialog.h"
@@ -26,13 +26,13 @@ DraggableElement::DraggableElement(
 		, EditorManagerInterface &editorManagerProxy
 		, QWidget *parent
 		)
-		: QWidget(parent)
-		, mId(id)
-		, mIcon(icon)
-		, mPreferredSize(preferredSize)
-		, mText(name)
-		, mEditorManagerProxy(editorManagerProxy)
-		, mMainWindow(mainWindow)
+	: QWidget(parent)
+	, mId(id)
+	, mIcon(icon)
+	, mPreferredSize(preferredSize)
+	, mText(name)
+	, mEditorManagerProxy(editorManagerProxy)
+	, mMainWindow(mainWindow)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 4, 0, 4);

@@ -7,21 +7,21 @@ HEADERS += \
 	mainwindow/error.h \
 	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
-	mainwindow/paletteTree.h \
 	mainwindow/findManager.h \
 	mainwindow/dotRunner.h \
 	mainwindow/splashScreen.h \
-	mainwindow/projectManager/projectManagementInterface.h \
-	mainwindow/projectManager/projectManager.h \
 	mainwindow/tabWidget.h \
 	mainwindow/miniMap.h \
 	mainwindow/referenceList.h \
-	mainwindow/projectManager/autosaver.h \
 	mainwindow/externBrowser.h \
-	mainwindow/draggableElement.h \
-	mainwindow/paletteTreeWidget.h \
 	mainwindow/qscintillaTextEdit.h \
-	mainwindow/shapeEdit/visibilityValueWidget.h \
+	mainwindow/projectManager/autosaver.h \
+	mainwindow/projectManager/projectManagementInterface.h \
+	mainwindow/projectManager/projectManager.h \
+	mainwindow/palette/paletteTree.h \
+	mainwindow/palette/paletteTreeWidget.h \
+	mainwindow/palette/draggableElement.h \
+	mainwindow/palette/paletteTreeWidgets.h \
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -29,19 +29,19 @@ SOURCES += \
 	mainwindow/errorReporter.cpp \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp \
-	mainwindow/paletteTree.cpp \
 	mainwindow/findManager.cpp \
 	mainwindow/dotRunner.cpp \
 	mainwindow/splashScreen.cpp \
-	mainwindow/projectManager/projectManager.cpp \
 	mainwindow/tabWidget.cpp \
 	mainwindow/miniMap.cpp \
 	mainwindow/referenceList.cpp \
-	mainwindow/projectManager/autosaver.cpp \
-	mainwindow/draggableElement.cpp \
-	mainwindow/paletteTreeWidget.cpp \
-	mainwindow/shapeEdit/visibilityValueWidget.cpp \
 	mainwindow/qscintillaTextEdit.cpp \
+	mainwindow/projectManager/autosaver.cpp \
+	mainwindow/projectManager/projectManager.cpp \
+	mainwindow/palette/paletteTree.cpp \
+	mainwindow/palette/paletteTreeWidget.cpp \
+	mainwindow/palette/draggableElement.cpp \
+	mainwindow/palette/paletteTreeWidgets.cpp \
 
 win32 {
 	HEADERS += \
@@ -92,6 +92,7 @@ HEADERS += \
 	mainwindow/shapeEdit/path.h \
 	mainwindow/shapeEdit/image.h \
 	mainwindow/shapeEdit/visibilityConditionsDialog.h \
+	mainwindow/shapeEdit/visibilityValueWidget.h \
 
 SOURCES += \
 	mainwindow/shapeEdit/shapeEdit.cpp \
@@ -113,6 +114,7 @@ SOURCES += \
 	mainwindow/shapeEdit/textPicture.cpp \
 	mainwindow/shapeEdit/image.cpp \
 	mainwindow/shapeEdit/visibilityConditionsDialog.cpp \
+	mainwindow/shapeEdit/visibilityValueWidget.cpp \
 
 FORMS += \
 	mainwindow/shapeEdit/shapeEdit.ui \
