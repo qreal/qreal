@@ -12,7 +12,7 @@
 #include "sensorImplementations/nullLightSensorImplementation.h"
 #include "sensorImplementations/nullSoundSensorImplementation.h"
 #include "sensorImplementations/nullEncoderImplementation.h"
-#include "sensorImplementations/nullGyroscopeSensorImplementations.h"
+#include "sensorImplementations/nullGyroscopeSensorImplementation.h"
 #include "sensorImplementations/nullAccelerometerSensorImplementation.h"
 
 namespace qReal {

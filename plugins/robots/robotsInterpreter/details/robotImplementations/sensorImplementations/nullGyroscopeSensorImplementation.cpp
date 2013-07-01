@@ -1,4 +1,4 @@
-#include "nullGyroscopeSensorImplementations.h"
+#include "nullGyroscopeSensorImplementation.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
