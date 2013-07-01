@@ -29,7 +29,7 @@ class EdgeElement : public Element
 	Q_OBJECT
 
 public:
-	EdgeElement(ElementImpl *impl);
+    EdgeElement(ElementImpl *impl);
 	virtual ~EdgeElement();
 
 	void updateData();
@@ -94,11 +94,6 @@ public:
 	// redrawing of this edgeElement in squarize
 	void redrawing(QPointF const &pos);
 
-	/// correct end of mLine for beauty link's drawing, creating the beauty link without node's intersections
-	void correctArrow();
-	/// correct begin of mLine for beauty link's drawing, creating the beauty link without node's intersections
-	void correctInception();
-
 	void setGraphicApiPos();
 
 	bool isLoop();
@@ -133,17 +128,15 @@ private slots:
 	void addPointHandler(QPointF const &pos);
 	/// add the closest point on edge to the parameter`s point
 	void addClosestPointHandler(QPointF const &pos);
-	void delPointHandler(QPointF const &pos);
-	void squarizeHandler(QPointF const &pos);
+    void delPointHandler(QPointF const &pos);
 	void minimizeHandler(QPointF const &pos);
 	/// delete Segment with nearest with pos ends
 	void deleteSegmentHandler(QPointF const &pos);
-	// redraw in rectangular good link
-	void squarizeAndAdjustHandler(QPointF const &pos);
-	/// change link's direction
-	void reverseHandler(QPointF const &pos);
-	/// mIsVerticalChanging = !mIsVerticalChanging
-	void changeSquarizeType(QPointF const &pos);
+
+    void squarizeAndAdjustHandler();
+
+    /// change link's direction
+    void reverseHandler(QPointF const &pos);
 
 private:
 	enum DragPointType {
@@ -152,18 +145,27 @@ private:
 		noPort = -1
 	};
 
-	enum LineDirection {
-		top = -1,
-		bottom = 1,
-		left = -2,
-		right = 2,
-		topInsideNode = -3,
-		bottomInsideNode = 3,
-		leftInsideNode = -4,
-		rightInsideNode = 4
-	};
+    enum LineDirection {
+            top = -1,
+            bottom = 1,
+            left = -2,
+            right = 2,
+            topInsideNode = -3,
+            bottomInsideNode = 3,
+            leftInsideNode = -4,
+            rightInsideNode = 4
+    };
 
-	// when (mSrc == mDst && mDst && mLine <= 3)
+    enum LineType {
+            Vertical,
+            Horizontal,
+            VerticalTurn,
+            HorizontalTurn
+    };
+
+    enum NodeSide { Left, Top, Right, Bottom };
+
+    // when (mSrc == mDst && mDst && mLine <= 3)
 	void createLoopEdge();
 	// connectToPort for self-closing line (mSrc == mDst && mDst)
 	void connectLoopEdge(NodeElement *newMaster);
@@ -190,8 +192,15 @@ private:
 	qreal lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const;
 
 	void delCloseLinePoints();
-
 	void delClosePoints();
+
+    void squarize();
+    int defineType();
+    int defineSide(qreal port);
+    void verticalSquareLine();
+    void horizontalSquareLine();
+    void verticalTurningSquareLine();
+    void horizontalTurningSquareLine();
 
 	bool removeOneLinePoints(int startingPoint);
 
@@ -200,13 +209,11 @@ private:
 	QPointF* haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4);
 
 	// these methods are called before the push action in the context menu
-	bool delPointActionIsPossible(const QPointF &pos);
-	bool squarizeActionIsPossible();
+    bool delPointActionIsPossible(const QPointF &pos);
 	bool addPointActionIsPossible(const QPointF &pos);
 	bool delSegmentActionIsPossible(const QPointF &pos);
 	bool minimizeActionIsPossible();
-	bool reverseActionIsPossible();
-	bool changeSquarizeTypeActionIsPossible();
+    bool reverseActionIsPossible();
 
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
@@ -224,29 +231,17 @@ private:
 	QColor mColor;
 
 	ContextMenuAction mAddPointAction;
-	ContextMenuAction mDelPointAction;
-	ContextMenuAction mSquarizeAction;
+    ContextMenuAction mDelPointAction;
 	ContextMenuAction mMinimizeAction;
 	ContextMenuAction mDelSegmentAction;
-	ContextMenuAction mReverseAction;
-	ContextMenuAction mChangeSquarizeTypeAction;
-
-	void edgeArrowOverlapsNodeCase(int direct);
-	void edgeArrowOverlapsNodeUprightCase(int direct);
-	void edgeArrowOverlapsNodeHorizontallyCase(int direct);
-
-	void edgeInceptionOverlapsNodeCase(int direct);
-	void edgeInceptionOverlapsNodeUprightCase(int direct);
-	void edgeInceptionOverlapsNodeHorizontallyCase(int direct);
+    ContextMenuAction mReverseAction;
 
 	bool mChaoticEdition;
 
 	QPolygonF mLastLine;
 	bool mLastLineIsLoop;
 	QPolygonF mSavedLineForChanges;
-	bool mLeftButtonIsPressed;
-	QPolygonF mSavedLineForSquarize;
-	int mSavesDragPointForSquarize;
+    bool mLeftButtonIsPressed;
 
 	bool mBreakPointPressed;
 
@@ -254,9 +249,7 @@ private:
 
 	bool mModelUpdateIsCalled;  // flag for the infinite updateData()-s liquidating
 
-	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst)
-
-	bool mIsVerticalChanging; // for squarize drawing
+    bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst
 
 	qReal::commands::ReshapeEdgeCommand *mReshapeCommand;
 };
