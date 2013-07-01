@@ -10,12 +10,12 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLabel>
 
-#include "mainWindow.h"
+#include "../mainWindow.h"
 #include "../pluginManager/proxyEditorManager.h"
 #include "../../qrkernel/ids.h"
 
-namespace qReal{
-namespace gui{
+namespace qReal {
+namespace gui {
 
 /// Class for representing editor element on palette.
 class DraggableElement : public QWidget
@@ -55,6 +55,10 @@ private slots:
 	void checkElementForRootDiagramNode();
 
 private:
+	virtual void mousePressEvent(QMouseEvent *event);
+
+	void checkElementForChildren();
+
 	Id mId;
 	QIcon mIcon;
 	QSize mPreferredSize;
@@ -64,10 +68,7 @@ private:
 	MainWindow &mMainWindow;
 	Id mDeletedElementId;
 	bool mIsRootDiagramNode;
-
-	virtual void mousePressEvent(QMouseEvent *event);
-
-	void checkElementForChildren();
 };
+
 }
 }

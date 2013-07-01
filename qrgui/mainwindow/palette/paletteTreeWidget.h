@@ -2,13 +2,14 @@
 
 #include <QtWidgets/QTreeWidget>
 
-#include "paletteTree.h"
 #include "../pluginManager/editorManagerInterface.h"
 
-namespace qReal{
-namespace gui{
+namespace qReal {
+namespace gui {
 
-/// Represents single element of a palette corresponding to a language element.
+class PaletteTree;
+
+/// Represents tree-like view for elements palette (both editor and user)
 class PaletteTreeWidget : public QTreeWidget
 {
 	Q_OBJECT
@@ -20,11 +21,12 @@ private slots:
 	void addElementPaletteActionTriggered();
 
 private:
+	void mousePressEvent(QMouseEvent *event);
+
 	MainWindow &mMainWindow;
 	EditorManagerInterface const &mEditorManagerProxy;
 	PaletteTree &mPaletteTree;
-
-	void mousePressEvent(QMouseEvent *event);
 };
+
 }
 }
