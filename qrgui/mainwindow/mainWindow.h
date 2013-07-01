@@ -153,6 +153,8 @@ public:
 
 	QListIterator<EditorView *> openedEditorViews() const;
 
+	bool saveGeneratedCode();
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();

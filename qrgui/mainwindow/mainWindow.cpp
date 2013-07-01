@@ -2083,6 +2083,33 @@ QListIterator<EditorView *> MainWindow::openedEditorViews() const
 	return QListIterator<EditorView *>(views);
 }
 
+bool MainWindow::saveGeneratedCode()
+{
+	if (dynamic_cast<EditorView *>(getCurrentTab()) == NULL) {
+		CodeArea * const area = dynamic_cast<CodeArea *>(mUi->tabs->currentWidget());
+
+		QFileInfo fileinfo = QFileInfo(QFileDialog::getSaveFileName(this, tr("Save generated code"), "", tr("Generated Code (*.c)")));
+
+		if (fileinfo.fileName() != "") {
+			mUi->tabs->setTabText(mUi->tabs->currentIndex(), fileinfo.fileName());
+
+			QFile cfile(fileinfo.absoluteFilePath());
+
+			cfile.open(QIODevice::WriteOnly);
+
+			QTextStream out(&cfile);
+
+			out << area->toPlainText();
+
+			cfile.close();
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
 void MainWindow::setVersion(QString const &version)
 {
 	// TODO: update title

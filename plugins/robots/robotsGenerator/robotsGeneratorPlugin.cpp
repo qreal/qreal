@@ -90,7 +90,9 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 			 *mRepoControlApi,
 			 *mMainWindowInterface->errorReporter());
 	mMainWindowInterface->errorReporter()->clearErrors();
+
 	gen.generate();
+
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
 		return false;
 	}

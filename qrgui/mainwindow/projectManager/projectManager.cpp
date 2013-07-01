@@ -291,6 +291,10 @@ bool ProjectManager::restoreIncorrectlyTerminated()
 
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
+	if (mMainWindow->saveGeneratedCode()) {
+		return true;
+	}
+
 	if (mSaveFilePath == mAutosaver->tempFilePath()
 			|| mSaveFilePath == mMainWindow->editorManagerProxy().saveMetamodelFilePath()) {
 		return suggestToSaveAs();
@@ -301,6 +305,10 @@ bool ProjectManager::saveOrSuggestToSaveAs()
 
 bool ProjectManager::suggestToSaveAs()
 {
+	if (mMainWindow->saveGeneratedCode()) {
+		return true;
+	}
+
 	if (mMainWindow->editorManagerProxy().isInterpretationMode()) {
 		QString const newMetamodelFileName = getSaveFileName(tr("Select file to save current metamodel to"));
 		if (newMetamodelFileName.isEmpty()) {
