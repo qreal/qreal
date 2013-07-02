@@ -1,5 +1,5 @@
 QREAL_XML = bPMNMetamodel.xml
 QREAL_EDITOR_PATH = bpmn
-ROOT = ../../
+ROOT = ../..
 
 include (../../plugins/editorsSdk/editorsCommon.pri)

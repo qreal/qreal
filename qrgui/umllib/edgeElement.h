@@ -9,7 +9,8 @@
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
-enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
+enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB
+		, NO_ARROW, OPEN_ARROW, CROSSED_LINE, EMPTY_CIRCLE };
 
 class NodeElement;
 /** @class EdgeElement
@@ -29,7 +30,7 @@ class EdgeElement : public Element
 	Q_OBJECT
 
 public:
-    EdgeElement(ElementImpl *impl);
+	EdgeElement(ElementImpl *impl);
 	virtual ~EdgeElement();
 
 	void updateData();
@@ -128,15 +129,15 @@ private slots:
 	void addPointHandler(QPointF const &pos);
 	/// add the closest point on edge to the parameter`s point
 	void addClosestPointHandler(QPointF const &pos);
-    void delPointHandler(QPointF const &pos);
+	void delPointHandler(QPointF const &pos);
 	void minimizeHandler(QPointF const &pos);
 	/// delete Segment with nearest with pos ends
 	void deleteSegmentHandler(QPointF const &pos);
 
-    void squarizeAndAdjustHandler();
+	void squarizeAndAdjustHandler();
 
-    /// change link's direction
-    void reverseHandler(QPointF const &pos);
+	/// change link's direction
+	void reverseHandler(QPointF const &pos);
 
 private:
 	enum DragPointType {
@@ -145,27 +146,27 @@ private:
 		noPort = -1
 	};
 
-    enum LineDirection {
-            top = -1,
-            bottom = 1,
-            left = -2,
-            right = 2,
-            topInsideNode = -3,
-            bottomInsideNode = 3,
-            leftInsideNode = -4,
-            rightInsideNode = 4
-    };
+	enum LineDirection {
+			top = -1,
+			bottom = 1,
+			left = -2,
+			right = 2,
+			topInsideNode = -3,
+			bottomInsideNode = 3,
+			leftInsideNode = -4,
+			rightInsideNode = 4
+	};
 
-    enum LineType {
-            Vertical,
-            Horizontal,
-            VerticalTurn,
-            HorizontalTurn
-    };
+	enum LineType {
+			Vertical,
+			Horizontal,
+			VerticalTurn,
+			HorizontalTurn
+	};
 
-    enum NodeSide { Left, Top, Right, Bottom };
+	enum NodeSide { Left, Top, Right, Bottom };
 
-    // when (mSrc == mDst && mDst && mLine <= 3)
+	// when (mSrc == mDst && mDst && mLine <= 3)
 	void createLoopEdge();
 	// connectToPort for self-closing line (mSrc == mDst && mDst)
 	void connectLoopEdge(NodeElement *newMaster);
@@ -194,13 +195,13 @@ private:
 	void delCloseLinePoints();
 	void delClosePoints();
 
-    void squarize();
-    int defineType();
-    int defineSide(qreal port);
-    void verticalSquareLine();
-    void horizontalSquareLine();
-    void verticalTurningSquareLine();
-    void horizontalTurningSquareLine();
+	void squarize();
+	int defineType();
+	int defineSide(qreal port);
+	void verticalSquareLine();
+	void horizontalSquareLine();
+	void verticalTurningSquareLine();
+	void horizontalTurningSquareLine();
 
 	bool removeOneLinePoints(int startingPoint);
 
@@ -209,11 +210,11 @@ private:
 	QPointF* haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4);
 
 	// these methods are called before the push action in the context menu
-    bool delPointActionIsPossible(const QPointF &pos);
+	bool delPointActionIsPossible(const QPointF &pos);
 	bool addPointActionIsPossible(const QPointF &pos);
 	bool delSegmentActionIsPossible(const QPointF &pos);
 	bool minimizeActionIsPossible();
-    bool reverseActionIsPossible();
+	bool reverseActionIsPossible();
 
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
@@ -231,17 +232,17 @@ private:
 	QColor mColor;
 
 	ContextMenuAction mAddPointAction;
-    ContextMenuAction mDelPointAction;
+	ContextMenuAction mDelPointAction;
 	ContextMenuAction mMinimizeAction;
 	ContextMenuAction mDelSegmentAction;
-    ContextMenuAction mReverseAction;
+	ContextMenuAction mReverseAction;
 
 	bool mChaoticEdition;
 
 	QPolygonF mLastLine;
 	bool mLastLineIsLoop;
 	QPolygonF mSavedLineForChanges;
-    bool mLeftButtonIsPressed;
+	bool mLeftButtonIsPressed;
 
 	bool mBreakPointPressed;
 
@@ -249,7 +250,7 @@ private:
 
 	bool mModelUpdateIsCalled;  // flag for the infinite updateData()-s liquidating
 
-    bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst
+	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst
 
 	qReal::commands::ReshapeEdgeCommand *mReshapeCommand;
 };

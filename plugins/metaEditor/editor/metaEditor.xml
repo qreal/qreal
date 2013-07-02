@@ -11,6 +11,8 @@
 				<value>filled_arrow</value>
 				<value>empty_rhomb</value>
 				<value>filled_rhomb</value>
+				<value>crossed_line</value>
+                <value>empty_circle</value>
 			</enum>
 			<enum name="lineTypes" displayedName="lineTypes">
 				<value>solidLine</value>
