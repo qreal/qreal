@@ -54,7 +54,7 @@ void PreferencesMiscellaniousPage::save()
 	SettingsManager::setValue("SquareLine", mUi->squareLineModeCheckBox->isChecked());
 //	SettingsManager::setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
 	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
-
+	SettingsManager::setValue("recentProjectsLimit", mUi->recentProjectsLimitSpinBox->value());
 	SettingsManager::setValue("PaintOldEdgeMode", mUi->paintOldLineCheckBox->isChecked());
 	SettingsManager::setValue("oldLineColor", mUi->colorComboBox->currentText());
 
@@ -69,7 +69,7 @@ void PreferencesMiscellaniousPage::restoreSettings()
 	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
 	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL").toBool());
 	mUi->squareLineModeCheckBox->setChecked(SettingsManager::value("SquareLine").toBool());
-
+	mUi->recentProjectsLimitSpinBox->setValue(SettingsManager::value("recentProjectsLimit").toInt());
 	mUi->paintOldLineCheckBox->setChecked(SettingsManager::value("PaintOldEdgeMode").toBool());
 
 	QString curColor = SettingsManager::value("oldLineColor").toString();
