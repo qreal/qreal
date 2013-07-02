@@ -556,9 +556,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	arrangeLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
-		edge->adjustNeighborLinks();
-		edge->correctArrow();
-		edge->correctInception();
+        edge->adjustNeighborLinks();
 	}
 	adjustLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
@@ -1278,3 +1276,4 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 	result->addPreAction(translateCommand);
 	return result;
 }
+
