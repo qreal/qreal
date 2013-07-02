@@ -63,4 +63,4 @@ showTitlesForRobots=false
 enableNoiseOfSensors=false
 enableNoiseOfMotors=false
 approximationLevel=12
-recentProjectsLimit=3
+recentProjectsLimit=5
