@@ -45,7 +45,7 @@ private:
 	void loadList(QString const &refType);
 	void addItem(qReal::Id const &element);
 
-	void highlightCurrentValue(const QStringList &currentValue);
+	void highlightCurrentValue(QStringList const &currentValue);
 	QStringList getNewValue();
 
 	void initConnections();

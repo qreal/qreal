@@ -3,7 +3,7 @@
 #include "mainWindow.h"
 
 ReferenceList::ReferenceList(qReal::MainWindow *mainWindow, QPersistentModelIndex const &index
-		, QString const &refType, const QStringList &currentValue, int role, QWidget *parent)
+		, QString const &refType, QStringList const &currentValue, int role, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::ReferenceList)
 	, mIndex(index)
