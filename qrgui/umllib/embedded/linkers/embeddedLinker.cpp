@@ -296,9 +296,6 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		if (result != -1) {
 			mEdge->connectToPort();
 			mEdge->adjustNeighborLinks();
-			mEdge->correctArrow();
-			mEdge->correctInception();
-			mEdge->adjustNeighborLinks();
 			// This will restore edge state after undo/redo
 			commands::ReshapeEdgeCommand *reshapeEdge = new commands::ReshapeEdgeCommand(mEdge);
 			reshapeEdge->startTracking();
