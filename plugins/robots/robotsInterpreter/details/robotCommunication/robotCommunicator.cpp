@@ -28,7 +28,7 @@ void RobotCommunicator::send(QObject *addressee, QByteArray const &buffer, unsig
 }
 
 void RobotCommunicator::sendI2C(QObject *addressee, QByteArray const &buffer
-		, unsigned const responseSize, inputPort::InputPortEnum const &port)
+		, unsigned const responseSize, inputPort::InputPortEnum const port)
 {
 	emit threadSendI2C(addressee, buffer, responseSize, static_cast<inputPort::InputPortEnum>(port));
 }

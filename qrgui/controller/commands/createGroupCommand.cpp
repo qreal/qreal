@@ -9,16 +9,17 @@ CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 		, Id const &graphicalParent
 		, Id const &id
 		, bool isFromLogicalModel
-		, QPointF const &position)
-	: mScene(scene)
-	, mLogicalApi(logicalApi)
-	, mGraphicalApi(graphicalApi)
-	, mLogicalParent(logicalParent)
-	, mGraphicalParent(graphicalParent)
-	, mId(id)
-	, mIsFromLogicalModel(isFromLogicalModel)
-	, mPosition(position)
-	, mPattern(graphicalApi->editorManager().getPatternByName(id.element()))
+		, QPointF const &position
+		)
+		: mScene(scene)
+		, mLogicalApi(logicalApi)
+		, mGraphicalApi(graphicalApi)
+		, mLogicalParent(logicalParent)
+		, mGraphicalParent(graphicalParent)
+		, mId(id)
+		, mIsFromLogicalModel(isFromLogicalModel)
+		, mPosition(position)
+		, mPattern(graphicalApi->editorManagerInterface().getPatternByName(id.element()))
 {
 	QPointF size = mPattern.size();
 	foreach (GroupNode const &node, mPattern.nodes()) {

@@ -12,11 +12,11 @@ public:
 
 protected:
 	virtual QList<SmartLine> convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-			, qReal::Id const elementId, qReal::Id const logicElementId);
+			, qReal::Id const &elementId, qReal::Id const &logicElementId);
 
 private:
 	void addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen
-			, qReal::Id const elementId, QString const &enginePort);
+			, qReal::Id const &elementId, QString const &enginePort);
 	QString mEngineType;
 
 };

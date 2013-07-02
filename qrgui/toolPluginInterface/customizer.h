@@ -11,6 +11,12 @@ namespace qReal {
 class Customizer
 {
 public:
+	/// Tells if we should show the button of opening the interpreted diagram or not
+	virtual bool showInterpeterButton() const
+	{
+		return true;
+	}
+
 	/// Allows to customize main window's title from plugin
 	virtual QString windowTitle() const
 	{

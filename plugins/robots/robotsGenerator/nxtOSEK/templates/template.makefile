@@ -6,6 +6,8 @@ TARGET_SOURCES = \
 
 TOPPERS_OSEK_OIL_SOURCE = ./@@PROJECT_NAME@@.oil
 
+@@BMPFILES@@
+
 @@BALANCER_LIB@@
 
 # Don't modify below part

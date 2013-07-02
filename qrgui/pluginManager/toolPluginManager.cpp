@@ -1,6 +1,7 @@
 #include <QtWidgets/QApplication>
 
 #include "toolPluginManager.h"
+#include "../hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 
@@ -36,6 +37,8 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 			delete loader;
 		}
 	}
+
+	setHotKeyActions();
 }
 
 ToolPluginManager::~ToolPluginManager()
@@ -60,6 +63,23 @@ QList<ActionInfo> ToolPluginManager::actions() const
 	}
 
 	return result;
+}
+
+QList<HotKeyActionInfo> ToolPluginManager::hotKeyActions() const
+{
+	QList<HotKeyActionInfo> result;
+	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
+		result += toolPlugin->hotKeyActions();
+	}
+
+	return result;
+}
+
+void ToolPluginManager::setHotKeyActions() const
+{
+	foreach (HotKeyActionInfo const &actionInfo, hotKeyActions()) {
+		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
+	}
 }
 
 QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() const

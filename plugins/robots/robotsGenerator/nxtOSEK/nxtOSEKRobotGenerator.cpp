@@ -86,10 +86,12 @@ void NxtOSEKRobotGenerator::generateMakeFile(
 	QTextStream outMake(&resultMakeFile);
 	if (mBalancerIsActivated) {
 		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@"
-				, "balancer_param.c \\").replace("@@BALANCER_LIB@@", "USER_LIB = nxtway_gs_balancer");
+		, "balancer_param.c \\").replace("@@BALANCER_LIB@@", "USER_LIB = nxtway_gs_balancer").replace("@@BMPFILES@@"
+		,  mImageGenerator.generateBmpFilesStringForMake().toUtf8());
 	} else {
 		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@"
-				, "").replace("@@BALANCER_LIB@@", "");
+		, "").replace("@@BALANCER_LIB@@", "").replace("@@BMPFILES@@"
+		, mImageGenerator.generateBmpFilesStringForMake().toUtf8());;
 		templateMakeFile.close();
 	}
 
@@ -116,7 +118,8 @@ void NxtOSEKRobotGenerator::insertCode(
 	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@").replace("@@VARIABLES@@"
 			, mVariables.generateVariableString() + "\n" + "@@VARIABLES@@").replace("@@INITHOOKS@@"
 			, resultInitCode).replace("@@TERMINATEHOOKS@@", resultTerminateCode)
-			.replace("@@USERISRHOOKS@@", resultIsrHooksCode);
+			.replace("@@USERISRHOOKS@@", resultIsrHooksCode).replace("@@BMPFILES@@"
+			, mImageGenerator.generateBmpFilesStringForC() + "@@BMPFILES@@");
 	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
 	mResultOil.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
 }
@@ -124,7 +127,7 @@ void NxtOSEKRobotGenerator::insertCode(
 void NxtOSEKRobotGenerator::deleteResidualLabels(QString const &projectName)
 {
 	mResultOil.replace("@@TASK@@", "");
-	mResultString.replace("@@VARIABLES@@", "").replace("@@CODE@@", "").replace("@@PROJECT_NAME@@", projectName);
+	mResultString.replace("@@VARIABLES@@", "").replace("@@BMPFILES@@", "").replace("@@CODE@@", "").replace("@@PROJECT_NAME@@", projectName);
 }
 
 void NxtOSEKRobotGenerator::generateFilesForBalancer(QString const &projectDir)
@@ -318,4 +321,10 @@ void NxtOSEKRobotGenerator::initializeFields(QString resultTaskTemplate, Id cons
 	mVariables.reinit(mApi);
 	mPreviousElement = curInitialNode;
 	mBalancerIsActivated = false;
+	mImageGenerator.reinit();
+}
+
+ImageGenerator &NxtOSEKRobotGenerator::imageGenerator()
+{
+	return mImageGenerator;
 }
