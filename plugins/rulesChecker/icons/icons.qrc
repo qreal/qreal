@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>startChecker.png</file>
+    </qresource>
+</RCC>
