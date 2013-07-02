@@ -1,15 +1,19 @@
 #pragma once
 
-#include <QWidget>
-#include <QGraphicsScene>
-#include <QList>
-#include <QPoint>
-#include <QString>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGraphicsScene>
+#include <QtCore/QList>
+#include <QtCore/QPoint>
+#include <QtCore/QString>
+
 #include "../../mainwindow/gesturesPainterInterface.h"
 
 namespace Ui {
 	class GesturesWidget;
 }
+
+namespace qReal {
+namespace gestures {
 
 class GesturesWidget : public QWidget, public GesturesPainterInterface
 {
@@ -18,15 +22,15 @@ class GesturesWidget : public QWidget, public GesturesPainterInterface
 public:
 	explicit GesturesWidget(QWidget *parent = 0);
 	~GesturesWidget();
-	void draw(PathVector const &paths);
-	QString currentElement();
-	void setElements(QList<QString> const & elements);
+	virtual void draw(PathVector const &paths);
+	virtual Id currentElement() const;
+	virtual void setElements(QList<QPair<QString, Id> > const &elements);
 
 signals:
 	void currentElementChanged();
 
 private:
-	Ui::GesturesWidget *ui;
+	Ui::GesturesWidget *mUi;
 	QGraphicsScene *mGestureScene;
 	PathVector mPaths;
 	QColor gestColor;
@@ -36,3 +40,6 @@ private:
 	static short const minBoarder = -1000;
 	static short const gestWidth = 3;
 };
+
+}
+}

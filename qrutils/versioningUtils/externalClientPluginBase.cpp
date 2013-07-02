@@ -1,5 +1,5 @@
 #include <QtCore/QTextCodec>
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "externalClientPluginBase.h"
 #include "../invocationUtils/functorOperation.h"

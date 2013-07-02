@@ -38,6 +38,7 @@ public:
 	virtual QString getPropertyType(QString const &element, QString const &name) const = 0;
 	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const = 0;
 	virtual QStringList getEnumValues(QString name) const = 0;
+	virtual QString getGroupsXML() const = 0;
 	virtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) const = 0;
 
 	virtual QString editorName() const = 0;
@@ -54,6 +55,7 @@ public:
 
 	virtual QStringList diagramPaletteGroups(QString const &diagram) const = 0;
 	virtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const = 0;
+	virtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const = 0;
 };
 
 }

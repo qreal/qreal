@@ -11,6 +11,7 @@ class SubversionPlugin : public qReal::versioning::ExternalClientPluginBase
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "qReal.versioning.svn")
 
 public:
 	SubversionPlugin();

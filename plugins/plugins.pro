@@ -8,12 +8,13 @@ SUBDIRS	= \
 #	bpel/bpel.pro \
 #	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
-#	metaEditor/metaEditor.pro \
+	metaEditor/metaEditor.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \
 #	requirements/requirements.pro \
 #	robots/robots.pro \
+#	sbt/sbt.pro \
 	subversionClient/subversionClient.pro \
 #	testEditor/testEditor.pro \
 #	testInvocation/testInvocation.pro \
@@ -28,6 +29,5 @@ SUBDIRS	= \
 #	umlStateMachinesDiagram/umlStateMachinesDiagram.pro \
 #	umlTimingDiagram/umlTimingDiagram.pro \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
-	visualDiff/visualDiff.pro \
-#	visualInterpreter/visualInterpreter.pro \
+	visualInterpreter/visualInterpreter.pro \
 	refactoring/refactoring.pro \

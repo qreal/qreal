@@ -5,6 +5,7 @@
 #include "preferencesPages/editorPage.h"
 #include "preferencesPages/miscellaniousPage.h"
 #include "preferencesPages/featuresPage.h"
+#include "../hotKeyManager/hotKeyManagerPage.h"
 
 using namespace qReal;
 
@@ -21,34 +22,35 @@ PreferencesDialog::~PreferencesDialog()
 	delete mUi;
 }
 
-void PreferencesDialog::init(QAction * const showGridAction
-		, QAction * const showAlignmentAction
-		, QAction * const activateGridAction
-		, QAction * const activateAlignmentAction)
+void PreferencesDialog::init(QAction * const showGridAction, QAction * const showAlignmentAction
+	, QAction * const activateGridAction, QAction * const activateAlignmentAction)
 {
 	PreferencesPage *behaviourPage = new PreferencesBehaviourPage(mUi->pageContentWigdet);
-	PreferencesPage *debuggerPage = new PreferencesDebuggerPage(mUi->pageContentWigdet);
+	// Debugger page removed due to #736
 	PreferencesPage *miscellaniousPage = new PreferencesMiscellaniousPage(mUi->pageContentWigdet);
-//	PreferencesPage *featuresPage = new PreferencesFeaturesPage(ui->pageContentWigdet);
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction
 		, activateAlignmentAction, mUi->pageContentWigdet);
+	PreferencesPage *hotKeyManagerPage = new  PreferencesHotKeyManagerPage(mUi->pageContentWigdet);
 
-	connect(mUi->listWidget, SIGNAL(clicked(const QModelIndex &)), this, SLOT(chooseTab(const QModelIndex &)));
+	connect(mUi->listWidget, SIGNAL(clicked(QModelIndex))
+			, this, SLOT(chooseTab(const QModelIndex &)));
+	connect(mUi->listWidget, SIGNAL(activated(const QModelIndex &))
+			, this, SLOT(chooseTab(const QModelIndex &)));
 	connect(mUi->applyButton, SIGNAL(clicked()), this, SLOT(applyChanges()));
 	connect(mUi->okButton, SIGNAL(clicked()), this, SLOT(saveAndClose()));
 	connect(mUi->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 
 	connect(editorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
 	connect(editorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
-	connect(editorPage, SIGNAL(paletteRepresentationChanged()), this,
-		SIGNAL(paletteRepresentationChanged()));
+	connect(editorPage, SIGNAL(paletteRepresentationChanged()), this
+		, SIGNAL(paletteRepresentationChanged()));
 	connect(miscellaniousPage, SIGNAL(iconsetChanged()), this, SIGNAL(iconsetChanged()));
 
 	registerPage(tr("Behaviour"), behaviourPage);
-	registerPage(tr("Debugger"), debuggerPage);
 	registerPage(tr("Miscellanious"), miscellaniousPage);
 	registerPage(tr("Editor"), editorPage);
+	registerPage(tr("Shortcuts"), hotKeyManagerPage);
 
 	int const currentTab = SettingsManager::value("currentPreferencesTab").toInt();
 	mUi->listWidget->setCurrentRow(currentTab);
@@ -64,6 +66,13 @@ void PreferencesDialog::applyChanges()
 	emit settingsApplied();
 }
 
+void PreferencesDialog::restoreSettings()
+{
+	foreach (PreferencesPage *page, mCustomPages.values()) {
+		page->restoreSettings();
+	}
+}
+
 void PreferencesDialog::changeEvent(QEvent *e)
 {
 	QDialog::changeEvent(e);
@@ -77,6 +86,12 @@ void PreferencesDialog::changeEvent(QEvent *e)
 	default:
 		break;
 	}
+}
+
+void PreferencesDialog::showEvent(QShowEvent *e)
+{
+	restoreSettings();
+	QDialog::showEvent(e);
 }
 
 void PreferencesDialog::saveAndClose()

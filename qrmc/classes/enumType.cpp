@@ -4,7 +4,7 @@
 using namespace qReal;
 using namespace qrmc;
 
-EnumType::EnumType(Diagram *diagram, qrRepo::RepoApi *api, const qReal::Id &id) : NonGraphicType(diagram, api, id)
+EnumType::EnumType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id) : NonGraphicType(diagram, api, id)
 {
 }
 
@@ -36,7 +36,7 @@ void EnumType::print()
 	qDebug() << "enum type" << mName;
 }
 
-QString EnumType::generateEnums(const QString &lineTemplate) const
+QString EnumType::generateEnums(QString const &lineTemplate) const
 {
 	QString enums;
 	QString line = lineTemplate;

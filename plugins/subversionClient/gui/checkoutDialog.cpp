@@ -1,3 +1,6 @@
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QFileDialog>
+
 #include "checkoutDialog.h"
 #include "../../../qrkernel/settingsManager.h"
 
@@ -53,7 +56,7 @@ QComboBox *CheckoutDialog::createComboBox(const QString &text)
 
 void CheckoutDialog::browse()
 {
-	QString saveFile = QFileDialog::getSaveFileName(this
+	QString const saveFile = QFileDialog::getSaveFileName(this
 			, tr("Select project") , QDir::currentPath()
 			, tr("QReal Save File(*.qrs)"));
 	if (!saveFile.isNull()) {

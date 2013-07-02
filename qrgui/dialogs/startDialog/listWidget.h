@@ -1,7 +1,7 @@
 #pragma once
-#include <QtGui/QWidget>
-#include <QtGui/QListWidget>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QPushButton>
 
 namespace qReal {
 

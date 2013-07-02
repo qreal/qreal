@@ -1,6 +1,6 @@
 #pragma once
 #include <QtCore/QList>
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
 #include <QtXml/QDomDocument>
 #include "lineItem.h"
@@ -34,15 +34,18 @@ public:
 	virtual void setBrushStyle(const QString& text);
 	virtual void setBrushColor(const QString& text);
 
-        virtual void resizeItem(QGraphicsSceneMouseEvent *event);
-        virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
-        virtual void deserialize(QDomElement const &element);
+	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
+	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
+	virtual void deserialize(QDomElement const &element);
 
 private:
+	void recalculateProperties();
+
 	qreal mTmpX1;
 	qreal mTmpY1;
 	QList<AbstractItem *> mAbstractListLine;
 	graphicsUtils::StylusImpl mStylusImpl;
+	QRectF mBoundingRect;
 };
 }
 }

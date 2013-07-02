@@ -1,4 +1,4 @@
-#include <QtGui>
+#include <QtWidgets>
 
 #ifdef QT_OPENGL_LIB
 #include <QtOpenGL/QGLWidget>
@@ -50,6 +50,16 @@ EditorView::~EditorView()
 	delete mScene;
 }
 
+EditorViewMViface *EditorView::mvIface() const
+{
+	return mMVIface;
+}
+
+EditorViewScene *EditorView::editorViewScene() const
+{
+	return mScene;
+}
+
 void EditorView::toggleAntialiasing(bool checked)
 {
 	setRenderHint(QPainter::Antialiasing, checked);
@@ -66,7 +76,7 @@ void EditorView::toggleOpenGL(bool checked)
 
 void EditorView::zoomIn()
 {
-	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()){
+	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()) {
 		return;
 	}
 	setSceneRect(mScene->sceneRect());
@@ -81,7 +91,7 @@ void EditorView::zoomIn()
 
 void EditorView::zoomOut()
 {
-	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()){
+	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()) {
 		return;
 	}
 	setSceneRect(mScene->sceneRect());
@@ -121,20 +131,26 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 	if (mWheelPressed) {
 		if (mMouseOldPosition != QPointF()) {
 			QRectF rect = sceneRect();
-			qreal dx = (event->posF().x() - mMouseOldPosition.x());
-			qreal dy = (event->posF().y() - mMouseOldPosition.y());
+			qreal dx = (event->localPos().x() - mMouseOldPosition.x());
+			qreal dy = (event->localPos().y() - mMouseOldPosition.y());
 			rect.moveLeft(rect.left() - dx);
 			rect.moveTop(rect.top() - dy);
 			setSceneRect(rect);
 			translate(dx, dy);
 		}
-		mMouseOldPosition = event->posF();
+		mMouseOldPosition = event->localPos();
 	}
 	QGraphicsView::mouseMoveEvent(event);
 	if (event->buttons() & Qt::RightButton) {
 		setDragMode(NoDrag);
 	} else {
-		if (event->buttons() & Qt::LeftButton ) {
+		if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ControlModifier)) {
+			setDragMode(RubberBandDrag);
+			mScene->itemSelectUpdate();
+		/*} else 	if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ShiftModifier)) {
+			setDragMode(ScrollHandDrag); //  (see #615)
+			mScene->itemSelectUpdate();*/
+		} else if (event->buttons() & Qt::LeftButton ) {
 			EdgeElement *newEdgeEl = dynamic_cast<EdgeElement *>(itemAt(event->pos()));
 			if (newEdgeEl == NULL) {
 				setDragMode(RubberBandDrag);
@@ -165,15 +181,39 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 {
 	mWheelPressed  = (event->buttons() & Qt::MidButton);
 	mMouseOldPosition = QPointF();
-	if (!mWheelPressed)
+	if (!mWheelPressed) {
 		QGraphicsView::mousePressEvent(event);
+	}
+	if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ControlModifier)) {
+		setDragMode(RubberBandDrag);
+		mScene->itemSelectUpdate();
+	}
 }
 
 void EditorView::scrollContentsBy(int dx, int dy)
 {
 	QGraphicsView::scrollContentsBy(dx, dy);
-	if (mScene->getNeedDrawGrid())
+	if (mScene->getNeedDrawGrid()) {
 		mScene->invalidate();
+	}
+}
+
+void EditorView::keyPressEvent(QKeyEvent *event)
+{
+	QGraphicsView::keyPressEvent(event);
+	if (event->key() == Qt::Key_Space) {
+		setDragMode(QGraphicsView::ScrollHandDrag);
+		event->accept();
+	}
+}
+
+void EditorView::keyReleaseEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Space) {
+		setDragMode(QGraphicsView::RubberBandDrag);
+	} else {
+		QGraphicsView::keyPressEvent(event);
+	}
 }
 
 void EditorView::invalidateScene()
@@ -190,4 +230,17 @@ void EditorView::ensureElementVisible(Element const * const element)
 		float const elementHeight = element->boundingRect().height();
 		ensureVisible(element, (widgetWidth - elementWidth) / 2, (widgetHeight - elementHeight) / 2);
 	}
+}
+
+void EditorView::ensureElementVisible(Element const * const element
+		, int xMargin, int yMargin)
+{
+	if (element) {
+		ensureVisible(element, xMargin, yMargin);
+	}
+}
+
+void EditorView::setTitlesVisible(bool visible)
+{
+	mScene->setTitlesVisible(visible);
 }

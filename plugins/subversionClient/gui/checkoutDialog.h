@@ -1,6 +1,10 @@
 #pragma once
 
-#include <QtGui>
+#include <QtCore/QDir>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
 
 namespace versioning
 {
@@ -9,7 +13,8 @@ namespace ui
 
 class CheckoutDialog : public QDialog
 {
-Q_OBJECT
+	Q_OBJECT
+
 public:
 	CheckoutDialog(QWidget *parent = 0);
 	QString url() const;

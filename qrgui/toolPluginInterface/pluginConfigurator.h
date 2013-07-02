@@ -5,6 +5,7 @@
 #include "usedInterfaces/logicalModelAssistInterface.h"
 #include "../mainwindow/mainWindowInterpretersInterface.h"
 #include "../mainwindow/projectManager/projectManagementInterface.h"
+#include "../view/sceneCustomizationInterface.h"
 
 namespace qReal {
 
@@ -17,33 +18,45 @@ public:
 		, LogicalModelAssistInterface &logicalModelApi
 		, gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
 		, ProjectManagementInterface &projectManager
+		, SceneCustomizationInterface &sceneCustomizer
 	)
 		: mRepoControlInterface(repoControlInterface)
 		, mGraphicalModelApi(graphicalModelApi)
 		, mLogicalModelApi(logicalModelApi)
 		, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 		, mProjectManager(projectManager)
+		, mSceneCustomizer(sceneCustomizer)
 	{
 	}
 
-	qrRepo::RepoControlInterface &repoControlInterface() const {
+	qrRepo::RepoControlInterface &repoControlInterface() const
+	{
 		return mRepoControlInterface;
 	}
 
-	GraphicalModelAssistInterface &graphicalModelApi() const {
+	GraphicalModelAssistInterface &graphicalModelApi() const
+	{
 		return mGraphicalModelApi;
 	}
 
-	LogicalModelAssistInterface &logicalModelApi() const {
+	LogicalModelAssistInterface &logicalModelApi() const
+	{
 		return mLogicalModelApi;
 	}
 
-	gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface() const {
+	gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface() const
+	{
 		return mMainWindowInterpretersInterface;
 	}
 
-	ProjectManagementInterface &projectManager() const {
+	ProjectManagementInterface &projectManager() const
+	{
 		return mProjectManager;
+	}
+
+	SceneCustomizationInterface &sceneCustomizer() const
+	{
+		return mSceneCustomizer;
 	}
 
 private:
@@ -52,6 +65,7 @@ private:
 	LogicalModelAssistInterface &mLogicalModelApi;
 	gui::MainWindowInterpretersInterface &mMainWindowInterpretersInterface;
 	ProjectManagementInterface &mProjectManager;
+	SceneCustomizationInterface &mSceneCustomizer;
 };
 
 }

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QtGui/QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
 #include "../../../../../qrutils/graphicsUtils/abstractItem.h"
 #include "../../../../../qrutils/graphicsUtils/lineImpl.h"
-#include "../../../../../qrutils/graphicsUtils/rotateInterface.h"
+#include "../../../../../qrutils/graphicsUtils/rotateItem.h"
 
 namespace qReal {
 namespace interpreters {
@@ -13,12 +13,13 @@ namespace details {
 namespace d2Model {
 
 const int length = 30;
-const int addAngle = 30; //в градусах; для отрисовки наконечника стрелки
+const int addAngle = 30; // Degrees; for arrow pike drawing
 
 /// Class that represents line that allows to rotate QGraphicItems
 class Rotater : public QObject, public graphicsUtils::AbstractItem
 {
 	Q_OBJECT
+
 public:
 	Rotater();
 
@@ -35,19 +36,13 @@ public:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
-	void setMasterItem(graphicsUtils::RotateInterface *masterItem);
-	void reshapeWithMasterItem(QPointF pos);
-	void rotateWithMasterItem(QPointF delta, QPointF rotatePoint, QPointF basePos, qreal baseDir, qreal localDir);
-
+	void setMasterItem(graphicsUtils::RotateItem *masterItem);
 
 private:
 	int mLength;
-	qreal mMasterSize;
-	QPointF mMasterRotatePoint;
-	QPointF mFrom;
-	QPointF mTo;
-	graphicsUtils::RotateInterface *mMaster;
-	QGraphicsLineItem mLine;
+	int mDrift;
+	int mResizeDrift;
+	graphicsUtils::RotateItem *mMaster;
 	graphicsUtils::LineImpl mLineImpl;
 };
 

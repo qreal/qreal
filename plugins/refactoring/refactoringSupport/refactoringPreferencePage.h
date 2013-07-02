@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QLineEdit>
+#include <QtWidgets/QLineEdit>
 
 #include "../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
 
@@ -20,6 +20,7 @@ public:
 	~RefactoringPreferencesPage();
 
 	void save();
+	void restoreSettings();
 
 protected:
 	void changeEvent(QEvent *e);

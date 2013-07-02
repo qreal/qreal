@@ -1,3 +1,5 @@
+#include <QtWidgets/QHBoxLayout>
+
 #include "commitDialog.h"
 
 using namespace versioning::ui;

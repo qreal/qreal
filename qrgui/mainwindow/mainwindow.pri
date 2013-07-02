@@ -7,7 +7,6 @@ HEADERS += \
 	mainwindow/error.h \
 	mainwindow/errorListWidget.h \
 	mainwindow/mainWindowInterpretersInterface.h \
-	mainwindow/helpBrowser.h \
 	mainwindow/paletteTree.h \
 	mainwindow/findManager.h \
 	mainwindow/dotRunner.h \
@@ -19,6 +18,9 @@ HEADERS += \
 	mainwindow/referenceList.h \
 	mainwindow/projectManager/autosaver.h \
 	mainwindow/externBrowser.h \
+	mainwindow/draggableElement.h \
+	mainwindow/paletteTreeWidget.h \
+	mainwindow/qscintillaTextEdit.h \
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -26,7 +28,6 @@ SOURCES += \
 	mainwindow/errorReporter.cpp \
 	mainwindow/error.cpp \
 	mainwindow/errorListWidget.cpp \
-	mainwindow/helpBrowser.cpp \
 	mainwindow/paletteTree.cpp \
 	mainwindow/findManager.cpp \
 	mainwindow/dotRunner.cpp \
@@ -36,7 +37,9 @@ SOURCES += \
 	mainwindow/miniMap.cpp \
 	mainwindow/referenceList.cpp \
 	mainwindow/projectManager/autosaver.cpp \
-	mainwindow/macExternBrowser.cpp \
+	mainwindow/draggableElement.cpp \
+	mainwindow/paletteTreeWidget.cpp \
+	mainwindow/qscintillaTextEdit.cpp \
 
 win32 {
 	HEADERS += \
@@ -64,7 +67,7 @@ macx {
 
 FORMS += \
 	mainwindow/mainWindow.ui \
-	mainwindow/referenceList.ui
+	mainwindow/referenceList.ui \
 
 # Shape editor
 HEADERS += \
@@ -86,6 +89,8 @@ HEADERS += \
 	mainwindow/shapeEdit/textPicture.h \
 	mainwindow/shapeEdit/path.h \
 	mainwindow/shapeEdit/image.h \
+	mainwindow/shapeEdit/visibilityConditionsDialog.h \
+	mainwindow/shapeEdit/visibilityValueWidget.h \
 
 SOURCES += \
 	mainwindow/shapeEdit/shapeEdit.cpp \
@@ -106,6 +111,9 @@ SOURCES += \
 	mainwindow/shapeEdit/view.cpp \
 	mainwindow/shapeEdit/textPicture.cpp \
 	mainwindow/shapeEdit/image.cpp \
+	mainwindow/shapeEdit/visibilityConditionsDialog.cpp \
+	mainwindow/shapeEdit/visibilityValueWidget.cpp \
 
 FORMS += \
 	mainwindow/shapeEdit/shapeEdit.ui \
+	mainwindow/shapeEdit/visibilityConditionsDialog.ui \

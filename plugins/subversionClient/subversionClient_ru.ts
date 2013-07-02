@@ -33,17 +33,17 @@
 <context>
     <name>versioning::SubversionPlugin</name>
     <message>
-        <location filename="subversionPlugin.cpp" line="278"/>
+        <location filename="subversionPlugin.cpp" line="295"/>
         <source>Can`t find repository root in svn info</source>
         <translation>Не могу найти информацию о корне репозитория в выводе svn info</translation>
     </message>
     <message>
-        <location filename="subversionPlugin.cpp" line="284"/>
+        <location filename="subversionPlugin.cpp" line="301"/>
         <source>Can`t find repository UUID in svn info</source>
         <translation>Не могу найти UUID репозитория в выводе svn info</translation>
     </message>
     <message>
-        <location filename="subversionPlugin.cpp" line="297"/>
+        <location filename="subversionPlugin.cpp" line="317"/>
         <source>Can`t find revision number in svn info</source>
         <translation>Не могу найти номер ревизии в выводе svn info</translation>
     </message>
@@ -91,27 +91,27 @@
         <translation>Операция Clean Up прошла успешно</translation>
     </message>
     <message>
-        <location filename="viewInteraction.cpp" line="131"/>
+        <location filename="viewInteraction.cpp" line="132"/>
         <source>Checkout succeeded. Working project was set to </source>
         <translation>Операция Checkout прошла успешно. Рабочим проектом назначен </translation>
     </message>
     <message>
-        <location filename="viewInteraction.cpp" line="140"/>
+        <location filename="viewInteraction.cpp" line="141"/>
         <source>Updated successfully</source>
         <translation>Операция Update прошла успешно</translation>
     </message>
     <message>
-        <location filename="viewInteraction.cpp" line="141"/>
+        <location filename="viewInteraction.cpp" line="142"/>
         <source>Updated to revision </source>
         <translation>Обновлено до ревизии </translation>
     </message>
     <message>
-        <location filename="viewInteraction.cpp" line="150"/>
+        <location filename="viewInteraction.cpp" line="151"/>
         <source>Commited successfully</source>
         <translation>Операция Commit прошла успешно</translation>
     </message>
     <message>
-        <location filename="viewInteraction.cpp" line="158"/>
+        <location filename="viewInteraction.cpp" line="159"/>
         <source>Reverted successfully</source>
         <translation>Операция Revert прошла успешно</translation>
     </message>
@@ -119,42 +119,42 @@
 <context>
     <name>versioning::ui::CheckoutDialog</name>
     <message>
-        <location filename="gui/checkoutDialog.cpp" line="9"/>
+        <location filename="gui/checkoutDialog.cpp" line="12"/>
         <source>&amp;Browse...</source>
         <translation>&amp;Обзор...</translation>
     </message>
     <message>
-        <location filename="gui/checkoutDialog.cpp" line="10"/>
+        <location filename="gui/checkoutDialog.cpp" line="13"/>
         <source>Subversion place</source>
         <translation>Адрес репозитория</translation>
     </message>
     <message>
-        <location filename="gui/checkoutDialog.cpp" line="11"/>
+        <location filename="gui/checkoutDialog.cpp" line="14"/>
         <source>Checkout to project:</source>
         <translation>Зачекаутить в проект:</translation>
     </message>
     <message>
-        <location filename="gui/checkoutDialog.cpp" line="14"/>
+        <location filename="gui/checkoutDialog.cpp" line="17"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="gui/checkoutDialog.cpp" line="15"/>
+        <location filename="gui/checkoutDialog.cpp" line="18"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="gui/checkoutDialog.cpp" line="34"/>
+        <location filename="gui/checkoutDialog.cpp" line="37"/>
         <source>Checkout options</source>
         <translation>Настройки чекаута</translation>
     </message>
     <message>
-        <location filename="gui/checkoutDialog.cpp" line="57"/>
+        <location filename="gui/checkoutDialog.cpp" line="60"/>
         <source>Select project</source>
         <translation>Выберите проект</translation>
     </message>
     <message>
-        <location filename="gui/checkoutDialog.cpp" line="58"/>
+        <location filename="gui/checkoutDialog.cpp" line="61"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файл проекта QReal(*.qrs)</translation>
     </message>
@@ -162,22 +162,22 @@
 <context>
     <name>versioning::ui::CommitDialog</name>
     <message>
-        <location filename="gui/commitDialog.cpp" line="7"/>
+        <location filename="gui/commitDialog.cpp" line="9"/>
         <source>Enter message here:</source>
         <translation>Введите сообщение здесь:</translation>
     </message>
     <message>
-        <location filename="gui/commitDialog.cpp" line="8"/>
+        <location filename="gui/commitDialog.cpp" line="10"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="gui/commitDialog.cpp" line="9"/>
+        <location filename="gui/commitDialog.cpp" line="11"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="gui/commitDialog.cpp" line="25"/>
+        <location filename="gui/commitDialog.cpp" line="27"/>
         <source>Enter commit message</source>
         <translation>Введите сообщение</translation>
     </message>
@@ -185,7 +185,7 @@
 <context>
     <name>versioning::ui::PreferencesVersioningPage</name>
     <message>
-        <location filename="gui/versioningPage.cpp" line="50"/>
+        <location filename="gui/versioningPage.cpp" line="55"/>
         <source>Open File</source>
         <translation>Открыть файл</translation>
     </message>

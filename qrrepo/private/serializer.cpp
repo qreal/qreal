@@ -6,8 +6,10 @@
 #include "serializer.h"
 #include "folderCompressor.h"
 #include "../../qrkernel/settingsManager.h"
+
 #include "../../qrutils/outFile.h"
 #include "../../qrutils/xmlUtils.h"
+#include "../../qrutils/fileSystemUtils.h"
 
 using namespace qrRepo;
 using namespace details;
@@ -128,7 +130,13 @@ void Serializer::saveToDisk(QList<Object*> const &objects)
 		previousSave.remove();
 	}
 
-	FolderCompressor().compressFolder(compressDir.absolutePath(), fileInfo.absolutePath() + "/" + fileName + ".qrs");
+	QString const filePath = fileInfo.absolutePath() + "/" + fileName + ".qrs";
+	FolderCompressor().compressFolder(compressDir.absolutePath(), filePath);
+
+	// Hiding autosaved files
+	if (fileName.contains("~")) {
+		FileSystemUtils::makeHidden(filePath);
+	}
 
 	clearDir(mWorkingDir);
 }

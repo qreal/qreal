@@ -6,6 +6,8 @@
 #include "longOperation.h"
 #include "private/functors.h"
 
+#define QT_TYPENAME typename
+
 namespace invocation
 {
 
@@ -560,15 +562,9 @@ public:
 
 signals:
 	void beforeStarted();
-	void finished(InvocationState invocationState);
+	void finished(InvocationState invocationResult);
 
 private:
-//	virtual void onThreadFinished()
-//	{
-//		mResult = &((dynamic_cast<FunctorThread *>(mThread))->result());
-//		LongOperation::onThreadFinished();
-//	}
-
 	virtual void startInvocation(QThread::Priority priority = QThread::NormalPriority)
 	{
 		mThread = new FunctorThread(mFunctor);

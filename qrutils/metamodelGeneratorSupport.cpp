@@ -1,8 +1,9 @@
 #include "metamodelGeneratorSupport.h"
 
-#include <QProcess>
-#include <QApplication>
-#include <QProgressBar>
+#include <QtCore/QProcess>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QDesktopWidget>
 
 #include "xmlUtils.h"
 #include "outFile.h"
@@ -31,8 +32,11 @@ QDomDocument MetamodelGeneratorSupport::loadMetamodelFromFile(QString const &met
 void MetamodelGeneratorSupport::saveMetamodelInFile(QDomDocument const &metamodel,
 		QString const &metamodelPath)
 {
-	QString const dirPath = metamodelPath.mid(0, metamodelPath.lastIndexOf("/"));
-	QDir().mkpath(dirPath);
+	int const slashIndex = metamodelPath.lastIndexOf("/");
+	if (slashIndex > -1) {
+		QString const dirPath = metamodelPath.mid(0, slashIndex);
+		QDir().mkpath(dirPath);
+	}
 
 	OutFile out(metamodelPath);
 	out() << metamodel.toString();
@@ -86,7 +90,7 @@ void MetamodelGeneratorSupport::loadPlugin(QString const &directoryName
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);
 		builder.start(pathToMake);
-		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
+		if (builder.waitForFinished()/* && (builder.exitCode() == 0)*/) {
 			progress->setValue(80);
 			if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "."
 					+ extension, normalizeDirName))
@@ -127,7 +131,7 @@ void MetamodelGeneratorSupport::insertElementsInDiagramSublevel(QDomDocument met
 }
 
 void MetamodelGeneratorSupport::insertElementInDiagramSublevel(QDomDocument metamodel,
-		const QString &sublevelName, QDomElement const &element)
+		QString const &sublevelName, QDomElement const &element)
 {
 	QDomNodeList sublevels = metamodel.elementsByTagName(sublevelName);
 
@@ -167,7 +171,7 @@ QStringList MetamodelGeneratorSupport::collectAllGraphicTypesInMetamodel(QDomDoc
 	QStringList result;
 	if (graphicTypes.length() > 0) {
 		QDomNodeList children = graphicTypes.at(0).childNodes();
-		for (unsigned i = 0; i < children.length(); i++) {
+		for (int i = 0; i < children.length(); i++) {
 			result.push_back(children.at(i).toElement().attribute(type));
 		}
 	}
@@ -200,7 +204,7 @@ void MetamodelGeneratorSupport::generateProFile(QDomDocument metamodel,
 
 	if (include.length() > 0) {
 		outpro() << "QREAL_XML_DEPENDS = ";
-		for (unsigned i = 0; i < include.length(); i++) {
+		for (int i = 0; i < include.length(); i++) {
 			QString const includePath = ".." +
 					mergePaths(
 							baseMetamodelPath.mid(0, baseMetamodelPath.lastIndexOf("/")),

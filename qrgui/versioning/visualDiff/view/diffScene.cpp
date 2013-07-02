@@ -1,5 +1,5 @@
 #include <QtGui/QColor>
-#include <QtGui/QGraphicsColorizeEffect>
+#include <QtWidgets/QGraphicsColorizeEffect>
 
 #include "diffScene.h"
 #include "diffColorPreferencesDialog.h"

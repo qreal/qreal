@@ -1,4 +1,4 @@
-#include <QtGui/QColorDialog>
+#include <QtWidgets/QColorDialog>
 
 #include "diffColorPreferencesDialog.h"
 #include "ui_diffColorPreferencesDialog.h"

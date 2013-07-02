@@ -2,7 +2,21 @@
 
 #include "fileSystemUtils.h"
 
-using namespace utils;
+#if defined(Q_OS_WIN)
+#include <windows.h>
+#endif
+
+using namespace qReal;
+
+bool FileSystemUtils::makeHidden(QString const &filePath)
+{
+#if defined(Q_OS_WIN)
+	return SetFileAttributesW(filePath.toStdWString().c_str(), FILE_ATTRIBUTE_HIDDEN);
+#else
+	Q_UNUSED(filePath)
+	return false;
+#endif
+}
 
 bool FileSystemUtils::removeDir(QString const &dirPath, bool recursive)
 {
@@ -10,8 +24,7 @@ bool FileSystemUtils::removeDir(QString const &dirPath, bool recursive)
 	if (!dir.exists()) {
 		return true;
 	}
-	if (recursive && !clearDir(dir))
-	{
+	if (recursive && !clearDir(dir)) {
 		return false;
 	}
 	return dir.rmdir(dirPath);
@@ -26,7 +39,7 @@ bool FileSystemUtils::clearDir(QString const &dirPath)
 	return clearDir(dir);
 }
 
-bool FileSystemUtils::removeFile(const QString &filePath)
+bool FileSystemUtils::removeFile(QString const &filePath)
 {
 	QFile file(filePath);
 	if (!file.exists()) {

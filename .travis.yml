@@ -1,0 +1,22 @@
+language: cpp
+compiler: gcc
+install:
+  - sudo add-apt-repository ppa:canonical-qt5-edgers/qt5-proper -y
+  - sudo add-apt-repository ppa:ubuntu-sdk-team/ppa -y
+  - sudo apt-get update
+  - sudo apt-get install qt-sdk libqt5svg5-dev qttools5-dev -y
+
+script:
+  - qmake qrealRobots.pro
+  - make -j2 
+  - git clean -dfx
+  - qmake qrealTest.pro CONFIG+=debug
+  - make -j2
+  - ./bin/unittests/qrlibs_unittests
+  - ./bin/unittests/qrgui_unittests
+  - ./bin/unittests/qrxc_unittests
+
+notifications:
+  email:
+    recipients:
+      - qreal-build-reports@googlegroups.com

@@ -5,11 +5,12 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
 
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 #include "../../../qrkernel/roles.h"
 
 #include "../../../qrutils/outFile.h"
+#include "../../../qrutils/nameNormalizer.h"
 
 #include "../../../qrkernel/settingsManager.h"
 
@@ -25,50 +26,35 @@ EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api, ErrorReporte
 
 QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 {
-	Id repoId = Id::rootId();
-
-	IdList const metamodels = mApi.children(repoId);
-	QHash<Id, QPair<QString,QString> > metamodelList;
+	IdList const metamodels = mApi.children(Id::rootId());
+	QHash<Id, QPair<QString, QString> > metamodelList;
 
 	foreach (Id const key, metamodels) {
 		QString const objectType = key.element();
 		if (objectType == "MetamodelDiagram" && mApi.isLogicalElement(key)) {
 			// Now the user must specify the full path to the directory and the relative path to source files of QReal
 			QString const directoryName = mApi.stringProperty(key, "name of the directory");
-			QString const pathToQRealRoot = mApi.stringProperty(key, "relative path to QReal Source Files");
-			if ((!directoryName.isEmpty()) && (!pathToQRealRoot.isEmpty())) {
+			QString const pathToQRealRoot = mApi.stringProperty(key, "path to QReal Source Files");
+			if (!directoryName.isEmpty() && !pathToQRealRoot.isEmpty()) {
 				QPair<QString, QString> savingData;
 				savingData.first = directoryName;
 				savingData.second = pathToQRealRoot;
 				metamodelList.insert(key, savingData);
-			}
-			else {
-				mErrorReporter.addError("no name of the directory or relative path to QReal Source Files", key);
+			} else {
+				mErrorReporter.addError(
+						QObject::tr("no directory to generated code or path to QReal Source Files"), key);
 			}
 		}
 	}
 	return metamodelList;
 }
 
-void EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource)
+QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
+		, QString const &pathToFile, QString const &pathToQRealSource)
 {
-	// find the path to the folder specified by the user for the new editor from the folder "plugins"
-	QStringList pathList = pathToQRealSource.split("/", QString::SkipEmptyParts);
-	QString editorPath = "..";
-	int index = pathList.length() - 1;
-	while ((index >= 0) && (pathList[index] != "..")) {
-		editorPath += "/..";
-		index--;
-	}
-	index++;
-	QStringList directoryPathList = pathToFile.split("/", QString::SkipEmptyParts);
-
-	int first = directoryPathList.length() - index - 1;
-	int last = directoryPathList.length() - 1;
-
-	for (int i = first; i < last; ++i) {
-		editorPath += "/" + directoryPathList[i];
-	}
+	mErrorReporter.clear();
+	mErrorReporter.clearErrors();
+	QString const editorPath = calculateEditorPath(pathToFile, pathToQRealSource);
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
 	metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");
@@ -92,31 +78,75 @@ void EditorGenerator::generateEditor(Id const &metamodelId, QString const &pathT
 
 	createDiagrams(metamodel, metamodelId);
 
-	QFileInfo const fileName(pathToFile);
-	QString const baseName = fileName.baseName();
+	QString const fileBaseName = NameNormalizer::normalize(mApi.name(metamodelId), false);
+
+	QRegExp patten;
+	patten.setPattern("[A-Za-z]+([A-Za-z0-9]*)");
+	if (!patten.exactMatch(fileBaseName) || fileBaseName.isEmpty()) {
+		mErrorReporter.addError(QObject::tr("wrong name\n"), metamodelId);
+		return QPair<QString, QString>("", "");
+	}
 
 	try {
-		OutFile outpro(pathToFile + ".pro");
-		outpro() << QString("QREAL_XML = %1\n").arg(baseName + ".xml");
+		OutFile outpro(pathToFile + "/" + fileBaseName + ".pro");
+		outpro() << QString("QREAL_XML = %1\n").arg(fileBaseName + ".xml");
 		if (includeProList != "") {
 			outpro() << QString("QREAL_XML_DEPENDS = %1\n").arg(includeProList);
 		}
 		outpro() << QString ("QREAL_EDITOR_PATH = %1\n").arg(editorPath);
-		outpro() << QString ("ROOT = %1\n").arg(pathToQRealSource);
+		QString const relativeQRealSourcesPath = calculateRelativeQRealSourcesPath(pathToFile, pathToQRealSource);
+		outpro() << QString ("ROOT = %1\n").arg(relativeQRealSourcesPath);
 		outpro() << "\n";
-		outpro() << QString("include (%1)").arg(pathToQRealSource + "/plugins/editorsSdk/editorsCommon.pri");
+		outpro() << QString("include (%1)").arg(relativeQRealSourcesPath + "/plugins/editorsSdk/editorsCommon.pri");
 	}
 	catch (char* e) {
 		mErrorReporter.addCritical(QObject::tr("incorrect file name"));
 	}
 
-	OutFile outxml(pathToFile + ".xml");
+	OutFile outxml(pathToFile + "/" + fileBaseName + ".xml");
 	QDomNode const header = mDocument.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"utf-8\"");
 	mDocument.insertBefore(header, mDocument.firstChild());
 	mDocument.save(outxml(), 4);
 	mDocument.clear();
 
 	copyImages(pathToFile);
+
+	return QPair<QString, QString>(mApi.name(metamodelId), fileBaseName);
+}
+
+QString EditorGenerator::calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource)
+{
+	QFileInfo const pluginDir(pathToFile);
+	QFileInfo const sourcesDir(pathToQRealSource);
+	QFileInfo const qRealPluginsDir(sourcesDir.absoluteFilePath() + "/plugins/");
+
+	return calculateRelativePath(qRealPluginsDir.absoluteFilePath(), pluginDir.absoluteFilePath());
+}
+
+QString EditorGenerator::calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource)
+{
+	QFileInfo const pluginDir(pathToFile);
+	QFileInfo const sourcesDir(pathToQRealSource);
+
+	return calculateRelativePath(pluginDir.absoluteFilePath(), sourcesDir.absoluteFilePath());
+}
+
+QString EditorGenerator::calculateRelativePath(QString const &pathOne, QString const &pathTwo)
+{
+	int const levels = pathOne.split("/", QString::SkipEmptyParts).count();
+	QString result;
+	for (int i = 0; i < levels; ++i) {
+		result += "/..";
+	}
+
+	if (pathTwo.count() > 2 && pathTwo[1] == ':') {
+		// Remove drive letter on Windows.
+		result += pathTwo.mid(2);
+	} else {
+		result += pathTwo;
+	}
+
+	return result;
 }
 
 void EditorGenerator::copyImages(QString const &pathToFile)
@@ -172,7 +202,8 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 
 	foreach (Id const &id, childElems) {
 		if (idParent != Id::rootId()) {
-			if (id.element() == "MetaEntityEnum") {
+			QString const objectType = id.element();
+			if (objectType == "MetaEntityEnum") {
 				createEnum(tagNonGraphic, id);
 			}
 		}
@@ -205,7 +236,7 @@ void EditorGenerator::createImport(QDomElement &parent, const Id &id)
 	if ((mApi.stringProperty(id, "importedFrom") != "") && (mApi.name(id) != "")) {
 		ensureCorrectness(id, import, "name", mApi.stringProperty(id, "importedFrom") + "::" + mApi.name(id));
 	} else {
-		mErrorReporter.addWarning(QString ("not filled name/importedFrom"), id);
+		mErrorReporter.addWarning(QObject::tr("not filled name/importedFrom"), id);
 		import.setAttribute("name", "");
 	}
 	ensureCorrectness(id, import, "displayedName", mApi.stringProperty(id, "displayedName"));
@@ -276,7 +307,7 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 			} else if (labelType == "Dynamic text") {
 				label.setAttribute("textBinded", labelText);
 			} else {
-				mErrorReporter.addWarning("Incorrect label type", id);
+				mErrorReporter.addWarning(QObject::tr("Incorrect label type"), id);
 			}
 		}
 	}
@@ -331,7 +362,8 @@ void EditorGenerator::setProperties(QDomElement &parent, Id const &id)
 
 	foreach (Id const &idChild, childElems) {
 		if (idChild != Id::rootId()) {
-			if (idChild.element() == "MetaEntity_Attribute") {
+			QString const objectType = idChild.element();
+			if (objectType == "MetaEntity_Attribute") {
 				QDomElement property = mDocument.createElement("property");
 				ensureCorrectness(idChild, property, "type", mApi.stringProperty(idChild, "attributeType"));
 				ensureCorrectness(idChild, property, "name", mApi.name(idChild));
@@ -359,7 +391,8 @@ void EditorGenerator::setContextMenuFields(QDomElement &parent, const Id &id)
 
 	foreach (Id const idChild, childElems)
 		if (idChild != Id::rootId()) {
-			if (idChild.element() == "MetaEntityContextMenuField"){
+			QString const objectType = idChild.element();
+			if (objectType == "MetaEntityContextMenuField"){
 				QDomElement field = mDocument.createElement("field");
 				ensureCorrectness(idChild, field, "name", mApi.name(idChild));
 				fields.appendChild(field);
@@ -389,7 +422,8 @@ void EditorGenerator::setAssociations(QDomElement &parent, const Id &id)
 	IdList const childElems = mApi.children(id);
 
 	foreach (Id const idChild, childElems) {
-		if (idChild.element() == "MetaEntityAssociation") {
+		QString const objectType = idChild.element();
+		if (objectType == "MetaEntityAssociation") {
 			QDomElement associationTag = mDocument.createElement("associations");
 			ensureCorrectness(idChild, associationTag, "beginType", mApi.stringProperty(idChild, "beginType"));
 			ensureCorrectness(idChild, associationTag, "endType", mApi.stringProperty(idChild, "endType"));
@@ -421,7 +455,8 @@ void EditorGenerator::newSetConnections(QDomElement &parent, const Id &id,
 	QDomElement connectionsTag = mDocument.createElement(commonTagName);
 
 	foreach (Id const idChild, childElems) {
-		if (idChild.element() == typeName) {
+		QString const objectType = idChild.editor();
+		if (objectType == typeName) {
 			QDomElement connection = mDocument.createElement(internalTagName);
 			ensureCorrectness(idChild, connection,"type", mApi.stringProperty(idChild, "type"));
 			connectionsTag.appendChild(connection);
@@ -440,7 +475,8 @@ void EditorGenerator::setPossibleEdges(QDomElement &parent, const Id &id)
 	QDomElement possibleEdges = mDocument.createElement("possibleEdges");
 
 	foreach (Id const idChild, childElems) {
-		if (idChild.element() == "MetaEntityPossibleEdge") {
+		QString const objectType = idChild.editor();
+		if (objectType == "MetaEntityPossibleEdge") {
 			QDomElement possibleEdge = mDocument.createElement("possibleEdge");
 			possibleEdges.appendChild(possibleEdge);
 			ensureCorrectness(idChild, possibleEdge, "beginName", mApi.stringProperty(idChild, "beginName"));
@@ -542,7 +578,7 @@ void EditorGenerator::ensureCorrectness(
 	if (value.isEmpty() && tag == "displayedName") {
 		return;
 	} else if (value.isEmpty()) {
-		mErrorReporter.addWarning(QString ("not filled %1\n").arg(tagName), id);
+		mErrorReporter.addWarning(QString (QObject::tr("not filled %1\n")).arg(tagName), id);
 		element.setAttribute(tagName, "");
 	} else if (tag == "name") {
 		QRegExp patten;
@@ -550,7 +586,7 @@ void EditorGenerator::ensureCorrectness(
 		if (patten.exactMatch(value)) {
 			element.setAttribute(tagName, value);
 		} else {
-			mErrorReporter.addWarning("wrong name\n", id);
+			mErrorReporter.addWarning(QObject::tr("wrong name\n"), id);
 			element.setAttribute(tagName, value);
 		}
 	}

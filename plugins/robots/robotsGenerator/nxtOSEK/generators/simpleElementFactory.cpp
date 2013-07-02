@@ -6,14 +6,23 @@
 #include "simpleElements/playToneGenerator.h"
 #include "simpleElements/finalNodeGenerator.h"
 #include "simpleElements/nullificationEncoderGenerator.h"
-#include "simpleElements/initialBlockGenerator.h"
 #include "simpleElements/waitForColorBlockGenerator.h"
 #include "simpleElements/waitForColorIntensityBlockGenerator.h"
 #include "simpleElements/balanceGenerator.h"
+#include "simpleElements/drawPixelBlockGenerator.h"
+#include "simpleElements/drawRectBlockGenerator.h"
+#include "simpleElements/clearScreenBlockGenerator.h"
+#include "simpleElements/drawLineBlockGenerator.h"
+#include "simpleElements/drawCircleBlockGenerator.h"
+#include "simpleElements/printTextBlockGenerator.h"
 #include "simpleElements/waitForLightBlockGenerator.h"
+#include "simpleElements/waitForButtonsBlockGenerator.h"
 #include "simpleElements/waitForSonarBlockGenerator.h"
 #include "simpleElements/waitForEncoderBlockGenerator.h"
 #include "simpleElements/waitForTouchSensorBlockGenerator.h"
+#include "simpleElements/waitForSoundBlockGenerator.h"
+#include "simpleElements/waitForGyroscopeBlockGenerator.h"
+#include "simpleElements/waitForAccelerometerBlockGenerator.h"
 #include "simpleElements/variableInitGenerator.h"
 #include "simpleElements/balanceInitGenerator.h"
 #include "simpleElements/initialNodeGenerator.h"
@@ -36,8 +45,6 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 		return new FinalNodeGenerator();
 	} else if (elementType == "NullificationEncoder") {
 		return new NullificationEncoderGenerator();
-	} else if (elementType == "InitialBlock") {
-		return new InitialBlockGenerator();
 	} else if (elementType == "WaitForColor") {
 		return new WaitForColorBlockGenerator();
 	} else if (elementType == "WaitForColorIntensity") {
@@ -50,12 +57,32 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 		return new WaitForSonarBlockGenerator();
 	} else if (elementType == "WaitForEncoder") {
 		return new WaitForEncoderBlockGenerator();
+	} else if (elementType == "WaitForSound") {
+		return new WaitForSoundBlockGenerator();
+	} else if (elementType == "WaitForGyroscope") {
+		return new WaitForGyroscopeBlockGenerator();
+	} else if (elementType == "WaitForAccelerometer") {
+		return new WaitForAccelerometerBlockGenerator();
 	} else if (elementType == "Balance") {
 		return new BalanceGenerator();
 	} else if (elementType == "BalanceInit") {
 		return new BalanceInitGenerator();
 	} else if (elementType == "VariableInit") {
 		return new VariableInitGenerator();
+	} else if (elementType == "WaitForButtons") {
+		return new WaitForButtonsBlockGenerator();
+	} else if (elementType == "DrawPixel") {
+		return new DrawPixelBlockGenerator();
+	} else if (elementType == "DrawLine") {
+		return new DrawLineBlockGenerator();
+	} else if (elementType == "DrawCircle") {
+		return new DrawCircleBlockGenerator();
+	} else if (elementType == "PrintText") {
+		return new PrintTextBlockGenerator();
+	} else if (elementType == "DrawRect") {
+		return new DrawRectBlockGenerator();
+	} else if (elementType == "ClearScreen") {
+		return new ClearScreenBlockGenerator();
 	}
 
 	return new InitialNodeGenerator();

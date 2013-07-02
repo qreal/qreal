@@ -12,7 +12,7 @@ class UnrealLightSensorImplementation : public UnrealSensorImplementation
 {
 	Q_OBJECT
 public:
-	UnrealLightSensorImplementation(inputPort::InputPortEnum const &port, d2Model::D2RobotModel *d2Model);
+	UnrealLightSensorImplementation(inputPort::InputPortEnum const port, d2Model::D2RobotModel *d2Model);
 	virtual void read();
 };
 

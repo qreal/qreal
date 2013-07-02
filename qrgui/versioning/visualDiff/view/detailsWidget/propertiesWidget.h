@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QtGui/QWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QGridLayout>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QGridLayout>
 #include <QtCore/QList>
 
 #include "propertyWidget.h"

@@ -1,6 +1,7 @@
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "toolPluginManager.h"
+#include "../hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 
@@ -16,9 +17,9 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 
 	mPluginsDir.cd("plugins");
 
-	foreach (QString fileName, mPluginsDir.entryList(QDir::Files)) {
+	foreach (QString const &fileName, mPluginsDir.entryList(QDir::Files)) {
 		// TODO: Free memory
-		QPluginLoader *loader  = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
+		QPluginLoader *loader = new QPluginLoader(mPluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader->instance();
 
 		if (plugin) {
@@ -26,14 +27,18 @@ ToolPluginManager::ToolPluginManager(QObject *parent)
 			if (toolPlugin) {
 				mPlugins << toolPlugin;
 				mLoaders << loader;
-			}
-			else {
+			} else {
+				// TODO: Does not work on linux. See editorManager.cpp for more details.
+				// loader->unload();
 				delete loader;
 			}
 		} else {
+			loader->unload();
 			delete loader;
 		}
 	}
+
+	setHotKeyActions();
 }
 
 ToolPluginManager::~ToolPluginManager()
@@ -60,6 +65,23 @@ QList<ActionInfo> ToolPluginManager::actions() const
 	return result;
 }
 
+QList<HotKeyActionInfo> ToolPluginManager::hotKeyActions() const
+{
+	QList<HotKeyActionInfo> result;
+	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
+		result += toolPlugin->hotKeyActions();
+	}
+
+	return result;
+}
+
+void ToolPluginManager::setHotKeyActions() const
+{
+	foreach (HotKeyActionInfo const &actionInfo, hotKeyActions()) {
+		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
+	}
+}
+
 QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() const
 {
 	QList<QPair<QString, PreferencesPage *> > result;
@@ -72,14 +94,14 @@ QList<QPair<QString, PreferencesPage *> > ToolPluginManager::preferencesPages() 
 	return result;
 }
 
-Customizer const *ToolPluginManager::customizer() const
+Customizer *ToolPluginManager::customizer() const
 {
 	foreach (ToolPluginInterface *toolPlugin, mPlugins) {
 		if (toolPlugin->customizationInterface()) {
 			return toolPlugin->customizationInterface();
 		}
 	}
-	return &mCustomizer;
+	return const_cast<qReal::Customizer *>(&mCustomizer);
 }
 
 void ToolPluginManager::updateSettings()

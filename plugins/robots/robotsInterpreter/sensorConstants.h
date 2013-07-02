@@ -4,6 +4,8 @@ namespace qReal {
 namespace interpreters {
 namespace robots {
 
+int const sensorWidth = 12;
+
 namespace sensorType {
 enum SensorTypeEnum {
 	unused
@@ -16,6 +18,9 @@ enum SensorTypeEnum {
 	, colorGreen
 	, colorBlue
 	, colorNone
+	, sound
+	, gyroscope
+	, accelerometer
 	, encoder
 };
 }

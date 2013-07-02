@@ -3,7 +3,7 @@ DEFINES += UNITTEST
 TEMPLATE = app
 CONFIG += console
 
-QT += xml gui
+QT += xml gui widgets printsupport
 
 DESTDIR = ../../bin/unittests
 TARGET = qrlibs_unittests
@@ -36,6 +36,9 @@ include(qrrepoTests/qrrepoTests.pri)
 
 # Unit tests for utils
 include(qrutilsTests/qrutilsTests.pri)
+
+# Unit tests for visual debug support plugin
+include(visualDebugSupportPluginTests/visualDebugSupportPluginTests.pri)
 
 # Example tests
 include(exampleTests/exampleTests.pri)

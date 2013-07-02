@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtGui/QColor>
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 
 namespace Ui {
 	class DiffColorPreferencesDialog;

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QtCore/QList>
-#include <QtGui/QWidget>
-#include <QtGui/QLabel>
-#include <QtGui/QGridLayout>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QGridLayout>
 
 #include "idWidget.h"
 #include "../../model/diffModel.h"

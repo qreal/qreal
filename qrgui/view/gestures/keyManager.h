@@ -1,7 +1,12 @@
 #pragma once
+
+#include <QtCore/QPointF>
+#include <QtCore/QList>
+
 #include "keyManagerInterface.h"
-#include <QPointF>
-#include <QList>
+
+namespace qReal {
+namespace gestures {
 
 class KeyManager : public IKeyManager
 {
@@ -12,6 +17,7 @@ public:
 private:
 	void analysePoints(QList<QPoint> const &path);
 	void clear();
+
 	int mLeftBound;
 	int mRightBound;
 	int mUpperBound;
@@ -20,3 +26,6 @@ private:
 	static const int iSize = 7;
 	static const int unidimensionalLimit = 4;
 };
+
+}
+}

@@ -16,7 +16,8 @@ public:
 	DiffPluginWrapper(qReal::DiffPluginBase *plugin
 			, qrRepo::WorkingCopyManagementInterface *workingCopyManager
 			, qReal::BriefVersioningInterface *vcs
-			, qReal::MainWindow *mainWindow, qReal::EditorManager *manager);
+			, qReal::MainWindow *mainWindow
+			, qReal::EditorManagerInterface *manager);
 
 public slots:
 	void showDiff(QString const &targetProject = QString());
@@ -31,7 +32,7 @@ private:
 	qrRepo::WorkingCopyManagementInterface *mWorkingCopyManager;
 	qReal::BriefVersioningInterface *mVcs;
 	qReal::MainWindow *mMainWindow;
-	qReal::EditorManager *mEditorManager;
+	qReal::EditorManagerInterface *mEditorManager;
 	qReal::ErrorReporterInterface *mErrorReporter;
 	qReal::ProjectManagementInterface *mProjectManager;
 	details::ModelLoader *mLoader;

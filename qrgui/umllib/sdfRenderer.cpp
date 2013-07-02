@@ -1,21 +1,22 @@
 #include "sdfRenderer.h"
 
-#include <QMessageBox>
-#include <QFont>
-#include <QIcon>
-#include <QLineF>
-#include <QTime>
-#include <QDebug>
+#include <QtCore/QLineF>
+#include <QtCore/QTime>
+#include <QtCore/QDebug>
+#include <QtCore/QRegExp>
+#include <QtWidgets/QApplication>
+#include <QtGui/QFont>
+#include <QtGui/QIcon>
 
 using namespace qReal;
 
 SdfRenderer::SdfRenderer()
-	: mStartX(0), mStartY(0), mNeedScale(true)
+	: mStartX(0), mStartY(0), mNeedScale(true), mElementRepo(0)
 {
 	mWorkingDirName = SettingsManager::value("workingDir").toString();
 }
 
-SdfRenderer::SdfRenderer(const QString path)
+SdfRenderer::SdfRenderer(QString const path)
 	: mStartX(0), mStartY(0), mNeedScale(true)
 {
 	if (!load(path))
@@ -29,9 +30,10 @@ SdfRenderer::~SdfRenderer()
 {
 }
 
-bool SdfRenderer::load(const QString &filename)
+bool SdfRenderer::load(QString const &filename)
 {
 	QFile file(filename);
+
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 
@@ -49,7 +51,21 @@ bool SdfRenderer::load(const QString &filename)
 	return true;
 }
 
-void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
+bool SdfRenderer::load(QDomDocument const &document)
+{
+	doc = document;
+	QDomElement const docElem = doc.firstChildElement("picture");
+	first_size_x = docElem.attribute("sizex").toInt();
+	first_size_y = docElem.attribute("sizey").toInt();
+
+	return true;
+}
+
+void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo){
+	mElementRepo = elementRepo;
+}
+
+void SdfRenderer::render(QPainter *painter, const QRectF &bounds, bool isIcon)
 {
 	current_size_x = static_cast<int>(bounds.width());
 	current_size_y = static_cast<int>(bounds.height());
@@ -63,6 +79,10 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 		QDomElement elem = node.toElement();
 		if(!elem.isNull())
 		{
+			if (!checkShowConditions(elem, isIcon)) {
+				node = node.nextSibling();
+				continue;
+			}
 			if (elem.tagName()=="line")
 			{
 				line(elem);
@@ -114,6 +134,50 @@ void SdfRenderer::render(QPainter *painter, const QRectF &bounds)
 		node = node.nextSibling();
 	}
 	this->painter = 0;
+}
+
+bool SdfRenderer::checkShowConditions(QDomElement const &element, bool isIcon) const
+{
+	QDomNodeList showConditions = element.elementsByTagName("showIf");
+	// a hack, need to be removed when there is another version of icons
+	if (!showConditions.isEmpty() && isIcon) {
+		return false;
+	}
+	if (showConditions.isEmpty() || !mElementRepo) {
+		return true;
+	}
+	for (int i = 0; i < showConditions.length(); ++i) {
+		if (!checkCondition(showConditions.at(i).toElement())) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool SdfRenderer::checkCondition(QDomElement const &condition) const
+{
+	QString sign = condition.attribute("sign");
+	QString realValue = mElementRepo->logicalProperty(condition.attribute("property"));
+	QString conditionValue = condition.attribute("value");
+
+	if (sign == "=~") {
+		return QRegExp(conditionValue).exactMatch(realValue);
+	} else if (sign == ">") {
+		return realValue.toInt() > conditionValue.toInt();
+	} else if (sign == "<") {
+		return realValue.toInt() < conditionValue.toInt();
+	} else if (sign == ">=") {
+		return realValue.toInt() >= conditionValue.toInt();
+	} else if (sign == "<=") {
+		return realValue.toInt() <= conditionValue.toInt();
+	} else if (sign == "!=") {
+		return realValue != conditionValue;
+	} else if (sign == "=") {
+		return realValue == conditionValue;
+	} else {
+		qDebug() << "Unsupported logical operator \"" + sign + "\"";
+		return false;
+	}
 }
 
 void SdfRenderer::line(QDomElement &element)
@@ -230,7 +294,11 @@ void SdfRenderer::image_draw(QDomElement &element)
 	float y1 = y1_def(element);
 	float x2 = x2_def(element);
 	float y2 = y2_def(element);
-	QString fileName = SettingsManager::value("pathToImages", ".").toString() + "/" + element.attribute("name", "error");
+	QString fileName = SettingsManager::value("pathToImages").toString() + "/" + element.attribute("name", "error");
+	// TODO: rewrite this ugly spike
+	if (fileName.startsWith("./")) {
+		fileName = QApplication::applicationDirPath() + "/" + fileName;
+	}
 
 	QPixmap pixmap;
 
@@ -703,10 +771,17 @@ SdfIconEngineV2::SdfIconEngineV2(QString const &file)
 {
 	mRenderer.load(file);
 	mRenderer.noScale();
+	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
+}
+
+SdfIconEngineV2::SdfIconEngineV2(QDomDocument const &document)
+{
+	mRenderer.load(document);
+	mRenderer.noScale();
 }
 
 void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
-	QIcon::Mode mode, QIcon::State state)
+		QIcon::Mode mode, QIcon::State state)
 {
 	Q_UNUSED(mode)
 	Q_UNUSED(state)
@@ -721,16 +796,19 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
 	}
 	// Take picture aspect into account
 	QRect resRect = rect;
-	if (rh * pw < ph * rw)
-	{
-		resRect.setLeft(rect.left() + (rw-rh*pw/ph)/2);
-		resRect.setRight(rect.right() - (rw-rh*pw/ph)/2);
+	if (rh * pw < ph * rw) {
+		resRect.setLeft(rect.left() + (rw - rh * pw / ph) / 2);
+		resRect.setRight(rect.right() - (rw - rh * pw / ph) / 2);
 	}
-	if (rh * pw > ph * rw)
-	{
-		resRect.setTop(rect.top() + (rh-rw*ph/pw)/2);
-		resRect.setBottom(rect.bottom() - (rh-rw*ph/pw)/2);
+	if (rh * pw > ph * rw) {
+		resRect.setTop(rect.top() + (rh - rw * ph / pw) / 2);
+		resRect.setBottom(rect.bottom() - (rh - rw * ph / pw) / 2);
 	}
 	painter->setRenderHint(QPainter::Antialiasing, true);
-	mRenderer.render(painter, resRect);
+	mRenderer.render(painter, resRect, true);
+}
+
+QSize SdfIconEngineV2::preferedSize() const
+{
+	return mSize;
 }

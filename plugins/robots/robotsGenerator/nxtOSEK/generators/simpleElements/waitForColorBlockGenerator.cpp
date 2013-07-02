@@ -9,7 +9,7 @@ WaitForColorBlockGenerator::WaitForColorBlockGenerator()
 }
 
 void WaitForColorBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen,
-		QString const &port, QString const &colorNxtType, qReal::Id const elementId)
+		QString const &port, QString const &colorNxtType, qReal::Id const &elementId)
 {
 	QString const partInitCode = "ecrobot_init_nxtcolorsensor(" + port;
 	QString const initCode = "ecrobot_init_nxtcolorsensor(" + port + "," + colorNxtType + ");";
@@ -22,7 +22,7 @@ void WaitForColorBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *
 }
 
 QList<SmartLine> WaitForColorBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		, qReal::Id const elementId, qReal::Id const logicElementId)
+		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	QList<SmartLine> result;
 	int const port = nxtGen->api()->stringProperty(logicElementId, "Port").toInt();
@@ -30,25 +30,24 @@ QList<SmartLine> WaitForColorBlockGenerator::convertElementIntoDirectCommand(Nxt
 
 	QString colorNxtType;
 
-	if (colorStr == "Красный") {
+	if (colorStr == QString::fromUtf8("Красный")) {
 		colorNxtType = "NXT_COLOR_RED";
-	} else if (colorStr == "Зелёный") {
+	} else if (colorStr == QString::fromUtf8("Зелёный")) {
 		colorNxtType = "NXT_COLOR_GREEN";
-	} else if (colorStr == "Синий") {
+	} else if (colorStr == QString::fromUtf8("Синий")) {
 		colorNxtType = "NXT_COLOR_BLUE";
-	} else if (colorStr == "Чёрный") {
+	} else if (colorStr == QString::fromUtf8("Чёрный")) {
 		colorNxtType = "NXT_COLOR_BLACK";
-	} else if (colorStr == "Жёлтый") {
+	} else if (colorStr == QString::fromUtf8("Жёлтый")) {
 		colorNxtType = "NXT_COLOR_YELLOW";
-	} else if (colorStr == "Белый") {
+	} else if (colorStr == QString::fromUtf8("Белый")) {
 		colorNxtType = "NXT_COLOR_WHITE";
 	}
 
 	if (!colorNxtType.isEmpty()) {
 		QString portStr = QString::number(port);
 		result.append(SmartLine("while (ecrobot_get_nxtcolorsensor_id(NXT_PORT_S" + portStr
-				+ ") != " + colorNxtType + ")", elementId));
-		result.append(SmartLine("{", elementId));
+				+ ") != " + colorNxtType + ") {", elementId));
 		result.append(SmartLine("}", elementId));
 		addInitAndTerminateCode(nxtGen, portStr, colorNxtType, elementId);
 	}

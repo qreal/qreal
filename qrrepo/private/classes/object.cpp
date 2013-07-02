@@ -117,7 +117,7 @@ Id Object::parent() const
 	return mParent;
 }
 
-void Object::setProperty(const QString &name, const QVariant &value)
+void Object::setProperty(QString const &name, const QVariant &value)
 {
 	if (value == QVariant()) {
 		qDebug() << "Empty QVariant set as a property for " << id().toString();
@@ -132,7 +132,7 @@ void Object::setProperties(QMap<QString, QVariant> const &properties)
 	mProperties = properties;
 }
 
-QVariant Object::property(const QString &name) const
+QVariant Object::property(QString const &name) const
 {
 	if (mProperties.contains(name)) {
 		return mProperties[name];
@@ -189,12 +189,12 @@ void Object::removeTemporaryRemovedLinksAt(QString const &direction)
 
 void Object::removeTemporaryRemovedLinks()
 {
-	temporaryRemovedLinksAt("from");
-	temporaryRemovedLinksAt("to");
-	temporaryRemovedLinksAt(QString());
+	removeTemporaryRemovedLinksAt("from");
+	removeTemporaryRemovedLinksAt("to");
+	removeTemporaryRemovedLinksAt(QString());
 }
 
-bool Object::hasProperty(const QString &name, bool sensitivity, bool regExpression) const
+bool Object::hasProperty(QString const &name, bool sensitivity, bool regExpression) const
 {
 	QStringList properties = mProperties.keys();
 	Qt::CaseSensitivity caseSensitivity;
@@ -214,7 +214,7 @@ bool Object::hasProperty(const QString &name, bool sensitivity, bool regExpressi
 	}
 }
 
-void Object::removeProperty(const QString &name)
+void Object::removeProperty(QString const &name)
 {
 	if (mProperties.contains(name)) {
 		mProperties.remove(name);

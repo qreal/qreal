@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QObject>
 
 #include "../view/editorView.h"

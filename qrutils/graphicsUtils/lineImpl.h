@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QPainter>
 #include "../utilsDeclSpec.h"
 

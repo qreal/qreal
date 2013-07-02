@@ -15,11 +15,11 @@ void EnginesForwardBlock::run()
 {
 	Tracer::debug(tracer::blocks, "EnginesForwardBlock::run", "");
 	int const power = evaluate("Power").toInt();
-	int const tachoLimit = evaluate("TachoLimit").toInt();
-	QVector<bool> ports = parsePorts();
+	bool const breakMode = stringProperty("Mode") != QString::fromUtf8("скользить");
+	QVector<bool> ports(parseEnginePorts());
 	for (int i = 0; i < 3; ++i) {
 		if (ports[i]) {
-			mMotors[i]->on(power, tachoLimit);
+			mMotors[i]->on(power, breakMode);
 		}
 	}
 

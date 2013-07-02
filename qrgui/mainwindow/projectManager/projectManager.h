@@ -15,7 +15,7 @@ public:
 	explicit ProjectManager(MainWindow *mainWindow);
 
 public slots:
-	bool openExisting(const QString &fileName);
+	bool openExisting(QString const &fileName);
 	bool suggestToOpenExisting();
 	bool openNewWithDiagram();
 	void suggestToCreateDiagram(bool isClosable = true);
@@ -24,38 +24,52 @@ public slots:
 	void close();
 
 	void save();
-	bool saveAs(const QString &fileName);
+	bool saveAs(QString const &fileName);
 	bool suggestToSaveAs();
 	bool saveOrSuggestToSaveAs();
+
+	void setUnsavedIndicator(bool isUnsaved);
+
+	/// Saves current project into given file without refreshing application state after it
+	void saveTo(QString const &fileName);
 
 public:
 	bool openEmptyWithSuggestToSaveChanges();
 	bool open(QString const &fileName = "");
 	bool suggestToSaveChangesOrCancel();
-	void setUnsavedIndicator(bool isUnsaved);
 	void reinitAutosaver();
+	QString openFileName(QString const &dialogWindowTitle) const;
 	QString saveFilePath() const;
 	void setSaveFilePath(QString const &filePath = "");
 	void saveGenCode(QString const &text);
 
+	/// Prompts user to restore last session if it was incorrectly terminated
+	/// and returns yes if he agrees. Otherwise returns false
+	bool restoreIncorrectlyTerminated();
+
 private:
-	bool import(const QString &fileName);
+	bool import(QString const &fileName);
 	bool saveFileExists(QString const &fileName);
-	bool pluginsEnough();
+	bool pluginsEnough() const;
 	QString missingPluginNames() const;
 
 	void refreshWindowTitleAccordingToSaveFile();
 	void refreshTitleModifiedSuffix();
 	void refreshApplicationStateAfterSave();
 	void refreshApplicationStateAfterOpen();
+
 	int suggestToSaveOrCancelMessage();
-	QString getOpenFileName(const QString &dialogWindowTitle);
-	QString getSaveFileName(const QString &dialogWindowTitle);
+
+	QString getOpenFileName(QString const &dialogWindowTitle);
+	QString getSaveFileName(QString const &dialogWindowTitle);
+
+	void fileNotFoundMessage(QString const &fileName) const;
 
 	MainWindow *mMainWindow;
 	Autosaver *mAutosaver;
 	bool mUnsavedIndicator;
 	QString mSaveFilePath;
+	bool mSomeProjectOpened;
 };
 
 }

@@ -12,7 +12,7 @@ AuthenticationSettingsWidget::AuthenticationSettingsWidget(QWidget *parent)
 	reinit();
 }
 
-AuthenticationSettingsWidget::AuthenticationSettingsWidget(const QString &settingsPrefix
+AuthenticationSettingsWidget::AuthenticationSettingsWidget(QString const &settingsPrefix
 		, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::AuthenticationSettingsWidget)

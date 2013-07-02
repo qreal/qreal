@@ -1,5 +1,5 @@
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
 
 #include "modelLoader.h"
 #include "../../../../qrutils/fileSystemUtils.h"
@@ -11,7 +11,7 @@ QString const tempProjectName = "tempDiff.qrs";
 
 ModelLoader::ModelLoader(qReal::BriefVersioningInterface *vcs
 		, qReal::ErrorReporterInterface *errorReporter
-		, qReal::EditorManager *editorManager
+		, qReal::EditorManagerInterface *editorManager
 		, qrRepo::WorkingCopyManagementInterface *workingCopyManager)
 	: mVcs(vcs)
 	, mErrorReporter(errorReporter)
@@ -100,7 +100,7 @@ void ModelLoader::onOldModelLoaded(qReal::models::Models *model)
 	if (!mOldModel) {
 		emit modelLoaded(NULL);
 	}
-	utils::FileSystemUtils::removeFile(tempProject());
+	qReal::FileSystemUtils::removeFile(tempProject());
 	connect(this, SIGNAL(internalModelLoaded(qReal::models::Models*))
 			, this, SLOT(onNewModelLoaded(qReal::models::Models*)));
 	mVcs->beginWorkingCopyDownloading(mRepoUrl, tempProject(), mNewRevision, true);
@@ -119,7 +119,7 @@ void ModelLoader::finishModelLoading()
 	if (mOldModel && mNewModel) {
 		result = new DiffModel(mOldModel, mNewModel);
 	}
-	utils::FileSystemUtils::removeFile(tempProject());
+	qReal::FileSystemUtils::removeFile(tempProject());
 	emit modelLoaded(result);
 }
 

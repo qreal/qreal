@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QtGui/QWidget>
-#include <QtGui/QGridLayout>
-#include <QtGui/QTabWidget>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QTabWidget>
 
 #include "../../model/diffModel.h"
 #include "idWidget.h"

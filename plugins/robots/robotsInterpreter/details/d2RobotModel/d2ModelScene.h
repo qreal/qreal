@@ -1,7 +1,9 @@
 #pragma once
 
-#include <QtGui/QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
+#include <QtGui/QPainter>
 #include "../../../../../qrutils/graphicsUtils/abstractScene.h"
+#include "../../../../../qrutils/graphicsUtils/gridDrawer.h"
 
 namespace qReal {
 namespace interpreters {
@@ -19,8 +21,21 @@ public:
 
 	void keyPressEvent(QKeyEvent *event);
 
+	void forPressResize(QGraphicsSceneMouseEvent *event);
+	void forMoveResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
+	void forReleaseResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
+	void reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect);
+	void drawBackground(QPainter *painter, QRectF const &rect);
+
+public slots:
+	void updateGrid();
+
+private:
+	graphicsUtils::GridDrawer mGridDrawer;
+	qreal mWidthOfGrid;
+
 signals:
-	void mouseClicked(QGraphicsSceneMouseEvent *mouseEvent);
+	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseReleased(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoved(QGraphicsSceneMouseEvent *mouseEvent);
 	void itemDeleted(QGraphicsItem *);

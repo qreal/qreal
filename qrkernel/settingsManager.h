@@ -17,22 +17,44 @@ namespace qReal {
 class QRKERNEL_EXPORT SettingsManager
 {
 public:
-	SettingsManager();
+	/// Get value associated with given key from settings.
+	/// @param key Parameter name.
+	/// @returns Variant with parameter value.
 	static QVariant value(QString const &key);
+
+	/// Get value associated with given key from settings with given default value.
+	/// @param key Parameter name.
+	/// @param defaultValue Default value, used when parameter not found.
+	/// @returns Variant with parameter value.
 	static QVariant value(QString const &key, QVariant const &defaultValue);
-	static void setValue(QString const &name, QVariant const &value = QVariant());
+
+	/// Set value associated with given key.
+	/// @param key Parameter name.
+	/// @param value Parameter value.
+	static void setValue(QString const &key, QVariant const &value);
+
+	/// Removes all entries in persistent external storage
+	static void clearSettings();
+
+	/// Returns an instance of a singleton.
+	static SettingsManager* instance();
+
+	/// Saves settings into persistent external storage (for example, Windows
+	/// registry), making them available to new instances of an application.
 	void saveData();
 
 	/// Loads settings from persistent external storage into SettingsManager.
 	void load();
 
-	static SettingsManager* instance();
-
 private:
+	/// Private constructor.
+	SettingsManager();
 	void set(QString const &name, QVariant const &value);
 	QVariant get(QString const &key, QVariant const &defaultValue = QVariant()) const;
 
 	void initDefaultValues();
+
+	//QMap<QString, QVariant> mDefaultValues;
 
 	/// Singleton sole instance.
 	static SettingsManager* mInstance;
@@ -40,6 +62,7 @@ private:
 	/// In-memory settings storage.
 	QHash<QString, QVariant> mData;
 	QHash<QString, QVariant> mDefaultValues;
+	/// Persistent settings storage.
 	QSettings mSettings;
 };
 

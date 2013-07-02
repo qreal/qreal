@@ -14,6 +14,9 @@ namespace qrmc {
 
 		virtual QString generateProperties(QString const &namesTemplate) const;
 		virtual QString generatePropertyDefaults(QString const &namesTemplate) const;
+		virtual QString generatePropertyDisplayedNames(QString const &lineTemplate) const;
+		virtual QString generateReferenceProperties(QString const &lineTemplate) const;
+		virtual QString generateParents(QString const &lineTemplate) const;
 		virtual QString generateContainers(QString const &lineTemplate) const;
 		virtual QString generateConnections(QString const &lineTemplate) const;
 		virtual QString generateUsages(QString const &lineTemplate) const;
@@ -25,6 +28,6 @@ namespace qrmc {
 		virtual QString generateResourceLine(QString const &resourceTemplate) const;
 
 	protected:
-		NonGraphicType(Diagram *diagram, qrRepo::RepoApi *api, qReal::Id const &id);
+		NonGraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id const &id);
 	};
 }

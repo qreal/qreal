@@ -3,16 +3,16 @@
 
 using namespace robots::generator;
 
+QString const defaultVolume = "50";
+
 BeepGenerator::BeepGenerator()
 {
 }
 
 QList<SmartLine> BeepGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		, qReal::Id const elementId, qReal::Id const logicElementId)
+		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
-	QList<SmartLine> result;
-	result.append(SmartLine("ecrobot_sound_tone(1000, 100, " + nxtGen->api()->stringProperty(logicElementId
-			, "Volume") + ");", elementId));
-
-	return result;
+	QString const volume = nxtGen->intExpression(logicElementId, "Volume");
+	return QList<SmartLine>() << SmartLine(QString("ecrobot_sound_tone(1000, 100, %1);")
+			.arg(volume.isEmpty() ? defaultVolume : volume), elementId);
 }

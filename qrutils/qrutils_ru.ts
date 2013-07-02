@@ -11,12 +11,12 @@
     <message>
         <location filename="versioningUtils/authenticationSettingsWidget.ui" line="23"/>
         <source>Enable authentication</source>
-        <translation>Использовать аутентификацию</translation>
+        <translation>Включить аутентификацию</translation>
     </message>
     <message>
         <location filename="versioningUtils/authenticationSettingsWidget.ui" line="39"/>
         <source>Username:</source>
-        <translation>Логин:</translation>
+        <translation>Пользователь:</translation>
     </message>
     <message>
         <location filename="versioningUtils/authenticationSettingsWidget.ui" line="46"/>
@@ -29,7 +29,7 @@
     <message>
         <location filename="versioningUtils/networkSettingsWidget.ui" line="14"/>
         <source>Network settings</source>
-        <translation>Сетевые настройки</translation>
+        <translation>Сеть</translation>
     </message>
     <message>
         <location filename="versioningUtils/networkSettingsWidget.ui" line="23"/>
@@ -59,68 +59,68 @@
     <message>
         <location filename="versioningUtils/networkSettingsWidget.ui" line="90"/>
         <source>Timeout in sec:</source>
-        <translation>Таймаут:</translation>
+        <translation>Таймаут (сек):</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="612"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="617"/>
         <source>Unexpected end of stream at %1. Mb you forget &apos;;&apos;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="616"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="621"/>
         <source>Unexpected symbol at %1 : expected %2, got %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="619"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="624"/>
         <source>Types mismatch at %1: %2 = %3. Possible loss of data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="623"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="628"/>
         <source>Unknown identifier at %1 &apos; %2 &apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="626"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="631"/>
         <source>Empty process is unnecessary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="630"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="635"/>
         <source>Condition can&apos;t be empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="634"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="639"/>
         <source>Using reserved variable %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="638"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="643"/>
         <source>No value of expression</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="641"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="646"/>
         <source>Incorrect variable declaration: use function block for it</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="645"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="650"/>
         <source>Unexpected symbol after the end of expression</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="649"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="654"/>
         <source>Unknown element property used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="expressionsParser/expressionsParser.cpp" line="653"/>
+        <location filename="expressionsParser/expressionsParser.cpp" line="658"/>
         <source>Unknown element name used</source>
         <translation type="unfinished"></translation>
     </message>
@@ -146,18 +146,23 @@
 <context>
     <name>qReal::BaseGraphTransformationUnit</name>
     <message>
-        <location filename="graphTransformation/baseGraphTransformationUnit.cpp" line="36"/>
-        <location filename="graphTransformation/baseGraphTransformationUnit.cpp" line="81"/>
+        <location filename="graphUtils/baseGraphTransformationUnit.cpp" line="29"/>
+        <source>no current diagram</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="graphUtils/baseGraphTransformationUnit.cpp" line="56"/>
+        <location filename="graphUtils/baseGraphTransformationUnit.cpp" line="102"/>
         <source>Rule &apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="graphTransformation/baseGraphTransformationUnit.cpp" line="37"/>
+        <location filename="graphUtils/baseGraphTransformationUnit.cpp" line="56"/>
         <source>&apos; has not any appropriate nodes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="graphTransformation/baseGraphTransformationUnit.cpp" line="82"/>
+        <location filename="graphUtils/baseGraphTransformationUnit.cpp" line="102"/>
         <source>&apos; has unconnected link</source>
         <translation type="unfinished"></translation>
     </message>
@@ -165,22 +170,22 @@
 <context>
     <name>qReal::versioning::ExternalClientPluginBase</name>
     <message>
-        <location filename="versioningUtils/externalClientPluginBase.cpp" line="119"/>
+        <location filename="versioningUtils/externalClientPluginBase.cpp" line="121"/>
         <source> is not a working copy</source>
         <translation> не является рабочей копией</translation>
     </message>
     <message>
-        <location filename="versioningUtils/externalClientPluginBase.cpp" line="153"/>
+        <location filename="versioningUtils/externalClientPluginBase.cpp" line="156"/>
         <source>An error occured while starting versioning client process (maybe path is not correct?)</source>
         <translation>Во время запуска стороннего процесса клиента системы контроля версий произошла ошика (может быть Вы указали невеный путь до него?)</translation>
     </message>
     <message>
-        <location filename="versioningUtils/externalClientPluginBase.cpp" line="165"/>
+        <location filename="versioningUtils/externalClientPluginBase.cpp" line="168"/>
         <source>Path to versioning client is empty</source>
         <translation>Путь до клиента системы конроля версий не задан</translation>
     </message>
     <message>
-        <location filename="versioningUtils/externalClientPluginBase.cpp" line="188"/>
+        <location filename="versioningUtils/externalClientPluginBase.cpp" line="191"/>
         <source>Versioning client timeout</source>
         <translation>Таймуат</translation>
     </message>
@@ -188,22 +193,22 @@
 <context>
     <name>utils::MetamodelGeneratorSupport</name>
     <message>
-        <location filename="metamodelGeneratorSupport.cpp" line="53"/>
+        <location filename="metamodelGeneratorSupport.cpp" line="57"/>
         <source>Please, fill compiler settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="metamodelGeneratorSupport.cpp" line="73"/>
+        <location filename="metamodelGeneratorSupport.cpp" line="77"/>
         <source>Cannot unload plugin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="metamodelGeneratorSupport.cpp" line="96"/>
+        <location filename="metamodelGeneratorSupport.cpp" line="100"/>
         <source>Cannot load new editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="metamodelGeneratorSupport.cpp" line="102"/>
+        <location filename="metamodelGeneratorSupport.cpp" line="106"/>
         <source>Cannot build new editor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -211,22 +216,19 @@
 <context>
     <name>watchListWindow</name>
     <message>
-        <location filename="watchListWindow.ui" line="35"/>
-        <location filename="ui_watchListWindow.h" line="72"/>
+        <location filename="watchListWindow.ui" line="38"/>
         <source>Watch List</source>
-        <translation type="unfinished"></translation>
+        <translation>Переменные</translation>
     </message>
     <message>
-        <location filename="watchListWindow.ui" line="96"/>
-        <location filename="ui_watchListWindow.h" line="74"/>
+        <location filename="watchListWindow.ui" line="85"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя</translation>
     </message>
     <message>
-        <location filename="watchListWindow.ui" line="101"/>
-        <location filename="ui_watchListWindow.h" line="76"/>
+        <location filename="watchListWindow.ui" line="90"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Значение</translation>
     </message>
 </context>
 </TS>

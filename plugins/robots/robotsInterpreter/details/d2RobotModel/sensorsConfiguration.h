@@ -16,21 +16,21 @@ class SensorsConfiguration
 {
 public:
 	SensorsConfiguration();
-	void setSensor(inputPort::InputPortEnum const &port
+	void setSensor(inputPort::InputPortEnum const port
 			, sensorType::SensorTypeEnum const &type
-			, QPoint const &position
+			, QPointF const &position
 			, qreal const &direction);
 
-	void setPosition(inputPort::InputPortEnum const &port, QPoint const &position);
-	QPoint position(inputPort::InputPortEnum const &port) const;
+	void setPosition(inputPort::InputPortEnum const port, QPointF const &position);
+	QPointF position(inputPort::InputPortEnum const port) const;
 
-	void setDirection(inputPort::InputPortEnum const &port, qreal direction);
-	qreal direction(inputPort::InputPortEnum const &port) const;
+	void setDirection(inputPort::InputPortEnum const port, qreal direction);
+	qreal direction(inputPort::InputPortEnum const port) const;
 
-	sensorType::SensorTypeEnum type(inputPort::InputPortEnum const &port) const;
-	void clearSensor(inputPort::InputPortEnum const &port);
+	sensorType::SensorTypeEnum type(inputPort::InputPortEnum const port) const;
+	void clearSensor(inputPort::InputPortEnum const port);
 
-	QDomElement serialize(QDomDocument &document) const;
+	void serialize(QDomElement &robot, QDomDocument &document) const;
 	void deserialize(QDomElement const &element);
 
 private:
@@ -38,10 +38,11 @@ private:
 	{
 	public:
 		SensorInfo();
-		SensorInfo(QPoint const &position, qreal direction, sensorType::SensorTypeEnum const &sensorType);
+		SensorInfo(QPointF const &position, qreal direction
+				, sensorType::SensorTypeEnum const &sensorType);
 
-		QPoint position() const;
-		void setPosition(QPoint const &position);
+		QPointF position() const;
+		void setPosition(QPointF const &position);
 
 		qreal direction() const;
 		void setDirection(qreal direction);
@@ -49,7 +50,7 @@ private:
 		sensorType::SensorTypeEnum type() const;
 
 	private:
-		QPoint mPosition;
+		QPointF mPosition;
 		qreal mDirection;
 		sensorType::SensorTypeEnum mSensorType;
 	};

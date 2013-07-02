@@ -3,14 +3,16 @@
 #include <QtCore/QObject>
 #include <QtGui/QIcon>
 
+#include "../mainwindow/mainWindowDockInterface.h"
+
 namespace qReal {
 
 /// Customization class for configuring QReal's main GUI module
 class Customizer
 {
 public:
-	/// Tells if we should show logical model explorer or not
-	virtual bool showLogicalModelExplorer() const
+	/// Tells if we should show the button of opening the interpreted diagram or not
+	virtual bool showInterpeterButton() const
 	{
 		return true;
 	}
@@ -27,10 +29,28 @@ public:
 		return QIcon();
 	}
 
+	/// Customizes product version
+	virtual QString productVersion() const
+	{
+		return "1.0.0";
+	}
+
+	/// Customizes text in about dialog
+	virtual QString aboutText() const
+	{
+		return "<b>QReal<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
+	}
+
 	/// Tells if we should show trace connections menu or not
 	virtual bool showConnectionRelatedMenus() const
 	{
 		return false;
+	}
+
+	/// Customizes docks placement and visibility. Default implementation does nothing
+	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface)
+	{
+		Q_UNUSED(dockInterface)
 	}
 };
 

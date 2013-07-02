@@ -10,7 +10,7 @@ EnginesStopBlock::EnginesStopBlock(robotParts::Motor &motor1, robotParts::Motor 
 
 void EnginesStopBlock::run()
 {
-	QVector<bool> ports = parsePorts();
+	QVector<bool> ports(parseEnginePorts());
 	for (int i = 0; i < 3; ++i) {
 		if (ports[i]) {
 			mMotors[i]->off();

@@ -8,8 +8,9 @@
 namespace robots {
 namespace generator {
 
-/// Realization of AbstractElementGenerator for Function.
-class FunctionElementGenerator: public SimpleElementGenerator {
+/// Implementation of AbstractElementGenerator for Function.
+class FunctionElementGenerator : public SimpleElementGenerator
+{
 public:
 	explicit FunctionElementGenerator(NxtOSEKRobotGenerator *generator
 			, qReal::Id const &elementId
@@ -17,10 +18,8 @@ public:
 
 protected:
 	virtual QList<SmartLine> convertBlockIntoCode();
-	void variableAnalysis(QByteArray const &code);
 
 private:
-	QByteArray replaceSensorVariables(QByteArray portValue) const;
 	bool mGenerateToInit;
 };
 

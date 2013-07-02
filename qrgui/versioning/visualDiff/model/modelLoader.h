@@ -18,7 +18,7 @@ class ModelLoader : public QObject
 public:
 	ModelLoader(qReal::BriefVersioningInterface *vcs
 			, qReal::ErrorReporterInterface *errorReporter
-			, qReal::EditorManager *editorManager
+			, qReal::EditorManagerInterface *editorManager
 			, qrRepo::WorkingCopyManagementInterface *workingCopyManager);
 
 	void startModelLoading(QString const &targetProject = QString());
@@ -46,7 +46,7 @@ private:
 
 	qReal::BriefVersioningInterface *mVcs;
 	qReal::ErrorReporterInterface *mErrorReporter;
-	qReal::EditorManager *mEditorManager;
+	qReal::EditorManagerInterface *mEditorManager;
 	qrRepo::WorkingCopyManagementInterface *mWorkingCopyManager;
 	QString mTempProject;
 

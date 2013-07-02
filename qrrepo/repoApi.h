@@ -15,7 +15,7 @@ namespace qrRepo {
 	class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
 	{
 	public:
-		explicit RepoApi(QString const &workingDirectory);
+		explicit RepoApi(QString const &workingDirectory, bool ignoreAutosave = false);
 		// Default destructor ok.
 
 		/// replacing property values that contains input value with new value
@@ -47,6 +47,8 @@ namespace qrRepo {
 		void removeChild(qReal::Id const &id, qReal::Id const &child);
 		void removeChildren(qReal::Id const &id);
 
+		void printDebug();
+
 		void removeElement(qReal::Id const &id);
 
 		qReal::Id parent(qReal::Id const &id) const;
@@ -72,11 +74,9 @@ namespace qrRepo {
 		qReal::IdList outgoingConnectedElements(qReal::Id const &id) const;
 		qReal::IdList incomingConnectedElements(qReal::Id const &id) const;
 
-		QString typeName(qReal::Id const &id) const;
-
 		QVariant property(qReal::Id const &id, QString const &propertyName) const;
 		QString stringProperty(qReal::Id const &id, QString const &propertyName) const;
-		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value) const;
+		void setProperty(qReal::Id const &id, QString const &propertyName, QVariant const &value);
 		void removeProperty(qReal::Id const &id, QString const &propertyName);
 		void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 		QMap<QString, QVariant> properties(qReal::Id const &id);
@@ -156,6 +156,7 @@ namespace qrRepo {
 		void removeLinkEnds(QString const &endName, qReal::Id const &id);
 
 		details::Client mClient;
+		bool mIgnoreAutosave;
 	};
 
 }

@@ -18,12 +18,14 @@ class SensorsConfigurer : public QObject
 public:
 	SensorsConfigurer();
 	~SensorsConfigurer();
-	void configureSensor(sensorImplementations::AbstractSensorImplementation *sensor, inputPort::InputPortEnum const &port);
+	void configureSensor(sensorImplementations::AbstractSensorImplementation *sensor, inputPort::InputPortEnum const port);
 	void lockConfiguring();
 	void unlockConfiguring();
 
 	/// Returns configured sensor on a given port or NULL if no sensor is configured there
-	sensorImplementations::AbstractSensorImplementation * sensor(inputPort::InputPortEnum const &port) const;
+	sensorImplementations::AbstractSensorImplementation *sensor(inputPort::InputPortEnum port) const;
+
+	void nullifySensor(inputPort::InputPortEnum port);
 
 signals:
 	void allSensorsConfigured();

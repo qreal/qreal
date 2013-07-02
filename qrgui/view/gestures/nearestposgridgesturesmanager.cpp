@@ -1,6 +1,8 @@
 #include "nearestposgridgesturesmanager.h"
 #include "curveKeyBuilder.h"
 
+using namespace qReal::gestures;
+
 NearestPosGridGesturesManager::NearestPosGridGesturesManager()
 {
 }

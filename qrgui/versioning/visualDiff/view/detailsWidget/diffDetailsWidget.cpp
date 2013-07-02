@@ -1,4 +1,4 @@
-#include <QtGui/QScrollArea>
+#include <QtWidgets/QScrollArea>
 
 #include "diffDetailsWidget.h"
 #include "../../model/commonDifference.h"

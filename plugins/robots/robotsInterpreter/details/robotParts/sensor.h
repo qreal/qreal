@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QtCore/QDebug>
 #include <QtCore/QObject>
 
@@ -15,12 +16,16 @@ namespace robotParts {
 class Sensor : public QObject
 {
 	Q_OBJECT
+
 public:
-	Sensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
+	Sensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const port);
 	virtual ~Sensor();
 	virtual void read();
 	robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl();
 	void setImplementation(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl);
+
+	/// Performs dummy sensor reading with 0 result; used for sensor variables nullification
+	void nullify();
 
 protected:
 	inputPort::InputPortEnum mPort;

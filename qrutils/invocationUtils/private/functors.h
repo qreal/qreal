@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/qglobal.h>
-#include "QtCore/qtconcurrentcompilertest.h"
+#include <QtConcurrent/qtconcurrentcompilertest.h>
 
 namespace invocation
 {

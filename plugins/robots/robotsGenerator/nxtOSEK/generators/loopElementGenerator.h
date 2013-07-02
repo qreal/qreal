@@ -7,10 +7,11 @@
 namespace robots {
 namespace generator {
 
-/// Realization of AbstractElementGenerator for Loop.
-class LoopElementGenerator: public AbstractElementGenerator {
+/// Implementation of AbstractElementGenerator for Loop.
+class LoopElementGenerator : public AbstractElementGenerator
+{
 public:
-	explicit LoopElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id const &elementId);
+	LoopElementGenerator(NxtOSEKRobotGenerator *gen, qReal::Id const &elementId);
 
 protected:
 	virtual QList<SmartLine> addLoopCodeInPrefixForm();

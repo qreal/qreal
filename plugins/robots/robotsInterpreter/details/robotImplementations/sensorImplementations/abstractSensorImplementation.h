@@ -13,13 +13,16 @@ class AbstractSensorImplementation : public QObject
 {
 	Q_OBJECT
 public:
-	AbstractSensorImplementation(inputPort::InputPortEnum const &port, sensorType::SensorTypeEnum const &sensorType);
+	AbstractSensorImplementation(inputPort::InputPortEnum const port, sensorType::SensorTypeEnum const &sensorType);
 	virtual ~AbstractSensorImplementation() {}
 	virtual void read() = 0;
-	void setPort(inputPort::InputPortEnum const &port);
+	void setPort(inputPort::InputPortEnum const port);
 	inputPort::InputPortEnum port() const;
 	sensorType::SensorTypeEnum type() const;
 	virtual void configure() = 0;
+
+	/// Performs dummy sensor reading with 0 result; used for sensor variables nullification
+	virtual void nullify();
 
 signals:
 	void response(int reading);

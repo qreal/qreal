@@ -53,14 +53,14 @@ public:
 	/// Stacks element child before sibling (element id shold be parent of them both)
 	void stackBefore(qReal::Id const &id, qReal::Id const &child, qReal::Id const &sibling);
 
-	void setProperty(const qReal::Id &id, const QString &name, const QVariant &value) const;
+	void setProperty(const qReal::Id &id, QString const &name, const QVariant &value) const;
 	void copyProperties(const qReal::Id &dest, const qReal::Id &src);
-	QVariant property(const qReal::Id &id, const QString &name) const;
+	QVariant property(const qReal::Id &id, QString const &name) const;
 	QMap<QString, QVariant> properties(qReal::Id const &id);
 	void setProperties(qReal::Id const &id, QMap<QString, QVariant> const &properties);
-	bool hasProperty(const qReal::Id &id, const QString &name, bool sensitivity = false
+	bool hasProperty(const qReal::Id &id, QString const &name, bool sensitivity = false
 			, bool regExpression = false) const;
-	void removeProperty(const qReal::Id &id, const QString &name);
+	void removeProperty(const qReal::Id &id, QString const &name);
 	QMapIterator<QString, QVariant> propertiesIterator(qReal::Id const &id) const;
 
 	void setBackReference(qReal::Id const &id, qReal::Id const &reference) const;

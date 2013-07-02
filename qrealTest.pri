@@ -11,5 +11,10 @@ qrtest.depends = \
 qrxcTest.file = qrxc/qrxcTest.pro
 qrguiTest.file = qrgui/qrguiTest.pro
 
-qrxcTest.depends = qrxc
-qrguiTest.depends = qrgui
+qrxcTest.depends = \
+	qrxc \
+	thirdparty \
+
+qrguiTest.depends = \
+	qrgui \
+	thirdparty \

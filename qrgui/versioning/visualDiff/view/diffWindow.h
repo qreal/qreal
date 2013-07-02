@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QtGui/QSplitter>
-#include <QtGui/QDialog>
-#include <QtGui/QGridLayout>
-#include <QtGui/QPushButton>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QPushButton>
 
 #include "../model/diffModel.h"
 #include "diffView.h"

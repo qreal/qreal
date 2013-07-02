@@ -1,48 +1,46 @@
-#include "elementTitle.h"
-
 #include <QtGui/QTextCursor>
-#include <QFontDatabase>
 
+#include "elementTitle.h"
 #include "nodeElement.h"
 #include "edgeElement.h"
+#include "private/fontCache.h"
 
 using namespace qReal;
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text)
-	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(""), mBackground(Qt::transparent)
+	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false)
+	, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false)
 {
 	setTitleFont();
 	setPos(x, y);
 	setHtml(text);
-
 }
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly)
-	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mPoint(x, y), mBinding(binding), mBackground(Qt::transparent)
+	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false)
+	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
 {
 	setTitleFont();
 	setPos(x, y);
 }
 
-void ElementTitle::setTitleFont() {
-	if (SettingsManager::value("CustomFont", true).toBool()) {
-		QFont font;
-		font.fromString(SettingsManager::value("CurrentFont", "ololo").toString());
-		setFont(font);
-	} else {
-		int const fontId = QFontDatabase::addApplicationFont(QDir::currentPath() + "/DejaVuSansCondensed.ttf");
-		if (fontId != -1)
-			setFont(QFont(QFontDatabase::applicationFontFamilies(fontId).at(0), 7));
-	}
+void ElementTitle::setTitleFont()
+{
+	setFont(FontCache::instance()->titlesFont());
 }
 
-void ElementTitle::init(QRectF const& contents)
+void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	ElementTitleInterface::mousePressEvent(event);
+	event->accept();
+}
+
+void ElementTitle::init(QRectF const &contents)
 {
 	mContents = contents;
 
-	qreal x = mPoint.x() * mContents.width();
-	qreal y = mPoint.y() * mContents.height();
-
+	qreal const x = mPoint.x() * mContents.width();
+	qreal const y = mPoint.y() * mContents.height();
 	setPos(x, y);
 }
 
@@ -52,16 +50,26 @@ void ElementTitle::setScaling(bool scalingX, bool scalingY)
 	mScalingY = scalingY;
 }
 
-void ElementTitle::setBackground(Qt::GlobalColor const &background)
+void ElementTitle::setBackground(QColor const &background)
 {
 	mBackground = background;
+}
+
+bool ElementTitle::isHard() const
+{
+	return mIsHard;
+}
+
+void ElementTitle::setHard(bool hard)
+{
+	mIsHard = hard;
 }
 
 void ElementTitle::focusOutEvent(QFocusEvent *event)
 {
 	QGraphicsTextItem::focusOutEvent(event);
 
-	QString htmlNormalizedText = toHtml().remove("\n", Qt::CaseInsensitive);
+	QString const htmlNormalizedText = toHtml().remove("\n", Qt::CaseInsensitive);
 
 	setTextInteractionFlags(Qt::NoTextInteraction);
 
@@ -74,35 +82,43 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 
 	unsetCursor();
 
-	if (mReadOnly)
+	if (mReadOnly) {
 		return;
+	}
 
 	if (mOldText != toPlainText()) {
 		QString value = toPlainText();
-		if (mBinding == "name")
+		if (mBinding == "name") {
 			static_cast<NodeElement*>(parentItem())->setName(value);
-		else
+		} else {
 			static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value);
+		}
 	}
 	setHtml(htmlNormalizedText);
 }
 
 void ElementTitle::keyPressEvent(QKeyEvent *event)
 {
-	/*if (event->key() == Qt::Key_Escape)
-	{
+	int const keyEvent = event->key();
+	if (keyEvent == Qt::Key_Escape) {
 		// Restore previous text and loose focus
 		setPlainText(mOldText);
 		clearFocus();
 		return;
 	}
-	if (event->key() == Qt::Key_Enter ||
-		event->key() == Qt::Key_Return)
-	{
+	if ((event->modifiers() & Qt::ShiftModifier) && (event->key() == Qt::Key_Return)) {
+		// Line feed
+		QTextCursor const cursor = textCursor();
+		QString const currentText = toPlainText();
+		setPlainText(currentText + "\n");
+		setTextCursor(cursor);
+		return;
+	}
+	if (keyEvent == Qt::Key_Enter || keyEvent == Qt::Key_Return) {
 		// Loose focus: new name will be applied in focusOutEvent
 		clearFocus();
 		return;
-	}*/
+	}
 	QGraphicsTextItem::keyPressEvent(event);
 }
 
@@ -111,19 +127,13 @@ void ElementTitle::startTextInteraction()
 	parentItem()->setSelected(true);
 
 	// Already interacting?
-	if (hasFocus())
+	if (hasFocus()) {
 		return;
+	}
 
 	mOldText = toPlainText();
 
-	// Clear scene selection
-	//if (!(event->modifiers() & Qt::ControlModifier)) - was here.
-	scene()->clearSelection();
-
-	if (mReadOnly)
-		setTextInteractionFlags(Qt::TextBrowserInteraction);
-	else
-		setTextInteractionFlags(Qt::TextEditorInteraction);
+	setTextInteractionFlags(mReadOnly ? Qt::TextBrowserInteraction : Qt::TextEditorInteraction);
 	setFocus(Qt::OtherFocusReason);
 
 	// Set full text selection

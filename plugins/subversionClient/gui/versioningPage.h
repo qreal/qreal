@@ -19,12 +19,13 @@ class PreferencesVersioningPage : public PreferencesPage
 
 public:
 	explicit PreferencesVersioningPage(QWidget *parent = 0);
-	~PreferencesVersioningPage();
+	virtual ~PreferencesVersioningPage();
 
-	void save();
+	virtual void save();
+	virtual void restoreSettings();
 
 protected:
-	void changeEvent(QEvent *e);
+	virtual void changeEvent(QEvent *e);
 
 private slots:
 	void on_browseSvnClientButton_clicked();

@@ -9,7 +9,7 @@
 
 namespace qReal {
 
-class EditorManager;
+class EditorManagerInterface;
 
 namespace models {
 
@@ -22,12 +22,17 @@ class GraphicalModelAssistApi : public QObject, public GraphicalModelAssistInter
 	Q_OBJECT
 
 public:
-	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManager const &editorManager);
-	EditorManager const &editorManager() const;
+	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManagerInterface const &editorManagerInterface);
+
+	/// Interface for accessing metamodel information.
+	EditorManagerInterface const &editorManagerInterface() const;
+
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
 	Id createElement(Id const &parent, Id const &type);
-	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
+	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel
+			, QString const &name, QPointF const &position
+			, Id const &preferedLogicalId = Id());
 	Id copyElement(Id const &source);
 	IdList children(Id const &element) const;
 	void changeParent(Id const &element, Id const &parent, QPointF const &position);
@@ -35,6 +40,10 @@ public:
 	void copyProperties(Id const &dest, Id const &src);
 	QMap<QString, QVariant> properties(Id const &id);
 	void setProperties(Id const &id, QMap<QString, QVariant> const &properties);
+
+	virtual QVariant property(Id const &id, QString const &name) const;
+	virtual void setProperty(Id const &id, QString const &name, QVariant const &value);
+
 	virtual void stackBefore(Id const &element, Id const &sibling);
 
 	IdList temporaryRemovedLinksFrom(Id const &elem) const;
@@ -79,6 +88,9 @@ public:
 	bool hasRootDiagrams() const;
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
+
+	void removeElement(Id const &graphicalId);
+
 signals:
 	void nameChanged(Id const &id);
 

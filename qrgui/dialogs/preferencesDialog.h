@@ -1,20 +1,23 @@
 #pragma once
 
-#include <QDialog>
-#include <QModelIndex>
+#include <QtCore/QModelIndex>
+#include <QtWidgets/QDialog>
 
 #include "preferencesPages/preferencesPage.h"
+
 #include "../../qrkernel/settingsManager.h"
 
 namespace Ui {
 	class PreferencesDialog;
 }
 
-class PreferencesDialog : public QDialog {
+class PreferencesDialog : public QDialog
+{
 	Q_OBJECT
 
 public:
-	explicit  PreferencesDialog(QWidget *parent = 0);
+
+	explicit PreferencesDialog(QWidget *parent = 0);
 	~PreferencesDialog();
 
 	void init(QAction * const showGridAction, QAction * const showAlignmentAction
@@ -25,6 +28,7 @@ public:
 
 protected:
 	void changeEvent(QEvent *e);
+	void showEvent(QShowEvent *e);
 
 signals:
 	void gridChanged();
@@ -39,6 +43,7 @@ public slots:
 private slots:
 	void cancel();
 	void applyChanges();
+	void restoreSettings();
 	void saveAndClose();
 	void chooseTab(const QModelIndex &);
 

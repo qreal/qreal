@@ -4,8 +4,9 @@ using namespace qrRepo;
 using namespace qrRepo::details;
 using namespace qReal;
 
-RepoApi::RepoApi(QString const &workingDirectory)
+RepoApi::RepoApi(QString const &workingDirectory, bool ignoreAutosave)
 		: mClient(workingDirectory)
+		, mIgnoreAutosave(ignoreAutosave)
 {
 }
 
@@ -23,6 +24,11 @@ void RepoApi::setName(Id const &id, QString const &name)
 IdList RepoApi::children(Id const &id) const
 {
 	return mClient.children(id);
+}
+
+void RepoApi::printDebug()
+{
+	mClient.printDebug();
 }
 
 IdList RepoApi::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
@@ -68,24 +74,30 @@ void RepoApi::removeChild(Id const &id, Id const &child)
 
 void RepoApi::removeChildren(Id const &id)
 {
-	foreach (Id const child, children(id))
+	foreach (Id const &child, children(id)) {
 		removeChild(id, child);
+	}
 }
 
 void RepoApi::removeElement(Id const &id)
 {
 	Q_ASSERT(id != Id::rootId());
 
-	foreach (Id const child, children(id))
+	foreach (Id const &child, children(id)) {
 		removeElement(child);
+	}
 
 	if (hasProperty(id, "links")) {
-		IdList links = property(id, "links").value<IdList>();
-		foreach (Id const link, links) {
-			if (hasProperty(link, "from") && property(link, "from").value<Id>() == id)
-				setProperty(link, "from", Id::rootId().toVariant());
-			if (hasProperty(link, "to") && property(link, "to").value<Id>() == id)
-				setProperty(link, "to", Id::rootId().toVariant());
+		IdList const links = property(id, "links").value<IdList>();
+		foreach (Id const &link, links) {
+			if (mClient.exist(link)) {
+				if (hasProperty(link, "from") && property(link, "from").value<Id>() == id) {
+					setProperty(link, "from", Id::rootId().toVariant());
+				}
+				if (hasProperty(link, "to") && property(link, "to").value<Id>() == id) {
+					setProperty(link, "to", Id::rootId().toVariant());
+				}
+			}
 		}
 	}
 
@@ -93,27 +105,31 @@ void RepoApi::removeElement(Id const &id)
 	removeLinkEnds("to", id);
 
 	if (hasProperty(id, "outgoingConnections")) {
-		IdList connections = property(id, "outgoingConnections").value<IdList>();
-		foreach (Id const target, connections)
+		IdList const connections = property(id, "outgoingConnections").value<IdList>();
+		foreach (Id const &target, connections) {
 			disconnect(id, target);
+		}
 	}
 
 	if (hasProperty(id, "incomingConnections")) {
-		IdList connections = property(id, "incomingConnections").value<IdList>();
-		foreach (Id const source, connections)
+		IdList const connections = property(id, "incomingConnections").value<IdList>();
+		foreach (Id const &source, connections) {
 			disconnect(source, id);
+		}
 	}
 
 	if (hasProperty(id, "outgoingUsages")) {
-		IdList connections = property(id, "outgoingUsages").value<IdList>();
-		foreach (Id const target, connections)
+		IdList const connections = property(id, "outgoingUsages").value<IdList>();
+		foreach (Id const &target, connections) {
 			deleteUsage(id, target);
+		}
 	}
 
 	if (hasProperty(id, "incomingUsages")) {
-		IdList connections = property(id, "incomingUsages").value<IdList>();
-		foreach (Id const source, connections)
+		IdList const connections = property(id, "incomingUsages").value<IdList>();
+		foreach (Id const &source, connections) {
 			deleteUsage(source, id);
+		}
 	}
 
 	mClient.remove(id);
@@ -145,7 +161,7 @@ IdList RepoApi::links(Id const &id, QString const &direction) const
 	IdList links = mClient.property(id, "links").value<IdList>();
 	IdList result;
 	foreach (Id const link, links) {
-		if (mClient.property(link, direction).value<Id>() == id) {
+		if (mClient.exist(link) && mClient.property(link, direction).value<Id>() == id) {
 			result.append(link);
 		}
 	}
@@ -255,7 +271,7 @@ QString RepoApi::stringProperty(Id const &id, QString const &propertyName) const
 	return mClient.property(id, propertyName).toString();
 }
 
-void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value) const
+void RepoApi::setProperty(Id const &id, QString const &propertyName, QVariant const &value)
 {
 	mClient.setProperty(id, propertyName, value);
 }
@@ -401,8 +417,10 @@ void RepoApi::saveAll()
 
 void RepoApi::saveTo(QString const &workingFile)
 {
-	mClient.setWorkingFile(workingFile);
-	mClient.saveAll();
+	if (!mIgnoreAutosave) {
+		mClient.setWorkingFile(workingFile);
+		mClient.saveAll();
+	}
 }
 
 void RepoApi::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
@@ -513,7 +531,6 @@ IdList RepoApi::graphicalElements(Id const &type) const
 IdList RepoApi::elementsByType(QString const &type, bool sensitivity, bool regExpression) const
 {
 	Qt::CaseSensitivity caseSensitivity;
-
 
 	if (sensitivity) {
 		caseSensitivity = Qt::CaseSensitive;

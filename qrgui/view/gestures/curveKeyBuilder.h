@@ -1,13 +1,15 @@
 #pragma once
+
 #include "GeometricForms.h"
 #include "pathCorrector.h"
 #include "cmath"
 
 static const int minMovement = 20;
-//static const int heightSize = 30;
-//static const int widthSize = 30;
 static const double maxRelation = 8;
 static const int minPoint = -1000;
+
+namespace qReal {
+namespace gestures {
 
 class KeyBuilder
 {
@@ -160,3 +162,6 @@ private:
 		else return 0;
 	}
 };
+
+}
+}

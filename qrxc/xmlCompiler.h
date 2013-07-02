@@ -50,11 +50,13 @@ private:
 	void generateUsages(utils::OutFile &out);
 	void generatePossibleEdges(utils::OutFile &out);
 	void generateNodesAndEdges(utils::OutFile &out);
+	void generateGroupsXML(utils::OutFile &out);
 	void generateEnumValues(utils::OutFile &out);
 	void generateResourceFile();
 	void generatePropertyTypesRequests(utils::OutFile &out);
 	void generatePropertyDefaultsRequests(utils::OutFile &out);
 	void generatePaletteGroupsLists(utils::OutFile &out);
+	void generatePaletteGroupsDescriptions(utils::OutFile &out);
 
 	class ListMethodGenerator;
 	class PropertiesGenerator;

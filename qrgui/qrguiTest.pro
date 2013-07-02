@@ -1,6 +1,6 @@
-QT += svg xml
+QT += svg xml printsupport widgets help
 
-CONFIG += rpath_libdirs help
+CONFIG += rpath_libdirs
 macx {
 	CONFIG -= app_bundle
 }
@@ -32,7 +32,7 @@ INCLUDEPATH += \
 	../thirdparty/gmock-1.6.0/include \
 	../thirdparty/gmock-1.6.0/gtest/include \
 
-LIBS += -L../bin/thirdparty/ -lgmock -lpthread
+LIBS += -L../bin/thirdparty/ -lgmock -lpthread -lqscintilla2
 
 TARGET = qrgui_unittests
 DESTDIR = ../bin/unittests
@@ -42,6 +42,7 @@ include (umllib/umllib.pri)
 include (dialogs/dialogs.pri)
 include (mainwindow/mainwindow.pri)
 include (view/view.pri)
+include (controller/controller.pri)
 include (generators/generators.pri)
 include (thirdparty/thirdparty.pri)
 include (pluginManager/pluginManager.pri)
@@ -49,4 +50,5 @@ include (models/models.pri)
 include (editorPluginInterface/editorPluginInterface.pri)
 include (toolPluginInterface/toolPluginInterface.pri)
 include (textEditor/textEditor.pri)
+include (hotKeyManager/hotKeyManager.pri)
 include (unitTests/unitTests.pri)

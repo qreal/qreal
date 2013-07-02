@@ -1,9 +1,7 @@
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 
 #include "robotsGeneratorPlugin.h"
 #include "nxtOSEK/nxtOSEKRobotGenerator.h"
-
-Q_EXPORT_PLUGIN2(robotsGeneratorPlugin, robots::generator::RobotsGeneratorPlugin)
 
 using namespace qReal;
 using namespace robots::generator;
@@ -17,6 +15,7 @@ RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 	mAppTranslator.load(":/robotsGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
 	checkNxtTools();
+	initHotKeyActions();
 }
 
 RobotsGeneratorPlugin::~RobotsGeneratorPlugin()
@@ -36,6 +35,7 @@ void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 QList<ActionInfo> RobotsGeneratorPlugin::actions()
 {
 	mGenerateCodeAction.setText(tr("Generate code"));
+	mGenerateCodeAction.setIcon(QIcon(":/icons/robots_generate_nxt.png"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
 
@@ -59,6 +59,22 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 			<< uploadProgramActionInfo;
 }
 
+void RobotsGeneratorPlugin::initHotKeyActions()
+{
+	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
+
+	HotKeyActionInfo generateActionInfo("Generator.Generate", tr("Generate code"), &mGenerateCodeAction);
+	HotKeyActionInfo uploadActionInfo("Generator.Upload", tr("Upload program to robot"), &mUploadProgramAction);
+
+	mHotKeyActionInfos << generateActionInfo << uploadActionInfo;
+}
+
+QList<HotKeyActionInfo> RobotsGeneratorPlugin::hotKeyActions()
+{
+	return mHotKeyActionInfos;
+}
+
 void RobotsGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
 {
 	foreach (ActionInfo const &actionInfo, info) {
@@ -66,7 +82,7 @@ void RobotsGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool 
 	}
 }
 
-void RobotsGeneratorPlugin::generateRobotSourceCode()
+bool RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mProjectManager->save();
 
@@ -76,7 +92,7 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 	mMainWindowInterface->errorReporter()->clearErrors();
 	gen.generate();
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
-		return;
+		return false;
 	}
 
 	QFile file("nxt-tools/example0/example0.c");
@@ -88,6 +104,7 @@ void RobotsGeneratorPlugin::generateRobotSourceCode()
 	if (inStream) {
 		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
 	}
+	return true;
 }
 
 void RobotsGeneratorPlugin::flashRobot()
@@ -104,8 +121,9 @@ void RobotsGeneratorPlugin::uploadProgram()
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-		generateRobotSourceCode();
-		mFlashTool->uploadProgram();
+		if (generateRobotSourceCode()) {
+			mFlashTool->uploadProgram();
+		}
 	}
 }
 

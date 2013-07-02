@@ -53,8 +53,8 @@ void VersioningPluginsManager::initFromToolPlugins(
 				dynamic_cast<DiffPluginBase *>(toolPlugin);
 		if (diffPlugin) {
 			mDiffPlugin = diffPlugin;
-			mDiffPlugin->setHandler(new versioning::DiffPluginWrapper(mDiffPlugin, mRepoApi,
-					this, mainWindow, mainWindow->manager()));
+			mDiffPlugin->setHandler(new versioning::DiffPluginWrapper(mDiffPlugin, mRepoApi
+					, this, mainWindow, &mainWindow->editorManager()));
 		}
 	}
 }
@@ -71,7 +71,7 @@ VersioningPluginInterface *VersioningPluginsManager::activePlugin(bool needPrepa
 		}
 	}
 	if (needPreparation) {
-		utils::FileSystemUtils::removeDir(tempFolder());
+		qReal::FileSystemUtils::removeDir(tempFolder());
 	}
 	return result;
 }

@@ -7,7 +7,7 @@ DiffPluginWrapper::DiffPluginWrapper(DiffPluginBase *plugin
 		, qrRepo::WorkingCopyManagementInterface *workingCopyManager
 		, BriefVersioningInterface *vcs
 		, MainWindow *mainWindow
-		, EditorManager *manager)
+		, EditorManagerInterface *manager)
 	: mWorkingCopyManager(workingCopyManager)
 	, mVcs(vcs), mMainWindow(mainWindow), mEditorManager(manager)
 	, mErrorReporter(plugin->errorReporter())

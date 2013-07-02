@@ -6,9 +6,11 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
+int const maxColorValue = 1023;
+
 BluetoothColorSensorImplementation::BluetoothColorSensorImplementation(
 		RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const &port
+		, inputPort::InputPortEnum const port
 		, lowLevelSensorType::SensorTypeEnum mode
 		, sensorType::SensorTypeEnum const sensorType)
 	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType, mode, sensorMode::RAWMODE, port)
@@ -54,7 +56,7 @@ void BluetoothColorSensorImplementation::sensorSpecificProcessResponse(QByteArra
 		if (mLowLevelSensorType == lowLevelSensorType::COLORFULL) {
 			emit response(0xff & reading[14]);  // Scaled value, used in ColorFull mode.
 		} else {
-			emit response((0xff & reading[10]) | ((0xff & reading[11]) << 8));
+			emit response(((0xff & reading[10]) | ((0xff & reading[11]) << 8)) * 100 / maxColorValue);
 		}
 	}
 }
