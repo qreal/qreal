@@ -1,4 +1,4 @@
-	#include <QtWidgets/QGraphicsTextItem>
+#include <QtWidgets/QGraphicsTextItem>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsDropShadowEffect>
 #include <QtWidgets/QMenu>
