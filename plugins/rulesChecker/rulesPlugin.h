@@ -1,17 +1,13 @@
 ﻿#pragma once
 
-#include <QtCore/QObject>
-
-
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 
 #include "rulesChecker.h"
 
-
-
 namespace qReal{
 namespace rulesChecker{
 
+//! @class RulesPlugin allowes to check diagram for BPMN rules
 class RulesPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
@@ -24,12 +20,9 @@ public:
 	void init(const PluginConfigurator &configurator);
 
 	QList<ActionInfo> actions();
-
-
 private:
 	//! init start key
 	void initAction();
-
 
 	RulesChecker *mChecker;
 
@@ -37,9 +30,6 @@ private:
 
 	//! starts checking
 	QAction *mRunAction;
-
-
-
 };
 
 }

@@ -3,12 +3,11 @@
 using namespace qReal;
 using namespace qReal::rulesChecker;
 
-
 RulesPlugin::RulesPlugin()
 	: mChecker(NULL)
 	, mRunAction(NULL)
 {
-
+	initAction();
 }
 
 RulesPlugin::~RulesPlugin()
@@ -18,9 +17,8 @@ RulesPlugin::~RulesPlugin()
 
 void RulesPlugin::init(const PluginConfigurator &configurator)
 {
-	mChecker = new RulesChecker(configurator.graphicalModelApi(), configurator.mainWindowInterpretersInterface());
-
-	initAction();
+	mChecker = new RulesChecker(configurator.graphicalModelApi().graphicalRepoApi(), configurator.mainWindowInterpretersInterface());
+	QObject::connect(mRunAction, SIGNAL(triggered()), mChecker, SLOT(check()));
 }
 
 QList<ActionInfo> RulesPlugin::actions()
@@ -28,14 +26,10 @@ QList<ActionInfo> RulesPlugin::actions()
 	return mActionInfos;
 }
 
-
 void RulesPlugin::initAction()
 {
 	mRunAction = new QAction(QIcon(":/icons/startChecker.png"), QObject::tr("Run"), NULL);
 	mRunAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
 	ActionInfo runActionInfo(mRunAction, "generators", "tools");
-	QObject::connect(mRunAction, SIGNAL(triggered()), mChecker, SLOT(check()));
-
 	mActionInfos << runActionInfo;
-
 }
