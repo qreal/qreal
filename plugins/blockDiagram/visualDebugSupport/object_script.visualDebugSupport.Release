@@ -1,0 +1,13 @@
+INPUT(
+./.obj\visualDebuggerPlugin.o
+./.obj\visualDebuggerPreferencesPage.o
+./.obj\visualDebugger.o
+./.obj\blockParser.o
+./.obj\debuggerConnector.o
+./.obj\qrc_visualDebugger.o
+./.obj\moc_visualDebuggerPlugin.o
+./.obj\moc_visualDebuggerPreferencesPage.o
+./.obj\moc_preferencesPage.o
+./.obj\moc_visualDebugger.o
+./.obj\moc_debuggerConnector.o
+);

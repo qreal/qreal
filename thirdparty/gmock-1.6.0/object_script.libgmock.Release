@@ -1,0 +1,15 @@
+CREATE ..\..\bin\thirdparty\libgmock.a
+ADDMOD .obj\gtest-death-test.o
+ADDMOD .obj\gtest-filepath.o
+ADDMOD .obj\gtest-port.o
+ADDMOD .obj\gtest-printers.o
+ADDMOD .obj\gtest-test-part.o
+ADDMOD .obj\gtest-typed-test.o
+ADDMOD .obj\gtest.o
+ADDMOD .obj\gmock-cardinalities.o
+ADDMOD .obj\gmock-internal-utils.o
+ADDMOD .obj\gmock-matchers.o
+ADDMOD .obj\gmock-spec-builders.o
+ADDMOD .obj\gmock.o
+ADDMOD .obj\gmock_main.o
+SAVE
