@@ -1,4 +1,4 @@
-﻿#include "rulesPlugin.h"
+﻿#include "rulesBPMNPlugin.h"
 
 using namespace qReal;
 using namespace qReal::rulesChecker;
@@ -28,7 +28,7 @@ QList<ActionInfo> RulesPlugin::actions()
 
 void RulesPlugin::initAction()
 {
-	mRunAction = new QAction(QIcon(":/icons/startChecker.png"), QObject::tr("Run"), NULL);
+	mRunAction = new QAction(QObject::tr("Diagram Validation"), NULL);
 	mRunAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
 	ActionInfo runActionInfo(mRunAction, "generators", "tools");
 	mActionInfos << runActionInfo;

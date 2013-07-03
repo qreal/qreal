@@ -8,11 +8,15 @@ RulesChecker::RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 	, mWindowInterface(&interpretersInterface)
 	, hasNoErrors(true)
 {
-	linksTypes << "SequenceFlow";
+	linkTypes << "SequenceFlow";
+	containerTypes << "Pool" << "Lane" << "BPMN Diagram";
 }
 
 void RulesChecker::makeDetour(Id const currentNode)
 {
+	if (!metamodels.removeOne(currentNode))
+		return;
+
 	if (isLink(currentNode))
 	{
 		Id destination = mGRepoApi->to(currentNode);
@@ -20,8 +24,6 @@ void RulesChecker::makeDetour(Id const currentNode)
 			postError(IncorrectLink, currentNode);
 		else
 			makeDetour(destination);
-
-		metamodels.removeOne(currentNode);
 		return;
 	}
 
@@ -32,8 +34,6 @@ void RulesChecker::makeDetour(Id const currentNode)
 	foreach (Id key, frontNodes) {
 		makeDetour(key);
 	}
-
-	metamodels.removeOne(currentNode);
 }
 
 void RulesChecker::findIncorrectLinks()
@@ -64,7 +64,8 @@ void RulesChecker::check()
 	hasNoErrors = true;
 	mWindowInterface->dehighlight();
 	mWindowInterface->errorReporter()->clear();
-	metamodels = mGRepoApi->children(mWindowInterface->activeDiagram());
+	metamodels = mGRepoApi->children(Id::rootId());
+	//metamodels = mGRepoApi->children(mWindowInterface->activeDiagram());
 
 	researchDiagram();
 
@@ -72,18 +73,20 @@ void RulesChecker::check()
 		mWindowInterface->errorReporter()->addInformation(QString("Compiled without errors"));
 }
 
-qReal::IdList RulesChecker::findStartingElements(qReal::IdList const list)
+qReal::IdList RulesChecker::findStartingElements(qReal::IdList &list)
 {
 	IdList headNodes;
-	foreach (Id key, list) {
-		if (key.type() == Id(key.editor(), key.diagram(), QString("StartEvent"))) {
+	foreach (Id const key, list) {
+		if (containerTypes.contains(key.element()))
+			list.removeOne(key);
+		if (key.element() == QString("StartEvent")) {
 			headNodes << key;
 		}
 	}
 	return headNodes;
 }
 
-void RulesChecker::postError(RulesChecker::ErrorsType const error, Id const &badNode)
+void RulesChecker::postError(RulesChecker::ErrorsType const error, Id badNode)
 {
 	QString errorMsg("");
 	switch (error) {
@@ -102,11 +105,12 @@ void RulesChecker::postError(RulesChecker::ErrorsType const error, Id const &bad
 	}
 	mWindowInterface->errorReporter()->addError(errorMsg, badNode);
 	mWindowInterface->highlight(badNode, false);
+	qDebug() << badNode.toUrl();
 	hasNoErrors = false;
 }
 
 bool RulesChecker::isLink(const qReal::Id &model)
 {
-	return linksTypes.contains(model.element());
+	return linkTypes.contains(model.element());
 }
 

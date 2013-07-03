@@ -31,16 +31,20 @@ private:
 	 void makeDetour(Id const currentNode);
 	 //! post-checking for connected component without head-node
 	 void findIncorrectLinks();
-	 IdList findStartingElements(IdList const list);
 
-	 void postError(ErrorsType const error, Id const &badNode);
+	 //! filters containers
+	 //! @return IdList of head-nodes
+	 IdList findStartingElements(IdList &list);
+
+	 void postError(ErrorsType const error, Id badNode);
 	 bool isLink(Id const &model);
 
 	 qrRepo::GraphicalRepoApi const *mGRepoApi;
 	 qReal::gui::MainWindowInterpretersInterface *mWindowInterface;
 
 	 //! TODO: find better place for that
-	 QStringList linksTypes;
+	 QStringList linkTypes;
+	 QStringList containerTypes;
 
 	 //! consists of models from current diagram
 	 IdList metamodels;

@@ -7,12 +7,11 @@ LIBS += -L../../bin -lqrkernel -lqrutils
 
 HEADERS += \
 	rulesChecker.h \
-	rulesPlugin.h \
+    rulesBPMNPlugin.h
 
 SOURCES += \
 	rulesChecker.cpp \
-	rulesPlugin.cpp \
+    rulesBPMNPlugin.cpp
 
 RESOURCES += \
-	icons/icons.qrc \
 
