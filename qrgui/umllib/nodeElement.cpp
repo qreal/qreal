@@ -557,8 +557,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	arrangeLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->adjustNeighborLinks();
-		edge->correctArrow();
-		edge->correctInception();
 	}
 	adjustLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
