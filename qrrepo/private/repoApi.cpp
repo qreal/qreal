@@ -1,7 +1,5 @@
 #include "../repoApi.h"
 
-#include <QtCore/QDebug>
-
 using namespace qrRepo;
 using namespace qrRepo::details;
 using namespace qReal;
@@ -412,7 +410,7 @@ void RepoApi::open(QString const &saveFile)
 	mClient.open(saveFile);
 }
 
-void RepoApi::saveAll() const
+void RepoApi::saveAll()
 {
 	mClient.saveAll();
 }
@@ -435,7 +433,7 @@ void RepoApi::importFromDisk(QString const &importedFile)
 	mClient.importFromDisk(importedFile);
 }
 
-void RepoApi::save(qReal::IdList list) const
+void RepoApi::save(qReal::IdList list)
 {
 	mClient.save(list);
 }
@@ -443,6 +441,21 @@ void RepoApi::save(qReal::IdList list) const
 QString RepoApi::workingFile() const
 {
 	return mClient.workingFile();
+}
+
+void RepoApi::setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector)
+{
+	mClient.setWorkingCopyInspector(inspector);
+}
+
+void RepoApi::prepareWorkingCopy(const QString &targetFolder, const QString &sourceProject)
+{
+	mClient.prepareWorkingCopy(targetFolder, sourceProject);
+}
+
+void RepoApi::processWorkingCopy(const QString &workingCopyPath, QString const &targetProject)
+{
+	mClient.processWorkingCopy(workingCopyPath, targetProject);
 }
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)

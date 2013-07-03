@@ -26,6 +26,7 @@
 #include "../models/logicalModelAssistApi.h"
 #include "../view/propertyEditorView.h"
 #include "../controller/controller.h"
+#include "../versioning/versioningPluginsManager.h"
 
 #include "../../qrgui/dialogs/preferencesDialog.h"
 #include "../../qrgui/dialogs/findReplaceDialog.h"
@@ -202,6 +203,9 @@ private slots:
 	void showAbout();
 	void showHelp();
 
+	/// checks parameters for integrity,then importing it
+	/// @param fileName - *.qrs file to import
+	/// @return true - if all ok, false - if not ok
 	void fullscreen();
 	void openRecentProjectsMenu();
 
@@ -358,6 +362,7 @@ private:
 	Controller *mController;
 	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
+	VersioningPluginsManager *mVersioningManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;

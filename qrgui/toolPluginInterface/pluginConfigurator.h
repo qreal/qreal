@@ -26,7 +26,8 @@ public:
 		, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 		, mProjectManager(projectManager)
 		, mSceneCustomizer(sceneCustomizer)
-	{}
+	{
+	}
 
 	qrRepo::RepoControlInterface &repoControlInterface() const
 	{

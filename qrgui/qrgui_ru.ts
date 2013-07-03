@@ -267,6 +267,29 @@
     </message>
 </context>
 <context>
+    <name>DiffColorPreferencesDialog</name>
+    <message>
+        <location filename="versioning/visualDiff/view/diffColorPreferencesDialog.ui" line="17"/>
+        <source>Diff Color Preferences</source>
+        <translation>Цвета</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/diffColorPreferencesDialog.ui" line="60"/>
+        <source>Added/Removed</source>
+        <translation>Добавлено/Удалено</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/diffColorPreferencesDialog.ui" line="89"/>
+        <source>Modified</source>
+        <translation>Изменено</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/diffColorPreferencesDialog.ui" line="134"/>
+        <source>Hint</source>
+        <translation>Подсветка</translation>
+    </message>
+</context>
+<context>
     <name>EdgeElement</name>
     <message>
         <location filename="umllib/edgeElement.cpp" line="30"/>
@@ -279,31 +302,29 @@
         <translation>Удалить точку</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="32"/>
         <source>Squarize</source>
-        <translation>Перерисовать под прямым углом</translation>
+        <translation type="obsolete">Перерисовать под прямым углом</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="33"/>
+        <location filename="umllib/edgeElement.cpp" line="32"/>
         <source>Remove all points</source>
         <translation>Удалить все точки</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="34"/>
+        <location filename="umllib/edgeElement.cpp" line="33"/>
         <source>Remove segment</source>
         <translation>Удалить отрезок</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="35"/>
+        <location filename="umllib/edgeElement.cpp" line="34"/>
         <source>Reverse</source>
         <translatorcomment>Обратить и переприсоединить</translatorcomment>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="36"/>
         <source>Change drawing type</source>
         <translatorcomment>вертикальный/горизонтальный</translatorcomment>
-        <translation>Изменить тип рисования </translation>
+        <translation type="obsolete">Изменить тип рисования </translation>
     </message>
     <message>
         <source>Minimize</source>
@@ -535,57 +556,57 @@
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="956"/>
+        <location filename="view/editorViewScene.cpp" line="954"/>
         <source>Add connection</source>
         <translation>Добавить провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="962"/>
+        <location filename="view/editorViewScene.cpp" line="960"/>
         <source>Disconnect</source>
         <translation>Убрать провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="967"/>
+        <location filename="view/editorViewScene.cpp" line="965"/>
         <source>Add usage</source>
         <translation>Добавить использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="973"/>
+        <location filename="view/editorViewScene.cpp" line="971"/>
         <source>Delete usage</source>
         <translation>Убрать использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="978"/>
+        <location filename="view/editorViewScene.cpp" line="976"/>
         <source>Go to</source>
         <translation>Перейти</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="980"/>
+        <location filename="view/editorViewScene.cpp" line="978"/>
         <source>Forward connection</source>
         <translation>По провязке вперёд</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="981"/>
+        <location filename="view/editorViewScene.cpp" line="979"/>
         <source>Backward connection</source>
         <translation>По провязке назад</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="982"/>
+        <location filename="view/editorViewScene.cpp" line="980"/>
         <source>Uses</source>
         <translation>Использует</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="983"/>
+        <location filename="view/editorViewScene.cpp" line="981"/>
         <source>Used in</source>
         <translation>Используется в</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="987"/>
+        <location filename="view/editorViewScene.cpp" line="985"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="990"/>
+        <location filename="view/editorViewScene.cpp" line="988"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
     </message>
@@ -1548,13 +1569,13 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="51"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="129"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="52"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="131"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="52"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="53"/>
         <source>Shortcuts</source>
         <translation>Горячие клавиши</translation>
     </message>
@@ -1615,7 +1636,7 @@
         <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="50"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="51"/>
         <source>Miscellanious</source>
         <translation>Разное</translation>
     </message>
@@ -1645,7 +1666,7 @@
         <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="49"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="50"/>
         <source>Behaviour</source>
         <translation>Поведение</translation>
     </message>
@@ -3537,7 +3558,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="786"/>
+        <location filename="mainwindow/mainWindow.cpp" line="787"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3562,16 +3583,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="812"/>
-        <location filename="mainwindow/mainWindow.cpp" line="830"/>
-        <location filename="mainwindow/mainWindow.cpp" line="848"/>
+        <location filename="mainwindow/mainWindow.cpp" line="813"/>
+        <location filename="mainwindow/mainWindow.cpp" line="831"/>
+        <location filename="mainwindow/mainWindow.cpp" line="849"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="814"/>
-        <location filename="mainwindow/mainWindow.cpp" line="832"/>
-        <location filename="mainwindow/mainWindow.cpp" line="850"/>
+        <location filename="mainwindow/mainWindow.cpp" line="815"/>
+        <location filename="mainwindow/mainWindow.cpp" line="833"/>
+        <location filename="mainwindow/mainWindow.cpp" line="851"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3676,89 +3697,89 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="848"/>
+        <location filename="mainwindow/mainWindow.cpp" line="849"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="850"/>
+        <location filename="mainwindow/mainWindow.cpp" line="851"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1024"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1025"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1302"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1303"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1303"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1304"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1304"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1305"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1305"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1306"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1306"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1307"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1307"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1308"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1308"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1309"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1309"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1310"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1310"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1311"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1311"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1312"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1312"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1313"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1313"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1314"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1314"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1315"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="993"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1006"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1032"/>
+        <location filename="mainwindow/mainWindow.cpp" line="994"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1007"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1033"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3767,17 +3788,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1951"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1955"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1981"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1985"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1981"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1985"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3798,7 +3819,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1519"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1520"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3858,6 +3879,11 @@
 </context>
 <context>
     <name>qReal::ProgressDialog</name>
+    <message>
+        <location filename="dialogs/progressDialog/progressDialog.cpp" line="8"/>
+        <source>Working...</source>
+        <translation>Выполняется...</translation>
+    </message>
     <message>
         <location filename="dialogs/progressDialog/progressDialog.cpp" line="12"/>
         <source>Please wait...</source>
@@ -4577,6 +4603,184 @@
     <message>
         <source>2D model saves (*.xml)</source>
         <translation type="obsolete">Сохранения 2D-модели (*.xml)</translation>
+    </message>
+</context>
+<context>
+    <name>versioning::DiffWindow</name>
+    <message>
+        <location filename="versioning/visualDiff/view/diffWindow.cpp" line="27"/>
+        <source>Diff</source>
+        <translation>Различия</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/diffWindow.cpp" line="51"/>
+        <source>OK</source>
+        <translation>ОК</translation>
+    </message>
+</context>
+<context>
+    <name>versioning::details::ChildrenWidget</name>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/childrenWidget.cpp" line="46"/>
+        <source>This element doesn`t have children</source>
+        <translation>У этого элемента нет дочерних</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/childrenWidget.cpp" line="53"/>
+        <source>1. This element in the old model doesn`t have common children with the new models one</source>
+        <translation>У элементов в старой и новой моделях нет общих дочерних элементов</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/childrenWidget.cpp" line="55"/>
+        <source>1. Children that element has in both models:</source>
+        <translation>Дочерние элементы в обеих моделях:</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/childrenWidget.cpp" line="59"/>
+        <source>2. This element doesn`t have children existing only in the new model</source>
+        <translation>Элемент не имеет дочерних элементов, которые присутсвуют только в новой модели</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/childrenWidget.cpp" line="61"/>
+        <source>2. Children existing only in the new model:</source>
+        <translation>Дочерние элементы, присутствующие только в новой модели:</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/childrenWidget.cpp" line="65"/>
+        <source>3. This element doesn`t have children existing only in the old model.</source>
+        <translation>Элемент не имеет дочерних элементов, которые присутсвуют только в старой модели.</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/childrenWidget.cpp" line="67"/>
+        <source>3. Children existing only in the old model:</source>
+        <translation>Дочерние элементы, присутствующие только в старой модели:</translation>
+    </message>
+</context>
+<context>
+    <name>versioning::details::DiffDetailsWidget</name>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/diffDetailsWidget.cpp" line="58"/>
+        <source>&lt;Click item to see details&gt;</source>
+        <translation>&lt;Для отобажения деталей выберите элемент&gt;</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/diffDetailsWidget.cpp" line="75"/>
+        <source>Parents</source>
+        <translation>Родители</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/diffDetailsWidget.cpp" line="83"/>
+        <source>Children</source>
+        <translation>Дети</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/diffDetailsWidget.cpp" line="96"/>
+        <source>Graphical Properties</source>
+        <translation>Графические свойства</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/diffDetailsWidget.cpp" line="97"/>
+        <source>Logical Properties</source>
+        <translation>Логические свойства</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/diffDetailsWidget.cpp" line="120"/>
+        <source>graphical</source>
+        <translation>графич.</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/diffDetailsWidget.cpp" line="120"/>
+        <source>logical</source>
+        <translation>логич.</translation>
+    </message>
+</context>
+<context>
+    <name>versioning::details::IdListDiffWidget</name>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/idListDiffWidget.cpp" line="70"/>
+        <source>The list is empty</source>
+        <translation>Список пуст</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/idListDiffWidget.cpp" line="77"/>
+        <source>The list in the old model doesn`t contain common elements with the new models one.</source>
+        <translation>Список в старой модели не имеет общих элементов со списком в новой модели.</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/idListDiffWidget.cpp" line="79"/>
+        <source>Elements that the list contains in both models:</source>
+        <translation>Элементы списка, присутствующие в обеих моделях:</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/idListDiffWidget.cpp" line="83"/>
+        <source>The list doesn`t contain elements existing only in the new model.</source>
+        <translation>В списке нет элементов, которые сущетвуют только в новой модели.</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/idListDiffWidget.cpp" line="85"/>
+        <source>Elements that the  list contains only in the new model:</source>
+        <translation>Элементы, которые содержатся только в новой модели:</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/idListDiffWidget.cpp" line="89"/>
+        <source>The list doesn`t contain elements existing only in the old model.</source>
+        <translation>В списке нет элементов, которые сущетвуют только в старой модели.</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/idListDiffWidget.cpp" line="91"/>
+        <source>Elements that the  list contains only in the old model:</source>
+        <translation>Элементы, которые содержатся только в старой модели:</translation>
+    </message>
+</context>
+<context>
+    <name>versioning::details::IdWidget</name>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/idWidget.cpp" line="56"/>
+        <source>Logical Id: </source>
+        <translation>Логический идентификатор:</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/idWidget.cpp" line="59"/>
+        <source>Graphical Id: </source>
+        <translation>Графический идентификатор:</translation>
+    </message>
+</context>
+<context>
+    <name>versioning::details::ParentWidget</name>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/parentWidget.cpp" line="42"/>
+        <source>Parents of this element in the old and new models are the same:</source>
+        <translation>Родитель элемента не изменился:</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/parentWidget.cpp" line="49"/>
+        <location filename="versioning/visualDiff/view/detailsWidget/parentWidget.cpp" line="64"/>
+        <source>Parent in the old model:</source>
+        <translation>Родитель в старой модели:</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/parentWidget.cpp" line="50"/>
+        <location filename="versioning/visualDiff/view/detailsWidget/parentWidget.cpp" line="58"/>
+        <source>Parent in the new model:</source>
+        <translation>Родитель в новой модели:</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/parentWidget.cpp" line="57"/>
+        <source>The element doesnt`t exist in the old model</source>
+        <translation>Элемент не существует в старой модели</translation>
+    </message>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/parentWidget.cpp" line="65"/>
+        <source>The element doesnt`t exist in the new model</source>
+        <translation>Элемент не существует в новой модели</translation>
+    </message>
+</context>
+<context>
+    <name>versioning::details::PropertyWidget</name>
+    <message>
+        <location filename="versioning/visualDiff/view/detailsWidget/propertyWidget.cpp" line="116"/>
+        <source>View id list difference</source>
+        <translation>Просмотреть разнцу списков</translation>
     </message>
 </context>
 </TS>

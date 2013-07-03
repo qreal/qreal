@@ -1,9 +1,10 @@
-#include "serializer.h"
-#include "folderCompressor.h"
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
+
+#include "serializer.h"
+#include "folderCompressor.h"
 #include "../../qrkernel/settingsManager.h"
 
 #include "../../qrutils/outFile.h"
@@ -18,11 +19,12 @@ using namespace qReal;
 Serializer::Serializer(QString const& saveDirName)
 	: mWorkingDir(SettingsManager::value("temp").toString())
 	, mWorkingFile(saveDirName)
+	, mWorkingCopyInspector(NULL)
 {
 	clearWorkingDir();
 }
 
-void Serializer::clearWorkingDir() const
+void Serializer::clearWorkingDir()
 {
 	clearDir(mWorkingDir);
 }
@@ -38,14 +40,54 @@ void Serializer::setWorkingFile(QString const &workingFile)
 	mWorkingFile = workingFile;
 }
 
-void Serializer::saveToDisk(QList<Object*> const &objects) const
+void Serializer::setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector)
+{
+	mWorkingCopyInspector = inspector;
+}
+
+void Serializer::prepareSaving()
+{
+	mSavedDirectories.clear();
+	mSavedFiles.clear();
+
+	clearDir(mWorkingDir);
+	if (QFileInfo(mWorkingFile).exists()) {
+		decompressFile(mWorkingFile);
+	}
+}
+
+bool Serializer::reportAdded(const QString &fileName)
+{
+	if (mWorkingCopyInspector) {
+		return mWorkingCopyInspector->onFileAdded(fileName, mWorkingDir);
+	}
+	return true;
+}
+
+bool Serializer::reportRemoved(const QString &fileName)
+{
+	if (mWorkingCopyInspector) {
+		return mWorkingCopyInspector->onFileRemoved(fileName, mWorkingDir);
+	}
+	return true;
+}
+
+bool Serializer::reportChanged(const QString &fileName)
+{
+	if (mWorkingCopyInspector) {
+		return mWorkingCopyInspector->onFileChanged(fileName, mWorkingDir);
+	}
+	return true;
+}
+
+void Serializer::saveToDisk(QList<Object*> const &objects)
 {
 	Q_ASSERT_X(!mWorkingFile.isEmpty()
-		, "Serializer::saveToDisk(...)"
-		, "may be Client of RepoApi (see Models constructor also) has been initialised with empty filename?");
+			, "Serializer::saveToDisk(...)"
+			, "may be Client of RepoApi (see Models constructor also) has been initialised with empty filename?");
+	prepareSaving();
 
 	foreach (Object *object, objects) {
-
 		QString filePath = createDirectory(object->id(), object->logicalId());
 
 		QDomDocument doc;
@@ -60,9 +102,22 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 		root.appendChild(idListToXml("children", object->children(), doc));
 		root.appendChild(propertiesToXml(object, doc));
 
+		QFileInfo fileInfo(filePath);
+		bool fileExists = fileInfo.exists();
+		if (fileExists) {
+			QDir().remove(filePath);
+		}
 		OutFile out(filePath);
 		doc.save(out(), 2);
+		mSavedFiles << filePath;
+		if (!fileExists) {
+			reportChanged(filePath);
+		} else {
+			reportAdded(filePath);
+		}
 	}
+
+	removeUnsaved(mWorkingDir);
 
 	QFileInfo fileInfo(mWorkingFile);
 	QString fileName = fileInfo.baseName();
@@ -104,6 +159,25 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Objec
 		dir.cd("graphical");
 		loadModel(dir, objectsHash);
 	}
+}
+
+void Serializer::prepareWorkingCopy(const QString &targetFolder, QString const &sourceProject)
+{
+	clearDir(targetFolder);
+	QString const workingFile = sourceProject.isEmpty() ? mWorkingFile : sourceProject;
+	if (QFileInfo(workingFile).exists()) {
+		FolderCompressor().decompressFolder(workingFile, targetFolder);
+	}
+}
+
+void Serializer::processWorkingCopy(const QString &workingCopyPath, QString const &targetProject)
+{
+	QString const targetProjectPath = targetProject.isEmpty() ? mWorkingFile : targetProject;
+	if (QDir(workingCopyPath).exists()) {
+		FolderCompressor().compressFolder(workingCopyPath, targetProjectPath);
+	}
+	clearDir(workingCopyPath);
+	QDir().rmdir(workingCopyPath);
 }
 
 void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash)
@@ -259,7 +333,7 @@ void Serializer::clearDir(QString const &path)
 	if (!dir.exists()) {
 		return;
 	}
-	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::Hidden | QDir::NoDotAndDotDot)) {
 		if (fileInfo.isDir()) {
 			clearDir(fileInfo.filePath());
 			dir.rmdir(fileInfo.fileName());
@@ -327,25 +401,52 @@ QString Serializer::pathToElement(Id const &id) const
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-QString Serializer::createDirectory(Id const &id, Id const &logicalId) const
+QString Serializer::createDirectory(Id const &id, Id const &logicalId)
 {
+	mSavedDirectories << QFileInfo(mWorkingDir).filePath();
 	QString dirName = mWorkingDir + "/tree";
+	mSavedDirectories << QFileInfo(dirName).filePath();
 	if (logicalId == Id()) {
 		dirName += "/logical";
 	} else {
 		dirName += "/graphical";
 	}
+	mSavedDirectories << QFileInfo(dirName).filePath();
 	QStringList const partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >= 1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
 		dirName += "/" + partsList[i];
+		QDir dir(dirName);
+		if (!dir.exists()) {
+			dir.mkpath(dirName);
+		}
+		mSavedDirectories << QFileInfo(dirName).filePath();
 	}
 
-	QDir dir;
-	dir.rmdir(mWorkingDir);
-	dir.mkpath(dirName);
-
 	return dirName + "/" + partsList[partsList.size() - 1];
+}
+
+bool Serializer::removeUnsaved(const QString &path)
+{
+	QDir dir(path);
+	if (!dir.exists()) {
+		return true;
+	}
+	bool result = true;
+	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		if (fileInfo.isDir()) {
+			bool const invocationResult =
+					mSavedDirectories.contains(fileInfo.filePath())
+						? removeUnsaved(fileInfo.filePath())
+						: reportRemoved(fileInfo.filePath());
+			result = result & invocationResult;
+		} else {
+			result = mSavedFiles.contains(fileInfo.filePath())
+					? result
+					: (reportRemoved(fileInfo.filePath()) && result);
+		}
+	}
+	return result;
 }
 
 QDomElement Serializer::idListToXml(QString const &attributeName, IdList const &idList, QDomDocument &doc)
@@ -385,4 +486,3 @@ void Serializer::decompressFile(QString const &fileName)
 {
 	FolderCompressor().decompressFolder(fileName, mWorkingDir);
 }
-

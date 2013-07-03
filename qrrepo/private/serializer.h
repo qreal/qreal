@@ -1,36 +1,51 @@
 #pragma once
 
-#include "../../qrkernel/roles.h"
-#include "classes/object.h"
-
 #include <QtXml/QDomDocument>
 #include <QtCore/QVariant>
-
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 
+#include "../../qrkernel/roles.h"
+#include "../workingCopyInspectionInterface.h"
+#include "classes/object.h"
+
 namespace qrRepo {
+
 namespace details {
 
 class Serializer
 {
 public:
-	Serializer(QString const &saveDirName);
-	void clearWorkingDir() const;
-	void setWorkingFile(QString const &workingDir);
+	Serializer(QString const& saveDirName);
+	void clearWorkingDir();
+	void setWorkingFile(QString const& workingDir);
+
+	void setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector);
 
 	void removeFromDisk(qReal::Id id) const;
-	void saveToDisk(QList<Object *> const &objects) const;
-	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash);
+	void saveToDisk(QList<Object*> const &objects);
+	void loadFromDisk(QHash<qReal::Id, Object*> &objectsHash);
+
+	void prepareWorkingCopy(const QString &workingCopyPath, QString const &sourceProject = QString());
+	void processWorkingCopy(const QString &workingCopyPath, QString const &targetProject = QString());
 
 	void decompressFile(QString const &fileName);
 
 private:
-	void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object *> &objectsHash);
-	void loadModel(QDir const &dir, QHash<qReal::Id, Object *> &objectsHash);
+	void loadFromDisk(QString const &currentPath, QHash<qReal::Id, Object*> &objectsHash);
+	void loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash);
 
 	QString pathToElement(qReal::Id const &id) const;
-	QString createDirectory(qReal::Id const &id, qReal::Id const &logicalId) const;
+	QString createDirectory(qReal::Id const &id, qReal::Id const &logicalId);
+
+	bool addSaved();
+	bool removeUnsaved(QString const &path);
+
+	void prepareSaving();
+
+	bool reportAdded(QString const &fileName);
+	bool reportRemoved(QString const &fileName);
+	bool reportChanged(QString const &fileName);
 
 	Object *parseObject(QDomElement const &elem);
 	static void clearDir(QString const &path);
@@ -46,10 +61,14 @@ private:
 	static QDomElement idListToXml(QString const &attributeName, qReal::IdList const &idList, QDomDocument &doc);
 	static QDomElement propertiesToXml(Object const *object, QDomDocument &doc);
 
+
 	QString mWorkingDir;
 	QString mWorkingFile;
 
-	QMap<QString, QFile*> files;
+	WorkingCopyInspectionInterface *mWorkingCopyInspector;
+	QSet<QString> mSavedFiles;
+	QSet<QString> mSavedDirectories;
+	QMap<QString, QFile*> mFiles;
 };
 
 }

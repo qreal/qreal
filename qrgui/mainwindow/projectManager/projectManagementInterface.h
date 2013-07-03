@@ -40,6 +40,8 @@ public slots:
 	virtual bool suggestToSaveAs() = 0;
 	/// Similarly @see save(), if specified project-file, similarly @see suggestToSaveAs() o/w
 	virtual bool saveOrSuggestToSaveAs() = 0;
+	/// Returns path to last saved project
+	virtual QString saveFilePath() const = 0;
 
 public:
 	/// Create an empty project

@@ -3,10 +3,10 @@ TEMPLATE = subdirs
 SUBDIRS	= \
 #	additionsEditor/additionsEditor.pro \
 #	android/android.pro \
-	dragonDiagram/dragonDiagram.pro \
+#	dragonDiagram/dragonDiagram.pro \
 	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
-	exterminatus/exterminatus.pro \
+#	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 #	network/network.pro \
@@ -15,6 +15,7 @@ SUBDIRS	= \
 #	requirements/requirements.pro \
 #	robots/robots.pro \
 #	sbt/sbt.pro \
+	subversionClient/subversionClient.pro \
 #	testEditor/testEditor.pro \
 #	testInvocation/testInvocation.pro \
 #	ubiq/ubiq.pro \

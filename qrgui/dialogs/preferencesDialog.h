@@ -48,6 +48,6 @@ private slots:
 	void chooseTab(const QModelIndex &);
 
 private:
-	Ui::PreferencesDialog *ui;
+	Ui::PreferencesDialog *mUi;
 	QMap<QString, PreferencesPage *> mCustomPages;
 };

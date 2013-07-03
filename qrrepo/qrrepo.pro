@@ -35,9 +35,8 @@ HEADERS += \
 	$$PWD/logicalRepoApi.h \
 	$$PWD/repoControlInterface.h \
 	$$PWD/commonRepoApi.h \
-
+	$$PWD/workingCopyInspectionInterface.h \
+	$$PWD/workingCopyManagementInterface.h \
 
 SOURCES += \
 	$$PWD/private/repoApi.cpp \
-
-OTHER_FILES +=

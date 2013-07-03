@@ -10,6 +10,9 @@ RESOURCES = qrgui.qrc
 SOURCES = main.cpp \
     qRealApplication.cpp
 
+HEADERS += \
+    qRealApplication.h
+
 TRANSLATIONS = qrgui_ru.ts
 
 # QMAKE_CXXFLAGS_DEBUG += -pg
@@ -74,7 +77,7 @@ include (pluginManager/pluginManager.pri)
 # Interfaces for plugins, used by qrxc and qrmc
 include (editorPluginInterface/editorPluginInterface.pri)
 
-# Interfaces for tool plugins, used in handcoded tools
+# Interfaces for tool plugins, used in handcoded tools.
 include (toolPluginInterface/toolPluginInterface.pri)
 
 # Text Editor
@@ -83,5 +86,5 @@ include (textEditor/textEditor.pri)
 # Hot Key Manager
 include (hotKeyManager/hotKeyManager.pri)
 
-HEADERS += \
-    qRealApplication.h
+# Versioning clients interfaces and managers
+include (versioning/versioning.pri)

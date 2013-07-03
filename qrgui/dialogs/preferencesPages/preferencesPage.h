@@ -27,7 +27,7 @@ public:
 	virtual void restoreSettings() = 0;
 
 	/// This method will be called when need to get icon on label in form
-	virtual QIcon getIcon() const
+	virtual QIcon icon() const
 	{
 		return mIcon;
 	}

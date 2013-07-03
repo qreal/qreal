@@ -8,13 +8,12 @@ using namespace qrRepo;
 using namespace qrRepo::details;
 
 Client::Client(QString const &workingFile)
-		: mWorkingFile(workingFile)
-		, serializer(workingFile)
+	: mWorkingFile(workingFile)
+	, mSerializer(workingFile)
 {
 	init();
 	loadFromDisk();
 }
-
 
 void Client::init()
 {
@@ -24,7 +23,7 @@ void Client::init()
 
 Client::~Client()
 {
-	serializer.clearWorkingDir();
+	mSerializer.clearWorkingDir();
 
 	foreach (Id id, mObjects.keys()) {
 		delete mObjects[id];
@@ -272,12 +271,21 @@ void Client::removeProperty( const Id &id, QString const &name )
 	}
 }
 
-bool Client::hasProperty(const Id &id, QString const &name, bool sensitivity, bool regExpression) const
+bool Client::hasProperty(const Id &id, const QString &name, bool sensitivity, bool regExpression) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->hasProperty(name, sensitivity, regExpression);
 	} else {
 		throw Exception("Client: Checking the existence of a property '" + name + "' of nonexistent object " + id.toString());
+	}
+}
+
+QMapIterator<QString, QVariant> Client::propertiesIterator(const Id &id) const
+{
+	if (mObjects.contains(id)) {
+		return mObjects[id]->propertiesIterator();
+	} else {
+		throw Exception("Client: Requesting property iterator of nonexistent object " + id.toString());
 	}
 }
 
@@ -347,15 +355,15 @@ void Client::removeTemporaryRemovedLinks(Id const &id)
 
 void Client::loadFromDisk()
 {
-	serializer.loadFromDisk(mObjects);
+	mSerializer.loadFromDisk(mObjects);
 	addChildrenToRootObject();
 }
 
 void Client::importFromDisk(QString const &importedFile)
 {
-	serializer.setWorkingFile(importedFile);
+	mSerializer.setWorkingFile(importedFile);
 	loadFromDisk();
-	serializer.setWorkingFile(mWorkingFile);
+	mSerializer.setWorkingFile(mWorkingFile);
 }
 
 void Client::addChildrenToRootObject()
@@ -406,27 +414,27 @@ bool Client::exist(const Id &id) const
 	return (mObjects[id] != NULL);
 }
 
-void Client::saveAll() const
+void Client::saveAll()
 {
-	serializer.saveToDisk(mObjects.values());
+	mSerializer.saveToDisk(mObjects.values());
 }
 
-void Client::save(IdList list) const
+void Client::save(IdList list)
 {
 	QList<Object*> toSave;
 	foreach(Id const &id, list)
 		toSave.append(allChildrenOf(id));
 
-	serializer.saveToDisk(toSave);
+	mSerializer.saveToDisk(toSave);
 }
 
-void Client::saveWithLogicalId(qReal::IdList list) const
+void Client::saveWithLogicalId(qReal::IdList list)
 {
 	QList<Object*> toSave;
-	foreach(Id const &id, list)
+	foreach(Id const &id, list) {
 		toSave.append(allChildrenOfWithLogicalId(id));
-
-	serializer.saveToDisk(toSave);
+	}
+	mSerializer.saveToDisk(toSave);
 }
 
 void Client::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
@@ -452,7 +460,7 @@ void Client::remove(IdList list) const
 {
 	foreach(Id const &id, list) {
 		qDebug() << id.toString();
-		serializer.removeFromDisk(id);
+		mSerializer.removeFromDisk(id);
 	}
 }
 
@@ -468,13 +476,28 @@ void Client::remove(const qReal::Id &id)
 
 void Client::setWorkingFile(QString const &workingFile)
 {
-	serializer.setWorkingFile(workingFile);
+	mSerializer.setWorkingFile(workingFile);
 	mWorkingFile = workingFile;
 }
 
 QString Client::workingFile() const
 {
 	return mWorkingFile;
+}
+
+void Client::setWorkingCopyInspector(WorkingCopyInspectionInterface *inspector)
+{
+	mSerializer.setWorkingCopyInspector(inspector);
+}
+
+void Client::prepareWorkingCopy(const QString &targetFolder, const QString &sourceProject)
+{
+	mSerializer.prepareWorkingCopy(targetFolder, sourceProject);
+}
+
+void Client::processWorkingCopy(const QString &workingCopyPath, QString const &targetProject)
+{
+	mSerializer.processWorkingCopy(workingCopyPath, targetProject);
 }
 
 void Client::printDebug() const
@@ -496,7 +519,7 @@ void Client::exterminate()
 	printDebug();
 	mObjects.clear();
 	//serializer.clearWorkingDir();
-	serializer.saveToDisk(mObjects.values());
+	mSerializer.saveToDisk(mObjects.values());
 	init();
 	printDebug();
 }
@@ -505,7 +528,7 @@ void Client::open(QString const &saveFile)
 {
 	mObjects.clear();
 	init();
-	serializer.setWorkingFile(saveFile);
+	mSerializer.setWorkingFile(saveFile);
 	loadFromDisk();
 }
 
@@ -522,9 +545,4 @@ bool Client::isLogicalId(qReal::Id const &elem) const
 qReal::Id Client::logicalId(qReal::Id const &elem) const
 {
 	return mObjects[elem]->logicalId();
-}
-
-QMapIterator<QString, QVariant> Client::propertiesIterator(qReal::Id const &id) const
-{
-	return mObjects[id]->propertiesIterator();
 }

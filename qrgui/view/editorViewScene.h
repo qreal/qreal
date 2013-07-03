@@ -226,6 +226,7 @@ private:
 	double mRealIndexGrid;
 
 	NodeElement *mHighlightNode;
+	QPointF newElementsPosition;
 
 	QList<QGraphicsItem *> mGesture;
 	/// list of pixmaps to be drawn on scene's foreground
@@ -239,7 +240,10 @@ private:
 
 	QList<QAction *> mContextMenuActions;
 
+	QPointF mPrevPosition;
 	QPointF mCurrentMousePos;
+	QGraphicsItem *mPrevParent;
+
 	QPointF mCreatePoint;
 
 	gestures::MouseMovementManager *mMouseMovementManager;

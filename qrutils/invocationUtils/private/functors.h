@@ -19,6 +19,11 @@ public:
 		return mResult;
 	}
 
+	bool returnsSomething() const
+	{
+		return true;
+	}
+
 protected:
 	T mResult;
 };
@@ -28,6 +33,12 @@ class Functor<void>
 {
 public:
 	virtual void runFunctor() = 0;
+
+	bool returnsSomething() const
+	{
+		return false;
+	}
+
 };
 
 template <typename T>

@@ -43,7 +43,7 @@ void TestInvocationPlugin::asyncWithoutProgress()
 	connect(operation, SIGNAL(finished(invocation::InvocationState)), this, SLOT(onOpertionFinished(invocation::InvocationState)));
 	operation->setInvocationTarget(this, &TestInvocationPlugin::doOperation, 1000, 5);
 	mMainWindow->reportOperation(operation);
-	operation->invoceAsync();
+	operation->invokeAsync();
 }
 
 void TestInvocationPlugin::asyncWithProgress()
@@ -54,7 +54,7 @@ void TestInvocationPlugin::asyncWithProgress()
 	connect(operation, SIGNAL(finished(invocation::InvocationState)), this, SLOT(onOpertionFinished(invocation::InvocationState)));
 	operation->setInvocationTargetWithProgress(this, &TestInvocationPlugin::doOperation, 1000, 5);
 	mMainWindow->reportOperation(operation);
-	operation->invoceAsync();
+	operation->invokeAsync();
 }
 
 void TestInvocationPlugin::syncWithoutProgress()
@@ -65,7 +65,7 @@ void TestInvocationPlugin::syncWithoutProgress()
 	connect(operation, SIGNAL(finished(invocation::InvocationState)), this, SLOT(onOpertionFinished(invocation::InvocationState)));
 	operation->setInvocationTarget(this, &TestInvocationPlugin::doOperation, 1000, 5);
 	mMainWindow->reportOperation(operation);
-	operation->invoceSync();
+	operation->invokeSync();
 }
 
 void TestInvocationPlugin::syncWithProgress()
@@ -76,7 +76,7 @@ void TestInvocationPlugin::syncWithProgress()
 	connect(operation, SIGNAL(finished(invocation::InvocationState)), this, SLOT(onOpertionFinished(invocation::InvocationState)));
 	operation->setInvocationTargetWithProgress(this, &TestInvocationPlugin::doOperation, 1000, 5);
 	mMainWindow->reportOperation(operation);
-	operation->invoceSync();
+	operation->invokeSync();
 }
 
 void TestInvocationPlugin::doOperation(invocation::Progress *progress, int sleepInterval, int count)

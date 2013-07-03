@@ -22,6 +22,7 @@
 
 #include "errorReporter.h"
 
+#include "../editorPluginInterface/editorInterface.h"
 #include "shapeEdit/shapeEdit.h"
 #include "propertyEditorProxyModel.h"
 #include "../dialogs/gesturesShow/gesturesWidget.h"
@@ -279,7 +280,7 @@ EditorManagerInterface& MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	QList<ToolPluginInterface *> toolPlugins = mToolManager.getPlugins();
+	QList<ToolPluginInterface *> toolPlugins = mToolManager.plugins();
 	foreach (ToolPluginInterface *toolPlugin, toolPlugins) {
 		toolPlugin->closeNeededWidget();
 	}
@@ -492,7 +493,6 @@ void MainWindow::openRecentProjectsMenu()
 void MainWindow::closeAllTabs()
 {
 	int const tabCount = mUi->tabs->count();
-
 	for (int i = 0; i < tabCount; i++) {
 		closeTab(0);
 	}
@@ -723,6 +723,7 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 	// correcting unremoved edges
 	ArrangeLinksCommand *arrangeCommand = new ArrangeLinksCommand(getCurrentTab(), id, true);
 	arrangeCommand->setRedoEnabled(false);
+\
 	result->addPreAction(arrangeCommand);
 
 	UpdateElementCommand *updateCommand = new UpdateElementCommand(getCurrentTab(), id);
@@ -1831,6 +1832,9 @@ void MainWindow::initToolPlugins()
 	foreach (PageDescriptor const page, preferencesPages) {
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
+
+	mVersioningManager = new VersioningPluginsManager(mToolManager
+				, &(mModels->repoControlApi()), mErrorReporter, this);
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)

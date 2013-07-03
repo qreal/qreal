@@ -74,7 +74,7 @@ void ProgressBar::onBeforeStart()
 void ProgressBar::onOperationComplete(invocation::InvocationState result)
 {
 	if (!mOperation->hasProgress()) {
-		setMaximum(100);
+		setMaximum(100); // Stop indicator
 	}
 	switch(result) {
 	case invocation::FinishedNormally:

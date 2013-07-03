@@ -58,3 +58,7 @@ include(invocationUtils/invocationUtils.pri)
 
 # Math Utils
 include(mathUtils/mathUtils.pri)
+
+# Some stuff available for using in versioning plugins
+include(versioningUtils/versioningUtils.pri)
+

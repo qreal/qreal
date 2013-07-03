@@ -34,8 +34,7 @@ public:
 	/// @param rootElementId Id of the tab which became active after change, if applicable. If not, Id().
 	void activeTabChanged(Id const & rootElementId);
 
-	QList<ToolPluginInterface *> getPlugins();
-
+	QList<ToolPluginInterface *> plugins() const;
 private:
 	QList<HotKeyActionInfo> hotKeyActions() const;
 	void setHotKeyActions() const;

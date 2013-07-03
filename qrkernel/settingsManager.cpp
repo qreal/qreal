@@ -61,7 +61,6 @@ void SettingsManager::saveData()
 		mSettings.setValue(name, mData[name]);
 	}
 	mSettings.sync();
-
 }
 
 void SettingsManager::load()

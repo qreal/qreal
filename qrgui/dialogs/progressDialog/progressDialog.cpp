@@ -5,7 +5,7 @@ using namespace qReal;
 ProgressDialog::ProgressDialog(QWidget *parent)
 	: QProgressDialog(parent), mProgressBar(new ProgressBar(this))
 {
-	setWindowTitle("");
+	setWindowTitle(tr("Working..."));
 	setBar(mProgressBar);
 	connect(this, SIGNAL(canceled()), this, SLOT(onCanceled()));
 
