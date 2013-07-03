@@ -1,5 +1,5 @@
 QT += widgets
-LIBS += -L../../../bin -lqrkernel -lqrutils
+LIBS += -L../../bin -lqrkernel -lqrutils
 
 TEMPLATE = lib
 CONFIG += plugin
