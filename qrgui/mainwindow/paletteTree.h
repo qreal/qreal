@@ -91,11 +91,9 @@ signals:
 	void paletteParametersChanged();
 
 public slots:
-	/// Collapse all nodes of current tree.
-	void collapse();
+	/// Change expanded/collapsed state of current tree.
+	void changeExpansionState();
 
-	/// Expand all nodes of current tree.
-	void expand();
 	void setActiveEditor(int index);
 	void setActiveEditor(Id id);
 
@@ -106,6 +104,12 @@ public slots:
 	void changeRepresentation();
 
 private:
+	/// Collapse all nodes of current tree.
+	void collapse();
+
+	/// Expand all nodes of current tree.
+	void expand();
+
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
 
@@ -165,11 +169,8 @@ private:
 	/// Pointer to current tree.
 	QTreeWidget *mTree;
 
-	/// Button that collapses all nodes of current tree.
-	QToolButton *mCollapseAll;
-
-	/// Button that expands all nodes of current tree.
-	QToolButton *mExpandAll;
+	/// Button that changes expansion state of current tree
+	QToolButton *mChangeExpansionState;
 
 	/// Button that changes palette representation.
 	QToolButton *mChangeRepresentation;
@@ -191,6 +192,9 @@ private:
 
 	/// Representation flag
 	bool mIconsView;
+
+	/// Whether expand/collapse button expands tree
+	bool expansionButtonExpands;
 
 	/// Count of items in a row in icon's representation
 	int mItemsCountInARow;
