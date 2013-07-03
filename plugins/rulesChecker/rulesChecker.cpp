@@ -12,10 +12,10 @@ RulesChecker::RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 	containerTypes << "Pool" << "Lane" << "BPMN Diagram";
 }
 
-void RulesChecker::makeDetour(Id const currentNode)
+bool RulesChecker::makeDetour(Id const currentNode)
 {
 	if (!metamodels.removeOne(currentNode))
-		return;
+		return false; // cannot go from final-node out
 
 	if (isLink(currentNode))
 	{
@@ -23,17 +23,23 @@ void RulesChecker::makeDetour(Id const currentNode)
 		if (destination == Id::rootId())
 			postError(IncorrectLink, currentNode);
 		else
-			makeDetour(destination);
-		return;
+			return makeDetour(destination);
 	}
 
 	IdList frontNodes = mGRepoApi->outgoingLinks(currentNode);
-	if (!frontNodes.size() && currentNode.element() != QString("EndEvent"))
-		postError(NoEndNode, currentNode);
-
-	foreach (Id key, frontNodes) {
-		makeDetour(key);
+	if (!frontNodes.size()) {
+		if (currentNode.element() != QString("EndEvent"))
+			postError(NoEndNode, currentNode);
+		else
+			return true;
 	}
+
+	bool hasFoundFinalNode= false;
+	foreach (Id key, frontNodes) {
+		if (makeDetour(key))
+			hasFoundFinalNode = true;
+	}
+	return hasFoundFinalNode;
 }
 
 void RulesChecker::findIncorrectLinks()
@@ -49,7 +55,8 @@ void RulesChecker::researchDiagram()
 	IdList startingElements = findStartingElements(metamodels);
 
 	while (startingElements.size()) {
-		makeDetour(startingElements.first());
+		if (!makeDetour(startingElements.first()))
+			postError(NoEndNode, startingElements.first());
 		startingElements.removeFirst();
 	}
 
@@ -64,7 +71,7 @@ void RulesChecker::check()
 	hasNoErrors = true;
 	mWindowInterface->dehighlight();
 	mWindowInterface->errorReporter()->clear();
-	metamodels = mGRepoApi->children(Id::rootId());
+	metamodels = mGRepoApi->graphicalElements();
 	//metamodels = mGRepoApi->children(mWindowInterface->activeDiagram());
 
 	researchDiagram();
@@ -105,7 +112,6 @@ void RulesChecker::postError(RulesChecker::ErrorsType const error, Id badNode)
 	}
 	mWindowInterface->errorReporter()->addError(errorMsg, badNode);
 	mWindowInterface->highlight(badNode, false);
-	qDebug() << badNode.toUrl();
 	hasNoErrors = false;
 }
 

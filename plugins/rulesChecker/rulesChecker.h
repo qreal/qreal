@@ -28,7 +28,8 @@ private:
 	 //! starts DFS for all connected component
 	 void researchDiagram();
 	 //! DFS, removes elements from metamodel list while making detour
-	 void makeDetour(Id const currentNode);
+	 //! @returns bool reached the final node
+	 bool makeDetour(Id const currentNode);
 	 //! post-checking for connected component without head-node
 	 void findIncorrectLinks();
 
