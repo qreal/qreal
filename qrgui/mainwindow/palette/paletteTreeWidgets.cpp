@@ -5,16 +5,14 @@
 using namespace qReal;
 using namespace gui;
 
-EditorManagerInterface *PaletteTreeWidgets::mEditorManager = NULL;
-
 PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow &mainWindow
 		, EditorManagerInterface &editorManagerProxy)
-	: mParentPalette(&parent)
+	: mEditorManager(&editorManagerProxy)
+	, mParentPalette(&parent)
 	, mMainWindow(&mainWindow)
 	, mEditorTree(new PaletteTreeWidget(parent, mainWindow, editorManagerProxy))
 	, mUserTree(new PaletteTreeWidget(parent, mainWindow, editorManagerProxy))
 {
-	mEditorManager = &editorManagerProxy;
 	initWidget();
 }
 
@@ -49,43 +47,19 @@ void PaletteTreeWidgets::initWidget(PaletteTreeWidget * const tree, QVBoxLayout 
 	layout->addWidget(tree);
 }
 
-	void PaletteTreeWidgets::initEditorTree()
+void PaletteTreeWidgets::initEditorTree()
 {
 	IdList elements = mEditorManager->elements(mDiagram) + mEditorManager->groups(mDiagram);
-	qSort(elements.begin(), elements.end(), idLessThan);
+	PaletteTreeWidget::sortByFriendlyName(elements);
 
 	if (!mEditorManager->paletteGroups(mEditor, mDiagram).empty()) {
-		int expandedCount = 0;
+		QMap<QString, QStringList> groups;
+		QMap<QString, QString> descriptions;
 		foreach (QString const &group, mEditorManager->paletteGroups(mEditor, mDiagram)) {
-			QTreeWidgetItem *item = new QTreeWidgetItem;
-			item->setText(0, group);
-			item->setToolTip(0, mEditorManager->paletteGroupDescription(mEditor, mDiagram, group));
-
-			IdList tmpIdList;
-
-			foreach (QString const &elementName, mEditorManager->paletteGroupList(mEditor, mDiagram, group)) {
-				foreach (Id const &element, elements) {
-					if (element.element() == elementName) {
-						tmpIdList.append(element);
-						break;
-					}
-				}
-			}
-
-			qSort(tmpIdList.begin(), tmpIdList.end(), idLessThan);
-
-			addItemsRow(tmpIdList, mEditorTree, item);
-
-			mEditorTree->addTopLevelItem(item);
-
-			if (SettingsManager::value(mEditorManager->friendlyName(mDiagram) + group, 0).toBool()) {
-				++expandedCount;
-				mEditorTree->expandItem(item);
-			}
+			groups[group] = mEditorManager->paletteGroupList(mEditor, mDiagram, group);
+			descriptions[group] = mEditorManager->paletteGroupDescription(mEditor, mDiagram, group);
 		}
-		if (expandedCount == 0) {
-			expand(mEditorTree);
-		}
+		mEditorTree->addGroups(groups, descriptions, elements, false, mEditorManager->friendlyName(mDiagram));
 	} else {
 		foreach (Id const &element, elements) {
 			addTopItemType(element, mEditorManager->friendlyName(element)
@@ -99,58 +73,6 @@ void PaletteTreeWidgets::initWidget(PaletteTreeWidget * const tree, QVBoxLayout 
 
 void PaletteTreeWidgets::initUserTree()
 {
-}
-
-void PaletteTreeWidgets::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, QTreeWidgetItem *item)
-{
-	if (mParentPalette->itemsCountInARow() == 1 || !mParentPalette->iconsView()) {
-		foreach (const Id &element, tmpIdList) {
-			addItemType(element, mEditorManager->friendlyName(element)
-					, mEditorManager->description(element)
-					, mEditorManager->icon(element)
-					, mEditorManager->iconSize(element)
-					, editorTree, item);
-		}
-		return;
-	}
-	for (IdList::ConstIterator it = tmpIdList.begin(); it != tmpIdList.end();) {
-		QWidget *field = new QWidget;
-		QHBoxLayout *layout = new QHBoxLayout;
-		int count = mParentPalette->itemsCountInARow();
-		for (; it != tmpIdList.end() && count-- > 0; ++it) {
-			DraggableElement *element = new DraggableElement(
-					*mMainWindow
-					, *it
-					, mEditorManager->friendlyName(*it)
-					, mEditorManager->description(*it)
-					, mEditorManager->icon(*it)
-					, mEditorManager->iconSize(*it)
-					, true
-					, *mEditorManager
-					);
-
-			element->setToolTip(mEditorManager->friendlyName(*it));
-			layout->addWidget(element, count > 0 ? 50 : 0);
-		}
-		field->setLayout(layout);
-		field->setMinimumHeight(80);
-		QTreeWidgetItem *leaf = new QTreeWidgetItem;
-		item->addChild(leaf);
-		editorTree->setItemWidget(leaf, 0, field);
-	}
-}
-
-void PaletteTreeWidgets::addItemType(const Id &id, QString const &name, QString const &description
-		, const QIcon &icon, QSize const &preferredSize, QTreeWidget *tree, QTreeWidgetItem *parent)
-{
-	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(*mMainWindow, id, name
-			, description, icon, preferredSize
-			, mParentPalette->iconsView(), *mEditorManager
-			);
-
-	parent->addChild(leaf);
-	tree->setItemWidget(leaf, 0, element);
 }
 
 void PaletteTreeWidgets::addTopItemType(Id const &id, QString const &name
@@ -214,52 +136,14 @@ int PaletteTreeWidgets::maxItemsCountInARow() const
 
 void PaletteTreeWidgets::expand()
 {
-	expand(mEditorTree);
-	expand(mUserTree);
-}
-
-void PaletteTreeWidgets::expand(QTreeWidget const *tree)
-{
-	for (int i = 0; i < tree->topLevelItemCount(); i++) {
-		if (tree->topLevelItem(i)) {
-			expandChildren(tree->topLevelItem(i));
-		}
-	}
-}
-
-void PaletteTreeWidgets::expandChildren(QTreeWidgetItem *item)
-{
-	for (int i = 0; i < item->childCount(); i++) {
-		if (item->child(i)) {
-			expandChildren(item->child(i));
-		}
-	}
-	item->treeWidget()->expandItem(item);
+	mEditorTree->expand();
+	mEditorTree->expand();
 }
 
 void PaletteTreeWidgets::collapse()
 {
-	collapse(mEditorTree);
-	collapse(mUserTree);
-}
-
-void PaletteTreeWidgets::collapse(QTreeWidget const *tree)
-{
-	for (int i = 0; i < tree->topLevelItemCount(); i++) {
-		if (tree->topLevelItem(i)) {
-			collapseChildren(tree->topLevelItem(i));
-		}
-	}
-}
-
-void PaletteTreeWidgets::collapseChildren(QTreeWidgetItem *item)
-{
-	for (int i = 0; i < item->childCount(); i++) {
-		if (item->child(i)) {
-			collapseChildren(item->child(i));
-		}
-	}
-	item->treeWidget()->collapseItem(item);
+	mEditorTree->collapse();
+	mUserTree->collapse();
 }
 
 void PaletteTreeWidgets::saveConfiguration(QString const &title) const
@@ -276,9 +160,4 @@ void PaletteTreeWidgets::saveConfiguration(PaletteTreeWidget const *tree, QStrin
 			SettingsManager::setValue(title, topItem->isExpanded());
 		}
 	}
-}
-
-bool PaletteTreeWidgets::idLessThan(Id const &s1, Id const &s2)
-{
-	return mEditorManager->friendlyName(s1).toLower() < mEditorManager->friendlyName(s2).toLower();
 }
