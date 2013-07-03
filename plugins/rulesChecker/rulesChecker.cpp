@@ -58,7 +58,11 @@ void RulesChecker::researchDiagram()
 	IdList startingElements = findStartingElements(metamodels);
 
 	while (startingElements.size()) {
-		if (!makeDetour(startingElements.first()))
+		Id const currentHead = startingElements.first();
+		if (mGRepoApi->incomingLinks(currentHead).size())
+			postError(LinkToStartNode, currentHead);
+
+		if (!makeDetour(currentHead))
 			postError(NoEndNode, startingElements.first());
 		startingElements.removeFirst();
 	}
@@ -99,6 +103,10 @@ void RulesChecker::postError(RulesChecker::ErrorsType const error, Id badNode)
 {
 	QString errorMsg("");
 	switch (error) {
+	case LinkToStartNode: {
+		errorMsg = "There are links to start node";
+		break;
+	}
 	case NoStartNode: {
 		errorMsg = "There is no start-node in path";
 		break;

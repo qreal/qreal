@@ -20,6 +20,7 @@ public:
 	// std destructor ok
 private:
 	 enum ErrorsType {
+		 LinkToStartNode,
 		 NoStartNode,
 		 NoEndNode,
 		 IncorrectLink
