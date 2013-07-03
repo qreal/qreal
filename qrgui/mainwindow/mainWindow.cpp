@@ -74,7 +74,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
-		, mRecentProjectsLimit(5)
+		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(*this, *mProjectManager))
@@ -86,7 +86,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	setWindowTitle("QReal");
 	initSettingsManager();
 	registerMetaTypes();
-
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setVisible(false);
 	splashScreen.setProgress(5);
