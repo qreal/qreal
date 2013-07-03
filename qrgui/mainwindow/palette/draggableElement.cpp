@@ -37,7 +37,7 @@ DraggableElement::DraggableElement(
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 4, 0, 4);
 
-	const int size = iconsOnly ? 50 : 30;
+	int const size = iconsOnly ? 50 : 30;
 	mLabel = new QLabel(this);
 	mLabel->setPixmap(mIcon.pixmap(size - 2, size - 2));
 	layout->addWidget(mLabel);
