@@ -14,6 +14,7 @@ RulesChecker::RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 
 bool RulesChecker::makeDetour(Id const currentNode)
 {
+	bool hasFoundFinalNode = false;
 	if (!metamodels.removeOne(currentNode))
 		return false; // cannot go from final-node out
 
@@ -29,12 +30,14 @@ bool RulesChecker::makeDetour(Id const currentNode)
 	IdList frontNodes = mGRepoApi->outgoingLinks(currentNode);
 	if (!frontNodes.size()) {
 		if (currentNode.element() != QString("EndEvent"))
+		{
 			postError(NoEndNode, currentNode);
+			hasFoundFinalNode = true;
+		}
 		else
 			return true;
 	}
 
-	bool hasFoundFinalNode= false;
 	foreach (Id key, frontNodes) {
 		if (makeDetour(key))
 			hasFoundFinalNode = true;
@@ -72,7 +75,6 @@ void RulesChecker::check()
 	mWindowInterface->dehighlight();
 	mWindowInterface->errorReporter()->clear();
 	metamodels = mGRepoApi->graphicalElements();
-	//metamodels = mGRepoApi->children(mWindowInterface->activeDiagram());
 
 	researchDiagram();
 
