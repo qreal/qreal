@@ -502,7 +502,7 @@ void MainWindow::setReference(QStringList const &data, QPersistentModelIndex con
 {
 	removeOldBackReference(index, role);
 	setData(data.join(','), index, role);
-	foreach (QString target, data) {
+	foreach (QString const &target, data) {
 		if (!target.isEmpty()) {
 			setBackReference(index, target);
 		}
@@ -1699,7 +1699,7 @@ void MainWindow::removeOldBackReference(QPersistentModelIndex const &index, int 
 {
 	QStringList data = index.data(role).toString().split(',', QString::SkipEmptyParts);
 
-	foreach (QString reference, data) {
+	foreach (QString const &reference, data) {
 		Id id = Id::loadFromString(reference);
 		Id indexId = mModels->logicalModelAssistApi().idByIndex(index);
 		mModels->logicalRepoApi().removeBackReference(id, indexId);

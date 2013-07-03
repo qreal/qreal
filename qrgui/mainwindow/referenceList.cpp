@@ -74,7 +74,7 @@ void ReferenceList::valueChanged()
 	emit referenceSet(newValue, mIndex, mRole);
 }
 
-QStringList ReferenceList::getNewValue()
+QStringList ReferenceList::getNewValue() const
 {
 	QStringList newValue;
 	foreach(QListWidgetItem *item, mUi->listWidget->selectedItems()) {

@@ -228,7 +228,7 @@ void LogicalModelAssistApi::removeReferencesFrom(Id const &id)
 
 	foreach (QString const &property, referenceProperties) {
 		QStringList propertyValue = mLogicalModel.api().property(id, property).toString().split(',', QString::SkipEmptyParts);
-		foreach (QString value, propertyValue) {
+		foreach (QString const &value, propertyValue) {
 			Id idValue = Id::loadFromString(value);
 			mLogicalModel.api().removeBackReference(idValue, id);
 		}
