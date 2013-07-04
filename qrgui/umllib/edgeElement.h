@@ -179,7 +179,6 @@ private:
 	void setBezierPoints();
 	QPainterPath bezierCurve() const;
 
-
 	QList<PossibleEdge> possibleEdges;
 
 	bool mIsDissectable;

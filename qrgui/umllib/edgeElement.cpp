@@ -396,7 +396,6 @@ QRectF EdgeElement::getPortRect(QPointF const &point)
 	return QRectF(point - QPointF(kvadratik - 5, kvadratik - 5), QSizeF(kvadratik, kvadratik));
 }
 
-
 int EdgeElement::getPoint(const QPointF &location)
 {
 	for (int i = 0; i < mLine.size(); ++i)
