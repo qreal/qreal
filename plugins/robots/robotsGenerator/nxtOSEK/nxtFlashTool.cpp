@@ -1,6 +1,7 @@
 #include "nxtFlashTool.h"
 
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDir>
 
 using namespace qReal;
 using namespace robots::generator;
@@ -11,6 +12,7 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 {
 	QProcessEnvironment environment(QProcessEnvironment::systemEnvironment());
 	environment.insert("QREALDIR", qApp->applicationDirPath());
+	environment.insert("QREALDIRPOSIX", qApp->applicationDirPath().remove(1,1).prepend("/cygdrive/"));
 	environment.insert("DISPLAY", ":0.0");
 	mFlashProcess.setProcessEnvironment(environment);
 	mUploadProcess.setProcessEnvironment(environment);
@@ -76,9 +78,11 @@ void NxtFlashTool::readNxtFlashData()
 void NxtFlashTool::uploadProgram()
 {
 #ifdef Q_OS_WIN
-	mUploadProcess.setEnvironment(QProcess::systemEnvironment());
 	mUploadProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
-	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
+	//mUploadProcess.setStandardOutputFile("uploadstd.txt");
+	//mUploadProcess.setStandardErrorFile("uploaderr.txt");
+	//must be changed (!)
+	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat example0 E:/QRealRobots/codeeditor/qreal/bin/nxt-tools/example0");
 #else
 	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif
@@ -89,6 +93,7 @@ void NxtFlashTool::uploadProgram()
 void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
 	Q_UNUSED(exitStatus)
+
 	if (exitCode == 127) { // most likely wineconsole didn't start and generate files needed to proceed compilation
 		mErrorReporter->addError(tr("Uploading failed. Make sure that X-server allows root to run GUI applications"));
 	} else if (exitCode == 139) {

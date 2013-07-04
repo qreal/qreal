@@ -159,6 +159,7 @@ signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
 	void rootDiagramChanged();
+	void changedSNameAndSDir(QFileInfo const &dir);
 
 public slots:
 	void deleteFromScene();
@@ -363,6 +364,7 @@ private:
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;
+	SystemEvents *mSystemEvents;
 
 	QVector<bool> mSaveListChecked;
 

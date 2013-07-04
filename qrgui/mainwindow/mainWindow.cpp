@@ -55,6 +55,9 @@
 
 #include "hotKeyManager/hotKeyManager.h"
 
+#include "../../../../qrutils/outFile.h"
+#include "../toolPluginInterface/systemEvents.h"
+
 using namespace qReal;
 using namespace qReal::commands;
 
@@ -69,6 +72,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mListenerManager(NULL)
 		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(NULL)
+		, mSystemEvents(new SystemEvents())
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(NULL)
 		, mIsFullscreen(false)
@@ -135,7 +139,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		showMaximized();
 	}
 	splashScreen.close();
-
 	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
@@ -279,10 +282,7 @@ EditorManagerInterface& MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	QList<ToolPluginInterface *> toolPlugins = mToolManager.getPlugins();
-	foreach (ToolPluginInterface *toolPlugin, toolPlugins) {
-		toolPlugin->closeNeededWidget();
-	}
+	mSystemEvents->emitCloseMainWindow();
 
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
@@ -1790,7 +1790,8 @@ void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMen
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
-			, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer));
+										 , mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
+										 , *mSystemEvents));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
@@ -2093,15 +2094,11 @@ bool MainWindow::saveGeneratedCode()
 		if (fileinfo.fileName() != "") {
 			mUi->tabs->setTabText(mUi->tabs->currentIndex(), fileinfo.fileName());
 
-			QFile cfile(fileinfo.absoluteFilePath());
+			utils::OutFile out(fileinfo.absoluteFilePath());
 
-			cfile.open(QIODevice::WriteOnly);
+			out() << area->toPlainText();
 
-			QTextStream out(&cfile);
-
-			out << area->toPlainText();
-
-			cfile.close();
+			emit changedSNameAndSDir(fileinfo);
 		}
 
 		return true;

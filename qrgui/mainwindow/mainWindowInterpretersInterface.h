@@ -79,6 +79,7 @@ public:
 	/// Shows progress bar on operation start
 	/// @param operation Operation that going to be invoced
 	virtual void reportOperation(invocation::LongOperation *operation) = 0;
+
 };
 
 }

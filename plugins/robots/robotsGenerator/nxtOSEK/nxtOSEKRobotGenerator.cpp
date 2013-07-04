@@ -84,6 +84,7 @@ void NxtOSEKRobotGenerator::generateMakeFile(
 	}
 
 	QTextStream outMake(&resultMakeFile);
+
 	if (mBalancerIsActivated) {
 		outMake << templateMakeFile.readAll().replace("@@PROJECT_NAME@@", projectName.toUtf8()).replace("@@BALANCER@@"
 		, "balancer_param.c \\").replace("@@BALANCER_LIB@@", "USER_LIB = nxtway_gs_balancer").replace("@@BMPFILES@@"

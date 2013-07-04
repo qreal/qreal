@@ -2,6 +2,7 @@
 #include "robotsPlugin.h"
 #include "details/tracer.h"
 #include "details/nxtDisplay.h"
+#include "../../../qrgui/toolPluginInterface/systemEvents.h"
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -114,6 +115,13 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
+
+	SystemEvents const *systemEvents = &configurator.systemEvents();
+
+	connect(systemEvents, SIGNAL(settingsUpdated()), this, SLOT(updateSettings()));
+	connect(systemEvents, SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(Id)));
+	connect(systemEvents, SIGNAL(closedMainWindow()), this, SLOT(closeNeededWidget()));
+
 	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
 }
 

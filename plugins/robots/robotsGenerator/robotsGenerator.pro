@@ -14,8 +14,10 @@ RESOURCES = robotsGenerator.qrc
 
 HEADERS += \
 	robotsGeneratorPlugin.h \
+        codeManager.h
 
 SOURCES += \
 	robotsGeneratorPlugin.cpp \
+        codeManager.cpp
 
 include(nxtOSEK/nxtOsek.pri)

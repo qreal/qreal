@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QFileInfo>
+
 #include "projectManagementInterface.h"
 
 namespace qReal {
@@ -46,6 +48,8 @@ public:
 	/// Prompts user to restore last session if it was incorrectly terminated
 	/// and returns yes if he agrees. Otherwise returns false
 	bool restoreIncorrectlyTerminated();
+
+	MainWindow *mainWindow() const;
 
 private:
 	bool import(QString const &fileName);

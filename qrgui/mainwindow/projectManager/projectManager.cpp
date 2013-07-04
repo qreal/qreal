@@ -289,6 +289,11 @@ bool ProjectManager::restoreIncorrectlyTerminated()
 	return mAutosaver->checkTempFile();
 }
 
+MainWindow *ProjectManager::mainWindow() const
+{
+	return mMainWindow;
+}
+
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
 	if (mMainWindow->saveGeneratedCode()) {

@@ -31,18 +31,17 @@ public:
 	virtual QList<HotKeyActionInfo> hotKeyActions();
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual qReal::Customizer* customizationInterface();
-	virtual void updateSettings();
-	virtual void closeNeededWidget();
-
-	/// Overriden to enable/disable related actions. For example, we can't run
-	/// a diagram which is not related to a plugin.
-	virtual void activeTabChanged(Id const &rootElementId);
 
 private slots:
 	void showRobotSettings();
 	void show2dModel();
 	void rereadSettings();
 	void titlesVisibilityChecked(bool checked);
+	void updateSettings();
+	void closeNeededWidget();
+	/// Overriden to enable/disable related actions. For example, we can't run
+	/// a diagram which is not related to a plugin.
+	void activeTabChanged(Id const &rootElementId);
 
 private:
 	/// Initializes and connects actions, fills action info list
