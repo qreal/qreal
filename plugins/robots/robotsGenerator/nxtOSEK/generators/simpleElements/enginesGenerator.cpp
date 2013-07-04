@@ -9,7 +9,7 @@ EnginesGenerator::EnginesGenerator(QString const &engineType): mEngineType(engin
 }
 
 void EnginesGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen  // duplicated code - not true
-		, qReal::Id const elementId, QString const &enginePort)
+		, qReal::Id const &elementId, QString const &enginePort)
 {
 	QString const initTerminateVelocity = "0";
 	QString const initTerminateBrakeMode = "1";
@@ -28,7 +28,7 @@ void EnginesGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen  //
 }
 
 QList<SmartLine> EnginesGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		 , qReal::Id const elementId, qReal::Id const logicElementId)
+		 , qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	QList<SmartLine> result;
 

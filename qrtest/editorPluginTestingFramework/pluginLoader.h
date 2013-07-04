@@ -8,7 +8,12 @@ namespace editorPluginTestingFramework {
 class PluginLoader
 {
 public:
-	static qReal::EditorInterface* loadedPlugin(QString const &fileName, QString const &pathToFile);
+	qReal::EditorInterface* loadedPlugin(QString const &fileName, QString const &pathToFile);
+
+	QStringList pluginNames();
+
+private:
+	QStringList mPluginNames;
 };
 
 }

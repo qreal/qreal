@@ -8,6 +8,7 @@
 using namespace qReal;
 using namespace editorPluginTestingFramework;
 using namespace utils;
+using namespace qrRepo;
 
 EditorInterface* PluginLoader::loadedPlugin(QString const &fileName, QString const &pathToFile)
 {
@@ -18,7 +19,7 @@ EditorInterface* PluginLoader::loadedPlugin(QString const &fileName, QString con
 		normalizedFileName += ".qrs";
 	}
 
-	qrRepo::RepoApi *const mRepoApi = new qrRepo::RepoApi(normalizedFileName);
+	RepoApi *const mRepoApi = new RepoApi(normalizedFileName);
 
 	IdList const metamodels = mRepoApi->children(Id::rootId());
 
@@ -26,6 +27,7 @@ EditorInterface* PluginLoader::loadedPlugin(QString const &fileName, QString con
 		if (mRepoApi->isLogicalElement(key)) {
 			QString const &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
 			QString const &pluginName = normalizedMetamodelName + ".dll";
+			mPluginNames.append(pluginName);
 
 			QPluginLoader * const loader = new QPluginLoader(mPluginDir.absoluteFilePath(pluginName));
 			qDebug() << mPluginDir.absoluteFilePath(pluginName);
@@ -41,4 +43,9 @@ EditorInterface* PluginLoader::loadedPlugin(QString const &fileName, QString con
 		}
 	}
 	return NULL;
+}
+
+QStringList PluginLoader::pluginNames()
+{
+	return mPluginNames;
 }

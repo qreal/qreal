@@ -29,8 +29,18 @@ HEADERS += \
 	../../qrgui/mainwindow/errorReporter.h \
 	../../qrgui/mainwindow/error.h \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.h \
+	../../qrgui/pluginManager/interpreterEditorManager.h \
+	../../qrgui/umllib/sdfRenderer.h \
+	../../qrgui/pluginManager/interpreterElementImpl.h \
+	../../qrgui/pluginManager/pattern.h \
+	../../qrgui/pluginManager/editorManager.h \
+	../../qrgui/pluginManager/patternParser.h \
+#	../../qrgui/umllib/element.h \
+#	../../qrgui/pluginManager/pattern.h \
+#	../../qrgui/mainwindow/mainWindow.h \
 	defs.h \
-	htmlMaker.h
+	htmlMaker.h \
+    editorManagerMethodsTester.h
 
 SOURCES += \
 	mainClass.cpp \
@@ -43,7 +53,17 @@ SOURCES += \
 	../../qrgui/mainwindow/errorReporter.cpp \
 	../../qrgui/mainwindow/error.cpp \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp \
-	htmlMaker.cpp
+	../../qrgui/pluginManager/interpreterEditorManager.cpp \
+	../../qrgui/umllib/sdfRenderer.cpp \
+	../../qrgui/pluginManager/interpreterElementImpl.cpp \
+	../../qrgui/pluginManager/pattern.cpp \
+	../../qrgui/pluginManager/editorManager.cpp \
+	../../qrgui/pluginManager/patternParser.cpp \
+#	../../qrgui/umllib/element.cpp \
+#	../../qrgui/pluginManager/pattern.cpp \
+#	../../qrgui/mainwindow/mainWindow.cpp \
+	htmlMaker.cpp \
+    editorManagerMethodsTester.cpp
 
 
 

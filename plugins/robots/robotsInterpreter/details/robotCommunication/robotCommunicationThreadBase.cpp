@@ -13,7 +13,7 @@ RobotCommunicationThreadBase::RobotCommunicationThreadBase()
 
 void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize
-		, inputPort::InputPortEnum const &port)
+		, inputPort::InputPortEnum const port)
 {
 	Tracer::debug(tracer::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
 

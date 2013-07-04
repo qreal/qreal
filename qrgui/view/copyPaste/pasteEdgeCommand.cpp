@@ -49,11 +49,14 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 		addPreAction(mCreateCommand);
 	}
 
-	EdgeElement * const newEdge = dynamic_cast<EdgeElement *>(
-			mScene->mainWindow()->manager()->graphicalObject(resultId));
-	newEdge->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
-	newEdge->setController(mScene->mainWindow()->controller());
-	newEdge->setId(resultId);
+	ElementImpl *impl = mScene->mainWindow()->editorManager().graphicalObject(resultId);
+
+	if (!impl->isNode()) {
+		EdgeElement * const newEdge = new EdgeElement(impl);
+		newEdge->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
+		newEdge->setController(mScene->mainWindow()->controller());
+		newEdge->setId(resultId);
+	}
 
 	return resultId;
 }

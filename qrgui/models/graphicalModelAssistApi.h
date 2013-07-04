@@ -9,7 +9,7 @@
 
 namespace qReal {
 
-class EditorManager;
+class EditorManagerInterface;
 
 namespace models {
 
@@ -22,8 +22,11 @@ class GraphicalModelAssistApi : public QObject, public GraphicalModelAssistInter
 	Q_OBJECT
 
 public:
-	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManager const &editorManager);
-	EditorManager const &editorManager() const;
+	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManagerInterface const &editorManagerInterface);
+
+	/// Interface for accessing metamodel information.
+	EditorManagerInterface const &editorManagerInterface() const;
+
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
 	Id createElement(Id const &parent, Id const &type);

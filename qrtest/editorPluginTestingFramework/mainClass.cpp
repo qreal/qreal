@@ -1,11 +1,17 @@
 #include "mainClass.h"
 #include "methodsTester.h"
 #include "defs.h"
+#include "editorManagerMethodsTester.h"
+
+#include "../../qrgui/pluginManager/interpreterEditorManager.h"
+#include "../../qrgui/pluginManager/editorManagerInterface.h"
+#include "../../qrgui/pluginManager/editorManager.h"
 
 #include <QtCore/QDir>
 
 using namespace qReal;
 using namespace editorPluginTestingFramework;
+using namespace qrRepo;
 
 MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 {
@@ -16,22 +22,32 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 	launchQrxc(normalizedFileName);
 	compilePlugin(pathToQrxcGeneratedCode);
 	EditorInterface* const qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrxcGeneratedPlugin);
+	appendPluginNames();
 
 	launchQrmc(fileName, pathToQrmc);
 	compilePlugin(pathToQrmcGeneratedCode);
 	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, pathToQrmcGeneratedPlugin);
+
+	InterpreterEditorManager interpreterEditorManager(fileName);
+	EditorManager qrxcEditorManager(destDirForQrxc, mQrxcGeneratedPluginsList);
+	// we cast qrxc plugin to Editor Manager
+
+	EditorManagerMethodsTester* const interpreterMethodsTester = new EditorManagerMethodsTester(
+			&qrxcEditorManager, &interpreterEditorManager);
+	interpreterMethodsTester->testMethods();
+
+	QList<QPair<QString, QPair<QString, QString> > > interpreterMethodsTesterOutput = interpreterMethodsTester->generatedResult();
 
 	if ((qrxcGeneratedPlugin != NULL) && (qrmcGeneratedPlugin != NULL)) {
 		MethodsTester* const methodsTester = new MethodsTester(qrmcGeneratedPlugin, qrxcGeneratedPlugin);
 
 		methodsTester->testMethods();
 
-		QList<QPair<QString, QString> > methodsTesterOutput = methodsTester->generateOutputList();
-		createHtml(methodsTesterOutput);
+		QList<QPair<QString, QPair<QString, QString> > > methodsTesterOutput = methodsTester->generateOutputList();
+		createHtml(methodsTesterOutput, interpreterMethodsTesterOutput);
 	} else {
 		qDebug() << "Generation of plugins failed";
 	}
-
 }
 
 void MainClass::createFolder(QString const &path)
@@ -102,8 +118,14 @@ EditorInterface* MainClass::loadedPlugin(QString const &fileName, QString const 
 	return mPluginLoader.loadedPlugin(fileName, pathToFile);
 }
 
-void MainClass::createHtml(QList<QPair<QString, QString> > outputList)
+void MainClass::createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
+		, QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult)
 {
-	mHtmlMaker.makeHtml(outputList);
+	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult);
+}
+
+void MainClass::appendPluginNames()
+{
+	mQrxcGeneratedPluginsList.append(mPluginLoader.pluginNames());
 }
 

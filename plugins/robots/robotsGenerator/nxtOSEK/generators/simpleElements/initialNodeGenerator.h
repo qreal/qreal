@@ -12,7 +12,7 @@ public:
 
 protected:
 	virtual QList<SmartLine> convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-			, qReal::Id const elementId, qReal::Id const logicElementId);
+			, qReal::Id const &elementId, qReal::Id const &logicElementId);
 
 private:
 	void appendColorCode(QList<SmartLine> &initCode, QList<SmartLine> &terminateCode

@@ -1,7 +1,8 @@
 #include "abstractElementGenerator.h"
 
-#include "../nxtOSEKRobotGenerator.h"
+#include <QtCore/QRegExp>
 
+#include "../nxtOSEKRobotGenerator.h"
 #include "../elementGeneratorFactory.h"
 
 using namespace robots::generator;
@@ -37,6 +38,22 @@ QString AbstractElementGenerator::replaceSensorAndEncoderVariables(QString const
 	return result;
 }
 
+QString AbstractElementGenerator::replaceFunctionInvocations(QString const &expression) const
+{
+	QString result = expression;
+
+	QRegExp randomFunctionInvocationRegEx("random\\((.*)\\)");
+	int pos = randomFunctionInvocationRegEx.indexIn(result, 0);
+	while (pos != -1) {
+		QString const param = randomFunctionInvocationRegEx.cap(1);
+		result.replace(randomFunctionInvocationRegEx, "rand() % " + param);
+		pos += randomFunctionInvocationRegEx.matchedLength();
+		pos = randomFunctionInvocationRegEx.indexIn(result, pos);
+	}
+
+	return result;
+}
+
 QString AbstractElementGenerator::sensorExpression(int port) const
 {
 	QString const portString = QString::number(port);
@@ -53,6 +70,10 @@ QString AbstractElementGenerator::sensorExpression(int port) const
 		return "ecrobot_get_sonar_sensor(NXT_PORT_S" + portString + ")";
 	case qReal::interpreters::robots::sensorType::light:
 		return "ecrobot_get_light_sensor(NXT_PORT_S" + portString + ") * 100 / 1023";
+	case qReal::interpreters::robots::sensorType::sound:
+		return "ecrobot_get_sound_sensor(NXT_PORT_S" + portString + ") * 100 / 1023";
+	case qReal::interpreters::robots::sensorType::gyroscope:
+		return "ecrobot_get_gyro_sensor(NXT_PORT_S" + portString + ")";
 	default:
 		return "ecrobot_get_touch_sensor(NXT_PORT_S" + portString + ")";
 	}

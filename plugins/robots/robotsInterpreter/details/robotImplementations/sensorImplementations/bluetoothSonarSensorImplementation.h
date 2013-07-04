@@ -14,7 +14,7 @@ class BluetoothSonarSensorImplementation : public BluetoothSensorImplementation
 	Q_OBJECT
 public:
 	BluetoothSonarSensorImplementation(RobotCommunicator *robotCommunicationInterface
-			, inputPort::InputPortEnum const &port);
+			, inputPort::InputPortEnum const port);
 	virtual void read();
 
 protected:

@@ -28,7 +28,7 @@ public:
 
 protected:
 	void changeEvent(QEvent *e);
-	void closeEvent(QCloseEvent *e);
+	void showEvent(QShowEvent *e);
 
 signals:
 	void gridChanged();
@@ -39,6 +39,7 @@ signals:
 
 public slots:
 	void changePaletteParameters();
+
 private slots:
 	void cancel();
 	void applyChanges();

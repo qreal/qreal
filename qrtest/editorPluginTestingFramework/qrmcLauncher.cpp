@@ -14,7 +14,7 @@ void QrmcLauncher::launchQrmc(QString const &fileName, QString const &pathToQrmc
 		normalizedFileName += ".qrs";
 	}
 
-	qrRepo::RepoApi *const mRepoApi = new qrRepo::RepoApi(normalizedFileName);
+	RepoApi *const mRepoApi = new RepoApi(normalizedFileName);
 	MetaCompiler metaCompiler(pathToQrmc, mRepoApi);
 	IdList const metamodels = mRepoApi->children(Id::rootId());
 

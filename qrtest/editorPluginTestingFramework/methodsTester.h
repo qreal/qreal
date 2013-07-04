@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 
 #include "../../qrgui/editorPluginInterface/editorInterface.h"
+#include "../../qrgui/pluginManager/interpreterEditorManager.h"
 
 namespace editorPluginTestingFramework {
 
@@ -10,11 +11,12 @@ class MethodsTester
 {
 
 public:
+
 	MethodsTester(qReal::EditorInterface * const qrmcGeneratedPlugin, qReal::EditorInterface * const qrxcGeneratedPlugin);
 
 	void testMethods();
 
-	QList<QPair<QString, QString> > generateOutputList();
+	QList<QPair<QString, QPair<QString, QString> > > generateOutputList();
 
 private:
 	class StringGenerator;
@@ -62,7 +64,9 @@ private:
 	qReal::EditorInterface* mQrmcGeneratedPlugin;
 	qReal::EditorInterface* mQrxcGeneratedPlugin;
 
-	QList<QPair<QString, QString> > mGeneratedOutputList;
+	qReal::InterpreterEditorManager* mInterpreterGeneratedPlugin;
+
+	QList<QPair<QString, QPair<QString, QString> > > mGeneratedList;
 };
 
 }

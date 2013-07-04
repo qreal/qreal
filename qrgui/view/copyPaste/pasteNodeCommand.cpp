@@ -48,11 +48,14 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 		addPreAction(mCreateCommand);
 	}
 
-	NodeElement * const newNode = dynamic_cast<NodeElement *>(
-			mScene->mainWindow()->manager()->graphicalObject(resultId));
-	newNode->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
-	newNode->setController(mScene->mainWindow()->controller());
-	newNode->setId(resultId);
+	ElementImpl *impl = mScene->mainWindow()->editorManager().graphicalObject(resultId);
+
+	if (impl->isNode()) {
+		NodeElement * const newNode = new NodeElement(impl);
+		newNode->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
+		newNode->setController(mScene->mainWindow()->controller());
+		newNode->setId(resultId);
+	}
 
 	return resultId;
 }

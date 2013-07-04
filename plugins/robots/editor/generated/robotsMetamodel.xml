@@ -34,20 +34,15 @@
 				<value>не меньше</value>
 				<value>не больше</value>
 			</enum>
+			<enum name="Accelerations">
+				<value>ось x</value>
+				<value>ось y</value>
+				<value>ось z</value>
+				<value>норма</value>
+			</enum>
 			<enum name="BreakEngineMode">
 				<value>тормозить</value>
 				<value>скользить</value>
-			</enum>
-			<enum name="Sensors">
-				<value>Не используется</value>
-				<value>Ультразвуковой сенсор</value>
-				<value>Сенсор касания (булево значение)</value>
-				<value>Сенсор касания (сырое значение)</value>
-				<value>Сенсор цвета (все цвета)</value>
-				<value>Сенсор цвета (красный)</value>
-				<value>Сенсор цвета (зеленый)</value>
-				<value>Сенсор цвета (синий)</value>
-				<value>Сенсор цвета (пассивный)</value>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
@@ -361,7 +356,7 @@
 				<graphics>
 					<lineType type="solidLine"/>
 					<labels>
-						<label textBinded="Guard"/>
+						<label textBinded="Guard" hard="true"/>
 					</labels>
 				</graphics>
 				<logic>
@@ -559,6 +554,155 @@
 				</graphics>
 				<logic>
 					<container/>
+					<generalizations>
+						<parent parentName="SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать сенсор звука" name="WaitForSound">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="33" y="60" textBinded="Volume"/>
+						<label x="-26" y="60" text="Громкость:"/>
+						<label x="33" y="80" textBinded="Sign"/>
+						<label x="-80" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Громкость" type="string" name="Volume">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>равно</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать гироскоп" name="WaitForGyroscope">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="33" y="60" textBinded="Degrees"/>
+						<label x="-26" y="60" text="Градусы:"/>
+						<label x="33" y="80" textBinded="Sign"/>
+						<label x="-80" y="80" text="Считанное значение:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Градусы/сек" type="string" name="Degrees">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>равно</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Ждать акселерометр" name="WaitForAccelerometer">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForAccelerometerBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="0" y="-25" text="Порт:" hard="true"/>
+						<label x="33" y="60" textBinded="Acceleration"/>
+						<label x="-26" y="60" text="Ускорение:"/>
+						<label x="33" y="80" textBinded="Sign"/>
+						<label x="-80" y="80" text="Считанное значение:"/>
+						<label x="33" y="100" textBinded="AccelerationAxis"/>
+						<label x="-80" y="100" text="Ускорение по оси:"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ускорение" type="string" name="Acceleration">
+							<default>0</default>
+						</property>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>равно</default>
+						</property>
+						<property displayedName="Ускорение по оси" type="Accelerations" name="AccelerationAxe">
+							<default>X</default>
+						</property>
+					</properties>
 					<generalizations>
 						<parent parentName="SensorBlock"/>
 					</generalizations>
@@ -1109,7 +1253,354 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Коментарий" name="CommentBlock" description="Блок с текстовыми заметками, которые игнорируются при генерации и интерпретации. Используйте его для повышения наглядности диаграммы.">
+			<node displayedName="Ждать нажатия кнопок" name="WaitForButtons">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="60" y="60" textBinded="RightButtonClicks"/>
+						<label x="0" y="60" text="Правая: "/>
+						<label x="60" y="80" textBinded="LeftButtonClicks"/>
+						<label x="0" y="80" text="Левая: "/>
+						<label x="60" y="100" textBinded="CentralButtonClicks"/>
+						<label x="0" y="100" text="Центральная: "/>
+						<label x="60" y="120" textBinded="BottomButtonClicks"/>
+						<label x="0" y="120" text="Нижняя: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Количество нажатий правой кнопки" type="string" name="RightButtonClicks">
+							<default>0</default>
+						</property>
+						<property displayedName="Количество нажатий левой кнопки" type="string" name="LeftButtonClicks">
+							<default>0</default>
+						</property>
+						<property displayedName="Количество нажатий центральной кнопки" type="string" name="CentralButtonClicks">
+							<default>1</default>
+						</property>
+						<property displayedName="Количество нажатий нижней кнопки" type="string" name="BottomButtonClicks">
+							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Очистить экран" name="ClearScreen">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/clearScreenBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels/>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Нарисовать точку" name="DrawPixel">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="36" y="60" textBinded="XCoordinatePix"/>
+						<label x="0" y="60" text="X: "/>
+						<label x="36" y="80" textBinded="YCoordinatePix"/>
+						<label x="0" y="80" text="Y: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X координата" type="int" name="XCoordinatePix">
+							<default>0</default>
+						</property>
+						<property displayedName="Y координата" type="int" name="YCoordinatePix">
+							<default>0</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Нарисовать линию" name="DrawLine">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="36" y="60" textBinded="X1CoordinateLine"/>
+						<label x="0" y="60" text="X1: "/>
+						<label x="36" y="80" textBinded="Y1CoordinateLine"/>
+						<label x="0" y="80" text="Y1: "/>
+						<label x="36" y="100" textBinded="X2CoordinateLine"/>
+						<label x="0" y="100" text="X2: "/>
+						<label x="36" y="120" textBinded="Y2CoordinateLine"/>
+						<label x="0" y="120" text="Y2: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X1 координата" type="int" name="X1CoordinateLine">
+							<default>0</default>
+						</property>
+						<property displayedName="Y1 координата" type="int" name="Y1CoordinateLine">
+							<default>0</default>
+						</property>
+						<property displayedName="X2 координата" type="int" name="X2CoordinateLine">
+							<default>10</default>
+						</property>
+						<property displayedName="Y2 координата" type="int" name="Y2CoordinateLine">
+							<default>10</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Нарисовать прямоугольник" name="DrawRect">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="60" textBinded="XCoordinateRect"/>
+						<label x="0" y="60" text="X: "/>
+						<label x="40" y="80" textBinded="YCoordinateRect"/>
+						<label x="0" y="80" text="Y: "/>
+						<label x="40" y="100" textBinded="WidthRect"/>
+						<label x="0" y="100" text="Ширина: "/>
+						<label x="40" y="120" textBinded="HeightRect"/>
+						<label x="0" y="120" text="Высота: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X координата" type="int" name="XCoordinateRect">
+							<default>0</default>
+						</property>
+						<property displayedName="Y координата" type="int" name="YCoordinateRect">
+							<default>0</default>
+						</property>
+						<property displayedName="Ширина" type="int" name="WidthRect">
+							<default>5</default>
+						</property>
+						<property displayedName="Высота" type="int" name="HeightRect">
+							<default>5</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Нарисовать круг" name="DrawCircle">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="36" y="60" textBinded="XCoordinateCircle"/>
+						<label x="0" y="60" text="X: "/>
+						<label x="36" y="80" textBinded="YCoordinateCircle"/>
+						<label x="0" y="80" text="Y: "/>
+						<label x="36" y="100" textBinded="CircleRadius"/>
+						<label x="0" y="100" text="Радиус: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X координата" type="int" name="XCoordinateCircle">
+							<default>0</default>
+						</property>
+						<property displayedName="Y координата" type="int" name="YCoordinateCircle">
+							<default>0</default>
+						</property>
+						<property displayedName="Радиус" type="int" name="CircleRadius">
+							<default>5</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Напечатать текст" name="PrintText">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="36" y="60" textBinded="XCoordinateText"/>
+						<label x="0" y="60" text="X: "/>
+						<label x="36" y="80" textBinded="YCoordinateText"/>
+						<label x="0" y="80" text="Y: "/>
+						<label x="36" y="100" textBinded="PrintText"/>
+						<label x="0" y="100" text="Текст: "/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							<end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X координата" type="string" name="XCoordinateText">
+							<default>0</default>
+						</property>
+						<property displayedName="Y координата" type="string" name="YCoordinateText">
+							<default>0</default>
+						</property>
+						<property displayedName="Текст" type="string" name="PrintText"/>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Комментарий" name="CommentBlock" description="Блок с текстовыми заметками, которые игнорируются при генерации и интерпретации. Используйте его для повышения наглядности диаграммы.">
 				<graphics>
 					<picture sizex="200" sizey="100">
 						<line y1="0" y2="100" fill="#ffffff" stroke="#000000" x1="0" x2="0" fill-style="none" stroke-style="solid" stroke-width="0"/>
@@ -1204,6 +1695,14 @@
 				<element name="EnginesStop"/>
 				<element name="Function"/>
 			</group>
+			<group name="Рисование на дисплее">
+				<element name="ClearScreen"/>
+				<element name="DrawRect"/>
+				<element name="DrawPixel"/>
+				<element name="DrawLine"/>
+				<element name="DrawCircle"/>
+				<element name="PrintText"/>
+			</group>
 			<group name="Ожидания">
 				<element name="Timer"/>
 				<element name="WaitForTouchSensor"/>
@@ -1212,6 +1711,9 @@
 				<element name="WaitForEncoder"/>
 				<element name="WaitForColorIntensity"/>
 				<element name="WaitForLight"/>
+				<element name="WaitForSound"/>
+				<element name="WaitForGyroscope"/>
+				<element name="WaitForButtons"/>
 			</group>
 			<group name="Алгоритмы">
 				<element name="IfBlock"/>
@@ -1221,7 +1723,6 @@
 			</group>
 			<group name="Инициализация">
 				<element name="InitialNode"/>
-				<element name="InitialBlock"/>
 				<element name="FinalNode"/>
 				<element name="NullificationEncoder"/>
 			</group>

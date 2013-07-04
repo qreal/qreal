@@ -52,6 +52,7 @@ public:
 	// including the scene (with dependencies) there
 	virtual Element *getElem(qReal::Id const &id) const;
 	Element *getElemAt(const QPointF &position);
+	Element *graphicalElement(ElementImpl *impl) const;
 
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
@@ -161,6 +162,8 @@ private slots:
 	void disconnectActionTriggered();
 	void addUsageActionTriggered();
 	void deleteUsageActionTriggered();
+	void changePropertiesActionTriggered();
+	void changeAppearanceActionTriggered();
 	void printElementsOfRootDiagram();
 	void drawIdealGesture();
 	void initMouseMoveManager();

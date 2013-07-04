@@ -18,6 +18,9 @@ enum SensorTypeEnum {
 	, colorGreen
 	, colorBlue
 	, colorNone
+	, sound
+	, gyroscope
+	, accelerometer
 	, encoder
 };
 }

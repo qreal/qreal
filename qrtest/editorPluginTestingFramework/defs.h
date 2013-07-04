@@ -3,6 +3,8 @@
 
 namespace editorPluginTestingFramework {
 
+QString const pathToQRealRoot = "../../";
+
 QString const binariesDir = "../qrtest/binaries";
 QString const sourcesDir = "../qrtest/binaries/sources";
 QString const pluginsDir = "../qrtest/binaries/plugins";
@@ -18,8 +20,4 @@ QString const pathToQRealRootFromQrxc = "../../../../";
 
 QString const destDirForQrmc = "qrtest/binaries/plugins/qrmc";
 QString const destDirForQrxc = "qrtest/binaries/plugins/qrxc";
-
-QString const uncheckedMethod = "THIS METHOD HAS TO BE VERIFIED SOMEHOW!";
-QString const goodMethod = "Results are the same";
-
 }

@@ -6,7 +6,7 @@
 #include "editorViewScene.h"
 #include "../../qrkernel/definitions.h"
 #include "../umllib/element.h"
-#include "../pluginManager/editorManager.h"
+#include "../pluginManager/editorManagerInterface.h"
 #include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
@@ -118,6 +118,14 @@ Id EditorViewMViface::rootId() const
 	return mGraphicalAssistApi ? mGraphicalAssistApi->idByIndex(rootIndex()) : Id();
 }
 
+Element* EditorViewMViface::graphicalElement(ElementImpl *impl) const
+{
+	if (impl->isNode()) {
+		return new NodeElement(impl);
+	}
+	return new EdgeElement(impl);
+}
+
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {
@@ -140,7 +148,9 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
+		ElementImpl *impl = mScene->mainWindow()->editorManager().graphicalObject(currentId);
+		Element *elem = graphicalElement(impl);
+
 		if (elem) {
 			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
 			elem->setController(mScene->mainWindow()->controller());
@@ -325,9 +335,11 @@ void EditorViewMViface::clearItems()
 			toRemove.append(pair.second);
 		}
 	}
-	foreach (QGraphicsItem *item, toRemove) {
+
+	foreach (QGraphicsItem * const item, toRemove) {
 		delete item;
 	}
+
 	mItems.clear();
 }
 

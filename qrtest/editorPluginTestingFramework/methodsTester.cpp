@@ -503,23 +503,27 @@ void MethodsTester::generateOutputForOneMethod(StringGenerator const &stringGene
 	QString const &qrmcResult = stringGenerator.generateString(mQrmcGeneratedPlugin);
 	QString const &qrxcResult = stringGenerator.generateString(mQrxcGeneratedPlugin);
 
-	QString output = "";
-	if (qrmcResult == qrxcResult) {
-		output = "Results are the same";
-		if (containsOnly(qrmcResult, ' ') || (qrmcResult.isEmpty())) {
-			output = "THIS METHOD HAS TO BE VERIFIED SOMEHOW!";
-		}
-	} else {
-		QString const newLineTag = "|";
-		output = "Results are not the same" + newLineTag + "For qrmc: " +  qrmcResult
-				+ newLineTag + "For qrxc: " + qrxcResult;
-	}
+//	QString output = "";
+//	if (qrmcResult == qrxcResult) {
+//		output = "Results are the same";
+//		if (containsOnly(qrmcResult, ' ') || (qrmcResult.isEmpty())) {
+//			output = "THIS METHOD HAS TO BE VERIFIED SOMEHOW!";
+//		}
+//	} else {
+//		QString const newLineTag = "|";
+//		output = "Results are not the same" + newLineTag + "For qrmc: " +  qrmcResult
+//				+ newLineTag + "For qrxc: " + qrxcResult;
+//	}
 
-	QPair<QString, QString> resultPair = qMakePair(methodName, output);
-	mGeneratedOutputList.append(resultPair);
+	QPair<QString, QString> methodsPair = qMakePair(qrxcResult, qrmcResult);
+	QPair<QString, QPair<QString, QString> > resultPair = qMakePair(methodName, methodsPair);
+
+	mGeneratedList.append(resultPair);
+	//QPair<QString, QString> resultPair = qMakePair(methodName, output);
+	//mGeneratedOutputList.append(resultPair);
 }
 
-QList<QPair<QString, QString> > MethodsTester::generateOutputList()
+QList<QPair<QString, QPair<QString, QString> > >MethodsTester::generateOutputList()
 {
 	generateOutputForOneMethod(PropertiesWithDefaultValuesStringGenerator());
 	generateOutputForOneMethod(UsedTypesStringGenerator());
@@ -550,7 +554,7 @@ QList<QPair<QString, QString> > MethodsTester::generateOutputList()
 	generateOutputForOneMethod(DiagramPaletteGroupListStringGenerator());
 	generateOutputForOneMethod(DiagramPaletteGroupDescriptionStringGenerator());
 
-	return mGeneratedOutputList;
+	return mGeneratedList;
 }
 
 bool MethodsTester::containsOnly(QString const &string, QChar const &symbol)
