@@ -176,6 +176,9 @@ private:
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
+	void setBezierPoints();
+	QPainterPath bezierCurve() const;
+
 	QList<PossibleEdge> possibleEdges;
 
 	bool mIsDissectable;
@@ -185,6 +188,8 @@ private:
 	void updateLongestPart();
 	static QRectF getPortRect(QPointF const &point);
 
+	void drawCurveIntermediatePoints(QPainter* painter) const;
+	void drawCurvePorts(QPainter* painter) const;
 	void drawPort(QPainter *painter) const;
 	void drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
 
@@ -209,6 +214,7 @@ private:
 
 	// these methods are called before the push action in the context menu
 	bool delPointActionIsPossible(const QPointF &pos);
+
 	bool addPointActionIsPossible(const QPointF &pos);
 	bool delSegmentActionIsPossible(const QPointF &pos);
 	bool minimizeActionIsPossible();
