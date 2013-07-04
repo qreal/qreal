@@ -5,7 +5,8 @@ using namespace qReal::rulesChecker;
 
 RulesPlugin::RulesPlugin()
 	: mChecker(NULL)
-	, mRunAction(NULL)
+	, mRunAllDiagram(NULL)
+	, mRunCurrentDiagram(NULL)
 {
 	initAction();
 }
@@ -18,7 +19,8 @@ RulesPlugin::~RulesPlugin()
 void RulesPlugin::init(const PluginConfigurator &configurator)
 {
 	mChecker = new RulesChecker(configurator.graphicalModelApi().graphicalRepoApi(), configurator.mainWindowInterpretersInterface());
-	QObject::connect(mRunAction, SIGNAL(triggered()), mChecker, SLOT(check()));
+	QObject::connect(mRunAllDiagram, SIGNAL(triggered()), mChecker, SLOT(checkAllDiagrams()));
+	QObject::connect(mRunCurrentDiagram, SIGNAL(triggered()), mChecker, SLOT(checkCurrentDiagram()));
 }
 
 QList<ActionInfo> RulesPlugin::actions()
@@ -28,8 +30,12 @@ QList<ActionInfo> RulesPlugin::actions()
 
 void RulesPlugin::initAction()
 {
-	mRunAction = new QAction(QObject::tr("Diagram Validation"), NULL);
-	mRunAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
-	ActionInfo runActionInfo(mRunAction, "generators", "tools");
-	mActionInfos << runActionInfo;
+	mRunAllDiagram = new QAction(QObject::tr("Diagram Validation"), NULL);
+	mRunAllDiagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_R));
+	ActionInfo runAllInfo(mRunAllDiagram, "generators", "tools");
+	mActionInfos << runAllInfo;
+
+	mRunCurrentDiagram = new QAction(QObject::tr("Validate active diagram"), NULL);
+	ActionInfo runCurrentInfo(mRunCurrentDiagram, "generators", "tools");
+	mActionInfos << runCurrentInfo;
 }

@@ -29,7 +29,8 @@ private:
 	QList<qReal::ActionInfo> mActionInfos;
 
 	//! starts checking
-	QAction *mRunAction;
+	QAction *mRunAllDiagram;
+	QAction *mRunCurrentDiagram;
 };
 
 }
