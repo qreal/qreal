@@ -174,10 +174,10 @@ private:
 	void paintSavedEdge(QPainter *painter) const;
 	void paintChangedEdge(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
-    void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
+	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
-    void setBezierPoints();
-    QPainterPath bezierCurve() const;
+	void setBezierPoints();
+	QPainterPath bezierCurve() const;
 
 
 	QList<PossibleEdge> possibleEdges;
@@ -189,8 +189,8 @@ private:
 	void updateLongestPart();
 	static QRectF getPortRect(QPointF const &point);
 
-    void drawCurveIntermidiatePoints(QPainter* painter) const;
-    void drawCurvePorts(QPainter* painter) const;
+	void drawCurveIntermediatePoints(QPainter* painter) const;
+	void drawCurvePorts(QPainter* painter) const;
 	void drawPort(QPainter *painter) const;
 	void drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
 
@@ -229,7 +229,7 @@ private:
 	qreal mPortFrom;
 	qreal mPortTo;
 
-    int mDragPoint; // is a number of mLine's point we're trying to drag
+	int mDragPoint; // is a number of mLine's point we're trying to drag
 
 	int mLongPart;
 

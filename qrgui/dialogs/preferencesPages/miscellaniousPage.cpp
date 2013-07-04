@@ -51,8 +51,8 @@ void PreferencesMiscellaniousPage::save()
 	SettingsManager::setValue("Splashscreen", mUi->splashScreenCheckBox->isChecked());
 	SettingsManager::setValue("Antialiasing", mUi->antialiasingCheckBox->isChecked());
 	SettingsManager::setValue("OpenGL", mUi->openGLCheckBox->isChecked());
-    SettingsManager::setValue("SquareLine", mUi->lineMode->currentIndex() == 1);
-    SettingsManager::setValue("CurveLine", mUi->lineMode->currentIndex() == 2);
+	SettingsManager::setValue("SquareLine", mUi->lineMode->currentIndex() == 1);
+	SettingsManager::setValue("CurveLine", mUi->lineMode->currentIndex() == 2);
 
 //	SettingsManager::setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
 	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
@@ -71,12 +71,12 @@ void PreferencesMiscellaniousPage::restoreSettings()
 	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
 	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL").toBool());
 
-    int index = 0;
-    if (SettingsManager::value("SquareLine").toBool())
-        index = 1;
-    if (SettingsManager::value("CurveLine").toBool())
-        index = 2;
-    mUi->lineMode->setCurrentIndex(index);
+	int index = 0;
+	if (SettingsManager::value("SquareLine").toBool())
+		index = 1;
+	if (SettingsManager::value("CurveLine").toBool())
+		index = 2;
+	mUi->lineMode->setCurrentIndex(index);
 
 	mUi->paintOldLineCheckBox->setChecked(SettingsManager::value("PaintOldEdgeMode").toBool());
 
@@ -85,5 +85,5 @@ void PreferencesMiscellaniousPage::restoreSettings()
 	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 
 	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
-    mUi->imagesPathEdit->setText(mLastIconsetPath);
+	mUi->imagesPathEdit->setText(mLastIconsetPath);
 }
