@@ -40,6 +40,8 @@ private slots:
 	/// Requires nxt-tools
 	void uploadProgram();
 
+	void runProgram();
+
 private:
 	/// Method that checks presense of nxt-tools (shall be installed to nxt-tools
 	/// subfolder of QReal installation), and sets mNxtToolsPresent flag.
@@ -58,6 +60,9 @@ private:
 
 	/// Action that compiles and uploads program on a robot
 	QAction mUploadProgramAction;
+
+	/// Action that runs latest uploaded program on a robot
+	QAction mRunProgramAction;
 
 	/// Translator object for this plugin
 	QTranslator mAppTranslator;

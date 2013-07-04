@@ -534,27 +534,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::Interpreter</name>
     <message>
-        <location filename="interpreter.cpp" line="89"/>
+        <location filename="interpreter.cpp" line="87"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="93"/>
+        <location filename="interpreter.cpp" line="91"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="103"/>
+        <location filename="interpreter.cpp" line="101"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="201"/>
+        <location filename="interpreter.cpp" line="200"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="205"/>
+        <location filename="interpreter.cpp" line="204"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
