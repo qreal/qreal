@@ -12,74 +12,86 @@ RulesChecker::RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 	containerTypes << "Pool" << "Lane" << "BPMN Diagram";
 }
 
-bool RulesChecker::makeDetour(Id const currentNode, IdList &used, bool const goForwards)
+bool RulesChecker::makeDetour(qReal::Id const currentNode, IdList &usedNodes)
 {
-	bool hasFoundFinalNode = false;
-	if (used.contains(currentNode) && used.size() > 1)
-		return false; //we already were here
-	else
-		used.append(currentNode);
+	if (usedNodes.contains(currentNode))
+		return false; // cannot learn some more here
+
+	if (!mDiagramModels.contains(currentNode))
+		return true;  // we already have made detour of forward nodes
 
 	mDiagramModels.removeOne(currentNode);
+	usedNodes.append(currentNode);
 
 	if (isLink(currentNode))
 	{
-		Id destination = ((goForwards)? mGRepoApi->to(currentNode) : mGRepoApi->from(currentNode));
-		if (destination == Id::rootId())
-			postError(IncorrectLink, currentNode);
-		else
-			return makeDetour(destination, used, goForwards);
+		Id destination = mGRepoApi->to(currentNode);
+		if (destination == Id::rootId()) {
+			postError(NoEndNode, currentNode); // we've already put info that link is incorrect
+			return true; // done end-job for link(50%)
+		}
+		return makeDetour(destination, usedNodes);
 	}
 
-	IdList frontNodes = ((goForwards)? mGRepoApi->outgoingLinks(currentNode) : mGRepoApi->incomingLinks(currentNode));
+	if (isEndNode(currentNode))
+		return true; // we found real end-node
+
+	IdList frontNodes =  mGRepoApi->outgoingLinks(currentNode);
 	if (!frontNodes.size()) {
-		QString finalNodeType = ((goForwards)? "EndEvent" : "StartEvent");
-		if (currentNode.element() != finalNodeType)
-			postError(((goForwards)? NoEndNode : NoStartNode), currentNode);
-
-		hasFoundFinalNode = true;  // because found error
+		postError(NoEndNode, currentNode);
+		return true; // done end-job for nodes (now 100%)
 	}
 
-	if (isValidFinalNode(currentNode))
-		return true;
-
+	bool hasFoundFinalNode = false; // to catch that we have found end-node anywhere in path
 	foreach (Id key, frontNodes) {
-		if (makeDetour(key, used, goForwards))
+		if (makeDetour(key, usedNodes))
 			hasFoundFinalNode = true;
 	}
 	return hasFoundFinalNode;
 }
 
-
-bool RulesChecker::isValidFinalNode(qReal::Id const &node)
+void RulesChecker::checkLinksRule(qReal::Id const &key)
 {
-	if (node.element() == "EndEvent" && mGRepoApi->outgoingLinks(node).size()) {
-		postError(LinkFromFinalNode, node);
-		return false;
+	if (isLink(key))
+		if (mGRepoApi->from(key) == Id::rootId() || mGRepoApi->to(key) == Id::rootId())
+			postError(IncorrectLink, key);
+}
+
+void RulesChecker::checkFinalNodeRule(const qReal::Id &key)
+{
+	bool isLastNode = isEndNode(key);
+	if (!isLastNode && !isStartNode(key))
+		return;
+
+	IdList incorrectLinks = ((isLastNode)? mGRepoApi->outgoingLinks(key) : mGRepoApi->incomingLinks(key));
+	if (incorrectLinks.size()) {
+		postError(((isLastNode)? LinkFromFinalNode : LinkToStartNode), key);
+		foreach (Id const key, incorrectLinks) {
+			mDiagramModels.removeOne(key);
+		}
 	}
-	if (node.element() == "StartEvent" && mGRepoApi->incomingLinks(node).size()) {
-		postError(LinkToStartNode, node);
-		return false;
-	}
-	return true;
 }
 
 void RulesChecker::researchDiagram()
 {
-	while (mDiagramModels.size()) {
-		Id const currentHead = mDiagramModels.first();
-		if (containerTypes.contains(currentHead.element())) {
-			mDiagramModels.removeFirst();
-			continue;
-		}
+	IdList startingElements = checkDiagramModelsList(mDiagramModels);
 
-		IdList used;
-		if (!makeDetour(currentHead, used))
-			postError(NoEndNode, currentHead);
-		used.clear();
-		used.append(currentHead);
-		if (!makeDetour(currentHead, used, false))
-			postError(NoStartNode, currentHead);
+	// check all paths which have starting nodes
+	while (startingElements.size()) {
+		Id const currentHead = startingElements.first();
+		IdList usedNodes;
+		if (!makeDetour(currentHead, usedNodes))
+			postError(NoEndNode, startingElements.first());
+		startingElements.removeFirst();
+	}
+
+	// check other connected components
+	while (mDiagramModels.size()) {
+		Id headNode = findFirstNode(mDiagramModels.first());
+		postError(NoStartNode, headNode);
+		IdList usedNodes;
+		if (!makeDetour(headNode, usedNodes))
+			postError(NoEndNode, headNode);
 	}
 }
 
@@ -98,7 +110,7 @@ void RulesChecker::checkAllDiagrams()
 			, QString("BPMNMetamodel"), QString("BPMN Diagram")));
 
 	foreach (Id const diagram, diagrams) {
-		mDiagramModels = childrenOfDiagram(diagram);
+		mDiagramModels = elementsOfDiagram(diagram);
 		researchDiagram();
 	}
 
@@ -109,7 +121,7 @@ void RulesChecker::checkAllDiagrams()
 void RulesChecker::checkCurrentDiagram()
 {
 	prepareOutput();
-	mDiagramModels = childrenOfDiagram(mWindowInterface->activeDiagram());
+	mDiagramModels = elementsOfDiagram(mWindowInterface->activeDiagram());
 	researchDiagram();
 
 	if (hasNoErrors)
@@ -149,18 +161,73 @@ void RulesChecker::postError(RulesChecker::ErrorsType const error, Id badNode)
 	hasNoErrors = false;
 }
 
-bool RulesChecker::isLink(const qReal::Id &model)
+bool RulesChecker::isLink(qReal::Id const &model) const
 {
 	return linkTypes.contains(model.element());
 }
 
-qReal::IdList RulesChecker::childrenOfDiagram(const qReal::Id &diagram)
+bool RulesChecker::isStartNode(qReal::Id const &model) const
+{
+	return (model.element() == "StartEvent");
+}
+
+bool RulesChecker::isEndNode(qReal::Id const &model) const
+{
+	return (model.element() == "EndEvent");
+}
+
+qReal::IdList RulesChecker::elementsOfDiagram(qReal::Id const &diagram) const
 {
 	IdList result = mGRepoApi->children(diagram);
 	int const childrenCount = result.size();
 	for (int i = 0; i < childrenCount; i++)
-		result.append(childrenOfDiagram(result.at(i)));
+		result.append(elementsOfDiagram(result.at(i)));
 
 	return result;
+}
+
+qReal::IdList RulesChecker::checkDiagramModelsList(qReal::IdList &list)
+{
+	IdList headNodes;
+	foreach (Id const key, list) {
+		if (containerTypes.contains(key.element()))
+			list.removeOne(key);
+		if (isStartNode(key)) {
+			headNodes << key;
+		}
+		checkLinksRule(key);
+		checkFinalNodeRule(key);
+	}
+	return headNodes;
+}
+
+qReal::Id RulesChecker::findFirstNode(qReal::Id const &key) const
+{
+	IdList startingList;
+	getPreviousNodes(key, startingList);
+
+	Id result = startingList.first();
+	int minIncomingLinks = mGRepoApi->incomingLinks(result).size();
+
+	foreach (Id const key, startingList) {
+		int incomingLinks = mGRepoApi->incomingLinks(key).size();
+		if (incomingLinks < minIncomingLinks) {
+			minIncomingLinks = incomingLinks;
+			result = key;
+		}
+	}
+
+	return result;
+}
+
+void RulesChecker::getPreviousNodes(qReal::Id const &key, IdList &result) const
+{
+	if (result.contains(key) || !mDiagramModels.contains(key)) // we wont loooking what already done
+		return;
+
+	result << key;
+	foreach (Id const link, mGRepoApi->incomingLinks(key)) {
+		getPreviousNodes(mGRepoApi->from(link), result);
+	}
 }
 
