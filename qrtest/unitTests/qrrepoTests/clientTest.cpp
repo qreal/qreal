@@ -155,7 +155,7 @@ TEST_F(ClientTest, findElementsByNameTest) {
 	EXPECT_EQ(list.size(), 2);
 	EXPECT_TRUE(list.contains(child1));
 	EXPECT_TRUE(list.contains(child1_child));
-	
+
 	list = mClient->findElementsByName("ChilD1", false, false);
 	EXPECT_EQ(list.size(), 2);
 	EXPECT_TRUE(list.contains(child1));
@@ -489,7 +489,7 @@ TEST_F(ClientTest, copyPropertiesTest) {
 	//EXPECT_THROW(mClient->copyProperties(notExistingId, root), Exception);
 	//EXPECT_THROW(mClient->copyProperties(root, notExistingId), Exception);
 	mClient->copyProperties(root, child2);
-	
+
 	ASSERT_TRUE(mClient->hasProperty(root, "property3"));
 	ASSERT_TRUE(mClient->hasProperty(root, "name"));
 	ASSERT_FALSE(mClient->hasProperty(child2, "property1"));
@@ -515,7 +515,7 @@ TEST_F(ClientTest, backReferenceTest) {
 	mClient->removeBackReference(root, backReference2);
 
 	IdList references = mClient->property(root, "backReferences").value<IdList>();
-	ASSERT_EQ(references.size(), 1);
+	ASSERT_EQ(references.size(), 2);
 	EXPECT_TRUE(references.contains(backReference3));
 }
 

@@ -3,7 +3,7 @@
 
 #include "edgePropertiesDialog.h"
 #include "ui_edgePropertiesDialog.h"
-#include "../mainwindow/mainWindow.h"
+#include "../../mainwindow/mainWindow.h"
 
 using namespace qReal;
 using namespace gui;

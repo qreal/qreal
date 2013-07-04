@@ -2,8 +2,8 @@
 
 #include <QtWidgets/QDialog>
 
-#include "../pluginManager/interpreterEditorManager.h"
-#include "../mainwindow/mainWindow.h"
+#include "../../pluginManager/interpreterEditorManager.h"
+#include "../../mainwindow/mainWindow.h"
 #include "editPropertiesDialog.h"
 
 namespace Ui {
