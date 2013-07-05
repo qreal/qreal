@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QDomElement>
-#include <QMap>
+#include <QtXml/QDomElement>
+#include <QtCore/QMap>
 
 class Property;
 class Diagram;

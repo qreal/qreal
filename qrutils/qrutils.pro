@@ -17,6 +17,7 @@ RESOURCES = $$PWD/qrutils.qrc
 TRANSLATIONS = $$PWD/qrutils_ru.ts
 
 HEADERS += \
+	$$PWD/fileSystemUtils.h \
 	$$PWD/outFile.h \
 	$$PWD/utilsDeclSpec.h \
 	$$PWD/xmlUtils.h \
@@ -29,6 +30,7 @@ HEADERS += \
 	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \
+	$$PWD/fileSystemUtils.cpp \
 	$$PWD/outFile.cpp \
 	$$PWD/xmlUtils.cpp \
 	$$PWD/watchListWindow.cpp\

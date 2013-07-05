@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QDomElement>
-#include <QStringList>
-#include <QList>
-#include <QPair>
+#include <QtXml/QDomElement>
+#include <QtCore/QStringList>
+#include <QtCore/QList>
+#include <QtCore/QPair>
 
 #include "type.h"
 
