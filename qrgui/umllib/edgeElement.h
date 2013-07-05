@@ -94,11 +94,6 @@ public:
 	// redrawing of this edgeElement in squarize
 	void redrawing(QPointF const &pos);
 
-	/// correct end of mLine for beauty link's drawing, creating the beauty link without node's intersections
-	void correctArrow();
-	/// correct begin of mLine for beauty link's drawing, creating the beauty link without node's intersections
-	void correctInception();
-
 	void setGraphicApiPos();
 
 	bool isLoop();
@@ -134,16 +129,13 @@ private slots:
 	/// add the closest point on edge to the parameter`s point
 	void addClosestPointHandler(QPointF const &pos);
 	void delPointHandler(QPointF const &pos);
-	void squarizeHandler(QPointF const &pos);
 	void minimizeHandler(QPointF const &pos);
 	/// delete Segment with nearest with pos ends
 	void deleteSegmentHandler(QPointF const &pos);
-	// redraw in rectangular good link
-	void squarizeAndAdjustHandler(QPointF const &pos);
 	/// change link's direction
 	void reverseHandler(QPointF const &pos);
-	/// mIsVerticalChanging = !mIsVerticalChanging
-	void changeSquarizeType(QPointF const &pos);
+
+	void squarizeAndAdjustHandler();
 
 private:
 	enum DragPointType {
@@ -163,6 +155,15 @@ private:
 		rightInsideNode = 4
 	};
 
+	enum LineType {
+		Vertical,
+		Horizontal,
+		VerticalTurn,
+		HorizontalTurn
+	};
+
+	enum NodeSide { Left, Top, Right, Bottom };
+
 	// when (mSrc == mDst && mDst && mLine <= 3)
 	void createLoopEdge();
 	// connectToPort for self-closing line (mSrc == mDst && mDst)
@@ -175,6 +176,9 @@ private:
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
+	void setBezierPoints();
+	QPainterPath bezierCurve() const;
+
 	QList<PossibleEdge> possibleEdges;
 
 	bool mIsDissectable;
@@ -184,14 +188,23 @@ private:
 	void updateLongestPart();
 	static QRectF getPortRect(QPointF const &point);
 
+	void drawCurveIntermediatePoints(QPainter* painter) const;
+	void drawCurvePorts(QPainter* painter) const;
 	void drawPort(QPainter *painter) const;
 	void drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
 
 	qreal lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const;
 
 	void delCloseLinePoints();
-
 	void delClosePoints();
+
+	void squarize();
+	int defineType();
+	int defineSide(qreal port);
+	void verticalSquareLine();
+	void horizontalSquareLine();
+	void verticalTurningSquareLine();
+	void horizontalTurningSquareLine();
 
 	bool removeOneLinePoints(int startingPoint);
 
@@ -201,12 +214,11 @@ private:
 
 	// these methods are called before the push action in the context menu
 	bool delPointActionIsPossible(const QPointF &pos);
-	bool squarizeActionIsPossible();
+
 	bool addPointActionIsPossible(const QPointF &pos);
 	bool delSegmentActionIsPossible(const QPointF &pos);
 	bool minimizeActionIsPossible();
 	bool reverseActionIsPossible();
-	bool changeSquarizeTypeActionIsPossible();
 
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
@@ -225,19 +237,9 @@ private:
 
 	ContextMenuAction mAddPointAction;
 	ContextMenuAction mDelPointAction;
-	ContextMenuAction mSquarizeAction;
 	ContextMenuAction mMinimizeAction;
 	ContextMenuAction mDelSegmentAction;
 	ContextMenuAction mReverseAction;
-	ContextMenuAction mChangeSquarizeTypeAction;
-
-	void edgeArrowOverlapsNodeCase(int direct);
-	void edgeArrowOverlapsNodeUprightCase(int direct);
-	void edgeArrowOverlapsNodeHorizontallyCase(int direct);
-
-	void edgeInceptionOverlapsNodeCase(int direct);
-	void edgeInceptionOverlapsNodeUprightCase(int direct);
-	void edgeInceptionOverlapsNodeHorizontallyCase(int direct);
 
 	bool mChaoticEdition;
 
@@ -245,8 +247,6 @@ private:
 	bool mLastLineIsLoop;
 	QPolygonF mSavedLineForChanges;
 	bool mLeftButtonIsPressed;
-	QPolygonF mSavedLineForSquarize;
-	int mSavesDragPointForSquarize;
 
 	bool mBreakPointPressed;
 
@@ -255,8 +255,6 @@ private:
 	bool mModelUpdateIsCalled;  // flag for the infinite updateData()-s liquidating
 
 	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst)
-
-	bool mIsVerticalChanging; // for squarize drawing
 
 	qReal::commands::ReshapeEdgeCommand *mReshapeCommand;
 };

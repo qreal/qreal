@@ -17,7 +17,6 @@ RESOURCES = $$PWD/qrutils.qrc
 TRANSLATIONS = $$PWD/qrutils_ru.ts
 
 HEADERS += \
-	$$PWD/fileSystemUtils.h \
 	$$PWD/outFile.h \
 	$$PWD/utilsDeclSpec.h \
 	$$PWD/xmlUtils.h \
@@ -27,10 +26,10 @@ HEADERS += \
 	$$PWD/scalableItem.h \
 	$$PWD/scalableCoordinate.h \
 	$$PWD/nameNormalizer.h \
+	$$PWD/fileSystemUtils.h \
 	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \
-	$$PWD/fileSystemUtils.cpp \
 	$$PWD/outFile.cpp \
 	$$PWD/xmlUtils.cpp \
 	$$PWD/watchListWindow.cpp\
@@ -39,6 +38,7 @@ SOURCES += \
 	$$PWD/scalableItem.cpp \
 	$$PWD/scalableCoordinate.cpp \
 	$$PWD/nameNormalizer.cpp \
+	$$PWD/fileSystemUtils.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
 
 FORMS += \

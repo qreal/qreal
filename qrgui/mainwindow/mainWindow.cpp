@@ -287,6 +287,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		event->ignore();
 		return;
 	}
+	mProjectManager->close();
 
 	SettingsManager::setValue("maximized", isMaximized());
 	SettingsManager::setValue("size", size());
@@ -496,12 +497,14 @@ void MainWindow::closeAllTabs()
 	}
 }
 
-void MainWindow::setReference(QString const &data, QPersistentModelIndex const &index, int const &role)
+void MainWindow::setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role)
 {
 	removeOldBackReference(index, role);
-	setData(data, index, role);
-	if (!data.isEmpty()) {
-		setBackReference(index, data);
+	setData(data.join(','), index, role);
+	foreach (QString const &target, data) {
+		if (!target.isEmpty()) {
+			setBackReference(index, target);
+		}
 	}
 }
 
@@ -1035,9 +1038,9 @@ void MainWindow::openShapeEditor()
 void MainWindow::openReferenceList(QPersistentModelIndex const &index
 		, QString const &referenceType,	QString const &propertyValue, int role)
 {
-	ReferenceList referenceList(this, index, referenceType, propertyValue, role);
-	connect(&referenceList, SIGNAL(referenceSet(QString, QPersistentModelIndex, int))
-			, this, SLOT(setReference(QString, QPersistentModelIndex, int)));
+	ReferenceList referenceList(this, index, referenceType, propertyValue.split(',', QString::SkipEmptyParts), role);
+	connect(&referenceList, SIGNAL(referenceSet(QStringList, QPersistentModelIndex, int))
+			, this, SLOT(setReference(QStringList, QPersistentModelIndex, int)));
 	referenceList.exec();
 }
 
@@ -1543,7 +1546,6 @@ void MainWindow::createDiagram(QString const &idString)
 
 bool MainWindow::createProject(QString const &diagramIdString)
 {
-	mProjectManager->clearAutosaveFile();
 	if (!mProjectManager->openEmptyWithSuggestToSaveChanges()) {
 		return false;
 	}
@@ -1694,14 +1696,13 @@ void MainWindow::setBackReference(QPersistentModelIndex const &index, QString co
 
 void MainWindow::removeOldBackReference(QPersistentModelIndex const &index, int const role)
 {
-	QString data = index.data(role).toString();
-	if (data.isEmpty()) {
-		return;
-	}
+	QStringList data = index.data(role).toString().split(',', QString::SkipEmptyParts);
 
-	Id id = Id::loadFromString(data);
-	Id indexId = mModels->logicalModelAssistApi().idByIndex(index);
-	mModels->logicalRepoApi().removeBackReference(id, indexId);
+	foreach (QString const &reference, data) {
+		Id id = Id::loadFromString(reference);
+		Id indexId = mModels->logicalModelAssistApi().idByIndex(index);
+		mModels->logicalRepoApi().removeBackReference(id, indexId);
+	}
 }
 
 void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString const &name)
@@ -1767,7 +1768,10 @@ Id MainWindow::activeDiagram()
 void MainWindow::initPluginsAndStartDialog()
 {
 	initToolPlugins();
-	if (mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)) {
+	if (!mProjectManager->restoreIncorrectlyTerminated() &&
+			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
+	{
+		mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 		mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 		// Centering dialog inside main window
 		mStartDialog->move(geometry().center() - mStartDialog->rect().center());

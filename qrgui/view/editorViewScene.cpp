@@ -728,8 +728,6 @@ void EditorViewScene::arrangeNodeLinks(NodeElement* node)
 	node->arrangeLinks();
 	foreach (EdgeElement* nodeEdge, node->edgeList()) {
 		nodeEdge->adjustNeighborLinks();
-		nodeEdge->correctArrow();
-		nodeEdge->correctInception();
 		nodeEdge->setGraphicApiPos();
 		nodeEdge->saveConfiguration(QPointF());
 	}
@@ -1213,8 +1211,6 @@ void EditorViewScene::createEdge(QString const &idStr)
 		edge->dst()->arrangeLinks();
 		foreach (EdgeElement* nodeEdge, edge->dst()->edgeList()) {
 			nodeEdge->adjustNeighborLinks();
-			nodeEdge->correctArrow();
-			nodeEdge->correctInception();
 			nodeEdge->setGraphicApiPos();
 			nodeEdge->saveConfiguration(QPointF());
 		}
@@ -1638,10 +1634,6 @@ void EditorViewScene::updateEdgesViaNodes()
 	foreach (QGraphicsItem *item, items()) {
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
-			foreach (EdgeElement* edge, node->edgeList()) {
-				edge->correctArrow();
-				edge->correctInception();
-			}
 			node->adjustLinks();
 		}
 	}
