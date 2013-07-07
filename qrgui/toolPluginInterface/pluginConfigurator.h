@@ -6,7 +6,8 @@
 #include "../mainwindow/mainWindowInterpretersInterface.h"
 #include "../mainwindow/projectManager/projectManagementInterface.h"
 #include "../view/sceneCustomizationInterface.h"
-#include "systemEvents.h"
+#include "systemEventsInterface.h"
+#include "../texteditor/codeManagerInterface.h"
 
 namespace qReal {
 
@@ -20,7 +21,8 @@ public:
 		, gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
 		, ProjectManagementInterface &projectManager
 		, SceneCustomizationInterface &sceneCustomizer
-		, SystemEvents &systemEvents
+		, SystemEventsInterface &systemEvents
+		, CodeManagerInterface &codeManager
 	)
 		: mRepoControlInterface(repoControlInterface)
 		, mGraphicalModelApi(graphicalModelApi)
@@ -29,6 +31,7 @@ public:
 		, mProjectManager(projectManager)
 		, mSceneCustomizer(sceneCustomizer)
 		, mSystemEvents(systemEvents)
+		, mCodeManager(codeManager)
 	{}
 
 	qrRepo::RepoControlInterface &repoControlInterface() const
@@ -61,9 +64,14 @@ public:
 		return mSceneCustomizer;
 	}
 
-	SystemEvents &systemEvents() const
+	SystemEventsInterface &systemEvents() const
 	{
 		return mSystemEvents;
+	}
+
+	CodeManagerInterface &codeManager() const
+	{
+		return mCodeManager;
 	}
 
 private:
@@ -73,7 +81,8 @@ private:
 	gui::MainWindowInterpretersInterface &mMainWindowInterpretersInterface;
 	ProjectManagementInterface &mProjectManager;
 	SceneCustomizationInterface &mSceneCustomizer;
-	SystemEvents &mSystemEvents;
+	SystemEventsInterface &mSystemEvents;
+	CodeManagerInterface &mCodeManager;
 };
 
 }

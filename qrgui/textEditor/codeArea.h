@@ -9,21 +9,22 @@ enum highlighterType {
 	sql
 };
 
-class CodeArea : public QPlainTextEdit {
+class CodeArea : public QPlainTextEdit
+{
 	Q_OBJECT
 
-	public:
-		CodeArea(QWidget *parent = 0, highlighterType type = text);
-		~CodeArea();
+public:
+	CodeArea(QWidget *parent = 0, highlighterType type = text);
+	~CodeArea();
 
-		void setHighlightedLineNumbers(const QList<int>&);
+	void setHighlightedLineNumbers(const QList<int>&);
 
-	private slots:
-		void highlightCurrentLine();
+private slots:
+	void highlightCurrentLine();
 
-	private:
-		QList<QTextEdit::ExtraSelection> highlightedLinesSelectionList();
+private:
+	QList<QTextEdit::ExtraSelection> highlightedLinesSelectionList();
 
-		QSyntaxHighlighter *mHighlighter;
-		QList<int> mHighlightedLineNumbers;
+	QSyntaxHighlighter *mHighlighter;
+	QList<int> mHighlightedLineNumbers;
 };

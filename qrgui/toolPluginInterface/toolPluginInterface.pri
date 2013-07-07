@@ -8,6 +8,7 @@ HEADERS += \
 	toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h \
 	toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h \
 	toolPluginInterface/hotKeyActionInfo.h \
-    toolPluginInterface/systemEvents.h
+    toolPluginInterface/systemEvents.h \
+    toolPluginInterface/systemEventsInterface.h
 
 SOURCES +=

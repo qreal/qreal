@@ -153,7 +153,7 @@ void NxtOSEKRobotGenerator::createProjectDir(QString const &projectDir)
 	}
 }
 
-void NxtOSEKRobotGenerator::generate()
+void NxtOSEKRobotGenerator::generate(QFileInfo const &fileInfo)
 {
 	if (mDiagram == Id()) {
 		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
@@ -163,8 +163,9 @@ void NxtOSEKRobotGenerator::generate()
 	IdList toGenerate(mApi->elementsByType("InitialNode"));
 
 	int curInitialNodeNumber = 0;
-	QString const projectName = "example" + QString::number(curInitialNodeNumber);
-	QString const projectDir = "nxt-tools/" + projectName;
+
+	QString const projectName = fileInfo.baseName();
+	QString const projectDir = fileInfo.absolutePath();
 
 	initializeGeneration(projectDir);
 

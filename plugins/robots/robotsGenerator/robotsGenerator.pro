@@ -13,11 +13,9 @@ TRANSLATIONS = robotsGenerator_ru.ts
 RESOURCES = robotsGenerator.qrc
 
 HEADERS += \
-	robotsGeneratorPlugin.h \
-        codeManager.h
+	robotsGeneratorPlugin.h
 
 SOURCES += \
-	robotsGeneratorPlugin.cpp \
-        codeManager.cpp
+	robotsGeneratorPlugin.cpp
 
 include(nxtOSEK/nxtOsek.pri)

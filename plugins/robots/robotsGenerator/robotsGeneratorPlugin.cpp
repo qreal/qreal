@@ -28,8 +28,12 @@ void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mRepoControlApi = &configurator.repoControlInterface();
 	mProjectManager = &configurator.projectManager();
+	mSystemEvents = &configurator.systemEvents();
+	mCodeManager = &configurator.codeManager();
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
+
+	connect(mSystemEvents, SIGNAL(codePathChanged(CodeArea*,QFileInfo)), this, SLOT(regenerateRobotSourceCode()));
 }
 
 QList<ActionInfo> RobotsGeneratorPlugin::actions()
@@ -91,22 +95,46 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 			 *mMainWindowInterface->errorReporter());
 	mMainWindowInterface->errorReporter()->clearErrors();
 
-	gen.generate();
+	QFileInfo fileInfo = mCodeManager->codePath(mMainWindowInterface->activeDiagram());
+	bool newCode = false;
+
+	if (fileInfo.absoluteFilePath() == "") {
+		QString const projectName = "example" + QString::number(mCodeManager->currentCodeNumber());
+		fileInfo = QFileInfo("nxt-tools/" + projectName + "/" + projectName + ".c");
+		newCode = true;
+	}
+
+	gen.generate(fileInfo);
 
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
 		return false;
 	}
 
-	QFile file("nxt-tools/example0/example0.c");
+	if (newCode) {
+		mCodeManager->nextCodeNumber();
+	}
+
+	QFile file(fileInfo.absoluteFilePath());
 	QTextStream *inStream = NULL;
 	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		inStream = new QTextStream(&file);
 	}
 
 	if (inStream) {
-		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
+		mMainWindowInterface->showInTextEditor(fileInfo.baseName(), inStream->readAll());
 	}
 	return true;
+}
+
+void RobotsGeneratorPlugin::regenerateRobotSourceCode()
+{
+	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeCodeDiagram(),
+			 *mRepoControlApi,
+			 *mMainWindowInterface->errorReporter());
+
+	QFileInfo fileInfo = mCodeManager->codePath(mMainWindowInterface->activeCodeDiagram());
+
+	gen.generate(fileInfo);
 }
 
 void RobotsGeneratorPlugin::flashRobot()

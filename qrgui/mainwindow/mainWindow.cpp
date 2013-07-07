@@ -57,6 +57,7 @@
 
 #include "../../../../qrutils/outFile.h"
 #include "../toolPluginInterface/systemEvents.h"
+#include "../textEditor/codeManager.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -73,6 +74,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(NULL)
 		, mSystemEvents(new SystemEvents())
+		, mCodeManager(new CodeManager(mSystemEvents))
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(NULL)
 		, mIsFullscreen(false)
@@ -1765,6 +1767,18 @@ Id MainWindow::activeDiagram()
 	return getCurrentTab() && getCurrentTab()->mvIface() ? getCurrentTab()->mvIface()->rootId() : Id();
 }
 
+Id MainWindow::activeCodeDiagram()
+{
+	Id id = activeDiagram();
+
+	if (id == Id()) {
+		CodeArea * const area = dynamic_cast<CodeArea *>(mUi->tabs->currentWidget());
+		id = mCodeManager->diagram(area);
+	}
+
+	return id;
+}
+
 void MainWindow::initPluginsAndStartDialog()
 {
 	initToolPlugins();
@@ -1791,7 +1805,7 @@ void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
 										 , mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
-										 , *mSystemEvents));
+										 , *mSystemEvents, *mCodeManager));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
@@ -1851,6 +1865,7 @@ void MainWindow::showInTextEditor(QString const &title, QString const &text)
 			area->document()->setPlainText(text);
 			area->show();
 			mCodeTabManager->insert(getCurrentTab(), area);
+			mCodeManager->addNewCode(activeDiagram(), area, QFileInfo("nxt-tools/" + title + "/" + title + ".c"));
 
 			mUi->tabs->addTab(area, title);
 			mUi->tabs->setCurrentWidget(area);
@@ -2089,16 +2104,16 @@ bool MainWindow::saveGeneratedCode()
 	if (dynamic_cast<EditorView *>(getCurrentTab()) == NULL) {
 		CodeArea * const area = dynamic_cast<CodeArea *>(mUi->tabs->currentWidget());
 
-		QFileInfo fileinfo = QFileInfo(QFileDialog::getSaveFileName(this, tr("Save generated code"), "", tr("Generated Code (*.c)")));
+		QFileInfo fileInfo = QFileInfo(QFileDialog::getSaveFileName(this, tr("Save generated code"), "", tr("Generated Code (*.c)")));
 
-		if (fileinfo.fileName() != "") {
-			mUi->tabs->setTabText(mUi->tabs->currentIndex(), fileinfo.fileName());
+		if (fileInfo.fileName() != "") {
+			mUi->tabs->setTabText(mUi->tabs->currentIndex(), fileInfo.fileName());
 
-			utils::OutFile out(fileinfo.absoluteFilePath());
+			utils::OutFile out(fileInfo.absoluteFilePath());
 
 			out() << area->toPlainText();
 
-			emit changedSNameAndSDir(fileinfo);
+			mSystemEvents->emitCodePathChanged(area, fileInfo);
 		}
 
 		return true;

@@ -16,6 +16,8 @@
 #include "findManager.h"
 #include "referenceList.h"
 
+#include "../toolPluginInterface/systemEvents.h"
+
 #include "projectManager/projectManager.h"
 
 #include "../pluginManager/editorManagerInterface.h"
@@ -93,6 +95,7 @@ public:
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
+	Id activeCodeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
 	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy);
@@ -159,7 +162,6 @@ signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
 	void rootDiagramChanged();
-	void changedSNameAndSDir(QFileInfo const &dir);
 
 public slots:
 	void deleteFromScene();
@@ -365,6 +367,8 @@ private:
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;
 	SystemEvents *mSystemEvents;
+	CodeManagerInterface *mCodeManager;
+
 
 	QVector<bool> mSaveListChecked;
 

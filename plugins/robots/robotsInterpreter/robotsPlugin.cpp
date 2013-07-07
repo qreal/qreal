@@ -116,7 +116,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
 
-	SystemEvents const *systemEvents = &configurator.systemEvents();
+	SystemEventsInterface const *systemEvents = &configurator.systemEvents();
 
 	connect(systemEvents, SIGNAL(settingsUpdated()), this, SLOT(updateSettings()));
 	connect(systemEvents, SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(Id)));

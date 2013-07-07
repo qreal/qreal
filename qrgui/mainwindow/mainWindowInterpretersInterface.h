@@ -25,6 +25,7 @@ public:
 	/// Gets graphical Id of diagram currently opened in editor.
 	/// @returns Id of opened diagram, empty Id if there is none.
 	virtual Id activeDiagram() = 0;
+	virtual Id activeCodeDiagram() = 0;
 
 	virtual void openSettingsDialog(QString const &tab) = 0;
 

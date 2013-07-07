@@ -5,6 +5,8 @@
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 #include "../../../qrgui/toolPluginInterface/hotKeyActionInfo.h"
+#include "../../../qrgui/toolPluginInterface/systemEventsInterface.h"
+#include "../../../qrgui/textEditor/codeManagerInterface.h"
 #include "nxtOSEK/nxtFlashTool.h"
 
 
@@ -32,6 +34,7 @@ public:
 private slots:
 	/// Calls code generator. Returns true if operation was successfull.
 	bool generateRobotSourceCode();
+	void regenerateRobotSourceCode();
 
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
 	void flashRobot();
@@ -78,6 +81,8 @@ private:
 	NxtFlashTool *mFlashTool;  // Has ownership
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
+	qReal::SystemEventsInterface *mSystemEvents;
+	qReal::CodeManagerInterface *mCodeManager;
 };
 
 }

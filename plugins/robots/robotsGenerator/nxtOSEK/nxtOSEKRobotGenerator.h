@@ -4,6 +4,7 @@
 #include <QtCore/QPair>
 #include <QtCore/QMap>
 #include <QtCore/QStack>
+#include <QtCore/QFileInfo>
 
 #include "../../../../qrkernel/ids.h"
 #include "../../../../qrrepo/repoApi.h"
@@ -28,7 +29,7 @@ public:
 	~NxtOSEKRobotGenerator();
 
 	/// main method that starts a code generation.
-	void generate();
+	void generate(QFileInfo const &fileInfo);
 	Variables &variables();
 	QList<SmartLine> &initCode();
 	QList<SmartLine> &terminateCode();
