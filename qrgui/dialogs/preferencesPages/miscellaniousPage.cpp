@@ -71,12 +71,12 @@ void PreferencesMiscellaniousPage::restoreSettings()
 	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
 	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL").toBool());
 
-	int index = 0;
+	LineType type = BrokenLine;
 	if (SettingsManager::value("SquareLine").toBool())
-		index = 1;
+		type = SquareLine;
 	if (SettingsManager::value("CurveLine").toBool())
-		index = 2;
-	mUi->lineMode->setCurrentIndex(index);
+		type = CurveLine;
+	mUi->lineMode->setCurrentIndex(type);
 
 	mUi->paintOldLineCheckBox->setChecked(SettingsManager::value("PaintOldEdgeMode").toBool());
 
