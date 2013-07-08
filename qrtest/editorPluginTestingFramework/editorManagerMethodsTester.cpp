@@ -12,7 +12,8 @@ EditorManagerMethodsTester::EditorManagerMethodsTester(EditorManager* qrxcGenera
 	mInterpreterGeneratedPlugin = interpreterGeneratedPlugin;
 }
 
-class EditorManagerMethodsTester::StringGenerator {
+class EditorManagerMethodsTester::StringGenerator
+{
 public:
 	QStringList convertIdListIntoStringList(IdList idList) const
 	{
@@ -44,11 +45,7 @@ protected:
 	virtual QStringList callMethod(EditorManagerInterface *editorManagerInterface
 			, Id const &editorId = Id::rootId()
 			, Id const &diagramId = Id::rootId()
-			, Id const &groupId = Id::rootId()
-			, QString const &editorName = ""
-			, QString const &diagramName = ""
-			, QString const &elementName = ""
-			, QString const &groupName = "") const = 0;
+			, Id const &elementId = Id::rootId()) const = 0;
 };
 
 class EditorManagerMethodsTester::StringGeneratorForEditors : public EditorManagerMethodsTester::StringGenerator
@@ -59,6 +56,7 @@ class EditorManagerMethodsTester::StringGeneratorForEditors : public EditorManag
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			QStringList const additionalList = callMethod(editorManagerInterface, editor);
 			resultList += additionalList;
+			resultList += "|";
 		}
 		return resultList;
 	}
@@ -71,11 +69,9 @@ class EditorManagerMethodsTester::StringGeneratorForDiagrams : public EditorMana
 
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
-				QString const &diagramName = editorManagerInterface->diagramName(editorManagerInterface->friendlyName(editor)
-						, editorManagerInterface->friendlyName(diagram));
-				// i have no idea about this bullshit
-				QStringList const additionalList = callMethod(editorManagerInterface, editor, diagram, diagramName);
+				QStringList const additionalList = callMethod(editorManagerInterface, editor, diagram);
 				resultList += additionalList;
+				resultList += "|";
 			}
 		}
 		return resultList;
@@ -89,19 +85,13 @@ class EditorManagerMethodsTester::StringGeneratorForElements : public EditorMana
 
 		foreach (Id const &editor, editorManagerInterface->editors()) {
 			foreach (Id const &diagram, editorManagerInterface->diagrams(editor)) {
-				QString const &diagramName = editorManagerInterface->diagramName(editorManagerInterface->friendlyName(editor)
-						, editorManagerInterface->friendlyName(diagram));
-				foreach (QString const &element, editorManagerInterface->elements(diagram)) {
-					QStringList const additionalList = callMethod(editorManagerInterface
-							, editor
-							, diagram
-							, diagramName
-							, element);
+				foreach (Id const &element, editorManagerInterface->elements(diagram)) {
+					QStringList const additionalList = callMethod(editorManagerInterface, editor, diagram, element);
 					resultList += additionalList;
+					resultList += "|";
 				}
 			}
 		}
-
 		return resultList;
 	}
 };
@@ -113,92 +103,65 @@ class EditorManagerMethodsTester::DiagramsListGenerator : public EditorManagerMe
 	}
 
 	virtual QStringList callMethod(EditorManagerInterface *editorManagerInterface
-			, Id const &id
-			, QString const &name) const
+			, Id const &editorId
+			, Id const &diagramId
+			, Id const &elementId) const
 	{
-		Q_UNUSED(name);
-		return convertIdListIntoStringList(editorManagerInterface->diagrams(id));
+		Q_UNUSED(diagramId);
+		Q_UNUSED(elementId);
+		return convertIdListIntoStringList(editorManagerInterface->diagrams(editorId));
 	}
 };
 
-class EditorManagerMethodsTester::ElementsListGenerator : public EditorManagerMethodsTester::StringGeneratorForDiagrams
+class EditorManagerMethodsTester::ElementsListGeneratorWithIdParameter : public EditorManagerMethodsTester::StringGeneratorForDiagrams
 {
 	virtual QString methodName() const {
-		return "Elements";
+		return "Elements(Id const &diagram)";
 	}
 
 	virtual QStringList callMethod(EditorManagerInterface *editorManagerInterface
-			, Id const &id
-			, QString const &name) const
+			, Id const &editorId
+			, Id const &diagramId
+			, Id const &elementId) const
 	{
-		Q_UNUSED(name);
-		return convertIdListIntoStringList(editorManagerInterface->elements(id));
+		Q_UNUSED(editorId);
+		Q_UNUSED(elementId);
+		return convertIdListIntoStringList(editorManagerInterface->elements(diagramId));
 	}
 };
 
-class EditorManagerMethodsTester::FriendlyNameListGenerator : public EditorManagerMethodsTester::StringGeneratorForElements
+class EditorManagerMethodsTester::ElementsListGeneratorWithQStringParameters : public EditorManagerMethodsTester::StringGeneratorForDiagrams
 {
 	virtual QString methodName() const {
-		return "Friendly name";
+		return "Elements(QString const &editor, QString const &diagram)";
 	}
 
 	virtual QStringList callMethod(EditorManagerInterface *editorManagerInterface
-			, Id const &id
-			, QString const &name) const
+			, Id const &editorId
+			, Id const &diagramId
+			, Id const &elementId) const
 	{
-		Q_UNUSED(name);
-		QStringList result;
-		result.append(editorManagerInterface->friendlyName(id));
-		return result;
-	}
-};
-
-class EditorManagerMethodsTester::DescriptionListGenerator : public EditorManagerMethodsTester::StringGeneratorForElements
-{
-	virtual QString methodName() const {
-		return "Description";
-	}
-
-	virtual QStringList callMethod(EditorManagerInterface *editorManagerInterface
-			, Id const &id
-			, QString const &name) const
-	{
-		Q_UNUSED(name);
-		QStringList result;
-		result.append(editorManagerInterface->description(id));
-		return result;
+		Q_UNUSED(elementId);
+		QString const &editorName = editorId.editor();
+		QString const &diagramName = diagramId.diagram();
+		return (editorManagerInterface->elements(editorName, diagramName));
 	}
 };
 
 void EditorManagerMethodsTester::testMethods()
 {
 	testMethod(DiagramsListGenerator());
-	testMethod(ElementsListGenerator());
-	testMethod(FriendlyNameListGenerator());
-	testMethod(DescriptionListGenerator());
+
+	testMethod(ElementsListGeneratorWithIdParameter());
+	testMethod(ElementsListGeneratorWithQStringParameters());
 }
 
 void EditorManagerMethodsTester::testMethod(StringGenerator const &stringGenerator)
 {
-	//qDebug() << "Testing: " << stringGenerator.methodName();
 	QString const &methodName = stringGenerator.methodName();
 
 	QString const &qrxcResult = stringGenerator.generateString(mQrxcGeneratedPlugin);
-	//qDebug() << "ololo" << qrxcResult;
 	QString const &interpreterResult = stringGenerator.generateString(mInterpreterGeneratedPlugin);
-
-//	if (interpreterResult == qrxcResult) {
-//		qDebug() << "Results are the same";
-//		if (interpreterResult.isEmpty()) {
-//			qDebug() << "THIS METHOD HAS TO BE VERIFIED SOMEHOW!";
-//		}
-//	} else {
-//		qDebug() << "Results are not the same";
-//		qDebug() << "For interpreter: " << interpreterResult;
-//		qDebug() << "For qrxc: " << qrxcResult;
-//	}
-
-//	qDebug() << "\n";
 
 	QPair<QString, QString> methodsPair = qMakePair(qrxcResult, interpreterResult);
 	QPair<QString, QPair<QString, QString> > resultPair = qMakePair(methodName, methodsPair);

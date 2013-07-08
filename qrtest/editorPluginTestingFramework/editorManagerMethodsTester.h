@@ -22,13 +22,10 @@ private:
 	class StringGeneratorForEditors;
 	class StringGeneratorForDiagrams;
 	class StringGeneratorForElements;
-	class StringGeneratorForProperties;
-	class StringGeneratorForGroups;
 
 	class DiagramsListGenerator;
-	class ElementsListGenerator;
-	class FriendlyNameListGenerator;
-	class DescriptionListGenerator;
+	class ElementsListGeneratorWithIdParameter;
+	class ElementsListGeneratorWithQStringParameters;
 
 	void testMethod(StringGenerator const &stringGenerator);
 

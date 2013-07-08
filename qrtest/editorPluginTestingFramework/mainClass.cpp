@@ -41,7 +41,7 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 	if ((qrxcGeneratedPlugin != NULL) && (qrmcGeneratedPlugin != NULL)) {
 		MethodsTester* const methodsTester = new MethodsTester(qrmcGeneratedPlugin, qrxcGeneratedPlugin);
 
-		methodsTester->testMethods();
+		//methodsTester->testMethods();
 
 		QList<QPair<QString, QPair<QString, QString> > > methodsTesterOutput = methodsTester->generateOutputList();
 		createHtml(methodsTesterOutput, interpreterMethodsTesterOutput);

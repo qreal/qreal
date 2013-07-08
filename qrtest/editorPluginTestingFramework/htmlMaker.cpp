@@ -21,48 +21,50 @@ void HtmlMaker::makeHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAn
 	QDomElement root = mHtml.createElement("html");
 	mHtml.appendChild(root);
 
-	QDomElement body = mHtml.createElement("body");
-	root.appendChild(body);
+	QDomElement head = newElement(root, "head");
+	QDomElement meta = newElement(head, "meta");
 
-//	QDomText nameOfTable = mHtml.createTextNode("Table with results of comparison between qrxc and qrmc");
-//	body.appendChild(nameOfTable);
+	QString const &charset = "utf-8";
+	meta.setAttribute("charset", charset);
 
-//	QDomElement table = mHtml.createElement("table border");
-//	body.appendChild(table);
+	QDomElement body = newElement(root, "body");
 
-//	addLineToTable(table, "Name of method", "Result for qrxc", "Result for qrmc", true);
-
-//	foreach (StringTriplet const &pair, listOfLines) {
-//		QString const &methodName = pair.first;
-//		QString const &qrxcResult = pair.second.first;
-//		QString const &qrmcResult = pair.second.second;
-
-//		addLineToTable(table, methodName, qrxcResult, qrmcResult, false);
-//	}
-
-	addTable(body, qrxcAndQrmcResult, "Method name", "QRXC", "QRMC"); //"left", "30");
-	addTable(body, qrxcAndInterpreterResult, "Method name", "QRXC", "Interpreter"); //"right", "70");
+	addTable(body, qrxcAndQrmcResult, "Table with results of comparison between qrxc and qrmc"
+			 , "Method name", "QRXC", "QRMC"); //"left", "30")
+	QDomElement breakLine = newElement(body, "br");
+	addTable(body, qrxcAndInterpreterResult, "Table with results of comparison between qrxc and interpreter"
+			 , "Method name", "QRXC", "Interpreter"); //"right", "70");
 
 	QString const &fileName = binariesDir + "/output.html";
 	OutFile outHtml(fileName);
 	mHtml.save(outHtml(), 4);
 }
 
+QDomElement HtmlMaker::newElement(QDomElement &parent, QString const &newElementName)
+{
+	QDomElement newElement = mHtml.createElement(newElementName);
+	parent.appendChild(newElement);
+
+	return newElement;
+}
+
 void HtmlMaker::addTable(QDomElement parent
 		, QList<QPair<QString, QPair<QString, QString> > > listOfLines
+		, QString const &text
 		, QString const &firstColumnTitle
 		, QString const &secondColumnTitle
-		, QString const &thirdColumnTitle
-/*		, QString const &alignParameter
-		, QString const &width*/)
+		, QString const &thirdColumnTitle)
 {
 	typedef QPair<QString, QPair<QString, QString> > StringTriplet;
 
-	QDomElement table = mHtml.createElement("table");
-	parent.appendChild(table);
+	QDomElement bold = newElement(parent, "b");
+
+	QDomText nameOfTable = mHtml.createTextNode(text);
+	bold.appendChild(nameOfTable);
+
+	QDomElement table = newElement(parent, "table");
 
 	QString const &styleLine = "border:2px solid black;";
-	//"float:" + alignParameter + "; width: " + width + "%;" +
 
 	table.setAttribute("style", styleLine);
 	table.setAttribute("rules", "all");
@@ -84,17 +86,16 @@ void HtmlMaker::addLineToTable(QDomElement parent
 			, QString const &qrmcResult
 			, bool const &isTitle)
 {
-	QDomElement newLine = mHtml.createElement("tr");
-	parent.appendChild(newLine);
+	QDomElement newLine = newElement(parent, "tr");
 
 	if (!isTitle) {
 		QString const color = lineColor(qrxcResult, qrmcResult);
 		newLine.setAttribute("bgcolor", color);
 	}
 
-	addColumnToLine(newLine, methodName);
-	addColumnToLine(newLine, qrxcResult);
-	addColumnToLine(newLine, qrmcResult);
+	addColumnToLine(newLine, methodName, isTitle, true);
+	addColumnToLine(newLine, qrxcResult, isTitle, false);
+	addColumnToLine(newLine, qrmcResult, isTitle, false);
 }
 
 bool HtmlMaker::resultsAreTheSame(QString const &firstMethod, QString const &secondMethod)
@@ -113,7 +114,8 @@ QString HtmlMaker::lineColor(QString const &qrxcResult, QString const &qrmcResul
 {
 	QString color = "";
 
-	if ((containsOnly(qrmcResult, ' ')) || (qrmcResult.isEmpty())) {
+	if (((containsOnly(qrmcResult, ' ')) || (qrmcResult.isEmpty()))
+			&& (((containsOnly(qrxcResult, ' ')) || (qrxcResult.isEmpty())))) {
 		color = "Gold";
 	} else {
 		if (resultsAreTheSame(qrxcResult, qrmcResult)) {
@@ -139,11 +141,37 @@ bool HtmlMaker::containsOnly(QString const &string, QChar const &symbol)
 	return containsOnlyThisSymbol;
 }
 
-void HtmlMaker::addColumnToLine(QDomElement parent, QString const &value)
+void HtmlMaker::addColumnToLine(QDomElement parent, QString const &value, bool const &isTitle, bool const &isMethodName)
 {
-	QDomElement newColumn = mHtml.createElement("td");
-	parent.appendChild(newColumn);
+	QDomElement newColumn = newElement(parent, "td");
 
-	QDomText name = mHtml.createTextNode(value);
-	newColumn.appendChild(name);
+	QStringList listOfMethodTestingResults = parseOutput(value);
+
+	foreach (QString const &elementOfOutput, listOfMethodTestingResults) {
+		QDomText name = mHtml.createTextNode(elementOfOutput);
+
+		if (isTitle || isMethodName) {
+			QDomElement bold = newElement(newColumn, "b");
+			bold.appendChild(name);
+		} else {
+			newColumn.appendChild(name);
+		}
+
+		QDomElement breakLine = newElement(newColumn, "br");
+	}
+}
+
+QStringList HtmlMaker::parseOutput(QString const &methodOutput)
+{
+	QStringList const list = methodOutput.split("|");
+
+	QStringList listWithoutEmptyElements;
+
+	foreach (QString const &element, list) {
+		if (!containsOnly(element, ' ')) {
+			listWithoutEmptyElements.append(element);
+		}
+	}
+
+	return listWithoutEmptyElements;
 }
