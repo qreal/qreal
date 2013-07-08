@@ -19,6 +19,8 @@ const double pi = 3.14159265358979;
 
 const qreal epsilon = 0.00000000001;
 
+const int rightRotation = 1;// the difference between the elements of NodeSide
+
 /** @brief indicator of edges' movement */
 
 EdgeElement::EdgeElement(ElementImpl *impl)
@@ -303,6 +305,10 @@ void EdgeElement::paintSavedEdge(QPainter *painter) const
 		return;
 	}
 
+	if (mIsLoop) {
+		return;
+	}
+
 	QColor color = QColor(SettingsManager::value("oldLineColor").toString());
 	if (!(mSavedLineForChanges.size() < 2) && mLeftButtonIsPressed) {
 		painter->save();
@@ -443,25 +449,12 @@ void EdgeElement::connectToPort()
 
 	mIsLoop = ((newSrc == newDst) && newSrc);
 
-	if (newSrc == newDst && newSrc && mLine.size() <= 3) {
-		if (!mLastLine.isEmpty()) {
-			if (mLastLine.size() > 2 && !mLastLineIsLoop) {
-				mIsLoop = false;
-			}
-			mLine = mLastLine;
-			mMoving = false;
-			return;
-		} else {
-			// FIXME: need createLoopEdge()'s implementation. linker's edges, for example, transforms to point now (see #602)
-			mIsLoop = true;
-			connectLoopEdge(newSrc);
-			createLoopEdge();
-			return;
-		}
-	}
+	setPos(pos() + mLine.first());
+	mLine.translate(-mLine.first());
 
 	if (mIsLoop) {
 		connectLoopEdge(newSrc);
+		createLoopEdge();
 		return;
 	}
 
@@ -521,7 +514,7 @@ void EdgeElement::connectLoopEdge(NodeElement *newMaster)
 	mLine.translate(-mLine.first());
 
 	mPortFrom = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.first())) : -1.0;
-	mPortTo = mPortFrom;
+	mPortTo = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.last())) : -1.0;
 
 	if (mPortFrom >= -epsilon) {
 		newMaster->delEdge(this);
@@ -549,37 +542,67 @@ void EdgeElement::connectLoopEdge(NodeElement *newMaster)
 
 void EdgeElement::createLoopEdge() // nice implementation makes sense after #602 fixed!
 {
-	int direct = defineDirection(true);
-	mLine.remove(1, mLine.size() - 1);
-	bool isVertical = direct & 1;
-	if (direct > 0) {
-		direct = 1;
-	} else {
-		direct = -1;
+	if (!(mDst && mSrc))
+		return;
+
+	QPolygonF newLine;
+
+	NodeSide startSide = (NodeSide)defineSide(mPortFrom);
+	NodeSide endSide = (NodeSide)defineSide(mPortTo);
+
+	QPointF secondPoint = boundingRectIndent(mLine.first(), startSide);
+	QPointF penultPoint = boundingRectIndent(mLine.last(), endSide);
+
+	if (isNeighbor(startSide, endSide)) {
+		newLine << mLine.first() << secondPoint
+					<< boundingRectIndent(secondPoint, endSide)
+					<< penultPoint << mLine.last();
+	} /*else {
+		QPointF thirdPoint = boundingRectIndent(secondPoint, rotateRight(startSide));
+		QPointF forthPoint = boundingRectIndent(thirdPoint, rotateRight(rotateRight(startSide)));
+
+		newLine << mLine.first() << secondPoint
+					<< thirdPoint << forthPoint
+					<< penultPoint << mLine.last();
 	}
-	if (SettingsManager::value("SquareLine").toBool()) {
-		// creating square
-		qreal newY = direct * 3 * kvadratik + mLine.first().y();
-		qreal newX = direct * 3 * kvadratik + mLine.first().x();
-		mLine.insert(1, QPointF(mLine.first().x(), newY));
-		mLine.insert(2, QPointF(newX, newY));
-		mLine.insert(3, QPointF(newX, mLine.first().y()));
-		mLine.insert(4, QPointF(mLine.first()));
-	} else {
-		// creating equilateral triangle
-		if (isVertical) {
-			qreal newY = direct * 3 * kvadratik + mLine.first().y();
-			mLine.insert(1, QPointF(mLine.first().x() - 1.5 * kvadratik, newY));
-			mLine.insert(2, QPointF(mLine.first().x() + 1.5 * kvadratik, newY));
-			mLine.insert(3, QPointF(mLine.first()));
-		} else {
-			qreal newX = direct * 3 * kvadratik + mLine.first().x();
-			mLine.insert(1, QPointF(newX, mLine.first().y() + 1.5 * kvadratik));
-			mLine.insert(2, QPointF(newX, mLine.first().y() - 1.5 * kvadratik));
-			mLine.insert(3, QPointF(mLine.first()));
-		}
-	}
+*/
+	setLine(newLine);
 	mIsLoop = true;
+}
+
+QPointF EdgeElement::boundingRectIndent(QPointF point, EdgeElement::NodeSide direction)
+{
+	QPointF newPoint;
+	QRectF bounds = mSrc->boundingRect();
+
+	switch (direction) {
+	case Top:
+		newPoint = QPointF(point.x(), bounds.top() + 20);
+		break;
+	case Bottom:
+		newPoint = QPointF(point.x(), bounds.bottom() - 20);
+		break;
+	case Left:
+		newPoint = QPointF(bounds.left() - 20, point.y());
+		break;
+	case Right:
+		newPoint = QPointF(bounds.right() + 20, point.y());
+		break;
+	default:
+		qDebug() << "incorrect direction";
+	}
+
+	return newPoint;
+}
+
+bool EdgeElement::isNeighbor(const EdgeElement::NodeSide &startSide, const EdgeElement::NodeSide &endSide) const
+{
+	return ((startSide == rotateRight(endSide)) || (endSide == rotateRight(startSide)));
+}
+
+EdgeElement::NodeSide EdgeElement::rotateRight(EdgeElement::NodeSide side) const
+{
+	return (NodeSide)(((int)side + rightRotation) % 4);
 }
 
 bool EdgeElement::initPossibleEdges()
@@ -638,9 +661,15 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	{
 		mLeftButtonIsPressed = false;
 		mDragPoint = noPort;
+//		mIsLoop = false;
 		Element::mousePressEvent(event);
 	} else if (mDragPoint == noPort) {
+		if (mIsLoop) {
+			return;
+		}
+
 		Element::mousePressEvent(event);
+
 
 		if (SettingsManager::value("CurveLine").toBool()) {
 			return;
@@ -719,6 +748,9 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	if (mDragPoint == noPort) {
+		if (mIsLoop) {
+			return;
+		}
 		Element::mouseMoveEvent(event);
 		if (SettingsManager::value("CurveLine").toBool()) {
 			return;
@@ -1214,7 +1246,7 @@ void EdgeElement::adjustLink(bool isDragging)
 			mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
 		}
 
-		if (!SettingsManager::value("CurveLine").toBool()) {
+		if (!SettingsManager::value("CurveLine").toBool() && !mIsLoop) {
 			delCloseLinePoints();
 			deleteLoops();
 		}
@@ -1222,6 +1254,7 @@ void EdgeElement::adjustLink(bool isDragging)
 		updateLongestPart();
 	} else {
 		if (isSelected()) {
+
 			if (mSrc && !mSrc->isSelected()) {
 				prepareGeometryChange();
 				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
@@ -1243,6 +1276,12 @@ void EdgeElement::adjustLink(bool isDragging)
 			updateLongestPart();
 		}
 	}
+
+	if (mIsLoop) {
+		prepareGeometryChange();
+		createLoopEdge();
+	}
+
 	if (SettingsManager::value("SquareLine").toBool()) {
 		squarizeAndAdjustHandler();
 	}
@@ -1480,7 +1519,7 @@ void EdgeElement::highlight(QColor const color)
 	update();
 }
 
-int EdgeElement::defineDirection(bool from)
+/*int EdgeElement::defineDirection(bool from)
 {
 	qreal port = from ? mPortFrom : mPortTo;
 	int direct = 0;
@@ -1513,7 +1552,7 @@ int EdgeElement::defineDirection(bool from)
 		}
 	}
 	return direct;
-}
+}*/
 
 void EdgeElement::redrawing(QPointF const &pos)
 {
