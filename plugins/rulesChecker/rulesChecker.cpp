@@ -39,7 +39,7 @@ bool RulesChecker::makeDetour(Id const &currentNode, IdList &usedNodes)
 	}
 
 	IdList frontNodes =  mGRepoApi->outgoingLinks(currentNode);
-	if (isEmptyList(frontNodes)) {
+	if (frontNodes.isEmpty()) {
 		postError(NoEndNode, currentNode);
 		return true; // done end-job for nodes (now 100%)
 	}
@@ -70,7 +70,7 @@ void RulesChecker::checkFinalNodeRule(qReal::Id const &key)
 	}
 
 	IdList incorrectLinks = (isLastNode) ? mGRepoApi->outgoingLinks(key) : mGRepoApi->incomingLinks(key);
-	if (!isEmptyList(incorrectLinks)) {
+	if (!incorrectLinks.isEmpty()) {
 		postError((isLastNode) ? LinkFromFinalNode : LinkToStartNode, key);
 		foreach (Id const &key, incorrectLinks) {
 			mDiagramModels.removeOne(key);
@@ -84,7 +84,7 @@ void RulesChecker::researchDiagram()
 	IdList startingElements = collectStartNodes();
 
 	// check all paths which have starting nodes
-	while (!isEmptyList(startingElements)) {
+	while (!startingElements.isEmpty()) {
 		Id const currentHead = startingElements.first();
 		IdList usedNodes;
 		if (!makeDetour(currentHead, usedNodes)) {
@@ -94,8 +94,8 @@ void RulesChecker::researchDiagram()
 	}
 
 	// check other connected components
-	while (!isEmptyList(mDiagramModels)) {
-		Id headNode = findFirstNode(mDiagramModels.first());
+	while (!mDiagramModels.isEmpty()) {
+		Id headNode = findFirstNode();
 		postError(NoStartNode, headNode);
 		IdList usedNodes;
 		if (!makeDetour(headNode, usedNodes)) {
@@ -192,11 +192,6 @@ bool RulesChecker::isEndNode(qReal::Id const &node) const
 	return (node.element() == "EndEvent");
 }
 
-bool RulesChecker::isEmptyList(qReal::IdList const &list) const
-{
-	return list.size() == 0;
-}
-
 qReal::IdList RulesChecker::elementsOfDiagram(qReal::Id const &diagram) const
 {
 	IdList result = mGRepoApi->children(diagram);
@@ -231,15 +226,12 @@ qReal::IdList RulesChecker::collectStartNodes() const
 	return headNodes;
 }
 
-qReal::Id RulesChecker::findFirstNode(qReal::Id const &key) const
+qReal::Id RulesChecker::findFirstNode() const
 {
-	IdList startingList;
-	getPreviousNodes(key, startingList);
-
-	Id result = startingList.first();
+	Id result = mDiagramModels.first();
 	int minIncomingLinks = mGRepoApi->incomingLinks(result).size();
 
-	foreach (Id const &key, startingList) {
+	foreach (Id const &key, mDiagramModels) {
 		int incomingLinks = mGRepoApi->incomingLinks(key).size();
 		if (incomingLinks < minIncomingLinks) {
 			minIncomingLinks = incomingLinks;
@@ -250,15 +242,4 @@ qReal::Id RulesChecker::findFirstNode(qReal::Id const &key) const
 	return result;
 }
 
-void RulesChecker::getPreviousNodes(qReal::Id const &key, IdList &result) const
-{
-	if (result.contains(key) || !mDiagramModels.contains(key)) { // we wont loooking what already done
-		return;
-	}
-
-	result << key;
-	foreach (Id const &link, mGRepoApi->incomingLinks(key)) {
-		getPreviousNodes(mGRepoApi->from(link), result);
-	}
-}
 

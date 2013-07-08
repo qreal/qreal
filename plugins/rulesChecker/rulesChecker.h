@@ -52,7 +52,6 @@ private:
 	bool isContainer(Id const &node) const;
 	bool isStartNode(Id const &node) const;
 	bool isEndNode(Id const &node) const;
-	bool isEmptyList(IdList const &list) const;
 
 	//! @returns IdList list all graphical elements of diagram
 	IdList elementsOfDiagram(Id const &diagram) const;
@@ -63,10 +62,7 @@ private:
 	IdList collectStartNodes() const;
 
 	//! @return Id node with minimal incoming links count
-	Id findFirstNode(Id const &key) const;
-
-	//! @arg result will have all nodes that have path to node key
-	void getPreviousNodes(Id const &key, IdList &result) const;
+	Id findFirstNode() const;
 
 	qrRepo::GraphicalRepoApi const *mGRepoApi;
 	qReal::gui::MainWindowInterpretersInterface *mWindowInterface;
