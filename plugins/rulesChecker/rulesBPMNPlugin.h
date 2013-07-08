@@ -7,7 +7,7 @@
 namespace qReal{
 namespace rulesChecker{
 
-//! @class RulesPlugin allowes to check diagram for BPMN rules
+//! @class RulesPlugin allows to check diagram for BPMN rules
 class RulesPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT

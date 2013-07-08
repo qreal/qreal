@@ -11,14 +11,14 @@ class RulesChecker : public QObject
 {
 	Q_OBJECT
 
-public slots:
-	void checkAllDiagrams();
-	void checkCurrentDiagram();
-
 public:
 	RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface);
 	// std destructor ok
+
+public slots:
+	void checkAllDiagrams();
+	void checkCurrentDiagram();
 
 private:
 	 enum ErrorsType {
@@ -36,7 +36,7 @@ private:
 	//! removes elements from mDiagramModels list while making detour
 	//! @arg usedNodes prevents detour to go twice in same node
 	//! @returns bool true if have reached the final node
-	bool makeDetour(Id const currentNode, IdList &usedNodes);
+	bool makeDetour(Id const &currentNode, IdList &usedNodes);
 
 	//! controls existsing nodes at the ends of link
 	void checkLinksRule(Id const &key);
@@ -46,18 +46,21 @@ private:
 	//! clears errorlog
 	void prepareOutput();
 	//! makes report and highlights of badNode
-	void postError(ErrorsType const error, Id badNode);
+	void postError(ErrorsType const error, Id const &badNode);
 
-	bool isLink(Id const &model) const;
-	bool isStartNode(Id const &model) const;
-	bool isEndNode(Id const &model) const;
+	bool isLink(Id const &node) const;
+	bool isContainer(Id const &node) const;
+	bool isStartNode(Id const &node) const;
+	bool isEndNode(Id const &node) const;
+	bool isEmptyList(IdList const &list) const;
 
 	//! @returns IdList list all graphical elements of diagram
 	IdList elementsOfDiagram(Id const &diagram) const;
 
 	//! removes containers from list, checks link-rule and final-nodes-rule
-	//! @return IdList of head-nodes
-	IdList checkDiagramModelsList(IdList &list);
+	void checkDiagramModelsList();
+	//! @return start-nodes from diagram list
+	IdList collectStartNodes() const;
 
 	//! @return Id node with minimal incoming links count
 	Id findFirstNode(Id const &key) const;
@@ -68,14 +71,13 @@ private:
 	qrRepo::GraphicalRepoApi const *mGRepoApi;
 	qReal::gui::MainWindowInterpretersInterface *mWindowInterface;
 
-	//! TODO: find better place for that
-	QStringList linkTypes;
-	QStringList containerTypes;
+	QStringList mLinkTypes;
+	QStringList mContainerTypes;
 
 	//! consists of models from current diagram
 	IdList mDiagramModels;
 	//! main flag
-	bool hasNoErrors;
+	bool mHasNoErrors;
 };
 
 }
