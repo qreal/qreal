@@ -765,6 +765,11 @@ bool NodeElement::isContainer() const
 	return mElementImpl->isContainer();
 }
 
+int NodeElement::numberOfPorts() const
+{
+	return mPortHandler->numberOfPorts();
+}
+
 int NodeElement::portNumber(qreal id)
 {
 	return PortHandler::portNumber(id);

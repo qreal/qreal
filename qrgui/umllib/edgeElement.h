@@ -172,6 +172,7 @@ private:
 	int defineDirection(bool from);
 
 	QPointF boundingRectIndent(QPointF point, NodeSide direction);
+	QPointF oppositeLoopCase(QPointF point, NodeSide direction);
 	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const ;
 	NodeSide rotateRight(NodeSide side) const;
 

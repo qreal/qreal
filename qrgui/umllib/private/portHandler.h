@@ -47,6 +47,8 @@ public:
 	 * @param id qreal Id that will be truncated.
 	 * @return Port number.
 	 */
+
+	int numberOfPorts() const;
 	static int portNumber(qreal id);
 
 	/**

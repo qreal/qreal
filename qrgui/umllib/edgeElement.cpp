@@ -20,6 +20,8 @@ const double pi = 3.14159265358979;
 const qreal epsilon = 0.00000000001;
 
 const int rightRotation = 1;// the difference between the elements of NodeSide
+const int curveReductCoeff = 2;
+const int brokenReduceCoeff = 6;
 
 /** @brief indicator of edges' movement */
 
@@ -267,6 +269,15 @@ void EdgeElement::setEdgePainter(QPainter *painter, QPen pen, qreal opacity) con
 
 void EdgeElement::setBezierPoints()
 {
+	if (mLine.size() == 4) {
+		return;
+	}
+	if (mIsLoop) {
+		QPolygonF newLine;
+		newLine << mLine[0] << mLine[2] << mLine[3] << mLine[5];
+		setLine(newLine);
+		return;
+	}
 	if (mLine.size() == 2) {
 		QPolygonF newLine;
 		newLine << mLine[0] << (mLine[1] - mLine[0]) / 3 << 2 * (mLine[1] - mLine[0]) / 3
@@ -282,7 +293,7 @@ void EdgeElement::setBezierPoints()
 	}
 	if (mLine.size() > 4) {
 		QPolygonF newLine;
-		newLine << mLine[0] << mLine[1] << mLine[mLine.size() - 2] << mLine[mLine.size() - 1];
+		newLine << mLine[0] << mLine[1] << mLine[mLine.size() - 2] << mLine.last();
 		setLine(newLine);
 		return;
 	}
@@ -458,9 +469,6 @@ void EdgeElement::connectToPort()
 		return;
 	}
 
-	setPos(pos() + mLine.first());
-	mLine.translate(-mLine.first());
-
 	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first())) : -1.0;
 	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last())) : -1.0;
 
@@ -510,9 +518,6 @@ void EdgeElement::connectToPort()
 
 void EdgeElement::connectLoopEdge(NodeElement *newMaster)
 {
-	setPos(pos() + mLine.first());
-	mLine.translate(-mLine.first());
-
 	mPortFrom = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.first())) : -1.0;
 	mPortTo = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.last())) : -1.0;
 
@@ -545,6 +550,9 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 	if (!(mDst && mSrc))
 		return;
 
+	setPos(pos() + mLine.first());
+	mLine.translate(-mLine.first());
+
 	QPolygonF newLine;
 
 	NodeSide startSide = (NodeSide)defineSide(mPortFrom);
@@ -554,10 +562,15 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 	QPointF penultPoint = boundingRectIndent(mLine.last(), endSide);
 
 	if (isNeighbor(startSide, endSide)) {
+		QPointF thirdPoint;
+		if ((endSide == Top) || (endSide == Bottom))
+			thirdPoint = QPointF(secondPoint.x(), penultPoint.y());
+		else
+			thirdPoint = QPointF(penultPoint.x(), secondPoint.y());
 		newLine << mLine.first() << secondPoint
-					<< boundingRectIndent(secondPoint, endSide)
-					<< penultPoint << mLine.last();
-	} /*else {
+					<< thirdPoint << thirdPoint
+					<< penultPoint << mLine.last(); //
+	} else {
 		QPointF thirdPoint = boundingRectIndent(secondPoint, rotateRight(startSide));
 		QPointF forthPoint = boundingRectIndent(thirdPoint, rotateRight(rotateRight(startSide)));
 
@@ -565,7 +578,7 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 					<< thirdPoint << forthPoint
 					<< penultPoint << mLine.last();
 	}
-*/
+
 	setLine(newLine);
 	mIsLoop = true;
 }
@@ -574,25 +587,46 @@ QPointF EdgeElement::boundingRectIndent(QPointF point, EdgeElement::NodeSide dir
 {
 	QPointF newPoint;
 	QRectF bounds = mSrc->boundingRect();
+	qreal reductFactor = brokenReduceCoeff;
+	if (SettingsManager::value("CurveLine").toBool()) {
+		reductFactor = curveReductCoeff;
+	}
 
 	switch (direction) {
-	case Top:
-		newPoint = QPointF(point.x(), bounds.top() + 20);
+	case Top: {
+		QPointF topPoint = mapToItem(mSrc, QPointF(point.x(), 0));
+		newPoint = mapFromItem(mSrc, QPointF(topPoint.x(),
+											bounds.top() - bounds.height() / reductFactor));
 		break;
-	case Bottom:
-		newPoint = QPointF(point.x(), bounds.bottom() - 20);
+	}
+	case Bottom: {
+		QPointF bottomPoint = mapToItem(mSrc, QPointF(point.x(), 0));
+		newPoint = mapFromItem(mSrc, QPointF(bottomPoint.x(),
+											bounds.bottom() + bounds.height() / reductFactor));
 		break;
-	case Left:
-		newPoint = QPointF(bounds.left() - 20, point.y());
+	}
+	case Left: {
+		QPointF leftPoint = mapToItem(mSrc, QPointF(0, point.y()));
+		newPoint = mapFromItem(mSrc, QPointF(bounds.left() - bounds.width() / reductFactor,
+											leftPoint.y()));
 		break;
-	case Right:
-		newPoint = QPointF(bounds.right() + 20, point.y());
+	}
+	case Right: {
+		QPointF rightPoint = mapToItem(mSrc, QPointF(0, point.y()));
+		newPoint = mapFromItem(mSrc, QPointF(bounds.right() + bounds.width() / reductFactor,
+											rightPoint.y()));
 		break;
+	}
 	default:
 		qDebug() << "incorrect direction";
 	}
 
 	return newPoint;
+}
+
+QPointF EdgeElement::oppositeLoopCase(QPointF point, EdgeElement::NodeSide direction)
+{
+
 }
 
 bool EdgeElement::isNeighbor(const EdgeElement::NodeSide &startSide, const EdgeElement::NodeSide &endSide) const
@@ -661,7 +695,7 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	{
 		mLeftButtonIsPressed = false;
 		mDragPoint = noPort;
-//		mIsLoop = false;
+		mIsLoop = false;
 		Element::mousePressEvent(event);
 	} else if (mDragPoint == noPort) {
 		if (mIsLoop) {
@@ -769,7 +803,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		mLine[mDragPoint] = event->pos();
 
-		if (SettingsManager::value("SquareLine").toBool()) {
+		if ((SettingsManager::value("SquareLine").toBool()) && (!mIsLoop)){
 			squarizeAndAdjustHandler();
 		} else {
 			if (SettingsManager::value("ActivateGrid").toBool()) {
@@ -1282,7 +1316,7 @@ void EdgeElement::adjustLink(bool isDragging)
 		createLoopEdge();
 	}
 
-	if (SettingsManager::value("SquareLine").toBool()) {
+	if ((SettingsManager::value("SquareLine").toBool()) && (!mIsLoop)){
 		squarizeAndAdjustHandler();
 	}
 }
@@ -1473,7 +1507,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 	prepareGeometryChange();
 	mLine[mLine.size() - 1] = place;
 
-	if (SettingsManager::value("SquareLine").toBool()) {
+	if ((SettingsManager::value("SquareLine").toBool()) && (!mIsLoop)){
 		squarizeAndAdjustHandler();
 	}
 
@@ -1701,7 +1735,7 @@ void EdgeElement::deleteLoops()
 	// It's very rough prevention of transforming in the point now
 	// should be adjusted deleteLoop and delCloseLinePoints to a good drawing considering isLoop (after fix #602)
 	// It's need to drawing without point's links and "QTransform::rotate with NaN called" accordingly
-	if (mIsLoop && ((SettingsManager::value("SquareLine").toBool() && mLine.size() <= 6) || mLine.size() <= 5)) {
+	if (mIsLoop) { //&& ((SettingsManager::value("SquareLine").toBool() && mLine.size() <= 6) || mLine.size() <= 5)) {
 		return;
 	}
 	prepareGeometryChange();
@@ -1797,6 +1831,9 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 {
 	switch (change) {
 	case ItemPositionHasChanged:
+		if (mIsLoop) {
+			return value;
+		}
 		if (isSelected() && (mSrc || mDst) && !mMoving) {
 			if (mSrc && !mSrc->isSelected()) {
 				prepareGeometryChange();
