@@ -68,6 +68,8 @@ public slots:
 	int currentRevision(QString const &target = QString(), bool const reportErrors = false
 			, QString const &sourceProject = QString());
 
+	void doAfterOperationIsFinished(QVariant &tag);
+
 signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);
 	void workingCopyUpdated(const bool success);
@@ -81,6 +83,7 @@ signals:
 	void addComplete(bool const success);
 	void removeComplete(bool const success);
 	void operationComplete(QString const &name, bool const success);
+
 
 protected:
 	// External client overloads
@@ -104,3 +107,4 @@ private:
 };
 
 }
+

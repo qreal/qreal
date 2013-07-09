@@ -68,7 +68,7 @@ bool ExternalClientPluginBase::invokeOperation(const QStringList &args
 
 invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(
 		QStringList const &args
-		, invocation::BoolCallback *callback
+		, QVariant tag
 		, bool needPreparation
 		, QString const &workingDir
 		, QString const &sourceProject
@@ -85,7 +85,7 @@ invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(
 			, reportErrors, workingDir, checkWorkingDir);
 	connect(operation, SIGNAL(finished(invocation::LongOperation*))
 			, this, SLOT(onOperationComplete(invocation::LongOperation*)));
-	mRunningOperationsCallbacksMap.insert(operation, callback);
+	mRunningOperationsCallbacksMap.insert(operation, tag);
 	mMainWindow->reportOperation(operation);
 	operation->invokeAsync();
 	return operation;
@@ -137,11 +137,9 @@ void ExternalClientPluginBase::onOperationComplete(invocation::LongOperation *op
 			dynamic_cast<invocation::FunctorOperation<bool> *>(operation);
 	bool result = functor->invocationState() == invocation::FinishedNormally;
 	result = result && functor->result();
-	invocation::BoolCallback *callback = mRunningOperationsCallbacksMap[operation];
-	if (callback) {
-		(*callback)(result);
-	}
-	mRunningOperationsCallbacksMap.remove(operation);
+
+	QVariant tag = mRunningOperationsCallbacksMap[operation];
+	emit operationIsFinished(tag);
 }
 
 bool ExternalClientPluginBase::startProcess(const QStringList &args, bool reportErrors)

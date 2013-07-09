@@ -5,7 +5,6 @@
 
 #include "../utilsDeclSpec.h"
 #include "../../qrgui/versioning/versioningPluginInterface.h"
-#include "boolCallback.h"
 
 namespace qReal
 {
@@ -48,7 +47,7 @@ public:
 	/// @param reportErrors Specifies if all occured errors are reported to GUI
 	/// @returns Pointer to started operaton
 	invocation::LongOperation *invokeOperationAsync(QStringList const &args
-		, invocation::BoolCallback *callback = 0
+		, QVariant tag
 		, bool needPreparation = true
 		, QString const &workingDir = QString()
 		, QString const &sourceProject = QString()
@@ -100,6 +99,8 @@ protected slots:
 signals:
 	/// The easiest way to invoke @see onErrorOccured() in on thread
 	void errorOccured(QString const &message);
+	/// Signal for notification plagins about end of operation
+	void operationIsFinished(QVariant &tag);
 
 
 private slots:
@@ -119,7 +120,7 @@ private:
 	ErrorReporterInterface *mErrorReporter;
 	QString mPathToClient;
 	QProcess *mClientProcess;
-	QMap<invocation::LongOperation *, invocation::BoolCallback *> mRunningOperationsCallbacksMap;
+	QMap<invocation::LongOperation *, QVariant> mRunningOperationsCallbacksMap;
 };
 
 }

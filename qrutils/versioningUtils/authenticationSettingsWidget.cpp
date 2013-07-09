@@ -10,6 +10,8 @@ AuthenticationSettingsWidget::AuthenticationSettingsWidget(QWidget *parent)
 {
 	mUi->setupUi(this);
 	reinit();
+
+	connect(mUi->enabledCheckBox, SIGNAL(clicked()), this, SLOT(onEnableChecked()));
 }
 
 AuthenticationSettingsWidget::AuthenticationSettingsWidget(QString const &settingsPrefix
@@ -20,6 +22,8 @@ AuthenticationSettingsWidget::AuthenticationSettingsWidget(QString const &settin
 {
 	mUi->setupUi(this);
 	reinit();
+
+	connect(mUi->enabledCheckBox, SIGNAL(clicked()), this, SLOT(onEnableChecked()));
 }
 
 AuthenticationSettingsWidget::~AuthenticationSettingsWidget()
@@ -50,6 +54,8 @@ void AuthenticationSettingsWidget::save()
 
 void AuthenticationSettingsWidget::onEnableChecked()
 {
+	//mUi->userEditor->setEnabled(mUi->enabledCheckBox->isChecked());
+
 	mUi->userEditor->setEnabled(mUi->enabledCheckBox->isChecked());
 	mUi->passwordEditor->setEnabled(mUi->enabledCheckBox->isChecked());
 }
