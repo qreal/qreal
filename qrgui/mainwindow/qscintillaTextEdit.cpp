@@ -5,6 +5,10 @@
 using namespace qReal;
 using namespace gui;
 
+QScintillaTextEdit::QScintillaTextEdit()
+	:mRole(0)
+{}
+
 QScintillaTextEdit::QScintillaTextEdit(QPersistentModelIndex const &index
 		, int const &role)
 		: mIndex(index)

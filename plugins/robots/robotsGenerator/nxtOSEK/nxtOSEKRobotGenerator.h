@@ -30,6 +30,7 @@ public:
 
 	/// main method that starts a code generation.
 	void generate(QFileInfo const &fileInfo);
+	void generateOilAndMakeFile(QFileInfo const &fileInfo);
 	Variables &variables();
 	QList<SmartLine> &initCode();
 	QList<SmartLine> &terminateCode();

@@ -1,13 +1,11 @@
 HEADERS += textEditor/codeEditor.h \
-	textEditor/codeArea.h \
 	textEditor/textHighlighter.h \
 	textEditor/sqlHighlighter.h \
-    	textEditor/codeManager.h \
-    	textEditor/codeManagerInterface.h
+    textEditor/textManager.h \
+    textEditor/textManagerInterface.h
 SOURCES += textEditor/codeEditor.cpp \
-	textEditor/codeArea.cpp \
 	textEditor/textHighlighter.cpp \
 	textEditor/sqlHighlighter.cpp \
-    	textEditor/codeManager.cpp
+    textEditor/textManager.cpp
 
 

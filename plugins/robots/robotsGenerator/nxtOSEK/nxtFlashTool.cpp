@@ -75,14 +75,16 @@ void NxtFlashTool::readNxtFlashData()
 	}
 }
 
-void NxtFlashTool::uploadProgram()
+void NxtFlashTool::uploadProgram(QFileInfo const &fileInfo)
 {
 #ifdef Q_OS_WIN
 	mUploadProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
 	//mUploadProcess.setStandardOutputFile("uploadstd.txt");
 	//mUploadProcess.setStandardErrorFile("uploaderr.txt");
 	//must be changed (!)
-	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat example0 E:/QRealRobots/codeeditor/qreal/bin/nxt-tools/example0");
+	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat " + fileInfo.baseName()
+						 + " " + fileInfo.absolutePath());
+	qDebug() << fileInfo.absoluteFilePath();
 #else
 	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif

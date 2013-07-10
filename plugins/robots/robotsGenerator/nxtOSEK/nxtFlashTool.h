@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QProcess>
+#include <QtCore/QFileInfo>
 
 #include "../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
@@ -19,7 +20,7 @@ public:
 //	void showErrors(gui::ErrorReporter * const errorReporter);
 public slots:
 	void flashRobot();
-	void uploadProgram();
+	void uploadProgram(QFileInfo const &fileInfo);
 
 	void error(QProcess::ProcessError error);
 	void readNxtFlashData();

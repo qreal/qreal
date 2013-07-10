@@ -1,16 +1,21 @@
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
+#include <QtCore/QDebug>
 
 #include "robotsGeneratorPlugin.h"
 #include "nxtOSEK/nxtOSEKRobotGenerator.h"
+#include "../../../qrgui/mainwindow/qscintillaTextEdit.h"
 
 using namespace qReal;
 using namespace robots::generator;
+using namespace gui;
 
 RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
 		, mFlashRobotAction(NULL)
 		, mUploadProgramAction(NULL)
 		, mNxtToolsPresent(false)
+		, mCurrentCodeNumber(0)
 {
 	mAppTranslator.load(":/robotsGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -29,11 +34,15 @@ void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 	mRepoControlApi = &configurator.repoControlInterface();
 	mProjectManager = &configurator.projectManager();
 	mSystemEvents = &configurator.systemEvents();
-	mCodeManager = &configurator.codeManager();
+	mTextManager = &configurator.textManager();
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 
-	connect(mSystemEvents, SIGNAL(codePathChanged(CodeArea*,QFileInfo)), this, SLOT(regenerateRobotSourceCode()));
+	connect(mSystemEvents, SIGNAL(codePathChanged(qReal::Id, QFileInfo, QFileInfo))
+			, this, SLOT(regenerateRobotSourceCode(qReal::Id, QFileInfo, QFileInfo)));
+	connect(mSystemEvents, SIGNAL(newCodeAppeared(qReal::Id, QFileInfo)), this, SLOT(addNewCode(qReal::Id, QFileInfo)));
+	connect(mSystemEvents, SIGNAL(diagramClosed(qReal::Id)), this, SLOT(removeDiagram(qReal::Id)));
+	connect(mSystemEvents, SIGNAL(codeTabClosed(QFileInfo)), this, SLOT(removeCode(QFileInfo)));
 }
 
 QList<ActionInfo> RobotsGeneratorPlugin::actions()
@@ -95,13 +104,22 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 			 *mMainWindowInterface->errorReporter());
 	mMainWindowInterface->errorReporter()->clearErrors();
 
-	QFileInfo fileInfo = mCodeManager->codePath(mMainWindowInterface->activeDiagram());
-	bool newCode = false;
+	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
-	if (fileInfo.absoluteFilePath() == "") {
-		QString const projectName = "example" + QString::number(mCodeManager->currentCodeNumber());
-		fileInfo = QFileInfo("nxt-tools/" + projectName + "/" + projectName + ".c");
-		newCode = true;
+	QString const projectName = "example" + QString::number(mCurrentCodeNumber);
+	QFileInfo fileInfo = QFileInfo("nxt-tools/" + projectName + "/" + projectName + ".c");
+	QList<QPair<QFileInfo, bool> > pathsList = mCodePath.values(activeDiagram);
+	bool newCode = true;
+
+	if (!pathsList.isEmpty()) {
+		typedef QPair<QFileInfo, bool> PathInfo;
+		foreach(PathInfo const &path, pathsList) {
+			if (path.second) {
+				fileInfo = path.first;
+				newCode = false;
+				break;
+			}
+		}
 	}
 
 	gen.generate(fileInfo);
@@ -111,7 +129,7 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 	}
 
 	if (newCode) {
-		mCodeManager->nextCodeNumber();
+		mCurrentCodeNumber++;
 	}
 
 	QFile file(fileInfo.absoluteFilePath());
@@ -121,20 +139,24 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 	}
 
 	if (inStream) {
-		mMainWindowInterface->showInTextEditor(fileInfo.baseName(), inStream->readAll());
+		mMainWindowInterface->showInTextEditor(fileInfo, inStream->readAll());
 	}
 	return true;
 }
 
-void RobotsGeneratorPlugin::regenerateRobotSourceCode()
+void RobotsGeneratorPlugin::regenerateRobotSourceCode(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo)
 {
-	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeCodeDiagram(),
-			 *mRepoControlApi,
-			 *mMainWindowInterface->errorReporter());
+	mTextManager->changeFilePath(oldFileInfo.absoluteFilePath(), newFileInfo.absoluteFilePath());
 
-	QFileInfo fileInfo = mCodeManager->codePath(mMainWindowInterface->activeCodeDiagram());
+	if (mCodePath.remove(diagram, QPair<QFileInfo, bool>(oldFileInfo, true)) == 0) {
+		mCodePath.remove(diagram, QPair<QFileInfo, bool>(oldFileInfo, false));
+	}
 
-	gen.generate(fileInfo);
+	mCodePath.insert(diagram, QPair<QFileInfo, bool>(newFileInfo.absoluteFilePath(), false));
+
+	robots::generator::NxtOSEKRobotGenerator gen(diagram, *mRepoControlApi, *mMainWindowInterface->errorReporter());
+
+	gen.generateOilAndMakeFile(newFileInfo);
 }
 
 void RobotsGeneratorPlugin::flashRobot()
@@ -151,10 +173,53 @@ void RobotsGeneratorPlugin::uploadProgram()
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-		if (generateRobotSourceCode()) {
-			mFlashTool->uploadProgram();
+		QFileInfo fileInfo;
+		Id const &activeDiagram = mMainWindowInterface->activeDiagram();
+
+		if (activeDiagram != Id()) {
+			if (generateRobotSourceCode()) {
+				typedef QPair<QFileInfo, bool> PathInfo;
+				foreach(PathInfo const &path, mCodePath.values(activeDiagram)) {
+					if (path.second) {
+						fileInfo = path.first;
+						break;
+					}
+				}
+			} else {
+				return;
+			}
+		} else {
+			QScintillaTextEdit *code = static_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab());
+			fileInfo = QFileInfo(mTextManager->path(code));
 		}
+
+		mFlashTool->uploadProgram(fileInfo);
 	}
+}
+
+void RobotsGeneratorPlugin::addNewCode(Id const &diagram, QFileInfo const &fileInfo)
+{
+	mCodePath.insert(diagram, QPair<QFileInfo, bool>(fileInfo, true));
+}
+
+void RobotsGeneratorPlugin::removeDiagram(qReal::Id const &diagram)
+{
+	mCodePath.remove(diagram);
+}
+
+void RobotsGeneratorPlugin::removeCode(QFileInfo const &fileInfo)
+{
+	Id diagram;
+	bool standartPath = true;
+
+	if (mCodePath.key(QPair<QFileInfo, bool> (fileInfo, false), Id()) == Id()) {
+		diagram = mCodePath.key(QPair<QFileInfo, bool> (fileInfo, true));
+	} else {
+		standartPath = false;
+		diagram = mCodePath.key(QPair<QFileInfo, bool> (fileInfo, false));
+	}
+
+	mCodePath.remove(diagram, QPair<QFileInfo, bool>(fileInfo, standartPath));
 }
 
 void RobotsGeneratorPlugin::checkNxtTools()

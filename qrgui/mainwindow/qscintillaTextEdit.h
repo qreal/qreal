@@ -15,6 +15,7 @@ class QScintillaTextEdit : public QsciScintilla
 	Q_OBJECT
 
 public:
+	QScintillaTextEdit();
 	QScintillaTextEdit(QPersistentModelIndex const &index, int const &role);
 
 	/// Destructor which runs after closing the tab with text editor. Allows to save written text.

@@ -195,7 +195,22 @@ void NxtOSEKRobotGenerator::generate(QFileInfo const &fileInfo)
 		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
 		return;
 	}
+
 	outputInCAndOilFile(projectName, projectDir, toGenerate);
+}
+
+void NxtOSEKRobotGenerator::generateOilAndMakeFile(QFileInfo const &fileInfo)
+{
+	QString const projectName = fileInfo.baseName();
+	QString const projectDir = fileInfo.absolutePath();
+
+	mResultOil = utils::InFile::readAll(":/nxtOSEK/templates/template.oil");
+
+	deleteResidualLabels(projectName);
+	utils::OutFile outOil(projectDir + "/" + projectName + ".oil");
+	outOil() << mResultOil;
+	generateFilesForBalancer(projectDir);
+	generateMakeFile(false, projectName, projectDir);
 }
 
 void NxtOSEKRobotGenerator::initializeGeneration(QString const &projectDir)

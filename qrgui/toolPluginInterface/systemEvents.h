@@ -28,9 +28,24 @@ public:
 		emit settingsUpdated();
 	}
 
-	void emitCodePathChanged(CodeArea *area, QFileInfo const &fileInfo)
+	void emitCodePathChanged(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo)
 	{
-		emit codePathChanged(area, fileInfo);
+		emit codePathChanged(diagram, oldFileInfo, newFileInfo);
+	}
+
+	void emitNewCodeAppeared(qReal::Id const &diagram, QFileInfo const &fileInfo)
+	{
+		emit newCodeAppeared(diagram, fileInfo);
+	}
+
+	void emitDiagramClosed(qReal::Id const &diagram)
+	{
+		emit diagramClosed(diagram);
+	}
+
+	void emitCodeTabClosed(QFileInfo const &fileInfo)
+	{
+		emit codeTabClosed(fileInfo);
 	}
 };
 }

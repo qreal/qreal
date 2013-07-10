@@ -1,12 +1,13 @@
 #pragma once
 
 #include <QtCore/QTranslator>
+#include <QtCore/QMultiHash>
 
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 #include "../../../qrgui/toolPluginInterface/hotKeyActionInfo.h"
 #include "../../../qrgui/toolPluginInterface/systemEventsInterface.h"
-#include "../../../qrgui/textEditor/codeManagerInterface.h"
+#include "../../../qrgui/textEditor/textManagerInterface.h"
 #include "nxtOSEK/nxtFlashTool.h"
 
 
@@ -34,7 +35,7 @@ public:
 private slots:
 	/// Calls code generator. Returns true if operation was successfull.
 	bool generateRobotSourceCode();
-	void regenerateRobotSourceCode();
+	void regenerateRobotSourceCode(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
 
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
 	void flashRobot();
@@ -42,6 +43,10 @@ private slots:
 	/// Compiles and uploads program to a robot. Program then can be launched manually.
 	/// Requires nxt-tools
 	void uploadProgram();
+
+	void addNewCode(qReal::Id const &diagram, QFileInfo const &fileInfo);
+	void removeDiagram(qReal::Id const &diagram);
+	void removeCode(QFileInfo const &fileInfo);
 
 private:
 	/// Method that checks presense of nxt-tools (shall be installed to nxt-tools
@@ -82,7 +87,9 @@ private:
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 	qReal::SystemEventsInterface *mSystemEvents;
-	qReal::CodeManagerInterface *mCodeManager;
+	qReal::TextManagerInterface *mTextManager;
+	int mCurrentCodeNumber;
+	QMultiHash<qReal::Id, QPair<QFileInfo, bool> > mCodePath;
 };
 
 }

@@ -57,16 +57,16 @@
 
 #include "../../../../qrutils/outFile.h"
 #include "../toolPluginInterface/systemEvents.h"
-#include "../textEditor/codeManager.h"
 
 using namespace qReal;
 using namespace qReal::commands;
+using namespace gui;
 
 QString const unsavedDir = "unsaved";
 
 MainWindow::MainWindow(QString const &fileToOpen)
 		: mUi(new Ui::MainWindowUi)
-		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
+		, mCodeTabManager(new QMap<EditorView*, QScintillaTextEdit*>())
 		, mModels(NULL)
 		, mController(new Controller)
 		, mEditorManagerProxy(new EditorManager())
@@ -74,7 +74,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(NULL)
 		, mSystemEvents(new SystemEvents())
-		, mCodeManager(new CodeManager(mSystemEvents))
+		, mTextManager(new TextManager())
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(NULL)
 		, mIsFullscreen(false)
@@ -236,28 +236,6 @@ QModelIndex MainWindow::rootIndex() const
 	return mRootIndex;
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
-{
-	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X) {
-		close();
-	} else if (keyEvent->key() == Qt::Key_F2
-			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
-	{
-		CodeArea *area = dynamic_cast<CodeArea*>(mUi->tabs->currentWidget());
-		if (area != NULL) {
-			mProjectManager->saveGenCode(area->toPlainText());
-		}
-		mProjectManager->saveOrSuggestToSaveAs();
-	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
-		closeTab(mUi->tabs->currentIndex());
-	} else if (keyEvent->key() == Qt::Key_F1) {
-		showHelp();
-	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_F) {
-		mFindReplaceDialog->stateClear();
-		mFindReplaceDialog->show();
-	}
-}
-
 MainWindow::~MainWindow()
 {
 	QDir().rmdir(mTempDir);
@@ -275,6 +253,8 @@ MainWindow::~MainWindow()
 	delete mProjectManager;
 	delete mStartDialog;
 	delete mSceneCustomizer;
+	delete mTextManager;
+	delete mSystemEvents;
 }
 
 EditorManagerInterface& MainWindow::editorManager()
@@ -302,21 +282,6 @@ void MainWindow::loadPlugins()
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
 			, &mEditorManagerProxy);
-}
-
-void MainWindow::closeDiagramTab(Id const &id)
-{
-	IdList const graphicalIds = mModels->graphicalRepoApi().graphicalElements(id.type());
-	if (!graphicalIds.isEmpty()) {
-		// TODO: Why only for first graphical element?
-		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(graphicalIds[0]);
-		for (int i = 0; i < mUi->tabs->count(); i++) {
-			EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
-			if (tab != NULL && tab->mvIface()->rootIndex() == index) {
-				mUi->tabs->removeTab(i);
-			}
-		}
-	}
 }
 
 void MainWindow::clearSelectionOnTabs()
@@ -558,6 +523,37 @@ void MainWindow::reportOperation(invocation::LongOperation *operation)
 {
 	ProgressDialog *progressDialog = new ProgressDialog(this);
 	progressDialog->connectOperation(operation);
+}
+
+QWidget *MainWindow::currentTab()
+{
+	return mUi->tabs->currentWidget();
+}
+
+void MainWindow::openTab(QWidget *tab, const QString &title)
+{
+	mUi->tabs->addTab(tab, title);
+	mUi->tabs->setCurrentWidget(tab);
+}
+
+void MainWindow::closeTab(QWidget *tab)
+{
+	mUi->tabs->removeTab(mUi->tabs->indexOf(tab));
+}
+
+void MainWindow::closeDiagramTab(Id const &id)
+{
+	IdList const graphicalIds = mModels->graphicalRepoApi().graphicalElements(id.type());
+	if (!graphicalIds.isEmpty()) {
+		// TODO: Why only for first graphical element?
+		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(graphicalIds[0]);
+		for (int i = 0; i < mUi->tabs->count(); i++) {
+			EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
+			if (tab != NULL && tab->mvIface()->rootIndex() == index) {
+				mUi->tabs->removeTab(i);
+			}
+		}
+	}
 }
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
@@ -902,21 +898,16 @@ void MainWindow::closeCurrentTab()
 void MainWindow::closeTab(int index)
 {
 	QWidget *widget = mUi->tabs->widget(index);
-	CodeArea *possibleCodeTab = static_cast<CodeArea *>(widget);
-	EditorView * deletingCodeTab = NULL;
-	foreach (EditorView *diagram, mCodeTabManager->keys()) {
-		if (mCodeTabManager->value(diagram) == possibleCodeTab) {
-			deletingCodeTab = diagram;
-		}
-	}
-	if (deletingCodeTab) {
-		mCodeTabManager->remove(deletingCodeTab);
-	}
+	QScintillaTextEdit *possibleCodeTab = static_cast<QScintillaTextEdit *>(widget);
 
-	EditorView *editorView = dynamic_cast<EditorView *>(mUi->tabs->widget(index));
-	if (editorView) {
+	QString const path = mTextManager->path(possibleCodeTab);
+
+	if (!mTextManager->unbindCode(possibleCodeTab)) {
 		Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(mRootIndex);
 		mController->diagramClosed(diagramId);
+		mSystemEvents->emitDiagramClosed(diagramId);
+	} else {
+		mSystemEvents->emitCodeTabClosed(QFileInfo(path));
 	}
 
 	mUi->tabs->removeTab(index);
@@ -1013,6 +1004,7 @@ void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, Edi
 void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue)
 {
 	gui::QScintillaTextEdit *textEdit = new gui::QScintillaTextEdit(index, role);
+
 	if (!propertyValue.isEmpty()) {
 		textEdit->setText(propertyValue.toUtf8());
 	}
@@ -1767,18 +1759,6 @@ Id MainWindow::activeDiagram()
 	return getCurrentTab() && getCurrentTab()->mvIface() ? getCurrentTab()->mvIface()->rootId() : Id();
 }
 
-Id MainWindow::activeCodeDiagram()
-{
-	Id id = activeDiagram();
-
-	if (id == Id()) {
-		CodeArea * const area = dynamic_cast<CodeArea *>(mUi->tabs->currentWidget());
-		id = mCodeManager->diagram(area);
-	}
-
-	return id;
-}
-
 void MainWindow::initPluginsAndStartDialog()
 {
 	initToolPlugins();
@@ -1805,7 +1785,7 @@ void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
 										 , mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
-										 , *mSystemEvents, *mCodeManager));
+										 , *mSystemEvents, *mTextManager));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
@@ -1857,24 +1837,49 @@ bool MainWindow::showConnectionRelatedMenus() const
 	return mToolManager.customizer()->showConnectionRelatedMenus();
 }
 
-void MainWindow::showInTextEditor(QString const &title, QString const &text)
+void MainWindow::showInTextEditor(QFileInfo const &fileInfo, QString const &text)
 {
 	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
-		if (!mCodeTabManager->contains(getCurrentTab())) {
-			CodeArea * const area = new CodeArea();
-			area->document()->setPlainText(text);
-			area->show();
-			mCodeTabManager->insert(getCurrentTab(), area);
-			mCodeManager->addNewCode(activeDiagram(), area, QFileInfo("nxt-tools/" + title + "/" + title + ".c"));
+		/*if (mCodeTabManager->contains(getCurrentTab())) {
+			QScintillaTextEdit * const area = mCodeTabManager->value(getCurrentTab());
+			if (mUi->tabs->indexOf(area) == -1) {
+				mCodeTabManager->remove(getCurrentTab());
+			}
+		}*/
+		QString const filePath = fileInfo.absoluteFilePath();
 
-			mUi->tabs->addTab(area, title);
+		if (!mTextManager->contains(filePath)) {
+			mTextManager->openFile(filePath);
+			QScintillaTextEdit * const area = mTextManager->code(filePath);
+			area->setText(text);
+			area->show();
+			mTextManager->bindCode(getCurrentTab(), filePath);
+			mSystemEvents->emitNewCodeAppeared(activeDiagram(), QFileInfo(filePath));
+			mUi->tabs->addTab(area, fileInfo.baseName() + ".c");
 			mUi->tabs->setCurrentWidget(area);
 		} else {
-			CodeArea * const area = mCodeTabManager->value(getCurrentTab());
-			area->document()->setPlainText(text);
-			area->show();
+			QScintillaTextEdit * const area = mTextManager->code(filePath);
 			mUi->tabs->setCurrentWidget(area);
 		}
+
+		/*if (!mCodeTabManager->contains(getCurrentTab())) {
+			QString const filePath = QFileInfo("nxt-tools/" + title + "/" + title + ".c").absoluteFilePath();
+			mTextManager->openFile(filePath);
+			QScintillaTextEdit * const area = mTextManager->code(filePath);
+			area->setText(text);
+			area->show();
+			mCodeTabManager->insert(getCurrentTab(), area);
+
+			mSystemEvents->emitNewCodeAppeared(activeDiagram(), QFileInfo(filePath));
+
+			mUi->tabs->addTab(area, title + ".c");
+			mUi->tabs->setCurrentWidget(area);
+		} else {
+			QScintillaTextEdit * const area = mCodeTabManager->value(getCurrentTab());
+			area->setText(text);//document()->setPlainText(text);
+			area->show();
+			mUi->tabs->setCurrentWidget(area);
+		}*/
 	}
 }
 
@@ -2102,7 +2107,7 @@ QListIterator<EditorView *> MainWindow::openedEditorViews() const
 bool MainWindow::saveGeneratedCode()
 {
 	if (dynamic_cast<EditorView *>(getCurrentTab()) == NULL) {
-		CodeArea * const area = dynamic_cast<CodeArea *>(mUi->tabs->currentWidget());
+		QScintillaTextEdit * const area = dynamic_cast<QScintillaTextEdit *>(mUi->tabs->currentWidget());
 
 		QFileInfo fileInfo = QFileInfo(QFileDialog::getSaveFileName(this, tr("Save generated code"), "", tr("Generated Code (*.c)")));
 
@@ -2111,9 +2116,9 @@ bool MainWindow::saveGeneratedCode()
 
 			utils::OutFile out(fileInfo.absoluteFilePath());
 
-			out() << area->toPlainText();
+			out() << area->text();
 
-			mSystemEvents->emitCodePathChanged(area, fileInfo);
+			mSystemEvents->emitCodePathChanged(mTextManager->diagram(area)->mvIface()->rootId(), mTextManager->path(area), fileInfo);
 		}
 
 		return true;

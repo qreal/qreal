@@ -37,10 +37,12 @@
 #include "../dialogs/gesturesShow/gesturesWidget.h"
 
 #include "../textEditor/codeEditor.h"
+#include "../textEditor/textManager.h"
 
 #include "../../qrkernel/settingsManager.h"
 #include "../dialogs/suggestToCreateDiagramDialog.h"
 #include "tabWidget.h"
+#include "qscintillaTextEdit.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -95,7 +97,6 @@ public:
 	virtual void dehighlight();
 	virtual ErrorReporterInterface *errorReporter();
 	virtual Id activeDiagram();
-	Id activeCodeDiagram();
 	void openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
 	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy);
@@ -110,7 +111,7 @@ public:
 	/// Tells if we should display trace connections menu or not
 	bool showConnectionRelatedMenus() const;
 
-	virtual void showInTextEditor(QString const &title, QString const &text);
+	virtual void showInTextEditor(QFileInfo const &fileInfo, QString const &text);
 	virtual void reinitModels();
 
 	virtual QWidget *windowWidget();
@@ -126,16 +127,19 @@ public:
 	virtual void deleteElementFromDiagram(Id const &id);
 
 	virtual void reportOperation(invocation::LongOperation *operation);
+	virtual QWidget *currentTab();
+	virtual void openTab(QWidget *tab, QString const &title);
+	virtual void closeTab(QWidget *tab);
+
+	/// Closes tab having given id as root id. If there is no such tab, does nothing.
+	/// @param id Id of a diagram (root element) that we want to close.
+	void closeDiagramTab(Id const &id);
 
 	/// Returns editor manager proxy, which allows to change editor manager implementation.
 	ProxyEditorManager &editorManagerProxy();
 
 	/// Loads (or reloads) available editor plugins and reinits palette.
 	void loadPlugins();
-
-	/// Closes tab having given id as root id. If there is no such tab, does nothing.
-	/// @param id Id of a diagram (root element) that we want to close.
-	void closeDiagramTab(Id const &id);
 
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();
@@ -272,7 +276,7 @@ private slots:
 	void updatePaletteIcons();
 
 private:
-	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
+	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
@@ -294,8 +298,6 @@ private:
 
 	void deleteFromExplorer(bool isLogicalModel);
 	void deleteItems(IdList &itemsToDelete);
-
-	void keyPressEvent(QKeyEvent *event);
 
 	QString getSaveFileName(QString const &dialogWindowTitle);
 	QString getOpenFileName(QString const &dialogWindowTitle);
@@ -357,7 +359,7 @@ private:
 	FindReplaceDialog *mFindReplaceDialog;
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
-	QMap<EditorView*, CodeArea*> *mCodeTabManager;
+	QMap<EditorView*, gui::QScintillaTextEdit*> *mCodeTabManager;
 
 	models::Models *mModels;
 	Controller *mController;
@@ -367,8 +369,7 @@ private:
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;
 	SystemEvents *mSystemEvents;
-	CodeManagerInterface *mCodeManager;
-
+	TextManager *mTextManager;
 
 	QVector<bool> mSaveListChecked;
 
