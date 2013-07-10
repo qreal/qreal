@@ -171,6 +171,11 @@ private:
 	// need for correcting links at square drawing
 	int defineDirection(bool from);
 
+	QPointF boundingRectIndent(QPointF point, NodeSide direction);
+	QPointF oppositeLoopCase(QPointF point, NodeSide direction);
+	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const ;
+	NodeSide rotateRight(NodeSide side) const;
+
 	void paintSavedEdge(QPainter *painter) const;
 	void paintChangedEdge(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
