@@ -11,11 +11,10 @@ RecentProjectsListWidget::RecentProjectsListWidget(QDialog *parent)
 	QString recentExistingProjects = "";
 
 	// Check existance of a project before adding it to the list
-	foreach (QString const &project, recentProjects.split(";", QString::SkipEmptyParts)) {
-		if (QFile::exists(project))
-		{
-			addItem(project.split("/").last().split("\\").last(), project, project);
-			recentExistingProjects += project + ";";
+	foreach (QString const &pathToProject, recentProjects.split(";", QString::SkipEmptyParts)) {
+		if (QFile::exists(pathToProject)) {
+			addItem(QFileInfo(pathToProject).fileName(), pathToProject, pathToProject);
+			recentExistingProjects += pathToProject + ";";
 		}
 	}
 
