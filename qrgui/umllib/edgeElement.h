@@ -164,14 +164,18 @@ private:
 
 	enum NodeSide { Left, Top, Right, Bottom };
 
+	/// Set mPortTo to next port.
 	void searchNextPort();
-	// when (mSrc == mDst && mDst && mLine <= 3)
+	/// Change line, if (mSrc && (mSrc == mDst)).
 	void createLoopEdge();
-	// connectToPort for self-closing line (mSrc == mDst && mDst)
+	/// connectToPort for self-closing line (mSrc && (mSrc == mDst)).
 	void connectLoopEdge(NodeElement *newMaster);
 
+	/// Create indent of bounding rect, depending on the rect size.
 	QPointF boundingRectIndent(QPointF const &point, NodeSide direction);
+	/// Returns true, if the sides adjacent.
 	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const ;
+	/// Returns the next clockwise side.
 	NodeSide rotateRight(NodeSide side) const;
 
 	void paintSavedEdge(QPainter *painter) const;
@@ -179,7 +183,9 @@ private:
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
+	/// Changed size of mLine to 4. Selects 2 intermediate points depending on the size and type of line.
 	void setBezierPoints();
+	/// Returns the bezier curve built on the mLine points.
 	QPainterPath bezierCurve() const;
 
 	QList<PossibleEdge> possibleEdges;
