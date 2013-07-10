@@ -56,7 +56,7 @@ void PreferencesMiscellaniousPage::save()
 
 //	SettingsManager::setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
 	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
-
+	SettingsManager::setValue("recentProjectsLimit", mUi->recentProjectsLimitSpinBox->value());
 	SettingsManager::setValue("PaintOldEdgeMode", mUi->paintOldLineCheckBox->isChecked());
 	SettingsManager::setValue("oldLineColor", mUi->colorComboBox->currentText());
 
@@ -70,7 +70,7 @@ void PreferencesMiscellaniousPage::restoreSettings()
 	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing").toBool());
 	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
 	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL").toBool());
-
+	mUi->recentProjectsLimitSpinBox->setValue(SettingsManager::value("recentProjectsLimit").toInt());
 	int index = 0;
 	if (SettingsManager::value("SquareLine").toBool())
 		index = 1;
