@@ -284,29 +284,22 @@ void PaletteTree::createPaletteTree()
 	mLayout->setSpacing(0);
 
 	mComboBox = new QComboBox;
-	mComboBox->setGeometry(0,0,300,50);
+	mComboBox->setGeometry(0, 0, 300, 50);
 	mLayout->addWidget(mComboBox);
 
 	QHBoxLayout *hLayout = new QHBoxLayout;
 	hLayout->setSpacing(0);
 
-	expansionButtonExpands = SettingsManager::value("expansionButtonExpands").toBool();
+	mNodesStateButtonExpands = SettingsManager::value("nodesStateButtonExpands").toBool();
 	mChangeExpansionState = new QToolButton;
-	mChangeExpansionState->setGeometry(0,0,30,30);
-	if (expansionButtonExpands) {
-		mChangeExpansionState->setIcon(QIcon(":/icons/expandAll.png"));
-		mChangeExpansionState->setToolTip(tr("Expand all"));
-	} else {
-		mChangeExpansionState->setIcon(QIcon(":/icons/collapseAll.png"));
-		mChangeExpansionState->setToolTip(tr("Collapse all"));
-	}
-
+	mChangeExpansionState->setGeometry(0, 0, 30, 30);
+	setExpansionButtonAppearance();
 	mChangeExpansionState->setIconSize(QSize(30, 30));
-	connect(mChangeExpansionState,SIGNAL(clicked()),this,SLOT(changeExpansionState()));
+	connect(mChangeExpansionState, SIGNAL(clicked()), this, SLOT(changeExpansionState()));
 	hLayout->addWidget(mChangeExpansionState);
 
 	mChangeRepresentation = new QToolButton;
-	mChangeRepresentation->setGeometry(0,0,30,30);
+	mChangeRepresentation->setGeometry(0, 0, 30, 30);
 	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
 	mChangeRepresentation->setToolTip(tr("Change representation"));
 	mChangeRepresentation->setIconSize(QSize(30, 30));
@@ -483,17 +476,28 @@ void PaletteTree::initMainWindow(MainWindow *mainWindow)
 
 void PaletteTree::changeExpansionState()
 {
-	if (expansionButtonExpands)
+	mNodesStateButtonExpands = !mNodesStateButtonExpands;
+	if (mNodesStateButtonExpands)
 	{
 		expand();
+	}
+	else
+	{
+		collapse();
+	}
+	setExpansionButtonAppearance();
+}
+
+void PaletteTree::setExpansionButtonAppearance()
+{
+	if (mNodesStateButtonExpands)
+	{
 		mChangeExpansionState->setIcon(QIcon(":/icons/collapseAll.png"));
 		mChangeExpansionState->setToolTip(tr("Collapse all"));
 	}
 	else
 	{
-		collapse();
 		mChangeExpansionState->setIcon(QIcon(":/icons/expandAll.png"));
 		mChangeExpansionState->setToolTip(tr("Expand all"));
 	}
-	expansionButtonExpands = !expansionButtonExpands;
 }

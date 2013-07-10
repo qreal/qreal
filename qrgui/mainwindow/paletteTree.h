@@ -104,6 +104,9 @@ public slots:
 	void changeRepresentation();
 
 private:
+	/// Change icon and tooltip
+	void setExpansionButtonAppearance();
+
 	/// Collapse all nodes of current tree.
 	void collapse();
 
@@ -194,7 +197,7 @@ private:
 	bool mIconsView;
 
 	/// Whether expand/collapse button expands tree
-	bool expansionButtonExpands;
+	bool mNodesStateButtonExpands;
 
 	/// Count of items in a row in icon's representation
 	int mItemsCountInARow;
