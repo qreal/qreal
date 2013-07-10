@@ -27,10 +27,6 @@ private slots:
 	void browseImagesPath();
 
 private:
-	enum LineType {
-		BrokenLine = 0, SquareLine, CurveLine
-	};
-
 	Ui::PreferencesMiscellaniousPage *mUi;
 
 	QString mLastIconsetPath;

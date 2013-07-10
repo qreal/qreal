@@ -1678,10 +1678,7 @@ void MainWindow::applySettings()
 		EditorView * const tab = static_cast<EditorView *>(mUi->tabs->widget(i));
 		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
 		if (scene) {
-			if (SettingsManager::value("SquareLine", false).toBool()
-					|| SettingsManager::value("ActivateGrid").toBool()) {
-				scene->updateEdgeElements();
-			}
+			scene->updateEdgeElements();
 			scene->invalidate();
 		}
 	}
