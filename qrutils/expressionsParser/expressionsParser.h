@@ -49,7 +49,9 @@ protected:
 	bool isSign(QChar const &c) const;
 	bool isExp(QChar const &c) const;
 	bool isPoint(QChar const &c) const;
+	bool isCommon(QChar const &c) const;
 	bool isRoundBracket(QChar const &c) const;
+	bool isSquareBracket(QChar const &c) const;
 	bool isDisjunction(QChar const &c) const;
 	bool isConjunction(QChar const &c) const;
 	bool isComparison(QChar const &c) const;
@@ -80,6 +82,8 @@ protected:
 	bool checkForDigit(QString const &stream, int &pos);
 	bool checkForOpeningBracket(QString const &stream, int &pos);
 	bool checkForClosingBracket(QString const &stream, int &pos);
+	bool checkForOpeningSquareBracket(QString const &stream, int &pos);
+	bool checkForClosingSquareBracket(QString const &stream, int &pos);
 	bool checkForColon(QString const &stream, int &pos);
 	bool isEmpty(QString const &stream, int &pos) const;
 	bool checkForEqual(QString const &stream, int pos);

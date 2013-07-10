@@ -57,10 +57,21 @@ bool ExpressionsParser::isPoint(const QChar &c) const
 	return c.toLatin1() == '.';
 }
 
+bool ExpressionsParser::isCommon(const QChar &c) const
+{
+	return c.toLatin1() == ',';
+}
+
 bool ExpressionsParser::isRoundBracket(const QChar &c) const
 {
 	char symbol = c.toLatin1();
 	return symbol == '(' || symbol == ')';
+}
+
+bool ExpressionsParser::isSquareBracket(const QChar &c) const
+{
+	char symbol = c.toLatin1();
+	return symbol == '[' || symbol == ']';
 }
 
 bool ExpressionsParser::isDisjunction(const QChar &c) const
@@ -574,6 +585,30 @@ bool ExpressionsParser::checkForClosingBracket(QString const &stream, int &pos)
 	}
 	if (stream.at(pos).toLatin1() != ')') {
 		error(unexpectedSymbol, QString::number(pos + 1), ")", QString(stream.at(pos)));
+		return false;
+	}
+	return true;
+}
+
+bool ExpressionsParser::checkForOpeningSquareBracket(QString const &stream, int &pos)
+{
+	if (isEndOfStream(stream, pos)) {
+		return false;
+	}
+	if (stream.at(pos).toLatin1() != '[') {
+		error(unexpectedSymbol, QString::number(pos + 1), "[", QString(stream.at(pos)));
+		return false;
+	}
+	return true;
+}
+
+bool ExpressionsParser::checkForClosingSquareBracket(QString const &stream, int &pos)
+{
+	if (isEndOfStream(stream, pos)) {
+		return false;
+	}
+	if (stream.at(pos).toLatin1() != ']') {
+		error(unexpectedSymbol, QString::number(pos + 1), "]", QString(stream.at(pos)));
 		return false;
 	}
 	return true;
