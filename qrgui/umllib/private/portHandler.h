@@ -47,9 +47,9 @@ public:
 	 * @param id qreal Id that will be truncated.
 	 * @return Port number.
 	 */
+	static int portNumber(qreal id);
 
 	int numberOfPorts() const;
-	static int portNumber(qreal id);
 
 	/**
 	 * Returns port position relative to the top left corner of NodeElement

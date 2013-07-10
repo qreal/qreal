@@ -547,43 +547,54 @@ void EdgeElement::connectLoopEdge(NodeElement *newMaster)
 
 void EdgeElement::createLoopEdge() // nice implementation makes sense after #602 fixed!
 {
-	if (!(mDst && mSrc))
+	if (!(mDst && mSrc)) {
 		return;
+	}
+
+	if (mDst->numberOfPorts() == 1) {
+		setLine(mSavedLineForChanges);
+		return;
+	}
+
+	if (mPortFrom == mPortTo) {
+		searchNextPort();
+	}
 
 	setPos(pos() + mLine.first());
 	mLine.translate(-mLine.first());
 
 	QPolygonF newLine;
 
-	NodeSide startSide = (NodeSide)defineSide(mPortFrom);
-	NodeSide endSide = (NodeSide)defineSide(mPortTo);
+	NodeSide startSide = (NodeSide) defineSide(mPortFrom);
+	NodeSide endSide = (NodeSide) defineSide(mPortTo);
 
 	QPointF secondPoint = boundingRectIndent(mLine.first(), startSide);
 	QPointF penultPoint = boundingRectIndent(mLine.last(), endSide);
 
 	if (isNeighbor(startSide, endSide)) {
 		QPointF thirdPoint;
-		if ((endSide == Top) || (endSide == Bottom))
+		if ((endSide == Top) || (endSide == Bottom)) {
 			thirdPoint = QPointF(secondPoint.x(), penultPoint.y());
-		else
+		} else {
 			thirdPoint = QPointF(penultPoint.x(), secondPoint.y());
+		}
 		newLine << mLine.first() << secondPoint
-					<< thirdPoint << thirdPoint
-					<< penultPoint << mLine.last(); //
+				<< thirdPoint << thirdPoint
+				<< penultPoint << mLine.last(); // Third point added twice for easy change of line mode(to curve line mode).
 	} else {
 		QPointF thirdPoint = boundingRectIndent(secondPoint, rotateRight(startSide));
 		QPointF forthPoint = boundingRectIndent(thirdPoint, rotateRight(rotateRight(startSide)));
 
 		newLine << mLine.first() << secondPoint
-					<< thirdPoint << forthPoint
-					<< penultPoint << mLine.last();
+				<< thirdPoint << forthPoint
+				<< penultPoint << mLine.last();
 	}
 
 	setLine(newLine);
 	mIsLoop = true;
 }
 
-QPointF EdgeElement::boundingRectIndent(QPointF point, EdgeElement::NodeSide direction)
+QPointF EdgeElement::boundingRectIndent(QPointF const &point, EdgeElement::NodeSide direction)
 {
 	QPointF newPoint;
 	QRectF bounds = mSrc->boundingRect();
@@ -595,26 +606,26 @@ QPointF EdgeElement::boundingRectIndent(QPointF point, EdgeElement::NodeSide dir
 	switch (direction) {
 	case Top: {
 		QPointF topPoint = mapToItem(mSrc, QPointF(point.x(), 0));
-		newPoint = mapFromItem(mSrc, QPointF(topPoint.x(),
-											bounds.top() - bounds.height() / reductFactor));
+		newPoint = mapFromItem(mSrc, QPointF(topPoint.x()
+				, bounds.top() - bounds.height() / reductFactor));
 		break;
 	}
 	case Bottom: {
 		QPointF bottomPoint = mapToItem(mSrc, QPointF(point.x(), 0));
-		newPoint = mapFromItem(mSrc, QPointF(bottomPoint.x(),
-											bounds.bottom() + bounds.height() / reductFactor));
+		newPoint = mapFromItem(mSrc, QPointF(bottomPoint.x()
+				, bounds.bottom() + bounds.height() / reductFactor));
 		break;
 	}
 	case Left: {
 		QPointF leftPoint = mapToItem(mSrc, QPointF(0, point.y()));
-		newPoint = mapFromItem(mSrc, QPointF(bounds.left() - bounds.width() / reductFactor,
-											leftPoint.y()));
+		newPoint = mapFromItem(mSrc, QPointF(bounds.left() - bounds.width() / reductFactor
+				, leftPoint.y()));
 		break;
 	}
 	case Right: {
 		QPointF rightPoint = mapToItem(mSrc, QPointF(0, point.y()));
-		newPoint = mapFromItem(mSrc, QPointF(bounds.right() + bounds.width() / reductFactor,
-											rightPoint.y()));
+		newPoint = mapFromItem(mSrc, QPointF(bounds.right() + bounds.width() / reductFactor
+				, rightPoint.y()));
 		break;
 	}
 	default:
@@ -624,9 +635,11 @@ QPointF EdgeElement::boundingRectIndent(QPointF point, EdgeElement::NodeSide dir
 	return newPoint;
 }
 
-QPointF EdgeElement::oppositeLoopCase(QPointF point, EdgeElement::NodeSide direction)
-{
-
+void EdgeElement::searchNextPort() {
+	mPortTo += 1;
+	if (mPortTo > mSrc->numberOfPorts()) {
+		mPortTo -= mSrc->numberOfPorts();
+	}
 }
 
 bool EdgeElement::isNeighbor(const EdgeElement::NodeSide &startSide, const EdgeElement::NodeSide &endSide) const
@@ -641,8 +654,9 @@ EdgeElement::NodeSide EdgeElement::rotateRight(EdgeElement::NodeSide side) const
 
 bool EdgeElement::initPossibleEdges()
 {
-	if (!possibleEdges.isEmpty())
+	if (!possibleEdges.isEmpty()) {
 		return true;
+	}
 	QString editor = id().editor();
 	//TODO: do a code generation for diagrams
 	QString diagram = id().diagram();
@@ -1553,41 +1567,6 @@ void EdgeElement::highlight(QColor const color)
 	update();
 }
 
-/*int EdgeElement::defineDirection(bool from)
-{
-	qreal port = from ? mPortFrom : mPortTo;
-	int direct = 0;
-	if (port < 2 && port > 1) {
-		direct = top;
-		if ((!from && (mLine[mLine.size() - 2].y() > mLine.last().y()))
-				|| (from && (mLine[1].y() < mLine[0].y()))) {
-			direct = topInsideNode;
-		}
-	}
-	if (port < 1 && port > 0) {
-		direct = left;
-		if ((!from && (mLine[mLine.size() - 2].x() > mLine.last().x()))
-				|| (from && (mLine[1].x() < mLine[0].x()))) {
-			direct = leftInsideNode;
-		}
-	}
-	if (port < 3 && port > 2) {
-		direct = right;
-		if ((!from && (mLine[mLine.size() - 2].x() < mLine.last().x()))
-				|| (from && (mLine[1].x() > mLine[0].x()))) {
-			direct = rightInsideNode;
-		}
-	}
-	if (port < 4 && port > 3) {
-		direct = bottom;
-		if ((!from && (mLine[mLine.size() - 2].y() < mLine.last().y()))
-				|| (from && (mLine[1].y() > mLine[0].y()))) {
-			direct = bottomInsideNode;
-		}
-	}
-	return direct;
-}*/
-
 void EdgeElement::redrawing(QPointF const &pos)
 {
 	Q_UNUSED(pos);
@@ -1732,10 +1711,7 @@ void EdgeElement::deleteLoop(int startPos)
 
 void EdgeElement::deleteLoops()
 {
-	// It's very rough prevention of transforming in the point now
-	// should be adjusted deleteLoop and delCloseLinePoints to a good drawing considering isLoop (after fix #602)
-	// It's need to drawing without point's links and "QTransform::rotate with NaN called" accordingly
-	if (mIsLoop) { //&& ((SettingsManager::value("SquareLine").toBool() && mLine.size() <= 6) || mLine.size() <= 5)) {
+	if (mIsLoop) {
 		return;
 	}
 	prepareGeometryChange();
