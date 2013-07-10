@@ -18,6 +18,7 @@
 #include "private/foldCommand.h"
 
 #include "../controller/commands/changeParentCommand.h"
+#include "../controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -498,11 +499,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-	QList<NodeElement*> element;
-	element.append(this);
-	QSize size = mGraphicalAssistApi->editorManagerInterface().iconSize(id());
-	evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos()
-			, QPointF(size.width(), size.height()), element);
+	commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
+			evScene, mLogicalAssistApi, mGraphicalAssistApi, id(), id(), Id::rootId()
+			, event->scenePos(), boundingRect().bottomRight(), false);
 
 	bool shouldProcessResize = true;
 
@@ -546,6 +545,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (shouldProcessResize && mResizeCommand) {
 		mResizeCommand->stopTracking();
 		if (mResizeCommand->modificationsHappened()) {
+			mResizeCommand->addPostAction(insertCommand);
 			mController->execute(mResizeCommand);
 		} else {
 			delete mResizeCommand;

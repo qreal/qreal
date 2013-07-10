@@ -23,6 +23,8 @@ public:
 	Id create();
 	void remove();
 
+	Id id() const;
+
 	bool equals(CreateRemoveCommandImplementation const &other) const;
 
 private:
