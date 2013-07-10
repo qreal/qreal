@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "codeArea.h"
 #include "../mainwindow/qscintillaTextEdit.h"
 
 namespace qReal {

@@ -4,8 +4,6 @@
 #include <QtCore/QFileInfo>
 #include <QtWidgets/QPlainTextEdit>
 
-#include "../textEditor/codeArea.h"
-
 namespace qReal
 {
 

@@ -3,7 +3,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QFileInfo>
 
-#include "../textEditor/codeArea.h"
 #include "systemEventsInterface.h"
 
 namespace qReal {
