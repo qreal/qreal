@@ -164,12 +164,15 @@ private:
 
 	enum NodeSide { Left, Top, Right, Bottom };
 
+	void searchNextPort();
 	// when (mSrc == mDst && mDst && mLine <= 3)
 	void createLoopEdge();
 	// connectToPort for self-closing line (mSrc == mDst && mDst)
 	void connectLoopEdge(NodeElement *newMaster);
-	// need for correcting links at square drawing
-	int defineDirection(bool from);
+
+	QPointF boundingRectIndent(QPointF const &point, NodeSide direction);
+	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const ;
+	NodeSide rotateRight(NodeSide side) const;
 
 	void paintSavedEdge(QPainter *painter) const;
 	void paintChangedEdge(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
