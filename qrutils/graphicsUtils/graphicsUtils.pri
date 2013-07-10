@@ -8,6 +8,9 @@ HEADERS += \
 	$$PWD/rotateItem.h \
 	$$PWD/colorlisteditor.h \
 	$$PWD/stylusImpl.h \
+	$$PWD/gridDrawer.h \
+	$$PWD/paintWidget.h \
+	$$PWD/painterInterface.h \
 
 SOURCES += \
 	$$PWD/abstractItem.cpp \
@@ -19,3 +22,6 @@ SOURCES += \
 	$$PWD/colorlisteditor.cpp \
 	$$PWD/stylusImpl.cpp \
 	$$PWD/rotateItem.cpp \
+	$$PWD/gridDrawer.cpp \
+	$$PWD/paintWidget.cpp \
+	$$PWD/painterInterface.cpp \

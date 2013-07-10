@@ -16,12 +16,17 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	// TODO: other storage for it?
-	return "2.3.1";
+	return "2.3.2";
 }
 
 QString Customizer::aboutText() const
 {
 	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
+}
+
+bool Customizer::showInterpeterButton() const
+{
+	return false;
 }
 
 void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)

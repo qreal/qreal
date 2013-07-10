@@ -1,7 +1,7 @@
 #pragma once
 
 #include "port.h"
-#include "scalableCoordinate.h"
+#include "../qrutils/scalableCoordinate.h"
 
 #include <QDomElement>
 
@@ -17,8 +17,8 @@ public:
 	virtual Port* clone() const;
 
 private:
-	ScalableCoordinate mX;
-	ScalableCoordinate mY;
+	utils::ScalableCoordinate mX;
+	utils::ScalableCoordinate mY;
 	int mInitWidth;
 	int mInitHeight;
 };

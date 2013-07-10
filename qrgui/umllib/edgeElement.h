@@ -158,10 +158,10 @@ private:
 	};
 
 	enum LineType {
-			Vertical,
-			Horizontal,
-			VerticalTurn,
-			HorizontalTurn
+		Vertical,
+		Horizontal,
+		VerticalTurn,
+		HorizontalTurn
 	};
 
 	enum NodeSide { Left, Top, Right, Bottom };
@@ -178,6 +178,9 @@ private:
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
+	void setBezierPoints();
+	QPainterPath bezierCurve() const;
+
 	QList<PossibleEdge> possibleEdges;
 
 	bool mIsDissectable;
@@ -187,6 +190,8 @@ private:
 	void updateLongestPart();
 	static QRectF getPortRect(QPointF const &point);
 
+	void drawCurveIntermediatePoints(QPainter* painter) const;
+	void drawCurvePorts(QPainter* painter) const;
 	void drawPort(QPainter *painter) const;
 	void drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
 
@@ -250,7 +255,7 @@ private:
 
 	bool mModelUpdateIsCalled;  // flag for the infinite updateData()-s liquidating
 
-	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst
+	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst)
 
 	qReal::commands::ReshapeEdgeCommand *mReshapeCommand;
 };

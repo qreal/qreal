@@ -19,7 +19,7 @@ public:
 
 public slots:
 	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize) = 0;
-	virtual void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize, inputPort::InputPortEnum const &port) = 0;
+	virtual void sendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize, inputPort::InputPortEnum const port) = 0;
 	virtual void connect(QString const &portName) = 0;
 	virtual void disconnect() = 0;
 	virtual void reconnect(QString const &portName) = 0;

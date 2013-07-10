@@ -170,8 +170,8 @@
 					</generalizations>
 					<properties>
 						<property type="string" name="displayedName"/>
-						<property type="bool" name="isPin">
-							<default>false</default>
+						<property type="reference" name="pins">
+							<reference nameReference="MetaEntityNode"/>
 						</property>
 						<property type="string" name="shape"/>
 						<property type="string" name="description"/>

@@ -9,6 +9,7 @@ using namespace robotImplementations;
 RobotModel::RobotModel()
 	: mRobotImpl(new NullRobotModelImplementation)
 	, mBrick(&mRobotImpl->brick())
+	, mDisplay(&mRobotImpl->display())
 	, mMotorA(0, &mRobotImpl->motorA())
 	, mMotorB(1, &mRobotImpl->motorA())
 	, mMotorC(2, &mRobotImpl->motorA())
@@ -34,27 +35,47 @@ robotParts::Brick &RobotModel::brick()
 	return mBrick;
 }
 
-robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const &port) const
+robotParts::Display &RobotModel::display()
+{
+	return mDisplay;
+}
+
+robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::TouchSensor *>(mSensors[port]);
 }
 
-robotParts::SonarSensor *RobotModel::sonarSensor(inputPort::InputPortEnum const &port) const
+robotParts::SonarSensor *RobotModel::sonarSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::SonarSensor *>(mSensors[port]);
 }
 
-robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const &port) const
+robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::ColorSensor *>(mSensors[port]);
 }
 
-robotParts::LightSensor *RobotModel::lightSensor(inputPort::InputPortEnum const &port) const
+robotParts::LightSensor *RobotModel::lightSensor(inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::LightSensor *>(mSensors[port]);
 }
 
-robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) const
+robotParts::SoundSensor *RobotModel::soundSensor(inputPort::InputPortEnum const port) const
+{
+	return dynamic_cast<robotParts::SoundSensor *>(mSensors[port]);
+}
+
+robotParts::GyroscopeSensor *RobotModel::gyroscopeSensor(inputPort::InputPortEnum const port) const
+{
+	return dynamic_cast<robotParts::GyroscopeSensor *>(mSensors[port]);
+}
+
+robotParts::AccelerometerSensor *RobotModel::accelerometerSensor(inputPort::InputPortEnum const port) const
+{
+	return dynamic_cast<robotParts::AccelerometerSensor *>(mSensors[port]);
+}
+
+robotParts::Sensor *RobotModel::sensor(inputPort::InputPortEnum const port) const
 {
 	return mSensors[port];
 }
@@ -83,7 +104,7 @@ void RobotModel::configureSensors(sensorType::SensorTypeEnum const &port1
 }
 
 void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
-		, inputPort::InputPortEnum const &port)
+		, inputPort::InputPortEnum const port)
 {
 	mRobotImpl->configureSensor(sensorType, port);
 }
@@ -124,6 +145,15 @@ void RobotModel::sensorsConfiguredSlot()
 			break;
 		case sensorType::light:
 			mSensors[port] = new robotParts::LightSensor(mRobotImpl->sensor(port), port);
+			break;
+		case sensorType::sound:
+			mSensors[port] = new robotParts::SoundSensor(mRobotImpl->sensor(port), port);
+			break;
+		case sensorType::gyroscope:
+			mSensors[port] = new robotParts::GyroscopeSensor(mRobotImpl->sensor(port), port);
+			break;
+		case sensorType::accelerometer:
+			mSensors[port] = new robotParts::AccelerometerSensor(mRobotImpl->sensor(port), port);
 			break;
 		default:
 			// TODO: Throw an exception
@@ -226,6 +256,7 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 	mEncoderC.setImplementation(&mRobotImpl->encoderC());
 
 	mBrick.setImplementation(&mRobotImpl->brick());
+	mDisplay.setImplementation(&mRobotImpl->display());
 
 	for (int i = 0; i < 4; ++i) {
 		if (mSensors[i] != NULL) {

@@ -7,6 +7,10 @@ WaitForSensorBlock::WaitForSensorBlock(RobotModel * const robotModel, sensorType
 {
 }
 
+WaitForSensorBlock::~WaitForSensorBlock()
+{
+}
+
 void WaitForSensorBlock::run()
 {
 	mPort = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);

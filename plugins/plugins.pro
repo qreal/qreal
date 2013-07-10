@@ -9,7 +9,7 @@ SUBDIRS	= \
 	bpmn/bPMNMetamodel.pro \
 #	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
-	metaEditor/metaEditor.pro \
+#	metaEditor/metaEditor.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \
@@ -32,4 +32,3 @@ SUBDIRS	= \
 	visualInterpreter/visualInterpreter.pro \
 	refactoring/refactoring.pro \
 	rulesChecker/rulesChecker.pro \
-

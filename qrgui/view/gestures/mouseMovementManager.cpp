@@ -10,12 +10,12 @@ QString const pathDelimeter = " | ";
 
 using namespace qReal::gestures;
 
-MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager *editorManager
+MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManagerInterface * editorManagerInterface
 		, GesturesPainterInterface *gesturesPaintManager)
 {
 	mGesturesManager = new MixedGesturesManager();
 	mKeyManager = &mKeyStringManager;
-	mEditorManager = editorManager;
+	mEditorManagerInterface = editorManagerInterface;
 	mGesturesPaintMan = gesturesPaintManager;
 	setElements(elements);
 }
@@ -34,7 +34,7 @@ void MouseMovementManager::drawIdealPath()
 {
 	Id const currentElement = mGesturesPaintMan->currentElement();
 	if (mElements.contains(currentElement)) {
-		QString const paths = mEditorManager->mouseGesture(currentElement);
+		QString const paths = mEditorManagerInterface->mouseGesture(currentElement);
 		mGesturesPaintMan->draw(stringToPath(paths));
 	}
 }
@@ -43,7 +43,7 @@ void MouseMovementManager::printElements()
 {
 	QList<QPair<QString, Id> > elements;
 	foreach (Id const &element, mElements) {
-		elements << qMakePair(mEditorManager->friendlyName(element), element);
+		elements << qMakePair(mEditorManagerInterface->friendlyName(element), element);
 	}
 	mGesturesPaintMan->setElements(elements);
 }
@@ -67,7 +67,7 @@ void MouseMovementManager::setElements(const QList<qReal::Id> &elements)
 {
 	QMap<QString, PathVector> gestures;
 	foreach (qReal::Id const &element, elements) {
-		QString pathStr = mEditorManager->mouseGesture(element);
+		QString pathStr = mEditorManagerInterface->mouseGesture(element);
 		if (!pathStr.isEmpty()) {
 			PathVector path = stringToPath(pathStr);
 			gestures.insert(element.toString(), path);

@@ -1,5 +1,7 @@
 #pragma once
+
 #include <QtCore/QObject>
+
 #include "../../../../../qrkernel/ids.h"
 #include "../robotCommandConstants.h"
 #include "../robotImplementations/motorImplementations/abstractMotorImplementation.h"
@@ -13,6 +15,7 @@ namespace robotParts {
 class Motor : public QObject
 {
 	Q_OBJECT
+
 public:
 	Motor(int const port, robotImplementations::motorImplementations::AbstractMotorImplementation *motorImpl);
 	~Motor();

@@ -10,7 +10,7 @@ int const maxColorValue = 1023;
 
 BluetoothColorSensorImplementation::BluetoothColorSensorImplementation(
 		RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const &port
+		, inputPort::InputPortEnum const port
 		, lowLevelSensorType::SensorTypeEnum mode
 		, sensorType::SensorTypeEnum const sensorType)
 	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType, mode, sensorMode::RAWMODE, port)

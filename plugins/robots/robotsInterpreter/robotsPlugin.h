@@ -4,11 +4,13 @@
 
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "../../../qrgui/toolPluginInterface/hotKeyActionInfo.h"
 
 #include "interpreter.h"
 #include "robotSettingsPage.h"
 #include "customizer.h"
 #include "details/sensorsConfigurationWidget.h"
+#include "details/nxtDisplay.h"
 
 namespace qReal {
 namespace interpreters {
@@ -26,6 +28,7 @@ public:
 
 	virtual void init(PluginConfigurator const &configurator);
 	virtual QList<ActionInfo> actions();
+	virtual QList<HotKeyActionInfo> hotKeyActions();
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual qReal::Customizer* customizationInterface();
 	virtual void updateSettings();
@@ -44,6 +47,8 @@ private slots:
 private:
 	/// Initializes and connects actions, fills action info list
 	void initActions();
+
+	void initHotKeyActions();
 
 	/// Disable/enable tab in QList<ActionInfo> info
 	void changeActiveTab(QList<ActionInfo> const &info, bool const &trigger);
@@ -88,13 +93,14 @@ private:
 	/// Action that shows robots tab in settings dialog
 	QAction *mRobotSettingsAction;
 
-	/// Action that shows watch list that allows to see current values of variables in a program
-	/// and current sensor readings
-	QAction *mWatchListAction;
+	/// Action that shows or hides titles on diagram
+	QAction *mTitlesAction;
 
 	/// List of action infos with plugin actions, for convenient initialization.
 	/// Contains all actions which already present as fields.
 	QList<qReal::ActionInfo> mActionInfos;
+
+	QList<HotKeyActionInfo> mHotKeyActionInfos;
 
 	/// Plugin translator object
 	QTranslator *mAppTranslator;  // Has ownership
