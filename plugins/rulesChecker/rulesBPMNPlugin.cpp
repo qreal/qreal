@@ -16,7 +16,7 @@ RulesPlugin::~RulesPlugin()
 	delete mChecker;
 }
 
-void RulesPlugin::init(const PluginConfigurator &configurator)
+void RulesPlugin::init(PluginConfigurator const &configurator)
 {
 	mChecker = new RulesChecker(configurator.graphicalModelApi().graphicalRepoApi(), configurator.mainWindowInterpretersInterface());
 	QObject::connect(mRunAllDiagram, SIGNAL(triggered()), mChecker, SLOT(checkAllDiagrams()));

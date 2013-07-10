@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
+#include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
 
 #include "rulesChecker.h"
 
@@ -17,7 +17,7 @@ public:
 	RulesPlugin();
 	~RulesPlugin();
 
-	void init(const PluginConfigurator &configurator);
+	void init(PluginConfigurator const &configurator);
 
 	QList<ActionInfo> actions();
 private:

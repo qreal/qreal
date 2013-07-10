@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "../../../qrgui/mainwindow/projectManager/projectManagementInterface.h"
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
+#include "../../qrgui/mainwindow/projectManager/projectManagementInterface.h"
+#include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
 
 namespace qReal{
 namespace rulesChecker{
