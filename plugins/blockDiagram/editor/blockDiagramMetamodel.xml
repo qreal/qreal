@@ -169,7 +169,7 @@
 		</node>
 	  </graphicTypes>
 	  <palette>
-		  <group name="Áëîê-ñõåìû">
+		  <group name="Ð­Ð»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹">
 			  <element name="ConditionNode"/>
 			  <element name="BlockDiagramNode"/>
 			  <element name="ActionElement"/>

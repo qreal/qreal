@@ -1796,27 +1796,27 @@
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="247"/>
         <source>Edge</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Связи</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="269"/>
         <source>Line mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Тип связи</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="277"/>
         <source>broken</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ломаные линии</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="282"/>
         <source>square</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Прямоугольные связи</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="287"/>
         <source>curve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Кривые Безье</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/editorPage.ui" line="311"/>

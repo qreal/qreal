@@ -147,10 +147,11 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->loopEdgeBoundsIndent->setValue(SettingsManager::value("LoopEdgeBoundsIndent").toInt());
 
 	LineType type = brokenLine;
-	if (SettingsManager::value("SquareLine").toBool())
+	if (SettingsManager::value("SquareLine").toBool()) {
 		type = squareLine;
-	if (SettingsManager::value("CurveLine").toBool())
+	} else if (SettingsManager::value("CurveLine").toBool()) {
 		type = curveLine;
+	}
 	mUi->lineMode->setCurrentIndex(type);
 
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());
