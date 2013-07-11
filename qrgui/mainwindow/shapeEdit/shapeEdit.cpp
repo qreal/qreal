@@ -13,7 +13,7 @@
 #include <QtGui/QImage>
 #include <QtWidgets/QMessageBox>
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 using namespace qReal;
 using namespace utils;
@@ -249,8 +249,9 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 			}
 		}
 	}
-	picture.setAttribute("sizex", static_cast<int>(sceneBoundingRect.width()));
-	picture.setAttribute("sizey", static_cast<int>(sceneBoundingRect.height()));
+
+	picture.setAttribute("sizex", static_cast<int>(sceneBoundingRect.width() + 1));
+	picture.setAttribute("sizey", static_cast<int>(sceneBoundingRect.height() + 1));
 
 	QList<QDomElement> domList;
 	domList.push_back(picture);
