@@ -3,6 +3,7 @@
 #include "../../qrgui/toolPluginInterface/toolPluginInterface.h"
 
 #include "rulesChecker.h"
+#include "bpmnCustomizer.h"
 
 namespace qReal{
 namespace rulesChecker{
@@ -19,12 +20,15 @@ public:
 
 	void init(PluginConfigurator const &configurator);
 
+	qReal::Customizer *customizationInterface();
+
 	QList<ActionInfo> actions();
 private:
 	//! init start key
 	void initAction();
 
 	RulesChecker *mChecker;
+	BpmnCustomizer mCustomizer;
 
 	QList<qReal::ActionInfo> mActionInfos;
 

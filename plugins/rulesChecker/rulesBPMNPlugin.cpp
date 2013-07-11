@@ -39,3 +39,8 @@ void RulesPlugin::initAction()
 	ActionInfo runCurrentInfo(mRunCurrentDiagram, "generators", "tools");
 	mActionInfos << runCurrentInfo;
 }
+
+qReal::Customizer * RulesPlugin::customizationInterface()
+{
+	return &mCustomizer;
+}
