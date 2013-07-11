@@ -1840,12 +1840,6 @@ bool MainWindow::showConnectionRelatedMenus() const
 void MainWindow::showInTextEditor(QFileInfo const &fileInfo, QString const &text)
 {
 	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
-		/*if (mCodeTabManager->contains(getCurrentTab())) {
-			QScintillaTextEdit * const area = mCodeTabManager->value(getCurrentTab());
-			if (mUi->tabs->indexOf(area) == -1) {
-				mCodeTabManager->remove(getCurrentTab());
-			}
-		}*/
 		QString const filePath = fileInfo.absoluteFilePath();
 
 		if (!mTextManager->contains(filePath)) {
@@ -1861,25 +1855,6 @@ void MainWindow::showInTextEditor(QFileInfo const &fileInfo, QString const &text
 			QScintillaTextEdit * const area = mTextManager->code(filePath);
 			mUi->tabs->setCurrentWidget(area);
 		}
-
-		/*if (!mCodeTabManager->contains(getCurrentTab())) {
-			QString const filePath = QFileInfo("nxt-tools/" + title + "/" + title + ".c").absoluteFilePath();
-			mTextManager->openFile(filePath);
-			QScintillaTextEdit * const area = mTextManager->code(filePath);
-			area->setText(text);
-			area->show();
-			mCodeTabManager->insert(getCurrentTab(), area);
-
-			mSystemEvents->emitNewCodeAppeared(activeDiagram(), QFileInfo(filePath));
-
-			mUi->tabs->addTab(area, title + ".c");
-			mUi->tabs->setCurrentWidget(area);
-		} else {
-			QScintillaTextEdit * const area = mCodeTabManager->value(getCurrentTab());
-			area->setText(text);//document()->setPlainText(text);
-			area->show();
-			mUi->tabs->setCurrentWidget(area);
-		}*/
 	}
 }
 
@@ -2104,12 +2079,19 @@ QListIterator<EditorView *> MainWindow::openedEditorViews() const
 	return QListIterator<EditorView *>(views);
 }
 
-bool MainWindow::saveGeneratedCode()
+bool MainWindow::saveGeneratedCode(bool saveAs)
 {
 	if (dynamic_cast<EditorView *>(getCurrentTab()) == NULL) {
 		QScintillaTextEdit * const area = dynamic_cast<QScintillaTextEdit *>(mUi->tabs->currentWidget());
 
-		QFileInfo fileInfo = QFileInfo(QFileDialog::getSaveFileName(this, tr("Save generated code"), "", tr("Generated Code (*.c)")));
+		QFileInfo fileInfo;
+		bool const defaultPath = mTextManager->isDefaultPath(mTextManager->path(area));
+
+		if (saveAs || defaultPath) {
+			fileInfo = QFileInfo(QFileDialog::getSaveFileName(this, tr("Save generated code"), "", tr("Generated Code (*.c)")));
+		} else {
+			fileInfo = mTextManager->path(area);
+		}
 
 		if (fileInfo.fileName() != "") {
 			mUi->tabs->setTabText(mUi->tabs->currentIndex(), fileInfo.fileName());
@@ -2118,7 +2100,9 @@ bool MainWindow::saveGeneratedCode()
 
 			out() << area->text();
 
-			mSystemEvents->emitCodePathChanged(mTextManager->diagram(area)->mvIface()->rootId(), mTextManager->path(area), fileInfo);
+			if (saveAs || defaultPath) {
+				mSystemEvents->emitCodePathChanged(mTextManager->diagram(area)->mvIface()->rootId(), mTextManager->path(area), fileInfo);
+			}
 		}
 
 		return true;

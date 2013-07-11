@@ -160,7 +160,7 @@ public:
 
 	QListIterator<EditorView *> openedEditorViews() const;
 
-	bool saveGeneratedCode();
+	bool saveGeneratedCode(bool saveAs);
 
 signals:
 	void gesturesShowed();

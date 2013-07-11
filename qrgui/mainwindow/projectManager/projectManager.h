@@ -43,7 +43,6 @@ public:
 	QString openFileName(QString const &dialogWindowTitle) const;
 	QString saveFilePath() const;
 	void setSaveFilePath(QString const &filePath = "");
-	void saveGenCode(QString const &text);
 
 	/// Prompts user to restore last session if it was incorrectly terminated
 	/// and returns yes if he agrees. Otherwise returns false

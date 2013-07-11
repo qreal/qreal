@@ -25,6 +25,7 @@ bool TextManager::openFile(QString const &filePath)
 		area->setText(inStream->readAll());
 		mText.insert(filePath, area);
 		mPath.insert(area, filePath);
+		mPathType.insert(filePath, true);
 
 		return true;
 	}
@@ -54,6 +55,7 @@ bool TextManager::unbindCode(gui::QScintillaTextEdit *code)
 bool TextManager::closeFile(QString const &filePath)
 {
 	mPath.remove(mText.value(filePath));
+	mPathType.remove(filePath);
 	return mText.remove(filePath) != 0;
 }
 
@@ -63,9 +65,12 @@ void TextManager::changeFilePath(QString const &from, QString const &to)
 	closeFile(from);
 	mText.insert(to, code);
 	mPath.insert(code, to);
-	EditorView* diagram = mDiagramCodeManager.key(from);
-	mDiagramCodeManager.remove(diagram, from);
-	mDiagramCodeManager.insert(diagram, to);
+	mPathType.insert(to, false);
+	EditorView* diagram = mDiagramCodeManager.key(from, NULL);
+	if (diagram != NULL) {
+		mDiagramCodeManager.remove(diagram, from);
+		mDiagramCodeManager.insert(diagram, to);
+	}
 }
 
 QScintillaTextEdit *TextManager::code(QString const &filePath)
@@ -102,4 +107,9 @@ EditorView *TextManager::diagram(gui::QScintillaTextEdit *code)
 QString TextManager::path(gui::QScintillaTextEdit *code)
 {
 	return mPath.value(code);
+}
+
+bool TextManager::isDefaultPath(QString const &path)
+{
+	return mPathType.value(path);
 }

@@ -278,12 +278,6 @@ void ProjectManager::save()
 	refreshApplicationStateAfterSave();
 }
 
-void ProjectManager::saveGenCode(QString const &text)
-{
-	utils::OutFile out("nxt-tools/example0/example0.c");
-	out() << text;
-}
-
 bool ProjectManager::restoreIncorrectlyTerminated()
 {
 	return mAutosaver->checkTempFile();
@@ -296,7 +290,7 @@ MainWindow *ProjectManager::mainWindow() const
 
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
-	if (mMainWindow->saveGeneratedCode()) {
+	if (mMainWindow->saveGeneratedCode(false)) {
 		return true;
 	}
 
@@ -310,7 +304,7 @@ bool ProjectManager::saveOrSuggestToSaveAs()
 
 bool ProjectManager::suggestToSaveAs()
 {
-	if (mMainWindow->saveGeneratedCode()) {
+	if (mMainWindow->saveGeneratedCode(true)) {
 		return true;
 	}
 

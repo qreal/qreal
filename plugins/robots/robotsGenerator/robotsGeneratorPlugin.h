@@ -89,7 +89,7 @@ private:
 	qReal::SystemEventsInterface *mSystemEvents;
 	qReal::TextManagerInterface *mTextManager;
 	int mCurrentCodeNumber;
-	QMultiHash<qReal::Id, QPair<QFileInfo, bool> > mCodePath;
+	QMultiHash<qReal::Id, QFileInfo> mCodePath;
 };
 
 }

@@ -28,10 +28,12 @@ public:
 	bool removeDiagram(EditorView *diagram);
 	EditorView *diagram(gui::QScintillaTextEdit *code);
 	QString path(gui::QScintillaTextEdit *code);
+	bool isDefaultPath(QString const &path);
 
 private:
 	QMap<QString, gui::QScintillaTextEdit *> mText;
 	QMap<gui::QScintillaTextEdit *, QString> mPath;
+	QMap<QString, bool> mPathType;
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMultiHash<EditorView*, QString> mDiagramCodeManager;

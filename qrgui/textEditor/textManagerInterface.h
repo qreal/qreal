@@ -24,6 +24,7 @@ public:
 	virtual bool contains(QString const &filePath) = 0;
 	virtual EditorView *diagram(gui::QScintillaTextEdit *code) = 0;
 	virtual QString path(gui::QScintillaTextEdit *code) = 0;
+	virtual bool isDefaultPath(QString const &path) = 0;
 };
 
 }

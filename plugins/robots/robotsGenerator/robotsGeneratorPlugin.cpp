@@ -108,14 +108,13 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 
 	QString const projectName = "example" + QString::number(mCurrentCodeNumber);
 	QFileInfo fileInfo = QFileInfo("nxt-tools/" + projectName + "/" + projectName + ".c");
-	QList<QPair<QFileInfo, bool> > pathsList = mCodePath.values(activeDiagram);
+	QList<QFileInfo> pathsList = mCodePath.values(activeDiagram);
 	bool newCode = true;
 
 	if (!pathsList.isEmpty()) {
-		typedef QPair<QFileInfo, bool> PathInfo;
-		foreach(PathInfo const &path, pathsList) {
-			if (path.second) {
-				fileInfo = path.first;
+		foreach(QFileInfo const &path, pathsList) {
+			if (mTextManager->isDefaultPath(path.absoluteFilePath())) {
+				fileInfo = path;
 				newCode = false;
 				break;
 			}
@@ -148,11 +147,9 @@ void RobotsGeneratorPlugin::regenerateRobotSourceCode(qReal::Id const &diagram, 
 {
 	mTextManager->changeFilePath(oldFileInfo.absoluteFilePath(), newFileInfo.absoluteFilePath());
 
-	if (mCodePath.remove(diagram, QPair<QFileInfo, bool>(oldFileInfo, true)) == 0) {
-		mCodePath.remove(diagram, QPair<QFileInfo, bool>(oldFileInfo, false));
-	}
+	mCodePath.remove(diagram, oldFileInfo);
 
-	mCodePath.insert(diagram, QPair<QFileInfo, bool>(newFileInfo.absoluteFilePath(), false));
+	mCodePath.insert(diagram, newFileInfo);
 
 	robots::generator::NxtOSEKRobotGenerator gen(diagram, *mRepoControlApi, *mMainWindowInterface->errorReporter());
 
@@ -178,10 +175,9 @@ void RobotsGeneratorPlugin::uploadProgram()
 
 		if (activeDiagram != Id()) {
 			if (generateRobotSourceCode()) {
-				typedef QPair<QFileInfo, bool> PathInfo;
-				foreach(PathInfo const &path, mCodePath.values(activeDiagram)) {
-					if (path.second) {
-						fileInfo = path.first;
+				foreach(QFileInfo const &path, mCodePath.values(activeDiagram)) {
+					if (mTextManager->isDefaultPath(path.absoluteFilePath())) {
+						fileInfo = path;
 						break;
 					}
 				}
@@ -199,7 +195,7 @@ void RobotsGeneratorPlugin::uploadProgram()
 
 void RobotsGeneratorPlugin::addNewCode(Id const &diagram, QFileInfo const &fileInfo)
 {
-	mCodePath.insert(diagram, QPair<QFileInfo, bool>(fileInfo, true));
+	mCodePath.insert(diagram, fileInfo);
 }
 
 void RobotsGeneratorPlugin::removeDiagram(qReal::Id const &diagram)
@@ -209,17 +205,9 @@ void RobotsGeneratorPlugin::removeDiagram(qReal::Id const &diagram)
 
 void RobotsGeneratorPlugin::removeCode(QFileInfo const &fileInfo)
 {
-	Id diagram;
-	bool standartPath = true;
+	Id const &diagram = mCodePath.key(fileInfo);
 
-	if (mCodePath.key(QPair<QFileInfo, bool> (fileInfo, false), Id()) == Id()) {
-		diagram = mCodePath.key(QPair<QFileInfo, bool> (fileInfo, true));
-	} else {
-		standartPath = false;
-		diagram = mCodePath.key(QPair<QFileInfo, bool> (fileInfo, false));
-	}
-
-	mCodePath.remove(diagram, QPair<QFileInfo, bool>(fileInfo, standartPath));
+	mCodePath.remove(diagram, fileInfo);
 }
 
 void RobotsGeneratorPlugin::checkNxtTools()
