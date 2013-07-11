@@ -46,7 +46,7 @@ public:
 
 	/// use adjustLink() to all links that have with this general master
 	void adjustNeighborLinks();
-	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
+	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
 	bool shouldReconnect() const;
 	void arrangeSrcAndDst();
 	NodeElement *src() const;

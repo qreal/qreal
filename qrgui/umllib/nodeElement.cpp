@@ -186,7 +186,7 @@ void NodeElement::arrangeLinks() {
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
-		edge->reconnectToNearestPorts(this == src, this == dst, true);
+		edge->reconnectToNearestPorts(this == src, this == dst);
 	}
 
 	//Episode II: Home Ports Arranging
@@ -199,7 +199,7 @@ void NodeElement::arrangeLinks() {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
 		NodeElement* other = edge->otherSide(this);
-		edge->reconnectToNearestPorts(other == src, other == dst, true);
+		edge->reconnectToNearestPorts(other == src, other == dst);
 	}
 
 	//Episode IV: Remote Arrangigng
@@ -555,6 +555,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	arrangeLinks();
+
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->adjustNeighborLinks();
 	}

@@ -556,7 +556,7 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 		return;
 	}
 
-	if (mPortFrom == mPortTo) {
+	if ((int) mPortFrom == (int) mPortTo) {
 		searchNextPort();
 	}
 
@@ -1416,24 +1416,26 @@ NodeElement* EdgeElement::otherSide(NodeElement const *node) const
 	return 0;
 }
 
-bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst, bool jumpsOnly)
+bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 {
 	bool reconnectedSrc = false;
 	bool reconnectedDst = false;
 	if (mSrc && reconnectSrc) {
 		qreal newFrom = mSrc->portId(mapToItem(mSrc, mLine[1]));
 		reconnectedSrc = (NodeElement::portNumber(newFrom) != NodeElement::portNumber(mPortFrom));
-		if (!jumpsOnly || reconnectedSrc) {
+		if (reconnectedSrc) {
 			mPortFrom = newFrom;
 			mModelUpdateIsCalled = true;
 			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 		}
-
+		if (mIsLoop) {
+			return reconnectedSrc;
+		}
 	}
 	if (mDst && reconnectDst) {
 		qreal newTo = mDst->portId(mapToItem(mDst, mLine[mLine.count() - 2]));
 		reconnectedDst = (NodeElement::portNumber(newTo) != NodeElement::portNumber(mPortTo));
-		if (!jumpsOnly || reconnectedDst) {
+		if (reconnectedDst) {
 			mPortTo = newTo;
 			mModelUpdateIsCalled = true;
 			mGraphicalAssistApi->setToPort(id(), mPortTo);
@@ -1536,11 +1538,13 @@ void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
 		mPortFrom = portId;
 		mModelUpdateIsCalled = true;
 		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+		return;
 	}
 	if (node == mDst) {
 		mPortTo = portId;
 		mModelUpdateIsCalled = true;
 		mGraphicalAssistApi->setToPort(id(), mPortTo);
+		return;
 	}
 }
 
