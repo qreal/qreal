@@ -101,6 +101,9 @@ void PreferencesEditorPage::save()
 {
 	SettingsManager::setValue("EmbeddedLinkerIndent", mUi->embeddedLinkerIndentSlider->value());
 	SettingsManager::setValue("EmbeddedLinkerSize", mUi->embeddedLinkerSizeSlider->value());
+	SettingsManager::setValue("SquareLine", mUi->lineMode->currentIndex() == (int) squareLine);
+	SettingsManager::setValue("CurveLine", mUi->lineMode->currentIndex() == (int) curveLine);
+	SettingsManager::setValue("LoopEdgeBoundsIndent", mUi->loopEdgeBoundsIndent->value());
 	SettingsManager::setValue("zoomFactor", mUi->zoomFactorSlider->value());
 	SettingsManager::setValue("ShowGrid", mUi->showGridCheckBox->isChecked());
 	SettingsManager::setValue("ShowAlignment", mUi->showAlignmentCheckBox->isChecked());
@@ -141,6 +144,14 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent").toInt());
 	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize").toInt());
 	mUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor").toInt());
+	mUi->loopEdgeBoundsIndent->setValue(SettingsManager::value("LoopEdgeBoundsIndent").toInt());
+
+	LineType type = brokenLine;
+	if (SettingsManager::value("SquareLine").toBool())
+		type = squareLine;
+	if (SettingsManager::value("CurveLine").toBool())
+		type = curveLine;
+	mUi->lineMode->setCurrentIndex(type);
 
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());
 	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont").toBool());

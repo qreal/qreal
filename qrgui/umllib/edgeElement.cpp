@@ -20,8 +20,8 @@ const double pi = 3.14159265358979;
 const qreal epsilon = 0.00000000001;
 
 const int rightRotation = 1;// the difference between the elements of NodeSide
-const int curveReductCoeff = 2;
-const int brokenReduceCoeff = 6;
+const int maxReductCoeff = 16;
+const int standartReductCoeff = 3;
 
 /** @brief indicator of edges' movement */
 
@@ -598,10 +598,10 @@ QPointF EdgeElement::boundingRectIndent(QPointF const &point, EdgeElement::NodeS
 {
 	QPointF newPoint;
 	QRectF bounds = mSrc->boundingRect();
-	qreal reductFactor = brokenReduceCoeff;
-	if (SettingsManager::value("CurveLine").toBool()) {
-		reductFactor = curveReductCoeff;
-	}
+	int reductFactor = indentReductCoeff();
+/*	if (reductFactor == 0) {
+		reductFactor = standartReductCoeff;
+	}*/
 
 	switch (direction) {
 	case Top: {
@@ -633,6 +633,10 @@ QPointF EdgeElement::boundingRectIndent(QPointF const &point, EdgeElement::NodeS
 	}
 
 	return newPoint;
+}
+
+int EdgeElement::indentReductCoeff() {
+	return (maxReductCoeff - SettingsManager::value("LoopEdgeBoundsIndent").toInt());
 }
 
 void EdgeElement::searchNextPort() {

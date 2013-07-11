@@ -41,6 +41,11 @@ private slots:
 	void activateAlignment(bool);
 
 private:
+	enum LineType {
+		brokenLine,
+		squareLine,
+		curveLine
+	};
 	Ui::PreferencesEditorPage *mUi;
 	bool mFontWasChanged;
 	bool mFontButtonWasPressed;

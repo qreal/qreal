@@ -164,7 +164,11 @@ private:
 
 	enum NodeSide { Left, Top, Right, Bottom };
 
+<<<<<<< HEAD
 	/// Set mPortTo to next port.
+=======
+	int indentReductCoeff();
+>>>>>>> 6cf3830b8a53523d722bd9a1e3d62741ec7fea36
 	void searchNextPort();
 	/// Change line, if (mSrc && (mSrc == mDst)).
 	void createLoopEdge();
