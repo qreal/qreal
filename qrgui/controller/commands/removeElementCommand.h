@@ -32,6 +32,8 @@ public:
 
 	virtual bool equals(AbstractCommand const &other) const;
 
+	Id elementId() const;
+
 protected:
 	virtual bool execute();
 	virtual bool restoreState();
