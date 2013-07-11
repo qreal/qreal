@@ -20,7 +20,7 @@ public:
 	/// Get value associated with given key from settings.
 	/// @param key Parameter name.
 	/// @returns Variant with parameter value.
-    static QVariant value(QString const &key);
+	static QVariant value(QString const &key);
 
 	/// Get value associated with given key from settings with given default value.
 	/// @param key Parameter name.
@@ -43,8 +43,14 @@ public:
 	/// registry), making them available to new instances of an application.
 	void saveData();
 
+	/// Saves settings into selected file with name fileNameForExport.
+	void saveSettings(QString fileNameForExport);
+
 	/// Loads settings from persistent external storage into SettingsManager.
 	void load();
+
+	/// Loads settings from selected file with name fileNameForImport.
+	void loadSettings(QString fileNameForImport);
 
 private:
 	/// Private constructor.

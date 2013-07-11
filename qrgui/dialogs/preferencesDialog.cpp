@@ -39,6 +39,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	connect(ui->applyButton, SIGNAL(clicked()), this, SLOT(applyChanges()));
 	connect(ui->okButton, SIGNAL(clicked()), this, SLOT(saveAndClose()));
 	connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
+	connect(ui->exportButton, SIGNAL(clicked()), this, SLOT(exportSettings()));
+	connect(ui->importButton, SIGNAL(clicked()), this, SLOT(importSettings()));
 
 	connect(editorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
 	connect(editorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
@@ -129,4 +131,18 @@ void PreferencesDialog::changePaletteParameters()
 	if (mCustomPages.count(tr("Editor")) > 0) {
 		static_cast<PreferencesEditorPage*>(mCustomPages[tr("Editor")])->changePaletteParameters();
 	}
+}
+
+void PreferencesDialog::exportSettings()
+{
+	QString fileNameForExport = QFileDialog::getSaveFileName(this, tr("Save File"),"/home",tr("*.ini"));
+	QFile file(fileNameForExport);
+	SettingsManager::instance()->saveSettings(fileNameForExport);
+}
+
+void PreferencesDialog::importSettings()
+{
+	QString fileNameForImport = QFileDialog::getOpenFileName(this, tr("Open File"),"/home",tr("*.ini"));
+	QFile file(fileNameForImport);
+	SettingsManager::instance()->loadSettings(fileNameForImport);
 }
