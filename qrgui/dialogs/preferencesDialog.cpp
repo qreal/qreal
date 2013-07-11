@@ -135,14 +135,16 @@ void PreferencesDialog::changePaletteParameters()
 
 void PreferencesDialog::exportSettings()
 {
-	QString fileNameForExport = QFileDialog::getSaveFileName(this, tr("Save File"),"/home",tr("*.ini"));
-	QFile file(fileNameForExport);
+	QString fileNameForExport = QFileDialog::getSaveFileName(this, tr("Save File"),"/mySettings",tr("*.ini"));
+	if (!fileNameForExport.endsWith(".ini"))
+	{
+		fileNameForExport += ".ini";
+	}
 	SettingsManager::instance()->saveSettings(fileNameForExport);
 }
 
 void PreferencesDialog::importSettings()
 {
-	QString fileNameForImport = QFileDialog::getOpenFileName(this, tr("Open File"),"/home",tr("*.ini"));
-	QFile file(fileNameForImport);
+	QString fileNameForImport = QFileDialog::getOpenFileName(this, tr("Open File"),"/mySettings",tr("*.ini"));
 	SettingsManager::instance()->loadSettings(fileNameForImport);
 }

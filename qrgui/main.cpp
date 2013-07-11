@@ -35,7 +35,16 @@ int main(int argc, char *argv[])
 			clearConfig();
 			return 0;
 		} else {
-			fileToOpen = app.arguments().at(1);
+			for (int i = 0; i < argc - 1; i++)
+			{
+				if (app.arguments().at(i) == "--config"
+						&& app.arguments().at(i + 1).endsWith(".ini"))
+				{
+					QString settingsFileName = app.arguments().at(i + 1);
+					SettingsManager::instance()->loadSettings(settingsFileName);
+				}
+			}
+		//	fileToOpen = app.arguments().at(1);
 		}
 	}
 
