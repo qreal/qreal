@@ -82,7 +82,9 @@
                             <showIf value="Conditional" property="Type" sign="="/>
                         </line>
                     </picture>
-                    <labels/>
+                    <labels>
+                        <label x="0" y="100" textBinded="text"/>
+                    </labels>
                     <ports>
                         <pointPort x="0" y="50"/>
                         <pointPort x="50" y="0"/>
@@ -96,6 +98,7 @@
                         <property type="StartEventType" name="Type" displayedName="Type">
                             <default>None</default>
                         </property>
+                        <property type="string" name="text" displayedName="Text"/>
                     </properties>
                 </logic>
             </node>
@@ -159,7 +162,9 @@
                             <showIf value="Conditional" property="Type" sign="="/>
                         </line>
                     </picture>
-                    <labels/>
+                    <labels>
+                        <label x="0" y="100" textBinded="text"/>
+                    </labels>
                     <ports>
                         <pointPort x="0" y="50"/>
                         <pointPort x="50" y="0"/>
@@ -173,6 +178,7 @@
                         <property type="IntermediateEventType" name="Type" displayedName="Type">
                             <default>None</default>
                         </property>
+                        <property type="string" name="text" displayedName="Text"/>
                     </properties>
                 </logic>
             </node>
@@ -190,7 +196,9 @@
                             <showIf value="Message" property="Type" sign="="/>
                         </line>
                     </picture>
-                    <labels/>
+                    <labels>
+                        <label x="0" y="100" textBinded="text"/>
+                    </labels>
                     <ports>
                         <pointPort x="0" y="50"/>
                         <pointPort x="50" y="0"/>
@@ -204,6 +212,7 @@
                         <property type="EndEventType" name="Type" displayedName="Type">
                             <default>None</default>
                         </property>
+                        <property type="string" name="text" displayedName="Text"/>
                     </properties>
                 </logic>
             </node>
@@ -245,7 +254,9 @@
                             <showIf value="Parallel" property="Type" sign="="/>
                         </line>
                     </picture>
-                    <labels/>
+                    <labels>
+                        <label x="0" y="110" textBinded="text"/>
+                    </labels>
                     <ports>
                         <pointPort x="0" y="55"/>
                         <pointPort x="55" y="0"/>
@@ -259,6 +270,7 @@
                         <property type="GatewayType" name="Type" displayedName="Type">
                             <default>Exclusive (Data Based)</default>
                         </property>
+                        <property type="string" name="text" displayedName="Text"/>
                     </properties>
                 </logic>
             </node>
@@ -333,6 +345,7 @@
                     </labels>
                 </graphics>
                 <logic>
+                    <dividability isDividable="true"/>
                     <associations endType="filled_arrow" beginType="no_arrow">
                         <association endName="end" beginName="start"/>
                     </associations>
