@@ -47,7 +47,7 @@ public:
 
 	/// use adjustLink() to all links that have with this general master
 	void adjustNeighborLinks();
-	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
+	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
 	bool shouldReconnect() const;
 	void arrangeSrcAndDst();
 	NodeElement *src() const;
@@ -146,39 +146,43 @@ private:
 		noPort = -1
 	};
 
-	enum LineDirection {
-			top = -1,
-			bottom = 1,
-			left = -2,
-			right = 2,
-			topInsideNode = -3,
-			bottomInsideNode = 3,
-			leftInsideNode = -4,
-			rightInsideNode = 4
-	};
-
 	enum LineType {
-		Vertical,
-		Horizontal,
-		VerticalTurn,
-		HorizontalTurn
+		vertical,
+		horizontal,
+		verticalTurn,
+		horizontalTurn
 	};
 
-	enum NodeSide { Left, Top, Right, Bottom };
+	enum NodeSide {
+		left,
+		top,
+		right,
+		bottom
+	};
 
-	// when (mSrc == mDst && mDst && mLine <= 3)
+	int indentReductCoeff();
+	/// Set mPortTo to next port.
+	void searchNextPort();
+	/// Change line, if (mSrc && (mSrc == mDst)).
 	void createLoopEdge();
-	// connectToPort for self-closing line (mSrc == mDst && mDst)
+	/// connectToPort for self-closing line (mSrc && (mSrc == mDst)).
 	void connectLoopEdge(NodeElement *newMaster);
-	// need for correcting links at square drawing
-	int defineDirection(bool from);
+
+	/// Create indent of bounding rect, depending on the rect size.
+	QPointF boundingRectIndent(QPointF const &point, NodeSide direction);
+	/// Returns true, if the sides adjacent.
+	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const ;
+	/// Returns the next clockwise side.
+	NodeSide rotateRight(NodeSide side) const;
 
 	void paintSavedEdge(QPainter *painter) const;
 	void paintChangedEdge(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
+	/// Changed size of mLine to 4. Selects 2 intermediate points depending on the size and type of line.
 	void setBezierPoints();
+	/// Returns the bezier curve built on the mLine points.
 	QPainterPath bezierCurve() const;
 
 	QList<PossibleEdge> possibleEdges;

@@ -168,5 +168,16 @@
 		  </logic>
 		</node>
 	  </graphicTypes>
+	  <palette>
+		  <group name="Элементы">
+			  <element name="ConditionNode"/>
+			  <element name="BlockDiagramNode"/>
+			  <element name="ActionElement"/>
+			  <element name="InitialNode"/>
+			  <element name="ConditionControlFlow"/>
+			  <element name="ControlFlow"/>
+			  <element name="BlockFinalNode"/>
+		  </group>
+	  </palette>
 	</diagram>
   </metamodel>

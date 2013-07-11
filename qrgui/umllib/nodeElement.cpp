@@ -187,7 +187,7 @@ void NodeElement::arrangeLinks() {
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
-		edge->reconnectToNearestPorts(this == src, this == dst, true);
+		edge->reconnectToNearestPorts(this == src, this == dst);
 	}
 
 	//Episode II: Home Ports Arranging
@@ -200,7 +200,7 @@ void NodeElement::arrangeLinks() {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
 		NodeElement* other = edge->otherSide(this);
-		edge->reconnectToNearestPorts(other == src, other == dst, true);
+		edge->reconnectToNearestPorts(other == src, other == dst);
 	}
 
 	//Episode IV: Remote Arrangigng
@@ -257,7 +257,7 @@ void NodeElement::switchGrid(bool isChecked)
 		alignToGrid();
 
 		// Align mode doesn`t work in a square mode
-		if (!SettingsManager::value("SquareLine").toBool()) {
+		if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) {
 			foreach (EdgeElement * const edge, mEdgeList) {
 				edge->alignToGrid();
 			}
@@ -555,6 +555,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	arrangeLinks();
+
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->adjustNeighborLinks();
 	}
@@ -562,7 +563,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
 		edge->saveConfiguration(QPointF());
-		if (SettingsManager::value("ActivateGrid").toBool() && !SettingsManager::value("SquareLine").toBool()) {
+		if (SettingsManager::value("ActivateGrid").toBool()
+				&& (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)))
+		{
 			edge->alignToGrid();
 		}
 	}
@@ -763,6 +766,11 @@ QPointF const NodeElement::nearestPort(QPointF const &location) const
 bool NodeElement::isContainer() const
 {
 	return mElementImpl->isContainer();
+}
+
+int NodeElement::numberOfPorts() const
+{
+	return mPortHandler->numberOfPorts();
 }
 
 int NodeElement::portNumber(qreal id)

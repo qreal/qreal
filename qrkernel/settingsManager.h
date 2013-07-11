@@ -20,7 +20,7 @@ public:
 	/// Get value associated with given key from settings.
 	/// @param key Parameter name.
 	/// @returns Variant with parameter value.
-    static QVariant value(QString const &key);
+	static QVariant value(QString const &key);
 
 	/// Get value associated with given key from settings with given default value.
 	/// @param key Parameter name.
