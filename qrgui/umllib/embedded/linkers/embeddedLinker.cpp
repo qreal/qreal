@@ -279,11 +279,12 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mEdge->hide();
 		QPointF const &eScenePos = event->scenePos();
 		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos, QTransform()));
+		QGraphicsItem *container = mEdge->src()->parentItem();
 		mEdge->show();
 		int result = 0;
 
 		commands::CreateElementCommand *createElementFromMenuCommand = NULL;
-		if (!under) {
+		if (!under || (container == under)) {
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, &createElementFromMenuCommand);
 			NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
 			if (result == -1) {
