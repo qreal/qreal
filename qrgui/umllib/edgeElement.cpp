@@ -573,7 +573,7 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 
 	if (isNeighbor(startSide, endSide)) {
 		QPointF thirdPoint;
-		if ((endSide == Top) || (endSide == Bottom)) {
+		if ((endSide == top) || (endSide == bottom)) {
 			thirdPoint = QPointF(secondPoint.x(), penultPoint.y());
 		} else {
 			thirdPoint = QPointF(penultPoint.x(), secondPoint.y());
@@ -604,25 +604,25 @@ QPointF EdgeElement::boundingRectIndent(QPointF const &point, EdgeElement::NodeS
 	}*/
 
 	switch (direction) {
-	case Top: {
+	case top: {
 		QPointF topPoint = mapToItem(mSrc, QPointF(point.x(), 0));
 		newPoint = mapFromItem(mSrc, QPointF(topPoint.x()
 				, bounds.top() - bounds.height() / reductFactor));
 		break;
 	}
-	case Bottom: {
+	case bottom: {
 		QPointF bottomPoint = mapToItem(mSrc, QPointF(point.x(), 0));
 		newPoint = mapFromItem(mSrc, QPointF(bottomPoint.x()
 				, bounds.bottom() + bounds.height() / reductFactor));
 		break;
 	}
-	case Left: {
+	case left: {
 		QPointF leftPoint = mapToItem(mSrc, QPointF(0, point.y()));
 		newPoint = mapFromItem(mSrc, QPointF(bounds.left() - bounds.width() / reductFactor
 				, leftPoint.y()));
 		break;
 	}
-	case Right: {
+	case right: {
 		QPointF rightPoint = mapToItem(mSrc, QPointF(0, point.y()));
 		newPoint = mapFromItem(mSrc, QPointF(bounds.right() + bounds.width() / reductFactor
 				, rightPoint.y()));
@@ -1171,16 +1171,16 @@ void EdgeElement::squarize()
 	int type = defineType();
 
 	switch (type) {
-	case Vertical:
+	case vertical:
 		verticalSquareLine();
 		break;
-	case Horizontal:
+	case horizontal:
 		horizontalSquareLine();
 		break;
-	case VerticalTurn:
+	case verticalTurn:
 		verticalTurningSquareLine();
 		break;
-	case HorizontalTurn:
+	case horizontalTurn:
 		horizontalTurningSquareLine();
 		break;
 	default:
@@ -1191,23 +1191,23 @@ void EdgeElement::squarize()
 int EdgeElement::defineType()
 {
 	if (!(mSrc && mDst)) {
-		return HorizontalTurn;
+		return horizontalTurn;
 	}
 
 	// defining type of square link by looking at sides of nodes which the link is connected to
 	int startSide = defineSide(mPortFrom);
 	int endSide = defineSide(mPortTo);
 
-	if (startSide == Top || startSide == Bottom) {
-		if (endSide == Top || endSide == Bottom) {
-			return Vertical;
+	if (startSide == top || startSide == bottom) {
+		if (endSide == top || endSide == bottom) {
+			return vertical;
 		} else {
-			return VerticalTurn;
+			return verticalTurn;
 		}
-	} else if (endSide == Left || endSide == Right) {
-		return Horizontal;
+	} else if (endSide == left || endSide == right) {
+		return horizontal;
 	} else {
-		return HorizontalTurn;
+		return horizontalTurn;
 	}
 }
 
@@ -1218,20 +1218,20 @@ int EdgeElement::defineSide(qreal port)
 	QRectF bounds = node->boundingRect();
 
 	// divide bounding rectangle with it's diagonals, then determine in which part the port lies
-	bool top = pos.y() < bounds.height() / bounds.width() * pos.x();
-	bool left = pos.y() / bounds.height() + pos.x() / bounds.width() < 1;
+	bool isTop = pos.y() < bounds.height() / bounds.width() * pos.x();
+	bool isLeft = pos.y() / bounds.height() + pos.x() / bounds.width() < 1;
 
-	if (top) {
-		if (left) {
-			return Top;
+	if (isTop) {
+		if (isLeft) {
+			return top;
 		} else {
-			return Right;
+			return right;
 		}
 	}
-	if (left) {
-		return Left;
+	if (isLeft) {
+		return left;
 	} else {
-		return Bottom;
+		return bottom;
 	}
 }
 

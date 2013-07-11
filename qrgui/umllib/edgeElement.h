@@ -144,25 +144,19 @@ private:
 		noPort = -1
 	};
 
-	enum LineDirection {
-		top = -1,
-		bottom = 1,
-		left = -2,
-		right = 2,
-		topInsideNode = -3,
-		bottomInsideNode = 3,
-		leftInsideNode = -4,
-		rightInsideNode = 4
-	};
-
 	enum LineType {
-		Vertical,
-		Horizontal,
-		VerticalTurn,
-		HorizontalTurn
+		vertical,
+		horizontal,
+		verticalTurn,
+		horizontalTurn
 	};
 
-	enum NodeSide { Left, Top, Right, Bottom };
+	enum NodeSide {
+		left,
+		top,
+		right,
+		bottom
+	};
 
 	int indentReductCoeff();
 	/// Set mPortTo to next port.
