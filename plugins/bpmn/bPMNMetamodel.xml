@@ -347,12 +347,6 @@
                     <container/>
                     <properties>
                         <property type="string" name="Text" displayedName="Text"/>
-                        <property type="LoopType" name="LoopType" displayedName="Loop Type">
-                            <default>No loop</default>
-                        </property>
-                        <property type="TaskType" name="TaskType" displayedName="Task Type">
-                            <default>Not specified</default>
-                        </property>
                     </properties>
                 </logic>
             </node>
