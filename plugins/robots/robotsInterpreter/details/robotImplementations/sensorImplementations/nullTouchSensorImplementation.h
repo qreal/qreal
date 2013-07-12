@@ -12,7 +12,7 @@ class NullTouchSensorImplementation : public NullSensorImplementation
 {
 	Q_OBJECT
 public:
-	NullTouchSensorImplementation(inputPort::InputPortEnum const &port);
+	NullTouchSensorImplementation(inputPort::InputPortEnum const port);
 protected slots:
 	virtual void timerTimeout();
 };

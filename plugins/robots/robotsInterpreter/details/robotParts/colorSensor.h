@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+
 #include "sensor.h"
 #include "../../sensorConstants.h"
 
@@ -15,7 +16,7 @@ class ColorSensor : public Sensor
 	Q_OBJECT
 
 public:
-	ColorSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
+	ColorSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const port);
 };
 
 }

@@ -115,7 +115,15 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal const angleInWrongQuarter = asin(sin);
 	qreal const angle = cosIsNegative ? M_PI - angleInWrongQuarter : angleInWrongQuarter;
 
-	mMaster->rotate(angle * 180 / M_PI);
+	if (event->modifiers() & Qt::ShiftModifier) {
+		qreal roundedAngle = (angle - fmod(angle, M_PI_4));
+		if (qAbs(roundedAngle - angle) > qAbs(roundedAngle + M_PI_4 - angle)) {
+			roundedAngle += M_PI_4;
+		}
+		mMaster->rotate(roundedAngle * 180 / M_PI);
+	} else {
+		mMaster->rotate(angle * 180 / M_PI);
+	}
 }
 
 void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)

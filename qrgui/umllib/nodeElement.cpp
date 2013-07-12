@@ -18,6 +18,7 @@
 #include "private/foldCommand.h"
 
 #include "../controller/commands/changeParentCommand.h"
+#include "../controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -186,7 +187,7 @@ void NodeElement::arrangeLinks() {
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
-		edge->reconnectToNearestPorts(this == src, this == dst, true);
+		edge->reconnectToNearestPorts(this == src, this == dst);
 	}
 
 	//Episode II: Home Ports Arranging
@@ -199,7 +200,7 @@ void NodeElement::arrangeLinks() {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
 		NodeElement* other = edge->otherSide(this);
-		edge->reconnectToNearestPorts(other == src, other == dst, true);
+		edge->reconnectToNearestPorts(other == src, other == dst);
 	}
 
 	//Episode IV: Remote Arrangigng
@@ -256,7 +257,7 @@ void NodeElement::switchGrid(bool isChecked)
 		alignToGrid();
 
 		// Align mode doesn`t work in a square mode
-		if (!SettingsManager::value("SquareLine").toBool()) {
+		if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) {
 			foreach (EdgeElement * const edge, mEdgeList) {
 				edge->alignToGrid();
 			}
@@ -498,11 +499,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-	QList<NodeElement*> element;
-	element.append(this);
-	QSize size = mGraphicalAssistApi->editorManagerInterface().iconSize(id());
-	evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos()
-			, QPointF(size.width(), size.height()), element);
+	commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
+			evScene, mLogicalAssistApi, mGraphicalAssistApi, id(), id(), Id::rootId()
+			, event->scenePos(), boundingRect().bottomRight(), false);
 
 	bool shouldProcessResize = true;
 
@@ -546,6 +545,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (shouldProcessResize && mResizeCommand) {
 		mResizeCommand->stopTracking();
 		if (mResizeCommand->modificationsHappened()) {
+			mResizeCommand->addPostAction(insertCommand);
 			mController->execute(mResizeCommand);
 		} else {
 			delete mResizeCommand;
@@ -555,16 +555,17 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	arrangeLinks();
+
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->adjustNeighborLinks();
-		edge->correctArrow();
-		edge->correctInception();
 	}
 	adjustLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
 		edge->saveConfiguration(QPointF());
-		if (SettingsManager::value("ActivateGrid").toBool() && !SettingsManager::value("SquareLine").toBool()) {
+		if (SettingsManager::value("ActivateGrid").toBool()
+				&& (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)))
+		{
 			edge->alignToGrid();
 		}
 	}
@@ -767,6 +768,11 @@ bool NodeElement::isContainer() const
 	return mElementImpl->isContainer();
 }
 
+int NodeElement::numberOfPorts() const
+{
+	return mPortHandler->numberOfPorts();
+}
+
 int NodeElement::portNumber(qreal id)
 {
 	return PortHandler::portNumber(id);
@@ -816,8 +822,8 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style
 	}
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option,
-						QWidget*, SdfRenderer* portRenderer)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
+		, QWidget *, SdfRenderer* portRenderer)
 {
 	if (option->levelOfDetail >= 0.5) {
 		if (option->state & QStyle::State_Selected) {
@@ -997,76 +1003,12 @@ bool NodeElement::canHavePorts()
 	return mElementImpl->hasPin();
 }
 
-/*
-void NodeElement::resizeChild(QRectF const &newContents, QRectF const &oldContents)
-{
-	if (!mParentNodeElement) {
-		QGraphicsItem* item = parentItem();
-		mParentNodeElement = dynamic_cast<NodeElement*>(item);
-	}
-
-	if (mPos == QPointF(0,0)) {
-		mPos = pos();
-	}
-	QList<double> list = mParentNodeElement->borderValues();
-	double const xHor = list[0];
-	double const yHor = list[1];
-	double const xVert = list[2];
-	double const yVert = list[3];
-	QPointF const posi = pos();
-
-	double const x = mPos.x() - oldContents.x();
-	double const y = mPos.y() - oldContents.y();
-
-	if (mParentNodeElement->checkLowerBorder(posi, xHor, yHor+5)) {
-		double const a = oldContents.x() + oldContents.width();
-		double const b = newContents.x() + newContents.width();
-		double const dy = newContents.height() - oldContents.height();
-		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
-	}
-
-	if (mParentNodeElement->checkUpperBorder(posi, xHor, yHor)) {
-		double const a = oldContents.x() + oldContents.width();
-		double const b = newContents.x() + newContents.width();
-		double const dy = 0;
-		mPos = QPointF(newContents.x() + x*b/a, mPos.y()+dy);
-	}
-
-	if (mParentNodeElement->checkRightBorder(posi, xVert+5, yVert)) {
-		double const a = oldContents.y() + oldContents.height();
-		double const b = newContents.y() + newContents.height();
-		double const dx = newContents.width() - oldContents.width();
-		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
-	}
-	if (mParentNodeElement->checkLeftBorder(posi, xVert, yVert))
-	{
-		double const a = oldContents.y() + oldContents.height();
-		double const b = newContents.y() + newContents.height();
-		double const dx = 0;
-		mPos = QPointF(mPos.x()+dx, newContents.y() + y*b/a);
-	}
-
-	setPos(mPos);
-	storeGeometry();
-	return;
-}
-*/
-
 void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 {
 	if (mIsFolded && isItemAddedOrDeleted && item) {
 		changeFoldState();
 	}
 
-	/*
-	QRectF newContents = mContents;
-//	newContents.moveTo(pos());
-	QRectF itemContents = item->mContents;
-	itemContents.moveTo(item->pos() - pos());
-
-	newContents = newContents.united(itemContents);
-	resize(mContents.unite(newContents));
- */
 	resize();
 }
 

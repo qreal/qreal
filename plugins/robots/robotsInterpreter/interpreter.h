@@ -18,6 +18,7 @@
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 #include "details/sensorsConfigurationWidget.h"
+#include "details/nxtDisplay.h"
 
 namespace qReal {
 namespace interpreters {

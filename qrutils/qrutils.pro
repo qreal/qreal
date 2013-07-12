@@ -12,9 +12,9 @@ LIBS += -L../bin -lqrkernel
 
 DEFINES += QRUTILS_LIBRARY
 
-RESOURCES = qrutils.qrc
+RESOURCES = $$PWD/qrutils.qrc
 
-TRANSLATIONS = qrutils_ru.ts
+TRANSLATIONS = $$PWD/qrutils_ru.ts
 
 HEADERS += \
 	$$PWD/outFile.h \
@@ -26,6 +26,7 @@ HEADERS += \
 	$$PWD/scalableItem.h \
 	$$PWD/scalableCoordinate.h \
 	$$PWD/nameNormalizer.h \
+	$$PWD/fileSystemUtils.h \
 	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \
@@ -37,6 +38,7 @@ SOURCES += \
 	$$PWD/scalableItem.cpp \
 	$$PWD/scalableCoordinate.cpp \
 	$$PWD/nameNormalizer.cpp \
+	$$PWD/fileSystemUtils.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
 
 FORMS += \

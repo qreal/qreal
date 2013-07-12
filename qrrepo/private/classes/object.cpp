@@ -161,7 +161,7 @@ void Object::removeBackReference(qReal::Id const &reference)
 		throw Exception("Object " + mId.toString() + ": removing nonexsistent reference " + reference.toString());
 	}
 
-	references.removeAll(reference);
+	references.removeOne(reference);
 	mProperties.insert("backReferences", qReal::IdListHelper::toVariant(references));
 }
 

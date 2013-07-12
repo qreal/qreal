@@ -30,6 +30,15 @@ public:
 	/// Returns given expression if it has int type or casts it to int otherwise
 	QString expressionToInt(QString const &expression) const;
 
+	/// Must be called when enter button usage found
+	void enterButtonUsed();
+
+	/// Must be called when run button usage found
+	void cancelButtonUsed();
+
+	/// Must be called when image usage found
+	void hasImages();
+
 private:
 	QMap<QString, VariableType> nonGenerableReservedVariables() const;
 	QMap<QString, int> intConstants() const;
@@ -64,6 +73,9 @@ private:
 	QString castToInt(QString const &expression) const;
 
 	QMap<QString, VariableType> mVariables;
+	bool mCancelButtonUsed;
+	bool mEnterButtonUsed;
+	bool mHasImages;
 };
 
 }

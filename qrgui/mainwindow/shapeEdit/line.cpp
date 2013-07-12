@@ -233,7 +233,7 @@ QPair<QDomElement, Item::DomElementTypes> Line::generateItem(QDomDocument &docum
 	qreal const y2 = scenePos().y() + line().y2() - topLeftPicture.y();
 
 	QDomElement line = setPenBrushToDoc(document, "line");
-	setXandY(line, setXandYBefore(QRectF(x1, y1, x2 - x1, y2 - y1).normalized().toRect()));
+	setXandY(line, setXandYBefore(QRectF(x1, y1, x2 - x1 + 1, y2 - y1 + 1).normalized().toRect()));
 
 	return QPair<QDomElement, Item::DomElementTypes>(line, mDomElementType);
 }

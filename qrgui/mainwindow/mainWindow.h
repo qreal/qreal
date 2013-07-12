@@ -232,6 +232,7 @@ private slots:
 
 	void cropSceneToItems();
 
+	void closeCurrentTab();
 	void closeTab(int index);
 
 	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs
@@ -260,7 +261,7 @@ private slots:
 	void switchAlignment(bool isChecked);
 
 	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
-	void setReference(QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role);
 	void openShapeEditor();
 
 	void updatePaletteIcons();
@@ -277,6 +278,8 @@ private:
 	/// Sets shortcuts for a given tab which don`t have own buttons anywhere
 	/// @param tab Tab to be initialized with shortcuts
 	void setShortcuts(EditorView * const tab);
+
+	void setDefaultShortcuts();
 
 	void registerMetaTypes();
 

@@ -284,30 +284,22 @@ void PaletteTree::createPaletteTree()
 	mLayout->setSpacing(0);
 
 	mComboBox = new QComboBox;
-	mComboBox->setGeometry(0,0,300,50);
+	mComboBox->setGeometry(0, 0, 300, 50);
 	mLayout->addWidget(mComboBox);
 
 	QHBoxLayout *hLayout = new QHBoxLayout;
 	hLayout->setSpacing(0);
 
-	mExpandAll = new QToolButton;
-	mExpandAll->setGeometry(0,0,30,30);
-	mExpandAll->setIcon(QIcon(":/icons/expandAll.png"));
-	mExpandAll->setToolTip(tr("Expand all"));
-	mExpandAll->setIconSize(QSize(30, 30));
-	connect(mExpandAll,SIGNAL(clicked()),this,SLOT(expand()));
-	hLayout->addWidget(mExpandAll);
-
-	mCollapseAll = new QToolButton;
-	mCollapseAll->setGeometry(0,0,30,30);
-	mCollapseAll->setIcon(QIcon(":/icons/collapseAll.png"));
-	mCollapseAll->setToolTip(tr("Collapse all"));
-	mCollapseAll->setIconSize(QSize(30, 30));
-	connect(mCollapseAll,SIGNAL(clicked()),this,SLOT(collapse()));
-	hLayout->addWidget(mCollapseAll);
+	mNodesStateButtonExpands = SettingsManager::value("nodesStateButtonExpands").toBool();
+	mChangeExpansionState = new QToolButton;
+	mChangeExpansionState->setGeometry(0, 0, 30, 30);
+	setExpansionButtonAppearance();
+	mChangeExpansionState->setIconSize(QSize(30, 30));
+	connect(mChangeExpansionState, SIGNAL(clicked()), this, SLOT(changeExpansionState()));
+	hLayout->addWidget(mChangeExpansionState);
 
 	mChangeRepresentation = new QToolButton;
-	mChangeRepresentation->setGeometry(0,0,30,30);
+	mChangeRepresentation->setGeometry(0, 0, 30, 30);
 	mChangeRepresentation->setIcon(QIcon(":/icons/changeRepresentation.png"));
 	mChangeRepresentation->setToolTip(tr("Change representation"));
 	mChangeRepresentation->setIconSize(QSize(30, 30));
@@ -325,8 +317,7 @@ void PaletteTree::createPaletteTree()
 
 void PaletteTree::deletePaletteTree()
 {
-	delete mCollapseAll;
-	delete mExpandAll;
+	delete mChangeExpansionState;
 	delete mChangeRepresentation;
 	delete mComboBox;
 	delete mLayout;
@@ -480,4 +471,33 @@ void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManagerInt
 void PaletteTree::initMainWindow(MainWindow *mainWindow)
 {
 	mMainWindow = mainWindow;
+}
+
+
+void PaletteTree::changeExpansionState()
+{
+	mNodesStateButtonExpands = !mNodesStateButtonExpands;
+	if (mNodesStateButtonExpands)
+	{
+		expand();
+	}
+	else
+	{
+		collapse();
+	}
+	setExpansionButtonAppearance();
+}
+
+void PaletteTree::setExpansionButtonAppearance()
+{
+	if (mNodesStateButtonExpands)
+	{
+		mChangeExpansionState->setIcon(QIcon(":/icons/collapseAll.png"));
+		mChangeExpansionState->setToolTip(tr("Collapse all"));
+	}
+	else
+	{
+		mChangeExpansionState->setIcon(QIcon(":/icons/expandAll.png"));
+		mChangeExpansionState->setToolTip(tr("Expand all"));
+	}
 }

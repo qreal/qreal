@@ -30,8 +30,6 @@ Interpreter::Interpreter()
 	, mWatchListWindow(NULL)
 	, mActionConnectToRobot(NULL)
 {
-	Tracer::enableAll();
-	Tracer::setTarget(tracer::logFile);
 	mParser = NULL;
 	mBlocksTable = NULL;
 	mTimer = new QTimer();
@@ -186,6 +184,7 @@ void Interpreter::disableD2ModelWidgetRunStopButtons()
 void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType)
 {
 	mConnected = false;
+	mActionConnectToRobot->setChecked(false);
 	robotImplementations::AbstractRobotModelImplementation *robotImpl =
 			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
 	setRobotImplementation(robotImpl);
@@ -427,10 +426,11 @@ void Interpreter::connectToRobot()
 		mRobotModel->disconnectFromRobot();
 	} else {
 		mRobotModel->init();
-		configureSensors(static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
-						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
-						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
-						 , static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
+		configureSensors(
+				  static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
+				, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
+				, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
+				, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
 	}
 	mActionConnectToRobot->setChecked(mConnected);
 }

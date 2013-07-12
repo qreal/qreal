@@ -96,7 +96,7 @@ void BluetoothRobotCommunicationThread::disconnect()
 
 void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize
-		, inputPort::InputPortEnum const &port)
+		, inputPort::InputPortEnum const port)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
