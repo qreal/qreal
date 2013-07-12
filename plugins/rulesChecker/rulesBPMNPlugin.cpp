@@ -10,7 +10,7 @@ RulesPlugin::RulesPlugin()
 	, mRunAllDiagram(NULL)
 	, mRunCurrentDiagram(NULL)
 {
-	mTranslator.load(":/robotsGenerator_" + QLocale::system().name());
+	mTranslator.load(":/rulesChecker_" + QLocale::system().name());
 	QApplication::installTranslator(&mTranslator);
 
 	initAction();

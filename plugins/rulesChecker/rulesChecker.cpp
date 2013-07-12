@@ -124,7 +124,7 @@ void RulesChecker::checkAllDiagrams()
 	}
 
 	if (mHasNoErrors) {
-		mWindowInterface->errorReporter()->addInformation(QString("All diagrams compiled without errors"));
+		mWindowInterface->errorReporter()->addInformation(tr("All diagrams compiled without errors"));
 	}
 }
 
@@ -135,7 +135,7 @@ void RulesChecker::checkCurrentDiagram()
 	researchDiagram();
 
 	if (mHasNoErrors) {
-		mWindowInterface->errorReporter()->addInformation(QString("Current diagram compiled without errors"));
+		mWindowInterface->errorReporter()->addInformation(tr("Current diagram compiled without errors"));
 	}
 }
 
@@ -144,27 +144,27 @@ void RulesChecker::postError(RulesChecker::ErrorsType const error, Id const &bad
 	QString errorMsg("");
 	switch (error) {
 	case LinkToStartNode: {
-		errorMsg = "There are links to start node";
+		errorMsg = tr("There are links to start node");
 		break;
 	}
 	case LinkFromFinalNode: {
-		errorMsg = "There are links from End-event";
+		errorMsg = tr("There are links from End-event");
 		break;
 	}
 	case NoStartNode: {
-		errorMsg = "There is no start-node in path";
+		errorMsg = tr("There is no start-node in path");
 		break;
 	}
 	case NoEndNode: {
-		errorMsg = "There is no end-node in path";
+		errorMsg = tr("There is no end-node in path");
 		break;
 	}
 	case IncorrectLink: {
-		errorMsg = "Some links are incorrect";
+		errorMsg = tr("Some links are incorrect");
 		break;
 	}
 	default: {
-		errorMsg = "There are problems";
+		errorMsg = tr("There are problems");
 	}
 	}
 	mWindowInterface->errorReporter()->addError(errorMsg, badNode);
