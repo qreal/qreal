@@ -19,6 +19,11 @@ Autosaver::Autosaver(ProjectManager *projectManager)
 
 void Autosaver::reinit()
 {
+	resume();
+}
+
+void Autosaver::resume()
+{
 	if (SettingsManager::value("Autosave").toBool()) {
 		mTimer->start(interval() * 1000);
 	} else {
@@ -26,7 +31,7 @@ void Autosaver::reinit()
 	}
 }
 
-void Autosaver::stop()
+void Autosaver::suspend()
 {
 	mTimer->stop();
 }
@@ -43,17 +48,12 @@ uint Autosaver::interval() const
 Autosaver::Pauser::Pauser(Autosaver &autosaver)
 		: mAutosaver(autosaver)
 {
-	autosaver.stop();
+	autosaver.suspend();
 }
 
 Autosaver::Pauser::~Pauser()
 {
-	mAutosaver.reinit();
-}
-
-Autosaver::Pauser Autosaver::pauser()
-{
-	return Pauser(*this);
+	mAutosaver.resume();
 }
 
 QString Autosaver::autosaveFilePath() const

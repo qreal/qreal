@@ -74,7 +74,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
-		, mRecentProjectsLimit(5)
+		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(*this, *mProjectManager))
@@ -86,7 +86,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	setWindowTitle("QReal");
 	initSettingsManager();
 	registerMetaTypes();
-
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setVisible(false);
 	splashScreen.setProgress(5);
@@ -498,12 +497,14 @@ void MainWindow::closeAllTabs()
 	}
 }
 
-void MainWindow::setReference(QString const &data, QPersistentModelIndex const &index, int const &role)
+void MainWindow::setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role)
 {
 	removeOldBackReference(index, role);
-	setData(data, index, role);
-	if (!data.isEmpty()) {
-		setBackReference(index, data);
+	setData(data.join(','), index, role);
+	foreach (QString const &target, data) {
+		if (!target.isEmpty()) {
+			setBackReference(index, target);
+		}
 	}
 }
 
@@ -942,17 +943,6 @@ void MainWindow::initSettingsManager()
 	if (!dir.cd(mTempDir)) {
 		QDir().mkdir(mTempDir);
 	}
-
-	// Removal from the list of recent projects of non-existent files
-	QString recentExistProjects;
-	foreach (QString const &fileName
-			, SettingsManager::value("recentProjects").toString().split(";", QString::SkipEmptyParts))
-	{
-		if (QFile::exists(fileName)) {
-			recentExistProjects += fileName + ";";
-		}
-	}
-	SettingsManager::setValue("recentProjects", recentExistProjects);
 }
 
 void MainWindow::openSettingsDialog(QString const &tab)
@@ -1037,9 +1027,9 @@ void MainWindow::openShapeEditor()
 void MainWindow::openReferenceList(QPersistentModelIndex const &index
 		, QString const &referenceType,	QString const &propertyValue, int role)
 {
-	ReferenceList referenceList(this, index, referenceType, propertyValue, role);
-	connect(&referenceList, SIGNAL(referenceSet(QString, QPersistentModelIndex, int))
-			, this, SLOT(setReference(QString, QPersistentModelIndex, int)));
+	ReferenceList referenceList(this, index, referenceType, propertyValue.split(',', QString::SkipEmptyParts), role);
+	connect(&referenceList, SIGNAL(referenceSet(QStringList, QPersistentModelIndex, int))
+			, this, SLOT(setReference(QStringList, QPersistentModelIndex, int)));
 	referenceList.exec();
 }
 
@@ -1676,10 +1666,7 @@ void MainWindow::applySettings()
 		EditorView * const tab = static_cast<EditorView *>(mUi->tabs->widget(i));
 		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
 		if (scene) {
-			if (SettingsManager::value("SquareLine", false).toBool()
-					|| SettingsManager::value("ActivateGrid").toBool()) {
-				scene->updateEdgeElements();
-			}
+			scene->updateEdgeElements();
 			scene->invalidate();
 		}
 	}
@@ -1695,14 +1682,13 @@ void MainWindow::setBackReference(QPersistentModelIndex const &index, QString co
 
 void MainWindow::removeOldBackReference(QPersistentModelIndex const &index, int const role)
 {
-	QString data = index.data(role).toString();
-	if (data.isEmpty()) {
-		return;
-	}
+	QStringList data = index.data(role).toString().split(',', QString::SkipEmptyParts);
 
-	Id id = Id::loadFromString(data);
-	Id indexId = mModels->logicalModelAssistApi().idByIndex(index);
-	mModels->logicalRepoApi().removeBackReference(id, indexId);
+	foreach (QString const &reference, data) {
+		Id id = Id::loadFromString(reference);
+		Id indexId = mModels->logicalModelAssistApi().idByIndex(index);
+		mModels->logicalRepoApi().removeBackReference(id, indexId);
+	}
 }
 
 void MainWindow::hideDockWidget(QDockWidget *dockWidget, QString const &name)

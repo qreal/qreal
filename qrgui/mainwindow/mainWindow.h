@@ -261,7 +261,7 @@ private slots:
 	void switchAlignment(bool isChecked);
 
 	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
-	void setReference(QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role);
 	void openShapeEditor();
 
 	void updatePaletteIcons();

@@ -100,7 +100,7 @@ TEST(ObjectTest, propertiesHasAndSetOperationsTest) {
 	::testing::FLAGS_gtest_death_test_style = "threadsafe";
 	EXPECT_DEATH_IF_SUPPORTED(obj.setProperty("prop", QVariant());
 			, ".*Empty QVariant set as a property.*");
-	
+
 }
 
 TEST(ObjectTest, propertiesGetAndRemoveTest) {
@@ -128,7 +128,7 @@ TEST(ObjectTest, propertiesGetAndRemoveTest) {
 	ASSERT_TRUE(properties.contains("property3"));
 	EXPECT_EQ(properties.value("property1").toString(), "value1");
 	EXPECT_EQ(properties.value("property3").toString(), "value3");
-	
+
 	obj.removeProperty("property3");
 	QMapIterator<QString, QVariant> iterator = obj.propertiesIterator();
 	iterator.next();
@@ -155,7 +155,7 @@ TEST(ObjectTest, backReferencesTest) {
 	obj.removeBackReference(backReference2);
 
 	IdList references = obj.property("backReferences").value<IdList>();
-	ASSERT_EQ(references.size(), 2);
+	ASSERT_EQ(references.size(), 3);
 	EXPECT_TRUE(references.contains(backReference1));
 	EXPECT_TRUE(references.contains(backReference3));
 }

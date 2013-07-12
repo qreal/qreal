@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 
@@ -26,11 +27,7 @@ public:
 
 	explicit Autosaver(ProjectManager *projectManager);
 	void reinit();
-	void stop();
-	Pauser pauser();
 
-	QString autosaveFilePath() const;
-	QString autosaveFilePath(QString const &currentFilePath) const;
 	QString tempFilePath() const;
 	bool isAutosave(QString const &fileName) const;
 	bool isTempFile(QString const &fileName) const;
@@ -58,6 +55,11 @@ private slots:
 	void saveTemp();
 
 private:
+	QString autosaveFilePath() const;
+	QString autosaveFilePath(QString const &currentFilePath) const;
+	void resume();
+	void suspend();
+
 	uint interval() const;
 	QString openAutosavePrompt() const;
 	QString openTempFilePrompt() const;

@@ -18,6 +18,7 @@
 #include "private/foldCommand.h"
 
 #include "../controller/commands/changeParentCommand.h"
+#include "../controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -186,7 +187,7 @@ void NodeElement::arrangeLinks() {
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
-		edge->reconnectToNearestPorts(this == src, this == dst, true);
+		edge->reconnectToNearestPorts(this == src, this == dst);
 	}
 
 	//Episode II: Home Ports Arranging
@@ -199,7 +200,7 @@ void NodeElement::arrangeLinks() {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
 		NodeElement* other = edge->otherSide(this);
-		edge->reconnectToNearestPorts(other == src, other == dst, true);
+		edge->reconnectToNearestPorts(other == src, other == dst);
 	}
 
 	//Episode IV: Remote Arrangigng
@@ -256,7 +257,7 @@ void NodeElement::switchGrid(bool isChecked)
 		alignToGrid();
 
 		// Align mode doesn`t work in a square mode
-		if (!SettingsManager::value("SquareLine").toBool()) {
+		if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) {
 			foreach (EdgeElement * const edge, mEdgeList) {
 				edge->alignToGrid();
 			}
@@ -498,11 +499,9 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-	QList<NodeElement*> element;
-	element.append(this);
-	QSize size = mGraphicalAssistApi->editorManagerInterface().iconSize(id());
-	evScene->insertElementIntoEdge(id(), id(), Id::rootId(), false, event->scenePos()
-			, QPointF(size.width(), size.height()), element);
+	commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
+			evScene, mLogicalAssistApi, mGraphicalAssistApi, id(), id(), Id::rootId()
+			, event->scenePos(), boundingRect().bottomRight(), false);
 
 	bool shouldProcessResize = true;
 
@@ -546,6 +545,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (shouldProcessResize && mResizeCommand) {
 		mResizeCommand->stopTracking();
 		if (mResizeCommand->modificationsHappened()) {
+			mResizeCommand->addPostAction(insertCommand);
 			mController->execute(mResizeCommand);
 		} else {
 			delete mResizeCommand;
@@ -555,16 +555,17 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	arrangeLinks();
+
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->adjustNeighborLinks();
-		edge->correctArrow();
-		edge->correctInception();
 	}
 	adjustLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
 		edge->saveConfiguration(QPointF());
-		if (SettingsManager::value("ActivateGrid").toBool() && !SettingsManager::value("SquareLine").toBool()) {
+		if (SettingsManager::value("ActivateGrid").toBool()
+				&& (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)))
+		{
 			edge->alignToGrid();
 		}
 	}
@@ -765,6 +766,11 @@ QPointF const NodeElement::nearestPort(QPointF const &location) const
 bool NodeElement::isContainer() const
 {
 	return mElementImpl->isContainer();
+}
+
+int NodeElement::numberOfPorts() const
+{
+	return mPortHandler->numberOfPorts();
 }
 
 int NodeElement::portNumber(qreal id)
