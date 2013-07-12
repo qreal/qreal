@@ -1,4 +1,4 @@
-#include <QtWidgets/QGraphicsTextItem>
+﻿#include <QtWidgets/QGraphicsTextItem>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsDropShadowEffect>
 #include <QtWidgets/QMenu>
@@ -1447,7 +1447,8 @@ void EditorViewScene::dehighlight(Id const &graphicalId)
 void EditorViewScene::dehighlight()
 {
 	foreach (Element *element, mHighlightedElements) {
-		element->setGraphicsEffect(NULL);
+		if (mainWindow()->getCurrentTab()->scene()->items().contains(element))
+			element->setGraphicsEffect(NULL);
 	}
 	mHighlightedElements.clear();
 }

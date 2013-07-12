@@ -1496,7 +1496,6 @@ void EdgeElement::updateData()
 	mPortTo = mGraphicalAssistApi->toPort(id());
 
 	adjustLink();
-
 	mElementImpl->updateData(this);
 
 	update();

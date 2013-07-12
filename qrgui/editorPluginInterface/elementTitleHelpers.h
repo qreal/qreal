@@ -13,6 +13,6 @@ public:
 class ElementTitleFactoryInterface
 {
 public:
-	virtual ElementTitleInterface *createTitle(qreal x, qreal y, QString const &text) = 0;
-	virtual ElementTitleInterface *createTitle(qreal x, qreal y, QString const &binding, bool readOnly) = 0;
+    virtual ElementTitleInterface *createTitle(qreal x, qreal y, QString const &text, qreal rotation) = 0;
+    virtual ElementTitleInterface *createTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation) = 0;
 };
