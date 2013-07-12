@@ -131,11 +131,14 @@ void RulesChecker::checkAllDiagrams()
 void RulesChecker::checkCurrentDiagram()
 {
 	prepareOutput();
-	mDiagramModels = elementsOfDiagram(mWindowInterface->activeDiagram());
-	researchDiagram();
 
-	if (mHasNoErrors) {
-		mWindowInterface->errorReporter()->addInformation(tr("Current diagram compiled without errors"));
+	if (mWindowInterface->activeDiagram() != Id()) {
+		mDiagramModels = elementsOfDiagram(mWindowInterface->activeDiagram());
+		researchDiagram();
+
+		if (mHasNoErrors) {
+			mWindowInterface->errorReporter()->addInformation(tr("Current diagram compiled without errors"));
+		}
 	}
 }
 
