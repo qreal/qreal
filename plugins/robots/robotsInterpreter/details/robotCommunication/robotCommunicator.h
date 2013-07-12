@@ -11,6 +11,7 @@ class QextSerialPort;
 namespace qReal {
 namespace interpreters {
 namespace robots {
+namespace details {
 
 class RobotCommunicator : public QObject
 {
@@ -30,7 +31,7 @@ public:
 signals:
 	void threadSend(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
 	void threadSendI2C(QObject *addressee, QByteArray const &buffer, unsigned const responseSize
-					, inputPort::InputPortEnum const port);
+			, inputPort::InputPortEnum const port);
 	void threadConnect();
 	void threadReconnect();
 	void threadDisconnect();
@@ -51,6 +52,7 @@ private:
 	RobotCommunicationThreadInterface *mRobotCommunicationThreadObject;
 };
 
+}
 }
 }
 }

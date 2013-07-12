@@ -23,6 +23,7 @@
 namespace qReal {
 namespace interpreters {
 namespace robots {
+namespace details {
 
 class Interpreter : public QObject
 {
@@ -128,11 +129,11 @@ private:
 	QList<details::Thread *> mThreads;  // Has ownership
 	details::RobotModel *mRobotModel;
 	details::BlocksTable *mBlocksTable;  // Has ownership
-	RobotsBlockParser *mParser;
-	QTimer *mTimer;
+	details::RobotsBlockParser *mParser;
+	QTimer mTimer;
 	details::d2Model::D2ModelWidget *mD2ModelWidget;
 	details::d2Model::D2RobotModel *mD2RobotModel;
-	RobotCommunicator* const mRobotCommunication;
+	details::RobotCommunicator* const mRobotCommunication;
 
 	bool mConnected;
 
@@ -146,6 +147,7 @@ private:
 	QString mLastCommunicationValue;
 };
 
+}
 }
 }
 }

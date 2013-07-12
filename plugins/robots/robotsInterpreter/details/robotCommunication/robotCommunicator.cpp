@@ -5,7 +5,7 @@
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
 
-using namespace qReal::interpreters::robots;
+using namespace qReal::interpreters::robots::details;
 
 RobotCommunicator::RobotCommunicator()
 		: mRobotCommunicationThreadObject(NULL)

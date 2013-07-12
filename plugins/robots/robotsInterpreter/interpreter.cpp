@@ -25,15 +25,12 @@ Interpreter::Interpreter()
 	, mState(idle)
 	, mRobotModel(new RobotModel())
 	, mBlocksTable(NULL)
+	, mParser(NULL)
 	, mRobotCommunication(new RobotCommunicator())
 	, mImplementationType(robotModelType::null)
 	, mWatchListWindow(NULL)
 	, mActionConnectToRobot(NULL)
 {
-	mParser = NULL;
-	mBlocksTable = NULL;
-	mTimer = new QTimer();
-
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
 
@@ -112,7 +109,7 @@ void Interpreter::interpret()
 
 void Interpreter::stopRobot()
 {
-	mTimer->stop();
+	mTimer.stop();
 	mRobotModel->stopRobot();
 	mState = idle;
 	foreach (Thread *thread, mThreads) {
@@ -330,10 +327,10 @@ void Interpreter::runTimer()
 	connect(mRobotModel->encoderC().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
 
 	mRobotModel->nullifySensors();
-	if (!mTimer->isActive()) {
+	if (!mTimer.isActive()) {
 		readSensorValues();
-		mTimer->start(25);
-		connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
+		mTimer.start(25);
+		connect(&mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
 	}
 }
 

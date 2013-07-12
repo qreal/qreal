@@ -62,7 +62,7 @@ private:
 	Customizer mCustomizer;
 
 	/// Main class for robot interpreter. Contains implementation of plugin functionality.
-	Interpreter mInterpreter;
+	details::Interpreter mInterpreter;
 
 	/// Page with plugin settings. Created here, but then ownership is passed to
 	/// a caller of preferencesPage().

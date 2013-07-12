@@ -4,7 +4,11 @@ namespace qReal {
 namespace interpreters {
 namespace robots {
 
+namespace details {
+namespace d2Model {
 int const sensorWidth = 12;
+}
+}
 
 namespace sensorType {
 enum SensorTypeEnum {

@@ -9,6 +9,7 @@
 namespace qReal {
 namespace interpreters {
 namespace robots {
+namespace details {
 
 class RobotCommunicationThreadInterface : public QObject
 {
@@ -36,4 +37,4 @@ signals:
 }
 }
 }
-
+}

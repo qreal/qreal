@@ -1,6 +1,6 @@
 #include "robotCommunicationException.h"
 
-using namespace robotsInterpreter::robotCommunication;
+using namespace qReal::interpreters::robots::details;
 
 RobotCommunicationException::RobotCommunicationException(QString const &message)
 	: Exception(message)
