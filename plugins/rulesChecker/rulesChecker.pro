@@ -5,6 +5,10 @@ DESTDIR = ../../bin/plugins/
 
 LIBS += -L../../bin -lqrkernel -lqrutils
 
+TRANSLATIONS = rulesChecker_ru.ts
+
+RESOURCES += rulesChecker.qrc \
+
 HEADERS += \
 	rulesChecker.h \
 	rulesBPMNPlugin.h \

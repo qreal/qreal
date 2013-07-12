@@ -1,5 +1,7 @@
 ﻿#include "rulesBPMNPlugin.h"
 
+#include <QtWidgets/QApplication>
+
 using namespace qReal;
 using namespace qReal::rulesChecker;
 
@@ -8,6 +10,9 @@ RulesPlugin::RulesPlugin()
 	, mRunAllDiagram(NULL)
 	, mRunCurrentDiagram(NULL)
 {
+	mTranslator.load(":/robotsGenerator_" + QLocale::system().name());
+	QApplication::installTranslator(&mTranslator);
+
 	initAction();
 }
 
