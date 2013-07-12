@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
     <namespace>UML 2.0</namespace>
-    <diagram nodeName="BPMN Diagram" name="BPMNDiagram" displayedName="BPMN Diagram">
+    <diagram nodeName="BPMNDiagramNode" name="BPMNDiagram" displayedName="BPMN Diagram">
         <nonGraphicTypes>
             <enum name="StartEventType" displayedName="Start Event Type">
                 <value>None</value>
@@ -32,6 +32,25 @@
             <enum name="TaskType" displayedName="Task Type"/>
         </nonGraphicTypes>
         <graphicTypes>
+            <node name="BPMNDiagramNode" displayedName="BPMN Diagram">
+                <graphics>
+                    <picture/>
+                    <labels/>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                         <contains type="BPMNDiagram::StartEvent"/>
+                         <contains type="BPMNDiagram::IntermediateEvent"/>
+                         <contains type="BPMNDiagram::EndEvent"/>
+                         <contains type="BPMNDiagram::Gateway"/>
+                         <contains type="BPMNDiagram::Task"/>
+                         <contains type="BPMNDiagram::SequenceFlow"/>
+                         <contains type="BPMNDiagram::Lane"/>
+                         <contains type="BPMNDiagram::Pool"/>
+                    </container>
+                </logic>
+            </node>
             <node name="StartEvent" displayedName="Start Event">
                 <graphics>
                     <picture sizex="100" sizey="100">
