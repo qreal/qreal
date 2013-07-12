@@ -6,9 +6,9 @@
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
 #include "../../../qrgui/toolPluginInterface/hotKeyActionInfo.h"
 
-#include "interpreter.h"
 #include "robotSettingsPage.h"
 #include "customizer.h"
+#include "details/interpreter.h"
 #include "details/sensorsConfigurationWidget.h"
 #include "details/nxtDisplay.h"
 
