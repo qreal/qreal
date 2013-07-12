@@ -116,7 +116,7 @@ void RulesChecker::checkAllDiagrams()
 	prepareOutput();
 
 	IdList diagrams = mGRepoApi->graphicalElements(Id(QString("BPMNDiagram")
-			, QString("BPMNMetamodel"), QString("BPMN Diagram")));
+			, QString("BPMNMetamodel"), QString("BPMNDiagramNode")));
 
 	foreach (Id const &diagram, diagrams) {
 		mDiagramModels = elementsOfDiagram(diagram);
