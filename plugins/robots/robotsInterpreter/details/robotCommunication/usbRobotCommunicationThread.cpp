@@ -111,7 +111,7 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer
 		// or in driver itself. Further investigation required.
 		for (int port = 0; port < 4; ++port) {
 			QByteArray command(2, 0);
-			command[3] = commandCode::RESETINPUTSCALEDVALUE;
+			command[3] = enums::commandCode::RESETINPUTSCALEDVALUE;
 			command[4] = port;
 
 			mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, command, 2, outputBufferPtr2, 2, status);
@@ -166,7 +166,7 @@ void UsbRobotCommunicationThread::checkForConnection()
 {
 	QByteArray command(4, 0);
 
-	command[3] = commandCode::KEEPALIVE;
+	command[3] = enums::commandCode::KEEPALIVE;
 
 	int const keepAliveResponseSize = 9;
 
@@ -199,6 +199,7 @@ void UsbRobotCommunicationThread::checkConsistency()
 		if (!fantomDownloadLink.isEmpty()) {
 			errorMessage += tr(" You can download Fantom Driver on <a href='%1'>Lego website</a>").arg(fantomDownloadLink);
 		}
+
 		emit errorOccured(errorMessage);
 	}
 }

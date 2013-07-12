@@ -74,8 +74,10 @@ void AbstractRobotModelImplementation::init()
 	Tracer::debug(tracer::initialization, "AbstractRobotModelImplementation::init", "Initializing robot model and connecting to robot...");
 }
 
-void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnum const &sensorType
-		, inputPort::InputPortEnum const port)
+void AbstractRobotModelImplementation::configureSensor(
+		sensorType::SensorTypeEnum const &sensorType
+		, inputPort::InputPortEnum const port
+		)
 {
 	switch (sensorType) {
 	case sensorType::unused:
@@ -90,19 +92,19 @@ void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnu
 		addSonarSensor(port);
 		break;
 	case sensorType::colorFull:
-		addColorSensor(port, lowLevelSensorType::COLORFULL, sensorType);
+		addColorSensor(port, enums::lowLevelSensorType::COLORFULL, sensorType);
 		break;
 	case sensorType::colorRed:
-		addColorSensor(port, lowLevelSensorType::COLORRED, sensorType);
+		addColorSensor(port, enums::lowLevelSensorType::COLORRED, sensorType);
 		break;
 	case sensorType::colorGreen:
-		addColorSensor(port, lowLevelSensorType::COLORGREEN, sensorType);
+		addColorSensor(port, enums::lowLevelSensorType::COLORGREEN, sensorType);
 		break;
 	case sensorType::colorBlue:
-		addColorSensor(port, lowLevelSensorType::COLORBLUE, sensorType);
+		addColorSensor(port, enums::lowLevelSensorType::COLORBLUE, sensorType);
 		break;
 	case sensorType::colorNone:
-		addColorSensor(port, lowLevelSensorType::COLORNONE, sensorType);
+		addColorSensor(port, enums::lowLevelSensorType::COLORNONE, sensorType);
 		break;
 	case sensorType::light:
 		addLightSensor(port);

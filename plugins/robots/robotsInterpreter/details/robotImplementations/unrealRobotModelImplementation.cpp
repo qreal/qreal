@@ -15,9 +15,9 @@ UnrealRobotModelImplementation::UnrealRobotModelImplementation(D2RobotModel *d2R
 	, mMotorB(1, d2RobotModel)
 	, mMotorC(2, d2RobotModel)
 	, mDisplay(d2RobotModel)
-	, mEncoderA(outputPort::port1, d2RobotModel)
-	, mEncoderB(outputPort::port2, d2RobotModel)
-	, mEncoderC(outputPort::port3, d2RobotModel)
+	, mEncoderA(enums::outputPort::port1, d2RobotModel)
+	, mEncoderB(enums::outputPort::port2, d2RobotModel)
+	, mEncoderC(enums::outputPort::port3, d2RobotModel)
 {
 	mActiveWaitingTimer.setInterval(500);
 	mActiveWaitingTimer.setSingleShot(true);
@@ -90,7 +90,11 @@ void UnrealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum con
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void UnrealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType)
+void UnrealRobotModelImplementation::addColorSensor(
+		inputPort::InputPortEnum const port
+		, enums::lowLevelSensorType::SensorTypeEnum mode
+		, sensorType::SensorTypeEnum const &sensorType
+		)
 {
 	Q_UNUSED(mode)
 	Tracer::debug(tracer::initialization, "UnrealRobotModelImplementation::addColorSensor", "Configuring color sensor on port " + QString::number(port));

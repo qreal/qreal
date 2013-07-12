@@ -7,12 +7,16 @@ using namespace details;
 using namespace robotImplementations;
 
 RealRobotModelImplementation::RealRobotModelImplementation(RobotCommunicator * const robotCommunicationInterface)
-	:  AbstractRobotModelImplementation()
-	, mRobotCommunicator(robotCommunicationInterface)
-	, mBrick(robotCommunicationInterface)
-	, mDisplay()
-	, mMotorA(0, robotCommunicationInterface), mMotorB(1, robotCommunicationInterface), mMotorC(2, robotCommunicationInterface)
-	, mEncoderA(robotCommunicationInterface, outputPort::port1), mEncoderB(robotCommunicationInterface, outputPort::port2), mEncoderC(robotCommunicationInterface, outputPort::port3)
+		:  AbstractRobotModelImplementation()
+		, mRobotCommunicator(robotCommunicationInterface)
+		, mBrick(robotCommunicationInterface)
+		, mDisplay()
+		, mMotorA(0, robotCommunicationInterface)
+		, mMotorB(1, robotCommunicationInterface)
+		, mMotorC(2, robotCommunicationInterface)
+		, mEncoderA(robotCommunicationInterface, enums::outputPort::port1)
+		, mEncoderB(robotCommunicationInterface, enums::outputPort::port2)
+		, mEncoderC(robotCommunicationInterface, enums::outputPort::port3)
 {
 	connect(mRobotCommunicator, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	connect(mRobotCommunicator, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
@@ -72,44 +76,55 @@ sensorImplementations::BluetoothGyroscopeSensorImplementation *RealRobotModelImp
 
 void RealRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const port)
 {
-	sensorImplementations::BluetoothTouchSensorImplementation *sensor = new sensorImplementations::BluetoothTouchSensorImplementation(mRobotCommunicator, port);
+	sensorImplementations::BluetoothTouchSensorImplementation *sensor
+			= new sensorImplementations::BluetoothTouchSensorImplementation(mRobotCommunicator, port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void RealRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const port)
 {
-	sensorImplementations::BluetoothSonarSensorImplementation *sensor = new sensorImplementations::BluetoothSonarSensorImplementation(mRobotCommunicator, port);
+	sensorImplementations::BluetoothSonarSensorImplementation *sensor
+			= new sensorImplementations::BluetoothSonarSensorImplementation(mRobotCommunicator, port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void RealRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType)
+void RealRobotModelImplementation::addColorSensor(
+		inputPort::InputPortEnum const port
+		, enums::lowLevelSensorType::SensorTypeEnum mode
+		, sensorType::SensorTypeEnum const &sensorType
+		)
 {
-	sensorImplementations::BluetoothColorSensorImplementation *sensor = new sensorImplementations::BluetoothColorSensorImplementation(mRobotCommunicator, port, mode, sensorType);
+	sensorImplementations::BluetoothColorSensorImplementation *sensor =
+			new sensorImplementations::BluetoothColorSensorImplementation(mRobotCommunicator, port, mode, sensorType);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void RealRobotModelImplementation::addSoundSensor(inputPort::InputPortEnum const port)
 {
-	sensorImplementations::BluetoothSoundSensorImplementation *sensor = new sensorImplementations::BluetoothSoundSensorImplementation(mRobotCommunicator, port);
+	sensorImplementations::BluetoothSoundSensorImplementation *sensor
+			= new sensorImplementations::BluetoothSoundSensorImplementation(mRobotCommunicator, port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void RealRobotModelImplementation::addAccelerometerSensor(const inputPort::InputPortEnum port)
 {
-	sensorImplementations::BluetoothAccelerometerSensorImplementation *sensor = new sensorImplementations::BluetoothAccelerometerSensorImplementation(mRobotCommunicator, port);
+	sensorImplementations::BluetoothAccelerometerSensorImplementation *sensor
+			= new sensorImplementations::BluetoothAccelerometerSensorImplementation(mRobotCommunicator, port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void RealRobotModelImplementation::addGyroscopeSensor(const inputPort::InputPortEnum port)
 {
-	sensorImplementations::BluetoothGyroscopeSensorImplementation *sensor = new sensorImplementations::BluetoothGyroscopeSensorImplementation(mRobotCommunicator, port);
+	sensorImplementations::BluetoothGyroscopeSensorImplementation *sensor
+			= new sensorImplementations::BluetoothGyroscopeSensorImplementation(mRobotCommunicator, port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
 void RealRobotModelImplementation::addLightSensor(inputPort::InputPortEnum const port)
 {
 	Q_UNUSED(port)
-	sensorImplementations::BluetoothLightSensorImplementation *sensor = new sensorImplementations::BluetoothLightSensorImplementation(mRobotCommunicator, port);
+	sensorImplementations::BluetoothLightSensorImplementation *sensor
+			= new sensorImplementations::BluetoothLightSensorImplementation(mRobotCommunicator, port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
@@ -127,7 +142,7 @@ void RealRobotModelImplementation::stopRobot()
 	mMotorC.off();
 	for (unsigned i = 0; i < 4; ++i) {
 		if (colorSensor(static_cast<inputPort::InputPortEnum>(i)) != NULL) {
-			colorSensor(static_cast<inputPort::InputPortEnum>(i))->reconfigure(lowLevelSensorType::COLORNONE);
+			colorSensor(static_cast<inputPort::InputPortEnum>(i))->reconfigure(enums::lowLevelSensorType::COLORNONE);
 		}
 	}
 }

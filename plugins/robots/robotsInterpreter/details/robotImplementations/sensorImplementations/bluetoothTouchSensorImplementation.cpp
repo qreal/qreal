@@ -8,7 +8,7 @@ using namespace robotImplementations::sensorImplementations;
 
 BluetoothTouchSensorImplementation::BluetoothTouchSensorImplementation(RobotCommunicator *robotCommunicationInterface
 		, inputPort::InputPortEnum const port)
-	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::touchBoolean, lowLevelSensorType::SWITCH, sensorMode::RAWMODE, port)
+	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::touchBoolean, enums::lowLevelSensorType::SWITCH, enums::sensorMode::RAWMODE, port)
 {
 }
 
@@ -40,8 +40,8 @@ void BluetoothTouchSensorImplementation::read()
 	QByteArray command(5, 0);
 	command[0] = 0x03;  //command length
 	command[1] = 0x00;
-	command[2] = telegramType::directCommandResponseRequired;
-	command[3] = commandCode::GETINPUTVALUES;
+	command[2] = enums::telegramType::directCommandResponseRequired;
+	command[3] = enums::commandCode::GETINPUTVALUES;
 	command[4] = mPort;
 	mRobotCommunicationInterface->send(this, command, 18);
 }

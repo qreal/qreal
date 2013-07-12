@@ -20,8 +20,8 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 	QByteArray command(buffer.length() + 7, 0);
 	command[0] = buffer.length() + 5;
 	command[1] = 0x00;
-	command[2] = telegramType::directCommandNoResponse;
-	command[3] = commandCode::LSWRITE;
+	command[2] = enums::telegramType::directCommandNoResponse;
+	command[3] = enums::commandCode::LSWRITE;
 	command[4] = port;
 	command[5] = buffer.length();
 	command[6] = responseSize;
@@ -44,8 +44,8 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 
 		command[0] = 0x03;
 		command[1] = 0x00;
-		command[2] = telegramType::directCommandResponseRequired;
-		command[3] = commandCode::LSREAD;
+		command[2] = enums::telegramType::directCommandResponseRequired;
+		command[3] = enums::commandCode::LSREAD;
 		command[4] = port;
 
 		QByteArray result;
@@ -81,15 +81,15 @@ int RobotCommunicationThreadBase::i2cBytesReady(inputPort::InputPortEnum port)
 	command[0] = 0x03;
 	command[1] = 0x00;
 
-	command[2] = telegramType::directCommandResponseRequired;
-	command[3] = commandCode::LSGETSTATUS;
+	command[2] = enums::telegramType::directCommandResponseRequired;
+	command[3] = enums::commandCode::LSGETSTATUS;
 	command[4] = port;
 
 	QByteArray result;
 	send(command, lsGetStatusResponseSize, result);
 
 	// static_cats<int> prevents a warning about operator != ambiguity
-	if (result.isEmpty() || static_cast<int>(result[4]) != errorCode::success) {
+	if (result.isEmpty() || static_cast<int>(result[4]) != enums::errorCode::success) {
 		return 0;
 	} else {
 		return result[5];

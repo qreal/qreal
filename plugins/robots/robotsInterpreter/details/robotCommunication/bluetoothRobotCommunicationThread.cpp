@@ -34,7 +34,7 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee
 	}
 
 	send(buffer);
-	if (buffer.size() >= 3 && buffer[2] == errorCode::success) {
+	if (buffer.size() >= 3 && buffer[2] == enums::errorCode::success) {
 		QByteArray const result = receive(responseSize);
 		emit response(addressee, result);
 	} else {
@@ -150,8 +150,8 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 	command[0] = 0x02;
 	command[1] = 0x00;
 
-	command[2] = telegramType::directCommandResponseRequired;
-	command[3] = commandCode::KEEPALIVE;
+	command[2] = enums::telegramType::directCommandResponseRequired;
+	command[3] = enums::commandCode::KEEPALIVE;
 
 	send(command);
 

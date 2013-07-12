@@ -21,8 +21,8 @@ public:
 
 protected:
 	d2Model::D2RobotModel *mD2Model;
-	lowLevelSensorType::SensorTypeEnum mSensorType;
-	sensorMode::SensorModeEnum mSensorMode;
+	enums::lowLevelSensorType::SensorTypeEnum mSensorType;
+	enums::sensorMode::SensorModeEnum mSensorMode;
 	bool mIsConfigured;
 	bool mResetDone;
 };

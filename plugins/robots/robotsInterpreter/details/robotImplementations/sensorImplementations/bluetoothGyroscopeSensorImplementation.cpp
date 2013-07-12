@@ -8,10 +8,14 @@ using namespace robotImplementations::sensorImplementations;
 
 BluetoothGyroscopeSensorImplementation::BluetoothGyroscopeSensorImplementation(
 		RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const port)
-	: BluetoothSensorImplementation(robotCommunicationInterface
-			, sensorType::sound, lowLevelSensorType::ANGLE
-			, sensorMode::RAWMODE, port)
+		, inputPort::InputPortEnum const port
+		)
+		: BluetoothSensorImplementation(robotCommunicationInterface
+				, sensorType::sound
+				, enums::lowLevelSensorType::ANGLE
+				, enums::sensorMode::RAWMODE
+				, port
+				)
 {
 }
 
@@ -31,8 +35,8 @@ void BluetoothGyroscopeSensorImplementation::read()
 	QByteArray command(5, 0);
 	command[0] = 0x03;  //command length
 	command[1] = 0x00;
-	command[2] = telegramType::directCommandResponseRequired;
-	command[3] = commandCode::GETINPUTVALUES;
+	command[2] = enums::telegramType::directCommandResponseRequired;
+	command[3] = enums::commandCode::GETINPUTVALUES;
 	command[4] = mPort;
 	mRobotCommunicationInterface->send(this, command, 18);
 }
@@ -40,7 +44,11 @@ void BluetoothGyroscopeSensorImplementation::read()
 void BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	if (reading.isEmpty()) {
-		Tracer::debug(tracer::sensors, "BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
+		Tracer::debug(
+				tracer::sensors
+				, "BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse"
+				, "Something is wrong, response is empty"
+				);
 	} else {
 		int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 		mState = idle;

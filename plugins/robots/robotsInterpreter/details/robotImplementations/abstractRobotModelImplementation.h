@@ -83,7 +83,7 @@ signals:
 protected:
 	virtual void addTouchSensor(inputPort::InputPortEnum const port) = 0;
 	virtual void addSonarSensor(inputPort::InputPortEnum const port) = 0;
-	virtual void addColorSensor(inputPort::InputPortEnum const port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
+	virtual void addColorSensor(inputPort::InputPortEnum const port, enums::lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
 	virtual void addLightSensor(inputPort::InputPortEnum const port) = 0;
 	virtual void addSoundSensor(inputPort::InputPortEnum const port) = 0;
 	virtual void addAccelerometerSensor(inputPort::InputPortEnum const port) = 0;

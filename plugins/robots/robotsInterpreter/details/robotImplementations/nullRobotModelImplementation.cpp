@@ -11,9 +11,9 @@ NullRobotModelImplementation::NullRobotModelImplementation()
 	, mMotorA(0)
 	, mMotorB(1)
 	, mMotorC(2)
-	, mEncoderA(outputPort::port1)
-	, mEncoderB(outputPort::port2)
-	, mEncoderC(outputPort::port3)
+	, mEncoderA(enums::outputPort::port1)
+	, mEncoderB(enums::outputPort::port2)
+	, mEncoderC(enums::outputPort::port3)
 {
 	mActiveWaitingTimer.setInterval(100);
 	mActiveWaitingTimer.setSingleShot(true);
@@ -78,7 +78,10 @@ void NullRobotModelImplementation::addLightSensor(inputPort::InputPortEnum const
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void NullRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType)
+void NullRobotModelImplementation::addColorSensor(
+		inputPort::InputPortEnum const port
+		, enums::lowLevelSensorType::SensorTypeEnum mode
+		, sensorType::SensorTypeEnum const &sensorType)
 {
 	Q_UNUSED(mode);
 	sensorImplementations::NullColorSensorImplementation *sensor = new sensorImplementations::NullColorSensorImplementation(port, sensorType);

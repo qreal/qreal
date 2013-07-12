@@ -8,7 +8,7 @@ using namespace robotImplementations::sensorImplementations;
 
 BluetoothSonarSensorImplementation::BluetoothSonarSensorImplementation(RobotCommunicator *robotCommunicationInterface
 		, inputPort::InputPortEnum const port)
-	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::sonar, lowLevelSensorType::LOWSPEED_9V, sensorMode::RAWMODE, port)
+	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::sonar, enums::lowLevelSensorType::LOWSPEED_9V, enums::sensorMode::RAWMODE, port)
 {
 }
 
@@ -26,7 +26,7 @@ void BluetoothSonarSensorImplementation::read()
 		return;
 	}
 	mState = pending;
-	setMode(sonarMode::SINGLE_SHOT);
+	setMode(enums::sonarMode::SINGLE_SHOT);
 }
 
 void BluetoothSonarSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
@@ -36,8 +36,8 @@ void BluetoothSonarSensorImplementation::sensorSpecificProcessResponse(QByteArra
 	} else if (reading.size() == 1 && reading[0] == 0) {
 		// Sensor configured, now we can send actual request.
 		QByteArray command(2, 0);
-		command[0] = sonarRegisters::SONAR_ADDRESS;
-		command[1] = sonarRegisters::RESULT_1;
+		command[0] = enums::sonarRegisters::SONAR_ADDRESS;
+		command[1] = enums::sonarRegisters::RESULT_1;
 		sendCommand(command, 1);
 	} else if (reading.size() == 1 && reading[0] != 0) {
 		Tracer::debug(tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse", "Reading malformed: " + QString::number(static_cast<unsigned int>(reading[0])));
@@ -48,15 +48,15 @@ void BluetoothSonarSensorImplementation::sensorSpecificProcessResponse(QByteArra
 	}
 }
 
-void BluetoothSonarSensorImplementation::setMode(sonarMode::SonarModeEnum const &mode)
+void BluetoothSonarSensorImplementation::setMode(enums::sonarMode::SonarModeEnum const &mode)
 {
-	writeRegister(sonarRegisters::COMMAND, mode);
+	writeRegister(enums::sonarRegisters::COMMAND, mode);
 }
 
-void BluetoothSonarSensorImplementation::writeRegister(sonarRegisters::SonarRegistersEnum const &reg, int value)
+void BluetoothSonarSensorImplementation::writeRegister(enums::sonarRegisters::SonarRegistersEnum const &reg, int value)
 {
 	QByteArray command(3, 0);
-	command[0] = sonarRegisters::SONAR_ADDRESS;
+	command[0] = enums::sonarRegisters::SONAR_ADDRESS;
 	command[1] = reg;
 	command[2] = value;
 

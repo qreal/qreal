@@ -71,7 +71,7 @@ private:
 	virtual void addTouchSensor(inputPort::InputPortEnum const port);
 	virtual void addSonarSensor(inputPort::InputPortEnum const port);
 	virtual void addLightSensor(inputPort::InputPortEnum const port);
-	virtual void addColorSensor(inputPort::InputPortEnum const port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
+	virtual void addColorSensor(inputPort::InputPortEnum const port, enums::lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
 	virtual void addSoundSensor(const inputPort::InputPortEnum port);
 	virtual void addGyroscopeSensor(inputPort::InputPortEnum const port);
 	virtual void addAccelerometerSensor(inputPort::InputPortEnum const port);

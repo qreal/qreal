@@ -13,9 +13,9 @@ RobotModel::RobotModel()
 	, mMotorA(0, &mRobotImpl->motorA())
 	, mMotorB(1, &mRobotImpl->motorA())
 	, mMotorC(2, &mRobotImpl->motorA())
-	, mEncoderA(&mRobotImpl->encoderA(), outputPort::port1)
-	, mEncoderB(&mRobotImpl->encoderB(), outputPort::port2)
-	, mEncoderC(&mRobotImpl->encoderC(), outputPort::port3)
+	, mEncoderA(&mRobotImpl->encoderA(), enums::outputPort::port1)
+	, mEncoderB(&mRobotImpl->encoderB(), enums::outputPort::port2)
+	, mEncoderC(&mRobotImpl->encoderC(), enums::outputPort::port3)
 {
 	mSensors.resize(4);
 	connect(mRobotImpl, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));

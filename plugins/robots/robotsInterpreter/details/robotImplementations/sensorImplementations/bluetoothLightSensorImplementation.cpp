@@ -8,9 +8,17 @@ using namespace robotImplementations::sensorImplementations;
 
 int const maxLightValue = 1023;
 
-BluetoothLightSensorImplementation::BluetoothLightSensorImplementation(RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const port)
-	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::light, lowLevelSensorType::LIGHT_ACTIVE, sensorMode::RAWMODE, port)
+BluetoothLightSensorImplementation::BluetoothLightSensorImplementation(
+		RobotCommunicator *robotCommunicationInterface
+		, inputPort::InputPortEnum const port
+		)
+		: BluetoothSensorImplementation(
+				robotCommunicationInterface
+				, sensorType::light
+				, enums::lowLevelSensorType::LIGHT_ACTIVE
+				, enums::sensorMode::RAWMODE
+				, port
+				)
 {
 }
 
@@ -32,8 +40,8 @@ void BluetoothLightSensorImplementation::read()
 	QByteArray command(5, 0);
 	command[0] = 0x03;  //command length
 	command[1] = 0x00;
-	command[2] = telegramType::directCommandResponseRequired;
-	command[3] = commandCode::GETINPUTVALUES;
+	command[2] = enums::telegramType::directCommandResponseRequired;
+	command[3] = enums::commandCode::GETINPUTVALUES;
 	command[4] = mPort;
 	mRobotCommunicationInterface->send(this, command, 18);
 }
