@@ -8,7 +8,7 @@ ResizeHandler::ResizeHandler(NodeElement * const resizingNode)
 {
 }
 
-void ResizeHandler::resize(QRectF newContents, QPointF newPos, QPointF const &oldPos) const
+void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 {
 	newContents.moveTo(0, 0);
 
@@ -27,19 +27,6 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos, QPointF const &ol
 	mTargetNode->setPos(newPos);
 
 	resizeParent();
-
-	/* If mTargetNode is inside a container and it's being moved towards top or left side of this container,
-	 * the container becomes to resize. And since mTargetNode->pos() is calculated in container's coord system
-	 * we get mTargetNode to move more when container resizes. The indicator of this case is negative value
-	 * of coord of newPos.x() or newPos.y(). In this case we get its old position back. That way visually it
-	 * will be moved only once — when the container resizes.
-	 */
-	if (newPos.x() < 0 || newPos.y() < 0) {
-		newContents.moveTo(oldPos);
-		mTargetNode->setGeometry(newContents);
-		mTargetNode->storeGeometry();
-		mTargetNode->setPos(oldPos);
-	}
 }
 
 qreal ResizeHandler::maxChildWidth() const
@@ -108,7 +95,7 @@ void ResizeHandler::resizeParent() const
 	NodeElement * const parItem = dynamic_cast<NodeElement* const>(mTargetNode->parentItem());
 	if (parItem) {
 		ResizeHandler const handler(parItem);
-		handler.resize(parItem->contentsRect(), parItem->pos(), parItem->pos());
+		handler.resize(parItem->contentsRect(), parItem->pos());
 	}
 }
 
@@ -137,7 +124,7 @@ void ResizeHandler::resizeAccordingToChildren(QRectF &newContents, QPointF &newP
 	*/
 
 	/// Vector of minimum negative XY child deflection from top left corner.
-	QPointF childDeflectionVector = childDeflection();
+	QPointF const childDeflectionVector = childDeflection();
 
 	moveChildren(-childDeflectionVector);
 	newPos += childDeflectionVector;

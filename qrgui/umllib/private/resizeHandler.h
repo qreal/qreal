@@ -22,9 +22,8 @@ public:
 	 * in most cases.
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
-	 * @param oldPos Old position in case we are in a container
 	 */
-	void resize(QRectF newContents, QPointF newPos, const QPointF &oldPos) const;
+	void resize(QRectF newContents, QPointF newPos) const;
 
 private:
 	/// Padding that reserves space for title.

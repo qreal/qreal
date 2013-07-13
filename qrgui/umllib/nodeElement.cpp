@@ -460,7 +460,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	}
 
-	resize(newContents, newPos, mPos);
+	resize(newContents, newPos);
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
@@ -1136,18 +1136,18 @@ NodeData& NodeElement::data()
 
 void NodeElement::resize()
 {
-	resize(mContents, pos(), pos());
+	resize(mContents, pos());
 }
 
 void NodeElement::resize(QRectF const &newContents)
 {
-	resize(newContents, pos(), pos());
+	resize(newContents, pos());
 }
 
-void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, QPointF const &oldPos)
+void NodeElement::resize(QRectF const &newContents, QPointF const &newPos)
 {
 	ResizeHandler handler(this);
-	handler.resize(newContents, newPos, oldPos);
+	handler.resize(newContents, newPos);
 }
 
 bool NodeElement::isFolded() const
