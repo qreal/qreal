@@ -124,6 +124,7 @@ void Object::setProperty(QString const &name, const QVariant &value)
 		qDebug() << ", property name " << name;
 		Q_ASSERT(!"Empty QVariant set as a property");
 	}
+	qDebug() << "set property" << name << "for " << mId << "value" << value;
 	mProperties.insert(name,value);
 }
 
@@ -135,6 +136,9 @@ void Object::setProperties(QMap<QString, QVariant> const &properties)
 QVariant Object::property(QString const &name) const
 {
 	if (mProperties.contains(name)) {
+
+		qDebug() << "get property" << name << "for " << mId;
+
 		return mProperties[name];
 	} else if (name == "backReferences") {
 		return QVariant();

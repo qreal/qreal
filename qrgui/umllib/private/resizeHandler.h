@@ -22,8 +22,9 @@ public:
 	 * in most cases.
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
+	 * @param oldPos Old position in case we are in a container
 	 */
-	void resize(QRectF newContents, QPointF newPos) const;
+	void resize(QRectF newContents, QPointF newPos, const QPointF &oldPos) const;
 
 private:
 	/// Padding that reserves space for title.
@@ -54,7 +55,7 @@ private:
 	void gripeIfMinimizesToChildrenContainer(QRectF &contents) const;
 
 	/// Calls resize() method for parent item.
-	void parentResizeCall() const;
+	void resizeParent() const;
 
 	/**
 	 * Changes contents to size that not smaller than folded contents.
@@ -104,7 +105,7 @@ private:
 	void printChildPos() const;
 
 	/// Node that is actually dealt with.
-	NodeElement * const mResizingNode;
+	NodeElement * const mTargetNode;
 
 	/// ElementImpl of node that is actually dealt with.
 	ElementImpl * const mElementImpl;

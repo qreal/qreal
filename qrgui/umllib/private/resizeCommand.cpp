@@ -75,7 +75,7 @@ void ResizeCommand::resize(NodeElement * const element, QRectF const &geometry)
 {
 	if (element && geometryOf(element) != geometry) {
 		ResizeHandler handler(element);
-		handler.resize(geometry.translated(-geometry.topLeft()), geometry.topLeft());
+		handler.resize(geometry.translated(-geometry.topLeft()), geometry.topLeft(), geometry.topLeft());
 	}
 }
 

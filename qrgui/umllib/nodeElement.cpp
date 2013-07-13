@@ -78,10 +78,14 @@ NodeElement::NodeElement(ElementImpl* impl)
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateNodeEdges()));
+
+	qDebug() << "\n\n+++++ created" << mId;
 }
 
 NodeElement::~NodeElement()
 {
+	qDebug() << "----- deleted" << mId;
+
 	highlightEdges();
 
 	foreach (EdgeElement *edge, mEdgeList) {
@@ -177,11 +181,13 @@ void NodeElement::adjustLinks(bool isDragging)
 	}
 }
 
-void NodeElement::arrangeLinearPorts() {
+void NodeElement::arrangeLinearPorts()
+{
 	mPortHandler->arrangeLinearPorts();
 }
 
-void NodeElement::arrangeLinks() {
+void NodeElement::arrangeLinks()
+{
 	//Episode I: Home Jumps
 	//qDebug() << "I";
 	foreach (EdgeElement* edge, mEdgeList) {
@@ -223,8 +229,11 @@ void NodeElement::storeGeometry()
 		mGraphicalAssistApi->setPosition(id(), pos());
 	}
 
+	qDebug() << "!!! " << mId << "new: " << contents.toAlignedRect() << ", old: " << mGraphicalAssistApi->configuration(id());
+
 	if (QPolygon(contents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
 		mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
+		qDebug() << "saving" << contents.toAlignedRect();
 	}
 }
 
@@ -272,6 +281,8 @@ void NodeElement::delUnusedLines()
 
 void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	qDebug() << "NodeElement::mousePressEvent";
+
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
@@ -364,6 +375,8 @@ void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	qDebug() << "\n\nNodeElement::mouseMoveEvent, pos:" << pos() << ", mPos:" << mPos;
+
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
@@ -378,13 +391,28 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	QRectF newContents = mContents;
 	QPointF newPos = mPos;
 
+	qDebug() << "drag state: " << mDragState;
+	qDebug() << "event pos:" << event->pos() << event->lastPos();
+	qDebug() << "event scene pos:" << event->scenePos() << event->lastScenePos();
+
 	if (mDragState == None) {
 		if (!isPort() && (flags() & ItemIsMovable)) {
 			recalculateHighlightedNode(event->scenePos());
 		}
 
 		// it is needed for sendEvent() to every isSelected element thro scene
-		Element::mouseMoveEvent(event);
+		qDebug() << "pos before Element::mouseMoveEvent: " << pos();
+		event->setPos(event->lastPos());
+
+		NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
+		if (parent) {
+			QPointF diff = event->scenePos() - event->lastScenePos();
+			qDebug() << diff;
+			moveBy(diff.x(), diff.y());
+		} else {
+			Element::mouseMoveEvent(event);
+		}
+		qDebug() << "pos after  Element::mouseMoveEvent: " << pos();
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
 		newPos = pos();
@@ -400,6 +428,9 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		qreal const newX = event->pos().x();
 		qreal const newY = event->pos().y();
+
+		qDebug() << "old pos: " << pos();
+		qDebug() << "new pos: " << QPointF(newX, newY);
 
 		switch (mDragState) {
 		case TopLeft: {
@@ -451,17 +482,29 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	}
 
-	resize(newContents, newPos);
+	qDebug() << "old contents:" << mContents;
+	qDebug() << "new contents:" << newContents;
+	qDebug() << "old mPos:" << mPos;
+	qDebug() << "new pos:" << newPos;
 
-	if (isPort()) {
-		mUmlPortHandler->handleMoveEvent(
-				  mLeftPressed
-				, mPos
-				, event->scenePos()
-				, mParentNodeElement
-			);
+	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
+	if (parent) {
+		qDebug() << "    parent old: " << parent->pos() << parent->boundingRect();
 	}
 
+	resize(newContents, newPos, mPos);
+
+	qDebug() << "new pos:" << pos() << mPos;
+
+	if (parent) {
+		qDebug() << "    parent new: " << parent->pos() << parent->boundingRect();
+	}
+
+	if (isPort()) {
+		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
+	}
+
+	// OMFG.
 	if (mTimeOfUpdate == 14) {
 		mTimeOfUpdate = 0;
 		foreach (EdgeElement* edge, mEdgeList) {
@@ -476,6 +519,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	qDebug() << "NodeElement::mouseReleaseEvent";
+
 	mTimer->stop();
 	mTimeOfUpdate = 0;
 	if (event->button() == Qt::RightButton) {
@@ -724,6 +769,7 @@ void NodeElement::updateData()
 		mMoving = false;
 		QPointF newpos = mGraphicalAssistApi->position(id());
 		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
+
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
@@ -747,6 +793,8 @@ void NodeElement::updateData()
 			}
 			newRect = QRectF(QPoint(minx, miny), QSize(maxx - minx, maxy - miny));
 		}
+
+		qDebug() << "=== updated: " << newRect << newpoly;
 		setGeometry(newRect.translated(newpos));
 	}
 	mElementImpl->updateData(this);
@@ -1129,18 +1177,18 @@ NodeData& NodeElement::data()
 
 void NodeElement::resize()
 {
-	resize(mContents, pos());
+	resize(mContents, pos(), pos());
 }
 
 void NodeElement::resize(QRectF const &newContents)
 {
-	resize(newContents, pos());
+	resize(newContents, pos(), pos());
 }
 
-void NodeElement::resize(QRectF const &newContents, QPointF const &newPos)
+void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, QPointF const &oldPos)
 {
 	ResizeHandler handler(this);
-	handler.resize(newContents, newPos);
+	handler.resize(newContents, newPos, oldPos);
 }
 
 bool NodeElement::isFolded() const
@@ -1200,7 +1248,7 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 	if (oldParent == newParent) {
 		return NULL;
 	}
-	QPointF const oldPos = mResizeCommand->geometryBeforeDrag().topLeft();
+	QPointF const oldPos = mResizeCommand ? mResizeCommand->geometryBeforeDrag().topLeft() : mPos;
 	QPointF const oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
 	// Without pre-translating into new position parent gets wrong child coords
 	// when redo happens and resizes when he doesn`t need it.

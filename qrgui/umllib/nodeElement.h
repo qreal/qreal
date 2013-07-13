@@ -174,8 +174,9 @@ private:
 	 * in most cases.
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
+	 * @param oldPos Old position in case we are in a container
 	 */
-	void resize(QRectF const &newContents, QPointF const &newPos);
+	void resize(QRectF const &newContents, QPointF const &newPos, const QPointF &oldPos);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
