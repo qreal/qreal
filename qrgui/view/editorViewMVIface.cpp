@@ -147,8 +147,6 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 		}
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
-		QRectF eConf = model()->data(current, roles::configurationRole).toRectF();
-		qDebug() << "[[[[[ created id " << currentId << "conf " << eConf;
 		bool needToProcessChildren = true;
 		if (elem) {
 			// setting position before parent definition 'itemChange' to work correctly

@@ -171,8 +171,6 @@ void ResizeHandler::printChildPos() const
 		if (!curItem || curItem->isPort()) {
 			continue;
 		}
-
-		qDebug() << "child pos: " << curItem->pos();
 	}
 }
 
