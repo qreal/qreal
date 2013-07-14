@@ -9,22 +9,26 @@
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
+namespace enums {
+namespace arrowTypeEnum {
 enum ArrowType
 {
-	  FILLED_ARROW
-	, EMPTY_ARROW
-	, FILLED_RHOMB
-	, EMPTY_RHOMB
-	, NO_ARROW
-	, OPEN_ARROW
-	, CROSSED_LINE
-	, EMPTY_CIRCLE
+	  filledArrow
+	, emptyArrow
+	, filledRhomb
+	, emptyRhomb
+	, noArrow
+	, openArrow
+	, crossedLine
+	, emptyCircle
 };
+}
+}
 
 class NodeElement;
 /** @class EdgeElement
-  * 	@brief class for an edge on a diagram
-  * 	*/
+  * @brief class for an edge on a diagram
+ */
 
 namespace qReal
 {
@@ -126,8 +130,8 @@ protected:
 	QColor mPenColor;
 	QString mText;
 	QString mFromMult, mToMult;
-	ArrowType mStartArrowStyle;
-	ArrowType mEndArrowStyle;
+	enums::arrowTypeEnum::ArrowType mStartArrowStyle;
+	enums::arrowTypeEnum::ArrowType mEndArrowStyle;
 
 public slots:
 	void saveConfiguration(QPointF const &pos);

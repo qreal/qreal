@@ -27,7 +27,8 @@ const int standartReductCoeff = 3;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
 		: Element(impl)
-		, mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+		, mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black)
+		, mStartArrowStyle(enums::arrowTypeEnum::noArrow), mEndArrowStyle(enums::arrowTypeEnum::noArrow)
 		, mSrc(NULL), mDst(NULL)
 		, mPortFrom(0), mPortTo(0)
 		, mDragPoint(noPort), mLongPart(0)
