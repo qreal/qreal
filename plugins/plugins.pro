@@ -9,7 +9,7 @@ SUBDIRS	= \
 #	bpmn/bpmn.pro \
 #	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
-#	metaEditor/metaEditor.pro \
+	metaEditor/metaEditor.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \
