@@ -177,13 +177,14 @@ void NodeElement::adjustLinks(bool isDragging)
 	}
 }
 
-void NodeElement::arrangeLinearPorts() {
+void NodeElement::arrangeLinearPorts()
+{
 	mPortHandler->arrangeLinearPorts();
 }
 
-void NodeElement::arrangeLinks() {
+void NodeElement::arrangeLinks()
+{
 	//Episode I: Home Jumps
-	//qDebug() << "I";
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
@@ -191,11 +192,9 @@ void NodeElement::arrangeLinks() {
 	}
 
 	//Episode II: Home Ports Arranging
-	//qDebug() << "II";
 	arrangeLinearPorts();
 
 	//Episode III: Remote Jumps
-	//qDebug() << "III";
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* src = edge->src();
 		NodeElement* dst = edge->dst();
@@ -204,7 +203,6 @@ void NodeElement::arrangeLinks() {
 	}
 
 	//Episode IV: Remote Arrangigng
-	//qDebug() << "IV";
 	QSet<NodeElement*> arranged;
 	foreach (EdgeElement* edge, mEdgeList) {
 		NodeElement* other = edge->otherSide(this);
@@ -384,11 +382,22 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 
 		// it is needed for sendEvent() to every isSelected element thro scene
-		Element::mouseMoveEvent(event);
+		event->setPos(event->lastPos());
+
+		NodeElement const * const parent = dynamic_cast<NodeElement const * const>(parentItem());
+		if (parent) {
+			// For some reason regular Element::mouseMoveEvent() does not work with our expanding containers.
+			// Better rewrite them from scratch.
+
+			QPointF const diff = event->scenePos() - event->lastScenePos();
+			moveBy(diff.x(), diff.y());
+		} else {
+			Element::mouseMoveEvent(event);
+		}
+
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
 		newPos = pos();
-
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
 
@@ -454,14 +463,10 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	resize(newContents, newPos);
 
 	if (isPort()) {
-		mUmlPortHandler->handleMoveEvent(
-				  mLeftPressed
-				, mPos
-				, event->scenePos()
-				, mParentNodeElement
-			);
+		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
 	}
 
+	// OMFG.
 	if (mTimeOfUpdate == 14) {
 		mTimeOfUpdate = 0;
 		foreach (EdgeElement* edge, mEdgeList) {
@@ -724,6 +729,7 @@ void NodeElement::updateData()
 		mMoving = false;
 		QPointF newpos = mGraphicalAssistApi->position(id());
 		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
+
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
@@ -747,6 +753,7 @@ void NodeElement::updateData()
 			}
 			newRect = QRectF(QPoint(minx, miny), QSize(maxx - minx, maxy - miny));
 		}
+
 		setGeometry(newRect.translated(newpos));
 	}
 	mElementImpl->updateData(this);
@@ -1200,7 +1207,7 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 	if (oldParent == newParent) {
 		return NULL;
 	}
-	QPointF const oldPos = mResizeCommand->geometryBeforeDrag().topLeft();
+	QPointF const oldPos = mResizeCommand ? mResizeCommand->geometryBeforeDrag().topLeft() : mPos;
 	QPointF const oldScenePos = oldParentElem ? oldParentElem->mapToScene(oldPos) : oldPos;
 	// Without pre-translating into new position parent gets wrong child coords
 	// when redo happens and resizes when he doesn`t need it.

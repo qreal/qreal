@@ -54,7 +54,7 @@ private:
 	void gripeIfMinimizesToChildrenContainer(QRectF &contents) const;
 
 	/// Calls resize() method for parent item.
-	void parentResizeCall() const;
+	void resizeParent() const;
 
 	/**
 	 * Changes contents to size that not smaller than folded contents.
@@ -104,7 +104,7 @@ private:
 	void printChildPos() const;
 
 	/// Node that is actually dealt with.
-	NodeElement * const mResizingNode;
+	NodeElement * const mTargetNode;
 
 	/// ElementImpl of node that is actually dealt with.
 	ElementImpl * const mElementImpl;
