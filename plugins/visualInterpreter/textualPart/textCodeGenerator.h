@@ -1,14 +1,12 @@
 #pragma once
 
-#include <QtCore/QDir>
-
 #include "../../qrgui/mainwindow/errorReporter.h"
 #include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
 
 namespace qReal {
 
-/// Generates python script file for reaction on the rule application specified in "procedure" attribute of "Rule" element
-class PythonGenerator : public QObject
+/// Generates text code file for reaction on the rule application specified in "procedure" attribute of "Rule" element
+class TextCodeGenerator : public QObject
 {
 	Q_OBJECT
 
@@ -16,10 +14,7 @@ public:
 	/// Delimiter that will be inserted instead of '.' in each "elemName.propertyName" occurencce
 	static QString const delimeter;
 
-	/// Constructor
-	/// @param reactionScriptPath Where save reaction on python
-	/// @param applicationConditionScriptPath Where save application condition on python
-	PythonGenerator(LogicalModelAssistInterface &logicalModelApi
+	TextCodeGenerator(LogicalModelAssistInterface &logicalModelApi
 			, GraphicalModelAssistInterface &graphicalModelApi
 			, gui::MainWindowInterpretersInterface &interpretersInterface);
 
@@ -29,18 +24,18 @@ public:
 	/// Matched rule match
 	void setMatch(QHash<Id, Id> const &match);
 
-	/// Generate and return reaction script or application condition script on python
-	QString generateScript(bool const isApplicationCondition);
+	/// Generate and return reaction script or application condition script
+	virtual QString generateScript(bool const isApplicationCondition);
 
 	/// Returns element id by it's name (from single rule)
 	Id idByName(QString const &name) const;
 
-private:
+protected:
 	/// Checks if rule have element with given name
 	bool hasElementName(QString const &name) const;
 
 	bool hasProperty(Id const &element, QString const &propertyName) const;
-	QString property(Id const &element, QString const &propertyName) const;
+	virtual QString property(Id const &element, QString const &propertyName) const;
 	QVariant propertyVariant(Id const &element, QString const &propertyName) const;
 
 	/// Checks if property has string type
@@ -61,13 +56,13 @@ private:
 	QString substituteElementProperties(QString const &code) const;
 
 	/// Add to code correct initialization of new variables and create proper output for model update
-	QString createProperInitAndOutput(QString const &code, bool const isApplicationCondition) const;
+	virtual QString createProperInitAndOutput(QString const &code, bool const isApplicationCondition) const = 0;
 
 	/// Create function definition from element property
-	QString createBehaviourFunction(QString const &elementName, QString const &propertyName) const;
+	virtual QString createBehaviourFunction(QString const &elementName, QString const &propertyName) const = 0;
 
 	/// Prepare property value for insertion in function definition (replace this. usages, add global variable, etc)
-	QString properElementProperty(QString const &elementName, QString const &propertyName) const;
+	virtual QString properElementProperty(QString const &elementName, QString const &propertyName) const = 0;
 
 	QString parseIdentifier(QString const &stream, int pos, bool leftToRight) const;
 	bool isCorrectIdentifierSymbol(QChar const c) const;

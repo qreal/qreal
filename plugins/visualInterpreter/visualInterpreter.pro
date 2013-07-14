@@ -1,4 +1,4 @@
-QT += xml
+QT += xml script widgets
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -10,26 +10,32 @@ RCC_DIR = .moc
 
 LIBS += -L../../bin -lqrkernel -lqrutils
 
-QT += widgets
-
 TRANSLATIONS = visualInterpreter_ru.ts
 
 HEADERS = \
 	../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 	visualInterpreterPlugin.h \
 	visualInterpreterPreferencesPage.h \
-	ruleParser.h \
 	visualInterpreterUnit.h \
-	pythonInterpreter.h \
-	pythonGenerator.h
+	textualPart/ruleParser.h \
+	textualPart/pythonInterpreter.h \
+	textualPart/pythonGenerator.h \
+	textualPart/textCodeGenerator.h \
+	textualPart/textCodeInterpreter.h \
+	textualPart/qtScriptGenerator.h \
+	textualPart/qtScriptInterpreter.h
 
 SOURCES = \
 	visualInterpreterPlugin.cpp \
 	visualInterpreterPreferencesPage.cpp \
-	ruleParser.cpp \
 	visualInterpreterUnit.cpp \
-	pythonInterpreter.cpp \
-	pythonGenerator.cpp
+	textualPart/ruleParser.cpp \
+	textualPart/pythonInterpreter.cpp \
+	textualPart/pythonGenerator.cpp \
+	textualPart/textCodeGenerator.cpp \
+	textualPart/textCodeInterpreter.cpp \
+	textualPart/qtScriptGenerator.cpp \
+	textualPart/qtScriptInterpreter.cpp
 
 FORMS += \
 	visualInterpreterPreferencePage.ui \
