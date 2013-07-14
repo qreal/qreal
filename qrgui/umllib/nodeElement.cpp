@@ -384,20 +384,20 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		// it is needed for sendEvent() to every isSelected element thro scene
 		event->setPos(event->lastPos());
 
-		NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
+		NodeElement const * const parent = dynamic_cast<NodeElement const * const>(parentItem());
 		if (parent) {
-			/* For some reason regular Element::mouseMoveEvent() does not work with our expanind containers.
-			 * Better rewrite them from scratch. */
+			// For some reason regular Element::mouseMoveEvent() does not work with our expanding containers.
+			// Better rewrite them from scratch.
 
-			QPointF diff = event->scenePos() - event->lastScenePos();
+			QPointF const diff = event->scenePos() - event->lastScenePos();
 			moveBy(diff.x(), diff.y());
 		} else {
 			Element::mouseMoveEvent(event);
 		}
+
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
 		newPos = pos();
-
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
 

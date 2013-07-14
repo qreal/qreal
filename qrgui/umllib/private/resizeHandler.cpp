@@ -123,7 +123,7 @@ void ResizeHandler::resizeAccordingToChildren(QRectF &newContents, QPointF &newP
 	}
 	*/
 
-	/// Vector of minimum negative XY child deflection from top left corner.
+	// Vector of minimum negative XY child deflection from top left corner.
 	QPointF const childDeflectionVector = childDeflection();
 
 	moveChildren(-childDeflectionVector);
@@ -175,7 +175,7 @@ void ResizeHandler::moveChildren(QPointF const &shift) const
 
 		QPointF pos(qMax(curItem->pos().x(), sizeOfForestalling)
 				, qMax(curItem->pos().y(), sizeOfForestalling));
-		//returns object to the parent area
+		// returns object to the parent area
 		curItem->setPos(pos);
 	}
 }
