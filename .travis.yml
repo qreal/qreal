@@ -7,8 +7,12 @@ install:
   - sudo apt-get install qt-sdk libqt5svg5-dev qttools5-dev -y
 
 script:
+  - qmake qreal.pro
+  - make -j2
   - qmake qrealRobots.pro
-  - make -j2 
+  - make -j2
+  - qmake qrealBP.pro
+  - make -j2
   - git clean -dfx
   - qmake qrealTest.pro CONFIG+=debug
   - make -j2
