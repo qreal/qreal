@@ -9,8 +9,17 @@
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
-enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB
-		, NO_ARROW, OPEN_ARROW, CROSSED_LINE, EMPTY_CIRCLE };
+enum ArrowType
+{
+	  FILLED_ARROW
+	, EMPTY_ARROW
+	, FILLED_RHOMB
+	, EMPTY_RHOMB
+	, NO_ARROW
+	, OPEN_ARROW
+	, CROSSED_LINE
+	, EMPTY_CIRCLE
+};
 
 class NodeElement;
 /** @class EdgeElement

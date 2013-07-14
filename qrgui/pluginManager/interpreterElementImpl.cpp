@@ -471,7 +471,7 @@ QVector<int> InterpreterElementImpl::getSizeOfContainerProperty(QString const &p
 			mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
 		if (!propertiesElement.firstChildElement(property).isNull()) {
-			QStringList sizeStr = propertiesElement.firstChildElement(property).attribute("size").split(',');
+			QStringList const sizeStr = propertiesElement.firstChildElement(property).attribute("size").split(',');
 			for (int i = 0; i < sizeStr.size(); i++) {
 				size[i] = sizeStr[i].toInt();
 			}

@@ -1,4 +1,3 @@
-QT += xml widgets
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../bin/plugins/
@@ -12,12 +11,12 @@ RESOURCES += rulesChecker.qrc \
 HEADERS += \
 	rulesChecker.h \
 	rulesBPMNPlugin.h \
-    bpmnCustomizer.h
+	bpmnCustomizer.h
 
 SOURCES += \
 	rulesChecker.cpp \
 	rulesBPMNPlugin.cpp \
-    bpmnCustomizer.cpp
+	bpmnCustomizer.cpp
 
 
 

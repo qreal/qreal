@@ -323,18 +323,18 @@ void NodeType::generateCode(OutFile &out)
 
 	<< "\t\tbool isSortingContainer() const\n\t\t{\n"
 	<< (mContainerProperties.isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-    << "\t\t}\n\n";
+	<< "\t\t}\n\n";
 
-    QStringList forestalling;
-    foreach (int size, mContainerProperties.sizeOfForestalling) {
-        forestalling << QString::number(size);
-    }
+	QStringList forestalling;
+	foreach (int size, mContainerProperties.sizeOfForestalling) {
+		forestalling << QString::number(size);
+	}
 
-    out() << "\t\tQVector<int> sizeOfForestalling() const\n\t\t{\n"
-    << "\t\t\tQVector<int> result;\n"
-    << "\t\t\tresult << " + forestalling[0] + " << " + forestalling[1] + " << " + forestalling[2]
-            + " << " + forestalling[3] + ";\n"
-    << ";\n\t\t\treturn result;\n"
+	out() << "\t\tQVector<int> sizeOfForestalling() const\n\t\t{\n"
+	<< "\t\t\tQVector<int> result;\n"
+	<< "\t\t\tresult << " + forestalling[0] + " << " + forestalling[1] + " << " + forestalling[2]
+			+ " << " + forestalling[3] + ";\n"
+	<< ";\n\t\t\treturn result;\n"
 	<< "\t\t}\n\n"
 
 	<< "\t\tint sizeOfChildrenForestalling() const\n\t\t{\n"

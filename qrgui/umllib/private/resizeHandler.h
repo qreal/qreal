@@ -29,7 +29,7 @@ private:
 	/// Padding that reserves space for title.
 	static int const mTitlePadding = 25;
 	/// Space between children inside sorting containers.
-    static int const mChildSpacing = 0;
+	static int const mChildSpacing = 0;
 	/// Minimum size of node
 	static int const mMinSize = 10;
 

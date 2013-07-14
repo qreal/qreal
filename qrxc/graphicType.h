@@ -44,7 +44,7 @@ protected:
 		ContainerProperties();
 
 		bool isSortingContainer;
-        QVector<int> sizeOfForestalling;
+		QVector<int> sizeOfForestalling;
 		int sizeOfChildrenForestalling;
 		bool hasMovableChildren;
 		bool minimizesToChildren;
@@ -105,7 +105,7 @@ private:
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
 
-    QVector<int> toIntVector(QString const &s, bool * isOk) const;
+	QVector<int> toIntVector(QString const &s, bool * isOk) const;
 
 	QString mDescription;
 };

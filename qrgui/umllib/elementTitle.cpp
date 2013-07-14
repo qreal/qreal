@@ -8,8 +8,8 @@
 using namespace qReal;
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation)
-    : mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
-	, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false)
+		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
+		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false)
 {
 	setTitleFont();
 	setPos(x, y);
@@ -17,8 +17,8 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation
 }
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
-    : mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
-	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
+		: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
+		, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
 {
 	setTitleFont();
 	setPos(x, y);
@@ -159,12 +159,12 @@ void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y, QString const &text, qreal rotation)
 {
-    return new ElementTitle(x, y, text, rotation);
+	return new ElementTitle(x, y, text, rotation);
 }
 
 ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y,QString const &binding, bool readOnly, qreal rotation)
 {
-    return new ElementTitle(x, y, binding, readOnly, rotation);
+	return new ElementTitle(x, y, binding, readOnly, rotation);
 }
 
 void ElementTitle::transform(QRectF const& contents)
@@ -172,18 +172,20 @@ void ElementTitle::transform(QRectF const& contents)
 	qreal x = 0;
 	qreal y = 0;
 
-	if (mScalingX)
+	if (mScalingX) {
 		x = mPoint.x() * mContents.width();
-	else
+	} else {
 		x = mPoint.x() * contents.width();
+	}
 
-	if (mScalingY)
+	if (mScalingY) {
 		y = mPoint.y() * mContents.height();
-	else
+	} else {
 		y = mPoint.y() * contents.height();
+	}
 
 	setPos(x, y);
 
-    setRotation(mRotation);
+	setRotation(mRotation);
 }
 

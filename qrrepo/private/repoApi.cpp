@@ -448,7 +448,7 @@ QString RepoApi::workingFile() const
 IdList RepoApi::graphicalElements() const
 {
 	IdList result;
-	foreach (Id id, mClient.elements()) {
+	foreach (Id const &id, mClient.elements()) {
 		if (!mClient.isLogicalId(id))
 			result.append(id);
 	}

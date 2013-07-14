@@ -32,5 +32,5 @@ private:
 	QString mCenter;
 	bool mIsHard;
 	bool mIsPlainText;
-    qreal mRotation;
+	qreal mRotation;
 };

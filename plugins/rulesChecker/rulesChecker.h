@@ -14,7 +14,7 @@ class RulesChecker : public QObject
 public:
 	RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface);
-	// std destructor ok
+	// default destructor is ok
 
 public slots:
 	void checkAllDiagrams();
@@ -22,15 +22,15 @@ public slots:
 
 private:
 	 enum ErrorsType {
-		LinkToStartNode
-		, LinkFromFinalNode
-		, NoStartNode
-		, NoEndNode
-		, IncorrectLink
+		linkToStartNode
+		, linkFromFinalNode
+		, noStartNode
+		, noEndNode
+		, incorrectLink
 	};
 
-	//! starts DFS for all connected component
-	void researchDiagram();
+	//! starts DFS for all connected components
+	void checkDiagram();
 
 	//! DFS, checks rule that all paths have start with StartEvent and finish in EndEvent
 	//! removes elements from mDiagramModels list while making detour
@@ -41,7 +41,7 @@ private:
 	//! controls existsing nodes at the ends of link
 	void checkLinksRule(Id const &key);
 	//! controls that start node hasn't got incoming links, so as end-node outcoming
-	void checkFinalNodeRule(Id const &key);
+	void checkFinalNodeRule(Id const &node);
 
 	//! clears errorlog
 	void prepareOutput();
@@ -56,8 +56,8 @@ private:
 	//! @returns IdList list all graphical elements of diagram
 	IdList elementsOfDiagram(Id const &diagram) const;
 
-	//! removes containers from list, checks link-rule and final-nodes-rule
-	void checkDiagramModelsList();
+	//! removes containers from elements list, checks link-rule and final-nodes-rule
+	void checkDiagramElements();
 	//! @return start-nodes from diagram list
 	IdList collectStartNodes() const;
 
@@ -70,10 +70,10 @@ private:
 	QStringList mLinkTypes;
 	QStringList mContainerTypes;
 
-	//! consists of models from current diagram
-	IdList mDiagramModels;
+	//! contains all elements from current diagram
+	IdList mDiagramElements;
 	//! main flag
-	bool mHasNoErrors;
+	bool mNoErrorsOccured;
 };
 
 }
