@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
 			for (int i = 0; i < argc; i++) {
 				if (app.arguments().at(i).endsWith(".qrs")) {
 					fileToOpen = app.arguments().at(i);
+					break;
 				}
 			}
 		}
