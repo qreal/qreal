@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	QTranslator guiTranslator;
 	QTranslator utilsTranslator;
 	QTranslator qtTranslator;
-	if (app.arguments().count() <= 1 || app.arguments().at(1) != "--no-locale") {
+	if (!app.arguments().contains("--no-locale")) {
 		guiTranslator.load(":/qrgui_" + QLocale::system().name());
 		utilsTranslator.load(":/qrutils_" + QLocale::system().name());
 		qtTranslator.load(":/qt_" + QLocale::system().name());
