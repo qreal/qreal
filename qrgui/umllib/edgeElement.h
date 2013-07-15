@@ -147,8 +147,6 @@ private slots:
 	/// delete Segment with nearest with pos ends
 	void deleteSegmentHandler(QPointF const &pos);
 
-	void squarizeAndAdjustHandler();
-
 	/// change link's direction
 	void reverseHandler(QPointF const &pos);
 
