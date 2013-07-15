@@ -316,7 +316,17 @@ void PortHandler::arrangeLinearPorts()
 		qreal const dx = portLine.dx();
 		qreal const dy = portLine.dy();
 		foreach (EdgeElement* edge, mNode->edgeList()) {
-			if (portNumber(edge->portIdOn(mNode)) == lpId) {
+			qreal portSrcId = edge->portIdOn(mNode).first;
+			qreal portDstId = edge->portIdOn(mNode).second;
+			qreal currentPortId = -1.0;
+			if (portNumber(portSrcId) == lpId) {
+				currentPortId = portSrcId;
+			}
+			if (portNumber(portDstId) == lpId) {
+				currentPortId = portDstId;
+			}
+
+			if (currentPortId != -1.0) {
 				QPointF const conn = edge->connectionPoint(mNode);
 				QPointF const next = edge->nextFrom(mNode);
 				qreal const x1 = conn.x();
@@ -325,7 +335,7 @@ void PortHandler::arrangeLinearPorts()
 				qreal const y2 = next.y();
 				qreal const len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 				qreal const scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
-				sortedEdges.insertMulti(qMakePair(edge->portIdOn(mNode), scalarProduct), edge);
+				sortedEdges.insertMulti(qMakePair(currentPortId, scalarProduct), edge);
 			}
 		}
 

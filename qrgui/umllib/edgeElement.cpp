@@ -1384,13 +1384,16 @@ bool EdgeElement::isDst(NodeElement const *node) const
 	return (mDst == node);
 }
 
-qreal EdgeElement::portIdOn(NodeElement const *node) const
+QPair<qreal, qreal> EdgeElement::portIdOn(NodeElement const *node) const
 {
+	if (mIsLoop && node == mSrc) {
+		return qMakePair(mPortFrom, mPortTo);
+	}
 	if (node == mSrc)
-		return mPortFrom;
+		return qMakePair(mPortFrom, -1.0);
 	if (node == mDst)
-		return mPortTo;
-	return -1;
+		return qMakePair(-1.0, mPortTo);
+	return qMakePair(-1.0, -1.0);
 }
 
 QPointF EdgeElement::nextFrom(NodeElement const *node) const
@@ -1538,13 +1541,14 @@ void EdgeElement::placeEndTo(QPointF const &place)
 }
 
 void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
-	if (node == mSrc) {
+	//expected that the id will change only fractional part
+	if (((!mIsLoop) || ((int)mPortFrom == (int)portId)) && (node == mSrc)) {
 		mPortFrom = portId;
 		mModelUpdateIsCalled = true;
 		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 		return;
 	}
-	if (node == mDst) {
+	if (((!mIsLoop) || ((int)mPortTo == (int)portId)) && (node == mDst)) {
 		mPortTo = portId;
 		mModelUpdateIsCalled = true;
 		mGraphicalAssistApi->setToPort(id(), mPortTo);
