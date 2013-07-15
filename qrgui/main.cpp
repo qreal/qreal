@@ -35,7 +35,17 @@ int main(int argc, char *argv[])
 			clearConfig();
 			return 0;
 		} else {
-			fileToOpen = app.arguments().at(1);
+			int setIndex = app.arguments().indexOf("--config");
+			if (setIndex > -1) {
+				QString settingsFileName = app.arguments().at(setIndex + 1);
+				SettingsManager::instance()->loadSettings(settingsFileName);
+			}
+			for (int i = 0; i < argc; i++) {
+				if (app.arguments().at(i).endsWith(".qrs")) {
+					fileToOpen = app.arguments().at(i);
+					break;
+				}
+			}
 		}
 	}
 

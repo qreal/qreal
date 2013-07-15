@@ -2,6 +2,8 @@
 
 #include <QtCore/QModelIndex>
 #include <QtWidgets/QDialog>
+#include <QtCore/QSettings>
+#include <QtWidgets/QFileDialog>
 
 #include "preferencesPages/preferencesPage.h"
 
@@ -46,8 +48,11 @@ private slots:
 	void restoreSettings();
 	void saveAndClose();
 	void chooseTab(const QModelIndex &);
+	void exportSettings();
+	void importSettings();
 
 private:
+
 	Ui::PreferencesDialog *ui;
 	QMap<QString, PreferencesPage *> mCustomPages;
 };
