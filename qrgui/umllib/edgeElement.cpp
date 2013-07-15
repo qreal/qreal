@@ -822,7 +822,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mLine[mDragPoint] = event->pos();
 
 		if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
-			squarizeAndAdjustHandler();
+			squarize();
 		} else {
 			if (SettingsManager::value("ActivateGrid").toBool()) {
 				int const indexGrid = SettingsManager::value("IndexGrid").toInt();
@@ -1148,11 +1148,6 @@ void EdgeElement::breakPointHandler(QPointF const &pos)
 	}
 }
 
-void EdgeElement::squarizeAndAdjustHandler()
-{
-	squarize();
-}
-
 void EdgeElement::squarize()
 {
 	mLine = QPolygonF() << mLine.first() << mLine.last();
@@ -1329,7 +1324,7 @@ void EdgeElement::adjustLink(bool isDragging)
 	}
 
 	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
-		squarizeAndAdjustHandler();
+		squarize();
 	}
 }
 
@@ -1527,7 +1522,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 	mLine[mLine.size() - 1] = place;
 
 	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
-		squarizeAndAdjustHandler();
+		squarize();
 	}
 
 	mModelUpdateIsCalled = true;
@@ -1830,7 +1825,7 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 			}
 		}
 		if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) {
-			squarizeAndAdjustHandler();
+			squarize();
 		}
 		return value;
 	default:
