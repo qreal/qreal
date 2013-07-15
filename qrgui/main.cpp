@@ -43,8 +43,18 @@ int main(int argc, char *argv[])
 					QString settingsFileName = app.arguments().at(i + 1);
 					SettingsManager::instance()->loadSettings(settingsFileName);
 				}
+				else
+				{
+					if (app.arguments().at(i).endsWith(".qrs"))
+					{
+						fileToOpen = app.arguments().at(i);
+					}
+				}
 			}
-		//	fileToOpen = app.arguments().at(1);
+			if (app.arguments().at(argc - 1).endsWith(".qrs"))
+			{
+				fileToOpen = app.arguments().at(argc - 1);
+			}
 		}
 	}
 
