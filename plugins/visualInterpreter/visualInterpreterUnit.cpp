@@ -14,19 +14,31 @@ VisualInterpreterUnit::VisualInterpreterUnit(
 		, mRuleParser(new RuleParser(logicalModelApi, graphicalModelApi, interpretersInterface.errorReporter()))
 		, mPythonGenerator(new PythonGenerator(logicalModelApi, graphicalModelApi, interpretersInterface))
 		, mPythonInterpreter(new PythonInterpreter(this))
+		, mQtScriptGenerator(new QtScriptGenerator(logicalModelApi, graphicalModelApi, interpretersInterface))
+		, mQtScriptInterpreter(new QtScriptInterpreter(this))
 {
 	mDefaultProperties.insert("semanticsStatus");
 	mDefaultProperties.insert("id");
-	connect(mPythonInterpreter, SIGNAL(readyReadStdOutput(QHash<QPair<QString, QString>, QString>))
-			, this, SLOT(processPythonInterpreterStdOutput(QHash<QPair<QString, QString>, QString>)));
+	connect(mPythonInterpreter
+			, SIGNAL(readyReadStdOutput(QHash<QPair<QString, QString>, QString>, TextCodeInterpreter::CodeLanguage))
+			, this
+			, SLOT(processTextCodeInterpreterStdOutput(QHash<QPair<QString, QString>, QString>, TextCodeInterpreter::CodeLanguage)));
 	connect(mPythonInterpreter, SIGNAL(readyReadErrOutput(QString))
-			, this, SLOT(processPythonInterpreterErrOutput(QString)));
+			, this, SLOT(processTextCodeInterpreterErrOutput(QString)));
+	connect(mQtScriptInterpreter
+			, SIGNAL(readyReadStdOutput(QHash<QPair<QString, QString>, QString>, TextCodeInterpreter::CodeLanguage))
+			, this
+			, SLOT(processTextCodeInterpreterStdOutput(QHash<QPair<QString, QString>, QString>, TextCodeInterpreter::CodeLanguage)));
+	connect(mQtScriptInterpreter, SIGNAL(readyReadErrOutput(QString))
+			, this, SLOT(processTextCodeInterpreterErrOutput(QString)));
 }
 
 VisualInterpreterUnit::~VisualInterpreterUnit()
 {
 	delete mPythonGenerator;
 	delete mPythonInterpreter;
+	delete mQtScriptGenerator;
+	delete mQtScriptInterpreter;
 }
 
 IdList VisualInterpreterUnit::allRules() const
@@ -310,11 +322,23 @@ bool VisualInterpreterUnit::checkApplicationCondition(QString const &ruleName)
 bool VisualInterpreterUnit::checkApplicationCondition(QHash<Id, Id> const &match, QString const &ruleName) const
 {
 	QString const appCond = property(mRules.value(ruleName), "applicationCondition").toString();
-	if (property(mRules.value(ruleName), "type").toString() == "Python") {
+	QString const type = property(mRules.value(ruleName), "type").toString();
+	if (type == "Python") {
 		return checkApplicationConditionPython(match, ruleName);
+	} else if (type == "QtScript") {
+		return checkApplicationConditionQtScript(match, ruleName);
 	} else {
 		return checkApplicationConditionCStyle(match, appCond);
 	}
+}
+
+bool VisualInterpreterUnit::checkApplicationConditionQtScript(QHash<Id, Id> const &match, QString const &ruleName) const
+{
+	mQtScriptGenerator->setRule(mRules.value(ruleName));
+	mQtScriptGenerator->setMatch(match);
+
+	return mQtScriptInterpreter->interpret(mQtScriptGenerator->generateScript(true)
+			, TextCodeInterpreter::applicationCondition);
 }
 
 bool VisualInterpreterUnit::checkApplicationConditionCStyle(QHash<Id, Id> const &match, QString const &appCond) const
@@ -526,8 +550,10 @@ void VisualInterpreterUnit::interpretInitializationCode()
 	}
 	if (mInitializationCode.first == "Block Scheme (C-like)") {
 		mRuleParser->parseStringCode(mInitializationCode.second);
+	} else if (mInitializationCode.first == "Python") {
+		mPythonInterpreter->interpret(mInitializationCode.second, TextCodeInterpreter::initialization);
 	} else {
-		mPythonInterpreter->interpret(mInitializationCode.second, PythonInterpreter::initialization);
+		mQtScriptInterpreter->interpret(mInitializationCode.second, TextCodeInterpreter::initialization);
 	}
 }
 
@@ -557,6 +583,14 @@ bool VisualInterpreterUnit::interpretPythonReaction()
 	return mPythonInterpreter->interpret(mPythonGenerator->generateScript(false), PythonInterpreter::reaction);
 }
 
+bool VisualInterpreterUnit::interpretQtScriptReaction()
+{
+	mQtScriptGenerator->setRule(mRules.value(mMatchedRuleName));
+	mQtScriptGenerator->setMatch(mMatches.first());
+
+	return mQtScriptInterpreter->interpret(mQtScriptGenerator->generateScript(false), TextCodeInterpreter::reaction);
+}
+
 void VisualInterpreterUnit::copyProperties(Id const &elemInModel, Id const &elemInRule)
 {
 	QHash<QString, QVariant> ruleProperties = properties(elemInRule);
@@ -578,8 +612,11 @@ bool VisualInterpreterUnit::makeStep()
 	needToUpdate |= createElementsToReplace();
 
 	bool result;
-	if (property(mRules.value(mMatchedRuleName), "type").toString() == "Python") {
+	QString const type = property(mRules.value(mMatchedRuleName), "type").toString();
+	if (type == "Python") {
 		result = interpretPythonReaction();
+	} else if (type == "QtScript") {
+		result = interpretQtScriptReaction();
 	} else {
 		result = interpretReaction();
 	}
@@ -660,7 +697,8 @@ utils::ExpressionsParser* VisualInterpreterUnit::ruleParser()
 	return mRuleParser;
 }
 
-void VisualInterpreterUnit::processPythonInterpreterStdOutput(QHash<QPair<QString, QString>, QString> const &output)
+void VisualInterpreterUnit::processTextCodeInterpreterStdOutput(QHash<QPair<QString, QString>, QString> const &output
+		, TextCodeInterpreter::CodeLanguage const language)
 {
 	QPair<QString, QString> pair;
 	foreach (pair, output.keys()) {
@@ -671,14 +709,19 @@ void VisualInterpreterUnit::processPythonInterpreterStdOutput(QHash<QPair<QStrin
 			value = value.toLower();
 		}
 
-		setProperty(mMatches.first().value(mPythonGenerator->idByName(elemName))
-				, propName, QString::fromUtf8(value.toLatin1()));
+		Id elemId;
+		if (language == TextCodeInterpreter::python) {
+			elemId = mPythonGenerator->idByName(elemName);
+		} else {
+			elemId = mQtScriptGenerator->idByName(elemName);
+		}
+		setProperty(mMatches.first().value(elemId), propName, QString::fromUtf8(value.toLatin1()));
 	}
 
 	mPythonInterpreter->continueStep();
 }
 
-void VisualInterpreterUnit::processPythonInterpreterErrOutput(QString const &output)
+void VisualInterpreterUnit::processTextCodeInterpreterErrOutput(QString const &output)
 {
 	mInterpretersInterface.errorReporter()->addCritical(output);
 	mPythonInterpreter->continueStep();

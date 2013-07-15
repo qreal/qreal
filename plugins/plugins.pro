@@ -6,9 +6,10 @@ SUBDIRS	= \
 #	dragonDiagram/dragonDiagram.pro \
 	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
+#	bpmn/bpmn.pro \
 #	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
-#	metaEditor/metaEditor.pro \
+	metaEditor/metaEditor.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \
@@ -28,5 +29,6 @@ SUBDIRS	= \
 #	umlStateMachinesDiagram/umlStateMachinesDiagram.pro \
 #	umlTimingDiagram/umlTimingDiagram.pro \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
-#	visualInterpreter/visualInterpreter.pro \
+	visualInterpreter/visualInterpreter.pro \
 #	refactoring/refactoring.pro \
+#	rulesChecker/rulesChecker.pro \

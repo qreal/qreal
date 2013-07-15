@@ -1,5 +1,5 @@
 #include "pythonInterpreter.h"
-#include "pythonGenerator.h"
+#include "textCodeGenerator.h"
 #include "../../qrutils/outFile.h"
 
 using namespace qReal;
@@ -7,14 +7,12 @@ using namespace qReal;
 PythonInterpreter::PythonInterpreter(QObject *parent
 		, QString const &pythonPath
 		, QString const &tempScriptPath)
-		: QObject(parent)
+		: TextCodeInterpreter(parent)
 		, mThread(new QThread())
 		, mInterpreterProcess(new QProcess(NULL))
 		, mPythonPath(pythonPath)
 		, mTempScriptPath(tempScriptPath)
 		, mPythonCodeProcessed(false)
-		, mApplicationConditionResult(false)
-		, mErrorOccured(false)
 {
 	moveToThread(mThread);
 	connect(mInterpreterProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));
@@ -118,8 +116,8 @@ void PythonInterpreter::setTempScriptPath(const QString &path)
 QHash<QPair<QString, QString>, QString> &PythonInterpreter::parseOutput(QString const &output) const
 {
 	int pos = 0;
-	int const delimeterIndex = output.indexOf(PythonGenerator::delimeter, pos);
-	if (output.contains(">>>")) {
+	int const delimeterIndex = output.indexOf(TextCodeGenerator::delimeter, pos);
+	if (output.contains(">>>") && output.indexOf(">>>", pos) < delimeterIndex) {
 		while (output.indexOf(">>>", pos + 1) < delimeterIndex) {
 			pos = output.indexOf(">>>", pos + 1);
 		}
@@ -127,55 +125,40 @@ QHash<QPair<QString, QString>, QString> &PythonInterpreter::parseOutput(QString 
 	}
 
 	QHash<QPair<QString, QString>, QString> *res = new QHash<QPair<QString, QString>, QString>();
-	parseOutput(*res, output, pos);
+	TextCodeInterpreter::parseOutput(*res, output, pos);
 	return *res;
-}
-
-void PythonInterpreter::parseOutput(QHash<QPair<QString, QString>, QString> &res, QString const &output, int &pos) const
-{
-	int const delimeterIndex = output.indexOf(PythonGenerator::delimeter, pos);
-	if (delimeterIndex == -1 || output.indexOf("';") == -1) {
-		return;
-	}
-
-	int const semicolumnIndex = output.indexOf("';", pos);
-	int const equalsIndex = output.indexOf("='", pos);
-	QString const elemName = output.mid(pos, delimeterIndex - pos);
-	QString const attrName = output.mid(delimeterIndex + PythonGenerator::delimeter.length()
-			, equalsIndex -delimeterIndex - PythonGenerator::delimeter.length());
-	QString const value = output.mid(equalsIndex + 2, semicolumnIndex - equalsIndex - 2);
-
-	res.insert(QPair<QString, QString>(elemName, attrName), value);
-	pos = semicolumnIndex + 2;
-	parseOutput(res, output, pos);
 }
 
 void PythonInterpreter::readOutput()
 {
 	QByteArray const out = mInterpreterProcess->readAllStandardOutput();
 	QString const outputString = QString(out);
-	if (outputString.isEmpty()) {
+
+	QString reducedOutput = QString(outputString);
+	reducedOutput = reducedOutput.replace(">>>", "").trimmed();
+	reducedOutput = reducedOutput.replace("...", "").trimmed();
+
+	if (reducedOutput.isEmpty()) {
 		return;
 	}
 
 	mErrorOccured = false;
-	if (outputString == "True\n") {
+	if (reducedOutput == "True\n" || reducedOutput == "True") {
 		mApplicationConditionResult = true;
 		continueStep();
-	} else if (outputString == "False\n") {
+	} else if (reducedOutput == "False\n"  || reducedOutput == "False") {
 		mApplicationConditionResult = false;
+		continueStep();
+	} else if (reducedOutput == "empty reaction") {
 		continueStep();
 	} else {
 		QHash<QPair<QString, QString>, QString> output = parseOutput(outputString);
 		if (!output.isEmpty()) {
-			emit readyReadStdOutput(output);
+			emit readyReadStdOutput(output, TextCodeInterpreter::python);
 		} else {
-			QString errorOutput = outputString;
-			errorOutput = errorOutput.replace(">>>", "").trimmed();
-			errorOutput = errorOutput.replace("...", "").trimmed();
-			if (!errorOutput.isEmpty() && errorOutput.indexOf("Python") == -1) {
+			if (!reducedOutput.isEmpty() && reducedOutput.indexOf("Python") == -1 && reducedOutput.indexOf("copyright") == -1) {
 				mErrorOccured = true;
-				emit readyReadErrOutput(errorOutput);
+				emit readyReadErrOutput(reducedOutput);
 			}
 		}
 	}

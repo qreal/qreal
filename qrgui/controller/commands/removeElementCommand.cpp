@@ -40,6 +40,11 @@ bool RemoveElementCommand::restoreState()
 	return true;
 }
 
+qReal::Id RemoveElementCommand::elementId() const
+{
+	return mImpl.id();
+}
+
 bool RemoveElementCommand::equals(AbstractCommand const &other) const
 {
 	RemoveElementCommand const *removeCommand = dynamic_cast<RemoveElementCommand const *>(&other);

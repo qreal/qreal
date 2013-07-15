@@ -95,8 +95,10 @@ void EmbeddedLinker::setDirected(const bool directed)
 
 void EmbeddedLinker::initTitle()
 {
-	EditorManagerInterface const &editorManagerInterface = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->editorManager();
-	QString edgeTypeFriendly = editorManagerInterface.friendlyName(Id::loadFromString("qrm:/"+ mMaster->id().editor() + "/" + mMaster->id().diagram() + "/" + mEdgeType.element()));
+	EditorManagerInterface const &editorManagerInterface
+			= dynamic_cast<EditorViewScene*>(scene())->mainWindow()->editorManager();
+	QString edgeTypeFriendly = editorManagerInterface.friendlyName(Id::loadFromString("qrm:/"+ mMaster->id().editor()
+			+ "/" + mMaster->id().diagram() + "/" + mEdgeType.element()));
 
 	float textWidth = edgeTypeFriendly.size()*10;
 	float rectWidth = mMaster->boundingRect().right() - mMaster->boundingRect().left();
@@ -114,7 +116,8 @@ void EmbeddedLinker::initTitle()
 	else if (scenePos().x() > mMaster->scenePos().x() + 2*rectWidth/3)
 		x = +boundingRect().width() - 10;
 
-	mTitle = new ElementTitle(static_cast<qreal>(x) / boundingRect().width(), static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly);
+	mTitle = new ElementTitle(static_cast<qreal>(x) / boundingRect().width()
+			, static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly, 0);
 	mTitle->init(boundingRect());
 	mTitle->setTextWidth(textWidth);
 	mTitle->setParentItem(this);
@@ -279,11 +282,12 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mEdge->hide();
 		QPointF const &eScenePos = event->scenePos();
 		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos, QTransform()));
+		QGraphicsItem *container = mEdge->src()->parentItem();
 		mEdge->show();
 		int result = 0;
 
 		commands::CreateElementCommand *createElementFromMenuCommand = NULL;
-		if (!under) {
+		if (!under || (container == under)) {
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, &createElementFromMenuCommand);
 			NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
 			if (result == -1) {

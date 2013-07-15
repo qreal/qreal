@@ -76,6 +76,7 @@ public:
 
 	QPointF const portPos(qreal id) const;
 	QPointF const nearestPort(QPointF const &location) const;
+	int numberOfPorts() const;
 	static int portNumber(qreal id);
 	qreal portId(QPointF const &location) const;
 

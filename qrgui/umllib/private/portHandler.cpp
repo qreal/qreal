@@ -275,6 +275,11 @@ qreal PortHandler::portId(QPointF const &location) const
 	}
 }
 
+int PortHandler::numberOfPorts() const
+{
+	return (mPointPorts.size() + mLinePorts.size());
+}
+
 void PortHandler::connectLinksToPorts()
 {
 	QList<QGraphicsItem *> const items = mNode->scene()->items(mNode->scenePos());
