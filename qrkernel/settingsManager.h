@@ -50,7 +50,7 @@ public:
 	void load();
 
 	/// Loads settings from selected file with name fileNameForImport.
-	void loadSettings(QString fileNameForImport);
+	void loadSettings(const QString &fileNameForImport);
 
 private:
 	/// Private constructor.

@@ -136,8 +136,7 @@ void PreferencesDialog::changePaletteParameters()
 void PreferencesDialog::exportSettings()
 {
 	QString fileNameForExport = QFileDialog::getSaveFileName(this, tr("Save File"),"/mySettings",tr("*.ini"));
-	if (!fileNameForExport.endsWith(".ini"))
-	{
+	if (!fileNameForExport.endsWith(".ini")) {
 		fileNameForExport += ".ini";
 	}
 	SettingsManager::instance()->saveSettings(fileNameForExport);

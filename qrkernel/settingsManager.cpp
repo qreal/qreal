@@ -79,10 +79,9 @@ void SettingsManager::load()
 	}
 }
 
-void SettingsManager::loadSettings(QString fileNameForImport)
+void SettingsManager::loadSettings(QString  const &fileNameForImport)
 {
 	QSettings *settings = new QSettings(fileNameForImport,QSettings::IniFormat);
-	QString fileName = settings->fileName();
 	foreach (QString const &name, settings->allKeys()) {
 		mData[name] = settings->value(name);
 	}

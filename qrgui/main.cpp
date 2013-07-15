@@ -35,25 +35,15 @@ int main(int argc, char *argv[])
 			clearConfig();
 			return 0;
 		} else {
-			for (int i = 0; i < argc - 1; i++)
-			{
-				if (app.arguments().at(i) == "--config"
-						&& app.arguments().at(i + 1).endsWith(".ini"))
-				{
-					QString settingsFileName = app.arguments().at(i + 1);
-					SettingsManager::instance()->loadSettings(settingsFileName);
-				}
-				else
-				{
-					if (app.arguments().at(i).endsWith(".qrs"))
-					{
-						fileToOpen = app.arguments().at(i);
-					}
-				}
+			int setIndex = app.arguments().indexOf("--config");
+			if (setIndex > -1) {
+				QString settingsFileName = app.arguments().at(setIndex + 1);
+				SettingsManager::instance()->loadSettings(settingsFileName);
 			}
-			if (app.arguments().at(argc - 1).endsWith(".qrs"))
-			{
-				fileToOpen = app.arguments().at(argc - 1);
+			for (int i = 0; i < argc; i++) {
+				if (app.arguments().at(i).endsWith(".qrs")) {
+					fileToOpen = app.arguments().at(i);
+				}
 			}
 		}
 	}
