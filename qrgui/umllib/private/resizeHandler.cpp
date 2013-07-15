@@ -115,17 +115,6 @@ void ResizeHandler::normalizeSize(QRectF &newContents) const
 
 void ResizeHandler::resizeAccordingToChildren(QRectF &newContents, QPointF &newPos) const
 {
-	/*
-	* AAAA!!! Who knows why is this code existed????!!!
-	*
-	foreach (QGraphicsItem *childItem, childItems()) {
-		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem && curItem->isPort() && newContents != mContents) {
-			curItem->resizeChild(newContents, mContents);
-		}
-	}
-	*/
-
 	// Vector of minimum negative XY child deflection from top left corner.
 	QPointF const childDeflectionVector = childDeflection();
 

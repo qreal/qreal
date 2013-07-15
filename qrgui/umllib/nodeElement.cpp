@@ -724,9 +724,6 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (!mMoving) {
-		mMoving = true;
-		storeGeometry();
-		mMoving = false;
 		QPointF newpos = mGraphicalAssistApi->position(id());
 		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
 
