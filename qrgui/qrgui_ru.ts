@@ -269,12 +269,12 @@
 <context>
     <name>EdgeElement</name>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="34"/>
+        <location filename="umllib/edgeElement.cpp" line="35"/>
         <source>Add point</source>
         <translation>Добавить точку</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="35"/>
+        <location filename="umllib/edgeElement.cpp" line="36"/>
         <source>Delete point</source>
         <translation>Удалить точку</translation>
     </message>
@@ -283,17 +283,17 @@
         <translation type="obsolete">Перерисовать под прямым углом</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="36"/>
+        <location filename="umllib/edgeElement.cpp" line="37"/>
         <source>Remove all points</source>
         <translation>Удалить все точки</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="37"/>
+        <location filename="umllib/edgeElement.cpp" line="38"/>
         <source>Remove segment</source>
         <translation>Удалить отрезок</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="38"/>
+        <location filename="umllib/edgeElement.cpp" line="39"/>
         <source>Reverse</source>
         <translatorcomment>Обратить и переприсоединить</translatorcomment>
         <translation>Развернуть</translation>
@@ -1531,30 +1531,58 @@
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.ui" line="87"/>
+        <location filename="dialogs/preferencesDialog.ui" line="42"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.ui" line="73"/>
+        <location filename="dialogs/preferencesDialog.ui" line="56"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.ui" line="80"/>
+        <location filename="dialogs/preferencesDialog.ui" line="136"/>
+        <source>Export</source>
+        <translation type="unfinished">Экспорт</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.ui" line="143"/>
+        <source>Import</source>
+        <translation type="unfinished">Импорт</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.ui" line="49"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="51"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="129"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="53"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="131"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="52"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="54"/>
         <source>Shortcuts</source>
         <translation>Горячие клавиши</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.cpp" line="138"/>
+        <source>Save File</source>
+        <translation type="unfinished">Сохранить файл
+</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.cpp" line="138"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="147"/>
+        <source>*.ini</source>
+        <translation type="unfinished">*.ini</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.cpp" line="147"/>
+        <source>Open File</source>
+        <translation type="unfinished">Открыть файл
+</translation>
     </message>
     <message>
         <source>Features</source>
@@ -1613,7 +1641,7 @@
         <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="50"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="52"/>
         <source>Miscellanious</source>
         <translation>Разное</translation>
     </message>
@@ -1643,7 +1671,7 @@
         <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="49"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="51"/>
         <source>Behaviour</source>
         <translation>Поведение</translation>
     </message>
@@ -4314,17 +4342,17 @@
         <translation type="obsolete">Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="296"/>
+        <location filename="mainwindow/paletteTree.cpp" line="501"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="304"/>
+        <location filename="mainwindow/paletteTree.cpp" line="496"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="312"/>
+        <location filename="mainwindow/paletteTree.cpp" line="304"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>
