@@ -1389,38 +1389,46 @@ QPair<qreal, qreal> EdgeElement::portIdOn(NodeElement const *node) const
 	if (mIsLoop && node == mSrc) {
 		return qMakePair(mPortFrom, mPortTo);
 	}
-	if (node == mSrc)
+	if (node == mSrc) {
 		return qMakePair(mPortFrom, -1.0);
-	if (node == mDst)
+	}
+	if (node == mDst) {
 		return qMakePair(-1.0, mPortTo);
+	}
 	return qMakePair(-1.0, -1.0);
 }
 
 QPointF EdgeElement::nextFrom(NodeElement const *node) const
 {
-	if (node == mSrc)
+	if (node == mSrc) {
 		return mapToItem(mSrc, mLine[1]);
-	if (node == mDst)
+	}
+	if (node == mDst) {
 		return mapToItem(mDst, mLine[mLine.count() - 2]);
+	}
 	return QPointF();
 }
 
 QPointF EdgeElement::connectionPoint(NodeElement const *node) const
 {
-	if (node == mSrc)
+	if (node == mSrc) {
 		return mapToItem(mSrc, mLine[0]);
-	if (node == mDst)
+	}
+	if (node == mDst) {
 		return mapToItem(mDst, mLine[mLine.count() - 1]);
+	}
 	return QPointF();
 
 }
 
 NodeElement* EdgeElement::otherSide(NodeElement const *node) const
 {
-	if (node == mSrc)
+	if (node == mSrc) {
 		return mDst;
-	if (node == mDst)
+	}
+	if (node == mDst) {
 		return mSrc;
+	}
 	return 0;
 }
 
