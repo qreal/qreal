@@ -255,7 +255,7 @@ void NodeElement::switchGrid(bool isChecked)
 		alignToGrid();
 
 		// Align mode doesn`t work in a square mode
-		if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) {
+		if (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)) {
 			foreach (EdgeElement * const edge, mEdgeList) {
 				edge->alignToGrid();
 			}
@@ -568,8 +568,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
 		edge->saveConfiguration(QPointF());
-		if (SettingsManager::value("ActivateGrid").toBool()
-				&& (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)))
+		if (SettingsManager::value("ActivateGrid").toBool())
 		{
 			edge->alignToGrid();
 		}
