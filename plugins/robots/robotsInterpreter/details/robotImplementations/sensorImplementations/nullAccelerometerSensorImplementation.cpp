@@ -3,8 +3,8 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-NullAccelerometerSensorImplementation::NullAccelerometerSensorImplementation(inputPort::InputPortEnum const port)
-	: NullSensorImplementation(port, sensorType::accelerometer)
+NullAccelerometerSensorImplementation::NullAccelerometerSensorImplementation(robots::enums::inputPort::InputPortEnum const port)
+	: NullSensorImplementation(port, robots::enums::sensorType::accelerometer)
 {
 }
 

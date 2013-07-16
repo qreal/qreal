@@ -55,11 +55,11 @@ void BluetoothEncoderImplementation::sensorSpecificProcessResponse(QByteArray co
 	mState = idle;
 
 	if (reading.isEmpty()) {
-		Tracer::debug(tracer::sensors, "BluetoothEncoderImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
+		Tracer::debug(tracer::enums::sensors, "BluetoothEncoderImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else {
 		unsigned int recieved = (0xff & reading[23]) | ((0xff & reading[24]) << 8)  | ((0xff & reading[25]) << 16) | ((0xff & reading[26]) << 24);
 
-		Tracer::debug(tracer::sensors, "BluetoothEncoderImplementation::sensorSpecificProcessResponse"
+		Tracer::debug(tracer::enums::sensors, "BluetoothEncoderImplementation::sensorSpecificProcessResponse"
 				, "Data received "
 				+ QString::number((0xff & reading[23])) + " " + QString::number((0xff & reading[24])) + " "
 				+ QString::number((0xff & reading[25])) + " " + QString::number((0xff & reading[26])) + " "

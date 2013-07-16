@@ -21,7 +21,7 @@ RobotsPlugin::RobotsPlugin()
 		, mTitlesAction(NULL)
 		, mAppTranslator(new QTranslator())
 {
-	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
+	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
 
@@ -96,7 +96,7 @@ void RobotsPlugin::initHotKeyActions()
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
-	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing plugin");
+	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
 	mInterpreter.init(configurator.graphicalModelApi()
 			, configurator.logicalModelApi()
 			, configurator.mainWindowInterpretersInterface()
@@ -108,7 +108,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
 	updateEnabledActions();
-	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
+	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing done");
 }
 
 qReal::Customizer* RobotsPlugin::customizationInterface()
@@ -144,23 +144,28 @@ void RobotsPlugin::show2dModel()
 
 void RobotsPlugin::updateSettings()
 {
-	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized...");
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
-	if (typeOfRobotModel != robotModelType::trik) {
+	details::Tracer::debug(
+			details::tracer::enums::initialization
+			, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized..."
+			);
+
+	robots::enums::robotModelType::robotModelTypeEnum typeOfRobotModel
+			= static_cast<robots::enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	if (typeOfRobotModel != robots::enums::robotModelType::trik) {
 		mInterpreter.setRobotModelType(typeOfRobotModel);
 	}
 
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
 	mInterpreter.setCommunicator(typeOfCommunication);
 	mInterpreter.configureSensors(
-			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
+			static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
+			, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
+			, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
+			, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
 	);
-	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::twoD);
-	mConnectToRobotAction->setVisible(typeOfRobotModel == robotModelType::nxt);
-	if (typeOfRobotModel == robotModelType::twoD) {
+	m2dModelAction->setVisible(typeOfRobotModel == robots::enums::robotModelType::twoD);
+	mConnectToRobotAction->setVisible(typeOfRobotModel == robots::enums::robotModelType::nxt);
+	if (typeOfRobotModel == robots::enums::robotModelType::twoD) {
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopRobotAction);
 	} else {
 		mInterpreter.showD2ModelWidget(false);
@@ -168,7 +173,7 @@ void RobotsPlugin::updateSettings()
 
 	updateEnabledActions();
 
-	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Done updating settings");
+	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::updateSettings", "Done updating settings");
 }
 
 void RobotsPlugin::closeNeededWidget()
@@ -223,8 +228,9 @@ void RobotsPlugin::updateEnabledActions()
 		actionInfo.action()->setEnabled(enabled);
 	}
 
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	robots::enums::robotModelType::robotModelTypeEnum typeOfRobotModel
+			= static_cast<robots::enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 
-	mRunAction->setEnabled(typeOfRobotModel != robotModelType::trik && enabled);
-	mStopRobotAction->setEnabled(typeOfRobotModel != robotModelType::trik && enabled);
+	mRunAction->setEnabled(typeOfRobotModel != robots::enums::robotModelType::trik && enabled);
+	mStopRobotAction->setEnabled(typeOfRobotModel != robots::enums::robotModelType::trik && enabled);
 }

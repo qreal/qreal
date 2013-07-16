@@ -15,9 +15,9 @@ class BluetoothColorSensorImplementation : public BluetoothSensorImplementation
 
 public:
 	BluetoothColorSensorImplementation(RobotCommunicator *robotCommunicationInterface
-			, inputPort::InputPortEnum const port
+			, robots::enums::inputPort::InputPortEnum const port
 			, enums::lowLevelSensorType::SensorTypeEnum mode
-			, sensorType::SensorTypeEnum const sensorType
+			, robots::enums::sensorType::SensorTypeEnum const sensorType
 		);
 	virtual void read();
 	void reconfigure(enums::lowLevelSensorType::SensorTypeEnum mode);

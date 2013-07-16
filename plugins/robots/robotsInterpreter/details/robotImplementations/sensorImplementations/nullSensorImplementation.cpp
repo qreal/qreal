@@ -2,7 +2,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-NullSensorImplementation::NullSensorImplementation(inputPort::InputPortEnum const port, sensorType::SensorTypeEnum const &sensorType)
+NullSensorImplementation::NullSensorImplementation(robots::enums::inputPort::InputPortEnum const port, robots::enums::sensorType::SensorTypeEnum const &sensorType)
 	: AbstractSensorImplementation(port, sensorType)
 {
 	mActiveWaitingTimer.setInterval(100);

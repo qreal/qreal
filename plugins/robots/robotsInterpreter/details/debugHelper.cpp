@@ -3,19 +3,20 @@
 using namespace qReal::interpreters::robots;
 using namespace qReal::interpreters::robots::details;
 
-QString DebugHelper::toString(robotModelType::robotModelTypeEnum const &modelType)
+QString DebugHelper::toString(robots::enums::robotModelType::robotModelTypeEnum const &modelType)
 {
 	switch (modelType)
 	{
-	case robotModelType::null:
+	case robots::enums::robotModelType::null:
 		return "null";
-	case robotModelType::twoD:
+	case robots::enums::robotModelType::twoD:
 		return "twoD";
-	case robotModelType::nxt:
+	case robots::enums::robotModelType::nxt:
 		return "legoNxt";
-	case robotModelType::trik:
+	case robots::enums::robotModelType::trik:
 		return "trik";
 	}
+
 	Q_ASSERT(!"Incorrect model type");
 	return "Incorrect model type";
 }

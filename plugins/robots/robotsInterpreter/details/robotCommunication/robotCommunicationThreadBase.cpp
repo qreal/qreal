@@ -3,6 +3,7 @@
 #include "robotCommunicationThreadBase.h"
 #include "../tracer.h"
 
+using namespace qReal::interpreters;
 using namespace qReal::interpreters::robots::details;
 
 unsigned const lsGetStatusResponseSize = 6;
@@ -13,9 +14,9 @@ RobotCommunicationThreadBase::RobotCommunicationThreadBase()
 
 void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize
-		, inputPort::InputPortEnum const port)
+		, robots::enums::inputPort::InputPortEnum const port)
 {
-	Tracer::debug(tracer::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
+	Tracer::debug(tracer::enums::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
 
 	QByteArray command(buffer.length() + 7, 0);
 	command[0] = buffer.length() + 5;
@@ -33,7 +34,7 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 	send(command, 0, dumpOutput);
 
 	if (!waitForI2CBytes(responseSize, port)) {
-		Tracer::debug(tracer::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "No response, connection error");
+		Tracer::debug(tracer::enums::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "No response, connection error");
 		emit response(addressee, QByteArray());
 		return;
 	}
@@ -60,7 +61,7 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 	}
 }
 
-bool RobotCommunicationThreadBase::waitForI2CBytes(int bytes, inputPort::InputPortEnum port)
+bool RobotCommunicationThreadBase::waitForI2CBytes(int bytes, robots::enums::inputPort::InputPortEnum port)
 {
 	time_t const startTime = clock();
 	do {
@@ -75,7 +76,7 @@ bool RobotCommunicationThreadBase::waitForI2CBytes(int bytes, inputPort::InputPo
 	} while (true);
 }
 
-int RobotCommunicationThreadBase::i2cBytesReady(inputPort::InputPortEnum port)
+int RobotCommunicationThreadBase::i2cBytesReady(robots::enums::inputPort::InputPortEnum port)
 {
 	QByteArray command(5, 0);
 	command[0] = 0x03;

@@ -7,8 +7,8 @@ using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
 BluetoothSonarSensorImplementation::BluetoothSonarSensorImplementation(RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const port)
-	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::sonar, enums::lowLevelSensorType::LOWSPEED_9V, enums::sensorMode::RAWMODE, port)
+		, robots::enums::inputPort::InputPortEnum const port)
+	: BluetoothSensorImplementation(robotCommunicationInterface, robots::enums::sensorType::sonar, enums::lowLevelSensorType::LOWSPEED_9V, enums::sensorMode::RAWMODE, port)
 {
 }
 
@@ -32,7 +32,7 @@ void BluetoothSonarSensorImplementation::read()
 void BluetoothSonarSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	if (reading.isEmpty()) {
-		Tracer::debug(tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
+		Tracer::debug(tracer::enums::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else if (reading.size() == 1 && reading[0] == 0) {
 		// Sensor configured, now we can send actual request.
 		QByteArray command(2, 0);
@@ -40,9 +40,9 @@ void BluetoothSonarSensorImplementation::sensorSpecificProcessResponse(QByteArra
 		command[1] = enums::sonarRegisters::RESULT_1;
 		sendCommand(command, 1);
 	} else if (reading.size() == 1 && reading[0] != 0) {
-		Tracer::debug(tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse", "Reading malformed: " + QString::number(static_cast<unsigned int>(reading[0])));
+		Tracer::debug(tracer::enums::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse", "Reading malformed: " + QString::number(static_cast<unsigned int>(reading[0])));
 	} else {
-		Tracer::debug(tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse", "Data received: " + QString::number(0xff & reading[1]) + " cm");
+		Tracer::debug(tracer::enums::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse", "Data received: " + QString::number(0xff & reading[1]) + " cm");
 		mState = idle;
 		emit response(0xff & reading[1]);
 	}
@@ -65,5 +65,5 @@ void BluetoothSonarSensorImplementation::writeRegister(enums::sonarRegisters::So
 
 void BluetoothSonarSensorImplementation::sendCommand(QByteArray const &command, int responseSize)
 {
-	mRobotCommunicationInterface->sendI2C(this, command, responseSize, static_cast<inputPort::InputPortEnum>(mPort));
+	mRobotCommunicationInterface->sendI2C(this, command, responseSize, static_cast<robots::enums::inputPort::InputPortEnum>(mPort));
 }

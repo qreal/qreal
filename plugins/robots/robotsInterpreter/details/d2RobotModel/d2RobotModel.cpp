@@ -151,7 +151,7 @@ D2ModelWidget *D2RobotModel::createModelWidget()
 	return mD2ModelWidget;
 }
 
-QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPortEnum const port) const
+QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(robots::enums::inputPort::InputPortEnum const port) const
 {
 	QVector<SensorItem *> items = mD2ModelWidget->sensorItems();
 	SensorItem *sensor = items[port];
@@ -160,10 +160,10 @@ QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPo
 	return QPair<QPointF, qreal>(position, direction);
 }
 
-int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
+int D2RobotModel::readTouchSensor(robots::enums::inputPort::InputPortEnum const port)
 {
-	if (mSensorsConfiguration.type(port) != sensorType::touchBoolean
-			&& mSensorsConfiguration.type(port) != sensorType::touchRaw)
+	if (mSensorsConfiguration.type(port) != robots::enums::sensorType::touchBoolean
+			&& mSensorsConfiguration.type(port) != robots::enums::sensorType::touchRaw)
 	{
 		return touchSensorNotPressedSignal;
 	}
@@ -183,7 +183,7 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
 
-int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
+int D2RobotModel::readSonarSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	int const res = mWorldModel.sonarReading(neededPosDir.first, neededPosDir.second);
@@ -201,7 +201,7 @@ int D2RobotModel::spoilSonarReading(int const distance) const
 	return truncateToInterval(0, 255, round(distance + ran));
 }
 
-int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
+int D2RobotModel::readColorSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	QImage const image = printColorSensor(port);
 	QHash<unsigned long, int> countsColor;
@@ -214,15 +214,15 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 	}
 
 	switch (mSensorsConfiguration.type(port)) {
-	case (sensorType::colorFull):
+	case robots::enums::sensorType::colorFull:
 		return readColorFullSensor(countsColor);
-	case (sensorType::colorNone):
+	case robots::enums::sensorType::colorNone:
 		return readColorNoneSensor(countsColor, n);
-	case (sensorType::colorRed):
+	case robots::enums::sensorType::colorRed:
 		return readSingleColorSensor(red, countsColor, n);
-	case (sensorType::colorGreen):
+	case robots::enums::sensorType::colorGreen:
 		return readSingleColorSensor(green, countsColor, n);
-	case (sensorType::colorBlue):
+	case robots::enums::sensorType::colorBlue:
 		return readSingleColorSensor(blue, countsColor, n);
 	default:
 		return 0;
@@ -232,9 +232,10 @@ int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
 unsigned long D2RobotModel::spoilColor(unsigned long const color) const
 {
 	qreal const ran = mNoiseGen.generate(
-					mNoiseGen.approximationLevel()
-					, spoilColorDispersion
-				);
+			mNoiseGen.approximationLevel()
+			, spoilColorDispersion
+			);
+
 	int r = round(((color >> 16) & 0xFF) + ran);
 	int g = round(((color >> 8) & 0xFF) + ran);
 	int b = round(((color >> 0) & 0xFF) + ran);
@@ -247,9 +248,9 @@ unsigned long D2RobotModel::spoilColor(unsigned long const color) const
 	return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
 }
 
-QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
+QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
-	if (mSensorsConfiguration.type(port) == sensorType::unused) {
+	if (mSensorsConfiguration.type(port) == robots::enums::sensorType::unused) {
 		return QImage();
 	}
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
@@ -285,31 +286,31 @@ int D2RobotModel::readColorFullSensor(QHash<unsigned long, int> countsColor) con
 
 	switch (maxColor) {
 	case (black):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "BLACK");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "BLACK");
 		return 1;
 	case (red):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "RED");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "RED");
 		return 5;
 	case (green):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "GREEN");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "GREEN");
 		return 3;
 	case (blue) :
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "BLUE");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "BLUE");
 		return 2;
 	case (yellow):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "YELLOW");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "YELLOW");
 		return 4;
 	case (white):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "WHITE");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "WHITE");
 		return 6;
 	case (cyan):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "CYAN");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "CYAN");
 		return 7;
 	case (magenta):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "MAGENTA");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "MAGENTA");
 		return 8;
 	default:
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "Other Color");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "Other Color");
 		return 0;
 	}
 }
@@ -339,7 +340,7 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
 }
 
-int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
+int D2RobotModel::readLightSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	// Must return 1023 on white and 0 on black normalized to percents
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
@@ -367,9 +368,10 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 unsigned long D2RobotModel::spoilLight(unsigned long const color) const
 {
 	qreal const ran = mNoiseGen.generate(
-					mNoiseGen.approximationLevel()
-					, spoilLightDispersion
-				);
+			mNoiseGen.approximationLevel()
+			, spoilLightDispersion
+			);
+
 	if (ran > (1.0 - percentSaltPepperNoise / 100.0)) {
 		return white;
 	} else if (ran < (-1.0 + percentSaltPepperNoise / 100.0)) {

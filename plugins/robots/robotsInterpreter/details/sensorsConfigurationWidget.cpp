@@ -72,10 +72,17 @@ void SensorsConfigurationWidget::changeEvent(QEvent *e)
 
 void SensorsConfigurationWidget::refresh()
 {
-	sensorType::SensorTypeEnum const port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType").toInt());
-	sensorType::SensorTypeEnum const port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType").toInt());
-	sensorType::SensorTypeEnum const port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType").toInt());
-	sensorType::SensorTypeEnum const port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType").toInt());
+	robots::enums::sensorType::SensorTypeEnum const port1
+			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType").toInt());
+
+	robots::enums::sensorType::SensorTypeEnum const port2
+			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType").toInt());
+
+	robots::enums::sensorType::SensorTypeEnum const port3
+			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType").toInt());
+
+	robots::enums::sensorType::SensorTypeEnum const port4
+			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType").toInt());
 
 	mUi->port1ComboBox->setCurrentIndex(port1);
 	mUi->port2ComboBox->setCurrentIndex(port2);
@@ -98,22 +105,22 @@ void SensorsConfigurationWidget::retranslateUi()
 	reinitValues();
 }
 
-sensorType::SensorTypeEnum SensorsConfigurationWidget::selectedPort1Sensor() const
+qReal::interpreters::robots::enums::sensorType::SensorTypeEnum SensorsConfigurationWidget::selectedPort1Sensor() const
 {
-	return static_cast<sensorType::SensorTypeEnum>(mUi->port1ComboBox->currentIndex());
+	return static_cast<robots::enums::sensorType::SensorTypeEnum>(mUi->port1ComboBox->currentIndex());
 }
 
-sensorType::SensorTypeEnum SensorsConfigurationWidget::selectedPort2Sensor() const
+qReal::interpreters::robots::enums::sensorType::SensorTypeEnum SensorsConfigurationWidget::selectedPort2Sensor() const
 {
-	return static_cast<sensorType::SensorTypeEnum>(mUi->port2ComboBox->currentIndex());
+	return static_cast<robots::enums::sensorType::SensorTypeEnum>(mUi->port2ComboBox->currentIndex());
 }
 
-sensorType::SensorTypeEnum SensorsConfigurationWidget::selectedPort3Sensor() const
+qReal::interpreters::robots::enums::sensorType::SensorTypeEnum SensorsConfigurationWidget::selectedPort3Sensor() const
 {
-	return static_cast<sensorType::SensorTypeEnum>(mUi->port3ComboBox->currentIndex());
+	return static_cast<robots::enums::sensorType::SensorTypeEnum>(mUi->port3ComboBox->currentIndex());
 }
 
-sensorType::SensorTypeEnum SensorsConfigurationWidget::selectedPort4Sensor() const
+qReal::interpreters::robots::enums::sensorType::SensorTypeEnum SensorsConfigurationWidget::selectedPort4Sensor() const
 {
-	return static_cast<sensorType::SensorTypeEnum>(mUi->port4ComboBox->currentIndex());
+	return static_cast<robots::enums::sensorType::SensorTypeEnum>(mUi->port4ComboBox->currentIndex());
 }

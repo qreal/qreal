@@ -8,10 +8,10 @@ using namespace robotImplementations::sensorImplementations;
 
 BluetoothAccelerometerSensorImplementation::BluetoothAccelerometerSensorImplementation(
 		RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const port
+		, robots::enums::inputPort::InputPortEnum const port
 		)
 		: BluetoothSensorImplementation(robotCommunicationInterface
-				, sensorType::accelerometer
+				, robots::enums::sensorType::accelerometer
 				, enums::lowLevelSensorType::ANGLE
 				, enums::sensorMode::RAWMODE
 				, port
@@ -45,7 +45,7 @@ void BluetoothAccelerometerSensorImplementation::sensorSpecificProcessResponse(Q
 {
 	if (reading.isEmpty()) {
 		Tracer::debug(
-				tracer::sensors
+				tracer::enums::sensors
 				, "BluetoothAccelerometerSensorImplementation::sensorSpecificProcessResponse"
 				, "Something is wrong, response is empty"
 				);

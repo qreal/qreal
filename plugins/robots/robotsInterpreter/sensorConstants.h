@@ -10,6 +10,8 @@ int const sensorWidth = 12;
 }
 }
 
+namespace enums {
+
 namespace sensorType {
 enum SensorTypeEnum {
 	unused
@@ -47,7 +49,9 @@ enum robotModelTypeEnum {
 	, trik
 };
 }
+}
 
 }
 }
+
 }

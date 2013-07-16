@@ -7,8 +7,8 @@ using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
 BluetoothTouchSensorImplementation::BluetoothTouchSensorImplementation(RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const port)
-	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::touchBoolean, enums::lowLevelSensorType::SWITCH, enums::sensorMode::RAWMODE, port)
+		, robots::enums::inputPort::InputPortEnum const port)
+	: BluetoothSensorImplementation(robotCommunicationInterface, robots::enums::sensorType::touchBoolean, enums::lowLevelSensorType::SWITCH, enums::sensorMode::RAWMODE, port)
 {
 }
 
@@ -16,7 +16,7 @@ void BluetoothTouchSensorImplementation::sensorSpecificProcessResponse(QByteArra
 {
 	mState = idle;
 	int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
-	Tracer::debug(tracer::sensors, "BluetoothTouchSensorImplementation::sensorSpecificProcessResponse", QString::number(sensorValue));
+	Tracer::debug(tracer::enums::sensors, "BluetoothTouchSensorImplementation::sensorSpecificProcessResponse", QString::number(sensorValue));
 	if (reading[4] == 0 && sensorValue < 500)  // Sensor is pressed.
 		emit response(1);
 	else

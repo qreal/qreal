@@ -17,10 +17,10 @@ class BluetoothSensorImplementation : public AbstractSensorImplementation
 
 public:
 	BluetoothSensorImplementation(RobotCommunicator *robotCommunicationInterface
-		, sensorType::SensorTypeEnum const &sensorType
+		, robots::enums::sensorType::SensorTypeEnum const &sensorType
 		, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 		, enums::sensorMode::SensorModeEnum const &sensorMode
-		, inputPort::InputPortEnum const port
+		, robots::enums::inputPort::InputPortEnum const port
 		);
 	virtual ~BluetoothSensorImplementation();
 	virtual void configure();

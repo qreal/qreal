@@ -43,14 +43,14 @@ private slots:
 	void refreshPorts();
 
 private:
-	void initRobotModelType(robotModelType::robotModelTypeEnum type);
+	void initRobotModelType(enums::robotModelType::robotModelTypeEnum type);
 	void initTypeOfCommunication(QString const &type);
 
-	sensorType::SensorTypeEnum selectedPort1Sensor() const;
-	sensorType::SensorTypeEnum selectedPort2Sensor() const;
-	sensorType::SensorTypeEnum selectedPort3Sensor() const;
-	sensorType::SensorTypeEnum selectedPort4Sensor() const;
-	robotModelType::robotModelTypeEnum selectedRobotModel() const;
+	enums::sensorType::SensorTypeEnum selectedPort1Sensor() const;
+	enums::sensorType::SensorTypeEnum selectedPort2Sensor() const;
+	enums::sensorType::SensorTypeEnum selectedPort3Sensor() const;
+	enums::sensorType::SensorTypeEnum selectedPort4Sensor() const;
+	enums::robotModelType::robotModelTypeEnum selectedRobotModel() const;
 	bool textVisible() const;
 	bool enableSensorNoise() const;
 	bool enableMotorNoise() const;

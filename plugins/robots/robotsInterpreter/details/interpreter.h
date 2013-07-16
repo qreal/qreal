@@ -41,16 +41,20 @@ public:
 
 	details::RobotModel *robotModel();
 	void setRobotModel(details::RobotModel * const robotModel);
-	void configureSensors(sensorType::SensorTypeEnum const &port1
-			, sensorType::SensorTypeEnum const &port2
-			, sensorType::SensorTypeEnum const &port3
-			, sensorType::SensorTypeEnum const &port4);
-	void setRobotImplementation(robotModelType::robotModelTypeEnum implementationType);
+
+	void configureSensors(
+			robots::enums::sensorType::SensorTypeEnum const &port1
+			, robots::enums::sensorType::SensorTypeEnum const &port2
+			, robots::enums::sensorType::SensorTypeEnum const &port3
+			, robots::enums::sensorType::SensorTypeEnum const &port4
+			);
+
+	void setRobotImplementation(robots::enums::robotModelType::robotModelTypeEnum implementationType);
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 	void closeD2ModelWidget();
 	void closeWatchList();
-	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
+	void setRobotModelType(robots::enums::robotModelType::robotModelTypeEnum robotModelType);
 	void setCommunicator(QString const &valueOfCommunication);
 
 	/// Assigning a value to the field mActionConnectToRobot
@@ -137,7 +141,7 @@ private:
 
 	bool mConnected;
 
-	robotModelType::robotModelTypeEnum mImplementationType;
+	robots::enums::robotModelType::robotModelTypeEnum mImplementationType;
 
 	utils::WatchListWindow *mWatchListWindow;
 

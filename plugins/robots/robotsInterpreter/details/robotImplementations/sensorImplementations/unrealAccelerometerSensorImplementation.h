@@ -14,7 +14,11 @@ class UnrealAccelerometerSensorImplementation : public UnrealSensorImplementatio
 	Q_OBJECT
 
 public:
-	UnrealAccelerometerSensorImplementation(inputPort::InputPortEnum const port, d2Model::D2RobotModel *d2Model);
+	UnrealAccelerometerSensorImplementation(
+			robots::enums::inputPort::InputPortEnum const port
+			, d2Model::D2RobotModel *d2Model
+			);
+
 	virtual void read();
 };
 

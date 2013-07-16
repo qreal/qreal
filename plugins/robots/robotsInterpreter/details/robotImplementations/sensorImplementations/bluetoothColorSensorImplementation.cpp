@@ -10,9 +10,9 @@ int const maxColorValue = 1023;
 
 BluetoothColorSensorImplementation::BluetoothColorSensorImplementation(
 		RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const port
+		, robots::enums::inputPort::InputPortEnum const port
 		, enums::lowLevelSensorType::SensorTypeEnum mode
-		, sensorType::SensorTypeEnum const sensorType)
+		, robots::enums::sensorType::SensorTypeEnum const sensorType)
 	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType, mode, enums::sensorMode::RAWMODE, port)
 {
 }
@@ -43,9 +43,9 @@ void BluetoothColorSensorImplementation::read()
 void BluetoothColorSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	if (reading.isEmpty()) {
-		Tracer::debug(tracer::sensors, "BluetoothColorSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
+		Tracer::debug(tracer::enums::sensors, "BluetoothColorSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else {
-		Tracer::debug(tracer::sensors, "BluetoothColorSensorImplementation::sensorSpecificProcessResponse"
+		Tracer::debug(tracer::enums::sensors, "BluetoothColorSensorImplementation::sensorSpecificProcessResponse"
 				, "Data received "
 				+ QString::number((0xff & reading[8])) + " " + QString::number((0xff & reading[9])) + " "
 				+ QString::number((0xff & reading[10])) + " " + QString::number((0xff & reading[11])) + " "

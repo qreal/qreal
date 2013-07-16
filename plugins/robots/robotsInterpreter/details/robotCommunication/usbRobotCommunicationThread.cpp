@@ -85,7 +85,7 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 void UsbRobotCommunicationThread::send(QByteArray const &buffer
 		, unsigned const responseSize, QByteArray &outputBuffer)
 {
-	Tracer::debug(tracer::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
+	Tracer::debug(tracer::enums::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
 
 	int status = 0;
 	QByteArray newBuffer;
@@ -159,7 +159,7 @@ void UsbRobotCommunicationThread::debugPrint(QByteArray const &buffer, bool out)
 		tmp += QString::number(static_cast<unsigned char>(buffer[i]));
 		tmp += " ";
 	}
-	Tracer::debug(tracer::robotCommunication, "UsbRobotCommunicationThread::debugPrint", (out ? ">" : "<") + tmp);
+	Tracer::debug(tracer::enums::robotCommunication, "UsbRobotCommunicationThread::debugPrint", (out ? ">" : "<") + tmp);
 }
 
 void UsbRobotCommunicationThread::checkForConnection()
@@ -187,9 +187,9 @@ bool UsbRobotCommunicationThread::isResponseNeeded(QByteArray const &buffer)
 
 void UsbRobotCommunicationThread::checkConsistency()
 {
-	robotModelType::robotModelTypeEnum const typeOfRobotModel =
-			static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel").toInt());
-	if (typeOfRobotModel != robotModelType::nxt) {
+	robots::enums::robotModelType::robotModelTypeEnum const typeOfRobotModel =
+			static_cast<robots::enums::robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel").toInt());
+	if (typeOfRobotModel != robots::enums::robotModelType::nxt) {
 		return;
 	}
 

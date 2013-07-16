@@ -10,12 +10,12 @@ Tracer* Tracer::mInstance = NULL;
 
 QString const logFileName = QString("QRealRobots.log");
 
-void Tracer::enableCategory(tracer::TracerEnum category)
+void Tracer::enableCategory(tracer::enums::TracerEnum category)
 {
 	instance()->enableCategoryImpl(category);
 }
 
-void Tracer::disableCategory(tracer::TracerEnum category)
+void Tracer::disableCategory(tracer::enums::TracerEnum category)
 {
 	instance()->disableCategoryImpl(category);
 }
@@ -30,21 +30,21 @@ void Tracer::disableAll()
 	instance()->disableAllImpl();
 }
 
-void Tracer::setTarget(tracer::TraceTarget target)
+void Tracer::setTarget(tracer::enums::TraceTarget target)
 {
 	instance()->mTarget = target;
 }
 
-void Tracer::debug(tracer::TracerEnum category, QString const &methodName, QString const &message)
+void Tracer::debug(tracer::enums::TracerEnum category, QString const &methodName, QString const &message)
 {
 	instance()->debugImpl(category, methodName, message);
 }
 
 Tracer::Tracer()
-	: mTarget(tracer::debug)
+	: mTarget(tracer::enums::debug)
 	, mLogPath(QString("%1/%2").arg(QCoreApplication::applicationDirPath(), logFileName))
 {
-	mCategories.resize(tracer::sensors + 1);
+	mCategories.resize(tracer::enums::sensors + 1);
 }
 
 Tracer *Tracer::instance()
@@ -55,12 +55,12 @@ Tracer *Tracer::instance()
 	return mInstance;
 }
 
-void Tracer::enableCategoryImpl(tracer::TracerEnum const &category)
+void Tracer::enableCategoryImpl(tracer::enums::TracerEnum const &category)
 {
 	mCategories[category] = true;
 }
 
-void Tracer::disableCategoryImpl(tracer::TracerEnum const &category)
+void Tracer::disableCategoryImpl(tracer::enums::TracerEnum const &category)
 {
 	mCategories[category] = false;
 }
@@ -75,13 +75,13 @@ void Tracer::disableAllImpl()
 	mCategories.fill(false);
 }
 
-void Tracer::debugImpl(tracer::TracerEnum const &category, QString const &methodName, QString const &message)
+void Tracer::debugImpl(tracer::enums::TracerEnum const &category, QString const &methodName, QString const &message)
 {
 	if (mCategories[category]) {
 		switch (mTarget) {
-		case tracer::debug:
+		case tracer::enums::debug:
 			qDebug() << "Trace ---" << methodName << ":" << message;
-		case tracer::logFile:
+		case tracer::enums::logFile:
 			QFile file(mLogPath);
 			if (!file.open(QIODevice::WriteOnly | QIODevice::Append)) {
 				return;

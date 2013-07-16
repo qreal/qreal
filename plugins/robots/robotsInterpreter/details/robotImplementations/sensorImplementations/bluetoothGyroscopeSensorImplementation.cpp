@@ -8,10 +8,10 @@ using namespace robotImplementations::sensorImplementations;
 
 BluetoothGyroscopeSensorImplementation::BluetoothGyroscopeSensorImplementation(
 		RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const port
+		, robots::enums::inputPort::InputPortEnum const port
 		)
 		: BluetoothSensorImplementation(robotCommunicationInterface
-				, sensorType::sound
+				, robots::enums::sensorType::sound
 				, enums::lowLevelSensorType::ANGLE
 				, enums::sensorMode::RAWMODE
 				, port
@@ -45,7 +45,7 @@ void BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse(QByte
 {
 	if (reading.isEmpty()) {
 		Tracer::debug(
-				tracer::sensors
+				tracer::enums::sensors
 				, "BluetoothGyroscopeSensorImplementation::sensorSpecificProcessResponse"
 				, "Something is wrong, response is empty"
 				);

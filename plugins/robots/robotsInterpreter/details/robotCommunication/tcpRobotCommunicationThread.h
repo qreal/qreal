@@ -23,8 +23,14 @@ public:
 
 public slots:
 	virtual void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
-	virtual void sendI2C(QObject *addressee, QByteArray const &buffer
-			, unsigned const responseSize, inputPort::InputPortEnum port);
+
+	virtual void sendI2C(
+			QObject *addressee
+			, QByteArray const &buffer
+			, unsigned const responseSize
+			, robots::enums::inputPort::InputPortEnum port
+			);
+
 	virtual void connect();
 	virtual void disconnect();
 	virtual void reconnect();

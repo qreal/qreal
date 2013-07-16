@@ -15,7 +15,7 @@ BluetoothRobotCommunicationThread::BluetoothRobotCommunicationThread()
 		: mPort(NULL)
 		, mKeepAliveTimer(new QTimer(this))
 {
-	qRegisterMetaType<inputPort::InputPortEnum>("details::inputPort::InputPortEnum");
+	qRegisterMetaType<qReal::interpreters::robots::enums::inputPort::InputPortEnum>("details::inputPort::InputPortEnum");
 
 	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 }
@@ -60,7 +60,7 @@ void BluetoothRobotCommunicationThread::connect()
 
 	mPort->open(QIODevice::ReadWrite | QIODevice::Unbuffered);
 
-	Tracer::debug(tracer::initialization, "BluetoothRobotCommunicationThread::connect"
+	Tracer::debug(tracer::enums::initialization, "BluetoothRobotCommunicationThread::connect"
 			, "Port " + mPort->portName() + " is open: " + QString("%1").arg(mPort->isOpen()));
 
 	// Sending "Get firmware version" system command to check connection.
@@ -94,9 +94,12 @@ void BluetoothRobotCommunicationThread::disconnect()
 	emit disconnected();
 }
 
-void BluetoothRobotCommunicationThread::sendI2C(QObject *addressee
-		, QByteArray const &buffer, unsigned const responseSize
-		, inputPort::InputPortEnum const port)
+void BluetoothRobotCommunicationThread::sendI2C(
+		QObject *addressee
+		, QByteArray const &buffer
+		, unsigned const responseSize
+		, robots::enums::inputPort::InputPortEnum const port
+		)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
@@ -119,9 +122,9 @@ void BluetoothRobotCommunicationThread::send(QByteArray const &buffer
 
 void BluetoothRobotCommunicationThread::send(QByteArray const &buffer) const
 {
-	Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::send", "Sending:");
+	Tracer::debug(tracer::enums::robotCommunication, "BluetoothRobotCommunicationThread::send", "Sending:");
 	for (int i = 0; i < buffer.size(); ++i) {
-		Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::send"
+		Tracer::debug(tracer::enums::robotCommunication, "BluetoothRobotCommunicationThread::send"
 				, QString("Byte %1 %2").arg(i).arg(static_cast<unsigned char>(buffer[i])));
 	}
 	mPort->write(buffer);
@@ -131,9 +134,9 @@ QByteArray BluetoothRobotCommunicationThread::receive(int size) const
 {
 	QByteArray const result = mPort->read(size);
 
-	Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive", "Received:");
+	Tracer::debug(tracer::enums::robotCommunication, "BluetoothRobotCommunicationThread::receive", "Received:");
 	for (int i = 0; i < result.size(); ++i) {
-		Tracer::debug(tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive"
+		Tracer::debug(tracer::enums::robotCommunication, "BluetoothRobotCommunicationThread::receive"
 				, QString("Byte %1 %2").arg(i).arg(static_cast<unsigned char>(result[i])));
 	}
 

@@ -65,7 +65,7 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	sensorsLayout->addWidget(mSensorsWidget);
 	mUi->sensorsSettingsGroupBox->setLayout(sensorsLayout);
 
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	enums::robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	initRobotModelType(typeOfRobotModel);
 
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
@@ -100,20 +100,20 @@ void PreferencesRobotSettingsPage::rereadNoiseSettings()
 	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
 }
 
-void PreferencesRobotSettingsPage::initRobotModelType(robotModelType::robotModelTypeEnum type)
+void PreferencesRobotSettingsPage::initRobotModelType(enums::robotModelType::robotModelTypeEnum type)
 {
 	switch (type)
 	{
-	case robotModelType::null:
+	case enums::robotModelType::null:
 		mUi->nullModelRadioButton->setChecked(true);
 		break;
-	case robotModelType::twoD:
+	case enums::robotModelType::twoD:
 		mUi->d2ModelRadioButton->setChecked(true);
 		break;
-	case robotModelType::nxt:
+	case enums::robotModelType::nxt:
 		mUi->nxtModelRadioButton->setChecked(true);
 		break;
-	case robotModelType::trik:
+	case enums::robotModelType::trik:
 		mUi->trikModelRadioButton->setChecked(true);
 		break;
 	}
@@ -134,16 +134,16 @@ void PreferencesRobotSettingsPage::initTypeOfCommunication(QString const &type)
 	onSomethingChanged();
 }
 
-robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotModel() const
+enums::robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selectedRobotModel() const
 {
 	if (mUi->nullModelRadioButton->isChecked()) {
-		return robotModelType::null;
+		return enums::robotModelType::null;
 	} else if (mUi->d2ModelRadioButton->isChecked()) {
-		return robotModelType::twoD;
+		return enums::robotModelType::twoD;
 	} else if (mUi->trikModelRadioButton->isChecked()) {
-		return robotModelType::trik;
+		return enums::robotModelType::trik;
 	} else {
-		return robotModelType::nxt;
+		return enums::robotModelType::nxt;
 	}
 }
 
@@ -250,7 +250,7 @@ void PreferencesRobotSettingsPage::restoreSettings()
 	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
 	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
 
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	enums::robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	initRobotModelType(typeOfRobotModel);
 
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();

@@ -10,10 +10,10 @@ int const soundMaxValue = 1023;
 
 BluetoothSoundSensorImplementation::BluetoothSoundSensorImplementation(
 		RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const port
+		, robots::enums::inputPort::InputPortEnum const port
 		)
 		: BluetoothSensorImplementation(robotCommunicationInterface
-				, sensorType::sound
+				, robots::enums::sensorType::sound
 				, enums::lowLevelSensorType::SOUND_DBA
 				, enums::sensorMode::RAWMODE
 				, port
@@ -46,7 +46,7 @@ void BluetoothSoundSensorImplementation::read()
 void BluetoothSoundSensorImplementation::sensorSpecificProcessResponse(QByteArray const &reading)
 {
 	if (reading.isEmpty()) {
-		Tracer::debug(tracer::sensors, "BluetoothSoundSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
+		Tracer::debug(tracer::enums::sensors, "BluetoothSoundSensorImplementation::sensorSpecificProcessResponse", "Something is wrong, response is empty");
 	} else {
 		int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 		mState = idle;

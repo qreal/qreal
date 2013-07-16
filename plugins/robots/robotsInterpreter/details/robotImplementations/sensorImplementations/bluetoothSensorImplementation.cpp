@@ -2,15 +2,16 @@
 #include "../../robotParts/robotModel.h"
 #include "../../tracer.h"
 
+using namespace qReal::interpreters;
 using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
 BluetoothSensorImplementation::BluetoothSensorImplementation(RobotCommunicator *const robotCommunicationInterface
-		, sensorType::SensorTypeEnum const &sensorType
+		, robots::enums::sensorType::SensorTypeEnum const &sensorType
 		, enums::lowLevelSensorType::SensorTypeEnum const &lowLevelSensorType
 		, enums::sensorMode::SensorModeEnum const &sensorMode
-		, inputPort::InputPortEnum const port)
+		, robots::enums::inputPort::InputPortEnum const port)
 	: AbstractSensorImplementation(port, sensorType)
 	, mRobotCommunicationInterface(robotCommunicationInterface)
 	, mLowLevelSensorType(lowLevelSensorType)
@@ -38,20 +39,20 @@ void BluetoothSensorImplementation::processResponse(QByteArray const &reading)
 	if (reading.isEmpty()) {
 		mState = idle;
 		if (mResetDone) {
-			Tracer::debug(tracer::sensors, "BluetoothSensorImplementation::processResponse", "Response is empty, seems to be a connection failure");
+			Tracer::debug(tracer::enums::sensors, "BluetoothSensorImplementation::processResponse", "Response is empty, seems to be a connection failure");
 			// Just ignore connection failures for now
 //			emit failure();
 		}
 	} else if (reading.size() >= 5 && reading[3] == enums::commandCode::RESETINPUTSCALEDVALUE) {
-		Tracer::debug(tracer::sensors, "BluetoothSensorImplementation::processResponse", "Response is a reset input scaled value response package");
-		Tracer::debug(tracer::sensors, "BluetoothSensorImplementation::processResponse", "Status byte is: " + QString::number(static_cast<int>(reading[4])));
+		Tracer::debug(tracer::enums::sensors, "BluetoothSensorImplementation::processResponse", "Response is a reset input scaled value response package");
+		Tracer::debug(tracer::enums::sensors, "BluetoothSensorImplementation::processResponse", "Status byte is: " + QString::number(static_cast<int>(reading[4])));
 		mState = idle;
 		mResetDone = true;
 		emit configured();
 	} else if (reading.size() >= 5 && reading[3] == enums::commandCode::SETINPUTMODE) {
 		mState = idle;
-		Tracer::debug(tracer::sensors, "BluetoothSensorImplementation::processResponse", "Response is a configuration response package");
-		Tracer::debug(tracer::sensors, "BluetoothSensorImplementation::processResponse", "Status byte is: " + QString::number(static_cast<int>(reading[4])));
+		Tracer::debug(tracer::enums::sensors, "BluetoothSensorImplementation::processResponse", "Response is a configuration response package");
+		Tracer::debug(tracer::enums::sensors, "BluetoothSensorImplementation::processResponse", "Status byte is: " + QString::number(static_cast<int>(reading[4])));
 		QByteArray command(5, 0);
 		command[0] = 0x03;
 		command[1] = 0x00;
