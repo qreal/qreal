@@ -104,7 +104,7 @@ void VisualInterpreterPlugin::generateSemanticsMetamodel(QString const &editorMe
 
 	removePropertyDefaultValues(metamodel);
 	insertSemanticsEnums(metamodel, "SemanticsStatus", QStringList() << "@new@" << "@deleted@");
-	insertSemanticsEnums(metamodel, "LanguageType", QStringList() << "Block Scheme (C-like)" << "Python");
+	insertSemanticsEnums(metamodel, "LanguageType", QStringList() << "Block Scheme (C-like)" << "Python" << "QtScript");
 	insertSemanticsEnums(metamodel, "SemanticsType", QStringList() << "Interpretation" << "Generation");
 	insertSematicsStateProperty(metamodel);
 	insertPaletteGroups(metamodel, displayedName);

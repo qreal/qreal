@@ -24,16 +24,17 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Ele
 		QString const textBinded = element.attribute("textBinded");
 		QString const readOnly = element.attribute("readOnly", "false");
 		QString const background = element.attribute("background", "transparent");
+		qreal const rotation = element.attribute("rotation", "0").toDouble();
 		if (text.isEmpty() && textBinded.isEmpty()) {
 			qDebug() << "ERROR: can't parse label";
 		} else {
 			ElementTitleInterface *title = NULL;
 			if (text.isEmpty()) {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createTitle(x.value(), y.value(), textBinded, readOnly == "true");
+				title = factory.createTitle(x.value(), y.value(), textBinded, readOnly == "true", rotation);
 			} else {
 				// This is a statical label, it does not need repository.
-				title = factory.createTitle(x.value(), y.value(), text);
+				title = factory.createTitle(x.value(), y.value(), text, rotation);
 			}
 			title->setBackground(QColor(background));
 			title->setScaling(x.isScalable(), y.isScalable());
@@ -202,10 +203,10 @@ void InterpreterElementImpl::init(ElementTitleFactoryInterface &factory, QList<E
 			ElementTitleInterface* title = NULL;
 			if (labelType == "Static text") {
 				// This is a statical label, it does not need repository.
-				title = factory.createTitle(0, 0, labelText);
+				title = factory.createTitle(0, 0, labelText, 0);
 			} else {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createTitle(0, 0, labelText, false);
+				title = factory.createTitle(0, 0, labelText, false, 0);
 			}
 			title->setBackground(QColor(Qt::white));
 			title->setScaling(false, false);
@@ -463,27 +464,30 @@ bool InterpreterElementImpl::isSortingContainer() const
 	return hasContainerProperty("sortContainer");
 }
 
-int InterpreterElementImpl::getSizeOfContainerProperty(QString const &property) const
+QVector<int> InterpreterElementImpl::getSizeOfContainerProperty(QString const &property) const
 {
-	int size = 0;
+	QVector<int> size(4, 0);
 	QDomElement const propertiesElement =
 			mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
 	if (propertiesElement.hasChildNodes()) {
 		if (!propertiesElement.firstChildElement(property).isNull()) {
-			size = propertiesElement.firstChildElement(property).attribute("size").toInt();
+			QStringList const sizeStr = propertiesElement.firstChildElement(property).attribute("size").split(',');
+			for (int i = 0; i < sizeStr.size(); i++) {
+				size[i] = sizeStr[i].toInt();
+			}
 		}
 	}
 
 	return size;
 }
-int InterpreterElementImpl::sizeOfForestalling() const
+QVector<int> InterpreterElementImpl::sizeOfForestalling() const
 {
 	return getSizeOfContainerProperty("forestallingSize");
 }
 
 int InterpreterElementImpl::sizeOfChildrenForestalling() const
 {
-	return getSizeOfContainerProperty("childrenForestallingSize");
+	return getSizeOfContainerProperty("childrenForestallingSize")[0];
 }
 
 bool InterpreterElementImpl::hasMovableChildren() const

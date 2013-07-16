@@ -9,12 +9,26 @@
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
-enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
+namespace enums {
+namespace arrowTypeEnum {
+enum ArrowType
+{
+	  filledArrow
+	, emptyArrow
+	, filledRhomb
+	, emptyRhomb
+	, noArrow
+	, openArrow
+	, crossedLine
+	, emptyCircle
+};
+}
+}
 
 class NodeElement;
 /** @class EdgeElement
-  * 	@brief class for an edge on a diagram
-  * 	*/
+  * @brief class for an edge on a diagram
+ */
 
 namespace qReal
 {
@@ -116,8 +130,8 @@ protected:
 	QColor mPenColor;
 	QString mText;
 	QString mFromMult, mToMult;
-	ArrowType mStartArrowStyle;
-	ArrowType mEndArrowStyle;
+	enums::arrowTypeEnum::ArrowType mStartArrowStyle;
+	enums::arrowTypeEnum::ArrowType mEndArrowStyle;
 
 public slots:
 	void saveConfiguration(QPointF const &pos);
@@ -132,10 +146,9 @@ private slots:
 	void minimizeHandler(QPointF const &pos);
 	/// delete Segment with nearest with pos ends
 	void deleteSegmentHandler(QPointF const &pos);
+
 	/// change link's direction
 	void reverseHandler(QPointF const &pos);
-
-	void squarizeAndAdjustHandler();
 
 private:
 	enum DragPointType {
@@ -218,7 +231,6 @@ private:
 
 	// these methods are called before the push action in the context menu
 	bool delPointActionIsPossible(const QPointF &pos);
-
 	bool addPointActionIsPossible(const QPointF &pos);
 	bool delSegmentActionIsPossible(const QPointF &pos);
 	bool minimizeActionIsPossible();

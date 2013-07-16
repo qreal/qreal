@@ -27,7 +27,8 @@ const int standartReductCoeff = 3;
 
 EdgeElement::EdgeElement(ElementImpl *impl)
 		: Element(impl)
-		, mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black), mStartArrowStyle(NO_ARROW), mEndArrowStyle(NO_ARROW)
+		, mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black)
+		, mStartArrowStyle(enums::arrowTypeEnum::noArrow), mEndArrowStyle(enums::arrowTypeEnum::noArrow)
 		, mSrc(NULL), mDst(NULL)
 		, mPortFrom(0), mPortTo(0)
 		, mDragPoint(noPort), mLongPart(0)
@@ -821,7 +822,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		mLine[mDragPoint] = event->pos();
 
 		if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
-			squarizeAndAdjustHandler();
+			squarize();
 		} else {
 			if (SettingsManager::value("ActivateGrid").toBool()) {
 				int const indexGrid = SettingsManager::value("IndexGrid").toInt();
@@ -861,12 +862,10 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		delCloseLinePoints();
 	}
 
-	adjustNeighborLinks();
 	arrangeSrcAndDst();
+	adjustNeighborLinks();
 
 	prepareGeometryChange();
-
-	adjustNeighborLinks();
 
 	setGraphicApiPos();
 	saveConfiguration(QPointF());
@@ -1149,16 +1148,6 @@ void EdgeElement::breakPointHandler(QPointF const &pos)
 	}
 }
 
-void EdgeElement::squarizeAndAdjustHandler()
-{
-	squarize();
-	deleteLoops();
-	delCloseLinePoints();
-	arrangeSrcAndDst();
-	squarize();
-	updateLongestPart();
-}
-
 void EdgeElement::squarize()
 {
 	mLine = QPolygonF() << mLine.first() << mLine.last();
@@ -1335,7 +1324,7 @@ void EdgeElement::adjustLink(bool isDragging)
 	}
 
 	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
-		squarizeAndAdjustHandler();
+		squarize();
 	}
 }
 
@@ -1424,9 +1413,13 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 {
 	bool reconnectedSrc = false;
 	bool reconnectedDst = false;
+	bool isSquareLine = (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine));
+
 	if (mSrc && reconnectSrc) {
-		qreal newFrom = mSrc->portId(mapToItem(mSrc, mLine[1]));
+		int targetLinePoint = isSquareLine ? mLine.count() - 1 : 1;
+		qreal newFrom =  mSrc->portId(mapToItem(mSrc, mLine[targetLinePoint]));
 		reconnectedSrc = (NodeElement::portNumber(newFrom) != NodeElement::portNumber(mPortFrom));
+
 		if (reconnectedSrc) {
 			mPortFrom = newFrom;
 			mModelUpdateIsCalled = true;
@@ -1437,8 +1430,10 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 		}
 	}
 	if (mDst && reconnectDst) {
-		qreal newTo = mDst->portId(mapToItem(mDst, mLine[mLine.count() - 2]));
+		int targetLinePoint = isSquareLine ? 0 : mLine.count() - 2;
+		qreal newTo = mDst->portId(mapToItem(mDst, mLine[targetLinePoint]));
 		reconnectedDst = (NodeElement::portNumber(newTo) != NodeElement::portNumber(mPortTo));
+
 		if (reconnectedDst) {
 			mPortTo = newTo;
 			mModelUpdateIsCalled = true;
@@ -1496,7 +1491,6 @@ void EdgeElement::updateData()
 	mPortTo = mGraphicalAssistApi->toPort(id());
 
 	adjustLink();
-
 	mElementImpl->updateData(this);
 
 	update();
@@ -1528,7 +1522,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 	mLine[mLine.size() - 1] = place;
 
 	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
-		squarizeAndAdjustHandler();
+		squarize();
 	}
 
 	mModelUpdateIsCalled = true;
@@ -1831,7 +1825,7 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 			}
 		}
 		if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) {
-			squarizeAndAdjustHandler();
+			squarize();
 		}
 		return value;
 	default:

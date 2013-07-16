@@ -9,7 +9,7 @@
 
 using namespace utils;
 
-GraphicType::ContainerProperties::ContainerProperties() : isSortingContainer(false), sizeOfForestalling(0),
+GraphicType::ContainerProperties::ContainerProperties() : isSortingContainer(false), sizeOfForestalling(4, 0),
 	sizeOfChildrenForestalling(0), hasMovableChildren(true), minimizesToChildren(false), maximizesChildren(false)
 {}
 
@@ -182,12 +182,14 @@ bool GraphicType::initBonusContextMenuFields()
 bool GraphicType::initContainerProperties()
 {
 	QDomElement containerElement = mLogic.firstChildElement("container");
-	if (containerElement.isNull())
+	if (containerElement.isNull()) {
 		return true;
+	}
 
 	QDomElement containerPropertiesElement = containerElement.firstChildElement("properties");
-	if (containerPropertiesElement.isNull())
+	if (containerPropertiesElement.isNull()) {
 		return true;
+	}
 
 	for (QDomElement childElement = containerPropertiesElement.firstChildElement();
 		!childElement.isNull();
@@ -198,15 +200,17 @@ bool GraphicType::initContainerProperties()
 		} else if (childElement.tagName() == "forestalling") {
 			QString sizeAttribute = childElement.attribute("size");
 			bool isSizeOk = false;
-			mContainerProperties.sizeOfForestalling = sizeAttribute.toInt(&isSizeOk);
-			if (!isSizeOk)
+			mContainerProperties.sizeOfForestalling = toIntVector(sizeAttribute, &isSizeOk);
+			if (!isSizeOk) {
 				return false;
+			}
 		} else if (childElement.tagName() == "childrenForestalling") {
 			QString sizeAttribute = childElement.attribute("size");
 			bool isSizeOk = false;
 			mContainerProperties.sizeOfChildrenForestalling = sizeAttribute.toInt(&isSizeOk);
-			if (!isSizeOk)
+			if (!isSizeOk) {
 				return false;
+			}
 		} else if (childElement.tagName() == "minimizeToChildren") {
 			mContainerProperties.minimizesToChildren = true;
 		} else if (childElement.tagName() == "banChildrenMove") {
@@ -595,4 +599,23 @@ void GraphicType::generateParentsMapping(utils::OutFile &out)
 		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\"" << NameNormalizer::normalize(parent) << "\"))\n";
 	}
 	out() << "\t;\n";
+}
+
+QVector<int> GraphicType::toIntVector(QString const &s, bool *isOk) const
+{
+	QStringList const strings = s.split(',');
+	QVector<int> result(4, 0);
+
+	if (strings.size() != 4) {
+		*isOk = false;
+		return result;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		result[i] = strings[i].toInt(isOk);
+		if (!*isOk)
+			return result;
+	}
+
+	return result;
 }
