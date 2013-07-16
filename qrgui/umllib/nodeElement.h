@@ -191,6 +191,9 @@ private:
 	 */
 	void resize();
 
+	void drawLinesForResize(QPainter *painter);
+	void drawSeveralLines(QPainter *painter, int dx, int dy);
+
 	void disconnectEdges();
 
 	void delUnusedLines();
