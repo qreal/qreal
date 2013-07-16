@@ -65,3 +65,4 @@ enableNoiseOfMotors=false
 approximationLevel=12
 nodesStateButtonExpands=true
 recentProjectsLimit=5
+dragArea = 12
