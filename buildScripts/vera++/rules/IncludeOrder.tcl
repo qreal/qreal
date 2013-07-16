@@ -21,7 +21,6 @@ proc checkIncludeOrder { fileName } {
   }
 }
 
-puts CIOExecuted
 foreach fileName [getSourceFileNames] {
   checkIncludeOrder $fileName
 }
