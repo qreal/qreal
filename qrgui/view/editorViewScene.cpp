@@ -436,6 +436,7 @@ qReal::Id EditorViewScene::createElement(QString const &str)
 {
 	qReal::Id result = createElement(str, mCreatePoint, true, &mLastCreatedWithEdgeCommand);
 	mLastCreatedWithEdge = getElem(result);
+	mShouldReparentItems = false;
 	return result;
 }
 
