@@ -316,14 +316,15 @@ void PortHandler::arrangeLinearPorts()
 		qreal const dx = portLine.dx();
 		qreal const dy = portLine.dy();
 		foreach (EdgeElement* edge, mNode->edgeList()) {
-			qreal portSrcId = edge->portIdOn(mNode).first;
-			qreal portDstId = edge->portIdOn(mNode).second;
+			//edge->portIdOn(mNode) returns a pair of ports id of the mNode associated with the ends of edge.
+			// returns -1.0 if the current end of edge is not connected to the mNode.
+			QPair<qreal, qreal> edgePortId = edge->portIdOn(mNode);
 			qreal currentPortId = -1.0;
-			if (portNumber(portSrcId) == lpId) {
-				currentPortId = portSrcId;
+			if (portNumber(edgePortId.first) == lpId) {
+				currentPortId = edgePortId.first;
 			}
-			if (portNumber(portDstId) == lpId) {
-				currentPortId = portDstId;
+			if (portNumber(edgePortId.second) == lpId) {
+				currentPortId = edgePortId.second;
 			}
 
 			if (currentPortId != -1.0) {
