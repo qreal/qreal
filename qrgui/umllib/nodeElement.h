@@ -175,7 +175,7 @@ private:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF const &newContents, QPointF const &newPos);
+	void resize(QRectF const &newContents, QPointF const &newPos, bool needResizeParent = true);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with

@@ -376,10 +376,14 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	QRectF newContents = mContents;
 	QPointF newPos = mPos;
 
+	bool needResizeParent = (event->modifiers() & Qt::ControlModifier);
+
 	if (mDragState == None) {
-		if (!isPort() && (flags() & ItemIsMovable)) {
-			recalculateHighlightedNode(event->scenePos());
+		if (!(flags() & ItemIsMovable)) {
+			return;
 		}
+
+		recalculateHighlightedNode(event->scenePos());
 
 		// it is needed for sendEvent() to every isSelected element thro scene
 		event->setPos(event->lastPos());
@@ -400,6 +404,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		newPos = pos();
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
+
+		needResizeParent = true;
 
 		QPointF parentPos = QPointF(0, 0);
 		QGraphicsItem *parItem = parentItem();
@@ -460,7 +466,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	}
 
-	resize(newContents, newPos);
+	resize(newContents, newPos, needResizeParent);
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
@@ -515,6 +521,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	// but because of mouseRelease twice triggering we can't do it
 	// This may cause more bugs
 	if (!isPort() && (flags() & ItemIsMovable)) {
+		recalculateHighlightedNode(event->scenePos());
 		if (mHighlightedNode) {
 			NodeElement *newParent = mHighlightedNode;
 			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
@@ -1141,10 +1148,10 @@ void NodeElement::resize(QRectF const &newContents)
 	resize(newContents, pos());
 }
 
-void NodeElement::resize(QRectF const &newContents, QPointF const &newPos)
+void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool needResizeParent)
 {
 	ResizeHandler handler(this);
-	handler.resize(newContents, newPos);
+	handler.resize(newContents, newPos, needResizeParent);
 }
 
 bool NodeElement::isFolded() const

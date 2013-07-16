@@ -8,7 +8,7 @@ ResizeHandler::ResizeHandler(NodeElement * const resizingNode)
 {
 }
 
-void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
+void ResizeHandler::resize(QRectF newContents, QPointF newPos, bool needResizeParent) const
 {
 	newContents.moveTo(0, 0);
 
@@ -26,7 +26,9 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 	mTargetNode->storeGeometry();
 	mTargetNode->setPos(newPos);
 
-	resizeParent();
+	if (needResizeParent) {
+		resizeParent();
+	}
 }
 
 qreal ResizeHandler::maxChildWidth() const

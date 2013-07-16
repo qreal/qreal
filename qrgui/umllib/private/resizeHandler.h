@@ -23,7 +23,7 @@ public:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF newContents, QPointF newPos) const;
+	void resize(QRectF newContents, QPointF newPos, bool needResizeParent = true) const;
 
 private:
 	/// Padding that reserves space for title.
