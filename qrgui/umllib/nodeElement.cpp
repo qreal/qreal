@@ -352,6 +352,9 @@ void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
 	// of element could be moved inside his parent
 
 	if (newParent != NULL) {
+		if (mHighlightedNode) {
+			mHighlightedNode->erasePlaceholder(false);
+		}
 		mHighlightedNode = newParent;
 		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), mouseScenePos);
 	} else if (mHighlightedNode != NULL) {
@@ -521,7 +524,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	// but because of mouseRelease twice triggering we can't do it
 	// This may cause more bugs
 	if (!isPort() && (flags() & ItemIsMovable)) {
-		recalculateHighlightedNode(event->scenePos());
 		if (mHighlightedNode) {
 			NodeElement *newParent = mHighlightedNode;
 			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
