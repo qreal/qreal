@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -86,12 +86,21 @@
     <addaction name="actionShow_alignment"/>
     <addaction name="actionSwitch_on_grid"/>
     <addaction name="actionSwitch_on_alignment"/>
+    <addaction name="actionTransparent_mode"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>&amp;Tools</string>
     </property>
+    <widget class="QMenu" name="menuEasy_versioning">
+     <property name="title">
+      <string>Easy versioning</string>
+     </property>
+     <addaction name="actionList_of_version"/>
+     <addaction name="actionSave_version"/>
+    </widget>
     <addaction name="actionShow"/>
+    <addaction name="menuEasy_versioning"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -139,7 +148,7 @@
    <property name="minimumSize">
     <size>
      <width>80</width>
-     <height>140</height>
+     <height>217</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -777,6 +786,29 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="actionTransparent_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Transparent mode</string>
+   </property>
+  </action>
+  <action name="actionList_of_version">
+   <property name="text">
+    <string>List of version</string>
+   </property>
+  </action>
+  <action name="actionSave_version">
+   <property name="text">
+    <string>Save version</string>
+   </property>
+  </action>
+  <action name="actionSet_version">
+   <property name="text">
+    <string>Set version</string>
    </property>
   </action>
  </widget>

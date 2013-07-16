@@ -244,3 +244,18 @@ void EditorView::setTitlesVisible(bool visible)
 {
 	mScene->setTitlesVisible(visible);
 }
+
+void EditorView::copyElementsOnDiagram()
+{
+	mScene->copy();
+}
+
+void EditorView::pasteOnDiagram()
+{
+	mScene->paste(false);
+}
+
+void EditorView::pasteCopyOfLogical()
+{
+	mScene->paste(true);
+}

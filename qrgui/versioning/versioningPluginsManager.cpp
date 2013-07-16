@@ -3,21 +3,22 @@
 #include "../mainwindow/mainWindow.h"
 #include "visualDiff/diffPluginWrapper.h"
 #include "../../qrutils/fileSystemUtils.h"
+#include <QDebug>
 
 using namespace qReal;
 
 QString const tempFolderName = "tempVCS";
 
-VersioningPluginsManager::VersioningPluginsManager(ToolPluginManager const &pluginManager
-		, qrRepo::RepoControlInterface *repoApi
+VersioningPluginsManager::VersioningPluginsManager(/*ToolPluginManager const &pluginManager
+		,*/ qrRepo::RepoControlInterface *repoApi
 		, ErrorReporterInterface *errorReporter
-		, MainWindow *mainWindow)
+		/*, MainWindow *mainWindow*/)
 	: mRepoApi(repoApi), mErrorReporter(errorReporter)
 	, mDiffPlugin(NULL)
 	, mTempDir(qApp->applicationDirPath() + "/" + tempFolderName)
 {
 	SettingsManager::setValue("versioningManagerTempDir", mTempDir);
-	initFromToolPlugins(QListIterator<ToolPluginInterface *>(pluginManager.plugins()), mainWindow);
+//	initFromToolPlugins(QListIterator<ToolPluginInterface *>(pluginManager.plugins()), mainWindow);
 	mRepoApi->setWorkingCopyInspector(this);
 }
 
@@ -35,11 +36,13 @@ void VersioningPluginsManager::initFromToolPlugins(
 		QListIterator<ToolPluginInterface *> iterator
 		, MainWindow *mainWindow)
 {
+	bool versionPluginsLoaded = false;
 	while (iterator.hasNext()) {
 		ToolPluginInterface *toolPlugin = iterator.next();
 		VersioningPluginInterface *versioningPlugin =
 				dynamic_cast<VersioningPluginInterface *>(toolPlugin);
 		if (versioningPlugin) {
+			versionPluginsLoaded = true;
 			mPlugins.append(versioningPlugin);
 			versioningPlugin->setWorkingCopyManager(mRepoApi);
 			connect(versioningPlugin, SIGNAL(workingCopyDownloaded(bool const, QString const &))
@@ -57,6 +60,8 @@ void VersioningPluginsManager::initFromToolPlugins(
 					, this, mainWindow, &mainWindow->editorManager()));
 		}
 	}
+	if (versionPluginsLoaded)
+		emit OnButton(true);
 }
 
 VersioningPluginInterface *VersioningPluginsManager::activePlugin(bool needPreparation, const QString &workingDir)
@@ -187,6 +192,15 @@ bool VersioningPluginsManager::isMyWorkingCopy(QString const &directory)
 	return activePlugin(false, directory) != NULL;
 }
 
+QString VersioningPluginsManager::friendlyName()
+{
+	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
+	if (!activeVcs) {
+		return QString();
+	}
+	return activeVcs->friendlyName();
+}
+
 void VersioningPluginsManager::reportError(const QString &message)
 {
 	mErrorReporter->addError(message);
@@ -225,4 +239,43 @@ void VersioningPluginsManager::onWorkingCopyUpdated(const bool success)
 void VersioningPluginsManager::onChangesSubmitted(const bool success)
 {
 	emit changesSubmitted(success);
+}
+
+void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTranspMode)
+{
+	foreach (VersioningPluginInterface *plugin, mPlugins){
+		foreach(ActionInfo const &actionInfo,plugin->actions()) {
+			actionInfo.menu()->menuAction()->setVisible(!switchOnTranspMode);
+		}
+	}
+	if (switchOnTranspMode){
+		mTranspaentMode = new TransparentMode(mPlugins);
+		emit transparentClassIsReady();
+	} else {
+		delete mTranspaentMode;
+	}
+}
+
+TransparentMode *VersioningPluginsManager::getLinkOnTransparentMode()
+{
+	return mTranspaentMode;
+}
+
+
+void VersioningPluginsManager::setVersion(QString hash)
+{
+	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
+	if (!activeVcs) {
+		return;
+	}
+	activeVcs->setVersion(hash);
+}
+
+QString VersioningPluginsManager::getLog(QString format)
+{
+	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
+	if (!activeVcs) {
+		return QString();
+	}
+	return activeVcs->getLog(QString());
 }

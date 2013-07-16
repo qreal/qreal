@@ -3,10 +3,14 @@ HEADERS += \
 	versioning/versioningPluginInterface.h \
 	versioning/diffPluginBase.h \
 	versioning/diffPluginInterface.h \
+	versioning/transparentMode/ChangeVersion.h \
+	versioning/transparentMode/transparentMode.h \
 
 SOURCES += \
 	versioning/versioningPluginsManager.cpp \
 	versioning/diffPluginBase.cpp \
+	versioning/transparentMode/ChangeVersion.cpp \
+	versioning/transparentMode/transparentMode.cpp \
 
 # Visual diff
 # This a temp solution till system would be refactored
@@ -59,3 +63,4 @@ SOURCES += \
 
 FORMS += \
 	versioning/visualDiff/view/diffColorPreferencesDialog.ui \
+    versioning/transparentMode/ChangeVersion.ui

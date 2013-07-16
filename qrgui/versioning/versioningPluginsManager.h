@@ -4,6 +4,7 @@
 #include "../pluginManager/toolPluginManager.h"
 #include "versioningPluginInterface.h"
 #include "../models/models.h"
+#include "../versioning/transparentMode/transparentMode.h"
 
 namespace qReal
 {
@@ -20,16 +21,21 @@ class VersioningPluginsManager
 
 public:
 	/// Inits plugin list using loaded by plugin manager ones
-	VersioningPluginsManager(ToolPluginManager const &pluginManager
-		, qrRepo::RepoControlInterface *repoApi
-		, ErrorReporterInterface *errorReporter
-		, MainWindow *mainWindow); // MainWindow used till refactoring
+	VersioningPluginsManager(qrRepo::RepoControlInterface *repoApi
+		, ErrorReporterInterface *errorReporter); // MainWindow used till refactoring
+
+	void initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator
+			, MainWindow *mainWindow);
 
 	BriefVersioningInterface *activeClient(const QString &workingDir);
 
 	bool onFileAdded(QString const &filePath, QString const &workingDir);
 	bool onFileRemoved(QString const &filePath, QString const &workingDir);
 	bool onFileChanged(QString const &filePath, QString const &workingDir);
+	TransparentMode *getLinkOnTransparentMode();
+signals:
+	void OnButton(bool);
+	void transparentClassIsReady();
 
 public slots:
 	void beginWorkingCopyDownloading(
@@ -44,17 +50,19 @@ public slots:
 	int revisionNumber(QString const &targetProject = QString());
 	QString remoteRepositoryUrl(QString const &targetProject = QString());
 	bool isMyWorkingCopy(QString const &directory = QString());
+	QString friendlyName();
+	virtual QString getLog(QString format);
+	virtual void setVersion(QString hash);
 
 private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);
 	void onWorkingCopyUpdated(bool const success);
 	void onChangesSubmitted(bool const success);
+	void switchOffOrOnAllPluginsAction(bool switchOnTranspMode);
 
 private:
 	QString tempFolder() const;
 	void prepareWorkingCopy();
-	void initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator
-			, MainWindow *mainWindow);
 	VersioningPluginInterface *activePlugin(bool needPreparation = true, QString const &workingDir = "");
 	WorkingCopyInspectionInterface *activeWorkingCopyInspector(QString const &workingDir = "");
 
@@ -68,6 +76,8 @@ private:
 	ErrorReporterInterface *mErrorReporter;
 	DiffPluginBase *mDiffPlugin;
 	QString mTempDir;
+
+	TransparentMode *mTranspaentMode;
 };
 
 }

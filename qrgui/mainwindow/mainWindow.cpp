@@ -56,6 +56,7 @@
 
 #include "hotKeyManager/hotKeyManager.h"
 
+
 using namespace qReal;
 using namespace qReal::commands;
 
@@ -170,9 +171,6 @@ void MainWindow::connectActions()
 	connect(mUi->actionNewProject, SIGNAL(triggered()), this, SLOT(createProject()));
 
 	connect(mUi->actionDeleteFromDiagram, SIGNAL(triggered()), this, SLOT(deleteFromDiagram()));
-	connect(mUi->actionCopyElementsOnDiagram, SIGNAL(triggered()), this, SLOT(copyElementsOnDiagram()));
-	connect(mUi->actionPasteOnDiagram, SIGNAL(triggered()), this, SLOT(pasteOnDiagram()));
-	connect(mUi->actionPasteReference, SIGNAL(triggered()), this, SLOT(pasteCopyOfLogical()));
 
 	connect(mUi->actionUndo, SIGNAL(triggered()), mController, SLOT(undo()));
 	connect(mUi->actionRedo, SIGNAL(triggered()), mController, SLOT(redo()));
@@ -758,30 +756,6 @@ void MainWindow::deleteFromDiagram()
 	}
 }
 
-void MainWindow::copyElementsOnDiagram()
-{
-	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
-	if (scene) {
-		scene->copy();
-	}
-}
-
-void MainWindow::pasteOnDiagram()
-{
-	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
-	if (scene) {
-		scene->paste(false);
-	}
-}
-
-void MainWindow::pasteCopyOfLogical()
-{
-	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(getCurrentTab()->scene());
-	if (scene) {
-		scene->paste(true);
-	}
-}
-
 void MainWindow::showAbout()
 {
 	QMessageBox::about(this, tr("About QReal"), mToolManager.customizer()->aboutText());
@@ -1326,6 +1300,15 @@ void MainWindow::currentTabChanged(int newIndex)
 	if (!isEditorTab) {
 		mToolManager.activeTabChanged(Id());
 	} else if (getCurrentTab()->mvIface() != NULL) {
+		EditorView *changeViewTab = dynamic_cast<EditorView *>(getCurrentTab());
+		if (changeViewTab){
+			actionCopyElementsOnDiagram()->disconnect();
+			actionPasteOnDiagram()->disconnect();
+			actionPasteCopyOfLogical()->disconnect();
+			connect(actionCopyElementsOnDiagram(), SIGNAL(triggered()), changeViewTab, SLOT(copyElementsOnDiagram()));
+			connect(actionPasteOnDiagram(), SIGNAL(triggered()), changeViewTab, SLOT(pasteOnDiagram()));
+			connect(actionPasteCopyOfLogical(), SIGNAL(triggered()), changeViewTab, SLOT(pasteCopyOfLogical()));
+		}
 		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
 		mToolManager.activeTabChanged(currentTabId);
 	}
@@ -1832,8 +1815,17 @@ void MainWindow::initToolPlugins()
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
-	mVersioningManager = new VersioningPluginsManager(mToolManager
-				, &(mModels->repoControlApi()), mErrorReporter, this);
+	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter);
+	mUi->menuEasy_versioning->menuAction()->setVisible(false);
+	mUi->actionTransparent_mode->setVisible(false);
+	connect(mVersioningManager, SIGNAL(OnButton(bool)), mUi->actionTransparent_mode, SLOT(setVisible(bool)));
+	connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
+	connect(mVersioningManager, SIGNAL(transparentClassIsReady()), this, SLOT(initMEasyVersioningLink()));
+	connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), this, SLOT(switchOffOrOnEasyVers(bool)));
+	connect(mUi->actionList_of_version, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
+
+	mVersioningManager->initFromToolPlugins(QListIterator<ToolPluginInterface *>(mToolManager.plugins()), this);
+
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
@@ -2075,6 +2067,7 @@ void MainWindow::addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget)
 	QMainWindow::addDockWidget(area, dockWidget);
 }
 
+
 QListIterator<EditorView *> MainWindow::openedEditorViews() const
 {
 	QList<EditorView *> views;
@@ -2091,4 +2084,29 @@ void MainWindow::setVersion(QString const &version)
 {
 	// TODO: update title
 	SettingsManager::setValue("version", version);
+}
+
+void MainWindow::switchOffOrOnEasyVers(bool switchOnOrOFF)
+{
+	mUi->menuEasy_versioning->menuAction()->setVisible(switchOnOrOFF);
+}
+
+void MainWindow::showChangeVersion()
+{
+	mChangeVersion = new ChangeVersion();
+	mUi->tabs->addTab(mChangeVersion, tr("Change version"));
+	mUi->tabs->setCurrentWidget(mChangeVersion);
+
+	connect(this, SIGNAL(changeVersionShowed()), mEasyVersioning, SLOT(listLog()));
+	connect(mEasyVersioning, SIGNAL(listLogIsReady(QList<QPair<QString , QString> >)),
+				mChangeVersion, SLOT(updateLog(QList<QPair<QString , QString> >)));
+	connect(mChangeVersion, SIGNAL(hashObtained(QString)), mEasyVersioning, SLOT(setVersion(QString)));
+	connect(mUi->actionSave_version, SIGNAL(triggered()), mEasyVersioning, SLOT(saveVersion()));
+	connect(mChangeVersion, SIGNAL(swapTab()), this, SLOT(openFirstDiagram()));
+	emit changeVersionShowed();
+}
+
+void MainWindow::initMEasyVersioningLink()
+{
+	mEasyVersioning = mVersioningManager->getLinkOnTransparentMode();
 }

@@ -28,12 +28,17 @@ public:
 	void ensureElementVisible(Element const * const element, int xMargin, int yMargin);
 	void setTitlesVisible(bool visible);
 
+
 public slots:
 	void toggleAntialiasing(bool);
 	void toggleOpenGL(bool);
 	void zoomIn();
 	void zoomOut();
 	void invalidateScene();
+	void copyElementsOnDiagram();
+	void pasteOnDiagram();
+	void pasteCopyOfLogical();
+
 
 protected:
 	virtual void mouseMoveEvent(QMouseEvent *event);
@@ -53,6 +58,7 @@ private:
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
 	int mZoom;
+
 };
 
 }

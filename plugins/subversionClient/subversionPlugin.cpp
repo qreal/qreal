@@ -118,6 +118,11 @@ bool SubversionPlugin::isMyWorkingCopy(QString const &directory)
 	return invokeOperation(infoArgs, false, directory, false, false, QString(), QString(), false);
 }
 
+QString SubversionPlugin::friendlyName()
+{
+	return "Subversion Plugin";
+}
+
 int SubversionPlugin::timeout() const
 {
 	return qReal::SettingsManager::value("svnClientTimeout", defaultTimeout).toInt();

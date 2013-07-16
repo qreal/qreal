@@ -43,6 +43,9 @@ public:
 	virtual int revisionNumber(QString const &targetProject = QString());
 	virtual QString remoteRepositoryUrl(QString const &targetProject = QString());
 	virtual bool isMyWorkingCopy(QString const &directory = QString());
+	virtual QString friendlyName();
+	virtual QString getLog(QString format){}
+	virtual void setVersion(QString hash){}
 
 	void editProxyConfiguration();
 

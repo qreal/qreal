@@ -27,13 +27,15 @@
 #include "../view/propertyEditorView.h"
 #include "../controller/controller.h"
 #include "../versioning/versioningPluginsManager.h"
+#include "../versioning/transparentMode/transparentMode.h"
 
 #include "../../qrgui/dialogs/preferencesDialog.h"
 #include "../../qrgui/dialogs/findReplaceDialog.h"
 #include "../dialogs/startDialog/startDialog.h"
+#include "../dialogs/gesturesShow/gesturesWidget.h"
 #include "propertyEditorProxyModel.h"
 #include "gesturesPainterInterface.h"
-#include "../dialogs/gesturesShow/gesturesWidget.h"
+#include "../versioning/transparentMode/ChangeVersion.h"
 
 #include "../textEditor/codeEditor.h"
 
@@ -158,6 +160,7 @@ signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();
 	void rootDiagramChanged();
+	void changeVersionShowed();
 
 public slots:
 	void deleteFromScene();
@@ -230,9 +233,6 @@ private slots:
 	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
 
 	void deleteFromDiagram();
-	void copyElementsOnDiagram();
-	void pasteOnDiagram();
-	void pasteCopyOfLogical();
 
 	void cropSceneToItems();
 
@@ -269,6 +269,10 @@ private slots:
 	void openShapeEditor();
 
 	void updatePaletteIcons();
+
+	void switchOffOrOnEasyVers(bool switchOnOrOFF);
+	void showChangeVersion();
+	void initMEasyVersioningLink();
 
 private:
 	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
@@ -366,6 +370,8 @@ private:
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;
+	ChangeVersion *mChangeVersion;
+	TransparentMode *mEasyVersioning;
 
 	QVector<bool> mSaveListChecked;
 
