@@ -997,10 +997,14 @@ Element* NodeElement::getPlaceholderNextElement()
 void NodeElement::erasePlaceholder(bool redraw)
 {
 	setOpacity(1);
-	if(mPlaceholder != NULL) {
-		delete mPlaceholder;
-		mPlaceholder = NULL;
+
+	if (!mPlaceholder) {
+		return;
 	}
+
+	delete mPlaceholder;
+	mPlaceholder = NULL;
+
 	if(redraw) {
 		resize();
 	}
