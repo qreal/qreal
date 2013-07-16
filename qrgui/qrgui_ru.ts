@@ -1791,13 +1791,13 @@
 <context>
     <name>PreferencesEditorPage</name>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="204"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="269"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="237"/>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="349"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="302"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="414"/>
         <source>Indent</source>
         <translation>Отступ</translation>
     </message>
@@ -1822,57 +1822,67 @@
         <translation>Размер ячейки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="247"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="188"/>
+        <source>Node Elements</source>
+        <translation type="unfinished">Элементы</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="204"/>
+        <source>Drag area</source>
+        <translation type="unfinished">Размер области масштабированияы</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="312"/>
         <source>Edge</source>
         <translation type="unfinished">Связи</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="269"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="334"/>
         <source>Line mode</source>
         <translation type="unfinished">Тип связей</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="277"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="342"/>
         <source>broken</source>
         <translation type="unfinished">Ломаные линии</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="282"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="347"/>
         <source>square</source>
         <translation type="unfinished">Прямоугольные линии</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="287"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="352"/>
         <source>curve</source>
         <translation type="unfinished">Кривые Безье</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="311"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="376"/>
         <source>Loop Edge</source>
         <translation type="unfinished">Связи-петлиы</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="464"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="529"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="480"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="545"/>
         <source>   Representation   </source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="507"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="572"/>
         <source>Icons  and names</source>
         <translation>Иконки и названия</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="512"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="577"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="487"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="552"/>
         <source>   Count of items in a row </source>
         <translation>Количество иконок в строке</translation>
     </message>
@@ -1892,47 +1902,47 @@
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="188"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="253"/>
         <source>Embedded Linkers</source>
         <translation>Встроенные линкеры</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="394"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="459"/>
         <source>Zoom factor</source>
         <translation>Коэффициент масштабирования</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="359"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="424"/>
         <source>Zoom</source>
         <translation>Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="404"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="469"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="441"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="506"/>
         <source>Use some of system fonts</source>
         <translation>Использовать системный шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="454"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="519"/>
         <source>Choose Font</source>
         <translation>Выбрать шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="131"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="141"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="131"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="141"/>
         <source>You should restart QReal:Robots to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="131"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="141"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
