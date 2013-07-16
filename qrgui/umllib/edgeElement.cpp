@@ -1436,9 +1436,6 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 			mModelUpdateIsCalled = true;
 			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 		}
-		if (mIsLoop) {
-			return reconnectedSrc;
-		}
 	}
 	if (mDst && reconnectDst) {
 		int targetLinePoint = isSquareLine ? 0 : mLine.count() - 2;
@@ -1544,13 +1541,13 @@ void EdgeElement::placeEndTo(QPointF const &place)
 
 void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
 	//expected that the id will change only fractional part
-	if (((!mIsLoop) || ((int)mPortFrom == (int)portId)) && (node == mSrc)) {
+	if ((!mIsLoop || ((int) mPortFrom == (int) portId)) && (node == mSrc)) {
 		mPortFrom = portId;
 		mModelUpdateIsCalled = true;
 		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 		return;
 	}
-	if (((!mIsLoop) || ((int)mPortTo == (int)portId)) && (node == mDst)) {
+	if ((!mIsLoop || ((int) mPortTo == (int) portId)) && (node == mDst)) {
 		mPortTo = portId;
 		mModelUpdateIsCalled = true;
 		mGraphicalAssistApi->setToPort(id(), mPortTo);

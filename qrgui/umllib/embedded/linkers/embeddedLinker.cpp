@@ -39,7 +39,7 @@ EmbeddedLinker::EmbeddedLinker()
 
 	setAcceptHoverEvents(true);
 
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdges()));
+	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdge()));
 }
 
 EmbeddedLinker::~EmbeddedLinker()
@@ -260,20 +260,19 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void EmbeddedLinker::updateMasterEdges()
+void EmbeddedLinker::updateMasterEdge()
 {
 	mTimer->stop();
 	mTimeOfUpdate = 0;
 
 	if (mEdge) {
-		mEdge->adjustNeighborLinks();
 		mEdge->arrangeSrcAndDst();
+		mEdge->adjustNeighborLinks();
 	}
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	updateMasterEdges();
 	hide();
 	mMaster->selectionState(false);
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(mMaster->scene());
@@ -299,10 +298,8 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		}
 		if (result != -1) {
 			mEdge->connectToPort();
-			mEdge->adjustNeighborLinks();
-			mEdge->arrangeSrcAndDst();
 
-			updateMasterEdges();
+			updateMasterEdge();
 			// This will restore edge state after undo/redo
 			commands::ReshapeEdgeCommand *reshapeEdge = new commands::ReshapeEdgeCommand(mEdge);
 			reshapeEdge->startTracking();
