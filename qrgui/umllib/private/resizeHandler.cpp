@@ -58,7 +58,7 @@ void ResizeHandler::sortChildrenIfNeeded() const
 	int forestallingTop = sizeOfForestalling[1];
 	int forestallingLeft = sizeOfForestalling[0];
 
-	qreal curChildY = forestallingTop + mTitlePadding;
+	qreal curChildY = forestallingTop;
 	qreal const maxChildWidthValue = maxChildWidth();
 
 	foreach (QGraphicsItem * const childItem, mTargetNode->childItems()) {
@@ -68,7 +68,7 @@ void ResizeHandler::sortChildrenIfNeeded() const
 			QRectF const rect(forestallingLeft, curChildY,
 					maxChildWidthValue, placeholder->rect().height());
 			placeholder->setRect(rect);
-			curChildY += placeholder->rect().height() + mChildSpacing;
+			curChildY += placeholder->rect().height();
 		}
 
 		NodeElement * const curItem = dynamic_cast<NodeElement* const>(childItem);
@@ -84,7 +84,7 @@ void ResizeHandler::sortChildrenIfNeeded() const
 
 		curItem->setGeometry(rect);
 		curItem->storeGeometry();
-		curChildY += curItem->contentsRect().height() + mElementImpl->sizeOfChildrenForestalling() + mChildSpacing;
+		curChildY += curItem->contentsRect().height() + mElementImpl->sizeOfChildrenForestalling();
 	}
 }
 

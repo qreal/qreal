@@ -286,7 +286,7 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			mDragState = BottomRight;
 		} else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = BottomLeft;
-		} else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos()) && mElementImpl->isContainer()) {
+		} else if (QRectF(QPointF(-20, 0), QPointF(0, 20)).contains(event->pos()) && mElementImpl->isContainer()) {
 			changeFoldState();
 		} else {
 			Element::mousePressEvent(event);
@@ -726,7 +726,7 @@ QRectF NodeElement::contentsRect() const
 
 QRectF NodeElement::boundingRect() const
 {
-	return mContents.adjusted(-kvadratik, -kvadratik, kvadratik, kvadratik);
+	return mContents.adjusted(-2*kvadratik, -2*kvadratik, kvadratik, kvadratik);
 }
 
 void NodeElement::updateData()
@@ -843,22 +843,20 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 			painter->save();
 
 			QBrush b;
-			b.setStyle(Qt::SolidPattern);
-
-			if (mIsFolded) {
-				b.setColor(Qt::red);
-				painter->setPen(Qt::red);
-			}
-			else {
-				b.setColor(Qt::green);
-				painter->setPen(Qt::green);
-			}
-			painter->setBrush(b);
 
 			if (mElementImpl->isContainer()) {
-				painter->drawRect(QRectF(mContents.topLeft(), QSizeF(20, 20)));
+				b.setStyle(Qt::NoBrush);
+				painter->setBrush(b);
+
+				painter->drawRect(QRectF(QPointF(-20, 0), QPointF(0, 20)));
+
+				painter->drawLine(-15, 10, -5, 10);
+				if (!mIsFolded) {
+					painter->drawLine(-10, 5, -10, 15);
+				}
 			}
 
+			b.setStyle(Qt::SolidPattern);
 			b.setColor(Qt::blue);
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
