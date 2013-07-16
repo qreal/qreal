@@ -1,0 +1,9 @@
+#!/usr/bin/tclsh
+
+set rules {
+  no_spaces
+  LineLength
+  include_guards
+  CommaAtTheEnd
+  IncludeOrder
+}
