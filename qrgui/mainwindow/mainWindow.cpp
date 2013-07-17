@@ -590,7 +590,6 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 	// so we should handle parent-child relationships manually
 	while (!itemsToDelete.isEmpty()) {
 		Id const currentItem = itemsToDelete.at(0);
-
 		IdList const children = mModels->graphicalModelAssistApi().children(currentItem);
 		foreach (Id const &child, children) {
 			itemsToDelete.removeAll(child);
