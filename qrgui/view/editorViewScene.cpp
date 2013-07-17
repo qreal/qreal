@@ -930,10 +930,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		mLeftButtonPressed = true;
 		QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
 		ElementTitle *title = dynamic_cast < ElementTitle *>(item);
-/*
-		if (title) { // check whether we accidently clicked on a title or not
-			item = item->parentItem();
-		}*/
+
 		if (item) {
 			item->setSelected(true);
 			mSelectList->clear();

@@ -173,25 +173,7 @@ ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y,QString
 }
 
 void ElementTitle::transform(QRectF const& contents)
-{/*
-	qreal x = 0;
-	qreal y = 0;
-
-	if (mScalingX) {
-		x = mPoint.x() * mContents.width();
-	} else {
-		x = mPoint.x() * contents.width();
-	}
-
-	if (mScalingY) {
-		y = mPoint.y() * mContents.height();
-	} else {
-		y = mPoint.y() * contents.height();
-	}
-
-	setPos(x - 100, y - 100);
-
-	setRotation(mRotation);*/
+{
 	ElementTitleInterface::transform();
 }
 
