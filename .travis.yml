@@ -3,7 +3,7 @@ compiler: gcc
 install:
   - sudo add-apt-repository ppa:canonical-qt5-edgers/qt5-proper -y
   - sudo add-apt-repository ppa:ubuntu-sdk-team/ppa -y
-  - sudo add-apt-repository ppa:smspillaz/verapp-latest
+  - sudo add-apt-repository ppa:smspillaz/verapp-latest -y
   - sudo apt-get update
   - sudo apt-get install libboost-system1.49.0 libboost-wave1.49.0 tcl8.5
   - sudo apt-get install vera++
