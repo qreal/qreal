@@ -585,7 +585,7 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 	IdList itemsToUpdate;
 	DoNothingCommand *multipleRemoveCommand = new DoNothingCommand;
 
-	deleteEdges(itemsToDelete);
+	addEdgesToBeDeleted(itemsToDelete);
 	// QGraphicsScene::selectedItems() returns items in no particular order,
 	// so we should handle parent-child relationships manually
 	while (!itemsToDelete.isEmpty()) {
@@ -618,24 +618,23 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 	mController->execute(multipleRemoveCommand);
 }
 
-void MainWindow::deleteEdges(IdList &itemsToDelete)
+void MainWindow::addEdgesToBeDeleted(IdList &itemsToDelete)
 {
 	IdList elementsToDelete = itemsToDelete;
 	int i = 0;
 	while (i < elementsToDelete.count()) {
-		Id idOfCurElement = elementsToDelete.at(i);
-		IdList const children = mModels->graphicalModelAssistApi().children(idOfCurElement);
+		Id const currentElement = elementsToDelete.at(i);
+		IdList const children = mModels->graphicalModelAssistApi().children(currentElement);
 		elementsToDelete.append(children);
 		i++;
 	}
-	for (int i = 0; i < elementsToDelete.count(); i++) {
-		Id idOfCurElement = elementsToDelete.at(i);
-		IdList linksOfCurElement = mModels->mutableLogicalRepoApi().links(idOfCurElement);
-		for (int j = 0; j < linksOfCurElement.count(); j++) {
-			Id otherEntityOfCurLink = mModels->mutableLogicalRepoApi().otherEntityFromLink(linksOfCurElement.at(j), idOfCurElement);
-			if (otherEntityOfCurLink == Id::rootId()
-					|| elementsToDelete.contains(otherEntityOfCurLink)) {
-				itemsToDelete.append(linksOfCurElement.at(j));
+	foreach (Id const &currentElement, elementsToDelete) {
+		IdList const linksOfCurrentElement = mModels->mutableLogicalRepoApi().links(currentElement);
+		foreach (Id const &link, linksOfCurrentElement) {
+			Id const otherEntityOfCurrentLink
+					= mModels->mutableLogicalRepoApi().otherEntityFromLink(link, currentElement);
+			if (otherEntityOfCurrentLink == Id::rootId() || elementsToDelete.contains(otherEntityOfCurrentLink)) {
+				itemsToDelete.append(link);
 			}
 		}
 	}
@@ -1850,6 +1849,11 @@ void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 bool MainWindow::showConnectionRelatedMenus() const
 {
 	return mToolManager.customizer()->showConnectionRelatedMenus();
+}
+
+bool MainWindow::showUsagesRelatedMenus() const
+{
+	return mToolManager.customizer()->showUsagesRelatedMenus();
 }
 
 void MainWindow::showInTextEditor(QString const &title, QString const &text)

@@ -17,5 +17,30 @@ QString BpmnCustomizer::windowTitle() const
 
 QString BpmnCustomizer::productVersion() const
 {
-	return "0.1";
+	return "0.1.0";
+}
+
+bool BpmnCustomizer::showConnectionRelatedMenus() const
+{
+	return true;
+}
+
+QString BpmnCustomizer::addConnectionMenuName() const
+{
+	return QObject::tr("Set subprocess");
+}
+
+QString BpmnCustomizer::deleteConnectionMenuName() const
+{
+	return QObject::tr("Remove subprocess");
+}
+
+QString BpmnCustomizer::forwardConnectionMenuName() const
+{
+	return QObject::tr("Edit subprocess");
+}
+
+QString BpmnCustomizer::backwardConnectionMenuName() const
+{
+	return QObject::tr("Return to process caller");
 }

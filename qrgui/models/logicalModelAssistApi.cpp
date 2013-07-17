@@ -90,16 +90,18 @@ Id LogicalModelAssistApi::createConnectedElement(Id const &source, Id const &ele
 	return element;
 }
 
-void LogicalModelAssistApi::createConnected(Id const &sourceElement, Id const &elementType)
+Id LogicalModelAssistApi::createConnected(Id const &sourceElement, Id const &elementType)
 {
 	Id element = createConnectedElement(sourceElement, elementType);
 	connect(sourceElement, element);
+	return element;
 }
 
-void LogicalModelAssistApi::createUsed(Id const &sourceElement, Id const &elementType)
+Id LogicalModelAssistApi::createUsed(Id const &sourceElement, Id const &elementType)
 {
 	Id element = createConnectedElement(sourceElement, elementType);
 	addUsage(sourceElement, element);
+	return element;
 }
 
 IdList LogicalModelAssistApi::diagramsFromList(IdList const &list) const

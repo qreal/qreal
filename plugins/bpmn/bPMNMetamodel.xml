@@ -350,6 +350,69 @@
                     </properties>
                 </logic>
             </node>
+            <node name="Subprocess" displayedName="Subprocess">
+                <graphics>
+                    <picture sizex="210" sizey="160">
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="45" y2="115" fill-style="none" x1="18" x2="18"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="18" y2="18" fill-style="none" x1="45" x2="165"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="45" y2="115" fill-style="none" x1="192" x2="192"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="142" y2="142" fill-style="none" x1="45" x2="165"/>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="18" starty="45"/>
+                            <end endx="45" endy="18"/>
+                            <ctrl x="15" y="15"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="192" starty="45"/>
+                            <end endx="165" endy="18"/>
+                            <ctrl x="195" y="15"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="165" starty="142"/>
+                            <end endx="192" endy="115"/>
+                            <ctrl x="195" y="145"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="18" starty="115"/>
+                            <end endx="45" endy="142"/>
+                            <ctrl x="15" y="145"/>
+                        </curve>
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="95" x2="115"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="118" y2="132" fill-style="none" x1="105" x2="105"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="125" y2="125" fill-style="none" x1="98" x2="112"/>
+                    </picture>
+                    <labels>
+                        <label x="40" y="145" textBinded="Text"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="18" starty="45"/>
+                            <end endx="18" endy="115"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="45" starty="18"/>
+                            <end endx="165" endy="18"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="192" starty="45"/>
+                            <end endx="192" endy="115"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="45" starty="142"/>
+                            <end endx="165" endy="142"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <connections>
+                        <connection type="BPMNDiagramNode"/>
+                    </connections>
+                    <properties>
+                        <property type="string" name="Text" displayedName="Text"/>
+                    </properties>
+                </logic>
+            </node>
             <edge name="SequenceFlow" displayedName="Sequence Flow">
                 <graphics>
                     <lineType type="solidLine"/>
@@ -395,7 +458,6 @@
                         <label x="2" y="145" textBinded="text" rotation="-90"/>
                     </labels>
                     <ports/>
-                    <nonResizeable/>
                 </graphics>
                 <logic>
                     <container>
@@ -420,6 +482,7 @@
                         <label x="2" y="145" textBinded="text" rotation="-90"/>
                     </labels>
                     <ports/>
+                    <nonResizable/>
                 </graphics>
                 <logic>
                     <container>
@@ -454,6 +517,7 @@
             </group>
             <group name="Activities">
                 <element name="Task"/>
+                <element name="Subprocess"/>
             </group>
             <group name="Flow Objects">
                 <element name="SequenceFlow"/>
