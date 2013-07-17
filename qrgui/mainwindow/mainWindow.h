@@ -332,6 +332,8 @@ private:
 	/// @param name Widget's name in internal map
 	void showDockWidget(QDockWidget *dockWidget, QString const &name);
 
+	void deleteEdges(IdList &itemsToDelete);
+
 	QString getNextDirName(QString const &name);
 
 	void initMiniMap();

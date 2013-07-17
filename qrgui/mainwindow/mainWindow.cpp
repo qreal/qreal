@@ -585,10 +585,12 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 	IdList itemsToUpdate;
 	DoNothingCommand *multipleRemoveCommand = new DoNothingCommand;
 
+	deleteEdges(itemsToDelete);
 	// QGraphicsScene::selectedItems() returns items in no particular order,
 	// so we should handle parent-child relationships manually
 	while (!itemsToDelete.isEmpty()) {
 		Id const currentItem = itemsToDelete.at(0);
+
 		IdList const children = mModels->graphicalModelAssistApi().children(currentItem);
 		foreach (Id const &child, children) {
 			itemsToDelete.removeAll(child);
@@ -615,6 +617,29 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 
 	multipleRemoveCommand->removeDuplicates();
 	mController->execute(multipleRemoveCommand);
+}
+
+void MainWindow::deleteEdges(IdList &itemsToDelete)
+{
+	IdList elementsToDelete = itemsToDelete;
+	int i = 0;
+	while (i < elementsToDelete.count()) {
+		Id idOfCurElement = elementsToDelete.at(i);
+		IdList const children = mModels->graphicalModelAssistApi().children(idOfCurElement);
+		elementsToDelete.append(children);
+		i++;
+	}
+	for (int i = 0; i < elementsToDelete.count(); i++) {
+		Id idOfCurElement = elementsToDelete.at(i);
+		IdList linksOfCurElement = mModels->mutableLogicalRepoApi().links(idOfCurElement);
+		for (int j = 0; j < linksOfCurElement.count(); j++) {
+			Id otherEntityOfCurLink = mModels->mutableLogicalRepoApi().otherEntityFromLink(linksOfCurElement.at(j), idOfCurElement);
+			if (otherEntityOfCurLink == Id::rootId()
+					|| elementsToDelete.contains(otherEntityOfCurLink)) {
+				itemsToDelete.append(linksOfCurElement.at(j));
+			}
+		}
+	}
 }
 
 void MainWindow::removeReferences(Id const &id)
