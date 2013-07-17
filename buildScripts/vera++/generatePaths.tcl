@@ -32,5 +32,7 @@ set dirList [split $file_data "\n"]
 set parameters ""
 set parameters [concat $parameters [getFiles [pwd] $dirList]]
 set fo [open "buildScripts/vera++/params" "w" ]
-puts $fo $parameters
+foreach par $parameters {
+  puts $fo $par
+}
 close $fo
