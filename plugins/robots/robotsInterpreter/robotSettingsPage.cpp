@@ -21,6 +21,7 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
 	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
 	connect(mUi->realModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
+	connect(mUi->textVisibleCheckBox, SIGNAL(toggled(bool)), this, SLOT(changeTextVisible(bool)));
 
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
 	QString const defaultPortName = SettingsManager::value("bluetoothPortName").toString();
@@ -148,6 +149,16 @@ bool PreferencesRobotSettingsPage::enableMotorNoise() const
 bool PreferencesRobotSettingsPage::textVisible() const
 {
 	return mUi->textVisibleCheckBox->checkState() == Qt::Checked;
+}
+
+void PreferencesRobotSettingsPage::changeTextVisible(bool isChecked)
+{
+	emit textVisibleChanged(isChecked);
+}
+
+void PreferencesRobotSettingsPage::changeTextVisibleOnSettingPage(bool isChecked)
+{
+	mUi->textVisibleCheckBox->setChecked(isChecked);
 }
 
 QString PreferencesRobotSettingsPage::selectedCommunication() const
