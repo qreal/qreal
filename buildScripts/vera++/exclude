@@ -1,7 +1,6 @@
 qreal/buildScripts
 qreal/plugins
 qreal/installer
-qreal/qrgui
 qreal/qrmc
 qreal/qrrepo
 qreal/qrutils

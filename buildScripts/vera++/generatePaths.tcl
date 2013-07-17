@@ -12,9 +12,7 @@ proc getFiles { folder dirList } {
   }
   if {$matched == 1} { 
     return ""
-    #puts afterReturn
   }
-  puts $folder
   foreach sourceFile [glob -nocomplain -type f -directory $folder *] {
     if [regexp -nocase {.*[.]cpp$|.*[.]h$} $sourceFile ] {
       set listOfFiles [concat $listOfFiles $sourceFile]

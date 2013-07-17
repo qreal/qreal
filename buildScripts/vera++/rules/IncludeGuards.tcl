@@ -9,9 +9,12 @@ proc checkGuards { fileName } {
     if {[regexp {^[\t ]*#pragma once[\t\r\n ]*} $line] } {
       set guardFound 1 
     }
-    if {[regexp {^[\t ]*#ifn?def .*|^[\t ]*#endif.*} $line] } {
-      set guardFound 1
-      report $fileName $lineCount "Old-style include guard"
+    if {[regexp {^[\t ]*#ifn?def .*} $line] } {
+      set nextLine [getLine $fileName [expr $lineCount + 1]]
+      if {[regexp {^[\t ]*#define .*} $nextLine]} {
+	set guardFound 1
+	report $fileName $lineCount "Old-style include guard"
+      }
     }
     incr lineCount
   }
