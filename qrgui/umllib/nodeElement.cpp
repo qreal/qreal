@@ -309,7 +309,9 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::alignToGrid()
 {
-	mGrid->alignToGrid();
+	if (SettingsManager::value("ActivateGrid").toBool()) {
+		mGrid->alignToGrid();
+	}
 }
 
 void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
@@ -386,7 +388,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		event->setPos(event->lastPos());
 
 		NodeElement const * const parent = dynamic_cast<NodeElement const * const>(parentItem());
-		if (parent) {
+		if (parent && !SettingsManager::value("ActivateGrid").toBool()) {
 			// For some reason regular Element::mouseMoveEvent() does not work with our expanding containers.
 			// Better rewrite them from scratch.
 
@@ -488,10 +490,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 	delUnusedLines();
-
-	if (SettingsManager::value("ActivateGrid").toBool() || mSwitchGridAction.isChecked()) {
-		alignToGrid();
-	}
 
 	storeGeometry();
 
