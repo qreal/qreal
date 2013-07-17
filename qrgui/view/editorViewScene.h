@@ -182,7 +182,7 @@ private:
 	/**
 	 * @return true, if connection menu was added
 	 */
-	bool createAddConnectionMenu(Element const * const element
+	void createAddConnectionMenu(Element const * const element
 			, QMenu &contextMenu, QString const &menuName
 			, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
 			, qReal::IdList const &connectableDiagrams, const char *slot) const;

@@ -77,6 +77,27 @@ public:
 	{
 		return QObject::tr("Delete usage");
 	}
+
+	virtual QString forwardConnectionMenuName() const
+	{
+		return QObject::tr("Forward connection");
+	}
+
+	virtual QString backwardConnectionMenuName() const
+	{
+		return QObject::tr("Backward connection");
+	}
+
+	virtual QString forwardUsageMenuName() const
+	{
+		return QObject::tr("Uses");
+	}
+
+	virtual QString backwardUsageMenuName() const
+	{
+		return QObject::tr("Used in");
+	}
+
 };
 
 }

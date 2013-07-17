@@ -773,6 +773,10 @@ QPointF EditorViewScene::offsetByDirection(int direction)
 
 void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const
 {
+	if (ids.isEmpty()) {
+		return;
+	}
+
 	QMenu *menu = goToMenu->addMenu(name);
 	foreach (Id element, ids) {
 		QAction *action = menu->addAction(mMVIface->logicalAssistApi()->logicalRepoApi().name(element));
@@ -781,7 +785,7 @@ void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &n
 	}
 }
 
-bool EditorViewScene::createAddConnectionMenu(Element const * const element
+void EditorViewScene::createAddConnectionMenu(Element const * const element
 		, QMenu &contextMenu, QString const &menuName
 		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
 		, IdList const &connectableDiagrams, const char *slot) const
@@ -817,9 +821,7 @@ bool EditorViewScene::createAddConnectionMenu(Element const * const element
 	if (hasAnyActions || !connectableDiagrams.empty())
 	{
 		contextMenu.addMenu(addConnectionMenu);
-		return true;
 	}
-	return false;
 }
 
 void EditorViewScene::createDisconnectMenu(Element const * const element, QMenu &contextMenu, QString const &menuName
@@ -846,9 +848,8 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 	if (mWindow->showConnectionRelatedMenus() || mWindow->showUsagesRelatedMenus()) {
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
-		bool needGoToMenu = false;
 		if (mWindow->showConnectionRelatedMenus()) {
-			needGoToMenu = createAddConnectionMenu(element, contextMenu
+			createAddConnectionMenu(element, contextMenu
 					, mWindow->toolManager().customizer()->addConnectionMenuName()
 					, mWindow->editorManager().connectedTypes(element->id().type())
 					, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
@@ -862,7 +863,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		}
 
 		if (mWindow->showUsagesRelatedMenus()) {
-			needGoToMenu = needGoToMenu || createAddConnectionMenu(element, contextMenu
+			createAddConnectionMenu(element, contextMenu
 					, mWindow->toolManager().customizer()->addUsageMenuName()
 					, mWindow->editorManager().usedTypes(element->id().type())
 					, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
@@ -875,22 +876,15 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 					, SLOT(deleteUsageActionTriggered()));
 		}
 
-		if (needGoToMenu) {
-			QMenu * const goToMenu = contextMenu.addMenu(tr("Go to"));
+		createGoToSubmenu(&contextMenu, mWindow->toolManager().customizer()->forwardConnectionMenuName()
+				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
+		createGoToSubmenu(&contextMenu, mWindow->toolManager().customizer()->backwardConnectionMenuName()
+				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
 
-			if (mWindow->showConnectionRelatedMenus()) {
-				createGoToSubmenu(goToMenu, tr("Forward connection")
-						, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
-				createGoToSubmenu(goToMenu, tr("Backward connection")
-						, mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
-			}
-			if (mWindow->showUsagesRelatedMenus()) {
-				createGoToSubmenu(goToMenu, tr("Uses")
-						, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
-				createGoToSubmenu(goToMenu, tr("Used in")
-						, mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
-			}
-		}
+		createGoToSubmenu(&contextMenu, mWindow->toolManager().customizer()->forwardUsageMenuName()
+				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
+		createGoToSubmenu(&contextMenu, mWindow->toolManager().customizer()->backwardUsageMenuName()
+				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
 	}
 	if (mWindow->editorManager().isInterpretationMode()) {
 		contextMenu.addSeparator();

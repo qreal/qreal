@@ -16,5 +16,8 @@ public:
 
 	virtual QString addConnectionMenuName() const;
 	virtual QString deleteConnectionMenuName() const;
+
+	virtual QString forwardConnectionMenuName() const;
+	virtual QString backwardConnectionMenuName() const;
 };
 

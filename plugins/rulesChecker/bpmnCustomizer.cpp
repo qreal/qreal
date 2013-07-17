@@ -17,7 +17,7 @@ QString BpmnCustomizer::windowTitle() const
 
 QString BpmnCustomizer::productVersion() const
 {
-	return "0.1";
+	return "0.1.0";
 }
 
 bool BpmnCustomizer::showConnectionRelatedMenus() const
@@ -33,4 +33,14 @@ QString BpmnCustomizer::addConnectionMenuName() const
 QString BpmnCustomizer::deleteConnectionMenuName() const
 {
 	return QObject::tr("Remove subprocess");
+}
+
+QString BpmnCustomizer::forwardConnectionMenuName() const
+{
+	return QObject::tr("Edit subprocess");
+}
+
+QString BpmnCustomizer::backwardConnectionMenuName() const
+{
+	return QObject::tr("Return to process caller");
 }
