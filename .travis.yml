@@ -14,7 +14,7 @@ install:
 script:
   - sudo sh buildScripts/vera++/CopyToVLib.sh
   - tclsh buildScripts/vera++/generatePaths.tcl
-  - vera++ --error -profile allRules - <buildScripts/vera++/params
+  - vera++ --error -p allRules - <buildScripts/vera++/params
   - qmake qreal.pro
   - make -j2
   - qmake qrealRobots.pro
