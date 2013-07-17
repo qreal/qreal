@@ -35,8 +35,8 @@ public:
 	void disconnect(Id const &source, Id const &destination);
 	void addUsage(Id const &source, Id const &destination);
 	void deleteUsage(Id const &source, Id const &destination);
-	void createConnected(Id const &sourceElement, Id const &elementType);
-	void createUsed(Id const &sourceElement, Id const &elementType);
+	Id createConnected(Id const &sourceElement, Id const &elementType);
+	Id createUsed(Id const &sourceElement, Id const &elementType);
 	Id createConnectedElement(Id const &source, Id const &elementType);
 	IdList diagramsAbleToBeConnectedTo(Id const &element) const;
 	IdList diagramsAbleToBeUsedIn(Id const &element) const;

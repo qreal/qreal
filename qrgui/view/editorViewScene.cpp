@@ -773,6 +773,10 @@ QPointF EditorViewScene::offsetByDirection(int direction)
 
 void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const
 {
+	if (ids.isEmpty()) {
+		return;
+	}
+
 	QMenu *menu = goToMenu->addMenu(name);
 	foreach (Id element, ids) {
 		QAction *action = menu->addAction(mMVIface->logicalAssistApi()->logicalRepoApi().name(element));
@@ -841,37 +845,46 @@ void EditorViewScene::createDisconnectMenu(Element const * const element, QMenu 
 
 void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
 {
-	if (mainWindow()->showConnectionRelatedMenus()) {
+	if (mWindow->showConnectionRelatedMenus() || mWindow->showUsagesRelatedMenus()) {
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
-		createAddConnectionMenu(element, contextMenu, tr("Add connection")
-				, mWindow->editorManager().connectedTypes(element->id().type())
-				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
-				, mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
-				, SLOT(connectActionTriggered()));
+		if (mWindow->showConnectionRelatedMenus()) {
+			createAddConnectionMenu(element, contextMenu
+					, mWindow->toolManager().customizer()->addConnectionMenuName()
+					, mWindow->editorManager().connectedTypes(element->id().type())
+					, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+					, mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
+					, SLOT(connectActionTriggered()));
 
-		createDisconnectMenu(element, contextMenu, tr("Disconnect")
-				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
-				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
-				, SLOT(disconnectActionTriggered()));
+			createDisconnectMenu(element, contextMenu, mWindow->toolManager().customizer()->deleteConnectionMenuName()
+					, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+					, mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
+					, SLOT(disconnectActionTriggered()));
+		}
 
-		createAddConnectionMenu(element, contextMenu, tr("Add usage")
-				, mWindow->editorManager().usedTypes(element->id().type())
-				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
-				, mMVIface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
-				, SLOT(addUsageActionTriggered()));
+		if (mWindow->showUsagesRelatedMenus()) {
+			createAddConnectionMenu(element, contextMenu
+					, mWindow->toolManager().customizer()->addUsageMenuName()
+					, mWindow->editorManager().usedTypes(element->id().type())
+					, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
+					, mMVIface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
+					, SLOT(addUsageActionTriggered()));
 
-		createDisconnectMenu(element, contextMenu, tr("Delete usage")
-				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
-				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
-				, SLOT(deleteUsageActionTriggered()));
+			createDisconnectMenu(element, contextMenu, mWindow->toolManager().customizer()->deleteUsageMenuName()
+					, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
+					, mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
+					, SLOT(deleteUsageActionTriggered()));
+		}
 
-		QMenu * const goToMenu = contextMenu.addMenu(tr("Go to"));
+		createGoToSubmenu(&contextMenu, mWindow->toolManager().customizer()->forwardConnectionMenuName()
+				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
+		createGoToSubmenu(&contextMenu, mWindow->toolManager().customizer()->backwardConnectionMenuName()
+				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
 
-		createGoToSubmenu(goToMenu, tr("Forward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
-		createGoToSubmenu(goToMenu, tr("Backward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
-		createGoToSubmenu(goToMenu, tr("Uses"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
-		createGoToSubmenu(goToMenu, tr("Used in"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
+		createGoToSubmenu(&contextMenu, mWindow->toolManager().customizer()->forwardUsageMenuName()
+				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
+		createGoToSubmenu(&contextMenu, mWindow->toolManager().customizer()->backwardUsageMenuName()
+				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
 	}
 	if (mWindow->editorManager().isInterpretationMode()) {
 		contextMenu.addSeparator();
@@ -1299,7 +1312,9 @@ void EditorViewScene::connectActionTriggered()
 	if (!action->text().startsWith("New ")) {
 		mMVIface->logicalAssistApi()->connect(source, destination);
 	} else {
-		mMVIface->logicalAssistApi()->createConnected(source, destination);
+		Id logicalId = mMVIface->logicalAssistApi()->createConnected(source, destination);
+		mMVIface->graphicalAssistApi()->createElement(Id::rootId(), logicalId, true
+				, mWindow->models()->logicalRepoApi().name(logicalId), QPointF(0, 0));
 	}
 }
 
@@ -1312,7 +1327,9 @@ void EditorViewScene::addUsageActionTriggered()
 	if (!action->text().startsWith("New ")) {
 		mMVIface->logicalAssistApi()->addUsage(source, destination);
 	} else {
-		mMVIface->logicalAssistApi()->createUsed(source, destination);
+		Id logicalId = mMVIface->logicalAssistApi()->createUsed(source, destination);
+		mMVIface->graphicalAssistApi()->createElement(Id::rootId(), logicalId, true
+				, mWindow->models()->logicalRepoApi().name(logicalId), QPointF(0, 0));
 	}
 }
 

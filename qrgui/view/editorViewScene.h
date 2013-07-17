@@ -179,6 +179,9 @@ private:
 	void redraw();
 	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
+	/**
+	 * @return true, if connection menu was added
+	 */
 	void createAddConnectionMenu(Element const * const element
 			, QMenu &contextMenu, QString const &menuName
 			, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
