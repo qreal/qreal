@@ -56,7 +56,8 @@ void Label::generateCodeForConstructor(OutFile &out)
 	out() << "			" + titleName() + "->setHard(" + (mIsHard ? "true" : "false") + ");\n";
 
 	// TODO: вынести отсюда в родительский класс.
-	out() << "			" + titleName() + "->setFlags(0);\n"
+	out()
+//		<< "			" + titleName() + "->setFlags(0);\n"
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
 		<< "			titles.append(" + titleName() + ");\n";
 }
