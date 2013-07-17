@@ -310,7 +310,10 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void NodeElement::alignToGrid()
 {
 	if (SettingsManager::value("ActivateGrid").toBool()) {
-		mGrid->alignToGrid();
+		NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
+		if (!parent || !parent->mElementImpl->isSortingContainer()) {
+			mGrid->alignToGrid();
+		}
 	}
 }
 
