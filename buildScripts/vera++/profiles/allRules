@@ -3,7 +3,7 @@
 set rules {
   IncludeOrder
   CommaAtTheEnd
-  IncludeGuars
+  IncludeGuards
   LineLength
   NoSpacesAtTheStart
 }
