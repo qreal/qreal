@@ -1320,7 +1320,7 @@ void EditorViewScene::connectActionTriggered()
 	} else {
 		Id logicalId = mMVIface->logicalAssistApi()->createConnected(source, destination);
 		mMVIface->graphicalAssistApi()->createElement(Id::rootId(), logicalId, true
-				, mWindow->editorManager().friendlyName(logicalId.type()), QPointF(0, 0));
+				, mWindow->models()->logicalRepoApi().name(logicalId), QPointF(0, 0));
 	}
 }
 
@@ -1335,7 +1335,7 @@ void EditorViewScene::addUsageActionTriggered()
 	} else {
 		Id logicalId = mMVIface->logicalAssistApi()->createUsed(source, destination);
 		mMVIface->graphicalAssistApi()->createElement(Id::rootId(), logicalId, true
-				, mWindow->editorManager().friendlyName(logicalId.type()), QPointF(0, 0));
+				, mWindow->models()->logicalRepoApi().name(logicalId), QPointF(0, 0));
 	}
 }
 
