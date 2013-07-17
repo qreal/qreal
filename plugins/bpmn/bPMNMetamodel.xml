@@ -395,7 +395,6 @@
                         <label x="2" y="145" textBinded="text" rotation="-90"/>
                     </labels>
                     <ports/>
-                    <nonResizeable/>
                 </graphics>
                 <logic>
                     <container>
@@ -420,6 +419,7 @@
                         <label x="2" y="145" textBinded="text" rotation="-90"/>
                     </labels>
                     <ports/>
+                    <nonResizable/>
                 </graphics>
                 <logic>
                     <container>

@@ -273,15 +273,16 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	mResizeCommand = new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id());
 	mResizeCommand->startTracking();
 	if (isSelected()) {
-		if (QRectF(mContents.topLeft(), QSizeF(4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		int dragArea = SettingsManager::instance()->value("DragArea").toInt();
+		if (QRectF(mContents.topLeft(), QSizeF(dragArea, dragArea)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopLeft;
-		} else if (QRectF(mContents.topRight(), QSizeF(-4, 4)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		} else if (QRectF(mContents.topRight(), QSizeF(-dragArea, dragArea)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = TopRight;
-		} else if (QRectF(mContents.bottomRight(), QSizeF(-12, -12)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		} else if (QRectF(mContents.bottomRight(), QSizeF(-dragArea, -dragArea)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = BottomRight;
-		} else if (QRectF(mContents.bottomLeft(), QSizeF(4, -4)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		} else if (QRectF(mContents.bottomLeft(), QSizeF(dragArea, -dragArea)).contains(event->pos()) && mElementImpl->isResizeable()) {
 			mDragState = BottomLeft;
-		} else if (QRectF(mContents.topLeft(), QSizeF(20, 20)).contains(event->pos()) && mElementImpl->isContainer()) {
+		} else if (QRectF(QPointF(-20, 0), QPointF(0, 20)).contains(event->pos()) && mElementImpl->isContainer()) {
 			changeFoldState();
 		} else {
 			Element::mousePressEvent(event);
@@ -347,6 +348,9 @@ void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
 	// of element could be moved inside his parent
 
 	if (newParent != NULL) {
+		if (mHighlightedNode) {
+			mHighlightedNode->erasePlaceholder(false);
+		}
 		mHighlightedNode = newParent;
 		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), mouseScenePos);
 	} else if (mHighlightedNode != NULL) {
@@ -371,24 +375,21 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	QRectF newContents = mContents;
 	QPointF newPos = mPos;
 
+	// expanding containers are turned off
+	// TODO: bring them back (but not their bugs =))
+	bool needResizeParent = false;
+
 	if (mDragState == None) {
-		if (!isPort() && (flags() & ItemIsMovable)) {
-			recalculateHighlightedNode(event->scenePos());
+		if (!(flags() & ItemIsMovable)) {
+			return;
 		}
+
+		recalculateHighlightedNode(event->scenePos());
 
 		// it is needed for sendEvent() to every isSelected element thro scene
 		event->setPos(event->lastPos());
 
-		NodeElement const * const parent = dynamic_cast<NodeElement const * const>(parentItem());
-		if (parent) {
-			// For some reason regular Element::mouseMoveEvent() does not work with our expanding containers.
-			// Better rewrite them from scratch.
-
-			QPointF const diff = event->scenePos() - event->lastScenePos();
-			moveBy(diff.x(), diff.y());
-		} else {
-			Element::mouseMoveEvent(event);
-		}
+		Element::mouseMoveEvent(event);
 
 		mGrid->mouseMoveEvent(event);
 		alignToGrid();
@@ -396,18 +397,20 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
 
+		needResizeParent = true;
+
 		QPointF parentPos = QPointF(0, 0);
 		QGraphicsItem *parItem = parentItem();
 		if (parItem) {
 			parentPos = parItem->scenePos();
 		}
 
-		qreal const newX = event->pos().x();
-		qreal const newY = event->pos().y();
+		qreal newX = event->pos().x();
+		qreal newY = event->pos().y();
 
 		switch (mDragState) {
 		case TopLeft: {
-			newContents.setTopLeft(QPoint(newX, newY));
+			newContents.setTopLeft(event->pos() - event->lastPos());
 			newPos = event->scenePos() - parentPos;
 			break;
 		}
@@ -417,8 +420,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			break;
 		}
 		case TopRight: {
-			newContents.setTopRight(QPoint(newX, newY));
-			newPos = QPoint(pos().x(), event->scenePos().y() - parentPos.y());
+			newContents.setTopRight(QPoint(newX, event->pos().y() - event->lastPos().y()));
+			newPos = QPoint(newPos.x(), event->scenePos().y() - parentPos.y());
 			break;
 		}
 		case Left: {
@@ -431,7 +434,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			break;
 		}
 		case BottomLeft: {
-			newContents.setBottomLeft(QPoint(newX, newY));
+			newContents.setBottomLeft(QPoint(event->pos().x() - event->lastPos().x(), newY));
 			newPos = QPoint(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
 		}
@@ -452,10 +455,9 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			newContents.setWidth(size);
 			newContents.setHeight(size);
 		}
-
 	}
 
-	resize(newContents, newPos);
+	resize(newContents, newPos, needResizeParent);
 
 	if (isPort()) {
 		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
@@ -685,7 +687,9 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
 	switch (change) {
 	case ItemPositionHasChanged:
-		alignToGrid();
+		if (mDragState == None) {
+			alignToGrid();
+		}
 		adjustLinks(true);
 		return value;
 
@@ -712,16 +716,13 @@ QRectF NodeElement::contentsRect() const
 
 QRectF NodeElement::boundingRect() const
 {
-	return mContents.adjusted(-kvadratik, -kvadratik, kvadratik, kvadratik);
+	return mContents.adjusted(-2 * kvadratik, -2 * kvadratik, kvadratik, kvadratik);
 }
 
 void NodeElement::updateData()
 {
 	Element::updateData();
 	if (!mMoving) {
-		mMoving = true;
-		storeGeometry();
-		mMoving = false;
 		QPointF newpos = mGraphicalAssistApi->position(id());
 		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
 
@@ -832,35 +833,27 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 			painter->save();
 
 			QBrush b;
-			b.setStyle(Qt::SolidPattern);
-
-			if (mIsFolded) {
-				b.setColor(Qt::red);
-				painter->setPen(Qt::red);
-			}
-			else {
-				b.setColor(Qt::green);
-				painter->setPen(Qt::green);
-			}
-			painter->setBrush(b);
 
 			if (mElementImpl->isContainer()) {
-				painter->drawRect(QRectF(mContents.topLeft(), QSizeF(20, 20)));
+				b.setStyle(Qt::NoBrush);
+				painter->setBrush(b);
+
+				painter->drawRect(QRectF(QPointF(-20, 0), QPointF(0, 20)));
+
+				painter->drawLine(-15, 10, -5, 10);
+				if (!mIsFolded) {
+					painter->drawLine(-10, 5, -10, 15);
+				}
 			}
 
+			b.setStyle(Qt::SolidPattern);
 			b.setColor(Qt::blue);
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
-
-			painter->drawRect(QRectF(mContents.topLeft(), QSizeF(4, 4)));
-			painter->drawRect(QRectF(mContents.topRight(), QSizeF(-4, 4)));
-			painter->drawRect(QRectF(mContents.bottomLeft(), QSizeF(4, -4)));
+			painter->save();
 
 			if (mElementImpl->isResizeable()) {
-				painter->translate(mContents.bottomRight());
-				painter->drawLine(QLineF(-4, 0, 0, -4));
-				painter->drawLine(QLineF(-8, 0, 0, -8));
-				painter->drawLine(QLineF(-12, 0, 0, -12));
+				drawLinesForResize(painter);
 			} else {
 				painter->drawRect(QRectF(mContents.bottomRight(), QSizeF(-4, -4)));
 			}
@@ -986,10 +979,14 @@ Element* NodeElement::getPlaceholderNextElement()
 void NodeElement::erasePlaceholder(bool redraw)
 {
 	setOpacity(1);
-	if(mPlaceholder != NULL) {
-		delete mPlaceholder;
-		mPlaceholder = NULL;
+
+	if (!mPlaceholder) {
+		return;
 	}
+
+	delete mPlaceholder;
+	mPlaceholder = NULL;
+
 	if(redraw) {
 		resize();
 	}
@@ -1139,10 +1136,34 @@ void NodeElement::resize(QRectF const &newContents)
 	resize(newContents, pos());
 }
 
-void NodeElement::resize(QRectF const &newContents, QPointF const &newPos)
+void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool needResizeParent)
 {
 	ResizeHandler handler(this);
-	handler.resize(newContents, newPos);
+	handler.resize(newContents, newPos, needResizeParent);
+}
+
+void NodeElement::drawLinesForResize(QPainter *painter)
+{
+	painter->translate(mContents.topRight());
+	drawSeveralLines(painter, -1, 1);
+	painter->save();
+	painter->translate(mContents.bottomRight());
+	drawSeveralLines(painter, -1, -1);
+	painter->save();
+	painter->translate(mContents.bottomLeft());
+	drawSeveralLines(painter, 1, -1);
+	painter->save();
+	painter->translate(mContents.topLeft());
+	drawSeveralLines(painter, 1, 1);
+}
+
+void NodeElement::drawSeveralLines(QPainter *painter, int dx, int dy)
+{
+	int dragArea = SettingsManager::instance()->value("DragArea").toInt();
+	for (int i = 1; i * 4 < dragArea + 1; i++) {
+		painter->drawLine(QLineF(4 * dx * i, 0, 0, 4 * dy * i));
+	}
+	painter->restore();
 }
 
 bool NodeElement::isFolded() const
@@ -1227,4 +1248,9 @@ AbstractCommand *NodeElement::changeParentCommand(Id const &newParent, QPointF c
 void NodeElement::updateShape(QString const &shape) const
 {
 	mElementImpl->updateRendererContent(shape);
+}
+
+bool NodeElement::operator<(NodeElement const &other) const
+{
+	return y() < other.y();
 }

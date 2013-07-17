@@ -71,7 +71,7 @@ public:
 	void setDst(NodeElement *node);
 	/// prepare edge to moving from the linker
 	void tuneForLinker();
-	qreal portIdOn(NodeElement const *node) const;
+	QPair<qreal, qreal> portIdOn(NodeElement const *node) const;
 	QPointF nextFrom(NodeElement const *node) const;
 	QPointF connectionPoint(NodeElement const *node) const;
 	NodeElement* otherSide(NodeElement const *node) const;
@@ -146,8 +146,6 @@ private slots:
 	void minimizeHandler(QPointF const &pos);
 	/// delete Segment with nearest with pos ends
 	void deleteSegmentHandler(QPointF const &pos);
-
-	void squarizeAndAdjustHandler();
 
 	/// change link's direction
 	void reverseHandler(QPointF const &pos);

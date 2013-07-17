@@ -25,6 +25,7 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	// changing grid size in QReal:Robots is forbidden
 	connect(mUi->gridWidthSlider, SIGNAL(sliderMoved(int)), this, SLOT(widthGridSliderMoved(int)));
 	connect(mUi->indexGridSlider, SIGNAL(sliderMoved(int)), this, SLOT(indexGridSliderMoved(int)));
+	connect(mUi->dragAreaSizeSlider, SIGNAL(sliderMoved(int)), this, SLOT(dragAreaSliderMoved(int)));
 	connect(mUi->fontCheckBox, SIGNAL(toggled(bool)), this, SLOT(manualFontCheckBoxChecked(bool)));
 	connect(mUi->fontSelectionButton, SIGNAL(clicked()),this, SLOT(fontSelectionButtonClicked()));
 	connect(mUi->paletteComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(paletteComboBoxClicked(int)));
@@ -40,6 +41,8 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	mUi->gridWidthSlider->setValue(mWidthGrid);
 	mUi->indexGridSlider->setValue(mIndexGrid);
 
+	mDragArea = mUi->dragAreaSizeSlider->value();
+	SettingsManager::setValue("DragArea", mDragArea);
 	restoreSettings();
 }
 
@@ -97,6 +100,11 @@ void PreferencesEditorPage::indexGridSliderMoved(int value)
 	emit gridChanged();
 }
 
+void PreferencesEditorPage::dragAreaSliderMoved(int value)
+{
+	SettingsManager::setValue("DragArea", value);
+}
+
 void PreferencesEditorPage::save()
 {
 	SettingsManager::setValue("EmbeddedLinkerIndent", mUi->embeddedLinkerIndentSlider->value());
@@ -116,8 +124,10 @@ void PreferencesEditorPage::save()
 
 	mWidthGrid = mUi->gridWidthSlider->value();
 	mIndexGrid = mUi->indexGridSlider->value();
+	mDragArea = mUi->dragAreaSizeSlider->value();
 	SettingsManager::setValue("GridWidth", mWidthGrid);
 	SettingsManager::setValue("IndexGrid", mIndexGrid);
+	SettingsManager::setValue("DragArea", mDragArea);
 
 	mShowGridAction->setChecked(mUi->showGridCheckBox->isChecked());
 	mShowAlignmentAction->setChecked(mUi->showAlignmentCheckBox->isChecked());

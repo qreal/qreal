@@ -585,6 +585,7 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 	IdList itemsToUpdate;
 	DoNothingCommand *multipleRemoveCommand = new DoNothingCommand;
 
+	addEdgesToBeDeleted(itemsToDelete);
 	// QGraphicsScene::selectedItems() returns items in no particular order,
 	// so we should handle parent-child relationships manually
 	while (!itemsToDelete.isEmpty()) {
@@ -615,6 +616,28 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 
 	multipleRemoveCommand->removeDuplicates();
 	mController->execute(multipleRemoveCommand);
+}
+
+void MainWindow::addEdgesToBeDeleted(IdList &itemsToDelete)
+{
+	IdList elementsToDelete = itemsToDelete;
+	int i = 0;
+	while (i < elementsToDelete.count()) {
+		Id const currentElement = elementsToDelete.at(i);
+		IdList const children = mModels->graphicalModelAssistApi().children(currentElement);
+		elementsToDelete.append(children);
+		i++;
+	}
+	foreach (Id const &currentElement, elementsToDelete) {
+		IdList const linksOfCurrentElement = mModels->mutableLogicalRepoApi().links(currentElement);
+		foreach (Id const &link, linksOfCurrentElement) {
+			Id const otherEntityOfCurrentLink
+					= mModels->mutableLogicalRepoApi().otherEntityFromLink(link, currentElement);
+			if (otherEntityOfCurrentLink == Id::rootId() || elementsToDelete.contains(otherEntityOfCurrentLink)) {
+				itemsToDelete.append(link);
+			}
+		}
+	}
 }
 
 void MainWindow::removeReferences(Id const &id)
