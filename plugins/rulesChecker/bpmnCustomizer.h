@@ -12,5 +12,6 @@ public:
 	virtual void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface);
 
 	virtual bool showInterpeterButton() const;
+	virtual bool showConnectionRelatedMenus() const;
 };
 

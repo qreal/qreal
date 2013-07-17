@@ -19,3 +19,8 @@ QString BpmnCustomizer::productVersion() const
 {
 	return "0.1";
 }
+
+bool BpmnCustomizer::showConnectionRelatedMenus() const
+{
+	return true;
+}
