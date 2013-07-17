@@ -719,7 +719,7 @@ QRectF NodeElement::contentsRect() const
 
 QRectF NodeElement::boundingRect() const
 {
-	return mContents.adjusted(-2*kvadratik, -2*kvadratik, kvadratik, kvadratik);
+	return mContents.adjusted(-2 * kvadratik, -2 * kvadratik, kvadratik, kvadratik);
 }
 
 void NodeElement::updateData()
