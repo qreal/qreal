@@ -65,11 +65,11 @@ void SettingsManager::saveData()
 
 void SettingsManager::saveSettings(QString fileNameForExport)
 {
-	QSettings *settingsForSave = new QSettings(fileNameForExport,QSettings::IniFormat);
+	QSettings settingsForSave(fileNameForExport,QSettings::IniFormat);
 	foreach (QString const &name, mData.keys()) {
-		settingsForSave->setValue(name, mData[name]);
+		settingsForSave.setValue(name, mData[name]);
 	}
-	settingsForSave->sync();
+	settingsForSave.sync();
 }
 
 void SettingsManager::load()
@@ -81,9 +81,9 @@ void SettingsManager::load()
 
 void SettingsManager::loadSettings(QString  const &fileNameForImport)
 {
-	QSettings *settings = new QSettings(fileNameForImport,QSettings::IniFormat);
-	foreach (QString const &name, settings->allKeys()) {
-		mData[name] = settings->value(name);
+	QSettings settings(fileNameForImport,QSettings::IniFormat);
+	foreach (QString const &name, settings.allKeys()) {
+		mData[name] = settings.value(name);
 	}
 	saveData();
 }

@@ -1,3 +1,5 @@
+QT += widgets
+
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../bin/plugins/

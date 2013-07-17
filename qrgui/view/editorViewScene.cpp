@@ -15,6 +15,7 @@
 #include "../controller/commands/createElementCommand.h"
 #include "../controller/commands/createGroupCommand.h"
 #include "../umllib/private/reshapeEdgeCommand.h"
+#include "../umllib/private/resizeCommand.h"
 #include "../controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal;
@@ -436,6 +437,7 @@ qReal::Id EditorViewScene::createElement(QString const &str)
 {
 	qReal::Id result = createElement(str, mCreatePoint, true, &mLastCreatedWithEdgeCommand);
 	mLastCreatedWithEdge = getElem(result);
+	mShouldReparentItems = false;
 	return result;
 }
 
@@ -721,22 +723,27 @@ void EditorViewScene::moveSelectedItems(int direction)
 		QPointF newPos = item->pos();
 		newPos += mOffset;
 
-		Element* element = dynamic_cast<Element*>(item);
-		if (element) {
-			element->setPos(newPos);
-		}
-
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
+			ResizeCommand *resizeCommand = new ResizeCommand(this, node->id());
+			resizeCommand->startTracking();
+			node->setPos(newPos);
 			node->alignToGrid();
 			node->adjustLinks(true);
+			resizeCommand->stopTracking();
+			mController->execute(resizeCommand);
 		} else {
 			EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
+			ReshapeEdgeCommand *edgeCommand = new ReshapeEdgeCommand(this, edge->id());
+			edgeCommand->startTracking();
+			edge->setPos(newPos);
 			if (edge && !(edge->src() && edge->dst()) && (edge->src() || edge->dst())
 					&& (edge->src() ? !edge->src()->isSelected() : true)
 					&& (edge->dst() ? !edge->dst()->isSelected() : true)) {
 				edge->adjustLink();
 			}
+			edgeCommand->stopTracking();
+			mController->execute(edgeCommand);
 		}
 	}
 

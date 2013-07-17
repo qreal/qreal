@@ -78,9 +78,6 @@ NodeElement::NodeElement(ElementImpl* impl)
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateNodeEdges()));
-
-	drawLinesForResize(new QPainter());
-	this->setFocus();
 }
 
 NodeElement::~NodeElement()
@@ -693,8 +690,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 	NodeElement *item = dynamic_cast<NodeElement*>(value.value<QGraphicsItem*>());
 	switch (change) {
 	case ItemPositionHasChanged:
-		if (mDragState == None)
-		{
+		if (mDragState == None) {
 			alignToGrid();
 		}
 		adjustLinks(true);
