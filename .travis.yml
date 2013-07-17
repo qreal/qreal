@@ -13,6 +13,7 @@ install:
 script:
   - sudo sh buildScripts/vera++/CopyToVLib.sh
   - tclsh buildScripts/vera++/generatePaths.tcl
+  - touch log
   - vera++ -profile allRules - <buildScripts/vera++/params > log
   - tclsh buildScripts/vera++/checkErrors.tcl
   - qmake qreal.pro
