@@ -332,6 +332,10 @@ private:
 	/// @param name Widget's name in internal map
 	void showDockWidget(QDockWidget *dockWidget, QString const &name);
 
+	/// Find edges that connect items from itemsToDelete and should be deleted with them
+	/// @param itemsToDelete selected items that should be deleted
+	void addEdgesToBeDeleted(IdList &itemsToDelete);
+
 	QString getNextDirName(QString const &name);
 
 	void initMiniMap();
