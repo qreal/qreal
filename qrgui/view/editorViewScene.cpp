@@ -781,7 +781,7 @@ void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &n
 	}
 }
 
-void EditorViewScene::createAddConnectionMenu(Element const * const element
+bool EditorViewScene::createAddConnectionMenu(Element const * const element
 		, QMenu &contextMenu, QString const &menuName
 		, IdList const &connectableTypes, IdList const &alreadyConnectedElements
 		, IdList const &connectableDiagrams, const char *slot) const
@@ -817,7 +817,9 @@ void EditorViewScene::createAddConnectionMenu(Element const * const element
 	if (hasAnyActions || !connectableDiagrams.empty())
 	{
 		contextMenu.addMenu(addConnectionMenu);
+		return true;
 	}
+	return false;
 }
 
 void EditorViewScene::createDisconnectMenu(Element const * const element, QMenu &contextMenu, QString const &menuName
@@ -841,37 +843,48 @@ void EditorViewScene::createDisconnectMenu(Element const * const element, QMenu 
 
 void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
 {
-	if (mainWindow()->showConnectionRelatedMenus()) {
+	if (mainWindow()->showConnectionRelatedMenus() || mainWindow()->showUsagesRelatedMenus()) {
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
-		createAddConnectionMenu(element, contextMenu, tr("Add connection")
-				, mWindow->editorManager().connectedTypes(element->id().type())
-				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
-				, mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
-				, SLOT(connectActionTriggered()));
+		bool needGoToMenu = false;
+		if (mainWindow()->showConnectionRelatedMenus()) {
+			needGoToMenu = createAddConnectionMenu(element, contextMenu, tr("Add connection")
+					, mWindow->editorManager().connectedTypes(element->id().type())
+					, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+					, mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
+					, SLOT(connectActionTriggered()));
 
-		createDisconnectMenu(element, contextMenu, tr("Disconnect")
-				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
-				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
-				, SLOT(disconnectActionTriggered()));
+			createDisconnectMenu(element, contextMenu, tr("Disconnect")
+					, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
+					, mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId())
+					, SLOT(disconnectActionTriggered()));
+		}
 
-		createAddConnectionMenu(element, contextMenu, tr("Add usage")
-				, mWindow->editorManager().usedTypes(element->id().type())
-				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
-				, mMVIface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
-				, SLOT(addUsageActionTriggered()));
+		if (mainWindow()->showUsagesRelatedMenus()) {
+			needGoToMenu = needGoToMenu || createAddConnectionMenu(element, contextMenu, tr("Add usage")
+					, mWindow->editorManager().usedTypes(element->id().type())
+					, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
+					, mMVIface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
+					, SLOT(addUsageActionTriggered()));
 
-		createDisconnectMenu(element, contextMenu, tr("Delete usage")
-				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
-				, mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
-				, SLOT(deleteUsageActionTriggered()));
+			createDisconnectMenu(element, contextMenu, tr("Delete usage")
+					, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
+					, mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId())
+					, SLOT(deleteUsageActionTriggered()));
+		}
 
-		QMenu * const goToMenu = contextMenu.addMenu(tr("Go to"));
+		if (needGoToMenu) {
+			QMenu * const goToMenu = contextMenu.addMenu(tr("Go to"));
 
-		createGoToSubmenu(goToMenu, tr("Forward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
-		createGoToSubmenu(goToMenu, tr("Backward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
-		createGoToSubmenu(goToMenu, tr("Uses"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
-		createGoToSubmenu(goToMenu, tr("Used in"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
+			if (mainWindow()->showConnectionRelatedMenus()) {
+				createGoToSubmenu(goToMenu, tr("Forward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
+				createGoToSubmenu(goToMenu, tr("Backward connection"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingConnections(element->logicalId()));
+			}
+			if (mainWindow()->showUsagesRelatedMenus()) {
+				createGoToSubmenu(goToMenu, tr("Uses"), mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId()));
+				createGoToSubmenu(goToMenu, tr("Used in"), mMVIface->logicalAssistApi()->logicalRepoApi().incomingUsages(element->logicalId()));
+			}
+		}
 	}
 	if (mWindow->editorManager().isInterpretationMode()) {
 		contextMenu.addSeparator();

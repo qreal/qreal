@@ -179,7 +179,10 @@ private:
 	void redraw();
 	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
-	void createAddConnectionMenu(Element const * const element
+	/**
+	 * @return true, if connection menu was added
+	 */
+	bool createAddConnectionMenu(Element const * const element
 			, QMenu &contextMenu, QString const &menuName
 			, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
 			, qReal::IdList const &connectableDiagrams, const char *slot) const;

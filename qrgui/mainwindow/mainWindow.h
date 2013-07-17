@@ -106,6 +106,7 @@ public:
 
 	/// Tells if we should display trace connections menu or not
 	bool showConnectionRelatedMenus() const;
+	bool showUsagesRelatedMenus() const;
 
 	virtual void showInTextEditor(QString const &title, QString const &text);
 	virtual void reinitModels();

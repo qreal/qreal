@@ -47,6 +47,11 @@ public:
 		return false;
 	}
 
+	virtual bool showUsagesRelatedMenus() const
+	{
+		return false;
+	}
+
 	/// Customizes docks placement and visibility. Default implementation does nothing
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	{
