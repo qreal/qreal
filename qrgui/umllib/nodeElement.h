@@ -144,6 +144,11 @@ public:
 
 	void changeFoldState();
 
+	/**
+	 * @brief Sorts by y coordinate, used for correct sorting children of sorting container
+	 */
+	bool operator<(NodeElement const &other) const;
+
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);

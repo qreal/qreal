@@ -1232,3 +1232,8 @@ void NodeElement::updateShape(QString const &shape) const
 {
 	mElementImpl->updateRendererContent(shape);
 }
+
+bool NodeElement::operator<(NodeElement const &other) const
+{
+	return y() < other.y();
+}

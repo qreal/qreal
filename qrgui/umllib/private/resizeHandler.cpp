@@ -61,7 +61,8 @@ void ResizeHandler::sortChildrenIfNeeded() const
 	qreal curChildY = forestallingTop;
 	qreal const maxChildWidthValue = maxChildWidth();
 
-	foreach (QGraphicsItem * const childItem, mTargetNode->childItems()) {
+	QList<NodeElement *> children = sortedChildrenList();
+	foreach (QGraphicsItem * const childItem, children) {
 		QGraphicsRectItem * const placeholder = mTargetNode->placeholder();
 
 		if(placeholder != NULL && childItem == placeholder) {
@@ -224,4 +225,17 @@ QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, Q
 	}
 
 	return boundingRect;
+}
+
+QList<NodeElement *> ResizeHandler::sortedChildrenList() const
+{
+	QList<NodeElement *> result;
+	foreach (QGraphicsItem *item, mTargetNode->childItems()) {
+		NodeElement *child = dynamic_cast<NodeElement *>(item);
+		if (child) {
+			result << child;
+		}
+	}
+	qSort(result);
+	return result;
 }

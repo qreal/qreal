@@ -99,6 +99,8 @@ private:
 	 */
 	void printChildPos() const;
 
+	QList<NodeElement *> sortedChildrenList() const;
+
 	/// Node that is actually dealt with.
 	NodeElement * const mTargetNode;
 
