@@ -13,5 +13,8 @@ public:
 
 	virtual bool showInterpeterButton() const;
 	virtual bool showConnectionRelatedMenus() const;
+
+	virtual QString addConnectionMenuName() const;
+	virtual QString deleteConnectionMenuName() const;
 };
 

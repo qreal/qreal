@@ -57,6 +57,26 @@ public:
 	{
 		Q_UNUSED(dockInterface)
 	}
+
+	virtual QString addConnectionMenuName() const
+	{
+		return QObject::tr("Add connection");
+	}
+
+	virtual QString deleteConnectionMenuName() const
+	{
+		return QObject::tr("Disconnect");
+	}
+
+	virtual QString addUsageMenuName() const
+	{
+		return QObject::tr("Add usage");
+	}
+
+	virtual QString deleteUsageMenuName() const
+	{
+		return QObject::tr("Delete usage");
+	}
 };
 
 }

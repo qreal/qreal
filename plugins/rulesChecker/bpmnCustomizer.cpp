@@ -24,3 +24,13 @@ bool BpmnCustomizer::showConnectionRelatedMenus() const
 {
 	return true;
 }
+
+QString BpmnCustomizer::addConnectionMenuName() const
+{
+	return QObject::tr("Set subprocess");
+}
+
+QString BpmnCustomizer::deleteConnectionMenuName() const
+{
+	return QObject::tr("Remove subprocess");
+}
