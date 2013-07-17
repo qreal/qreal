@@ -11,6 +11,8 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation
 		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
 		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false)
 {
+	setFlag(QGraphicsItem::ItemIsSelectable);
+	setFlag(QGraphicsItem::ItemIsMovable);
 	setTitleFont();
 	setPos(x, y);
 	setHtml(text);
@@ -20,6 +22,7 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOn
 		: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
 		, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
 {
+	setFlags(ItemIsSelectable | ItemIsMovable | ItemIgnoresTransformations);
 	setTitleFont();
 	setPos(x, y);
 }
@@ -32,12 +35,14 @@ void ElementTitle::setTitleFont()
 void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	ElementTitleInterface::mousePressEvent(event);
-	event->accept();
+//	event->accept();
 }
 
 void ElementTitle::init(QRectF const &contents)
 {
 	mContents = contents;
+
+	setTextWidth(mContents.width());
 
 	qreal const x = mPoint.x() * mContents.width();
 	qreal const y = mPoint.y() * mContents.height();
@@ -73,7 +78,7 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 
 	setTextInteractionFlags(Qt::NoTextInteraction);
 
-	parentItem()->setSelected(true);
+//	parentItem()->setSelected(true);
 
 	// Clear selection
 	QTextCursor cursor = textCursor();
@@ -124,7 +129,7 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 
 void ElementTitle::startTextInteraction()
 {
-	parentItem()->setSelected(true);
+//	parentItem()->setSelected(true);
 
 	// Already interacting?
 	if (hasFocus()) {
@@ -148,7 +153,7 @@ void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	// if text is not empty, draw it's background
 	if (!toPlainText().isEmpty()) {
 		painter->save();
-		painter->setBrush(QBrush(mBackground));
+		painter->setBrush(QBrush(QBrush(mBackground)));
 		painter->setPen(QPen(Qt::transparent));
 		painter->drawRect(boundingRect());
 		painter->restore();
@@ -168,7 +173,7 @@ ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y,QString
 }
 
 void ElementTitle::transform(QRectF const& contents)
-{
+{/*
 	qreal x = 0;
 	qreal y = 0;
 
@@ -184,8 +189,9 @@ void ElementTitle::transform(QRectF const& contents)
 		y = mPoint.y() * contents.height();
 	}
 
-	setPos(x, y);
+	setPos(x - 100, y - 100);
 
-	setRotation(mRotation);
+	setRotation(mRotation);*/
+	ElementTitleInterface::transform();
 }
 
