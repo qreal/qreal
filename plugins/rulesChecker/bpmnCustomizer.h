@@ -12,5 +12,12 @@ public:
 	virtual void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface);
 
 	virtual bool showInterpeterButton() const;
+	virtual bool showConnectionRelatedMenus() const;
+
+	virtual QString addConnectionMenuName() const;
+	virtual QString deleteConnectionMenuName() const;
+
+	virtual QString forwardConnectionMenuName() const;
+	virtual QString backwardConnectionMenuName() const;
 };
 
