@@ -9,13 +9,13 @@ using namespace versioning;
 using namespace qReal::versioning;
 
 
-QString const tempFolderName = "tempSvn";
+QString const tempFolderName = "tempGit";
 int const defaultTimeout = 30000;
 
 GitPlugin::GitPlugin():
 	mTempDir(qApp->applicationDirPath() + "/" + tempFolderName)
 {
-	qReal::SettingsManager::instance()->setValue("svnTempDir", mTempDir);
+	qReal::SettingsManager::instance()->setValue("gitTempDir", mTempDir);
 	setPathToClient(pathToGit());
 }
 
@@ -25,7 +25,7 @@ GitPlugin::~GitPlugin()
 
 QString GitPlugin::pathToGit() const
 {
-	return qReal::SettingsManager::value("pathToGitClient", "").toString();
+	return "git";
 }
 
 qReal::Customizer *GitPlugin::customizationInterface()
@@ -125,12 +125,12 @@ QString GitPlugin::friendlyName()
 
 int GitPlugin::timeout() const
 {
-	return qReal::SettingsManager::value("svnClientTimeout", defaultTimeout).toInt();
+	return qReal::SettingsManager::value("gitClientTimeout", defaultTimeout).toInt();
 }
 
 QString GitPlugin::tempFolder() const
 {
-	return qReal::SettingsManager::value("svnTempDir", mTempDir).toString();
+	return qReal::SettingsManager::value("gitTempDir", mTempDir).toString();
 }
 
 void GitPlugin::startCheckout(QString const &from
@@ -346,6 +346,13 @@ void GitPlugin::editProxyConfiguration()
 void GitPlugin::setVersion(QString hash)
 {
 	qDebug() << "switch to version " << hash << "ok";
+}
+
+void GitPlugin::initializeLocalRepo()
+{
+	QStringList arguments;
+	arguments << "init" << mTempDir;
+	invokeOperation(arguments, true, QString(), true, true, QString(), QString(), true);
 }
 
 QString GitPlugin::getLog(QString format)

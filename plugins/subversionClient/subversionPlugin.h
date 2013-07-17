@@ -46,6 +46,7 @@ public:
 	virtual QString friendlyName();
 	virtual QString getLog(QString format){}
 	virtual void setVersion(QString hash){}
+	virtual void initializeLocalRepo(){}
 
 	void editProxyConfiguration();
 

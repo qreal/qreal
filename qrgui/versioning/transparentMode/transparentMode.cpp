@@ -18,9 +18,8 @@ qReal::TransparentMode::TransparentMode(QList<VersioningPluginInterface *> mPlug
 
 void TransparentMode::isInit()
 {
-	if (mPlugin != NULL)//удали потом, если сюда пришли, значит условие лишнее
 	if (!mPlugin->isMyWorkingCopy()){
-		//mPlugin->initHere.. после появления гит плагина
+		mPlugin->initializeLocalRepo();
 	}
 }
 

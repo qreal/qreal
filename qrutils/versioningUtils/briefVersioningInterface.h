@@ -62,6 +62,18 @@ public slots:
 	/// @param directory Path to interested directory
 	virtual bool isMyWorkingCopy(QString const &directory = QString()) = 0;
 
+	///This method return name of plugin. Examples: GitPlugin..
+	virtual QString friendlyName() = 0;
+
+	///This method return log. just for Git
+	virtual QString getLog(QString format) = 0;
+
+	///Just for git ex: git reset
+	virtual void setVersion(QString hash) = 0;
+
+	///initialize the local repository
+	virtual void initializeLocalRepo() = 0;
+
 signals:
 	/// Emitted when working copy downloading started by
 	/// @see beginWorkingCopyDownloading() complete

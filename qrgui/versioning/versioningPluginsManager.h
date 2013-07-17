@@ -51,8 +51,9 @@ public slots:
 	QString remoteRepositoryUrl(QString const &targetProject = QString());
 	bool isMyWorkingCopy(QString const &directory = QString());
 	QString friendlyName();
-	virtual QString getLog(QString format);
-	virtual void setVersion(QString hash);
+	QString getLog(QString format);
+	void setVersion(QString hash);
+	void initializeLocalRepo();
 
 private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);

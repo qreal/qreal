@@ -271,6 +271,15 @@ void VersioningPluginsManager::setVersion(QString hash)
 	activeVcs->setVersion(hash);
 }
 
+void VersioningPluginsManager::initializeLocalRepo()
+{
+	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
+	if (!activeVcs) {
+		return;
+	}
+	activeVcs->initializeLocalRepo();
+}
+
 QString VersioningPluginsManager::getLog(QString format)
 {
 	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
