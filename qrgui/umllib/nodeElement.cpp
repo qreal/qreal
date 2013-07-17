@@ -379,6 +379,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	QRectF newContents = mContents;
 	QPointF newPos = mPos;
 
+	// expanding containers are turned off
+	// TODO: bring them back (but not their bugs =))
 	bool needResizeParent = false;
 
 	if (mDragState == None) {
