@@ -1318,7 +1318,9 @@ void EditorViewScene::connectActionTriggered()
 	if (!action->text().startsWith("New ")) {
 		mMVIface->logicalAssistApi()->connect(source, destination);
 	} else {
-		mMVIface->logicalAssistApi()->createConnected(source, destination);
+		Id logicalId = mMVIface->logicalAssistApi()->createConnected(source, destination);
+		mMVIface->graphicalAssistApi()->createElement(Id::rootId(), logicalId, true
+				, mWindow->editorManager().friendlyName(logicalId.type()), QPointF(0, 0));
 	}
 }
 
@@ -1331,7 +1333,9 @@ void EditorViewScene::addUsageActionTriggered()
 	if (!action->text().startsWith("New ")) {
 		mMVIface->logicalAssistApi()->addUsage(source, destination);
 	} else {
-		mMVIface->logicalAssistApi()->createUsed(source, destination);
+		Id logicalId = mMVIface->logicalAssistApi()->createUsed(source, destination);
+		mMVIface->graphicalAssistApi()->createElement(Id::rootId(), logicalId, true
+				, mWindow->editorManager().friendlyName(logicalId.type()), QPointF(0, 0));
 	}
 }
 
