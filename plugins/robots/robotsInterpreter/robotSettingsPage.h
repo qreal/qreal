@@ -45,7 +45,6 @@ private slots:
 	void manualComPortCheckboxChecked(bool state);
 	void refreshPorts();
 	void refreshCommunicationGroup();
-	void changeTextVisible(bool isChecked);
 
 private:
 	void initRobotModelType(robotModelType::robotModelTypeEnum type);
