@@ -24,7 +24,6 @@ HEADERS += \
 	qrmcLauncher.h \
 	pluginCompiler.h \
 	pluginLoader.h \
-	methodsTester.h \
 	qrxcLauncher.h \
 	../../qrgui/mainwindow/errorReporter.h \
 	../../qrgui/mainwindow/error.h \
@@ -40,7 +39,11 @@ HEADERS += \
 #	../../qrgui/mainwindow/mainWindow.h \
 	defs.h \
 	htmlMaker.h \
-    editorManagerMethodsTester.h
+    convertingMethods.h \
+    unifiedStringGenerator.h \
+    methodsTesterForQrxcAndQrmc.h \
+    methodsTester.h \
+    methodsTesterForQrxcAndInterpreter.h
 
 SOURCES += \
 	mainClass.cpp \
@@ -48,7 +51,6 @@ SOURCES += \
 	main.cpp \
 	pluginCompiler.cpp \
 	pluginLoader.cpp \
-	methodsTester.cpp \
 	qrxcLauncher.cpp \
 	../../qrgui/mainwindow/errorReporter.cpp \
 	../../qrgui/mainwindow/error.cpp \
@@ -63,7 +65,10 @@ SOURCES += \
 #	../../qrgui/pluginManager/pattern.cpp \
 #	../../qrgui/mainwindow/mainWindow.cpp \
 	htmlMaker.cpp \
-    editorManagerMethodsTester.cpp
+    convertingMethods.cpp \
+    methodsTesterForQrxcAndQrmc.cpp \
+    methodsTester.cpp \
+    methodsTesterForQrxcAndInterpreter.cpp
 
 
 

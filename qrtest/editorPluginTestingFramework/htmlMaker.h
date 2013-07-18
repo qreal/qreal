@@ -10,31 +10,69 @@ namespace editorPluginTestingFramework {
 class HtmlMaker
 {
 public:
-	void makeHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult,
-			QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult);
+	/// creates .html-file with results of testing
+	void makeHtml(
+			QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult,
+			QList<QPair<QString, QPair<QString, QString> > > qrxcAndInterpreterResult
+			);
 
 private:
-	void addTable(QDomElement parent
+	/// adds one table with results of testing for qrxc-qrmc or qrxc-interpreter
+	void addTable(
+			QDomElement parent
 			, QList<QPair<QString, QPair<QString, QString> > > listOfLines
 			, QString const &text
 			, QString const &firstColumnTitle
 			, QString const &secondColumnTitle
-			, QString const &thirdColumnTitle);
+			, QString const &thirdColumnTitle
+			);
 
-	void addLineToTable(QDomElement parent
+	/// adds one line to table
+	void addLineToTable(
+			QDomElement parent
 			, QString const &methodName
 			, QString const &qrxcResult
 			, QString const &qrmcResult
-			, bool const &isTitle);
+			, bool const &isTitle
+			);
 
+	/// creates new qDomElement
 	QDomElement newElement(QDomElement &parent, QString const &newElementName);
 
-	void addColumnToLine(QDomElement parent, QString const &value, bool const &isTitle, bool const &isMethodName);
+	/// adds column to line
+	void addColumnToLine(
+			QDomElement parent
+			, QString const &value
+			, bool const &isTitle
+			, bool const &isMethodName);
 
+	/// adds inner table into column (table for results of testing one method of one interface)
+	void addTableToColumn(
+			QDomElement &parent
+			, QPair<QString, QStringList> const &tableElements
+			);
+
+	/// adds line to inner table
+	void addLineToResultTable(
+			QDomElement &parent
+			, QString const &firstColumn
+			, QStringList const &secondColumn
+			);
+
+	/// finds out if string contains only of given symbol (for example, "aaa" contains only of symbol 'a')
 	static bool containsOnly(QString const &string, QChar const &symbol);
+	/// finds out if results of testing are equivalent
 	static bool resultsAreTheSame(QString const &firstMethod, QString const &secondMethod);
+	/// parses given result of testing (tested methods can give the same results, but in different order)
+	static QSet<QString> resultToCompare(QString const &method);
 
+	/// parses results of methods testing
 	static QStringList parseOutput(QString const &methodOutput);
+
+	/// parses given result of testing for further adding to table
+	static QPair<QString, QStringList> parseOneElementResult(QString const &oneElementOutput);
+
+	/// returns color of line (red, green or red, depending on methods result concurrence)
 	static QString lineColor(QString const &qrxcResult, QString const &qrmcResult);
 
 	QDomDocument mHtml;

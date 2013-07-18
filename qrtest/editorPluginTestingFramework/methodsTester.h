@@ -1,73 +1,38 @@
 #pragma once
 
-#include <QtCore/QString>
-
-#include "../../qrgui/editorPluginInterface/editorInterface.h"
+#include "../../qrgui/pluginManager/editorManagerInterface.h"
 #include "../../qrgui/pluginManager/interpreterEditorManager.h"
+#include "../../qrgui/pluginManager/editorManager.h"
+#include "../../qrgui/editorPluginInterface/editorInterface.h"
+
+#include "unifiedStringGenerator.h"
 
 namespace editorPluginTestingFramework {
 
 class MethodsTester
 {
 
-public:
+protected:
 
-	MethodsTester(qReal::EditorInterface * const qrmcGeneratedPlugin, qReal::EditorInterface * const qrxcGeneratedPlugin);
+	virtual UnifiedStringGenerator * initGeneratorWithFirstInterface(UnifiedStringGenerator const &generator) const = 0;
+	virtual UnifiedStringGenerator * initGeneratorWithSecondInterface(UnifiedStringGenerator const &generator) const = 0;
 
-	void testMethods();
+	/// tests given method if it exists in list of methods to be tested
+	QPair<QString, QPair<QString, QString> > testMethodIfExistsInList(
+			UnifiedStringGenerator const &stringGenerator
+			, QString const &method
+			);
 
-	QList<QPair<QString, QPair<QString, QString> > > generateOutputList();
+	/// fills list of methods to test with methods from given .txt-file
+	void fillMethodsToTestList(QString const &fileName);
 
 private:
-	class StringGenerator;
 
-	class StringGeneratorForDiagrams;
-	class StringGeneratorForElements;
-	class StringGeneratorForProperties;
-	class StringGeneratorForGroups;
+	/// generated method name and results for two interfaces, returns triplet of strings
+	QPair<QString, QPair<QString, QString> > generateOutputForOneMethod(UnifiedStringGenerator const &stringGenerator);
 
-	class PropertiesWithDefaultValuesStringGenerator;
-	class TypesContainedByStringGenerator;
-	class ConnectedTypesStringGenerator;
-	class UsedTypesStringGenerator;
-	class GetPossibleEdgesStringGenerator;
-	class IsNodeOrEdgeStringGenerator;
-
-	class GetPropertyNamesStringGenerator;
-	class GetReferencePropertiesStringGenerator;
-	class GetParentsOfStringGenerator;
-
-	class GetPropertyTypesStringGenerator;
-	class GetPropertyDefaultValueStringGenerator;
-
-	class DiagramNameStringGenerator;
-	class DiagramNodeNameStringGenerator;
-
-	class ElementNameStringGenerator;
-	class ElementMouseGestureStringGenerator;
-	class ElementDescriptionStringGenerator;
-
-	class PropertyDescriptionStringGenerator;
-	class PropertyDisplayedNameStringGenerator;
-
-	class IsParentOfStringGenerator;
-
-	class DiagramPaletteGroupListStringGenerator;
-	class DiagramPaletteGroupDescriptionStringGenerator;
-
-	void testMethod(StringGenerator const &stringGenerator);
-
-	void generateOutputForOneMethod(StringGenerator const &stringGenerator);
-
-	static bool containsOnly(QString const &string, QChar const &symbol);
-
-	qReal::EditorInterface* mQrmcGeneratedPlugin;
-	qReal::EditorInterface* mQrxcGeneratedPlugin;
-
-	qReal::InterpreterEditorManager* mInterpreterGeneratedPlugin;
-
-	QList<QPair<QString, QPair<QString, QString> > > mGeneratedList;
+	/// list of methods to be tested, is filled from files
+	QStringList mMethodsToTest;
 };
 
 }
-

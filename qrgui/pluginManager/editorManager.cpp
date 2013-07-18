@@ -242,7 +242,7 @@ QString EditorManager::propertyDescription(const Id &id, QString const &property
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
-	if (id.idSize() != 4) {
+	if ((id.idSize() != 3) && (id.idSize() != 4)) {
 		return "";
 	}
 	return mPluginIface[id.editor()]->propertyDescription(id.diagram(), id.element(), propertyName);
@@ -252,7 +252,7 @@ QString EditorManager::propertyDisplayedName(Id const &id, QString const &proper
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
-	if (id.idSize() != 4) {
+	if ((id.idSize() != 3) && (id.idSize() != 4)) {
 		return "";
 	}
 	return mPluginIface[id.editor()]->propertyDisplayedName(id.diagram(), id.element(), propertyName);
@@ -291,13 +291,6 @@ ElementImpl* EditorManager::graphicalObject(const Id &id) const
 		return 0;
 	}
 	return impl;
-
-	/*
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
-
-	return new EdgeElement(impl);*/
 }
 
 QStringList EditorManager::propertyNames(const Id &id) const

@@ -1,7 +1,7 @@
 #include "mainClass.h"
-#include "methodsTester.h"
 #include "defs.h"
-#include "editorManagerMethodsTester.h"
+#include "methodsTesterForQrxcAndQrmc.h"
+#include "methodsTesterForQrxcAndInterpreter.h"
 
 #include "../../qrgui/pluginManager/interpreterEditorManager.h"
 #include "../../qrgui/pluginManager/editorManagerInterface.h"
@@ -32,18 +32,17 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 	EditorManager qrxcEditorManager(destDirForQrxc, mQrxcGeneratedPluginsList);
 	// we cast qrxc plugin to Editor Manager
 
-	EditorManagerMethodsTester* const interpreterMethodsTester = new EditorManagerMethodsTester(
-			&qrxcEditorManager, &interpreterEditorManager);
-	interpreterMethodsTester->testMethods();
+	MethodsTesterForQrxcAndInterpreter* const interpreterMethodsTester = new MethodsTesterForQrxcAndInterpreter(
+			&qrxcEditorManager
+			,&interpreterEditorManager);
 
-	QList<QPair<QString, QPair<QString, QString> > > interpreterMethodsTesterOutput = interpreterMethodsTester->generatedResult();
+	QList<QPair<QString, QPair<QString, QString> > > interpreterMethodsTesterOutput =
+			interpreterMethodsTester->generatedResult();
 
 	if ((qrxcGeneratedPlugin != NULL) && (qrmcGeneratedPlugin != NULL)) {
-		MethodsTester* const methodsTester = new MethodsTester(qrmcGeneratedPlugin, qrxcGeneratedPlugin);
+		MethodsTesterForQrxcAndQrmc* const methodsTester = new MethodsTesterForQrxcAndQrmc(qrmcGeneratedPlugin, qrxcGeneratedPlugin);
 
-		//methodsTester->testMethods();
-
-		QList<QPair<QString, QPair<QString, QString> > > methodsTesterOutput = methodsTester->generateOutputList();
+		QList<QPair<QString, QPair<QString, QString> > > methodsTesterOutput = methodsTester->generatedOutput();
 		createHtml(methodsTesterOutput, interpreterMethodsTesterOutput);
 	} else {
 		qDebug() << "Generation of plugins failed";
@@ -96,7 +95,6 @@ void MainClass::deleteOldBinaries(QString const &directory)
 		}
 	}
 }
-
 
 void MainClass::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 {

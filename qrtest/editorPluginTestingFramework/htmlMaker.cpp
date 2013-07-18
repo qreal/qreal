@@ -64,10 +64,10 @@ void HtmlMaker::addTable(QDomElement parent
 
 	QDomElement table = newElement(parent, "table");
 
-	QString const &styleLine = "border:2px solid black;";
+	QString const &styleLine = "border:4px solid black;";
 
-	table.setAttribute("style", styleLine);
 	table.setAttribute("rules", "all");
+	table.setAttribute("style", styleLine);
 
 	addLineToTable(table, firstColumnTitle, secondColumnTitle, thirdColumnTitle, true);
 
@@ -104,8 +104,8 @@ bool HtmlMaker::resultsAreTheSame(QString const &firstMethod, QString const &sec
 		return true;
 	}
 
-	QSet<QString> firstMethodParsed = firstMethod.split(" ").toSet();
-	QSet<QString> secondMethodParsed = secondMethod.split(" ").toSet();
+	QSet<QString> firstMethodParsed = resultToCompare(firstMethod);
+	QSet<QString> secondMethodParsed = resultToCompare(secondMethod);
 
 	return (firstMethodParsed == secondMethodParsed);
 }
@@ -148,16 +148,60 @@ void HtmlMaker::addColumnToLine(QDomElement parent, QString const &value, bool c
 	QStringList listOfMethodTestingResults = parseOutput(value);
 
 	foreach (QString const &elementOfOutput, listOfMethodTestingResults) {
-		QDomText name = mHtml.createTextNode(elementOfOutput);
 
 		if (isTitle || isMethodName) {
+			QDomText name = mHtml.createTextNode(elementOfOutput);
 			QDomElement bold = newElement(newColumn, "b");
 			bold.appendChild(name);
 		} else {
-			newColumn.appendChild(name);
+			QPair<QString, QStringList> parsedOutput = parseOneElementResult(elementOfOutput);
+
+			addTableToColumn(newColumn, parsedOutput);
 		}
 
 		QDomElement breakLine = newElement(newColumn, "br");
+	}
+}
+
+void HtmlMaker::addTableToColumn(QDomElement &parent, QPair<QString, QStringList> const &tableElements)
+{
+	QDomElement table = newElement(parent, "table");
+
+	QString const &align = "center";
+	QString const &border = "1";
+	QString const &cellspacing = "5";
+	QString const &width = "100%";
+	QString const &height = "100%";
+
+	table.setAttribute("width", width);
+	table.setAttribute("height", height);
+	table.setAttribute("align", align);
+	table.setAttribute("border", border);
+	table.setAttribute("cellcpacing", cellspacing);
+	table.setAttribute("rules", "all");
+
+	addLineToResultTable(table, tableElements.first, tableElements.second);
+}
+
+void HtmlMaker::addLineToResultTable(QDomElement &parent, QString const &firstColumn, QStringList const &secondColumn)
+{
+	QDomElement newLine = newElement(parent, "tr");
+	QString const &columnWidth = "50%";
+
+	QDomElement firstColumnNode = newElement(newLine, "td");
+	firstColumnNode.setAttribute("width", columnWidth);
+
+	QDomText firstColumnText = mHtml.createTextNode(firstColumn);
+	firstColumnNode.appendChild(firstColumnText);
+
+	QDomElement secondColumnNode = newElement(newLine, "td");
+	secondColumnNode.setAttribute("width", columnWidth);
+
+	foreach (QString const &secondColumnElement, secondColumn) {
+		QDomNode newString = mHtml.createTextNode(secondColumnElement);
+		secondColumnNode.appendChild(newString);
+
+		QDomElement breakLine = newElement(secondColumnNode, "br");
 	}
 }
 
@@ -174,4 +218,32 @@ QStringList HtmlMaker::parseOutput(QString const &methodOutput)
 	}
 
 	return listWithoutEmptyElements;
+}
+
+QPair<QString, QStringList> HtmlMaker::parseOneElementResult(QString const &oneElementOutput)
+{
+	QStringList const elementAndResult = oneElementOutput.split("-");
+	QString const &element = elementAndResult.first();
+	QString const &result = elementAndResult.last();
+
+	QStringList const parsedResult = result.split(",");
+	QPair<QString, QStringList> resultPair = qMakePair(element, parsedResult);
+
+	return resultPair;
+}
+
+QSet<QString> HtmlMaker::resultToCompare(QString const &method)
+{
+	QStringList methodOutput = method.split("|");
+
+	QStringList result;
+	foreach (QString const &string, methodOutput) {
+		QString output = string.split("-").last();
+		QStringList outputToList = output.split(",");
+
+		result.append(outputToList);
+	}
+
+	QSet<QString> methodParsed = result.toSet();
+	return methodParsed;
 }

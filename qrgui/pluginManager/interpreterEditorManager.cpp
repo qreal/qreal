@@ -136,12 +136,12 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 QString InterpreterEditorManager::friendlyName(const Id &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+
 	if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "displayedName")
 			&& !repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "displayedName").isEmpty())
 	{
 		return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "displayedName");
 	}
-
 	return repoAndMetaIdPair.first->name(repoAndMetaIdPair.second);
 }
 
@@ -152,8 +152,9 @@ bool InterpreterEditorManager::hasElement(Id const &elementId) const
 
 QString InterpreterEditorManager::propertyDescription(const Id &id, const QString &propertyName) const
 {
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, propertyName);
+	return valueOfProperty(id, propertyName, "description");
+//	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
+//	return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, propertyName);
 }
 
 QStringList InterpreterEditorManager::allChildrenTypesOf(Id const &parent) const
@@ -163,7 +164,6 @@ QStringList InterpreterEditorManager::allChildrenTypesOf(Id const &parent) const
 	foreach (Id const &child, repoAndMetaIdPair.first->children(repoAndMetaIdPair.second)) {
 		result << child.element();
 	}
-
 	return result;
 }
 
@@ -206,8 +206,17 @@ IdList InterpreterEditorManager::connectedTypes(Id const &id) const
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	qrRepo::RepoApi const * const repo = repoAndMetaIdPair.first;
 	Id const metaId = repoAndMetaIdPair.second;
+	qDebug() << "element:" << id.element();
 	foreach (Id const &connectId, repo->connectedElements(metaId)) {
+		if (connectId == Id::rootId()) {
+			qDebug() << "go to hell again!11!";
+			continue;
+		}
 		QPair<Id, Id> editorAndDiagramPair = editorAndDiagram(repo, connectId);
+
+		//Id const connect(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(connectId));
+		//qDebug() << "connected:" << connect.element();
+
 		result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(connectId));
 	}
 
@@ -441,13 +450,6 @@ InterpreterElementImpl* InterpreterEditorManager::graphicalObject(Id const &id) 
 		return 0;
 	}
 	return impl;
-
-	/*
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
-
-	return new EdgeElement(impl);*/
 }
 
 IdList InterpreterEditorManager::containedTypes(Id const &id) const
@@ -459,9 +461,13 @@ IdList InterpreterEditorManager::containedTypes(Id const &id) const
 	foreach (Id const &link, repo->outgoingLinks(metaId)) {
 		if (link.element() == "Container") {
 			Id const metaIdTo = repo->otherEntityFromLink(link, metaId);
+			if (metaIdTo == Id::rootId()) {
+				qDebug() << "Go to hell!11";
+				continue;
+			}
 			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, metaIdTo);
 			containedTypes << Id(repo->name(editorAndDiagramPair.first)
-					 , repo->name(editorAndDiagramPair.second), repo->name(metaIdTo));
+					, repo->name(editorAndDiagramPair.second), repo->name(metaIdTo));
 		}
 	}
 
@@ -526,14 +532,16 @@ QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) 
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	qrRepo::RepoApi const * const repo = repoAndMetaIdPair.first;
 	Id const metaId = repoAndMetaIdPair.second;
-	QStringList const parentsPropertiesWithDefaultValues = propertiesFromParents(id, "defaultName", HasProperty());
+	QStringList const parentsPropertiesWithDefaultValues = propertiesFromParents(id, "defaultValue", HasProperty());
 	if (!parentsPropertiesWithDefaultValues.isEmpty()) {
 		result << parentsPropertiesWithDefaultValues;
 	}
 
 	foreach (Id const &property, repo->children(metaId)) {
-		if (repo->hasProperty(property, "defaultName")) {
-			result << repo->name(property);
+		if (repo->hasProperty(property, "defaultValue")) {
+			if (repo->property(property, "defaultValue") != "") {
+				result << repo->name(property);
+			}
 		}
 	}
 
@@ -660,7 +668,9 @@ QStringList InterpreterEditorManager::elements(QString const &editor, QString co
 	qrRepo::RepoApi const * const repo = repoAndDiagramPair.first;
 	Id const diag = repoAndDiagramPair.second;
 	foreach (Id const &element, repo->children(diag)) {
-		result.append(repo->name(element));
+		if (element.element() == "MetaEntityEdge" || !repo->stringProperty(element, "shape").isEmpty()) {
+			result.append(repo->name(element));
+		}
 	}
 
 	return result;

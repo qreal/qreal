@@ -1,0 +1,29 @@
+#pragma once
+
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore>
+#include "../../qrkernel/ids.h"
+
+namespace editorPluginTestingFramework {
+
+class ConvertingMethods
+{
+public:
+
+	/// converters for methods output converting into string list
+	static QStringList convertIdListIntoStringList(qReal::IdList const idList);
+	static QStringList convertStringIntoStringList(QString const &string);
+	static QStringList convertBoolIntoStringList(bool const &boolValue);
+	static QStringList convertIdIntoStringList(qReal::Id const &id);
+	static QStringList convertIntIntoStringList(int const &integer);
+
+	/// converter to string with special symbols to parse in html
+	static QString transformateOutput(
+			QStringList const &output
+			, qReal::Id const &id = qReal::Id::rootId()
+			, QString const &name = ""
+			);
+};
+
+}

@@ -8,6 +8,8 @@ namespace editorPluginTestingFramework {
 class PluginCompiler
 {
 public:
+
+	/// compiles code that is generated in qrmcLauncher and qrxcLauncher
 	void compilePlugin(QString const &directoryToCodeToCompile);
 };
 
