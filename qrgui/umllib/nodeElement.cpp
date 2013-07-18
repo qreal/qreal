@@ -29,6 +29,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	, mPortsVisible(false)
 	, mDragState(None)
 	, mResizeCommand(NULL)
+	, mIsExpanded(false)
 	, mIsFolded(false)
 	, mLeftPressed(false)
 	, mParentNodeElement(NULL)
@@ -1169,6 +1170,16 @@ void NodeElement::drawSeveralLines(QPainter *painter, int dx, int dy)
 		painter->drawLine(QLineF(4 * dx * i, 0, 0, 4 * dy * i));
 	}
 	painter->restore();
+}
+
+void NodeElement::setExpanded(bool isExpanded)
+{
+	mIsExpanded = isExpanded;
+}
+
+bool NodeElement::isExpanded() const
+{
+	return mIsExpanded;
 }
 
 bool NodeElement::isFolded() const

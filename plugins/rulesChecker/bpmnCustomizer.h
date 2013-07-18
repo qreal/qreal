@@ -19,5 +19,9 @@ public:
 
 	virtual QString forwardConnectionMenuName() const;
 	virtual QString backwardConnectionMenuName() const;
+
+	virtual bool showExpandConnectionAction() const;
+	virtual QString expandConnectionActionText() const;
+	virtual QString collapseConnectionActionText() const;
 };
 

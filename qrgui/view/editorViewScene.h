@@ -145,11 +145,14 @@ protected:
 	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
+	void expandConnectionActionTriggered();
+	void collapseConnectionActionTriggered();
 	void connectActionTriggered();
 	void goToActionTriggered();
 	void disconnectActionTriggered();
 	void addUsageActionTriggered();
 	void deleteUsageActionTriggered();
+
 	void changePropertiesActionTriggered();
 	void changeAppearanceActionTriggered();
 	void printElementsOfRootDiagram();
@@ -178,6 +181,8 @@ private:
 	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
 	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
+	void createExpandAction(Element const * const element, QMenu * const menu, QString const &nameExpand
+			, const QString &nameCollapse, qReal::IdList const &ids) const;
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
 	/**
 	 * @return true, if connection menu was added

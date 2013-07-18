@@ -128,6 +128,9 @@ public:
 
 	void highlightEdges();
 
+	void setExpanded(bool isExpanded);
+	bool isExpanded() const;
+
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
 
@@ -251,6 +254,8 @@ private:
 
 	SdfRenderer *mPortRenderer;
 	SdfRenderer *mRenderer;
+
+	bool mIsExpanded;
 
 	bool mIsFolded;
 	QRectF mFoldedContents;

@@ -771,6 +771,32 @@ QPointF EditorViewScene::offsetByDirection(int direction)
 	}
 }
 
+void EditorViewScene::createExpandAction(Element const * const element, QMenu * const menu, QString const &nameExpand
+		, QString const &nameCollapse, qReal::IdList const &ids) const
+{
+	if (ids.isEmpty()) {
+		return;
+	}
+
+	NodeElement const * const node = dynamic_cast<NodeElement const * const>(element);
+	if (!node) {
+		return;
+	}
+
+	QAction *action;
+	if (node->isExpanded()) {
+		action = menu->addAction(nameCollapse);
+		connect(action, SIGNAL(triggered()), SLOT(collapseConnectionActionTriggered()));
+	} else {
+		action = menu->addAction(nameExpand);
+		connect(action, SIGNAL(triggered()), SLOT(expandConnectionActionTriggered()));
+	}
+
+	QList<QVariant> data;
+	data << element->id().toVariant() << ids[0].toVariant();
+	action->setData(data);
+}
+
 void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const
 {
 	if (ids.isEmpty()) {
@@ -849,6 +875,12 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
 		if (mWindow->showConnectionRelatedMenus()) {
+			if (mWindow->toolManager().customizer()->showExpandConnectionAction()) {
+				createExpandAction(element, &contextMenu, mWindow->toolManager().customizer()->expandConnectionActionText()
+						, mWindow->toolManager().customizer()->collapseConnectionActionText()
+						, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
+			}
+
 			createAddConnectionMenu(element, contextMenu
 					, mWindow->toolManager().customizer()->addConnectionMenuName()
 					, mWindow->editorManager().connectedTypes(element->id().type())
@@ -1301,6 +1333,28 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 qReal::MainWindow *EditorViewScene::mainWindow() const
 {
 	return mWindow;
+}
+
+void EditorViewScene::expandConnectionActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	QList<QVariant> data = action->data().toList();
+	Id elem = data[0].value<Id>();
+	NodeElement *node = getNodeById(elem);
+	if (node) {
+		node->setExpanded(true);
+	}
+}
+
+void EditorViewScene::collapseConnectionActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	QList<QVariant> data = action->data().toList();
+	Id elem = data[0].value<Id>();
+	NodeElement *node = getNodeById(elem);
+	if (node) {
+		node->setExpanded(false);
+	}
 }
 
 void EditorViewScene::connectActionTriggered()
