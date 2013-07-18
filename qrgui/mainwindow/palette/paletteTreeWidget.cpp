@@ -12,9 +12,10 @@ using namespace gui;
 EditorManagerInterface *PaletteTreeWidget::mEditorManager = NULL;
 
 PaletteTreeWidget::PaletteTreeWidget(PaletteTree &palette, MainWindow &mainWindow
-		, EditorManagerInterface &editorManagerProxy)
+		, EditorManagerInterface &editorManagerProxy, bool editable)
 	: mMainWindow(mainWindow)
 	, mPaletteTree(palette)
+	, mEditable(editable)
 {
 	mEditorManager = &editorManagerProxy;
 }
@@ -107,6 +108,9 @@ void PaletteTreeWidget::addItemsRow(IdList const &tmpIdList, QTreeWidgetItem *it
 		field->setMinimumHeight(80);
 		QTreeWidgetItem *leaf = new QTreeWidgetItem;
 		item->addChild(leaf);
+		if (mEditable) {
+			leaf->setFlags(leaf->flags() | Qt::ItemIsEditable);
+		}
 		setItemWidget(leaf, 0, field);
 	}
 }
@@ -185,6 +189,11 @@ void PaletteTreeWidget::expand()
 void PaletteTreeWidget::sortByFriendlyName(IdList &ids)
 {
 	qSort(ids.begin(), ids.end(), idLessThan);
+}
+
+void PaletteTreeWidget::editItem(QTreeWidgetItem * const item)
+{
+	edit(indexFromItem(item));
 }
 
 void PaletteTreeWidget::expandChildren(QTreeWidgetItem *item)

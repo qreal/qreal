@@ -14,7 +14,9 @@ EdgeElementCommand::EdgeElementCommand(EditorView const *view, Id const &id)
 
 bool EdgeElementCommand::reinitElement()
 {
-	ElementCommand::reinitElement();
+	if (!ElementCommand::reinitElement()) {
+		return false;
+	}
 	mEdge = dynamic_cast<EdgeElement *>(mElement);
 	return mEdge != NULL;
 }

@@ -13,10 +13,10 @@ namespace gui {
 class PaletteTreeWidgets : public QWidget
 {
 public:
-	PaletteTreeWidgets(PaletteTree &parent, MainWindow &mainWindow
+	PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWindow
 			, EditorManagerInterface &editorManagerProxy);
 
-	PaletteTreeWidgets(PaletteTree &parent, MainWindow &mainWindow
+	PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWindow
 			, EditorManagerInterface &editorManagerProxy
 			, Id const &editor, Id const &diagram);
 

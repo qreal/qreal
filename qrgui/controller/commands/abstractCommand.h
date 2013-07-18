@@ -3,6 +3,8 @@
 #include <QtCore/QList>
 #include <QtWidgets/QUndoCommand>
 
+#include "../../../qrkernel/ids.h"
+
 namespace qReal
 {
 namespace commands
@@ -44,6 +46,11 @@ public:
 	/// Root command is never removed
 	void removeDuplicates();
 
+	Id diagramBinded() const;
+	void bindToDiagram(Id const &diagramId);
+
+	uint timestamp() const;
+
 signals:
 	void redoComplete(bool success);
 	void undoComplete(bool success);
@@ -74,6 +81,8 @@ private:
 	bool mUndoEnabled;
 	QList<AbstractCommand *> mPreActions;
 	QList<AbstractCommand *> mPostActions;
+	Id mDiagramBinded;
+	uint mTimestamp;
 };
 
 inline bool operator==(AbstractCommand const &c1, AbstractCommand const &c2)

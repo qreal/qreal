@@ -14,7 +14,9 @@ NodeElementCommand::NodeElementCommand(EditorView const *view, Id const &id)
 
 bool NodeElementCommand::reinitElement()
 {
-	ElementCommand::reinitElement();
+	if (!ElementCommand::reinitElement()) {
+		return false;
+	}
 	mNode = dynamic_cast<NodeElement *>(mElement);
 	return mNode != NULL;
 }

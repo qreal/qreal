@@ -191,6 +191,7 @@ void EditorViewScene::itemSelectUpdate()
 		item->setSelected(true);
 	}
 }
+
 Element *EditorViewScene::getElem(qReal::Id const &id) const
 {
 	if (id == Id::rootId()) {
@@ -1132,7 +1133,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-Element *EditorViewScene::getElemAt(QPointF const &position)
+Element *EditorViewScene::getElemAt(QPointF const &position) const
 {
 	foreach (QGraphicsItem *item, items(position)) {
 		Element *e = dynamic_cast<Element *>(item);
@@ -1153,7 +1154,7 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 	mWindow = mainWindow;
 	mController = mWindow->controller();
 	mClipboardHandler.setController(mController);
-	mExploser = new Exploser(mainWindow, &mainWindow->models()->logicalModelAssistApi()
+	mExploser = new view::details::ExploserView(mainWindow, &mainWindow->models()->logicalModelAssistApi()
 			, &mainWindow->models()->graphicalModelAssistApi(), this);
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
 	mContextMenuActions << mWindow->actionDeleteFromDiagram()

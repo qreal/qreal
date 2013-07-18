@@ -5,9 +5,12 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface)
+LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel
+		, EditorManagerInterface const &editorManagerInterface)
 	: mModelsAssistApi(logicalModel, editorManagerInterface)
-	, mLogicalModel(logicalModel), mEditorManager(editorManagerInterface)
+	, mLogicalModel(logicalModel)
+	, mExploser(this)
+	, mEditorManager(editorManagerInterface)
 {
 }
 
@@ -18,6 +21,11 @@ LogicalModelAssistApi::~LogicalModelAssistApi()
 EditorManagerInterface const &LogicalModelAssistApi::editorManagerInterface() const
 {
 	return mModelsAssistApi.editorManagerInterface();
+}
+
+Exploser &LogicalModelAssistApi::exploser()
+{
+	return mExploser;
 }
 
 qrRepo::LogicalRepoApi const &LogicalModelAssistApi::logicalRepoApi() const
