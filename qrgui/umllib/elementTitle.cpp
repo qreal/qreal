@@ -7,6 +7,8 @@
 
 using namespace qReal;
 
+const QString separator = "»";
+
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation)
 		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
 		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false), isStretched(false)
@@ -15,7 +17,7 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation
 	setFlag(QGraphicsItem::ItemIsMovable);
 	setTitleFont();
 	setPos(x, y);
-	setHtml(text);
+	setPlainText(text);
 }
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
@@ -26,6 +28,58 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOn
 	setTitleFont();
 	setPos(x, y);
 }
+
+QString ElementTitle::createTextForRepo() const
+{
+	return (toPlainText()
+			+ separator
+			+ QString::number(pos().x())
+			+ " "
+			+ QString::number(pos().y())
+			+ separator
+			+ QString::number(mContents.width()));
+}
+
+
+void ElementTitle::setTextFromRepo(QString const& text)
+{
+	if (!text.count(separator))
+	{
+		updateData();
+		return;
+	}
+
+	QStringList prList = text.split(separator);
+
+	QStringList coordinates = prList[coordinate].split(" ");
+	qreal x = coordinates[0].toDouble();
+	qreal y = coordinates[1].toDouble();
+
+	setProperties(x, y
+			, prList[textWidth].toDouble()
+			, prList[propertyText]);
+}
+
+void ElementTitle::setProperties(qreal x, qreal y, qreal width, QString const &text)
+{
+	mContents.setWidth(width);
+	setTextWidth(mContents.width());
+
+	setPlainText(text);
+
+	setPos(x, y);
+}
+
+void ElementTitle::updateData()
+{
+	QString value = createTextForRepo();
+	if (mBinding == "name") {
+		static_cast<NodeElement*>(parentItem())->setName(value);
+	} else {
+		static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value);
+	}
+}
+
 
 void ElementTitle::setTitleFont()
 {
@@ -57,6 +111,14 @@ void ElementTitle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		event->accept();
 	}
 }
+
+void ElementTitle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+	updateData();
+
+	ElementTitleInterface::mouseReleaseEvent(event);
+}
+
 
 void ElementTitle::init(QRectF const &contents)
 {
@@ -94,7 +156,7 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 {
 	QGraphicsTextItem::focusOutEvent(event);
 
-	QString const htmlNormalizedText = toHtml().remove("\n", Qt::CaseInsensitive);
+//	QString const htmlNormalizedText = toHtml().remove("\n", Qt::CaseInsensitive);
 
 	setTextInteractionFlags(Qt::NoTextInteraction);
 
@@ -112,14 +174,9 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 	}
 
 	if (mOldText != toPlainText()) {
-		QString value = toPlainText();
-		if (mBinding == "name") {
-			static_cast<NodeElement*>(parentItem())->setName(value);
-		} else {
-			static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value);
-		}
+		updateData();
 	}
-	setHtml(htmlNormalizedText);
+//	setPlainText()
 
 }
 
@@ -188,7 +245,6 @@ void ElementTitle::updateRect(QPointF newBottomRightPoint)
 	mContents.setBottomRight(newBottomRightPoint);
 	setTextWidth(mContents.width());
 }
-
 
 ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y, QString const &text, qreal rotation)
 {
