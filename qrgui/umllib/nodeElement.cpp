@@ -255,7 +255,7 @@ void NodeElement::switchGrid(bool isChecked)
 		alignToGrid();
 
 		// Align mode doesn`t work in a square mode
-		if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) {
+		if (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)) {
 			foreach (EdgeElement * const edge, mEdgeList) {
 				edge->alignToGrid();
 			}
@@ -309,7 +309,12 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::alignToGrid()
 {
-	mGrid->alignToGrid();
+	if (SettingsManager::value("ActivateGrid").toBool()) {
+		NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
+		if (!parent || !parent->mElementImpl->isSortingContainer()) {
+			mGrid->alignToGrid();
+		}
+	}
 }
 
 void NodeElement::recalculateHighlightedNode(QPointF const &mouseScenePos) {
@@ -491,10 +496,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 	delUnusedLines();
 
-	if (SettingsManager::value("ActivateGrid").toBool() || mSwitchGridAction.isChecked()) {
-		alignToGrid();
-	}
-
 	storeGeometry();
 
 	if (scene() && scene()->selectedItems().size() == 1 && isSelected()) {
@@ -570,8 +571,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
 		edge->saveConfiguration(QPointF());
-		if (SettingsManager::value("ActivateGrid").toBool()
-				&& (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)))
+		if (SettingsManager::value("ActivateGrid").toBool())
 		{
 			edge->alignToGrid();
 		}

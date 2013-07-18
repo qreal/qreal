@@ -1884,7 +1884,7 @@ bool EdgeElement::isLoop()
 
 void EdgeElement::alignToGrid()
 {
-	if (mLine.size() >= 3 && (SettingsManager::value("TypeLine").toInt() != static_cast<int>(squareLine))) {
+	if (mLine.size() >= 3 && (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine))) {
 		int const indexGrid = SettingsManager::value("IndexGrid").toInt();
 
 		prepareGeometryChange();

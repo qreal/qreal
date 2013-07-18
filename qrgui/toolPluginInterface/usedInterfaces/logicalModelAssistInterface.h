@@ -27,8 +27,8 @@ public:
 	virtual void disconnect(Id const &source, Id const &destination) = 0;
 	virtual void addUsage(Id const &source, Id const &destination) = 0;
 	virtual void deleteUsage(Id const &source, Id const &destination) = 0;
-	virtual void createConnected(Id const &sourceElement, Id const &elementType) = 0;
-	virtual void createUsed(Id const &sourceElement, Id const &elementType) = 0;
+	virtual Id createConnected(Id const &sourceElement, Id const &elementType) = 0;
+	virtual Id createUsed(Id const &sourceElement, Id const &elementType) = 0;
 	virtual Id createConnectedElement(Id const &source, Id const &elementType) = 0;
 	virtual IdList diagramsAbleToBeConnectedTo(Id const &element) const = 0;
 	virtual IdList diagramsAbleToBeUsedIn(Id const &element) const = 0;
