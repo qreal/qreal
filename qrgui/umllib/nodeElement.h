@@ -76,6 +76,7 @@ public:
 
 	QPointF const portPos(qreal id) const;
 	QPointF const nearestPort(QPointF const &location) const;
+	int numberOfPorts() const;
 	static int portNumber(qreal id);
 	qreal portId(QPointF const &location) const;
 
@@ -189,6 +190,9 @@ private:
 	 * newContents equals to current shape (mContents).
 	 */
 	void resize();
+
+	void drawLinesForResize(QPainter *painter);
+	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
 	void disconnectEdges();
 

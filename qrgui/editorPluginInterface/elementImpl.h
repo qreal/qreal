@@ -111,7 +111,7 @@ public:
 	/*Container properties*/
 	virtual bool isContainer() const = 0;
 	virtual bool isSortingContainer() const = 0;
-	virtual int sizeOfForestalling() const = 0;
+	virtual QVector<int> sizeOfForestalling() const = 0;
 	virtual int sizeOfChildrenForestalling() const = 0;
 	virtual bool hasMovableChildren() const = 0;
 	virtual bool minimizesToChildren() const = 0;

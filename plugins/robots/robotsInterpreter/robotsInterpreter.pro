@@ -3,6 +3,7 @@ QT += xml widgets network
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../../bin/plugins/
+OBJECTS_DIR = .obj
 MOC_DIR = .moc
 RCC_DIR = .moc
 
@@ -11,11 +12,11 @@ LIBS += -L../../../bin -lqrkernel -lqrutils -lqextserialport
 TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
-	robotsPlugin.h \
-	interpreter.h \
-	sensorConstants.h \
-	robotSettingsPage.h \
 	customizer.h \
+	robotSettingsPage.h \
+	robotsPlugin.h \
+	sensorConstants.h \
+	details/interpreter.h \
 	details/thread.h \
 	details/blocksFactory.h \
 	details/blocksTable.h \
@@ -24,34 +25,35 @@ HEADERS += \
 	details/autoconfigurer.h \
 	details/tracer.h \
 	details/debugHelper.h \
-	../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
 	details/abstractTimer.h \
 	details/realTimer.h \
 	details/sensorsConfigurationWidget.h \
-	details/nullTimer.h
+	details/nullTimer.h \
+	details/nxtDisplay.h \
 
 SOURCES += \
-	robotsPlugin.cpp \
-	interpreter.cpp \
-	robotSettingsPage.cpp \
 	customizer.cpp \
-	watchListWindow.cpp\
-	details/thread.cpp \
+	robotSettingsPage.cpp \
+	robotsPlugin.cpp \
+	details/abstractTimer.cpp \
+	details/autoconfigurer.cpp \
 	details/blocksTable.cpp \
 	details/blocksFactory.cpp \
-	details/robotsBlockParser.cpp \
-	details/autoconfigurer.cpp \
-	details/tracer.cpp \
 	details/debugHelper.cpp \
-	details/abstractTimer.cpp \
-	details/realTimer.cpp \
-	details/sensorsConfigurationWidget.cpp \
+	details/interpreter.cpp \
 	details/nullTimer.cpp \
+	details/nxtDisplay.cpp \
+	details/realTimer.cpp \
+	details/robotsBlockParser.cpp \
+	details/sensorsConfigurationWidget.cpp \
+	details/thread.cpp \
+	details/tracer.cpp \
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
 	details/sensorsConfigurationWidget.ui \
+	details/nxtDisplay.ui \
 
 RESOURCES += \
 	robotsInterpreter.qrc \
@@ -65,3 +67,5 @@ include(details/blocks/blocks.pri)
 include(details/robotImplementations/robotImplementations.pri)
 
 include(details/robotParts/robotParts.pri)
+
+include(qrguiIncludes.pri)

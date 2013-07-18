@@ -7,12 +7,13 @@ using namespace details::robotImplementations;
 NullRobotModelImplementation::NullRobotModelImplementation()
 	: AbstractRobotModelImplementation()
 	, mBrick()
+	, mDisplay()
 	, mMotorA(0)
 	, mMotorB(1)
 	, mMotorC(2)
-	, mEncoderA(outputPort::port1)
-	, mEncoderB(outputPort::port2)
-	, mEncoderC(outputPort::port3)
+	, mEncoderA(enums::outputPort::port1)
+	, mEncoderB(enums::outputPort::port2)
+	, mEncoderC(enums::outputPort::port3)
 {
 	mActiveWaitingTimer.setInterval(100);
 	mActiveWaitingTimer.setSingleShot(true);
@@ -25,48 +26,113 @@ brickImplementations::NullBrickImplementation &NullRobotModelImplementation::bri
 	return mBrick;
 }
 
-sensorImplementations::NullTouchSensorImplementation *NullRobotModelImplementation::touchSensor(inputPort::InputPortEnum const &port) const
+displayImplementations::NullDisplayImplementation &NullRobotModelImplementation::display()
+{
+	return mDisplay;
+}
+
+sensorImplementations::NullTouchSensorImplementation *NullRobotModelImplementation::touchSensor(
+		robots::enums::inputPort::InputPortEnum const port
+		) const
 {
 	return dynamic_cast<sensorImplementations::NullTouchSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
-sensorImplementations::NullSonarSensorImplementation *NullRobotModelImplementation::sonarSensor(inputPort::InputPortEnum const &port) const
+sensorImplementations::NullSonarSensorImplementation *NullRobotModelImplementation::sonarSensor(
+		robots::enums::inputPort::InputPortEnum const port
+		) const
 {
 	return dynamic_cast<sensorImplementations::NullSonarSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
-sensorImplementations::NullColorSensorImplementation *NullRobotModelImplementation::colorSensor(inputPort::InputPortEnum const &port) const
+sensorImplementations::NullColorSensorImplementation *NullRobotModelImplementation::colorSensor(
+		robots::enums::inputPort::InputPortEnum const port
+		) const
 {
 	return dynamic_cast<sensorImplementations::NullColorSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
-sensorImplementations::NullLightSensorImplementation *NullRobotModelImplementation::lightSensor(inputPort::InputPortEnum const &port) const
+sensorImplementations::NullLightSensorImplementation *NullRobotModelImplementation::lightSensor(
+		robots::enums::inputPort::InputPortEnum const port
+		) const
 {
 	return dynamic_cast<sensorImplementations::NullLightSensorImplementation *>(mSensorsConfigurer.sensor(port));
 }
 
-void NullRobotModelImplementation::addTouchSensor(inputPort::InputPortEnum const &port)
+sensorImplementations::NullSoundSensorImplementation *NullRobotModelImplementation::soundSensor(
+		robots::enums::inputPort::InputPortEnum const port
+		) const
+{
+	return dynamic_cast<sensorImplementations::NullSoundSensorImplementation *>(mSensorsConfigurer.sensor(port));
+}
+
+sensorImplementations::NullGyroscopeSensorImplementation *NullRobotModelImplementation::gyroscopeSensor(
+		robots::enums::inputPort::InputPortEnum const port
+		) const
+{
+	return dynamic_cast<sensorImplementations::NullGyroscopeSensorImplementation *>(mSensorsConfigurer.sensor(port));
+}
+
+sensorImplementations::NullAccelerometerSensorImplementation *NullRobotModelImplementation::accelerometerSensor(
+		robots::enums::inputPort::InputPortEnum const port
+		) const
+{
+	return dynamic_cast<sensorImplementations::NullAccelerometerSensorImplementation *>(mSensorsConfigurer.sensor(port));
+}
+
+void NullRobotModelImplementation::addTouchSensor(robots::enums::inputPort::InputPortEnum const port)
 {
 	sensorImplementations::NullTouchSensorImplementation *sensor = new sensorImplementations::NullTouchSensorImplementation(port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void NullRobotModelImplementation::addLightSensor(inputPort::InputPortEnum const &port)
+void NullRobotModelImplementation::addLightSensor(robots::enums::inputPort::InputPortEnum const port)
 {
 	sensorImplementations::NullLightSensorImplementation *sensor = new sensorImplementations::NullLightSensorImplementation(port);
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void NullRobotModelImplementation::addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType)
+void NullRobotModelImplementation::addColorSensor(
+		robots::enums::inputPort::InputPortEnum const port
+		, enums::lowLevelSensorType::SensorTypeEnum mode
+		, robots::enums::sensorType::SensorTypeEnum const &sensorType)
 {
 	Q_UNUSED(mode);
-	sensorImplementations::NullColorSensorImplementation *sensor = new sensorImplementations::NullColorSensorImplementation(port, sensorType);
+	sensorImplementations::NullColorSensorImplementation *sensor
+			= new sensorImplementations::NullColorSensorImplementation(port, sensorType);
+
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 
-void NullRobotModelImplementation::addSonarSensor(inputPort::InputPortEnum const &port)
+void NullRobotModelImplementation::addSonarSensor(robots::enums::inputPort::InputPortEnum const port)
 {
-	sensorImplementations::NullSonarSensorImplementation *sensor = new sensorImplementations::NullSonarSensorImplementation(port);
+	sensorImplementations::NullSonarSensorImplementation *sensor
+			= new sensorImplementations::NullSonarSensorImplementation(port);
+
+	mSensorsConfigurer.configureSensor(sensor, port);
+}
+
+void NullRobotModelImplementation::addSoundSensor(robots::enums::inputPort::InputPortEnum const port)
+{
+	sensorImplementations::NullSoundSensorImplementation *sensor
+			= new sensorImplementations::NullSoundSensorImplementation(port);
+
+	mSensorsConfigurer.configureSensor(sensor, port);
+}
+
+void NullRobotModelImplementation::addGyroscopeSensor(robots::enums::inputPort::InputPortEnum const port)
+{
+	sensorImplementations::NullGyroscopeSensorImplementation *sensor \
+			= new sensorImplementations::NullGyroscopeSensorImplementation(port);
+
+	mSensorsConfigurer.configureSensor(sensor, port);
+}
+
+void NullRobotModelImplementation::addAccelerometerSensor(robots::enums::inputPort::InputPortEnum const port)
+{
+	sensorImplementations::NullAccelerometerSensorImplementation *sensor
+			= new sensorImplementations::NullAccelerometerSensorImplementation(port);
+
 	mSensorsConfigurer.configureSensor(sensor, port);
 }
 

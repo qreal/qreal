@@ -8,6 +8,8 @@ namespace details {
 unsigned const maxMessageSize = 59;
 unsigned const i2cBufferSize = 24;
 
+namespace enums {
+
 namespace telegramType {
 enum TelegramTypeEnum {
 	directCommandResponseRequired = 0x00
@@ -183,6 +185,8 @@ enum SonarReadingModeEnum {
 	METRIC = 1
 	, INCH = 2
 };
+}
+
 }
 
 }

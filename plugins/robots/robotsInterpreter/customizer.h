@@ -4,12 +4,9 @@
 
 #include "../../../qrgui/toolPluginInterface/customizer.h"
 
-namespace qReal
-{
-namespace interpreters
-{
-namespace robots
-{
+namespace qReal {
+namespace interpreters {
+namespace robots {
 
 class Customizer : public QObject, public qReal::Customizer
 {

@@ -1,4 +1,6 @@
+#include <string.h>
 #include "kernel.h"
+#include "kernel_id.h"
 #include "ecrobot_interface.h"
 #include <time.h>
 #include <stdlib.h>
@@ -24,5 +26,7 @@ void user_1ms_isr_type2(void)
 { 
 @@USERISRHOOKS@@
 }
+
+@@BMPFILES@@
 
 @@CODE@@

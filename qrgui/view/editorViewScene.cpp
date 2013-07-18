@@ -1,4 +1,4 @@
-#include <QtWidgets/QGraphicsTextItem>
+﻿#include <QtWidgets/QGraphicsTextItem>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsDropShadowEffect>
 #include <QtWidgets/QMenu>
@@ -15,6 +15,8 @@
 #include "../controller/commands/createElementCommand.h"
 #include "../controller/commands/createGroupCommand.h"
 #include "../umllib/private/reshapeEdgeCommand.h"
+#include "../umllib/private/resizeCommand.h"
+#include "../controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -435,6 +437,7 @@ qReal::Id EditorViewScene::createElement(QString const &str)
 {
 	qReal::Id result = createElement(str, mCreatePoint, true, &mLastCreatedWithEdgeCommand);
 	mLastCreatedWithEdge = getElem(result);
+	mShouldReparentItems = false;
 	return result;
 }
 
@@ -549,7 +552,6 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, Ele
 		, QPointF const &position, Id const &parentId, bool isFromLogicalModel
 		, CreateElementCommand **createCommandPointer, bool executeImmediately)
 {
-	QList<NodeElement*> elements;
 	CreateElementCommand *createCommand = new CreateElementCommand(
 				mMVIface->logicalAssistApi()
 				, mMVIface->graphicalAssistApi()
@@ -563,142 +565,50 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, Ele
 		(*createCommandPointer) = createCommand;
 	}
 	if (executeImmediately) {
-		mController->execute(createCommand);
-		Id const newElemId = createCommand->result();
 		if (dynamic_cast<NodeElement*>(e)) {
-			QSize const size = mMVIface->graphicalAssistApi()->editorManagerInterface().iconSize(newElemId);
-			getNodeById(newElemId)->setPos(position.x()- size.width()/2, position.y());
-			elements.append(getNodeById(newElemId));
-			insertElementIntoEdge(newElemId, newElemId, parentId, isFromLogicalModel, position
-					, QPointF(size.width(), size.height()), elements);
+			QSize const size = mMVIface->graphicalAssistApi()->editorManagerInterface().iconSize(id);
+			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
+					this, mMVIface->logicalAssistApi(), mMVIface->graphicalAssistApi(), Id(), Id()
+					, parentId, position, QPointF(size.width(), size.height()), isFromLogicalModel, createCommand);
+			mController->execute(insertCommand);
+		} else {
+			mController->execute(createCommand);
 		}
 	}
 }
 
-void EditorViewScene::insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
-		, qReal::Id const &insertedLastNodeId , qReal::Id const &parentId, bool isFromLogicalModel
-		, QPointF const &scenePos, QPointF const &shift, QList<NodeElement*> elements
-		, AbstractCommand *parentCommand)
+EdgeElement * EditorViewScene::edgeForInsertion(QPointF const &scenePos)
 {
-	Q_UNUSED(parentCommand)
 	foreach (QGraphicsItem *item, items(scenePos)) {
-		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
-		if(edge && edge->isDividable()) {// check if item is an edge and the edge is dissectable
-			NodeElement *previouslyConnectedFrom = edge->src();
-			NodeElement *previouslyConnectedTo = edge->dst();
-			if (previouslyConnectedTo && previouslyConnectedFrom) {//check has edge dst
-				Id const realParentId = (parentId == Id::rootId()) ? mMVIface->rootId() : parentId;
-
-				Id const newEdge1(edge->id().editor(), edge->id().diagram()
-						, edge->id().element(), QUuid::createUuid().toString());
-				mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge1
-						, isFromLogicalModel, "flow1", scenePos);
-				mMVIface->graphicalAssistApi()->setFrom(newEdge1, previouslyConnectedFrom->id());
-				mMVIface->graphicalAssistApi()->setTo(newEdge1, insertedFirstNodeId);
-				getNodeById(insertedFirstNodeId)->connectLinksToPorts();
-
-				reConnectLink(getEdgeById(newEdge1));
-
-				Id const newEdge2(edge->id().editor(), edge->id().diagram()
-						, edge->id().element(), QUuid::createUuid().toString());
-				mMVIface->graphicalAssistApi()->createElement(realParentId, newEdge2
-						, isFromLogicalModel, "flow2", scenePos);
-				mMVIface->graphicalAssistApi()->setFrom(newEdge2, insertedLastNodeId);
-				mMVIface->graphicalAssistApi()->setTo(newEdge2, previouslyConnectedTo->id());
-				previouslyConnectedTo->connectLinksToPorts();
-
-				reConnectLink(getEdgeById(newEdge2));
-
-				QPointF fromP = previouslyConnectedFrom->pos();
-				QPointF toP = previouslyConnectedTo->pos();
-				QPointF direction = QPointF(toP.x()- fromP.x(), toP.y()- fromP.y());
-				mainWindow()->deleteElementFromDiagram(edge->id());
-
-				moveDownFromElem(getNodeById(insertedLastNodeId), scenePos, direction, shift, elements);
-				moveDownFromElem(getNodeById(insertedFirstNodeId), scenePos, direction, shift, elements);
-
-				break;
-			}
+		EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
+		if (edge && edge->isDividable()) {
+			return edge;
 		}
 	}
+	return NULL;
 }
 
-void EditorViewScene::moveDownFromElem(NodeElement * node, QPointF const &scenePos
-		, QPointF const &direction, QPointF const &shift, QList<NodeElement *> moved)
+void EditorViewScene::resolveOverlaps(NodeElement *node, QPointF const &scenePos
+		, QPointF const &shift, QMap<qReal::Id, QPointF> &shifting)
 {
-	if (direction.x() == 0 && direction.y() == 0) {
-		return;
-	}
-	QList<NodeElement*> destinations = getNeibors(node);
-	for (int i = 0; i < destinations.length(); i++) {
-		if (!moved.contains(destinations.at(i))) {
-			if (destinations.at(i)->pos().y() >= scenePos.y()) {
-				if(direction.x() == 0 || shift.y() < shift.x() * sign(direction.x()) * sign(direction.y())
-						* (direction.y() / direction.x())
-				) {
-					destinations.at(i)->setPos(destinations.at(i)->pos().x() + shift.y() * direction.x() / direction.y()
-							, destinations.at(i)->pos().y() + shift.y());
-				} else {
-					destinations.at(i)->setPos(destinations.at(i)->pos().x() + sign(direction.x()) * sign(direction.y())* shift.x()
-							, destinations.at(i)->pos().y() + shift.x() * sign(direction.x()) * sign(direction.y())
-									* direction.y() / direction.x());
-				}
-				arrangeNodeLinks(destinations.at(i));
-			}
-			moved.append(destinations.at(i));
-			moveDownFromElem(destinations.at(i), scenePos, direction, shift, moved);
+	QList<NodeElement*> closeNodes = getCloseNodes(node);
+	foreach (NodeElement *closeNode, closeNodes) {
+		QPointF offset(closeNode->scenePos() - node->scenePos());
+		if (offset.x() < 0) {
+			offset.setX(-(closeNode->boundingRect().width() + offset.x()));
+		} else if (offset.y() < 0) {
+			offset.setY(-(closeNode->boundingRect().height() + offset.y()));
+		} else {
+			qreal coeff = qSqrt(shift.x() * shift.x() + shift.y() * shift.y())
+					/ qSqrt(offset.x() * offset.x() + offset.y() * offset.y());
+			offset.setX(coeff * offset.x());
+			offset.setY(coeff * offset.y());
 		}
+		closeNode->setPos(closeNode->pos() + offset);
+		shifting.insert(closeNode->id(), offset);
+		arrangeNodeLinks(closeNode);
+		resolveOverlaps(closeNode, scenePos, shift, shifting);
 	}
-}//
-
-void EditorViewScene::deleteElementFromEdge(qReal::Id const &nodeId, QList<QGraphicsItem *> edgesToDelete)
-{
-	QList<EdgeElement*> inEdges = getInEdges(getNodeById(nodeId));
-	QList<EdgeElement*> outEdges = getOutEdges(getNodeById(nodeId));
-	if (inEdges.count() == 1 && !edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(inEdges.at(0)))
-			&& outEdges.count() > 0)
-	{
-		NodeElement* node = inEdges.at(0)->src();
-		bool wasRelinked = false;
-		if (node) {
-			foreach(EdgeElement* edge, outEdges) {
-				if (!edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(edge))) {
-					mMVIface->graphicalAssistApi()->setFrom(edge->id(), node->id());
-					getNodeById(edge->dst()->id())->connectLinksToPorts();
-					reConnectLink(edge);
-					wasRelinked = true;
-				}
-			}
-			if (wasRelinked) {
-				mainWindow()->deleteElementFromDiagram(inEdges.at(0)->id());
-			}
-		}
-		return;
-	}
-	if (outEdges.count() == 1 && !edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(outEdges.at(0)))
-			&& inEdges.count() > 0)
-	{
-		NodeElement* node = outEdges.at(0)->dst();
-		if (node) {
-			bool wasRelinked = false;
-			foreach(EdgeElement* edge, inEdges) {
-				if(!edgesToDelete.contains(dynamic_cast<QGraphicsItem*>(edge))) {
-					mMVIface->graphicalAssistApi()->setTo(edge->id(), node->id());
-					getNodeById(node->id())->connectLinksToPorts();
-					reConnectLink(edge);
-					wasRelinked = true;
-				}
-			}
-			if (wasRelinked) {
-				mainWindow()->deleteElementFromDiagram(outEdges.at(0)->id());
-			}
-		}
-	}
-}
-
-qreal EditorViewScene::sign(qreal x)
-{
-	return (x >= 0) ? 1 : -1;
 }
 
 void EditorViewScene::reConnectLink(EdgeElement * edgeElem)
@@ -717,8 +627,6 @@ void EditorViewScene::arrangeNodeLinks(NodeElement* node)
 	node->arrangeLinks();
 	foreach (EdgeElement* nodeEdge, node->edgeList()) {
 		nodeEdge->adjustNeighborLinks();
-		nodeEdge->correctArrow();
-		nodeEdge->correctInception();
 		nodeEdge->setGraphicApiPos();
 		nodeEdge->saveConfiguration(QPointF());
 	}
@@ -748,40 +656,18 @@ EdgeElement* EditorViewScene::getEdgeById(qReal::Id const &itemId)
 	return NULL;
 }
 
-QList<EdgeElement*> EditorViewScene::getInEdges(NodeElement* node)
+QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node)
 {
-	QList<EdgeElement*> edges;
-	foreach (EdgeElement* edge, node->getEdges()) {
-		if (edge->dst() == node)
-			edges.append(edge);
+	QList<NodeElement *> list;
+	QPolygonF bounds = node->mapToScene(node->boundingRect());
+	QList<QGraphicsItem *> overlapping = items(bounds);
+	foreach (QGraphicsItem *item, overlapping) {
+		NodeElement *closeNode = dynamic_cast<NodeElement *>(item);
+		if (closeNode && (closeNode != node) && !closeNode->isAncestorOf(node) && !node->isAncestorOf(closeNode)) {
+			list.append(closeNode);
+		}
 	}
-	return edges;
-}
 
-QList<EdgeElement*> EditorViewScene::getOutEdges(NodeElement* node)
-{
-	QList<EdgeElement*> edges;
-	foreach (EdgeElement* edge, node->getEdges()) {
-		if (edge->src() == node)
-			edges.append(edge);
-	}
-	return edges;
-}
-
-QList<NodeElement*> EditorViewScene::getNeibors(NodeElement *node)
-{
-	QList<NodeElement*> list;
-	foreach (EdgeElement *edge, node->getEdges()) {
-		if (!edge->src() || !edge->dst()) {
-			continue;
-		}
-		if (edge->src()->id() == node->id()) {
-			list.append(edge->dst());
-		}
-		if (edge->dst()->id() == node->id()) {
-			list.append(edge->src());
-		}
-	}
 	return list;
 }
 
@@ -837,22 +723,27 @@ void EditorViewScene::moveSelectedItems(int direction)
 		QPointF newPos = item->pos();
 		newPos += mOffset;
 
-		Element* element = dynamic_cast<Element*>(item);
-		if (element) {
-			element->setPos(newPos);
-		}
-
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
+			ResizeCommand *resizeCommand = new ResizeCommand(this, node->id());
+			resizeCommand->startTracking();
+			node->setPos(newPos);
 			node->alignToGrid();
 			node->adjustLinks(true);
+			resizeCommand->stopTracking();
+			mController->execute(resizeCommand);
 		} else {
 			EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
+			ReshapeEdgeCommand *edgeCommand = new ReshapeEdgeCommand(this, edge->id());
+			edgeCommand->startTracking();
+			edge->setPos(newPos);
 			if (edge && !(edge->src() && edge->dst()) && (edge->src() || edge->dst())
 					&& (edge->src() ? !edge->src()->isSelected() : true)
 					&& (edge->dst() ? !edge->dst()->isSelected() : true)) {
 				edge->adjustLink();
 			}
+			edgeCommand->stopTracking();
+			mController->execute(edgeCommand);
 		}
 	}
 
@@ -1202,8 +1093,6 @@ void EditorViewScene::createEdge(QString const &idStr)
 		edge->dst()->arrangeLinks();
 		foreach (EdgeElement* nodeEdge, edge->dst()->edgeList()) {
 			nodeEdge->adjustNeighborLinks();
-			nodeEdge->correctArrow();
-			nodeEdge->correctInception();
 			nodeEdge->setGraphicApiPos();
 			nodeEdge->saveConfiguration(QPointF());
 		}
@@ -1565,7 +1454,8 @@ void EditorViewScene::dehighlight(Id const &graphicalId)
 void EditorViewScene::dehighlight()
 {
 	foreach (Element *element, mHighlightedElements) {
-		element->setGraphicsEffect(NULL);
+		if (mainWindow()->getCurrentTab()->scene()->items().contains(element))
+			element->setGraphicsEffect(NULL);
 	}
 	mHighlightedElements.clear();
 }
@@ -1615,6 +1505,9 @@ void EditorViewScene::updateEdgeElements()
 		EdgeElement* element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
 			element->redrawing(QPoint());
+			if (SettingsManager::value("ActivateGrid").toBool()) {
+				element->alignToGrid();
+			}
 		}
 	}
 }
@@ -1624,10 +1517,6 @@ void EditorViewScene::updateEdgesViaNodes()
 	foreach (QGraphicsItem *item, items()) {
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
-			foreach (EdgeElement* edge, node->edgeList()) {
-				edge->correctArrow();
-				edge->correctInception();
-			}
 			node->adjustLinks();
 		}
 	}

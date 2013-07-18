@@ -7,7 +7,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
 WaitForColorBlock::WaitForColorBlock(details::RobotModel * const robotModel)
-	: WaitForColorSensorBlockBase(robotModel, sensorType::colorFull)
+	: WaitForColorSensorBlockBase(robotModel, robots::enums::sensorType::colorFull)
 {
 }
 

@@ -3,11 +3,15 @@
 #include "abstractRobotModelImplementation.h"
 #include "brickImplementations/unrealBrickImplementation.h"
 #include "motorImplementations/unrealMotorImplementation.h"
+#include "displayImplementations/unrealDisplayImplementation.h"
 #include "sensorImplementations/unrealTouchSensorImplementation.h"
 #include "sensorImplementations/unrealSonarSensorImplementation.h"
 #include "sensorImplementations/unrealColorSensorImplementation.h"
 #include "sensorImplementations/unrealLightSensorImplementation.h"
 #include "sensorImplementations/unrealEncoderImplementation.h"
+#include "sensorImplementations/unrealSoundSensorImplementation.h"
+#include "sensorImplementations/unrealGyroscopeSensorImplementation.h"
+#include "sensorImplementations/unrealAccelerometerSensorImplementation.h"
 #include "../d2RobotModel/d2RobotModel.h"
 
 namespace qReal {
@@ -26,10 +30,36 @@ public:
 	virtual void stopRobot();
 
 	virtual brickImplementations::UnrealBrickImplementation &brick();
-	virtual sensorImplementations::UnrealTouchSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::UnrealSonarSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::UnrealColorSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const;
-	virtual sensorImplementations::UnrealLightSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const;
+
+	virtual sensorImplementations::UnrealTouchSensorImplementation *touchSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const;
+
+	virtual sensorImplementations::UnrealSonarSensorImplementation *sonarSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const;
+
+	virtual sensorImplementations::UnrealColorSensorImplementation *colorSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const;
+
+	virtual sensorImplementations::UnrealLightSensorImplementation *lightSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const;
+
+	virtual sensorImplementations::UnrealSoundSensorImplementation *soundSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const;
+
+	virtual sensorImplementations::UnrealAccelerometerSensorImplementation *accelerometerSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const;
+
+	virtual sensorImplementations::UnrealGyroscopeSensorImplementation *gyroscopeSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const;
+
+	virtual displayImplementations::UnrealDisplayImplementation &display();
 
 	virtual motorImplementations::UnrealMotorImplementation &motorA();
 	virtual motorImplementations::UnrealMotorImplementation &motorB();
@@ -55,14 +85,24 @@ private:
 	motorImplementations::UnrealMotorImplementation mMotorB;
 	motorImplementations::UnrealMotorImplementation mMotorC;
 
+	displayImplementations::UnrealDisplayImplementation mDisplay;
 	sensorImplementations::UnrealEncoderImplementation mEncoderA;
 	sensorImplementations::UnrealEncoderImplementation mEncoderB;
 	sensorImplementations::UnrealEncoderImplementation mEncoderC;
 
-	virtual void addTouchSensor(inputPort::InputPortEnum const &port);
-	virtual void addSonarSensor(inputPort::InputPortEnum const &port);
-	virtual void addLightSensor(inputPort::InputPortEnum const &port);
-	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType);
+	virtual void addTouchSensor(robots::enums::inputPort::InputPortEnum const port);
+	virtual void addSonarSensor(robots::enums::inputPort::InputPortEnum const port);
+	virtual void addLightSensor(robots::enums::inputPort::InputPortEnum const port);
+
+	virtual void addColorSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			, enums::lowLevelSensorType::SensorTypeEnum mode
+			, robots::enums::sensorType::SensorTypeEnum const &sensorType
+			);
+
+	virtual void addSoundSensor(robots::enums::inputPort::InputPortEnum const port);
+	virtual void addGyroscopeSensor(robots::enums::inputPort::InputPortEnum const port);
+	virtual void addAccelerometerSensor(robots::enums::inputPort::InputPortEnum const port);
 };
 
 }

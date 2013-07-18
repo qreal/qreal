@@ -26,7 +26,7 @@ void TcpRobotCommunicationThread::send(QObject *addressee, QByteArray const &buf
 }
 
 void TcpRobotCommunicationThread::sendI2C(QObject *addressee, QByteArray const &buffer
-		, unsigned const responseSize, inputPort::InputPortEnum const &port)
+		, unsigned const responseSize, robots::enums::inputPort::InputPortEnum port)
 {
 	Q_UNUSED(addressee)
 	Q_UNUSED(buffer)

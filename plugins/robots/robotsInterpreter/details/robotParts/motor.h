@@ -1,5 +1,7 @@
 #pragma once
+
 #include <QtCore/QObject>
+
 #include "../../../../../qrkernel/ids.h"
 #include "../robotCommandConstants.h"
 #include "../robotImplementations/motorImplementations/abstractMotorImplementation.h"
@@ -13,6 +15,7 @@ namespace robotParts {
 class Motor : public QObject
 {
 	Q_OBJECT
+
 public:
 	Motor(int const port, robotImplementations::motorImplementations::AbstractMotorImplementation *motorImpl);
 	~Motor();
@@ -28,7 +31,7 @@ signals:
 	void motorTimeout();
 
 private:
-	outputPort::OutputPortEnum mPort;
+	enums::outputPort::OutputPortEnum mPort;
 	robotImplementations::motorImplementations::AbstractMotorImplementation *mMotorImpl;  // Doesn't have ownership.
 };
 

@@ -4,7 +4,13 @@ namespace qReal {
 namespace interpreters {
 namespace robots {
 
+namespace details {
+namespace d2Model {
 int const sensorWidth = 12;
+}
+}
+
+namespace enums {
 
 namespace sensorType {
 enum SensorTypeEnum {
@@ -18,6 +24,9 @@ enum SensorTypeEnum {
 	, colorGreen
 	, colorBlue
 	, colorNone
+	, sound
+	, gyroscope
+	, accelerometer
 	, encoder
 };
 }
@@ -40,7 +49,9 @@ enum robotModelTypeEnum {
 	, trik
 };
 }
+}
 
 }
 }
+
 }

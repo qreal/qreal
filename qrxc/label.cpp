@@ -14,6 +14,8 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
 	mReadOnly = element.attribute("readOnly", "false");
+	mRotation = element.attribute("rotation", "0").toDouble();
+
 	if (mTextBinded.contains("##")) {
 		mReadOnly = "true";
 	}
@@ -38,11 +40,13 @@ void Label::generateCodeForConstructor(OutFile &out)
 	if (mText.isEmpty()) {
 		// Это бинденный лейбл, текст для него будет браться из репозитория
 		out() << "			" + titleName() + " = factory.createTitle("
-				+ QString::number(mX.value()) + ", " + QString::number(mY.value()) + ", \"" + mTextBinded + "\", " + mReadOnly + ");\n";
+				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
+				+ ", \"" + mTextBinded + "\", " + mReadOnly + ", " + QString::number(mRotation) + ");\n";
 	} else {
 		// Это статический лейбл, репозиторий ему не нужен
 		out() << "			" + titleName() + " = factory.createTitle("
-				+ QString::number(mX.value()) + ", " + QString::number(mY.value()) + ", QString::fromUtf8(\"" + mText + "\"));\n";
+				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
+				+ ", QString::fromUtf8(\"" + mText + "\"), " + QString::number(mRotation) + ");\n";
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 

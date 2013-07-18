@@ -1,8 +1,10 @@
 #pragma once
+
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 
 #include "brick.h"
+#include "display.h"
 #include "motor.h"
 #include "sensor.h"
 #include "touchSensor.h"
@@ -10,10 +12,14 @@
 #include "colorSensor.h"
 #include "encoderSensor.h"
 #include "lightSensor.h"
+#include "soundSensor.h"
+#include "gyroscopeSensor.h"
+#include "accelerometerSensor.h"
 #include "../../sensorConstants.h"
 #include "../robotImplementations/abstractRobotModelImplementation.h"
 
 #include "../robotImplementations/brickImplementations/abstractBrickImplementation.h"
+#include "../robotImplementations/displayImplementations/abstractDisplayImplementation.h"
 #include "../robotImplementations/motorImplementations/abstractMotorImplementation.h"
 #include "../robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h"
 #include "../robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.h"
@@ -36,17 +42,30 @@ public:
 	void stopRobot();
 	void disconnectFromRobot();
 
-	void configureSensors(sensorType::SensorTypeEnum const &port1
-			, sensorType::SensorTypeEnum const &port2
-			, sensorType::SensorTypeEnum const &port3
-			, sensorType::SensorTypeEnum const &port4);
+	void configureSensors(
+			robots::enums::sensorType::SensorTypeEnum const &port1
+			, robots::enums::sensorType::SensorTypeEnum const &port2
+			, robots::enums::sensorType::SensorTypeEnum const &port3
+			, robots::enums::sensorType::SensorTypeEnum const &port4
+			);
 
 	robotParts::Brick &brick();
-	robotParts::TouchSensor *touchSensor(inputPort::InputPortEnum const &port) const;
-	robotParts::SonarSensor *sonarSensor(inputPort::InputPortEnum const &port) const;
-	robotParts::LightSensor *lightSensor(inputPort::InputPortEnum const &port) const;
-	robotParts::Sensor *sensor(inputPort::InputPortEnum const &port) const;
-	robotParts::ColorSensor *colorSensor(inputPort::InputPortEnum const &port) const;
+	robotParts::Display &display();
+
+	robotParts::TouchSensor *touchSensor(robots::enums::inputPort::InputPortEnum const port) const;
+	robotParts::SonarSensor *sonarSensor(robots::enums::inputPort::InputPortEnum const port) const;
+	robotParts::LightSensor *lightSensor(robots::enums::inputPort::InputPortEnum const port) const;
+	robotParts::Sensor *sensor(robots::enums::inputPort::InputPortEnum const port) const;
+	robotParts::ColorSensor *colorSensor(robots::enums::inputPort::InputPortEnum const port) const;
+	robotParts::SoundSensor *soundSensor(robots::enums::inputPort::InputPortEnum const port) const;
+
+	robotParts::GyroscopeSensor *gyroscopeSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const;
+
+	robotParts::AccelerometerSensor *accelerometerSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const;
 
 	robotParts::Motor &motorA();
 	robotParts::Motor &motorB();
@@ -83,6 +102,7 @@ private slots:
 private:
 	robotImplementations::AbstractRobotModelImplementation *mRobotImpl;  // Has ownership.
 	robotParts::Brick mBrick;
+	robotParts::Display mDisplay;
 	robotParts::Motor mMotorA;
 	robotParts::Motor mMotorB;
 	robotParts::Motor mMotorC;
@@ -92,8 +112,10 @@ private:
 
 	QVector<robotParts::Sensor *> mSensors;  // Has ownership.
 
-	void configureSensor(sensorType::SensorTypeEnum const &sensorType
-			, inputPort::InputPortEnum const &port);
+	void configureSensor(
+			robots::enums::sensorType::SensorTypeEnum const &sensorType
+			, robots::enums::inputPort::InputPortEnum const port
+			);
 };
 
 }

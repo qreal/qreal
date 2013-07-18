@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+
 #include "sensor.h"
 #include "../../sensorConstants.h"
 
@@ -13,8 +14,9 @@ namespace robotParts {
 class LightSensor : public Sensor
 {
 	Q_OBJECT
+
 public:
-	LightSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port);
+	LightSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, robots::enums::inputPort::InputPortEnum const port);
 };
 
 }

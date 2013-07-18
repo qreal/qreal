@@ -21,7 +21,6 @@ HEADERS += \
 	mainwindow/draggableElement.h \
 	mainwindow/paletteTreeWidget.h \
 	mainwindow/qscintillaTextEdit.h \
-	mainwindow/shapeEdit/visibilityValueWidget.h \
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -40,7 +39,6 @@ SOURCES += \
 	mainwindow/projectManager/autosaver.cpp \
 	mainwindow/draggableElement.cpp \
 	mainwindow/paletteTreeWidget.cpp \
-	mainwindow/shapeEdit/visibilityValueWidget.cpp \
 	mainwindow/qscintillaTextEdit.cpp \
 
 win32 {
@@ -92,6 +90,7 @@ HEADERS += \
 	mainwindow/shapeEdit/path.h \
 	mainwindow/shapeEdit/image.h \
 	mainwindow/shapeEdit/visibilityConditionsDialog.h \
+	mainwindow/shapeEdit/visibilityValueWidget.h \
 
 SOURCES += \
 	mainwindow/shapeEdit/shapeEdit.cpp \
@@ -113,6 +112,7 @@ SOURCES += \
 	mainwindow/shapeEdit/textPicture.cpp \
 	mainwindow/shapeEdit/image.cpp \
 	mainwindow/shapeEdit/visibilityConditionsDialog.cpp \
+	mainwindow/shapeEdit/visibilityValueWidget.cpp \
 
 FORMS += \
 	mainwindow/shapeEdit/shapeEdit.ui \

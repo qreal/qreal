@@ -3,6 +3,7 @@
 #include "robotCommunicationThreadBase.h"
 #include "../tracer.h"
 
+using namespace qReal::interpreters;
 using namespace qReal::interpreters::robots::details;
 
 unsigned const lsGetStatusResponseSize = 6;
@@ -13,15 +14,15 @@ RobotCommunicationThreadBase::RobotCommunicationThreadBase()
 
 void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 		, QByteArray const &buffer, unsigned const responseSize
-		, inputPort::InputPortEnum const &port)
+		, robots::enums::inputPort::InputPortEnum const port)
 {
-	Tracer::debug(tracer::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
+	Tracer::debug(tracer::enums::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "Sending:");
 
 	QByteArray command(buffer.length() + 7, 0);
 	command[0] = buffer.length() + 5;
 	command[1] = 0x00;
-	command[2] = telegramType::directCommandNoResponse;
-	command[3] = commandCode::LSWRITE;
+	command[2] = enums::telegramType::directCommandNoResponse;
+	command[3] = enums::commandCode::LSWRITE;
 	command[4] = port;
 	command[5] = buffer.length();
 	command[6] = responseSize;
@@ -33,7 +34,7 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 	send(command, 0, dumpOutput);
 
 	if (!waitForI2CBytes(responseSize, port)) {
-		Tracer::debug(tracer::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "No response, connection error");
+		Tracer::debug(tracer::enums::robotCommunication, "RobotCommunicationThreadBase::sendI2C", "No response, connection error");
 		emit response(addressee, QByteArray());
 		return;
 	}
@@ -44,8 +45,8 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 
 		command[0] = 0x03;
 		command[1] = 0x00;
-		command[2] = telegramType::directCommandResponseRequired;
-		command[3] = commandCode::LSREAD;
+		command[2] = enums::telegramType::directCommandResponseRequired;
+		command[3] = enums::commandCode::LSREAD;
 		command[4] = port;
 
 		QByteArray result;
@@ -60,7 +61,7 @@ void RobotCommunicationThreadBase::sendI2C(QObject *addressee
 	}
 }
 
-bool RobotCommunicationThreadBase::waitForI2CBytes(int bytes, inputPort::InputPortEnum port)
+bool RobotCommunicationThreadBase::waitForI2CBytes(int bytes, robots::enums::inputPort::InputPortEnum port)
 {
 	time_t const startTime = clock();
 	do {
@@ -75,21 +76,21 @@ bool RobotCommunicationThreadBase::waitForI2CBytes(int bytes, inputPort::InputPo
 	} while (true);
 }
 
-int RobotCommunicationThreadBase::i2cBytesReady(inputPort::InputPortEnum port)
+int RobotCommunicationThreadBase::i2cBytesReady(robots::enums::inputPort::InputPortEnum port)
 {
 	QByteArray command(5, 0);
 	command[0] = 0x03;
 	command[1] = 0x00;
 
-	command[2] = telegramType::directCommandResponseRequired;
-	command[3] = commandCode::LSGETSTATUS;
+	command[2] = enums::telegramType::directCommandResponseRequired;
+	command[3] = enums::commandCode::LSGETSTATUS;
 	command[4] = port;
 
 	QByteArray result;
 	send(command, lsGetStatusResponseSize, result);
 
 	// static_cats<int> prevents a warning about operator != ambiguity
-	if (result.isEmpty() || static_cast<int>(result[4]) != errorCode::success) {
+	if (result.isEmpty() || static_cast<int>(result[4]) != enums::errorCode::success) {
 		return 0;
 	} else {
 		return result[5];

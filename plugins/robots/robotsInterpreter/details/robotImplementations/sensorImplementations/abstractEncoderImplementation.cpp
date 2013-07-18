@@ -2,12 +2,12 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-AbstractEncoderImplementation::AbstractEncoderImplementation(const outputPort::OutputPortEnum &port)
+AbstractEncoderImplementation::AbstractEncoderImplementation(const enums::outputPort::OutputPortEnum &port)
 	: mPort(port), mState(idle)
 {
 }
 
-void AbstractEncoderImplementation::setPort(outputPort::OutputPortEnum const &port)
+void AbstractEncoderImplementation::setPort(enums::outputPort::OutputPortEnum const &port)
 {
 	mPort = port;
 }

@@ -49,14 +49,18 @@ UnrealRobotModelImplementation *AbstractRobotModelImplementation::unrealRobotMod
 	return mUnrealRobotModel;
 }
 
-AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicator * const robotCommunication, d2Model::D2RobotModel *d2RobotModel)
+AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(
+		robots::enums::robotModelType::robotModelTypeEnum type
+		, RobotCommunicator * const robotCommunication
+		, d2Model::D2RobotModel *d2RobotModel
+		)
 {
 	switch (type) {
-	case robotModelType::null:
+	case robots::enums::robotModelType::null:
 		return nullRobotModel();
-	case robotModelType::twoD:
+	case robots::enums::robotModelType::twoD:
 		return unrealRobotModel(d2RobotModel);
-	case robotModelType::nxt:
+	case robots::enums::robotModelType::nxt:
 		return realRobotModel(robotCommunication);
 	}
 
@@ -64,48 +68,62 @@ AbstractRobotModelImplementation *AbstractRobotModelImplementation::robotModel(r
 	return nullRobotModel();
 }
 
-sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplementation::sensor(inputPort::InputPortEnum const &port)
+sensorImplementations::AbstractSensorImplementation * AbstractRobotModelImplementation::sensor(
+		robots::enums::inputPort::InputPortEnum const port
+		)
 {
 	return mSensorsConfigurer.sensor(port);
 }
 
 void AbstractRobotModelImplementation::init()
 {
-	Tracer::debug(tracer::initialization, "AbstractRobotModelImplementation::init", "Initializing robot model and connecting to robot...");
+	Tracer::debug(tracer::enums::initialization, "AbstractRobotModelImplementation::init", "Initializing robot model and connecting to robot...");
 }
 
-void AbstractRobotModelImplementation::configureSensor(sensorType::SensorTypeEnum const &sensorType
-		, inputPort::InputPortEnum const &port)
+void AbstractRobotModelImplementation::configureSensor(
+		robots::enums::sensorType::SensorTypeEnum const &sensorType
+		, robots::enums::inputPort::InputPortEnum const port
+		)
 {
 	switch (sensorType) {
-	case sensorType::unused:
+	case robots::enums::sensorType::unused:
 		nullifySensor(port);
 		break;
-	case sensorType::touchBoolean:
+	case robots::enums::sensorType::touchBoolean:
 		addTouchSensor(port);
 		break;
-	case sensorType::touchRaw:
+	case robots::enums::sensorType::touchRaw:
 		break;
-	case sensorType::sonar:
+	case robots::enums::sensorType::sonar:
 		addSonarSensor(port);
 		break;
-	case sensorType::colorFull:
-		addColorSensor(port, lowLevelSensorType::COLORFULL, sensorType);
+	case robots::enums::sensorType::colorFull:
+		addColorSensor(port, enums::lowLevelSensorType::COLORFULL, sensorType);
 		break;
-	case sensorType::colorRed:
-		addColorSensor(port, lowLevelSensorType::COLORRED, sensorType);
+	case robots::enums::sensorType::colorRed:
+		addColorSensor(port, enums::lowLevelSensorType::COLORRED, sensorType);
 		break;
-	case sensorType::colorGreen:
-		addColorSensor(port, lowLevelSensorType::COLORGREEN, sensorType);
+	case robots::enums::sensorType::colorGreen:
+		addColorSensor(port, enums::lowLevelSensorType::COLORGREEN, sensorType);
 		break;
-	case sensorType::colorBlue:
-		addColorSensor(port, lowLevelSensorType::COLORBLUE, sensorType);
+	case robots::enums::sensorType::colorBlue:
+		addColorSensor(port, enums::lowLevelSensorType::COLORBLUE, sensorType);
 		break;
-	case sensorType::colorNone:
-		addColorSensor(port, lowLevelSensorType::COLORNONE, sensorType);
+	case robots::enums::sensorType::colorNone:
+		addColorSensor(port, enums::lowLevelSensorType::COLORNONE, sensorType);
 		break;
-	case sensorType::light:
+	case robots::enums::sensorType::light:
 		addLightSensor(port);
+		break;
+	case robots::enums::sensorType::sound:
+		addSoundSensor(port);
+		break;
+	case robots::enums::sensorType::accelerometer:
+		addAccelerometerSensor(port);
+		break;
+	case robots::enums::sensorType::gyroscope:
+		addGyroscopeSensor(port);
+		break;
 	default:
 		// TODO: Throw an exception
 		break;
@@ -144,8 +162,8 @@ void AbstractRobotModelImplementation::disconnectFromRobot()
 {
 }
 
-void AbstractRobotModelImplementation::nullifySensor(inputPort::InputPortEnum port)
+void AbstractRobotModelImplementation::nullifySensor(robots::enums::inputPort::InputPortEnum const port)
 {
-	Tracer::debug(tracer::initialization, "AbstractRobotModelImplementation::nullifySensor", "Nullifying sensor on port " + QString::number(port));
+	Tracer::debug(tracer::enums::initialization, "AbstractRobotModelImplementation::nullifySensor", "Nullifying sensor on port " + QString::number(port));
 	mSensorsConfigurer.nullifySensor(port);
 }

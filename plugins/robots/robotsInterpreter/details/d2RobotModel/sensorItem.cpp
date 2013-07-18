@@ -10,7 +10,7 @@ using namespace graphicsUtils;
 int const selectionDrift = 3;
 
 SensorItem::SensorItem(SensorsConfiguration &configuration
-		, inputPort::InputPortEnum port)
+		, robots::enums::inputPort::InputPortEnum port)
 	: RotateItem()
 	, mConfiguration(configuration)
 	, mPort(port)
@@ -92,20 +92,20 @@ void SensorItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 QString SensorItem::name() const
 {
 	switch (mConfiguration.type(mPort)) {
-	case sensorType::touchBoolean:
+	case robots::enums::sensorType::touchBoolean:
 		return "touch";
-	case sensorType::colorFull:
-	case sensorType::colorNone:
+	case robots::enums::sensorType::colorFull:
+	case robots::enums::sensorType::colorNone:
 		return "color_empty";
-	case sensorType::colorBlue:
+	case robots::enums::sensorType::colorBlue:
 		return "color_blue";
-	case sensorType::colorGreen:
+	case robots::enums::sensorType::colorGreen:
 		return "color_green";
-	case sensorType::colorRed:
+	case robots::enums::sensorType::colorRed:
 		return "color_red";
-	case sensorType::sonar:
+	case robots::enums::sensorType::sonar:
 		return "sonar";
-	case sensorType::light:
+	case robots::enums::sensorType::light:
 		return "light";
 	default:
 		Q_ASSERT(!"Unknown sensor type");
@@ -116,16 +116,16 @@ QString SensorItem::name() const
 QRectF SensorItem::imageRect() const
 {
 	switch (mConfiguration.type(mPort)) {
-	case sensorType::touchBoolean:
+	case robots::enums::sensorType::touchBoolean:
 		return QRectF(-12, -5, 25, 10);
-	case sensorType::colorFull:
-	case sensorType::colorNone:
-	case sensorType::colorBlue:
-	case sensorType::colorGreen:
-	case sensorType::colorRed:
-	case sensorType::light:
+	case robots::enums::sensorType::colorFull:
+	case robots::enums::sensorType::colorNone:
+	case robots::enums::sensorType::colorBlue:
+	case robots::enums::sensorType::colorGreen:
+	case robots::enums::sensorType::colorRed:
+	case robots::enums::sensorType::light:
 		return QRectF(-6, -6, 12, 12);
-	case sensorType::sonar:
+	case robots::enums::sensorType::sonar:
 		return QRectF(-20, -10, 40, 20);
 	default:
 		Q_ASSERT(!"Unknown sensor type");

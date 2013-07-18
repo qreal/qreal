@@ -3,11 +3,12 @@
 #include "../../sensorConstants.h"
 
 using namespace qReal;
+using namespace interpreters;
 using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
 WaitForTouchSensorBlock::WaitForTouchSensorBlock(details::RobotModel * const robotModel)
-	: WaitForSensorBlock(robotModel, sensorType::touchBoolean)
+	: WaitForSensorBlock(robotModel, robots::enums::sensorType::touchBoolean)
 {
 }
 

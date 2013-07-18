@@ -18,7 +18,10 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
-D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel, QWidget *parent)
+QSize const displaySize(200, 300);
+
+D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
+	, NxtDisplay *nxtDisplay, QWidget *parent)
 		: QWidget(parent)
 		, mUi(new Ui::D2Form)
 		, mScene(NULL)
@@ -26,14 +29,15 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
 		, mRobotModel(robotModel)
 		, mWorldModel(worldModel)
-		, mDrawingAction(drawingAction::none)
+		, mNxtDisplay(nxtDisplay)
+		, mDrawingAction(enums::drawingAction::none)
 		, mMouseClicksCount(0)
 		, mCurrentWall(NULL)
 		, mCurrentLine(NULL)
 		, mCurrentStylus(NULL)
 		, mCurrentEllipse(NULL)
-		, mCurrentPort(inputPort::none)
-		, mCurrentSensorType(sensorType::unused)
+		, mCurrentPort(robots::enums::inputPort::none)
+		, mCurrentSensorType(robots::enums::sensorType::unused)
 		, mWidth(defaultPenWidth)
 		, mClearing(false)
 		, mFirstShow(true)
@@ -55,7 +59,10 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 
 	connect(mScene, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 
-	setCursorType(static_cast<cursorType::CursorType>(SettingsManager::value("2dCursorType").toInt()));
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(updateGrid()));
+	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), this, SLOT(alignWalls()));
+
+	setCursorType(static_cast<enums::cursorType::CursorType>(SettingsManager::value("2dCursorType").toInt()));
 	syncCursorButtons();
 	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
@@ -97,6 +104,11 @@ void D2ModelWidget::initWidget()
 	mUi->penColorComboBox->setColor(QColor("black"));
 
 	initButtonGroups();
+
+	mNxtDisplay->setMinimumSize(displaySize);
+	mNxtDisplay->setMaximumSize(displaySize);
+	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mNxtDisplay);
+	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
 }
 
 void D2ModelWidget::connectUiButtons()
@@ -120,19 +132,21 @@ void D2ModelWidget::connectUiButtons()
 	connect(&mPortsMapper, SIGNAL(mapped(int)), this, SLOT(saveToRepo()));
 
 	connect(mUi->port1Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port1Box, inputPort::port1);
+	mPortsMapper.setMapping(mUi->port1Box, robots::enums::inputPort::port1);
 	connect(mUi->port2Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port2Box, inputPort::port2);
+	mPortsMapper.setMapping(mUi->port2Box, robots::enums::inputPort::port2);
 	connect(mUi->port3Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port3Box, inputPort::port3);
+	mPortsMapper.setMapping(mUi->port3Box, robots::enums::inputPort::port3);
 	connect(mUi->port4Box, SIGNAL(activated(int)), &mPortsMapper, SLOT(map()));
-	mPortsMapper.setMapping(mUi->port4Box, inputPort::port4);
+	mPortsMapper.setMapping(mUi->port4Box, robots::enums::inputPort::port4);
 
 	connect(mUi->speedComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSpeed(int)));
 
 	connect(mUi->autoCenteringButton, SIGNAL(toggled(bool)), this, SLOT(enableRobotFollowing(bool)));
 	connect(mUi->handCursorButton, SIGNAL(toggled(bool)), this, SLOT(onHandCursorButtonToggled(bool)));
 	connect(mUi->multiselectionCursorButton, SIGNAL(toggled(bool)), this, SLOT(onMultiselectionCursorButtonToggled(bool)));
+
+	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
 }
 
 void D2ModelWidget::initButtonGroups()
@@ -314,7 +328,7 @@ void D2ModelWidget::centerOnRobot()
 
 void D2ModelWidget::drawWalls()
 {
-	if (mDrawingAction == drawingAction::wall || mDrawingAction == drawingAction::noneWordLoad) {
+	if (mDrawingAction == enums::drawingAction::wall || mDrawingAction == enums::drawingAction::noneWordLoad) {
 		foreach (WallItem *wall, mWorldModel->walls()) {
 			if (!mScene->items().contains(wall)) {
 				mScene->addItem(wall);
@@ -327,10 +341,10 @@ void D2ModelWidget::drawWalls()
 
 void D2ModelWidget::drawColorFields()
 {
-	if (mDrawingAction == drawingAction::line
-			|| mDrawingAction == drawingAction::stylus
-			|| mDrawingAction == drawingAction::ellipse
-			|| mDrawingAction == drawingAction::noneWordLoad) {
+	if (mDrawingAction == enums::drawingAction::line
+			|| mDrawingAction == enums::drawingAction::stylus
+			|| mDrawingAction == enums::drawingAction::ellipse
+			|| mDrawingAction == enums::drawingAction::noneWordLoad) {
 		foreach (ColorFieldItem *colorField, mWorldModel->colorFields()) {
 			if (!mScene->items().contains(colorField)) {
 				mScene->addItem(colorField);
@@ -361,48 +375,48 @@ QPainterPath const D2ModelWidget::robotBoundingPolygon(QPointF const &coord
 void D2ModelWidget::addWall(bool on)
 {
 	if (!on) {
-		mDrawingAction = drawingAction::none;
+		mDrawingAction = enums::drawingAction::none;
 		mMouseClicksCount = 0;
 		return;
 	}
 
-	mDrawingAction = drawingAction::wall;
+	mDrawingAction = enums::drawingAction::wall;
 	setHighlightOneButton(mUi->wallButton);
 }
 
 void D2ModelWidget::addLine(bool on)
 {
 	if (!on) {
-		mDrawingAction = drawingAction::none;
+		mDrawingAction = enums::drawingAction::none;
 		mMouseClicksCount = 0;
 		return;
 	}
 
-	mDrawingAction = drawingAction::line;
+	mDrawingAction = enums::drawingAction::line;
 	setHighlightOneButton(mUi->lineButton);
 }
 
 void D2ModelWidget::addStylus(bool on)
 {
 	if (!on) {
-		mDrawingAction = drawingAction::none;
+		mDrawingAction = enums::drawingAction::none;
 		mMouseClicksCount = 0;
 		return;
 	}
 
-	mDrawingAction = drawingAction::stylus;
+	mDrawingAction = enums::drawingAction::stylus;
 	setHighlightOneButton(mUi->stylusButton);
 }
 
 void D2ModelWidget::addEllipse(bool on)
 {
 	if (!on) {
-		mDrawingAction = drawingAction::none;
+		mDrawingAction = enums::drawingAction::none;
 		mMouseClicksCount = 0;
 		return;
 	}
 
-	mDrawingAction = drawingAction::ellipse;
+	mDrawingAction = enums::drawingAction::ellipse;
 	setHighlightOneButton(mUi->ellipseButton);
 }
 
@@ -412,10 +426,10 @@ void D2ModelWidget::clearScene(bool removeRobot)
 	mWorldModel->clearScene();
 	mRobotModel->clear();
 	if (removeRobot) {
-		removeSensor(inputPort::port1);
-		removeSensor(inputPort::port2);
-		removeSensor(inputPort::port3);
-		removeSensor(inputPort::port4);
+		removeSensor(robots::enums::inputPort::port1);
+		removeSensor(robots::enums::inputPort::port2);
+		removeSensor(robots::enums::inputPort::port3);
+		removeSensor(robots::enums::inputPort::port4);
 		int const noneSensorIndex = 0;
 		mUi->port1Box->setCurrentIndex(noneSensorIndex);
 		mUi->port2Box->setCurrentIndex(noneSensorIndex);
@@ -444,21 +458,21 @@ void D2ModelWidget::resetButtons()
 	mCurrentLine = NULL;
 	mCurrentStylus = NULL;
 	mMouseClicksCount = 0;
-	mDrawingAction = drawingAction::none;
+	mDrawingAction = enums::drawingAction::none;
 }
 
 QComboBox *D2ModelWidget::currentComboBox()
 {
 	switch (mCurrentPort){
-	case inputPort::port1:
+	case robots::enums::inputPort::port1:
 		return mUi->port1Box;
-	case inputPort::port2:
+	case robots::enums::inputPort::port2:
 		return mUi->port2Box;
-	case inputPort::port3:
+	case robots::enums::inputPort::port3:
 		return mUi->port3Box;
-	case inputPort::port4:
+	case robots::enums::inputPort::port4:
 		return mUi->port4Box;
-	case inputPort::none:
+	case robots::enums::inputPort::none:
 		break;
 	}
 	return NULL;
@@ -469,37 +483,39 @@ void D2ModelWidget::addPort(int const port)
 	if (!isVisible() && mFirstShow) {
 		return;
 	}
+
 	QPointF const sensorPos = mSensors[port]
 			? mSensors[port]->scenePos()
 			: mRobot->mapToScene(mRobot->boundingRect().center());
-	mCurrentPort = static_cast<inputPort::InputPortEnum>(port);
+	mCurrentPort = static_cast<robots::enums::inputPort::InputPortEnum>(port);
 
 	switch (currentComboBox()->currentIndex()){
 	case 0:
-		mCurrentSensorType = sensorType::unused;
+		mCurrentSensorType = robots::enums::sensorType::unused;
 		break;
 	case 1:
-		mCurrentSensorType = sensorType::touchBoolean;
+		mCurrentSensorType = robots::enums::sensorType::touchBoolean;
 		break;
 	case 2: {
 		QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
-		sensorType::SensorTypeEnum const defaultValue = sensorType::colorFull;
-		mCurrentSensorType = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
-		if (mCurrentSensorType != sensorType::colorFull
-					&& mCurrentSensorType != sensorType::colorBlue
-					&& mCurrentSensorType != sensorType::colorGreen
-					&& mCurrentSensorType != sensorType::colorRed
-					&& mCurrentSensorType != sensorType::colorNone) {
+		robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
+		mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
+		if (mCurrentSensorType != robots::enums::sensorType::colorFull
+					&& mCurrentSensorType != robots::enums::sensorType::colorBlue
+					&& mCurrentSensorType != robots::enums::sensorType::colorGreen
+					&& mCurrentSensorType != robots::enums::sensorType::colorRed
+					&& mCurrentSensorType != robots::enums::sensorType::colorNone) {
 			mCurrentSensorType = defaultValue;
 		}
 	}
 		break;
 	case 3:
-		mCurrentSensorType = sensorType::sonar;
+		mCurrentSensorType = robots::enums::sensorType::sonar;
 		break;
 	case 4:
-		mCurrentSensorType = sensorType::light;
+		mCurrentSensorType = robots::enums::sensorType::light;
 	}
+
 	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, sensorPos.toPoint(), 0);
 	reinitSensor(mCurrentPort);
 
@@ -510,14 +526,20 @@ void D2ModelWidget::reshapeWall(QGraphicsSceneMouseEvent *event)
 {
 	QPointF const pos = event->scenePos();
 	if (mCurrentWall) {
-		QPointF oldPos = mCurrentWall->end();
+		QPointF const oldPos = mCurrentWall->end();
 		mCurrentWall->setX2andY2(pos.x(), pos.y());
-		if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
-			mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
+		if (SettingsManager::value("2dShowGrid").toBool()) {
+			mCurrentWall->reshapeBeginWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+			mCurrentWall->reshapeEndWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+		} else {
+			if (mCurrentWall->realShape().intersects(mRobot->realBoundingRect())) {
+				mCurrentWall->setX2andY2(oldPos.x(), oldPos.y());
+			}
+			if (event->modifiers() & Qt::ShiftModifier) {
+				mCurrentWall->reshapeRectWithShift();
+			}
 		}
-		if (event->modifiers() & Qt::ShiftModifier) {
-			mCurrentWall->reshapeRectWithShift();
-		}
+
 	}
 }
 
@@ -553,9 +575,10 @@ void D2ModelWidget::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 
 void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	if (mCursorType == cursorType::hand) {
+	if (mCursorType == enums::cursorType::hand) {
 		mUi->graphicsView->setCursor(Qt::ClosedHandCursor);
 	}
+
 	mRobot->checkSelection();
 	foreach (SensorItem *sensor, mSensors) {
 		if (sensor) {
@@ -565,48 +588,47 @@ void D2ModelWidget::mousePressed(QGraphicsSceneMouseEvent *mouseEvent)
 
 	QPointF const position = mouseEvent->scenePos();
 	processDragMode(mDrawingAction);
-	switch (mDrawingAction){
-	case drawingAction::wall: {
+	switch (mDrawingAction) {
+	case enums::drawingAction::wall: {
 		if (!mRobot->realBoundingRect().intersects(QRectF(position, position))) {
 			mCurrentWall = new WallItem(position, position);
 			mScene->removeMoveFlag(mouseEvent, mCurrentWall);
 			mWorldModel->addWall(mCurrentWall);
 			mMouseClicksCount++;
 		}
-	}
 		break;
-	case drawingAction::line: {
+	}
+	case enums::drawingAction::line: {
 		mCurrentLine = new LineItem(position, position);
 		mCurrentLine->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
 				, mScene->brushStyleItems(), mScene->brushColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentLine);
 		mWorldModel->addColorField(mCurrentLine);
 		mMouseClicksCount++;
-	}
 		break;
-	case drawingAction::stylus: {
+	}
+	case enums::drawingAction::stylus: {
 		mCurrentStylus = new StylusItem(position.x(), position.y());
 		mCurrentStylus->setPenBrush(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems()
 				, mScene->brushStyleItems(), mScene->brushColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentStylus);
 		mWorldModel->addColorField(mCurrentStylus);
 		mMouseClicksCount++;
-	}
 		break;
-	case drawingAction::ellipse: {
+	}
+	case enums::drawingAction::ellipse: {
 		mCurrentEllipse = new EllipseItem(position, position);
 		mCurrentEllipse->setPen(mScene->penStyleItems(), mScene->penWidthItems(), mScene->penColorItems());
 		mScene->removeMoveFlag(mouseEvent, mCurrentEllipse);
 		mWorldModel->addColorField(mCurrentEllipse);
 		mMouseClicksCount++;
-	}
 		break;
-
-	case drawingAction::none: {
+	}
+	case enums::drawingAction::none: {
 		mMouseClicksCount = 0;
 		mScene->forPressResize(mouseEvent);
-	}
 		break;
+	}
 	default:
 		break;
 	}
@@ -628,16 +650,16 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 	bool needUpdate = true;
 	processDragMode(mDrawingAction);
 	switch (mDrawingAction){
-	case drawingAction::wall:
+	case enums::drawingAction::wall:
 		reshapeWall(mouseEvent);
 		break;
-	case drawingAction::line:
+	case enums::drawingAction::line:
 		reshapeLine(mouseEvent);
 		break;
-	case drawingAction::stylus:
+	case enums::drawingAction::stylus:
 		reshapeStylus(mouseEvent);
 		break;
-	case drawingAction::ellipse:
+	case enums::drawingAction::ellipse:
 		reshapeEllipse(mouseEvent);
 		break;
 	default:
@@ -654,9 +676,10 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 
 void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	if (mCursorType == cursorType::hand) {
+	if (mCursorType == enums::cursorType::hand) {
 		mUi->graphicsView->setCursor(Qt::OpenHandCursor);
 	}
+
 	mRobot->checkSelection();
 	foreach (SensorItem *sensor, mSensors) {
 		if (sensor) {
@@ -667,39 +690,39 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	processDragMode(mDrawingAction);
 
 	switch (mDrawingAction){
-	case drawingAction::wall: {
+	case enums::drawingAction::wall: {
 		reshapeWall(mouseEvent);
 		mCurrentWall = NULL;
 		mMouseClicksCount = 0;
-		mDrawingAction = drawingAction::none;
-	}
+		mDrawingAction = enums::drawingAction::none;
 		break;
-	case drawingAction::line: {
+	}
+	case enums::drawingAction::line: {
 		reshapeLine(mouseEvent);
 		mCurrentLine = NULL;
 		mMouseClicksCount = 0;
-		mDrawingAction = drawingAction::none;
-	}
+		mDrawingAction = enums::drawingAction::none;
 		break;
-	case drawingAction::stylus: {
+	}
+	case enums::drawingAction::stylus: {
 		reshapeStylus(mouseEvent);
 		mCurrentStylus = NULL;
 		mMouseClicksCount = 0;
-		mDrawingAction = drawingAction::none;
-	}
+		mDrawingAction = enums::drawingAction::none;
 		break;
-	case drawingAction::ellipse: {
+	}
+	case enums::drawingAction::ellipse: {
 		reshapeEllipse(mouseEvent);
 		mCurrentEllipse = NULL;
 		mMouseClicksCount = 0;
-		mDrawingAction = drawingAction::none;
-	}
+		mDrawingAction = enums::drawingAction::none;
 		break;
+	}
 	default:
 		mScene->forReleaseResize(mouseEvent, mRobot->realBoundingRect());
-
 		break;
 	}
+
 	mUi->wallButton->setChecked(false);
 	mUi->lineButton->setChecked(false);
 	mUi->stylusButton->setChecked(false);
@@ -717,6 +740,7 @@ void D2ModelWidget::saveWorldModel()
 	if (saveFileName.isEmpty()) {
 		return;
 	}
+
 	if (!saveFileName.toLower().endsWith(".xml")) {
 		saveFileName += ".xml";
 	}
@@ -752,12 +776,12 @@ void D2ModelWidget::handleNewRobotPosition()
 	}
 }
 
-void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
+void D2ModelWidget::removeSensor(robots::enums::inputPort::InputPortEnum port)
 {
 	// Here's the point where all interested entities are notified about sensor deletion,
 	// so if this code gets broken or worked around, we'll have some almost undebuggable
 	// dangling pointers in scene and in robot item. But what could possibly go wrong?
-	if (!mSensors[port]) {
+	if (!mSensors[port] || !mRobot) {
 		return;
 	}
 
@@ -766,23 +790,23 @@ void D2ModelWidget::removeSensor(inputPort::InputPortEnum port)
 	delete mSensors[port];
 	mSensors[port] = NULL;
 
-	changeSensorType(port, sensorType::unused);
+	changeSensorType(port, robots::enums::sensorType::unused);
 }
 
-void D2ModelWidget::changeSensorType(inputPort::InputPortEnum const port
-		, sensorType::SensorTypeEnum const type)
+void D2ModelWidget::changeSensorType(robots::enums::inputPort::InputPortEnum const port
+		, robots::enums::sensorType::SensorTypeEnum const type)
 {
 	switch (port) {
-	case inputPort::port1:
+	case robots::enums::inputPort::port1:
 		mUi->port1Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
 		break;
-	case inputPort::port2:
+	case robots::enums::inputPort::port2:
 		mUi->port2Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
 		break;
-	case inputPort::port3:
+	case robots::enums::inputPort::port3:
 		mUi->port3Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
 		break;
-	case inputPort::port4:
+	case robots::enums::inputPort::port4:
 		mUi->port4Box->setCurrentIndex(sensorTypeToComboBoxIndex(type));
 		break;
 	default:
@@ -790,38 +814,38 @@ void D2ModelWidget::changeSensorType(inputPort::InputPortEnum const port
 	}
 }
 
-int D2ModelWidget::sensorTypeToComboBoxIndex(sensorType::SensorTypeEnum const type)
+int D2ModelWidget::sensorTypeToComboBoxIndex(robots::enums::sensorType::SensorTypeEnum const type)
 {
 	switch(type) {
-	case sensorType::unused:
+	case robots::enums::sensorType::unused:
 		return indexOfNoneSensor;
-	case sensorType::touchBoolean:
-	case sensorType::touchRaw:
+	case robots::enums::sensorType::touchBoolean:
+	case robots::enums::sensorType::touchRaw:
 		return indexOfTouchSensor;
-	case sensorType::colorFull:
-	case sensorType::colorRed:
-	case sensorType::colorGreen:
-	case sensorType::colorBlue:
-	case sensorType::colorNone:
+	case robots::enums::sensorType::colorFull:
+	case robots::enums::sensorType::colorRed:
+	case robots::enums::sensorType::colorGreen:
+	case robots::enums::sensorType::colorBlue:
+	case robots::enums::sensorType::colorNone:
 		return indexOfColorSensor;
-	case sensorType::sonar:
+	case robots::enums::sensorType::sonar:
 		return indexOfSonarSensor;
-	case sensorType::light:
+	case robots::enums::sensorType::light:
 		return indexOfLightSensor;
 	default:
 		return indexOfNoneSensor;
 	}
 }
 
-void D2ModelWidget::reinitSensor(inputPort::InputPortEnum port)
+void D2ModelWidget::reinitSensor(robots::enums::inputPort::InputPortEnum port)
 {
 	removeSensor(port);
 
-	if (mRobotModel->configuration().type(port) == sensorType::unused) {
+	if (mRobotModel->configuration().type(port) == robots::enums::sensorType::unused) {
 		return;
 	}
 
-	SensorItem *sensor = mRobotModel->configuration().type(port) == sensorType::sonar
+	SensorItem *sensor = mRobotModel->configuration().type(port) == robots::enums::sensorType::sonar
 			? new SonarSensorItem(*mWorldModel, mRobotModel->configuration(), port)
 			: new SensorItem(mRobotModel->configuration(), port);
 
@@ -850,15 +874,17 @@ void D2ModelWidget::deleteItem(QGraphicsItem *item)
 	if (sensor) {
 		int const port = mSensors.indexOf(sensor);
 		if (port != -1) {
-			removeSensor(static_cast<inputPort::InputPortEnum>(port));
+			removeSensor(static_cast<robots::enums::inputPort::InputPortEnum>(port));
 		}
 		return;
 	}
+
 	WallItem * const wall = dynamic_cast<WallItem *>(item);
 	if (wall) {
 		mScene->removeItem(wall);
 		mWorldModel->removeWall(wall);
 	}
+
 	ColorFieldItem *colorField = dynamic_cast<ColorFieldItem *>(item);
 	if (colorField) {
 		mScene->removeItem(colorField);
@@ -898,6 +924,7 @@ void D2ModelWidget::changePenWidth(int width)
 	foreach (AbstractItem *item, selectedColorItems()) {
 		item->setPenWidth(width);
 	}
+
 	mScene->update();
 }
 
@@ -907,6 +934,7 @@ void D2ModelWidget::changePenColor(const QString &text)
 	foreach (AbstractItem *item, selectedColorItems()) {
 		item->setPenColor(text);
 	}
+
 	mScene->update();
 }
 
@@ -915,7 +943,8 @@ void D2ModelWidget::changePalette()
 	if (mClearing) {
 		return;
 	}
-	if(mDrawingAction == drawingAction::none) {
+
+	if(mDrawingAction == enums::drawingAction::none) {
 		QList<QGraphicsItem *> listSelectedItems = mScene->selectedItems();
 		if (listSelectedItems.isEmpty()) {
 			setNoPalette();
@@ -960,7 +989,7 @@ D2ModelScene* D2ModelWidget::scene()
 	return mScene;
 }
 
-void D2ModelWidget::setSensorVisible(inputPort::InputPortEnum port, bool isVisible)
+void D2ModelWidget::setSensorVisible(robots::enums::inputPort::InputPortEnum port, bool isVisible)
 {
 	if (mSensors[port]) {
 		mSensors[port]->setVisible(isVisible);
@@ -1017,13 +1046,13 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 	mRobotModel->deserialize(robotList.at(0).toElement());
 
 	for (int i = 0; i < 4; ++i) {
-		reinitSensor(static_cast<inputPort::InputPortEnum>(i));
+		reinitSensor(static_cast<robots::enums::inputPort::InputPortEnum>(i));
 	}
 
 	mRobot->processPositionAndAngleChange();
-	mDrawingAction = drawingAction::noneWordLoad;
+	mDrawingAction = enums::drawingAction::noneWordLoad;
 	update();
-	mDrawingAction = drawingAction::none;
+	mDrawingAction = enums::drawingAction::none;
 }
 
 void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
@@ -1031,8 +1060,9 @@ void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
 {
 	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
 	wall->onOverlappedWithRobot(isNeedStop);
-	if (wall->isDragged() && ((mDrawingAction == drawingAction::none) ||
-			(mDrawingAction == drawingAction::wall && mCurrentWall == wall))) {
+	if (wall->isDragged() && ((mDrawingAction == enums::drawingAction::none) ||
+			(mDrawingAction == enums::drawingAction::wall && mCurrentWall == wall)))
+	{
 		if (isNeedStop) {
 			wall->setPos(oldPos);
 		}
@@ -1046,7 +1076,7 @@ void D2ModelWidget::enableRobotFollowing(bool on)
 	qReal::SettingsManager::setValue("2dFollowingRobot", on);
 }
 
-void D2ModelWidget::setCursorType(cursorType::CursorType cursor)
+void D2ModelWidget::setCursorType(enums::cursorType::CursorType cursor)
 {
 	mCursorType = cursor;
 	qReal::SettingsManager::setValue("2dCursorType", cursor);
@@ -1080,28 +1110,41 @@ void D2ModelWidget::onTimelineTick()
 	mUi->timelineBox->stepBy(1);
 }
 
-QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(cursorType::CursorType type) const
+void D2ModelWidget::toggleDisplayVisibility()
+{
+	setDisplayVisibility(!mNxtDisplay->isVisible());
+}
+
+void D2ModelWidget::setDisplayVisibility(bool visible)
+{
+	mNxtDisplay->setVisible(visible);
+	QString const direction = visible ? "right" : "left";
+	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
+	SettingsManager::setValue("2d_displayVisible", visible);
+}
+
+QGraphicsView::DragMode D2ModelWidget::cursorTypeToDragType(enums::cursorType::CursorType type) const
 {
 	switch(type) {
-	case cursorType::NoDrag:
+	case enums::cursorType::NoDrag:
 		return QGraphicsView::NoDrag;
-	case cursorType::hand:
+	case enums::cursorType::hand:
 		return QGraphicsView::ScrollHandDrag;
-	case cursorType::multiselection:
+	case enums::cursorType::multiselection:
 		return QGraphicsView::RubberBandDrag;
 	default:
 		return QGraphicsView::ScrollHandDrag;
 	}
 }
 
-Qt::CursorShape D2ModelWidget::cursorTypeToShape(cursorType::CursorType type) const
+Qt::CursorShape D2ModelWidget::cursorTypeToShape(enums::cursorType::CursorType type) const
 {
 	switch(type) {
-	case cursorType::NoDrag:
+	case enums::cursorType::NoDrag:
 		return Qt::ArrowCursor;
-	case cursorType::hand:
+	case enums::cursorType::hand:
 		return Qt::OpenHandCursor;
-	case cursorType::multiselection:
+	case enums::cursorType::multiselection:
 		return Qt::ArrowCursor;
 	default:
 		return Qt::ArrowCursor;
@@ -1118,24 +1161,24 @@ void D2ModelWidget::processDragMode(int mode)
 void D2ModelWidget::onHandCursorButtonToggled(bool on)
 {
 	if (on) {
-		setCursorType(cursorType::hand);
+		setCursorType(enums::cursorType::hand);
 	}
 }
 
 void D2ModelWidget::onMultiselectionCursorButtonToggled(bool on)
 {
 	if (on) {
-		setCursorType(cursorType::multiselection);
+		setCursorType(enums::cursorType::multiselection);
 	}
 }
 
 void D2ModelWidget::syncCursorButtons()
 {
 	switch(mCursorType) {
-	case cursorType::hand:
+	case enums::cursorType::hand:
 		mUi->handCursorButton->setChecked(true);
 		break;
-	case cursorType::multiselection:
+	case enums::cursorType::multiselection:
 		mUi->multiselectionCursorButton->setChecked(true);
 		break;
 	default:
@@ -1145,16 +1188,35 @@ void D2ModelWidget::syncCursorButtons()
 
 void D2ModelWidget::syncronizeSensors()
 {
-	sensorType::SensorTypeEnum const port1 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType").toInt());
-	sensorType::SensorTypeEnum const port2 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType").toInt());
-	sensorType::SensorTypeEnum const port3 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType").toInt());
-	sensorType::SensorTypeEnum const port4 = static_cast<sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType").toInt());
-	changeSensorType(inputPort::port1, port1);
+	robots::enums::sensorType::SensorTypeEnum const port1
+			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType").toInt());
+
+	robots::enums::sensorType::SensorTypeEnum const port2
+			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType").toInt());
+
+	robots::enums::sensorType::SensorTypeEnum const port3
+			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType").toInt());
+
+	robots::enums::sensorType::SensorTypeEnum const port4
+			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType").toInt());
+
+	changeSensorType(robots::enums::inputPort::port1, port1);
 	addPort(0);
-	changeSensorType(inputPort::port2, port2);
+	changeSensorType(robots::enums::inputPort::port2, port2);
 	addPort(1);
-	changeSensorType(inputPort::port3, port3);
+	changeSensorType(robots::enums::inputPort::port3, port3);
 	addPort(2);
-	changeSensorType(inputPort::port4, port4);
+	changeSensorType(robots::enums::inputPort::port4, port4);
 	addPort(3);
 }
+
+void D2ModelWidget::alignWalls()
+{
+	foreach (WallItem * const wall, mWorldModel->walls()) {
+		if (mScene->items().contains(wall)) {
+			wall->setBeginCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
+		}
+	}
+}
+

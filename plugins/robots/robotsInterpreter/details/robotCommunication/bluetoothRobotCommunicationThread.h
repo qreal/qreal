@@ -26,9 +26,14 @@ public slots:
 	void connect();
 	void reconnect();
 	void disconnect();
-	void sendI2C(QObject *addressee, QByteArray const &buffer
+
+	void sendI2C(
+			QObject *addressee
+			, QByteArray const &buffer
 			, unsigned const responseSize
-			, inputPort::InputPortEnum const &port);
+			, robots::enums::inputPort::InputPortEnum const port
+			);
+
 	void allowLongJobs(bool allow = true);
 	void checkConsistency();
 

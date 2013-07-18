@@ -32,6 +32,7 @@ private:
 	enum UploadState {
 		clean,
 		compile,
+		compilationError,
 		link,
 		uploadStart,
 		flash,

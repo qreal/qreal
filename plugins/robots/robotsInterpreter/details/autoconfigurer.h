@@ -22,7 +22,7 @@ private:
 	ErrorReporterInterface * const mErrorReporter;  // Does not have ownership
 	RobotModel *mRobotModel;
 
-	QVector<sensorType::SensorTypeEnum> mUsedSensors;
+	QVector<robots::enums::sensorType::SensorTypeEnum> mUsedSensors;
 };
 
 }

@@ -12,7 +12,7 @@ namespace details {
 class DebugHelper
 {
 public:
-	static QString toString(robotModelType::robotModelTypeEnum const &modelType);
+	static QString toString(robots::enums::robotModelType::robotModelTypeEnum const &modelType);
 };
 
 }

@@ -8,16 +8,16 @@ class ElementTitle;
 class ElementTitleFactory : public ElementTitleFactoryInterface
 {
 public:
-	ElementTitleInterface *createTitle(qreal x, qreal y, QString const &text);
-	ElementTitleInterface *createTitle(qreal x, qreal y, QString const &binding, bool readOnly);
+	ElementTitleInterface *createTitle(qreal x, qreal y, QString const &text, qreal rotation);
+	ElementTitleInterface *createTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
 };
 
 class ElementTitle : public ElementTitleInterface
 {
 	Q_OBJECT
 public:
-	ElementTitle(qreal x, qreal y, QString const &text);
-	ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly);
+	ElementTitle(qreal x, qreal y, QString const &text, qreal rotation);
+	ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
 	virtual ~ElementTitle() {}
 
 	void init(QRectF const& contents);
@@ -44,6 +44,7 @@ private:
 	bool mScalingX;
 	bool mScalingY;
 	QRectF mContents;
+	qreal mRotation;
 	QPointF mPoint;
 	QString mOldText;
 	QString mBinding;
