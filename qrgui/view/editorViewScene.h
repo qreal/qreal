@@ -88,29 +88,18 @@ public:
 			, Id const &parentId, bool isFromLogicalModel
 			, commands::CreateElementCommand **createCommandPointer = NULL
 			, bool executeImmediately = true);
-	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
-			, qReal::Id const &insertedLastNodeId
-			, qReal::Id const &parentId
-			, bool isFromLogicalModel
-			, QPointF const &scenePos
-			, QPointF const &shift
-			, QList<NodeElement*> elements
-			, commands::AbstractCommand *parentCommand = NULL);
 
-	QList<NodeElement*> getNeibors(NodeElement* node);
-	void moveDownFromElem(NodeElement* node, QPointF const &scenePos, QPointF const &direction
-			, QPointF const &shift, QList<NodeElement*> elements);
+	EdgeElement *edgeForInsertion(QPointF const &scenePos);
+	void resolveOverlaps(NodeElement* node, QPointF const &scenePos, QPointF const &shift
+			, QMap<qReal::Id, QPointF> &shifting);
+
+	QList<NodeElement*> getCloseNodes(NodeElement* node);
 
 	void reConnectLink(EdgeElement * edgeElem);
 	void arrangeNodeLinks(NodeElement* node);
 
 	NodeElement* getNodeById(qReal::Id const &itemId);
 	EdgeElement* getEdgeById(qReal::Id const &itemId);
-
-	QList<EdgeElement*> getInEdges(NodeElement* node);
-	QList<EdgeElement*> getOutEdges(NodeElement* node);
-
-	void deleteElementFromEdge(qReal::Id const &nodeId, QList<QGraphicsItem*> edgesToDelete);
 
 	void itemSelectUpdate();
 
@@ -191,6 +180,9 @@ private:
 	void redraw();
 	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
 	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
+	/**
+	 * @return true, if connection menu was added
+	 */
 	void createAddConnectionMenu(Element const * const element
 			, QMenu &contextMenu, QString const &menuName
 			, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
@@ -208,8 +200,6 @@ private:
 	void enableActions();
 
 	inline bool isArrow(int key);
-
-	static qreal sign(qreal x);
 
 	void moveSelectedItems(int direction);
 	QPointF offsetByDirection(int direction);

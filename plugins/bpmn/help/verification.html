@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="QReal:BP, help, mannual, user guide" />
+<meta name="description" content="QReal:BP help center" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Запуск программ в QReal:BP</title>
+<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="version.js"></script>
+</head>
+
+<!-- TODO: move contents, header and footer into common separate files -->
+<body>
+<div id="wrapper">
+	<div id="banner-wrapper">
+		<div id="logo" class="container">
+			<p>Справка - QReal:BP %version%</p>
+		</div>
+		<div class="container">
+			<center><img src="pics/kroki.png" width="600" height="250" alt="" /></center>
+		</div>
+	</div>
+	<div id="page" class="container">
+		<div id="sidebar">
+			<div>
+				<h2>Содержание:</h2>
+				<ul class="list-style2">
+					<li><a href="interface.html">Пользовательский интерфейс</a></li>
+						<ul>
+							<li><a href="interface.html#settings">Диалог настроек</li>
+						</ul>
+					<li><a href="modelling.html">Создание моделей бизнес-процессов</a></li>
+						<ul>
+							<li><a href="modelling.html#diagrams">Работа с диаграммами</a></li>
+							<li><a href="modelling.html#elements">Создание элементов и связей</a></li>
+							<li><a href="modelling.html#properties">Редактирование свойств элементов</a></li>
+						</ul>
+					<li><a href="verification.html">Верификация бизнес-процессов</a></li>
+				</ul>
+			</div>
+		</div>		
+		<div id="content">
+			<div class="post">
+				<h2 class="title">Верификация моделей бизнес-процессов в QReal:BP<a href="#"></a></h2>
+				<div class="entry">
+					<p></p>
+				</div>
+			</div>
+		<div style="clear: both;">&nbsp;</div>
+			В QReal:BP существует возможность проверять модели бизнес-процессов на корректность. Для этой цели в меню "Инструменты" присутствуют два пункта: "Проверить диаграммы" и "Проверить текущую диаграмму" - осуществляющие соответственно верификацию всех диаграмм текущего проекта либо открытой в данный момент диаграммы. Соответствующие кнопки также добавлены на панель "Верификация" (см. <a href="interface.html">Пользовательский интерфейс</a>).
+			
+			<br/><br/>
+
+			<div>
+			После нажатия на кнопку верификатор проверяет диаграмму (или диаграммы) и выдаёт сообщения о всех найденных ошибках. При этом все некорректные элементы подсвечиваются красным. Понять по сообщению, к какому из элементов оно относится, можно, щёлкнув по нему. Соответствующий элемент выделится на сцене. Пример работы верификатора с найденными ошибками показан на рисунке:
+			</div>
+
+			<br/>
+
+			<center><img src="pics/verification-errors.png" height="500" alt="Проверка диаграммы с ошибками"></center>
+
+			<div>
+			Если ошибок не было обнаружено, верификатор выведет сообщение том, что данная диаграмма или диаграммы корректны:
+			</div>
+
+			<br/>
+
+			<center><img src="pics/verification-ok.png" height="500" alt="Проверка корректной диаграммы"></center>
+
+		</div>
+		<!-- end #content -->
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<!-- end #page -->
+</div>
+<div id="footer">
+	<p>© %year% QReal Inc. All rights reserved. </p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

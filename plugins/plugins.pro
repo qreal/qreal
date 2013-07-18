@@ -1,32 +1,34 @@
 TEMPLATE = subdirs
 
+# editor plugins
 SUBDIRS	= \
-#	additionsEditor/additionsEditor.pro \
-#	android/android.pro \
 	dragonDiagram/dragonDiagram.pro \
 	blockDiagram/blockDiagram.pro \
-#	bpel/bpel.pro \
-	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
-#	network/network.pro \
-#	orthodoxEditor/orthodoxEditor.pro \
-#	parallel/parallel.pro \
-#	requirements/requirements.pro \
-#	robots/robots.pro \
-#	sbt/sbt.pro \
-#	testEditor/testEditor.pro \
+	requirements/requirements.pro \
+
+ 
+# tool plugins
+SUBDIRS += \
 #	testInvocation/testInvocation.pro \
-#	ubiq/ubiq.pro \
-#	umlActivityDiagram/umlActivityDiagram.pro \
-#	umlClassDiagram/umlClassDiagram.pro \
-#	umlCommunicationDiagram/umlCommunicationDiagram.pro \
-#	umlComponentDiagram/umlComponentDiagram.pro \
-#	umlDeploymentDiagram/umlDeploymentDiagram.pro \
-#	umlPackageDiagram/umlPackageDiagram.pro \
-#	umlSequenceDiagram/umlSequenceDiagram.pro \
-#	umlStateMachinesDiagram/umlStateMachinesDiagram.pro \
-#	umlTimingDiagram/umlTimingDiagram.pro \
-#	umlUseCaseDiagram/umlUseCaseDiagram.pro \
+	exterminatus/exterminatus.pro \
 	visualInterpreter/visualInterpreter.pro \
-#	refactoring/refactoring.pro \
+	refactoring/refactoring.pro \
+
+
+# QReal:Robots
+SUBDIRS += \
+#	robots/robots.pro \
+
+
+# QReal:BP
+SUBDIRS += \
+	bpmn/bpmn.pro \
+	rulesChecker/rulesChecker.pro \
+
+
+# QReal:Ubiq
+SUBDIRS += \
+#	ubiq/ubiq.pro \
+

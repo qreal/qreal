@@ -316,6 +316,14 @@ IdList EditorManager::containedTypes(const Id &id) const
 	foreach (QString const &type, mPluginIface[id.editor()]->getTypesContainedBy(id.element())) {
 		result.append(Id(type));
 	}
+
+	typedef QPair<QString, QString> StringPair;
+	QList<StringPair> const parents = mPluginIface[id.editor()]->getParentsOf(id.diagram(), id.element());
+
+	foreach (StringPair const &pair, parents) {
+		result.append(containedTypes(Id(id.editor(), pair.first, pair.second)));
+	}
+
 	return result;
 }
 

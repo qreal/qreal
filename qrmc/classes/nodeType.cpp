@@ -89,16 +89,27 @@ QString NodeType::generateNodeClass(QString const &classTemplate)
 QString NodeType::loadBoolProperty(qReal::Id const &id, QString const &property) const
 {
 	QString result = mApi->stringProperty(id, property);
-	if (result.isEmpty())
+	if (result.isEmpty()) {
 		result = "false";
+	}
 	return result;
 }
 
 QString NodeType::loadIntProperty(qReal::Id const &id, QString const &property) const
 {
 	QString result = mApi->stringProperty(id, property);
-	if (result.isEmpty())
+	if (result.isEmpty()) {
 		result = "0";
+	}
+	return result;
+}
+
+QString NodeType::loadIntVectorProperty(qReal::Id const &id, QString const &property) const
+{
+	QString result = mApi->stringProperty(id, property);
+	if (result.isEmpty()) {
+		result = "0,0,0,0";
+	}
 	return result;
 }
 
@@ -117,7 +128,7 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 					.replace(minimizeToChildrenTag, loadBoolProperty(child, "minimizeToChildren"))
 					.replace(maximizeChildrenTag, loadBoolProperty(child, "maximizeChildren"))
 					.replace(hasMovableChildrenTag, movableChildren)
-					.replace(forestallingSizeTag, loadIntProperty(child, "forestallingSize"))
+					.replace(forestallingSizeTag, loadIntVectorProperty(child, "forestallingSize"))
 					.replace(childrenForestallingSizeTag, loadIntProperty(child, "childrenForestallingSize"));
 			break;
 		}

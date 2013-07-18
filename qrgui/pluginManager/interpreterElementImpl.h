@@ -71,7 +71,7 @@ public:
 	bool hasContainerProperty(QString const &property) const;
 	bool isContainer() const;
 	bool isSortingContainer() const;
-	int sizeOfForestalling() const;
+	QVector<int> sizeOfForestalling() const;
 	int sizeOfChildrenForestalling() const;
 	bool hasMovableChildren() const;
 	bool minimizesToChildren() const;
@@ -89,7 +89,7 @@ private:
 	void initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height);
 	void initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height);
 	void initLabels(int const &width, int const &height, ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles);
-	int getSizeOfContainerProperty(QString const &property) const;
+	QVector<int> getSizeOfContainerProperty(QString const &property) const;
 	QStringList getListOfStr(QString const &labelText) const;
 	QString getResultStr(QStringList const &list, ElementRepoInterface *repo) const;
 	void drawArrow(QPainter *painter, QString const &type) const;

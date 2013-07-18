@@ -49,6 +49,8 @@ public:
 	 */
 	static int portNumber(qreal id);
 
+	int numberOfPorts() const;
+
 	/**
 	 * Returns port position relative to the top left corner of NodeElement
 	 * (position of NodeElement).

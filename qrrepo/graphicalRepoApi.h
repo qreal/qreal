@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../qrkernel/roles.h"
 #include "commonRepoApi.h"
@@ -26,6 +26,7 @@ public:
 	virtual void setPosition(qReal::Id const &id, QVariant const &position) = 0;
 	virtual void setConfiguration(qReal::Id const &id, QVariant const &configuration) = 0;
 
+	virtual qReal::IdList graphicalElements() const = 0;
 	virtual qReal::IdList graphicalElements(qReal::Id const &type) const = 0;
 
 	virtual bool isGraphicalElement(qReal::Id const &id) const = 0;
