@@ -11,6 +11,7 @@
 #include "nodeElement.h"
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
+#include "../mainwindow/mainWindow.h"
 
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
@@ -872,6 +873,11 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 			portRenderer->render(painter, mContents);
 			painter->restore();
 		}
+
+		if (mIsExpanded && !mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId()).empty()) {
+			QImage image(contentsRect().size().toSize(), QImage::Format_RGB32);
+			painter->drawImage(diagramRenderingRect(), mRenderedDiagram);
+		}
 	}
 }
 
@@ -888,6 +894,11 @@ void NodeElement::addEdge(EdgeElement *edge)
 void NodeElement::delEdge(EdgeElement *edge)
 {
 	mEdgeList.removeAll(edge);
+}
+
+void NodeElement::changeExpanded()
+{
+	mIsExpanded = !mIsExpanded;
 }
 
 void NodeElement::changeFoldState()
@@ -1172,11 +1183,6 @@ void NodeElement::drawSeveralLines(QPainter *painter, int dx, int dy)
 	painter->restore();
 }
 
-void NodeElement::setExpanded(bool isExpanded)
-{
-	mIsExpanded = isExpanded;
-}
-
 bool NodeElement::isExpanded() const
 {
 	return mIsExpanded;
@@ -1269,4 +1275,68 @@ void NodeElement::updateShape(QString const &shape) const
 bool NodeElement::operator<(NodeElement const &other) const
 {
 	return y() < other.y();
+}
+
+void NodeElement::initRenderedDiagram()
+{
+	IdList diagrams = mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId());
+	if (diagrams.empty()) {
+		return;
+	}
+
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	MainWindow *window = evScene->mainWindow();
+
+	Id diagram = mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId())[0];
+	Id graphicalDiagram = mGraphicalAssistApi->graphicalIdsByLogicalId(diagram)[0];
+
+	EditorView * view = new EditorView(window);
+	EditorViewScene *openedScene = dynamic_cast<EditorViewScene *>(view->scene());
+	openedScene->setMainWindow(window);
+	openedScene->setNeedDrawGrid(false);
+
+	view->mvIface()->setAssistApi(window->models()->graphicalModelAssistApi()
+			, window->models()->logicalModelAssistApi());
+	view->mvIface()->setModel(window->models()->graphicalModel());
+	view->mvIface()->setLogicalModel(window->models()->logicalModel());
+	view->mvIface()->setRootIndex(window->models()->graphicalModelAssistApi().indexById(graphicalDiagram));
+
+	QRectF sceneRect = openedScene->itemsBoundingRect();
+	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
+	QPainter painter(&image);
+
+	QBrush brush(Qt::SolidPattern);
+	brush.setColor(Qt::white);
+	painter.setBrush(brush);
+	painter.setPen(QPen(Qt::white));
+
+	sceneRect.moveTo(QPointF());
+	painter.drawRect(sceneRect);
+
+	openedScene->render(&painter);
+
+	delete view;
+	mRenderedDiagram = image;
+}
+
+QRectF NodeElement::diagramRenderingRect() const
+{
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	NodeElement *initial = dynamic_cast<NodeElement *>(evScene->mainWindow()->editorManager().graphicalObject(id()));
+	qreal xCoeff = boundingRect().width() / initial->boundingRect().width();
+	qreal yCoeff = boundingRect().height() / initial->boundingRect().height();
+
+	// QReal:BP hardcode
+	QRectF result(QPointF(30 * xCoeff, 30 * yCoeff), QPointF(195 * xCoeff, 120 * yCoeff));
+
+	qreal renderedDiagramRatio = mRenderedDiagram.width() / mRenderedDiagram.height();
+	QPointF oldCenter(result.center());
+	if (renderedDiagramRatio < 1) {
+		result.setHeight(result.width() * renderedDiagramRatio);
+	} else {
+		result.setWidth(result.height() * renderedDiagramRatio);
+	}
+	result.moveCenter(oldCenter);
+
+	return result;
 }

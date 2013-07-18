@@ -71,7 +71,7 @@ bool InsertIntoEdgeCommand::execute()
 bool InsertIntoEdgeCommand::restoreState()
 {
 	if (mRemoveOldEdge && mCreateSecond && mCreateFirst) {
-		returnElementsToOldPositions();
+		mScene->returnElementsToOldPositions(mElementShifting);
 
 		mRemoveOldEdge->undo();
 
@@ -111,15 +111,6 @@ void InsertIntoEdgeCommand::makeLink(CreateElementCommand *command, NodeElement 
 	edge->setSrc(src);
 	edge->setDst(dst);
 	mScene->reConnectLink(edge);
-}
-
-void InsertIntoEdgeCommand::returnElementsToOldPositions()
-{
-	foreach (qReal::Id const &id, mElementShifting.keys()) {
-		NodeElement *node = mScene->getNodeById(id);
-		node->setPos(node->pos() - mElementShifting[id]);
-		mGraphicalAssistApi->setPosition(node->id(), node->pos());
-	}
 }
 
 }

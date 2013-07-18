@@ -128,7 +128,7 @@ public:
 
 	void highlightEdges();
 
-	void setExpanded(bool isExpanded);
+	void changeExpanded();
 	bool isExpanded() const;
 
 	bool isFolded() const;
@@ -146,6 +146,15 @@ public:
 	void updateShape(QString const &shape) const;
 
 	void changeFoldState();
+
+	/**
+	 * Calls resize(QRectF newContents, QPointF newPos) with
+	 * newPos equals to current position of node and
+	 * newContents equals to current shape (mContents).
+	 */
+	void resize();
+
+	void initRenderedDiagram();
 
 	/**
 	 * @brief Sorts by y coordinate, used for correct sorting children of sorting container
@@ -192,13 +201,6 @@ private:
 	 */
 	void resize(QRectF const &newContents);
 
-	/**
-	 * Calls resize(QRectF newContents, QPointF newPos) with
-	 * newPos equals to current position of node and
-	 * newContents equals to current shape (mContents).
-	 */
-	void resize();
-
 	void drawLinesForResize(QPainter *painter);
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
@@ -231,6 +233,8 @@ private:
 	void updateByNewParent();
 
 	void initEmbeddedLinkers();
+
+	QRectF diagramRenderingRect() const;
 
 	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
 
@@ -283,4 +287,6 @@ private:
 
 	int mTimeOfUpdate;
 	QTimer *mTimer;
+
+	QImage mRenderedDiagram;
 };

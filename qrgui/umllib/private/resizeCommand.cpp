@@ -59,7 +59,9 @@ void ResizeCommand::resizeHierarchy(QMap<Id, QRectF> const &snapshot)
 {
 	foreach (Id const &id, snapshot.keys()) {
 		NodeElement *element = nodeById(id);
-		resize(element, snapshot[id]);
+		if (!element->parentItem()) {
+			resizeTree(snapshot, id);
+		}
 	}
 	// Updating linker position
 	if (mScene->selectedItems().size() == 1) {
@@ -69,6 +71,15 @@ void ResizeCommand::resizeHierarchy(QMap<Id, QRectF> const &snapshot)
 			selectedNode->setVisibleEmbeddedLinkers(true);
 		}
 	}
+}
+
+void ResizeCommand::resizeTree(QMap<Id, QRectF> const &snapshot, Id const &root)
+{
+	NodeElement *element = nodeById(root);
+	foreach (NodeElement *child, element->childNodes()) {
+		resizeTree(snapshot, child->id());
+	}
+	resize(element, snapshot[root]);
 }
 
 void ResizeCommand::resize(NodeElement * const element, QRectF const &geometry)

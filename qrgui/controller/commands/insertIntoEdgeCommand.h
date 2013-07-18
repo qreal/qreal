@@ -28,8 +28,6 @@ private:
 	void initCommand(CreateElementCommand *&command, Id const &type);
 	void makeLink(CreateElementCommand *command, NodeElement *src, NodeElement *dst);
 
-	void returnElementsToOldPositions();
-
 	EditorViewScene *mScene;
 
 	models::LogicalModelAssistApi *mLogicalAssistApi;

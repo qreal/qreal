@@ -90,15 +90,16 @@ public:
 
 	EdgeElement *edgeForInsertion(QPointF const &scenePos);
 	void resolveOverlaps(NodeElement* node, QPointF const &scenePos, QPointF const &shift
-			, QMap<qReal::Id, QPointF> &shifting);
+			, QMap<qReal::Id, QPointF> &shifting) const;
+	void returnElementsToOldPositions(QMap<Id, QPointF> const &shifting) const;
 
-	QList<NodeElement*> getCloseNodes(NodeElement* node);
+	QList<NodeElement*> getCloseNodes(NodeElement* node) const;
 
 	void reConnectLink(EdgeElement * edgeElem);
-	void arrangeNodeLinks(NodeElement* node);
+	void arrangeNodeLinks(NodeElement* node) const;
 
-	NodeElement* getNodeById(qReal::Id const &itemId);
-	EdgeElement* getEdgeById(qReal::Id const &itemId);
+	NodeElement* getNodeById(qReal::Id const &itemId) const;
+	EdgeElement* getEdgeById(qReal::Id const &itemId) const;
 
 	void itemSelectUpdate();
 
@@ -146,7 +147,6 @@ protected:
 
 private slots:
 	void expandConnectionActionTriggered();
-	void collapseConnectionActionTriggered();
 	void connectActionTriggered();
 	void goToActionTriggered();
 	void disconnectActionTriggered();

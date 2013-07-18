@@ -45,6 +45,7 @@
                          <contains type="BPMNDiagram::EndEvent"/>
                          <contains type="BPMNDiagram::Gateway"/>
                          <contains type="BPMNDiagram::Task"/>
+                         <contains type="BPMNDiagram::Subprocess"/>
                          <contains type="BPMNDiagram::SequenceFlow"/>
                          <contains type="BPMNDiagram::Lane"/>
                          <contains type="BPMNDiagram::Pool"/>
@@ -466,6 +467,7 @@
                         <contains type="IntermediateEvent"/>
                         <contains type="Gateway"/>
                         <contains type="Task"/>
+                        <contains type="Subprocess"/>
                     </container>
                     <properties>
                         <property name="text" displayedName="Text" type="string"/>
