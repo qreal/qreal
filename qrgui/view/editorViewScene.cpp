@@ -605,6 +605,7 @@ void EditorViewScene::resolveOverlaps(NodeElement *node, QPointF const &scenePos
 			offset.setY(coeff * offset.y());
 		}
 		closeNode->setPos(closeNode->pos() + offset);
+		mMVIface->graphicalAssistApi()->setPosition(closeNode->id(), closeNode->pos());
 		shifting.insert(closeNode->id(), offset);
 		arrangeNodeLinks(closeNode);
 		resolveOverlaps(closeNode, scenePos, shift, shifting);

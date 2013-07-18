@@ -118,6 +118,7 @@ void InsertIntoEdgeCommand::returnElementsToOldPositions()
 	foreach (qReal::Id const &id, mElementShifting.keys()) {
 		NodeElement *node = mScene->getNodeById(id);
 		node->setPos(node->pos() - mElementShifting[id]);
+		mGraphicalAssistApi->setPosition(node->id(), node->pos());
 	}
 }
 
