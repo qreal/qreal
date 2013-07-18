@@ -24,12 +24,14 @@ public:
 
 	void save();
 	virtual void restoreSettings();
+	void changeTextVisibleOnSettingPage(bool isChecked);
 
 	QString selectedPortName() const;
 	QString selectedCommunication() const;
 
 signals:
 	void saved();
+	void textVisibleChanged(bool isChecked);
 
 protected:
 	void changeEvent(QEvent *e);
@@ -43,6 +45,7 @@ private slots:
 	void manualComPortCheckboxChecked(bool state);
 	void refreshPorts();
 	void refreshCommunicationGroup();
+	void changeTextVisible(bool isChecked);
 
 private:
 	void initRobotModelType(robotModelType::robotModelTypeEnum type);
