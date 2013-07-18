@@ -9,7 +9,7 @@ using namespace qReal;
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation)
 		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
-		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false)
+		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false), isStretched(false)
 {
 	setFlag(QGraphicsItem::ItemIsSelectable);
 	setFlag(QGraphicsItem::ItemIsMovable);
@@ -34,8 +34,28 @@ void ElementTitle::setTitleFont()
 
 void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	if ((event->pos().x() >= boundingRect().right() - 10)
+			&& (event->pos().y() >= boundingRect().bottom() - 10)) {
+		isStretched = true;
+	} else {
+		isStretched = false;
+	}
 	ElementTitleInterface::mousePressEvent(event);
-//	event->accept();
+	event->accept();
+
+}
+
+void ElementTitle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	if (isSelected()) {
+		QPointF cursorPoint = mapToItem(this, event->pos());
+		if (isStretched) {
+			updateRect(cursorPoint);
+			return;
+		}
+		ElementTitleInterface::mouseMoveEvent(event);
+		event->accept();
+	}
 }
 
 void ElementTitle::init(QRectF const &contents)
@@ -100,6 +120,7 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 		}
 	}
 	setHtml(htmlNormalizedText);
+
 }
 
 void ElementTitle::keyPressEvent(QKeyEvent *event)
@@ -161,6 +182,14 @@ void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 	QGraphicsTextItem::paint(painter, option, widget);
 }
+
+void ElementTitle::updateRect(QPointF newBottomRightPoint)
+{
+	boundingRect().setBottomRight(newBottomRightPoint);
+
+	setTextWidth(boundingRect().width());
+}
+
 
 ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y, QString const &text, qreal rotation)
 {

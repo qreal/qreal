@@ -33,12 +33,14 @@ public:
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
 	virtual void focusOutEvent(QFocusEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
 
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = NULL);
 private:
+	bool isStretched;
 	bool mFocusIn;
 	bool mReadOnly;
 	bool mScalingX;
@@ -50,4 +52,6 @@ private:
 	QString mBinding;
 	QColor mBackground;
 	bool mIsHard;
+
+	void updateRect(QPointF newBottomRightPoint);
 };
