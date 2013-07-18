@@ -174,7 +174,7 @@ void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	// if text is not empty, draw it's background
 	if (!toPlainText().isEmpty()) {
 		painter->save();
-		painter->setBrush(QBrush(QBrush(mBackground)));
+		painter->setBrush(QBrush(mBackground));
 		painter->setPen(QPen(Qt::transparent));
 		painter->drawRect(boundingRect());
 		painter->restore();
@@ -185,9 +185,8 @@ void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 void ElementTitle::updateRect(QPointF newBottomRightPoint)
 {
-	boundingRect().setBottomRight(newBottomRightPoint);
-
-	setTextWidth(boundingRect().width());
+	mContents.setBottomRight(newBottomRightPoint);
+	setTextWidth(mContents.width());
 }
 
 
