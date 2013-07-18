@@ -126,9 +126,9 @@ qrRepo::RepoApi const *TrikRobotGenerator::api() const
 	return mApi;
 }
 
-interpreters::robots::sensorType::SensorTypeEnum TrikRobotGenerator::portValue(int port) const
+interpreters::robots::enums::sensorType::SensorTypeEnum TrikRobotGenerator::portValue(int port) const
 {
-	return static_cast<interpreters::robots::sensorType::SensorTypeEnum>(SettingsManager::value("port" + QString::number(port) + "SensorType").toInt());
+	return static_cast<interpreters::robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port" + QString::number(port) + "SensorType").toInt());
 }
 
 ErrorReporterInterface &TrikRobotGenerator::errorReporter()

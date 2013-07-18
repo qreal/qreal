@@ -35,7 +35,7 @@ public:
 
 	qrRepo::RepoApi const *api() const;
 
-	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue(int port) const;
+	qReal::interpreters::robots::enums::sensorType::SensorTypeEnum portValue(int port) const;
 
 	qReal::ErrorReporterInterface &errorReporter();
 	qReal::Id &previousElement();

@@ -15,9 +15,17 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
 
+	bool const enableTrik = SettingsManager::value("enableTrik", false).toBool();
+
+	if (!enableTrik) {
+		mUi->tcpRadioButton->setVisible(false);
+		mUi->trikModelRadioButton->setVisible(false);
+	}
+
 	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(onSomethingChanged()));
 	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(onSomethingChanged()));
 	connect(mUi->nxtModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(onSomethingChanged()));
+	connect(mUi->trikModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(onSomethingChanged()));
 	connect(mUi->usbRadioButton, SIGNAL(toggled(bool)), this, SLOT(onSomethingChanged()));
 	connect(mUi->bluetoothRadioButton, SIGNAL(toggled(bool)), this, SLOT(onSomethingChanged()));
 	connect(mUi->tcpRadioButton, SIGNAL(toggled(bool)), this, SLOT(onSomethingChanged()));
