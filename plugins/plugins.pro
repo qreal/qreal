@@ -19,7 +19,7 @@ SUBDIRS += \
 
 # QReal:Robots
 SUBDIRS += \
-	robots/robots.pro \
+#	robots/robots.pro \
 
 
 # QReal:BP

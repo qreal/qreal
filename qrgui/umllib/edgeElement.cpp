@@ -1372,40 +1372,51 @@ bool EdgeElement::isDst(NodeElement const *node) const
 	return (mDst == node);
 }
 
-qreal EdgeElement::portIdOn(NodeElement const *node) const
+QPair<qreal, qreal> EdgeElement::portIdOn(NodeElement const *node) const
 {
-	if (node == mSrc)
-		return mPortFrom;
-	if (node == mDst)
-		return mPortTo;
-	return -1;
+	if (mIsLoop && node == mSrc) {
+		return qMakePair(mPortFrom, mPortTo);
+	}
+	if (node == mSrc) {
+		return qMakePair(mPortFrom, -1.0);
+	}
+	if (node == mDst) {
+		return qMakePair(-1.0, mPortTo);
+	}
+	return qMakePair(-1.0, -1.0);
 }
 
 QPointF EdgeElement::nextFrom(NodeElement const *node) const
 {
-	if (node == mSrc)
+	if (node == mSrc) {
 		return mapToItem(mSrc, mLine[1]);
-	if (node == mDst)
+	}
+	if (node == mDst) {
 		return mapToItem(mDst, mLine[mLine.count() - 2]);
+	}
 	return QPointF();
 }
 
 QPointF EdgeElement::connectionPoint(NodeElement const *node) const
 {
-	if (node == mSrc)
+	if (node == mSrc) {
 		return mapToItem(mSrc, mLine[0]);
-	if (node == mDst)
+	}
+	if (node == mDst) {
 		return mapToItem(mDst, mLine[mLine.count() - 1]);
+	}
 	return QPointF();
 
 }
 
 NodeElement* EdgeElement::otherSide(NodeElement const *node) const
 {
-	if (node == mSrc)
+	if (node == mSrc) {
 		return mDst;
-	if (node == mDst)
+	}
+	if (node == mDst) {
 		return mSrc;
+	}
 	return 0;
 }
 
@@ -1424,9 +1435,6 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 			mPortFrom = newFrom;
 			mModelUpdateIsCalled = true;
 			mGraphicalAssistApi->setFromPort(id(), mPortFrom);
-		}
-		if (mIsLoop) {
-			return reconnectedSrc;
 		}
 	}
 	if (mDst && reconnectDst) {
@@ -1532,13 +1540,14 @@ void EdgeElement::placeEndTo(QPointF const &place)
 }
 
 void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
-	if (node == mSrc) {
+	//expected that the id will change only fractional part
+	if ((!mIsLoop || ((int) mPortFrom == (int) portId)) && (node == mSrc)) {
 		mPortFrom = portId;
 		mModelUpdateIsCalled = true;
 		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 		return;
 	}
-	if (node == mDst) {
+	if ((!mIsLoop || ((int) mPortTo == (int) portId)) && (node == mDst)) {
 		mPortTo = portId;
 		mModelUpdateIsCalled = true;
 		mGraphicalAssistApi->setToPort(id(), mPortTo);
@@ -1875,7 +1884,7 @@ bool EdgeElement::isLoop()
 
 void EdgeElement::alignToGrid()
 {
-	if (mLine.size() >= 3 && (SettingsManager::value("TypeLine").toInt() != static_cast<int>(squareLine))) {
+	if (mLine.size() >= 3 && (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine))) {
 		int const indexGrid = SettingsManager::value("IndexGrid").toInt();
 
 		prepareGeometryChange();

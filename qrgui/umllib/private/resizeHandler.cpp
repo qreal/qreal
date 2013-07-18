@@ -8,7 +8,7 @@ ResizeHandler::ResizeHandler(NodeElement * const resizingNode)
 {
 }
 
-void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
+void ResizeHandler::resize(QRectF newContents, QPointF newPos, bool needResizeParent) const
 {
 	newContents.moveTo(0, 0);
 
@@ -26,7 +26,9 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos) const
 	mTargetNode->storeGeometry();
 	mTargetNode->setPos(newPos);
 
-	resizeParent();
+	if (needResizeParent) {
+		resizeParent();
+	}
 }
 
 qreal ResizeHandler::maxChildWidth() const
@@ -56,17 +58,18 @@ void ResizeHandler::sortChildrenIfNeeded() const
 	int forestallingTop = sizeOfForestalling[1];
 	int forestallingLeft = sizeOfForestalling[0];
 
-	qreal curChildY = forestallingTop + mTitlePadding;
+	qreal curChildY = forestallingTop;
 	qreal const maxChildWidthValue = maxChildWidth();
 
-	foreach (QGraphicsItem * const childItem, mTargetNode->childItems()) {
+	QList<NodeElement *> children = sortedChildrenList();
+	foreach (QGraphicsItem * const childItem, children) {
 		QGraphicsRectItem * const placeholder = mTargetNode->placeholder();
 
 		if(placeholder != NULL && childItem == placeholder) {
 			QRectF const rect(forestallingLeft, curChildY,
 					maxChildWidthValue, placeholder->rect().height());
 			placeholder->setRect(rect);
-			curChildY += placeholder->rect().height() + mChildSpacing;
+			curChildY += placeholder->rect().height();
 		}
 
 		NodeElement * const curItem = dynamic_cast<NodeElement* const>(childItem);
@@ -82,7 +85,7 @@ void ResizeHandler::sortChildrenIfNeeded() const
 
 		curItem->setGeometry(rect);
 		curItem->storeGeometry();
-		curChildY += curItem->contentsRect().height() + mElementImpl->sizeOfChildrenForestalling() + mChildSpacing;
+		curChildY += curItem->contentsRect().height() + mElementImpl->sizeOfChildrenForestalling();
 	}
 }
 
@@ -115,17 +118,6 @@ void ResizeHandler::normalizeSize(QRectF &newContents) const
 
 void ResizeHandler::resizeAccordingToChildren(QRectF &newContents, QPointF &newPos) const
 {
-	/*
-	* AAAA!!! Who knows why is this code existed????!!!
-	*
-	foreach (QGraphicsItem *childItem, childItems()) {
-		NodeElement* curItem = dynamic_cast<NodeElement*>(childItem);
-		if (curItem && curItem->isPort() && newContents != mContents) {
-			curItem->resizeChild(newContents, mContents);
-		}
-	}
-	*/
-
 	// Vector of minimum negative XY child deflection from top left corner.
 	QPointF const childDeflectionVector = childDeflection();
 
@@ -233,4 +225,17 @@ QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, Q
 	}
 
 	return boundingRect;
+}
+
+QList<NodeElement *> ResizeHandler::sortedChildrenList() const
+{
+	QList<NodeElement *> result;
+	foreach (QGraphicsItem *item, mTargetNode->childItems()) {
+		NodeElement *child = dynamic_cast<NodeElement *>(item);
+		if (child) {
+			result << child;
+		}
+	}
+	qSort(result);
+	return result;
 }

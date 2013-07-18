@@ -23,13 +23,9 @@ public:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF newContents, QPointF newPos) const;
+	void resize(QRectF newContents, QPointF newPos, bool needResizeParent = true) const;
 
 private:
-	/// Padding that reserves space for title.
-	static int const mTitlePadding = 25;
-	/// Space between children inside sorting containers.
-	static int const mChildSpacing = 0;
 	/// Minimum size of node
 	static int const mMinSize = 10;
 
@@ -102,6 +98,8 @@ private:
 	 * It used for debug purposes.
 	 */
 	void printChildPos() const;
+
+	QList<NodeElement *> sortedChildrenList() const;
 
 	/// Node that is actually dealt with.
 	NodeElement * const mTargetNode;

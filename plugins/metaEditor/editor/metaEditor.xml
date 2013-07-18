@@ -194,7 +194,7 @@
 							<sortContainer/>
 							<minimizeToChildren/>
 							<banChildrenMove/>
-							<forestalling size="25,25,25,25"/>
+							<forestalling size="25,35,25,25"/>
 							<childrenForestalling size="5"/>
 						</properties>
 					</container>
@@ -254,7 +254,7 @@
 							<sortContainer/>
 							<minimizeToChildren/>
 							<banChildrenMove/>
-							<forestalling size="25,25,25,25"/>
+							<forestalling size="25,35,25,25"/>
 							<childrenForestalling size="5"/>
 						</properties>
 					</container>
@@ -294,7 +294,7 @@
 							<sortContainer/>
 							<minimizeToChildren/>
 							<banChildrenMove/>
-							<forestalling size="5,5,5,5"/>
+							<forestalling size="5,25,5,5"/>
 							<childrenForestalling size="5"/>
 						</properties>
 					</container>
