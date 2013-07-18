@@ -214,6 +214,7 @@ private:
 
 	void delCloseLinePoints();
 	void delClosePoints();
+	void updateAllPointsExceptDstAndSrc(QPointF delta);
 
 	void squarize();
 	int defineType();
