@@ -116,7 +116,9 @@ void RepoApi::removeElement(Id const &id)
 	if (hasProperty(id, "incomingExplosions")) {
 		IdList const explosions = property(id, "incomingExplosions").value<IdList>();
 		foreach (Id const &source, explosions) {
-			removeExplosion(source, id);
+			if (exist(source)) {
+				removeExplosion(source, id);
+			}
 		}
 	}
 
@@ -484,26 +486,20 @@ IdList RepoApi::graphicalElements(Id const &type) const
 
 IdList RepoApi::elementsByType(QString const &type, bool sensitivity, bool regExpression) const
 {
-	Qt::CaseSensitivity caseSensitivity;
-
-	if (sensitivity) {
-		caseSensitivity = Qt::CaseSensitive;
-	} else {
-		caseSensitivity = Qt::CaseInsensitive;
-	}
+	Qt::CaseSensitivity const caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
 	QRegExp *regExp = new QRegExp(type,caseSensitivity);
 
 	IdList result;
 
 	if (regExpression) {
-		foreach (Id id, mClient.elements()) {
+		foreach (Id const &id, mClient.elements()) {
 			if (id.element().contains(*regExp)) {
 				result.append(id);
 			}
 		}
 	} else {
-		foreach (Id id, mClient.elements()) {
+		foreach (Id const &id, mClient.elements()) {
 			if (id.element().contains(type, caseSensitivity)) {
 				result.append(id);
 			}

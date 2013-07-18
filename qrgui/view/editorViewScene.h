@@ -11,7 +11,7 @@
 #include "copyPaste/clipboardHandler.h"
 
 #include "private/editorViewMVIface.h"
-#include "private/exploser.h"
+#include "private/exploserView.h"
 
 const int arrowMoveOffset = 5;
 
@@ -52,7 +52,7 @@ public:
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
 	virtual Element *getElem(qReal::Id const &id) const;
-	Element *getElemAt(const QPointF &position);
+	Element *getElemAt(const QPointF &position) const;
 
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
@@ -251,7 +251,7 @@ private:
 	bool mIsSelectEvent;
 	bool mTitlesVisible;
 
-	Exploser *mExploser; // Takes ownership
+	view::details::ExploserView *mExploser; // Takes ownership
 
 	friend class qReal::EditorViewMViface;
 };

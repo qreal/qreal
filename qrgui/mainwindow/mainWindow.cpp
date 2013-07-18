@@ -32,7 +32,7 @@
 #include "../controller/commands/removeElementCommand.h"
 #include "../controller/commands/doNothingCommand.h"
 #include "../controller/commands/arrangeLinksCommand.h"
-#include "../controller/commands/selectElementCommand.h"
+//#include "../controller/commands/selectElementCommand.h"
 #include "../controller/commands/updateElementCommand.h"
 
 #include "../umllib/element.h"
@@ -562,23 +562,19 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	if (isLogicalModel) {
 		QModelIndex const index = mUi->logicalModelExplorer->currentIndex();
 		if (index.isValid()) {
-			mController->execute(logicalDeleteCommand(index));
+			mController->executeGlobal(logicalDeleteCommand(index));
 		}
 		return;
 	}
 
 	Id const id = mModels->graphicalModelAssistApi().idByIndex(
 			mUi->graphicalModelExplorer->currentIndex());
-	if (id == Id()) {
-		return;
+	if (id != Id()) {
+		deleteItems(IdList() << id, true);
 	}
-
-	IdList itemsToDelete;
-	itemsToDelete << id;
-	deleteItems(itemsToDelete);
 }
 
-void MainWindow::deleteItems(IdList &itemsToDelete)
+void MainWindow::deleteItems(IdList &itemsToDelete, bool global)
 {
 	IdList itemsToUpdate;
 	DoNothingCommand *multipleRemoveCommand = new DoNothingCommand;
@@ -612,7 +608,11 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 	}
 
 	multipleRemoveCommand->removeDuplicates();
-	mController->execute(multipleRemoveCommand);
+	if (global) {
+		mController->executeGlobal(multipleRemoveCommand);
+	} else {
+		mController->execute(multipleRemoveCommand);
+	}
 }
 
 void MainWindow::removeReferences(Id const &id)
@@ -687,6 +687,10 @@ commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
 	foreach (Id const &graphicalId, graphicalIds) {
 		result->addPreAction(graphicalDeleteCommand(graphicalId));
 	}
+	if (graphicalIds.size() != 1) { // else it was done in graphicalDeleteCommand()
+		appendCascadeDeleteCommands(result, id);
+	}
+	result->removeDuplicates();
 	return result;
 }
 
@@ -713,9 +717,6 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 			result->insertPreAction(graphicalDeleteCommand(child), 0);
 		}
 	}
-	// This will return selection and reinit property editor that loads incorrect
-	// property values because of its intermediate resetting
-	result->addPreAction(new SelectElementCommand(getCurrentTab(), id, true, true));
 
 	// correcting unremoved edges
 	ArrangeLinksCommand *arrangeCommand = new ArrangeLinksCommand(getCurrentTab(), id, true);
@@ -733,7 +734,19 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 		result->addPreAction(updateLinkCommand);
 	}
 
+	if (mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId).size() == 1) {
+		appendCascadeDeleteCommands(result, logicalId);
+	}
+
 	return result;
+}
+
+void MainWindow::appendCascadeDeleteCommands(AbstractCommand *parentCommand, Id const &logicalId)
+{
+	IdList const toDelete = mModels->logicalModelAssistApi().exploser().elementsWithHardDependencyFrom(logicalId);
+	foreach (Id const &logicalChild, toDelete) {
+		parentCommand->addPreAction(logicalDeleteCommand(logicalChild));
+	}
 }
 
 void MainWindow::deleteFromDiagram()

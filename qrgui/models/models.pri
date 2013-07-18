@@ -11,7 +11,8 @@ HEADERS += \
 	models/details/modelsAssistApi.h \
 	models/models.h \
 	models/graphicalModelAssistApi.h \
-	models/logicalModelAssistApi.h
+	models/logicalModelAssistApi.h \
+    models/details/exploser.h
 
 SOURCES += models/details/graphicalModel.cpp \
 	models/details/graphicalModelView.cpp \
@@ -25,4 +26,5 @@ SOURCES += models/details/graphicalModel.cpp \
 	models/details/modelsAssistApi.cpp \
 	models/models.cpp \
 	models/graphicalModelAssistApi.cpp \
-	models/logicalModelAssistApi.cpp
+	models/logicalModelAssistApi.cpp \
+    models/details/exploser.cpp

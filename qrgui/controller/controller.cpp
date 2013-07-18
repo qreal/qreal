@@ -4,14 +4,29 @@ using namespace qReal;
 using namespace qReal::commands;
 
 Controller::Controller()
-	: mModifiedState(false)
+	: mGlobalStack(new UndoStack), mModifiedState(false)
+	, mCanRedoState(true), mCanUndoState(true)
 {
+	connectStack(mGlobalStack);
+}
+
+Controller::~Controller()
+{
+	disconnect(this, SLOT(resetModifiedState()));
+	disconnect(this, SLOT(resetCanRedoState()));
+	disconnect(this, SLOT(resetCanUndoState()));
+	foreach (UndoStack *stack, mDiagramStacks) {
+		// 'delete stack;' causes segfaults when app is beeing closed:
+		// for some reason slots are still connected
+		stack->deleteLater();
+	}
+	mGlobalStack->deleteLater();
 }
 
 void Controller::setActiveDiagram(Id const &diagramId)
 {
 	if (diagramId != Id()) {
-		setActiveStack(mStacks[diagramId.toString()]);
+		setActiveStack(mDiagramStacks[diagramId.toString()]);
 	} else {
 		setActiveStack(NULL);
 	}
@@ -19,12 +34,17 @@ void Controller::setActiveDiagram(Id const &diagramId)
 
 void Controller::execute(commands::AbstractCommand *command)
 {
-	execute(command, activeUndoStack());
+	execute(command, mActiveStack);
 }
 
 void Controller::execute(commands::AbstractCommand *command, Id const &diagramid)
 {
-	execute(command, mStacks[diagramid.toString()]);
+	execute(command, mDiagramStacks[diagramid.toString()]);
+}
+
+void Controller::executeGlobal(AbstractCommand *command)
+{
+	execute(command, mGlobalStack);
 }
 
 void Controller::execute(commands::AbstractCommand *command, UndoStack *stack)
@@ -40,26 +60,25 @@ void Controller::diagramOpened(Id const &diagramId)
 		return;
 	}
 	UndoStack *stack = new UndoStack;
-	connect(stack, SIGNAL(cleanChanged(bool)), this, SLOT(resetModifiedState()));
-	mStacks.insert(diagramId.toString(), stack);
-	addStack(stack);
+	connectStack(stack);
+	mDiagramStacks.insert(diagramId.toString(), stack);
+	resetAll();
 }
 
 void Controller::diagramClosed(Id const &diagramId)
 {
-	if (diagramId == Id() || !mStacks.keys().contains(diagramId.toString())) {
+	if (diagramId == Id() || !mDiagramStacks.keys().contains(diagramId.toString())) {
 		return;
 	}
-	UndoStack *stackToRemove = mStacks[diagramId.toString()];
-	mStacks.remove(diagramId.toString());
-	removeStack(stackToRemove);
+	mDiagramStacks.remove(diagramId.toString());
+	resetAll();
 }
 
 void Controller::resetModifiedState()
 {
 	bool wasModified = false;
-	QList<QUndoStack *> const undoStacks = stacks();
-	foreach (QUndoStack *stack, undoStacks) {
+	QList<UndoStack *> const undoStacks = stacks();
+	foreach (UndoStack *stack, undoStacks) {
 		if (!stack->isClean()) {
 			wasModified = true;
 			break;
@@ -71,50 +90,105 @@ void Controller::resetModifiedState()
 	}
 }
 
+void Controller::resetCanUndoState()
+{
+	bool canUndo = false;
+	QList<UndoStack *> const undoStacks = stacks();
+	foreach (UndoStack *stack, undoStacks) {
+		if (stack->canUndo()) {
+			canUndo = true;
+			break;
+		}
+	}
+	if (canUndo != mCanUndoState) {
+		mCanUndoState = canUndo;
+		emit canUndoChanged(mCanUndoState);
+	}
+}
+
+void Controller::resetCanRedoState()
+{
+	bool canRedo = false;
+	QList<UndoStack *> const undoStacks = stacks();
+	foreach (UndoStack *stack, undoStacks) {
+		if (stack->canRedo()) {
+			canRedo = true;
+			break;
+		}
+	}
+	if (canRedo != mCanRedoState) {
+		mCanRedoState = canRedo;
+		emit canRedoChanged(mCanRedoState);
+	}
+}
+
+void Controller::resetAll()
+{
+	resetModifiedState();
+	resetCanRedoState();
+	resetCanUndoState();
+}
+
+QList<UndoStack *> Controller::stacks() const
+{
+	return mDiagramStacks.values() << mGlobalStack;
+}
+
 void Controller::projectSaved()
 {
-	QList<QUndoStack *> const undoStacks = stacks();
-	foreach (QUndoStack *stack, undoStacks) {
+	mGlobalStack->setClean();
+	foreach (UndoStack *stack, mDiagramStacks) {
 		stack->setClean();
 	}
 }
 
-QUndoStack *Controller::activeStack() const
+void Controller::redo()
 {
-	return QUndoGroup::activeStack();
+	UndoStack *stack = selectActiveStack(false);
+	if (stack) {
+		stack->redo();
+	}
 }
 
-void Controller::addStack(QUndoStack *stack)
+void Controller::undo()
 {
-	QUndoGroup::addStack(stack);
+	UndoStack *stack = selectActiveStack(true);
+	if (stack) {
+		stack->undo();
+	}
 }
 
-void Controller::setActiveStack(QUndoStack *stack)
+UndoStack *Controller::selectActiveStack(bool forUndo)
 {
-	QUndoGroup::setActiveStack(stack);
+	int const shift = forUndo ? -1 : 0;
+	int const diagramIndex = mActiveStack ? mActiveStack->index() + shift : -1;
+	int const globalIndex = mGlobalStack->index() + shift;
+	AbstractCommand const *diagramCommand = diagramIndex < 0 ? NULL
+			: dynamic_cast<AbstractCommand const *>(mActiveStack->command(diagramIndex));
+	AbstractCommand const *globalCommand = globalIndex < 0 ? NULL
+			: dynamic_cast<AbstractCommand const *>(mGlobalStack->command(globalIndex));
+	if (!diagramCommand && !globalCommand) {
+		return NULL;
+	}
+	if (!diagramCommand) {
+		return mGlobalStack;
+	}
+	if (!globalCommand) {
+		return mActiveStack;
+	}
+	uint const diagramTimestamp = diagramCommand->timestamp();
+	uint const globalTimestamp = diagramCommand->timestamp();
+	return forUndo == (diagramTimestamp < globalTimestamp) ? mGlobalStack : mActiveStack;
 }
 
-QList<QUndoStack *> Controller::stacks() const
+void Controller::setActiveStack(UndoStack *stack)
 {
-	return QUndoGroup::stacks();
+	mActiveStack = stack;
 }
 
-QString Controller::undoText() const
+void Controller::connectStack(UndoStack const *stack)
 {
-	return QUndoGroup::undoText();
-}
-
-QString Controller::redoText() const
-{
-	return QUndoGroup::redoText();
-}
-
-void Controller::removeStack(QUndoStack *stack)
-{
-	QUndoGroup::removeStack(stack);
-}
-
-UndoStack *Controller::activeUndoStack() const
-{
-	return dynamic_cast<UndoStack *>(activeStack());
+	connect(stack, SIGNAL(cleanChanged(bool)), this, SLOT(resetModifiedState()));
+	connect(stack, SIGNAL(canRedoChanged(bool)), this, SLOT(resetCanRedoState()));
+	connect(stack, SIGNAL(canUndoChanged(bool)), this, SLOT(resetCanUndoState()));
 }

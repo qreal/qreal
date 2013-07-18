@@ -22,7 +22,7 @@ HEADERS += \
 	view/copyPaste/pasteNodeCommand.h \
 	view/copyPaste/pasteGroupCommand.h \
 	view/copyPaste/pasteEdgeCommand.h \
-	view/private/exploser.h \
+    view/private/exploserView.h
 
 SOURCES += \
 	view/editorView.cpp \
@@ -43,4 +43,4 @@ SOURCES += \
 	view/copyPaste/pasteNodeCommand.cpp \
 	view/copyPaste/pasteGroupCommand.cpp \
 	view/copyPaste/pasteEdgeCommand.cpp \
-	view/private/exploser.cpp \
+    view/private/exploserView.cpp

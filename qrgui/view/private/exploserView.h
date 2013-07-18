@@ -9,15 +9,19 @@ namespace qReal {
 
 class MainWindow;
 
-/// Incapsulates all operations related to explosion links
-class Exploser : public QObject
+namespace view {
+namespace details {
+
+/// This class contains methods for processing all system explosion-based operations
+/// from the view aspect
+class ExploserView : public QObject
 {
 	Q_OBJECT
 
 public:
-	Exploser(MainWindow * const mainWindow
-			, LogicalModelAssistInterface * const logicalApi
-			, GraphicalModelAssistInterface * const graphicalApi
+	ExploserView(MainWindow * const mainWindow
+			, models::LogicalModelAssistApi * const logicalApi
+			, models::GraphicalModelAssistApi * const graphicalApi
 			, QObject *parent = 0);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
@@ -48,8 +52,10 @@ private:
 	Id createElementWithIncommingExplosion(Id const &source, Id const &targetType);
 
 	MainWindow *mMainWindow; // Doesn`t take ownership
-	LogicalModelAssistInterface *mLogicalApi; // Doesn`t take ownership
-	GraphicalModelAssistInterface *mGraphicalApi; // Doesn`t take ownership
+	models::LogicalModelAssistApi *mLogicalApi; // Doesn`t take ownership
+	models::GraphicalModelAssistApi *mGraphicalApi; // Doesn`t take ownership
 };
 
+}
+}
 }

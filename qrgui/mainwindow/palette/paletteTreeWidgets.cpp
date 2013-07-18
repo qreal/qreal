@@ -5,26 +5,26 @@
 using namespace qReal;
 using namespace gui;
 
-PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow &mainWindow
+PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWindow
 		, EditorManagerInterface &editorManagerProxy)
 	: mEditorManager(&editorManagerProxy)
 	, mParentPalette(&parent)
-	, mMainWindow(&mainWindow)
-	, mEditorTree(new PaletteTreeWidget(parent, mainWindow, editorManagerProxy))
-	, mUserTree(new PaletteTreeWidget(parent, mainWindow, editorManagerProxy))
+	, mMainWindow(mainWindow)
+	, mEditorTree(new PaletteTreeWidget(parent, *mainWindow, editorManagerProxy, false))
+	, mUserTree(new PaletteTreeWidget(parent, *mainWindow, editorManagerProxy, true))
 {
 	initWidget();
 }
 
-PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow &mainWindow
+PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWindow
 		, EditorManagerInterface &editorManagerProxy
 		, Id const &editor, Id const &diagram)
 	: mParentPalette(&parent)
-	, mMainWindow(&mainWindow)
+	, mMainWindow(mainWindow)
 	, mEditor(editor)
 	, mDiagram(diagram)
-	, mEditorTree(new PaletteTreeWidget(parent, mainWindow, editorManagerProxy))
-	, mUserTree(new PaletteTreeWidget(parent, mainWindow, editorManagerProxy))
+	, mEditorTree(new PaletteTreeWidget(parent, *mainWindow, editorManagerProxy, false))
+	, mUserTree(new PaletteTreeWidget(parent, *mainWindow, editorManagerProxy, true))
 {
 	mEditorManager = &editorManagerProxy;
 	initWidget();

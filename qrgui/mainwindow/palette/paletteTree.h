@@ -24,6 +24,7 @@ class PaletteTree: public QWidget
 Q_OBJECT
 public:
 	explicit PaletteTree(QWidget *parent = 0);
+	~PaletteTree();
 
 	/** Adds all editor's elements to appropriate tree.
 	  @param editorManager Editor manager which all editors with elements are taken from.
@@ -65,7 +66,6 @@ public:
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	*/
 	void loadPalette(bool isIconsView, int itemsCount, EditorManagerInterface *editorManagerProxy);
-	~PaletteTree();
 	void initMainWindow(MainWindow *mainWindow);
 
 signals:

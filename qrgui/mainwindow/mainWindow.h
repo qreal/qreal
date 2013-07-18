@@ -222,6 +222,7 @@ private slots:
 	commands::AbstractCommand *graphicalDeleteCommand(QModelIndex const &index);
 	commands::AbstractCommand *logicalDeleteCommand(Id const &index);
 	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
+	void appendCascadeDeleteCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
 
 	void deleteFromDiagram();
 	void copyElementsOnDiagram();
@@ -286,7 +287,7 @@ private:
 	virtual void closeEvent(QCloseEvent *event);
 
 	void deleteFromExplorer(bool isLogicalModel);
-	void deleteItems(IdList &itemsToDelete);
+	void deleteItems(IdList &itemsToDelete, bool global = false);
 
 	void keyPressEvent(QKeyEvent *event);
 

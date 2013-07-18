@@ -14,14 +14,12 @@ UpdateElementCommand::UpdateElementCommand(EditorView const *view, Id const &id)
 
 bool UpdateElementCommand::execute()
 {
-	ElementCommand::execute();
-	return update();
+	return ElementCommand::execute() && update();
 }
 
 bool UpdateElementCommand::restoreState()
 {
-	ElementCommand::restoreState();
-	return update();
+	return ElementCommand::restoreState() && update();
 }
 
 bool UpdateElementCommand::update()

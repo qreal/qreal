@@ -59,7 +59,7 @@ void PaletteTree::addEditorElements(EditorManagerInterface &editorManagerProxy, 
 
 	mComboBox->addItem(mEditorManager->friendlyName(diagram));
 
-	PaletteTreeWidgets *editorTree = new PaletteTreeWidgets(*this, *mMainWindow
+	PaletteTreeWidgets *editorTree = new PaletteTreeWidgets(*this, mMainWindow
 			, *mEditorManager, editor, diagram);
 	mEditorsTrees.push_back(editorTree);
 	mLayout->addWidget(editorTree);
@@ -158,7 +158,7 @@ void PaletteTree::createPaletteTree()
 
 	mLayout->addLayout(hLayout);
 
-	mTree = new PaletteTreeWidgets(*this, *mMainWindow, *mEditorManager);
+	mTree = new PaletteTreeWidgets(*this, mMainWindow, *mEditorManager);
 
 	mLayout->addWidget(mTree);
 	setMinimumWidth(200);

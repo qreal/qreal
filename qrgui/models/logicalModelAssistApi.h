@@ -3,6 +3,7 @@
 #include "../../qrkernel/ids.h"
 #include "details/logicalModel.h"
 #include "details/modelsAssistApi.h"
+#include "details/exploser.h"
 #include "../toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 #include "../pluginManager/proxyEditorManager.h"
 
@@ -13,10 +14,6 @@ class EditorManagerInterface;
 
 namespace models {
 
-namespace details {
-class LogicalModel;
-}
-
 class LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
 {
 public:
@@ -24,6 +21,7 @@ public:
 	virtual ~LogicalModelAssistApi();
 
 	EditorManagerInterface const &editorManagerInterface() const;
+	details::Exploser &exploser();
 
 	virtual qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
@@ -74,6 +72,7 @@ private:
 
 	details::ModelsAssistApi mModelsAssistApi;
 	details::LogicalModel &mLogicalModel;
+	details::Exploser mExploser;
 	EditorManagerInterface const &mEditorManager;
 };
 

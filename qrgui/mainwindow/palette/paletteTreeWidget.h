@@ -15,7 +15,9 @@ class PaletteTreeWidget : public QTreeWidget
 	Q_OBJECT
 
 public:
-	PaletteTreeWidget(PaletteTree &parent, MainWindow &mainWindow, EditorManagerInterface &editorManagerProxy);
+	PaletteTreeWidget(PaletteTree &parent, MainWindow &mainWindow
+			, EditorManagerInterface &editorManagerProxy
+			, bool editable);
 
 	void addGroups(QMap<QString, QStringList> const &groups
 			, QMap<QString, QString> const &descriptions
@@ -40,6 +42,8 @@ public:
 	void expand();
 
 	static void sortByFriendlyName(IdList &ids);
+
+	void editItem(QTreeWidgetItem * const item);
 
 protected:
 	void mousePressEvent(QMouseEvent *event);
@@ -71,6 +75,7 @@ private:
 	static EditorManagerInterface *mEditorManager; // Does not take ownership
 	MainWindow &mMainWindow;
 	PaletteTree &mPaletteTree;
+	bool mEditable;
 };
 
 }

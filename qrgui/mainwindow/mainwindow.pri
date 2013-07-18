@@ -41,7 +41,7 @@ SOURCES += \
 	mainwindow/palette/paletteTree.cpp \
 	mainwindow/palette/paletteTreeWidget.cpp \
 	mainwindow/palette/draggableElement.cpp \
-	mainwindow/palette/paletteTreeWidgets.cpp \
+    mainwindow/palette/paletteTreeWidgets.cpp
 
 win32 {
 	HEADERS += \
