@@ -37,9 +37,6 @@ public:
 	virtual void setFromPort(Id const &elem, qreal const &newValue) = 0;
 	virtual qreal fromPort(Id const &elem) const = 0;
 
-	virtual void setName(Id const &elem, QString const &newValue) = 0;
-	virtual QString name(Id const &elem) const = 0;
-
 	virtual void setToolTip(Id const &elem, QString const &newValue) = 0;
 	virtual QString toolTip(Id const &elem) const = 0;
 

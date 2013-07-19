@@ -83,21 +83,12 @@ void LogicalModelAssistApi::removeExplosion(Id const &source, Id const &destinat
 	mLogicalModel.mutableApi().removeExplosion(source, destination);
 }
 
-QVariant LogicalModelAssistApi::property(Id const &id, QString const &name) const
-{
-	return mLogicalModel.mutableApi().property(id, name);
-}
-
-void LogicalModelAssistApi::setProperty(Id const &id, QString const &name, QVariant const &value)
-{
-	mLogicalModel.mutableApi().setProperty(id, name, value);
-}
-
 void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName)
 {
-	int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
-	if (roleIndex < roles::customPropertiesBeginRole)
+	int const roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
+	if (roleIndex < roles::customPropertiesBeginRole) {
 		return;
+	}
 	mModelsAssistApi.setProperty(elem, newValue, roleIndex);
 }
 
@@ -112,6 +103,16 @@ QVariant LogicalModelAssistApi::propertyByRoleName(Id const &elem, QString const
 bool LogicalModelAssistApi::isLogicalId(Id const &id) const
 {
 	return mModelsAssistApi.indexById(id) != QModelIndex();
+}
+
+void LogicalModelAssistApi::setName(Id const &elem, QString const &newValue)
+{
+	mModelsAssistApi.setProperty(elem, QVariant(newValue), Qt::DisplayRole);
+}
+
+QString LogicalModelAssistApi::name(Id const &elem) const
+{
+	return mModelsAssistApi.property(elem, Qt::DisplayRole).value<QString>();
 }
 
 void LogicalModelAssistApi::setTo(Id const &elem, Id const &newValue)

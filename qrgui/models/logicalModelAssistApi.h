@@ -37,9 +37,6 @@ public:
 
 	virtual void stackBefore(Id const &element, Id const &sibling);
 
-	virtual QVariant property(Id const &id, QString const &name) const;
-	virtual void setProperty(Id const &id, QString const &name, QVariant const &value);
-
 	virtual void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
 	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
 
@@ -48,6 +45,9 @@ public:
 	virtual void removeReferencesTo(Id const &id);
 	virtual void removeReferencesFrom(Id const &id);
 	virtual void removeReference(Id const &id, Id const &reference);
+
+	virtual void setName(Id const &elem, QString const &newValue);
+	virtual QString name(Id const &elem) const;
 
 	virtual void setTo(Id const &elem, Id const &newValue);
 	virtual Id to(Id const &elem) const;
