@@ -5,6 +5,15 @@
 
 class ElementTitle;
 
+namespace enums {
+namespace OrientationType {
+enum OrientationType {
+	horizontal,
+	vertical
+};
+}
+}
+
 class ElementTitleFactory : public ElementTitleFactoryInterface
 {
 public:
@@ -58,8 +67,8 @@ private:
 	QString createTextForRepo() const;
 	void setText(QString const &text);
 	void moveToParentCenter();
+	enums::OrientationType::OrientationType orientation();
 
-	bool mIsStretched;
 	bool mFocusIn;
 	bool mReadOnly;
 	bool mScalingX;
@@ -71,6 +80,7 @@ private:
 	QString mOldText;
 	QString mBinding;
 	QColor mBackground;
+	bool mIsStretched;
 	bool mIsHard;
 	bool mParentIsSelected;
 	bool mWasMoved;

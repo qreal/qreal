@@ -6,6 +6,7 @@
 #include "private/fontCache.h"
 
 using namespace qReal;
+using namespace enums;
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation)
 		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
@@ -38,18 +39,36 @@ QString ElementTitle::createTextForRepo() const
 
 void ElementTitle::moveToParentCenter()
 {
-	return;
-
 	if (mWasMoved) {
 		// now it has user defined position, don't center automatically
 		return;
 	}
 
-	qreal parentCenter = mParentContents.x() + mParentContents.width() / 2;
-	qreal titleCenter = x() + mContents.width() / 2;
-	qreal diff = parentCenter - titleCenter;
+	if (orientation() == OrientationType::horizontal) {
+		qreal parentCenter = mParentContents.x() + mParentContents.width() / 2;
+		qreal titleCenter = x() + mContents.width() / 2;
+		qreal diff = parentCenter - titleCenter;
 
-	setX(x() + diff);
+		setX(x() + diff);
+	} else if (orientation() == OrientationType::vertical) {
+		qreal parentCenter = mParentContents.y() + mParentContents.height() / 2;
+		qreal titleCenter = y() - mContents.width() / 2;
+		qreal diff = parentCenter - titleCenter;
+
+		qDebug() << "parent: "<< parentCenter;
+		qDebug() << "title : "<< titleCenter;
+		qDebug() << diff;
+
+		setY(y() + diff);
+	}
+}
+
+OrientationType::OrientationType ElementTitle::orientation()
+{
+	if (abs(rotation()) == 90) {
+		return OrientationType::vertical;
+	}
+	return OrientationType::horizontal;
 }
 
 void ElementTitle::setText(const QString &text)
@@ -152,7 +171,11 @@ void ElementTitle::init(QRectF const &contents)
 {
 	mContents = contents;
 	mParentContents = contents;
-	mContents.setWidth(mContents.width() / 2);
+	if (orientation() == OrientationType::horizontal) {
+		mContents.setWidth(mContents.width() / 2);
+	} else if (orientation() == OrientationType::vertical) {
+		mContents.setWidth(mContents.height() * 3 / 4);
+	}
 
 	setTextWidth(mContents.width());
 
