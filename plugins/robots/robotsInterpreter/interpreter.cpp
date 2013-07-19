@@ -46,8 +46,8 @@ Interpreter::Interpreter()
 	connect(mRobotCommunication, SIGNAL(errorOccured(QString)), this, SLOT(reportError(QString)));
 }
 
-void Interpreter::init(GraphicalModelAssistInterface &graphicalModelApi
-	, LogicalModelAssistInterface const &logicalModelApi
+void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
+	, LogicalModelAssistInterface &logicalModelApi
 	, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 	, qReal::ProjectManagementInterface const &projectManager)
 {
@@ -130,7 +130,7 @@ void Interpreter::onTabChanged(Id const &diagramId, bool enabled)
 {
 	if (enabled) {
 		Id const logicalId = mGraphicalModelApi->logicalId(diagramId);
-		QString const xml = mGraphicalModelApi->property(logicalId, "worldModel").toString();
+		QString const xml = mLogicalModelApi->propertyByRoleName(logicalId, "worldModel").toString();
 		QDomDocument worldModel;
 		worldModel.setContent(xml);
 		mD2ModelWidget->loadXml(worldModel);
@@ -483,7 +483,7 @@ void Interpreter::on2dModelChanged(QDomDocument const &xml)
 	Id const currentDiagramId = mInterpretersInterface->activeDiagram();
 	Id const logicalId = mGraphicalModelApi->logicalId(currentDiagramId);
 	if (logicalId != Id() && logicalId != Id::rootId()) {
-		mGraphicalModelApi->setProperty(logicalId, "worldModel", xml.toString(4));
+		mLogicalModelApi->setPropertyByRoleName(logicalId, xml.toString(4), "worldModel");
 	}
 }
 
@@ -496,10 +496,10 @@ void Interpreter::saveSensorConfiguration()
 		int const sensor2Value = SettingsManager::value("port2SensorType").toInt();
 		int const sensor3Value = SettingsManager::value("port3SensorType").toInt();
 		int const sensor4Value = SettingsManager::value("port4SensorType").toInt();
-		mGraphicalModelApi->setProperty(logicalId, "sensor1Value", QString::number(sensor1Value));
-		mGraphicalModelApi->setProperty(logicalId, "sensor2Value", QString::number(sensor2Value));
-		mGraphicalModelApi->setProperty(logicalId, "sensor3Value", QString::number(sensor3Value));
-		mGraphicalModelApi->setProperty(logicalId, "sensor4Value", QString::number(sensor4Value));
+		mLogicalModelApi->setPropertyByRoleName(logicalId, QString::number(sensor1Value), "sensor1Value");
+		mLogicalModelApi->setPropertyByRoleName(logicalId, QString::number(sensor2Value), "sensor2Value");
+		mLogicalModelApi->setPropertyByRoleName(logicalId, QString::number(sensor3Value), "sensor3Value");
+		mLogicalModelApi->setPropertyByRoleName(logicalId, QString::number(sensor4Value), "sensor4Value");
 	}
 }
 
@@ -510,10 +510,10 @@ void Interpreter::loadSensorConfiguration(Id const &diagramId)
 	int const oldSensor3Value = SettingsManager::value("port3SensorType").toInt();
 	int const oldSensor4Value = SettingsManager::value("port4SensorType").toInt();
 
-	int const sensor1Value = mGraphicalModelApi->property(diagramId, "sensor1Value").toInt();
-	int const sensor2Value = mGraphicalModelApi->property(diagramId, "sensor2Value").toInt();
-	int const sensor3Value = mGraphicalModelApi->property(diagramId, "sensor3Value").toInt();
-	int const sensor4Value = mGraphicalModelApi->property(diagramId, "sensor4Value").toInt();
+	int const sensor1Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor1Value").toInt();
+	int const sensor2Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor2Value").toInt();
+	int const sensor3Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor3Value").toInt();
+	int const sensor4Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor4Value").toInt();
 
 	bool const somethingChanged = oldSensor1Value != sensor1Value
 			|| oldSensor2Value != sensor2Value

@@ -39,9 +39,9 @@ public:
 	/// Returns all elements that have specified id as explosion target with hard nessesarity
 	IdList elementsWithHardDependencyFrom(Id const &id) const;
 
-	/// Puts into explosion tree`s elements ids @param hierarchy with
+	/// Puts into  explosion tree`s elements ids with
 	/// @param oneOfIds belonging to this hierarchy.
-	void explosionsHierarchy(Id const &oneOfIds, IdList &hierarchy) const;
+	IdList explosionsHierarchy(Id const &oneOfIds) const;
 
 	/// This method checks if explosion must be created immediately for given type
 	/// and if yes returns type with explosion target. Otherwise returns Id().
@@ -50,6 +50,11 @@ public:
 	/// Binds elements with explosion link; adds explosion instance into
 	/// palette if nessesary.
 	void addExplosion(Id const &source, Id const &target);
+
+	/// Performs the renaming of the whole explosions hierarchy and
+	/// binded palette items
+	/// @param oneOfIds The id of one of the elements belonging to the hierarchy
+	void rename(Id const &oneOfIds);
 
 private:
 	void refreshAllPalettes();

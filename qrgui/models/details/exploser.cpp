@@ -84,11 +84,13 @@ qReal::IdList Exploser::elementsWithHardDependencyFrom(qReal::Id const &id) cons
 	return result;
 }
 
-void Exploser::explosionsHierarchy(Id const &oneOfIds, IdList &hierarchy) const
+qReal::IdList Exploser::explosionsHierarchy(Id const &oneOfIds) const
 {
 	// Infinite cycle may happen here in case of cyclic explosions
 	Id const root = explosionsRoot(oneOfIds);
+	IdList hierarchy;
 	explosionsHierarchyPrivate(root, hierarchy);
+	return hierarchy;
 }
 
 qReal::Id Exploser::explosionTarget(qReal::Id const &id)
@@ -102,14 +104,21 @@ qReal::Id Exploser::explosionTarget(qReal::Id const &id)
 
 void Exploser::addExplosion(qReal::Id const &source, qReal::Id const &target)
 {
-	QString const sourceName = mApi->property(source, "name").toString();
-	mApi->setProperty(target, "name", sourceName + tr(" - inside"));
+	mApi->setName(target, mApi->name(source) + insideSuffix());
 	mApi->addExplosion(source, target);
 	QList<Explosion> const explosions = mApi->editorManagerInterface().explosions(source);
 	foreach (Explosion const &explosion, explosions) {
 		if (explosion.target() == target.type() && explosion.isReusable()) {
 			break;
 		}
+	}
+}
+
+void Exploser::rename(qReal::Id const &oneOfIds)
+{
+	IdList const idsToRename = explosionsHierarchy(oneOfIds);
+	foreach (Id const &id, idsToRename) {
+
 	}
 }
 
