@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="QReal:BP, help, mannual, user guide" />
+<meta name="description" content="QReal:BP help center" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Создание программ в QReal:BP</title>
+<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="version.js"></script>
+</head>
+
+<!-- TODO: move contents, header and footer into common separate files -->
+<body>
+<div id="wrapper">
+	<div id="banner-wrapper">
+		<div id="logo" class="container">
+			<p>Справка - QReal:BP %version%</p>
+		</div>
+		<div class="container">
+			<center><img src="pics/kroki.png" width="600" height="250" alt="" /></center>
+		</div>
+	</div>
+	<div id="page" class="container">
+		<div id="sidebar">
+			<div>
+				<h2>Содержание:</h2>
+				<ul class="list-style2">
+					<li><a href="interface.html">Пользовательский интерфейс</a></li>
+						<ul>
+							<li><a href="interface.html#settings">Диалог настроек</li>
+						</ul>
+					<li><a href="modelling.html">Создание моделей бизнес-процессов</a></li>
+						<ul>
+							<li><a href="modelling.html#diagrams">Работа с диаграммами</a></li>
+							<li><a href="modelling.html#elements">Создание элементов и связей</a></li>
+							<li><a href="modelling.html#properties">Редактирование свойств элементов</a></li>
+						</ul>
+					<li><a href="lang.html">Описание языка BPMN</a></li>
+					<li><a href="verification.html">Верификация бизнес-процессов</a></li>
+				</ul>
+			</div>
+		</div>		
+		<div id="content">
+			<div class="post">
+				<h2 class="title">Описание языка BPMN<a href="#"></a></h2>
+				<div class="entry">
+					<p></p>
+				</div>
+			</div>
+			<div style="clear: both;">&nbsp;</div>
+
+			Ниже приведено описание элементов языка BPMN, поддерживаемых средой моделирования QReal:BP.
+
+			<h3><a name="activities">Действия (Activities)</a></h3>
+
+			<div>
+			<b>Задание (Task)</b> - обозначает элементарное действие в процессе, исполняемое человеком или системой исполнения бизнес-процессов. Имеет свойство <i>Text</i>, отображаемое в виде надписи внутри элемента.	
+			</div>
+
+			<br/>
+			<center><img src="pics/bpmn-task.png" alt="Задание"></center>
+
+			<div>
+			<b>Подпроцесс (Subprocess)</b> - составное действие внутри процесса, само также являющееся бизнес-процессом. Подробнее о подпроцессах см. <a href="modelling.html#subprocess">Создание подпроцессов</a>. Подпроцесс также имеет свойство <i>Text</i>, отображаемое под элементом.
+			</div>
+
+			<center><img src="pics/bpmn-subprocess.png" alt="Подпроцесс"></center>
+			<br/>
+
+			<h3><a name="events">События (Events)</a></h3>
+
+
+			<div>
+			<b>Начальное событие (Start Event)</b> - описывает способ инициации процесса. Имеет следующие свойства:
+				<ul>
+					<li><i>Type</i> - тип события:
+						<ul>
+							<li><i>None (Простое)</i> - нетипизированное событие. Означает, что процесс был кем-либо инициирован.</li>
+							<li><i>Timer (Таймер)</i> - процесс начинается по наступлению какого-то времени или даты.</li>
+							<li><i>Message (Сообщение)</i> - процесс начинается по получении сообщения.</li>
+							<li><i>Conditional (Условие)</i> - процесс начинается при наступлении какого-либо условия.</li>
+							<li><i>Multiple (Составное)</i> - означает, что процесс может быть начат по наступлении любого события из нескольких.</li>
+						</ul>
+					<li><i>Text</i> - отображается в виде текста под элементом.</li>
+				</ul> 	
+			</div>
+
+			<br/>
+			<center><img src="pics/bpmn-start-event.png" alt="Начальное событие"></center>
+
+			<div>
+			<b>Промежуточное событие (Intermediate Event)</b> - описывает какое-либо происшествие, которое может случиться во время выполнения процесса. Имеет следующие свойства:
+				<ul>
+					<li><i>Type</i> - тип события:
+						<ul>
+							<li><i>None (Простое)</i> - нетипизированное событие. Не несёт какой-либо дополнительной информации о событии.</li>
+							<li><i>Receive Message (Получение сообщения)</i> - моделирует получение сообщения.</li>
+							<li><i>Send Message (Отправка сообщения)</i> - моделирует отправку сообщения одним участником процесса другому.</li>
+							<li><i>Timer (Таймер)</i> - моделирует истечение какого-либо срока либо наступление конкретной даты или времени.</li>
+							<li><i>Conditional (Условие)</i> - событие происходит при выполнении некоторого условия.</li>
+							<li><i>Multiple (Составное)</i> - наступление одного события из нескольких.</li>
+						</ul>
+					<li><i>Text</i> - отображается в виде текста под элементом.</li>
+				</ul> 	
+			</div>
+
+			<br/>
+			<center><img src="pics/bpmn-intermediate-event.png" alt="Промежуточное событие"></center>
+
+			<div>
+			<b>Завершающее событие (End Event)</b> - описывает способ завершения процесса. Имеет следующие свойства:
+				<ul>
+					<li><i>Type</i> - тип события:
+						<ul>
+							<li><i>None (Простое)</i> - завершение процесса без каких-либо дополнительных действий.</li>
+							<li><i>Send Message (Отправка сообщения)</i> - процесс завершается отправкой сообщения.</li>
+						</ul>
+					<li><i>Text</i> - отображается в виде текста под элементом.</li>
+				</ul>
+			</div>
+
+			<br/>
+			<center><img src="pics/bpmn-end-event.png" alt="Завершающее событие"></center>
+
+			<h3>Соединяющие объекты (Flow objects)</h3>
+
+			<div>
+			<b>Поток управления (Sequence Flow)</b> - направление стрелки обозначает порядок выполнения действий. Имеет свойство <i>Text</i>, отображаемое в виде текста на стрелке.
+			</div>
+
+			<center><img src="pics/bpmn-sequence-flow.png" alt="Поток управления"></center>
+
+			<h3><a name="gateways">Развилки (Gateways)</a></h3>
+
+			<div>
+			<b>Развилка (Gateway)</b> - представляет собой точку принятия решения в процессе. С помощью развилок моделируются ветвление и параллельное исполнение потоков управления. Имеет следующие свойства:
+			<ul>
+				<li><i>Type</i> - тип развилки:</li>
+					<ul>
+						<li><i>Исключающее "или", управляемое данными (Exclusive (Data Based))</i> - поток управления направляется вдоль одной из исходящих ветвей в зависимости от выполнения какого-либо условия.</li>
+						<li><i>Исключающее "или", управляемое событиями (Exclusive (Event Based))</i> - поток управления направляется вдоль той из исходящих ветвей, на которой первой произошло событие.</li>
+						<li><i>Включающее "или" (Inclusive)</i> - активизирует одну или более исходящих ветвей.</li>
+						<li><i>Параллельная (Parallel)</i> - разделяет поток управления на несколько параллельных ветвей. Может использоваться для синхронизации параллельных потоков управления.</li>
+					</ul>
+				<li><i>Text</i> - текст, отображаемый под элементом.</li>
+			</ul>
+			</div>
+
+			<center><img src="pics/bpmn-gateway.png" alt="Развилка"></center>
+
+			<h3><a name="swimlanes">Роли (Swimlanes)</a></h3>
+
+			<div>
+			<b>Пул (Pool)</b> - представляет собой участника процесса. Может содержать внутри себя одну или несколько дорожек. Имеет свойство <i>Text</i>, изображённое в виде вертикально направленного текста в левой части элемента.
+			</div>
+
+			<br/>
+			<center><img src="pics/bpmn-swimlane.png" alt="Пул"></center>
+
+			<div>
+			<b>Дорожка (Lane)</b> - представляет собой роль внутри участника процесса. Содержит в себе элементы потока управления. Имеет свойство <i>Text</i>, изображённое в виде вертикально направленного текста в левой части элемента.
+			</div>
+
+			<center><img src="pics/bpmn-swimlane.png" alt="Дорожка"></center>
+
+		</div>
+		<!-- end #content -->
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<!-- end #page -->
+</div>
+<div id="footer">
+	<p>© %year% QReal Inc. All rights reserved. </p>
+</div>
+<!-- end #footer -->
+</body>
+</html>
