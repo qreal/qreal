@@ -8,6 +8,8 @@
 using namespace qReal;
 
 const QString separator = "»";
+const int minTextRect = 28;
+const int reductCoeff = 3;
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation)
 		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
@@ -29,6 +31,19 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOn
 	setPos(x, y);
 }
 
+QRectF ElementTitle::boundingRect() const
+{
+	return mContents;
+}
+
+QPainterPath ElementTitle::shape() const
+{
+	QPainterPath path;
+	path.addRect(boundingRect());
+
+	return path;
+}
+
 QString ElementTitle::createTextForRepo() const
 {
 	return (toPlainText()
@@ -37,9 +52,10 @@ QString ElementTitle::createTextForRepo() const
 			+ " "
 			+ QString::number(pos().y())
 			+ separator
-			+ QString::number(mContents.width()));
+			+ QString::number(mContents.width())
+			+ " "
+			+ QString::number(mContents.height()));
 }
-
 
 void ElementTitle::setTextFromRepo(QString const& text)
 {
@@ -55,15 +71,16 @@ void ElementTitle::setTextFromRepo(QString const& text)
 	qreal x = coordinates[0].toDouble();
 	qreal y = coordinates[1].toDouble();
 
-	setProperties(x, y
-			, prList[textWidth].toDouble()
-			, prList[propertyText]);
+	QStringList rectProperties = prList[rectProp].split(" ");
+	qreal width = rectProperties[0].toDouble();
+	qreal height = rectProperties[1].toDouble();
+
+	setProperties(x, y, width, height, prList[propertyText]);
 }
 
-void ElementTitle::setProperties(qreal x, qreal y, qreal width, QString const &text)
+void ElementTitle::setProperties(qreal x, qreal y, qreal width, qreal height, QString const &text)
 {
-	mContents.setWidth(width);
-	setTextWidth(mContents.width());
+	updateRect(width, height);
 
 	setPlainText(text);
 
@@ -80,7 +97,6 @@ void ElementTitle::updateData()
 	}
 }
 
-
 void ElementTitle::setTitleFont()
 {
 	setFont(FontCache::instance()->titlesFont());
@@ -88,12 +104,19 @@ void ElementTitle::setTitleFont()
 
 void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if ((event->pos().x() >= boundingRect().right() - 10)
-			&& (event->pos().y() >= boundingRect().bottom() - 10)) {
+	if (hasFocus()) {
+		ElementTitleInterface::mousePressEvent(event);
+		event->accept();
+		return;
+	}
+
+	if ((event->pos().x() >= boundingRect().right() - minTextRect / 2)
+			&& (event->pos().y() >= boundingRect().bottom() - minTextRect / 2)) {
 		isStretched = true;
 	} else {
 		isStretched = false;
 	}
+
 	ElementTitleInterface::mousePressEvent(event);
 	event->accept();
 
@@ -104,7 +127,7 @@ void ElementTitle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (isSelected()) {
 		QPointF cursorPoint = mapToItem(this, event->pos());
 		if (isStretched) {
-			updateRect(cursorPoint);
+			updateRect(cursorPoint.x(), cursorPoint.y());
 			return;
 		}
 		ElementTitleInterface::mouseMoveEvent(event);
@@ -114,15 +137,31 @@ void ElementTitle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void ElementTitle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	updateData();
+	if (!hasFocus()) {
+		updateData();
+	}
 
 	ElementTitleInterface::mouseReleaseEvent(event);
 }
 
+void ElementTitle::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+	if (hasFocus()) {
+		return;
+	}
+
+	if ((event->pos().x() >= boundingRect().right() - minTextRect / 2)
+			&& (event->pos().y() >= boundingRect().bottom() - minTextRect / 2)) {
+		setCursor(Qt::SizeAllCursor);
+	} else {
+		unsetCursor();
+	}
+}
 
 void ElementTitle::init(QRectF const &contents)
 {
-	mContents = contents;
+	mContents.setWidth(contents.width() / reductCoeff);
+	mContents.setHeight(contents.height() / reductCoeff);
 
 	setTextWidth(mContents.width());
 
@@ -229,6 +268,27 @@ void ElementTitle::startTextInteraction()
 void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	// if text is not empty, draw it's background
+	if (isSelected() || parentItem()->isSelected())
+	{
+		QColor color;
+		QPen pen;
+
+		pen.setWidth(1);
+		pen.setStyle(Qt::DashLine);
+
+		color.setNamedColor("#f8f8ff");
+		painter->save();
+		painter->setPen(pen);
+		painter->setBrush(QBrush(color));
+		painter->drawRect(boundingRect());
+		painter->restore();
+	}
+
+	if (isSelected() && !hasFocus())
+	{
+
+	}
+
 	if (!toPlainText().isEmpty()) {
 		painter->save();
 		painter->setBrush(QBrush(mBackground));
@@ -237,12 +297,24 @@ void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 		painter->restore();
 	}
 
-	QGraphicsTextItem::paint(painter, option, widget);
+	QStyleOptionGraphicsItem myOption(*option);
+	myOption.state &= ~QStyle::State_Selected;
+	myOption.state &= ~QStyle::State_HasFocus;
+
+	QGraphicsTextItem::paint(painter, &myOption, widget);
 }
 
-void ElementTitle::updateRect(QPointF newBottomRightPoint)
+void ElementTitle::updateRect(qreal width, qreal height)
 {
-	mContents.setBottomRight(newBottomRightPoint);
+	if (width < minTextRect) {
+		width = minTextRect;
+	}
+
+	if (height < minTextRect) {
+		height = minTextRect;
+	}
+
+	mContents.setBottomRight(QPointF(width, height));
 	setTextWidth(mContents.width());
 }
 
@@ -260,4 +332,3 @@ void ElementTitle::transform(QRectF const& contents)
 {
 	ElementTitleInterface::transform();
 }
-
