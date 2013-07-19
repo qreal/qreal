@@ -145,11 +145,6 @@ void NodeElement::setGeometry(QRectF const &geom)
 	mTransform.reset();
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
-
-	foreach (ElementTitle * const title, mTitles) {
-		title->transform(geom);
-	}
-
 }
 
 void NodeElement::setPos(QPointF const &pos)

@@ -31,14 +31,26 @@ public:
 	void transform(QRectF const& contents);
 	void setTitleFont();
 
+	void setTextFromRepo(QString const& text);
+
 protected:
+	enum InterpriterPropertyType
+	{
+		propertyText,
+		coordinate,
+		textWidth
+	};
+
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 	virtual void focusOutEvent(QFocusEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
 
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = NULL);
 private:
+	bool isStretched;
 	bool mFocusIn;
 	bool mReadOnly;
 	bool mScalingX;
@@ -50,4 +62,9 @@ private:
 	QString mBinding;
 	QColor mBackground;
 	bool mIsHard;
+
+	void updateData();
+	void updateRect(QPointF newBottomRightPoint);
+	void setProperties(qreal x, qreal y, qreal width, QString const &text);
+	QString createTextForRepo() const;
 };
