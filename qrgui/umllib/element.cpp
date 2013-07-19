@@ -70,16 +70,8 @@ void Element::setController(Controller *controller)
 	mController = controller;
 }
 
-void Element::initTitlesBy(QRectF const& contents)
-{
-	foreach (ElementTitle * const title, mTitles) {
-		title->transform(contents);
-	}
-}
-
 void Element::initTitles()
 {
-	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
 }
 
 void Element::singleSelectionState(const bool singleSelected)

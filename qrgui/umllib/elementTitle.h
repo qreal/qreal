@@ -28,12 +28,12 @@ public:
 	virtual void setHard(bool hard);
 
 	void startTextInteraction();
-	void transform(QRectF const& contents);
 	void setTitleFont();
 
 	void setTextFromRepo(QString const& text);
 
 	void setParentSelected(bool isSelected);
+	void setParentContents(QRectF contents);
 
 protected:
 	enum InterpriterPropertyType
@@ -52,17 +52,20 @@ protected:
 
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = NULL);
 private:
-
 	void updateData();
 	void updateRect(QPointF newBottomRightPoint);
 	void setProperties(qreal x, qreal y, qreal width, QString const &text);
 	QString createTextForRepo() const;
+	void setText(QString const &text);
+	void moveToParentCenter();
+
 	bool mIsStretched;
 	bool mFocusIn;
 	bool mReadOnly;
 	bool mScalingX;
 	bool mScalingY;
 	QRectF mContents;
+	QRectF mParentContents;
 	qreal mRotation;
 	QPointF mPoint;
 	QString mOldText;
@@ -70,4 +73,5 @@ private:
 	QColor mBackground;
 	bool mIsHard;
 	bool mParentIsSelected;
+	bool mWasMoved;
 };

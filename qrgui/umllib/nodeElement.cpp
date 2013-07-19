@@ -1140,6 +1140,10 @@ void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool 
 {
 	ResizeHandler handler(this);
 	handler.resize(newContents, newPos, needResizeParent);
+
+	foreach (ElementTitle *title, mTitles) {
+		title->setParentContents(mContents);
+	}
 }
 
 void NodeElement::drawLinesForResize(QPainter *painter)
