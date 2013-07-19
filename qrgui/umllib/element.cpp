@@ -91,7 +91,7 @@ void Element::selectionState(const bool selected)
 		singleSelectionState(false);
 	}
 
-	foreach (ElementTitle *title, mTitles) {
+	foreach (Label *title, mTitles) {
 		title->setParentSelected(selected);
 	}
 }
@@ -109,7 +109,7 @@ void Element::setTitlesVisible(bool visible)
 
 void Element::setTitlesVisiblePrivate(bool visible)
 {
-	foreach (ElementTitle * const title, mTitles) {
+	foreach (Label * const title, mTitles) {
 		title->setVisible(title->isHard() || visible);
 	}
 }

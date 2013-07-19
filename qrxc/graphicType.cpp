@@ -461,8 +461,7 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRefer
 		bool isFirstProperty = true;
 
 		foreach (Property *property, mProperties) {
-			// Хак: не генерить предопределённые свойства, иначе они затрут
-			// настоящие и линки будут цепляться к чему попало.
+			// do not generate common properties
 			if (property->name() == "fromPort" || property->name() == "toPort"
 				|| property->name() == "from" || property->name() == "to"
 				|| property->name() == "name")

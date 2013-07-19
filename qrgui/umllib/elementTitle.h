@@ -3,8 +3,6 @@
 #include <QtWidgets/QGraphicsTextItem>
 #include "../editorPluginInterface/elementTitleHelpers.h"
 
-class ElementTitle;
-
 namespace enums {
 namespace OrientationType {
 enum OrientationType {
@@ -14,20 +12,20 @@ enum OrientationType {
 }
 }
 
-class ElementTitleFactory : public ElementTitleFactoryInterface
+class LabelFactory : public LabelFactoryInterface
 {
 public:
-	ElementTitleInterface *createTitle(qreal x, qreal y, QString const &text, qreal rotation);
-	ElementTitleInterface *createTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
+	LabelInterface *createTitle(qreal x, qreal y, QString const &text, qreal rotation);
+	LabelInterface *createTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
 };
 
-class ElementTitle : public ElementTitleInterface
+class Label : public LabelInterface
 {
 	Q_OBJECT
 public:
-	ElementTitle(qreal x, qreal y, QString const &text, qreal rotation);
-	ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
-	virtual ~ElementTitle() {}
+	Label(qreal x, qreal y, QString const &text, qreal rotation);
+	Label(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
+	virtual ~Label() {}
 
 	void init(QRectF const& contents);
 	void setBackground(QColor const &background);

@@ -942,7 +942,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	} else if (event->button() == Qt::LeftButton) {
 		mLeftButtonPressed = true;
 		QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
-		ElementTitle *title = dynamic_cast < ElementTitle *>(item);
+		Label *title = dynamic_cast < Label *>(item);
 
 		if (item) {
 			item->setSelected(true);
@@ -1235,7 +1235,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton && !event->modifiers()) {
 		// Double click on a title activates it
-		if (ElementTitle *title = dynamic_cast<ElementTitle*>(itemAt(event->scenePos(), QTransform()))) {
+		if (Label *title = dynamic_cast<Label*>(itemAt(event->scenePos(), QTransform()))) {
 			if (!title->hasFocus()) {  // Do not activate already activated item
 				event->accept();
 				title->startTextInteraction();

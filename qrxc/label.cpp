@@ -114,7 +114,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 
 void Label::generateCodeForFields(OutFile &out)
 {
-	out() << "		ElementTitleInterface *" + titleName() + ";\n";
+	out() << "		LabelInterface *" + titleName() + ";\n";
 }
 
 

@@ -81,7 +81,7 @@ protected:
 	bool mMoving;
 	qReal::Id mId;
 	ElementImpl* const mElementImpl;
-	QList<ElementTitle *> mTitles;
+	QList<Label *> mTitles;
 	bool mTitlesVisible;
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
