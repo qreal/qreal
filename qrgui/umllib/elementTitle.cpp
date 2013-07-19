@@ -7,8 +7,6 @@
 
 using namespace qReal;
 
-const QString separator = "»";
-
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation)
 		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
 		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false), mIsStretched(false)
@@ -32,18 +30,18 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOn
 QString ElementTitle::createTextForRepo() const
 {
 	return (toPlainText()
-			+ separator + QString::number(pos().x()) + " " + QString::number(pos().y())
-			+ separator + QString::number(mContents.width()));
+			+ propertiesSeparator + QString::number(pos().x()) + " " + QString::number(pos().y())
+			+ propertiesSeparator + QString::number(mContents.width()));
 }
 
 void ElementTitle::setTextFromRepo(QString const& text)
 {
-	if (!text.count(separator)) {
+	if (!text.count(propertiesSeparator)) {
 		updateData();
 		return;
 	}
 
-	QStringList const prList = text.split(separator);
+	QStringList const prList = text.split(propertiesSeparator);
 
 	QStringList const coordinates = prList[coordinate].split(" ");
 	qreal x = coordinates.at(0).toDouble();
