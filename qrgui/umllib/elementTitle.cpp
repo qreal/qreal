@@ -11,10 +11,10 @@ const QString separator = "»";
 
 ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation)
 		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
-		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false), isStretched(false)
+		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false), mIsStretched(false)
+		, mParentIsSelected(false)
 {
-	setFlag(QGraphicsItem::ItemIsSelectable);
-	setFlag(QGraphicsItem::ItemIsMovable);
+	setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
 	setTitleFont();
 	setPos(x, y);
 	setPlainText(text);
@@ -32,32 +32,29 @@ ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOn
 QString ElementTitle::createTextForRepo() const
 {
 	return (toPlainText()
-			+ separator
-			+ QString::number(pos().x())
-			+ " "
-			+ QString::number(pos().y())
-			+ separator
-			+ QString::number(mContents.width()));
+			+ separator + QString::number(pos().x()) + " " + QString::number(pos().y())
+			+ separator + QString::number(mContents.width()));
 }
-
 
 void ElementTitle::setTextFromRepo(QString const& text)
 {
-	if (!text.count(separator))
-	{
+	if (!text.count(separator)) {
 		updateData();
 		return;
 	}
 
-	QStringList prList = text.split(separator);
+	QStringList const prList = text.split(separator);
 
-	QStringList coordinates = prList[coordinate].split(" ");
-	qreal x = coordinates[0].toDouble();
-	qreal y = coordinates[1].toDouble();
+	QStringList const coordinates = prList[coordinate].split(" ");
+	qreal x = coordinates.at(0).toDouble();
+	qreal y = coordinates.at(1).toDouble();
 
-	setProperties(x, y
-			, prList[textWidth].toDouble()
-			, prList[propertyText]);
+	setProperties(x, y, prList[textWidth].toDouble(), prList[propertyText]);
+}
+
+void ElementTitle::setParentSelected(bool isSelected)
+{
+	mParentIsSelected = isSelected;
 }
 
 void ElementTitle::setProperties(qreal x, qreal y, qreal width, QString const &text)
@@ -72,14 +69,13 @@ void ElementTitle::setProperties(qreal x, qreal y, qreal width, QString const &t
 
 void ElementTitle::updateData()
 {
-	QString value = createTextForRepo();
+	QString const value = createTextForRepo();
 	if (mBinding == "name") {
 		static_cast<NodeElement*>(parentItem())->setName(value);
 	} else {
 		static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value);
 	}
 }
-
 
 void ElementTitle::setTitleFont()
 {
@@ -88,22 +84,17 @@ void ElementTitle::setTitleFont()
 
 void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if ((event->pos().x() >= boundingRect().right() - 10)
-			&& (event->pos().y() >= boundingRect().bottom() - 10)) {
-		isStretched = true;
-	} else {
-		isStretched = false;
-	}
+	mIsStretched = ((event->pos().x() >= boundingRect().right() - 10)
+			&& (event->pos().y() >= boundingRect().bottom() - 10));
 	ElementTitleInterface::mousePressEvent(event);
 	event->accept();
-
 }
 
 void ElementTitle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (isSelected()) {
 		QPointF cursorPoint = mapToItem(this, event->pos());
-		if (isStretched) {
+		if (mIsStretched) {
 			updateRect(cursorPoint);
 			return;
 		}
@@ -123,6 +114,7 @@ void ElementTitle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void ElementTitle::init(QRectF const &contents)
 {
 	mContents = contents;
+	mContents.setWidth(mContents.width() / 2);
 
 	setTextWidth(mContents.width());
 
@@ -155,12 +147,7 @@ void ElementTitle::setHard(bool hard)
 void ElementTitle::focusOutEvent(QFocusEvent *event)
 {
 	QGraphicsTextItem::focusOutEvent(event);
-
-//	QString const htmlNormalizedText = toHtml().remove("\n", Qt::CaseInsensitive);
-
 	setTextInteractionFlags(Qt::NoTextInteraction);
-
-//	parentItem()->setSelected(true);
 
 	// Clear selection
 	QTextCursor cursor = textCursor();
@@ -176,8 +163,6 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 	if (mOldText != toPlainText()) {
 		updateData();
 	}
-//	setPlainText()
-
 }
 
 void ElementTitle::keyPressEvent(QKeyEvent *event)
@@ -207,8 +192,6 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 
 void ElementTitle::startTextInteraction()
 {
-//	parentItem()->setSelected(true);
-
 	// Already interacting?
 	if (hasFocus()) {
 		return;
@@ -228,14 +211,23 @@ void ElementTitle::startTextInteraction()
 
 void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	// if text is not empty, draw it's background
-	if (!toPlainText().isEmpty()) {
-		painter->save();
-		painter->setBrush(QBrush(mBackground));
-		painter->setPen(QPen(Qt::transparent));
-		painter->drawRect(boundingRect());
-		painter->restore();
+	QString text = toPlainText();
+
+	if (text.isEmpty() && !mParentIsSelected && !isSelected()) {
+		return;
 	}
+
+	painter->save();
+	painter->setBrush(QBrush(mBackground));
+
+	if ((mParentIsSelected && toPlainText().isEmpty()) || isSelected()) {
+		painter->setPen(QPen(Qt::DotLine));
+	} else if (!toPlainText().isEmpty()) {
+		painter->setPen(QPen(Qt::transparent));
+	}
+
+	painter->drawRect(boundingRect());
+	painter->restore();
 
 	QGraphicsTextItem::paint(painter, option, widget);
 }

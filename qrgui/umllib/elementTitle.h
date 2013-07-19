@@ -33,6 +33,8 @@ public:
 
 	void setTextFromRepo(QString const& text);
 
+	void setParentSelected(bool isSelected);
+
 protected:
 	enum InterpriterPropertyType
 	{
@@ -50,7 +52,12 @@ protected:
 
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = NULL);
 private:
-	bool isStretched;
+
+	void updateData();
+	void updateRect(QPointF newBottomRightPoint);
+	void setProperties(qreal x, qreal y, qreal width, QString const &text);
+	QString createTextForRepo() const;
+	bool mIsStretched;
 	bool mFocusIn;
 	bool mReadOnly;
 	bool mScalingX;
@@ -62,9 +69,5 @@ private:
 	QString mBinding;
 	QColor mBackground;
 	bool mIsHard;
-
-	void updateData();
-	void updateRect(QPointF newBottomRightPoint);
-	void setProperties(qreal x, qreal y, qreal width, QString const &text);
-	QString createTextForRepo() const;
+	bool mParentIsSelected;
 };
