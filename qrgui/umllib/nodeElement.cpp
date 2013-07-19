@@ -848,7 +848,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 				painter->drawRect(QRectF(QPointF(-20, 0), QPointF(0, 20)));
 
 				painter->drawLine(-15, 10, -5, 10);
-				if (!mIsFolded) {
+				if (mIsFolded) {
 					painter->drawLine(-10, 5, -10, 15);
 				}
 			}
