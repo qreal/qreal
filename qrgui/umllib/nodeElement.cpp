@@ -46,16 +46,16 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	mPortRenderer = new SdfRenderer();
 	mRenderer = new SdfRenderer();
-	ElementTitleFactory factory;
-	QList<ElementTitleInterface*> titles;
+	LabelFactory factory;
+	QList<LabelInterface*> titles;
 
 	QList<StatPoint> pointPorts;
 	QList<StatLine> linePorts;
 	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
 
-	foreach (ElementTitleInterface *titleIface, titles) {
-		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
+	foreach (LabelInterface *titleIface, titles) {
+		Label *title = dynamic_cast<Label*>(titleIface);
 		if (!title) {
 			continue;
 		}
@@ -88,7 +88,7 @@ NodeElement::~NodeElement()
 		edge->removeLink(this);
 	}
 
-	foreach (ElementTitle *title, mTitles) {
+	foreach (Label *title, mTitles) {
 		delete title;
 	}
 
@@ -145,11 +145,6 @@ void NodeElement::setGeometry(QRectF const &geom)
 	mTransform.reset();
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
-
-	foreach (ElementTitle * const title, mTitles) {
-		title->transform(geom);
-	}
-
 }
 
 void NodeElement::setPos(QPointF const &pos)
@@ -1145,6 +1140,10 @@ void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool 
 {
 	ResizeHandler handler(this);
 	handler.resize(newContents, newPos, needResizeParent);
+
+	foreach (Label *title, mTitles) {
+		title->setParentContents(mContents);
+	}
 }
 
 void NodeElement::drawLinesForResize(QPainter *painter)

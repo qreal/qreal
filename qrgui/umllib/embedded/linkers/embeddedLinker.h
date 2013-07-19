@@ -45,7 +45,7 @@ private slots:
 private:
 	EdgeElement* mEdge;
 	NodeElement* mMaster;
-	ElementTitle* mTitle;
+	Label* mTitle;
 
 	float mSize;
 	float mIndent;

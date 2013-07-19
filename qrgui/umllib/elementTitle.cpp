@@ -6,74 +6,218 @@
 #include "private/fontCache.h"
 
 using namespace qReal;
+using namespace enums;
 
-ElementTitle::ElementTitle(qreal x, qreal y, QString const &text, qreal rotation)
+Label::Label(qreal x, qreal y, QString const &text, qreal rotation)
 		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
-		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsHard(false)
+		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
+		, mParentIsSelected(false), mWasMoved(false)
 {
+	setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
 	setPos(x, y);
-	setHtml(text);
+	setText(text);
+	setRotation(mRotation);
 }
 
-ElementTitle::ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
+Label::Label(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
 		: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
 		, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
 {
+	setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
+	setPos(x, y);
+	setRotation(mRotation);
+}
+
+QString Label::createTextForRepo() const
+{
+	return (toPlainText()
+			+ propertiesSeparator + QString::number(pos().x()) + " " + QString::number(pos().y())
+			+ propertiesSeparator + QString::number(mContents.width()));
+}
+
+void Label::moveToParentCenter()
+{
+	if (mWasMoved) {
+		// now it has user defined position, don't center automatically
+		return;
+	}
+
+	if (orientation() == OrientationType::horizontal) {
+		qreal parentCenter = mParentContents.x() + mParentContents.width() / 2;
+		qreal titleCenter = x() + mContents.width() / 2;
+		qreal diff = parentCenter - titleCenter;
+
+		setX(x() + diff);
+	} else if (orientation() == OrientationType::vertical) {
+		qreal parentCenter = mParentContents.y() + mParentContents.height() / 2;
+		qreal titleCenter = y() - mContents.width() / 2;
+		qreal diff = parentCenter - titleCenter;
+
+		qDebug() << "parent: "<< parentCenter;
+		qDebug() << "title : "<< titleCenter;
+		qDebug() << diff;
+
+		setY(y() + diff);
+	}
+}
+
+OrientationType::OrientationType Label::orientation()
+{
+	if (abs(rotation()) == 90) {
+		return OrientationType::vertical;
+	}
+	return OrientationType::horizontal;
+}
+
+void Label::setText(const QString &text)
+{
+	setPlainText(text);
+	moveToParentCenter();
+}
+
+void Label::setTextFromRepo(QString const& text)
+{
+	if (!text.contains(propertiesSeparator)) {
+		setHtml(text); // need this to load old saves with html markup
+		setText(toPlainText());
+		updateData();
+		return;
+	}
+
+	QStringList const prList = text.split(propertiesSeparator);
+
+	QStringList const coordinates = prList[coordinate].split(" ");
+	qreal x = coordinates.at(0).toDouble();
+	qreal y = coordinates.at(1).toDouble();
+
+	setProperties(x, y, prList[textWidth].toDouble(), prList[propertyText]);
+}
+
+void Label::setParentSelected(bool isSelected)
+{
+	mParentIsSelected = isSelected;
+}
+
+void Label::setParentContents(QRectF contents)
+{
+	mParentContents = contents;
+	moveToParentCenter();
+}
+
+void Label::setProperties(qreal x, qreal y, qreal width, QString const &text)
+{
+	mContents.setWidth(width);
+	setTextWidth(mContents.width());
+
+	setText(text);
+
 	setPos(x, y);
 }
 
-void ElementTitle::setTitleFont()
+void Label::updateData()
+{
+	QString const value = createTextForRepo();
+	if (mBinding == "name") {
+		static_cast<NodeElement*>(parentItem())->setName(value);
+	} else {
+		static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value);
+	}
+}
+
+void Label::setTitleFont()
 {
 	setFont(FontCache::instance()->titlesFont());
 }
 
-void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	ElementTitleInterface::mousePressEvent(event);
+	mIsStretched = ((event->pos().x() >= boundingRect().right() - 10)
+			&& (event->pos().y() >= boundingRect().bottom() - 10));
+	LabelInterface::mousePressEvent(event);
 	event->accept();
 }
 
-void ElementTitle::init(QRectF const &contents)
+void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	if (!isSelected()) {
+		event->ignore();
+		return;
+	}
+
+	QPointF cursorPoint = mapToItem(this, event->pos());
+
+	if (mIsStretched  && SettingsManager::value("ResizeLabels", true).toBool()) {
+		updateRect(cursorPoint);
+		return;
+	}
+
+	if (!SettingsManager::value("MoveLabels", true).toBool()) {
+		event->ignore();
+		return;
+	}
+
+	mWasMoved = true;
+	LabelInterface::mouseMoveEvent(event);
+	event->accept();
+}
+
+void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+	if (mIsStretched) {
+		moveToParentCenter();
+	}
+	updateData();
+
+	LabelInterface::mouseReleaseEvent(event);
+}
+
+
+void Label::init(QRectF const &contents)
 {
 	mContents = contents;
+	mParentContents = contents;
+	if (orientation() == OrientationType::horizontal) {
+		mContents.setWidth(mContents.width() / 2);
+	} else if (orientation() == OrientationType::vertical) {
+		mContents.setWidth(mContents.height() * 3 / 4);
+	}
+
+	setTextWidth(mContents.width());
 
 	qreal const x = mPoint.x() * mContents.width();
 	qreal const y = mPoint.y() * mContents.height();
 	setPos(x, y);
+
+	moveToParentCenter();
 }
 
-void ElementTitle::setScaling(bool scalingX, bool scalingY)
+void Label::setScaling(bool scalingX, bool scalingY)
 {
 	mScalingX = scalingX;
 	mScalingY = scalingY;
 }
 
-void ElementTitle::setBackground(QColor const &background)
+void Label::setBackground(QColor const &background)
 {
 	mBackground = background;
 }
 
-bool ElementTitle::isHard() const
+bool Label::isHard() const
 {
 	return mIsHard;
 }
 
-void ElementTitle::setHard(bool hard)
+void Label::setHard(bool hard)
 {
 	mIsHard = hard;
 }
 
-void ElementTitle::focusOutEvent(QFocusEvent *event)
+void Label::focusOutEvent(QFocusEvent *event)
 {
 	QGraphicsTextItem::focusOutEvent(event);
-
-	QString const htmlNormalizedText = toHtml().remove("\n", Qt::CaseInsensitive);
-
 	setTextInteractionFlags(Qt::NoTextInteraction);
-
-	parentItem()->setSelected(true);
 
 	// Clear selection
 	QTextCursor cursor = textCursor();
@@ -87,22 +231,16 @@ void ElementTitle::focusOutEvent(QFocusEvent *event)
 	}
 
 	if (mOldText != toPlainText()) {
-		QString value = toPlainText();
-		if (mBinding == "name") {
-			static_cast<NodeElement*>(parentItem())->setName(value);
-		} else {
-			static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value);
-		}
+		updateData();
 	}
-	setHtml(htmlNormalizedText);
 }
 
-void ElementTitle::keyPressEvent(QKeyEvent *event)
+void Label::keyPressEvent(QKeyEvent *event)
 {
 	int const keyEvent = event->key();
 	if (keyEvent == Qt::Key_Escape) {
 		// Restore previous text and loose focus
-		setPlainText(mOldText);
+		setText(mOldText);
 		clearFocus();
 		return;
 	}
@@ -110,7 +248,7 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 		// Line feed
 		QTextCursor const cursor = textCursor();
 		QString const currentText = toPlainText();
-		setPlainText(currentText + "\n");
+		setText(currentText + "\n");
 		setTextCursor(cursor);
 		return;
 	}
@@ -122,10 +260,8 @@ void ElementTitle::keyPressEvent(QKeyEvent *event)
 	QGraphicsTextItem::keyPressEvent(event);
 }
 
-void ElementTitle::startTextInteraction()
+void Label::startTextInteraction()
 {
-	parentItem()->setSelected(true);
-
 	// Already interacting?
 	if (hasFocus()) {
 		return;
@@ -143,49 +279,42 @@ void ElementTitle::startTextInteraction()
 	setCursor(Qt::IBeamCursor);
 }
 
-void ElementTitle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	// if text is not empty, draw it's background
-	if (!toPlainText().isEmpty()) {
-		painter->save();
-		painter->setBrush(QBrush(mBackground));
-		painter->setPen(QPen(Qt::transparent));
-		painter->drawRect(boundingRect());
-		painter->restore();
+	QString text = toPlainText();
+
+	if (text.isEmpty() && !mParentIsSelected && !isSelected()) {
+		return;
 	}
+
+	painter->save();
+	painter->setBrush(QBrush(mBackground));
+
+	if ((mParentIsSelected && toPlainText().isEmpty()) || isSelected()) {
+		painter->setPen(QPen(Qt::DotLine));
+	} else if (!toPlainText().isEmpty()) {
+		painter->setPen(QPen(Qt::transparent));
+	}
+
+	painter->drawRect(boundingRect());
+	painter->restore();
 
 	QGraphicsTextItem::paint(painter, option, widget);
 }
 
-ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y, QString const &text, qreal rotation)
+void Label::updateRect(QPointF newBottomRightPoint)
 {
-	return new ElementTitle(x, y, text, rotation);
+	mContents.setBottomRight(newBottomRightPoint);
+	setTextWidth(mContents.width());
 }
 
-ElementTitleInterface *ElementTitleFactory::createTitle(qreal x, qreal y,QString const &binding, bool readOnly, qreal rotation)
+LabelInterface *LabelFactory::createTitle(qreal x, qreal y, QString const &text, qreal rotation)
 {
-	return new ElementTitle(x, y, binding, readOnly, rotation);
+	return new Label(x, y, text, rotation);
 }
 
-void ElementTitle::transform(QRectF const& contents)
+LabelInterface *LabelFactory::createTitle(qreal x, qreal y,QString const &binding, bool readOnly, qreal rotation)
 {
-	qreal x = 0;
-	qreal y = 0;
-
-	if (mScalingX) {
-		x = mPoint.x() * mContents.width();
-	} else {
-		x = mPoint.x() * contents.width();
-	}
-
-	if (mScalingY) {
-		y = mPoint.y() * mContents.height();
-	} else {
-		y = mPoint.y() * contents.height();
-	}
-
-	setPos(x, y);
-
-	setRotation(mRotation);
+	return new Label(x, y, binding, readOnly, rotation);
 }
 

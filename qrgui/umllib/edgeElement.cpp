@@ -68,12 +68,12 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 
 	mChaoticEdition = SettingsManager::value("ChaoticEdition").toBool();
 
-	ElementTitleFactory factory;
+	LabelFactory factory;
 
-	QList<ElementTitleInterface*> titles;
+	QList<LabelInterface*> titles;
 	mElementImpl->init(factory, titles);
-	foreach (ElementTitleInterface *titleIface, titles) {
-		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
+	foreach (LabelInterface *titleIface, titles) {
+		Label *title = dynamic_cast<Label*>(titleIface);
 		if (!title) {
 			continue;
 		}
@@ -439,7 +439,7 @@ void EdgeElement::updateLongestPart()
 	mLongPart = maxIdx;
 
 	if (mTitles.count() == 1) {
-		ElementTitle *title = mTitles[0];
+		Label *title = mTitles[0];
 		qreal x = (mLine[maxIdx].x() + mLine[maxIdx + 1].x()) / 2;
 		qreal y = (mLine[maxIdx].y() + mLine[maxIdx + 1].y()) / 2;
 		x -= title->boundingRect().width() / 2;
