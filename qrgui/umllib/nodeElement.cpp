@@ -875,7 +875,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 		}
 
 		if (mIsExpanded && !mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId()).empty()) {
-			QImage image(contentsRect().size().toSize(), QImage::Format_RGB32);
+			initRenderedDiagram();
 			painter->drawImage(diagramRenderingRect(), mRenderedDiagram);
 		}
 	}
@@ -1331,8 +1331,8 @@ QRectF NodeElement::diagramRenderingRect() const
 
 	qreal renderedDiagramRatio = mRenderedDiagram.width() / mRenderedDiagram.height();
 	QPointF oldCenter(result.center());
-	if (renderedDiagramRatio < 1) {
-		result.setHeight(result.width() * renderedDiagramRatio);
+	if (renderedDiagramRatio > 1) {
+		result.setHeight(result.width() / renderedDiagramRatio);
 	} else {
 		result.setWidth(result.height() * renderedDiagramRatio);
 	}

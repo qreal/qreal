@@ -21,8 +21,6 @@ protected:
 private:
 	void changeExpanded();
 
-	void initRenderedDiagram();
-
 	QMap<Id, QPointF> mShifting;
 	ResizeCommand *mResizeCommand;
 };

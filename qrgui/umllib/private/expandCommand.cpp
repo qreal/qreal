@@ -19,7 +19,6 @@ ExpandCommand::~ExpandCommand()
 bool ExpandCommand::execute()
 {
 	NodeElementCommand::execute();
-	initRenderedDiagram();
 	delete mResizeCommand;
 	mResizeCommand = new ResizeCommand(mScene, mNode->id());
 	mResizeCommand->startTracking();
@@ -62,13 +61,6 @@ void ExpandCommand::changeExpanded()
 		mScene->resolveOverlaps(mNode, mNode->pos(), mNode->boundingRect().bottomRight(), mShifting);
 	} else {
 		mScene->returnElementsToOldPositions(mShifting);
-	}
-}
-
-void ExpandCommand::initRenderedDiagram()
-{
-	if (mNode) {
-		mNode->initRenderedDiagram();
 	}
 }
 
