@@ -7,7 +7,7 @@
 #include "../../qrkernel/settingsManager.h"
 
 #include "../editorPluginInterface/elementRepoInterface.h"
-#include "elementTitle.h"
+#include "label.h"
 
 #include "contextMenuAction.h"
 #include "../editorPluginInterface/elementImpl.h"

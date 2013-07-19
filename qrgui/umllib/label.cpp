@@ -1,6 +1,6 @@
 #include <QtGui/QTextCursor>
 
-#include "elementTitle.h"
+#include "label.h"
 #include "nodeElement.h"
 #include "edgeElement.h"
 #include "private/fontCache.h"

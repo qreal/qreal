@@ -5,7 +5,7 @@
 #include <QtCore/QRectF>
 #include <QtCore/QPointF>
 #include <QtGui/QPainter>
-#include "elementTitleHelpers.h"
+#include "labelHelpers.h"
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
 #include "../../qrkernel/ids.h"

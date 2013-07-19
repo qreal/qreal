@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QGraphicsTextItem>
-#include "../editorPluginInterface/elementTitleHelpers.h"
+#include "../editorPluginInterface/labelHelpers.h"
 
 namespace enums {
 namespace OrientationType {
