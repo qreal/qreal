@@ -80,7 +80,8 @@ void ElementTitle::setText(const QString &text)
 void ElementTitle::setTextFromRepo(QString const& text)
 {
 	if (!text.contains(propertiesSeparator)) {
-		setText(text);
+		setHtml(text); // need this to load old saves with html markup
+		setText(toPlainText());
 		updateData();
 		return;
 	}
