@@ -446,7 +446,7 @@ bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 	if (mVisible) {
 		QString name = NameNormalizer::normalize(qualifiedName());
 		generateOneCase(out, isNotFirst);
-		out() << "\t\treturn new " << name << "();\n";
+		out() << "\t\treturn new " << name << "();\n\t}\n";
 		return true;
 	}
 	return false;
@@ -485,10 +485,11 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRefer
 			}
 		}
 
-		if (!propertiesString.trimmed().isEmpty())
-			out() << propertiesString;
+		if (!isFirstProperty) {
+			out() << propertiesString << ";\n";
+		}
 
-		out() << ";\n";
+		out() << "\t}\n";
 		return true;
 	}
 	return false;
@@ -527,9 +528,9 @@ void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const
 	QString name = NameNormalizer::normalize(qualifiedName());
 
 	if (!isNotFirst)
-		out() << "\tif (element == \"" << name << "\")\n";
+		out() << "\tif (element == \"" << name << "\") {\n";
 	else
-		out() << "\telse if (element == \"" << name << "\")\n";
+		out() << "\telse if (element == \"" << name << "\") {\n";
 }
 
 QString GraphicType::resourceName(QString const &resourceType) const
@@ -567,7 +568,7 @@ bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 		out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\"" << element.first.second << "\")),"
 				<< "qMakePair(" << directed << ",QString(\"" << element.second.second << "\")))";
 	}
-	out() << ";\n";
+	out() << ";\n\t}\n";
 	return true;
 }
 
@@ -582,7 +583,7 @@ bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, Q
 	foreach (QString element, list)
 		out() << "<< \"" << element << "\" ";
 
-	out() << ";\n";
+	out() << ";\n\t}\n";
 	return true;
 }
 
