@@ -142,13 +142,19 @@ void ElementTitle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void ElementTitle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (!isSelected()) {
+		event->ignore();
 		return;
 	}
 
 	QPointF cursorPoint = mapToItem(this, event->pos());
 
-	if (mIsStretched) {
+	if (mIsStretched  && SettingsManager::value("ResizeLabels", true).toBool()) {
 		updateRect(cursorPoint);
+		return;
+	}
+
+	if (!SettingsManager::value("MoveLabels", true).toBool()) {
+		event->ignore();
 		return;
 	}
 
