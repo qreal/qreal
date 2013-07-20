@@ -1782,158 +1782,176 @@
 <context>
     <name>PreferencesEditorPage</name>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="269"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="516"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="302"/>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="414"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="523"/>
         <source>Indent</source>
         <translation>Отступ</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="175"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="203"/>
         <source>Show grid</source>
         <translation>Показать сетку</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="165"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="186"/>
         <source>Activate grid</source>
         <translation>Выравнивание по сетке</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="107"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="196"/>
         <source>Width</source>
         <translation>Толщина сетки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="136"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="173"/>
         <source>Cell size</source>
         <translation>Размер ячейки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="188"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="286"/>
         <source>Node Elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="204"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="318"/>
         <source>Drag area</source>
         <translation>Размер области масштабирования</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="312"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="351"/>
         <source>Edge</source>
         <translation>Связи</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="334"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="451"/>
         <source>Line mode</source>
         <translation>Тип связей</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="342"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="405"/>
         <source>broken</source>
         <translation>Ломаные линии</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="347"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="410"/>
         <source>square</source>
         <translation>Прямоугольные линии</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="352"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="415"/>
         <source>curve</source>
         <translation>Кривые Безье</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="376"/>
         <source>Loop Edge</source>
-        <translation>Связи-петли</translation>
+        <translation type="obsolete">Связи-петли</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="529"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="617"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="545"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="633"/>
         <source>   Representation   </source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="572"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="660"/>
         <source>Icons  and names</source>
         <translation>Иконки и названия</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="577"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="665"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="552"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="640"/>
         <source>   Count of items in a row </source>
         <translation>Количество иконок в строке</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="149"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="163"/>
         <source>Activate alignment</source>
         <translation>Выравнивание по направляющим</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="78"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="219"/>
         <source>Show alignment</source>
         <translation>Показать направляющие</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="50"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="110"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="253"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="464"/>
+        <source>Loop edges indent</source>
+        <translation>Отступ связей-петель</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="474"/>
         <source>Embedded Linkers</source>
         <translation>Встроенные линкеры</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="459"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="533"/>
+        <source>Labels</source>
+        <translation>Надписи на элементах</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="549"/>
+        <source>Enable move</source>
+        <translation>Разрешить перемещать</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="559"/>
+        <source>Enable resize</source>
+        <translation>Разрешить изменять размер</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="588"/>
         <source>Zoom factor</source>
         <translation>Коэффициент масштабирования</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="424"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="572"/>
         <source>Zoom</source>
         <translation>Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="469"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="50"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="506"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="87"/>
         <source>Use some of system fonts</source>
         <translation>Использовать системный шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="519"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="100"/>
         <source>Choose Font</source>
         <translation>Выбрать шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="141"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="141"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
         <source>You should restart QReal:Robots to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="141"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -2984,114 +3002,114 @@
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1034"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="976"/>
         <source>Draw line</source>
         <translation>Рисовать линию</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="205"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="169"/>
         <source>Draw curve</source>
         <translation>Рисовать кривую</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="695"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="637"/>
         <source>Draw rectangle</source>
         <translation>Рисовать прямоугольник</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="69"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="43"/>
         <source>Draw ellipse</source>
         <translation>Рисовать эллипс</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="110"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="84"/>
         <source>Add static text</source>
         <translation>Добавить статический текст</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="151"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="125"/>
         <source>Add dynamic text</source>
         <translation>Добавить динамический текст</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="528"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="470"/>
         <source>Stylus</source>
         <translation>Стилус</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="657"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="599"/>
         <source>Add picture text</source>
         <translation>Добавить текст-картинку</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="569"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="511"/>
         <source>Add line port</source>
         <translation>Добавить линейный порт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="616"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="558"/>
         <source>Add point port</source>
         <translation>Добавить точечный порт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="267"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="231"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="294"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="258"/>
         <source>Family</source>
         <translation>Семейство</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="343"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="307"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="385"/>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="854"/>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="993"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="349"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="796"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="935"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="406"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="370"/>
         <source>Text format</source>
         <translation>Формат текста</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="418"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="382"/>
         <source>Italic</source>
         <translation>Наклонный</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="431"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="395"/>
         <source> Bold</source>
         <translation>Полужирный</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="444"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="408"/>
         <source>Underline</source>
         <translation>Подчёркнутый</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="466"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="430"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1069"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1011"/>
         <source>VisibilityConditions</source>
         <translation>Условия видимости</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="56"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="30"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="493"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="457"/>
         <source>Save to Xml</source>
         <translation>Сохранить в Xml</translation>
     </message>
@@ -3101,38 +3119,38 @@
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="36"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1037"/>
         <source>Delete Item</source>
         <translation>Удалить элемент</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="49"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1024"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="486"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="450"/>
         <source>Save as picture</source>
         <translation>Сохранить как картинку</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="766"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="708"/>
         <source>Pen</source>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="806"/>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="951"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="748"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="893"/>
         <source>Style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="896"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="838"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="914"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="856"/>
         <source>Brush</source>
         <translation>Кисть</translation>
     </message>
@@ -3141,7 +3159,7 @@
         <translation type="obsolete">Ничего</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1015"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="957"/>
         <source>Image</source>
         <translation>Картинка</translation>
     </message>
