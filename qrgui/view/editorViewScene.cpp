@@ -605,8 +605,8 @@ void EditorViewScene::resolveOverlaps(NodeElement *node, QPointF const &scenePos
 			coeff = (node->boundingRect().height() / 2) / qAbs(offset.length() * qSin(offset.angle()));
 		}
 		QLineF nodeLine(offset);
-		nodeLine.setLength(nodeLine.length() * coeff);
-
+		nodeLine.setP2(nodeLine.p1() + QPointF((nodeLine.p2().x() - nodeLine.p1().x()) * coeff
+				, (nodeLine.p2().y() - nodeLine.p1().y()) * coeff));
 		offset.setPoints(offset.p2(), offset.p1());
 
 		coeff = (closeNode->boundingRect().width() / 2) / qAbs(offset.length() * qCos(offset.angle()));
@@ -614,7 +614,8 @@ void EditorViewScene::resolveOverlaps(NodeElement *node, QPointF const &scenePos
 			coeff = (closeNode->boundingRect().height() / 2) / qAbs(offset.length() * qSin(offset.angle()));
 		}
 		QLineF closeNodeLine(offset);
-		closeNodeLine.setLength(closeNodeLine.length() * coeff);
+		closeNodeLine.setP2(closeNodeLine.p1() + QPointF((closeNodeLine.p2().x() - closeNodeLine.p1().x()) * coeff
+				, (closeNodeLine.p2().y() - closeNodeLine.p1().y()) * coeff));
 
 		QPointF offsetPoint(nodeLine.p2() - closeNodeLine.p2());
 		closeNode->setPos(closeNode->pos() + offsetPoint);
