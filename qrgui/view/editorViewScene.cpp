@@ -594,6 +594,9 @@ void EditorViewScene::resolveOverlaps(NodeElement *node, QPointF const &scenePos
 {
 	QList<NodeElement*> closeNodes = getCloseNodes(node);
 	foreach (NodeElement *closeNode, closeNodes) {
+		if (shifting.contains(closeNode->id())) {
+			continue;
+		}
 		QPointF offset(closeNode->scenePos() - node->scenePos());
 		if (offset.x() < 0) {
 			offset.setX(-(closeNode->boundingRect().width() + offset.x()));

@@ -33,10 +33,7 @@ bool ExpandCommand::execute()
 	newContents.moveTo(mNode->pos());
 	mNode->setGeometry(newContents);
 	changeExpanded();
-	NodeElement *parent = dynamic_cast<NodeElement *>(mNode->parentItem());
-	if (parent) {
-		parent->resize();
-	}
+	mNode->resize();
 	mResizeCommand->stopTracking();
 	mResizeCommand->redo();
 	return true;
@@ -58,6 +55,7 @@ void ExpandCommand::changeExpanded()
 	mNode->changeExpanded();
 	if (mNode->isExpanded()) {
 		mShifting.clear();
+		mShifting.insert(mNode->id(), QPointF(0, 0));
 		mScene->resolveOverlaps(mNode, mNode->pos(), mNode->boundingRect().bottomRight(), mShifting);
 	} else {
 		mScene->returnElementsToOldPositions(mShifting);

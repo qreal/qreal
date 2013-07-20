@@ -41,6 +41,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	, mHighlightedNode(NULL)
 	, mTimeOfUpdate(0)
 	, mTimer(new QTimer(this))
+	, mRenderTimer(this)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -80,6 +81,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateNodeEdges()));
+	connect(&mRenderTimer, SIGNAL(timeout()), this, SLOT(initRenderedDiagram()));
 }
 
 NodeElement::~NodeElement()
@@ -870,7 +872,6 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 		}
 
 		if (mIsExpanded && !mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId()).empty()) {
-			initRenderedDiagram();
 			painter->drawImage(diagramRenderingRect(), mRenderedDiagram);
 		}
 	}
@@ -894,6 +895,12 @@ void NodeElement::delEdge(EdgeElement *edge)
 void NodeElement::changeExpanded()
 {
 	mIsExpanded = !mIsExpanded;
+	if (mIsExpanded) {
+		mRenderTimer.start(1000);
+		initRenderedDiagram();
+	} else {
+		mRenderTimer.stop();
+	}
 }
 
 void NodeElement::changeFoldState()
@@ -1278,8 +1285,7 @@ bool NodeElement::operator<(NodeElement const &other) const
 
 void NodeElement::initRenderedDiagram()
 {
-	IdList diagrams = mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId());
-	if (diagrams.empty()) {
+	if (!mIsExpanded || mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId()).empty()) {
 		return;
 	}
 

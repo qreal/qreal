@@ -154,8 +154,6 @@ public:
 	 */
 	void resize();
 
-	void initRenderedDiagram();
-
 	/**
 	 * @brief Sorts by y coordinate, used for correct sorting children of sorting container
 	 */
@@ -169,6 +167,7 @@ public slots:
 
 private slots:
 	void updateNodeEdges();
+	void initRenderedDiagram();
 
 private:
 	enum DragState {
@@ -289,4 +288,5 @@ private:
 	QTimer *mTimer;
 
 	QImage mRenderedDiagram;
+	QTimer mRenderTimer;
 };
