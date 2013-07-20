@@ -195,9 +195,9 @@ void EdgeType::generateCode(OutFile &out)
 	}
 
 	out() << "\t\tvoid init(QRectF &, QList<StatPoint> &, QList<StatLine> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tLabelFactoryInterface &, QList<LabelInterface*> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *, ElementRepoInterface *) {}\n\n"
-	<< "\t\tvoid init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)\n\t\t{\n";
+	<< "\t\tvoid init(LabelFactoryInterface &factory, QList<LabelInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty())
 		mLabels[0]->generateCodeForConstructor(out);
