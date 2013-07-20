@@ -4,6 +4,7 @@
 #include <QtCore/QDebug>
 
 #include "../../qrkernel/exception/exception.h"
+#include "../../qrkernel/definitions.h"
 
 #include "propertyEditorProxyModel.h"
 
@@ -59,25 +60,29 @@ QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientatio
 
 QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 {
-	if (!isValid())
+	if (!isValid()) {
 		return QVariant();
+	}
 
 	if (role == Qt::ToolTipRole) {
 		if (index.column() == 0) {
 			Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
 			QString const description = mEditorManagerInterface.propertyDescription(id, mFields[index.row()].fieldName);
-			if (!description.isEmpty())
+			if (!description.isEmpty()) {
 				return "<body>" + description;
-			else
+			} else {
 				return QVariant();
-		} else if (index.column() == 1)
+			}
+		} else if (index.column() == 1) {
 			return data(index, Qt::DisplayRole);
-		else
+		} else {
 			return QVariant();
+		}
 	}
 
-	if (role != Qt::DisplayRole)
+	if (role != Qt::DisplayRole) {
 		return QVariant();
+	}
 
 	if (index.column() == 0) {
 		Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
@@ -85,8 +90,10 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 		return displayedName.isEmpty() ? mFields[index.row()].fieldName : displayedName;
 	} else if (index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
-		case logicalAttribute:
-			return mTargetLogicalObject.data(mFields[index.row()].role);
+		case logicalAttribute: {
+			QString value = mTargetLogicalObject.data(mFields[index.row()].role).toString();
+			return value.split(propertiesSeparator).at(0);
+		}
 		case graphicalAttribute:
 			return mTargetGraphicalObject.data(mFields[index.row()].role);
 		case graphicalIdPseudoattribute:
@@ -97,12 +104,15 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 			Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
 			return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
 		}
-		case namePseudoattribute:
+		case namePseudoattribute: {
 			return mTargetLogicalObject.data(Qt::DisplayRole);
 		}
+		default:
+			return QVariant();
+		}
+	} else {
 		return QVariant();
-	} else
-		return QVariant();
+	}
 }
 
 bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -114,9 +124,14 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 
 	if ((role == Qt::DisplayRole || role == Qt::EditRole) && index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
-		case logicalAttribute:
-			mTargetLogicalModel->setData(mTargetLogicalObject, value, mFields[index.row()].role);
+		case logicalAttribute: {
+			QString oldValue = mTargetLogicalObject.data(mFields[index.row()].role).toString();
+			QStringList components = oldValue.split(propertiesSeparator);
+			components[0] = value.toString();
+			QString newValue = components.join(propertiesSeparator);
+			mTargetLogicalModel->setData(mTargetLogicalObject, newValue, mFields[index.row()].role);
 			break;
+		}
 		case graphicalAttribute:
 			mTargetGraphicalModel->setData(mTargetGraphicalObject, value, mFields[index.row()].role);
 			break;
