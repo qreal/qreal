@@ -597,20 +597,30 @@ void EditorViewScene::resolveOverlaps(NodeElement *node, QPointF const &scenePos
 		if (shifting.contains(closeNode->id())) {
 			continue;
 		}
-		QPointF offset(closeNode->scenePos() - node->scenePos());
-		if (offset.x() < 0) {
-			offset.setX(-(closeNode->boundingRect().width() + offset.x()));
-		} else if (offset.y() < 0) {
-			offset.setY(-(closeNode->boundingRect().height() + offset.y()));
-		} else {
-			qreal coeff = qSqrt(shift.x() * shift.x() + shift.y() * shift.y())
-					/ qSqrt(offset.x() * offset.x() + offset.y() * offset.y());
-			offset.setX(coeff * offset.x());
-			offset.setY(coeff * offset.y());
+		QLineF offset(node->mapToScene(node->boundingRect().center())
+				, closeNode->mapToScene(closeNode->boundingRect().center()));
+
+		qreal coeff = (node->boundingRect().width() / 2) / qAbs(offset.length() * qCos(offset.angle()));
+		if (qAbs(offset.y2() - offset.y1()) * coeff > node->boundingRect().height() / 2) {
+			coeff = (node->boundingRect().height() / 2) / qAbs(offset.length() * qSin(offset.angle()));
 		}
-		closeNode->setPos(closeNode->pos() + offset);
+		QLineF nodeLine(offset);
+		nodeLine.setLength(nodeLine.length() * coeff);
+
+		offset.setPoints(offset.p2(), offset.p1());
+
+		coeff = (closeNode->boundingRect().width() / 2) / qAbs(offset.length() * qCos(offset.angle()));
+		if (qAbs(offset.y2() - offset.y1()) * coeff > closeNode->boundingRect().height() / 2) {
+			coeff = (closeNode->boundingRect().height() / 2) / qAbs(offset.length() * qSin(offset.angle()));
+		}
+		QLineF closeNodeLine(offset);
+		closeNodeLine.setLength(closeNodeLine.length() * coeff);
+
+		QPointF offsetPoint(nodeLine.p2() - closeNodeLine.p2());
+		closeNode->setPos(closeNode->pos() + offsetPoint);
 		mMVIface->graphicalAssistApi()->setPosition(closeNode->id(), closeNode->pos());
-		shifting.insert(closeNode->id(), offset);
+		shifting.insert(closeNode->id(), offsetPoint);
+
 		arrangeNodeLinks(closeNode);
 		resolveOverlaps(closeNode, scenePos, shift, shifting);
 	}
