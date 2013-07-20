@@ -20,6 +20,9 @@ public:
 	ElementTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
 	virtual ~ElementTitle() {}
 
+	virtual QRectF boundingRect() const;
+	QPainterPath shape() const;
+
 	void init(QRectF const& contents);
 	void setBackground(QColor const &background);
 	void setScaling(bool scalingX, bool scalingY);
@@ -31,14 +34,27 @@ public:
 	void transform(QRectF const& contents);
 	void setTitleFont();
 
+	void setTextFromRepo(QString const& text);
+
 protected:
+	enum InterpriterPropertyType
+	{
+		propertyText,
+		coordinate,
+		rectProp
+	};
+
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 
 	virtual void focusOutEvent(QFocusEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
 
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = NULL);
 private:
+	bool isStretched;
 	bool mFocusIn;
 	bool mReadOnly;
 	bool mScalingX;
@@ -50,4 +66,9 @@ private:
 	QString mBinding;
 	QColor mBackground;
 	bool mIsHard;
+
+	void updateData();
+	void updateRect(qreal width, qreal height);
+	void setProperties(qreal x, qreal y, qreal width, qreal height, QString const &text);
+	QString createTextForRepo() const;
 };

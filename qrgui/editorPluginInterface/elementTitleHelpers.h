@@ -8,6 +8,7 @@ public:
 	virtual void setBackground(QColor const &background) = 0;
 	virtual void setScaling(bool scalingX, bool scalingY) = 0;
 	virtual void setHard(bool hard) = 0;
+	virtual void setTextFromRepo(QString const& text) = 0;
 };
 
 class ElementTitleFactoryInterface
