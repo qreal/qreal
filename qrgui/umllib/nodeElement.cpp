@@ -1309,6 +1309,7 @@ void NodeElement::initRenderedDiagram()
 	brush.setColor(Qt::white);
 	painter.setBrush(brush);
 	painter.setPen(QPen(Qt::white));
+	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
 
 	sceneRect.moveTo(QPointF());
 	painter.drawRect(sceneRect);
@@ -1323,20 +1324,14 @@ QRectF NodeElement::diagramRenderingRect() const
 {
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	NodeElement *initial = dynamic_cast<NodeElement *>(evScene->mainWindow()->editorManager().graphicalObject(id()));
-	qreal xCoeff = boundingRect().width() / initial->boundingRect().width();
-	qreal yCoeff = boundingRect().height() / initial->boundingRect().height();
+	qreal xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);
+	qreal yCoeff = (boundingRect().height() - 3 * kvadratik) / (initial->boundingRect().height() - 3 *kvadratik);
 
 	// QReal:BP hardcode
-	QRectF result(QPointF(30 * xCoeff, 30 * yCoeff), QPointF(195 * xCoeff, 120 * yCoeff));
+	QRectF result(QPointF(30 * xCoeff, 30 * yCoeff), QPointF(180 * xCoeff, 110 * yCoeff));
 
-	qreal renderedDiagramRatio = mRenderedDiagram.width() / mRenderedDiagram.height();
 	QPointF oldCenter(result.center());
-	if (renderedDiagramRatio > 1) {
-		result.setHeight(result.width() / renderedDiagramRatio);
-	} else {
-		result.setWidth(result.height() * renderedDiagramRatio);
-	}
+	result.setSize(mRenderedDiagram.size().scaled(result.size().toSize(), Qt::KeepAspectRatio));
 	result.moveCenter(oldCenter);
-
 	return result;
 }
