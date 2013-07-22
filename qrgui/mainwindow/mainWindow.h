@@ -71,6 +71,7 @@ public:
 
 	EditorManagerInterface &editorManager();
 	EditorView *getCurrentTab() const;
+	bool isCurrentTabShapeEdit() const;
 	ListenerManager *listenerManager() const;
 	models::Models *models() const;
 	Controller *controller() const;
