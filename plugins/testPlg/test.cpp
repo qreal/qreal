@@ -56,7 +56,7 @@ QPair<QString, PreferencesPage *> GitPlugin::preferencesPage()
 bool GitPlugin::onFileAdded(QString const &filePath, QString const &workingDir)
 {
 	Q_UNUSED(workingDir)
-	return doAdd(filePath);
+	return doAdd(filePath, workingDir);
 }
 
 bool GitPlugin::onFileRemoved(QString const &filePath, QString const &workingDir)
@@ -87,7 +87,7 @@ void GitPlugin::beginWorkingCopyUpdating(QString const &targetProject)
 
 void GitPlugin::beginChangesSubmitting(QString const &description, QString const &targetProject)
 {
-	doAdd(QString());
+	doAdd(QString(),QString());
 	startCommit(description, tempFolder(), targetProject);
 }
 
@@ -229,16 +229,17 @@ void GitPlugin::onRevertComplete(bool const result)
 	emit operationComplete("revert", result);
 }
 
-bool GitPlugin::doAdd(const QString &what, bool force)
+bool GitPlugin::doAdd(QString const &what, QString const &targetFolder, const bool &force)
 {
+	QString targetDir = targetFolder.isEmpty() ? tempFolder() : what;
 	QStringList arguments;
-	arguments << "add" << "--all";
-	if (force) {
-	}
-	// This feature requires svn with version >= 1.5
-	bool const result = invokeOperation(arguments, false, QString(), false, false, QString(), QString(), true);
-	addComplete(result);
-	operationComplete("add", result);
+	arguments << "add" << what;
+	QString path = what;
+	path = getFilePath(path);
+
+	bool const result = invokeOperation(arguments, true, path, false, false, QString(), QString(), true);
+	emit addComplete(result);
+	emit operationComplete("add", result);
 	return result;
 }
 
@@ -331,6 +332,14 @@ QStringList GitPlugin::authenticationArgs() const
 	return result;
 }
 
+QString &GitPlugin::getFilePath(QString &adress)
+{
+	int pos = adress.lastIndexOf("/");
+	int len = adress.length();
+	return adress.remove(pos, len - pos);
+
+}
+
 void GitPlugin::editProxyConfiguration()
 {
 	// TODO: add proxy settings into settings page;
@@ -346,7 +355,7 @@ void GitPlugin::setVersion(QString hash)
 void GitPlugin::initializeLocalRepo()
 {
 	QStringList arguments;
-	arguments << "init" << mTempDir;
+	arguments << "init";
 	invokeOperation(arguments, true, QString(), false, true, QString(), QString(),true);
 	arguments.clear();
 	arguments << "config" << "--local" << "user.name" << "\"testName\"";

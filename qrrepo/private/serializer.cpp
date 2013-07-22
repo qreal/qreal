@@ -167,6 +167,9 @@ void Serializer::prepareWorkingCopy(const QString &targetFolder, QString const &
 	QString const workingFile = sourceProject.isEmpty() ? mWorkingFile : sourceProject;
 	if (QFileInfo(workingFile).exists()) {
 		FolderCompressor().decompressFolder(workingFile, targetFolder);
+	} else {
+		QDir qDir;
+		qDir.mkdir(targetFolder);
 	}
 }
 

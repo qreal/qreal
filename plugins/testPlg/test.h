@@ -63,7 +63,7 @@ public slots:
 			, QString const &sourceProject = QString());
 	void startRevert(QString const &what = QString()
 			, QString const &sourceProject = QString());
-	bool doAdd(QString const &what, bool force = true);
+	bool doAdd(QString const &what, QString const &targetFolder, bool const &force = true);
 	bool doRemove(QString const &what, bool force = true);
 	QString info(QString const &target = QString(), bool const reportErrors = true
 			, QString const &sourceProject = QString());
@@ -102,6 +102,7 @@ private:
 	void onRevertComplete(bool const result);
 
 	QStringList authenticationArgs() const;
+	QString &getFilePath(QString &adress);
 	QString mTempDir;
 };
 

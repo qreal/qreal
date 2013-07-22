@@ -122,7 +122,7 @@ bool ExternalClientPluginBase::startAndWait(const QStringList &args
 		}
 		return false;
 	}
-	if (!startProcess(args, reportErrors)) {
+	if (!startProcess(args, reportErrors, workingCopyPath)) {
 		return false;
 	}
 	if (!waitForClient(reportErrors)) {
@@ -144,13 +144,15 @@ void ExternalClientPluginBase::onOperationComplete(invocation::LongOperation *op
 	mRunningOperationsCallbacksMap.remove(operation);
 }
 
-bool ExternalClientPluginBase::startProcess(const QStringList &args, bool reportErrors)
+bool ExternalClientPluginBase::startProcess(const QStringList &args, bool reportErrors, QString const &workingCopy)
 {
 	if (!checkClientPath(reportErrors)) {
 		return false;
 	}
 	mClientProcess = new QProcess;
+	mClientProcess->setWorkingDirectory(workingCopy);
 	mClientProcess->start(mPathToClient, args);
+
 	if (!mClientProcess->waitForStarted()) {
 		if (reportErrors) {
 			emit errorOccured(tr("An error occured while starting versioning client process (maybe path is not correct?)"));

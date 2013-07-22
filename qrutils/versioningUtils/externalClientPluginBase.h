@@ -109,7 +109,7 @@ private:
 	bool startAndWait(const QStringList &args, bool reportErrors
 			, QString const &workingDir, bool const checkWorkingCopy);
 
-	bool startProcess(QStringList const &args, bool reportErrors = true);
+	bool startProcess(QStringList const &args, bool reportErrors = true, QString const &workingCopy = "");
 	bool checkClientPath(bool reportErrors = true);
 	bool processErrors(bool reportErrors = true);
 	bool waitForClient(bool reportErrors = true);
