@@ -32,4 +32,3 @@ SUBDIRS	= \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
 	visualInterpreter/visualInterpreter.pro \
 	refactoring/refactoring.pro \
-	testPlg/testPlg.pro\

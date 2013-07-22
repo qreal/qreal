@@ -397,3 +397,37 @@ void GitPlugin::onResetComplete(const bool result)
 	emit resetComplete(result);
 	emit operationComplete("reset", result);
 }
+
+QString GitPlugin::friendlyName()
+{
+	return "Git Plugin";
+}
+
+void GitPlugin::setVersion(QString hash)
+{
+	qDebug() << "switch to version " << hash << "ok";
+}
+
+void GitPlugin::initializeLocalRepo()
+{
+	QStringList arguments;
+	arguments << "init";
+	invokeOperation(arguments, true, QString(), false, true, QString(), QString(),true);
+	arguments.clear();
+	arguments << "config" << "--local" << "user.name" << "\"testName\"";
+	invokeOperation(arguments, true, QString(), false, true, QString(), QString(),true);
+	arguments.clear();
+	arguments << "config" << "--local" << "user.email" << "testName@mael.com";
+	invokeOperation(arguments, true, QString(), false, true, QString(), QString(),true);
+}
+
+QString GitPlugin::getLog(QStringList const &format, bool const &quiet)
+{
+	QString testLog = "7941425c938e7c7ce7f8c23a9a034be34edd6486 - ZiminGrigory,";
+	testLog += "Thu Jul 11 15:26:02 2013 +0400 : fix bug ctrl+c, add easyVersioning architecture";
+	testLog += "\nc16cea4f66e1a9b3e6ba8b3b4242175a29dfab68";
+	testLog += " - Dmitry Mordvinov, Wed Jul 3 20:59:50 2013 +0400 : Corrected path in previous commit";
+
+	return testLog;
+}
+
