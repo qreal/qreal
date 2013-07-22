@@ -35,6 +35,7 @@ signals:
 
 protected:
 	void changeEvent(QEvent *e);
+	void changeTextVisible(bool isChecked);
 
 public slots:
 	void rereadNoiseSettings();
