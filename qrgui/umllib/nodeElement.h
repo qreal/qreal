@@ -155,9 +155,10 @@ public:
 	void resize();
 
 	/**
-	 * @brief Sorts by y coordinate, used for correct sorting children of sorting container
+	 * @brief sortedChildren
+	 * @return children of sorting container sorted in correct order
 	 */
-	bool operator<(NodeElement const &other) const;
+	IdList sortedChildren() const;
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
@@ -230,6 +231,8 @@ private:
 
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
+
+	void updateChildrenOrder();
 
 	void initEmbeddedLinkers();
 

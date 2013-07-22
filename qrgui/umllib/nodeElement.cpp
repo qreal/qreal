@@ -1029,6 +1029,10 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 		changeFoldState();
 	}
 
+	if (mElementImpl->isSortingContainer()) {
+		updateChildrenOrder();
+	}
+
 	resize();
 }
 
@@ -1044,6 +1048,32 @@ void NodeElement::updateByNewParent()
 	} else {
 		setFlag(ItemIsMovable, false);
 	}
+}
+
+void NodeElement::updateChildrenOrder()
+{
+	QStringList ids;
+	if (mGraphicalAssistApi->properties(mId).contains("childrenOrder")) {
+		ids = mGraphicalAssistApi->property(mId, "childrenOrder").toStringList();
+	}
+
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	if (evScene) {
+		foreach (QString const &id, ids) {
+			if (!evScene->getNodeById(Id::loadFromString(id))) {
+				ids.removeAll(id);
+			}
+		}
+	}
+
+	QList<NodeElement *> children = childNodes();
+	foreach (NodeElement *child, children) {
+		if (!ids.contains(child->id().toString())) {
+			ids << child->id().toString();
+		}
+	}
+	mGraphicalAssistApi->setProperty(mId, "childrenOrder", ids);
+
 }
 
 QList<double> NodeElement::borderValues() const
@@ -1280,9 +1310,15 @@ void NodeElement::updateShape(QString const &shape) const
 	mElementImpl->updateRendererContent(shape);
 }
 
-bool NodeElement::operator<(NodeElement const &other) const
+IdList NodeElement::sortedChildren() const
 {
-	return y() < other.y();
+	IdList result;
+	if (mGraphicalAssistApi->properties(mId).contains("childrenOrder")) {
+		foreach (QString const &id, mGraphicalAssistApi->property(mId, "childrenOrder").toStringList()) {
+			result << Id::loadFromString(id);
+		}
+	}
+	return result;
 }
 
 void NodeElement::initRenderedDiagram()
