@@ -928,6 +928,11 @@ EditorView * MainWindow::getCurrentTab() const
 	return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
 }
 
+bool MainWindow::isCurrentTabShapeEdit() const
+{
+	return dynamic_cast<ShapeEdit *>(mUi->tabs->currentWidget()) != NULL;
+}
+
 void MainWindow::closeCurrentTab()
 {
 	if (mUi->tabs->currentIndex() >= 0) {
@@ -1347,6 +1352,7 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->minimapView->changeSource(newIndex);
 
 	bool const isEditorTab = getCurrentTab() != NULL;
+	bool const isShape = isCurrentTabShapeEdit();
 
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	if (!isEditorTab) {
@@ -1354,6 +1360,14 @@ void MainWindow::currentTabChanged(int newIndex)
 	} else if (getCurrentTab()->mvIface() != NULL) {
 		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
 		mToolManager.activeTabChanged(currentTabId);
+	}
+
+	if (this->mController->canRedo()){
+		mUi->actionRedo->setDisabled(isShape);
+	}
+
+	if(this->mController->canUndo()){
+		mUi->actionUndo->setDisabled(isShape);
 	}
 
 	mUi->actionZoom_In->setEnabled(isEditorTab);
