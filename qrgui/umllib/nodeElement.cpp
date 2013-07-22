@@ -901,6 +901,7 @@ void NodeElement::changeExpanded()
 	} else {
 		mRenderTimer.stop();
 	}
+	mGraphicalAssistApi->setProperty(mId, "expanded", mIsExpanded ? "true" : "false");
 }
 
 void NodeElement::changeFoldState()

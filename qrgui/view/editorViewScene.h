@@ -104,7 +104,7 @@ public:
 	void itemSelectUpdate();
 
 	/// update (for a beauty) all edges when tab is opening
-	void updateEdgesViaNodes();
+	void initNodes();
 
 	void setTitlesVisible(bool visible);
 	void onElementParentChanged(Element *element);

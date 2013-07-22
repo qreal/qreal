@@ -1591,12 +1591,16 @@ void EditorViewScene::updateEdgeElements()
 	}
 }
 
-void EditorViewScene::updateEdgesViaNodes()
+void EditorViewScene::initNodes()
 {
 	foreach (QGraphicsItem *item, items()) {
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
 			node->adjustLinks();
+			if (mMVIface->graphicalAssistApi()->properties(node->id()).contains("expanded")
+					&& mMVIface->graphicalAssistApi()->property(node->id(), "expanded").toString() == "true") {
+				node->changeExpanded();
+			}
 		}
 	}
 }
