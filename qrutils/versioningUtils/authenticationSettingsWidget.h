@@ -55,6 +55,8 @@ public:
 	/// @param prefix Prefix of required key
 	static QString passwordSettingsName(QString const &prefix);
 
+	static QString emailSettingsName(QString const &prefix);
+
 private slots:
 	void onEnableChecked();
 
@@ -62,6 +64,7 @@ private:
 	QString enabledSettingsName() const;
 	QString usernameSettingsName() const;
 	QString passwordSettingsName() const;
+	QString emailSettingsName() const;
 
 	Ui::AuthenticationSettingsWidget *mUi;
 	QString mSettingsPrefix;

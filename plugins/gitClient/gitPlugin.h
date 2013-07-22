@@ -7,17 +7,17 @@
 namespace versioning
 {
 
-class SubversionPlugin : public qReal::versioning::ExternalClientPluginBase
+class GitPlugin : public qReal::versioning::ExternalClientPluginBase
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
-	Q_PLUGIN_METADATA(IID "qReal.versioning.svn")
-
+	Q_PLUGIN_METADATA(IID "qReal.versioning.git")
 public:
-	SubversionPlugin();
-	virtual ~SubversionPlugin();
+	GitPlugin();
 
-	QString pathToSvn() const;
+	virtual ~GitPlugin();
+
+	QString pathToGit() const;
 
 	// QReal plugin interface
 	virtual qReal::Customizer* customizationInterface();
@@ -44,65 +44,67 @@ public:
 	virtual QString remoteRepositoryUrl(QString const &targetProject = QString());
 	virtual bool isMyWorkingCopy(QString const &directory = QString());
 
-	void editProxyConfiguration();
-
 public slots:
-	void startCheckout(QString const &from
-			, QString const &targetProject = QString()
-			, QString const &targetFolder = QString()
-			, int revision = -1, bool quiet = false);
-	void startUpdate(QString const &to = QString()
+	void doInit(QString const &targetFolder = QString(), bool quiet = false);
+	void startClone(QString const &from = QString()
+					, QString const &targetFolder = QString());
+	void startCommit(QString const &message, QString const &from  = QString()
 			, QString const &sourceProject = QString());
-	void startCommit(QString const &message = QString(), QString const &from = QString()
-			, QString const &sourceProject = QString());
-	bool doCleanUp(QString const &what = QString()
-			, QString const &sourceProject = QString());
-	void startRevert(QString const &what = QString()
-			, QString const &sourceProject = QString());
-	bool doAdd(QString const &what, bool force = true);
+	void doRemote(QString const &remote, QString const &adress, QString const &targerFolder = QString());
+	void startPush(QString const &remote, QString const &sourceProject = QString()
+			, QString const &targetFolder = QString());
+	void startPull(QString const &remote, QString const &targetFolder = QString());
+	void startReset(QString const &hash = QString(), QString const &targetFolder = QString());
+	bool doAdd(QString const &what, QString const &targetFolder, bool force = true);
 	bool doRemove(QString const &what, bool force = true);
-	QString info(QString const &target = QString(), bool const reportErrors = true
-			, QString const &sourceProject = QString());
+	bool doClean();
+	bool doUserNameConfig();
+	bool doUserEmailConfig();
+	/*
 	QString repoUrl(QString const &target = QString(), bool const reportErrors = false
 			, QString const &sourceProject = QString());
 	int currentRevision(QString const &target = QString(), bool const reportErrors = false
-			, QString const &sourceProject = QString());
+			, QString const &sourceProject = QString());*/
 
 	void doAfterOperationIsFinished(QVariant &tag);
-
 signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);
 	void workingCopyUpdated(const bool success);
 	void changesSubmitted(const bool success);
 
-	void checkoutComplete(bool const success, QString const &targetProject, bool quiet);
-	void updateComplete(bool const success);
+	void initComplete(bool const success);
+	void cloneComplete(bool const success);
 	void commitComplete(bool const success);
-	void revertComplete(bool const success);
-	void cleanUpComplete(bool const success);
+	void remoteComplete(bool const success);
+	void pushComplete(bool const success);
+	void pullComplete(bool const success);
+	void resetComplete(bool const success);
+	void cleanComplete(bool const success);
 	void addComplete(bool const success);
 	void removeComplete(bool const success);
 	void operationComplete(QString const &name, bool const success);
-
 protected:
 	// External client overloads
 	virtual int timeout() const;
 	virtual QString tempFolder() const;
-
 private:
-	QString infoToRepoUrl(QString &repoInfo);
-	int infoToRevision(QString const &repoInfo);
+	/*QString infoToRepoUrl(QString &repoInfo);
+	int infoToRevision(QString const &repoInfo);*/
 
-	void onCheckoutComplete(bool const result
-		, QString const &targetProject, const bool quiet);
-	void onUpdateComplete(bool const result);
+	void onInitComplete(bool const result);
+	void onCloneComplete(bool const result);
+	void onRemoteComplete(bool const result);
 	void onCommitComplete(bool const result);
-	void onRevertComplete(bool const result);
+	void onPushComplete(bool const result);
+	void onPullComplete(bool const result);
+	void onResetComplete(bool const result);
 
-	QStringList authenticationArgs() const;
+	QString &getFilePath(QString &adress);
+	QString getUsername();
+	QString getPassword();
 
 	details::ViewInteraction *mViewInteraction;
 	QString mTempDir;
+
 };
 }
-

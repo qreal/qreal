@@ -40,7 +40,7 @@ public:
 	/// Starts process which executable`s path specified by setPathToClient() method in separate thread.
 	/// @param args Startup arguments
 	/// @param needPreparation Specifies if working copy must be fetchced from current project
-	/// @param callback A callback that will be called when operation complete with result specification.
+	/// @param tag !!!!! A callback that will be called when operation complete with result specification.
 	/// @param workingDir A path to working directory. If empty, tempFolder() used
 	/// @param sourceProject A path to source project. If empty, working one used
 	/// @param checkWorkingDir Specifies if before operation will be checked if specified directory is under version control
@@ -102,7 +102,6 @@ signals:
 	/// Signal for notification plagins about end of operation
 	void operationIsFinished(QVariant &tag);
 
-
 private slots:
 	void onOperationComplete(invocation::LongOperation *operation);
 
@@ -110,7 +109,7 @@ private:
 	bool startAndWait(const QStringList &args, bool reportErrors
 			, QString const &workingDir, bool const checkWorkingCopy);
 
-	bool startProcess(QStringList const &args, bool reportErrors = true);
+	bool startProcess(QStringList const &args, QString const &workingDir = QString(), bool reportErrors = true);
 	bool checkClientPath(bool reportErrors = true);
 	bool processErrors(bool reportErrors = true);
 	bool waitForClient(bool reportErrors = true);

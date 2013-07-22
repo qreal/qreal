@@ -41,6 +41,7 @@ void AuthenticationSettingsWidget::reinit()
 	mUi->enabledCheckBox->setChecked(qReal::SettingsManager::value(enabledSettingsName(), false).toBool());
 	mUi->userEditor->setText(qReal::SettingsManager::value(usernameSettingsName()).toString());
 	mUi->passwordEditor->setText(qReal::SettingsManager::value(passwordSettingsName()).toString());
+	mUi->emailEditor->setText(qReal::SettingsManager::value(emailSettingsName()).toString());
 
 	onEnableChecked();
 }
@@ -50,14 +51,14 @@ void AuthenticationSettingsWidget::save()
 	qReal::SettingsManager::setValue(enabledSettingsName(), mUi->enabledCheckBox->isChecked());
 	qReal::SettingsManager::setValue(usernameSettingsName(), mUi->userEditor->text());
 	qReal::SettingsManager::setValue(passwordSettingsName(), mUi->passwordEditor->text());
+	qReal::SettingsManager::setValue(emailSettingsName(), mUi->emailEditor->text());
 }
 
 void AuthenticationSettingsWidget::onEnableChecked()
 {
-	//mUi->userEditor->setEnabled(mUi->enabledCheckBox->isChecked());
-
 	mUi->userEditor->setEnabled(mUi->enabledCheckBox->isChecked());
 	mUi->passwordEditor->setEnabled(mUi->enabledCheckBox->isChecked());
+	mUi->emailEditor->setEnabled(mUi->enabledCheckBox->isChecked());
 }
 
 void AuthenticationSettingsWidget::setSettingsPrefix(const QString &prefix)
@@ -80,6 +81,11 @@ QString AuthenticationSettingsWidget::passwordSettingsName(const QString &prefix
 	return prefix + "Password";
 }
 
+QString AuthenticationSettingsWidget::emailSettingsName(const QString &prefix)
+{
+	return prefix + "Email";
+}
+
 QString AuthenticationSettingsWidget::enabledSettingsName() const
 {
 	return enabledSettingsName(mSettingsPrefix);
@@ -93,4 +99,9 @@ QString AuthenticationSettingsWidget::usernameSettingsName() const
 QString AuthenticationSettingsWidget::passwordSettingsName() const
 {
 	return passwordSettingsName(mSettingsPrefix);
+}
+
+QString AuthenticationSettingsWidget::emailSettingsName() const
+{
+	return emailSettingsName(mSettingsPrefix);
 }

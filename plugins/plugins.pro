@@ -15,7 +15,8 @@ SUBDIRS	= \
 #	requirements/requirements.pro \
 #	robots/robots.pro \
 #	sbt/sbt.pro \
-        subversionClient/subversionClient.pro \
+	subversionClient/subversionClient.pro \
+	gitClient/gitClient.pro \
 #	testEditor/testEditor.pro \
 #	testInvocation/testInvocation.pro \
 #	ubiq/ubiq.pro \

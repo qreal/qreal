@@ -160,9 +160,7 @@ void SubversionPlugin::startUpdate(QString const &to
 	arguments << "update" << targetDir;
 	arguments << authenticationArgs();
 
-	QString emptyString = "";
-	QString const &emptyStringAdress = emptyString;
-	Tag tagStruct("update", emptyStringAdress, false);
+	Tag tagStruct("update");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
 	invokeOperationAsync(arguments, tagVariant, true, to, sourceProject);
@@ -176,9 +174,7 @@ void SubversionPlugin::startCommit(QString const &message, QString const &from
 	arguments << "commit" << targetDir << "-m" << message;
 	arguments << authenticationArgs();
 
-	QString emptyString = "";
-	QString const &emptyStringAdress = emptyString;
-	Tag tagStruct("commit", emptyStringAdress, false);
+	Tag tagStruct("commit");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
 	invokeOperationAsync(arguments, tagVariant, true, from, sourceProject);
@@ -204,9 +200,7 @@ void SubversionPlugin::startRevert(QString const &what
 	// TODO: Add different variants
 	arguments << "revert" << "-R" << targetDir;
 
-	QString emptyString = "";
-	QString const &emptyStringAdress = emptyString;
-	Tag tagStruct("revert", emptyStringAdress, false);
+	Tag tagStruct("revert");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
 	invokeOperationAsync(arguments, tagVariant, true, targetDir, sourceProject, true, true);

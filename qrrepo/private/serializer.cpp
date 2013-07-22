@@ -168,6 +168,10 @@ void Serializer::prepareWorkingCopy(const QString &targetFolder, QString const &
 	if (QFileInfo(workingFile).exists()) {
 		FolderCompressor().decompressFolder(workingFile, targetFolder);
 	}
+	else {
+	QDir qDir;
+	qDir.mkdir(targetFolder);
+	}
 }
 
 void Serializer::processWorkingCopy(const QString &workingCopyPath, QString const &targetProject)
@@ -434,6 +438,9 @@ bool Serializer::removeUnsaved(const QString &path)
 	}
 	bool result = true;
 	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		if (fileInfo.fileName().startsWith('.')) {
+			continue;
+		}
 		if (fileInfo.isDir()) {
 			bool const invocationResult =
 					mSavedDirectories.contains(fileInfo.filePath())

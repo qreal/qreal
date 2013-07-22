@@ -66,8 +66,7 @@ bool ExternalClientPluginBase::invokeOperation(const QStringList &args
 	return result;
 }
 
-invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(
-		QStringList const &args
+invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(QStringList const &args
 		, QVariant tag
 		, bool needPreparation
 		, QString const &workingDir
@@ -112,7 +111,7 @@ QString ExternalClientPluginBase::standartOutput() const
 }
 
 bool ExternalClientPluginBase::startAndWait(const QStringList &args
-		, bool reportErrors, const QString &workingDir
+		, bool reportErrors, QString const &workingDir
 		, const bool checkWorkingCopy)
 {
 	QString const workingCopyPath = workingDir.isEmpty() ? tempFolder() : workingDir;
@@ -122,7 +121,7 @@ bool ExternalClientPluginBase::startAndWait(const QStringList &args
 		}
 		return false;
 	}
-	if (!startProcess(args, reportErrors)) {
+	if (!startProcess(args, workingCopyPath, reportErrors)) {
 		return false;
 	}
 	if (!waitForClient(reportErrors)) {
@@ -142,12 +141,13 @@ void ExternalClientPluginBase::onOperationComplete(invocation::LongOperation *op
 	emit operationIsFinished(tag);
 }
 
-bool ExternalClientPluginBase::startProcess(const QStringList &args, bool reportErrors)
+bool ExternalClientPluginBase::startProcess(QStringList const &args, QString const &workingDir, bool reportErrors)
 {
 	if (!checkClientPath(reportErrors)) {
 		return false;
 	}
 	mClientProcess = new QProcess;
+	mClientProcess->setWorkingDirectory(workingDir);
 	mClientProcess->start(mPathToClient, args);
 	if (!mClientProcess->waitForStarted()) {
 		if (reportErrors) {

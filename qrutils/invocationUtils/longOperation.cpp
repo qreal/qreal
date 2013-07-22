@@ -84,7 +84,7 @@ void LongOperation::stopTimer()
 void LongOperation::startInvocation(QThread::Priority priority)
 {
 	connect(mThread, SIGNAL(finished()), this, SLOT(onThreadFinished()));
-	connect(mThread, SIGNAL(terminated()), this, SLOT(onThreadTerminated()));
+	//connect(mThread, SIGNAL(terminated()), this, SLOT(onThreadTerminated()));
 
 	mTimer = new QTimer;
 	mTimer->connect(mTimer, SIGNAL(timeout()), mThread, SLOT(terminate()));

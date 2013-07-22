@@ -19,7 +19,7 @@ HEADERS = \
 	gui/commitDialog.h \
 	gui/versioningPage.h \
 	../../qrgui/dialogs/preferencesPages/preferencesPage.h \
-    tags.h
+	tags.h
 
 SOURCES = \
 	subversionPlugin.cpp \
