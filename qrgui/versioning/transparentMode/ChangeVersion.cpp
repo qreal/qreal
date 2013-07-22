@@ -1,20 +1,20 @@
 #include "ChangeVersion.h"
 #include "ui_ChangeVersion.h"
-#include <QString>
+#include <QtCore/QString>
 
 using namespace qReal;
 
 ChangeVersion::ChangeVersion(QWidget *parent) :
 	QWidget(parent),
-	ui(new Ui::ChangeVersion)
+	mUi(new Ui::ChangeVersion)
 {
-	ui->setupUi(this);
-	connect(ui->listWidgetForLog, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(obtainHash(QListWidgetItem*)));
+	mUi->setupUi(this);
+	connect(mUi->listWidgetForLog, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(obtainHash(QListWidgetItem*)));
 }
 
 ChangeVersion::~ChangeVersion()
 {
-	delete ui;
+	delete mUi;
 }
 
 void ChangeVersion::obtainHash(QListWidgetItem *item)
@@ -26,13 +26,13 @@ void ChangeVersion::obtainHash(QListWidgetItem *item)
 
 void ChangeVersion::updateLog(QList<QPair<QString , QString> > listLog) // hash & mainPart
 {
-	ui->listWidgetForLog->clear();
+	mUi->listWidgetForLog->clear();
 	int number = 0;
 	while (number < listLog.size()){
 		QListWidgetItem *item = new QListWidgetItem;
 		item->setData(Qt::UserRole,listLog.at(number).first);
 		item->setText(listLog.at(number).second);
-		ui->listWidgetForLog->addItem(item);
+		mUi->listWidgetForLog->addItem(item);
 		number++;
 	}
 }

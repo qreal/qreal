@@ -1,7 +1,7 @@
 #include "transparentMode.h"
-#include <QDebug>
-#include <QRegExp>
-#include <QString>
+#include <QtCore/QDebug>
+#include <QtCore/QRegExp>
+#include <QtCore/QString>
 
 using namespace qReal;
 

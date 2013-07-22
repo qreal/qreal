@@ -26,5 +26,5 @@ private slots:
 	void obtainHash(QListWidgetItem* item);
 
 private:
-	Ui::ChangeVersion *ui;
+	Ui::ChangeVersion *mUi;
 };

@@ -3,7 +3,7 @@
 #include "test.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrutils/fileSystemUtils.h"
-#include <QDebug>
+#include <QtCore/QDebug>
 
 using namespace versioning;
 using namespace qReal::versioning;
@@ -87,7 +87,8 @@ void GitPlugin::beginWorkingCopyUpdating(QString const &targetProject)
 
 void GitPlugin::beginChangesSubmitting(QString const &description, QString const &targetProject)
 {
-	startCommit(tempFolder(), description, targetProject);
+	doAdd(QString());
+	startCommit(description, tempFolder(), targetProject);
 }
 
 bool GitPlugin::reinitWorkingCopy(QString const &targetProject)
@@ -112,10 +113,7 @@ QString GitPlugin::remoteRepositoryUrl(QString const &targetProject)
 
 bool GitPlugin::isMyWorkingCopy(QString const &directory)
 {
-	// If svn info worked well then it is our dir
-	QStringList infoArgs;
-	infoArgs << "info" << (directory.isEmpty() ? tempFolder() : directory);
-	return invokeOperation(infoArgs, false, directory, false, false, QString(), QString(), false);
+	return false;
 }
 
 QString GitPlugin::friendlyName()
@@ -171,10 +169,9 @@ void GitPlugin::startCommit(QString const &message, QString const &from
 	QString targetDir = from.isEmpty() ? tempFolder() : from;
 	QStringList arguments;
 	arguments << "commit" << targetDir << "-m" << message;
-	arguments << authenticationArgs();
 	invokeOperationAsync(arguments
 		, new invocation::BoolClassMemberCallback<GitPlugin>(this, &GitPlugin::onCommitComplete)
-		, true, from, sourceProject);
+		, true, from, sourceProject,false);
 }
 
 bool GitPlugin::doCleanUp(QString const &what
@@ -235,12 +232,10 @@ void GitPlugin::onRevertComplete(bool const result)
 bool GitPlugin::doAdd(const QString &what, bool force)
 {
 	QStringList arguments;
-	arguments << "add" << what;
+	arguments << "add" << "--all";
 	if (force) {
-		arguments << "--force";
 	}
 	// This feature requires svn with version >= 1.5
-	arguments << "--parents";
 	bool const result = invokeOperation(arguments, false, QString(), false, false, QString(), QString(), true);
 	addComplete(result);
 	operationComplete("add", result);
@@ -352,14 +347,21 @@ void GitPlugin::initializeLocalRepo()
 {
 	QStringList arguments;
 	arguments << "init" << mTempDir;
-	invokeOperation(arguments, true, QString(), true, true, QString(), QString(), true);
+	invokeOperation(arguments, true, QString(), false, true, QString(), QString(),true);
+	arguments.clear();
+	arguments << "config" << "--local" << "user.name" << "\"testName\"";
+	invokeOperation(arguments, true, QString(), false, true, QString(), QString(),true);
+	arguments.clear();
+	arguments << "config" << "--local" << "user.email" << "testName@mael.com";
+	invokeOperation(arguments, true, QString(), false, true, QString(), QString(),true);
 }
 
 QString GitPlugin::getLog(QString format)
 {
-	QString testLog = "7941425c938e7c7ce7f8c23a9a034be34edd6486 - ZiminGrigory, Thu Jul 11 15:26:02 2013 +0400 : fix bug ctrl+c, add easyVersioning architecture";
-
-	testLog += "\nc16cea4f66e1a9b3e6ba8b3b4242175a29dfab68 - Dmitry Mordvinov, Wed Jul 3 20:59:50 2013 +0400 : Corrected path in previous commit";
+	QString testLog = "7941425c938e7c7ce7f8c23a9a034be34edd6486 - ZiminGrigory,";
+	testLog += "Thu Jul 11 15:26:02 2013 +0400 : fix bug ctrl+c, add easyVersioning architecture";
+	testLog += "\nc16cea4f66e1a9b3e6ba8b3b4242175a29dfab68";
+	testLog += " - Dmitry Mordvinov, Wed Jul 3 20:59:50 2013 +0400 : Corrected path in previous commit";
 
 	return testLog;
 }

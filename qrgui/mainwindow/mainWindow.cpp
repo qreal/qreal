@@ -2101,7 +2101,6 @@ void MainWindow::showChangeVersion()
 	connect(mEasyVersioning, SIGNAL(listLogIsReady(QList<QPair<QString , QString> >)),
 				mChangeVersion, SLOT(updateLog(QList<QPair<QString , QString> >)));
 	connect(mChangeVersion, SIGNAL(hashObtained(QString)), mEasyVersioning, SLOT(setVersion(QString)));
-	connect(mUi->actionSave_version, SIGNAL(triggered()), mEasyVersioning, SLOT(saveVersion()));
 	connect(mChangeVersion, SIGNAL(swapTab()), this, SLOT(openFirstDiagram()));
 	emit changeVersionShowed();
 }
@@ -2109,4 +2108,5 @@ void MainWindow::showChangeVersion()
 void MainWindow::initMEasyVersioningLink()
 {
 	mEasyVersioning = mVersioningManager->getLinkOnTransparentMode();
+	connect(mUi->actionSave_version, SIGNAL(triggered()), mEasyVersioning, SLOT(saveVersion()));
 }
