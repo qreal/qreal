@@ -834,6 +834,13 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
+void EdgeElement::updateAllPointsExceptDstAndSrc(QPointF delta)
+{
+	for (int i = 1; i < mLine.size() - 1; i++) {
+		mLine[i] -= delta;
+	}
+}
+
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mDragPoint = noPort;
@@ -1278,13 +1285,20 @@ void EdgeElement::minimizeHandler(const QPointF &pos)
 void EdgeElement::adjustLink(bool isDragging)
 {
 	if (!isDragging) {
+		QPointF deltaSrc(0.0, 0.0), deltaDst(0.0, 0.0);
 		if (mSrc) {
 			prepareGeometryChange();
+			deltaSrc = mLine.first() - mapFromItem(mSrc, mSrc->portPos(mPortFrom));
 			mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
 		}
 		if (mDst) {
 			prepareGeometryChange();
+			deltaDst = mLine.last() - mapFromItem(mDst, mDst->portPos(mPortTo));
 			mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+		}
+
+		if (deltaSrc == deltaDst) {
+			updateAllPointsExceptDstAndSrc(deltaSrc);
 		}
 
 		if ((SettingsManager::value("LineType").toInt() != static_cast<int>(curveLine)) && !mIsLoop) {
