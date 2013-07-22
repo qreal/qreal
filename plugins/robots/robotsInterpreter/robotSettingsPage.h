@@ -57,6 +57,9 @@ private:
 	bool enableSensorNoise() const;
 	bool enableMotorNoise() const;
 	int approximationLevel() const;
+	int sensorUpdateInterval() const;
+	int autoscalingInterval() const;
+	int textUpdateInterval() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 	details::SensorsConfigurationWidget *mSensorsWidget;

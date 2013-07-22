@@ -1,4 +1,4 @@
-#include "customizer.h"
+﻿#include "customizer.h"
 #include "../../../qrkernel/settingsManager.h"
 
 using namespace qReal::interpreters::robots;
@@ -37,12 +37,20 @@ void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	dockInterface->graphicalModelDock()->setWindowTitle(tr("Blocks"));
 }
 
-void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget)
+void Customizer::placeSensorsConfig(QWidget *sensorsWidget)
+{
+	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
+	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
+}
+
+void Customizer::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch)
 {
 	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
 	watchWindow->setFloating(false);
-	QDockWidget *sensorsDock = produceDockWidget(QObject::tr("Configure sensors"), sensorsWidget);
-	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, sensorsDock);
+	QDockWidget *graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
+	mDockInterface->addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
+
+	mDockInterface->tabifyDockWidget(watchWindow, graphWatchDock);
 }
 
 QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *content) const

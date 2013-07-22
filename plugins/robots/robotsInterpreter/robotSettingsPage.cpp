@@ -1,9 +1,10 @@
-#include "robotSettingsPage.h"
+﻿#include "robotSettingsPage.h"
 #include "ui_robotSettingsPage.h"
 
 #include "../../../qrkernel/settingsManager.h"
 #include "../../../qrkernel/exception/exception.h"
 #include "../../../plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h"
+#include "../../../qrutils/graphicsWatcher/sensorsGraph.h"
 
 using namespace qReal::interpreters::robots;
 
@@ -65,10 +66,7 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 		}
 	}
 
-	mUi->manualComPortCheckbox->setChecked(SettingsManager::value("manualComPortCheckboxChecked").toBool());
-	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
-	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
-	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
+	refreshValuesOnUi();
 
 	QVBoxLayout *sensorsLayout = new QVBoxLayout;
 	sensorsLayout->addWidget(mSensorsWidget);
@@ -156,9 +154,52 @@ enums::robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selected
 	}
 }
 
+void PreferencesRobotSettingsPage::refreshValuesOnUi()
+{
+	mUi->manualComPortCheckbox->setChecked(SettingsManager::value("manualComPortCheckboxChecked").toBool());
+	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
+	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
+	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
+	mUi->sensorUpdateSpinBox->setValue(
+			SettingsManager::value("sensorUpdateInterval"
+					, utils::sensorsGraph::SensorsGraph::readSensorDefaultInterval).toInt()
+	);
+	mUi->autoScalingSpinBox->setValue(
+			SettingsManager::value("autoscalingInterval"
+					, utils::sensorsGraph::SensorsGraph::autoscalingDefault).toInt()
+	);
+	mUi->textUpdaterSpinBox->setValue(
+			SettingsManager::value("textUpdateInterval"
+					, utils::sensorsGraph::SensorsGraph::textUpdateDefault).toInt()
+	);
+
+	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	initRobotModelType(typeOfRobotModel);
+
+	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
+	initTypeOfCommunication(typeOfCommunication);
+
+	mUi->textVisibleCheckBox->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
+}
+
 int PreferencesRobotSettingsPage::approximationLevel() const
 {
 	return mUi->approximationLevelSpinBox->value();
+}
+
+int PreferencesRobotSettingsPage::sensorUpdateInterval() const
+{
+	return mUi->sensorUpdateSpinBox->value();
+}
+
+int PreferencesRobotSettingsPage::autoscalingInterval() const
+{
+	return mUi->autoScalingSpinBox->value();
+}
+
+int PreferencesRobotSettingsPage::textUpdateInterval() const
+{
+	return mUi->textUpdaterSpinBox->value();
 }
 
 bool PreferencesRobotSettingsPage::enableSensorNoise() const
@@ -251,6 +292,9 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("enableNoiseOfSensors", enableSensorNoise());
 	SettingsManager::setValue("enableNoiseOfMotors", enableMotorNoise());
 	SettingsManager::setValue("approximationLevel", approximationLevel());
+	SettingsManager::setValue("sensorUpdateInterval", sensorUpdateInterval());
+	SettingsManager::setValue("autoscalingInterval", autoscalingInterval());
+	SettingsManager::setValue("textUpdateInterval", textUpdateInterval());
 	SettingsManager::setValue("tcpServer", mUi->tcpServerLineEdit->text());
 	SettingsManager::setValue("tcpPort", mUi->tcpPortSpinBox->value());
 	mSensorsWidget->save();
