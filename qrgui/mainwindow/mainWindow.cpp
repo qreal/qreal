@@ -1815,7 +1815,7 @@ void MainWindow::initToolPlugins()
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
-	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter);
+	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter, mProjectManager);
 	mUi->menuEasy_versioning->menuAction()->setVisible(false);
 	mUi->actionTransparent_mode->setVisible(false);
 	connect(mVersioningManager, SIGNAL(OnButton(bool)), mUi->actionTransparent_mode, SLOT(setVisible(bool)));

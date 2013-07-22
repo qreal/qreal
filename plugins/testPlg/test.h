@@ -44,7 +44,7 @@ public:
 	virtual QString remoteRepositoryUrl(QString const &targetProject = QString());
 	virtual bool isMyWorkingCopy(QString const &directory = QString());
 	virtual QString friendlyName();
-	virtual QString getLog(QString format);
+	virtual QString getLog(QStringList const &format = QStringList(), bool const &quiet = false);
 	virtual void setVersion(QString hash);
 	virtual void initializeLocalRepo();
 

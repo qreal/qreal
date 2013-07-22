@@ -87,7 +87,7 @@ void GitPlugin::beginWorkingCopyUpdating(QString const &targetProject)
 
 void GitPlugin::beginChangesSubmitting(QString const &description, QString const &targetProject)
 {
-	doAdd(QString(),QString());
+	doAdd(QString(),targetProject);
 	startCommit(description, tempFolder(), targetProject);
 }
 
@@ -365,7 +365,7 @@ void GitPlugin::initializeLocalRepo()
 	invokeOperation(arguments, true, QString(), false, true, QString(), QString(),true);
 }
 
-QString GitPlugin::getLog(QString format)
+QString GitPlugin::getLog(QStringList const &format, bool const &quiet)
 {
 	QString testLog = "7941425c938e7c7ce7f8c23a9a034be34edd6486 - ZiminGrigory,";
 	testLog += "Thu Jul 11 15:26:02 2013 +0400 : fix bug ctrl+c, add easyVersioning architecture";

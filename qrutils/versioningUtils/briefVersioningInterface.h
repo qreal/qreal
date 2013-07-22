@@ -2,6 +2,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 
 #include "../utilsDeclSpec.h"
 
@@ -66,7 +67,7 @@ public slots:
 	virtual QString friendlyName() = 0;
 
 	///This method return log. just for Git
-	virtual QString getLog(QString format) = 0;
+	virtual QString getLog(QStringList const &format = QStringList(), bool const &quiet = false) = 0;
 
 	///Just for git ex: git reset
 	virtual void setVersion(QString hash) = 0;

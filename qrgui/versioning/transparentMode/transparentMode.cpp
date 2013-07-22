@@ -5,8 +5,9 @@
 
 using namespace qReal;
 
-qReal::TransparentMode::TransparentMode(QList<VersioningPluginInterface *> mPlugins):
-	mPlugin(NULL)
+qReal::TransparentMode::TransparentMode(QList<VersioningPluginInterface *> mPlugins
+		, ProjectManager *projectManager):
+	mPlugin(NULL), mProjectManager(projectManager)
 {
 	foreach (VersioningPluginInterface *plugin, mPlugins){
 		qDebug() << plugin->friendlyName();
@@ -26,7 +27,9 @@ void TransparentMode::isInit()
 void TransparentMode::listLog()
 {
 	isInit();
-	QString log = mPlugin->getLog("--pretty=format:\"%H - %an, %ad : %s\"");
+	QStringList format;
+	format << "--pretty=format:" << "%H - %an, %ad : %s";
+	QString log = mPlugin->getLog(format);
 	QList<QPair<QString , QString> > listlog = parseLog(log);
 	emit listLogIsReady(listlog);
 }
@@ -40,6 +43,7 @@ void TransparentMode::setVersion(QString hash)
 
 void TransparentMode::saveVersion()
 {
+	mProjectManager->save();
 	isInit();
 	mPlugin->beginChangesSubmitting("version was saved in a transparent mode",QString());
 	listLog();

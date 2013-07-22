@@ -5,6 +5,7 @@
 #include "versioningPluginInterface.h"
 #include "../models/models.h"
 #include "../versioning/transparentMode/transparentMode.h"
+#include "../mainwindow/projectManager/projectManager.h"
 
 namespace qReal
 {
@@ -22,7 +23,7 @@ class VersioningPluginsManager
 public:
 	/// Inits plugin list using loaded by plugin manager ones
 	VersioningPluginsManager(qrRepo::RepoControlInterface *repoApi
-		, ErrorReporterInterface *errorReporter); // MainWindow used till refactoring
+		, ErrorReporterInterface *errorReporter, ProjectManager * projectManager); // MainWindow used till refactoring
 
 	void initFromToolPlugins(QListIterator<ToolPluginInterface *> iterator
 			, MainWindow *mainWindow);
@@ -51,7 +52,7 @@ public slots:
 	QString remoteRepositoryUrl(QString const &targetProject = QString());
 	bool isMyWorkingCopy(QString const &directory = QString());
 	QString friendlyName();
-	QString getLog(QString format);
+	QString getLog(QStringList const &format = QStringList(), bool const &quiet = false);
 	void setVersion(QString hash);
 	void initializeLocalRepo();
 
@@ -79,6 +80,7 @@ private:
 	QString mTempDir;
 
 	TransparentMode *mTranspaentMode;
+	ProjectManager *mProjectManager;
 };
 
 }

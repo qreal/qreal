@@ -12,9 +12,10 @@ QString const tempFolderName = "tempVCS";
 VersioningPluginsManager::VersioningPluginsManager(/*ToolPluginManager const &pluginManager
 		,*/ qrRepo::RepoControlInterface *repoApi
 		, ErrorReporterInterface *errorReporter
-		/*, MainWindow *mainWindow*/)
+		, ProjectManager *projectManager)
 	: mRepoApi(repoApi), mErrorReporter(errorReporter)
 	, mDiffPlugin(NULL)
+	, mProjectManager(projectManager)
 	, mTempDir(qApp->applicationDirPath() + "/" + tempFolderName)
 {
 	SettingsManager::setValue("versioningManagerTempDir", mTempDir);
@@ -249,7 +250,7 @@ void VersioningPluginsManager::switchOffOrOnAllPluginsAction(bool switchOnTransp
 		}
 	}
 	if (switchOnTranspMode){
-		mTranspaentMode = new TransparentMode(mPlugins);
+		mTranspaentMode = new TransparentMode(mPlugins, mProjectManager);
 		emit transparentClassIsReady();
 	} else {
 		delete mTranspaentMode;
@@ -280,11 +281,11 @@ void VersioningPluginsManager::initializeLocalRepo()
 	activeVcs->initializeLocalRepo();
 }
 
-QString VersioningPluginsManager::getLog(QString format)
+QString VersioningPluginsManager::getLog(const QStringList &format, const bool &quiet)
 {
 	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
 	if (!activeVcs) {
 		return QString();
 	}
-	return activeVcs->getLog(QString());
+	return activeVcs->getLog();
 }
