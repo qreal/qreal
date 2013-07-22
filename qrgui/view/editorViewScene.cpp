@@ -1601,6 +1601,11 @@ void EditorViewScene::initNodes()
 					&& mMVIface->graphicalAssistApi()->property(node->id(), "expanded").toString() == "true") {
 				node->changeExpanded();
 			}
+			if (mMVIface->graphicalAssistApi()->properties(node->id()).contains("folded")
+					&& mMVIface->graphicalAssistApi()->property(node->id(), "folded").toString() == "true") {
+				node->changeFoldState();
+			}
+
 		}
 	}
 }
