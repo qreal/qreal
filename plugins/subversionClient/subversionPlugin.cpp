@@ -3,6 +3,7 @@
 #include "subversionPlugin.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../../qrutils/fileSystemUtils.h"
+#include "tags.h"
 
 using namespace versioning;
 using namespace qReal::versioning;
@@ -16,6 +17,8 @@ SubversionPlugin::SubversionPlugin()
 {
 	qReal::SettingsManager::instance()->setValue("svnTempDir", mTempDir);
 	setPathToClient(pathToSvn());
+
+	connect(this, SIGNAL(operationIsFinished(QVariant&)), SLOT(doAfterOperationIsFinished(QVariant&)));
 }
 
 SubversionPlugin::~SubversionPlugin()
@@ -147,10 +150,11 @@ void SubversionPlugin::startCheckout(QString const &from
 		arguments << QString::number(revision);
 	}
 	arguments << authenticationArgs();
-	invokeOperationAsync(arguments
-			, new invocation::BoolClassMemberCallback<SubversionPlugin>(this
-			, &SubversionPlugin::onCheckoutComplete, targetProject, quiet)
-			, false, QString(), QString(), false, !quiet);
+
+	Tag tagStruct("checkout", targetProject, quiet);
+	QVariant tagVariant;
+	tagVariant.setValue(tagStruct);
+	invokeOperationAsync(arguments, tagVariant, false, QString(), QString(), false, !quiet);
 }
 
 void SubversionPlugin::startUpdate(QString const &to
@@ -160,9 +164,11 @@ void SubversionPlugin::startUpdate(QString const &to
 	QStringList arguments;
 	arguments << "update" << targetDir;
 	arguments << authenticationArgs();
-	invokeOperationAsync(arguments
-		, new invocation::BoolClassMemberCallback<SubversionPlugin>(this, &SubversionPlugin::onUpdateComplete)
-		, true, to, sourceProject);
+
+	Tag tagStruct("update");
+	QVariant tagVariant;
+	tagVariant.setValue(tagStruct);
+	invokeOperationAsync(arguments, tagVariant, true, to, sourceProject);
 }
 
 void SubversionPlugin::startCommit(QString const &message, QString const &from
@@ -172,9 +178,11 @@ void SubversionPlugin::startCommit(QString const &message, QString const &from
 	QStringList arguments;
 	arguments << "commit" << targetDir << "-m" << message;
 	arguments << authenticationArgs();
-	invokeOperationAsync(arguments
-		, new invocation::BoolClassMemberCallback<SubversionPlugin>(this, &SubversionPlugin::onCommitComplete)
-		, true, from, sourceProject);
+
+	Tag tagStruct("commit");
+	QVariant tagVariant;
+	tagVariant.setValue(tagStruct);
+	invokeOperationAsync(arguments, tagVariant, true, from, sourceProject);
 }
 
 bool SubversionPlugin::doCleanUp(QString const &what
@@ -196,9 +204,11 @@ void SubversionPlugin::startRevert(QString const &what
 	QString targetDir = what.isEmpty() ? tempFolder() : what;
 	// TODO: Add different variants
 	arguments << "revert" << "-R" << targetDir;
-	invokeOperationAsync(arguments
-		, new invocation::BoolClassMemberCallback<SubversionPlugin>(this, &SubversionPlugin::onRevertComplete)
-		, true, targetDir, sourceProject, true, true);
+
+	Tag tagStruct("revert");
+	QVariant tagVariant;
+	tagVariant.setValue(tagStruct);
+	invokeOperationAsync(arguments, tagVariant, true, targetDir, sourceProject, true, true);
 }
 
 void SubversionPlugin::onCheckoutComplete(bool const result, QString const &targetProject, bool const quiet)
@@ -364,4 +374,18 @@ void SubversionPlugin::editProxyConfiguration()
 {
 	// TODO: add proxy settings into settings page;
 	//   teach to edit config file to set proxy
+}
+
+void SubversionPlugin::doAfterOperationIsFinished(QVariant &tag)
+{
+	Tag tagStruct = tag.value<Tag>();
+	if (tagStruct.operation == "checkout"){
+		onCheckoutComplete(true, tagStruct.stringTag, tagStruct.boolTag);
+	} else if (tagStruct.operation == "update"){
+		onUpdateComplete(true);
+	} else if (tagStruct.operation == "commit"){
+		onCommitComplete(true);
+	} else if (tagStruct.operation == "revert"){
+		onRevertComplete(true);
+	}
 }

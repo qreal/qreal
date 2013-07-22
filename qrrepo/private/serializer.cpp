@@ -437,6 +437,9 @@ bool Serializer::removeUnsaved(const QString &path)
 	}
 	bool result = true;
 	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+		if (fileInfo.fileName().startsWith('.')) {
+			continue;
+		}
 		if (fileInfo.isDir()) {
 			bool const invocationResult =
 					mSavedDirectories.contains(fileInfo.filePath())

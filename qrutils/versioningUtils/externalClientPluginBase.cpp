@@ -66,9 +66,8 @@ bool ExternalClientPluginBase::invokeOperation(const QStringList &args
 	return result;
 }
 
-invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(
-		QStringList const &args
-		, invocation::BoolCallback *callback
+invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(QStringList const &args
+		, QVariant tag
 		, bool needPreparation
 		, QString const &workingDir
 		, QString const &sourceProject
@@ -85,7 +84,7 @@ invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(
 			, reportErrors, workingDir, checkWorkingDir);
 	connect(operation, SIGNAL(finished(invocation::LongOperation*))
 			, this, SLOT(onOperationComplete(invocation::LongOperation*)));
-	mRunningOperationsCallbacksMap.insert(operation, callback);
+	mRunningOperationsCallbacksMap.insert(operation, tag);
 	mMainWindow->reportOperation(operation);
 	operation->invokeAsync();
 	return operation;
@@ -112,7 +111,7 @@ QString ExternalClientPluginBase::standartOutput() const
 }
 
 bool ExternalClientPluginBase::startAndWait(const QStringList &args
-		, bool reportErrors, const QString &workingDir
+		, bool reportErrors, QString const &workingDir
 		, const bool checkWorkingCopy)
 {
 	QString const workingCopyPath = workingDir.isEmpty() ? tempFolder() : workingDir;
@@ -122,7 +121,8 @@ bool ExternalClientPluginBase::startAndWait(const QStringList &args
 		}
 		return false;
 	}
-	if (!startProcess(args, reportErrors, workingCopyPath)) {
+
+	if (!startProcess(args, workingCopyPath, reportErrors)) {
 		return false;
 	}
 	if (!waitForClient(reportErrors)) {
@@ -137,20 +137,21 @@ void ExternalClientPluginBase::onOperationComplete(invocation::LongOperation *op
 			dynamic_cast<invocation::FunctorOperation<bool> *>(operation);
 	bool result = functor->invocationState() == invocation::FinishedNormally;
 	result = result && functor->result();
-	invocation::BoolCallback *callback = mRunningOperationsCallbacksMap[operation];
-	if (callback) {
-		(*callback)(result);
-	}
-	mRunningOperationsCallbacksMap.remove(operation);
+
+	QVariant tag = mRunningOperationsCallbacksMap[operation];
+	emit operationIsFinished(tag);
 }
 
-bool ExternalClientPluginBase::startProcess(const QStringList &args, bool reportErrors, QString const &workingCopy)
+
+bool ExternalClientPluginBase::startProcess(QStringList const &args, QString const &workingDir, bool reportErrors)
+
 {
 	if (!checkClientPath(reportErrors)) {
 		return false;
 	}
 	mClientProcess = new QProcess;
-	mClientProcess->setWorkingDirectory(workingCopy);
+
+	mClientProcess->setWorkingDirectory(workingDir);
 	mClientProcess->start(mPathToClient, args);
 
 	if (!mClientProcess->waitForStarted()) {
