@@ -106,6 +106,15 @@ void FindReplaceDialog::initIds(QMap<QString, QString> foundData)
 			item->setData(Qt::ToolTipRole, currentId);
 			mUi->mListWidget->addItem(item);
 		}
+		else {
+			if (foundData[currentId].contains(tr("by property content"))) {
+			QListWidgetItem *item = new QListWidgetItem();
+			item->setText(mCommonApi.name(qReal::Id::loadFromString(currentId))
+						+ foundData[currentId]);
+			item->setData(Qt::ToolTipRole, currentId);
+			mUi->mListWidget->addItem(item);
+			}
+		}
 	}
 
 	QObject::connect(mUi->mListWidget, SIGNAL(itemClicked(QListWidgetItem*)), this
