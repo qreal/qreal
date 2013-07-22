@@ -49,8 +49,6 @@ private:
 	/// with given @see id
 	void goTo(Id const &id);
 
-	Id createElementWithIncommingExplosion(Id const &source, Id const &targetType);
-
 	MainWindow *mMainWindow; // Doesn`t take ownership
 	models::LogicalModelAssistApi *mLogicalApi; // Doesn`t take ownership
 	models::GraphicalModelAssistApi *mGraphicalApi; // Doesn`t take ownership

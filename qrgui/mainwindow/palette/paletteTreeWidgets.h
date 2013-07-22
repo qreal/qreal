@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QSplitter>
 
 #include "paletteTreeWidget.h"
 
@@ -46,7 +47,7 @@ public:
 
 private:
 	void initWidget();
-	void initWidget(PaletteTreeWidget * const tree, QVBoxLayout * const layout);
+	void initWidget(PaletteTreeWidget * const tree, QSplitter * const splitter);
 	void initEditorTree();
 	void initUserTree();
 

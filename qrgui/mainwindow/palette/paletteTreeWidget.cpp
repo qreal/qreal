@@ -29,6 +29,8 @@ void PaletteTreeWidget::addGroups(QMap<QString, QStringList> const &groups
 		hide();
 		return;
 	}
+	show();
+	clear();
 	int expandedCount = 0;
 	foreach (QString const &group, groups.keys()) {
 		QTreeWidgetItem *item = new QTreeWidgetItem;

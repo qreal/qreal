@@ -102,7 +102,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	splashScreen.setProgress(40);
 
 	initDocks();
-	mModels = new models::Models("", mEditorManagerProxy);
+	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -135,7 +135,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	}
 	splashScreen.close();
 
-	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
 	connectActions();
@@ -202,6 +201,8 @@ void MainWindow::connectActions()
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(modifiedChanged(bool)), mProjectManager, SLOT(setUnsavedIndicator(bool)));
+
+	connect(&mModels->logicalModelAssistApi().exploser(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
 
 	setDefaultShortcuts();
 }
