@@ -1,4 +1,4 @@
-#include <QtWidgets/QGraphicsTextItem>
+﻿#include <QtWidgets/QGraphicsTextItem>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsDropShadowEffect>
 #include <QtWidgets/QMenu>
@@ -438,8 +438,8 @@ qReal::Id EditorViewScene::createElement(QString const &str)
 	return result;
 }
 
-qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scenePos
-		, bool searchForParents, CreateElementCommand **createCommand, bool executeImmediately)
+qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scenePos, bool searchForParents
+		, CreateElementCommand **createCommand, bool executeImmediately, QPointF const shiftToParent)
 {
 	Id typeId = Id::loadFromString(str);
 	Id objectId(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
@@ -451,12 +451,11 @@ qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scen
 	QString uuid = objectId.toString();
 	QString pathToItem = Id::rootId().toString();
 	QString name = mWindow->editorManager().friendlyName(typeId);
-	QPointF pos = QPointF(0, 0);
 	bool isFromLogicalModel = false;
 	stream << uuid;
 	stream << pathToItem;
 	stream << name;
-	stream << pos;
+	stream << shiftToParent;
 	stream << isFromLogicalModel;
 
 	mimeData->setData(mimeType, data);
@@ -466,8 +465,8 @@ qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scen
 	return objectId;
 }
 
-void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos
-		, bool searchForParents, CreateElementCommand **createCommandPointer, bool executeImmediately)
+void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &scenePos , bool searchForParents
+		, CreateElementCommand **createCommandPointer, bool executeImmediately)
 {
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
 	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
@@ -475,12 +474,12 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	QString uuid = "";
 	QString pathToItem = "";
 	QString name = "";
-	QPointF pos;
+	QPointF shiftToParent;
 	bool isFromLogicalModel = false;
 	in_stream >> uuid;
 	in_stream >> pathToItem;
 	in_stream >> name;
-	in_stream >> pos;
+	in_stream >> shiftToParent;
 	in_stream >> isFromLogicalModel;
 
 	Id const id = Id::loadFromString(uuid);
@@ -500,7 +499,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 			// if element is node then we should look for parent for him
 			e = mWindow->editorManager().graphicalObject(id);
 			if (dynamic_cast<NodeElement*>(e)) { // check if e is node
-				foreach (QGraphicsItem *item, items(scenePos)) {
+				foreach (QGraphicsItem *item, items(scenePos - shiftToParent)) {
 					NodeElement *el = dynamic_cast<NodeElement*>(item);
 					if (el && canBeContainedBy(el->id(), id)) {
 						newParent = el;
