@@ -8,7 +8,7 @@
 ErrorListWidget::ErrorListWidget(QWidget *parent)
 {
 	Q_UNUSED(parent);
-	connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(clickList()));
+	connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(clickList()));
 	initContextMenu();
 }
 
