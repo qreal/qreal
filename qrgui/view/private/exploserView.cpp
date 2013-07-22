@@ -1,6 +1,7 @@
 #include "exploserView.h"
 #include "../../mainwindow/mainWindow.h"
 #include "../../umllib/element.h"
+#include "../../controller/commands/createElementCommand.h"
 
 using namespace qReal;
 using namespace view::details;
@@ -45,7 +46,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 		Id const diagramType = mMainWindow->editorManager().findElementByType(explosion.target().element());
 		QString const name = mMainWindow->editorManager().friendlyName(diagramType);
 		QString const editorName = mMainWindow->editorManager().friendlyName(Id(diagramType.editor()));
-		QAction *action = addExplosionMenu->addAction("New " + editorName + "/" + name);
+		QAction *action = addExplosionMenu->addAction(tr("New ") + editorName + "/" + name);
 		hasAnyActions = true;
 		connect(action, SIGNAL(triggered()), slot);
 		action->setData(QVariantList() << element->logicalId().toVariant() << diagramType.toVariant());
@@ -107,7 +108,11 @@ void ExploserView::handleDoubleClick(Id const &id)
 		QList<Explosion> const explosions = mMainWindow->editorManager().explosions(id);
 		if (!explosions.isEmpty()) {
 			Id const diagramType = mMainWindow->editorManager().findElementByType(explosions[0].target().element());
-			outgoingLink = createElementWithIncommingExplosion(id, diagramType);
+			commands::AbstractCommand *createCommand =
+					mLogicalApi->exploser().createElementWithIncommingExplosionCommand(
+							id, diagramType, mGraphicalApi);
+			mMainWindow->controller()->executeGlobal(createCommand);
+			outgoingLink = static_cast<commands::CreateElementCommand *>(createCommand)->result();
 		}
 	}
 	goTo(outgoingLink);
@@ -118,25 +123,17 @@ void ExploserView::goTo(Id const &id)
 	mMainWindow->activateItemOrDiagram(id);
 }
 
-Id ExploserView::createElementWithIncommingExplosion(Id const &source, Id const &targetType)
-{
-	Id const targetElement = mGraphicalApi->createElement(Id::rootId(), targetType);
-	Id const logicalId = mGraphicalApi->logicalId(targetElement);
-	mLogicalApi->exploser().addExplosion(source, logicalId);
-	// TODO: customize suffix from plugins
-	return logicalId;
-}
-
 void ExploserView::addExplosionActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
 	QList<QVariant> const connection = action->data().toList();
 	Id const source = connection[0].value<Id>();
 	Id const destination = connection[1].value<Id>();
-	if (!action->text().startsWith("New ")) {
-		mLogicalApi->addExplosion(source, destination);
+	if (action->text().startsWith(tr("New "))) {
+		mMainWindow->controller()->executeGlobal(mLogicalApi->exploser().createElementWithIncommingExplosionCommand(
+				source, destination, mGraphicalApi));
 	} else {
-		createElementWithIncommingExplosion(source, destination);
+		mMainWindow->controller()->executeGlobal(mLogicalApi->exploser().addExplosionCommand(source, destination));
 	}
 }
 
@@ -153,5 +150,5 @@ void ExploserView::removeExplosionActionTriggered()
 	QList<QVariant> const connection = action->data().toList();
 	Id const source = connection[0].value<Id>();
 	Id const destination = connection[1].value<Id>();
-	mLogicalApi->removeExplosion(source, destination);
+	mMainWindow->controller()->execute(mLogicalApi->exploser().removeExplosionCommand(source, destination));
 }

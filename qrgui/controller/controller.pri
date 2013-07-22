@@ -15,7 +15,9 @@ HEADERS += \
 	controller/commands/updateElementCommand.h \
 	controller/commands/changeParentCommand.h \
 	controller/commands/trackingEntity.h \
-    controller/commands/createGroupCommand.h
+	controller/commands/createGroupCommand.h \
+	controller/commands/renameCommand.h \
+	controller/commands/explosionCommand.h
 
 SOURCES += \
 	controller/controller.cpp \
@@ -34,4 +36,6 @@ SOURCES += \
 	controller/commands/updateElementCommand.cpp \
 	controller/commands/changeParentCommand.cpp \
 	controller/commands/trackingEntity.cpp \
-    controller/commands/createGroupCommand.cpp
+	controller/commands/createGroupCommand.cpp \
+	controller/commands/renameCommand.cpp \
+	controller/commands/explosionCommand.cpp

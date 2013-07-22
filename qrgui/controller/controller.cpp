@@ -4,8 +4,11 @@ using namespace qReal;
 using namespace qReal::commands;
 
 Controller::Controller()
-	: mGlobalStack(new UndoStack), mModifiedState(false)
-	, mCanRedoState(true), mCanUndoState(true)
+	: mGlobalStack(new UndoStack)
+	, mActiveStack(NULL)
+	, mModifiedState(false)
+	, mCanRedoState(true)
+	, mCanUndoState(true)
 {
 	connectStack(mGlobalStack);
 }
@@ -30,6 +33,7 @@ void Controller::setActiveDiagram(Id const &diagramId)
 	} else {
 		setActiveStack(NULL);
 	}
+	resetAll();
 }
 
 void Controller::execute(commands::AbstractCommand *command)
@@ -92,14 +96,7 @@ void Controller::resetModifiedState()
 
 void Controller::resetCanUndoState()
 {
-	bool canUndo = false;
-	QList<UndoStack *> const undoStacks = stacks();
-	foreach (UndoStack *stack, undoStacks) {
-		if (stack->canUndo()) {
-			canUndo = true;
-			break;
-		}
-	}
+	bool const canUndo = (mActiveStack && mActiveStack->canUndo()) || mGlobalStack->canUndo();
 	if (canUndo != mCanUndoState) {
 		mCanUndoState = canUndo;
 		emit canUndoChanged(mCanUndoState);
@@ -108,14 +105,7 @@ void Controller::resetCanUndoState()
 
 void Controller::resetCanRedoState()
 {
-	bool canRedo = false;
-	QList<UndoStack *> const undoStacks = stacks();
-	foreach (UndoStack *stack, undoStacks) {
-		if (stack->canRedo()) {
-			canRedo = true;
-			break;
-		}
-	}
+	bool const canRedo = (mActiveStack && mActiveStack->canRedo()) || mGlobalStack->canRedo();
 	if (canRedo != mCanRedoState) {
 		mCanRedoState = canRedo;
 		emit canRedoChanged(mCanRedoState);

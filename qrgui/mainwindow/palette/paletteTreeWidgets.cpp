@@ -34,17 +34,21 @@ PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWind
 
 void PaletteTreeWidgets::initWidget()
 {
+	QSplitter *splitter = new QSplitter(Qt::Vertical);
+	initWidget(mEditorTree, splitter);
+	initWidget(mUserTree, splitter);
 	QVBoxLayout *layout = new QVBoxLayout;
-	initWidget(mEditorTree, layout);
-	initWidget(mUserTree, layout);
+	layout->setContentsMargins(0, 0, 0, 0);
+	layout->setMargin(0);
+	layout->addWidget(splitter);
 	setLayout(layout);
 }
 
-void PaletteTreeWidgets::initWidget(PaletteTreeWidget * const tree, QVBoxLayout * const layout)
+void PaletteTreeWidgets::initWidget(PaletteTreeWidget * const tree, QSplitter * const splitter)
 {
 	tree->setHeaderHidden(true);
 	tree->setSelectionMode(QAbstractItemView::NoSelection);
-	layout->addWidget(tree);
+	splitter->addWidget(tree);
 }
 
 void PaletteTreeWidgets::initEditorTree()
@@ -73,6 +77,7 @@ void PaletteTreeWidgets::initEditorTree()
 
 void PaletteTreeWidgets::initUserTree()
 {
+	mMainWindow->models()->logicalModelAssistApi().exploser().addUserPalette(mUserTree, mDiagram);
 }
 
 void PaletteTreeWidgets::addTopItemType(Id const &id, QString const &name
