@@ -39,6 +39,8 @@ protected:
 	void drawBackground(QPainter *painter, const QRectF &rect);
 	//! renders hint with value under cursor
 	void mouseMoveEvent(QMouseEvent *event);
+	void leaveEvent(QEvent *);
+	void mouseDoubleClickEvent(QMouseEvent *event);
 
 	void initGraphicsOutput();
 
@@ -48,16 +50,17 @@ private slots:
 private:
 	QGraphicsScene *mScene;
 	QTimer mVisualTimer;
-	KeyPoint *mainPoint;
+	KeyPoint *mMainPoint;
+	KeyPoint *mMarker;
 	PointsQueueProcessor *mPointsDataProcessor;
 	QBrush mPenBrush;
 
 	//! output update delay in ms
-	int fpsInterval;
+	int mFpsInterval;
 	//! @variable autoScaleInterval time in milliseconds
-	int autoScaleInterval;
+	int mAutoScaleInterval;
 	//! update interval of current value
-	int updateTextInfoInterval;
+	int mUpdateTextInfoInterval;
 	//! shift in pixels each frame
 	static int const stepSize = 2;
 	//! zoom coefficent

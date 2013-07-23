@@ -5,9 +5,9 @@ using namespace utils::sensorsGraph;
 SensorViewer::SensorViewer(QWidget *parent)
 	: QGraphicsView(parent)
 	, mPenBrush(QBrush(Qt::yellow))
-	, fpsInterval(50)
-	, autoScaleInterval(3000)
-	, updateTextInfoInterval(500)
+	, mFpsInterval(50)
+	, mAutoScaleInterval(3000)
+	, mUpdateTextInfoInterval(500)
 	, mScaleCoefficient(0)
 	, mAutoScaleTimer(0)
 	, mUpdateCurrValueTimer(0)
@@ -20,9 +20,12 @@ SensorViewer::SensorViewer(QWidget *parent)
 
 SensorViewer::~SensorViewer()
 {
-	mScene->removeItem(mainPoint);
+	mScene->removeItem(mMainPoint);
+	delete mMainPoint;
+	mScene->removeItem(mMarker);
+	delete mMarker;
+
 	delete mPointsDataProcessor;
-	delete mainPoint;
 	delete mScene;
 }
 
@@ -35,13 +38,15 @@ void SensorViewer::resizeEvent(QResizeEvent *event)
 
 void SensorViewer::initGraphicsOutput()
 {
+	setCursor(Qt::CrossCursor);
+
 	mScene = new QGraphicsScene(this);
 	mScene->setItemIndexMethod(QGraphicsScene::NoIndex);
 	mScene->setSceneRect(-200, -160, 205, 160);
 
 	setScene(mScene);
 	setRenderHint(QPainter::Antialiasing, false);
-	setDragMode(QGraphicsView::ScrollHandDrag);
+	setDragMode(QGraphicsView::NoDrag);
 
 	// This makes information on left side actual
 	setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
@@ -51,15 +56,21 @@ void SensorViewer::initGraphicsOutput()
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	mainPoint = new KeyPoint;
-	mScene->addItem(mainPoint);
+	mMainPoint = new KeyPoint(Qt::yellow);
+	mScene->addItem(mMainPoint);
+
+	mMarker = new KeyPoint(Qt::red);
+	mScene->addItem(mMarker);
+	mMarker->hide();
 
 	mPointsDataProcessor = new PointsQueueProcessor(mScene->sceneRect().height() - 20, mScene->sceneRect().left());
 }
 
 void SensorViewer::startJob()
 {
-	mVisualTimer.start(fpsInterval);
+	if (!mVisualTimer.isActive()) {
+		mVisualTimer.start(mFpsInterval);
+	}
 }
 
 void SensorViewer::stopJob()
@@ -81,6 +92,7 @@ void SensorViewer::clear()
 
 	QMatrix defaultMatrix;
 	setMatrix(defaultMatrix);
+	mScaleCoefficient = 0;
 }
 
 void SensorViewer::setNextValue(qreal const newValue)
@@ -90,7 +102,7 @@ void SensorViewer::setNextValue(qreal const newValue)
 
 void SensorViewer::drawNextFrame()
 {
-	mainPoint->setPos(mPointsDataProcessor->latestPosition());
+	mMainPoint->setPos(mPointsDataProcessor->latestPosition());
 
 	// shifting lines left
 	mPointsDataProcessor->makeShiftLeft(stepSize);
@@ -115,11 +127,11 @@ void SensorViewer::drawNextFrame()
 void SensorViewer::visualTimerEvent()
 {
 	drawNextFrame();
-	if (++mAutoScaleTimer * fpsInterval >= autoScaleInterval) {
+	if (++mAutoScaleTimer * mFpsInterval >= mAutoScaleInterval) {
 		mAutoScaleTimer = 0;
 		mPointsDataProcessor->checkPeaks();
 	}
-	if (++mUpdateCurrValueTimer * fpsInterval >= updateTextInfoInterval) {
+	if (++mUpdateCurrValueTimer * mFpsInterval >= mUpdateTextInfoInterval) {
 		mUpdateCurrValueTimer = 0;
 		mOutputValue = mPointsDataProcessor->latestValue();
 	}
@@ -159,12 +171,28 @@ void SensorViewer::drawBackground(QPainter *painter, const QRectF &rect)
 
 void SensorViewer::mouseMoveEvent(QMouseEvent *event)
 {
-	qreal valueUnderCursor = mPointsDataProcessor->pointToAbsoluteValue(
-			mPointsDataProcessor->pointOfVerticalIntersection(
-					mapToScene(event->pos().x() , event->pos().y())
-			).y()
-	);
+	QPointF const pivot = mPointsDataProcessor->pointOfVerticalIntersection(mapToScene(event->pos().x(),
+			event->pos().y()));
+	qreal valueUnderCursor = mPointsDataProcessor->pointToAbsoluteValue(pivot.y());
+
+	mMarker->setPos(pivot);
+	mMarker->show();
+
 	QToolTip::showText(QCursor::pos(), tr("value: ") + QString::number(valueUnderCursor));
+}
+
+void SensorViewer::leaveEvent(QEvent *)
+{
+	mMarker->hide();
+}
+
+void SensorViewer::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	if (event->button() == Qt::LeftButton) {
+		zoomIn();
+	} else {
+		zoomOut();
+	}
 }
 
 void SensorViewer::zoomIn()
@@ -205,11 +233,11 @@ void SensorViewer::onSensorChange()
 void SensorViewer::configureUserOptions(int const &fpsDelay, int const &autoScaleDelay, int const &textInfoUpdateDelay)
 {
 	int const maxFpsInterval = 100;
-	fpsInterval = (fpsDelay < maxFpsInterval) ? fpsDelay : maxFpsInterval;
-	autoScaleInterval = autoScaleDelay;
-	updateTextInfoInterval = textInfoUpdateDelay;
+	mFpsInterval = (fpsDelay < maxFpsInterval) ? fpsDelay : maxFpsInterval;
+	mAutoScaleInterval = autoScaleDelay;
+	mUpdateTextInfoInterval = textInfoUpdateDelay;
 	if (mVisualTimer.isActive()) {
 		mVisualTimer.stop();
-		mVisualTimer.start(fpsInterval);
+		mVisualTimer.start(mFpsInterval);
 	}
 }
