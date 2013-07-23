@@ -111,9 +111,9 @@ void Serializer::saveToDisk(QList<Object*> const &objects)
 		doc.save(out(), 2);
 		mSavedFiles << filePath;
 		if (!fileExists) {
-			reportChanged(filePath);
-		} else {
 			reportAdded(filePath);
+		} else {
+			reportChanged(filePath);
 		}
 	}
 

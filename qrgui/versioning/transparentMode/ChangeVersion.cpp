@@ -9,7 +9,6 @@ ChangeVersion::ChangeVersion(QWidget *parent) :
 	mUi(new Ui::ChangeVersion)
 {
 	mUi->setupUi(this);
-	connect(mUi->listWidgetForLog, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(obtainHash(QListWidgetItem*)));
 }
 
 ChangeVersion::~ChangeVersion()
@@ -26,13 +25,24 @@ void ChangeVersion::obtainHash(QListWidgetItem *item)
 
 void ChangeVersion::updateLog(QList<QPair<QString , QString> > listLog) // hash & mainPart
 {
-	mUi->listWidgetForLog->clear();
-	int number = 0;
-	while (number < listLog.size()){
+	if (listLog.size() != 0){
+		disconnect(mUi->listWidgetForLog, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(obtainHash(QListWidgetItem*)));
+		connect(mUi->listWidgetForLog, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(obtainHash(QListWidgetItem*)));
+		mUi->listWidgetForLog->clear();
+		int number = 0;
+		while (number < listLog.size()){
+			QListWidgetItem *item = new QListWidgetItem;
+			item->setData(Qt::UserRole,listLog.at(number).first);
+			item->setText(listLog.at(number).second);
+			mUi->listWidgetForLog->addItem(item);
+			number++;
+		}
+	} else {
+		mUi->listWidgetForLog->clear();
+		disconnect(mUi->listWidgetForLog, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(obtainHash(QListWidgetItem*)));
 		QListWidgetItem *item = new QListWidgetItem;
-		item->setData(Qt::UserRole,listLog.at(number).first);
-		item->setText(listLog.at(number).second);
+		item->setText(tr("There are not version of the project or project was not versioned."));
 		mUi->listWidgetForLog->addItem(item);
-		number++;
 	}
 }
+

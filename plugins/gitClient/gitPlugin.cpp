@@ -139,7 +139,10 @@ void GitPlugin::doInit(QString const &targetFolder, bool quiet)
 {
 	QStringList arguments;
 	arguments  << "init";
-	invokeOperation(arguments, true, QString(), false, true, QString(), QString(), true);
+	invokeOperation(arguments, true, QString(), false, true, targetFolder, QString(), quiet);
+	arguments.clear();
+	arguments << "add" << "-A";
+	invokeOperation(arguments, true, QString(), true, true, targetFolder, QString(), quiet);
 }
 
 void GitPlugin::startClone(QString const &from
@@ -158,7 +161,6 @@ void GitPlugin::startClone(QString const &from
 void GitPlugin::startCommit(QString const &message, QString const &from
 		, QString const &sourceProject)
 {
-	//QString targetDir = from.isEmpty() ? tempFolder() : from;
 	bool flag = doUserEmailConfig() && doUserNameConfig();
 
 	QStringList arguments;
@@ -269,14 +271,13 @@ bool GitPlugin::doUserEmailConfig()
 
 bool GitPlugin::doAdd(QString const &what, QString const &targetFolder, bool force)
 {
-	QString targetDir = targetFolder.isEmpty() ? tempFolder() : what;
 	QStringList arguments;
 	arguments << "add" << what;
 
 	QString path = what;
 	path = getFilePath(path);
 
-	bool const result = invokeOperation(arguments, true, path, false, false, QString(), QString(), true);
+	bool const result = invokeOperation(arguments, false, path, false, false, targetFolder, QString(), force);
 	emit addComplete(result);
 	emit operationComplete("add", result);
 	return result;
@@ -293,11 +294,13 @@ bool GitPlugin::doRemove(QString const &what, bool force)
 {
 	QStringList arguments;
 	arguments << "rm" << what;
-
+	if (force) {
+		arguments.append("-f");
+	}
 	QString path = what;
 	path = getFilePath(path);
 
-	bool const result = invokeOperation(arguments, true, path, false, false, QString(), QString(), true);
+	bool const result = invokeOperation(arguments, false, path, false, false, QString(), QString(), true);
 	emit removeComplete(result);
 	emit operationComplete("rm", result);
 	return result;
