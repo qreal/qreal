@@ -54,7 +54,6 @@ public slots:
 	QString friendlyName();
 	QString getLog(QStringList const &format = QStringList(), bool const &quiet = false);
 	void setVersion(QString hash);
-	void initializeLocalRepo();
 
 private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);

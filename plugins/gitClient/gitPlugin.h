@@ -46,7 +46,6 @@ public:
 	virtual QString friendlyName();
 	virtual QString getLog(QStringList const &format = QStringList(), bool const &quiet = false);
 	virtual void setVersion(QString hash);
-	virtual void initializeLocalRepo();
 
 public slots:
 	void doInit(QString const &targetFolder = QString(), bool quiet = false);
