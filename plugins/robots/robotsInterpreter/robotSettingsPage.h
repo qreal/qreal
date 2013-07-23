@@ -38,6 +38,7 @@ protected:
 
 public slots:
 	void rereadNoiseSettings();
+	void changeTextVisible(bool isChecked);
 
 private slots:
 	void activatedUnrealModel(bool checked);
