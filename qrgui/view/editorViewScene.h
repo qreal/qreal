@@ -38,7 +38,7 @@ public:
 	void clearScene();
 
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
-			, commands::CreateElementCommand **elementCommand = 0);
+			, bool canBeConnected, commands::CreateElementCommand **elementCommand = 0);
 	virtual qReal::Id createElement(QString const &, QPointF const &scenePos
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommand = 0
