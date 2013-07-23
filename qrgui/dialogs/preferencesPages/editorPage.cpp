@@ -35,8 +35,9 @@ PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAc
 	connect(mActivateGridAction, SIGNAL(toggled(bool)), this, SLOT(activateGrid(bool)));
 	connect(mActivateAlignmentAction, SIGNAL(toggled(bool)), this, SLOT(activateAlignment(bool)));
 
-	mUi->indexGridSlider->setVisible(false);
-	mUi->label_20->setVisible(false);
+	// use customizer to blick it somehow
+//	mUi->indexGridSlider->setVisible(false);
+//	mUi->label_20->setVisible(false);
 
 	mUi->gridWidthSlider->setValue(mWidthGrid);
 	mUi->indexGridSlider->setValue(mIndexGrid);
@@ -123,6 +124,8 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("CustomFont", mUi->fontCheckBox->isChecked());
 	SettingsManager::setValue("PaletteRepresentation", mUi->paletteComboBox->currentIndex());
 	SettingsManager::setValue("PaletteIconsInARowCount", mUi->paletteSpinBox->value());
+	SettingsManager::setValue("MoveLabels", mUi->enableMoveLabelsCheckBox->isChecked());
+	SettingsManager::setValue("ResizeLabels", mUi->enableResizeLabelsCheckBox->isChecked());
 
 	emit paletteRepresentationChanged();
 
@@ -158,6 +161,8 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize").toInt());
 	mUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor").toInt());
 	mUi->loopEdgeBoundsIndent->setValue(SettingsManager::value("LoopEdgeBoundsIndent").toInt());
+	mUi->enableMoveLabelsCheckBox->setChecked(SettingsManager::value("MoveLabels").toBool());
+	mUi->enableResizeLabelsCheckBox->setChecked(SettingsManager::value("ResizeLabels").toBool());
 
 	LineType type = static_cast<LineType>(SettingsManager::value("LineType", brokenLine).toInt());
 	mUi->lineMode->setCurrentIndex(type);

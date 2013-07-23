@@ -10,8 +10,8 @@ InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &
 {
 }
 
-void InterpreterElementImpl::initLabels(int const &width, int const &height, ElementTitleFactoryInterface &factory
-		, QList<ElementTitleInterface*> &titles)
+void InterpreterElementImpl::initLabels(int const &width, int const &height, LabelFactoryInterface &factory
+		, QList<LabelInterface*> &titles)
 {
 	for (QDomElement element = mGraphics.firstChildElement("graphics").firstChildElement("labels").firstChildElement("label");
 			!element.isNull();
@@ -28,7 +28,7 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Ele
 		if (text.isEmpty() && textBinded.isEmpty()) {
 			qDebug() << "ERROR: can't parse label";
 		} else {
-			ElementTitleInterface *title = NULL;
+			LabelInterface *title = NULL;
 			if (text.isEmpty()) {
 				// It is a binded label, text for it will be taken from repository.
 				title = factory.createTitle(x.value(), y.value(), textBinded, readOnly == "true", rotation);
@@ -156,8 +156,8 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 }
 
 void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
-		, QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
-		, QList<ElementTitleInterface*> &titles
+		, QList<StatLine> &linePorts, LabelFactoryInterface &factory
+		, QList<LabelInterface*> &titles
 		, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
 		, ElementRepoInterface *elementRepo)
 {
@@ -194,13 +194,13 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 	}
 }
 
-void InterpreterElementImpl::init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)
+void InterpreterElementImpl::init(LabelFactoryInterface &factory, QList<LabelInterface*> &titles)
 {
 	if (mId.element() == "MetaEntityEdge") {
 		QString labelText = mEditorRepoApi->stringProperty(mId, "labelText");
 		if (!labelText.isEmpty()) {
 			QString const labelType = mEditorRepoApi->stringProperty(mId, "labelType");
-			ElementTitleInterface* title = NULL;
+			LabelInterface* title = NULL;
 			if (labelType == "Static text") {
 				// This is a statical label, it does not need repository.
 				title = factory.createTitle(0, 0, labelText, 0);

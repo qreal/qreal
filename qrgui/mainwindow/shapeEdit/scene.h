@@ -20,7 +20,7 @@
 #include "path.h"
 #include "curve.h"
 #include "image.h"
-#include "../../../umllib/elementTitle.h"
+#include "../../../umllib/label.h"
 #include "../../../qrkernel/settingsManager.h"
 #include "../../../qrutils/graphicsUtils/abstractScene.h"
 
