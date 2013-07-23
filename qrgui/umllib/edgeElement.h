@@ -87,6 +87,7 @@ public:
 	void placeStartTo(QPointF const &place);
 	void placeEndTo(QPointF const &place);
 	void moveConnection(NodeElement *node, qreal const portId);
+	void updateEdge();
 
 	virtual void connectToPort();
 
@@ -214,6 +215,7 @@ private:
 
 	void delCloseLinePoints();
 	void delClosePoints();
+	void updateAllPoints(QPointF delta);
 
 	void squarize();
 	int defineType();
@@ -235,6 +237,7 @@ private:
 	bool delSegmentActionIsPossible(const QPointF &pos);
 	bool minimizeActionIsPossible();
 	bool reverseActionIsPossible();
+	bool isDragging;
 
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
@@ -273,4 +276,6 @@ private:
 	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst)
 
 	qReal::commands::ReshapeEdgeCommand *mReshapeCommand;
+
+	QPointF deltaSrc, deltaDst; // show how positions of sourse and destination were changed
 };
