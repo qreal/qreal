@@ -2,11 +2,11 @@
 	{
 	public:
 @@NodeConstructor@@
-		void init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}
+		void init(LabelFactoryInterface &, QList<LabelInterface*> &) {}
 
 		void init(QRectF &contents, QList<StatPoint> &pointPorts,
-				QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-				QList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,
+				QList<StatLine> &linePorts, LabelFactoryInterface &factory,
+				QList<LabelInterface*> &titles, SdfRendererInterface *renderer,
 				SdfRendererInterface *portRenderer, ElementRepoInterface *elementRepo)
 		{
 @@NodeUnusedArgs@@

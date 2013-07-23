@@ -20,7 +20,7 @@
 @@UpdateData@@=			title_@@Count@@->setHtml(QString("<b>%1</b>").arg(@@UpdateRole@@));
 @@NameRole@@=repo->name()
 @@CustomRole@@=repo->logicalProperty("@@LabelName@@")
-@@LabelDefinition@@=		ElementTitleInterface *title_@@Count@@;
+@@LabelDefinition@@=		LabelInterface *title_@@Count@@;
 @@NodeLoadShapeRenderer@@=			mRenderer->load(QString(":/generated/shapes/@@ElementName@@Class.sdf"));
 @@NodeLoadPortsRenderer@@=			portRenderer->load(QString(":/generated/shapes/@@ElementName@@Ports.sdf"));
 @@NodeSetContents@@=			contents.setWidth(@@NodeWidth@@);\n			contents.setHeight(@@NodeHeight@@);\n			StatPoint pt;

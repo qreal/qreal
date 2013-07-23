@@ -4,7 +4,7 @@
 #include <QPainter>
 
 #include "@@PathToSources@@qrgui/editorPluginInterface/elementImpl.h"
-#include "@@PathToSources@@qrgui/editorPluginInterface/elementTitleHelpers.h"
+#include "@@PathToSources@@qrgui/editorPluginInterface/labelHelpers.h"
 #include "@@PathToSources@@qrgui/editorPluginInterface/elementRepoInterface.h"
 #include "@@PathToSources@@qrgui/umllib/element.h"
 

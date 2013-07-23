@@ -2,6 +2,7 @@
 #include "convertingMethods.h"
 #include "unifiedStringGenerator.h"
 #include "defs.h"
+#include "../../qrkernel/exception/exception.h"
 
 #include <QtCore/QDebug>
 
