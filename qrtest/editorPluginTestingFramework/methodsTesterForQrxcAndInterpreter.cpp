@@ -303,7 +303,7 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDescriptionListGenerator : pub
 		QStringList result;
 		try {
 			result = ConvertingMethods::convertStringIntoStringList(editorManagerInterface->propertyDescription(elementId, propertyName));
-		} catch (...) {
+		} catch (Exception e) {
 			result.append("method failed");
 		}
 		return result;
