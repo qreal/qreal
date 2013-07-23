@@ -31,6 +31,7 @@ RobotsPlugin::RobotsPlugin()
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
 //	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
+	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityChecked(bool)));
 
 	initActions();
 	initHotKeyActions();
@@ -67,7 +68,7 @@ void RobotsPlugin::initActions()
 
 	mTitlesAction = new QAction(tr("Text under pictogram"), NULL);
 	mTitlesAction->setCheckable(true);
-	connect(mTitlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityChecked(bool)));
+	connect(mTitlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 	ActionInfo titlesActionInfo(mTitlesAction, "", "settings");
 
 	QAction *separator = new QAction(NULL);
@@ -221,8 +222,14 @@ void RobotsPlugin::rereadSettings()
 
 void RobotsPlugin::titlesVisibilityChecked(bool checked)
 {
+	mTitlesAction->setChecked(checked);
+}
+
+void RobotsPlugin::titlesVisibilityCheckedInPlugin(bool checked)
+{
 	SettingsManager::setValue("showTitlesForRobots", checked);
 	updateTitlesVisibility();
+	mRobotSettingsPage->changeTextVisibleOnSettingPage(checked);
 }
 
 void RobotsPlugin::updateTitlesVisibility()

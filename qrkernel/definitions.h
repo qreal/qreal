@@ -18,4 +18,6 @@ enum LineType {
 	curveLine
 };
 
+const QString propertiesSeparator = "»";
+
 }

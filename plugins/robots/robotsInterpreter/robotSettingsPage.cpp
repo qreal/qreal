@@ -16,6 +16,7 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	mUi->setupUi(this);
 
 //	bool const enableTrik = SettingsManager::value("enableTrik", false).toBool();
+	connect(mUi->textVisibleCheckBox, SIGNAL(toggled(bool)), this, SIGNAL(textVisibleChanged(bool)));
 
 //	if (!enableTrik) {
 //		mUi->tcpRadioButton->setVisible(false);
@@ -175,10 +176,18 @@ bool PreferencesRobotSettingsPage::textVisible() const
 	return mUi->textVisibleCheckBox->checkState() == Qt::Checked;
 }
 
+void PreferencesRobotSettingsPage::changeTextVisibleOnSettingPage(bool isChecked)
+{
+	mUi->textVisibleCheckBox->setChecked(isChecked);
+}
+
 //QString PreferencesRobotSettingsPage::selectedCommunication() const
 //{
-//	return mUi->bluetoothRadioButton->isChecked() ? "bluetooth"
-//			: mUi->usbRadioButton->isChecked() ? "usb" : "tcp";
+//	return mUi->bluetoothRadioButton->isChecked()
+//			? "bluetooth"
+//			: mUi->usbRadioButton->isChecked()
+//					? "usb"
+//					: "tcp";
 //}
 
 void PreferencesRobotSettingsPage::onSomethingChanged()
