@@ -99,6 +99,7 @@
 			  <possibleEdge beginName="InitialNode" directed="true" endName="ConditionNode"/>
 			  <possibleEdge beginName="InitialNode" directed="true" endName="BlockFinalNode"/>
 			  <possibleEdge beginName="InitialNode" directed="true" endName="ActionElement"/>
+			  <possibleEdge beginName="ActionElement" directed="true" endName="BlockDiagramNode"/>
 			  <possibleEdge beginName="ActionElement" directed="true" endName="ActionElement"/>
 			  <possibleEdge beginName="ActionElement" directed="true" endName="ConditionNode"/>
 			  <possibleEdge beginName="ActionElement" directed="true" endName="BlockFinalNode"/>
