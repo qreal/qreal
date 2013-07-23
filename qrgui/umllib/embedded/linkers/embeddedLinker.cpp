@@ -292,6 +292,11 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			foreach(PossibleEdge const &pEdge, mEdge->src()->getPossibleEdges()) {
 				if (pEdge.first.second.element() == under->id().element()) {
 					canBeConnected = true;
+				} else {
+					// pEdge.second.first is true, if edge can connect items in only one direction.
+					if (!pEdge.second.first) {
+						canBeConnected = (pEdge.first.first.element() == under->id().element());
+					}
 				}
 			}
 
