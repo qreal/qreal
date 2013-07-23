@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "pasteCommand.h"
 #include "../../controller/commands/createElementCommand.h"
@@ -28,7 +28,6 @@ private:
 	QPointF getNewPos() const;
 
 	NodeData const mNodeData;
-	QPointF const mNewPos;
 	CreateElementCommand *mCreateCommand;
 };
 
