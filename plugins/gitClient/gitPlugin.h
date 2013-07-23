@@ -63,11 +63,6 @@ public slots:
 	bool doClean();
 	bool doUserNameConfig();
 	bool doUserEmailConfig();
-	/*
-	QString repoUrl(QString const &target = QString(), bool const reportErrors = false
-			, QString const &sourceProject = QString());
-	int currentRevision(QString const &target = QString(), bool const reportErrors = false
-			, QString const &sourceProject = QString());*/
 
 	void doAfterOperationIsFinished(QVariant &tag);
 signals:
@@ -85,6 +80,7 @@ signals:
 	void cleanComplete(bool const success);
 	void addComplete(bool const success);
 	void removeComplete(bool const success);
+	void infoComplete(QString const &answer, bool const success);
 	void operationComplete(QString const &name, bool const success);
 protected:
 	// External client overloads
@@ -94,7 +90,6 @@ private:
 	/*QString infoToRepoUrl(QString &repoInfo);
 	int infoToRevision(QString const &repoInfo);*/
 
-	void onInitComplete(bool const result);
 	void onCloneComplete(bool const result);
 	void onRemoteComplete(bool const result);
 	void onCommitComplete(bool const result);

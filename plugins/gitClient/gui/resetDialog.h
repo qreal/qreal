@@ -17,11 +17,11 @@ class ResetDialog : public QDialog
 
 public:
 	ResetDialog(QWidget *parent = 0);
-	QString url() const;
+	QString hashCommit() const;
 
 private:
-	QComboBox *mUrlComboBox;
-	QLabel *mUrlLabel;
+	QComboBox *mHashCommitComboBox;
+	QLabel *mHashCommitLabel;
 	QDir mCurrentDir;
 
 	QPushButton *createButton(const QString &text, const char *member);

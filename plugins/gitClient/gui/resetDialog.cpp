@@ -9,8 +9,8 @@ using namespace versioning::ui;
 ResetDialog::ResetDialog(QWidget *parent)
 	: QDialog(parent)
 {
-	mUrlLabel = new QLabel(tr("Enter hash of commit: "));
-	mUrlComboBox = createComboBox(qReal::SettingsManager::value("hashCommit", "").toString());
+	mHashCommitLabel = new QLabel(tr("Enter hash of commit: "));
+	mHashCommitComboBox = createComboBox(qReal::SettingsManager::value("hashCommit", "").toString());
 	QPushButton *ok = new QPushButton(tr("OK"), this);
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 
@@ -23,8 +23,8 @@ ResetDialog::ResetDialog(QWidget *parent)
 	connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
 
 	QGridLayout *mainLayout = new QGridLayout;
-	mainLayout->addWidget(mUrlLabel, 0, 0);
-	mainLayout->addWidget(mUrlComboBox, 0, 1, 1, 2);
+	mainLayout->addWidget(mHashCommitLabel, 0, 0);
+	mainLayout->addWidget(mHashCommitComboBox, 0, 1, 1, 2);
 	mainLayout->addLayout(buttonsLayout,2, 0, 1, 3);
 	setLayout(mainLayout);
 
@@ -48,9 +48,9 @@ QComboBox *ResetDialog::createComboBox(const QString &text)
 	return comboBox;
 }
 
-QString ResetDialog::url() const
+QString ResetDialog::hashCommit() const
 {
-	return mUrlComboBox->currentText();
+	return mHashCommitComboBox->currentText();
 }
 
 

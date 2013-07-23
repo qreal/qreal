@@ -19,6 +19,7 @@ ViewInteraction::ViewInteraction(GitPlugin *pluginInstance)
 	connect(mPlugin, SIGNAL(pushComplete(bool)), this, SLOT(onPushComplete(bool)));
 	connect(mPlugin, SIGNAL(pullComplete(bool)), this, SLOT(onPullComplete(bool)));
 	connect(mPlugin, SIGNAL(resetComplete(bool)), this, SLOT(onResetComplete(bool)));
+	connect(mPlugin, SIGNAL(infoComplete(QString,bool)), this, SLOT(onInfoComplete(QString,bool)));
 
 }
 
@@ -51,6 +52,9 @@ void ViewInteraction::initActions()
 
 	QAction *cleanAction = gitMenu->addAction(tr("Clean"));
 	connect(cleanAction, SIGNAL(triggered()), this, SLOT(cleanClicked()));
+
+	QAction *infoAction = gitMenu->addAction(tr("Info"));
+	connect(infoAction, SIGNAL(triggered()), this, SLOT(infoClicked()));
 
 	mMenu << qReal::ActionInfo(gitMenu, "tools");
 }
@@ -94,7 +98,7 @@ void ViewInteraction::remoteClicked()
 		return;
 	}
 
-	mPlugin->doRemote(dialog->url(), dialog->target());
+	mPlugin->doRemote(dialog->remoteName(), dialog->remoteAdress());
 }
 
 void ViewInteraction::commitClicked()
@@ -145,7 +149,7 @@ void ViewInteraction::resetClicked()
 		return;
 	}
 
-	mPlugin->startReset(dialog->url());
+	mPlugin->startReset(dialog->hashCommit());
 }
 
 void ViewInteraction::cleanClicked()
@@ -153,6 +157,11 @@ void ViewInteraction::cleanClicked()
 	if (mPlugin->doClean()) {
 		showMessage(tr("Clean successfully."));
 	}
+}
+
+void ViewInteraction::infoClicked()
+{
+	QString answer = mPlugin->information();
 }
 
 void ViewInteraction::showMessage(const QString &message)
@@ -213,6 +222,21 @@ void ViewInteraction::onResetComplete(const bool success)
 		showMessage(tr("Reseted successfully."));
 		reopenWithoutSavings();
 	}
+}
+
+void ViewInteraction::onInfoComplete(QString answer, const bool success)
+{
+	if (!success)
+		return;
+
+	//showMessage(tr("Reseted successfully."));
+
+	ui::InfoDialog *dialog = new ui::InfoDialog(mMainWindowIface->windowWidget());
+	dialog->message(answer);
+	if (QDialog::Accepted != dialog->exec()) {
+		return;
+	}
+
 }
 
 void ViewInteraction::reopenWithoutSavings()
