@@ -153,7 +153,7 @@ void GitPlugin::startClone(QString const &from
 	Tag tagStruct("clone");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
-	invokeOperationAsync(arguments, tagVariant, false, QString(), QString(), false);
+	invokeOperationAsync(arguments, tagVariant, false, cloneDist, QString(), false);
 }
 
 void GitPlugin::startCommit(QString const &message, QString const &from
