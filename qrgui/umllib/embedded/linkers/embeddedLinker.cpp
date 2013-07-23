@@ -290,7 +290,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		} else {
 			bool canBeConnected = false;
 			foreach(PossibleEdge const &pEdge, mEdge->src()->getPossibleEdges()) {
-				if (pEdge.first.second == under->id()) {
+				if (pEdge.first.second.element() == under->id().element()) {
 					canBeConnected = true;
 				}
 			}
