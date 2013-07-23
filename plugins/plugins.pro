@@ -8,7 +8,7 @@ SUBDIRS	= \
 	metaEditor/metaEditor.pro \
 	requirements/requirements.pro \
 
- 
+
 # tool plugins
 SUBDIRS += \
 #	testInvocation/testInvocation.pro \

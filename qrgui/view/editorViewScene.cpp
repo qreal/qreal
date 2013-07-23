@@ -341,7 +341,7 @@ bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id con
 }
 
 int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
-		, QPointF const &scenePos, commands::CreateElementCommand **createCommand)
+		, QPointF const &scenePos, bool canBeConnected, commands::CreateElementCommand **createCommand)
 {
 	edge->setSelected(true);
 
@@ -411,6 +411,11 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	mLastCreatedWithEdge = NULL;
 	QObject::connect(menuSignalMapper, SIGNAL(mapped(QString const &)), this, SLOT(createElement(QString const &)));
 
+	if (canBeConnected) {
+		edgeMenu->addSeparator();
+		edgeMenu->addAction(tr("Connect with the current item"));
+	}
+
 	QPoint cursorPos = QCursor::pos();
 	QAction *executed = edgeMenu->exec(cursorPos);
 
@@ -418,7 +423,8 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	if (executed) {
 		if (executed == mWindow->actionDeleteFromDiagram()) {
 			result = -1;
-		} else if (!(executed->text() == tr("Discard"))) {
+		} else if (!(executed->text() == tr("Discard"))
+					&& !(executed->text() == tr("Connect with the current item"))) {
 			result = 1;
 			if (createCommand && mLastCreatedWithEdgeCommand) {
 				*createCommand = mLastCreatedWithEdgeCommand;
