@@ -20,7 +20,7 @@ qReal::TransparentMode::TransparentMode(QList<VersioningPluginInterface *> mPlug
 void TransparentMode::isInit()
 {
 	if (!mPlugin->isMyWorkingCopy()){
-		mPlugin->initializeLocalRepo();
+		mPlugin->beginWorkingCopyDownloading(QString(),QString());
 	}
 }
 

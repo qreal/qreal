@@ -72,9 +72,6 @@ public slots:
 	///Just for git ex: git reset
 	virtual void setVersion(QString hash) = 0;
 
-	///initialize the local repository
-	virtual void initializeLocalRepo() = 0;
-
 signals:
 	/// Emitted when working copy downloading started by
 	/// @see beginWorkingCopyDownloading() complete
