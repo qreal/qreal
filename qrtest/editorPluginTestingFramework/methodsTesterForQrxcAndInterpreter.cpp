@@ -299,7 +299,13 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDescriptionListGenerator : pub
 	{
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
-		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->propertyDescription(elementId, propertyName));
+		QStringList result;
+		try {
+			result = ConvertingMethods::convertStringIntoStringList(editorManagerInterface->propertyDescription(elementId, propertyName));
+		} catch (...) {
+			result.append("method failed");
+		}
+		return result;
 	}
 
 	virtual UnifiedStringGenerator* clone() const {

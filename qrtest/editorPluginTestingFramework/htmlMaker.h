@@ -66,6 +66,9 @@ private:
 	/// parses given result of testing (tested methods can give the same results, but in different order)
 	static QSet<QString> resultToCompare(QString const &method);
 
+	/// checks if method failed
+	static bool methodFailed(QString const &firstResult, QString const &secondResult);
+
 	/// parses results of methods testing
 	static QStringList parseOutput(QString const &methodOutput);
 

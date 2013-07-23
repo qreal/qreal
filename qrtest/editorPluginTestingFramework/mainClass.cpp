@@ -47,6 +47,10 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 	} else {
 		qDebug() << "Generation of plugins failed";
 	}
+
+	delete qrxcGeneratedPlugin;
+	delete qrmcGeneratedPlugin;
+	delete interpreterMethodsTester;
 }
 
 void MainClass::createFolder(QString const &path)

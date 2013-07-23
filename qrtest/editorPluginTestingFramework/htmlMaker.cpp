@@ -123,11 +123,20 @@ QString HtmlMaker::lineColor(QString const &qrxcResult, QString const &qrmcResul
 		if (resultsAreTheSame(qrxcResult, qrmcResult)) {
 			color = "PaleGreen";
 		} else {
-			color = "Coral";
+			if (methodFailed(qrxcResult, qrmcResult)) {
+				color = "Gray";
+			} else {
+				color = "Coral";
+			}
 		}
 	}
 
 	return color;
+}
+
+bool HtmlMaker::methodFailed(QString const &firstResult, QString const &secondResult)
+{
+	return (firstResult.contains("method failed") || (secondResult.contains("method failed")));
 }
 
 bool HtmlMaker::containsOnly(QString const &string, QChar const &symbol)
@@ -174,13 +183,15 @@ void HtmlMaker::addTableToColumn(QDomElement &parent, QPair<QString, QStringList
 	QString const &cellspacing = "5";
 	QString const &width = "100%";
 	QString const &height = "100%";
+	QString const &styleLine = "border:0.2px solid black;";
 
+	table.setAttribute("rules", "all");
 	table.setAttribute("width", width);
 	table.setAttribute("height", height);
 	table.setAttribute("align", align);
 	table.setAttribute("border", border);
+	table.setAttribute("style", styleLine);
 	table.setAttribute("cellcpacing", cellspacing);
-	table.setAttribute("rules", "all");
 
 	addLineToResultTable(table, tableElements.first, tableElements.second);
 }
