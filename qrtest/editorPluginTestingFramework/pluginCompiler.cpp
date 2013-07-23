@@ -10,6 +10,7 @@ using namespace editorPluginTestingFramework;
 
 void PluginCompiler::compilePlugin(QString const &directoryToCodeToCompile)
 {
+	qDebug() << "STARTING PLUGIN COMPILING";
 	QProcess builder;
 	builder.setWorkingDirectory(directoryToCodeToCompile);
 

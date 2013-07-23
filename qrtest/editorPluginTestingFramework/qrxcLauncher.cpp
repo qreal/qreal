@@ -15,6 +15,7 @@ using namespace editorPluginTestingFramework;
 
 void QrxcLauncher::launchQrxc(QString const &fileName)
 {
+	qDebug() << "STARTING QRXC LAUNCHING";
 	QString normalizedFileName = fileName;
 
 	if (!fileName.contains(".qrs")) {
@@ -33,8 +34,8 @@ void QrxcLauncher::launchQrxc(QString const &fileName)
 	foreach (Id const &key, metamodelList.keys()) {
 		if (mRepoApi->isLogicalElement(key)) {
 
-			QString const pathToQRealRoot = mRepoApi->stringProperty(key, "path to QReal Source Files");
-
+			//QString const pathToQRealRoot = mRepoApi->stringProperty(key, "path to QReal Source Files");
+			QString const pathToQRealRoot = SettingsManager::value("pathToQRealSourceFiles").toString();
 			QString const &directoryToGeneratedCode = generatePathToPlugin(pathToQRealRoot);
 
 			if (!dir.exists(directoryToGeneratedCode)) {
@@ -47,6 +48,7 @@ void QrxcLauncher::launchQrxc(QString const &fileName)
 					, directoryToGeneratedCode);
 		}
 	}
+	qDebug() << stringSeparator;
 }
 
 QString QrxcLauncher::generatePathToPlugin(QString const &pathToQRealRoot)

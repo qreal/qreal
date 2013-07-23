@@ -106,8 +106,9 @@ Editor* Diagram::editor() const
 
 Type* Diagram::findType(QString name)
 {
-	if (mTypes.contains(name))
+	if (mTypes.contains(name)) {
 		return mTypes[name];
+	}
 
 	return mEditor->findType(name);
 }

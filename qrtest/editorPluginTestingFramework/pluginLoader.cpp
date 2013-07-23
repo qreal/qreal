@@ -12,6 +12,7 @@ using namespace qrRepo;
 
 EditorInterface* PluginLoader::loadedPlugin(QString const &fileName, QString const &pathToFile)
 {
+	qDebug() << "STARTING PLUGIN LOADING";
 	QDir mPluginDir = QDir(pathToFile);
 
 	QString normalizedFileName = fileName;

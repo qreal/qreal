@@ -128,8 +128,14 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 					.replace(minimizeToChildrenTag, loadBoolProperty(child, "minimizeToChildren"))
 					.replace(maximizeChildrenTag, loadBoolProperty(child, "maximizeChildren"))
 					.replace(hasMovableChildrenTag, movableChildren)
-					.replace(forestallingSizeTag, loadIntVectorProperty(child, "forestallingSize"))
 					.replace(childrenForestallingSizeTag, loadIntProperty(child, "childrenForestallingSize"));
+			QStringList const &forestallingSizes = loadIntVectorProperty(child, "forestallingSize").split(",");
+			QString resultForestallingLine = "";
+			foreach (QString const &forestallingSize, forestallingSizes) {
+				resultForestallingLine.append(" << ");
+				resultForestallingLine.append(forestallingSize);
+			}
+			classTemplate.replace(forestallingSizeTag, resultForestallingLine);
 			break;
 		}
 	}
@@ -138,7 +144,7 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 				.replace(minimizeToChildrenTag, "false")
 				.replace(maximizeChildrenTag, "false")
 				.replace(hasMovableChildrenTag, "true")
-				.replace(forestallingSizeTag, "0")
+				.replace(forestallingSizeTag, " << 0")
 				.replace(childrenForestallingSizeTag, "0");
 }
 

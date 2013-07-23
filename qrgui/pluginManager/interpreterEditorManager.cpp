@@ -206,7 +206,6 @@ IdList InterpreterEditorManager::connectedTypes(Id const &id) const
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	qrRepo::RepoApi const * const repo = repoAndMetaIdPair.first;
 	Id const metaId = repoAndMetaIdPair.second;
-	qDebug() << "element:" << id.element();
 	foreach (Id const &connectId, repo->connectedElements(metaId)) {
 		if (connectId == Id::rootId()) {
 			qDebug() << "go to hell again!11!";
@@ -400,7 +399,6 @@ QString InterpreterEditorManager::description(Id const &id) const
 	if (repoAndMetaIdPair.first->hasProperty(repoAndMetaIdPair.second, "description")) {
 		return repoAndMetaIdPair.first->stringProperty(repoAndMetaIdPair.second, "description");
 	}
-
 	return "";
 }
 

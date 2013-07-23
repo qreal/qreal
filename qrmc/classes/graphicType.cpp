@@ -159,7 +159,14 @@ bool GraphicType::resolve()
 	mParents.removeDuplicates();
 	foreach (QString parentName, mParents) {
 		// searching for parents in native context. if it was imported, references will remain valid
-		QString qualifiedParentName = parentName.contains("::") ? parentName : nativeContext() + "::" + parentName;
+		if (parentName.contains("::")) {
+			QStringList parsedParentName = parentName.split("::");
+			parentName = NameNormalizer::normalize(parsedParentName.last());
+		} else {
+			parentName = NameNormalizer::normalize(parentName);
+		}
+		QString const qualifiedParentName = nativeContext() + "::" + parentName;
+		//bydlo-code :(
 
 		Type *parent = mDiagram->findType(qualifiedParentName);
 		if (parent == NULL) {

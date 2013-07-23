@@ -55,9 +55,12 @@
 			return @@IsSortContainer@@;
 		}
 
-		int sizeOfForestalling() const
+		QVector<int> sizeOfForestalling() const
 		{
-			return @@SizeOfForestalling@@;
+			QVector<int> result;
+			result@@SizeOfForestalling@@;
+;
+			return result;
 		}       
 
 		int sizeOfChildrenForestalling() const

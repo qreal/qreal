@@ -10,6 +10,8 @@ DESTDIR = ../../bin
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD),-rpath,$(PWD)/../../bin"
 }
 
+RESOURCES = editorPluginTestingFramework.qrc
+
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 MOC_DIR = .moc
@@ -34,16 +36,13 @@ HEADERS += \
 	../../qrgui/pluginManager/pattern.h \
 	../../qrgui/pluginManager/editorManager.h \
 	../../qrgui/pluginManager/patternParser.h \
-#	../../qrgui/umllib/element.h \
-#	../../qrgui/pluginManager/pattern.h \
-#	../../qrgui/mainwindow/mainWindow.h \
 	defs.h \
 	htmlMaker.h \
-    convertingMethods.h \
-    unifiedStringGenerator.h \
-    methodsTesterForQrxcAndQrmc.h \
-    methodsTester.h \
-    methodsTesterForQrxcAndInterpreter.h
+	convertingMethods.h \
+	unifiedStringGenerator.h \
+	methodsTesterForQrxcAndQrmc.h \
+	methodsTester.h \
+	methodsTesterForQrxcAndInterpreter.h
 
 SOURCES += \
 	mainClass.cpp \
@@ -61,14 +60,11 @@ SOURCES += \
 	../../qrgui/pluginManager/pattern.cpp \
 	../../qrgui/pluginManager/editorManager.cpp \
 	../../qrgui/pluginManager/patternParser.cpp \
-#	../../qrgui/umllib/element.cpp \
-#	../../qrgui/pluginManager/pattern.cpp \
-#	../../qrgui/mainwindow/mainWindow.cpp \
 	htmlMaker.cpp \
-    convertingMethods.cpp \
-    methodsTesterForQrxcAndQrmc.cpp \
-    methodsTester.cpp \
-    methodsTesterForQrxcAndInterpreter.cpp
+	convertingMethods.cpp \
+	methodsTesterForQrxcAndQrmc.cpp \
+	methodsTester.cpp \
+	methodsTesterForQrxcAndInterpreter.cpp
 
 
 

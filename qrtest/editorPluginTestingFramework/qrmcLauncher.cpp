@@ -9,6 +9,7 @@ using namespace editorPluginTestingFramework;
 
 void QrmcLauncher::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 {
+	qDebug() << "STARTING QRMC LAUNCHING";
 	QString normalizedFileName = fileName;
 	if (!fileName.contains(".qrs")) {
 		normalizedFileName += ".qrs";
@@ -28,4 +29,5 @@ void QrmcLauncher::launchQrmc(QString const &fileName, QString const &pathToQrmc
 			}
 		}
 	}
+	qDebug() << stringSeparator;
 }

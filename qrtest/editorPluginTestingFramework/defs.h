@@ -25,4 +25,6 @@ QString const destDirForQrxc = "qrtest/binaries/plugins/qrxc";
 
 QString const pathToQrxcQrmcMethodsToTest = "methodsToTest/methodsToTestQrxcQrmc.txt";
 QString const pathToQrxcInterpreterMethodsToTest = "methodsToTest/methodsToTestInterpQrxc.txt";
+
+QString const stringSeparator = "-----------------------------------";
 }

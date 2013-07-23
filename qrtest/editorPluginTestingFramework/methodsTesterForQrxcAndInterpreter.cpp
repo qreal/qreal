@@ -510,7 +510,6 @@ class MethodsTesterForQrxcAndInterpreter::IsDiagramListGenerator : public Method
 		Q_UNUSED(editorId);
 		Q_UNUSED(elementId);
 		Q_UNUSED(propertyName);
-		qDebug() << "diagram id: " << diagramId.toString() << "id size:" << diagramId.idSize();
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isDiagram(diagramId));
 	}
 

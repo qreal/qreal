@@ -18,6 +18,7 @@ void HtmlMaker::makeHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAn
 {
 	typedef QPair<QString, QPair<QString, QString> > StringTriplet;
 
+	qDebug() << "STARTING HTML GENERATING";
 	QDomElement root = mHtml.createElement("html");
 	mHtml.appendChild(root);
 
@@ -29,15 +30,16 @@ void HtmlMaker::makeHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAn
 
 	QDomElement body = newElement(root, "body");
 
-	addTable(body, qrxcAndQrmcResult, "Table with results of comparison between qrxc and qrmc"
-			 , "Method name", "QRXC", "QRMC"); //"left", "30")
+	addTable(body, qrxcAndQrmcResult, QObject::tr("Table with results of comparison between qrxc and qrmc")
+			 , QObject::tr("Method name"), "QRXC", "QRMC"); //"left", "30")
 	QDomElement breakLine = newElement(body, "br");
-	addTable(body, qrxcAndInterpreterResult, "Table with results of comparison between qrxc and interpreter"
-			 , "Method name", "QRXC", "Interpreter"); //"right", "70");
+	addTable(body, qrxcAndInterpreterResult, QObject::tr("Table with results of comparison between qrxc and interpreter")
+			 , QObject::tr("Method name"), "QRXC", "Interpreter"); //"right", "70");
 
 	QString const &fileName = binariesDir + "/output.html";
 	OutFile outHtml(fileName);
 	mHtml.save(outHtml(), 4);
+	qDebug() << "binaries/output.html generated";
 }
 
 QDomElement HtmlMaker::newElement(QDomElement &parent, QString const &newElementName)

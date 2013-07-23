@@ -1,6 +1,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QStringList>
 #include <QtCore/QDebug>
+#include <QtCore/QTranslator>
 
 #include "mainClass.h"
 
@@ -28,6 +29,12 @@ int main(int argc, char *argv[])
 {
 	//qInstallMsgHandler(myMessageOutput);
 	QCoreApplication app(argc, argv);
+
+	QTranslator appTranslator;
+	if (!app.arguments().contains("--no-locale")) {
+		appTranslator.load(":/editorPluginTestingFramework_" + QLocale::system().name());
+		app.installTranslator(&appTranslator);
+	}
 
 	if (argc != 2) {
 		qDebug() << "Usage: editorPluginTestFramework fileName.qrs";

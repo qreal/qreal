@@ -15,7 +15,10 @@
 		bool isNode() const { return false; }
 		bool isContainer() const { return false; }
 		bool isSortingContainer() const { return false; }
-		int sizeOfForestalling() const { return 0; }
+		QVector<int> sizeOfForestalling() const {
+			QVector<int> result;
+			return result;
+		}
 		int sizeOfChildrenForestalling() const { return 0; }
 		bool hasMovableChildren() const { return false; }
 		bool minimizesToChildren() const { return false; }
