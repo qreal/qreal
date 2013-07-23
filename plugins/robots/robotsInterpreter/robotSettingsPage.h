@@ -2,16 +2,14 @@
 
 #include "../../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
 
-#include "sensorConstants.h"
-#include "details/sensorsConfigurationWidget.h"
+//#include "sensorConstants.h"
+//#include "details/sensorsConfigurationWidget.h"
 
 namespace Ui {
-	class PreferencesRobotSettingsPage;
+class PreferencesRobotSettingsPage;
 }
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
+namespace qRealRobots {
 
 /// Preferences page for robots interpreter plugin
 class PreferencesRobotSettingsPage : public PreferencesPage
@@ -25,8 +23,8 @@ public:
 	void save();
 	virtual void restoreSettings();
 
-	QString selectedPortName() const;
-	QString selectedCommunication() const;
+//	QString selectedPortName() const;
+//	QString selectedCommunication() const;
 
 signals:
 	void saved();
@@ -35,31 +33,29 @@ protected:
 	void changeEvent(QEvent *e);
 
 public slots:
-	void rereadNoiseSettings();
+//	void rereadNoiseSettings();
 
 private slots:
 	void onSomethingChanged();
-	void manualComPortCheckboxChecked(bool state);
-	void refreshPorts();
+//	void manualComPortCheckboxChecked(bool state);
+//	void refreshPorts();
 
 private:
-	void initRobotModelType(enums::robotModelType::robotModelTypeEnum type);
-	void initTypeOfCommunication(QString const &type);
+//	void initRobotModelType(enums::robotModelType::robotModelTypeEnum type);
+//	void initTypeOfCommunication(QString const &type);
 
-	enums::sensorType::SensorTypeEnum selectedPort1Sensor() const;
-	enums::sensorType::SensorTypeEnum selectedPort2Sensor() const;
-	enums::sensorType::SensorTypeEnum selectedPort3Sensor() const;
-	enums::sensorType::SensorTypeEnum selectedPort4Sensor() const;
-	enums::robotModelType::robotModelTypeEnum selectedRobotModel() const;
+//	enums::sensorType::SensorTypeEnum selectedPort1Sensor() const;
+//	enums::sensorType::SensorTypeEnum selectedPort2Sensor() const;
+//	enums::sensorType::SensorTypeEnum selectedPort3Sensor() const;
+//	enums::sensorType::SensorTypeEnum selectedPort4Sensor() const;
+//	enums::robotModelType::robotModelTypeEnum selectedRobotModel() const;
 	bool textVisible() const;
-	bool enableSensorNoise() const;
-	bool enableMotorNoise() const;
-	int approximationLevel() const;
+//	bool enableSensorNoise() const;
+//	bool enableMotorNoise() const;
+//	int approximationLevel() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
-	details::SensorsConfigurationWidget *mSensorsWidget;
+//	details::SensorsConfigurationWidget *mSensorsWidget;
 };
 
-}
-}
 }

@@ -1,7 +1,7 @@
 #include "customizer.h"
 #include "../../../qrkernel/settingsManager.h"
 
-using namespace qReal::interpreters::robots;
+using namespace qRealRobots;
 
 QString Customizer::windowTitle() const
 {
@@ -21,7 +21,7 @@ QString Customizer::productVersion() const
 
 QString Customizer::aboutText() const
 {
-	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
+	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://robots.qreal.ru/\">http://robots.qreal.ru/</a>";
 }
 
 bool Customizer::showInterpeterButton() const
@@ -29,7 +29,7 @@ bool Customizer::showInterpeterButton() const
 	return false;
 }
 
-void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
+void Customizer::customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface)
 {
 	mDockInterface = dockInterface;
 	dockInterface->logicalModelDock()->hide();

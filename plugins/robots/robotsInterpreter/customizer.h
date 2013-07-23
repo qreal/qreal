@@ -4,9 +4,7 @@
 
 #include "../../../qrgui/toolPluginInterface/customizer.h"
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
+namespace qRealRobots {
 
 class Customizer : public QObject, public qReal::Customizer
 {
@@ -17,17 +15,14 @@ public:
 	virtual QIcon applicationIcon() const;
 	virtual QString productVersion() const;
 	virtual QString aboutText() const;
-	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface);
-
-	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
+	virtual void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface);
 	virtual bool showInterpeterButton() const;
 
 private:
+	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
 	QDockWidget *produceDockWidget(QString const &title, QWidget *content) const;
 
-	gui::MainWindowDockInterface *mDockInterface;
+	qReal::gui::MainWindowDockInterface *mDockInterface;
 };
 
-}
-}
 }
