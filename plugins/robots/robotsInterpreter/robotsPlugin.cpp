@@ -28,7 +28,7 @@ RobotsPlugin::RobotsPlugin()
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
 	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
-	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityChecked(bool)));
+	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 
 	initActions();
 	initHotKeyActions();
