@@ -19,6 +19,7 @@ RenameExplosionCommand::~RenameExplosionCommand()
 bool RenameExplosionCommand::execute()
 {
 	if (mNewName.isEmpty()) {
+		// Getting here during first execution
 		promptUserToEnterNewName();
 	}
 	return true;
@@ -42,5 +43,7 @@ void RenameExplosionCommand::promptUserToEnterNewName()
 	mOldName = mLogicalApi->name(mTarget);
 	mLogicalApi->name(mTarget);
 	mNewName = gui::RenameDialog::selectNewName(mOldName);
+	// Adding real renaming commands; they will be executed just after this
+	// command so the sequence is ok
 	addPostAction(mLogicalApi->exploser().renameCommands(mTarget, mNewName));
 }

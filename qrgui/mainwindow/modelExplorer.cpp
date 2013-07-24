@@ -1,5 +1,6 @@
 #include "modelExplorer.h"
 #include "../controller/commands/renameCommand.h"
+#include "../models/details/modelsImplementation/abstractModel.h"
 
 using namespace qReal;
 using namespace gui;
@@ -22,11 +23,16 @@ void ModelExplorer::setAssistApi(details::ModelsAssistInterface * const model)
 	mModel = model;
 }
 
+void ModelExplorer::setExploser(models::details::Exploser * const exploser)
+{
+	mExploser = exploser;
+}
+
 void ModelExplorer::commitData(QWidget *editor)
 {
 	Id const id = static_cast<AbstractModel *>(model())->idByIndex(currentIndex());
 	QString const oldName = model()->data(currentIndex()).toString();
 	QTreeView::commitData(editor);
 	QString const newName = model()->data(currentIndex()).toString();
-	mController->execute(new commands::RenameCommand(mModel, id, oldName, newName));
+	mController->execute(new commands::RenameCommand(mModel, id, oldName, newName, mExploser));
 }

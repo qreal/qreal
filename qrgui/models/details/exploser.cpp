@@ -149,12 +149,15 @@ AbstractCommand *Exploser::removeExplosionCommand(Id const &source, Id const &ta
 AbstractCommand *Exploser::renameCommands(Id const &oneOfIds, QString const &newNames)
 {
 	DoNothingCommand *result = new DoNothingCommand;
-	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()));
-	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()));
 
 	IdList const idsToRename = explosionsHierarchy(oneOfIds);
 	foreach (Id const &id, idsToRename) {
 		result->addPostAction(new RenameCommand(mApi, id, newNames));
+	}
+
+	if (!idsToRename.isEmpty()) {
+		connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()));
+		connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()));
 	}
 	return result;
 }
