@@ -1,4 +1,5 @@
 ﻿#include "rulesChecker.h"
+#include <QtWidgets/QFileDialog>
 
 using namespace qReal::rulesChecker;
 
@@ -11,6 +12,19 @@ RulesChecker::RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 	// TODO: get these lists from metamodel somehow
 	mLinkTypes << "SequenceFlow" << "MessageFlow";
 	mContainerTypes << "Pool" << "Lane" << "BPMN Diagram";
+}
+
+void RulesChecker::exportToXml()
+{
+	QString fileName = QFileDialog::getSaveFileName(mWindowInterface->windowWidget(), tr("Save File"), tr("export.xml"), tr("*.xml"));
+	if (!fileName.endsWith(".xml")) {
+		fileName += ".xml";
+	}
+
+	qrRepo::RepoControlInterface *repoControlApi = dynamic_cast<qrRepo::RepoControlInterface *>((qrRepo::CommonRepoApi *)mGRepoApi);
+	if (repoControlApi) {
+		repoControlApi->exportToXml(fileName);
+	}
 }
 
 bool RulesChecker::makeDetour(Id const &currentNode, IdList &usedNodes)

@@ -28,7 +28,7 @@ SOURCES += \
 	$$PWD/private/classes/object.cpp \
 	$$PWD/private/folderCompressor.cpp \
 
-# API репозитория
+# repo API
 HEADERS += \
 	$$PWD/repoApi.h \
 	$$PWD/graphicalRepoApi.h \
