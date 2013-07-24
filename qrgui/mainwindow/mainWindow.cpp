@@ -1370,8 +1370,8 @@ void MainWindow::currentTabChanged(int newIndex)
 		mUi->actionUndo->setDisabled(isShape);
 	}
 
-	mUi->actionZoom_In->setEnabled(isEditorTab);
-	mUi->actionZoom_Out->setEnabled(isEditorTab);
+	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
+	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
 
 	emit rootDiagramChanged();
 }
