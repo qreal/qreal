@@ -22,7 +22,8 @@ HEADERS += \
 	mainwindow/palette/paletteTreeWidget.h \
 	mainwindow/palette/draggableElement.h \
 	mainwindow/palette/paletteTreeWidgets.h \
-    mainwindow/palette/paletteElement.h
+    mainwindow/palette/paletteElement.h \
+    mainwindow/modelExplorer.h
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -43,7 +44,8 @@ SOURCES += \
 	mainwindow/palette/paletteTreeWidget.cpp \
 	mainwindow/palette/draggableElement.cpp \
     mainwindow/palette/paletteTreeWidgets.cpp \
-    mainwindow/palette/paletteElement.cpp
+    mainwindow/palette/paletteElement.cpp \
+    mainwindow/modelExplorer.cpp
 
 win32 {
 	HEADERS += \
