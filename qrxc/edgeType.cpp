@@ -283,7 +283,8 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 	"\t\t\tQBrush brush;\n"
 	"\t\t\tbrush.setStyle(Qt::SolidPattern);\n";
 
-	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow" || style == "empty_circle")
+	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow" || style == "empty_circle"
+			|| style == "signal")
 		out() << "\t\t\tbrush.setColor(Qt::white);\n";
 
 	if (style == "filled_arrow" || style == "filled_rhomb")
@@ -323,6 +324,14 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 
 	if (style == "empty_circle")
 		out() << "\t\t\tpainter->drawEllipse(-5, 0, 10, 10);\n";
+
+	if (style == "signal")
+		out() << "\t\t\tpainter->drawEllipse(-20, 0, 40, 40);\n"
+		"\t\t\tpainter->drawEllipse(-15, 5, 30, 30);\n"
+		"\t\t\tstatic const QPointF points[] = {"
+		"\n\t\t\t\tQPointF(10, 20),\n\t\t\t\tQPointF(-7, 10),"
+		"\n\t\t\t\tQPointF(-7, 30),\n\t\t\t\tQPointF(10, 20)\n\t\t\t};\n"
+		"\t\t\tpainter->drawPolyline(points, 4);\n";
 
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
 }

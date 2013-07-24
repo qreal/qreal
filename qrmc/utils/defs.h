@@ -135,6 +135,7 @@ QString const filledArrowColorTag = "@@FilledArrowColor@@";
 QString const emptyArrowColorTag = "@@EmptyArrowColor@@";
 QString const crossedLineTemplateTag = "@@CrossedLine@@";
 QString const emptyCircleTemplateTag = "@@EmptyCircle@@";
+QString const signalTemplateTag = "@@Signal@@";
 QString const beginArrowBrushColorTag = "@@BeginArrowBrushColor@@";
 QString const endArrowBrushColorTag = "@@EndArrowBrushColor@@";
 QString const beginArrowCustomizationTag = "@@BeginArrowCustomization@@";
