@@ -65,6 +65,8 @@ private:
 	static bool resultsAreTheSame(QString const &firstMethod, QString const &secondMethod);
 	/// parses given result of testing (tested methods can give the same results, but in different order)
 	static QSet<QString> resultToCompare(QString const &method);
+	/// checks if results are empty
+	static bool resultsAreEmpty(QString const &firstMethod, QString const &secondMethod);
 
 	/// checks if method failed
 	static bool methodFailed(QString const &firstResult, QString const &secondResult);

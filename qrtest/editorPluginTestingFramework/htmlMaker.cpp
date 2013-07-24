@@ -31,10 +31,10 @@ void HtmlMaker::makeHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAn
 	QDomElement body = newElement(root, "body");
 
 	addTable(body, qrxcAndQrmcResult, QObject::tr("Table with results of comparison between qrxc and qrmc")
-			 , QObject::tr("Method name"), "QRXC", "QRMC"); //"left", "30")
+			 , QObject::tr("Method name"), "QRXC", "QRMC");
 	QDomElement breakLine = newElement(body, "br");
 	addTable(body, qrxcAndInterpreterResult, QObject::tr("Table with results of comparison between qrxc and interpreter")
-			 , QObject::tr("Method name"), "QRXC", "Interpreter"); //"right", "70");
+			, QObject::tr("Method name"), "QRXC", "Interpreter");
 
 	QString const &fileName = binariesDir + "/output.html";
 	OutFile outHtml(fileName);
@@ -50,12 +50,14 @@ QDomElement HtmlMaker::newElement(QDomElement &parent, QString const &newElement
 	return newElement;
 }
 
-void HtmlMaker::addTable(QDomElement parent
+void HtmlMaker::addTable(
+		QDomElement parent
 		, QList<QPair<QString, QPair<QString, QString> > > listOfLines
 		, QString const &text
 		, QString const &firstColumnTitle
 		, QString const &secondColumnTitle
-		, QString const &thirdColumnTitle)
+		, QString const &thirdColumnTitle
+		)
 {
 	typedef QPair<QString, QPair<QString, QString> > StringTriplet;
 
@@ -116,8 +118,9 @@ QString HtmlMaker::lineColor(QString const &qrxcResult, QString const &qrmcResul
 {
 	QString color = "";
 
-	if (((containsOnly(qrmcResult, ' ')) || (qrmcResult.isEmpty()))
-			&& (((containsOnly(qrxcResult, ' ')) || (qrxcResult.isEmpty())))) {
+	//if (((containsOnly(qrmcResult, ' ')) || (qrmcResult.isEmpty()))
+	//		&& (((containsOnly(qrxcResult, ' ')) || (qrxcResult.isEmpty())))) {
+	if (resultsAreEmpty(qrxcResult, qrmcResult)) {
 		color = "Gold";
 	} else {
 		if (resultsAreTheSame(qrxcResult, qrmcResult)) {
@@ -259,4 +262,24 @@ QSet<QString> HtmlMaker::resultToCompare(QString const &method)
 
 	QSet<QString> methodParsed = result.toSet();
 	return methodParsed;
+}
+
+bool HtmlMaker::resultsAreEmpty(QString const &firstMethod, QString const &secondMethod)
+{
+	QList<QString> firstMethodParsed = resultToCompare(firstMethod).toList();
+	QList<QString> secondMethodParsed = resultToCompare(secondMethod).toList();
+
+	foreach (QString const &element, firstMethodParsed) {
+		if (!containsOnly(element, ' ')) {
+			return false;
+		}
+	}
+
+	foreach (QString const &element, secondMethodParsed) {
+		if (!containsOnly(element, ' ')) {
+			return false;
+		}
+	}
+
+	return true;
 }

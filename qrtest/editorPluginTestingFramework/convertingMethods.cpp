@@ -39,9 +39,11 @@ QStringList ConvertingMethods::convertIntIntoStringList(int const &integer)
 	return convertStringIntoStringList(stringRepresentation);
 }
 
-QString ConvertingMethods::transformateOutput(QStringList const &output
+QString ConvertingMethods::transformateOutput(
+		QStringList const &output
 		, Id const &id
-		, QString const &name)
+		, QString const &name
+		)
 {
 	QString result;
 	if (name == "") {
