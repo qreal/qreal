@@ -70,8 +70,7 @@ public slots:
 			, QString const &sourceProject = QString());
 	int currentRevision(QString const &target = QString(), bool const reportErrors = false
 			, QString const &sourceProject = QString());
-
-	void doAfterOperationIsFinished(QVariant &tag);
+	void doAfterOperationIsFinished(QVariant const &tag);
 
 signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);

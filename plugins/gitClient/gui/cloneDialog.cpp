@@ -10,7 +10,7 @@ CloneDialog::CloneDialog(QWidget *parent)
 	: QDialog(parent)
 {
 	mUrlLabel = new QLabel(tr("Clone from: "));
-	mUrlComboBox = createComboBox(qReal::SettingsManager::value("cloneAdress", "").toString());
+	mUrlComboBox = createComboBox(qReal::SettingsManager::value("cloneUrl", "").toString());
 	QPushButton *ok = new QPushButton(tr("OK"), this);
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 

@@ -19,8 +19,9 @@ ViewInteraction::ViewInteraction(GitPlugin *pluginInstance)
 	connect(mPlugin, SIGNAL(pushComplete(bool)), this, SLOT(onPushComplete(bool)));
 	connect(mPlugin, SIGNAL(pullComplete(bool)), this, SLOT(onPullComplete(bool)));
 	connect(mPlugin, SIGNAL(resetComplete(bool)), this, SLOT(onResetComplete(bool)));
-	connect(mPlugin, SIGNAL(infoComplete(QString,bool)), this, SLOT(onInfoComplete(QString,bool)));
-
+	connect(mPlugin, SIGNAL(statusComplete(QString,bool)), this, SLOT(onStatusComplete(QString,bool)));
+	connect(mPlugin, SIGNAL(logComplete(QString,bool)), this, SLOT(onLogComplete(QString,bool)));
+	connect(mPlugin, SIGNAL(remoteListComplete(QString,bool)), this, SLOT(onRemoteListComplete(QString,bool)));
 }
 
 void ViewInteraction::initActions()
@@ -53,8 +54,14 @@ void ViewInteraction::initActions()
 	QAction *cleanAction = gitMenu->addAction(tr("Clean"));
 	connect(cleanAction, SIGNAL(triggered()), this, SLOT(cleanClicked()));
 
-	QAction *infoAction = gitMenu->addAction(tr("Info"));
-	connect(infoAction, SIGNAL(triggered()), this, SLOT(infoClicked()));
+	QAction *statusAction = gitMenu->addAction(tr("Status"));
+	connect(statusAction, SIGNAL(triggered()), this, SLOT(statusClicked()));
+
+	QAction *logAction = gitMenu->addAction(tr("Log"));
+	connect(logAction, SIGNAL(triggered()), this, SLOT(logClicked()));
+
+	QAction *remoteListAction = gitMenu->addAction(tr("Remote -v"));
+	connect(remoteListAction, SIGNAL(triggered()), this, SLOT(remoteListClicked()));
 
 	mMenu << qReal::ActionInfo(gitMenu, "tools");
 }
@@ -88,7 +95,9 @@ void ViewInteraction::cloneClicked()
 		return;
 	}
 
-	mPlugin->startClone(dialog->url());
+	QString url = dialog->url();
+	qReal::SettingsManager::setValue("cloneUrl",url);
+	mPlugin->startClone(url);
 }
 
 void ViewInteraction::remoteClicked()
@@ -98,7 +107,11 @@ void ViewInteraction::remoteClicked()
 		return;
 	}
 
-	mPlugin->doRemote(dialog->remoteName(), dialog->remoteAdress());
+	QString name = dialog->remoteName();
+	QString url = dialog->remoteUrl();
+	qReal::SettingsManager::setValue("remoteName", name);
+	qReal::SettingsManager::setValue("remoteUrl", url);
+	mPlugin->doRemote(name, url);
 }
 
 void ViewInteraction::commitClicked()
@@ -121,12 +134,8 @@ void ViewInteraction::pushClicked()
 	if (QDialog::Accepted != dialog->exec()) {
 		return;
 	}
-	//QString const target = dialog->target();
 	QString const remote = dialog->url();
-
-	//qReal::SettingsManager::setValue("pushTarget", target);
-	qReal::SettingsManager::setValue("remote", remote);
-
+	qReal::SettingsManager::setValue("remoteName", remote);
 	mPlugin->startPush(remote);
 }
 
@@ -137,9 +146,9 @@ void ViewInteraction::pullClicked()
 		return;
 	}
 
-	//qReal::SettingsManager::setValue("pushUrl", dialog->url);
-
-	mPlugin->startPull(dialog->url());
+	QString const remote = dialog->url();
+	qReal::SettingsManager::setValue("pullUrl", remote);
+	mPlugin->startPull(remote);
 }
 
 void ViewInteraction::resetClicked()
@@ -159,9 +168,19 @@ void ViewInteraction::cleanClicked()
 	}
 }
 
-void ViewInteraction::infoClicked()
+void ViewInteraction::statusClicked()
 {
-	QString answer = mPlugin->information();
+	QString answer = mPlugin->doStatus();
+}
+
+void ViewInteraction::logClicked()
+{
+	mPlugin->doLog();
+}
+
+void ViewInteraction::remoteListClicked()
+{
+	mPlugin->doRemoteList();
 }
 
 void ViewInteraction::showMessage(const QString &message)
@@ -224,19 +243,42 @@ void ViewInteraction::onResetComplete(const bool success)
 	}
 }
 
-void ViewInteraction::onInfoComplete(QString answer, const bool success)
+void ViewInteraction::onStatusComplete(QString answer, const bool success)
 {
 	if (!success)
 		return;
 
-	//showMessage(tr("Reseted successfully."));
-
-	ui::InfoDialog *dialog = new ui::InfoDialog(mMainWindowIface->windowWidget());
+	ui::StatusDialog *dialog = new ui::StatusDialog(mMainWindowIface->windowWidget());
 	dialog->message(answer);
 	if (QDialog::Accepted != dialog->exec()) {
 		return;
 	}
+}
 
+void ViewInteraction::onLogComplete(QString answer, const bool success)
+{
+	ui::LogDialog *dialog = new ui::LogDialog(mMainWindowIface->windowWidget());
+
+	if (answer.isEmpty()) {
+		dialog->message("You have no commits.");
+	} else {
+		dialog->message(answer);
+	}
+	if (QDialog::Accepted != dialog->exec()) {
+		return;
+	}
+}
+
+void ViewInteraction::onRemoteListComplete(QString answer, const bool success)
+{
+	//if (!success)
+	//	return;
+
+	ui::RemoteListDialog *dialog = new ui::RemoteListDialog(mMainWindowIface->windowWidget());
+	dialog->message(answer);
+	if (QDialog::Accepted != dialog->exec()) {
+		return;
+	}
 }
 
 void ViewInteraction::reopenWithoutSavings()

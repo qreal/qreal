@@ -67,7 +67,7 @@ bool ExternalClientPluginBase::invokeOperation(const QStringList &args
 }
 
 invocation::LongOperation* ExternalClientPluginBase::invokeOperationAsync(QStringList const &args
-		, QVariant tag
+		, QVariant const &tag
 		, bool needPreparation
 		, QString const &workingDir
 		, QString const &sourceProject
@@ -138,7 +138,7 @@ void ExternalClientPluginBase::onOperationComplete(invocation::LongOperation *op
 	bool result = functor->invocationState() == invocation::FinishedNormally;
 	result = result && functor->result();
 
-	QVariant tag = mRunningOperationsCallbacksMap[operation];
+	const QVariant tag = mRunningOperationsCallbacksMap[operation];
 	emit operationIsFinished(tag);
 }
 

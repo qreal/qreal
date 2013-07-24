@@ -10,9 +10,9 @@ RemoteDialog::RemoteDialog(QWidget *parent)
 	: QDialog(parent)
 {
 	mRemoteNameLabel = new QLabel(tr("Name: "));
-	mRemoteAdressLabel = new QLabel(tr("Adress: "));
+	mRemoteUrlLabel = new QLabel(tr("Adress: "));
 	mRemoteNameComboBox = createComboBox(qReal::SettingsManager::value("remoteName", "").toString());
-	mRemoteAdressComboBox = createComboBox(qReal::SettingsManager::value("remoreAdress", "").toString());
+	mRemoteUrlComboBox = createComboBox(qReal::SettingsManager::value("remoteUrl", "").toString());
 	QPushButton *ok = new QPushButton(tr("OK"), this);
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 
@@ -27,8 +27,8 @@ RemoteDialog::RemoteDialog(QWidget *parent)
 	QGridLayout *mainLayout = new QGridLayout;
 	mainLayout->addWidget(mRemoteNameLabel, 0, 0);
 	mainLayout->addWidget(mRemoteNameComboBox, 0, 1, 1, 2);
-	mainLayout->addWidget(mRemoteAdressLabel, 1, 0);
-	mainLayout->addWidget(mRemoteAdressComboBox, 1, 1);
+	mainLayout->addWidget(mRemoteUrlLabel, 1, 0);
+	mainLayout->addWidget(mRemoteUrlComboBox, 1, 1);
 	mainLayout->addLayout(buttonsLayout,2, 0, 1, 3);
 	setLayout(mainLayout);
 
@@ -58,8 +58,8 @@ QString RemoteDialog::remoteName() const
 	return mRemoteNameComboBox->currentText();
 }
 
-QString RemoteDialog::remoteAdress() const
+QString RemoteDialog::remoteUrl() const
 {
-	return mRemoteAdressComboBox->currentText();
+	return mRemoteUrlComboBox->currentText();
 }
 

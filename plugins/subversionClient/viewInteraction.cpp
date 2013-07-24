@@ -11,14 +11,10 @@ ViewInteraction::ViewInteraction(SubversionPlugin *pluginInstance)
 	, mPreferencesPage(new PreferencesVersioningPage())
 {
 	initActions();
-	connect(mPlugin, SIGNAL(checkoutComplete(bool,QString,bool))
-			, this, SLOT(onCheckoutComplete(bool,QString,bool)));
-	connect(mPlugin, SIGNAL(updateComplete(bool))
-			, this, SLOT(onUpdateComplete(bool)));
-	connect(mPlugin, SIGNAL(commitComplete(bool))
-			, this, SLOT(onCommitComplete(bool)));
-	connect(mPlugin, SIGNAL(revertComplete(bool))
-			, this, SLOT(onRevertComplete(bool)));
+	connect(mPlugin, SIGNAL(checkoutComplete(bool,QString,bool)), this, SLOT(onCheckoutComplete(bool,QString,bool)));
+	connect(mPlugin, SIGNAL(updateComplete(bool)), this, SLOT(onUpdateComplete(bool)));
+	connect(mPlugin, SIGNAL(commitComplete(bool)), this, SLOT(onCommitComplete(bool)));
+	connect(mPlugin, SIGNAL(revertComplete(bool)), this, SLOT(onRevertComplete(bool)));
 }
 
 void ViewInteraction::initActions()

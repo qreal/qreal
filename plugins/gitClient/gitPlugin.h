@@ -53,7 +53,8 @@ public slots:
 					, QString const &targetFolder = QString());
 	void startCommit(QString const &message, QString const &from  = QString()
 			, QString const &sourceProject = QString());
-	void doRemote(QString const &remote, QString const &adress, QString const &targerFolder = QString());
+	void doRemote(QString const &remote, QString const &adress
+			, QString const &targerFolder = QString());
 	void startPush(QString const &remote, QString const &sourceProject = QString()
 			, QString const &targetFolder = QString());
 	void startPull(QString const &remote, QString const &targetFolder = QString());
@@ -63,8 +64,10 @@ public slots:
 	bool doClean();
 	bool doUserNameConfig();
 	bool doUserEmailConfig();
-
-	void doAfterOperationIsFinished(QVariant &tag);
+	QString doStatus();
+	QString doLog(QStringList const &format = QStringList(), bool const &quiet = false);
+	QString doRemoteList();
+	void doAfterOperationIsFinished(QVariant const &tag);
 signals:
 	void workingCopyDownloaded(const bool success, QString const &targetProject);
 	void workingCopyUpdated(const bool success);
@@ -80,16 +83,15 @@ signals:
 	void cleanComplete(bool const success);
 	void addComplete(bool const success);
 	void removeComplete(bool const success);
-	void infoComplete(QString const &answer, bool const success);
+	void statusComplete(QString const &answer, bool const success);
+	void logComplete(QString const &answer, bool const success);
+	void remoteListComplete(QString const &answer, bool const success);
 	void operationComplete(QString const &name, bool const success);
 protected:
 	// External client overloads
 	virtual int timeout() const;
 	virtual QString tempFolder() const;
 private:
-	/*QString infoToRepoUrl(QString &repoInfo);
-	int infoToRevision(QString const &repoInfo);*/
-
 	void onCloneComplete(bool const result);
 	void onRemoteComplete(bool const result);
 	void onCommitComplete(bool const result);
