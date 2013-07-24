@@ -17,6 +17,7 @@ HEADERS += umllib/edgeElement.h \
 	umllib/private/foldCommand.h \
 	umllib/private/reshapeEdgeCommand.h \
 	umllib/private/fontCache.h \
+    umllib/private/expandCommand.h
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -37,6 +38,7 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/private/foldCommand.cpp \
 	umllib/private/reshapeEdgeCommand.cpp \
 	umllib/private/fontCache.cpp \
+    umllib/private/expandCommand.cpp
 
 RESOURCES += \
 	umllib/contextIcons.qrc \

@@ -128,6 +128,9 @@ public:
 
 	void highlightEdges();
 
+	void changeExpanded();
+	bool isExpanded() const;
+
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
 
@@ -145,9 +148,17 @@ public:
 	void changeFoldState();
 
 	/**
-	 * @brief Sorts by y coordinate, used for correct sorting children of sorting container
+	 * Calls resize(QRectF newContents, QPointF newPos) with
+	 * newPos equals to current position of node and
+	 * newContents equals to current shape (mContents).
 	 */
-	bool operator<(NodeElement const &other) const;
+	void resize();
+
+	/**
+	 * @brief sortedChildren
+	 * @return children of sorting container sorted in correct order
+	 */
+	IdList sortedChildren() const;
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
@@ -157,6 +168,7 @@ public slots:
 
 private slots:
 	void updateNodeEdges();
+	void initRenderedDiagram();
 
 private:
 	enum DragState {
@@ -189,13 +201,6 @@ private:
 	 */
 	void resize(QRectF const &newContents);
 
-	/**
-	 * Calls resize(QRectF newContents, QPointF newPos) with
-	 * newPos equals to current position of node and
-	 * newContents equals to current shape (mContents).
-	 */
-	void resize();
-
 	void drawLinesForResize(QPainter *painter);
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
@@ -227,7 +232,11 @@ private:
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
+	void updateChildrenOrder();
+
 	void initEmbeddedLinkers();
+
+	QRectF diagramRenderingRect() const;
 
 	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
 
@@ -251,6 +260,8 @@ private:
 
 	SdfRenderer *mPortRenderer;
 	SdfRenderer *mRenderer;
+
+	bool mIsExpanded;
 
 	bool mIsFolded;
 	QRectF mFoldedContents;
@@ -278,4 +289,7 @@ private:
 
 	int mTimeOfUpdate;
 	QTimer *mTimer;
+
+	QImage mRenderedDiagram;
+	QTimer mRenderTimer;
 };

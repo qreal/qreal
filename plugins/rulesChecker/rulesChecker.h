@@ -64,6 +64,9 @@ private:
 	//! @return Id node with minimal incoming links count
 	Id findFirstNode() const;
 
+	IdList incomingSequenceFlow(Id const &id) const;
+	IdList outgoingSequenceFlow(Id const &id) const;
+
 	qrRepo::GraphicalRepoApi const *mGRepoApi;
 	qReal::gui::MainWindowInterpretersInterface *mWindowInterface;
 
