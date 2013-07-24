@@ -12,18 +12,18 @@ RobotsBlockParser::RobotsBlockParser(ErrorReporterInterface *errorReporter)
 	setReservedVariables();
 }
 
-Number RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &pos, const Id &curId)
+Number *RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &pos, const Id &curId)
 {
 	mCurrentId = curId;
 
 	if (isEmpty(stream, pos)) {
 		error(emptyProcess);
-		return Number(0, Number::intType);
+		return new Number(0, Number::intType);
 	}
 	QStringList exprs = stream.split(";", QString::SkipEmptyParts);
 	for (int i = 0; i < (exprs.length() - 1); ++i) {
 		if (mHasParseErrors) {
-			return Number(0, Number::intType);
+			return new Number(0, Number::intType);
 		}
 		int position = 0;
 		QString expr = exprs[i];
@@ -33,10 +33,10 @@ Number RobotsBlockParser::standartBlockParseProcess(const QString &stream, int &
 	int position = 0;
 	QString valueExpression = exprs.last();
 	if (!valueExpression.contains("="))
-		return parseExpression(valueExpression, position);
+		return parseArithmeticExpression(valueExpression, position);
 	else {
 		error(noExpression);
-		return Number(0, Number::intType);
+		return new Number(0, Number::intType);
 	}
 }
 
@@ -94,16 +94,16 @@ bool RobotsBlockParser::isLetter(const QChar &symbol)
 void RobotsBlockParser::setReservedVariables()
 {
 	QString const pi = "pi";
-	Number value = Number(3.14159265, Number::doubleType);
+	Number *value = new Number(3.14159265, Number::doubleType);
 	mVariables.insert(pi, value);
 	for (int i = 1; i <= 4; ++i) {
 		QString const variable = sensorVariablePerfix + QString::number(i);
-		mVariables.insert(variable, Number(0, Number::intType));
+		mVariables.insert(variable, new Number(0, Number::intType));
 		mReservedVariables.append(variable);
 	}
 	for (int i = 0; i < 3; ++i) {
 		QString const variable = encoderVariablePerfix + ('A' + i);
-		mVariables.insert(variable, Number(0, Number::intType));
+		mVariables.insert(variable, new Number(0, Number::intType));
 		mReservedVariables.append(variable);
 	}
 }

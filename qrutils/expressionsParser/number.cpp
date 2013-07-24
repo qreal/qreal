@@ -42,6 +42,11 @@ QString Number::toString() const
 	return mNumber.toString();
 }
 
+QVariant Number::evaluate()
+{
+	return mNumber;
+}
+
 void Number::operator+=(Number add)
 {
 	Number::Type t = add.property("Type").toInt() ? Number::intType : Number::doubleType;

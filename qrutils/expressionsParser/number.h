@@ -3,10 +3,11 @@
 #include <QVariant>
 
 #include "../utilsDeclSpec.h"
+#include "abstractType.h"
 
 namespace utils {
 
-class QRUTILS_EXPORT Number {
+class QRUTILS_EXPORT Number : public AbstractType{
 public:
 	enum Type {
 		doubleType = 0,
@@ -20,6 +21,7 @@ public:
 
 	QVariant property(QString name);
 	void setProperty(QString name, QVariant value);
+	QVariant evaluate();
 	QString toString() const;
 
 	void operator+=(Number add);

@@ -402,7 +402,7 @@ void Interpreter::responseSlotC(int encoderValue)
 
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
-	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
+	(*(mParser->getVariables()))[sensorVariableName] = new utils::Number(sensorValue, utils::Number::intType);
 	Tracer::debug(tracer::autoupdatedSensorValues, "Interpreter::updateSensorValues", sensorVariableName + QString::number(sensorValue));
 }
 
