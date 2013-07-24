@@ -122,21 +122,38 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 			QRectF rect = sceneRect();
 			qreal dx = (event->localPos().x() - mMouseOldPosition.x());
 			qreal dy = (event->localPos().y() - mMouseOldPosition.y());
-			if (!rect.contains(event->localPos())) {
-				if (dx > 0) {
-					rect.setRight(rect.right() + dx);
-				} else {
-					rect.setLeft(rect.left() + dx);
-				}
-				if (dy > 0) {
-					rect.setBottom(rect.bottom() + dy);
-				} else {
-					rect.setTop(rect.top() + dy);
-				}
-			}
+
+			QRect visibleRect = viewport()->rect();
+			QRectF newRect = mapToScene(visibleRect).boundingRect();
+
 			rect.moveLeft(rect.left() - dx);
 			rect.moveTop(rect.top() - dy);
-			scene()->setSceneRect(rect);
+
+			if (dx > 0) {
+				rect.setRight(rect.right() + dx);
+				if (newRect.left() - dx >= 0) {
+					rect.setLeft(rect.left() + dx);
+				}
+			} else {
+				rect.setLeft(rect.left() + dx);
+				if (newRect.right() - dx <= rect.right()) {
+					rect.setRight(rect.right() + dx);
+				}
+			}
+			if (dy > 0) {
+				rect.setBottom(rect.bottom() + dy);
+				if (newRect.top() - dy >= 0) {
+					rect.setTop(rect.top() + dy);
+				}
+			} else {
+				rect.setTop(rect.top() + dy);
+				if (newRect.bottom() - dy <= rect.bottom()) {
+					rect.setBottom(rect.bottom() + dy);
+				}
+			}
+
+			setSceneRect(rect);
+
 			translate(dx, dy);
 		}
 		mMouseOldPosition = event->localPos();

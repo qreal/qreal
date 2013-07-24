@@ -51,8 +51,8 @@ void MiniMap::setScene(QGraphicsScene *scene)
 void MiniMap::showScene()
 {
 	if (scene() != NULL) {
-		setSceneRect(scene()->sceneRect());
-		fitInView(sceneRect(), Qt::KeepAspectRatio);
+//		setSceneRect(scene()->sceneRect());
+		fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
 	}
 }
 
