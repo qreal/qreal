@@ -30,6 +30,10 @@ public:
 	/// Activates binded with explosion element or creates default explosed element
 	void handleDoubleClick(Id const &id);
 
+	/// Adds commands of explosion creation to given element creation command
+	void handleCreationWithExplosion(commands::AbstractCommand *createCommand
+			, Id const &source, Id const &target);
+
 private slots:
 	void addExplosionActionTriggered();
 	void goToActionTriggered();

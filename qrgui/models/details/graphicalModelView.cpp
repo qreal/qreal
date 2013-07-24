@@ -64,5 +64,3 @@ void GraphicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int sta
 	Q_UNUSED(start);
 	Q_UNUSED(end);
 }
-
-

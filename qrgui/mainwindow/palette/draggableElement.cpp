@@ -17,20 +17,13 @@ using namespace gui;
 
 DraggableElement::DraggableElement(
 		MainWindow &mainWindow
-		, Id const &id
-		, QString const &name
-		, QString const &description
-		, QIcon const &icon
-		, QSize const &preferredSize
+		, PaletteElement const &data
 		, bool iconsOnly
 		, EditorManagerInterface &editorManagerProxy
 		, QWidget *parent
 		)
 	: QWidget(parent)
-	, mId(id)
-	, mIcon(icon)
-	, mPreferredSize(preferredSize)
-	, mText(name)
+	, mData(data)
 	, mEditorManagerProxy(editorManagerProxy)
 	, mMainWindow(mainWindow)
 {
@@ -39,17 +32,17 @@ DraggableElement::DraggableElement(
 
 	int const size = iconsOnly ? 50 : 30;
 	mLabel = new QLabel(this);
-	mLabel->setPixmap(mIcon.pixmap(size - 2, size - 2));
+	mLabel->setPixmap(mData.icon().pixmap(size - 2, size - 2));
 	layout->addWidget(mLabel);
 	if (!iconsOnly) {
 		QLabel *text = new QLabel(this);
-		text->setText(mText);
+		text->setText(mData.name());
 		layout->addWidget(text);
 		layout->addStretch();
 	}
 
 	setLayout(layout);
-	QString modifiedDescription = description;
+	QString modifiedDescription = mData.description();
 	if (!modifiedDescription.isEmpty()) {
 		modifiedDescription.insert(0, "<body>");  //turns alignment on
 		setToolTip(modifiedDescription);
@@ -59,27 +52,32 @@ DraggableElement::DraggableElement(
 
 QIcon DraggableElement::icon() const
 {
-	return mIcon;
+	return mData.icon();
 }
 
 QString DraggableElement::text() const
 {
-	return mText;
+	return mData.name();
 }
 
 Id DraggableElement::id() const
 {
-	return mId;
+	return mData.id();
+}
+
+Id DraggableElement::explosionTarget() const
+{
+	return mData.explosionTarget();
 }
 
 QSize DraggableElement::iconsPreferredSize() const
 {
-	return mPreferredSize;
+	return mData.preferredSize();
 }
 
 void DraggableElement::setIconSize(int size)
 {
-	mLabel->setPixmap(mIcon.pixmap(size , size));
+	mLabel->setPixmap(mData.icon().pixmap(size , size));
 }
 
 void DraggableElement::changePropertiesPaletteActionTriggered()
@@ -235,6 +233,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		stream << QString("(" + child->text() + ")");
 		stream << QPointF(0, 0);
 		stream << isFromLogicalModel;
+		stream << mData.explosionTarget().toString();
 
 		QMimeData *mimeData = new QMimeData;
 		mimeData->setData("application/x-real-uml-data", itemData);

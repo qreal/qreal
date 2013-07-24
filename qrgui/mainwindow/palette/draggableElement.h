@@ -10,6 +10,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLabel>
 
+#include "paletteElement.h"
 #include "../mainWindow.h"
 #include "../pluginManager/proxyEditorManager.h"
 #include "../../qrkernel/ids.h"
@@ -24,11 +25,7 @@ class DraggableElement : public QWidget
 
 public:
 	DraggableElement(MainWindow &mainWindow
-		, Id const &id
-		, QString const &name
-		, QString const &description
-		, QIcon const &icon
-		, QSize const &preferredSize
+		, PaletteElement const &paletteElement
 		, bool iconsOnly
 		, EditorManagerInterface &editorManagerProxy
 		, QWidget *parent = NULL
@@ -42,6 +39,10 @@ public:
 
 	/// Id of an element.
 	Id id() const;
+
+	/// The id of the element which will be a target for an explosion of
+	/// newly created element
+	Id explosionTarget() const;
 
 	void setIconSize(int size);
 
@@ -59,10 +60,8 @@ private:
 
 	void checkElementForChildren();
 
-	Id mId;
-	QIcon mIcon;
-	QSize mPreferredSize;
-	QString mText;
+
+	PaletteElement const mData;
 	QLabel *mLabel;
 	EditorManagerInterface &mEditorManagerProxy;  // Does not have ownership.
 	MainWindow &mMainWindow;

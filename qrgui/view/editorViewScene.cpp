@@ -479,20 +479,23 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 		, CreateElementCommand **createCommandPointer, bool executeImmediately)
 {
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
-	QDataStream in_stream(&itemData, QIODevice::ReadOnly);
+	QDataStream inStream(&itemData, QIODevice::ReadOnly);
 
 	QString uuid = "";
 	QString pathToItem = "";
 	QString name = "";
 	QPointF shiftToParent;
 	bool isFromLogicalModel = false;
-	in_stream >> uuid;
-	in_stream >> pathToItem;
-	in_stream >> name;
-	in_stream >> shiftToParent;
-	in_stream >> isFromLogicalModel;
+	QString explosionTargetUuid = "";
+	inStream >> uuid;
+	inStream >> pathToItem;
+	inStream >> name;
+	inStream >> shiftToParent;
+	inStream >> isFromLogicalModel;
+	inStream >> explosionTargetUuid;
 
 	Id const id = Id::loadFromString(uuid);
+	Id const explosionTarget = Id::loadFromString(explosionTargetUuid);
 
 	if(mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
 		CreateGroupCommand *createGroupCommand = new CreateGroupCommand(
@@ -539,7 +542,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 		Id parentId = newParent ? newParent->id() : mMVIface->rootId();
 
 		createSingleElement(id, name, e, position, parentId, isFromLogicalModel
-				, createCommandPointer, executeImmediately);
+				, explosionTarget, createCommandPointer, executeImmediately);
 
 		NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
 		if (parentNode) {
@@ -556,7 +559,8 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 
 void EditorViewScene::createSingleElement(Id const &id, QString const &name, Element * e
 		, QPointF const &position, Id const &parentId, bool isFromLogicalModel
-		, CreateElementCommand **createCommandPointer, bool executeImmediately)
+		, Id const &explosionTarget, CreateElementCommand **createCommandPointer
+		, bool executeImmediately)
 {
 	CreateElementCommand *createCommand = new CreateElementCommand(
 				mMVIface->logicalAssistApi()
@@ -570,6 +574,7 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, Ele
 	if (createCommandPointer) {
 		(*createCommandPointer) = createCommand;
 	}
+	mExploser->handleCreationWithExplosion(createCommand, id, explosionTarget);
 	if (executeImmediately) {
 		if (dynamic_cast<NodeElement*>(e)) {
 			QSize const size = mMVIface->graphicalAssistApi()->editorManagerInterface().iconSize(id);

@@ -20,36 +20,27 @@ PaletteTreeWidget::PaletteTreeWidget(PaletteTree &palette, MainWindow &mainWindo
 	mEditorManager = &editorManagerProxy;
 }
 
-void PaletteTreeWidget::addGroups(QMap<QString, QStringList> const &groups
+void PaletteTreeWidget::addGroups(QMap<QString, QList<PaletteElement> > &groups
 		, QMap<QString, QString> const &descriptions
-		, IdList const &allElements, bool hideIfEmpty
+		, bool hideIfEmpty
 		, QString const &diagramFriendlyName)
 {
 	if (groups.isEmpty() && hideIfEmpty) {
 		hide();
 		return;
 	}
-	show();
+
 	clear();
+	show();
+
 	int expandedCount = 0;
 	foreach (QString const &group, groups.keys()) {
 		QTreeWidgetItem *item = new QTreeWidgetItem;
 		item->setText(0, group);
 		item->setToolTip(0, descriptions[group]);
 
-		IdList tmpIdList;
-		foreach (QString const &elementName, groups[group]) {
-			foreach (Id const &element, allElements) {
-				if (element.element() == elementName) {
-					tmpIdList << element;
-					break;
-				}
-			}
-		}
-		qSort(tmpIdList.begin(), tmpIdList.end(), idLessThan);
-
-		addItemsRow(tmpIdList, item);
-
+		sortByFriendlyName(groups[group]);
+		addItemsRow(groups[group], item);
 		addTopLevelItem(item);
 
 		if (SettingsManager::value(diagramFriendlyName + group, 0).toBool()) {
@@ -62,54 +53,37 @@ void PaletteTreeWidget::addGroups(QMap<QString, QStringList> const &groups
 	}
 }
 
-void PaletteTreeWidget::addItemType(Id const &id, QString const &name, QString const &description
-		, QIcon const &icon, QSize const &preferredSize, QTreeWidgetItem *parent)
+void PaletteTreeWidget::addItemType(PaletteElement const &data, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(mMainWindow, id, name
-			, description, icon, preferredSize
-			, mPaletteTree.iconsView(), *mEditorManager
-			);
+	DraggableElement *element = new DraggableElement(mMainWindow, data
+			, mPaletteTree.iconsView(), *mEditorManager);
 
 	parent->addChild(leaf);
 	setItemWidget(leaf, 0, element);
 }
 
-void PaletteTreeWidget::addItemsRow(IdList const &tmpIdList, QTreeWidgetItem *item)
+void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWidgetItem *parent)
 {
 	if (mPaletteTree.itemsCountInARow() == 1 || !mPaletteTree.iconsView()) {
-		foreach (Id const &element, tmpIdList) {
-			addItemType(element, mEditorManager->friendlyName(element)
-					, mEditorManager->description(element)
-					, mEditorManager->icon(element)
-					, mEditorManager->iconSize(element)
-					, item);
+		foreach (PaletteElement const &element, items) {
+			addItemType(element, parent);
 		}
 		return;
 	}
-	for (IdList::ConstIterator it = tmpIdList.begin(); it != tmpIdList.end();) {
+	for (QList<PaletteElement>::ConstIterator it = items.begin(); it != items.end();) {
 		QWidget *field = new QWidget;
 		QHBoxLayout *layout = new QHBoxLayout;
 		int count = mPaletteTree.itemsCountInARow();
-		for (; it != tmpIdList.end() && --count > 0; ++it) {
-			DraggableElement *element = new DraggableElement(
-					mMainWindow
-					, *it
-					, mEditorManager->friendlyName(*it)
-					, mEditorManager->description(*it)
-					, mEditorManager->icon(*it)
-					, mEditorManager->iconSize(*it)
-					, true
-					, *mEditorManager
-					);
-
-			element->setToolTip(mEditorManager->friendlyName(*it));
+		for (; it != items.end() && --count > 0; ++it) {
+			DraggableElement *element = new DraggableElement(mMainWindow, *it, true, *mEditorManager);
+			element->setToolTip((*it).description());
 			layout->addWidget(element, count > 0 ? 50 : 0);
 		}
 		field->setLayout(layout);
 		field->setMinimumHeight(80);
 		QTreeWidgetItem *leaf = new QTreeWidgetItem;
-		item->addChild(leaf);
+		parent->addChild(leaf);
 		if (mEditable) {
 			leaf->setFlags(leaf->flags() | Qt::ItemIsEditable);
 		}
@@ -193,6 +167,11 @@ void PaletteTreeWidget::sortByFriendlyName(IdList &ids)
 	qSort(ids.begin(), ids.end(), idLessThan);
 }
 
+void PaletteTreeWidget::sortByFriendlyName(QList<PaletteElement> &elements)
+{
+	qSort(elements.begin(), elements.end(), paletteElementLessThan);
+}
+
 void PaletteTreeWidget::editItem(QTreeWidgetItem * const item)
 {
 	edit(indexFromItem(item));
@@ -230,4 +209,9 @@ void PaletteTreeWidget::collapseChildren(QTreeWidgetItem *item)
 bool PaletteTreeWidget::idLessThan(Id const &s1, Id const &s2)
 {
 	return mEditorManager->friendlyName(s1).toLower() < mEditorManager->friendlyName(s2).toLower();
+}
+
+bool PaletteTreeWidget::paletteElementLessThan(PaletteElement const &s1, PaletteElement const &s2)
+{
+	return idLessThan(s1.id(), s2.id());
 }
