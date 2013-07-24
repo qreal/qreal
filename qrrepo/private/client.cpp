@@ -80,7 +80,7 @@ qReal::IdList Client::elementsByProperty(QString const &property, bool sensitivi
 	return result;
 }
 
-qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue, bool sensitivity
+QMap<QString, qReal::Id> Client::elementsByPropertyContent(QString const &propertyValue, bool sensitivity
 		, bool regExpression) const
 {
 	Qt::CaseSensitivity caseSensitivity;
@@ -92,21 +92,21 @@ qReal::IdList Client::elementsByPropertyContent(QString const &propertyValue, bo
 	}
 
 	QRegExp *regExp = new QRegExp(propertyValue, caseSensitivity);
-	IdList result;
+	QMap<QString, qReal::Id> result;
 
 	foreach (Object *element, mObjects.values()) {
 		QMapIterator<QString, QVariant> iterator = element->propertiesIterator();
 		if (regExpression) {
 			while (iterator.hasNext()) {
 				if (iterator.next().value().toString().contains(*regExp)) {
-					result.append(mObjects.key(element));
+					result.insert(iterator.key(), mObjects.key(element));
 					break;
 				}
 			}
 		} else {
 			while (iterator.hasNext()) {
 				if (iterator.next().value().toString().contains(propertyValue, caseSensitivity)) {
-					result.append(mObjects.key(element));
+					result.insert(iterator.key(), mObjects.key(element));
 					break;
 				}
 			}

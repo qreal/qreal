@@ -18,6 +18,16 @@ void FindManager::handleRefsDialog(qReal::Id const &id)
 	mMainWindow->selectItemOrDiagram(id);
 }
 
+QMap<QString, qReal::Id> FindManager::foundByProperties(QString key, QString currentMode
+		, bool sensitivity, bool regExpression)
+{
+	if (currentMode == tr("by property content")) {
+		return mControlApi.elementsByPropertyContent(key, sensitivity, regExpression);
+	} else {
+		return QMap<QString, qReal::Id>();
+	}
+}
+
 qReal::IdList FindManager::foundByMode(QString key, QString currentMode, bool sensitivity
 		, bool regExpression)
 {
@@ -28,8 +38,6 @@ qReal::IdList FindManager::foundByMode(QString key, QString currentMode, bool se
 		return mLogicalApi.elementsByType(key, sensitivity, regExpression);
 	} else if (currentMode == tr("by property")) {
 		return mControlApi.elementsByProperty(key, sensitivity, regExpression);
-	} else if (currentMode == tr("by property content")) {
-		return mControlApi.elementsByPropertyContent(key, sensitivity, regExpression);
 	} else {
 		return qReal::IdList();
 	}
@@ -43,14 +51,28 @@ QMap<QString, QString> FindManager::findItems(QStringList const &searchData)
 
 	for(int i = 1; i < searchData.length(); i++) {
 		if (searchData[i] != tr("case sensitivity") && searchData[i] != tr("by regular expression")) {
-			qReal::IdList byMode = foundByMode(searchData.first(), searchData[i], sensitivity
-					, regExpression);
-			foreach (qReal::Id currentId, byMode) {
-				if (found.contains(currentId.toString())) {
-					found[currentId.toString()] += tr(", ") + searchData[i];
-					continue;
+			if (searchData[i] == tr("by property content")) {
+				QMap<QString, qReal::Id> byProperties = foundByProperties(searchData.first(), searchData[i],
+					sensitivity, regExpression);
+				foreach (qReal::Id currentId, byProperties) {
+					if (found.contains(currentId.toString())) {
+						found[currentId.toString()] += tr(", ") + searchData[i]
+							+ tr("(") + byProperties.key(currentId) + tr(")");
+						continue;
+					}
+					found.insert(currentId.toString(), tr("   :: ") + searchData[i]
+						+ tr("(") + byProperties.key(currentId) + tr(")"));
 				}
-				found.insert(currentId.toString(), tr("   :: ") + searchData[i]);
+			} else {
+				qReal::IdList byMode = foundByMode(searchData.first(), searchData[i], sensitivity
+						, regExpression);
+				foreach (qReal::Id currentId, byMode) {
+					if (found.contains(currentId.toString())) {
+						found[currentId.toString()] += tr(", ") + searchData[i];
+						continue;
+					}
+					found.insert(currentId.toString(), tr("   :: ") + searchData[i]);
+				}
 			}
 		}
 	}

@@ -34,7 +34,7 @@ public:
 
 	/// returning IdList of elements that have input property content
 	/// @param name - string that should be contained by names of elements that have input property content
-	qReal::IdList elementsByPropertyContent(QString const &property, bool sensitivity, bool regExpression) const;
+	QMap<QString, qReal::Id> elementsByPropertyContent(QString const &property, bool sensitivity, bool regExpression) const;
 
 	qReal::IdList children(const qReal::Id &id) const;
 	qReal::Id parent(const qReal::Id &id) const;
