@@ -58,7 +58,7 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 
 		root.setAttribute("parent", object->parent().toString());
 		root.appendChild(idListToXml("children", object->children(), doc));
-		root.appendChild(propertiesToXml(object, doc));
+		root.appendChild(createPropertiesXmlElement(object, doc));
 
 		OutFile out(filePath);
 		doc.save(out(), 2);
@@ -359,9 +359,8 @@ QDomElement Serializer::idListToXml(QString const &attributeName, IdList const &
 	return result;
 }
 
-QDomElement Serializer::propertiesToXml(Object const *object, QDomDocument &doc)
+void Serializer::getSingleElementProperties(QDomElement &result, Object const *object, QDomDocument &doc)
 {
-	QDomElement result = doc.createElement("properties");
 	QMapIterator<QString, QVariant> i = object->propertiesIterator();
 	while (i.hasNext()) {
 		i.next();
@@ -378,6 +377,17 @@ QDomElement Serializer::propertiesToXml(Object const *object, QDomDocument &doc)
 			result.appendChild(property);
 		}
 	}
+}
+
+QDomElement Serializer::createPropertiesXmlElement(Object const *object, QDomDocument &doc, Object const *logicalObject)
+{
+	QDomElement result = doc.createElement("properties");
+	getSingleElementProperties(result, object, doc);
+
+	if (logicalObject) {
+		getSingleElementProperties(result, logicalObject, doc);
+	}
+
 	return result;
 }
 
@@ -385,4 +395,74 @@ void Serializer::decompressFile(QString const &fileName)
 {
 	FolderCompressor().decompressFolder(fileName, mWorkingDir);
 }
+
+void Serializer::exportTo(const QString &targetFile, QHash<qReal::Id, Object*> const &objects)
+{
+	Q_ASSERT_X(!targetFile.isEmpty(), "XmlSerializer::exportTo(...)", "target filename is empty");
+
+	QDomDocument doc;
+	QDomElement root = doc.createElement("project");
+	doc.appendChild(root);
+
+	foreach (Id const &id, objects[Id::rootId()]->children()) {
+
+		// skip logical elements of diagrams
+
+		if (objects[id]->logicalId().toString() == "qrm:/") {
+			continue;
+		}
+
+		exportDiagram(id, doc, root, objects);
+	}
+
+	OutFile out(targetFile);
+	doc.save(out(), 4);
+}
+
+void Serializer::exportDiagram(const Id &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+{
+	QDomElement diagram = doc.createElement("diagram");
+	diagram.setAttribute("id", diagramId.toString());
+	diagram.appendChild(createPropertiesXmlElement(objects[diagramId], doc, objects[objects[diagramId]->logicalId()]));
+
+	QDomElement elements = doc.createElement("elements");
+
+	foreach (Id const &id, objects[diagramId]->children()) {
+		exportElement(id, doc, elements, objects);
+	}
+
+	diagram.appendChild(elements);
+
+	root.appendChild(diagram);
+}
+
+void Serializer::exportElement(const Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+{
+	QDomElement element = doc.createElement("element");
+	element.setAttribute("id", id.toString());
+
+	element.appendChild(createPropertiesXmlElement(objects[id], doc, objects[objects[id]->logicalId()]));
+	exportChildren(id, doc, element, objects);
+
+	root.appendChild(element);
+}
+
+void Serializer::exportChildren(const Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+{
+	Object *object = objects[id];
+	int size = object->children().size();
+	if (size == 0) {
+		return;
+	}
+
+	QDomElement children = doc.createElement("children");
+	children.setAttribute("count", size);
+
+	foreach (Id const &id, object->children()) {
+		exportElement(id, doc, children, objects);
+	}
+
+	root.appendChild(children);
+}
+
 

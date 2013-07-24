@@ -21,16 +21,14 @@ HEADERS += \
 	$$PWD/private/serializer.h \
 	$$PWD/private/classes/object.h \
 	$$PWD/private/folderCompressor.h \
-	$$PWD/private/xmlSerializer.h
 
 SOURCES += \
 	$$PWD/private/client.cpp \
 	$$PWD/private/serializer.cpp \
 	$$PWD/private/classes/object.cpp \
 	$$PWD/private/folderCompressor.cpp \
-	$$PWD/private/xmlSerializer.cpp
 
-# API репозитория
+# repo API
 HEADERS += \
 	$$PWD/repoApi.h \
 	$$PWD/graphicalRepoApi.h \

@@ -22,6 +22,8 @@ public:
 	void saveToDisk(QList<Object *> const &objects) const;
 	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash);
 
+	void exportTo(QString const &targetFile, QHash<qReal::Id, Object*> const &objects);
+
 	void decompressFile(QString const &fileName);
 
 private:
@@ -43,7 +45,13 @@ private:
 	static QString serializeQPointF(QPointF const &p);
 	static QString serializeQPolygon(QPolygon const &p);
 	static QDomElement idListToXml(QString const &attributeName, qReal::IdList const &idList, QDomDocument &doc);
-	static QDomElement propertiesToXml(Object const *object, QDomDocument &doc);
+	static QDomElement createPropertiesXmlElement(Object const *object, QDomDocument &doc, Object const *logicalObject = NULL);
+	static void getSingleElementProperties(QDomElement &result, Object const *object, QDomDocument &doc);
+
+	static void exportDiagram(const qReal::Id &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportElement(const qReal::Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportChildren(const qReal::Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+
 
 	QString mWorkingDir;
 	QString mWorkingFile;

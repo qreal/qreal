@@ -456,12 +456,14 @@ void MainWindow::sceneSelectionChanged()
 
 void MainWindow::exportToXml()
 {
-	QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), ".", tr("*.xml"));
-	if (!fileName.endsWith(".xml")) {
-		fileName += ".xml";
-	}
+//	QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), ".", tr("*.xml"));
+//	if (!fileName.endsWith(".xml")) {
+//		fileName += ".xml";
+//	}
 
-	mModels->repoControlApi().exportToXml(fileName);
+//	mModels->repoControlApi().exportToXml(fileName);
+
+	mModels->repoControlApi().exportToXml("123.xml");
 }
 
 void MainWindow::refreshRecentProjectsList(QString const &fileName)

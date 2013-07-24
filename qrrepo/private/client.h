@@ -5,7 +5,6 @@
 #include "classes/object.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"
-#include "xmlSerializer.h"
 
 #include <QHash>
 
@@ -116,7 +115,6 @@ private:
 	/// This term keeps name of current save file for project
 	QString mWorkingFile;
 	Serializer mSerializer;
-	XmlSerializer mXmlSerializer;
 };
 
 }
