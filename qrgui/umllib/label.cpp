@@ -55,10 +55,6 @@ void Label::moveToParentCenter()
 		qreal titleCenter = y() - mContents.width() / 2;
 		qreal diff = parentCenter - titleCenter;
 
-		qDebug() << "parent: "<< parentCenter;
-		qDebug() << "title : "<< titleCenter;
-		qDebug() << diff;
-
 		setY(y() + diff);
 	}
 }
@@ -104,6 +100,11 @@ void Label::setParentContents(QRectF contents)
 {
 	mParentContents = contents;
 	moveToParentCenter();
+}
+
+void Label::setShouldCenter(bool shouldCenter)
+{
+	mWasMoved = !shouldCenter;
 }
 
 void Label::setProperties(qreal x, qreal y, qreal width, QString const &text)
