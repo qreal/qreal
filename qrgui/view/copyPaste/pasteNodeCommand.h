@@ -25,7 +25,13 @@ protected:
 	virtual void restoreElement();
 
 private:
+	//! @returns real new pos on scene
 	QPointF getNewPos() const;
+	//! @returns pos for normal CreateElementCommand usage
+	QPointF getNewGraphicalPos() const;
+	Id newGraphicalParent() const;
+
+	QPointF vectorFromContainer() const;
 
 	NodeData const mNodeData;
 	CreateElementCommand *mCreateCommand;

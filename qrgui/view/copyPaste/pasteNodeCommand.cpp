@@ -22,7 +22,8 @@ Id PasteNodeCommand::pasteNewInstance()
 	Id resultId = mResult;
 	if (!mCreateCommand) {
 		Id const typeId = mNodeData.id.type();
-		resultId = mScene->createElement(typeId.toString(), getNewPos(), true, &mCreateCommand, false);
+		resultId = mScene->createElement(typeId.toString(), getNewPos(), true, &mCreateCommand, false
+				, vectorFromContainer());
 		mCreateCommand->redo();
 		mCopiedIds->insert(mNodeData.id, resultId);
 		addPreAction(mCreateCommand);
@@ -35,14 +36,16 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 	Id resultId = mResult;
 	if (!mCreateCommand) {
 		mCreateCommand = new CreateElementCommand(
-				mMVIface->logicalAssistApi()
-				, mMVIface->graphicalAssistApi()
-				, mMVIface->rootId()
-				, mMVIface->rootId()
-				, mNodeData.logicalId
-				, true
-				, mMVIface->graphicalAssistApi()->name(mNodeData.id)
-				, getNewPos());
+			mMVIface->logicalAssistApi()
+			, mMVIface->graphicalAssistApi()
+			, mMVIface->rootId()
+			, newGraphicalParent()
+			, mNodeData.logicalId
+			, true
+			, mMVIface->graphicalAssistApi()->name(mNodeData.id)
+			, getNewGraphicalPos()
+			);
+
 		mCreateCommand->redo();
 		resultId = mCreateCommand->result();
 		mCopiedIds->insert(mNodeData.id, resultId);
@@ -75,5 +78,23 @@ void PasteNodeCommand::restoreElement()
 
 QPointF PasteNodeCommand::getNewPos() const
 {
-	return mNodeData.pos + (mCopiedIds->contains(mNodeData.parentId) ? QPointF() : mOffset);
+	return mNodeData.pos + (mCopiedIds->contains(mNodeData.parentId) ?
+			mMVIface->graphicalAssistApi()->position(mCopiedIds->value(mNodeData.parentId)) : mOffset);
+}
+
+QPointF PasteNodeCommand::getNewGraphicalPos() const
+{
+	return mNodeData.pos + (mCopiedIds->contains(mNodeData.parentId) ?
+			QPointF() : mOffset);
+}
+
+Id PasteNodeCommand::newGraphicalParent() const
+{
+	return (mCopiedIds->contains(mNodeData.parentId) ?
+			mCopiedIds->value(mNodeData.parentId) : mMVIface->rootId());
+}
+
+QPointF PasteNodeCommand::vectorFromContainer() const
+{
+	return (mNodeData.parentId == Id::rootId()) ? QPointF() : mNodeData.pos;
 }
