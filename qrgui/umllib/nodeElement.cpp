@@ -18,6 +18,7 @@
 #include "private/foldCommand.h"
 
 #include "../controller/commands/changeParentCommand.h"
+#include "../controller/commands/renameCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -131,7 +132,7 @@ QMap<QString, QVariant> NodeElement::logicalProperties() const
 
 void NodeElement::setName(QString value)
 {
-	mGraphicalAssistApi->setName(id(), value);
+	mController->execute(new RenameCommand(mGraphicalAssistApi, id(), value));
 }
 
 void NodeElement::setGeometry(QRectF const &geom)

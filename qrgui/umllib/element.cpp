@@ -1,6 +1,7 @@
 #include <QtWidgets>
 
 #include "element.h"
+#include "../controller/commands/changePropertyCommand.h"
 
 using namespace qReal;
 
@@ -56,7 +57,7 @@ QString Element::logicalProperty(QString const &roleName) const
 
 void Element::setLogicalProperty(QString const &roleName, QString const &value)
 {
-	mLogicalAssistApi->setPropertyByRoleName(logicalId(), value, roleName);
+	mController->execute(new commands::ChangePropertyCommand(mLogicalAssistApi, roleName, logicalId(), value));
 }
 
 void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
