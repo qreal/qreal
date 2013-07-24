@@ -1,4 +1,4 @@
-var version = "0.2.0";
+var version = "0.3.0";
 var year = 2013;
 
 window.onload = function() {
