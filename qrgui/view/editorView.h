@@ -4,6 +4,7 @@
 
 #include "editorViewScene.h"
 #include "editorViewMVIface.h"
+#include "QsKineticScroller.h"
 
 namespace qReal {
 
@@ -32,6 +33,7 @@ namespace qReal {
 		void toggleOpenGL(bool);
 		void zoomIn();
 		void zoomOut();
+		void zoom(double const zoomFactor);
 		void invalidateScene();
 
 	protected:
@@ -43,6 +45,11 @@ namespace qReal {
 		virtual void keyPressEvent(QKeyEvent *event);
 		virtual void keyReleaseEvent(QKeyEvent *event);
 
+	private slots:
+		void zoomInTime(qreal x);
+		void zoomOutTime(qreal x);
+		void animFinished();
+
 	private:
 		EditorViewMViface *mMVIface;
 		EditorViewScene *mScene;
@@ -50,6 +57,7 @@ namespace qReal {
 		bool mWheelPressed;
 		void checkGrid();
 		int mZoom;
+		QsKineticScroller *mKineticScroller;
 	};
 
 }
