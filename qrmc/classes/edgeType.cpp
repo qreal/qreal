@@ -141,6 +141,9 @@ void EdgeType::generateArrowEnd(QString &edgeClass, QString const &arrowEnd,
 	} else if (arrowEnd == "signal") {
 		edgeClass.replace(customTag, compiler->getTemplateUtils(signalTemplateTag))
 				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+	} else if (arrowEnd == "timer") {
+		edgeClass.replace(customTag, compiler->getTemplateUtils(timerTemplateTag))
+				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
 	}
 }
 
