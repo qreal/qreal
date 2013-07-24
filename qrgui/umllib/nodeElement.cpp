@@ -856,7 +856,6 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 			b.setColor(Qt::blue);
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
-			painter->save();
 
 			if (mElementImpl->isResizeable()) {
 				drawLinesForResize(painter);
@@ -1150,6 +1149,7 @@ void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool 
 
 void NodeElement::drawLinesForResize(QPainter *painter)
 {
+	painter->save();
 	painter->translate(mContents.topRight());
 	drawSeveralLines(painter, -1, 1);
 	painter->save();
