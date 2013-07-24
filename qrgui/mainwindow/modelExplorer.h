@@ -3,7 +3,7 @@
 #include <QtWidgets/QTreeView>
 
 #include "../controller/controller.h"
-#include "../models/details/modelsImplementation/abstractModel.h"
+#include "../models/details/exploser.h"
 #include "../toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
 
 namespace qReal {
@@ -18,6 +18,7 @@ public:
 
 	void setController(Controller * const controller);
 	void setAssistApi(details::ModelsAssistInterface * const model);
+	void setExploser(models::details::Exploser * const exploser);
 
 protected:
 	virtual void commitData(QWidget *editor);
@@ -25,6 +26,7 @@ protected:
 private:
 	Controller *mController; // Doesn`t take ownership
 	details::ModelsAssistInterface *mModel; // Doesn`t take ownership
+	models::details::Exploser *mExploser;
 };
 
 }

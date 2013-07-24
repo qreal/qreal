@@ -1937,6 +1937,7 @@ void MainWindow::initExplorers()
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setController(mController);
 	mUi->graphicalModelExplorer->setAssistApi(&mModels->graphicalModelAssistApi());
+	mUi->graphicalModelExplorer->setExploser(&mModels->logicalModelAssistApi().exploser());
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
@@ -1945,6 +1946,7 @@ void MainWindow::initExplorers()
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 	mUi->logicalModelExplorer->setController(mController);
 	mUi->logicalModelExplorer->setAssistApi(&mModels->logicalModelAssistApi());
+	mUi->logicalModelExplorer->setExploser(&mModels->logicalModelAssistApi().exploser());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 

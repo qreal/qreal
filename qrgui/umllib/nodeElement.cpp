@@ -132,7 +132,8 @@ QMap<QString, QVariant> NodeElement::logicalProperties() const
 
 void NodeElement::setName(QString value)
 {
-	mController->execute(new RenameCommand(mGraphicalAssistApi, id(), value));
+	mController->execute(new RenameCommand(mGraphicalAssistApi, id(), value
+			, &mLogicalAssistApi->exploser()));
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
