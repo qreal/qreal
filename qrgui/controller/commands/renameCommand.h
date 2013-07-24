@@ -12,8 +12,13 @@ namespace commands
 class RenameCommand : public AbstractCommand
 {
 public:
+	/// This overload gets old name automaticly using models api
 	RenameCommand(details::ModelsAssistInterface * const model
 			, Id const &id, QString const &newName);
+
+	/// This overload alows to specify old name manually
+	RenameCommand(details::ModelsAssistInterface * const model
+			, Id const &id, QString const &oldName, QString const &newName);
 
 protected:
 	virtual bool execute();

@@ -32,7 +32,6 @@
 #include "../controller/commands/removeElementCommand.h"
 #include "../controller/commands/doNothingCommand.h"
 #include "../controller/commands/arrangeLinksCommand.h"
-//#include "../controller/commands/selectElementCommand.h"
 #include "../controller/commands/updateElementCommand.h"
 
 #include "../umllib/element.h"
@@ -1961,12 +1960,16 @@ void MainWindow::initExplorers()
 	mUi->graphicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->graphicalModelExplorer->addAction(mUi->actionPasteReference);
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+	mUi->graphicalModelExplorer->setController(mController);
+	mUi->graphicalModelExplorer->setAssistApi(&mModels->graphicalModelAssistApi());
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionPasteReference);
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+	mUi->logicalModelExplorer->setController(mController);
+	mUi->logicalModelExplorer->setAssistApi(&mModels->logicalModelAssistApi());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 

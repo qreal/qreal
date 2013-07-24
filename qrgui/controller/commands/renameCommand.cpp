@@ -11,6 +11,15 @@ RenameCommand::RenameCommand(details::ModelsAssistInterface * const model
 {
 }
 
+RenameCommand::RenameCommand(details::ModelsAssistInterface * const model
+		, Id const &id, QString const &oldName, QString const &newName)
+	: mModel(model)
+	, mId(id)
+	, mOldName(oldName)
+	, mNewName(newName)
+{
+}
+
 bool RenameCommand::execute()
 {
 	return rename(mNewName);
