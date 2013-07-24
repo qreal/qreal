@@ -215,6 +215,7 @@ private slots:
 
 	void sceneSelectionChanged();
 
+	void exportToXml();
 	void exportToXmi();
 	void generateToJava();
 	void parseJavaLibraries();

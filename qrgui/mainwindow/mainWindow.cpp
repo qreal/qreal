@@ -190,7 +190,9 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
-	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+
+	connect(mUi->actionExportToXml, SIGNAL(triggered()), this, SLOT(exportToXml()));
 
 	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
 	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
@@ -450,6 +452,16 @@ void MainWindow::sceneSelectionChanged()
 			mUi->graphicalModelExplorer->setCurrentIndex(index);
 		}
 	}
+}
+
+void MainWindow::exportToXml()
+{
+	QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), ".", tr("*.xml"));
+	if (!fileName.endsWith(".xml")) {
+		fileName += ".xml";
+	}
+
+	mModels->repoControlApi().exportToXml(fileName);
 }
 
 void MainWindow::refreshRecentProjectsList(QString const &fileName)

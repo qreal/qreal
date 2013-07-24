@@ -1,13 +1,12 @@
 #pragma once
 
-#include "../../qrkernel/roles.h"
-#include "classes/object.h"
-
 #include <QtXml/QDomDocument>
 #include <QtCore/QVariant>
-
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+
+#include "../../qrkernel/roles.h"
+#include "classes/object.h"
 
 namespace qrRepo {
 namespace details {

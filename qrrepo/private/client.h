@@ -5,6 +5,7 @@
 #include "classes/object.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"
+#include "xmlSerializer.h"
 
 #include <QHash>
 
@@ -95,6 +96,7 @@ public:
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 	void remove(qReal::IdList list) const;
 	void setWorkingFile(QString const &workingDir);
+	void exportToXml(QString const &targetFile);
 
 	/// Returns current working file name
 	QString workingFile() const;
@@ -113,7 +115,8 @@ private:
 
 	/// This term keeps name of current save file for project
 	QString mWorkingFile;
-	Serializer serializer;
+	Serializer mSerializer;
+	XmlSerializer mXmlSerializer;
 };
 
 }
