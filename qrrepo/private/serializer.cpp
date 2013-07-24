@@ -422,8 +422,10 @@ void Serializer::exportTo(const QString &targetFile, QHash<qReal::Id, Object*> c
 void Serializer::exportDiagram(const Id &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
 {
 	QDomElement diagram = doc.createElement("diagram");
-	diagram.setAttribute("id", diagramId.toString());
-	diagram.appendChild(createPropertiesXmlElement(objects[diagramId], doc, objects[objects[diagramId]->logicalId()]));
+	diagram.setAttribute("logical_id", objects[diagramId]->logicalId().toString());
+	diagram.setAttribute("graphical_id", diagramId.toString());
+	diagram.setAttribute("name", objects[diagramId]->properties()["name"].toString());
+	exportProperties(diagramId, doc, diagram, objects);
 
 	QDomElement elements = doc.createElement("elements");
 
@@ -439,9 +441,11 @@ void Serializer::exportDiagram(const Id &diagramId, QDomDocument &doc, QDomEleme
 void Serializer::exportElement(const Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
 {
 	QDomElement element = doc.createElement("element");
-	element.setAttribute("id", id.toString());
+	element.setAttribute("name", objects[id]->properties()["name"].toString());
+	element.setAttribute("graphical_id", id.toString());
+	element.setAttribute("logical_id", objects[id]->logicalId().toString());
 
-	element.appendChild(createPropertiesXmlElement(objects[id], doc, objects[objects[id]->logicalId()]));
+	exportProperties(id, doc, element, objects);
 	exportChildren(id, doc, element, objects);
 
 	root.appendChild(element);
@@ -463,6 +467,46 @@ void Serializer::exportChildren(const Id &id, QDomDocument &doc, QDomElement &ro
 	}
 
 	root.appendChild(children);
+}
+
+void Serializer::exportProperties(const Id &id, QDomDocument &doc, QDomElement &root, const QHash<Id, Object *> &objects)
+{
+	QDomElement props = doc.createElement("properties");
+
+	Object *graphicalObject = objects[id];
+	Object *logicalObject = objects[graphicalObject->logicalId()];
+	QMap<QString, QVariant> properties;
+
+	QMapIterator<QString, QVariant> i = logicalObject->propertiesIterator();
+	while (i.hasNext()) {
+		i.next();
+		properties[i.key()] = i.value();
+
+	}
+	i = graphicalObject->propertiesIterator();
+	while (i.hasNext()) {
+		i.next();
+		properties[i.key()] = i.value();
+	}
+
+	foreach (QString const &key, properties.keys()) {
+		QDomElement prop = doc.createElement("property");
+
+		QString typeName = properties[key].typeName();
+		if (typeName == "qReal::IdList" && (properties[key].value<IdList>().size() != 0)) {
+			QDomElement list = idListToXml("list", properties[key].value<IdList>(), doc);
+			prop.appendChild(list);
+		} else if (properties[key].toString().isEmpty()) {
+			continue;
+		} else {
+			prop.setAttribute("value", properties[key].toString());
+		}
+		prop.setAttribute("name", key);
+
+		props.appendChild(prop);
+	}
+
+	root.appendChild(props);
 }
 
 

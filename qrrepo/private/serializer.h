@@ -51,6 +51,7 @@ private:
 	static void exportDiagram(const qReal::Id &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
 	static void exportElement(const qReal::Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
 	static void exportChildren(const qReal::Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportProperties(const qReal::Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
 
 
 	QString mWorkingDir;
