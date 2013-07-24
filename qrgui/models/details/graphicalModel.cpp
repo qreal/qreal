@@ -131,8 +131,10 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 			QString value = mApi.name(item->id());
 			return value.split(propertiesSeparator).at(0);
 		}
-		case Qt::EditRole:
-			return mApi.name(item->id());
+		case Qt::EditRole: {
+			QString value = mApi.name(item->id());
+			return value.split(propertiesSeparator).at(0);
+		}
 		case Qt::DecorationRole:
 			return mEditorManagerInterface.icon(item->id());
 		case roles::idRole:
