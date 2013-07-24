@@ -66,6 +66,7 @@ void PasteNodeCommand::restoreElement()
 	Id const logicalId = mMVIface->graphicalAssistApi()->logicalId(mResult);
 	mMVIface->graphicalAssistApi()->setProperties(logicalId, mNodeData.logicalProperties);
 	mMVIface->graphicalAssistApi()->setProperties(mResult, mNodeData.graphicalProperties);
+	mMVIface->graphicalAssistApi()->setPosition(mResult, getNewGraphicalPos());
 	if (mCopiedIds->contains(mNodeData.parentId)) {
 		mMVIface->graphicalAssistApi()->changeParent(mResult, mCopiedIds->value(mNodeData.parentId), getNewPos());
 	}
