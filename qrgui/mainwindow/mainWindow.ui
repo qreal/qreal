@@ -92,7 +92,6 @@
      <string>&amp;Tools</string>
     </property>
     <addaction name="actionShow"/>
-    <addaction name="actionExportToXml"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
