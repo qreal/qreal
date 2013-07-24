@@ -474,7 +474,7 @@ void Client::setWorkingFile(QString const &workingFile)
 
 void Client::exportToXml(QString const &targetFile)
 {
-	mSerializer.exportTo(targetFile, mObjects);
+	mSerializer.exportToXml(targetFile, mObjects);
 }
 
 QString Client::workingFile() const

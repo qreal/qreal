@@ -396,7 +396,7 @@ void Serializer::decompressFile(QString const &fileName)
 	FolderCompressor().decompressFolder(fileName, mWorkingDir);
 }
 
-void Serializer::exportTo(const QString &targetFile, QHash<qReal::Id, Object*> const &objects)
+void Serializer::exportToXml(const QString &targetFile, QHash<qReal::Id, Object*> const &objects)
 {
 	Q_ASSERT_X(!targetFile.isEmpty(), "XmlSerializer::exportTo(...)", "target filename is empty");
 
@@ -493,10 +493,13 @@ void Serializer::exportProperties(const Id &id, QDomDocument &doc, QDomElement &
 		QDomElement prop = doc.createElement("property");
 
 		QString typeName = properties[key].typeName();
-		if (typeName == "qReal::IdList" && (properties[key].value<IdList>().size() != 0)) {
-			QDomElement list = idListToXml("list", properties[key].value<IdList>(), doc);
+		QVariant value = properties[key];
+		if (typeName == "qReal::IdList" && (value.value<IdList>().size() != 0)) {
+			QDomElement list = idListToXml("list", value.value<IdList>(), doc);
 			prop.appendChild(list);
-		} else if (properties[key].toString().isEmpty()) {
+		} else if (typeName == "qReal::Id"){
+			prop.setAttribute("value", value.value<Id>().toString());
+		} else if (value.toString().isEmpty()) {
 			continue;
 		} else {
 			prop.setAttribute("value", properties[key].toString());

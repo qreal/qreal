@@ -22,7 +22,7 @@ public:
 	void saveToDisk(QList<Object *> const &objects) const;
 	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash);
 
-	void exportTo(QString const &targetFile, QHash<qReal::Id, Object*> const &objects);
+	void exportToXml(QString const &targetFile, QHash<qReal::Id, Object*> const &objects);
 
 	void decompressFile(QString const &fileName);
 
