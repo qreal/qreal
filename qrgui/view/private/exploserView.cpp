@@ -118,6 +118,14 @@ void ExploserView::handleDoubleClick(Id const &id)
 	goTo(outgoingLink);
 }
 
+void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *createCommand
+		, Id const &source, Id const &target)
+{
+	if (source != Id() && target != Id()) {
+		createCommand->addPostAction(mLogicalApi->exploser().addExplosionCommand(source, target, mGraphicalApi));
+	}
+}
+
 void ExploserView::goTo(Id const &id)
 {
 	mMainWindow->activateItemOrDiagram(id);

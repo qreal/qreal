@@ -71,13 +71,12 @@ public:
 	/// @param newNames The name which will bew assigned to all the elements in heirarchy
 	commands::AbstractCommand *renameCommands(Id const &oneOfIds, QString const &newNames);
 
+public slots:
+	void refreshAllPalettes();
+
 signals:
 	/// Emitted each time when automatically created explosion target was removed
 	void explosionTargetRemoved();
-
-private slots:
-	void refreshAllPalettes();
-	void refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram);
 
 private:
 	/// This method takes one of the elements of the diagram and tries
@@ -95,8 +94,7 @@ private:
 	/// ids into @param targetIds
 	void explosionsHierarchyPrivate(Id const &currentId, IdList &targetIds) const;
 
-	void reuseExplosion(Id const &source, bool invokeEditTrigger);
-	QTreeWidgetItem *userGroup(Id const &diagram) const;
+	void refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram);
 
 	LogicalModelAssistApi *mApi; // Does not take ownership
 	QMap<Id, gui::PaletteTreeWidget *> mUserPalettes;

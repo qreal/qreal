@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QTreeWidget>
 
+#include "paletteElement.h"
 #include "../pluginManager/editorManagerInterface.h"
 
 namespace qReal {
@@ -19,21 +20,10 @@ public:
 			, EditorManagerInterface &editorManagerProxy
 			, bool editable);
 
-	void addGroups(QMap<QString, QStringList> const &groups
+	void addGroups(QMap<QString, QList<PaletteElement> > &groups
 			, QMap<QString, QString> const &descriptions
-			, IdList const &allElements, bool hideIfEmpty
+			, bool hideIfEmpty
 			, QString const &diagramFriendlyName);
-
-	/// Adds item type to some editor's tree.
-	/// @param id Item id.
-	/// @param name Item name.
-	/// @param description Item description.
-	/// @param icon Item icon.
-	/// @param tree Editor's tree.
-	/// @param parent Parent of item's group.
-	void addItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon, QSize const &preferredSize
-			, QTreeWidgetItem *parent);
 
 	/// Collapses all nodes of all current trees.
 	void collapse();
@@ -42,6 +32,7 @@ public:
 	void expand();
 
 	static void sortByFriendlyName(IdList &ids);
+	static void sortByFriendlyName(QList<PaletteElement> &elements);
 
 	void editItem(QTreeWidgetItem * const item);
 
@@ -55,7 +46,12 @@ private:
 	/// Adds group of editor's elements to appropriate tree to some top element.
 	/// @param tmpList List with sorted group elements.
 	/// @param item Editor's tree node for adding in it tmpList.
-	void addItemsRow(IdList const &tmpIdList, QTreeWidgetItem *item);
+	void addItemsRow(QList<PaletteElement> const &items, QTreeWidgetItem *item);
+
+	/// Adds item type to some editor's tree.
+	/// @param data Palette element properties (such as title and icon)
+	/// @param parent Parent of item's group.
+	void addItemType(PaletteElement const &data, QTreeWidgetItem *parent);
 
 	/// Recursive procedure that collapses node with his children.
 	/// @param item Node which will be collapsed with all his children.
@@ -70,6 +66,9 @@ private:
 	/// but qSort() prohibits it to be a member of an object.
 	/// So making it static does the trick.
 	static bool idLessThan(Id const &s1, Id const &s2);
+
+	/// Same as idLessThan (compares ids of given operands)
+	static bool paletteElementLessThan(PaletteElement const &s1, PaletteElement const &s2);
 
 	/// Made static to be used inside idLessThan()
 	static EditorManagerInterface *mEditorManager; // Does not take ownership

@@ -86,8 +86,10 @@ public:
 	void createSingleElement(Id const &id, QString const &name
 			, Element *e, QPointF const &position
 			, Id const &parentId, bool isFromLogicalModel
+			, Id const &explosionTarget = Id()
 			, commands::CreateElementCommand **createCommandPointer = NULL
 			, bool executeImmediately = true);
+
 	void insertElementIntoEdge(qReal::Id const &insertedFirstNodeId
 			, qReal::Id const &insertedLastNodeId
 			, qReal::Id const &parentId

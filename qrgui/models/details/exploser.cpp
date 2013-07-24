@@ -5,6 +5,7 @@
 #include "../controller/commands/explosionCommand.h"
 #include "../controller/commands/renameCommand.h"
 #include "../controller/commands/createElementCommand.h"
+#include "../controller/commands/renameExplosionCommand.h"
 
 using namespace qReal;
 using namespace models::details;
@@ -32,10 +33,9 @@ void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &dia
 {
 	QString const groupName = userGroupTitle();
 	QString const groupDescription = userGroupDescription();
-	QMap<QString, QStringList> groups;
+	QMap<QString, QList<gui::PaletteElement> > groups;
 	QMap<QString, QString> descriptions;
 	descriptions[groupName] = groupDescription;
-	IdList allElements;
 
 	IdList const childTypes = mApi->editorManagerInterface().elements(diagram);
 	foreach (Id const &child, childTypes) {
@@ -50,14 +50,17 @@ void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &dia
 				if (mApi->isLogicalId(targetInstance) &&
 						!mApi->logicalRepoApi().incomingExplosions(targetInstance).isEmpty())
 				{
-					groups[groupName] << mApi->logicalRepoApi().name(targetInstance);
-					allElements << targetInstance;
+					groups[groupName] << gui::PaletteElement(child
+							, mApi->logicalRepoApi().name(targetInstance)
+							, QString(), mApi->editorManagerInterface().icon(child)
+							, mApi->editorManagerInterface().iconSize(child)
+							, targetInstance);
 				}
 			}
 		}
 	}
 
-	tree->addGroups(groups, descriptions, allElements, true, mApi->editorManagerInterface().friendlyName(diagram));
+	tree->addGroups(groups, descriptions, true, mApi->editorManagerInterface().friendlyName(diagram));
 }
 
 QString Exploser::insideSuffix()
@@ -103,6 +106,7 @@ AbstractCommand *Exploser::createElementWithIncommingExplosionCommand(Id const &
 			, Id::rootId(), newElementId, false, friendlyTargetName, QPointF());
 
 	result->addPostAction(addExplosionCommand(source, newElementId, graphicalApi));
+	result->addPostAction(new RenameExplosionCommand(mApi, graphicalApi, newElementId));
 	connect(result, SIGNAL(undoComplete(bool)), this, SIGNAL(explosionTargetRemoved()));
 	return result;
 }
@@ -162,29 +166,6 @@ void Exploser::explosionsHierarchyPrivate(Id const &currentId, IdList &targetIds
 	foreach (Id const incomming, incommingExplosions) {
 		explosionsHierarchyPrivate(incomming, targetIds);
 	}
-}
-
-void Exploser::reuseExplosion(Id const &source, bool invokeEditTrigger)
-{
-	QTreeWidgetItem *group = userGroup(Id(source.editor(), source.diagram()));
-	QTreeWidgetItem *item = new QTreeWidgetItem;
-	item->setFlags(item->flags() | Qt::ItemIsEditable);
-	item->setText(0, mApi->logicalRepoApi().name(source));
-	group->addChild(item);
-	if (invokeEditTrigger) {
-		mUserPalettes[Id(source.editor(), source.diagram())]->editItem(item);
-	}
-}
-
-QTreeWidgetItem *Exploser::userGroup(Id const &diagram) const
-{
-	for (int i = 0 ; i < mUserPalettes[diagram]->topLevelItemCount(); ++i) {
-		QTreeWidgetItem *item = mUserPalettes[diagram]->topLevelItem(i);
-		if (item && item->text(0) == userGroupTitle()) {
-			return item;
-		}
-	}
-	return NULL;
 }
 
 Id Exploser::explosionsRoot(Id const &id) const

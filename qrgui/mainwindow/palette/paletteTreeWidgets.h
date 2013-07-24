@@ -22,13 +22,9 @@ public:
 			, Id const &editor, Id const &diagram);
 
 	/// Adds top item type to some editor's tree.
-	/// @param id Item id.
-	/// @param name Item name.
-	/// @param description Item description.
-	/// @param icon Item icon.
+	/// @param data Parameters of new element
 	/// @param tree Editor's tree.
-	void addTopItemType(Id const &id, QString const &name, QString const &description
-			, QIcon const &icon, QSize const &preferredSize, QTreeWidget *tree);
+	void addTopItemType(PaletteElement const &data, QTreeWidget *tree);
 
 	/// Collapses all nodes of all current trees.
 	void collapse();

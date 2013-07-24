@@ -57,20 +57,25 @@ void PaletteTreeWidgets::initEditorTree()
 	PaletteTreeWidget::sortByFriendlyName(elements);
 
 	if (!mEditorManager->paletteGroups(mEditor, mDiagram).empty()) {
-		QMap<QString, QStringList> groups;
+		QMap<QString, QList<PaletteElement> > groups;
 		QMap<QString, QString> descriptions;
 		foreach (QString const &group, mEditorManager->paletteGroups(mEditor, mDiagram)) {
-			groups[group] = mEditorManager->paletteGroupList(mEditor, mDiagram, group);
+			QStringList const paletteGroup = mEditorManager->paletteGroupList(mEditor, mDiagram, group);
+			foreach (QString const &name, paletteGroup) {
+				foreach (Id const &element, elements) {
+					if (element.element() == name) {
+						groups[group] << PaletteElement(*mEditorManager, element);
+						break;
+					}
+				}
+			}
+
 			descriptions[group] = mEditorManager->paletteGroupDescription(mEditor, mDiagram, group);
 		}
-		mEditorTree->addGroups(groups, descriptions, elements, false, mEditorManager->friendlyName(mDiagram));
+		mEditorTree->addGroups(groups, descriptions, false, mEditorManager->friendlyName(mDiagram));
 	} else {
 		foreach (Id const &element, elements) {
-			addTopItemType(element, mEditorManager->friendlyName(element)
-					, mEditorManager->description(element)
-					, mEditorManager->icon(element)
-					, mEditorManager->iconSize(element)
-					, mEditorTree);
+			addTopItemType(PaletteElement(*mEditorManager, element), mEditorTree);
 		}
 	}
 }
@@ -80,15 +85,11 @@ void PaletteTreeWidgets::initUserTree()
 	mMainWindow->models()->logicalModelAssistApi().exploser().addUserPalette(mUserTree, mDiagram);
 }
 
-void PaletteTreeWidgets::addTopItemType(Id const &id, QString const &name
-		, QString const &description, QIcon const &icon
-		, QSize const &preferredSize, QTreeWidget *tree)
+void PaletteTreeWidgets::addTopItemType(PaletteElement const &data, QTreeWidget *tree)
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(*mMainWindow, id, name
-			, description, icon, preferredSize
-			, mParentPalette->iconsView(), *mEditorManager
-			);
+	DraggableElement *element = new DraggableElement(*mMainWindow, data
+			, mParentPalette->iconsView(), *mEditorManager);
 
 	tree->addTopLevelItem(item);
 	tree->setItemWidget(item, 0, element);
