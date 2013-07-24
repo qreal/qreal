@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsLineItem>
@@ -38,11 +38,15 @@ public:
 	void clearScene();
 
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
-			, commands::CreateElementCommand **elementCommand = 0);
-	virtual qReal::Id createElement(QString const &, QPointF const &scenePos
+			, bool canBeConnected, commands::CreateElementCommand **elementCommand = 0);
+	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
+	virtual qReal::Id createElement(QString const &
+			, QPointF const &scenePos
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommand = 0
-			, bool executeImmediately = true);
+			, bool executeImmediately = true
+			, QPointF const shiftToParent = QPointF());
+
 	virtual void createElement(QMimeData const *mimeData, QPointF const &scenePos
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommandPointer = 0
