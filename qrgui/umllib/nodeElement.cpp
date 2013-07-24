@@ -872,7 +872,9 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 		}
 
 		if (mIsExpanded && !mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId()).empty()) {
-			painter->drawImage(diagramRenderingRect(), mRenderedDiagram);
+			QRectF rect = diagramRenderingRect();
+			painter->drawImage(rect, mRenderedDiagram.scaled(rect.size().toSize()
+					, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		}
 	}
 }
@@ -1352,7 +1354,7 @@ void NodeElement::initRenderedDiagram()
 	brush.setColor(Qt::white);
 	painter.setBrush(brush);
 	painter.setPen(QPen(Qt::white));
-	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
+	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::HighQualityAntialiasing);
 
 	sceneRect.moveTo(QPointF());
 	painter.drawRect(sceneRect);
