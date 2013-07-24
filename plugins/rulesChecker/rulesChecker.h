@@ -16,9 +16,11 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface);
 	// default destructor is ok
 
+
 public slots:
 	void checkAllDiagrams();
 	void checkCurrentDiagram();
+	void exportToXml();
 
 private:
 	 enum ErrorsType {

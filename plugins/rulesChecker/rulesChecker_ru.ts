@@ -29,55 +29,75 @@
         <translation>Вернуться в более общий процесс</translation>
     </message>
     <message>
-        <location filename="rulesBPMNPlugin.cpp" line="38"/>
+        <location filename="rulesBPMNPlugin.cpp" line="40"/>
         <source>Diagram Validation</source>
         <translation>Проверить диаграммы</translation>
     </message>
     <message>
-        <location filename="rulesBPMNPlugin.cpp" line="43"/>
+        <location filename="rulesBPMNPlugin.cpp" line="45"/>
         <source>Validate active diagram</source>
         <translation>Проверить текущую диаграмму</translation>
+    </message>
+    <message>
+        <location filename="rulesBPMNPlugin.cpp" line="49"/>
+        <source>Generate XML</source>
+        <translation>Сериализовать в XML</translation>
     </message>
 </context>
 <context>
     <name>qReal::rulesChecker::RulesChecker</name>
     <message>
-        <location filename="rulesChecker.cpp" line="127"/>
+        <location filename="rulesChecker.cpp" line="19"/>
+        <source>Save File</source>
+        <translation>Выбрать файл</translation>
+    </message>
+    <message>
+        <location filename="rulesChecker.cpp" line="19"/>
+        <source>export.xml</source>
+        <translation>export.xml</translation>
+    </message>
+    <message>
+        <location filename="rulesChecker.cpp" line="19"/>
+        <source>*.xml</source>
+        <translation>*.xml</translation>
+    </message>
+    <message>
+        <location filename="rulesChecker.cpp" line="141"/>
         <source>All diagrams compiled without errors</source>
         <translation>Все диаграммы корректны</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="140"/>
+        <location filename="rulesChecker.cpp" line="154"/>
         <source>Current diagram compiled without errors</source>
         <translation>Текущая диаграмма корректна</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="150"/>
+        <location filename="rulesChecker.cpp" line="164"/>
         <source>There are links to start node</source>
         <translation>Входящий поток управления к начальному событию</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="154"/>
+        <location filename="rulesChecker.cpp" line="168"/>
         <source>There are links from End-event</source>
         <translation>Исходящий поток управления из завершающего события</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="158"/>
+        <location filename="rulesChecker.cpp" line="172"/>
         <source>There is no start-node in path</source>
         <translation>В потоке управления нет начального события</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="162"/>
+        <location filename="rulesChecker.cpp" line="176"/>
         <source>There is no end-node in path</source>
         <translation>В потоке управления нет завершающего события</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="166"/>
+        <location filename="rulesChecker.cpp" line="180"/>
         <source>Some links are incorrect</source>
         <translation>Поток управления без начала или конца</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="170"/>
+        <location filename="rulesChecker.cpp" line="184"/>
         <source>There are problems</source>
         <translation>Неизвестная ошибка</translation>
     </message>

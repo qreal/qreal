@@ -9,6 +9,7 @@ RulesPlugin::RulesPlugin()
 	: mChecker(NULL)
 	, mRunAllDiagram(NULL)
 	, mRunCurrentDiagram(NULL)
+	, mExportToXml(NULL)
 {
 	mTranslator.load(":/rulesChecker_" + QLocale::system().name());
 	QApplication::installTranslator(&mTranslator);
@@ -26,6 +27,7 @@ void RulesPlugin::init(PluginConfigurator const &configurator)
 	mChecker = new RulesChecker(configurator.graphicalModelApi().graphicalRepoApi(), configurator.mainWindowInterpretersInterface());
 	QObject::connect(mRunAllDiagram, SIGNAL(triggered()), mChecker, SLOT(checkAllDiagrams()));
 	QObject::connect(mRunCurrentDiagram, SIGNAL(triggered()), mChecker, SLOT(checkCurrentDiagram()));
+	QObject::connect(mExportToXml, SIGNAL(triggered()), mChecker, SLOT(exportToXml()));
 }
 
 QList<ActionInfo> RulesPlugin::actions()
@@ -43,6 +45,11 @@ void RulesPlugin::initAction()
 	mRunCurrentDiagram = new QAction(QObject::tr("Validate active diagram"), NULL);
 	ActionInfo runCurrentInfo(mRunCurrentDiagram, "generators", "tools");
 	mActionInfos << runCurrentInfo;
+
+	mExportToXml = new QAction(QObject::tr("Generate XML"), NULL);
+	ActionInfo exportXmlInfo(mExportToXml, "generators", "tools");
+	mActionInfos << exportXmlInfo;
+
 }
 
 qReal::Customizer * RulesPlugin::customizationInterface()

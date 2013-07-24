@@ -347,6 +347,7 @@
                     <container/>
                     <properties>
                         <property type="string" name="Text" displayedName="Text"/>
+                        <property type="string" name="Name" displayedName="Name"/>
                     </properties>
                 </logic>
             </node>
@@ -427,6 +428,7 @@
                     </associations>
                     <properties>
                         <property type="string" displayedName="Text" name="Text"/>
+                        <property type="string" displayedName="Name" name="Name"/>
                     </properties>
                     <possibleEdges>
                         <possibleEdge beginName="StartEvent" directed="true" endName="EndEvent"/>

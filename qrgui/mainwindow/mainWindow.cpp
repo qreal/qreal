@@ -190,7 +190,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
-	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
 	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
 	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
