@@ -574,7 +574,6 @@
                 <graphics>
                     <picture sizex="450" sizey="150">
                         <rectangle stroke-style="solid" fill-style="none" stroke-width="0" y1="0" y2="150" fill="#ffffff" x1="0" stroke="#000000" x2="450"/>
-                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="0" y2="150" fill="#ffffff" x1="30a" stroke="#000000" x2="30a"/>
                     </picture>
                     <labels>
                         <label x="2" y="145" textBinded="text" rotation="-90"/>
