@@ -341,7 +341,7 @@ bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id con
 }
 
 int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
-		, QPointF const &scenePos, commands::CreateElementCommand **createCommand)
+		, QPointF const &scenePos, bool canBeConnected, commands::CreateElementCommand **createCommand)
 {
 	edge->setSelected(true);
 
@@ -411,6 +411,11 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	mLastCreatedWithEdge = NULL;
 	QObject::connect(menuSignalMapper, SIGNAL(mapped(QString const &)), this, SLOT(createElement(QString const &)));
 
+	if (canBeConnected) {
+		edgeMenu->addSeparator();
+		edgeMenu->addAction(tr("Connect with the current item"));
+	}
+
 	QPoint cursorPos = QCursor::pos();
 	QAction *executed = edgeMenu->exec(cursorPos);
 
@@ -418,7 +423,8 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	if (executed) {
 		if (executed == mWindow->actionDeleteFromDiagram()) {
 			result = -1;
-		} else if (!(executed->text() == tr("Discard"))) {
+		} else if (!(executed->text() == tr("Discard"))
+					&& !(executed->text() == tr("Connect with the current item"))) {
 			result = 1;
 			if (createCommand && mLastCreatedWithEdgeCommand) {
 				*createCommand = mLastCreatedWithEdgeCommand;
@@ -441,8 +447,8 @@ qReal::Id EditorViewScene::createElement(QString const &str)
 	return result;
 }
 
-qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scenePos
-		, bool searchForParents, CreateElementCommand **createCommand, bool executeImmediately)
+qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scenePos, bool searchForParents
+		, CreateElementCommand **createCommand, bool executeImmediately, QPointF const shiftToParent)
 {
 	Id typeId = Id::loadFromString(str);
 	Id objectId(typeId.editor(),typeId.diagram(),typeId.element(),QUuid::createUuid().toString());
@@ -454,12 +460,11 @@ qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scen
 	QString uuid = objectId.toString();
 	QString pathToItem = Id::rootId().toString();
 	QString name = mWindow->editorManager().friendlyName(typeId);
-	QPointF pos = QPointF(0, 0);
 	bool isFromLogicalModel = false;
 	stream << uuid;
 	stream << pathToItem;
 	stream << name;
-	stream << pos;
+	stream << shiftToParent;
 	stream << isFromLogicalModel;
 
 	mimeData->setData(mimeType, data);
@@ -486,12 +491,12 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	QString uuid = "";
 	QString pathToItem = "";
 	QString name = "";
-	QPointF pos;
+	QPointF shiftToParent;
 	bool isFromLogicalModel = false;
 	in_stream >> uuid;
 	in_stream >> pathToItem;
 	in_stream >> name;
-	in_stream >> pos;
+	in_stream >> shiftToParent;
 	in_stream >> isFromLogicalModel;
 
 	Id const id = Id::loadFromString(uuid);
@@ -514,7 +519,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 
 			//e = mWindow->editorManager().graphicalObject(id);
 			if (dynamic_cast<NodeElement*>(e)) { // check if e is node
-				foreach (QGraphicsItem *item, items(scenePos)) {
+				foreach (QGraphicsItem *item, items(scenePos - shiftToParent)) {
 					NodeElement *el = dynamic_cast<NodeElement*>(item);
 					if (el && canBeContainedBy(el->id(), id)) {
 						newParent = el;
