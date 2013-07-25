@@ -10,7 +10,7 @@ PullDialog::PullDialog(QWidget *parent)
 	: QDialog(parent)
 {
 	mUrlLabel = new QLabel(tr("Choose origin: "));
-	mUrlComboBox = createComboBox(qReal::SettingsManager::value("remote", "").toString());
+	mUrlComboBox = createComboBox(qReal::SettingsManager::value("pullUrl", "").toString());
 	QPushButton *ok = new QPushButton(tr("OK"), this);
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 
