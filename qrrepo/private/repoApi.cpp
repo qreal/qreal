@@ -38,7 +38,7 @@ IdList RepoApi::findElementsByName(QString const &name, bool sensitivity, bool r
 	return mClient.findElementsByName(name, sensitivity, regExpression);
 }
 
-QMap<qReal::Id, QString> RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity,
+QMap<QString, qReal::Id> RepoApi::elementsByPropertyContent(QString const &propertyContent, bool sensitivity,
 		bool regExpression) const
 {
 	return mClient.elementsByPropertyContent(propertyContent, sensitivity, regExpression);
