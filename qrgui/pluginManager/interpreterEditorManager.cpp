@@ -83,7 +83,7 @@ IdList InterpreterEditorManager::editors() const
 	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
 		foreach (Id const &editor, repo->elementsByType("MetaEditorDiagramNode")) {
 			if (repo->isLogicalElement(editor)) {
-				result << Id(repo->name(repo->parent(editor)), repo->name(editor));
+				result << Id(repo->name(repo->parent(editor)));
 			}
 		}
 	}
@@ -212,10 +212,6 @@ IdList InterpreterEditorManager::connectedTypes(Id const &id) const
 			continue;
 		}
 		QPair<Id, Id> editorAndDiagramPair = editorAndDiagram(repo, connectId);
-
-		//Id const connect(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(connectId));
-		//qDebug() << "connected:" << connect.element();
-
 		result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(connectId));
 	}
 
@@ -568,8 +564,11 @@ bool InterpreterEditorManager::isDiagramNode(Id const &id) const
 
 bool InterpreterEditorManager::isGraphicalElementNode(const Id &id) const
 {
-	Q_UNUSED(id);
-	return false;
+	ElementImpl *impl = graphicalObject(id);
+	if (!impl) {
+		return false;
+	}
+	return impl->isNode();
 }
 
 Id InterpreterEditorManager::theOnlyDiagram() const

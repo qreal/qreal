@@ -77,29 +77,29 @@ void HtmlMaker::addTable(
 
 	foreach (StringTriplet const &pair, listOfLines) {
 		QString const &methodName = pair.first;
-		QString const &qrxcResult = pair.second.first;
-		QString const &qrmcResult = pair.second.second;
+		QString const &firstResult = pair.second.first;
+		QString const &secondResult = pair.second.second;
 
-		addLineToTable(table, methodName, qrxcResult, qrmcResult, false);
+		addLineToTable(table, methodName, firstResult, secondResult, false);
 	}
 }
 
 void HtmlMaker::addLineToTable(QDomElement parent
 			, QString const &methodName
-			, QString const &qrxcResult
-			, QString const &qrmcResult
+			, QString const &firstResult
+			, QString const &secondResult
 			, bool const &isTitle)
 {
 	QDomElement newLine = newElement(parent, "tr");
 
 	if (!isTitle) {
-		QString const color = lineColor(qrxcResult, qrmcResult);
+		QString const color = lineColor(firstResult, secondResult);
 		newLine.setAttribute("bgcolor", color);
 	}
 
 	addColumnToLine(newLine, methodName, isTitle, true);
-	addColumnToLine(newLine, qrxcResult, isTitle, false);
-	addColumnToLine(newLine, qrmcResult, isTitle, false);
+	addColumnToLine(newLine, firstResult, isTitle, false);
+	addColumnToLine(newLine, secondResult, isTitle, false);
 }
 
 bool HtmlMaker::resultsAreTheSame(QString const &firstMethod, QString const &secondMethod)
@@ -114,19 +114,17 @@ bool HtmlMaker::resultsAreTheSame(QString const &firstMethod, QString const &sec
 	return (firstMethodParsed == secondMethodParsed);
 }
 
-QString HtmlMaker::lineColor(QString const &qrxcResult, QString const &qrmcResult)
+QString HtmlMaker::lineColor(QString const &firstResult, QString const &secondResult)
 {
 	QString color = "";
 
-	//if (((containsOnly(qrmcResult, ' ')) || (qrmcResult.isEmpty()))
-	//		&& (((containsOnly(qrxcResult, ' ')) || (qrxcResult.isEmpty())))) {
-	if (resultsAreEmpty(qrxcResult, qrmcResult)) {
+	if (resultsAreEmpty(firstResult, secondResult)) {
 		color = "Gold";
 	} else {
-		if (resultsAreTheSame(qrxcResult, qrmcResult)) {
+		if (resultsAreTheSame(firstResult, secondResult)) {
 			color = "PaleGreen";
 		} else {
-			if (methodFailed(qrxcResult, qrmcResult)) {
+			if (methodFailed(firstResult, secondResult)) {
 				color = "Gray";
 			} else {
 				color = "Coral";

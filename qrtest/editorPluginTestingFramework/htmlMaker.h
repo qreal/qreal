@@ -31,8 +31,8 @@ private:
 	void addLineToTable(
 			QDomElement parent
 			, QString const &methodName
-			, QString const &qrxcResult
-			, QString const &qrmcResult
+			, QString const &firstResult
+			, QString const &secondResult
 			, bool const &isTitle
 			);
 
@@ -78,7 +78,7 @@ private:
 	static QPair<QString, QStringList> parseOneElementResult(QString const &oneElementOutput);
 
 	/// returns color of line (red, green or red, depending on methods result concurrence)
-	static QString lineColor(QString const &qrxcResult, QString const &qrmcResult);
+	static QString lineColor(QString const &firstResult, QString const &secondResult);
 
 	QDomDocument mHtml;
 };

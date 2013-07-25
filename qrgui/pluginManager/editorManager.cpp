@@ -631,8 +631,20 @@ QString EditorManager::propertyNameByDisplayedName(Id const &id, QString const &
 
 IdList EditorManager::children(Id const &parent) const
 {
-	Q_UNUSED(parent);
-	return IdList();
+	Q_ASSERT(parent.idSize() == 3);
+	EditorInterface const *plugin = mPluginIface[parent.editor()];
+	if (!plugin) {
+		return IdList();
+	}
+
+	IdList children;
+
+	foreach (Id const &id, elements(parent)) {
+		if ((isParentOf(id, parent)) && (id !=  parent)) {
+			children << id;
+		}
+	}
+	return children;
 }
 
 QString EditorManager::shape(Id const &id) const
