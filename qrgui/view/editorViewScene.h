@@ -201,6 +201,7 @@ private:
 
 	void disableActions(Element *focusElement);
 	void enableActions();
+	void updateLinks();
 
 	inline bool isArrow(int key);
 

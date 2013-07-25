@@ -1229,6 +1229,24 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			QGraphicsScene::mouseMoveEvent(event);
 		}
 	}
+	updateLinks();
+}
+
+void EditorViewScene::updateLinks()
+{
+	foreach (QGraphicsItem* item, selectedItems()) {
+		NodeElement* node = dynamic_cast<NodeElement*>(item);
+		if (node) {
+			QList<EdgeElement *> edgeList = node->getEdges();
+			foreach (EdgeElement *edge, edgeList) {
+				edge->updateEdge();
+			}
+		}
+		else {
+			EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
+			edge->updateEdge();
+		}
+	}
 }
 
 QPointF EditorViewScene::getMousePos() const

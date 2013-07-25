@@ -40,6 +40,8 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		, mModelUpdateIsCalled(false)
 		, mIsLoop(false)
 		, mReshapeCommand(NULL)
+		, deltaSrc(0.0, 0.0)
+		, deltaDst(0.0, 0.0)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -835,6 +837,11 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
+void EdgeElement::updateAllPoints(QPointF delta)
+{
+	this->moveBy(delta.x(), delta.y());
+}
+
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mDragPoint = noPort;
@@ -1278,14 +1285,15 @@ void EdgeElement::minimizeHandler(const QPointF &pos)
 
 void EdgeElement::adjustLink(bool isDragging)
 {
+	this->isDragging = isDragging;
 	if (!isDragging) {
 		if (mSrc) {
 			prepareGeometryChange();
-			mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+			deltaSrc = mapFromItem(mSrc, mSrc->portPos(mPortFrom)) - mLine.first();
 		}
 		if (mDst) {
 			prepareGeometryChange();
-			mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+			deltaDst = mapFromItem(mDst, mDst->portPos(mPortTo)) - mLine.last();
 		}
 
 		if ((SettingsManager::value("LineType").toInt() != static_cast<int>(curveLine)) && !mIsLoop) {
@@ -1296,7 +1304,6 @@ void EdgeElement::adjustLink(bool isDragging)
 		updateLongestPart();
 	} else {
 		if (isSelected()) {
-
 			if (mSrc && !mSrc->isSelected()) {
 				prepareGeometryChange();
 				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
@@ -1309,11 +1316,11 @@ void EdgeElement::adjustLink(bool isDragging)
 		} else {
 			if (mSrc && mSrc->isSelected()) {
 				prepareGeometryChange();
-				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+				deltaSrc = mapFromItem(mSrc, mSrc->portPos(mPortFrom)) - mLine.first();
 			}
 			if (mDst && mDst->isSelected()) {
 				prepareGeometryChange();
-				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+				deltaDst = mapFromItem(mDst, mDst->portPos(mPortTo)) - mLine.last();
 			}
 			updateLongestPart();
 		}
@@ -1327,6 +1334,42 @@ void EdgeElement::adjustLink(bool isDragging)
 	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
 		squarize();
 	}
+}
+
+void EdgeElement::updateEdge()
+{
+	if (deltaSrc == deltaDst) {
+		updateAllPoints(deltaSrc);
+	}
+	else {
+		if (!isDragging) {
+			if (mSrc) {
+				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+			}
+			if (mDst) {
+				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+			}
+		}
+		else {
+			if (isSelected()) {
+				if (mSrc && !mSrc->isSelected()) {
+					mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+				}
+				if (mDst && !mDst->isSelected()) {
+					mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+				}
+			} else {
+				if (mSrc && mSrc->isSelected()) {
+					mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
+				}
+				if (mDst && mDst->isSelected()) {
+					mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
+				}
+			}
+		}
+	}
+	deltaDst = QPointF(0.0, 0.0);
+	deltaSrc = QPointF(0.0, 0.0);
 }
 
 bool EdgeElement::shouldReconnect() const
