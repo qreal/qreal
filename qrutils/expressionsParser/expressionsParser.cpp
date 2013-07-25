@@ -297,9 +297,13 @@ Number *ExpressionsParser::parseTerm(QString const &stream, int &pos)
 					}
 				}
 			} else if(isOpenSquareBracket(stream.at(pos))) {
-				if (!mVariables.contains(variable))
-				{
+				if (!mVariables.contains(variable)) {
 					error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
+					return new Number();
+				}
+				if (mVariables[variable]->type() != AbstractType::array)
+				{
+					error(wrongType,QString::number(unknownIdentifierIndex + 1),mVariables[variable]->typeToString(), "Array");
 					return new Number();
 				}
 				Number *num;
