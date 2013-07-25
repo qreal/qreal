@@ -10,7 +10,7 @@ RulesChecker::RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 	, mNoErrorsOccured(true)
 {
 	// TODO: get these lists from metamodel somehow
-	mLinkTypes << "SequenceFlow" << "MessageFlow";
+	mLinkTypes << "SequenceFlow" << "MessageFlow" << "SignalFlow" << "TimerFlow";
 	mContainerTypes << "Pool" << "Lane" << "BPMN Diagram";
 }
 
@@ -40,7 +40,7 @@ bool RulesChecker::makeDetour(Id const &currentNode, IdList &usedNodes)
 	mDiagramElements.removeOne(currentNode);
 	usedNodes.append(currentNode);
 
-	if (currentNode.element() == "SequenceFlow") {
+	if (currentNode.element() != "MessageFlow" && isLink(currentNode)) {
 		Id const destinationNode = mGRepoApi->to(currentNode);
 		if (destinationNode == Id::rootId()) {
 			postError(noEndNode, currentNode); // we've already put info that link is incorrect
@@ -270,7 +270,7 @@ qReal::IdList RulesChecker::incomingSequenceFlow(qReal::Id const &id) const
 {
 	IdList result = mGRepoApi->incomingLinks(id);
 	foreach (Id const link, result) {
-		if (link.element() != "SequenceFlow") {
+		if (link.element() == "MessageFlow") {
 			result.removeAll(link);
 		}
 	}
@@ -281,7 +281,7 @@ qReal::IdList RulesChecker::outgoingSequenceFlow(qReal::Id const &id) const
 {
 	IdList result = mGRepoApi->outgoingLinks(id);
 	foreach (Id const link, result) {
-		if (link.element() != "SequenceFlow") {
+		if (link.element() == "MessageFlow") {
 			result.removeAll(link);
 		}
 	}
