@@ -854,7 +854,6 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 			b.setColor(Qt::blue);
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
-			painter->save();
 
 			if (mElementImpl->isResizeable()) {
 				drawLinesForResize(painter);
@@ -872,7 +871,9 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 		}
 
 		if (mIsExpanded && !mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId()).empty()) {
-			painter->drawImage(diagramRenderingRect(), mRenderedDiagram);
+			QRectF rect = diagramRenderingRect();
+			painter->drawImage(rect, mRenderedDiagram.scaled(rect.size().toSize()
+					, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		}
 	}
 }
@@ -1199,6 +1200,7 @@ void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool 
 
 void NodeElement::drawLinesForResize(QPainter *painter)
 {
+	painter->save();
 	painter->translate(mContents.topRight());
 	drawSeveralLines(painter, -1, 1);
 	painter->save();
@@ -1352,7 +1354,7 @@ void NodeElement::initRenderedDiagram()
 	brush.setColor(Qt::white);
 	painter.setBrush(brush);
 	painter.setPen(QPen(Qt::white));
-	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
+	painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::HighQualityAntialiasing);
 
 	sceneRect.moveTo(QPointF());
 	painter.drawRect(sceneRect);
