@@ -135,7 +135,7 @@ void RobotsGeneratorPlugin::uploadProgram()
 void RobotsGeneratorPlugin::runProgram()
 {
 	if (!mNxtToolsPresent) {
-		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
+		mMainWindowInterface->errorReporter()->addError(tr("NextTool not found. Make sure it is present in QReal installation directory"));
 	} else {
 		if (generateRobotSourceCode()) {
 			mFlashTool->runProgram();

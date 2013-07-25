@@ -6,9 +6,13 @@
 #include <stdlib.h>
 #include <math.h>
 
+@@TASKDECLARATION@@
+
 @@BALANCER@@
 
 @@VARIABLES@@
+
+@@DEFINES@@
 
 void ecrobot_device_initialize(void)
 {

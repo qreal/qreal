@@ -40,6 +40,7 @@ private slots:
 	/// Requires nxt-tools
 	void uploadProgram();
 
+	/// Requires nxt-tools
 	void runProgram();
 
 private:

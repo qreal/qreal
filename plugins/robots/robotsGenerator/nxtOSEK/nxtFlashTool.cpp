@@ -1,7 +1,7 @@
 #include "nxtFlashTool.h"
 
 #include <QtCore/QCoreApplication>
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 
 using namespace qReal;
 using namespace robots::generator;
@@ -80,7 +80,6 @@ void NxtFlashTool::readNxtFlashData()
 void NxtFlashTool::uploadProgram()
 {
 #ifdef Q_OS_WIN
-	qDebug() << "here!";
 	mUploadProcess.setEnvironment(QProcess::systemEnvironment());
 	mUploadProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
 	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat");
@@ -111,12 +110,9 @@ void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitS
 
 void NxtFlashTool::askToRun()
 {
-	QMessageBox msgBox;
-	msgBox.setText(tr("The program has been uploaded."));
-	msgBox.setInformativeText(tr("Do you want to run it?"));
-	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-	int ret = msgBox.exec();
-	if(ret == QMessageBox::Ok) runProgram();
+	if (QMessageBox::question(0, tr("Do you want to run it?"), tr("The program has been uploaded.")) == QMessageBox::Ok) {
+		runProgram();
+	}
 }
 
 void NxtFlashTool::readNxtUploadData()
