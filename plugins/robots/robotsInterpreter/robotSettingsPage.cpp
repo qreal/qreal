@@ -15,7 +15,7 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
 
-	bool const enableTrik = SettingsManager::value("enableTrik", false).toBool();
+	bool const enableTrik = SettingsManager::value("enableTrik", true).toBool();
 
 	if (!enableTrik) {
 		mUi->tcpRadioButton->setVisible(false);

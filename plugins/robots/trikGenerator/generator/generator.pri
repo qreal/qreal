@@ -9,9 +9,9 @@ HEADERS += \
 	generator/generators/simpleElementGenerator.h \
 	generator/generators/simpleElementFactory.h \
 	generator/generators/simpleElements/abstractSimpleElementGenerator.h \
-#	generator/generators/simpleElements/enginesStopGenerator.h \
+	generator/generators/simpleElements/enginesStopGenerator.h \
 	generator/generators/simpleElements/timerGenerator.h \
-#	generator/generators/simpleElements/beepGenerator.h \
+	generator/generators/simpleElements/beepGenerator.h \
 #	generator/generators/simpleElements/playToneGenerator.h \
 #	generator/generators/simpleElements/finalNodeGenerator.h \
 #	generator/generators/simpleElements/nullificationEncoderGenerator.h \
@@ -42,9 +42,9 @@ SOURCES += \
 	generator/generators/simpleElementGenerator.cpp \
 	generator/generators/simpleElementFactory.cpp \
 	generator/generators/simpleElements/abstractSimpleElementGenerator.cpp \
-#	generator/generators/simpleElements/enginesStopGenerator.cpp \
+	generator/generators/simpleElements/enginesStopGenerator.cpp \
 	generator/generators/simpleElements/timerGenerator.cpp \
-#	generator/generators/simpleElements/beepGenerator.cpp \
+	generator/generators/simpleElements/beepGenerator.cpp \
 #	generator/generators/simpleElements/playToneGenerator.cpp \
 #	generator/generators/simpleElements/finalNodeGenerator.cpp \
 #	generator/generators/simpleElements/nullificationEncoderGenerator.cpp \
