@@ -31,6 +31,8 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos, bool needResizePa
 	if (needResizeParent) {
 		resizeParent();
 	}
+
+	mTargetNode->updateLabels();
 }
 
 qreal ResizeHandler::maxChildWidth() const

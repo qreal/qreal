@@ -147,6 +147,8 @@ public:
 
 	void changeFoldState();
 
+	void updateLabels();
+
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
 	 * newPos equals to current position of node and

@@ -29,75 +29,65 @@
         <translation>Вернуться в более общий процесс</translation>
     </message>
     <message>
-        <location filename="rulesBPMNPlugin.cpp" line="40"/>
+        <location filename="bpmnCustomizer.cpp" line="55"/>
+        <source>Expand subprocess</source>
+        <translation>Развернуть подпроцесс</translation>
+    </message>
+    <message>
+        <location filename="bpmnCustomizer.cpp" line="60"/>
+        <source>Collapse subprocess</source>
+        <translation>Свернуть подпроцесс</translation>
+    </message>
+    <message>
+        <location filename="rulesBPMNPlugin.cpp" line="38"/>
         <source>Diagram Validation</source>
         <translation>Проверить диаграммы</translation>
     </message>
     <message>
-        <location filename="rulesBPMNPlugin.cpp" line="45"/>
+        <location filename="rulesBPMNPlugin.cpp" line="43"/>
         <source>Validate active diagram</source>
         <translation>Проверить текущую диаграмму</translation>
-    </message>
-    <message>
-        <location filename="rulesBPMNPlugin.cpp" line="49"/>
-        <source>Generate XML</source>
-        <translation>Сериализовать в XML</translation>
     </message>
 </context>
 <context>
     <name>qReal::rulesChecker::RulesChecker</name>
     <message>
-        <location filename="rulesChecker.cpp" line="19"/>
-        <source>Save File</source>
-        <translation>Выбрать файл</translation>
-    </message>
-    <message>
-        <location filename="rulesChecker.cpp" line="19"/>
-        <source>export.xml</source>
-        <translation>export.xml</translation>
-    </message>
-    <message>
-        <location filename="rulesChecker.cpp" line="19"/>
-        <source>*.xml</source>
-        <translation>*.xml</translation>
-    </message>
-    <message>
-        <location filename="rulesChecker.cpp" line="141"/>
+        <location filename="rulesChecker.cpp" line="128"/>
         <source>All diagrams compiled without errors</source>
         <translation>Все диаграммы корректны</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="154"/>
+        <location filename="rulesChecker.cpp" line="141"/>
         <source>Current diagram compiled without errors</source>
         <translation>Текущая диаграмма корректна</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="164"/>
+        <location filename="rulesChecker.cpp" line="151"/>
         <source>There are links to start node</source>
         <translation>Входящий поток управления к начальному событию</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="168"/>
+        <location filename="rulesChecker.cpp" line="155"/>
         <source>There are links from End-event</source>
         <translation>Исходящий поток управления из завершающего события</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="172"/>
+        <location filename="rulesChecker.cpp" line="159"/>
         <source>There is no start-node in path</source>
         <translation>В потоке управления нет начального события</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="176"/>
+        <location filename="rulesChecker.cpp" line="163"/>
         <source>There is no end-node in path</source>
         <translation>В потоке управления нет завершающего события</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="180"/>
+        <location filename="rulesChecker.cpp" line="167"/>
         <source>Some links are incorrect</source>
         <translation>Поток управления без начала или конца</translation>
     </message>
     <message>
-        <location filename="rulesChecker.cpp" line="184"/>
+        <location filename="rulesChecker.cpp" line="171"/>
         <source>There are problems</source>
         <translation>Неизвестная ошибка</translation>
     </message>
