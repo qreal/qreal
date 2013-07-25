@@ -30,7 +30,10 @@ private:
 	QList<EdgeElement *> getEdgesForCopying(QList<NodeElement *> const &nodes) const;
 	QList<NodeData> getNodesData(QList<NodeElement *> const &nodes) const;
 	QList<EdgeData> getEdgesData(QList<EdgeElement *> const &edges) const;
+
 	void addChildren(NodeElement *node, QList<NodeElement *> &nodes) const;
+	QSet<EdgeElement *> edgesInContainer(QList<NodeElement *> const &nodes) const;
+	IdList toIdList(QList<NodeElement *> const &nodes) const;
 
 	EditorViewScene *mScene;
 	EditorViewMViface *mMVIface;

@@ -78,18 +78,7 @@ QList<EdgeElement *> ClipboardHandler::getEdgesForCopying(QList<NodeElement *> c
 		}
 	}
 
-	// add children. because edges.parent is root diagram
-	foreach (NodeElement *node, nodes) {
-		if (node->childItems().size() > 0) {
-			foreach (QGraphicsItem *item, mScene->collidingItems(node)) {
-				EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
-				if (edge) {
-					edgeSet << edge;
-				}
-			}
-		}
-	}
-
+	edgeSet += edgesInContainer(nodes);
 	return edgeSet.toList();
 }
 
@@ -102,6 +91,39 @@ void ClipboardHandler::addChildren(NodeElement *node, QList<NodeElement *> &node
 			addChildren(child, nodes);
 		}
 	}
+}
+
+QSet<EdgeElement *> ClipboardHandler::edgesInContainer(QList<NodeElement *> const &nodes) const
+{
+	QSet<EdgeElement *> edges;
+	foreach (NodeElement *node, nodes) {
+		if (node->childItems().size() > 0) {
+			foreach (QGraphicsItem *item, mScene->collidingItems(node)) {
+				EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
+				if (edge) {
+					edges << edge;
+				}
+			}
+		}
+	}
+
+	// removing edges to non-copying nodes
+	IdList nodesId = toIdList(nodes);
+	foreach (EdgeElement *edge, edges) {
+		if (!nodesId.contains(edge->data().srcId) || !nodesId.contains(edge->data().dstId)) {
+			edges.remove(edge);
+		}
+	}
+	return edges;
+}
+
+IdList ClipboardHandler::toIdList(QList<NodeElement *> const &nodes) const
+{
+	IdList result;
+	foreach (NodeElement *node, nodes) {
+		result << node->id();
+	}
+	return result;
 }
 
 void ClipboardHandler::pushDataToClipboard(QList<NodeData> const &nodesData, QList<EdgeData> const &edgesData) const
