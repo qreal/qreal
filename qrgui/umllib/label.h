@@ -42,6 +42,8 @@ public:
 	void setParentSelected(bool isSelected);
 	void setParentContents(QRectF contents);
 
+	void scaleCoordinates(QRectF const &contents);
+
 protected:
 	enum InterpriterPropertyType
 	{

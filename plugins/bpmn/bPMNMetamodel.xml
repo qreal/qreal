@@ -441,7 +441,7 @@
                         </line>
                     </picture>
                     <labels>
-                        <label x="40" y="145" textBinded="Text"/>
+                        <label x="40" y="145a" textBinded="Text"/>
                     </labels>
                     <ports>
                         <linePort>
