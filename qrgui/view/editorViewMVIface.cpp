@@ -99,8 +99,12 @@ void EditorViewMViface::reset()
 	mScene->removeItem(rect);
 	delete rect;
 
-	if (model() && rootIndex().isValid()) {
-		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1);
+	if (model()) {
+		if (rootIndex().isValid()) {
+			rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1);
+		} else {
+			mScene->setEnabled(true);
+		}
 	}
 }
 
