@@ -17,14 +17,14 @@ class RemoteDialog : public QDialog
 
 public:
 	RemoteDialog(QWidget *parent = 0);
-	QString url() const;
-	QString target() const;
+	QString remoteName() const;
+	QString remoteUrl() const;
 
 private:
-	QComboBox *mUrlComboBox;
-	QComboBox *mPathComboBox;
-	QLabel *mUrlLabel;
-	QLabel *mPathLabel;
+	QComboBox *mRemoteNameComboBox;
+	QComboBox *mRemoteUrlComboBox;
+	QLabel *mRemoteNameLabel;
+	QLabel *mRemoteUrlLabel;
 	QDir mCurrentDir;
 
 	QPushButton *createButton(const QString &text, const char *member);

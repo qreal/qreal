@@ -19,15 +19,17 @@ ChangeVersion::~ChangeVersion()
 void ChangeVersion::obtainHash(QListWidgetItem *item)
 {
 	QString hash = item->data(Qt::UserRole).toString();
+	mUi->listWidgetForLog->clear();
+	mUi->listWidgetForLog->deleteLater();
 	emit hashObtained(hash);
-	emit swapTab();
 }
 
 void ChangeVersion::updateLog(QList<QPair<QString , QString> > listLog) // hash & mainPart
 {
 	if (listLog.size() != 0){
 		disconnect(mUi->listWidgetForLog, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(obtainHash(QListWidgetItem*)));
-		connect(mUi->listWidgetForLog, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(obtainHash(QListWidgetItem*)));
+		connect(mUi->listWidgetForLog, SIGNAL(itemDoubleClicked(QListWidgetItem*))
+				, this, SLOT(obtainHash(QListWidgetItem*)),Qt::QueuedConnection);
 		mUi->listWidgetForLog->clear();
 		int number = 0;
 		while (number < listLog.size()){

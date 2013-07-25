@@ -23,7 +23,10 @@ HEADERS += \
     gui/cloneDialog.h \
     gui/remoteDialog.h \
     gui/pullDialog.h \
-    gui/resetDialog.h
+    gui/resetDialog.h \
+    gui/logDialog.h \
+    gui/statusDialog.h \
+    gui/remoteListDialog.h
 
 SOURCES += \
     gitPlugin.cpp \
@@ -34,7 +37,10 @@ SOURCES += \
     gui/cloneDialog.cpp \
     gui/remoteDialog.cpp \
     gui/pullDialog.cpp \
-    gui/resetDialog.cpp
+    gui/resetDialog.cpp \
+    gui/logDialog.cpp \
+    gui/statusDialog.cpp \
+    gui/remoteListDialog.cpp
 
 FORMS += \
     gui/versioningPage.ui

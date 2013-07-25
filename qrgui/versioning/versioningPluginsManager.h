@@ -45,15 +45,15 @@ public slots:
 			, int revisionNumber = -1
 			, bool quiet = false);
 	void beginWorkingCopyUpdating(QString const &targetProject = QString());
-	void beginChangesSubmitting(QString const &description, QString const &targetProject = QString());
+	void beginChangesSubmitting(QString const &description, QString const &targetProject = QString(), bool const &quiet = false);
 	bool reinitWorkingCopy(QString const &targetProject = QString());
 	QString information(QString const &targetProject = QString());
 	int revisionNumber(QString const &targetProject = QString());
 	QString remoteRepositoryUrl(QString const &targetProject = QString());
-	bool isMyWorkingCopy(QString const &directory = QString());
+	bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false);
 	QString friendlyName();
-	QString getLog(QStringList const &format = QStringList(), bool const &quiet = false);
-	void setVersion(QString hash);
+	QString getLog(QString const &format = QString(), bool const &quiet = false);
+	void setVersion(QString hash, bool const &quiet = false);
 
 private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);

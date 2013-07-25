@@ -11,6 +11,9 @@
 #include "gui/cloneDialog.h"
 #include "gui/remoteDialog.h"
 #include "gui/resetDialog.h"
+#include "gui/statusDialog.h"
+#include "gui/logDialog.h"
+#include "gui/remoteListDialog.h"
 
 namespace versioning
 {
@@ -40,6 +43,9 @@ public slots:
 	void pullClicked();
 	void resetClicked();
 	void cleanClicked();
+	void statusClicked();
+	void logClicked();
+	void remoteListClicked();
 
 private slots:
 	void onInitComplete(bool const success);
@@ -49,6 +55,9 @@ private slots:
 	void onPushComplete(bool const success);
 	void onPullComplete(bool const success);
 	void onResetComplete(bool const success);
+	void onStatusComplete(QString answer, bool const success);
+	void onLogComplete(QString answer, bool const success);
+	void onRemoteListComplete(QString answer, bool const success);
 
 private:
 	void initActions();

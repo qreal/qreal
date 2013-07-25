@@ -9,10 +9,10 @@ using namespace versioning::ui;
 RemoteDialog::RemoteDialog(QWidget *parent)
 	: QDialog(parent)
 {
-	mUrlLabel = new QLabel(tr("Name: "));
-	mPathLabel = new QLabel(tr("Adress: "));
-	mPathComboBox = createComboBox(qReal::SettingsManager::value("remoteName", "").toString());
-	mUrlComboBox = createComboBox(qReal::SettingsManager::value("remoreAdress", "").toString());
+	mRemoteNameLabel = new QLabel(tr("Name: "));
+	mRemoteUrlLabel = new QLabel(tr("Adress: "));
+	mRemoteNameComboBox = createComboBox(qReal::SettingsManager::value("remoteName", "").toString());
+	mRemoteUrlComboBox = createComboBox(qReal::SettingsManager::value("remoteUrl", "").toString());
 	QPushButton *ok = new QPushButton(tr("OK"), this);
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 
@@ -25,10 +25,10 @@ RemoteDialog::RemoteDialog(QWidget *parent)
 	connect(cancel, SIGNAL(clicked()), this, SLOT(reject()));
 
 	QGridLayout *mainLayout = new QGridLayout;
-	mainLayout->addWidget(mUrlLabel, 0, 0);
-	mainLayout->addWidget(mUrlComboBox, 0, 1, 1, 2);
-	mainLayout->addWidget(mPathLabel, 1, 0);
-	mainLayout->addWidget(mPathComboBox, 1, 1);
+	mainLayout->addWidget(mRemoteNameLabel, 0, 0);
+	mainLayout->addWidget(mRemoteNameComboBox, 0, 1, 1, 2);
+	mainLayout->addWidget(mRemoteUrlLabel, 1, 0);
+	mainLayout->addWidget(mRemoteUrlComboBox, 1, 1);
 	mainLayout->addLayout(buttonsLayout,2, 0, 1, 3);
 	setLayout(mainLayout);
 
@@ -53,13 +53,13 @@ QComboBox *RemoteDialog::createComboBox(const QString &text)
 }
 
 
-QString RemoteDialog::target() const
+QString RemoteDialog::remoteName() const
 {
-	return mPathComboBox->currentText();
+	return mRemoteNameComboBox->currentText();
 }
 
-QString RemoteDialog::url() const
+QString RemoteDialog::remoteUrl() const
 {
-	return mUrlComboBox->currentText();
+	return mRemoteUrlComboBox->currentText();
 }
 

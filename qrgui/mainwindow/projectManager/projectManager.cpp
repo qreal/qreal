@@ -284,6 +284,13 @@ void ProjectManager::saveGenCode(QString const &text)
 	out() << text;
 }
 
+void ProjectManager::reload()
+{
+	QString currentAdress = this->saveFilePath();
+	this->close();
+	this->open(currentAdress);
+}
+
 bool ProjectManager::restoreIncorrectlyTerminated()
 {
 	return mAutosaver->checkTempFile();

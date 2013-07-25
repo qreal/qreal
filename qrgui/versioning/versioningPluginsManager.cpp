@@ -143,13 +143,14 @@ void VersioningPluginsManager::beginWorkingCopyUpdating(QString const &targetPro
 	return activeVcs->beginWorkingCopyUpdating(targetProject);
 }
 
-void VersioningPluginsManager::beginChangesSubmitting(QString const &description, QString const &targetProject)
+void VersioningPluginsManager::beginChangesSubmitting(QString const &description
+														, QString const &targetProject, const bool &quiet)
 {
 	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
 	if (!activeVcs) {
 		return;
 	}
-	return activeVcs->beginChangesSubmitting(description, targetProject);
+	return activeVcs->beginChangesSubmitting(description, targetProject, quiet);
 }
 
 bool VersioningPluginsManager::reinitWorkingCopy(QString const &targetProject)
@@ -188,7 +189,7 @@ QString VersioningPluginsManager::remoteRepositoryUrl(QString const &targetProje
 	return activeVcs->remoteRepositoryUrl(targetProject);
 }
 
-bool VersioningPluginsManager::isMyWorkingCopy(QString const &directory)
+bool VersioningPluginsManager::isMyWorkingCopy(QString const &directory, const bool &quiet)
 {
 	return activePlugin(false, directory) != NULL;
 }
@@ -234,6 +235,7 @@ void VersioningPluginsManager::onWorkingCopyDownloaded(const bool success
 
 void VersioningPluginsManager::onWorkingCopyUpdated(const bool success)
 {
+	mProjectManager->reload();
 	emit workingCopyUpdated(success);
 }
 
@@ -263,16 +265,16 @@ TransparentMode *VersioningPluginsManager::getLinkOnTransparentMode()
 }
 
 
-void VersioningPluginsManager::setVersion(QString hash)
+void VersioningPluginsManager::setVersion(QString hash, const bool &quiet)
 {
 	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
 	if (!activeVcs) {
 		return;
 	}
-	activeVcs->setVersion(hash);
+	activeVcs->setVersion(hash,quiet);
 }
 
-QString VersioningPluginsManager::getLog(const QStringList &format, const bool &quiet)
+QString VersioningPluginsManager::getLog(const QString &format, const bool &quiet)
 {
 	BriefVersioningInterface *activeVcs = activePlugin(true, tempFolder());
 	if (!activeVcs) {

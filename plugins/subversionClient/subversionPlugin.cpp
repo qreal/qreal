@@ -18,7 +18,7 @@ SubversionPlugin::SubversionPlugin()
 	qReal::SettingsManager::instance()->setValue("svnTempDir", mTempDir);
 	setPathToClient(pathToSvn());
 
-	connect(this, SIGNAL(operationIsFinished(QVariant&)), SLOT(doAfterOperationIsFinished(QVariant&)));
+	connect(this, SIGNAL(operationIsFinished(QVariant)), SLOT(doAfterOperationIsFinished(QVariant)));
 }
 
 SubversionPlugin::~SubversionPlugin()
@@ -88,7 +88,7 @@ void SubversionPlugin::beginWorkingCopyUpdating(QString const &targetProject)
 	startUpdate(tempFolder(), targetProject);
 }
 
-void SubversionPlugin::beginChangesSubmitting(QString const &description, QString const &targetProject)
+void SubversionPlugin::beginChangesSubmitting(QString const &description, QString const &targetProject, bool const &quiet)
 {
 	startCommit(tempFolder(), description, targetProject);
 }
@@ -113,7 +113,7 @@ QString SubversionPlugin::remoteRepositoryUrl(QString const &targetProject)
 	return repoUrl(tempFolder(), false, targetProject);
 }
 
-bool SubversionPlugin::isMyWorkingCopy(QString const &directory)
+bool SubversionPlugin::isMyWorkingCopy(QString const &directory, bool const &quiet)
 {
 	// If svn info worked well then it is our dir
 	QStringList infoArgs;
@@ -151,7 +151,7 @@ void SubversionPlugin::startCheckout(QString const &from
 	}
 	arguments << authenticationArgs();
 
-	Tag tagStruct("checkout", targetProject, quiet);
+	const Tag tagStruct("checkout", targetProject, quiet);
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
 	invokeOperationAsync(arguments, tagVariant, false, QString(), QString(), false, !quiet);
@@ -165,7 +165,7 @@ void SubversionPlugin::startUpdate(QString const &to
 	arguments << "update" << targetDir;
 	arguments << authenticationArgs();
 
-	Tag tagStruct("update");
+	const Tag tagStruct("update");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
 	invokeOperationAsync(arguments, tagVariant, true, to, sourceProject);
@@ -179,7 +179,7 @@ void SubversionPlugin::startCommit(QString const &message, QString const &from
 	arguments << "commit" << targetDir << "-m" << message;
 	arguments << authenticationArgs();
 
-	Tag tagStruct("commit");
+	const Tag tagStruct("commit");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
 	invokeOperationAsync(arguments, tagVariant, true, from, sourceProject);
@@ -205,7 +205,7 @@ void SubversionPlugin::startRevert(QString const &what
 	// TODO: Add different variants
 	arguments << "revert" << "-R" << targetDir;
 
-	Tag tagStruct("revert");
+	const Tag tagStruct("revert");
 	QVariant tagVariant;
 	tagVariant.setValue(tagStruct);
 	invokeOperationAsync(arguments, tagVariant, true, targetDir, sourceProject, true, true);
@@ -376,7 +376,7 @@ void SubversionPlugin::editProxyConfiguration()
 	//   teach to edit config file to set proxy
 }
 
-void SubversionPlugin::doAfterOperationIsFinished(QVariant &tag)
+void SubversionPlugin::doAfterOperationIsFinished(QVariant const &tag)
 {
 	Tag tagStruct = tag.value<Tag>();
 	if (tagStruct.operation == "checkout"){

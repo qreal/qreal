@@ -47,7 +47,7 @@ public:
 	/// @param reportErrors Specifies if all occured errors are reported to GUI
 	/// @returns Pointer to started operaton
 	invocation::LongOperation *invokeOperationAsync(QStringList const &args
-		, QVariant tag
+		, QVariant const &tag
 		, bool needPreparation = true
 		, QString const &workingDir = QString()
 		, QString const &sourceProject = QString()
@@ -100,7 +100,7 @@ signals:
 	/// The easiest way to invoke @see onErrorOccured() in on thread
 	void errorOccured(QString const &message);
 	/// Signal for notification plagins about end of operation
-	void operationIsFinished(QVariant &tag);
+	void operationIsFinished(QVariant const &tag);
 
 private slots:
 	void onOperationComplete(invocation::LongOperation *operation);

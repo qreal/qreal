@@ -22,6 +22,7 @@ signals:
 public slots:
 	void updateLog(QList<QPair<QString, QString> > listLog);
 
+
 private slots:
 	void obtainHash(QListWidgetItem* item);
 

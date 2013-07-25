@@ -17,19 +17,18 @@ qReal::TransparentMode::TransparentMode(QList<VersioningPluginInterface *> mPlug
 	}
 }
 
-void TransparentMode::isInit(QString directory)
+void TransparentMode::isInit(QString const &directory)
 {
 	if (!mPlugin->isMyWorkingCopy(directory)){
-		mPlugin->beginWorkingCopyDownloading(QString(),QString());
+		mPlugin->beginWorkingCopyDownloading(QString(),QString(), -1, true);
 	}
 }
 
 void TransparentMode::listLog()
 {
 	isInit("unsaved");
-	QStringList format;
-	format << "--pretty=format:" << "%H - %an, %ad : %s";
-	QString log = mPlugin->getLog(format);
+	QString format = "--pretty=format:\"%H\ -\ %an%ad\ :\ %s\"";
+	QString log = mPlugin->getLog(format, true);
 	QList<QPair<QString , QString> > listlog = parseLog(log);
 	emit listLogIsReady(listlog);
 }
@@ -38,14 +37,14 @@ void TransparentMode::setVersion(QString hash)
 {
 	isInit("unsaved");
 	qDebug() << hash;
-	mPlugin->setVersion(hash);
+	mPlugin->setVersion(hash, true);
 }
 
 void TransparentMode::saveVersion()
 {
-	isInit("unsaved");
-	mProjectManager->save();
-	mPlugin->beginChangesSubmitting("version was saved in a transparent mode",QString());
+	mProjectManager->saveOrSuggestToSaveAs();
+	isInit();
+	mPlugin->beginChangesSubmitting("version was saved in a transparent mode",QString(),true);
 	listLog();
 }
 
@@ -65,8 +64,10 @@ QList<QPair<QString , QString> >TransparentMode::parseLog(QString log) //hash & 
 			number++;
 			parseHash.indexIn(tmpList);
 			tmpList.remove(parseHash.cap());
+			tmpList.remove("\"");
 			QString hash = parseHash.cap();
 			hash.remove(" -");
+			hash.remove("\"");
 			listOfParseLog.append(qMakePair(hash, QString("Version " + QString::number(version) + ":" + tmpList)));
 		}
 		return listOfParseLog;

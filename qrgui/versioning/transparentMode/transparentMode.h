@@ -25,7 +25,7 @@ public slots:
 private:
 	ProjectManager *mProjectManager;
 	BriefVersioningInterface *mPlugin;
-	void isInit(QString directory);
+	void isInit(const QString &directory = "");
 	QList<QPair<QString, QString> > parseLog(QString log); //hash & mainPart
 };
 }

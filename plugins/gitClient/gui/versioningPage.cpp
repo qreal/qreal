@@ -16,14 +16,6 @@ PreferencesVersioningPage::PreferencesVersioningPage(QWidget *parent)
 	mAuthenticationSettings = new AuthenticationSettingsWidget("git");
 	// The last widget in layout must remain spacer
 	mUi->verticalLayout->insertWidget(mUi->verticalLayout->count() - 1, mAuthenticationSettings);
-
-	/*mEmailLabel = new QLabel(tr("Email: "));
-	mEmailComboBox = createComboBox(qReal::SettingsManager::value("", "").toString());
-	mUi->verticalLayout->insertWidget(mUi->verticalLayout->count() - 1, mEmailLabel);
-	mUi->verticalLayout->insertWidget(mUi->verticalLayout->count() - 1, mEmailComboBox);
-	restoreSettings();
-
-	connect(mAuthenticationSettings->)*/
 }
 
 PreferencesVersioningPage::~PreferencesVersioningPage()
