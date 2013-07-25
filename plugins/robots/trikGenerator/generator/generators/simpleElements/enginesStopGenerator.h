@@ -5,14 +5,14 @@
 namespace robots {
 namespace trikGenerator {
 
-class NxtOSEKRobotGenerator;
+class TrikRobotGenerator;
 
 class EnginesStopGenerator: public AbstractSimpleElementGenerator {
 public:
 	EnginesStopGenerator();
 
 protected:
-	virtual QList<SmartLine> convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+	virtual QList<SmartLine> convertElementIntoDirectCommand(TrikRobotGenerator *nxtGen
 			, qReal::Id const elementId, qReal::Id const logicElementId);
 };
 }
