@@ -170,6 +170,8 @@ void AbstractCommand::removeDuplicatesOn(QList<AbstractCommand *> &list)
 		if (hierarchyContains(command)) {
 			list.removeAll(command);
 			delete command;
+		} else {
+			command->removeDuplicates();
 		}
 	}
 }

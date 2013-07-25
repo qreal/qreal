@@ -34,5 +34,7 @@ void ModelExplorer::commitData(QWidget *editor)
 	QString const oldName = model()->data(currentIndex()).toString();
 	QTreeView::commitData(editor);
 	QString const newName = model()->data(currentIndex()).toString();
-	mController->execute(new commands::RenameCommand(mModel, id, oldName, newName, mExploser));
+	if (oldName != newName) {
+		mController->execute(new commands::RenameCommand(mModel, id, oldName, newName, mExploser));
+	}
 }

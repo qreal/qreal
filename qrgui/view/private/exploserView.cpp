@@ -121,8 +121,16 @@ void ExploserView::handleDoubleClick(Id const &id)
 void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *createCommand
 		, Id const &source, Id const &target)
 {
-	if (source != Id() && target != Id()) {
+	if (target != Id()) {
 		createCommand->addPostAction(mLogicalApi->exploser().addExplosionCommand(source, target, mGraphicalApi));
+	} else {
+		QList<Explosion> const explosions = mLogicalApi->editorManagerInterface().explosions(source);
+		foreach (Explosion const &explosion, explosions) {
+			if (explosion.source().type() == source.type() && explosion.requiresImmediateLinkage()) {
+				createCommand->addPostAction(mLogicalApi->exploser().createElementWithIncommingExplosionCommand(
+						source, explosion.target(), mGraphicalApi));
+			}
+		}
 	}
 }
 
