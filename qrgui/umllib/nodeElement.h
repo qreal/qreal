@@ -76,6 +76,7 @@ public:
 
 	QPointF const portPos(qreal id) const;
 	QPointF const nearestPort(QPointF const &location) const;
+	int numberOfPorts() const;
 	static int portNumber(qreal id);
 	qreal portId(QPointF const &location) const;
 
@@ -143,6 +144,11 @@ public:
 
 	void changeFoldState();
 
+	/**
+	 * @brief Sorts by y coordinate, used for correct sorting children of sorting container
+	 */
+	bool operator<(NodeElement const &other) const;
+
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);
@@ -174,7 +180,7 @@ private:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF const &newContents, QPointF const &newPos);
+	void resize(QRectF const &newContents, QPointF const &newPos, bool needResizeParent = true);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
@@ -189,6 +195,9 @@ private:
 	 * newContents equals to current shape (mContents).
 	 */
 	void resize();
+
+	void drawLinesForResize(QPainter *painter);
+	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
 	void disconnectEdges();
 

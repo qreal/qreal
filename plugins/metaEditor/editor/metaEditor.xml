@@ -11,6 +11,8 @@
 				<value>filled_arrow</value>
 				<value>empty_rhomb</value>
 				<value>filled_rhomb</value>
+				<value>crossed_line</value>
+                <value>empty_circle</value>
 			</enum>
 			<enum name="lineTypes" displayedName="lineTypes">
 				<value>solidLine</value>
@@ -192,7 +194,7 @@
 							<sortContainer/>
 							<minimizeToChildren/>
 							<banChildrenMove/>
-							<forestalling size="25"/>
+							<forestalling size="25,35,25,25"/>
 							<childrenForestalling size="5"/>
 						</properties>
 					</container>
@@ -252,7 +254,7 @@
 							<sortContainer/>
 							<minimizeToChildren/>
 							<banChildrenMove/>
-							<forestalling size="25"/>
+							<forestalling size="25,35,25,25"/>
 							<childrenForestalling size="5"/>
 						</properties>
 					</container>
@@ -292,7 +294,7 @@
 							<sortContainer/>
 							<minimizeToChildren/>
 							<banChildrenMove/>
-							<forestalling size="5"/>
+							<forestalling size="5,25,5,5"/>
 							<childrenForestalling size="5"/>
 						</properties>
 					</container>

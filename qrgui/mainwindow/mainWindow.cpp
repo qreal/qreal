@@ -74,7 +74,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
-		, mRecentProjectsLimit(5)
+		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(*this, *mProjectManager))
@@ -86,7 +86,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	setWindowTitle("QReal");
 	initSettingsManager();
 	registerMetaTypes();
-
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setVisible(false);
 	splashScreen.setProgress(5);
@@ -458,7 +457,7 @@ void MainWindow::refreshRecentProjectsList(QString const &fileName)
 	QString previousString = SettingsManager::value("recentProjects").toString();
 	QStringList previousList = previousString.split(";", QString::SkipEmptyParts);
 	previousList.removeOne(fileName);
-	if (previousList.size() == mRecentProjectsLimit) {
+	if (!previousList.isEmpty() && (previousList.size() == mRecentProjectsLimit)) {
 		previousList.removeLast();
 	}
 	previousList.push_front(fileName);
@@ -586,6 +585,7 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 	IdList itemsToUpdate;
 	DoNothingCommand *multipleRemoveCommand = new DoNothingCommand;
 
+	addEdgesToBeDeleted(itemsToDelete);
 	// QGraphicsScene::selectedItems() returns items in no particular order,
 	// so we should handle parent-child relationships manually
 	while (!itemsToDelete.isEmpty()) {
@@ -616,6 +616,28 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 
 	multipleRemoveCommand->removeDuplicates();
 	mController->execute(multipleRemoveCommand);
+}
+
+void MainWindow::addEdgesToBeDeleted(IdList &itemsToDelete)
+{
+	IdList elementsToDelete = itemsToDelete;
+	int i = 0;
+	while (i < elementsToDelete.count()) {
+		Id const currentElement = elementsToDelete.at(i);
+		IdList const children = mModels->graphicalModelAssistApi().children(currentElement);
+		elementsToDelete.append(children);
+		i++;
+	}
+	foreach (Id const &currentElement, elementsToDelete) {
+		IdList const linksOfCurrentElement = mModels->mutableLogicalRepoApi().links(currentElement);
+		foreach (Id const &link, linksOfCurrentElement) {
+			Id const otherEntityOfCurrentLink
+					= mModels->mutableLogicalRepoApi().otherEntityFromLink(link, currentElement);
+			if (otherEntityOfCurrentLink == Id::rootId() || elementsToDelete.contains(otherEntityOfCurrentLink)) {
+				itemsToDelete.append(link);
+			}
+		}
+	}
 }
 
 void MainWindow::removeReferences(Id const &id)
@@ -892,6 +914,11 @@ EditorView * MainWindow::getCurrentTab() const
 	return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
 }
 
+bool MainWindow::isCurrentTabShapeEdit() const
+{
+	return dynamic_cast<ShapeEdit *>(mUi->tabs->currentWidget()) != NULL;
+}
+
 void MainWindow::closeCurrentTab()
 {
 	if (mUi->tabs->currentIndex() >= 0) {
@@ -944,17 +971,6 @@ void MainWindow::initSettingsManager()
 	if (!dir.cd(mTempDir)) {
 		QDir().mkdir(mTempDir);
 	}
-
-	// Removal from the list of recent projects of non-existent files
-	QString recentExistProjects;
-	foreach (QString const &fileName
-			, SettingsManager::value("recentProjects").toString().split(";", QString::SkipEmptyParts))
-	{
-		if (QFile::exists(fileName)) {
-			recentExistProjects += fileName + ";";
-		}
-	}
-	SettingsManager::setValue("recentProjects", recentExistProjects);
 }
 
 void MainWindow::openSettingsDialog(QString const &tab)
@@ -1322,6 +1338,7 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->minimapView->changeSource(newIndex);
 
 	bool const isEditorTab = getCurrentTab() != NULL;
+	bool const isShape = isCurrentTabShapeEdit();
 
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	if (!isEditorTab) {
@@ -1331,8 +1348,16 @@ void MainWindow::currentTabChanged(int newIndex)
 		mToolManager.activeTabChanged(currentTabId);
 	}
 
-	mUi->actionZoom_In->setEnabled(isEditorTab);
-	mUi->actionZoom_Out->setEnabled(isEditorTab);
+	if (this->mController->canRedo()){
+		mUi->actionRedo->setDisabled(isShape);
+	}
+
+	if(this->mController->canUndo()){
+		mUi->actionUndo->setDisabled(isShape);
+	}
+
+	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
+	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
 
 	emit rootDiagramChanged();
 }
@@ -1678,10 +1703,7 @@ void MainWindow::applySettings()
 		EditorView * const tab = static_cast<EditorView *>(mUi->tabs->widget(i));
 		EditorViewScene *scene = dynamic_cast <EditorViewScene *> (tab->scene());
 		if (scene) {
-			if (SettingsManager::value("SquareLine", false).toBool()
-					|| SettingsManager::value("ActivateGrid").toBool()) {
-				scene->updateEdgeElements();
-			}
+			scene->updateEdgeElements();
 			scene->invalidate();
 		}
 	}
@@ -1841,6 +1863,11 @@ void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 bool MainWindow::showConnectionRelatedMenus() const
 {
 	return mToolManager.customizer()->showConnectionRelatedMenus();
+}
+
+bool MainWindow::showUsagesRelatedMenus() const
+{
+	return mToolManager.customizer()->showUsagesRelatedMenus();
 }
 
 void MainWindow::showInTextEditor(QString const &title, QString const &text)

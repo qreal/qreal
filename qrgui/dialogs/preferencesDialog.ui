@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>815</width>
-    <height>580</height>
+    <width>892</width>
+    <height>593</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -36,6 +36,27 @@
     <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="4" column="1">
+    <widget class="QPushButton" name="okButton">
+     <property name="text">
+      <string>OK</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QPushButton" name="cancelButton">
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QPushButton" name="applyButton">
+     <property name="text">
+      <string>Apply</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0" rowspan="2">
     <widget class="QListWidget" name="listWidget">
      <property name="sizePolicy">
@@ -67,27 +88,6 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="3">
-    <widget class="QPushButton" name="applyButton">
-     <property name="text">
-      <string>Apply</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <widget class="QPushButton" name="cancelButton">
-     <property name="text">
-      <string>Cancel</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QPushButton" name="okButton">
-     <property name="text">
-      <string>OK</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="1" colspan="3">
     <widget class="QScrollArea" name="scrollArea">
      <property name="minimumSize">
@@ -104,8 +104,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>533</width>
-        <height>525</height>
+        <width>610</width>
+        <height>509</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -128,6 +128,20 @@
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item row="3" column="3">
+    <widget class="QPushButton" name="exportButton">
+     <property name="text">
+      <string>Export</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QPushButton" name="importButton">
+     <property name="text">
+      <string>Import</string>
+     </property>
     </widget>
    </item>
   </layout>

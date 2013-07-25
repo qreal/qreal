@@ -11,6 +11,7 @@ bool FileSystemUtils::makeHidden(QString const &filePath)
 #if defined(Q_OS_WIN)
 	return SetFileAttributesW(filePath.toStdWString().c_str(), FILE_ATTRIBUTE_HIDDEN);
 #else
+	Q_UNUSED(filePath)
 	return false;
 #endif
 }

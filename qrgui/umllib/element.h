@@ -7,7 +7,7 @@
 #include "../../qrkernel/settingsManager.h"
 
 #include "../editorPluginInterface/elementRepoInterface.h"
-#include "elementTitle.h"
+#include "label.h"
 
 #include "contextMenuAction.h"
 #include "../editorPluginInterface/elementImpl.h"
@@ -81,7 +81,7 @@ protected:
 	bool mMoving;
 	qReal::Id mId;
 	ElementImpl* const mElementImpl;
-	QList<ElementTitle *> mTitles;
+	QList<Label *> mTitles;
 	bool mTitlesVisible;
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;

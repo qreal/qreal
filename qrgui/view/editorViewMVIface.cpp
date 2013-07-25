@@ -153,6 +153,11 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->setPos(ePos);
 			elem->setId(currentId);
 
+			NodeElement *node = dynamic_cast<NodeElement *>(elem);
+			if (node) {
+				node->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect());
+			}
+
 			if (item(parent)) {
 				elem->setParentItem(item(parent));
 				QModelIndex next = current.sibling(current.row() + 1, 0);
@@ -168,6 +173,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->checkConnectionsToPort();
 			elem->initPossibleEdges();
 			elem->initTitles();
+			mView->setFocus();
 			// TODO: brush up init~()
 
 			bool isEdgeFromEmbeddedLinker = false;

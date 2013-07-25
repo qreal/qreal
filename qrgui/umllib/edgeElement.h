@@ -9,12 +9,26 @@
 
 QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
-enum ArrowType { FILLED_ARROW, EMPTY_ARROW, FILLED_RHOMB, EMPTY_RHOMB, NO_ARROW, OPEN_ARROW };
+namespace enums {
+namespace arrowTypeEnum {
+enum ArrowType
+{
+	  filledArrow
+	, emptyArrow
+	, filledRhomb
+	, emptyRhomb
+	, noArrow
+	, openArrow
+	, crossedLine
+	, emptyCircle
+};
+}
+}
 
 class NodeElement;
 /** @class EdgeElement
-  * 	@brief class for an edge on a diagram
-  * 	*/
+  * @brief class for an edge on a diagram
+ */
 
 namespace qReal
 {
@@ -46,7 +60,7 @@ public:
 
 	/// use adjustLink() to all links that have with this general master
 	void adjustNeighborLinks();
-	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true, bool jumpsOnly = false);
+	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
 	bool shouldReconnect() const;
 	void arrangeSrcAndDst();
 	NodeElement *src() const;
@@ -57,7 +71,7 @@ public:
 	void setDst(NodeElement *node);
 	/// prepare edge to moving from the linker
 	void tuneForLinker();
-	qreal portIdOn(NodeElement const *node) const;
+	QPair<qreal, qreal> portIdOn(NodeElement const *node) const;
 	QPointF nextFrom(NodeElement const *node) const;
 	QPointF connectionPoint(NodeElement const *node) const;
 	NodeElement* otherSide(NodeElement const *node) const;
@@ -116,8 +130,8 @@ protected:
 	QColor mPenColor;
 	QString mText;
 	QString mFromMult, mToMult;
-	ArrowType mStartArrowStyle;
-	ArrowType mEndArrowStyle;
+	enums::arrowTypeEnum::ArrowType mStartArrowStyle;
+	enums::arrowTypeEnum::ArrowType mEndArrowStyle;
 
 public slots:
 	void saveConfiguration(QPointF const &pos);
@@ -132,10 +146,9 @@ private slots:
 	void minimizeHandler(QPointF const &pos);
 	/// delete Segment with nearest with pos ends
 	void deleteSegmentHandler(QPointF const &pos);
+
 	/// change link's direction
 	void reverseHandler(QPointF const &pos);
-
-	void squarizeAndAdjustHandler();
 
 private:
 	enum DragPointType {
@@ -144,37 +157,44 @@ private:
 		noPort = -1
 	};
 
-	enum LineDirection {
-		top = -1,
-		bottom = 1,
-		left = -2,
-		right = 2,
-		topInsideNode = -3,
-		bottomInsideNode = 3,
-		leftInsideNode = -4,
-		rightInsideNode = 4
-	};
-
 	enum LineType {
-		Vertical,
-		Horizontal,
-		VerticalTurn,
-		HorizontalTurn
+		vertical,
+		horizontal,
+		verticalTurn,
+		horizontalTurn
 	};
 
-	enum NodeSide { Left, Top, Right, Bottom };
+	enum NodeSide {
+		left,
+		top,
+		right,
+		bottom
+	};
 
-	// when (mSrc == mDst && mDst && mLine <= 3)
+	int indentReductCoeff();
+	/// Set mPortTo to next port.
+	void searchNextPort();
+	/// Change line, if (mSrc && (mSrc == mDst)).
 	void createLoopEdge();
-	// connectToPort for self-closing line (mSrc == mDst && mDst)
+	/// connectToPort for self-closing line (mSrc && (mSrc == mDst)).
 	void connectLoopEdge(NodeElement *newMaster);
-	// need for correcting links at square drawing
-	int defineDirection(bool from);
+
+	/// Create indent of bounding rect, depending on the rect size.
+	QPointF boundingRectIndent(QPointF const &point, NodeSide direction);
+	/// Returns true, if the sides adjacent.
+	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const ;
+	/// Returns the next clockwise side.
+	NodeSide rotateRight(NodeSide side) const;
 
 	void paintSavedEdge(QPainter *painter) const;
 	void paintChangedEdge(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
+
+	/// Changed size of mLine to 4. Selects 2 intermediate points depending on the size and type of line.
+	void setBezierPoints();
+	/// Returns the bezier curve built on the mLine points.
+	QPainterPath bezierCurve() const;
 
 	QList<PossibleEdge> possibleEdges;
 
@@ -185,6 +205,8 @@ private:
 	void updateLongestPart();
 	static QRectF getPortRect(QPointF const &point);
 
+	void drawCurveIntermediatePoints(QPainter* painter) const;
+	void drawCurvePorts(QPainter* painter) const;
 	void drawPort(QPainter *painter) const;
 	void drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
 
