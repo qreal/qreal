@@ -31,6 +31,7 @@ public slots:
 	/// makes the minimap display only items of the scene
 	void showScene();
 	void ensureVisible(QList<QRectF> region);
+	void updateView(QRectF);
 
 protected:
 	void wheelEvent(QWheelEvent *event);

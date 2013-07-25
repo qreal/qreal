@@ -28,13 +28,22 @@ namespace qReal {
 		void setTitlesVisible(bool visible);
 
 	public slots:
+		void showScene();
 		void toggleAntialiasing(bool);
 		void toggleOpenGL(bool);
 		void zoomIn();
 		void zoomOut();
 		void invalidateScene();
 
+	signals:
+		void sceneRectChanged(QRectF);
+
 	protected:
+		enum Direction {
+			horizontal,
+			vertical
+		};
+
 		virtual void mouseMoveEvent(QMouseEvent *event);
 		virtual void mouseReleaseEvent(QMouseEvent *event);
 		virtual void mousePressEvent(QMouseEvent *event);
@@ -43,10 +52,15 @@ namespace qReal {
 		virtual void keyPressEvent(QKeyEvent *event);
 		virtual void keyReleaseEvent(QKeyEvent *event);
 
+		QPointF getCenter() const;
+		void setCenter(QPointF const &centerPoint);
+		void moveTo(Direction direction, qreal dx);
+
 	private:
 		EditorViewMViface *mMVIface;
 		EditorViewScene *mScene;
-		QPointF mMouseOldPosition;
+		QPoint mMouseOldPosition;
+		QPointF center;
 		bool mWheelPressed;
 		void checkGrid();
 		int mZoom;

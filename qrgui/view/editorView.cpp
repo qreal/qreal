@@ -8,12 +8,15 @@
 
 using namespace qReal;
 
+const int boundAdjustSize = 30;
+
 EditorView::EditorView(QWidget *parent)
 	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false), mZoom(0)
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
 	mScene = new EditorViewScene(this);
+	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), this, SLOT(showScene()));
 
 	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
@@ -118,46 +121,15 @@ void EditorView::setDrawSceneGrid(bool show)
 void EditorView::mouseMoveEvent(QMouseEvent *event)
 {
 	if (mWheelPressed) {
-		if (mMouseOldPosition != QPointF()) {
-			QRectF rect = sceneRect();
-			qreal dx = (event->localPos().x() - mMouseOldPosition.x());
-			qreal dy = (event->localPos().y() - mMouseOldPosition.y());
+		if (mMouseOldPosition != QPoint()) {
+			QPointF offset = mapToScene(mMouseOldPosition) - mapToScene(event->pos());
 
-			QRect visibleRect = viewport()->rect();
-			QRectF newRect = mapToScene(visibleRect).boundingRect();
+			mMouseOldPosition = event->pos();
 
-			rect.moveLeft(rect.left() - dx);
-			rect.moveTop(rect.top() - dy);
-
-			if (dx > 0) {
-				rect.setRight(rect.right() + dx);
-				if (newRect.left() - dx >= 0) {
-					rect.setLeft(rect.left() + dx);
-				}
-			} else {
-				rect.setLeft(rect.left() + dx);
-				if (newRect.right() - dx <= rect.right()) {
-					rect.setRight(rect.right() + dx);
-				}
-			}
-			if (dy > 0) {
-				rect.setBottom(rect.bottom() + dy);
-				if (newRect.top() - dy >= 0) {
-					rect.setTop(rect.top() + dy);
-				}
-			} else {
-				rect.setTop(rect.top() + dy);
-				if (newRect.bottom() - dy <= rect.bottom()) {
-					rect.setBottom(rect.bottom() + dy);
-				}
-			}
-
-			setSceneRect(rect);
-
-			translate(dx, dy);
+			setCenter(getCenter() + offset);
 		}
-		mMouseOldPosition = event->localPos();
 	}
+
 	QGraphicsView::mouseMoveEvent(event);
 	if (event->buttons() & Qt::RightButton) {
 		setDragMode(NoDrag);
@@ -188,8 +160,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent *event)
 {
 	if (!(event->buttons() & Qt::MidButton)) {
 		mWheelPressed = false;
-		scene()->setSceneRect(sceneRect());
-		mMouseOldPosition = QPointF();
+		mMouseOldPosition = QPoint();
 	}
 	QGraphicsView::mouseReleaseEvent(event);
 	if (mScene->getNeedDrawGrid())
@@ -199,7 +170,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent *event)
 void EditorView::mousePressEvent(QMouseEvent *event)
 {
 	mWheelPressed  = (event->buttons() & Qt::MidButton);
-	mMouseOldPosition = QPointF();
+	mMouseOldPosition = event->pos();
 	if (!mWheelPressed) {
 		QGraphicsView::mousePressEvent(event);
 	}
@@ -235,6 +206,75 @@ void EditorView::keyReleaseEvent(QKeyEvent *event)
 	}
 }
 
+QPointF EditorView::getCenter() const
+{
+	return center;
+}
+
+void EditorView::setCenter(const QPointF &centerPoint)
+{
+	QRectF visibleArea = mapToScene(viewport()->rect()).boundingRect();
+	QRectF sceneBounds = sceneRect();
+
+	qreal boundX = sceneBounds.x() + boundAdjustSize;
+	qreal boundY = sceneBounds.y() + boundAdjustSize;
+	qreal boundWidth = sceneBounds.width() - boundAdjustSize;
+	qreal boundHeight = sceneBounds.height() - boundAdjustSize;
+
+	qreal dx = (centerPoint - center).x();
+	qreal dy = (centerPoint - center).y();
+
+	QRectF bounds(boundX, boundY, boundWidth, boundHeight);
+
+	center = centerPoint;
+
+	if (!bounds.contains(centerPoint)) {
+		if (visibleArea.contains(sceneBounds)) {
+			center = sceneBounds.center();
+		} else {
+			if (centerPoint.x() > bounds.right()
+					|| centerPoint.x() < bounds.left()) {
+				moveTo(horizontal, dx);
+			}
+			if (centerPoint.y() > bounds.bottom()
+					|| centerPoint.y() < bounds.top()) {
+				moveTo(vertical, dy);
+			}
+		}
+	}
+	centerOn(center);
+}
+
+void EditorView::moveTo(EditorView::Direction direction, qreal dx)
+{
+	if (!dx) {
+		return;
+	}
+
+	QRectF rect = sceneRect();
+
+	if (direction == horizontal) {
+		rect.moveLeft(rect.left() + dx);
+		if (dx > 0) {
+			rect.setLeft(rect.left() - dx);
+		} else {
+			rect.setRight(rect.right() - dx);
+		}
+	}
+
+	if (direction == vertical) {
+		rect.moveTop(rect.top() + dx);
+		if (dx > 0) {
+			rect.setTop(rect.top() - dx);
+		} else {
+			rect.setBottom(rect.bottom() - dx);
+		}
+	}
+
+	setSceneRect(rect);
+	emit sceneRectChanged(rect);
+}
+
 void EditorView::invalidateScene()
 {
 	scene()->invalidate();
@@ -262,4 +302,11 @@ void EditorView::ensureElementVisible(Element const * const element
 void EditorView::setTitlesVisible(bool visible)
 {
 	mScene->setTitlesVisible(visible);
+}
+
+void EditorView::showScene()
+{
+	if (scene() != NULL) {
+		setSceneRect(sceneRect().united(mScene->sceneRect()));
+	}
 }
