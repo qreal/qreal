@@ -3,6 +3,7 @@
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtCore/QSignalMapper>
+#include <QGestureEvent>
 
 #include "../../qrkernel/roles.h"
 #include "../umllib/nodeElement.h"
@@ -141,7 +142,6 @@ protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-
 
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 

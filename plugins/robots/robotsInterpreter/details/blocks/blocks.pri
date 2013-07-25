@@ -35,6 +35,9 @@ HEADERS += \
 	details/blocks/printTextBlock.h \
 	details/blocks/drawRectBlock.h \
 	details/blocks/clearScreenBlock.h \
+    details/blocks/initBtSlaveBlock.h \
+    details/blocks/initBtMasterBlock.h \
+    details/blocks/terminateConnectionBlock.h
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -73,3 +76,6 @@ SOURCES +=\
 	details/blocks/printTextBlock.cpp \
 	details/blocks/drawRectBlock.cpp \
 	details/blocks/clearScreenBlock.cpp \
+    details/blocks/initBtSlaveBlock.cpp \
+    details/blocks/initBtMasterBlock.cpp \
+    details/blocks/terminateConnectionBlock.cpp

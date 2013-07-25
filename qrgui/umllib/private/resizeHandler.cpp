@@ -1,4 +1,5 @@
 #include "resizeHandler.h"
+#include<QString>
 
 #include <algorithm>
 
@@ -11,7 +12,6 @@ ResizeHandler::ResizeHandler(NodeElement * const resizingNode)
 void ResizeHandler::resize(QRectF newContents, QPointF newPos, bool needResizeParent) const
 {
 	newContents.moveTo(0, 0);
-
 	sortChildrenIfNeeded();
 	gripeIfMinimizesToChildrenContainer(newContents);
 
@@ -44,7 +44,6 @@ qreal ResizeHandler::maxChildWidth() const
 	if (maxChildWidthValue == 0) {
 		maxChildWidthValue = mTargetNode->childrenBoundingRect().width();
 	}
-
 	return maxChildWidthValue;
 }
 
@@ -202,6 +201,8 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 						, contents.top()));
 		contents.setBottom(qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling[3]
 						, contents.bottom()));
+		//qDebug()<< "top:" + QString::number(qMin(curChildItemBoundingRect.top() - sizeOfForestalling , contents.top()));
+		//qDebug()<< "bottom:" + QString::number(qMax(curChildItemBoundingRect.bottom() + sizeOfForestalling, contents.bottom()));
 	}
 }
 

@@ -1,6 +1,7 @@
 #include "nxtFlashTool.h"
 
 #include <QtCore/QCoreApplication>
+#include <QtWidgets/QMessageBox>
 
 using namespace qReal;
 using namespace robots::generator;
@@ -14,6 +15,7 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 	environment.insert("DISPLAY", ":0.0");
 	mFlashProcess.setProcessEnvironment(environment);
 	mUploadProcess.setProcessEnvironment(environment);
+	mRunProcess.setProcessEnvironment(environment);
 
 	connect(&mFlashProcess, SIGNAL(readyRead()), this, SLOT(readNxtFlashData()));
 	connect(&mFlashProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
@@ -22,6 +24,8 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 	connect(&mUploadProcess, SIGNAL(readyRead()), this, SLOT(readNxtUploadData()));
 	connect(&mUploadProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
 	connect(&mUploadProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(nxtUploadingFinished(int, QProcess::ExitStatus)));
+
+	connect(&mRunProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
 }
 
 void NxtFlashTool::flashRobot()
@@ -82,8 +86,14 @@ void NxtFlashTool::uploadProgram()
 #else
 	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif
-
 	mErrorReporter->addInformation(tr("Uploading program started. Please don't disconnect robot during the process"));
+}
+
+void NxtFlashTool::runProgram()
+{
+	mRunProcess.setEnvironment(QProcess::systemEnvironment());
+	mRunProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
+	mRunProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/nexttool/NexTTool.exe /COM=usb -run=example0_OSEK.rxe");
 }
 
 void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitStatus)
@@ -93,6 +103,15 @@ void NxtFlashTool::nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitS
 		mErrorReporter->addError(tr("Uploading failed. Make sure that X-server allows root to run GUI applications"));
 	} else if (exitCode == 139) {
 		mErrorReporter->addError(tr("QReal requires superuser privileges to flash NXT robot"));
+	} else if (exitCode == 0) {
+		askToRun();
+	}
+}
+
+void NxtFlashTool::askToRun()
+{
+	if (QMessageBox::question(0, tr("Do you want to run it?"), tr("The program has been uploaded.")) == QMessageBox::Ok) {
+		runProgram();
 	}
 }
 

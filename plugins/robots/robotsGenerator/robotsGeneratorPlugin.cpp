@@ -10,6 +10,7 @@ RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
 		, mFlashRobotAction(NULL)
 		, mUploadProgramAction(NULL)
+		, mRunProgramAction(NULL)
 		, mNxtToolsPresent(false)
 {
 	mAppTranslator.load(":/robotsGenerator_" + QLocale::system().name());
@@ -47,6 +48,10 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
 	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
+	mRunProgramAction.setText(tr("Run program"));
+	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
+	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()));
+
 	checkNxtTools();
 
 	/*
@@ -56,7 +61,7 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 	changeActiveTab(unusedAtTheOpeningTab, false);
 	*/
 	return QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo
-			<< uploadProgramActionInfo;
+			<< uploadProgramActionInfo << runProgramActionInfo;
 }
 
 void RobotsGeneratorPlugin::initHotKeyActions()
@@ -123,6 +128,17 @@ void RobotsGeneratorPlugin::uploadProgram()
 	} else {
 		if (generateRobotSourceCode()) {
 			mFlashTool->uploadProgram();
+		}
+	}
+}
+
+void RobotsGeneratorPlugin::runProgram()
+{
+	if (!mNxtToolsPresent) {
+		mMainWindowInterface->errorReporter()->addError(tr("NextTool not found. Make sure it is present in QReal installation directory"));
+	} else {
+		if (generateRobotSourceCode()) {
+			mFlashTool->runProgram();
 		}
 	}
 }
