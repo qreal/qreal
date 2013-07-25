@@ -132,6 +132,11 @@ void Controller::projectSaved()
 	}
 }
 
+void Controller::projectClosed()
+{
+	mGlobalStack->clear();
+}
+
 void Controller::redo()
 {
 	UndoStack *stack = selectActiveStack(false);

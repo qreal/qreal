@@ -43,6 +43,9 @@ public slots:
 	/// Tells controller that user saved project
 	void projectSaved();
 
+	/// Tells controller that current project was closed
+	void projectClosed();
+
 	/// Invokes the latest command on one of the stacks: active diagram stack or global one
 	void redo();
 

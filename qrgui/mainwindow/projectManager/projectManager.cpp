@@ -247,6 +247,7 @@ void ProjectManager::close()
 	}
 	mMainWindow->closeAllTabs();
 	mMainWindow->setWindowTitle(mMainWindow->toolManager().customizer()->windowTitle());
+	emit closed();
 }
 
 void ProjectManager::save()

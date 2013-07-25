@@ -487,7 +487,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	inStream >> explosionTargetUuid;
 
 	Id const id = Id::loadFromString(uuid);
-	Id const explosionTarget = Id::loadFromString(explosionTargetUuid);
+	Id const explosionTarget = explosionTargetUuid.isEmpty()
+			? Id()
+			: Id::loadFromString(explosionTargetUuid);
 
 	if(mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
 		CreateGroupCommand *createGroupCommand = new CreateGroupCommand(

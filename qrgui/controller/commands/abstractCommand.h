@@ -41,7 +41,7 @@ public:
 
 	virtual bool equals(AbstractCommand const &other) const;
 
-	/// Performs command tree clearing with all duplicates to be removed.
+	/// Performs command tree filtering with all duplicates to be removed.
 	/// Removes duplicate closer to root, with search only in current subtree.
 	/// Root command is never removed
 	void removeDuplicates();
