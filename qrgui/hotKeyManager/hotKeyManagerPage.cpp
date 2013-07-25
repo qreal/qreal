@@ -4,7 +4,6 @@
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QKeySequence>
 #include <QtGui/QWheelEvent>
-#include <QtCore/QDebug>
 
 #include "hotKeyManagerPage.h"
 #include "ui_hotKeyManagerPage.h"
@@ -68,7 +67,6 @@ void PreferencesHotKeyManagerPage::resetShortcuts()
 {
 	if (!mCurrentId.isEmpty()) {
 		if (mCurrentItem->textColor() == Qt::black) {
-			qDebug() << 1;
 			HotKeyManager::deleteShortcut(mCurrentId, mCurrentItem->text());
 		}
 

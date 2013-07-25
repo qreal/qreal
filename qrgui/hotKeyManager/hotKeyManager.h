@@ -35,20 +35,13 @@ public:
 	/// @param id Command id
 	/// @param keyseq Shortcut
 	static bool setShortcut(QString const &id, QKeySequence const &keyseq);
-	static bool setShortcut(QString const &id, QKeySequence const &modifier, MouseButtons mousebutton);
 
 	static void resetShortcuts(QString const &id);
 	static void resetAllShortcuts();
 	static void deleteShortcut(QString const &id, QString const &shortcut);
 
-	static void doShortcut(QEvent *event);
-
-	static void setCurrentModifier(QString const &modifier);
-
 	static QHash<QString, QAction *> commands();
 	static QHash<QString, QString> shortcuts();
-
-	static QString sequence(QString const &modifier, MouseButtons mousebutton);
 
 private:
 	HotKeyManager();
@@ -60,13 +53,9 @@ private:
 	void registerCommand(QString const &id, QAction *command);
 
 	bool registerShortcut(QString const &id, QKeySequence const &keyseq);
-	bool registerShortcut(QString const &id, QKeySequence const &modifier, MouseButtons mousebutton);
 	void registerShortcut(QString const &id, QString const &shortcut);
 
 	void findShortcut(QString const &shortcut);
-
-	void setCurrentModifierPrivate(QString const &modifier);
-	QString currentModifier() const;
 
 	void resetShortcutsPrivate(QString const &id);
 	void resetAllShortcutsPrivate();
@@ -80,7 +69,6 @@ private:
 	QHash<QString, QAction *> commandsPrivate();
 	QHash<QString, QString> shortcutsPrivate();
 
-	QString mCurrentModifer;
 	QHash<QString, QAction *> mCommands;
 	QHash<QString, QString> mShortcuts;
 	QHash<QString, int> mPrefixes;
