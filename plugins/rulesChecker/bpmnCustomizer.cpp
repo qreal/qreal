@@ -44,3 +44,18 @@ QString BpmnCustomizer::backwardConnectionMenuName() const
 {
 	return QObject::tr("Return to process caller");
 }
+
+bool BpmnCustomizer::showExpandConnectionAction() const
+{
+	return true;
+}
+
+QString BpmnCustomizer::expandConnectionActionText() const
+{
+	return QObject::tr("Expand subprocess");
+}
+
+QString BpmnCustomizer::collapseConnectionActionText() const
+{
+	return QObject::tr("Collapse subprocess");
+}

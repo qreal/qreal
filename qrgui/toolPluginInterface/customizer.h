@@ -98,6 +98,20 @@ public:
 		return QObject::tr("Used in");
 	}
 
+	virtual bool showExpandConnectionAction() const
+	{
+		return false;
+	}
+
+	virtual QString expandConnectionActionText() const
+	{
+		return QObject::tr("Expand connection");
+	}
+
+	virtual QString collapseConnectionActionText() const
+	{
+		return QObject::tr("Collapse connection");
+	}
 };
 
 }

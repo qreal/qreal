@@ -226,6 +226,8 @@ QVariant Serializer::parseValue(QString const &typeName, QString const &valueStr
 		return QVariant(valueStr.toLower() == "true");
 	} else if (typeName == "QString") {
 		return QVariant(valueStr);
+	} else if (typeName == "QStringList") {
+		return QVariant(valueStr.split(',', QString::SkipEmptyParts));
 	} else if (typeName.toLower() == "char") {
 		return QVariant(valueStr[0]);
 	} else if (typeName == "QPointF") {
@@ -282,6 +284,8 @@ QString Serializer::serializeQVariant(QVariant const &v)
 		return QString("%1").arg(v.toBool());
 	case QVariant::String:
 		return v.toString();
+	case QVariant::StringList:
+		return v.toStringList().join(',');
 	case QVariant::Char:
 		return v.toChar();
 	case QVariant::PointF:

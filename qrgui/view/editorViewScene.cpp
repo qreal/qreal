@@ -17,6 +17,7 @@
 #include "../umllib/private/reshapeEdgeCommand.h"
 #include "../umllib/private/resizeCommand.h"
 #include "../controller/commands/insertIntoEdgeCommand.h"
+#include "../umllib/private/expandCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -594,25 +595,49 @@ EdgeElement * EditorViewScene::edgeForInsertion(QPointF const &scenePos)
 }
 
 void EditorViewScene::resolveOverlaps(NodeElement *node, QPointF const &scenePos
-		, QPointF const &shift, QMap<qReal::Id, QPointF> &shifting)
+		, QPointF const &shift, QMap<qReal::Id, QPointF> &shifting) const
 {
 	QList<NodeElement*> closeNodes = getCloseNodes(node);
 	foreach (NodeElement *closeNode, closeNodes) {
-		QPointF offset(closeNode->scenePos() - node->scenePos());
-		if (offset.x() < 0) {
-			offset.setX(-(closeNode->boundingRect().width() + offset.x()));
-		} else if (offset.y() < 0) {
-			offset.setY(-(closeNode->boundingRect().height() + offset.y()));
-		} else {
-			qreal coeff = qSqrt(shift.x() * shift.x() + shift.y() * shift.y())
-					/ qSqrt(offset.x() * offset.x() + offset.y() * offset.y());
-			offset.setX(coeff * offset.x());
-			offset.setY(coeff * offset.y());
+		if (shifting.contains(closeNode->id())) {
+			continue;
 		}
-		closeNode->setPos(closeNode->pos() + offset);
-		shifting.insert(closeNode->id(), offset);
+		QLineF offset(node->mapToScene(node->boundingRect().center())
+				, closeNode->mapToScene(closeNode->boundingRect().center()));
+
+		qreal coeff = (node->boundingRect().width() / 2) / qAbs(offset.length() * qCos(offset.angle()));
+		if (qAbs(offset.y2() - offset.y1()) * coeff > node->boundingRect().height() / 2) {
+			coeff = (node->boundingRect().height() / 2) / qAbs(offset.length() * qSin(offset.angle()));
+		}
+		QLineF nodeLine(offset);
+		nodeLine.setP2(nodeLine.p1() + QPointF((nodeLine.p2().x() - nodeLine.p1().x()) * coeff
+				, (nodeLine.p2().y() - nodeLine.p1().y()) * coeff));
+		offset.setPoints(offset.p2(), offset.p1());
+
+		coeff = (closeNode->boundingRect().width() / 2) / qAbs(offset.length() * qCos(offset.angle()));
+		if (qAbs(offset.y2() - offset.y1()) * coeff > closeNode->boundingRect().height() / 2) {
+			coeff = (closeNode->boundingRect().height() / 2) / qAbs(offset.length() * qSin(offset.angle()));
+		}
+		QLineF closeNodeLine(offset);
+		closeNodeLine.setP2(closeNodeLine.p1() + QPointF((closeNodeLine.p2().x() - closeNodeLine.p1().x()) * coeff
+				, (closeNodeLine.p2().y() - closeNodeLine.p1().y()) * coeff));
+
+		QPointF offsetPoint(nodeLine.p2() - closeNodeLine.p2());
+		closeNode->setPos(closeNode->pos() + offsetPoint);
+		mMVIface->graphicalAssistApi()->setPosition(closeNode->id(), closeNode->pos());
+		shifting.insert(closeNode->id(), offsetPoint);
+
 		arrangeNodeLinks(closeNode);
 		resolveOverlaps(closeNode, scenePos, shift, shifting);
+	}
+}
+
+void EditorViewScene::returnElementsToOldPositions(const QMap<Id, QPointF> &shifting) const
+{
+	foreach (qReal::Id const &id, shifting.keys()) {
+		NodeElement *node = getNodeById(id);
+		node->setPos(node->pos() - shifting[id]);
+		mMVIface->graphicalAssistApi()->setPosition(node->id(), node->pos());
 	}
 }
 
@@ -627,7 +652,7 @@ void EditorViewScene::reConnectLink(EdgeElement * edgeElem)
 	edgeElem->connectToPort();
 }
 
-void EditorViewScene::arrangeNodeLinks(NodeElement* node)
+void EditorViewScene::arrangeNodeLinks(NodeElement* node) const
 {
 	node->arrangeLinks();
 	foreach (EdgeElement* nodeEdge, node->edgeList()) {
@@ -639,7 +664,7 @@ void EditorViewScene::arrangeNodeLinks(NodeElement* node)
 	node->adjustLinks();
 }
 
-NodeElement* EditorViewScene::getNodeById(qReal::Id const &itemId)
+NodeElement* EditorViewScene::getNodeById(qReal::Id const &itemId) const
 {
 	foreach (QGraphicsItem *item, items()) {
 		NodeElement *node = dynamic_cast<NodeElement*>(item);
@@ -650,7 +675,7 @@ NodeElement* EditorViewScene::getNodeById(qReal::Id const &itemId)
 	return NULL;
 }
 
-EdgeElement* EditorViewScene::getEdgeById(qReal::Id const &itemId)
+EdgeElement* EditorViewScene::getEdgeById(qReal::Id const &itemId) const
 {
 	foreach (QGraphicsItem *item, items()) {
 		EdgeElement *edge = dynamic_cast<EdgeElement*>(item);
@@ -661,7 +686,7 @@ EdgeElement* EditorViewScene::getEdgeById(qReal::Id const &itemId)
 	return NULL;
 }
 
-QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node)
+QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 {
 	QList<NodeElement *> list;
 	QPolygonF bounds = node->mapToScene(node->boundingRect());
@@ -776,6 +801,30 @@ QPointF EditorViewScene::offsetByDirection(int direction)
 	}
 }
 
+void EditorViewScene::createExpandAction(Element const * const element, QMenu * const menu, QString const &nameExpand
+		, QString const &nameCollapse, qReal::IdList const &ids) const
+{
+	if (ids.isEmpty()) {
+		return;
+	}
+
+	NodeElement const * const node = dynamic_cast<NodeElement const * const>(element);
+	if (!node) {
+		return;
+	}
+
+	QAction *action;
+	if (node->isExpanded()) {
+		action = menu->addAction(nameCollapse);
+		connect(action, SIGNAL(triggered()), SLOT(expandConnectionActionTriggered()));
+	} else {
+		action = menu->addAction(nameExpand);
+		connect(action, SIGNAL(triggered()), SLOT(expandConnectionActionTriggered()));
+	}
+
+	action->setData(element->id().toVariant());
+}
+
 void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const
 {
 	if (ids.isEmpty()) {
@@ -854,6 +903,12 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
 		if (mWindow->showConnectionRelatedMenus()) {
+			if (mWindow->toolManager().customizer()->showExpandConnectionAction()) {
+				createExpandAction(element, &contextMenu, mWindow->toolManager().customizer()->expandConnectionActionText()
+						, mWindow->toolManager().customizer()->collapseConnectionActionText()
+						, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId()));
+			}
+
 			createAddConnectionMenu(element, contextMenu
 					, mWindow->toolManager().customizer()->addConnectionMenuName()
 					, mWindow->editorManager().connectedTypes(element->id().type())
@@ -1305,6 +1360,16 @@ qReal::MainWindow *EditorViewScene::mainWindow() const
 	return mWindow;
 }
 
+void EditorViewScene::expandConnectionActionTriggered()
+{
+	QAction *action = static_cast<QAction *>(sender());
+	Id elem = action->data().value<Id>();
+	NodeElement *node = getNodeById(elem);
+	if (node) {
+		mController->execute(new ExpandCommand(node));
+	}
+}
+
 void EditorViewScene::connectActionTriggered()
 {
 	QAction *action = static_cast<QAction *>(sender());
@@ -1531,12 +1596,21 @@ void EditorViewScene::updateEdgeElements()
 	}
 }
 
-void EditorViewScene::updateEdgesViaNodes()
+void EditorViewScene::initNodes()
 {
 	foreach (QGraphicsItem *item, items()) {
 		NodeElement* node = dynamic_cast<NodeElement*>(item);
 		if (node) {
 			node->adjustLinks();
+			if (mMVIface->graphicalAssistApi()->properties(node->id()).contains("expanded")
+					&& mMVIface->graphicalAssistApi()->property(node->id(), "expanded").toString() == "true") {
+				node->changeExpanded();
+			}
+			if (mMVIface->graphicalAssistApi()->properties(node->id()).contains("folded")
+					&& mMVIface->graphicalAssistApi()->property(node->id(), "folded").toString() == "true") {
+				node->changeFoldState();
+			}
+
 		}
 	}
 }

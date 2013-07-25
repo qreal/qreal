@@ -45,6 +45,7 @@
                          <contains type="BPMNDiagram::EndEvent"/>
                          <contains type="BPMNDiagram::Gateway"/>
                          <contains type="BPMNDiagram::Task"/>
+                         <contains type="BPMNDiagram::Subprocess"/>
                          <contains type="BPMNDiagram::SequenceFlow"/>
                          <contains type="BPMNDiagram::Lane"/>
                          <contains type="BPMNDiagram::Pool"/>
@@ -433,18 +434,27 @@
                         <possibleEdge beginName="StartEvent" directed="true" endName="Gateway"/>
                         <possibleEdge beginName="StartEvent" directed="true" endName="Task"/>
                         <possibleEdge beginName="StartEvent" directed="true" endName="IntermediateEvent"/>
+                        <possibleEdge beginName="StartEvent" directed="true" endName="Subprocess"/>
                         <possibleEdge beginName="IntermediateEvent" directed="true" endName="Task"/>
                         <possibleEdge beginName="IntermediateEvent" directed="true" endName="Gateway"/>
                         <possibleEdge beginName="IntermediateEvent" directed="true" endName="EndEvent"/>
                         <possibleEdge beginName="IntermediateEvent" directed="true" endName="IntermediateEvent"/>
+                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="Subprocess"/>
                         <possibleEdge beginName="Task" directed="true" endName="Task"/>
                         <possibleEdge beginName="Task" directed="true" endName="Gateway"/>
                         <possibleEdge beginName="Task" directed="true" endName="EndEvent"/>
                         <possibleEdge beginName="Task" directed="true" endName="IntermediateEvent"/>
+                        <possibleEdge beginName="Task" directed="true" endName="Subprocess"/>
                         <possibleEdge beginName="Gateway" directed="true" endName="Task"/>
                         <possibleEdge beginName="Gateway" directed="true" endName="Gateway"/>
                         <possibleEdge beginName="Gateway" directed="true" endName="EndEvent"/>
                         <possibleEdge beginName="Gateway" directed="true" endName="IntermediateEvent"/>
+                        <possibleEdge beginName="Gateway" directed="true" endName="Subprocess"/>
+                        <possibleEdge beginName="Subprocess" directed="true" endName="Task"/>
+                        <possibleEdge beginName="Subprocess" directed="true" endName="Gateway"/>
+                        <possibleEdge beginName="Subprocess" directed="true" endName="EndEvent"/>
+                        <possibleEdge beginName="Subprocess" directed="true" endName="IntermediateEvent"/>
+                        <possibleEdge beginName="Subprocess" directed="true" endName="Subprocess"/>
                     </possibleEdges>
                 </logic>
             </edge>
@@ -466,6 +476,7 @@
                         <contains type="IntermediateEvent"/>
                         <contains type="Gateway"/>
                         <contains type="Task"/>
+                        <contains type="Subprocess"/>
                     </container>
                     <properties>
                         <property name="text" displayedName="Text" type="string"/>

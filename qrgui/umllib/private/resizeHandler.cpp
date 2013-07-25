@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "../../view/editorViewScene.h"
+
 ResizeHandler::ResizeHandler(NodeElement * const resizingNode)
 	: mTargetNode(resizingNode)
 	, mElementImpl(resizingNode->elementImpl())
@@ -230,12 +232,15 @@ QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, Q
 QList<NodeElement *> ResizeHandler::sortedChildrenList() const
 {
 	QList<NodeElement *> result;
-	foreach (QGraphicsItem *item, mTargetNode->childItems()) {
-		NodeElement *child = dynamic_cast<NodeElement *>(item);
+
+	IdList childrenIds = mTargetNode->sortedChildren();
+	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mTargetNode->scene());
+	foreach (Id const &id, childrenIds) {
+		NodeElement *child = evScene->getNodeById(id);
 		if (child) {
 			result << child;
 		}
 	}
-	qSort(result);
+
 	return result;
 }
