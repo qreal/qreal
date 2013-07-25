@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtCore/QObject>
 
@@ -25,11 +25,12 @@ public:
 	void paste(bool isGraphicalCopy);
 
 private:
-	void pushDataToClipboard(QList<NodeData> const &nodesData, QList<EdgeData> const &edgesData);
-	QList<NodeElement *> getNodesForCopying();
-	QList<NodeData> getNodesData(QList<NodeElement *> const &nodes);
-	QList<EdgeData> getEdgesData();
-	void addChildren(NodeElement *node, QList<NodeElement *> &nodes);
+	void pushDataToClipboard(QList<NodeData> const &nodesData, QList<EdgeData> const &edgesData) const;
+	QList<NodeElement *> getNodesForCopying() const;
+	QList<EdgeElement *> getEdgesForCopying(QList<NodeElement *> const &nodes) const;
+	QList<NodeData> getNodesData(QList<NodeElement *> const &nodes) const;
+	QList<EdgeData> getEdgesData(QList<EdgeElement *> const &edges) const;
+	void addChildren(NodeElement *node, QList<NodeElement *> &nodes) const;
 
 	EditorViewScene *mScene;
 	EditorViewMViface *mMVIface;
