@@ -412,15 +412,9 @@
                             <end endx="45" endy="142"/>
                             <ctrl x="15" y="145"/>
                         </curve>
-                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="95" x2="115">
-                            <showIf value="false" property="expanded" sign="="/>
-                        </rectangle>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="118" y2="132" fill-style="none" x1="105" x2="105">
-                            <showIf value="false" property="expanded" sign="="/>
-                        </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="125" y2="125" fill-style="none" x1="98" x2="112">
-                            <showIf value="false" property="expanded" sign="="/>
-                        </line>
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="95" x2="115"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="118" y2="132" fill-style="none" x1="105" x2="105"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="125" y2="125" fill-style="none" x1="98" x2="112"/>
                         <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="70" x2="70">
                             <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
                         </line>
