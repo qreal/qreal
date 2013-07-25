@@ -115,12 +115,13 @@ TEST(ObjectTest, propertiesGetAndRemoveTest) {
 	EXPECT_EQ(obj.property("property2").toString(), "value2");
 	EXPECT_EQ(obj.property("property3").toString(), "value3");
 	EXPECT_EQ(obj.property("backReferences"), QVariant());
-	EXPECT_THROW(obj.property("property4"), Exception);
+	// disabled throwing exceptions here until we get some kind of model migration tool
+	//EXPECT_THROW(obj.property("property4"), Exception);
 
 	obj.removeProperty("property2");
 
 	ASSERT_FALSE(obj.hasProperty("property2"));
-	EXPECT_THROW(obj.removeProperty("property4"), Exception);
+	// EXPECT_THROW(obj.removeProperty("property4"), Exception);
 
 	QMap<QString, QVariant> properties = obj.properties();
 	ASSERT_EQ(properties.keys().size(), 2);

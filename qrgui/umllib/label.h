@@ -42,6 +42,7 @@ public:
 	void setParentSelected(bool isSelected);
 	void setParentContents(QRectF contents);
 
+	void setShouldCenter(bool shouldCenter);
 	void scaleCoordinates(QRectF const &contents);
 
 protected:

@@ -29,6 +29,8 @@ public:
 	virtual void saveAll() const = 0;
 	virtual void save(qReal::IdList list) const = 0;
 	virtual void saveTo(QString const &workingFile) = 0;
+	/// exports repo contents to a single XML file
+	virtual void exportToXml(QString const &targetFile) = 0;
 	/// saves choosen diagrams to target directory and file
 	/// @param diagramIds - map of the following structure:
 	/// key is a file path to save into, value is a list of diagrams to save
