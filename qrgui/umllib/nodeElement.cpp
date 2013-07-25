@@ -757,6 +757,7 @@ void NodeElement::updateData()
 		setGeometry(newRect.translated(newpos));
 	}
 	mElementImpl->updateData(this);
+	updateLabels();
 	update();
 }
 
@@ -930,6 +931,14 @@ void NodeElement::changeFoldState()
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (parent) {
 		parent->resize();
+	}
+	updateLabels();
+}
+
+void NodeElement::updateLabels()
+{
+	foreach (Label *title, mTitles) {
+		title->setParentContents(mContents);
 	}
 }
 
@@ -1191,10 +1200,6 @@ void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool 
 {
 	ResizeHandler handler(this);
 	handler.resize(newContents, newPos, needResizeParent);
-
-	foreach (Label *title, mTitles) {
-		title->setParentContents(mContents);
-	}
 }
 
 void NodeElement::drawLinesForResize(QPainter *painter)
