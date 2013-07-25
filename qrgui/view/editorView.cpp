@@ -122,9 +122,21 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 			QRectF rect = sceneRect();
 			qreal dx = (event->localPos().x() - mMouseOldPosition.x());
 			qreal dy = (event->localPos().y() - mMouseOldPosition.y());
+			if (!rect.contains(event->localPos())) {
+				if (dx > 0) {
+					rect.setRight(rect.right() + dx);
+				} else {
+					rect.setLeft(rect.left() + dx);
+				}
+				if (dy > 0) {
+					rect.setBottom(rect.bottom() + dy);
+				} else {
+					rect.setTop(rect.top() + dy);
+				}
+			}
 			rect.moveLeft(rect.left() - dx);
 			rect.moveTop(rect.top() - dy);
-			setSceneRect(rect);
+			scene()->setSceneRect(rect);
 			translate(dx, dy);
 		}
 		mMouseOldPosition = event->localPos();
@@ -136,9 +148,9 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 		if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ControlModifier)) {
 			setDragMode(RubberBandDrag);
 			mScene->itemSelectUpdate();
-		/*} else 	if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ShiftModifier)) {
+		} else 	if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ShiftModifier)) {
 			setDragMode(ScrollHandDrag); //  (see #615)
-			mScene->itemSelectUpdate();*/
+			mScene->itemSelectUpdate();
 		} else if (event->buttons() & Qt::LeftButton ) {
 			EdgeElement *newEdgeEl = dynamic_cast<EdgeElement *>(itemAt(event->pos()));
 			if (newEdgeEl == NULL) {
@@ -159,6 +171,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent *event)
 {
 	if (!(event->buttons() & Qt::MidButton)) {
 		mWheelPressed = false;
+		scene()->setSceneRect(sceneRect());
 		mMouseOldPosition = QPointF();
 	}
 	QGraphicsView::mouseReleaseEvent(event);
