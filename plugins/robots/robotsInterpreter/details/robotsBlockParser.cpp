@@ -61,7 +61,7 @@ void RobotsBlockParser::functionBlockParseProcess(const QString &stream, int &po
 		skip(expr, position);
 		parseCommand(expr + ";", position);
 	}
-	mHasParseErrors = hasParseErrorsFlag;
+	mHasParseErrors |= hasParseErrorsFlag;
 }
 
 void RobotsBlockParser::deselect()

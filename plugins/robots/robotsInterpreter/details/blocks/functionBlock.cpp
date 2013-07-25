@@ -17,7 +17,6 @@ QVariant FunctionBlock::evaluate(const QString &propertyName)
 {
 	int position = 0;
 	mParser->functionBlockParseProcess(stringProperty(propertyName), position, mGraphicalId);
-	qDebug() << stringProperty(propertyName) << mParser->hasErrors();
 	if (mParser->hasErrors()) {
 		mParser->deselect();
 		emit failure(); /*разобраться с этой хренотой*/

@@ -297,6 +297,11 @@ Number *ExpressionsParser::parseTerm(QString const &stream, int &pos)
 					}
 				}
 			} else if(isOpenSquareBracket(stream.at(pos))) {
+				if (!mVariables.contains(variable))
+				{
+					error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
+					return new Number();
+				}
 				Number *num;
 				pos++;
 				num = parseArithmeticExpression(stream, pos);
@@ -315,6 +320,7 @@ Number *ExpressionsParser::parseTerm(QString const &stream, int &pos)
 			} else if (mVariables.contains(variable)) {
 				res = dynamic_cast<Number *>(mVariables[variable]);
 			} else {
+				qDebug() << "1";
 				error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
 			}
 		} else {
