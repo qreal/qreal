@@ -39,7 +39,7 @@ namespace qrRepo {
 
 		/// returning IdList of elements that have input property content
 		/// @param name - string that should be contained by names of elements that have input property content
-		qReal::IdList elementsByPropertyContent(QString const &propertyContent, bool sensitivity, bool regExpression) const;
+		QMap<QString, qReal::Id> elementsByPropertyContent(QString const &propertyContent, bool sensitivity, bool regExpression) const;
 
 		qReal::IdList children(qReal::Id const &id) const;
 		virtual void addChild(qReal::Id const &id, qReal::Id const &child);
