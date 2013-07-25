@@ -191,7 +191,10 @@ QVariant LogicalModel::data(const QModelIndex &index, int role) const
 		AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
 		Q_ASSERT(item);
 		switch (role) {
-			case Qt::DisplayRole:
+			case Qt::DisplayRole: {
+				QString value = mApi.name(item->id());
+				return value.split(propertiesSeparator).at(0);
+			}
 			case Qt::EditRole:
 				return mApi.name(item->id());
 			case Qt::DecorationRole:
