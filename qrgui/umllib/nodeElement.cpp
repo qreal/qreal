@@ -1371,7 +1371,7 @@ QRectF NodeElement::diagramRenderingRect() const
 	qreal yCoeff = (boundingRect().height() - 3 * kvadratik) / (initial->boundingRect().height() - 3 *kvadratik);
 
 	// QReal:BP hardcode
-	QRectF result(QPointF(30 * xCoeff, 30 * yCoeff), QPointF(180 * xCoeff, 110 * yCoeff));
+	QRectF result(QPointF(25 * xCoeff, 25 * yCoeff), QPointF(185 * xCoeff, 135 * yCoeff));
 
 	QPointF oldCenter(result.center());
 	result.setSize(mRenderedDiagram.size().scaled(result.size().toSize(), Qt::KeepAspectRatio));
