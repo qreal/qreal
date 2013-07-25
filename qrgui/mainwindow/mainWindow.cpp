@@ -74,7 +74,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
-		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
+		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit", 5).toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(*this, *mProjectManager))
@@ -457,7 +457,7 @@ void MainWindow::refreshRecentProjectsList(QString const &fileName)
 	QString previousString = SettingsManager::value("recentProjects").toString();
 	QStringList previousList = previousString.split(";", QString::SkipEmptyParts);
 	previousList.removeOne(fileName);
-	if (previousList.size() == mRecentProjectsLimit) {
+	if (previousList.size() == mRecentProjectsLimit && mRecentProjectsLimit != 0) {
 		previousList.removeLast();
 	}
 	previousList.push_front(fileName);
