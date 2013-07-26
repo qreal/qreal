@@ -24,7 +24,7 @@ QList<SmartLine> EnginesGenerator::convertElementIntoDirectCommand(TrikRobotGene
 		result.append(
 				SmartLine("brick.motor("
 						+ enginePort + ").setPower("
-						+ intPower + ")"
+						+ intPower + ");"
 				, elementId));
 	}
 

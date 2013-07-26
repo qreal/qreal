@@ -1,9 +1,9 @@
 #include "simpleElementFactory.h"
 
 #include "simpleElements/enginesGenerator.h"
-//#include "simpleElements/enginesStopGenerator.h"
+#include "simpleElements/enginesStopGenerator.h"
 #include "simpleElements/timerGenerator.h"
-//#include "simpleElements/beepGenerator.h"
+#include "simpleElements/beepGenerator.h"
 //#include "simpleElements/playToneGenerator.h"
 //#include "simpleElements/finalNodeGenerator.h"
 //#include "simpleElements/nullificationEncoderGenerator.h"
@@ -24,12 +24,12 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 {
 	if (elementType == "EnginesForward" || elementType == "EnginesBackward") {
 		return new EnginesGenerator(elementType);
-//	} else if (elementType == "EnginesStop") {
-//		return new EnginesStopGenerator();
+	} else if (elementType == "EnginesStop") {
+		return new EnginesStopGenerator();
 	} else if (elementType == "Timer") {
 		return new TimerGenerator();
-//	} else if (elementType == "Beep") {
-//		return new BeepGenerator();
+	} else if (elementType == "Beep") {
+		return new BeepGenerator();
 //	} else if (elementType == "PlayTone") {
 //		return new PlayToneGenerator();
 //	} else if (elementType == "FinalNode") {

@@ -12,7 +12,7 @@ QList<SmartLine> TimerGenerator::convertElementIntoDirectCommand(TrikRobotGenera
 {
 	QList<SmartLine> result;
 	result.append(SmartLine("brick.wait(" + trikGenerator->intExpression(logicElementId
-			, "Delay") + ")", elementId));
+			, "Delay") + ");", elementId));
 
 	return result;
 }

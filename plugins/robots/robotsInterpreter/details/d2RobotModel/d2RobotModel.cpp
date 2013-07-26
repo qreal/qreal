@@ -100,6 +100,11 @@ void D2RobotModel::setBeep(unsigned freq, unsigned time)
 
 void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 {
+	// TODO: Hack for TRIK 2D model.
+	if (port == 2) {
+		speed = -speed;
+	}
+
 	mMotors[port]->speed = speed;
 	mMotors[port]->degrees = degrees;
 	mMotors[port]->isUsed = true;
