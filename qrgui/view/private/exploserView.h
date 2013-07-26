@@ -42,12 +42,10 @@ private slots:
 private:
 	void createAddExplosionMenu(Element const * const element
 			, QMenu &contextMenu, QList<Explosion> const &explosions
-			, qReal::Id const &alreadyConnectedElement
-			, char const *slot) const;
+			, qReal::Id const &alreadyConnectedElement) const;
 
 	void createRemoveExplosionMenu(Element const * const element
-			, QMenu &contextMenu, qReal::Id const &outgoingConnection
-			, char const *slot) const;
+			, QMenu &contextMenu, qReal::Id const &outgoingConnection) const;
 
 	/// Activates first binded with explosion link graphical instance of the element
 	/// with given @see id

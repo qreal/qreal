@@ -61,6 +61,8 @@ void PaletteTree::addEditorElements(EditorManagerInterface &editorManagerProxy, 
 
 	PaletteTreeWidgets *editorTree = new PaletteTreeWidgets(*this, mMainWindow
 			, *mEditorManager, editor, diagram);
+	editorTree->hide();
+
 	mEditorsTrees.push_back(editorTree);
 	mLayout->addWidget(editorTree);
 }
