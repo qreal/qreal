@@ -638,12 +638,12 @@ void GraphicType::generateExplosionsMap(OutFile &out)
 	foreach (QString const &target, mExplosions.keys()) {
 		bool const reusable = mExplosions[target].first;
 		bool const immediateLinkage = mExplosions[target].second;
-		QString const makeTarget = QString("qMakePair(QString(\"%1\"), QString(\"%2\"))").arg(
-					diagramName, NameNormalizer::normalize(target));
-		QString const makeProperties = QString("qMakePair(%1, %2)").arg(
-					reusable ? "true" : "false", immediateLinkage ? "true" : "false");
+
 		out() << "\tmExplosionsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]";
-		out() << " << qMakePair(" + makeTarget + ", " + makeProperties + ");\n";
+		out() << QString(" << ExplosionData(%1, %2, %3, %4);\n").arg(diagramName
+				, NameNormalizer::normalize(target)
+				, reusable ? "true" : "false"
+				, immediateLinkage ? "true" : "false");
 	}
 }
 

@@ -456,11 +456,11 @@ QList<Explosion> EditorManager::explosions(Id const &source) const
 	Q_ASSERT(mPluginsLoaded.contains(source.editor()));
 	EditorInterface const *plugin = mPluginIface[source.editor()];
 	QList<Explosion> result;
-	typedef QPair<QPair<QString, QString>, QPair<bool, bool> > RawExplosion;
-	QList<RawExplosion> const rawExplosions = plugin->explosions(source.diagram(), source.element());
-	foreach (RawExplosion const &rawExplosion, rawExplosions) {
-		Id const target(source.editor(), rawExplosion.first.first, rawExplosion.first.second, "");
-		result << Explosion(source, target, rawExplosion.second.first, rawExplosion.second.second);
+	QList<EditorInterface::ExplosionData> const rawExplosions =
+			plugin->explosions(source.diagram(), source.element());
+	foreach (EditorInterface::ExplosionData const &rawExplosion, rawExplosions) {
+		Id const target(source.editor(), rawExplosion.targetDiagram, rawExplosion.targetElement, "");
+		result << Explosion(source, target, rawExplosion.isReusable, rawExplosion.requiresImmediateLinkage);
 	}
 	return result;
 }

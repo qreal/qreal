@@ -174,7 +174,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tvirtual QStringList getTypesContainedBy(QString const &element) const;\n"
 		<< "\tvirtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const;\n"
-		<< "\tvirtual QList<QPair<QPair<QString, QString>, QPair<bool, bool> > > explosions(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual QList<qReal::EditorInterface::ExplosionData> explosions(QString const &diagram, QString const &element) const;\n"
 		<< "\n"
 		<< "\tvirtual int isNodeOrEdge(QString const &element) const; \n"
 		<< "\n"
@@ -219,7 +219,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QMap<QString, QList<QPair<QString, QString> > > > mParentsMap;  // Maps diagram and element to a list of diagram-element pairs of parents (generalization relation).\n"
 		<< "\tQMap<QString, QMap<QString, QStringList > > mPaletteGroupsMap;  // Maps element`s lists of all palette groups.\n"
 		<< "\tQMap<QString, QMap<QString, QString > > mPaletteGroupsDescriptionMap; \n"
-		<< "\tQMap<QString, QMap<QString, QList<QPair<QPair<QString, QString>, QPair<bool, bool> > > > > mExplosionsMap;\n"
+		<< "\tQMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData> > > mExplosionsMap;\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -520,7 +520,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn mElementMouseGesturesMap[diagram][element];\n"
 		<< "}\n\n"
 
-		<< "QList<QPair<QPair<QString, QString>, QPair<bool, bool> > >" << mPluginName << "Plugin::explosions(QString const &diagram, QString const &element) const \n{\n"
+		<< "QList<qReal::EditorInterface::ExplosionData>" << mPluginName << "Plugin::explosions(QString const &diagram, QString const &element) const \n{\n"
 		<< "\treturn mExplosionsMap[diagram][element];\n"
 		<< "}\n\n";
 }
