@@ -176,7 +176,7 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 	mApi.setProperty(mMetamodel, "name of the directory", directoryName);
 	mApi.setProperty(mMetamodel, "relative path to QReal Source Files", pathToRoot);
 
-	mApi.connect(metamodelId, mMetamodel);
+	mApi.addExplosion(metamodelId, mMetamodel);
 }
 
 Id XmlParser::initListener(const QString &name, const QString &className, const QString &fileName)

@@ -17,7 +17,7 @@ ExploserView::ExploserView(MainWindow * const mainWindow
 
 void ExploserView::createAddExplosionMenu(Element const * const element
 		, QMenu &contextMenu, QList<Explosion> const &explosions
-		, Id const &alreadyConnectedElement, char const *slot) const
+		, Id const &alreadyConnectedElement) const
 {
 	bool hasAnyActions = false;
 	QString const menuName = alreadyConnectedElement == Id()
@@ -31,7 +31,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 			}
 			QAction *action = addExplosionMenu->addAction(mLogicalApi->logicalRepoApi().name(elementId));
 			hasAnyActions = true;
-			connect(action, SIGNAL(triggered()), slot);
+			connect(action, SIGNAL(triggered()), SLOT(addExplosionActionTriggered()));
 			QList<QVariant> tag;
 			tag << element->logicalId().toVariant() << elementId.toVariant();
 			action->setData(tag);
@@ -48,7 +48,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 		QString const editorName = mMainWindow->editorManager().friendlyName(Id(diagramType.editor()));
 		QAction *action = addExplosionMenu->addAction(tr("New ") + editorName + "/" + name);
 		hasAnyActions = true;
-		connect(action, SIGNAL(triggered()), slot);
+		connect(action, SIGNAL(triggered()), SLOT(addExplosionActionTriggered()));
 		action->setData(QVariantList() << element->logicalId().toVariant() << diagramType.toVariant());
 	}
 	contextMenu.addMenu(addExplosionMenu);
@@ -61,7 +61,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 }
 
 void ExploserView::createRemoveExplosionMenu(Element const * const element, QMenu &contextMenu
-		, Id const &outgoingConnection, const char *slot) const
+		, Id const &outgoingConnection) const
 {
 	if (outgoingConnection == Id()) {
 		return;
@@ -69,7 +69,7 @@ void ExploserView::createRemoveExplosionMenu(Element const * const element, QMen
 
 	// TODO: customize it from plugins
 	QAction *action = contextMenu.addAction(tr("Disconnect"));
-	connect(action, SIGNAL(triggered()), slot);
+	connect(action, SIGNAL(triggered()), SLOT(removeExplosionActionTriggered()));
 	action->setData(QVariantList() << element->logicalId().toVariant() << outgoingConnection.toVariant());
 }
 
@@ -83,12 +83,10 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, Element const * 
 	// menu items "connect to"
 	// TODO: move to elements, they can call the model and API themselves
 	createAddExplosionMenu(element, contextMenu, explosions
-			, mLogicalApi->logicalRepoApi().outgoingExplosion(element->logicalId())
-			, SLOT(addExplosionActionTriggered()));
+			, mLogicalApi->logicalRepoApi().outgoingExplosion(element->logicalId()));
 
 	createRemoveExplosionMenu(element, contextMenu
-			, mLogicalApi->logicalRepoApi().outgoingExplosion(element->logicalId())
-			, SLOT(removeExplosionActionTriggered()));
+			, mLogicalApi->logicalRepoApi().outgoingExplosion(element->logicalId()));
 
 	if (mMainWindow->editorManager().isInterpretationMode()) {
 		contextMenu.addSeparator();
@@ -146,10 +144,10 @@ void ExploserView::addExplosionActionTriggered()
 	Id const source = connection[0].value<Id>();
 	Id const destination = connection[1].value<Id>();
 	if (action->text().startsWith(tr("New "))) {
-		mMainWindow->controller()->executeGlobal(mLogicalApi->exploser().createElementWithIncommingExplosionCommand(
+		mMainWindow->controller()->execute(mLogicalApi->exploser().createElementWithIncommingExplosionCommand(
 				source, destination, mGraphicalApi));
 	} else {
-		mMainWindow->controller()->executeGlobal(mLogicalApi->exploser().addExplosionCommand(source, destination));
+		mMainWindow->controller()->execute(mLogicalApi->exploser().addExplosionCommand(source, destination));
 	}
 }
 
