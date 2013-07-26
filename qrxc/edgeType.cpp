@@ -195,9 +195,9 @@ void EdgeType::generateCode(OutFile &out)
 	}
 
 	out() << "\t\tvoid init(QRectF &, QList<StatPoint> &, QList<StatLine> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tElementTitleFactoryInterface &, QList<ElementTitleInterface*> &,\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tLabelFactoryInterface &, QList<LabelInterface*> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *, ElementRepoInterface *) {}\n\n"
-	<< "\t\tvoid init(ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles)\n\t\t{\n";
+	<< "\t\tvoid init(LabelFactoryInterface &factory, QList<LabelInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty())
 		mLabels[0]->generateCodeForConstructor(out);
@@ -214,7 +214,7 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tbool isContainer() const { return false; }\n"
 	<< "\t\tbool isDividable() const { return " << mIsDividable << "; }\n"
 	<< "\t\tbool isSortingContainer() const { return false; }\n"
-	<< "\t\tint sizeOfForestalling() const { return 0; }\n"
+	<< "\t\tQVector<int> sizeOfForestalling() const { return QVector<int>(4, 0); }\n"
 	<< "\t\tint sizeOfChildrenForestalling() const { return 0; }\n"
 	<< "\t\tbool hasMovableChildren() const { return false; }\n"
 	<< "\t\tbool minimizesToChildren() const { return false; }\n"
@@ -283,7 +283,7 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 	"\t\t\tQBrush brush;\n"
 	"\t\t\tbrush.setStyle(Qt::SolidPattern);\n";
 
-	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow")
+	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow" || style == "empty_circle")
 		out() << "\t\t\tbrush.setColor(Qt::white);\n";
 
 	if (style == "filled_arrow" || style == "filled_rhomb")
@@ -312,5 +312,17 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 		"\n\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(10,10),"
 		"\n\t\t\t\tQPointF(15,30),\n\t\t\t\tQPointF(0,23),\n\t\t\t\tQPointF(-15,30)\n\t\t\t};\n"
 		"\t\t\tpainter->drawPolyline(points, 7);\n";
+
+	if (style == "crossed_line")
+		out() << "\t\t\tQPen oldPen = painter->pen();\n"
+		"\t\t\tQPen newPen = oldPen;\n"
+		"\t\t\tnewPen.setWidth(2);\n"
+		"\t\t\tpainter->setPen(newPen);\n"
+		"\t\t\tpainter->drawLine(5, 5, -5, 15);\n"
+		"\t\t\tpainter->setPen(oldPen);\n";
+
+	if (style == "empty_circle")
+		out() << "\t\t\tpainter->drawEllipse(-5, 0, 10, 10);\n";
+
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
 }

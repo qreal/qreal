@@ -21,7 +21,8 @@ namespace gui {
 /// Class for representing tree with elements of the editors.
 class PaletteTree: public QWidget
 {
-Q_OBJECT
+	Q_OBJECT
+
 public:
 	explicit PaletteTree(QWidget *parent = 0);
 	~PaletteTree();
@@ -72,11 +73,14 @@ signals:
 	void paletteParametersChanged();
 
 public slots:
-	/// Collapse all nodes of current tree.
-	void collapse();
+	/// Change expanded/collapsed state of current tree.
+	void changeExpansionState();
 
 	/// Expand all nodes of current tree.
 	void expand();
+
+	/// Collapse all nodes of current tree.
+	void collapse();
 
 	void setActiveEditor(int index);
 	void setActiveEditor(Id const &id);
@@ -86,6 +90,10 @@ public slots:
 
 	/// Changes widget representation.
 	void changeRepresentation();
+
+private:
+	/// Change icon and tooltip
+	void setExpansionButtonAppearance();
 
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;
@@ -116,11 +124,8 @@ private:
 	/// Pointer to current tree.
 	PaletteTreeWidgets *mTree;
 
-	/// Button that collapses all nodes of current tree.
-	QToolButton *mCollapseAll;
-
-	/// Button that expands all nodes of current tree.
-	QToolButton *mExpandAll;
+	/// Button that changes expansion state of current tree
+	QToolButton *mChangeExpansionState;
 
 	/// Button that changes palette representation.
 	QToolButton *mChangeRepresentation;
@@ -142,6 +147,9 @@ private:
 
 	/// Representation flag
 	bool mIconsView;
+
+	/// Whether expand/collapse button expands tree
+	bool mNodesStateButtonExpands;
 
 	/// Count of items in a row in icon's representation
 	int mItemsCountInARow;

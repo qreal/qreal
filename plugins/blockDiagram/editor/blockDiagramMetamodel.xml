@@ -99,6 +99,7 @@
 			  <possibleEdge beginName="InitialNode" directed="true" endName="ConditionNode"/>
 			  <possibleEdge beginName="InitialNode" directed="true" endName="BlockFinalNode"/>
 			  <possibleEdge beginName="InitialNode" directed="true" endName="ActionElement"/>
+			  <possibleEdge beginName="ActionElement" directed="true" endName="BlockDiagramNode"/>
 			  <possibleEdge beginName="ActionElement" directed="true" endName="ActionElement"/>
 			  <possibleEdge beginName="ActionElement" directed="true" endName="ConditionNode"/>
 			  <possibleEdge beginName="ActionElement" directed="true" endName="BlockFinalNode"/>
@@ -168,5 +169,16 @@
 		  </logic>
 		</node>
 	  </graphicTypes>
+	  <palette>
+		  <group name="Элементы">
+			  <element name="ConditionNode"/>
+			  <element name="BlockDiagramNode"/>
+			  <element name="ActionElement"/>
+			  <element name="InitialNode"/>
+			  <element name="ConditionControlFlow"/>
+			  <element name="ControlFlow"/>
+			  <element name="BlockFinalNode"/>
+		  </group>
+	  </palette>
 	</diagram>
   </metamodel>

@@ -3,6 +3,7 @@
 #include <QDomElement>
 #include <QStringList>
 #include <QList>
+#include <QVector>
 #include <QPair>
 
 #include "type.h"
@@ -43,7 +44,7 @@ protected:
 		ContainerProperties();
 
 		bool isSortingContainer;
-		int sizeOfForestalling;
+		QVector<int> sizeOfForestalling;
 		int sizeOfChildrenForestalling;
 		bool hasMovableChildren;
 		bool minimizesToChildren;
@@ -102,6 +103,8 @@ private:
 	bool addProperty(Property *property);
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
+
+	QVector<int> toIntVector(QString const &s, bool * isOk) const;
 
 	QString mDescription;
 };

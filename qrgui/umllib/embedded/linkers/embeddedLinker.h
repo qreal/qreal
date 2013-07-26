@@ -40,12 +40,12 @@ public:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
 private slots:
-	void updateMasterEdges();
+	void updateMasterEdge();
 
 private:
 	EdgeElement* mEdge;
 	NodeElement* mMaster;
-	ElementTitle* mTitle;
+	Label* mTitle;
 
 	float mSize;
 	float mIndent;

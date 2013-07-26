@@ -240,10 +240,10 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t}\n\n";
 	}
 
-	out () << "\t\tvoid init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}\n\n"
+	out () << "\t\tvoid init(LabelFactoryInterface &, QList<LabelInterface*> &) {}\n\n"
 	<< "\t\tvoid init(QRectF &contents, QList<StatPoint> &pointPorts,\n"
-	<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
-	<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
+	<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, LabelFactoryInterface &factory,\n"
+	<< "\t\t\t\t\t\t\tQList<LabelInterface*> &titles, SdfRendererInterface *renderer,\n"
 	<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer, ElementRepoInterface *elementRepo)\n\t\t{\n";
 
 	if (!hasPointPorts())
@@ -323,10 +323,18 @@ void NodeType::generateCode(OutFile &out)
 
 	<< "\t\tbool isSortingContainer() const\n\t\t{\n"
 	<< (mContainerProperties.isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n"
+	<< "\t\t}\n\n";
 
-	<< "\t\tint sizeOfForestalling() const\n\t\t{\n"
-	<< "\t\t\treturn " + QString::number(mContainerProperties.sizeOfForestalling) + ";\n"
+	QStringList forestalling;
+	foreach (int size, mContainerProperties.sizeOfForestalling) {
+		forestalling << QString::number(size);
+	}
+
+	out() << "\t\tQVector<int> sizeOfForestalling() const\n\t\t{\n"
+	<< "\t\t\tQVector<int> result;\n"
+	<< "\t\t\tresult << " + forestalling[0] + " << " + forestalling[1] + " << " + forestalling[2]
+			+ " << " + forestalling[3] + ";\n"
+	<< ";\n\t\t\treturn result;\n"
 	<< "\t\t}\n\n"
 
 	<< "\t\tint sizeOfChildrenForestalling() const\n\t\t{\n"

@@ -185,10 +185,10 @@ void LogicalModelAssistApi::removeReferencesFrom(Id const &id)
 	QStringList referenceProperties = mEditorManager.referenceProperties(id.type());
 
 	foreach (QString const &property, referenceProperties) {
-		QString propertyString = mLogicalModel.api().property(id, property).toString();
-		if (!propertyString.isEmpty()) {
-			Id propertyValue = Id::loadFromString(propertyString);
-			mLogicalModel.api().removeBackReference(propertyValue, id);
+		QStringList propertyValue = mLogicalModel.api().property(id, property).toString().split(',', QString::SkipEmptyParts);
+		foreach (QString const &value, propertyValue) {
+			Id idValue = Id::loadFromString(value);
+			mLogicalModel.api().removeBackReference(idValue, id);
 		}
 	}
 }
@@ -198,10 +198,9 @@ void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference)
 	QStringList referenceProperties = mEditorManager.referenceProperties(id.type());
 
 	foreach (QString const &propertyName, referenceProperties) {
-		QString stringData = mLogicalModel.api().property(id, propertyName).toString();
-		if (stringData == reference.toString()) {
-			mLogicalModel.mutableApi().setProperty(id, propertyName, "");
-		}
+		QStringList stringData = mLogicalModel.api().property(id, propertyName).toString().split(',', QString::SkipEmptyParts);
+		stringData.removeAll(reference.toString());
+		mLogicalModel.mutableApi().setProperty(id, propertyName, stringData.join(','));
 	}
 }
 

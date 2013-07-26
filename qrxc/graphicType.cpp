@@ -10,7 +10,7 @@
 using namespace utils;
 
 GraphicType::ContainerProperties::ContainerProperties()
-	: isSortingContainer(false), sizeOfForestalling(0)
+	: isSortingContainer(false), sizeOfForestalling(4, 0)
 	, sizeOfChildrenForestalling(0), hasMovableChildren(true)
 	, minimizesToChildren(false), maximizesChildren(false)
 {
@@ -194,15 +194,17 @@ bool GraphicType::initContainerProperties()
 		} else if (childElement.tagName() == "forestalling") {
 			QString sizeAttribute = childElement.attribute("size");
 			bool isSizeOk = false;
-			mContainerProperties.sizeOfForestalling = sizeAttribute.toInt(&isSizeOk);
-			if (!isSizeOk)
+			mContainerProperties.sizeOfForestalling = toIntVector(sizeAttribute, &isSizeOk);
+			if (!isSizeOk) {
 				return false;
+			}
 		} else if (childElement.tagName() == "childrenForestalling") {
 			QString sizeAttribute = childElement.attribute("size");
 			bool isSizeOk = false;
 			mContainerProperties.sizeOfChildrenForestalling = sizeAttribute.toInt(&isSizeOk);
-			if (!isSizeOk)
+			if (!isSizeOk) {
 				return false;
+			}
 		} else if (childElement.tagName() == "minimizeToChildren") {
 			mContainerProperties.minimizesToChildren = true;
 		} else if (childElement.tagName() == "banChildrenMove") {
@@ -474,7 +476,7 @@ bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 	if (mVisible) {
 		QString name = NameNormalizer::normalize(qualifiedName());
 		generateOneCase(out, isNotFirst);
-		out() << "\t\treturn new " << name << "();\n";
+		out() << "\t\treturn new " << name << "();\n\t}\n";
 		return true;
 	}
 	return false;
@@ -489,8 +491,7 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRefer
 		bool isFirstProperty = true;
 
 		foreach (Property *property, mProperties) {
-			// Хак: не генерить предопределённые свойства, иначе они затрут
-			// настоящие и линки будут цепляться к чему попало.
+			// do not generate common properties
 			if (property->name() == "fromPort" || property->name() == "toPort"
 				|| property->name() == "from" || property->name() == "to"
 				|| property->name() == "name")
@@ -514,10 +515,11 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRefer
 			}
 		}
 
-		if (!propertiesString.trimmed().isEmpty())
-			out() << propertiesString;
+		if (!isFirstProperty) {
+			out() << propertiesString << ";\n";
+		}
 
-		out() << ";\n";
+		out() << "\t}\n";
 		return true;
 	}
 	return false;
@@ -555,12 +557,12 @@ void GraphicType::generatePropertyDefaults(OutFile &out)
 
 void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const
 {
-	QString name = NameNormalizer::normalize(qualifiedName());
+	QString const name = NameNormalizer::normalize(qualifiedName());
 
 	if (!isNotFirst) {
-		out() << "\tif (element == \"" << name << "\")\n";
+		out() << "\tif (element == \"" << name << "\") {\n";
 	} else {
-		out() << "\telse if (element == \"" << name << "\")\n";
+		out() << "\telse if (element == \"" << name << "\") {\n";
 	}
 }
 
@@ -589,7 +591,7 @@ bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 		out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\"" << element.first.second << "\")),"
 				<< "qMakePair(" << directed << ",QString(\"" << element.second.second << "\")))";
 	}
-	out() << ";\n";
+	out() << ";\n\t}\n";
 	return true;
 }
 
@@ -606,7 +608,7 @@ bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, Q
 		out() << "<< \"" << element << "\" ";
 	}
 
-	out() << ";\n";
+	out() << ";\n\t}\n";
 	return true;
 }
 
@@ -643,4 +645,23 @@ void GraphicType::generateExplosionsMap(OutFile &out)
 		out() << "\tmExplosionsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]";
 		out() << " << qMakePair(" + makeTarget + ", " + makeProperties + ");\n";
 	}
+}
+
+QVector<int> GraphicType::toIntVector(QString const &s, bool *isOk) const
+{
+	QStringList const strings = s.split(',');
+	QVector<int> result(4, 0);
+
+	if (strings.size() != 4) {
+		*isOk = false;
+		return result;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		result[i] = strings[i].toInt(isOk);
+		if (!*isOk)
+			return result;
+	}
+
+	return result;
 }

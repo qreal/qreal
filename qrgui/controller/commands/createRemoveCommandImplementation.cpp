@@ -39,6 +39,11 @@ Id CreateRemoveCommandImplementation::create()
 	return mId;
 }
 
+Id CreateRemoveCommandImplementation::id() const
+{
+	return mId;
+}
+
 void CreateRemoveCommandImplementation::remove()
 {
 	if (mIsFromLogicalModel) {

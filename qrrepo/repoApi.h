@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../qrkernel/roles.h"
 #include "private/client.h"
@@ -124,6 +124,7 @@ namespace qrRepo {
 
 		// "Глобальные" методы, позволяющие делать запросы к модели в целом.
 		//Returns all elements with .element() == type.element()
+		virtual qReal::IdList graphicalElements() const;
 		virtual qReal::IdList graphicalElements(qReal::Id const &type) const;
 		virtual qReal::IdList logicalElements(qReal::Id const &type) const;
 

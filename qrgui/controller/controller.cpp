@@ -26,6 +26,16 @@ Controller::~Controller()
 	mGlobalStack->deleteLater();
 }
 
+bool Controller::canUndo() const
+{
+	return mCanUndoState;
+}
+
+bool Controller::canRedo() const
+{
+	return mCanRedoState;
+}
+
 void Controller::setActiveDiagram(Id const &diagramId)
 {
 	if (diagramId != Id()) {

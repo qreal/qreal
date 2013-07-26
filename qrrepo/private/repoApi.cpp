@@ -1,4 +1,4 @@
-#include "../repoApi.h"
+﻿#include "../repoApi.h"
 
 #include <QtCore/QDebug>
 
@@ -412,6 +412,16 @@ void RepoApi::save(qReal::IdList list) const
 QString RepoApi::workingFile() const
 {
 	return mClient.workingFile();
+}
+
+IdList RepoApi::graphicalElements() const
+{
+	IdList result;
+	foreach (Id const &id, mClient.elements()) {
+		if (!mClient.isLogicalId(id))
+			result.append(id);
+	}
+	return result;
 }
 
 void RepoApi::addToIdList(Id const &target, QString const &listName, Id const &data, QString const &direction)

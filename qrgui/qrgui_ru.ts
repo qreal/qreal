@@ -269,41 +269,39 @@
 <context>
     <name>EdgeElement</name>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="30"/>
+        <location filename="umllib/edgeElement.cpp" line="35"/>
         <source>Add point</source>
         <translation>Добавить точку</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="31"/>
+        <location filename="umllib/edgeElement.cpp" line="36"/>
         <source>Delete point</source>
         <translation>Удалить точку</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="32"/>
         <source>Squarize</source>
-        <translation>Перерисовать под прямым углом</translation>
+        <translation type="obsolete">Перерисовать под прямым углом</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="33"/>
+        <location filename="umllib/edgeElement.cpp" line="37"/>
         <source>Remove all points</source>
         <translation>Удалить все точки</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="34"/>
+        <location filename="umllib/edgeElement.cpp" line="38"/>
         <source>Remove segment</source>
         <translation>Удалить отрезок</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="35"/>
+        <location filename="umllib/edgeElement.cpp" line="39"/>
         <source>Reverse</source>
         <translatorcomment>Обратить и переприсоединить</translatorcomment>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="36"/>
         <source>Change drawing type</source>
         <translatorcomment>вертикальный/горизонтальный</translatorcomment>
-        <translation>Изменить тип рисования </translation>
+        <translation type="obsolete">Изменить тип рисования </translation>
     </message>
     <message>
         <source>Minimize</source>
@@ -524,68 +522,65 @@
 <context>
     <name>EditorViewScene</name>
     <message>
-        <location filename="view/editorViewScene.cpp" line="351"/>
-        <location filename="view/editorViewScene.cpp" line="419"/>
+        <location filename="view/editorViewScene.cpp" line="353"/>
+        <location filename="view/editorViewScene.cpp" line="426"/>
         <source>Discard</source>
         <translation>Убрать меню</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="354"/>
+        <location filename="view/editorViewScene.cpp" line="356"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="956"/>
+        <location filename="view/editorViewScene.cpp" line="416"/>
+        <location filename="view/editorViewScene.cpp" line="427"/>
+        <source>Connect with the current item</source>
+        <translation>Соединить с данным элементом</translation>
+    </message>
+    <message>
         <source>Add connection</source>
-        <translation>Добавить провязку</translation>
+        <translation type="obsolete">Добавить провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="962"/>
         <source>Disconnect</source>
-        <translation>Убрать провязку</translation>
+        <translation type="obsolete">Убрать провязку</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="967"/>
         <source>Add usage</source>
-        <translation>Добавить использование</translation>
+        <translation type="obsolete">Добавить использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="973"/>
         <source>Delete usage</source>
-        <translation>Убрать использование</translation>
+        <translation type="obsolete">Убрать использование</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="978"/>
         <source>Go to</source>
-        <translation>Перейти</translation>
+        <translation type="obsolete">Перейти</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="980"/>
         <source>Forward connection</source>
-        <translation>По провязке вперёд</translation>
+        <translation type="obsolete">По провязке вперёд</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="981"/>
         <source>Backward connection</source>
-        <translation>По провязке назад</translation>
+        <translation type="obsolete">По провязке назад</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="982"/>
         <source>Uses</source>
-        <translation>Использует</translation>
+        <translation type="obsolete">Использует</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="983"/>
         <source>Used in</source>
-        <translation>Используется в</translation>
+        <translation type="obsolete">Используется в</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="987"/>
+        <location filename="view/editorViewScene.cpp" line="897"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="990"/>
+        <location filename="view/editorViewScene.cpp" line="900"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
     </message>
@@ -834,7 +829,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="550"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+S</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="558"/>
@@ -844,7 +839,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="569"/>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+O</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.ui" line="637"/>
@@ -1378,7 +1373,7 @@
 <context>
     <name>NodeElement</name>
     <message>
-        <location filename="umllib/nodeElement.cpp" line="27"/>
+        <location filename="umllib/nodeElement.cpp" line="28"/>
         <source>Switch on grid</source>
         <translation>Включить сетку</translation>
     </message>
@@ -1533,30 +1528,58 @@
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.ui" line="87"/>
+        <location filename="dialogs/preferencesDialog.ui" line="42"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.ui" line="73"/>
+        <location filename="dialogs/preferencesDialog.ui" line="56"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.ui" line="80"/>
+        <location filename="dialogs/preferencesDialog.ui" line="136"/>
+        <source>Export</source>
+        <translation>Экспорт</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.ui" line="143"/>
+        <source>Import</source>
+        <translation>Импорт</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.ui" line="49"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="51"/>
-        <location filename="dialogs/preferencesDialog.cpp" line="129"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="53"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="131"/>
         <source>Editor</source>
         <translation>Редактор</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="52"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="54"/>
         <source>Shortcuts</source>
         <translation>Горячие клавиши</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.cpp" line="138"/>
+        <source>Save File</source>
+        <translation>Сохранить файл
+</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.cpp" line="138"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="147"/>
+        <source>*.ini</source>
+        <translation>*.ini</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesDialog.cpp" line="147"/>
+        <source>Open File</source>
+        <translation>Открыть файл
+</translation>
     </message>
     <message>
         <source>Features</source>
@@ -1615,7 +1638,7 @@
         <translation type="obsolete">Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="50"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="52"/>
         <source>Miscellanious</source>
         <translation>Разное</translation>
     </message>
@@ -1645,7 +1668,7 @@
         <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesDialog.cpp" line="49"/>
+        <location filename="dialogs/preferencesDialog.cpp" line="51"/>
         <source>Behaviour</source>
         <translation>Поведение</translation>
     </message>
@@ -1765,117 +1788,176 @@
 <context>
     <name>PreferencesEditorPage</name>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="190"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="516"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="210"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="523"/>
         <source>Indent</source>
         <translation>Отступ</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="148"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="203"/>
         <source>Show grid</source>
         <translation>Показать сетку</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="138"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="186"/>
         <source>Activate grid</source>
         <translation>Выравнивание по сетке</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="80"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="196"/>
         <source>Width</source>
         <translation>Толщина сетки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="109"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="173"/>
         <source>Cell size</source>
         <translation>Размер ячейки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="325"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="286"/>
+        <source>Node Elements</source>
+        <translation>Элементы</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="318"/>
+        <source>Drag area</source>
+        <translation>Размер области масштабирования</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="351"/>
+        <source>Edge</source>
+        <translation>Связи</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="423"/>
+        <source>Line mode</source>
+        <translation>Тип связей</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="405"/>
+        <source>broken</source>
+        <translation>Ломаные линии</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="410"/>
+        <source>square</source>
+        <translation>Прямоугольные линии</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="415"/>
+        <source>curve</source>
+        <translation>Кривые Безье</translation>
+    </message>
+    <message>
+        <source>Loop Edge</source>
+        <translation type="obsolete">Связи-петли</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="617"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="341"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="633"/>
         <source>   Representation   </source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="378"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="660"/>
         <source>Icons  and names</source>
         <translation>Иконки и названия</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="383"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="665"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="348"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="640"/>
         <source>   Count of items in a row </source>
         <translation>Количество иконок в строке</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="122"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="163"/>
         <source>Activate alignment</source>
         <translation>Выравнивание по направляющим</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="51"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="219"/>
         <source>Show alignment</source>
         <translation>Показать направляющие</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="23"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="110"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="161"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="436"/>
+        <source>Loop edges indent</source>
+        <translation>Отступ связей-петель</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="474"/>
         <source>Embedded Linkers</source>
         <translation>Встроенные линкеры</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="255"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="533"/>
+        <source>Labels</source>
+        <translation>Надписи на элементах</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="549"/>
+        <source>Enable move</source>
+        <translation>Разрешить перемещать</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="559"/>
+        <source>Enable resize</source>
+        <translation>Разрешить изменять размер</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="588"/>
         <source>Zoom factor</source>
         <translation>Коэффициент масштабирования</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="220"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="572"/>
         <source>Zoom</source>
         <translation>Увеличение</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="265"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="50"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="302"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="87"/>
         <source>Use some of system fonts</source>
         <translation>Использовать системный шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="315"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="100"/>
         <source>Choose Font</source>
         <translation>Выбрать шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="129"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="129"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
         <source>You should restart QReal:Robots to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="129"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -1930,28 +2012,53 @@
 <context>
     <name>PreferencesMiscellaniousPage</name>
     <message>
-        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="154"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="208"/>
         <source>Browse</source>
         <translation>Выбрать</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="138"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="192"/>
         <source>Images</source>
         <translation>Изображения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="82"/>
+        <source>LineMode</source>
+        <translation type="obsolete">Режим рисования линии</translation>
+    </message>
+    <message>
+        <source>Broken</source>
+        <translation type="obsolete">Ломаная</translation>
+    </message>
+    <message>
+        <source>Square</source>
+        <translation type="obsolete">Сквадрачивание</translation>
+    </message>
+    <message>
+        <source>Curve</source>
+        <translation type="obsolete">Кривая</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="72"/>
         <source>Show splashscreen</source>
         <translation>Показывать сплешскрин</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="92"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="145"/>
+        <source>Limit recent projects list</source>
+        <translation>Длина списка недавних проектов</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Limit recent projects list:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="obsolete">Длина списка недавних проектов:</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="102"/>
         <source>Paint the old line</source>
         <oldsource>Paint the old line mode</oldsource>
         <translation>Рисовать старую линию</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="112"/>
+        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="79"/>
         <source>Color of old line:</source>
         <translation>Цвет старой линии:</translation>
     </message>
@@ -1960,9 +2067,8 @@
         <translation type="obsolete">Режим, угодный богам Хаоса</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="75"/>
         <source>Square Line Mode</source>
-        <translation>Режим перпендикулярных линий</translation>
+        <translation type="obsolete">Режим перпендикулярных линий</translation>
     </message>
     <message>
         <location filename="dialogs/preferencesPages/miscellaniousPage.ui" line="39"/>
@@ -2276,6 +2382,46 @@
     <message>
         <source>incorrect file name</source>
         <translation type="obsolete">Некорректное имя файла</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="63"/>
+        <source>Add connection</source>
+        <translation>Добавить провязку</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="68"/>
+        <source>Disconnect</source>
+        <translation>Убрать провязку</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="73"/>
+        <source>Add usage</source>
+        <translation>Добавить использование</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="78"/>
+        <source>Delete usage</source>
+        <translation>Убрать использование</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="83"/>
+        <source>Forward connection</source>
+        <translation>По провязке вперёд</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="88"/>
+        <source>Backward connection</source>
+        <translation>По провязке назад</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="93"/>
+        <source>Uses</source>
+        <translation>Использует</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="98"/>
+        <source>Used in</source>
+        <translation>Используется в</translation>
     </message>
 </context>
 <context>
@@ -2862,114 +3008,114 @@
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1034"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="976"/>
         <source>Draw line</source>
         <translation>Рисовать линию</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="205"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="169"/>
         <source>Draw curve</source>
         <translation>Рисовать кривую</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="695"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="637"/>
         <source>Draw rectangle</source>
         <translation>Рисовать прямоугольник</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="69"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="43"/>
         <source>Draw ellipse</source>
         <translation>Рисовать эллипс</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="110"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="84"/>
         <source>Add static text</source>
         <translation>Добавить статический текст</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="151"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="125"/>
         <source>Add dynamic text</source>
         <translation>Добавить динамический текст</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="528"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="470"/>
         <source>Stylus</source>
         <translation>Стилус</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="657"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="599"/>
         <source>Add picture text</source>
         <translation>Добавить текст-картинку</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="569"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="511"/>
         <source>Add line port</source>
         <translation>Добавить линейный порт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="616"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="558"/>
         <source>Add point port</source>
         <translation>Добавить точечный порт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="267"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="231"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="294"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="258"/>
         <source>Family</source>
         <translation>Семейство</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="343"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="307"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="385"/>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="854"/>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="993"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="349"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="796"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="935"/>
         <source>Color</source>
         <translation>Цвет</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="406"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="370"/>
         <source>Text format</source>
         <translation>Формат текста</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="418"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="382"/>
         <source>Italic</source>
         <translation>Наклонный</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="431"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="395"/>
         <source> Bold</source>
         <translation>Полужирный</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="444"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="408"/>
         <source>Underline</source>
         <translation>Подчёркнутый</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="466"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="430"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1069"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1011"/>
         <source>VisibilityConditions</source>
         <translation>Условия видимости</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="56"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="30"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="493"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="457"/>
         <source>Save to Xml</source>
         <translation>Сохранить в Xml</translation>
     </message>
@@ -2979,38 +3125,38 @@
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="36"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1037"/>
         <source>Delete Item</source>
         <translation>Удалить элемент</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="49"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1024"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="486"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="450"/>
         <source>Save as picture</source>
         <translation>Сохранить как картинку</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="766"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="708"/>
         <source>Pen</source>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="806"/>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="951"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="748"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="893"/>
         <source>Style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="896"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="838"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="914"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="856"/>
         <source>Brush</source>
         <translation>Кисть</translation>
     </message>
@@ -3019,7 +3165,7 @@
         <translation type="obsolete">Ничего</translation>
     </message>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="1015"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.ui" line="957"/>
         <source>Image</source>
         <translation>Картинка</translation>
     </message>
@@ -3392,6 +3538,25 @@
     </message>
 </context>
 <context>
+    <name>qReal::Autosaver</name>
+    <message>
+        <location filename="mainwindow/projectManager/autosaver.cpp" line="127"/>
+        <location filename="mainwindow/projectManager/autosaver.cpp" line="140"/>
+        <source>Question</source>
+        <translation>Вопрос</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/autosaver.cpp" line="149"/>
+        <source>More recent autosaved version of this file was found. Do you wish to open it instead?</source>
+        <translation>Похоже, что предыдущая сессия была некоррекно завершена. Найдена более свежая автосохраненная версия выбранного проекта. Открыть ее?</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/autosaver.cpp" line="155"/>
+        <source>It seems like the last application session was terminated in an unusial way. Do you wish to recover unsaved project?</source>
+        <translation>Похоже, что предыдущая сессия была некоррекно завершена. Открыть несохраненный проект?</translation>
+    </message>
+</context>
+<context>
     <name>qReal::ChooseTypeDialog</name>
     <message>
         <source>Choose type of adding element:</source>
@@ -3518,7 +3683,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="784"/>
+        <location filename="mainwindow/mainWindow.cpp" line="810"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3543,16 +3708,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="810"/>
-        <location filename="mainwindow/mainWindow.cpp" line="828"/>
-        <location filename="mainwindow/mainWindow.cpp" line="846"/>
+        <location filename="mainwindow/mainWindow.cpp" line="836"/>
+        <location filename="mainwindow/mainWindow.cpp" line="854"/>
+        <location filename="mainwindow/mainWindow.cpp" line="872"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="812"/>
-        <location filename="mainwindow/mainWindow.cpp" line="830"/>
-        <location filename="mainwindow/mainWindow.cpp" line="848"/>
+        <location filename="mainwindow/mainWindow.cpp" line="838"/>
+        <location filename="mainwindow/mainWindow.cpp" line="856"/>
+        <location filename="mainwindow/mainWindow.cpp" line="874"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3657,89 +3822,89 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="846"/>
+        <location filename="mainwindow/mainWindow.cpp" line="872"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="848"/>
+        <location filename="mainwindow/mainWindow.cpp" line="874"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1022"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1042"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1300"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1320"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1301"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1321"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1302"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1322"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1303"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1323"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1304"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1324"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1305"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1325"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1306"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1326"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1307"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1327"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1308"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1328"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1309"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1329"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1310"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1330"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1311"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1331"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1312"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1332"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="991"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1004"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1030"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1011"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1024"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1050"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3748,17 +3913,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1948"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1979"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1978"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2009"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1978"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2009"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3779,7 +3944,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1517"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1546"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -3848,88 +4013,90 @@
 <context>
     <name>qReal::ProjectManager</name>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="52"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="51"/>
         <source>Open existing project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="77"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="76"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="78"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="77"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="79"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="78"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отмена</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="80"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="79"/>
         <source>&amp;Discard</source>
         <translation>&amp;Не сохранять</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="81"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="80"/>
         <source>Do you want to save current project?</source>
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="125"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="134"/>
         <source>Select file with a save to import</source>
         <translation>Выберите файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="147"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="315"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="205"/>
+        <source>Unsaved project</source>
+        <translation>Несохраненный проект</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="358"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="148"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="316"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="359"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="148"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="316"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="359"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="158"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="165"/>
         <source>There are missing plugins</source>
         <translation>Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="159"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="166"/>
         <source>These plugins are not present, but needed to load the save:
 </source>
         <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="288"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="305"/>
         <source>Select file to save current metamodel to</source>
         <translation>Выберите файл для сохранения метамодели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="294"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="311"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения модели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="312"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="327"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="330"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="342"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="201"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="212"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>
@@ -3977,7 +4144,7 @@
 <context>
     <name>qReal::ShapeEdit</name>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="315"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="316"/>
         <source>Saving</source>
         <translation>Сохранение</translation>
     </message>
@@ -3985,7 +4152,7 @@
 <context>
     <name>qReal::StartDialog</name>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="71"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="70"/>
         <source>Start page</source>
         <oldsource>Start Page</oldsource>
         <translation>Начальная страница</translation>
@@ -3999,17 +4166,17 @@
         <translation type="obsolete">Новый проект на базе диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="24"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="23"/>
         <source>&amp;Recent projects</source>
         <translation>&amp;Недавние проекты</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="29"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="28"/>
         <source>&amp;New project with diagram</source>
         <translation>Новый проект на базе &amp;диаграммы</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="54"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="53"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
@@ -4026,35 +4193,35 @@
         <translation type="obsolete">&amp;Открыть проект</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="36"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="35"/>
         <source>&amp;Open interpreted diagram</source>
         <translation>Открыть интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="37"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="36"/>
         <source>&amp;Create interpreted diagram</source>
         <translation>&amp;Создать интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="61"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="60"/>
         <source>Open existing project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="134"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="133"/>
         <source>Select file with metamodel to open</source>
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="173"/>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="175"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="172"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="174"/>
         <source>Enter the diagram name:</source>
         <oldsource>Enter the editor name:</oldsource>
         <translation>Введите имя диаграммы:</translation>
     </message>
     <message>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="173"/>
-        <location filename="dialogs/startDialog/startDialog.cpp" line="175"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="172"/>
+        <location filename="dialogs/startDialog/startDialog.cpp" line="174"/>
         <source>diagram name:</source>
         <translation>имя диаграммы:</translation>
     </message>
@@ -4240,17 +4407,17 @@
         <translation type="obsolete">Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="296"/>
+        <location filename="mainwindow/paletteTree.cpp" line="501"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="304"/>
+        <location filename="mainwindow/paletteTree.cpp" line="496"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="312"/>
+        <location filename="mainwindow/paletteTree.cpp" line="304"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>

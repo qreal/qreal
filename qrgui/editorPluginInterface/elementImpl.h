@@ -5,7 +5,7 @@
 #include <QtCore/QRectF>
 #include <QtCore/QPointF>
 #include <QtGui/QPainter>
-#include "elementTitleHelpers.h"
+#include "labelHelpers.h"
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
 #include "../../qrkernel/ids.h"
@@ -90,12 +90,12 @@ class ElementImpl {
 public:
 	virtual ~ElementImpl() {}
 	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts
-					  , QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
-					  , QList<ElementTitleInterface*> &title
+					  , QList<StatLine> &linePorts, LabelFactoryInterface &factory
+					  , QList<LabelInterface*> &title
 					  , SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
 					  , ElementRepoInterface *elementRepo = 0) = 0;
-	virtual void init(ElementTitleFactoryInterface &factory,
-					  QList<ElementTitleInterface*> &titles) = 0;
+	virtual void init(LabelFactoryInterface &factory,
+					  QList<LabelInterface*> &titles) = 0;
 	virtual void paint(QPainter *painter, QRectF &contents) = 0;
 	virtual void updateData(ElementRepoInterface *repo) const = 0;
 	virtual bool isNode() const = 0;
@@ -111,7 +111,7 @@ public:
 	/*Container properties*/
 	virtual bool isContainer() const = 0;
 	virtual bool isSortingContainer() const = 0;
-	virtual int sizeOfForestalling() const = 0;
+	virtual QVector<int> sizeOfForestalling() const = 0;
 	virtual int sizeOfChildrenForestalling() const = 0;
 	virtual bool hasMovableChildren() const = 0;
 	virtual bool minimizesToChildren() const = 0;

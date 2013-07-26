@@ -39,7 +39,7 @@ EmbeddedLinker::EmbeddedLinker()
 
 	setAcceptHoverEvents(true);
 
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdges()));
+	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdge()));
 }
 
 EmbeddedLinker::~EmbeddedLinker()
@@ -95,8 +95,10 @@ void EmbeddedLinker::setDirected(const bool directed)
 
 void EmbeddedLinker::initTitle()
 {
-	EditorManagerInterface const &editorManagerInterface = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->editorManager();
-	QString edgeTypeFriendly = editorManagerInterface.friendlyName(Id::loadFromString("qrm:/"+ mMaster->id().editor() + "/" + mMaster->id().diagram() + "/" + mEdgeType.element()));
+	EditorManagerInterface const &editorManagerInterface
+			= dynamic_cast<EditorViewScene*>(scene())->mainWindow()->editorManager();
+	QString edgeTypeFriendly = editorManagerInterface.friendlyName(Id::loadFromString("qrm:/"+ mMaster->id().editor()
+			+ "/" + mMaster->id().diagram() + "/" + mEdgeType.element()));
 
 	float textWidth = edgeTypeFriendly.size()*10;
 	float rectWidth = mMaster->boundingRect().right() - mMaster->boundingRect().left();
@@ -114,7 +116,8 @@ void EmbeddedLinker::initTitle()
 	else if (scenePos().x() > mMaster->scenePos().x() + 2*rectWidth/3)
 		x = +boundingRect().width() - 10;
 
-	mTitle = new ElementTitle(static_cast<qreal>(x) / boundingRect().width(), static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly);
+	mTitle = new Label(static_cast<qreal>(x) / boundingRect().width()
+			, static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly, 0);
 	mTitle->init(boundingRect());
 	mTitle->setTextWidth(textWidth);
 	mTitle->setParentItem(this);
@@ -257,20 +260,19 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void EmbeddedLinker::updateMasterEdges()
+void EmbeddedLinker::updateMasterEdge()
 {
 	mTimer->stop();
 	mTimeOfUpdate = 0;
 
 	if (mEdge) {
-		mEdge->adjustNeighborLinks();
 		mEdge->arrangeSrcAndDst();
+		mEdge->adjustNeighborLinks();
 	}
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	updateMasterEdges();
 	hide();
 	mMaster->selectionState(false);
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(mMaster->scene());
@@ -284,21 +286,41 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 		commands::CreateElementCommand *createElementFromMenuCommand = NULL;
 		if (!under) {
-			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, &createElementFromMenuCommand);
-			NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
-			if (result == -1) {
-				mEdge = NULL;
-			} else if ((result == 1) && target) {
-				mEdge->setDst(target);
-				target->storeGeometry();
+			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
+		} else {
+			bool canBeConnected = false;
+			foreach(PossibleEdge const &pEdge, mEdge->src()->getPossibleEdges()) {
+				if (pEdge.first.second.element() == under->id().element()) {
+					canBeConnected = true;
+				} else {
+					// pEdge.second.first is true, if edge can connect items in only one direction.
+					if (!pEdge.second.first) {
+						canBeConnected = (pEdge.first.first.element() == under->id().element());
+					}
+				}
 			}
+
+			if (under->isContainer()) {
+				result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos,
+							canBeConnected, &createElementFromMenuCommand);
+			} else {
+				if (!canBeConnected) {
+					result = -1;
+				}
+			}
+		}
+		NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
+
+		if (result == -1) {
+			mEdge = NULL;
+		} else if ((result == 1) && target) {
+			mEdge->setDst(target);
+			target->storeGeometry();
 		}
 		if (result != -1) {
 			mEdge->connectToPort();
-			mEdge->adjustNeighborLinks();
-			mEdge->correctArrow();
-			mEdge->correctInception();
-			mEdge->adjustNeighborLinks();
+
+			updateMasterEdge();
 			// This will restore edge state after undo/redo
 			commands::ReshapeEdgeCommand *reshapeEdge = new commands::ReshapeEdgeCommand(mEdge);
 			reshapeEdge->startTracking();

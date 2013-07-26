@@ -19,6 +19,9 @@ public:
 	Controller();
 	virtual ~Controller();
 
+	bool canUndo() const;
+	bool canRedo() const;
+
 public slots:
 	/// Tells controller that user swithed to diagram with specified id as root
 	void setActiveDiagram(Id const &diagramId);

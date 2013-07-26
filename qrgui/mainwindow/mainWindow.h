@@ -71,6 +71,7 @@ public:
 
 	EditorManagerInterface &editorManager();
 	EditorView *getCurrentTab() const;
+	bool isCurrentTabShapeEdit() const;
 	ListenerManager *listenerManager() const;
 	models::Models *models() const;
 	Controller *controller() const;
@@ -105,6 +106,9 @@ public:
 	void showErrors(gui::ErrorReporter *reporter);
 
 	/// Tells if we should display trace connections menu or not
+	bool showConnectionRelatedMenus() const;
+	bool showUsagesRelatedMenus() const;
+
 	virtual void showInTextEditor(QString const &title, QString const &text);
 	virtual void reinitModels();
 
@@ -260,7 +264,7 @@ private slots:
 	void switchAlignment(bool isChecked);
 
 	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
-	void setReference(QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role);
 	void openShapeEditor();
 
 	void updatePaletteIcons();
@@ -330,6 +334,10 @@ private:
 	/// @param dockWidget QDockWidget to show
 	/// @param name Widget's name in internal map
 	void showDockWidget(QDockWidget *dockWidget, QString const &name);
+
+	/// Find edges that connect items from itemsToDelete and should be deleted with them
+	/// @param itemsToDelete selected items that should be deleted
+	void addEdgesToBeDeleted(IdList &itemsToDelete);
 
 	QString getNextDirName(QString const &name);
 
