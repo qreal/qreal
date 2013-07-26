@@ -12,6 +12,10 @@ EdgeElementCommand::EdgeElementCommand(EditorView const *view, Id const &id)
 {
 }
 
+EdgeElementCommand::~EdgeElementCommand()
+{
+}
+
 bool EdgeElementCommand::reinitElement()
 {
 	if (!ElementCommand::reinitElement()) {

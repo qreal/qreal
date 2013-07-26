@@ -12,6 +12,10 @@ NodeElementCommand::NodeElementCommand(EditorView const *view, Id const &id)
 {
 }
 
+NodeElementCommand::~NodeElementCommand()
+{
+}
+
 bool NodeElementCommand::reinitElement()
 {
 	if (!ElementCommand::reinitElement()) {

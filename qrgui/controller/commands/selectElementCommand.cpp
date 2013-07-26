@@ -18,6 +18,10 @@ SelectElementCommand::SelectElementCommand(EditorView const *view
 {
 }
 
+SelectElementCommand::~SelectElementCommand()
+{
+}
+
 bool SelectElementCommand::execute()
 {
 	if (!ElementCommand::execute()) {

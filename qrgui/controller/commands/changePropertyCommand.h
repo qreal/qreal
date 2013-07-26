@@ -14,12 +14,12 @@ namespace commands {
 class ChangePropertyCommand : public AbstractCommand
 {
 public:
-	/// Use this overload to set propery using models api
+	/// Use this overload to modify properties via models api
 	ChangePropertyCommand(models::LogicalModelAssistApi * const model
 			, QString const &property, Id const &id, QVariant const &newValue);
 
-	/// Constructs new change property command instance with binding to
-	/// property editor
+	/// Constructs new change property command instance modifying
+	/// properties via property editor proxy model
 	ChangePropertyCommand(
 		PropertyEditorModel * const model /* Doesn`t take ownership */
 		, QModelIndex const &index

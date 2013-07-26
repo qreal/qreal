@@ -14,6 +14,10 @@ ArrangeLinksCommand::ArrangeLinksCommand(EditorView const *view
 {
 }
 
+ArrangeLinksCommand::~ArrangeLinksCommand()
+{
+}
+
 bool ArrangeLinksCommand::execute()
 {
 	if (!ElementCommand::execute()) {
