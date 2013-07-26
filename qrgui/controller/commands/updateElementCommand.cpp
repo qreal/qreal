@@ -12,6 +12,10 @@ UpdateElementCommand::UpdateElementCommand(EditorView const *view, Id const &id)
 {
 }
 
+UpdateElementCommand::~UpdateElementCommand()
+{
+}
+
 bool UpdateElementCommand::execute()
 {
 	return ElementCommand::execute() && update();

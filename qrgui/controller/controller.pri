@@ -40,6 +40,7 @@ SOURCES += \
 	controller/commands/trackingEntity.cpp \
 	controller/commands/insertIntoEdgeCommand.cpp \
 	controller/commands/createGroupCommand.cpp \
+	controller/commands/insertIntoEdgeCommand.cpp \
 	controller/commands/renameCommand.cpp \
 	controller/commands/explosionCommand.cpp \
 	controller/commands/renameExplosionCommand.cpp \

@@ -9,6 +9,10 @@ ElementCommand::ElementCommand(EditorViewScene const *scene, Id const &id)
 	connect(mScene, SIGNAL(destroyed()), SLOT(onSceneWasRemoved()));
 }
 
+ElementCommand::~ElementCommand()
+{
+}
+
 EditorViewScene const *ElementCommand::scene() const
 {
 	return mScene;
