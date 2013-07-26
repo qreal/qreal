@@ -22,7 +22,7 @@ HEADERS += \
 	dialogs/preferencesDialog.h \
 	dialogs/suggestToCreateDiagramDialog.h \
 	dialogs/suggestToCreateProjectDialog.h \
-    dialogs/renameDialog.h
+	dialogs/renameDialog.h \
 
 SOURCES += \
 	dialogs/gesturesShow/gesturesWidget.cpp \
@@ -47,7 +47,7 @@ SOURCES += \
 	dialogs/preferencesDialog.cpp \
 	dialogs/suggestToCreateDiagramDialog.cpp \
 	dialogs/suggestToCreateProjectDialog.cpp \
-    dialogs/renameDialog.cpp
+	dialogs/renameDialog.cpp \
 
 FORMS += \
 	dialogs/gesturesShow/gesturesWidget.ui \
