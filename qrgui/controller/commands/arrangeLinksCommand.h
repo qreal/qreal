@@ -13,7 +13,7 @@ class ArrangeLinksCommand : public ElementCommand
 public:
 	ArrangeLinksCommand(EditorViewScene const *scene, Id const &id, bool needAdjusting = false);
 	ArrangeLinksCommand(EditorView const *view, Id const &id, bool needAdjusting = false);
-	virtual ~ArrangeLinksCommand() {}
+	virtual ~ArrangeLinksCommand();
 
 protected:
 	virtual bool execute();

@@ -13,7 +13,7 @@ class EdgeElementCommand : public ElementCommand
 public:
 	EdgeElementCommand(EditorViewScene const *scene, Id const &id);
 	EdgeElementCommand(EditorView const *view, Id const &id);
-	virtual ~EdgeElementCommand() {}
+	virtual ~EdgeElementCommand();
 
 protected:
 	virtual bool reinitElement();

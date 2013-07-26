@@ -15,7 +15,7 @@ class ElementCommand : public AbstractCommand
 
 public:
 	ElementCommand(EditorViewScene const *scene, Id const &id);
-	virtual ~ElementCommand() {}
+	virtual ~ElementCommand();
 
 	EditorViewScene const *scene() const;
 	Id elementId() const;
