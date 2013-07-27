@@ -326,7 +326,7 @@ void XmlLoader::readImage(QDomElement const &image)
 	QRectF rect = readRectOfXandY(image);
 	QString fileName = image.attribute("name", "error");
 	QString const workingDirName = QFileInfo(QApplication::applicationFilePath()).absoluteDir().absolutePath();
-	QString fullFileName = workingDirName + "/" + fileName;
+	QString const fullFileName = workingDirName + "/" + fileName;
 	Image* item = new Image(fullFileName, rect.left(), rect.top(), NULL);
 	item->setX2andY2(rect.right(), rect.bottom());
 	item->setListScalePoint(mListScalePoint);
