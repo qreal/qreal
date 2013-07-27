@@ -1,6 +1,8 @@
 #include "xmlLoader.h"
 #include "../../../qrutils/xmlUtils.h"
 
+#include <QtCore/QDir>
+#include <QtWidgets/QApplication>
 #include <QtCore/QDebug>
 
 using namespace qReal;
@@ -323,8 +325,8 @@ void XmlLoader::readImage(QDomElement const &image)
 {
 	QRectF rect = readRectOfXandY(image);
 	QString fileName = image.attribute("name", "error");
-	QString workingDirName = SettingsManager::value("workingDir").toString();
-	QString fullFileName = workingDirName +"/" + fileName;
+	QString const workingDirName = QFileInfo(QApplication::applicationFilePath()).absoluteDir().absolutePath();
+	QString const fullFileName = workingDirName + "/" + fileName;
 	Image* item = new Image(fullFileName, rect.left(), rect.top(), NULL);
 	item->setX2andY2(rect.right(), rect.bottom());
 	item->setListScalePoint(mListScalePoint);
