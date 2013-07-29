@@ -9,11 +9,12 @@
 using namespace qReal;
 
 EditorView::EditorView(QWidget *parent)
-	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false), mZoom(0)
+	: QGraphicsView(parent), mMouseOldPosition(), mWheelPressed(false), mZoom(0), mKineticScroller(new QsKineticScroller())
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
 	mScene = new EditorViewScene(this);
+	mKineticScroller->enableKineticScrollFor(this);
 
 	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
@@ -31,12 +32,16 @@ EditorView::EditorView(QWidget *parent)
 	setMouseTracking(true);
 
 	setAlignment(Qt::AlignCenter);
+	setAttribute(Qt::WA_AcceptTouchEvents);
+	grabGesture(Qt::PanGesture);
+	grabGesture(Qt::TapGesture);
 }
 
 EditorView::~EditorView()
 {
 	delete mMVIface;
 	delete mScene;
+	delete mKineticScroller;
 }
 
 EditorViewMViface *EditorView::mvIface() const
@@ -68,14 +73,15 @@ void EditorView::zoomIn()
 	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()) {
 		return;
 	}
-	setSceneRect(mScene->sceneRect());
-	double zoomFactor = static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1;
-	scale(zoomFactor, zoomFactor);
+
+	QTimeLine *anim = new QTimeLine(300, this);
+	anim->setUpdateInterval(20);
+
+	connect(anim, SIGNAL(valueChanged(qreal)), this, SLOT(zoomInTime(qreal)));
+	connect(anim, SIGNAL(finished()), this, SLOT(animFinished()));
+	anim->start();
+
 	mZoom++;
-	if (SettingsManager::value("ShowGrid").toBool()) {
-		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
-	}
-	checkGrid();
 }
 
 void EditorView::zoomOut()
@@ -83,14 +89,15 @@ void EditorView::zoomOut()
 	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()) {
 		return;
 	}
-	setSceneRect(mScene->sceneRect());
-	double zoomFactor = 1 / (static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / 10 + 1);
-	scale(zoomFactor, zoomFactor);
+
+	QTimeLine *anim = new QTimeLine(300, this);
+	anim->setUpdateInterval(20);
+
+	connect(anim, SIGNAL(valueChanged(qreal)), this, SLOT(zoomOutTime(qreal)));
+	connect(anim, SIGNAL(finished()), this, SLOT(animFinished()));
+	anim->start();
+
 	mZoom--;
-	if (SettingsManager::value("ShowGrid").toBool()) {
-		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
-	}
-	checkGrid();
 }
 
 void EditorView::checkGrid()
@@ -232,4 +239,32 @@ void EditorView::ensureElementVisible(Element const * const element
 void EditorView::setTitlesVisible(bool visible)
 {
 	mScene->setTitlesVisible(visible);
+}
+
+void EditorView::zoomInTime(qreal x)
+{
+	double zoomFactor = static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / (10 + 15) + 1;
+	zoom(zoomFactor);
+}
+
+void EditorView::zoomOutTime(qreal x)
+{
+	double zoomFactor = 1/ (static_cast<double>(SettingsManager::value("zoomFactor").toInt()) / (10 + 15) + 1);
+	zoom(zoomFactor);
+}
+
+void EditorView::animFinished()
+{
+	sender()->~QObject();
+}
+
+void EditorView::zoom(double const zoomFactor)
+{
+	setSceneRect(mScene->sceneRect());
+	scale(zoomFactor, zoomFactor);
+
+	if (SettingsManager::value("ShowGrid").toBool()) {
+		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
+	}
+	checkGrid();
 }
