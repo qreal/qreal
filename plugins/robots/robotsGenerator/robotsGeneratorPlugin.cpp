@@ -1,6 +1,5 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
-#include <QtCore/QDebug>
 
 #include "robotsGeneratorPlugin.h"
 #include "nxtOSEK/nxtOSEKRobotGenerator.h"
@@ -113,7 +112,8 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 
 	if (!pathsList.isEmpty()) {
 		foreach(QFileInfo const &path, pathsList) {
-			if (mTextManager->isDefaultPath(path.absoluteFilePath())) {
+			if (mTextManager->isDefaultPath(path.absoluteFilePath())
+			&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))) {
 				fileInfo = path;
 				newCode = false;
 				break;
@@ -176,7 +176,8 @@ void RobotsGeneratorPlugin::uploadProgram()
 		if (activeDiagram != Id()) {
 			if (generateRobotSourceCode()) {
 				foreach(QFileInfo const &path, mCodePath.values(activeDiagram)) {
-					if (mTextManager->isDefaultPath(path.absoluteFilePath())) {
+					if (mTextManager->isDefaultPath(path.absoluteFilePath())
+					&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))) {
 						fileInfo = path;
 						break;
 					}

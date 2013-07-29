@@ -7,7 +7,11 @@ using namespace gui;
 
 QScintillaTextEdit::QScintillaTextEdit()
 	:mRole(0)
-{}
+{
+	connect(this, SIGNAL(textChanged()), this, SLOT(emitTexWasModified()));
+	setUtf8(true);
+	setCppLexer();
+}
 
 QScintillaTextEdit::QScintillaTextEdit(QPersistentModelIndex const &index
 		, int const &role)
@@ -24,6 +28,17 @@ void QScintillaTextEdit::setPythonLexer()
 {
 	QsciLexerPython *lexer = new QsciLexerPython();
 	setLexer(lexer);
+}
+
+void QScintillaTextEdit::setCppLexer()
+{
+	//QsciLexerCPP *lexCpp = new QsciLexerCPP(this);
+	//setLexer(lexCpp);
+}
+
+void QScintillaTextEdit::emitTexWasModified()
+{
+	emit textWasModified(this);
 }
 
 void QScintillaTextEdit::setPythonEditorProperties()

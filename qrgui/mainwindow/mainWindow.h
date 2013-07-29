@@ -111,7 +111,7 @@ public:
 	/// Tells if we should display trace connections menu or not
 	bool showConnectionRelatedMenus() const;
 
-	virtual void showInTextEditor(QFileInfo const &fileInfo, QString const &text);
+	virtual void showInTextEditor(QFileInfo const &fileInfo,  QString const &text);
 	virtual void reinitModels();
 
 	virtual QWidget *windowWidget();
@@ -274,6 +274,9 @@ private slots:
 	void openShapeEditor();
 
 	void updatePaletteIcons();
+
+	void changeWindowTitle(int index);
+	void setTextChanged();
 
 private:
 	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;

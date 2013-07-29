@@ -79,9 +79,6 @@ void NxtFlashTool::uploadProgram(QFileInfo const &fileInfo)
 {
 #ifdef Q_OS_WIN
 	mUploadProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
-	//mUploadProcess.setStandardOutputFile("uploadstd.txt");
-	//mUploadProcess.setStandardErrorFile("uploaderr.txt");
-	//must be changed (!)
 	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat " + fileInfo.baseName()
 						 + " " + fileInfo.absolutePath());
 #else

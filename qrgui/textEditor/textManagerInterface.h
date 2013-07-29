@@ -25,6 +25,14 @@ public:
 	virtual EditorView *diagram(gui::QScintillaTextEdit *code) = 0;
 	virtual QString path(gui::QScintillaTextEdit *code) = 0;
 	virtual bool isDefaultPath(QString const &path) = 0;
+	virtual bool isModified(QString const &path) = 0;
+	virtual bool isModifiedEver(QString const &path) = 0;
+
+signals:
+	void textChanged();
+
+private slots:
+	virtual void setModified(gui::QScintillaTextEdit *code) = 0;
 };
 
 }

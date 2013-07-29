@@ -12,7 +12,6 @@
 #include <QtCore/QPluginLoader>
 #include <QtCore/QMetaType>
 #include <QtSvg/QSvgGenerator>
-#include <QtCore/QDebug>
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
@@ -208,6 +207,9 @@ void MainWindow::connectActions()
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(modifiedChanged(bool)), mProjectManager, SLOT(setUnsavedIndicator(bool)));
+
+	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeWindowTitle(int)));
+	connect(mTextManager, SIGNAL(textChanged()), this, SLOT(setTextChanged()));
 
 	setDefaultShortcuts();
 }
@@ -612,6 +614,39 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 
 	multipleRemoveCommand->removeDuplicates();
 	mController->execute(multipleRemoveCommand);
+}
+
+void MainWindow::changeWindowTitle(int index)
+{
+	QString const windowTitle = mToolManager.customizer()->windowTitle();
+
+	if (index != -1) {
+		if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
+			setWindowTitle(windowTitle + " " + mProjectManager->saveFilePath());
+		} else {
+			QScintillaTextEdit *area = static_cast<QScintillaTextEdit *>(currentTab());
+			QString const filePath = mTextManager->path(area);
+
+			setWindowTitle(windowTitle + " " + filePath);
+		}
+	} else {
+		setWindowTitle(windowTitle);
+	}
+}
+
+void MainWindow::setTextChanged()
+{
+	QScintillaTextEdit *area = static_cast<QScintillaTextEdit *>(currentTab());
+
+	QString const windowTitle = mToolManager.customizer()->windowTitle();
+
+	QString const filePath = mTextManager->path(area);
+
+	setWindowTitle(windowTitle + " *" + filePath);
+
+	int const index = mUi->tabs->currentIndex();
+
+	mUi->tabs->setTabText(index, mUi->tabs->tabText(index) + "*");
 }
 
 void MainWindow::removeReferences(Id const &id)
@@ -1845,7 +1880,6 @@ void MainWindow::showInTextEditor(QFileInfo const &fileInfo, QString const &text
 		if (!mTextManager->contains(filePath)) {
 			mTextManager->openFile(filePath);
 			QScintillaTextEdit * const area = mTextManager->code(filePath);
-			area->setText(text);
 			area->show();
 			mTextManager->bindCode(getCurrentTab(), filePath);
 			mSystemEvents->emitNewCodeAppeared(activeDiagram(), QFileInfo(filePath));
@@ -2087,7 +2121,7 @@ bool MainWindow::saveGeneratedCode(bool saveAs)
 		QFileInfo fileInfo;
 		bool const defaultPath = mTextManager->isDefaultPath(mTextManager->path(area));
 
-		if (saveAs || defaultPath) {
+		if (saveAs) {
 			fileInfo = QFileInfo(QFileDialog::getSaveFileName(this, tr("Save generated code"), "", tr("Generated Code (*.c)")));
 		} else {
 			fileInfo = mTextManager->path(area);
@@ -2100,9 +2134,15 @@ bool MainWindow::saveGeneratedCode(bool saveAs)
 
 			out() << area->text();
 
-			if (saveAs || defaultPath) {
+			if (saveAs) {
 				mSystemEvents->emitCodePathChanged(mTextManager->diagram(area)->mvIface()->rootId(), mTextManager->path(area), fileInfo);
 			}
+
+			if (defaultPath) {
+				mTextManager->changeFilePath(fileInfo.absoluteFilePath(), fileInfo.absoluteFilePath());
+			}
+
+			changeWindowTitle(0);
 		}
 
 		return true;

@@ -110,6 +110,7 @@ HEADERS = \
 	../src/UniConversion.h \
 	../src/ViewStyle.h \
 	../src/XPM.h \
+    ../../../../../../qscilexercpp.h
 
 SOURCES = \
 	qsciscintilla.cpp \
@@ -163,7 +164,7 @@ SOURCES = \
 	../src/Style.cpp \
 	../src/UniConversion.cpp \
 	../src/ViewStyle.cpp \
-	../src/XPM.cpp \
+	../src/XPM.cpp
 
 TRANSLATIONS = \
 	qscintilla_ru.ts \

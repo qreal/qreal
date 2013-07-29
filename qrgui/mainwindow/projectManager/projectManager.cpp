@@ -126,6 +126,7 @@ bool ProjectManager::open(QString const &fileName)
 	emit afterOpen(fileName);
 
 	mSomeProjectOpened = true;
+
 	return true;
 }
 
