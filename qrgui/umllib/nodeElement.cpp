@@ -131,10 +131,16 @@ QMap<QString, QVariant> NodeElement::logicalProperties() const
 	return mGraphicalAssistApi->properties(logicalId());
 }
 
-void NodeElement::setName(QString value)
+void NodeElement::setName(QString const &value, bool withUndoRedo)
 {
-	mController->execute(new RenameCommand(mGraphicalAssistApi, id(), value
-			, &mLogicalAssistApi->exploser()));
+	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi
+			, id(), value, &mLogicalAssistApi->exploser());
+	if (withUndoRedo) {
+		mController->execute(command);
+	} else {
+		command->redo();
+		delete command;
+	}
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
