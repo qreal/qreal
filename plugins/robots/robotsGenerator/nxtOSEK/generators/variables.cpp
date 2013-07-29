@@ -25,6 +25,9 @@ void Variables::reinit(qrRepo::RepoApi *api)
 	mEnterButtonUsed = false;
 	mCancelButtonUsed = false;
 	mHasImages = false;
+	mHasBtRead = false;
+	mHasBtSend = false;
+	mSlaveAddr = "";
 }
 
 QString Variables::generateVariableString() const
@@ -63,6 +66,24 @@ QString Variables::generateVariableString() const
 
 	if (mHasImages) {
 		result = "U8 lcd[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\nU8 lcd_copy[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\n" + result;
+	}
+
+	if (mHasBtRead) {
+		result = "U8 bt_read_buf[32];" + result;
+	}
+
+	if (mHasBtSend) {
+		result = "U8 bt_send_buf[32];" + result;
+	}
+
+	if(mSlaveAddr.compare("", mSlaveAddr)) {
+		QString address = "";
+		for(int i = 0; i < 6; i++) {
+			address += "0x" + mSlaveAddr.mid(i*2, 2);
+			address += ", ";
+		}
+		address += "0x00";
+		result = "const U8 bd_addr[7] = {" + address + "};\n" + result;
 	}
 
 	return result;
@@ -367,4 +388,19 @@ void Variables::cancelButtonUsed()
 void Variables::hasImages()
 {
 	mHasImages = true;
+}
+
+void Variables::setSlaveAddr(QString addr)
+{
+	mSlaveAddr = addr;
+}
+
+void Variables::hasBtSend()
+{
+	mHasBtSend = true;
+}
+
+void Variables::hasBtRead()
+{
+	mHasBtRead = true;
 }

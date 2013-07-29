@@ -117,17 +117,47 @@ void NxtOSEKRobotGenerator::insertCode(
 	}
 	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@").replace("@@VARIABLES@@"
 			, mVariables.generateVariableString() + "\n" + "@@VARIABLES@@").replace("@@INITHOOKS@@"
-			, resultInitCode).replace("@@TERMINATEHOOKS@@", resultTerminateCode)
+			, resultInitCode + "\n" + "@@INITHOOKS@@").replace("@@TERMINATEHOOKS@@", resultTerminateCode + "\n" + "@@TERMINATEHOOKS@@")
 			.replace("@@USERISRHOOKS@@", resultIsrHooksCode).replace("@@BMPFILES@@"
 			, mImageGenerator.generateBmpFilesStringForC() + "@@BMPFILES@@");
+
 	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
 	mResultOil.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
+	mResultString.replace("@@TASKDECLARATION@@", "DeclareTask(OSEK_Task_Number_0);\n@@TASKDECLARATION@@");
+qDebug() << "1here!";
+	mBtCommunicationGenerator.generateBtCommCode(mResultOil, mResultString, mTaskTemplate);
+	qDebug() << "2here!";
+	//BT Communication code
+	//if (mIsBtMaster || mIsBtSlave) {
+		//mResultOil.replace("PRIORITY = 1; /* lowest priority */", "PRIORITY = 2;\n\tEVENT = BtConnect;");
+		//mResultOil.replace("@@TASK@@", mTaskTemplate.replace("OSEK_Task_Number_0", "IdleTask")
+		//+ "\n" + "@@TASK@@");
+		/*mResultOil.replace("@@EVENT@@", "EVENT BtConnect\n{\n\tMASK = AUTO;\n};");
+
+		mResultString.replace("@@TASKDECLARATION@@", "DeclareTask(IdleTask);\n@@TASKDECLARATION@@");
+		mResultString.replace("@@TASKDECLARATION@@", "DeclareEvent(BtConnect);\n@@TASKDECLARATION@@");
+		mResultString.replace("@@DEFINES@@", "#define RUNTIME_CONNECTION\n@@DEFINES@@");
+		mResultString.replace("@@TERMINATEHOOKS@@", "\tecrobot_term_bt_connection();");
+		mResultString += "\nTASK(IdleTask)\n{\n\tstatic SINT bt_status = BT_NO_INIT;\n\twhile(1)\n\t{\n#ifdef RUNTIME_CONNECTION\n";
+		if(mIsBtMaster) {
+			mResultString.replace("@@INITHOOKS@@", "#ifndef RUNTIME_CONNECTION\n\tecrobot_init_bt_master(bd_addr, \"LEJOS-OSEK\");\n#endif");
+			mResultString += "\t\tecrobot_init_bt_master(bd_addr, \"LEJOS-OSEK\");\n#endif\n";
+		} else {
+			mResultString.replace("@@INITHOOKS@@", "#ifndef RUNTIME_CONNECTION\n\tecrobot_init_bt_slave(\"LEJOS-OSEK\");\n#endif");
+			mResultString += "\t\tecrobot_init_bt_slave(\"LEJOS-OSEK\");\n#endif\n";
+		}
+		mResultString += "\tif (ecrobot_get_bt_status() == BT_STREAM && bt_status != BT_STREAM)\n";
+		mResultString += "\t{\n\t\tSetEvent(OSEK_Task_Number_0, BtConnect);\n\t}";
+		mResultString += "\n\tbt_status = ecrobot_get_bt_status();\n\t}\n}";
+	}*/
+	mResultString.replace("@@INITHOOKS@@", "").replace("@@TERMINATEHOOKS@@", "");
 }
 
 void NxtOSEKRobotGenerator::deleteResidualLabels(QString const &projectName)
 {
 	mResultOil.replace("@@TASK@@", "");
-	mResultString.replace("@@VARIABLES@@", "").replace("@@BMPFILES@@", "").replace("@@CODE@@", "").replace("@@PROJECT_NAME@@", projectName);
+	mResultString.replace("@@VARIABLES@@", "").replace("@@BMPFILES@@", "").replace("@@CODE@@"
+		, "").replace("@@PROJECT_NAME@@", projectName).replace("@@DEFINES@@", "").replace("@@TASKDECLARATION@@", "");
 }
 
 void NxtOSEKRobotGenerator::generateFilesForBalancer(QString const &projectDir)
@@ -322,9 +352,15 @@ void NxtOSEKRobotGenerator::initializeFields(QString resultTaskTemplate, Id cons
 	mPreviousElement = curInitialNode;
 	mBalancerIsActivated = false;
 	mImageGenerator.reinit();
+	mBtCommunicationGenerator.reinit();
 }
 
 ImageGenerator &NxtOSEKRobotGenerator::imageGenerator()
 {
 	return mImageGenerator;
+}
+
+BtCommunicationGenerator &NxtOSEKRobotGenerator::btCommunicationGenerator()
+{
+	return mBtCommunicationGenerator;
 }

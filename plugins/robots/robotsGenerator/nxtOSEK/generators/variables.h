@@ -36,6 +36,10 @@ public:
 	/// Must be called when run button usage found
 	void cancelButtonUsed();
 
+	void setSlaveAddr(QString addr);
+	void hasBtSend();
+	void hasBtRead();
+
 	/// Must be called when image usage found
 	void hasImages();
 
@@ -76,6 +80,9 @@ private:
 	bool mCancelButtonUsed;
 	bool mEnterButtonUsed;
 	bool mHasImages;
+	bool mHasBtRead;
+	bool mHasBtSend;
+	QString mSlaveAddr;
 };
 
 }

@@ -42,6 +42,14 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/drawRectBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/clearScreenBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/drawBlockGenerator.h \
+    nxtOSEK/generators/simpleElements/terminateConnectionBlockGenerator.h \
+    nxtOSEK/generators/simpleElements/initBtMasterBlockGenerator.h \
+    nxtOSEK/generators/simpleElements/initBtSlaveBlockGenerator.h \
+    nxtOSEK/generators/simpleElements/readBtMessageBlockGenerator.h \
+    nxtOSEK/generators/simpleElements/sendBtMessageBlockGenerator.h \
+    nxtOSEK/generators/simpleElements/readBtVariableBlockGenerator.h \
+    nxtOSEK/generators/simpleElements/readBtArrayBlockGenerator.h \
+    nxtOSEK/generators/btCommunicationGenerator.h
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
@@ -87,3 +95,11 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/drawRectBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/clearScreenBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/drawBlockGenerator.cpp \
+    nxtOSEK/generators/simpleElements/terminateConnectionBlockGenerator.cpp \
+    nxtOSEK/generators/simpleElements/initBtMasterBlockGenerator.cpp \
+    nxtOSEK/generators/simpleElements/initBtSlaveBlockGenerator.cpp \
+    nxtOSEK/generators/simpleElements/readBtMessageBlockGenerator.cpp \
+    nxtOSEK/generators/simpleElements/sendBtMessageBlockGenerator.cpp \
+    nxtOSEK/generators/simpleElements/readBtVariableBlockGenerator.cpp \
+    nxtOSEK/generators/simpleElements/readBtArrayBlockGenerator.cpp \
+    nxtOSEK/generators/btCommunicationGenerator.cpp

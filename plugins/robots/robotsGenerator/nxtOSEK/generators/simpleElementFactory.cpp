@@ -15,6 +15,12 @@
 #include "simpleElements/drawLineBlockGenerator.h"
 #include "simpleElements/drawCircleBlockGenerator.h"
 #include "simpleElements/printTextBlockGenerator.h"
+#include "simpleElements/initBtMasterBlockGenerator.h"
+#include "simpleElements/initBtSlaveBlockGenerator.h"
+#include "simpleElements/readBtArrayBlockGenerator.h"
+#include "simpleElements/readBtVariableBlockGenerator.h"
+#include "simpleElements/sendBtMessageBlockGenerator.h"
+#include "simpleElements/terminateConnectionBlockGenerator.h"
 #include "simpleElements/waitForLightBlockGenerator.h"
 #include "simpleElements/waitForButtonsBlockGenerator.h"
 #include "simpleElements/waitForSonarBlockGenerator.h"
@@ -83,6 +89,18 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 		return new DrawRectBlockGenerator();
 	} else if (elementType == "ClearScreen") {
 		return new ClearScreenBlockGenerator();
+	} else if (elementType == "InitBtMaster") {
+		return new InitBtMasterBlockGenerator();
+	} else if (elementType == "InitBtSlave") {
+		return new InitBtSlaveBlockGenerator();
+	} else if (elementType == "TerminateConnection") {
+		return new TerminateConnectionBlockGenerator();
+	} else if (elementType == "BtVarMessageRead") {
+		return new ReadBtVariableBlockGenerator();
+	} else if (elementType == "BtArrMessageRead") {
+		return new ReadBtArrayBlockGenerator();
+	} else if (elementType == "BtMessageSend") {
+		return new SendBtMessageBlockGenerator();
 	}
 
 	return new InitialNodeGenerator();

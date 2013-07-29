@@ -14,6 +14,7 @@
 #include "smartLine.h"
 #include "generators/variables.h"
 #include "generators/imageGenerator.h"
+#include "generators/btCommunicationGenerator.h"
 
 namespace robots {
 namespace generator {
@@ -54,6 +55,7 @@ public:
 	/// Returns string property treated as expression and casts it to int if nessesary
 	QString intExpression(qReal::Id const &id, QString const &propertyName) const;
 	ImageGenerator &imageGenerator();
+	BtCommunicationGenerator &btCommunicationGenerator();
 
 private:
 	void createProjectDir(QString const &projectDir);
@@ -108,6 +110,7 @@ private:
 	qReal::Id mDiagram;
 
 	ImageGenerator mImageGenerator;
+	BtCommunicationGenerator mBtCommunicationGenerator;
 };
 
 }
