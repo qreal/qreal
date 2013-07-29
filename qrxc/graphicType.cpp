@@ -640,7 +640,7 @@ void GraphicType::generateExplosionsMap(OutFile &out)
 		bool const immediateLinkage = mExplosions[target].second;
 
 		out() << "\tmExplosionsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]";
-		out() << QString(" << ExplosionData(%1, %2, %3, %4);\n").arg(diagramName
+		out() << QString(" << ExplosionData(\"%1\", \"%2\", %3, %4);\n").arg(diagramName
 				, NameNormalizer::normalize(target)
 				, reusable ? "true" : "false"
 				, immediateLinkage ? "true" : "false");
