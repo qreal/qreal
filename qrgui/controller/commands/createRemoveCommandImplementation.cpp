@@ -35,6 +35,7 @@ Id CreateRemoveCommandImplementation::create()
 			&& !mLogicalPropertiesSnapshot.isEmpty()) {
 		mGraphicalApi->setProperties(logicalId, mLogicalPropertiesSnapshot);
 	}
+	mLogicalApi->exploser().refreshAllPalettes();
 	return mId;
 }
 
@@ -54,6 +55,7 @@ void CreateRemoveCommandImplementation::remove()
 		Id const logicalId = mGraphicalApi->logicalId(mId);
 		if (!mLogicalApi->logicalRepoApi().exist(logicalId)) {
 			mGraphicalApi->removeElement(mId);
+			mLogicalApi->exploser().refreshAllPalettes();
 			return;
 		}
 		mOldLogicalId = logicalId;
@@ -68,6 +70,7 @@ void CreateRemoveCommandImplementation::remove()
 			mLogicalApi->removeElement(logicalId);
 		}
 	}
+	mLogicalApi->exploser().refreshAllPalettes();
 }
 
 bool CreateRemoveCommandImplementation::equals(CreateRemoveCommandImplementation const &other) const

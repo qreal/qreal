@@ -13,6 +13,7 @@ public:
 	virtual void generatePropertyTypes(utils::OutFile &out);
 	virtual void generatePropertyDefaults(utils::OutFile &out); 
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
+	virtual void generateExplosionsMap(utils::OutFile &out);
 
 private:
 	QString mRegularExpression;

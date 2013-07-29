@@ -457,6 +457,23 @@
 					</generalizations>
 				</logic>
 			</edge>
+			<edge name="Explosion" displayedName="Explodes To" description="Связь, означающая 'раскрываемость' элемента в диаграмму (направление - от элемента, который раскрывается к элементу, являющимся корневым для диаграммы, в которую раскрывается элемент)">
+				<graphics>
+					<lineType type="solidLine"/>
+				</graphics>
+				<logic>
+					<associations endType="no_arrow" beginType="filled_arrow">
+						<association beginName="Explosion1" endName="Explosion2"/>
+					</associations>
+					<generalizations>
+						<parent parentName="KernelDiagram::Relationship"/>
+					</generalizations>
+					<properties>
+						<property type="bool" name="makeReusable" />
+						<property type="bool" name="requireImmediateLinkage" />
+					</properties>
+				</logic>
+			</edge>
 			<node name="MetaEntityPossibleEdge" displayedName="Possible Edge" description="Сущность для указания элементов, которые можно присоединять к данному с помощью «вытягивания» из него связей. Вкладывается в соответствующий элемент Node">
 				<graphics>
 					<picture sizex="25" sizey="25">
@@ -566,6 +583,7 @@
 			<group name="Relationship" description="Связи метаязыка для описания вызимоотношений между элементами создаваемого языка">
 				<element name="Inheritance"/>
 				<element name="Container"/>
+				<element name="Explosion"/>
 			</group>
 		</palette>
 	</diagram>

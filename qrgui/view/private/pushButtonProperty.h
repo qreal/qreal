@@ -1,8 +1,9 @@
 #pragma once
+
 #include <QtWidgets/QPushButton>
 
-#include "../thirdparty/qtpropertybrowser/src/qtvariantproperty.h"
-#include "../thirdparty/qtpropertybrowser/src/qteditorfactory.h"
+#include "../../thirdparty/qtpropertybrowser/src/qtvariantproperty.h"
+#include "../../thirdparty/qtpropertybrowser/src/qteditorfactory.h"
 
 /** @brief This manager allows to use push buttons in property editor to do some stuff by click */
 class PushButtonPropertyManager : public QtAbstractPropertyManager

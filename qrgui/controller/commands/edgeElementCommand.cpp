@@ -12,9 +12,15 @@ EdgeElementCommand::EdgeElementCommand(EditorView const *view, Id const &id)
 {
 }
 
+EdgeElementCommand::~EdgeElementCommand()
+{
+}
+
 bool EdgeElementCommand::reinitElement()
 {
-	ElementCommand::reinitElement();
+	if (!ElementCommand::reinitElement()) {
+		return false;
+	}
 	mEdge = dynamic_cast<EdgeElement *>(mElement);
 	return mEdge != NULL;
 }
