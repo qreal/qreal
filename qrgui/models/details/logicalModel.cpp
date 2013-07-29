@@ -62,7 +62,7 @@ void LogicalModel::addInsufficientProperties(Id const &id, QString const &name)
 		return;
 	}
 
-	QMap<QString, QVariant> const standardProperties;
+	QMap<QString, QVariant> standardProperties;
 	standardProperties.insert("name", name);
 	standardProperties.insert("from", Id::rootId().toVariant());
 	standardProperties.insert("to", Id::rootId().toVariant());
@@ -176,7 +176,7 @@ void LogicalModel::initializeElement(Id const &id, modelsImplementation::Abstrac
 	parentItem->addChild(item);
 	mApi.addChild(parentItem->id(), id);
 
-	addInsufficientProperties(id);
+	addInsufficientProperties(id, name);
 
 	mModelItems.insert(id, item);
 	endInsertRows();
