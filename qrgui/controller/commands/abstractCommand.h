@@ -17,8 +17,8 @@ public:
 	AbstractCommand();
 	virtual ~AbstractCommand();
 
-	void redo();
-	void undo();
+	virtual void redo();
+	virtual void undo();
 
 	void setRedoEnabled(bool enabled);
 	void setUndoEnabled(bool enabled);
