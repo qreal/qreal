@@ -110,6 +110,10 @@ void Label::setShouldCenter(bool shouldCenter)
 
 void Label::scaleCoordinates(QRectF const &contents)
 {
+	if (mWasMoved) {
+		return;
+	}
+
 	qreal x = 0;
 	qreal y = 0;
 

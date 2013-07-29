@@ -112,7 +112,7 @@
                         </line>
                     </picture>
                     <labels>
-                        <label x="0" y="100" textBinded="text"/>
+                        <label x="0a" y="100a" textBinded="text"/>
                     </labels>
                     <ports>
                         <pointPort x="0" y="50"/>
@@ -192,7 +192,7 @@
                         </line>
                     </picture>
                     <labels>
-                        <label x="0" y="100" textBinded="text"/>
+                        <label x="0a" y="100a" textBinded="text"/>
                     </labels>
                     <ports>
                         <pointPort x="0" y="50"/>
@@ -232,7 +232,7 @@
                         </polygon>
                     </picture>
                     <labels>
-                        <label x="0" y="100" textBinded="text"/>
+                        <label x="0a" y="100a" textBinded="text"/>
                     </labels>
                     <ports>
                         <pointPort x="0" y="50"/>
@@ -290,7 +290,7 @@
                         </line>
                     </picture>
                     <labels>
-                        <label x="0" y="110" textBinded="text"/>
+                        <label x="0a" y="110a" textBinded="text"/>
                     </labels>
                     <ports>
                         <pointPort x="0" y="55"/>
@@ -356,7 +356,7 @@
                         </line>
                     </picture>
                     <labels>
-                        <label x="46" y="55" textBinded="Text"/>
+                        <label x="46a" y="55a" textBinded="Text"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -436,7 +436,7 @@
                         </line>
                     </picture>
                     <labels>
-                        <label x="40" y="145a" textBinded="Text"/>
+                        <label x="40a" y="145a" textBinded="Text"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -578,7 +578,7 @@
                         <rectangle stroke-style="solid" fill-style="none" stroke-width="0" y1="0" y2="150" fill="#ffffff" x1="0" stroke="#000000" x2="450"/>
                     </picture>
                     <labels>
-                        <label x="2" y="145" textBinded="text" rotation="-90"/>
+                        <label x="2a" y="145a" textBinded="text" rotation="-90"/>
                     </labels>
                     <ports/>
                 </graphics>
@@ -612,7 +612,7 @@
                         </line>
                     </picture>
                     <labels>
-                        <label x="2" y="145" textBinded="text" rotation="-90"/>
+                        <label x="2a" y="145a" textBinded="text" rotation="-90"/>
                     </labels>
                     <ports/>
                     <nonResizable/>
