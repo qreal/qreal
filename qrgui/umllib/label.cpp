@@ -192,12 +192,13 @@ void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
+	mWasMoved = true;
+
 	if (!labelMovingRect().contains(event->pos())) {
 		event->ignore();
 		return;
 	}
 
-	mWasMoved = true;
 	LabelInterface::mouseMoveEvent(event);
 	event->accept();
 }

@@ -522,19 +522,19 @@
 <context>
     <name>EditorViewScene</name>
     <message>
-        <location filename="view/editorViewScene.cpp" line="353"/>
-        <location filename="view/editorViewScene.cpp" line="426"/>
+        <location filename="view/editorViewScene.cpp" line="355"/>
+        <location filename="view/editorViewScene.cpp" line="428"/>
         <source>Discard</source>
         <translation>Убрать меню</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="356"/>
+        <location filename="view/editorViewScene.cpp" line="358"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="416"/>
-        <location filename="view/editorViewScene.cpp" line="427"/>
+        <location filename="view/editorViewScene.cpp" line="418"/>
+        <location filename="view/editorViewScene.cpp" line="429"/>
         <source>Connect with the current item</source>
         <translation>Соединить с данным элементом</translation>
     </message>
@@ -575,12 +575,12 @@
         <translation type="obsolete">Используется в</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="897"/>
+        <location filename="view/editorViewScene.cpp" line="952"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="900"/>
+        <location filename="view/editorViewScene.cpp" line="955"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
     </message>
@@ -916,6 +916,11 @@
         <location filename="mainwindow/mainWindow.ui" line="779"/>
         <source>Ctrl+Shift+Z</source>
         <translation>Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.ui" line="784"/>
+        <source>Export to XML</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Find</source>
@@ -1373,7 +1378,7 @@
 <context>
     <name>NodeElement</name>
     <message>
-        <location filename="umllib/nodeElement.cpp" line="28"/>
+        <location filename="umllib/nodeElement.cpp" line="29"/>
         <source>Switch on grid</source>
         <translation>Включить сетку</translation>
     </message>
@@ -1857,27 +1862,27 @@
         <translation type="obsolete">Связи-петли</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="617"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="634"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="633"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="650"/>
         <source>   Representation   </source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="660"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="677"/>
         <source>Icons  and names</source>
         <translation>Иконки и названия</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="665"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="682"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="640"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="657"/>
         <source>   Count of items in a row </source>
         <translation>Количество иконок в строке</translation>
     </message>
@@ -1922,12 +1927,17 @@
         <translation>Разрешить изменять размер</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="588"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="569"/>
+        <source>Label distance</source>
+        <translation>Расстояние от надписей до элемента</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="605"/>
         <source>Zoom factor</source>
         <translation>Коэффициент масштабирования</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="572"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="589"/>
         <source>Zoom</source>
         <translation>Увеличение</translation>
     </message>
@@ -1947,17 +1957,17 @@
         <translation>Выбрать шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="145"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="145"/>
         <source>You should restart QReal:Robots to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="145"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -2422,6 +2432,16 @@
         <location filename="toolPluginInterface/customizer.h" line="98"/>
         <source>Used in</source>
         <translation>Используется в</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="108"/>
+        <source>Expand connection</source>
+        <translation>Раскрыть провязку</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="113"/>
+        <source>Collapse connection</source>
+        <translation>Свернуть провязку</translation>
     </message>
 </context>
 <context>
