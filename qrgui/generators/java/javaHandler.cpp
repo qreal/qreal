@@ -823,7 +823,7 @@ QString JavaHandler::serializeObject(Id const &id)
 
 		result += getConstraints(id);
 	} else if (objectType(id) == "ActivityDiagram_Action") {
-		// Many many ears ago outgoingExplosions() had IdList return value.
+		// Many many years ago outgoingExplosions() had IdList return value.
 		// Remove this comment when it will be returned or with this class
 		Id outgoingConnection = mApi.outgoingExplosion(id);
 		IdList activityDiagrams;

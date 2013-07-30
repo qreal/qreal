@@ -4,31 +4,29 @@
 #include "../toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
 #include "../models/details/exploser.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 /// Assigns to element with given id given name using given model (logical or graphical)
 class RenameCommand : public AbstractCommand
 {
 public:
-	/// This overload gets old name automaticly using models api
+	/// This overload gets old name automatically using models api
 	RenameCommand(details::ModelsAssistInterface * const model
 			, Id const &id, QString const &newName
-			, models::details::Exploser * const exploser = 0);
+			, models::Exploser * const exploser = 0);
 
 	/// This overload alows to specify old name manually
 	RenameCommand(details::ModelsAssistInterface * const model
 			, Id const &id, QString const &oldName, QString const &newName
-			, models::details::Exploser * const exploser = 0);
+			, models::Exploser * const exploser = 0);
 
 protected:
 	virtual bool execute();
 	virtual bool restoreState();
 
 private:
-	void initExplosions(models::details::Exploser * const exploser);
+	void initExplosions(models::Exploser * const exploser);
 
 	bool rename(QString const &name);
 

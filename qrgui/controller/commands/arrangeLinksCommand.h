@@ -2,10 +2,8 @@
 
 #include "elementCommand.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 /// Arranges links of specified node element
 class ArrangeLinksCommand : public ElementCommand
