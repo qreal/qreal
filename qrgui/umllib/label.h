@@ -72,6 +72,7 @@ private:
 	void setText(QString const &text);
 	void moveToParentCenter();
 	enums::OrientationType::OrientationType orientation();
+	QRectF labelMovingRect() const;
 
 	bool mFocusIn;
 	bool mReadOnly;

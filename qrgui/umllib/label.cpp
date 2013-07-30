@@ -192,6 +192,11 @@ void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
+	if (!labelMovingRect().contains(event->pos())) {
+		event->ignore();
+		return;
+	}
+
 	mWasMoved = true;
 	LabelInterface::mouseMoveEvent(event);
 	event->accept();
@@ -347,6 +352,13 @@ void Label::updateRect(QPointF newBottomRightPoint)
 void Label::clearMoveFlag()
 {
 	mShouldMove = false;
+}
+
+QRectF Label::labelMovingRect() const
+{
+	int distance = 100;
+	return mapFromItem(parentItem(), parentItem()->boundingRect()).boundingRect()
+			.adjusted(-distance, -distance, distance, distance);
 }
 
 LabelInterface *LabelFactory::createTitle(qreal x, qreal y, QString const &text, qreal rotation)
