@@ -43,20 +43,23 @@ public:
 	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
 
 private:
+	virtual void init();
+	void loadSubtreeFromClient(modelsImplementation::LogicalModelItem * const parent);
+	modelsImplementation::LogicalModelItem *loadElement(modelsImplementation::LogicalModelItem *parentItem
+			, Id const &id);
+	void addInsufficientProperties(Id const &id, QString const &name = QString());
+
+	virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id
+			, modelsImplementation::AbstractModelItem *parentItem) const;
+	void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem
+			, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position);
+	QString pathToItem(modelsImplementation::AbstractModelItem const * const item) const;
+	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
+			, details::modelsImplementation::AbstractModelItem *child);
+
 	GraphicalModelView mGraphicalModelView;
 	qrRepo::LogicalRepoApi &mApi;
 	LogicalModelAssistApi *mLogicalAssistApi;
-
-	virtual void init();
-	void loadSubtreeFromClient(modelsImplementation::LogicalModelItem * const parent);
-	modelsImplementation::LogicalModelItem *loadElement(modelsImplementation::LogicalModelItem *parentItem, Id const &id);
-	void checkProperties(Id const &id);
-
-	virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
-	void initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem,
-						   modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position);
-	QString pathToItem(modelsImplementation::AbstractModelItem const * const item) const;
-	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child);
 };
 }
 
