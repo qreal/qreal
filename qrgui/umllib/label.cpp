@@ -11,7 +11,7 @@ using namespace enums;
 Label::Label(qreal x, qreal y, QString const &text, qreal rotation)
 		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
 		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
-		, mParentIsSelected(false), mWasMoved(false)
+		, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
@@ -23,6 +23,7 @@ Label::Label(qreal x, qreal y, QString const &text, qreal rotation)
 Label::Label(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
 		: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
 		, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
+		, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
@@ -159,6 +160,12 @@ void Label::setTitleFont()
 
 void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	if (!mShouldMove) {
+		LabelInterface::mousePressEvent(event);
+		event->accept();
+		return;
+	}
+
 	mIsStretched = ((event->pos().x() >= boundingRect().right() - 10)
 			&& (event->pos().y() >= boundingRect().bottom() - 10));
 	LabelInterface::mousePressEvent(event);
@@ -167,8 +174,9 @@ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (!isSelected()) {
-		event->ignore();
+	if (!mShouldMove) {
+		setSelected(false);
+		parentItem()->grabMouse();
 		return;
 	}
 
@@ -191,6 +199,8 @@ void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	mShouldMove = true;
+
 	if (mIsStretched) {
 		moveToParentCenter();
 	}
@@ -332,6 +342,11 @@ void Label::updateRect(QPointF newBottomRightPoint)
 {
 	mContents.setBottomRight(newBottomRightPoint);
 	setTextWidth(mContents.width());
+}
+
+void Label::clearMoveFlag()
+{
+	mShouldMove = false;
 }
 
 LabelInterface *LabelFactory::createTitle(qreal x, qreal y, QString const &text, qreal rotation)

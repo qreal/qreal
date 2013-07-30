@@ -487,6 +487,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	ungrabMouse();
+
 	mTimer->stop();
 	mTimeOfUpdate = 0;
 	if (event->button() == Qt::RightButton) {

@@ -45,6 +45,8 @@ public:
 	void setShouldCenter(bool shouldCenter);
 	void scaleCoordinates(QRectF const &contents);
 
+	void clearMoveFlag();
+
 protected:
 	enum InterpriterPropertyType
 	{
@@ -61,6 +63,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = NULL);
+
 private:
 	void updateData();
 	void updateRect(QPointF newBottomRightPoint);
@@ -85,4 +88,5 @@ private:
 	bool mIsHard;
 	bool mParentIsSelected;
 	bool mWasMoved;
+	bool mShouldMove;
 };

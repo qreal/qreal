@@ -53,6 +53,7 @@ EditorViewScene::EditorViewScene(QObject *parent)
 
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
+	connect(this, SIGNAL(selectionChanged()), this, SLOT(deselectLabels()));
 
 	mSelectList = new QList<QGraphicsItem *>();
 }
@@ -1629,4 +1630,14 @@ void EditorViewScene::setTitlesVisible(bool visible)
 void EditorViewScene::onElementParentChanged(Element *element)
 {
 	element->setTitlesVisible(mTitlesVisible);
+}
+
+void EditorViewScene::deselectLabels()
+{
+	foreach (QGraphicsItem *item, items()) {
+		Label *label = dynamic_cast<Label *>(item);
+		if (label && !label->isSelected()) {
+			label->clearMoveFlag();
+		}
+	}
 }
