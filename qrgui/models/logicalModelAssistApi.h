@@ -21,7 +21,7 @@ public:
 	virtual ~LogicalModelAssistApi();
 
 	EditorManagerInterface const &editorManagerInterface() const;
-	details::Exploser &exploser();
+	Exploser &exploser();
 
 	virtual qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
@@ -72,7 +72,7 @@ private:
 
 	details::ModelsAssistApi mModelsAssistApi;
 	details::LogicalModel &mLogicalModel;
-	details::Exploser mExploser;
+	Exploser mExploser;
 	EditorManagerInterface const &mEditorManager;
 };
 

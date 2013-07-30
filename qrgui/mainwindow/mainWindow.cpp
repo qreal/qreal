@@ -386,7 +386,7 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool setSelected)
 			getCurrentTab()->mvIface()->setRootIndex(parent);
 			// select this item on diagram
 			getCurrentTab()->scene()->clearSelection();
-			EditorViewScene *scene = static_cast<EditorViewScene *>(getCurrentTab()->scene());
+			EditorViewScene const *scene = static_cast<EditorViewScene const *>(getCurrentTab()->scene());
 			Element * const e = scene->getElem(idx.data(roles::idRole).value<Id>());
 			if (e) {
 				if (setSelected) {

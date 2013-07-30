@@ -48,7 +48,6 @@ public:
 	virtual QString typeName(Id const &id, const QString &name) const = 0;
 	virtual QStringList allChildrenTypesOf(Id const &parent) const = 0;
 
-
 	virtual bool isEditor(Id const &id) const = 0;
 	virtual bool isDiagram(Id const &id) const = 0;
 	virtual bool isElement(Id const &id) const = 0;

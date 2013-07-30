@@ -2,10 +2,8 @@
 
 #include "../../models/graphicalModelAssistApi.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class CreateRemoveCommandImplementation
 {

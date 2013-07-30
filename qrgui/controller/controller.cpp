@@ -127,7 +127,7 @@ QList<UndoStack *> Controller::stacks() const
 void Controller::projectSaved()
 {
 	mGlobalStack->setClean();
-	foreach (UndoStack *stack, mDiagramStacks) {
+	foreach (UndoStack * const stack, mDiagramStacks) {
 		stack->setClean();
 	}
 }

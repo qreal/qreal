@@ -32,13 +32,16 @@ bool ExplosionCommand::processExplosion(bool add)
 	if (!mLogicalApi->isLogicalId(mSource) && mGraphicalApi) {
 		mSource = mGraphicalApi->logicalId(mSource);
 	}
+
 	if (!mLogicalApi->isLogicalId(mTarget) && mGraphicalApi) {
 		mTarget = mGraphicalApi->logicalId(mTarget);
 	}
+
 	if (add) {
 		mLogicalApi->addExplosion(mSource, mTarget);
 	} else {
 		mLogicalApi->removeExplosion(mSource, mTarget);
 	}
+
 	return true;
 }
