@@ -60,7 +60,6 @@ private:
 
 	void checkElementForChildren();
 
-
 	PaletteElement const mData;
 	QLabel *mLabel;
 	EditorManagerInterface &mEditorManagerProxy;  // Does not have ownership.
