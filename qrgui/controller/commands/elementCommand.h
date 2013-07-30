@@ -3,10 +3,8 @@
 #include "abstractCommand.h"
 #include "../../view/editorView.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 /// A base for all commands using concrete element instance on some scene
 class ElementCommand : public AbstractCommand

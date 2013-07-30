@@ -38,7 +38,7 @@ public:
 	void setDescription(QString const &description);
 
 protected:
-	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge; // Lol
+	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;  // Lol
 
 	struct ContainerProperties {
 		ContainerProperties();

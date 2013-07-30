@@ -23,7 +23,7 @@ void ModelExplorer::setAssistApi(details::ModelsAssistInterface * const model)
 	mModel = model;
 }
 
-void ModelExplorer::setExploser(models::details::Exploser * const exploser)
+void ModelExplorer::setExploser(models::Exploser * const exploser)
 {
 	mExploser = exploser;
 }

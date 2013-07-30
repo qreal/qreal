@@ -107,7 +107,7 @@ void ExploserView::handleDoubleClick(Id const &id)
 		if (!explosions.isEmpty()) {
 			Id const diagramType = mMainWindow->editorManager().findElementByType(explosions[0].target().element());
 			commands::AbstractCommand *createCommand =
-					mLogicalApi->exploser().createElementWithIncommingExplosionCommand(
+					mLogicalApi->exploser().createElementWithIncomingExplosionCommand(
 							id, diagramType, mGraphicalApi);
 			mMainWindow->controller()->executeGlobal(createCommand);
 			outgoingLink = static_cast<commands::CreateElementCommand *>(createCommand)->result();
@@ -125,7 +125,7 @@ void ExploserView::handleCreationWithExplosion(commands::AbstractCommand *create
 		QList<Explosion> const explosions = mLogicalApi->editorManagerInterface().explosions(source);
 		foreach (Explosion const &explosion, explosions) {
 			if (explosion.source().type() == source.type() && explosion.requiresImmediateLinkage()) {
-				createCommand->addPostAction(mLogicalApi->exploser().createElementWithIncommingExplosionCommand(
+				createCommand->addPostAction(mLogicalApi->exploser().createElementWithIncomingExplosionCommand(
 						source, explosion.target(), mGraphicalApi));
 			}
 		}
@@ -144,7 +144,7 @@ void ExploserView::addExplosionActionTriggered()
 	Id const source = connection[0].value<Id>();
 	Id const destination = connection[1].value<Id>();
 	if (action->text().startsWith(tr("New "))) {
-		mMainWindow->controller()->execute(mLogicalApi->exploser().createElementWithIncommingExplosionCommand(
+		mMainWindow->controller()->execute(mLogicalApi->exploser().createElementWithIncomingExplosionCommand(
 				source, destination, mGraphicalApi));
 	} else {
 		mMainWindow->controller()->execute(mLogicalApi->exploser().addExplosionCommand(source, destination));
