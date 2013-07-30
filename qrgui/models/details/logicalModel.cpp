@@ -68,10 +68,6 @@ void LogicalModel::checkProperties(Id const &id)
 	foreach (QString const property, propertiesThatShallBe)
 		if (!api().hasProperty(id, property))
 			mApi.setProperty(id, property, "");  // There shall be default value.
-	if (!mApi.hasProperty(id, "outgoingUsages"))
-		mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
-	if (!mApi.hasProperty(id, "incomingUsages"))
-		mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 }
 
 void LogicalModel::connectToGraphicalModel(GraphicalModel * const graphicalModel)
@@ -170,13 +166,11 @@ void LogicalModel::initializeElement(const Id &id, modelsImplementation::Abstrac
 	mApi.setProperty(id, "from", Id::rootId().toVariant());
 	mApi.setProperty(id, "to", Id::rootId().toVariant());
 	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
+	mApi.setProperty(id, "outgoingExplosion", Id().toVariant());
+	mApi.setProperty(id, "incomingExplosions", IdListHelper::toVariant(IdList()));
 
 	QStringList const properties = mEditorManagerInterface.propertyNames(id.type());
-	foreach (QString const property, properties) {
+	foreach (QString const &property, properties) {
 		// for those properties that doesn't have default values, plugin will return empty string
 		mApi.setProperty(id, property, mEditorManagerInterface.defaultPropertyValue(id, property));
 	}

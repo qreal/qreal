@@ -5,15 +5,21 @@
 
 #include "abstractCommand.h"
 #include "../../mainwindow/propertyEditorProxyModel.h"
+#include "../../models/logicalModelAssistApi.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
+/// Sets given property to a given value
 class ChangePropertyCommand : public AbstractCommand
 {
 public:
+	/// Use this overload to modify properties via models api
+	ChangePropertyCommand(models::LogicalModelAssistApi * const model
+			, QString const &property, Id const &id, QVariant const &newValue);
+
+	/// Constructs new change property command instance modifying
+	/// properties via property editor proxy model
 	ChangePropertyCommand(
 		PropertyEditorModel * const model /* Doesn`t take ownership */
 		, QModelIndex const &index
@@ -28,11 +34,16 @@ protected:
 private:
 	bool setProperty(QVariant const &value);
 
-	PropertyEditorModel *mModel;
-	QModelIndex mIndex;
+	models::LogicalModelAssistApi *mLogicalModel;
+	Id const mId;
+	QString mPropertyName;
+
+	PropertyEditorModel *mPropertyEditorModel;
+	QModelIndex mPropertyEditorIndex;
+	int mPropertyEditorRole;
+
 	QVariant mOldValue;
 	QVariant mNewValue;
-	int mRole;
 };
 
 }

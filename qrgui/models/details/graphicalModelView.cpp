@@ -41,8 +41,10 @@ void GraphicalModelView::rowsInserted(QModelIndex const &parent, int start, int 
 	}
 }
 
-void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight)
+void GraphicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight
+		, QVector<int> const &roles)
 {
+	Q_UNUSED(roles)
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex current = topLeft.sibling(row, 0);
 
@@ -62,5 +64,3 @@ void GraphicalModelView::rowsAboutToBeRemoved(QModelIndex const &parent, int sta
 	Q_UNUSED(start);
 	Q_UNUSED(end);
 }
-
-

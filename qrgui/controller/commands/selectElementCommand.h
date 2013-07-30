@@ -18,7 +18,7 @@ public:
 			, bool shouldSelect = true, bool forceValueChange = false);
 	SelectElementCommand(EditorView const *view, Id const &id
 			, bool shouldSelect = true, bool forceValueChange = false);
-	virtual ~SelectElementCommand() {}
+	virtual ~SelectElementCommand();
 
 protected:
 	virtual bool execute();
