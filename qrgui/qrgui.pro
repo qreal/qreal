@@ -8,11 +8,7 @@ macx {
 
 RESOURCES = qrgui.qrc
 
-HEADERS += \
-	qRealApplication.h
-
-SOURCES = main.cpp \
-	qRealApplication.cpp
+SOURCES = main.cpp
 
 TRANSLATIONS = qrgui_ru.ts
 

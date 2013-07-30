@@ -28,6 +28,9 @@ private slots:
 	void resetShortcuts();
 	void resetAllShortcuts();
 
+protected:
+	void showEvent(QShowEvent *e);
+
 private:
 	void loadHotKeys();
 	void initTable();
