@@ -19,8 +19,6 @@ namespace models {
 class LogicalModelAssistApi;
 class GraphicalModelAssistApi;
 
-namespace details {
-
 /// This class contains methods for processing all system explosion-based operations
 /// from the model aspect
 class Exploser : public QObject
@@ -62,7 +60,7 @@ public:
 
 	/// Produces and returns command that creates element of target type and
 	/// binds given element with new element with explosion link
-	commands::AbstractCommand *createElementWithIncommingExplosionCommand(Id const &source
+	commands::AbstractCommand *createElementWithIncomingExplosionCommand(Id const &source
 			, Id const &targetType, GraphicalModelAssistApi *graphicalApi);
 
 	/// Produces and returns a command that performs the renaming of the whole
@@ -80,8 +78,8 @@ signals:
 
 private:
 	/// This method takes one of the elements of the diagram and tries
-	/// to move through its explosions hiererchy to the root.
-	/// In case of cyclic explosions the behaviour is undifined
+	/// to move through its explosions hierarchy to the root.
+	/// In case of cyclic explosions the behaviour is undefined
 	/// (most probably you will get infinite cycle)
 	Id explosionsRoot(Id const &id) const;
 
@@ -100,6 +98,5 @@ private:
 	QMap<Id, gui::PaletteTreeWidget *> mUserPalettes;
 };
 
-}
 }
 }

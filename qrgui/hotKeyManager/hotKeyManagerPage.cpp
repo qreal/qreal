@@ -25,7 +25,7 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 	mUi->setupUi(this);
 	mIcon = QIcon(":/icons/hotkeys.png");
 
-	mUi->hotKeysTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+	mUi->hotKeysTable->horizontalHeader()->setResizeMode(QHeaderView::Interactive);
 
 	// TODO: implement export/import
 	mUi->importPushButton->hide();
@@ -56,6 +56,11 @@ void PreferencesHotKeyManagerPage::restoreSettings()
 	initTable();
 	loadHotKeys();
 	mUi->hotKeysTable->sortByColumn(0, Qt::AscendingOrder);
+
+	int const tableWidth = mUi->hotKeysTable->horizontalHeader()->width();
+	mUi->hotKeysTable->setColumnWidth(0, 0.25 * tableWidth);
+	mUi->hotKeysTable->setColumnWidth(1, 0.5 * tableWidth);
+	mUi->hotKeysTable->setColumnWidth(2, 0.25 * tableWidth);
 }
 
 void PreferencesHotKeyManagerPage::resetShortcuts()
@@ -83,6 +88,12 @@ void PreferencesHotKeyManagerPage::resetAllShortcuts()
 	}
 }
 
+void PreferencesHotKeyManagerPage::showEvent(QShowEvent *e)
+{
+	restoreSettings();
+	QWidget::showEvent(e);
+}
+
 void PreferencesHotKeyManagerPage::loadHotKeys()
 {
 	QHash<QString, QAction *> cmds = HotKeyManager::commands();
@@ -100,6 +111,7 @@ void PreferencesHotKeyManagerPage::loadHotKeys()
 		int j = 0;
 		foreach (QString const &sequence, sequences) {
 			mUi->hotKeysTable->item(k, 2 + j)->setText(sequence);
+			mUi->hotKeysTable->item(k, 2 + j)->setTextColor(Qt::black);
 
 			if (++j >= maxShortcuts) {
 				break;

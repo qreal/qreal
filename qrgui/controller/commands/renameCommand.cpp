@@ -5,7 +5,7 @@ using namespace qReal::commands;
 
 RenameCommand::RenameCommand(details::ModelsAssistInterface * const model
 		, Id const &id, QString const &newName
-		, models::details::Exploser * const exploser)
+		, models::Exploser * const exploser)
 	: mModel(model)
 	, mId(id)
 	, mOldName(mModel->name(mId))
@@ -16,7 +16,7 @@ RenameCommand::RenameCommand(details::ModelsAssistInterface * const model
 
 RenameCommand::RenameCommand(details::ModelsAssistInterface * const model
 		, Id const &id, QString const &oldName, QString const &newName
-		, models::details::Exploser * const exploser)
+		, models::Exploser * const exploser)
 	: mModel(model)
 	, mId(id)
 	, mOldName(oldName)
@@ -35,7 +35,7 @@ bool RenameCommand::restoreState()
 	return rename(mOldName);
 }
 
-void RenameCommand::initExplosions(qReal::models::details::Exploser * const exploser)
+void RenameCommand::initExplosions(models::Exploser * const exploser)
 {
 	if (!exploser) {
 		return;

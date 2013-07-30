@@ -8,7 +8,7 @@
 #include "../controller/commands/renameExplosionCommand.h"
 
 using namespace qReal;
-using namespace models::details;
+using namespace models;
 using namespace commands;
 
 Exploser::Exploser(LogicalModelAssistApi * const api)
@@ -85,19 +85,19 @@ IdList Exploser::elementsWithHardDependencyFrom(Id const &id) const
 {
 	IdList result;
 	Id const targetType = id.type();
-	IdList const incommingExplosions = mApi->logicalRepoApi().incomingExplosions(id);
-	foreach (Id const &incomming, incommingExplosions) {
-		QList<Explosion> const explosions = mApi->editorManagerInterface().explosions(incomming.type());
+	IdList const incomingExplosions = mApi->logicalRepoApi().incomingExplosions(id);
+	foreach (Id const &incoming, incomingExplosions) {
+		QList<Explosion> const explosions = mApi->editorManagerInterface().explosions(incoming.type());
 		foreach (Explosion const &explosion, explosions) {
 			if (explosion.target() == targetType && explosion.requiresImmediateLinkage()) {
-				result << incomming;
+				result << incoming;
 			}
 		}
 	}
 	return result;
 }
 
-AbstractCommand *Exploser::createElementWithIncommingExplosionCommand(Id const &source
+AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(Id const &source
 		, Id const &targetType, GraphicalModelAssistApi *graphicalApi)
 {
 	QString const friendlyTargetName = mApi->editorManagerInterface().friendlyName(targetType);
@@ -165,9 +165,9 @@ AbstractCommand *Exploser::renameCommands(Id const &oneOfIds, QString const &new
 void Exploser::explosionsHierarchyPrivate(Id const &currentId, IdList &targetIds) const
 {
 	targetIds << currentId;
-	IdList const incommingExplosions = mApi->logicalRepoApi().incomingExplosions(currentId);
-	foreach (Id const incomming, incommingExplosions) {
-		explosionsHierarchyPrivate(incomming, targetIds);
+	IdList const incomingExplosions = mApi->logicalRepoApi().incomingExplosions(currentId);
+	foreach (Id const incoming, incomingExplosions) {
+		explosionsHierarchyPrivate(incoming, targetIds);
 	}
 }
 

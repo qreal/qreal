@@ -80,7 +80,6 @@ void LogicalModel::addInsufficientProperties(Id const &id, QString const &name)
 		// for those properties that doesn't have default values, plugin will return empty string
 		mApi.setProperty(id, property, mEditorManagerInterface.defaultPropertyValue(id, property));
 	}
-
 }
 
 void LogicalModel::connectToGraphicalModel(GraphicalModel * const graphicalModel)

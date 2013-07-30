@@ -3,10 +3,8 @@
 #include "abstractCommand.h"
 #include "createRemoveCommandImplementation.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class CreateElementCommand : public AbstractCommand
 {

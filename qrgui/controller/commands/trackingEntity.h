@@ -1,9 +1,7 @@
 #pragma once
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 /// A helper class for commands that track some continious user operation
 class TrackingEntity

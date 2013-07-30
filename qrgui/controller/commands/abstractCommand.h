@@ -5,10 +5,8 @@
 
 #include "../../../qrkernel/ids.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class AbstractCommand : public QObject, public QUndoCommand
 {
@@ -17,8 +15,8 @@ public:
 	AbstractCommand();
 	virtual ~AbstractCommand();
 
-	void redo();
-	void undo();
+	virtual void redo();
+	virtual void undo();
 
 	void setRedoEnabled(bool enabled);
 	void setUndoEnabled(bool enabled);
@@ -46,9 +44,15 @@ public:
 	/// Root command is never removed
 	void removeDuplicates();
 
+	/// Returns id of the root diagram whose tab is the parent for this command
+	/// @see bindToDiagram()
 	Id diagramBinded() const;
+
+	/// Binds this command to the tab associated with the specified root diagram
+	/// @see diagramBinded()
 	void bindToDiagram(Id const &diagramId);
 
+	/// Returns time of this command creation in ms since epoch
 	uint timestamp() const;
 
 signals:

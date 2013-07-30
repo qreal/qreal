@@ -573,7 +573,8 @@ void EditorGenerator::setExplosion(QDomElement &parent, Id const &id)
 				explodesTo.appendChild(target);
 			} else if (typeName == "MetaEntityImport") {
 				QDomElement target = mDocument.createElement("target");
-				ensureCorrectness(elementId, target, "type", mApi.stringProperty(elementId, "importedFrom") + "::" + mApi.name(elementId));
+				ensureCorrectness(elementId, target, "type"
+						, mApi.stringProperty(elementId, "importedFrom") + "::" + mApi.name(elementId));
 				setExplosionProperties(target, inLink);
 				explodesTo.appendChild(target);
 			}
