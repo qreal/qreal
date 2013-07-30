@@ -68,7 +68,6 @@ void LogicalModel::checkProperties(Id const &id)
 	foreach (QString const property, propertiesThatShallBe)
 		if (!api().hasProperty(id, property))
 			mApi.setProperty(id, property, "");  // There shall be default value.
-
 }
 
 void LogicalModel::connectToGraphicalModel(GraphicalModel * const graphicalModel)
