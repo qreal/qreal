@@ -495,7 +495,7 @@ void RefactoringPlugin::makeSubprogramHARDCODE() // FIXME
 		}
 	}
 
-	mLogicalModelApi->connect(mGraphicalModelApi->logicalId(subprogramId)
+	mLogicalModelApi->addExplosion(mGraphicalModelApi->logicalId(subprogramId)
 			, mGraphicalModelApi->logicalId(newDiagramId));
 }
 

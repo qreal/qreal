@@ -62,3 +62,8 @@ void EnumType::generateMouseGesturesMap(utils::OutFile &out)
 	Q_UNUSED(out);
 }
 
+void EnumType::generateExplosionsMap(utils::OutFile &out)
+{
+	Q_UNUSED(out)
+}
+

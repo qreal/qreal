@@ -3,9 +3,14 @@
 using namespace qReal::commands;
 
 ElementCommand::ElementCommand(EditorViewScene const *scene, Id const &id)
-	: mElement(NULL), mScene(scene), mId(id)
+	: mElement(NULL), mScene(scene), mId(id), mSceneWasRemoved(false)
 {
 	reinitElement();
+	connect(mScene, SIGNAL(destroyed()), SLOT(onSceneWasRemoved()));
+}
+
+ElementCommand::~ElementCommand()
+{
 }
 
 EditorViewScene const *ElementCommand::scene() const
@@ -36,17 +41,22 @@ bool ElementCommand::reinitElement()
 	return mElement != NULL;
 }
 
-bool ElementCommand::restoreState()
-{
-	return reinitElement();
-}
-
 Element *ElementCommand::elementById(Id const &id)
 {
 	return mScene ? mScene->getElem(id) : NULL;
 }
 
+void ElementCommand::onSceneWasRemoved()
+{
+	mSceneWasRemoved = true;
+}
+
 bool ElementCommand::execute()
 {
-	return reinitElement();
+	return !mSceneWasRemoved && reinitElement();
+}
+
+bool ElementCommand::restoreState()
+{
+	return !mSceneWasRemoved && reinitElement();
 }

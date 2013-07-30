@@ -52,8 +52,7 @@ public:
 	virtual Element* graphicalObject(Id const &id) const;
 
 	virtual IdList containedTypes(const Id &id) const;
-	virtual IdList connectedTypes(const Id &id) const;
-	virtual IdList usedTypes(const Id &id) const;
+	virtual QList<Explosion> explosions(Id const &source) const;
 	virtual QStringList enumValues(Id const &id, const QString &name) const;
 	virtual QString typeName(Id const &id, const QString &name) const;
 	virtual QStringList allChildrenTypesOf(Id const &parent) const;

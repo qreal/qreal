@@ -11,8 +11,10 @@ LogicalModelView::LogicalModelView(GraphicalModel * const model)
 {
 }
 
-void LogicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight)
+void LogicalModelView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight
+		, QVector<int> const &roles)
 {
+	Q_UNUSED(roles)
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex curr = topLeft.sibling(row, 0);
 

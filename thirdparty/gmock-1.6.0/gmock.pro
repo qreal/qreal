@@ -1,7 +1,7 @@
 TEMPLATE = lib
 DESTDIR = ../../bin/thirdparty
 TARGET = gmock
-CONFIG += staticlib
+CONFIG += staticlib warn_off
 
 OBJECTS_DIR = .obj
 MOC_DIR = .moc

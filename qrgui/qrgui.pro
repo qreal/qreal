@@ -7,6 +7,7 @@ macx {
 }
 
 RESOURCES = qrgui.qrc
+
 SOURCES = main.cpp
 
 TRANSLATIONS = qrgui_ru.ts
@@ -81,5 +82,3 @@ include (textEditor/textEditor.pri)
 
 # Hot Key Manager
 include (hotKeyManager/hotKeyManager.pri)
-
-HEADERS +=

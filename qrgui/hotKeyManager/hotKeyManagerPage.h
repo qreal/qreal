@@ -14,7 +14,7 @@ class PreferencesHotKeyManagerPage : public PreferencesPage
 	Q_OBJECT
 	
 public:
-	explicit  PreferencesHotKeyManagerPage(QWidget *parent = 0);
+	explicit PreferencesHotKeyManagerPage(QWidget *parent = 0);
 	~PreferencesHotKeyManagerPage();
 
 	void save();
