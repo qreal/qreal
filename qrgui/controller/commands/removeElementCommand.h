@@ -4,10 +4,8 @@
 #include "createRemoveCommandImplementation.h"
 #include "../../umllib/element.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class RemoveElementCommand : public AbstractCommand
 {

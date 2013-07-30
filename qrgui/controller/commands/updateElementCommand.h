@@ -2,10 +2,8 @@
 
 #include "elementCommand.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class UpdateElementCommand : public ElementCommand
 {

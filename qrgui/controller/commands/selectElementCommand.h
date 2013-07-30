@@ -2,10 +2,8 @@
 
 #include "elementCommand.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 /// This command selects or deselects element on the scene
 class SelectElementCommand : public ElementCommand
