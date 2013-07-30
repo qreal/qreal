@@ -23,7 +23,7 @@ HEADERS += \
 	view/copyPaste/pasteGroupCommand.h \
 	view/copyPaste/pasteEdgeCommand.h \
 	view/private/exploserView.h \
-	view/QsKineticScroller.h \
+	view/private/touchSupportManager.h \
 
 SOURCES += \
 	view/editorView.cpp \
@@ -45,4 +45,4 @@ SOURCES += \
 	view/copyPaste/pasteGroupCommand.cpp \
 	view/copyPaste/pasteEdgeCommand.cpp \
 	view/private/exploserView.cpp \
-	view/QsKineticScroller.cpp \
+	view/private/touchSupportManager.cpp \

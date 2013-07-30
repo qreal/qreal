@@ -4,7 +4,7 @@
 
 #include "editorViewScene.h"
 #include "private/editorViewMVIface.h"
-#include "QsKineticScroller.h"
+#include "private/touchSupportManager.h"
 
 namespace qReal {
 
@@ -46,8 +46,8 @@ protected:
 	virtual void keyReleaseEvent(QKeyEvent *event);
 
 private slots:
-	void zoomInTime(qreal x);
-	void zoomOutTime(qreal x);
+	void zoomInTime();
+	void zoomOutTime();
 	void animFinished();
 
 private:
@@ -58,7 +58,7 @@ private:
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
 	int mZoom;
-	QsKineticScroller *mKineticScroller;
+	view::details::TouchSupportManager mTouchManager;
 };
 
 }

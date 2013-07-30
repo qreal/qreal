@@ -241,10 +241,10 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		QDrag *drag = new QDrag(this);
 		drag->setMimeData(mimeData);
 
-		QPixmap p = child->icon().pixmap(96, 96);
+		QPixmap const pixmap = child->icon().pixmap(mData.preferredSize());
 
-		if (!p.isNull()) {
-			drag->setPixmap(child->icon().pixmap(96, 96));
+		if (!pixmap.isNull()) {
+			drag->setPixmap(pixmap);
 		}
 
 		if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction) {
