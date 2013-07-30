@@ -356,7 +356,7 @@ void Label::clearMoveFlag()
 
 QRectF Label::labelMovingRect() const
 {
-	int distance = 100;
+	int distance = SettingsManager::value("LabelsDistance").toInt();
 	return mapFromItem(parentItem(), parentItem()->boundingRect()).boundingRect()
 			.adjusted(-distance, -distance, distance, distance);
 }
