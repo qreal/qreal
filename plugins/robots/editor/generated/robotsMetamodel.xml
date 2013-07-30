@@ -369,6 +369,7 @@
 					<properties>
 						<property displayedName="Условие" type="GuardType" name="Guard"/>
 					</properties>
+					<dividability isDividable="true"/>
 				</logic>
 			</edge>
 			<node displayedName="Балансировка" name="Balance">
