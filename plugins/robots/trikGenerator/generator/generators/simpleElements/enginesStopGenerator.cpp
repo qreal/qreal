@@ -7,14 +7,14 @@ EnginesStopGenerator::EnginesStopGenerator()
 {
 }
 
-QList<SmartLine> EnginesStopGenerator::convertElementIntoDirectCommand(TrikRobotGenerator *nxtGen
+QList<SmartLine> EnginesStopGenerator::convertElementIntoDirectCommand(TrikRobotGenerator *generator
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;
-	foreach (QString enginePort, portsToEngineNames(nxtGen->api()->stringProperty(logicElementId, "Ports"))) {
+	foreach (QString enginePort, portsToEngineNames(generator->api()->stringProperty(logicElementId, "Ports"))) {
 		result.append(
 				SmartLine("brick.motor("
-						+ enginePort + ").stop();"
+						+ enginePort + ").powerOff();"
 				, elementId));
 	}
 

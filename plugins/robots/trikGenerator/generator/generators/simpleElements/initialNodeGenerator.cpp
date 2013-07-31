@@ -7,10 +7,10 @@ InitialNodeGenerator::InitialNodeGenerator()
 {
 }
 
-QList<SmartLine> InitialNodeGenerator::convertElementIntoDirectCommand(TrikRobotGenerator *trikGenerator
+QList<SmartLine> InitialNodeGenerator::convertElementIntoDirectCommand(TrikRobotGenerator *generator
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
-	Q_UNUSED(trikGenerator)
+	Q_UNUSED(generator)
 	Q_UNUSED(elementId)
 	Q_UNUSED(logicElementId)
 

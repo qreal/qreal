@@ -1,20 +1,20 @@
 #include "finalNodeGenerator.h"
-#include "../../nxtOSEKRobotGenerator.h"
+#include "../../trikRobotGenerator.h"
 
-using namespace robots::generator;
+using namespace robots::trikGenerator;
 
 FinalNodeGenerator::FinalNodeGenerator()
 {
 }
 
-QList<SmartLine> FinalNodeGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> FinalNodeGenerator::convertElementIntoDirectCommand(TrikRobotGenerator *generator
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
-	Q_UNUSED(nxtGen)
+	Q_UNUSED(generator)
 	Q_UNUSED(logicElementId)
 
 	QList<SmartLine> result;
-	result.append(SmartLine("TerminateTask();", elementId));
+	result.append(SmartLine("brick.stop();", elementId));
 
 	return result;
 }
