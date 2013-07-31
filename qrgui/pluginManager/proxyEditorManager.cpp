@@ -77,16 +77,6 @@ IdList ProxyEditorManager::containedTypes(const Id &id) const
 	return mProxiedEditorManager->containedTypes(id);
 }
 
-IdList ProxyEditorManager::connectedTypes(const Id &id) const
-{
-	return mProxiedEditorManager->connectedTypes(id);
-}
-
-IdList ProxyEditorManager::usedTypes(const Id &id) const
-{
-	return mProxiedEditorManager->usedTypes(id);
-}
-
 QStringList ProxyEditorManager::enumValues(Id const &id, const QString &name) const
 {
 	return mProxiedEditorManager->enumValues(id, name);
@@ -100,6 +90,11 @@ QString ProxyEditorManager::typeName(Id const &id, const QString &name) const
 QStringList ProxyEditorManager::allChildrenTypesOf(Id const &parent) const
 {
 	return mProxiedEditorManager->allChildrenTypesOf(parent);
+}
+
+QList<Explosion> ProxyEditorManager::explosions(Id const &source) const
+{
+	return mProxiedEditorManager->explosions(source);
 }
 
 bool ProxyEditorManager::isEditor(Id const &id) const

@@ -25,24 +25,24 @@ bool BpmnCustomizer::showConnectionRelatedMenus() const
 	return true;
 }
 
-QString BpmnCustomizer::addConnectionMenuName() const
+QString BpmnCustomizer::addExplosionMenuName() const
 {
 	return QObject::tr("Set subprocess");
 }
 
-QString BpmnCustomizer::deleteConnectionMenuName() const
+QString BpmnCustomizer::changeExplosionMenuName() const
+{
+	return QObject::tr("Change subprocess");
+}
+
+QString BpmnCustomizer::deleteExplosionMenuName() const
 {
 	return QObject::tr("Remove subprocess");
 }
 
-QString BpmnCustomizer::forwardConnectionMenuName() const
+QString BpmnCustomizer::goToConnectedMenuName() const
 {
 	return QObject::tr("Edit subprocess");
-}
-
-QString BpmnCustomizer::backwardConnectionMenuName() const
-{
-	return QObject::tr("Return to process caller");
 }
 
 bool BpmnCustomizer::showExpandConnectionAction() const
@@ -50,12 +50,12 @@ bool BpmnCustomizer::showExpandConnectionAction() const
 	return true;
 }
 
-QString BpmnCustomizer::expandConnectionActionText() const
+QString BpmnCustomizer::expandExplosionActionText() const
 {
 	return QObject::tr("Expand subprocess");
 }
 
-QString BpmnCustomizer::collapseConnectionActionText() const
+QString BpmnCustomizer::collapseExplosionActionText() const
 {
 	return QObject::tr("Collapse subprocess");
 }

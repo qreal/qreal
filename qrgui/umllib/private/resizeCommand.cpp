@@ -40,7 +40,9 @@ bool ResizeCommand::execute()
 	if (!mTrackStopped) {
 		return true;
 	}
-	NodeElementCommand::execute();
+	if (!NodeElementCommand::execute()) {
+		return false;
+	}
 	resizeHierarchy(mNewGeometrySnapshot);
 	return true;
 }
@@ -50,7 +52,9 @@ bool ResizeCommand::restoreState()
 	if (!mTrackStopped) {
 		return true;
 	}
-	NodeElementCommand::restoreState();
+	if (!NodeElementCommand::restoreState()) {
+		return false;
+	}
 	resizeHierarchy(mOldGeometrySnapshot);
 	return true;
 }

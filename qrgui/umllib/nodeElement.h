@@ -71,7 +71,7 @@ public:
 	bool isContainer() const;
 
 	void storeGeometry();
-	virtual void setName(QString name);
+	virtual void setName(QString const &name, bool withUndoRedo = false);
 	//void shift(QPointF const &pos, EdgeElement* called);
 
 	QPointF const portPos(qreal id) const;

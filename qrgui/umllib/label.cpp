@@ -142,13 +142,13 @@ void Label::setProperties(qreal x, qreal y, qreal width, QString const &text)
 	setPos(x, y);
 }
 
-void Label::updateData()
+void Label::updateData(bool withUndoRedo)
 {
 	QString const value = createTextForRepo();
 	if (mBinding == "name") {
-		static_cast<NodeElement*>(parentItem())->setName(value);
+		static_cast<NodeElement*>(parentItem())->setName(value, withUndoRedo);
 	} else {
-		static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value);
+		static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value, withUndoRedo);
 	}
 }
 
@@ -257,7 +257,7 @@ void Label::focusOutEvent(QFocusEvent *event)
 	}
 
 	if (mOldText != toPlainText()) {
-		updateData();
+		updateData(true);
 	}
 }
 

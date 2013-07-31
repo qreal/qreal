@@ -268,7 +268,7 @@
    <widget class="QWidget" name="logicalModelDockWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTreeView" name="logicalModelExplorer">
+	  <widget class="qReal::gui::ModelExplorer" name="logicalModelExplorer">
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
        </property>
@@ -352,7 +352,7 @@
    <widget class="QWidget" name="graphicalModelDockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QTreeView" name="graphicalModelExplorer">
+	  <widget class="qReal::gui::ModelExplorer" name="graphicalModelExplorer">
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
        </property>
@@ -790,7 +790,7 @@
   <customwidget>
    <class>qReal::gui::PaletteTree</class>
    <extends>QToolBox</extends>
-   <header>../mainwindow/paletteTree.h</header>
+   <header>../mainwindow/palette/paletteTree.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -813,6 +813,11 @@
    <class>qReal::gui::TabWidget</class>
    <extends>QWidget</extends>
    <header>../mainwindow/tabWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>qReal::gui::ModelExplorer</class>
+   <extends>QWidget</extends>
+   <header>../mainwindow/modelExplorer.h</header>
   </customwidget>
  </customwidgets>
  <resources>

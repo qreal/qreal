@@ -2,17 +2,29 @@
 
 using namespace qReal::commands;
 
+ChangePropertyCommand::ChangePropertyCommand(models::LogicalModelAssistApi * const model
+		, QString const &property, Id const &id, QVariant const &newValue)
+	: mLogicalModel(model)
+	, mId(id)
+	, mPropertyName(property)
+	, mPropertyEditorModel(NULL)
+	, mOldValue(mLogicalModel->propertyByRoleName(mId, mPropertyName))
+	, mNewValue(newValue)
+{
+}
+
 ChangePropertyCommand::ChangePropertyCommand(
 		PropertyEditorModel * const model
 		, QModelIndex const &index
 		, QVariant const &oldValue
 		, QVariant const &newValue
 		, int role)
-	: mModel(model)
-	, mIndex(index)
+	: mLogicalModel(NULL)
+	, mPropertyEditorModel(model)
+	, mPropertyEditorIndex(index)
+	, mPropertyEditorRole(role)
 	, mOldValue(oldValue)
 	, mNewValue(newValue)
-	, mRole(role)
 {
 }
 
@@ -28,5 +40,9 @@ bool ChangePropertyCommand::restoreState()
 
 bool ChangePropertyCommand::setProperty(QVariant const &value)
 {
-	return mModel->setData(mIndex, value, mRole);
+	if (mPropertyEditorModel) {
+		return mPropertyEditorModel->setData(mPropertyEditorIndex, value, mPropertyEditorRole);
+	}
+	mLogicalModel->setPropertyByRoleName(mId, value, mPropertyName);
+	return true;
 }

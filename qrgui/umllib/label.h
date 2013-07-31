@@ -62,7 +62,7 @@ protected:
 
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = NULL);
 private:
-	void updateData();
+	void updateData(bool withUndoRedo = false);
 	void updateRect(QPointF newBottomRightPoint);
 	void setProperties(qreal x, qreal y, qreal width, QString const &text);
 	QString createTextForRepo() const;

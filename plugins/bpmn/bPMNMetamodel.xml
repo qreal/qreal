@@ -459,9 +459,9 @@
                 </graphics>
                 <logic>
                     <container/>
-                    <connections>
-                        <connection type="BPMNDiagramNode"/>
-                    </connections>
+                    <explodesTo>
+                        <target type="BPMNDiagramNode" makeReusable="false" requireImmediateLinkage="false"/>
+                    </explodesTo>
                     <properties>
                         <property type="string" name="Text" displayedName="Text"/>
                         <property type="LoopType" name="loopType" displayedName="Loop Type"/>

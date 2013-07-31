@@ -19,6 +19,7 @@
 #include "private/foldCommand.h"
 
 #include "../controller/commands/changeParentCommand.h"
+#include "../controller/commands/renameCommand.h"
 #include "../controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal;
@@ -134,9 +135,16 @@ QMap<QString, QVariant> NodeElement::logicalProperties() const
 	return mGraphicalAssistApi->properties(logicalId());
 }
 
-void NodeElement::setName(QString value)
+void NodeElement::setName(QString const &value, bool withUndoRedo)
 {
-	mGraphicalAssistApi->setName(id(), value);
+	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi
+			, id(), value, &mLogicalAssistApi->exploser());
+	if (withUndoRedo) {
+		mController->execute(command);
+	} else {
+		command->redo();
+		delete command;
+	}
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
@@ -871,7 +879,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 			painter->restore();
 		}
 
-		if (mIsExpanded && !mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId()).empty()) {
+		if (mIsExpanded && mLogicalAssistApi->logicalRepoApi().outgoingExplosion(logicalId()) != qReal::Id()) {
 			QRectF rect = diagramRenderingRect();
 			painter->drawImage(rect, mRenderedDiagram.scaled(rect.size().toSize()
 					, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -903,7 +911,7 @@ void NodeElement::changeExpanded()
 	} else {
 		mRenderTimer.stop();
 	}
-	mGraphicalAssistApi->setProperty(mId, "expanded", mIsExpanded ? "true" : "false");
+	mGraphicalAssistApi->mutableGraphicalRepoApi().setProperty(mId, "expanded", mIsExpanded ? "true" : "false");
 }
 
 void NodeElement::changeFoldState()
@@ -927,7 +935,7 @@ void NodeElement::changeFoldState()
 		mCurUnfoldedContents.moveTo(pos());
 		setGeometry(mCurUnfoldedContents);
 	}
-	mGraphicalAssistApi->setProperty(mId, "folded", mIsFolded ? "true" : "false");
+	mGraphicalAssistApi->mutableGraphicalRepoApi().setProperty(mId, "folded", mIsFolded ? "true" : "false");
 
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (parent) {
@@ -1064,7 +1072,7 @@ void NodeElement::updateChildrenOrder()
 {
 	QStringList ids;
 	if (mGraphicalAssistApi->properties(mId).contains("childrenOrder")) {
-		ids = mGraphicalAssistApi->property(mId, "childrenOrder").toStringList();
+		ids = mGraphicalAssistApi->graphicalRepoApi().property(mId, "childrenOrder").toStringList();
 	}
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
@@ -1082,7 +1090,7 @@ void NodeElement::updateChildrenOrder()
 			ids << child->id().toString();
 		}
 	}
-	mGraphicalAssistApi->setProperty(mId, "childrenOrder", ids);
+	mGraphicalAssistApi->mutableGraphicalRepoApi().setProperty(mId, "childrenOrder", ids);
 
 }
 
@@ -1321,7 +1329,8 @@ IdList NodeElement::sortedChildren() const
 {
 	IdList result;
 	if (mGraphicalAssistApi->properties(mId).contains("childrenOrder")) {
-		foreach (QString const &id, mGraphicalAssistApi->property(mId, "childrenOrder").toStringList()) {
+		foreach (QString const &id, mGraphicalAssistApi->graphicalRepoApi().property(mId, "childrenOrder")
+				.toStringList()) {
 			result << Id::loadFromString(id);
 		}
 	}
@@ -1330,14 +1339,14 @@ IdList NodeElement::sortedChildren() const
 
 void NodeElement::initRenderedDiagram()
 {
-	if (!mIsExpanded || mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId()).empty()) {
+	if (!mIsExpanded || mLogicalAssistApi->logicalRepoApi().outgoingExplosion(logicalId()) == qReal::Id()) {
 		return;
 	}
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	MainWindow *window = evScene->mainWindow();
 
-	Id diagram = mLogicalAssistApi->logicalRepoApi().outgoingConnections(logicalId())[0];
+	Id diagram = mLogicalAssistApi->logicalRepoApi().outgoingExplosion(logicalId());
 	Id graphicalDiagram = mGraphicalAssistApi->graphicalIdsByLogicalId(diagram)[0];
 
 	EditorView * view = new EditorView(window);

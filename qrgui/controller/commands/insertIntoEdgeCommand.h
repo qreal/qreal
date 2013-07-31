@@ -6,10 +6,8 @@
 #include "../../models/graphicalModelAssistApi.h"
 #include "../../models/logicalModelAssistApi.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class InsertIntoEdgeCommand : public AbstractCommand
 {

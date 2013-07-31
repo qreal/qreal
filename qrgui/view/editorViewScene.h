@@ -10,7 +10,8 @@
 #include "gestures/mouseMovementManager.h"
 #include "copyPaste/clipboardHandler.h"
 
-#include "editorViewMVIface.h"
+#include "private/editorViewMVIface.h"
+#include "private/exploserView.h"
 
 const int arrowMoveOffset = 5;
 
@@ -55,7 +56,7 @@ public:
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
 	virtual Element *getElem(qReal::Id const &id) const;
-	Element *getElemAt(const QPointF &position);
+	Element *getElemAt(const QPointF &position) const;
 
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
@@ -89,6 +90,7 @@ public:
 	void createSingleElement(Id const &id, QString const &name
 			, Element *e, QPointF const &position
 			, Id const &parentId, bool isFromLogicalModel
+			, Id const &explosionTarget = Id()
 			, commands::CreateElementCommand **createCommandPointer = NULL
 			, bool executeImmediately = true);
 
@@ -150,13 +152,6 @@ protected:
 	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
-	void expandConnectionActionTriggered();
-	void connectActionTriggered();
-	void goToActionTriggered();
-	void disconnectActionTriggered();
-	void addUsageActionTriggered();
-	void deleteUsageActionTriggered();
-
 	void changePropertiesActionTriggered();
 	void changeAppearanceActionTriggered();
 	void printElementsOfRootDiagram();
@@ -184,22 +179,6 @@ private:
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
-	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
-	void createExpandAction(Element const * const element, QMenu * const menu, QString const &nameExpand
-			, const QString &nameCollapse, qReal::IdList const &ids) const;
-	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
-	/**
-	 * @return true, if connection menu was added
-	 */
-	void createAddConnectionMenu(Element const * const element
-			, QMenu &contextMenu, QString const &menuName
-			, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
-			, qReal::IdList const &connectableDiagrams, const char *slot) const;
-
-	void createDisconnectMenu(Element const * const element
-			, QMenu &contextMenu, QString const &menuName
-			, qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
-			, const char *slot) const;
 
 	void initContextMenu(Element *e, QPointF const &pos);
 	bool isEmptyClipboard();
@@ -264,6 +243,8 @@ private:
 
 	bool mIsSelectEvent;
 	bool mTitlesVisible;
+
+	view::details::ExploserView *mExploser; // Takes ownership
 
 	friend class qReal::EditorViewMViface;
 };

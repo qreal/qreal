@@ -277,6 +277,7 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	setAction(logic, id);
 	setGeneralization(logic, id);
 	setContextMenuFields(logic, id);
+	setExplosion(logic, id);
 }
 
 void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
@@ -319,6 +320,7 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	setPossibleEdges(logic, id);
 	setProperties(logic, id);
 	setGeneralization(logic, id);
+	setExplosion(logic, id);
 }
 
 void EditorGenerator::createEnum(QDomElement &parent, Id const &id)
@@ -554,6 +556,38 @@ void EditorGenerator::setContainerProperties(QDomElement &parent, Id const &id)
 	}
 }
 
+void EditorGenerator::setExplosion(QDomElement &parent, Id const &id)
+{
+	QDomElement explodesTo = mDocument.createElement("explodesTo");
+	parent.appendChild(explodesTo);
+
+	IdList const inLinks = mApi.incomingLinks(id);
+	foreach (Id const inLink, inLinks) {
+		if (inLink.element() == "Explosion") {
+			Id const elementId = mApi.from(inLink);
+			QString const typeName = elementId.element();
+			if (typeName == "MetaEntityNode") {
+				QDomElement target = mDocument.createElement("target");
+				ensureCorrectness(elementId, target, "type", mApi.name(elementId));
+				setExplosionProperties(target, inLink);
+				explodesTo.appendChild(target);
+			} else if (typeName == "MetaEntityImport") {
+				QDomElement target = mDocument.createElement("target");
+				ensureCorrectness(elementId, target, "type"
+						, mApi.stringProperty(elementId, "importedFrom") + "::" + mApi.name(elementId));
+				setExplosionProperties(target, inLink);
+				explodesTo.appendChild(target);
+			}
+		}
+	}
+}
+
+void EditorGenerator::setExplosionProperties(QDomElement &target, Id const &linkId)
+{
+	target.setAttribute("makeReusable", mApi.property(linkId, "makeReusable").toString());
+	target.setAttribute("requireImmediateLinkage", mApi.property(linkId, "requireImmediateLinkage").toString());
+}
+
 void EditorGenerator::setSizesForContainer(QString const &propertyName, QDomElement &properties, Id const &id)
 {
 	if (mApi.stringProperty(id, propertyName + "Size") != "") {
@@ -589,8 +623,7 @@ void EditorGenerator::ensureCorrectness(
 			mErrorReporter.addWarning(QObject::tr("wrong name\n"), id);
 			element.setAttribute(tagName, value);
 		}
-	}
-	else {
+	} else {
 		element.setAttribute(tagName, value);
 	}
 }
