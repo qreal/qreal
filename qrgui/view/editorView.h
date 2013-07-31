@@ -45,6 +45,8 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 	virtual void keyReleaseEvent(QKeyEvent *event);
 
+	virtual bool viewportEvent(QEvent *event);
+
 private slots:
 	void zoomInTime();
 	void zoomOutTime();

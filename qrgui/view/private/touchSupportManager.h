@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtGui/QTouchEvent>
+
 #include "../thirdparty/qsKineticScroller.h"
 
 namespace qReal {
@@ -15,6 +17,7 @@ class TouchSupportManager : public QObject
 public:
 	explicit TouchSupportManager(EditorView *editorView);
 
+	bool processTouchEvent(QTouchEvent *event);
 	bool isGestureRunning() const;
 
 signals:
@@ -25,7 +28,6 @@ protected:
 	virtual bool eventFilter(QObject* object, QEvent* event);
 
 private:
-	void processGestureState(QGesture const *gesture, bool processFinished = true);
 
 	EditorView *mEditorView;
 	QsKineticScroller mScroller;

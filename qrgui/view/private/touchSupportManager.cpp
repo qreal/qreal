@@ -10,10 +10,10 @@ TouchSupportManager::TouchSupportManager(EditorView *editorView)
 	: mEditorView(editorView)
 	, mGestureIsRunning(false)
 {
-	mEditorView->setAttribute(Qt::WA_AcceptTouchEvents);
 	mEditorView->grabGesture(Qt::PanGesture);
 	mEditorView->grabGesture(Qt::TapGesture);
 	mEditorView->grabGesture(Qt::PinchGesture);
+	mEditorView->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
 
 	mEditorView->installEventFilter(this);
 	mEditorView->viewport()->installEventFilter(this);
@@ -40,19 +40,17 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 		return false;
 	}
 
-	QMouseEvent* const mouseEvent = static_cast<QMouseEvent*>(event);
+	QMouseEvent * const mouseEvent = static_cast<QMouseEvent *>(event);
 
 	switch (eventType) {
 		case QEvent::Gesture: {
-			QGestureEvent *gestureEvent = static_cast<QGestureEvent*>(event);
+			QGestureEvent *gestureEvent = static_cast<QGestureEvent *>(event);
 
-			if (QGesture *tap = gestureEvent->gesture(Qt::TapGesture)) {
-				processGestureState(tap, false);
+			if (gestureEvent->gesture(Qt::TapGesture)) {
 				mScroller.onTap();
 			} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
 				mScroller.onPan(pan);
 			} else if (QGesture *pinch = gestureEvent->gesture(Qt::PinchGesture)) {
-				processGestureState(pinch);
 				QPinchGesture *pinchGesture = static_cast<QPinchGesture *>(pinch);
 				mEditorView->zoom(pinchGesture->scaleFactor());
 			}
@@ -68,22 +66,21 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 		case QEvent::MouseButtonRelease:
 			mScroller.onMouseRelease(object, mouseEvent);
 			break;
+		// For some reason touch events can`t be processed here and must be
+		// processed in scroll area`s viewport event
 		default:
 			break;
 	}
 
-	return false; // filter event
+	return false;
 }
 
-void TouchSupportManager::processGestureState(QGesture const *gesture, bool processFinished)
+bool TouchSupportManager::processTouchEvent(QTouchEvent *event)
 {
-	if (gesture->state() == Qt::GestureStarted) {
-		mGestureIsRunning = true;
-		mEditorView->setDragMode(QGraphicsView::NoDrag);
-		emit gestureStarted();
-	} else if (gesture->state() == Qt::GestureFinished && processFinished) {
-		mEditorView->setDragMode(QGraphicsView::RubberBandDrag);
-		mGestureIsRunning = false;
-		emit gestureFinished();
-	}
+	mGestureIsRunning = event->type() != QEvent::TouchEnd
+			&& event->type() != QEvent::TouchCancel;
+	mEditorView->setDragMode(mGestureIsRunning
+			? QGraphicsView::NoDrag
+			: QGraphicsView::RubberBandDrag);
+	return true;
 }

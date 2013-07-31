@@ -5,7 +5,6 @@
 #endif
 
 #include "editorView.h"
-#include "../../qrutils/outFile.h"
 
 using namespace qReal;
 
@@ -205,6 +204,21 @@ void EditorView::keyReleaseEvent(QKeyEvent *event)
 	} else {
 		QGraphicsView::keyPressEvent(event);
 	}
+}
+
+bool EditorView::viewportEvent(QEvent *event)
+{
+	switch (event->type()) {
+	case QEvent::TouchBegin:
+	case QEvent::TouchUpdate:
+	case QEvent::TouchEnd:
+		// For some reason touch viewport events can`t be processed in manual event
+		// filters, so catching them here
+		return mTouchManager.processTouchEvent(static_cast<QTouchEvent *>(event));
+	default:
+		break;
+	}
+	return QGraphicsView::viewportEvent(event);
 }
 
 void EditorView::invalidateScene()
