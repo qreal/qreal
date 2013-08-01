@@ -1,6 +1,7 @@
 #include "touchSupportManager.h"
 
 #include <QtWidgets/QPinchGesture>
+#include <QtWidgets/QApplication>
 
 #include "../editorView.h"
 
@@ -10,8 +11,8 @@ TouchSupportManager::TouchSupportManager(EditorView *editorView)
 	: mEditorView(editorView)
 	, mGestureIsRunning(false)
 {
-	mEditorView->grabGesture(Qt::PanGesture);
 	mEditorView->grabGesture(Qt::TapGesture);
+	mEditorView->grabGesture(Qt::PanGesture);
 	mEditorView->grabGesture(Qt::PinchGesture);
 	mEditorView->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
 
@@ -43,20 +44,8 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 	QMouseEvent * const mouseEvent = static_cast<QMouseEvent *>(event);
 
 	switch (eventType) {
-		case QEvent::Gesture: {
-			QGestureEvent *gestureEvent = static_cast<QGestureEvent *>(event);
-
-			if (gestureEvent->gesture(Qt::TapGesture)) {
-				mScroller.onTap();
-			} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
-				mScroller.onPan(pan);
-			} else if (QGesture *pinch = gestureEvent->gesture(Qt::PinchGesture)) {
-				QPinchGesture *pinchGesture = static_cast<QPinchGesture *>(pinch);
-				mEditorView->zoom(pinchGesture->scaleFactor());
-			}
-
-			return true;
-		}
+		case QEvent::Gesture:
+			return handleGesture(static_cast<QGestureEvent *>(event));
 		case QEvent::MouseButtonPress:
 			mScroller.onMousePress(mouseEvent);
 			break;
@@ -75,12 +64,98 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 	return false;
 }
 
+bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
+{
+	if (gestureEvent->gesture(Qt::TapGesture)) {
+		mScroller.onTap();
+	} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
+		mScroller.onPan(pan);
+	} else if (QGesture *pinch = gestureEvent->gesture(Qt::PinchGesture)) {
+		QPinchGesture *pinchGesture = static_cast<QPinchGesture *>(pinch);
+		mEditorView->zoom(pinchGesture->scaleFactor());
+	}
+	return true;
+}
+
+void TouchSupportManager::simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos)
+{
+	QMouseEvent* mouseEvent = new QMouseEvent(event, pos, mButton, mButton, Qt::NoModifier);
+	QApplication::postEvent(reciever, mouseEvent);
+}
+
+void TouchSupportManager::simulatePress(QTouchEvent *event, Qt::MouseButton button)
+{
+	mButton = button;
+	simulateMouse(event->target(), QEvent::MouseButtonPress, event->touchPoints()[0].pos());
+}
+
+void TouchSupportManager::simulateMove(QTouchEvent *event)
+{
+	simulateMouse(event->target(), QEvent::MouseMove, event->touchPoints()[0].pos());
+}
+
+void TouchSupportManager::simulateRelease(QTouchEvent *event)
+{
+	simulateMouse(event->target(), QEvent::MouseButtonRelease, event->touchPoints()[0].pos());
+}
+
+void TouchSupportManager::simulateDoubleClick(QTouchEvent *event)
+{
+	mButton = Qt::LeftButton;
+	simulateMouse(event->target(), QEvent::MouseButtonDblClick, event->touchPoints()[0].pos());
+}
+
+bool TouchSupportManager::isElementUnder(QPointF const &pos)
+{
+	return mEditorView->itemAt(pos.toPoint());
+}
+
 bool TouchSupportManager::processTouchEvent(QTouchEvent *event)
 {
-	mGestureIsRunning = event->type() != QEvent::TouchEnd
-			&& event->type() != QEvent::TouchCancel;
-	mEditorView->setDragMode(mGestureIsRunning
-			? QGraphicsView::NoDrag
-			: QGraphicsView::RubberBandDrag);
+	event->accept();
+	mGestureIsRunning = event->type() != QEvent::TouchEnd;
+	mEditorView->setDragMode(QGraphicsView::NoDrag);
+	mFingersInGesture = event->touchPoints().count();
+	if (mFingersInGesture == 1) {
+		handleOneFingerTouch(event);
+	}
 	return true;
+}
+
+void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
+{
+	switch(event->type()) {
+	case QEvent::TouchBegin: {
+		bool const elementUnder = isElementUnder(event->touchPoints()[0].pos());
+
+		if (QDateTime::currentMSecsSinceEpoch() - mLastTapTimestamp <= QApplication::doubleClickInterval()) {
+			if (elementUnder) {
+				// simulating right button click for links gesture
+				simulatePress(event, Qt::RightButton);
+			} else {
+				// simulating double-click
+				simulateDoubleClick(event);
+			}
+		} else {
+			if (elementUnder) {
+				// simulating regular left button click
+				simulatePress(event);
+			} else {
+				// simulating right button click for mouse gestures drawing
+				simulatePress(event, Qt::RightButton);
+			}
+		}
+
+		mLastTapTimestamp = QDateTime::currentMSecsSinceEpoch();
+		break;
+	}
+	case QEvent::TouchEnd:
+		simulateRelease(event);
+		break;
+	case QEvent::TouchUpdate:
+		simulateMove(event);
+		break;
+	default:
+		break;
+	}
 }

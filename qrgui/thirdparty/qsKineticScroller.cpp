@@ -195,20 +195,21 @@ void QsKineticScroller::onMouseMove(QMouseEvent *mouseEvent)
 
 void QsKineticScroller::onMouseRelease(QObject *eventSource, QMouseEvent *mouseEvent)
 {
+	Q_UNUSED(eventSource)
 	if (mouseEvent->button() == Qt::MiddleButton) {
 		d->isPressed = false;
 		// Looks like the user wanted a single click. Simulate the click,
 		// as the events were already consumed
-		if (!d->isMoving) {
-			QMouseEvent* mousePress = new QMouseEvent(QEvent::MouseButtonPress,
-			   d->lastPressPoint, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
-			QMouseEvent* mouseRelease = new QMouseEvent(QEvent::MouseButtonRelease,
-			   d->lastPressPoint, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+		// if (!d->isMoving) {
+		//	QMouseEvent* mousePress = new QMouseEvent(QEvent::MouseButtonPress,
+		//	   d->lastPressPoint, Qt::MiddleButton, Qt::MiddleButton, Qt::NoModifier);
+		//	QMouseEvent* mouseRelease = new QMouseEvent(QEvent::MouseButtonRelease,
+		//	   d->lastPressPoint, Qt::MiddleButton, Qt::MiddleButton, Qt::NoModifier);
 
-			d->ignoredMouseActions = 2;
-			QApplication::postEvent(eventSource, mousePress);
-			QApplication::postEvent(eventSource, mouseRelease);
-		}
+		//	d->ignoredMouseActions = 2;
+		//	QApplication::postEvent(eventSource, mousePress);
+		//	QApplication::postEvent(eventSource, mouseRelease);
+		//}
 	}
 }
 

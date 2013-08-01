@@ -28,10 +28,23 @@ protected:
 	virtual bool eventFilter(QObject* object, QEvent* event);
 
 private:
+	bool handleGesture(QGestureEvent *gestureEvent);
+	void handleOneFingerTouch(QTouchEvent *event);
+
+	void simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos);
+	void simulatePress(QTouchEvent *event, Qt::MouseButton button = Qt::LeftButton);
+	void simulateMove(QTouchEvent *event);
+	void simulateRelease(QTouchEvent *event);
+	void simulateDoubleClick(QTouchEvent *event);
+
+	bool isElementUnder(QPointF const &pos);
 
 	EditorView *mEditorView;
 	QsKineticScroller mScroller;
 	bool mGestureIsRunning;
+	int mFingersInGesture;
+	Qt::MouseButton mButton;
+	qint64 mLastTapTimestamp;
 };
 
 }
