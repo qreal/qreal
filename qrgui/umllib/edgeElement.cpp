@@ -79,7 +79,6 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		}
 		title->init(boundingRect());
 		title->setParentItem(this);
-		title->setShouldCenter(false);
 		mTitles.append(title);
 	}
 }

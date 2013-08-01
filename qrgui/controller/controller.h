@@ -52,6 +52,9 @@ public slots:
 	/// Rolls back the earliest command on one of the stacks: active diagram stack or global one
 	void undo();
 
+	bool canUndo();
+	bool canRedo();
+
 signals:
 	/// Emitted when at least one of the stacks has modifications
 	void modifiedChanged(bool modified);

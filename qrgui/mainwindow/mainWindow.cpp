@@ -1365,11 +1365,11 @@ void MainWindow::currentTabChanged(int newIndex)
 		mToolManager.activeTabChanged(currentTabId);
 	}
 
-	if (this->mController->canRedo()){
+	if (mController->canRedo()) {
 		mUi->actionRedo->setDisabled(isShape);
 	}
 
-	if(this->mController->canUndo()){
+	if (mController->canUndo()) {
 		mUi->actionUndo->setDisabled(isShape);
 	}
 

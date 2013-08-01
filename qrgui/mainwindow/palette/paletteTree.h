@@ -21,7 +21,8 @@ namespace gui {
 /// Class for representing tree with elements of the editors.
 class PaletteTree: public QWidget
 {
-Q_OBJECT
+	Q_OBJECT
+
 public:
 	explicit PaletteTree(QWidget *parent = 0);
 	~PaletteTree();
@@ -78,6 +79,9 @@ public slots:
 	/// Expand all nodes of current tree.
 	void expand();
 
+	/// Collapse all nodes of current tree.
+	void collapse();
+
 	void setActiveEditor(int index);
 	void setActiveEditor(Id const &id);
 
@@ -86,6 +90,10 @@ public slots:
 
 	/// Changes widget representation.
 	void changeRepresentation();
+
+private:
+	/// Change icon and tooltip
+	void setExpansionButtonAppearance();
 
 	/// Returns maximum count of items in all rows of widget
 	int maxItemsCountInARow() const;

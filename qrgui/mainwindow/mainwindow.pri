@@ -37,9 +37,6 @@ SOURCES += \
 	mainwindow/tabWidget.cpp \
 	mainwindow/miniMap.cpp \
 	mainwindow/referenceList.cpp \
-	mainwindow/projectManager/autosaver.cpp \
-	mainwindow/draggableElement.cpp \
-	mainwindow/paletteTreeWidget.cpp \
 	mainwindow/qscintillaTextEdit.cpp \
 	mainwindow/projectManager/autosaver.cpp \
 	mainwindow/projectManager/projectManager.cpp \

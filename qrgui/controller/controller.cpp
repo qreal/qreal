@@ -153,6 +153,16 @@ void Controller::undo()
 	}
 }
 
+bool Controller::canUndo()
+{
+	return mCanUndoState;
+}
+
+bool Controller::canRedo()
+{
+	return mCanRedoState;
+}
+
 UndoStack *Controller::selectActiveStack(bool forUndo)
 {
 	int const shift = forUndo ? -1 : 0;
