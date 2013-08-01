@@ -106,31 +106,19 @@ void RepoApi::removeElement(Id const &id)
 	removeLinkEnds("from", id);
 	removeLinkEnds("to", id);
 
-	if (hasProperty(id, "outgoingConnections")) {
-		IdList const connections = property(id, "outgoingConnections").value<IdList>();
-		foreach (Id const &target, connections) {
-			disconnect(id, target);
+	if (hasProperty(id, "outgoingExplosions")) {
+		IdList const explosions = property(id, "outgoingExplosions").value<IdList>();
+		foreach (Id const &target, explosions) {
+			removeExplosion(id, target);
 		}
 	}
 
-	if (hasProperty(id, "incomingConnections")) {
-		IdList const connections = property(id, "incomingConnections").value<IdList>();
-		foreach (Id const &source, connections) {
-			disconnect(source, id);
-		}
-	}
-
-	if (hasProperty(id, "outgoingUsages")) {
-		IdList const connections = property(id, "outgoingUsages").value<IdList>();
-		foreach (Id const &target, connections) {
-			deleteUsage(id, target);
-		}
-	}
-
-	if (hasProperty(id, "incomingUsages")) {
-		IdList const connections = property(id, "incomingUsages").value<IdList>();
-		foreach (Id const &source, connections) {
-			deleteUsage(source, id);
+	if (hasProperty(id, "incomingExplosions")) {
+		IdList const explosions = property(id, "incomingExplosions").value<IdList>();
+		foreach (Id const &source, explosions) {
+			if (exist(source)) {
+				removeExplosion(source, id);
+			}
 		}
 	}
 
@@ -185,48 +173,33 @@ IdList RepoApi::links(Id const &id) const
 	return incomingLinks(id) << outgoingLinks(id);
 }
 
-qReal::IdList RepoApi::outgoingConnections(qReal::Id const &id) const
+qReal::Id RepoApi::outgoingExplosion(qReal::Id const &id) const
 {
-	return mClient.property(id, "outgoingConnections").value<IdList>();
+	return mClient.property(id, "outgoingExplosion").value<Id>();
 }
 
-qReal::IdList RepoApi::incomingConnections(qReal::Id const &id) const
+qReal::IdList RepoApi::incomingExplosions(qReal::Id const &id) const
 {
-	return mClient.property(id, "incomingConnections").value<IdList>();
+	return mClient.property(id, "incomingExplosions").value<IdList>();
 }
 
-void RepoApi::connect(qReal::Id const &source, qReal::Id const &destination)
+void RepoApi::addExplosion(qReal::Id const &source, qReal::Id const &destination)
 {
-	addToIdList(source, "outgoingConnections", destination);
-	addToIdList(destination, "incomingConnections", source);
+	Id const oldTarget = outgoingExplosion(source);
+	if (oldTarget == destination) {
+		return;
+	}
+	if (oldTarget != Id()) {
+		removeExplosion(source, oldTarget);
+	}
+	mClient.setProperty(source, "outgoingExplosion", destination.toVariant());
+	addToIdList(destination, "incomingExplosions", source);
 }
 
-void RepoApi::disconnect(qReal::Id const &source, qReal::Id const &destination)
+void RepoApi::removeExplosion(qReal::Id const &source, qReal::Id const &destination)
 {
-	removeFromList(source, "outgoingConnections", destination);
-	removeFromList(destination, "incomingConnections", source);
-}
-
-qReal::IdList RepoApi::outgoingUsages(qReal::Id const &id) const
-{
-	return mClient.property(id, "outgoingUsages").value<IdList>();
-}
-
-qReal::IdList RepoApi::incomingUsages(qReal::Id const &id) const
-{
-	return mClient.property(id, "incomingUsages").value<IdList>();
-}
-
-void RepoApi::addUsage(qReal::Id const &source, qReal::Id const &destination)
-{
-	addToIdList(source, "outgoingUsages", destination);
-	addToIdList(destination, "incomingUsages", source);
-}
-
-void RepoApi::deleteUsage(qReal::Id const &source, qReal::Id const &destination)
-{
-	removeFromList(source, "outgoingUsages", destination);
-	removeFromList(destination, "incomingUsages", source);
+	mClient.setProperty(source, "outgoingExplosion", Id().toVariant());
+	removeFromList(destination, "incomingExplosions", source);
 }
 
 qReal::IdList RepoApi::connectedElements(qReal::Id const &id) const
@@ -241,8 +214,6 @@ qReal::IdList RepoApi::outgoingConnectedElements(qReal::Id const &id) const
 	qReal::IdList result;
 	foreach (qReal::Id curLink, outgoingLinks(id)) {
 		qReal::Id toElem = to(curLink);
-		//if (toElem == Id::rootId())
-		//	continue;
 
 		result.append(toElem);
 	}
@@ -254,8 +225,6 @@ qReal::IdList RepoApi::incomingConnectedElements(qReal::Id const &id) const
 	qReal::IdList result;
 	foreach (qReal::Id curLink, incomingLinks(id)) {
 		qReal::Id fromElem = from(curLink);
-		//if (fromElem == Id::rootId())
-		//	continue;
 
 		result.append(fromElem);
 	}
@@ -532,26 +501,20 @@ IdList RepoApi::graphicalElements(Id const &type) const
 
 IdList RepoApi::elementsByType(QString const &type, bool sensitivity, bool regExpression) const
 {
-	Qt::CaseSensitivity caseSensitivity;
-
-	if (sensitivity) {
-		caseSensitivity = Qt::CaseSensitive;
-	} else {
-		caseSensitivity = Qt::CaseInsensitive;
-	}
+	Qt::CaseSensitivity const caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
 	QRegExp *regExp = new QRegExp(type,caseSensitivity);
 
 	IdList result;
 
 	if (regExpression) {
-		foreach (Id id, mClient.elements()) {
+		foreach (Id const &id, mClient.elements()) {
 			if (id.element().contains(*regExp)) {
 				result.append(id);
 			}
 		}
 	} else {
-		foreach (Id id, mClient.elements()) {
+		foreach (Id const &id, mClient.elements()) {
 			if (id.element().contains(type, caseSensitivity)) {
 				result.append(id);
 			}

@@ -20,8 +20,8 @@ public:
 	virtual IdList children(Id const &element) const = 0;
 	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF()) = 0;
 
-	virtual QVariant property(Id const &id, QString const &name) const = 0;
-	virtual void setProperty(Id const &id, QString const &name, QVariant const &value) = 0;
+	virtual void setName(Id const &elem, QString const &newValue) = 0;
+	virtual QString name(Id const &elem) const = 0;
 
 	virtual void setTo(Id const &elem, Id const &newValue) = 0;
 	virtual Id to(Id const &elem) const = 0;

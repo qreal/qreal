@@ -27,13 +27,13 @@ public:
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst, bool isReference);
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
-	virtual bool generateConnections(utils::OutFile &out, bool isNotFirst);
-	virtual bool generateUsages(utils::OutFile &out, bool isNotFirst);
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst);
 	virtual void generatePropertyTypes(utils::OutFile &out);
 	virtual void generatePropertyDefaults(utils::OutFile &out);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
 	virtual void generateParentsMapping(utils::OutFile &out);
+	virtual void generateExplosionsMap(utils::OutFile &out);
+
 	QString description() const;
 	void setDescription(QString const &description);
 
@@ -61,10 +61,9 @@ protected:
 	QList<Label*> mLabels;
 	QStringList mContains;
 	ContainerProperties mContainerProperties;
-	QStringList mConnections;
-	QStringList mUsages;
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
+	QMap<QString, QPair<bool, bool> > mExplosions;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -88,8 +87,8 @@ private:
 	bool initProperties();
 	bool initContainers();
 	bool initContainerProperties();
-	bool initConnections();
 	bool initPossibleEdges();
+	bool initExplosions();
 	bool initTypeList(QString const &listName, QString const &listElementName
 		, QStringList &resultingList) const;
 

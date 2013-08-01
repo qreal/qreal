@@ -37,7 +37,7 @@ IdList GraphicalModelAssistApi::graphicalIdsByLogicalId(Id const &logicalId) con
 {
 	IdList result;
 	QList<QPersistentModelIndex> indexes = mGraphicalModel.indexesWithLogicalId(logicalId);
-	foreach (QPersistentModelIndex index, indexes) {
+	foreach (QPersistentModelIndex const &index, indexes) {
 		result.append(idByIndex(index));
 	}
 
@@ -90,16 +90,6 @@ QMap<QString, QVariant> GraphicalModelAssistApi::properties(Id const &id)
 void GraphicalModelAssistApi::setProperties(Id const &id, QMap<QString, QVariant> const &properties)
 {
 	mGraphicalModel.mutableApi().setProperties(id, properties);
-}
-
-void GraphicalModelAssistApi::setProperty(Id const &id, QString const &name, QVariant const &value)
-{
-	mGraphicalModel.mutableApi().setProperty(id, name, value);
-}
-
-QVariant GraphicalModelAssistApi::property(Id const &id, QString const &name) const
-{
-	return mGraphicalModel.mutableApi().property(id, name);
 }
 
 void GraphicalModelAssistApi::stackBefore(const Id &element, const Id &sibling)

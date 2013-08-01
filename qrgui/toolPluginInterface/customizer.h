@@ -58,44 +58,24 @@ public:
 		Q_UNUSED(dockInterface)
 	}
 
-	virtual QString addConnectionMenuName() const
+	virtual QString addExplosionMenuName() const
 	{
 		return QObject::tr("Add connection");
 	}
 
-	virtual QString deleteConnectionMenuName() const
+	virtual QString changeExplosionMenuName() const
+	{
+		return QObject::tr("Connect to other");
+	}
+
+	virtual QString deleteExplosionMenuName() const
 	{
 		return QObject::tr("Disconnect");
 	}
 
-	virtual QString addUsageMenuName() const
+	virtual QString goToConnectedMenuName() const
 	{
-		return QObject::tr("Add usage");
-	}
-
-	virtual QString deleteUsageMenuName() const
-	{
-		return QObject::tr("Delete usage");
-	}
-
-	virtual QString forwardConnectionMenuName() const
-	{
-		return QObject::tr("Forward connection");
-	}
-
-	virtual QString backwardConnectionMenuName() const
-	{
-		return QObject::tr("Backward connection");
-	}
-
-	virtual QString forwardUsageMenuName() const
-	{
-		return QObject::tr("Uses");
-	}
-
-	virtual QString backwardUsageMenuName() const
-	{
-		return QObject::tr("Used in");
+		return QObject::tr("Go to connected element");
 	}
 
 	virtual bool showExpandConnectionAction() const
@@ -103,14 +83,14 @@ public:
 		return false;
 	}
 
-	virtual QString expandConnectionActionText() const
+	virtual QString expandExplosionActionText() const
 	{
-		return QObject::tr("Expand connection");
+		return QObject::tr("Expand explosion");
 	}
 
-	virtual QString collapseConnectionActionText() const
+	virtual QString collapseExplosionActionText() const
 	{
-		return QObject::tr("Collapse connection");
+		return QObject::tr("Collapse explosion");
 	}
 };
 
