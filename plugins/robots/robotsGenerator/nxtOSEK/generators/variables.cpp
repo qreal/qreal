@@ -49,7 +49,16 @@ QString Variables::generateVariableString() const
 		}
 		// If every code path decided that this variable has int type
 		// then it has int one. Unknown types are maximal ones (float)
-		QString const type = mVariables.value(curVariable) == intType ? "int" : "float";
+		QString type;
+		switch (mVariables.value(curVariable))
+		{
+		case intType: type = "int"; qDebug() << "int"; break;
+		case floatType: type = "float"; qDebug() << "float"; break;
+		case intArray: type = "int* "; qDebug() << "int*"; break;
+		case doubleArray: type = "double* "; qDebug() << "double*"; break;
+		}
+
+		//QString const type = mVariables.value(curVariable) == intType ? "int" : "float";
 		result += QString("static %1 %2;\n").arg(type, curVariable);
 	}
 
@@ -76,6 +85,8 @@ void Variables::inferTypes(QStringList const &expressions)
 
 	QStringList earlyFloats;
 	QStringList earlyInts;
+	QStringList earlyIntArray;
+	QStringList earlyDoubleArray;
 
 	foreach (QString const &variable, variableNames) {
 		if (reservedVariables().contains(variable)) {
@@ -99,9 +110,23 @@ void Variables::inferTypes(QStringList const &expressions)
 				earlyFloats << variable;
 				break;
 			}
+
+			if (inferredType == intArray)
+			{
+				allInts = false;\
+				earlyIntArray << variable;
+			}
+
+			if (inferredType == doubleArray)
+			{
+				allInts = false;
+				earlyDoubleArray << variable;
+			}
+
 			if (inferredType == unknown) {
 				allInts = false;
 			}
+
 		}
 		if (allInts) {
 			earlyInts << variable;
@@ -117,6 +142,16 @@ void Variables::inferTypes(QStringList const &expressions)
 		assignType(floatVariable, floatType);
 		// The type is already known, it must not participate in further inference
 		variableGroups.remove(floatVariable);
+	}
+	foreach (QString const &intArrayVariable, earlyIntArray) {
+		assignType(intArrayVariable, intArray);
+		// The type is already known, it must not participate in further inference
+		variableGroups.remove(intArrayVariable);
+	}
+	foreach (QString const &doubleArrayVariable, earlyDoubleArray) {
+		assignType(doubleArrayVariable, doubleArray);
+		// The type is already known, it must not participate in further inference
+		variableGroups.remove(doubleArrayVariable);
 	}
 
 	startDeepInference(variableGroups);
@@ -208,9 +243,39 @@ VariableType Variables::participatingVariables(QString const &expression, QStrin
 	// So syntax erros may cause incorrect inferrer work
 	QStringList const tokens = expression.split(QRegExp("[\\s\\+\\-\\*/\\(\\)\\%]+"), QString::SkipEmptyParts);
 	bool metVariables = false;
+	qDebug() << "Tokens" << tokens;
 
 	foreach (QString const &token, tokens) {
 		bool ok = false;
+			if (token.at(0) == '{')
+		{
+			QString temp = token.mid(1, token.length()-2);
+			if (temp.toInt()) {
+				bool allint = true;
+				int pos;
+				for(int i = 1; i < tokens.size(); i++)
+				{
+					pos = 0;
+					qDebug() << "tokens" << tokens.at(i);
+					while(isDigit(tokens[i].at(pos)))
+					{
+						++pos;
+					}
+					if (tokens[i].at(pos) == '.')
+					{
+						allint = false;
+					}
+				}
+				if (allint)
+				{
+					return intArray;
+				} else {
+					return doubleArray;
+				}
+			} else {
+				 return doubleArray;
+			}
+		}
 		token.toInt(&ok);
 		if (ok) {
 			continue;
