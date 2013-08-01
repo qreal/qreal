@@ -156,6 +156,30 @@ bool EdgeType::initDividability()
 	return true;
 }
 
+bool EdgeType::initPortTypes()
+{
+	initPortTypes(mLogic.firstChildElement("fromPorts"), mFromPorts);
+	initPortTypes(mLogic.firstChildElement("toPorts"), mToPorts);
+	return true;
+}
+
+void EdgeType::initPortTypes(QDomElement const &portsElement, QStringList &ports)
+{
+	ports << "NonTyped";
+	if (portsElement.isNull()) {
+		return;
+	}
+
+	QDomNodeList portNodes = portsElement.elementsByTagName("port");
+	for (int i = 0; i < portNodes.size(); i++) {
+		QDomElement elem = portNodes.at(i).toElement();
+		if (!elem.isNull()) {
+			ports << elem.attribute("type");
+		}
+	}
+	ports.removeDuplicates();
+}
+
 bool EdgeType::initLabel(Label *label, QDomElement const &element, int const &count)
 {
 	return label->init(element, count, false, mWidth, mHeight);
@@ -219,7 +243,14 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tbool hasMovableChildren() const { return false; }\n"
 	<< "\t\tbool minimizesToChildren() const { return false; }\n"
 	<< "\t\tbool maximizesChildren() const { return false; }\n"
-	<< "\t\tbool isPort() const { return false; }\n"
+
+	<< "\t\tQStringList fromPortTypes() const\n\t\t{\n\t\t\t";
+	generatePorts(out, mFromPorts);
+
+	out() << "\t\tQStringList toPortTypes() const\n\t\t{\n\t\t\t";
+	generatePorts(out, mToPorts);
+
+	out() << "\t\tbool isPort() const { return false; }\n"
 	<< "\t\tbool hasPin() const { return false; }\n"
 	<< "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n"
@@ -346,4 +377,14 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 		"\t\t\tpainter->restore();\n";
 
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
+}
+
+void EdgeType::generatePorts(OutFile &out, QStringList const &portTypes)
+{
+	out() << "QStringList result;\n"
+		  << "\t\t\tresult";
+	foreach (QString const &type, portTypes) {
+		out() << " << \"" << type << "\"";
+	}
+	out() << ";\n\t\t\treturn result;\n\t\t}\n";
 }

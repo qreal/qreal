@@ -13,4 +13,7 @@ public:
 	virtual bool init(QDomElement const &element, int width, int height) = 0;
 	virtual void generateCode(utils::OutFile &out) = 0;
 	virtual Port *clone() const = 0;
+
+protected:
+	QString mType;
 };

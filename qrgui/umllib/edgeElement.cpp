@@ -473,8 +473,8 @@ void EdgeElement::connectToPort()
 		return;
 	}
 
-	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first())) : -1.0;
-	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last())) : -1.0;
+	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first()), fromPortTypes()) : -1.0;
+	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last()), toPortTypes()) : -1.0;
 
 	if (mSrc) {
 		mSrc->delEdge(this);
@@ -522,8 +522,8 @@ void EdgeElement::connectToPort()
 
 void EdgeElement::connectLoopEdge(NodeElement *newMaster)
 {
-	mPortFrom = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.first())) : -1.0;
-	mPortTo = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.last())) : -1.0;
+	mPortFrom = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.first()), fromPortTypes()) : -1.0;
+	mPortTo = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.last()), toPortTypes()) : -1.0;
 
 	if (mPortFrom >= -epsilon) {
 		newMaster->delEdge(this);
@@ -1332,12 +1332,12 @@ void EdgeElement::adjustLink(bool isDragging)
 bool EdgeElement::shouldReconnect() const
 {
 	if (mSrc) {
-		qreal newFrom = mSrc->portId(mapToItem(mSrc, mLine[1]));
+		qreal newFrom = mSrc->portId(mapToItem(mSrc, mLine[1]), fromPortTypes());
 		if (floor(newFrom) != floor(mPortFrom))
 			return true;
 	}
 	if (mDst) {
-		qreal newTo = mDst->portId(mapToItem(mDst, mLine[mLine.count() - 2]));
+		qreal newTo = mDst->portId(mapToItem(mDst, mLine[mLine.count() - 2]), toPortTypes());
 		if (floor(newTo) != floor(mPortTo))
 			return true;
 	}
@@ -1429,7 +1429,7 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 
 	if (mSrc && reconnectSrc) {
 		int targetLinePoint = isSquareLine ? mLine.count() - 1 : 1;
-		qreal newFrom =  mSrc->portId(mapToItem(mSrc, mLine[targetLinePoint]));
+		qreal newFrom = mSrc->portId(mapToItem(mSrc, mLine[targetLinePoint]), fromPortTypes());
 		reconnectedSrc = (NodeElement::portNumber(newFrom) != NodeElement::portNumber(mPortFrom));
 
 		if (reconnectedSrc) {
@@ -1440,7 +1440,7 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 	}
 	if (mDst && reconnectDst) {
 		int targetLinePoint = isSquareLine ? 0 : mLine.count() - 2;
-		qreal newTo = mDst->portId(mapToItem(mDst, mLine[targetLinePoint]));
+		qreal newTo = mDst->portId(mapToItem(mDst, mLine[targetLinePoint]), toPortTypes());
 		reconnectedDst = (NodeElement::portNumber(newTo) != NodeElement::portNumber(mPortTo));
 
 		if (reconnectedDst) {
@@ -1518,6 +1518,16 @@ void EdgeElement::removeLink(NodeElement const *from)
 	mIsLoop = false;
 
 	highlight();
+}
+
+QStringList EdgeElement::fromPortTypes() const
+{
+	return mElementImpl->fromPortTypes();
+}
+
+QStringList EdgeElement::toPortTypes() const
+{
+	return mElementImpl->toPortTypes();
 }
 
 void EdgeElement::placeStartTo(QPointF const &place)
@@ -1791,8 +1801,8 @@ void EdgeElement::reversingReconnectToPorts(NodeElement *newSrc, NodeElement *ne
 	setPos(pos() + mLine.first());
 	mLine.translate(-mLine.first());
 
-	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first())) : -1.0;
-	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last())) : -1.0;
+	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first()), fromPortTypes()) : -1.0;
+	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last()), toPortTypes()) : -1.0;
 
 	setSrc(NULL);
 	setDst(NULL);
@@ -1870,7 +1880,7 @@ void EdgeElement::tuneForLinker()
 	mMoving = true;
 	setPos(pos() + mLine.first());
 	mLine.translate(-mLine.first());
-	mPortFrom = mSrc ? mSrc->portId(mapToItem(mSrc, mLine.first())) : -1.0;
+	mPortFrom = mSrc ? mSrc->portId(mapToItem(mSrc, mLine.first()), fromPortTypes()) : -1.0;
 	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
 	adjustNeighborLinks();
 	arrangeSrcAndDst();

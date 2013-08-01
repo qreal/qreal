@@ -30,6 +30,7 @@ private:
 	virtual bool initAssociations();
 	virtual bool initGraphics();
 	virtual bool initDividability();
+	virtual bool initPortTypes();
 
 	bool hasLinePorts();
 	bool hasPointPorts();

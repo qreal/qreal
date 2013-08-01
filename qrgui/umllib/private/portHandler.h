@@ -25,8 +25,8 @@ public:
 	 * Constructs a PortHandler.
 	 * @param node Node that ports are actually dealt with.
 	 * @param graphicalAssistApi GraphicalModelAssistApi that used by node.
-	 * @param pointPorts Point ports those are belonged to node.
-	 * @param linePorts Line ports those are belonged to node.
+	 * @param pointPorts Point ports which belong to node.
+	 * @param linePorts Line ports which belong to node.
 	 */
 	PortHandler(
 			NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
@@ -38,7 +38,7 @@ public:
 	 * @param location For this point port will be seen. location is assumed to be in LOCAL NodeElement coordinates!
 	 * @return Port ID in terms described below *'Useful information' before class*.
 	 */
-	qreal portId(QPointF const &location) const;
+	qreal portId(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Calculates port number.
@@ -64,7 +64,7 @@ public:
 	 * @param location To this point nearest port will be calculated. location is assumed to be in SCENE coordinates!
 	 * @return Nearest point of NodeElement ports to parameter point.
 	 */
-	QPointF const nearestPort(QPointF const &location) const;
+	QPointF const nearestPort(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Connects all temporary removed from working NodeElement edges.
@@ -116,28 +116,28 @@ private:
 	 * @param location Point that is considered for locate in locality (kvadratik, kvadratik) of point ports. location is assumed to be in LOCAL NodeElement coordinates!
 	 * @return Point port ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
 	 */
-	qreal pointPortId(QPointF const &location) const;
+	qreal pointPortId(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Returns line port point ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
 	 * @param location Point that is considered for locate in locality (kvadratik - 5, kvadratik - 5) of line port points. location is assumed to be in LOCAL NodeElement coordinates!
 	 * @return line port point ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
 	 */
-	qreal linePortId(QPointF const &location) const;
+	qreal linePortId(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Returns distance from location to closest point port of NodeElement and this port number in list of point ports.
 	 * @param location Result will be calculated for this point. location is assumed to be in LOCAL NodeElement coordinates!
 	 * @return The closest point port number in list of line ports and distance from location to it.
 	 */
-	QPair<int, qreal> nearestPointPortNumberAndDistance(QPointF const &location) const;
+	QPair<int, qreal> nearestPointPortNumberAndDistance(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Returns distance from location to closest line port of NodeElement and this port number in list of line ports.
 	 * @param location Result will be calculated for this point. location is assumed to be in LOCAL NodeElement coordinates!
 	 * @return The closest line port number in list of line ports and distance from location to it.
 	 */
-	QPair<int, qreal> nearestLinePortNumberAndDistance(QPointF const &location) const;
+	QPair<int, qreal> nearestLinePortNumberAndDistance(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Returns nearest point parameter at line port to point.

@@ -32,6 +32,8 @@ struct StatPoint
 	int initWidth;
 	int initHeight;
 
+	QString type;
+
 	StatPoint() : point(QPointF(0, 0)), prop_x(false), prop_y(false),
 		initWidth(1), initHeight(1) {}
 
@@ -60,6 +62,8 @@ struct StatLine
 	bool prop_y2;
 	int initWidth;
 	int initHeight;
+
+	QString type;
 
 	StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
 		prop_x2(false), prop_y2(false), initWidth(1), initHeight(1) {}
@@ -116,6 +120,9 @@ public:
 	virtual bool hasMovableChildren() const = 0;
 	virtual bool minimizesToChildren() const = 0;
 	virtual bool maximizesChildren() const = 0;
+
+	virtual QStringList fromPortTypes() const = 0;
+	virtual QStringList toPortTypes() const = 0;
 
 	virtual bool isPort() const = 0;
 	virtual bool hasPin() const = 0;

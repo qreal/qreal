@@ -505,6 +505,16 @@ bool InterpreterElementImpl::maximizesChildren() const
 	return mEditorRepoApi->stringProperty(mId, "maximizeChildren") == "true";
 }
 
+QStringList InterpreterElementImpl::fromPortTypes() const
+{
+	return QStringList("NonTyped");
+}
+
+QStringList InterpreterElementImpl::toPortTypes() const
+{
+	return QStringList("NonTyped");
+}
+
 bool InterpreterElementImpl::isPort() const
 {
 	return mEditorRepoApi->stringProperty(mId, "isPin") == "true";

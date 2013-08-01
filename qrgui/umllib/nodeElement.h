@@ -75,10 +75,10 @@ public:
 	//void shift(QPointF const &pos, EdgeElement* called);
 
 	QPointF const portPos(qreal id) const;
-	QPointF const nearestPort(QPointF const &location) const;
+	QPointF const nearestPort(QPointF const &location, QStringList const &types) const;
 	int numberOfPorts() const;
 	static int portNumber(qreal id);
-	qreal portId(QPointF const &location) const;
+	qreal portId(QPointF const &location, QStringList const &types) const;
 
 	QList<EdgeElement *> getEdges();
 	void addEdge(EdgeElement *edge);

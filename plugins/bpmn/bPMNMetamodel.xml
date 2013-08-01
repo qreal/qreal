@@ -359,19 +359,19 @@
                         <label x="46a" y="55a" textBinded="Text"/>
                     </labels>
                     <ports>
-                        <linePort>
+                        <linePort type="SequenceTo">
                             <start startx="18" starty="45"/>
                             <end endx="18" endy="115"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="SequenceTo">
                             <start startx="45" starty="18"/>
                             <end endx="165" endy="18"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="SequenceFrom">
                             <start startx="192" starty="45"/>
                             <end endx="192" endy="115"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="SequenceFrom">
                             <start startx="45" starty="142"/>
                             <end endx="165" endy="142"/>
                         </linePort>
@@ -484,6 +484,12 @@
                         <property type="string" displayedName="Text" name="Text"/>
                         <property type="string" displayedName="Name" name="Name"/>
                     </properties>
+                    <fromPorts>
+                        <port type="SequenceFrom"/>
+                    </fromPorts>
+                    <toPorts>
+                        <port type="SequenceTo"/>
+                    </toPorts>
                     <possibleEdges>
                         <possibleEdge beginName="StartEvent" directed="true" endName="EndEvent"/>
                         <possibleEdge beginName="StartEvent" directed="true" endName="Gateway"/>

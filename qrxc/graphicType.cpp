@@ -69,8 +69,8 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 		}
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
-			&& initGraphics() && initLabels() && initPossibleEdges()
-			&& initContainerProperties() && initBonusContextMenuFields() && initExplosions();
+				&& initGraphics() && initLabels() && initPossibleEdges() && initPortTypes()
+				&& initContainerProperties() && initBonusContextMenuFields() && initExplosions();
 	}
 	return false;
 }

@@ -495,7 +495,9 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	ungrabMouse();
+	if (dynamic_cast<NodeElement *>(scene()->mouseGrabberItem()) == this) {
+		ungrabMouse();
+	}
 
 	mTimer->stop();
 	mTimeOfUpdate = 0;
@@ -776,9 +778,9 @@ QPointF const NodeElement::portPos(qreal id) const
 	return mPortHandler->portPos(id);
 }
 
-QPointF const NodeElement::nearestPort(QPointF const &location) const
+QPointF const NodeElement::nearestPort(QPointF const &location, QStringList const &types) const
 {
-	return mPortHandler->nearestPort(location);
+	return mPortHandler->nearestPort(location, types);
 }
 
 bool NodeElement::isContainer() const
@@ -796,9 +798,9 @@ int NodeElement::portNumber(qreal id)
 	return PortHandler::portNumber(id);
 }
 
-qreal NodeElement::portId(QPointF const &location) const
+qreal NodeElement::portId(QPointF const &location, QStringList const &types) const
 {
-	return mPortHandler->portId(location);
+	return mPortHandler->portId(location, types);
 }
 
 void NodeElement::setPortsVisible(bool value)

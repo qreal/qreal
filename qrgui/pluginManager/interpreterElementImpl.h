@@ -77,6 +77,9 @@ public:
 	bool minimizesToChildren() const;
 	bool maximizesChildren() const;
 
+	QStringList fromPortTypes() const;
+	QStringList toPortTypes() const;
+
 	bool isPort() const;
 	bool hasPin() const;
 

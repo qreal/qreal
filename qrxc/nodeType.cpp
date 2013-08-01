@@ -49,6 +49,11 @@ bool NodeType::initDividability()
 	return true;
 }
 
+bool NodeType::initPortTypes()
+{
+	return true;
+}
+
 bool NodeType::initGraphics()
 {
 	return initSdf() && initPorts() && initBooleanProperties();
@@ -354,6 +359,10 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\t}\n\n"
 
 	<< "\t\tbool isDividable() const\n\t\t{\n\t\t\treturn false;\n\t\t}\n\n"
+
+	<< "\t\tQStringList fromPortTypes() const\n\t\t{\n\t\t\treturn QStringList(\"NonTyped\");\n\t\t}\n\n"
+
+	<< "\t\tQStringList toPortTypes() const\n\t\t{\n\t\t\treturn QStringList(\"NonTyped\");\n\t\t}\n\n"
 
 	<< "\t\tbool isPort() const\n\t\t{\n"
 	<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")

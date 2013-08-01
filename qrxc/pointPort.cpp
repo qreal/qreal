@@ -9,6 +9,7 @@ bool PointPort::init(QDomElement const &element, int width, int height)
 	mY = initCoordinate(element.attribute("y"), height);
 	mInitWidth = width;
 	mInitHeight = height;
+	mType = element.attribute("type", "NonTyped");
 	return true;
 }
 
@@ -23,6 +24,7 @@ void PointPort::generateCode(OutFile &out)
 		<< ((mY.isScalable()) ? "true; \n" : "false; \n")
 		<< QString("\t\t\t\tpt.initWidth = %1;\n").arg(mInitWidth)
 		<< QString("\t\t\t\tpt.initHeight = %1;\n").arg(mInitHeight)
+		<< "\t\t\t\tpt.type = \"" << mType << "\";\n"
 		<< "\t\t\t\tpointPorts << pt;\n"
 		<< "\t\t\t};\n";
 }
@@ -32,6 +34,7 @@ Port* PointPort::clone() const
 	PointPort *result = new PointPort();
 	result->mX = mX;
 	result->mY = mY;
+	result->mType = mType;
 	result->mInitWidth = mInitWidth;
 	result->mInitHeight = mInitHeight;
 	return result;

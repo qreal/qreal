@@ -12,6 +12,7 @@ bool LinePort::init(QDomElement const &element, int width, int height)
 	mStartY = initCoordinate(portStartElement.attribute("starty"), height);
 	mEndX = initCoordinate(portEndElement.attribute("endx"), width);
 	mEndY = initCoordinate(portEndElement.attribute("endy"), height);
+	mType = element.attribute("type", "NonTyped");
 	mInitWidth = width;
 	mInitHeight = height;
 	return true;
@@ -31,6 +32,7 @@ void LinePort::generateCode(OutFile &out)
 		<< ((mEndX.isScalable()) ? "true; \n" : "false; \n")
 		<< "\t\t\t\tln.prop_y2 = "
 		<< ((mEndY.isScalable()) ? "true; \n" : "false; \n")
+		<< "\t\t\t\tln.type = \"" << mType << "\";\n"
 		<< QString("\t\t\t\tln.initWidth = %1;\n").arg(mInitWidth)
 		<< QString("\t\t\t\tln.initHeight = %1;\n").arg(mInitHeight)
 		<< "\t\t\t\tlinePorts << ln;\n"
@@ -44,6 +46,7 @@ Port *LinePort::clone() const
 	result->mEndY = mEndY;
 	result->mStartX = mStartX;
 	result->mStartY = mStartY;
+	result->mType = mType;
 	result->mInitWidth = mInitWidth;
 	result->mInitHeight = mInitHeight;
 	return result;
