@@ -335,5 +335,6 @@ QString Variables::expressionToInt(QString const &expression) const
 
 QString Variables::castToInt(QString const &expression) const
 {
-	return QString("(int)(%1)").arg(expression);
+//	return QString("(int)(%1)").arg(expression);
+	return QString("Math.round(%1)").arg(expression);
 }

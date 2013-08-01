@@ -181,6 +181,9 @@
                 <distributionFile>
                     <origin>%1/plugins/robots/examples/aroundCorner.qrs</origin>
                 </distributionFile>
+                <distributionFile>
+                    <origin>%1/plugins/robots/examples/alongTheLineTrik.qrs</origin>
+                </distributionFile>
             </distributionFileList>
         </folder>
     </folderList>
