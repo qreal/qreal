@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
+#include <QtDebug>
 
 using namespace utils;
 using namespace qReal;
@@ -13,7 +14,7 @@ ExpressionsParser::ExpressionsParser(ErrorReporterInterface *errorReporter)
 	srand(time(NULL));
 }
 
-QMap<QString, Number>* ExpressionsParser::getVariables()
+QMap<QString, AbstractType*> *ExpressionsParser::getVariables()
 {
 	return &mVariables;
 }
@@ -22,9 +23,8 @@ QMap<QString, QString>* ExpressionsParser::getVariablesForWatch() const
 {
 	QMap<QString, QString>* result = new QMap<QString, QString>();
 	foreach (QString const &variable, mVariables.keys()) {
-		result->insert(variable, mVariables.value(variable).toString());
+		result->insert(variable, mVariables[variable]->toString());
 	}
-
 	return result;
 }
 
@@ -57,10 +57,45 @@ bool ExpressionsParser::isPoint(const QChar &c) const
 	return c.toLatin1() == '.';
 }
 
+bool ExpressionsParser::isComma(const QChar &c) const
+{
+	return c.toLatin1() == ',';
+}
+
 bool ExpressionsParser::isRoundBracket(const QChar &c) const
 {
 	char symbol = c.toLatin1();
 	return symbol == '(' || symbol == ')';
+}
+
+bool ExpressionsParser::isSquareBracket(const QChar &c) const
+{
+	char symbol = c.toLatin1();
+	return symbol == '[' || symbol == ']';
+}
+
+bool ExpressionsParser::isOpenSquareBracket(const QChar &c) const
+{
+	char symbol = c.toLatin1();
+	return symbol == '[';
+}
+
+bool ExpressionsParser::isCurlyBracket(const QChar &c) const
+{
+	char symbol = c.toLatin1();
+	return symbol == '{' || symbol == '}';
+}
+
+bool ExpressionsParser::isCurlyOpenBracket(const QChar &c) const
+{
+	char symbol = c.toLatin1();
+	return symbol == '{';
+}
+
+bool ExpressionsParser::isCurlyCloseBracket(const QChar &c) const
+{
+	char symbol = c.toLatin1();
+	return symbol == '}';
 }
 
 bool ExpressionsParser::isDisjunction(const QChar &c) const
@@ -102,27 +137,26 @@ bool ExpressionsParser::isAssignment(const QChar &c) const
 	return c.toLatin1() == '=';
 }
 
-Number ExpressionsParser::parseNumber(QString const &stream, int &pos)
+Number *ExpressionsParser::parseNumber(QString const &stream, int &pos)
 {
 	int beginPos = pos;
 	bool isDouble = false;
 	if (pos < stream.length() && isSign(stream.at(pos))) {
 		pos++;
 	}
-
 	if (!checkForDigit(stream, pos)) {
-		return Number();
+		return new Number();
 	}
-
 	while (pos < stream.length() && isDigit(stream.at(pos))) {
 		pos++;
 	}
+
 	if (pos < stream.length() && isPoint(stream.at(pos))) {
 		isDouble = true;
 		pos++;
 
 		if (!checkForDigit(stream, pos)) {
-			return Number();
+			return new Number();
 		}
 
 		while (pos < stream.length() && isDigit(stream.at(pos))) {
@@ -134,7 +168,7 @@ Number ExpressionsParser::parseNumber(QString const &stream, int &pos)
 		pos++;
 
 		if (isEndOfStream(stream, pos)) {
-			return Number();
+			return new Number();
 		}
 
 		if (pos < stream.length() && isSign(stream.at(pos))) {
@@ -142,7 +176,7 @@ Number ExpressionsParser::parseNumber(QString const &stream, int &pos)
 		}
 
 		if (!checkForDigit(stream, pos)) {
-			return Number();
+			return new Number();
 		}
 
 		while (pos < stream.length() && isDigit(stream.at(pos))) {
@@ -150,10 +184,28 @@ Number ExpressionsParser::parseNumber(QString const &stream, int &pos)
 		}
 	}
 	if (isDouble) {
-		return Number(stream.mid(beginPos, pos - beginPos).toDouble(), Number::doubleType);
-	} else {
-		return Number(stream.mid(beginPos, pos - beginPos).toInt(), Number::intType);
+		return  new Number(stream.mid(beginPos, pos - beginPos).toDouble(), Number::doubleType);
 	}
+	return new Number(stream.mid(beginPos, pos - beginPos).toInt(), Number::intType);
+}
+
+Array *ExpressionsParser::parseArray(const QString &stream, int &pos)
+{
+	Array::Type t = Array::intType;
+	QVector <Number> result;
+		while (pos < stream.length()-1 && (!isCurlyCloseBracket(stream.at(pos)))) {
+			skip(stream, pos);
+			result.append(*parseArithmeticExpression(stream, pos));
+			skip(stream, pos);
+			if (isComma(stream.at(pos))){
+				pos++;
+			} else if (!isCurlyCloseBracket(stream.at(pos))) {
+				error(unexpectedSymbol, QString::number(pos), QObject::tr("',' or '}'"), "");
+				return new Array();
+			}
+		}
+		checkForClosingCurlyBracket(stream, pos);
+	return new Array(result,t);
 }
 
 QString ExpressionsParser::parseIdentifier(QString const &stream, int &pos)
@@ -197,15 +249,13 @@ bool ExpressionsParser::isHtmlBrTag(QString const &stream, int &pos) const
 	}
 }
 
-Number ExpressionsParser::parseTerm(QString const &stream, int &pos)
+Number *ExpressionsParser::parseTerm(QString const &stream, int &pos)
 {
-	Number res;
+	Number *res;
 	skip(stream, pos);
-
 	if (hasErrors() || isEndOfStream(stream, pos)) {
-		return Number();
+		return new Number();
 	}
-
 	switch (stream.at(pos).toLatin1()) {
 	case '+':
 		pos++;
@@ -215,12 +265,13 @@ Number ExpressionsParser::parseTerm(QString const &stream, int &pos)
 	case '-':
 		pos++;
 		skip(stream, pos);
-		res = - (parseTerm(stream, pos));
+		res = parseTerm(stream, pos);
+		*res = -*res;
 		break;
 	case '(':
 		pos++;
 		skip(stream, pos);
-		res = parseExpression(stream, pos);
+		res = parseArithmeticExpression(stream, pos);
 		skip(stream, pos);
 		if (!checkForClosingBracket(stream, pos)) {
 			return res;
@@ -235,23 +286,50 @@ Number ExpressionsParser::parseTerm(QString const &stream, int &pos)
 			QString variable = parseIdentifier(stream, pos);
 			if (isFunction(variable)) {
 				skip(stream, pos);
-				Number value;
+				Number *value;
 				if (checkForOpeningBracket(stream, pos)) {
 					pos++;
-					value = parseExpression(stream, pos);
+					value = parseArithmeticExpression(stream, pos);
 					if (checkForClosingBracket(stream, pos)) {
 						pos++;
-						res = applyFunction(variable, value);
+						res = new Number();
+						*res = applyFunction(variable, *value);
 					}
 				}
+			} else if(isOpenSquareBracket(stream.at(pos))) {
+				if (!mVariables.contains(variable)) {
+					error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
+					return new Number();
+				}
+				if (mVariables[variable]->type() != AbstractType::array)
+				{
+					error(wrongType,QString::number(unknownIdentifierIndex + 1),mVariables[variable]->typeToString(), "Array");
+					return new Number();
+				}
+				Number *num;
+				pos++;
+				num = parseArithmeticExpression(stream, pos);
+				if (checkForClosingSquareBracket(stream,pos))
+				{
+					res = new Number();
+					Array* arr = dynamic_cast<Array *>(mVariables[variable]);
+					if (arr->checkForOutOfRange(num->property("Number").toInt())){
+						res ->setProperty("Number",arr->getAt(num->property("Number").toInt()));
+					} else {
+						error(outofRange,QString::number(pos), QString::number(arr->size()), QString::number(num->property("Number").toInt()));
+					}
+					//delete arr;
+					//delete num;
+				}
 			} else if (mVariables.contains(variable)) {
-				res = mVariables[variable];
+				res = dynamic_cast<Number *>(mVariables[variable]);
 			} else {
+				qDebug() << "1";
 				error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
 			}
 		} else {
 			error(unexpectedSymbol, QString::number(pos+1),
-				  "\'digit\' or \'letter\' or \'bracket\' or \'sign\'", QString(stream.at(pos)));
+				"\'digit\' or \'letter\' or \'bracket\' or \'sign\'", QString(stream.at(pos)));
 		}
 		break;
 	}
@@ -259,34 +337,52 @@ Number ExpressionsParser::parseTerm(QString const &stream, int &pos)
 	return res;
 }
 
-Number ExpressionsParser::parseMult(QString const &stream, int &pos)
+Number *ExpressionsParser::parseMult(QString const &stream, int &pos)
 {
-	Number res = parseTerm(stream, pos);
+	Number *res = parseTerm(stream, pos);
 	while (pos < stream.length() && isMultiplicationOrDivision(stream.at(pos))) {
 		pos++;
 		switch (stream.at(pos - 1).toLatin1()) {
 		case '*':
-			res *= parseTerm(stream, pos);
+			*res *= *parseTerm(stream, pos);
 			break;
 		case '/':
-			res /= parseTerm(stream, pos);
+			*res /= *parseTerm(stream, pos);
 			break;
 		}
 	}
 	return res;
 }
 
-Number ExpressionsParser::parseExpression(QString const &stream, int &pos)
+AbstractType *ExpressionsParser::parseExpression(const QString &stream, int &pos)
 {
-	Number res = parseMult(stream, pos);
+	if (isCurlyOpenBracket(stream.at(pos))){
+		++pos;
+		skip(stream,pos);
+		Array *result = parseArray(stream, pos);
+		dynamic_cast<AbstractType *>(result);
+		result->setType(AbstractType::array);
+		return result;
+	} else {
+		skip(stream,pos);
+		Number *result = parseArithmeticExpression(stream, pos);
+		dynamic_cast<AbstractType *>(result);
+		result->setType(AbstractType::number);
+		return result;
+	}
+}
+
+Number *ExpressionsParser::parseArithmeticExpression(QString const &stream, int &pos)
+{
+	Number *res = parseMult(stream, pos);
 	while (pos < stream.length() && isArithmeticalMinusOrPlus(stream.at(pos))) {
 		pos++;
 		switch (stream.at(pos - 1).toLatin1()) {
 		case '+':
-			res += parseMult(stream, pos);
+			*res += *parseMult(stream, pos);
 			break;
 		case '-':
-			res -= parseMult(stream, pos);
+			*res -= *parseMult(stream, pos);
 			break;
 		}
 	}
@@ -298,6 +394,7 @@ void ExpressionsParser::parseVarPart(QString const &stream, int &pos)
 	Q_UNUSED(stream);
 	Q_UNUSED(pos);
 }
+
 
 void ExpressionsParser::parseCommand(QString const &stream, int &pos)
 {
@@ -313,7 +410,25 @@ void ExpressionsParser::parseCommand(QString const &stream, int &pos)
 
 	if (isAssignment(stream.at(pos))) {
 		pos++;
-		Number n = parseExpression(stream, pos);
+		skip(stream, pos);
+		AbstractType *t =parseExpression(stream, pos);
+		if(!mVariables.contains(variable)){
+			delete mVariables[variable];
+			mVariables[variable] = t;
+		} else if(mVariables[variable]->type() == t->type()) {
+			mVariables[variable] = t;
+		} else {
+			error(wrongType,QString::number(pos),mVariables[variable]->typeToString(),t->typeToString());
+			return;
+		}
+	} else {
+		error(unexpectedSymbol, QString::number(pos+1), "=", QString(stream.at(pos)));
+		return;
+	}
+	/*if (!hasErrors() && checkForColon(stream, pos)) {
+		pos++;
+	}*/
+		/*Number n = *parseArithmeticExpression(stream, pos);
 		if (!hasErrors()) {
 			bool const containsVariable = mVariables.keys().contains(variable);
 			Number::Type const t1 = containsVariable
@@ -321,7 +436,7 @@ void ExpressionsParser::parseCommand(QString const &stream, int &pos)
 					: Number::intType;
 			Number::Type const t2 = n.property("Type").toInt() ? Number::intType : Number::doubleType;
 			if (!containsVariable || t1 == t2) {
-				mVariables[variable] = n;
+				mVariables[variable] = &n;
 			} else {
 				if (t1 == Number::intType) {
 					mVariables[variable].setProperty("Number", n.property("Number").toInt());
@@ -330,14 +445,7 @@ void ExpressionsParser::parseCommand(QString const &stream, int &pos)
 					mVariables[variable].setProperty("Number", n.property("Number").toDouble());
 				}
 			}
-		}
-	} else {
-		error(unexpectedSymbol, QString::number(pos+1), "=", QString(stream.at(pos)));
-		return;
-	}
-	if (!hasErrors() && checkForColon(stream, pos)) {
-		pos++;
-	}
+		}*/
 }
 
 void ExpressionsParser::parseProcess(QString const &stream, int &pos, const Id &curId)
@@ -360,8 +468,8 @@ void ExpressionsParser::parseProcess(QString const &stream, int &pos, const Id &
 
 bool ExpressionsParser::parseSingleComprasion(QString const &stream, int &pos)
 {
-	Number left = parseExpression(stream, pos);
-	Number right;
+	Number *left = parseArithmeticExpression(stream, pos);
+	Number *right;
 	if (hasErrors() || isEndOfStream(stream, pos)) {
 		return false;
 	}
@@ -371,8 +479,8 @@ bool ExpressionsParser::parseSingleComprasion(QString const &stream, int &pos)
 		pos++;
 		if (checkForEqual(stream, pos)) {
 			pos++;
-			right = parseExpression(stream, pos);
-			return left == right;
+			right = parseArithmeticExpression(stream, pos);
+			return *left == *right;
 		} else {
 			return false;
 		}
@@ -381,8 +489,8 @@ bool ExpressionsParser::parseSingleComprasion(QString const &stream, int &pos)
 		pos++;
 		if (checkForEqual(stream, pos)) {
 			pos++;
-			right = parseExpression(stream, pos);
-			return left != right;
+			right = parseArithmeticExpression(stream, pos);
+			return *left != *right;
 		} else {
 			return false;
 		}
@@ -391,22 +499,22 @@ bool ExpressionsParser::parseSingleComprasion(QString const &stream, int &pos)
 		pos++;
 		if (pos < stream.length() && stream.at(pos).toLatin1() == '=') {
 			pos++;
-			right = parseExpression(stream, pos);
-			return left <= right;
+			right = parseArithmeticExpression(stream, pos);
+			return *left <= *right;
 		} else {
-			right = parseExpression(stream, pos);
-			return left < right;
+			right = parseArithmeticExpression(stream, pos);
+			return *left < *right;
 		}
 		break;
 	case '>':
 		pos++;
 		if (pos < stream.length() && stream.at(pos).toLatin1() == '=') {
 			pos++;
-			right = parseExpression(stream, pos);
-			return left >= right;
+			right = parseArithmeticExpression(stream, pos);
+			return *left >= *right;
 		} else {
-			right = parseExpression(stream, pos);
-			return left > right;
+			right = parseArithmeticExpression(stream, pos);
+			return *left > *right;
 		}
 		break;
 	}
@@ -579,6 +687,54 @@ bool ExpressionsParser::checkForClosingBracket(QString const &stream, int &pos)
 	return true;
 }
 
+bool ExpressionsParser::checkForOpeningSquareBracket(QString const &stream, int &pos)
+{
+	if (isEndOfStream(stream, pos)) {
+		return false;
+	}
+	if (stream.at(pos).toLatin1() != '[') {
+		error(unexpectedSymbol, QString::number(pos + 1), "[", QString(stream.at(pos)));
+		return false;
+	}
+	return true;
+}
+
+bool ExpressionsParser::checkForClosingSquareBracket(QString const &stream, int &pos)
+{
+	if (isEndOfStream(stream, pos)) {
+		return false;
+	}
+	if (stream.at(pos).toLatin1() != ']') {
+		error(unexpectedSymbol, QString::number(pos + 1), "]", QString(stream.at(pos)));
+		return false;
+	}
+	return true;
+}
+
+bool ExpressionsParser::checkForOpeningCurlyBracket(QString const &stream, int &pos)
+{
+	if (isEndOfStream(stream, pos)) {
+		return false;
+	}
+	if (stream.at(pos).toLatin1() != '{') {
+		error(unexpectedSymbol, QString::number(pos + 1), "{", QString(stream.at(pos)));
+		return false;
+	}
+	return true;
+}
+
+bool ExpressionsParser::checkForClosingCurlyBracket(QString const &stream, int &pos)
+{
+	if (isEndOfStream(stream, pos)) {
+		return false;
+	}
+	if (stream.at(pos).toLatin1() != '}') {
+		error(unexpectedSymbol, QString::number(pos + 1), "}", QString(stream.at(pos)));
+		return false;
+	}
+	return true;
+}
+
 bool ExpressionsParser::checkForColon(QString const &stream, int &pos)
 {
 	if (isEndOfStream(stream, pos)) {
@@ -656,6 +812,14 @@ void ExpressionsParser::error(const ParseErrorType &type, QString const &pos, QS
 	case unknownElementName:
 		mHasParseErrors = true;
 		mErrorReporter->addCritical(QObject::tr("Unknown element name used"), mCurrentId);
+		break;
+	case outofRange:
+		mHasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("Out of range in %1 , size of array is %2").arg(pos,expected), mCurrentId);
+		break;
+	case wrongType:
+		mHasParseErrors = true;
+		mErrorReporter->addCritical(QObject::tr("Types mismatch at %1: expected type %2, but got type %3").arg(pos,expected, got), mCurrentId);
 		break;
 	}
 }

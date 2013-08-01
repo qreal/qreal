@@ -13,6 +13,8 @@ enum VariableType
 	unknown = 0
 	, floatType
 	, intType
+	, intArray
+	, doubleArray
 };
 
 class Variables
