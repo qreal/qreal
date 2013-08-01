@@ -130,19 +130,30 @@
 <context>
     <name>robots::trikGenerator::TrikGeneratorPlugin</name>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="38"/>
+        <location filename="trikGeneratorPlugin.cpp" line="39"/>
         <source>Generate TRIK code</source>
         <translation>Генерировать код для ТРИК</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="42"/>
+        <location filename="trikGeneratorPlugin.cpp" line="43"/>
         <source>Upload program</source>
         <translation>Загрузить программу</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="46"/>
+        <location filename="trikGeneratorPlugin.cpp" line="47"/>
         <source>Run program</source>
         <translation>Загрузить и выполнить программу</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="51"/>
+        <source>Stop robot</source>
+        <translation>Остановить робот</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="94"/>
+        <location filename="trikGeneratorPlugin.cpp" line="118"/>
+        <source>No connection to robot</source>
+        <translation>Нет соединения с роботом, проверьте настройки, проверьте, включён ли робот</translation>
     </message>
 </context>
 </TS>

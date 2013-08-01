@@ -47,6 +47,20 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 	return true;
 }
 
+bool TcpRobotCommunicator::stopRobot()
+{
+	connect();
+	if (!mSocket.isValid()) {
+		return false;
+	}
+
+	QString const command = "stop";
+	mSocket.write(command.toLatin1());
+	mSocket.waitForBytesWritten();
+
+	return true;
+}
+
 void TcpRobotCommunicator::connect()
 {
 	QString const server = qReal::SettingsManager::value("tcpServer").toString();
