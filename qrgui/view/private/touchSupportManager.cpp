@@ -64,22 +64,9 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 	return false;
 }
 
-bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
-{
-	if (gestureEvent->gesture(Qt::TapGesture)) {
-		mScroller.onTap();
-	} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
-		mScroller.onPan(pan);
-	} else if (QGesture *pinch = gestureEvent->gesture(Qt::PinchGesture)) {
-		QPinchGesture *pinchGesture = static_cast<QPinchGesture *>(pinch);
-		mEditorView->zoom(pinchGesture->scaleFactor());
-	}
-	return true;
-}
-
 void TouchSupportManager::simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos)
 {
-	QMouseEvent* mouseEvent = new QMouseEvent(event, pos, mButton, mButton, Qt::NoModifier);
+	QMouseEvent *mouseEvent = new QMouseEvent(event, pos, mButton, mButton, Qt::NoModifier);
 	QApplication::postEvent(reciever, mouseEvent);
 }
 
@@ -110,6 +97,31 @@ bool TouchSupportManager::isElementUnder(QPointF const &pos)
 	return mEditorView->itemAt(pos.toPoint());
 }
 
+bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
+{
+	if (gestureEvent->gesture(Qt::TapGesture)) {
+		mScroller.onTap();
+	} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
+		processGestureState(pan);
+		mScroller.onPan(pan);
+	} else if (QGesture *pinch = gestureEvent->gesture(Qt::PinchGesture)) {
+		processGestureState(pinch);
+		QPinchGesture *pinchGesture = static_cast<QPinchGesture *>(pinch);
+		mEditorView->zoom(pinchGesture->scaleFactor());
+	}
+	return true;
+}
+
+void TouchSupportManager::processGestureState(QGesture *gesture)
+{
+	if (gesture->state() == Qt::GestureStarted) {
+		qDebug() << "started!";
+		emit gestureStarted();
+	} else if (gesture->state() == Qt::GestureFinished) {
+		emit gestureFinished();
+	}
+}
+
 bool TouchSupportManager::processTouchEvent(QTouchEvent *event)
 {
 	event->accept();
@@ -130,18 +142,18 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 
 		if (QDateTime::currentMSecsSinceEpoch() - mLastTapTimestamp <= QApplication::doubleClickInterval()) {
 			if (elementUnder) {
-				// simulating right button click for links gesture
+				// Simulating right button click for links gesture
 				simulatePress(event, Qt::RightButton);
 			} else {
-				// simulating double-click
+				// Simulating double-click
 				simulateDoubleClick(event);
 			}
 		} else {
 			if (elementUnder) {
-				// simulating regular left button click
+				// Simulating regular left button click
 				simulatePress(event);
 			} else {
-				// simulating right button click for mouse gestures drawing
+				// Simulating right button click for mouse gestures drawing
 				simulatePress(event, Qt::RightButton);
 			}
 		}
@@ -150,6 +162,8 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 		break;
 	}
 	case QEvent::TouchEnd:
+		// This will not show context menu when we just tap on scene
+		simulateMove(event);
 		simulateRelease(event);
 		break;
 	case QEvent::TouchUpdate:

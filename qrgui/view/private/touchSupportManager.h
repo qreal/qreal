@@ -29,6 +29,7 @@ protected:
 
 private:
 	bool handleGesture(QGestureEvent *gestureEvent);
+	void processGestureState(QGesture *gesture);
 	void handleOneFingerTouch(QTouchEvent *event);
 
 	void simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos);

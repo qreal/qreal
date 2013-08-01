@@ -34,6 +34,8 @@ EditorView::EditorView(QWidget *parent)
 	setMouseTracking(true);
 
 	setAlignment(Qt::AlignCenter);
+
+	connect(&mTouchManager, SIGNAL(gestureStarted()), mScene, SLOT(deleteGesture()));
 }
 
 EditorView::~EditorView()
