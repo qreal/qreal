@@ -4,6 +4,7 @@
 
 #include "editorViewScene.h"
 #include "private/editorViewMVIface.h"
+#include "private/touchSupportManager.h"
 
 namespace qReal {
 
@@ -32,6 +33,7 @@ public slots:
 	void toggleOpenGL(bool);
 	void zoomIn();
 	void zoomOut();
+	void zoom(qreal const zoomFactor);
 	void invalidateScene();
 
 protected:
@@ -43,13 +45,24 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 	virtual void keyReleaseEvent(QKeyEvent *event);
 
+	virtual bool viewportEvent(QEvent *event);
+
+private slots:
+	void zoomInTime();
+	void zoomOutTime();
+	void animFinished();
+
 private:
+	void checkGrid();
+
+	void startAnimation(char const *slot);
+
 	EditorViewMViface *mMVIface;
 	EditorViewScene *mScene;
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
-	void checkGrid();
 	int mZoom;
+	view::details::TouchSupportManager mTouchManager;
 };
 
 }
