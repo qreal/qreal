@@ -32,6 +32,11 @@ void NonGraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
 	Q_UNUSED(out)
 }
 
+void NonGraphicType::generateExplosionsMap(OutFile &out)
+{
+	Q_UNUSED(out)
+}
+
 bool NonGraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 {
 	Q_UNUSED(out)
@@ -54,20 +59,6 @@ bool NonGraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)
 	return false;
 }
 
-bool NonGraphicType::generateConnections(utils::OutFile &out, bool isNotFirst)
-{
-	Q_UNUSED(out)
-	Q_UNUSED(isNotFirst)
-	return false;
-}
-
-bool NonGraphicType::generateUsages(OutFile &out, bool isNotFirst)
-{
-	Q_UNUSED(out)
-	Q_UNUSED(isNotFirst)
-	return false;
-}
-
 bool NonGraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 {
 	Q_UNUSED(out)
@@ -79,4 +70,3 @@ void NonGraphicType::generateMouseGesturesMap(utils::OutFile &out)
 {
 	Q_UNUSED(out);
 }
-

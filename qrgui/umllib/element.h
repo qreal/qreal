@@ -51,7 +51,8 @@ public:
 	virtual void initTitles();
 	// for inline editing we should be able to change properties value. right now via graphical
 	// representation. also labels could store indices and get data themselves
-	virtual void setLogicalProperty(QString const &roleName, QString const &value);
+	virtual void setLogicalProperty(QString const &roleName, QString const &value
+			, bool withUndoRedo = false);
 	QString logicalProperty(QString const &roleName) const;
 
 	virtual void setColorRect(bool bl) = 0;

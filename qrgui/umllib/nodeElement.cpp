@@ -19,6 +19,7 @@
 
 #include "../controller/commands/changeParentCommand.h"
 #include "../controller/commands/insertIntoEdgeCommand.h"
+#include "../controller/commands/renameCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -130,9 +131,16 @@ QMap<QString, QVariant> NodeElement::logicalProperties() const
 	return mGraphicalAssistApi->properties(logicalId());
 }
 
-void NodeElement::setName(QString value)
+void NodeElement::setName(QString const &value, bool withUndoRedo)
 {
-	mGraphicalAssistApi->setName(id(), value);
+	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi
+			, id(), value, &mLogicalAssistApi->exploser());
+	if (withUndoRedo) {
+		mController->execute(command);
+	} else {
+		command->redo();
+		delete command;
+	}
 }
 
 void NodeElement::setGeometry(QRectF const &geom)

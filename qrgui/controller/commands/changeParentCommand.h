@@ -4,10 +4,8 @@
 #include "../../models/logicalModelAssistApi.h"
 #include "../../models/graphicalModelAssistApi.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class ChangeParentCommand : public AbstractCommand
 {

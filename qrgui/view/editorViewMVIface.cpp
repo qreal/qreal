@@ -173,6 +173,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->checkConnectionsToPort();
 			elem->initPossibleEdges();
 			elem->initTitles();
+			mView->setFocus();
 			// TODO: brush up init~()
 
 			bool isEdgeFromEmbeddedLinker = false;

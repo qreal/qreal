@@ -260,6 +260,7 @@ void ProjectManager::close()
 	mAutosaver->removeAutoSave();
 	mAutosaver->removeTemp();
 	mSomeProjectOpened = false;
+	emit closed();
 }
 
 void ProjectManager::saveTo(QString const &fileName)

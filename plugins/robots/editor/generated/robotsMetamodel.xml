@@ -369,6 +369,7 @@
 					<properties>
 						<property displayedName="Условие" type="GuardType" name="Guard"/>
 					</properties>
+					<dividability isDividable="true"/>
 				</logic>
 			</edge>
 			<node displayedName="Балансировка" name="Balance">
@@ -1634,7 +1635,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Подпрограмма" name="SubprogramRobots">
+			<node displayedName="Подпрограмма" name="Subprogram">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/subprogramRobots.png" x1="0" y2="50" x2="50"/>
@@ -1667,6 +1668,9 @@
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
+					<explodesTo>
+						<target type="RobotsDiagramNode" makeReusable="true" requireImmediateLinkage="true"/>
+					</explodesTo>
 				</logic>
 			</node>
 		</graphicTypes>

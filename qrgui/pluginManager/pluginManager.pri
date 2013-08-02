@@ -8,7 +8,8 @@ HEADERS += \
 	pluginManager/interpreterElementImpl.h \
 	pluginManager/proxyEditorManager.h \
 	pluginManager/pattern.h \
-	pluginManager/patternParser.h
+	pluginManager/patternParser.h \
+	pluginManager/explosion.h \
 
 SOURCES += \
 	pluginManager/editorManager.cpp \
@@ -18,4 +19,5 @@ SOURCES += \
 	pluginManager/interpreterElementImpl.cpp \
 	pluginManager/proxyEditorManager.cpp \
 	pluginManager/pattern.cpp \
-	pluginManager/patternParser.cpp
+	pluginManager/patternParser.cpp \
+	pluginManager/explosion.cpp \

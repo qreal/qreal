@@ -9,7 +9,8 @@
 
 #include "../thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h"
 #include "../models/logicalModelAssistApi.h"
-#include "pushButtonProperty.h"
+
+#include "private/pushButtonProperty.h"
 
 namespace qReal {
 	class MainWindow;
