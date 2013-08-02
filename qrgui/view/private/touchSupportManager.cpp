@@ -115,7 +115,6 @@ bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
 void TouchSupportManager::processGestureState(QGesture *gesture)
 {
 	if (gesture->state() == Qt::GestureStarted) {
-		qDebug() << "started!";
 		emit gestureStarted();
 	} else if (gesture->state() == Qt::GestureFinished) {
 		emit gestureFinished();
@@ -153,8 +152,10 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 				// Simulating regular left button click
 				simulatePress(event);
 			} else {
-				// Simulating right button click for mouse gestures drawing
-				simulatePress(event, Qt::RightButton);
+				// Simulating right button click for mouse gestures drawing or left button click
+				// for clearing selection
+				simulatePress(event, mEditorView->scene()->selectedItems().isEmpty()
+						? Qt::RightButton : Qt::LeftButton);
 			}
 		}
 

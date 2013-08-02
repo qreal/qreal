@@ -74,12 +74,7 @@ void EditorView::zoomIn()
 		return;
 	}
 
-	QTimeLine *animation = new QTimeLine(300, this);
-	animation->setUpdateInterval(20);
-	connect(animation, SIGNAL(valueChanged(qreal)), this, SLOT(zoomInTime()));
-	connect(animation, SIGNAL(finished()), this, SLOT(animFinished()));
-	animation->start();
-
+	startAnimation(SLOT(zoomInTime()));
 	++mZoom;
 }
 
@@ -89,13 +84,7 @@ void EditorView::zoomOut()
 		return;
 	}
 
-	QTimeLine *anim = new QTimeLine(300, this);
-	anim->setUpdateInterval(20);
-
-	connect(anim, SIGNAL(valueChanged(qreal)), this, SLOT(zoomOutTime()));
-	connect(anim, SIGNAL(finished()), this, SLOT(animFinished()));
-	anim->start();
-
+	startAnimaition(SLOT(zoomOutTime()));
 	--mZoom;
 }
 
@@ -104,6 +93,16 @@ void EditorView::checkGrid()
 	if (SettingsManager::value("ShowGrid").toBool()) {
 		mScene->setNeedDrawGrid(mScene->realIndexGrid() >= 2 && mScene->realIndexGrid() <= 380);
 	}
+}
+
+void EditorView::startAnimation(char const *slot)
+{
+	QTimeLine *anim = new QTimeLine(300, this);
+	anim->setUpdateInterval(20);
+
+	connect(anim, SIGNAL(valueChanged(qreal)), this, slot);
+	connect(anim, SIGNAL(finished()), this, SLOT(animFinished()));
+	anim->start();
 }
 
 void EditorView::setMainWindow(qReal::MainWindow *mainWindow)
