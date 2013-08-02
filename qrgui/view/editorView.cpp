@@ -84,7 +84,7 @@ void EditorView::zoomOut()
 		return;
 	}
 
-	startAnimaition(SLOT(zoomOutTime()));
+	startAnimation(SLOT(zoomOutTime()));
 	--mZoom;
 }
 
