@@ -128,6 +128,8 @@ public slots:
 
 	void cropToItems();
 
+	void deleteGesture();
+
 signals:
 	void zoomIn();
 	void zoomOut();
@@ -168,7 +170,6 @@ private:
 
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
 	void drawGesture();
-	void deleteGesture();
 	void createEdgeMenu(QList<QString> const &ids);
 
 	/// sets sceneRect to (0, 0, 1000, 1000) by adding its corners to the scene

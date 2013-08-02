@@ -55,9 +55,11 @@ private slots:
 	void deleteElement();
 	void checkElementForRootDiagramNode();
 
-private:
+protected:
+	virtual bool event(QEvent *event);
 	virtual void mousePressEvent(QMouseEvent *event);
 
+private:
 	void checkElementForChildren();
 
 	PaletteElement const mData;
