@@ -5,6 +5,7 @@
 #include <QtCore/QRectF>
 #include <QtCore/QPointF>
 #include <QtGui/QPainter>
+#include <QSharedPointer>
 #include "labelHelpers.h"
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
@@ -13,6 +14,20 @@
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
 typedef QPair<bool, qReal::Id> PossibleEdgeType;
+
+class PortImpl
+{
+public:
+	virtual ~PortImpl() {}
+
+	virtual QString type() const = 0;
+};
+
+class NonTyped : public PortImpl
+{
+public:
+	virtual QString type() const { return "NonTyped"; }
+};
 
 /** @brief point port description */
 struct StatPoint
@@ -32,10 +47,10 @@ struct StatPoint
 	int initWidth;
 	int initHeight;
 
-	QString type;
+	QSharedPointer<PortImpl> impl;
 
 	StatPoint() : point(QPointF(0, 0)), prop_x(false), prop_y(false),
-		initWidth(1), initHeight(1) {}
+		initWidth(1), initHeight(1), impl(NULL) {}
 
 	operator QPointF () const
 	{
@@ -63,10 +78,10 @@ struct StatLine
 	int initWidth;
 	int initHeight;
 
-	QString type;
+	QSharedPointer<PortImpl> impl;
 
 	StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
-		prop_x2(false), prop_y2(false), initWidth(1), initHeight(1) {}
+		prop_x2(false), prop_y2(false), initWidth(1), initHeight(1), impl(NULL) {}
 
 	operator QLineF () const
 	{

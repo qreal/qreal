@@ -163,7 +163,7 @@ qreal PortHandler::pointPortId(QPointF const &location, QStringList const &types
 	foreach (StatPoint const &pointPort, mPointPorts) {
 		if (QRectF(transformPortForNodeSize(pointPort) - QPointF(kvadratik, kvadratik),
 					QSizeF(kvadratik * 2, kvadratik * 2)
-			).contains(location) && types.contains(pointPort.type))
+			).contains(location) && types.contains(pointPort.impl->type()))
 		{
 			return pointPortNumber;
 		}
@@ -177,7 +177,7 @@ qreal PortHandler::linePortId(QPointF const &location, QStringList const &types)
 {
 	int linePortNumber = 0;
 	foreach (StatLine const &linePort, mLinePorts) {
-		if (!types.contains(linePort.type)) {
+		if (!types.contains(linePort.impl->type())) {
 			continue;
 		}
 
@@ -207,7 +207,7 @@ QPair<int, qreal> PortHandler::nearestPointPortNumberAndDistance(QPointF const &
 
 	int minDistancePointPortNumber = -1; // just smth negative
 	for (int pointPortNumber = 0; pointPortNumber < mPointPorts.size(); pointPortNumber++) {
-		if (!types.contains(mPointPorts.at(pointPortNumber).type)) {
+		if (!types.contains(mPointPorts.at(pointPortNumber).impl->type())) {
 			continue;
 		}
 
@@ -227,7 +227,7 @@ QPair<int, qreal> PortHandler::nearestLinePortNumberAndDistance(QPointF const &l
 
 	int minDistanceLinePortNumber = -1; // just smth negative
 	for (int linePortNumber = 0; linePortNumber < mLinePorts.size(); linePortNumber++) {
-		if (!types.contains(mLinePorts.at(linePortNumber).type)) {
+		if (!types.contains(mLinePorts.at(linePortNumber).impl->type())) {
 			continue;
 		}
 

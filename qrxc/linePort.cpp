@@ -15,10 +15,11 @@ bool LinePort::init(QDomElement const &element, int width, int height)
 	mType = element.attribute("type", "NonTyped");
 	mInitWidth = width;
 	mInitHeight = height;
+
 	return true;
 }
 
-void LinePort::generateCode(OutFile &out)
+void LinePort::generateCode(OutFile &out, QStringList const &portTypes)
 {
 	out() <<"\t\t\t{\n"
 		<< "\t\t\t\tStatLine ln;\n"
@@ -32,9 +33,14 @@ void LinePort::generateCode(OutFile &out)
 		<< ((mEndX.isScalable()) ? "true; \n" : "false; \n")
 		<< "\t\t\t\tln.prop_y2 = "
 		<< ((mEndY.isScalable()) ? "true; \n" : "false; \n")
-		<< "\t\t\t\tln.type = \"" << mType << "\";\n"
 		<< QString("\t\t\t\tln.initWidth = %1;\n").arg(mInitWidth)
-		<< QString("\t\t\t\tln.initHeight = %1;\n").arg(mInitHeight)
+		<< QString("\t\t\t\tln.initHeight = %1;\n").arg(mInitHeight);
+
+	if (!portTypes.contains(mType)) {
+		mType = "NonTyped";
+	}
+
+	out() << QString("\t\t\t\tln.impl = QSharedPointer<PortImpl>(new %1());\n").arg(mType)
 		<< "\t\t\t\tlinePorts << ln;\n"
 		<< "\t\t\t};\n";
 }

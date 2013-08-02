@@ -3,6 +3,7 @@
 #include "diagram.h"
 #include "type.h"
 #include "enumType.h"
+#include "portType.h"
 #include "../qrutils/outFile.h"
 
 #include <QDebug>
@@ -132,6 +133,26 @@ QSet<EnumType*> Editor::getAllEnumTypes()
 		result += editor->getAllEnumTypes();
 	}
 
+	return result;
+}
+
+QStringList Editor::getAllPortNames()
+{
+	QStringList result;
+
+	foreach (Diagram *diagram, mDiagrams.values()) {
+		foreach (Type *type, diagram->types()) {
+			if (dynamic_cast<PortType *>(type)) {
+				result << type->name();
+			}
+		}
+	}
+
+	foreach (Editor *editor, mIncludes) {
+		result += editor->getAllPortNames();
+	}
+
+	result.removeDuplicates();
 	return result;
 }
 

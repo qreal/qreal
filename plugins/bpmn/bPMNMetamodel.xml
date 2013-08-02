@@ -3,6 +3,8 @@
     <namespace>UML 2.0</namespace>
     <diagram nodeName="BPMNDiagramNode" name="BPMNDiagram" displayedName="BPMN Diagram">
         <nonGraphicTypes>
+            <port name="SequenceFrom"/>
+            <port name="SequenceTo"/>
             <enum name="StartEventType" displayedName="Start Event Type">
                 <value>None</value>
                 <value>Message</value>
