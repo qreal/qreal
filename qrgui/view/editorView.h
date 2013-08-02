@@ -55,6 +55,8 @@ private slots:
 private:
 	void checkGrid();
 
+	void startAnimation(char const *slot);
+
 	EditorViewMViface *mMVIface;
 	EditorViewScene *mScene;
 	QPointF mMouseOldPosition;
