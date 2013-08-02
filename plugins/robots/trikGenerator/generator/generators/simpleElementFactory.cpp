@@ -4,7 +4,7 @@
 #include "simpleElements/enginesStopGenerator.h"
 #include "simpleElements/timerGenerator.h"
 #include "simpleElements/beepGenerator.h"
-//#include "simpleElements/playToneGenerator.h"
+#include "simpleElements/playToneGenerator.h"
 #include "simpleElements/finalNodeGenerator.h"
 //#include "simpleElements/nullificationEncoderGenerator.h"
 //#include "simpleElements/waitForColorBlockGenerator.h"
@@ -30,8 +30,8 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 		return new TimerGenerator();
 	} else if (elementType == "Beep") {
 		return new BeepGenerator();
-//	} else if (elementType == "PlayTone") {
-//		return new PlayToneGenerator();
+	} else if (elementType == "PlayTone") {
+		return new PlayToneGenerator();
 	} else if (elementType == "FinalNode") {
 		return new FinalNodeGenerator();
 //	} else if (elementType == "NullificationEncoder") {

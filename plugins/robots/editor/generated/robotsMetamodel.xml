@@ -834,14 +834,8 @@
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-25" text="Частота (Гц):" hard="true"/>
-						<label x="-35" y="60" text="Громкость (%):"/>
-						<label x="-68" y="80" text="Длительность (мс):"/>
-						<label x="-68" y="100" text="Ждать завершения:"/>
-						<label x="40" y="-25" textBinded="Frequency" hard="true"/>
-						<label x="45" y="60" textBinded="Volume"/>
-						<label x="45" y="80" textBinded="Duration"/>
-						<label x="45" y="100" textBinded="WaitForCompletion"/>
+						<label x="-35" y="-25" text="Файл:" hard="true"/>
+						<label x="40" y="-25" textBinded="FileName" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -866,17 +860,8 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Частота" type="string" name="Frequency">
-							<default>1000</default>
-						</property>
-						<property displayedName="Громкость" type="string" name="Volume">
-							<default>50</default>
-						</property>
-						<property displayedName="Длительность" type="string" name="Duration">
-							<default>1000</default>
-						</property>
-						<property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
-							<default>true</default>
+						<property displayedName="Файл" type="string" name="FileName">
+							<default>media/beep.mp3</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1690,7 +1675,7 @@
 <!--			<group name="Действия"> -->
 <!--				<element name="Fork"/> -->
 				<element name="Beep"/>
-<!--				<element name="PlayTone"/> -->
+				<element name="PlayTone"/>
 				<element name="EnginesForward"/>
 				<element name="EnginesBackward"/>
 				<element name="EnginesStop"/>
