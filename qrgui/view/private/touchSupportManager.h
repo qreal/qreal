@@ -32,7 +32,7 @@ private:
 	void processGestureState(QGesture *gesture);
 	void handleOneFingerTouch(QTouchEvent *event);
 
-	void simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos);
+	void simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos, Qt::MouseButtons buttons);
 	void simulatePress(QTouchEvent *event, Qt::MouseButton button = Qt::LeftButton);
 	void simulateMove(QTouchEvent *event);
 	void simulateRelease(QTouchEvent *event);

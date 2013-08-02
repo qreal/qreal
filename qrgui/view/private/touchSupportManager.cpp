@@ -64,32 +64,32 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 	return false;
 }
 
-void TouchSupportManager::simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos)
+void TouchSupportManager::simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos, Qt::MouseButtons buttons)
 {
-	QMouseEvent *mouseEvent = new QMouseEvent(event, pos, mButton, mButton, Qt::NoModifier);
+	QMouseEvent *mouseEvent = new QMouseEvent(event, pos, mButton, buttons, Qt::NoModifier);
 	QApplication::postEvent(reciever, mouseEvent);
 }
 
 void TouchSupportManager::simulatePress(QTouchEvent *event, Qt::MouseButton button)
 {
 	mButton = button;
-	simulateMouse(event->target(), QEvent::MouseButtonPress, event->touchPoints()[0].pos());
+	simulateMouse(event->target(), QEvent::MouseButtonPress, event->touchPoints()[0].pos(), mButton);
 }
 
 void TouchSupportManager::simulateMove(QTouchEvent *event)
 {
-	simulateMouse(event->target(), QEvent::MouseMove, event->touchPoints()[0].pos());
+	simulateMouse(event->target(), QEvent::MouseMove, event->touchPoints()[0].pos(), mButton);
 }
 
 void TouchSupportManager::simulateRelease(QTouchEvent *event)
 {
-	simulateMouse(event->target(), QEvent::MouseButtonRelease, event->touchPoints()[0].pos());
+	simulateMouse(event->target(), QEvent::MouseButtonRelease, event->touchPoints()[0].pos(), Qt::NoButton);
 }
 
 void TouchSupportManager::simulateDoubleClick(QTouchEvent *event)
 {
 	mButton = Qt::LeftButton;
-	simulateMouse(event->target(), QEvent::MouseButtonDblClick, event->touchPoints()[0].pos());
+	simulateMouse(event->target(), QEvent::MouseButtonDblClick, event->touchPoints()[0].pos(), mButton);
 }
 
 bool TouchSupportManager::isElementUnder(QPointF const &pos)
@@ -137,6 +137,7 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 {
 	switch(event->type()) {
 	case QEvent::TouchBegin: {
+		mEditorView->scene()->clearSelection();
 		bool const elementUnder = isElementUnder(event->touchPoints()[0].pos());
 
 		if (QDateTime::currentMSecsSinceEpoch() - mLastTapTimestamp <= QApplication::doubleClickInterval()) {
@@ -159,13 +160,18 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 			}
 		}
 
+		mEditorView->scene()->update();
 		mLastTapTimestamp = QDateTime::currentMSecsSinceEpoch();
 		break;
 	}
 	case QEvent::TouchEnd:
 		// This will not show context menu when we just tap on scene
-		simulateMove(event);
+		if (mButton == Qt::RightButton) {
+			simulateMove(event);
+		}
+
 		simulateRelease(event);
+		mEditorView->scene()->update();
 		break;
 	case QEvent::TouchUpdate:
 		simulateMove(event);
