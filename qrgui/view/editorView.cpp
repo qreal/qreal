@@ -173,7 +173,8 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 		QGraphicsView::mousePressEvent(event);
 	}
 	if (event->buttons() & Qt::LeftButton) {
-		if (!(event->buttons() & Qt::RightButton) && !mTouchManager.isGestureRunning()) {
+		if (!(event->buttons() & Qt::RightButton) && !mTouchManager.isGestureRunning()
+				&& !itemAt(event->pos())) {
 			setDragMode(RubberBandDrag);
 		}
 		if (event->modifiers() & Qt::ControlModifier) {
