@@ -26,6 +26,16 @@ Controller::~Controller()
 	mGlobalStack->deleteLater();
 }
 
+bool Controller::canUndo() const
+{
+	return mCanUndoState;
+}
+
+bool Controller::canRedo() const
+{
+	return mCanRedoState;
+}
+
 void Controller::setActiveDiagram(Id const &diagramId)
 {
 	if (diagramId != Id()) {
@@ -151,16 +161,6 @@ void Controller::undo()
 	if (stack) {
 		stack->undo();
 	}
-}
-
-bool Controller::canUndo()
-{
-	return mCanUndoState;
-}
-
-bool Controller::canRedo()
-{
-	return mCanRedoState;
 }
 
 UndoStack *Controller::selectActiveStack(bool forUndo)

@@ -257,9 +257,11 @@ void ProjectManager::close()
 	}
 	mMainWindow->closeAllTabs();
 	mMainWindow->setWindowTitle(mMainWindow->toolManager().customizer()->windowTitle());
+
 	mAutosaver->removeAutoSave();
 	mAutosaver->removeTemp();
 	mSomeProjectOpened = false;
+
 	emit closed();
 }
 

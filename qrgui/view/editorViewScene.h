@@ -40,7 +40,9 @@ public:
 
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
 			, bool canBeConnected, commands::CreateElementCommand **elementCommand = 0);
-	virtual qReal::Id createElement(QString const &, QPointF const &scenePos
+	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
+	virtual qReal::Id createElement(QString const &
+			, QPointF const &scenePos
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommand = 0
 			, bool executeImmediately = true
@@ -126,6 +128,8 @@ public slots:
 
 	void cropToItems();
 
+	void deleteGesture();
+
 signals:
 	void zoomIn();
 	void zoomOut();
@@ -166,7 +170,6 @@ private:
 
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
 	void drawGesture();
-	void deleteGesture();
 	void createEdgeMenu(QList<QString> const &ids);
 
 	/// sets sceneRect to (0, 0, 1000, 1000) by adding its corners to the scene

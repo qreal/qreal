@@ -29,6 +29,7 @@ public:
 	virtual Id createElement(Id const &parent, Id const &id
 			, bool isFromLogicalModel, QString const &name
 			, QPointF const &position, Id const &preferedLogicalId = Id());
+
 	virtual IdList children(Id const &element) const;
 	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF());
 

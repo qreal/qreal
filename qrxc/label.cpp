@@ -56,7 +56,8 @@ void Label::generateCodeForConstructor(OutFile &out)
 	out() << "			" + titleName() + "->setHard(" + (mIsHard ? "true" : "false") + ");\n";
 
 	// TODO: вынести отсюда в родительский класс.
-	out() << "			" + titleName() + "->setFlags(0);\n"
+	out()
+//		<< "			" + titleName() + "->setFlags(0);\n"
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
 		<< "			titles.append(" + titleName() + ");\n";
 }
@@ -106,14 +107,14 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		out() << QString("\t\t\t%1->setPlainText(%2);\n")
 				.arg(titleName(), resultStr);
 	} else {
-		out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
-			+ (mCenter == "true" ? "<center>%1</center>" : "<b>%1</b>") + "\").arg(" + resultStr + ").replace(\"\\n\", \"<br>\"));\n";
+		out() << "\t\t\t" + titleName() + "->setTextFromRepo("
+			 + resultStr + ");\n";
 	}
 }
 
 void Label::generateCodeForFields(OutFile &out)
 {
-	out() << "		ElementTitleInterface *" + titleName() + ";\n";
+	out() << "		LabelInterface *" + titleName() + ";\n";
 }
 
 

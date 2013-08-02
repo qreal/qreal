@@ -1710,6 +1710,7 @@
 				<element name="ControlFlow"/>
 <!--				<element name="Loop"/> -->
 				<element name="CommentBlock"/>
+<!--				<element name="Subprogram"/> -->
 <!--			</group> -->
 <!--			<group name="Инициализация"> -->
 				<element name="InitialNode"/>

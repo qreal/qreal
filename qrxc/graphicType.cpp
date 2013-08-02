@@ -476,7 +476,7 @@ bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 	if (mVisible) {
 		QString name = NameNormalizer::normalize(qualifiedName());
 		generateOneCase(out, isNotFirst);
-		out() << "\t\treturn new " << name << "();\n";
+		out() << "\t\treturn new " << name << "();\n\t}\n";
 		return true;
 	}
 	return false;
@@ -491,8 +491,7 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRefer
 		bool isFirstProperty = true;
 
 		foreach (Property *property, mProperties) {
-			// Хак: не генерить предопределённые свойства, иначе они затрут
-			// настоящие и линки будут цепляться к чему попало.
+			// do not generate common properties
 			if (property->name() == "fromPort" || property->name() == "toPort"
 				|| property->name() == "from" || property->name() == "to"
 				|| property->name() == "name")
@@ -516,10 +515,11 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRefer
 			}
 		}
 
-		if (!propertiesString.trimmed().isEmpty())
-			out() << propertiesString;
+		if (!isFirstProperty) {
+			out() << propertiesString << ";\n";
+		}
 
-		out() << ";\n";
+		out() << "\t}\n";
 		return true;
 	}
 	return false;
@@ -557,12 +557,13 @@ void GraphicType::generatePropertyDefaults(OutFile &out)
 
 void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const
 {
-	QString name = NameNormalizer::normalize(qualifiedName());
+	QString const name = NameNormalizer::normalize(qualifiedName());
 
 	if (!isNotFirst) {
-		out() << "\tif (element == \"" << name << "\")\n";
+		out() << "\tif (element == \"" << name << "\") {\n";
 	} else {
-		out() << "\telse if (element == \"" << name << "\")\n";
+		out() << "\telse if (element == \"" << name << "\") {\n";
+	}
 	}
 }
 
@@ -591,7 +592,7 @@ bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 		out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\"" << element.first.second << "\")),"
 				<< "qMakePair(" << directed << ",QString(\"" << element.second.second << "\")))";
 	}
-	out() << ";\n";
+	out() << ";\n\t}\n";
 	return true;
 }
 
@@ -608,7 +609,7 @@ bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, Q
 		out() << "<< \"" << element << "\" ";
 	}
 
-	out() << ";\n";
+	out() << ";\n\t}\n";
 	return true;
 }
 
@@ -625,6 +626,26 @@ void GraphicType::generateParentsMapping(utils::OutFile &out)
 		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\"" << NameNormalizer::normalize(parent) << "\"))\n";
 	}
 	out() << "\t;\n";
+}
+
+void GraphicType::generateExplosionsMap(OutFile &out)
+{
+	if (mExplosions.isEmpty()) {
+		return;
+	}
+
+	QString const diagramName = NameNormalizer::normalize(mDiagram->name());
+	QString const normalizedName = NameNormalizer::normalize(qualifiedName());
+	foreach (QString const &target, mExplosions.keys()) {
+		bool const reusable = mExplosions[target].first;
+		bool const immediateLinkage = mExplosions[target].second;
+
+		out() << "\tmExplosionsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]";
+		out() << QString(" << ExplosionData(\"%1\", \"%2\", %3, %4);\n").arg(diagramName
+				, NameNormalizer::normalize(target)
+				, reusable ? "true" : "false"
+				, immediateLinkage ? "true" : "false");
+	}
 }
 
 QVector<int> GraphicType::toIntVector(QString const &s, bool *isOk) const

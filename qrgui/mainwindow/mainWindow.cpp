@@ -73,7 +73,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
-		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit", 5).toInt())
+		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
 		, mStartDialog(new StartDialog(*this, *mProjectManager))
@@ -461,7 +461,7 @@ void MainWindow::refreshRecentProjectsList(QString const &fileName)
 	QString previousString = SettingsManager::value("recentProjects").toString();
 	QStringList previousList = previousString.split(";", QString::SkipEmptyParts);
 	previousList.removeOne(fileName);
-	if (previousList.size() == mRecentProjectsLimit && mRecentProjectsLimit != 0) {
+	if (!previousList.isEmpty() && (previousList.size() == mRecentProjectsLimit)) {
 		previousList.removeLast();
 	}
 	previousList.push_front(fileName);
@@ -1365,13 +1365,8 @@ void MainWindow::currentTabChanged(int newIndex)
 		mToolManager.activeTabChanged(currentTabId);
 	}
 
-	if (mController->canRedo()) {
-		mUi->actionRedo->setDisabled(isShape);
-	}
-
-	if (mController->canUndo()) {
-		mUi->actionUndo->setDisabled(isShape);
-	}
+	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
+	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);
 
 	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
 	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
@@ -1875,6 +1870,16 @@ void MainWindow::initToolPlugins()
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)
 {
 	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
+}
+
+bool MainWindow::showConnectionRelatedMenus() const
+{
+	return mToolManager.customizer()->showConnectionRelatedMenus();
+}
+
+bool MainWindow::showUsagesRelatedMenus() const
+{
+	return mToolManager.customizer()->showUsagesRelatedMenus();
 }
 
 void MainWindow::showInTextEditor(QString const &title, QString const &text)

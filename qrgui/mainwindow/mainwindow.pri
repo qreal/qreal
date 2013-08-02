@@ -11,6 +11,7 @@ HEADERS += \
 	mainwindow/dotRunner.h \
 	mainwindow/splashScreen.h \
 	mainwindow/tabWidget.h \
+	mainwindow/modelExplorer.h \
 	mainwindow/miniMap.h \
 	mainwindow/referenceList.h \
 	mainwindow/externBrowser.h \
@@ -22,8 +23,7 @@ HEADERS += \
 	mainwindow/palette/paletteTreeWidget.h \
 	mainwindow/palette/draggableElement.h \
 	mainwindow/palette/paletteTreeWidgets.h \
-    mainwindow/palette/paletteElement.h \
-    mainwindow/modelExplorer.h
+	mainwindow/palette/paletteElement.h \
 
 SOURCES += \
 	mainwindow/mainWindow.cpp \
@@ -36,6 +36,7 @@ SOURCES += \
 	mainwindow/splashScreen.cpp \
 	mainwindow/tabWidget.cpp \
 	mainwindow/miniMap.cpp \
+	mainwindow/modelExplorer.cpp \
 	mainwindow/referenceList.cpp \
 	mainwindow/qscintillaTextEdit.cpp \
 	mainwindow/projectManager/autosaver.cpp \
@@ -43,9 +44,8 @@ SOURCES += \
 	mainwindow/palette/paletteTree.cpp \
 	mainwindow/palette/paletteTreeWidget.cpp \
 	mainwindow/palette/draggableElement.cpp \
-    mainwindow/palette/paletteTreeWidgets.cpp \
-    mainwindow/palette/paletteElement.cpp \
-    mainwindow/modelExplorer.cpp
+	mainwindow/palette/paletteTreeWidgets.cpp \
+	mainwindow/palette/paletteElement.cpp \
 
 win32 {
 	HEADERS += \

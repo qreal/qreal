@@ -485,8 +485,8 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	QString pathToItem = "";
 	QString name = "";
 	QPointF shiftToParent;
-	bool isFromLogicalModel = false;
 	QString explosionTargetUuid = "";
+	bool isFromLogicalModel = false;
 	inStream >> uuid;
 	inStream >> pathToItem;
 	inStream >> name;
@@ -829,11 +829,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	} else if (event->button() == Qt::LeftButton) {
 		mLeftButtonPressed = true;
 		QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
-		ElementTitle *title = dynamic_cast < ElementTitle *>(item);
 
-		if (title) { // check whether we accidently clicked on a title or not
-			item = item->parentItem();
-		}
 		if (item) {
 			item->setSelected(true);
 			mSelectList->clear();
@@ -1131,7 +1127,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 	if (event->button() == Qt::LeftButton && !event->modifiers()) {
 		// Double click on a title activates it
-		if (ElementTitle *title = dynamic_cast<ElementTitle*>(itemAt(event->scenePos(), QTransform()))) {
+		if (Label *title = dynamic_cast<Label*>(itemAt(event->scenePos(), QTransform()))) {
 			if (!title->hasFocus()) {  // Do not activate already activated item
 				event->accept();
 				title->startTextInteraction();
@@ -1229,6 +1225,7 @@ void EditorViewScene::drawGesture()
 
 void EditorViewScene::deleteGesture()
 {
+	mRightButtonPressed = false;
 	foreach (QGraphicsItem *item, mGesture) {
 		removeItem(item);
 	}

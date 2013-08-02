@@ -240,10 +240,10 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t}\n\n";
 	}
 
-	out () << "\t\tvoid init(ElementTitleFactoryInterface &, QList<ElementTitleInterface*> &) {}\n\n"
+	out () << "\t\tvoid init(LabelFactoryInterface &, QList<LabelInterface*> &) {}\n\n"
 	<< "\t\tvoid init(QRectF &contents, QList<StatPoint> &pointPorts,\n"
-	<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,\n"
-	<< "\t\t\t\t\t\t\tQList<ElementTitleInterface*> &titles, SdfRendererInterface *renderer,\n"
+	<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, LabelFactoryInterface &factory,\n"
+	<< "\t\t\t\t\t\t\tQList<LabelInterface*> &titles, SdfRendererInterface *renderer,\n"
 	<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer, ElementRepoInterface *elementRepo)\n\t\t{\n";
 
 	if (!hasPointPorts())

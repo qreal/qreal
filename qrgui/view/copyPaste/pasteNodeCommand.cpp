@@ -22,7 +22,8 @@ Id PasteNodeCommand::pasteNewInstance()
 	Id resultId = mResult;
 	if (!mCreateCommand) {
 		Id const typeId = mNodeData.id.type();
-		resultId = mScene->createElement(typeId.toString(), getNewPos(), true, &mCreateCommand, false);
+		resultId = mScene->createElement(typeId.toString(), getNewPos(), true, &mCreateCommand, false
+				, vectorFromContainer());
 		mCreateCommand->redo();
 		mCopiedIds->insert(mNodeData.id, resultId);
 		addPreAction(mCreateCommand);
@@ -35,14 +36,16 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 	Id resultId = mResult;
 	if (!mCreateCommand) {
 		mCreateCommand = new CreateElementCommand(
-				mMVIface->logicalAssistApi()
-				, mMVIface->graphicalAssistApi()
-				, mMVIface->rootId()
-				, mMVIface->rootId()
-				, mNodeData.logicalId
-				, true
-				, mMVIface->graphicalAssistApi()->name(mNodeData.id)
-				, getNewPos());
+			mMVIface->logicalAssistApi()
+			, mMVIface->graphicalAssistApi()
+			, mMVIface->rootId()
+			, newGraphicalParent()
+			, mNodeData.logicalId
+			, true
+			, mMVIface->graphicalAssistApi()->name(mNodeData.id)
+			, getNewGraphicalPos()
+			);
+
 		mCreateCommand->redo();
 		resultId = mCreateCommand->result();
 		mCopiedIds->insert(mNodeData.id, resultId);
