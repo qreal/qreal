@@ -370,3 +370,13 @@ void PortHandler::setGraphicalAssistApi(qReal::models::GraphicalModelAssistApi *
 {
 	mGraphicalAssistApi = graphicalAssistApi;
 }
+
+void PortHandler::drawPorts(QPainter *painter, QRectF const &contents, QStringList const &)
+{
+	foreach (StatPoint const &pointPort, mPointPorts) {
+		pointPort.paint(painter, contents);
+	}
+	foreach (StatLine const &linePort, mLinePorts) {
+		linePort.paint(painter, contents);
+	}
+}

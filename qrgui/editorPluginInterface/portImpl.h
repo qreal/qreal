@@ -1,7 +1,7 @@
 #pragma once
 
-#include <QtCore/QLineF>
 #include <QtCore/QSharedPointer>
+#include <QtGui/QPainter>
 
 class PortImpl
 {
@@ -55,6 +55,26 @@ struct StatPoint
 		initHeight = 1;
 		initWidth = 1;
 	}
+
+	void paint(QPainter *painter, QRectF const &contents) const
+	{
+		qreal const x = point.x() * (prop_x ? initWidth : contents.width());
+		qreal const y = point.y() * (prop_y ? initHeight : contents.height());
+
+		QLineF pointToDraw(x - 0.1, y - 0.1, x + 0.1, y + 0.1);
+
+		painter->save();
+		QPen pen = painter->pen();
+		pen.setColor(QColor("#c3dcc4"));
+		pen.setWidth(12);
+		painter->setPen(pen);
+		painter->drawLine(pointToDraw);
+		pen.setColor(QColor("#465945"));
+		pen.setWidth(3);
+		painter->setPen(pen);
+		painter->drawLine(pointToDraw);
+		painter->restore();
+	}
 };
 
 /** @brief line port description */
@@ -87,5 +107,28 @@ struct StatLine
 		prop_y2 = false;
 		initHeight = 1;
 		initWidth = 1;
+	}
+
+	void paint(QPainter *painter, QRectF const &contents) const
+	{
+		qreal const x1 = line.x1() * (prop_x1 ? initWidth : contents.width());
+		qreal const y1 = line.y1() * (prop_y1 ? initHeight : contents.height());
+
+		qreal const x2 = line.x2() * (prop_x2 ? initWidth : contents.width());
+		qreal const y2 = line.y2() * (prop_y2 ? initHeight : contents.height());
+
+		QLineF lineToDraw(x1, y1, x2, y2);
+
+		painter->save();
+		QPen pen = painter->pen();
+		pen.setColor(QColor("#c3dcc4"));
+		pen.setWidth(7);
+		painter->setPen(pen);
+		painter->drawLine(lineToDraw);
+		pen.setColor(QColor("#465945"));
+		pen.setWidth(1);
+		painter->setPen(pen);
+		painter->drawLine(lineToDraw);
+		painter->restore();
 	}
 };

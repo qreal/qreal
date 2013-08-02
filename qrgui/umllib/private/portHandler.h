@@ -89,6 +89,8 @@ public:
 	 */
 	void setGraphicalAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi);
 
+	void drawPorts(QPainter *painter, QRectF const &contents, QStringList const &types);
+
 private:
 	/// Value for determing ID of nonexistent port.
 	static qreal const mNonexistentPortId = -1; // just smth negative

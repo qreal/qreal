@@ -823,11 +823,7 @@ NodeElement *NodeElement::getNodeAt(QPointF const &position)
 void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *w)
 {
 	mElementImpl->paint(painter, mContents);
-	if (mElementImpl->hasPorts()) {
-		paint(painter, style, w, mPortRenderer);
-	} else {
-		paint(painter, style, w, 0);
-	}
+	paint(painter, style);
 
 	if (mSelectionNeeded) {
 		painter->save();
@@ -842,8 +838,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style
 	}
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
-		, QWidget *, SdfRenderer* portRenderer)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option)
 {
 	if (option->levelOfDetail >= 0.5) {
 		if (option->state & QStyle::State_Selected) {
@@ -876,10 +871,10 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 
 			painter->restore();
 		}
-		if (((option->state & QStyle::State_MouseOver) || mPortsVisible) && portRenderer) {
+		if ((option->state & QStyle::State_MouseOver) || mPortsVisible) {
 			painter->save();
 			painter->setOpacity(0.7);
-			portRenderer->render(painter, mContents);
+			mPortHandler->drawPorts(painter, mContents, QStringList());
 			painter->restore();
 		}
 

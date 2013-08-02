@@ -2,8 +2,6 @@
 
 #include <QtWidgets/QWidget>
 #include <QtCore/QList>
-#include <QtCore/QRectF>
-#include <QtGui/QPainter>
 
 #include "labelHelpers.h"
 #include "elementRepoInterface.h"
