@@ -1,6 +1,5 @@
 #include "methodsTesterForQrxcAndInterpreter.h"
 #include "convertingMethods.h"
-#include "unifiedStringGenerator.h"
 #include "defs.h"
 #include "../../qrkernel/exception/exception.h"
 
@@ -18,7 +17,7 @@ MethodsTesterForQrxcAndInterpreter::MethodsTesterForQrxcAndInterpreter(
 	mInterpreterGeneratedPlugin = interpreterGeneratedPlugin;
 }
 
-class MethodsTesterForQrxcAndInterpreter::StringGenerator : public UnifiedStringGenerator
+class MethodsTesterForQrxcAndInterpreter::StringGenerator : public AbstractStringGenerator
 {
 public:
 	void init(EditorManagerInterface *editorManagerInterface)
@@ -156,9 +155,9 @@ class MethodsTesterForQrxcAndInterpreter::EditorsListGenerator
 		return ConvertingMethods::convertIdIntoStringList(editorId);
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new EditorsListGenerator();
+		AbstractStringGenerator* clonedGenerator = new EditorsListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -185,9 +184,9 @@ class MethodsTesterForQrxcAndInterpreter::DiagramsListGenerator
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->diagrams(editorId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new DiagramsListGenerator();
+		AbstractStringGenerator* clonedGenerator = new DiagramsListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -214,9 +213,9 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithIdParameter
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->elements(diagramId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new ElementsListGeneratorWithIdParameter();
+		AbstractStringGenerator* clonedGenerator = new ElementsListGeneratorWithIdParameter();
 		return clonedGenerator;
 	}
 };
@@ -244,9 +243,9 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithQStringParame
 		return editorManagerInterface->elements(editorName, diagramName);
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new ElementsListGeneratorWithQStringParameters();
+		AbstractStringGenerator* clonedGenerator = new ElementsListGeneratorWithQStringParameters();
 		return clonedGenerator;
 	}
 };
@@ -273,9 +272,9 @@ class MethodsTesterForQrxcAndInterpreter::MouseGesturesListGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->mouseGesture(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new MouseGesturesListGenerator();
+		AbstractStringGenerator* clonedGenerator = new MouseGesturesListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -302,9 +301,9 @@ class MethodsTesterForQrxcAndInterpreter::FriendlyNameListGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->friendlyName(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new FriendlyNameListGenerator();
+		AbstractStringGenerator* clonedGenerator = new FriendlyNameListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -331,9 +330,9 @@ class MethodsTesterForQrxcAndInterpreter::DescriptionListGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->description(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new DescriptionListGenerator();
+		AbstractStringGenerator* clonedGenerator = new DescriptionListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -366,9 +365,9 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDescriptionListGenerator
 		return result;
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new PropertyDescriptionListGenerator();
+		AbstractStringGenerator* clonedGenerator = new PropertyDescriptionListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -395,9 +394,9 @@ class MethodsTesterForQrxcAndInterpreter::PropertyDisplayedNameListGenerator
 				editorManagerInterface->propertyDisplayedName(elementId,propertyName));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new PropertyDisplayedNameListGenerator();
+		AbstractStringGenerator* clonedGenerator = new PropertyDisplayedNameListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -424,9 +423,9 @@ class MethodsTesterForQrxcAndInterpreter::ContainedTypesListGenerator
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->containedTypes(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new ContainedTypesListGenerator();
+		AbstractStringGenerator* clonedGenerator = new ContainedTypesListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -453,9 +452,9 @@ class MethodsTesterForQrxcAndInterpreter::ConnectedTypesListGenerator
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->connectedTypes(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new ConnectedTypesListGenerator();
+		AbstractStringGenerator* clonedGenerator = new ConnectedTypesListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -482,9 +481,9 @@ class MethodsTesterForQrxcAndInterpreter::UsedTypesListGenerator
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->usedTypes(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new UsedTypesListGenerator();
+		AbstractStringGenerator* clonedGenerator = new UsedTypesListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -512,9 +511,9 @@ class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 		return (editorManagerInterface->enumValues(elementId, name));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new EnumValuesListGenerator();
+		AbstractStringGenerator* clonedGenerator = new EnumValuesListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -542,9 +541,9 @@ class MethodsTesterForQrxcAndInterpreter::TypeNameListGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->typeName(elementId, name));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new TypeNameListGenerator();
+		AbstractStringGenerator* clonedGenerator = new TypeNameListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -571,9 +570,9 @@ class MethodsTesterForQrxcAndInterpreter::AllChildrenTypesOfListGenerator
 		return (editorManagerInterface->allChildrenTypesOf(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new AllChildrenTypesOfListGenerator();
+		AbstractStringGenerator* clonedGenerator = new AllChildrenTypesOfListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -600,9 +599,9 @@ class MethodsTesterForQrxcAndInterpreter::IsEditorListGenerator
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isEditor(editorId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new IsEditorListGenerator();
+		AbstractStringGenerator* clonedGenerator = new IsEditorListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -628,9 +627,9 @@ class MethodsTesterForQrxcAndInterpreter::IsDiagramListGenerator
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isDiagram(diagramId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new IsDiagramListGenerator();
+		AbstractStringGenerator* clonedGenerator = new IsDiagramListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -657,9 +656,9 @@ class MethodsTesterForQrxcAndInterpreter::IsElementListGenerator
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->isElement(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new IsElementListGenerator();
+		AbstractStringGenerator* clonedGenerator = new IsElementListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -686,9 +685,9 @@ class MethodsTesterForQrxcAndInterpreter::PropertyNamesListGenerator
 		return (editorManagerInterface->propertyNames(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new PropertyNamesListGenerator();
+		AbstractStringGenerator* clonedGenerator = new PropertyNamesListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -715,9 +714,9 @@ class MethodsTesterForQrxcAndInterpreter::DefaultPropertyValuesListGenerator
 				editorManagerInterface->defaultPropertyValue(elementId, propertyName));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new DefaultPropertyValuesListGenerator();
+		AbstractStringGenerator* clonedGenerator = new DefaultPropertyValuesListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -744,9 +743,9 @@ class MethodsTesterForQrxcAndInterpreter::PropertiesWithDefaultValuesListGenerat
 		return (editorManagerInterface->propertiesWithDefaultValues(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new PropertiesWithDefaultValuesListGenerator();
+		AbstractStringGenerator* clonedGenerator = new PropertiesWithDefaultValuesListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -773,9 +772,9 @@ class MethodsTesterForQrxcAndInterpreter::HasElementListGenerator
 		return ConvertingMethods::convertBoolIntoStringList(editorManagerInterface->hasElement(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new HasElementListGenerator();
+		AbstractStringGenerator* clonedGenerator = new HasElementListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -803,9 +802,9 @@ class MethodsTesterForQrxcAndInterpreter::FindElementByTypeListGenerator
 		return ConvertingMethods::convertIdIntoStringList(editorManagerInterface->findElementByType(type));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new FindElementByTypeListGenerator();
+		AbstractStringGenerator* clonedGenerator = new FindElementByTypeListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -833,9 +832,9 @@ class MethodsTesterForQrxcAndInterpreter::IsGraphicalElementListGenerator
 				editorManagerInterface->isGraphicalElementNode(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new IsGraphicalElementListGenerator();
+		AbstractStringGenerator* clonedGenerator = new IsGraphicalElementListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -864,9 +863,9 @@ class MethodsTesterForQrxcAndInterpreter::IsNodeOrEdgeListGenerator
 				editorManagerInterface->isNodeOrEdge(editorName, elementName));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new IsNodeOrEdgeListGenerator();
+		AbstractStringGenerator* clonedGenerator = new IsNodeOrEdgeListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -895,9 +894,9 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNameListGenerator
 				editorManagerInterface->diagramName(editorName, diagramName));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new DiagramNameListGenerator();
+		AbstractStringGenerator* clonedGenerator = new DiagramNameListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -926,9 +925,9 @@ class MethodsTesterForQrxcAndInterpreter::DiagramNodeNameListGenerator
 				editorManagerInterface->diagramNodeName(editorName, diagramName));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new DiagramNodeNameListGenerator();
+		AbstractStringGenerator* clonedGenerator = new DiagramNodeNameListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -955,9 +954,9 @@ class MethodsTesterForQrxcAndInterpreter::IsParentPropertyListGenerator
 				editorManagerInterface->isParentProperty(elementId, propertyName));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new IsParentPropertyListGenerator();
+		AbstractStringGenerator* clonedGenerator = new IsParentPropertyListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -984,9 +983,9 @@ class MethodsTesterForQrxcAndInterpreter::ChildrenListGenerator
 		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->children(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new ChildrenListGenerator();
+		AbstractStringGenerator* clonedGenerator = new ChildrenListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -1013,9 +1012,9 @@ class MethodsTesterForQrxcAndInterpreter::ShapeListGenerator
 		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->shape(elementId));
 	}
 
-	virtual UnifiedStringGenerator* clone() const
+	virtual AbstractStringGenerator* clone() const
 	{
-		UnifiedStringGenerator* clonedGenerator = new ShapeListGenerator();
+		AbstractStringGenerator* clonedGenerator = new ShapeListGenerator();
 		return clonedGenerator;
 	}
 };
@@ -1071,8 +1070,8 @@ QList<QPair<QString, QPair<QString, QString> > > MethodsTesterForQrxcAndInterpre
 	return mGeneratedList;
 }
 
-UnifiedStringGenerator * MethodsTesterForQrxcAndInterpreter::initGeneratorWithFirstInterface(
-		UnifiedStringGenerator const &generator) const
+AbstractStringGenerator * MethodsTesterForQrxcAndInterpreter::initGeneratorWithFirstInterface(
+		AbstractStringGenerator const &generator) const
 {
 	StringGenerator *clonedGenerator = dynamic_cast<StringGenerator *>(generator.clone());
 
@@ -1080,8 +1079,8 @@ UnifiedStringGenerator * MethodsTesterForQrxcAndInterpreter::initGeneratorWithFi
 	return clonedGenerator;
 }
 
-UnifiedStringGenerator * MethodsTesterForQrxcAndInterpreter::initGeneratorWithSecondInterface(
-		UnifiedStringGenerator const &generator) const
+AbstractStringGenerator * MethodsTesterForQrxcAndInterpreter::initGeneratorWithSecondInterface(
+		AbstractStringGenerator const &generator) const
 {
 	StringGenerator *clonedGenerator = dynamic_cast<StringGenerator *>(generator.clone());
 

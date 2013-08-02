@@ -6,7 +6,7 @@ using namespace qReal;
 
 void MethodsTester::fillMethodsToTestList(QString const &fileName)
 {
-	QFile methodsToTest(pathToSourceCode + "/" + fileName);
+	QFile methodsToTest(pathToSourceCode + fileName);
 	if (!methodsToTest.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		return;
 	}
@@ -20,7 +20,7 @@ void MethodsTester::fillMethodsToTestList(QString const &fileName)
 }
 
 QPair<QString, QPair<QString, QString> > MethodsTester::testMethodIfExistsInList(
-		UnifiedStringGenerator const &stringGenerator
+		AbstractStringGenerator const &stringGenerator
 		, QString const &method)
 {
 	QPair<QString, QPair<QString, QString> > resultPair;
@@ -32,13 +32,13 @@ QPair<QString, QPair<QString, QString> > MethodsTester::testMethodIfExistsInList
 	return resultPair;
 }
 
-QPair<QString, QPair<QString, QString> > MethodsTester::generateOutputForOneMethod(UnifiedStringGenerator const &stringGenerator)
+QPair<QString, QPair<QString, QString> > MethodsTester::generateOutputForOneMethod(AbstractStringGenerator const &stringGenerator)
 {
-	UnifiedStringGenerator * firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
+	AbstractStringGenerator * firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
 	QString const &methodName = firstGenerator->methodName();
 	QString const &firstResult = firstGenerator->generateString();
 
-	UnifiedStringGenerator * secondGenerator = initGeneratorWithSecondInterface(stringGenerator);
+	AbstractStringGenerator * secondGenerator = initGeneratorWithSecondInterface(stringGenerator);
 	QString const &secondResult = secondGenerator->generateString();
 
 	QPair<QString, QString> methodsPair = qMakePair(firstResult, secondResult);

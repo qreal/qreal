@@ -40,10 +40,11 @@ HEADERS += \
 	defs.h \
 	htmlMaker.h \
 	convertingMethods.h \
-	unifiedStringGenerator.h \
 	methodsTesterForQrxcAndQrmc.h \
 	methodsTester.h \
-	methodsTesterForQrxcAndInterpreter.h
+	methodsTesterForQrxcAndInterpreter.h \
+    configurationFileParser.h \
+    abstractStringGenerator.h
 
 SOURCES += \
 	mainClass.cpp \
@@ -65,7 +66,8 @@ SOURCES += \
 	convertingMethods.cpp \
 	methodsTesterForQrxcAndQrmc.cpp \
 	methodsTester.cpp \
-	methodsTesterForQrxcAndInterpreter.cpp
+	methodsTesterForQrxcAndInterpreter.cpp \
+    configurationFileParser.cpp
 
 
 

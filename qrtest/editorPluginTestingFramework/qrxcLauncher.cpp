@@ -58,7 +58,7 @@ QString QrxcLauncher::generatePathToPlugin(QString const &pathToQRealRoot)
 	QString pathToEditorsSdk = pathToQRealRoot + "/plugins";
 	int const levels = pathToEditorsSdk.split("/", QString::SkipEmptyParts).count();
 
-	for (int i = 0; i < levels; i++) {
+	for (int i = 0; i < levels - 1; i++) {
 		result += "../";
 	}
 

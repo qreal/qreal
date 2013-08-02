@@ -6,6 +6,7 @@
 
 #include "methodsTester.h"
 #include "defs.h"
+#include "abstractStringGenerator.h"
 
 namespace editorPluginTestingFramework {
 
@@ -23,10 +24,10 @@ public:
 	QList<QPair<QString, QPair<QString, QString> > > generatedResult();
 
 	/// clones generator, initializes it with qrxcGeneratedPlugin and returns it to methodsTester
-	UnifiedStringGenerator * initGeneratorWithFirstInterface(UnifiedStringGenerator const &generator) const;
+	AbstractStringGenerator * initGeneratorWithFirstInterface(AbstractStringGenerator const &generator) const;
 
 	/// clones generator, initializes it with interpreterGeneratedPlugin and returns it to methodsTester
-	UnifiedStringGenerator * initGeneratorWithSecondInterface(UnifiedStringGenerator const &generator) const;
+	AbstractStringGenerator * initGeneratorWithSecondInterface(AbstractStringGenerator const &generator) const;
 
 private:
 

@@ -4,7 +4,7 @@
 
 #include "../../qrgui/editorPluginInterface/editorInterface.h"
 #include "../../qrgui/pluginManager/interpreterEditorManager.h"
-#include "unifiedStringGenerator.h"
+#include "abstractStringGenerator.h"
 #include "methodsTester.h"
 
 namespace editorPluginTestingFramework {
@@ -23,10 +23,10 @@ public:
 	QList<QPair<QString, QPair<QString, QString> > > generatedOutput();
 
 	/// clones generator, initializes it with qrxcGeneratedPlugin and returns it to methodsTester
-	UnifiedStringGenerator * initGeneratorWithFirstInterface(UnifiedStringGenerator const &generator) const;
+	AbstractStringGenerator * initGeneratorWithFirstInterface(AbstractStringGenerator const &generator) const;
 
 	/// clones generator, initializes it with qrmcGeneratedPlugin and returns it to methodsTester
-	UnifiedStringGenerator * initGeneratorWithSecondInterface(UnifiedStringGenerator const &generator) const;
+	AbstractStringGenerator * initGeneratorWithSecondInterface(AbstractStringGenerator const &generator) const;
 
 private:
 	class StringGenerator;

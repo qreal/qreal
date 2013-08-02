@@ -6,6 +6,7 @@
 #include "../../qrgui/pluginManager/interpreterEditorManager.h"
 #include "../../qrgui/pluginManager/editorManagerInterface.h"
 #include "../../qrgui/pluginManager/editorManager.h"
+#include "../../../qrutils/xmlUtils.h"
 
 #include <QtCore/QDir>
 
@@ -18,6 +19,8 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 	deleteOldBinaries(binariesDir);
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
+
+	parseConfigurationFile();
 
 	launchQrxc(normalizedFileName);
 	compilePlugin(pathToQrxcGeneratedCode);
@@ -107,7 +110,12 @@ void MainClass::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 
 void MainClass::compilePlugin(QString const &directoryToCodeToCompile)
 {
-	mPluginCompiler.compilePlugin(directoryToCodeToCompile);
+	mPluginCompiler.compilePlugin(
+			directoryToCodeToCompile
+			, mQmakeParameter
+			, mMakeParameter
+			, mConfigurationParameter
+	);
 }
 
 void MainClass::launchQrxc(QString const &fileName)
@@ -129,5 +137,13 @@ void MainClass::createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxc
 void MainClass::appendPluginNames()
 {
 	mQrxcGeneratedPluginsList.append(mPluginLoader.pluginNames());
+}
+
+void MainClass::parseConfigurationFile()
+{
+	mConfigurationFileParser.parseConfigurationFile();
+	mQmakeParameter = mConfigurationFileParser.qmakeParameter();
+	mMakeParameter = mConfigurationFileParser.makeParameter();
+	mConfigurationParameter = mConfigurationFileParser.configurationParameter();
 }
 
