@@ -48,14 +48,13 @@ NodeElement::NodeElement(ElementImpl* impl)
 	setFlag(ItemClipsChildrenToShape, false);
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
-	mPortRenderer = new SdfRenderer();
 	mRenderer = new SdfRenderer();
 	LabelFactory factory;
 	QList<LabelInterface*> titles;
 
 	QList<StatPoint> pointPorts;
 	QList<StatLine> linePorts;
-	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer, this);
+	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
 
 	foreach (LabelInterface *titleIface, titles) {
@@ -97,7 +96,6 @@ NodeElement::~NodeElement()
 		delete title;
 	}
 
-	delete mPortRenderer;
 	delete mRenderer;
 	delete mElementImpl;
 
@@ -820,7 +818,7 @@ NodeElement *NodeElement::getNodeAt(QPointF const &position)
 	return 0;
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *w)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *)
 {
 	mElementImpl->paint(painter, mContents);
 	paint(painter, style);

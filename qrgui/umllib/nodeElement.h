@@ -261,7 +261,6 @@ private:
 
 	QTransform mTransform;
 
-	SdfRenderer *mPortRenderer;
 	SdfRenderer *mRenderer;
 
 	bool mIsExpanded;

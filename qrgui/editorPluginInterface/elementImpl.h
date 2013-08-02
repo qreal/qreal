@@ -23,14 +23,12 @@ public:
 	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts
 					  , QList<StatLine> &linePorts, LabelFactoryInterface &factory
 					  , QList<LabelInterface*> &title
-					  , SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
-					  , ElementRepoInterface *elementRepo = 0) = 0;
+					  , SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0) = 0;
 	virtual void init(LabelFactoryInterface &factory,
 					  QList<LabelInterface*> &titles) = 0;
 	virtual void paint(QPainter *painter, QRectF &contents) = 0;
 	virtual void updateData(ElementRepoInterface *repo) const = 0;
 	virtual bool isNode() const = 0;
-	virtual bool hasPorts() const = 0;
 	virtual bool isResizeable() const = 0;
 	virtual Qt::PenStyle getPenStyle() const = 0;
 	virtual int getPenWidth() const = 0; //

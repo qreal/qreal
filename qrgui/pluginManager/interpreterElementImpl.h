@@ -49,15 +49,12 @@ public:
 	InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId);
 	void init(QRectF &contents, QList<StatPoint> &pointPorts
 			, QList<StatLine> &linePorts, LabelFactoryInterface &factory
-			, QList<LabelInterface*> &titles
-			, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
-			, ElementRepoInterface *elementRepo = 0);
+			, QList<LabelInterface*> &titles, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0);
 	void init(LabelFactoryInterface &factory
 			, QList<LabelInterface*> &titles);
 	void paint(QPainter *painter, QRectF &contents);
 	void updateData(ElementRepoInterface *repo) const;
 	bool isNode() const;
-	bool hasPorts() const;
 	bool isResizeable() const;
 	Qt::PenStyle getPenStyle() const;
 	int getPenWidth() const;

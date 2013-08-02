@@ -220,7 +220,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\tvoid init(QRectF &, QList<StatPoint> &, QList<StatLine> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tLabelFactoryInterface &, QList<LabelInterface*> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *, ElementRepoInterface *) {}\n\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, ElementRepoInterface *) {}\n\n"
 	<< "\t\tvoid init(LabelFactoryInterface &factory, QList<LabelInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty())
@@ -257,7 +257,6 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\t\tlist << 0 << 0 << 0 << 0;\n"
 	<< "\t\t\treturn list;\n"
 	<< "\t\t}\n"
-	<< "\t\tbool hasPorts() const { return false; }\n"
 	<< "\t\tint getPenWidth() const { return " << mLineWidth << "; }\n"
 	<< "\t\tQColor getPenColor() const { return QColor("
 	<< mLineColor.red() << ","

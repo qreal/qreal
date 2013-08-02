@@ -42,8 +42,4 @@ private:
 	bool initLinePorts(QDomElement const &portsElement);
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count);
 	bool initBooleanProperties();
-
-	void generatePorts() const;
-	void generateLinePorts(QDomElement const &portsElement, utils::OutFile &out) const;
-	void generatePointPorts(QDomElement const &portsElement, utils::OutFile &out) const;
 };

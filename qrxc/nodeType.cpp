@@ -155,56 +155,6 @@ bool NodeType::initBooleanProperties()
 	return true;
 }
 
-void NodeType::generatePorts() const
-{
-	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Ports") + "</file>\n");
-
-	OutFile out("generated/shapes/" + resourceName("Ports"));
-	out() << "<picture ";
-	out() << "sizex=\"" << mWidth << "\" ";
-	out() << "sizey=\"" << mHeight << "\" ";
-	out() << ">\n";
-
-	generatePointPorts(mPortsDomElement, out);
-	generateLinePorts(mPortsDomElement, out);
-
-	out() << "</picture>\n";
-}
-
-void NodeType::generatePointPorts(QDomElement const &portsElement, OutFile &out) const
-{
-	for (QDomElement portElement = portsElement.firstChildElement("pointPort"); !portElement.isNull();
-	portElement = portElement.nextSiblingElement("pointPort"))
-	{
-		out() << "\t<point stroke-width=\"11\" stroke-style=\"solid\" stroke=\"#c3dcc4\" ";
-		out() << "x1=\""<<portElement.attribute("x") << "\" y1=\""<<portElement.attribute("y") << "\" ";
-		out() << "/>\n";
-		out() << "\t<point stroke-width=\"3\" stroke-style=\"solid\" stroke=\"#465945\" ";
-		out() << "x1=\"" << portElement.attribute("x") << "\" y1=\"" << portElement.attribute("y") << "\" ";
-		out() << "/>\n";
-	}
-}
-
-void NodeType::generateLinePorts(QDomElement const &portsElement, OutFile &out) const
-{
-	for (QDomElement portElement = portsElement.firstChildElement("linePort"); !portElement.isNull();
-	portElement = portElement.nextSiblingElement("linePort"))
-	{
-		QDomElement portStartElement = portElement.firstChildElement("start");
-		QDomElement portEndElement = portElement.firstChildElement("end");
-
-		out() << "\t<line x1=\"" << portStartElement.attribute("startx") << "\" y1=\"" << portStartElement.attribute("starty") << "\" ";
-		out() << "x2=\"" << portEndElement.attribute("endx") << "\" y2=\"" << portEndElement.attribute("endy") << "\" ";
-		out() << "stroke-width=\"7\" stroke-style=\"solid\" stroke=\"#c3dcc4\" ";
-		out() << "/>\n";
-
-		out() << "\t<line x1=\"" << portStartElement.attribute("startx") << "\" y1=\""<<portStartElement.attribute("starty") << "\" ";
-		out() << "x2=\""<<portEndElement.attribute("endx") << "\" y2=\"" << portEndElement.attribute("endy") << "\" ";
-		out() << "stroke-width=\"1\" stroke-style=\"solid\" stroke=\"#465945\" ";
-		out() << "/>\n";
-	}
-}
-
 bool NodeType::hasPointPorts()
 {
 	foreach (Port *port, mPorts){
@@ -226,11 +176,9 @@ bool NodeType::hasLinePorts()
 void NodeType::generateCode(OutFile &out)
 {
 	generateSdf();
-	generatePorts();
 
 	QString const className = NameNormalizer::normalize(qualifiedName());
 	bool hasSdf = false;
-	bool hasPorts = false;
 
 	out() << "\tclass " << className << " : public ElementImpl\n\t{\n"
 	<< "\tpublic:\n";
@@ -249,7 +197,7 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\tvoid init(QRectF &contents, QList<StatPoint> &pointPorts,\n"
 	<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, LabelFactoryInterface &factory,\n"
 	<< "\t\t\t\t\t\t\tQList<LabelInterface*> &titles, SdfRendererInterface *renderer,\n"
-	<< "\t\t\t\t\t\t\tSdfRendererInterface *portRenderer, ElementRepoInterface *elementRepo)\n\t\t{\n";
+	<< "\t\t\t\t\t\t\tElementRepoInterface *elementRepo)\n\t\t{\n";
 
 	if (!hasPointPorts())
 		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
@@ -265,13 +213,6 @@ void NodeType::generateCode(OutFile &out)
 		"\t\t\tmRenderer->load(QString(\":/generated/shapes/" << className << "Class.sdf\"));\n"
 				<< "\t\t\tmRenderer->setElementRepo(elementRepo);\n";
 		hasSdf = true;
-	} else
-		out() << "\t\t\tQ_UNUSED(portRenderer);\n";
-
-	sdfFile.setFileName("generated/shapes/" + className + "Ports.sdf");
-	if (sdfFile.exists()) {
-		out() << "\t\t\tportRenderer->load(QString(\":/generated/shapes/" << className << "Ports.sdf\"));\n";
-		hasPorts = true;
 	}
 
 	out() << "\t\t\tcontents.setWidth(" << mWidth << ");\n"
@@ -299,11 +240,8 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\tint getPenWidth() const { return 0; }\n\n"
 	<< "\t\tQColor getPenColor() const { return QColor(); }\n\n"
 	<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
-	<< "\t\tvoid drawEndArrow(QPainter *) const {}\n"
-	<< "\t\tbool hasPorts() const\n\t\t{\n";
+	<< "\t\tvoid drawEndArrow(QPainter *) const {}\n\n"
 
-	out() << (hasPorts ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n"
 	<< "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n"
 	<< "\t\t\tmRenderer->setElementRepo(repo);\n";
 

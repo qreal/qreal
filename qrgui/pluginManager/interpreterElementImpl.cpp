@@ -157,9 +157,7 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 
 void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 		, QList<StatLine> &linePorts, LabelFactoryInterface &factory
-		, QList<LabelInterface*> &titles
-		, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
-		, ElementRepoInterface *elementRepo)
+		, QList<LabelInterface*> &titles, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)
 {
 	Q_UNUSED(elementRepo);
 	if (mId.element() == "MetaEntityNode") {
@@ -183,10 +181,6 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 		QDomNode portsPicture = portsDoc.importNode(sdfElement, false);
 		initPointPorts(pointPorts, portsDoc, portsPicture, width, height);
 		initLinePorts(linePorts, portsDoc, portsPicture, width, height);
-		portsDoc.appendChild(portsPicture);
-		if (!portsDoc.childNodes().isEmpty()) {
-			portRenderer->load(portsDoc);
-		}
 
 		contents.setWidth(width);
 		contents.setHeight(height);
@@ -301,18 +295,6 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 bool InterpreterElementImpl::isNode() const
 {
 	return mId.element() == "MetaEntityNode";
-}
-
-bool InterpreterElementImpl::hasPorts() const
-{
-	if (mId.element() == "MetaEntityNode") {
-		QDomDocument portsDoc;
-		portsDoc.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
-		QDomNodeList const pointPorts = portsDoc.elementsByTagName("pointPort");
-		QDomNodeList const linePorts = portsDoc.elementsByTagName("linePort");
-		return !pointPorts.isEmpty() || !linePorts.isEmpty();
-	}
-	return false;
 }
 
 bool InterpreterElementImpl::isResizeable() const
