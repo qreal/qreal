@@ -48,6 +48,8 @@ DraggableElement::DraggableElement(
 		setToolTip(modifiedDescription);
 	}
 	setCursor(Qt::OpenHandCursor);
+
+	setAttribute(Qt::WA_AcceptTouchEvents);
 }
 
 QIcon DraggableElement::icon() const
@@ -187,6 +189,38 @@ void DraggableElement::checkElementForChildren()
 	}
 }
 
+bool DraggableElement::event(QEvent *event)
+{
+	QTouchEvent *touchEvent = dynamic_cast<QTouchEvent *>(event);
+	if (!touchEvent || touchEvent->touchPoints().count() != 1) {
+		return QWidget::event(event);
+	}
+
+	QPoint const pos(touchEvent->touchPoints()[0].pos().toPoint());
+
+	switch(event->type()) {
+	case QEvent::TouchBegin: {
+		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonPress, pos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+		QApplication::postEvent(touchEvent->target(), mouseEvent);
+		break;
+	}
+	case QEvent::TouchEnd: {
+		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonRelease, pos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+		QApplication::postEvent(touchEvent->target(), mouseEvent);
+		break;
+	}
+	case QEvent::TouchUpdate: {
+		// TODO: This must move mouse cursor but no effect...
+		QCursor::setPos(mapToGlobal(pos));
+		break;
+	}
+	default:
+		break;
+	}
+	event->accept();
+	return true;
+}
+
 void DraggableElement::mousePressEvent(QMouseEvent *event)
 {
 	QWidget *atMouse = childAt(event->pos());
@@ -241,10 +275,10 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		QDrag *drag = new QDrag(this);
 		drag->setMimeData(mimeData);
 
-		QPixmap p = child->icon().pixmap(96, 96);
+		QPixmap const pixmap = child->icon().pixmap(mData.preferredSize());
 
-		if (!p.isNull()) {
-			drag->setPixmap(child->icon().pixmap(96, 96));
+		if (!pixmap.isNull()) {
+			drag->setPixmap(pixmap);
 		}
 
 		if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction) {
