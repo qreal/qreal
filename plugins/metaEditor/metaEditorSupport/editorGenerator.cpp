@@ -321,6 +321,8 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	setAssociations(logic, id);
 	setPossibleEdges(logic, id);
 	setProperties(logic, id);
+	setPorts(logic, id, "from");
+	setPorts(logic, id, "to");
 	setGeneralization(logic, id);
 	setExplosion(logic, id);
 }
@@ -393,6 +395,20 @@ void EditorGenerator::setProperties(QDomElement &parent, Id const &id)
 	if (!tagProperties.childNodes().isEmpty()) {
 		parent.appendChild(tagProperties);
 	}
+}
+
+void EditorGenerator::setPorts(QDomElement &parent, Id const &id, QString const &direction)
+{
+	QString propertyName = direction + "Ports";
+	QDomElement portsTag = mDocument.createElement(propertyName);
+	QStringList ports = mApi.stringProperty(id, propertyName).split(',', QString::SkipEmptyParts);
+	foreach (QString const &port, ports) {
+		QDomElement portElem = mDocument.createElement("port");
+		Id portId = Id::loadFromString(port);
+		portElem.setAttribute("type", mApi.name(portId));
+		portsTag.appendChild(portElem);
+	}
+	parent.appendChild(portsTag);
 }
 
 void EditorGenerator::setContextMenuFields(QDomElement &parent, const Id &id)
