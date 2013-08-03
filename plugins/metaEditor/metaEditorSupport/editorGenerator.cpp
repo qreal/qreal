@@ -273,7 +273,6 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	setUsages(logic, id);
 	setConnections(logic, id);
 	setProperties(logic, id);
-	setPin(logic, id);
 	setAction(logic, id);
 	setGeneralization(logic, id);
 	setContextMenuFields(logic, id);
@@ -490,11 +489,6 @@ void EditorGenerator::setPossibleEdges(QDomElement &parent, const Id &id)
 	if (!possibleEdges.childNodes().isEmpty()) {
 		parent.appendChild(possibleEdges);
 	}
-}
-
-void EditorGenerator::setPin(QDomElement &parent, const Id &id)
-{
-	setStatusElement(parent, id, "pin", "isPin");
 }
 
 void EditorGenerator::setAction(QDomElement &parent, const Id &id)
