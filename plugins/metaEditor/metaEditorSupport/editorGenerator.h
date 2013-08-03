@@ -26,6 +26,7 @@ private:
 	void createNode(QDomElement &parent, qReal::Id const &id);
 	void createEdge(QDomElement &parent, qReal::Id const &id);
 	void createEnum(QDomElement &parent, qReal::Id const &id);
+	void createPort(QDomElement &parent, qReal::Id const &id);
 	void setProperties(QDomElement &parent, qReal::Id const &id);
 	void setContextMenuFields(QDomElement &parent, qReal::Id const &id);
 	void setValues(QDomElement &parent, qReal::Id const &id);

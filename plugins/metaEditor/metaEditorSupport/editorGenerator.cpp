@@ -205,6 +205,8 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 			QString const objectType = id.element();
 			if (objectType == "MetaEntityEnum") {
 				createEnum(tagNonGraphic, id);
+			} else if (objectType == "MetaEntityPort") {
+				createPort(tagNonGraphic, id);
 			}
 		}
 	}
@@ -331,6 +333,13 @@ void EditorGenerator::createEnum(QDomElement &parent, Id const &id)
 	parent.appendChild(enumElement);
 
 	setValues(enumElement, id);
+}
+
+void EditorGenerator::createPort(QDomElement &parent, Id const &id)
+{
+	QDomElement portElement = mDocument.createElement("port");
+	ensureCorrectness(id, portElement, "name", mApi.name(id));
+	parent.appendChild(portElement);
 }
 
 void EditorGenerator::setGeneralization(QDomElement &parent, const Id &id)
@@ -608,13 +617,12 @@ void EditorGenerator::setBoolValuesForContainer(QString const &propertyName, QDo
 void EditorGenerator::ensureCorrectness(
 		Id const &id, QDomElement element, QString const &tagName, QString const &value)
 {
-	QString const tag = tagName;
-	if (value.isEmpty() && tag == "displayedName") {
+	if (value.isEmpty() && tagName == "displayedName") {
 		return;
 	} else if (value.isEmpty()) {
 		mErrorReporter.addWarning(QString (QObject::tr("not filled %1\n")).arg(tagName), id);
 		element.setAttribute(tagName, "");
-	} else if (tag == "name") {
+	} else if (tagName == "name") {
 		QRegExp patten;
 		patten.setPattern("[A-Za-z_]+([A-Za-z_0-9 :]*)");
 		if (patten.exactMatch(value)) {

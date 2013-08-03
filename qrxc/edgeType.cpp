@@ -31,6 +31,8 @@ Type* EdgeType::clone() const
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
 	result->mLineType = mLineType;
+	result->mFromPorts = mFromPorts;
+	result->mToPorts = mToPorts;
 	return result;
 }
 
