@@ -117,6 +117,11 @@ QStringList ProxyEditorManager::propertyNames(Id const &id) const
 	return mProxiedEditorManager->propertyNames(id);
 }
 
+QStringList ProxyEditorManager::portTypes(Id const &id) const
+{
+	return mProxiedEditorManager->portTypes(id);
+}
+
 QString ProxyEditorManager::defaultPropertyValue(Id const &id, QString name) const
 {
 	return mProxiedEditorManager->defaultPropertyValue(id, name);

@@ -493,31 +493,7 @@
                         <port type="SequenceTo"/>
                     </toPorts>
                     <possibleEdges>
-                        <possibleEdge beginName="StartEvent" directed="true" endName="EndEvent"/>
-                        <possibleEdge beginName="StartEvent" directed="true" endName="Gateway"/>
-                        <possibleEdge beginName="StartEvent" directed="true" endName="Task"/>
-                        <possibleEdge beginName="StartEvent" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="StartEvent" directed="true" endName="Subprocess"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="Task"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="Gateway"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="EndEvent"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="Subprocess"/>
-                        <possibleEdge beginName="Task" directed="true" endName="Task"/>
-                        <possibleEdge beginName="Task" directed="true" endName="Gateway"/>
-                        <possibleEdge beginName="Task" directed="true" endName="EndEvent"/>
-                        <possibleEdge beginName="Task" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="Task" directed="true" endName="Subprocess"/>
-                        <possibleEdge beginName="Gateway" directed="true" endName="Task"/>
-                        <possibleEdge beginName="Gateway" directed="true" endName="Gateway"/>
-                        <possibleEdge beginName="Gateway" directed="true" endName="EndEvent"/>
-                        <possibleEdge beginName="Gateway" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="Gateway" directed="true" endName="Subprocess"/>
-                        <possibleEdge beginName="Subprocess" directed="true" endName="Task"/>
-                        <possibleEdge beginName="Subprocess" directed="true" endName="Gateway"/>
-                        <possibleEdge beginName="Subprocess" directed="true" endName="EndEvent"/>
-                        <possibleEdge beginName="Subprocess" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="Subprocess" directed="true" endName="Subprocess"/>
+                        <possibleEdge beginName="SequenceFrom" directed="true" endName="SequenceTo"/>
                     </possibleEdges>
                 </logic>
             </edge>
@@ -568,15 +544,7 @@
                         <property type="string" displayedName="Text" name="Text"/>
                     </properties>
                     <possibleEdges>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="Task"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="StartEvent"/>
-                        <possibleEdge beginName="Task" directed="true" endName="Task"/>
-                        <possibleEdge beginName="Task" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="Task" directed="true" endName="StartEvent"/>
-                        <possibleEdge beginName="EndEvent" directed="true" endName="Task"/>
-                        <possibleEdge beginName="EndEvent" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="EndEvent" directed="true" endName="StartEvent"/>
+                        <possibleEdge beginName="NonTyped" directed="true" endName="NonTyped"/>
                     </possibleEdges>
                 </logic>
             </edge>

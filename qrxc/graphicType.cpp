@@ -525,6 +525,13 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRefer
 	return false;
 }
 
+bool GraphicType::generatePorts(OutFile &out, bool isNotFirst)
+{
+	Q_UNUSED(out)
+	Q_UNUSED(isNotFirst)
+	return false;
+}
+
 void GraphicType::generatePropertyTypes(OutFile &out)
 {
 	if (!mVisible)

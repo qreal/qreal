@@ -12,6 +12,7 @@
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
 typedef QPair<bool, qReal::Id> PossibleEdgeType;
+typedef QPair<qReal::Id, qReal::Id> ElementPair;
 
 /** @class ElementImpl
   *	@brief base class for generated stuff in plugins

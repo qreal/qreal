@@ -659,22 +659,44 @@ EdgeElement::NodeSide EdgeElement::rotateRight(EdgeElement::NodeSide side) const
 
 bool EdgeElement::initPossibleEdges()
 {
-	if (!possibleEdges.isEmpty()) {
+	if (!mPossibleEdges.isEmpty()) {
 		return true;
 	}
+
 	QString editor = id().editor();
 	//TODO: do a code generation for diagrams
 	QString diagram = id().diagram();
-	QList<StringPossibleEdge> stringPossibleEdges = mGraphicalAssistApi->editorManagerInterface().possibleEdges(editor, id().element());
+	QStringList elements = mGraphicalAssistApi->editorManagerInterface().elements(editor, diagram);
+
+	QList<StringPossibleEdge> stringPossibleEdges = mGraphicalAssistApi->editorManagerInterface().possibleEdges(
+			editor, id().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges) {
-		QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, pEdge.first.first),
-		Id(editor, diagram, pEdge.first.second));
 		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
-		PossibleEdge possibleEdge(nodes, edge);
-		possibleEdges.push_back(possibleEdge);
+
+		QStringList fromElements;
+		QStringList toElements;
+		foreach (QString const &element, elements) {
+			if (mGraphicalAssistApi->editorManagerInterface().portTypes(Id(editor, diagram, element)).contains(
+					pEdge.first.first)) {
+				fromElements << element;
+			}
+			if (mGraphicalAssistApi->editorManagerInterface().portTypes(Id(editor, diagram, element)).contains(
+					pEdge.first.second)) {
+				toElements << element;
+			}
+		}
+
+		foreach (QString const &fromElement, fromElements) {
+			foreach (QString const &toElement, toElements) {
+				QPair<qReal::Id, qReal::Id> nodes(Id(editor, diagram, fromElement),	Id(editor, diagram, toElement));
+				PossibleEdge possibleEdge(nodes, edge);
+				mPossibleEdges.push_back(possibleEdge);
+
+			}
+		}
 	}
 
-	return (!possibleEdges.isEmpty());
+	return (!mPossibleEdges.isEmpty());
 }
 
 void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -1075,7 +1097,7 @@ bool EdgeElement::reverseActionIsPossible()
 
 QList<PossibleEdge> EdgeElement::getPossibleEdges()
 {
-	return possibleEdges;
+	return mPossibleEdges;
 }
 
 void EdgeElement::delPointHandler(QPointF const &pos)

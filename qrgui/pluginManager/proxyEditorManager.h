@@ -52,6 +52,7 @@ public:
 	bool isElement(Id const &id) const;
 
 	QStringList propertyNames(Id const &id) const;
+	QStringList portTypes(Id const &id) const;
 	QString defaultPropertyValue(Id const &id, QString name) const;
 	QStringList propertiesWithDefaultValues(Id const &id) const;
 

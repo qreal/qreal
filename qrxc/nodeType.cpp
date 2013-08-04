@@ -336,3 +336,24 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t};";
 	out() << "\n\n";
 }
+
+bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
+{
+	GraphicType::generateOneCase(out, isNotFirst);
+
+	QSet<QString> portTypes;
+	foreach (Port *port, mPorts) {
+		portTypes.insert(port->type());
+	}
+
+	if (!portTypes.empty()) {
+		out() << "\t\tresult ";
+		foreach (QString const &type, portTypes) {
+			out() << "<< \"" << type << "\"";
+		}
+		out() << ";\n";
+	}
+
+	out() << "\t}\n";
+	return true;
+}

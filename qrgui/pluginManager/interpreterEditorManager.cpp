@@ -497,6 +497,16 @@ QStringList InterpreterEditorManager::propertyNames(Id const &id) const
 	return result;
 }
 
+QStringList InterpreterEditorManager::portTypes(Id const &id) const
+{
+	QStringList result;
+	qrRepo::RepoApi *repo = repoAndMetaId(id).first;
+	foreach (Id const &port, repo->elementsByType("MetaEntityPort")) {
+		result << repo->name(port);
+	}
+	return result;
+}
+
 QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) const
 {
 	QStringList result;

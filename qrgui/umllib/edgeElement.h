@@ -197,7 +197,7 @@ private:
 	/// Returns the bezier curve built on the mLine points.
 	QPainterPath bezierCurve() const;
 
-	QList<PossibleEdge> possibleEdges;
+	QList<PossibleEdge> mPossibleEdges;
 
 	bool mIsDissectable;
 	int getPoint(const QPointF &location);

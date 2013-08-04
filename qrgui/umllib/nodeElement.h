@@ -208,7 +208,7 @@ private:
 	void disconnectEdges();
 
 	void delUnusedLines();
-	PossibleEdge toPossibleEdge(StringPossibleEdge const &strPossibleEdge);
+	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);

@@ -16,6 +16,8 @@ public:
 	virtual void generateCode(utils::OutFile &out, QStringList const &portTypes) = 0;
 	virtual Port *clone() const = 0;
 
+	QString type() const;
+
 protected:
 	QString mType;
 };
