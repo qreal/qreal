@@ -647,8 +647,24 @@ void EditorGenerator::ensureCorrectness(
 			mErrorReporter.addWarning(QObject::tr("wrong name\n"), id);
 			element.setAttribute(tagName, value);
 		}
+	} else if (element.nodeName() == "possibleEdge" && (tagName == "beginName" || tagName == "endName")) {
+		if (value == "NonTyped" || findPort(value)) {
+			element.setAttribute(tagName, value);
+		} else {
+			mErrorReporter.addError(QObject::tr("wrong %1 for possible edge: must be port type\n").arg(tagName), id);
+		}
 	} else {
 		element.setAttribute(tagName, value);
 	}
 }
 
+bool EditorGenerator::findPort(QString const &name) const
+{
+	foreach (Id const &port, mApi.elementsByType("MetaEntityPort")) {
+		if (mApi.name(port) == name) {
+			return true;
+		}
+	}
+
+	return false;
+}
