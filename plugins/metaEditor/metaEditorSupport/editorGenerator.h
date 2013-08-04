@@ -36,7 +36,6 @@ private:
 	void setConnections(QDomElement &parent, qReal::Id const &id);
 	void setGeneralization(QDomElement &parent, qReal::Id const &id);
 	void setPossibleEdges(QDomElement &parent, qReal::Id const &id);
-	void setPin(QDomElement &parent, qReal::Id const &id);
 	void setStatusElement(QDomElement &parent, qReal::Id const &id, QString const &tagName, QString const &propertyName);
 	void setAction(QDomElement &parent, qReal::Id const &id);
 	void createDiagrams(QDomElement &parent, qReal::Id const &id);
