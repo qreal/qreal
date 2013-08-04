@@ -1,6 +1,7 @@
 #include <QtWidgets>
 
 #include "element.h"
+#include "../controller/commands/changePropertyCommand.h"
 
 using namespace qReal;
 
@@ -54,9 +55,16 @@ QString Element::logicalProperty(QString const &roleName) const
 	return mLogicalAssistApi->propertyByRoleName(logicalId(), roleName).toString();
 }
 
-void Element::setLogicalProperty(QString const &roleName, QString const &value)
+void Element::setLogicalProperty(QString const &roleName, QString const &value, bool withUndoRedo)
 {
-	mLogicalAssistApi->setPropertyByRoleName(logicalId(), value, roleName);
+	commands::AbstractCommand *command = new commands::ChangePropertyCommand(mLogicalAssistApi
+			, roleName, logicalId(), value);
+	if (withUndoRedo) {
+		mController->execute(command);
+	} else {
+		command->redo();
+		delete command;
+	}
 }
 
 void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
@@ -70,31 +78,29 @@ void Element::setController(Controller *controller)
 	mController = controller;
 }
 
-void Element::initTitlesBy(QRectF const& contents)
-{
-	foreach (ElementTitle * const title, mTitles) {
-		title->transform(contents);
-	}
-}
-
 void Element::initTitles()
 {
-	initTitlesBy(boundingRect().adjusted(kvadratik, kvadratik, -kvadratik, -kvadratik));
 }
 
-void Element::singleSelectionState(const bool singleSelected) {
+void Element::singleSelectionState(const bool singleSelected)
+{
 	if (singleSelected) {
 		selectionState(true);
 	}
 	emit switchFolding(!singleSelected);
 }
 
-void Element::selectionState(const bool selected) {
+void Element::selectionState(const bool selected)
+{
 	if (isSelected() != selected) {
 		setSelected(selected);
 	}
 	if (!selected) {
 		singleSelectionState(false);
+	}
+
+	foreach (Label *title, mTitles) {
+		title->setParentSelected(selected);
 	}
 }
 
@@ -111,7 +117,7 @@ void Element::setTitlesVisible(bool visible)
 
 void Element::setTitlesVisiblePrivate(bool visible)
 {
-	foreach (ElementTitle * const title, mTitles) {
+	foreach (Label * const title, mTitles) {
 		title->setVisible(title->isHard() || visible);
 	}
 }

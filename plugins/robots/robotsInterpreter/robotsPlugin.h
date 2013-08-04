@@ -42,6 +42,7 @@ private slots:
 	void showRobotSettings();
 	void show2dModel();
 	void rereadSettings();
+	void titlesVisibilityCheckedInPlugin(bool checked);
 	void titlesVisibilityChecked(bool checked);
 
 private:

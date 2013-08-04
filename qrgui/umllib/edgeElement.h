@@ -30,10 +30,8 @@ class NodeElement;
   * @brief class for an edge on a diagram
  */
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 class ReshapeEdgeCommand;
 }
 }

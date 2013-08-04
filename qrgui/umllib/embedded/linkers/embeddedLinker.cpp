@@ -116,7 +116,7 @@ void EmbeddedLinker::initTitle()
 	else if (scenePos().x() > mMaster->scenePos().x() + 2*rectWidth/3)
 		x = +boundingRect().width() - 10;
 
-	mTitle = new ElementTitle(static_cast<qreal>(x) / boundingRect().width()
+	mTitle = new Label(static_cast<qreal>(x) / boundingRect().width()
 			, static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly, 0);
 	mTitle->init(boundingRect());
 	mTitle->setTextWidth(textWidth);
@@ -281,20 +281,41 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mEdge->hide();
 		QPointF const &eScenePos = event->scenePos();
 		NodeElement *under = dynamic_cast<NodeElement*>(scene->itemAt(eScenePos, QTransform()));
-		QGraphicsItem *container = mEdge->src()->parentItem();
 		mEdge->show();
 		int result = 0;
 
 		commands::CreateElementCommand *createElementFromMenuCommand = NULL;
-		if (!under || (container == under)) {
-			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, &createElementFromMenuCommand);
-			NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
-			if (result == -1) {
-				mEdge = NULL;
-			} else if ((result == 1) && target) {
-				mEdge->setDst(target);
-				target->storeGeometry();
+		if (!under) {
+			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
+		} else {
+			bool canBeConnected = false;
+			foreach(PossibleEdge const &pEdge, mEdge->src()->getPossibleEdges()) {
+				if (pEdge.first.second.element() == under->id().element()) {
+					canBeConnected = true;
+				} else {
+					// pEdge.second.first is true, if edge can connect items in only one direction.
+					if (!pEdge.second.first) {
+						canBeConnected = (pEdge.first.first.element() == under->id().element());
+					}
+				}
 			}
+
+			if (under->isContainer()) {
+				result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos,
+							canBeConnected, &createElementFromMenuCommand);
+			} else {
+				if (!canBeConnected) {
+					result = -1;
+				}
+			}
+		}
+		NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
+
+		if (result == -1) {
+			mEdge = NULL;
+		} else if ((result == 1) && target) {
+			mEdge->setDst(target);
+			target->storeGeometry();
 		}
 		if (result != -1) {
 			mEdge->connectToPort();

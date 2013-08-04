@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsLineItem>
@@ -10,7 +10,8 @@
 #include "gestures/mouseMovementManager.h"
 #include "copyPaste/clipboardHandler.h"
 
-#include "editorViewMVIface.h"
+#include "private/editorViewMVIface.h"
+#include "private/exploserView.h"
 
 const int arrowMoveOffset = 5;
 
@@ -38,11 +39,15 @@ public:
 	void clearScene();
 
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
-			, commands::CreateElementCommand **elementCommand = 0);
-	virtual qReal::Id createElement(QString const &, QPointF const &scenePos
+			, bool canBeConnected, commands::CreateElementCommand **elementCommand = 0);
+	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
+	virtual qReal::Id createElement(QString const &
+			, QPointF const &scenePos
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommand = 0
-			, bool executeImmediately = true);
+			, bool executeImmediately = true
+			, QPointF const shiftToParent = QPointF());
+
 	virtual void createElement(QMimeData const *mimeData, QPointF const &scenePos
 			, bool searchForParents = true
 			, commands::CreateElementCommand **createCommandPointer = 0
@@ -51,7 +56,7 @@ public:
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
 	virtual Element *getElem(qReal::Id const &id) const;
-	Element *getElemAt(const QPointF &position);
+	Element *getElemAt(const QPointF &position) const;
 
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
@@ -85,6 +90,7 @@ public:
 	void createSingleElement(Id const &id, QString const &name
 			, Element *e, QPointF const &position
 			, Id const &parentId, bool isFromLogicalModel
+			, Id const &explosionTarget = Id()
 			, commands::CreateElementCommand **createCommandPointer = NULL
 			, bool executeImmediately = true);
 
@@ -122,6 +128,8 @@ public slots:
 
 	void cropToItems();
 
+	void deleteGesture();
+
 signals:
 	void zoomIn();
 	void zoomOut();
@@ -145,11 +153,6 @@ protected:
 	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
-	void connectActionTriggered();
-	void goToActionTriggered();
-	void disconnectActionTriggered();
-	void addUsageActionTriggered();
-	void deleteUsageActionTriggered();
 	void changePropertiesActionTriggered();
 	void changeAppearanceActionTriggered();
 	void printElementsOfRootDiagram();
@@ -167,7 +170,6 @@ private:
 
 	void getLinkByGesture(NodeElement *parent, NodeElement const &child);
 	void drawGesture();
-	void deleteGesture();
 	void createEdgeMenu(QList<QString> const &ids);
 
 	/// sets sceneRect to (0, 0, 1000, 1000) by adding its corners to the scene
@@ -177,20 +179,6 @@ private:
 
 	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
-	void createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const;
-	void createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const;
-	/**
-	 * @return true, if connection menu was added
-	 */
-	void createAddConnectionMenu(Element const * const element
-			, QMenu &contextMenu, QString const &menuName
-			, qReal::IdList const &connectableTypes, qReal::IdList const &alreadyConnectedElements
-			, qReal::IdList const &connectableDiagrams, const char *slot) const;
-
-	void createDisconnectMenu(Element const * const element
-			, QMenu &contextMenu, QString const &menuName
-			, qReal::IdList const &outgoingConnections, qReal::IdList const &incomingConnections
-			, const char *slot) const;
 
 	void initContextMenu(Element *e, QPointF const &pos);
 	bool isEmptyClipboard();
@@ -255,6 +243,8 @@ private:
 
 	bool mIsSelectEvent;
 	bool mTitlesVisible;
+
+	view::details::ExploserView *mExploser; // Takes ownership
 
 	friend class qReal::EditorViewMViface;
 };

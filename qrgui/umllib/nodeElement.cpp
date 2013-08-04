@@ -18,6 +18,7 @@
 #include "private/foldCommand.h"
 
 #include "../controller/commands/changeParentCommand.h"
+#include "../controller/commands/renameCommand.h"
 #include "../controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal;
@@ -46,16 +47,16 @@ NodeElement::NodeElement(ElementImpl* impl)
 
 	mPortRenderer = new SdfRenderer();
 	mRenderer = new SdfRenderer();
-	ElementTitleFactory factory;
-	QList<ElementTitleInterface*> titles;
+	LabelFactory factory;
+	QList<LabelInterface*> titles;
 
 	QList<StatPoint> pointPorts;
 	QList<StatLine> linePorts;
 	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
 
-	foreach (ElementTitleInterface *titleIface, titles) {
-		ElementTitle *title = dynamic_cast<ElementTitle*>(titleIface);
+	foreach (LabelInterface *titleIface, titles) {
+		Label *title = dynamic_cast<Label*>(titleIface);
 		if (!title) {
 			continue;
 		}
@@ -88,7 +89,7 @@ NodeElement::~NodeElement()
 		edge->removeLink(this);
 	}
 
-	foreach (ElementTitle *title, mTitles) {
+	foreach (Label *title, mTitles) {
 		delete title;
 	}
 
@@ -130,9 +131,16 @@ QMap<QString, QVariant> NodeElement::logicalProperties() const
 	return mGraphicalAssistApi->properties(logicalId());
 }
 
-void NodeElement::setName(QString value)
+void NodeElement::setName(QString const &value, bool withUndoRedo)
 {
-	mGraphicalAssistApi->setName(id(), value);
+	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi
+			, id(), value, &mLogicalAssistApi->exploser());
+	if (withUndoRedo) {
+		mController->execute(command);
+	} else {
+		command->redo();
+		delete command;
+	}
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
@@ -145,11 +153,6 @@ void NodeElement::setGeometry(QRectF const &geom)
 	mTransform.reset();
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
-
-	foreach (ElementTitle * const title, mTitles) {
-		title->transform(geom);
-	}
-
 }
 
 void NodeElement::setPos(QPointF const &pos)
@@ -855,7 +858,6 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 			b.setColor(Qt::blue);
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
-			painter->save();
 
 			if (mElementImpl->isResizeable()) {
 				drawLinesForResize(painter);
@@ -1145,10 +1147,15 @@ void NodeElement::resize(QRectF const &newContents, QPointF const &newPos, bool 
 {
 	ResizeHandler handler(this);
 	handler.resize(newContents, newPos, needResizeParent);
+
+	foreach (Label *title, mTitles) {
+		title->setParentContents(mContents);
+	}
 }
 
 void NodeElement::drawLinesForResize(QPainter *painter)
 {
+	painter->save();
 	painter->translate(mContents.topRight());
 	drawSeveralLines(painter, -1, 1);
 	painter->save();

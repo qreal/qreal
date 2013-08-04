@@ -9,7 +9,7 @@
 #include <QtGui/QPainter>
 
 #include "../editorPluginInterface/elementImpl.h"
-#include "../editorPluginInterface/elementTitleHelpers.h"
+#include "../editorPluginInterface/labelHelpers.h"
 #include "../editorPluginInterface/elementRepoInterface.h"
 #include "../umllib/sdfRenderer.h"
 #include "../../qrkernel/ids.h"
@@ -25,9 +25,9 @@ namespace qReal {
 struct EdgeLabel {
 	QString labelText;
 	QString labelType;
-	ElementTitleInterface* title;
+	LabelInterface* title;
 
-	EdgeLabel(QString const &labelText_, QString const &labelType_, ElementTitleInterface* title_)
+	EdgeLabel(QString const &labelText_, QString const &labelType_, LabelInterface* title_)
 		: labelText(labelText_), labelType(labelType_), title(title_)
 	{}
 };
@@ -35,9 +35,9 @@ struct EdgeLabel {
 struct NodeLabel {
 	QString textBinded;
 	QString center;
-	ElementTitleInterface* title;
+	LabelInterface* title;
 
-	NodeLabel(QString const &textBinded_, QString const &center_, ElementTitleInterface* title_)
+	NodeLabel(QString const &textBinded_, QString const &center_, LabelInterface* title_)
 		: textBinded(textBinded_), center(center_), title(title_)
 	{}
 };
@@ -48,12 +48,12 @@ class InterpreterElementImpl : public ElementImpl
 public:
 	InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId);
 	void init(QRectF &contents, QList<StatPoint> &pointPorts
-			, QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
-			, QList<ElementTitleInterface*> &titles
+			, QList<StatLine> &linePorts, LabelFactoryInterface &factory
+			, QList<LabelInterface*> &titles
 			, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
 			, ElementRepoInterface *elementRepo = 0);
-	void init(ElementTitleFactoryInterface &factory
-			, QList<ElementTitleInterface*> &titles);
+	void init(LabelFactoryInterface &factory
+			, QList<LabelInterface*> &titles);
 	void paint(QPainter *painter, QRectF &contents);
 	void updateData(ElementRepoInterface *repo) const;
 	bool isNode() const;
@@ -88,7 +88,7 @@ public:
 private:
 	void initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height);
 	void initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height);
-	void initLabels(int const &width, int const &height, ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles);
+	void initLabels(int const &width, int const &height, LabelFactoryInterface &factory, QList<LabelInterface*> &titles);
 	QVector<int> getSizeOfContainerProperty(QString const &property) const;
 	QStringList getListOfStr(QString const &labelText) const;
 	QString getResultStr(QStringList const &list, ElementRepoInterface *repo) const;

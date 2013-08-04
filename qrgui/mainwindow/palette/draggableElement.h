@@ -10,12 +10,13 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLabel>
 
-#include "mainWindow.h"
+#include "paletteElement.h"
+#include "../mainWindow.h"
 #include "../pluginManager/proxyEditorManager.h"
 #include "../../qrkernel/ids.h"
 
-namespace qReal{
-namespace gui{
+namespace qReal {
+namespace gui {
 
 /// Class for representing editor element on palette.
 class DraggableElement : public QWidget
@@ -24,11 +25,7 @@ class DraggableElement : public QWidget
 
 public:
 	DraggableElement(MainWindow &mainWindow
-		, Id const &id
-		, QString const &name
-		, QString const &description
-		, QIcon const &icon
-		, QSize const &preferredSize
+		, PaletteElement const &paletteElement
 		, bool iconsOnly
 		, EditorManagerInterface &editorManagerProxy
 		, QWidget *parent = NULL
@@ -43,6 +40,10 @@ public:
 	/// Id of an element.
 	Id id() const;
 
+	/// The id of the element which will be a target for an explosion of
+	/// newly created element
+	Id explosionTarget() const;
+
 	void setIconSize(int size);
 
 	QSize iconsPreferredSize() const;
@@ -54,20 +55,20 @@ private slots:
 	void deleteElement();
 	void checkElementForRootDiagramNode();
 
+protected:
+	virtual bool event(QEvent *event);
+	virtual void mousePressEvent(QMouseEvent *event);
+
 private:
-	Id mId;
-	QIcon mIcon;
-	QSize mPreferredSize;
-	QString mText;
+	void checkElementForChildren();
+
+	PaletteElement const mData;
 	QLabel *mLabel;
 	EditorManagerInterface &mEditorManagerProxy;  // Does not have ownership.
 	MainWindow &mMainWindow;
 	Id mDeletedElementId;
 	bool mIsRootDiagramNode;
-
-	virtual void mousePressEvent(QMouseEvent *event);
-
-	void checkElementForChildren();
 };
+
 }
 }

@@ -2,12 +2,12 @@
 #include <QtCore/QDebug>
 
 #include "editorViewMVIface.h"
-#include "editorView.h"
-#include "editorViewScene.h"
-#include "../../qrkernel/definitions.h"
-#include "../umllib/element.h"
-#include "../pluginManager/editorManagerInterface.h"
-#include "../mainwindow/mainWindow.h"
+#include "../editorView.h"
+#include "../editorViewScene.h"
+#include "../../../qrkernel/definitions.h"
+#include "../../umllib/element.h"
+#include "../../pluginManager/editorManagerInterface.h"
+#include "../../mainwindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -173,6 +173,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			elem->checkConnectionsToPort();
 			elem->initPossibleEdges();
 			elem->initTitles();
+			mView->setFocus();
 			// TODO: brush up init~()
 
 			bool isEdgeFromEmbeddedLinker = false;

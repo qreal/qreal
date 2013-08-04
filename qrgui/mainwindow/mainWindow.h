@@ -71,6 +71,7 @@ public:
 
 	EditorManagerInterface &editorManager();
 	EditorView *getCurrentTab() const;
+	bool isCurrentTabShapeEdit() const;
 	ListenerManager *listenerManager() const;
 	models::Models *models() const;
 	Controller *controller() const;
@@ -163,8 +164,8 @@ public slots:
 	void deleteFromScene();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
-	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
-	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
+	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true);
+	void activateItemOrDiagram(QModelIndex const &idx, bool setSelected = true);
 	virtual void selectItem(Id const &id);
 	virtual void selectItemOrDiagram(Id const &graphicalId);
 
@@ -225,6 +226,7 @@ private slots:
 	commands::AbstractCommand *graphicalDeleteCommand(QModelIndex const &index);
 	commands::AbstractCommand *logicalDeleteCommand(Id const &index);
 	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
+	void appendCascadeDeleteCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
 
 	void deleteFromDiagram();
 	void copyElementsOnDiagram();
@@ -289,7 +291,7 @@ private:
 	virtual void closeEvent(QCloseEvent *event);
 
 	void deleteFromExplorer(bool isLogicalModel);
-	void deleteItems(IdList &itemsToDelete);
+	void deleteItems(IdList &itemsToDelete, bool global = false);
 
 	void keyPressEvent(QKeyEvent *event);
 

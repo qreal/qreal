@@ -17,7 +17,9 @@ bool ReshapeEdgeCommand::execute()
 	if (!mTrackStopped) {
 		return true;
 	}
-	EdgeElementCommand::execute();
+	if (!EdgeElementCommand::execute()) {
+		return false;
+	}
 	applyConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos);
 	return true;
 }
@@ -27,7 +29,9 @@ bool ReshapeEdgeCommand::restoreState()
 	if (!mTrackStopped) {
 		return true;
 	}
-	EdgeElementCommand::restoreState();
+	if (!EdgeElementCommand::restoreState()) {
+		return false;
+	}
 	applyConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos);
 	return true;
 }

@@ -4,7 +4,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "draggableElement.h"
-#include "mainWindow.h"
+#include "../mainWindow.h"
 #include "paletteTree.h"
 #include "../../qrkernel/settingsManager.h"
 #include "../dialogs/metamodelingOnFly/propertiesDialog.h"
@@ -17,69 +17,69 @@ using namespace gui;
 
 DraggableElement::DraggableElement(
 		MainWindow &mainWindow
-		, Id const &id
-		, QString const &name
-		, QString const &description
-		, QIcon const &icon
-		, QSize const &preferredSize
+		, PaletteElement const &data
 		, bool iconsOnly
 		, EditorManagerInterface &editorManagerProxy
 		, QWidget *parent
 		)
-		: QWidget(parent)
-		, mId(id)
-		, mIcon(icon)
-		, mPreferredSize(preferredSize)
-		, mText(name)
-		, mEditorManagerProxy(editorManagerProxy)
-		, mMainWindow(mainWindow)
+	: QWidget(parent)
+	, mData(data)
+	, mEditorManagerProxy(editorManagerProxy)
+	, mMainWindow(mainWindow)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 4, 0, 4);
 
-	const int size = iconsOnly ? 50 : 30;
+	int const size = iconsOnly ? 50 : 30;
 	mLabel = new QLabel(this);
-	mLabel->setPixmap(mIcon.pixmap(size - 2, size - 2));
+	mLabel->setPixmap(mData.icon().pixmap(size - 2, size - 2));
 	layout->addWidget(mLabel);
 	if (!iconsOnly) {
 		QLabel *text = new QLabel(this);
-		text->setText(mText);
+		text->setText(mData.name());
 		layout->addWidget(text);
 		layout->addStretch();
 	}
 
 	setLayout(layout);
-	QString modifiedDescription = description;
+	QString modifiedDescription = mData.description();
 	if (!modifiedDescription.isEmpty()) {
 		modifiedDescription.insert(0, "<body>");  //turns alignment on
 		setToolTip(modifiedDescription);
 	}
 	setCursor(Qt::OpenHandCursor);
+
+	setAttribute(Qt::WA_AcceptTouchEvents);
 }
 
 QIcon DraggableElement::icon() const
 {
-	return mIcon;
+	return mData.icon();
 }
 
 QString DraggableElement::text() const
 {
-	return mText;
+	return mData.name();
 }
 
 Id DraggableElement::id() const
 {
-	return mId;
+	return mData.id();
+}
+
+Id DraggableElement::explosionTarget() const
+{
+	return mData.explosionTarget();
 }
 
 QSize DraggableElement::iconsPreferredSize() const
 {
-	return mPreferredSize;
+	return mData.preferredSize();
 }
 
 void DraggableElement::setIconSize(int size)
 {
-	mLabel->setPixmap(mIcon.pixmap(size , size));
+	mLabel->setPixmap(mData.icon().pixmap(size , size));
 }
 
 void DraggableElement::changePropertiesPaletteActionTriggered()
@@ -189,6 +189,38 @@ void DraggableElement::checkElementForChildren()
 	}
 }
 
+bool DraggableElement::event(QEvent *event)
+{
+	QTouchEvent *touchEvent = dynamic_cast<QTouchEvent *>(event);
+	if (!touchEvent || touchEvent->touchPoints().count() != 1) {
+		return QWidget::event(event);
+	}
+
+	QPoint const pos(touchEvent->touchPoints()[0].pos().toPoint());
+
+	switch(event->type()) {
+	case QEvent::TouchBegin: {
+		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonPress, pos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+		QApplication::postEvent(touchEvent->target(), mouseEvent);
+		break;
+	}
+	case QEvent::TouchEnd: {
+		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonRelease, pos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+		QApplication::postEvent(touchEvent->target(), mouseEvent);
+		break;
+	}
+	case QEvent::TouchUpdate: {
+		// TODO: This must move mouse cursor but no effect...
+		QCursor::setPos(mapToGlobal(pos));
+		break;
+	}
+	default:
+		break;
+	}
+	event->accept();
+	return true;
+}
+
 void DraggableElement::mousePressEvent(QMouseEvent *event)
 {
 	QWidget *atMouse = childAt(event->pos());
@@ -235,6 +267,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		stream << QString("(" + child->text() + ")");
 		stream << QPointF(0, 0);
 		stream << isFromLogicalModel;
+		stream << mData.explosionTarget().toString();
 
 		QMimeData *mimeData = new QMimeData;
 		mimeData->setData("application/x-real-uml-data", itemData);
@@ -242,10 +275,10 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		QDrag *drag = new QDrag(this);
 		drag->setMimeData(mimeData);
 
-		QPixmap p = child->icon().pixmap(96, 96);
+		QPixmap const pixmap = child->icon().pixmap(mData.preferredSize());
 
-		if (!p.isNull()) {
-			drag->setPixmap(child->icon().pixmap(96, 96));
+		if (!pixmap.isNull()) {
+			drag->setPixmap(pixmap);
 		}
 
 		if (drag->start(Qt::CopyAction | Qt::MoveAction) == Qt::MoveAction) {

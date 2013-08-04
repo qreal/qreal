@@ -24,12 +24,14 @@ public:
 
 	void save();
 	virtual void restoreSettings();
+	void changeTextVisibleOnSettingPage(bool isChecked);
 
 	QString selectedPortName() const;
 	QString selectedCommunication() const;
 
 signals:
 	void saved();
+	void textVisibleChanged(bool isChecked);
 
 protected:
 	void changeEvent(QEvent *e);

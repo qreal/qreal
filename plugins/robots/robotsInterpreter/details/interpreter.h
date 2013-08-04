@@ -33,8 +33,8 @@ public:
 	Interpreter();
 	virtual ~Interpreter();
 
-	virtual void init(GraphicalModelAssistInterface &graphicalModelApi
-			, LogicalModelAssistInterface const &logicalModelApi
+	virtual void init(GraphicalModelAssistInterface const &graphicalModelApi
+			, LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
 	);
@@ -125,8 +125,8 @@ private:
 		, idle
 	};
 
-	GraphicalModelAssistInterface *mGraphicalModelApi;
-	LogicalModelAssistInterface const *mLogicalModelApi;
+	GraphicalModelAssistInterface const *mGraphicalModelApi;
+	LogicalModelAssistInterface *mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
 
 	InterpreterState mState;
