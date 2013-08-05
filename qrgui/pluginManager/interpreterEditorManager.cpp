@@ -13,6 +13,8 @@
 #include "../../qrutils/outFile.h"
 #include "../mainwindow/mainWindow.h"
 
+#include "../../qrutils/nameNormalizer.h"
+
 using namespace qReal;
 using namespace utils;
 
@@ -34,7 +36,8 @@ InterpreterEditorManager::~InterpreterEditorManager()
 Id InterpreterEditorManager::element(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const
 {
 	foreach (Id const &element, repo->children(diagram)) {
-		if (id.element() == repo->name(element) && repo->isLogicalElement(element)) {
+		QString const &normalizedElementName = NameNormalizer::normalize(repo->name(element));
+		if (id.element() == normalizedElementName && repo->isLogicalElement(element)) {
 			return element;
 		}
 	}
@@ -45,8 +48,9 @@ Id InterpreterEditorManager::element(Id const &id, qrRepo::RepoApi const * const
 Id InterpreterEditorManager::diagramOrElement(Id const &id, qrRepo::RepoApi const * const repo, Id const &editor) const
 {
 	foreach (Id const &diagram, repo->children(editor)) {
+		QString const &normalizedDiagramName = NameNormalizer::normalize(repo->name(diagram));
 		if (diagram.element() == "MetaEditorDiagramNode"
-				&& id.diagram() == repo->name(diagram)
+				&& id.diagram() == normalizedDiagramName
 				&& repo->isLogicalElement(diagram))
 		{
 			if (!id.element().isEmpty()) {
@@ -64,7 +68,8 @@ QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndMetaId(Id const &id
 {
 	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
 		foreach (Id const &editor,  repo->elementsByType("MetamodelDiagram")) {
-			if (id.editor() == repo->name(editor) && repo->isLogicalElement(editor)) {
+			QString const &normalizedEditorName = NameNormalizer::normalize(repo->name(editor));
+			if (id.editor() == normalizedEditorName && repo->isLogicalElement(editor)) {
 				if (!id.diagram().isEmpty()) {
 					return qMakePair(repo, diagramOrElement(id, repo, editor));
 				} else {
@@ -83,7 +88,8 @@ IdList InterpreterEditorManager::editors() const
 	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
 		foreach (Id const &editor, repo->elementsByType("MetaEditorDiagramNode")) {
 			if (repo->isLogicalElement(editor)) {
-				result << Id(repo->name(repo->parent(editor)));
+				QString const &normalizedEditorName = NameNormalizer::normalize(repo->name(repo->parent(editor)));
+				result << Id(normalizedEditorName);
 			}
 		}
 	}
@@ -96,13 +102,15 @@ IdList InterpreterEditorManager::diagrams(const Id &editor) const
 	IdList result;
 	foreach (qrRepo::RepoApi const * const repo, mEditorRepoApi.values()) {
 		foreach (Id const &edit, repo->elementsByType("MetamodelDiagram")) {
-			if (editor.editor() != repo->name(edit) || !repo->isLogicalElement(edit)) {
+			QString const &normalizedEditorName = NameNormalizer::normalize(repo->name(edit));
+			if (editor.editor() != normalizedEditorName || !repo->isLogicalElement(edit)) {
 				continue;
 			}
 
 			foreach (Id const &diagram, repo->children(edit)) {
 				if (diagram.element() == "MetaEditorDiagramNode") {
-					result << Id(repo->name(edit), repo->name(diagram));
+					QString const &normalizedDiagramName = NameNormalizer::normalize(repo->name(diagram));
+					result << Id(normalizedEditorName, normalizedDiagramName);
 				}
 			}
 		}
@@ -117,13 +125,16 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 	foreach (qrRepo::RepoApi const * const repo, mEditorRepoApi.values()) {
 		foreach (Id const &editor, repo->elementsByType("MetamodelDiagram")) {
 			foreach (Id const &editorChild, repo->children(editor)) {
-				if (diagram.diagram() != repo->name(editorChild) || !repo->isLogicalElement(editorChild)) {
+				QString const &normalizedDiagramName = NameNormalizer::normalize(repo->name(editorChild));
+				if (diagram.diagram() != normalizedDiagramName || !repo->isLogicalElement(editorChild)) {
 					continue;
 				}
 
 				foreach (Id const &diagramChild, repo->children(editorChild)) {
 					if (diagramChild.element() == "MetaEntityEdge" || !repo->stringProperty(diagramChild, "shape").isEmpty()) {
-						result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
+						QString const &normalizedEditorName = NameNormalizer::normalize(repo->name(editor));
+						QString const &normalizedElementName = NameNormalizer::normalize(repo->name(diagramChild));
+						result << Id(normalizedEditorName, normalizedDiagramName, normalizedElementName);
 					}
 				}
 			}
@@ -315,7 +326,10 @@ QStringList InterpreterEditorManager::propertiesFromParents(Id const &id
 			Id const metaChildParent = repo->otherEntityFromLink(link, metaId);
 			if (metaChildParent != Id::rootId()) {
 				QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, metaChildParent);
-				result << propertiesFromParents(Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(metaChildParent)), propertyName, checker);
+				QString const &normalizedEditorName = NameNormalizer::normalize(repo->name(editorAndDiagramPair.first));
+				QString const &normalizedDiagramName = NameNormalizer::normalize(repo->name(editorAndDiagramPair.second));
+				QString const &normalizedElementName = NameNormalizer::normalize(repo->name(metaChildParent));
+				result << propertiesFromParents(Id(normalizedEditorName, normalizedDiagramName, normalizedElementName), propertyName, checker);
 			}
 		}
 	}
@@ -366,8 +380,11 @@ Id InterpreterEditorManager::findElementByType(QString const &type) const
 		foreach (Id const &editor, repo->elementsByType("MetamodelDiagram")) {
 			foreach (Id const &diagram, repo->children(editor)) {
 				foreach (Id const &element, repo->children(diagram)) {
-					if (type == repo->name(element)) {
-						return Id(repo->name(editor), repo->name(diagram), repo->name(element));
+					QString const &normalizedElementName = NameNormalizer::normalize(repo->name(element));
+					if (type == normalizedElementName) {
+						QString const &normalizedEditorName = NameNormalizer::normalize(repo->name(editor));
+						QString const &normalizedDiagramName = NameNormalizer::normalize(repo->name(diagram));
+						return Id(normalizedEditorName, normalizedDiagramName, normalizedElementName);
 					}
 				}
 			}
@@ -588,13 +605,15 @@ QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndElement(QString con
 {
 	foreach (qrRepo::RepoApi * const repo, mEditorRepoApi.values()) {
 		foreach (Id const &edit,  repo->elementsByType("MetamodelDiagram")) {
-			if (editor != repo->name(edit) || !repo->isLogicalElement(edit)) {
+			QString const &normalizedEditorName = NameNormalizer::normalize(repo->name(edit));
+			if (editor != normalizedEditorName || !repo->isLogicalElement(edit)) {
 				continue;
 			}
 
 			foreach (Id const &diagram, repo->children(edit)) {
 				foreach (Id const &elem, repo->children(diagram)) {
-					if (element == repo->name(elem)) {
+					QString const &normalizedElementName = NameNormalizer::normalize(repo->name(elem));
+					if (element == normalizedElementName) {
 						return qMakePair(repo, elem);
 					}
 				}
@@ -609,12 +628,14 @@ QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndDiagram(QString con
 {
 	foreach (qrRepo::RepoApi * const repo, mEditorRepoApi.values()) {
 		foreach (Id const &edit, repo->elementsByType("MetamodelDiagram")) {
-			if (editor != repo->name(edit) || !repo->isLogicalElement(edit)) {
+			QString const &normalizedEditorName = NameNormalizer::normalize(repo->name(edit));
+			if (editor != normalizedEditorName || !repo->isLogicalElement(edit)) {
 				continue;
 			}
 
 			foreach (Id const &editChild, repo->children(edit)) {
-				if (diagram == repo->name(editChild)) {
+				QString const &normalizedDiagramName = NameNormalizer::normalize(repo->name(editChild));
+				if (diagram == normalizedDiagramName) {
 					return qMakePair(repo, editChild);
 				}
 			}
@@ -666,7 +687,8 @@ QStringList InterpreterEditorManager::elements(QString const &editor, QString co
 	Id const diag = repoAndDiagramPair.second;
 	foreach (Id const &element, repo->children(diag)) {
 		if (element.element() == "MetaEntityEdge" || !repo->stringProperty(element, "shape").isEmpty()) {
-			result.append(repo->name(element));
+			QString const &normalizedElementName = NameNormalizer::normalize(repo->name(element));
+			result.append(normalizedElementName);
 		}
 	}
 
@@ -802,7 +824,10 @@ IdList InterpreterEditorManager::children(Id const &parent) const {
 		if (link.element() == "Inheritance") {
 			Id const metaChild = repo->otherEntityFromLink(link, metaId);
 			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, metaChild);
-			Id const child = Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(metaChild));
+			QString const &normalizedEditorName = NameNormalizer::normalize(repo->name(editorAndDiagramPair.first));
+			QString const &normalizedDiagramName = NameNormalizer::normalize(repo->name(editorAndDiagramPair.second));
+			QString const &normalizedElementName = NameNormalizer::normalize(repo->name(metaChild));
+			Id const child = Id(normalizedEditorName, normalizedDiagramName, normalizedElementName);
 			result << child;
 			result << children(child);
 		}

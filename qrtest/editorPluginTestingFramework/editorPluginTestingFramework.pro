@@ -43,8 +43,8 @@ HEADERS += \
 	methodsTesterForQrxcAndQrmc.h \
 	methodsTester.h \
 	methodsTesterForQrxcAndInterpreter.h \
-    configurationFileParser.h \
-    abstractStringGenerator.h
+	configurationFileParser.h \
+	abstractStringGenerator.h
 
 SOURCES += \
 	mainClass.cpp \
@@ -67,7 +67,7 @@ SOURCES += \
 	methodsTesterForQrxcAndQrmc.cpp \
 	methodsTester.cpp \
 	methodsTesterForQrxcAndInterpreter.cpp \
-    configurationFileParser.cpp
+	configurationFileParser.cpp
 
 
 
