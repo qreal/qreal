@@ -65,27 +65,23 @@ void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDo
 		portsElement2.setAttribute("x1", pointPortsList.at(i).toElement().attribute("x"));
 		portsElement2.setAttribute("y1", pointPortsList.at(i).toElement().attribute("y"));
 		portsPicture.appendChild(portsElement2);
-		StatPoint pt;
+
 		QString x = pointPortsList.at(i).toElement().attribute("x");
+		bool propX = false;
 		if (x.endsWith("a")) {
-			pt.prop_x = true;
+			propX = true;
 			x.chop(1);
-		} else {
-			pt.prop_x = false;
 		}
 
 		QString y = pointPortsList.at(i).toElement().attribute("y");
+		bool propY = false;
 		if (y.endsWith("a")) {
-			pt.prop_y = true;
+			propY = true;
 			y.chop(1);
-		} else {
-			pt.prop_y = false;
 		}
 
-		pt.point = QPointF(x.toDouble() / static_cast<double>(width), y.toDouble() / static_cast<double>(height));
-		pt.initWidth = width;
-		pt.initHeight = height;
-		pointPorts << pt;
+		QPointF point = QPointF(x.toDouble() / static_cast<double>(width), y.toDouble() / static_cast<double>(height));
+		pointPorts << StatPoint(point, propX, propY, width, height, new NonTyped());
 	}
 }
 
@@ -112,46 +108,41 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 		lineElement2.setAttribute("stroke-style", "solid");
 		lineElement2.setAttribute("stroke", "#465945");
 		portsPicture.appendChild(lineElement2);
-		StatLine ln;
+
 		QString x1 = linePortsList.at(i).firstChildElement("start").attribute("startx");
+		bool propX1 = false;
 		if (x1.endsWith("a")) {
-			ln.prop_x1 = true;
+			propX1 = true;
 			x1.chop(1);
-		} else {
-			ln.prop_x1 = false;
 		}
 
 		QString y1 = linePortsList.at(i).firstChildElement("start").attribute("starty");
+		bool propY1 = false;
 		if (y1.endsWith("a")) {
-			ln.prop_y1 = true;
+			propY1 = true;
 			y1.chop(1);
-		} else {
-			ln.prop_y1 = false;
 		}
 
 		QString x2 = linePortsList.at(i).firstChildElement("end").attribute("endx");
+		bool propX2 = false;
 		if (x2.endsWith("a")) {
-			ln.prop_x2 = true;
+			propX2 = true;
 			x2.chop(1);
-		} else {
-			ln.prop_x2 = false;
 		}
 
 		QString y2 = linePortsList.at(i).firstChildElement("end").attribute("endy");
+		bool propY2 = false;
 		if (y2.endsWith("a")) {
-			ln.prop_y2 = true;
+			propY2 = true;
 			y2.chop(1);
-		} else {
-			ln.prop_y2 = false;
 		}
 
-		ln.line = QLineF(x1.toDouble() / static_cast<double>(width)
+		QLineF line = QLineF(x1.toDouble() / static_cast<double>(width)
 				, y1.toDouble() / static_cast<double>(height)
 				, x2.toDouble() / static_cast<double>(width)
 				, y2.toDouble() / static_cast<double>(height));
-		ln.initWidth = width;
-		ln.initHeight = height;
-		linePorts << ln;
+
+		linePorts << StatLine(line, propX1, propY1, propX2, propY2, width, height, new NonTyped());
 	}
 }
 

@@ -7,7 +7,8 @@
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
 #include "../../qrkernel/ids.h"
-#include "portImpl.h"
+#include "ports/statPoint.h"
+#include "ports/statLine.h"
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;

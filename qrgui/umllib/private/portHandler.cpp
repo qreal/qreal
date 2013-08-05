@@ -63,21 +63,12 @@ qreal PortHandler::nearestPointOfLinePort(int linePortNumber, QPointF const &loc
 
 QLineF PortHandler::transformPortForNodeSize(StatLine const &port) const
 {
-	qreal const x1 = port.line.x1() * (port.prop_x1 ? port.initWidth : mNode->contentsRect().width());
-	qreal const y1 = port.line.y1() * (port.prop_y1 ? port.initHeight : mNode->contentsRect().height());
-
-	qreal const x2 = port.line.x2() * (port.prop_x2 ? port.initWidth : mNode->contentsRect().width());
-	qreal const y2 = port.line.y2() * (port.prop_y2 ? port.initHeight : mNode->contentsRect().height());
-
-	return QLineF(x1, y1, x2, y2);
+	return port.transformForContents(mNode->contentsRect());
 }
 
 QPointF PortHandler::transformPortForNodeSize(StatPoint const &port) const
 {
-	qreal const x = port.point.x() * (port.prop_x ? port.initWidth : mNode->contentsRect().width());
-	qreal const y = port.point.y() * (port.prop_y ? port.initHeight : mNode->contentsRect().height());
-
-	return QPointF(x, y);
+	return port.transformForContents(mNode->contentsRect());
 }
 
 void PortHandler::connectTemporaryRemovedLinksToPort(IdList const &temporaryRemovedLinks, QString const &direction)
@@ -163,7 +154,7 @@ qreal PortHandler::pointPortId(QPointF const &location, QStringList const &types
 	foreach (StatPoint const &pointPort, mPointPorts) {
 		if (QRectF(transformPortForNodeSize(pointPort) - QPointF(kvadratik, kvadratik),
 					QSizeF(kvadratik * 2, kvadratik * 2)
-			).contains(location) && types.contains(pointPort.impl->type()))
+			).contains(location) && types.contains(pointPort.type()))
 		{
 			return pointPortNumber;
 		}
@@ -177,7 +168,7 @@ qreal PortHandler::linePortId(QPointF const &location, QStringList const &types)
 {
 	int linePortNumber = 0;
 	foreach (StatLine const &linePort, mLinePorts) {
-		if (!types.contains(linePort.impl->type())) {
+		if (!types.contains(linePort.type())) {
 			continue;
 		}
 
@@ -207,7 +198,7 @@ QPair<int, qreal> PortHandler::nearestPointPortNumberAndDistance(QPointF const &
 
 	int minDistancePointPortNumber = -1; // just smth negative
 	for (int pointPortNumber = 0; pointPortNumber < mPointPorts.size(); pointPortNumber++) {
-		if (!types.contains(mPointPorts.at(pointPortNumber).impl->type())) {
+		if (!types.contains(mPointPorts.at(pointPortNumber).type())) {
 			continue;
 		}
 
@@ -227,7 +218,7 @@ QPair<int, qreal> PortHandler::nearestLinePortNumberAndDistance(QPointF const &l
 
 	int minDistanceLinePortNumber = -1; // just smth negative
 	for (int linePortNumber = 0; linePortNumber < mLinePorts.size(); linePortNumber++) {
-		if (!types.contains(mLinePorts.at(linePortNumber).impl->type())) {
+		if (!types.contains(mLinePorts.at(linePortNumber).type())) {
 			continue;
 		}
 
