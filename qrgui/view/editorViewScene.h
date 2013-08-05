@@ -166,6 +166,8 @@ private slots:
 	/// Updates repository after the move. Controled by the timer.
 	void updateMovedElements();
 
+	void deselectLabels();
+
 private:
 	void setMVIface(EditorViewMViface *mvIface);
 

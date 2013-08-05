@@ -44,6 +44,7 @@ Splashscreen=true
 LineType=1
 MoveLabels = true
 ResizeLabels = true
+LabelsDistance = 100
 temp=
 warningWindow=true
 windowsButton=false
