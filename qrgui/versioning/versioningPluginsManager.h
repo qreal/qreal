@@ -50,16 +50,17 @@ public slots:
 	QString information(QString const &targetProject = QString());
 	int revisionNumber(QString const &targetProject = QString());
 	QString remoteRepositoryUrl(QString const &targetProject = QString());
-	bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false);
+	bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false
+						, bool const &prepareAndProcess = false);
 	QString friendlyName();
 	QString getLog(QString const &format = QString(), bool const &quiet = false);
 	void setVersion(QString hash, bool const &quiet = false);
+	void switchOffOrOnAllPluginsAction(bool switchOnTranspMode);
 
 private slots:
 	void onWorkingCopyDownloaded(bool const success, QString const &targetProject);
 	void onWorkingCopyUpdated(bool const success);
 	void onChangesSubmitted(bool const success);
-	void switchOffOrOnAllPluginsAction(bool switchOnTranspMode);
 
 private:
 	QString tempFolder() const;

@@ -116,11 +116,11 @@ QString GitPlugin::remoteRepositoryUrl(QString const &targetProject)
 	return qReal::SettingsManager::value("remoteAdress", "").toString();
 }
 
-bool GitPlugin::isMyWorkingCopy(QString const &directory, const bool &quiet)
+bool GitPlugin::isMyWorkingCopy(QString const &directory, const bool &quiet, bool const &prepareAndProcess)
 {
 	QStringList infoArgs;
 	infoArgs << "remote" << "show";
-	return invokeOperation(infoArgs, false, directory, false, false, QString(), QString(), quiet);
+	return invokeOperation(infoArgs, prepareAndProcess, directory, false, prepareAndProcess, QString(), QString(), quiet);
 }
 
 int GitPlugin::timeout() const
@@ -180,6 +180,10 @@ void GitPlugin::startCommit(QString const &message, QString const &from
 		, QString const &sourceProject, const bool &quiet)
 {
 	QStringList arguments;
+	arguments << "add" << "-A";
+	invokeOperation(arguments, true, QString(), true, true, QString(), QString(), !quiet);
+
+	arguments.clear();
 	arguments << "commit" << "-m" << message;
 
 	bool result = invokeOperation(arguments, true, QString(), true, true, QString(), QString(), !quiet);
@@ -335,7 +339,14 @@ QString GitPlugin::doStatus()
 
 QString GitPlugin::doLog(QString const &format, const bool &quiet, bool const &showDialog)
 {
-	int result = invokeOperation(QStringList() << "log" << format, true, QString(), true, true, QString(), QString(), quiet);
+	QStringList arguments;
+	arguments << "log";
+	if (format.size() != 0) {
+		arguments << format;
+	}
+
+	bool result = invokeOperation(arguments, true, QString(), true, true, QString(), QString(), quiet);
+
 	QString answer = standartOutput();
 	if (showDialog){
 		emit logComplete(answer, result);

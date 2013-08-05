@@ -43,7 +43,8 @@ public:
 	virtual QString information(QString const &targetProject = QString());
 	virtual int revisionNumber(QString const &targetProject = QString());
 	virtual QString remoteRepositoryUrl(QString const &targetProject = QString());
-	virtual bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false);
+	virtual bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false
+								, bool const &prepareAndProcess = false);
 	virtual QString friendlyName();
 	virtual QString getLog(QString const &format = QString(), bool const &quiet = false);
 	virtual void setVersion(QString hash, bool const &quiet = false);

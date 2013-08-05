@@ -189,7 +189,8 @@ QString VersioningPluginsManager::remoteRepositoryUrl(QString const &targetProje
 	return activeVcs->remoteRepositoryUrl(targetProject);
 }
 
-bool VersioningPluginsManager::isMyWorkingCopy(QString const &directory, const bool &quiet)
+bool VersioningPluginsManager::isMyWorkingCopy(QString const &directory, bool const &quiet
+												, bool const &prepareAndProcess)
 {
 	return activePlugin(false, directory) != NULL;
 }

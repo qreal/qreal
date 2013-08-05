@@ -17,25 +17,29 @@ qReal::TransparentMode::TransparentMode(QList<VersioningPluginInterface *> mPlug
 	}
 }
 
-void TransparentMode::isInit(QString const &directory)
+void TransparentMode::isInit(QString const &directory, const bool &prepareAndProcess)
 {
-	if (!mPlugin->isMyWorkingCopy(directory)){
+	if (!mPlugin->isMyWorkingCopy(directory, false, prepareAndProcess)){
 		mPlugin->beginWorkingCopyDownloading(QString(),QString(), -1, true);
 	}
 }
 
 void TransparentMode::listLog()
 {
-	isInit("unsaved");
-	QString format = "--pretty=format:\"%H\ -\ %an%ad\ :\ %s\"";
-	QString log = mPlugin->getLog(format, true);
-	QList<QPair<QString , QString> > listlog = parseLog(log);
-	emit listLogIsReady(listlog);
+	if (mPlugin->isMyWorkingCopy(QString(), false, true))
+	{
+		QString format = "--pretty=format:\"%H\ -\ %an%ad\ :\ %s\"";
+		QString log = mPlugin->getLog(format, true);
+		QList<QPair<QString , QString> > listlog = parseLog(log);
+		emit listLogIsReady(listlog);
+	} else {
+		emit listLogIsReady(QList<QPair<QString , QString> >());
+	}
 }
 
 void TransparentMode::setVersion(QString hash)
 {
-	isInit("unsaved");
+	isInit();
 	qDebug() << hash;
 	mPlugin->setVersion(hash, true);
 }

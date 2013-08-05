@@ -1816,8 +1816,7 @@ void MainWindow::initToolPlugins()
 	}
 
 	mVersioningManager = new VersioningPluginsManager(&(mModels->repoControlApi()), mErrorReporter, mProjectManager);
-	mUi->menuEasy_versioning->menuAction()->setVisible(false);
-	mUi->actionTransparent_mode->setVisible(false);
+	mUi->actionTransparent_mode->setChecked(true);
 	connect(mVersioningManager, SIGNAL(OnButton(bool)), mUi->actionTransparent_mode, SLOT(setVisible(bool)));
 	connect(mUi->actionTransparent_mode,SIGNAL(triggered(bool)), mVersioningManager, SLOT(switchOffOrOnAllPluginsAction(bool)));
 	connect(mVersioningManager, SIGNAL(transparentClassIsReady()), this, SLOT(initMEasyVersioningLink()));
@@ -1825,7 +1824,9 @@ void MainWindow::initToolPlugins()
 	connect(mUi->actionList_of_version, SIGNAL(triggered()), this, SLOT(showChangeVersion()));
 
 	mVersioningManager->initFromToolPlugins(QListIterator<ToolPluginInterface *>(mToolManager.plugins()), this);
-
+	mVersioningManager->switchOffOrOnAllPluginsAction(true);
+	mUi->actionList_of_version->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_V));
+	mUi->actionSave_version->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_T, Qt::SHIFT + Qt::Key_S));
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)

@@ -61,7 +61,8 @@ public slots:
 	/// Implementation must determine if specified working copy
 	/// is versioned with this VCS.
 	/// @param directory Path to interested directory
-	virtual bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false) = 0;
+	virtual bool isMyWorkingCopy(QString const &directory = QString(), bool const &quiet = false
+								, bool const &prepareAndProcess = false) = 0;
 
 	///This method return name of plugin. Examples: GitPlugin..
 	virtual QString friendlyName() = 0;

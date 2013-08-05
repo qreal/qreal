@@ -113,12 +113,13 @@ QString SubversionPlugin::remoteRepositoryUrl(QString const &targetProject)
 	return repoUrl(tempFolder(), false, targetProject);
 }
 
-bool SubversionPlugin::isMyWorkingCopy(QString const &directory, bool const &quiet)
+bool SubversionPlugin::isMyWorkingCopy(QString const &directory, bool const &quiet, bool const &prepareAndProcess)
 {
 	// If svn info worked well then it is our dir
 	QStringList infoArgs;
 	infoArgs << "info" << (directory.isEmpty() ? tempFolder() : directory);
-	return invokeOperation(infoArgs, false, directory, false, false, QString(), QString(), false);
+	return invokeOperation(infoArgs, prepareAndProcess, directory, false
+							, prepareAndProcess, QString(), QString(), quiet);
 }
 
 QString SubversionPlugin::friendlyName()
