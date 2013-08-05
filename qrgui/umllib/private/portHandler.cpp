@@ -7,10 +7,31 @@
 qreal const PortHandler::mMaximumFractionPartValue = 0.9999;
 
 PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
-	QList<StatPoint> const &pointPorts, QList<StatLine> const &linePorts)
+		QList<PortInterface *> const &ports)
 	: mNode(node), mGraphicalAssistApi(graphicalAssistApi)
-	, mPointPorts(pointPorts), mLinePorts(linePorts)
 {
+	foreach (PortInterface *port, ports) {
+		StatPoint *point = dynamic_cast<StatPoint *>(port);
+		if (point) {
+			mPointPorts << point;
+		} else {
+			StatLine *line = dynamic_cast<StatLine *>(port);
+			if (line) {
+				mLinePorts << line;
+			}
+		}
+	}
+}
+
+PortHandler::~PortHandler()
+{
+	foreach (StatPoint *point, mPointPorts) {
+		delete point;
+	}
+
+	foreach (StatLine *line, mLinePorts) {
+		delete line;
+	}
 }
 
 qreal PortHandler::minDistanceFromLinePort(int linePortNumber, QPointF const &location) const
@@ -61,14 +82,14 @@ qreal PortHandler::nearestPointOfLinePort(int linePortNumber, QPointF const &loc
 	return nearestPointOfLinePort;
 }
 
-QLineF PortHandler::transformPortForNodeSize(StatLine const &port) const
+QLineF PortHandler::transformPortForNodeSize(StatLine const * const port) const
 {
-	return port.transformForContents(mNode->contentsRect());
+	return port->transformForContents(mNode->contentsRect());
 }
 
-QPointF PortHandler::transformPortForNodeSize(StatPoint const &port) const
+QPointF PortHandler::transformPortForNodeSize(StatPoint const * const port) const
 {
-	return port.transformForContents(mNode->contentsRect());
+	return port->transformForContents(mNode->contentsRect());
 }
 
 void PortHandler::connectTemporaryRemovedLinksToPort(IdList const &temporaryRemovedLinks, QString const &direction)
@@ -151,10 +172,10 @@ QPointF const PortHandler::nearestPort(QPointF const &location, QStringList cons
 qreal PortHandler::pointPortId(QPointF const &location, QStringList const &types) const
 {
 	int pointPortNumber = 0;
-	foreach (StatPoint const &pointPort, mPointPorts) {
+	foreach (StatPoint const * const pointPort, mPointPorts) {
 		if (QRectF(transformPortForNodeSize(pointPort) - QPointF(kvadratik, kvadratik),
 					QSizeF(kvadratik * 2, kvadratik * 2)
-			).contains(location) && types.contains(pointPort.type()))
+			).contains(location) && types.contains(pointPort->type()))
 		{
 			return pointPortNumber;
 		}
@@ -167,8 +188,8 @@ qreal PortHandler::pointPortId(QPointF const &location, QStringList const &types
 qreal PortHandler::linePortId(QPointF const &location, QStringList const &types) const
 {
 	int linePortNumber = 0;
-	foreach (StatLine const &linePort, mLinePorts) {
-		if (!types.contains(linePort.type())) {
+	foreach (StatLine const * const linePort, mLinePorts) {
+		if (!types.contains(linePort->type())) {
 			continue;
 		}
 
@@ -198,7 +219,7 @@ QPair<int, qreal> PortHandler::nearestPointPortNumberAndDistance(QPointF const &
 
 	int minDistancePointPortNumber = -1; // just smth negative
 	for (int pointPortNumber = 0; pointPortNumber < mPointPorts.size(); pointPortNumber++) {
-		if (!types.contains(mPointPorts.at(pointPortNumber).type())) {
+		if (!types.contains(mPointPorts.at(pointPortNumber)->type())) {
 			continue;
 		}
 
@@ -218,7 +239,7 @@ QPair<int, qreal> PortHandler::nearestLinePortNumberAndDistance(QPointF const &l
 
 	int minDistanceLinePortNumber = -1; // just smth negative
 	for (int linePortNumber = 0; linePortNumber < mLinePorts.size(); linePortNumber++) {
-		if (!types.contains(mLinePorts.at(linePortNumber).type())) {
+		if (!types.contains(mLinePorts.at(linePortNumber)->type())) {
 			continue;
 		}
 
@@ -314,10 +335,10 @@ void PortHandler::checkConnectionsToPort()
 void PortHandler::arrangeLinearPorts()
 {
 	int lpId = mPointPorts.size(); //point ports before linear
-	foreach (StatLine const &linePort, mLinePorts) {
+	foreach (StatLine const * const linePort, mLinePorts) {
 		//sort first by slope, then by current portNumber
 		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
-		QLineF const portLine = linePort;
+		QLineF const portLine = *linePort;
 		qreal const dx = portLine.dx();
 		qreal const dy = portLine.dy();
 		foreach (EdgeElement* edge, mNode->edgeList()) {
@@ -364,10 +385,10 @@ void PortHandler::setGraphicalAssistApi(qReal::models::GraphicalModelAssistApi *
 
 void PortHandler::drawPorts(QPainter *painter, QRectF const &contents, QStringList const &)
 {
-	foreach (StatPoint const &pointPort, mPointPorts) {
-		pointPort.paint(painter, contents);
+	foreach (StatPoint const * const pointPort, mPointPorts) {
+		pointPort->paint(painter, contents);
 	}
-	foreach (StatLine const &linePort, mLinePorts) {
-		linePort.paint(painter, contents);
+	foreach (StatLine const * const linePort, mLinePorts) {
+		linePort->paint(painter, contents);
 	}
 }

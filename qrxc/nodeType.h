@@ -33,8 +33,6 @@ private:
 	virtual bool initDividability();
 	virtual bool initPortTypes();
 
-	bool hasLinePorts();
-	bool hasPointPorts();
 	bool initSdf();
 	void generateSdf() const;
 

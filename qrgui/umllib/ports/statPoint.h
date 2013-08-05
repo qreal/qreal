@@ -1,12 +1,9 @@
 #pragma once
 
-#include <QtCore/QSharedPointer>
-#include <QtGui/QPainter>
-
-#include "portImpl.h"
+#include "../../../editorPluginInterface/portHelpers.h"
 
 /** @brief point port description */
-class StatPoint
+class StatPoint : public PortInterface
 {
 public:
 	StatPoint(QPointF const &point, bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl);
@@ -14,9 +11,8 @@ public:
 	operator QPointF() const;
 	void operator= (QPointF const &p);
 
-	void paint(QPainter *painter, QRectF const &contents) const;
+	virtual void paint(QPainter *painter, QRectF const &contents) const;
 	QPointF transformForContents(QRectF const &contents) const;
-	QString type() const;
 
 private:
 	QPointF mPoint;
@@ -26,7 +22,5 @@ private:
 
 	int mInitWidth;
 	int mInitHeight;
-
-	QSharedPointer<PortImpl> mImpl;
 };
 

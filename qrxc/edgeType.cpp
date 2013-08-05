@@ -220,8 +220,8 @@ void EdgeType::generateCode(OutFile &out)
 		out() << "\t\t}\n\n";
 	}
 
-	out() << "\t\tvoid init(QRectF &, QList<StatPoint> &, QList<StatLine> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tLabelFactoryInterface &, QList<LabelInterface*> &,\n"
+	out() << "\t\tvoid init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tLabelFactoryInterface &, QList<LabelInterface *> &,\n"
 	<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, ElementRepoInterface *) {}\n\n"
 	<< "\t\tvoid init(LabelFactoryInterface &factory, QList<LabelInterface*> &titles)\n\t\t{\n";
 

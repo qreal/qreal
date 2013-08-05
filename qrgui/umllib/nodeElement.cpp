@@ -12,6 +12,7 @@
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
 #include "../mainwindow/mainWindow.h"
+#include "ports/portFactory.h"
 
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
@@ -49,13 +50,13 @@ NodeElement::NodeElement(ElementImpl* impl)
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
 	mRenderer = new SdfRenderer();
-	LabelFactory factory;
+	LabelFactory labelFactory;
 	QList<LabelInterface*> titles;
 
-	QList<StatPoint> pointPorts;
-	QList<StatLine> linePorts;
-	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, this);
-	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
+	QList<PortInterface *> ports;
+	PortFactory portFactory;
+	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, mRenderer, this);
+	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
 
 	foreach (LabelInterface *titleIface, titles) {
 		Label *title = dynamic_cast<Label*>(titleIface);

@@ -2,8 +2,8 @@
 
 StatLine::StatLine(const QLineF &line, bool propX1, bool propY1, bool propX2, bool propY2
 		, int initWidth, int initHeight, PortImpl *impl)
-	: mLine(line), mPropX1(propX1), mPropY1(propY1), mPropX2(propX2), mPropY2(propY2)
-	, mInitWidth(initWidth), mInitHeight(initHeight), mImpl(impl)
+	: PortInterface(impl), mLine(line), mPropX1(propX1), mPropY1(propY1), mPropX2(propX2), mPropY2(propY2)
+	, mInitWidth(initWidth), mInitHeight(initHeight)
 {}
 
 StatLine::operator QLineF () const
@@ -54,9 +54,4 @@ QLineF StatLine::transformForContents(QRectF const &contents) const
 	qreal const y2 = mLine.y2() * (mPropY2 ? mInitHeight : contents.height());
 
 	return QLineF(x1, y1, x2, y2);
-}
-
-QString StatLine::type() const
-{
-	return mImpl->type();
 }

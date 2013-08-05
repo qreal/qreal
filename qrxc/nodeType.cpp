@@ -155,24 +155,6 @@ bool NodeType::initBooleanProperties()
 	return true;
 }
 
-bool NodeType::hasPointPorts()
-{
-	foreach (Port *port, mPorts){
-		if (dynamic_cast<PointPort*>(port))
-			return true;
-	}
-	return false;
-}
-
-bool NodeType::hasLinePorts()
-{
-	foreach (Port *port, mPorts){
-		if (dynamic_cast<LinePort*>(port))
-			return true;
-	}
-	return false;
-}
-
 void NodeType::generateCode(OutFile &out)
 {
 	generateSdf();
@@ -194,16 +176,16 @@ void NodeType::generateCode(OutFile &out)
 	}
 
 	out () << "\t\tvoid init(LabelFactoryInterface &, QList<LabelInterface*> &) {}\n\n"
-	<< "\t\tvoid init(QRectF &contents, QList<StatPoint> &pointPorts,\n"
-	<< "\t\t\t\t\t\t\tQList<StatLine> &linePorts, LabelFactoryInterface &factory,\n"
-	<< "\t\t\t\t\t\t\tQList<LabelInterface*> &titles, SdfRendererInterface *renderer,\n"
-	<< "\t\t\t\t\t\t\tElementRepoInterface *elementRepo)\n\t\t{\n";
+	<< "\t\tvoid init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports\n"
+	<< "\t\t\t\t\t\t\t, LabelFactoryInterface &factory, QList<LabelInterface*> &titles\n"
+	<< "\t\t\t\t\t\t\t, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)\n\t\t{\n";
 
-	if (!hasPointPorts())
-		out() << "\t\t\tQ_UNUSED(pointPorts);\n";
-	if (!hasLinePorts())
-		out() << "\t\t\tQ_UNUSED(linePorts);\n";
-	if (mLabels.size() == 0)
+	if (mPorts.empty()) {
+		out() << "\t\t\tQ_UNUSED(portFactory);\n";
+		out() << "\t\t\tQ_UNUSED(ports);\n";
+	}
+
+	if (mLabels.empty())
 		out() << "\t\t\tQ_UNUSED(titles);\n"
 		<<"\t\t\tQ_UNUSED(factory);\n";
 

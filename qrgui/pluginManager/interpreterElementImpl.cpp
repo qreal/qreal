@@ -46,8 +46,8 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 	}
 }
 
-void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc
-		, QDomNode &portsPicture, int const &width, int const &height)
+void InterpreterElementImpl::initPointPorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+		, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height)
 {
 	QDomNodeList const pointPortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
 	for (int i = 0; i < pointPortsList.size(); i++) {
@@ -81,12 +81,12 @@ void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDo
 		}
 
 		QPointF point = QPointF(x.toDouble() / static_cast<double>(width), y.toDouble() / static_cast<double>(height));
-		pointPorts << StatPoint(point, propX, propY, width, height, new NonTyped());
+		ports << factory.createPort(point, propX, propY, width, height, new NonTyped());
 	}
 }
 
-void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc
-		, QDomNode &portsPicture, int const &width, int const &height)
+void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+		, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height)
 {
 	QDomNodeList const linePortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
 	for (int i = 0; i < linePortsList.size(); i++) {
@@ -142,13 +142,13 @@ void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocum
 				, x2.toDouble() / static_cast<double>(width)
 				, y2.toDouble() / static_cast<double>(height));
 
-		linePorts << StatLine(line, propX1, propY1, propX2, propY2, width, height, new NonTyped());
+		ports << factory.createPort(line, propX1, propY1, propX2, propY2, width, height, new NonTyped());
 	}
 }
 
-void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
-		, QList<StatLine> &linePorts, LabelFactoryInterface &factory
-		, QList<LabelInterface*> &titles, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)
+void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &portFactory
+		, QList<PortInterface *> &ports, LabelFactoryInterface &labelFactory
+		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)
 {
 	Q_UNUSED(elementRepo);
 	if (mId.element() == "MetaEntityNode") {
@@ -170,16 +170,16 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 
 		QDomDocument portsDoc;
 		QDomNode portsPicture = portsDoc.importNode(sdfElement, false);
-		initPointPorts(pointPorts, portsDoc, portsPicture, width, height);
-		initLinePorts(linePorts, portsDoc, portsPicture, width, height);
+		initPointPorts(portFactory, ports, portsDoc, portsPicture, width, height);
+		initLinePorts(portFactory, ports, portsDoc, portsPicture, width, height);
 
 		contents.setWidth(width);
 		contents.setHeight(height);
-		initLabels(width, height, factory, titles);
+		initLabels(width, height, labelFactory, labels);
 	}
 }
 
-void InterpreterElementImpl::init(LabelFactoryInterface &factory, QList<LabelInterface*> &titles)
+void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels)
 {
 	if (mId.element() == "MetaEntityEdge") {
 		QString labelText = mEditorRepoApi->stringProperty(mId, "labelText");
@@ -188,16 +188,16 @@ void InterpreterElementImpl::init(LabelFactoryInterface &factory, QList<LabelInt
 			LabelInterface* title = NULL;
 			if (labelType == "Static text") {
 				// This is a statical label, it does not need repository.
-				title = factory.createTitle(0, 0, labelText, 0);
+				title = labelFactory.createTitle(0, 0, labelText, 0);
 			} else {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createTitle(0, 0, labelText, false, 0);
+				title = labelFactory.createTitle(0, 0, labelText, false, 0);
 			}
 			title->setBackground(QColor(Qt::white));
 			title->setScaling(false, false);
 			title->setFlags(0);
 			title->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title);
+			labels.append(title);
 			mEdgeLabels.append(EdgeLabel(labelText, labelType, title));
 		}
 	}

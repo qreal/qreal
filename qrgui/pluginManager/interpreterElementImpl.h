@@ -47,11 +47,10 @@ class InterpreterElementImpl : public ElementImpl
 {
 public:
 	InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId);
-	void init(QRectF &contents, QList<StatPoint> &pointPorts
-			, QList<StatLine> &linePorts, LabelFactoryInterface &factory
-			, QList<LabelInterface*> &titles, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0);
-	void init(LabelFactoryInterface &factory
-			, QList<LabelInterface*> &titles);
+	void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
+			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
+			, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0);
+	void init(LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels);
 	void paint(QPainter *painter, QRectF &contents);
 	void updateData(ElementRepoInterface *repo) const;
 	bool isNode() const;
@@ -86,10 +85,10 @@ public:
 	void updateRendererContent(QString const &shape);
 
 private:
-	void initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc, QDomNode &portsPicture
-			, int const &width, int const &height);
-	void initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc, QDomNode &portsPicture
-			, int const &width, int const &height);
+	void initPointPorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+			, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height);
+	void initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+			, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height);
 	void initLabels(int const &width, int const &height, LabelFactoryInterface &factory, QList<LabelInterface*> &titles);
 	QVector<int> getSizeOfContainerProperty(QString const &property) const;
 	QStringList getListOfStr(QString const &labelText) const;

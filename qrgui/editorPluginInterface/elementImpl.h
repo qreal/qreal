@@ -7,8 +7,7 @@
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
 #include "../../qrkernel/ids.h"
-#include "ports/statPoint.h"
-#include "ports/statLine.h"
+#include "portHelpers.h"
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
@@ -22,9 +21,8 @@ typedef QPair<qReal::Id, qReal::Id> ElementPair;
 class ElementImpl {
 public:
 	virtual ~ElementImpl() {}
-	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts
-					  , QList<StatLine> &linePorts, LabelFactoryInterface &factory
-					  , QList<LabelInterface*> &title
+	virtual void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
+					  , LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
 					  , SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0) = 0;
 	virtual void init(LabelFactoryInterface &factory,
 					  QList<LabelInterface*> &titles) = 0;

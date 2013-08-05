@@ -19,7 +19,7 @@ void PointPort::generateCode(OutFile &out, QStringList const &portTypes)
 		mType = "NonTyped";
 	}
 
-	out() << QString("\t\t\tpointPorts << StatPoint(QPointF(%1, %2), %3, %4, %5, %6, new %7());\n")
+	out() << QString("\t\t\tports << portFactory.createPort(QPointF(%1, %2), %3, %4, %5, %6, new %7());\n")
 			.arg(mX.value()).arg(mY.value())
 			.arg(mX.isScalable() ? "true" : "false").arg(mY.isScalable() ? "true" : "false")
 			.arg(mInitWidth).arg(mInitHeight).arg(mType);

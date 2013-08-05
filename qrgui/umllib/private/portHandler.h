@@ -7,7 +7,8 @@
 #pragma once
 
 #include "../../models/graphicalModelAssistApi.h"
-#include <QPointF>
+#include "../ports/statLine.h"
+#include "../ports/statPoint.h"
 
 /**
  * Useful information:
@@ -29,9 +30,9 @@ public:
 	 * @param linePorts Line ports which belong to node.
 	 */
 	PortHandler(
-			NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
-			QList<StatPoint> const &pointPorts, QList<StatLine> const &linePorts
-			);
+			NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi
+			, QList<PortInterface *> const &ports);
+	~PortHandler();
 
 	/**
 	 * Returns port ID in terms described below *'Useful information' before class*.
@@ -169,13 +170,13 @@ private:
 	 * Transforms point port for current node size.
 	 * @param port Port that will be actually dealt with.
 	 */
-	QLineF transformPortForNodeSize(StatLine const &port) const;
+	QLineF transformPortForNodeSize(StatLine const * const port) const;
 
 	/**
 	 * Transforms line port for current node size.
 	 * @param port Port that will be actually dealt with.
 	 */
-	QPointF transformPortForNodeSize(StatPoint const &port) const;
+	QPointF transformPortForNodeSize(StatPoint const * const port) const;
 
 	/// Node that ports are actually dealt with.
 	NodeElement *mNode;
@@ -187,8 +188,8 @@ private:
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 
 	/// List of point ports that belongs to mNode.
-	QList<StatPoint> const mPointPorts;
+	QList<StatPoint *> mPointPorts;
 
 	/// List of line ports that belongs to mNode.
-	QList<StatLine> const mLinePorts;
+	QList<StatLine *> mLinePorts;
 };

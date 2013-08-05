@@ -129,7 +129,7 @@ void XmlCompiler::generateElementClasses()
 
 	OutFile outPorts("generated/ports.h");
 	outPorts() << "#pragma once\n\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/ports/portImpl.h\"\n\n";
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/portHelpers.h\"\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		foreach (Type *type, diagram->types().values()) {

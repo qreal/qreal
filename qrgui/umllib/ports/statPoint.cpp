@@ -1,7 +1,7 @@
 #include "statPoint.h"
 
 StatPoint::StatPoint(QPointF const &point, bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl)
-	: mPoint(point), mPropX(propX), mPropY(propY), mInitWidth(initWidth), mInitHeight(initHeight), mImpl(impl)
+	: PortInterface(impl), mPoint(point), mPropX(propX), mPropY(propY), mInitWidth(initWidth), mInitHeight(initHeight)
 {}
 
 StatPoint::operator QPointF () const
@@ -44,9 +44,4 @@ QPointF StatPoint::transformForContents(QRectF const &contents) const
 	qreal const y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
 
 	return QPointF(x, y);
-}
-
-QString StatPoint::type() const
-{
-	return mImpl->type();
 }

@@ -28,7 +28,7 @@ void LinePort::generateCode(OutFile &out, QStringList const &portTypes)
 		mType = "NonTyped";
 	}
 
-	out() << QString("\t\t\tlinePorts << StatLine(%1, %2, %3, %4, %5, %6, %7, new %8());\n").arg(line)
+	out() << QString("\t\t\tports << portFactory.createPort(%1, %2, %3, %4, %5, %6, %7, new %8());\n").arg(line)
 			.arg(mStartX.isScalable() ? "true" : "false").arg(mStartY.isScalable() ? "true" : "false")
 			.arg(mEndX.isScalable() ? "true" : "false").arg(mEndY.isScalable() ? "true" : "false")
 			.arg(mInitWidth).arg(mInitHeight).arg(mType);
