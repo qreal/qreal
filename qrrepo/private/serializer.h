@@ -1,13 +1,12 @@
 #pragma once
 
-#include "../../qrkernel/roles.h"
-#include "classes/object.h"
-
 #include <QtXml/QDomDocument>
 #include <QtCore/QVariant>
-
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+
+#include "../../qrkernel/roles.h"
+#include "classes/object.h"
 
 namespace qrRepo {
 namespace details {
@@ -22,6 +21,8 @@ public:
 	void removeFromDisk(qReal::Id id) const;
 	void saveToDisk(QList<Object *> const &objects) const;
 	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash);
+
+	void exportToXml(QString const &targetFile, QHash<qReal::Id, Object*> const &objects) const;
 
 	void decompressFile(QString const &fileName);
 
@@ -44,7 +45,14 @@ private:
 	static QString serializeQPointF(QPointF const &p);
 	static QString serializeQPolygon(QPolygon const &p);
 	static QDomElement idListToXml(QString const &attributeName, qReal::IdList const &idList, QDomDocument &doc);
-	static QDomElement propertiesToXml(Object const *object, QDomDocument &doc);
+	static QDomElement createPropertiesXmlElement(Object const *object, QDomDocument &doc, Object const *logicalObject = NULL);
+	static void getSingleElementProperties(QDomElement &result, Object const *object, QDomDocument &doc);
+
+	static void exportDiagram(qReal::Id const &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportElement(qReal::Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportChildren(qReal::Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportProperties(qReal::Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+
 
 	QString mWorkingDir;
 	QString mWorkingFile;
