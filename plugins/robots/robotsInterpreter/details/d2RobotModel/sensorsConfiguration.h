@@ -16,19 +16,19 @@ class SensorsConfiguration
 {
 public:
 	SensorsConfiguration();
-	void setSensor(inputPort::InputPortEnum const port
-			, sensorType::SensorTypeEnum const &type
+	void setSensor(robots::enums::inputPort::InputPortEnum const port
+			, robots::enums::sensorType::SensorTypeEnum const &type
 			, QPointF const &position
 			, qreal const &direction);
 
-	void setPosition(inputPort::InputPortEnum const port, QPointF const &position);
-	QPointF position(inputPort::InputPortEnum const port) const;
+	void setPosition(robots::enums::inputPort::InputPortEnum const port, QPointF const &position);
+	QPointF position(robots::enums::inputPort::InputPortEnum const port) const;
 
-	void setDirection(inputPort::InputPortEnum const port, qreal direction);
-	qreal direction(inputPort::InputPortEnum const port) const;
+	void setDirection(robots::enums::inputPort::InputPortEnum const port, qreal direction);
+	qreal direction(robots::enums::inputPort::InputPortEnum const port) const;
 
-	sensorType::SensorTypeEnum type(inputPort::InputPortEnum const port) const;
-	void clearSensor(inputPort::InputPortEnum const port);
+	robots::enums::sensorType::SensorTypeEnum type(robots::enums::inputPort::InputPortEnum const port) const;
+	void clearSensor(robots::enums::inputPort::InputPortEnum const port);
 
 	void serialize(QDomElement &robot, QDomDocument &document) const;
 	void deserialize(QDomElement const &element);
@@ -39,7 +39,7 @@ private:
 	public:
 		SensorInfo();
 		SensorInfo(QPointF const &position, qreal direction
-				, sensorType::SensorTypeEnum const &sensorType);
+				, robots::enums::sensorType::SensorTypeEnum const &sensorType);
 
 		QPointF position() const;
 		void setPosition(QPointF const &position);
@@ -47,12 +47,12 @@ private:
 		qreal direction() const;
 		void setDirection(qreal direction);
 
-		sensorType::SensorTypeEnum type() const;
+		robots::enums::sensorType::SensorTypeEnum type() const;
 
 	private:
 		QPointF mPosition;
 		qreal mDirection;
-		sensorType::SensorTypeEnum mSensorType;
+		robots::enums::sensorType::SensorTypeEnum mSensorType;
 	};
 
 	QVector<SensorInfo> mSensors;

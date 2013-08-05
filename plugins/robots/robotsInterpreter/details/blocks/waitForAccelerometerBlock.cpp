@@ -7,7 +7,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
 WaitForAccelerometerSensorBlock::WaitForAccelerometerSensorBlock(details::RobotModel * const robotModel)
-	: WaitForSensorBlock(robotModel, sensorType::accelerometer)
+	: WaitForSensorBlock(robotModel, robots::enums::sensorType::accelerometer)
 {
 }
 

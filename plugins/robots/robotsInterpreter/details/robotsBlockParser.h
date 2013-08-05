@@ -3,6 +3,9 @@
 #include "../../../../qrutils/expressionsParser/expressionsParser.h"
 
 namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace details {
 
 class RobotsBlockParser : public utils::ExpressionsParser
 {
@@ -22,4 +25,8 @@ private:
 
 	QStringList mReservedVariables;
 };
+
+}
+}
+}
 }

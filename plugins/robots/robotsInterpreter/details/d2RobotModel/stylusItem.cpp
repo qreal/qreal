@@ -121,7 +121,7 @@ void StylusItem::deserialize(QDomElement const &element)
 					recalculateProperties();
 			}
 			else
-				Tracer::debug(tracer::d2Model, "StylusItem::deserialize", "Incorrect stylus tag");
+				Tracer::debug(tracer::enums::d2Model, "StylusItem::deserialize", "Incorrect stylus tag");
 	}
 }
 

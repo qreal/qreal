@@ -35,11 +35,11 @@ public:
 	QList<SmartLine> &isrHooksCode();
 	qrRepo::RepoApi const *api() const;
 
-	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue(int port) const;
-	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue1() const;
-	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue2() const;
-	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue3() const;
-	qReal::interpreters::robots::sensorType::SensorTypeEnum portValue4() const;
+	qReal::interpreters::robots::enums::sensorType::SensorTypeEnum portValue(int port) const;
+	qReal::interpreters::robots::enums::sensorType::SensorTypeEnum portValue1() const;
+	qReal::interpreters::robots::enums::sensorType::SensorTypeEnum portValue2() const;
+	qReal::interpreters::robots::enums::sensorType::SensorTypeEnum portValue3() const;
+	qReal::interpreters::robots::enums::sensorType::SensorTypeEnum portValue4() const;
 
 	qReal::ErrorReporterInterface &errorReporter();
 	qReal::Id &previousElement();

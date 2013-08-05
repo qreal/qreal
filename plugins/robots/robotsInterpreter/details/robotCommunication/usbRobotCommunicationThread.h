@@ -10,14 +10,10 @@
 
 class QextSerialPort;
 
-namespace qReal
-{
-namespace interpreters
-{
-namespace robots
-{
-namespace details
-{
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace details {
 
 class UsbRobotCommunicationThread : public RobotCommunicationThreadBase
 {
@@ -29,8 +25,8 @@ public:
 
 public slots:
 	void send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize);
-	void connect(QString const &portName);
-	void reconnect(QString const &portName);
+	void connect();
+	void reconnect();
 	void disconnect();
 	void allowLongJobs(bool allow = true);
 	void checkConsistency();
@@ -54,7 +50,7 @@ private:
 
 	bool mActive;
 	unsigned long mNXTHandle;
-	robotsInterpreter::robotCommunication::Fantom mFantom;
+	Fantom mFantom;
 
 	/// Timer that sends messages to robot to check that connection is still alive
 	QTimer *mKeepAliveTimer;

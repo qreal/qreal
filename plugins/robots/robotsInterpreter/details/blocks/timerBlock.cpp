@@ -16,13 +16,13 @@ TimerBlock::TimerBlock(AbstractTimer * const timer)
 void TimerBlock::run()
 {
 	int const interval = evaluate("Delay").toInt();
-	Tracer::debug(tracer::blocks, "TimerBlock::run", "interval=" + QString(interval));
+	Tracer::debug(tracer::enums::blocks, "TimerBlock::run", "interval=" + QString(interval));
 
 	mTimer->start(interval);
 }
 
 void TimerBlock::timeout()
 {
-	Tracer::debug(tracer::blocks, "TimerBlock::timeout", "emit done(mNextBlock)");
+	Tracer::debug(tracer::enums::blocks, "TimerBlock::timeout", "emit done(mNextBlock)");
 	emit done(mNextBlock);
 }

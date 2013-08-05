@@ -21,7 +21,7 @@ int WorldModel::sonarReading(QPointF const &position, qreal direction) const
 
 	QPainterPath const wallPath = buildWallPath();
 	if (!checkSonarDistance(maxSonarRangeCms, position, direction, wallPath)) {
-		Tracer::debug(tracer::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: max (" + QString(maxSonarRangeCms) + ")");
+		Tracer::debug(tracer::enums::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: max (" + QString(maxSonarRangeCms) + ")");
 		return maxSonarRangeCms;
 	}
 
@@ -35,7 +35,7 @@ int WorldModel::sonarReading(QPointF const &position, qreal direction) const
 		}
 	}
 
-	Tracer::debug(tracer::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: " + QString(currentRangeInCm));
+	Tracer::debug(tracer::enums::d2Model, "WorldModel::sonarReading", "Sonar sensor. Reading: " + QString(currentRangeInCm));
 	return currentRangeInCm;
 }
 
@@ -46,7 +46,7 @@ bool WorldModel::checkSonarDistance(int const distance, QPointF const &position
 	return rayPath.intersects(wallPath);
 }
 
-bool WorldModel::touchSensorReading(QPointF const &position, qreal direction, inputPort::InputPortEnum const port)
+bool WorldModel::touchSensorReading(QPointF const &position, qreal direction, robots::enums::inputPort::InputPortEnum const port)
 {
 	Q_UNUSED(direction)
 

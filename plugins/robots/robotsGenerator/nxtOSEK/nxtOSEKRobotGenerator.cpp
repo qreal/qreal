@@ -229,9 +229,11 @@ qrRepo::RepoApi const *NxtOSEKRobotGenerator::api() const
 	return mApi;
 }
 
-interpreters::robots::sensorType::SensorTypeEnum NxtOSEKRobotGenerator::portValue(int port) const
+interpreters::robots::enums::sensorType::SensorTypeEnum NxtOSEKRobotGenerator::portValue(int port) const
 {
-	return static_cast<interpreters::robots::sensorType::SensorTypeEnum>(SettingsManager::value("port" + QString::number(port) + "SensorType").toInt());
+	return static_cast<interpreters::robots::enums::sensorType::SensorTypeEnum>(
+			SettingsManager::value("port" + QString::number(port) + "SensorType").toInt()
+			);
 }
 
 ErrorReporterInterface &NxtOSEKRobotGenerator::errorReporter()

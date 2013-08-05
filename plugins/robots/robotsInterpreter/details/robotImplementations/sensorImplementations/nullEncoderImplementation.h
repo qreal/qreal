@@ -14,7 +14,7 @@ class NullEncoderImplementation : public AbstractEncoderImplementation
 {
 	Q_OBJECT
 public:
-	NullEncoderImplementation(outputPort::OutputPortEnum const &port);
+	NullEncoderImplementation(enums::outputPort::OutputPortEnum const &port);
 	virtual void read();
 	virtual void nullificate();
 
