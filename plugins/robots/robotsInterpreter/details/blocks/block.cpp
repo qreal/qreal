@@ -20,6 +20,10 @@ Block::Block()
 	connect(this, SIGNAL(done(blocks::Block*const)), this, SLOT(finishedRunning()));
 }
 
+Block::~Block()
+{
+}
+
 void Block::init(Id const &graphicalId
 		, GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
@@ -190,6 +194,6 @@ QVector<bool> Block::parseEnginePorts() const
 	return result;
 }
 
-void Block::stopActiveTimerInBlock()
+void Block::finishedSteppingInto()
 {
 }
