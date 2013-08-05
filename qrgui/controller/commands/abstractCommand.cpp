@@ -1,4 +1,5 @@
 #include <QtCore/QListIterator>
+#include <QtCore/QDateTime>
 
 #include "abstractCommand.h"
 
@@ -7,6 +8,7 @@ using namespace qReal::commands;
 AbstractCommand::AbstractCommand()
 	: mExecuted(false), mRedoEnabled(true), mUndoEnabled(true)
 {
+	mTimestamp = QDateTime::currentMSecsSinceEpoch();
 }
 
 AbstractCommand::~AbstractCommand()
@@ -147,12 +149,29 @@ void AbstractCommand::removeDuplicates()
 	removeDuplicatesOn(mPostActions);
 }
 
+qReal::Id AbstractCommand::diagramBinded() const
+{
+	return mDiagramBinded;
+}
+
+void AbstractCommand::bindToDiagram(qReal::Id const &diagramId)
+{
+	mDiagramBinded = diagramId;
+}
+
+uint AbstractCommand::timestamp() const
+{
+	return mTimestamp;
+}
+
 void AbstractCommand::removeDuplicatesOn(QList<AbstractCommand *> &list)
 {
 	foreach (AbstractCommand * const command, list) {
 		if (hierarchyContains(command)) {
 			list.removeAll(command);
 			delete command;
+		} else {
+			command->removeDuplicates();
 		}
 	}
 }

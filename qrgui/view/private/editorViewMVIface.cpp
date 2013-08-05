@@ -2,12 +2,12 @@
 #include <QtCore/QDebug>
 
 #include "editorViewMVIface.h"
-#include "editorView.h"
-#include "editorViewScene.h"
-#include "../../qrkernel/definitions.h"
-#include "../umllib/element.h"
-#include "../pluginManager/editorManagerInterface.h"
-#include "../mainwindow/mainWindow.h"
+#include "../editorView.h"
+#include "../editorViewScene.h"
+#include "../../../qrkernel/definitions.h"
+#include "../../umllib/element.h"
+#include "../../pluginManager/editorManagerInterface.h"
+#include "../../mainwindow/mainWindow.h"
 
 using namespace qReal;
 

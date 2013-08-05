@@ -13,7 +13,7 @@ class NodeElementCommand : public ElementCommand
 public:
 	NodeElementCommand(EditorViewScene const *scene, Id const &id);
 	NodeElementCommand(EditorView const *view, Id const &id);
-	virtual ~NodeElementCommand() {}
+	virtual ~NodeElementCommand();
 
 protected:
 	virtual bool reinitElement();
