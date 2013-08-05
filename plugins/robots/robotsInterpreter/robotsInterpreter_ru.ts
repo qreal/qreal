@@ -453,12 +453,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Сенсор4</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="43"/>
+        <location filename="robotsPlugin.cpp" line="44"/>
         <source>2d model</source>
         <translation>2D модель</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="47"/>
+        <location filename="robotsPlugin.cpp" line="48"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
@@ -467,17 +467,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="51"/>
+        <location filename="robotsPlugin.cpp" line="52"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="55"/>
+        <location filename="robotsPlugin.cpp" line="56"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="61"/>
+        <location filename="robotsPlugin.cpp" line="62"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -486,7 +486,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="138"/>
+        <location filename="robotsPlugin.cpp" line="140"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -534,27 +534,26 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::Interpreter</name>
     <message>
-        <location filename="interpreter.cpp" line="89"/>
+        <location filename="interpreter.cpp" line="84"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="93"/>
+        <location filename="interpreter.cpp" line="88"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="103"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
-        <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
+        <translation type="obsolete">Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="201"/>
+        <location filename="interpreter.cpp" line="190"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="205"/>
+        <location filename="interpreter.cpp" line="194"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
@@ -624,32 +623,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::RobotsPlugin</name>
     <message>
-        <location filename="robotsPlugin.cpp" line="65"/>
+        <location filename="robotsPlugin.cpp" line="66"/>
         <source>Text under pictogram</source>
         <translation>Текст под пиктограммами</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="94"/>
+        <location filename="robotsPlugin.cpp" line="96"/>
         <source>Show 2d model</source>
         <translation>Открыть окно 2D модели</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="95"/>
+        <location filename="robotsPlugin.cpp" line="97"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="96"/>
+        <location filename="robotsPlugin.cpp" line="98"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="98"/>
+        <location filename="robotsPlugin.cpp" line="100"/>
         <source>Toggle titles visibility</source>
         <translation>Показать/скрыть встроенные редакторы свойств</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="143"/>
+        <location filename="robotsPlugin.cpp" line="145"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -733,6 +732,19 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>qReal::interpreters::robots::details::Thread</name>
+    <message>
+        <location filename="details/thread.cpp" line="60"/>
+        <source>No entry point found, please add Initial Node to a diagram</source>
+        <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
+    </message>
+    <message>
+        <location filename="details/thread.cpp" line="65"/>
+        <source>Stack overflow</source>
+        <translation>Переполнение стека</translation>
+    </message>
+</context>
+<context>
     <name>qReal::interpreters::robots::details::UsbRobotCommunicationThread</name>
     <message>
         <location filename="details/robotCommunication/usbRobotCommunicationThread.cpp" line="200"/>
@@ -752,22 +764,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::Block</name>
     <message>
-        <location filename="details/blocks/block.cpp" line="42"/>
+        <location filename="details/blocks/block.cpp" line="46"/>
         <source>Control flow break detected, stopping</source>
         <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
-        <location filename="details/blocks/block.cpp" line="49"/>
+        <location filename="details/blocks/block.cpp" line="53"/>
         <source>Too many outgoing links</source>
         <translation>Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="details/blocks/block.cpp" line="54"/>
+        <location filename="details/blocks/block.cpp" line="58"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
         <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="details/blocks/block.cpp" line="61"/>
+        <location filename="details/blocks/block.cpp" line="65"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
@@ -1019,9 +1031,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForGyroscopeSensorBlock</name>
     <message>
-        <location filename="details/blocks/waitForGyroscopeSensorBlock.cpp" line="31"/>
         <source>Gyroscope</source>
-        <translation>Гироскоп</translation>
+        <translation type="obsolete">Гироскоп</translation>
     </message>
 </context>
 <context>
