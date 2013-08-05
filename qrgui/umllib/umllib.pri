@@ -3,6 +3,7 @@ HEADERS += umllib/edgeElement.h \
 	umllib/nodeElement.h \
 	umllib/sdfRenderer.h \
 	umllib/label.h \
+	umllib/labelFactory.h \
 	umllib/contextMenuAction.h \
 	umllib/embedded/linkers/embeddedLinker.h \
 	umllib/embedded/linkers/embeddedLinkers.h \
@@ -23,6 +24,7 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/nodeElement.cpp \
 	umllib/sdfRenderer.cpp \
 	umllib/label.cpp \
+	umllib/labelFactory.cpp \
 	umllib/contextMenuAction.cpp \
 	umllib/embedded/linkers/embeddedLinker.cpp \
 	umllib/embedded/linkers/embeddedLinkers.cpp \

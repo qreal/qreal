@@ -1,4 +1,4 @@
-/** @file edgeelement.cpp
+/** @file edgeElement.cpp
  * 	@brief class for an edge on a diagram
  * */
 #include <QtWidgets/QStyleOptionGraphicsItem>
@@ -10,6 +10,7 @@
 
 #include "edgeElement.h"
 #include "nodeElement.h"
+#include "labelFactory.h"
 #include "private/reshapeEdgeCommand.h"
 #include "../view/editorViewScene.h"
 

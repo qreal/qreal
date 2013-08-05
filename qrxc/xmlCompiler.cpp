@@ -122,7 +122,9 @@ void XmlCompiler::generateElementClasses()
 		<< "#include <QPainter>\n\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementImpl.h\"\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelHelpers.h\"\n\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelFactoryInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelInterface.h\"\n"
+		<< "\n"
 		;
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {

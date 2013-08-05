@@ -9,6 +9,7 @@
 #include <math.h>
 
 #include "nodeElement.h"
+#include "labelFactory.h"
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
 

@@ -1,31 +1,26 @@
 #pragma once
 
 #include <QtWidgets/QGraphicsTextItem>
-#include "../editorPluginInterface/labelHelpers.h"
+
+#include "../editorPluginInterface/labelInterface.h"
 
 namespace enums {
-namespace OrientationType {
+namespace orientationType {
 enum OrientationType {
-	horizontal,
-	vertical
+	horizontal
+	, vertical
 };
 }
 }
 
-class LabelFactory : public LabelFactoryInterface
-{
-public:
-	LabelInterface *createTitle(qreal x, qreal y, QString const &text, qreal rotation);
-	LabelInterface *createTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
-};
-
-class Label : public LabelInterface
+class Label : public QGraphicsTextItem, public LabelInterface
 {
 	Q_OBJECT
+
 public:
 	Label(qreal x, qreal y, QString const &text, qreal rotation);
 	Label(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
-	virtual ~Label() {}
+	virtual ~Label();
 
 	void init(QRectF const& contents);
 	void setBackground(QColor const &background);
@@ -43,6 +38,11 @@ public:
 	void setParentContents(QRectF contents);
 
 	void setShouldCenter(bool shouldCenter);
+
+	virtual void setFlags(GraphicsItemFlags flags);
+	virtual void setTextInteractionFlags(Qt::TextInteractionFlags flags);
+	virtual void setHtml(QString const &html);
+	virtual void setPlainText(QString const &text);
 
 protected:
 	enum InterpriterPropertyType
@@ -67,7 +67,7 @@ private:
 	QString createTextForRepo() const;
 	void setText(QString const &text);
 	void moveToParentCenter();
-	enums::OrientationType::OrientationType orientation();
+	enums::orientationType::OrientationType orientation();
 
 	bool mFocusIn;
 	bool mReadOnly;

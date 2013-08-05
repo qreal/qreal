@@ -9,7 +9,7 @@
 #include <QtGui/QPainter>
 
 #include "../editorPluginInterface/elementImpl.h"
-#include "../editorPluginInterface/labelHelpers.h"
+#include "../editorPluginInterface/labelInterface.h"
 #include "../editorPluginInterface/elementRepoInterface.h"
 #include "../umllib/sdfRenderer.h"
 #include "../../qrkernel/ids.h"
