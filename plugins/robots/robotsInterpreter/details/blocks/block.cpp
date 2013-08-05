@@ -77,13 +77,13 @@ Id const Block::id() const
 
 void Block::interpret()
 {
-	if ((mState == running) || (mState == failed)) {
+	// mState == running is not filtered out due to recursions and forks
+	if (mState == failed) {
 		return;
 	}
 
 	mState = running;
-	bool result = initNextBlocks();
-	if (result) {
+	if (initNextBlocks()) {
 		run();
 	}
 }
