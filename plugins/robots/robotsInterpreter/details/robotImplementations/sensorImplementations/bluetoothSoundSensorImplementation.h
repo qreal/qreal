@@ -15,7 +15,7 @@ class BluetoothSoundSensorImplementation : public BluetoothSensorImplementation
 
 public:
 	BluetoothSoundSensorImplementation(RobotCommunicator *robotCommunicationInterface
-			, inputPort::InputPortEnum port);
+			, robots::enums::inputPort::InputPortEnum port);
 	virtual void read();
 
 protected:

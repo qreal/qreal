@@ -5,8 +5,12 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotParts;
 
-EncoderSensor::EncoderSensor(robotImplementations::sensorImplementations::AbstractEncoderImplementation *encoderImpl, outputPort::OutputPortEnum const &port)
-	: mPort(port), mEncoderImpl(encoderImpl)
+EncoderSensor::EncoderSensor(
+		robotImplementations::sensorImplementations::AbstractEncoderImplementation *encoderImpl
+		, enums::outputPort::OutputPortEnum const &port
+		)
+		: mPort(port)
+		, mEncoderImpl(encoderImpl)
 {
 }
 

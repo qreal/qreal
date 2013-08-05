@@ -7,6 +7,7 @@
 #include "details/robotImplementations/unrealRobotModelImplementation.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 #include "details/robotCommunication/usbRobotCommunicationThread.h"
+#include "details/robotCommunication/tcpRobotCommunicationThread.h"
 #include "details/tracer.h"
 #include "details/debugHelper.h"
 
@@ -24,15 +25,12 @@ Interpreter::Interpreter()
 	, mState(idle)
 	, mRobotModel(new RobotModel())
 	, mBlocksTable(NULL)
-	, mRobotCommunication(new RobotCommunicator(SettingsManager::value("valueOfCommunication").toString()))
-	, mImplementationType(robotModelType::null)
+	, mParser(NULL)
+	, mRobotCommunication(new RobotCommunicator())
+	, mImplementationType(robots::enums::robotModelType::null)
 	, mWatchListWindow(NULL)
 	, mActionConnectToRobot(NULL)
 {
-	mParser = NULL;
-	mBlocksTable = NULL;
-	mTimer = new QTimer();
-
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
 
@@ -60,8 +58,15 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 
 	connect(&projectManager, SIGNAL(beforeOpen(QString)), this, SLOT(stopRobot()));
 
-	robotModelType::robotModelTypeEnum const modelType = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
-	Tracer::debug(tracer::initialization, "Interpreter::init", "Going to set robot implementation, model type is " + DebugHelper::toString(modelType));
+	robots::enums::robotModelType::robotModelTypeEnum const modelType
+			= static_cast<robots::enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+
+	Tracer::debug(
+			tracer::enums::initialization
+			, "Interpreter::init"
+			, "Going to set robot implementation, model type is " + DebugHelper::toString(modelType)
+			);
+
 	setRobotImplementation(modelType);
 
 	mWatchListWindow = new utils::WatchListWindow(mParser, mInterpretersInterface->windowWidget());
@@ -77,7 +82,7 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret()
 {
-	Tracer::debug(tracer::initialization, "Interpreter::interpret", "Preparing for interpretation");
+	Tracer::debug(tracer::enums::initialization, "Interpreter::interpret", "Preparing for interpretation");
 
 	mInterpretersInterface->errorReporter()->clear();
 
@@ -111,7 +116,7 @@ void Interpreter::interpret()
 
 void Interpreter::stopRobot()
 {
-	mTimer->stop();
+	mTimer.stop();
 	mRobotModel->stopRobot();
 	mState = idle;
 	foreach (Thread *thread, mThreads) {
@@ -180,15 +185,15 @@ void Interpreter::disableD2ModelWidgetRunStopButtons()
 	mD2ModelWidget->disableRunStopButtons();
 }
 
-void Interpreter::setRobotImplementation(robotModelType::robotModelTypeEnum implementationType)
+void Interpreter::setRobotImplementation(robots::enums::robotModelType::robotModelTypeEnum implementationType)
 {
 	mConnected = false;
 	mActionConnectToRobot->setChecked(false);
-	robotImplementations::AbstractRobotModelImplementation *robotImpl =
-			robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
+	robotImplementations::AbstractRobotModelImplementation *robotImpl
+			= robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
 	setRobotImplementation(robotImpl);
 	mImplementationType = implementationType;
-	if (mImplementationType != robotModelType::real) {
+	if (mImplementationType != robots::enums::robotModelType::nxt) {
 		mRobotModel->init();
 	}
 }
@@ -200,7 +205,7 @@ void Interpreter::connectedSlot(bool success)
 			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
 		}
 	} else {
-		Tracer::debug(tracer::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
+		Tracer::debug(tracer::enums::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
 		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
 	}
 	mConnected = success;
@@ -209,7 +214,7 @@ void Interpreter::connectedSlot(bool success)
 
 void Interpreter::sensorsConfiguredSlot()
 {
-	Tracer::debug(tracer::initialization, "Interpreter::sensorsConfiguredSlot", "Sensors are configured");
+	Tracer::debug(tracer::enums::initialization, "Interpreter::sensorsConfiguredSlot", "Sensors are configured");
 
 	mConnected = true;
 	mActionConnectToRobot->setChecked(mConnected);
@@ -223,7 +228,7 @@ void Interpreter::sensorsConfiguredSlot()
 
 		runTimer();
 
-		Tracer::debug(tracer::initialization, "Interpreter::sensorsConfiguredSlot", "Starting interpretation");
+		Tracer::debug(tracer::enums::initialization, "Interpreter::sensorsConfiguredSlot", "Starting interpretation");
 		mRobotModel->startInterpretation();
 
 		Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
@@ -264,10 +269,11 @@ void Interpreter::newThread(details::blocks::Block * const startBlock)
 	addThread(thread);
 }
 
-void Interpreter::configureSensors(sensorType::SensorTypeEnum const &port1
-		, sensorType::SensorTypeEnum const &port2
-		, sensorType::SensorTypeEnum const &port3
-		, sensorType::SensorTypeEnum const &port4)
+void Interpreter::configureSensors(
+		robots::enums::sensorType::SensorTypeEnum const &port1
+		, robots::enums::sensorType::SensorTypeEnum const &port2
+		, robots::enums::sensorType::SensorTypeEnum const &port3
+		, robots::enums::sensorType::SensorTypeEnum const &port4)
 {
 	if (mConnected) {
 		mRobotModel->configureSensors(port1, port2, port3, port4);
@@ -304,21 +310,73 @@ void Interpreter::setRobotImplementation(details::robotImplementations::Abstract
 
 void Interpreter::runTimer()
 {
-	if (mRobotModel->sensor(inputPort::port1)) {
-		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot1(int)), Qt::UniqueConnection);
-		connect(mRobotModel->sensor(inputPort::port1)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
+	if (mRobotModel->sensor(robots::enums::inputPort::port1)) {
+		connect(
+				mRobotModel->sensor(robots::enums::inputPort::port1)->sensorImpl()
+				, SIGNAL(response(int))
+				, this
+				, SLOT(responseSlot1(int))
+				, Qt::UniqueConnection
+				);
+
+		connect(
+				mRobotModel->sensor(robots::enums::inputPort::port1)->sensorImpl()
+				, SIGNAL(failure())
+				, this
+				, SLOT(slotFailure())
+				, Qt::UniqueConnection
+				);
 	}
-	if (mRobotModel->sensor(inputPort::port2)) {
-		connect(mRobotModel->sensor(inputPort::port2)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot2(int)), Qt::UniqueConnection);
-		connect(mRobotModel->sensor(inputPort::port2)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
+	if (mRobotModel->sensor(robots::enums::inputPort::port2)) {
+		connect(
+				mRobotModel->sensor(robots::enums::inputPort::port2)->sensorImpl()
+				, SIGNAL(response(int))
+				, this
+				, SLOT(responseSlot2(int))
+				, Qt::UniqueConnection
+				);
+
+		connect(
+				mRobotModel->sensor(robots::enums::inputPort::port2)->sensorImpl()
+				, SIGNAL(failure())
+				, this
+				, SLOT(slotFailure())
+				, Qt::UniqueConnection
+				);
 	}
-	if (mRobotModel->sensor(inputPort::port3)) {
-		connect(mRobotModel->sensor(inputPort::port3)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot3(int)), Qt::UniqueConnection);
-		connect(mRobotModel->sensor(inputPort::port3)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
+	if (mRobotModel->sensor(robots::enums::inputPort::port3)) {
+		connect(
+				mRobotModel->sensor(robots::enums::inputPort::port3)->sensorImpl()
+				, SIGNAL(response(int))
+				, this
+				, SLOT(responseSlot3(int))
+				, Qt::UniqueConnection
+				);
+
+		connect(
+				mRobotModel->sensor(robots::enums::inputPort::port3)->sensorImpl()
+				, SIGNAL(failure())
+				, this
+				, SLOT(slotFailure())
+				, Qt::UniqueConnection
+				);
 	}
-	if (mRobotModel->sensor(inputPort::port4)) {
-		connect(mRobotModel->sensor(inputPort::port4)->sensorImpl(), SIGNAL(response(int)), this, SLOT(responseSlot4(int)), Qt::UniqueConnection);
-		connect(mRobotModel->sensor(inputPort::port4)->sensorImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
+	if (mRobotModel->sensor(robots::enums::inputPort::port4)) {
+		connect(
+				mRobotModel->sensor(robots::enums::inputPort::port4)->sensorImpl()
+				, SIGNAL(response(int))
+				, this
+				, SLOT(responseSlot4(int))
+				, Qt::UniqueConnection
+				);
+
+		connect(
+				mRobotModel->sensor(robots::enums::inputPort::port4)->sensorImpl()
+				, SIGNAL(failure())
+				, this
+				, SLOT(slotFailure())
+				, Qt::UniqueConnection
+				);
 	}
 
 	connect(mRobotModel->encoderA().encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlotA(int)), Qt::UniqueConnection);
@@ -329,10 +387,10 @@ void Interpreter::runTimer()
 	connect(mRobotModel->encoderC().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
 
 	mRobotModel->nullifySensors();
-	if (!mTimer->isActive()) {
+	if (!mTimer.isActive()) {
 		readSensorValues();
-		mTimer->start(25);
-		connect(mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
+		mTimer.start(25);
+		connect(&mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
 	}
 }
 
@@ -342,17 +400,17 @@ void Interpreter::readSensorValues()
 		return;
 	}
 
-	if (mRobotModel->sensor(inputPort::port1)) {
-		mRobotModel->sensor(inputPort::port1)->read();
+	if (mRobotModel->sensor(robots::enums::inputPort::port1)) {
+		mRobotModel->sensor(robots::enums::inputPort::port1)->read();
 	}
-	if (mRobotModel->sensor(inputPort::port2)) {
-		mRobotModel->sensor(inputPort::port2)->read();
+	if (mRobotModel->sensor(robots::enums::inputPort::port2)) {
+		mRobotModel->sensor(robots::enums::inputPort::port2)->read();
 	}
-	if (mRobotModel->sensor(inputPort::port3)) {
-		mRobotModel->sensor(inputPort::port3)->read();
+	if (mRobotModel->sensor(robots::enums::inputPort::port3)) {
+		mRobotModel->sensor(robots::enums::inputPort::port3)->read();
 	}
-	if (mRobotModel->sensor(inputPort::port4)) {
-		mRobotModel->sensor(inputPort::port4)->read();
+	if (mRobotModel->sensor(robots::enums::inputPort::port4)) {
+		mRobotModel->sensor(robots::enums::inputPort::port4)->read();
 	}
 
 	mRobotModel->encoderA().read();
@@ -362,7 +420,7 @@ void Interpreter::readSensorValues()
 
 void Interpreter::slotFailure()
 {
-	Tracer::debug(tracer::autoupdatedSensorValues, "Interpreter::slotFailure", "");
+	Tracer::debug(tracer::enums::autoupdatedSensorValues, "Interpreter::slotFailure", "");
 }
 
 void Interpreter::responseSlot1(int sensorValue)
@@ -403,7 +461,11 @@ void Interpreter::responseSlotC(int encoderValue)
 void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
 {
 	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
-	Tracer::debug(tracer::autoupdatedSensorValues, "Interpreter::updateSensorValues", sensorVariableName + QString::number(sensorValue));
+	Tracer::debug(
+			tracer::enums::autoupdatedSensorValues
+			, "Interpreter::updateSensorValues"
+			, sensorVariableName + QString::number(sensorValue)
+			);
 }
 
 void Interpreter::resetVariables()
@@ -426,10 +488,10 @@ void Interpreter::connectToRobot()
 	} else {
 		mRobotModel->init();
 		configureSensors(
-				  static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
-				, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
-				, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
-				, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
+				  static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
+				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
+				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
+				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
 	}
 	mActionConnectToRobot->setChecked(mConnected);
 }
@@ -440,26 +502,29 @@ void Interpreter::disconnectSlot()
 	mConnected = false;
 }
 
-void Interpreter::setRobotModelType(robotModelType::robotModelTypeEnum robotModelType)
+void Interpreter::setRobotModelType(robots::enums::robotModelType::robotModelTypeEnum robotModelType)
 {
 	setRobotImplementation(robotModelType);
 }
 
-void Interpreter::setCommunicator(QString const &valueOfCommunication, QString const &portName)
+void Interpreter::setCommunicator(QString const &valueOfCommunication)
 {
 	if (valueOfCommunication == mLastCommunicationValue) {
 		return;
 	}
+
 	RobotCommunicationThreadInterface *communicator = NULL;
 	if (valueOfCommunication == "bluetooth") {
 		communicator = new BluetoothRobotCommunicationThread();
-	} else {
+	} else if (valueOfCommunication == "usb") {
 		communicator = new UsbRobotCommunicationThread();
+	} else {
+		communicator = new TcpRobotCommunicationThread();
 	}
+
 	mLastCommunicationValue = valueOfCommunication;
 
 	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
-	mRobotCommunication->setPortName(portName);
 }
 
 void Interpreter::setConnectRobotAction(QAction *actionConnect)

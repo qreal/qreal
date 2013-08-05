@@ -11,10 +11,15 @@ namespace sensorImplementations {
 class BluetoothTouchSensorImplementation : public BluetoothSensorImplementation
 {
 	Q_OBJECT
+
 public:
-	BluetoothTouchSensorImplementation(RobotCommunicator *robotCommunicationInterface
-			, inputPort::InputPortEnum const port);
+	BluetoothTouchSensorImplementation(
+			RobotCommunicator *robotCommunicationInterface
+			, robots::enums::inputPort::InputPortEnum const port
+			);
+
 	virtual void read();
+
 protected:
 	virtual void sensorSpecificProcessResponse(QByteArray const &reading);
 };
