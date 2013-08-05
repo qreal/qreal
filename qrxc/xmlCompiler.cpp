@@ -8,6 +8,7 @@
 
 #include "edgeType.h"
 #include "nodeType.h"
+#include "portType.h"
 #include "enumType.h"
 
 #include <QtCore/QFile>
@@ -116,18 +117,27 @@ void XmlCompiler::addResource(QString const &resourceName)
 
 void XmlCompiler::generateElementClasses()
 {
-	OutFile out("generated/elements.h");
-	out() << "#pragma once\n\n"
+	OutFile outElements("generated/elements.h");
+	outElements() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementImpl.h\"\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelHelpers.h\"\n\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelHelpers.h\"\n"
+		<< "#include \"ports.h\"\n\n"
 		;
+
+	OutFile outPorts("generated/ports.h");
+	outPorts() << "#pragma once\n\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/portImpl.h\"\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		foreach (Type *type, diagram->types().values()) {
-			type->generateCode(out);
+			if (dynamic_cast<PortType *>(type)) {
+				type->generateCode(outPorts);
+			} else {
+				type->generateCode(outElements);
+			}
 		}
 	}
 }
