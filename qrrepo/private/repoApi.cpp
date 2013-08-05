@@ -381,7 +381,7 @@ void RepoApi::open(QString const &saveFile)
 	mClient.open(saveFile);
 }
 
-void RepoApi::exportToXml(QString const &targetFile)
+void RepoApi::exportToXml(QString const &targetFile) const
 {
 	mClient.exportToXml(targetFile);
 }

@@ -119,7 +119,7 @@ namespace qrRepo {
 		void saveTo(QString const &workingFile);
 		void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 		void open(QString const &saveFile);
-		void exportToXml(QString const &targetFile);
+		void exportToXml(QString const &targetFile) const;
 
 		virtual QString workingFile() const;
 

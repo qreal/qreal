@@ -1344,21 +1344,25 @@ void NodeElement::initRenderedDiagram()
 	}
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
+	if (!evScene) {
+		return;
+	}
+
 	MainWindow *window = evScene->mainWindow();
 
-	Id diagram = mLogicalAssistApi->logicalRepoApi().outgoingExplosion(logicalId());
-	Id graphicalDiagram = mGraphicalAssistApi->graphicalIdsByLogicalId(diagram)[0];
+	Id const diagram = mLogicalAssistApi->logicalRepoApi().outgoingExplosion(logicalId());
+	Id const graphicalDiagram = mGraphicalAssistApi->graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView * view = new EditorView(window);
-	EditorViewScene *openedScene = dynamic_cast<EditorViewScene *>(view->scene());
+	EditorView view(window);
+	EditorViewScene *openedScene = dynamic_cast<EditorViewScene *>(view.scene());
 	openedScene->setMainWindow(window);
 	openedScene->setNeedDrawGrid(false);
 
-	view->mvIface()->setAssistApi(window->models()->graphicalModelAssistApi()
+	view.mvIface()->setAssistApi(window->models()->graphicalModelAssistApi()
 			, window->models()->logicalModelAssistApi());
-	view->mvIface()->setModel(window->models()->graphicalModel());
-	view->mvIface()->setLogicalModel(window->models()->logicalModel());
-	view->mvIface()->setRootIndex(window->models()->graphicalModelAssistApi().indexById(graphicalDiagram));
+	view.mvIface()->setModel(window->models()->graphicalModel());
+	view.mvIface()->setLogicalModel(window->models()->logicalModel());
+	view.mvIface()->setRootIndex(window->models()->graphicalModelAssistApi().indexById(graphicalDiagram));
 
 	QRectF sceneRect = openedScene->itemsBoundingRect();
 	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
@@ -1375,16 +1379,15 @@ void NodeElement::initRenderedDiagram()
 
 	openedScene->render(&painter);
 
-	delete view;
 	mRenderedDiagram = image;
 }
 
 QRectF NodeElement::diagramRenderingRect() const
 {
-	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
-	NodeElement *initial = dynamic_cast<NodeElement *>(evScene->mainWindow()->editorManager().graphicalObject(id()));
-	qreal xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);
-	qreal yCoeff = (boundingRect().height() - 3 * kvadratik) / (initial->boundingRect().height() - 3 *kvadratik);
+	EditorViewScene const *evScene = dynamic_cast<EditorViewScene *>(scene());
+	NodeElement const *initial = dynamic_cast<NodeElement *>(evScene->mainWindow()->editorManager().graphicalObject(id()));
+	qreal const xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);
+	qreal const yCoeff = (boundingRect().height() - 3 * kvadratik) / (initial->boundingRect().height() - 3 *kvadratik);
 
 	// QReal:BP hardcode
 	QRectF result(QPointF(25 * xCoeff, 25 * yCoeff), QPointF(185 * xCoeff, 115 * yCoeff));

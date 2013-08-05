@@ -1,9 +1,7 @@
 #include "expandCommand.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 ExpandCommand::ExpandCommand(NodeElement const *node)
 	: NodeElementCommand(dynamic_cast<EditorViewScene *>(node->scene()), node->id())

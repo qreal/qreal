@@ -473,7 +473,7 @@ void Client::setWorkingFile(QString const &workingFile)
 	mWorkingFile = workingFile;
 }
 
-void Client::exportToXml(QString const &targetFile)
+void Client::exportToXml(QString const &targetFile) const
 {
 	mSerializer.exportToXml(targetFile, mObjects);
 }

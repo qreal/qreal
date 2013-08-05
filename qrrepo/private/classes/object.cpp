@@ -141,7 +141,6 @@ QVariant Object::property(QString const &name) const
 	} else {
 		// TODO: replace with exception when there is some kind of model migration tool
 		return QVariant();
-//		throw Exception("Object " + mId.toString() + ": requesting nonexistent property " + name);
 	}
 }
 

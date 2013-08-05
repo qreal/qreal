@@ -22,7 +22,7 @@ public:
 	void saveToDisk(QList<Object *> const &objects) const;
 	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash);
 
-	void exportToXml(QString const &targetFile, QHash<qReal::Id, Object*> const &objects);
+	void exportToXml(QString const &targetFile, QHash<qReal::Id, Object*> const &objects) const;
 
 	void decompressFile(QString const &fileName);
 
@@ -48,10 +48,10 @@ private:
 	static QDomElement createPropertiesXmlElement(Object const *object, QDomDocument &doc, Object const *logicalObject = NULL);
 	static void getSingleElementProperties(QDomElement &result, Object const *object, QDomDocument &doc);
 
-	static void exportDiagram(const qReal::Id &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
-	static void exportElement(const qReal::Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
-	static void exportChildren(const qReal::Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
-	static void exportProperties(const qReal::Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportDiagram(qReal::Id const &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportElement(qReal::Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportChildren(qReal::Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
+	static void exportProperties(qReal::Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects);
 
 
 	QString mWorkingDir;

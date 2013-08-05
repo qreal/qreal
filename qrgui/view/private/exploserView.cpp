@@ -88,13 +88,12 @@ void ExploserView::createExpandAction(Element const * const element, QMenu &cont
 		return;
 	}
 
-	QAction *action;
-	action = contextMenu.addAction(node->isExpanded()
+	QAction * expandAction = contextMenu.addAction(node->isExpanded()
 			? mMainWindow->toolManager().customizer()->collapseExplosionActionText()
 			: mMainWindow->toolManager().customizer()->expandExplosionActionText());
-	connect(action, SIGNAL(triggered()), SLOT(expandExplosionActionTriggered()));
+	connect(expandAction, SIGNAL(triggered()), SLOT(expandExplosionActionTriggered()));
 
-	action->setData(element->id().toVariant());
+	expandAction->setData(element->id().toVariant());
 }
 
 void ExploserView::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
@@ -199,6 +198,10 @@ void ExploserView::expandExplosionActionTriggered()
 	QAction *action = static_cast<QAction *>(sender());
 	Id elem = action->data().value<Id>();
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mMainWindow->getCurrentTab()->scene());
+	if (!evScene) {
+		return;
+	}
+
 	NodeElement *node = evScene->getNodeById(elem);
 	if (node) {
 		mMainWindow->controller()->execute(new qReal::commands::ExpandCommand(node));
