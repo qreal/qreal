@@ -1251,6 +1251,7 @@ void EditorViewScene::drawGesture()
 
 void EditorViewScene::deleteGesture()
 {
+	mRightButtonPressed = false;
 	foreach (QGraphicsItem *item, mGesture) {
 		removeItem(item);
 	}
