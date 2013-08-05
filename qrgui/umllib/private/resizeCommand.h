@@ -52,6 +52,7 @@ private:
 	void makeChildrenSnapshot(NodeElement const *element, QMap<Id, QRectF> &target);
 
 	void resizeHierarchy(QMap<Id, QRectF> const &snapshot);
+	void resizeTree(QMap<Id, QRectF> const &snapshot, Id const &root);
 
 	QRectF geometryOf(NodeElement const *element) const;
 

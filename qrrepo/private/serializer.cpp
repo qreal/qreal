@@ -58,7 +58,7 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 
 		root.setAttribute("parent", object->parent().toString());
 		root.appendChild(idListToXml("children", object->children(), doc));
-		root.appendChild(propertiesToXml(object, doc));
+		root.appendChild(createPropertiesXmlElement(object, doc));
 
 		OutFile out(filePath);
 		doc.save(out(), 2);
@@ -226,6 +226,8 @@ QVariant Serializer::parseValue(QString const &typeName, QString const &valueStr
 		return QVariant(valueStr.toLower() == "true");
 	} else if (typeName == "QString") {
 		return QVariant(valueStr);
+	} else if (typeName == "QStringList") {
+		return QVariant(valueStr.split(',', QString::SkipEmptyParts));
 	} else if (typeName.toLower() == "char") {
 		return QVariant(valueStr[0]);
 	} else if (typeName == "QPointF") {
@@ -282,6 +284,8 @@ QString Serializer::serializeQVariant(QVariant const &v)
 		return QString("%1").arg(v.toBool());
 	case QVariant::String:
 		return v.toString();
+	case QVariant::StringList:
+		return v.toStringList().join(',');
 	case QVariant::Char:
 		return v.toChar();
 	case QVariant::PointF:
@@ -359,9 +363,8 @@ QDomElement Serializer::idListToXml(QString const &attributeName, IdList const &
 	return result;
 }
 
-QDomElement Serializer::propertiesToXml(Object const *object, QDomDocument &doc)
+void Serializer::getSingleElementProperties(QDomElement &result, Object const *object, QDomDocument &doc)
 {
-	QDomElement result = doc.createElement("properties");
 	QMapIterator<QString, QVariant> i = object->propertiesIterator();
 	while (i.hasNext()) {
 		i.next();
@@ -378,6 +381,17 @@ QDomElement Serializer::propertiesToXml(Object const *object, QDomDocument &doc)
 			result.appendChild(property);
 		}
 	}
+}
+
+QDomElement Serializer::createPropertiesXmlElement(Object const *object, QDomDocument &doc, Object const *logicalObject)
+{
+	QDomElement result = doc.createElement("properties");
+	getSingleElementProperties(result, object, doc);
+
+	if (logicalObject) {
+		getSingleElementProperties(result, logicalObject, doc);
+	}
+
 	return result;
 }
 
@@ -385,4 +399,121 @@ void Serializer::decompressFile(QString const &fileName)
 {
 	FolderCompressor().decompressFolder(fileName, mWorkingDir);
 }
+
+void Serializer::exportToXml(QString const &targetFile, QHash<qReal::Id, Object*> const &objects) const
+{
+	Q_ASSERT_X(!targetFile.isEmpty(), "XmlSerializer::exportTo(...)", "target filename is empty");
+
+	QDomDocument doc;
+	QDomElement root = doc.createElement("project");
+	doc.appendChild(root);
+
+	foreach (Id const &id, objects[Id::rootId()]->children()) {
+
+		// skip logical elements of diagrams
+
+		if (objects[id]->logicalId().toString() == "qrm:/") {
+			continue;
+		}
+
+		exportDiagram(id, doc, root, objects);
+	}
+
+	OutFile out(targetFile);
+	doc.save(out(), 4);
+}
+
+void Serializer::exportDiagram(Id const &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+{
+	QDomElement diagram = doc.createElement("diagram");
+	diagram.setAttribute("logical_id", objects[diagramId]->logicalId().toString());
+	diagram.setAttribute("graphical_id", diagramId.toString());
+	diagram.setAttribute("name", objects[diagramId]->properties()["name"].toString());
+	exportProperties(diagramId, doc, diagram, objects);
+
+	QDomElement elements = doc.createElement("elements");
+
+	foreach (Id const &id, objects[diagramId]->children()) {
+		exportElement(id, doc, elements, objects);
+	}
+
+	diagram.appendChild(elements);
+
+	root.appendChild(diagram);
+}
+
+void Serializer::exportElement(Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+{
+	QDomElement element = doc.createElement("element");
+	element.setAttribute("name", objects[id]->properties()["name"].toString());
+	element.setAttribute("graphical_id", id.toString());
+	element.setAttribute("logical_id", objects[id]->logicalId().toString());
+
+	exportProperties(id, doc, element, objects);
+	exportChildren(id, doc, element, objects);
+
+	root.appendChild(element);
+}
+
+void Serializer::exportChildren(Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+{
+	Object *object = objects[id];
+	int size = object->children().size();
+	if (size == 0) {
+		return;
+	}
+
+	QDomElement children = doc.createElement("children");
+	children.setAttribute("count", size);
+
+	foreach (Id const &id, object->children()) {
+		exportElement(id, doc, children, objects);
+	}
+
+	root.appendChild(children);
+}
+
+void Serializer::exportProperties(Id const&id, QDomDocument &doc, QDomElement &root, QHash<Id, Object *> const &objects)
+{
+	QDomElement props = doc.createElement("properties");
+
+	Object *graphicalObject = objects[id];
+	Object *logicalObject = objects[graphicalObject->logicalId()];
+	QMap<QString, QVariant> properties;
+
+	QMapIterator<QString, QVariant> i = logicalObject->propertiesIterator();
+	while (i.hasNext()) {
+		i.next();
+		properties[i.key()] = i.value();
+
+	}
+	i = graphicalObject->propertiesIterator();
+	while (i.hasNext()) {
+		i.next();
+		properties[i.key()] = i.value();
+	}
+
+	foreach (QString const &key, properties.keys()) {
+		QDomElement prop = doc.createElement("property");
+
+		QString typeName = properties[key].typeName();
+		QVariant value = properties[key];
+		if (typeName == "qReal::IdList" && (value.value<IdList>().size() != 0)) {
+			QDomElement list = idListToXml("list", value.value<IdList>(), doc);
+			prop.appendChild(list);
+		} else if (typeName == "qReal::Id"){
+			prop.setAttribute("value", value.value<Id>().toString());
+		} else if (value.toString().isEmpty()) {
+			continue;
+		} else {
+			prop.setAttribute("value", properties[key].toString());
+		}
+		prop.setAttribute("name", key);
+
+		props.appendChild(prop);
+	}
+
+	root.appendChild(props);
+}
+
 

@@ -38,6 +38,7 @@ private slots:
 	void addExplosionActionTriggered();
 	void goToActionTriggered();
 	void removeExplosionActionTriggered();
+	void expandExplosionActionTriggered();
 
 private:
 	void createAddExplosionMenu(Element const * const element
@@ -46,6 +47,9 @@ private:
 
 	void createRemoveExplosionMenu(Element const * const element
 			, QMenu &contextMenu, qReal::Id const &outgoingConnection) const;
+
+	void createExpandAction(Element const * const element
+			, QMenu &contextMenu, qReal::Id const &alreadyConnectedElement) const;
 
 	/// Activates first binded with explosion link graphical instance of the element
 	/// with given @see id

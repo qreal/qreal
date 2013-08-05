@@ -96,20 +96,21 @@ public:
 
 	EdgeElement *edgeForInsertion(QPointF const &scenePos);
 	void resolveOverlaps(NodeElement* node, QPointF const &scenePos, QPointF const &shift
-			, QMap<qReal::Id, QPointF> &shifting);
+			, QMap<qReal::Id, QPointF> &shifting) const;
+	void returnElementsToOldPositions(QMap<Id, QPointF> const &shifting) const;
 
-	QList<NodeElement*> getCloseNodes(NodeElement* node);
+	QList<NodeElement*> getCloseNodes(NodeElement* node) const;
 
 	void reConnectLink(EdgeElement * edgeElem);
-	void arrangeNodeLinks(NodeElement* node);
+	void arrangeNodeLinks(NodeElement* node) const;
 
-	NodeElement* getNodeById(qReal::Id const &itemId);
-	EdgeElement* getEdgeById(qReal::Id const &itemId);
+	NodeElement* getNodeById(qReal::Id const &itemId) const;
+	EdgeElement* getEdgeById(qReal::Id const &itemId) const;
 
 	void itemSelectUpdate();
 
 	/// update (for a beauty) all edges when tab is opening
-	void updateEdgesViaNodes();
+	void initNodes();
 
 	void setTitlesVisible(bool visible);
 	void onElementParentChanged(Element *element);
@@ -164,6 +165,8 @@ private slots:
 	void getObjectByGesture();
 	/// Updates repository after the move. Controled by the timer.
 	void updateMovedElements();
+
+	void deselectLabels();
 
 private:
 	void setMVIface(EditorViewMViface *mvIface);
