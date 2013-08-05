@@ -139,7 +139,8 @@ QVariant Object::property(QString const &name) const
 	} else if (name == "backReferences") {
 		return QVariant();
 	} else {
-		throw Exception("Object " + mId.toString() + ": requesting nonexistent property " + name);
+		// TODO: replace with exception when there is some kind of model migration tool
+		return QVariant();
 	}
 }
 

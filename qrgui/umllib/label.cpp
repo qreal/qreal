@@ -99,12 +99,25 @@ void Label::setParentSelected(bool isSelected)
 void Label::setParentContents(QRectF contents)
 {
 	mParentContents = contents;
+	scaleCoordinates(contents);
 	moveToParentCenter();
 }
 
 void Label::setShouldCenter(bool shouldCenter)
 {
 	mWasMoved = !shouldCenter;
+}
+
+void Label::scaleCoordinates(QRectF const &contents)
+{
+	if (mWasMoved) {
+		return;
+	}
+
+	qreal const x = mPoint.x() * (!mScalingX ? mContents.width() : contents.width());
+	qreal const y = mPoint.y() * (!mScalingX ? mContents.height() : contents.height());
+
+	setPos(x, y);
 }
 
 void Label::setProperties(qreal x, qreal y, qreal width, QString const &text)

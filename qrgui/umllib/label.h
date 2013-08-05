@@ -43,6 +43,7 @@ public:
 	void setParentContents(QRectF contents);
 
 	void setShouldCenter(bool shouldCenter);
+	void scaleCoordinates(QRectF const &contents);
 
 protected:
 	enum InterpriterPropertyType

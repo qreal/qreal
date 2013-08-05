@@ -100,7 +100,11 @@ void EditorViewMViface::reset()
 	delete rect;
 
 	if (model()) {
-		rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1);
+		if (rootIndex().isValid()) {
+			rowsInserted(rootIndex(), 0, model()->rowCount(rootIndex()) - 1);
+		} else {
+			mScene->setEnabled(true);
+		}
 	}
 }
 
