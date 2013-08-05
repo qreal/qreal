@@ -1092,6 +1092,20 @@ bool EdgeElement::minimizeActionIsPossible()
 
 bool EdgeElement::reverseActionIsPossible()
 {
+	if (mSrc) {
+		if (mGraphicalAssistApi->editorManagerInterface().portTypes(mSrc->id().type()).toSet().intersect(
+				mElementImpl->toPortTypes().toSet()).empty()) {
+			return false;
+		}
+	}
+
+	if (mDst) {
+		if (mGraphicalAssistApi->editorManagerInterface().portTypes(mDst->id().type()).toSet().intersect(
+				mElementImpl->fromPortTypes().toSet()).empty()) {
+			return false;
+		}
+	}
+
 	return true;
 }
 
