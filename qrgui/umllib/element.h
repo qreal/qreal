@@ -17,12 +17,10 @@
 
 #include "../controller/controller.h"
 
-/** @brief size of a point port */
+/// size of a point port
 const int kvadratik = 10;
 
-/**
- * @brief base class for an element on a diagram
- */
+/// base class for an element on a diagram
 class Element : public QObject, public QGraphicsItem, public ElementRepoInterface
 {
 	Q_OBJECT
@@ -63,6 +61,7 @@ public:
 	void setController(qReal::Controller *controller);
 
 	ElementImpl* elementImpl() const;
+
 	/// Perform element-specific actions before being deleted
 	virtual void deleteFromScene() = 0;
 
@@ -82,7 +81,7 @@ protected:
 	bool mMoving;
 	qReal::Id mId;
 	ElementImpl* const mElementImpl;
-	QList<Label *> mTitles;
+	QList<Label *> mLabels;
 	bool mTitlesVisible;
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;

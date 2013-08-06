@@ -52,21 +52,22 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mPortRenderer = new SdfRenderer();
 	mRenderer = new SdfRenderer();
 	LabelFactory factory;
-	QList<LabelInterface*> titles;
+	QList<LabelInterface*> labels;
 
 	QList<StatPoint> pointPorts;
 	QList<StatLine> linePorts;
-	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer, this);
+	mElementImpl->init(mContents, pointPorts, linePorts, factory, labels, mRenderer, mPortRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
 
-	foreach (LabelInterface *titleIface, titles) {
-		Label *title = dynamic_cast<Label*>(titleIface);
-		if (!title) {
+	foreach (LabelInterface *labelInterface, labels) {
+		Label *label = dynamic_cast<Label*>(labelInterface);
+		if (!label) {
 			continue;
 		}
-		title->init(mContents);
-		title->setParentItem(this);
-		mTitles.append(title);
+
+		label->init(mContents);
+		label->setParentItem(this);
+		mLabels.append(label);
 	}
 
 	mFoldedContents = mContents;
@@ -94,7 +95,7 @@ NodeElement::~NodeElement()
 		edge->removeLink(this);
 	}
 
-	foreach (Label *title, mTitles) {
+	foreach (Label *title, mLabels) {
 		delete title;
 	}
 
@@ -949,7 +950,7 @@ void NodeElement::changeFoldState()
 
 void NodeElement::updateLabels()
 {
-	foreach (Label *title, mTitles) {
+	foreach (Label *title, mLabels) {
 		title->setParentContents(mContents);
 	}
 }
