@@ -6,6 +6,6 @@
 class LabelFactory : public LabelFactoryInterface
 {
 public:
-	LabelInterface *createTitle(qreal x, qreal y, QString const &text, qreal rotation);
-	LabelInterface *createTitle(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
+	LabelInterface *createLabel(qreal x, qreal y, QString const &text, qreal rotation);
+	LabelInterface *createLabel(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
 };

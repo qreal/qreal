@@ -31,10 +31,10 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 			LabelInterface *title = NULL;
 			if (text.isEmpty()) {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createTitle(x.value(), y.value(), textBinded, readOnly == "true", rotation);
+				title = factory.createLabel(x.value(), y.value(), textBinded, readOnly == "true", rotation);
 			} else {
 				// This is a statical label, it does not need repository.
-				title = factory.createTitle(x.value(), y.value(), text, rotation);
+				title = factory.createLabel(x.value(), y.value(), text, rotation);
 			}
 			title->setBackground(QColor(background));
 			title->setScaling(x.isScalable(), y.isScalable());
@@ -203,10 +203,10 @@ void InterpreterElementImpl::init(LabelFactoryInterface &factory, QList<LabelInt
 			LabelInterface* title = NULL;
 			if (labelType == "Static text") {
 				// This is a statical label, it does not need repository.
-				title = factory.createTitle(0, 0, labelText, 0);
+				title = factory.createLabel(0, 0, labelText, 0);
 			} else {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createTitle(0, 0, labelText, false, 0);
+				title = factory.createLabel(0, 0, labelText, false, 0);
 			}
 			title->setBackground(QColor(Qt::white));
 			title->setScaling(false, false);
