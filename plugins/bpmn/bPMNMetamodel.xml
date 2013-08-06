@@ -3,8 +3,21 @@
     <namespace>UML 2.0</namespace>
     <diagram nodeName="BPMNDiagramNode" name="BPMNDiagram" displayedName="BPMN Diagram">
         <nonGraphicTypes>
-            <port name="SequenceFrom"/>
-            <port name="SequenceTo"/>
+            <port name="StartEventLeft"/>
+            <port name="StartEventVertical"/>
+            <port name="StartEventRight"/>
+            <port name="IntermediateEventLeft"/>
+            <port name="IntermediateEventVertical"/>
+            <port name="IntermediateEventRight"/>
+            <port name="EndEventLeft"/>
+            <port name="EndEventVertical"/>
+            <port name="EndEventRight"/>
+            <port name="GatewayLeft"/>
+            <port name="GatewayVertical"/>
+            <port name="GatewayRight"/>
+            <port name="ActivityLeft"/>
+            <port name="ActivityVertical"/>
+            <port name="ActivityRight"/>
             <enum name="StartEventType" displayedName="Start Event Type">
                 <value>None</value>
                 <value>Message</value>
@@ -117,10 +130,10 @@
                         <label x="0a" y="100a" textBinded="text"/>
                     </labels>
                     <ports>
-                        <pointPort x="0" y="50"/>
-                        <pointPort x="50" y="0"/>
-                        <pointPort x="50" y="100"/>
-                        <pointPort x="100" y="50"/>
+                        <pointPort type="StartEventLeft" x="0" y="50"/>
+                        <pointPort type="StartEventVertical" x="50" y="0"/>
+                        <pointPort type="StartEventVertical" x="50" y="100"/>
+                        <pointPort type="StartEventRight" x="100" y="50"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -197,10 +210,10 @@
                         <label x="0a" y="100a" textBinded="text"/>
                     </labels>
                     <ports>
-                        <pointPort x="0" y="50"/>
-                        <pointPort x="50" y="0"/>
-                        <pointPort x="50" y="100"/>
-                        <pointPort x="100" y="50"/>
+                        <pointPort type="IntermediateEventLeft" x="0" y="50"/>
+                        <pointPort type="IntermediateEventVertical" x="50" y="0"/>
+                        <pointPort type="IntermediateEventVertical" x="50" y="100"/>
+                        <pointPort type="IntermediateEventRight" x="100" y="50"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -237,10 +250,10 @@
                         <label x="0a" y="100a" textBinded="text"/>
                     </labels>
                     <ports>
-                        <pointPort x="0" y="50"/>
-                        <pointPort x="50" y="0"/>
-                        <pointPort x="50" y="100"/>
-                        <pointPort x="100" y="50"/>
+                        <pointPort type="EndEventLeft" x="0" y="50"/>
+                        <pointPort type="EndEventVertical" x="50" y="0"/>
+                        <pointPort type="EndEventVertical" x="50" y="100"/>
+                        <pointPort type="EndEventRight" x="100" y="50"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -295,10 +308,10 @@
                         <label x="0a" y="110a" textBinded="text"/>
                     </labels>
                     <ports>
-                        <pointPort x="0" y="55"/>
-                        <pointPort x="55" y="0"/>
-                        <pointPort x="55" y="110"/>
-                        <pointPort x="110" y="55"/>
+                        <pointPort type="GatewayLeft" x="0" y="55"/>
+                        <pointPort type="GatewayVertical" x="55" y="0"/>
+                        <pointPort type="GatewayVertical" x="55" y="110"/>
+                        <pointPort type="GatewayRight" x="110" y="55"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -361,19 +374,19 @@
                         <label x="46a" y="55a" textBinded="Text"/>
                     </labels>
                     <ports>
-                        <linePort type="SequenceTo">
+                        <linePort type="ActivityLeft">
                             <start startx="18" starty="45"/>
                             <end endx="18" endy="115"/>
                         </linePort>
-                        <linePort type="SequenceTo">
+                        <linePort type="ActivityVertical">
                             <start startx="45" starty="18"/>
                             <end endx="165" endy="18"/>
                         </linePort>
-                        <linePort type="SequenceFrom">
+                        <linePort type="ActivityRight">
                             <start startx="192" starty="45"/>
                             <end endx="192" endy="115"/>
                         </linePort>
-                        <linePort type="SequenceFrom">
+                        <linePort type="ActivityVertical">
                             <start startx="45" starty="142"/>
                             <end endx="165" endy="142"/>
                         </linePort>
@@ -441,19 +454,19 @@
                         <label x="40a" y="145a" textBinded="Text"/>
                     </labels>
                     <ports>
-                        <linePort>
+                        <linePort type="ActivityLeft">
                             <start startx="18" starty="45"/>
                             <end endx="18" endy="115"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="ActivityVertical">
                             <start startx="45" starty="18"/>
                             <end endx="165" endy="18"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="ActivityRight">
                             <start startx="192" starty="45"/>
                             <end endx="192" endy="115"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="ActivityVertical">
                             <start startx="45" starty="142"/>
                             <end endx="165" endy="142"/>
                         </linePort>
@@ -487,13 +500,42 @@
                         <property type="string" displayedName="Name" name="Name"/>
                     </properties>
                     <fromPorts>
-                        <port type="SequenceFrom"/>
+                        <port type="StartEventRight"/>
+                        <port type="StartEventVertical"/>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="IntermediateEventRight"/>
+                        <port type="ActivityRight"/>
+                        <port type="ActivityVertical"/>
+                        <port type="GatewayVertical"/>
+                        <port type="GatewayRight"/>
                     </fromPorts>
                     <toPorts>
-                        <port type="SequenceTo"/>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="IntermediateEventLeft"/>
+                        <port type="ActivityLeft"/>
+                        <port type="ActivityVertical"/>
+                        <port type="GatewayVertical"/>
+                        <port type="GatewayLeft"/>
+                        <port type="EndEventLeft"/>
+                        <port type="EndEventVertical"/>
                     </toPorts>
                     <possibleEdges>
-                        <possibleEdge beginName="SequenceFrom" directed="true" endName="SequenceTo"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="ActivityRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="ActivityRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="ActivityRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="ActivityRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="ActivityLeft"/>
                     </possibleEdges>
                 </logic>
             </edge>
@@ -511,6 +553,21 @@
                     <properties>
                         <property type="string" displayedName="Text" name="Text"/>
                     </properties>
+                    <fromPorts>
+                        <port type="ActivityVertical"/>
+                        <port type="ActivityLeft"/>
+                        <port type="ActivityRight"/>
+                    </fromPorts>
+                    <toPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="IntermediateEventLeft"/>
+                        <port type="ActivityLeft"/>
+                        <port type="ActivityVertical"/>
+                        <port type="GatewayVertical"/>
+                        <port type="GatewayLeft"/>
+                        <port type="EndEventLeft"/>
+                        <port type="EndEventVertical"/>
+                    </toPorts>
                 </logic>
           </edge>
           <edge name="TimerFlow" displayedName="Timer Flow">
@@ -527,6 +584,21 @@
                     <properties>
                         <property type="string" displayedName="Text" name="Text"/>
                     </properties>
+                    <fromPorts>
+                        <port type="ActivityVertical"/>
+                        <port type="ActivityLeft"/>
+                        <port type="ActivityRight"/>
+                    </fromPorts>
+                    <toPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="IntermediateEventLeft"/>
+                        <port type="ActivityLeft"/>
+                        <port type="ActivityVertical"/>
+                        <port type="GatewayVertical"/>
+                        <port type="GatewayLeft"/>
+                        <port type="EndEventLeft"/>
+                        <port type="EndEventVertical"/>
+                    </toPorts>
                 </logic>
           </edge>
           <edge name="MessageFlow" displayedName="Message Flow">
@@ -543,8 +615,26 @@
                     <properties>
                         <property type="string" displayedName="Text" name="Text"/>
                     </properties>
+                    <fromPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="EndEventVertical"/>
+                        <port type="ActivityVertical"/>
+                    </fromPorts>
+                    <toPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="StartEventVertical"/>
+                        <port type="ActivityVertical"/>
+                    </toPorts>
                     <possibleEdges>
-                        <possibleEdge beginName="NonTyped" directed="true" endName="NonTyped"/>
+                        <possibleEdge beginName="EndEventVertical" directed="true" endName="StartEventVertical"/>
+                        <possibleEdge beginName="EndEventVertical" directed="true" endName="IntermediateEventVertical"/>
+                        <possibleEdge beginName="EndEventVertical" directed="true" endName="ActivityVertical"/>
+                        <possibleEdge beginName="IntermediateEventVertical" directed="true" endName="StartEventVertical"/>
+                        <possibleEdge beginName="IntermediateEventVertical" directed="true" endName="IntermediateEventVertical"/>
+                        <possibleEdge beginName="IntermediateEventVertical" directed="true" endName="ActivityVertical"/>
+                        <possibleEdge beginName="ActivityVertical" directed="true" endName="StartEventVertical"/>
+                        <possibleEdge beginName="ActivityVertical" directed="true" endName="IntermediateEventVertical"/>
+                        <possibleEdge beginName="ActivityVertical" directed="true" endName="ActivityVertical"/>
                     </possibleEdges>
                 </logic>
             </edge>
