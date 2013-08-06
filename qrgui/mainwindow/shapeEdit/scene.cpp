@@ -544,7 +544,7 @@ void Scene::changePortsType(QString const &type)
 {
 	mPortType = type;
 
-	foreach (QGraphicsItem *item, items()) {
+	foreach (QGraphicsItem *item, selectedItems()) {
 		PointPort *point = dynamic_cast<PointPort *>(item);
 		if (point) {
 			point->setType(type);

@@ -645,7 +645,9 @@ QStringList ShapeEdit::getPortTypes() const
 	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
 	if (repoApi) {
 		foreach (qReal::Id const &port, repoApi->elementsByType("MetaEntityPort")) {
-			result << repoApi->name(port);
+			if (repoApi->isLogicalElement(port)) {
+				result << repoApi->name(port);
+			}
 		}
 	}
 
