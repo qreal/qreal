@@ -499,12 +499,18 @@ QStringList InterpreterEditorManager::propertyNames(Id const &id) const
 
 QStringList InterpreterEditorManager::portTypes(Id const &id) const
 {
-	QStringList result;
-	qrRepo::RepoApi *repo = repoAndMetaId(id).first;
-	foreach (Id const &port, repo->elementsByType("MetaEntityPort")) {
-		result << repo->name(port);
+	QSet<QString> result;
+
+	QDomDocument shape;
+	shape.setContent(repoAndMetaId(id).first->stringProperty(id, "shape"));
+
+	QDomElement portsElement = shape.firstChildElement("graphics").firstChildElement("ports");
+	for (int i = 0; i < portsElement.childNodes().size(); i++) {
+		QDomElement port = portsElement.childNodes().at(i).toElement();
+		result.insert(port.attribute("type", "NonTyped"));
 	}
-	return result;
+
+	return result.toList();
 }
 
 QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) const

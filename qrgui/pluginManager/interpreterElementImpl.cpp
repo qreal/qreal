@@ -1,6 +1,8 @@
 #include "interpreterElementImpl.h"
+
 #include "../../qrutils/outFile.h"
 #include "../../qrutils/scalableItem.h"
+#include "interpreterPortImpl.h"
 
 using namespace qReal;
 using namespace utils;
@@ -47,33 +49,20 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 }
 
 void InterpreterElementImpl::initPointPorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
-		, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height)
+		, int const &width, int const &height)
 {
 	QDomNodeList const pointPortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
 	for (int i = 0; i < pointPortsList.size(); i++) {
-		QDomElement portsElement1 = portsDoc.createElement("point");
-		portsElement1.setAttribute("stroke-width", 11);
-		portsElement1.setAttribute("stroke-style", "solid");
-		portsElement1.setAttribute("stroke", "#c3dcc4");
-		portsElement1.setAttribute("x1", pointPortsList.at(i).toElement().attribute("x"));
-		portsElement1.setAttribute("y1", pointPortsList.at(i).toElement().attribute("y"));
-		portsPicture.appendChild(portsElement1);
-		QDomElement portsElement2 = portsDoc.createElement("point");
-		portsElement2.setAttribute("stroke-width", 3);
-		portsElement2.setAttribute("stroke-style", "solid");
-		portsElement2.setAttribute("stroke", "#465945");
-		portsElement2.setAttribute("x1", pointPortsList.at(i).toElement().attribute("x"));
-		portsElement2.setAttribute("y1", pointPortsList.at(i).toElement().attribute("y"));
-		portsPicture.appendChild(portsElement2);
+		QDomElement portElement = pointPortsList.at(i).toElement();
 
-		QString x = pointPortsList.at(i).toElement().attribute("x");
+		QString x = portElement.attribute("x");
 		bool propX = false;
 		if (x.endsWith("a")) {
 			propX = true;
 			x.chop(1);
 		}
 
-		QString y = pointPortsList.at(i).toElement().attribute("y");
+		QString y = portElement.attribute("y");
 		bool propY = false;
 		if (y.endsWith("a")) {
 			propY = true;
@@ -81,33 +70,17 @@ void InterpreterElementImpl::initPointPorts(PortFactoryInterface const &factory,
 		}
 
 		QPointF point = QPointF(x.toDouble() / static_cast<double>(width), y.toDouble() / static_cast<double>(height));
-		ports << factory.createPort(point, propX, propY, width, height, new NonTyped());
+
+		QString portType = portElement.attribute("type", "NonTyped");
+		ports << factory.createPort(point, propX, propY, width, height, new InterpreterPortImpl(portType));
 	}
 }
 
 void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
-		, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height)
+		, int const &width, int const &height)
 {
 	QDomNodeList const linePortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
 	for (int i = 0; i < linePortsList.size(); i++) {
-		QDomElement lineElement1 = portsDoc.createElement("line");
-		lineElement1.setAttribute("x1", linePortsList.at(i).firstChildElement("start").attribute("startx"));
-		lineElement1.setAttribute("y1", linePortsList.at(i).firstChildElement("start").attribute("starty"));
-		lineElement1.setAttribute("x2", linePortsList.at(i).firstChildElement("end").attribute("endx"));
-		lineElement1.setAttribute("y2", linePortsList.at(i).firstChildElement("end").attribute("endy"));
-		lineElement1.setAttribute("stroke-width", 7);
-		lineElement1.setAttribute("stroke-style", "solid");
-		lineElement1.setAttribute("stroke", "#c3dcc4");
-		portsPicture.appendChild(lineElement1);
-		QDomElement lineElement2 = portsDoc.createElement("line");
-		lineElement2.setAttribute("x1", linePortsList.at(i).firstChildElement("start").attribute("startx"));
-		lineElement2.setAttribute("y1", linePortsList.at(i).firstChildElement("start").attribute("starty"));
-		lineElement2.setAttribute("x2", linePortsList.at(i).firstChildElement("end").attribute("endx"));
-		lineElement2.setAttribute("y2", linePortsList.at(i).firstChildElement("end").attribute("endy"));
-		lineElement2.setAttribute("stroke-width", 1);
-		lineElement2.setAttribute("stroke-style", "solid");
-		lineElement2.setAttribute("stroke", "#465945");
-		portsPicture.appendChild(lineElement2);
 
 		QString x1 = linePortsList.at(i).firstChildElement("start").attribute("startx");
 		bool propX1 = false;
@@ -142,7 +115,8 @@ void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, 
 				, x2.toDouble() / static_cast<double>(width)
 				, y2.toDouble() / static_cast<double>(height));
 
-		ports << factory.createPort(line, propX1, propY1, propX2, propY2, width, height, new NonTyped());
+		QString portType = linePortsList.at(i).toElement().attribute("type", "NonTyped");
+		ports << factory.createPort(line, propX1, propY1, propX2, propY2, width, height, new InterpreterPortImpl(portType));
 	}
 }
 
@@ -168,10 +142,8 @@ void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &
 			height = sdfElement.attribute("sizey").toInt();
 		}
 
-		QDomDocument portsDoc;
-		QDomNode portsPicture = portsDoc.importNode(sdfElement, false);
-		initPointPorts(portFactory, ports, portsDoc, portsPicture, width, height);
-		initLinePorts(portFactory, ports, portsDoc, portsPicture, width, height);
+		initPointPorts(portFactory, ports, width, height);
+		initLinePorts(portFactory, ports, width, height);
 
 		contents.setWidth(width);
 		contents.setHeight(height);
@@ -200,7 +172,19 @@ void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<Lab
 			labels.append(title);
 			mEdgeLabels.append(EdgeLabel(labelText, labelType, title));
 		}
+		initEdgePorts(mFromPorts, "fromPorts");
+		initEdgePorts(mToPorts, "toPorts");
 	}
+}
+
+void InterpreterElementImpl::initEdgePorts(QStringList &ports, QString const &direction)
+{
+	QStringList ids = mEditorRepoApi->stringProperty(mId, direction).split(',', QString::SkipEmptyParts);
+	foreach (QString const &strId, ids) {
+		Id id = Id::loadFromString(strId);
+		ports << mEditorRepoApi->name(id);
+	}
+	ports << "NonTyped";
 }
 
 void InterpreterElementImpl::paint(QPainter *painter, QRectF &contents)
@@ -480,12 +464,12 @@ bool InterpreterElementImpl::maximizesChildren() const
 
 QStringList InterpreterElementImpl::fromPortTypes() const
 {
-	return QStringList("NonTyped");
+	return mFromPorts;
 }
 
 QStringList InterpreterElementImpl::toPortTypes() const
 {
-	return QStringList("NonTyped");
+	return mToPorts;
 }
 
 bool InterpreterElementImpl::isPort() const
