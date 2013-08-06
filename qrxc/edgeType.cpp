@@ -308,64 +308,74 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 {
 	QString style = styleString;
 
-	if (style.isEmpty())
+	if (style.isEmpty()) {
 		style = "filled_arrow";
+	}
 
 	out() << "\t\t\tQBrush old = painter->brush();\n"
 	"\t\t\tQBrush brush;\n"
 	"\t\t\tbrush.setStyle(Qt::SolidPattern);\n";
 
 	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow" || style == "empty_circle"
-			|| style == "signal" || style=="timer")
+			|| style == "signal" || style=="timer") {
 		out() << "\t\t\tbrush.setColor(Qt::white);\n";
+	}
 
-	if (style == "filled_arrow" || style == "filled_rhomb")
+	if (style == "filled_arrow" || style == "filled_rhomb") {
 		out() << "\t\t\tbrush.setColor(Qt::black);\n";
+	}
 	out() << "\t\t\tpainter->setBrush(brush);\n";
 
-	if (style == "empty_arrow" || style == "filled_arrow")
+	if (style == "empty_arrow" || style == "filled_arrow") {
 		out() << "\t\t\tstatic const QPointF points[] = {\n"
 		"\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(-5,10),\n\t\t\t\tQPointF(5,10)\n\t\t\t};\n"
 		"\t\t\tpainter->drawPolygon(points, 3);\n";
+	}
 
-	if (style == "empty_rhomb" || style == "filled_rhomb")
+	if (style == "empty_rhomb" || style == "filled_rhomb") {
 		out() << "\t\t\tstatic const QPointF points[] = {\n"
 		"\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(-5,10),\n\t\t\t\tQPointF(0,20),\n\t\t\t\tQPointF(5,10)\n\t\t\t"
 		"};\n"
 		"\t\t\tpainter->drawPolygon(points, 4);\n";
+	}
 
-	if (style == "open_arrow")
+	if (style == "open_arrow") {
 		out() << "\t\t\tstatic const QPointF points[] = {\n"
 		"\t\t\t\tQPointF(-5,10),\n\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(5,10)\n\t\t\t};\n"
 		"\t\t\tpainter->drawPolyline(points, 3);\n";
+	}
 
-	if (style == "complex_arrow")
+	if (style == "complex_arrow") {
 		out() << "\t\t\tstatic const QPointF points[] = {"
 		"\n\t\t\t\tQPointF(-15,30),\n\t\t\t\tQPointF(-10,10),"
 		"\n\t\t\t\tQPointF(0,0),\n\t\t\t\tQPointF(10,10),"
 		"\n\t\t\t\tQPointF(15,30),\n\t\t\t\tQPointF(0,23),\n\t\t\t\tQPointF(-15,30)\n\t\t\t};\n"
 		"\t\t\tpainter->drawPolyline(points, 7);\n";
+	}
 
-	if (style == "crossed_line")
+	if (style == "crossed_line") {
 		out() << "\t\t\tQPen oldPen = painter->pen();\n"
 		"\t\t\tQPen newPen = oldPen;\n"
 		"\t\t\tnewPen.setWidth(2);\n"
 		"\t\t\tpainter->setPen(newPen);\n"
 		"\t\t\tpainter->drawLine(5, 5, -5, 15);\n"
 		"\t\t\tpainter->setPen(oldPen);\n";
+	}
 
-	if (style == "empty_circle")
+	if (style == "empty_circle") {
 		out() << "\t\t\tpainter->drawEllipse(-5, 0, 10, 10);\n";
+	}
 
-	if (style == "signal")
+	if (style == "signal") {
 		out() << "\t\t\tpainter->drawEllipse(-20, 0, 40, 40);\n"
 		"\t\t\tpainter->drawEllipse(-15, 5, 30, 30);\n"
 		"\t\t\tstatic const QPointF points[] = {"
 		"\n\t\t\t\tQPointF(10, 20),\n\t\t\t\tQPointF(-7, 10),"
 		"\n\t\t\t\tQPointF(-7, 30),\n\t\t\t\tQPointF(10, 20)\n\t\t\t};\n"
 		"\t\t\tpainter->drawPolyline(points, 4);\n";
+	}
 
-	if (style == "timer")
+	if (style == "timer") {
 		out() << "\t\t\tpainter->drawEllipse(-20, 0, 40, 40);\n"
 		"\t\t\tpainter->drawEllipse(-15, 5, 30, 30);\n"
 		"\t\t\tpainter->drawEllipse(-10, 10, 20, 20);\n"
@@ -376,6 +386,7 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 		"\t\t\tpainter->drawLine(0, 20, 0, 15);\n"
 		"\t\t\tpainter->drawLine(0, 20, 10, 20);\n"
 		"\t\t\tpainter->restore();\n";
+	}
 
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
 }

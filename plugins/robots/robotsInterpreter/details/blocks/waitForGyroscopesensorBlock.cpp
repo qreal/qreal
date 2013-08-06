@@ -7,7 +7,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
 WaitForGyroscopeSensorBlock::WaitForGyroscopeSensorBlock(details::RobotModel * const robotModel)
-	: WaitForSensorBlock(robotModel, sensorType::gyroscope)
+	: WaitForSensorBlock(robotModel, robots::enums::sensorType::gyroscope)
 {
 }
 

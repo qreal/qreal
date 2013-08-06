@@ -20,6 +20,7 @@ public:
 public slots:
 	void checkAllDiagrams();
 	void checkCurrentDiagram();
+	//! get an XML file with all repo contents (used as a hack for integration with REAL-IT.NET)
 	void exportToXml();
 
 private:

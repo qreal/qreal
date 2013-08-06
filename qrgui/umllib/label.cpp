@@ -115,20 +115,8 @@ void Label::scaleCoordinates(QRectF const &contents)
 		return;
 	}
 
-	qreal x = 0;
-	qreal y = 0;
-
-	if (!mScalingX) {
-		x = mPoint.x() * mContents.width();
-	} else {
-		x = mPoint.x() * contents.width();
-	}
-
-	if (!mScalingY) {
-		y = mPoint.y() * mContents.height();
-	} else {
-		y = mPoint.y() * contents.height();
-	}
+	qreal const x = mPoint.x() * (!mScalingX ? mContents.width() : contents.width());
+	qreal const y = mPoint.y() * (!mScalingX ? mContents.height() : contents.height());
 
 	setPos(x, y);
 }

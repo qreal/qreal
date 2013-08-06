@@ -400,7 +400,7 @@ void Serializer::decompressFile(QString const &fileName)
 	FolderCompressor().decompressFolder(fileName, mWorkingDir);
 }
 
-void Serializer::exportToXml(const QString &targetFile, QHash<qReal::Id, Object*> const &objects)
+void Serializer::exportToXml(QString const &targetFile, QHash<qReal::Id, Object*> const &objects) const
 {
 	Q_ASSERT_X(!targetFile.isEmpty(), "XmlSerializer::exportTo(...)", "target filename is empty");
 
@@ -423,7 +423,7 @@ void Serializer::exportToXml(const QString &targetFile, QHash<qReal::Id, Object*
 	doc.save(out(), 4);
 }
 
-void Serializer::exportDiagram(const Id &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+void Serializer::exportDiagram(Id const &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
 {
 	QDomElement diagram = doc.createElement("diagram");
 	diagram.setAttribute("logical_id", objects[diagramId]->logicalId().toString());
@@ -442,7 +442,7 @@ void Serializer::exportDiagram(const Id &diagramId, QDomDocument &doc, QDomEleme
 	root.appendChild(diagram);
 }
 
-void Serializer::exportElement(const Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+void Serializer::exportElement(Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
 {
 	QDomElement element = doc.createElement("element");
 	element.setAttribute("name", objects[id]->properties()["name"].toString());
@@ -455,7 +455,7 @@ void Serializer::exportElement(const Id &id, QDomDocument &doc, QDomElement &roo
 	root.appendChild(element);
 }
 
-void Serializer::exportChildren(const Id &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
+void Serializer::exportChildren(Id const &id, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
 {
 	Object *object = objects[id];
 	int size = object->children().size();
@@ -473,7 +473,7 @@ void Serializer::exportChildren(const Id &id, QDomDocument &doc, QDomElement &ro
 	root.appendChild(children);
 }
 
-void Serializer::exportProperties(const Id &id, QDomDocument &doc, QDomElement &root, const QHash<Id, Object *> &objects)
+void Serializer::exportProperties(Id const&id, QDomDocument &doc, QDomElement &root, QHash<Id, Object *> const &objects)
 {
 	QDomElement props = doc.createElement("properties");
 

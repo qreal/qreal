@@ -31,7 +31,7 @@ signals:
 	void motorTimeout();
 
 private:
-	outputPort::OutputPortEnum mPort;
+	enums::outputPort::OutputPortEnum mPort;
 	robotImplementations::motorImplementations::AbstractMotorImplementation *mMotorImpl;  // Doesn't have ownership.
 };
 

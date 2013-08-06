@@ -16,12 +16,14 @@ RulesChecker::RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 
 void RulesChecker::exportToXml()
 {
-	QString fileName = QFileDialog::getSaveFileName(mWindowInterface->windowWidget(), tr("Save File"), tr("export.xml"), tr("*.xml"));
+	QString fileName = QFileDialog::getSaveFileName(mWindowInterface->windowWidget()
+			, tr("Save File"), tr("export.xml"), tr("*.xml"));
 	if (!fileName.endsWith(".xml")) {
 		fileName += ".xml";
 	}
 
-	qrRepo::RepoControlInterface *repoControlApi = dynamic_cast<qrRepo::RepoControlInterface *>((qrRepo::CommonRepoApi *)mGRepoApi);
+	// TODO: get your own pointer to RepoControlInterface, don't cast mGRepoApi
+	qrRepo::RepoControlInterface const *repoControlApi = reinterpret_cast<qrRepo::RepoControlInterface const *>(mGRepoApi);
 	if (repoControlApi) {
 		repoControlApi->exportToXml(fileName);
 	}

@@ -15,12 +15,12 @@ void RealMotorImplementation::on(int speed, bool breakMode)
 
 void RealMotorImplementation::on(int speed, long unsigned int degrees, bool breakMode)
 {
-	int mode = motorMode::MOTORON | motorMode::REGULATED;
+	int mode = enums::motorMode::MOTORON | enums::motorMode::REGULATED;
 	if (breakMode) {
-		mode |= motorMode::BRAKE;
+		mode |= enums::motorMode::BRAKE;
 	}
-	setOutputState(speed, mode, regulationMode::REGULATION_MODE_MOTOR_SPEED
-			, 100, runState::MOTOR_RUN_STATE_RUNNING, degrees);
+	setOutputState(speed, mode, enums::regulationMode::REGULATION_MODE_MOTOR_SPEED
+			, 100, enums::runState::MOTOR_RUN_STATE_RUNNING, degrees);
 }
 
 void RealMotorImplementation::stop(bool breakMode)
@@ -30,21 +30,21 @@ void RealMotorImplementation::stop(bool breakMode)
 
 void RealMotorImplementation::off()
 {
-	setOutputState(0, motorMode::REGULATED, regulationMode::REGULATION_MODE_MOTOR_SPEED
-			, 100, runState::MOTOR_RUN_STATE_IDLE, 0);
+	setOutputState(0, enums::motorMode::REGULATED, enums::regulationMode::REGULATION_MODE_MOTOR_SPEED
+			, 100, enums::runState::MOTOR_RUN_STATE_IDLE, 0);
 }
 
 void RealMotorImplementation::setOutputState(int speed, int mode
-		, regulationMode::RegulationModeEnum regulation, int turnRatio
-		, runState::RunStateEnum runState, unsigned long tachoLimit)
+		, enums::regulationMode::RegulationModeEnum regulation, int turnRatio
+		, enums::runState::RunStateEnum runState, unsigned long tachoLimit)
 {
 	QByteArray command(15, 0);
 	command[0] = 13;  // command length.
 	command[1] = 0x00;
 
-	command[2] = telegramType::directCommandNoResponse;
+	command[2] = enums::telegramType::directCommandNoResponse;
 
-	command[3] = commandCode::SETOUTPUTSTATE;
+	command[3] = enums::commandCode::SETOUTPUTSTATE;
 
 	command[4] = mPort;  // output port
 	command[5] = speed;  // power set point (range: -100 -- 100)
@@ -68,8 +68,8 @@ void RealMotorImplementation::resetMotorPosition(bool relative)
 	QByteArray command(5, 0);
 	command[0] = 3;  // command length.
 	command[1] = 0x00;
-	command[2] = telegramType::directCommandNoResponse;
-	command[3] = commandCode::RESETMOTORPOSITION;
+	command[2] = enums::telegramType::directCommandNoResponse;
+	command[3] = enums::commandCode::RESETMOTORPOSITION;
 	command[4] = relative;
 	mRobotCommunicationInterface->send(this, command, 3);
 }
