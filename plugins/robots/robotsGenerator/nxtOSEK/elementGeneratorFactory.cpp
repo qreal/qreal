@@ -3,7 +3,6 @@
 #include "generators/ifElementGenerator.h"
 #include "generators/loopElementGenerator.h"
 #include "generators/functionElementGenerator.h"
-#include "generators/subprogramGenerator.h"
 #include "generators/commentElementGenerator.h"
 #include "generators/simpleElementGenerator.h"
 
@@ -21,8 +20,6 @@ AbstractElementGenerator* ElementGeneratorFactory::generator(
 	} else if (elementId.element() == "Function") {
 		qReal::Id const logicElementId = api.logicalId(elementId);
 		return new FunctionElementGenerator(generator, elementId, api.property(logicElementId, "Init").toBool());
-	} else if (elementId.element() == "Subpprogram") {
-		return new SubprogramGenerator(generator, elementId);
 	} else if (elementId.element() == "CommentBlock") {
 		return new CommentElementGenerator(generator, elementId);
 	}

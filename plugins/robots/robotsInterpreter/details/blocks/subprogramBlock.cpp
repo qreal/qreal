@@ -9,7 +9,7 @@ SubprogramBlock::SubprogramBlock()
 
 void SubprogramBlock::run()
 {
-	Tracer::debug(tracer::blocks, "SubprogramBlock::run", "stepping into "
+	Tracer::debug(tracer::enums::blocks, "SubprogramBlock::run", "stepping into "
 			+ stringProperty(id(), "name"));
 	Id const logicalId = mGraphicalModelApi->logicalId(id());
 	Id const logicalDiagram = mLogicalModelApi->logicalRepoApi().outgoingExplosion(logicalId);
@@ -21,6 +21,6 @@ void SubprogramBlock::run()
 
 void SubprogramBlock::finishedSteppingInto()
 {
-	Tracer::debug(tracer::blocks, "SubprogramBlock::run", "finished stepping into " + stringProperty(id(), "name"));
+	Tracer::debug(tracer::enums::blocks, "SubprogramBlock::run", "finished stepping into " + stringProperty(id(), "name"));
 	emit done(mNextBlock);
 }
