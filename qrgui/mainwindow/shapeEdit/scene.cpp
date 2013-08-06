@@ -23,6 +23,7 @@ Scene::Scene(graphicsUtils::AbstractView *view, QObject * parent)
 	setEmptyRect(0, 0, mSizeEmptyRectX, mSizeEmptyRectY);
 	setEmptyPenBrushItems();
 	mCopyPaste = nonePaste;
+	mPortType = "NonTyped";
 
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changeFontPalette()));
