@@ -23,7 +23,7 @@ class Block : public QObject
 	Q_OBJECT
 
 public:
-	typedef QPair<sensorType::SensorTypeEnum, int> SensorPortPair;
+	typedef QPair<robots::enums::sensorType::SensorTypeEnum, int> SensorPortPair;
 
 	virtual ~Block();
 

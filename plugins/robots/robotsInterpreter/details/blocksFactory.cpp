@@ -1,7 +1,7 @@
 #include "blocksFactory.h"
 
-#include "../../../../qrkernel/exception/exception.h"
-
+#include "blocks/timerBlock.h"
+#include "blocks/beepBlock.h"
 #include "blocks/initialBlock.h"
 #include "blocks/finalBlock.h"
 #include "blocks/nullificationEncoderBlock.h"

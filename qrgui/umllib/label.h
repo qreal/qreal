@@ -43,6 +43,9 @@ public:
 	void setParentContents(QRectF contents);
 
 	void setShouldCenter(bool shouldCenter);
+	void scaleCoordinates(QRectF const &contents);
+
+	void clearMoveFlag();
 
 protected:
 	enum InterpriterPropertyType
@@ -60,6 +63,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = NULL);
+
 private:
 	void updateData(bool withUndoRedo = false);
 	void updateRect(QPointF newBottomRightPoint);
@@ -68,6 +72,7 @@ private:
 	void setText(QString const &text);
 	void moveToParentCenter();
 	enums::OrientationType::OrientationType orientation();
+	QRectF labelMovingRect() const;
 
 	bool mFocusIn;
 	bool mReadOnly;
@@ -84,4 +89,5 @@ private:
 	bool mIsHard;
 	bool mParentIsSelected;
 	bool mWasMoved;
+	bool mShouldMove;
 };

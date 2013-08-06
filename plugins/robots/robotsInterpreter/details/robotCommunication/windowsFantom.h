@@ -2,8 +2,10 @@
 
 #include <QtCore/QLibrary>
 
-namespace robotsInterpreter {
-namespace robotCommunication {
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace details {
 
 /// Proxy for Fantom driver DLL for Windows. Responsible for loading DLL and
 /// dispatching all calls to corresponding driver functions.
@@ -37,5 +39,7 @@ private:
 	QLibrary mFantomLibrary;
 };
 
+}
+}
 }
 }

@@ -39,6 +39,7 @@ private:
 	//! starts checking
 	QAction *mRunAllDiagram;
 	QAction *mRunCurrentDiagram;
+	QAction *mExportToXml;
 };
 
 }
