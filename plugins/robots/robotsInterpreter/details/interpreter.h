@@ -23,6 +23,7 @@
 namespace qReal {
 namespace interpreters {
 namespace robots {
+namespace details {
 
 class Interpreter : public QObject
 {
@@ -40,17 +41,21 @@ public:
 
 	details::RobotModel *robotModel();
 	void setRobotModel(details::RobotModel * const robotModel);
-	void configureSensors(sensorType::SensorTypeEnum const &port1
-			, sensorType::SensorTypeEnum const &port2
-			, sensorType::SensorTypeEnum const &port3
-			, sensorType::SensorTypeEnum const &port4);
-	void setRobotImplementation(robotModelType::robotModelTypeEnum implementationType);
+
+	void configureSensors(
+			robots::enums::sensorType::SensorTypeEnum const &port1
+			, robots::enums::sensorType::SensorTypeEnum const &port2
+			, robots::enums::sensorType::SensorTypeEnum const &port3
+			, robots::enums::sensorType::SensorTypeEnum const &port4
+			);
+
+	void setRobotImplementation(robots::enums::robotModelType::robotModelTypeEnum implementationType);
 
 	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
 	void closeD2ModelWidget();
 	void closeWatchList();
-	void setRobotModelType(robotModelType::robotModelTypeEnum robotModelType);
-	void setCommunicator(const QString &valueOfCommunication, const QString &portName);
+	void setRobotModelType(robots::enums::robotModelType::robotModelTypeEnum robotModelType);
+	void setCommunicator(QString const &valueOfCommunication);
 
 	/// Assigning a value to the field mActionConnectToRobot
 	void setConnectRobotAction(QAction *actionConnect);
@@ -128,15 +133,15 @@ private:
 	QList<details::Thread *> mThreads;  // Has ownership
 	details::RobotModel *mRobotModel;
 	details::BlocksTable *mBlocksTable;  // Has ownership
-	RobotsBlockParser *mParser;
-	QTimer *mTimer;
+	details::RobotsBlockParser *mParser;
+	QTimer mTimer;
 	details::d2Model::D2ModelWidget *mD2ModelWidget;
 	details::d2Model::D2RobotModel *mD2RobotModel;
-	RobotCommunicator* const mRobotCommunication;
+	details::RobotCommunicator* const mRobotCommunication;
 
 	bool mConnected;
 
-	robotModelType::robotModelTypeEnum mImplementationType;
+	robots::enums::robotModelType::robotModelTypeEnum mImplementationType;
 
 	utils::WatchListWindow *mWatchListWindow;
 
@@ -146,6 +151,7 @@ private:
 	QString mLastCommunicationValue;
 };
 
+}
 }
 }
 }

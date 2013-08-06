@@ -16,7 +16,7 @@ class AccelerometerSensor : public Sensor
 	Q_OBJECT
 
 public:
-	AccelerometerSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const port);
+	AccelerometerSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, robots::enums::inputPort::InputPortEnum const port);
 };
 
 }

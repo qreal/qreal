@@ -3,8 +3,8 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-NullGyroscopeSensorImplementation::NullGyroscopeSensorImplementation(inputPort::InputPortEnum const port)
-	: NullSensorImplementation(port, sensorType::gyroscope)
+NullGyroscopeSensorImplementation::NullGyroscopeSensorImplementation(robots::enums::inputPort::InputPortEnum const port)
+	: NullSensorImplementation(port, robots::enums::sensorType::gyroscope)
 {
 }
 

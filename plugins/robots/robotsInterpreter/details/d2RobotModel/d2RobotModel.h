@@ -42,10 +42,10 @@ public:
 
 	details::NxtDisplay *display();
 
-	int readTouchSensor(inputPort::InputPortEnum const port);
-	int readSonarSensor(inputPort::InputPortEnum const port) const;
-	int readColorSensor(inputPort::InputPortEnum const port) const;
-	int readLightSensor(inputPort::InputPortEnum const port) const;
+	int readTouchSensor(robots::enums::inputPort::InputPortEnum const port);
+	int readSonarSensor(robots::enums::inputPort::InputPortEnum const port) const;
+	int readColorSensor(robots::enums::inputPort::InputPortEnum const port) const;
+	int readLightSensor(robots::enums::inputPort::InputPortEnum const port) const;
 
 	void showModelWidget();
 
@@ -93,10 +93,14 @@ private:
 	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
 	void countNewCoord();
 	void countBeep();
-	QPair<QPointF, qreal> countPositionAndDirection(inputPort::InputPortEnum const port) const;
+
+	QPair<QPointF, qreal> countPositionAndDirection(
+			robots::enums::inputPort::InputPortEnum const port
+			) const;
+
 	void countMotorTurnover();
 
-	QImage printColorSensor(inputPort::InputPortEnum const port) const;
+	QImage printColorSensor(robots::enums::inputPort::InputPortEnum const port) const;
 	int readColorFullSensor(QHash<unsigned long, int> countsColor) const;
 	int readColorNoneSensor(QHash<unsigned long, int> const &countsColor, int n) const;
 	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const;

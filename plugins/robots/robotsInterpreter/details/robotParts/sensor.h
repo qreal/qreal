@@ -18,7 +18,7 @@ class Sensor : public QObject
 	Q_OBJECT
 
 public:
-	Sensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const port);
+	Sensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, robots::enums::inputPort::InputPortEnum const port);
 	virtual ~Sensor();
 	virtual void read();
 	robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl();
@@ -28,7 +28,7 @@ public:
 	void nullify();
 
 protected:
-	inputPort::InputPortEnum mPort;
+	robots::enums::inputPort::InputPortEnum mPort;
 	robotImplementations::sensorImplementations::AbstractSensorImplementation *mSensorImpl;  // Doesn't have ownership
 };
 

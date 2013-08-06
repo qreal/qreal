@@ -2,8 +2,8 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-NullLightSensorImplementation::NullLightSensorImplementation(inputPort::InputPortEnum const port)
-	: NullSensorImplementation(port, sensorType::light)
+NullLightSensorImplementation::NullLightSensorImplementation(robots::enums::inputPort::InputPortEnum const port)
+	: NullSensorImplementation(port, robots::enums::sensorType::light)
 {
 }
 

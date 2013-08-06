@@ -2,8 +2,10 @@
 
 #include "../../../qrkernel/exception/exception.h"
 
-namespace robotsInterpreter {
-namespace robotCommunication {
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace details {
 
 class RobotCommunicationException : public qReal::Exception
 {
@@ -11,5 +13,7 @@ class RobotCommunicationException : public qReal::Exception
 		explicit RobotCommunicationException(QString const &message);
 };
 
+}
+}
 }
 }
