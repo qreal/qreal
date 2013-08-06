@@ -39,12 +39,12 @@ void Label::generateCodeForConstructor(OutFile &out)
 {
 	if (mText.isEmpty()) {
 		// Это бинденный лейбл, текст для него будет браться из репозитория
-		out() << "			" + titleName() + " = factory.createTitle("
+		out() << "			" + titleName() + " = factory.createLabel("
 				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
 				+ ", \"" + mTextBinded + "\", " + mReadOnly + ", " + QString::number(mRotation) + ");\n";
 	} else {
 		// Это статический лейбл, репозиторий ему не нужен
-		out() << "			" + titleName() + " = factory.createTitle("
+		out() << "			" + titleName() + " = factory.createLabel("
 				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
 				+ ", QString::fromUtf8(\"" + mText + "\"), " + QString::number(mRotation) + ");\n";
 	}
