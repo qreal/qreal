@@ -74,6 +74,8 @@ void ShapeEdit::init()
 	mUi->brushColorComboBox->setColorList(QColor::colorNames());
 	mUi->brushColorComboBox->setColor(QColor("white"));
 
+	mUi->portsComboBox->addItems(getPortTypes());
+
 	mUi->textPixelSizeSpinBox->setRange(5, 72);
 	initFontPalette();
 
@@ -104,6 +106,8 @@ void ShapeEdit::init()
 	connect(mUi->boldCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontBold(bool)));
 	connect(mUi->underlineCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontUnderline(bool)));
 
+	connect(mUi->portsComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePortsType(QString const &)));
+
 	connect(mUi->visibilityConditionsButton, SIGNAL(clicked()), this, SLOT(visibilityButtonClicked()));
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
 	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
@@ -120,6 +124,8 @@ void ShapeEdit::init()
 	connect(mScene, SIGNAL(resetHighlightAllButtons()), this, SLOT(resetHighlightAllButtons()));
 	connect(mScene, SIGNAL(noSelectedTextPictureItems()), this, SLOT(setNoFontPalette()));
 	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &)), this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
+	connect(mScene, SIGNAL(noSelectedPortItems()), this, SLOT(setNoPortType()));
+	connect(mScene, SIGNAL(existSelectedPortItems(QString const &)), this, SLOT(setPortType(QString const &)));
 }
 
 void ShapeEdit::resetHighlightAllButtons()
@@ -482,6 +488,16 @@ void ShapeEdit::setNoFontPalette()
 	mUi->fontToolBox->setEnabled(false);
 }
 
+void ShapeEdit::setNoPortType()
+{
+	mUi->portsComboBox->setCurrentText("NonTyped");
+}
+
+void ShapeEdit::setPortType(QString const &type)
+{
+	mUi->portsComboBox->setCurrentText(type);
+}
+
 void ShapeEdit::changeTextName()
 {
 	QString newName = mUi->textEditField->toPlainText();
@@ -618,5 +634,20 @@ QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties
 			}
 		}
 	}
+	return result;
+}
+
+QStringList ShapeEdit::getPortTypes() const
+{
+	QStringList result;
+	result << "NonTyped";
+
+	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
+	if (repoApi) {
+		foreach (qReal::Id const &port, repoApi->elementsByType("MetaEntityPort")) {
+			result << repoApi->name(port);
+		}
+	}
+
 	return result;
 }
