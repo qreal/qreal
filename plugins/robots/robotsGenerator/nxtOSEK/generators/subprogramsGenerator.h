@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QMap>
+#include <QtCore/QSet>
 
 #include "../smartLine.h"
 
@@ -27,6 +28,11 @@ public:
 	QList<SmartLine> &generatedCode();
 
 private:
+	bool checkIdentifier(QString const &identificator);
+
+	void mergeCode(QMap<qReal::Id, QList<SmartLine> > const &declarations
+			, QMap<qReal::Id, QList<SmartLine> > const &implementations);
+
 	// TODO: this must be obtained via models!
 	qReal::Id graphicalId(qReal::Id const &logicalId) const;
 
@@ -40,6 +46,9 @@ private:
 	QMap<qReal::Id, bool> mDiscoveredSubprograms;
 
 	QList<SmartLine> mGeneratedCode;
+
+	QSet<QString> mUsedNames;
+
 };
 
 }

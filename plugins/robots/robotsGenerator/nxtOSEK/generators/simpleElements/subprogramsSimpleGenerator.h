@@ -15,7 +15,7 @@ public:
 	virtual QList<SmartLine>  convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 			, qReal::Id const &elementId, qReal::Id const &logicElementId);
 
-	static QString identificator(NxtOSEKRobotGenerator const *nxtGen, qReal::Id const &id);
+	static QString identifier(NxtOSEKRobotGenerator const *nxtGen, qReal::Id const &id);
 };
 
 }

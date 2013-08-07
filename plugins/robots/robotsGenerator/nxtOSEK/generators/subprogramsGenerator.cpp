@@ -12,6 +12,11 @@ SubprogramsGenerator::SubprogramsGenerator(NxtOSEKRobotGenerator * const nxtGene
 {
 }
 
+QList<SmartLine> &SubprogramsGenerator::generatedCode()
+{
+	return mGeneratedCode;
+}
+
 void SubprogramsGenerator::usageFound(Id const &logicalId)
 {
 	Id const diagram = mMainGenerator->api()->outgoingExplosion(logicalId);
@@ -22,8 +27,8 @@ void SubprogramsGenerator::usageFound(Id const &logicalId)
 
 bool SubprogramsGenerator::generate()
 {
-	QMap<qReal::Id, QList<SmartLine> > declarations;
-	QMap<qReal::Id, QList<SmartLine> > implementations;
+	QMap<Id, QList<SmartLine> > declarations;
+	QMap<Id, QList<SmartLine> > implementations;
 
 	Id toGen = firstToGenerate();
 	while (toGen != Id()) {
@@ -35,6 +40,11 @@ bool SubprogramsGenerator::generate()
 			return false;
 		}
 
+		QString const identifier = SubprogramsSimpleGenerator::identifier(mMainGenerator, toGen);
+		if (!checkIdentifier(identifier)) {
+			return false;
+		}
+
 		ControlFlowGenerator generator(mMainGenerator, graphicalDiagramId);
 		mMainGenerator->beforeSubprogramGeneration(&generator);
 		if (!generator.generate()) {
@@ -42,16 +52,23 @@ bool SubprogramsGenerator::generate()
 		}
 		implementations[toGen] = generator.generatedCode();
 
-		QString const forwardDeclaration = QString("void %1();").arg(
-				SubprogramsSimpleGenerator::identificator(mMainGenerator, toGen));
+		QString const forwardDeclaration = QString("void %1();").arg(identifier);
 		declarations[toGen] = QList<SmartLine>() << SmartLine(forwardDeclaration, toGen);
 
 		toGen = firstToGenerate();
 	}
 
+	mergeCode(declarations, implementations);
+
+	return true;
+}
+
+void SubprogramsGenerator::mergeCode(QMap<Id, QList<SmartLine> > const &declarations
+		, QMap<Id, QList<SmartLine> > const &implementations)
+{
 	if (!declarations.keys().isEmpty()) {
 		mGeneratedCode << SmartLine("/* Subprograms declarations */", Id())
-				<< SmartLine("", Id());;
+				<< SmartLine("", Id());
 	}
 	foreach (Id const &id, declarations.keys()) {
 		mGeneratedCode += declarations[id];
@@ -61,18 +78,16 @@ bool SubprogramsGenerator::generate()
 
 	if (!implementations.keys().isEmpty()) {
 		mGeneratedCode << SmartLine("/* Subprograms implementations */", Id())
-				 << SmartLine("", Id());;
+				 << SmartLine("", Id());
 	}
 	foreach (Id const &id, implementations.keys()) {
 		QString const signature = QString("void %1()").arg(
-				SubprogramsSimpleGenerator::identificator(mMainGenerator, id));
+				SubprogramsSimpleGenerator::identifier(mMainGenerator, id));
 		mGeneratedCode << SmartLine(signature, id) << SmartLine("{", id, SmartLine::increase);
 		mGeneratedCode += implementations[id];
 		mGeneratedCode << SmartLine("}", id, SmartLine::decrease)
 				<< SmartLine("", id);
 	}
-
-	return true;
 }
 
 Id SubprogramsGenerator::graphicalId(Id const &logicalId) const
@@ -87,9 +102,21 @@ Id SubprogramsGenerator::graphicalId(Id const &logicalId) const
 	return Id();
 }
 
-QList<SmartLine> &SubprogramsGenerator::generatedCode()
+bool SubprogramsGenerator::checkIdentifier(QString const &identifier)
 {
-	return mGeneratedCode;
+	if (identifier.isEmpty()) {
+		mMainGenerator->errorReporter().addError(QObject::tr("Please enter subprogam name"));
+		return false;
+	}
+
+	if (mUsedNames.contains(identifier)) {
+		mMainGenerator->errorReporter().addError(QObject::tr("Duplicate identifier: ") + identifier);
+		return false;
+	}
+
+	mUsedNames << identifier;
+
+	return true;
 }
 
 Id SubprogramsGenerator::firstToGenerate() const
