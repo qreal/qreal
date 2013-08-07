@@ -16,9 +16,23 @@ QString NameNormalizer::normalize(QString const &name, bool const isUpperFirst)
 	return result;
 }
 
+QString NameNormalizer::normalizeStrongly(QString const &name, bool const upperFirst)
+{
+	QString filteredName;
+	foreach (QChar const &character, name) {
+		if ((character.isLetterOrNumber() || character == ' ' || character == '_')
+				&& !(filteredName.isEmpty() && character.isDigit()))
+		{
+			filteredName += character;
+		}
+	}
+
+	return normalize(filteredName, upperFirst);
+}
+
 QString NameNormalizer::upperFirst(QString const &string)
 {
-	if (string.size() < 1) {
+	if (string.isEmpty()) {
 		return "";
 	}
 	QStringList const tokens = string.split(" ");
@@ -31,7 +45,7 @@ QString NameNormalizer::upperFirst(QString const &string)
 
 QString NameNormalizer::lowerFirst(QString const &string)
 {
-	if (string.size() < 1) {
+	if (string.isEmpty()) {
 		return "";
 	}
 	QStringList const tokens = string.split(" ");

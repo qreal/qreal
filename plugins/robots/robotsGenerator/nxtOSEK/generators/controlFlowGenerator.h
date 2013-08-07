@@ -17,7 +17,11 @@ public:
 	ControlFlowGenerator(NxtOSEKRobotGenerator * const mainGenerator
 			, qReal::Id const &diagram);
 
+	/// Starts control flow generation process
 	bool generate();
+
+	/// Returns generation process result
+	QList<SmartLine> &generatedCode();
 
 	qReal::Id &previousElement();
 	QList<QList<SmartLine> > &generatedStringSet();
@@ -30,6 +34,8 @@ public:
 private:
 	NxtOSEKRobotGenerator *mMainGenerator; // Doesn`t take ownership
 	qReal::Id mDiagram;
+
+	QList<SmartLine> mGeneratedCode;
 
 	/// Mapped element with lists in mGeneratedStringSet
 	/// QString in this case is qReal::Id string presentation.

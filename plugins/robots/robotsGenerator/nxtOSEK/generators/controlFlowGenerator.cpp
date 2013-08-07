@@ -38,7 +38,18 @@ bool ControlFlowGenerator::generate()
 		mMainGenerator->errorReporter().addError(QObject::tr("There is nothing "\
 				"to generate, diagram doesn't have Initial Node"), mDiagram);
 	}
+
+	typedef QList<SmartLine> SmartLineList;
+	foreach (SmartLineList const &code, mGeneratedStringSet) {
+		mGeneratedCode += code;
+	}
+
 	return generationOccured;
+}
+
+QList<SmartLine> &ControlFlowGenerator::generatedCode()
+{
+	return mGeneratedCode;
 }
 
 qReal::Id &ControlFlowGenerator::previousElement()

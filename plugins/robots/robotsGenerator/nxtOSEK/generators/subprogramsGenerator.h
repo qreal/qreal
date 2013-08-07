@@ -19,20 +19,27 @@ public:
 	/// @param logicalId Logical id of the block which calls subprogram
 	void usageFound(qReal::Id const &logicalId);
 
-	QList<SmartLine> generateCode();
+	/// Starts code generation process
+	/// @warning this will modify main generator`s currentGenerator() return result
+	bool generate();
+
+	/// Returns generation process result. If it was unsuccessfull returns empty list
+	QList<SmartLine> &generatedCode();
 
 private:
+	// TODO: this must be obtained via models!
+	qReal::Id graphicalId(qReal::Id const &logicalId) const;
+
 	qReal::Id firstToGenerate() const;
 
-	NxtOSEKRobotGenerator *mNxtGen;
+	NxtOSEKRobotGenerator *mMainGenerator;
 
 	/// Stores all found by generator diagrams with subprograms implementation.
 	/// Bool value means if key diagram was already processed and generated into
 	/// the code.
 	QMap<qReal::Id, bool> mDiscoveredSubprograms;
 
-	QMap<qReal::Id, QList<SmartLine> > mDeclarations;
-	QMap<qReal::Id, QList<SmartLine> > mImplementations;
+	QList<SmartLine> mGeneratedCode;
 };
 
 }

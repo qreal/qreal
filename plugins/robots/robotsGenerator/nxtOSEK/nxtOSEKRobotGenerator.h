@@ -64,11 +64,12 @@ private:
 			, QString const &resultInitCode
 			, QString const &resultTerminateCode
 			, QString const &resultIsrHooksCode
+			, QString const &subprogramsCode
 			, QString const &curInitialNodeNumber);
 	void deleteResidualLabels(QString const &projectName);
 	void generateMakeFile(QString const &projectName, QString const &projectDir);
 	void generateFilesForBalancer(QString const &projectDir);
-	QString addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode);
+	QString toString(QList<SmartLine> const &lineList);
 	void addResultCodeInCFile(int curInitialNodeNumber);
 	void outputInCAndOilFile(QString const &projectName, QString const &projectDir);
 	void initializeFields(QString const &resultTaskTemplate);

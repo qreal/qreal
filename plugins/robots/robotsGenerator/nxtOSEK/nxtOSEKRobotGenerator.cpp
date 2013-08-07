@@ -53,19 +53,20 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 	}
 }
 
-QString NxtOSEKRobotGenerator::addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode)
+QString NxtOSEKRobotGenerator::toString(QList<SmartLine> const &lineList)
 {
+	QString resultCode;
 	foreach (SmartLine const &curLine, lineList) {
 		if (curLine.indentLevelChange() == SmartLine::decrease
-			|| curLine.indentLevelChange() == SmartLine::decreaseOnlyThisLine)
+				|| curLine.indentLevelChange() == SmartLine::decreaseOnlyThisLine)
 		{
-			mCurTabNumber--;
+			--mCurTabNumber;
 		}
-		resultCode += '\t' + QString(mCurTabNumber, '\t') + curLine.text() + "\n";
+		resultCode += QString(mCurTabNumber, '\t') + curLine.text() + "\n";
 		if (curLine.indentLevelChange() == SmartLine::increase
-			|| curLine.indentLevelChange() == SmartLine::decreaseOnlyThisLine)
+				|| curLine.indentLevelChange() == SmartLine::decreaseOnlyThisLine)
 		{
-			mCurTabNumber++;
+			++mCurTabNumber;
 		}
 	}
 	return resultCode;
@@ -107,18 +108,24 @@ void NxtOSEKRobotGenerator::insertCode(
 		, QString const &resultInitCode
 		, QString const &resultTerminateCode
 		, QString const &resultIsrHooksCode
-		, QString const &curInitialNodeNumber)
+		, QString const &subprogramsCode
+		, QString const &curInitialNodeNumber
+		)
 {
 	if (mBalancerIsActivated) {
 		mResultString.replace("@@BALANCER@@", "#include \"balancer.h\"");
 	} else {
 		mResultString.replace("@@BALANCER@@", "");
 	}
-	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@").replace("@@VARIABLES@@"
-			, mVariables.generateVariableString() + "\n" + "@@VARIABLES@@").replace("@@INITHOOKS@@"
-			, resultInitCode).replace("@@TERMINATEHOOKS@@", resultTerminateCode)
-			.replace("@@USERISRHOOKS@@", resultIsrHooksCode).replace("@@BMPFILES@@"
-			, mImageGenerator.generateBmpFilesStringForC() + "@@BMPFILES@@");
+
+	mResultString.replace("@@CODE@@", resultCode +"\n" + "@@CODE@@")
+			.replace("@@VARIABLES@@", mVariables.generateVariableString() + "\n@@VARIABLES@@")
+			.replace("@@INITHOOKS@@", resultInitCode)
+			.replace("@@TERMINATEHOOKS@@", resultTerminateCode)
+			.replace("@@USERISRHOOKS@@", resultIsrHooksCode)
+			.replace("@@BMPFILES@@", mImageGenerator.generateBmpFilesStringForC()
+					+ "@@BMPFILES@@")
+			.replace("@@SUBPROGRAMS@@", subprogramsCode);
 	mTaskTemplate.replace("@@NUMBER@@", curInitialNodeNumber);
 	mResultOil.replace("@@TASK@@", mTaskTemplate + "\n" + "@@TASK@@");
 }
@@ -167,7 +174,7 @@ void NxtOSEKRobotGenerator::generate()
 	QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
 	initializeFields(resultTaskTemplate);
 
-	if (!mMainControlFlowGenerator.generate()) {
+	if (!mMainControlFlowGenerator.generate() || !mSubprogramsGenerator.generate()) {
 		return;
 	}
 
@@ -233,21 +240,23 @@ void NxtOSEKRobotGenerator::activateBalancer()
 
 void NxtOSEKRobotGenerator::addResultCodeInCFile(int curInitialNodeNumber)
 {
-	QString resultCode;
-	mCurTabNumber = 0;
-	foreach (QList<SmartLine> const &lineList, mMainControlFlowGenerator.generatedStringSet()) {
-		 resultCode = addTabAndEndOfLine(lineList, resultCode);
-	}
+	QString const nodeNumber = QString::number(curInitialNodeNumber);
 
-	QString resultInitCode;
-	resultInitCode = addTabAndEndOfLine(mInitCode, resultInitCode);
-	QString resultTerminateCode;
-	resultTerminateCode = addTabAndEndOfLine(mTerminateCode, resultTerminateCode);
-	QString resultIsrHooksCode;
-	resultIsrHooksCode = addTabAndEndOfLine(mIsrHooksCode, resultIsrHooksCode);
-	resultCode = "TASK(OSEK_Task_Number_" + QString::number(curInitialNodeNumber) +")\n{\n" + resultCode + "}";
+	// This will add to all next code one tab before each line
+	mCurTabNumber = 1;
+
+	QString const resultCode = QString("TASK(OSEK_Task_Number_%1)\n{\n%2}").arg(nodeNumber
+			, toString(mMainControlFlowGenerator.generatedCode()));
+	QString const resultInitCode = toString(mInitCode);
+	QString const resultTerminateCode = toString(mTerminateCode);
+	QString const resultIsrHooksCode = toString(mIsrHooksCode);
+
+	// Subprograms have been already generated with first tab consideration
+	mCurTabNumber = 0;
+	QString const subprogramsCode = toString(mSubprogramsGenerator.generatedCode());
+
 	insertCode(resultCode, resultInitCode, resultTerminateCode, resultIsrHooksCode
-			, QString::number(curInitialNodeNumber));
+			, subprogramsCode, nodeNumber);
 }
 
 void NxtOSEKRobotGenerator::outputInCAndOilFile(QString const &projectName, QString const &projectDir)

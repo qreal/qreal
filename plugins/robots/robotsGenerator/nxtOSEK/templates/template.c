@@ -31,4 +31,5 @@ void user_1ms_isr_type2(void)
 
 @@SUBPROGRAMS@@
 
+/* Main task */
 @@CODE@@

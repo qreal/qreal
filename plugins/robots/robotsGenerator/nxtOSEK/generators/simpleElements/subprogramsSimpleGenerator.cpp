@@ -13,5 +13,5 @@ QList<SmartLine> SubprogramsSimpleGenerator::convertElementIntoDirectCommand(Nxt
 QString SubprogramsSimpleGenerator::identificator(NxtOSEKRobotGenerator const *nxtGen, qReal::Id const &id)
 {
 	QString const rawName = nxtGen->api()->name(id);
-	return utils::NameNormalizer::normalize(rawName, false);
+	return utils::NameNormalizer::normalizeStrongly(rawName, false);
 }
