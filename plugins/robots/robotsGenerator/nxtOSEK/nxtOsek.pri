@@ -42,6 +42,9 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/drawRectBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/clearScreenBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/drawBlockGenerator.h \
+	nxtOSEK/generators/simpleElements/subprogramsSimpleGenerator.h \
+    nxtOSEK/generators/subprogramsGenerator.h \
+    nxtOSEK/generators/controlFlowGenerator.h
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
@@ -87,3 +90,6 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/drawRectBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/clearScreenBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/drawBlockGenerator.cpp \
+	nxtOSEK/generators/simpleElements/subprogramsSimpleGenerator.cpp \
+    nxtOSEK/generators/subprogramsGenerator.cpp \
+    nxtOSEK/generators/controlFlowGenerator.cpp

@@ -1,4 +1,6 @@
-﻿#include <QtCore/QTextStream>
+﻿#include "nxtOSEKRobotGenerator.h"
+
+#include <QtCore/QTextStream>
 #include <cmath>
 #include <QtCore/QObject>
 #include <QtCore/QDir>
@@ -7,9 +9,6 @@
 #include "../../../../qrkernel/settingsManager.h"
 #include "../../../../qrutils/inFile.h"
 #include "../../../../qrutils/outFile.h"
-
-#include "nxtOSEKRobotGenerator.h"
-#include "elementGeneratorFactory.h"
 
 using namespace qReal;
 using namespace robots::generator;
@@ -23,6 +22,9 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(
 		: mDestinationPath(destinationPath)
 		, mErrorReporter(errorReporter)
 		, mDiagram(diagram)
+		, mSubprogramsGenerator(this)
+		, mMainControlFlowGenerator(this, mDiagram)
+		, mCurrentGenerator(&mMainControlFlowGenerator)
 {
 	mIsNeedToDeleteMApi = false;
 	mApi = dynamic_cast<qrRepo::RepoApi *>(&api);  // TODO: remove unneeded dynamic_cast or provide strong argumentation why it is needed.
@@ -34,6 +36,9 @@ NxtOSEKRobotGenerator::NxtOSEKRobotGenerator(QString const &pathToRepo
 		)
 		: mDestinationPath(SettingsManager::value("temp").toString())
 		, mErrorReporter(errorReporter)
+		, mSubprogramsGenerator(this)
+		, mMainControlFlowGenerator(this, mDiagram)
+		, mCurrentGenerator(&mMainControlFlowGenerator)
 {
 	Q_UNUSED(destinationPath)
 	mIsNeedToDeleteMApi = true;
@@ -66,9 +71,7 @@ QString NxtOSEKRobotGenerator::addTabAndEndOfLine(QList<SmartLine> const &lineLi
 	return resultCode;
 }
 
-void NxtOSEKRobotGenerator::generateMakeFile(
-		bool const &toGenerateIsEmpty
-		, QString const &projectName
+void NxtOSEKRobotGenerator::generateMakeFile(QString const &projectName
 		, QString const &projectDir)
 {
 	QFile templateMakeFile(":/nxtOSEK/templates/template.makefile");
@@ -97,10 +100,6 @@ void NxtOSEKRobotGenerator::generateMakeFile(
 
 	outMake.flush();
 	resultMakeFile.close();
-
-	if (toGenerateIsEmpty) {
-		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
-	}
 }
 
 void NxtOSEKRobotGenerator::insertCode(
@@ -159,8 +158,6 @@ void NxtOSEKRobotGenerator::generate()
 		return;
 	}
 
-	IdList toGenerate(mApi->elementsByType("InitialNode"));
-
 	int curInitialNodeNumber = 0;
 	QString const projectName = "example" + QString::number(curInitialNodeNumber);
 	QString const projectDir = "nxt-tools/" + projectName;
@@ -168,32 +165,14 @@ void NxtOSEKRobotGenerator::generate()
 	initializeGeneration(projectDir);
 
 	QString resultTaskTemplate = utils::InFile::readAll(":/nxtOSEK/templates/taskTemplate.oil");
+	initializeFields(resultTaskTemplate);
 
-	bool generationOccured = false;
-	foreach (Id const &curInitialNode, toGenerate) {
-		if (!mApi->isGraphicalElement(curInitialNode)) {
-			continue;
-		}
-		if (mApi->parent(curInitialNode) != mDiagram) {
-			continue;
-		}
-		generationOccured = true;
-
-		initializeFields(resultTaskTemplate, curInitialNode);
-
-		AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(this, curInitialNode, *mApi);
-		gen->generate(); //may throws a exception
-		delete gen;
-
-		addResultCodeInCFile(curInitialNodeNumber);
-		curInitialNodeNumber++;
-	}
-
-	if (!generationOccured) {
-		mErrorReporter.addError(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"));
+	if (!mMainControlFlowGenerator.generate()) {
 		return;
 	}
-	outputInCAndOilFile(projectName, projectDir, toGenerate);
+
+	addResultCodeInCFile(curInitialNodeNumber);
+	outputInCAndOilFile(projectName, projectDir);
 }
 
 void NxtOSEKRobotGenerator::initializeGeneration(QString const &projectDir)
@@ -241,52 +220,22 @@ ErrorReporterInterface &NxtOSEKRobotGenerator::errorReporter()
 	return mErrorReporter;
 }
 
-qReal::Id &NxtOSEKRobotGenerator::previousElement()
-{
-	return mPreviousElement;
-}
-
-QList<QList<SmartLine> > &NxtOSEKRobotGenerator::generatedStringSet()
-{
-	return mGeneratedStringSet;
-}
-
-void NxtOSEKRobotGenerator::setGeneratedStringSet(int key, QList<SmartLine> const &list)
-{
-	mGeneratedStringSet[key] = list;
-}
-
 QString NxtOSEKRobotGenerator::intExpression(Id const &id, QString const &propertyName) const
 {
 	QString const expression = mApi->stringProperty(id, propertyName);
 	return mVariables.expressionToInt(expression);
 }
 
-QMap<QString, QStack<int> > &NxtOSEKRobotGenerator::elementToStringListNumbers()
+void NxtOSEKRobotGenerator::activateBalancer()
 {
-	return mElementToStringListNumbers;
-}
-
-int NxtOSEKRobotGenerator::elementToStringListNumbersPop(QString const &key)
-{
-	return mElementToStringListNumbers[key].pop();
-}
-
-QStack<qReal::Id> &NxtOSEKRobotGenerator::previousLoopElements()
-{
-	return mPreviousLoopElements;
-}
-
-qReal::Id NxtOSEKRobotGenerator::previousLoopElementsPop()
-{
-	return mPreviousLoopElements.pop();
+	mBalancerIsActivated = true;
 }
 
 void NxtOSEKRobotGenerator::addResultCodeInCFile(int curInitialNodeNumber)
 {
 	QString resultCode;
 	mCurTabNumber = 0;
-	foreach (QList<SmartLine> const &lineList, mGeneratedStringSet) {
+	foreach (QList<SmartLine> const &lineList, mMainControlFlowGenerator.generatedStringSet()) {
 		 resultCode = addTabAndEndOfLine(lineList, resultCode);
 	}
 
@@ -297,11 +246,11 @@ void NxtOSEKRobotGenerator::addResultCodeInCFile(int curInitialNodeNumber)
 	QString resultIsrHooksCode;
 	resultIsrHooksCode = addTabAndEndOfLine(mIsrHooksCode, resultIsrHooksCode);
 	resultCode = "TASK(OSEK_Task_Number_" + QString::number(curInitialNodeNumber) +")\n{\n" + resultCode + "}";
-	insertCode(resultCode, resultInitCode, resultTerminateCode, resultIsrHooksCode, QString::number(curInitialNodeNumber));
+	insertCode(resultCode, resultInitCode, resultTerminateCode, resultIsrHooksCode
+			, QString::number(curInitialNodeNumber));
 }
 
-void NxtOSEKRobotGenerator::outputInCAndOilFile(QString const projectName, QString const projectDir
-		,IdList toGenerate)
+void NxtOSEKRobotGenerator::outputInCAndOilFile(QString const &projectName, QString const &projectDir)
 {
 	deleteResidualLabels(projectName);
 	//Output in the .c and .oil file
@@ -310,18 +259,14 @@ void NxtOSEKRobotGenerator::outputInCAndOilFile(QString const projectName, QStri
 	utils::OutFile outOil(projectDir + "/" + projectName + ".oil");
 	outOil() << mResultOil;
 	generateFilesForBalancer(projectDir);
-	generateMakeFile(toGenerate.isEmpty(), projectName, projectDir);
+	generateMakeFile(projectName, projectDir);
 }
 
-void NxtOSEKRobotGenerator::initializeFields(QString resultTaskTemplate, Id const curInitialNode)
+void NxtOSEKRobotGenerator::initializeFields(QString const &resultTaskTemplate)
 {
 	mTaskTemplate = resultTaskTemplate;
-	mGeneratedStringSet.clear();
-	mGeneratedStringSet.append(QList<SmartLine>()); //first list for variable initialization
 	mVariablePlaceInGenStrSet = 0;
-	mElementToStringListNumbers.clear();
 	mVariables.reinit(mApi);
-	mPreviousElement = curInitialNode;
 	mBalancerIsActivated = false;
 	mImageGenerator.reinit();
 }
@@ -329,4 +274,19 @@ void NxtOSEKRobotGenerator::initializeFields(QString resultTaskTemplate, Id cons
 ImageGenerator &NxtOSEKRobotGenerator::imageGenerator()
 {
 	return mImageGenerator;
+}
+
+SubprogramsGenerator &NxtOSEKRobotGenerator::subprogramsGenerator()
+{
+	return mSubprogramsGenerator;
+}
+
+ControlFlowGenerator *NxtOSEKRobotGenerator::currentGenerator()
+{
+	return mCurrentGenerator;
+}
+
+void NxtOSEKRobotGenerator::beforeSubprogramGeneration(ControlFlowGenerator * const generator)
+{
+	mCurrentGenerator = generator;
 }

@@ -17,5 +17,6 @@ public:
 protected:
 	virtual void drawBmp(NxtOSEKRobotGenerator *nxtGen, qReal::Id const logicElementId, QPainter *p);
 };
+
 }
 }

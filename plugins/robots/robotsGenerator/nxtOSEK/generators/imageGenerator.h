@@ -3,6 +3,9 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 
+namespace robots {
+namespace generator {
+
 /// Class responsible for everything with images generation
 class ImageGenerator
 {
@@ -21,3 +24,5 @@ private:
 	int mBmpFilesCounter;
 };
 
+}
+}

@@ -2,8 +2,6 @@
 
 #include <QtCore/QString>
 #include <QtCore/QPair>
-#include <QtCore/QMap>
-#include <QtCore/QStack>
 
 #include "../../../../qrkernel/ids.h"
 #include "../../../../qrrepo/repoApi.h"
@@ -12,8 +10,11 @@
 
 #include "generators/abstractElementGenerator.h"
 #include "smartLine.h"
+
 #include "generators/variables.h"
 #include "generators/imageGenerator.h"
+#include "generators/subprogramsGenerator.h"
+#include "generators/controlFlowGenerator.h"
 
 namespace robots {
 namespace generator {
@@ -29,11 +30,20 @@ public:
 
 	/// main method that starts a code generation.
 	void generate();
+
 	Variables &variables();
+	ImageGenerator &imageGenerator();
+	SubprogramsGenerator &subprogramsGenerator();
+
+	ControlFlowGenerator *currentGenerator();
+	void beforeSubprogramGeneration(ControlFlowGenerator * const generator);
+
 	QList<SmartLine> &initCode();
 	QList<SmartLine> &terminateCode();
 	QList<SmartLine> &isrHooksCode();
+
 	qrRepo::RepoApi const *api() const;
+	qReal::ErrorReporterInterface &errorReporter();
 
 	qReal::interpreters::robots::enums::sensorType::SensorTypeEnum portValue(int port) const;
 	qReal::interpreters::robots::enums::sensorType::SensorTypeEnum portValue1() const;
@@ -41,19 +51,11 @@ public:
 	qReal::interpreters::robots::enums::sensorType::SensorTypeEnum portValue3() const;
 	qReal::interpreters::robots::enums::sensorType::SensorTypeEnum portValue4() const;
 
-	qReal::ErrorReporterInterface &errorReporter();
-	qReal::Id &previousElement();
-	QList<QList<SmartLine> > &generatedStringSet();
-	QMap<QString, QStack<int> > &elementToStringListNumbers();
-	QStack<qReal::Id> &previousLoopElements();
-	qReal::Id previousLoopElementsPop();
-	int elementToStringListNumbersPop(QString const &key);
-	void setGeneratedStringSet(int key, QList<SmartLine> const &list);
-	bool mBalancerIsActivated;
-
 	/// Returns string property treated as expression and casts it to int if nessesary
 	QString intExpression(qReal::Id const &id, QString const &propertyName) const;
-	ImageGenerator &imageGenerator();
+
+	// TODO: remove it or move into separate generator (like with images)
+	void activateBalancer();
 
 private:
 	void createProjectDir(QString const &projectDir);
@@ -64,12 +66,12 @@ private:
 			, QString const &resultIsrHooksCode
 			, QString const &curInitialNodeNumber);
 	void deleteResidualLabels(QString const &projectName);
-	void generateMakeFile(bool const &toGenerateIsEmpty, QString const &projectName, QString const &projectDir);
+	void generateMakeFile(QString const &projectName, QString const &projectDir);
 	void generateFilesForBalancer(QString const &projectDir);
 	QString addTabAndEndOfLine(QList<SmartLine> const &lineList, QString resultCode);
 	void addResultCodeInCFile(int curInitialNodeNumber);
-	void outputInCAndOilFile(QString const projectName, QString const projectDir, qReal::IdList toGenerate);
-	void initializeFields(QString resultTaskTemplate, qReal::Id curInitialNode);
+	void outputInCAndOilFile(QString const &projectName, QString const &projectDir);
+	void initializeFields(QString const &resultTaskTemplate);
 
 	/// Loads templates and creates output directory.
 	void initializeGeneration(QString const &projectDir);
@@ -83,21 +85,9 @@ private:
 	bool mIsNeedToDeleteMApi;
 	QString mDestinationPath;
 
-	//! Set of already generated strings united for take a same critical places position (start of loop etc)
-	QList< QList<SmartLine> > mGeneratedStringSet;
 	QList<SmartLine> mInitCode;
 	QList<SmartLine> mTerminateCode;
 	QList<SmartLine> mIsrHooksCode;
-
-	/// Set of elements that have been already observed, but can create a regular loop (If blocks, Loop etc)
-	QStack<qReal::Id> mPreviousLoopElements;
-	qReal::Id mPreviousElement;
-
-	/**
-	 * Mapped element with lists in mGeneratedStringSet
-	 * QString in this case is qReal::Id string presentation.
-	 */
-	QMap<QString, QStack<int> > mElementToStringListNumbers;
 
 	Variables mVariables;
 	int mVariablePlaceInGenStrSet;
@@ -108,6 +98,11 @@ private:
 	qReal::Id mDiagram;
 
 	ImageGenerator mImageGenerator;
+	SubprogramsGenerator mSubprogramsGenerator;
+	ControlFlowGenerator mMainControlFlowGenerator;
+	ControlFlowGenerator *mCurrentGenerator; // Doesn`t take ownership
+
+	bool mBalancerIsActivated;
 };
 
 }
