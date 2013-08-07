@@ -298,27 +298,26 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PreferencesRobotSettingsPage</name>
     <message>
-        <location filename="robotSettingsPage.ui" line="63"/>
+        <location filename="robotSettingsPage.ui" line="17"/>
         <source>Type of Robot Model</source>
         <translation>Тип модели робота</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="72"/>
+        <location filename="robotSettingsPage.ui" line="23"/>
         <source>Null model</source>
         <translation>Пустая модель</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="79"/>
+        <location filename="robotSettingsPage.ui" line="30"/>
         <source>2D robot model</source>
         <translation>Двухмерная модель</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="86"/>
         <source>Real robot</source>
-        <translation>Реальный робот</translation>
+        <translation type="obsolete">Реальный робот</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="128"/>
+        <location filename="robotSettingsPage.ui" line="171"/>
         <source>Sensors Settings</source>
         <translation>Настройки сенсоров</translation>
     </message>
@@ -339,68 +338,93 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Порт 4:</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="17"/>
+        <location filename="robotSettingsPage.ui" line="40"/>
+        <source>Lego NXT</source>
+        <translation>Лего NXT</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="50"/>
+        <source>TRIK</source>
+        <translation>ТРИК</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="76"/>
         <source>Bluetooth Settings</source>
         <translation>Настройки Bluetooth</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="23"/>
-        <location filename="robotSettingsPage.ui" line="33"/>
+        <location filename="robotSettingsPage.ui" line="82"/>
+        <location filename="robotSettingsPage.ui" line="92"/>
         <source>COM Port:</source>
         <translation>COM-порт:</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="43"/>
+        <location filename="robotSettingsPage.ui" line="102"/>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
         <translation>COM-порты не найдены. Если установлено Bluetooth-соединение с активным COM-портом, пожалуйста, укажите его имя. Пример: COM3</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="53"/>
+        <location filename="robotSettingsPage.ui" line="112"/>
         <source>Specify COM port manually</source>
         <translation>Указать COM-порт вручную</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="99"/>
+        <location filename="robotSettingsPage.ui" line="122"/>
         <source>Type of Communication</source>
         <translation>Тип связи</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="108"/>
+        <location filename="robotSettingsPage.ui" line="131"/>
         <source>Bluetooth</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="118"/>
+        <location filename="robotSettingsPage.ui" line="141"/>
         <source>USB</source>
         <translation></translation>
     </message>
     <message>
         <location filename="robotSettingsPage.ui" line="148"/>
+        <source>TCP</source>
+        <translation>TCP</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="178"/>
         <source>Elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="154"/>
+        <location filename="robotSettingsPage.ui" line="184"/>
         <source>Text visible</source>
         <translation>Показывать текст под пиктограммой</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="164"/>
+        <location filename="robotSettingsPage.ui" line="194"/>
+        <source>TCP Settings</source>
+        <translation>Настройки TCP</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="200"/>
+        <source>Enter server address here</source>
+        <translation>IP-адрес сервера</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="235"/>
         <source>Noise</source>
         <translation>Шум</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="176"/>
+        <location filename="robotSettingsPage.ui" line="256"/>
         <source>Enable sensor noise</source>
         <translation>Шум сенсоров</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="183"/>
+        <location filename="robotSettingsPage.ui" line="263"/>
         <source>Approximation level</source>
         <translation>Уровень приближения</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="209"/>
+        <location filename="robotSettingsPage.ui" line="289"/>
         <source>Enable motor noise</source>
         <translation>Шум моторов</translation>
     </message>
@@ -486,9 +510,39 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="140"/>
+        <location filename="robotsPlugin.cpp" line="134"/>
         <source>Robots</source>
         <translation>Роботы</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="63"/>
+        <source>Add connection</source>
+        <translation>Соединить с</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="68"/>
+        <source>Connect to other</source>
+        <translation>Пересоединить</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="73"/>
+        <source>Disconnect</source>
+        <translation>Отсоединить</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="78"/>
+        <source>Go to connected element</source>
+        <translation>Перейти к элементу по ссылке</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="88"/>
+        <source>Expand explosion</source>
+        <translation>Раскрыть эксплозию</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="93"/>
+        <source>Collapse explosion</source>
+        <translation>Схлопнуть эксплозию</translation>
     </message>
 </context>
 <context>
@@ -534,28 +588,24 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::Interpreter</name>
     <message>
-        <location filename="interpreter.cpp" line="84"/>
         <source>No connection to robot</source>
-        <translation>Нет соединения с роботом</translation>
+        <translation type="obsolete">Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="88"/>
         <source>Interpreter is already running</source>
-        <translation>Программа уже запущена</translation>
+        <translation type="obsolete">Программа уже запущена</translation>
     </message>
     <message>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation type="obsolete">Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="190"/>
         <source>Connected successfully</source>
-        <translation>Подключение к роботу выполнено</translation>
+        <translation type="obsolete">Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="interpreter.cpp" line="194"/>
         <source>Can&apos;t connect to a robot.</source>
-        <translation>Не удалось подключиться к роботу.</translation>
+        <translation type="obsolete">Не удалось подключиться к роботу.</translation>
     </message>
 </context>
 <context>
@@ -628,27 +678,27 @@ p, li { white-space: pre-wrap; }
         <translation>Текст под пиктограммами</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="96"/>
+        <location filename="robotsPlugin.cpp" line="89"/>
         <source>Show 2d model</source>
         <translation>Открыть окно 2D модели</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="97"/>
+        <location filename="robotsPlugin.cpp" line="90"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="98"/>
+        <location filename="robotsPlugin.cpp" line="91"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="100"/>
+        <location filename="robotsPlugin.cpp" line="93"/>
         <source>Toggle titles visibility</source>
         <translation>Показать/скрыть встроенные редакторы свойств</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="145"/>
+        <location filename="robotsPlugin.cpp" line="139"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -662,6 +712,29 @@ p, li { white-space: pre-wrap; }
     <message>
         <source> You can download Fantom Driver on </source>
         <translation type="obsolete">Вы можете скачать драйвер Fantom по адресу </translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::Interpreter</name>
+    <message>
+        <location filename="details/interpreter.cpp" line="89"/>
+        <source>No connection to robot</source>
+        <translation>Нет соединения с роботом</translation>
+    </message>
+    <message>
+        <location filename="details/interpreter.cpp" line="93"/>
+        <source>Interpreter is already running</source>
+        <translation>Программа уже запущена</translation>
+    </message>
+    <message>
+        <location filename="details/interpreter.cpp" line="195"/>
+        <source>Connected successfully</source>
+        <translation>Подключение к роботу выполнено</translation>
+    </message>
+    <message>
+        <location filename="details/interpreter.cpp" line="199"/>
+        <source>Can&apos;t connect to a robot.</source>
+        <translation>Не удалось подключиться к роботу.</translation>
     </message>
 </context>
 <context>
@@ -732,6 +805,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>qReal::interpreters::robots::details::TcpRobotCommunicationThread</name>
+    <message>
+        <location filename="details/robotCommunication/tcpRobotCommunicationThread.cpp" line="43"/>
+        <source>Unable to resolve %1. Check server address anfd try again</source>
+        <translation>Сервер %1не найден. Проверьте адрес и попробуйте еще раз </translation>
+    </message>
+</context>
+<context>
     <name>qReal::interpreters::robots::details::Thread</name>
     <message>
         <location filename="details/thread.cpp" line="60"/>
@@ -747,12 +828,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::UsbRobotCommunicationThread</name>
     <message>
-        <location filename="details/robotCommunication/usbRobotCommunicationThread.cpp" line="200"/>
+        <location filename="details/robotCommunication/usbRobotCommunicationThread.cpp" line="198"/>
         <source>Fantom Driver is unavailable. Usb connection to robot is impossible.</source>
         <translation>Драйвер Fantom недоступен. Usb-соединение с роботом невозможно.</translation>
     </message>
     <message>
-        <location filename="details/robotCommunication/usbRobotCommunicationThread.cpp" line="202"/>
+        <location filename="details/robotCommunication/usbRobotCommunicationThread.cpp" line="200"/>
         <source> You can download Fantom Driver on &lt;a href=&apos;%1&apos;&gt;Lego website&lt;/a&gt;</source>
         <translation>Вы можете скачать драйвера Fantom на &lt;a href=&apos;%1&apos;&gt;сайте Lego&lt;/a&gt;</translation>
     </message>
@@ -949,6 +1030,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>qReal::interpreters::robots::details::blocks::SubprogramBlock</name>
+    <message>
+        <location filename="details/blocks/subprogramBlock.cpp" line="18"/>
+        <source>Please enter valid c-style name for subprogram &quot;</source>
+        <translation>Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
+    </message>
+</context>
+<context>
     <name>qReal::interpreters::robots::details::blocks::WaitForAccelerometerSensorBlock</name>
     <message>
         <source>Sound sensor</source>
@@ -1082,7 +1171,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Сенсор касания не сконфигурирован на этом порту</translation>
     </message>
     <message>
-        <location filename="details/blocks/waitForTouchSensorBlock.cpp" line="21"/>
+        <location filename="details/blocks/waitForTouchSensorBlock.cpp" line="22"/>
         <source>Touch sensor</source>
         <translation>Сенсор касания</translation>
     </message>
@@ -1090,18 +1179,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="736"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="739"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="736"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="754"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="739"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="758"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="754"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="758"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>
