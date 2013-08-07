@@ -2,22 +2,21 @@
 
 #include "../../../qrkernel/ids.h"
 
-#include <QMap>
-#include <QVariant>
-#include <QString>
+#include <QtCore/QMap>
+#include <QtCore/QVariant>
+#include <QtCore/QString>
 
 namespace qrRepo {
-
 namespace details {
 
 class Object
 {
 public:
-	explicit Object(const qReal::Id &id);
+	explicit Object(qReal::Id const &id);
 
-	/// replacing property values that contains input value with new value
-	/// @param value - input value that should be contained by any property of element
-	/// @param newValue - string representation of value with what property values should be replaced
+	/// Replacing property values that contains input value with new value.
+	/// @param value - input value that should be contained by any property of element.
+	/// @param newValue - string representation of value with what property values should be replaced.
 	void replaceProperties(QString const value, QString newValue);
 
 	Object(const qReal::Id &id, const qReal::Id &parent);
@@ -48,7 +47,7 @@ public:
 	void removeTemporaryRemovedLinksAt(QString const &direction);
 	void removeTemporaryRemovedLinks();
 
-	/// Stacks item element before sibling (they should have the same parent)
+	/// Stacks item element before sibling (they should have the same parent).
 	void stackBefore(qReal::Id const &element, qReal::Id const &sibling);
 
 private:
