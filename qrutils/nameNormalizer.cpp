@@ -20,8 +20,9 @@ QString NameNormalizer::normalizeStrongly(QString const &name, bool const upperF
 {
 	QString filteredName;
 	foreach (QChar const &character, name) {
-		if ((character.isLetterOrNumber() || character == ' ' || character == '_')
-				&& !(filteredName.isEmpty() && character.isDigit()))
+		if ((filteredName.isEmpty() && (character.isLetter() || character == '_')) ||
+				(!filteredName.isEmpty() && (character.isLetterOrNumber()
+						|| character == ' ' || character == '_')))
 		{
 			filteredName += character;
 		}

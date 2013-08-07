@@ -41,7 +41,7 @@ bool SubprogramsGenerator::generate()
 		}
 
 		QString const identifier = SubprogramsSimpleGenerator::identifier(mMainGenerator, toGen);
-		if (!checkIdentifier(identifier)) {
+		if (!checkIdentifier(identifier, mMainGenerator->api()->name(toGen))) {
 			return false;
 		}
 
@@ -102,10 +102,11 @@ Id SubprogramsGenerator::graphicalId(Id const &logicalId) const
 	return Id();
 }
 
-bool SubprogramsGenerator::checkIdentifier(QString const &identifier)
+bool SubprogramsGenerator::checkIdentifier(QString const &identifier, QString const &rawName)
 {
 	if (identifier.isEmpty()) {
-		mMainGenerator->errorReporter().addError(QObject::tr("Please enter subprogam name"));
+		mMainGenerator->errorReporter().addError(
+				QObject::tr("Please enter valid c-style name for subprogram \"") + rawName + "\"");
 		return false;
 	}
 

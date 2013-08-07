@@ -28,7 +28,7 @@ public:
 	QList<SmartLine> &generatedCode();
 
 private:
-	bool checkIdentifier(QString const &identificator);
+	bool checkIdentifier(QString const &identificator, QString const &rawName);
 
 	void mergeCode(QMap<qReal::Id, QList<SmartLine> > const &declarations
 			, QMap<qReal::Id, QList<SmartLine> > const &implementations);

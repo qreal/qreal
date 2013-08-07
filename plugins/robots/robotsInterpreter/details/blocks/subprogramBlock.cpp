@@ -1,5 +1,6 @@
 #include "subprogramBlock.h"
 #include "../tracer.h"
+#include "../../../qrutils/nameNormalizer.h"
 
 using namespace qReal::interpreters::robots::details::blocks;
 
@@ -9,8 +10,15 @@ SubprogramBlock::SubprogramBlock()
 
 void SubprogramBlock::run()
 {
-	Tracer::debug(tracer::enums::blocks, "SubprogramBlock::run", "stepping into "
-			+ stringProperty(id(), "name"));
+	QString const name = stringProperty(id(), "name");
+	Tracer::debug(tracer::enums::blocks, "SubprogramBlock::run", "stepping into " + name);
+
+	QString const validName = utils::NameNormalizer::normalizeStrongly(validName, false);
+	if (name.isEmpty()) {
+		error(tr("Please enter valid c-style name for subprogram \"") + name + "\"");
+		return;
+	}
+
 	Id const logicalId = mGraphicalModelApi->logicalId(id());
 	Id const logicalDiagram = mLogicalModelApi->logicalRepoApi().outgoingExplosion(logicalId);
 	IdList const diagrams = mGraphicalModelApi->graphicalIdsByLogicalId(logicalDiagram);
