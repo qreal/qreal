@@ -201,8 +201,8 @@ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	updateData();
 
 	LabelInterface::mouseReleaseEvent(event);
+	event->accept();
 }
-
 
 void Label::init(QRectF const &contents)
 {
