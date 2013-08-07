@@ -35,8 +35,15 @@ public:
 	ImageGenerator &imageGenerator();
 	SubprogramsGenerator &subprogramsGenerator();
 
+	/// Returns control flow generator that currently perfroms generation process
 	ControlFlowGenerator *currentGenerator();
+
+	/// Must be called each time when another control flow generator starts work
 	void beforeSubprogramGeneration(ControlFlowGenerator * const generator);
+
+	/// Returns false if currently some subprogram`s code is being generated and
+	/// true otherwise (primary generation of main task code)
+	bool areWeGeneratingMainTask() const;
 
 	QList<SmartLine> &initCode();
 	QList<SmartLine> &terminateCode();

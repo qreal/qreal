@@ -299,3 +299,8 @@ void NxtOSEKRobotGenerator::beforeSubprogramGeneration(ControlFlowGenerator * co
 {
 	mCurrentGenerator = generator;
 }
+
+bool NxtOSEKRobotGenerator::areWeGeneratingMainTask() const
+{
+	return mCurrentGenerator == &mMainControlFlowGenerator;
+}
