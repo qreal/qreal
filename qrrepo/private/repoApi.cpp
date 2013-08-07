@@ -557,3 +557,23 @@ QMapIterator<QString, QVariant> RepoApi::propertiesIterator(qReal::Id const &id)
 {
 	return mClient.propertiesIterator(id);
 }
+
+void RepoApi::createGraphicalPart(qReal::Id const &id, int partIndex)
+{
+	mClient.createGraphicalPart(id, partIndex);
+}
+
+QVariant RepoApi::graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const
+{
+	return mClient.graphicalPartProperty(id, partIndex, propertyName);
+}
+
+void RepoApi::setGraphicalPartProperty(
+		qReal::Id const &id
+		, int partIndex
+		, QString const &propertyName
+		, QVariant const &value
+		)
+{
+	mClient.setGraphicalPartProperty(id, partIndex, propertyName, value);
+}

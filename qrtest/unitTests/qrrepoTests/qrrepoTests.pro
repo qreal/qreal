@@ -28,6 +28,3 @@ LIBS += -L../../../bin/thirdparty/ -lgmock -lpthread
 include(../../../qrrepo/qrrepo.pri)
 
 include(qrrepoTests.pri)
-
-OTHER_FILES += \
-	../unittestDeclaration.cfg \

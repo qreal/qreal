@@ -6,7 +6,7 @@ HEADERS += \
 	$$PWD/private/classes/object.h \
 	$$PWD/private/classes/logicalObject.h \
 	$$PWD/private/classes/graphicalObject.h \
-	$$PWD/private/classes/graphicalProperty.h \
+	$$PWD/private/classes/graphicalPart.h \
 
 SOURCES += \
 	$$PWD/private/client.cpp \
@@ -16,7 +16,7 @@ SOURCES += \
 	$$PWD/private/classes/object.cpp \
 	$$PWD/private/classes/logicalObject.cpp \
 	$$PWD/private/classes/graphicalObject.cpp \
-	$$PWD/private/classes/graphicalProperty.cpp \
+	$$PWD/private/classes/graphicalPart.cpp \
 
 # repo API
 HEADERS += \

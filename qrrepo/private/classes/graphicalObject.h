@@ -10,6 +10,8 @@ class GraphicalObject : public Object
 public:
 	explicit GraphicalObject(qReal::Id const &id);
 
+	virtual void f() {}
+
 private:
 };
 

@@ -1,15 +1,15 @@
 #pragma once
 
+#include <QtCore/QHash>
+
 #include "../../qrkernel/definitions.h"
 #include "../../qrkernel/ids.h"
-#include "classes/object.h"
+#include "classes/graphicalObject.h"
+#include "classes/logicalObject.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"
 
-#include <QHash>
-
 namespace qrRepo {
-
 namespace details {
 
 class Client
@@ -100,6 +100,17 @@ public:
 	/// Returns current working file name
 	QString workingFile() const;
 
+	virtual void createGraphicalPart(qReal::Id const &id, int partIndex);
+
+	virtual QVariant graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const;
+
+	virtual void setGraphicalPartProperty(
+			qReal::Id const &id
+			, int partIndex
+			, QString const &propertyName
+			, QVariant const &value
+			);
+
 private:
 	void init();
 
@@ -112,12 +123,10 @@ private:
 
 	QHash<qReal::Id, Object*> mObjects;
 
-	/// This term keeps name of current save file for project
+	/// This term keeps name of current save file for project.
 	QString mWorkingFile;
 	Serializer mSerializer;
 };
 
 }
-
 }
-

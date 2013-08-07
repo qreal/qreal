@@ -18,7 +18,7 @@ Client::Client(QString const &workingFile)
 
 void Client::init()
 {
-	mObjects.insert(Id::rootId(), new Object(Id::rootId()));
+	mObjects.insert(Id::rootId(), new LogicalObject(Id::rootId()));
 	mObjects[Id::rootId()]->setProperty("name", Id::rootId().toString());
 }
 
@@ -28,20 +28,12 @@ Client::~Client()
 
 	foreach (Id id, mObjects.keys()) {
 		delete mObjects[id];
-		mObjects.remove(id);
 	}
 }
 
-IdList Client::findElementsByName(QString const &name, bool sensitivity,
-		bool regExpression) const
+IdList Client::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
 {
-	Qt::CaseSensitivity caseSensitivity;
-
-	if (sensitivity) {
-		caseSensitivity = Qt::CaseSensitive;
-	} else {
-		caseSensitivity = Qt::CaseInsensitive;
-	}
+	Qt::CaseSensitivity caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
 	QRegExp *regExp = new QRegExp(name, caseSensitivity);
 	IdList result;
@@ -176,7 +168,12 @@ void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
 		if (mObjects.contains(child)) { // should we move element?
 			mObjects[child]->setParent(id);
 		} else {
-			mObjects.insert(child, new Object(child, id, logicalId));
+			Object *object = logicalId == Id()
+					? new LogicalObject(child, id, logicalId)
+					: new GraphicalObject(child, id, logicalId)
+					;
+
+			mObjects.insert(child, object);
 		}
 	} else {
 		throw Exception("Client: Adding child " + child.toString() + " to nonexistent object " + id.toString());
@@ -534,3 +531,17 @@ QMapIterator<QString, QVariant> Client::propertiesIterator(qReal::Id const &id) 
 {
 	return mObjects[id]->propertiesIterator();
 }
+
+void Client::createGraphicalPart(qReal::Id const &id, int partIndex)
+{
+	mObjects[id]->createGraphicalPart(partIndex);
+}
+
+QVariant Client::graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const;
+
+void Client::setGraphicalPartProperty(
+		qReal::Id const &id
+		, int partIndex
+		, QString const &propertyName
+		, QVariant const &value
+		);

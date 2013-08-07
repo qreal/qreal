@@ -1,10 +1,12 @@
 SOURCES += \
-	qrrepoTests/objectTest.cpp \
-	qrrepoTests/folderCompressorTest.cpp \
-	qrrepoTests/serializerTest.cpp \
-	qrrepoTests/clientTest.cpp
+	objectTest.cpp \
+	folderCompressorTest.cpp \
+	serializerTest.cpp \
+	clientTest.cpp \
+	repoApiTest.cpp \
 
 HEADERS += \
-	qrrepoTests/folderCompressorTest.h \
-	qrrepoTests/serializerTest.h \
-	qrrepoTests/clientTest.h
+	folderCompressorTest.h \
+	serializerTest.h \
+	clientTest.h \
+	repoApiTest.h \

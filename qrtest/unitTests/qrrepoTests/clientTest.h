@@ -1,10 +1,9 @@
 #pragma once
 
+#include <gtest/gtest.h>
+
 #include "../../../qrrepo/private/client.h"
 #include "../../../qrrepo/private/serializer.h"
-#include "../../../qrkernel/ids.h"
-
-#include "gtest/gtest.h"
 
 namespace qrTest {
 
@@ -14,7 +13,7 @@ protected:
 	virtual void SetUp();
 
 	virtual void TearDown();
-	
+
 	void removeDirectory(QString const &dirName);
 
 	qrRepo::details::Client *mClient;

@@ -3,10 +3,10 @@
 namespace qrRepo {
 namespace details {
 
-class GraphicalProperty
+class GraphicalPart
 {
 public:
-	explicit GraphicalProperty();
+	explicit GraphicalPart();
 };
 
 }

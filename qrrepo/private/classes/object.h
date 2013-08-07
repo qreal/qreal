@@ -50,6 +50,8 @@ public:
 	/// Stacks item element before sibling (they should have the same parent).
 	void stackBefore(qReal::Id const &element, qReal::Id const &sibling);
 
+	virtual void f() = 0;
+
 private:
 	const qReal::Id mId;
 	qReal::Id mLogicalId;

@@ -10,6 +10,8 @@ class LogicalObject : public Object
 public:
 	explicit LogicalObject(qReal::Id const &id);
 
+	virtual void f() {}
+
 private:
 };
 
