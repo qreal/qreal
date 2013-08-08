@@ -22,3 +22,10 @@ void GraphicalPart::setProperty(QString const &name, const QVariant &value)
 {
 	mProperties.insert(name, value);
 }
+
+GraphicalPart *GraphicalPart::clone() const
+{
+	GraphicalPart * const result = new GraphicalPart();
+	result->mProperties = this->mProperties;
+	return result;
+}

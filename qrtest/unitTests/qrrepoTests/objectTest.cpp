@@ -1,13 +1,16 @@
 #include "../../../qrrepo/private/classes/object.h"
+
+#include <gtest/gtest.h>
+
 #include "../../../qrrepo/private/classes/logicalObject.h"
 #include "../../../qrrepo/private/classes/graphicalObject.h"
 #include "../../../qrkernel/exception/exception.h"
 
-#include "gtest/gtest.h"
-
 using namespace qReal;
+using namespace qrRepo::details;
 
-TEST(ObjectTest, contructorsTest) {
+TEST(ObjectTest, contructorsTest)
+{
 	Id const id("editor", "diagram", "element", "id");
 	Id const logicalId("editor", "diagram", "element", "logicalId");
 	Id const parentId("editor", "diagram", "element", "parentId");
@@ -24,7 +27,8 @@ TEST(ObjectTest, contructorsTest) {
 	EXPECT_EQ(obj3.logicalId(), logicalId);
 }
 
-TEST(ObjectTest, setParentTest) {
+TEST(ObjectTest, setParentTest)
+{
 	Id const id("editor", "diagram", "element", "id");
 	Id const parent1("editor", "diagram", "element", "parent1");
 	Id const parent2("editor", "diagram", "element", "parent2");
@@ -35,7 +39,8 @@ TEST(ObjectTest, setParentTest) {
 	EXPECT_EQ(obj.parent(), parent2);
 }
 
-TEST(ObjectTest, removeParentTest) {
+TEST(ObjectTest, removeParentTest)
+{
 	Id const id("editor", "diagram", "element", "id");
 	Id const parent("editor", "diagram", "element", "parent");
 	qrRepo::details::LogicalObject obj(id, parent);
@@ -44,7 +49,8 @@ TEST(ObjectTest, removeParentTest) {
 	EXPECT_EQ(obj.parent(), Id());
 }
 
-TEST(ObjectTest, addAndRemoveChildAndChildrenTest) {
+TEST(ObjectTest, addAndRemoveChildAndChildrenTest)
+{
 	Id const id("editor", "diagram", "element", "id");
 	Id const child1("editor", "diagram", "element", "child1");
 	Id const child2("editor", "diagram", "element", "child2");
@@ -71,7 +77,8 @@ TEST(ObjectTest, addAndRemoveChildAndChildrenTest) {
 	EXPECT_THROW(obj.addChild(child1), Exception);
 }
 
-TEST(ObjectTest, propertiesHasAndSetOperationsTest) {
+TEST(ObjectTest, propertiesHasAndSetOperationsTest)
+{
 	Id const id("editor", "diagram", "element", "id");
 	qrRepo::details::LogicalObject obj(id);
 
@@ -105,7 +112,8 @@ TEST(ObjectTest, propertiesHasAndSetOperationsTest) {
 
 }
 
-TEST(ObjectTest, propertiesGetAndRemoveTest) {
+TEST(ObjectTest, propertiesGetAndRemoveTest)
+{
 	Id const id("editor", "diagram", "element", "id");
 	qrRepo::details::LogicalObject obj(id);
 
@@ -139,7 +147,8 @@ TEST(ObjectTest, propertiesGetAndRemoveTest) {
 	EXPECT_EQ(iterator.value(), "value1");
 }
 
-TEST(ObjectTest, backReferencesTest) {
+TEST(ObjectTest, backReferencesTest)
+{
 	Id const id("editor", "diagram", "element", "id");
 	Id const backReference1("editor", "diagram", "element", "backReference1");
 	Id const backReference2("editor", "diagram", "element", "backReference2");
@@ -163,7 +172,8 @@ TEST(ObjectTest, backReferencesTest) {
 	EXPECT_TRUE(references.contains(backReference3));
 }
 
-TEST(ObjectTest, temporaryRemovedLinksTest) {
+TEST(ObjectTest, temporaryRemovedLinksTest)
+{
 	Id const id("editor", "diagram", "element", "id");
 	qrRepo::details::LogicalObject obj(id);
 
@@ -219,7 +229,8 @@ TEST(ObjectTest, temporaryRemovedLinksTest) {
 	ASSERT_FALSE(obj.hasProperty(QString()));
 }
 
-TEST(ObjectTest, stackBeforeTest) {
+TEST(ObjectTest, stackBeforeTest)
+{
 	Id const id("editor", "diagram", "element", "id");
 	Id const child1("editor", "diagram", "element", "child1");
 	Id const child2("editor", "diagram", "element", "child2");
@@ -245,7 +256,8 @@ TEST(ObjectTest, stackBeforeTest) {
 	ASSERT_EQ(obj.children().indexOf(child1) + 1, obj.children().indexOf(child5));
 }
 
-TEST(ObjectTest, cloneTest) {
+TEST(ObjectTest, cloneTest)
+{
 	Id const parent("editor", "diagram", "element", "parent");
 	Id const root("editor", "diagram", "element", "root");
 	Id const child1("editor", "diagram", "element", "child1");
@@ -341,7 +353,8 @@ TEST(ObjectTest, cloneTest) {
 	EXPECT_EQ(objHash.value(clonedChildChildId3)->property("testProperty2").toString(), "value2");
 }
 
-TEST(ObjectTest, replacePropertiesTest) {
+TEST(ObjectTest, replacePropertiesTest)
+{
 	Id const id("editor", "diagram", "element", "id");
 	qrRepo::details::LogicalObject obj(id);
 

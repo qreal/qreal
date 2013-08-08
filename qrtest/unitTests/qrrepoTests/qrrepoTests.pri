@@ -1,5 +1,6 @@
 SOURCES += \
 	objectTest.cpp \
+	graphicalObjectTest.cpp \
 	folderCompressorTest.cpp \
 	serializerTest.cpp \
 	clientTest.cpp \

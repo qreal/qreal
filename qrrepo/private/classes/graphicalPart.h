@@ -12,6 +12,7 @@ public:
 	explicit GraphicalPart();
 	QVariant property(QString const &name) const;
 	void setProperty(QString const &name, const QVariant &value);
+	GraphicalPart *clone() const;
 
 private:
 	QMap<QString, QVariant> mProperties;

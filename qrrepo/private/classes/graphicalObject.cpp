@@ -42,7 +42,16 @@ void GraphicalObject::setGraphicalPartProperty(int index, QString const &name, Q
 
 Object *GraphicalObject::createClone() const
 {
-	return new GraphicalObject(mId.sameTypeId(), mParent, mLogicalId);
+	GraphicalObject * const clone = new GraphicalObject(mId.sameTypeId(), mParent, mLogicalId);
+
+	QHash<int, GraphicalPart *>::const_iterator i = mGraphicalParts.constBegin();
+	while (i != mGraphicalParts.constEnd()) {
+		GraphicalPart * const partClone = i.value()->clone();
+		clone->mGraphicalParts.insert(i.key(), partClone);
+		++i;
+	}
+
+	return clone;
 }
 
 Id GraphicalObject::logicalId() const
