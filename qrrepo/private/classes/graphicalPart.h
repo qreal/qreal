@@ -8,6 +8,7 @@
 namespace qrRepo {
 namespace details {
 
+/// Represents part of a graphical object which has its own properties, like label or pin.
 class GraphicalPart
 {
 public:

@@ -12,11 +12,12 @@
 namespace qrRepo {
 namespace details {
 
-class Client
+/// Class that actually contains all data, supports low-level queries and can serialize/deserialize data.
+class Repository
 {
 public:
-	QRREPO_EXPORT Client(QString const &workingFile);
-	QRREPO_EXPORT virtual ~Client();
+	QRREPO_EXPORT Repository(QString const &workingFile);
+	QRREPO_EXPORT virtual ~Repository();
 
 	/// replacing property values that contains input value with new value
 	/// @param toReplace - id list that contains ids of elements that properties should be replaced
@@ -28,7 +29,7 @@ public:
 	/// @param name - string that should be contained by names of elements that Id's are in the output list
 	qReal::IdList findElementsByName(QString const &name, bool sensitivity, bool regExpression) const;
 
-	/// returning IdList of elements that have input property
+	/// Returns IdList of elements that have given property
 	/// @param name - string that should be contained by names of elements that have input property
 	qReal::IdList elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const;
 
@@ -74,9 +75,6 @@ public:
 	qReal::IdList elements() const;
 	bool isLogicalId(qReal::Id const &elem) const;
 	qReal::Id logicalId(qReal::Id const &elem) const;
-
-	void svnUpdate();
-	void svnCommit();
 
 	void printDebug() const;
 

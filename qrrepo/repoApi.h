@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "../qrkernel/roles.h"
-#include "private/client.h"
+#include "private/repository.h"
 #include "private/qrRepoGlobal.h"
 #include "repoControlInterface.h"
 #include "commonRepoApi.h"
@@ -112,7 +112,7 @@ public:
 
 	void exterminate();
 
-	/// RepoApi's wrapper for Client.importFromDisk
+	/// RepoApi's wrapper for Repository.importFromDisk
 	/// @param importedFile - file to be imported
 	void importFromDisk(QString const &importedFile);
 	void saveAll() const;
@@ -159,7 +159,7 @@ private:
 	qReal::IdList links(qReal::Id const &id, QString const &direction) const;
 	void removeLinkEnds(QString const &endName, qReal::Id const &id);
 
-	details::Client mClient;
+	details::Repository mRepository;
 	bool mIgnoreAutosave;
 };
 

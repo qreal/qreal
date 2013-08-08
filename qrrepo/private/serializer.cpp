@@ -47,7 +47,7 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 {
 	Q_ASSERT_X(!mWorkingFile.isEmpty()
 		, "Serializer::saveToDisk(...)"
-		, "may be Client of RepoApi (see Models constructor also) has been initialised with empty filename?");
+		, "may be Repository of RepoApi (see Models constructor also) has been initialised with empty filename?");
 
 	foreach (Object const * const object, objects) {
 		QString const filePath = createDirectory(object->id(), object->isLogicalObject());

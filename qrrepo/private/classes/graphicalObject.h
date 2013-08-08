@@ -9,6 +9,7 @@
 namespace qrRepo {
 namespace details {
 
+/// Represents graphical object in repository.
 class GraphicalObject : public Object
 {
 public:

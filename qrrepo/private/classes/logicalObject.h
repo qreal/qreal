@@ -5,6 +5,7 @@
 namespace qrRepo {
 namespace details {
 
+/// Represents logical object in repository.
 class LogicalObject : public Object
 {
 public:

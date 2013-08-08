@@ -1,5 +1,5 @@
 HEADERS += \
-	$$PWD/private/client.h \
+	$$PWD/private/repository.h \
 	$$PWD/private/folderCompressor.h \
 	$$PWD/private/qrRepoGlobal.h \
 	$$PWD/private/serializer.h \
@@ -11,7 +11,7 @@ HEADERS += \
 	$$PWD/private/classes/graphicalPart.h \
 
 SOURCES += \
-	$$PWD/private/client.cpp \
+	$$PWD/private/repository.cpp \
 	$$PWD/private/folderCompressor.cpp \
 	$$PWD/private/repoApi.cpp \
 	$$PWD/private/serializer.cpp \

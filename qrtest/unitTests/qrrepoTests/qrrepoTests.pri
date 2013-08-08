@@ -3,11 +3,11 @@ SOURCES += \
 	graphicalObjectTest.cpp \
 	folderCompressorTest.cpp \
 	serializerTest.cpp \
-	clientTest.cpp \
+	repositoryTest.cpp \
 	repoApiTest.cpp \
 
 HEADERS += \
 	folderCompressorTest.h \
 	serializerTest.h \
-	clientTest.h \
+	repositoryTest.h \
 	repoApiTest.h \

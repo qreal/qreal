@@ -11,6 +11,8 @@
 namespace qrRepo {
 namespace details {
 
+/// Abstract class, general object in repository. Has id, parents, children and properties, able to
+/// serialize/deserialize and clone itself.
 class Object
 {
 public:
