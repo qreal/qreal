@@ -7,6 +7,7 @@ SUBDIRS	= \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 	requirements/requirements.pro \
+	umlClassDiagram/umlClassDiagram.pro \
 
 
 # tool plugins
@@ -31,4 +32,3 @@ SUBDIRS += \
 # QReal:Ubiq
 SUBDIRS += \
 #	ubiq/ubiq.pro \
-

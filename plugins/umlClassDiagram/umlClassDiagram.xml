@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+    <namespace>UML 2.0</namespace>
+    <diagram nodeName="UmlClassDiagramNode" name="UmlClassDiagram" displayedName="Uml Class Diagram">
+       <graphicTypes>
+            <node name="UmlClassDiagramNode" displayedName="Uml Class Diagram">
+                <graphics>
+                    <picture/>
+                    <labels/>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container>
+                         <contains type="UmlClassDiagram::UmlClass"/>
+                         <contains type="UmlClassDiagram::Field"/>
+                         <contains type="UmlClassDiagram::Association"/>
+                    </container>
+                </logic>
+            </node>
+            <node name="UmlClass" displayedName="UML Class">
+                <graphics>
+                    <picture sizex="200" sizey="130">
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="0" y2="130" fill-style="none" x1="0" x2="200"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="30a" y2="30a" fill-style="none" x1="0" x2="200"/>
+                    </picture>
+                    <labels>
+                        <label x="0a" y="5a" textBinded="className"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+							<start startx="10" starty="0"/>
+							<end endx="190" endy="0"/>
+						</linePort>
+                        <linePort>
+							<start startx="200" starty="40"/>
+							<end endx="200" endy="120"/>
+						</linePort>
+                        <linePort>
+							<start startx="10" starty="130"/>
+							<end endx="190" endy="130"/>
+						</linePort>
+                        <linePort>
+							<start startx="0" starty="40"/>
+							<end endx="0" endy="120"/>
+						</linePort>
+					</ports>
+                </graphics>
+                <logic>
+                    <container>
+						<contains type="Field"/>
+                        <properties>
+                            <forestalling size="0,40,0,0"/>
+                            <childrenForestalling size="20"/>
+                            <sortContainer/>
+							<banChildrenMove/>
+                            <minimizeToChildren/>
+                            <maximizeChildren/>
+                        </properties>
+					</container>
+                    <properties>
+                        <property type="string" name="className" displayedName="Class Name"/>
+                    </properties>
+					<bonusContextMenuFields>
+						<field name="New Field"/>
+					</bonusContextMenuFields>
+                </logic>
+            </node>
+            <node name="Field" displayedName="Field">
+                <graphics>
+                    <picture sizex="200" sizey="25"/>
+                    <labels>
+                        <label x="0a" y="0a" textBinded="fieldName"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="string" name="fieldName" displayedName="Field Name"/>
+                    </properties>
+                </logic>
+            </node>
+			<edge name="Association" displayedName="Association">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels/>
+                </graphics>
+                <logic>
+                    <dividability isDividable="false"/>
+                    <associations endType="filled_arrow" beginType="no_arrow">
+                        <association endName="end" beginName="start"/>
+                    </associations>
+                    <properties/>
+                </logic>
+            </edge>
+        </graphicTypes>
+        <palette>
+            <group name="Elements">
+                <element name="UmlClass"/>
+                <element name="Field"/>
+                <element name="Association"/>
+            </group>
+        </palette>
+    </diagram>
+</metamodel>
