@@ -275,6 +275,7 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	setProperties(logic, id);
 	setPin(logic, id);
 	setAction(logic, id);
+	setCreateChildrenFromMenu(logic, id);
 	setGeneralization(logic, id);
 	setContextMenuFields(logic, id);
 	setExplosion(logic, id);
@@ -500,6 +501,11 @@ void EditorGenerator::setPin(QDomElement &parent, const Id &id)
 void EditorGenerator::setAction(QDomElement &parent, const Id &id)
 {
 	setStatusElement(parent, id, "action", "isAction");
+}
+
+void EditorGenerator::setCreateChildrenFromMenu(QDomElement &parent, const Id &id)
+{
+	setStatusElement(parent, id, "createChildrenFromMenu", "createChildrenFromMenu");
 }
 
 void EditorGenerator::setStatusElement(

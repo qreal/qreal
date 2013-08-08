@@ -80,6 +80,8 @@ public:
 	bool isPort() const;
 	bool hasPin() const;
 
+	bool createChildrenFromMenu() const;
+
 	QList<double> border() const;
 
 	QStringList bonusContextMenuFields() const;

@@ -226,6 +226,7 @@ private:
 	gestures::MouseMovementManager *mMouseMovementManager;
 
 	QSignalMapper *mActionSignalMapper;
+	QSignalMapper *mCreateChildSignalMapper;
 
 	QSet<Element *> mHighlightedElements;
 	QTimer *mTimer;
@@ -246,6 +247,7 @@ private:
 
 	bool mIsSelectEvent;
 	bool mTitlesVisible;
+	bool mCreatingChildFromMenu;
 
 	view::details::ExploserView *mExploser; // Takes ownership
 

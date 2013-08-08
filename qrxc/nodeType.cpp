@@ -361,6 +361,10 @@ void NodeType::generateCode(OutFile &out)
 
 	<< "\t\tbool hasPin() const\n\t\t{\n"
 	<< (mIsHavePin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< "\t\t}\n\n"
+
+	<< "\t\tbool createChildrenFromMenu() const\n\t\t{\n"
+	<< (mCreateChildrenFromMenu ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n";
 
 	out() << "\t\tQList<double> border() const\n\t\t{\n"

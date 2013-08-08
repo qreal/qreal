@@ -32,6 +32,7 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mWindow(NULL)
 		, mMouseMovementManager(NULL)
 		, mActionSignalMapper(new QSignalMapper(this))
+		, mCreateChildSignalMapper(new QSignalMapper(this))
 		, mTimer(new QTimer(this))
 		, mTimerForArrowButtons(new QTimer(this))
 		, mOffset(QPointF(0, 0))
@@ -91,6 +92,7 @@ void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
 EditorViewScene::~EditorViewScene()
 {
 	delete mActionSignalMapper;
+	delete mCreateChildSignalMapper;
 	delete mMouseMovementManager;
 	delete mSelectList;
 }
@@ -898,6 +900,18 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 					Qt::UniqueConnection);
 			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
 		}
+
+		if (e->createChildrenFromMenu() && !mWindow->editorManager().containedTypes(e->id().type()).empty()) {
+			mCreatePoint = pos;
+			QMenu *createChildMenu = menu.addMenu(tr("Add child"));
+			foreach (Id const &type, mWindow->editorManager().containedTypes(e->id().type())) {
+				QAction *createAction = createChildMenu->addAction(type.element());
+				connect(createAction, SIGNAL(triggered()), mCreateChildSignalMapper, SLOT(map()), Qt::UniqueConnection);
+				mCreateChildSignalMapper->setMapping(createAction, type.toString());
+				connect(mCreateChildSignalMapper, SIGNAL(mapped(QString const &)), this, SLOT(createElement(QString const &)));
+			}
+		}
+
 		menu.addSeparator();
 		mExploser->createConnectionSubmenus(menu, e);
 	}

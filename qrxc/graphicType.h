@@ -64,6 +64,7 @@ protected:
 	QList<PossibleEdge> mPossibleEdges;
 	QStringList mBonusContextMenuFields;
 	QMap<QString, QPair<bool, bool> > mExplosions;
+	bool mCreateChildrenFromMenu;
 
 	void copyFields(GraphicType *type) const;
 	QString resourceName(QString const &resourceType) const;
@@ -87,6 +88,7 @@ private:
 	bool initProperties();
 	bool initContainers();
 	bool initContainerProperties();
+	bool initCreateChildrenFromMenu();
 	bool initPossibleEdges();
 	bool initExplosions();
 	bool initTypeList(QString const &listName, QString const &listElementName

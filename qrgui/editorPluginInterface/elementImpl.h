@@ -120,6 +120,8 @@ public:
 	virtual bool isPort() const = 0;
 	virtual bool hasPin() const = 0;
 
+	virtual bool createChildrenFromMenu() const = 0;
+
 	virtual QList<double> border() const = 0;
 
 	virtual QStringList bonusContextMenuFields() const = 0;

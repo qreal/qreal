@@ -515,6 +515,11 @@ bool InterpreterElementImpl::hasPin() const
 	return mEditorRepoApi->stringProperty(mId, "isAction") == "true";
 }
 
+bool InterpreterElementImpl::createChildrenFromMenu() const
+{
+	return mEditorRepoApi->stringProperty(mId, "createChildrenFromMenu") == "true";
+}
+
 QList<double> InterpreterElementImpl::border() const
 {
 	QList<double> list;

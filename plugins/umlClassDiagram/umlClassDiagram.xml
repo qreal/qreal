@@ -60,9 +60,7 @@
                     <properties>
                         <property type="string" name="className" displayedName="Class Name"/>
                     </properties>
-					<bonusContextMenuFields>
-						<field name="New Field"/>
-					</bonusContextMenuFields>
+					<createChildrenFromMenu/>
                 </logic>
             </node>
             <node name="Field" displayedName="Field">

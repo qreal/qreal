@@ -63,6 +63,8 @@ public:
 	void setController(qReal::Controller *controller);
 
 	ElementImpl* elementImpl() const;
+	bool createChildrenFromMenu() const;
+
 	/// Perform element-specific actions before being deleted
 	virtual void deleteFromScene() = 0;
 

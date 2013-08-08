@@ -37,6 +37,7 @@ private:
 	void setPin(QDomElement &parent, qReal::Id const &id);
 	void setStatusElement(QDomElement &parent, qReal::Id const &id, QString const &tagName, QString const &propertyName);
 	void setAction(QDomElement &parent, qReal::Id const &id);
+	void setCreateChildrenFromMenu(QDomElement &parent, qReal::Id const &id);
 	void createDiagrams(QDomElement &parent, qReal::Id const &id);
 	void setContainer(QDomElement &parent, qReal::Id const &id);
 	void setContainerProperties(QDomElement &parent, qReal::Id const &id);
