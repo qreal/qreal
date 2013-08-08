@@ -2,7 +2,7 @@
 #include <QtCore/QDir>
 
 #include "clientTest.h"
-#include "../../../qrrepo/private/classes/object.h"
+#include "../../../qrrepo/private/classes/logicalObject.h"
 #include "../../../qrkernel/exception/exception.h"
 #include "../../../qrkernel/settingsManager.h"
 
@@ -58,14 +58,14 @@ void ClientTest::SetUp() {
 
 	mSerializer = new Serializer("saveFile");
 
-	Object parentObj(parent, fakeParent);
-	Object rootObj(root, parent, rootLogicalId);
-	Object child1Obj(child1, root, child1LogicalId);
-	Object child2Obj(child2, root);
-	Object child3Obj(child3, root);
-	Object child1_childObj(child1_child, child1, child1_childLogicalId);
-	Object child2_childObj(child2_child, child2, child2_childLogicalId);
-	Object child3_childObj(child3_child, child3);
+	LogicalObject parentObj(parent, fakeParent);
+	GraphicalObject rootObj(root, parent, rootLogicalId);
+	GraphicalObject child1Obj(child1, root, child1LogicalId);
+	LogicalObject child2Obj(child2, root);
+	LogicalObject child3Obj(child3, root);
+	GraphicalObject child1_childObj(child1_child, child1, child1_childLogicalId);
+	GraphicalObject child2_childObj(child2_child, child2, child2_childLogicalId);
+	LogicalObject child3_childObj(child3_child, child3);
 
 	parentObj.addChild(root);
 	rootObj.addChild(child1);
@@ -106,8 +106,8 @@ void ClientTest::SetUp() {
 	mSerializer->clearWorkingDir();
 	delete mSerializer;
 
-	Object newObj1(newId1);
-	Object newObj2(newId2);
+	LogicalObject newObj1(newId1);
+	LogicalObject newObj2(newId2);
 
 	newObj1.setProperty("property1", "value1");
 	newObj2.setProperty("property2", "value2");

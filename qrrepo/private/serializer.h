@@ -31,7 +31,7 @@ private:
 	void loadModel(QDir const &dir, QHash<qReal::Id, Object *> &objectsHash);
 
 	QString pathToElement(qReal::Id const &id) const;
-	QString createDirectory(qReal::Id const &id, qReal::Id const &logicalId) const;
+	QString createDirectory(qReal::Id const &id, bool logical) const;
 
 	Object *parseObject(QDomElement const &elem);
 	static void clearDir(QString const &path);

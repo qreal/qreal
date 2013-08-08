@@ -9,8 +9,12 @@ class LogicalObject : public Object
 {
 public:
 	explicit LogicalObject(qReal::Id const &id);
+	LogicalObject(const qReal::Id &id, const qReal::Id &parent);
 
-	virtual void f() {}
+	virtual bool isLogicalObject() const;
+
+protected:
+	virtual Object *createClone() const;
 
 private:
 };

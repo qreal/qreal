@@ -1,14 +1,18 @@
 #include "serializer.h"
-#include "folderCompressor.h"
+
 #include <QtCore/QDir>
 #include <QtCore/QDebug>
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
-#include "../../qrkernel/settingsManager.h"
 
+#include "../../qrkernel/settingsManager.h"
 #include "../../qrutils/outFile.h"
 #include "../../qrutils/xmlUtils.h"
 #include "../../qrutils/fileSystemUtils.h"
+
+#include "folderCompressor.h"
+#include "classes/logicalObject.h"
+#include "classes/graphicalObject.h"
 
 using namespace qrRepo;
 using namespace details;
@@ -46,14 +50,16 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 
 	foreach (Object *object, objects) {
 
-		QString filePath = createDirectory(object->id(), object->logicalId());
+		QString filePath = createDirectory(object->id(), object->isLogicalObject());
 
 		QDomDocument doc;
 		QDomElement root = doc.createElement("object");
 		doc.appendChild(root);
 		root.setAttribute("id", object->id().toString());
-		if (object->logicalId() != Id()) {
-			root.setAttribute("logicalId", object->logicalId().toString());
+
+		GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject const *>(object);
+		if (graphicalObject) {
+			root.setAttribute("logicalId", graphicalObject->logicalId().toString());
 		}
 
 		root.setAttribute("parent", object->parent().toString());
@@ -132,21 +138,28 @@ Object *Serializer::parseObject(QDomElement const &elem)
 	QString const logicalIdString = elem.attribute("logicalId", "");
 	Id const logicalId = loadId(logicalIdString);
 
-	Object object(Id::loadFromString(id), Id(), logicalId);
+	Object * const object = logicalId == Id()
+			? static_cast<Object *>(new LogicalObject(Id::loadFromString(id), Id()))
+			: static_cast<Object *>(new GraphicalObject(Id::loadFromString(id), Id(), logicalId))
+			;
 
 	QString const parentIdString = elem.attribute("parent", "");
 	Id const parent = loadId(parentIdString);
-	if (object.parent() != parent)
-		object.setParent(parent);
+	if (object->parent() != parent) {
+		object->setParent(parent);
+	}
 
-	foreach (Id child, loadIdList(elem, "children"))
-		if (!object.children().contains(child))
-			object.addChild(child);
+	foreach (Id child, loadIdList(elem, "children")) {
+		if (!object->children().contains(child)) {
+			object->addChild(child);
+		}
+	}
 
-	if (!loadProperties(elem, object))
+	if (!loadProperties(elem, *object)) {
 		return NULL;
+	}
 
-	return new Object(object);
+	return object;
 }
 
 bool Serializer::loadProperties(QDomElement const &elem, Object &object)
@@ -331,14 +344,11 @@ QString Serializer::pathToElement(Id const &id) const
 	return dirName + "/" + partsList[partsList.size() - 1];
 }
 
-QString Serializer::createDirectory(Id const &id, Id const &logicalId) const
+QString Serializer::createDirectory(Id const &id, bool logical) const
 {
 	QString dirName = mWorkingDir + "/tree";
-	if (logicalId == Id()) {
-		dirName += "/logical";
-	} else {
-		dirName += "/graphical";
-	}
+	dirName += logical ? "/logical" : "/graphical";
+
 	QStringList const partsList = id.toString().split('/');
 	Q_ASSERT(partsList.size() >= 1 && partsList.size() <= 5);
 	for (int i = 1; i < partsList.size() - 1; ++i) {
@@ -411,8 +421,7 @@ void Serializer::exportToXml(QString const &targetFile, QHash<qReal::Id, Object*
 	foreach (Id const &id, objects[Id::rootId()]->children()) {
 
 		// skip logical elements of diagrams
-
-		if (objects[id]->logicalId().toString() == "qrm:/") {
+		if (objects[id]->isLogicalObject()) {
 			continue;
 		}
 
@@ -426,7 +435,12 @@ void Serializer::exportToXml(QString const &targetFile, QHash<qReal::Id, Object*
 void Serializer::exportDiagram(Id const &diagramId, QDomDocument &doc, QDomElement &root, QHash<qReal::Id, Object*> const &objects)
 {
 	QDomElement diagram = doc.createElement("diagram");
-	diagram.setAttribute("logical_id", objects[diagramId]->logicalId().toString());
+
+	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject const *>(objects[diagramId]);
+	if (graphicalObject) {
+		diagram.setAttribute("logical_id", graphicalObject->logicalId().toString());
+	}
+
 	diagram.setAttribute("graphical_id", diagramId.toString());
 	diagram.setAttribute("name", objects[diagramId]->properties()["name"].toString());
 	exportProperties(diagramId, doc, diagram, objects);
@@ -447,7 +461,11 @@ void Serializer::exportElement(Id const &id, QDomDocument &doc, QDomElement &roo
 	QDomElement element = doc.createElement("element");
 	element.setAttribute("name", objects[id]->properties()["name"].toString());
 	element.setAttribute("graphical_id", id.toString());
-	element.setAttribute("logical_id", objects[id]->logicalId().toString());
+
+	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject const *>(objects[id]);
+	if (graphicalObject) {
+		element.setAttribute("logical_id", graphicalObject->logicalId().toString());
+	}
 
 	exportProperties(id, doc, element, objects);
 	exportChildren(id, doc, element, objects);
@@ -477,8 +495,10 @@ void Serializer::exportProperties(Id const&id, QDomDocument &doc, QDomElement &r
 {
 	QDomElement props = doc.createElement("properties");
 
-	Object *graphicalObject = objects[id];
-	Object *logicalObject = objects[graphicalObject->logicalId()];
+	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject const *>(objects[id]);
+	LogicalObject const * const logicalObject
+			= dynamic_cast<LogicalObject const *>(objects[graphicalObject->logicalId()]);
+
 	QMap<QString, QVariant> properties;
 
 	QMapIterator<QString, QVariant> i = logicalObject->propertiesIterator();
@@ -487,6 +507,7 @@ void Serializer::exportProperties(Id const&id, QDomDocument &doc, QDomElement &r
 		properties[i.key()] = i.value();
 
 	}
+
 	i = graphicalObject->propertiesIterator();
 	while (i.hasNext()) {
 		i.next();
@@ -508,6 +529,7 @@ void Serializer::exportProperties(Id const&id, QDomDocument &doc, QDomElement &r
 		} else {
 			prop.setAttribute("value", properties[key].toString());
 		}
+
 		prop.setAttribute("name", key);
 
 		props.appendChild(prop);

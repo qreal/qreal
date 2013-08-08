@@ -16,7 +16,7 @@ class Client
 {
 public:
 	QRREPO_EXPORT Client(QString const &workingFile);
-	QRREPO_EXPORT ~Client();
+	QRREPO_EXPORT virtual ~Client();
 
 	/// replacing property values that contains input value with new value
 	/// @param toReplace - id list that contains ids of elements that properties should be replaced

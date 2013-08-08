@@ -2,7 +2,7 @@
 #include <QtCore/QDir>
 
 #include "serializerTest.h"
-#include "../../../qrrepo/private/classes/object.h"
+#include "../../../qrrepo/private/classes/logicalObject.h"
 #include "../../../qrkernel/settingsManager.h"
 
 using namespace qrRepo;
@@ -47,11 +47,11 @@ void SerializerTest::TearDown() {
 
 TEST_F(SerializerTest, saveAndLoadFromDiskTest) {
 	Id const id1("editor1", "diagram1", "element1", "id1");
-	Object obj1(id1);
+	LogicalObject obj1(id1);
 	obj1.setProperty("property1", "value1");
 
 	Id const id2("editor1", "diagram2", "element2", "id2");
-	Object obj2(id2);
+	LogicalObject obj2(id2);
 	obj2.setProperty("property2", "value2");
 
 	QList<Object *> list;
@@ -78,11 +78,11 @@ TEST_F(SerializerTest, saveAndLoadFromDiskTest) {
 // path without parent folder /tree and /logical or /graphical according to id type.
 TEST_F(SerializerTest, removeFromDiskTest) {
 	Id const id1("editor1", "diagram1", "element1", "id1");
-	Object obj1(id1);
+	LogicalObject obj1(id1);
 	obj1.setProperty("property1", "value1");
 
 	Id const id2("editor1", "diagram2", "element2", "id2");
-	Object obj2(id2);
+	LogicalObject obj2(id2);
 	obj2.setProperty("property2", "value2");
 
 	QList<Object *> list;

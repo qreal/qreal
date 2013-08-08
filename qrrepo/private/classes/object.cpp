@@ -1,7 +1,10 @@
 #include "object.h"
-#include "../../../qrkernel/exception/exception.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
+
+#include "../../../qrkernel/exception/exception.h"
+#include "logicalObject.h"
+#include "graphicalObject.h"
 
 using namespace qrRepo::details;
 using namespace qReal;
@@ -10,6 +13,15 @@ Object::Object(const Id &id, const Id &parent)
 	: mId(id)
 {
 	setParent(parent);
+}
+
+Object::Object(const Id &id)
+	: mId(id)
+{
+}
+
+Object::~Object()
+{
 }
 
 void Object::replaceProperties(QString const value, QString newValue)
@@ -21,28 +33,17 @@ void Object::replaceProperties(QString const value, QString newValue)
 	}
 }
 
-Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
-	: mId(id), mLogicalId(logicalId)
-{
-	setParent(parent);
-}
-
-Object::Object(const Id &id) : mId(id)
-{
-}
-
 Object *Object::clone(QHash<Id, Object*> &objHash) const
 {
-	Id resultId = id().sameTypeId();
-	Object *result = new Object(resultId);
-	objHash.insert(resultId, result);
+	Object * const result = createClone();
+	objHash.insert(result->id(), result);
 
-	foreach (Id childId, mChildren) {
-		Object *child = objHash[childId]->clone(id(), objHash);
+	foreach (Id const &childId, mChildren) {
+		Object const * const child = objHash[childId]->clone(id(), objHash);
 		result->addChild(child->id());
 	}
 
-	//using copy constructor
+	// Using copy constructor.
 	result->mProperties = mProperties;
 
 	return result;
@@ -50,7 +51,7 @@ Object *Object::clone(QHash<Id, Object*> &objHash) const
 
 Object *Object::clone(const Id &parent, QHash<Id, Object*> &objHash) const
 {
-	Object *result = clone(objHash);
+	Object * const result = clone(objHash);
 	result->setParent(parent);
 
 	return result;
@@ -124,6 +125,7 @@ void Object::setProperty(QString const &name, const QVariant &value)
 		qDebug() << ", property name " << name;
 		Q_ASSERT(!"Empty QVariant set as a property");
 	}
+
 	mProperties.insert(name,value);
 }
 
@@ -227,11 +229,6 @@ void Object::removeProperty(QString const &name)
 Id Object::id() const
 {
 	return mId;
-}
-
-Id Object::logicalId() const
-{
-	return mLogicalId;
 }
 
 QMapIterator<QString, QVariant> Object::propertiesIterator() const

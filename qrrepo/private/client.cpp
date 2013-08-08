@@ -168,9 +168,9 @@ void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
 		if (mObjects.contains(child)) { // should we move element?
 			mObjects[child]->setParent(id);
 		} else {
-			Object *object = logicalId == Id()
-					? new LogicalObject(child, id, logicalId)
-					: new GraphicalObject(child, id, logicalId)
+			Object * const object = logicalId == Id()
+					? static_cast<Object *>(new LogicalObject(child, id))
+					: static_cast<Object *>(new GraphicalObject(child, id, logicalId))
 					;
 
 			mObjects.insert(child, object);
@@ -519,12 +519,17 @@ qReal::IdList Client::elements() const
 
 bool Client::isLogicalId(qReal::Id const &elem) const
 {
-	return mObjects[elem]->logicalId() == qReal::Id();
+	return mObjects[elem]->isLogicalObject();
 }
 
 qReal::Id Client::logicalId(qReal::Id const &elem) const
 {
-	return mObjects[elem]->logicalId();
+	GraphicalObject const * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[elem]);
+	if (!graphicalObject) {
+		throw Exception("Trying to get logical id from non-graphical object");
+	}
+
+	return graphicalObject->logicalId();
 }
 
 QMapIterator<QString, QVariant> Client::propertiesIterator(qReal::Id const &id) const
@@ -534,14 +539,35 @@ QMapIterator<QString, QVariant> Client::propertiesIterator(qReal::Id const &id) 
 
 void Client::createGraphicalPart(qReal::Id const &id, int partIndex)
 {
-	mObjects[id]->createGraphicalPart(partIndex);
+	GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[id]);
+	if (!graphicalObject) {
+		throw Exception("Trying to create graphical part for non-graphical object");
+	}
+
+	graphicalObject->createGraphicalPart(partIndex);
 }
 
-QVariant Client::graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const;
+QVariant Client::graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const
+{
+	GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[id]);
+	if (!graphicalObject) {
+		throw Exception("Trying to obtain graphical part property for non-graphical item");
+	}
+
+	return graphicalObject->graphicalPartProperty(partIndex, propertyName);
+}
 
 void Client::setGraphicalPartProperty(
 		qReal::Id const &id
 		, int partIndex
 		, QString const &propertyName
 		, QVariant const &value
-		);
+		)
+{
+	GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[id]);
+	if (!graphicalObject) {
+		throw Exception("Trying to obtain graphical part property for non-graphical item");
+	}
+
+	graphicalObject->setGraphicalPartProperty(partIndex, propertyName, value);
+}

@@ -13,16 +13,17 @@ class Object
 {
 public:
 	explicit Object(qReal::Id const &id);
+	Object(const qReal::Id &id, const qReal::Id &parent);
+	virtual ~Object();
 
 	/// Replacing property values that contains input value with new value.
 	/// @param value - input value that should be contained by any property of element.
 	/// @param newValue - string representation of value with what property values should be replaced.
 	void replaceProperties(QString const value, QString newValue);
 
-	Object(const qReal::Id &id, const qReal::Id &parent);
-	Object(const qReal::Id &id, const qReal::Id &parent, const qReal::Id &logicalId);
 	Object *clone(QHash<qReal::Id, Object*> &objHash) const;
-	Object *clone(const qReal::Id &parent, QHash<qReal::Id, Object*> &objHash) const;
+	Object *clone(qReal::Id const &parent, QHash<qReal::Id, Object*> &objHash) const;
+
 	void setParent(const qReal::Id &parent);
 	void removeParent();
 	void addChild(const qReal::Id &child);
@@ -39,7 +40,6 @@ public:
 	void removeProperty(QString const &name);
 	QMap<QString, QVariant> properties();
 	qReal::Id id() const;
-	qReal::Id logicalId() const;
 	QMapIterator<QString, QVariant> propertiesIterator() const;
 	void setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue);
 	qReal::IdList temporaryRemovedLinksAt(QString const &direction) const;
@@ -50,11 +50,13 @@ public:
 	/// Stacks item element before sibling (they should have the same parent).
 	void stackBefore(qReal::Id const &element, qReal::Id const &sibling);
 
-	virtual void f() = 0;
+	/// Returns true, if it is logical object, false, if graphical.
+	virtual bool isLogicalObject() const = 0;
 
-private:
+protected:
+	virtual Object *createClone() const = 0;
+
 	const qReal::Id mId;
-	qReal::Id mLogicalId;
 	qReal::Id mParent;
 	qReal::IdList mChildren;
 	QMap<QString, QVariant> mProperties;

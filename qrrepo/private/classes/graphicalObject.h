@@ -1,6 +1,10 @@
 #pragma once
 
+#include <QtCore/QHash>
+#include <QtCore/QVariant>
+
 #include "object.h"
+#include "graphicalPart.h"
 
 namespace qrRepo {
 namespace details {
@@ -8,11 +12,22 @@ namespace details {
 class GraphicalObject : public Object
 {
 public:
-	explicit GraphicalObject(qReal::Id const &id);
+	GraphicalObject(qReal::Id const &id, qReal::Id const &parent, qReal::Id const &logicalId);
+	virtual ~GraphicalObject();
 
-	virtual void f() {}
+	qReal::Id logicalId() const;
+	virtual bool isLogicalObject() const;
+
+	void createGraphicalPart(int index);
+	QVariant graphicalPartProperty(int index, QString const &name) const;
+	void setGraphicalPartProperty(int index, QString const &name, QVariant const &value);
+
+protected:
+	virtual Object *createClone() const;
 
 private:
+	qReal::Id mLogicalId;
+	QHash<int, GraphicalPart *> mGraphicalParts;  // Has ownership.
 };
 
 }
