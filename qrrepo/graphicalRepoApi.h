@@ -41,6 +41,8 @@ public:
 	virtual QMap<QString, QVariant> properties(qReal::Id const &id) = 0;
 	virtual void setProperties(qReal::Id const &id, QMap<QString, QVariant> const &properties) = 0;
 
+	virtual void createGraphicalPart(qReal::Id const &id, int partIndex) = 0;
+
 	virtual QVariant graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const = 0;
 
 	virtual void setGraphicalPartProperty(
