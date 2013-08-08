@@ -26,7 +26,7 @@
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="30a" y2="30a" fill-style="none" x1="0" x2="200"/>
                     </picture>
                     <labels>
-                        <label x="0a" y="5a" textBinded="className"/>
+                        <label x="0a" y="5a" textBinded="Name"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -60,7 +60,9 @@
                         </properties>
 					</container>
                     <properties>
-                        <property type="string" name="className" displayedName="Class Name"/>
+                        <property type="string" name="Name" displayedName="Name"/>
+                        <property type="string" name="Access" displayedName="Access"/>
+                        <property type="string" name="Summary" displayedName="Summary"/>
                     </properties>
 					<createChildrenFromMenu/>
                 </logic>
@@ -69,15 +71,17 @@
                 <graphics>
                     <picture sizex="200" sizey="25"/>
                     <labels>
-                        <label x="0a" y="0a" textBinded="fieldName"/>
+                        <label x="0a" y="0a" textBinded="Name"/>
                     </labels>
                     <ports/>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="string" name="fieldName" displayedName="Field Name"/>
-						<property type="string" name="fieldType" displayedName="Field Type"/>
+						<property type="string" name="FieldType" displayedName="Type"/>
+                        <property type="string" name="Name" displayedName="Name"/>
+                        <property type="string" name="Access" displayedName="Access"/>
+                        <property type="string" name="Summary" displayedName="Summary"/>
                     </properties>
                 </logic>
             </node>
@@ -88,7 +92,7 @@
                         <line fill="#ffffff" stroke="#000000" stroke-style="dot" stroke-width="0" y1="30a" y2="30a" fill-style="none" x1="0" x2="200"/>
                     </picture>
                     <labels>
-                        <label x="0a" y="5a" textBinded="enumName"/>
+                        <label x="0a" y="5a" textBinded="Name"/>
                     </labels>
                     <ports>
                         <linePort>
@@ -122,7 +126,10 @@
                         </properties>
 					</container>
                     <properties>
-                        <property type="string" name="enumName" displayedName="Enum Name"/>
+                        <property type="string" name="Name" displayedName="Name"/>
+                        <property type="string" name="Access" displayedName="Access"/>
+                        <property type="string" name="Summary" displayedName="Summary"/>
+                        <property type="string" name="Remarks" displayedName="Remarks"/>
                     </properties>
 					<createChildrenFromMenu/>
                 </logic>
@@ -131,14 +138,16 @@
                 <graphics>
                     <picture sizex="200" sizey="25"/>
                     <labels>
-                        <label x="0a" y="0a" textBinded="valueName"/>
+                        <label x="0a" y="0a" textBinded="Name"/>
                     </labels>
                     <ports/>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="string" name="valueName" displayedName="Value Name"/>
+                        <property type="string" name="Name" displayedName="Name"/>
+                        <property type="string" name="Summary" displayedName="Summary"/>
+                        <property type="int" name="Value" displayedName="Value"/>
                     </properties>
                 </logic>
             </node>
