@@ -1,13 +1,13 @@
 SOURCES += \
-	objectTest.cpp \
-	graphicalObjectTest.cpp \
-	folderCompressorTest.cpp \
-	serializerTest.cpp \
-	repositoryTest.cpp \
-	repoApiTest.cpp \
+	$$PWD/objectTest.cpp \
+	$$PWD/graphicalObjectTest.cpp \
+	$$PWD/folderCompressorTest.cpp \
+	$$PWD/serializerTest.cpp \
+	$$PWD/repositoryTest.cpp \
+	$$PWD/repoApiTest.cpp \
 
 HEADERS += \
-	folderCompressorTest.h \
-	serializerTest.h \
-	repositoryTest.h \
-	repoApiTest.h \
+	$$PWD/folderCompressorTest.h \
+	$$PWD/serializerTest.h \
+	$$PWD/repositoryTest.h \
+	$$PWD/repoApiTest.h \
