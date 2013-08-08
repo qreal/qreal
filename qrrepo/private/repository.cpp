@@ -205,7 +205,7 @@ void Repository::removeParent(const Id &id)
 	if (mObjects.contains(id)) {
 		Id const parent = mObjects[id]->parent();
 		if (mObjects.contains(parent)) {
-			mObjects[id]->removeParent();
+			mObjects[id]->setParent(Id());
 			mObjects[parent]->removeChild(id);
 		} else {
 			throw Exception("Repository: Removing nonexistent parent " + parent.toString() + " from object " + id.toString());
@@ -413,7 +413,7 @@ void Repository::saveAll() const
 	mSerializer.saveToDisk(mObjects.values());
 }
 
-void Repository::save(IdList list) const
+void Repository::save(IdList const &list) const
 {
 	QList<Object*> toSave;
 	foreach(Id const &id, list)
@@ -422,7 +422,7 @@ void Repository::save(IdList list) const
 	mSerializer.saveToDisk(toSave);
 }
 
-void Repository::saveWithLogicalId(qReal::IdList list) const
+void Repository::saveWithLogicalId(qReal::IdList const &list) const
 {
 	QList<Object*> toSave;
 	foreach(Id const &id, list)

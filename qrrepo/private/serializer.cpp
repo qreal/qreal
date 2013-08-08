@@ -72,7 +72,7 @@ void Serializer::saveToDisk(QList<Object*> const &objects) const
 	}
 
 	QString const filePath = fileInfo.absolutePath() + "/" + fileName + ".qrs";
-	FolderCompressor().compressFolder(compressDir.absolutePath(), filePath);
+	FolderCompressor::compressFolder(compressDir.absolutePath(), filePath);
 
 	// Hiding autosaved files
 	if (fileName.contains("~")) {
@@ -174,5 +174,5 @@ QString Serializer::createDirectory(Id const &id, bool logical) const
 
 void Serializer::decompressFile(QString const &fileName)
 {
-	FolderCompressor().decompressFolder(fileName, mWorkingDir);
+	FolderCompressor::decompressFolder(fileName, mWorkingDir);
 }

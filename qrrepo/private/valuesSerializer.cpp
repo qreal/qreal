@@ -125,21 +125,20 @@ QString ValuesSerializer::serializeQPolygon(QPolygon const &p)
 	return result;
 }
 
-QDomElement ValuesSerializer::serializeIdList(QString const &attributeName, IdList const &idList, QDomDocument &doc)
+QDomElement ValuesSerializer::serializeIdList(QString const &tagName, IdList const &idList, QDomDocument &document)
 {
-	QDomElement result = doc.createElement(attributeName);
+	QDomElement result = document.createElement(tagName);
 	foreach (Id id, idList) {
-		QDomElement element = doc.createElement("object");
+		QDomElement element = document.createElement("object");
 		element.setAttribute("id", id.toString());
 		result.appendChild(element);
 	}
 	return result;
 }
 
-QDomElement ValuesSerializer::serializeNamedVariantsMap(
-		QString const &attributeName, QMap<QString, QVariant> const &map, QDomDocument &document)
+QDomElement ValuesSerializer::serializeNamedVariantsMap(QString const &tagName, QMap<QString, QVariant> const &map, QDomDocument &document)
 {
-	QDomElement result = document.createElement(attributeName);
+	QDomElement result = document.createElement(tagName);
 	QMap<QString, QVariant>::const_iterator i = map.constBegin();
 
 	while (i != map.constEnd()) {

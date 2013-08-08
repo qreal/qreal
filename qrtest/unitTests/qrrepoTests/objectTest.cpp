@@ -42,17 +42,6 @@ TEST(ObjectTest, setParentTest)
 	EXPECT_EQ(obj.parent(), parent2);
 }
 
-TEST(ObjectTest, removeParentTest)
-{
-	Id const id("editor", "diagram", "element", "id");
-	Id const parent("editor", "diagram", "element", "parent");
-	qrRepo::details::LogicalObject obj(id);
-	obj.setParent(parent);
-	obj.removeParent();
-
-	EXPECT_EQ(obj.parent(), Id());
-}
-
 TEST(ObjectTest, addAndRemoveChildAndChildrenTest)
 {
 	Id const id("editor", "diagram", "element", "id");

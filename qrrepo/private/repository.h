@@ -88,8 +88,8 @@ public:
 	void importFromDisk(QString const &importedFile);
 
 	void saveAll() const;
-	void save(qReal::IdList list) const;
-	void saveWithLogicalId(qReal::IdList list) const;
+	void save(qReal::IdList const &list) const;
+	void saveWithLogicalId(qReal::IdList const &list) const;
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 	void remove(qReal::IdList list) const;
 	void setWorkingFile(QString const &workingDir);
@@ -98,10 +98,23 @@ public:
 	/// Returns current working file name
 	QString workingFile() const;
 
+	/// Creates empty graphical part with given index inside given object.
+	/// @param id - id of an object where we shall create graphical part.
+	/// @param partIndex - index of created part in given object.
 	virtual void createGraphicalPart(qReal::Id const &id, int partIndex);
 
+	/// Returns the value of graphical part property of a given object.
+	/// @param id - id of an object where graphical part is located.
+	/// @param partIndex - index of a graphical part.
+	/// @param propertyName - name of a property which value we want to get.
 	virtual QVariant graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const;
 
+	/// Sets the value of graphical part property of a given object. If a property already exists, its value
+	/// will be overwritten, otherwise new property will be created with given value.
+	/// @param id - id of an object where graphical part is located.
+	/// @param partIndex - index of a graphical part.
+	/// @param propertyName - name of a property which value we want to set.
+	/// @param value - new value of a property.
 	virtual void setGraphicalPartProperty(
 			qReal::Id const &id
 			, int partIndex
@@ -121,7 +134,7 @@ private:
 
 	QHash<qReal::Id, Object*> mObjects;
 
-	/// This term keeps name of current save file for project.
+	/// Name of the current save file for project.
 	QString mWorkingFile;
 	Serializer mSerializer;
 };

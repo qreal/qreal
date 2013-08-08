@@ -42,9 +42,9 @@ Object::~Object()
 {
 }
 
-void Object::replaceProperties(QString const value, QString newValue)
+void Object::replaceProperties(QString const value, QString const &newValue)
 {
-	foreach (QVariant val, mProperties.values()) {
+	foreach (QVariant const &val, mProperties.values()) {
 		if (val.toString().contains(value)) {
 			mProperties[mProperties.key(val)] = newValue;
 		}
@@ -73,11 +73,6 @@ Object *Object::clone(QHash<Id, Object*> &objHash) const
 void Object::setParent(const Id &parent)
 {
 	mParent = parent;
-}
-
-void Object::removeParent()
-{
-	mParent = qReal::Id();
 }
 
 void Object::addChild(const Id &child)
@@ -249,7 +244,7 @@ QMapIterator<QString, QVariant> Object::propertiesIterator() const
 	return QMapIterator<QString, QVariant>(mProperties);
 }
 
-QMap<QString, QVariant> Object::properties()
+QMap<QString, QVariant> Object::properties() const
 {
 	return mProperties;
 }

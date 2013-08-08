@@ -12,7 +12,7 @@
 
 namespace qrRepo {
 
-/// Repository interface.
+/// Repository interface. Supports higher level queries, than \see Repository, so is more convenient to work with.
 class QRREPO_EXPORT RepoApi : public GraphicalRepoApi, public LogicalRepoApi, public RepoControlInterface
 {
 public:

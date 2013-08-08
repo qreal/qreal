@@ -12,6 +12,7 @@
 namespace qrRepo {
 namespace details {
 
+/// Class that is responsible for saving repository contents to disk as .qrs file.
 class Serializer
 {
 public:

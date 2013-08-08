@@ -5,6 +5,7 @@
 
 namespace qrRepo {
 
+/// Methods for working with graphical model in a repository.
 class GraphicalRepoApi : public CommonRepoApi
 {
 public:

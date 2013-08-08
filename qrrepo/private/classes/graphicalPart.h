@@ -12,14 +12,30 @@ namespace details {
 class GraphicalPart
 {
 public:
+	/// Creates empty graphical part.
 	GraphicalPart();
+
+	/// Deserializing constructor.
+	/// @param element - root of XML DOM subtree with serialized graphical part.
 	explicit GraphicalPart(QDomElement const &element);
+
+	/// Returns value of a property with given name or throws an exception if there is no such property in this part.
 	QVariant property(QString const &name) const;
+
+	/// Sets the value of given property. If a property already exists, its value will be overwritten,
+	/// otherwise new property will be created with given value.
 	void setProperty(QString const &name, const QVariant &value);
+
+	/// Creates deep copy of object.
 	GraphicalPart *clone() const;
+
+	/// Serializes contents of an object to XML DOM subtree.
+	/// @param index - index of a part in its parent graphical object.
+	/// @param document - document to which will belong created subtree.
 	QDomElement serialize(int index, QDomDocument &document) const;
 
 private:
+	/// A list of properties in a form of pairs (name, value).
 	QMap<QString, QVariant> mProperties;
 };
 

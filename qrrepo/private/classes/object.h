@@ -11,41 +11,55 @@
 namespace qrRepo {
 namespace details {
 
-/// Abstract class, general object in repository. Has id, parents, children and properties, able to
+/// Abstract class, general object in repository. Has id, parent, children and properties, able to
 /// serialize/deserialize and clone itself.
 class Object
 {
 public:
+	/// Constructor.
+	/// @param id - id of a new object.
 	explicit Object(qReal::Id const &id);
+
+	/// Deserializing constructor.
+	/// @param element - root of XML DOM subtree with serialized object.
 	explicit Object(QDomElement const &element);
+
 	virtual ~Object();
 
 	/// Replacing property values that contains input value with new value.
 	/// @param value - input value that should be contained by any property of element.
 	/// @param newValue - string representation of value with what property values should be replaced.
-	void replaceProperties(QString const value, QString newValue);
+	void replaceProperties(QString const value, QString const &newValue);
 
-	Object *clone(QHash<qReal::Id, Object*> &objHash) const;
+	/// Creates deep copy of this object also creating new objects for children (parent remains as is).
+	/// @param objHash - hashtable with cloned object and its children, will be used to get information
+	///        about children and to add clone (and clones of all children).
+	Object *clone(QHash<qReal::Id, Object *> &objHash) const;
 
+	/// Serializes contents of an object to XML DOM subtree.
+	/// @param document - document to which will belong created subtree.
 	virtual QDomElement serialize(QDomDocument &document) const;
 
-	void setParent(const qReal::Id &parent);
-	void removeParent();
-	void addChild(const qReal::Id &child);
-	void removeChild(const qReal::Id &child);
-	void copyPropertiesFrom(const Object &src);
+	void setParent(qReal::Id const &parent);
+	void addChild(qReal::Id const &child);
+	void removeChild(qReal::Id const &child);
 	qReal::IdList children() const;
 	qReal::Id parent() const;
 	QVariant property(QString const &name) const;
 	bool hasProperty(QString const &name, bool sensitivity = false, bool regExpression = false) const;
-	void setProperty(QString const &name, const QVariant &value);
-	void setProperties(QMap<QString, QVariant> const &properties);
+	void setProperty(QString const &name, QVariant const &value);
+	void removeProperty(QString const &name);
 	void setBackReference(qReal::Id const &reference);
 	void removeBackReference(qReal::Id const &reference);
-	void removeProperty(QString const &name);
-	QMap<QString, QVariant> properties();
-	qReal::Id id() const;
+
+	void setProperties(QMap<QString, QVariant> const &properties);
+	void copyPropertiesFrom(Object const &src);
+	// TODO: omg
+	QMap<QString, QVariant> properties() const;
 	QMapIterator<QString, QVariant> propertiesIterator() const;
+
+	qReal::Id id() const;
+
 	void setTemporaryRemovedLinks(QString const &direction, qReal::IdList const &listValue);
 	qReal::IdList temporaryRemovedLinksAt(QString const &direction) const;
 	qReal::IdList temporaryRemovedLinks() const;
@@ -59,6 +73,7 @@ public:
 	virtual bool isLogicalObject() const = 0;
 
 protected:
+	/// Implemented in derived classes to create a clone and init it with specific fields.
 	virtual Object *createClone() const = 0;
 
 	const qReal::Id mId;

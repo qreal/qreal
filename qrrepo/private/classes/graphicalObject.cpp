@@ -65,6 +65,10 @@ QDomElement GraphicalObject::serialize(QDomDocument &document) const
 
 void GraphicalObject::createGraphicalPart(int index)
 {
+	if (mGraphicalParts.contains(index)) {
+		throw Exception("Part with that index already exists");
+	}
+
 	GraphicalPart * const part = new GraphicalPart();
 	mGraphicalParts.insert(index, part);
 }
