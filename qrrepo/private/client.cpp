@@ -1,7 +1,9 @@
 #include "client.h"
-#include "../../qrkernel/exception/exception.h"
 
 #include <QtCore/QDebug>
+
+#include "../../qrkernel/exception/exception.h"
+#include "singleXmlSerializer.h"
 
 using namespace qReal;
 using namespace qrRepo;
@@ -472,7 +474,7 @@ void Client::setWorkingFile(QString const &workingFile)
 
 void Client::exportToXml(QString const &targetFile) const
 {
-	mSerializer.exportToXml(targetFile, mObjects);
+	SingleXmlSerializer::exportToXml(targetFile, mObjects);
 }
 
 QString Client::workingFile() const

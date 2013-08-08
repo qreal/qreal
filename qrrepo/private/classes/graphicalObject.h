@@ -18,6 +18,8 @@ public:
 	qReal::Id logicalId() const;
 	virtual bool isLogicalObject() const;
 
+	virtual QDomElement serialize(QDomDocument &document) const;
+
 	void createGraphicalPart(int index);
 	QVariant graphicalPartProperty(int index, QString const &name) const;
 	void setGraphicalPartProperty(int index, QString const &name, QVariant const &value);

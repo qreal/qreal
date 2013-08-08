@@ -3,6 +3,8 @@ HEADERS += \
 	$$PWD/private/folderCompressor.h \
 	$$PWD/private/qrRepoGlobal.h \
 	$$PWD/private/serializer.h \
+	$$PWD/private/singleXmlSerializer.h \
+	$$PWD/private/valuesSerializer.h \
 	$$PWD/private/classes/object.h \
 	$$PWD/private/classes/logicalObject.h \
 	$$PWD/private/classes/graphicalObject.h \
@@ -13,6 +15,8 @@ SOURCES += \
 	$$PWD/private/folderCompressor.cpp \
 	$$PWD/private/repoApi.cpp \
 	$$PWD/private/serializer.cpp \
+	$$PWD/private/singleXmlSerializer.cpp \
+	$$PWD/private/valuesSerializer.cpp \
 	$$PWD/private/classes/object.cpp \
 	$$PWD/private/classes/logicalObject.cpp \
 	$$PWD/private/classes/graphicalObject.cpp \

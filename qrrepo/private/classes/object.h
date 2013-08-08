@@ -5,6 +5,8 @@
 #include <QtCore/QMap>
 #include <QtCore/QVariant>
 #include <QtCore/QString>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
 
 namespace qrRepo {
 namespace details {
@@ -23,6 +25,8 @@ public:
 
 	Object *clone(QHash<qReal::Id, Object*> &objHash) const;
 	Object *clone(qReal::Id const &parent, QHash<qReal::Id, Object*> &objHash) const;
+
+	virtual QDomElement serialize(QDomDocument &document) const;
 
 	void setParent(const qReal::Id &parent);
 	void removeParent();

@@ -1,8 +1,10 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QPointF>
 
 #include "serializerTest.h"
 #include "../../../qrrepo/private/classes/logicalObject.h"
+#include "../../../qrrepo/private/classes/graphicalObject.h"
 #include "../../../qrkernel/settingsManager.h"
 
 using namespace qrRepo;
@@ -14,7 +16,7 @@ void SerializerTest::removeDirectory(QString const &dirName)
 {
 	QDir const dir(dirName);
 
-	foreach (QFileInfo info, dir.entryInfoList(QDir::Hidden
+	foreach (QFileInfo const &info, dir.entryInfoList(QDir::Hidden
 			| QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
 	{
 		if (info.isDir()) {
@@ -27,7 +29,8 @@ void SerializerTest::removeDirectory(QString const &dirName)
 	dir.rmdir(dir.absolutePath());
 }
 
-void SerializerTest::SetUp() {
+void SerializerTest::SetUp()
+{
 	mOldTempFolder = SettingsManager::value("temp").toString();
 	mNewTempFolder = QDir::currentPath() + "/unsaved";
 	SettingsManager::setValue("temp", mNewTempFolder);
@@ -35,7 +38,8 @@ void SerializerTest::SetUp() {
 	mSerializer = new Serializer("saveFile");
 }
 
-void SerializerTest::TearDown() {
+void SerializerTest::TearDown()
+{
 	mSerializer->clearWorkingDir();
 	delete mSerializer;
 
@@ -45,7 +49,8 @@ void SerializerTest::TearDown() {
 	SettingsManager::setValue("temp", mOldTempFolder);
 }
 
-TEST_F(SerializerTest, saveAndLoadFromDiskTest) {
+TEST_F(SerializerTest, saveAndLoadFromDiskTest)
+{
 	Id const id1("editor1", "diagram1", "element1", "id1");
 	LogicalObject obj1(id1);
 	obj1.setProperty("property1", "value1");
@@ -76,7 +81,8 @@ TEST_F(SerializerTest, saveAndLoadFromDiskTest) {
 
 // Decomment EXPECT_FALSE and delete EXPECT_TRUE(true) when removeFromDisk will be fixed. pathToElement(id) returns
 // path without parent folder /tree and /logical or /graphical according to id type.
-TEST_F(SerializerTest, removeFromDiskTest) {
+TEST_F(SerializerTest, removeFromDiskTest)
+{
 	Id const id1("editor1", "diagram1", "element1", "id1");
 	LogicalObject obj1(id1);
 	obj1.setProperty("property1", "value1");
@@ -96,4 +102,34 @@ TEST_F(SerializerTest, removeFromDiskTest) {
 	//EXPECT_FALSE(QFile::exists("unsaved/tree/logical/editor1/diagram2/element2/id2"));
 	//EXPECT_FALSE(QDir().exists("unsaved/tree/logical/editor1/diagram2"));
 	EXPECT_TRUE(true);
+}
+
+TEST_F(SerializerTest, saveAndLoadGraphicalPartsTest)
+{
+	Id const element("editor", "diagram", "element", "id");
+	LogicalObject logicalObj(element);
+
+	Id const graphicalElement("editor", "diagram", "element", "graphicalId");
+
+	GraphicalObject graphicalObj(graphicalElement, Id(), element);
+
+	graphicalObj.createGraphicalPart(0);
+	graphicalObj.setGraphicalPartProperty(0, "Coord", QPointF(10, 20));
+
+	QList<Object *> list;
+	list.push_back(&graphicalObj);
+	list.push_back(&logicalObj);
+
+	mSerializer->saveToDisk(list);
+
+	QHash<Id, Object *> map;
+	mSerializer->setWorkingFile("saveFile.qrs");
+	mSerializer->loadFromDisk(map);
+
+	ASSERT_TRUE(map.contains(graphicalElement));
+
+	GraphicalObject const * const deserializedGraphicalObject
+			= dynamic_cast<GraphicalObject const *>(map.value(graphicalElement));
+
+	ASSERT_EQ(QPointF(10, 20), deserializedGraphicalObject->graphicalPartProperty(0, "Coord"));
 }

@@ -63,3 +63,21 @@ bool GraphicalObject::isLogicalObject() const
 {
 	return false;
 }
+
+QDomElement GraphicalObject::serialize(QDomDocument &document) const
+{
+	QDomElement result = Object::serialize(document);
+	result.setAttribute("logicalId", mLogicalId.toString());
+
+	QDomElement graphicalParts = document.createElement("graphicalParts");
+	result.appendChild(graphicalParts);
+
+	QHash<int, GraphicalPart *>::const_iterator i = mGraphicalParts.constBegin();
+	while (i != mGraphicalParts.constEnd()) {
+		QDomElement graphicalPart = i.value()->serialize(i.key(), document);
+		graphicalParts.appendChild(graphicalPart);
+		++i;
+	}
+
+	return result;
+}

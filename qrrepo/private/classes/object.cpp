@@ -3,8 +3,10 @@
 #include <QtCore/QDebug>
 
 #include "../../../qrkernel/exception/exception.h"
+#include "../../../qrkernel/ids.h"
 #include "logicalObject.h"
 #include "graphicalObject.h"
+#include "../valuesSerializer.h"
 
 using namespace qrRepo::details;
 using namespace qReal;
@@ -239,4 +241,14 @@ QMapIterator<QString, QVariant> Object::propertiesIterator() const
 QMap<QString, QVariant> Object::properties()
 {
 	return mProperties;
+}
+
+QDomElement Object::serialize(QDomDocument &document) const
+{
+	QDomElement result = document.createElement("object");
+	result.setAttribute("id", id().toString());
+	result.setAttribute("parent", parent().toString());
+	result.appendChild(ValuesSerializer::serializeIdList("children", children(), document));
+	result.appendChild(ValuesSerializer::serializeNamedVariantsMap("properties", mProperties, document));
+	return result;
 }
