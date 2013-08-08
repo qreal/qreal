@@ -59,20 +59,13 @@ Object *Object::clone(QHash<Id, Object*> &objHash) const
 	result->mParent = mParent;
 
 	foreach (Id const &childId, mChildren) {
-		Object const * const child = objHash[childId]->clone(id(), objHash);
+		Object * const child = objHash[childId]->clone(objHash);
+		child->setParent(mId);
 		result->addChild(child->id());
 	}
 
 	// Using copy constructor.
 	result->mProperties = mProperties;
-
-	return result;
-}
-
-Object *Object::clone(const Id &parent, QHash<Id, Object*> &objHash) const
-{
-	Object * const result = clone(objHash);
-	result->setParent(parent);
 
 	return result;
 }

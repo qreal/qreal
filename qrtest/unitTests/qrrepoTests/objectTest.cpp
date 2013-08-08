@@ -301,7 +301,8 @@ TEST(ObjectTest, cloneTest)
 	child2Obj.addChild(child2_child);
 	child3Obj.addChild(child3_child);
 
-	qrRepo::details::Object const *cloned = rootObj.clone(parent, objHash);
+	qrRepo::details::Object * const cloned = rootObj.clone(objHash);
+	cloned->setParent(parent);
 
 	ASSERT_EQ(objHash.keys().size(), 15);
 

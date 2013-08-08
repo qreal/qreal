@@ -24,7 +24,6 @@ public:
 	void replaceProperties(QString const value, QString newValue);
 
 	Object *clone(QHash<qReal::Id, Object*> &objHash) const;
-	Object *clone(qReal::Id const &parent, QHash<qReal::Id, Object*> &objHash) const;
 
 	virtual QDomElement serialize(QDomDocument &document) const;
 
