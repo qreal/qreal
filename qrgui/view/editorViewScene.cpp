@@ -32,7 +32,6 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mWindow(NULL)
 		, mMouseMovementManager(NULL)
 		, mActionSignalMapper(new QSignalMapper(this))
-		, mCreateChildSignalMapper(new QSignalMapper(this))
 		, mTimer(new QTimer(this))
 		, mTimerForArrowButtons(new QTimer(this))
 		, mOffset(QPointF(0, 0))
@@ -92,7 +91,6 @@ void EditorViewScene::deleteFromForeground(QPixmap *pixmap)
 EditorViewScene::~EditorViewScene()
 {
 	delete mActionSignalMapper;
-	delete mCreateChildSignalMapper;
 	delete mMouseMovementManager;
 	delete mSelectList;
 }
@@ -885,6 +883,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	disableActions(e);
 	menu.addActions(mContextMenuActions);
 
+	QSignalMapper *createChildMapper = NULL;
 	if (e) {
 		QList<ContextMenuAction*> elementActions = e->contextMenuActions(e->mapFromScene(pos));
 
@@ -904,11 +903,12 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 		if (e->createChildrenFromMenu() && !mWindow->editorManager().containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
 			QMenu *createChildMenu = menu.addMenu(tr("Add child"));
+			createChildMapper = new QSignalMapper();
 			foreach (Id const &type, mWindow->editorManager().containedTypes(e->id().type())) {
-				QAction *createAction = createChildMenu->addAction(type.element());
-				connect(createAction, SIGNAL(triggered()), mCreateChildSignalMapper, SLOT(map()), Qt::UniqueConnection);
-				mCreateChildSignalMapper->setMapping(createAction, type.toString());
-				connect(mCreateChildSignalMapper, SIGNAL(mapped(QString const &)), this, SLOT(createElement(QString const &)));
+				QAction *createAction = createChildMenu->addAction(mWindow->editorManager().friendlyName(type));
+				connect(createAction, SIGNAL(triggered()), createChildMapper, SLOT(map()), Qt::UniqueConnection);
+				createChildMapper->setMapping(createAction, type.toString());
+				connect(createChildMapper, SIGNAL(mapped(QString const &)), this, SLOT(createElement(QString const &)));
 			}
 		}
 
@@ -919,6 +919,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	menu.exec(QCursor::pos());
 
 	enableActions();
+	delete createChildMapper;
 }
 
 void EditorViewScene::disableActions(Element *focusElement)
