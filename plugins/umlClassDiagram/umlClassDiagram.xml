@@ -13,6 +13,8 @@
                     <container>
                          <contains type="UmlClassDiagram::UmlClass"/>
                          <contains type="UmlClassDiagram::Field"/>
+                         <contains type="UmlClassDiagram::Enum"/>
+                         <contains type="UmlClassDiagram::EnumValue"/>
                          <contains type="UmlClassDiagram::Association"/>
                     </container>
                 </logic>
@@ -75,10 +77,72 @@
                     <container/>
                     <properties>
                         <property type="string" name="fieldName" displayedName="Field Name"/>
+						<property type="string" name="fieldType" displayedName="Field Type"/>
                     </properties>
                 </logic>
             </node>
-			<edge name="Association" displayedName="Association">
+			<node name="Enum" displayedName="Enum">
+                <graphics>
+                    <picture sizex="200" sizey="130">
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="dot" stroke-width="0" y1="0" y2="130" fill-style="none" x1="0" x2="200"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="dot" stroke-width="0" y1="30a" y2="30a" fill-style="none" x1="0" x2="200"/>
+                    </picture>
+                    <labels>
+                        <label x="0a" y="5a" textBinded="enumName"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+							<start startx="10" starty="0"/>
+							<end endx="190" endy="0"/>
+						</linePort>
+                        <linePort>
+							<start startx="200" starty="40"/>
+							<end endx="200" endy="120"/>
+						</linePort>
+                        <linePort>
+							<start startx="10" starty="130"/>
+							<end endx="190" endy="130"/>
+						</linePort>
+                        <linePort>
+							<start startx="0" starty="40"/>
+							<end endx="0" endy="120"/>
+						</linePort>
+					</ports>
+                </graphics>
+                <logic>
+                    <container>
+						<contains type="EnumValue"/>
+                        <properties>
+                            <forestalling size="0,40,0,0"/>
+                            <childrenForestalling size="20"/>
+                            <sortContainer/>
+							<banChildrenMove/>
+                            <minimizeToChildren/>
+                            <maximizeChildren/>
+                        </properties>
+					</container>
+                    <properties>
+                        <property type="string" name="enumName" displayedName="Enum Name"/>
+                    </properties>
+					<createChildrenFromMenu/>
+                </logic>
+            </node>
+            <node name="EnumValue" displayedName="Enum Value">
+                <graphics>
+                    <picture sizex="200" sizey="25"/>
+                    <labels>
+                        <label x="0a" y="0a" textBinded="valueName"/>
+                    </labels>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="string" name="valueName" displayedName="Value Name"/>
+                    </properties>
+                </logic>
+            </node>
+	<edge name="Association" displayedName="Association">
                 <graphics>
                     <lineType type="solidLine"/>
                     <labels/>
@@ -86,7 +150,10 @@
                 <logic>
                     <dividability isDividable="false"/>
                     <associations endType="filled_arrow" beginType="no_arrow">
-                        <association endName="end" beginName="start"/>
+                        <association endName="UmlClass" beginName="UmlClass"/>
+                        <association endName="Enum" beginName="UmlClass"/>
+                        <association endName="Enum" beginName="Enum"/>
+                        <association endName="UmlClass" beginName="Enum"/>
                     </associations>
                     <properties/>
                 </logic>
@@ -95,7 +162,7 @@
         <palette>
             <group name="Elements">
                 <element name="UmlClass"/>
-                <element name="Field"/>
+                <element name="Enum"/>
                 <element name="Association"/>
             </group>
         </palette>
