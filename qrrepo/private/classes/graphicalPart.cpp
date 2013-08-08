@@ -10,6 +10,11 @@ GraphicalPart::GraphicalPart()
 {
 }
 
+GraphicalPart::GraphicalPart(QDomElement const &element)
+{
+	ValuesSerializer::deserializeNamedVariantsMap(mProperties, element);
+}
+
 QVariant GraphicalPart::property(QString const &name) const
 {
 	if (!mProperties.contains(name)) {

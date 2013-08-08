@@ -171,9 +171,11 @@ void Client::addChild(const Id &id, const Id &child, Id const &logicalId)
 			mObjects[child]->setParent(id);
 		} else {
 			Object * const object = logicalId == Id()
-					? static_cast<Object *>(new LogicalObject(child, id))
+					? static_cast<Object *>(new LogicalObject(child))
 					: static_cast<Object *>(new GraphicalObject(child, id, logicalId))
 					;
+
+			object->setParent(id);
 
 			mObjects.insert(child, object);
 		}

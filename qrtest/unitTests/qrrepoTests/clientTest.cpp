@@ -58,14 +58,23 @@ void ClientTest::SetUp() {
 
 	mSerializer = new Serializer("saveFile");
 
-	LogicalObject parentObj(parent, fakeParent);
+	LogicalObject parentObj(parent);
+	parentObj.setParent(fakeParent);
+
 	GraphicalObject rootObj(root, parent, rootLogicalId);
 	GraphicalObject child1Obj(child1, root, child1LogicalId);
-	LogicalObject child2Obj(child2, root);
-	LogicalObject child3Obj(child3, root);
+
+	LogicalObject child2Obj(child2);
+	child2Obj.setParent(root);
+
+	LogicalObject child3Obj(child3);
+	child3Obj.setParent(root);
+
 	GraphicalObject child1_childObj(child1_child, child1, child1_childLogicalId);
 	GraphicalObject child2_childObj(child2_child, child2, child2_childLogicalId);
-	LogicalObject child3_childObj(child3_child, child3);
+
+	LogicalObject child3_childObj(child3_child);
+	child3_childObj.setParent(child3);
 
 	parentObj.addChild(root);
 	rootObj.addChild(child1);

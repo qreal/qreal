@@ -14,10 +14,11 @@ namespace details {
 class ValuesSerializer
 {
 public:
-	static qReal::IdList loadIdList(QDomElement const &elem, QString const &name);
-	static qReal::Id loadId(QString const &elementStr);
-	static QVariant parseValue(QString const &typeName, QString const &valueStr);
-	static QPointF parsePointF(QString const &str);
+	static qReal::IdList deserializeIdList(QDomElement const &elem, QString const &name);
+	static qReal::Id deserializeId(QString const &elementStr);
+	static QVariant deserializeQVariant(QString const &typeName, QString const &valueStr);
+	static QPointF deserializeQPointF(QString const &str);
+	static void deserializeNamedVariantsMap(QMap<QString, QVariant> &map, QDomElement const &element);
 
 	static QString serializeQVariant(QVariant const &v);
 	static QString serializeQPointF(QPointF const &p);

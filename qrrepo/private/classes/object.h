@@ -15,7 +15,7 @@ class Object
 {
 public:
 	explicit Object(qReal::Id const &id);
-	Object(const qReal::Id &id, const qReal::Id &parent);
+	explicit Object(QDomElement const &element);
 	virtual ~Object();
 
 	/// Replacing property values that contains input value with new value.

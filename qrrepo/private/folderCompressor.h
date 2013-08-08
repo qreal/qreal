@@ -15,10 +15,12 @@ public:
 	/// A function that deserializes data from the compressed file and
 	/// creates any needed subfolders before saving the file
 	bool decompressFolder(QString const &sourceFile, QString const &destinationFolder);
+
 private:
+	bool compress(QString const &sourceFolder, QString const &prefix);
+
 	QFile mFile;
 	QDataStream mDataStream;
-	bool compress(QString const &sourceFolder, QString const &prefix);
 };
 
 

@@ -7,14 +7,14 @@ LogicalObject::LogicalObject(qReal::Id const &id)
 {
 }
 
-LogicalObject::LogicalObject(const qReal::Id &id, const qReal::Id &parent)
-	: Object(id, parent)
+LogicalObject::LogicalObject(QDomElement const &element)
+	: Object(element)
 {
 }
 
 Object *LogicalObject::createClone() const
 {
-	return new LogicalObject(mId.sameTypeId(), mParent);
+	return new LogicalObject(mId.sameTypeId());
 }
 
 bool LogicalObject::isLogicalObject() const

@@ -3,7 +3,6 @@
 #include <QtXml/QDomDocument>
 
 #include "classes/object.h"
-#include "valuesSerializer.h"
 
 namespace qrRepo {
 namespace details {

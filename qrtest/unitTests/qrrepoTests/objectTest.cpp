@@ -16,7 +16,10 @@ TEST(ObjectTest, contructorsTest)
 	Id const parentId("editor", "diagram", "element", "parentId");
 
 	qrRepo::details::LogicalObject obj1(id);
-	qrRepo::details::LogicalObject obj2(id, parentId);
+
+	qrRepo::details::LogicalObject obj2(id);
+	obj2.setParent(parentId);
+
 	qrRepo::details::GraphicalObject obj3(id, parentId, logicalId);
 
 	EXPECT_EQ(obj1.id(), id);
@@ -33,7 +36,7 @@ TEST(ObjectTest, setParentTest)
 	Id const parent1("editor", "diagram", "element", "parent1");
 	Id const parent2("editor", "diagram", "element", "parent2");
 
-	qrRepo::details::LogicalObject obj(id, parent1);
+	qrRepo::details::LogicalObject obj(id);
 	obj.setParent(parent2);
 
 	EXPECT_EQ(obj.parent(), parent2);
@@ -43,7 +46,8 @@ TEST(ObjectTest, removeParentTest)
 {
 	Id const id("editor", "diagram", "element", "id");
 	Id const parent("editor", "diagram", "element", "parent");
-	qrRepo::details::LogicalObject obj(id, parent);
+	qrRepo::details::LogicalObject obj(id);
+	obj.setParent(parent);
 	obj.removeParent();
 
 	EXPECT_EQ(obj.parent(), Id());

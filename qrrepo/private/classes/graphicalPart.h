@@ -11,7 +11,8 @@ namespace details {
 class GraphicalPart
 {
 public:
-	explicit GraphicalPart();
+	GraphicalPart();
+	explicit GraphicalPart(QDomElement const &element);
 	QVariant property(QString const &name) const;
 	void setProperty(QString const &name, const QVariant &value);
 	GraphicalPart *clone() const;

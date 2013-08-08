@@ -1,12 +1,14 @@
 #include "valuesSerializer.h"
 
+#include "../../qrkernel/exception/exception.h"
+
 #include <QtCore/QPointF>
 #include <QtGui/QPolygon>
 
 using namespace qReal;
 using namespace qrRepo::details;
 
-IdList ValuesSerializer::loadIdList(QDomElement const &elem, QString const &name)
+IdList ValuesSerializer::deserializeIdList(QDomElement const &elem, QString const &name)
 {
 	QDomNodeList list = elem.elementsByTagName(name);
 	if (list.count() != 1) {
@@ -30,12 +32,12 @@ IdList ValuesSerializer::loadIdList(QDomElement const &elem, QString const &name
 	return result;
 }
 
-Id ValuesSerializer::loadId(QString const &elementStr)
+Id ValuesSerializer::deserializeId(QString const &elementStr)
 {
 	return elementStr.isEmpty() ? Id() : Id::loadFromString(elementStr);
 }
 
-QVariant ValuesSerializer::parseValue(QString const &typeName, QString const &valueStr)
+QVariant ValuesSerializer::deserializeQVariant(QString const &typeName, QString const &valueStr)
 {
 	if (typeName.toLower() == "int") {
 		return QVariant(valueStr.toInt());
@@ -52,12 +54,12 @@ QVariant ValuesSerializer::parseValue(QString const &typeName, QString const &va
 	} else if (typeName.toLower() == "char") {
 		return QVariant(valueStr[0]);
 	} else if (typeName == "QPointF") {
-		return QVariant(parsePointF(valueStr));
+		return QVariant(deserializeQPointF(valueStr));
 	} else if (typeName == "QPolygon") {  // TODO: QPolygonF?
 		QStringList const points = valueStr.split(" : ", QString::SkipEmptyParts);
 		QPolygon result;
 		foreach (QString str, points) {
-			QPointF point = parsePointF(str);
+			QPointF point = deserializeQPointF(str);
 			result << point.toPoint();
 		}
 		return QVariant(result);
@@ -69,7 +71,7 @@ QVariant ValuesSerializer::parseValue(QString const &typeName, QString const &va
 	}
 }
 
-QPointF ValuesSerializer::parsePointF(QString const &str)
+QPointF ValuesSerializer::deserializeQPointF(QString const &str)
 {
 	double x = str.section(", ", 0, 0).toDouble();
 	double y = str.section(", ", 1, 1).toDouble();
@@ -157,4 +159,32 @@ QDomElement ValuesSerializer::serializeNamedVariantsMap(
 	}
 
 	return result;
+}
+
+void ValuesSerializer::deserializeNamedVariantsMap(QMap<QString, QVariant> &map, QDomElement const &element)
+{
+	QDomElement property = element.firstChildElement();
+	while (!property.isNull()) {
+		if (property.hasAttribute("type")) {
+			if (property.attribute("type") == "qReal::IdList") {
+				QString const key = property.tagName();
+				IdList const value = ValuesSerializer::deserializeIdList(element, property.tagName());
+				map.insert(key, IdListHelper::toVariant(value));
+			} else {
+				throw Exception("Unknown list type");
+			}
+		} else {
+			QString const type = property.tagName();
+			QString const key = property.attribute("key");
+			if (key.isEmpty()) {
+				throw Exception("Missing property name");
+			}
+
+			QString const valueStr = property.attribute("value", "");
+			QVariant const value = ValuesSerializer::deserializeQVariant(type, valueStr);
+			map.insert(key, value);
+		}
+
+		property = property.nextSiblingElement();
+	}
 }

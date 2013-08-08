@@ -1,19 +1,66 @@
 #include "graphicalObject.h"
 
 #include "../../../qrkernel/exception/exception.h"
+#include "../valuesSerializer.h"
 
 using namespace qrRepo::details;
 using namespace qReal;
 
-GraphicalObject::GraphicalObject(qReal::Id const &id, qReal::Id const &parent, qReal::Id const &logicalId)
-	: Object(id, parent)
+GraphicalObject::GraphicalObject(qReal::Id const &id, Id const &parent, qReal::Id const &logicalId)
+	: Object(id)
 	, mLogicalId(logicalId)
 {
+	mParent = parent;
+}
+
+GraphicalObject::GraphicalObject(QDomElement const &element)
+	: Object(element)
+{
+	mLogicalId = Id::loadFromString(element.attribute("logicalId"));
+	if (mLogicalId == Id()) {
+		throw Exception("Logical id not found for graphical object");
+	}
+
+	QDomElement graphicalParts = element.firstChildElement("graphicalParts");
+	if (!graphicalParts.isNull()) {
+		QDomElement part = graphicalParts.firstChildElement();
+		while (!part.isNull()) {
+			GraphicalPart * const deserializedPart = new GraphicalPart(part);
+
+			QString const indexString = part.attribute("index");
+			if (indexString.isEmpty()) {
+				throw Exception("No \"index\" attribute in graphical part");
+			}
+
+			int index = indexString.toInt();
+			mGraphicalParts.insert(index, deserializedPart);
+
+			part = part.nextSiblingElement();
+		}
+	}
 }
 
 GraphicalObject::~GraphicalObject()
 {
 	qDeleteAll(mGraphicalParts.values());
+}
+
+QDomElement GraphicalObject::serialize(QDomDocument &document) const
+{
+	QDomElement result = Object::serialize(document);
+	result.setAttribute("logicalId", mLogicalId.toString());
+
+	QDomElement graphicalParts = document.createElement("graphicalParts");
+	result.appendChild(graphicalParts);
+
+	QHash<int, GraphicalPart *>::const_iterator i = mGraphicalParts.constBegin();
+	while (i != mGraphicalParts.constEnd()) {
+		QDomElement graphicalPart = i.value()->serialize(i.key(), document);
+		graphicalParts.appendChild(graphicalPart);
+		++i;
+	}
+
+	return result;
 }
 
 void GraphicalObject::createGraphicalPart(int index)
@@ -62,22 +109,4 @@ Id GraphicalObject::logicalId() const
 bool GraphicalObject::isLogicalObject() const
 {
 	return false;
-}
-
-QDomElement GraphicalObject::serialize(QDomDocument &document) const
-{
-	QDomElement result = Object::serialize(document);
-	result.setAttribute("logicalId", mLogicalId.toString());
-
-	QDomElement graphicalParts = document.createElement("graphicalParts");
-	result.appendChild(graphicalParts);
-
-	QHash<int, GraphicalPart *>::const_iterator i = mGraphicalParts.constBegin();
-	while (i != mGraphicalParts.constEnd()) {
-		QDomElement graphicalPart = i.value()->serialize(i.key(), document);
-		graphicalParts.appendChild(graphicalPart);
-		++i;
-	}
-
-	return result;
 }

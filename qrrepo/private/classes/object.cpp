@@ -11,15 +11,31 @@
 using namespace qrRepo::details;
 using namespace qReal;
 
-Object::Object(const Id &id, const Id &parent)
-	: mId(id)
-{
-	setParent(parent);
-}
-
 Object::Object(const Id &id)
 	: mId(id)
 {
+}
+
+Object::Object(QDomElement const &element)
+	: mId(Id::loadFromString(element.attribute("id", "")))
+{
+	if (mId == Id()) {
+		throw Exception("Id deserialization failed");
+	}
+
+	mParent = ValuesSerializer::deserializeId(element.attribute("parent", ""));
+
+	foreach (Id const &child, ValuesSerializer::deserializeIdList(element, "children")) {
+		mChildren.append(child);
+	}
+
+	QDomNodeList propertiesList = element.elementsByTagName("properties");
+	if (propertiesList.count() != 1) {
+		throw Exception("Incorrect element: children list must appear once");
+	}
+
+	QDomElement properties = propertiesList.at(0).toElement();
+	ValuesSerializer::deserializeNamedVariantsMap(mProperties, properties);
 }
 
 Object::~Object()
@@ -39,6 +55,8 @@ Object *Object::clone(QHash<Id, Object*> &objHash) const
 {
 	Object * const result = createClone();
 	objHash.insert(result->id(), result);
+
+	result->mParent = mParent;
 
 	foreach (Id const &childId, mChildren) {
 		Object const * const child = objHash[childId]->clone(id(), objHash);

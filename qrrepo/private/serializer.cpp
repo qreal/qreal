@@ -32,7 +32,7 @@ void Serializer::clearWorkingDir() const
 	clearDir(mWorkingDir);
 }
 
-void Serializer::removeFromDisk(Id id) const
+void Serializer::removeFromDisk(Id const &id) const
 {
 	QDir dir;
 	dir.remove(pathToElement(id));
@@ -88,6 +88,7 @@ void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash)
 	if (!mWorkingFile.isEmpty()) {
 		decompressFile(mWorkingFile);
 	}
+
 	loadFromDisk(SettingsManager::value("temp").toString(), objectsHash);
 }
 
@@ -104,88 +105,24 @@ void Serializer::loadFromDisk(QString const &currentPath, QHash<qReal::Id, Objec
 
 void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHash)
 {
-	foreach (QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 		QString const path = fileInfo.filePath();
-		if (fileInfo.isDir())
+		if (fileInfo.isDir()) {
 			loadModel(path, objectsHash);
-		else if (fileInfo.isFile()) {
+		} else if (fileInfo.isFile()) {
 			QDomDocument doc = xmlUtils::loadDocument(path);
-			Object *object = parseObject(doc.documentElement());
-			Q_ASSERT(object);  // All objects in a repository shall be loadable.
-			if (object != NULL) {
-				objectsHash.insert(object->id(), object);
-			}
+			QDomElement const element = doc.documentElement();
+
+			// To ensure backwards compatibility. Replace this by separate tag names when save updating mechanism
+			// will be implemented.
+			Object * const object = element.hasAttribute("logicalId") && element.attribute("logicalId") != "qrm:/"
+					? dynamic_cast<Object *>(new GraphicalObject(element))
+					: dynamic_cast<Object *>(new LogicalObject(element))
+					;
+
+			objectsHash.insert(object->id(), object);
 		}
 	}
-}
-
-Object *Serializer::parseObject(QDomElement const &elem)
-{
-	QString const id = elem.attribute("id", "");
-	if (id == "")
-		return NULL;
-
-	QString const logicalIdString = elem.attribute("logicalId", "");
-	Id const logicalId = ValuesSerializer::loadId(logicalIdString);
-
-	Object * const object = logicalId == Id()
-			? static_cast<Object *>(new LogicalObject(Id::loadFromString(id), Id()))
-			: static_cast<Object *>(new GraphicalObject(Id::loadFromString(id), Id(), logicalId))
-			;
-
-	QString const parentIdString = elem.attribute("parent", "");
-	Id const parent = ValuesSerializer::loadId(parentIdString);
-	if (object->parent() != parent) {
-		object->setParent(parent);
-	}
-
-	foreach (Id child, ValuesSerializer::loadIdList(elem, "children")) {
-		if (!object->children().contains(child)) {
-			object->addChild(child);
-		}
-	}
-
-	if (!loadProperties(elem, *object)) {
-		return NULL;
-	}
-
-	return object;
-}
-
-bool Serializer::loadProperties(QDomElement const &elem, Object &object)
-{
-	QDomNodeList propertiesList = elem.elementsByTagName("properties");
-	if (propertiesList.count() != 1) {
-		qDebug() << "Incorrect element: children list must appear once";
-		return false;
-	}
-
-	QDomElement properties = propertiesList.at(0).toElement();
-	QDomElement property = properties.firstChildElement();
-	while (!property.isNull()) {
-		if (property.hasAttribute("type")) {
-			// Тогда это список. Немного кривовато, зато унифицировано со
-			// списками детей/родителей.
-			if (property.attribute("type", "") == "qReal::IdList") {
-				QString key = property.tagName();
-				IdList value = ValuesSerializer::loadIdList(properties, property.tagName());
-				object.setProperty(key, IdListHelper::toVariant(value));
-			} else {
-				Q_ASSERT(!"Unknown list type");
-			}
-		} else {
-			QString type = property.tagName();
-			QString key = property.attribute("key", "");
-			if (key == "")
-				return false;
-
-			QString valueStr = property.attribute("value", "");
-			QVariant value = ValuesSerializer::parseValue(type, valueStr);
-			object.setProperty(key, value);
-		}
-		property = property.nextSiblingElement();
-	}
-	return true;
 }
 
 void Serializer::clearDir(QString const &path)

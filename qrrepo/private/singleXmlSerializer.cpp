@@ -1,19 +1,9 @@
 #include "singleXmlSerializer.h"
 
-#include <QtCore/QDir>
-#include <QtCore/QDebug>
-#include <QtCore/QPointF>
-#include <QtGui/QPolygon>
-
-#include "../../qrkernel/settingsManager.h"
-#include "../../qrkernel/exception/exception.h"
 #include "../../qrutils/outFile.h"
-#include "../../qrutils/xmlUtils.h"
-#include "../../qrutils/fileSystemUtils.h"
-
-#include "folderCompressor.h"
 #include "classes/logicalObject.h"
 #include "classes/graphicalObject.h"
+#include "valuesSerializer.h"
 
 using namespace qrRepo::details;
 using namespace qReal;

@@ -13,6 +13,7 @@ class GraphicalObject : public Object
 {
 public:
 	GraphicalObject(qReal::Id const &id, qReal::Id const &parent, qReal::Id const &logicalId);
+	explicit GraphicalObject(QDomElement const &element);
 	virtual ~GraphicalObject();
 
 	qReal::Id logicalId() const;

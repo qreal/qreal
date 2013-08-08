@@ -9,7 +9,7 @@ class LogicalObject : public Object
 {
 public:
 	explicit LogicalObject(qReal::Id const &id);
-	LogicalObject(const qReal::Id &id, const qReal::Id &parent);
+	explicit LogicalObject(QDomElement const &element);
 
 	virtual bool isLogicalObject() const;
 
