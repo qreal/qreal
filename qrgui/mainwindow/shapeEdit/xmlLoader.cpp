@@ -606,6 +606,7 @@ void XmlLoader::readLinePort(QDomElement const &linePort)
 	LinePort* item = new LinePort(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), NULL);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(linePort));
+	item->setType(linePort.attribute("type", "NonTyped"));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -616,6 +617,8 @@ void XmlLoader::readPointPort(QDomElement const &pointPort)
 	PointPort* item = new PointPort(point.x(), point.y(), NULL);
 	item->setListScalePoint(mListScalePoint);
 	item->setVisibilityCondition(readVisibility(pointPort));
+	item->setType(pointPort.attribute("type", "NonTyped"));
+	mScene->addItem(item);
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }

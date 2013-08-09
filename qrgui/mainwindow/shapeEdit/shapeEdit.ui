@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="18" column="0" colspan="4">
+   <item row="19" column="0" colspan="4">
     <widget class="QPushButton" name="saveButton">
      <property name="enabled">
       <bool>false</bool>
@@ -24,7 +24,7 @@
      </property>
     </widget>
    </item>
-   <item row="19" column="0" colspan="4">
+   <item row="20" column="0" colspan="4">
     <widget class="QPushButton" name="openButton">
      <property name="text">
       <string>Open</string>
@@ -154,6 +154,13 @@
      </property>
     </widget>
    </item>
+   <item row="17" column="0" colspan="4">
+    <widget class="QPushButton" name="saveAsPictureButton">
+     <property name="text">
+      <string>Save as picture</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="3">
     <widget class="QPushButton" name="drawCurveButton">
      <property name="enabled">
@@ -198,6 +205,13 @@
      </property>
     </widget>
    </item>
+   <item row="18" column="0" colspan="4">
+    <widget class="QPushButton" name="saveToXmlButton">
+     <property name="text">
+      <string>Save to Xml</string>
+     </property>
+    </widget>
+   </item>
    <item row="7" column="0" rowspan="2" colspan="4">
     <widget class="QToolBox" name="fontToolBox">
      <property name="enabled">
@@ -224,7 +238,7 @@
         <x>0</x>
         <y>0</y>
         <width>135</width>
-        <height>81</height>
+        <height>77</height>
        </rect>
       </property>
       <attribute name="label">
@@ -362,8 +376,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>130</width>
-        <height>81</height>
+        <width>135</width>
+        <height>77</height>
        </rect>
       </property>
       <attribute name="label">
@@ -442,20 +456,6 @@
        </widget>
       </widget>
      </widget>
-    </widget>
-   </item>
-   <item row="16" column="0" colspan="4">
-    <widget class="QPushButton" name="saveAsPictureButton">
-     <property name="text">
-      <string>Save as picture</string>
-     </property>
-    </widget>
-   </item>
-   <item row="17" column="0" colspan="4">
-    <widget class="QPushButton" name="saveToXmlButton">
-     <property name="text">
-      <string>Save to Xml</string>
-     </property>
     </widget>
    </item>
    <item row="4" column="3">
@@ -701,7 +701,7 @@
         <x>0</x>
         <y>0</y>
         <width>135</width>
-        <height>86</height>
+        <height>76</height>
        </rect>
       </property>
       <attribute name="label">
@@ -848,8 +848,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>130</width>
-        <height>74</height>
+        <width>135</width>
+        <height>76</height>
        </rect>
       </property>
       <attribute name="label">
@@ -1005,14 +1005,14 @@
      </property>
     </widget>
    </item>
-   <item row="14" column="0" colspan="4">
+   <item row="15" column="0" colspan="4">
     <widget class="QPushButton" name="visibilityConditionsButton">
      <property name="text">
       <string>VisibilityConditions</string>
      </property>
     </widget>
    </item>
-   <item row="12" column="0" colspan="4">
+   <item row="13" column="0" colspan="4">
     <widget class="QPushButton" name="clearButton">
      <property name="maximumSize">
       <size>
@@ -1025,7 +1025,23 @@
      </property>
     </widget>
    </item>
-   <item row="13" column="0" colspan="4">
+   <item row="1" column="4" rowspan="20">
+    <widget class="graphicsUtils::AbstractView" name="graphicsView">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>170</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>2</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0" colspan="4">
     <widget class="QPushButton" name="deleteItemButton">
      <property name="maximumSize">
       <size>
@@ -1038,7 +1054,7 @@
      </property>
     </widget>
    </item>
-   <item row="15" column="0" colspan="4">
+   <item row="16" column="0" colspan="4">
     <widget class="Line" name="line">
      <property name="enabled">
       <bool>false</bool>
@@ -1060,21 +1076,8 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="4" rowspan="19">
-    <widget class="graphicsUtils::AbstractView" name="graphicsView">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>170</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>2</height>
-      </size>
-     </property>
-    </widget>
+   <item row="12" column="0" colspan="4">
+    <widget class="QComboBox" name="portsComboBox"/>
    </item>
   </layout>
  </widget>

@@ -26,6 +26,7 @@ public:
 	virtual void generatePropertyDescriptionMapping(utils::OutFile &out);
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst, bool isReference);
+	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst);
 	virtual void generatePropertyTypes(utils::OutFile &out);
@@ -69,6 +70,8 @@ protected:
 	QString resourceName(QString const &resourceType) const;
 	virtual bool isResolving() const;
 
+	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
+
 private:
 	class ResolvingHelper {
 	public:
@@ -98,10 +101,10 @@ private:
 	virtual bool initGraphics() = 0;
 	virtual bool initAssociations() = 0;
 	virtual bool initDividability() = 0;
+	virtual bool initPortTypes() = 0;
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count) = 0;
 
 	bool addProperty(Property *property);
-	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, QStringList const &list) const;
 
 	QVector<int> toIntVector(QString const &s, bool * isOk) const;

@@ -497,6 +497,22 @@ QStringList InterpreterEditorManager::propertyNames(Id const &id) const
 	return result;
 }
 
+QStringList InterpreterEditorManager::portTypes(Id const &id) const
+{
+	QSet<QString> result;
+
+	QDomDocument shape;
+	shape.setContent(repoAndMetaId(id).first->stringProperty(id, "shape"));
+
+	QDomElement portsElement = shape.firstChildElement("graphics").firstChildElement("ports");
+	for (int i = 0; i < portsElement.childNodes().size(); i++) {
+		QDomElement port = portsElement.childNodes().at(i).toElement();
+		result.insert(port.attribute("type", "NonTyped"));
+	}
+
+	return result.toList();
+}
+
 QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) const
 {
 	QStringList result;
