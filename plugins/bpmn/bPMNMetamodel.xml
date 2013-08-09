@@ -625,17 +625,7 @@
                         <port type="StartEventVertical"/>
                         <port type="ActivityVertical"/>
                     </toPorts>
-                    <possibleEdges>
-                        <possibleEdge beginName="EndEventVertical" directed="true" endName="StartEventVertical"/>
-                        <possibleEdge beginName="EndEventVertical" directed="true" endName="IntermediateEventVertical"/>
-                        <possibleEdge beginName="EndEventVertical" directed="true" endName="ActivityVertical"/>
-                        <possibleEdge beginName="IntermediateEventVertical" directed="true" endName="StartEventVertical"/>
-                        <possibleEdge beginName="IntermediateEventVertical" directed="true" endName="IntermediateEventVertical"/>
-                        <possibleEdge beginName="IntermediateEventVertical" directed="true" endName="ActivityVertical"/>
-                        <possibleEdge beginName="ActivityVertical" directed="true" endName="StartEventVertical"/>
-                        <possibleEdge beginName="ActivityVertical" directed="true" endName="IntermediateEventVertical"/>
-                        <possibleEdge beginName="ActivityVertical" directed="true" endName="ActivityVertical"/>
-                    </possibleEdges>
+                    <possibleEdges/>
                 </logic>
             </edge>
             <node name="Lane" displayedName="Lane">
