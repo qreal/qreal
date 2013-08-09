@@ -968,9 +968,11 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 	QList<QString> allLinks;
 	foreach (PossibleEdge const &possibleEdge, edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
-		&& possibleEdge.first.second.diagram() == child.id().diagram()
-		&& mainWindow()->editorManager().isParentOf(child.id().editor(), child.id().diagram()
-		, possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
+				&& possibleEdge.first.second.diagram() == child.id().diagram()
+				&& mWindow->editorManager().isParentOf(child.id().editor(), child.id().diagram()
+						, possibleEdge.first.second.element(), child.id().diagram(), child.id().element())
+				&& mWindow->editorManager().isParentOf(child.id().editor(), child.id().diagram()
+						, possibleEdge.first.first.element(), child.id().diagram(), parent->id().element()))
 		{
 			allLinks.push_back(possibleEdge.second.second.toString());
 		}
