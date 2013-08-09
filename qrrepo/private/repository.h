@@ -1,22 +1,23 @@
 #pragma once
 
+#include <QtCore/QHash>
+
 #include "../../qrkernel/definitions.h"
 #include "../../qrkernel/ids.h"
-#include "classes/object.h"
+#include "classes/graphicalObject.h"
+#include "classes/logicalObject.h"
 #include "qrRepoGlobal.h"
 #include "serializer.h"
 
-#include <QHash>
-
 namespace qrRepo {
-
 namespace details {
 
-class Client
+/// Class that actually contains all data, supports low-level queries and can serialize/deserialize data.
+class Repository
 {
 public:
-	QRREPO_EXPORT Client(QString const &workingFile);
-	QRREPO_EXPORT ~Client();
+	QRREPO_EXPORT Repository(QString const &workingFile);
+	QRREPO_EXPORT virtual ~Repository();
 
 	/// replacing property values that contains input value with new value
 	/// @param toReplace - id list that contains ids of elements that properties should be replaced
@@ -28,7 +29,7 @@ public:
 	/// @param name - string that should be contained by names of elements that Id's are in the output list
 	qReal::IdList findElementsByName(QString const &name, bool sensitivity, bool regExpression) const;
 
-	/// returning IdList of elements that have input property
+	/// Returns IdList of elements that have given property
 	/// @param name - string that should be contained by names of elements that have input property
 	qReal::IdList elementsByProperty(QString const &property, bool sensitivity, bool regExpression) const;
 
@@ -75,9 +76,6 @@ public:
 	bool isLogicalId(qReal::Id const &elem) const;
 	qReal::Id logicalId(qReal::Id const &elem) const;
 
-	void svnUpdate();
-	void svnCommit();
-
 	void printDebug() const;
 
 	void exterminate();
@@ -90,8 +88,8 @@ public:
 	void importFromDisk(QString const &importedFile);
 
 	void saveAll() const;
-	void save(qReal::IdList list) const;
-	void saveWithLogicalId(qReal::IdList list) const;
+	void save(qReal::IdList const &list) const;
+	void saveWithLogicalId(qReal::IdList const &list) const;
 	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 	void remove(qReal::IdList list) const;
 	void setWorkingFile(QString const &workingDir);
@@ -99,6 +97,30 @@ public:
 
 	/// Returns current working file name
 	QString workingFile() const;
+
+	/// Creates empty graphical part with given index inside given object.
+	/// @param id - id of an object where we shall create graphical part.
+	/// @param partIndex - index of created part in given object.
+	virtual void createGraphicalPart(qReal::Id const &id, int partIndex);
+
+	/// Returns the value of graphical part property of a given object.
+	/// @param id - id of an object where graphical part is located.
+	/// @param partIndex - index of a graphical part.
+	/// @param propertyName - name of a property which value we want to get.
+	virtual QVariant graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const;
+
+	/// Sets the value of graphical part property of a given object. If a property already exists, its value
+	/// will be overwritten, otherwise new property will be created with given value.
+	/// @param id - id of an object where graphical part is located.
+	/// @param partIndex - index of a graphical part.
+	/// @param propertyName - name of a property which value we want to set.
+	/// @param value - new value of a property.
+	virtual void setGraphicalPartProperty(
+			qReal::Id const &id
+			, int partIndex
+			, QString const &propertyName
+			, QVariant const &value
+			);
 
 private:
 	void init();
@@ -112,12 +134,10 @@ private:
 
 	QHash<qReal::Id, Object*> mObjects;
 
-	/// This term keeps name of current save file for project
+	/// Name of the current save file for project.
 	QString mWorkingFile;
 	Serializer mSerializer;
 };
 
 }
-
 }
-

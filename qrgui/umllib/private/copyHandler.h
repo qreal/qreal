@@ -4,14 +4,14 @@
 
 #pragma once
 
-class NodeElement;
-// class qReal::models::GraphicalModelAssistApi; because warning
-
 namespace qReal {
+
 namespace models {
 class GraphicalModelAssistApi;
 }
-}
+
+class NodeElement;
+// class qReal::models::GraphicalModelAssistApi; because warning
 
 class CopyHandler {
 public:
@@ -59,3 +59,5 @@ private:
 	/// GraphicalModelAssistApi that used to creating new NodeElement.
 	qReal::models::GraphicalModelAssistApi * const mGraphicalAssistApi;
 };
+
+}

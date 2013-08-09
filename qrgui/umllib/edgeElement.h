@@ -7,7 +7,9 @@
 #include "../editorPluginInterface/elementImpl.h"
 #include "serializationData.h"
 
-QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
+namespace qReal {
+
+//QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
 namespace enums {
 namespace arrowTypeEnum {
@@ -30,10 +32,8 @@ class NodeElement;
   * @brief class for an edge on a diagram
  */
 
-namespace qReal {
 namespace commands {
 class ReshapeEdgeCommand;
-}
 }
 
 class EdgeElement : public Element
@@ -272,3 +272,5 @@ private:
 
 	qReal::commands::ReshapeEdgeCommand *mReshapeCommand;
 };
+
+}

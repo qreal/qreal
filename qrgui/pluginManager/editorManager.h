@@ -17,9 +17,9 @@
 #include "pattern.h"
 #include "patternParser.h"
 
-class Element;
-
 namespace qReal {
+
+class Element;
 
 class EditorManager : public QObject, public EditorManagerInterface
 {
