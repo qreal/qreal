@@ -27,7 +27,7 @@ public:
 	bool load(QDir const &currentDir);
 	Type *findType(QString const &name);
 	QSet<EnumType *> getAllEnumTypes();
-	QStringList getAllPortNames();
+	QStringList getAllPortNames() const;
 	Diagram *findDiagram(QString const &name);
 	QMap<QString, Diagram*> diagrams();
 

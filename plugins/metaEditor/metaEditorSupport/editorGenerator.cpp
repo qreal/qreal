@@ -398,12 +398,12 @@ void EditorGenerator::setProperties(QDomElement &parent, Id const &id)
 
 void EditorGenerator::setPorts(QDomElement &parent, Id const &id, QString const &direction)
 {
-	QString propertyName = direction + "Ports";
+	QString const propertyName = direction + "Ports";
 	QDomElement portsTag = mDocument.createElement(propertyName);
-	QStringList ports = mApi.stringProperty(id, propertyName).split(',', QString::SkipEmptyParts);
+	QStringList const ports = mApi.stringProperty(id, propertyName).split(',', QString::SkipEmptyParts);
 	foreach (QString const &port, ports) {
 		QDomElement portElem = mDocument.createElement("port");
-		Id portId = Id::loadFromString(port);
+		Id const portId = Id::loadFromString(port);
 		portElem.setAttribute("type", mApi.name(portId));
 		portsTag.appendChild(portElem);
 	}
@@ -627,7 +627,7 @@ void EditorGenerator::setBoolValuesForContainer(QString const &propertyName, QDo
 void EditorGenerator::ensureCorrectness(
 		Id const &id, QDomElement element, QString const &tagName, QString const &value)
 {
-	if (value.isEmpty() && tagName == "displayedName") {
+	if (value.isEmpty() && (tagName == "displayedName")) {
 		return;
 	} else if (value.isEmpty()) {
 		mErrorReporter.addWarning(QString (QObject::tr("not filled %1\n")).arg(tagName), id);
@@ -641,8 +641,8 @@ void EditorGenerator::ensureCorrectness(
 			mErrorReporter.addWarning(QObject::tr("wrong name\n"), id);
 			element.setAttribute(tagName, value);
 		}
-	} else if (element.nodeName() == "possibleEdge" && (tagName == "beginName" || tagName == "endName")) {
-		if (value == "NonTyped" || findPort(value)) {
+	} else if ((element.nodeName() == "possibleEdge") && ((tagName == "beginName") || (tagName == "endName"))) {
+		if ((value == "NonTyped") || findPort(value)) {
 			element.setAttribute(tagName, value);
 		} else {
 			mErrorReporter.addError(QObject::tr("wrong %1 for possible edge: must be port type\n").arg(tagName), id);

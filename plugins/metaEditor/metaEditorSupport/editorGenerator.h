@@ -43,8 +43,8 @@ private:
 	void setContainerProperties(QDomElement &parent, qReal::Id const &id);
 	void setExplosion(QDomElement &parent, qReal::Id const &id);
 	void setExplosionProperties(QDomElement &target, qReal::Id const &linkId);
-	void newSetConnections(QDomElement &parent, const qReal::Id &id,
-			QString const &commonTagName, QString const &internalTagName, QString const &typeName);
+	void newSetConnections(QDomElement &parent, const qReal::Id &id
+			, QString const &commonTagName, QString const &internalTagName, QString const &typeName);
 	void ensureCorrectness(qReal::Id const &id, QDomElement element, QString const &tagName, QString const &value);
 	bool findPort(QString const &name) const;
 	void setBoolValuesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);

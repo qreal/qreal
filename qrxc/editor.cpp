@@ -136,19 +136,19 @@ QSet<EnumType*> Editor::getAllEnumTypes()
 	return result;
 }
 
-QStringList Editor::getAllPortNames()
+QStringList Editor::getAllPortNames() const
 {
 	QStringList result;
 
-	foreach (Diagram *diagram, mDiagrams.values()) {
-		foreach (Type *type, diagram->types()) {
-			if (dynamic_cast<PortType *>(type)) {
+	foreach (Diagram const * const diagram, mDiagrams.values()) {
+		foreach (Type const * const type, diagram->types()) {
+			if (dynamic_cast<PortType const * const>(type)) {
 				result << type->name();
 			}
 		}
 	}
 
-	foreach (Editor *editor, mIncludes) {
+	foreach (Editor const * const editor, mIncludes) {
 		result += editor->getAllPortNames();
 	}
 

@@ -29,8 +29,7 @@ public:
 	 * @param pointPorts Point ports which belong to node.
 	 * @param linePorts Line ports which belong to node.
 	 */
-	PortHandler(
-			NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi
+	PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi
 			, QList<PortInterface *> const &ports);
 	~PortHandler();
 
@@ -90,6 +89,12 @@ public:
 	 */
 	void setGraphicalAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi);
 
+	/**
+	 * @brief drawPorts Renders all ports of specified types
+	 * @param painter A painter used for rendering
+	 * @param contents Rectangle inside of which ports will be rendered
+	 * @param types Types of ports that must be rendered
+	 */
 	void drawPorts(QPainter *painter, QRectF const &contents, QStringList const &types);
 
 private:

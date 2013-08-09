@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 #include <QtGui/QPainter>
 
+/** @brief Abstract class for generated port types */
 class PortImpl
 {
 public:
@@ -14,24 +15,33 @@ public:
 class NonTyped : public PortImpl
 {
 public:
-	virtual QString type() const {
+	virtual QString type() const
+	{
 		return "NonTyped";
 	}
 };
 
+/** @brief A base class for classes that represent element's ports on a diagram */
 class PortInterface
 {
 public:
 	PortInterface(PortImpl *impl) : mImpl(impl) {}
-	virtual ~PortInterface() { delete mImpl; }
+	virtual ~PortInterface()
+	{
+		delete mImpl;
+	}
 
 	virtual void paint(QPainter *painter, QRectF const &contents) const = 0;
-	QString type() const { return mImpl->type(); }
+	QString type() const
+	{
+		return mImpl->type();
+	}
 
 protected:
 	PortImpl *mImpl;
 };
 
+/** @brief An interface for creation of PortInterface implementations */
 class PortFactoryInterface
 {
 public:

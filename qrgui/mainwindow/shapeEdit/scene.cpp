@@ -602,12 +602,11 @@ void Scene::changePortsComboBox()
 		if (point) {
 			emit existSelectedPortItems(point->getType());
 			return;
-		} else {
-			LinePort *line = dynamic_cast<LinePort *>(item);
-			if (line) {
-				emit existSelectedPortItems(line->getType());
-				return;
-			}
+		}
+		LinePort *line = dynamic_cast<LinePort *>(item);
+		if (line) {
+			emit existSelectedPortItems(line->getType());
+			return;
 		}
 	}
 	emit noSelectedPortItems();

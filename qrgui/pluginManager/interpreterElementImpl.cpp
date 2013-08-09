@@ -177,11 +177,11 @@ void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<Lab
 	}
 }
 
-void InterpreterElementImpl::initEdgePorts(QStringList &ports, QString const &direction)
+void InterpreterElementImpl::initEdgePorts(QStringList &ports, QString const &direction) const
 {
-	QStringList ids = mEditorRepoApi->stringProperty(mId, direction).split(',', QString::SkipEmptyParts);
+	QStringList const ids = mEditorRepoApi->stringProperty(mId, direction).split(',', QString::SkipEmptyParts);
 	foreach (QString const &strId, ids) {
-		Id id = Id::loadFromString(strId);
+		Id const id = Id::loadFromString(strId);
 		ports << mEditorRepoApi->name(id);
 	}
 	ports << "NonTyped";

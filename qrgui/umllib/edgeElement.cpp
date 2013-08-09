@@ -668,20 +668,20 @@ bool EdgeElement::initPossibleEdges()
 	QString diagram = id().diagram();
 	QStringList elements = mGraphicalAssistApi->editorManagerInterface().elements(editor, diagram);
 
-	QList<StringPossibleEdge> stringPossibleEdges = mGraphicalAssistApi->editorManagerInterface().possibleEdges(
-			editor, id().element());
+	QList<StringPossibleEdge> stringPossibleEdges
+			= mGraphicalAssistApi->editorManagerInterface().possibleEdges(editor, id().element());
 	foreach (StringPossibleEdge pEdge, stringPossibleEdges) {
 		QPair<bool, qReal::Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
 
 		QStringList fromElements;
 		QStringList toElements;
 		foreach (QString const &element, elements) {
-			if (mGraphicalAssistApi->editorManagerInterface().portTypes(Id(editor, diagram, element)).contains(
-					pEdge.first.first)) {
+			if (mGraphicalAssistApi->editorManagerInterface().portTypes(Id(editor, diagram, element))
+					.contains(pEdge.first.first)) {
 				fromElements << element;
 			}
-			if (mGraphicalAssistApi->editorManagerInterface().portTypes(Id(editor, diagram, element)).contains(
-					pEdge.first.second)) {
+			if (mGraphicalAssistApi->editorManagerInterface().portTypes(Id(editor, diagram, element))
+					.contains(pEdge.first.second)) {
 				toElements << element;
 			}
 		}
@@ -1093,15 +1093,15 @@ bool EdgeElement::minimizeActionIsPossible()
 bool EdgeElement::reverseActionIsPossible()
 {
 	if (mSrc) {
-		if (mGraphicalAssistApi->editorManagerInterface().portTypes(mSrc->id().type()).toSet().intersect(
-				mElementImpl->toPortTypes().toSet()).empty()) {
+		if (mGraphicalAssistApi->editorManagerInterface().portTypes(mSrc->id().type()).toSet()
+				.intersect(mElementImpl->toPortTypes().toSet()).empty()) {
 			return false;
 		}
 	}
 
 	if (mDst) {
-		if (mGraphicalAssistApi->editorManagerInterface().portTypes(mDst->id().type()).toSet().intersect(
-				mElementImpl->fromPortTypes().toSet()).empty()) {
+		if (mGraphicalAssistApi->editorManagerInterface().portTypes(mDst->id().type()).toSet()
+				.intersect(mElementImpl->fromPortTypes().toSet()).empty()) {
 			return false;
 		}
 	}

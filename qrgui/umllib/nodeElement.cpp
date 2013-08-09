@@ -630,12 +630,12 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	foreach (QString const &elementName, mGraphicalAssistApi->editorManagerInterface().elements(
-			id().editor(),id().diagram())) {
+	foreach (QString const &elementName, mGraphicalAssistApi->editorManagerInterface().elements(id().editor()
+			, id().diagram())) {
 		int ne = mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> const list = mGraphicalAssistApi->editorManagerInterface().possibleEdges(
-					id().editor(), elementName);
+			QList<StringPossibleEdge> const list = mGraphicalAssistApi->editorManagerInterface()
+					.possibleEdges(id().editor(), elementName);
 			foreach(StringPossibleEdge pEdge, list) {
 				if (mGraphicalAssistApi->editorManagerInterface().portTypes(id().type()).contains(pEdge.first.first)
 						|| (mGraphicalAssistApi->editorManagerInterface().portTypes(id().type()).contains(pEdge.first.second)
@@ -1113,8 +1113,8 @@ QSet<ElementPair> NodeElement::elementsForPossibleEdge(StringPossibleEdge const 
 
 	QSet<ElementPair> result;
 	foreach (QString const &element, elements) {
-		QStringList otherPortTypes = mGraphicalAssistApi->editorManagerInterface().portTypes(
-				Id(id().editor(), id().diagram(), element));
+		QStringList otherPortTypes
+				= mGraphicalAssistApi->editorManagerInterface().portTypes(Id(id().editor(), id().diagram(), element));
 		if (portTypes.contains(edge.first.first) && otherPortTypes.contains(edge.first.second)) {
 			result.insert(qMakePair(id().type(), Id(id().editor(), id().diagram(), element)));
 		}

@@ -1399,7 +1399,7 @@ void MainWindow::updateTabName(Id const &id)
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
 		EditorView * const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
-		if (tab && tab->mvIface()->rootIndex() == mModels->graphicalModelAssistApi().indexById(id)) {
+		if (tab && (tab->mvIface()->rootIndex() == mModels->graphicalModelAssistApi().indexById(id))) {
 			mUi->tabs->setTabText(i, mModels->graphicalModelAssistApi().name(id));
 			return;
 		}
