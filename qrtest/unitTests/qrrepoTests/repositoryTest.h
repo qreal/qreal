@@ -1,23 +1,22 @@
 #pragma once
 
-#include "../../../qrrepo/private/client.h"
-#include "../../../qrrepo/private/serializer.h"
-#include "../../../qrkernel/ids.h"
+#include <gtest/gtest.h>
 
-#include "gtest/gtest.h"
+#include "../../../qrrepo/private/repository.h"
+#include "../../../qrrepo/private/serializer.h"
 
 namespace qrTest {
 
-class ClientTest : public testing::Test {
+class RepositoryTest : public testing::Test {
 
 protected:
 	virtual void SetUp();
 
 	virtual void TearDown();
-	
+
 	void removeDirectory(QString const &dirName);
 
-	qrRepo::details::Client *mClient;
+	qrRepo::details::Repository *mRepository;
 	qrRepo::details::Serializer *mSerializer;
 
 	QString mOldTempFolder;

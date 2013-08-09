@@ -181,7 +181,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	QString const className = NameNormalizer::normalize(qualifiedName());
 
-	out() << "\tclass " << className << " : public ElementImpl {\n"
+	out() << "\tclass " << className << " : public qReal::ElementImpl {\n"
 	<< "\tpublic:\n";
 
 	if (!mBonusContextMenuFields.empty()) {
@@ -194,10 +194,10 @@ void EdgeType::generateCode(OutFile &out)
 		out() << "\t\t}\n\n";
 	}
 
-	out() << "\t\tvoid init(QRectF &, QList<StatPoint> &, QList<StatLine> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tLabelFactoryInterface &, QList<LabelInterface*> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *, ElementRepoInterface *) {}\n\n"
-	<< "\t\tvoid init(LabelFactoryInterface &factory, QList<LabelInterface*> &titles)\n\t\t{\n";
+	out() << "\t\tvoid init(QRectF &, QList<qReal::StatPoint> &, QList<qReal::StatLine> &,\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &,\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::SdfRendererInterface *, qReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}\n\n"
+	<< "\t\tvoid init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty())
 		mLabels[0]->generateCodeForConstructor(out);
@@ -207,7 +207,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n"
 	<< "\t\tvirtual ~" << className << "() {}\n\n"
-	<< "\t\tElementImpl *clone() { return NULL; }\n"
+	<< "\t\tqReal::ElementImpl *clone() { return NULL; }\n"
 	<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
 	<< "\t\tbool isNode() const { return false; }\n"
 	<< "\t\tbool isResizeable() const { return true; }\n"
@@ -254,7 +254,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	generateEdgeStyle(mEndType, out);
 
-	out() << "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
+	out() << "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n";
 
 	if (mLabels.isEmpty())
 		out() << "\t\t\tQ_UNUSED(repo);\n";

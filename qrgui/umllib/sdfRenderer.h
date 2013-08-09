@@ -15,6 +15,8 @@
 #include "../../qrkernel/settingsManager.h"
 #include "../editorPluginInterface/elementRepoInterface.h"
 
+namespace qReal {
+
 class SdfRenderer : public SdfRendererInterface
 {
 	Q_OBJECT
@@ -107,3 +109,5 @@ private:
 	SdfRenderer mRenderer;
 	QSize mSize;
 };
+
+}

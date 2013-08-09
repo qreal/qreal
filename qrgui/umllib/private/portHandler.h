@@ -17,6 +17,8 @@
  * 	In case of line port fractional part ID means position at line port.
  */
 
+namespace qReal {
+
 class NodeElement;
 
 class PortHandler {
@@ -190,3 +192,5 @@ private:
 	/// List of line ports that belongs to mNode.
 	QList<StatLine> const mLinePorts;
 };
+
+}
