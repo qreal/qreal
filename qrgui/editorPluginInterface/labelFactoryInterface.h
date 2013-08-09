@@ -4,6 +4,8 @@
 
 #include "labelInterface.h"
 
+namespace qReal {
+
 /// Interface that allows to create new text labels (\see LabelInterface) in editor plugins.
 class LabelFactoryInterface
 {
@@ -26,3 +28,5 @@ public:
 	/// @param rotation Sets rotation of a label.
 	virtual LabelInterface *createLabel(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation) = 0;
 };
+
+}

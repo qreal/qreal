@@ -11,6 +11,8 @@
 #include "sdfRendererInterface.h"
 #include "../../qrkernel/ids.h"
 
+namespace qReal {
+
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
 typedef QPair<bool, qReal::Id> PossibleEdgeType;
@@ -131,3 +133,5 @@ public:
 		Q_UNUSED(shape);
 	}
 };
+
+}

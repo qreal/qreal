@@ -49,13 +49,13 @@ void Label::moveToParentCenter()
 		return;
 	}
 
-	if (orientation() == orientationType::horizontal) {
+	if (orientation() == Qt::Horizontal) {
 		qreal parentCenter = mParentContents.x() + mParentContents.width() / 2;
 		qreal titleCenter = x() + mContents.width() / 2;
 		qreal diff = parentCenter - titleCenter;
 
 		setX(x() + diff);
-	} else if (orientation() == orientationType::vertical) {
+	} else if (orientation() == Qt::Vertical) {
 		qreal parentCenter = mParentContents.y() + mParentContents.height() / 2;
 		qreal titleCenter = y() - mContents.width() / 2;
 		qreal diff = parentCenter - titleCenter;
@@ -64,13 +64,13 @@ void Label::moveToParentCenter()
 	}
 }
 
-orientationType::OrientationType Label::orientation()
+Qt::Orientation Label::orientation()
 {
 	if (abs(rotation()) == 90) {
-		return orientationType::vertical;
+		return Qt::Vertical;
 	}
 
-	return orientationType::horizontal;
+	return Qt::Horizontal;
 }
 
 void Label::setText(const QString &text)
@@ -234,9 +234,9 @@ void Label::init(QRectF const &contents)
 {
 	mContents = contents;
 	mParentContents = contents;
-	if (orientation() == orientationType::horizontal) {
+	if (orientation() == Qt::Horizontal) {
 		mContents.setWidth(mContents.width() / 2);
-	} else if (orientation() == orientationType::vertical) {
+	} else if (orientation() == Qt::Vertical) {
 		mContents.setWidth(mContents.height() * 3 / 4);
 	}
 

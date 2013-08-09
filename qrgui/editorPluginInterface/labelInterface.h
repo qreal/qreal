@@ -4,6 +4,8 @@
 #include <QtGui/QColor>
 #include <QtWidgets/QGraphicsItem>
 
+namespace qReal {
+
 /// Represents text label on a shape, to be configured and used in editor plugins.
 class LabelInterface
 {
@@ -37,3 +39,5 @@ public:
 	/// Sets unformatted text as the contents of this label.
 	virtual void setPlainText(QString const &text) = 0;
 };
+
+}

@@ -4,14 +4,7 @@
 
 #include "../editorPluginInterface/labelInterface.h"
 
-namespace enums {
-namespace orientationType {
-enum OrientationType {
-	horizontal
-	, vertical
-};
-}
-}
+namespace qReal {
 
 class Label : public QGraphicsTextItem, public LabelInterface
 {
@@ -71,7 +64,7 @@ private:
 	QString createTextForRepo() const;
 	void setText(QString const &text);
 	void moveToParentCenter();
-	enums::orientationType::OrientationType orientation();
+	Qt::Orientation orientation();
 	QRectF labelMovingRect() const;
 
 	bool mFocusIn;
@@ -91,3 +84,5 @@ private:
 	bool mWasMoved;
 	bool mShouldMove;
 };
+
+}

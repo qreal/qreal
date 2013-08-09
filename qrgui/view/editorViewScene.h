@@ -13,17 +13,16 @@
 #include "private/editorViewMVIface.h"
 #include "private/exploserView.h"
 
+namespace qReal {
+
 const int arrowMoveOffset = 5;
 
-namespace qReal {
 class EditorViewMViface;
 class EditorView;
 class MainWindow;
 
-namespace commands
-{
+namespace commands {
 class CreateElementCommand;
-}
 }
 
 class EditorViewScene : public QGraphicsScene
@@ -251,3 +250,5 @@ private:
 
 	friend class qReal::EditorViewMViface;
 };
+
+}
