@@ -114,7 +114,7 @@ void Label::generateCodeForUpdateData(OutFile &out)
 
 void Label::generateCodeForFields(OutFile &out)
 {
-	out() << "		LabelInterface *" + titleName() + ";\n";
+	out() << "		qReal::LabelInterface *" + titleName() + ";\n";
 }
 
 

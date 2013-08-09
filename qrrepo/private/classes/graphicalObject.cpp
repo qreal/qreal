@@ -21,10 +21,9 @@ GraphicalObject::GraphicalObject(QDomElement const &element)
 		throw Exception("Logical id not found for graphical object");
 	}
 
-	QDomElement graphicalParts = element.firstChildElement("graphicalParts");
+	QDomElement const graphicalParts = element.firstChildElement("graphicalParts");
 	if (!graphicalParts.isNull()) {
-		QDomElement part = graphicalParts.firstChildElement();
-		while (!part.isNull()) {
+		for (QDomElement part = graphicalParts.firstChildElement(); !part.isNull(); part = part.nextSiblingElement()) {
 			GraphicalPart * const deserializedPart = new GraphicalPart(part);
 
 			QString const indexString = part.attribute("index");
@@ -32,10 +31,7 @@ GraphicalObject::GraphicalObject(QDomElement const &element)
 				throw Exception("No \"index\" attribute in graphical part");
 			}
 
-			int index = indexString.toInt();
-			mGraphicalParts.insert(index, deserializedPart);
-
-			part = part.nextSiblingElement();
+			mGraphicalParts.insert(indexString.toInt(), deserializedPart);
 		}
 	}
 }
@@ -53,11 +49,12 @@ QDomElement GraphicalObject::serialize(QDomDocument &document) const
 	QDomElement graphicalParts = document.createElement("graphicalParts");
 	result.appendChild(graphicalParts);
 
-	QHash<int, GraphicalPart *>::const_iterator i = mGraphicalParts.constBegin();
-	while (i != mGraphicalParts.constEnd()) {
-		QDomElement graphicalPart = i.value()->serialize(i.key(), document);
+	for (QHash<int, GraphicalPart *>::const_iterator i = mGraphicalParts.constBegin();
+			i != mGraphicalParts.constEnd();
+			++i)
+	{
+		QDomElement const graphicalPart = i.value()->serialize(i.key(), document);
 		graphicalParts.appendChild(graphicalPart);
-		++i;
 	}
 
 	return result;
@@ -95,11 +92,12 @@ Object *GraphicalObject::createClone() const
 {
 	GraphicalObject * const clone = new GraphicalObject(mId.sameTypeId(), mParent, mLogicalId);
 
-	QHash<int, GraphicalPart *>::const_iterator i = mGraphicalParts.constBegin();
-	while (i != mGraphicalParts.constEnd()) {
+	for (QHash<int, GraphicalPart *>::const_iterator i = mGraphicalParts.constBegin();
+			i != mGraphicalParts.constEnd();
+			++i)
+	{
 		GraphicalPart * const partClone = i.value()->clone();
 		clone->mGraphicalParts.insert(i.key(), partClone);
-		++i;
 	}
 
 	return clone;

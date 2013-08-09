@@ -15,7 +15,7 @@ bool PointPort::init(QDomElement const &element, int width, int height)
 void PointPort::generateCode(OutFile &out)
 {
 	out() <<"\t\t\t{\n"
-		<< "\t\t\t\tStatPoint pt;\n"
+		<< "\t\t\t\tqReal::StatPoint pt;\n"
 		<< QString("\t\t\t\tpt.point = QPointF(%1, %2);\n").arg(mX.value()).arg(mY.value())
 		<< "\t\t\t\tpt.prop_x = "
 		<< ((mX.isScalable()) ? "true;\n" : "false;\n")

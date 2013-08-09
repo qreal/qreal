@@ -17,6 +17,8 @@
 
 #include "../controller/controller.h"
 
+namespace qReal {
+
 /// size of a point port
 const int kvadratik = 10;
 
@@ -88,3 +90,5 @@ protected:
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	qReal::Controller *mController;
 };
+
+}
