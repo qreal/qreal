@@ -1,5 +1,3 @@
-DEFINES += UNITTEST
-
 TEMPLATE = app
 CONFIG += console
 

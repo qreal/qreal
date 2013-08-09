@@ -98,6 +98,7 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
 		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
 	}
+
 	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
 }
 

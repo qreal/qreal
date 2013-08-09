@@ -4,6 +4,7 @@
 
 #include "../../qrkernel/ids.h"
 #include "details/graphicalModel.h"
+#include "details/graphicalPartModel.h"
 #include "details/modelsAssistApi.h"
 #include "../toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 
@@ -22,7 +23,11 @@ class GraphicalModelAssistApi : public QObject, public GraphicalModelAssistInter
 	Q_OBJECT
 
 public:
-	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManagerInterface const &editorManagerInterface);
+	GraphicalModelAssistApi(
+			details::GraphicalModel &graphicalModel
+			, details::GraphicalPartModel &graphicalPartModel
+			, EditorManagerInterface const &editorManagerInterface
+			);
 
 	/// Interface for accessing metamodel information.
 	EditorManagerInterface const &editorManagerInterface() const;
@@ -88,6 +93,10 @@ public:
 
 	void removeElement(Id const &graphicalId);
 
+	void createLabel(Id const &graphicalId, int index, QPointF const &position, QPolygonF const &size);
+	void setLabelPosition(Id const &graphicalId, int index, QPointF const &position);
+	void setLabelSize(Id const &graphicalId, int index, QPolygonF const &size);
+
 signals:
 	void nameChanged(Id const &id);
 
@@ -97,6 +106,7 @@ private:
 
 	details::GraphicalModel &mGraphicalModel;
 	details::ModelsAssistApi mModelsAssistApi;
+	details::GraphicalPartModel &mGraphicalPartModel;
 };
 
 }
