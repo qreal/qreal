@@ -15,7 +15,7 @@ Type * PortType::clone() const
 
 void PortType::generateCode(utils::OutFile &out)
 {
-	QString name = Type::name();
+	QString const name = Type::name();
 
 	out() << "\tclass " << name << " : public PortImpl\n"
 	<< "\t{\n"

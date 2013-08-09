@@ -25,13 +25,16 @@ void StatPoint::paint(QPainter *painter, QRectF const &contents) const
 
 	QLineF pointToDraw(x - 0.1, y - 0.1, x + 0.1, y + 0.1);
 
+	QColor const portColor("#465945");
+	QColor const highlightColor("#c3dcc4");
+
 	painter->save();
 	QPen pen = painter->pen();
-	pen.setColor(QColor("#c3dcc4"));
+	pen.setColor(highlightColor);
 	pen.setWidth(12);
 	painter->setPen(pen);
 	painter->drawLine(pointToDraw);
-	pen.setColor(QColor("#465945"));
+	pen.setColor(portColor);
 	pen.setWidth(3);
 	painter->setPen(pen);
 	painter->drawLine(pointToDraw);

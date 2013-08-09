@@ -32,13 +32,16 @@ void StatLine::paint(QPainter *painter, QRectF const &contents) const
 
 	QLineF lineToDraw(x1, y1, x2, y2);
 
+	QColor const portColor("#465945");
+	QColor const highlightColor("#c3dcc4");
+
 	painter->save();
 	QPen pen = painter->pen();
-	pen.setColor(QColor("#c3dcc4"));
+	pen.setColor(highlightColor);
 	pen.setWidth(7);
 	painter->setPen(pen);
 	painter->drawLine(lineToDraw);
-	pen.setColor(QColor("#465945"));
+	pen.setColor(portColor);
 	pen.setWidth(1);
 	painter->setPen(pen);
 	painter->drawLine(lineToDraw);
