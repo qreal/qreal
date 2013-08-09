@@ -9,6 +9,7 @@
 #include <math.h>
 
 #include "nodeElement.h"
+#include "labelFactory.h"
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
 #include "../mainwindow/mainWindow.h"
@@ -58,14 +59,15 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, mRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
 
-	foreach (LabelInterface *titleIface, titles) {
-		Label *title = dynamic_cast<Label*>(titleIface);
-		if (!title) {
+	foreach (LabelInterface *labelInterface, titles) {
+		Label *label = dynamic_cast<Label*>(labelInterface);
+		if (!label) {
 			continue;
 		}
-		title->init(mContents);
-		title->setParentItem(this);
-		mTitles.append(title);
+
+		label->init(mContents);
+		label->setParentItem(this);
+		mLabels.append(label);
 	}
 
 	mFoldedContents = mContents;
@@ -93,7 +95,7 @@ NodeElement::~NodeElement()
 		edge->removeLink(this);
 	}
 
-	foreach (Label *title, mTitles) {
+	foreach (Label *title, mLabels) {
 		delete title;
 	}
 
@@ -953,7 +955,7 @@ void NodeElement::changeFoldState()
 
 void NodeElement::updateLabels()
 {
-	foreach (Label *title, mTitles) {
+	foreach (Label *title, mLabels) {
 		title->setParentContents(mContents);
 	}
 }

@@ -162,7 +162,7 @@ void NodeType::generateCode(OutFile &out)
 	QString const className = NameNormalizer::normalize(qualifiedName());
 	bool hasSdf = false;
 
-	out() << "\tclass " << className << " : public ElementImpl\n\t{\n"
+	out() << "\tclass " << className << " : public qReal::ElementImpl\n\t{\n"
 	<< "\tpublic:\n";
 
 	if (!mBonusContextMenuFields.empty()) {
@@ -175,10 +175,10 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t}\n\n";
 	}
 
-	out () << "\t\tvoid init(LabelFactoryInterface &, QList<LabelInterface*> &) {}\n\n"
+	out () << "\t\tvoid init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}\n\n"
 	<< "\t\tvoid init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports\n"
-	<< "\t\t\t\t\t\t\t, LabelFactoryInterface &factory, QList<LabelInterface*> &titles\n"
-	<< "\t\t\t\t\t\t\t, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)\n\t\t{\n";
+	<< "\t\t\t\t\t\t\t, qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles\n"
+	<< "\t\t\t\t\t\t\t, qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)\n\t\t{\n";
 
 	if (mPorts.empty()) {
 		out() << "\t\t\tQ_UNUSED(portFactory);\n";
@@ -208,7 +208,7 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n";
 
-	out() << "\t\t ElementImpl *clone() { return NULL; }\n";
+	out() << "\t\t qReal::ElementImpl *clone() { return NULL; }\n";
 
 	out() << "\t\t~" << className << "() {}\n\n"
 	<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
@@ -224,7 +224,7 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
 	<< "\t\tvoid drawEndArrow(QPainter *) const {}\n\n"
 
-	<< "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n"
+	<< "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n"
 	<< "\t\t\tmRenderer->setElementRepo(repo);\n";
 
 	if (mLabels.isEmpty())
@@ -312,7 +312,7 @@ void NodeType::generateCode(OutFile &out)
 	if (!mBonusContextMenuFields.empty())
 		out() << "\t\tQStringList mBonusContextMenuFields;\n";
 	if (hasSdf)
-		out() << "\t\tSdfRendererInterface *mRenderer;\n";
+		out() << "\t\tqReal::SdfRendererInterface *mRenderer;\n";
 	foreach (Label *label, mLabels)
 		label->generateCodeForFields(out);
 	out() << "\t};";

@@ -7,6 +7,8 @@
 #include "../../edgeElement.h"
 #include "../../../controller/commands/createElementCommand.h"
 
+namespace qReal {
+
 class NodeElement;
 
 class EmbeddedLinker : public QObject, public QGraphicsItem
@@ -61,3 +63,5 @@ private:
 	QTimer *mTimer;
 	commands::CreateElementCommand *mCreateEdgeCommand;
 };
+
+}

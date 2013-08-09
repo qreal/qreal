@@ -8,6 +8,8 @@
 
 #include "elementRepoInterface.h"
 
+namespace qReal {
+
 class SdfRendererInterface : public QObject
 {
 public:
@@ -22,3 +24,5 @@ class SdfIconEngineV2Interface : public QIconEngine
 {
 public:
 };
+
+}

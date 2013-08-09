@@ -8,6 +8,8 @@
 #include <QtCore/QPointF>
 #include <QList>
 
+namespace qReal {
+
 class NodeElement;
 
 class BorderChecker
@@ -25,17 +27,17 @@ public:
 	 */
 	/**
 	 * Checks is point belongs to NodeElement lower border.
-	 * @param point Point that is checked to belong to lower border. 
+	 * @param point Point that is checked to belong to lower border.
 	 */
 	bool checkLowerBorder(QPointF const &point) const;
 	/**
 	 * Checks is point belongs to NodeElement upper border.
-	 * @param point Point that is checked to belong to upper border. 
+	 * @param point Point that is checked to belong to upper border.
 	 */
 	bool checkUpperBorder(QPointF const &point) const;
 	/**
 	 * Checks is point belongs to NodeElement left border.
-	 * @param point Point that is checked to belong to upper border. 
+	 * @param point Point that is checked to belong to upper border.
 	 */
 	bool checkLeftBorder(QPointF const &point) const;
 	/**
@@ -66,3 +68,5 @@ private:
 	double const mXVert;
 	double const mYVert;
 };
+
+}

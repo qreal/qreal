@@ -1,4 +1,4 @@
-/** @file edgeelement.cpp
+/** @file edgeElement.cpp
  * 	@brief class for an edge on a diagram
  * */
 #include <QtWidgets/QStyleOptionGraphicsItem>
@@ -10,6 +10,7 @@
 
 #include "edgeElement.h"
 #include "nodeElement.h"
+#include "labelFactory.h"
 #include "private/reshapeEdgeCommand.h"
 #include "../view/editorViewScene.h"
 
@@ -80,7 +81,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		title->init(boundingRect());
 		title->setParentItem(this);
 		title->setShouldCenter(false);
-		mTitles.append(title);
+		mLabels.append(title);
 	}
 }
 
@@ -439,8 +440,8 @@ void EdgeElement::updateLongestPart()
 	}
 	mLongPart = maxIdx;
 
-	if (mTitles.count() == 1) {
-		Label *title = mTitles[0];
+	if (mLabels.count() == 1) {
+		Label *title = mLabels[0];
 		qreal x = (mLine[maxIdx].x() + mLine[maxIdx + 1].x()) / 2;
 		qreal y = (mLine[maxIdx].y() + mLine[maxIdx + 1].y()) / 2;
 		x -= title->boundingRect().width() / 2;

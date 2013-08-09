@@ -17,9 +17,9 @@
 #include "patternParser.h"
 #include "explosion.h"
 
-class Element;
-
 namespace qReal {
+
+class Element;
 
 class MainWindow;
 

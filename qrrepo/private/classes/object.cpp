@@ -1,57 +1,71 @@
 #include "object.h"
-#include "../../../qrkernel/exception/exception.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
+
+#include "../../../qrkernel/exception/exception.h"
+#include "../../../qrkernel/ids.h"
+#include "logicalObject.h"
+#include "graphicalObject.h"
+#include "../valuesSerializer.h"
 
 using namespace qrRepo::details;
 using namespace qReal;
 
-Object::Object(const Id &id, const Id &parent)
+Object::Object(const Id &id)
 	: mId(id)
 {
-	setParent(parent);
 }
 
-void Object::replaceProperties(QString const value, QString newValue)
+Object::Object(QDomElement const &element)
+	: mId(Id::loadFromString(element.attribute("id", "")))
 {
-	foreach (QVariant val, mProperties.values()) {
+	if (mId == Id()) {
+		throw Exception("Id deserialization failed");
+	}
+
+	mParent = ValuesSerializer::deserializeId(element.attribute("parent", ""));
+
+	foreach (Id const &child, ValuesSerializer::deserializeIdList(element, "children")) {
+		mChildren.append(child);
+	}
+
+	QDomNodeList propertiesList = element.elementsByTagName("properties");
+	if (propertiesList.count() != 1) {
+		throw Exception("Incorrect element: children list must appear once");
+	}
+
+	QDomElement properties = propertiesList.at(0).toElement();
+	ValuesSerializer::deserializeNamedVariantsMap(mProperties, properties);
+}
+
+Object::~Object()
+{
+}
+
+void Object::replaceProperties(QString const value, QString const &newValue)
+{
+	foreach (QVariant const &val, mProperties.values()) {
 		if (val.toString().contains(value)) {
 			mProperties[mProperties.key(val)] = newValue;
 		}
 	}
 }
 
-Object::Object(const Id &id, const Id &parent, const qReal::Id &logicalId)
-	: mId(id), mLogicalId(logicalId)
-{
-	setParent(parent);
-}
-
-Object::Object(const Id &id) : mId(id)
-{
-}
-
 Object *Object::clone(QHash<Id, Object*> &objHash) const
 {
-	Id resultId = id().sameTypeId();
-	Object *result = new Object(resultId);
-	objHash.insert(resultId, result);
+	Object * const result = createClone();
+	objHash.insert(result->id(), result);
 
-	foreach (Id childId, mChildren) {
-		Object *child = objHash[childId]->clone(id(), objHash);
+	result->mParent = mParent;
+
+	foreach (Id const &childId, mChildren) {
+		Object * const child = objHash[childId]->clone(objHash);
+		child->setParent(mId);
 		result->addChild(child->id());
 	}
 
-	//using copy constructor
+	// Using copy constructor.
 	result->mProperties = mProperties;
-
-	return result;
-}
-
-Object *Object::clone(const Id &parent, QHash<Id, Object*> &objHash) const
-{
-	Object *result = clone(objHash);
-	result->setParent(parent);
 
 	return result;
 }
@@ -59,11 +73,6 @@ Object *Object::clone(const Id &parent, QHash<Id, Object*> &objHash) const
 void Object::setParent(const Id &parent)
 {
 	mParent = parent;
-}
-
-void Object::removeParent()
-{
-	mParent = qReal::Id();
 }
 
 void Object::addChild(const Id &child)
@@ -124,6 +133,7 @@ void Object::setProperty(QString const &name, const QVariant &value)
 		qDebug() << ", property name " << name;
 		Q_ASSERT(!"Empty QVariant set as a property");
 	}
+
 	mProperties.insert(name,value);
 }
 
@@ -229,17 +239,22 @@ Id Object::id() const
 	return mId;
 }
 
-Id Object::logicalId() const
-{
-	return mLogicalId;
-}
-
 QMapIterator<QString, QVariant> Object::propertiesIterator() const
 {
 	return QMapIterator<QString, QVariant>(mProperties);
 }
 
-QMap<QString, QVariant> Object::properties()
+QMap<QString, QVariant> Object::properties() const
 {
 	return mProperties;
+}
+
+QDomElement Object::serialize(QDomDocument &document) const
+{
+	QDomElement result = document.createElement("object");
+	result.setAttribute("id", id().toString());
+	result.setAttribute("parent", parent().toString());
+	result.appendChild(ValuesSerializer::serializeIdList("children", children(), document));
+	result.appendChild(ValuesSerializer::serializeNamedVariantsMap("properties", mProperties, document));
+	return result;
 }

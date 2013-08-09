@@ -2,12 +2,18 @@
 
 #include <QtWidgets/QWidget>
 #include <QtCore/QList>
+#include <QtCore/QRectF>
+#include <QtCore/QPointF>
+#include <QtGui/QPainter>
 
-#include "labelHelpers.h"
+#include "labelInterface.h"
+#include "labelFactoryInterface.h"
 #include "elementRepoInterface.h"
 #include "sdfRendererInterface.h"
 #include "../../qrkernel/ids.h"
 #include "portHelpers.h"
+
+namespace qReal {
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
@@ -62,3 +68,5 @@ public:
 		Q_UNUSED(shape);
 	}
 };
+
+}

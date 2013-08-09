@@ -5,6 +5,7 @@
 
 namespace qrRepo {
 
+/// Methods for working with logical model in a repository.
 class LogicalRepoApi : public CommonRepoApi
 {
 public:
