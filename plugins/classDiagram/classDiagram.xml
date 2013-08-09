@@ -2,6 +2,13 @@
 <metamodel xmlns="http://schema.real.com/schema/">
 	<namespace>UML 2.0</namespace>
 	<diagram nodeName="ClassDiagramNode" name="ClassDiagram" displayedName="Class Diagram">
+		<nonGraphicTypes>
+			<enum name="AccessType" displayedName="Access Type">
+				<value>public</value>
+				<value>protected</value>
+				<value>private</value>
+			</enum>
+		</nonGraphicTypes>
 		<graphicTypes>
 			<node name="ClassDiagramNode" displayedName="Class Diagram">
 				<graphics>
@@ -60,7 +67,9 @@
 					</container>
 					<properties>
 						<property type="string" name="Name" displayedName="Name"/>
-						<property type="string" name="Access" displayedName="Access"/>
+						<property type="AccessType" name="Access" displayedName="Access">
+							<default>public</default>
+						</property>
 						<property type="string" name="Summary" displayedName="Summary"/>
 					</properties>
 					<createChildrenFromMenu/>
@@ -68,7 +77,29 @@
 			</node>
 			<node name="Field" displayedName="Field">
 				<graphics>
-					<picture sizex="200" sizey="25"/>
+					<picture sizex="200" sizey="25">
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="13a" y2="13a" fill-style="none" x1="10a" x2="20a">
+							<showIf property="Access" value="public" sign="="/>
+						</line>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="8a" y2="18a" fill-style="none" x1="15a" x2="15a">
+							<showIf property="Access" value="public" sign="="/>
+						</line>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="13a" y2="13a" fill-style="none" x1="10a" x2="20a">
+							<showIf property="Access" value="private" sign="="/>
+						</line>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="8a" y2="18a" fill-style="none" x1="14a" x2="12a">
+							<showIf property="Access" value="protected" sign="="/>
+						</line>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="8a" y2="18a" fill-style="none" x1="18a" x2="16a">
+							<showIf property="Access" value="protected" sign="="/>
+						</line>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="11a" y2="11a" fill-style="none" x1="12a" x2="19a">
+							<showIf property="Access" value="protected" sign="="/>
+						</line>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="15a" y2="15a" fill-style="none" x1="11a" x2="18a">
+							<showIf property="Access" value="protected" sign="="/>
+						</line>
+					</picture>
 					<labels>
 						<label x="0a" y="0a" textBinded="Name"/>
 					</labels>
@@ -79,7 +110,9 @@
 					<properties>
 						<property type="string" name="FieldType" displayedName="Type"/>
 						<property type="string" name="Name" displayedName="Name"/>
-						<property type="string" name="Access" displayedName="Access"/>
+						<property type="AccessType" name="Access" displayedName="Access">
+							<default>public</default>
+						</property>
 						<property type="string" name="Summary" displayedName="Summary"/>
 					</properties>
 				</logic>
@@ -126,7 +159,9 @@
 					</container>
 					<properties>
 						<property type="string" name="Name" displayedName="Name"/>
-						<property type="string" name="Access" displayedName="Access"/>
+						<property type="AccessType" name="Access" displayedName="Access">
+							<default>public</default>
+						</property>
 						<property type="string" name="Summary" displayedName="Summary"/>
 						<property type="string" name="Remarks" displayedName="Remarks"/>
 					</properties>
