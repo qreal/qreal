@@ -144,6 +144,7 @@ QPainterPath WorldModel::buildWallPath() const
 	foreach (WallItem* wall, mWalls) {
 		wallPath.moveTo(wall->begin());
 		wallPath.lineTo(wall->end());
+
 	}
 	return wallPath;
 }

@@ -81,12 +81,28 @@ private:
 		int degrees;
 		ATime activeTimeType;
 		bool isUsed;
+		qreal VK_mMotorFactor;
 	};
 
 	struct Beep {
 		unsigned freq;
 		int time;
 	};
+
+	void VK_checkCollision(WallItem &wall);
+	void VK_setWall(int index, WallItem* wall){VK_mRobotWalls[index] = wall;}
+	bool VK_isCollision(WallItem &wall, int i);
+	bool VK_isEdgeCollision(WallItem &wall, int i);
+	void VK_getRobotFromWall(WallItem& wall, int index);
+    void VK_getEdgeRobotFromWall(WallItem& wall, int index);
+	void VK_setEdgeWall(int index, WallItem* wall){VK_mRobotEdgeWalls[index] = wall;}
+    void VK_updateVelocity(qreal dt);
+    void VK_updateCoord();
+	QLineF VK_interRobotLine(WallItem& wall);
+    QLineF VK_interWallLine(WallItem& wall);
+	QLineF VK_nearRobotLine(WallItem& wall, QPointF p);
+	QPointF VK_normalPoint(qreal x1, qreal y1, qreal x2, qreal y2, qreal x3, qreal y3);
+
 
 	void setSpeedFactor(qreal speedMul);
 	void initPosition();
@@ -127,6 +143,108 @@ private:
 	bool mNeedSync;
 	bool mNeedSensorNoise;
 	bool mNeedMotorNoise;
+
+	QVector2D VK_mForce;//vector
+    qreal VK_mForceMoment;
+    QVector2D VK_mV; //velocity vector
+	QVector2D VK_mVA;
+	QVector2D VK_mVB;
+
+	void updateRegion()
+	{
+		VK_mBoundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
+	}
+
+	QPainterPath VK_mBoundingRegion;
+
+
+    qreal VK_mMass;
+    qreal VK_mSize;
+	const qreal VK_mMomentI = 200;
+	QVector2D VK_getVA() const;
+	QVector2D VK_getVB() const;
+	QVector2D VK_getV() const;
+
+    void VK_nextStep();
+
+    qreal VK_mFullSpeed;
+	qreal VK_mFullSpeedA;
+	qreal VK_mFullSpeedB;
+
+	qreal VK_scalarProduct(QVector2D vector1, QVector2D vector2);
+    qreal VK_vectorProduct(QVector2D vector1, QVector2D vector2);
+
+	void VK_setV(QVector2D &V);
+
+	qreal VK_getAngle()
+    {
+        return mAngle;
+    }
+    qreal VK_getMass()
+    {
+        return VK_mMass;
+    }
+    qreal VK_getSize()
+    {
+        return VK_mSize;
+    }
+
+  //  qreal VK_getFullSpeed()
+  //  {
+    //    return VK_mFullSpeed;
+  //  }
+    qreal VK_getInertiaMoment()
+    {
+        return VK_mMomentI;
+    }
+
+    qreal VK_getAngularVelocity()
+    {
+        return VK_mAngularVelocity;
+    }
+    QVector2D VK_getForce()
+    {
+        return VK_mForce;
+    }
+    qreal VK_getForceMoment()
+    {
+        return VK_mForceMoment;
+    }
+    void VK_setForce(QVector2D force)
+    {
+        VK_mForce = force;
+    }
+    void VK_setForceMoment(qreal forceMoment)
+    {
+        VK_mForceMoment = forceMoment;
+    }
+
+	qreal VK_getFullSpeed()
+    {
+        return VK_mFullSpeed;
+    }
+	qreal VK_getFullSpeedA()
+    {
+        return VK_mFullSpeedA;
+    }
+	qreal VK_getFullSpeedB()
+    {
+        return VK_mFullSpeedB;
+    }
+
+
+    qreal VK_mAngularVelocity;
+
+	WallItem* VK_mRobotWalls[4]; // Массив вершин, хранящих указатели на стены
+    WallItem* VK_mRobotEdgeWalls[4]; // Массив ребер, хранящих указатели на стены
+
+	QList<QPointF> VK_mEdP; // Массив вершин(стен), которые попали внутрь робота
+    QPointF VK_mP[4]; // Массив вершин робота
+    QLineF VK_mL[4]; // Массив ребер робота
+
+
+
+
 };
 
 }

@@ -19,6 +19,29 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 {
 	setPrivateData();
 	setAcceptDrops(true);
+
+/*	QPainterPathStroker wallPathStroker;
+	wallPathStroker.setWidth(stroke);
+	QPainterPath const wallPath = buildWallPath();
+	QPainterPath const wallStrokedPath = stroke
+			? wallPathStroker.createStroke(wallPath)
+			: wallPath;
+
+	VK_mWallPath =*/
+	VK_setLines();
+	VK_setWallPath();
+}
+
+void WallItem::VK_setWallPath(int stroke)
+{
+
+	QPainterPath wallPath;
+	wallPath.moveTo(VK_mP[0]);
+	wallPath.lineTo(VK_mP[1]);
+	wallPath.lineTo(VK_mP[2]);
+	wallPath.lineTo(VK_mP[3]);
+	wallPath.lineTo(VK_mP[0]);
+	VK_mWallPath = wallPath;
 }
 
 void WallItem::setPrivateData()
@@ -66,6 +89,7 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
 	mOldX1 = qAbs(mX1 - event->scenePos().x());
 	mOldY1 = qAbs(mY1 - event->scenePos().y());
+
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -94,6 +118,8 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		emit wallDragged(this, realShape(), oldPos);
 	}
 	event->accept();
+	VK_setLines();
+	VK_setWallPath();
 }
 
 bool WallItem::isDragged()
@@ -126,4 +152,35 @@ void WallItem::deserializePenBrush(QDomElement const &element)
 void WallItem::onOverlappedWithRobot(bool overlapped)
 {
 	mOverlappedWithRobot = overlapped;
+}
+
+void WallItem::VK_setLines()
+{
+	VK_linesList.clear();
+
+	qreal x1 = begin().rx();// mX1;// + scenePos().rx();
+	qreal x2 = end().rx();// mX2;// + scenePos().rx();
+	qreal y1 = begin().ry();// mY1;// + scenePos().ry();
+	qreal y2 = end().ry();// mY2;// + scenePos().ry();
+
+	QVector2D norm (y1 - y2, x2 - x1);
+	norm = norm.normalized();
+	norm.operator *=(mPen.widthF()); //= norm*mPen.widthF();
+
+	VK_mP[0] = QPointF(x1 + norm.x(), y1 + norm.y());
+    VK_mP[1] = QPointF(x1 - norm.x(), y1 - norm.y());
+    VK_mP[2] = QPointF(x2 - norm.x(), y2 - norm.y());
+    VK_mP[3] = QPointF(x2 + norm.x(), y2 + norm.y());
+
+	//VK_mP[0] += scenePos();
+	//VK_mP[1] += scenePos();
+	//VK_mP[2] += scenePos();
+	//VK_mP[3] += scenePos();
+
+	VK_linesList.push_back(QLineF(VK_mP[0],VK_mP[1]));
+    VK_linesList.push_back(QLineF(VK_mP[1],VK_mP[2]));
+    VK_linesList.push_back(QLineF(VK_mP[2],VK_mP[3]));
+    VK_linesList.push_back(QLineF(VK_mP[3],VK_mP[0]));
+
+
 }

@@ -8,6 +8,7 @@ using namespace details;
 using namespace d2Model;
 using namespace mathUtils;
 
+
 unsigned long const black   = 0xFF000000;
 unsigned long const white   = 0xFFFFFFFF;
 unsigned long const red     = 0xFFFF0000;
@@ -40,6 +41,11 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		, mNeedMotorNoise(SettingsManager::value("enableNoiseOfMotors").toBool())
 {
 	mAngle = 0;
+
+	VK_mFullSpeed = 1;
+	VK_mFullSpeedA = 1;
+	VK_mFullSpeedB = 1;
+
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
 	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()), Qt::UniqueConnection);
@@ -78,6 +84,7 @@ void D2RobotModel::clear()
 D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed)
 {
 	Motor *motor = new Motor();
+	motor->VK_mMotorFactor = 0;
 	motor->radius = radius;
 	motor->speed = speed;
 	motor->degrees = degrees;
@@ -108,6 +115,7 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	} else {
 		mMotors[port]->activeTimeType = DoByLimit;
 	}
+	if (speed != 0) mMotors[port]->VK_mMotorFactor = 5;
 }
 
 int D2RobotModel::varySpeed(int const speed) const
@@ -383,59 +391,20 @@ unsigned long D2RobotModel::spoilLight(unsigned long const color) const
 void D2RobotModel::startInit()
 {
 	initPosition();
-	mTimeline->start();
-}
 
-void D2RobotModel::startInterpretation()
-{
-	startInit();
-	mD2ModelWidget->startTimelineListening();
-}
 
-void D2RobotModel::stopRobot()
-{
-	mMotorA->speed = 0;
-	mMotorB->speed = 0;
-	mMotorC->speed = 0;
-	mD2ModelWidget->stopTimelineListening();
-}
 
-void D2RobotModel::countBeep()
-{
-	if (mBeep.time > 0) {
-		mD2ModelWidget->drawBeep(true);
-		mBeep.time -= Timeline::frameLength;
-	} else {
-		mD2ModelWidget->drawBeep(false);
-	}
-}
+	//mPos = QPointF (0, 0);
+	mAngle = 0;
 
-void D2RobotModel::countNewCoord()
-{
-	Motor *motor1 = mMotorA;
-	Motor *motor2 = mMotorB;
 
-	if (mMotorC->isUsed) {
-		if (!mMotorA->isUsed) {
-			motor1 = mMotorC;
-		} else if (!mMotorB->isUsed) {
-			motor2 = mMotorC;
-		}
-	}
+	//qreal deltaY = 0;
+	//qreal deltaX = 0;
+	//qreal const averageSpeed = (vSpeed + uSpeed) / 2;
 
-	int const sspeed1 = mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
-	int const sspeed2 = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
-
-	qreal const vSpeed = sspeed1 * 2 * M_PI * motor1->radius * onePercentAngularVelocity / 360;
-	qreal const uSpeed = sspeed2 * 2 * M_PI * motor2->radius * onePercentAngularVelocity / 360;
-
-	qreal deltaY = 0;
-	qreal deltaX = 0;
-	qreal const averageSpeed = (vSpeed + uSpeed) / 2;
-
-	qreal const oldAngle = mAngle;
-	QPointF const oldPosition = mPos;
-
+	//qreal const oldAngle = mAngle;
+	//QPointF const oldPosition = mPos;
+/*
 	if (sspeed1 != sspeed2) {
 		qreal const vRadius = vSpeed * robotHeight / (vSpeed - uSpeed);
 		qreal const averageRadius = vRadius - robotHeight / 2;
@@ -469,30 +438,558 @@ void D2RobotModel::countNewCoord()
 		deltaX = averageSpeed * Timeline::timeInterval * cos(mAngle * M_PI / 180);
 	}
 
-	QPointF const delta(deltaX, deltaY);
-	mPos += delta;
+	QPointF const delta( , deltaY);
+	//mPos += delta;
 
 	if(mAngle > 360) {
 		mAngle -= 360;
 	}
+*/
+
+
+
+
+
+
+
+
+	mTimeline->start();
+}
+
+void D2RobotModel::startInterpretation()
+{
+	startInit();
+
+
+	VK_mMass = 100;
+	VK_mV = QVector2D(0,0);
+	VK_mVA = QVector2D(0,0);
+	VK_mVB = QVector2D(0,0);
+	VK_mFullSpeed = 0.1;
+	VK_mFullSpeedA = 0.1;
+	VK_mFullSpeedB = 0.1;
+	VK_mAngularVelocity = 0;
+	VK_mForce = QVector2D(0,0);
+	VK_mForceMoment = 0;
+	mAngle = 0;
+	//mPos = QPointF(0,0);
+	VK_updateCoord();
+
+	mD2ModelWidget->startTimelineListening();
+}
+
+void D2RobotModel::stopRobot()
+{
+	mMotorA->speed = 0;
+	mMotorB->speed = 0;
+	mMotorC->speed = 0;
+	mD2ModelWidget->stopTimelineListening();
+}
+
+void D2RobotModel::countBeep()
+{
+	if (mBeep.time > 0) {
+		mD2ModelWidget->drawBeep(true);
+		mBeep.time -= Timeline::frameLength;
+	} else {
+		mD2ModelWidget->drawBeep(false);
+	}
+}
+
+qreal D2RobotModel::VK_vectorProduct(QVector2D vector1, QVector2D vector2)
+{
+    return  vector1.x()*vector2.y() - vector1.y()*vector2.x();
+}
+
+qreal D2RobotModel::VK_scalarProduct(QVector2D vector1, QVector2D vector2)
+{
+    return vector1.x()*vector2.x() + vector1.y()*vector2.y();
+}
+
+QVector2D D2RobotModel::VK_getVA()const
+{
+    return VK_mVA;
+}
+
+QVector2D D2RobotModel::VK_getVB()const
+{
+    return VK_mVB;
+}
+QVector2D D2RobotModel::VK_getV()const
+{
+    return VK_mV;
+}
+void D2RobotModel::VK_setV(QVector2D& V)
+{
+    qreal V0 = VK_getFullSpeed();
+	qreal V0A = VK_getFullSpeedA();
+	qreal V0B = VK_getFullSpeedB();
+	qreal V0_ = V0 > (V0A +V0B)/2. ? V0 : (V0A +V0B)/2.;
+	V0_ = V0;
+    if(V.length() > V0_)
+    {
+        qreal x = V0_/V.length();
+        V *= x;
+    }
+    VK_mV = V;
+}
+
+QLineF D2RobotModel::VK_nearRobotLine(WallItem& wall, QPointF p) // Возвращает наименьший из перпендикуляров от точки до ребер стены
+{
+    QList<qreal> len;
+    qreal min=0;
+    for(int i = 0; i<4; i++)
+    {
+        QLineF l;
+        l= wall.VK_getLine(i);
+        QPointF normPoint = VK_normalPoint(l.x1(), l.y1(), l.x2(), l.y2(), p.rx(),p.ry());
+        QLineF k (p.rx(), p.ry(), normPoint.rx(),normPoint.ry());
+        len.push_back( k.length());
+        if (min == 0){
+            min = k.length();
+        }
+        if (k.length() < min){
+            min = k.length();
+        }
+    }
+    int j = len.indexOf(min);
+    return wall.VK_getLine(j);
+}
+
+QPointF D2RobotModel::VK_normalPoint(qreal x1, qreal y1, qreal x2, qreal y2, qreal x3, qreal y3) // Возвращает точку прямой, в которую опустится перпендикуляр из заданной точки
+{
+    if (x1 == x2) return QPointF(x2, y3);
+    qreal x0 = (x1*(y2-y1)*(y2-y1) + x3*(x2-x1)*(x2-x1) + (x2-x1)*(y2-y1)*(y3-y1))/((y2-y1)*(y2-y1) + (x2-x1)*(x2-x1));
+    qreal y0 = ((y2-y1)*(x0-x1)/(x2-x1))+y1;
+    return QPointF(x0, y0);
+}
+void D2RobotModel::VK_updateCoord() // Обновляет координаты вершин
+{
+
+
+	double x = mPos.rx()+25;
+    double y = mPos.ry()+25;
+    double nx = cos(mAngle * M_PI/180);
+    double ny = sin(mAngle * M_PI/180);
+
+	int mSize = 50;// //!!!!!!!!!!!!!!!!!!!!!
+
+    double nnx = nx*(mSize/2);
+    double nny = ny*(mSize/2);
+
+    VK_mP[0] = QPointF(x + nnx + nny, y + nny - nnx);
+    VK_mP[1] = QPointF(x + nnx - nny, y + nny + nnx);
+    VK_mP[2] = QPointF(x - nnx - nny, y - nny + nnx);
+    VK_mP[3] = QPointF(x - nnx + nny, y - nny - nnx);
+
+    for (int i = 0; i < 3; i++) {
+        VK_mL[i] = QLineF(VK_mP[i], VK_mP[i+1]);
+    }
+    VK_mL[3] = QLineF(VK_mP[3], VK_mP[0]);
+
+}
+void D2RobotModel::VK_checkCollision(WallItem& wall) // Проверяет коллизии
+{
+	//mD2ModelWidget->VK_addR();
+	VK_mEdP.clear();
+	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
+	if (mWorldModel.checkCollision(boundingRegion)) {
+        for(int i = 0; i <4; i++)
+        {
+  //          QPointF new_p = wall.mapFromScene(VK_mP[i]);
+//			QPointF new_p = this-> mapToScene(VK_mP[i]);
+			QPointF new_p = VK_mP[i];
+			mD2ModelWidget->VK_addR(new_p.rx(), new_p.ry());
+			mD2ModelWidget->VK_addR(mPos.rx(), mPos.ry());
+
+			mD2ModelWidget->VK_addR(wall.VK_mP[0].rx(), wall.VK_mP[0].ry());
+			mD2ModelWidget->VK_addR(wall.VK_mP[1].rx(), wall.VK_mP[1].ry());
+			mD2ModelWidget->VK_addR(wall.VK_mP[2].rx(), wall.VK_mP[2].ry());
+			mD2ModelWidget->VK_addR(wall.VK_mP[3].rx(), wall.VK_mP[3].ry());
+
+			mD2ModelWidget->VK_addR(wall.begin().rx(), wall.begin().ry());
+			mD2ModelWidget->VK_addR(wall.end().rx(), wall.end().ry());
+
+			if (wall.VK_mWallPath.contains(new_p)) {
+                if(VK_mRobotWalls[i]== NULL) {
+                    //Vnormal = 0
+                    QLineF border = VK_interRobotLine(wall);
+                    QPointF normPoint = VK_normalPoint(border.x1(), border.y1(), border.x2(), border.y2(), VK_mP[i].rx(), VK_mP[i].ry());
+
+                    QVector2D n (-normPoint.rx() + VK_mP[i].rx(), -normPoint.ry() + VK_mP[i].ry());
+                    n = n.normalized();
+                    if (!(n.length() < 1.e-10)) {
+                        QVector2D V = VK_getV();
+                        qreal k = VK_scalarProduct(V, n);
+                        QVector2D V1 (V - n * k);
+                        VK_setV(V1);
+                    }
+                }
+                VK_setWall(i, &wall);
+            } else {
+                if (VK_mRobotWalls[i] == &wall){
+                    VK_setWall(i, NULL);
+                }
+                //QPointF p = mapFromScene(wall.VK_getPoint(i));
+				QPointF p = wall.VK_getPoint(i);
+				//bool isContain =
+
+				if (VK_mBoundingRegion.contains(p)) {
+                   // p = mapToScene(p);
+                    QLineF border = VK_interWallLine(wall);
+                    QPointF normPoint = VK_normalPoint(border.x1(), border.y1(), border.x2(), border.y2(), p.rx(), p.ry());
+                    QVector2D n (-normPoint.rx() + p.rx(), -normPoint.ry() + p.ry());
+                    n = n.normalized();
+                    QVector2D V1 (0,0);
+                    VK_setV(V1);
+                    VK_mEdP.push_back(p);
+                    VK_mAngularVelocity=0;
+                } else {
+                    if (VK_mRobotEdgeWalls[i] == &wall){
+                        VK_setEdgeWall(i, NULL);
+                    }
+                }
+
+            }
+        }
+    } else {
+        for (int i = 0; i < 4; i++) {
+
+            if (VK_mRobotWalls[i] == &wall) {
+                VK_mRobotWalls[i] = NULL;
+                VK_mAngularVelocity = 0;
+            }
+        }
+    }
+
+}
+
+void D2RobotModel::countNewCoord()
+{
+	VK_updateCoord();
+	/*
+	Motor *motor1 = mMotorA;
+	Motor *motor2 = mMotorB;
+
+	if (mMotorC->isUsed) {
+		if (!mMotorA->isUsed) {
+			motor1 = mMotorC;
+		} else if (!mMotorB->isUsed) {
+			motor2 = mMotorC;
+		}
+	}
+
+	int const sspeed1 = mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
+	int const sspeed2 = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
+
+	qreal const vSpeed = sspeed1 * 2 * M_PI * motor1->radius * onePercentAngularVelocity / 360;
+	qreal const uSpeed = sspeed2 * 2 * M_PI * motor2->radius * onePercentAngularVelocity / 360;
+
+	QVector2D VK_V(vSpeed * cos(mAngle * M_PI / 180), uSpeed * sin(mAngle * M_PI / 180));
+	VK_mFullSpeed = VK_V.length();
+	VK_mV = VK_V;
 
 	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
 	if (mWorldModel.checkCollision(boundingRegion)) {
-		mPos = oldPosition;
-		mAngle = oldAngle;
-	}
+	*/
+		// ///***
+		// ///***
+		VK_setForce(QVector2D(0,0));
+	    VK_setForceMoment(0);
+
+	    qreal rotationalFricFactor = VK_getV().length()*150; // Коэффициент трения поверхности, возникающего при повроте зависит от скорости робота
+	    qreal angularVelocityFricFactor = fabs(VK_mAngularVelocity*100); // Коэффициент момента силы трения поверхности, возникающего при повроте зависит от угловой скорости робота
+
+		QVector2D napr (cos(mAngle * M_PI / 180), sin (mAngle * M_PI / 180));
+
+		qreal VA = VK_getFullSpeedA();
+		qreal VB = VK_getFullSpeedB();
+		qreal V0 = VK_getFullSpeed();
+	    qreal scalProdA = VK_scalarProduct(VK_getVA(), napr);
+	    qreal scalProdB = VK_scalarProduct(VK_getVB(), napr);
+	    qreal scalProd = VK_scalarProduct(VK_getV(), napr);
+	    qreal tmpA = ( VA - scalProdA) * mMotorB->VK_mMotorFactor;
+		qreal tmpB = ( VB - scalProdB) * mMotorC->VK_mMotorFactor;
+		qreal tmp2 = ( V0 - scalProd) * mMotorA->VK_mMotorFactor;
+	    QVector2D F_engine = napr*tmp2;
+		QPointF p0 (mPos.rx() + 25, mPos.ry() + 25);
+	    VK_mForce = F_engine;
+		//calculate F_engine_A  F_engine_B
+
+		QVector2D tmpAr(VK_mP[0].rx() - p0.rx(), VK_mP[0].ry() - p0.ry());
+		QVector2D tmpBr(VK_mP[1].rx() - p0.rx(), VK_mP[1].ry() - p0.ry());
+
+		QVector2D F_engine_A = napr*tmpA;
+		QVector2D F_engine_B = napr*tmpB;
+
+
+		VK_mForce  += F_engine_A;
+		VK_mForce  += F_engine_B;
+
+
+
+		qreal mForceMomentA = VK_vectorProduct(F_engine_A, tmpAr);
+		qreal mForceMomentB = VK_vectorProduct(F_engine_B, tmpBr);
+		VK_mForceMoment -= mForceMomentA;
+		VK_mForceMoment -= mForceMomentB;
+
+	    for (int i = 0; i < 4; i++) { // Если врезались в угол стены
+	        if (VK_mRobotEdgeWalls[i] != NULL){
+	            for (int j = 0; j < VK_mEdP.length(); j++) {
+	                QVector2D tmp(VK_mEdP.at(j) - p0);
+	                QVector2D F_norm = VK_mForce;
+	                F_norm *= -1;
+	                qreal a = VK_vectorProduct(F_norm, tmp);
+	                VK_mForceMoment -= a;
+	            }
+	        }
+	    }
+
+
+
+	    for (int i = 0; i < 4; i++) { // Если врезались в ребро стены
+	        if (VK_mRobotWalls[i] != NULL){
+
+	            QVector2D tmp(VK_mP[i] - p0);
+
+	            QLineF bord = VK_nearRobotLine(*VK_mRobotWalls[i], VK_mP[i]);
+	            qreal ang = bord.angle();
+	            QVector2D vectorParalStene (cos(ang*M_PI/180),-sin(ang*M_PI/180));
+
+	            if (VK_scalarProduct(vectorParalStene, napr) < 0) {
+	                vectorParalStene *= (-1);
+	            }
+	            vectorParalStene = vectorParalStene.normalized();
+
+	            QVector2D F_norm = VK_mForce;
+
+	            double sc1 = VK_scalarProduct(VK_mForce, vectorParalStene);
+	            F_norm -= vectorParalStene* sc1;
+
+	            F_norm *= -1;
+	            QVector2D F_fr_wall;
+
+	            vectorParalStene *= -1;
+
+	            F_fr_wall = vectorParalStene;
+	            F_fr_wall *= F_norm.length() * 0.2; //VK_mRobotWalls[i]->getFric();
+
+	            VK_mForce += F_norm;
+	            VK_mForce += F_fr_wall;
+
+	            qreal a = VK_vectorProduct(F_fr_wall, tmp);
+	            qreal b = VK_vectorProduct(F_norm , tmp);
+
+	            VK_setForceMoment(VK_mForceMoment - a);
+	            VK_setForceMoment(VK_mForceMoment - b);
+
+
+	        }
+	    }
+
+	    QVector2D V = VK_getV();
+	    QVector2D V1 = V + VK_mForce / VK_mMass * Timeline::timeInterval;
+	    VK_setV(V1);// /////////////////
+
+	    qreal momentI = VK_getInertiaMoment();
+	    VK_mAngularVelocity += VK_mForceMoment /  momentI * Timeline::timeInterval;
+
+	        // Далее анализируем трение поворота и момент трения поворота
+	    qreal tmpAngVel = VK_mAngularVelocity;
+	    if (VK_mAngularVelocity > 0) {
+	        VK_mAngularVelocity -= angularVelocityFricFactor / momentI * Timeline::timeInterval;
+	    } else {
+	        VK_mAngularVelocity += angularVelocityFricFactor / momentI * Timeline::timeInterval;
+	    }
+	    if (tmpAngVel * VK_mAngularVelocity <= 0) {
+	        VK_mAngularVelocity = 0;
+	    }
+
+
+	    QVector2D rotationalFrictionF (-napr.y(), napr.x());
+
+	    rotationalFrictionF = rotationalFrictionF.normalized();
+
+	    QVector2D tmpV = VK_getV();
+	    if (tmpV.length() != 0) {
+	        tmpV = tmpV.normalized();
+	    }
+	    qreal sinus = VK_vectorProduct(tmpV, rotationalFrictionF);
+
+	    rotationalFrictionF = rotationalFrictionF *(sinus * rotationalFricFactor);
+
+	    V = VK_getV();
+	    if (VK_scalarProduct(rotationalFrictionF, V) > 0) {
+	        rotationalFrictionF = -rotationalFrictionF;
+	    }
+
+	    QVector2D newV = V + rotationalFrictionF / VK_mMass * Timeline::timeInterval;
+	    qreal sc_1 = VK_scalarProduct(newV, rotationalFrictionF);
+	    if (sc_1 > 0) {
+	        qreal sc_2 = -VK_scalarProduct(V, rotationalFrictionF);
+	        qreal dt_tmp = Timeline::timeInterval *sc_2/(sc_2 + sc_1);
+	        QVector2D V1 = V + rotationalFrictionF / VK_mMass * dt_tmp;
+	        VK_setV(V1);
+
+	    }  else {
+	        VK_setV(newV);
+	    }
+	    V = VK_getV();
+	    if ( V.length() > V0){
+	        newV = V.normalized() * V0;
+	        VK_setV(newV);
+	    }
+
+		qreal temp = 0;
+
+		// ***///
+		// ***///
+
+
+
+
+		//mPos = oldPosition;
+		//mAngle = oldAngle;
+	//}
+}
+
+void D2RobotModel::VK_getRobotFromWall(WallItem& wall, int index) // Вытаскивает из стены по заданной вершине робота
+{
+	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
+	if (boundingRegion.intersects(wall.VK_mWallPath)){
+        QPointF p = VK_mP[index];
+        QLineF border = VK_nearRobotLine(wall, p);
+        QPointF pntIntersect = VK_normalPoint(border.x1(), border.y1(), border.x2(), border.y2(), p.rx(), p.ry());
+        QPointF k;
+        k = pntIntersect -= p;
+        QPointF curPos = robotPos();
+        mPos = (curPos+=k);
+        VK_updateCoord();
+    }
+}
+
+void D2RobotModel::VK_getEdgeRobotFromWall(WallItem& wall, int index) // Вытаскивает из стены по заданному ребру робота
+{
+	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
+
+    if (boundingRegion.intersects(wall.VK_mWallPath)){
+        QLineF l = VK_mL[index];
+        for (int i = 0; i<4; i++)
+        {
+			QPointF p = wall.VK_getPoint(i);
+            //QPointF p = mapFromScene(wall.VK_getPoint(i));
+            if (boundingRegion.contains(p)){
+                //p = mapToScene(p);
+                QPointF pntIntersect = VK_normalPoint(l.x1(), l.y1(), l.x2(), l.y2(), p.rx(), p.ry());
+                QPointF k (p.rx() - pntIntersect.rx(),p.ry() - pntIntersect.ry());
+                QPointF curPos = robotPos();
+                mPos = (curPos+=k);
+                VK_updateCoord();
+            }
+        }
+    }
+}
+
+QLineF D2RobotModel::VK_interRobotLine(WallItem& wall) // Возвращает ребро стены, в которое въехал робот
+{
+	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
+
+    QLineF tmpLine;
+    for(int i = 0; i<4; i++)
+    {
+		QLineF l = wall.VK_getLine(i);
+		QPainterPath p(l.p1());
+		p.lineTo(l.p2());
+
+        if (boundingRegion.intersects(p)){
+            tmpLine = l;
+        }
+    }
+    return tmpLine;
+}
+
+QLineF D2RobotModel::VK_interWallLine(WallItem& wall) // Возвращает ребро робота, которым робот въехал в стену
+{
+    QLineF tmpLine;
+    QGraphicsLineItem *l = new QGraphicsLineItem(0,0,0,0);
+    for(int i = 0; i<4; i++)
+    {
+        l->setLine(VK_mL[i]);
+        if (wall.collidesWithItem(l)){
+            tmpLine = l->line();
+            VK_setEdgeWall(i, &wall);
+        }
+    }
+    return tmpLine;
+}
+
+bool D2RobotModel::VK_isCollision(WallItem& wall, int i) // Проверяет коллизию поиском вершины робота в стене
+{
+    //QPointF new_p = wall.mapFromScene(mP[i]);
+	return (wall.VK_mWallPath.contains(VK_mP[i]));
+}
+
+bool D2RobotModel::VK_isEdgeCollision(WallItem& wall, int i) // Проверяет наличие пересечения ребра робота со стеной
+{
+    QPainterPath path (VK_mL[i].p1() );
+    path.lineTo(VK_mL[i].p2());
+    return (wall.VK_mWallPath.intersects(path));
+}
+
+void D2RobotModel::VK_nextStep() // Делает шаг и меняет угол
+{
+    QVector2D curPos(mPos);
+    curPos += VK_getV() * Timeline::timeInterval;
+    mPos = QPointF(curPos.x(), curPos.y());
+    qreal timeInterval = Timeline::timeInterval;
+	mAngle += VK_mAngularVelocity * timeInterval;
+    VK_updateCoord();
 }
 
 void D2RobotModel::recalculateParams()
 {
+
 	// do nothing until robot gets back on the ground
 	if (!mD2ModelWidget->isRobotOnTheGround()) {
 		mNeedSync = true;
 		return;
 	}
 	synchronizePositions();
+	// //**VK
+	for (int i = 0; i < 4; i++)
+    {
+        VK_setWall(i, NULL);
+    }
+
+    for (int i = 0; i < mWorldModel.mWalls.length(); i++) { // Ищет коллизии
+        VK_checkCollision(*(mWorldModel.mWalls[i]));
+            VK_updateCoord();
+    }
+    //robot->updateVelocity(mDelta); // Считаем изменение скорости и угла
 	countNewCoord();
+
+    for (int i = 0; i < 4; i++){ // Вытаскиваем из стен
+        for (int j = 0; j < mWorldModel.mWalls.length(); j++) {
+            if (VK_isCollision(*(mWorldModel.mWalls[j]), i)) {
+                VK_getRobotFromWall(*(mWorldModel.mWalls[j]), i);
+            }
+            if (VK_isEdgeCollision(*(mWorldModel.mWalls[j]), i)) {
+                if (VK_mRobotEdgeWalls[i] != NULL) {
+                    VK_getEdgeRobotFromWall(*(mWorldModel.mWalls[j]), i);
+                }
+            }
+        }
+    }
+    VK_nextStep(); //Сдвигаем и поварачиваем
+	// **//VK
+
+
+
+
+
+	//countNewCoord();
 	countMotorTurnover();
+
 }
 
 void D2RobotModel::nextFragment()

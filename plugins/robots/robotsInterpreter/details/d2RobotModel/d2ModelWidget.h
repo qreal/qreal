@@ -97,6 +97,9 @@ public:
 
 	void loadXml(QDomDocument const &worldModel);
 
+	void VK_addR(qreal a, qreal b);
+	QPointF pointCoord(QPointF point);
+
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
