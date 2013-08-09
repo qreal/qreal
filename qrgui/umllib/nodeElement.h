@@ -24,12 +24,10 @@
 
 #include "serializationData.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+
+namespace commands {
 class ResizeCommand;
-}
 }
 
 class NodeElement : public Element
@@ -295,3 +293,5 @@ private:
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;
 };
+
+}

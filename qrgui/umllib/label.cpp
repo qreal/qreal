@@ -13,7 +13,7 @@ Label::Label(qreal x, qreal y, QString const &text, qreal rotation)
 		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
 		, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
 {
-	setFlags(ItemIsSelectable | ItemIsMovable);
+	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
 	setPos(x, y);
 	setText(text);
@@ -25,10 +25,14 @@ Label::Label(qreal x, qreal y, QString const &binding, bool readOnly, qreal rota
 		, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
 		, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
 {
-	setFlags(ItemIsSelectable | ItemIsMovable);
+	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
 	setPos(x, y);
 	setRotation(mRotation);
+}
+
+Label::~Label()
+{
 }
 
 QString Label::createTextForRepo() const
@@ -45,13 +49,13 @@ void Label::moveToParentCenter()
 		return;
 	}
 
-	if (orientation() == OrientationType::horizontal) {
+	if (orientation() == Qt::Horizontal) {
 		qreal parentCenter = mParentContents.x() + mParentContents.width() / 2;
 		qreal titleCenter = x() + mContents.width() / 2;
 		qreal diff = parentCenter - titleCenter;
 
 		setX(x() + diff);
-	} else if (orientation() == OrientationType::vertical) {
+	} else if (orientation() == Qt::Vertical) {
 		qreal parentCenter = mParentContents.y() + mParentContents.height() / 2;
 		qreal titleCenter = y() - mContents.width() / 2;
 		qreal diff = parentCenter - titleCenter;
@@ -60,12 +64,13 @@ void Label::moveToParentCenter()
 	}
 }
 
-OrientationType::OrientationType Label::orientation()
+Qt::Orientation Label::orientation()
 {
 	if (abs(rotation()) == 90) {
-		return OrientationType::vertical;
+		return Qt::Vertical;
 	}
-	return OrientationType::horizontal;
+
+	return Qt::Horizontal;
 }
 
 void Label::setText(const QString &text)
@@ -77,7 +82,7 @@ void Label::setText(const QString &text)
 void Label::setTextFromRepo(QString const& text)
 {
 	if (!text.contains(propertiesSeparator)) {
-		setHtml(text); // need this to load old saves with html markup
+		QGraphicsTextItem::setHtml(text); // need this to load old saves with html markup
 		setText(toPlainText());
 		updateData();
 		return;
@@ -121,6 +126,26 @@ void Label::scaleCoordinates(QRectF const &contents)
 	setPos(x, y);
 }
 
+void Label::setFlags(GraphicsItemFlags flags)
+{
+	QGraphicsTextItem::setFlags(flags);
+}
+
+void Label::setTextInteractionFlags(Qt::TextInteractionFlags flags)
+{
+	QGraphicsTextItem::setTextInteractionFlags(flags);
+}
+
+void Label::setHtml(QString const &html)
+{
+	QGraphicsTextItem::setHtml(html);
+}
+
+void Label::setPlainText(QString const &text)
+{
+	QGraphicsTextItem::setPlainText(text);
+}
+
 void Label::setProperties(qreal x, qreal y, qreal width, QString const &text)
 {
 	mContents.setWidth(width);
@@ -149,14 +174,14 @@ void Label::setTitleFont()
 void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (!mShouldMove) {
-		LabelInterface::mousePressEvent(event);
+		QGraphicsTextItem::mousePressEvent(event);
 		event->accept();
 		return;
 	}
 
 	mIsStretched = ((event->pos().x() >= boundingRect().right() - 10)
 			&& (event->pos().y() >= boundingRect().bottom() - 10));
-	LabelInterface::mousePressEvent(event);
+	QGraphicsTextItem::mousePressEvent(event);
 	event->accept();
 }
 
@@ -187,7 +212,7 @@ void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	LabelInterface::mouseMoveEvent(event);
+	QGraphicsTextItem::mouseMoveEvent(event);
 	event->accept();
 }
 
@@ -198,9 +223,10 @@ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (mIsStretched) {
 		moveToParentCenter();
 	}
+
 	updateData();
 
-	LabelInterface::mouseReleaseEvent(event);
+	QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
 
@@ -208,9 +234,9 @@ void Label::init(QRectF const &contents)
 {
 	mContents = contents;
 	mParentContents = contents;
-	if (orientation() == OrientationType::horizontal) {
+	if (orientation() == Qt::Horizontal) {
 		mContents.setWidth(mContents.width() / 2);
-	} else if (orientation() == OrientationType::vertical) {
+	} else if (orientation() == Qt::Vertical) {
 		mContents.setWidth(mContents.height() * 3 / 4);
 	}
 
@@ -274,6 +300,7 @@ void Label::keyPressEvent(QKeyEvent *event)
 		clearFocus();
 		return;
 	}
+
 	if ((event->modifiers() & Qt::ShiftModifier) && (event->key() == Qt::Key_Return)) {
 		// Line feed
 		QTextCursor const cursor = textCursor();
@@ -282,11 +309,13 @@ void Label::keyPressEvent(QKeyEvent *event)
 		setTextCursor(cursor);
 		return;
 	}
+
 	if (keyEvent == Qt::Key_Enter || keyEvent == Qt::Key_Return) {
 		// Loose focus: new name will be applied in focusOutEvent
 		clearFocus();
 		return;
 	}
+
 	QGraphicsTextItem::keyPressEvent(event);
 }
 
@@ -345,18 +374,8 @@ void Label::clearMoveFlag()
 
 QRectF Label::labelMovingRect() const
 {
-	int distance = SettingsManager::value("LabelsDistance").toInt();
+	int const distance = SettingsManager::value("LabelsDistance").toInt();
 	return mapFromItem(parentItem(), parentItem()->boundingRect()).boundingRect()
 			.adjusted(-distance, -distance, distance, distance);
-}
-
-LabelInterface *LabelFactory::createTitle(qreal x, qreal y, QString const &text, qreal rotation)
-{
-	return new Label(x, y, text, rotation);
-}
-
-LabelInterface *LabelFactory::createTitle(qreal x, qreal y,QString const &binding, bool readOnly, qreal rotation)
-{
-	return new Label(x, y, binding, readOnly, rotation);
 }
 

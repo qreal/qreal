@@ -15,9 +15,9 @@
 #include "../../qrkernel/settingsManager.h"
 #include "editorManagerInterface.h"
 
-class Element;
-
 namespace qReal {
+
+class Element;
 
 /// Proxy for changing between generative and interpretive approach.
 class ProxyEditorManager : public EditorManagerInterface

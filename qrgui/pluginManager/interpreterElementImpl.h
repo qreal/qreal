@@ -9,18 +9,17 @@
 #include <QtGui/QPainter>
 
 #include "../editorPluginInterface/elementImpl.h"
-#include "../editorPluginInterface/labelHelpers.h"
+#include "../editorPluginInterface/labelInterface.h"
 #include "../editorPluginInterface/elementRepoInterface.h"
 #include "../umllib/sdfRenderer.h"
 #include "../../qrkernel/ids.h"
 #include "../../qrrepo/repoApi.h"
-#include "../../qrxc/graphicType.h"
+
+namespace qReal {
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
 typedef QPair<bool, qReal::Id> PossibleEdgeType;
-
-namespace qReal {
 
 struct EdgeLabel {
 	QString labelText;

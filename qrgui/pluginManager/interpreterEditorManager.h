@@ -17,9 +17,9 @@
 #include "../../qrrepo/repoApi.h"
 #include "editorManagerInterface.h"
 
-class Element;
-
 namespace qReal {
+
+class Element;
 
 class InterpreterEditorManager : public QObject, public EditorManagerInterface
 {

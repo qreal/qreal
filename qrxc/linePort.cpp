@@ -20,7 +20,7 @@ bool LinePort::init(QDomElement const &element, int width, int height)
 void LinePort::generateCode(OutFile &out)
 {
 	out() <<"\t\t\t{\n"
-		<< "\t\t\t\tStatLine ln;\n"
+		<< "\t\t\t\tqReal::StatLine ln;\n"
 		<< QString("\t\t\t\tln.line = QLineF(%1, %2, %3, %4);\n")
 		.arg(mStartX.value()).arg(mStartY.value()).arg(mEndX.value()).arg(mEndY.value())
 		<< "\t\t\t\tln.prop_x1 = "
