@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<namespace>UML 2.0</namespace>
-	<diagram nodeName="UmlClassDiagramNode" name="UmlClassDiagram" displayedName="UML Class Diagram">
+	<diagram nodeName="ClassDiagramNode" name="ClassDiagram" displayedName="Class Diagram">
 		<graphicTypes>
-			<node name="UmlClassDiagramNode" displayedName="UML Class Diagram">
+			<node name="ClassDiagramNode" displayedName="Class Diagram">
 				<graphics>
 					<picture/>
 					<labels/>
@@ -11,11 +11,11 @@
 				</graphics>
 				<logic>
 					<container>
-						 <contains type="UmlClassDiagram::UmlClass"/>
-						 <contains type="UmlClassDiagram::Field"/>
-						 <contains type="UmlClassDiagram::Enum"/>
-						 <contains type="UmlClassDiagram::EnumValue"/>
-						 <contains type="UmlClassDiagram::Association"/>
+						 <contains type="ClassDiagram::UmlClass"/>
+						 <contains type="ClassDiagram::Field"/>
+						 <contains type="ClassDiagram::Enum"/>
+						 <contains type="ClassDiagram::EnumValue"/>
+						 <contains type="ClassDiagram::Association"/>
 					</container>
 				</logic>
 			</node>
