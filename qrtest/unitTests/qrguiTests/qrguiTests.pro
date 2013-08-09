@@ -1,13 +1,16 @@
+TEMPLATE = app
+CONFIG += console
+
 QT += svg xml printsupport widgets help
 
-CONFIG += rpath_libdirs
+DESTDIR = ../../../bin
+TARGET = qrgui_unittests
+
 macx {
 	CONFIG -= app_bundle
 }
 
 SOURCES = mainTest.cpp
-
-TRANSLATIONS = qrgui_ru.ts
 
 !macx {
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,."
@@ -26,11 +29,9 @@ INCLUDEPATH += \
 	../../../thirdparty/gmock-1.6.0/include \
 	../../../thirdparty/gmock-1.6.0/gtest/include \
 	../../../qrgui/.ui \
+	../../../qrgui/ \
 
 LIBS += -L../../../bin/thirdparty/ -lgmock -lpthread
-
-TARGET = qrgui_unittests
-DESTDIR = ../../../bin/
 
 include(../../../qrgui/qrgui.pri)
 

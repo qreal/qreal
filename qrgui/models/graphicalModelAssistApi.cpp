@@ -9,7 +9,7 @@ using namespace models::details;
 
 GraphicalModelAssistApi::GraphicalModelAssistApi(
 		GraphicalModel &graphicalModel
-		, GraphicalPartModel &graphicalPartModel
+//		, GraphicalPartModel &graphicalPartModel
 		, EditorManagerInterface const &editorManagerInterface
 		)
 	: mGraphicalModel(graphicalModel)
@@ -250,26 +250,26 @@ void GraphicalModelAssistApi::removeElement(Id const &graphicalId)
 	}
 }
 
-void GraphicalModelAssistApi::createLabel(
-		Id const &graphicalId
-		, int index
-		, QPointF const &position
-		, QPolygonF const &size
-		)
-{
-	QModelIndex const modelIndex = mGraphicalPartModel.addGraphicalPart(graphicalId, index);
-	mGraphicalPartModel.setData(modelIndex, position, GraphicalPartModel::positionRole);
-	mGraphicalPartModel.setData(modelIndex, size, GraphicalPartModel::configurationRole);
-}
+//void GraphicalModelAssistApi::createLabel(
+//		Id const &graphicalId
+//		, int index
+//		, QPointF const &position
+//		, QPolygonF const &size
+//		)
+//{
+//	QModelIndex const modelIndex = mGraphicalPartModel.addGraphicalPart(graphicalId, index);
+//	mGraphicalPartModel.setData(modelIndex, position, GraphicalPartModel::positionRole);
+//	mGraphicalPartModel.setData(modelIndex, size, GraphicalPartModel::configurationRole);
+//}
 
-void GraphicalModelAssistApi::setLabelPosition(Id const &graphicalId, int index, QPointF const &position)
-{
-	QModelIndex const modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
-	mGraphicalPartModel.setData(modelIndex, position, GraphicalPartModel::positionRole);
-}
+//void GraphicalModelAssistApi::setLabelPosition(Id const &graphicalId, int index, QPointF const &position)
+//{
+//	QModelIndex const modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
+//	mGraphicalPartModel.setData(modelIndex, position, GraphicalPartModel::positionRole);
+//}
 
-void GraphicalModelAssistApi::setLabelSize(Id const &graphicalId, int index, QPolygonF const &size)
-{
-	QModelIndex const modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
-	mGraphicalPartModel.setData(modelIndex, size, GraphicalPartModel::configurationRole);
-}
+//void GraphicalModelAssistApi::setLabelSize(Id const &graphicalId, int index, QPolygonF const &size)
+//{
+//	QModelIndex const modelIndex = mGraphicalPartModel.findIndex(graphicalId, index);
+//	mGraphicalPartModel.setData(modelIndex, size, GraphicalPartModel::configurationRole);
+//}

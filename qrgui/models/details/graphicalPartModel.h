@@ -1,9 +1,11 @@
 #pragma once
 
 #include <QtCore/QAbstractItemModel>
+#include <QtCore/QHash>
 
 #include "../../../qrrepo/repoApi.h"
 #include "../../pluginManager/editorManagerInterface.h"
+#include "modelsImplementation/graphicalPartModelItem.h"
 
 namespace qReal {
 namespace models {
@@ -15,65 +17,39 @@ class GraphicalPartModel : public QAbstractItemModel
 
 public:
 	enum Roles {
-		positionRole = Qt::UserRole + 1 // element's position within current context
-		, configurationRole // element's configuration (e.g. shape, size) within current context
+		positionRole = Qt::UserRole + 1  // element's position within current context
+		, configurationRole  // element's configuration (e.g. shape, size) within current context
 	};
 
-	GraphicalPartModel(EditorManagerInterface const &editorManagerInterface);
+	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi);
+
+	virtual ~GraphicalPartModel();
 
 	// Override.
-	virtual QVariant data(const QModelIndex &index, int role) const;
+	virtual QVariant data(QModelIndex const &index, int role) const;
 
 	// Override.
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+	virtual bool setData(QModelIndex const &index, QVariant const &value, int role);
+
+	// Override.
+	virtual int rowCount(QModelIndex const &parent = QModelIndex()) const;
+
+	// Override.
+	virtual int columnCount(QModelIndex const &parent = QModelIndex()) const;
+
+	// Override.
+	virtual QModelIndex index(int row, int column, QModelIndex const &parent = QModelIndex()) const;
+
+	// Override.
+	virtual QModelIndex parent(QModelIndex const &index) const;
 
 	QModelIndex addGraphicalPart(Id const &element, int index);
 
 	QModelIndex findIndex(Id const &element, int index);
 
-//	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-//	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-//	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-//	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-//	virtual QModelIndex parent(const QModelIndex &index) const;
-//	virtual Qt::ItemFlags flags(QModelIndex const &index) const;
-//	virtual Qt::DropActions supportedDropActions() const;
-//	virtual QStringList mimeTypes() const;
-//	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const = 0;
-//	bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
-
-//	virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, QString const &name, QPointF const &position) = 0;
-//	QPersistentModelIndex rootIndex() const;
-//	EditorManagerInterface const &editorManagerInterface() const;
-
-//	/// Stacks item element before sibling (they should have the same parent)
-//	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling) = 0;
-
-//	QModelIndex indexById(Id const &id) const;
-//	Id idByIndex(QModelIndex const &index) const;
-//	Id rootId() const;
-
-//	void reinit();
-
-protected:
-	EditorManagerInterface const &mEditorManagerInterface;
-	/*
-	QHash<Id, AbstractModelItem *> mModelItems;
-	AbstractModelItem *mRootItem;
-
-	QString findPropertyName(Id const &id, int const role) const;
-	QModelIndex index(AbstractModelItem const * const item) const;
-
-	void cleanupTree(modelsImplementation::AbstractModelItem * item);
-
-	AbstractModelItem * parentAbstractItem(QModelIndex const &parent) const;
-	void removeModelItems(details::modelsImplementation::AbstractModelItem *const root);
-
 private:
-	virtual AbstractModelItem *createModelItem(Id const &id, AbstractModelItem *parentItem) const = 0;
-	virtual void init() = 0;
-	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child) = 0;
-	*/
+	qrRepo::GraphicalRepoApi &mRepoApi;
+	QHash<Id, QHash<int, modelsImplementation::GraphicalPartModelItem *> > mItems;  // Has ownership.
 };
 
 }

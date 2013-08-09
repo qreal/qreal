@@ -4,7 +4,7 @@
 
 #include "../../qrkernel/ids.h"
 #include "details/graphicalModel.h"
-#include "details/graphicalPartModel.h"
+//#include "details/graphicalPartModel.h"
 #include "details/modelsAssistApi.h"
 #include "../toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 
@@ -25,7 +25,7 @@ class GraphicalModelAssistApi : public QObject, public GraphicalModelAssistInter
 public:
 	GraphicalModelAssistApi(
 			details::GraphicalModel &graphicalModel
-			, details::GraphicalPartModel &graphicalPartModel
+//			, details::GraphicalPartModel &graphicalPartModel
 			, EditorManagerInterface const &editorManagerInterface
 			);
 
@@ -106,7 +106,7 @@ private:
 
 	details::GraphicalModel &mGraphicalModel;
 	details::ModelsAssistApi mModelsAssistApi;
-	details::GraphicalPartModel &mGraphicalPartModel;
+//	details::GraphicalPartModel &mGraphicalPartModel;
 };
 
 }

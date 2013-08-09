@@ -33,4 +33,4 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 	QMAKE_LFLAGS += -Wl,-E
 }
 
-include (qrgui.pri)
+include(qrgui.pri)

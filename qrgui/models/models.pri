@@ -7,6 +7,7 @@ HEADERS += \
 	$$PWD/details/modelsImplementation/graphicalModelItem.h \
 	$$PWD/details/modelsImplementation/abstractModel.h \
 	$$PWD/details/modelsImplementation/abstractModelItem.h \
+	$$PWD/details/modelsImplementation/graphicalPartModelItem.h \
 	$$PWD/details/modelsImplementation/logicalModelItem.h \
 	$$PWD/details/modelsImplementation/abstractView.h \
 	$$PWD/details/modelsAssistApi.h \
@@ -24,6 +25,7 @@ SOURCES += \
 	$$PWD/details/modelsImplementation/graphicalModelItem.cpp \
 	$$PWD/details/modelsImplementation/abstractModel.cpp \
 	$$PWD/details/modelsImplementation/abstractModelItem.cpp \
+	$$PWD/details/modelsImplementation/graphicalPartModelItem.cpp \
 	$$PWD/details/modelsImplementation/logicalModelItem.cpp \
 	$$PWD/details/modelsImplementation/abstractView.cpp \
 	$$PWD/details/modelsAssistApi.cpp \
