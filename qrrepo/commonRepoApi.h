@@ -11,7 +11,7 @@ public:
 	/// Destructor.
 	virtual ~CommonRepoApi() {}
 
-	/// Replaces property values that contains input value with new value.
+	/// Replaces property values that contain input value with new value.
 	/// @param toReplace - id list that contains ids of elements that properties should be replaced.
 	/// @param value - input value that should be contained by any property of each element.
 	/// @param newValue - string representation of value with what property values should be replaced.

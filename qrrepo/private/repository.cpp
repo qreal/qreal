@@ -35,20 +35,20 @@ Repository::~Repository()
 
 IdList Repository::findElementsByName(QString const &name, bool sensitivity, bool regExpression) const
 {
-	Qt::CaseSensitivity caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
+	Qt::CaseSensitivity const caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
-	QRegExp *regExp = new QRegExp(name, caseSensitivity);
+	QRegExp const regExp(name, caseSensitivity);
 	IdList result;
 
 	if (regExpression){
-		foreach (Object *element, mObjects.values()) {
-			if (element->property("name").toString().contains(*regExp)
+		foreach (Object * const element, mObjects.values()) {
+			if (element->property("name").toString().contains(regExp)
 					&& !isLogicalId(mObjects.key(element))) {
 				result.append(mObjects.key(element));
 			}
 		}
 	} else {
-		foreach (Object *element, mObjects.values()) {
+		foreach (Object * const element, mObjects.values()) {
 			if (element->property("name").toString().contains(name, caseSensitivity)
 					&& !isLogicalId(mObjects.key(element))) {
 				result.append(mObjects.key(element));
@@ -77,22 +77,16 @@ qReal::IdList Repository::elementsByProperty(QString const &property, bool sensi
 qReal::IdList Repository::elementsByPropertyContent(QString const &propertyValue, bool sensitivity
 		, bool regExpression) const
 {
-	Qt::CaseSensitivity caseSensitivity;
+	Qt::CaseSensitivity const caseSensitivity = sensitivity ? Qt::CaseSensitive : Qt::CaseInsensitive;
 
-	if (sensitivity) {
-		caseSensitivity = Qt::CaseSensitive;
-	} else {
-		caseSensitivity = Qt::CaseInsensitive;
-	}
-
-	QRegExp *regExp = new QRegExp(propertyValue, caseSensitivity);
+	QRegExp const regExp(propertyValue, caseSensitivity);
 	IdList result;
 
-	foreach (Object *element, mObjects.values()) {
+	foreach (Object * const element, mObjects.values()) {
 		QMapIterator<QString, QVariant> iterator = element->propertiesIterator();
 		if (regExpression) {
 			while (iterator.hasNext()) {
-				if (iterator.next().value().toString().contains(*regExp)) {
+				if (iterator.next().value().toString().contains(regExp)) {
 					result.append(mObjects.key(element));
 					break;
 				}
@@ -112,7 +106,7 @@ qReal::IdList Repository::elementsByPropertyContent(QString const &propertyValue
 
 void Repository::replaceProperties(qReal::IdList const &toReplace, QString const value, QString const newValue)
 {
-	foreach (qReal::Id currentId, toReplace) {
+	foreach (qReal::Id const &currentId, toReplace) {
 		mObjects[currentId]->replaceProperties(value, newValue);
 	}
 }
@@ -135,9 +129,9 @@ Id Repository::parent(Id const &id) const
 	}
 }
 
-Id Repository::cloneObject(const qReal::Id &id)
+Id Repository::cloneObject(qReal::Id const &id)
 {
-	Object *result = mObjects[id]->clone(mObjects);
+	Object const * const result = mObjects[id]->clone(mObjects);
 	return result->id();
 }
 

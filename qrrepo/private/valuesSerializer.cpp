@@ -19,15 +19,18 @@ IdList ValuesSerializer::deserializeIdList(QDomElement const &elem, QString cons
 	IdList result;
 
 	QDomElement elements = list.at(0).toElement();
-	QDomElement element = elements.firstChildElement();
-	while (!element.isNull()) {
+
+	for (QDomElement element = elements.firstChildElement();
+			!element.isNull();
+			element = element.nextSiblingElement())
+	{
 		QString elementStr = element.attribute("id", "");
 		if (elementStr == "") {
 			qDebug() << "Incorrect Child XML node";
 			return IdList();
 		}
+
 		result.append(Id::loadFromString(elementStr));
-		element = element.nextSiblingElement();
 	}
 	return result;
 }
@@ -62,6 +65,7 @@ QVariant ValuesSerializer::deserializeQVariant(QString const &typeName, QString 
 			QPointF point = deserializeQPointF(str);
 			result << point.toPoint();
 		}
+
 		return QVariant(result);
 	} else if (typeName == "qReal::Id") {
 		return Id::loadFromString(valueStr).toVariant();
@@ -122,6 +126,7 @@ QString ValuesSerializer::serializeQPolygon(QPolygon const &p)
 	foreach (QPoint point, p) {
 		result += serializeQPointF(point) + " : ";
 	}
+
 	return result;
 }
 
@@ -133,15 +138,15 @@ QDomElement ValuesSerializer::serializeIdList(QString const &tagName, IdList con
 		element.setAttribute("id", id.toString());
 		result.appendChild(element);
 	}
+
 	return result;
 }
 
 QDomElement ValuesSerializer::serializeNamedVariantsMap(QString const &tagName, QMap<QString, QVariant> const &map, QDomDocument &document)
 {
 	QDomElement result = document.createElement(tagName);
-	QMap<QString, QVariant>::const_iterator i = map.constBegin();
 
-	while (i != map.constEnd()) {
+	for (QMap<QString, QVariant>::const_iterator i = map.constBegin(); i != map.constEnd(); ++i) {
 		QString const typeName = i.value().typeName();
 		if (typeName == "qReal::IdList") {
 			QDomElement list = ValuesSerializer::serializeIdList(i.key(), i.value().value<IdList>(), document);
@@ -154,7 +159,6 @@ QDomElement ValuesSerializer::serializeNamedVariantsMap(QString const &tagName, 
 			property.setAttribute("value", value);
 			result.appendChild(property);
 		}
-		++i;
 	}
 
 	return result;
@@ -162,8 +166,10 @@ QDomElement ValuesSerializer::serializeNamedVariantsMap(QString const &tagName, 
 
 void ValuesSerializer::deserializeNamedVariantsMap(QMap<QString, QVariant> &map, QDomElement const &element)
 {
-	QDomElement property = element.firstChildElement();
-	while (!property.isNull()) {
+	for (QDomElement property = element.firstChildElement();
+			!property.isNull();
+			property = property.nextSiblingElement())
+	{
 		if (property.hasAttribute("type")) {
 			if (property.attribute("type") == "qReal::IdList") {
 				QString const key = property.tagName();
@@ -183,7 +189,5 @@ void ValuesSerializer::deserializeNamedVariantsMap(QMap<QString, QVariant> &map,
 			QVariant const value = ValuesSerializer::deserializeQVariant(type, valueStr);
 			map.insert(key, value);
 		}
-
-		property = property.nextSiblingElement();
 	}
 }

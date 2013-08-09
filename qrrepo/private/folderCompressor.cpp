@@ -13,7 +13,7 @@ bool FolderCompressor::compressFolder(QString const &sourceFolder, QString const
 
 	QDataStream dataStream(&file);
 
-	bool result = compress(sourceFolder, "", dataStream);
+	bool const result = compress(sourceFolder, "", dataStream);
 	file.close();
 
 	return result;
@@ -83,7 +83,7 @@ bool FolderCompressor::decompressFolder(QString const &sourceFile, QString const
 		dataStream >> fileName >> data; // extract file name and data in order
 
 		QString subfolder; // create any needed folder
-		for(int i = fileName.length() - 1; i > 0; i--) {
+		for (int i = fileName.length() - 1; i > 0; i--) {
 			if((QString(fileName.at(i)) == QString("\\"))
 					|| (QString(fileName.at(i)) == QString("/")))
 			{
