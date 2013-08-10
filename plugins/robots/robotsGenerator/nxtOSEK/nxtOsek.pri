@@ -3,6 +3,7 @@ HEADERS += \
 	nxtOSEK/nxtFlashTool.h \
 	nxtOSEK/nxtOSEKRobotGenerator.h \
 	nxtOSEK/smartLine.h \
+	nxtOSEK/generators/controlFlowGenerator.h \
 	nxtOSEK/generators/abstractElementGenerator.h \
 	nxtOSEK/generators/functionElementGenerator.h \
 	nxtOSEK/generators/ifElementGenerator.h \
@@ -43,14 +44,14 @@ HEADERS += \
 	nxtOSEK/generators/simpleElements/clearScreenBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/drawBlockGenerator.h \
 	nxtOSEK/generators/simpleElements/subprogramsSimpleGenerator.h \
-    nxtOSEK/generators/subprogramsGenerator.h \
-    nxtOSEK/generators/controlFlowGenerator.h
+	nxtOSEK/generators/subprogramsGenerator.h \
 
 SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
 	nxtOSEK/nxtFlashTool.cpp \
 	nxtOSEK/nxtOSEKRobotGenerator.cpp \
 	nxtOSEK/smartLine.cpp \
+	nxtOSEK/generators/controlFlowGenerator.cpp \
 	nxtOSEK/generators/abstractElementGenerator.cpp \
 	nxtOSEK/generators/functionElementGenerator.cpp \
 	nxtOSEK/generators/ifElementGenerator.cpp \
@@ -91,5 +92,4 @@ SOURCES += \
 	nxtOSEK/generators/simpleElements/clearScreenBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/drawBlockGenerator.cpp \
 	nxtOSEK/generators/simpleElements/subprogramsSimpleGenerator.cpp \
-    nxtOSEK/generators/subprogramsGenerator.cpp \
-    nxtOSEK/generators/controlFlowGenerator.cpp
+	nxtOSEK/generators/subprogramsGenerator.cpp \

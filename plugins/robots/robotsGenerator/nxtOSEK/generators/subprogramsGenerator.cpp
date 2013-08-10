@@ -70,6 +70,7 @@ void SubprogramsGenerator::mergeCode(QMap<Id, QList<SmartLine> > const &declarat
 		mGeneratedCode << SmartLine("/* Subprograms declarations */", Id())
 				<< SmartLine("", Id());
 	}
+
 	foreach (Id const &id, declarations.keys()) {
 		mGeneratedCode += declarations[id];
 	}
@@ -80,6 +81,7 @@ void SubprogramsGenerator::mergeCode(QMap<Id, QList<SmartLine> > const &declarat
 		mGeneratedCode << SmartLine("/* Subprograms implementations */", Id())
 				 << SmartLine("", Id());
 	}
+
 	foreach (Id const &id, implementations.keys()) {
 		QString const signature = QString("void %1()").arg(
 				SubprogramsSimpleGenerator::identifier(mMainGenerator, id));

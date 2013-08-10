@@ -84,9 +84,11 @@ void Controller::diagramClosed(Id const &diagramId)
 	if (diagramId == Id() || !mDiagramStacks.keys().contains(diagramId.toString())) {
 		return;
 	}
+
 	if (mActiveStack == mDiagramStacks[diagramId.toString()]) {
 		mActiveStack = NULL;
 	}
+
 	delete mDiagramStacks[diagramId.toString()];
 	mDiagramStacks.remove(diagramId.toString());
 	resetAll();

@@ -809,7 +809,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="details/robotCommunication/tcpRobotCommunicationThread.cpp" line="43"/>
         <source>Unable to resolve %1. Check server address anfd try again</source>
-        <translation>Сервер %1не найден. Проверьте адрес и попробуйте еще раз </translation>
+        <translation>Сервер %1 не найден. Проверьте адрес и попробуйте еще раз </translation>
     </message>
 </context>
 <context>

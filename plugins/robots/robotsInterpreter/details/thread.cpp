@@ -75,6 +75,7 @@ void Thread::finishedSteppingInto()
 		emit stopped();
 		return;
 	}
+
 	mCurrentBlock = mStack.top();
 	// Execution must proceed here
 	mCurrentBlock->finishedSteppingInto();
