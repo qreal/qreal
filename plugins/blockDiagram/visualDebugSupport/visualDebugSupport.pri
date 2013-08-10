@@ -1,6 +1,8 @@
 QT += widgets
 
-LIBS += -L../../../bin -lqrkernel -lqrutils
+INCLUDEPATH += $$PWD/../../..
+
+LIBS += -L$$PWD/../../../bin -lqrkernel -lqrutils
 
 TRANSLATIONS = $$PWD/visualDebugSupport_ru.ts
 

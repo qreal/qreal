@@ -4,7 +4,7 @@ include(../common.pri)
 
 LIBS += -L../../../bin -lqrkernel -lqrutils
 
-include(../../../plugins/blockDiagram/visualDebugSupport/interpreter/interpreter.pri)
+include(../../../plugins/blockDiagram/visualDebugSupport/visualDebugSupport.pri)
 
 HEADERS += \
 	sampleFixtureTest.h \
