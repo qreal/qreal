@@ -55,6 +55,7 @@ public:
 	virtual bool isElement(Id const &id) const;
 
 	virtual QStringList propertyNames(Id const &id) const;
+	virtual QStringList portTypes(Id const &id) const;
 	virtual QString defaultPropertyValue(Id const &id, QString name) const;
 	virtual QStringList propertiesWithDefaultValues(Id const &id) const;
 

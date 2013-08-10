@@ -7,4 +7,5 @@ HEADERS += \
 	editorPluginInterface/sdfRendererInterface.h \
 	editorPluginInterface/listenerInterface.h \
 	editorPluginInterface/listenerApiInterface.h \
+	editorPluginInterface/portHelpers.h
 

@@ -11,4 +11,10 @@ public:
 	virtual Item* clone();
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+
+	void setType(QString const &type);
+	QString getType() const;
+
+private:
+	QString mType;
 };
