@@ -17,9 +17,9 @@
 #include "../../qrrepo/repoApi.h"
 #include "editorManagerInterface.h"
 
-class Element;
-
 namespace qReal {
+
+class Element;
 
 class InterpreterEditorManager : public QObject, public EditorManagerInterface
 {
@@ -55,6 +55,7 @@ public:
 	virtual bool isElement(Id const &id) const;
 
 	virtual QStringList propertyNames(Id const &id) const;
+	virtual QStringList portTypes(Id const &id) const;
 	virtual QString defaultPropertyValue(Id const &id, QString name) const;
 	virtual QStringList propertiesWithDefaultValues(Id const &id) const;
 

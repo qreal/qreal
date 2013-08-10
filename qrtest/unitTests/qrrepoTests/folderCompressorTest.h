@@ -12,10 +12,8 @@ protected:
 	virtual void SetUp();
 
 	virtual void TearDown();
-	
-	void removeDirectory(QString const &dirName);
 
-	FolderCompressor *mFolderCompressor;
+	void removeDirectory(QString const &dirName);
 };
 
 }

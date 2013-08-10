@@ -23,8 +23,6 @@ void FolderCompressorTest::removeDirectory(QString const &dirName)
 }
 
 void FolderCompressorTest::SetUp() {
-	mFolderCompressor = new FolderCompressor();
-
 	QDir().mkpath("temp/dir1/dir2");
 	QDir().mkdir("temp/dir3");
 
@@ -42,15 +40,14 @@ void FolderCompressorTest::SetUp() {
 }
 
 void FolderCompressorTest::TearDown() {
-	delete mFolderCompressor;
 	removeDirectory("temp");
 	removeDirectory("temp_decompessed");
 	QFile::remove("compressed");
 }
 
 TEST_F(FolderCompressorTest, decompressTest) {
-	mFolderCompressor->compressFolder("temp", "compressed");
-	mFolderCompressor->decompressFolder("compressed", "temp_decompessed");
+	FolderCompressor::compressFolder("temp", "compressed");
+	FolderCompressor::decompressFolder("compressed", "temp_decompessed");
 
 	ASSERT_TRUE(QFile::exists("temp_decompessed/file1"));
 	ASSERT_TRUE(QFile::exists("temp_decompessed/dir1/dir2/file2"));

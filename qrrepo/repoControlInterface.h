@@ -4,6 +4,7 @@
 
 namespace qrRepo {
 
+/// Provides repository control methods, like save or open saved contents.
 class RepoControlInterface
 {
 public:

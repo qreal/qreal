@@ -8,7 +8,7 @@ namespace qReal {
 	class ListenerInterface : public QObject
 	{
 	public:
-		virtual ~ListenerInterface() {};
+		virtual ~ListenerInterface() {}
 		void init(ListenerApiInterface *listenerApiInterface)
 		{
 			mListenerApiInterface = listenerApiInterface;

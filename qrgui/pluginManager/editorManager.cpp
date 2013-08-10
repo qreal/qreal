@@ -254,10 +254,11 @@ Element* EditorManager::graphicalObject(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
-	if( !impl ) {
+	if (!impl) {
 		qDebug() << "no impl";
 		return 0;
 	}
+
 	if (impl->isNode()) {
 		return new NodeElement(impl);
 	}
@@ -270,6 +271,13 @@ QStringList EditorManager::propertyNames(const Id &id) const
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
+}
+
+QStringList EditorManager::portTypes(Id const &id) const
+{
+	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getPortTypes(id.diagram(), id.element());
 }
 
 QStringList EditorManager::referenceProperties(const Id &id) const

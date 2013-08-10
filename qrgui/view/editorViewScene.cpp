@@ -967,9 +967,11 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 	QList<QString> allLinks;
 	foreach (PossibleEdge const &possibleEdge, edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
-		&& possibleEdge.first.second.diagram() == child.id().diagram()
-		&& mainWindow()->editorManager().isParentOf(child.id().editor(), child.id().diagram()
-		, possibleEdge.first.second.element(), child.id().diagram(), child.id().element()))
+				&& possibleEdge.first.second.diagram() == child.id().diagram()
+				&& mWindow->editorManager().isParentOf(child.id().editor(), child.id().diagram()
+						, possibleEdge.first.second.element(), child.id().diagram(), child.id().element())
+				&& mWindow->editorManager().isParentOf(child.id().editor(), child.id().diagram()
+						, possibleEdge.first.first.element(), child.id().diagram(), parent->id().element()))
 		{
 			allLinks.push_back(possibleEdge.second.second.toString());
 		}
@@ -988,7 +990,7 @@ void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
 	QMenu *edgeMenu = new QMenu();
 	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
 	foreach (QString id, ids) {
-		QAction *element = new QAction(id, edgeMenu);
+		QAction *element = new QAction(mWindow->editorManager().friendlyName(Id::loadFromString(id)), edgeMenu);
 		edgeMenu->addAction(element);
 		QObject::connect(element, SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
 		menuSignalMapper->setMapping(element, id);

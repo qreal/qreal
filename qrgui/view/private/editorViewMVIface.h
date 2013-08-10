@@ -7,11 +7,11 @@
 
 class QGraphicsItem;
 
+namespace qReal {
+
 class EditorViewScene;
 
 class Element;
-
-namespace qReal {
 
 namespace models {
 class GraphicalModelAssistApi;

@@ -31,6 +31,8 @@ Type* EdgeType::clone() const
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
 	result->mLineType = mLineType;
+	result->mFromPorts = mFromPorts;
+	result->mToPorts = mToPorts;
 	return result;
 }
 
@@ -156,6 +158,30 @@ bool EdgeType::initDividability()
 	return true;
 }
 
+bool EdgeType::initPortTypes()
+{
+	initPortTypes(mLogic.firstChildElement("fromPorts"), mFromPorts);
+	initPortTypes(mLogic.firstChildElement("toPorts"), mToPorts);
+	return true;
+}
+
+void EdgeType::initPortTypes(QDomElement const &portsElement, QStringList &ports)
+{
+	ports << "NonTyped";
+	if (portsElement.isNull()) {
+		return;
+	}
+
+	QDomNodeList portNodes = portsElement.elementsByTagName("port");
+	for (int i = 0; i < portNodes.size(); i++) {
+		QDomElement elem = portNodes.at(i).toElement();
+		if (!elem.isNull()) {
+			ports << elem.attribute("type");
+		}
+	}
+	ports.removeDuplicates();
+}
+
 bool EdgeType::initLabel(Label *label, QDomElement const &element, int const &count)
 {
 	return label->init(element, count, false, mWidth, mHeight);
@@ -181,7 +207,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	QString const className = NameNormalizer::normalize(qualifiedName());
 
-	out() << "\tclass " << className << " : public ElementImpl {\n"
+	out() << "\tclass " << className << " : public qReal::ElementImpl {\n"
 	<< "\tpublic:\n";
 
 	if (!mBonusContextMenuFields.empty()) {
@@ -194,10 +220,10 @@ void EdgeType::generateCode(OutFile &out)
 		out() << "\t\t}\n\n";
 	}
 
-	out() << "\t\tvoid init(QRectF &, QList<StatPoint> &, QList<StatLine> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tLabelFactoryInterface &, QList<LabelInterface*> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tSdfRendererInterface *, SdfRendererInterface *, ElementRepoInterface *) {}\n\n"
-	<< "\t\tvoid init(LabelFactoryInterface &factory, QList<LabelInterface*> &titles)\n\t\t{\n";
+	out() << "\t\tvoid init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,\n"
+	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}\n\n"
+	<< "\t\tvoid init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty())
 		mLabels[0]->generateCodeForConstructor(out);
@@ -207,7 +233,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n"
 	<< "\t\tvirtual ~" << className << "() {}\n\n"
-	<< "\t\tElementImpl *clone() { return NULL; }\n"
+	<< "\t\tqReal::ElementImpl *clone() { return NULL; }\n"
 	<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
 	<< "\t\tbool isNode() const { return false; }\n"
 	<< "\t\tbool isResizeable() const { return true; }\n"
@@ -219,14 +245,20 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tbool hasMovableChildren() const { return false; }\n"
 	<< "\t\tbool minimizesToChildren() const { return false; }\n"
 	<< "\t\tbool maximizesChildren() const { return false; }\n"
-	<< "\t\tbool isPort() const { return false; }\n"
+
+	<< "\t\tQStringList fromPortTypes() const\n\t\t{\n\t\t\t";
+	generatePorts(out, mFromPorts);
+
+	out() << "\t\tQStringList toPortTypes() const\n\t\t{\n\t\t\t";
+	generatePorts(out, mToPorts);
+
+	out() << "\t\tbool isPort() const { return false; }\n"
 	<< "\t\tbool hasPin() const { return false; }\n"
 	<< "\t\tQList<double> border() const\n\t\t{\n"
 	<< "\t\t\tQList<double> list;\n"
 	<< "\t\t\tlist << 0 << 0 << 0 << 0;\n"
 	<< "\t\t\treturn list;\n"
 	<< "\t\t}\n"
-	<< "\t\tbool hasPorts() const { return false; }\n"
 	<< "\t\tint getPenWidth() const { return " << mLineWidth << "; }\n"
 	<< "\t\tQColor getPenColor() const { return QColor("
 	<< mLineColor.red() << ","
@@ -254,7 +286,7 @@ void EdgeType::generateCode(OutFile &out)
 
 	generateEdgeStyle(mEndType, out);
 
-	out() << "\t\tvoid updateData(ElementRepoInterface *repo) const\n\t\t{\n";
+	out() << "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n";
 
 	if (mLabels.isEmpty())
 		out() << "\t\t\tQ_UNUSED(repo);\n";
@@ -357,4 +389,14 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 	}
 
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
+}
+
+void EdgeType::generatePorts(OutFile &out, QStringList const &portTypes)
+{
+	out() << "QStringList result;\n"
+		  << "\t\t\tresult";
+	foreach (QString const &type, portTypes) {
+		out() << " << \"" << type << "\"";
+	}
+	out() << ";\n\t\t\treturn result;\n\t\t}\n";
 }

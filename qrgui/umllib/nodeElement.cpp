@@ -9,9 +9,11 @@
 #include <math.h>
 
 #include "nodeElement.h"
+#include "labelFactory.h"
 #include "../view/editorViewScene.h"
 #include "../editorPluginInterface/editorInterface.h"
 #include "../mainwindow/mainWindow.h"
+#include "ports/portFactory.h"
 
 #include "private/resizeHandler.h"
 #include "private/copyHandler.h"
@@ -48,24 +50,24 @@ NodeElement::NodeElement(ElementImpl* impl)
 	setFlag(ItemClipsChildrenToShape, false);
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
-	mPortRenderer = new SdfRenderer();
 	mRenderer = new SdfRenderer();
-	LabelFactory factory;
+	LabelFactory labelFactory;
 	QList<LabelInterface*> titles;
 
-	QList<StatPoint> pointPorts;
-	QList<StatLine> linePorts;
-	mElementImpl->init(mContents, pointPorts, linePorts, factory, titles, mRenderer, mPortRenderer, this);
-	mPortHandler = new PortHandler(this, mGraphicalAssistApi, pointPorts, linePorts);
+	QList<PortInterface *> ports;
+	PortFactory portFactory;
+	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, mRenderer, this);
+	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
 
-	foreach (LabelInterface *titleIface, titles) {
-		Label *title = dynamic_cast<Label*>(titleIface);
-		if (!title) {
+	foreach (LabelInterface *labelInterface, titles) {
+		Label *label = dynamic_cast<Label*>(labelInterface);
+		if (!label) {
 			continue;
 		}
-		title->init(mContents);
-		title->setParentItem(this);
-		mTitles.append(title);
+
+		label->init(mContents);
+		label->setParentItem(this);
+		mLabels.append(label);
 	}
 
 	mFoldedContents = mContents;
@@ -93,11 +95,10 @@ NodeElement::~NodeElement()
 		edge->removeLink(this);
 	}
 
-	foreach (Label *title, mTitles) {
+	foreach (Label *title, mLabels) {
 		delete title;
 	}
 
-	delete mPortRenderer;
 	delete mRenderer;
 	delete mElementImpl;
 
@@ -495,7 +496,9 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	ungrabMouse();
+	if (dynamic_cast<NodeElement *>(scene()->mouseGrabberItem()) == this) {
+		ungrabMouse();
+	}
 
 	mTimer->stop();
 	mTimeOfUpdate = 0;
@@ -629,19 +632,28 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	foreach (QString const &elementName, mGraphicalAssistApi->editorManagerInterface().elements(id().editor(),id().diagram())) {
+	foreach (QString const &elementName, mGraphicalAssistApi->editorManagerInterface().elements(id().editor()
+			, id().diagram())) {
 		int ne = mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> const list =  mGraphicalAssistApi->editorManagerInterface().possibleEdges(id().editor(), elementName);
+			QList<StringPossibleEdge> const list = mGraphicalAssistApi->editorManagerInterface()
+					.possibleEdges(id().editor(), elementName);
 			foreach(StringPossibleEdge pEdge, list) {
-				if (mGraphicalAssistApi->editorManagerInterface().isParentOf(id().editor(), id().diagram()
-						, pEdge.first.first, id().diagram(), id().element())
-						|| (mGraphicalAssistApi->editorManagerInterface().isParentOf(id().editor(), id().diagram()
-						, pEdge.first.second, id().diagram(), id().element()) && !pEdge.second.first))
+				if (mGraphicalAssistApi->editorManagerInterface().portTypes(id().type()).contains(pEdge.first.first)
+						|| (mGraphicalAssistApi->editorManagerInterface().portTypes(id().type()).contains(pEdge.first.second)
+								&& !pEdge.second.first))
 				{
-					PossibleEdge possibleEdge = toPossibleEdge(pEdge);
-					mPossibleEdges.insert(possibleEdge);
-					mPossibleEdgeTypes.insert(possibleEdge.second);
+					PossibleEdgeType edge(pEdge.second.first, Id(id().editor(), id().diagram(), pEdge.second.second));
+					QSet<ElementPair> elementPairs = elementsForPossibleEdge(pEdge);
+					if (elementPairs.empty()) {
+						continue;
+					}
+
+					foreach (ElementPair const &elementPair, elementPairs) {
+						mPossibleEdges.insert(qMakePair(elementPair, edge));
+					}
+
+					mPossibleEdgeTypes.insert(edge);
 				}
 			}
 		}
@@ -776,9 +788,9 @@ QPointF const NodeElement::portPos(qreal id) const
 	return mPortHandler->portPos(id);
 }
 
-QPointF const NodeElement::nearestPort(QPointF const &location) const
+QPointF const NodeElement::nearestPort(QPointF const &location, QStringList const &types) const
 {
-	return mPortHandler->nearestPort(location);
+	return mPortHandler->nearestPort(location, types);
 }
 
 bool NodeElement::isContainer() const
@@ -796,9 +808,9 @@ int NodeElement::portNumber(qreal id)
 	return PortHandler::portNumber(id);
 }
 
-qreal NodeElement::portId(QPointF const &location) const
+qreal NodeElement::portId(QPointF const &location, QStringList const &types) const
 {
-	return mPortHandler->portId(location);
+	return mPortHandler->portId(location, types);
 }
 
 void NodeElement::setPortsVisible(bool value)
@@ -818,14 +830,10 @@ NodeElement *NodeElement::getNodeAt(QPointF const &position)
 	return 0;
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *w)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *)
 {
 	mElementImpl->paint(painter, mContents);
-	if (mElementImpl->hasPorts()) {
-		paint(painter, style, w, mPortRenderer);
-	} else {
-		paint(painter, style, w, 0);
-	}
+	paint(painter, style);
 
 	if (mSelectionNeeded) {
 		painter->save();
@@ -840,8 +848,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style
 	}
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option
-		, QWidget *, SdfRenderer* portRenderer)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option)
 {
 	if (option->levelOfDetail >= 0.5) {
 		if (option->state & QStyle::State_Selected) {
@@ -874,10 +881,10 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 
 			painter->restore();
 		}
-		if (((option->state & QStyle::State_MouseOver) || mPortsVisible) && portRenderer) {
+		if ((option->state & QStyle::State_MouseOver) || mPortsVisible) {
 			painter->save();
 			painter->setOpacity(0.7);
-			portRenderer->render(painter, mContents);
+			mPortHandler->drawPorts(painter, mContents, QStringList());
 			painter->restore();
 		}
 
@@ -948,7 +955,7 @@ void NodeElement::changeFoldState()
 
 void NodeElement::updateLabels()
 {
-	foreach (Label *title, mTitles) {
+	foreach (Label *title, mLabels) {
 		title->setParentContents(mContents);
 	}
 }
@@ -1101,15 +1108,24 @@ QList<double> NodeElement::borderValues() const
 	return mElementImpl->border();
 }
 
-PossibleEdge NodeElement::toPossibleEdge(StringPossibleEdge const &strPossibleEdge)
+QSet<ElementPair> NodeElement::elementsForPossibleEdge(StringPossibleEdge const &edge)
 {
-	QString editor = id().editor();
-	QString diagram = id().diagram();
-	QPair<qReal::Id, qReal::Id> nodes(qReal::Id(editor, diagram, strPossibleEdge.first.first),
-									  qReal::Id(editor, diagram, strPossibleEdge.first.second));
-	QPair<bool, qReal::Id> link(strPossibleEdge.second.first,
-								qReal::Id(editor, diagram, strPossibleEdge.second.second));
-	return QPair<QPair<qReal::Id, qReal::Id>, PossibleEdgeType>(nodes, link);
+	QStringList elements = mGraphicalAssistApi->editorManagerInterface().elements(id().editor(), id().diagram());
+	QStringList portTypes = mGraphicalAssistApi->editorManagerInterface().portTypes(id().type());
+
+	QSet<ElementPair> result;
+	foreach (QString const &element, elements) {
+		QStringList otherPortTypes
+				= mGraphicalAssistApi->editorManagerInterface().portTypes(Id(id().editor(), id().diagram(), element));
+		if (portTypes.contains(edge.first.first) && otherPortTypes.contains(edge.first.second)) {
+			result.insert(qMakePair(id().type(), Id(id().editor(), id().diagram(), element)));
+		}
+		if (otherPortTypes.contains(edge.first.first) && portTypes.contains(edge.first.second)) {
+			result.insert(qMakePair(Id(id().editor(), id().diagram(), element), id().type()));
+		}
+	}
+
+	return result;
 }
 
 QList<PossibleEdge> NodeElement::getPossibleEdges()
