@@ -13,6 +13,4 @@ LIBS += -L../bin -lqrkernel -lqrutils
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)"
 }
 
-DEFINES += QRREPO_LIBRARY
-
 include(qrrepo.pri)

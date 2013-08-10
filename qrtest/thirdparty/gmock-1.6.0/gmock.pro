@@ -1,5 +1,5 @@
 TEMPLATE = lib
-DESTDIR = ../../bin/thirdparty
+DESTDIR = ../../../bin/thirdparty
 TARGET = gmock
 CONFIG += staticlib warn_off
 

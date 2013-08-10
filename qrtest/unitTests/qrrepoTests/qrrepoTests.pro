@@ -1,28 +1,19 @@
-TEMPLATE = app
-CONFIG += console
-
-QT += xml
-
-DESTDIR = ../../../bin
 TARGET = qrrepo_unittests
 
-!macx {
-	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../bin
-	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../bin/plugins
-}
-
-OBJECTS_DIR = .obj
-UI_DIR = .ui
-MOC_DIR = .moc
-RCC_DIR = .moc
-
-INCLUDEPATH += \
-	../../../thirdparty/gmock-1.6.0/include \
-	../../../thirdparty/gmock-1.6.0/gtest/include \
-
-LIBS += -L../../../bin/ -lqrkernel -lqrutils
-LIBS += -L../../../bin/thirdparty/ -lgmock -lpthread
+include(../common.pri)
 
 include(../../../qrrepo/qrrepo.pri)
 
-include(qrrepoTests.pri)
+SOURCES += \
+	objectTest.cpp \
+	graphicalObjectTest.cpp \
+	folderCompressorTest.cpp \
+	serializerTest.cpp \
+	repositoryTest.cpp \
+	repoApiTest.cpp \
+
+HEADERS += \
+	folderCompressorTest.h \
+	serializerTest.h \
+	repositoryTest.h \
+	repoApiTest.h \
