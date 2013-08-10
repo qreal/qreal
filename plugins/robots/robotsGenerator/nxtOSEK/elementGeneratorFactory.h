@@ -8,7 +8,8 @@ namespace robots {
 namespace generator {
 
 /// Element generator factory that returns generator for diagram element Id.
-class ElementGeneratorFactory {
+class ElementGeneratorFactory
+{
 public:
 	static AbstractElementGenerator* generator(
 			NxtOSEKRobotGenerator *generator

@@ -39,8 +39,8 @@ bool LoopElementGenerator::nextElementsGeneration()
 	AbstractElementGenerator* const loopGen = ElementGeneratorFactory::generator(mNxtGen
 			, loopNextElement, *mNxtGen->api());
 
-	mNxtGen->previousElement() = mElementId;
-	mNxtGen->previousLoopElements().push(mElementId);
+	mNxtGen->currentGenerator()->previousElement() = mElementId;
+	mNxtGen->currentGenerator()->previousLoopElements().push(mElementId);
 	if (!loopGen->generate()) {
 		return false;
 	}
@@ -57,8 +57,8 @@ bool LoopElementGenerator::nextElementsGeneration()
 	AbstractElementGenerator* nextBlocksGen = ElementGeneratorFactory::generator(mNxtGen
 			, nextBlockElement, *mNxtGen->api());
 
-	mNxtGen->previousElement() = mElementId;
-	mNxtGen->previousLoopElements().push(mElementId);
+	mNxtGen->currentGenerator()->previousElement() = mElementId;
+	mNxtGen->currentGenerator()->previousLoopElements().push(mElementId);
 	if (!nextBlocksGen->generate()) {
 		return false;
 	}

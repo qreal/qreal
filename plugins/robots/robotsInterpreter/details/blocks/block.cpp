@@ -20,6 +20,10 @@ Block::Block()
 	connect(this, SIGNAL(done(blocks::Block*const)), this, SLOT(finishedRunning()));
 }
 
+Block::~Block()
+{
+}
+
 void Block::init(Id const &graphicalId
 		, GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
@@ -73,13 +77,13 @@ Id const Block::id() const
 
 void Block::interpret()
 {
-	if ((mState == running) || (mState == failed)) {
+	// mState == running is not filtered out due to recursions and forks
+	if (mState == failed) {
 		return;
 	}
 
 	mState = running;
-	bool result = initNextBlocks();
-	if (result) {
+	if (initNextBlocks()) {
 		run();
 	}
 }
@@ -190,6 +194,6 @@ QVector<bool> Block::parseEnginePorts() const
 	return result;
 }
 
-void Block::stopActiveTimerInBlock()
+void Block::finishedSteppingInto()
 {
 }

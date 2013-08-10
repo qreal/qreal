@@ -11,10 +11,16 @@ QList<SmartLine> InitialNodeGenerator::convertElementIntoDirectCommand(NxtOSEKRo
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	Q_UNUSED(logicElementId)
-	QList<SmartLine> result;
+
+	if (!nxtGen->areWeGeneratingMainTask()) {
+		// Otherwise we will have duplicates in initialization/termination code
+		return QList<SmartLine>();
+	}
+
 	QList<SmartLine> initCode;
 	QList<SmartLine> terminateCode;
 	QList<SmartLine> isrHooks;
+
 	bool foundColorSensor = false;
 
 	int const numberOfPorts = 4;
@@ -62,7 +68,7 @@ QList<SmartLine> InitialNodeGenerator::convertElementIntoDirectCommand(NxtOSEKRo
 	nxtGen->terminateCode().append(terminateCode);
 	nxtGen->isrHooksCode().append(isrHooks);
 
-	return result;
+	return QList<SmartLine>();
 }
 
 void InitialNodeGenerator::appendColorCode(QList<SmartLine> &initCode
