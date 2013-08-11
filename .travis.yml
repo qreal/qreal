@@ -15,8 +15,9 @@ script:
   - make -j2
   - git clean -dfx
   - qmake qrealTest.pro CONFIG+=debug
-  - make -j2
+  - make 
   - cd ./bin
+  - ls -A
   - ./exampleTests
   - ./qrgui_unttests
   - ./qrrepo_unittests
