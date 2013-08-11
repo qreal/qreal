@@ -141,22 +141,21 @@ void EditorViewScene::initMouseMoveManager()
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
 	int const indexGrid = SettingsManager::value("IndexGrid").toInt();
-	qreal const sceneX = rect.x();
-	qreal const sceneY = rect.y();
 
-	int const indent = 100; // should be enough
+	int const left = static_cast<int>(rect.left());
+	int const right = static_cast<int>(rect.right());
+	int const top = static_cast<int>(rect.top());
+	int const bottom = static_cast<int>(rect.bottom());
 
-	int startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid - indent;
-	int endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid + indent;
-	int startY = static_cast<int>(sceneY + 10) / indexGrid * indexGrid - indent;
-	int endY = static_cast<int>(sceneY + rect.height() - 10) / indexGrid * indexGrid + indent;
-	for (int i = startX; i <= endX; i = i + indexGrid) {
-		QLineF line(i, startY, i, endY);
-		painter->drawLine(line);
+	int const startX = left / indexGrid * indexGrid;
+	int const startY = top / indexGrid * indexGrid;
+
+	for (int i = startX; i <= right; i += indexGrid) {
+		painter->drawLine(i, top, i, bottom);
 	}
-	for (int i = startY; i <= endY; i = i + indexGrid) {
-		QLineF line(startX, i, endX, i);
-		painter->drawLine(line);
+
+	for (int i = startY; i <= bottom; i += indexGrid) {
+		painter->drawLine(left, i, right, i);
 	}
 }
 

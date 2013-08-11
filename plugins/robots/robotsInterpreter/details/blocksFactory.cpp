@@ -4,33 +4,41 @@
 #include "blocks/beepBlock.h"
 #include "blocks/initialBlock.h"
 #include "blocks/finalBlock.h"
-#include "blocks/dummyBlock.h"
-#include "blocks/waitForTouchSensorBlock.h"
-#include "blocks/waitForSonarDistanceBlock.h"
-#include "blocks/waitForButtonsBlock.h"
-#include "blocks/drawPixelBlock.h"
-#include "blocks/drawLineBlock.h"
-#include "blocks/drawRectBlock.h"
-#include "blocks/clearScreenBlock.h"
-#include "blocks/drawCircleBlock.h"
-#include "blocks/printTextBlock.h"
+#include "blocks/nullificationEncoderBlock.h"
+
 #include "blocks/enginesForwardBlock.h"
 #include "blocks/enginesBackwardBlock.h"
 #include "blocks/enginesStopBlock.h"
-#include "blocks/loopBlock.h"
-#include "blocks/forkBlock.h"
+
+#include "blocks/timerBlock.h"
 #include "blocks/playToneBlock.h"
 #include "blocks/functionBlock.h"
+#include "blocks/beepBlock.h"
+
+#include "blocks/loopBlock.h"
+#include "blocks/forkBlock.h"
+#include "blocks/ifBlock.h"
+#include "blocks/dummyBlock.h"
+#include "blocks/commentBlock.h"
+#include "blocks/subprogramBlock.h"
+
+#include "blocks/clearScreenBlock.h"
+#include "blocks/drawPixelBlock.h"
+#include "blocks/drawLineBlock.h"
+#include "blocks/drawRectBlock.h"
+#include "blocks/drawCircleBlock.h"
+#include "blocks/printTextBlock.h"
+
+#include "blocks/waitForTouchSensorBlock.h"
+#include "blocks/waitForSonarDistanceBlock.h"
 #include "blocks/waitForColorBlock.h"
 #include "blocks/waitForColorIntensityBlock.h"
-#include "blocks/ifBlock.h"
-#include "blocks/waitForEncoderBlock.h"
-#include "blocks/nullificationEncoderBlock.h"
 #include "blocks/waitForLightSensorBlock.h"
 #include "blocks/waitForSoundSensorBlock.h"
 #include "blocks/waitforGyroscopeSensorBlock.h"
 #include "blocks/waitForAccelerometerBlock.h"
-#include "blocks/commentBlock.h"
+#include "blocks/waitForEncoderBlock.h"
+#include "blocks/waitForButtonsBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -80,6 +88,8 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new LoopBlock();
 	} else if (elementMetatypeIs(element, "Fork")) {
 		newBlock = new ForkBlock();
+	} else if (elementMetatypeIs(element, "Subprogram")) {
+		newBlock = new SubprogramBlock();
 	} else if (elementMetatypeIs(element, "PlayTone")) {
 		newBlock = new PlayToneBlock(mRobotModel->brick());
 	} else if (elementMetatypeIs(element, "Function")) {

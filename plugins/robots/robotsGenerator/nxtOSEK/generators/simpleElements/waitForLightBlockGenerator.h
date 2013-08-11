@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../../../../../qrkernel/ids.h"
 #include "abstractSimpleElementGenerator.h"
 #include "../abstractElementGenerator.h"
@@ -6,7 +8,7 @@ namespace robots {
 namespace generator {
 class NxtOSEKRobotGenerator;
 
-class WaitForLightBlockGenerator: public AbstractSimpleElementGenerator {
+class WaitForLightBlockGenerator : public AbstractSimpleElementGenerator {
 public:
 	WaitForLightBlockGenerator();
 
@@ -18,5 +20,6 @@ private:
 	void addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen
 			, QString const &port, qReal::Id const &elementId);
 };
+
 }
 }

@@ -69,3 +69,4 @@ approximationLevel=12
 nodesStateButtonExpands=true
 recentProjectsLimit=5
 dragArea = 12
+robotsInterpreterStackSize=4000
