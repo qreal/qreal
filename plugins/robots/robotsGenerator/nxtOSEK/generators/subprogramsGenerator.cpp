@@ -35,7 +35,7 @@ bool SubprogramsGenerator::generate()
 		mDiscoveredSubprograms[toGen] = true;
 
 		Id const graphicalDiagramId = graphicalId(toGen);
-		if (graphicalDiagramId == Id()) {
+		if (graphicalDiagramId.isNull()) {
 			mMainGenerator->errorReporter().addError(QObject::tr("Graphical diagram instance not found"));
 			return false;
 		}

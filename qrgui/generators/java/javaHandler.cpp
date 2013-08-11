@@ -196,7 +196,7 @@ bool JavaHandler::checkTheModel()
 	features.append(classMethods);
 	foreach (Id id, features) {
 		Id parent = mApi.parent(id);
-		if (parent == Id()) {
+		if (parent .isNull()) {
 			addError("Unable to serialize object " + objectType(id) + " with id: " + id.toString() + ". Move it inside some Class or Interface.");
 			result = false;
 		}
@@ -250,7 +250,7 @@ bool JavaHandler::checkTheModel()
 		Id fromIdParent = mApi.parent(fromId);
 		Id toIdParent = mApi.parent(toId);
 
-		if (fromIdParent == Id() || toIdParent == Id() || fromIdParent != toIdParent) {
+		if (fromIdParent .isNull() || toIdParent .isNull() || fromIdParent != toIdParent) {
 			addError("Unable to serialize object " + objectType(aLink) + " with id: " + aLink.toString() + ". The source and the target of an edge must be in the same activity as the edge.");
 			result = false;
 		}
@@ -1017,7 +1017,7 @@ QString JavaHandler::ifStatement(Id const &id)
 	}
 
 	//if there is no merge node than we must close the function
-	if (untilMergeNode == Id()) {
+	if (untilMergeNode .isNull()) {
 		mIndent--;
 		result += indent() + "}\n";
 	}

@@ -277,7 +277,7 @@ int PropertyEditorModel::roleByIndex(int row) const
 QString PropertyEditorModel::typeName(QModelIndex const &index) const
 {
 	Id id = idByIndex(index);
-	if (id == Id()) {
+	if (id .isNull()) {
 		return "";
 	}
 	return mEditorManagerInterface.typeName(id, mFields[index.row()].fieldName);
@@ -286,7 +286,7 @@ QString PropertyEditorModel::typeName(QModelIndex const &index) const
 bool PropertyEditorModel::isReference(QModelIndex const &index, QString const &propertyName)
 {
 	Id id = idByIndex(index);
-	if (id == Id()) {
+	if (id .isNull()) {
 		return false;
 	}
 	return mEditorManagerInterface.referenceProperties(id.type()).contains(propertyName);

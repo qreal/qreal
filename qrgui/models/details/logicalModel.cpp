@@ -96,7 +96,7 @@ AbstractModelItem *LogicalModel::createModelItem(Id const &id, AbstractModelItem
 
 void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 {
-	if ((logicalId == Id()) || (mApi.name(logicalId) == name)) {
+	if ((logicalId .isNull()) || (mApi.name(logicalId) == name)) {
 		return;
 	}
 	mApi.setName(logicalId, name);

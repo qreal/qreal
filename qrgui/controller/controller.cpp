@@ -70,7 +70,7 @@ void Controller::execute(commands::AbstractCommand *command, UndoStack *stack)
 
 void Controller::diagramOpened(Id const &diagramId)
 {
-	if (diagramId == Id()) {
+	if (diagramId .isNull()) {
 		return;
 	}
 	UndoStack *stack = new UndoStack;
@@ -81,7 +81,7 @@ void Controller::diagramOpened(Id const &diagramId)
 
 void Controller::diagramClosed(Id const &diagramId)
 {
-	if (diagramId == Id() || !mDiagramStacks.keys().contains(diagramId.toString())) {
+	if (diagramId .isNull() || !mDiagramStacks.keys().contains(diagramId.toString())) {
 		return;
 	}
 
@@ -188,7 +188,7 @@ UndoStack *Controller::selectActiveStack(bool forUndo)
 		return mActiveStack;
 	}
 	uint const diagramTimestamp = diagramCommand->timestamp();
-	uint const globalTimestamp = diagramCommand->timestamp();
+	uint const globalTimestamp = globalCommand->timestamp();
 	return forUndo == (diagramTimestamp < globalTimestamp) ? mGlobalStack : mActiveStack;
 }
 
