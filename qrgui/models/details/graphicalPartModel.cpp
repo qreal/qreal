@@ -40,13 +40,16 @@ bool GraphicalPartModel::setData(QModelIndex const &index, QVariant const &value
 	switch (role) {
 	case positionRole:
 		mRepoApi.setGraphicalPartProperty(item->id(), item->index(), "position", value);
-		return true;
+		break;
 	case configurationRole:
 		mRepoApi.setGraphicalPartProperty(item->id(), item->index(), "configuration", value);
-		return true;
+		break;
 	default:
 		return false;
 	}
+
+	emit dataChanged(index, index);
+	return true;
 }
 
 int GraphicalPartModel::rowCount(const QModelIndex &parent) const

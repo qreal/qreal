@@ -28,4 +28,4 @@ INCLUDEPATH += \
 	$$PWD/../thirdparty/gmock-1.6.0/include \
 	$$PWD/../thirdparty/gmock-1.6.0/gtest/include \
 
-LIBS += -L$$PWD/../../bin/thirdparty/ -lgmock -lpthread
+LIBS += -L$$PWD/../../bin -lgmock -lpthread
