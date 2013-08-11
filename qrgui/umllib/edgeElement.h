@@ -28,14 +28,14 @@ enum ArrowType
 }
 
 class NodeElement;
-/** @class EdgeElement
-  * @brief class for an edge on a diagram
- */
 
 namespace commands {
 class ReshapeEdgeCommand;
 }
 
+/** @class EdgeElement
+  * @brief class for an edge on a diagram
+ */
 class EdgeElement : public Element
 {
 	Q_OBJECT
@@ -54,19 +54,20 @@ public:
 	virtual void initTitles();
 
 	bool isDividable();
-	void adjustLink(bool isDragging = false);
+	void adjustLink();
 
 	/// use adjustLink() to all links that have with this general master
 	void adjustNeighborLinks();
 	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
-	bool shouldReconnect() const;
 	void arrangeSrcAndDst();
+
 	NodeElement *src() const;
 	NodeElement *dst() const;
 	bool isSrc(NodeElement const *node) const;
 	bool isDst(NodeElement const *node) const;
 	void setSrc(NodeElement *node);
 	void setDst(NodeElement *node);
+
 	/// prepare edge to moving from the linker
 	void tuneForLinker();
 	QPair<qreal, qreal> portIdOn(NodeElement const *node) const;
@@ -74,6 +75,7 @@ public:
 	QPointF connectionPoint(NodeElement const *node) const;
 	NodeElement* otherSide(NodeElement const *node) const;
 	void removeLink(NodeElement const *from);
+
 	QPolygonF line() const;
 	void setLine(QPolygonF const &line);
 
@@ -104,8 +106,6 @@ public:
 
 	EdgeData& data();
 
-	virtual void deleteFromScene();
-
 	// redrawing of this edgeElement in squarize
 	void redrawing(QPointF const &pos);
 
@@ -135,7 +135,7 @@ protected:
 	enums::arrowTypeEnum::ArrowType mEndArrowStyle;
 
 public slots:
-	void saveConfiguration(QPointF const &pos);
+	void saveConfiguration();
 	/// redraw a new mLine after delPointHandler or deleteSegmentHandler using contextMenu
 	void arrangeAndAdjustHandler(QPointF const &pos);
 
@@ -218,7 +218,7 @@ private:
 
 	void squarize();
 	int defineType();
-	int defineSide(qreal port);
+	NodeSide defineSide(qreal port);
 	void verticalSquareLine();
 	void horizontalSquareLine();
 	void verticalTurningSquareLine();
@@ -232,7 +232,6 @@ private:
 
 	// these methods are called before the push action in the context menu
 	bool delPointActionIsPossible(const QPointF &pos);
-	bool addPointActionIsPossible(const QPointF &pos);
 	bool delSegmentActionIsPossible(const QPointF &pos);
 	bool minimizeActionIsPossible();
 	bool reverseActionIsPossible();
@@ -252,7 +251,6 @@ private:
 	QPolygonF mLine; // holds coordinates of polygon points in coordinate system with center in first point
 	QColor mColor;
 
-	ContextMenuAction mAddPointAction;
 	ContextMenuAction mDelPointAction;
 	ContextMenuAction mMinimizeAction;
 	ContextMenuAction mDelSegmentAction;
@@ -261,7 +259,6 @@ private:
 	bool mChaoticEdition;
 
 	QPolygonF mLastLine;
-	bool mLastLineIsLoop;
 	QPolygonF mSavedLineForChanges;
 	bool mLeftButtonIsPressed;
 

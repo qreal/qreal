@@ -171,16 +171,16 @@ void NodeElement::setPos(qreal x, qreal y)
 	setPos(QPointF(x, y));
 }
 
-void NodeElement::adjustLinks(bool isDragging)
+void NodeElement::adjustLinks()
 {
 	foreach (EdgeElement *edge, mEdgeList) {
-		edge->adjustLink(isDragging);
+		edge->adjustLink();
 	}
 
 	foreach (QGraphicsItem *child, childItems()) {
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
-			element->adjustLinks(isDragging);
+			element->adjustLinks();
 		}
 	}
 }
@@ -223,14 +223,14 @@ void NodeElement::arrangeLinks()
 
 void NodeElement::storeGeometry()
 {
-	QRectF contents = mContents; // saving correct current contents
+	QPolygon contents(mContents.toAlignedRect()); // saving correct current contents
 
 	if ((pos() != mGraphicalAssistApi->position(id()))) { // check if it's been changed
 		mGraphicalAssistApi->setPosition(id(), pos());
 	}
 
-	if (QPolygon(contents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
-		mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
+	if (contents != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
+		mGraphicalAssistApi->setConfiguration(id(), contents);
 	}
 }
 
@@ -582,7 +582,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	adjustLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
-		edge->saveConfiguration(QPointF());
+		edge->saveConfiguration();
 		if (SettingsManager::value("ActivateGrid").toBool())
 		{
 			edge->alignToGrid();
@@ -716,7 +716,7 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 		if (mDragState == None) {
 			alignToGrid();
 		}
-		adjustLinks(true);
+		adjustLinks();
 		return value;
 
 	case ItemChildAddedChange:
@@ -817,17 +817,6 @@ void NodeElement::setPortsVisible(bool value)
 {
 	prepareGeometryChange();
 	mPortsVisible = value;
-}
-
-NodeElement *NodeElement::getNodeAt(QPointF const &position)
-{
-	foreach (QGraphicsItem *item, scene()->items(position)) {
-		NodeElement *e = dynamic_cast<NodeElement *>(item);
-		if (e && (item != this)) {
-			return e;
-		}
-	}
-	return 0;
 }
 
 void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *)
@@ -1143,11 +1132,6 @@ void NodeElement::checkConnectionsToPort() // it is strange method
 	mPortHandler->checkConnectionsToPort();
 }
 
-void NodeElement::connectLinksToPorts()
-{
-	mPortHandler->connectLinksToPorts();
-}
-
 void NodeElement::singleSelectionState(bool const singleSelected)
 {
 	initEmbeddedLinkers();
@@ -1166,30 +1150,6 @@ void NodeElement::highlightEdges()
 	foreach (EdgeElement *edge, mEdgeList) {
 		edge->highlight();
 	}
-}
-
-void NodeElement::disconnectEdges()
-{
-	foreach (EdgeElement *edge, mEdgeList) {
-		if (edge->src() == this) {
-			mGraphicalAssistApi->setFrom(edge->id(), Id::rootId());
-			mLogicalAssistApi->setFrom(edge->logicalId(), Id::rootId());
-		}
-
-		if (edge->dst() == this) {
-			mGraphicalAssistApi->setTo(edge->id(), Id::rootId());
-			mLogicalAssistApi->setTo(edge->logicalId(), Id::rootId());
-		}
-
-		edge->removeLink(this);
-	}
-	mEdgeList.clear();
-}
-
-void NodeElement::deleteFromScene()
-{
-	highlightEdges();
-	disconnectEdges();
 }
 
 NodeData& NodeElement::data()

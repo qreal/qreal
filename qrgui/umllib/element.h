@@ -64,9 +64,6 @@ public:
 
 	ElementImpl* elementImpl() const;
 
-	/// Perform element-specific actions before being deleted
-	virtual void deleteFromScene() = 0;
-
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
 	virtual void selectionState(bool const selected);

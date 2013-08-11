@@ -668,7 +668,7 @@ void EditorViewScene::arrangeNodeLinks(NodeElement* node) const
 	foreach (EdgeElement* nodeEdge, node->edgeList()) {
 		nodeEdge->adjustNeighborLinks();
 		nodeEdge->setGraphicApiPos();
-		nodeEdge->saveConfiguration(QPointF());
+		nodeEdge->saveConfiguration();
 	}
 	node->arrangeLinks();
 	node->adjustLinks();
@@ -769,7 +769,7 @@ void EditorViewScene::moveSelectedItems(int direction)
 			resizeCommand->startTracking();
 			node->setPos(newPos);
 			node->alignToGrid();
-			node->adjustLinks(true);
+			node->adjustLinks();
 			resizeCommand->stopTracking();
 			mController->execute(resizeCommand);
 		} else {
@@ -1019,7 +1019,7 @@ void EditorViewScene::createEdge(QString const &idStr)
 		foreach (EdgeElement* nodeEdge, edge->dst()->edgeList()) {
 			nodeEdge->adjustNeighborLinks();
 			nodeEdge->setGraphicApiPos();
-			nodeEdge->saveConfiguration(QPointF());
+			nodeEdge->saveConfiguration();
 		}
 		edge->dst()->arrangeLinks();
 		edge->dst()->adjustLinks();
