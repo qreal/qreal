@@ -27,5 +27,6 @@ protected:
 	virtual void generateBmpFile(NxtOSEKRobotGenerator *nxtGen, QString const &name, qReal::Id const &logicElementId);
 	virtual void drawBmp(NxtOSEKRobotGenerator *nxtGen, qReal::Id const logicElementId, QPainter *p) = 0;
 };
+
 }
 }

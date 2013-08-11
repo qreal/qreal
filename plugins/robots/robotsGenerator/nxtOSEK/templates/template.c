@@ -10,6 +10,8 @@
 
 @@VARIABLES@@
 
+@@BMPFILES@@
+
 void ecrobot_device_initialize(void)
 {
 	srand(systick_get_ms());
@@ -27,6 +29,7 @@ void user_1ms_isr_type2(void)
 @@USERISRHOOKS@@
 }
 
-@@BMPFILES@@
+@@SUBPROGRAMS@@
 
+/* Main task */
 @@CODE@@

@@ -36,7 +36,7 @@ bool Property::init(QDomElement const &element)
 
 bool Property::initReferenceType(QString typeName, QDomElement const &element)
 {
-	mType = element.firstChildElement(typeName).attribute("nameReference");
+	mType = element.firstChildElement(typeName).attribute("type");
 	if (mType.isEmpty()) {
 		qDebug() << "ERROR: anonymous property reference type for" << name() << "found";
 		return false;

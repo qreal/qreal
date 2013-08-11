@@ -26,7 +26,9 @@ private:
 	void createNode(QDomElement &parent, qReal::Id const &id);
 	void createEdge(QDomElement &parent, qReal::Id const &id);
 	void createEnum(QDomElement &parent, qReal::Id const &id);
+	void createPort(QDomElement &parent, qReal::Id const &id);
 	void setProperties(QDomElement &parent, qReal::Id const &id);
+	void setPorts(QDomElement &parent, qReal::Id const &id, QString const &direction);
 	void setContextMenuFields(QDomElement &parent, qReal::Id const &id);
 	void setValues(QDomElement &parent, qReal::Id const &id);
 	void setAssociations(QDomElement &parent, qReal::Id const &id);
@@ -34,7 +36,6 @@ private:
 	void setConnections(QDomElement &parent, qReal::Id const &id);
 	void setGeneralization(QDomElement &parent, qReal::Id const &id);
 	void setPossibleEdges(QDomElement &parent, qReal::Id const &id);
-	void setPin(QDomElement &parent, qReal::Id const &id);
 	void setStatusElement(QDomElement &parent, qReal::Id const &id, QString const &tagName, QString const &propertyName);
 	void setAction(QDomElement &parent, qReal::Id const &id);
 	void createDiagrams(QDomElement &parent, qReal::Id const &id);
@@ -42,9 +43,10 @@ private:
 	void setContainerProperties(QDomElement &parent, qReal::Id const &id);
 	void setExplosion(QDomElement &parent, qReal::Id const &id);
 	void setExplosionProperties(QDomElement &target, qReal::Id const &linkId);
-	void newSetConnections(QDomElement &parent, const qReal::Id &id,
-			QString const &commonTagName, QString const &internalTagName, QString const &typeName);
+	void newSetConnections(QDomElement &parent, const qReal::Id &id
+			, QString const &commonTagName, QString const &internalTagName, QString const &typeName);
 	void ensureCorrectness(qReal::Id const &id, QDomElement element, QString const &tagName, QString const &value);
+	bool findPort(QString const &name) const;
 	void setBoolValuesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
 	void setSizesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
 	static void copyImages(QString const &pathToFile);

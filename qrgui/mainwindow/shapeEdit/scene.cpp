@@ -23,8 +23,12 @@ Scene::Scene(graphicsUtils::AbstractView *view, QObject * parent)
 	setEmptyRect(0, 0, mSizeEmptyRectX, mSizeEmptyRectY);
 	setEmptyPenBrushItems();
 	mCopyPaste = nonePaste;
+	mPortType = "NonTyped";
+
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePalette()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(changeFontPalette()));
+	connect(this, SIGNAL(selectionChanged()), this, SLOT(changePortsComboBox()));
+
 	mZValue = 0;
 }
 
@@ -210,12 +214,14 @@ void Scene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	case pointPort :
 		setX1andY1(event);
 		mPointPort = new PointPort(mX1, mY1, NULL);
+		mPointPort->setType(mPortType);
 		addItem(mPointPort);
 		setZValue(mPointPort);
 		break;
 	case linePort :
 		setX1andY1(event);
 		mLinePort = new LinePort(mX1, mY1, mX1, mY1, NULL);
+		mLinePort->setType(mPortType);
 		addItem(mLinePort);
 		setZValue(mLinePort);
 		removeMoveFlag(event, mLinePort);
@@ -535,6 +541,25 @@ void Scene::changeBrushColor(QString const &text)
 	update();
 }
 
+void Scene::changePortsType(QString const &type)
+{
+	mPortType = type;
+
+	foreach (QGraphicsItem *item, selectedItems()) {
+		PointPort *point = dynamic_cast<PointPort *>(item);
+		if (point) {
+			point->setType(type);
+		} else {
+			LinePort *line = dynamic_cast<LinePort *>(item);
+			if (line) {
+				line->setType(type);
+			}
+		}
+	}
+
+	update();
+}
+
 void Scene::changePalette()
 {
 	if(mItemType == none) {
@@ -568,6 +593,23 @@ void Scene::changeFontPalette()
 			emit existSelectedTextPictureItems(penItem, fontItem, item->name());
 		}
 	}
+}
+
+void Scene::changePortsComboBox()
+{
+	foreach (QGraphicsItem *item, selectedItems()) {
+		PointPort *point = dynamic_cast<PointPort *>(item);
+		if (point) {
+			emit existSelectedPortItems(point->getType());
+			return;
+		}
+		LinePort *line = dynamic_cast<LinePort *>(item);
+		if (line) {
+			emit existSelectedPortItems(line->getType());
+			return;
+		}
+	}
+	emit noSelectedPortItems();
 }
 
 void Scene::changeFontFamily(const QFont& font)

@@ -26,10 +26,11 @@
 #include "simpleElements/variableInitGenerator.h"
 #include "simpleElements/balanceInitGenerator.h"
 #include "simpleElements/initialNodeGenerator.h"
+#include "simpleElements/subprogramsSimpleGenerator.h"
 
 using namespace robots::generator;
 
-AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const elementType)
+AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const &elementType)
 {
 	if (elementType == "EnginesForward" || elementType == "EnginesBackward") {
 		return new EnginesGenerator(elementType);
@@ -83,6 +84,8 @@ AbstractSimpleElementGenerator* SimpleElementFactory::generator(QString const el
 		return new DrawRectBlockGenerator();
 	} else if (elementType == "ClearScreen") {
 		return new ClearScreenBlockGenerator();
+	} else if (elementType == "Subprogram") {
+		return new SubprogramsSimpleGenerator();
 	}
 
 	return new InitialNodeGenerator();

@@ -8,6 +8,7 @@
 
 #include "edgeType.h"
 #include "nodeType.h"
+#include "portType.h"
 #include "enumType.h"
 
 #include <QtCore/QFile>
@@ -116,18 +117,28 @@ void XmlCompiler::addResource(QString const &resourceName)
 
 void XmlCompiler::generateElementClasses()
 {
-	OutFile out("generated/elements.h");
-	out() << "#pragma once\n\n"
+	OutFile outElements("generated/elements.h");
+	outElements() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementImpl.h\"\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelHelpers.h\"\n\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelFactoryInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelInterface.h\"\n"
+		<< "#include \"ports.h\"\n\n"
 		;
+
+	OutFile outPorts("generated/ports.h");
+	outPorts() << "#pragma once\n\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/portHelpers.h\"\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		foreach (Type *type, diagram->types().values()) {
-			type->generateCode(out);
+			if (dynamic_cast<PortType *>(type)) {
+				type->generateCode(outPorts);
+			} else {
+				type->generateCode(outElements);
+			}
 		}
 	}
 }
@@ -178,11 +189,12 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tvirtual int isNodeOrEdge(QString const &element) const; \n"
 		<< "\n"
-		<< "\tvirtual QIcon getIcon(SdfIconEngineV2Interface *engine) const;\n"
-		<< "\tvirtual ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual QIcon getIcon(qReal::SdfIconEngineV2Interface *engine) const;\n"
+		<< "\tvirtual qReal::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString getPropertyType(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;\n"
 		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
+		<< "\tvirtual QStringList getPortTypes(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QStringList getReferenceProperties(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QStringList getEnumValues(QString name) const;\n"
 		<< "\tvirtual QString getGroupsXML() const;\n"
@@ -237,6 +249,7 @@ void XmlCompiler::generatePluginSource()
 	generateIsParentOfRequest(out);
 	generateGetParentsOfRequest(out);
 	generateProperties(out);
+	generatePortTypes(out);
 	generateReferenceProperties(out);
 	generateContainedTypes(out);
 	generatePossibleEdges(out);
@@ -484,7 +497,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn mPropertyDefault[element].keys();\n"
 		<< "}\n\n"
 
-		<< "QIcon " << mPluginName << "Plugin::getIcon(SdfIconEngineV2Interface *engine) const\n{\n"
+		<< "QIcon " << mPluginName << "Plugin::getIcon(qReal::SdfIconEngineV2Interface *engine) const\n{\n"
 		<< "\treturn QIcon(engine);\n"
 		<< "}\n\n"
 
@@ -527,7 +540,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 {
-	out() << "ElementImpl* " << mPluginName
+	out() << "qReal::ElementImpl* " << mPluginName
 		<< "Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const\n{\n";
 
 	bool isNotFirst = false;
@@ -598,6 +611,13 @@ class XmlCompiler::PropertiesGenerator: public XmlCompiler::ListMethodGenerator 
 public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
 		return type->generateProperties(out, isNotFirst, false);
+	}
+};
+
+class XmlCompiler::PortsGenerator: public XmlCompiler::ListMethodGenerator {
+public:
+	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
+		return type->generatePorts(out, isNotFirst);
 	}
 };
 
@@ -698,6 +718,11 @@ void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 void XmlCompiler::generateProperties(OutFile &out)
 {
 	generateListMethod(out, "getPropertyNames(QString const &/*diagram*/, QString const &element)", PropertiesGenerator());
+}
+
+void XmlCompiler::generatePortTypes(OutFile &out)
+{
+	generateListMethod(out, "getPortTypes(QString const &/*diagram*/, QString const &element)", PortsGenerator());
 }
 
 void XmlCompiler::generateReferenceProperties(OutFile &out)
