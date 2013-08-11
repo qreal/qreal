@@ -1,5 +1,9 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	qrrepoTests \
+	exampleTests \
+	pluginsTests \
 	qrguiTests \
+	qrkernelTests \
+	qrrepoTests \
+	qrutilsTests \

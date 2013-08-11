@@ -5,15 +5,15 @@ include(../common.pri)
 include(../../../qrrepo/qrrepo.pri)
 
 SOURCES += \
-	objectTest.cpp \
-	graphicalObjectTest.cpp \
-	folderCompressorTest.cpp \
-	serializerTest.cpp \
-	repositoryTest.cpp \
 	repoApiTest.cpp \
+	privateTests/folderCompressorTest.cpp \
+	privateTests/serializerTest.cpp \
+	privateTests/repositoryTest.cpp \
+	privateTests/classesTests/objectTest.cpp \
+	privateTests/classesTests/graphicalObjectTest.cpp \
 
 HEADERS += \
-	folderCompressorTest.h \
-	serializerTest.h \
-	repositoryTest.h \
 	repoApiTest.h \
+	privateTests/folderCompressorTest.h \
+	privateTests/serializerTest.h \
+	privateTests/repositoryTest.h \
