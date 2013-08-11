@@ -9,6 +9,12 @@ WaitBlock::WaitBlock(details::RobotModel * const robotModel)
 	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
 }
 
+void WaitBlock::setFailedStatus()
+{
+	Block::setFailedStatus();
+	stopActiveTimerInBlock();
+}
+
 void WaitBlock::processResponce(int reading, int targetValue)
 {
 	QString const sign = stringProperty("Sign");

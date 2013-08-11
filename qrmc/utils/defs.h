@@ -105,7 +105,6 @@ QString const labelIndexTag = "@@Count@@";
 QString const nameRoleTag ="@@NameRole@@";
 QString const customRoleTag ="@@CustomRole@@";
 QString const updateRoleTag ="@@UpdateRole@@";
-QString const hasPortsTag = "@@NodeHasPorts@@";
 QString const isNodeTag = "@@IsNode@@";
 QString const isContainerTag = "@@IsContainer@@";
 QString const sortingContainerTag = "@@IsSortContainer@@";

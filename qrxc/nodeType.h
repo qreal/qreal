@@ -18,6 +18,7 @@ public:
 	virtual ~NodeType();
 	virtual void generateCode(utils::OutFile &out);
 	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
+	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
 
 private:
 	QList<Port*> mPorts;
@@ -30,9 +31,8 @@ private:
 	virtual bool initAssociations();
 	virtual bool initGraphics();
 	virtual bool initDividability();
+	virtual bool initPortTypes();
 
-	bool hasLinePorts();
-	bool hasPointPorts();
 	bool initSdf();
 	void generateSdf() const;
 
@@ -41,8 +41,4 @@ private:
 	bool initLinePorts(QDomElement const &portsElement);
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count);
 	bool initBooleanProperties();
-
-	void generatePorts() const;
-	void generateLinePorts(QDomElement const &portsElement, utils::OutFile &out) const;
-	void generatePointPorts(QDomElement const &portsElement, utils::OutFile &out) const;
 };

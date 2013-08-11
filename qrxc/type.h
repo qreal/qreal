@@ -36,6 +36,7 @@ public:
 	virtual void generateNameMapping(utils::OutFile &out) = 0;
 	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst, bool isReference) = 0;
+	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) = 0;
 	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst) = 0;

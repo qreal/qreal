@@ -82,6 +82,9 @@ public:
 	/** @brief Get position of edge's end point*/
 	QPointF to() const;
 
+	QStringList fromPortTypes() const;
+	QStringList toPortTypes() const;
+
 	void placeStartTo(QPointF const &place);
 	void placeEndTo(QPointF const &place);
 	void moveConnection(NodeElement *node, qreal const portId);
@@ -194,7 +197,7 @@ private:
 	/// Returns the bezier curve built on the mLine points.
 	QPainterPath bezierCurve() const;
 
-	QList<PossibleEdge> possibleEdges;
+	QList<PossibleEdge> mPossibleEdges;
 
 	bool mIsDissectable;
 	int getPoint(const QPointF &location);

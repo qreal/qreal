@@ -56,6 +56,8 @@ signals:
 	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
 	void noSelectedTextPictureItems();
 	void existSelectedTextPictureItems(QPen const &penItem, QFont const &fontItem, QString const &name);
+	void noSelectedPortItems();
+	void existSelectedPortItems(QString const &type);
 	void resetHighlightAllButtons();
 
 private slots:
@@ -64,8 +66,11 @@ private slots:
 	void changePenColor(QString const &text);
 	void changeBrushStyle(QString const &text);
 	void changeBrushColor(QString const &text);
+	void changePortsType(QString const &type);
+
 	void changePalette();
 	void changeFontPalette();
+	void changePortsComboBox();
 
 	void changeFontFamily(const QFont& font);
 	void changeFontPixelSize(int size);
@@ -120,6 +125,7 @@ private:
 	QList<TextPicture *> mListSelectedTextPictureItems;
 	TextPicture *mSelectedTextPicture;
 	QPair<bool, Item *> mNeedResize;
+	QString mPortType;
 
 	void initListSelectedItemsForPaste();
 	QRectF selectedItemsBoundingRect() const;

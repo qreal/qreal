@@ -10,6 +10,7 @@ HEADERS += \
 	pluginManager/pattern.h \
 	pluginManager/patternParser.h \
 	pluginManager/explosion.h \
+	pluginManager/interpreterPortImpl.h \
 
 SOURCES += \
 	pluginManager/editorManager.cpp \
@@ -21,3 +22,4 @@ SOURCES += \
 	pluginManager/pattern.cpp \
 	pluginManager/patternParser.cpp \
 	pluginManager/explosion.cpp \
+	pluginManager/interpreterPortImpl.cpp \

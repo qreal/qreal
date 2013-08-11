@@ -69,8 +69,9 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 		}
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
-				&& initGraphics() && initLabels() && initPossibleEdges() && initContainerProperties()
-				&& initCreateChildrenFromMenu() && initBonusContextMenuFields() && initExplosions();
+				&& initGraphics() && initLabels() && initPossibleEdges() && initPortTypes()
+				&& initCreateChildrenFromMenu() && initContainerProperties() && initBonusContextMenuFields()
+				&& initExplosions();
 	}
 	return false;
 }
@@ -531,6 +532,13 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRefer
 		out() << "\t}\n";
 		return true;
 	}
+	return false;
+}
+
+bool GraphicType::generatePorts(OutFile &out, bool isNotFirst)
+{
+	Q_UNUSED(out)
+	Q_UNUSED(isNotFirst)
 	return false;
 }
 
