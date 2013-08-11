@@ -1,5 +1,7 @@
 TARGET = qrrepo_unittests
 
+QT += xml
+
 include(../common.pri)
 
 include(../../../qrrepo/qrrepo.pri)

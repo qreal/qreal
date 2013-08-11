@@ -1,8 +1,6 @@
 TEMPLATE = app
 CONFIG += console
 
-QT += svg xml printsupport widgets help
-
 DESTDIR = $$PWD/../../bin
 
 macx {

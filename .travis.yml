@@ -19,7 +19,7 @@ script:
   - cd ./bin
   - ls -A
   - ./exampleTests
-  - ./qrgui_unttests
+  - ./qrgui_unittests
   - ./qrrepo_unittests
   - ./qrutils_unittests
   - ./visualDebugSupport_unittests
