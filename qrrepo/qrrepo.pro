@@ -1,5 +1,3 @@
-QT += xml
-
 DESTDIR = ../bin
 
 TEMPLATE = lib

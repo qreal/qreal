@@ -1,5 +1,7 @@
 RESOURCES = $$PWD/qrgui.qrc
 
+QT += svg xml printsupport widgets help
+
 LIBS += -L$$PWD/../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 LIBS += -L$$PWD/../bin/thirdparty -lqscintilla2
 

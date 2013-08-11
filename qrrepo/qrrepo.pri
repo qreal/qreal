@@ -1,5 +1,7 @@
 DEFINES += QRREPO_LIBRARY
 
+QT += xml
+
 LIBS += -L$$PWD/../bin/ -lqrkernel -lqrutils
 
 HEADERS += \
