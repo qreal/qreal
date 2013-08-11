@@ -11,9 +11,9 @@ GraphicalPartModel::GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi)
 
 GraphicalPartModel::~GraphicalPartModel()
 {
-	typedef QHash<int, modelsImplementation::GraphicalPartModelItem *> GraphicalPartModelItemHash;
-	foreach (GraphicalPartModelItemHash const &hash, mItems.values()) {
-		qDeleteAll(hash.values());
+	typedef QList<modelsImplementation::GraphicalPartModelItem *> GraphicalPartModelItemList;
+	foreach (GraphicalPartModelItemList const &list, mItems) {
+		qDeleteAll(list);
 	}
 }
 
@@ -58,7 +58,7 @@ int GraphicalPartModel::rowCount(const QModelIndex &parent) const
 		return mItems.size();
 	}
 
-	return mItems.values().at(parent.row()).size();
+	return mItems.at(parent.row()).size();
 }
 
 int GraphicalPartModel::columnCount(const QModelIndex &parent) const
@@ -82,8 +82,7 @@ QModelIndex GraphicalPartModel::index(int row, int column, QModelIndex const &pa
 		return QModelIndex();
 	}
 
-	Id const id = mItems.keys().at(parent.row());
-	return createIndex(row, column, mItems[id].values().at(row));
+	return createIndex(row, column, mItems[parent.row()].at(row));
 }
 
 QModelIndex GraphicalPartModel::parent(QModelIndex const &index) const
@@ -97,24 +96,47 @@ QModelIndex GraphicalPartModel::parent(QModelIndex const &index) const
 	}
 
 	GraphicalPartModelItem const * const item = static_cast<GraphicalPartModelItem const *>(index.internalPointer());
-	int const row = mItems.keys().indexOf(item->id());
+	int const row = mIdPositions[item->id()];
 	return createIndex(row, 0, static_cast<void *>(NULL));
 }
 
 QModelIndex GraphicalPartModel::addGraphicalPart(Id const &element, int index)
 {
-	// TODO: beginInsertRows
-	GraphicalPartModelItem * const item = new GraphicalPartModelItem(element, index);
-	mItems[element][index] = item;
-	mRepoApi.createGraphicalPart(element, index);
+	int const parentRow = mIdPositions.contains(element) ? mIdPositions[element] : mItems.size();
+	if (!mIdPositions.contains(element)) {
+		beginInsertRows(QModelIndex(), parentRow, parentRow);
+		mIdPositions.insert(element, parentRow);
+		mItems.append(QList<modelsImplementation::GraphicalPartModelItem *>());
+		endInsertRows();
+	}
 
-	return findIndex(element, index);
+	QModelIndex const parentIndex = this->index(parentRow, 0, QModelIndex());
+	int const row = mItems[parentRow].size();
+
+	beginInsertRows(parentIndex, row, row);
+	mItems[parentRow].append(new modelsImplementation::GraphicalPartModelItem(element, index));
+	mRepoApi.createGraphicalPart(element, index);
+	endInsertRows();
+
+	return this->index(row, 0, parentIndex);
 }
 
 QModelIndex GraphicalPartModel::findIndex(Id const &element, int index)
 {
-	int const parentRow = mItems.keys().indexOf(element);
+	if (!mIdPositions.contains(element)) {
+		return QModelIndex();
+	}
+
+	int const parentRow = mIdPositions.value(element);
 	QModelIndex const parent = createIndex(parentRow, 0, static_cast<void *>(NULL));
-	int const partRow = mItems[element].keys().indexOf(index);
+	int partRow = 0;
+	foreach (modelsImplementation::GraphicalPartModelItem const * const item, mItems[parentRow]) {
+		if (item->index() == index) {
+			break;
+		}
+
+		++partRow;
+	}
+
 	return this->index(partRow, 0, parent);
 }

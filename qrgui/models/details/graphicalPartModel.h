@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QAbstractItemModel>
+#include <QtCore/QList>
 #include <QtCore/QHash>
 
 #include "../../../qrrepo/repoApi.h"
@@ -49,7 +50,8 @@ public:
 
 private:
 	qrRepo::GraphicalRepoApi &mRepoApi;
-	QHash<Id, QHash<int, modelsImplementation::GraphicalPartModelItem *> > mItems;  // Has ownership.
+	QList<QList<modelsImplementation::GraphicalPartModelItem *> > mItems;  // Has ownership.
+	QHash<Id, int> mIdPositions;
 };
 
 }
