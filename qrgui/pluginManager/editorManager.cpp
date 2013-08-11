@@ -273,6 +273,13 @@ QStringList EditorManager::propertyNames(const Id &id) const
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
 }
 
+QStringList EditorManager::portTypes(Id const &id) const
+{
+	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getPortTypes(id.diagram(), id.element());
+}
+
 QStringList EditorManager::referenceProperties(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types

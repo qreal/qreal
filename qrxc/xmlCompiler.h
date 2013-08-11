@@ -40,6 +40,7 @@ private:
 	void generateIsParentOfRequest(utils::OutFile &out);
 	void generateGetParentsOfRequest(utils::OutFile &out);
 	void generateProperties(utils::OutFile &out);
+	void generatePortTypes(utils::OutFile &out);
 	void generateReferenceProperties(utils::OutFile &out);
 	void generateContainedTypes(utils::OutFile &out);
 	void generatePossibleEdges(utils::OutFile &out);
@@ -54,6 +55,7 @@ private:
 
 	class ListMethodGenerator;
 	class PropertiesGenerator;
+	class PortsGenerator;
 	class ReferencePropertiesGenerator;
 	class ContainedTypesGenerator;
 	class PossibleEdgesGenerator;

@@ -13,7 +13,7 @@ class NxtOSEKRobotGenerator;
 class AbstractElementGenerator
 {
 public:
-	explicit AbstractElementGenerator(NxtOSEKRobotGenerator *mainGenerator, qReal::Id const &elementId);
+	AbstractElementGenerator(NxtOSEKRobotGenerator *mainGenerator, qReal::Id const &elementId);
 	virtual ~AbstractElementGenerator();
 	virtual bool generate();
 

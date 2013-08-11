@@ -49,7 +49,6 @@ public:
 	QMap<QString, QVariant> graphicalProperties() const;
 	QMap<QString, QVariant> logicalProperties() const;
 
-	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w, SdfRenderer *portrenderer);
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
 
 	QRectF boundingRect() const;
@@ -73,10 +72,10 @@ public:
 	//void shift(QPointF const &pos, EdgeElement* called);
 
 	QPointF const portPos(qreal id) const;
-	QPointF const nearestPort(QPointF const &location) const;
+	QPointF const nearestPort(QPointF const &location, QStringList const &types) const;
 	int numberOfPorts() const;
 	static int portNumber(qreal id);
-	qreal portId(QPointF const &location) const;
+	qreal portId(QPointF const &location, QStringList const &types) const;
 
 	QList<EdgeElement *> getEdges();
 	void addEdge(EdgeElement *edge);
@@ -207,7 +206,7 @@ private:
 	void disconnectEdges();
 
 	void delUnusedLines();
-	PossibleEdge toPossibleEdge(StringPossibleEdge const &strPossibleEdge);
+	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -217,6 +216,8 @@ private:
 	virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
+	void paint(QPainter *p, QStyleOptionGraphicsItem const *opt);
 
 	/**
 	 * Recalculates mHighlightedNode according to current mouse scene position.
@@ -258,7 +259,6 @@ private:
 
 	QTransform mTransform;
 
-	SdfRenderer *mPortRenderer;
 	SdfRenderer *mRenderer;
 
 	bool mIsExpanded;

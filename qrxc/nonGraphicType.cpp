@@ -52,6 +52,13 @@ bool NonGraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRe
 	return false;
 }
 
+bool NonGraphicType::generatePorts(OutFile &out, bool isNotFirst)
+{
+	Q_UNUSED(out)
+	Q_UNUSED(isNotFirst)
+	return false;
+}
+
 bool NonGraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)
 {
 	Q_UNUSED(out)

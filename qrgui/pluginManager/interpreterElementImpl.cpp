@@ -1,6 +1,8 @@
 #include "interpreterElementImpl.h"
+
 #include "../../qrutils/outFile.h"
 #include "../../qrutils/scalableItem.h"
+#include "interpreterPortImpl.h"
 
 using namespace qReal;
 using namespace utils;
@@ -46,120 +48,81 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 	}
 }
 
-void InterpreterElementImpl::initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc
-		, QDomNode &portsPicture, int const &width, int const &height)
+void InterpreterElementImpl::initPointPorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+		, int const &width, int const &height)
 {
 	QDomNodeList const pointPortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
 	for (int i = 0; i < pointPortsList.size(); i++) {
-		QDomElement portsElement1 = portsDoc.createElement("point");
-		portsElement1.setAttribute("stroke-width", 11);
-		portsElement1.setAttribute("stroke-style", "solid");
-		portsElement1.setAttribute("stroke", "#c3dcc4");
-		portsElement1.setAttribute("x1", pointPortsList.at(i).toElement().attribute("x"));
-		portsElement1.setAttribute("y1", pointPortsList.at(i).toElement().attribute("y"));
-		portsPicture.appendChild(portsElement1);
-		QDomElement portsElement2 = portsDoc.createElement("point");
-		portsElement2.setAttribute("stroke-width", 3);
-		portsElement2.setAttribute("stroke-style", "solid");
-		portsElement2.setAttribute("stroke", "#465945");
-		portsElement2.setAttribute("x1", pointPortsList.at(i).toElement().attribute("x"));
-		portsElement2.setAttribute("y1", pointPortsList.at(i).toElement().attribute("y"));
-		portsPicture.appendChild(portsElement2);
-		StatPoint pt;
-		QString x = pointPortsList.at(i).toElement().attribute("x");
+		QDomElement portElement = pointPortsList.at(i).toElement();
+
+		QString x = portElement.attribute("x");
+		bool propX = false;
 		if (x.endsWith("a")) {
-			pt.prop_x = true;
+			propX = true;
 			x.chop(1);
-		} else {
-			pt.prop_x = false;
 		}
 
-		QString y = pointPortsList.at(i).toElement().attribute("y");
+		QString y = portElement.attribute("y");
+		bool propY = false;
 		if (y.endsWith("a")) {
-			pt.prop_y = true;
+			propY = true;
 			y.chop(1);
-		} else {
-			pt.prop_y = false;
 		}
 
-		pt.point = QPointF(x.toDouble() / static_cast<double>(width), y.toDouble() / static_cast<double>(height));
-		pt.initWidth = width;
-		pt.initHeight = height;
-		pointPorts << pt;
+		QPointF point = QPointF(x.toDouble() / static_cast<double>(width), y.toDouble() / static_cast<double>(height));
+
+		QString portType = portElement.attribute("type", "NonTyped");
+		ports << factory.createPort(point, propX, propY, width, height, new InterpreterPortImpl(portType));
 	}
 }
 
-void InterpreterElementImpl::initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc
-		, QDomNode &portsPicture, int const &width, int const &height)
+void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+		, int const &width, int const &height)
 {
 	QDomNodeList const linePortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
 	for (int i = 0; i < linePortsList.size(); i++) {
-		QDomElement lineElement1 = portsDoc.createElement("line");
-		lineElement1.setAttribute("x1", linePortsList.at(i).firstChildElement("start").attribute("startx"));
-		lineElement1.setAttribute("y1", linePortsList.at(i).firstChildElement("start").attribute("starty"));
-		lineElement1.setAttribute("x2", linePortsList.at(i).firstChildElement("end").attribute("endx"));
-		lineElement1.setAttribute("y2", linePortsList.at(i).firstChildElement("end").attribute("endy"));
-		lineElement1.setAttribute("stroke-width", 7);
-		lineElement1.setAttribute("stroke-style", "solid");
-		lineElement1.setAttribute("stroke", "#c3dcc4");
-		portsPicture.appendChild(lineElement1);
-		QDomElement lineElement2 = portsDoc.createElement("line");
-		lineElement2.setAttribute("x1", linePortsList.at(i).firstChildElement("start").attribute("startx"));
-		lineElement2.setAttribute("y1", linePortsList.at(i).firstChildElement("start").attribute("starty"));
-		lineElement2.setAttribute("x2", linePortsList.at(i).firstChildElement("end").attribute("endx"));
-		lineElement2.setAttribute("y2", linePortsList.at(i).firstChildElement("end").attribute("endy"));
-		lineElement2.setAttribute("stroke-width", 1);
-		lineElement2.setAttribute("stroke-style", "solid");
-		lineElement2.setAttribute("stroke", "#465945");
-		portsPicture.appendChild(lineElement2);
-		StatLine ln;
+
 		QString x1 = linePortsList.at(i).firstChildElement("start").attribute("startx");
+		bool propX1 = false;
 		if (x1.endsWith("a")) {
-			ln.prop_x1 = true;
+			propX1 = true;
 			x1.chop(1);
-		} else {
-			ln.prop_x1 = false;
 		}
 
 		QString y1 = linePortsList.at(i).firstChildElement("start").attribute("starty");
+		bool propY1 = false;
 		if (y1.endsWith("a")) {
-			ln.prop_y1 = true;
+			propY1 = true;
 			y1.chop(1);
-		} else {
-			ln.prop_y1 = false;
 		}
 
 		QString x2 = linePortsList.at(i).firstChildElement("end").attribute("endx");
+		bool propX2 = false;
 		if (x2.endsWith("a")) {
-			ln.prop_x2 = true;
+			propX2 = true;
 			x2.chop(1);
-		} else {
-			ln.prop_x2 = false;
 		}
 
 		QString y2 = linePortsList.at(i).firstChildElement("end").attribute("endy");
+		bool propY2 = false;
 		if (y2.endsWith("a")) {
-			ln.prop_y2 = true;
+			propY2 = true;
 			y2.chop(1);
-		} else {
-			ln.prop_y2 = false;
 		}
 
-		ln.line = QLineF(x1.toDouble() / static_cast<double>(width)
+		QLineF line = QLineF(x1.toDouble() / static_cast<double>(width)
 				, y1.toDouble() / static_cast<double>(height)
 				, x2.toDouble() / static_cast<double>(width)
 				, y2.toDouble() / static_cast<double>(height));
-		ln.initWidth = width;
-		ln.initHeight = height;
-		linePorts << ln;
+
+		QString portType = linePortsList.at(i).toElement().attribute("type", "NonTyped");
+		ports << factory.createPort(line, propX1, propY1, propX2, propY2, width, height, new InterpreterPortImpl(portType));
 	}
 }
 
-void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
-		, QList<StatLine> &linePorts, LabelFactoryInterface &factory
-		, QList<LabelInterface*> &titles
-		, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
-		, ElementRepoInterface *elementRepo)
+void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &portFactory
+		, QList<PortInterface *> &ports, LabelFactoryInterface &labelFactory
+		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)
 {
 	Q_UNUSED(elementRepo);
 	if (mId.element() == "MetaEntityNode") {
@@ -179,22 +142,16 @@ void InterpreterElementImpl::init(QRectF &contents, QList<StatPoint> &pointPorts
 			height = sdfElement.attribute("sizey").toInt();
 		}
 
-		QDomDocument portsDoc;
-		QDomNode portsPicture = portsDoc.importNode(sdfElement, false);
-		initPointPorts(pointPorts, portsDoc, portsPicture, width, height);
-		initLinePorts(linePorts, portsDoc, portsPicture, width, height);
-		portsDoc.appendChild(portsPicture);
-		if (!portsDoc.childNodes().isEmpty()) {
-			portRenderer->load(portsDoc);
-		}
+		initPointPorts(portFactory, ports, width, height);
+		initLinePorts(portFactory, ports, width, height);
 
 		contents.setWidth(width);
 		contents.setHeight(height);
-		initLabels(width, height, factory, titles);
+		initLabels(width, height, labelFactory, labels);
 	}
 }
 
-void InterpreterElementImpl::init(LabelFactoryInterface &factory, QList<LabelInterface*> &titles)
+void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels)
 {
 	if (mId.element() == "MetaEntityEdge") {
 		QString labelText = mEditorRepoApi->stringProperty(mId, "labelText");
@@ -203,19 +160,31 @@ void InterpreterElementImpl::init(LabelFactoryInterface &factory, QList<LabelInt
 			LabelInterface* title = NULL;
 			if (labelType == "Static text") {
 				// This is a statical label, it does not need repository.
-				title = factory.createLabel(0, 0, labelText, 0);
+				title = labelFactory.createLabel(0, 0, labelText, 0);
 			} else {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createLabel(0, 0, labelText, false, 0);
+				title = labelFactory.createLabel(0, 0, labelText, false, 0);
 			}
 			title->setBackground(QColor(Qt::white));
 			title->setScaling(false, false);
 			title->setFlags(0);
 			title->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title);
+			labels.append(title);
 			mEdgeLabels.append(EdgeLabel(labelText, labelType, title));
 		}
+		initEdgePorts(mFromPorts, "fromPorts");
+		initEdgePorts(mToPorts, "toPorts");
 	}
+}
+
+void InterpreterElementImpl::initEdgePorts(QStringList &ports, QString const &direction) const
+{
+	QStringList const ids = mEditorRepoApi->stringProperty(mId, direction).split(',', QString::SkipEmptyParts);
+	foreach (QString const &strId, ids) {
+		Id const id = Id::loadFromString(strId);
+		ports << mEditorRepoApi->name(id);
+	}
+	ports << "NonTyped";
 }
 
 void InterpreterElementImpl::paint(QPainter *painter, QRectF &contents)
@@ -301,18 +270,6 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 bool InterpreterElementImpl::isNode() const
 {
 	return mId.element() == "MetaEntityNode";
-}
-
-bool InterpreterElementImpl::hasPorts() const
-{
-	if (mId.element() == "MetaEntityNode") {
-		QDomDocument portsDoc;
-		portsDoc.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
-		QDomNodeList const pointPorts = portsDoc.elementsByTagName("pointPort");
-		QDomNodeList const linePorts = portsDoc.elementsByTagName("linePort");
-		return !pointPorts.isEmpty() || !linePorts.isEmpty();
-	}
-	return false;
 }
 
 bool InterpreterElementImpl::isResizeable() const
@@ -503,6 +460,16 @@ bool InterpreterElementImpl::minimizesToChildren() const
 bool InterpreterElementImpl::maximizesChildren() const
 {
 	return mEditorRepoApi->stringProperty(mId, "maximizeChildren") == "true";
+}
+
+QStringList InterpreterElementImpl::fromPortTypes() const
+{
+	return mFromPorts;
+}
+
+QStringList InterpreterElementImpl::toPortTypes() const
+{
+	return mToPorts;
 }
 
 bool InterpreterElementImpl::isPort() const

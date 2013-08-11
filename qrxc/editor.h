@@ -11,6 +11,7 @@ class XmlCompiler;
 class Diagram;
 class Type;
 class EnumType;
+class PortType;
 
 namespace utils {
 	class OutFile;
@@ -25,7 +26,8 @@ public:
 	bool isLoaded();
 	bool load(QDir const &currentDir);
 	Type *findType(QString const &name);
-	QSet<EnumType*> getAllEnumTypes();
+	QSet<EnumType *> getAllEnumTypes();
+	QStringList getAllPortNames() const;
 	Diagram *findDiagram(QString const &name);
 	QMap<QString, Diagram*> diagrams();
 

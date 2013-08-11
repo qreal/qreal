@@ -12,7 +12,7 @@ namespace generator {
 class IfElementGenerator : public AbstractElementGenerator
 {
 public:
-	explicit IfElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id const &elementId);
+	IfElementGenerator(NxtOSEKRobotGenerator *emboxGen, qReal::Id const &elementId);
 
 protected:
 	virtual QList<SmartLine> addLoopCodeInPrefixForm();

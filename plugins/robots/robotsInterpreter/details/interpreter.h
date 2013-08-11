@@ -114,7 +114,6 @@ private slots:
 
 private:
 	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
-	Id const findStartingElement(Id const &diagram) const;
 	void addThread(details::Thread * const thread);
 	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
 	void resetVariables();
