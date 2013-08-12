@@ -254,10 +254,11 @@ Element* EditorManager::graphicalObject(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
-	if( !impl ) {
+	if (!impl) {
 		qDebug() << "no impl";
 		return 0;
 	}
+
 	if (impl->isNode()) {
 		return new NodeElement(impl);
 	}
@@ -270,6 +271,13 @@ QStringList EditorManager::propertyNames(const Id &id) const
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
+}
+
+QStringList EditorManager::portTypes(Id const &id) const
+{
+	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getPortTypes(id.diagram(), id.element());
 }
 
 QStringList EditorManager::referenceProperties(const Id &id) const
@@ -294,35 +302,6 @@ IdList EditorManager::containedTypes(const Id &id) const
 
 	foreach (StringPair const &pair, parents) {
 		result.append(containedTypes(Id(id.editor(), pair.first, pair.second)));
-	}
-
-	return result;
-}
-
-IdList EditorManager::connectedTypes(const Id &id) const
-{
-	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
-
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-
-	IdList result;
-	foreach (QString const &type, mPluginIface[id.editor()]->getConnectedTypes(id.element())) {
-		// a hack caused by absence of ID entity in editors generator
-		result.append(Id("?", "?", type));
-	}
-
-	return result;
-}
-
-IdList EditorManager::usedTypes(const Id &id) const
-{
-	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
-
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-
-	IdList result;
-	foreach (QString const &type, mPluginIface[id.editor()]->getUsedTypes(id.element())) {
-		result.append(Id("?", "?", type));
 	}
 
 	return result;
@@ -476,6 +455,20 @@ QStringList EditorManager::allChildrenTypesOf(Id const &parent) const
 		if (isParentOf(id, parent)) {
 			result << id.element();
 		}
+	}
+	return result;
+}
+
+QList<Explosion> EditorManager::explosions(Id const &source) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(source.editor()));
+	EditorInterface const *plugin = mPluginIface[source.editor()];
+	QList<Explosion> result;
+	QList<EditorInterface::ExplosionData> const rawExplosions =
+			plugin->explosions(source.diagram(), source.element());
+	foreach (EditorInterface::ExplosionData const &rawExplosion, rawExplosions) {
+		Id const target(source.editor(), rawExplosion.targetDiagram, rawExplosion.targetElement, "");
+		result << Explosion(source, target, rawExplosion.isReusable, rawExplosion.requiresImmediateLinkage);
 	}
 	return result;
 }

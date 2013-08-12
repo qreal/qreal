@@ -7,7 +7,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
 WaitForSoundSensorBlock::WaitForSoundSensorBlock(details::RobotModel * const robotModel)
-	: WaitForSensorBlock(robotModel, sensorType::sound)
+	: WaitForSensorBlock(robotModel, robots::enums::sensorType::sound)
 {
 }
 

@@ -8,7 +8,7 @@ using namespace interpreters::robots::details::blocks;
 
 WaitForColorIntensityBlock::WaitForColorIntensityBlock(details::RobotModel * const robotModel)
 	// Unchecked for now since it needs one of some different color sensor modes.
-	: WaitForColorSensorBlockBase(robotModel, sensorType::unused)
+	: WaitForColorSensorBlockBase(robotModel, robots::enums::sensorType::unused)
 {
 }
 

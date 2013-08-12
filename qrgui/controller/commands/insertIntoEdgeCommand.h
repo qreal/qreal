@@ -6,10 +6,8 @@
 #include "../../models/graphicalModelAssistApi.h"
 #include "../../models/logicalModelAssistApi.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class InsertIntoEdgeCommand : public AbstractCommand
 {
@@ -27,8 +25,6 @@ protected:
 private:
 	void initCommand(CreateElementCommand *&command, Id const &type);
 	void makeLink(CreateElementCommand *command, NodeElement *src, NodeElement *dst);
-
-	void returnElementsToOldPositions();
 
 	EditorViewScene *mScene;
 

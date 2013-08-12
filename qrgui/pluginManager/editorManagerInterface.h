@@ -15,10 +15,11 @@
 #include "../../qrkernel/settingsManager.h"
 #include "pattern.h"
 #include "patternParser.h"
-
-class Element;
+#include "explosion.h"
 
 namespace qReal {
+
+class Element;
 
 class MainWindow;
 
@@ -42,8 +43,7 @@ public:
 	virtual Element* graphicalObject(Id const &id) const = 0;
 
 	virtual IdList containedTypes(const Id &id) const = 0;
-	virtual IdList connectedTypes(const Id &id) const = 0;
-	virtual IdList usedTypes(const Id &id) const = 0;
+	virtual QList<Explosion> explosions(Id const &source) const = 0;
 	virtual QStringList enumValues(Id const &id, const QString &name) const = 0;
 	virtual QString typeName(Id const &id, const QString &name) const = 0;
 	virtual QStringList allChildrenTypesOf(Id const &parent) const = 0;
@@ -53,6 +53,7 @@ public:
 	virtual bool isElement(Id const &id) const = 0;
 
 	virtual QStringList propertyNames(Id const &id) const = 0;
+	virtual QStringList portTypes(Id const &id) const = 0;
 	virtual QString defaultPropertyValue(Id const &id, QString name) const = 0;
 	virtual QStringList propertiesWithDefaultValues(Id const &id) const = 0;
 

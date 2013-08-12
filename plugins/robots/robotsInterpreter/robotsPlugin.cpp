@@ -21,14 +21,14 @@ RobotsPlugin::RobotsPlugin()
 		, mTitlesAction(NULL)
 		, mAppTranslator(new QTranslator())
 {
-	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
+	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
 
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
 	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
-	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityChecked(bool)));
+	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 
 	initActions();
 	initHotKeyActions();
@@ -65,6 +65,7 @@ void RobotsPlugin::initActions()
 
 	mTitlesAction = new QAction(tr("Text under pictogram"), NULL);
 	mTitlesAction->setCheckable(true);
+	mTitlesAction->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
 	connect(mTitlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 	ActionInfo titlesActionInfo(mTitlesAction, "", "settings");
 
@@ -76,13 +77,6 @@ void RobotsPlugin::initActions()
 			<< stopRobotActionInfo << connectToRobotActionInfo
 			<< separatorActionInfo << robotSettingsActionInfo
 			<< titlesActionInfo;
-
-	// Set tabs, unused at the opening, enabled
-	bool isTabEnable = false;
-	QList<ActionInfo> unusedTab;
-	unusedTab << d2ModelActionInfo << runActionInfo << stopRobotActionInfo
-			<< connectToRobotActionInfo << titlesActionInfo;
-	changeActiveTab(unusedTab, isTabEnable);
 }
 
 void RobotsPlugin::initHotKeyActions()
@@ -104,7 +98,7 @@ void RobotsPlugin::initHotKeyActions()
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
-	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing plugin");
+	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
 	mInterpreter.init(configurator.graphicalModelApi()
 			, configurator.logicalModelApi()
 			, configurator.mainWindowInterpretersInterface()
@@ -115,7 +109,8 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
-	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::init", "Initializing done");
+	updateEnabledActions();
+	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing done");
 }
 
 qReal::Customizer* RobotsPlugin::customizationInterface()
@@ -151,27 +146,36 @@ void RobotsPlugin::show2dModel()
 
 void RobotsPlugin::updateSettings()
 {
-	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized...");
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
-	mInterpreter.setRobotModelType(typeOfRobotModel);
+	details::Tracer::debug(
+			details::tracer::enums::initialization
+			, "RobotsPlugin::updateSettings", "Updating settings, model and sensors are going to be reinitialized..."
+			);
+
+	robots::enums::robotModelType::robotModelTypeEnum typeOfRobotModel
+			= static_cast<robots::enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	if (typeOfRobotModel != robots::enums::robotModelType::trik) {
+		mInterpreter.setRobotModelType(typeOfRobotModel);
+	}
+
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
-	QString const portName = SettingsManager::value("bluetoothPortName").toString();
-	mInterpreter.setCommunicator(typeOfCommunication, portName);
+	mInterpreter.setCommunicator(typeOfCommunication);
 	mInterpreter.configureSensors(
-			static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
-			, static_cast<sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
+			static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
+			, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
+			, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
+			, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt())
 	);
-	m2dModelAction->setVisible(typeOfRobotModel == robotModelType::unreal);
-	mConnectToRobotAction->setVisible(typeOfRobotModel == robotModelType::real);
-	if (typeOfRobotModel == robotModelType::unreal) {
+	m2dModelAction->setVisible(typeOfRobotModel == robots::enums::robotModelType::twoD);
+	mConnectToRobotAction->setVisible(typeOfRobotModel == robots::enums::robotModelType::nxt);
+	if (typeOfRobotModel == robots::enums::robotModelType::twoD) {
 		mInterpreter.setD2ModelWidgetActions(mRunAction, mStopRobotAction);
 	} else {
 		mInterpreter.showD2ModelWidget(false);
 	}
 
-	details::Tracer::debug(details::tracer::initialization, "RobotsPlugin::updateSettings", "Done updating settings");
+	updateEnabledActions();
+
+	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::updateSettings", "Done updating settings");
 }
 
 void RobotsPlugin::closeNeededWidget()
@@ -182,21 +186,9 @@ void RobotsPlugin::closeNeededWidget()
 
 void RobotsPlugin::activeTabChanged(Id const &rootElementId)
 {
+	updateEnabledActions();
 	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
-	changeActiveTab(mActionInfos, enabled);
 	mInterpreter.onTabChanged(rootElementId, enabled);
-}
-
-void RobotsPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
-{
-	foreach (ActionInfo const &actionInfo, info) {
-			actionInfo.action()->setEnabled(trigger);
-	}
-}
-
-bool RobotsPlugin::needToDisableWhenNotRobotsDiagram(QAction const * const action) const
-{
-	return action != mRobotSettingsAction && action != mConnectToRobotAction && action != m2dModelAction;
 }
 
 interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produceSensorsConfigurer() const
@@ -224,6 +216,7 @@ void RobotsPlugin::titlesVisibilityChecked(bool checked)
 
 void RobotsPlugin::titlesVisibilityCheckedInPlugin(bool checked)
 {
+	titlesVisibilityChecked(checked);
 	SettingsManager::setValue("showTitlesForRobots", checked);
 	updateTitlesVisibility();
 	mRobotSettingsPage->changeTextVisibleOnSettingPage(checked);
@@ -233,4 +226,20 @@ void RobotsPlugin::updateTitlesVisibility()
 {
 	bool const titlesVisible = SettingsManager::value("showTitlesForRobots").toBool();
 	mSceneCustomizer->setTitlesVisible(titlesVisible);
+}
+
+void RobotsPlugin::updateEnabledActions()
+{
+	Id const &rootElementId = mMainWindowInterpretersInterface->activeDiagram();
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
+
+	foreach (ActionInfo const &actionInfo, mActionInfos) {
+		actionInfo.action()->setEnabled(enabled);
+	}
+
+	robots::enums::robotModelType::robotModelTypeEnum typeOfRobotModel
+			= static_cast<robots::enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+
+	mRunAction->setEnabled(typeOfRobotModel != robots::enums::robotModelType::trik && enabled);
+	mStopRobotAction->setEnabled(typeOfRobotModel != robots::enums::robotModelType::trik && enabled);
 }

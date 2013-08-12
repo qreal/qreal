@@ -4,10 +4,8 @@
 #include "createElementCommand.h"
 #include "../../view/editorViewScene.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class CreateGroupCommand : public AbstractCommand
 {

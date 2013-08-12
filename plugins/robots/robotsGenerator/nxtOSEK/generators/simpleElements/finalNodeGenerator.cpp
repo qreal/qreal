@@ -13,8 +13,6 @@ QList<SmartLine> FinalNodeGenerator::convertElementIntoDirectCommand(NxtOSEKRobo
 	Q_UNUSED(nxtGen)
 	Q_UNUSED(logicElementId)
 
-	QList<SmartLine> result;
-	result.append(SmartLine("TerminateTask();", elementId));
-
-	return result;
+	return QList<SmartLine>() << SmartLine(nxtGen->areWeGeneratingMainTask()
+			? "TerminateTask();" : "return;", elementId);
 }

@@ -17,8 +17,6 @@ script:
   - qmake qrealTest.pro CONFIG+=debug
   - make -j2
   - ./bin/unittests/qrlibs_unittests
-  - ./bin/unittests/qrgui_unittests
-  - ./bin/unittests/qrxc_unittests
 
 notifications:
   email:

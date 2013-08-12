@@ -11,6 +11,10 @@ AbstractView::AbstractView(AbstractModel * const model)
 {
 }
 
+AbstractView::~AbstractView()
+{
+}
+
 void AbstractView::rowsAboutToBeMoved(QModelIndex const &sourceParent
 		, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
 {
@@ -31,10 +35,12 @@ void AbstractView::rowsMoved(QModelIndex const &sourceParent, int sourceStart
 	Q_UNUSED(destinationRow)
 }
 
-void AbstractView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight)
+void AbstractView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight
+		, QVector<int> const &roles)
 {
 	Q_UNUSED(topLeft)
 	Q_UNUSED(bottomRight)
+	Q_UNUSED(roles)
 }
 
 void AbstractView::rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end)

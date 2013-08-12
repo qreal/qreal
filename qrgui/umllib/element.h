@@ -7,7 +7,7 @@
 #include "../../qrkernel/settingsManager.h"
 
 #include "../editorPluginInterface/elementRepoInterface.h"
-#include "elementTitle.h"
+#include "label.h"
 
 #include "contextMenuAction.h"
 #include "../editorPluginInterface/elementImpl.h"
@@ -17,12 +17,12 @@
 
 #include "../controller/controller.h"
 
-/** @brief size of a point port */
+namespace qReal {
+
+/// size of a point port
 const int kvadratik = 10;
 
-/**
- * @brief base class for an element on a diagram
- */
+/// base class for an element on a diagram
 class Element : public QObject, public QGraphicsItem, public ElementRepoInterface
 {
 	Q_OBJECT
@@ -51,7 +51,8 @@ public:
 	virtual void initTitles();
 	// for inline editing we should be able to change properties value. right now via graphical
 	// representation. also labels could store indices and get data themselves
-	virtual void setLogicalProperty(QString const &roleName, QString const &value);
+	virtual void setLogicalProperty(QString const &roleName, QString const &value
+			, bool withUndoRedo = false);
 	QString logicalProperty(QString const &roleName) const;
 
 	virtual void setColorRect(bool bl) = 0;
@@ -62,6 +63,7 @@ public:
 	void setController(qReal::Controller *controller);
 
 	ElementImpl* elementImpl() const;
+
 	/// Perform element-specific actions before being deleted
 	virtual void deleteFromScene() = 0;
 
@@ -81,10 +83,12 @@ protected:
 	bool mMoving;
 	qReal::Id mId;
 	ElementImpl* const mElementImpl;
-	QList<Label *> mTitles;
+	QList<Label *> mLabels;
 	bool mTitlesVisible;
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	qReal::Controller *mController;
 };
+
+}

@@ -14,16 +14,24 @@ ArrangeLinksCommand::ArrangeLinksCommand(EditorView const *view
 {
 }
 
+ArrangeLinksCommand::~ArrangeLinksCommand()
+{
+}
+
 bool ArrangeLinksCommand::execute()
 {
-	ElementCommand::execute();
+	if (!ElementCommand::execute()) {
+		return false;
+	}
 	arrange();
 	return true;
 }
 
 bool ArrangeLinksCommand::restoreState()
 {
-	ElementCommand::restoreState();
+	if (!ElementCommand::restoreState()) {
+		return false;
+	}
 	arrange();
 	return true;
 }

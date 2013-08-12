@@ -1,7 +1,7 @@
 #include "linuxFantom.h"
 #include <QObject>
 
-using namespace robotsInterpreter::robotCommunication;
+using namespace qReal::interpreters::robots::details;
 
 bool Fantom::isAvailable()
 {

@@ -1,5 +1,7 @@
 #include "imageGenerator.h"
 
+using namespace robots::generator;
+
 ImageGenerator::ImageGenerator()
 {
 	reinit();

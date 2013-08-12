@@ -25,7 +25,7 @@ QList<SmartLine> SimpleElementGenerator::convertBlockIntoCode()
 bool SimpleElementGenerator::nextElementsGeneration()
 {
 	IdList const outgoingConnectedElements = mNxtGen->api()->outgoingConnectedElements(mElementId);
-	mNxtGen->generatedStringSet() << convertBlockIntoCode();
+	mNxtGen->currentGenerator()->generatedStringSet() << convertBlockIntoCode();
 
 	if (outgoingConnectedElements.size() == 1) {
 		if (outgoingConnectedElements.at(0) == Id::rootId()) {
@@ -37,7 +37,7 @@ bool SimpleElementGenerator::nextElementsGeneration()
 
 		AbstractElementGenerator* const gen = ElementGeneratorFactory::generator(mNxtGen
 				, outgoingConnectedElements.at(0), *mNxtGen->api());
-		mNxtGen->previousElement() = mElementId;
+		mNxtGen->currentGenerator()->previousElement() = mElementId;
 		gen->generate();
 		delete gen;
 		return true;

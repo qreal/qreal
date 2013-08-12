@@ -205,6 +205,8 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 			QString const objectType = id.element();
 			if (objectType == "MetaEntityEnum") {
 				createEnum(tagNonGraphic, id);
+			} else if (objectType == "MetaEntityPort") {
+				createPort(tagNonGraphic, id);
 			}
 		}
 	}
@@ -273,10 +275,10 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	setUsages(logic, id);
 	setConnections(logic, id);
 	setProperties(logic, id);
-	setPin(logic, id);
 	setAction(logic, id);
 	setGeneralization(logic, id);
 	setContextMenuFields(logic, id);
+	setExplosion(logic, id);
 }
 
 void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
@@ -318,7 +320,10 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	setAssociations(logic, id);
 	setPossibleEdges(logic, id);
 	setProperties(logic, id);
+	setPorts(logic, id, "from");
+	setPorts(logic, id, "to");
 	setGeneralization(logic, id);
+	setExplosion(logic, id);
 }
 
 void EditorGenerator::createEnum(QDomElement &parent, Id const &id)
@@ -329,6 +334,13 @@ void EditorGenerator::createEnum(QDomElement &parent, Id const &id)
 	parent.appendChild(enumElement);
 
 	setValues(enumElement, id);
+}
+
+void EditorGenerator::createPort(QDomElement &parent, Id const &id)
+{
+	QDomElement portElement = mDocument.createElement("port");
+	ensureCorrectness(id, portElement, "name", mApi.name(id));
+	parent.appendChild(portElement);
 }
 
 void EditorGenerator::setGeneralization(QDomElement &parent, const Id &id)
@@ -382,6 +394,20 @@ void EditorGenerator::setProperties(QDomElement &parent, Id const &id)
 	if (!tagProperties.childNodes().isEmpty()) {
 		parent.appendChild(tagProperties);
 	}
+}
+
+void EditorGenerator::setPorts(QDomElement &parent, Id const &id, QString const &direction)
+{
+	QString const propertyName = direction + "Ports";
+	QDomElement portsTag = mDocument.createElement(propertyName);
+	QStringList const ports = mApi.stringProperty(id, propertyName).split(',', QString::SkipEmptyParts);
+	foreach (QString const &port, ports) {
+		QDomElement portElem = mDocument.createElement("port");
+		Id const portId = Id::loadFromString(port);
+		portElem.setAttribute("type", mApi.name(portId));
+		portsTag.appendChild(portElem);
+	}
+	parent.appendChild(portsTag);
 }
 
 void EditorGenerator::setContextMenuFields(QDomElement &parent, const Id &id)
@@ -490,11 +516,6 @@ void EditorGenerator::setPossibleEdges(QDomElement &parent, const Id &id)
 	}
 }
 
-void EditorGenerator::setPin(QDomElement &parent, const Id &id)
-{
-	setStatusElement(parent, id, "pin", "isPin");
-}
-
 void EditorGenerator::setAction(QDomElement &parent, const Id &id)
 {
 	setStatusElement(parent, id, "action", "isAction");
@@ -554,6 +575,38 @@ void EditorGenerator::setContainerProperties(QDomElement &parent, Id const &id)
 	}
 }
 
+void EditorGenerator::setExplosion(QDomElement &parent, Id const &id)
+{
+	QDomElement explodesTo = mDocument.createElement("explodesTo");
+	parent.appendChild(explodesTo);
+
+	IdList const inLinks = mApi.incomingLinks(id);
+	foreach (Id const inLink, inLinks) {
+		if (inLink.element() == "Explosion") {
+			Id const elementId = mApi.from(inLink);
+			QString const typeName = elementId.element();
+			if (typeName == "MetaEntityNode") {
+				QDomElement target = mDocument.createElement("target");
+				ensureCorrectness(elementId, target, "type", mApi.name(elementId));
+				setExplosionProperties(target, inLink);
+				explodesTo.appendChild(target);
+			} else if (typeName == "MetaEntityImport") {
+				QDomElement target = mDocument.createElement("target");
+				ensureCorrectness(elementId, target, "type"
+						, mApi.stringProperty(elementId, "importedFrom") + "::" + mApi.name(elementId));
+				setExplosionProperties(target, inLink);
+				explodesTo.appendChild(target);
+			}
+		}
+	}
+}
+
+void EditorGenerator::setExplosionProperties(QDomElement &target, Id const &linkId)
+{
+	target.setAttribute("makeReusable", mApi.property(linkId, "makeReusable").toString());
+	target.setAttribute("requireImmediateLinkage", mApi.property(linkId, "requireImmediateLinkage").toString());
+}
+
 void EditorGenerator::setSizesForContainer(QString const &propertyName, QDomElement &properties, Id const &id)
 {
 	if (mApi.stringProperty(id, propertyName + "Size") != "") {
@@ -574,13 +627,12 @@ void EditorGenerator::setBoolValuesForContainer(QString const &propertyName, QDo
 void EditorGenerator::ensureCorrectness(
 		Id const &id, QDomElement element, QString const &tagName, QString const &value)
 {
-	QString const tag = tagName;
-	if (value.isEmpty() && tag == "displayedName") {
+	if (value.isEmpty() && (tagName == "displayedName")) {
 		return;
 	} else if (value.isEmpty()) {
 		mErrorReporter.addWarning(QString (QObject::tr("not filled %1\n")).arg(tagName), id);
 		element.setAttribute(tagName, "");
-	} else if (tag == "name") {
+	} else if (tagName == "name") {
 		QRegExp patten;
 		patten.setPattern("[A-Za-z_]+([A-Za-z_0-9 :]*)");
 		if (patten.exactMatch(value)) {
@@ -589,9 +641,24 @@ void EditorGenerator::ensureCorrectness(
 			mErrorReporter.addWarning(QObject::tr("wrong name\n"), id);
 			element.setAttribute(tagName, value);
 		}
-	}
-	else {
+	} else if ((element.nodeName() == "possibleEdge") && ((tagName == "beginName") || (tagName == "endName"))) {
+		if ((value == "NonTyped") || findPort(value)) {
+			element.setAttribute(tagName, value);
+		} else {
+			mErrorReporter.addError(QObject::tr("wrong %1 for possible edge: must be port type\n").arg(tagName), id);
+		}
+	} else {
 		element.setAttribute(tagName, value);
 	}
 }
 
+bool EditorGenerator::findPort(QString const &name) const
+{
+	foreach (Id const &port, mApi.elementsByType("MetaEntityPort")) {
+		if (mApi.name(port) == name) {
+			return true;
+		}
+	}
+
+	return false;
+}

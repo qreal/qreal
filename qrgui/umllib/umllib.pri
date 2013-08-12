@@ -2,7 +2,8 @@ HEADERS += umllib/edgeElement.h \
 	umllib/element.h \
 	umllib/nodeElement.h \
 	umllib/sdfRenderer.h \
-	umllib/elementTitle.h \
+	umllib/label.h \
+	umllib/labelFactory.h \
 	umllib/contextMenuAction.h \
 	umllib/embedded/linkers/embeddedLinker.h \
 	umllib/embedded/linkers/embeddedLinkers.h \
@@ -17,12 +18,17 @@ HEADERS += umllib/edgeElement.h \
 	umllib/private/foldCommand.h \
 	umllib/private/reshapeEdgeCommand.h \
 	umllib/private/fontCache.h \
+	umllib/private/expandCommand.h \
+	umllib/ports/portFactory.h \
+	umllib/ports/statLine.h \
+	umllib/ports/statPoint.h
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
 	umllib/nodeElement.cpp \
 	umllib/sdfRenderer.cpp \
-	umllib/elementTitle.cpp \
+	umllib/label.cpp \
+	umllib/labelFactory.cpp \
 	umllib/contextMenuAction.cpp \
 	umllib/embedded/linkers/embeddedLinker.cpp \
 	umllib/embedded/linkers/embeddedLinkers.cpp \
@@ -37,6 +43,10 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/private/foldCommand.cpp \
 	umllib/private/reshapeEdgeCommand.cpp \
 	umllib/private/fontCache.cpp \
+	umllib/private/expandCommand.cpp \
+	umllib/ports/portFactory.cpp \
+	umllib/ports/statLine.cpp \
+	umllib/ports/statPoint.cpp
 
 RESOURCES += \
 	umllib/contextIcons.qrc \

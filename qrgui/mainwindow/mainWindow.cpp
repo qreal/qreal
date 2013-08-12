@@ -32,7 +32,6 @@
 #include "../controller/commands/removeElementCommand.h"
 #include "../controller/commands/doNothingCommand.h"
 #include "../controller/commands/arrangeLinksCommand.h"
-#include "../controller/commands/selectElementCommand.h"
 #include "../controller/commands/updateElementCommand.h"
 
 #include "../umllib/element.h"
@@ -102,7 +101,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	splashScreen.setProgress(40);
 
 	initDocks();
-	mModels = new models::Models("", mEditorManagerProxy);
+	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -135,7 +134,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	}
 	splashScreen.close();
 
-	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
 	connectActions();
@@ -190,7 +188,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
-	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
 	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
 	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
@@ -202,6 +200,12 @@ void MainWindow::connectActions()
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(modifiedChanged(bool)), mProjectManager, SLOT(setUnsavedIndicator(bool)));
+
+	connect(mProjectManager, SIGNAL(afterOpen(QString)), &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
+	connect(mProjectManager, SIGNAL(closed()), &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
+	connect(mProjectManager, SIGNAL(closed()), mController, SLOT(projectClosed()));
+
+	connect(&mModels->logicalModelAssistApi().exploser(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
 
 	setDefaultShortcuts();
 }
@@ -359,10 +363,10 @@ void MainWindow::selectItem(Id const &id)
 
 void MainWindow::selectItemOrDiagram(Id const &graphicalId)
 {
-	activateItemOrDiagram(graphicalId, false, true);
+	activateItemOrDiagram(graphicalId, true);
 }
 
-void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isSetSel)
+void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool setSelected)
 {
 	QModelIndex const parent = idx.parent();
 	int const numTab = getTabIndex(idx);
@@ -382,10 +386,10 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isS
 			getCurrentTab()->mvIface()->setRootIndex(parent);
 			// select this item on diagram
 			getCurrentTab()->scene()->clearSelection();
-			Element * const e = (static_cast<EditorViewScene *>(getCurrentTab()->scene()))->getElem(idx.data(roles::idRole).value<Id>());
+			EditorViewScene const *scene = static_cast<EditorViewScene const *>(getCurrentTab()->scene());
+			Element * const e = scene->getElem(idx.data(roles::idRole).value<Id>());
 			if (e) {
-				e->setColorRect(bl);
-				if (isSetSel) {
+				if (setSelected) {
 					e->setSelected(true);
 				}
 			} else {
@@ -395,17 +399,17 @@ void MainWindow::activateItemOrDiagram(QModelIndex const &idx, bool bl, bool isS
 	}
 }
 
-void MainWindow::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
+void MainWindow::activateItemOrDiagram(Id const &id, bool setSelected)
 {
 	if (mModels->graphicalModelAssistApi().isGraphicalId(id)) {
-		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), bl, isSetSel);
+		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(id), setSelected);
 		return;
 	}
 
-	// logical ID
+	// id is logical ID
 	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(id);
-	if (graphicalIds.count() != 0) {
-		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(graphicalIds[0]), bl, isSetSel);
+	if (graphicalIds.count()) {
+		activateItemOrDiagram(mModels->graphicalModelAssistApi().indexById(graphicalIds[0]), setSelected);
 	}
 }
 
@@ -564,23 +568,19 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	if (isLogicalModel) {
 		QModelIndex const index = mUi->logicalModelExplorer->currentIndex();
 		if (index.isValid()) {
-			mController->execute(logicalDeleteCommand(index));
+			mController->executeGlobal(logicalDeleteCommand(index));
 		}
 		return;
 	}
 
 	Id const id = mModels->graphicalModelAssistApi().idByIndex(
 			mUi->graphicalModelExplorer->currentIndex());
-	if (id == Id()) {
-		return;
+	if (id != Id()) {
+		deleteItems(IdList() << id, true);
 	}
-
-	IdList itemsToDelete;
-	itemsToDelete << id;
-	deleteItems(itemsToDelete);
 }
 
-void MainWindow::deleteItems(IdList &itemsToDelete)
+void MainWindow::deleteItems(IdList &itemsToDelete, bool global)
 {
 	IdList itemsToUpdate;
 	DoNothingCommand *multipleRemoveCommand = new DoNothingCommand;
@@ -615,7 +615,11 @@ void MainWindow::deleteItems(IdList &itemsToDelete)
 	}
 
 	multipleRemoveCommand->removeDuplicates();
-	mController->execute(multipleRemoveCommand);
+	if (global) {
+		mController->executeGlobal(multipleRemoveCommand);
+	} else {
+		mController->execute(multipleRemoveCommand);
+	}
 }
 
 void MainWindow::addEdgesToBeDeleted(IdList &itemsToDelete)
@@ -712,6 +716,10 @@ commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
 	foreach (Id const &graphicalId, graphicalIds) {
 		result->addPreAction(graphicalDeleteCommand(graphicalId));
 	}
+	if (graphicalIds.size() != 1) { // else it was done in graphicalDeleteCommand()
+		appendCascadeDeleteCommands(result, id);
+	}
+	result->removeDuplicates();
 	return result;
 }
 
@@ -738,9 +746,6 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 			result->insertPreAction(graphicalDeleteCommand(child), 0);
 		}
 	}
-	// This will return selection and reinit property editor that loads incorrect
-	// property values because of its intermediate resetting
-	result->addPreAction(new SelectElementCommand(getCurrentTab(), id, true, true));
 
 	// correcting unremoved edges
 	ArrangeLinksCommand *arrangeCommand = new ArrangeLinksCommand(getCurrentTab(), id, true);
@@ -758,7 +763,19 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 		result->addPreAction(updateLinkCommand);
 	}
 
+	if (mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId).size() == 1) {
+		appendCascadeDeleteCommands(result, logicalId);
+	}
+
 	return result;
+}
+
+void MainWindow::appendCascadeDeleteCommands(AbstractCommand *parentCommand, Id const &logicalId)
+{
+	IdList const toDelete = mModels->logicalModelAssistApi().exploser().elementsWithHardDependencyFrom(logicalId);
+	foreach (Id const &logicalChild, toDelete) {
+		parentCommand->addPreAction(logicalDeleteCommand(logicalChild));
+	}
 }
 
 void MainWindow::deleteFromDiagram()
@@ -912,6 +929,11 @@ bool MainWindow::pluginLoaded(QString const &pluginName)
 EditorView * MainWindow::getCurrentTab() const
 {
 	return dynamic_cast<EditorView *>(mUi->tabs->currentWidget());
+}
+
+bool MainWindow::isCurrentTabShapeEdit() const
+{
+	return dynamic_cast<ShapeEdit *>(mUi->tabs->currentWidget()) != NULL;
 }
 
 void MainWindow::closeCurrentTab()
@@ -1105,7 +1127,7 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (mEditorManagerProxy.isDiagramNode(id)) {
+	if (id == Id() || mEditorManagerProxy.isDiagramNode(id)) {
 		return;
 	}
 
@@ -1118,7 +1140,7 @@ void MainWindow::centerOn(Id const &id)
 	Element* const element = scene->getElem(id);
 
 	scene->clearSelection();
-	if (element != NULL) {
+	if (element) {
 		element->setSelected(true);
 		view->ensureElementVisible(element);
 	}
@@ -1264,7 +1286,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 
 	EditorViewScene *scene = dynamic_cast<EditorViewScene *>(tab->scene());
 	if (scene) {
-		scene->updateEdgesViaNodes();
+		scene->initNodes();
 	}
 }
 
@@ -1333,6 +1355,7 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->minimapView->changeSource(newIndex);
 
 	bool const isEditorTab = getCurrentTab() != NULL;
+	bool const isShape = isCurrentTabShapeEdit();
 
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	if (!isEditorTab) {
@@ -1342,8 +1365,11 @@ void MainWindow::currentTabChanged(int newIndex)
 		mToolManager.activeTabChanged(currentTabId);
 	}
 
-	mUi->actionZoom_In->setEnabled(isEditorTab);
-	mUi->actionZoom_Out->setEnabled(isEditorTab);
+	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
+	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);
+
+	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
+	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
 
 	emit rootDiagramChanged();
 }
@@ -1372,8 +1398,8 @@ void MainWindow::switchToTab(int index)
 void MainWindow::updateTabName(Id const &id)
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView * const tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
-		if (tab->mvIface()->rootIndex() == mModels->graphicalModelAssistApi().indexById(id)) {
+		EditorView * const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab && (tab->mvIface()->rootIndex() == mModels->graphicalModelAssistApi().indexById(id))) {
 			mUi->tabs->setTabText(i, mModels->graphicalModelAssistApi().name(id));
 			return;
 		}
@@ -1943,12 +1969,18 @@ void MainWindow::initExplorers()
 	mUi->graphicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->graphicalModelExplorer->addAction(mUi->actionPasteReference);
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
+	mUi->graphicalModelExplorer->setController(mController);
+	mUi->graphicalModelExplorer->setAssistApi(&mModels->graphicalModelAssistApi());
+	mUi->graphicalModelExplorer->setExploser(&mModels->logicalModelAssistApi().exploser());
 
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionCopyElementsOnDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionPasteOnDiagram);
 	mUi->logicalModelExplorer->addAction(mUi->actionPasteReference);
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
+	mUi->logicalModelExplorer->setController(mController);
+	mUi->logicalModelExplorer->setAssistApi(&mModels->logicalModelAssistApi());
+	mUi->logicalModelExplorer->setExploser(&mModels->logicalModelAssistApi().exploser());
 
 	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 

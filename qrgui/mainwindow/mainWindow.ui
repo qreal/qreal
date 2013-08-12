@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -139,7 +139,7 @@
    <property name="minimumSize">
     <size>
      <width>80</width>
-     <height>140</height>
+     <height>211</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -268,7 +268,7 @@
    <widget class="QWidget" name="logicalModelDockWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTreeView" name="logicalModelExplorer">
+	  <widget class="qReal::gui::ModelExplorer" name="logicalModelExplorer">
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
        </property>
@@ -352,7 +352,7 @@
    <widget class="QWidget" name="graphicalModelDockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QTreeView" name="graphicalModelExplorer">
+	  <widget class="qReal::gui::ModelExplorer" name="graphicalModelExplorer">
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
        </property>
@@ -779,13 +779,18 @@
     <string>Ctrl+Shift+Z</string>
    </property>
   </action>
+  <action name="actionExportToXml">
+   <property name="text">
+    <string>Export to XML</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
   <customwidget>
    <class>qReal::gui::PaletteTree</class>
    <extends>QToolBox</extends>
-   <header>../mainwindow/paletteTree.h</header>
+   <header>../mainwindow/palette/paletteTree.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -808,6 +813,11 @@
    <class>qReal::gui::TabWidget</class>
    <extends>QWidget</extends>
    <header>../mainwindow/tabWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>qReal::gui::ModelExplorer</class>
+   <extends>QWidget</extends>
+   <header>../mainwindow/modelExplorer.h</header>
   </customwidget>
  </customwidgets>
  <resources>

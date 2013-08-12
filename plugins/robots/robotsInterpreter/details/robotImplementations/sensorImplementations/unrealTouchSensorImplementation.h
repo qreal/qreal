@@ -13,7 +13,11 @@ class UnrealTouchSensorImplementation : public UnrealSensorImplementation
 	Q_OBJECT
 
 public:
-	UnrealTouchSensorImplementation(inputPort::InputPortEnum const port, d2Model::D2RobotModel *d2Model);
+	UnrealTouchSensorImplementation(
+			robots::enums::inputPort::InputPortEnum const port
+			, d2Model::D2RobotModel *d2Model
+			);
+
 	virtual void read();
 };
 

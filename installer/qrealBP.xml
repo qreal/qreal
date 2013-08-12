@@ -94,6 +94,9 @@
                             <origin>%1/bin/help</origin>
                         </distributionDirectory>
                         <distributionFile>
+                            <origin>%1/bin/changelog.txt</origin>
+                        </distributionFile>
+                         <distributionFile>
                             <origin>%2/Qt5Network.dll</origin>
                         </distributionFile>
                         <distributionFile>
