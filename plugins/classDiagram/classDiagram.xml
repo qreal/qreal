@@ -199,6 +199,9 @@
 						<association endName="UmlClass" beginName="Enum"/>
 					</associations>
 					<properties/>
+					<possibleEdges>
+						<possibleEdge directed="true" beginName="NonTyped" endName="NonTyped"/>
+					</possibleEdges>
 				</logic>
 			</edge>
 		</graphicTypes>

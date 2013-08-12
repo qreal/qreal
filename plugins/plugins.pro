@@ -24,9 +24,9 @@ SUBDIRS += \
 
 # QReal:BP
 SUBDIRS += \
-	bpmn/bpmn.pro \
-	rulesChecker/rulesChecker.pro \
-	classDiagram/classDiagram.pro \
+#	bpmn/bpmn.pro \
+#	rulesChecker/rulesChecker.pro \
+#	classDiagram/classDiagram.pro \
 
 
 # QReal:Ubiq
