@@ -10,18 +10,28 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface)
-	: AbstractModel(editorManagerInterface), mLogicalModelView(this), mApi(*repoApi)
+GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
+		, EditorManagerInterface const &editorManagerInterface
+//		, GraphicalModelAssistApi * graphicalAssistApi
+		)
+	: AbstractModel(editorManagerInterface)
+	, mLogicalModelView(this)
+	, mApi(*repoApi)
+	, mGraphicalAssistApi(NULL)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	init();
-	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManagerInterface);
 }
 
 GraphicalModel::~GraphicalModel()
 {
 	delete mGraphicalAssistApi;
 	cleanupTree(mRootItem);
+}
+
+void GraphicalModel::setAssistApi(GraphicalModelAssistApi * graphicalAssistApi)
+{
+	mGraphicalAssistApi = graphicalAssistApi;
 }
 
 void GraphicalModel::init()

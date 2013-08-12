@@ -21,8 +21,14 @@ class GraphicalModel : public modelsImplementation::AbstractModel
 	Q_OBJECT
 
 public:
-	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface);
+	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
+			, EditorManagerInterface const &editorManagerInterface
+//			, GraphicalModelAssistApi * graphicalAssistApi
+			);
+
 	virtual ~GraphicalModel();
+
+	void setAssistApi(GraphicalModelAssistApi * graphicalAssistApi);
 
 	void connectToLogicalModel(LogicalModel * const logicalModel);
 	void updateElements(Id const &logicalId, QString const &name);
