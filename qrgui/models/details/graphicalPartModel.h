@@ -44,6 +44,9 @@ public:
 	// Override.
 	virtual QModelIndex parent(QModelIndex const &index) const;
 
+	// Override.
+	virtual bool removeRows(int row, int count, QModelIndex const &parent = QModelIndex());
+
 	QModelIndex addGraphicalPart(Id const &element, int index);
 
 	QModelIndex findIndex(Id const &element, int index);

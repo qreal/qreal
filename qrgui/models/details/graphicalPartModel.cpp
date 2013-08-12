@@ -100,6 +100,29 @@ QModelIndex GraphicalPartModel::parent(QModelIndex const &index) const
 	return createIndex(row, 0, static_cast<void *>(NULL));
 }
 
+bool GraphicalPartModel::removeRows(int row, int count, QModelIndex const &parent)
+{
+	if (parent.isValid()) {
+		// We shall not be able to remove one part now, only element as a whole.
+		return false;
+	}
+
+	if (row + count > mItems.size()) {
+		return false;
+	}
+
+	beginRemoveRows(parent, row, row + count - 1);
+	for (int i = row; i < row + count; ++i) {
+		qDeleteAll(mItems[i]);
+		mItems.removeAt(i);
+		mIdPositions.remove(mIdPositions.key(i));
+	}
+
+	endRemoveRows();
+
+	return true;
+}
+
 QModelIndex GraphicalPartModel::addGraphicalPart(Id const &element, int index)
 {
 	int const parentRow = mIdPositions.contains(element) ? mIdPositions[element] : mItems.size();
