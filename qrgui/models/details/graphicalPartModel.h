@@ -12,16 +12,24 @@ namespace qReal {
 namespace models {
 namespace details {
 
+/// A model that contains separate parts of graphical elements, like labels or pins.
+/// Model organized as a list of graphical elements, each cell of which contains a list of graphical parts.
+/// It allows to freely add graphical parts to new or existing elements (elements always shall already be in a repo),
+/// or to remove elements as a whole, but only from model --- GraphicalPartModel does not own elements, and graphical
+/// parts can not be removed separately.
 class GraphicalPartModel : public QAbstractItemModel
 {
 	Q_OBJECT
 
 public:
+	/// Roles specific to graphical parts.
 	enum Roles {
 		positionRole = Qt::UserRole + 1  // element's position within current context
 		, configurationRole  // element's configuration (e.g. shape, size) within current context
 	};
 
+	/// Constructor.
+	/// @param repoApi - reference to repository API.
 	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi);
 
 	virtual ~GraphicalPartModel();
@@ -47,8 +55,14 @@ public:
 	// Override.
 	virtual bool removeRows(int row, int count, QModelIndex const &parent = QModelIndex());
 
+	/// Adds new graphical part to model and repository.
+	/// @param element - id of an element to which a part shall be added. It shall already exist in repository,
+	///        but not nesessarily in a model.
+	/// @param index - index of a part, which uniquely identifies it in an element.
+	/// @returns model index of newly added part.
 	QModelIndex addGraphicalPart(Id const &element, int index);
 
+	/// Returns index by given id of an element and index of a part within it.
 	QModelIndex findIndex(Id const &element, int index) const;
 
 private:
