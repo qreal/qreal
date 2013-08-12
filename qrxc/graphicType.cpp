@@ -70,7 +70,8 @@ bool GraphicType::init(QDomElement const &element, QString const &context)
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
 				&& initGraphics() && initLabels() && initPossibleEdges() && initPortTypes()
-				&& initContainerProperties() && initBonusContextMenuFields() && initExplosions();
+				&& initCreateChildrenFromMenu() && initContainerProperties() && initBonusContextMenuFields()
+				&& initExplosions();
 	}
 	return false;
 }
@@ -213,6 +214,15 @@ bool GraphicType::initContainerProperties()
 			mContainerProperties.maximizesChildren = true;
 		}
 
+	}
+
+	return true;
+}
+
+bool GraphicType::initCreateChildrenFromMenu()
+{
+	if (!mLogic.elementsByTagName("createChildrenFromMenu").isEmpty()) {
+		mCreateChildrenFromMenu = true;
 	}
 
 	return true;

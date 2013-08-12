@@ -180,6 +180,7 @@
 						<property type="bool" name="isResizeable">
 							<default>true</default>
 						</property>
+						<property type="bool" name="createChildrenFromMenu"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
