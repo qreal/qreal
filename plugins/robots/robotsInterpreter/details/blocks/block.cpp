@@ -42,7 +42,7 @@ void Block::init(Id const &graphicalId
 
 bool Block::initNextBlocks()
 {
-	if (id() .isNull() || id() == Id::rootId()) {
+	if (id().isNull() || id() == Id::rootId()) {
 		error(tr("Control flow break detected, stopping"));
 		return false;
 	}
@@ -61,7 +61,7 @@ bool Block::initNextBlocks()
 
 	if (links.count() == 1) {
 		Id const nextBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(links[0], id());
-		if (nextBlockId .isNull() || nextBlockId == Id::rootId()) {
+		if (nextBlockId.isNull() || nextBlockId == Id::rootId()) {
 			error(tr("Outgoing link is not connected"));
 			return false;
 		}

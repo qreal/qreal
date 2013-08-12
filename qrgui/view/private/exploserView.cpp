@@ -23,7 +23,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 		, Id const &alreadyConnectedElement) const
 {
 	bool hasAnyActions = false;
-	QString const menuName = alreadyConnectedElement .isNull()
+	QString const menuName = alreadyConnectedElement.isNull()
 			? mMainWindow->toolManager().customizer()->addExplosionMenuName()
 			: mMainWindow->toolManager().customizer()->changeExplosionMenuName();
 	QMenu *addExplosionMenu = new QMenu(menuName);
@@ -67,7 +67,7 @@ void ExploserView::createAddExplosionMenu(Element const * const element
 void ExploserView::createRemoveExplosionMenu(Element const * const element, QMenu &contextMenu
 		, Id const &outgoingConnection) const
 {
-	if (outgoingConnection .isNull()) {
+	if (outgoingConnection.isNull()) {
 		return;
 	}
 
@@ -79,7 +79,7 @@ void ExploserView::createRemoveExplosionMenu(Element const * const element, QMen
 void ExploserView::createExpandAction(Element const * const element, QMenu &contextMenu
 		, Id const &alreadyConnectedElement) const
 {
-	if (alreadyConnectedElement .isNull()) {
+	if (alreadyConnectedElement.isNull()) {
 		return;
 	}
 
@@ -128,7 +128,7 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, Element const * 
 void ExploserView::handleDoubleClick(Id const &id)
 {
 	Id outgoingLink = mLogicalApi->logicalRepoApi().outgoingExplosion(id);
-	if (outgoingLink .isNull()) {
+	if (outgoingLink.isNull()) {
 		QList<Explosion> const explosions = mMainWindow->editorManager().explosions(id);
 		if (!explosions.isEmpty()) {
 			Id const diagramType = mMainWindow->editorManager().findElementByType(explosions[0].target().element());

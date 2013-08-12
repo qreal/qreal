@@ -70,7 +70,7 @@ void Controller::execute(commands::AbstractCommand *command, UndoStack *stack)
 
 void Controller::diagramOpened(Id const &diagramId)
 {
-	if (diagramId .isNull()) {
+	if (diagramId.isNull()) {
 		return;
 	}
 	UndoStack *stack = new UndoStack;
@@ -81,7 +81,7 @@ void Controller::diagramOpened(Id const &diagramId)
 
 void Controller::diagramClosed(Id const &diagramId)
 {
-	if (diagramId .isNull() || !mDiagramStacks.keys().contains(diagramId.toString())) {
+	if (diagramId.isNull() || !mDiagramStacks.keys().contains(diagramId.toString())) {
 		return;
 	}
 

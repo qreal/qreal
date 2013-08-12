@@ -667,7 +667,7 @@ void MainWindow::deleteFromScene()
 AbstractCommand *MainWindow::logicalDeleteCommand(QGraphicsItem *target)
 {
 	Element *elem = dynamic_cast<Element *>(target);
-	if (!elem || elem->id() .isNull()) {
+	if (!elem || elem->id().isNull()) {
 		return NULL;
 	}
 	return logicalDeleteCommand(elem->id());
@@ -676,7 +676,7 @@ AbstractCommand *MainWindow::logicalDeleteCommand(QGraphicsItem *target)
 AbstractCommand *MainWindow::graphicalDeleteCommand(QGraphicsItem *target)
 {
 	Element *elem = dynamic_cast<Element *>(target);
-	if (!elem || elem->id() .isNull()) {
+	if (!elem || elem->id().isNull()) {
 		return NULL;
 	}
 	return graphicalDeleteCommand(elem->id());
@@ -1129,7 +1129,7 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (id .isNull() || mEditorManagerProxy.isDiagramNode(id)) {
+	if (id.isNull() || mEditorManagerProxy.isDiagramNode(id)) {
 		return;
 	}
 
@@ -1596,7 +1596,7 @@ bool MainWindow::createProject(QString const &diagramIdString)
 void MainWindow::createProject()
 {
 	Id const theOnlyDiagram = mEditorManagerProxy.theOnlyDiagram();
-	if (theOnlyDiagram .isNull()) {
+	if (theOnlyDiagram.isNull()) {
 		SuggestToCreateProjectDialog dialog(this);
 		dialog.exec();
 	} else {
@@ -1681,7 +1681,7 @@ void MainWindow::dehighlight(Id const &graphicalId)
 
 		EditorViewScene * const scene = dynamic_cast<EditorViewScene *>(view->scene());
 
-		if (graphicalId .isNull()) {
+		if (graphicalId.isNull()) {
 			scene->dehighlight();
 		} else {
 			scene->dehighlight(graphicalId);
