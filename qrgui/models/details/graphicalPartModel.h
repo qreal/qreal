@@ -49,7 +49,7 @@ public:
 
 	QModelIndex addGraphicalPart(Id const &element, int index);
 
-	QModelIndex findIndex(Id const &element, int index);
+	QModelIndex findIndex(Id const &element, int index) const;
 
 private:
 	qrRepo::GraphicalRepoApi &mRepoApi;

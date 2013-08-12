@@ -10,3 +10,5 @@ include(../common.pri)
 include(../../../qrgui/qrgui.pri)
 
 include(modelsTests/modelsTests.pri)
+
+include(helpers/helpers.pri)

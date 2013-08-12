@@ -1,6 +1,10 @@
 #include "graphicalPartModelTest.h"
 
+#include <QtWidgets/QApplication>
+
 #include <../qrrepo/repoApi.h>
+
+#include "../helpers/graphicalPartViewMock.h"
 
 using namespace qrguiTests;
 using namespace qReal;
@@ -12,9 +16,10 @@ Id const graphicalElement("editor", "diagram", "element", "graphicalId");
 void GraphicalPartModelTest::SetUp()
 {
 	mRepoApi = new qrRepo::RepoApi("test.qrs");
-	mGraphicalPartModel = new GraphicalPartModel(*mRepoApi);
 	mRepoApi->addChild(Id::rootId(), element);
 	mRepoApi->addChild(Id::rootId(), graphicalElement, element);
+
+	mGraphicalPartModel = new GraphicalPartModel(*mRepoApi);
 }
 
 void GraphicalPartModelTest::TearDown()
@@ -84,4 +89,50 @@ TEST_F(GraphicalPartModelTest, dataSetDataTest)
 	// Just in case
 	QModelIndex const newIndex = mGraphicalPartModel->findIndex(graphicalElement, 0);
 	ASSERT_EQ(QPointF(10, 20), mGraphicalPartModel->data(newIndex, GraphicalPartModel::positionRole).toPointF());
+}
+
+TEST_F(GraphicalPartModelTest, removeRowsTest)
+{
+	QModelIndex const index = mGraphicalPartModel->addGraphicalPart(graphicalElement, 0);
+	ASSERT_NE(QModelIndex(), mGraphicalPartModel->findIndex(graphicalElement, 0));
+
+	ASSERT_TRUE(mGraphicalPartModel->removeRow(index.row()));
+
+	ASSERT_EQ(QModelIndex(), mGraphicalPartModel->findIndex(graphicalElement, 0));
+}
+
+TEST_F(GraphicalPartModelTest, viewTest)
+{
+	int argc = 0;
+	char *argv[] = {"", ""};
+	QApplication app(argc, argv);
+	Q_UNUSED(app)
+
+	helpers::GraphicalPartViewMock viewMock;
+
+	delete mGraphicalPartModel;
+	mGraphicalPartModel = new GraphicalPartModel(*mRepoApi);
+
+	QObject::connect(mGraphicalPartModel, SIGNAL(dataChanged(QModelIndex, QModelIndex))
+			, &viewMock, SLOT(dataChanged(QModelIndex, QModelIndex)));
+
+	QObject::connect(mGraphicalPartModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int))
+			, &viewMock, SLOT(rowsAboutToBeRemoved(QModelIndex, int, int)));
+
+	viewMock.setModel(mGraphicalPartModel);
+
+	QModelIndex const index = mGraphicalPartModel->addGraphicalPart(graphicalElement, 0);
+
+	ASSERT_EQ(0, viewMock.rowsInsertedCalledWithIndexFirstTime());
+	ASSERT_EQ(0, viewMock.rowsInsertedCalledWithIndex());
+	ASSERT_EQ(graphicalElement, viewMock.rowsInsertedCalledWithId());
+
+	mGraphicalPartModel->setData(index, QPointF(10, 20), GraphicalPartModel::positionRole);
+
+	ASSERT_EQ(0, viewMock.dataChangedCalledWithIndex());
+	ASSERT_EQ(graphicalElement, viewMock.dataChangedCalledWithId());
+
+	mGraphicalPartModel->removeRows(0, 1);
+
+	ASSERT_EQ(0, viewMock.rowsAboutToBeRemovedCalledWithRow());
 }

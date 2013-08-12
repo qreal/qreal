@@ -64,6 +64,7 @@ int GraphicalPartModel::rowCount(const QModelIndex &parent) const
 int GraphicalPartModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent)
+
 	return 1;
 }
 
@@ -144,7 +145,7 @@ QModelIndex GraphicalPartModel::addGraphicalPart(Id const &element, int index)
 	return this->index(row, 0, parentIndex);
 }
 
-QModelIndex GraphicalPartModel::findIndex(Id const &element, int index)
+QModelIndex GraphicalPartModel::findIndex(Id const &element, int index) const
 {
 	if (!mIdPositions.contains(element)) {
 		return QModelIndex();
