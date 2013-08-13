@@ -206,11 +206,11 @@ int D2RobotModel::readColorSensor(robots::enums::inputPort::InputPortEnum const 
 	QImage const image = printColorSensor(port);
 	QHash<uint, int> countsColor;
 
-	uint *data = static_cast<uint *>(image.bits());
+	uint const *data = reinterpret_cast<uint const *>(image.bits());
 	int const n = image.byteCount() / 4;
 	for (int i = 0; i < n; ++i) {
-		uint color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
-		countsColor[color] ++;
+		uint const color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
+		++countsColor[color];
 	}
 
 	switch (mSensorsConfiguration.type(port)) {
@@ -359,7 +359,7 @@ int D2RobotModel::readLightSensor(robots::enums::inputPort::InputPortEnum const 
 	}
 
 	uint sum = 0;
-	uint *data = static_cast<uint *>(image.bits());
+	uint const *data = reinterpret_cast<uint const *>(image.bits());
 	int const n = image.byteCount() / 4;
 
 	for (int i = 0; i < n; ++i) {
