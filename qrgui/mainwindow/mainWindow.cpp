@@ -1358,18 +1358,21 @@ void MainWindow::currentTabChanged(int newIndex)
 	bool const isShape = isCurrentTabShapeEdit();
 
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
-	if (!isEditorTab) {
-		mToolManager.activeTabChanged(Id());
-	} else if (getCurrentTab()->mvIface() != NULL) {
-		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
-		mToolManager.activeTabChanged(currentTabId);
-	}
+	// TODO: implement printing for text tabs
+	mUi->actionPrint->setEnabled(isEditorTab);
 
 	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
 	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);
 
 	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
 	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
+
+	if (!isEditorTab) {
+		mToolManager.activeTabChanged(Id());
+	} else if (getCurrentTab()->mvIface()) {
+		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
+		mToolManager.activeTabChanged(currentTabId);
+	}
 
 	emit rootDiagramChanged();
 }
