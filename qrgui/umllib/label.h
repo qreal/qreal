@@ -60,8 +60,6 @@ protected:
 private:
 	void updateData(bool withUndoRedo = false);
 	void updateRect(QPointF newBottomRightPoint);
-	void setProperties(qreal x, qreal y, qreal width, QString const &text);
-	QString createTextForRepo() const;
 	void setText(QString const &text);
 	void moveToParentCenter();
 	Qt::Orientation orientation();
