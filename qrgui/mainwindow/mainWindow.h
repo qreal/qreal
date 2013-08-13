@@ -226,7 +226,7 @@ private slots:
 	commands::AbstractCommand *graphicalDeleteCommand(QModelIndex const &index);
 	commands::AbstractCommand *logicalDeleteCommand(Id const &index);
 	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
-	void appendCascadeDeleteCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
+	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
 
 	void deleteFromDiagram();
 	void copyElementsOnDiagram();
