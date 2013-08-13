@@ -12,7 +12,6 @@ using namespace modelsImplementation;
 
 GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
 		, EditorManagerInterface const &editorManagerInterface
-//		, GraphicalModelAssistApi * graphicalAssistApi
 		)
 	: AbstractModel(editorManagerInterface)
 	, mLogicalModelView(this)
@@ -29,7 +28,7 @@ GraphicalModel::~GraphicalModel()
 	cleanupTree(mRootItem);
 }
 
-void GraphicalModel::setAssistApi(GraphicalModelAssistApi * graphicalAssistApi)
+void GraphicalModel::setAssistApi(GraphicalModelAssistApi * const graphicalAssistApi)
 {
 	mGraphicalAssistApi = graphicalAssistApi;
 }

@@ -23,12 +23,12 @@ class GraphicalModel : public modelsImplementation::AbstractModel
 public:
 	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
 			, EditorManagerInterface const &editorManagerInterface
-//			, GraphicalModelAssistApi * graphicalAssistApi
 			);
 
 	virtual ~GraphicalModel();
 
-	void setAssistApi(GraphicalModelAssistApi * graphicalAssistApi);
+	/// Sets graphical assist interface for this model. Takes ownership.
+	void setAssistApi(GraphicalModelAssistApi * const graphicalAssistApi);
 
 	void connectToLogicalModel(LogicalModel * const logicalModel);
 	void updateElements(Id const &logicalId, QString const &name);
@@ -50,7 +50,7 @@ signals:
 private:
 	LogicalModelView mLogicalModelView;
 	qrRepo::GraphicalRepoApi &mApi;
-	GraphicalModelAssistApi *mGraphicalAssistApi;
+	GraphicalModelAssistApi *mGraphicalAssistApi;  // Has ownership.
 
 	virtual void init();
 	void loadSubtreeFromClient(modelsImplementation::GraphicalModelItem * const parent);

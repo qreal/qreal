@@ -10,7 +10,7 @@ HEADERS += \
 	$$PWD/pattern.h \
 	$$PWD/patternParser.h \
 	$$PWD/explosion.h \
-	pluginManager/interpreterPortImpl.h \
+	$$PWD/interpreterPortImpl.h \
 
 SOURCES += \
 	$$PWD/editorManager.cpp \

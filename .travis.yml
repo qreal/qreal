@@ -19,8 +19,7 @@ script:
   - cd ./bin
   - ls -A
   - ./exampleTests
-  - ./qrgui_unittests -platform offscreen
-  - ./qrgui_unittests -platform minimal
+  - ./qrgui_unittests
   - ./qrrepo_unittests
   - ./qrutils_unittests
   - ./visualDebugSupport_unittests

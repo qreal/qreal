@@ -7,5 +7,5 @@ HEADERS += \
 	$$PWD/sdfRendererInterface.h \
 	$$PWD/listenerInterface.h \
 	$$PWD/listenerApiInterface.h \
-	$$PWD/editorPluginInterface/portHelpers.h
+	$$PWD/portHelpers.h
 
