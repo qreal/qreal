@@ -101,7 +101,7 @@ private:
 	void countMotorTurnover();
 
 	QImage printColorSensor(robots::enums::inputPort::InputPortEnum const port) const;
-	int readColorFullSensor(QHash<uint, int> countsColor) const;
+	int readColorFullSensor(QHash<uint, int> const &countsColor) const;
 	int readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const;
 	int readSingleColorSensor(uint color, QHash<uint, int> const &countsColor, int n) const;
 

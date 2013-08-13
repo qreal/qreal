@@ -206,7 +206,7 @@ int D2RobotModel::readColorSensor(robots::enums::inputPort::InputPortEnum const 
 	QImage const image = printColorSensor(port);
 	QHash<uint, int> countsColor;
 
-	uint *data = (uint *) image.bits();
+	uint *data = static_cast<uint *>(image.bits());
 	int const n = image.byteCount() / 4;
 	for (int i = 0; i < n; ++i) {
 		uint color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
@@ -277,13 +277,21 @@ QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum co
 	return image;
 }
 
-int D2RobotModel::readColorFullSensor(QHash<uint, int> countsColor) const
+int D2RobotModel::readColorFullSensor(QHash<uint, int> const &countsColor) const
 {
-	QList<int> values = countsColor.values();
-	qSort(values);
-	int maxValue = values.last();
-	uint maxColor = countsColor.key(maxValue);
+	if (countsColor.isEmpty()) {
+		return 0;
+	}
 
+	QList<int> const values = countsColor.values();
+	int maxValue = INT_MIN;
+	foreach (int value, values) {
+		if (value > maxValue) {
+			maxValue = value;
+		}
+	}
+
+	uint const maxColor = countsColor.key(maxValue);
 	switch (maxColor) {
 	case (black):
 		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "BLACK");
@@ -351,7 +359,7 @@ int D2RobotModel::readLightSensor(robots::enums::inputPort::InputPortEnum const 
 	}
 
 	uint sum = 0;
-	uint *data = (uint *) image.bits();
+	uint *data = static_cast<uint *>(image.bits());
 	int const n = image.byteCount() / 4;
 
 	for (int i = 0; i < n; ++i) {
