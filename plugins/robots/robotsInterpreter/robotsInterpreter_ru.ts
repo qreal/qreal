@@ -946,29 +946,41 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">равно 0</translation>
     </message>
     <message>
+        <location filename="details/blocks/ifBlock.cpp" line="26"/>
+        <source>There must be exactly TWO links outgoing from if block</source>
+        <translation>От условного блока должно отходить ровно ДВЕ связи</translation>
+    </message>
+    <message>
         <location filename="details/blocks/ifBlock.cpp" line="33"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="details/blocks/ifBlock.cpp" line="47"/>
+        <location filename="details/blocks/ifBlock.cpp" line="41"/>
+        <source>Two links marked with &apos;true&apos; found</source>
+        <translation>Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
+    </message>
+    <message>
+        <location filename="details/blocks/ifBlock.cpp" line="48"/>
+        <source>Two links marked with &apos;false&apos; found</source>
+        <translation>Обе связи помечены условием &apos;Ложь&apos;</translation>
+    </message>
+    <message>
         <source>Two links marked with condition found</source>
-        <translation>Найдено две связи, помеченные условием</translation>
+        <translation type="obsolete">Найдено две связи, помеченные условием</translation>
+    </message>
+    <message>
+        <source>Two outgoing links to a next element found</source>
+        <translation type="obsolete">Найдено две исходящие связи к следующему элементу</translation>
     </message>
     <message>
         <location filename="details/blocks/ifBlock.cpp" line="55"/>
-        <source>Two outgoing links to a next element found</source>
-        <translation>Найдено две исходящие связи к следующему элементу</translation>
-    </message>
-    <message>
-        <location filename="details/blocks/ifBlock.cpp" line="62"/>
         <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
         <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
     </message>
     <message>
-        <location filename="details/blocks/ifBlock.cpp" line="67"/>
         <source>There must be a non-marked outgoing link</source>
-        <translation>Должна быть непомеченная исходящая связь</translation>
+        <translation type="obsolete">Должна быть непомеченная исходящая связь</translation>
     </message>
 </context>
 <context>

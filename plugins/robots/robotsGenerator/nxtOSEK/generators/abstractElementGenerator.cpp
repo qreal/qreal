@@ -55,6 +55,11 @@ QString AbstractElementGenerator::replaceFunctionInvocations(QString const &expr
 	return result;
 }
 
+void AbstractElementGenerator::error(QString const &message)
+{
+	mNxtGen->errorReporter().addError(message, mElementId);
+}
+
 QString AbstractElementGenerator::sensorExpression(int port) const
 {
 	QString const portString = QString::number(port);

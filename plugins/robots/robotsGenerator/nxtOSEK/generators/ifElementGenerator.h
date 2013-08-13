@@ -21,26 +21,26 @@ protected:
 	virtual bool preGenerationCheck();
 	virtual bool nextElementsGeneration();
 
-	bool generateBranch(int branchNumber);
+	bool generateBranch(qReal::Id const &branchElement);
 
 	QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId); //initial step of checking
 	QPair<bool, qReal::Id> checkBranchForBackArrows(qReal::Id const &curElementId, qReal::IdList* checkedElements);
 
 private:
-	virtual void displaysSuitableError(QPair<bool, qReal::Id> const positiveBranchCheck
+	void displaysSuitableError(QPair<bool, qReal::Id> const positiveBranchCheck
 			, QPair<bool, qReal::Id> const negativeBranchCheck);
-	virtual void generateIfBlock(bool isPositiveBranchReturnsToBackElems, int const conditionArrowNum, QString condition);
-	virtual void generateBlockIfElseIs(QString const &condition, int conditionArrowNum);
-	virtual void addNeededCondition(QString &condition, qReal::IdList outgoingLinks, int conditionArrowNum);
+	void generateIfBlock(bool isPositiveBranchReturnsToBackElems, QString const &condition);
+	void generateBlockIfElseIs(QString const &condition);
 
 	/// Checks that positive and negative branches are correct and adds error if not.
 	/// @returns true, if everything is ok
 	bool areOutgoingLinksCorrect(
-			qReal::Id const positiveBranchGraphicalId
-			, qReal::Id const negativeBranchGraphicalId
-			, bool &isPositiveBranchReturnsToBackElems
+			bool &isPositiveBranchReturnsToBackElems
 			, bool &isNegativeBranchReturnsToBackElems
 			);
+
+	qReal::Id mTrueId;
+	qReal::Id mFalseId;
 };
 
 }
