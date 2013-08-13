@@ -20,7 +20,6 @@ public:
 
 private:
 	Block *mElseBlock;
-	QString mCondition;
 
 	virtual bool initNextBlocks();
 };

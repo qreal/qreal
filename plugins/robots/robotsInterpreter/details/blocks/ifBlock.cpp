@@ -11,21 +11,21 @@ IfBlock::IfBlock()
 void IfBlock::run()
 {
 	bool const expressionValue = evaluateBool("Condition");
-	if ((mCondition == QString::fromUtf8("истина") && expressionValue)
-			|| (mCondition == QString::fromUtf8("ложь") && !expressionValue))
-	{
-		emit done(mNextBlock);
-	} else {
-		emit done(mElseBlock);
-	}
+	emit done(expressionValue ? mNextBlock : mElseBlock);
 }
 
 bool IfBlock::initNextBlocks()
 {
-	bool thenFound = false;
-	bool elseFound = false;
+	// In correct case exactly 2 of this 3 would be non-null
+	Block *trueBlock = NULL;
+	Block *falseBlock = NULL;
+	Block *nonMarkedBlock = NULL;
 
 	IdList const links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
+	if (links.size() != 2) {
+		error(tr("There must be exactly TWO links outgoing from if block"));
+		return false;
+	}
 
 	foreach (Id const &linkId, links) {
 		Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
@@ -34,38 +34,42 @@ bool IfBlock::initNextBlocks()
 			return false;
 		}
 
-		Block *targetBlock = mBlocksTable->block(targetBlockId);
+		Block * const targetBlock = mBlocksTable->block(targetBlockId);
 		QString const condition = stringProperty(linkId, "Guard").toLower();
-		if (condition == QString::fromUtf8("истина")
-				|| condition == QString::fromUtf8("ложь"))
-		{
-			if (!thenFound) {
-				mNextBlock = targetBlock;
-				mCondition = condition;
-				thenFound = true;
-			} else {
-				error(tr("Two links marked with condition found"));
+		if (condition == QString::fromUtf8("истина")) {
+			if (trueBlock) {
+				error(tr("Two links marked with 'true' found"));
 				return false;
+			} else {
+				trueBlock = targetBlock;
 			}
-		} else if (condition == "") {
-			if (!elseFound) {
-				mElseBlock = targetBlock;
-				elseFound = true;
-			} else {
-				error(tr("Two outgoing links to a next element found"));
+		} else if (condition == QString::fromUtf8("ложь")) {
+			if (falseBlock) {
+				error(tr("Two links marked with 'false' found"));
 				return false;
+			} else {
+				falseBlock = targetBlock;
+			}
+		} else {
+			if (nonMarkedBlock) {
+				error(tr("There must be a link with property \"Guard\" set to one of the conditions"));
+				return false;
+			} else {
+				nonMarkedBlock = targetBlock;
 			}
 		}
 	}
 
-	if (!thenFound) {
-		error(tr("There must be a link with property \"Guard\" set to one of the conditions"));
-		return false;
-	}
-
-	if (!elseFound) {
-		error(tr("There must be a non-marked outgoing link"));
-		return false;
+	// Now we have correctly placed links with correct guards. Determining who is who
+	if (!trueBlock) {
+		mNextBlock = nonMarkedBlock;
+		mElseBlock = falseBlock;
+	} else if (!falseBlock) {
+		mNextBlock = trueBlock;
+		mElseBlock = nonMarkedBlock;
+	} else if (!nonMarkedBlock) {
+		mNextBlock = trueBlock;
+		mElseBlock = falseBlock;
 	}
 
 	return true;
