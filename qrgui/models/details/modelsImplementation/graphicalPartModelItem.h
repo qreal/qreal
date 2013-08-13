@@ -15,8 +15,8 @@ public:
 	int index() const;
 
 private:
-	const Id mId;
-	const int mIndex;
+	Id const mId;
+	int const mIndex;
 };
 
 }
