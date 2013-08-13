@@ -1,14 +1,14 @@
 # XMI
-HEADERS += generators/xmi/xmiHandler.h \
+HEADERS += $$PWD/xmi/xmiHandler.h \
 
-SOURCES += generators/xmi/xmiHandler.cpp \
+SOURCES += $$PWD/xmi/xmiHandler.cpp \
 
 # JAVA
-HEADERS += generators/java/javaHandler.h \
+HEADERS += $$PWD/java/javaHandler.h \
 
-SOURCES += generators/java/javaHandler.cpp \
+SOURCES += $$PWD/java/javaHandler.cpp \
 
 # Креатор не умеет показывать файлы глубже одного уровня в иерархии инклудов
-# include (generators/xmi/xmi.pri)
+# include ($$PWD/xmi/xmi.pri)
 
-# include (generators/hascol/hascol.pri)
+# include ($$PWD/hascol/hascol.pri)

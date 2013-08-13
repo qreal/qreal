@@ -1,5 +1,3 @@
-QT += xml
-
 DESTDIR = ../bin
 
 TEMPLATE = lib
@@ -12,7 +10,5 @@ LIBS += -L../bin -lqrkernel -lqrutils
 !macx {
 	QMAKE_LFLAGS="-Wl,-O1,-rpath,$(PWD)"
 }
-
-DEFINES += QRREPO_LIBRARY
 
 include(qrrepo.pri)
