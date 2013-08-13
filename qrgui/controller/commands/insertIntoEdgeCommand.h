@@ -2,7 +2,7 @@
 
 #include "createElementCommand.h"
 #include "removeElementCommand.h"
-#include "../qrgui/view/editorViewScene.h"
+#include "../../view/editorViewScene.h"
 #include "../../models/graphicalModelAssistApi.h"
 #include "../../models/logicalModelAssistApi.h"
 

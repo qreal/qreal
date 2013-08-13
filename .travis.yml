@@ -18,8 +18,14 @@ script:
   - make -j2
   - git clean -dfx
   - qmake qrealTest.pro CONFIG+=debug
-  - make -j2
-  - ./bin/unittests/qrlibs_unittests
+  - make 
+  - cd ./bin
+  - ls -A
+  - ./exampleTests
+  - ./qrgui_unittests
+  - ./qrrepo_unittests
+  - ./qrutils_unittests
+  - ./visualDebugSupport_unittests
 
 notifications:
   email:

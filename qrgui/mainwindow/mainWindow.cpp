@@ -52,7 +52,7 @@
 #include "dotRunner.h"
 #include "../view/sceneCustomizer.h"
 
-#include "hotKeyManager/hotKeyManager.h"
+#include "../hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 using namespace qReal::commands;

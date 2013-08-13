@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../../../plugins/blockDiagram/visualDebugSupport/interpreter/blockParser.h"
-#include "../../mocks/grgui/toolPluginInterface/usedInterface/errorReporterMock.h"
+#include "../../../../../plugins/blockDiagram/visualDebugSupport/interpreter/blockParser.h"
+#include "../../../../mocks/grgui/toolPluginInterface/usedInterface/errorReporterMock.h"
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 namespace qrTest {
 
