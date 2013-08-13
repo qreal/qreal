@@ -229,7 +229,6 @@ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
-
 void Label::init(QRectF const &contents)
 {
 	mContents = contents;

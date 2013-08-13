@@ -894,10 +894,12 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	setGraphicApiPos();
 	saveConfiguration(QPointF());
 
-	mReshapeCommand->stopTracking();
-	mController->execute(mReshapeCommand);
-	// Undo stack took ownership
-	mReshapeCommand = NULL;
+	if (mReshapeCommand) {
+		mReshapeCommand->stopTracking();
+		mController->execute(mReshapeCommand);
+		// Undo stack took ownership
+		mReshapeCommand = NULL;
+	}
 }
 
 qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const

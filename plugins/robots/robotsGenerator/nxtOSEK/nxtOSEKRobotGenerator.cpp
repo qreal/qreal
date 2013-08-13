@@ -160,7 +160,7 @@ void NxtOSEKRobotGenerator::createProjectDir(QString const &projectDir)
 
 void NxtOSEKRobotGenerator::generate()
 {
-	if (mDiagram == Id()) {
+	if (mDiagram.isNull()) {
 		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
 		return;
 	}
