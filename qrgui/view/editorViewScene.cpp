@@ -882,6 +882,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	disableActions(e);
 	menu.addActions(mContextMenuActions);
 
+	QSignalMapper *createChildMapper = NULL;
 	if (e) {
 		QList<ContextMenuAction*> elementActions = e->contextMenuActions(e->mapFromScene(pos));
 
@@ -897,6 +898,19 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 					Qt::UniqueConnection);
 			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
 		}
+
+		if (e->createChildrenFromMenu() && !mWindow->editorManager().containedTypes(e->id().type()).empty()) {
+			mCreatePoint = pos;
+			QMenu *createChildMenu = menu.addMenu(tr("Add child"));
+			createChildMapper = new QSignalMapper();
+			foreach (Id const &type, mWindow->editorManager().containedTypes(e->id().type())) {
+				QAction *createAction = createChildMenu->addAction(mWindow->editorManager().friendlyName(type));
+				connect(createAction, SIGNAL(triggered()), createChildMapper, SLOT(map()), Qt::UniqueConnection);
+				createChildMapper->setMapping(createAction, type.toString());
+				connect(createChildMapper, SIGNAL(mapped(QString const &)), this, SLOT(createElement(QString const &)));
+			}
+		}
+
 		menu.addSeparator();
 		mExploser->createConnectionSubmenus(menu, e);
 	}
@@ -904,6 +918,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	menu.exec(QCursor::pos());
 
 	enableActions();
+	delete createChildMapper;
 }
 
 void EditorViewScene::disableActions(Element *focusElement)

@@ -109,6 +109,11 @@ ElementImpl* Element::elementImpl() const
 	return mElementImpl;
 }
 
+bool Element::createChildrenFromMenu() const
+{
+	return mElementImpl->createChildrenFromMenu();
+}
+
 void Element::setTitlesVisible(bool visible)
 {
 	mTitlesVisible = visible;
