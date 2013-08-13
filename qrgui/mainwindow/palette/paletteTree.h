@@ -11,8 +11,8 @@
 #include <QtWidgets/QLabel>
 
 #include "../mainWindow.h"
-#include "../pluginManager/proxyEditorManager.h"
-#include "../../qrkernel/ids.h"
+#include "../../pluginManager/proxyEditorManager.h"
+#include "../../../qrkernel/ids.h"
 #include "paletteTreeWidgets.h"
 
 namespace  qReal {

@@ -3,7 +3,7 @@
 #include <QtWidgets/QTreeWidget>
 
 #include "paletteElement.h"
-#include "../pluginManager/editorManagerInterface.h"
+#include "../../pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 namespace gui {

@@ -127,10 +127,15 @@ void Serializer::loadModel(QDir const &dir, QHash<qReal::Id, Object*> &objectsHa
 
 void Serializer::clearDir(QString const &path)
 {
+	if (path.isEmpty()) {
+		return;
+	}
+
 	QDir dir(path);
 	if (!dir.exists()) {
 		return;
 	}
+
 	foreach (QFileInfo const &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 		if (fileInfo.isDir()) {
 			clearDir(fileInfo.filePath());

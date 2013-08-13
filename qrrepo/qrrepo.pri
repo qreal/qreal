@@ -1,3 +1,9 @@
+DEFINES += QRREPO_LIBRARY
+
+QT += xml
+
+LIBS += -L$$PWD/../bin/ -lqrkernel -lqrutils
+
 HEADERS += \
 	$$PWD/private/repository.h \
 	$$PWD/private/folderCompressor.h \
