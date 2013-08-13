@@ -43,8 +43,7 @@ class EdgeElement : public Element
 
 public:
 	enum DragType {
-		wholeEdge = -4,
-		noDrag = -3,
+		wholeEdge = -3,
 		overPointMax = -2,
 		noPort = -1
 	};
@@ -127,9 +126,6 @@ public:
 	void alignToGrid();
 	qreal alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const;
 	QPointF alignedPoint(QPointF const &point, int const indexGrid) const;
-
-public slots:
-	int addPointHandler(QPointF const &pos);
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
