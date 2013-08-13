@@ -34,7 +34,7 @@ public:
 	void startInterpretation();
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
-	void setNewMotor(int speed, long unsigned int degrees, int const port);
+	void setNewMotor(int speed, uint degrees, int const port);
 	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
 	int readEncoder(int const port) const;
@@ -101,13 +101,13 @@ private:
 	void countMotorTurnover();
 
 	QImage printColorSensor(robots::enums::inputPort::InputPortEnum const port) const;
-	int readColorFullSensor(QHash<unsigned long, int> countsColor) const;
-	int readColorNoneSensor(QHash<unsigned long, int> const &countsColor, int n) const;
-	int readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const;
+	int readColorFullSensor(QHash<uint, int> const &countsColor) const;
+	int readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const;
+	int readSingleColorSensor(uint color, QHash<uint, int> const &countsColor, int n) const;
 
 	void synchronizePositions();
-	unsigned long spoilColor(unsigned long const color) const;
-	unsigned long spoilLight(unsigned long const color) const;
+	uint spoilColor(uint const color) const;
+	uint spoilLight(uint const color) const;
 	int varySpeed(int const speed) const;
 	int spoilSonarReading(int const distance) const;
 	int truncateToInterval(int const a, int const b, int const res) const;

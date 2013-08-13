@@ -180,6 +180,7 @@ void RobotsPlugin::updateSettings()
 
 void RobotsPlugin::closeNeededWidget()
 {
+	mInterpreter.stopRobot();
 	mInterpreter.closeD2ModelWidget();
 	mInterpreter.closeWatchList();
 }
