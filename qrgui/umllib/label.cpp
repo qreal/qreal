@@ -8,10 +8,13 @@
 using namespace qReal;
 using namespace enums;
 
-Label::Label(qreal x, qreal y, QString const &text, qreal rotation)
-		: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
-		, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
-		, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
+Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
+		, int index, qreal x, qreal y, QString const &text, qreal rotation)
+	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
+	, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
+	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
+	, mIndex(index)
+	, mGraphicalModelAssistApi(graphicalAssistApi)
 {
 	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
@@ -20,10 +23,13 @@ Label::Label(qreal x, qreal y, QString const &text, qreal rotation)
 	setRotation(mRotation);
 }
 
-Label::Label(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
-		: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
-		, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
-		, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
+Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
+		, int index, qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
+	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
+	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
+	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
+	, mIndex(index)
+	, mGraphicalModelAssistApi(graphicalAssistApi)
 {
 	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
@@ -133,11 +139,15 @@ void Label::setPlainText(QString const &text)
 void Label::updateData(bool withUndoRedo)
 {
 	QString const value = toPlainText();
+	NodeElement const * const parent = static_cast<NodeElement*>(parentItem());
 	if (mBinding == "name") {
-		static_cast<NodeElement*>(parentItem())->setName(value, withUndoRedo);
+		parent->setName(value, withUndoRedo);
 	} else {
-		static_cast<NodeElement*>(parentItem())->setLogicalProperty(mBinding, value, withUndoRedo);
+		parent->setLogicalProperty(mBinding, value, withUndoRedo);
 	}
+
+	mGraphicalModelAssistApi.setLabelPosition(parent->id(), mIndex, pos());
+	mGraphicalModelAssistApi.setLabelSize(parent->id(), mIndex, this->boundingRect().size());
 }
 
 void Label::setTitleFont()
@@ -169,7 +179,7 @@ void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	QPointF cursorPoint = mapToItem(this, event->pos());
 
-	if (mIsStretched  && SettingsManager::value("ResizeLabels", true).toBool()) {
+	if (mIsStretched && SettingsManager::value("ResizeLabels", true).toBool()) {
 		updateRect(cursorPoint);
 		return;
 	}

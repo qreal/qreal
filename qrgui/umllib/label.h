@@ -3,6 +3,7 @@
 #include <QtWidgets/QGraphicsTextItem>
 
 #include "../editorPluginInterface/labelInterface.h"
+#include "../models/graphicalModelAssistApi.h"
 
 namespace qReal {
 
@@ -11,8 +12,12 @@ class Label : public QGraphicsTextItem, public LabelInterface
 	Q_OBJECT
 
 public:
-	Label(qreal x, qreal y, QString const &text, qreal rotation);
-	Label(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
+	Label(models::GraphicalModelAssistApi &graphicalAssistApi
+			, int index, qreal x, qreal y, QString const &text, qreal rotation);
+
+	Label(models::GraphicalModelAssistApi &graphicalAssistApi
+			, int index, qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
+
 	virtual ~Label();
 
 	void init(QRectF const& contents);
@@ -41,7 +46,7 @@ public:
 	virtual void setPlainText(QString const &text);
 
 protected:
-	enum InterpriterPropertyType
+	enum InterpreterPropertyType
 	{
 		propertyText,
 		coordinate,
@@ -81,6 +86,8 @@ private:
 	bool mParentIsSelected;
 	bool mWasMoved;
 	bool mShouldMove;
+	int const mIndex;
+	models::GraphicalModelAssistApi &mGraphicalModelAssistApi;
 };
 
 }
