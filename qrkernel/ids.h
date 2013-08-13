@@ -50,6 +50,9 @@ public:
 	/// @param additional Part of Id that will be added to base Id.
 	Id(Id const &base, QString const &additional);
 
+	/// Returns true if this id is an empty one (same as == Id())
+	bool isNull() const;
+
 	/// Converts Id to URI in format "qrm:/<editor>/<diagram>/<element>/<id>".
 	QUrl toUrl() const;
 

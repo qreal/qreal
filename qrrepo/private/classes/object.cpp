@@ -19,7 +19,7 @@ Object::Object(const Id &id)
 Object::Object(QDomElement const &element)
 	: mId(Id::loadFromString(element.attribute("id", "")))
 {
-	if (mId == Id()) {
+	if (mId.isNull()) {
 		throw Exception("Id deserialization failed");
 	}
 

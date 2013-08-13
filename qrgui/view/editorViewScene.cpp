@@ -125,7 +125,7 @@ void EditorViewScene::initMouseMoveManager()
 		return;
 	}
 
-	if (diagram == Id()) {
+	if (diagram.isNull()) {
 		// Root diagram is not set, for example, current tab is disabled. No need
 		// to do anything with mouse manager.
 		return;

@@ -32,7 +32,7 @@ bool LoopBlock::initNextBlocks()
 			" property <b>Guard</b> set as <b>iteration</b>. See help, chapter <i>Programming</i>");
 	foreach (Id const linkId, links) {
 		Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
-		if (targetBlockId == Id()) {
+		if (targetBlockId.isNull()) {
 			error(tr("Outgoing link is not connected"));
 			return false;
 		}
