@@ -22,6 +22,7 @@ HEADERS += umllib/edgeElement.h \
 	umllib/ports/portFactory.h \
 	umllib/ports/statLine.h \
 	umllib/ports/statPoint.h \
+	umllib/lineHandler.h
 
 SOURCES += umllib/edgeElement.cpp \
 	umllib/element.cpp \
@@ -47,6 +48,7 @@ SOURCES += umllib/edgeElement.cpp \
 	umllib/ports/portFactory.cpp \
 	umllib/ports/statLine.cpp \
 	umllib/ports/statPoint.cpp \
+	umllib/lineHandler.cpp
 
 RESOURCES += \
 	umllib/contextIcons.qrc \

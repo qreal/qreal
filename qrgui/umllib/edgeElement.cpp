@@ -13,6 +13,8 @@
 #include "labelFactory.h"
 #include "private/reshapeEdgeCommand.h"
 #include "../view/editorViewScene.h"
+#include "lineHandler.h"
+
 using namespace qReal;
 
 const double pi = 3.14159265358979;
@@ -26,12 +28,13 @@ const int standartReductCoeff = 3;
 /** @brief indicator of edges' movement */
 
 EdgeElement::EdgeElement(ElementImpl *impl)
-	: Element(impl)
+		: Element(impl)
 		, mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black)
 		, mStartArrowStyle(enums::arrowTypeEnum::noArrow), mEndArrowStyle(enums::arrowTypeEnum::noArrow)
 		, mSrc(NULL), mDst(NULL)
+		, mHandler(new LineHandler(this, static_cast<qReal::LineType>(SettingsManager::value("LineType").toInt())))
 		, mPortFrom(0), mPortTo(0)
-		, mDragPoint(noPort), mLongPart(0)
+		, mDragType(noPort), mLongPart(0)
 		, mDelPointAction(tr("Delete point"), this)
 		, mMinimizeAction(tr("Remove all points"), this)
 		, mDelSegmentAction(tr("Remove segment"), this)
@@ -52,7 +55,7 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 	mLine << QPointF(0, 0) << QPointF(200, 60);
 
 	mLeftButtonIsPressed = false;
-	mSavedLineForChanges = mLine;
+//	mSavedLineForChanges = mLine;
 
 	setAcceptHoverEvents(true);
 
@@ -87,6 +90,7 @@ EdgeElement::~EdgeElement()
 		mDst->delEdge(this);
 
 	delete mElementImpl;
+	delete mHandler;
 }
 
 void EdgeElement::initTitles()
@@ -380,7 +384,7 @@ void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
 		setBezierPoints();
 	}
-	paintSavedEdge(painter);
+//	paintSavedEdge(painter);
 	paintChangedEdge(painter, option);
 }
 
@@ -551,7 +555,7 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 	}
 
 	if (mDst->numberOfPorts() == 1) {
-		setLine(mSavedLineForChanges);
+//		setLine(mSavedLineForChanges);
 		return;
 	}
 
@@ -694,67 +698,6 @@ bool EdgeElement::initPossibleEdges()
 	return (!mPossibleEdges.isEmpty());
 }
 
-void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	if (event->button() == Qt::RightButton) {
-		event->accept();
-		if (mDragPoint == noDrag) {
-			return;
-		}
-	}
-
-	mReshapeCommand = new commands::ReshapeEdgeCommand(this);
-	mReshapeCommand->startTracking();
-
-	if ((event->modifiers() & Qt::AltModifier) && (event->button() == Qt::LeftButton)
-			&& delPointActionIsPossible(event->pos()))
-	{
-		delPointHandler(event->pos());
-		return;
-	}
-	if ((event->button() == Qt::RightButton) && (event->buttons() & Qt::LeftButton)) {
-		prepareGeometryChange();
-		mLine = mSavedLineForChanges;
-		mDragPoint = noDrag;
-		mLeftButtonIsPressed = false;
-		return;
-	}
-	if (event->button() == Qt::LeftButton && !(event->modifiers())) {
-		mLeftButtonIsPressed = true;
-	}
-
-	mDragPoint = getPoint(event->pos());
-
-	if ((mSrc && mDst && mSrc->isSelected() && mDst->isSelected() && isSelected())
-		|| (mSrc && !mDst && mSrc->isSelected() && isSelected())
-		|| (mDst && !mSrc && mDst->isSelected() && isSelected()))
-	{
-		mLeftButtonIsPressed = false;
-		mDragPoint = noPort;
-		mIsLoop = false;
-		Element::mousePressEvent(event);
-	} else if (mDragPoint == noPort) {
-		if (mIsLoop) {
-			return;
-		}
-
-		Element::mousePressEvent(event);
-
-		if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
-			return;
-		}
-		if ((mSrc) || (mDst)) {
-			if ((event->button() != Qt::RightButton) && !event->modifiers()) {
-				mSavedLineForChanges = mLine;
-				addPointHandler(event->pos());
-			}
-		}
-	} else if (mDragPoint != noPort && (event->button() != Qt::RightButton)) {
-		mLastLine = mLine;	// saving info in case we need to rollback (see #4)
-		mSavedLineForChanges = mLine;
-	}
-}
-
 void EdgeElement::addClosestPointHandler(QPointF const &pos)
 {
 	QPainterPath path;
@@ -799,60 +742,84 @@ bool EdgeElement::isDividable()
 	return mElementImpl->isDividable();
 }
 
+void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	if (event->button() == Qt::RightButton) {
+		event->accept();
+		if (mDragType == noDrag) {
+			return;
+		}
+	}
+
+	mReshapeCommand = new commands::ReshapeEdgeCommand(this);
+	mReshapeCommand->startTracking();
+
+	if ((event->button() == Qt::RightButton) && (event->buttons() & Qt::LeftButton)) {
+		prepareGeometryChange();
+		mHandler->rejectMovingEdge();
+		mDragType = noDrag;
+		mLeftButtonIsPressed = false;
+		return;
+	}
+
+	if ((event->modifiers() & Qt::AltModifier) && (event->button() == Qt::LeftButton)
+			&& delPointActionIsPossible(event->pos()))
+	{
+		delPointHandler(event->pos());
+		return;
+	}
+
+	if (event->button() == Qt::LeftButton && !(event->modifiers())) {
+		mLeftButtonIsPressed = true;
+	}
+
+	Element::mousePressEvent(event);
+	if ((mSrc && mDst && mSrc->isSelected() && mDst->isSelected() && isSelected())
+			|| (mSrc && mSrc->isSelected() && isSelected()) || (mDst && mDst->isSelected() && isSelected())) {
+		mLeftButtonIsPressed = false;
+		mDragType = wholeEdge;
+		mIsLoop = false;
+	} else if (event->button() != Qt::RightButton && !event->modifiers()) {
+			mHandler->startMovingEdge(mDragType, event->pos());
+	}
+}
+
 void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
 	}
-	if (mSrc) {
-		mSrc->setPortsVisible(true);
-	}
-	if (mDst) {
-		mDst->setPortsVisible(true);
-	}
-	if (!mLeftButtonIsPressed && mDragPoint == noDrag) {
+
+	if (!mLeftButtonIsPressed && mDragType == noDrag) {
 		return;
 	}
 
-	if (mDragPoint == noPort) {
+	if (mDragType == wholeEdge) {
 		if (mIsLoop) {
 			return;
 		}
 		Element::mouseMoveEvent(event);
-		if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
-			return;
-		}
 	} else {
-		if (mDragPoint > mLine.size() - 1) {
-			mDragPoint = overPointMax;
+		if (mDragType > mLine.size() - 1) {
+			mDragType = overPointMax;
 			prepareGeometryChange();
-			mLine = mSavedLineForChanges;
+			mHandler->rejectMovingEdge();
 			return;
 		}
-		if (mDragPoint < 0) {
+		if (mDragType < 0 && mDragType != noPort) {
 			return;
 		}
+
 		prepareGeometryChange();
-
-		mLine[mDragPoint] = event->pos();
-
-		if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
-			squarize();
-		} else {
-			if (SettingsManager::value("ActivateGrid").toBool()) {
-				int const indexGrid = SettingsManager::value("IndexGrid").toInt();
-				mLine[mDragPoint] = alignedPoint(event->pos(), indexGrid);
-			}
-		}
-
+		mHandler->moveEdge(event->pos(), SettingsManager::value("ActivateGrid").toBool());
 		updateLongestPart();
 	}
 }
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	mDragPoint = noPort;
+	mDragType = noPort;
 	scene()->update();
 	if (event->button() == Qt::RightButton) {
 		event->accept();
@@ -872,16 +839,8 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mDst->setPortsVisible(false);
 	}
 
-	connectToPort();
-
-	if (SettingsManager::value("LineType").toInt() != static_cast<int>(curveLine)) {
-		delCloseLinePoints();
-	}
-
-	arrangeSrcAndDst();
-	adjustNeighborLinks();
-
 	prepareGeometryChange();
+	mHandler->endMovingEdge();
 
 	setGraphicApiPos();
 	saveConfiguration();
@@ -1093,8 +1052,7 @@ QList<PossibleEdge> EdgeElement::getPossibleEdges()
 void EdgeElement::delPointHandler(QPointF const &pos)
 {
 	int pointIndex = getPoint(pos);
-	// it is understood that there is a point and its index is equal to the index of the first and last (end) points
-	if (pointIndex != noPort && pointIndex != mLine.count() - 1 && pointIndex) {
+	if (pointIndex != noPort && pointIndex != mLine.count() - 1 && pointIndex != 0) {
 		prepareGeometryChange();
 		mLine.remove(pointIndex);
 		arrangeAndAdjustHandler(pos);
@@ -1118,7 +1076,7 @@ void EdgeElement::setGraphicApiPos()
 	mMoving = false;
 }
 
-void EdgeElement::addPointHandler(QPointF const &pos)
+int EdgeElement::addPointHandler(QPointF const &pos)
 {
 	QPainterPath path;
 	QPainterPathStroker ps;
@@ -1129,11 +1087,12 @@ void EdgeElement::addPointHandler(QPointF const &pos)
 		if (ps.createStroke(path).contains(pos)) {
 			mLine.insert(i + 1, pos);
 			updateLongestPart();
-			mDragPoint = i + 1;
+			mDragType = i + 1;
 			update();
 			break;
 		}
 	}
+	return mDragType;
 }
 
 bool EdgeElement::isBreakPointPressed()
@@ -1151,12 +1110,12 @@ void EdgeElement::breakPointHandler(QPointF const &pos)
 	mBreakPointPressed = true;
 	if (mLine.startsWith(pos.toPoint())) {
 		mLine.insert(0, pos);
-		mDragPoint = 0;
+		mDragType = 0;
 	}
 
 	if (mLine.endsWith(pos.toPoint())) {
 		mLine.insert(mLine.size() - 1, pos);
-		mDragPoint = mLine.size() - 1;
+		mDragType = mLine.size() - 1;
 	}
 }
 

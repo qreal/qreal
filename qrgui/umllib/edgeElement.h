@@ -28,6 +28,7 @@ enum ArrowType
 }
 
 class NodeElement;
+class LineHandler;
 
 namespace commands {
 class ReshapeEdgeCommand;
@@ -41,6 +42,13 @@ class EdgeElement : public Element
 	Q_OBJECT
 
 public:
+	enum DragType {
+		wholeEdge = -4,
+		noDrag = -3,
+		overPointMax = -2,
+		noPort = -1
+	};
+
 	EdgeElement(ElementImpl *impl);
 	virtual ~EdgeElement();
 
@@ -112,10 +120,16 @@ public:
 	void setGraphicApiPos();
 
 	bool isLoop();
+	void squarize();
+	void delCloseLinePoints();
+	int getPoint(const QPointF &location);
 
 	void alignToGrid();
 	qreal alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const;
 	QPointF alignedPoint(QPointF const &point, int const indexGrid) const;
+
+public slots:
+	int addPointHandler(QPointF const &pos);
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -140,7 +154,6 @@ public slots:
 	void arrangeAndAdjustHandler(QPointF const &pos);
 
 private slots:
-	void addPointHandler(QPointF const &pos);
 	/// add the closest point on edge to the parameter`s point
 	void addClosestPointHandler(QPointF const &pos);
 	void delPointHandler(QPointF const &pos);
@@ -152,12 +165,6 @@ private slots:
 	void reverseHandler(QPointF const &pos);
 
 private:
-	enum DragPointType {
-		noDrag = -3,
-		overPointMax = -2,
-		noPort = -1
-	};
-
 	enum LineType {
 		vertical,
 		horizontal,
@@ -200,7 +207,6 @@ private:
 	QList<PossibleEdge> mPossibleEdges;
 
 	bool mIsDissectable;
-	int getPoint(const QPointF &location);
 	NodeElement *getNodeAt(const QPointF &position, bool isStart);
 	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const;
 	void updateLongestPart();
@@ -213,10 +219,8 @@ private:
 
 	qreal lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const;
 
-	void delCloseLinePoints();
 	void delClosePoints();
 
-	void squarize();
 	int defineType();
 	NodeSide defineSide(qreal port);
 	void verticalSquareLine();
@@ -241,10 +245,12 @@ private:
 	NodeElement *mSrc;
 	NodeElement *mDst;
 
+	LineHandler *mHandler;
+
 	qreal mPortFrom;
 	qreal mPortTo;
 
-	int mDragPoint; // is a number of mLine's point we're trying to drag
+	int mDragType; // is a number of mLine's point we're trying to drag
 
 	int mLongPart;
 
@@ -258,7 +264,6 @@ private:
 
 	bool mChaoticEdition;
 
-	QPolygonF mLastLine;
 	QPolygonF mSavedLineForChanges;
 	bool mLeftButtonIsPressed;
 
