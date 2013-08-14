@@ -32,6 +32,7 @@ public:
 
 private:
 	models::details::GraphicalModel *mGraphicalModel;
+	models::details::GraphicalPartModel *mGraphicalPartModel;
 	models::details::LogicalModel *mLogicalModel;
 	qrRepo::RepoControlInterface *mRepoApi;
 };

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../../../../../qrkernel/ids.h"
 #include "abstractSimpleElementGenerator.h"
 #include "../abstractElementGenerator.h"
@@ -6,7 +8,8 @@ namespace robots {
 namespace generator {
 class NxtOSEKRobotGenerator;
 
-class EnginesGenerator: public AbstractSimpleElementGenerator {
+class EnginesGenerator : public AbstractSimpleElementGenerator
+{
 public:
 	EnginesGenerator(QString const &engineType);
 
@@ -20,5 +23,6 @@ private:
 	QString mEngineType;
 
 };
+
 }
 }

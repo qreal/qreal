@@ -23,7 +23,7 @@ StartDialog::StartDialog(MainWindow &mainWindow, ProjectManager &projectManager)
 	tabWidget->addTab(recentProjects, tr("&Recent projects"));
 
 	Id const theOnlyDiagram = mMainWindow.editorManager().theOnlyDiagram();
-	if (theOnlyDiagram == Id()) {
+	if (theOnlyDiagram.isNull()) {
 		SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(&mMainWindow, this);
 		tabWidget->addTab(diagrams, tr("&New project with diagram"));
 		connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));

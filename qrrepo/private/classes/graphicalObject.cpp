@@ -17,7 +17,7 @@ GraphicalObject::GraphicalObject(QDomElement const &element)
 	: Object(element)
 {
 	mLogicalId = Id::loadFromString(element.attribute("logicalId"));
-	if (mLogicalId == Id()) {
+	if (mLogicalId.isNull()) {
 		throw Exception("Logical id not found for graphical object");
 	}
 

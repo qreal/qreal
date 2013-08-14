@@ -1,6 +1,8 @@
 ﻿#include "rulesChecker.h"
 #include <QtWidgets/QFileDialog>
 
+#include "../../qrrepo/repoApi.h"
+
 using namespace qReal::rulesChecker;
 
 RulesChecker::RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
@@ -23,7 +25,8 @@ void RulesChecker::exportToXml()
 	}
 
 	// TODO: get your own pointer to RepoControlInterface, don't cast mGRepoApi
-	qrRepo::RepoControlInterface const *repoControlApi = reinterpret_cast<qrRepo::RepoControlInterface const *>(mGRepoApi);
+	qrRepo::RepoControlInterface const *repoControlApi
+			= static_cast<qrRepo::RepoControlInterface const *>(static_cast<qrRepo::RepoApi const *>(mGRepoApi));
 	if (repoControlApi) {
 		repoControlApi->exportToXml(fileName);
 	}

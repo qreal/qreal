@@ -52,7 +52,7 @@
 #include "dotRunner.h"
 #include "../view/sceneCustomizer.h"
 
-#include "hotKeyManager/hotKeyManager.h"
+#include "../hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -667,7 +667,7 @@ void MainWindow::deleteFromScene()
 AbstractCommand *MainWindow::logicalDeleteCommand(QGraphicsItem *target)
 {
 	Element *elem = dynamic_cast<Element *>(target);
-	if (!elem || elem->id() == Id()) {
+	if (!elem || elem->id().isNull()) {
 		return NULL;
 	}
 	return logicalDeleteCommand(elem->id());
@@ -676,7 +676,7 @@ AbstractCommand *MainWindow::logicalDeleteCommand(QGraphicsItem *target)
 AbstractCommand *MainWindow::graphicalDeleteCommand(QGraphicsItem *target)
 {
 	Element *elem = dynamic_cast<Element *>(target);
-	if (!elem || elem->id() == Id()) {
+	if (!elem || elem->id().isNull()) {
 		return NULL;
 	}
 	return graphicalDeleteCommand(elem->id());
@@ -717,7 +717,7 @@ commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
 		result->addPreAction(graphicalDeleteCommand(graphicalId));
 	}
 	if (graphicalIds.size() != 1) { // else it was done in graphicalDeleteCommand()
-		appendCascadeDeleteCommands(result, id);
+		appendExplosionsCommands(result, id);
 	}
 	result->removeDuplicates();
 	return result;
@@ -764,18 +764,20 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 	}
 
 	if (mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId).size() == 1) {
-		appendCascadeDeleteCommands(result, logicalId);
+		appendExplosionsCommands(result, logicalId);
 	}
 
 	return result;
 }
 
-void MainWindow::appendCascadeDeleteCommands(AbstractCommand *parentCommand, Id const &logicalId)
+void MainWindow::appendExplosionsCommands(AbstractCommand *parentCommand, Id const &logicalId)
 {
 	IdList const toDelete = mModels->logicalModelAssistApi().exploser().elementsWithHardDependencyFrom(logicalId);
 	foreach (Id const &logicalChild, toDelete) {
 		parentCommand->addPreAction(logicalDeleteCommand(logicalChild));
 	}
+
+	mModels->logicalModelAssistApi().exploser().handleRemoveCommand(logicalId, parentCommand);
 }
 
 void MainWindow::deleteFromDiagram()
@@ -1127,7 +1129,7 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (mEditorManagerProxy.isDiagramNode(id)) {
+	if (id.isNull() || mEditorManagerProxy.isDiagramNode(id)) {
 		return;
 	}
 
@@ -1140,7 +1142,7 @@ void MainWindow::centerOn(Id const &id)
 	Element* const element = scene->getElem(id);
 
 	scene->clearSelection();
-	if (element != NULL) {
+	if (element) {
 		element->setSelected(true);
 		view->ensureElementVisible(element);
 	}
@@ -1358,18 +1360,21 @@ void MainWindow::currentTabChanged(int newIndex)
 	bool const isShape = isCurrentTabShapeEdit();
 
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
-	if (!isEditorTab) {
-		mToolManager.activeTabChanged(Id());
-	} else if (getCurrentTab()->mvIface() != NULL) {
-		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
-		mToolManager.activeTabChanged(currentTabId);
-	}
+	// TODO: implement printing for text tabs
+	mUi->actionPrint->setEnabled(isEditorTab);
 
 	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
 	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);
 
 	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
 	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
+
+	if (!isEditorTab) {
+		mToolManager.activeTabChanged(Id());
+	} else if (getCurrentTab()->mvIface()) {
+		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
+		mToolManager.activeTabChanged(currentTabId);
+	}
 
 	emit rootDiagramChanged();
 }
@@ -1594,7 +1599,7 @@ bool MainWindow::createProject(QString const &diagramIdString)
 void MainWindow::createProject()
 {
 	Id const theOnlyDiagram = mEditorManagerProxy.theOnlyDiagram();
-	if (theOnlyDiagram == Id()) {
+	if (theOnlyDiagram.isNull()) {
 		SuggestToCreateProjectDialog dialog(this);
 		dialog.exec();
 	} else {
@@ -1679,7 +1684,7 @@ void MainWindow::dehighlight(Id const &graphicalId)
 
 		EditorViewScene * const scene = dynamic_cast<EditorViewScene *>(view->scene());
 
-		if (graphicalId == Id()) {
+		if (graphicalId.isNull()) {
 			scene->dehighlight();
 		} else {
 			scene->dehighlight(graphicalId);

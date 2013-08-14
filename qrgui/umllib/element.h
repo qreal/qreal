@@ -63,6 +63,7 @@ public:
 	void setController(qReal::Controller *controller);
 
 	ElementImpl* elementImpl() const;
+	bool createChildrenFromMenu() const;
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);

@@ -94,7 +94,27 @@ IdList Exploser::elementsWithHardDependencyFrom(Id const &id) const
 			}
 		}
 	}
+
 	return result;
+}
+
+void Exploser::handleRemoveCommand(Id const &logicalId, AbstractCommand * const command)
+{
+	Id const outgoing = mApi->logicalRepoApi().outgoingExplosion(logicalId);
+	if (!outgoing.isNull()) {
+		command->addPreAction(new ExplosionCommand(mApi, NULL, logicalId, outgoing, false));
+	}
+
+	Id const targetType = logicalId.type();
+	IdList const incomingExplosions = mApi->logicalRepoApi().incomingExplosions(logicalId);
+	foreach (Id const &incoming, incomingExplosions) {
+		QList<Explosion> const explosions = mApi->editorManagerInterface().explosions(incoming.type());
+		foreach (Explosion const &explosion, explosions) {
+			if (explosion.target() == targetType && !explosion.requiresImmediateLinkage()) {
+				command->addPreAction(new ExplosionCommand(mApi, NULL, incoming, logicalId, false));
+			}
+		}
+	}
 }
 
 AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(Id const &source

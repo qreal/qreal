@@ -828,10 +828,12 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	setGraphicApiPos();
 	saveConfiguration();
 
-	mReshapeCommand->stopTracking();
-	mController->execute(mReshapeCommand);
-	// Undo stack took ownership
-	mReshapeCommand = NULL;
+	if (mReshapeCommand) {
+		mReshapeCommand->stopTracking();
+		mController->execute(mReshapeCommand);
+		// Undo stack took ownership
+		mReshapeCommand = NULL;
+	}
 }
 
 qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const
@@ -941,7 +943,10 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 	foreach (QGraphicsItem *item, items) {
 		NodeElement *e = dynamic_cast<NodeElement *>(item);
 		if (e) {
-			return innermostChild(items, e);
+			NodeElement *innerChild = innermostChild(items, e);
+			if (innerChild) {
+				return innerChild;
+			}
 		}
 	}
 	return NULL;
@@ -951,10 +956,18 @@ NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, No
 {
 	foreach (NodeElement *child, element->childNodes()) {
 		if (items.contains(child)) {
-			return innermostChild(items, child);
+			NodeElement *innerChild = innermostChild(items, child);
+			if (innerChild) {
+				return innerChild;
+			}
 		}
 	}
-	return element;
+
+	if (element->numberOfPorts() > 0) {
+		return element;
+	}
+
+	return NULL;
 }
 
 QList<ContextMenuAction*> EdgeElement::contextMenuActions(const QPointF &pos)

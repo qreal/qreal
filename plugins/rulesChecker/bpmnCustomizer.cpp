@@ -17,7 +17,7 @@ QString BpmnCustomizer::windowTitle() const
 
 QString BpmnCustomizer::productVersion() const
 {
-	return "0.3.0";
+	return "0.4.0";
 }
 
 bool BpmnCustomizer::showConnectionRelatedMenus() const

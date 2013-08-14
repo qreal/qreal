@@ -125,7 +125,7 @@ void EditorViewScene::initMouseMoveManager()
 		return;
 	}
 
-	if (diagram == Id()) {
+	if (diagram.isNull()) {
 		// Root diagram is not set, for example, current tab is disabled. No need
 		// to do anything with mouse manager.
 		return;
@@ -141,22 +141,21 @@ void EditorViewScene::initMouseMoveManager()
 void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
 	int const indexGrid = SettingsManager::value("IndexGrid").toInt();
-	qreal const sceneX = rect.x();
-	qreal const sceneY = rect.y();
 
-	int const indent = 100; // should be enough
+	int const left = static_cast<int>(rect.left());
+	int const right = static_cast<int>(rect.right());
+	int const top = static_cast<int>(rect.top());
+	int const bottom = static_cast<int>(rect.bottom());
 
-	int startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid - indent;
-	int endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid + indent;
-	int startY = static_cast<int>(sceneY + 10) / indexGrid * indexGrid - indent;
-	int endY = static_cast<int>(sceneY + rect.height() - 10) / indexGrid * indexGrid + indent;
-	for (int i = startX; i <= endX; i = i + indexGrid) {
-		QLineF line(i, startY, i, endY);
-		painter->drawLine(line);
+	int const startX = left / indexGrid * indexGrid;
+	int const startY = top / indexGrid * indexGrid;
+
+	for (int i = startX; i <= right; i += indexGrid) {
+		painter->drawLine(i, top, i, bottom);
 	}
-	for (int i = startY; i <= endY; i = i + indexGrid) {
-		QLineF line(startX, i, endX, i);
-		painter->drawLine(line);
+
+	for (int i = startY; i <= bottom; i += indexGrid) {
+		painter->drawLine(left, i, right, i);
 	}
 }
 
@@ -887,6 +886,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	disableActions(e);
 	menu.addActions(mContextMenuActions);
 
+	QSignalMapper *createChildMapper = NULL;
 	if (e) {
 		QList<ContextMenuAction*> elementActions = e->contextMenuActions(e->mapFromScene(pos));
 
@@ -902,6 +902,19 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 					Qt::UniqueConnection);
 			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
 		}
+
+		if (e->createChildrenFromMenu() && !mWindow->editorManager().containedTypes(e->id().type()).empty()) {
+			mCreatePoint = pos;
+			QMenu *createChildMenu = menu.addMenu(tr("Add child"));
+			createChildMapper = new QSignalMapper();
+			foreach (Id const &type, mWindow->editorManager().containedTypes(e->id().type())) {
+				QAction *createAction = createChildMenu->addAction(mWindow->editorManager().friendlyName(type));
+				connect(createAction, SIGNAL(triggered()), createChildMapper, SLOT(map()), Qt::UniqueConnection);
+				createChildMapper->setMapping(createAction, type.toString());
+				connect(createChildMapper, SIGNAL(mapped(QString const &)), this, SLOT(createElement(QString const &)));
+			}
+		}
+
 		menu.addSeparator();
 		mExploser->createConnectionSubmenus(menu, e);
 	}
@@ -909,6 +922,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	menu.exec(QCursor::pos());
 
 	enableActions();
+	delete createChildMapper;
 }
 
 void EditorViewScene::disableActions(Element *focusElement)

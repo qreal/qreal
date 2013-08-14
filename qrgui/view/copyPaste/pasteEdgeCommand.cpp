@@ -68,8 +68,8 @@ void PasteEdgeCommand::restoreElement()
 	mMVIface->graphicalAssistApi()->setPosition(edgeId, mEdgeData.pos + mOffset);
 	mMVIface->graphicalAssistApi()->setConfiguration(edgeId, mEdgeData.configuration);
 
-	mMVIface->graphicalAssistApi()->setFrom(edgeId, newSrcId == Id() ? Id::rootId() : newSrcId);
-	mMVIface->graphicalAssistApi()->setTo(edgeId, newDstId == Id() ? Id::rootId() : newDstId);
+	mMVIface->graphicalAssistApi()->setFrom(edgeId, newSrcId.isNull() ? Id::rootId() : newSrcId);
+	mMVIface->graphicalAssistApi()->setTo(edgeId, newDstId.isNull() ? Id::rootId() : newDstId);
 
 	mMVIface->graphicalAssistApi()->setFromPort(edgeId, mEdgeData.portFrom);
 	mMVIface->graphicalAssistApi()->setToPort(edgeId, mEdgeData.portTo);

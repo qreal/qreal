@@ -63,7 +63,7 @@ void TrikRobotGenerator::deleteResidualLabels()
 
 void TrikRobotGenerator::generate(QString const &programName)
 {
-	if (mDiagram == Id()) {
+	if (mDiagram.isNull()) {
 		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
 		return;
 	}

@@ -35,13 +35,6 @@ Label::~Label()
 {
 }
 
-QString Label::createTextForRepo() const
-{
-	return (toPlainText()
-			+ propertiesSeparator + QString::number(pos().x()) + " " + QString::number(pos().y())
-			+ propertiesSeparator + QString::number(mContents.width()));
-}
-
 void Label::moveToParentCenter()
 {
 	if (mWasMoved) {
@@ -81,20 +74,11 @@ void Label::setText(const QString &text)
 
 void Label::setTextFromRepo(QString const& text)
 {
-	if (!text.contains(propertiesSeparator)) {
+	if (text != toPlainText()) {
 		QGraphicsTextItem::setHtml(text); // need this to load old saves with html markup
 		setText(toPlainText());
 		updateData();
-		return;
 	}
-
-	QStringList const prList = text.split(propertiesSeparator);
-
-	QStringList const coordinates = prList[coordinate].split(" ");
-	qreal x = coordinates.at(0).toDouble();
-	qreal y = coordinates.at(1).toDouble();
-
-	setProperties(x, y, prList[textWidth].toDouble(), prList[propertyText]);
 }
 
 void Label::setParentSelected(bool isSelected)
@@ -146,19 +130,9 @@ void Label::setPlainText(QString const &text)
 	QGraphicsTextItem::setPlainText(text);
 }
 
-void Label::setProperties(qreal x, qreal y, qreal width, QString const &text)
-{
-	mContents.setWidth(width);
-	setTextWidth(mContents.width());
-
-	setText(text);
-
-	setPos(x, y);
-}
-
 void Label::updateData(bool withUndoRedo)
 {
-	QString const value = createTextForRepo();
+	QString const value = toPlainText();
 	if (mBinding == "name") {
 		static_cast<NodeElement*>(parentItem())->setName(value, withUndoRedo);
 	} else {
@@ -228,7 +202,6 @@ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	QGraphicsTextItem::mouseReleaseEvent(event);
 }
-
 
 void Label::init(QRectF const &contents)
 {

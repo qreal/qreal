@@ -4,7 +4,7 @@
 
 #include "../../../../../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
-#include "gmock/gmock.h"
+#include <gmock/gmock.h>
 
 namespace qrTest {
 
