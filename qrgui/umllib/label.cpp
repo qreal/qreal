@@ -8,37 +8,48 @@
 using namespace qReal;
 using namespace enums;
 
-Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
+Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elementId
 		, int index, qreal x, qreal y, QString const &text, qreal rotation)
 	: mFocusIn(false), mReadOnly(true), mScalingX(false), mScalingY(false), mRotation(rotation)
 	, mPoint(x, y), mBinding(""), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
 	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
 	, mIndex(index)
+	, mId(elementId)
 	, mGraphicalModelAssistApi(graphicalAssistApi)
 {
-	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
-	setTitleFont();
-	setPos(x, y);
 	setText(text);
-	setRotation(mRotation);
+	init();
 }
 
-Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
+Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elementId
 		, int index, qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
 	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
 	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
 	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
 	, mIndex(index)
+	, mId(elementId)
 	, mGraphicalModelAssistApi(graphicalAssistApi)
 {
-	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
-	setTitleFont();
-	setPos(x, y);
-	setRotation(mRotation);
+	init();
 }
 
 Label::~Label()
 {
+}
+
+void Label::init()
+{
+	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
+	setTitleFont();
+	setRotation(mRotation);
+
+	if (mGraphicalModelAssistApi.hasLabel(mId, mIndex)) {
+		mPoint = mGraphicalModelAssistApi.labelPosition(mId, mIndex);
+	} else {
+		mGraphicalModelAssistApi.createLabel(mId, mIndex, mPoint, this->boundingRect().size());
+	}
+
+	setPos(mPoint.x(), mPoint.y());
 }
 
 void Label::moveToParentCenter()
@@ -146,8 +157,8 @@ void Label::updateData(bool withUndoRedo)
 		parent->setLogicalProperty(mBinding, value, withUndoRedo);
 	}
 
-	mGraphicalModelAssistApi.setLabelPosition(parent->id(), mIndex, pos());
-	mGraphicalModelAssistApi.setLabelSize(parent->id(), mIndex, this->boundingRect().size());
+	mGraphicalModelAssistApi.setLabelPosition(mId, mIndex, pos());
+	mGraphicalModelAssistApi.setLabelSize(mId, mIndex, this->boundingRect().size());
 }
 
 void Label::setTitleFont()

@@ -28,10 +28,11 @@ const int standartReductCoeff = 3;
 
 EdgeElement::EdgeElement(
 		ElementImpl *impl
+		, Id const &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
 		)
-	: Element(impl, graphicalAssistApi, logicalAssistApi)
+	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 	, mPenStyle(Qt::SolidLine), mPenWidth(1), mPenColor(Qt::black)
 	, mStartArrowStyle(enums::arrowTypeEnum::noArrow), mEndArrowStyle(enums::arrowTypeEnum::noArrow)
 	, mSrc(NULL), mDst(NULL)
@@ -73,7 +74,7 @@ EdgeElement::EdgeElement(
 
 	mChaoticEdition = SettingsManager::value("ChaoticEdition").toBool();
 
-	LabelFactory factory(graphicalAssistApi);
+	LabelFactory factory(graphicalAssistApi, mId);
 
 	QList<LabelInterface*> titles;
 	mElementImpl->init(factory, titles);

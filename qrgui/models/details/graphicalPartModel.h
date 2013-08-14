@@ -65,7 +65,15 @@ public:
 	/// Returns index by given id of an element and index of a part within it.
 	QModelIndex findIndex(Id const &element, int index) const;
 
+	/// Deletes model contents and reloads it from repo.
+	void reinit();
+
 private:
+	void clear();
+	void load(Id const &parent = Id::rootId());
+	void loadElement(Id const &id);
+	QModelIndex addGraphicalPart(Id const &element, int index, bool addToRepo);
+
 	qrRepo::GraphicalRepoApi &mRepoApi;
 	QList<QList<modelsImplementation::GraphicalPartModelItem *> > mItems;  // Has ownership.
 	QHash<Id, int> mIdPositions;

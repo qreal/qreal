@@ -52,12 +52,12 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 
 	EdgeElement * const newEdge = new EdgeElement(
 			mScene->mainWindow()->editorManager().elementImpl(resultId)
+			, resultId
 			, *mMVIface->graphicalAssistApi()
 			, *mMVIface->logicalAssistApi()
 			);
 
 	newEdge->setController(mScene->mainWindow()->controller());
-	newEdge->setId(resultId);
 
 	return resultId;
 }

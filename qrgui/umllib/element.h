@@ -32,20 +32,19 @@ public:
 	/// Constructor
 	/// @param elementImpl - pointer to implementation of the element. Takes ownership.
 	Element(ElementImpl *elementImpl
-			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			, Id const &id
+			, models::GraphicalModelAssistApi &graphicalAssistApi
+			, models::LogicalModelAssistApi &logicalAssistApi
 			);
 
 	virtual ~Element() {}
-
-	void setId(qReal::Id &id);
 
 	void initEmbeddedControls();
 
 	virtual void updateData();
 
-	virtual qReal::Id id() const;
-	virtual qReal::Id logicalId() const;
+	virtual Id id() const;
+	virtual Id logicalId() const;
 	virtual QString name() const;
 
 	virtual void connectToPort() {}  // for edge
@@ -85,14 +84,14 @@ protected:
 	void setTitlesVisiblePrivate(bool visible);
 
 	bool mMoving;
-	qReal::Id mId;
-	ElementImpl *mElementImpl;  // Has ownership.
+	Id const mId;
+	ElementImpl * const mElementImpl;  // Has ownership.
 	QList<Label *> mLabels;
 	bool mTitlesVisible;
 
-	qReal::models::LogicalModelAssistApi &mLogicalAssistApi;
-	qReal::models::GraphicalModelAssistApi &mGraphicalAssistApi;
-	qReal::Controller *mController;
+	models::LogicalModelAssistApi &mLogicalAssistApi;
+	models::GraphicalModelAssistApi &mGraphicalAssistApi;
+	Controller *mController;
 };
 
 }

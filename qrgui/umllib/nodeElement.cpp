@@ -28,10 +28,11 @@ using namespace qReal;
 using namespace qReal::commands;
 
 NodeElement::NodeElement(ElementImpl *impl
+		, Id const &id
 		, models::GraphicalModelAssistApi &graphicalAssistApi
 		, models::LogicalModelAssistApi &logicalAssistApi
 		)
-	: Element(impl, graphicalAssistApi, logicalAssistApi)
+	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 	, mSwitchGridAction(tr("Switch on grid"), this)
 	, mPortsVisible(false)
 	, mDragState(None)
@@ -54,7 +55,7 @@ NodeElement::NodeElement(ElementImpl *impl
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
 	mRenderer = new SdfRenderer();
-	LabelFactory labelFactory(graphicalAssistApi);
+	LabelFactory labelFactory(graphicalAssistApi, mId);
 	QList<LabelInterface*> titles;
 
 	QList<PortInterface *> ports;
@@ -62,8 +63,8 @@ NodeElement::NodeElement(ElementImpl *impl
 	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, mRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
 
-	foreach (LabelInterface *labelInterface, titles) {
-		Label *label = dynamic_cast<Label*>(labelInterface);
+	foreach (LabelInterface * const labelInterface, titles) {
+		Label * const label = dynamic_cast<Label *>(labelInterface);
 		if (!label) {
 			continue;
 		}
@@ -1401,6 +1402,7 @@ QRectF NodeElement::diagramRenderingRect() const
 	EditorViewScene const *evScene = dynamic_cast<EditorViewScene *>(scene());
 	NodeElement const *initial = new NodeElement(
 			evScene->mainWindow()->editorManager().elementImpl(id())
+			, id().sameTypeId()
 			, mGraphicalAssistApi
 			, mLogicalAssistApi
 			);

@@ -6,25 +6,22 @@
 using namespace qReal;
 
 Element::Element(ElementImpl *elementImpl
+		, Id const &id
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
 		)
 	: mMoving(false)
+	, mId(id)
 	, mElementImpl(elementImpl)
 	, mLogicalAssistApi(logicalAssistApi)
 	, mGraphicalAssistApi(graphicalAssistApi)
 	, mController(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
-		ItemClipsToShape | ItemSendsGeometryChanges);
+			ItemClipsToShape | ItemSendsGeometryChanges);
+
 	setAcceptDrops(true);
 	setCursor(Qt::PointingHandCursor);
-}
-
-void Element::setId(qReal::Id &id)
-{
-	mId = id;
-	update();
 }
 
 Id Element::id() const

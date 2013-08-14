@@ -36,8 +36,9 @@ class NodeElement : public Element
 
 public:
 	explicit NodeElement(ElementImpl *impl
-			 , qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			 , qReal::models::LogicalModelAssistApi &logicalAssistApi
+			, Id const &id
+			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
 			);
 
 	virtual ~NodeElement();

@@ -42,6 +42,7 @@ class EdgeElement : public Element
 
 public:
 	EdgeElement(ElementImpl *impl
+			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 			, qReal::models::LogicalModelAssistApi &logicalAssistApi
 			);

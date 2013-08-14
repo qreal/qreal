@@ -103,6 +103,9 @@ public:
 	/// @param partIndex - index of created part in given object.
 	virtual void createGraphicalPart(qReal::Id const &id, int partIndex);
 
+	/// Returns a list of indexes of graphical parts for given element.
+	virtual QList<int> graphicalParts(qReal::Id const &id) const;
+
 	/// Returns the value of graphical part property of a given object.
 	/// @param id - id of an object where graphical part is located.
 	/// @param partIndex - index of a graphical part.

@@ -251,6 +251,11 @@ void GraphicalModelAssistApi::removeElement(Id const &graphicalId)
 	}
 }
 
+bool GraphicalModelAssistApi::hasLabel(Id const &graphicalId, int index)
+{
+	return mGraphicalPartModel.findIndex(graphicalId, index).isValid();
+}
+
 void GraphicalModelAssistApi::createLabel(
 		Id const &graphicalId
 		, int index

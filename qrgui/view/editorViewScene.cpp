@@ -515,7 +515,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 			// if element is node then we should look for parent for him
 			ElementImpl *impl = mWindow->editorManager().elementImpl(id);
 			if (impl->isNode()) {
-				e = new NodeElement(impl, *mMVIface->graphicalAssistApi(), *mMVIface->logicalAssistApi());
+				e = new NodeElement(impl, id, *mMVIface->graphicalAssistApi(), *mMVIface->logicalAssistApi());
 				foreach (QGraphicsItem *item, items(scenePos - shiftToParent)) {
 					NodeElement *el = dynamic_cast<NodeElement*>(item);
 					if (el && canBeContainedBy(el->id(), id)) {
@@ -524,7 +524,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 					}
 				}
 			} else {
-				e = new EdgeElement(impl, *mMVIface->graphicalAssistApi(), *mMVIface->logicalAssistApi());
+				e = new EdgeElement(impl, id, *mMVIface->graphicalAssistApi(), *mMVIface->logicalAssistApi());
 			}
 
 			if (newParent && dynamic_cast<NodeElement*>(newParent)) {
