@@ -265,7 +265,10 @@ void GraphicalModelAssistApi::createLabel(
 {
 	QModelIndex const modelIndex = mGraphicalPartModel.addGraphicalPart(graphicalId, index);
 	mGraphicalPartModel.setData(modelIndex, position, GraphicalPartModel::positionRole);
-	mGraphicalPartModel.setData(modelIndex, size, GraphicalPartModel::configurationRole);
+
+	QPolygonF configuration;
+	configuration.append(QPointF(size.width(), size.height()));
+	mGraphicalPartModel.setData(modelIndex, configuration, GraphicalPartModel::configurationRole);
 }
 
 void GraphicalModelAssistApi::setLabelPosition(Id const &graphicalId, int index, QPointF const &position)

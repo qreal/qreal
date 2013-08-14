@@ -549,7 +549,7 @@ QList<int> Repository::graphicalParts(qReal::Id const &id) const
 {
 	GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[id]);
 	if (!graphicalObject) {
-		throw Exception("Trying to get a list of graphical parts for non-graphical object");
+		return QList<int>();
 	}
 
 	return graphicalObject->graphicalParts();
