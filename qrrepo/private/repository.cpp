@@ -552,7 +552,7 @@ QList<int> Repository::graphicalParts(qReal::Id const &id) const
 		throw Exception("Trying to get a list of graphical parts for non-graphical object");
 	}
 
-	graphicalObject->(partIndex);
+	return graphicalObject->graphicalParts();
 }
 
 QVariant Repository::graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const
