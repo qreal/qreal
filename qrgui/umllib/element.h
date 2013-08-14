@@ -29,7 +29,12 @@ class Element : public QObject, public QGraphicsItem, public ElementRepoInterfac
 	Q_INTERFACES(QGraphicsItem)
 
 public:
-	Element(ElementImpl* elementImpl);
+	/// Constructor
+	/// @param elementImpl - pointer to implementation of the element. Takes ownership.
+	Element(ElementImpl *elementImpl
+			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			);
 
 	virtual ~Element() {}
 
@@ -57,9 +62,7 @@ public:
 
 	virtual void setColorRect(bool bl) = 0;
 
-	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
-
+	// TODO: Move this to constructor.
 	void setController(qReal::Controller *controller);
 
 	ElementImpl* elementImpl() const;
@@ -83,12 +86,12 @@ protected:
 
 	bool mMoving;
 	qReal::Id mId;
-	ElementImpl* const mElementImpl;
+	ElementImpl *mElementImpl;  // Has ownership.
 	QList<Label *> mLabels;
 	bool mTitlesVisible;
 
-	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
-	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
+	qReal::models::LogicalModelAssistApi &mLogicalAssistApi;
+	qReal::models::GraphicalModelAssistApi &mGraphicalAssistApi;
 	qReal::Controller *mController;
 };
 

@@ -46,7 +46,7 @@ EmbeddedLinker::~EmbeddedLinker()
 {
 }
 
-NodeElement* EmbeddedLinker::getMaster()
+NodeElement* EmbeddedLinker::master() const
 {
 	return mMaster;
 }
@@ -62,6 +62,7 @@ void EmbeddedLinker::generateColor()
 	int result = 0;
 	mColor = QColor(result % 192 + 64, result % 128 + 128, result % 64 + 192).darker(0);
 }
+
 void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	Q_UNUSED(option);
@@ -95,32 +96,35 @@ void EmbeddedLinker::setDirected(const bool directed)
 
 void EmbeddedLinker::initTitle()
 {
-	EditorManagerInterface const &editorManagerInterface
-			= dynamic_cast<EditorViewScene*>(scene())->mainWindow()->editorManager();
-	QString edgeTypeFriendly = editorManagerInterface.friendlyName(Id::loadFromString("qrm:/"+ mMaster->id().editor()
-			+ "/" + mMaster->id().diagram() + "/" + mEdgeType.element()));
+//	EditorManagerInterface const &editorManagerInterface
+//			= dynamic_cast<EditorViewScene *>(scene())->mainWindow()->editorManager();
 
-	float textWidth = edgeTypeFriendly.size()*10;
-	float rectWidth = mMaster->boundingRect().right() - mMaster->boundingRect().left();
-	float rectHeight = mMaster->boundingRect().bottom() - mMaster->boundingRect().top();
+//	QString edgeTypeFriendly = editorManagerInterface.friendlyName(Id::loadFromString("qrm:/"+ mMaster->id().editor()
+//			+ "/" + mMaster->id().diagram() + "/" + mEdgeType.element()));
 
-	int x = 0;
-	int y = 0;
-	if (scenePos().y() < mMaster->scenePos().y() + rectHeight/3)
-		y = -boundingRect().height() - 10;
-	else if (scenePos().y() > mMaster->scenePos().y() + 2*rectHeight/3)
-		y = +boundingRect().height() - 10;
+//	float textWidth = edgeTypeFriendly.size() * 10;
+//	float rectWidth = mMaster->boundingRect().right() - mMaster->boundingRect().left();
+//	float rectHeight = mMaster->boundingRect().bottom() - mMaster->boundingRect().top();
 
-	if (scenePos().x() < mMaster->scenePos().x() + rectWidth/3)
-		x = -boundingRect().width() - textWidth + 20;
-	else if (scenePos().x() > mMaster->scenePos().x() + 2*rectWidth/3)
-		x = +boundingRect().width() - 10;
+	// TODO: It is not Label, it is simply some text on a scene. Refactor this.
+//	int x = 0;
+//	int y = 0;
+//	if (scenePos().y() < mMaster->scenePos().y() + rectHeight/3)
+//		y = -boundingRect().height() - 10;
+//	else if (scenePos().y() > mMaster->scenePos().y() + 2*rectHeight/3)
+//		y = +boundingRect().height() - 10;
 
-	mTitle = new Label(static_cast<qreal>(x) / boundingRect().width()
-			, static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly, 0);
-	mTitle->init(boundingRect());
-	mTitle->setTextWidth(textWidth);
-	mTitle->setParentItem(this);
+//	if (scenePos().x() < mMaster->scenePos().x() + rectWidth/3)
+//		x = -boundingRect().width() - textWidth + 20;
+//	else if (scenePos().x() > mMaster->scenePos().x() + 2*rectWidth/3)
+//		x = +boundingRect().width() - 10;
+
+//	mTitle = new Label(static_cast<qreal>(x) / boundingRect().width()
+//			, static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly, 0);
+
+//	mTitle->init(boundingRect());
+//	mTitle->setTextWidth(textWidth);
+//	mTitle->setParentItem(this);
 }
 
 void EmbeddedLinker::setEdgeType(const qReal::Id &edgeType)
@@ -129,12 +133,12 @@ void EmbeddedLinker::setEdgeType(const qReal::Id &edgeType)
 	generateColor();
 }
 
-qReal::Id EmbeddedLinker::getEdgeType()
+qReal::Id EmbeddedLinker::edgeType() const
 {
 	return mEdgeType;
 }
 
-bool EmbeddedLinker::isDirected()
+bool EmbeddedLinker::isDirected() const
 {
 	return mDirected;
 }

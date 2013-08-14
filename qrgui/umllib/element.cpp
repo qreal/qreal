@@ -5,11 +5,14 @@
 
 using namespace qReal;
 
-Element::Element(ElementImpl* elementImpl)
+Element::Element(ElementImpl *elementImpl
+		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+		, qReal::models::LogicalModelAssistApi &logicalAssistApi
+		)
 	: mMoving(false)
 	, mElementImpl(elementImpl)
-	, mLogicalAssistApi(NULL)
-	, mGraphicalAssistApi(NULL)
+	, mLogicalAssistApi(logicalAssistApi)
+	, mGraphicalAssistApi(graphicalAssistApi)
 	, mController(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
@@ -31,17 +34,17 @@ Id Element::id() const
 
 qReal::Id Element::logicalId() const
 {
-	return mGraphicalAssistApi->logicalId(mId);
+	return mGraphicalAssistApi.logicalId(mId);
 }
 
 QString Element::name() const
 {
-	return mGraphicalAssistApi->name(id());
+	return mGraphicalAssistApi.name(id());
 }
 
 void Element::updateData()
 {
-	setToolTip(mGraphicalAssistApi->toolTip(id()));
+	setToolTip(mGraphicalAssistApi.toolTip(id()));
 }
 
 QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
@@ -52,12 +55,12 @@ QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
 
 QString Element::logicalProperty(QString const &roleName) const
 {
-	return mLogicalAssistApi->propertyByRoleName(logicalId(), roleName).toString();
+	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
 }
 
 void Element::setLogicalProperty(QString const &roleName, QString const &value, bool withUndoRedo)
 {
-	commands::AbstractCommand *command = new commands::ChangePropertyCommand(mLogicalAssistApi
+	commands::AbstractCommand *command = new commands::ChangePropertyCommand(&mLogicalAssistApi
 			, roleName, logicalId(), value);
 	if (withUndoRedo) {
 		mController->execute(command);
@@ -65,12 +68,6 @@ void Element::setLogicalProperty(QString const &roleName, QString const &value, 
 		command->redo();
 		delete command;
 	}
-}
-
-void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
-{
-	mGraphicalAssistApi = graphicalAssistApi;
-	mLogicalAssistApi = logicalAssistApi;
 }
 
 void Element::setController(Controller *controller)

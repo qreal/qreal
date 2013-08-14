@@ -144,11 +144,12 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			continue;
 		}
 
-		Element* elem = mScene->mainWindow()->editorManager().graphicalObject(currentId);
-		if (elem) {
-			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
-			elem->setController(mScene->mainWindow()->controller());
-		}
+		ElementImpl * const elementImpl = mScene->mainWindow()->editorManager().elementImpl(currentId);
+		Element *elem = elementImpl->isNode()
+				? dynamic_cast<Element *>(new NodeElement(elementImpl, *mGraphicalAssistApi, *mLogicalAssistApi))
+				: dynamic_cast<Element *>(new EdgeElement(elementImpl, *mGraphicalAssistApi, *mLogicalAssistApi));
+
+		elem->setController(mScene->mainWindow()->controller());
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
@@ -171,6 +172,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			} else {
 				mScene->addItem(elem);
 			}
+
 			setItem(current, elem);
 			elem->updateData();
 			elem->connectToPort();
@@ -212,6 +214,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				}
 			}
 		}
+
 		if (needToProcessChildren && model()->hasChildren(current)) {
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
 		}

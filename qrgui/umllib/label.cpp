@@ -139,7 +139,7 @@ void Label::setPlainText(QString const &text)
 void Label::updateData(bool withUndoRedo)
 {
 	QString const value = toPlainText();
-	NodeElement const * const parent = static_cast<NodeElement*>(parentItem());
+	NodeElement * const parent = static_cast<NodeElement*>(parentItem());
 	if (mBinding == "name") {
 		parent->setName(value, withUndoRedo);
 	} else {

@@ -41,7 +41,11 @@ class EdgeElement : public Element
 	Q_OBJECT
 
 public:
-	EdgeElement(ElementImpl *impl);
+	EdgeElement(ElementImpl *impl
+			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			);
+
 	virtual ~EdgeElement();
 
 	void updateData();

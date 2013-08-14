@@ -427,7 +427,7 @@ QIcon InterpreterEditorManager::icon(Id const &id) const
 	return QIcon(engine);
 }
 
-Element* InterpreterEditorManager::graphicalObject(Id const &id) const
+ElementImpl *InterpreterEditorManager::elementImpl(Id const &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	InterpreterElementImpl * const impl = new InterpreterElementImpl(repoAndMetaIdPair.first, repoAndMetaIdPair.second);
@@ -435,11 +435,7 @@ Element* InterpreterEditorManager::graphicalObject(Id const &id) const
 		return 0;
 	}
 
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
-
-	return new EdgeElement(impl);
+	return impl;
 }
 
 IdList InterpreterEditorManager::containedTypes(Id const &id) const
