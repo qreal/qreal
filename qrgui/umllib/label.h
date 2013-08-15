@@ -33,7 +33,7 @@ public:
 	void setTextFromRepo(QString const& text);
 
 	void setParentSelected(bool isSelected);
-	void setParentContents(QRectF contents);
+	void setParentContents(QRectF const &contents);
 
 	void setShouldCenter(bool shouldCenter);
 	void scaleCoordinates(QRectF const &contents);

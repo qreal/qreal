@@ -95,7 +95,7 @@ void Label::setParentSelected(bool isSelected)
 	mParentIsSelected = isSelected;
 }
 
-void Label::setParentContents(QRectF contents)
+void Label::setParentContents(QRectF const &contents)
 {
 	mParentContents = contents;
 	scaleCoordinates(contents);
