@@ -36,6 +36,8 @@ protected:
 	/// Replaces function invocations to calls of corresponding functions in C.
 	QString replaceFunctionInvocations(QString const &expression) const;
 
+	void error(QString const &message);
+
 	NxtOSEKRobotGenerator *mNxtGen;
 	qReal::Id mElementId;
 
