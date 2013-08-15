@@ -3,12 +3,19 @@
 
 using namespace qReal;
 
-LabelInterface *LabelFactory::createLabel(qreal x, qreal y, QString const &text, qreal rotation)
+LabelFactory::LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssistApi, const Id &elementId)
+	: mGraphicalModelAssistApi(graphicalModelAssistApi)
+	, mId(elementId)
 {
-	return new Label(x, y, text, rotation);
 }
 
-LabelInterface *LabelFactory::createLabel(qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
+LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y, QString const &text, qreal rotation)
 {
-	return new Label(x, y, binding, readOnly, rotation);
+	return new Label(mGraphicalModelAssistApi, mId, index, x, y, text, rotation);
+}
+
+LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y, QString const &binding, bool readOnly
+		, qreal rotation)
+{
+	return new Label(mGraphicalModelAssistApi, mId, index, x, y, binding, readOnly, rotation);
 }

@@ -38,13 +38,13 @@ QString Label::titleName() const
 void Label::generateCodeForConstructor(OutFile &out)
 {
 	if (mText.isEmpty()) {
-		// Это бинденный лейбл, текст для него будет браться из репозитория
-		out() << "			" + titleName() + " = factory.createLabel("
+		// It is binded label, text for it will be fetched from repo.
+		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
 				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
 				+ ", \"" + mTextBinded + "\", " + mReadOnly + ", " + QString::number(mRotation) + ");\n";
 	} else {
-		// Это статический лейбл, репозиторий ему не нужен
-		out() << "			" + titleName() + " = factory.createLabel("
+		// It is a static label, text for it is fixed.
+		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
 				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
 				+ ", QString::fromUtf8(\"" + mText + "\"), " + QString::number(mRotation) + ");\n";
 	}
@@ -55,9 +55,7 @@ void Label::generateCodeForConstructor(OutFile &out)
 	out() << "			" + titleName() + "->setScaling(" + scalingX + ", " + scalingY + ");\n";
 	out() << "			" + titleName() + "->setHard(" + (mIsHard ? "true" : "false") + ");\n";
 
-	// TODO: вынести отсюда в родительский класс.
 	out()
-//		<< "			" + titleName() + "->setFlags(0);\n"
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
 		<< "			titles.append(" + titleName() + ");\n";
 }

@@ -35,7 +35,12 @@ class NodeElement : public Element
 	Q_OBJECT
 
 public:
-	explicit NodeElement(ElementImpl *impl);
+	explicit NodeElement(ElementImpl *impl
+			, Id const &id
+			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			);
+
 	virtual ~NodeElement();
 
 	/**
@@ -135,9 +140,6 @@ public:
 
 	QList<EdgeElement *> const edgeList() const;
 	QList<NodeElement *> const childNodes() const;
-
-	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 	void setVisibleEmbeddedLinkers(bool const show);
 	void updateShape(QString const &shape) const;

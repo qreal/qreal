@@ -3,8 +3,8 @@
 using namespace qReal::commands;
 
 RemoveElementCommand::RemoveElementCommand(
-		models::LogicalModelAssistApi *logicalApi
-		, models::GraphicalModelAssistApi *graphicalApi
+		models::LogicalModelAssistApi &logicalApi
+		, models::GraphicalModelAssistApi &graphicalApi
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, Id const &id
@@ -17,8 +17,8 @@ RemoveElementCommand::RemoveElementCommand(
 }
 
 RemoveElementCommand::RemoveElementCommand(
-		models::LogicalModelAssistApi *logicalApi
-		, models::GraphicalModelAssistApi *graphicalApi
+		models::LogicalModelAssistApi &logicalApi
+		, models::GraphicalModelAssistApi &graphicalApi
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, bool isFromLogicalModel
@@ -51,5 +51,6 @@ bool RemoveElementCommand::equals(AbstractCommand const &other) const
 	if (removeCommand) {
 		return mImpl == removeCommand->mImpl;
 	}
+
 	return false;
 }

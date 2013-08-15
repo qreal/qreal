@@ -26,7 +26,7 @@ class Exploser : public QObject
 	Q_OBJECT
 
 public:
-	explicit Exploser(LogicalModelAssistApi * const api);
+	explicit Exploser(LogicalModelAssistApi &api);
 
 	/// Returns current system suffix that would be added to every explosion target name
 	static QString insideSuffix();
@@ -98,7 +98,7 @@ private:
 
 	void refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram);
 
-	LogicalModelAssistApi *mApi; // Does not take ownership
+	LogicalModelAssistApi &mApi;
 	QMap<Id, gui::PaletteTreeWidget *> mUserPalettes;
 };
 

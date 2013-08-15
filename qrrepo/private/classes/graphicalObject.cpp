@@ -70,6 +70,11 @@ void GraphicalObject::createGraphicalPart(int index)
 	mGraphicalParts.insert(index, part);
 }
 
+QList<int> GraphicalObject::graphicalParts() const
+{
+	return mGraphicalParts.keys();
+}
+
 QVariant GraphicalObject::graphicalPartProperty(int index, QString const &name) const
 {
 	if (!mGraphicalParts.contains(index)) {

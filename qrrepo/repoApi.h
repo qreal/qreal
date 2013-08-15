@@ -138,10 +138,16 @@ public:
 
 	bool exist(qReal::Id const &id) const;
 
+	// Override.
 	virtual void createGraphicalPart(qReal::Id const &id, int partIndex);
 
+	// Override.
+	virtual QList<int> graphicalParts(qReal::Id const &id) const;
+
+	// Override.
 	virtual QVariant graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const;
 
+	// Override.
 	virtual void setGraphicalPartProperty(
 			qReal::Id const &id
 			, int partIndex

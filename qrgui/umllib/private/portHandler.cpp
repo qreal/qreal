@@ -6,7 +6,7 @@
 
 qreal const PortHandler::mMaximumFractionPartValue = 0.9999;
 
-PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
+PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi &graphicalAssistApi,
 		QList<PortInterface *> const &ports)
 	: mNode(node), mGraphicalAssistApi(graphicalAssistApi)
 {
@@ -322,10 +322,10 @@ void PortHandler::checkConnectionsToPort()
 {
 	//FIXME
 
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksFrom(mNode->id()), "from");
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksTo(mNode->id()), "to");
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksNone(mNode->id()), QString());
-	mGraphicalAssistApi->removeTemporaryRemovedLinks(mNode->id());
+	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi.temporaryRemovedLinksFrom(mNode->id()), "from");
+	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi.temporaryRemovedLinksTo(mNode->id()), "to");
+	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi.temporaryRemovedLinksNone(mNode->id()), QString());
+	mGraphicalAssistApi.removeTemporaryRemovedLinks(mNode->id());
 
 	// i have no idea what this method does, but it is called when the element
 	// is dropped on scene. so i'll just leave this code here for now.
@@ -376,11 +376,6 @@ void PortHandler::arrangeLinearPorts()
 		}
 		lpId++; //next linear port.
 	}
-}
-
-void PortHandler::setGraphicalAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi)
-{
-	mGraphicalAssistApi = graphicalAssistApi;
 }
 
 void PortHandler::drawPorts(QPainter *painter, QRectF const &contents, QStringList const &)

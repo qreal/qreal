@@ -9,7 +9,7 @@ LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel
 		, EditorManagerInterface const &editorManagerInterface)
 	: mModelsAssistApi(logicalModel, editorManagerInterface)
 	, mLogicalModel(logicalModel)
-	, mExploser(this)
+	, mExploser(*this)
 	, mEditorManager(editorManagerInterface)
 {
 }
