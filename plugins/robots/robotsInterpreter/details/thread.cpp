@@ -1,5 +1,7 @@
 #include "thread.h"
 
+#include <QtWidgets/QApplication>
+
 using namespace qReal;
 using namespace interpreters::robots;
 using namespace interpreters::robots::details;
@@ -120,7 +122,15 @@ void Thread::turnOn(blocks::Block * const block)
 	connect(mCurrentBlock, SIGNAL(stepInto(Id const &)), this, SLOT(stepInto(Id const &)));
 
 	mStack.push(mCurrentBlock);
-	mCurrentBlock->interpret();
+
+	// After QApplication::processEvents() call thread can be destroyed, so we can not access fields, but can access
+	// variables on a stack. Kind of hack, but quite an easy way not to suspend everything if interpreted program
+	// has an infinite loop without timers.
+	blocks::Block *currentBlock = mCurrentBlock;
+
+	QApplication::processEvents();
+
+	currentBlock->interpret();
 }
 
 void Thread::turnOff(blocks::Block * const block)
