@@ -220,11 +220,11 @@ void Label::init(QRectF const &contents)
 {
 	mContents = contents;
 	mParentContents = contents;
-	if (orientation() == Qt::Horizontal) {
-		mContents.setWidth(mContents.width() / 2);
-	} else if (orientation() == Qt::Vertical) {
-		mContents.setWidth(mContents.height() * 3 / 4);
-	}
+//	if (orientation() == Qt::Horizontal) {
+//		mContents.setWidth(mContents.width() / 2);
+//	} else if (orientation() == Qt::Vertical) {
+//		mContents.setWidth(mContents.height() * 3 / 4);
+//	}
 
 //	setTextWidth(mContents.width());
 
