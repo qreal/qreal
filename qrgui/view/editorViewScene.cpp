@@ -509,13 +509,14 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 		}
 	} else {
 		Element *newParent = NULL;
-		Element *e = NULL;
+
+		ElementImpl const * const impl = mWindow->editorManager().elementImpl(id);
+		bool const isNode = impl->isNode();
+		delete impl;
 
 		if (searchForParents) {
 			// if element is node then we should look for parent for him
-			ElementImpl *impl = mWindow->editorManager().elementImpl(id);
-			if (impl->isNode()) {
-				e = new NodeElement(impl, id, *mMVIface->graphicalAssistApi(), *mMVIface->logicalAssistApi());
+			if (isNode) {
 				foreach (QGraphicsItem *item, items(scenePos - shiftToParent)) {
 					NodeElement *el = dynamic_cast<NodeElement*>(item);
 					if (el && canBeContainedBy(el->id(), id)) {
@@ -523,8 +524,6 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 						break;
 					}
 				}
-			} else {
-				e = new EdgeElement(impl, id, *mMVIface->graphicalAssistApi(), *mMVIface->logicalAssistApi());
 			}
 
 			if (newParent && dynamic_cast<NodeElement*>(newParent)) {
@@ -540,8 +539,8 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 					newParent = NULL;
 				}
 			}
-
 		}
+
 		QPointF const position = !newParent
 				? scenePos
 				: newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
@@ -558,13 +557,10 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 				mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 			}
 		}
-		if (e) {
-			delete e;
-		}
 	}
 }
 
-void EditorViewScene::createSingleElement(Id const &id, QString const &name, Element * e
+void EditorViewScene::createSingleElement(Id const &id, QString const &name, bool isNode
 		, QPointF const &position, Id const &parentId, bool isFromLogicalModel
 		, Id const &explosionTarget, CreateElementCommand **createCommandPointer
 		, bool executeImmediately)
@@ -584,7 +580,7 @@ void EditorViewScene::createSingleElement(Id const &id, QString const &name, Ele
 	}
 	mExploser->handleCreationWithExplosion(createCommand, id, explosionTarget);
 	if (executeImmediately) {
-		if (dynamic_cast<NodeElement*>(e)) {
+		if (isNode) {
 			QSize const size = mMVIface->graphicalAssistApi()->editorManagerInterface().iconSize(id);
 			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
 					*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), Id(), Id()
