@@ -568,7 +568,6 @@ QList<int> RepoApi::graphicalParts(qReal::Id const &id) const
 	return mRepository.graphicalParts(id);
 }
 
-
 QVariant RepoApi::graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const
 {
 	return mRepository.graphicalPartProperty(id, partIndex, propertyName);
