@@ -826,7 +826,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	// Let scene update selection and perform other operations
-	QGraphicsItem const * const item = itemAt(mCurrentMousePos, QTransform());
+	QGraphicsItem * item = itemAt(mCurrentMousePos, QTransform());
 	if (event->modifiers() & Qt::ControlModifier) {
 		if (item) {
 			QGraphicsScene::mousePressEvent(event);
@@ -838,13 +838,14 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	if ((event->modifiers() & Qt::ControlModifier) && (event->buttons() & Qt::LeftButton) && !(event->buttons() & Qt::RightButton)) {
 		mIsSelectEvent = true;
 		mSelectList->append(selectedItems());
-		foreach (QGraphicsItem* item, items()) {
+		foreach (QGraphicsItem * const item, items()) {
 			item->setAcceptedMouseButtons(0);
 		}
-		foreach (QGraphicsItem* item, *mSelectList) {
+
+		foreach (QGraphicsItem * const item, *mSelectList) {
 			item->setSelected(true);
 		}
-		QGraphicsItem* item = itemAt(mCurrentMousePos, QTransform());
+
 		if (item) {
 			item->setSelected(!mSelectList->contains(item));
 			if (item->isSelected()) {
@@ -855,7 +856,11 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		}
 	} else if (event->button() == Qt::LeftButton) {
 		mLeftButtonPressed = true;
-		QGraphicsItem *item = itemAt(event->scenePos(), QTransform());
+
+		Label * const label = dynamic_cast<Label *>(item);
+		if (label) {
+			item = item->parentItem();
+		}
 
 		if (item) {
 			item->setSelected(true);
