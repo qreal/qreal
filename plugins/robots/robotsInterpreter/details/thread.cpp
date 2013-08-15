@@ -124,7 +124,7 @@ void Thread::turnOn(blocks::Block * const block)
 	mStack.push(mCurrentBlock);
 
 	// After QApplication::processEvents() call thread can be destroyed, so we can not access fields, but can access
-	// variables on a stack. Kind of hack, but quite an easy way to not suspend everything if interpreted program
+	// variables on a stack. Kind of hack, but quite an easy way not to suspend everything if interpreted program
 	// has an infinite loop without timers.
 	blocks::Block *currentBlock = mCurrentBlock;
 
