@@ -1669,7 +1669,7 @@ void MainWindow::highlight(Id const &graphicalId, bool exclusive, QColor const &
 		Element const * const element = scene->getElem(graphicalId);
 		if (element) {
 			scene->highlight(graphicalId, exclusive, color);
-			view->ensureElementVisible(element);
+			view->ensureElementVisible(element, 0, 0);
 		}
 	}
 }
