@@ -50,6 +50,14 @@ void ReshapeEdgeCommand::stopTracking()
 	saveConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos);
 }
 
+bool ReshapeEdgeCommand::somethingChanged() const
+{
+	return mOldConfiguration != mNewConfiguration
+			|| mOldPos != mNewPos
+			|| mOldSrc != mNewSrc
+			|| mOldDst != mNewDst;
+}
+
 void ReshapeEdgeCommand::saveConfiguration(QPolygonF &target, Id &src, Id &dst
 		, QPointF &pos)
 {
