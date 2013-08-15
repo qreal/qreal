@@ -16,7 +16,6 @@
 #include "edgeElement.h"
 #include "embedded/linkers/embeddedLinker.h"
 #include "../editorPluginInterface/elementImpl.h"
-#include "embedded/linkers/embeddedLinker.h"
 
 #include "private/sceneGridHandler.h"
 #include "private/umlPortHandler.h"
@@ -92,8 +91,6 @@ public:
 	QList<PossibleEdge> getPossibleEdges();
 
 	void setPortsVisible(bool value);
-
-	void hideEmbeddedLinkers();
 
 	bool isPort() const;
 	bool canHavePorts();
