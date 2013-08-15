@@ -16,6 +16,9 @@ InsertIntoEdgeCommand::InsertIntoEdgeCommand(EditorViewScene &scene, models::Log
 	, mIsLogical(isFromLogicalModel), mCreateFirst(NULL), mCreateSecond(NULL), mRemoveOldEdge(NULL)
 	, mCreateCommand(createCommand)
 {
+	if (mCreateCommand) {
+		mCreateCommand->setParent(this);
+	}
 }
 
 InsertIntoEdgeCommand::~InsertIntoEdgeCommand()
@@ -23,7 +26,6 @@ InsertIntoEdgeCommand::~InsertIntoEdgeCommand()
 	delete mCreateFirst;
 	delete mCreateSecond;
 	delete mRemoveOldEdge;
-	delete mCreateCommand;
 }
 
 bool InsertIntoEdgeCommand::execute()
