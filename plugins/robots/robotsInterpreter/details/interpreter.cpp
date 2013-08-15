@@ -109,7 +109,7 @@ void Interpreter::stopRobot()
 	mTimer.stop();
 	mRobotModel->stopRobot();
 	mState = idle;
-	foreach (Thread *thread, mThreads) {
+	foreach (Thread * const thread, mThreads) {
 		delete thread;
 		mThreads.removeAll(thread);
 	}
