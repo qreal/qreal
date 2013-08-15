@@ -228,13 +228,15 @@ void Label::init(QRectF const &contents)
 
 //	setTextWidth(mContents.width());
 
-	qreal const x = mPoint.x() * mContents.width();
-	qreal const y = mPoint.y() * mContents.height();
-	setPos(x, y);
-
 	if (mGraphicalModelAssistApi.hasLabel(mId, mIndex)) {
-		setPos(mGraphicalModelAssistApi.labelPosition(mId, mIndex));
+		QPointF const currentPos = mGraphicalModelAssistApi.labelPosition(mId, mIndex);
+		mPoint.setX(currentPos.x() / mContents.width());
+		mPoint.setY(currentPos.y() / mContents.height());
+		setPos(currentPos);
 	} else {
+		qreal const x = mPoint.x() * mContents.width();
+		qreal const y = mPoint.y() * mContents.height();
+		setPos(x, y);
 		mGraphicalModelAssistApi.createLabel(mId, mIndex, QPointF(x, y), this->boundingRect().size());
 	}
 
