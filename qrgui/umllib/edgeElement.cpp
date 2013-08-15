@@ -907,7 +907,9 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (mReshapeCommand) {
 		mReshapeCommand->stopTracking();
-		mController->execute(mReshapeCommand);
+		if (mReshapeCommand->somethingChanged()) {
+			mController->execute(mReshapeCommand);
+		}
 		// Undo stack took ownership
 		mReshapeCommand = NULL;
 	}
