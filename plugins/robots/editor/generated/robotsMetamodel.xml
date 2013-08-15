@@ -364,7 +364,7 @@
 						<association beginName="begin" endName="end"/>
 					</associations>
 					<possibleEdges>
-						<possibleEdge beginName="AbstractNode" directed="false" endName="AbstractNode"/>
+						<possibleEdge beginName="NonTyped" directed="false" endName="NonTyped"/>
 					</possibleEdges>
 					<properties>
 						<property displayedName="Условие" type="GuardType" name="Guard"/>

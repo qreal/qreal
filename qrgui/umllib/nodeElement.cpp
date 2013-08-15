@@ -642,10 +642,10 @@ bool NodeElement::initPossibleEdges()
 		if (ne == -1) {
 			QList<StringPossibleEdge> const list = mGraphicalAssistApi.editorManagerInterface()
 					.possibleEdges(id().editor(), elementName);
-			foreach(StringPossibleEdge pEdge, list) {
-				if (mGraphicalAssistApi.editorManagerInterface().portTypes(id().type()).contains(pEdge.first.first)
-						|| (mGraphicalAssistApi.editorManagerInterface().portTypes(id().type()).contains(pEdge.first.second)
-								&& !pEdge.second.first))
+			foreach (StringPossibleEdge const &pEdge, list) {
+				QStringList const portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
+				if (portTypes.contains(pEdge.first.first)
+						|| (portTypes.contains(pEdge.first.second) && !pEdge.second.first))
 				{
 					PossibleEdgeType edge(pEdge.second.first, Id(id().editor(), id().diagram(), pEdge.second.second));
 					QSet<ElementPair> elementPairs = elementsForPossibleEdge(pEdge);
@@ -672,7 +672,7 @@ void NodeElement::initEmbeddedLinkers()
 		return;
 	}
 	QSet<qReal::Id> usedEdges;
-	foreach (PossibleEdgeType type, mPossibleEdgeTypes) {
+	foreach (PossibleEdgeType const &type, mPossibleEdgeTypes) {
 		if (usedEdges.contains(type.second)) {
 			continue;
 		}
