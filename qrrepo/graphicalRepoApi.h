@@ -43,6 +43,8 @@ public:
 
 	virtual void createGraphicalPart(qReal::Id const &id, int partIndex) = 0;
 
+	virtual QList<int> graphicalParts(qReal::Id const &id) const = 0;
+
 	virtual QVariant graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const = 0;
 
 	virtual void setGraphicalPartProperty(

@@ -500,21 +500,23 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 			? Id()
 			: Id::loadFromString(explosionTargetUuid);
 
-	if(mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
+	if (mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
 		CreateGroupCommand *createGroupCommand = new CreateGroupCommand(
-				this, mMVIface->logicalAssistApi(), mMVIface->graphicalAssistApi()
+				*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi()
 				, mMVIface->rootId(), mMVIface->rootId(), id, isFromLogicalModel, scenePos);
 		if (executeImmediately) {
 			mController->execute(createGroupCommand);
 		}
 	} else {
 		Element *newParent = NULL;
-		Element *e = NULL;
+
+		ElementImpl const * const impl = mWindow->editorManager().elementImpl(id);
+		bool const isNode = impl->isNode();
+		delete impl;
 
 		if (searchForParents) {
 			// if element is node then we should look for parent for him
-			e = mWindow->editorManager().graphicalObject(id);
-			if (dynamic_cast<NodeElement*>(e)) { // check if e is node
+			if (isNode) {
 				foreach (QGraphicsItem *item, items(scenePos - shiftToParent)) {
 					NodeElement *el = dynamic_cast<NodeElement*>(item);
 					if (el && canBeContainedBy(el->id(), id)) {
@@ -524,7 +526,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 				}
 			}
 
-			if(newParent && dynamic_cast<NodeElement*>(newParent)) {
+			if (newParent && dynamic_cast<NodeElement*>(newParent)) {
 				if (!canBeContainedBy(newParent->id(), id)) {
 					QString text;
 					text += "Element of type \"" + id.element() + "\" can not be a child of \"" + newParent->id().element() + "\"";
@@ -537,12 +539,13 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 					newParent = NULL;
 				}
 			}
-
 		}
-		QPointF const position = !newParent ? scenePos
+
+		QPointF const position = !newParent
+				? scenePos
 				: newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
 
-		Id parentId = newParent ? newParent->id() : mMVIface->rootId();
+		Id const parentId = newParent ? newParent->id() : mMVIface->rootId();
 
 		createSingleElement(id, name, e, position, parentId, isFromLogicalModel
 				, explosionTarget, createCommandPointer, executeImmediately);
@@ -554,35 +557,33 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 				mMVIface->graphicalAssistApi()->stackBefore(id, nextNode->id());
 			}
 		}
-		if (e) {
-			delete e;
-		}
 	}
 }
 
-void EditorViewScene::createSingleElement(Id const &id, QString const &name, Element * e
+void EditorViewScene::createSingleElement(Id const &id, QString const &name, bool isNode
 		, QPointF const &position, Id const &parentId, bool isFromLogicalModel
 		, Id const &explosionTarget, CreateElementCommand **createCommandPointer
 		, bool executeImmediately)
 {
 	CreateElementCommand *createCommand = new CreateElementCommand(
-				mMVIface->logicalAssistApi()
-				, mMVIface->graphicalAssistApi()
+				*mMVIface->logicalAssistApi()
+				, *mMVIface->graphicalAssistApi()
 				, mMVIface->rootId()
 				, parentId
 				, id
 				, isFromLogicalModel
 				, name
 				, position);
+
 	if (createCommandPointer) {
 		(*createCommandPointer) = createCommand;
 	}
 	mExploser->handleCreationWithExplosion(createCommand, id, explosionTarget);
 	if (executeImmediately) {
-		if (dynamic_cast<NodeElement*>(e)) {
+		if (isNode) {
 			QSize const size = mMVIface->graphicalAssistApi()->editorManagerInterface().iconSize(id);
 			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
-					this, mMVIface->logicalAssistApi(), mMVIface->graphicalAssistApi(), Id(), Id()
+					*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi(), Id(), Id()
 					, parentId, position, QPointF(size.width(), size.height()), isFromLogicalModel, createCommand);
 			mController->execute(insertCommand);
 		} else {

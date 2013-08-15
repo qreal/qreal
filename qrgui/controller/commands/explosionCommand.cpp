@@ -2,7 +2,7 @@
 
 using namespace qReal::commands;
 
-ExplosionCommand::ExplosionCommand(models::LogicalModelAssistApi * const logicalApi
+ExplosionCommand::ExplosionCommand(models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi const * const graphicalApi
 		, Id const &source, Id const &target, bool mustAdd)
 	: mLogicalApi(logicalApi)
@@ -29,18 +29,18 @@ bool ExplosionCommand::restoreState()
 
 bool ExplosionCommand::processExplosion(bool add)
 {
-	if (!mLogicalApi->isLogicalId(mSource) && mGraphicalApi) {
+	if (!mLogicalApi.isLogicalId(mSource) && mGraphicalApi) {
 		mSource = mGraphicalApi->logicalId(mSource);
 	}
 
-	if (!mLogicalApi->isLogicalId(mTarget) && mGraphicalApi) {
+	if (!mLogicalApi.isLogicalId(mTarget) && mGraphicalApi) {
 		mTarget = mGraphicalApi->logicalId(mTarget);
 	}
 
 	if (add) {
-		mLogicalApi->addExplosion(mSource, mTarget);
+		mLogicalApi.addExplosion(mSource, mTarget);
 	} else {
-		mLogicalApi->removeExplosion(mSource, mTarget);
+		mLogicalApi.removeExplosion(mSource, mTarget);
 	}
 
 	return true;

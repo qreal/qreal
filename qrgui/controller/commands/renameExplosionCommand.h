@@ -15,9 +15,10 @@ class RenameExplosionCommand : public AbstractCommand
 	Q_OBJECT
 
 public:
-	RenameExplosionCommand(models::LogicalModelAssistApi * const logicalApi
+	RenameExplosionCommand(models::LogicalModelAssistApi &logicalApi
 		, models::GraphicalModelAssistApi const * const graphicalApi
 		, Id const &target);
+
 	virtual ~RenameExplosionCommand();
 
 protected:
@@ -32,7 +33,7 @@ private:
 	QTreeWidgetItem *userGroup() const;
 	QTreeWidgetItem *paletteItem() const;
 
-	models::LogicalModelAssistApi *mLogicalApi;
+	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi const *mGraphicalApi;
 	Id mTarget;
 	QString mOldName;

@@ -58,15 +58,17 @@ QVariant ValuesSerializer::deserializeQVariant(QString const &typeName, QString 
 		return QVariant(valueStr[0]);
 	} else if (typeName == "QPointF") {
 		return QVariant(deserializeQPointF(valueStr));
-	} else if (typeName == "QPolygon") {  // TODO: QPolygonF?
+	} else if (typeName == "QPolygon" || typeName == "QPolygonF") {
 		QStringList const points = valueStr.split(" : ", QString::SkipEmptyParts);
-		QPolygon result;
-		foreach (QString str, points) {
-			QPointF point = deserializeQPointF(str);
-			result << point.toPoint();
+		QPolygon polygonResult;
+		QPolygonF polygonFResult;
+		foreach (QString const &str, points) {
+			QPointF const point = deserializeQPointF(str);
+			polygonFResult << point;
+			polygonResult << point.toPoint();
 		}
 
-		return QVariant(result);
+		return typeName == "QPolygon" ? QVariant(polygonResult) : QVariant(polygonFResult);
 	} else if (typeName == "qReal::Id") {
 		return Id::loadFromString(valueStr).toVariant();
 	} else {
@@ -102,7 +104,9 @@ QString ValuesSerializer::serializeQVariant(QVariant const &v)
 	case QVariant::PointF:
 		return serializeQPointF(v.toPointF());
 	case QVariant::Polygon:
-		return serializeQPolygon(v.value<QPolygon>());
+		return serializeQPolygonF(v.value<QPolygon>());
+	case QVariant::PolygonF:
+		return serializeQPolygonF(v.value<QPolygonF>());
 	case QVariant::UserType:
 		if (v.userType() == QMetaType::type("qReal::Id")) {
 			return v.value<qReal::Id>().toString();
@@ -120,10 +124,10 @@ QString ValuesSerializer::serializeQPointF(QPointF const &p)
 	return QString::number(p.x()) + ", " + QString::number(p.y());
 }
 
-QString ValuesSerializer::serializeQPolygon(QPolygon const &p)
+QString ValuesSerializer::serializeQPolygonF(QPolygonF const &p)
 {
 	QString result("");
-	foreach (QPoint point, p) {
+	foreach (QPointF const &point, p) {
 		result += serializeQPointF(point) + " : ";
 	}
 

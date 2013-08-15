@@ -21,8 +21,8 @@ public:
 	/// Serializes given QPoint to string.
 	static QString serializeQPointF(QPointF const &p);
 
-	/// Serializes given QPolygon to string.
-	static QString serializeQPolygon(QPolygon const &p);
+	/// Serializes given QPolygonF to string.
+	static QString serializeQPolygonF(QPolygonF const &p);
 
 	/// Serializes given IdList to a XML subtree.
 	/// @param tagName - name of a root of resulting XML subtree.

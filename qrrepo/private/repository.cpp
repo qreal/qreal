@@ -545,6 +545,16 @@ void Repository::createGraphicalPart(qReal::Id const &id, int partIndex)
 	graphicalObject->createGraphicalPart(partIndex);
 }
 
+QList<int> Repository::graphicalParts(qReal::Id const &id) const
+{
+	GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[id]);
+	if (!graphicalObject) {
+		return QList<int>();
+	}
+
+	return graphicalObject->graphicalParts();
+}
+
 QVariant Repository::graphicalPartProperty(qReal::Id const &id, int partIndex, QString const &propertyName) const
 {
 	GraphicalObject * const graphicalObject = dynamic_cast<GraphicalObject *>(mObjects[id]);
