@@ -364,7 +364,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	QStringList targets;
 	QStringList const groups = mWindow->editorManager().paletteGroups(node->id(), node->id());
 
-	foreach(PossibleEdge const &pEdge, edge->getPossibleEdges()) {
+	foreach (PossibleEdge const &pEdge, edge->getPossibleEdges()) {
 		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
 		// and vice versa
 		if (mWindow->editorManager().isParentOf(node->id(), pEdge.first.first)) {
@@ -418,8 +418,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 		edgeMenu->addAction(tr("Connect with the current item"));
 	}
 
-	QPoint cursorPos = QCursor::pos();
-	QAction *executed = edgeMenu->exec(cursorPos);
+	QAction *executed = edgeMenu->exec(QCursor::pos());
 
 	int result = 0;
 	if (executed) {
