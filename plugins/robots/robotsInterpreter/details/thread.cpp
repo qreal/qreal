@@ -39,7 +39,7 @@ Thread::~Thread()
 void Thread::interpret()
 {
 	if (mCurrentBlock) {
-		nextBlock(mCurrentBlock);
+		turnOn(mCurrentBlock);
 	} else {
 		stepInto(mInitialDiagram);
 	}
