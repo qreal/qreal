@@ -96,6 +96,8 @@ void EmbeddedLinker::setDirected(const bool directed)
 
 void EmbeddedLinker::initTitle()
 {
+	// TODO: It is not Label, it is simply some text on a scene. Refactor this.
+	// Temporarily commented out.
 //	EditorManagerInterface const &editorManagerInterface
 //			= dynamic_cast<EditorViewScene *>(scene())->mainWindow()->editorManager();
 
@@ -106,7 +108,6 @@ void EmbeddedLinker::initTitle()
 //	float rectWidth = mMaster->boundingRect().right() - mMaster->boundingRect().left();
 //	float rectHeight = mMaster->boundingRect().bottom() - mMaster->boundingRect().top();
 
-	// TODO: It is not Label, it is simply some text on a scene. Refactor this.
 //	int x = 0;
 //	int y = 0;
 //	if (scenePos().y() < mMaster->scenePos().y() + rectHeight/3)

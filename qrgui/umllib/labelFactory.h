@@ -9,7 +9,7 @@ namespace qReal {
 class LabelFactory : public LabelFactoryInterface
 {
 public:
-	explicit LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssistApi, Id const &elementId);
+	LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssistApi, Id const &elementId);
 	LabelInterface *createLabel(int index, qreal x, qreal y, QString const &text, qreal rotation);
 	LabelInterface *createLabel(int index, qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation);
 

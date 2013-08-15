@@ -78,7 +78,6 @@ Qt::Orientation Label::orientation()
 void Label::setText(const QString &text)
 {
 	setPlainText(text);
-//	moveToParentCenter();
 }
 
 void Label::setTextFromRepo(QString const& text)
@@ -99,7 +98,6 @@ void Label::setParentContents(QRectF const &contents)
 {
 	mParentContents = contents;
 	scaleCoordinates(contents);
-//	moveToParentCenter();
 }
 
 void Label::setShouldCenter(bool shouldCenter)
@@ -207,10 +205,6 @@ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mShouldMove = true;
 
-//	if (mIsStretched) {
-//		moveToParentCenter();
-//	}
-
 	updateData();
 
 	QGraphicsTextItem::mouseReleaseEvent(event);
@@ -220,13 +214,6 @@ void Label::init(QRectF const &contents)
 {
 	mContents = contents;
 	mParentContents = contents;
-//	if (orientation() == Qt::Horizontal) {
-//		mContents.setWidth(mContents.width() / 2);
-//	} else if (orientation() == Qt::Vertical) {
-//		mContents.setWidth(mContents.height() * 3 / 4);
-//	}
-
-//	setTextWidth(mContents.width());
 
 	if (mGraphicalModelAssistApi.hasLabel(mId, mIndex)) {
 		QPointF const currentPos = mGraphicalModelAssistApi.labelPosition(mId, mIndex);
@@ -239,8 +226,6 @@ void Label::init(QRectF const &contents)
 		setPos(x, y);
 		mGraphicalModelAssistApi.createLabel(mId, mIndex, QPointF(x, y), this->boundingRect().size());
 	}
-
-//	moveToParentCenter();
 }
 
 void Label::setScaling(bool scalingX, bool scalingY)
@@ -372,4 +357,3 @@ QRectF Label::labelMovingRect() const
 	return mapFromItem(parentItem(), parentItem()->boundingRect()).boundingRect()
 			.adjusted(-distance, -distance, distance, distance);
 }
-

@@ -94,7 +94,7 @@ bool InsertIntoEdgeCommand::restoreState()
 void InsertIntoEdgeCommand::initCommand(CreateElementCommand *&command, Id const &type)
 {
 	if (!command) {
-		QString name = mScene.mainWindow()->editorManager().friendlyName(type);
+		QString const name = mScene.mainWindow()->editorManager().friendlyName(type);
 		command = new CreateElementCommand(mLogicalAssistApi, mGraphicalAssistApi, mScene.rootItemId()
 				, mParentId, Id(type, QUuid::createUuid().toString()), mIsLogical, name, mPos);
 	}
