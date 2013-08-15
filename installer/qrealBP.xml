@@ -96,6 +96,34 @@
                         <distributionFile>
                             <origin>%1/bin/changelog.txt</origin>
                         </distributionFile>
+
+                        <distributionDirectory>
+                            <origin>%1/bin/PassOffice</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>%1/bin/Templates</origin>
+                        </distributionDirectory>
+                        <distributionFile>
+                            <origin>%1/bin/DocsByReflection.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%1/bin/FormGererator.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%1/bin/FormGererator.pdb</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%1/bin/FormGererator.exe.config</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%1/bin/generated.xml</origin>
+                        </distributionFile>
+
+
+
+
+
+
                          <distributionFile>
                             <origin>%2/Qt5Network.dll</origin>
                         </distributionFile>
