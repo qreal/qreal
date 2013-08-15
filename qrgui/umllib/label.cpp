@@ -24,7 +24,7 @@ Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elem
 Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elementId
 		, int index, qreal x, qreal y, QString const &binding, bool readOnly, qreal rotation)
 	: mFocusIn(false), mReadOnly(readOnly), mScalingX(false), mScalingY(false), mRotation(rotation)
-	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsHard(false)
+	, mPoint(x, y), mBinding(binding), mBackground(Qt::transparent), mIsStretched(false), mIsHard(false)
 	, mParentIsSelected(false), mWasMoved(false), mShouldMove(false)
 	, mIndex(index)
 	, mId(elementId)
@@ -42,14 +42,6 @@ void Label::init()
 	QGraphicsTextItem::setFlags(ItemIsSelectable | ItemIsMovable);
 	setTitleFont();
 	setRotation(mRotation);
-
-	if (mGraphicalModelAssistApi.hasLabel(mId, mIndex)) {
-		mPoint = mGraphicalModelAssistApi.labelPosition(mId, mIndex);
-	} else {
-		mGraphicalModelAssistApi.createLabel(mId, mIndex, mPoint, this->boundingRect().size());
-	}
-
-	setPos(mPoint.x(), mPoint.y());
 }
 
 void Label::moveToParentCenter()
@@ -86,7 +78,7 @@ Qt::Orientation Label::orientation()
 void Label::setText(const QString &text)
 {
 	setPlainText(text);
-	moveToParentCenter();
+//	moveToParentCenter();
 }
 
 void Label::setTextFromRepo(QString const& text)
@@ -107,7 +99,7 @@ void Label::setParentContents(QRectF contents)
 {
 	mParentContents = contents;
 	scaleCoordinates(contents);
-	moveToParentCenter();
+//	moveToParentCenter();
 }
 
 void Label::setShouldCenter(bool shouldCenter)
@@ -215,9 +207,9 @@ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	mShouldMove = true;
 
-	if (mIsStretched) {
-		moveToParentCenter();
-	}
+//	if (mIsStretched) {
+//		moveToParentCenter();
+//	}
 
 	updateData();
 
@@ -234,13 +226,19 @@ void Label::init(QRectF const &contents)
 		mContents.setWidth(mContents.height() * 3 / 4);
 	}
 
-	setTextWidth(mContents.width());
+//	setTextWidth(mContents.width());
 
 	qreal const x = mPoint.x() * mContents.width();
 	qreal const y = mPoint.y() * mContents.height();
 	setPos(x, y);
 
-	moveToParentCenter();
+	if (mGraphicalModelAssistApi.hasLabel(mId, mIndex)) {
+		setPos(mGraphicalModelAssistApi.labelPosition(mId, mIndex));
+	} else {
+		mGraphicalModelAssistApi.createLabel(mId, mIndex, QPointF(x, y), this->boundingRect().size());
+	}
+
+//	moveToParentCenter();
 }
 
 void Label::setScaling(bool scalingX, bool scalingY)
