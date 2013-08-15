@@ -28,6 +28,7 @@ void RulesPlugin::init(PluginConfigurator const &configurator)
 	QObject::connect(mRunAllDiagram, SIGNAL(triggered()), mChecker, SLOT(checkAllDiagrams()));
 	QObject::connect(mRunCurrentDiagram, SIGNAL(triggered()), mChecker, SLOT(checkCurrentDiagram()));
 	QObject::connect(mExportToXml, SIGNAL(triggered()), mChecker, SLOT(exportToXml()));
+	QObject::connect(mGenerateForms, SIGNAL(triggered()), mChecker, SLOT(generateForms()));
 }
 
 QList<ActionInfo> RulesPlugin::actions()
@@ -50,6 +51,9 @@ void RulesPlugin::initAction()
 	ActionInfo exportXmlInfo(mExportToXml, "generators", "tools");
 	mActionInfos << exportXmlInfo;
 
+	mGenerateForms = new QAction(QObject::tr("Generate Forms"), NULL);
+	ActionInfo generateFormsInfo(mGenerateForms, "generators", "tools");
+	mActionInfos << generateFormsInfo;
 }
 
 qReal::Customizer * RulesPlugin::customizationInterface()

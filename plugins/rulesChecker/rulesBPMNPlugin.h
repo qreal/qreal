@@ -40,6 +40,9 @@ private:
 	QAction *mRunAllDiagram;
 	QAction *mRunCurrentDiagram;
 	QAction *mExportToXml;
+
+	/// export XML and run Anton's form generator
+	QAction *mGenerateForms;
 };
 
 }

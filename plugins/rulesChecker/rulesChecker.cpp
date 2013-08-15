@@ -1,5 +1,6 @@
 ﻿#include "rulesChecker.h"
 #include <QtWidgets/QFileDialog>
+#include <QtCore/QProcess>
 
 #include "../../qrrepo/repoApi.h"
 
@@ -18,8 +19,26 @@ RulesChecker::RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 
 void RulesChecker::exportToXml()
 {
-	QString fileName = QFileDialog::getSaveFileName(mWindowInterface->windowWidget()
+	QString const fileName = QFileDialog::getSaveFileName(mWindowInterface->windowWidget()
 			, tr("Save File"), tr("export.xml"), tr("*.xml"));
+
+	exportXmlToFile(fileName);
+}
+
+void RulesChecker::generateForms()
+{
+	exportXmlToFile("export.xml");
+
+	// OMG, a memleak here!
+	QProcess *process = new QProcess;
+	QProcessEnvironment environment(QProcessEnvironment::systemEnvironment());
+	process->setProcessEnvironment(environment);
+	process->start("FormGererator.exe");
+}
+
+void RulesChecker::exportXmlToFile(QString const &file)
+{
+	QString fileName = file;
 	if (!fileName.endsWith(".xml")) {
 		fileName += ".xml";
 	}

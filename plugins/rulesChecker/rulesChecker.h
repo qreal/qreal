@@ -23,6 +23,9 @@ public slots:
 	//! get an XML file with all repo contents (used as a hack for integration with REAL-IT.NET)
 	void exportToXml();
 
+	/// generate XML export and run forms generator
+	void generateForms();
+
 private:
 	 enum ErrorsType {
 		linkToStartNode
@@ -69,6 +72,9 @@ private:
 
 	IdList incomingSequenceFlow(Id const &id) const;
 	IdList outgoingSequenceFlow(Id const &id) const;
+
+	/// generates and XML file with specific file name
+	void exportXmlToFile(QString const &filename);
 
 	qrRepo::GraphicalRepoApi const *mGRepoApi;
 	qReal::gui::MainWindowInterpretersInterface *mWindowInterface;
