@@ -12,7 +12,10 @@
 #include "nodeElement.h"
 #include "labelFactory.h"
 #include "../view/editorViewScene.h"
-#include "lineHandler.h"
+
+#include "private/brokenLine.h"
+#include "private/squareLine.h"
+#include "private/curveLine.h"
 
 using namespace qReal;
 
@@ -40,7 +43,7 @@ EdgeElement::EdgeElement(
 	, mEndArrowStyle(enums::arrowTypeEnum::noArrow)
 	, mSrc(NULL)
 	, mDst(NULL)
-	, mHandler(new LineHandler(this, static_cast<qReal::LineType>(SettingsManager::value("LineType").toInt())))
+	, mHandler(NULL)
 	, mPortFrom(0)
 	, mPortTo(0)
 	, mDragType(noPort)
@@ -89,6 +92,8 @@ EdgeElement::EdgeElement(
 		title->setShouldCenter(false);
 		mLabels.append(title);
 	}
+
+	initLineHandler();
 }
 
 EdgeElement::~EdgeElement()
@@ -106,6 +111,21 @@ void EdgeElement::initTitles()
 {
 	Element::initTitles();
 	updateLongestPart();
+}
+
+void EdgeElement::initLineHandler()
+{
+	delete mHandler;
+	switch(SettingsManager::value("LineType").toInt()) {
+	case brokenLine:
+		mHandler = new BrokenLine(this);
+		break;
+	case curveLine:
+		mHandler = new CurveLine(this);
+		break;
+	default:
+		mHandler = new SquareLine(this);
+	}
 }
 
 QRectF EdgeElement::boundingRect() const
@@ -1494,7 +1514,7 @@ void EdgeElement::redrawing(QPointF const &pos)
 	if (mIsLoop) { // it's row prevention of transform to the point before fix #602
 		createLoopEdge();
 	}
-	mHandler->setType(static_cast<qReal::LineType>(SettingsManager::value("LineType").toInt()));
+	initLineHandler();
 	adjustLink();
 	arrangeSrcAndDst();
 	prepareGeometryChange();

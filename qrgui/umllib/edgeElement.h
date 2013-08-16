@@ -180,6 +180,8 @@ private:
 		bottom
 	};
 
+	void initLineHandler();
+
 	int indentReductCoeff();
 	/// Set mPortTo to next port.
 	void searchNextPort();

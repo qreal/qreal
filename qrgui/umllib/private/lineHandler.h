@@ -1,35 +1,31 @@
 #pragma once
 
-#include "edgeElement.h"
-#include "private/reshapeEdgeCommand.h"
+#include "../edgeElement.h"
+#include "reshapeEdgeCommand.h"
 
 namespace qReal {
 
 class LineHandler
 {
 public:
-	LineHandler(EdgeElement *edge, LineType type);
+	LineHandler(EdgeElement *edge);
 
 	void startMovingEdge(int dragType, QPointF const &pos);
 	void rejectMovingEdge();
-	void moveEdge(QPointF const &pos, bool needAlign);
+	virtual void moveEdge(QPointF const &pos, bool needAlign) = 0;
 	void endMovingEdge();
 
-	void adjust();
+	virtual void adjust();
 	void layOut();
-
-	void setType(LineType type);
 
 protected:
 	int addPoint(QPointF const &pos);
-	void moveSegment(QPointF const &pos);
 	int defineSegment(QPointF const &pos);
-	void improveAppearance();
+	virtual void improveAppearance();
 	bool checkPort(QPointF const &pos, bool isStart) const;
 	bool nodeChanged(bool isStart) const;
 
 	EdgeElement *mEdge;
-	LineType mType;
 
 	QPolygonF mSavedLine;
 	int mDragType;

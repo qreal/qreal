@@ -1,12 +1,12 @@
 #include "lineHandler.h"
 
-#include "nodeElement.h"
-#include "../controller/controller.h"
+#include "../nodeElement.h"
+#include "../../controller/controller.h"
 
 namespace qReal {
 
-LineHandler::LineHandler(EdgeElement *edge, LineType type)
-		: mEdge(edge), mType(type), mReshapeCommand(NULL)
+LineHandler::LineHandler(EdgeElement *edge)
+		: mEdge(edge), mReshapeCommand(NULL)
 {}
 
 void LineHandler::startMovingEdge(int dragType, QPointF const &pos)
@@ -19,49 +19,16 @@ void LineHandler::startMovingEdge(int dragType, QPointF const &pos)
 	mDragStartPoint = pos;
 }
 
-void LineHandler::moveEdge(QPointF const &pos, bool needAlign)
-{
-	QPolygonF line = mEdge->line();
-	int const indexGrid = SettingsManager::value("IndexGrid").toInt();
-
-	switch (mType) {
-	case brokenLine:
-		if (mDragType == EdgeElement::noPort) {
-			mDragType = addPoint(mDragStartPoint);
-		}
-
-		line = mEdge->line();
-		line[mDragType] = needAlign ? mEdge->alignedPoint(pos, indexGrid) : pos;
-		mEdge->setLine(line);
-		break;
-	case squareLine:
-		if (mDragType == EdgeElement::noPort) {
-			moveSegment(pos);
-			return;
-		} else if (mDragType == 0 || mDragType == mEdge->line().size() - 1) {
-				line[mDragType] = pos;
-				mEdge->setLine(line);
-				mEdge->squarize();
-		}
-		break;
-	case curveLine:
-		if (mDragType >= 0) {
-			line[mDragType] = pos;
-			mEdge->setLine(line);
-		}
-	}
-	mEdge->update();
-}
-
 void LineHandler::rejectMovingEdge()
 {
 	delete mReshapeCommand;
+	mReshapeCommand = NULL;
 	mEdge->setLine(mSavedLine);
 }
 
 void LineHandler::endMovingEdge()
 {
-	if ((mDragType == 0) || (mDragType == mEdge->line().count() - 1)) {
+	if ((mDragType == 0) || (mDragType == mSavedLine.count() - 1)) {
 		bool isStart = mDragType == 0;
 		if (nodeChanged(isStart)) {
 			layOut();
@@ -74,9 +41,11 @@ void LineHandler::endMovingEdge()
 
 			if (mEdge->src()) {
 				mEdge->src()->arrangeLinearPorts();
+				mEdge->src()->adjustLinks();
 			}
 			if (mEdge->dst()) {
 				mEdge->dst()->arrangeLinearPorts();
+				mEdge->dst()->adjustLinks();
 			}
 
 			adjust();
@@ -88,7 +57,11 @@ void LineHandler::endMovingEdge()
 
 	if (mReshapeCommand) {
 		mReshapeCommand->stopTracking();
-		mEdge->controller()->execute(mReshapeCommand);
+		if (mReshapeCommand->somethingChanged()) {
+			mEdge->controller()->execute(mReshapeCommand);
+		} else {
+			delete mReshapeCommand;
+		}
 		mReshapeCommand = NULL;
 	}
 
@@ -113,17 +86,12 @@ void LineHandler::adjust()
 
 	if (mEdge->isLoop()) {
 		mEdge->createLoopEdge();
-		return;
-	}
-
-	if (mType == static_cast<int>(squareLine) && !mEdge->isLoop()) {
-		mEdge->squarize();
 	}
 }
 
 void LineHandler::layOut()
 {
-	if (mDragType == 0 || mDragType == mEdge->line().count() - 1) {
+	if (mDragType == 0 || mDragType == mSavedLine.count() - 1) {
 		mEdge->connectToPort();
 	}
 	if (mEdge->src()) {
@@ -151,11 +119,6 @@ int LineHandler::addPoint(QPointF const &pos)
 	return mDragType;
 }
 
-void LineHandler::setType(LineType type)
-{
-	mType = type;
-}
-
 int LineHandler::defineSegment(QPointF const &pos)
 {
 	QPainterPath path;
@@ -172,47 +135,8 @@ int LineHandler::defineSegment(QPointF const &pos)
 	return -1;
 }
 
-void LineHandler::moveSegment(QPointF const &pos)
-{
-	int segmentNumber = defineSegment(pos);
-	if (segmentNumber <= 0 || segmentNumber >= mEdge->line().count() - 2) {
-		return;
-	}
-
-	QPolygonF line = mSavedLine;
-	QLineF segment(line[segmentNumber], line[segmentNumber + 1]);
-	QPointF offset(pos - line[segmentNumber]);
-
-	if (segment.x1() == segment.x2()) {
-		offset.setY(0);
-	}
-
-	if (segment.y1() == segment.y2()) {
-		offset.setX(0);
-	}
-
-	line[segmentNumber] += offset;
-	line[segmentNumber + 1] += offset;
-	mEdge->setLine(line);
-	mEdge->update();
-
-}
-
 void LineHandler::improveAppearance()
 {
-	switch (mType) {
-	case brokenLine:
-		mEdge->delCloseLinePoints();
-		mEdge->deleteLoops();
-		break;
-	case squareLine:
-		mEdge->delCloseLinePoints();
-		mEdge->deleteLoops();
-		mEdge->squarize();
-		break;
-	case curveLine:
-		break;
-	}
 }
 
 bool LineHandler::checkPort(QPointF const &pos, bool isStart) const
