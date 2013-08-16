@@ -175,7 +175,6 @@ void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (!mShouldMove) {
 		setSelected(false);
-		parentItem()->grabMouse();
 		return;
 	}
 

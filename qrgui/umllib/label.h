@@ -20,7 +20,7 @@ public:
 
 	virtual ~Label();
 
-	void init(QRectF const& contents);
+	void init(QRectF const &contents);
 	void setBackground(QColor const &background);
 	void setScaling(bool scalingX, bool scalingY);
 
