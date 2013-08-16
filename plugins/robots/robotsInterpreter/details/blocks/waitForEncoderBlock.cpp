@@ -22,9 +22,10 @@ void WaitForEncoderBlock::run()
 	} else if (port.trimmed().toUpper() == "C") {
 		mEncoderSensor = &mRobotModel->encoderC();
 	}
+
 	if (!mEncoderSensor) {
 		mActiveWaitingTimer.stop();
-		error(tr("Encoder sensor is not configured on this port ")); // поправить имя ошибки
+		error(tr("Encoder sensor is not configured on this port "));
 		return;
 	}
 
@@ -38,9 +39,7 @@ void WaitForEncoderBlock::run()
 void WaitForEncoderBlock::responseSlot(int reading)
 {
 	int const tachoLimit = evaluate("TachoLimit").toInt();
-	if (reading >= tachoLimit) {
-		stop();
-	}
+	processResponce(reading, tachoLimit);
 }
 
 void WaitForEncoderBlock::timerTimeout()

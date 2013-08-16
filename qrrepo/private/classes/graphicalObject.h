@@ -37,6 +37,9 @@ public:
 	/// Creates empty graphical part with given index inside this object.
 	void createGraphicalPart(int index);
 
+	/// Returns a list of indexes of graphical parts.
+	QList<int> graphicalParts() const;
+
 	/// Returns the value of graphical part property.
 	/// @param index - index of a graphical part.
 	/// @param name - name of a property which value we want to get.

@@ -15,6 +15,7 @@ InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &
 void InterpreterElementImpl::initLabels(int const &width, int const &height, LabelFactoryInterface &factory
 		, QList<LabelInterface*> &titles)
 {
+	int index = 0;
 	for (QDomElement element = mGraphics.firstChildElement("graphics").firstChildElement("labels").firstChildElement("label");
 			!element.isNull();
 			element = element.nextSiblingElement("label"))
@@ -33,17 +34,19 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 			LabelInterface *title = NULL;
 			if (text.isEmpty()) {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createLabel(x.value(), y.value(), textBinded, readOnly == "true", rotation);
+				title = factory.createLabel(index, x.value(), y.value(), textBinded, readOnly == "true", rotation);
 			} else {
 				// This is a statical label, it does not need repository.
-				title = factory.createLabel(x.value(), y.value(), text, rotation);
+				title = factory.createLabel(index, x.value(), y.value(), text, rotation);
 			}
+
 			title->setBackground(QColor(background));
 			title->setScaling(x.isScalable(), y.isScalable());
 			title->setFlags(0);
 			title->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title);
 			mNodeLabels.append(NodeLabel(textBinded, center, title));
+			++index;
 		}
 	}
 }
@@ -160,11 +163,12 @@ void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<Lab
 			LabelInterface* title = NULL;
 			if (labelType == "Static text") {
 				// This is a statical label, it does not need repository.
-				title = labelFactory.createLabel(0, 0, labelText, 0);
+				title = labelFactory.createLabel(0, 0, 0, labelText, 0);
 			} else {
 				// It is a binded label, text for it will be taken from repository.
-				title = labelFactory.createLabel(0, 0, labelText, false, 0);
+				title = labelFactory.createLabel(0, 0, 0, labelText, false, 0);
 			}
+
 			title->setBackground(QColor(Qt::white));
 			title->setScaling(false, false);
 			title->setFlags(0);

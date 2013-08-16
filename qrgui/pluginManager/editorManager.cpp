@@ -250,7 +250,7 @@ QSize EditorManager::iconSize(Id const &id) const
 	return engine->preferedSize();
 }
 
-Element* EditorManager::graphicalObject(const Id &id) const
+ElementImpl *EditorManager::elementImpl(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
@@ -259,11 +259,7 @@ Element* EditorManager::graphicalObject(const Id &id) const
 		return 0;
 	}
 
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
-
-	return  new EdgeElement(impl);
+	return impl;
 }
 
 QStringList EditorManager::propertyNames(const Id &id) const

@@ -31,8 +31,9 @@ public:
 	 * @param pointPorts Point ports which belong to node.
 	 * @param linePorts Line ports which belong to node.
 	 */
-	PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi
+	PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 			, QList<PortInterface *> const &ports);
+
 	~PortHandler();
 
 	/**
@@ -84,12 +85,6 @@ public:
 	 * Arranges edges at line ports.
 	 */
 	void arrangeLinearPorts();
-
-	/**
-	 * Sets GraphicalModelAssistApi.
-	 * @param graphicalAssistApi New value for GraphicalModelAssistApi.
-	 */
-	void setGraphicalAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi);
 
 	/**
 	 * @brief drawPorts Renders all ports of specified types
@@ -192,7 +187,7 @@ private:
 	 * GraphicalModelAssistApi that used to reconnect some links
 	 * and ports (temporary disconnected and etc).
 	 */
-	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
+	qReal::models::GraphicalModelAssistApi &mGraphicalAssistApi;
 
 	/// List of point ports that belongs to mNode.
 	QList<StatPoint *> mPointPorts;

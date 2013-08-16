@@ -44,7 +44,12 @@ public:
 		noPort = -1
 	};
 
-	EdgeElement(ElementImpl *impl);
+	EdgeElement(ElementImpl *impl
+			, Id const &id
+			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			);
+
 	virtual ~EdgeElement();
 
 	void updateData();

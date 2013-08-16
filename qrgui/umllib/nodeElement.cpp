@@ -27,8 +27,12 @@
 using namespace qReal;
 using namespace qReal::commands;
 
-NodeElement::NodeElement(ElementImpl* impl)
-	: Element(impl)
+NodeElement::NodeElement(ElementImpl *impl
+		, Id const &id
+		, models::GraphicalModelAssistApi &graphicalAssistApi
+		, models::LogicalModelAssistApi &logicalAssistApi
+		)
+	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 	, mSwitchGridAction(tr("Switch on grid"), this)
 	, mPortsVisible(false)
 	, mDragState(None)
@@ -51,7 +55,7 @@ NodeElement::NodeElement(ElementImpl* impl)
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
 	mRenderer = new SdfRenderer();
-	LabelFactory labelFactory;
+	LabelFactory labelFactory(graphicalAssistApi, mId);
 	QList<LabelInterface*> titles;
 
 	QList<PortInterface *> ports;
@@ -59,8 +63,8 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, mRenderer, this);
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
 
-	foreach (LabelInterface *labelInterface, titles) {
-		Label *label = dynamic_cast<Label*>(labelInterface);
+	foreach (LabelInterface * const labelInterface, titles) {
+		Label * const label = dynamic_cast<Label *>(labelInterface);
 		if (!label) {
 			continue;
 		}
@@ -112,7 +116,7 @@ NodeElement::~NodeElement()
 
 NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
 {
-	CopyHandler copyHandler(this, mGraphicalAssistApi);
+	CopyHandler copyHandler(*this, mGraphicalAssistApi);
 	return copyHandler.clone(toCursorPos, searchForParents);
 }
 
@@ -127,18 +131,18 @@ NodeElement* NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
 
 QMap<QString, QVariant> NodeElement::graphicalProperties() const
 {
-	return mGraphicalAssistApi->properties(id());
+	return mGraphicalAssistApi.properties(id());
 }
 
 QMap<QString, QVariant> NodeElement::logicalProperties() const
 {
-	return mGraphicalAssistApi->properties(logicalId());
+	return mGraphicalAssistApi.properties(logicalId());
 }
 
 void NodeElement::setName(QString const &value, bool withUndoRedo)
 {
 	commands::AbstractCommand *command = new RenameCommand(mGraphicalAssistApi
-			, id(), value, &mLogicalAssistApi->exploser());
+			, id(), value, &mLogicalAssistApi.exploser());
 	if (withUndoRedo) {
 		mController->execute(command);
 	} else {
@@ -224,12 +228,12 @@ void NodeElement::storeGeometry()
 {
 	QPolygon contents(mContents.toAlignedRect()); // saving correct current contents
 
-	if ((pos() != mGraphicalAssistApi->position(id()))) { // check if it's been changed
-		mGraphicalAssistApi->setPosition(id(), pos());
+	if ((pos() != mGraphicalAssistApi.position(id()))) { // check if it's been changed
+		mGraphicalAssistApi.setPosition(id(), pos());
 	}
 
-	if (contents != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
-		mGraphicalAssistApi->setConfiguration(id(), contents);
+	if (contents != mGraphicalAssistApi.configuration(id())) { // check if it's been changed
+		mGraphicalAssistApi.setConfiguration(id(), contents);
 	}
 }
 
@@ -518,7 +522,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
-			evScene, mLogicalAssistApi, mGraphicalAssistApi, id(), id(), Id::rootId()
+			*evScene, mLogicalAssistApi, mGraphicalAssistApi, id(), id(), Id::rootId()
 			, event->scenePos(), boundingRect().bottomRight(), false);
 
 	bool shouldProcessResize = true;
@@ -543,7 +547,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			setPos(newPos);
 
 			if (insertBefore) {
-				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
+				mGraphicalAssistApi.stackBefore(id(), insertBefore->id());
 			}
 
 			newParent->resize();
@@ -627,16 +631,16 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	foreach (QString const &elementName, mGraphicalAssistApi->editorManagerInterface().elements(id().editor()
+	foreach (QString const &elementName, mGraphicalAssistApi.editorManagerInterface().elements(id().editor()
 			, id().diagram())) {
-		int ne = mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
+		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> const list = mGraphicalAssistApi->editorManagerInterface()
+			QList<StringPossibleEdge> const list = mGraphicalAssistApi.editorManagerInterface()
 					.possibleEdges(id().editor(), elementName);
-			foreach(StringPossibleEdge pEdge, list) {
-				if (mGraphicalAssistApi->editorManagerInterface().portTypes(id().type()).contains(pEdge.first.first)
-						|| (mGraphicalAssistApi->editorManagerInterface().portTypes(id().type()).contains(pEdge.first.second)
-								&& !pEdge.second.first))
+			foreach (StringPossibleEdge const &pEdge, list) {
+				QStringList const portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
+				if (portTypes.contains(pEdge.first.first)
+						|| (portTypes.contains(pEdge.first.second) && !pEdge.second.first))
 				{
 					PossibleEdgeType edge(pEdge.second.first, Id(id().editor(), id().diagram(), pEdge.second.second));
 					QSet<ElementPair> elementPairs = elementsForPossibleEdge(pEdge);
@@ -663,7 +667,7 @@ void NodeElement::initEmbeddedLinkers()
 		return;
 	}
 	QSet<qReal::Id> usedEdges;
-	foreach (PossibleEdgeType type, mPossibleEdgeTypes) {
+	foreach (PossibleEdgeType const &type, mPossibleEdgeTypes) {
 		if (usedEdges.contains(type.second)) {
 			continue;
 		}
@@ -744,8 +748,8 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (!mMoving) {
-		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
+		QPointF newpos = mGraphicalAssistApi.position(id());
+		QPolygon newpoly = mGraphicalAssistApi.configuration(id());
 
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
@@ -872,7 +876,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 			painter->restore();
 		}
 
-		if (mIsExpanded && mLogicalAssistApi->logicalRepoApi().outgoingExplosion(logicalId()) != qReal::Id()) {
+		if (mIsExpanded && mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != qReal::Id()) {
 			QRectF rect = diagramRenderingRect();
 			painter->drawImage(rect, mRenderedDiagram.scaled(rect.size().toSize()
 					, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -904,7 +908,7 @@ void NodeElement::changeExpanded()
 	} else {
 		mRenderTimer.stop();
 	}
-	mGraphicalAssistApi->mutableGraphicalRepoApi().setProperty(mId, "expanded", mIsExpanded ? "true" : "false");
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "expanded", mIsExpanded ? "true" : "false");
 }
 
 void NodeElement::changeFoldState()
@@ -928,7 +932,7 @@ void NodeElement::changeFoldState()
 		mCurUnfoldedContents.moveTo(pos());
 		setGeometry(mCurUnfoldedContents);
 	}
-	mGraphicalAssistApi->mutableGraphicalRepoApi().setProperty(mId, "folded", mIsFolded ? "true" : "false");
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "folded", mIsFolded ? "true" : "false");
 
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
 	if (parent) {
@@ -1064,8 +1068,8 @@ void NodeElement::updateByNewParent()
 void NodeElement::updateChildrenOrder()
 {
 	QStringList ids;
-	if (mGraphicalAssistApi->properties(mId).contains("childrenOrder")) {
-		ids = mGraphicalAssistApi->graphicalRepoApi().property(mId, "childrenOrder").toStringList();
+	if (mGraphicalAssistApi.properties(mId).contains("childrenOrder")) {
+		ids = mGraphicalAssistApi.graphicalRepoApi().property(mId, "childrenOrder").toStringList();
 	}
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
@@ -1083,7 +1087,7 @@ void NodeElement::updateChildrenOrder()
 			ids << child->id().toString();
 		}
 	}
-	mGraphicalAssistApi->mutableGraphicalRepoApi().setProperty(mId, "childrenOrder", ids);
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "childrenOrder", ids);
 
 }
 
@@ -1094,13 +1098,13 @@ QList<double> NodeElement::borderValues() const
 
 QSet<ElementPair> NodeElement::elementsForPossibleEdge(StringPossibleEdge const &edge)
 {
-	QStringList elements = mGraphicalAssistApi->editorManagerInterface().elements(id().editor(), id().diagram());
-	QStringList portTypes = mGraphicalAssistApi->editorManagerInterface().portTypes(id().type());
+	QStringList elements = mGraphicalAssistApi.editorManagerInterface().elements(id().editor(), id().diagram());
+	QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 
 	QSet<ElementPair> result;
 	foreach (QString const &element, elements) {
 		QStringList otherPortTypes
-				= mGraphicalAssistApi->editorManagerInterface().portTypes(Id(id().editor(), id().diagram(), element));
+				= mGraphicalAssistApi.editorManagerInterface().portTypes(Id(id().editor(), id().diagram(), element));
 		if (portTypes.contains(edge.first.first) && otherPortTypes.contains(edge.first.second)) {
 			result.insert(qMakePair(id().type(), Id(id().editor(), id().diagram(), element)));
 		}
@@ -1246,13 +1250,6 @@ QList<NodeElement *> const NodeElement::childNodes() const
 	return result;
 }
 
-void NodeElement::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
-{
-	Element::setAssistApi(graphicalAssistApi, logicalAssistApi);
-	mPortHandler->setGraphicalAssistApi(graphicalAssistApi);
-}
-
-
 void NodeElement::updateNodeEdges()
 {
 	mTimer->stop();
@@ -1301,8 +1298,8 @@ void NodeElement::updateShape(QString const &shape) const
 IdList NodeElement::sortedChildren() const
 {
 	IdList result;
-	if (mGraphicalAssistApi->properties(mId).contains("childrenOrder")) {
-		foreach (QString const &id, mGraphicalAssistApi->graphicalRepoApi().property(mId, "childrenOrder")
+	if (mGraphicalAssistApi.properties(mId).contains("childrenOrder")) {
+		foreach (QString const &id, mGraphicalAssistApi.graphicalRepoApi().property(mId, "childrenOrder")
 				.toStringList()) {
 			result << Id::loadFromString(id);
 		}
@@ -1312,7 +1309,7 @@ IdList NodeElement::sortedChildren() const
 
 void NodeElement::initRenderedDiagram()
 {
-	if (!mIsExpanded || mLogicalAssistApi->logicalRepoApi().outgoingExplosion(logicalId()) == qReal::Id()) {
+	if (!mIsExpanded || mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) == qReal::Id()) {
 		return;
 	}
 
@@ -1323,8 +1320,8 @@ void NodeElement::initRenderedDiagram()
 
 	MainWindow *window = evScene->mainWindow();
 
-	Id const diagram = mLogicalAssistApi->logicalRepoApi().outgoingExplosion(logicalId());
-	Id const graphicalDiagram = mGraphicalAssistApi->graphicalIdsByLogicalId(diagram)[0];
+	Id const diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	Id const graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
 	EditorView view(window);
 	EditorViewScene *openedScene = dynamic_cast<EditorViewScene *>(view.scene());
@@ -1358,11 +1355,20 @@ void NodeElement::initRenderedDiagram()
 QRectF NodeElement::diagramRenderingRect() const
 {
 	EditorViewScene const *evScene = dynamic_cast<EditorViewScene *>(scene());
-	NodeElement const *initial = dynamic_cast<NodeElement *>(evScene->mainWindow()->editorManager().graphicalObject(id()));
+	NodeElement const *initial = new NodeElement(
+			evScene->mainWindow()->editorManager().elementImpl(id())
+			, id().sameTypeId()
+			, mGraphicalAssistApi
+			, mLogicalAssistApi
+			);
+
 	qreal const xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);
 	qreal const yCoeff = (boundingRect().height() - 3 * kvadratik) / (initial->boundingRect().height() - 3 *kvadratik);
 
+	delete initial;
+
 	// QReal:BP hardcode
+	// TODO: Remove this.
 	QRectF result(QPointF(25 * xCoeff, 25 * yCoeff), QPointF(185 * xCoeff, 115 * yCoeff));
 
 	QPointF oldCenter(result.center());

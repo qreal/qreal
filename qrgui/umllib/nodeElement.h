@@ -16,7 +16,6 @@
 #include "edgeElement.h"
 #include "embedded/linkers/embeddedLinker.h"
 #include "../editorPluginInterface/elementImpl.h"
-#include "embedded/linkers/embeddedLinker.h"
 
 #include "private/sceneGridHandler.h"
 #include "private/umlPortHandler.h"
@@ -35,7 +34,12 @@ class NodeElement : public Element
 	Q_OBJECT
 
 public:
-	explicit NodeElement(ElementImpl *impl);
+	explicit NodeElement(ElementImpl *impl
+			, Id const &id
+			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			);
+
 	virtual ~NodeElement();
 
 	/**
@@ -88,8 +92,6 @@ public:
 
 	void setPortsVisible(bool value);
 
-	void hideEmbeddedLinkers();
-
 	bool isPort() const;
 	bool canHavePorts();
 
@@ -132,9 +134,6 @@ public:
 
 	QList<EdgeElement *> const edgeList() const;
 	QList<NodeElement *> const childNodes() const;
-
-	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 	void setVisibleEmbeddedLinkers(bool const show);
 	void updateShape(QString const &shape) const;

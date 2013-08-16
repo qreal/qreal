@@ -72,4 +72,5 @@ void Models::reinit()
 {
 	mLogicalModel->reinit();
 	mGraphicalModel->reinit();
+	mGraphicalPartModel->reinit();
 }

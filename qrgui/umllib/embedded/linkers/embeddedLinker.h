@@ -24,9 +24,9 @@ public:
 	void initTitle();
 	void generateColor();
 
-	bool isDirected();
-	qReal::Id getEdgeType();
-	NodeElement* getMaster();
+	bool isDirected() const;
+	qReal::Id edgeType() const;
+	NodeElement* master() const;
 
 	void setDirected(const bool directed);
 	void setMaster(NodeElement* const master);

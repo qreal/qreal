@@ -3,9 +3,9 @@
 
 using namespace qReal::commands;
 
-CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
-		, models::LogicalModelAssistApi * const logicalApi
-		, models::GraphicalModelAssistApi * const graphicalApi
+CreateGroupCommand::CreateGroupCommand(EditorViewScene &scene
+		, models::LogicalModelAssistApi &logicalApi
+		, models::GraphicalModelAssistApi &graphicalApi
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, Id const &id
@@ -19,7 +19,7 @@ CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 	, mId(id)
 	, mIsFromLogicalModel(isFromLogicalModel)
 	, mPosition(position)
-	, mPattern(graphicalApi->editorManagerInterface().getPatternByName(id.element()))
+	, mPattern(graphicalApi.editorManagerInterface().getPatternByName(id.element()))
 {
 	QPointF size = mPattern.size();
 	foreach (GroupNode const &node, mPattern.nodes()) {
@@ -27,8 +27,8 @@ CreateGroupCommand::CreateGroupCommand(EditorViewScene * const scene
 		QPointF const nodePos(position.x()- size.x()/2 + node.position.x()
 						, position.y() + node.position.y());
 		CreateElementCommand *createNodeCommand = new CreateElementCommand(
-					logicalApi, graphicalApi, logicalParent, graphicalParent, element
-					, isFromLogicalModel, "(" + node.type + ")", nodePos);
+				logicalApi, graphicalApi, logicalParent, graphicalParent, element
+				, isFromLogicalModel, "(" + node.type + ")", nodePos);
 		mNodeCommands.append(createNodeCommand);
 		addPreAction(createNodeCommand);
 	}
@@ -55,9 +55,9 @@ bool CreateGroupCommand::execute()
 		CreateElementCommand const *createEdgeCommand = mEdgeCommands[i];
 		GroupEdge const groupEdge = mPattern.edges()[i];
 		Id const newEdgeId = createEdgeCommand->result();
-		mGraphicalApi->setFrom(newEdgeId, nodes.value(groupEdge.from));
-		mGraphicalApi->setTo(newEdgeId, nodes.value(groupEdge.to));
-		mScene->reConnectLink(mScene->getEdgeById(newEdgeId));
+		mGraphicalApi.setFrom(newEdgeId, nodes.value(groupEdge.from));
+		mGraphicalApi.setTo(newEdgeId, nodes.value(groupEdge.to));
+		mScene.reConnectLink(mScene.getEdgeById(newEdgeId));
 	}
 	InsertIntoEdgeCommand *insertCommand = new InsertIntoEdgeCommand(mScene, mLogicalApi, mGraphicalApi
 			, nodes.value(mPattern.inNode()), nodes.value(mPattern.outNode()), mGraphicalParent, mPosition

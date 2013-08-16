@@ -40,7 +40,7 @@ public:
 	virtual QString propertyDescription(Id const &id, QString const &propertyName) const = 0;
 	virtual QString propertyDisplayedName(Id const &id, QString const &propertyName) const = 0;
 	virtual QIcon icon(Id const &id) const = 0;
-	virtual Element* graphicalObject(Id const &id) const = 0;
+	virtual ElementImpl* elementImpl(Id const &id) const = 0;
 
 	virtual IdList containedTypes(const Id &id) const = 0;
 	virtual QList<Explosion> explosions(Id const &source) const = 0;

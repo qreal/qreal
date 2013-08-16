@@ -37,7 +37,7 @@ public:
 	QString propertyDescription(Id const &id, QString const &propertyName) const;
 	QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
 	QIcon icon(Id const &id) const;
-	Element* graphicalObject(Id const &id) const;
+	ElementImpl* elementImpl(Id const &id) const;
 
 	IdList containedTypes(const Id &id) const;
 	IdList usedTypes(const Id &id) const;

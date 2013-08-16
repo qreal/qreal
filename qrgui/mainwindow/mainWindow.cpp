@@ -701,8 +701,8 @@ commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
 
 	if (graphicalIds.isEmpty()) {
 		return new RemoveElementCommand(
-				&mModels->logicalModelAssistApi()
-				, &mModels->graphicalModelAssistApi()
+				mModels->logicalModelAssistApi()
+				, mModels->graphicalModelAssistApi()
 				, mModels->logicalRepoApi().parent(id)
 				, Id()
 				, id
@@ -727,8 +727,8 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 {
 	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
 	AbstractCommand *result = new RemoveElementCommand(
-				&mModels->logicalModelAssistApi()
-				, &mModels->graphicalModelAssistApi()
+				mModels->logicalModelAssistApi()
+				, mModels->graphicalModelAssistApi()
 				, mModels->logicalRepoApi().parent(logicalId)
 				, mModels->graphicalRepoApi().parent(id)
 				, id
@@ -736,6 +736,7 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 				, mModels->graphicalModelAssistApi().name(id)
 				, mModels->graphicalModelAssistApi().position(id)
 				);
+
 	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
 	foreach (Id const &child, children) {
@@ -1669,7 +1670,7 @@ void MainWindow::highlight(Id const &graphicalId, bool exclusive, QColor const &
 		Element const * const element = scene->getElem(graphicalId);
 		if (element) {
 			scene->highlight(graphicalId, exclusive, color);
-			view->ensureElementVisible(element);
+			view->ensureElementVisible(element, 0, 0);
 		}
 	}
 }

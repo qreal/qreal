@@ -67,9 +67,9 @@ QIcon ProxyEditorManager::icon(Id const &id) const
 	return mProxiedEditorManager->icon(id);
 }
 
-Element* ProxyEditorManager::graphicalObject(Id const &id) const
+ElementImpl *ProxyEditorManager::elementImpl(Id const &id) const
 {
-	return mProxiedEditorManager->graphicalObject(id);
+	return mProxiedEditorManager->elementImpl(id);
 }
 
 IdList ProxyEditorManager::containedTypes(const Id &id) const

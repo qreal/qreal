@@ -18,6 +18,8 @@ public:
 	virtual void startTracking();
 	virtual void stopTracking();
 
+	bool somethingChanged() const;
+
 protected:
 	bool execute();
 	bool restoreState();
