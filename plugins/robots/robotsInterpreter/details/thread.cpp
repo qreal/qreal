@@ -144,11 +144,15 @@ void Thread::turnOn(blocks::Block * const block)
 
 	++mBlocksSincePreviousEventsProcessing;
 	if (mBlocksSincePreviousEventsProcessing > blocksCountTillProcessingEvents) {
-		// Here we want to process all accumulated events and
+		// Here we want to process all accumulated events and terminate blocks recursion
 		mBlocksSincePreviousEventsProcessing = 0;
 
-		// After QApplication::processEvents() call thread can be destroyed, so
-		// we can not access fields, but can access variables on a stack.
+		// After timer was started control flow returns to event loop and
+		// among events there can be the one that destroys this thread instance.
+		// There are some suspicions that in QObject destructor children are removed
+		// not immediately but with deleteLater() method. So there is a small probability
+		// that slot will be triggered after this object is destroyed. Then
+		// we can not access fields, but can access alive block instance in mapper.
 		// Kind of hack, but quite an easy way not to suspend everything if
 		// interpreted program has an infinite loop without timers.
 		mProcessEventsMapper->removeMappings(mProcessEventsTimer);
