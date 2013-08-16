@@ -581,7 +581,6 @@ void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const
 	} else {
 		out() << "\telse if (element == \"" << name << "\") {\n";
 	}
-	}
 }
 
 QString GraphicType::resourceName(QString const &resourceType) const
@@ -643,26 +642,6 @@ void GraphicType::generateParentsMapping(utils::OutFile &out)
 		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\"" << NameNormalizer::normalize(parent) << "\"))\n";
 	}
 	out() << "\t;\n";
-}
-
-void GraphicType::generateExplosionsMap(OutFile &out)
-{
-	if (mExplosions.isEmpty()) {
-		return;
-	}
-
-	QString const diagramName = NameNormalizer::normalize(mDiagram->name());
-	QString const normalizedName = NameNormalizer::normalize(qualifiedName());
-	foreach (QString const &target, mExplosions.keys()) {
-		bool const reusable = mExplosions[target].first;
-		bool const immediateLinkage = mExplosions[target].second;
-
-		out() << "\tmExplosionsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]";
-		out() << QString(" << ExplosionData(\"%1\", \"%2\", %3, %4);\n").arg(diagramName
-				, NameNormalizer::normalize(target)
-				, reusable ? "true" : "false"
-				, immediateLinkage ? "true" : "false");
-	}
 }
 
 QVector<int> GraphicType::toIntVector(QString const &s, bool *isOk) const
