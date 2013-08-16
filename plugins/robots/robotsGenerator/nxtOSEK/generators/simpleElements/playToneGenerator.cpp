@@ -12,14 +12,14 @@ PlayToneGenerator::PlayToneGenerator()
 {
 }
 
-QList<SmartLine> PlayToneGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> PlayToneGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 	QString const frequency = nxtGen->intExpression(logicElementId, "Frequency");
 	QString const duration = nxtGen->intExpression(logicElementId, "Duration");
 	QString const volume = nxtGen->intExpression(logicElementId, "Volume");
-	result.append(SmartLine(QString("ecrobot_sound_tone(%1, %2, %3);").arg(
+	result.append(SmartLine_old(QString("ecrobot_sound_tone(%1, %2, %3);").arg(
 			(frequency.trimmed().isEmpty() ? defaultFrequency : frequency)
 			, (duration.trimmed().isEmpty() ? defaultDuration : duration)
 			, (volume.trimmed().isEmpty() ? defaultVolume : volume)), elementId));

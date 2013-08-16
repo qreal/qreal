@@ -12,9 +12,9 @@ SimpleElementGenerator::SimpleElementGenerator(NxtOSEKRobotGenerator *emboxGen
 {
 }
 
-QList<SmartLine> SimpleElementGenerator::convertBlockIntoCode()
+QList<SmartLine_old> SimpleElementGenerator::convertBlockIntoCode()
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
@@ -53,17 +53,17 @@ bool SimpleElementGenerator::nextElementsGeneration()
 	return true;
 }
 
-QList<SmartLine> SimpleElementGenerator::addLoopCodeInPrefixForm()
+QList<SmartLine_old> SimpleElementGenerator::addLoopCodeInPrefixForm()
 {
-	QList<SmartLine> result;
-	result << SmartLine("while (true) {", mElementId, SmartLine::increase);
+	QList<SmartLine_old> result;
+	result << SmartLine_old("while (true) {", mElementId, SmartLine_old::increase);
 	return result;
 }
 
-QList<SmartLine> SimpleElementGenerator::addLoopCodeInPostfixForm()
+QList<SmartLine_old> SimpleElementGenerator::addLoopCodeInPostfixForm()
 {
-	QList<SmartLine> result;
-	result << SmartLine("}", mElementId, SmartLine::decrease);
+	QList<SmartLine_old> result;
+	result << SmartLine_old("}", mElementId, SmartLine_old::decrease);
 	return result;
 }
 

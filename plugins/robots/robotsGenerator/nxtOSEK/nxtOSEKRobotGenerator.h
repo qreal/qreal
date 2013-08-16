@@ -45,9 +45,9 @@ public:
 	/// true otherwise (primary generation of main task code)
 	bool areWeGeneratingMainTask() const;
 
-	QList<SmartLine> &initCode();
-	QList<SmartLine> &terminateCode();
-	QList<SmartLine> &isrHooksCode();
+	QList<SmartLine_old> &initCode();
+	QList<SmartLine_old> &terminateCode();
+	QList<SmartLine_old> &isrHooksCode();
 
 	qrRepo::RepoApi const *api() const;
 	qReal::ErrorReporterInterface &errorReporter();
@@ -76,7 +76,7 @@ private:
 	void deleteResidualLabels(QString const &projectName);
 	void generateMakeFile(QString const &projectName, QString const &projectDir);
 	void generateFilesForBalancer(QString const &projectDir);
-	QString toString(QList<SmartLine> const &lineList);
+	QString toString(QList<SmartLine_old> const &lineList);
 	void addResultCodeInCFile(int curInitialNodeNumber);
 	void outputInCAndOilFile(QString const &projectName, QString const &projectDir);
 	void initializeFields(QString const &resultTaskTemplate);
@@ -93,9 +93,9 @@ private:
 	bool mIsNeedToDeleteMApi;
 	QString mDestinationPath;
 
-	QList<SmartLine> mInitCode;
-	QList<SmartLine> mTerminateCode;
-	QList<SmartLine> mIsrHooksCode;
+	QList<SmartLine_old> mInitCode;
+	QList<SmartLine_old> mTerminateCode;
+	QList<SmartLine_old> mIsrHooksCode;
 
 	Variables mVariables;
 	int mVariablePlaceInGenStrSet;

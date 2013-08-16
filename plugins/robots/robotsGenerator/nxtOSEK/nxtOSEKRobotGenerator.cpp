@@ -53,18 +53,18 @@ NxtOSEKRobotGenerator::~NxtOSEKRobotGenerator()
 	}
 }
 
-QString NxtOSEKRobotGenerator::toString(QList<SmartLine> const &lineList)
+QString NxtOSEKRobotGenerator::toString(QList<SmartLine_old> const &lineList)
 {
 	QString resultCode;
-	foreach (SmartLine const &curLine, lineList) {
-		if (curLine.indentLevelChange() == SmartLine::decrease
-				|| curLine.indentLevelChange() == SmartLine::decreaseOnlyThisLine)
+	foreach (SmartLine_old const &curLine, lineList) {
+		if (curLine.indentLevelChange() == SmartLine_old::decrease
+				|| curLine.indentLevelChange() == SmartLine_old::decreaseOnlyThisLine)
 		{
 			--mCurTabNumber;
 		}
 		resultCode += QString(mCurTabNumber, '\t') + curLine.text() + "\n";
-		if (curLine.indentLevelChange() == SmartLine::increase
-				|| curLine.indentLevelChange() == SmartLine::decreaseOnlyThisLine)
+		if (curLine.indentLevelChange() == SmartLine_old::increase
+				|| curLine.indentLevelChange() == SmartLine_old::decreaseOnlyThisLine)
 		{
 			++mCurTabNumber;
 		}
@@ -195,17 +195,17 @@ Variables &NxtOSEKRobotGenerator::variables()
 	return mVariables;
 }
 
-QList<SmartLine> &NxtOSEKRobotGenerator::initCode()
+QList<SmartLine_old> &NxtOSEKRobotGenerator::initCode()
 {
 	return mInitCode;
 }
 
-QList<SmartLine> &NxtOSEKRobotGenerator::terminateCode()
+QList<SmartLine_old> &NxtOSEKRobotGenerator::terminateCode()
 {
 	return mTerminateCode;
 }
 
-QList<SmartLine> &NxtOSEKRobotGenerator::isrHooksCode()
+QList<SmartLine_old> &NxtOSEKRobotGenerator::isrHooksCode()
 {
 	return mIsrHooksCode;
 }

@@ -14,13 +14,13 @@ public:
 	SimpleElementGenerator(NxtOSEKRobotGenerator *mainGenerator, qReal::Id const &elementId);
 
 protected:
-	virtual QList<SmartLine> addLoopCodeInPrefixForm();
-	virtual QList<SmartLine> addLoopCodeInPostfixForm();
+	virtual QList<SmartLine_old> addLoopCodeInPrefixForm();
+	virtual QList<SmartLine_old> addLoopCodeInPostfixForm();
 
 	virtual bool preGenerationCheck();
 	virtual bool nextElementsGeneration();
 
-	virtual QList<SmartLine> convertBlockIntoCode();
+	virtual QList<SmartLine_old> convertBlockIntoCode();
 };
 
 }

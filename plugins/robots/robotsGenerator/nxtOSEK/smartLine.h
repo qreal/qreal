@@ -8,7 +8,7 @@ namespace generator {
 
 /// Class for representing code line generated from Robot Language Diagram.
 /// Contains information for formatting (indent level change) and connection with master object ID.
-class SmartLine {
+class SmartLine_old {
 public:
 	/// Indent control type.
 	enum IndentChangeType {
@@ -18,7 +18,7 @@ public:
 		decreaseOnlyThisLine ///< decreases indent only for this line
 	};
 
-	SmartLine(QString const &text, qReal::Id const &elementId, IndentChangeType indentLevelChange = withoutChange);
+	SmartLine_old(QString const &text, qReal::Id const &elementId, IndentChangeType indentLevelChange = withoutChange);
 
 	QString text() const;
 	qReal::Id elementId() const;

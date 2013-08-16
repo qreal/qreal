@@ -22,15 +22,15 @@ void EnginesGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen  //
 			+ initTerminateVelocity + ", "
 			+ initTerminateBrakeMode + ");";
 	if (!ListSmartLine::isContains(nxtGen->initCode(), initCodeEngines)) {
-		nxtGen->initCode().append(SmartLine(initCodeEngines, elementId));
-		nxtGen->terminateCode().append(SmartLine(terminateCodeEngines, elementId));
+		nxtGen->initCode().append(SmartLine_old(initCodeEngines, elementId));
+		nxtGen->terminateCode().append(SmartLine_old(terminateCodeEngines, elementId));
 	}
 }
 
-QList<SmartLine> EnginesGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> EnginesGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		 , qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 
 	QString const signRotate = mEngineType == "EnginesBackward" ? "-" : "";
 	QString const power = nxtGen->api()->stringProperty(logicElementId, "Power");
@@ -41,7 +41,7 @@ QList<SmartLine> EnginesGenerator::convertElementIntoDirectCommand(NxtOSEKRobotG
 	QByteArray const brakeMode = brakeModeRaw == QString::fromUtf8("скользить") ? "0" : "1";
 
 	foreach (QString const &enginePort, portsToEngineNames(nxtGen->api()->stringProperty(logicElementId, "Ports"))) {
-		result.append(SmartLine("nxt_motor_set_speed("
+		result.append(SmartLine_old("nxt_motor_set_speed("
 				+ enginePort + ", "
 				+ intPower + ", "
 				+ brakeMode + ");", elementId));

@@ -8,10 +8,10 @@ WaitForGyroscopeBlockGenerator::WaitForGyroscopeBlockGenerator()
 {
 }
 
-QList<SmartLine> WaitForGyroscopeBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> WaitForGyroscopeBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 
 	QString const port = "NXT_PORT_S" + nxtGen->api()->stringProperty(logicElementId, "Port");
 
@@ -21,9 +21,9 @@ QList<SmartLine> WaitForGyroscopeBlockGenerator::convertElementIntoDirectCommand
 
 	QString const condition = inequalitySign + " " + degrees;
 
-	result.append(SmartLine("while (!(ecrobot_get_gyro_sensor(" + port
+	result.append(SmartLine_old("while (!(ecrobot_get_gyro_sensor(" + port
 			+ ") " + condition + ")) {", elementId));
-	result.append(SmartLine("}", elementId));
+	result.append(SmartLine_old("}", elementId));
 
 	return result;
 }

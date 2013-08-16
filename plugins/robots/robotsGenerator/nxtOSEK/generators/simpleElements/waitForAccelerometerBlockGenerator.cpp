@@ -14,15 +14,15 @@ void WaitForAccelerometerBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGen
 	QString const initCode = "ecrobot_init_accel_sensor(" + port + ");";
 	if (!ListSmartLine::isContains(nxtGen->initCode(), initCode)) {
 		QString const terminateCode = "ecrobot_term_accel_sensor(" + port + ");";
-		nxtGen->initCode().append(SmartLine(initCode, elementId));
-		nxtGen->terminateCode().append(SmartLine(terminateCode, elementId));
+		nxtGen->initCode().append(SmartLine_old(initCode, elementId));
+		nxtGen->terminateCode().append(SmartLine_old(terminateCode, elementId));
 	}
 }
 
-QList<SmartLine> WaitForAccelerometerBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> WaitForAccelerometerBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 
 	QString const port = "NXT_PORT_S" + nxtGen->api()->stringProperty(logicElementId, "Port");
 
@@ -43,10 +43,10 @@ QList<SmartLine> WaitForAccelerometerBlockGenerator::convertElementIntoDirectCom
 	}
 	condition += inequalitySign + " " + acceleration;;
 
-	result.append(SmartLine("int[3] buf;",elementId));
-	result.append(SmartLine("while (!(ecrobot_get_accel_sensor(" + port + "" + ", buf[3]"
+	result.append(SmartLine_old("int[3] buf;",elementId));
+	result.append(SmartLine_old("while (!(ecrobot_get_accel_sensor(" + port + "" + ", buf[3]"
 			+ ") " + " && " + condition + ")) {", elementId));
-	result.append(SmartLine("}", elementId));
+	result.append(SmartLine_old("}", elementId));
 
 	addInitAndTerminateCode(nxtGen, port, elementId);
 	return result;

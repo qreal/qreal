@@ -14,7 +14,7 @@ public:
 	WaitForGyroscopeBlockGenerator();
 
 protected:
-	virtual QList<SmartLine> convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+	virtual QList<SmartLine_old> convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 			, qReal::Id const &elementId, qReal::Id const &logicElementId);
 
 private:

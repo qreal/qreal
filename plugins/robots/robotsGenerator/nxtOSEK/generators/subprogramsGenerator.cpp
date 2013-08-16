@@ -12,7 +12,7 @@ SubprogramsGenerator::SubprogramsGenerator(NxtOSEKRobotGenerator * const nxtGene
 {
 }
 
-QList<SmartLine> &SubprogramsGenerator::generatedCode()
+QList<SmartLine_old> &SubprogramsGenerator::generatedCode()
 {
 	return mGeneratedCode;
 }
@@ -27,8 +27,8 @@ void SubprogramsGenerator::usageFound(Id const &logicalId)
 
 bool SubprogramsGenerator::generate()
 {
-	QMap<Id, QList<SmartLine> > declarations;
-	QMap<Id, QList<SmartLine> > implementations;
+	QMap<Id, QList<SmartLine_old> > declarations;
+	QMap<Id, QList<SmartLine_old> > implementations;
 
 	Id toGen = firstToGenerate();
 	while (toGen != Id()) {
@@ -53,7 +53,7 @@ bool SubprogramsGenerator::generate()
 		implementations[toGen] = generator.generatedCode();
 
 		QString const forwardDeclaration = QString("void %1();").arg(identifier);
-		declarations[toGen] = QList<SmartLine>() << SmartLine(forwardDeclaration, toGen);
+		declarations[toGen] = QList<SmartLine_old>() << SmartLine_old(forwardDeclaration, toGen);
 
 		toGen = firstToGenerate();
 	}
@@ -63,32 +63,32 @@ bool SubprogramsGenerator::generate()
 	return true;
 }
 
-void SubprogramsGenerator::mergeCode(QMap<Id, QList<SmartLine> > const &declarations
-		, QMap<Id, QList<SmartLine> > const &implementations)
+void SubprogramsGenerator::mergeCode(QMap<Id, QList<SmartLine_old> > const &declarations
+		, QMap<Id, QList<SmartLine_old> > const &implementations)
 {
 	if (!declarations.keys().isEmpty()) {
-		mGeneratedCode << SmartLine("/* Subprograms declarations */", Id())
-				<< SmartLine("", Id());
+		mGeneratedCode << SmartLine_old("/* Subprograms declarations */", Id())
+				<< SmartLine_old("", Id());
 	}
 
 	foreach (Id const &id, declarations.keys()) {
 		mGeneratedCode += declarations[id];
 	}
 
-	mGeneratedCode << SmartLine("", Id());
+	mGeneratedCode << SmartLine_old("", Id());
 
 	if (!implementations.keys().isEmpty()) {
-		mGeneratedCode << SmartLine("/* Subprograms implementations */", Id())
-				 << SmartLine("", Id());
+		mGeneratedCode << SmartLine_old("/* Subprograms implementations */", Id())
+				 << SmartLine_old("", Id());
 	}
 
 	foreach (Id const &id, implementations.keys()) {
 		QString const signature = QString("void %1()").arg(
 				SubprogramsSimpleGenerator::identifier(mMainGenerator, id));
-		mGeneratedCode << SmartLine(signature, id) << SmartLine("{", id, SmartLine::increase);
+		mGeneratedCode << SmartLine_old(signature, id) << SmartLine_old("{", id, SmartLine_old::increase);
 		mGeneratedCode += implementations[id];
-		mGeneratedCode << SmartLine("}", id, SmartLine::decrease)
-				<< SmartLine("", id);
+		mGeneratedCode << SmartLine_old("}", id, SmartLine_old::decrease)
+				<< SmartLine_old("", id);
 	}
 }
 

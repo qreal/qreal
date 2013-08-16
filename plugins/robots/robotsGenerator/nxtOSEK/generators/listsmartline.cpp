@@ -4,9 +4,9 @@ ListSmartLine::ListSmartLine()
 {
 }
 
-bool ListSmartLine::isContains(QList<SmartLine> const &storage, QString const &templateCode)
+bool ListSmartLine::isContains(QList<SmartLine_old> const &storage, QString const &templateCode)
 {
-	foreach (SmartLine const &code, storage) {
+	foreach (SmartLine_old const &code, storage) {
 		if (code.text() == templateCode) {
 			return true;
 		}
@@ -14,9 +14,9 @@ bool ListSmartLine::isContains(QList<SmartLine> const &storage, QString const &t
 	return false;
 }
 
-bool ListSmartLine::isContainsPart(QList<SmartLine> const &storage, QString const &templateCode)
+bool ListSmartLine::isContainsPart(QList<SmartLine_old> const &storage, QString const &templateCode)
 {
-	foreach (SmartLine const &code, storage) {
+	foreach (SmartLine_old const &code, storage) {
 		if (templateCode.compare(code.text()) <= 0) {
 			return true;
 		}

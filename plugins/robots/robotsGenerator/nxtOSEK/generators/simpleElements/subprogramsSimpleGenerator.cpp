@@ -3,11 +3,11 @@
 
 using namespace robots::generator;
 
-QList<SmartLine> SubprogramsSimpleGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> SubprogramsSimpleGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	nxtGen->subprogramsGenerator().usageFound(logicElementId);
-	return QList<SmartLine>() << SmartLine(identifier(nxtGen, elementId) + "();", elementId);
+	return QList<SmartLine_old>() << SmartLine_old(identifier(nxtGen, elementId) + "();", elementId);
 }
 
 QString SubprogramsSimpleGenerator::identifier(NxtOSEKRobotGenerator const *nxtGen, qReal::Id const &id)

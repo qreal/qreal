@@ -17,14 +17,14 @@ void WaitForSonarBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *
 	QString const initCode = "ecrobot_init_sonar_sensor(" + port + ");";
 	if (!ListSmartLine::isContains(nxtGen->initCode(), initCode)) {
 		QString const terminateCode = "ecrobot_term_sonar_sensor(" + port + ");";
-		nxtGen->initCode().append(SmartLine(initCode, elementId));
-		nxtGen->terminateCode().append(SmartLine(terminateCode, elementId));
+		nxtGen->initCode().append(SmartLine_old(initCode, elementId));
+		nxtGen->terminateCode().append(SmartLine_old(terminateCode, elementId));
 	}
 }
-QList<SmartLine> WaitForSonarBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> WaitForSonarBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 
 	QString const port = "NXT_PORT_S" + nxtGen->api()->stringProperty(logicElementId, "Port");
 	QString const distance = nxtGen->api()->stringProperty(logicElementId, "Distance");
@@ -32,11 +32,11 @@ QList<SmartLine> WaitForSonarBlockGenerator::convertElementIntoDirectCommand(Nxt
 			, "Sign").toUtf8()));
 	QString const condition = inequalitySign + " " + distance;
 
-	result.append(SmartLine("while (!(ecrobot_get_sonar_sensor(" + port + ") "
-			+ condition + ")) {", elementId, SmartLine::increase));
-	result.append(SmartLine(QString("systick_wait_ms(%1);").arg(
+	result.append(SmartLine_old("while (!(ecrobot_get_sonar_sensor(" + port + ") "
+			+ condition + ")) {", elementId, SmartLine_old::increase));
+	result.append(SmartLine_old(QString("systick_wait_ms(%1);").arg(
 			QString::number(sleepInterval)), elementId));
-	result.append(SmartLine("}", elementId, SmartLine::decrease));
+	result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
 
 	addInitAndTerminateCode(nxtGen, port, elementId);
 

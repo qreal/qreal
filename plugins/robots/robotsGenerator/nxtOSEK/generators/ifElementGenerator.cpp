@@ -11,20 +11,20 @@ IfElementGenerator::IfElementGenerator(NxtOSEKRobotGenerator *emboxGen
 {
 }
 
-QList<SmartLine> IfElementGenerator::addLoopCodeInPrefixForm()
+QList<SmartLine_old> IfElementGenerator::addLoopCodeInPrefixForm()
 {
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 	QString condition = mNxtGen->api()->property(logicElementId, "Condition").toString();
 	condition = replaceSensorAndEncoderVariables(condition);
 
-	return QList<SmartLine>() << SmartLine("while (" + condition + ") {"
-			, mElementId, SmartLine::increase); //TODO;
+	return QList<SmartLine_old>() << SmartLine_old("while (" + condition + ") {"
+			, mElementId, SmartLine_old::increase); //TODO;
 }
 
-QList<SmartLine> IfElementGenerator::addLoopCodeInPostfixForm()
+QList<SmartLine_old> IfElementGenerator::addLoopCodeInPostfixForm()
 {
-	QList<SmartLine> result;
-	result << SmartLine("}", mElementId, SmartLine::decrease);
+	QList<SmartLine_old> result;
+	result << SmartLine_old("}", mElementId, SmartLine_old::decrease);
 	return result;
 }
 
@@ -236,32 +236,32 @@ void IfElementGenerator::generateIfBlock(bool isPositiveBranchReturnsToBackElems
 	QString const condition = isPositiveBranchReturnsToBackElems
 			? QString("!(%1)").arg(rawCondition) : rawCondition;
 
-	QList<SmartLine> ifBlock;
-	ifBlock << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
-	ifBlock << SmartLine("break;", mElementId, SmartLine::withoutChange);
-	ifBlock << SmartLine("}", mElementId, SmartLine::decrease);
+	QList<SmartLine_old> ifBlock;
+	ifBlock << SmartLine_old("if (" + condition + ") {", mElementId, SmartLine_old::increase);
+	ifBlock << SmartLine_old("break;", mElementId, SmartLine_old::withoutChange);
+	ifBlock << SmartLine_old("}", mElementId, SmartLine_old::decrease);
 	mNxtGen->currentGenerator()->generatedStringSet() << ifBlock;
 	generateBranch(cycleBlock);
 
-	QList<SmartLine> ifBlockPostfix;
+	QList<SmartLine_old> ifBlockPostfix;
 	generateBranch(nonCycleBlock);
 	mNxtGen->currentGenerator()->generatedStringSet() << ifBlockPostfix;
 }
 
 void IfElementGenerator::generateBlockIfElseIs(QString const &condition)
 {
-	QList<SmartLine> ifBlockPrefix;
-	ifBlockPrefix << SmartLine("if (" + condition + ") {", mElementId, SmartLine::increase);
+	QList<SmartLine_old> ifBlockPrefix;
+	ifBlockPrefix << SmartLine_old("if (" + condition + ") {", mElementId, SmartLine_old::increase);
 	mNxtGen->currentGenerator()->generatedStringSet() << ifBlockPrefix;
 
 	// generate true/false blocks
 	generateBranch(mTrueId);
-	QList<SmartLine> elseBlock;
-	elseBlock << SmartLine("} else {", mElementId, SmartLine::decreaseOnlyThisLine);
+	QList<SmartLine_old> elseBlock;
+	elseBlock << SmartLine_old("} else {", mElementId, SmartLine_old::decreaseOnlyThisLine);
 	mNxtGen->currentGenerator()->generatedStringSet() << elseBlock;
 	generateBranch(mFalseId);
 
-	QList<SmartLine> ifBlockPostfix;
-	ifBlockPostfix << SmartLine("}", mElementId, SmartLine::decrease);
+	QList<SmartLine_old> ifBlockPostfix;
+	ifBlockPostfix << SmartLine_old("}", mElementId, SmartLine_old::decrease);
 	mNxtGen->currentGenerator()->generatedStringSet() << ifBlockPostfix;
 }

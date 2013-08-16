@@ -67,21 +67,21 @@ bool LoopElementGenerator::nextElementsGeneration()
 	return true;
 }
 
-QList<SmartLine> LoopElementGenerator::addLoopCodeInPrefixForm()
+QList<SmartLine_old> LoopElementGenerator::addLoopCodeInPrefixForm()
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
-	result << SmartLine("for (int __iter__ = 0; __iter__ < "
+	result << SmartLine_old("for (int __iter__ = 0; __iter__ < "
 			+ mNxtGen->api()->property(logicElementId, "Iterations").toString()
-				+ "; __iter__++) {", mElementId, SmartLine::increase); //TODO
+				+ "; __iter__++) {", mElementId, SmartLine_old::increase); //TODO
 	return result;
 }
 
-QList<SmartLine> LoopElementGenerator::addLoopCodeInPostfixForm()
+QList<SmartLine_old> LoopElementGenerator::addLoopCodeInPostfixForm()
 {
-	QList<SmartLine> result;
-	result << SmartLine("}", mElementId, SmartLine::decrease);
+	QList<SmartLine_old> result;
+	result << SmartLine_old("}", mElementId, SmartLine_old::decrease);
 	return result;
 }
 

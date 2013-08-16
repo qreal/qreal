@@ -10,7 +10,7 @@ ControlFlowGenerator::ControlFlowGenerator(NxtOSEKRobotGenerator * const mainGen
 	: mMainGenerator(mainGenerator)
 	, mDiagram(diagram)
 {
-	mGeneratedStringSet.append(QList<SmartLine>()); //first list for variable initialization
+	mGeneratedStringSet.append(QList<SmartLine_old>()); //first list for variable initialization
 }
 
 bool ControlFlowGenerator::generate()
@@ -39,7 +39,7 @@ bool ControlFlowGenerator::generate()
 				"to generate, diagram doesn't have Initial Node"), mDiagram);
 	}
 
-	typedef QList<SmartLine> SmartLineList;
+	typedef QList<SmartLine_old> SmartLineList;
 	foreach (SmartLineList const &code, mGeneratedStringSet) {
 		mGeneratedCode += code;
 	}
@@ -47,7 +47,7 @@ bool ControlFlowGenerator::generate()
 	return generationOccured;
 }
 
-QList<SmartLine> &ControlFlowGenerator::generatedCode()
+QList<SmartLine_old> &ControlFlowGenerator::generatedCode()
 {
 	return mGeneratedCode;
 }
@@ -57,12 +57,12 @@ qReal::Id &ControlFlowGenerator::previousElement()
 	return mPreviousElement;
 }
 
-QList<QList<SmartLine> > &ControlFlowGenerator::generatedStringSet()
+QList<QList<SmartLine_old> > &ControlFlowGenerator::generatedStringSet()
 {
 	return mGeneratedStringSet;
 }
 
-void ControlFlowGenerator::setGeneratedStringSet(int key, QList<SmartLine> const &list)
+void ControlFlowGenerator::setGeneratedStringSet(int key, QList<SmartLine_old> const &list)
 {
 	mGeneratedStringSet[key] = list;
 }

@@ -8,8 +8,9 @@
 #include "nxtOSEK/nxtFlashTool.h"
 
 
+namespace qReal {
 namespace robots {
-namespace generator {
+namespace generators {
 
 /// Main plugin class for NXT code generator. Provides generator that generates
 /// C code for nxtOSEK from robot diagrams, and interface for standalone nxt-tools
@@ -68,8 +69,8 @@ private:
 	/// Interface of project manager (allows to perform open/save activities)
 	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership
 
-	/// Control interface of the repository
-	qrRepo::RepoControlInterface *mRepoControlApi;  // Does not have ownership
+	/// Logical model API
+	LogicalModelAssistInterface *mModel;  // Does not have ownership
 
 	/// When true, nxt-tools are found by QReal and flashing and uploading is possible
 	bool mNxtToolsPresent;
@@ -80,5 +81,6 @@ private:
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
 };
 
+}
 }
 }

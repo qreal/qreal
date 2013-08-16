@@ -8,9 +8,9 @@ FunctionElementGenerator::FunctionElementGenerator(NxtOSEKRobotGenerator *genera
 {
 }
 
-QList<SmartLine> FunctionElementGenerator::convertBlockIntoCode()
+QList<SmartLine_old> FunctionElementGenerator::convertBlockIntoCode()
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 
 	qReal::Id const logicElementId = mNxtGen->api()->logicalId(mElementId); //TODO
 
@@ -19,7 +19,7 @@ QList<SmartLine> FunctionElementGenerator::convertBlockIntoCode()
 	funcCode = replaceFunctionInvocations(funcCode);
 
 	foreach (QString const &str, funcCode.split(';', QString::SkipEmptyParts)) {
-		result.append(SmartLine(str.trimmed() + ";", mElementId));
+		result.append(SmartLine_old(str.trimmed() + ";", mElementId));
 	}
 
 	if (mGenerateToInit) {

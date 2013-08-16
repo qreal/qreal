@@ -18,8 +18,8 @@ public:
 	virtual bool generate();
 
 protected:
-	virtual QList<SmartLine> addLoopCodeInPrefixForm() = 0;
-	virtual QList<SmartLine> addLoopCodeInPostfixForm() = 0;
+	virtual QList<SmartLine_old> addLoopCodeInPrefixForm() = 0;
+	virtual QList<SmartLine_old> addLoopCodeInPostfixForm() = 0;
 
 	/// Creates new lists in mGeneratedStringSet
 	/// and connects it with mElementId in mElementToStringListNumbers

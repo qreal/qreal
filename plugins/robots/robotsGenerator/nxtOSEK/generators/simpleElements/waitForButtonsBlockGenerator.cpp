@@ -8,10 +8,10 @@ WaitForButtonsBlockGenerator::WaitForButtonsBlockGenerator()
 {
 }
 
-QList<SmartLine> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 	QString condition = "";
 
 	QString const enterButtonClicks = nxtGen->intExpression(logicElementId, "CentralButtonClicks");
@@ -20,14 +20,14 @@ QList<SmartLine> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(N
 	bool const listenCancel = !cancelButtonClicks.isEmpty() && cancelButtonClicks.trimmed() != "0";
 
 	if (listenCancel) {
-		result.append(SmartLine("cancelCounter = 0;", elementId));
-		result.append(SmartLine("cancelWasDown = 0;", elementId));
+		result.append(SmartLine_old("cancelCounter = 0;", elementId));
+		result.append(SmartLine_old("cancelWasDown = 0;", elementId));
 		condition += "cancelCounter < " + cancelButtonClicks;
 		nxtGen->variables().cancelButtonUsed();
 	}
 	if (listenEnter) {
-		result.append(SmartLine("enterCounter = 0;", elementId));
-		result.append(SmartLine("enterWasDown = 0;", elementId));
+		result.append(SmartLine_old("enterCounter = 0;", elementId));
+		result.append(SmartLine_old("enterWasDown = 0;", elementId));
 		if (listenCancel) {
 			condition += " || ";
 		}
@@ -36,26 +36,26 @@ QList<SmartLine> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(N
 	}
 
 	if (listenEnter || listenCancel) {
-		result.append(SmartLine("while (" + condition + ") {", elementId, SmartLine::increase));
+		result.append(SmartLine_old("while (" + condition + ") {", elementId, SmartLine_old::increase));
 		if (listenEnter) {
-			result.append(SmartLine("if (!ecrobot_is_ENTER_button_pressed() && enterWasDown) {", elementId, SmartLine::increase));
-			result.append(SmartLine("enterCounter++;", elementId));
-			result.append(SmartLine("enterWasDown = 0;", elementId));
-			result.append(SmartLine("}", elementId, SmartLine::decrease));
-			result.append(SmartLine("if (ecrobot_is_ENTER_button_pressed()) {", elementId, SmartLine::increase));
-			result.append(SmartLine("enterWasDown = 1;", elementId));
-			result.append(SmartLine("}", elementId, SmartLine::decrease));
+			result.append(SmartLine_old("if (!ecrobot_is_ENTER_button_pressed() && enterWasDown) {", elementId, SmartLine_old::increase));
+			result.append(SmartLine_old("enterCounter++;", elementId));
+			result.append(SmartLine_old("enterWasDown = 0;", elementId));
+			result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
+			result.append(SmartLine_old("if (ecrobot_is_ENTER_button_pressed()) {", elementId, SmartLine_old::increase));
+			result.append(SmartLine_old("enterWasDown = 1;", elementId));
+			result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
 		}
 		if (listenCancel) {
-			result.append(SmartLine("if (!ecrobot_is_RUN_button_pressed() && cancelWasDown) {", elementId, SmartLine::increase));
-			result.append(SmartLine("cancelCounter++;", elementId));
-			result.append(SmartLine("cancelWasDown = 0;", elementId));
-			result.append(SmartLine("}", elementId, SmartLine::decrease));
-			result.append(SmartLine("if (ecrobot_is_RUN_button_pressed()) {", elementId, SmartLine::increase));
-			result.append(SmartLine("cancelWasDown = 1;", elementId));
-			result.append(SmartLine("}", elementId, SmartLine::decrease));
+			result.append(SmartLine_old("if (!ecrobot_is_RUN_button_pressed() && cancelWasDown) {", elementId, SmartLine_old::increase));
+			result.append(SmartLine_old("cancelCounter++;", elementId));
+			result.append(SmartLine_old("cancelWasDown = 0;", elementId));
+			result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
+			result.append(SmartLine_old("if (ecrobot_is_RUN_button_pressed()) {", elementId, SmartLine_old::increase));
+			result.append(SmartLine_old("cancelWasDown = 1;", elementId));
+			result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
 		}
-		result.append(SmartLine("}", elementId, SmartLine::decrease));
+		result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
 		return result;
 	}
 	return result;

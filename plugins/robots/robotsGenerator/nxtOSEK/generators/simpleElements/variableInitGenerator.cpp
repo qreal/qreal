@@ -7,14 +7,14 @@ VariableInitGenerator::VariableInitGenerator()
 {
 }
 
-QList<SmartLine> VariableInitGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> VariableInitGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 
 	QString const variableName = nxtGen->api()->stringProperty(logicElementId, "variable");
 	QString const variableValue = nxtGen->intExpression(logicElementId, "value");
-	result.append(SmartLine(variableName + " = " + variableValue + "; \n", elementId));
+	result.append(SmartLine_old(variableName + " = " + variableValue + "; \n", elementId));
 
 	return result;
 }

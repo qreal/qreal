@@ -10,14 +10,14 @@ CommentElementGenerator::CommentElementGenerator(NxtOSEKRobotGenerator *gen
 {
 }
 
-QList<SmartLine> CommentElementGenerator::addLoopCodeInPrefixForm()
+QList<SmartLine_old> CommentElementGenerator::addLoopCodeInPrefixForm()
 {
-	return QList<SmartLine>();
+	return QList<SmartLine_old>();
 }
 
-QList<SmartLine> CommentElementGenerator::addLoopCodeInPostfixForm()
+QList<SmartLine_old> CommentElementGenerator::addLoopCodeInPostfixForm()
 {
-	return QList<SmartLine>();
+	return QList<SmartLine_old>();
 }
 
 bool CommentElementGenerator::preGenerationCheck()

@@ -20,7 +20,7 @@ void AbstractElementGenerator::createListsForIncomingConnections()
 {
 	//connects string lists in mGeneratedStringSet with mElementId in mElementToStringListNumbers
 	for (int i = 1; i < mNxtGen->api()->incomingConnectedElements(mElementId).size(); i++) {
-		mNxtGen->currentGenerator()->generatedStringSet() << QList<SmartLine>();
+		mNxtGen->currentGenerator()->generatedStringSet() << QList<SmartLine_old>();
 		mNxtGen->currentGenerator()->elementToStringListNumbers()[mElementId.toString()]
 				<< mNxtGen->currentGenerator()->generatedStringSet().size() - 1;
 	}
@@ -109,7 +109,7 @@ bool AbstractElementGenerator::generate()
 				, loopElement, *mNxtGen->api());
 
 		int num = mNxtGen->currentGenerator()->elementToStringListNumbersPop(loopElement.toString());
-		QList<SmartLine> set = mNxtGen->currentGenerator()->generatedStringSet()[num]
+		QList<SmartLine_old> set = mNxtGen->currentGenerator()->generatedStringSet()[num]
 				+ loopElementGen->addLoopCodeInPrefixForm();
 		mNxtGen->currentGenerator()->setGeneratedStringSet(num, set);
 		mNxtGen->currentGenerator()->generatedStringSet() << loopElementGen->addLoopCodeInPostfixForm();

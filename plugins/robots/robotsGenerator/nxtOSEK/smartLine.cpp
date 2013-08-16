@@ -2,39 +2,39 @@
 
 using namespace robots::generator;
 
-SmartLine::SmartLine(QString const &text, qReal::Id const &elementId, IndentChangeType indentLevelChange)
+SmartLine_old::SmartLine_old(QString const &text, qReal::Id const &elementId, IndentChangeType indentLevelChange)
 		: mText(text)
 		, mElementId(elementId)
 		, mIndentChange(indentLevelChange)
 {
 }
 
-QString SmartLine::text() const
+QString SmartLine_old::text() const
 {
 	return mText;
 }
 
-qReal::Id SmartLine::elementId() const
+qReal::Id SmartLine_old::elementId() const
 {
 	return mElementId;
 }
 
-SmartLine::IndentChangeType SmartLine::indentLevelChange() const
+SmartLine_old::IndentChangeType SmartLine_old::indentLevelChange() const
 {
 	return mIndentChange;
 }
 
-void SmartLine::setText(QString const &text)
+void SmartLine_old::setText(QString const &text)
 {
 	mText = text;
 }
 
-void SmartLine::setElementId(qReal::Id const &id)
+void SmartLine_old::setElementId(qReal::Id const &id)
 {
 	mElementId = id;
 }
 
-void SmartLine::setIndentChange(IndentChangeType t)
+void SmartLine_old::setIndentChange(IndentChangeType t)
 {
 	mIndentChange = t;
 }

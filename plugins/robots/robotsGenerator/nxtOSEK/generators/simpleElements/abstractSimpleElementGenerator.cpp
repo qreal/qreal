@@ -14,13 +14,13 @@ AbstractSimpleElementGenerator::~AbstractSimpleElementGenerator()
 {
 }
 
-QList<SmartLine> AbstractSimpleElementGenerator::convertedCode(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> AbstractSimpleElementGenerator::convertedCode(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	QString const elementType = elementId.element();
 	AbstractSimpleElementGenerator *currentSimpleElement = SimpleElementFactory::generator(elementType);
 
-	QList<SmartLine> result = currentSimpleElement->convertElementIntoDirectCommand(nxtGen, elementId, logicElementId);
+	QList<SmartLine_old> result = currentSimpleElement->convertElementIntoDirectCommand(nxtGen, elementId, logicElementId);
 	return result;
 }
 

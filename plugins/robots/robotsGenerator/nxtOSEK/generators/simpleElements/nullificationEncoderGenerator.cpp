@@ -7,12 +7,12 @@ NullificationEncoderGenerator::NullificationEncoderGenerator()
 {
 }
 
-QList<SmartLine> NullificationEncoderGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> NullificationEncoderGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
-	QList<SmartLine> result;
+	QList<SmartLine_old> result;
 	QString const port = nxtGen->api()->stringProperty(logicElementId, "Ports");
-	result.append(SmartLine("nxt_motor_set_count(NXT_PORT_" + port + ", 0);", elementId));
+	result.append(SmartLine_old("nxt_motor_set_count(NXT_PORT_" + port + ", 0);", elementId));
 
 	return result;
 }

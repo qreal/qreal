@@ -15,8 +15,8 @@ public:
 	CommentElementGenerator(NxtOSEKRobotGenerator *gen, qReal::Id const &elementId);
 
 protected:
-	virtual QList<SmartLine> addLoopCodeInPrefixForm();
-	virtual QList<SmartLine> addLoopCodeInPostfixForm();
+	virtual QList<SmartLine_old> addLoopCodeInPrefixForm();
+	virtual QList<SmartLine_old> addLoopCodeInPostfixForm();
 
 	virtual bool preGenerationCheck();
 	virtual bool nextElementsGeneration();

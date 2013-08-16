@@ -2,7 +2,7 @@ HEADERS += \
 	nxtOSEK/elementGeneratorFactory.h \
 	nxtOSEK/nxtFlashTool.h \
 	nxtOSEK/nxtOSEKRobotGenerator.h \
-	nxtOSEK/smartLine.h \
+	#nxtOSEK/smartLine.h \
 	nxtOSEK/generators/controlFlowGenerator.h \
 	nxtOSEK/generators/abstractElementGenerator.h \
 	nxtOSEK/generators/functionElementGenerator.h \
@@ -50,7 +50,7 @@ SOURCES += \
 	nxtOSEK/elementGeneratorFactory.cpp \
 	nxtOSEK/nxtFlashTool.cpp \
 	nxtOSEK/nxtOSEKRobotGenerator.cpp \
-	nxtOSEK/smartLine.cpp \
+	#nxtOSEK/smartLine.cpp \
 	nxtOSEK/generators/controlFlowGenerator.cpp \
 	nxtOSEK/generators/abstractElementGenerator.cpp \
 	nxtOSEK/generators/functionElementGenerator.cpp \

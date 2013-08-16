@@ -2,9 +2,10 @@
 
 #include "robotsGeneratorPlugin.h"
 #include "nxtOSEK/nxtOSEKRobotGenerator.h"
+#include "base/readableControlFlowGenerator.h"
 
 using namespace qReal;
-using namespace robots::generator;
+using namespace qReal::robots::generators;
 
 RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
@@ -26,7 +27,7 @@ RobotsGeneratorPlugin::~RobotsGeneratorPlugin()
 void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
-	mRepoControlApi = &configurator.repoControlInterface();
+	mModel = &configurator.logicalModelApi();
 	mProjectManager = &configurator.projectManager();
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
@@ -86,24 +87,30 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mProjectManager->save();
 
-	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(),
-			 *mRepoControlApi,
-			 *mMainWindowInterface->errorReporter());
-	mMainWindowInterface->errorReporter()->clearErrors();
-	gen.generate();
-	if (mMainWindowInterface->errorReporter()->wereErrors()) {
-		return false;
-	}
+	ReadableControlFlowGenerator generator(*mModel
+			, *mMainWindowInterface->errorReporter()
+			, GeneratorCustomizer()
+			, mMainWindowInterface->activeDiagram());
+	generator.generate();
 
-	QFile file("nxt-tools/example0/example0.c");
-	QTextStream *inStream = NULL;
-	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		inStream = new QTextStream(&file);
-	}
+//	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(),
+//			 *mRepoControlApi,
+//			 *mMainWindowInterface->errorReporter());
+//	mMainWindowInterface->errorReporter()->clearErrors();
+//	gen.generate();
+//	if (mMainWindowInterface->errorReporter()->wereErrors()) {
+//		return false;
+//	}
 
-	if (inStream) {
-		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
-	}
+//	QFile file("nxt-tools/example0/example0.c");
+//	QTextStream *inStream = NULL;
+//	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+//		inStream = new QTextStream(&file);
+//	}
+
+//	if (inStream) {
+//		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
+//	}
 	return true;
 }
 

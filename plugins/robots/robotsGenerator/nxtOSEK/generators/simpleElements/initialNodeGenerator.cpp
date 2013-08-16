@@ -7,19 +7,19 @@ InitialNodeGenerator::InitialNodeGenerator()
 {
 }
 
-QList<SmartLine> InitialNodeGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine_old> InitialNodeGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
 		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	Q_UNUSED(logicElementId)
 
 	if (!nxtGen->areWeGeneratingMainTask()) {
 		// Otherwise we will have duplicates in initialization/termination code
-		return QList<SmartLine>();
+		return QList<SmartLine_old>();
 	}
 
-	QList<SmartLine> initCode;
-	QList<SmartLine> terminateCode;
-	QList<SmartLine> isrHooks;
+	QList<SmartLine_old> initCode;
+	QList<SmartLine_old> terminateCode;
+	QList<SmartLine_old> isrHooks;
 
 	bool foundColorSensor = false;
 
@@ -29,15 +29,15 @@ QList<SmartLine> InitialNodeGenerator::convertElementIntoDirectCommand(NxtOSEKRo
 
 		switch (portValue) {
 		case qReal::interpreters::robots::enums::sensorType::sonar:
-			initCode.append(SmartLine("ecrobot_init_sonar_sensor(NXT_PORT_S"
+			initCode.append(SmartLine_old("ecrobot_init_sonar_sensor(NXT_PORT_S"
 					+ QString::number(i) + ");", elementId));
-			terminateCode.append(SmartLine("ecrobot_term_sonar_sensor(NXT_PORT_S"
+			terminateCode.append(SmartLine_old("ecrobot_term_sonar_sensor(NXT_PORT_S"
 					+ QString::number(i) + ");", elementId));
 			break;
 		case qReal::interpreters::robots::enums::sensorType::light:
-			initCode.append(SmartLine("ecrobot_set_light_sensor_active(NXT_PORT_S"
+			initCode.append(SmartLine_old("ecrobot_set_light_sensor_active(NXT_PORT_S"
 					+ QString::number(i) + ");", elementId));
-			terminateCode.append(SmartLine("ecrobot_set_light_sensor_inactive(NXT_PORT_S"
+			terminateCode.append(SmartLine_old("ecrobot_set_light_sensor_inactive(NXT_PORT_S"
 					+ QString::number(i) + ");", elementId));
 			break;
 		case qReal::interpreters::robots::enums::sensorType::colorFull:
@@ -68,11 +68,11 @@ QList<SmartLine> InitialNodeGenerator::convertElementIntoDirectCommand(NxtOSEKRo
 	nxtGen->terminateCode().append(terminateCode);
 	nxtGen->isrHooksCode().append(isrHooks);
 
-	return QList<SmartLine>();
+	return QList<SmartLine_old>();
 }
 
-void InitialNodeGenerator::appendColorCode(QList<SmartLine> &initCode
-		, QList<SmartLine> &terminateCode, QList<SmartLine> &isrHooks
+void InitialNodeGenerator::appendColorCode(QList<SmartLine_old> &initCode
+		, QList<SmartLine_old> &terminateCode, QList<SmartLine_old> &isrHooks
 		, bool &foundColorSensor, qReal::Id const &elementId
 		, QString const &sensor, int port)
 {
@@ -80,9 +80,9 @@ void InitialNodeGenerator::appendColorCode(QList<SmartLine> &initCode
 	QString const termPattern = "ecrobot_term_nxtcolorsensor(NXT_PORT_S%1);";
 	QString const portString = QString::number(port);
 
-	SmartLine const initColorSensorCode(initPattern.arg(portString, sensor), elementId);
-	SmartLine const termColorSensorCode(termPattern.arg(portString), elementId);
-	SmartLine const colorSensorIsrHook("ecrobot_process_bg_nxtcolorsensor();", elementId);
+	SmartLine_old const initColorSensorCode(initPattern.arg(portString, sensor), elementId);
+	SmartLine_old const termColorSensorCode(termPattern.arg(portString), elementId);
+	SmartLine_old const colorSensorIsrHook("ecrobot_process_bg_nxtcolorsensor();", elementId);
 
 	initCode.append(initColorSensorCode);
 	terminateCode.append(termColorSensorCode);

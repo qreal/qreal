@@ -17,7 +17,7 @@ public:
 			, bool const &generateToInit);
 
 protected:
-	virtual QList<SmartLine> convertBlockIntoCode();
+	virtual QList<SmartLine_old> convertBlockIntoCode();
 
 private:
 	bool mGenerateToInit;

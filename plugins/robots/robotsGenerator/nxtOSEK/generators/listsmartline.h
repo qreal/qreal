@@ -9,6 +9,6 @@ class ListSmartLine
 {
 public:
 	ListSmartLine();
-	static bool isContains(QList<SmartLine> const &storage, QString const &templateCode);
-	static bool isContainsPart(QList<SmartLine> const &storage, QString const &templateCode); // rename
+	static bool isContains(QList<SmartLine_old> const &storage, QString const &templateCode);
+	static bool isContainsPart(QList<SmartLine_old> const &storage, QString const &templateCode); // rename
 };

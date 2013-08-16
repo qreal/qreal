@@ -25,13 +25,13 @@ public:
 	bool generate();
 
 	/// Returns generation process result. If it was unsuccessfull returns empty list
-	QList<SmartLine> &generatedCode();
+	QList<SmartLine_old> &generatedCode();
 
 private:
 	bool checkIdentifier(QString const &identificator, QString const &rawName);
 
-	void mergeCode(QMap<qReal::Id, QList<SmartLine> > const &declarations
-			, QMap<qReal::Id, QList<SmartLine> > const &implementations);
+	void mergeCode(QMap<qReal::Id, QList<SmartLine_old> > const &declarations
+			, QMap<qReal::Id, QList<SmartLine_old> > const &implementations);
 
 	// TODO: this must be obtained via models!
 	qReal::Id graphicalId(qReal::Id const &logicalId) const;
@@ -45,7 +45,7 @@ private:
 	/// the code.
 	QMap<qReal::Id, bool> mDiscoveredSubprograms;
 
-	QList<SmartLine> mGeneratedCode;
+	QList<SmartLine_old> mGeneratedCode;
 
 	QSet<QString> mUsedNames;
 
