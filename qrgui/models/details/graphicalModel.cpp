@@ -284,9 +284,9 @@ GraphicalModelAssistApi &GraphicalModel::graphicalModelAssistApi() const
 bool GraphicalModel::removeRows(int row, int count, QModelIndex const &parent)
 {
 	AbstractModelItem *parentItem = parentAbstractItem(parent);
-	if (parentItem->children().size() < row + count)
+	if (parentItem->children().size() < row + count) {
 		return false;
-	else {
+	} else {
 		for (int i = row; i < row + count; ++i) {
 			AbstractModelItem *child = parentItem->children().at(i);
 			removeModelItems(child);
