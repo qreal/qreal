@@ -20,6 +20,7 @@ void GraphicalPartModel::reinit()
 	blockSignals(true);
 	clear();
 	mItems.clear();
+	mIdPositions.clear();
 	load();
 	blockSignals(false);
 }
