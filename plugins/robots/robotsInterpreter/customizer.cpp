@@ -16,12 +16,12 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	// TODO: other storage for it?
-	return "2.3.2";
+	return "2.4.0";
 }
 
 QString Customizer::aboutText() const
 {
-	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
+	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://robots.qreal.ru/\">http://robots.qreal.ru/</a>";
 }
 
 bool Customizer::showInterpeterButton() const
