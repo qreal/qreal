@@ -52,7 +52,7 @@
 #include "dotRunner.h"
 #include "../view/sceneCustomizer.h"
 
-#include "hotKeyManager/hotKeyManager.h"
+#include "../hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -188,7 +188,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
-	connect (mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
 	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
 	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
@@ -667,7 +667,7 @@ void MainWindow::deleteFromScene()
 AbstractCommand *MainWindow::logicalDeleteCommand(QGraphicsItem *target)
 {
 	Element *elem = dynamic_cast<Element *>(target);
-	if (!elem || elem->id() == Id()) {
+	if (!elem || elem->id().isNull()) {
 		return NULL;
 	}
 	return logicalDeleteCommand(elem->id());
@@ -676,7 +676,7 @@ AbstractCommand *MainWindow::logicalDeleteCommand(QGraphicsItem *target)
 AbstractCommand *MainWindow::graphicalDeleteCommand(QGraphicsItem *target)
 {
 	Element *elem = dynamic_cast<Element *>(target);
-	if (!elem || elem->id() == Id()) {
+	if (!elem || elem->id().isNull()) {
 		return NULL;
 	}
 	return graphicalDeleteCommand(elem->id());
@@ -701,8 +701,8 @@ commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
 
 	if (graphicalIds.isEmpty()) {
 		return new RemoveElementCommand(
-				&mModels->logicalModelAssistApi()
-				, &mModels->graphicalModelAssistApi()
+				mModels->logicalModelAssistApi()
+				, mModels->graphicalModelAssistApi()
 				, mModels->logicalRepoApi().parent(id)
 				, Id()
 				, id
@@ -717,7 +717,7 @@ commands::AbstractCommand *MainWindow::logicalDeleteCommand(Id const &id)
 		result->addPreAction(graphicalDeleteCommand(graphicalId));
 	}
 	if (graphicalIds.size() != 1) { // else it was done in graphicalDeleteCommand()
-		appendCascadeDeleteCommands(result, id);
+		appendExplosionsCommands(result, id);
 	}
 	result->removeDuplicates();
 	return result;
@@ -727,8 +727,8 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 {
 	Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
 	AbstractCommand *result = new RemoveElementCommand(
-				&mModels->logicalModelAssistApi()
-				, &mModels->graphicalModelAssistApi()
+				mModels->logicalModelAssistApi()
+				, mModels->graphicalModelAssistApi()
 				, mModels->logicalRepoApi().parent(logicalId)
 				, mModels->graphicalRepoApi().parent(id)
 				, id
@@ -736,6 +736,7 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 				, mModels->graphicalModelAssistApi().name(id)
 				, mModels->graphicalModelAssistApi().position(id)
 				);
+
 	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(closeTabsWithRemovedRootElements()));
 	IdList const children = mModels->graphicalModelAssistApi().children(id);
 	foreach (Id const &child, children) {
@@ -764,18 +765,20 @@ commands::AbstractCommand *MainWindow::graphicalDeleteCommand(Id const &id)
 	}
 
 	if (mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId).size() == 1) {
-		appendCascadeDeleteCommands(result, logicalId);
+		appendExplosionsCommands(result, logicalId);
 	}
 
 	return result;
 }
 
-void MainWindow::appendCascadeDeleteCommands(AbstractCommand *parentCommand, Id const &logicalId)
+void MainWindow::appendExplosionsCommands(AbstractCommand *parentCommand, Id const &logicalId)
 {
 	IdList const toDelete = mModels->logicalModelAssistApi().exploser().elementsWithHardDependencyFrom(logicalId);
 	foreach (Id const &logicalChild, toDelete) {
 		parentCommand->addPreAction(logicalDeleteCommand(logicalChild));
 	}
+
+	mModels->logicalModelAssistApi().exploser().handleRemoveCommand(logicalId, parentCommand);
 }
 
 void MainWindow::deleteFromDiagram()
@@ -1127,7 +1130,7 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (mEditorManagerProxy.isDiagramNode(id)) {
+	if (id.isNull() || mEditorManagerProxy.isDiagramNode(id)) {
 		return;
 	}
 
@@ -1140,7 +1143,7 @@ void MainWindow::centerOn(Id const &id)
 	Element* const element = scene->getElem(id);
 
 	scene->clearSelection();
-	if (element != NULL) {
+	if (element) {
 		element->setSelected(true);
 		view->ensureElementVisible(element);
 	}
@@ -1286,7 +1289,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 
 	EditorViewScene *scene = dynamic_cast<EditorViewScene *>(tab->scene());
 	if (scene) {
-		scene->updateEdgesViaNodes();
+		scene->initNodes();
 	}
 }
 
@@ -1358,18 +1361,21 @@ void MainWindow::currentTabChanged(int newIndex)
 	bool const isShape = isCurrentTabShapeEdit();
 
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
-	if (!isEditorTab) {
-		mToolManager.activeTabChanged(Id());
-	} else if (getCurrentTab()->mvIface() != NULL) {
-		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
-		mToolManager.activeTabChanged(currentTabId);
-	}
+	// TODO: implement printing for text tabs
+	mUi->actionPrint->setEnabled(isEditorTab);
 
 	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
 	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);
 
 	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
 	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
+
+	if (!isEditorTab) {
+		mToolManager.activeTabChanged(Id());
+	} else if (getCurrentTab()->mvIface()) {
+		Id const currentTabId = getCurrentTab()->mvIface()->rootId();
+		mToolManager.activeTabChanged(currentTabId);
+	}
 
 	emit rootDiagramChanged();
 }
@@ -1398,8 +1404,8 @@ void MainWindow::switchToTab(int index)
 void MainWindow::updateTabName(Id const &id)
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView * const tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
-		if (tab->mvIface()->rootIndex() == mModels->graphicalModelAssistApi().indexById(id)) {
+		EditorView * const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab && (tab->mvIface()->rootIndex() == mModels->graphicalModelAssistApi().indexById(id))) {
 			mUi->tabs->setTabText(i, mModels->graphicalModelAssistApi().name(id));
 			return;
 		}
@@ -1594,7 +1600,7 @@ bool MainWindow::createProject(QString const &diagramIdString)
 void MainWindow::createProject()
 {
 	Id const theOnlyDiagram = mEditorManagerProxy.theOnlyDiagram();
-	if (theOnlyDiagram == Id()) {
+	if (theOnlyDiagram.isNull()) {
 		SuggestToCreateProjectDialog dialog(this);
 		dialog.exec();
 	} else {
@@ -1664,7 +1670,7 @@ void MainWindow::highlight(Id const &graphicalId, bool exclusive, QColor const &
 		Element const * const element = scene->getElem(graphicalId);
 		if (element) {
 			scene->highlight(graphicalId, exclusive, color);
-			view->ensureElementVisible(element);
+			view->ensureElementVisible(element, 0, 0);
 		}
 	}
 }
@@ -1679,7 +1685,7 @@ void MainWindow::dehighlight(Id const &graphicalId)
 
 		EditorViewScene * const scene = dynamic_cast<EditorViewScene *>(view->scene());
 
-		if (graphicalId == Id()) {
+		if (graphicalId.isNull()) {
 			scene->dehighlight();
 		} else {
 			scene->dehighlight(graphicalId);

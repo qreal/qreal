@@ -427,7 +427,7 @@ QIcon InterpreterEditorManager::icon(Id const &id) const
 	return QIcon(engine);
 }
 
-Element* InterpreterEditorManager::graphicalObject(Id const &id) const
+ElementImpl *InterpreterEditorManager::elementImpl(Id const &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	InterpreterElementImpl * const impl = new InterpreterElementImpl(repoAndMetaIdPair.first, repoAndMetaIdPair.second);
@@ -435,11 +435,7 @@ Element* InterpreterEditorManager::graphicalObject(Id const &id) const
 		return 0;
 	}
 
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
-
-	return new EdgeElement(impl);
+	return impl;
 }
 
 IdList InterpreterEditorManager::containedTypes(Id const &id) const
@@ -495,6 +491,22 @@ QStringList InterpreterEditorManager::propertyNames(Id const &id) const
 	}
 
 	return result;
+}
+
+QStringList InterpreterEditorManager::portTypes(Id const &id) const
+{
+	QSet<QString> result;
+
+	QDomDocument shape;
+	shape.setContent(repoAndMetaId(id).first->stringProperty(id, "shape"));
+
+	QDomElement portsElement = shape.firstChildElement("graphics").firstChildElement("ports");
+	for (int i = 0; i < portsElement.childNodes().size(); i++) {
+		QDomElement port = portsElement.childNodes().at(i).toElement();
+		result.insert(port.attribute("type", "NonTyped"));
+	}
+
+	return result.toList();
 }
 
 QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) const

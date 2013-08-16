@@ -6,7 +6,14 @@ using namespace models;
 Models::Models(QString const &workingCopy, EditorManagerInterface &editorManager)
 {
 	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingCopy);
+	mGraphicalPartModel = new models::details::GraphicalPartModel(*repoApi);
 	mGraphicalModel = new models::details::GraphicalModel(repoApi, editorManager);
+
+	GraphicalModelAssistApi * const graphicalAssistApi
+			= new GraphicalModelAssistApi(*mGraphicalModel, *mGraphicalPartModel, editorManager);
+
+	mGraphicalModel->setAssistApi(graphicalAssistApi);
+
 	mLogicalModel = new models::details::LogicalModel(repoApi, editorManager);
 	mRepoApi = repoApi;
 
@@ -65,4 +72,5 @@ void Models::reinit()
 {
 	mLogicalModel->reinit();
 	mGraphicalModel->reinit();
+	mGraphicalPartModel->reinit();
 }

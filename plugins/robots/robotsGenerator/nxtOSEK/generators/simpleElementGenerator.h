@@ -11,7 +11,7 @@ namespace generator {
 class SimpleElementGenerator: public AbstractElementGenerator
 {
 public:
-	explicit SimpleElementGenerator(NxtOSEKRobotGenerator *mainGenerator, qReal::Id const &elementId);
+	SimpleElementGenerator(NxtOSEKRobotGenerator *mainGenerator, qReal::Id const &elementId);
 
 protected:
 	virtual QList<SmartLine> addLoopCodeInPrefixForm();

@@ -1,4 +1,7 @@
 ﻿#include "rulesChecker.h"
+#include <QtWidgets/QFileDialog>
+
+#include "../../qrrepo/repoApi.h"
 
 using namespace qReal::rulesChecker;
 
@@ -9,8 +12,24 @@ RulesChecker::RulesChecker(qrRepo::GraphicalRepoApi const &graphicalRepoApi
 	, mNoErrorsOccured(true)
 {
 	// TODO: get these lists from metamodel somehow
-	mLinkTypes << "SequenceFlow";
+	mLinkTypes << "SequenceFlow" << "MessageFlow" << "SignalFlow" << "TimerFlow";
 	mContainerTypes << "Pool" << "Lane" << "BPMN Diagram";
+}
+
+void RulesChecker::exportToXml()
+{
+	QString fileName = QFileDialog::getSaveFileName(mWindowInterface->windowWidget()
+			, tr("Save File"), tr("export.xml"), tr("*.xml"));
+	if (!fileName.endsWith(".xml")) {
+		fileName += ".xml";
+	}
+
+	// TODO: get your own pointer to RepoControlInterface, don't cast mGRepoApi
+	qrRepo::RepoControlInterface const *repoControlApi
+			= static_cast<qrRepo::RepoControlInterface const *>(static_cast<qrRepo::RepoApi const *>(mGRepoApi));
+	if (repoControlApi) {
+		repoControlApi->exportToXml(fileName);
+	}
 }
 
 bool RulesChecker::makeDetour(Id const &currentNode, IdList &usedNodes)
@@ -26,7 +45,7 @@ bool RulesChecker::makeDetour(Id const &currentNode, IdList &usedNodes)
 	mDiagramElements.removeOne(currentNode);
 	usedNodes.append(currentNode);
 
-	if (isLink(currentNode)) {
+	if (currentNode.element() != "MessageFlow" && isLink(currentNode)) {
 		Id const destinationNode = mGRepoApi->to(currentNode);
 		if (destinationNode == Id::rootId()) {
 			postError(noEndNode, currentNode); // we've already put info that link is incorrect
@@ -39,7 +58,8 @@ bool RulesChecker::makeDetour(Id const &currentNode, IdList &usedNodes)
 		return true; // we found real end-node
 	}
 
-	IdList frontNodes =  mGRepoApi->outgoingLinks(currentNode);
+	IdList frontNodes = outgoingSequenceFlow(currentNode);
+
 	if (frontNodes.isEmpty()) {
 		postError(noEndNode, currentNode);
 		return true; // done end-job for nodes (now 100%)
@@ -70,7 +90,7 @@ void RulesChecker::checkFinalNodeRule(qReal::Id const &node)
 		return;
 	}
 
-	IdList incorrectLinks = (isLastNode) ? mGRepoApi->outgoingLinks(node) : mGRepoApi->incomingLinks(node);
+	IdList incorrectLinks = (isLastNode) ? outgoingSequenceFlow(node) : incomingSequenceFlow(node);
 	if (!incorrectLinks.isEmpty()) {
 		postError((isLastNode) ? linkFromFinalNode : linkToStartNode, node);
 		foreach (Id const &key, incorrectLinks) {
@@ -198,6 +218,12 @@ bool RulesChecker::isEndNode(qReal::Id const &node) const
 qReal::IdList RulesChecker::elementsOfDiagram(qReal::Id const &diagram) const
 {
 	IdList result = mGRepoApi->children(diagram);
+	foreach (Id const &id, result) {
+		if (id.element() == "MessageFlow") {
+			result.removeAll(id);
+		}
+	}
+
 	int const childrenCount = result.size();
 	for (int i = 0; i < childrenCount; i++) {
 		result.append(elementsOfDiagram(result.at(i)));
@@ -232,10 +258,10 @@ qReal::IdList RulesChecker::collectStartNodes() const
 qReal::Id RulesChecker::findFirstNode() const
 {
 	Id result = mDiagramElements.first();
-	int minIncomingLinks = mGRepoApi->incomingLinks(result).size();
+	int minIncomingLinks = incomingSequenceFlow(result).size();
 
 	foreach (Id const &element, mDiagramElements) {
-		int incomingLinks = mGRepoApi->incomingLinks(element).size();
+		int incomingLinks = incomingSequenceFlow(element).size();
 		if (incomingLinks < minIncomingLinks) {
 			minIncomingLinks = incomingLinks;
 			result = element;
@@ -243,4 +269,27 @@ qReal::Id RulesChecker::findFirstNode() const
 	}
 
 	return result;
+}
+
+qReal::IdList RulesChecker::incomingSequenceFlow(qReal::Id const &id) const
+{
+	IdList result = mGRepoApi->incomingLinks(id);
+	foreach (Id const link, result) {
+		if (link.element() == "MessageFlow") {
+			result.removeAll(link);
+		}
+	}
+	return result;
+}
+
+qReal::IdList RulesChecker::outgoingSequenceFlow(qReal::Id const &id) const
+{
+	IdList result = mGRepoApi->outgoingLinks(id);
+	foreach (Id const link, result) {
+		if (link.element() == "MessageFlow") {
+			result.removeAll(link);
+		}
+	}
+	return result;
+
 }

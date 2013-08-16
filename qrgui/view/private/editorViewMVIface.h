@@ -7,11 +7,11 @@
 
 class QGraphicsItem;
 
+namespace qReal {
+
 class EditorViewScene;
 
 class Element;
-
-namespace qReal {
 
 namespace models {
 class GraphicalModelAssistApi;
@@ -41,15 +41,15 @@ public:
 
 public slots:
 	void reset();
-	void setRootIndex(const QModelIndex &index);
+	void setRootIndex(QModelIndex const &index);
 	void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
 	void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
 
 private slots:
-	void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-	void rowsAboutToBeRemoved ( const QModelIndex & parent, int start, int end);
-	void rowsInserted ( const QModelIndex & parent,	int start, int end);
-	void logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+	void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight);
+	void rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end);
+	void rowsInserted(QModelIndex const &parent, int start, int end);
+	void logicalDataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight);
 
 private:
 	typedef QPair<QPersistentModelIndex, Element*> IndexElementPair;

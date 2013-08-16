@@ -1,7 +1,7 @@
 #include "pointPort.h"
 
 const int step = 3;
-PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent), mPointImpl()
+PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent), mPointImpl(), mType("NonTyped")
 {
 	mNeedScalingRect = true;
 	mRadius = 2;
@@ -29,6 +29,7 @@ PointPort::PointPort(PointPort const &other)
 	mY2 = other.mY2;
 	mRadius = other.mRadius;
 	mListScalePoint = other.mListScalePoint;
+	mType = other.mType;
 	setPos(other.x(), other.y());
 }
 
@@ -113,6 +114,17 @@ QPair<QDomElement, Item::DomElementTypes> PointPort::generateItem(QDomDocument &
 	int const y = static_cast<int>(scenePos().y() + itemBoundingRect.y() + mRadius - topLeftPicture.y());
 	pointPort.setAttribute("y", setSingleScaleForDoc(4, x, y));
 	pointPort.setAttribute("x", setSingleScaleForDoc(0, x, y));
+	pointPort.setAttribute("type", mType);
 
 	return QPair<QDomElement, Item::DomElementTypes>(pointPort, mDomElementType);
+}
+
+void PointPort::setType(QString const &type)
+{
+	mType = type;
+}
+
+QString PointPort::getType() const
+{
+	return mType;
 }

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../../../../../qrkernel/ids.h"
 #include "abstractSimpleElementGenerator.h"
 #include "../abstractElementGenerator.h"
@@ -6,7 +8,8 @@ namespace robots {
 namespace generator {
 class NxtOSEKRobotGenerator;
 
-class InitialNodeGenerator: public AbstractSimpleElementGenerator {
+class InitialNodeGenerator : public AbstractSimpleElementGenerator
+{
 public:
 	InitialNodeGenerator();
 

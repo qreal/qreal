@@ -3,6 +3,21 @@
     <namespace>UML 2.0</namespace>
     <diagram nodeName="BPMNDiagramNode" name="BPMNDiagram" displayedName="BPMN Diagram">
         <nonGraphicTypes>
+            <port name="StartEventLeft"/>
+            <port name="StartEventVertical"/>
+            <port name="StartEventRight"/>
+            <port name="IntermediateEventLeft"/>
+            <port name="IntermediateEventVertical"/>
+            <port name="IntermediateEventRight"/>
+            <port name="EndEventLeft"/>
+            <port name="EndEventVertical"/>
+            <port name="EndEventRight"/>
+            <port name="GatewayLeft"/>
+            <port name="GatewayVertical"/>
+            <port name="GatewayRight"/>
+            <port name="ActivityLeft"/>
+            <port name="ActivityVertical"/>
+            <port name="ActivityRight"/>
             <enum name="StartEventType" displayedName="Start Event Type">
                 <value>None</value>
                 <value>Message</value>
@@ -19,8 +34,10 @@
                 <value>Multiple</value>
             </enum>
             <enum name="EndEventType" displayedName="End Event Type">
-                <value>Message</value>
                 <value>None</value>
+                <value>Message</value>
+                <value>Terminate</value>
+                <value>Signal</value>
             </enum>
             <enum name="GatewayType" displayedName="Gateway Type">
                 <value>Exclusive (Data Based)</value>
@@ -28,7 +45,11 @@
                 <value>Inclusive</value>
                 <value>Parallel</value>
             </enum>
-            <enum name="LoopType" displayedName="Loop Type"/>
+            <enum name="LoopType" displayedName="Loop Type">
+                <value>No Loop</value>
+                <value>Multiple Instances (Parallel)</value>
+                <value>Multiple Instances (Sequential)</value>
+            </enum>
             <enum name="TaskType" displayedName="Task Type"/>
         </nonGraphicTypes>
         <graphicTypes>
@@ -45,7 +66,11 @@
                          <contains type="BPMNDiagram::EndEvent"/>
                          <contains type="BPMNDiagram::Gateway"/>
                          <contains type="BPMNDiagram::Task"/>
+                         <contains type="BPMNDiagram::Subprocess"/>
                          <contains type="BPMNDiagram::SequenceFlow"/>
+                         <contains type="BPMNDiagram::SignalFlow"/>
+                         <contains type="BPMNDiagram::TimerFlow"/>
+                         <contains type="BPMNDiagram::MessageFlow"/>
                          <contains type="BPMNDiagram::Lane"/>
                          <contains type="BPMNDiagram::Pool"/>
                     </container>
@@ -102,13 +127,13 @@
                         </line>
                     </picture>
                     <labels>
-                        <label x="0" y="100" textBinded="text"/>
+                        <label x="0a" y="100a" textBinded="text"/>
                     </labels>
                     <ports>
-                        <pointPort x="0" y="50"/>
-                        <pointPort x="50" y="0"/>
-                        <pointPort x="50" y="100"/>
-                        <pointPort x="100" y="50"/>
+                        <pointPort type="StartEventLeft" x="0" y="50"/>
+                        <pointPort type="StartEventVertical" x="50" y="0"/>
+                        <pointPort type="StartEventVertical" x="50" y="100"/>
+                        <pointPort type="StartEventRight" x="100" y="50"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -182,13 +207,13 @@
                         </line>
                     </picture>
                     <labels>
-                        <label x="0" y="100" textBinded="text"/>
+                        <label x="0a" y="100a" textBinded="text"/>
                     </labels>
                     <ports>
-                        <pointPort x="0" y="50"/>
-                        <pointPort x="50" y="0"/>
-                        <pointPort x="50" y="100"/>
-                        <pointPort x="100" y="50"/>
+                        <pointPort type="IntermediateEventLeft" x="0" y="50"/>
+                        <pointPort type="IntermediateEventVertical" x="50" y="0"/>
+                        <pointPort type="IntermediateEventVertical" x="50" y="100"/>
+                        <pointPort type="IntermediateEventRight" x="100" y="50"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -214,15 +239,21 @@
                         <line fill="#ffffff" stroke="#ffffff" stroke-style="solid" stroke-width="2" y1="50" y2="30" fill-style="none" x1="50" x2="85">
                             <showIf value="Message" property="Type" sign="="/>
                         </line>
+                        <ellipse fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" y1="15" y2="85" fill-style="solid" x1="15" x2="85">
+                            <showIf value="Terminate" property="Type" sign="="/>
+                        </ellipse>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="30" y2="70" y3="70" fill-style="solid" x1="50" x2="20" x3="80">
+                            <showIf value="Signal" property="Type" sign="="/>
+                        </polygon>
                     </picture>
                     <labels>
-                        <label x="0" y="100" textBinded="text"/>
+                        <label x="0a" y="100a" textBinded="text"/>
                     </labels>
                     <ports>
-                        <pointPort x="0" y="50"/>
-                        <pointPort x="50" y="0"/>
-                        <pointPort x="50" y="100"/>
-                        <pointPort x="100" y="50"/>
+                        <pointPort type="EndEventLeft" x="0" y="50"/>
+                        <pointPort type="EndEventVertical" x="50" y="0"/>
+                        <pointPort type="EndEventVertical" x="50" y="100"/>
+                        <pointPort type="EndEventRight" x="100" y="50"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -274,13 +305,13 @@
                         </line>
                     </picture>
                     <labels>
-                        <label x="0" y="110" textBinded="text"/>
+                        <label x="0a" y="110a" textBinded="text"/>
                     </labels>
                     <ports>
-                        <pointPort x="0" y="55"/>
-                        <pointPort x="55" y="0"/>
-                        <pointPort x="55" y="110"/>
-                        <pointPort x="110" y="55"/>
+                        <pointPort type="GatewayLeft" x="0" y="55"/>
+                        <pointPort type="GatewayVertical" x="55" y="0"/>
+                        <pointPort type="GatewayVertical" x="55" y="110"/>
+                        <pointPort type="GatewayRight" x="110" y="55"/>
                     </ports>
                 </graphics>
                 <logic>
@@ -320,24 +351,42 @@
                             <end endx="45" endy="142"/>
                             <ctrl x="15" y="145"/>
                         </curve>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="70" x2="70">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="80" x2="80">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="90" x2="90">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="115" fill="#ffffff" y2="115" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="125" fill="#ffffff" y2="125" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="135" fill="#ffffff" y2="135" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
                     </picture>
                     <labels>
-                        <label x="46" y="55" textBinded="Text"/>
+                        <label x="46a" y="55a" textBinded="Text"/>
                     </labels>
                     <ports>
-                        <linePort>
+                        <linePort type="ActivityLeft">
                             <start startx="18" starty="45"/>
                             <end endx="18" endy="115"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="ActivityVertical">
                             <start startx="45" starty="18"/>
                             <end endx="165" endy="18"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="ActivityRight">
                             <start startx="192" starty="45"/>
                             <end endx="192" endy="115"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="ActivityVertical">
                             <start startx="45" starty="142"/>
                             <end endx="165" endy="142"/>
                         </linePort>
@@ -347,6 +396,8 @@
                     <container/>
                     <properties>
                         <property type="string" name="Text" displayedName="Text"/>
+                        <property type="LoopType" name="loopType" displayedName="Loop Type"/>
+                        <property type="string" name="Name" displayedName="Name"/>
                     </properties>
                 </logic>
             </node>
@@ -380,24 +431,42 @@
                         <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="95" x2="115"/>
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="118" y2="132" fill-style="none" x1="105" x2="105"/>
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="125" y2="125" fill-style="none" x1="98" x2="112"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="70" x2="70">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="80" x2="80">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="90" x2="90">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="115" fill="#ffffff" y2="115" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="125" fill="#ffffff" y2="125" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="135" fill="#ffffff" y2="135" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
                     </picture>
                     <labels>
-                        <label x="40" y="145" textBinded="Text"/>
+                        <label x="40a" y="145a" textBinded="Text"/>
                     </labels>
                     <ports>
-                        <linePort>
+                        <linePort type="ActivityLeft">
                             <start startx="18" starty="45"/>
                             <end endx="18" endy="115"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="ActivityVertical">
                             <start startx="45" starty="18"/>
                             <end endx="165" endy="18"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="ActivityRight">
                             <start startx="192" starty="45"/>
                             <end endx="192" endy="115"/>
                         </linePort>
-                        <linePort>
+                        <linePort type="ActivityVertical">
                             <start startx="45" starty="142"/>
                             <end endx="165" endy="142"/>
                         </linePort>
@@ -405,11 +474,12 @@
                 </graphics>
                 <logic>
                     <container/>
-                    <connections>
-                        <connection type="BPMNDiagramNode"/>
-                    </connections>
+                    <explodesTo>
+                        <target type="BPMNDiagramNode" makeReusable="false" requireImmediateLinkage="false"/>
+                    </explodesTo>
                     <properties>
                         <property type="string" name="Text" displayedName="Text"/>
+                        <property type="LoopType" name="loopType" displayedName="Loop Type"/>
                     </properties>
                 </logic>
             </node>
@@ -427,35 +497,144 @@
                     </associations>
                     <properties>
                         <property type="string" displayedName="Text" name="Text"/>
+                        <property type="string" displayedName="Name" name="Name"/>
                     </properties>
+                    <fromPorts>
+                        <port type="StartEventRight"/>
+                        <port type="StartEventVertical"/>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="IntermediateEventRight"/>
+                        <port type="ActivityRight"/>
+                        <port type="ActivityVertical"/>
+                        <port type="GatewayVertical"/>
+                        <port type="GatewayRight"/>
+                    </fromPorts>
+                    <toPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="IntermediateEventLeft"/>
+                        <port type="ActivityLeft"/>
+                        <port type="ActivityVertical"/>
+                        <port type="GatewayVertical"/>
+                        <port type="GatewayLeft"/>
+                        <port type="EndEventLeft"/>
+                        <port type="EndEventVertical"/>
+                    </toPorts>
                     <possibleEdges>
-                        <possibleEdge beginName="StartEvent" directed="true" endName="EndEvent"/>
-                        <possibleEdge beginName="StartEvent" directed="true" endName="Gateway"/>
-                        <possibleEdge beginName="StartEvent" directed="true" endName="Task"/>
-                        <possibleEdge beginName="StartEvent" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="Task"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="Gateway"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="EndEvent"/>
-                        <possibleEdge beginName="IntermediateEvent" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="Task" directed="true" endName="Task"/>
-                        <possibleEdge beginName="Task" directed="true" endName="Gateway"/>
-                        <possibleEdge beginName="Task" directed="true" endName="EndEvent"/>
-                        <possibleEdge beginName="Task" directed="true" endName="IntermediateEvent"/>
-                        <possibleEdge beginName="Gateway" directed="true" endName="Task"/>
-                        <possibleEdge beginName="Gateway" directed="true" endName="Gateway"/>
-                        <possibleEdge beginName="Gateway" directed="true" endName="EndEvent"/>
-                        <possibleEdge beginName="Gateway" directed="true" endName="IntermediateEvent"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="ActivityRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="ActivityRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="ActivityRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="ActivityRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="ActivityLeft"/>
                     </possibleEdges>
+                </logic>
+            </edge>
+            <edge name="SignalFlow" displayedName="Signal Flow">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label textBinded="Text"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="filled_arrow" beginType="signal">
+                        <association endName="end" beginName="start"/>
+                    </associations>
+                    <properties>
+                        <property type="string" displayedName="Text" name="Text"/>
+                    </properties>
+                    <fromPorts>
+                        <port type="ActivityVertical"/>
+                        <port type="ActivityLeft"/>
+                        <port type="ActivityRight"/>
+                    </fromPorts>
+                    <toPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="IntermediateEventLeft"/>
+                        <port type="ActivityLeft"/>
+                        <port type="ActivityVertical"/>
+                        <port type="GatewayVertical"/>
+                        <port type="GatewayLeft"/>
+                        <port type="EndEventLeft"/>
+                        <port type="EndEventVertical"/>
+                    </toPorts>
+                </logic>
+          </edge>
+          <edge name="TimerFlow" displayedName="Timer Flow">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label textBinded="Text"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="filled_arrow" beginType="timer">
+                        <association endName="end" beginName="start"/>
+                    </associations>
+                    <properties>
+                        <property type="string" displayedName="Text" name="Text"/>
+                    </properties>
+                    <fromPorts>
+                        <port type="ActivityVertical"/>
+                        <port type="ActivityLeft"/>
+                        <port type="ActivityRight"/>
+                    </fromPorts>
+                    <toPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="IntermediateEventLeft"/>
+                        <port type="ActivityLeft"/>
+                        <port type="ActivityVertical"/>
+                        <port type="GatewayVertical"/>
+                        <port type="GatewayLeft"/>
+                        <port type="EndEventLeft"/>
+                        <port type="EndEventVertical"/>
+                    </toPorts>
+                </logic>
+          </edge>
+          <edge name="MessageFlow" displayedName="Message Flow">
+                <graphics>
+                    <lineType type="dashLine"/>
+                    <labels>
+                        <label textBinded="Text"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="open_arrow" beginType="empty_circle">
+                        <association endName="end" beginName="start"/>
+                    </associations>
+                    <properties>
+                        <property type="string" displayedName="Text" name="Text"/>
+                    </properties>
+                    <fromPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="EndEventVertical"/>
+                        <port type="ActivityVertical"/>
+                    </fromPorts>
+                    <toPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="StartEventVertical"/>
+                        <port type="ActivityVertical"/>
+                    </toPorts>
+                    <possibleEdges/>
                 </logic>
             </edge>
             <node name="Lane" displayedName="Lane">
                 <graphics>
                     <picture sizex="450" sizey="150">
                         <rectangle stroke-style="solid" fill-style="none" stroke-width="0" y1="0" y2="150" fill="#ffffff" x1="0" stroke="#000000" x2="450"/>
-                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="0" y2="150" fill="#ffffff" x1="30a" stroke="#000000" x2="30a"/>
                     </picture>
                     <labels>
-                        <label x="2" y="145" textBinded="text" rotation="-90"/>
+                        <label x="2a" y="145a" textBinded="text" rotation="-90"/>
                     </labels>
                     <ports/>
                 </graphics>
@@ -466,6 +645,7 @@
                         <contains type="IntermediateEvent"/>
                         <contains type="Gateway"/>
                         <contains type="Task"/>
+                        <contains type="Subprocess"/>
                     </container>
                     <properties>
                         <property name="text" displayedName="Text" type="string"/>
@@ -477,9 +657,18 @@
                     <picture sizex="450" sizey="150">
                         <rectangle stroke-style="solid" fill-style="none" stroke-width="0" y1="0" fill="#ffffff" y2="150" stroke="#000000" x1="0" x2="450"/>
                         <line stroke-style="solid" fill-style="none" stroke-width="0" y1="0" fill="#ffffff" y2="150" stroke="#000000" x1="30a" x2="30a"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="2" y1="125" fill="#ffffff" y2="145" stroke="#000000" x1="215" x2="215">
+                            <showIf value="true" property="multiple" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="2" y1="125" fill="#ffffff" y2="145" stroke="#000000" x1="225" x2="225">
+                            <showIf value="true" property="multiple" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="2" y1="125" fill="#ffffff" y2="145" stroke="#000000" x1="235" x2="235">
+                            <showIf value="true" property="multiple" sign="="/>
+                        </line>
                     </picture>
                     <labels>
-                        <label x="2" y="145" textBinded="text" rotation="-90"/>
+                        <label x="2a" y="145a" textBinded="text" rotation="-90"/>
                     </labels>
                     <ports/>
                     <nonResizable/>
@@ -498,6 +687,7 @@
                     </container>
                     <properties>
                         <property name="text" displayedName="Text" type="string"/>
+                        <property name="multiple" displayedName="Multiple" type="bool"/>
                     </properties>
                 </logic>
             </node>
@@ -519,8 +709,11 @@
                 <element name="Task"/>
                 <element name="Subprocess"/>
             </group>
-            <group name="Flow Objects">
+            <group name="Flows">
                 <element name="SequenceFlow"/>
+                <element name="MessageFlow"/>
+                <element name="SignalFlow"/>
+                <element name="TimerFlow"/>
             </group>
         </palette>
     </diagram>

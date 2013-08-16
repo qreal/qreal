@@ -4,6 +4,7 @@
 
 #include "../../qrkernel/ids.h"
 #include "details/graphicalModel.h"
+#include "details/graphicalPartModel.h"
 #include "details/modelsAssistApi.h"
 #include "../toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 
@@ -22,7 +23,13 @@ class GraphicalModelAssistApi : public QObject, public GraphicalModelAssistInter
 	Q_OBJECT
 
 public:
-	GraphicalModelAssistApi(details::GraphicalModel &graphicalModel, EditorManagerInterface const &editorManagerInterface);
+	GraphicalModelAssistApi(
+			details::GraphicalModel &graphicalModel
+			, details::GraphicalPartModel &graphicalPartModel
+			, EditorManagerInterface const &editorManagerInterface
+			);
+
+	void setModel(details::GraphicalModel * const graphicalModel);
 
 	/// Interface for accessing metamodel information.
 	EditorManagerInterface const &editorManagerInterface() const;
@@ -88,6 +95,41 @@ public:
 
 	void removeElement(Id const &graphicalId);
 
+	/// Returns true, if a label already exists in repository.
+	/// @param graphicalId - id of an element.
+	/// @param index - index of a part, which uniquely identifies label in an element.
+	bool hasLabel(Id const &graphicalId, int index);
+
+	/// Creates model representation of text label on element.
+	/// @param graphicalId - id of an element on which a label shall be created. It shall already be in repository.
+	/// @param index - index of a part, which uniquely identifies label in an element.
+	/// @param position - initial position of a label in coordinates of an element.
+	/// @param size - initial size of a label.
+	void createLabel(Id const &graphicalId, int index, QPointF const &position, QSizeF const &size);
+
+	/// Sets label position.
+	/// @param graphicalId - id of an element to which label belongs.
+	/// @param index - index of a part, which uniquely identifies label in an element.
+	/// @param position - position of a label in coordinates of an element.
+	void setLabelPosition(Id const &graphicalId, int index, QPointF const &position);
+
+	/// Sets label size.
+	/// @param graphicalId - id of an element to which label belongs.
+	/// @param index - index of a part, which uniquely identifies label in an element.
+	/// @param size - size of a label.
+	void setLabelSize(Id const &graphicalId, int index, QSizeF const &size);
+
+	/// Returns label position.
+	/// @param graphicalId - id of an element to which label belongs.
+	/// @param index - index of a part, which uniquely identifies label in an element.
+	/// @returns label position in coordinates of an element.
+	QPointF labelPosition(Id const &graphicalId, int index) const;
+
+	/// Returns label size.
+	/// @param graphicalId - id of an element to which label belongs.
+	/// @param index - index of a part, which uniquely identifies label in an element.
+	QSizeF labelSize(Id const &graphicalId, int index) const;
+
 signals:
 	void nameChanged(Id const &id);
 
@@ -97,6 +139,7 @@ private:
 
 	details::GraphicalModel &mGraphicalModel;
 	details::ModelsAssistApi mModelsAssistApi;
+	details::GraphicalPartModel &mGraphicalPartModel;
 };
 
 }

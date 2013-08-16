@@ -78,7 +78,9 @@ void LogicalModel::addInsufficientProperties(Id const &id, QString const &name)
 	QStringList const properties = mEditorManagerInterface.propertyNames(id.type());
 	foreach (QString const &property, properties) {
 		// for those properties that doesn't have default values, plugin will return empty string
-		mApi.setProperty(id, property, mEditorManagerInterface.defaultPropertyValue(id, property));
+		if (!mApi.hasProperty(id, property)) {
+			mApi.setProperty(id, property, mEditorManagerInterface.defaultPropertyValue(id, property));
+		}
 	}
 }
 
@@ -94,7 +96,7 @@ AbstractModelItem *LogicalModel::createModelItem(Id const &id, AbstractModelItem
 
 void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 {
-	if ((logicalId == Id()) || (mApi.name(logicalId) == name)) {
+	if ((logicalId.isNull()) || (mApi.name(logicalId) == name)) {
 		return;
 	}
 	mApi.setName(logicalId, name);

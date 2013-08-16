@@ -15,9 +15,9 @@
 #include "../../qrkernel/settingsManager.h"
 #include "editorManagerInterface.h"
 
-class Element;
-
 namespace qReal {
+
+class Element;
 
 /// Proxy for changing between generative and interpretive approach.
 class ProxyEditorManager : public EditorManagerInterface
@@ -37,7 +37,7 @@ public:
 	QString propertyDescription(Id const &id, QString const &propertyName) const;
 	QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
 	QIcon icon(Id const &id) const;
-	Element* graphicalObject(Id const &id) const;
+	ElementImpl* elementImpl(Id const &id) const;
 
 	IdList containedTypes(const Id &id) const;
 	IdList usedTypes(const Id &id) const;
@@ -52,6 +52,7 @@ public:
 	bool isElement(Id const &id) const;
 
 	QStringList propertyNames(Id const &id) const;
+	QStringList portTypes(Id const &id) const;
 	QString defaultPropertyValue(Id const &id, QString name) const;
 	QStringList propertiesWithDefaultValues(Id const &id) const;
 

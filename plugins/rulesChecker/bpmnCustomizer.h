@@ -14,10 +14,14 @@ public:
 	virtual bool showInterpeterButton() const;
 	virtual bool showConnectionRelatedMenus() const;
 
-	virtual QString addConnectionMenuName() const;
-	virtual QString deleteConnectionMenuName() const;
+	virtual QString addExplosionMenuName() const;
+	virtual QString changeExplosionMenuName() const;
+	virtual QString deleteExplosionMenuName() const;
 
-	virtual QString forwardConnectionMenuName() const;
-	virtual QString backwardConnectionMenuName() const;
+	virtual QString goToConnectedMenuName() const;
+
+	virtual bool showExpandConnectionAction() const;
+	virtual QString expandExplosionActionText() const;
+	virtual QString collapseExplosionActionText() const;
 };
 

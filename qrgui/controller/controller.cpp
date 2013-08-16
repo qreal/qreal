@@ -70,7 +70,7 @@ void Controller::execute(commands::AbstractCommand *command, UndoStack *stack)
 
 void Controller::diagramOpened(Id const &diagramId)
 {
-	if (diagramId == Id()) {
+	if (diagramId.isNull()) {
 		return;
 	}
 	UndoStack *stack = new UndoStack;
@@ -81,9 +81,15 @@ void Controller::diagramOpened(Id const &diagramId)
 
 void Controller::diagramClosed(Id const &diagramId)
 {
-	if (diagramId == Id() || !mDiagramStacks.keys().contains(diagramId.toString())) {
+	if (diagramId.isNull() || !mDiagramStacks.keys().contains(diagramId.toString())) {
 		return;
 	}
+
+	if (mActiveStack == mDiagramStacks[diagramId.toString()]) {
+		mActiveStack = NULL;
+	}
+
+	delete mDiagramStacks[diagramId.toString()];
 	mDiagramStacks.remove(diagramId.toString());
 	resetAll();
 }
@@ -93,7 +99,7 @@ void Controller::resetModifiedState()
 	bool wasModified = false;
 	QList<UndoStack *> const undoStacks = stacks();
 	foreach (UndoStack *stack, undoStacks) {
-		if (!stack->isClean()) {
+		if (stack && !stack->isClean()) {
 			wasModified = true;
 			break;
 		}
@@ -182,7 +188,7 @@ UndoStack *Controller::selectActiveStack(bool forUndo)
 		return mActiveStack;
 	}
 	uint const diagramTimestamp = diagramCommand->timestamp();
-	uint const globalTimestamp = diagramCommand->timestamp();
+	uint const globalTimestamp = globalCommand->timestamp();
 	return forUndo == (diagramTimestamp < globalTimestamp) ? mGlobalStack : mActiveStack;
 }
 

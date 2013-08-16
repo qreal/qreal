@@ -26,7 +26,7 @@ class Exploser : public QObject
 	Q_OBJECT
 
 public:
-	explicit Exploser(LogicalModelAssistApi * const api);
+	explicit Exploser(LogicalModelAssistApi &api);
 
 	/// Returns current system suffix that would be added to every explosion target name
 	static QString insideSuffix();
@@ -43,6 +43,10 @@ public:
 
 	/// Returns all elements that have specified id as explosion target with hard nessesarity
 	IdList elementsWithHardDependencyFrom(Id const &id) const;
+
+	/// Appends to given command child commands that clear outgoing explosion and
+	/// all non-hard incoming explosions
+	void handleRemoveCommand(Id const &logicalId, commands::AbstractCommand * const command);
 
 	/// This method checks if explosion must be created immediately for given type
 	/// and if yes returns type with explosion target. Otherwise returns Id().
@@ -94,7 +98,7 @@ private:
 
 	void refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram);
 
-	LogicalModelAssistApi *mApi; // Does not take ownership
+	LogicalModelAssistApi &mApi;
 	QMap<Id, gui::PaletteTreeWidget *> mUserPalettes;
 };
 

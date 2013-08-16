@@ -91,8 +91,7 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	} else if (index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
 		case logicalAttribute: {
-			QString value = mTargetLogicalObject.data(mFields[index.row()].role).toString();
-			return value.split(propertiesSeparator).at(0);
+			return mTargetLogicalObject.data(mFields[index.row()].role).toString();
 		}
 		case graphicalAttribute:
 			return mTargetGraphicalObject.data(mFields[index.row()].role);
@@ -115,21 +114,18 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	}
 }
 
-bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool PropertyEditorModel::setData(QModelIndex const &index, QVariant const &value, int role)
 {
 	bool modelChanged = true;
 
-	if (!isValid())
+	if (!isValid()) {
 		return false;
+	}
 
 	if ((role == Qt::DisplayRole || role == Qt::EditRole) && index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
 		case logicalAttribute: {
-			QString oldValue = mTargetLogicalObject.data(mFields[index.row()].role).toString();
-			QStringList components = oldValue.split(propertiesSeparator);
-			components[0] = value.toString();
-			QString newValue = components.join(propertiesSeparator);
-			mTargetLogicalModel->setData(mTargetLogicalObject, newValue, mFields[index.row()].role);
+			mTargetLogicalModel->setData(mTargetLogicalObject, value, mFields[index.row()].role);
 			break;
 		}
 		case graphicalAttribute:
@@ -141,12 +137,13 @@ bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &valu
 		default:
 			modelChanged = false;
 		}
-	}
-	else
+	} else {
 		modelChanged = false;
+	}
 
-	if (modelChanged)
+	if (modelChanged) {
 		emit dataChanged(index, index);
+	}
 
 	return modelChanged;
 }
@@ -277,7 +274,7 @@ int PropertyEditorModel::roleByIndex(int row) const
 QString PropertyEditorModel::typeName(QModelIndex const &index) const
 {
 	Id id = idByIndex(index);
-	if (id == Id()) {
+	if (id.isNull()) {
 		return "";
 	}
 	return mEditorManagerInterface.typeName(id, mFields[index.row()].fieldName);
@@ -286,7 +283,7 @@ QString PropertyEditorModel::typeName(QModelIndex const &index) const
 bool PropertyEditorModel::isReference(QModelIndex const &index, QString const &propertyName)
 {
 	Id id = idByIndex(index);
-	if (id == Id()) {
+	if (id.isNull()) {
 		return false;
 	}
 	return mEditorManagerInterface.referenceProperties(id.type()).contains(propertyName);

@@ -7,7 +7,9 @@
 #include "../editorPluginInterface/elementImpl.h"
 #include "serializationData.h"
 
-QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
+namespace qReal {
+
+//QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
 
 namespace enums {
 namespace arrowTypeEnum {
@@ -30,10 +32,8 @@ class NodeElement;
   * @brief class for an edge on a diagram
  */
 
-namespace qReal {
 namespace commands {
 class ReshapeEdgeCommand;
-}
 }
 
 class EdgeElement : public Element
@@ -41,7 +41,12 @@ class EdgeElement : public Element
 	Q_OBJECT
 
 public:
-	EdgeElement(ElementImpl *impl);
+	EdgeElement(ElementImpl *impl
+			, Id const &id
+			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi
+			);
+
 	virtual ~EdgeElement();
 
 	void updateData();
@@ -81,6 +86,9 @@ public:
 	QPointF from() const;
 	/** @brief Get position of edge's end point*/
 	QPointF to() const;
+
+	QStringList fromPortTypes() const;
+	QStringList toPortTypes() const;
 
 	void placeStartTo(QPointF const &place);
 	void placeEndTo(QPointF const &place);
@@ -194,7 +202,7 @@ private:
 	/// Returns the bezier curve built on the mLine points.
 	QPainterPath bezierCurve() const;
 
-	QList<PossibleEdge> possibleEdges;
+	QList<PossibleEdge> mPossibleEdges;
 
 	bool mIsDissectable;
 	int getPoint(const QPointF &location);
@@ -272,3 +280,5 @@ private:
 
 	qReal::commands::ReshapeEdgeCommand *mReshapeCommand;
 };
+
+}

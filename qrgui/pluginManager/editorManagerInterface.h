@@ -17,9 +17,9 @@
 #include "patternParser.h"
 #include "explosion.h"
 
-class Element;
-
 namespace qReal {
+
+class Element;
 
 class MainWindow;
 
@@ -40,7 +40,7 @@ public:
 	virtual QString propertyDescription(Id const &id, QString const &propertyName) const = 0;
 	virtual QString propertyDisplayedName(Id const &id, QString const &propertyName) const = 0;
 	virtual QIcon icon(Id const &id) const = 0;
-	virtual Element* graphicalObject(Id const &id) const = 0;
+	virtual ElementImpl* elementImpl(Id const &id) const = 0;
 
 	virtual IdList containedTypes(const Id &id) const = 0;
 	virtual QList<Explosion> explosions(Id const &source) const = 0;
@@ -53,6 +53,7 @@ public:
 	virtual bool isElement(Id const &id) const = 0;
 
 	virtual QStringList propertyNames(Id const &id) const = 0;
+	virtual QStringList portTypes(Id const &id) const = 0;
 	virtual QString defaultPropertyValue(Id const &id, QString name) const = 0;
 	virtual QStringList propertiesWithDefaultValues(Id const &id) const = 0;
 

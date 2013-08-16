@@ -364,7 +364,7 @@
 						<association beginName="begin" endName="end"/>
 					</associations>
 					<possibleEdges>
-						<possibleEdge beginName="AbstractNode" directed="false" endName="AbstractNode"/>
+						<possibleEdge beginName="NonTyped" directed="false" endName="NonTyped"/>
 					</possibleEdges>
 					<properties>
 						<property displayedName="Условие" type="GuardType" name="Guard"/>
@@ -1641,7 +1641,7 @@
 						<image y1="0" name="images/subprogramRobots.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="5" y="60" textBinded="name"/>
+						<label x="-10" y="-25" textBinded="name" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>

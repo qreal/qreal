@@ -4,8 +4,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="102"/>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="193"/>
+        <location filename="nxtOSEK/generators/controlFlowGenerator.cpp" line="38"/>
         <source>There is nothing to generate, diagram doesn&apos;t have Initial Node</source>
         <translation>Генерация невозможна, на диаграмме нет начальных блоков</translation>
     </message>
@@ -20,7 +19,7 @@
         <translation>Обнаружено более 1 исходящей связи!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="158"/>
+        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="164"/>
         <source>There is no opened diagram</source>
         <translation>Сначала откройте диаграмму </translation>
     </message>
@@ -30,26 +29,62 @@
         <translation>Блок коментария не может иметь входящих связей!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="169"/>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="176"/>
         <source>If block </source>
-        <translation>У условного блока </translation>
+        <translation type="obsolete">У условного блока </translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="169"/>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="176"/>
         <source> has no 2 correct branches! May be you need to connect one of them to some diagram element.</source>
-        <translation> найдены не присоединенные ветки!</translation>
+        <translation type="obsolete"> найдены не присоединенные ветки!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="209"/>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="40"/>
+        <source>There must be exactly TWO links outgoing from if block</source>
+        <translation>От условного блока должно отходить ровно ДВЕ связи</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="49"/>
+        <source>Outgoing link is not connected</source>
+        <translation>Исходящая связь ни к чему не подключена</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="58"/>
+        <source>Two links marked with &apos;true&apos; found</source>
+        <translation>Обнаружено обе связи помечены условием &apos;Истина&apos;</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="65"/>
+        <source>Two links marked with &apos;false&apos; found</source>
+        <translation>Обе связи помечены условием &apos;Ложь&apos;</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="72"/>
+        <source>There must be a link with property &quot;Guard&quot; set to one of the conditions</source>
+        <translation>Должна быть связь со свойством &quot;Условие&quot; установленным в одно из условий</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="222"/>
         <source>This diagram isn&apos;t structed diagram, because there are IF block with 2 back arrows!</source>
         <translation>Диаграмма не структурная т.к. существует условный блок с двумя обратными стрелками!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="213"/>
+        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="226"/>
         <source>Generator JUST does not work in this case.</source>
         <translation>Данная диаграмма слишком сложна для генерации.</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/subprogramsGenerator.cpp" line="39"/>
+        <source>Graphical diagram instance not found</source>
+        <translation>Графическая модель диаграммы с подпрограммой не найдена</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/subprogramsGenerator.cpp" line="111"/>
+        <source>Please enter valid c-style name for subprogram &quot;</source>
+        <translation>Введите корректный идентификатор подпрограммы &quot;</translation>
+    </message>
+    <message>
+        <location filename="nxtOSEK/generators/subprogramsGenerator.cpp" line="116"/>
+        <source>Duplicate identifier: </source>
+        <translation>Такой идентификатор уже используется: </translation>
     </message>
 </context>
 <context>

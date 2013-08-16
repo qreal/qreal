@@ -67,9 +67,9 @@ QIcon ProxyEditorManager::icon(Id const &id) const
 	return mProxiedEditorManager->icon(id);
 }
 
-Element* ProxyEditorManager::graphicalObject(Id const &id) const
+ElementImpl *ProxyEditorManager::elementImpl(Id const &id) const
 {
-	return mProxiedEditorManager->graphicalObject(id);
+	return mProxiedEditorManager->elementImpl(id);
 }
 
 IdList ProxyEditorManager::containedTypes(const Id &id) const
@@ -115,6 +115,11 @@ bool ProxyEditorManager::isElement(Id const &id) const
 QStringList ProxyEditorManager::propertyNames(Id const &id) const
 {
 	return mProxiedEditorManager->propertyNames(id);
+}
+
+QStringList ProxyEditorManager::portTypes(Id const &id) const
+{
+	return mProxiedEditorManager->portTypes(id);
 }
 
 QString ProxyEditorManager::defaultPropertyValue(Id const &id, QString name) const

@@ -250,19 +250,16 @@ QSize EditorManager::iconSize(Id const &id) const
 	return engine->preferedSize();
 }
 
-Element* EditorManager::graphicalObject(const Id &id) const
+ElementImpl *EditorManager::elementImpl(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
-	if( !impl ) {
+	if (!impl) {
 		qDebug() << "no impl";
 		return 0;
 	}
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
 
-	return  new EdgeElement(impl);
+	return impl;
 }
 
 QStringList EditorManager::propertyNames(const Id &id) const
@@ -270,6 +267,13 @@ QStringList EditorManager::propertyNames(const Id &id) const
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
+}
+
+QStringList EditorManager::portTypes(Id const &id) const
+{
+	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getPortTypes(id.diagram(), id.element());
 }
 
 QStringList EditorManager::referenceProperties(const Id &id) const
@@ -286,7 +290,7 @@ IdList EditorManager::containedTypes(const Id &id) const
 
 	IdList result;
 	foreach (QString const &type, mPluginIface[id.editor()]->getTypesContainedBy(id.element())) {
-		result.append(Id(type));
+		result.append(Id(id.editor(), id.diagram(), type));
 	}
 
 	typedef QPair<QString, QString> StringPair;

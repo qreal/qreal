@@ -15,9 +15,6 @@ using namespace qReal;
 using namespace interpreters::robots;
 using namespace interpreters::robots::details;
 
-const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
-const Id startingElementType1 = Id("RobotsMetamodel", "RobotsDiagram", "InitialBlock");
-
 Interpreter::Interpreter()
 	: mGraphicalModelApi(NULL)
 	, mLogicalModelApi(NULL)
@@ -101,13 +98,6 @@ void Interpreter::interpret()
 	mState = waitingForSensorsConfiguredToLaunch;
 	mBlocksTable->setIdleForBlocks();
 
-	Id const startingElement = findStartingElement(currentDiagramId);
-	if (startingElement == Id()) {
-		mInterpretersInterface->errorReporter()->addError(tr("No entry point found, please add Initial Node to a diagram"));
-		mState = idle;
-		return;
-	}
-
 	Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
 	if (!configurer.configure(currentDiagramId)) {
 		return;
@@ -119,7 +109,7 @@ void Interpreter::stopRobot()
 	mTimer.stop();
 	mRobotModel->stopRobot();
 	mState = idle;
-	foreach (Thread *thread, mThreads) {
+	foreach (Thread * const thread, mThreads) {
 		delete thread;
 		mThreads.removeAll(thread);
 	}
@@ -232,23 +222,10 @@ void Interpreter::sensorsConfiguredSlot()
 		mRobotModel->startInterpretation();
 
 		Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
-		Id const startingElement = findStartingElement(currentDiagramId);
-		Thread * const initialThread = new Thread(*mInterpretersInterface, *mBlocksTable, startingElement);
+		Thread * const initialThread = new Thread(mGraphicalModelApi
+				, *mInterpretersInterface, currentDiagramId, *mBlocksTable);
 		addThread(initialThread);
 	}
-}
-
-Id const Interpreter::findStartingElement(Id const &diagram) const
-{
-	IdList const children = mGraphicalModelApi->graphicalRepoApi().children(diagram);
-
-	foreach (Id const child, children) {
-		if (child.type() == startingElementType || child.type() == startingElementType1) {
-			return child;
-		}
-	}
-
-	return Id();
 }
 
 void Interpreter::threadStopped()
@@ -265,7 +242,8 @@ void Interpreter::threadStopped()
 
 void Interpreter::newThread(details::blocks::Block * const startBlock)
 {
-	Thread * const thread = new Thread(*mInterpretersInterface, *mBlocksTable, startBlock->id());
+	Thread * const thread = new Thread(mGraphicalModelApi
+			, *mInterpretersInterface, *mBlocksTable, startBlock->id());
 	addThread(thread);
 }
 
