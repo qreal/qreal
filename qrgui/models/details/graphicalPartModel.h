@@ -7,12 +7,11 @@
 #include "../../../qrrepo/repoApi.h"
 #include "../../pluginManager/editorManagerInterface.h"
 #include "modelsImplementation/graphicalPartModelItem.h"
+#include "modelsImplementation/modelIndexesInterface.h"
 
 namespace qReal {
 namespace models {
 namespace details {
-
-class GraphicalModel;
 
 /// A model that contains separate parts of graphical elements, like labels or pins.
 /// Model organized as a list of graphical elements, each cell of which contains a list of graphical parts.
@@ -32,7 +31,8 @@ public:
 
 	/// Constructor.
 	/// @param repoApi - reference to repository API.
-	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi, GraphicalModel const &graphicalModel);
+	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi
+			, modelsImplementation::ModelIndexesInterface const &graphicalModel);
 
 	virtual ~GraphicalPartModel();
 
@@ -84,7 +84,7 @@ private:
 
 	/// Maps id to an index of this id in mItems list.
 	QHash<Id, int> mIdPositions;
-	GraphicalModel const &mGraphicalModel;
+	modelsImplementation::ModelIndexesInterface const &mGraphicalModel;
 };
 
 }

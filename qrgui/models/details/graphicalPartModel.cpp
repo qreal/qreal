@@ -6,7 +6,8 @@ using namespace qReal;
 using namespace qReal::models::details;
 using namespace qReal::models::details::modelsImplementation;
 
-GraphicalPartModel::GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi, GraphicalModel const &graphicalModel)
+GraphicalPartModel::GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi
+		, modelsImplementation::ModelIndexesInterface const &graphicalModel)
 	: mRepoApi(repoApi)
 	, mGraphicalModel(graphicalModel)
 {
@@ -166,7 +167,7 @@ QModelIndex GraphicalPartModel::findIndex(Id const &element, int index) const
 void GraphicalPartModel::rowsAboutToBeRemovedInGraphicalModel(QModelIndex const &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {
-		QModelIndex current = mGraphicalModel.index(row, 0, parent);
+		QModelIndex const current = mGraphicalModel.index(row, 0, parent);
 		if (current.isValid()) {
 			Id const graphicalId = current.data(roles::idRole).value<Id>();
 			if (!mIdPositions.contains(graphicalId)) {

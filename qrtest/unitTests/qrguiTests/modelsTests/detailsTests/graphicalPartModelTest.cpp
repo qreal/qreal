@@ -19,7 +19,7 @@ void GraphicalPartModelTest::SetUp()
 	mRepoApi->addChild(Id::rootId(), element);
 	mRepoApi->addChild(Id::rootId(), graphicalElement, element);
 
-	mGraphicalPartModel = new GraphicalPartModel(*mRepoApi);
+	mGraphicalPartModel = new GraphicalPartModel(*mRepoApi, mModelIndexesInterfaceMock);
 }
 
 void GraphicalPartModelTest::TearDown()
@@ -111,7 +111,7 @@ TEST_F(GraphicalPartModelTest, viewTest)
 	helpers::GraphicalPartViewMock viewMock;
 
 	delete mGraphicalPartModel;
-	mGraphicalPartModel = new GraphicalPartModel(*mRepoApi);
+	mGraphicalPartModel = new GraphicalPartModel(*mRepoApi, mModelIndexesInterfaceMock);
 
 	QObject::connect(mGraphicalPartModel, SIGNAL(dataChanged(QModelIndex, QModelIndex))
 			, &viewMock, SLOT(dataChanged(QModelIndex, QModelIndex)));
