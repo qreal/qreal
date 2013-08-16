@@ -78,6 +78,11 @@ void Element::setController(Controller *controller)
 	mController = controller;
 }
 
+qReal::Controller * Element::controller() const
+{
+	return mController;
+}
+
 void Element::initTitles()
 {
 }

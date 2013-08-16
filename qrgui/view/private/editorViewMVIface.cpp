@@ -211,6 +211,11 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 					mGraphicalAssistApi->createElement(currentId, newUuid, false,  "(anonymous something)", QPointF(0, 0));
 				}
 			}
+
+			EdgeElement *edgeElem = dynamic_cast<EdgeElement *>(elem);
+			if (edgeElem) {
+				edgeElem->layOut();
+			}
 		}
 		if (needToProcessChildren && model()->hasChildren(current)) {
 			rowsInserted(current, 0, model()->rowCount(current) - 1);

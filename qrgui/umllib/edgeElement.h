@@ -30,10 +30,6 @@ enum ArrowType
 class NodeElement;
 class LineHandler;
 
-namespace commands {
-class ReshapeEdgeCommand;
-}
-
 /** @class EdgeElement
   * @brief class for an edge on a diagram
  */
@@ -63,8 +59,6 @@ public:
 	bool isDividable();
 	void adjustLink();
 
-	/// use adjustLink() to all links that have with this general master
-	void adjustNeighborLinks();
 	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
 	void arrangeSrcAndDst();
 
@@ -86,10 +80,10 @@ public:
 	QPolygonF line() const;
 	void setLine(QPolygonF const &line);
 
-	/** @brief Get position of edge's start point*/
-	QPointF from() const;
-	/** @brief Get position of edge's end point*/
-	QPointF to() const;
+	qreal fromPort() const;
+	qreal toPort() const;
+	void setFromPort(qreal const &fromPort);
+	void setToPort(qreal const &toPort);
 
 	QStringList fromPortTypes() const;
 	QStringList toPortTypes() const;
@@ -121,7 +115,13 @@ public:
 	bool isLoop();
 	void squarize();
 	void delCloseLinePoints();
-	int getPoint(const QPointF &location);
+	/// Change line, if (mSrc && (mSrc == mDst)).
+	void createLoopEdge();
+	/// connectToPort for self-closing line (mSrc && (mSrc == mDst)).
+	void connectLoopEdge(NodeElement *newMaster);
+	void deleteLoops();
+	void layOut();
+	NodeElement *getNodeAt(const QPointF &position, bool isStart);
 
 	void alignToGrid();
 	qreal alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const;
@@ -178,10 +178,6 @@ private:
 	int indentReductCoeff();
 	/// Set mPortTo to next port.
 	void searchNextPort();
-	/// Change line, if (mSrc && (mSrc == mDst)).
-	void createLoopEdge();
-	/// connectToPort for self-closing line (mSrc && (mSrc == mDst)).
-	void connectLoopEdge(NodeElement *newMaster);
 
 	/// Create indent of bounding rect, depending on the rect size.
 	QPointF boundingRectIndent(QPointF const &point, NodeSide direction);
@@ -200,10 +196,6 @@ private:
 	/// Returns the bezier curve built on the mLine points.
 	QPainterPath bezierCurve() const;
 
-	QList<PossibleEdge> mPossibleEdges;
-
-	bool mIsDissectable;
-	NodeElement *getNodeAt(const QPointF &position, bool isStart);
 	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const;
 	void updateLongestPart();
 	static QRectF getPortRect(QPointF const &point);
@@ -217,6 +209,8 @@ private:
 
 	void delClosePoints();
 
+	int getPoint(const QPointF &location);
+
 	int defineType();
 	NodeSide defineSide(qreal port);
 	void verticalSquareLine();
@@ -226,7 +220,6 @@ private:
 
 	bool removeOneLinePoints(int startingPoint);
 
-	void deleteLoops();
 	void deleteLoop(int startPos);
 	QPointF* haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4);
 
@@ -237,6 +230,8 @@ private:
 	bool reverseActionIsPossible();
 
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
+
+	QList<PossibleEdge> mPossibleEdges;
 
 	NodeElement *mSrc;
 	NodeElement *mDst;
@@ -270,8 +265,6 @@ private:
 	bool mModelUpdateIsCalled;  // flag for the infinite updateData()-s liquidating
 
 	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst)
-
-	qReal::commands::ReshapeEdgeCommand *mReshapeCommand;
 };
 
 }

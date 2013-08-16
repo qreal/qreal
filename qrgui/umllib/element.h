@@ -61,6 +61,7 @@ public:
 			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 	void setController(qReal::Controller *controller);
+	qReal::Controller *controller() const;
 
 	ElementImpl* elementImpl() const;
 	bool createChildrenFromMenu() const;

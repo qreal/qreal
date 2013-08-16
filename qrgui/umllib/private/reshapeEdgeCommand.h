@@ -23,9 +23,9 @@ protected:
 	bool restoreState();
 
 private:
-	void saveConfiguration(QPolygonF &target, Id &src, Id &dst, QPointF &pos);
+	void saveConfiguration(QPolygonF &target, Id &src, Id &dst, QPointF &pos, qreal &fromPort, qreal &toPort);
 	void applyConfiguration(QPolygonF const &configuration, Id const &src
-			, Id const &dst, QPointF const &pos);
+			, Id const &dst, QPointF const &pos, qreal const &fromPort, qreal const &toPort);
 
 	QPolygonF mOldConfiguration;
 	QPolygonF mNewConfiguration;
@@ -35,6 +35,10 @@ private:
 	Id mOldDst;
 	Id mNewSrc;
 	Id mNewDst;
+	qreal mOldFromPort;
+	qreal mNewFromPort;
+	qreal mOldToPort;
+	qreal mNewToPort;
 };
 
 }

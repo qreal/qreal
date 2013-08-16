@@ -21,7 +21,6 @@ EmbeddedLinker::EmbeddedLinker()
 		, mColor(Qt::blue)
 		, mPressed(false)
 		, mTimeOfUpdate(0)
-		, mTimer(new QTimer(this))
 {
 	mSize = SettingsManager::value("EmbeddedLinkerSize").toFloat();
 	if (mSize > 10) {
@@ -38,8 +37,6 @@ EmbeddedLinker::EmbeddedLinker()
 	setFlag(ItemStacksBehindParent, false);
 
 	setAcceptHoverEvents(true);
-
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdge()));
 }
 
 EmbeddedLinker::~EmbeddedLinker()
@@ -218,8 +215,6 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	mTimer->start(400);
-
 	if (mPressed) {
 		mPressed = false;
 		EditorViewScene *scene = dynamic_cast<EditorViewScene*>(mMaster->scene());
@@ -251,23 +246,11 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (mEdge) {
 		if (mTimeOfUpdate == 14) {
 			mTimeOfUpdate = 0;
-			mEdge->adjustNeighborLinks();
-			mEdge->arrangeSrcAndDst();
+			mEdge->adjustLink();
 		} else {
 			mTimeOfUpdate++;
 		}
 		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
-	}
-}
-
-void EmbeddedLinker::updateMasterEdge()
-{
-	mTimer->stop();
-	mTimeOfUpdate = 0;
-
-	if (mEdge) {
-		mEdge->arrangeSrcAndDst();
-		mEdge->adjustNeighborLinks();
 	}
 }
 
@@ -319,11 +302,10 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		}
 		if (result != -1) {
 			mEdge->connectToPort();
-
-			updateMasterEdge();
 			// This will restore edge state after undo/redo
 			commands::ReshapeEdgeCommand *reshapeEdge = new commands::ReshapeEdgeCommand(mEdge);
 			reshapeEdge->startTracking();
+			mEdge->layOut();
 			reshapeEdge->stopTracking();
 			reshapeEdge->setUndoEnabled(false);
 			if (createElementFromMenuCommand) {

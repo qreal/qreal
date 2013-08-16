@@ -83,7 +83,6 @@ NodeElement::NodeElement(ElementImpl* impl)
 	mUmlPortHandler = new UmlPortHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateNodeEdges()));
 	connect(&mRenderTimer, SIGNAL(timeout()), this, SLOT(initRenderedDiagram()));
 }
 
@@ -485,9 +484,8 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	if (mTimeOfUpdate == 14) {
 		mTimeOfUpdate = 0;
 		foreach (EdgeElement* edge, mEdgeList) {
-			edge->adjustNeighborLinks();
+			edge->adjustLink();
 		}
-		arrangeLinks();
 	} else {
 		mTimeOfUpdate++;
 	}
@@ -575,11 +573,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	arrangeLinks();
-
-	foreach (EdgeElement* edge, mEdgeList) {
-		edge->adjustNeighborLinks();
-	}
 	adjustLinks();
+
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->setGraphicApiPos();
 		edge->saveConfiguration();
@@ -1264,7 +1259,7 @@ void NodeElement::updateNodeEdges()
 	mTimeOfUpdate = 0;
 	arrangeLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
-		edge->adjustNeighborLinks();
+		edge->adjustLink();
 	}
 }
 

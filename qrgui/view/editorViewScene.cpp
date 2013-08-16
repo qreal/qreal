@@ -665,7 +665,7 @@ void EditorViewScene::arrangeNodeLinks(NodeElement* node) const
 {
 	node->arrangeLinks();
 	foreach (EdgeElement* nodeEdge, node->edgeList()) {
-		nodeEdge->adjustNeighborLinks();
+		nodeEdge->adjustLink();
 		nodeEdge->setGraphicApiPos();
 		nodeEdge->saveConfiguration();
 	}
@@ -1035,7 +1035,7 @@ void EditorViewScene::createEdge(QString const &idStr)
 	if (edge->dst()) {
 		edge->dst()->arrangeLinks();
 		foreach (EdgeElement* nodeEdge, edge->dst()->edgeList()) {
-			nodeEdge->adjustNeighborLinks();
+			nodeEdge->adjustLink();
 			nodeEdge->setGraphicApiPos();
 			nodeEdge->saveConfiguration();
 		}
@@ -1044,6 +1044,7 @@ void EditorViewScene::createEdge(QString const &idStr)
 	}
 	ReshapeEdgeCommand *reshapeEdgeCommand = new ReshapeEdgeCommand(this, id);
 	reshapeEdgeCommand->startTracking();
+	edge->layOut();
 	reshapeEdgeCommand->stopTracking();
 	reshapeEdgeCommand->setUndoEnabled(false);
 	createCommand->addPostAction(reshapeEdgeCommand);

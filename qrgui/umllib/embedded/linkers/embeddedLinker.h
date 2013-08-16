@@ -41,9 +41,6 @@ public:
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
-private slots:
-	void updateMasterEdge();
-
 private:
 	EdgeElement* mEdge;
 	NodeElement* mMaster;
@@ -60,7 +57,6 @@ private:
 	qReal::Id mEdgeType;
 
 	int mTimeOfUpdate;
-	QTimer *mTimer;
 	commands::CreateElementCommand *mCreateEdgeCommand;
 };
 

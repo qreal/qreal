@@ -11,7 +11,6 @@
 #include "edgeElement.h"
 #include "nodeElement.h"
 #include "labelFactory.h"
-#include "private/reshapeEdgeCommand.h"
 #include "../view/editorViewScene.h"
 #include "lineHandler.h"
 
@@ -41,7 +40,6 @@ EdgeElement::EdgeElement(ElementImpl *impl)
 		, mReverseAction(tr("Reverse"), this)
 		, mModelUpdateIsCalled(false)
 		, mIsLoop(false)
-		, mReshapeCommand(NULL)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -111,8 +109,38 @@ QPolygonF EdgeElement::line() const
 
 void EdgeElement::setLine(QPolygonF const &line)
 {
+	if (line == mLine) {
+		return;
+	}
+
+	prepareGeometryChange();
 	mLine = line;
 	saveConfiguration();
+	updateLongestPart();
+}
+
+qreal EdgeElement::fromPort() const
+{
+	return mPortFrom;
+}
+
+qreal EdgeElement::toPort() const
+{
+	return mPortTo;
+}
+
+void EdgeElement::setFromPort(qreal const &fromPort)
+{
+	mPortFrom = fromPort;
+	mModelUpdateIsCalled = true;
+	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+}
+
+void EdgeElement::setToPort(qreal const &toPort)
+{
+	mPortTo = toPort;
+	mModelUpdateIsCalled = true;
+	mGraphicalAssistApi->setToPort(id(), mPortTo);
 }
 
 static double lineAngle(const QLineF &line)
@@ -505,9 +533,8 @@ void EdgeElement::connectToPort()
 	mLogicalAssistApi->setTo(logicalId(), (mDst ? mDst->logicalId() : Id::rootId()));
 
 	adjustLink();
-	arrangeSrcAndDst();
 
-	mGraphicalAssistApi->setPosition(id(), pos());
+	setGraphicApiPos();
 	saveConfiguration();
 
 	mMoving = false;
@@ -517,6 +544,11 @@ void EdgeElement::connectToPort()
 	} else {
 		highlight(Qt::red);
 	}
+}
+
+void EdgeElement::layOut()
+{
+	mHandler->layOut();
 }
 
 void EdgeElement::connectLoopEdge(NodeElement *newMaster)
@@ -747,14 +779,10 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		if (event->buttons() & Qt::LeftButton) {
-			prepareGeometryChange();
 			mHandler->rejectMovingEdge();
 		}
 		return;
 	}
-
-	mReshapeCommand = new commands::ReshapeEdgeCommand(this);
-	mReshapeCommand->startTracking();
 
 	if ((event->modifiers() & Qt::AltModifier) && (event->button() == Qt::LeftButton)
 			&& delPointActionIsPossible(event->pos())) {
@@ -763,13 +791,11 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	Element::mousePressEvent(event);
-	if ((mSrc && mDst && mSrc->isSelected() && mDst->isSelected() && isSelected())
-			|| (mSrc && mSrc->isSelected() && isSelected()) || (mDst && mDst->isSelected() && isSelected())) {
+	if ((mSrc && mSrc->isSelected() && isSelected()) || (mDst && mDst->isSelected() && isSelected())) {
 		mDragType = wholeEdge;
-		mIsLoop = false;
 	} else if (event->button() == Qt::LeftButton && !event->modifiers()) {
-		prepareGeometryChange();
-		mHandler->startMovingEdge(event->pos());
+		mDragType = getPoint(event->pos());
+		mHandler->startMovingEdge(mDragType, event->pos());
 	}
 }
 
@@ -781,32 +807,20 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	if (mDragType == wholeEdge) {
-		if (mIsLoop) {
-			return;
-		}
 		Element::mouseMoveEvent(event);
 	} else {
 		if (mDragType > mLine.size() - 1) {
 			mDragType = overPointMax;
-			prepareGeometryChange();
 			mHandler->rejectMovingEdge();
 			return;
 		}
 
-		if (mDragType < 0 && mDragType != noPort) {
-			return;
-		}
-
-		prepareGeometryChange();
 		mHandler->moveEdge(event->pos(), SettingsManager::value("ActivateGrid").toBool());
-		updateLongestPart();
 	}
 }
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	mDragType = noPort;
-
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
@@ -822,18 +836,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mDst->setPortsVisible(false);
 	}
 
-	prepareGeometryChange();
 	mHandler->endMovingEdge();
-
-	setGraphicApiPos();
-	saveConfiguration();
-
-	if (mReshapeCommand) {
-		mReshapeCommand->stopTracking();
-		mController->execute(mReshapeCommand);
-		// Undo stack took ownership
-		mReshapeCommand = NULL;
-	}
 }
 
 qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const
@@ -1058,7 +1061,7 @@ void EdgeElement::delPointHandler(QPointF const &pos)
 void EdgeElement::arrangeAndAdjustHandler(QPointF const &pos)
 {
 	Q_UNUSED(pos);
-	adjustNeighborLinks();
+	adjustLink();
 	arrangeSrcAndDst();
 	setGraphicApiPos();
 	update();
@@ -1067,6 +1070,10 @@ void EdgeElement::arrangeAndAdjustHandler(QPointF const &pos)
 
 void EdgeElement::setGraphicApiPos()
 {
+	if (pos() == mGraphicalAssistApi->position(id())) {
+		return;
+	}
+
 	mMoving = true;
 	mGraphicalAssistApi->setPosition(id(), this->pos());
 	mMoving = false;
@@ -1098,6 +1105,7 @@ void EdgeElement::breakPointHandler(QPointF const &pos)
 
 void EdgeElement::squarize()
 {
+	prepareGeometryChange();
 	mLine = QPolygonF() << mLine.first() << mLine.last();
 
 	// we don't need to correct the already straight line
@@ -1123,6 +1131,7 @@ void EdgeElement::squarize()
 	default:
 		qDebug() << "incorrect link type";
 	}
+	updateLongestPart();
 }
 
 int EdgeElement::defineType()
@@ -1218,38 +1227,14 @@ void EdgeElement::minimizeHandler(const QPointF &pos)
 	prepareGeometryChange();
 	mLine = newMLine;
 	updateLongestPart();
-	adjustNeighborLinks();
+	adjustLink();
 	arrangeSrcAndDst();
 	saveConfiguration();
 }
 
 void EdgeElement::adjustLink()
 {
-	if (mSrc) {
-		prepareGeometryChange();
-		mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
-	}
-
-	if (mDst) {
-		prepareGeometryChange();
-		mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
-	}
-
-	if ((SettingsManager::value("LineType").toInt() != static_cast<int>(curveLine)) && !mIsLoop) {
-		delCloseLinePoints();
-		deleteLoops();
-	}
-
-	if (mIsLoop) {
-		prepareGeometryChange();
-		createLoopEdge();
-	}
-
-	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
-		squarize();
-	}
-
-	updateLongestPart();
+	mHandler->adjust();
 }
 
 void EdgeElement::arrangeSrcAndDst()
@@ -1407,7 +1392,6 @@ void EdgeElement::updateData()
 	mPortFrom = mGraphicalAssistApi->fromPort(id());
 	mPortTo = mGraphicalAssistApi->toPort(id());
 
-	adjustLink();
 	mElementImpl->updateData(this);
 
 	update();
@@ -1461,15 +1445,11 @@ void EdgeElement::placeEndTo(QPointF const &place)
 void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
 	//expected that the id will change only fractional part
 	if ((!mIsLoop || ((int) mPortFrom == (int) portId)) && (node == mSrc)) {
-		mPortFrom = portId;
-		mModelUpdateIsCalled = true;
-		mGraphicalAssistApi->setFromPort(id(), mPortFrom);
+		setFromPort(portId);
 		return;
 	}
 	if ((!mIsLoop || ((int) mPortTo == (int) portId)) && (node == mDst)) {
-		mPortTo = portId;
-		mModelUpdateIsCalled = true;
-		mGraphicalAssistApi->setToPort(id(), mPortTo);
+		setToPort(portId);
 		return;
 	}
 }
@@ -1504,23 +1484,12 @@ void EdgeElement::redrawing(QPointF const &pos)
 		createLoopEdge();
 	}
 	mHandler->setType(static_cast<qReal::LineType>(SettingsManager::value("LineType").toInt()));
-	adjustNeighborLinks();
+	adjustLink();
 	arrangeSrcAndDst();
 	prepareGeometryChange();
 	adjustLink();
 	setGraphicApiPos();
 	saveConfiguration();
-}
-
-void EdgeElement::adjustNeighborLinks() // require a lot of resources for the beauty
-{
-	if (mSrc) {
-		mSrc->adjustLinks();
-	}
-	if (mDst) {
-		mDst->adjustLinks();
-	}
-	adjustLink();
 }
 
 QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4)
@@ -1723,17 +1692,13 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 			if (mSrc && !mSrc->isSelected()) {
 				prepareGeometryChange();
 				mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
-				updateLongestPart();
 			}
 			if (mDst && !mDst->isSelected()) {
 				prepareGeometryChange();
 				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
-				updateLongestPart();
 			}
 		}
-		if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) {
-			squarize();
-		}
+		updateLongestPart();
 		return value;
 	default:
 		return QGraphicsItem::itemChange(change, value);
@@ -1746,6 +1711,8 @@ void EdgeElement::setSrc(NodeElement *node)
 		mSrc->delEdge(this);
 	}
 	mSrc = node;
+	mGraphicalAssistApi->setFrom(id(), mSrc ? mSrc->id() : Id::rootId());
+	mLogicalAssistApi->setFrom(logicalId(), mSrc ? mSrc->logicalId() : Id::rootId());
 	if (node) {
 		mSrc->addEdge(this);
 	}
@@ -1757,6 +1724,8 @@ void EdgeElement::setDst(NodeElement *node)
 		mDst->delEdge(this);
 	}
 	mDst = node;
+	mGraphicalAssistApi->setTo(id(), mDst ? mDst->id() : Id::rootId());
+	mLogicalAssistApi->setTo(logicalId(), mDst ? mDst->logicalId() : Id::rootId());
 	if (node) {
 		mDst->addEdge(this);
 	}
@@ -1769,7 +1738,7 @@ void EdgeElement::tuneForLinker()
 	mLine.translate(-mLine.first());
 	mPortFrom = mSrc ? mSrc->portId(mapToItem(mSrc, mLine.first()), fromPortTypes()) : -1.0;
 	mGraphicalAssistApi->setFromPort(id(), mPortFrom);
-	adjustNeighborLinks();
+	adjustLink();
 	arrangeSrcAndDst();
 	mGraphicalAssistApi->setPosition(id(), pos());
 	mMoving = false;
