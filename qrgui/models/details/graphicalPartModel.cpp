@@ -128,7 +128,12 @@ bool GraphicalPartModel::removeRows(int row, int count, QModelIndex const &paren
 	for (int i = row; i < row + count; ++i) {
 		qDeleteAll(mItems[i]);
 		mItems.removeAt(i);
-		mIdPositions.remove(mIdPositions.key(i));
+		mIdPositions.clear();
+		for (int j = i; j < mItems.size(); ++j) {
+			if (mItems[j].size() > 0) {
+				mIdPositions[mItems[j][0]->id()] = j;
+			}
+		}
 	}
 
 	endRemoveRows();
