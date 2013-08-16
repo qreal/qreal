@@ -7,6 +7,7 @@
 #include "../../../qrrepo/repoApi.h"
 #include "../../pluginManager/editorManagerInterface.h"
 #include "modelsImplementation/graphicalPartModelItem.h"
+#include "modelsImplementation/modelIndexesInterface.h"
 
 namespace qReal {
 namespace models {
@@ -30,7 +31,8 @@ public:
 
 	/// Constructor.
 	/// @param repoApi - reference to repository API.
-	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi);
+	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi
+			, modelsImplementation::ModelIndexesInterface const &graphicalModel);
 
 	virtual ~GraphicalPartModel();
 
@@ -68,6 +70,9 @@ public:
 	/// Deletes model contents and reloads it from repo.
 	void reinit();
 
+public slots:
+	virtual void rowsAboutToBeRemovedInGraphicalModel(QModelIndex const &parent, int start, int end);
+
 private:
 	void clear();
 	void load(Id const &parent = Id::rootId());
@@ -76,7 +81,10 @@ private:
 
 	qrRepo::GraphicalRepoApi &mRepoApi;
 	QList<QList<modelsImplementation::GraphicalPartModelItem *> > mItems;  // Has ownership.
+
+	/// Maps id to an index of this id in mItems list.
 	QHash<Id, int> mIdPositions;
+	modelsImplementation::ModelIndexesInterface const &mGraphicalModel;
 };
 
 }
