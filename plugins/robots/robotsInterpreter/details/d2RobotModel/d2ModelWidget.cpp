@@ -516,8 +516,10 @@ void D2ModelWidget::addPort(int const port)
 		mCurrentSensorType = robots::enums::sensorType::light;
 	}
 
-	mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, sensorPos.toPoint(), 0);
-	reinitSensor(mCurrentPort);
+	if (mCurrentSensorType != mRobotModel->configuration().type(mCurrentPort)) {
+		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, sensorPos.toPoint(), 0);
+		reinitSensor(mCurrentPort);
+	}
 
 	resetButtons();
 }
