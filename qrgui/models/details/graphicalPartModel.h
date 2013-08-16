@@ -12,6 +12,8 @@ namespace qReal {
 namespace models {
 namespace details {
 
+class GraphicalModel;
+
 /// A model that contains separate parts of graphical elements, like labels or pins.
 /// Model organized as a list of graphical elements, each cell of which contains a list of graphical parts.
 /// It allows to freely add graphical parts to new or existing elements (elements always shall already be in a repo),
@@ -30,7 +32,7 @@ public:
 
 	/// Constructor.
 	/// @param repoApi - reference to repository API.
-	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi);
+	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi, GraphicalModel const &graphicalModel);
 
 	virtual ~GraphicalPartModel();
 
@@ -68,6 +70,9 @@ public:
 	/// Deletes model contents and reloads it from repo.
 	void reinit();
 
+public slots:
+	virtual void rowsAboutToBeRemovedInGraphicalModel(QModelIndex const &parent, int start, int end);
+
 private:
 	void clear();
 	void load(Id const &parent = Id::rootId());
@@ -76,7 +81,10 @@ private:
 
 	qrRepo::GraphicalRepoApi &mRepoApi;
 	QList<QList<modelsImplementation::GraphicalPartModelItem *> > mItems;  // Has ownership.
+
+	/// Maps id to an index of this id in mItems list.
 	QHash<Id, int> mIdPositions;
+	GraphicalModel const &mGraphicalModel;
 };
 
 }
