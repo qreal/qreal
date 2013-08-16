@@ -44,6 +44,13 @@ public:
 		noPort = -1
 	};
 
+	enum NodeSide {
+		left,
+		top,
+		right,
+		bottom
+	};
+
 	EdgeElement(ElementImpl *impl
 			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
@@ -118,7 +125,6 @@ public:
 	void setGraphicApiPos();
 
 	bool isLoop();
-	void squarize();
 	void delCloseLinePoints();
 	/// Change line, if (mSrc && (mSrc == mDst)).
 	void createLoopEdge();
@@ -127,6 +133,7 @@ public:
 	void deleteLoops();
 	void layOut();
 	NodeElement *getNodeAt(const QPointF &position, bool isStart);
+	NodeSide defineNodePortSide(bool isStart);
 
 	void alignToGrid();
 	qreal alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const;
@@ -166,20 +173,6 @@ private slots:
 	void reverseHandler(QPointF const &pos);
 
 private:
-	enum LineType {
-		vertical,
-		horizontal,
-		verticalTurn,
-		horizontalTurn
-	};
-
-	enum NodeSide {
-		left,
-		top,
-		right,
-		bottom
-	};
-
 	void initLineHandler();
 
 	int indentReductCoeff();
@@ -217,13 +210,6 @@ private:
 	void delClosePoints();
 
 	int getPoint(const QPointF &location);
-
-	int defineType();
-	NodeSide defineSide(qreal port);
-	void verticalSquareLine();
-	void horizontalSquareLine();
-	void verticalTurningSquareLine();
-	void horizontalTurningSquareLine();
 
 	bool removeOneLinePoints(int startingPoint);
 

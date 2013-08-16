@@ -631,8 +631,8 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 
 	QPolygonF newLine;
 
-	NodeSide startSide = defineSide(mPortFrom);
-	NodeSide endSide = defineSide(mPortTo);
+	NodeSide startSide = defineNodePortSide(true);
+	NodeSide endSide = defineNodePortSide(false);
 
 	QPointF secondPoint = boundingRectIndent(mLine.first(), startSide);
 	QPointF penultPoint = boundingRectIndent(mLine.last(), endSide);
@@ -1136,64 +1136,10 @@ void EdgeElement::breakPointHandler(QPointF const &pos)
 	}
 }
 
-void EdgeElement::squarize()
+EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart)
 {
-	prepareGeometryChange();
-	mLine = QPolygonF() << mLine.first() << mLine.last();
-
-	// we don't need to correct the already straight line
-	if (mLine.first().x() == mLine.last().x() || mLine.first().y() == mLine.last().y()) {
-		return;
-	}
-
-	int type = defineType();
-
-	switch (type) {
-	case vertical:
-		verticalSquareLine();
-		break;
-	case horizontal:
-		horizontalSquareLine();
-		break;
-	case verticalTurn:
-		verticalTurningSquareLine();
-		break;
-	case horizontalTurn:
-		horizontalTurningSquareLine();
-		break;
-	default:
-		qDebug() << "incorrect link type";
-	}
-	updateLongestPart();
-}
-
-int EdgeElement::defineType()
-{
-	if (!(mSrc && mDst)) {
-		return horizontalTurn;
-	}
-
-	// defining type of square link by looking at sides of nodes which the link is connected to
-	int startSide = defineSide(mPortFrom);
-	int endSide = defineSide(mPortTo);
-
-	if (startSide == top || startSide == bottom) {
-		if (endSide == top || endSide == bottom) {
-			return vertical;
-		} else {
-			return verticalTurn;
-		}
-	} else if (endSide == left || endSide == right) {
-		return horizontal;
-	} else {
-		return horizontalTurn;
-	}
-}
-
-EdgeElement::NodeSide EdgeElement::defineSide(qreal port)
-{
-	NodeElement *node = (port == mPortFrom) ? mSrc : mDst;
-	QPointF pos = node->portPos(port);
+	NodeElement *node = isStart ? mSrc : mDst;
+	QPointF pos = node->portPos(isStart ? mPortFrom : mPortTo);
 	QRectF bounds = node->boundingRect();
 
 	// divide bounding rectangle with it's diagonals, then determine in which part the port lies
@@ -1212,44 +1158,6 @@ EdgeElement::NodeSide EdgeElement::defineSide(qreal port)
 	} else {
 		return bottom;
 	}
-}
-
-void EdgeElement::horizontalSquareLine()
-{
-	QPointF insertPoint1 = mLine.first();
-	QPointF insertPoint2 = mLine.last();
-
-	insertPoint1.setX((insertPoint1.x() + insertPoint2.x()) / 2);
-	insertPoint2.setX(insertPoint1.x());
-
-	mLine.insert(1, insertPoint1);
-	mLine.insert(2, insertPoint2);
-}
-
-void EdgeElement::verticalSquareLine()
-{
-	QPointF insertPoint1 = mLine.first();
-	QPointF insertPoint2 = mLine.last();
-
-	insertPoint1.setY((insertPoint1.y() + insertPoint2.y()) / 2);
-	insertPoint2.setY(insertPoint1.y());
-
-	mLine.insert(1, insertPoint1);
-	mLine.insert(2, insertPoint2);
-}
-
-void EdgeElement::horizontalTurningSquareLine()
-{
-	QPointF insertPoint = mLine.first();
-	insertPoint.setX(mLine.last().x());
-	mLine.insert(1, insertPoint);
-}
-
-void EdgeElement::verticalTurningSquareLine()
-{
-	QPointF insertPoint = mLine.first();
-	insertPoint.setY(mLine.last().y());
-	mLine.insert(1, insertPoint);
 }
 
 void EdgeElement::minimizeHandler(const QPointF &pos)
@@ -1465,9 +1373,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 	prepareGeometryChange();
 	mLine[mLine.size() - 1] = place;
 
-	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
-		squarize();
-	}
+	mHandler->adjust();
 
 	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi.setPosition(id(), this->pos());

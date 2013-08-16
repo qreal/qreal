@@ -13,8 +13,23 @@ public:
 	virtual void adjust();
 
 protected:
+	enum LineType {
+		vertical,
+		horizontal,
+		verticalTurn,
+		horizontalTurn
+	};
+
 	virtual void improveAppearance();
 	void moveSegment(QPointF const &pos);
+
+	void squarize();
+	int defineType();
+
+	void verticalSquareLine(QPolygonF &line);
+	void horizontalSquareLine(QPolygonF &line);
+	void verticalTurningSquareLine(QPolygonF &line);
+	void horizontalTurningSquareLine(QPolygonF &line);
 };
 
 }
