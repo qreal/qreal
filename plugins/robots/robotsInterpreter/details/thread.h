@@ -33,6 +33,7 @@ public:
 			, Id const &diagramToInterpret, BlocksTable &blocksTable);
 
 	~Thread();
+
 	void interpret();
 
 signals:
@@ -47,19 +48,26 @@ private slots:
 
 	void failure();
 
+	void interpretAfterEventsProcessing(QObject *block);
+
 private:
+	void initTimer();
+
 	Id findStartingElement(Id const &diagram) const;
 	void error(QString const &message, Id const &source = Id());
 
 	void turnOn(blocks::Block * const block);
 	void turnOff(blocks::Block * const block);
 
-	GraphicalModelAssistInterface const *mGraphicalModelApi; // Doesn't have ownership
+	GraphicalModelAssistInterface const *mGraphicalModelApi;  // Doesn't have ownership
 	gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	BlocksTable &mBlocksTable;
 	blocks::Block *mCurrentBlock;  // Doesn't have ownership
 	QStack<blocks::Block *> mStack;
 	Id const mInitialDiagram;
+	int mBlocksSincePreviousEventsProcessing;
+	QTimer *mProcessEventsTimer;  // Takes ownership
+	QSignalMapper *mProcessEventsMapper;  // Takes ownership
 };
 
 }
