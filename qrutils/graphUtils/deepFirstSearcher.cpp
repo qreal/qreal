@@ -10,12 +10,21 @@ DeepFirstSearcher::DeepFirstSearcher(LogicalModelAssistInterface const &model)
 
 void DeepFirstSearcher::startSearch(Id const &firstId, VisitorInterface *visitor)
 {
-	dfs(firstId, QList<VisitorInterface *>() << visitor);
+
+	startSearch(firstId, QList<VisitorInterface *>() << visitor);
 }
 
 void DeepFirstSearcher::startSearch(Id const &firstId, QList<VisitorInterface *> const &visitors)
 {
+	foreach (VisitorInterface * const visitor, visitors) {
+		visitor->beforeSearch();
+	}
+
 	dfs(firstId, visitors);
+
+	foreach (VisitorInterface * const visitor, visitors) {
+		visitor->afterSearch();
+	}
 }
 
 void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visitors)
@@ -44,4 +53,13 @@ void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visit
 			dfs(link.target, visitors);
 		}
 	}
+}
+
+
+void DeepFirstSearcher::VisitorInterface::beforeSearch()
+{
+}
+
+void DeepFirstSearcher::VisitorInterface::afterSearch()
+{
 }

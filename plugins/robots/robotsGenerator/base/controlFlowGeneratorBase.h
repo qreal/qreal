@@ -26,7 +26,6 @@ public:
 protected:
 	void error(QString const &message, Id const &id = Id());
 	enums::semantics::Semantics semanticsOf(Id const &id) const;
-	Id initialNode() const;
 	QPair<Id, Id> ifBranchesFor(Id const &id) const;
 	QPair<Id, Id> loopBranchesFor(Id const &id) const;
 

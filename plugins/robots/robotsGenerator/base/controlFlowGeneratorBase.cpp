@@ -31,17 +31,17 @@ ControlFlow *ControlFlowGeneratorBase::generate()
 	}
 
 	ControlFlow *result = new ControlFlow;
+
+	// This will start dfs on model graph with processig every block
+	// in subclasses which must construct control flow in handlers
+	startSearch(mValidator.initialNode());
+
 	return result;
 }
 
 enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(qReal::Id const &id) const
 {
 	return mCustomizer.semanticsOf(id.type());
-}
-
-qReal::Id ControlFlowGeneratorBase::initialNode() const
-{
-	return mValidator.initialNode();
 }
 
 QPair<qReal::Id, qReal::Id> ControlFlowGeneratorBase::ifBranchesFor(qReal::Id const &id) const

@@ -23,6 +23,8 @@ public:
 	public:
 		virtual ~VisitorInterface() {}
 		virtual void visit(qReal::Id const &nodeId, QList<LinkInfo> const &links) = 0;
+		virtual void beforeSearch();
+		virtual void afterSearch();
 	};
 
 	explicit DeepFirstSearcher(qReal::LogicalModelAssistInterface const &model);
