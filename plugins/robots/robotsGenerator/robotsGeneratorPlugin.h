@@ -70,7 +70,10 @@ private:
 	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership
 
 	/// Logical model API
-	LogicalModelAssistInterface *mModel;  // Does not have ownership
+	LogicalModelAssistInterface *mLogicalModel;  // Does not have ownership
+
+	/// Graphical model API
+	GraphicalModelAssistInterface *mGraphicalModel;  // Does not have ownership
 
 	/// When true, nxt-tools are found by QReal and flashing and uploading is possible
 	bool mNxtToolsPresent;

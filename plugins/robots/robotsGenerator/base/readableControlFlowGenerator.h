@@ -9,7 +9,9 @@ namespace generators {
 class ReadableControlFlowGenerator : public ControlFlowGeneratorBase
 {
 public:
-	ReadableControlFlowGenerator(LogicalModelAssistInterface const &model
+	ReadableControlFlowGenerator(
+			LogicalModelAssistInterface const &logicalModel
+			, GraphicalModelAssistInterface const &graphicalModel
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer const &customizer
 			, Id const &diagramId

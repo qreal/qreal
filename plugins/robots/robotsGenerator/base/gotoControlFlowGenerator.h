@@ -9,7 +9,9 @@ namespace generators {
 class GotoControlFlowGenerator : public ControlFlowGeneratorBase
 {
 public:
-	GotoControlFlowGenerator(LogicalModelAssistInterface const &model
+	GotoControlFlowGenerator(
+			LogicalModelAssistInterface const &logicalModel
+			, GraphicalModelAssistInterface const &graphicalModel
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer const &customizer
 			, Id const &diagramId

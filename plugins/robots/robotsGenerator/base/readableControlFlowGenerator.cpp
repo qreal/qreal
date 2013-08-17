@@ -2,11 +2,13 @@
 
 using namespace qReal::robots::generators;
 
-ReadableControlFlowGenerator::ReadableControlFlowGenerator(LogicalModelAssistInterface const &model
+ReadableControlFlowGenerator::ReadableControlFlowGenerator(
+		LogicalModelAssistInterface const &logicalModel
+		, GraphicalModelAssistInterface const &graphicalModel
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer const &customizer
 		, Id const &diagramId
 		, QObject *parent)
-	: ControlFlowGeneratorBase(model, errorReporter, customizer, diagramId, parent)
+	: ControlFlowGeneratorBase(logicalModel, graphicalModel, errorReporter, customizer, diagramId, parent)
 {
 }

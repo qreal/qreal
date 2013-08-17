@@ -10,7 +10,9 @@ namespace generators {
 class ControlFlowGeneratorBase : public QObject
 {
 public:
-	ControlFlowGeneratorBase(LogicalModelAssistInterface const &model
+	ControlFlowGeneratorBase(
+			LogicalModelAssistInterface const &logicalModel
+			, GraphicalModelAssistInterface const &graphicalModel
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer const &customizer
 			, Id const &diagramId
@@ -23,6 +25,7 @@ public:
 protected:
 	void error(QString const &message, Id const &id = Id());
 	enums::semantics::Semantics semanticsOf(Id const &id) const;
+	QPair<Id, Id> ifBranchesFor(Id const &id) const;
 
 private:
 	LogicalModelAssistInterface const &mModel;

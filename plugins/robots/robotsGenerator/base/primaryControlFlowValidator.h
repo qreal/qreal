@@ -2,6 +2,7 @@
 
 #include <ids.h>
 #include <logicalModelAssistInterface.h>
+#include <graphicalModelAssistInterface.h>
 #include <errorReporterInterface.h>
 
 #include "generatorCustomizer.h"
@@ -14,7 +15,8 @@ namespace generators {
 class PrimaryControlFlowValidator : public DeepFirstSearcher::VisitorInterface
 {
 public:
-	PrimaryControlFlowValidator(LogicalModelAssistInterface const &model
+	PrimaryControlFlowValidator(LogicalModelAssistInterface const &logicalModel
+			, GraphicalModelAssistInterface const &graphicalModel
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer const &customizer
 			, Id const &diagramId);
@@ -22,10 +24,14 @@ public:
 
 	bool validate();
 
+	Id initialId() const;
+
+	QPair<Id, Id> ifBranchesFor(Id const &id) const;
+
 private:
 	virtual void visit(Id const &nodeId, QList<DeepFirstSearcher::LinkInfo> const &links);
 
-	Id findInitialNode() const;
+	void findInitialNode();
 	void error(QString const &message, Id const &id);
 	bool checkForConnected(DeepFirstSearcher::LinkInfo const &link);
 
@@ -36,12 +42,16 @@ private:
 	void validateSwitch(Id const &id, QList<DeepFirstSearcher::LinkInfo> const &links);
 	void validateFork(Id const &id, QList<DeepFirstSearcher::LinkInfo> const &links);
 
-	LogicalModelAssistInterface const &mModel;
+	LogicalModelAssistInterface const &mLogicalModel;
+	GraphicalModelAssistInterface const &mGraphicalModel;
 	ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer const &mCustomizer;
 	Id const mDiagram;
 	DeepFirstSearcher mDfser;
 	bool mErrorsOccured;
+
+	Id mFirstId;
+	QMap<Id, QPair<Id, Id> > mIfBranches;
 };
 
 }

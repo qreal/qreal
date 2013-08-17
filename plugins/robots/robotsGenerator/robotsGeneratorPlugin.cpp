@@ -27,7 +27,8 @@ RobotsGeneratorPlugin::~RobotsGeneratorPlugin()
 void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
-	mModel = &configurator.logicalModelApi();
+	mLogicalModel = &configurator.logicalModelApi();
+	mGraphicalModel = &configurator.graphicalModelApi();
 	mProjectManager = &configurator.projectManager();
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
@@ -87,11 +88,15 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mProjectManager->save();
 
-	ReadableControlFlowGenerator generator(*mModel
+	GeneratorCustomizer customizer;
+	ReadableControlFlowGenerator generator(*mLogicalModel
+			, *mGraphicalModel
 			, *mMainWindowInterface->errorReporter()
-			, GeneratorCustomizer()
+			, customizer
 			, mMainWindowInterface->activeDiagram());
-	generator.generate();
+	if (generator.generate()) {
+		mMainWindowInterface->errorReporter()->addInformation("Diagram is valid");
+	}
 
 //	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(),
 //			 *mRepoControlApi,

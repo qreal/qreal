@@ -3,15 +3,17 @@
 using namespace qReal::robots::generators;
 
 PrimaryControlFlowValidator::PrimaryControlFlowValidator(
-		LogicalModelAssistInterface const &model
+		LogicalModelAssistInterface const &logicalModel
+		, GraphicalModelAssistInterface const &graphicalModel
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer const &customizer
 		, Id const &diagramId)
-	: mModel(model)
+	: mLogicalModel(logicalModel)
+	, mGraphicalModel(graphicalModel)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
 	, mDiagram(diagramId)
-	, mDfser(model)
+	, mDfser(logicalModel)
 {
 }
 
@@ -21,16 +23,28 @@ PrimaryControlFlowValidator::~PrimaryControlFlowValidator()
 
 bool PrimaryControlFlowValidator::validate()
 {
-	Id const initialNode = findInitialNode();
-	if (initialNode.isNull()) {
+	mIfBranches.clear();
+
+	findInitialNode();
+	if (mFirstId.isNull()) {
 		error(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"), mDiagram);
 		return false;
 	}
 
 	mErrorsOccured = false;
-	mDfser.startSearch(initialNode, this);
+	mDfser.startSearch(mFirstId, this);
 
-	return mErrorsOccured;
+	return !mErrorsOccured;
+}
+
+qReal::Id PrimaryControlFlowValidator::initialId() const
+{
+	return mFirstId;
+}
+
+QPair<qReal::Id, qReal::Id> PrimaryControlFlowValidator::ifBranchesFor(qReal::Id const &id) const
+{
+	return mIfBranches[id];
 }
 
 void PrimaryControlFlowValidator::visit(qReal::Id const &nodeId
@@ -67,10 +81,10 @@ void PrimaryControlFlowValidator::validateRegular(Id const &id
 	}
 
 	if (links.size() != 1) {
-		error(QObject::tr("This element is allowed to have exactly one outgoing link"), id);
+		error(QObject::tr("This element must have exactly ONE outgoing link"), id);
+	} else {
+		checkForConnected(links[0]);
 	}
-
-	checkForConnected(links[0]);
 }
 
 void PrimaryControlFlowValidator::validateFinalBlock(Id const &id
@@ -89,40 +103,54 @@ void PrimaryControlFlowValidator::validateConditional(Id const &id
 		return;
 	}
 
-	// In correct case exactly 2 of this 3 would be true
-	bool trueFound = false, falseFound = false, nonMarkedFound = false;
+	// In correct case exactly 2 of this 3 would be non-null
+	Id trueBlock, falseBlock, nonMarkedBlock;
 
 	foreach (DeepFirstSearcher::LinkInfo const &link, links) {
 		checkForConnected(link);
 
-		switch (link.guard) {
+		switch(link.guard) {
 		case DeepFirstSearcher::trueGuard:
-			if (trueFound) {
+			if (trueBlock.isNull()) {
+				trueBlock = link.target;
+			} else {
 				error(QObject::tr("Two outgoing links marked with 'true' found"), id);
-			} else {
-				trueFound = true;
 			}
-
 			break;
+
 		case DeepFirstSearcher::falseGuard:
-			if (falseFound) {
+			if (falseBlock.isNull()) {
+				falseBlock = link.target;
+			} else {
 				error(QObject::tr("Two outgoing links marked with 'false' found"), id);
-			} else {
-				falseFound = true;
 			}
-
 			break;
-		default:
-			if (nonMarkedFound) {
-				error(QObject::tr("There must be a link with property \"Guard\""\
-						"set to one of the conditions"), id);
-			} else {
-				nonMarkedFound = true;
-			}
 
+		default:
+			if (nonMarkedBlock.isNull()) {
+				nonMarkedBlock = link.target;
+			} else {
+				error(QObject::tr("There must be a link with property \"Guard\""\
+						" set to one of the conditions"), id);
+			}
 			break;
 		}
 	}
+
+	// Now we have correctly linked branches. Determining who is who...
+	QPair<Id, Id> branches;
+	if (trueBlock.isNull()) {
+		branches.first = nonMarkedBlock;
+		branches.second = falseBlock;
+	} else if (falseBlock.isNull()) {
+		branches.first = trueBlock;
+		branches.second = nonMarkedBlock;
+	} else {
+		branches.first = trueBlock;
+		branches.second = falseBlock;
+	}
+
+	mIfBranches[id] = branches;
 }
 
 void PrimaryControlFlowValidator::validateLoop(Id const &id
@@ -153,7 +181,7 @@ void PrimaryControlFlowValidator::validateLoop(Id const &id
 				nonMarkedBlock = link.target;
 			} else {
 				error(QObject::tr("There must be a link with property \"Guard\""\
-						"set to \"iteration\""), id);
+						" set to \"iteration\""), id);
 				return;
 			}
 			break;
@@ -203,14 +231,15 @@ bool PrimaryControlFlowValidator::checkForConnected(DeepFirstSearcher::LinkInfo 
 	return true;
 }
 
-qReal::Id PrimaryControlFlowValidator::findInitialNode() const
+void PrimaryControlFlowValidator::findInitialNode()
 {
-	qReal::IdList const initialNodes(mModel.children(mDiagram));
+	qReal::IdList const initialNodes(mGraphicalModel.children(mDiagram));
 	foreach (qReal::Id const &initialNode, initialNodes) {
 		if (mCustomizer.isInitialNode(initialNode)) {
-			return initialNode;
+			mFirstId = mGraphicalModel.logicalId(initialNode);
+			return;
 		}
 	}
 
-	return Id();
+	mFirstId = Id();
 }

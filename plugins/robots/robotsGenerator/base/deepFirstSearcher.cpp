@@ -26,11 +26,10 @@ void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visit
 
 	foreach (Id const &link, outgoingLinks) {
 		Id const connectedNode = mModel.logicalRepoApi().otherEntityFromLink(link, id);
-		LinkGuard const guard = guardOf(link);
 		LinkInfo info;
 		info.linkId = link;
 		info.target = connectedNode;
-		info.guard = guard;
+		info.guard = guardOf(link);
 		info.connected = !connectedNode.isNull() && connectedNode != Id::rootId();
 		info.targetVisited = mVisitedNodes.contains(connectedNode);
 		linkInfos << info;
@@ -49,8 +48,7 @@ void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visit
 
 DeepFirstSearcher::LinkGuard DeepFirstSearcher::guardOf(qReal::Id const &linkId) const
 {
-	QVariant const guardProperty = mModel.propertyByRoleName(linkId, "Guard").toString().toLower();
-
+	QString const guardProperty = mModel.propertyByRoleName(linkId, "Guard").toString().toLower();
 	if (guardProperty == QString::fromUtf8("истина")) {
 		return trueGuard;
 	} else if (guardProperty == QString::fromUtf8("ложь")) {

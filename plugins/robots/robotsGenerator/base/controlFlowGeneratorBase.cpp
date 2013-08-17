@@ -2,17 +2,19 @@
 
 using namespace qReal::robots::generators;
 
-ControlFlowGeneratorBase::ControlFlowGeneratorBase(LogicalModelAssistInterface const &model
+ControlFlowGeneratorBase::ControlFlowGeneratorBase(
+		LogicalModelAssistInterface const &logicalModel
+		, GraphicalModelAssistInterface const &graphicalModel
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer const &customizer
 		, Id const &diagramId
 		, QObject *parent)
 	: QObject(parent)
-	, mModel(model)
+	, mModel(logicalModel)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
 	, mDiagram(diagramId)
-	, mValidator(model, errorReporter, customizer, diagramId)
+	, mValidator(logicalModel, graphicalModel, errorReporter, customizer, diagramId)
 {
 }
 
@@ -34,4 +36,9 @@ ControlFlow *ControlFlowGeneratorBase::generate()
 enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(qReal::Id const &id) const
 {
 	return mCustomizer.semanticsOf(id.type());
+}
+
+QPair<qReal::Id, qReal::Id> ControlFlowGeneratorBase::ifBranchesFor(qReal::Id const &id) const
+{
+	return mValidator.ifBranchesFor(id);
 }
