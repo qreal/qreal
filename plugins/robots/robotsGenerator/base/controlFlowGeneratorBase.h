@@ -2,12 +2,13 @@
 
 #include "controlFlow.h"
 #include "primaryControlFlowValidator.h"
+#include "robotsDiagramVisitor.h"
 
 namespace qReal {
 namespace robots {
 namespace generators {
 
-class ControlFlowGeneratorBase : public QObject
+class ControlFlowGeneratorBase : public QObject, public RobotsDiagramVisitor
 {
 public:
 	ControlFlowGeneratorBase(
@@ -25,7 +26,9 @@ public:
 protected:
 	void error(QString const &message, Id const &id = Id());
 	enums::semantics::Semantics semanticsOf(Id const &id) const;
+	Id initialNode() const;
 	QPair<Id, Id> ifBranchesFor(Id const &id) const;
+	QPair<Id, Id> loopBranchesFor(Id const &id) const;
 
 private:
 	LogicalModelAssistInterface const &mModel;

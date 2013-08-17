@@ -9,6 +9,7 @@ OBJECTS_DIR = .obj
 
 INCLUDEPATH = \
 	../../../qrkernel \
+	../../../qrutils \
 	../../../qrgui/toolPluginInterface/usedInterfaces \
 
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo

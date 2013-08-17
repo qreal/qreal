@@ -6,13 +6,13 @@
 #include <errorReporterInterface.h>
 
 #include "generatorCustomizer.h"
-#include "deepFirstSearcher.h"
+#include "robotsDiagramVisitor.h"
 
 namespace qReal {
 namespace robots {
 namespace generators {
 
-class PrimaryControlFlowValidator : public DeepFirstSearcher::VisitorInterface
+class PrimaryControlFlowValidator : public RobotsDiagramVisitor
 {
 public:
 	PrimaryControlFlowValidator(LogicalModelAssistInterface const &logicalModel
@@ -24,34 +24,33 @@ public:
 
 	bool validate();
 
-	Id initialId() const;
-
+	Id initialNode() const;
 	QPair<Id, Id> ifBranchesFor(Id const &id) const;
+	QPair<Id, Id> loopBranchesFor(Id const &id) const;
 
 private:
-	virtual void visit(Id const &nodeId, QList<DeepFirstSearcher::LinkInfo> const &links);
-
 	void findInitialNode();
 	void error(QString const &message, Id const &id);
-	bool checkForConnected(DeepFirstSearcher::LinkInfo const &link);
+	bool checkForConnected(utils::DeepFirstSearcher::LinkInfo const &link);
 
-	void validateRegular(Id const &id, QList<DeepFirstSearcher::LinkInfo> const &links);
-	void validateFinalBlock(Id const &id, QList<DeepFirstSearcher::LinkInfo> const &links);
-	void validateConditional(Id const &id, QList<DeepFirstSearcher::LinkInfo> const &links);
-	void validateLoop(Id const &id, QList<DeepFirstSearcher::LinkInfo> const &links);
-	void validateSwitch(Id const &id, QList<DeepFirstSearcher::LinkInfo> const &links);
-	void validateFork(Id const &id, QList<DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visitRegular(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visitConditional(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visitLoop(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visitSwitch(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visitFork(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visitUnknown(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	void visitFinalBlock(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 
 	LogicalModelAssistInterface const &mLogicalModel;
 	GraphicalModelAssistInterface const &mGraphicalModel;
 	ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer const &mCustomizer;
 	Id const mDiagram;
-	DeepFirstSearcher mDfser;
 	bool mErrorsOccured;
 
-	Id mFirstId;
+	Id mInitialNode;
 	QMap<Id, QPair<Id, Id> > mIfBranches;
+	QMap<Id, QPair<Id, Id> > mLoopBranches;
 };
 
 }

@@ -5,7 +5,7 @@ HEADERS += \
 	$$PWD/controlFlowGeneratorBase.h \
 	$$PWD/readableControlFlowGenerator.h \
 	$$PWD/gotoControlFlowGenerator.h \
-	$$PWD/deepFirstSearcher.h \
+	$$PWD/robotsDiagramVisitor.h \
 	$$PWD/primaryControlFlowValidator.h \
 	$$PWD/semanticTree/semanticTree.h \
 	$$PWD/semanticTree/semanticNode.h \
@@ -23,7 +23,7 @@ SOURCES += \
 	$$PWD/controlFlowGeneratorBase.cpp \
 	$$PWD/readableControlFlowGenerator.cpp \
 	$$PWD/gotoControlFlowGenerator.cpp \
-	$$PWD/deepFirstSearcher.cpp \
+	$$PWD/robotsDiagramVisitor.cpp \
 	$$PWD/primaryControlFlowValidator.cpp \
 	$$PWD/semanticTree/semanticTree.cpp \
 	$$PWD/semanticTree/semanticNode.cpp \

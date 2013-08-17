@@ -8,12 +8,12 @@ PrimaryControlFlowValidator::PrimaryControlFlowValidator(
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer const &customizer
 		, Id const &diagramId)
-	: mLogicalModel(logicalModel)
+	: RobotsDiagramVisitor(logicalModel, customizer)
+	, mLogicalModel(logicalModel)
 	, mGraphicalModel(graphicalModel)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
 	, mDiagram(diagramId)
-	, mDfser(logicalModel)
 {
 }
 
@@ -24,22 +24,23 @@ PrimaryControlFlowValidator::~PrimaryControlFlowValidator()
 bool PrimaryControlFlowValidator::validate()
 {
 	mIfBranches.clear();
+	mLoopBranches.clear();
 
 	findInitialNode();
-	if (mFirstId.isNull()) {
+	if (mInitialNode.isNull()) {
 		error(QObject::tr("There is nothing to generate, diagram doesn't have Initial Node"), mDiagram);
 		return false;
 	}
 
 	mErrorsOccured = false;
-	mDfser.startSearch(mFirstId, this);
+	startSearch(mInitialNode);
 
 	return !mErrorsOccured;
 }
 
-qReal::Id PrimaryControlFlowValidator::initialId() const
+qReal::Id PrimaryControlFlowValidator::initialNode() const
 {
-	return mFirstId;
+	return mInitialNode;
 }
 
 QPair<qReal::Id, qReal::Id> PrimaryControlFlowValidator::ifBranchesFor(qReal::Id const &id) const
@@ -47,36 +48,16 @@ QPair<qReal::Id, qReal::Id> PrimaryControlFlowValidator::ifBranchesFor(qReal::Id
 	return mIfBranches[id];
 }
 
-void PrimaryControlFlowValidator::visit(qReal::Id const &nodeId
-		, QList<DeepFirstSearcher::LinkInfo> const &links)
+QPair<qReal::Id, qReal::Id> PrimaryControlFlowValidator::loopBranchesFor(qReal::Id const &id) const
 {
-	switch (mCustomizer.semanticsOf(nodeId)) {
-	case enums::semantics::regularBlock:
-		validateRegular(nodeId, links);
-		break;
-	case enums::semantics::condidionalBlock:
-		validateConditional(nodeId, links);
-		break;
-	case enums::semantics::loopBlock:
-		validateLoop(nodeId, links);
-		break;
-	case enums::semantics::switchBlock:
-		validateSwitch(nodeId, links);
-		break;
-	case enums::semantics::forkBlock:
-		validateFork(nodeId, links);
-		break;
-	default:
-		error(QObject::tr("Unknown block type"), nodeId);
-		break;
-	}
+	return mLoopBranches[id];
 }
 
-void PrimaryControlFlowValidator::validateRegular(Id const &id
-		, QList<DeepFirstSearcher::LinkInfo> const &links)
+void PrimaryControlFlowValidator::visitRegular(Id const &id
+		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
 	if (mCustomizer.isFinalNode(id)) {
-		validateFinalBlock(id, links);
+		visitFinalBlock(id, links);
 		return;
 	}
 
@@ -87,16 +68,16 @@ void PrimaryControlFlowValidator::validateRegular(Id const &id
 	}
 }
 
-void PrimaryControlFlowValidator::validateFinalBlock(Id const &id
-		, QList<DeepFirstSearcher::LinkInfo> const &links)
+void PrimaryControlFlowValidator::visitFinalBlock(Id const &id
+		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
 	if (!links.isEmpty()) {
 		error(QObject::tr("Final node must not have outgioing links"), id);
 	}
 }
 
-void PrimaryControlFlowValidator::validateConditional(Id const &id
-		, QList<DeepFirstSearcher::LinkInfo> const &links)
+void PrimaryControlFlowValidator::visitConditional(Id const &id
+		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
 	if (links.size() != 2) {
 		error(QObject::tr("If block must have exactly TWO outgoing links"), id);
@@ -106,11 +87,11 @@ void PrimaryControlFlowValidator::validateConditional(Id const &id
 	// In correct case exactly 2 of this 3 would be non-null
 	Id trueBlock, falseBlock, nonMarkedBlock;
 
-	foreach (DeepFirstSearcher::LinkInfo const &link, links) {
+	foreach (utils::DeepFirstSearcher::LinkInfo const &link, links) {
 		checkForConnected(link);
 
-		switch(link.guard) {
-		case DeepFirstSearcher::trueGuard:
+		switch (guardOf(link.linkId)) {
+		case trueGuard:
 			if (trueBlock.isNull()) {
 				trueBlock = link.target;
 			} else {
@@ -118,7 +99,7 @@ void PrimaryControlFlowValidator::validateConditional(Id const &id
 			}
 			break;
 
-		case DeepFirstSearcher::falseGuard:
+		case falseGuard:
 			if (falseBlock.isNull()) {
 				falseBlock = link.target;
 			} else {
@@ -153,8 +134,8 @@ void PrimaryControlFlowValidator::validateConditional(Id const &id
 	mIfBranches[id] = branches;
 }
 
-void PrimaryControlFlowValidator::validateLoop(Id const &id
-		, QList<DeepFirstSearcher::LinkInfo> const &links)
+void PrimaryControlFlowValidator::visitLoop(Id const &id
+		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
 	if (links.size() != 2) {
 		error(QObject::tr("Loop block must have exactly TWO outgoing links"), id);
@@ -164,11 +145,11 @@ void PrimaryControlFlowValidator::validateLoop(Id const &id
 	// In correct case must be non-null and different
 	Id iterationBlock, nonMarkedBlock;
 
-	foreach (DeepFirstSearcher::LinkInfo const &link, links) {
+	foreach (utils::DeepFirstSearcher::LinkInfo const &link, links) {
 		checkForConnected(link);
 
-		switch (link.guard) {
-		case DeepFirstSearcher::iterationGuard:
+		switch (guardOf(link.linkId)) {
+		case iterationGuard:
 			if (iterationBlock.isNull()) {
 				iterationBlock = link.target;
 			} else {
@@ -191,27 +172,36 @@ void PrimaryControlFlowValidator::validateLoop(Id const &id
 	if (iterationBlock == nonMarkedBlock) {
 		error(QObject::tr("Outgoing links from loop block must be connected to different blocks"), id);
 	}
+
+	mLoopBranches[id] = qMakePair(iterationBlock, nonMarkedBlock);
 }
 
-void PrimaryControlFlowValidator::validateSwitch(Id const &id
-		, QList<DeepFirstSearcher::LinkInfo> const &links)
+void PrimaryControlFlowValidator::visitSwitch(Id const &id
+		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
 	Q_UNUSED(id)
 	Q_UNUSED(links)
 	// TODO
 }
 
-void PrimaryControlFlowValidator::validateFork(Id const &id
-		, QList<DeepFirstSearcher::LinkInfo> const &links)
+void PrimaryControlFlowValidator::visitFork(Id const &id
+		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
 	if (links.size() < 2) {
 		error(QObject::tr("Fork block must have at least TWO outgoing links"), id);
 		return;
 	}
 
-	foreach (DeepFirstSearcher::LinkInfo const &link, links) {
+	foreach (utils::DeepFirstSearcher::LinkInfo const &link, links) {
 		checkForConnected(link);
 	}
+}
+
+void PrimaryControlFlowValidator::visitUnknown(Id const &id
+		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+{
+	Q_UNUSED(links)
+	error(QObject::tr("Unknown block type"), id);
 }
 
 void PrimaryControlFlowValidator::error(QString const &message, qReal::Id const &id)
@@ -221,7 +211,7 @@ void PrimaryControlFlowValidator::error(QString const &message, qReal::Id const 
 	mErrorsOccured = true;
 }
 
-bool PrimaryControlFlowValidator::checkForConnected(DeepFirstSearcher::LinkInfo const &link)
+bool PrimaryControlFlowValidator::checkForConnected(utils::DeepFirstSearcher::LinkInfo const &link)
 {
 	if (!link.connected) {
 		error(QObject::tr("Outgoing link is not connected"), link.linkId);
@@ -236,10 +226,10 @@ void PrimaryControlFlowValidator::findInitialNode()
 	qReal::IdList const initialNodes(mGraphicalModel.children(mDiagram));
 	foreach (qReal::Id const &initialNode, initialNodes) {
 		if (mCustomizer.isInitialNode(initialNode)) {
-			mFirstId = mGraphicalModel.logicalId(initialNode);
+			mInitialNode = mGraphicalModel.logicalId(initialNode);
 			return;
 		}
 	}
 
-	mFirstId = Id();
+	mInitialNode = Id();
 }

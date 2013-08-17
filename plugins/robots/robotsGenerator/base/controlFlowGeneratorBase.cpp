@@ -10,6 +10,7 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(
 		, Id const &diagramId
 		, QObject *parent)
 	: QObject(parent)
+	, RobotsDiagramVisitor(logicalModel, customizer)
 	, mModel(logicalModel)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
@@ -38,7 +39,17 @@ enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(qReal::Id cons
 	return mCustomizer.semanticsOf(id.type());
 }
 
+qReal::Id ControlFlowGeneratorBase::initialNode() const
+{
+	return mValidator.initialNode();
+}
+
 QPair<qReal::Id, qReal::Id> ControlFlowGeneratorBase::ifBranchesFor(qReal::Id const &id) const
 {
 	return mValidator.ifBranchesFor(id);
+}
+
+QPair<qReal::Id, qReal::Id> ControlFlowGeneratorBase::loopBranchesFor(qReal::Id const &id) const
+{
+	return mValidator.loopBranchesFor(id);
 }

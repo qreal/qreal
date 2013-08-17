@@ -1,6 +1,7 @@
 #include "deepFirstSearcher.h"
 
-using namespace qReal::robots::generators;
+using namespace qReal;
+using namespace utils;
 
 DeepFirstSearcher::DeepFirstSearcher(LogicalModelAssistInterface const &model)
 	: mModel(model)
@@ -29,7 +30,6 @@ void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visit
 		LinkInfo info;
 		info.linkId = link;
 		info.target = connectedNode;
-		info.guard = guardOf(link);
 		info.connected = !connectedNode.isNull() && connectedNode != Id::rootId();
 		info.targetVisited = mVisitedNodes.contains(connectedNode);
 		linkInfos << info;
@@ -44,18 +44,4 @@ void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visit
 			dfs(link.target, visitors);
 		}
 	}
-}
-
-DeepFirstSearcher::LinkGuard DeepFirstSearcher::guardOf(qReal::Id const &linkId) const
-{
-	QString const guardProperty = mModel.propertyByRoleName(linkId, "Guard").toString().toLower();
-	if (guardProperty == QString::fromUtf8("истина")) {
-		return trueGuard;
-	} else if (guardProperty == QString::fromUtf8("ложь")) {
-		return falseGuard;
-	} else if (guardProperty == QString::fromUtf8("итерация")) {
-		return iterationGuard;
-	}
-
-	return emptyGuard;
 }
