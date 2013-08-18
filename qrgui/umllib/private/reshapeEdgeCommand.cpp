@@ -55,7 +55,9 @@ bool ReshapeEdgeCommand::somethingChanged() const
 	return mOldConfiguration != mNewConfiguration
 			|| mOldPos != mNewPos
 			|| mOldSrc != mNewSrc
-			|| mOldDst != mNewDst;
+			|| mOldDst != mNewDst
+			|| mOldFromPort != mNewFromPort
+			|| mOldToPort != mNewToPort;
 }
 
 void ReshapeEdgeCommand::saveConfiguration(QPolygonF &target, Id &src, Id &dst
