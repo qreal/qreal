@@ -13,6 +13,8 @@ public:
 
 protected:
 	virtual void improveAppearance();
+
+	virtual QPointF alignedPoint(QPointF const &point) const;
 };
 
 }

@@ -39,8 +39,6 @@ EdgeElement::EdgeElement(
 	, mPenStyle(Qt::SolidLine)
 	, mPenWidth(1)
 	, mPenColor(Qt::black)
-	, mStartArrowStyle(enums::arrowTypeEnum::noArrow)
-	, mEndArrowStyle(enums::arrowTypeEnum::noArrow)
 	, mSrc(NULL)
 	, mDst(NULL)
 	, mHandler(NULL)
@@ -66,17 +64,12 @@ EdgeElement::EdgeElement(
 
 	mLine << QPointF(0, 0) << QPointF(200, 60);
 
-	mLeftButtonIsPressed = false;
-//	mSavedLineForChanges = mLine;
-
 	setAcceptHoverEvents(true);
 
 	connect(&mDelPointAction, SIGNAL(triggered(QPointF const &)), SLOT(delPointHandler(QPointF const &)));
 	connect(&mReverseAction, SIGNAL(triggered(QPointF const)), SLOT(reverseHandler(QPointF const &)));
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), SLOT(minimizeHandler(QPointF const &)));
 	connect(&mDelSegmentAction, SIGNAL(triggered(QPointF const &)), SLOT(deleteSegmentHandler(QPointF const &)));
-
-	mChaoticEdition = SettingsManager::value("ChaoticEdition").toBool();
 
 	LabelFactory factory(graphicalAssistApi, mId);
 	QList<LabelInterface*> titles;
@@ -140,10 +133,6 @@ QPolygonF EdgeElement::line() const
 
 void EdgeElement::setLine(QPolygonF const &line)
 {
-	if (line == mLine) {
-		return;
-	}
-
 	prepareGeometryChange();
 	mLine = line;
 	saveConfiguration();
@@ -183,134 +172,60 @@ static double lineAngle(const QLineF &line)
 	return angle * 180 / pi;
 }
 
-void EdgeElement::drawCurveIntermediatePoints(QPainter *painter) const
+void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
-	QPen pen;
-	pen.setCapStyle(Qt::RoundCap);
-	QColor color;
-	QPointF p1(-0.25, 0);
-	QPointF p2(0.25, 0);
-
-	color.setNamedColor("#ffcc66");
-	pen.setWidth(12);
-	pen.setColor(color);
-	painter->setPen(pen);
-	painter->drawLine(p1, p2);
-
-	color.setNamedColor("#ff6666");
-	pen.setWidth(3);
-	pen.setColor(color);
-	painter->setPen(pen);
-	painter->drawLine(p1, p2);
-}
-
-void EdgeElement::drawCurvePorts(QPainter *painter) const
-{
-	QPen pen;
-	pen.setStyle(Qt::DashLine);
-	painter->save();
-	painter->setPen(pen);
-	painter->drawLine(mLine[0], mLine[1]);
-	painter->drawLine(mLine[2], mLine[3]);
-	painter->restore();
-
-	painter->save();
-	painter->translate(mLine[0]);
-	drawPort(painter);
-	painter->restore();
-
-	painter->save();
-	painter->translate(mLine[1]);
-	drawCurveIntermediatePoints(painter);
-	painter->restore();
-
-	painter->save();
-	painter->translate(mLine[2]);
-	drawCurveIntermediatePoints(painter);
-	painter->restore();
-
-	painter->save();
-	painter->translate(mLine[3]);
-	drawPort(painter);
-	painter->restore();
-
-}
-
-static void drawChaosStar(QPainter *painter)
-{
-	painter->save();
-	QPen pen;
-	QColor color;
-	color.setNamedColor("#c3dcc4");
-	pen.setColor(color);
-	painter->setPen(pen);
-
-	for (int i = 0; i < 8; ++i) {
-		painter->rotate(45 * i);
-		painter->drawLine(0, 2, 0, 11);
-
-		painter->save();
-		painter->translate(0, 11);
-		painter->rotate(30);
-		painter->drawLine(0, 0, 0, -3);
-		painter->rotate(-60);
-		painter->drawLine(0, 0, 0, -3);
-		painter->restore();
+	if (SettingsManager::value("PaintOldEdgeMode").toBool() && mHandler->isReshapeStarted()) {
+		paintEdge(painter, option, true);
 	}
+	paintEdge(painter, option, false);
+}
 
-	painter->drawArc(-2, -2, 4, 4, 0, 5760);
-	painter->drawArc(-6, -6, 12, 12, 0, 5760);
-
+void EdgeElement::paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *option, bool drawSavedLine) const
+{
+	painter->save();
+	if (drawSavedLine) {
+		QColor color = QColor(SettingsManager::value("oldLineColor").toString());
+		setEdgePainter(painter, edgePen(painter, color, Qt::DashDotLine, mPenWidth), 0.5);
+	} else {
+		setEdgePainter(painter, edgePen(painter, mColor, mPenStyle, mPenWidth), painter->opacity());
+	}
+	mHandler->drawLine(painter, drawSavedLine);
 	painter->restore();
-}
 
-void EdgeElement::drawPort(QPainter *painter) const
-{
-	QPen pen;
-	QColor color;
-	QPointF p1(-0.25,0);
-	QPointF p2(0.25,0);
+	drawArrows(painter, drawSavedLine);
 
-	color.setNamedColor("#c3dcc4");
-	pen.setWidth(12);
-	pen.setColor(color);
-	painter->setPen(pen);
-	painter->drawLine(p1, p2);
-
-	color.setNamedColor("#465945");
-	pen.setWidth(3);
-	pen.setColor(color);
-	painter->setPen(pen);
-	painter->drawLine(p1, p2);
-}
-
-void EdgeElement::drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *option) const
-{
-	if (option->state & (QStyle::State_Selected | QStyle::State_MouseOver)) {
+	if ((option->state & (QStyle::State_Selected | QStyle::State_MouseOver)) && !drawSavedLine) {
 		painter->setBrush(Qt::SolidPattern);
-		if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine))
-		{
-			drawCurvePorts(painter);
-			return;
-		}
-		foreach (QPointF const point, mLine) {
-			// if the square mode is on then user can't edit links manually so there is no need in showing
-			// intermediate link points to him
-			if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)
-					&& !(point == mLine.first() || point == mLine.last()))
-			{
-				continue;
-			}
-			painter->save();
-			painter->translate(point);
-			if (mChaoticEdition) {
-				drawChaosStar(painter);
-			} else {
-				drawPort(painter);
-			}
-			painter->restore();
-		}
+		mHandler->drawPorts(painter);
 	}
+}
+
+void EdgeElement::drawArrows(QPainter *painter, bool savedLine) const
+{
+	Qt::PenStyle style(QPen(painter->pen()).style());
+
+	painter->save();
+	if (savedLine) {
+		QColor color = QColor(SettingsManager::value("oldLineColor").toString());
+		setEdgePainter(painter, edgePen(painter, color, Qt::SolidLine, 3), 0.5);
+	} else {
+		setEdgePainter(painter, edgePen(painter, mColor, style, 3), painter->opacity());
+	}
+	QPolygonF line = savedLine ? mHandler->savedLine() : mLine;
+
+	painter->save();
+	painter->translate(line[0]);
+	painter->rotate(90 - lineAngle(QLineF(line[1], line[0])));
+	drawStartArrow(painter);
+	painter->restore();
+
+	painter->save();
+	painter->translate(line[line.size() - 1]);
+	painter->rotate(90 - lineAngle(QLineF(line[line.size() - 2], line[line.size() - 1])));
+	drawEndArrow(painter);
+	painter->restore();
+
+	painter->restore();
 }
 
 QPen EdgeElement::edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const
@@ -329,141 +244,19 @@ void EdgeElement::setEdgePainter(QPainter *painter, QPen pen, qreal opacity) con
 	painter->setOpacity(opacity);
 }
 
-void EdgeElement::setBezierPoints()
-{
-	if (mLine.size() == 4) {
-		return;
-	}
-	if (mIsLoop) {
-		QPolygonF newLine;
-		newLine << mLine[0] << mLine[2] << mLine[3] << mLine[5];
-		setLine(newLine);
-		return;
-	}
-	if (mLine.size() == 2) {
-		QPolygonF newLine;
-		newLine << mLine[0] << (mLine[1] - mLine[0]) / 3 << 2 * (mLine[1] - mLine[0]) / 3
-				<< mLine[1];
-		setLine(newLine);
-		return;
-	}
-	if (mLine.size() == 3) {
-		QPolygonF newLine;
-		newLine << mLine[0] << mLine[1] << mLine[1] << mLine[2];
-		setLine(newLine);
-		return;
-	}
-	if (mLine.size() > 4) {
-		QPolygonF newLine;
-		newLine << mLine[0] << mLine[1] << mLine[mLine.size() - 2] << mLine.last();
-		setLine(newLine);
-		return;
-	}
-}
-
-QPainterPath EdgeElement::bezierCurve() const
-{
-	QPainterPath mPath(mLine[0]);
-	mPath.cubicTo(mLine[1], mLine[2], mLine[3]);
-	return mPath;
-}
-
-void EdgeElement::paintSavedEdge(QPainter *painter) const
-{
-	if (!SettingsManager::value("PaintOldEdgeMode").toBool()) {
-		return;
-	}
-
-	if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
-		return;
-	}
-
-	if (mIsLoop) {
-		return;
-	}
-
-	QColor color = QColor(SettingsManager::value("oldLineColor").toString());
-	if (!(mSavedLineForChanges.size() < 2) && mLeftButtonIsPressed) {
-		painter->save();
-		setEdgePainter(painter, edgePen(painter, color, Qt::DashDotLine, mPenWidth), 0.5);
-		painter->drawPolyline(mSavedLineForChanges);
-		painter->restore();
-
-		painter->save();
-		painter->translate(mSavedLineForChanges[0]);
-		painter->rotate(90 - lineAngle(QLineF(mSavedLineForChanges[1], mSavedLineForChanges[0])));
-		setEdgePainter(painter, edgePen(painter, color, Qt::SolidLine, 3), 0.5);
-		drawStartArrow(painter);
-		painter->restore();
-
-		painter->save();
-		painter->translate(mSavedLineForChanges[mSavedLineForChanges.size() - 1]);
-		painter->rotate(90 - lineAngle(QLineF(mSavedLineForChanges[mSavedLineForChanges.size() - 2], mSavedLineForChanges[mSavedLineForChanges.size() - 1])));
-		setEdgePainter(painter, edgePen(painter, color, Qt::SolidLine, 3), 0.5);
-		drawEndArrow(painter);
-		painter->restore();
-	}
-}
-
-void EdgeElement::paintChangedEdge(QPainter *painter, const QStyleOptionGraphicsItem *option) const
-{
-	Qt::PenStyle style(QPen(painter->pen()).style());
-
-	painter->save();
-	setEdgePainter(painter, edgePen(painter, mColor, mPenStyle, mPenWidth), painter->opacity());
-
-	if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
-		painter->drawPath(bezierCurve());
-	} else {
-		painter->drawPolyline(mLine);
-	}
-	painter->restore();
-
-	painter->save();
-	painter->translate(mLine[0]);
-	painter->drawText(QPointF(10, 20), mFromMult);
-	painter->rotate(90 - lineAngle(QLineF(mLine[1], mLine[0])));
-	setEdgePainter(painter, edgePen(painter, mColor, style, 3), painter->opacity());
-	drawStartArrow(painter);
-	painter->restore();
-
-	painter->save();
-	painter->translate(mLine[mLine.size() - 1]);
-	painter->drawText(QPointF(10, 20), mToMult);
-	painter->rotate(90 - lineAngle(QLineF(mLine[mLine.size() - 2], mLine[mLine.size() - 1])));
-	setEdgePainter(painter, edgePen(painter, mColor, style, 3), painter->opacity());
-	drawEndArrow(painter);
-	painter->restore();
-
-	drawPorts(painter, option);
-}
-
-void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
-{
-	if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
-		setBezierPoints();
-	}
-//	paintSavedEdge(painter);
-	paintChangedEdge(painter, option);
-}
-
 QPainterPath EdgeElement::shape() const
 {
 	QPainterPath path;
 	path.setFillRule(Qt::WindingFill);
 
+	path.addPath(mHandler->shape());
+
 	QPainterPathStroker ps;
 	ps.setWidth(kvadratik - 2.5);
 
-	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) && mLine.size() == 4) {
-		path.addPath(bezierCurve());
-	} else {
-		path.addPolygon(mLine);
-	}
-
 	path = ps.createStroke(path);
 
-	foreach (QPointF const point, mLine) {
+	foreach (QPointF const &point, mLine) {
 		path.addRect(getPortRect(point).adjusted(1, 1, -1, -1));
 	}
 
@@ -507,9 +300,6 @@ void EdgeElement::updateLongestPart()
 
 		QLineF longest(mLine[maxIdx], mLine[mLongPart + 1]);
 
-		if (mChaoticEdition) {
-			title->setRotation(title->rotation() + (-lineAngle(longest)));
-		}
 	}
 }
 
@@ -669,26 +459,22 @@ QPointF EdgeElement::boundingRectIndent(QPointF const &point, EdgeElement::NodeS
 	switch (direction) {
 	case top: {
 		QPointF topPoint = mapToItem(mSrc, QPointF(point.x(), 0));
-		newPoint = mapFromItem(mSrc, QPointF(topPoint.x()
-				, bounds.top() - bounds.height() / reductFactor));
+		newPoint = mapFromItem(mSrc, QPointF(topPoint.x(), bounds.top() - bounds.height() / reductFactor));
 		break;
 	}
 	case bottom: {
 		QPointF bottomPoint = mapToItem(mSrc, QPointF(point.x(), 0));
-		newPoint = mapFromItem(mSrc, QPointF(bottomPoint.x()
-				, bounds.bottom() + bounds.height() / reductFactor));
+		newPoint = mapFromItem(mSrc, QPointF(bottomPoint.x(), bounds.bottom() + bounds.height() / reductFactor));
 		break;
 	}
 	case left: {
 		QPointF leftPoint = mapToItem(mSrc, QPointF(0, point.y()));
-		newPoint = mapFromItem(mSrc, QPointF(bounds.left() - bounds.width() / reductFactor
-				, leftPoint.y()));
+		newPoint = mapFromItem(mSrc, QPointF(bounds.left() - bounds.width() / reductFactor, leftPoint.y()));
 		break;
 	}
 	case right: {
 		QPointF rightPoint = mapToItem(mSrc, QPointF(0, point.y()));
-		newPoint = mapFromItem(mSrc, QPointF(bounds.right() + bounds.width() / reductFactor
-				, rightPoint.y()));
+		newPoint = mapFromItem(mSrc, QPointF(bounds.right() + bounds.width() / reductFactor, rightPoint.y()));
 		break;
 	}
 	default:
@@ -761,45 +547,6 @@ bool EdgeElement::initPossibleEdges()
 	return (!mPossibleEdges.isEmpty());
 }
 
-void EdgeElement::addClosestPointHandler(QPointF const &pos)
-{
-	QPainterPath path;
-	QPainterPathStroker ps;
-	ps.setWidth(kvadratik);
-	int start = -1;
-	for (int i = 0; i < mLine.size() - 1; ++i) {
-		path.moveTo(mLine[i]);
-		path.lineTo(mLine[i + 1]);
-		if (ps.createStroke(path).contains(pos)) {
-			start = i;
-			break;
-		}
-	}
-
-	if (start == -1) {
-		return;
-	}
-
-	qreal x = mLine[start + 1].x() - mLine[start].x();
-	qreal y = mLine[start + 1].y() - mLine[start].y();
-	qreal x1 = pos.x() - mLine[start].x();
-	qreal y1 = pos.y() - mLine[start].y();
-	// normalize
-	x = x / lengthOfSegment(mLine[start], mLine[start + 1]);
-	y = y / lengthOfSegment(mLine[start], mLine[start + 1]);
-
-	qreal scalar = x * x1 + y * y1;
-	qreal shiftX = scalar * x;
-	qreal shiftY = scalar * y;
-
-	QPointF basePoint(mLine[start].x() + shiftX, mLine[start].y() + shiftY);
-
-	mLine.insert(start + 1, basePoint);
-
-	updateLongestPart();
-	update();
-}
-
 bool EdgeElement::isDividable()
 {
 	return mElementImpl->isDividable();
@@ -870,17 +617,11 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mHandler->endMovingEdge();
 }
 
-qreal EdgeElement::lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const
-{
-	qreal len = sqrt(((pos1.x() - pos2.x()) * (pos1.x() - pos2.x())) + ((pos1.y() - pos2.y()) * (pos1.y() - pos2.y())));
-	return len;
-}
-
 void EdgeElement::delClosePoints()
 {
 	int const rad = kvadratik * 2;
 	for (int i = 0; i < mLine.size() - 1; i++) {
-		if (lengthOfSegment(mLine[i], mLine[i + 1]) < rad) {
+		if (QLineF(mLine[i], mLine[i + 1]).length() < rad) {
 			if (i != mLine.size() - 2) {
 				mLine.remove(i + 1);
 				i--;
@@ -1336,6 +1077,7 @@ void EdgeElement::updateData()
 	mElementImpl->updateData(this);
 
 	update();
+	updateLongestPart();
 }
 
 void EdgeElement::removeLink(NodeElement const *from)
@@ -1499,7 +1241,8 @@ void EdgeElement::deleteLoop(int startPos)
 			QPointF* cut = haveIntersection(mLine[i], mLine[i + 1], mLine[j], mLine[j + 1]);
 			if (cut)
 			{
-				if ((i != 0) || !((j == mLine.size() - 2) && (lengthOfSegment(mLine.first(), mLine.last()) < (kvadratik * 2))))
+				if ((i != 0) || !((j == mLine.size() - 2)
+						&& (QLineF(mLine.first(), mLine.last()).length() < (kvadratik * 2))))
 				{
 					QPointF const pos = QPointF(cut->x(), cut->y());
 					QPainterPath path;
@@ -1690,29 +1433,7 @@ bool EdgeElement::isLoop()
 
 void EdgeElement::alignToGrid()
 {
-	if (mLine.size() >= 3 && (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine))) {
-		int const indexGrid = SettingsManager::value("IndexGrid").toInt();
-
-		prepareGeometryChange();
-
-		for (int i = 1; i < mLine.size() - 1; ++i) {
-			mLine[i] = alignedPoint(mLine[i], indexGrid);
-		}
-
-		update();
-		updateLongestPart();
-	}
-}
-
-QPointF EdgeElement::alignedPoint(QPointF const &point, int const indexGrid) const
-{
-	QPointF result = mapToScene(point);
-
-	int const coefX = static_cast<int>(result.x()) / indexGrid;
-	int const coefY = static_cast<int>(result.y()) / indexGrid;
-
-	result = QPointF(SceneGridHandler::alignedCoordinate(result.x(), coefX, indexGrid)
-			, SceneGridHandler::alignedCoordinate(result.y(), coefY, indexGrid));
-
-	return mapFromScene(result);
+	prepareGeometryChange();
+	mHandler->alignToGrid();
+	updateLongestPart();
 }

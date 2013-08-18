@@ -379,14 +379,13 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	QSet<QString> const targetsSet = targets.toSet();
 	QMap<QString, QString> targetsInGroups;
 	QStringList targetGroups;
-	bool const chaoticEdition = SettingsManager::value("ChaoticEdition").toBool();
 	foreach (QString const &group, groups) {
 		QStringList const groupsContents = mWindow->editorManager().paletteGroupList(
 				node->id(), node->id(), group);
 		foreach (QString const &elementInGroup, groupsContents) {
 			if (targetsSet.contains(elementInGroup)) {
 				targetsInGroups.insertMulti(group, elementInGroup);
-				if (!targetGroups.contains(group) || chaoticEdition) {
+				if (!targetGroups.contains(group)) {
 					targetGroups.append(group);
 				}
 			}
@@ -400,7 +399,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 		QStringList const targetsInGroup = targetsInGroups.values(targetGroups[i]);
 		foreach (QString const &target, targetsInGroup) {
 			Id const id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
-			QString const friendlyName = chaoticEdition ? "" : mWindow->editorManager().friendlyName(id);
+			QString const friendlyName = mWindow->editorManager().friendlyName(id);
 			QAction *element = new QAction(friendlyName, createElemMenu);
 			// deleted as child of createElemMenu
 			createElemMenu->addAction(element);

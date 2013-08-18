@@ -16,7 +16,15 @@ public:
 	void endMovingEdge();
 
 	virtual void adjust();
-	void layOut();
+	virtual void alignToGrid();
+	virtual void layOut();
+
+	virtual void drawLine(QPainter *painter, bool drawSavedLine);
+	virtual void drawPorts(QPainter *painter);
+	virtual QPainterPath shape() const;
+
+	QPolygonF savedLine() const;
+	bool isReshapeStarted() const;
 
 protected:
 	int addPoint(QPointF const &pos);
@@ -25,6 +33,10 @@ protected:
 	bool checkPort(QPointF const &pos, bool isStart) const;
 	bool nodeChanged(bool isStart) const;
 
+	virtual void drawPort(QPainter *painter, int portNumber);
+
+	virtual QPointF alignedPoint(QPointF const &point) const;
+
 	EdgeElement *mEdge;
 
 	QPolygonF mSavedLine;
@@ -32,6 +44,7 @@ protected:
 	QPointF mDragStartPoint;
 
 	commands::ReshapeEdgeCommand *mReshapeCommand;
+	bool mReshapeStarted;
 };
 
 }

@@ -136,8 +136,6 @@ public:
 	NodeSide defineNodePortSide(bool isStart);
 
 	void alignToGrid();
-	qreal alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const;
-	QPointF alignedPoint(QPointF const &point, int const indexGrid) const;
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -151,10 +149,6 @@ protected:
 	Qt::PenStyle mPenStyle;
 	int mPenWidth;
 	QColor mPenColor;
-	QString mText;
-	QString mFromMult, mToMult;
-	enums::arrowTypeEnum::ArrowType mStartArrowStyle;
-	enums::arrowTypeEnum::ArrowType mEndArrowStyle;
 
 public slots:
 	void saveConfiguration();
@@ -162,8 +156,6 @@ public slots:
 	void arrangeAndAdjustHandler(QPointF const &pos);
 
 private slots:
-	/// add the closest point on edge to the parameter`s point
-	void addClosestPointHandler(QPointF const &pos);
 	void delPointHandler(QPointF const &pos);
 	void minimizeHandler(QPointF const &pos);
 	/// delete Segment with nearest with pos ends
@@ -186,26 +178,14 @@ private:
 	/// Returns the next clockwise side.
 	NodeSide rotateRight(NodeSide side) const;
 
-	void paintSavedEdge(QPainter *painter) const;
-	void paintChangedEdge(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
+	void paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *option, bool drawSavedLine) const;
+	void drawArrows(QPainter *painter, bool savedLine) const;
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
-
-	/// Changed size of mLine to 4. Selects 2 intermediate points depending on the size and type of line.
-	void setBezierPoints();
-	/// Returns the bezier curve built on the mLine points.
-	QPainterPath bezierCurve() const;
 
 	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const;
 	void updateLongestPart();
 	static QRectF getPortRect(QPointF const &point);
-
-	void drawCurveIntermediatePoints(QPainter* painter) const;
-	void drawCurvePorts(QPainter* painter) const;
-	void drawPort(QPainter *painter) const;
-	void drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
-
-	qreal lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const;
 
 	void delClosePoints();
 
@@ -245,11 +225,6 @@ private:
 	ContextMenuAction mMinimizeAction;
 	ContextMenuAction mDelSegmentAction;
 	ContextMenuAction mReverseAction;
-
-	bool mChaoticEdition;
-
-	QPolygonF mSavedLineForChanges;
-	bool mLeftButtonIsPressed;
 
 	bool mBreakPointPressed;
 

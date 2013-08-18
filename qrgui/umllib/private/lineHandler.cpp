@@ -6,13 +6,15 @@
 namespace qReal {
 
 LineHandler::LineHandler(EdgeElement *edge)
-		: mEdge(edge), mReshapeCommand(NULL)
-{}
+	: mEdge(edge), mReshapeCommand(NULL), mReshapeStarted(false)
+{
+}
 
 void LineHandler::startMovingEdge(int dragType, QPointF const &pos)
 {
 	mReshapeCommand = new commands::ReshapeEdgeCommand(static_cast<EditorViewScene *>(mEdge->scene()), mEdge->id());
 	mReshapeCommand->startTracking();
+	mReshapeStarted = true;
 
 	mSavedLine = mEdge->line();
 	mDragType = dragType;
@@ -23,6 +25,7 @@ void LineHandler::rejectMovingEdge()
 {
 	delete mReshapeCommand;
 	mReshapeCommand = NULL;
+	mReshapeStarted = false;
 	mEdge->setLine(mSavedLine);
 }
 
@@ -66,6 +69,7 @@ void LineHandler::endMovingEdge()
 	}
 
 	mDragType = EdgeElement::noPort;
+	mReshapeStarted = false;
 }
 
 void LineHandler::adjust()
@@ -139,6 +143,23 @@ void LineHandler::improveAppearance()
 {
 }
 
+void LineHandler::alignToGrid()
+{
+	QPolygonF line = mEdge->line();
+
+	for (int i = 1; i < line.size() - 1; ++i) {
+		line[i] = alignedPoint(line[i]);
+	}
+
+	mEdge->setLine(line);
+	mEdge->update();
+}
+
+QPointF LineHandler::alignedPoint(QPointF const &point) const
+{
+	return point;
+}
+
 bool LineHandler::checkPort(QPointF const &pos, bool isStart) const
 {
 	NodeElement *node = dynamic_cast<NodeElement *>(mEdge->getNodeAt(pos, isStart));
@@ -161,6 +182,61 @@ bool LineHandler::nodeChanged(bool isStart) const
 	NodeElement *node = dynamic_cast<NodeElement *>(mEdge->getNodeAt(isStart
 			? mEdge->line().first() : mEdge->line().last(), isStart));
 	return isStart ? (node != mEdge->src()) : (node != mEdge->dst());
+}
+
+void LineHandler::drawLine(QPainter *painter, bool drawSavedLine)
+{
+	QPolygonF line = drawSavedLine ? mSavedLine : mEdge->line();
+	painter->drawPolyline(line);
+}
+
+void LineHandler::drawPorts(QPainter *painter)
+{
+	for (int i = 0; i < mEdge->line().count(); i++) {
+		painter->save();
+		painter->translate(mEdge->line().at(i));
+		drawPort(painter, i);
+		painter->restore();
+	}
+}
+
+void LineHandler::drawPort(QPainter *painter, int portNumber)
+{
+	Q_UNUSED(portNumber)
+
+	QPen pen;
+	QPointF p1(-0.25,0);
+	QPointF p2(0.25,0);
+
+	QColor portColor("#465945");
+	QColor highlightColor("#c3dcc4");
+
+	pen.setWidth(12);
+	pen.setColor(highlightColor);
+	painter->setPen(pen);
+	painter->drawLine(p1, p2);
+
+	pen.setWidth(3);
+	pen.setColor(portColor);
+	painter->setPen(pen);
+	painter->drawLine(p1, p2);
+}
+
+QPainterPath LineHandler::shape() const
+{
+	QPainterPath path;
+	path.addPolygon(mEdge->line());
+	return path;
+}
+
+QPolygonF LineHandler::savedLine() const
+{
+	return mSavedLine;
+}
+
+bool LineHandler::isReshapeStarted() const
+{
+	return mReshapeStarted;
 }
 
 }
