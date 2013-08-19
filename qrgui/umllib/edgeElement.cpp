@@ -163,15 +163,6 @@ void EdgeElement::setToPort(qreal const &toPort)
 	mGraphicalAssistApi.setToPort(id(), mPortTo);
 }
 
-static double lineAngle(const QLineF &line)
-{
-	double angle = ::acos(line.dx() / line.length());
-	if (line.dy() >= 0)
-		angle = 2 * pi - angle;
-
-	return angle * 180 / pi;
-}
-
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	if (SettingsManager::value("PaintOldEdgeMode").toBool() && mHandler->isReshapeStarted()) {
@@ -215,13 +206,13 @@ void EdgeElement::drawArrows(QPainter *painter, bool savedLine) const
 
 	painter->save();
 	painter->translate(line[0]);
-	painter->rotate(90 - lineAngle(QLineF(line[1], line[0])));
+	painter->rotate(90 - QLineF(line[1], line[0]).angle());
 	drawStartArrow(painter);
 	painter->restore();
 
 	painter->save();
 	painter->translate(line[line.size() - 1]);
-	painter->rotate(90 - lineAngle(QLineF(line[line.size() - 2], line[line.size() - 1])));
+	painter->rotate(90 - QLineF(line[line.size() - 2], line[line.size() - 1]).angle());
 	drawEndArrow(painter);
 	painter->restore();
 
@@ -404,11 +395,6 @@ void EdgeElement::connectLoopEdge(NodeElement *newMaster)
 void EdgeElement::createLoopEdge() // nice implementation makes sense after #602 fixed!
 {
 	if (!(mDst && mSrc)) {
-		return;
-	}
-
-	if (mDst->numberOfPorts() == 1) {
-//		setLine(mSavedLineForChanges);
 		return;
 	}
 
@@ -844,10 +830,6 @@ void EdgeElement::arrangeAndAdjustHandler(QPointF const &pos)
 
 void EdgeElement::setGraphicApiPos()
 {
-	if (pos() == mGraphicalAssistApi.position(id())) {
-		return;
-	}
-
 	mMoving = true;
 	mGraphicalAssistApi.setPosition(id(), this->pos());
 	mMoving = false;
@@ -996,36 +978,9 @@ NodeElement* EdgeElement::otherSide(NodeElement const *node) const
 	return 0;
 }
 
-bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
+void EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 {
-	bool reconnectedSrc = false;
-	bool reconnectedDst = false;
-	bool isSquareLine = (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine));
-
-	if (mSrc && reconnectSrc) {
-		int targetLinePoint = isSquareLine ? mLine.count() - 1 : 1;
-		qreal newFrom = mSrc->portId(mapToItem(mSrc, mLine[targetLinePoint]), fromPortTypes());
-		reconnectedSrc = (NodeElement::portNumber(newFrom) != NodeElement::portNumber(mPortFrom));
-
-		if (reconnectedSrc) {
-			mPortFrom = newFrom;
-			mModelUpdateIsCalled = true;
-			mGraphicalAssistApi.setFromPort(id(), mPortFrom);
-		}
-	}
-	if (mDst && reconnectDst) {
-		int targetLinePoint = isSquareLine ? 0 : mLine.count() - 2;
-		qreal newTo = mDst->portId(mapToItem(mDst, mLine[targetLinePoint]), toPortTypes());
-		reconnectedDst = (NodeElement::portNumber(newTo) != NodeElement::portNumber(mPortTo));
-
-		if (reconnectedDst) {
-			mPortTo = newTo;
-			mModelUpdateIsCalled = true;
-			mGraphicalAssistApi.setToPort(id(), mPortTo);
-		}
-	}
-
-	return reconnectedSrc || reconnectedDst;
+	mHandler->reconnect(reconnectSrc, reconnectDst);
 }
 
 void EdgeElement::updateData()

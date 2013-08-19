@@ -10,13 +10,14 @@ class LineHandler
 public:
 	LineHandler(EdgeElement *edge);
 
-	void startMovingEdge(int dragType, QPointF const &pos);
+	virtual void startMovingEdge(int dragType, QPointF const &pos);
 	void rejectMovingEdge();
-	virtual void moveEdge(QPointF const &pos, bool needAlign) = 0;
-	void endMovingEdge();
+	virtual void moveEdge(QPointF const &pos, bool needAlign);
+	virtual void endMovingEdge();
 
 	virtual void adjust();
 	virtual void alignToGrid();
+	virtual void reconnect(bool reconnectSrc, bool reconnectDst);
 	virtual void layOut();
 
 	virtual void drawLine(QPainter *painter, bool drawSavedLine);
@@ -32,6 +33,7 @@ protected:
 	virtual void improveAppearance();
 	bool checkPort(QPointF const &pos, bool isStart) const;
 	bool nodeChanged(bool isStart) const;
+	int firstOutsidePoint(bool startFromSrc) const;
 
 	virtual void drawPort(QPainter *painter, int portNumber);
 

@@ -71,7 +71,7 @@ public:
 	bool isDividable();
 	void adjustLink();
 
-	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
+	void reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
 	void arrangeSrcAndDst();
 
 	NodeElement *src() const;
@@ -119,7 +119,6 @@ public:
 
 	EdgeData& data();
 
-	// redrawing of this edgeElement in squarize
 	void redrawing(QPointF const &pos);
 
 	void setGraphicApiPos();

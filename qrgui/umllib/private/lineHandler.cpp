@@ -29,6 +29,10 @@ void LineHandler::rejectMovingEdge()
 	mEdge->setLine(mSavedLine);
 }
 
+void LineHandler::moveEdge(QPointF const &, bool)
+{
+}
+
 void LineHandler::endMovingEdge()
 {
 	if ((mDragType == 0) || (mDragType == mSavedLine.count() - 1)) {
@@ -108,6 +112,47 @@ void LineHandler::layOut()
 	}
 
 	improveAppearance();
+}
+
+void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
+{
+	NodeElement *src = mEdge->src();
+	NodeElement *dst = mEdge->dst();
+
+	if (src && reconnectSrc) {
+		int targetLinePoint = firstOutsidePoint(true);
+		qreal newFrom = src->portId(mEdge->mapToItem(src, mEdge->line()[targetLinePoint]), mEdge->fromPortTypes());
+		mEdge->setFromPort(newFrom);
+	}
+	if (dst && reconnectDst) {
+		int targetLinePoint = firstOutsidePoint(false);
+		qreal newTo = dst->portId(mEdge->mapToItem(dst, mEdge->line()[targetLinePoint]), mEdge->toPortTypes());
+		mEdge->setToPort(newTo);
+	}
+}
+
+int LineHandler::firstOutsidePoint(bool startFromSrc) const
+{
+	NodeElement *node = startFromSrc ? mEdge->src() : mEdge->dst();
+	if (!node) {
+		return 0;
+	}
+	int point = startFromSrc ? 0 : mEdge->line().count() - 1;
+
+	while (point >= 0 && point < mEdge->line().count()
+			&& node->boundingRect().contains(mEdge->mapToItem(node, mEdge->line().at(point)))) {
+		startFromSrc ? point++ : point--;
+	}
+
+	if (point < 0) {
+		return 0;
+	}
+
+	if (point >= mEdge->line().count()) {
+		return mEdge->line().count() - 1;
+	}
+
+	return point;
 }
 
 int LineHandler::addPoint(QPointF const &pos)
@@ -208,8 +253,8 @@ void LineHandler::drawPort(QPainter *painter, int portNumber)
 	QPointF p1(-0.25,0);
 	QPointF p2(0.25,0);
 
-	QColor portColor("#465945");
-	QColor highlightColor("#c3dcc4");
+	QColor const portColor("#465945");
+	QColor const highlightColor("#c3dcc4");
 
 	pen.setWidth(12);
 	pen.setColor(highlightColor);
