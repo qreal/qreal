@@ -271,16 +271,12 @@ private:
 	QList<ContextMenuAction *> mBonusContextMenuActions;
 
 	SceneGridHandler *mGrid;
-	UmlPortHandler *mUmlPortHandler;
 	PortHandler *mPortHandler;
 
 	QGraphicsRectItem *mPlaceholder;
 	NodeElement *mHighlightedNode;
 
 	NodeData mData;
-
-	int mTimeOfUpdate;
-	QTimer *mTimer;
 
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;

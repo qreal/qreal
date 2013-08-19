@@ -171,15 +171,14 @@ QPointF const PortHandler::nearestPort(QPointF const &location, QStringList cons
 
 qreal PortHandler::pointPortId(QPointF const &location, QStringList const &types) const
 {
-	int pointPortNumber = 0;
-	foreach (StatPoint const * const pointPort, mPointPorts) {
+	for (int pointPortNumber = 0; pointPortNumber < mPointPorts.count(); pointPortNumber++) {
+		StatPoint const * const pointPort = mPointPorts.at(pointPortNumber);
 		if (QRectF(transformPortForNodeSize(pointPort) - QPointF(kvadratik, kvadratik),
 					QSizeF(kvadratik * 2, kvadratik * 2)
 			).contains(location) && types.contains(pointPort->type()))
 		{
 			return pointPortNumber;
 		}
-		pointPortNumber++;
 	}
 
 	return mNonexistentPortId;
@@ -187,8 +186,8 @@ qreal PortHandler::pointPortId(QPointF const &location, QStringList const &types
 
 qreal PortHandler::linePortId(QPointF const &location, QStringList const &types) const
 {
-	int linePortNumber = 0;
-	foreach (StatLine const * const linePort, mLinePorts) {
+	for (int linePortNumber = 0; linePortNumber < mLinePorts.count(); linePortNumber++) {
+		StatLine const * const linePort = mLinePorts.at(linePortNumber);
 		if (!types.contains(linePort->type())) {
 			continue;
 		}
@@ -207,7 +206,6 @@ qreal PortHandler::linePortId(QPointF const &location, QStringList const &types)
 				+ qMin(QLineF(line.p1(), location).length() / line.length()
 					, mMaximumFractionPartValue);
 		}
-		linePortNumber++;
 	}
 
 	return mNonexistentPortId;

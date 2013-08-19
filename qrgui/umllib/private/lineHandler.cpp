@@ -26,6 +26,7 @@ void LineHandler::rejectMovingEdge()
 	delete mReshapeCommand;
 	mReshapeCommand = NULL;
 	mReshapeStarted = false;
+	mDragType = EdgeElement::noPort;
 	mEdge->setLine(mSavedLine);
 }
 
@@ -44,7 +45,6 @@ void LineHandler::endMovingEdge()
 			return;
 		} else {
 			mEdge->connectToPort();
-			mEdge->reconnectToNearestPorts(!isStart, isStart);
 
 			if (mEdge->src()) {
 				mEdge->src()->arrangeLinearPorts();

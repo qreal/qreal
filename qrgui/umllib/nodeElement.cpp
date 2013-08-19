@@ -46,8 +46,6 @@ NodeElement::NodeElement(ElementImpl *impl
 	, mConnectionInProgress(false)
 	, mPlaceholder(NULL)
 	, mHighlightedNode(NULL)
-	, mTimeOfUpdate(0)
-	, mTimer(new QTimer(this))
 	, mRenderTimer(this)
 {
 	setAcceptHoverEvents(true);
@@ -84,7 +82,6 @@ NodeElement::NodeElement(ElementImpl *impl
 	}
 
 	mGrid = new SceneGridHandler(this);
-	mUmlPortHandler = new UmlPortHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
 	connect(&mRenderTimer, SIGNAL(timeout()), this, SLOT(initRenderedDiagram()));
@@ -110,7 +107,6 @@ NodeElement::~NodeElement()
 	}
 
 	delete mGrid;
-	delete mUmlPortHandler;
 	delete mPortHandler;
 }
 
@@ -476,21 +472,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	resize(newContents, newPos, needResizeParent);
-
-	if (isPort()) {
-		mUmlPortHandler->handleMoveEvent(mLeftPressed, mPos, event->scenePos(), mParentNodeElement);
-	}
-
-	// OMFG.
-	if (mTimeOfUpdate == 14) {
-		mTimeOfUpdate = 0;
-		foreach (EdgeElement* edge, mEdgeList) {
-			edge->adjustLink();
-		}
-	} else {
-		mTimeOfUpdate++;
-	}
-	mTimer->start(400);
 }
 
 void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -499,8 +480,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		ungrabMouse();
 	}
 
-	mTimer->stop();
-	mTimeOfUpdate = 0;
 	if (event->button() == Qt::RightButton) {
 		event->accept();
 		return;
@@ -1249,8 +1228,6 @@ QList<NodeElement *> const NodeElement::childNodes() const
 
 void NodeElement::updateNodeEdges()
 {
-	mTimer->stop();
-	mTimeOfUpdate = 0;
 	arrangeLinks();
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->adjustLink();
