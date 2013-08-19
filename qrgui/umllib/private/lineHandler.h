@@ -18,7 +18,7 @@ public:
 	virtual void adjust();
 	virtual void alignToGrid();
 	virtual void reconnect(bool reconnectSrc, bool reconnectDst);
-	virtual void layOut();
+	virtual void layOut(bool needReconnect = true);
 
 	virtual void drawLine(QPainter *painter, bool drawSavedLine);
 	virtual void drawPorts(QPainter *painter);
@@ -31,9 +31,11 @@ protected:
 	int addPoint(QPointF const &pos);
 	int defineSegment(QPointF const &pos);
 	virtual void improveAppearance();
+	virtual void handleIntersections();
 	bool checkPort(QPointF const &pos, bool isStart) const;
 	bool nodeChanged(bool isStart) const;
 	int firstOutsidePoint(bool startFromSrc) const;
+	void endReshape();
 
 	virtual void drawPort(QPainter *painter, int portNumber);
 

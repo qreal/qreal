@@ -867,7 +867,9 @@ QList<EdgeElement*> NodeElement::getEdges()
 
 void NodeElement::addEdge(EdgeElement *edge)
 {
-	mEdgeList << edge;
+	if (!mEdgeList.contains(edge)) {
+		mEdgeList << edge;
+	}
 }
 
 void NodeElement::delEdge(EdgeElement *edge)

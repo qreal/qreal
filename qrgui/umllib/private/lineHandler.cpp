@@ -39,29 +39,25 @@ void LineHandler::endMovingEdge()
 	if ((mDragType == 0) || (mDragType == mSavedLine.count() - 1)) {
 		bool isStart = mDragType == 0;
 		if (nodeChanged(isStart)) {
+			mEdge->connectToPort();
 			layOut();
 		} else if (!checkPort(isStart ? mEdge->line().first() : mEdge->line().last(), isStart)) {
 			rejectMovingEdge();
 			return;
 		} else {
 			mEdge->connectToPort();
-
-			if (mEdge->src()) {
-				mEdge->src()->arrangeLinearPorts();
-				mEdge->src()->adjustLinks();
-			}
-			if (mEdge->dst()) {
-				mEdge->dst()->arrangeLinearPorts();
-				mEdge->dst()->adjustLinks();
-			}
-
-			adjust();
-			improveAppearance();
+			layOut(false);
 		}
 	} else {
 		layOut();
 	}
 
+	endReshape();
+	mDragType = EdgeElement::noPort;
+}
+
+void LineHandler::endReshape()
+{
 	if (mReshapeCommand) {
 		mReshapeCommand->stopTracking();
 		if (mReshapeCommand->somethingChanged()) {
@@ -72,7 +68,6 @@ void LineHandler::endMovingEdge()
 		mReshapeCommand = NULL;
 	}
 
-	mDragType = EdgeElement::noPort;
 	mReshapeStarted = false;
 }
 
@@ -97,17 +92,20 @@ void LineHandler::adjust()
 	}
 }
 
-void LineHandler::layOut()
+void LineHandler::layOut(bool needReconnect)
 {
-	if (mDragType == 0 || mDragType == mSavedLine.count() - 1) {
-		mEdge->connectToPort();
+	if (needReconnect) {
+		reconnect(true, true);
 	}
+
+	handleIntersections();
+
 	if (mEdge->src()) {
-		mEdge->src()->arrangeLinks();
+		mEdge->src()->arrangeLinearPorts();
 		mEdge->src()->adjustLinks();
 	}
 	if (mEdge->dst()) {
-		mEdge->dst()->arrangeLinks();
+		mEdge->dst()->arrangeLinearPorts();
 		mEdge->dst()->adjustLinks();
 	}
 
@@ -185,6 +183,10 @@ int LineHandler::defineSegment(QPointF const &pos)
 }
 
 void LineHandler::improveAppearance()
+{
+}
+
+void LineHandler::handleIntersections()
 {
 }
 

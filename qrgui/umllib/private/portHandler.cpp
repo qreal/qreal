@@ -332,11 +332,10 @@ void PortHandler::checkConnectionsToPort()
 
 void PortHandler::arrangeLinearPorts()
 {
-	int lpId = mPointPorts.size(); //point ports before linear
-	foreach (StatLine const * const linePort, mLinePorts) {
+	for (int lpId = mPointPorts.size(); lpId < mPointPorts.size() + mLinePorts.size(); lpId++) {
 		//sort first by slope, then by current portNumber
 		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
-		QLineF const portLine = *linePort;
+		QLineF const portLine = *mLinePorts.at(lpId);
 		qreal const dx = portLine.dx();
 		qreal const dy = portLine.dy();
 		foreach (EdgeElement* edge, mNode->edgeList()) {
@@ -372,7 +371,6 @@ void PortHandler::arrangeLinearPorts()
 			edge->moveConnection(mNode, newId);
 			i++;
 		}
-		lpId++; //next linear port.
 	}
 }
 
