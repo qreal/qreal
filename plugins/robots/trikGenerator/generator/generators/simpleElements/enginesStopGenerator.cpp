@@ -13,7 +13,7 @@ QList<SmartLine> EnginesStopGenerator::convertElementIntoDirectCommand(TrikRobot
 	QList<SmartLine> result;
 	foreach (QString enginePort, portsToEngineNames(generator->api()->stringProperty(logicElementId, "Ports"))) {
 		result.append(
-				SmartLine("brick.motor("
+				SmartLine("brick.powerMotor("
 						+ enginePort + ").powerOff();"
 				, elementId));
 	}
