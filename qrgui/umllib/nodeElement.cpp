@@ -552,12 +552,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mResizeCommand = NULL;
 	}
 
-	arrangeLinks();
-	adjustLinks();
-
 	foreach (EdgeElement* edge, mEdgeList) {
-		edge->setGraphicApiPos();
-		edge->saveConfiguration();
+		edge->layOut();
 		if (SettingsManager::value("ActivateGrid").toBool())
 		{
 			edge->alignToGrid();

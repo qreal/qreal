@@ -1118,13 +1118,8 @@ void EdgeElement::redrawing(QPointF const &pos)
 		createLoopEdge();
 	}
 	initLineHandler();
-	adjustLink();
-	arrangeSrcAndDst();
-	prepareGeometryChange();
-	adjustLink();
-	mMoving = true;
-	mGraphicalAssistApi.setPosition(id(), this->pos());
-	mMoving = false;
+	layOut();
+	setGraphicApiPos();
 	saveConfiguration();
 }
 

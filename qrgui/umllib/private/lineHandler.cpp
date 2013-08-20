@@ -36,7 +36,7 @@ void LineHandler::moveEdge(QPointF const &, bool)
 
 void LineHandler::endMovingEdge()
 {
-	if ((mDragType == 0) || (mDragType == mSavedLine.count() - 1)) {
+	if ((mDragType == 0) || (mDragType == mEdge->line().count() - 1)) {
 		bool isStart = mDragType == 0;
 		if (nodeChanged(isStart)) {
 			mEdge->connectToPort();
@@ -138,7 +138,7 @@ int LineHandler::firstOutsidePoint(bool startFromSrc) const
 	int point = startFromSrc ? 0 : mEdge->line().count() - 1;
 
 	while (point >= 0 && point < mEdge->line().count()
-			&& node->boundingRect().contains(mEdge->mapToItem(node, mEdge->line().at(point)))) {
+			&& node->contentsRect().contains(mEdge->mapToItem(node, mEdge->line().at(point)))) {
 		startFromSrc ? point++ : point--;
 	}
 
@@ -170,11 +170,10 @@ int LineHandler::defineSegment(QPointF const &pos)
 {
 	QPainterPath path;
 	QPainterPathStroker ps;
-	QPolygonF line = mEdge->line();
 	ps.setWidth(kvadratik);
-	for (int i = 0; i < line.size() - 1; ++i) {
-		path.moveTo(line[i]);
-		path.lineTo(line[i + 1]);
+	for (int i = 0; i < mSavedLine.size() - 1; ++i) {
+		path.moveTo(mSavedLine[i]);
+		path.lineTo(mSavedLine[i + 1]);
 		if (ps.createStroke(path).contains(pos)) {
 			return i;
 		}

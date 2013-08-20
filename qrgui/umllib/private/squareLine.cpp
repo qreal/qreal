@@ -13,7 +13,7 @@ void SquareLine::moveEdge(QPointF const &pos, bool needAlign)
 	QPolygonF line = mEdge->line();
 
 	if (mDragType == EdgeElement::noPort) {
-		moveSegment(pos);
+		moveSegment(mDragStartPoint, pos);
 		return;
 	} else if (mDragType == 0 || mDragType == mEdge->line().size() - 1) {
 		line[mDragType] = pos;
@@ -32,6 +32,11 @@ void SquareLine::adjust()
 	}
 }
 
+void SquareLine::handleIntersections()
+{
+
+}
+
 void SquareLine::improveAppearance()
 {
 	mEdge->delCloseLinePoints();
@@ -39,16 +44,16 @@ void SquareLine::improveAppearance()
 	squarize();
 }
 
-void SquareLine::moveSegment(QPointF const &pos)
+void SquareLine::moveSegment(QPointF const &oldPos, QPointF const &newPos)
 {
-	int segmentNumber = defineSegment(pos);
+	int segmentNumber = defineSegment(oldPos);
 	if (segmentNumber <= 0 || segmentNumber >= mEdge->line().count() - 2) {
 		return;
 	}
 
 	QPolygonF line = mSavedLine;
 	QLineF segment(line[segmentNumber], line[segmentNumber + 1]);
-	QPointF offset(pos - line[segmentNumber]);
+	QPointF offset(newPos - line[segmentNumber]);
 
 	if (segment.x1() == segment.x2()) {
 		offset.setY(0);

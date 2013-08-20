@@ -20,8 +20,9 @@ protected:
 		horizontalTurn
 	};
 
+	virtual void handleIntersections();
 	virtual void improveAppearance();
-	void moveSegment(QPointF const &pos);
+	void moveSegment(QPointF const &oldPos, QPointF const &newPos);
 
 	void squarize();
 	int defineType();
