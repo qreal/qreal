@@ -9,6 +9,7 @@
 #include "../../../pluginManager/editorManagerInterface.h"
 #include "abstractModelItem.h"
 #include "../../../toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
+#include "modelIndexesInterface.h"
 
 namespace qReal {
 
@@ -18,7 +19,7 @@ namespace details {
 
 namespace modelsImplementation {
 
-class AbstractModel : public QAbstractItemModel
+class AbstractModel : public QAbstractItemModel, public ModelIndexesInterface
 {
 	Q_OBJECT
 

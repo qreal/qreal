@@ -4,6 +4,8 @@
 #include <models/details/graphicalPartModel.h>
 #include <../qrrepo/repoApi.h>
 
+#include "../../../mocks/grgui/models/details/modelsImplementation/modelIndexesInterfaceMock.h"
+
 namespace qrguiTests {
 
 class GraphicalPartModelTest : public testing::Test {
@@ -15,6 +17,7 @@ protected:
 protected:
 	qReal::models::details::GraphicalPartModel *mGraphicalPartModel;
 	qrRepo::RepoApi *mRepoApi;
+	qrTest::ModelIndexesInterfaceMock mModelIndexesInterfaceMock;
 };
 
 }
