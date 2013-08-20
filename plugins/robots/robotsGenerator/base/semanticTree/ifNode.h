@@ -13,7 +13,9 @@ public:
 	IfNode(Id const &idBinded, QObject *parent = 0);
 
 private:
-	ZoneNode *mIfZone;
+	virtual void debugPrint(int indent);
+
+	ZoneNode *mThenZone;
 	ZoneNode *mElseZone;
 };
 

@@ -20,6 +20,8 @@ public:
 	SemanticNode *removeLast();
 
 private:
+	virtual void debugPrint(int indent);
+
 	QLinkedList<SemanticNode *> mChildren;
 };
 

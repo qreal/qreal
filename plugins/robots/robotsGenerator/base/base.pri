@@ -15,6 +15,9 @@ HEADERS += \
 	$$PWD/semanticTree/loopNode.h \
 	$$PWD/semanticTree/rootNode.h \
 	$$PWD/rules/semanticTransformationRule.h \
+	$$PWD/rules/simpleRules/simpleBlockRuleBase.h \
+	$$PWD/rules/ifRules/ifBlockRuleBase.h \
+	$$PWD/rules/loopRules/loopBlockRuleBase.h \
 
 SOURCES += \
 	$$PWD/smartLine.cpp \
@@ -33,3 +36,6 @@ SOURCES += \
 	$$PWD/semanticTree/loopNode.cpp \
 	$$PWD/semanticTree/rootNode.cpp \
 	$$PWD/rules/semanticTransformationRule.cpp \
+	$$PWD/rules/simpleRules/simpleBlockRuleBase.cpp \
+	$$PWD/rules/ifRules/ifBlockRuleBase.cpp \
+	$$PWD/rules/loopRules/loopBlockRuleBase.cpp \

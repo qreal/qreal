@@ -12,10 +12,11 @@ namespace semantics {
 class SemanticTree : public QObject
 {
 public:
-	explicit SemanticTree(QObject *parent = 0);
+	SemanticTree(Id const &initialBlock, QObject *parent = 0);
+	void debugPrint();
 
 private:
-	RootNode *mRoot; // Takes ownership
+	RootNode *mRoot;  // Takes ownership
 };
 
 }

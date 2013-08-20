@@ -13,6 +13,8 @@ public:
 	LoopNode(Id const &idBinded, QObject *parent = 0);
 
 private:
+	virtual void debugPrint(int indent);
+
 	ZoneNode *mBodyZone;
 };
 

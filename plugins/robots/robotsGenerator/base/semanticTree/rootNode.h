@@ -1,6 +1,6 @@
 #pragma once
 
-#include "semanticNode.h"
+#include "zoneNode.h"
 
 namespace qReal {
 namespace robots {
@@ -10,7 +10,12 @@ namespace semantics {
 class RootNode : public SemanticNode
 {
 public:
-	explicit RootNode(QObject *parent = 0);
+	RootNode(Id const &initialBlock, QObject *parent = 0);
+
+private:
+	virtual void debugPrint(int indent);
+
+	ZoneNode *mZone;  // Takes ownership
 };
 
 }

@@ -18,6 +18,7 @@ public:
 			, GeneratorCustomizer const &customizer
 			, Id const &diagramId
 			, QObject *parent = 0);
+	virtual ~ControlFlowGeneratorBase();
 
 	bool preGenerationCheck();
 
@@ -26,6 +27,7 @@ public:
 protected:
 	void error(QString const &message, Id const &id = Id());
 	enums::semantics::Semantics semanticsOf(Id const &id) const;
+	Id initialNode() const;
 	QPair<Id, Id> ifBranchesFor(Id const &id) const;
 	QPair<Id, Id> loopBranchesFor(Id const &id) const;
 
