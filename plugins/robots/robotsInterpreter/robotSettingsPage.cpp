@@ -19,7 +19,6 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	bool const enableTrik = true;
 	connect(mUi->textVisibleCheckBox, SIGNAL(toggled(bool)), this, SIGNAL(textVisibleChanged(bool)));
 
-	if (!enableTrik) {
 //	if (!enableTrik) {
 //		mUi->tcpRadioButton->setVisible(false);
 //		mUi->trikModelRadioButton->setVisible(false);

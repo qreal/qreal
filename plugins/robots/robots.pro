@@ -3,8 +3,8 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	editor \
 	robotsInterpreter \
-	robotsGenerator \
-	trikGenerator \
+#	robotsGenerator \
+#	trikGenerator \
 	qextserialport \
 
 qextserialport.file = thirdparty/qextserialport/qextserialport.pro
