@@ -21,12 +21,13 @@ public:
 	virtual bool apply() = 0;
 
 signals:
-	SemanticTransformationRule(SemanticTree *tree, Id const &id, QObject *parent = 0);
-	virtual ~SemanticTransformationRule();
 
 	void errorOccured();
 
 protected:
+	SemanticTransformationRule(SemanticTree *tree, Id const &id, QObject *parent = 0);
+	virtual ~SemanticTransformationRule();
+
 	SemanticTree *mTree;  // Does not take ownership
 	Id const mId;
 };

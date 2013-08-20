@@ -10,7 +10,7 @@ namespace semantics {
 class LoopBlockRuleBase : public SemanticTransformationRule
 {
 public:
-	LoopBlockRuleBase();
+	LoopBlockRuleBase(SemanticTree *tree, Id const &id, QObject *parent = 0);
 };
 
 }

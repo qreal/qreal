@@ -12,3 +12,8 @@ void SemanticNode::bindTo(qReal::Id const &id)
 {
 	mId = id;
 }
+
+qReal::Id SemanticNode::id() const
+{
+	return mId;
+}

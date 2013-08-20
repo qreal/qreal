@@ -19,9 +19,9 @@ public:
 	void removeChild(SemanticNode *node);
 	SemanticNode *removeLast();
 
-private:
 	virtual void debugPrint(int indent);
 
+private:
 	QLinkedList<SemanticNode *> mChildren;
 };
 

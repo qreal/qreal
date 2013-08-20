@@ -223,10 +223,10 @@ bool PrimaryControlFlowValidator::checkForConnected(utils::DeepFirstSearcher::Li
 
 void PrimaryControlFlowValidator::findInitialNode()
 {
-	qReal::IdList const initialNodes(mGraphicalModel.children(mDiagram));
-	foreach (qReal::Id const &initialNode, initialNodes) {
-		if (mCustomizer.isInitialNode(initialNode)) {
-			mInitialNode = mGraphicalModel.logicalId(initialNode);
+	qReal::IdList const diagramNodes(mLogicalModel.children(mDiagram));
+	foreach (qReal::Id const &diagramNode, diagramNodes) {
+		if (mCustomizer.isInitialNode(diagramNode)) {
+			mInitialNode = mGraphicalModel.logicalId(diagramNode);
 			return;
 		}
 	}

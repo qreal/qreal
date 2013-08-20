@@ -16,8 +16,10 @@ class SemanticNode : public QObject
 public:
 	void bindTo(Id const &id);
 
-protected:
 	virtual void debugPrint(int indent) = 0;
+
+protected:
+	inline Id id() const;
 
 	SemanticNode(Id const &idBinded = Id(), QObject *parent = 0);
 

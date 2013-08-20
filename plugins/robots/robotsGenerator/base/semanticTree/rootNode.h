@@ -12,9 +12,9 @@ class RootNode : public SemanticNode
 public:
 	RootNode(Id const &initialBlock, QObject *parent = 0);
 
-private:
 	virtual void debugPrint(int indent);
 
+private:
 	ZoneNode *mZone;  // Takes ownership
 };
 
