@@ -23,6 +23,7 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 }
 
 INCLUDEPATH += \
+	$$PWD/../../ \
 	$$PWD/../thirdparty/gmock-1.6.0/include \
 	$$PWD/../thirdparty/gmock-1.6.0/gtest/include \
 

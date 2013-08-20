@@ -1,9 +1,9 @@
-#include "robotSettingsPage.h"
-#include "ui_robotSettingsPage.h"
+#include "robotsSettingsPage.h"
+#include "ui_robotsSettingsPage.h"
 
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../qrkernel/exception/exception.h"
-#include "../../../plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h"
+#include "../../../../qrkernel/settingsManager.h"
+#include "../../../../qrkernel/exception/exception.h"
+#include "../../../../plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h"
 
 using namespace qRealRobots;
 

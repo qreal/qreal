@@ -1,8 +1,7 @@
-TEMPLATE = lib
-CONFIG += plugin
-DESTDIR = ../../../bin/plugins/
-OBJECTS_DIR = .obj
-MOC_DIR = .moc
-RCC_DIR = .moc
+TEMPLATE = subdirs
 
-include(robotsInterpreter.pri)
+SUBDIRS = \
+	robotsInterpreterCore \
+#	nxtRobotsInterpreter \
+
+#nxtRobotsInterpreter.depends = robotsInterpreterCore

@@ -2,11 +2,11 @@
 
 #include <QtCore/QTranslator>
 
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
-#include "../../../qrgui/toolPluginInterface/hotKeyActionInfo.h"
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
 
-#include "robotSettingsPage.h"
+#include "robotsSettingsPage.h"
 #include "customizer.h"
 //#include "details/interpreter.h"
 //#include "details/sensorsConfigurationWidget.h"
