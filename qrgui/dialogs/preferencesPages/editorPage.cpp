@@ -126,6 +126,7 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("PaletteIconsInARowCount", mUi->paletteSpinBox->value());
 	SettingsManager::setValue("MoveLabels", mUi->enableMoveLabelsCheckBox->isChecked());
 	SettingsManager::setValue("ResizeLabels", mUi->enableResizeLabelsCheckBox->isChecked());
+	SettingsManager::setValue("LabelsDistance", mUi->labelDistanceSlider->value());
 
 	emit paletteRepresentationChanged();
 
@@ -161,8 +162,10 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize").toInt());
 	mUi->zoomFactorSlider->setValue(SettingsManager::value("zoomFactor").toInt());
 	mUi->loopEdgeBoundsIndent->setValue(SettingsManager::value("LoopEdgeBoundsIndent").toInt());
+
 	mUi->enableMoveLabelsCheckBox->setChecked(SettingsManager::value("MoveLabels").toBool());
 	mUi->enableResizeLabelsCheckBox->setChecked(SettingsManager::value("ResizeLabels").toBool());
+	mUi->labelDistanceSlider->setValue(SettingsManager::value("LabelsDistance").toInt());
 
 	LineType type = static_cast<LineType>(SettingsManager::value("LineType", brokenLine).toInt());
 	mUi->lineMode->setCurrentIndex(type);

@@ -25,7 +25,7 @@ Qt::ItemFlags AbstractModel::flags(QModelIndex const &index) const
 QVariant AbstractModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole && section == 0)
-		return QVariant("name");
+		return QVariant(tr("name"));
 	else
 		return QVariant();
 }
@@ -97,8 +97,8 @@ QModelIndex AbstractModel::index(AbstractModelItem const * const item) const
 
 QString AbstractModel::findPropertyName(Id const &id, int const role) const
 {
-	//In case of a property described in element itself (in metamodel),
-	// role is simply an index of a property in a list of propertires.
+	// In case of a property described in element itself (in metamodel),
+	// role is simply an index of a property in a list of properties.
 	// This convention must be obeyed everywhere, otherwise roles will shift.
 	QStringList properties = mEditorManagerInterface.propertyNames(id.type());
 	Q_ASSERT(role - roles::customPropertiesBeginRole < properties.count());

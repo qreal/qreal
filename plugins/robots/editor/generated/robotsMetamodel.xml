@@ -28,7 +28,6 @@
 				<value>Белый</value>
 			</enum>
 			<enum name="DistanceSign">
-				<value>равно</value>
 				<value>больше</value>
 				<value>меньше</value>
 				<value>не меньше</value>
@@ -364,11 +363,12 @@
 						<association beginName="begin" endName="end"/>
 					</associations>
 					<possibleEdges>
-						<possibleEdge beginName="AbstractNode" directed="false" endName="AbstractNode"/>
+						<possibleEdge beginName="NonTyped" directed="false" endName="NonTyped"/>
 					</possibleEdges>
 					<properties>
 						<property displayedName="Условие" type="GuardType" name="Guard"/>
 					</properties>
+					<dividability isDividable="true"/>
 				</logic>
 			</edge>
 			<node displayedName="Балансировка" name="Balance">
@@ -599,7 +599,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>равно</default>
+							<default>больше</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -647,7 +647,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>равно</default>
+							<default>больше</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -697,7 +697,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>равно</default>
+							<default>больше</default>
 						</property>
 						<property displayedName="Ускорение по оси" type="Accelerations" name="AccelerationAxe">
 							<default>X</default>
@@ -924,7 +924,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>равно</default>
+							<default>больше</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -990,7 +990,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>равно</default>
+							<default>больше</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1079,7 +1079,7 @@
 							<default>0</default>
 						</property>
 						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
-							<default>равно</default>
+							<default>больше</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1097,6 +1097,8 @@
 						<label x="0" y="-25" text="Порт:" hard="true"/>
 						<label x="33" y="60" textBinded="TachoLimit"/>
 						<label x="-60" y="60" text="Предел оборотов:"/>
+						<label x="33" y="80" textBinded="Sign"/>
+						<label x="-80" y="80" text="Считанное значение:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1125,6 +1127,9 @@
 							<default>B</default>
 						</property>
 						<property displayedName="Предел оборотов" type="string" name="TachoLimit"/>
+						<property displayedName="Считанное значение" type="DistanceSign" name="Sign">
+							<default>больше</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -1649,13 +1654,13 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Подпрограмма" name="SubprogramRobots">
+			<node displayedName="Подпрограмма" name="Subprogram">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/subprogramRobots.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="5" y="60" textBinded="name"/>
+						<label x="-10" y="-25" textBinded="name" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1682,6 +1687,9 @@
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
+					<explodesTo>
+						<target type="RobotsDiagramNode" makeReusable="true" requireImmediateLinkage="true"/>
+					</explodesTo>
 				</logic>
 			</node>
 		</graphicTypes>
@@ -1720,6 +1728,7 @@
 				<element name="ControlFlow"/>
 				<element name="Loop"/>
 				<element name="CommentBlock"/>
+				<element name="Subprogram"/>
 			</group>
 			<group name="Инициализация">
 				<element name="InitialNode"/>

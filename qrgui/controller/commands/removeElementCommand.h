@@ -4,17 +4,15 @@
 #include "createRemoveCommandImplementation.h"
 #include "../../umllib/element.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class RemoveElementCommand : public AbstractCommand
 {
 public:
 	RemoveElementCommand(
-			models::LogicalModelAssistApi *logicalApi
-			, models::GraphicalModelAssistApi *graphicalApi
+			models::LogicalModelAssistApi &logicalApi
+			, models::GraphicalModelAssistApi &graphicalApi
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id
@@ -23,8 +21,8 @@ public:
 			, QPointF const &position);
 
 	RemoveElementCommand(
-			models::LogicalModelAssistApi *logicalApi
-			, models::GraphicalModelAssistApi *graphicalApi
+			models::LogicalModelAssistApi &logicalApi
+			, models::GraphicalModelAssistApi &graphicalApi
 			, const Id &logicalParent
 			, const Id &graphicalParent
 			, bool isFromLogicalModel

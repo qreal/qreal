@@ -33,13 +33,11 @@ namespace qrmc {
 		void changeDir(QDir &dir) const;
 
 		void generateSdf() const;
-		void generatePortsSdf() const;
 
 		bool hasLabels() const;
 		bool hasPointPorts() const;
 		bool hasLinePorts() const;
 		bool hasPicture() const;
-		bool hasPorts() const;
 
 		int mWidth;
 		int mHeight;

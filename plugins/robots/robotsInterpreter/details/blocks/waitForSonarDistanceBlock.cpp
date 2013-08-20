@@ -7,7 +7,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details::blocks;
 
 WaitForSonarDistanceBlock::WaitForSonarDistanceBlock(details::RobotModel * const robotModel)
-	: WaitForSensorBlock(robotModel, sensorType::sonar)
+	: WaitForSensorBlock(robotModel, robots::enums::sensorType::sonar)
 {
 }
 

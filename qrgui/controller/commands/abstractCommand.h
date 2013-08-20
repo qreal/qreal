@@ -3,10 +3,10 @@
 #include <QtCore/QList>
 #include <QtWidgets/QUndoCommand>
 
-namespace qReal
-{
-namespace commands
-{
+#include "../../../qrkernel/ids.h"
+
+namespace qReal {
+namespace commands {
 
 class AbstractCommand : public QObject, public QUndoCommand
 {
@@ -15,8 +15,8 @@ public:
 	AbstractCommand();
 	virtual ~AbstractCommand();
 
-	void redo();
-	void undo();
+	virtual void redo();
+	virtual void undo();
 
 	void setRedoEnabled(bool enabled);
 	void setUndoEnabled(bool enabled);
@@ -39,10 +39,21 @@ public:
 
 	virtual bool equals(AbstractCommand const &other) const;
 
-	/// Performs command tree clearing with all duplicates to be removed.
+	/// Performs command tree filtering with all duplicates to be removed.
 	/// Removes duplicate closer to root, with search only in current subtree.
 	/// Root command is never removed
 	void removeDuplicates();
+
+	/// Returns id of the root diagram whose tab is the parent for this command
+	/// @see bindToDiagram()
+	Id diagramBinded() const;
+
+	/// Binds this command to the tab associated with the specified root diagram
+	/// @see diagramBinded()
+	void bindToDiagram(Id const &diagramId);
+
+	/// Returns time of this command creation in ms since epoch
+	uint timestamp() const;
 
 signals:
 	void redoComplete(bool success);
@@ -74,6 +85,8 @@ private:
 	bool mUndoEnabled;
 	QList<AbstractCommand *> mPreActions;
 	QList<AbstractCommand *> mPostActions;
+	Id mDiagramBinded;
+	uint mTimestamp;
 };
 
 inline bool operator==(AbstractCommand const &c1, AbstractCommand const &c2)

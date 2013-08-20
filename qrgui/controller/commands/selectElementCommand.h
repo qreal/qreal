@@ -2,10 +2,8 @@
 
 #include "elementCommand.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 /// This command selects or deselects element on the scene
 class SelectElementCommand : public ElementCommand
@@ -18,7 +16,7 @@ public:
 			, bool shouldSelect = true, bool forceValueChange = false);
 	SelectElementCommand(EditorView const *view, Id const &id
 			, bool shouldSelect = true, bool forceValueChange = false);
-	virtual ~SelectElementCommand() {}
+	virtual ~SelectElementCommand();
 
 protected:
 	virtual bool execute();

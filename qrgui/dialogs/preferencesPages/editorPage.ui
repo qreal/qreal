@@ -38,9 +38,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>468</width>
-        <height>726</height>
+        <y>-109</y>
+        <width>466</width>
+        <height>823</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -560,6 +560,23 @@
             </property>
             <property name="checked">
              <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelDistanceLabel">
+            <property name="text">
+             <string>Label distance</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="labelDistanceSlider">
+            <property name="maximum">
+             <number>500</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>

@@ -67,24 +67,14 @@ QIcon ProxyEditorManager::icon(Id const &id) const
 	return mProxiedEditorManager->icon(id);
 }
 
-ElementImpl* ProxyEditorManager::graphicalObject(Id const &id) const
+ElementImpl *ProxyEditorManager::elementImpl(Id const &id) const
 {
-	return mProxiedEditorManager->graphicalObject(id);
+	return mProxiedEditorManager->elementImpl(id);
 }
 
 IdList ProxyEditorManager::containedTypes(const Id &id) const
 {
 	return mProxiedEditorManager->containedTypes(id);
-}
-
-IdList ProxyEditorManager::connectedTypes(const Id &id) const
-{
-	return mProxiedEditorManager->connectedTypes(id);
-}
-
-IdList ProxyEditorManager::usedTypes(const Id &id) const
-{
-	return mProxiedEditorManager->usedTypes(id);
 }
 
 QStringList ProxyEditorManager::enumValues(Id const &id, const QString &name) const
@@ -100,6 +90,11 @@ QString ProxyEditorManager::typeName(Id const &id, const QString &name) const
 QStringList ProxyEditorManager::allChildrenTypesOf(Id const &parent) const
 {
 	return mProxiedEditorManager->allChildrenTypesOf(parent);
+}
+
+QList<Explosion> ProxyEditorManager::explosions(Id const &source) const
+{
+	return mProxiedEditorManager->explosions(source);
 }
 
 bool ProxyEditorManager::isEditor(Id const &id) const
@@ -120,6 +115,11 @@ bool ProxyEditorManager::isElement(Id const &id) const
 QStringList ProxyEditorManager::propertyNames(Id const &id) const
 {
 	return mProxiedEditorManager->propertyNames(id);
+}
+
+QStringList ProxyEditorManager::portTypes(Id const &id) const
+{
+	return mProxiedEditorManager->portTypes(id);
 }
 
 QString ProxyEditorManager::defaultPropertyValue(Id const &id, QString name) const

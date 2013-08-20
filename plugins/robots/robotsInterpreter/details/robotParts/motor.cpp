@@ -6,7 +6,8 @@ using namespace robotImplementations::motorImplementations;
 using namespace robotParts;
 
 Motor::Motor(int const port, robotImplementations::motorImplementations::AbstractMotorImplementation *motorImpl)
-	: mPort(static_cast<outputPort::OutputPortEnum>(port)), mMotorImpl(motorImpl)
+		: mPort(static_cast<enums::outputPort::OutputPortEnum>(port))
+		, mMotorImpl(motorImpl)
 {
 	mMotorImpl->setPort(mPort);
 }

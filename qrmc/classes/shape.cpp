@@ -146,7 +146,6 @@ void Shape::generate(QString &classTemplate) const
 		return;
 
 	generateSdf();
-	generatePortsSdf();
 
 	MetaCompiler *compiler = mNode->diagram()->editor()->metaCompiler();
 	QString unused;
@@ -186,8 +185,6 @@ void Shape::generate(QString &classTemplate) const
 		labelsUpdateLine = nodeIndent + "Q_UNUSED(repo)" + endline;
 	}
 
-	QString hasPorts = mPorts.isEmpty() ? "false" : "true";
-
 	classTemplate.replace(nodeUnusedTag, unused)
 			.replace(nodeLoadShapeRendererTag, shapeRendererLine)
 			.replace(nodeLoadPortsRendererTag, portRendererLine)
@@ -195,8 +192,7 @@ void Shape::generate(QString &classTemplate) const
 			.replace(nodeInitPortsTag, portsInitLine)
 			.replace(nodeInitTag, labelsInitLine)
 			.replace(updateDataTag, labelsUpdateLine)
-			.replace(labelDefinitionTag, labelsDefinitionLine)
-			.replace(hasPortsTag, hasPorts);
+			.replace(labelDefinitionTag, labelsDefinitionLine);
 }
 
 void Shape::generateSdf() const
@@ -217,39 +213,6 @@ void Shape::generateSdf() const
 
 	QTextStream out(&file);
 	out << mPicture;
-	file.close();
-}
-
-void Shape::generatePortsSdf() const
-{
-	if (!hasPorts()) {
-		return;
-	}
-
-	QDir dir;
-	changeDir(dir);
-
-	QString const fileName = dir.absoluteFilePath(mNode->name() + "Ports.sdf");
-	QFile file(fileName);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		qDebug() << "cannot open \"" << fileName << "\"";
-		return;
-	}
-	QTextStream out(&file);
-	MetaCompiler *compiler = mNode->diagram()->editor()->metaCompiler();
-	QString portsTemplate = compiler->getTemplateUtils(sdfPortsTag);
-
-	QString portsSdf;
-	foreach(Port *port, mPorts) {
-		portsSdf += port->generateSdf(compiler) + endline;
-	}
-
-	portsTemplate.replace(portsTag, portsSdf)
-				.replace(nodeWidthTag, QString::number(mWidth))
-				.replace(nodeHeightTag, QString::number(mHeight))
-				.replace("\\n", "\n");
-
-	out << portsTemplate;
 	file.close();
 }
 
@@ -283,11 +246,6 @@ bool Shape::hasPicture() const
 	return !mPicture.isEmpty();
 }
 
-bool Shape::hasPorts() const
-{
-	return !mPorts.isEmpty();
-}
-
 QString Shape::generateResourceLine(const QString &resourceTemplate) const
 {
 	QString result;
@@ -299,9 +257,5 @@ QString Shape::generateResourceLine(const QString &resourceTemplate) const
 	QString line = resourceTemplate;
 	result += line.replace(fileNameTag, mNode->name() + "Class.sdf") + endline;
 
-	if (hasPorts()) {
-		QString line = resourceTemplate;
-		result += line.replace(fileNameTag, mNode->name() + "Ports.sdf") + endline;
-	}
 	return result;
 }

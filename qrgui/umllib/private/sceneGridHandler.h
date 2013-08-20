@@ -5,6 +5,8 @@
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtGui/QPen>
 
+namespace qReal {
+
 class NodeElement;
 
 class SceneGridHandler
@@ -83,3 +85,5 @@ private:
 	/** @brief guides that have distance equal or less will be represented by only one of them */
 	static qreal const indistinguishabilitySpace = 10;
 };
+
+}

@@ -36,8 +36,8 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 	Id resultId = mResult;
 	if (!mCreateCommand) {
 		mCreateCommand = new CreateElementCommand(
-			mMVIface->logicalAssistApi()
-			, mMVIface->graphicalAssistApi()
+			*mMVIface->logicalAssistApi()
+			, *mMVIface->graphicalAssistApi()
 			, mMVIface->rootId()
 			, newGraphicalParent()
 			, mNodeData.logicalId
@@ -52,7 +52,14 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 		addPreAction(mCreateCommand);
 	}
 
-	ElementImpl *impl = mScene->mainWindow()->editorManager().graphicalObject(resultId);
+	NodeElement * const newNode = new NodeElement(
+			mScene->mainWindow()->editorManager().elementImpl(resultId)
+			, resultId
+			, *mMVIface->graphicalAssistApi()
+			, *mMVIface->logicalAssistApi()
+			);
+
+	newNode->setController(mScene->mainWindow()->controller());
 
 	if (impl->isNode()) {
 		NodeElement * const newNode = new NodeElement(impl);
@@ -69,6 +76,7 @@ void PasteNodeCommand::restoreElement()
 	Id const logicalId = mMVIface->graphicalAssistApi()->logicalId(mResult);
 	mMVIface->graphicalAssistApi()->setProperties(logicalId, mNodeData.logicalProperties);
 	mMVIface->graphicalAssistApi()->setProperties(mResult, mNodeData.graphicalProperties);
+	mMVIface->graphicalAssistApi()->setPosition(mResult, getNewGraphicalPos());
 	if (mCopiedIds->contains(mNodeData.parentId)) {
 		mMVIface->graphicalAssistApi()->changeParent(mResult, mCopiedIds->value(mNodeData.parentId), getNewPos());
 	}

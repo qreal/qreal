@@ -2,10 +2,8 @@
 
 #include "abstractCommand.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 /// This command does nothing. Can be useful for creating "container" commands
 /// having no actions itself

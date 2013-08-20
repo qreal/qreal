@@ -16,9 +16,12 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface);
 	// default destructor is ok
 
+
 public slots:
 	void checkAllDiagrams();
 	void checkCurrentDiagram();
+	//! get an XML file with all repo contents (used as a hack for integration with REAL-IT.NET)
+	void exportToXml();
 
 private:
 	 enum ErrorsType {
@@ -63,6 +66,9 @@ private:
 
 	//! @return Id node with minimal incoming links count
 	Id findFirstNode() const;
+
+	IdList incomingSequenceFlow(Id const &id) const;
+	IdList outgoingSequenceFlow(Id const &id) const;
 
 	qrRepo::GraphicalRepoApi const *mGRepoApi;
 	qReal::gui::MainWindowInterpretersInterface *mWindowInterface;

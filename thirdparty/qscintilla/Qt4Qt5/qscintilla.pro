@@ -27,9 +27,9 @@
 !win32:VERSION = 8.0.2
 
 TEMPLATE = lib
-DESTDIR = ../../../bin/thirdparty
+DESTDIR = ../../../bin
 TARGET = qscintilla2
-CONFIG += qt warn_off staticlib thread
+CONFIG += qt warn_off thread
 INCLUDEPATH = . ../include ../lexlib ../src
 DEFINES = STATIC_BUILD QT SCI_LEXER
 

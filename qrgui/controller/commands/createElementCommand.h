@@ -3,17 +3,15 @@
 #include "abstractCommand.h"
 #include "createRemoveCommandImplementation.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class CreateElementCommand : public AbstractCommand
 {
 public:
 	CreateElementCommand(
-			models::LogicalModelAssistApi *logicalApi
-			, models::GraphicalModelAssistApi *graphicalApi
+			models::LogicalModelAssistApi &logicalApi
+			, models::GraphicalModelAssistApi &graphicalApi
 			, Id const &logicalParent
 			, Id const &graphicalParent
 			, Id const &id

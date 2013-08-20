@@ -3,6 +3,7 @@
 #include "enumType.h"
 #include "numericType.h"
 #include "stringType.h"
+#include "portType.h"
 #include "nodeType.h"
 #include "edgeType.h"
 #include "editor.h"
@@ -27,16 +28,19 @@ bool Diagram::init(QDomElement const &diagramElement)
 		element = element.nextSiblingElement())
 	{
 		if (element.nodeName() == "graphicTypes") {
-			if (!initGraphicTypes(element))
+			if (!initGraphicTypes(element)) {
 				return false;
+			}
 		} else if (element.nodeName() == "nonGraphicTypes") {
-			if (!initNonGraphicTypes(element))
+			if (!initNonGraphicTypes(element)) {
 				return false;
+			}
 		} else if (element.nodeName() == "palette") {
 			initPaletteGroups(element);
 		} else
 			qDebug() << "ERROR: unknown tag" << element.nodeName();
 	}
+
 	return true;
 }
 
@@ -121,6 +125,14 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 				return false;
 			}
 			mTypes[stringType->qualifiedName()] = stringType;
+		} else if (element.nodeName() == "port") {
+			Type *portType = new PortType();
+			if (!portType->init(element, mDiagramName)) {
+				delete portType;
+				qDebug() << "Can't parse port type";
+				return false;
+			}
+			mTypes[portType->qualifiedName()] = portType;
 		}
 		else {
 			qDebug() << "ERROR: unknown non graphic type" << element.nodeName();

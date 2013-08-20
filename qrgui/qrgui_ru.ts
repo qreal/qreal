@@ -522,21 +522,26 @@
 <context>
     <name>EditorViewScene</name>
     <message>
-        <location filename="view/editorViewScene.cpp" line="353"/>
-        <location filename="view/editorViewScene.cpp" line="426"/>
+        <location filename="view/editorViewScene.cpp" line="356"/>
+        <location filename="view/editorViewScene.cpp" line="429"/>
         <source>Discard</source>
         <translation>Убрать меню</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="356"/>
+        <location filename="view/editorViewScene.cpp" line="359"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="416"/>
-        <location filename="view/editorViewScene.cpp" line="427"/>
+        <location filename="view/editorViewScene.cpp" line="419"/>
+        <location filename="view/editorViewScene.cpp" line="430"/>
         <source>Connect with the current item</source>
         <translation>Соединить с данным элементом</translation>
+    </message>
+    <message>
+        <location filename="view/editorViewScene.cpp" line="905"/>
+        <source>Add child</source>
+        <translation>Добавить элемент</translation>
     </message>
     <message>
         <source>Add connection</source>
@@ -575,14 +580,12 @@
         <translation type="obsolete">Используется в</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="897"/>
         <source>Change Properties</source>
-        <translation>Изменить свойства</translation>
+        <translation type="obsolete">Изменить свойства</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="900"/>
         <source>Change Appearance</source>
-        <translation>Изменить внешний вид</translation>
+        <translation type="obsolete">Изменить внешний вид</translation>
     </message>
 </context>
 <context>
@@ -916,6 +919,11 @@
         <location filename="mainwindow/mainWindow.ui" line="779"/>
         <source>Ctrl+Shift+Z</source>
         <translation>Ctrl+Shift+Z</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/mainWindow.ui" line="784"/>
+        <source>Export to XML</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Find</source>
@@ -1373,7 +1381,7 @@
 <context>
     <name>NodeElement</name>
     <message>
-        <location filename="umllib/nodeElement.cpp" line="28"/>
+        <location filename="umllib/nodeElement.cpp" line="30"/>
         <source>Switch on grid</source>
         <translation>Включить сетку</translation>
     </message>
@@ -1857,27 +1865,27 @@
         <translation type="obsolete">Связи-петли</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="617"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="634"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="633"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="650"/>
         <source>   Representation   </source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="660"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="677"/>
         <source>Icons  and names</source>
         <translation>Иконки и названия</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="665"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="682"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="640"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="657"/>
         <source>   Count of items in a row </source>
         <translation>Количество иконок в строке</translation>
     </message>
@@ -1922,12 +1930,17 @@
         <translation>Разрешить изменять размер</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="588"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="569"/>
+        <source>Label distance</source>
+        <translation>Расстояние от надписей до элемента</translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="605"/>
         <source>Zoom factor</source>
         <translation>Коэффициент масштабирования</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="572"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="589"/>
         <source>Zoom</source>
         <translation>Увеличение</translation>
     </message>
@@ -1947,17 +1960,17 @@
         <translation>Выбрать шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="145"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="145"/>
         <source>You should restart QReal:Robots to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="144"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="145"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -1999,12 +2012,12 @@
 <context>
     <name>PreferencesHotKeyManagerPage</name>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.cpp" line="76"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.cpp" line="81"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.cpp" line="76"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.cpp" line="81"/>
         <source>This will clear all current shortcuts. Are you sure?</source>
         <translation>Все текущие настройки горячих клавиш будут удалены. Продолжить?</translation>
     </message>
@@ -2276,7 +2289,7 @@
 <context>
     <name>PushButtonPropertyManager</name>
     <message>
-        <location filename="view/pushButtonProperty.cpp" line="22"/>
+        <location filename="view/private/pushButtonProperty.cpp" line="22"/>
         <source>Click to choose</source>
         <translation>Кликните для выбора</translation>
     </message>
@@ -2389,39 +2402,56 @@
         <translation>Добавить провязку</translation>
     </message>
     <message>
-        <location filename="toolPluginInterface/customizer.h" line="68"/>
+        <location filename="toolPluginInterface/customizer.h" line="73"/>
         <source>Disconnect</source>
         <translation>Убрать провязку</translation>
     </message>
     <message>
-        <location filename="toolPluginInterface/customizer.h" line="73"/>
-        <source>Add usage</source>
-        <translation>Добавить использование</translation>
-    </message>
-    <message>
         <location filename="toolPluginInterface/customizer.h" line="78"/>
-        <source>Delete usage</source>
-        <translation>Убрать использование</translation>
-    </message>
-    <message>
-        <location filename="toolPluginInterface/customizer.h" line="83"/>
-        <source>Forward connection</source>
-        <translation>По провязке вперёд</translation>
+        <source>Go to connected element</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="toolPluginInterface/customizer.h" line="88"/>
-        <source>Backward connection</source>
-        <translation>По провязке назад</translation>
+        <source>Expand explosion</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="toolPluginInterface/customizer.h" line="93"/>
-        <source>Uses</source>
-        <translation>Использует</translation>
+        <source>Collapse explosion</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="toolPluginInterface/customizer.h" line="98"/>
+        <source>Add usage</source>
+        <translation type="obsolete">Добавить использование</translation>
+    </message>
+    <message>
+        <source>Delete usage</source>
+        <translation type="obsolete">Убрать использование</translation>
+    </message>
+    <message>
+        <source>Forward connection</source>
+        <translation type="obsolete">По провязке вперёд</translation>
+    </message>
+    <message>
+        <source>Backward connection</source>
+        <translation type="obsolete">По провязке назад</translation>
+    </message>
+    <message>
+        <source>Uses</source>
+        <translation type="obsolete">Использует</translation>
+    </message>
+    <message>
         <source>Used in</source>
-        <translation>Используется в</translation>
+        <translation type="obsolete">Используется в</translation>
+    </message>
+    <message>
+        <source>Expand connection</source>
+        <translation type="obsolete">Раскрыть провязку</translation>
+    </message>
+    <message>
+        <source>Collapse connection</source>
+        <translation type="obsolete">Свернуть провязку</translation>
     </message>
 </context>
 <context>
@@ -3227,47 +3257,47 @@
         <translation>Экспорт...</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="102"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="108"/>
         <source>Command</source>
         <translation>Команда</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="107"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="113"/>
         <source>Label</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="112"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="118"/>
         <source>Shortcut 1</source>
         <translation>Сочетание 1</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="117"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="123"/>
         <source>Shortcut 2</source>
         <translation>Сочетание 2</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="122"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="128"/>
         <source>Shortcut 3</source>
         <translation>Сочетание 3</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="140"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="146"/>
         <source>Shortcut</source>
         <translation>Сочетание</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="130"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="136"/>
         <source>Reset All</source>
         <translation>Очистить все</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="146"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="152"/>
         <source>Reset</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="169"/>
+        <location filename="hotKeyManager/hotKeyManagerPage.ui" line="175"/>
         <source>Key sequence</source>
         <translation>Введите сочетание клавиш...</translation>
     </message>
@@ -3683,7 +3713,7 @@
         <translation type="obsolete">Выберите папку с сохранением, которое хотите открыть</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="810"/>
+        <location filename="mainwindow/mainWindow.cpp" line="827"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
@@ -3708,16 +3738,16 @@
         <translation type="obsolete">Выберите папку для коммита</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="836"/>
-        <location filename="mainwindow/mainWindow.cpp" line="854"/>
-        <location filename="mainwindow/mainWindow.cpp" line="872"/>
+        <location filename="mainwindow/mainWindow.cpp" line="853"/>
+        <location filename="mainwindow/mainWindow.cpp" line="871"/>
+        <location filename="mainwindow/mainWindow.cpp" line="889"/>
         <source>errors</source>
         <translation>Ошибки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="838"/>
-        <location filename="mainwindow/mainWindow.cpp" line="856"/>
-        <location filename="mainwindow/mainWindow.cpp" line="874"/>
+        <location filename="mainwindow/mainWindow.cpp" line="855"/>
+        <location filename="mainwindow/mainWindow.cpp" line="873"/>
+        <location filename="mainwindow/mainWindow.cpp" line="891"/>
         <source>finished</source>
         <translation>Закончено</translation>
     </message>
@@ -3822,89 +3852,89 @@
         <translation type="obsolete">Не хватает плагинов</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="872"/>
+        <location filename="mainwindow/mainWindow.cpp" line="889"/>
         <source>Some errors occured. Export may be incorrect. Errors list:</source>
         <translation>Экспорт может быть неверным. Возникли следующие ошибки:</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="874"/>
+        <location filename="mainwindow/mainWindow.cpp" line="891"/>
         <source>Parsing is finished</source>
         <translation>Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1042"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1059"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1320"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1337"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1321"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1338"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1322"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1339"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1323"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1340"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1324"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1341"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1325"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1342"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1326"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1343"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1327"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1344"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1328"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1345"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1329"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1346"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1330"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1347"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1331"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1348"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1332"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1349"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1011"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1024"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1050"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1028"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1041"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1067"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3913,17 +3943,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1979"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1997"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2009"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2027"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2009"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2027"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -3944,7 +3974,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1546"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1558"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -4053,17 +4083,17 @@
         <translation>Несохраненный проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="358"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="361"/>
         <source>File not found</source>
         <translation>Файл не найден</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="359"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="362"/>
         <source>File </source>
         <translation>Файл </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="359"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="362"/>
         <source> not found. Try again</source>
         <translation> не найден. Укажите существующий файл</translation>
     </message>
@@ -4080,18 +4110,18 @@
 </translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="305"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="308"/>
         <source>Select file to save current metamodel to</source>
         <translation>Выберите файл для сохранения метамодели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="311"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="314"/>
         <source>Select file to save current model to</source>
         <translation>Выберите файл для сохранения модели</translation>
     </message>
     <message>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="330"/>
-        <location filename="mainwindow/projectManager/projectManager.cpp" line="342"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="333"/>
+        <location filename="mainwindow/projectManager/projectManager.cpp" line="345"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
@@ -4298,68 +4328,68 @@
 <context>
     <name>qReal::gui::DraggableElement</name>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="107"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="107"/>
         <source>Deleting an element: </source>
         <translation>Удаление элемента: </translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="108"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="108"/>
         <source>Do you really want to delete this item and all its graphical representation from the scene and from the palette?</source>
         <translation>Вы действительно хотите удалить данный элемент  и все его графические представления со сцены и из палитры?</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="115"/>
-        <location filename="mainwindow/draggableElement.cpp" line="145"/>
-        <location filename="mainwindow/draggableElement.cpp" line="182"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="115"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="145"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="182"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="116"/>
-        <location filename="mainwindow/draggableElement.cpp" line="146"/>
-        <location filename="mainwindow/draggableElement.cpp" line="183"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="116"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="146"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="183"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="137"/>
-        <location filename="mainwindow/draggableElement.cpp" line="169"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="137"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="169"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="138"/>
-        <location filename="mainwindow/draggableElement.cpp" line="170"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="138"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="170"/>
         <source>The deleted element </source>
         <translation>Удаляемый элемент </translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="172"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="172"/>
         <source> has inheritors:</source>
         <translation> имеет наследников:</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="175"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="175"/>
         <source>If you delete it, its properties will be removed from the elements-inheritors. Continue to delete?</source>
         <translation>Если вы удалите его, то все унаследованные свойства будут удалены у его потомков. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="138"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="138"/>
         <source> is the element of root digram. Continue to delete?</source>
         <translation> является элементом корневой диаграммы. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="217"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="249"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="220"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="252"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
     </message>
     <message>
-        <location filename="mainwindow/draggableElement.cpp" line="223"/>
+        <location filename="mainwindow/palette/draggableElement.cpp" line="255"/>
         <source>Delete Element</source>
         <translation>Удалить элемент</translation>
     </message>
@@ -4407,17 +4437,17 @@
         <translation type="obsolete">Изменить свойства</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="501"/>
+        <location filename="mainwindow/palette/paletteTree.cpp" line="294"/>
         <source>Expand all</source>
         <translation>Развернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="496"/>
+        <location filename="mainwindow/palette/paletteTree.cpp" line="291"/>
         <source>Collapse all</source>
         <translation>Свернуть всё</translation>
     </message>
     <message>
-        <location filename="mainwindow/paletteTree.cpp" line="304"/>
+        <location filename="mainwindow/palette/paletteTree.cpp" line="148"/>
         <source>Change representation</source>
         <translation>Изменить представление</translation>
     </message>
@@ -4425,7 +4455,7 @@
 <context>
     <name>qReal::gui::PaletteTreeWidget</name>
     <message>
-        <location filename="mainwindow/paletteTreeWidget.cpp" line="31"/>
+        <location filename="mainwindow/palette/paletteTreeWidget.cpp" line="107"/>
         <source>Add Element</source>
         <translation>Добавить элемент</translation>
     </message>
@@ -4446,6 +4476,14 @@
         <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="113"/>
         <source>For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!</source>
         <translation>Для добавления нового свойства со сцены и обозревателя логической модели должны быть удалены все элементы данного объекта и его наследников!</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::gui::RenameDialog</name>
+    <message>
+        <location filename="dialogs/renameDialog.cpp" line="11"/>
+        <source>Enter new name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4723,6 +4761,43 @@
     <message>
         <source>2D model saves (*.xml)</source>
         <translation type="obsolete">Сохранения 2D-модели (*.xml)</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::models::Exploser</name>
+    <message>
+        <location filename="models/details/exploser.cpp" line="69"/>
+        <source> - inside</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="models/details/exploser.cpp" line="75"/>
+        <source>Existing connections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="models/details/exploser.cpp" line="81"/>
+        <source>Elements from this group exist for reusing all created connections</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>qReal::view::details::ExploserView</name>
+    <message>
+        <location filename="view/private/exploserView.cpp" line="53"/>
+        <location filename="view/private/exploserView.cpp" line="172"/>
+        <source>New </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="view/private/exploserView.cpp" line="119"/>
+        <source>Change Properties</source>
+        <translation type="unfinished">Изменить свойства</translation>
+    </message>
+    <message>
+        <location filename="view/private/exploserView.cpp" line="122"/>
+        <source>Change Appearance</source>
+        <translation type="unfinished">Изменить внешний вид</translation>
     </message>
 </context>
 </TS>

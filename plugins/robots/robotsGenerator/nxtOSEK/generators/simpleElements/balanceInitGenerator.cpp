@@ -14,7 +14,7 @@ QList<SmartLine> BalanceInitGenerator::convertElementIntoDirectCommand(NxtOSEKRo
 	QList<SmartLine> result;
 
 	result.append(SmartLine("balance_init();", elementId));
-	nxtGen->mBalancerIsActivated = true;
+	nxtGen->activateBalancer();
 
 	return result;
 }

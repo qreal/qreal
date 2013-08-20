@@ -30,7 +30,7 @@ QList<SmartLine> BalanceGenerator::convertElementIntoDirectCommand(NxtOSEKRobotG
 			<< (SmartLine(QString("&") + outPowerValue1 + ", ", elementId))
 			<< (SmartLine(QString("&") + outPowerValue2 + ");", elementId));
 
-	nxtGen->mBalancerIsActivated = true;
+	nxtGen->activateBalancer();
 
 	return result;
 }

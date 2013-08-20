@@ -20,7 +20,8 @@ public:
 	explicit LogicalModelView(GraphicalModel * const model);
 
 protected slots:
-	virtual void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight);
+	virtual void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight
+			, QVector<int> const &roles = QVector<int>());
 	virtual void rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end);
 };
 

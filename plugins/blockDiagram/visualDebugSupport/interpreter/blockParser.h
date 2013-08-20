@@ -2,8 +2,8 @@
 
 #include <QtCore/QMap>
 
-#include "../../../qrutils/expressionsParser/expressionsParser.h"
-#include "../../../qrgui/mainwindow/errorReporter.h"
+#include <qrutils/expressionsParser/expressionsParser.h>
+#include <qrgui/mainwindow/errorReporter.h>
 
 namespace qReal {
 

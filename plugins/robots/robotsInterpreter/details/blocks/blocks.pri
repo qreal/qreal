@@ -35,6 +35,7 @@ HEADERS += \
 	details/blocks/printTextBlock.h \
 	details/blocks/drawRectBlock.h \
 	details/blocks/clearScreenBlock.h \
+	details/blocks/subprogramBlock.h \
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -73,3 +74,4 @@ SOURCES +=\
 	details/blocks/printTextBlock.cpp \
 	details/blocks/drawRectBlock.cpp \
 	details/blocks/clearScreenBlock.cpp \
+	details/blocks/subprogramBlock.cpp \

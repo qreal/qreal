@@ -19,7 +19,7 @@ class WaitForSensorBlock : public WaitBlock
 	Q_OBJECT
 
 public:
-	WaitForSensorBlock(RobotModel * const robotModel, sensorType::SensorTypeEnum type);
+	WaitForSensorBlock(RobotModel * const robotModel, robots::enums::sensorType::SensorTypeEnum type);
 	virtual ~WaitForSensorBlock();
 
 	virtual void run();
@@ -35,8 +35,8 @@ protected:
 	virtual QString name() const = 0;
 	virtual void stop();
 
-	sensorType::SensorTypeEnum mType;
-	inputPort::InputPortEnum mPort;
+	robots::enums::sensorType::SensorTypeEnum mType;
+	robots::enums::inputPort::InputPortEnum mPort;
 };
 
 }

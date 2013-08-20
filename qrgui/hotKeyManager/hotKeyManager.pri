@@ -1,12 +1,12 @@
 HEADERS += \
-    hotKeyManager/hotKeyManagerPage.h \
-    hotKeyManager/hotKeyManager.h \
-    hotKeyManager/shortcutEdit.h
+	$$PWD/hotKeyManagerPage.h \
+	$$PWD/hotKeyManager.h \
+	$$PWD/shortcutEdit.h
 
 SOURCES += \
-    hotKeyManager/hotKeyManagerPage.cpp \
-    hotKeyManager/hotKeyManager.cpp \
-    hotKeyManager/shortcutEdit.cpp
+	$$PWD/hotKeyManagerPage.cpp \
+	$$PWD/hotKeyManager.cpp \
+	$$PWD/shortcutEdit.cpp
 
 FORMS += \
-    hotKeyManager/hotKeyManagerPage.ui
+	$$PWD/hotKeyManagerPage.ui

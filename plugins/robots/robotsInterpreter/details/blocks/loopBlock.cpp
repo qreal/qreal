@@ -30,15 +30,15 @@ bool LoopBlock::initNextBlocks()
 
 	QString const iterationNotFoundError = tr("There must be an outgoing link with"\
 			" property <b>Guard</b> set as <b>iteration</b>. See help, chapter <i>Programming</i>");
-	foreach (Id const linkId, links) {
+	foreach (Id const &linkId, links) {
 		Id const targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
-		if (targetBlockId == Id()) {
+		if (targetBlockId.isNull()) {
 			error(tr("Outgoing link is not connected"));
 			return false;
 		}
 
 		Block *targetBlock = mBlocksTable->block(targetBlockId);
-		if (stringProperty(linkId, "Guard").toLower() == tr("iteration")) {
+		if (stringProperty(linkId, "Guard").toLower() == QString::fromUtf8("итерация")) {
 			if (!iterationFound) {
 				mIterationStartBlock = targetBlock;
 				iterationFound = true;

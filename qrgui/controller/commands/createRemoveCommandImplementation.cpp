@@ -4,8 +4,8 @@
 using namespace qReal::commands;
 
 CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
-		models::LogicalModelAssistApi *logicalApi
-		, models::GraphicalModelAssistApi *graphicalApi
+		models::LogicalModelAssistApi &logicalApi
+		, models::GraphicalModelAssistApi &graphicalApi
 		, Id const &logicalParent
 		, Id const &graphicalParent
 		, Id const &id
@@ -25,16 +25,20 @@ CreateRemoveCommandImplementation::CreateRemoveCommandImplementation(
 
 Id CreateRemoveCommandImplementation::create()
 {
-	mId = mGraphicalApi->createElement(mGraphicalParent, mId
+	mId = mGraphicalApi.createElement(mGraphicalParent, mId
 			, mIsFromLogicalModel, mName, mPosition, mOldLogicalId);
+
 	if (!mGraphicalPropertiesSnapshot.isEmpty()) {
-		mGraphicalApi->setProperties(mId, mGraphicalPropertiesSnapshot);
+		mGraphicalApi.setProperties(mId, mGraphicalPropertiesSnapshot);
 	}
-	Id const logicalId = mGraphicalApi->logicalId(mId);
-	if (mLogicalApi->logicalRepoApi().exist(logicalId)
+
+	Id const logicalId = mGraphicalApi.logicalId(mId);
+	if (mLogicalApi.logicalRepoApi().exist(logicalId)
 			&& !mLogicalPropertiesSnapshot.isEmpty()) {
-		mGraphicalApi->setProperties(logicalId, mLogicalPropertiesSnapshot);
+		mGraphicalApi.setProperties(logicalId, mLogicalPropertiesSnapshot);
 	}
+
+	mLogicalApi.exploser().refreshAllPalettes();
 	return mId;
 }
 
@@ -46,38 +50,40 @@ Id CreateRemoveCommandImplementation::id() const
 void CreateRemoveCommandImplementation::remove()
 {
 	if (mIsFromLogicalModel) {
-		mLogicalApi->removeReferencesTo(mId);
-		mLogicalApi->removeReferencesFrom(mId);
-		mLogicalApi->removeElement(mId);
+		mLogicalApi.removeReferencesTo(mId);
+		mLogicalApi.removeReferencesFrom(mId);
+		mLogicalApi.removeElement(mId);
 	} else {
-		mGraphicalPropertiesSnapshot = mGraphicalApi->properties(mId);
-		Id const logicalId = mGraphicalApi->logicalId(mId);
-		if (!mLogicalApi->logicalRepoApi().exist(logicalId)) {
-			mGraphicalApi->removeElement(mId);
+		mGraphicalPropertiesSnapshot = mGraphicalApi.properties(mId);
+		Id const logicalId = mGraphicalApi.logicalId(mId);
+		if (!mLogicalApi.logicalRepoApi().exist(logicalId)) {
+			mGraphicalApi.removeElement(mId);
+			mLogicalApi.exploser().refreshAllPalettes();
 			return;
 		}
+
 		mOldLogicalId = logicalId;
-		mLogicalPropertiesSnapshot = mGraphicalApi->properties(logicalId);
-		IdList const graphicalIds = mGraphicalApi->graphicalIdsByLogicalId(logicalId);
-		mGraphicalApi->removeElement(mId);
+		mLogicalPropertiesSnapshot = mGraphicalApi.properties(logicalId);
+		IdList const graphicalIds = mGraphicalApi.graphicalIdsByLogicalId(logicalId);
+		mGraphicalApi.removeElement(mId);
 		// Checking that the only graphical part is our element itself
 		// (bijection between graphical and logical parts)
 		if (graphicalIds.count() == 1 && graphicalIds[0] == mId) {
-			mLogicalApi->removeReferencesTo(logicalId);
-			mLogicalApi->removeReferencesFrom(logicalId);
-			mLogicalApi->removeElement(logicalId);
+			mLogicalApi.removeReferencesTo(logicalId);
+			mLogicalApi.removeReferencesFrom(logicalId);
+			mLogicalApi.removeElement(logicalId);
 		}
 	}
+	mLogicalApi.exploser().refreshAllPalettes();
 }
 
 bool CreateRemoveCommandImplementation::equals(CreateRemoveCommandImplementation const &other) const
 {
-	return mLogicalApi == other.mLogicalApi
-			&& mGraphicalApi == other.mGraphicalApi
-			&& mLogicalParent == other.mLogicalParent
+	return mLogicalParent == other.mLogicalParent
 			&& mGraphicalParent == other.mGraphicalParent
 			&& mId == other.mId
 			&& mIsFromLogicalModel == other.mIsFromLogicalModel
 			&& mName == other.mName
-			&& mPosition == other.mPosition;
+			&& mPosition == other.mPosition
+			;
 }

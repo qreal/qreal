@@ -17,7 +17,7 @@ class SonarSensor : public Sensor
 	Q_OBJECT
 
 public:
-	SonarSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const port);
+	SonarSensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, robots::enums::inputPort::InputPortEnum const port);
 };
 
 }

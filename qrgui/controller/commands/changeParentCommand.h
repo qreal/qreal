@@ -4,17 +4,15 @@
 #include "../../models/logicalModelAssistApi.h"
 #include "../../models/graphicalModelAssistApi.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 class ChangeParentCommand : public AbstractCommand
 {
 public:
 	ChangeParentCommand(
-			models::LogicalModelAssistApi * const logicalApi
-			, models::GraphicalModelAssistApi * const graphicalApi
+			models::LogicalModelAssistApi &logicalApi
+			, models::GraphicalModelAssistApi &graphicalApi
 			, bool isLogical, Id const &id, Id const &oldParent
 			, Id const newParent, QPointF const &oldPosition
 			, QPointF const &newPosition);
@@ -26,8 +24,8 @@ protected:
 private:
 	void changeParent(Id const &parent, QPointF const &position);
 
-	models::LogicalModelAssistApi *mLogicalApi;
-	models::GraphicalModelAssistApi *mGraphicalApi;
+	models::LogicalModelAssistApi &mLogicalApi;
+	models::GraphicalModelAssistApi &mGraphicalApi;
 	bool mIsLogical;
 	Id mId;
 	Id mOldParent;
