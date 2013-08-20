@@ -8,23 +8,23 @@ EnginesGenerator::EnginesGenerator(QString const &engineType): mEngineType(engin
 {
 }
 
-QList<SmartLine> EnginesGenerator::convertElementIntoDirectCommand(TrikRobotGenerator *nxtGen
+QList<SmartLine> EnginesGenerator::convertElementIntoDirectCommand(TrikRobotGenerator *generator
 		 , qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;
 
 	QString const signRotate = mEngineType == "EnginesBackward" ? "-" : "";
-	QString const power = nxtGen->api()->stringProperty(logicElementId, "Power");
+	QString const power = generator->api()->stringProperty(logicElementId, "Power");
 	QString const signedPower = signRotate + power;
-	QString const intPower = nxtGen->variables().expressionToInt(signedPower);
+	QString const intPower = generator->variables().expressionToInt(signedPower);
 
-	QString const brakeModeRaw = nxtGen->api()->stringProperty(logicElementId, "Mode");
+	QString const brakeModeRaw = generator->api()->stringProperty(logicElementId, "Mode");
 
-	foreach (QString const &enginePort, portsToEngineNames(nxtGen->api()->stringProperty(logicElementId, "Ports"))) {
+	foreach (QString const &enginePort, portsToEngineNames(generator->api()->stringProperty(logicElementId, "Ports"))) {
 		result.append(
-				SmartLine("brick.motor("
+				SmartLine("brick.powerMotor("
 						+ enginePort + ").setPower("
-						+ intPower + ")"
+						+ intPower + ");"
 				, elementId));
 	}
 

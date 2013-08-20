@@ -12,7 +12,7 @@ public:
 	InitialNodeGenerator();
 
 protected:
-	virtual QList<SmartLine> convertElementIntoDirectCommand(TrikRobotGenerator *trikGenerator
+	virtual QList<SmartLine> convertElementIntoDirectCommand(TrikRobotGenerator *generator
 			, qReal::Id const elementId, qReal::Id const logicElementId);
 
 };

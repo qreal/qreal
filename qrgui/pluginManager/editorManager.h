@@ -17,9 +17,9 @@
 #include "pattern.h"
 #include "patternParser.h"
 
-class Element;
-
 namespace qReal {
+
+class Element;
 
 class EditorManager : public QObject, public EditorManagerInterface
 {
@@ -49,11 +49,10 @@ public:
 	virtual QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
 	virtual QIcon icon(Id const &id) const;
 	virtual QSize iconSize(Id const &id) const;
-	virtual Element* graphicalObject(Id const &id) const;
+	virtual ElementImpl* elementImpl(Id const &id) const;
 
 	virtual IdList containedTypes(const Id &id) const;
-	virtual IdList connectedTypes(const Id &id) const;
-	virtual IdList usedTypes(const Id &id) const;
+	virtual QList<Explosion> explosions(Id const &source) const;
 	virtual QStringList enumValues(Id const &id, const QString &name) const;
 	virtual QString typeName(Id const &id, const QString &name) const;
 	virtual QStringList allChildrenTypesOf(Id const &parent) const;
@@ -63,6 +62,7 @@ public:
 	virtual bool isElement(Id const &id) const;
 
 	virtual QStringList propertyNames(Id const &id) const;
+	virtual QStringList portTypes(Id const &id) const;
 	virtual QStringList referenceProperties(Id const &id) const;
 	virtual QString defaultPropertyValue(Id const &id, QString name) const;
 	virtual QStringList propertiesWithDefaultValues(Id const &id) const;

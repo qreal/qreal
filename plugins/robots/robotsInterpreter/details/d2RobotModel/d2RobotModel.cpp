@@ -8,14 +8,14 @@ using namespace details;
 using namespace d2Model;
 using namespace mathUtils;
 
-unsigned long const black   = 0xFF000000;
-unsigned long const white   = 0xFFFFFFFF;
-unsigned long const red     = 0xFFFF0000;
-unsigned long const green   = 0xFF008000;
-unsigned long const blue    = 0xFF0000FF;
-unsigned long const yellow  = 0xFFFFFF00;
-unsigned long const cyan    = 0xFF00FFFF;
-unsigned long const magenta = 0xFFFF00FF;
+uint const black   = 0xFF000000;
+uint const white   = 0xFFFFFFFF;
+uint const red     = 0xFFFF0000;
+uint const green   = 0xFF008000;
+uint const blue    = 0xFF0000FF;
+uint const yellow  = 0xFFFFFF00;
+uint const cyan    = 0xFF00FFFF;
+uint const magenta = 0xFFFF00FF;
 
 unsigned const touchSensorPressedSignal = 1;
 unsigned const touchSensorNotPressedSignal = 0;
@@ -98,8 +98,13 @@ void D2RobotModel::setBeep(unsigned freq, unsigned time)
 	mBeep.time = time;
 }
 
-void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
+void D2RobotModel::setNewMotor(int speed, uint degrees, const int port)
 {
+	// TODO: Hack for TRIK 2D model.
+	if (port == 2) {
+		speed = -speed;
+	}
+
 	mMotors[port]->speed = speed;
 	mMotors[port]->degrees = degrees;
 	mMotors[port]->isUsed = true;
@@ -204,13 +209,13 @@ int D2RobotModel::spoilSonarReading(int const distance) const
 int D2RobotModel::readColorSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	QImage const image = printColorSensor(port);
-	QHash<unsigned long, int> countsColor;
+	QHash<uint, int> countsColor;
 
-	unsigned long *data = (unsigned long *) image.bits();
+	uint const *data = reinterpret_cast<uint const *>(image.bits());
 	int const n = image.byteCount() / 4;
 	for (int i = 0; i < n; ++i) {
-		unsigned long color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
-		countsColor[color] ++;
+		uint const color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
+		++countsColor[color];
 	}
 
 	switch (mSensorsConfiguration.type(port)) {
@@ -229,7 +234,7 @@ int D2RobotModel::readColorSensor(robots::enums::inputPort::InputPortEnum const 
 	}
 }
 
-unsigned long D2RobotModel::spoilColor(unsigned long const color) const
+uint D2RobotModel::spoilColor(uint const color) const
 {
 	qreal const ran = mNoiseGen.generate(
 			mNoiseGen.approximationLevel()
@@ -277,13 +282,21 @@ QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum co
 	return image;
 }
 
-int D2RobotModel::readColorFullSensor(QHash<unsigned long, int> countsColor) const
+int D2RobotModel::readColorFullSensor(QHash<uint, int> const &countsColor) const
 {
-	QList<int> values = countsColor.values();
-	qSort(values);
-	int maxValue = values.last();
-	unsigned long maxColor = countsColor.key(maxValue);
+	if (countsColor.isEmpty()) {
+		return 0;
+	}
 
+	QList<int> const values = countsColor.values();
+	int maxValue = INT_MIN;
+	foreach (int value, values) {
+		if (value > maxValue) {
+			maxValue = value;
+		}
+	}
+
+	uint const maxColor = countsColor.key(maxValue);
 	switch (maxColor) {
 	case (black):
 		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "BLACK");
@@ -315,19 +328,19 @@ int D2RobotModel::readColorFullSensor(QHash<unsigned long, int> countsColor) con
 	}
 }
 
-int D2RobotModel::readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const
+int D2RobotModel::readSingleColorSensor(uint color, QHash<uint, int> const &countsColor, int n) const
 {
 	return (static_cast<double>(countsColor[color]) / static_cast<double>(n)) * 100.0;
 }
 
-int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsColor, int n) const
+int D2RobotModel::readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const
 {
 	double allWhite = static_cast<double>(countsColor[white]);
 
-	QHashIterator<unsigned long, int> i(countsColor);
+	QHashIterator<uint, int> i(countsColor);
 	while(i.hasNext()) {
 		i.next();
-		unsigned long const color = i.key();
+		uint const color = i.key();
 		if (color != white) {
 			int const b = (color >> 0) & 0xFF;
 			int const g = (color >> 8) & 0xFF;
@@ -346,9 +359,12 @@ int D2RobotModel::readLightSensor(robots::enums::inputPort::InputPortEnum const 
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
 	QImage const image = printColorSensor(port);
+	if (image.isNull()) {
+		return 0;
+	}
 
-	unsigned long sum = 0;
-	unsigned long *data = (unsigned long *) image.bits();
+	uint sum = 0;
+	uint const *data = reinterpret_cast<uint const *>(image.bits());
 	int const n = image.byteCount() / 4;
 
 	for (int i = 0; i < n; ++i) {
@@ -365,7 +381,7 @@ int D2RobotModel::readLightSensor(robots::enums::inputPort::InputPortEnum const 
 	return rawValue * 100 / maxLightSensorValur; // Normalizing to percents
 }
 
-unsigned long D2RobotModel::spoilLight(unsigned long const color) const
+uint D2RobotModel::spoilLight(uint const color) const
 {
 	qreal const ran = mNoiseGen.generate(
 			mNoiseGen.approximationLevel()

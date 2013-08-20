@@ -1,18 +1,21 @@
 #include "enginesStopGenerator.h"
-#include "../../nxtOSEKRobotGenerator.h"
+#include "../../trikRobotGenerator.h"
 
-using namespace robots::generator;
+using namespace robots::trikGenerator;
 
 EnginesStopGenerator::EnginesStopGenerator()
 {
 }
 
-QList<SmartLine> EnginesStopGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> EnginesStopGenerator::convertElementIntoDirectCommand(TrikRobotGenerator *generator
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
 	QList<SmartLine> result;
-	foreach (QString enginePort, portsToEngineNames(nxtGen->api()->stringProperty(logicElementId, "Ports"))) {
-		result.append(SmartLine("nxt_motor_set_speed(" + enginePort + ", 0, 1);", elementId));
+	foreach (QString enginePort, portsToEngineNames(generator->api()->stringProperty(logicElementId, "Ports"))) {
+		result.append(
+				SmartLine("brick.powerMotor("
+						+ enginePort + ").powerOff();"
+				, elementId));
 	}
 
 	return result;

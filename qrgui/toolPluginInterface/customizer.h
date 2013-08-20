@@ -41,63 +41,46 @@ public:
 		return "<b>QReal<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
 	}
 
-	/// Tells if we should show trace connections menu or not
-	virtual bool showConnectionRelatedMenus() const
-	{
-		return false;
-	}
-
-	virtual bool showUsagesRelatedMenus() const
-	{
-		return false;
-	}
-
 	/// Customizes docks placement and visibility. Default implementation does nothing
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	{
 		Q_UNUSED(dockInterface)
 	}
 
-	virtual QString addConnectionMenuName() const
+	virtual QString addExplosionMenuName() const
 	{
 		return QObject::tr("Add connection");
 	}
 
-	virtual QString deleteConnectionMenuName() const
+	virtual QString changeExplosionMenuName() const
+	{
+		return QObject::tr("Connect to other");
+	}
+
+	virtual QString deleteExplosionMenuName() const
 	{
 		return QObject::tr("Disconnect");
 	}
 
-	virtual QString addUsageMenuName() const
+	virtual QString goToConnectedMenuName() const
 	{
-		return QObject::tr("Add usage");
+		return QObject::tr("Go to connected element");
 	}
 
-	virtual QString deleteUsageMenuName() const
+	virtual bool showExpandConnectionAction() const
 	{
-		return QObject::tr("Delete usage");
+		return false;
 	}
 
-	virtual QString forwardConnectionMenuName() const
+	virtual QString expandExplosionActionText() const
 	{
-		return QObject::tr("Forward connection");
+		return QObject::tr("Expand explosion");
 	}
 
-	virtual QString backwardConnectionMenuName() const
+	virtual QString collapseExplosionActionText() const
 	{
-		return QObject::tr("Backward connection");
+		return QObject::tr("Collapse explosion");
 	}
-
-	virtual QString forwardUsageMenuName() const
-	{
-		return QObject::tr("Uses");
-	}
-
-	virtual QString backwardUsageMenuName() const
-	{
-		return QObject::tr("Used in");
-	}
-
 };
 
 }

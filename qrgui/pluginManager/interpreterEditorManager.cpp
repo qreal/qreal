@@ -168,6 +168,13 @@ QStringList InterpreterEditorManager::allChildrenTypesOf(Id const &parent) const
 	return result;
 }
 
+QList<Explosion> InterpreterEditorManager::explosions(Id const &source) const
+{
+	// TODO: implement me
+	Q_UNUSED(source)
+	return QList<Explosion>();
+}
+
 bool InterpreterEditorManager::isParentOf(Id const &child, Id const &parent) const
 {
 	qrRepo::RepoApi const * const repoMetaModelChild = repoAndMetaId(child).first;
@@ -199,20 +206,6 @@ bool InterpreterEditorManager::isParentOf(Id const &child, Id const &parent) con
 	}
 
 	return false;
-}
-
-IdList InterpreterEditorManager::connectedTypes(Id const &id) const
-{
-	IdList result;
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	qrRepo::RepoApi const * const repo = repoAndMetaIdPair.first;
-	Id const metaId = repoAndMetaIdPair.second;
-	foreach (Id const &connectId, repo->connectedElements(metaId)) {
-		QPair<Id, Id> editorAndDiagramPair = editorAndDiagram(repo, connectId);
-		result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(connectId));
-	}
-
-	return result;
 }
 
 bool InterpreterEditorManager::isEditor(Id const &id) const
@@ -434,7 +427,7 @@ QIcon InterpreterEditorManager::icon(Id const &id) const
 	return QIcon(engine);
 }
 
-Element* InterpreterEditorManager::graphicalObject(Id const &id) const
+ElementImpl *InterpreterEditorManager::elementImpl(Id const &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	InterpreterElementImpl * const impl = new InterpreterElementImpl(repoAndMetaIdPair.first, repoAndMetaIdPair.second);
@@ -442,11 +435,7 @@ Element* InterpreterEditorManager::graphicalObject(Id const &id) const
 		return 0;
 	}
 
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
-
-	return new EdgeElement(impl);
+	return impl;
 }
 
 IdList InterpreterEditorManager::containedTypes(Id const &id) const
@@ -465,21 +454,6 @@ IdList InterpreterEditorManager::containedTypes(Id const &id) const
 	}
 
 	return containedTypes;
-}
-
-IdList InterpreterEditorManager::usedTypes(Id const &id) const
-{
-	IdList usedTypes;
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	qrRepo::RepoApi const * const repo = repoAndMetaIdPair.first;
-	Id const metaId = repoAndMetaIdPair.second;
-	foreach (Id const &child, repo->children(metaId)) {
-		if (repo->name(child) == "MetaEntityUsage") {
-			usedTypes << repo->property(child, "type").value<Id>();
-		}
-	}
-
-	return usedTypes;
 }
 
 QStringList InterpreterEditorManager::enumValues(Id const &id, const QString &name) const
@@ -517,6 +491,22 @@ QStringList InterpreterEditorManager::propertyNames(Id const &id) const
 	}
 
 	return result;
+}
+
+QStringList InterpreterEditorManager::portTypes(Id const &id) const
+{
+	QSet<QString> result;
+
+	QDomDocument shape;
+	shape.setContent(repoAndMetaId(id).first->stringProperty(id, "shape"));
+
+	QDomElement portsElement = shape.firstChildElement("graphics").firstChildElement("ports");
+	for (int i = 0; i < portsElement.childNodes().size(); i++) {
+		QDomElement port = portsElement.childNodes().at(i).toElement();
+		result.insert(port.attribute("type", "NonTyped"));
+	}
+
+	return result.toList();
 }
 
 QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) const

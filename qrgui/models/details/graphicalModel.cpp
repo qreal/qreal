@@ -10,18 +10,27 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface)
-	: AbstractModel(editorManagerInterface), mLogicalModelView(this), mApi(*repoApi)
+GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
+		, EditorManagerInterface const &editorManagerInterface
+		)
+	: AbstractModel(editorManagerInterface)
+	, mLogicalModelView(this)
+	, mApi(*repoApi)
+	, mGraphicalAssistApi(NULL)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	init();
-	mGraphicalAssistApi = new GraphicalModelAssistApi(*this, editorManagerInterface);
 }
 
 GraphicalModel::~GraphicalModel()
 {
 	delete mGraphicalAssistApi;
 	cleanupTree(mRootItem);
+}
+
+void GraphicalModel::setAssistApi(GraphicalModelAssistApi * const graphicalAssistApi)
+{
+	mGraphicalAssistApi = graphicalAssistApi;
 }
 
 void GraphicalModel::init()
@@ -38,9 +47,9 @@ void GraphicalModel::init()
 
 void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
 {
-	foreach (Id childId, mApi.children(parent->id())) {
+	foreach (Id const &childId, mApi.children(parent->id())) {
 		if (mApi.isGraphicalElement(childId)) {
-			GraphicalModelItem *child = loadElement(parent, childId);
+			GraphicalModelItem * const child = loadElement(parent, childId);
 			loadSubtreeFromClient(child);
 		}
 	}
@@ -90,7 +99,7 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 
 	GraphicalModelItem *newGraphicalModelItem = NULL;
 	Id actualLogicalId = logicalId;
-	if (logicalId == Id::rootId() || logicalId == Id()) {
+	if (logicalId == Id::rootId() || logicalId.isNull()) {
 		AbstractModelItem *newItem = createModelItem(id, parentItem);
 		newGraphicalModelItem = static_cast<GraphicalModelItem *>(newItem);
 		actualLogicalId = newGraphicalModelItem->logicalId();
@@ -98,6 +107,7 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 		GraphicalModelItem *graphicalParentItem = static_cast<GraphicalModelItem *>(parentItem);
 		newGraphicalModelItem = new GraphicalModelItem(id, logicalId, graphicalParentItem);
 	}
+
 	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
 }
 

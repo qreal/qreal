@@ -14,13 +14,13 @@ AbstractSimpleElementGenerator::~AbstractSimpleElementGenerator()
 {
 }
 
-QList<SmartLine> AbstractSimpleElementGenerator::convertedCode(TrikRobotGenerator *nxtGen
+QList<SmartLine> AbstractSimpleElementGenerator::convertedCode(TrikRobotGenerator *generator
 		, const qReal::Id elementId, const qReal::Id logicElementId)
 {
 	QString const elementType = elementId.element();
 	AbstractSimpleElementGenerator *currentSimpleElement = SimpleElementFactory::generator(elementType);
 
-	QList<SmartLine> result = currentSimpleElement->convertElementIntoDirectCommand(nxtGen, elementId, logicElementId);
+	QList<SmartLine> result = currentSimpleElement->convertElementIntoDirectCommand(generator, elementId, logicElementId);
 	return result;
 }
 
@@ -35,7 +35,7 @@ QList<QString> AbstractSimpleElementGenerator::portsToEngineNames(QString const 
 		result.append("1");
 	}
 	if (portsProperty.contains("C")) {
-		result.append("2");
+		result.append("4");
 	}
 
 	return result;

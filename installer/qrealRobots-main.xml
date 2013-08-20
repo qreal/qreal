@@ -179,16 +179,10 @@
             <platforms>windows</platforms>
             <distributionFileList>
                 <distributionFile>
-                    <origin>%1/plugins/robots/examples/2dModelExample.qrs</origin>
+                    <origin>%1/plugins/robots/examples/aroundCorner.qrs</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/plugins/robots/examples/simultaneousSensorReading.qrs</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%1/plugins/robots/examples/touchObstacle.qrs</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%1/plugins/robots/examples/movingAlongTheLine.qrs</origin>
+                    <origin>%1/plugins/robots/examples/alongTheLineTrik.qrs</origin>
                 </distributionFile>
             </distributionFileList>
         </folder>

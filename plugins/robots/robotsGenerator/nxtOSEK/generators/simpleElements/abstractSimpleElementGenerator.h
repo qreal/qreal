@@ -7,7 +7,8 @@ namespace robots {
 namespace generator {
 class NxtOSEKRobotGenerator;
 
-class AbstractSimpleElementGenerator {
+class AbstractSimpleElementGenerator
+{
 public:
 	AbstractSimpleElementGenerator();
 	virtual ~AbstractSimpleElementGenerator();

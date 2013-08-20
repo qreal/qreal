@@ -12,7 +12,7 @@ public:
 	EnginesGenerator(QString const &engineType);
 
 protected:
-	virtual QList<SmartLine> convertElementIntoDirectCommand(TrikRobotGenerator *nxtGen
+	virtual QList<SmartLine> convertElementIntoDirectCommand(TrikRobotGenerator *generator
 			, qReal::Id const elementId, qReal::Id const logicElementId);
 
 private:

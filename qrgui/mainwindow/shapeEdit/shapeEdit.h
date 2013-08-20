@@ -64,6 +64,8 @@ private slots:
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoFontPalette();
 	void setItemFontPalette(QPen const &penItem, QFont const &fontItem, QString const &name);
+	void setNoPortType();
+	void setPortType(QString const &type);
 	void changeTextName();
 	void resetHighlightAllButtons();
 
@@ -110,5 +112,6 @@ private:
 	QList<QDomElement> generateGraphics();
 
 	QMap<QString, VisibilityConditionsDialog::PropertyInfo> getProperties() const;
+	QStringList getPortTypes() const;
 };
 }

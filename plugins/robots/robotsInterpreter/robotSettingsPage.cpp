@@ -16,8 +16,10 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	mUi->setupUi(this);
 
 //	bool const enableTrik = SettingsManager::value("enableTrik", false).toBool();
+	bool const enableTrik = true;
 	connect(mUi->textVisibleCheckBox, SIGNAL(toggled(bool)), this, SIGNAL(textVisibleChanged(bool)));
 
+	if (!enableTrik) {
 //	if (!enableTrik) {
 //		mUi->tcpRadioButton->setVisible(false);
 //		mUi->trikModelRadioButton->setVisible(false);
@@ -32,6 +34,12 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 //	connect(mUi->tcpRadioButton, SIGNAL(toggled(bool)), this, SLOT(onSomethingChanged()));
 
 //	connect(mUi->manualComPortCheckbox, SIGNAL(toggled(bool)), this, SLOT(manualComPortCheckboxChecked(bool)));
+
+	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
+	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
+	connect(mUi->nxtModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
+	connect(mUi->trikModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
+	connect(mUi->textVisibleCheckBox, SIGNAL(toggled(bool)), this, SIGNAL(textVisibleChanged(bool)));
 
 //	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
 //	QString const defaultPortName = SettingsManager::value("bluetoothPortName").toString();

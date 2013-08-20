@@ -13,11 +13,11 @@ public:
 	AbstractSimpleElementGenerator();
 	virtual ~AbstractSimpleElementGenerator();
 
-	static QList<SmartLine> convertedCode(TrikRobotGenerator *nxtGen
+	static QList<SmartLine> convertedCode(TrikRobotGenerator *generator
 			, qReal::Id const elementId, qReal::Id const logicElementId);
 
 protected:
-	virtual QList<SmartLine> convertElementIntoDirectCommand(TrikRobotGenerator *nxtGen
+	virtual QList<SmartLine> convertElementIntoDirectCommand(TrikRobotGenerator *generator
 			, qReal::Id const elementId, qReal::Id const logicElementId) = 0;
 
 	virtual QList<QString> portsToEngineNames(QString const &portsProperty) const;

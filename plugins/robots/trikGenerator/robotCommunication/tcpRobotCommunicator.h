@@ -18,6 +18,9 @@ public:
 	/// Sends a command to run previously uploaded file in a robot.
 	bool runProgram(QString const &programName);
 
+	/// Sends a command to remotely abort script execution and stop robot.
+	bool stopRobot();
+
 private:
 	/// Establishes connection and initializes socket. If connection fails, leaves socket
 	/// in invalid state.

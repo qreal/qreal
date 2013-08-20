@@ -17,7 +17,9 @@ bool ReshapeEdgeCommand::execute()
 	if (!mTrackStopped) {
 		return true;
 	}
-	EdgeElementCommand::execute();
+	if (!EdgeElementCommand::execute()) {
+		return false;
+	}
 	applyConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos);
 	return true;
 }
@@ -27,7 +29,9 @@ bool ReshapeEdgeCommand::restoreState()
 	if (!mTrackStopped) {
 		return true;
 	}
-	EdgeElementCommand::restoreState();
+	if (!EdgeElementCommand::restoreState()) {
+		return false;
+	}
 	applyConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos);
 	return true;
 }
@@ -44,6 +48,14 @@ void ReshapeEdgeCommand::stopTracking()
 	EdgeElementCommand::reinitElement();
 	TrackingEntity::stopTracking();
 	saveConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos);
+}
+
+bool ReshapeEdgeCommand::somethingChanged() const
+{
+	return mOldConfiguration != mNewConfiguration
+			|| mOldPos != mNewPos
+			|| mOldSrc != mNewSrc
+			|| mOldDst != mNewDst;
 }
 
 void ReshapeEdgeCommand::saveConfiguration(QPolygonF &target, Id &src, Id &dst

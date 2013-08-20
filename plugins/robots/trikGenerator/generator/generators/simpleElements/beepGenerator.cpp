@@ -1,18 +1,14 @@
 #include "beepGenerator.h"
-#include "../../nxtOSEKRobotGenerator.h"
+#include "../../trikRobotGenerator.h"
 
-using namespace robots::generator;
-
-QString const defaultVolume = "50";
+using namespace robots::trikGenerator;
 
 BeepGenerator::BeepGenerator()
 {
 }
 
-QList<SmartLine> BeepGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+QList<SmartLine> BeepGenerator::convertElementIntoDirectCommand(TrikRobotGenerator *generator
 		, qReal::Id const elementId, qReal::Id const logicElementId)
 {
-	QString const volume = nxtGen->intExpression(logicElementId, "Volume");
-	return QList<SmartLine>() << SmartLine(QString("ecrobot_sound_tone(1000, 100, %1);")
-			.arg(volume.isEmpty() ? defaultVolume : volume), elementId);
+	return QList<SmartLine>() << SmartLine(QString("brick.playSound(\"beep.mp3\");"), logicElementId);
 }
