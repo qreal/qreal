@@ -190,8 +190,10 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
-	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
-	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
+	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&))
+			, mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
+	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList))
+			, mFindHelper, SLOT(handleFindDialog(QStringList)));
 	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
 
 	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this, SLOT(changePaletteRepresentation()));
@@ -201,11 +203,13 @@ void MainWindow::connectActions()
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(modifiedChanged(bool)), mProjectManager, SLOT(setUnsavedIndicator(bool)));
 
-	connect(mProjectManager, SIGNAL(afterOpen(QString)), &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
+	connect(mProjectManager, SIGNAL(afterOpen(QString))
+			, &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
 	connect(mProjectManager, SIGNAL(closed()), &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
 	connect(mProjectManager, SIGNAL(closed()), mController, SLOT(projectClosed()));
 
-	connect(&mModels->logicalModelAssistApi().exploser(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
+	connect(&mModels->logicalModelAssistApi().exploser(), SIGNAL(explosionTargetRemoved())
+			, this, SLOT(closeTabsWithRemovedRootElements()));
 
 	setDefaultShortcuts();
 }
@@ -853,7 +857,8 @@ void MainWindow::exportToXmi()
 	QString const errors = xmi.exportToXmi(fileName);
 
 	if (!errors.isEmpty()) {
-		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+		QMessageBox::warning(this, tr("errors")
+				, "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
 	} else {
 		QMessageBox::information(this, tr("finished"), "Export is finished");
 	}
@@ -871,7 +876,8 @@ void MainWindow::generateToJava()
 	QString const errors = java.generateToJava(dirName);
 
 	if (!errors.isEmpty()) {
-		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
+		QMessageBox::warning(this, tr("errors")
+				, "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
 	} else {
 		QMessageBox::information(this, tr("finished"), "Export is finished");
 	}
@@ -889,7 +895,8 @@ void MainWindow::parseJavaLibraries()
 	QString const errors = java.parseJavaLibraries(dirName);
 
 	if (!errors.isEmpty()) {
-		QMessageBox::warning(this, tr("errors"), tr("Some errors occured. Export may be incorrect. Errors list:") + " \n" + errors);
+		QMessageBox::warning(this, tr("errors")
+				, tr("Some errors occured. Export may be incorrect. Errors list:") + " \n" + errors);
 	} else {
 		QMessageBox::information(this, tr("finished"), tr("Parsing is finished"));
 	}
@@ -1046,7 +1053,8 @@ void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, Edi
 	setConnectActionZoomTo(shapeEdit);
 }
 
-void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue)
+void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role
+		, QString const &propertyValue)
 {
 	gui::QScintillaTextEdit *textEdit = new gui::QScintillaTextEdit(index, role);
 	if (!propertyValue.isEmpty()) {

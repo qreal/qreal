@@ -37,7 +37,8 @@ void ProgressBar::connectOperation(invocation::LongOperation *operation)
 void ProgressBar::connectOperation()
 {
 	connect(mOperation, SIGNAL(beforeStarted()), this, SLOT(onBeforeStart()));
-	connect(mOperation, SIGNAL(finished(invocation::InvocationState)), this, SLOT(onOperationComplete(invocation::InvocationState)));
+	connect(mOperation, SIGNAL(finished(invocation::InvocationState)), this
+			, SLOT(onOperationComplete(invocation::InvocationState)));
 	setTextVisible(mOperation->hasProgress());
 	if (mOperation->hasProgress()) {
 		invocation::Progress *progress = mOperation->progress();

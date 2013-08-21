@@ -1,6 +1,7 @@
 /** @file propertyeditorproxymodel.h
- *	@brief Модель редактора свойств
- * */
+*	@brief Property editor model
+* */
+
 #pragma once
 
 #include <QAbstractTableModel>

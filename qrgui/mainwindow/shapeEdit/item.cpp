@@ -105,7 +105,8 @@ void Item::setNoneDragState()
 	mDragState = None;
 }
 
-void Item::calcForChangeScalingState(QPointF const&pos, QPointF const& point1, QPointF const& point2, int const &correction)
+void Item::calcForChangeScalingState(QPointF const&pos, QPointF const& point1, QPointF const& point2
+		, int correction)
 {
 	qreal x = pos.x();
 	qreal y = pos.y();
@@ -113,27 +114,54 @@ void Item::calcForChangeScalingState(QPointF const&pos, QPointF const& point1, Q
 	qreal x2 = point2.x();
 	qreal y1 = point1.y();
 	qreal y2 = point2.y();
-	if (QRectF(x1 + scenePos().x() - correction, y1 - scalingRect + scenePos().y() - correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	if (QRectF(x1 + scenePos().x() - correction, y1 - scalingRect + scenePos().y() - correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = topLeftX;
-	else if (QRectF(x2 - scalingRect + scenePos().x() + correction, y1 - scalingRect + scenePos().y() - correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	}
+	else if (QRectF(x2 - scalingRect + scenePos().x() + correction, y1 - scalingRect + scenePos().y() - correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = topRightX;
-	else if (QRectF(x1 + scenePos().x() - correction, y2 + scenePos().y(), scalingRect + correction, scalingRect).contains(QPointF(x, y)))
+	}
+	else if (QRectF(x1 + scenePos().x() - correction, y2 + scenePos().y(), scalingRect + correction
+			, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = bottomLeftX;
-	else if (QRectF(x2 - scalingRect + scenePos().x() + correction, y2 + scenePos().y() + correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	}
+	else if (QRectF(x2 - scalingRect + scenePos().x() + correction, y2 + scenePos().y() + correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = bottomRightX;
-
-	else if (QRectF(x1 - scalingRect + scenePos().x() - correction, y1 + scenePos().y() - correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	}
+	else if (QRectF(x1 - scalingRect + scenePos().x() - correction, y1 + scenePos().y() - correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = topLeftY;
-	else if (QRectF(x2 + scenePos().x() + correction, y1 + scenePos().y() - correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	}
+	else if (QRectF(x2 + scenePos().x() + correction, y1 + scenePos().y() - correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = topRightY;
-	else if (QRectF(x1 - scalingRect + scenePos().x() - correction, y2 - scalingRect + scenePos().y() + correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	}
+	else if (QRectF(x1 - scalingRect + scenePos().x() - correction, y2 - scalingRect + scenePos().y() + correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = bottomLeftY;
-	else if (QRectF(x2 + scenePos().x() + correction, y2 - scalingRect + scenePos().y() + correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	}
+	else if (QRectF(x2 + scenePos().x() + correction, y2 - scalingRect + scenePos().y() + correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = bottomRightY;
-	else
+	}
+	else {
 		mScalingState = noneScale;
-	if (mScalingState == topLeftX || mScalingState == topLeftY || mScalingState == bottomRightX || mScalingState == bottomRightY)
+	}
+	if (mScalingState == topLeftX || mScalingState == topLeftY || mScalingState == bottomRightX
+			|| mScalingState == bottomRightY)
+	{
 		mDragState = None;
+	}
 }
 
 void Item::changeScalingPointState(qreal x, qreal y)

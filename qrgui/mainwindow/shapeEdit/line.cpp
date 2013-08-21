@@ -159,14 +159,18 @@ void Line::changeScalingPointState(qreal x, qreal y)
 	qreal y2 = (boundingRect().adjusted(drift, drift, -drift, -drift)).bottom();
 	int correction = step;
 	calcForChangeScalingState(QPointF(x, y), QPointF(x1, y1), QPointF(x2, y2), correction);
-	if (mScalingState == topRightX || mScalingState == topRightY || mScalingState == bottomLeftX || mScalingState == bottomLeftY)
+	if (mScalingState == topRightX || mScalingState == topRightY
+			|| mScalingState == bottomLeftX || mScalingState == bottomLeftY)
+	{
 		mDragState = None;
+	}
 }
 
 void Line::resizeItem(QGraphicsSceneMouseEvent *event)
 {
-	if (mDragState == TopLeft || mDragState == BottomRight)
+	if (mDragState == TopLeft || mDragState == BottomRight) {
 		Item::resizeItem(event);
+	}
 }
 
 void Line::reshapeRectWithShift()
@@ -177,18 +181,21 @@ void Line::reshapeRectWithShift()
 	qreal size = qMax(differenceX, differenceY);
 	const int delta = size / 2;
 	if (differenceXY > delta) {
-		QPair<qreal, qreal> res = mLineImpl.reshapeRectWithShiftForLine(mX1, mY1, mX2, mY2, differenceX, differenceY, size);
+		QPair<qreal, qreal> res = mLineImpl.reshapeRectWithShiftForLine(mX1, mY1, mX2, mY2
+				, differenceX, differenceY, size);
 		setX2andY2(res.first, res.second);
-	} else
+	} else {
 		Item::reshapeRectWithShift();
+	}
 }
 
 QPair<QPair<QString, QString>, QPair<QString, QString> > Line::setXandYBefore(QRect const &rect)
 {
-	QString x1 = "";
-	QString y1 = "";
-	QString y2 = "";
-	QString x2 = "";
+	QString x1;
+	QString y1;
+	QString y2;
+	QString x2;
+
 	if (mX2 > mX1) {
 		if (mY2 > mY1) {
 			y1 = setScaleForDoc(4, rect);
@@ -214,7 +221,10 @@ QPair<QPair<QString, QString>, QPair<QString, QString> > Line::setXandYBefore(QR
 			x2 = setScaleForDoc(0, rect);
 		}
 	}
-	return QPair<QPair<QString, QString>, QPair<QString, QString> >(QPair<QString, QString>(x1, y1), QPair<QString, QString>(x2, y2));
+
+	// omfg!
+	return QPair<QPair<QString, QString>, QPair<QString, QString> >(QPair<QString, QString>(x1, y1)
+			, QPair<QString, QString>(x2, y2));
 }
 
 void Line::setXandY(QDomElement& dom, QPair<QPair<QString, QString>, QPair<QString, QString> > pair)

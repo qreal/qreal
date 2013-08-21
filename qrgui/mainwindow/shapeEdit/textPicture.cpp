@@ -20,7 +20,7 @@ TextPicture::TextPicture(int x, int y, QString const &text)
 }
 
 TextPicture::TextPicture(TextPicture const &other)
-	:Text()
+	: Text()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	mPen = other.mPen;
@@ -58,13 +58,13 @@ void TextPicture::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 	QString str = mText.toPlainText();
 	str += "\n";
 	int countStr = 0;
-	while (str.contains('\n'))
-	{
+	while (str.contains('\n')) {
 		int i = str.indexOf('\n');
 		QString temp = str.left(i);
 		str.remove(0, i + 1);
 		QRectF rect;
-		painter->drawText(QRectF(static_cast<int>(x), static_cast<int>(y), 500, 500), Qt::AlignLeft | Qt::AlignTop, temp, &rect);
+		painter->drawText(QRectF(static_cast<int>(x), static_cast<int>(y), 500, 500)
+				, Qt::AlignLeft | Qt::AlignTop, temp, &rect);
 		y += painter->font().pixelSize();
 		mBoundingRect |= rect;
 		countStr++;
@@ -140,48 +140,40 @@ void TextPicture::setFontUnderline(bool isChecked)
 void TextPicture::readFont(QDomElement const &docItem)
 {
 	QDomElement dom = docItem;
-	if(!dom.isNull())
-	{
-		if (dom.hasAttribute("font-fill"))
-		{
+	if(!dom.isNull()) {
+		if (dom.hasAttribute("font-fill")) {
 			QColor color = dom.attribute("font-fill");
 			mPen.setColor(color);
 		}
 
-		if (dom.hasAttribute("font-size"))
-		{
+		if (dom.hasAttribute("font-size")) {
 			QString fontsize = dom.attribute("font-size");
-			if (fontsize.endsWith("%"))
-			{
+			if (fontsize.endsWith("%")) {
 				fontsize.chop(1);
 				mFont.setPixelSize(fontsize.toInt() / 100);
 			}
-			else if (fontsize.endsWith("a"))
-			{
+			else if (fontsize.endsWith("a")) {
 				fontsize.chop(1);
 				mFont.setPixelSize(fontsize.toInt());
 			}
-			else
+			else {
 				mFont.setPixelSize(fontsize.toInt());
+			}
 		}
 
-		if (dom.hasAttribute("font-name"))
-		{
+		if (dom.hasAttribute("font-name")) {
 			mFont.setFamily(dom.attribute("font-name"));
 		}
 
-		if (dom.hasAttribute("b"))
-		{
+		if (dom.hasAttribute("b")) {
 			mFont.setBold(dom.attribute("b").toInt());
 		}
 
-		if (dom.hasAttribute("i"))
-		{
+		if (dom.hasAttribute("i")) {
 			mFont.setItalic(dom.attribute("i").toInt());
 		}
 
-		if (dom.hasAttribute("u"))
-		{
+		if (dom.hasAttribute("u")) {
 			mFont.setUnderline(dom.attribute("u").toInt());
 		}
 	}

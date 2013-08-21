@@ -11,12 +11,13 @@ namespace qReal {
 class MainWindow;
 
 /**
- * @brief Start page dialog
- *
- * Start page dialog that allows the user to either open an existing project (from list of recent
- * projects or not), or create a new one and did not appear in the main window of application,
- * where there is no single project.
- */
+* @brief Start page dialog
+*
+* Start page dialog that allows the user to either open an existing project (from list of recent
+* projects or not), or create a new one and did not appear in the main window of
+* application, where there is no single project.
+*/
+
 class StartDialog : public QDialog
 {
 	Q_OBJECT
