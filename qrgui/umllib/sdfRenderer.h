@@ -86,8 +86,7 @@ private:
 	float y1_def(QDomElement &element);
 	float x2_def(QDomElement &element);
 	float y2_def(QDomElement &element);
-	float coord_def(QDomElement &element, QString coordName, int current_size,
-		int first_size);
+	float coord_def(QDomElement &element, QString coordName, int current_size, int first_size);
 	void logger(QString path, QString string);
 
 	/** @brief checks that str[i] is not L, C, M or Z*/

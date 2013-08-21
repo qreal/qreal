@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "pasteCommand.h"
 #include "../../controller/commands/createElementCommand.h"

@@ -192,7 +192,8 @@ QDomElement TextPicture::setFontToDoc(QDomDocument &document, QString const &dom
 	return dom;
 }
 
-QPair<QDomElement, Item::DomElementTypes> TextPicture::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> TextPicture::generateItem(QDomDocument &document
+		, QPoint const &topLeftPicture)
 {
 	QDomElement text = setFontToDoc(document, "text");
 	int const x1 = static_cast<int>(mapToScene(mBoundingRect).boundingRect().left() - topLeftPicture.x());

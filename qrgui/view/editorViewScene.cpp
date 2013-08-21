@@ -132,8 +132,8 @@ void EditorViewScene::initMouseMoveManager()
 	}
 	QList<qReal::Id> elements = mWindow->editorManager().elements(diagram);
 	delete mMouseMovementManager;
-	mMouseMovementManager = new gestures::MouseMovementManager(elements,
-		&mWindow->editorManager(), mWindow->gesturesPainter());
+	mMouseMovementManager = new gestures::MouseMovementManager(elements
+			, &mWindow->editorManager(), mWindow->gesturesPainter());
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
@@ -834,7 +834,9 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		QGraphicsScene::mousePressEvent(event);
 	}
 
-	if ((event->modifiers() & Qt::ControlModifier) && (event->buttons() & Qt::LeftButton) && !(event->buttons() & Qt::RightButton)) {
+	if ((event->modifiers() & Qt::ControlModifier) && (event->buttons() & Qt::LeftButton)
+			&& !(event->buttons() & Qt::RightButton))
+	{
 		mIsSelectEvent = true;
 		mSelectList->append(selectedItems());
 		foreach (QGraphicsItem * const item, items()) {
@@ -899,8 +901,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 			action->setEventPos(e->mapFromScene(pos));
 			menu.addAction(action);
 
-			connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()),
-					Qt::UniqueConnection);
+			connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()), Qt::UniqueConnection);
 			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
 		}
 

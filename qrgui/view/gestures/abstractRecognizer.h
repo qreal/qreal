@@ -4,7 +4,7 @@
 #include <QtWidgets/QWidget>
 #include <QtGui/QMouseEvent>
 
-#include "GeometricForms.h"
+#include "geometricForms.h"
 #include "pathCorrector.h"
 #include "../../../qrkernel/ids.h"
 

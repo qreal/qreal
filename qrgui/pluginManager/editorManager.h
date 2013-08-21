@@ -86,16 +86,16 @@ public:
 	virtual QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const;
 	virtual QStringList elements(QString const &editor, QString const &diagram) const;
 	virtual int isNodeOrEdge(QString const &editor, QString const &element) const;
-	virtual bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement,
-			QString const &childDiagram, QString const &childElement) const;
+	virtual bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement
+			, QString const &childDiagram, QString const &childElement) const;
 	virtual QString diagramName(QString const &editor, QString const &diagram) const;
 	virtual QString diagramNodeName(QString const &editor, QString const &diagram) const;
 	virtual bool isInterpretationMode() const;
 	virtual bool isParentProperty(Id const &id, QString const &propertyName) const;
 	virtual void deleteProperty(QString const &propDisplayedName) const;
 	virtual void addProperty(Id const &id, QString const &propDisplayedName) const;
-	virtual void updateProperties(Id const &id, QString const &property, QString const &propertyType,
-			QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
+	virtual void updateProperties(Id const &id, QString const &property, QString const &propertyType
+			, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
 	virtual QString propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
 	virtual IdList children(Id const &parent) const;
 	virtual QString shape(Id const &id) const;

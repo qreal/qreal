@@ -1,7 +1,7 @@
 /** @file umlPortHandler.h
- * 	@brief Class for handling port item behaviour at move events.
- * 	Changes port position, parent if it is necessary.
- * */
+* 	@brief Class for handling port item behaviour at move events.
+* 	Changes port position, parent if it is necessary.
+**/
 
 #pragma once
 
