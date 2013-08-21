@@ -2,7 +2,7 @@
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
 Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
-	:Path(QPainterPath(start))
+		: Path(QPainterPath(start))
 {
 	mPen.setColor(Qt::gray);
 	mBrush.setStyle(Qt::NoBrush);
@@ -18,7 +18,7 @@ Curve::Curve(QPointF const &start, QPointF const &end, QPointF const &c1)
 }
 
 Curve::Curve(Curve const &other)
-	:Path(QPainterPath())
+		: Path(QPainterPath())
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	mPen = other.mPen;
@@ -121,8 +121,11 @@ void Curve::setCXandCY(qreal x, qreal y)
 void Curve::changeDragState(qreal x, qreal y)
 {
 	Item::changeDragState(x, y);
-	if (QRectF(QPointF(mC1.x() + scenePos().x(), mC1.y() + scenePos().y()), QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
+	if (QRectF(QPointF(mC1.x() + scenePos().x(), mC1.y() + scenePos().y())
+			, QSizeF(0, 0)).adjusted(-resizeDrift, -resizeDrift, resizeDrift, resizeDrift).contains(QPointF(x, y)))
+	{
 		mDragState = Ctrl;
+	}
 }
 
 void  Curve::calcResizeItem(QGraphicsSceneMouseEvent *event)

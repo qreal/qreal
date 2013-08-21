@@ -1,6 +1,7 @@
 /** @file edgeElement.cpp
- * 	@brief class for an edge on a diagram
- * */
+*	@brief class for an edge on a diagram
+**/
+
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
@@ -35,23 +36,23 @@ EdgeElement::EdgeElement(
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
 		)
-	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
-	, mPenStyle(Qt::SolidLine)
-	, mPenWidth(1)
-	, mPenColor(Qt::black)
-	, mSrc(NULL)
-	, mDst(NULL)
-	, mHandler(NULL)
-	, mPortFrom(0)
-	, mPortTo(0)
-	, mDragType(noPort)
-	, mLongPart(0)
-	, mDelPointAction(tr("Delete point"), this)
-	, mMinimizeAction(tr("Remove all points"), this)
-	, mDelSegmentAction(tr("Remove segment"), this)
-	, mReverseAction(tr("Reverse"), this)
-	, mModelUpdateIsCalled(false)
-	, mIsLoop(false)
+		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
+		, mPenStyle(Qt::SolidLine)
+		, mPenWidth(1)
+		, mPenColor(Qt::black)
+		, mSrc(NULL)
+		, mDst(NULL)
+		, mHandler(NULL)
+		, mPortFrom(0)
+		, mPortTo(0)
+		, mDragType(noPort)
+		, mLongPart(0)
+		, mDelPointAction(tr("Delete point"), this)
+		, mMinimizeAction(tr("Remove all points"), this)
+		, mDelSegmentAction(tr("Remove segment"), this)
+		, mReverseAction(tr("Reverse"), this)
+		, mModelUpdateIsCalled(false)
+		, mIsLoop(false)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -422,7 +423,7 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 		}
 		newLine << mLine.first() << secondPoint
 				<< thirdPoint << thirdPoint
-				<< penultPoint << mLine.last(); // Third point added twice for easy change of line mode(to curve line mode).
+				<< penultPoint << mLine.last(); // Third point added twice for easy change of line mode (to curve lines)
 	} else {
 		QPointF thirdPoint = boundingRectIndent(secondPoint, rotateRight(startSide));
 		QPointF forthPoint = boundingRectIndent(thirdPoint, rotateRight(rotateRight(startSide)));
@@ -1124,7 +1125,8 @@ void EdgeElement::redrawing(QPointF const &pos)
 	saveConfiguration();
 }
 
-QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4)
+QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3
+		, QPointF const &pos4)
 {
 	// use equation of line for solution
 	qreal a1 = pos1.y() - pos2.y();

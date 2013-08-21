@@ -31,8 +31,9 @@ class NodeElement;
 class LineHandler;
 
 /** @class EdgeElement
-  * @brief class for an edge on a diagram
- */
+* @brief class for an edge on a diagram
+*/
+
 class EdgeElement : public Element
 {
 	Q_OBJECT
@@ -54,8 +55,7 @@ public:
 	EdgeElement(ElementImpl *impl
 			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			);
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
 
 	virtual ~EdgeElement();
 

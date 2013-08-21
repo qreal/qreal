@@ -50,13 +50,14 @@ typedef QList<KeyObjectItem> KeyObjectItems;
 struct Object
 {
 public:
-        Object(QString const &name, QList<QList<QPoint> > const &path)
+	Object(QString const &name, QList<QList<QPoint> > const &path)
 	{
 		this->name = name;
 		this->path = path;
 	}
+
 	QString name;
-        QList<QList<QPoint> > path;
+	QList<QList<QPoint> > path;
 };
 
 typedef QList<Object> Objects;

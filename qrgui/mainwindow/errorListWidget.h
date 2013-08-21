@@ -6,7 +6,7 @@
 #include "error.h"
 
 namespace qReal {
-  class MainWindow;
+	class MainWindow;
 }
 
 class ErrorListWidget : public QListWidget

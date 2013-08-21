@@ -9,17 +9,14 @@ install:
   - sudo apt-get update
   - sudo apt-get install libboost-system1.49.0 libboost-wave1.49.0 tcl8.5
   - sudo apt-get install vera++
-  - sudo apt-get install qdbus qmlscene qt5-default qt5-qmake qtbase5-dev-tools qtchooser qtdeclarative5-dev xbitmaps xterm libqt5svg5-dev qttools5-dev -y
-  - sudo apt-get install qt-sdk libqt5svg5-dev qttools5-dev qtscript5-dev -y
+  - sudo apt-get install qdbus qmlscene qt5-default qt5-qmake qtbase5-dev-tools qtchooser qtdeclarative5-dev xbitmaps xterm libqt5svg5-dev qttools5-dev qtscript5-dev -y
   - sudo apt-get install xvfb
   - Xvfb :0 &
   - export DISPLAY=:0
 
 script:
-  - sudo cp buildScripts/vera++/profiles/* /usr/lib/vera++/profiles/
-  - sudo cp buildScripts/vera++/rules/* /usr/lib/vera++/scripts/rules/
   - tclsh buildScripts/vera++/generatePaths.tcl
-  - vera++ --error -p allRules <buildScripts/vera++/params
+  - vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params
   - qmake qreal.pro
   - make -j2
   - qmake qrealRobots.pro

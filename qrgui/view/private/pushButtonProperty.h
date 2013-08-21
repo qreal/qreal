@@ -43,8 +43,7 @@ public:
 
 protected:
 	void connectPropertyManager(PushButtonPropertyManager *manager);
-	QWidget *createEditor(PushButtonPropertyManager *manager, QtProperty *property,
-				QWidget *parent);
+	QWidget *createEditor(PushButtonPropertyManager *manager, QtProperty *property, QWidget *parent);
 	void disconnectPropertyManager(PushButtonPropertyManager *manager);
 
 private:

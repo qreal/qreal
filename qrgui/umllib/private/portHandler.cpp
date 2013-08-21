@@ -6,9 +6,9 @@
 
 qreal const PortHandler::mMaximumFractionPartValue = 0.9999;
 
-PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi &graphicalAssistApi,
-		QList<PortInterface *> const &ports)
-	: mNode(node), mGraphicalAssistApi(graphicalAssistApi)
+PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+		, QList<PortInterface *> const &ports)
+		: mNode(node), mGraphicalAssistApi(graphicalAssistApi)
 {
 	foreach (PortInterface *port, ports) {
 		StatPoint *point = dynamic_cast<StatPoint *>(port);
@@ -156,7 +156,8 @@ QPointF const PortHandler::nearestPort(QPointF const &location, QStringList cons
 		(linePortRes.second < minDistance || minDistance < 0)
 	) {
 		minDistance = linePortRes.second;
-		qreal const positionAtLineCoef = qMin(qMax(0., nearestPointOfLinePort(linePortRes.first, locationInLocalCoords)), mMaximumFractionPartValue);
+		qreal const positionAtLineCoef = qMin(qMax(0., nearestPointOfLinePort(linePortRes.first, locationInLocalCoords))
+				, mMaximumFractionPartValue);
 		QLineF const sceneLine = transformPortForNodeSize(mLinePorts[linePortRes.first]);
 		nearestPortPoint = sceneLine.pointAt(positionAtLineCoef);
 	}
@@ -173,9 +174,8 @@ qreal PortHandler::pointPortId(QPointF const &location, QStringList const &types
 {
 	for (int pointPortNumber = 0; pointPortNumber < mPointPorts.count(); pointPortNumber++) {
 		StatPoint const * const pointPort = mPointPorts.at(pointPortNumber);
-		if (QRectF(transformPortForNodeSize(pointPort) - QPointF(kvadratik, kvadratik),
-					QSizeF(kvadratik * 2, kvadratik * 2)
-			).contains(location) && types.contains(pointPort->type()))
+		if (QRectF(transformPortForNodeSize(pointPort) - QPointF(kvadratik, kvadratik)
+				, QSizeF(kvadratik * 2, kvadratik * 2)).contains(location) && types.contains(pointPort->type()))
 		{
 			return pointPortNumber;
 		}
@@ -211,7 +211,8 @@ qreal PortHandler::linePortId(QPointF const &location, QStringList const &types)
 	return mNonexistentPortId;
 }
 
-QPair<int, qreal> PortHandler::nearestPointPortNumberAndDistance(QPointF const &location, QStringList const &types) const
+QPair<int, qreal> PortHandler::nearestPointPortNumberAndDistance(QPointF const &location
+		, QStringList const &types) const
 {
 	qreal minDistance = -1; // just smth negative
 

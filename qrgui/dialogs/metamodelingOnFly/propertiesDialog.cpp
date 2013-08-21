@@ -10,7 +10,8 @@
 using namespace qReal;
 using namespace gui;
 
-PropertiesDialog::PropertiesDialog(MainWindow &mainWindow, EditorManagerInterface &interperterEditorManager, Id const &id)
+PropertiesDialog::PropertiesDialog(MainWindow &mainWindow, EditorManagerInterface &interperterEditorManager
+		, Id const &id)
 		: QDialog(&mainWindow)
 		, mUi(new Ui::PropertiesDialog)
 		, mInterperterEditorManager(interperterEditorManager)
@@ -110,7 +111,8 @@ void PropertiesDialog::addProperty()
 	qrRepo::LogicalRepoApi const &logicalRepoApi = mMainWindow.models()->logicalRepoApi();
 	if (checkElementOnDiagram(logicalRepoApi, mId)) {
 		QMessageBox::warning(this, tr("Warning")
-				, tr("For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!"));
+				, tr("For adding a new property from the scene and from the explorer of logical model"
+						"should be removed all the elements of the object and its inheritors!"));
 	} else {
 		mUi->propertiesNamesList->setCurrentItem(NULL);
 		change("");

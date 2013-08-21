@@ -40,8 +40,8 @@ public:
 	/// @param diagram Diagram part of an Id (palette tab name).
 	/// @param element Element part of an Id (element type name).
 	/// @param id Id part of an, mm, Id. Represents identity of a model element.
-	explicit Id(QString const &editor = "", QString  const &diagram = "",
-				QString  const &element = "", QString  const &id = "");
+	explicit Id(QString const &editor = "", QString  const &diagram = ""
+			, QString  const &element = "", QString  const &id = "");
 
 	/// Convenience constructor, creates Id by given base Id adding new part as
 	/// a next section. For example, by given editor Id and diagram name

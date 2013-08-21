@@ -36,7 +36,8 @@ public:
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const = 0;
 	bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
 
-	virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, QString const &name, QPointF const &position) = 0;
+	virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId
+			, QString const &name, QPointF const &position) = 0;
 	QPersistentModelIndex rootIndex() const;
 	EditorManagerInterface const &editorManagerInterface() const;
 
@@ -65,7 +66,8 @@ protected:
 private:
 	virtual AbstractModelItem *createModelItem(Id const &id, AbstractModelItem *parentItem) const = 0;
 	virtual void init() = 0;
-	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child) = 0;
+	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
+			, details::modelsImplementation::AbstractModelItem *child) = 0;
 };
 
 }

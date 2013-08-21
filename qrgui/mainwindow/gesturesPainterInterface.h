@@ -3,7 +3,7 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 
-#include "../../qrgui/view/gestures/GeometricForms.h"
+#include "../../qrgui/view/gestures/geometricForms.h"
 #include "../../qrkernel/ids.h"
 
 namespace qReal {

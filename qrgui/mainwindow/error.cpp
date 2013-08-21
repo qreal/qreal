@@ -3,7 +3,7 @@
 using namespace qReal::gui;
 
 Error::Error(QString const &message, Severity const &severity, qReal::Id const &position)
-	: mMessage(message), mTimestamp(QTime::currentTime()), mSeverity(severity), mPosition(position)
+		: mMessage(message), mTimestamp(QTime::currentTime()), mSeverity(severity), mPosition(position)
 {
 }
 
@@ -14,7 +14,7 @@ Error::Severity Error::severity() const
 
 QString Error::message() const
 {
-    return mMessage;
+	return mMessage;
 }
 
 QString Error::timestamp() const

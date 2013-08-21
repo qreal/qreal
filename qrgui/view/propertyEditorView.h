@@ -28,8 +28,7 @@ public:
 	// QAbstractItemView's methods
 	void setModel(PropertyEditorModel *model);
 	/** @brief editor initialization */
-	void init(qReal::MainWindow *mainWindow,
-		qReal::models::LogicalModelAssistApi * const logicalModelAssistApi);
+	void init(qReal::MainWindow *mainWindow, qReal::models::LogicalModelAssistApi * const logicalModelAssistApi);
 	/** @brief unimplemented */
 	void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint = QAbstractItemView::EnsureVisible);
 

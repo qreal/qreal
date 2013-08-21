@@ -123,7 +123,9 @@ IdList InterpreterEditorManager::elements(const Id &diagram) const
 				}
 
 				foreach (Id const &diagramChild, repo->children(editorChild)) {
-					if (diagramChild.element() == "MetaEntityEdge" || !repo->stringProperty(diagramChild, "shape").isEmpty()) {
+					if (diagramChild.element() == "MetaEntityEdge"
+							|| !repo->stringProperty(diagramChild, "shape").isEmpty())
+					{
 						result << Id(repo->name(editor), repo->name(editorChild), repo->name(diagramChild));
 					}
 				}
@@ -305,7 +307,8 @@ QStringList InterpreterEditorManager::propertiesFromParents(Id const &id
 			Id const metaChildParent = repo->otherEntityFromLink(link, metaId);
 			if (metaChildParent != Id::rootId()) {
 				QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, metaChildParent);
-				result << propertiesFromParents(Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(metaChildParent)), propertyName, checker);
+				result << propertiesFromParents(Id(repo->name(editorAndDiagramPair.first)
+						, repo->name(editorAndDiagramPair.second), repo->name(metaChildParent)), propertyName, checker);
 			}
 		}
 	}
@@ -568,7 +571,8 @@ QString InterpreterEditorManager::diagramNodeNameString(Id const &editor, Id con
 	return QString("qrm:/%1/%2/%3").arg(editor.editor(), diagram.diagram(), diagramNodeNameString);
 }
 
-QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndElement(QString const &editor, QString const &element) const
+QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndElement(QString const &editor
+		, QString const &element) const
 {
 	foreach (qrRepo::RepoApi * const repo, mEditorRepoApi.values()) {
 		foreach (Id const &edit,  repo->elementsByType("MetamodelDiagram")) {
@@ -589,7 +593,8 @@ QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndElement(QString con
 	return QPair<qrRepo::RepoApi*, Id>();
 }
 
-QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndDiagram(QString const &editor, QString const &diagram) const
+QPair<qrRepo::RepoApi*, Id> InterpreterEditorManager::repoAndDiagram(QString const &editor
+		, QString const &diagram) const
 {
 	foreach (qrRepo::RepoApi * const repo, mEditorRepoApi.values()) {
 		foreach (Id const &edit, repo->elementsByType("MetamodelDiagram")) {
@@ -623,7 +628,8 @@ QPair<Id, Id> InterpreterEditorManager::editorAndDiagram(qrRepo::RepoApi const *
 	return QPair<Id, Id>();
 }
 
-QList<StringPossibleEdge> InterpreterEditorManager::possibleEdges(QString const &editor, QString const &elementName) const
+QList<StringPossibleEdge> InterpreterEditorManager::possibleEdges(QString const &editor
+		, QString const &elementName) const
 {
 	QList<StringPossibleEdge> result;
 	QPair<qrRepo::RepoApi*, Id> const repoAndElementPair = repoAndElement(editor, elementName);
@@ -738,8 +744,8 @@ void InterpreterEditorManager::addProperty(Id const &id, QString const &propDisp
 	repoAndMetaIdPair.first->setProperty(newId, "displayedName", propDisplayedName);
 }
 
-void InterpreterEditorManager::setProperty(qrRepo::RepoApi *repo, Id const &id,
-		QString const &property, QVariant const &propertyValue) const
+void InterpreterEditorManager::setProperty(qrRepo::RepoApi *repo, Id const &id
+		, QString const &property, QVariant const &propertyValue) const
 {
 	repo->setProperty(id, property, propertyValue);
 }
@@ -784,7 +790,8 @@ IdList InterpreterEditorManager::children(Id const &parent) const {
 		if (link.element() == "Inheritance") {
 			Id const metaChild = repo->otherEntityFromLink(link, metaId);
 			QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, metaChild);
-			Id const child = Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second), repo->name(metaChild));
+			Id const child = Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second)
+					, repo->name(metaChild));
 			result << child;
 			result << children(child);
 		}
@@ -836,7 +843,8 @@ bool InterpreterEditorManager::isRootDiagramNode(Id const &id) const
 	return repo->stringProperty(editorAndDiagramPair.second, "nodeName") == repo->name(metaId);
 }
 
-void InterpreterEditorManager::setStandartConfigurations(qrRepo::RepoApi *repo, Id const &id, Id const &parent, QString const &name) const
+void InterpreterEditorManager::setStandartConfigurations(qrRepo::RepoApi *repo, Id const &id, Id const &parent
+		, QString const &name) const
 {
 	repo->addChild(parent, id);
 	repo->setProperty(id, "name", name);
@@ -857,7 +865,12 @@ void InterpreterEditorManager::setStandartConfigurations(qrRepo::RepoApi *repo, 
 
 void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const
 {
-	QString const shape = "<graphics>\n    <picture sizex=\"168\" sizey=\"111\">\n    <rectangle fill=\"#ffffff\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" stroke-width=\"0\" x1=\"1\" y2=\"107\" fill-style=\"none\" x2=\"125\"/>\n    </picture>\n    <labels>\n    <label x=\"41\" y=\"43\" textBinded=\"name\"/>\n    </labels>\n    <ports>\n    <pointPort x=\"2\" y=\"52\"/>\n    <pointPort x=\"134\" y=\"56\"/>\n    <linePort>\n    <start startx=\"29\" starty=\"110\"/>\n    <end endx=\"95\" endy=\"111\"/>\n    </linePort>\n    </ports>\n</graphics>\n";
+	QString const shape = "<graphics>\n    <picture sizex=\"168\" sizey=\"111\">\n    <rectangle fill=\"#ffffff\" "
+			"stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" stroke-width=\"0\" x1=\"1\" y2=\"107\" "
+			"fill-style=\"none\" x2=\"125\"/>\n    </picture>\n    <labels>\n    <label x=\"41\" y=\"43\" "
+			"textBinded=\"name\"/>\n    </labels>\n    <ports>\n    <pointPort x=\"2\" y=\"52\"/>\n    "
+			"<pointPort x=\"134\" y=\"56\"/>\n    <linePort>\n    <start startx=\"29\" starty=\"110\"/>\n    "
+			"<end endx=\"95\" endy=\"111\"/>\n    </linePort>\n    </ports>\n</graphics>\n";
 	QPair<qrRepo::RepoApi*, Id> const repoAndDiagramPair = repoAndDiagram(diagram.editor(), diagram.diagram());
 	qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
 	Id const diag = repoAndDiagramPair.second;
@@ -890,8 +903,8 @@ void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &
 	}
 }
 
-void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
-		, QString const &lineType, QString const &beginType, QString const &endType) const
+void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndDiagramPair = repoAndDiagram(diagram.editor(), diagram.diagram());
 	qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
@@ -977,7 +990,8 @@ QStringList InterpreterEditorManager::referenceProperties(const Id &id) const
 	return QStringList();
 }
 
-QString InterpreterEditorManager::paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const
+QString InterpreterEditorManager::paletteGroupDescription(Id const &editor, const Id &diagram
+		, const QString &group) const
 {
 	Q_UNUSED(editor);
 	Q_UNUSED(diagram);
