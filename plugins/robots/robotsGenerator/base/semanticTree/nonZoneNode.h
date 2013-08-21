@@ -13,6 +13,8 @@ public:
 	NonZoneNode(Id const &idBinded, QObject *parent = 0);
 
 	ZoneNode *parentZone();
+
+	void appendSibling(SemanticNode *node);
 };
 
 }

@@ -11,3 +11,8 @@ ZoneNode *NonZoneNode::parentZone()
 {
 	return static_cast<ZoneNode *>(mParentNode);
 }
+
+void NonZoneNode::appendSibling(SemanticNode *node)
+{
+	parentZone()->appendChild(node);
+}

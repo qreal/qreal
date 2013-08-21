@@ -12,8 +12,6 @@ class SimpleNode : public NonZoneNode
 public:
 	SimpleNode(Id const &idBinded, QObject *parent = 0);
 
-	void appendSibling(SemanticNode *node);
-
 	virtual QString toString() const;
 
 protected:

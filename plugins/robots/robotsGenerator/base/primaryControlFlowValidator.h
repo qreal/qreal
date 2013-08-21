@@ -33,15 +33,15 @@ public:
 private:
 	void findInitialNode();
 	void error(QString const &message, Id const &id);
-	bool checkForConnected(utils::DeepFirstSearcher::LinkInfo const &link);
+	bool checkForConnected(LinkInfo const &link);
 
-	virtual void visitRegular(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitFinal(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitConditional(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitLoop(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitSwitch(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitFork(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitUnknown(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visitRegular(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitFinal(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitConditional(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitLoop(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitSwitch(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitFork(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitUnknown(Id const &id, QList<LinkInfo> const &links);
 
 	LogicalModelAssistInterface const &mLogicalModel;
 	GraphicalModelAssistInterface const &mGraphicalModel;

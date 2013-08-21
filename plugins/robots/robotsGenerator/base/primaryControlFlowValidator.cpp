@@ -54,7 +54,7 @@ QPair<LinkInfo, LinkInfo> PrimaryControlFlowValidator::loopBranchesFor(qReal::Id
 }
 
 void PrimaryControlFlowValidator::visitRegular(Id const &id
-		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+		, QList<LinkInfo> const &links)
 {
 	if (links.size() != 1) {
 		error(QObject::tr("This element must have exactly ONE outgoing link"), id);
@@ -64,7 +64,7 @@ void PrimaryControlFlowValidator::visitRegular(Id const &id
 }
 
 void PrimaryControlFlowValidator::visitFinal(Id const &id
-		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+		, QList<LinkInfo> const &links)
 {
 	if (!links.isEmpty()) {
 		error(QObject::tr("Final node must not have outgioing links"), id);
@@ -72,7 +72,7 @@ void PrimaryControlFlowValidator::visitFinal(Id const &id
 }
 
 void PrimaryControlFlowValidator::visitConditional(Id const &id
-		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+		, QList<LinkInfo> const &links)
 {
 	if (links.size() != 2) {
 		error(QObject::tr("If block must have exactly TWO outgoing links"), id);
@@ -84,7 +84,7 @@ void PrimaryControlFlowValidator::visitConditional(Id const &id
 	LinkInfo const *falseLink = NULL;
 	LinkInfo const *nonMarkedLink = NULL;
 
-	foreach (utils::DeepFirstSearcher::LinkInfo const &link, links) {
+	foreach (LinkInfo const &link, links) {
 		checkForConnected(link);
 
 		switch (guardOf(link.linkId)) {
@@ -135,7 +135,7 @@ void PrimaryControlFlowValidator::visitConditional(Id const &id
 }
 
 void PrimaryControlFlowValidator::visitLoop(Id const &id
-		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+		, QList<LinkInfo> const &links)
 {
 	if (links.size() != 2) {
 		error(QObject::tr("Loop block must have exactly TWO outgoing links"), id);
@@ -146,7 +146,7 @@ void PrimaryControlFlowValidator::visitLoop(Id const &id
 	LinkInfo const *iterationLink = NULL;
 	LinkInfo const *nonMarkedBlock = NULL;
 
-	foreach (utils::DeepFirstSearcher::LinkInfo const &link, links) {
+	foreach (LinkInfo const &link, links) {
 		checkForConnected(link);
 
 		switch (guardOf(link.linkId)) {
@@ -178,7 +178,7 @@ void PrimaryControlFlowValidator::visitLoop(Id const &id
 }
 
 void PrimaryControlFlowValidator::visitSwitch(Id const &id
-		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+		, QList<LinkInfo> const &links)
 {
 	Q_UNUSED(id)
 	Q_UNUSED(links)
@@ -186,20 +186,20 @@ void PrimaryControlFlowValidator::visitSwitch(Id const &id
 }
 
 void PrimaryControlFlowValidator::visitFork(Id const &id
-		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+		, QList<LinkInfo> const &links)
 {
 	if (links.size() < 2) {
 		error(QObject::tr("Fork block must have at least TWO outgoing links"), id);
 		return;
 	}
 
-	foreach (utils::DeepFirstSearcher::LinkInfo const &link, links) {
+	foreach (LinkInfo const &link, links) {
 		checkForConnected(link);
 	}
 }
 
 void PrimaryControlFlowValidator::visitUnknown(Id const &id
-		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+		, QList<LinkInfo> const &links)
 {
 	Q_UNUSED(links)
 	error(QObject::tr("Unknown block type"), id);
@@ -212,7 +212,7 @@ void PrimaryControlFlowValidator::error(QString const &message, qReal::Id const 
 	mErrorsOccured = true;
 }
 
-bool PrimaryControlFlowValidator::checkForConnected(utils::DeepFirstSearcher::LinkInfo const &link)
+bool PrimaryControlFlowValidator::checkForConnected(LinkInfo const &link)
 {
 	if (!link.connected) {
 		error(QObject::tr("Outgoing link is not connected"), link.linkId);

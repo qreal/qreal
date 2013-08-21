@@ -8,11 +8,6 @@ SimpleNode::SimpleNode(Id const &idBinded, QObject *parent)
 {
 }
 
-void SimpleNode::appendSibling(SemanticNode *node)
-{
-	parentZone()->appendChild(node);
-}
-
 QString SimpleNode::toString() const
 {
 	return mId.element() + " (s)";

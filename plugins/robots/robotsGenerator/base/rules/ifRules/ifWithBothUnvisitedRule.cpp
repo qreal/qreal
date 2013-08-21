@@ -14,10 +14,10 @@ bool IfWithBothUnvisitedRule::apply()
 		return false;
 	}
 
-	SemanticNode *thenNode = mTree->produceNodeFor(mThenLink.target);
-	SemanticNode *elseNode = mTree->produceNodeFor(mElseLink.target);
+	SemanticNode * const thenNode = mTree->produceNodeFor(mThenLink.target);
+	SemanticNode * const elseNode = mTree->produceNodeFor(mElseLink.target);
 
-	IfNode *thisNode = static_cast<IfNode *>(mTree->findNodeFor(mId));
-	thisNode->appendThenBranch(thenNode);
-	thisNode->appendElseBranch(elseNode);
+	IfNode * const thisNode = static_cast<IfNode *>(mTree->findNodeFor(mId));
+	thisNode->thenZone()->appendChild(thenNode);
+	thisNode->elseZone()->appendChild(elseNode);
 }

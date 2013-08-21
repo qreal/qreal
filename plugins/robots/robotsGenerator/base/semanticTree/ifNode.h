@@ -14,10 +14,10 @@ public:
 
 	ZoneNode *parentZone();
 
-	virtual QString toString() const;
+	ZoneNode *thenZone();
+	ZoneNode *elseZone();
 
-	void appendThenBranch(SemanticNode *node);
-	void appendElseBranch(SemanticNode *node);
+	virtual QString toString() const;
 
 protected:
 	virtual QLinkedList<SemanticNode *> children() const;
@@ -25,6 +25,8 @@ protected:
 private:
 	ZoneNode *mThenZone;  // Takes ownership
 	ZoneNode *mElseZone;  // Takes ownership
+
+	bool mAddNotToCondition;
 };
 
 }

@@ -29,7 +29,7 @@ public:
 	virtual void afterSearch();
 
 private:
-	bool applyFirstPossible(QList<semantics::SemanticTransformationRule *> const &rules);
+	bool applyFirstPossible(Id const &currentId, QList<semantics::SemanticTransformationRule *> const &rules);
 
 	semantics::SemanticTree *mSemanticTree;  // Takes ownership
 };

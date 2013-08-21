@@ -59,6 +59,11 @@ QString ZoneNode::toString() const
 	return "";
 }
 
+SemanticNode *ZoneNode::parentNode()
+{
+	return mParentNode;
+}
+
 QLinkedList<SemanticNode *> ZoneNode::children() const
 {
 	return mChildren;

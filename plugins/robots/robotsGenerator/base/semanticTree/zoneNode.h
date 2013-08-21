@@ -28,6 +28,8 @@ public:
 
 	virtual QString toString() const;
 
+	SemanticNode *parentNode();
+
 protected:
 	virtual QLinkedList<SemanticNode *> children() const;
 

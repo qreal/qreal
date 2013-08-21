@@ -2,6 +2,7 @@
 
 #include "rules/simpleRules/simpleUnvisitedRule.h"
 #include "rules/simpleRules/simpleVisitedOneZoneRule.h"
+#include "rules/simpleRules/simpleMergedIfBranchesRule.h"
 #include "rules/ifRules/ifWithBothUnvisitedRule.h"
 
 
@@ -29,10 +30,12 @@ void ReadableControlFlowGenerator::visitRegular(Id const &id
 {
 	SimpleUnvisitedRule unvisitedRule(mSemanticTree, id, links[0]);
 	SimpleVisitedOneZoneRule visitedOneZoneRule(mSemanticTree, id, links[0]);
+	SimpleMergedIfBranchesRule mergedBranchesRule(mSemanticTree, id, links[0]);
 
-	applyFirstPossible(QList<SemanticTransformationRule *>()
+	applyFirstPossible(id, QList<SemanticTransformationRule *>()
 			<< &unvisitedRule
-			<< &visitedOneZoneRule);
+			<< &visitedOneZoneRule
+			<< &mergedBranchesRule);
 }
 
 void ReadableControlFlowGenerator::visitFinal(Id const &id
@@ -52,7 +55,7 @@ void ReadableControlFlowGenerator::visitConditional(Id const &id
 	IfWithBothUnvisitedRule bothUnvisitedRule(mSemanticTree, id
 			, branches.first, branches.second);
 
-	applyFirstPossible(QList<SemanticTransformationRule *>()
+	applyFirstPossible(id, QList<SemanticTransformationRule *>()
 			<< &bothUnvisitedRule);
 }
 
@@ -80,12 +83,15 @@ void ReadableControlFlowGenerator::afterSearch()
 	mSemanticTree->debugPrint();
 }
 
-bool ReadableControlFlowGenerator::applyFirstPossible(QList<SemanticTransformationRule *> const &rules)
+bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
+		, QList<SemanticTransformationRule *> const &rules)
 {
 	foreach (SemanticTransformationRule * const rule, rules) {
 		if (rule->apply()) {
 			return true;
 		}
 	}
+
+	error(tr("This diagram cannot be generated into the structured code"), currentId);
 	return false;
 }
