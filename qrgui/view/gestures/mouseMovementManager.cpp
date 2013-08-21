@@ -1,7 +1,7 @@
 #include "mouseMovementManager.h"
 #include "pathCorrector.h"
 #include "levenshteinDistance.h"
-#include "GeometricForms.h"
+#include "geometricForms.h"
 #include "mixedgesturesmanager.h"
 
 QString const comma = ", ";
@@ -10,7 +10,8 @@ QString const pathDelimeter = " | ";
 
 using namespace qReal::gestures;
 
-MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManagerInterface * editorManagerInterface
+MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements
+		, qReal::EditorManagerInterface * editorManagerInterface
 		, GesturesPainterInterface *gesturesPaintManager)
 {
 	mGesturesManager = new MixedGesturesManager();

@@ -44,7 +44,8 @@ public:
 	virtual QStringList getPropertiesWithDefaultValues(QString const &element) const = 0;
 	virtual QStringList getTypesContainedBy(QString const &element) const = 0;
 	virtual QList<ExplosionData> explosions(QString const &diagram, QString const &element) const = 0;
-	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > > getPossibleEdges(QString const &element) const = 0;
+	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > >
+			getPossibleEdges(QString const &element) const = 0;
 
 	virtual int isNodeOrEdge(QString const &element) const = 0;
 
@@ -65,11 +66,14 @@ public:
 	virtual QString elementName(QString const &diagram, QString const &element) const = 0;
 	virtual QString elementMouseGesture(QString const &diagram, QString const &element) const = 0;
 	virtual QString elementDescription(QString const &diagram, QString const &element) const = 0;
-	virtual QString propertyDescription(QString const &diagram, QString const &element, QString const &property) const = 0;
-	virtual QString propertyDisplayedName(QString const &diagram, QString const &element, QString const &property) const = 0;
+	virtual QString propertyDescription(QString const &diagram, QString const &element
+			, QString const &property) const = 0;
+	virtual QString propertyDisplayedName(QString const &diagram, QString const &element
+			, QString const &property) const = 0;
 	virtual QList<qReal::ListenerInterface*> listeners() const = 0;
 
-	virtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const = 0;
+	virtual bool isParentOf(QString const &parentDiagram, QString const &parentElement
+			, QString const &childDiagram, QString const &childElement) const = 0;
 
 	virtual QStringList diagramPaletteGroups(QString const &diagram) const = 0;
 	virtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const = 0;

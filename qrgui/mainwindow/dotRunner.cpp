@@ -120,7 +120,8 @@ void DotRunner::parseDOTCoordinates()
 			continue;
 		}
 		QPointF const pointF = QPointF(qpointFCoordinates.at(0).toDouble(), qpointFCoordinates.at(1).toDouble());
-		QPair<qreal, qreal> const pair = qMakePair(regexp.capturedTexts().at(3).toDouble(), regexp.capturedTexts().at(4).toDouble());
+		QPair<qreal, qreal> const pair = qMakePair(regexp.capturedTexts().at(3).toDouble()
+				, regexp.capturedTexts().at(4).toDouble());
 		mDOTCoordinatesOfElements.insert(id, qMakePair(pointF, pair));
 	}
 	foreach (Id const &id, mDOTCoordinatesOfElements.keys()) {

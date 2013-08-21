@@ -29,8 +29,8 @@ enum ArrowType
 
 class NodeElement;
 /** @class EdgeElement
-  * @brief class for an edge on a diagram
- */
+* @brief class for an edge on a diagram
+*/
 
 namespace commands {
 class ReshapeEdgeCommand;
@@ -44,8 +44,7 @@ public:
 	EdgeElement(ElementImpl *impl
 			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			);
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
 
 	virtual ~EdgeElement();
 
@@ -158,23 +157,23 @@ private slots:
 
 private:
 	enum DragPointType {
-		noDrag = -3,
-		overPointMax = -2,
-		noPort = -1
+		noDrag = -3
+		, overPointMax = -2
+		, noPort = -1
 	};
 
 	enum LineType {
-		vertical,
-		horizontal,
-		verticalTurn,
-		horizontalTurn
+		vertical
+		, horizontal
+		, verticalTurn
+		, horizontalTurn
 	};
 
 	enum NodeSide {
-		left,
-		top,
-		right,
-		bottom
+		left
+		, top
+		, right
+		, bottom
 	};
 
 	int indentReductCoeff();

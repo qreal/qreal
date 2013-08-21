@@ -84,23 +84,24 @@ private slots:
 
 private:
 	enum ItemTypes {
-		none,
-		line,
-		ellipse,
-		rectangle,
-		text,
-		dynamicText,
-		textPicture,
-		pointPort,
-		linePort,
-		stylus,
-		curve,
-		image
+		none
+		, line
+		, ellipse
+		, rectangle
+		, text
+		, dynamicText
+		, textPicture
+		, pointPort
+		, linePort
+		, stylus
+		, curve
+		, image
 	};
+
 	enum CopyPasteType {
-		nonePaste,
-		copy,
-		cut
+		nonePaste
+		, copy
+		, cut
 	};
 
 	int mZValue;

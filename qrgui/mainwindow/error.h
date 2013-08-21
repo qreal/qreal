@@ -10,10 +10,10 @@ namespace gui {
 class Error {
 public:
 	enum Severity {
-		information,
-		warning,
-		error,
-		critical
+		information
+		, warning
+		, error
+		, critical
 	};
 
 	Error(QString const &message, Severity const &severity, qReal::Id  const &position);

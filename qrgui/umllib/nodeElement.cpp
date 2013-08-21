@@ -33,23 +33,23 @@ NodeElement::NodeElement(ElementImpl *impl
 		, models::GraphicalModelAssistApi &graphicalAssistApi
 		, models::LogicalModelAssistApi &logicalAssistApi
 		)
-	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
-	, mSwitchGridAction(tr("Switch on grid"), this)
-	, mPortsVisible(false)
-	, mDragState(None)
-	, mResizeCommand(NULL)
-	, mIsExpanded(false)
-	, mIsFolded(false)
-	, mLeftPressed(false)
-	, mParentNodeElement(NULL)
-	, mPos(QPointF(0,0))
-	, mSelectionNeeded(false)
-	, mConnectionInProgress(false)
-	, mPlaceholder(NULL)
-	, mHighlightedNode(NULL)
-	, mTimeOfUpdate(0)
-	, mTimer(new QTimer(this))
-	, mRenderTimer(this)
+		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
+		, mSwitchGridAction(tr("Switch on grid"), this)
+		, mPortsVisible(false)
+		, mDragState(None)
+		, mResizeCommand(NULL)
+		, mIsExpanded(false)
+		, mIsFolded(false)
+		, mLeftPressed(false)
+		, mParentNodeElement(NULL)
+		, mPos(QPointF(0,0))
+		, mSelectionNeeded(false)
+		, mConnectionInProgress(false)
+		, mPlaceholder(NULL)
+		, mHighlightedNode(NULL)
+		, mTimeOfUpdate(0)
+		, mTimer(new QTimer(this))
+		, mRenderTimer(this)
 {
 	setAcceptHoverEvents(true);
 	setFlag(ItemClipsChildrenToShape, false);
@@ -292,15 +292,25 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	mResizeCommand->startTracking();
 	if (isSelected()) {
 		int dragArea = SettingsManager::instance()->value("DragArea").toInt();
-		if (QRectF(mContents.topLeft(), QSizeF(dragArea, dragArea)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		if (QRectF(mContents.topLeft(), QSizeF(dragArea, dragArea)).contains(event->pos())
+				&& mElementImpl->isResizeable())
+		{
 			mDragState = TopLeft;
-		} else if (QRectF(mContents.topRight(), QSizeF(-dragArea, dragArea)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		} else if (QRectF(mContents.topRight(), QSizeF(-dragArea, dragArea)).contains(event->pos())
+				&& mElementImpl->isResizeable())
+		{
 			mDragState = TopRight;
-		} else if (QRectF(mContents.bottomRight(), QSizeF(-dragArea, -dragArea)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		} else if (QRectF(mContents.bottomRight(), QSizeF(-dragArea, -dragArea)).contains(event->pos())
+				&& mElementImpl->isResizeable())
+		{
 			mDragState = BottomRight;
-		} else if (QRectF(mContents.bottomLeft(), QSizeF(dragArea, -dragArea)).contains(event->pos()) && mElementImpl->isResizeable()) {
+		} else if (QRectF(mContents.bottomLeft(), QSizeF(dragArea, -dragArea)).contains(event->pos())
+				&& mElementImpl->isResizeable())
+		{
 			mDragState = BottomLeft;
-		} else if (QRectF(QPointF(-20, 0), QPointF(0, 20)).contains(event->pos()) && mElementImpl->isContainer()) {
+		} else if (QRectF(QPointF(-20, 0), QPointF(0, 20)).contains(event->pos())
+				&& mElementImpl->isContainer())
+		{
 			changeFoldState();
 		} else {
 			Element::mousePressEvent(event);

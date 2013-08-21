@@ -16,7 +16,8 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 		, QList<LabelInterface*> &titles)
 {
 	int index = 0;
-	for (QDomElement element = mGraphics.firstChildElement("graphics").firstChildElement("labels").firstChildElement("label");
+	for (QDomElement element
+			= mGraphics.firstChildElement("graphics").firstChildElement("labels").firstChildElement("label");
 			!element.isNull();
 			element = element.nextSiblingElement("label"))
 	{
@@ -54,7 +55,8 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 void InterpreterElementImpl::initPointPorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
 		, int const &width, int const &height)
 {
-	QDomNodeList const pointPortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
+	QDomNodeList const pointPortsList
+			= mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
 	for (int i = 0; i < pointPortsList.size(); i++) {
 		QDomElement portElement = pointPortsList.at(i).toElement();
 
@@ -82,7 +84,9 @@ void InterpreterElementImpl::initPointPorts(PortFactoryInterface const &factory,
 void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
 		, int const &width, int const &height)
 {
-	QDomNodeList const linePortsList = mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
+	QDomNodeList const linePortsList
+			= mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
+
 	for (int i = 0; i < linePortsList.size(); i++) {
 
 		QString x1 = linePortsList.at(i).firstChildElement("start").attribute("startx");
@@ -119,7 +123,8 @@ void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, 
 				, y2.toDouble() / static_cast<double>(height));
 
 		QString portType = linePortsList.at(i).toElement().attribute("type", "NonTyped");
-		ports << factory.createPort(line, propX1, propY1, propX2, propY2, width, height, new InterpreterPortImpl(portType));
+		ports << factory.createPort(line, propX1, propY1, propX2, propY2, width, height
+				, new InterpreterPortImpl(portType));
 	}
 }
 
@@ -287,7 +292,8 @@ bool InterpreterElementImpl::isResizeable() const
 Qt::PenStyle InterpreterElementImpl::getPenStyle() const
 {
 	if (mId.element() == "MetaEntityEdge") {
-		QString const QtStyle = "Qt::" + mEditorRepoApi->stringProperty(mId, "lineType").replace(0, 1, mEditorRepoApi->stringProperty(mId, "lineType").at(0).toUpper());
+		QString const QtStyle = "Qt::" + mEditorRepoApi->stringProperty(mId, "lineType").replace(0, 1
+				, mEditorRepoApi->stringProperty(mId, "lineType").at(0).toUpper());
 		if (QtStyle != "") {
 			if (QtStyle == "Qt::NoPen") {
 				return Qt::NoPen;
@@ -379,7 +385,8 @@ void InterpreterElementImpl::drawArrow(QPainter *painter, QString const &type) c
 			static const QPointF points[] = {QPointF(-5, 10), QPointF(0, 0), QPointF(5, 10)};
 			painter->drawPolyline(points, 3);
 		} else if (style == "complex_arrow") {
-			static const QPointF points[] = {QPointF(-15, 30), QPointF(-10, 10), QPointF(0, 0), QPointF(10, 10), QPointF(15, 30), QPointF(0, 23), QPointF(-15, 30)};
+			static const QPointF points[] = {QPointF(-15, 30), QPointF(-10, 10), QPointF(0, 0), QPointF(10, 10)
+					, QPointF(15, 30), QPointF(0, 23), QPointF(-15, 30)};
 			painter->drawPolyline(points, 7);
 		}
 

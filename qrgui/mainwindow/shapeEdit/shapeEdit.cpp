@@ -95,10 +95,13 @@ void ShapeEdit::init()
 	connect(mUi->penStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenStyle(QString const &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
 	connect(mUi->penColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenColor(QString const &)));
-	connect(mUi->brushStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeBrushStyle(QString const &)));
-	connect(mUi->brushColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeBrushColor(QString const &)));
+	connect(mUi->brushStyleComboBox, SIGNAL(activated(QString const &))
+			, mScene, SLOT(changeBrushStyle(QString const &)));
+	connect(mUi->brushColorComboBox, SIGNAL(activated(QString const &))
+			, mScene, SLOT(changeBrushColor(QString const &)));
 
-	connect(mUi->textFamilyFontComboBox, SIGNAL(currentFontChanged(const QFont&)), mScene, SLOT(changeFontFamily(const QFont&)));
+	connect(mUi->textFamilyFontComboBox, SIGNAL(currentFontChanged(const QFont&))
+			, mScene, SLOT(changeFontFamily(const QFont&)));
 	connect(mUi->textPixelSizeSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changeFontPixelSize(int)));
 	connect(mUi->textColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeFontColor(QString const &)));
 	connect(mUi->textEditField, SIGNAL(textChanged()), this, SLOT(changeTextName()));
@@ -120,10 +123,12 @@ void ShapeEdit::init()
 	connect(this, SIGNAL(openSignal()), this, SLOT(open()));
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
-	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &)), this, SLOT(setItemPalette(QPen const&, QBrush const&)));
+	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &))
+			, this, SLOT(setItemPalette(QPen const&, QBrush const&)));
 	connect(mScene, SIGNAL(resetHighlightAllButtons()), this, SLOT(resetHighlightAllButtons()));
 	connect(mScene, SIGNAL(noSelectedTextPictureItems()), this, SLOT(setNoFontPalette()));
-	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &)), this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
+	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &))
+			, this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
 	connect(mScene, SIGNAL(noSelectedPortItems()), this, SLOT(setNoPortType()));
 	connect(mScene, SIGNAL(existSelectedPortItems(QString const &)), this, SLOT(setPortType(QString const &)));
 }

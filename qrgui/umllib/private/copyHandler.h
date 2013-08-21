@@ -1,6 +1,6 @@
 /** @file copyHandler.h
- * 	@brief Class for handling copyring of NodeElement.
- * */
+* 	@brief Class for handling copyring of NodeElement.
+**/
 
 #pragma once
 

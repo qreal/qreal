@@ -212,9 +212,6 @@ private slots:
 
 	void sceneSelectionChanged();
 
-	void exportToXmi();
-	void generateToJava();
-	void parseJavaLibraries();
 	void applySettings();
 
 	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);

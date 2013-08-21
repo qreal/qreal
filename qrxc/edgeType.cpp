@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "edgeType.h"
 #include "association.h"
 #include "../qrutils/outFile.h"
@@ -6,8 +8,6 @@
 #include "editor.h"
 #include "nameNormalizer.h"
 #include "label.h"
-
-#include <QDebug>
 
 using namespace utils;
 
@@ -18,16 +18,18 @@ EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
 
 EdgeType::~EdgeType()
 {
-	foreach (Association *association, mAssociations)
+	foreach (Association *association, mAssociations) {
 		delete association;
+	}
 }
 
 Type* EdgeType::clone() const
 {
 	EdgeType *result = new EdgeType(mDiagram);
 	GraphicType::copyFields(result);
-	foreach (Association *association, mAssociations)
+	foreach (Association *association, mAssociations) {
 		result->mAssociations.append(new Association(*association));
+	}
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
 	result->mLineType = mLineType;
@@ -39,29 +41,30 @@ Type* EdgeType::clone() const
 bool EdgeType::initAssociations()
 {
 	QDomElement associationsElement = mLogic.firstChildElement("associations");
-	if (associationsElement.isNull())
-	{
+	if (associationsElement.isNull()) {
 		return true;
 	}
+
 	mBeginType = associationsElement.attribute("beginType");
 	mEndType = associationsElement.attribute("endType");
-	if (mBeginType.isEmpty() || mEndType.isEmpty())
-	{
+	if (mBeginType.isEmpty() || mEndType.isEmpty()) {
 		qDebug() << "ERROR: can't parse associations";
 		return false;
 	}
+
 	for (QDomElement element = associationsElement.firstChildElement("association");
 		!element.isNull();
 		element = element.nextSiblingElement("association"))
 	{
 		Association *association = new Association();
-		if (!association->init(element))
-		{
+		if (!association->init(element)) {
 			delete association;
 			return false;
 		}
+
 		mAssociations.append(association);
 	}
+
 	return true;
 }
 
@@ -69,39 +72,34 @@ bool EdgeType::initGraphics()
 {
 	mVisible = true;
 	QDomElement lineTypeElement = mGraphics.firstChildElement("lineType");
-	if (lineTypeElement.isNull())
-	{
+	if (lineTypeElement.isNull()) {
 		mVisible = false;
 		return true;
 	}
+
 	/* code for setting the width of the edges */
 	QDomElement lineWidthElement = mGraphics.firstChildElement("lineWidth");
 	if (lineWidthElement.isNull()) {
 		mLineWidth = 1;
-	}
-	else {
+	} else {
 		QString lineWidth = lineWidthElement.attribute("width");
-		if (lineWidth.isEmpty())
-		{
+		if (lineWidth.isEmpty()) {
 			qDebug() << "ERROR: no width of line";
 			return false;
-		}
-		else {
+		} else {
 			bool success = true;
 			int lineWidthInt = lineWidth.toInt(&success);
 			if (!success) {
 				qDebug() << "ERROR: line width is not a number";
 				return false;
-			}
-			else if (lineWidthInt <= 0) {
+			} else if (lineWidthInt <= 0) {
 				qDebug() << "ERROR: line width is negative number";
 				return false;
-			}
-			else
+			} else {
 				mLineWidth = lineWidthInt;
+			}
 		}
 	}
-	/* code for setting the width of the edges */
 
 	/* code for setting the color of the edges */
 	QDomElement lineColorElement = mGraphics.firstChildElement("lineColor");
@@ -113,28 +111,25 @@ bool EdgeType::initGraphics()
 		if (lineColor.isEmpty()) {
 			qDebug() << "ERROR: no color of line";
 			return false;
-		}
-		else {
+		} else {
 			QColor color = QColor(lineColor);
 			if (!color.isValid()) {
 				qDebug() << "ERROR: invalid color name of line";
 				return false;
-			}
-			else {
+			} else {
 				mLineColor = color;
 			}
 		}
 	}
-	/* code for setting the color of the edges */
 
 	QString lineType = lineTypeElement.attribute("type");
-	if (lineType.isEmpty())
-	{
+	if (lineType.isEmpty()) {
 		qDebug() << "ERROR: no line type";
 		return false;
-	}
-	else if (lineType == "noPan")
+	} else if (lineType == "noPan") {
 		lineType = "solidLine";
+	}
+
 	mLineType = "Qt::" + lineType.replace(0, 1, lineType.at(0).toUpper());
 	return true;
 }
@@ -144,16 +139,16 @@ bool EdgeType::initDividability()
 	QDomElement dividabilityElement = mLogic.firstChildElement("dividability");
 
 	mIsDividable = "false";
-	if (dividabilityElement.isNull())
-	{
+	if (dividabilityElement.isNull()) {
 		return true;
 	}
+
 	QString isDividable = dividabilityElement.attribute("isDividable");
-	if (isDividable != "true" && isDividable != "false")
-	{
+	if (isDividable != "true" && isDividable != "false") {
 		qDebug() << "ERROR: can't parse dividability";
 		return false;
 	}
+
 	mIsDividable = isDividable;
 	return true;
 }
@@ -194,10 +189,10 @@ void EdgeType::generateGraphics() const
 	sdfType.remove("Line").toLower();
 
 	OutFile out("generated/shapes/" + resourceName("Class"));
-	out() << "<picture sizex=\"100\" sizey=\"60\" >\n" <<
-	"\t<line fill=\""<< mLineColor.name() << "\" stroke-style=\"" << sdfType << "\" stroke=\""<< mLineColor.name() <<"\" y1=\"0\" " <<
-	"x1=\"0\" y2=\"60\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />\n" <<
-	"</picture>";
+	out() << "<picture sizex=\"100\" sizey=\"60\" >\n"
+			<< "\t<line fill=\""<< mLineColor.name() << "\" stroke-style=\"" << sdfType << "\" stroke=\""
+			<< mLineColor.name() <<"\" y1=\"0\" "
+			<< "x1=\"0\" y2=\"60\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />\n" << "</picture>";
 	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Class") + "</file>\n");
 }
 
@@ -225,11 +220,11 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}\n\n"
 	<< "\t\tvoid init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)\n\t\t{\n";
 
-	if (!mLabels.isEmpty())
+	if (!mLabels.isEmpty()) {
 		mLabels[0]->generateCodeForConstructor(out);
-	else
-		out() << "\t\t\tQ_UNUSED(titles);\n"
-		<< "\t\t\tQ_UNUSED(factory);\n";
+	} else {
+		out() << "\t\t\tQ_UNUSED(titles);\n" << "\t\t\tQ_UNUSED(factory);\n";
+	}
 
 	out() << "\t\t}\n\n"
 	<< "\t\tvirtual ~" << className << "() {}\n\n"
@@ -267,15 +262,21 @@ void EdgeType::generateCode(OutFile &out)
 	<< mLineColor.blue()
 	<< "); }\n"
 	<< "\t\tQt::PenStyle getPenStyle() const { ";
-	if (mLineType != "")
+
+	if (mLineType != "") {
 		out() << "return " << mLineType << "; }\n";
-	else
+	} else {
 		out() << "return Qt::SolidLine; }\n";
+	}
+
 	out() << "\t\tQStringList bonusContextMenuFields() const\n\t\t{\n" << "\t\t\treturn ";
-	if (!mBonusContextMenuFields.empty())
+
+	if (!mBonusContextMenuFields.empty()) {
 		out() << "mBonusContextMenuFields;";
-	else
+	} else {
 		out() << "QStringList();";
+	}
+
 	out() << "\n\t\t}\n\n";
 
 	out() << "\tprotected:\n"
@@ -289,18 +290,22 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n";
 
-	if (mLabels.isEmpty())
+	if (mLabels.isEmpty()) {
 		out() << "\t\t\tQ_UNUSED(repo);\n";
-	else
+	} else {
 		mLabels[0]->generateCodeForUpdateData(out);
+	}
 
 	out() << "\t\t}\n\n";
 	out() << "\tprivate:\n";
-	if (!mBonusContextMenuFields.empty())
-		out() << "\t\tQStringList mBonusContextMenuFields;\n";
 
-	if (!mLabels.isEmpty())
+	if (!mBonusContextMenuFields.empty()) {
+		out() << "\t\tQStringList mBonusContextMenuFields;\n";
+	}
+
+	if (!mLabels.isEmpty()) {
 		mLabels[0]->generateCodeForFields(out);
+	}
 
 	out() << "\t};\n\n";
 }
@@ -396,8 +401,10 @@ void EdgeType::generatePorts(OutFile &out, QStringList const &portTypes)
 {
 	out() << "QStringList result;\n"
 		  << "\t\t\tresult";
+
 	foreach (QString const &type, portTypes) {
 		out() << " << \"" << type << "\"";
 	}
+
 	out() << ";\n\t\t\treturn result;\n\t\t}\n";
 }
