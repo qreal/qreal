@@ -1,6 +1,6 @@
 #include "stylus.h"
 
-Stylus::Stylus(qreal x1, qreal y1, Item* parent):Item(parent), mStylusImpl()
+Stylus::Stylus(qreal x1, qreal y1, Item* parent) : Item(parent), mStylusImpl()
 {
 	mNeedScalingRect = false;
 	mPen.setColor(Qt::black);
@@ -125,7 +125,8 @@ QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &doc
 	QDomElement stylus = document.createElement("stylus");
 	foreach (AbstractItem *aItem, mAbstractListLine) {
 		Line *line = dynamic_cast<Line *>(aItem);
-		QDomElement item = (line->generateItem(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())))).first;
+		QDomElement item = (line->generateItem(document
+				, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())))).first;
 		stylus.appendChild(item);
 	}
 	return QPair<QDomElement, Item::DomElementTypes>(stylus, mDomElementType);

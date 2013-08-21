@@ -306,8 +306,8 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			}
 
 			if (under->isContainer()) {
-				result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos,
-							canBeConnected, &createElementFromMenuCommand);
+				result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos
+						, canBeConnected, &createElementFromMenuCommand);
 			} else {
 				if (!canBeConnected) {
 					result = -1;

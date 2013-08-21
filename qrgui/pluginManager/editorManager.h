@@ -103,8 +103,9 @@ public:
 	virtual void deleteElement(MainWindow *mainWindow, Id const &id) const;
 	virtual bool isRootDiagramNode(Id const &id) const;
 	virtual void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const;
-	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
-			QString const &lineType, QString const &beginType, QString const &endType) const;
+	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+			, QString const &labelType, QString const &lineType, QString const &beginType
+			, QString const &endType) const;
 	virtual QPair<Id, Id> createEditorAndDiagram(QString const &name) const;
 	virtual void saveMetamodel(QString const &newMetamodelFileName);
 	virtual QString saveMetamodelFilePath() const;
@@ -123,7 +124,8 @@ private:
 	EditorInterface* editorInterface(QString const &editor) const;
 	void checkNeededPluginsRecursive(qrRepo::CommonRepoApi const &api, Id const &id, IdList &result) const;
 
-	bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child, QString const &parentDiagram, QString const &parent) const;
+	bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child
+			, QString const &parentDiagram, QString const &parent) const;
 };
 
 }

@@ -111,8 +111,9 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
 }
 
-void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
-		, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position)
+void GraphicalModel::initializeElement(const Id &id, const Id &logicalId
+		, modelsImplementation::AbstractModelItem *parentItem, modelsImplementation::AbstractModelItem *item
+		, QString const &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 
@@ -304,7 +305,8 @@ bool GraphicalModel::removeRows(int row, int count, QModelIndex const &parent)
 	}
 }
 
-void GraphicalModel::removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child)
+void GraphicalModel::removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
+		, details::modelsImplementation::AbstractModelItem *child)
 {
 	mApi.removeProperty(child->id(), "position");
 	mApi.removeProperty(child->id(), "configuration");

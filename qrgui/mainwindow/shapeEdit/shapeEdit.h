@@ -26,7 +26,8 @@ class ShapeEdit : public QWidget {
 public:
 	explicit ShapeEdit(QWidget *parent = NULL);
 	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role);
-	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow, EditorView *editorView);
+	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy
+			, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow, EditorView *editorView);
 	~ShapeEdit();
 	graphicsUtils::AbstractView* getView();
 	void load(QString const &text);
