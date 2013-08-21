@@ -18,8 +18,10 @@ public:
 	virtual ~AbstractView();
 
 public slots:
-	void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
-	void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
+	void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
+			, QModelIndex const &destinationParent, int destinationRow);
+	void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
+			, QModelIndex const &destinationParent, int destinationRow);
 
 protected slots:
 	virtual void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GeometricForms.h"
+#include "geometricForms.h"
 #include "pathCorrector.h"
 #include "cmath"
 

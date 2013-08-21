@@ -39,12 +39,9 @@ PushButtonFactory::~PushButtonFactory()
 
 void PushButtonFactory::connectPropertyManager(PushButtonPropertyManager *)
 {
-//	connect(manager, SIGNAL(valueChanged(QtProperty *, bool)),
-//				this, SLOT(slotPropertyChanged(QtProperty *, bool)));
 }
 
-QWidget *PushButtonFactory::createEditor(PushButtonPropertyManager *manager, QtProperty *property,
-		QWidget *)
+QWidget *PushButtonFactory::createEditor(PushButtonPropertyManager *manager, QtProperty *property, QWidget *)
 {
 	emit manager->buttonClicked(property);
 	return NULL;
@@ -52,6 +49,4 @@ QWidget *PushButtonFactory::createEditor(PushButtonPropertyManager *manager, QtP
 
 void PushButtonFactory::disconnectPropertyManager(PushButtonPropertyManager *)
 {
-//	disconnect(manager, SIGNAL(valueChanged(QtProperty *, bool)),
-//				this, SLOT(slotPropertyChanged(QtProperty *, bool)));
 }

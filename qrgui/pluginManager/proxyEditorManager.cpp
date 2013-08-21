@@ -276,8 +276,8 @@ void ProxyEditorManager::addNodeElement(Id const &diagram, QString const &name, 
 	mProxiedEditorManager->addNodeElement(diagram, name, isRootDiagramNode);
 }
 
-void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
-		, QString const &lineType, QString const &beginType, QString const &endType) const
+void ProxyEditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
 {
 	mProxiedEditorManager->addEdgeElement(diagram, name, labelText, labelType, lineType, beginType, endType);
 }

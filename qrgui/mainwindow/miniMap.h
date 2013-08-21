@@ -8,11 +8,12 @@
 #include "mainWindow.h"
 
 /** @brief Minimap for the current viewed diagram
-  *
-  * Displays the scene of current diagram. The area of the scene, visible in the
-  * EditorView, displayed on the minimap as a rectangle. Navigation on the scene is possible
-  * by moving that rectangle with mouse.
-  */
+*
+* Displays the scene of current diagram. The area of the scene, visible in the
+* EditorView, displayed on the minimap as a rectangle. Navigation on the scene is possible
+* by moving that rectangle with mouse.
+*/
+
 class MiniMap : public QGraphicsView
 {
 	Q_OBJECT

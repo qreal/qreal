@@ -19,7 +19,7 @@ proc checkGuards { fileName } {
     incr lineCount
   }
   if {![expr $guardFound]} {
-    puts "$fileName: No include guard in header file"
+    report $fileName 1 "No include guard in header file"
   }
 }
 

@@ -31,8 +31,7 @@ bool MixedGesturesManager::isMultistroke()
 	return true;
 }
 
-double MixedGesturesManager::getDistance(QPair<double *,double *> const &key1,
-										 QPair<double *, double *> const &key2)
+double MixedGesturesManager::getDistance(QPair<double *,double *> const &key1, QPair<double *, double *> const &key2)
 {
 	RectangleGesturesManager rectMan;
 	NearestPosGridGesturesManager gridMan;
