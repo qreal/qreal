@@ -10,8 +10,9 @@
 using namespace qReal;
 
 /**
- * @brief EdgeElement serialization data for copy/paste
- */
+* @brief EdgeElement serialization data for copy/paste
+*/
+
 class EdgeData
 {
 public:
@@ -38,8 +39,9 @@ public:
 };
 
 /**
- * @brief NodeElement serialization data for copy/paste
- */
+* @brief NodeElement serialization data for copy/paste
+*/
+
 class NodeData
 {
 public:

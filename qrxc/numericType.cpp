@@ -7,11 +7,11 @@ bool NumericType::init(QDomElement const &element, QString const &context)
 {
 	if (NonGraphicType::init(element, context)) {
 		QString baseTypeName = element.firstChildElement("base_type").text();
-		if (baseTypeName == "int")
-			mBaseType = IntType;
-		else if (baseTypeName == "float")
-			mBaseType = FloatType;
-		else {
+		if (baseTypeName == "int") {
+			mBaseType = intType;
+		} else if (baseTypeName == "float") {
+			mBaseType = floatType;
+		} else {
 			qDebug() << "ERROR: unknown numeric base type" << baseTypeName;
 			return false;
 		}
@@ -29,11 +29,11 @@ Type* NumericType::clone() const
 	return result;
 }
 
-bool NumericType::generateEnumValues(utils::OutFile &out, bool isNotFirst) 
-{ 
+bool NumericType::generateEnumValues(utils::OutFile &out, bool isNotFirst)
+{
 	Q_UNUSED(out);
 	Q_UNUSED(isNotFirst);
-	return false; 
+	return false;
 }
 
 void NumericType::generatePropertyTypes(utils::OutFile &out)

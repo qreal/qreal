@@ -6,8 +6,8 @@
 
 enum BaseType
 {
-	IntType,
-	FloatType
+	intType
+	, floatType
 };
 
 class NumericType : public NonGraphicType

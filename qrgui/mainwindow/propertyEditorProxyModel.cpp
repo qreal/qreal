@@ -1,6 +1,7 @@
 /** @file propertyeditorproxymodel.cpp
- *	@brief Модель редактора свойств
- * */
+*	@brief Property editor model
+* */
+
 #include <QtCore/QDebug>
 
 #include "../../qrkernel/exception/exception.h"
@@ -154,7 +155,8 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 		return QStringList();
 
 	AttributeClassEnum const attrClass = mFields[index.row()].attributeClass;
-	if (attrClass != logicalAttribute && attrClass != graphicalAttribute)  // metatype, ids and name are definitely not enums
+	// metatype, ids and name are definitely not enums
+	if (attrClass != logicalAttribute && attrClass != graphicalAttribute)
 		return QStringList();
 
 	Id const id = attrClass == logicalAttribute
@@ -164,19 +166,9 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 	return mEditorManagerInterface.enumValues(id, mFields[index.row()].fieldName);
 }
 
-//QString PropertyEditorModel::typeName(const QModelIndex &index) const
-//{
-//	model::Model *im = const_cast<model::Model *>(static_cast<model::Model const *>(targetModel));
-//	if (im) {
-//		return im->getTypeName(targetObject, roleByIndex(index.row()));
-//	}
-//	return QString();
-//}
-
 void PropertyEditorModel::rereadData(QModelIndex const &topLeftIndex, QModelIndex const &bottomRightIndex)
 {
 	emit dataChanged(topLeftIndex, bottomRightIndex);
-//	reset();
 }
 
 void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogicalModel
@@ -190,12 +182,12 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 	endResetModel();
 
 	if (mTargetLogicalModel)
-		connect(mTargetLogicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &)),
-				this, SLOT(rereadData(QModelIndex const &, QModelIndex const &)));
+		connect(mTargetLogicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &))
+				, this, SLOT(rereadData(QModelIndex const &, QModelIndex const &)));
 
 	if (mTargetGraphicalModel)
-		connect(mTargetGraphicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &)),
-				this, SLOT(rereadData(QModelIndex const &, QModelIndex const &)));
+		connect(mTargetGraphicalModel, SIGNAL(dataChanged(QModelIndex const &, QModelIndex const &))
+				, this, SLOT(rereadData(QModelIndex const &, QModelIndex const &)));
 }
 
 void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
@@ -261,7 +253,8 @@ QModelIndex PropertyEditorModel::modelIndex(int row) const
 	case graphicalAttribute:
 		return mTargetGraphicalObject;
 	default:
-		throw Exception("PropertyEditorModel::modelIndex: called for incorrect field, which is not graphical nor logical attribute");
+		throw Exception("PropertyEditorModel::modelIndex: called for incorrect field,"
+				"which is not graphical nor logical attribute");
 	}
 	return QModelIndex();
 }

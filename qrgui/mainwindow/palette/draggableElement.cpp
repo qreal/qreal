@@ -105,7 +105,8 @@ void DraggableElement::deleteElementPaletteActionTriggered()
 	mDeletedElementId = action->data().value<Id>();
 	QMessageBox messageBox(
 			tr("Deleting an element: ") + mEditorManagerProxy.friendlyName(mDeletedElementId)
-			, tr("Do you really want to delete this item and all its graphical representation from the scene and from the palette?")
+			, tr("Do you really want to delete this item and all its graphical"
+					"representation from the scene and from the palette?")
 			, QMessageBox::Warning
 			, QMessageBox::Ok
 			, QMessageBox::Cancel
@@ -135,7 +136,8 @@ void DraggableElement::checkElementForRootDiagramNode()
 		mIsRootDiagramNode = true;
 		QMessageBox messageBox(
 				tr("Warning")
-				, tr("The deleted element ") + mEditorManagerProxy.friendlyName(mDeletedElementId) + tr(" is the element of root digram. Continue to delete?")
+				, tr("The deleted element ") + mEditorManagerProxy.friendlyName(mDeletedElementId)
+						+ tr(" is the element of root digram. Continue to delete?")
 				, QMessageBox::Warning
 				, QMessageBox::Ok
 				, QMessageBox::Cancel
@@ -172,7 +174,8 @@ void DraggableElement::checkElementForChildren()
 						+ tr(" has inheritors:")
 						+ childrenNames
 						+ "\n"
-						+ tr("If you delete it, its properties will be removed from the elements-inheritors. Continue to delete?")
+						+ tr("If you delete it, its properties will be removed from"
+								"the elements-inheritors. Continue to delete?")
 				, QMessageBox::Warning
 				, QMessageBox::Ok
 				, QMessageBox::Cancel
@@ -200,12 +203,14 @@ bool DraggableElement::event(QEvent *event)
 
 	switch(event->type()) {
 	case QEvent::TouchBegin: {
-		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonPress, pos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonPress, pos
+				, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
 		QApplication::postEvent(touchEvent->target(), mouseEvent);
 		break;
 	}
 	case QEvent::TouchEnd: {
-		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonRelease, pos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonRelease, pos
+				, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
 		QApplication::postEvent(touchEvent->target(), mouseEvent);
 		break;
 	}

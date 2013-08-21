@@ -10,14 +10,14 @@
 using namespace utils;
 
 GraphicType::ContainerProperties::ContainerProperties()
-	: isSortingContainer(false), sizeOfForestalling(4, 0)
-	, sizeOfChildrenForestalling(0), hasMovableChildren(true)
-	, minimizesToChildren(false), maximizesChildren(false)
+		: isSortingContainer(false), sizeOfForestalling(4, 0)
+		, sizeOfChildrenForestalling(0), hasMovableChildren(true)
+		, minimizesToChildren(false), maximizesChildren(false)
 {
 }
 
 GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
-	: mResolvingFlag(resolvingFlag)
+		: mResolvingFlag(resolvingFlag)
 {
 	mResolvingFlag = true;
 }
@@ -28,7 +28,7 @@ GraphicType::ResolvingHelper::~ResolvingHelper()
 }
 
 GraphicType::GraphicType(Diagram *diagram)
-	: Type(false, diagram), mVisible(false), mWidth(-1), mHeight(-1), mResolving(false)
+		: Type(false, diagram), mVisible(false), mWidth(-1), mHeight(-1), mResolving(false)
 {
 }
 
@@ -151,7 +151,8 @@ bool GraphicType::initFieldList(QString const &listName, QString const &listElem
 		if (!resultingList.contains(typeName)) {
 			resultingList.append(typeName);
 		} else {
-			qDebug() << "ERROR: " << fieldName << " in the " << listName << " list in " << qualifiedName() << "duplicated";
+			qDebug() << "ERROR: " << fieldName << " in the " << listName << " list in "
+					 << qualifiedName() << "duplicated";
 			return false;
 		}
 	}
@@ -159,7 +160,7 @@ bool GraphicType::initFieldList(QString const &listName, QString const &listElem
 }
 
 bool GraphicType::initTypeList(QString const &listName, QString const &listElementName
-	, QStringList &resultingList) const
+		, QStringList &resultingList) const
 {
 	return initFieldList(listName, listElementName, resultingList, "type", true);
 }
@@ -263,7 +264,8 @@ bool GraphicType::initPossibleEdges()
 		}
 
 		QString edgeName = NameNormalizer::normalize(qualifiedName());
-		QPair<QPair<QString,QString>,QPair<bool,QString> > possibleEdge(qMakePair(beginName,endName),qMakePair(directed,edgeName));
+		QPair<QPair<QString, QString>, QPair<bool, QString> > possibleEdge(qMakePair(beginName, endName)
+				, qMakePair(directed, edgeName));
 
 		if (!mPossibleEdges.contains(possibleEdge)) {
 			mPossibleEdges.append(possibleEdge);
@@ -290,7 +292,8 @@ bool GraphicType::initExplosions()
 			return false;
 		}
 		bool const isReusable = targetElement.attribute("makeReusable", "false").toLower().trimmed() == "true";
-		bool const immediateLinkage = targetElement.attribute("requireImmediateLinkage", "false").toLower().trimmed() == "true";
+		bool const immediateLinkage
+				= targetElement.attribute("requireImmediateLinkage", "false").toLower().trimmed() == "true";
 		mExplosions[targetName] = qMakePair(isReusable, immediateLinkage);
 	}
 	return true;
@@ -401,7 +404,8 @@ void GraphicType::generateNameMapping(OutFile &out)
 		QString diagramName = NameNormalizer::normalize(mDiagram->name());
 		QString normalizedName = NameNormalizer::normalize(qualifiedName());
 		QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
-		out() << "\tmElementsNameMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = QString::fromUtf8(\"" << actualDisplayedName << "\");\n";
+		out() << "\tmElementsNameMap[\"" << diagramName << "\"][\"" << normalizedName
+				<< "\"] = QString::fromUtf8(\"" << actualDisplayedName << "\");\n";
 	}
 }
 
@@ -411,7 +415,8 @@ void GraphicType::generateDescriptionMapping(OutFile &out)
 		if (!mDescription.isEmpty()) {
 			QString diagramName = NameNormalizer::normalize(mDiagram->name());
 			QString normalizedName = NameNormalizer::normalize(qualifiedName());
-			out() << "\tmElementsDescriptionMap[\"" << diagramName << "\"][\"" << normalizedName << "\"] = QString::fromUtf8(\"" << mDescription << "\");\n";
+			out() << "\tmElementsDescriptionMap[\"" << diagramName << "\"][\""
+					<< normalizedName << "\"] = QString::fromUtf8(\"" << mDescription << "\");\n";
 		}
 	}
 }
@@ -426,7 +431,8 @@ void GraphicType::generatePropertyDescriptionMapping(utils::OutFile &out)
 				QString const propertyName = p->name();
 				QString const propertyDescription = p->description();
 				out() << "\tmPropertiesDescriptionMap[\"" << diagramName << "\"][\""
-						<< normalizedName << "\"][\"" << propertyName << "\"] = QString::fromUtf8(\"" << propertyDescription << "\");\n";
+						<< normalizedName << "\"][\"" << propertyName << "\"] = QString::fromUtf8(\""
+						<< propertyDescription << "\");\n";
 			}
 		}
 	}
@@ -442,7 +448,8 @@ void GraphicType::generatePropertyDisplayedNamesMapping(utils::OutFile &out)
 				QString const propertyName = p->name();
 				QString const propertyDisplayedName = p->displayedName();
 				out() << "\tmPropertiesDisplayedNamesMap[\"" << diagramName << "\"][\""
-						<< normalizedName << "\"][\"" << propertyName << "\"] = QString::fromUtf8(\"" << propertyDisplayedName << "\");\n";
+						<< normalizedName << "\"][\"" << propertyName << "\"] = QString::fromUtf8(\""
+						<< propertyDisplayedName << "\");\n";
 			}
 		}
 	}
@@ -457,8 +464,8 @@ void GraphicType::generateMouseGesturesMap(OutFile &out)
 			return;
 		}
 
-		output =  "\tmElementMouseGesturesMap[\"" + NameNormalizer::normalize(mDiagram->name()) + "\"][\"" +
-											NameNormalizer::normalize(qualifiedName()) + "\"] = ";
+		output =  "\tmElementMouseGesturesMap[\"" + NameNormalizer::normalize(mDiagram->name()) + "\"][\""
+				+ NameNormalizer::normalize(qualifiedName()) + "\"] = ";
 		out() << output;
 
 		if (pathStr.length() > maxLineLength - output.length()) {
@@ -489,6 +496,7 @@ bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 		out() << "\t\treturn new " << name << "();\n\t}\n";
 		return true;
 	}
+
 	return false;
 }
 
@@ -544,24 +552,28 @@ bool GraphicType::generatePorts(OutFile &out, bool isNotFirst)
 
 void GraphicType::generatePropertyTypes(OutFile &out)
 {
-	if (!mVisible)
+	if (!mVisible) {
 		return;
+	}
 
 	QString name = NameNormalizer::normalize(qualifiedName());
 
 	foreach (Property *property, mProperties) {
 		// skipping basic types since we're not really interested in them
 		// TODO: lolwut?
-		if (property->type() == "string" || property->name() == "int")
+		if (property->type() == "string" || property->name() == "int") {
 			continue;
-		out() << "\tmPropertyTypes[\"" << name << "\"][\"" << property->name() << "\"] = \"" << NameNormalizer::normalize(property->type()) << "\";\n";
+		}
+		out() << "\tmPropertyTypes[\"" << name << "\"][\"" << property->name() << "\"] = \""
+				<< NameNormalizer::normalize(property->type()) << "\";\n";
 	}
 }
 
 void GraphicType::generatePropertyDefaults(OutFile &out)
 {
-	if (!mVisible)
+	if (!mVisible) {
 		return;
+	}
 
 	QString name = NameNormalizer::normalize(qualifiedName());
 	foreach (Property *property, mProperties) {
@@ -596,16 +608,21 @@ bool GraphicType::generateContainedTypes(OutFile &out, bool isNotFirst)
 
 bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst)
 {
-	if (mPossibleEdges.isEmpty())
+	if (mPossibleEdges.isEmpty()) {
 		return false;
+	}
+
 	generateOneCase(out, isNotFirst);
 
 	out() << "\t\tresult";
 	foreach (PossibleEdge element, mPossibleEdges) {
 		QString directed = "false";
-		if (element.second.first)
+		if (element.second.first) {
 			directed = "true";
-		out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\"" << element.first.second << "\")),"
+		}
+
+		out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\""
+				<< element.first.second << "\")),"
 				<< "qMakePair(" << directed << ",QString(\"" << element.second.second << "\")))";
 	}
 	out() << ";\n\t}\n";
@@ -639,7 +656,8 @@ void GraphicType::generateParentsMapping(utils::OutFile &out)
 	QString const normalizedName = NameNormalizer::normalize(qualifiedName());
 	out() << "\tmParentsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]\n";
 	foreach (QString const &parent, mParents) {
-		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\"" << NameNormalizer::normalize(parent) << "\"))\n";
+		out() << "\t\t<< qMakePair(QString(\"" << diagramName << "\"), QString(\""
+				<< NameNormalizer::normalize(parent) << "\"))\n";
 	}
 	out() << "\t;\n";
 }

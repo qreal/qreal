@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef Q_WS_WIN
 #include "windowsExternBrowser.h"
 #endif

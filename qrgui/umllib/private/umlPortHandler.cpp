@@ -3,7 +3,7 @@
 #include "borderChecker.h"
 
 UmlPortHandler::UmlPortHandler(NodeElement * const node)
-	: mNode(node), mBelongsToHorizontalBorders(true)
+		: mNode(node), mBelongsToHorizontalBorders(true)
 {
 }
 
