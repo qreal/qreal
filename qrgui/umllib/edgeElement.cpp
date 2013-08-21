@@ -572,6 +572,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 	if (mDragType == wholeEdge) {
 		Element::mouseMoveEvent(event);
+		adjustLink();
 	} else {
 		if (mDragType > mLine.size() - 1) {
 			mDragType = overPointMax;

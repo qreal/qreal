@@ -77,6 +77,12 @@ void LineHandler::adjust()
 	NodeElement *src = mEdge->src();
 	NodeElement *dst = mEdge->dst();
 
+	if (src && src->isSelected() && dst && dst->isSelected()) {
+		QPointF offset = mEdge->mapFromItem(src, src->portPos(mEdge->fromPort())) - line.first();
+		mEdge->setPos(mEdge->pos() + offset);
+		return;
+	}
+
 	if (src) {
 		line.first() = mEdge->mapFromItem(src, src->portPos(mEdge->fromPort()));
 	}
