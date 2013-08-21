@@ -10,12 +10,12 @@ SimpleVisitedRuleBase::SimpleVisitedRuleBase(SemanticTree *tree, Id const &id
 
 bool SimpleVisitedRuleBase::apply()
 {
-	if (!mNext.targetVisited) {
+	if (!mNextLink.targetVisited) {
 		return false;
 	}
 
 	mThisNode = mTree->findNodeFor(mId);
-	mNextNode = mTree->findNodeFor(mNext.target);
+	mNextNode = mTree->findNodeFor(mNextLink.target);
 
 	return true;
 }

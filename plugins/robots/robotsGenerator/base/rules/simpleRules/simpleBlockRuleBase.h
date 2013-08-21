@@ -13,7 +13,7 @@ public:
 	SimpleBlockRuleBase(SemanticTree *tree, Id const &id, LinkInfo const &next);
 
 protected:
-	LinkInfo const &mNext;
+	LinkInfo const &mNextLink;
 };
 
 }

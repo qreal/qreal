@@ -16,6 +16,9 @@ public:
 
 	virtual QString toString() const;
 
+	void appendThenBranch(SemanticNode *node);
+	void appendElseBranch(SemanticNode *node);
+
 protected:
 	virtual QLinkedList<SemanticNode *> children() const;
 

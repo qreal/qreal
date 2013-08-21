@@ -18,10 +18,11 @@ HEADERS += \
 	$$PWD/rules/semanticTransformationRule.h \
 	$$PWD/rules/simpleRules/simpleBlockRuleBase.h \
 	$$PWD/rules/simpleRules/simpleUnvisitedRule.h \
-	$$PWD/rules/ifRules/ifBlockRuleBase.h \
-	$$PWD/rules/loopRules/loopBlockRuleBase.h \
 	$$PWD/rules/simpleRules/simpleVisitedOneZoneRule.h \
 	$$PWD/rules/simpleRules/simpleVisitedRuleBase.h \
+	$$PWD/rules/ifRules/ifBlockRuleBase.h \
+	$$PWD/rules/ifRules/ifWithBothUnvisitedRule.h \
+	$$PWD/rules/loopRules/loopBlockRuleBase.h \
 
 SOURCES += \
 	$$PWD/smartLine.cpp \
@@ -46,4 +47,5 @@ SOURCES += \
 	$$PWD/rules/simpleRules/simpleVisitedOneZoneRule.cpp \
 	$$PWD/rules/simpleRules/simpleVisitedRuleBase.cpp \
 	$$PWD/rules/ifRules/ifBlockRuleBase.cpp \
+	$$PWD/rules/ifRules/ifWithBothUnvisitedRule.cpp \
 	$$PWD/rules/loopRules/loopBlockRuleBase.cpp \

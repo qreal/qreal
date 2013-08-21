@@ -10,7 +10,12 @@ namespace semantics {
 class IfBlockRuleBase : public SemanticTransformationRule
 {
 public:
-	IfBlockRuleBase(SemanticTree *tree, Id const &id);
+	IfBlockRuleBase(SemanticTree *tree, Id const &id
+			, LinkInfo const &thenNode, LinkInfo const &elseNode);
+
+protected:
+	LinkInfo const &mThenLink;
+	LinkInfo const &mElseLink;
 };
 
 }

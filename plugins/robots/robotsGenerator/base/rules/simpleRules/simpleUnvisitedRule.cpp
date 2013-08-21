@@ -11,11 +11,11 @@ SimpleUnvisitedRule::SimpleUnvisitedRule(SemanticTree *tree, Id const &id
 
 bool SimpleUnvisitedRule::apply()
 {
-	if (mNext.targetVisited) {
+	if (mNextLink.targetVisited) {
 		return false;
 	}
 
-	SemanticNode * const nextNode = mTree->produceNodeFor(mNext.target);
+	SemanticNode * const nextNode = mTree->produceNodeFor(mNextLink.target);
 	SimpleNode * const thisNode = static_cast<SimpleNode *>(mTree->findNodeFor(mId));
 	thisNode->appendSibling(nextNode);
 

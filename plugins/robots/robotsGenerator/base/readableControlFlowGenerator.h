@@ -20,12 +20,12 @@ public:
 			, QObject *parent = 0);
 
 	virtual void beforeSearch();
-	virtual void visitRegular(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitFinal(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitConditional(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitLoop(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitSwitch(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
-	virtual void visitFork(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visitRegular(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitFinal(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitConditional(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitLoop(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitSwitch(Id const &id, QList<LinkInfo> const &links);
+	virtual void visitFork(Id const &id, QList<LinkInfo> const &links);
 	virtual void afterSearch();
 
 private:

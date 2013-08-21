@@ -21,6 +21,16 @@ QString IfNode::toString() const
 	return "if";
 }
 
+void IfNode::appendThenBranch(SemanticNode *node)
+{
+	mThenZone->appendChild(node);
+}
+
+void IfNode::appendElseBranch(SemanticNode *node)
+{
+	mElseZone->appendChild(node);
+}
+
 QLinkedList<SemanticNode *> IfNode::children() const
 {
 	return QLinkedList<SemanticNode *>() << mThenZone << mElseZone;

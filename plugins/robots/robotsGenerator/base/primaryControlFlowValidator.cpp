@@ -43,12 +43,12 @@ qReal::Id PrimaryControlFlowValidator::initialNode() const
 	return mInitialNode;
 }
 
-QPair<qReal::Id, qReal::Id> PrimaryControlFlowValidator::ifBranchesFor(qReal::Id const &id) const
+QPair<LinkInfo, LinkInfo> PrimaryControlFlowValidator::ifBranchesFor(qReal::Id const &id) const
 {
 	return mIfBranches[id];
 }
 
-QPair<qReal::Id, qReal::Id> PrimaryControlFlowValidator::loopBranchesFor(qReal::Id const &id) const
+QPair<LinkInfo, LinkInfo> PrimaryControlFlowValidator::loopBranchesFor(qReal::Id const &id) const
 {
 	return mLoopBranches[id];
 }
@@ -80,50 +80,55 @@ void PrimaryControlFlowValidator::visitConditional(Id const &id
 	}
 
 	// In correct case exactly 2 of this 3 would be non-null
-	Id trueBlock, falseBlock, nonMarkedBlock;
+	LinkInfo const *trueLink = NULL;
+	LinkInfo const *falseLink = NULL;
+	LinkInfo const *nonMarkedLink = NULL;
 
 	foreach (utils::DeepFirstSearcher::LinkInfo const &link, links) {
 		checkForConnected(link);
 
 		switch (guardOf(link.linkId)) {
 		case trueGuard:
-			if (trueBlock.isNull()) {
-				trueBlock = link.target;
-			} else {
+			if (trueLink) {
 				error(QObject::tr("Two outgoing links marked with 'true' found"), id);
+				return;
+			} else {
+				trueLink = &link;
 			}
 			break;
 
 		case falseGuard:
-			if (falseBlock.isNull()) {
-				falseBlock = link.target;
-			} else {
+			if (falseLink) {
 				error(QObject::tr("Two outgoing links marked with 'false' found"), id);
+				return;
+			} else {
+				falseLink = &link;
 			}
 			break;
 
 		default:
-			if (nonMarkedBlock.isNull()) {
-				nonMarkedBlock = link.target;
-			} else {
+			if (nonMarkedLink) {
 				error(QObject::tr("There must be a link with property \"Guard\""\
 						" set to one of the conditions"), id);
+				return;
+			} else {
+				nonMarkedLink = &link;
 			}
 			break;
 		}
 	}
 
 	// Now we have correctly linked branches. Determining who is who...
-	QPair<Id, Id> branches;
-	if (trueBlock.isNull()) {
-		branches.first = nonMarkedBlock;
-		branches.second = falseBlock;
-	} else if (falseBlock.isNull()) {
-		branches.first = trueBlock;
-		branches.second = nonMarkedBlock;
+	QPair<LinkInfo, LinkInfo> branches;
+	if (!trueLink) {
+		branches.first = *nonMarkedLink;
+		branches.second = *falseLink;
+	} else if (!falseLink) {
+		branches.first = *trueLink;
+		branches.second = *nonMarkedLink;
 	} else {
-		branches.first = trueBlock;
-		branches.second = falseBlock;
+		branches.first = *trueLink;
+		branches.second = *falseLink;
 	}
 
 	mIfBranches[id] = branches;
@@ -138,37 +143,38 @@ void PrimaryControlFlowValidator::visitLoop(Id const &id
 	}
 
 	// In correct case must be non-null and different
-	Id iterationBlock, nonMarkedBlock;
+	LinkInfo const *iterationLink = NULL;
+	LinkInfo const *nonMarkedBlock = NULL;
 
 	foreach (utils::DeepFirstSearcher::LinkInfo const &link, links) {
 		checkForConnected(link);
 
 		switch (guardOf(link.linkId)) {
 		case iterationGuard:
-			if (iterationBlock.isNull()) {
-				iterationBlock = link.target;
-			} else {
+			if (iterationLink) {
 				error(QObject::tr("Two outgoing links marked with \"iteration\" found"), id);
+			} else {
+				iterationLink = &link;
 				return;
 			}
 			break;
 		default:
-			if (nonMarkedBlock.isNull()) {
-				nonMarkedBlock = link.target;
-			} else {
+			if (nonMarkedBlock) {
 				error(QObject::tr("There must be a link with property \"Guard\""\
 						" set to \"iteration\""), id);
+			} else {
+				nonMarkedBlock = &link;
 				return;
 			}
 			break;
 		}
 	}
 
-	if (iterationBlock == nonMarkedBlock) {
+	if (iterationLink->target == nonMarkedBlock->target) {
 		error(QObject::tr("Outgoing links from loop block must be connected to different blocks"), id);
 	}
 
-	mLoopBranches[id] = qMakePair(iterationBlock, nonMarkedBlock);
+	mLoopBranches[id] = qMakePair(*iterationLink, *nonMarkedBlock);
 }
 
 void PrimaryControlFlowValidator::visitSwitch(Id const &id

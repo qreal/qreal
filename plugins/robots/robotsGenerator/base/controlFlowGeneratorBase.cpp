@@ -53,12 +53,12 @@ qReal::Id ControlFlowGeneratorBase::initialNode() const
 	return mValidator.initialNode();
 }
 
-QPair<qReal::Id, qReal::Id> ControlFlowGeneratorBase::ifBranchesFor(qReal::Id const &id) const
+QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::ifBranchesFor(qReal::Id const &id) const
 {
 	return mValidator.ifBranchesFor(id);
 }
 
-QPair<qReal::Id, qReal::Id> ControlFlowGeneratorBase::loopBranchesFor(qReal::Id const &id) const
+QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::loopBranchesFor(qReal::Id const &id) const
 {
 	return mValidator.loopBranchesFor(id);
 }

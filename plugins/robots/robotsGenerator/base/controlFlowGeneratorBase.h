@@ -28,8 +28,8 @@ protected:
 	void error(QString const &message, Id const &id = Id());
 	enums::semantics::Semantics semanticsOf(Id const &id) const;
 	Id initialNode() const;
-	QPair<Id, Id> ifBranchesFor(Id const &id) const;
-	QPair<Id, Id> loopBranchesFor(Id const &id) const;
+	QPair<LinkInfo, LinkInfo> ifBranchesFor(Id const &id) const;
+	QPair<LinkInfo, LinkInfo> loopBranchesFor(Id const &id) const;
 
 	GeneratorCustomizer const &customizer() const;
 

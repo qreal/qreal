@@ -12,6 +12,8 @@ namespace qReal {
 namespace robots {
 namespace generators {
 
+typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
+
 class PrimaryControlFlowValidator : public RobotsDiagramVisitor
 {
 public:
@@ -25,8 +27,8 @@ public:
 	bool validate();
 
 	Id initialNode() const;
-	QPair<Id, Id> ifBranchesFor(Id const &id) const;
-	QPair<Id, Id> loopBranchesFor(Id const &id) const;
+	QPair<LinkInfo, LinkInfo> ifBranchesFor(Id const &id) const;
+	QPair<LinkInfo, LinkInfo> loopBranchesFor(Id const &id) const;
 
 private:
 	void findInitialNode();
@@ -49,8 +51,8 @@ private:
 	bool mErrorsOccured;
 
 	Id mInitialNode;
-	QMap<Id, QPair<Id, Id> > mIfBranches;
-	QMap<Id, QPair<Id, Id> > mLoopBranches;
+	QMap<Id, QPair<LinkInfo, LinkInfo> > mIfBranches;
+	QMap<Id, QPair<LinkInfo, LinkInfo> > mLoopBranches;
 };
 
 }
