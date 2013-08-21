@@ -31,7 +31,8 @@ public:
 	QRect visualRect(const QModelIndex &index) const;
 	void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
 	bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
-	void setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi);
+	void setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi
+			, models::LogicalModelAssistApi &logicalAssistApi);
 	void setLogicalModel(QAbstractItemModel * const logicalModel);
     Id rootId() const;
 
@@ -42,8 +43,10 @@ public:
 public slots:
 	void reset();
 	void setRootIndex(QModelIndex const &index);
-	void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
-	void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
+	void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
+			, QModelIndex const &destinationParent, int destinationRow);
+	void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
+			, QModelIndex const &destinationParent, int destinationRow);
 
 private slots:
 	void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight);

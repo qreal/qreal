@@ -11,14 +11,16 @@
 #include <QDebug>
 
 Diagram::Diagram(QString const &name, QString const &nodeName, QString const &displayedName, Editor *editor)
-	: mDiagramName(name), mDiagramNodeName(nodeName), mDiagramDisplayedName(displayedName), mEditor(editor)
+		: mDiagramName(name), mDiagramNodeName(nodeName), mDiagramDisplayedName(displayedName), mEditor(editor)
 {}
 
 Diagram::~Diagram()
 {
-	foreach(Type *type, mTypes.values())
-		if (type)
+	foreach(Type *type, mTypes.values()) {
+		if (type) {
 			delete type;
+		}
+	}
 }
 
 bool Diagram::init(QDomElement const &diagramElement)
@@ -37,8 +39,9 @@ bool Diagram::init(QDomElement const &diagramElement)
 			}
 		} else if (element.nodeName() == "palette") {
 			initPaletteGroups(element);
-		} else
+		} else {
 			qDebug() << "ERROR: unknown tag" << element.nodeName();
+		}
 	}
 
 	return true;
@@ -69,9 +72,9 @@ bool Diagram::initGraphicTypes(QDomElement const &graphicTypesElement)
 			mTypes[edgeType->qualifiedName()] = edgeType;
 		} else if (element.nodeName() == "import") {
 			ImportSpecification import = {
-				element.attribute("name", ""),
-				element.attribute("as", ""),
-				element.attribute("displayedName", "")
+					element.attribute("name", "")
+					, element.attribute("as", "")
+					, element.attribute("displayedName", "")
 			};
 			mImports.append(import);
 		}
@@ -100,8 +103,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 			mGroupsXML = xml;
 		} else if (element.nodeName() == "enum") {
 			Type *enumType = new EnumType();
-			if (!enumType->init(element, mDiagramName))
-			{
+			if (!enumType->init(element, mDiagramName)) {
 				delete enumType;
 				qDebug() << "Can't parse enum";
 				return false;
@@ -109,8 +111,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 			mTypes[enumType->qualifiedName()] = enumType;
 		} else if (element.nodeName() == "numeric") {
 			Type *numericType = new NumericType();
-			if (!numericType->init(element, mDiagramName))
-			{
+			if (!numericType->init(element, mDiagramName)) {
 				delete numericType;
 				qDebug() << "Can't parse numeric type";
 				return false;
@@ -118,8 +119,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 			mTypes[numericType->qualifiedName()] = numericType;
 		} else if (element.nodeName() == "string") {
 			Type *stringType = new StringType();
-			if (!stringType->init(element, mDiagramName))
-			{
+			if (!stringType->init(element, mDiagramName)) {
 				delete stringType;
 				qDebug() << "Can't parse string type";
 				return false;
@@ -194,10 +194,11 @@ Editor* Diagram::editor() const
 
 Type* Diagram::findType(QString name)
 {
-	if (mTypes.contains(name))
+	if (mTypes.contains(name)) {
 		return mTypes[name];
-	else
+	} else {
 		return mEditor->findType(name);
+	}
 }
 
 QMap<QString, Type*> Diagram::types() const

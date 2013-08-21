@@ -46,7 +46,8 @@ void QRealRectangle::drawItem(QPainter* painter, const QStyleOptionGraphicsItem*
 	mRectangleImpl.drawRectItem(painter, mX1, mY1, mX2, mY2);
 }
 
-QPair<QDomElement, Item::DomElementTypes> QRealRectangle::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> QRealRectangle::generateItem(QDomDocument &document
+		, QPoint const &topLeftPicture)
 {
 	QDomElement rectangle = setPenBrushToDoc(document, "rectangle");
 	setXandY(rectangle, sceneBoundingRectCoord(topLeftPicture));

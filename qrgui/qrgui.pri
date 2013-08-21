@@ -26,9 +26,6 @@ include(view/view.pri)
 # Controller
 include(controller/controller.pri)
 
-# Built-in generators
-include(generators/generators.pri)
-
 # The code from the Internet
 include(thirdparty/thirdparty.pri)
 

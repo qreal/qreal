@@ -21,7 +21,7 @@ Pattern::Pattern()
 
 Pattern::Pattern(QString const &editor, QString const &diagram, QString const &name
 		, QString const &inNode, QString const &outNode)
-	: mEditor(editor), mDiagram(diagram), mGroupName(name), mInNode(inNode), mOutNode(outNode)
+		: mEditor(editor), mDiagram(diagram), mGroupName(name), mInNode(inNode), mOutNode(outNode)
 {
 }
 

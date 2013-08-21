@@ -1,6 +1,6 @@
 /** @file nodeElement.h
- *  @brief class for an element object on a diagram
- * */
+*  @brief class for an element object on a diagram
+**/
 
 #pragma once
 
@@ -37,8 +37,7 @@ public:
 	explicit NodeElement(ElementImpl *impl
 			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			);
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
 
 	virtual ~NodeElement();
 
@@ -170,15 +169,15 @@ private slots:
 
 private:
 	enum DragState {
-		None,
-		TopLeft,
-		Top,
-		TopRight,
-		Left,
-		Right,
-		BottomLeft,
-		Bottom,
-		BottomRight
+		None
+		, TopLeft
+		, Top
+		, TopRight
+		, Left
+		, Right
+		, BottomLeft
+		, Bottom
+		, BottomRight
 	};
 
 	/**

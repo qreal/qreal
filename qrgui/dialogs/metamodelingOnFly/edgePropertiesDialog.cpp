@@ -8,7 +8,8 @@
 using namespace qReal;
 using namespace gui;
 
-EdgePropertiesDialog::EdgePropertiesDialog(MainWindow &mainWindow, Id const &diagram, EditorManagerInterface const &editorManagerProxy)
+EdgePropertiesDialog::EdgePropertiesDialog(MainWindow &mainWindow, Id const &diagram
+		, EditorManagerInterface const &editorManagerProxy)
 		: QDialog(&mainWindow)
 		, mUi(new Ui::EdgePropertiesDialog)
 		, mMainWindow(mainWindow)

@@ -6,7 +6,8 @@
 using namespace qReal;
 using namespace gui;
 
-ChooseTypeDialog::ChooseTypeDialog(MainWindow &mainWindow, Id const &diagram, EditorManagerInterface const &editorManagerProxy)
+ChooseTypeDialog::ChooseTypeDialog(MainWindow &mainWindow, Id const &diagram
+		, EditorManagerInterface const &editorManagerProxy)
 		: QDialog(&mainWindow)
 		, mUi(new Ui::ChooseTypeDialog)
 		, mMainWindow(mainWindow)

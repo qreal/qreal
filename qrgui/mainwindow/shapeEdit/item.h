@@ -13,22 +13,22 @@ class Item : public graphicsUtils::AbstractItem
 {
 public:
 	enum DomElementTypes {
-		noneType,
-		pictureType,
-		labelType,
-		portType
+		noneType
+		, pictureType
+		, labelType
+		, portType
 	};
 
 	enum ScalingPointState {
-		noneScale,
-		topLeftX,
-		topRightX,
-		bottomLeftX,
-		bottomRightX,
-		topLeftY,
-		topRightY,
-		bottomLeftY,
-		bottomRightY
+		noneScale
+		, topLeftX
+		, topRightX
+		, bottomLeftX
+		, bottomRightX
+		, topLeftY
+		, topRightY
+		, bottomLeftY
+		, bottomRightY
 	};
 
 	struct VisibilityCondition
@@ -58,7 +58,7 @@ public:
 	void setListScalePoint(QList<QPair<ScalingPointState, QColor> > list);
 
 	void initListScalePoint();
-	void calcForChangeScalingState(QPointF const&pos, QPointF const& point1, QPointF const& point2, int const &correction);
+	void calcForChangeScalingState(QPointF const&pos, QPointF const& point1, QPointF const& point2, int correction);
 	virtual void changeScalingPointState(qreal x, qreal y);
 	ScalingPointState getScalingPointState() const;
 	QColor changeScaleColor(QPair<Item::ScalingPointState, QColor> point);
@@ -70,7 +70,8 @@ public:
 	virtual void setXandY(QDomElement& dom, QRectF const &rect);
 
 	QPair<QDomElement, Item::DomElementTypes> generateDom(QDomDocument &document, QPoint const &topLeftPicture);
-	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture) = 0;
+	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
+			, QPoint const &topLeftPicture) = 0;
 
 	void setVisibilityCondition(VisibilityCondition const &condition);
 	void setVisibilityCondition(QString const &property, QString const &sign, QString const &value);

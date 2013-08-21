@@ -169,9 +169,11 @@ void StartDialog::createInterpretedDiagram()
 	ProxyEditorManager &editorManagerProxy = mMainWindow.editorManagerProxy();
 	editorManagerProxy.setProxyManager(new InterpreterEditorManager(""));
 	bool ok = false;
-	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
+	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
+			, QLineEdit::Normal, "", &ok);
 	while (ok && name.isEmpty()) {
-		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
+		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
+				, QLineEdit::Normal, "", &ok);
 	}
 
 	if (ok) {

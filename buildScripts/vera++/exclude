@@ -1,0 +1,15 @@
+qreal/buildScripts
+qreal/plugins
+qreal/installer
+qreal/qrrepo
+qreal/qrutils
+qreal/thirdparty
+qreal/plugins
+qreal/qrtest
+qreal/bin
+qreal/docs
+qreal/umlDocumentation
+qreal/qrmc
+thirdparty
+.moc
+.ui

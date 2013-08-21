@@ -76,14 +76,16 @@ public:
 	virtual QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const = 0;
 	virtual QStringList elements(QString const &editor, QString const &diagram) const = 0;
 	virtual int isNodeOrEdge(QString const &editor, QString const &element) const = 0;
-	virtual bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement, QString const &childDiagram, QString const &childElement) const = 0;
+	virtual bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement
+			, QString const &childDiagram, QString const &childElement) const = 0;
 	virtual QString diagramName(QString const &editor, QString const &diagram) const = 0;
 	virtual QString diagramNodeName(QString const &editor, QString const &diagram) const = 0;
 	virtual bool isInterpretationMode() const = 0;
 	virtual bool isParentProperty(Id const &id, QString const &propertyName) const = 0;
 	virtual void deleteProperty(QString const &propDisplayedName) const = 0;
 	virtual void addProperty(Id const &id, QString const &propDisplayedName) const = 0;
-	virtual void updateProperties(Id const &id, QString const &property, QString const &propertyType, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const = 0;
+	virtual void updateProperties(Id const &id, QString const &property, QString const &propertyType
+			, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const = 0;
 	virtual QString propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const = 0;
 	virtual IdList children(Id const &parent) const = 0;
 	virtual QString shape(Id const &id) const = 0;
@@ -91,8 +93,9 @@ public:
 	virtual void deleteElement(MainWindow *mainWindow, Id const &id) const = 0;
 	virtual bool isRootDiagramNode(Id const &id) const = 0;
 	virtual void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const = 0;
-	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType,
-			QString const &lineType, QString const &beginType, QString const &endType) const = 0;
+	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+			, QString const &labelType, QString const &lineType
+			, QString const &beginType, QString const &endType) const = 0;
 	virtual QPair<Id, Id> createEditorAndDiagram(QString const &name) const = 0;
 	virtual void saveMetamodel(QString const &newMetamodelFileName) = 0;
 	virtual QString saveMetamodelFilePath() const = 0;

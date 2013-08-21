@@ -1,6 +1,7 @@
 /** @file edgeElement.cpp
- * 	@brief class for an edge on a diagram
- * */
+*	@brief class for an edge on a diagram
+**/
+
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
@@ -32,26 +33,26 @@ EdgeElement::EdgeElement(
 		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
 		, qReal::models::LogicalModelAssistApi &logicalAssistApi
 		)
-	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
-	, mPenStyle(Qt::SolidLine)
-	, mPenWidth(1)
-	, mPenColor(Qt::black)
-	, mStartArrowStyle(enums::arrowTypeEnum::noArrow)
-	, mEndArrowStyle(enums::arrowTypeEnum::noArrow)
-	, mSrc(NULL)
-	, mDst(NULL)
-	, mPortFrom(0)
-	, mPortTo(0)
-	, mDragPoint(noPort)
-	, mLongPart(0)
-	, mAddPointAction(tr("Add point"), this)
-	, mDelPointAction(tr("Delete point"), this)
-	, mMinimizeAction(tr("Remove all points"), this)
-	, mDelSegmentAction(tr("Remove segment"), this)
-	, mReverseAction(tr("Reverse"), this)
-	, mModelUpdateIsCalled(false)
-	, mIsLoop(false)
-	, mReshapeCommand(NULL)
+		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
+		, mPenStyle(Qt::SolidLine)
+		, mPenWidth(1)
+		, mPenColor(Qt::black)
+		, mStartArrowStyle(enums::arrowTypeEnum::noArrow)
+		, mEndArrowStyle(enums::arrowTypeEnum::noArrow)
+		, mSrc(NULL)
+		, mDst(NULL)
+		, mPortFrom(0)
+		, mPortTo(0)
+		, mDragPoint(noPort)
+		, mLongPart(0)
+		, mAddPointAction(tr("Add point"), this)
+		, mDelPointAction(tr("Delete point"), this)
+		, mMinimizeAction(tr("Remove all points"), this)
+		, mDelSegmentAction(tr("Remove segment"), this)
+		, mReverseAction(tr("Reverse"), this)
+		, mModelUpdateIsCalled(false)
+		, mIsLoop(false)
+		, mReshapeCommand(NULL)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -352,7 +353,8 @@ void EdgeElement::paintSavedEdge(QPainter *painter) const
 
 		painter->save();
 		painter->translate(mSavedLineForChanges[mSavedLineForChanges.size() - 1]);
-		painter->rotate(90 - lineAngle(QLineF(mSavedLineForChanges[mSavedLineForChanges.size() - 2], mSavedLineForChanges[mSavedLineForChanges.size() - 1])));
+		painter->rotate(90 - lineAngle(QLineF(mSavedLineForChanges[mSavedLineForChanges.size() - 2]
+				, mSavedLineForChanges[mSavedLineForChanges.size() - 1])));
 		setEdgePainter(painter, edgePen(painter, color, Qt::SolidLine, 3), 0.5);
 		drawEndArrow(painter);
 		painter->restore();
@@ -596,7 +598,7 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 		}
 		newLine << mLine.first() << secondPoint
 				<< thirdPoint << thirdPoint
-				<< penultPoint << mLine.last(); // Third point added twice for easy change of line mode(to curve line mode).
+				<< penultPoint << mLine.last(); // Third point added twice for easy change of line mode (to curve lines)
 	} else {
 		QPointF thirdPoint = boundingRectIndent(secondPoint, rotateRight(startSide));
 		QPointF forthPoint = boundingRectIndent(thirdPoint, rotateRight(rotateRight(startSide)));
@@ -723,8 +725,9 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	mReshapeCommand = new commands::ReshapeEdgeCommand(this);
 	mReshapeCommand->startTracking();
 
-	if (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)  && (event->modifiers() & Qt::AltModifier)
-		&& (getPoint(event->pos()) != noPort) && (event->button() == Qt::LeftButton) && delPointActionIsPossible(event->pos()))
+	if (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)
+			&& (event->modifiers() & Qt::AltModifier) && (getPoint(event->pos()) != noPort)
+			&& (event->button() == Qt::LeftButton) && delPointActionIsPossible(event->pos()))
 	{
 		delPointHandler(event->pos());
 		return;
@@ -1679,7 +1682,8 @@ void EdgeElement::adjustNeighborLinks() // require a lot of resources for the be
 	adjustLink();
 }
 
-QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4)
+QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3
+		, QPointF const &pos4)
 {
 	// use equation of line for solution
 	qreal a1 = pos1.y() - pos2.y();
@@ -1767,7 +1771,8 @@ void EdgeElement::deleteLoop(int startPos)
 			QPointF* cut = haveIntersection(mLine[i], mLine[i + 1], mLine[j], mLine[j + 1]);
 			if (cut)
 			{
-				if ((i != 0) || !((j == mLine.size() - 2) && (lengthOfSegment(mLine.first(), mLine.last()) < (kvadratik * 2))))
+				if ((i != 0) || !((j == mLine.size() - 2)
+						&& (lengthOfSegment(mLine.first(), mLine.last()) < (kvadratik * 2))))
 				{
 					QPointF const pos = QPointF(cut->x(), cut->y());
 					QPainterPath path;

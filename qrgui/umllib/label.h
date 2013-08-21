@@ -48,9 +48,9 @@ public:
 protected:
 	enum InterpreterPropertyType
 	{
-		propertyText,
-		coordinate,
-		textWidth
+		propertyText
+		, coordinate
+		, textWidth
 	};
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);

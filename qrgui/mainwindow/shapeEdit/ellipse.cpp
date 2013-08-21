@@ -1,7 +1,7 @@
 #include "ellipse.h"
 
 QRealEllipse::QRealEllipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
-	:Item(parent), mRectangleImpl()
+		: Item(parent), mRectangleImpl()
 {
 	mNeedScalingRect = true;
 	mPen.setColor(Qt::blue);
@@ -14,7 +14,7 @@ QRealEllipse::QRealEllipse(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent)
 }
 
 QRealEllipse::QRealEllipse(QRealEllipse const &other)
-	:Item(), mRectangleImpl()
+	 : Item(), mRectangleImpl()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
 	mPen = other.mPen;
@@ -46,7 +46,8 @@ void QRealEllipse::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* o
 	mRectangleImpl.drawEllipseItem(painter, mX1, mY1, mX2, mY2);
 }
 
-QPair<QDomElement, Item::DomElementTypes> QRealEllipse::generateItem(QDomDocument &document, QPoint const &topLeftPicture)
+QPair<QDomElement, Item::DomElementTypes> QRealEllipse::generateItem(QDomDocument &document
+		, QPoint const &topLeftPicture)
 {
 	QDomElement ellipse = setPenBrushToDoc(document, "ellipse");
 	setXandY(ellipse, sceneBoundingRectCoord(topLeftPicture));

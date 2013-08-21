@@ -1,6 +1,7 @@
 /** @file propertyeditorproxymodel.h
- *	@brief Модель редактора свойств
- * */
+*	@brief Property editor model
+* */
+
 #pragma once
 
 #include <QAbstractTableModel>
@@ -16,8 +17,7 @@ class PropertyEditorModel : public QAbstractTableModel
 	Q_OBJECT
 
 public:
-	explicit PropertyEditorModel(qReal::EditorManagerInterface const &editorManagerInterface,
-			QObject *parent = 0);
+	explicit PropertyEditorModel(qReal::EditorManagerInterface const &editorManagerInterface, QObject *parent = 0);
 
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;
