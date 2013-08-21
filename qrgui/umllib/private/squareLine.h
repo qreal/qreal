@@ -24,6 +24,10 @@ protected:
 	virtual void improveAppearance();
 	void moveSegment(QPointF const &oldPos, QPointF const &newPos);
 
+	void adjustEndSegments();
+	void adjustStart();
+	void adjustEnd();
+
 	void squarize();
 	int defineType();
 

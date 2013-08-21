@@ -1085,22 +1085,15 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (mShouldReparentItems) {
 		QList<QGraphicsItem *> const list = selectedItems();
 		foreach(QGraphicsItem *item, list) {
-			EdgeElement* edgeItem = dynamic_cast<EdgeElement*>(item);
-			if (edgeItem) {
-				if (!list.contains(edgeItem->src()) && !list.contains(edgeItem->dst()) && (edgeItem->src() || edgeItem->dst())) {
-					edgeItem->arrangeAndAdjustHandler(QPointF());
+			NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+			if (nodeItem) {
+				Element *e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
+				if ((e && (nodeItem->id() != e->id())) || !e) {
+					sendEvent(item, event);
 				}
-			} else {
-				NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
-				if (nodeItem) {
-					Element *e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
-					if ((e && (nodeItem->id() != e->id())) || !e) {
-						sendEvent(item, event);
-					}
-					if (list.size() > 1 && nodeItem) {
-						nodeItem->setVisibleEmbeddedLinkers(false);
-						nodeItem->setPortsVisible(false);
-					}
+				if (list.size() > 1 && nodeItem) {
+					nodeItem->setVisibleEmbeddedLinkers(false);
+					nodeItem->setPortsVisible(false);
 				}
 			}
 		}

@@ -306,5 +306,4 @@ void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 	drawGuides();
-	mNode->adjustLinks();
 }

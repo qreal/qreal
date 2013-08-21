@@ -15,10 +15,10 @@ void SquareLine::moveEdge(QPointF const &pos, bool needAlign)
 	if (mDragType == EdgeElement::noPort) {
 		moveSegment(mDragStartPoint, pos);
 		return;
-	} else if (mDragType == 0 || mDragType == mEdge->line().size() - 1) {
+	} else if (mDragType == 0 || mDragType == mSavedLine.size() - 1) {
 		line[mDragType] = pos;
 		mEdge->setLine(line);
-		squarize();
+		adjustEndSegments();
 	}
 
 	mEdge->update();
@@ -28,8 +28,69 @@ void SquareLine::adjust()
 {
 	LineHandler::adjust();
 	if (!mEdge->isLoop()) {
-		squarize();
+		adjustEndSegments();
 	}
+}
+
+void SquareLine::adjustEndSegments()
+{
+	if (mEdge->line().count() == 2) {
+		squarize();
+	} else {
+		adjustStart();
+		adjustEnd();
+	}
+}
+
+void SquareLine::adjustStart()
+{
+	QPolygonF line = mEdge->line();
+
+	if ((line[0].x() == line[1].x()) || (line[0].y() == line[1].y())) {
+		return;
+	}
+
+	if (line[1] == line[2] && line.count() > 3) {
+		if (line[2].x() == line[3].x()) {
+			line[1].setX(line[0].x());
+		} else {
+			line[1].setY(line[0].y());
+		}
+	} else {
+		if (line[1].x() == line[2].x()) {
+			line[1].setY(line[0].y());
+		} else {
+			line[1].setX(line[0].x());
+		}
+	}
+
+	mEdge->setLine(line);
+}
+
+void SquareLine::adjustEnd()
+{
+	QPolygonF line = mEdge->line();
+
+	if (line[line.count() - 1].x() == line[line.count() - 2].x()
+			|| line[line.count() - 1].y() == line[line.count() - 2].y()) {
+		return;
+	}
+
+	if (line[line.count() - 2] == line[line.count() - 3] && line.count() > 3) {
+		if (line[line.count() - 3].x() == line[line.count() - 4].x()) {
+			line[line.count() - 2].setX(line[line.count() - 1].x());
+		} else {
+			line[line.count() - 2].setY(line[line.count() - 1].y());
+		}
+	} else {
+		if (line[line.count() - 2].x() == line[line.count() - 3].x()) {
+			line[line.count() - 2].setY(line[line.count() - 1].y());
+		} else {
+			line[line.count() - 2].setX(line[line.count() - 1].x());
+		}
+	}
+
+	mEdge->setLine(line);
 }
 
 void SquareLine::handleIntersections()
