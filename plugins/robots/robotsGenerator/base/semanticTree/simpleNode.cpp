@@ -4,13 +4,13 @@
 using namespace qReal::robots::generators::semantics;
 
 SimpleNode::SimpleNode(Id const &idBinded, QObject *parent)
-	: SemanticNode(idBinded, parent)
+	: NonZoneNode(idBinded, parent)
 {
 }
 
 void SimpleNode::appendSibling(SemanticNode *node)
 {
-	static_cast<ZoneNode *>(mParentNode)->appendChild(node);
+	parentZone()->appendChild(node);
 }
 
 QString SimpleNode::toString() const

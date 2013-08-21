@@ -9,6 +9,11 @@ SemanticNode::SemanticNode(Id const &idBinded, QObject *parent)
 {
 }
 
+qReal::Id SemanticNode::id() const
+{
+	return mId;
+}
+
 void SemanticNode::bindTo(qReal::Id const &id)
 {
 	mId = id;

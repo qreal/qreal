@@ -1,16 +1,18 @@
 #pragma once
 
-#include "zoneNode.h"
+#include "nonZoneNode.h"
 
 namespace qReal {
 namespace robots {
 namespace generators {
 namespace semantics {
 
-class IfNode : public SemanticNode
+class IfNode : public NonZoneNode
 {
 public:
 	IfNode(Id const &idBinded, QObject *parent = 0);
+
+	ZoneNode *parentZone();
 
 	virtual QString toString() const;
 

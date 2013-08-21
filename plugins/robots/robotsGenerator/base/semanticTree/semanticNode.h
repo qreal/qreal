@@ -13,7 +13,9 @@ namespace semantics {
 class SemanticNode : public QObject
 {
 public:
+	Id id() const;
 	void bindTo(Id const &id);
+
 	void setParentNode(SemanticNode *parent);
 
 	virtual QString toString() const = 0;

@@ -9,8 +9,9 @@ HEADERS += \
 	$$PWD/primaryControlFlowValidator.h \
 	$$PWD/semanticTree/semanticTree.h \
 	$$PWD/semanticTree/semanticNode.h \
-	$$PWD/semanticTree/simpleNode.h \
+	$$PWD/semanticTree/nonZoneNode.h \
 	$$PWD/semanticTree/zoneNode.h \
+	$$PWD/semanticTree/simpleNode.h \
 	$$PWD/semanticTree/ifNode.h \
 	$$PWD/semanticTree/loopNode.h \
 	$$PWD/semanticTree/rootNode.h \
@@ -19,6 +20,8 @@ HEADERS += \
 	$$PWD/rules/simpleRules/simpleUnvisitedRule.h \
 	$$PWD/rules/ifRules/ifBlockRuleBase.h \
 	$$PWD/rules/loopRules/loopBlockRuleBase.h \
+	$$PWD/rules/simpleRules/simpleVisitedOneZoneRule.h \
+	$$PWD/rules/simpleRules/simpleVisitedRuleBase.h \
 
 SOURCES += \
 	$$PWD/smartLine.cpp \
@@ -31,13 +34,16 @@ SOURCES += \
 	$$PWD/primaryControlFlowValidator.cpp \
 	$$PWD/semanticTree/semanticTree.cpp \
 	$$PWD/semanticTree/semanticNode.cpp \
-	$$PWD/semanticTree/simpleNode.cpp \
+	$$PWD/semanticTree/nonZoneNode.cpp \
 	$$PWD/semanticTree/zoneNode.cpp \
+	$$PWD/semanticTree/simpleNode.cpp \
 	$$PWD/semanticTree/ifNode.cpp \
 	$$PWD/semanticTree/loopNode.cpp \
 	$$PWD/semanticTree/rootNode.cpp \
 	$$PWD/rules/semanticTransformationRule.cpp \
 	$$PWD/rules/simpleRules/simpleBlockRuleBase.cpp \
 	$$PWD/rules/simpleRules/simpleUnvisitedRule.cpp \
+	$$PWD/rules/simpleRules/simpleVisitedOneZoneRule.cpp \
+	$$PWD/rules/simpleRules/simpleVisitedRuleBase.cpp \
 	$$PWD/rules/ifRules/ifBlockRuleBase.cpp \
 	$$PWD/rules/loopRules/loopBlockRuleBase.cpp \

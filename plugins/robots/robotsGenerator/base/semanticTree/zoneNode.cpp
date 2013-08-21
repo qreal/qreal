@@ -13,6 +13,13 @@ void ZoneNode::appendChild(SemanticNode *node)
 	node->setParentNode(this);
 }
 
+void ZoneNode::appendChildren(QLinkedList<SemanticNode *> const &nodes)
+{
+	foreach (SemanticNode * const node, nodes) {
+		appendChild(node);
+	}
+}
+
 void ZoneNode::removeChild(SemanticNode *node)
 {
 	mChildren.removeOne(node);
@@ -24,6 +31,26 @@ SemanticNode *ZoneNode::removeLast()
 	SemanticNode *result = mChildren.last();
 	mChildren.removeLast();
 	result->setParentNode(NULL);
+	return result;
+}
+
+QLinkedList<SemanticNode *> ZoneNode::removeStartingFrom(SemanticNode *node)
+{
+	QLinkedList<SemanticNode *> result;
+	bool foundNode = false;
+
+	foreach (SemanticNode * const current, mChildren) {
+		if (!foundNode) {
+			foundNode = current == node;
+		}
+
+		if (foundNode) {
+			current->setParentNode(NULL);
+			mChildren.removeOne(current);
+			result << current;
+		}
+	}
+
 	return result;
 }
 

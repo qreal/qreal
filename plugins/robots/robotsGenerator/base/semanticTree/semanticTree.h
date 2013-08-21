@@ -3,6 +3,9 @@
 #include <QtCore/QObject>
 
 #include "rootNode.h"
+#include "simpleNode.h"
+#include "ifNode.h"
+#include "loopNode.h"
 #include "../generatorCustomizer.h"
 
 namespace qReal {
@@ -19,7 +22,12 @@ public:
 	void debugPrint();
 
 	SemanticNode *produceNodeFor(Id const &id);
-	SemanticNode *findNodeFor(Id const &id);
+
+	SimpleNode *produceSimple(Id const &id = Id());
+	IfNode *produceConditional(Id const &id = Id());
+	LoopNode *produceLoop(Id const &id = Id());
+
+	NonZoneNode *findNodeFor(Id const &id);
 
 private:
 	GeneratorCustomizer const &mCustomizer;

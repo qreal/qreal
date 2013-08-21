@@ -4,19 +4,20 @@
 using namespace qReal::robots::generators::semantics;
 
 SimpleUnvisitedRule::SimpleUnvisitedRule(SemanticTree *tree, Id const &id
-		, LinkInfo const &next, QObject *parent)
-	: SimpleBlockRuleBase(tree, id, next, parent)
+		, LinkInfo const &next)
+	: SimpleBlockRuleBase(tree, id, next)
 {
 }
 
-bool SimpleUnvisitedRule::canApply()
+bool SimpleUnvisitedRule::apply()
 {
-	return !mNext.targetVisited;
-}
+	if (mNext.targetVisited) {
+		return false;
+	}
 
-void SimpleUnvisitedRule::apply()
-{
-	SemanticNode *nextNode = mTree->produceNodeFor(mNext.target);
-	SimpleNode *thisNode = static_cast<SimpleNode *>(findNodeInSemanticTree());
+	SemanticNode * const nextNode = mTree->produceNodeFor(mNext.target);
+	SimpleNode * const thisNode = static_cast<SimpleNode *>(mTree->findNodeFor(mId));
 	thisNode->appendSibling(nextNode);
+
+	return true;
 }

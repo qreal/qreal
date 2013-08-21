@@ -10,7 +10,7 @@ namespace semantics {
 class IfBlockRuleBase : public SemanticTransformationRule
 {
 public:
-	IfBlockRuleBase(SemanticTree *tree, Id const &id, QObject *parent = 0);
+	IfBlockRuleBase(SemanticTree *tree, Id const &id);
 };
 
 }

@@ -3,7 +3,7 @@
 using namespace qReal::robots::generators::semantics;
 
 LoopNode::LoopNode(Id const &idBinded, QObject *parent)
-	: SemanticNode(idBinded, parent)
+	: NonZoneNode(idBinded, parent)
 	, mBodyZone(new ZoneNode(this))
 {
 	mBodyZone->setParentNode(this);
@@ -12,6 +12,11 @@ LoopNode::LoopNode(Id const &idBinded, QObject *parent)
 QString LoopNode::toString() const
 {
 	return "loop";
+}
+
+void LoopNode::appendChildren(QLinkedList<SemanticNode *> const &nodes)
+{
+	mBodyZone->appendChildren(nodes);
 }
 
 QLinkedList<SemanticNode *> LoopNode::children() const

@@ -2,7 +2,7 @@
 
 using namespace qReal::robots::generators::semantics;
 
-LoopBlockRuleBase::LoopBlockRuleBase(SemanticTree *tree, Id const &id, QObject *parent)
-	: SemanticTransformationRule(tree, id, parent)
+LoopBlockRuleBase::LoopBlockRuleBase(SemanticTree *tree, Id const &id)
+	: SemanticTransformationRule(tree, id)
 {
 }

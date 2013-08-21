@@ -1,0 +1,13 @@
+#include "nonZoneNode.h"
+
+using namespace qReal::robots::generators::semantics;
+
+NonZoneNode::NonZoneNode(Id const &idBinded, QObject *parent)
+	: SemanticNode(idBinded, parent)
+{
+}
+
+ZoneNode *NonZoneNode::parentZone()
+{
+	return static_cast<ZoneNode *>(mParentNode);
+}

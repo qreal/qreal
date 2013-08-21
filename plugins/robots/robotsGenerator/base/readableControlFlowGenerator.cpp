@@ -1,5 +1,6 @@
 #include "readableControlFlowGenerator.h"
 #include "rules/simpleRules/simpleUnvisitedRule.h"
+#include "rules/simpleRules/simpleVisitedOneZoneRule.h"
 
 using namespace qReal::robots::generators;
 using namespace semantics;
@@ -24,7 +25,11 @@ void ReadableControlFlowGenerator::visitRegular(Id const &id
 		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
 	SimpleUnvisitedRule unvisitedRule(mSemanticTree, id, links[0]);
-	applyFirstPossible(QList<SemanticTransformationRule *>() << &unvisitedRule);
+	SimpleVisitedOneZoneRule visitedOneZoneRule(mSemanticTree, id, links[0]);
+
+	applyFirstPossible(QList<SemanticTransformationRule *>()
+			<< &unvisitedRule
+			<< &visitedOneZoneRule);
 }
 
 void ReadableControlFlowGenerator::visitFinal(Id const &id
@@ -66,8 +71,7 @@ void ReadableControlFlowGenerator::afterSearch()
 bool ReadableControlFlowGenerator::applyFirstPossible(QList<SemanticTransformationRule *> const &rules)
 {
 	foreach (SemanticTransformationRule * const rule, rules) {
-		if (rule->canApply()) {
-			rule->apply();
+		if (rule->apply()) {
 			return true;
 		}
 	}

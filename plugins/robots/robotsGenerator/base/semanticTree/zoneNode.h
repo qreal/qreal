@@ -13,9 +13,18 @@ public:
 	explicit ZoneNode(QObject *parent = 0);
 
 	void appendChild(SemanticNode *node);
-	/// Removes given node from child list without deleting the child itself
+
+	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
+
+	/// Removes given node from children list without deleting the child itself
 	void removeChild(SemanticNode *node);
+
+	/// Removes last node from children list without deleting the child itself
 	SemanticNode *removeLast();
+
+	/// Removes all the children starting from specified node without deletting
+	/// themselves and returns removed tail
+	QLinkedList<SemanticNode *> removeStartingFrom(SemanticNode *node);
 
 	virtual QString toString() const;
 

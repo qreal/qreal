@@ -25,20 +25,36 @@ SemanticNode *SemanticTree::produceNodeFor(qReal::Id const &id)
 {
 	switch (mCustomizer.semanticsOf(id)) {
 	case enums::semantics::regularBlock:
-		return new SimpleNode(id, this);
+		return produceSimple(id);
 	case enums::semantics::condidionalBlock:
-		return new IfNode(id, this);
+		return produceConditional(id);
 	case enums::semantics::loopBlock:
-		return new LoopNode(id, this);
+		return produceLoop(id);
 	default:
-		// TODO: inplement fork and switch
-		return new SimpleNode(id, this);
+		// TODO: implement fork and switch
+		return produceSimple(id);
 	}
 }
 
-SemanticNode *SemanticTree::findNodeFor(qReal::Id const &id)
+SimpleNode *SemanticTree::produceSimple(qReal::Id const &id)
 {
-	// Due to inner rule node for given id must exist when we visit it
-	// so result MUST NOT be null. Never.
-	return mRoot->findNodeFor(id);
+	return new SimpleNode(id, this);
+}
+
+IfNode *SemanticTree::produceConditional(qReal::Id const &id)
+{
+	return new IfNode(id, this);
+}
+
+LoopNode *SemanticTree::produceLoop(qReal::Id const &id)
+{
+	return new LoopNode(id, this);
+}
+
+NonZoneNode *SemanticTree::findNodeFor(qReal::Id const &id)
+{
+	// Due to inner rule node for given id must exist when we visit it.
+	// Also only non-zone nodes can be binded to id.
+	// So result MUST NOT be null. Never.
+	return static_cast<NonZoneNode *>(mRoot->findNodeFor(id));
 }
