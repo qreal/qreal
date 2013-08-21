@@ -4,7 +4,7 @@
 
 #include "../../../../qrgui/toolPluginInterface/customizer.h"
 
-namespace qRealRobots {
+namespace robotsInterpreterCore {
 
 class Customizer : public qReal::Customizer
 {

@@ -1,7 +1,7 @@
 #include "customizer.h"
 #include "../../../../qrkernel/settingsManager.h"
 
-using namespace qRealRobots;
+using namespace robotsInterpreterCore;
 
 QString Customizer::windowTitle() const
 {

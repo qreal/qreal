@@ -14,6 +14,7 @@ HEADERS += \
 	$$PWD/src/robotsBlockParser.h \
 	$$PWD/src/robotsPlugin.h \
 	$$PWD/src/robotsSettingsPage.h \
+	$$PWD/src/robotsSettingsPageExtensionsInterface.h \
 	$$PWD/src/thread.h \
 	$$PWD/src/utils/tracer.h \
 	$$PWD/src/utils/debugHelper.h \
@@ -39,6 +40,9 @@ FORMS += \
 	$$PWD/src/robotsSettingsPage.ui \
 
 TRANSLATIONS += $$PWD/robotsInterpreterCore_ru.ts
+
+RESOURCES += \
+	$$PWD/robotsInterpreterCore.qrc \
 
 include($$PWD/qrguiIncludes.pri)
 

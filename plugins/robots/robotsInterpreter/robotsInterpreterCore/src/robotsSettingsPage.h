@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../../../../qrgui/dialogs/preferencesPages/preferencesPage.h"
+#include <qrgui/dialogs/preferencesPages/preferencesPage.h>
+#include "robotsSettingsPageExtensionsInterface.h"
 
 //#include "sensorConstants.h"
 //#include "details/sensorsConfigurationWidget.h"
@@ -9,55 +10,30 @@ namespace Ui {
 class PreferencesRobotSettingsPage;
 }
 
-namespace qRealRobots {
+namespace robotsInterpreterCore {
 
-/// Preferences page for robots interpreter plugin
-class PreferencesRobotSettingsPage : public PreferencesPage
+/// Preferences page for robots interpreter plugin. Contains constructor kit selector and a placeholder for
+/// kit-specific settings.
+class RobotsSettingsPage : public PreferencesPage
 {
 	Q_OBJECT
 
 public:
-	explicit PreferencesRobotSettingsPage(QWidget *parent = 0);
-	~PreferencesRobotSettingsPage();
+	explicit RobotsSettingsPage(RobotsSettingsPageExtensionsInterface const &settingsExtensions, QWidget *parent = 0);
+	~RobotsSettingsPage();
 
-	void save();
+	virtual void save();
 	virtual void restoreSettings();
-	void changeTextVisibleOnSettingPage(bool isChecked);
-
-//	QString selectedPortName() const;
-//	QString selectedCommunication() const;
 
 signals:
 	void saved();
-	void textVisibleChanged(bool isChecked);
 
 protected:
 	void changeEvent(QEvent *e);
 
-public slots:
-//	void rereadNoiseSettings();
-
-private slots:
-	void onSomethingChanged();
-//	void manualComPortCheckboxChecked(bool state);
-//	void refreshPorts();
-
 private:
-//	void initRobotModelType(enums::robotModelType::robotModelTypeEnum type);
-//	void initTypeOfCommunication(QString const &type);
-
-//	enums::sensorType::SensorTypeEnum selectedPort1Sensor() const;
-//	enums::sensorType::SensorTypeEnum selectedPort2Sensor() const;
-//	enums::sensorType::SensorTypeEnum selectedPort3Sensor() const;
-//	enums::sensorType::SensorTypeEnum selectedPort4Sensor() const;
-//	enums::robotModelType::robotModelTypeEnum selectedRobotModel() const;
-	bool textVisible() const;
-//	bool enableSensorNoise() const;
-//	bool enableMotorNoise() const;
-//	int approximationLevel() const;
-
 	Ui::PreferencesRobotSettingsPage *mUi;
-//	details::SensorsConfigurationWidget *mSensorsWidget;
+	RobotsSettingsPageExtensionsInterface const &mSettingsExtensions;
 };
 
 }

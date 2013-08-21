@@ -8,7 +8,7 @@
 //#include "details/nxtDisplay.h"
 
 using namespace qReal;
-using namespace qRealRobots;
+using namespace robotsInterpreterCore;
 
 Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
 Id const oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
@@ -28,7 +28,7 @@ RobotsPlugin::RobotsPlugin()
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
 
-	mRobotSettingsPage = new PreferencesRobotSettingsPage();
+	mRobotSettingsPage = new RobotsSettingsPage(mKitPluginManager);
 
 //	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
 	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
@@ -232,7 +232,7 @@ void RobotsPlugin::titlesVisibilityCheckedInPlugin(bool checked)
 	titlesVisibilityChecked(checked);
 	SettingsManager::setValue("showTitlesForRobots", checked);
 	updateTitlesVisibility();
-	mRobotSettingsPage->changeTextVisibleOnSettingPage(checked);
+//	mRobotSettingsPage->changeTextVisibleOnSettingPage(checked);
 }
 
 void RobotsPlugin::updateTitlesVisibility()

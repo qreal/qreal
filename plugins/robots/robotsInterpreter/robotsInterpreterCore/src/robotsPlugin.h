@@ -8,11 +8,13 @@
 
 #include "robotsSettingsPage.h"
 #include "customizer.h"
+#include "kitPluginManager.h"
+
 //#include "details/interpreter.h"
 //#include "details/sensorsConfigurationWidget.h"
 //#include "details/nxtDisplay.h"
 
-namespace qRealRobots {
+namespace robotsInterpreterCore {
 
 class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 {
@@ -65,7 +67,7 @@ private:
 
 	/// Page with plugin settings. Created here, but then ownership is passed to
 	/// a caller of preferencesPage().
-	PreferencesRobotSettingsPage *mRobotSettingsPage;  // Does not have ownership
+	RobotsSettingsPage *mRobotSettingsPage;  // Does not have ownership
 
 	/// Main window interface object, used to call GUI functionality
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership
@@ -99,6 +101,8 @@ private:
 	QTranslator *mAppTranslator;  // Has ownership
 
 	qReal::SceneCustomizationInterface *mSceneCustomizer;  // Does not have ownership
+
+	KitPluginManager mKitPluginManager;
 };
 
 }
