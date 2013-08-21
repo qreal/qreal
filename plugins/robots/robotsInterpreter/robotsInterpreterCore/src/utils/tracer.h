@@ -3,15 +3,10 @@
 #include <QtCore/QVector>
 #include <QtCore/QString>
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
-namespace details {
-
-namespace tracer {
+namespace robotsInterpreterCore {
+namespace utils {
 
 namespace enums {
-
 enum TracerEnum {
 	d2Model
 	, initialization
@@ -27,19 +22,17 @@ enum TraceTarget {
 };
 }
 
-}
-
 class Tracer
 {
 public:
-	static void enableCategory(tracer::enums::TracerEnum category);
-	static void disableCategory(tracer::enums::TracerEnum category);
+	static void enableCategory(enums::TracerEnum category);
+	static void disableCategory(enums::TracerEnum category);
 	static void enableAll();
 	static void disableAll();
-	static void setTarget(tracer::enums::TraceTarget target);
+	static void setTarget(enums::TraceTarget target);
 
 	static void debug(
-			tracer::enums::TracerEnum category
+			enums::TracerEnum category
 			, QString const &methodName
 			, QString const &message
 			);
@@ -47,25 +40,23 @@ public:
 private:
 	static Tracer *mInstance;
 	QVector<bool> mCategories;
-	tracer::enums::TraceTarget mTarget;
+	enums::TraceTarget mTarget;
 	QString const mLogPath;
 
 	Tracer();
 	static Tracer *instance();
 
-	void enableCategoryImpl(tracer::enums::TracerEnum const &category);
-	void disableCategoryImpl(tracer::enums::TracerEnum const &category);
+	void enableCategoryImpl(enums::TracerEnum const &category);
+	void disableCategoryImpl(enums::TracerEnum const &category);
 	void enableAllImpl();
 	void disableAllImpl();
 
 	void debugImpl(
-			tracer::enums::TracerEnum const &category
+			enums::TracerEnum const &category
 			, QString const &methodName
 			, QString const &message
 			);
 };
 
-}
-}
 }
 }

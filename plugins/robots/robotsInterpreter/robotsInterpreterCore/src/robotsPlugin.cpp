@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QApplication>
 
-#include "../../../qrkernel/settingsManager.h"
+#include "../../../../qrkernel/settingsManager.h"
 
 //#include "details/tracer.h"
 //#include "details/nxtDisplay.h"
