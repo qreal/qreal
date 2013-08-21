@@ -51,6 +51,10 @@ void @@MetamodelName@@Plugin::initDescriptionMap()
 @@InitDescriptionMapLine@@
 }
 
+void @@MetamodelName@@Plugin::initExplosionsMap()
+{
+}
+
 QStringList @@MetamodelName@@Plugin::diagrams() const
 {
 	return diagramNameMap.keys();
@@ -114,7 +118,7 @@ QString @@MetamodelName@@Plugin::diagramPaletteGroupDescription(QString const &d
 	return paletteGroupsDescriptionMap[diagram][group];
 }
 
-QIcon @@MetamodelName@@Plugin::getIcon(SdfIconEngineV2Interface *engine) const
+QIcon @@MetamodelName@@Plugin::getIcon(qReal::SdfIconEngineV2Interface *engine) const
 {
 	return QIcon(engine);
 }
@@ -144,7 +148,7 @@ QString @@MetamodelName@@Plugin::elementMouseGesture(QString const &diagram, QSt
 	return elementMouseGesturesMap[diagram][element];
 }
 
-ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const
+qReal::ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(QString const &/*diagram*/, QString const &element) const
 {
 @@GetGraphicalObjectLine@@
 
@@ -155,6 +159,12 @@ ElementImpl* @@MetamodelName@@Plugin::getGraphicalObject(QString const &/*diagra
 QStringList @@MetamodelName@@Plugin::getPropertyNames(QString const &/*diagram*/, QString const &element) const
 {
 	return propertyTypes[element].keys();
+}
+
+QStringList @@MetamodelName@@Plugin::getPortTypes(QString const &diagram, QString const &element) const
+{
+	QStringList result;
+	return result;
 }
 
 QStringList @@MetamodelName@@Plugin::getReferenceProperties(QString const &/*diagram*/, QString const &element) const
@@ -171,24 +181,17 @@ QStringList @@MetamodelName@@Plugin::getTypesContainedBy(QString const &element)
 	return result;
 }
 
-QStringList @@MetamodelName@@Plugin::getConnectedTypes(QString const &element) const
-{
-	QStringList result;
-@@GetConnectedTypesLine@@
-	return result;
-}
-
-QStringList @@MetamodelName@@Plugin::getUsedTypes(QString const &element) const
-{
-	QStringList result;
-@@GetUsedTypesLine@@
-	return result;
-}
 
 QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > @@MetamodelName@@Plugin::getPossibleEdges(QString const &element) const
 {
 	QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > result;
 @@GetPossibleEdgesLine@@
+	return result;
+}
+
+QList<qReal::EditorInterface::ExplosionData> @@MetamodelName@@Plugin::explosions(QString const &diagram, QString const &element) const
+{
+	QList<qReal::EditorInterface::ExplosionData> result;
 	return result;
 }
 

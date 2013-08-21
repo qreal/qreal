@@ -152,9 +152,11 @@ void Shape::generate(QString &classTemplate) const
 	if (!hasPointPorts()) {
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
 	}
+	//TODO: fix ports for qrmc
+	/*
 	if (!hasLinePorts()) {
 		unused += nodeIndent + "Q_UNUSED(linePorts)" + endline;
-	}
+	}*/
 	if (!hasLabels()) {
 		unused += nodeIndent + "Q_UNUSED(titles);" + endline + nodeIndent + "Q_UNUSED(factory)" + endline;
 	}

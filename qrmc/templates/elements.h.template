@@ -4,8 +4,10 @@
 #include <QPainter>
 
 #include "@@PathToSources@@qrgui/editorPluginInterface/elementImpl.h"
-#include "@@PathToSources@@qrgui/editorPluginInterface/labelHelpers.h"
+#include "@@PathToSources@@qrgui/editorPluginInterface/labelFactoryInterface.h"
+#include "@@PathToSources@@qrgui/editorPluginInterface/labelInterface.h"
 #include "@@PathToSources@@qrgui/editorPluginInterface/elementRepoInterface.h"
+#include "@@PathToSources@@qrgui/editorPluginInterface/portHelpers.h"
 #include "@@PathToSources@@qrgui/umllib/element.h"
 
 @@NodesList@@

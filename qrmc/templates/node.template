@@ -1,23 +1,29 @@
-	class @@ElementName@@ : public ElementImpl
+	class @@ElementName@@ : public qReal::ElementImpl
 	{
 	public:
 @@NodeConstructor@@
-		void init(LabelFactoryInterface &, QList<LabelInterface*> &) {}
+		void init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}
 
-		void init(QRectF &contents, QList<StatPoint> &pointPorts,
-				QList<StatLine> &linePorts, LabelFactoryInterface &factory,
-				QList<LabelInterface*> &titles, SdfRendererInterface *renderer,
-				SdfRendererInterface *portRenderer, ElementRepoInterface *elementRepo)
+		void init(QRectF &contents
+				, PortFactoryInterface const &portFactory
+				, QList<PortInterface *> &ports
+				, qReal::LabelFactoryInterface &factory
+				, QList<qReal::LabelInterface*> &titles
+				, qReal::SdfRendererInterface *renderer,
+				qReal::ElementRepoInterface *elementRepo
+			)
+
 		{
 @@NodeUnusedArgs@@
 			mRenderer = renderer;
 			mRenderer->setElementRepo(elementRepo);
 @@NodeLoadShapeRenderer@@
-@@NodeLoadPortsRenderer@@
 @@NodeSetContents@@
 @@NodeInitPorts@@
 @@NodeInit@@
 		}
+		
+		qReal::ElementImpl *clone() { return NULL; }
 
 		~@@ElementName@@() {}
 
@@ -30,12 +36,8 @@
 
 		void drawStartArrow(QPainter *) const {}
 		void drawEndArrow(QPainter *) const {}
-		bool hasPorts() const
-		{
-			return @@NodeHasPorts@@;
-		}
 
-		void updateData(ElementRepoInterface *repo) const
+		void updateData(qReal::ElementRepoInterface *repo) const
 		{
 @@UpdateData@@
 		}
@@ -83,6 +85,22 @@
 			return @@MaximizesChildren@@;
 		}
 
+		QStringList fromPortTypes() const
+		{
+			return QStringList("NonTyped");
+		}
+
+		QStringList toPortTypes() const
+		{
+			return QStringList("NonTyped");
+		}
+
+		bool createChildrenFromMenu() const
+		{
+			return true;
+		}
+
+
 		bool isPort() const
 		{
 			return @@IsPort@@;
@@ -126,7 +144,7 @@
 		}
 
 	private:
-		SdfRendererInterface *mRenderer;
+		qReal::SdfRendererInterface *mRenderer;
 		QStringList mBonusContextMenuFields;
 @@LabelDefinition@@
 	};

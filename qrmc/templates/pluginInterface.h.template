@@ -23,6 +23,7 @@ public:
 	virtual void initPropertyDefaultsMap();
 	virtual void initParentsMap();
 	virtual void initDescriptionMap();
+	virtual void initExplosionsMap();
 
 	virtual QString id() const { return "@@MetamodelName@@"; }
 
@@ -39,17 +40,17 @@ public:
 	virtual QStringList getPropertiesWithDefaultValues(QString const &element) const;
 
 	virtual QStringList getTypesContainedBy(QString const &element) const;
-	virtual QStringList getConnectedTypes(QString const &element) const;
-	virtual QStringList getUsedTypes(QString const &element) const;
 	virtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const;
+	virtual QList<qReal::EditorInterface::ExplosionData> explosions(QString const &diagram, QString const &element) const;
 
 	virtual int isNodeOrEdge(QString const &element) const; 
 
-	virtual QIcon getIcon(SdfIconEngineV2Interface *engine) const;
-	virtual ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;
+	virtual QIcon getIcon(qReal::SdfIconEngineV2Interface *engine) const;
+	virtual qReal::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;
 	virtual QString getPropertyType(QString const &element, QString const &property) const;
 	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;
 	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;
+	virtual QStringList getPortTypes(QString const &diagram, QString const &element) const;
 	virtual QStringList getReferenceProperties(QString const &/*diagram*/, QString const &element) const;
 	virtual QStringList getEnumValues(QString name) const;
 	virtual QString getGroupsXML() const;
