@@ -34,7 +34,7 @@ void Customizer::customizeDocks(qReal::gui::MainWindowDockInterface *dockInterfa
 	mDockInterface = dockInterface;
 	dockInterface->logicalModelDock()->hide();
 	dockInterface->tabifyDockWidget(dockInterface->graphicalModelDock(), dockInterface->propertyEditorDock());
-	dockInterface->graphicalModelDock()->setWindowTitle(tr("Blocks"));
+	dockInterface->graphicalModelDock()->setWindowTitle(QObject::tr("Blocks"));
 }
 
 void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget)

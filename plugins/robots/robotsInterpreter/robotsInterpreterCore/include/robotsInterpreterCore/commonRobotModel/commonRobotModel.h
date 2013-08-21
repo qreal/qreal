@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../robotModelInterface.h"
+
 namespace robotsInterpreterCore {
 
-class CommonRobotModel {
+class CommonRobotModel : public RobotModelInterface {
 
 };
 

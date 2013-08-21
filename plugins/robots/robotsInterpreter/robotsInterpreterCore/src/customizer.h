@@ -6,10 +6,8 @@
 
 namespace qRealRobots {
 
-class Customizer : public QObject, public qReal::Customizer
+class Customizer : public qReal::Customizer
 {
-	Q_OBJECT
-
 public:
 	virtual QString windowTitle() const;
 	virtual QIcon applicationIcon() const;

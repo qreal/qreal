@@ -3,8 +3,7 @@
 #include <QtWidgets/QApplication>
 
 using namespace qReal;
-using namespace interpreters::robots;
-using namespace interpreters::robots::details;
+using namespace robotsInterpreterCore;
 
 Id const startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 int const blocksCountTillProcessingEvents = 100;
@@ -40,7 +39,7 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 
 Thread::~Thread()
 {
-	foreach (blocks::Block *block, mStack) {
+	foreach (Block *block, mStack) {
 		if (block) {
 			mInterpretersInterface.dehighlight(block->id());
 		}
@@ -66,7 +65,7 @@ void Thread::interpret()
 	}
 }
 
-void Thread::nextBlock(blocks::Block * const block)
+void Thread::nextBlock(Block * const block)
 {
 	turnOff(mCurrentBlock);
 	turnOn(block);
@@ -75,7 +74,7 @@ void Thread::nextBlock(blocks::Block * const block)
 void Thread::stepInto(Id const &diagram)
 {
 	Id const initialNode = findStartingElement(diagram);
-	blocks::Block *block = mBlocksTable.block(initialNode);
+	Block *block = mBlocksTable.block(initialNode);
 
 	if (!block) {
 		error(tr("No entry point found, please add Initial Node to a diagram"), diagram);
@@ -126,7 +125,7 @@ Id Thread::findStartingElement(Id const &diagram) const
 	return Id();
 }
 
-void Thread::turnOn(blocks::Block * const block)
+void Thread::turnOn(Block * const block)
 {
 	mCurrentBlock = block;
 	if (!mCurrentBlock) {
@@ -165,13 +164,13 @@ void Thread::turnOn(blocks::Block * const block)
 
 void Thread::interpretAfterEventsProcessing(QObject *blockObject)
 {
-	blocks::Block * const block = dynamic_cast<blocks::Block *>(blockObject);
+	Block * const block = dynamic_cast<Block *>(blockObject);
 	if (block) {
 		block->interpret();
 	}
 }
 
-void Thread::turnOff(blocks::Block * const block)
+void Thread::turnOff(Block * const block)
 {
 	// This is a signal not from a current block of this thread.
 	// Other thread shall process it, we will just ignore.
