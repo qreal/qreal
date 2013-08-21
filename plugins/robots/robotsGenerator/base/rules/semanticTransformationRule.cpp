@@ -13,3 +13,8 @@ SemanticTransformationRule::SemanticTransformationRule(SemanticTree *tree
 SemanticTransformationRule::~SemanticTransformationRule()
 {
 }
+
+SemanticNode *SemanticTransformationRule::findNodeInSemanticTree() const
+{
+	return mTree->findNodeFor(mId);
+}

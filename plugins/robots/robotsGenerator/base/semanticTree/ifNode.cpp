@@ -4,14 +4,19 @@ using namespace qReal::robots::generators::semantics;
 
 IfNode::IfNode(Id const &idBinded, QObject *parent)
 	: SemanticNode(idBinded, parent)
+	, mThenZone(new ZoneNode(this))
+	, mElseZone(new ZoneNode(this))
 {
+	mThenZone->setParentNode(this);
+	mElseZone->setParentNode(this);
 }
 
-void IfNode::debugPrint(int indent)
+QString IfNode::toString() const
 {
-	qDebug() << QString('\t', indent) << "if";
-	qDebug() << QString('\t', indent + 1) << "then";
-	mThenZone->debugPrint(indent + 2);
-	qDebug() << QString('\t', indent + 1) << "else";
-	mElseZone->debugPrint(indent + 2);
+	return "if";
+}
+
+QLinkedList<SemanticNode *> IfNode::children() const
+{
+	return QLinkedList<SemanticNode *>() << mThenZone << mElseZone;
 }

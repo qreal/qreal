@@ -56,11 +56,6 @@ QPair<qReal::Id, qReal::Id> PrimaryControlFlowValidator::loopBranchesFor(qReal::
 void PrimaryControlFlowValidator::visitRegular(Id const &id
 		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
-	if (mCustomizer.isFinalNode(id)) {
-		visitFinalBlock(id, links);
-		return;
-	}
-
 	if (links.size() != 1) {
 		error(QObject::tr("This element must have exactly ONE outgoing link"), id);
 	} else {
@@ -68,7 +63,7 @@ void PrimaryControlFlowValidator::visitRegular(Id const &id
 	}
 }
 
-void PrimaryControlFlowValidator::visitFinalBlock(Id const &id
+void PrimaryControlFlowValidator::visitFinal(Id const &id
 		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
 	if (!links.isEmpty()) {

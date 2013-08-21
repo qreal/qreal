@@ -1,8 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
-// TODO: remove it
-#include <QtCore/QDebug>
+#include <QtCore/QLinkedList>
 
 #include <ids.h>
 
@@ -15,16 +14,21 @@ class SemanticNode : public QObject
 {
 public:
 	void bindTo(Id const &id);
+	void setParentNode(SemanticNode *parent);
 
-	virtual void debugPrint(int indent) = 0;
+	virtual QString toString() const = 0;
+
+	void debugPrint(int indent);
+
+	SemanticNode *findNodeFor(Id const &id);
 
 protected:
-	inline Id id() const;
-
 	SemanticNode(Id const &idBinded = Id(), QObject *parent = 0);
 
-private:
+	virtual QLinkedList<SemanticNode *> children() const = 0;
+
 	Id mId;
+	SemanticNode *mParentNode;
 };
 
 }

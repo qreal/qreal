@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QtCore/QLinkedList>
-
 #include "semanticNode.h"
 
 namespace qReal {
@@ -19,7 +17,10 @@ public:
 	void removeChild(SemanticNode *node);
 	SemanticNode *removeLast();
 
-	virtual void debugPrint(int indent);
+	virtual QString toString() const;
+
+protected:
+	virtual QLinkedList<SemanticNode *> children() const;
 
 private:
 	QLinkedList<SemanticNode *> mChildren;

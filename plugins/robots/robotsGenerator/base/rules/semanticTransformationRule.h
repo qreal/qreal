@@ -18,15 +18,16 @@ public:
 	typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
 
 	virtual bool canApply() = 0;
-	virtual bool apply() = 0;
+	virtual void apply() = 0;
 
 signals:
-
 	void errorOccured();
 
 protected:
 	SemanticTransformationRule(SemanticTree *tree, Id const &id, QObject *parent = 0);
 	virtual ~SemanticTransformationRule();
+
+	SemanticNode *findNodeInSemanticTree() const;
 
 	SemanticTree *mTree;  // Does not take ownership
 	Id const mId;

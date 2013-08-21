@@ -1,6 +1,8 @@
 #include "readableControlFlowGenerator.h"
+#include "rules/simpleRules/simpleUnvisitedRule.h"
 
 using namespace qReal::robots::generators;
+using namespace semantics;
 
 ReadableControlFlowGenerator::ReadableControlFlowGenerator(
 		LogicalModelAssistInterface const &logicalModel
@@ -15,12 +17,21 @@ ReadableControlFlowGenerator::ReadableControlFlowGenerator(
 
 void ReadableControlFlowGenerator::beforeSearch()
 {
-	mSemanticTree = new semantics::SemanticTree(initialNode(), this);
+	mSemanticTree = new SemanticTree(customizer(), initialNode(), this);
 }
 
 void ReadableControlFlowGenerator::visitRegular(Id const &id
 		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
 {
+	SimpleUnvisitedRule unvisitedRule(mSemanticTree, id, links[0]);
+	applyFirstPossible(QList<SemanticTransformationRule *>() << &unvisitedRule);
+}
+
+void ReadableControlFlowGenerator::visitFinal(Id const &id
+		, QList<utils::DeepFirstSearcher::LinkInfo> const &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
 }
 
 void ReadableControlFlowGenerator::visitConditional(Id const &id
@@ -50,4 +61,15 @@ void ReadableControlFlowGenerator::visitFork(Id const &id
 void ReadableControlFlowGenerator::afterSearch()
 {
 	mSemanticTree->debugPrint();
+}
+
+bool ReadableControlFlowGenerator::applyFirstPossible(QList<SemanticTransformationRule *> const &rules)
+{
+	foreach (SemanticTransformationRule * const rule, rules) {
+		if (rule->canApply()) {
+			rule->apply();
+			return true;
+		}
+	}
+	return false;
 }

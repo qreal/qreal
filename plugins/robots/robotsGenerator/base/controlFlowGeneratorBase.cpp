@@ -62,3 +62,8 @@ QPair<qReal::Id, qReal::Id> ControlFlowGeneratorBase::loopBranchesFor(qReal::Id 
 {
 	return mValidator.loopBranchesFor(id);
 }
+
+GeneratorCustomizer const &ControlFlowGeneratorBase::customizer() const
+{
+	return mCustomizer;
+}

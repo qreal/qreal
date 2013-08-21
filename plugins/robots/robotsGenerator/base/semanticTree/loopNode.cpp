@@ -4,11 +4,17 @@ using namespace qReal::robots::generators::semantics;
 
 LoopNode::LoopNode(Id const &idBinded, QObject *parent)
 	: SemanticNode(idBinded, parent)
+	, mBodyZone(new ZoneNode(this))
 {
+	mBodyZone->setParentNode(this);
 }
 
-void LoopNode::debugPrint(int indent)
+QString LoopNode::toString() const
 {
-	qDebug() << QString('\t', indent) << "loop";
-	mBodyZone->debugPrint(indent + 1);
+	return "loop";
+}
+
+QLinkedList<SemanticNode *> LoopNode::children() const
+{
+	return QLinkedList<SemanticNode *>() << mBodyZone;
 }

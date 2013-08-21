@@ -31,6 +31,7 @@ protected:
 	LinkGuard guardOf(Id const &linkId) const;
 
 	virtual void visitRegular(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
+	virtual void visitFinal(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
 	virtual void visitConditional(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
 	virtual void visitLoop(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;
 	virtual void visitSwitch(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links) = 0;

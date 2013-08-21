@@ -2,6 +2,7 @@
 
 #include "controlFlowGeneratorBase.h"
 #include "semanticTree/semanticTree.h"
+#include "rules/semanticTransformationRule.h"
 
 namespace qReal {
 namespace robots {
@@ -18,9 +19,9 @@ public:
 			, Id const &diagramId
 			, QObject *parent = 0);
 
-
 	virtual void beforeSearch();
 	virtual void visitRegular(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
+	virtual void visitFinal(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 	virtual void visitConditional(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 	virtual void visitLoop(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 	virtual void visitSwitch(Id const &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
@@ -28,6 +29,8 @@ public:
 	virtual void afterSearch();
 
 private:
+	bool applyFirstPossible(QList<semantics::SemanticTransformationRule *> const &rules);
+
 	semantics::SemanticTree *mSemanticTree;  // Takes ownership
 };
 

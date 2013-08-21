@@ -5,6 +5,7 @@ using namespace qReal::robots::generators::semantics;
 SemanticNode::SemanticNode(Id const &idBinded, QObject *parent)
 	: QObject(parent)
 	, mId(idBinded)
+	, mParentNode(NULL)
 {
 }
 
@@ -13,7 +14,38 @@ void SemanticNode::bindTo(qReal::Id const &id)
 	mId = id;
 }
 
-qReal::Id SemanticNode::id() const
+void SemanticNode::setParentNode(SemanticNode * const parent)
 {
-	return mId;
+	mParentNode = parent;
+}
+
+SemanticNode *SemanticNode::findNodeFor(qReal::Id const &id)
+{
+	if (id == mId) {
+		return this;
+	}
+
+	QLinkedList<SemanticNode *> const children = this->children();
+	foreach (SemanticNode * const child, children) {
+		SemanticNode * const searchResult = child->findNodeFor(id);
+		if (searchResult) {
+			return searchResult;
+		}
+	}
+
+	return NULL;
+}
+
+// TODO: Remove this
+#include <QtCore/QDebug>
+
+void SemanticNode::debugPrint(int indent)
+{
+	QString const indentString(indent, '\t');
+	qDebug() << indentString + toString();
+
+	QLinkedList<SemanticNode *> const children = this->children();
+	foreach (SemanticNode * const child, children) {
+		child->debugPrint(indent + 1);
+	}
 }

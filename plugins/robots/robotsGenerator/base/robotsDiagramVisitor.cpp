@@ -45,7 +45,11 @@ void RobotsDiagramVisitor::visit(qReal::Id const &nodeId
 {
 	switch (mCustomizer.semanticsOf(nodeId)) {
 	case enums::semantics::regularBlock:
-		visitRegular(nodeId, links);
+		if (mCustomizer.isFinalNode(nodeId)) {
+			visitFinal(nodeId, links);
+		} else {
+			visitRegular(nodeId, links);
+		}
 		break;
 	case enums::semantics::condidionalBlock:
 		visitConditional(nodeId, links);

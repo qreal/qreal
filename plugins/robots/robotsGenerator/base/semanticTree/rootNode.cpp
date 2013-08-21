@@ -7,11 +7,16 @@ RootNode::RootNode(Id const &initialBlock, QObject *parent)
 	: SemanticNode(Id(), parent)
 	, mZone(new ZoneNode(this))
 {
+	mZone->setParentNode(this);
 	mZone->appendChild(new SimpleNode(initialBlock, mZone));
 }
 
-void RootNode::debugPrint(int indent)
+QString RootNode::toString() const
 {
-	qDebug() << QString('\t', indent) << "begin";
-	mZone->debugPrint(indent + 1);
+	return "begin";
+}
+
+QLinkedList<SemanticNode *> RootNode::children() const
+{
+	return QLinkedList<SemanticNode *>() << mZone;
 }

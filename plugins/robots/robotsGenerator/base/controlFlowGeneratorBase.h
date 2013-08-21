@@ -31,6 +31,8 @@ protected:
 	QPair<Id, Id> ifBranchesFor(Id const &id) const;
 	QPair<Id, Id> loopBranchesFor(Id const &id) const;
 
+	GeneratorCustomizer const &customizer() const;
+
 private:
 	LogicalModelAssistInterface const &mModel;
 	ErrorReporterInterface &mErrorReporter;
