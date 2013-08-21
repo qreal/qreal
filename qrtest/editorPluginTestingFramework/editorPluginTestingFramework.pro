@@ -33,6 +33,8 @@ HEADERS += \
 	../../qrgui/pluginManager/interpreterEditorManager.h \
 	../../qrgui/umllib/sdfRenderer.h \
 	../../qrgui/pluginManager/interpreterElementImpl.h \
+	../../qrgui/pluginManager/interpreterPortImpl.h \
+	../../qrgui/pluginManager/explosion.h \
 	../../qrgui/pluginManager/pattern.h \
 	../../qrgui/pluginManager/editorManager.h \
 	../../qrgui/pluginManager/patternParser.h \
@@ -59,6 +61,8 @@ SOURCES += \
 	../../qrgui/pluginManager/interpreterEditorManager.cpp \
 	../../qrgui/umllib/sdfRenderer.cpp \
 	../../qrgui/pluginManager/interpreterElementImpl.cpp \
+	../../qrgui/pluginManager/interpreterPortImpl.cpp \
+	../../qrgui/pluginManager/explosion.cpp \
 	../../qrgui/pluginManager/pattern.cpp \
 	../../qrgui/pluginManager/editorManager.cpp \
 	../../qrgui/pluginManager/patternParser.cpp \

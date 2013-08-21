@@ -122,14 +122,6 @@ Id EditorViewMViface::rootId() const
 	return mGraphicalAssistApi ? mGraphicalAssistApi->idByIndex(rootIndex()) : Id();
 }
 
-Element* EditorViewMViface::graphicalElement(ElementImpl *impl) const
-{
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
-	return new EdgeElement(impl);
-}
-
 void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int end)
 {
 	for (int row = start; row <= end; ++row) {

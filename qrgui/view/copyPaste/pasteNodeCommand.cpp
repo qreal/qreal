@@ -61,13 +61,6 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 
 	newNode->setController(mScene->mainWindow()->controller());
 
-	if (impl->isNode()) {
-		NodeElement * const newNode = new NodeElement(impl);
-		newNode->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
-		newNode->setController(mScene->mainWindow()->controller());
-		newNode->setId(resultId);
-	}
-
 	return resultId;
 }
 

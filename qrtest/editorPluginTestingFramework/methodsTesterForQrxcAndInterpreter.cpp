@@ -430,64 +430,6 @@ class MethodsTesterForQrxcAndInterpreter::ContainedTypesListGenerator
 	}
 };
 
-class MethodsTesterForQrxcAndInterpreter::ConnectedTypesListGenerator
-		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
-{
-	virtual QString methodName() const
-	{
-		return "Connected types";
-	}
-
-	virtual QStringList callMethod(
-			EditorManagerInterface *editorManagerInterface
-			, Id const &editorId
-			, Id const &diagramId
-			, Id const &elementId
-			, QString const &propertyName
-			) const
-	{
-		Q_UNUSED(editorId);
-		Q_UNUSED(diagramId);
-		Q_UNUSED(propertyName);
-		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->connectedTypes(elementId));
-	}
-
-	virtual AbstractStringGenerator* clone() const
-	{
-		AbstractStringGenerator* clonedGenerator = new ConnectedTypesListGenerator();
-		return clonedGenerator;
-	}
-};
-
-class MethodsTesterForQrxcAndInterpreter::UsedTypesListGenerator
-		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
-{
-	virtual QString methodName() const
-	{
-		return "Used types";
-	}
-
-	virtual QStringList callMethod(
-			EditorManagerInterface *editorManagerInterface
-			, Id const &editorId
-			, Id const &diagramId
-			, Id const &elementId
-			, QString const &propertyName
-			) const
-	{
-		Q_UNUSED(editorId);
-		Q_UNUSED(diagramId);
-		Q_UNUSED(propertyName);
-		return ConvertingMethods::convertIdListIntoStringList(editorManagerInterface->usedTypes(elementId));
-	}
-
-	virtual AbstractStringGenerator* clone() const
-	{
-		AbstractStringGenerator* clonedGenerator = new UsedTypesListGenerator();
-		return clonedGenerator;
-	}
-};
-
 class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
 {
@@ -1036,8 +978,6 @@ void MethodsTesterForQrxcAndInterpreter::testMethods()
 	mGeneratedList.append(testMethodIfExistsInList(PropertyDisplayedNameListGenerator(), "propertyDisplayedName"));
 
 	mGeneratedList.append(testMethodIfExistsInList(ContainedTypesListGenerator(), "containedTypes"));
-	mGeneratedList.append(testMethodIfExistsInList(ConnectedTypesListGenerator(), "connectedTypes"));
-	mGeneratedList.append(testMethodIfExistsInList(UsedTypesListGenerator(), "usedTypes"));
 	mGeneratedList.append(testMethodIfExistsInList(EnumValuesListGenerator(), "enumValues"));
 	mGeneratedList.append(testMethodIfExistsInList(TypeNameListGenerator(), "typeName"));
 	mGeneratedList.append(testMethodIfExistsInList(AllChildrenTypesOfListGenerator(), "allChildrenTypesOf"));

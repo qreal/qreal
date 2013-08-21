@@ -475,14 +475,6 @@ qReal::Id EditorViewScene::createElement(QString const &str, QPointF const &scen
 	return objectId;
 }
 
-Element* EditorViewScene::graphicalElement(ElementImpl *impl) const
-{
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
-	return new EdgeElement(impl);
-}
-
 void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &scenePos
 		, bool searchForParents, CreateElementCommand **createCommandPointer, bool executeImmediately)
 {

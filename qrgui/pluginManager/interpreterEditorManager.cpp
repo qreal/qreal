@@ -572,11 +572,8 @@ bool InterpreterEditorManager::isDiagramNode(Id const &id) const
 
 bool InterpreterEditorManager::isGraphicalElementNode(const Id &id) const
 {
-	ElementImpl *impl = graphicalObject(id);
-	if (!impl) {
-		return false;
-	}
-	return impl->isNode();
+	Q_UNUSED(id);
+	return false;
 }
 
 Id InterpreterEditorManager::theOnlyDiagram() const

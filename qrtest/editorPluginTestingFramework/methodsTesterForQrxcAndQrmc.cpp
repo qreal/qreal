@@ -179,60 +179,6 @@ class MethodsTesterForQrxcAndQrmc::TypesContainedByStringGenerator
 	}
 };
 
-class MethodsTesterForQrxcAndQrmc::ConnectedTypesStringGenerator
-		: public MethodsTesterForQrxcAndQrmc::StringGeneratorForElements
-{
-	virtual QString methodName() const
-	{
-		return "Connected types";
-	}
-
-	virtual QStringList callMethod(
-			EditorInterface *editorInterface
-			, const QString &diagram
-			, const QString &element
-			, const QString &property
-			) const
-	{
-		Q_UNUSED(diagram);
-		Q_UNUSED(property);
-		return editorInterface->getConnectedTypes(element);
-	}
-
-	virtual AbstractStringGenerator* clone() const
-	{
-		AbstractStringGenerator* clonedGenerator = new ConnectedTypesStringGenerator();
-		return clonedGenerator;
-	}
-};
-
-class MethodsTesterForQrxcAndQrmc::UsedTypesStringGenerator
-		: public MethodsTesterForQrxcAndQrmc::StringGeneratorForElements
-{
-	virtual QString methodName() const
-	{
-		return "Used types";
-	}
-
-	virtual QStringList callMethod(
-			EditorInterface *editorInterface
-			, const QString &diagram
-			, const QString &element
-			, const QString &property
-			) const
-	{
-		Q_UNUSED(diagram);
-		Q_UNUSED(property);
-		return editorInterface->getUsedTypes(element);
-	}
-
-	virtual AbstractStringGenerator* clone() const
-	{
-		AbstractStringGenerator* clonedGenerator = new UsedTypesStringGenerator();
-		return clonedGenerator;
-	}
-};
-
 class MethodsTesterForQrxcAndQrmc::GetPossibleEdgesStringGenerator
 		: public MethodsTesterForQrxcAndQrmc::StringGeneratorForElements
 {
@@ -729,9 +675,7 @@ void MethodsTesterForQrxcAndQrmc::testMethods()
 
 	mGeneratedList.append(testMethodIfExistsInList(PropertiesWithDefaultValuesStringGenerator()
 			, "propertiesWithDefaulValues"));
-	mGeneratedList.append(testMethodIfExistsInList(UsedTypesStringGenerator(), "usedTypes"));
 	mGeneratedList.append(testMethodIfExistsInList(TypesContainedByStringGenerator(), "typesContanedBy"));
-	mGeneratedList.append(testMethodIfExistsInList(ConnectedTypesStringGenerator(), "connectedTypes"));
 	mGeneratedList.append(testMethodIfExistsInList(GetPossibleEdgesStringGenerator(), "getPossibleEdges"));
 	mGeneratedList.append(testMethodIfExistsInList(IsNodeOrEdgeStringGenerator(), "isNodeOrEdge"));
 

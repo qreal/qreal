@@ -59,13 +59,6 @@ Id PasteEdgeCommand::pasteGraphicalCopy()
 
 	newEdge->setController(mScene->mainWindow()->controller());
 
-	if (!impl->isNode()) {
-		EdgeElement * const newEdge = new EdgeElement(impl);
-		newEdge->setAssistApi(mMVIface->graphicalAssistApi(), mMVIface->logicalAssistApi());
-		newEdge->setController(mScene->mainWindow()->controller());
-		newEdge->setId(resultId);
-	}
-
 	return resultId;
 }
 

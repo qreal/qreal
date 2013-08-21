@@ -38,8 +38,6 @@ private:
 
 	class PropertiesWithDefaultValuesStringGenerator;
 	class TypesContainedByStringGenerator;
-	class ConnectedTypesStringGenerator;
-	class UsedTypesStringGenerator;
 	class GetPossibleEdgesStringGenerator;
 	class IsNodeOrEdgeStringGenerator;
 

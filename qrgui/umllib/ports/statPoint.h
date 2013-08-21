@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../editorPluginInterface/portHelpers.h"
+#include "../../editorPluginInterface/portHelpers.h"
 
 /** @brief point port description */
 class StatPoint : public PortInterface
