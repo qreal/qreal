@@ -5,12 +5,25 @@ using namespace qReal::robots::generators::semantics;
 
 SimpleNode::SimpleNode(Id const &idBinded, QObject *parent)
 	: NonZoneNode(idBinded, parent)
+	, mSyntheticBinding(noSytheticBinding)
 {
 }
 
 QString SimpleNode::toString() const
 {
-	return mId.element() + " (s)";
+	switch (mSyntheticBinding) {
+	case breakNode:
+		return "break";
+	case continueNode:
+		return "continue";
+	default:
+		return mId.element() + " (simp)";
+	}
+}
+
+void SimpleNode::bindToSyntheticConstruction(SimpleNode::SyntheticBlockType type)
+{
+	mSyntheticBinding = type;
 }
 
 QLinkedList<SemanticNode *> SimpleNode::children() const

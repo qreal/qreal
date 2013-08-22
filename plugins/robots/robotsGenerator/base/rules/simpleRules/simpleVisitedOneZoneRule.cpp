@@ -19,13 +19,7 @@ bool SimpleVisitedOneZoneRule::apply()
 		return false;
 	}
 
-	LoopNode *endlessLoop = mTree->produceLoop();
-	ZoneNode *parent = mThisNode->parentZone();
-
-	QLinkedList<SemanticNode *> const unhookedChildren = parent->removeStartingFrom(mNextNode);
-	endlessLoop->appendChildren(unhookedChildren);
-
-	parent->appendChild(endlessLoop);
+	makeLoopStartingFrom(mNextNode);
 
 	return true;
 }

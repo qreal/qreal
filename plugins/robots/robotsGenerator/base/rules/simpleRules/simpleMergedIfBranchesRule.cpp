@@ -24,8 +24,8 @@ bool SimpleMergedIfBranchesRule::apply()
 		return false;
 	}
 
-	QLinkedList<SemanticNode *> const unhookedChildren = nextZone->removeStartingFrom(mNextNode);
-	ifParent->parentZone()->appendChildren(unhookedChildren);
+	QLinkedList<SemanticNode *> const detachedChildren = nextZone->removeStartingFrom(mNextNode);
+	ifParent->appendSiblings(detachedChildren);
 
 	return true;
 }

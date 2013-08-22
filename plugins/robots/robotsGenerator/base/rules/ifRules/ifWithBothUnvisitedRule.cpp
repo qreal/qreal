@@ -3,8 +3,8 @@
 using namespace qReal::robots::generators::semantics;
 
 IfWithBothUnvisitedRule::IfWithBothUnvisitedRule(SemanticTree *tree, Id const &id
-		, LinkInfo const &thenNode, LinkInfo const &elseNode)
-	: IfBlockRuleBase(tree, id, thenNode, elseNode)
+		, LinkInfo const &thenLink, LinkInfo const &elseLink)
+	: IfBlockRuleBase(tree, id, thenLink, elseLink)
 {
 }
 

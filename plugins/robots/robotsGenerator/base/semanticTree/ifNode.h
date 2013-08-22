@@ -1,13 +1,13 @@
 #pragma once
 
-#include "nonZoneNode.h"
+#include "conditionalNode.h"
 
 namespace qReal {
 namespace robots {
 namespace generators {
 namespace semantics {
 
-class IfNode : public NonZoneNode
+class IfNode : public ConditionalNode
 {
 public:
 	IfNode(Id const &idBinded, QObject *parent = 0);
@@ -25,8 +25,6 @@ protected:
 private:
 	ZoneNode *mThenZone;  // Takes ownership
 	ZoneNode *mElseZone;  // Takes ownership
-
-	bool mAddNotToCondition;
 };
 
 }

@@ -10,22 +10,19 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
-class SemanticTransformationRule : public QObject
+class SemanticTransformationRule
 {
-	Q_OBJECT
-
 public:
 	typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
 
 	/// Returns true if rule has been applied successfully; otherwise returns false
 	virtual bool apply() = 0;
 
-signals:
-	void errorOccured();
-
 protected:
 	SemanticTransformationRule(SemanticTree *tree, Id const &id);
 	virtual ~SemanticTransformationRule();
+
+	LoopNode *makeLoopStartingFrom(NonZoneNode *node);
 
 	SemanticTree *mTree;  // Does not take ownership
 	Id const mId;

@@ -3,10 +3,9 @@
 using namespace qReal::robots::generators::semantics;
 
 IfNode::IfNode(Id const &idBinded, QObject *parent)
-	: NonZoneNode(idBinded, parent)
+	: ConditionalNode(idBinded, parent)
 	, mThenZone(new ZoneNode(this))
 	, mElseZone(new ZoneNode(this))
-	, mAddNotToCondition(false)
 {
 	mThenZone->setParentNode(this);
 	mElseZone->setParentNode(this);
@@ -29,7 +28,7 @@ ZoneNode *IfNode::elseZone()
 
 QString IfNode::toString() const
 {
-	return "if";
+	return QString("if") + ConditionalNode::toString();
 }
 
 QLinkedList<SemanticNode *> IfNode::children() const

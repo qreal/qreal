@@ -43,6 +43,11 @@ ControlFlow *ControlFlowGeneratorBase::generate()
 	return result;
 }
 
+void ControlFlowGeneratorBase::error(QString const &message, Id const &id)
+{
+	mErrorReporter.addError(message, id);
+}
+
 enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(qReal::Id const &id) const
 {
 	return mCustomizer.semanticsOf(id.type());

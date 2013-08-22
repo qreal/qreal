@@ -37,7 +37,7 @@ SemanticNode *ZoneNode::removeLast()
 QLinkedList<SemanticNode *> ZoneNode::removeStartingFrom(SemanticNode *node)
 {
 	QLinkedList<SemanticNode *> result;
-	bool foundNode = false;
+	bool foundNode = node == NULL;
 
 	foreach (SemanticNode * const current, mChildren) {
 		if (!foundNode) {

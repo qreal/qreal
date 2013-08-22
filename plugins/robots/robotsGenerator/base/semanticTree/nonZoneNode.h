@@ -15,6 +15,7 @@ public:
 	ZoneNode *parentZone();
 
 	void appendSibling(SemanticNode *node);
+	void appendSiblings(QLinkedList<SemanticNode *> const &nodes);
 };
 
 }

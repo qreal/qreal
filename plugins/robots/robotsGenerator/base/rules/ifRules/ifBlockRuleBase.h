@@ -11,7 +11,7 @@ class IfBlockRuleBase : public SemanticTransformationRule
 {
 public:
 	IfBlockRuleBase(SemanticTree *tree, Id const &id
-			, LinkInfo const &thenNode, LinkInfo const &elseNode);
+			, LinkInfo const &thenLink, LinkInfo const &elseLink);
 
 protected:
 	LinkInfo const &mThenLink;

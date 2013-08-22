@@ -3,9 +3,9 @@
 using namespace qReal::robots::generators::semantics;
 
 IfBlockRuleBase::IfBlockRuleBase(SemanticTree *tree, Id const &id
-		, LinkInfo const &thenNode, LinkInfo const &elseNode)
+		, LinkInfo const &thenLink, LinkInfo const &elseLink)
 	: SemanticTransformationRule(tree, id)
-	, mThenLink(thenNode)
-	, mElseLink(elseNode)
+	, mThenLink(thenLink)
+	, mElseLink(elseLink)
 {
 }

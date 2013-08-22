@@ -12,6 +12,7 @@ HEADERS += \
 	$$PWD/semanticTree/nonZoneNode.h \
 	$$PWD/semanticTree/zoneNode.h \
 	$$PWD/semanticTree/simpleNode.h \
+	$$PWD/semanticTree/conditionalNode.h \
 	$$PWD/semanticTree/ifNode.h \
 	$$PWD/semanticTree/loopNode.h \
 	$$PWD/semanticTree/rootNode.h \
@@ -21,8 +22,10 @@ HEADERS += \
 	$$PWD/rules/simpleRules/simpleVisitedOneZoneRule.h \
 	$$PWD/rules/simpleRules/simpleVisitedRuleBase.h \
 	$$PWD/rules/simpleRules/simpleMergedIfBranchesRule.h \
+	$$PWD/rules/simpleRules/simpleIfInsideCycleRule.h \
 	$$PWD/rules/ifRules/ifBlockRuleBase.h \
 	$$PWD/rules/ifRules/ifWithBothUnvisitedRule.h \
+	$$PWD/rules/ifRules/ifWithOneVisitedRule.h \
 	$$PWD/rules/loopRules/loopBlockRuleBase.h \
 
 SOURCES += \
@@ -39,6 +42,7 @@ SOURCES += \
 	$$PWD/semanticTree/nonZoneNode.cpp \
 	$$PWD/semanticTree/zoneNode.cpp \
 	$$PWD/semanticTree/simpleNode.cpp \
+	$$PWD/semanticTree/conditionalNode.cpp \
 	$$PWD/semanticTree/ifNode.cpp \
 	$$PWD/semanticTree/loopNode.cpp \
 	$$PWD/semanticTree/rootNode.cpp \
@@ -48,6 +52,8 @@ SOURCES += \
 	$$PWD/rules/simpleRules/simpleVisitedOneZoneRule.cpp \
 	$$PWD/rules/simpleRules/simpleVisitedRuleBase.cpp \
 	$$PWD/rules/simpleRules/simpleMergedIfBranchesRule.cpp \
+	$$PWD/rules/simpleRules/simpleIfInsideCycleRule.cpp \
 	$$PWD/rules/ifRules/ifBlockRuleBase.cpp \
 	$$PWD/rules/ifRules/ifWithBothUnvisitedRule.cpp \
+	$$PWD/rules/ifRules/ifWithOneVisitedRule.cpp \
 	$$PWD/rules/loopRules/loopBlockRuleBase.cpp \

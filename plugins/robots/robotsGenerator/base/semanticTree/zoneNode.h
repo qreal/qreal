@@ -23,7 +23,7 @@ public:
 	SemanticNode *removeLast();
 
 	/// Removes all the children starting from specified node without deletting
-	/// themselves and returns removed tail
+	/// themselves and returns removed tail. Removes all if node is null.
 	QLinkedList<SemanticNode *> removeStartingFrom(SemanticNode *node);
 
 	virtual QString toString() const;
