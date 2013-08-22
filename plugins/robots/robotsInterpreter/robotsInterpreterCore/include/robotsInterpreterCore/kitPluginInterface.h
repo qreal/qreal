@@ -24,3 +24,5 @@ public:
 };
 
 }
+
+Q_DECLARE_INTERFACE(robotsInterpreterCore::KitPluginInterface, "ru.spbsu.math.QReal.KitPluginInterface/1")
