@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "../../../../qrgui/toolPluginInterface/customizer.h"
+#include <qrgui/toolPluginInterface/customizer.h>
 
 namespace robotsInterpreterCore {
 

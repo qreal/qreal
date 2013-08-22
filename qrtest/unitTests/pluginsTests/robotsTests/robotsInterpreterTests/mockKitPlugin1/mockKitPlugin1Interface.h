@@ -10,7 +10,7 @@ namespace mockKitPlugin1 {
 class MockKitPlugin1Interface : public QObject, public robotsInterpreterCore::KitPluginInterface
 {
 	Q_OBJECT
-	Q_INTERFACES(qReal::KitPluginInterface)
+	Q_INTERFACES(robotsInterpreterCore::KitPluginInterface)
 	Q_PLUGIN_METADATA(IID "mockKitPlugin1.MockKitPlugin1Interface")
 
 public:

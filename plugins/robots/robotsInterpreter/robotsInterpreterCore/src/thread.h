@@ -7,8 +7,9 @@
 #include <qrkernel/ids.h>
 #include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 
-#include "blocksTable.h"
 #include <robotsInterpreterCore/block.h>
+
+#include "blocksTable.h"
 
 namespace robotsInterpreterCore {
 

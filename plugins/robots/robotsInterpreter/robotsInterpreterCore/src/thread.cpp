@@ -1,6 +1,7 @@
 #include "thread.h"
 
 #include <QtWidgets/QApplication>
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal;
 using namespace robotsInterpreterCore;

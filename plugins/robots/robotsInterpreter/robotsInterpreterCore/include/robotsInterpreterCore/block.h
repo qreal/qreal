@@ -3,8 +3,8 @@
 #include <QtCore/QObject>
 
 #include <qrkernel/ids.h>
-#include <qrgui/models/graphicalModelAssistApi.h>
-#include <qrgui/models/logicalModelAssistApi.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 //#include "../blocksTable.h"

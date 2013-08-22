@@ -9,8 +9,11 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 UI_DIR = .ui
 
+LIBS += -L../../../../../../bin/plugins -lrobotsInterpreterCore
+
 INCLUDEPATH += \
-	../../../../../../plugins/robots/robotsInterpreter/robotsInterpreterCore/include
+	../../../../../../plugins/robots/robotsInterpreter/robotsInterpreterCore/include \
+	../../../../../../ \
 
 HEADERS += \
 	mockKitPlugin1Interface.h \

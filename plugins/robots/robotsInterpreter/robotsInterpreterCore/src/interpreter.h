@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include "../../../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 //#include "details/robotCommunication/robotCommunicator.h"
 //#include "sensorConstants.h"

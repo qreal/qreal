@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 #include <robotsInterpreterCore/block.h>
 #include <robotsInterpreterCore/robotModelInterface.h>
