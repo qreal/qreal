@@ -4,6 +4,7 @@
 #include <QtCore/QStringList>
 #include <QtCore>
 #include "../../qrkernel/ids.h"
+#include "../../qrgui/pluginManager/explosion.h"
 
 namespace editorPluginTestingFramework {
 
@@ -17,6 +18,7 @@ public:
 	static QStringList convertBoolIntoStringList(bool const &boolValue);
 	static QStringList convertIdIntoStringList(qReal::Id const &id);
 	static QStringList convertIntIntoStringList(int const &integer);
+	static QStringList convertExplosionListIntoStringList(QList<qReal::Explosion> explosion);
 
 	/// converter to string with special symbols to parse in html
 	static QString transformateOutput(

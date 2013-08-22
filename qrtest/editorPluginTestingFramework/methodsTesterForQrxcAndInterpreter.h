@@ -48,8 +48,9 @@ private:
 	class DescriptionListGenerator;
 	class PropertyDescriptionListGenerator;
 	class PropertyDisplayedNameListGenerator;
-	class ContainedTypesListGenerator;
 
+	class ContainedTypesListGenerator;
+	class ExplosionsListGenerator;
 	class EnumValuesListGenerator;
 	class TypeNameListGenerator;
 	class AllChildrenTypesOfListGenerator;

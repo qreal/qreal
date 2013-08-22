@@ -430,6 +430,35 @@ class MethodsTesterForQrxcAndInterpreter::ContainedTypesListGenerator
 	}
 };
 
+class MethodsTesterForQrxcAndInterpreter::ExplosionsListGenerator
+: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
+{
+	virtual QString methodName() const
+	{
+		return "Explosions";
+	}
+
+	virtual QStringList callMethod(
+			EditorManagerInterface *editorManagerInterface
+			, Id const &editorId
+			, Id const &diagramId
+			, Id const &elementId
+			, QString const &propertyName
+			) const
+	{
+		Q_UNUSED(editorId);
+		Q_UNUSED(diagramId);
+		Q_UNUSED(propertyName);
+		return ConvertingMethods::convertExplosionListIntoStringList(editorManagerInterface->explosions(elementId));
+	}
+
+	virtual AbstractStringGenerator* clone() const
+	{
+		AbstractStringGenerator* clonedGenerator = new ExplosionsListGenerator();
+		return clonedGenerator;
+	}
+};
+
 class MethodsTesterForQrxcAndInterpreter::EnumValuesListGenerator
 		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
 {
@@ -978,6 +1007,7 @@ void MethodsTesterForQrxcAndInterpreter::testMethods()
 	mGeneratedList.append(testMethodIfExistsInList(PropertyDisplayedNameListGenerator(), "propertyDisplayedName"));
 
 	mGeneratedList.append(testMethodIfExistsInList(ContainedTypesListGenerator(), "containedTypes"));
+	mGeneratedList.append(testMethodIfExistsInList(ExplosionsListGenerator(), "explosions"));
 	mGeneratedList.append(testMethodIfExistsInList(EnumValuesListGenerator(), "enumValues"));
 	mGeneratedList.append(testMethodIfExistsInList(TypeNameListGenerator(), "typeName"));
 	mGeneratedList.append(testMethodIfExistsInList(AllChildrenTypesOfListGenerator(), "allChildrenTypesOf"));

@@ -12,9 +12,8 @@ description
 propertyDescription
 propertyDisplayedName
 
-containedTypes
-connectedTypes
-usedTypes
+containedTypes 
+explosions
 enumValues
 typeName
 allChildrenTypesOf

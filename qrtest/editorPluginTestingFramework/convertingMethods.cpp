@@ -39,6 +39,16 @@ QStringList ConvertingMethods::convertIntIntoStringList(int const &integer)
 	return convertStringIntoStringList(stringRepresentation);
 }
 
+QStringList ConvertingMethods::convertExplosionListIntoStringList(QList<Explosion> explosionList)
+{
+	QStringList result;
+	foreach (Explosion const &explosion, explosionList) {
+		QString const &target = explosion.target().toString();
+		result.append(target);
+	}
+	return result;
+}
+
 QString ConvertingMethods::transformateOutput(
 		QStringList const &output
 		, Id const &id
