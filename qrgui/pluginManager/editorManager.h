@@ -4,7 +4,6 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
 #include <QtCore/QPluginLoader>
-#include <QtCore/QStringList>
 #include <QtGui/QIcon>
 
 #include "listenerManager.h"

@@ -23,6 +23,7 @@ RobotsPlugin::RobotsPlugin()
 		, mRobotSettingsAction(NULL)
 		, mTitlesAction(NULL)
 		, mAppTranslator(new QTranslator())
+		, mKitPluginManager("plugins/kitPlugins")
 {
 //	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
