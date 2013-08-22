@@ -9,6 +9,8 @@
 #include "rules/ifRules/ifWithOneVisitedRule.h"
 
 #include "rules/loopRules/loopWithBothUnvisitedRule.h"
+#include "rules/loopRules/loopWithIterationVisitedRule.h"
+#include "rules/loopRules/loopWithNextVisitedRule.h"
 
 using namespace qReal::robots::generators;
 using namespace semantics;
@@ -77,9 +79,15 @@ void ReadableControlFlowGenerator::visitLoop(Id const &id
 
 	LoopWithBothUnvisitedRule bothUnvisitedRule(mSemanticTree, id
 			, branches.first, branches.second);
+	LoopWithIterationVisitedRule iterationVisitedRule(mSemanticTree, id
+			, branches.first, branches.second);
+	LoopWithNextVisitedRule nextVisitedRule(mSemanticTree, id
+			, branches.first, branches.second);
 
 	applyFirstPossible(id, QList<SemanticTransformationRule *>()
-			<< &bothUnvisitedRule);
+			<< &bothUnvisitedRule
+			<< &iterationVisitedRule
+			<< &nextVisitedRule);
 }
 
 void ReadableControlFlowGenerator::visitSwitch(Id const &id

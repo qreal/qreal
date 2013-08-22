@@ -13,8 +13,8 @@ void SubprogramBlock::run()
 	QString const name = stringProperty(id(), "name");
 	Tracer::debug(tracer::enums::blocks, "SubprogramBlock::run", "stepping into " + name);
 
-	QString const validName = utils::NameNormalizer::normalizeStrongly(validName, false);
-	if (name.isEmpty()) {
+	QString const validName = utils::NameNormalizer::normalizeStrongly(name, false);
+	if (validName.isEmpty()) {
 		error(tr("Please enter valid c-style name for subprogram \"") + name + "\"");
 		return;
 	}

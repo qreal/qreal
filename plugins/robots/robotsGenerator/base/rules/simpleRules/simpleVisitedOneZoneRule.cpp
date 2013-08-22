@@ -16,7 +16,9 @@ bool SimpleVisitedOneZoneRule::apply()
 	}
 
 	if (mNextNode->parentZone() != mThisNode->parentZone()) {
-		return false;
+		// If we have backward edge to loop - it`s ok, simply ignoring it
+		return mThisNode->parentZone()->parentNode() == mNextNode
+				&& dynamic_cast<LoopNode *>(mNextNode);
 	}
 
 	makeLoopStartingFrom(mNextNode);
