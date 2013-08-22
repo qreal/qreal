@@ -3,9 +3,9 @@
 using namespace qReal::robots::generators::semantics;
 
 LoopBlockRuleBase::LoopBlockRuleBase(SemanticTree *tree, Id const &id
-		, LinkInfo const &iterationNode, LinkInfo const &nextNode)
+		, LinkInfo const &iterationLink, LinkInfo const &nextLink)
 	: SemanticTransformationRule(tree, id)
-	, mIterationLink(iterationNode)
-	, mNextLink(nextNode)
+	, mIterationLink(iterationLink)
+	, mNextLink(nextLink)
 {
 }

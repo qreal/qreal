@@ -8,6 +8,7 @@
 #include "rules/ifRules/ifWithBothUnvisitedRule.h"
 #include "rules/ifRules/ifWithOneVisitedRule.h"
 
+#include "rules/loopRules/loopWithBothUnvisitedRule.h"
 
 using namespace qReal::robots::generators;
 using namespace semantics;
@@ -70,6 +71,15 @@ void ReadableControlFlowGenerator::visitConditional(Id const &id
 void ReadableControlFlowGenerator::visitLoop(Id const &id
 		, QList<LinkInfo> const &links)
 {
+	Q_UNUSED(links)
+
+	QPair<LinkInfo, LinkInfo> const branches(loopBranchesFor(id));
+
+	LoopWithBothUnvisitedRule bothUnvisitedRule(mSemanticTree, id
+			, branches.first, branches.second);
+
+	applyFirstPossible(id, QList<SemanticTransformationRule *>()
+			<< &bothUnvisitedRule);
 }
 
 void ReadableControlFlowGenerator::visitSwitch(Id const &id

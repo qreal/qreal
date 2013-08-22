@@ -11,7 +11,7 @@ class LoopBlockRuleBase : public SemanticTransformationRule
 {
 public:
 	LoopBlockRuleBase(SemanticTree *tree, Id const &id
-			, LinkInfo const &iterationNode, LinkInfo const &nextNode);
+			, LinkInfo const &iterationLink, LinkInfo const &nextLink);
 
 protected:
 	LinkInfo const &mIterationLink;

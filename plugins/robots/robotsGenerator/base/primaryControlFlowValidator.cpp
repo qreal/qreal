@@ -153,18 +153,18 @@ void PrimaryControlFlowValidator::visitLoop(Id const &id
 		case iterationGuard:
 			if (iterationLink) {
 				error(QObject::tr("Two outgoing links marked with \"iteration\" found"), id);
+				return;
 			} else {
 				iterationLink = &link;
-				return;
 			}
 			break;
 		default:
 			if (nonMarkedBlock) {
 				error(QObject::tr("There must be a link with property \"Guard\""\
 						" set to \"iteration\""), id);
+				return;
 			} else {
 				nonMarkedBlock = &link;
-				return;
 			}
 			break;
 		}

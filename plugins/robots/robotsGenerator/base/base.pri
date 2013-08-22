@@ -27,6 +27,7 @@ HEADERS += \
 	$$PWD/rules/ifRules/ifWithBothUnvisitedRule.h \
 	$$PWD/rules/ifRules/ifWithOneVisitedRule.h \
 	$$PWD/rules/loopRules/loopBlockRuleBase.h \
+	$$PWD/rules/loopRules/loopWithBothUnvisitedRule.h \
 
 SOURCES += \
 	$$PWD/smartLine.cpp \
@@ -57,3 +58,4 @@ SOURCES += \
 	$$PWD/rules/ifRules/ifWithBothUnvisitedRule.cpp \
 	$$PWD/rules/ifRules/ifWithOneVisitedRule.cpp \
 	$$PWD/rules/loopRules/loopBlockRuleBase.cpp \
+	$$PWD/rules/loopRules/loopWithBothUnvisitedRule.cpp \
