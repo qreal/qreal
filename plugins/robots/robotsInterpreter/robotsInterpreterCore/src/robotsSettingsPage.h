@@ -32,6 +32,8 @@ protected:
 	void changeEvent(QEvent *e);
 
 private:
+	QString selectedKit() const;
+
 	Ui::PreferencesRobotSettingsPage *mUi;
 	RobotsSettingsPageExtensionsInterface const &mSettingsExtensions;
 };

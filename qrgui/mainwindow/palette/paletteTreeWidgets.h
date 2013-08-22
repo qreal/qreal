@@ -5,6 +5,7 @@
 #include <QtWidgets/QSplitter>
 
 #include "paletteTreeWidget.h"
+#include "draggableElement.h"
 
 namespace qReal {
 namespace gui {
@@ -41,6 +42,14 @@ public:
 	/// Saves expanded groups into settings
 	void saveConfiguration(QString const &title) const;
 
+	void setElementVisible(Id const &metatype, bool visible);
+
+	void setVisibleForAllElements(bool visible);
+
+	void setElementEnabled(Id const &metatype, bool enabled);
+
+	void setEnabledForAllElements(bool enabled);
+
 private:
 	void initWidget();
 	void initWidget(PaletteTreeWidget * const tree, QSplitter * const splitter);
@@ -57,6 +66,7 @@ private:
 	Id mDiagram;
 	PaletteTreeWidget *mEditorTree; // Takes ownership
 	PaletteTreeWidget *mUserTree; // Takes ownership
+	QHash<Id, DraggableElement *> mPaletteElements; // Does not take ownership.
 };
 
 }

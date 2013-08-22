@@ -152,6 +152,18 @@ public:
 
 	QListIterator<EditorView *> openedEditorViews() const;
 
+	// Override.
+	virtual void setElementInPaletteVisible(Id const &metatype, bool visible);
+
+	// Override.
+	virtual void setVisibleForAllElementsInPalette(bool visible);
+
+	// Override.
+	virtual void setElementInPaletteEnabled(Id const &metatype, bool enabled);
+
+	// Override.
+	virtual void setEnabledForAllElementsInPalette(bool enabled);
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();

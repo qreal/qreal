@@ -2,6 +2,7 @@
 #include <QtWidgets/QAction>
 
 #include "interpreter.h"
+#include <robotsInterpreterCore/commonRobotModel/commonRobotModel.h>
 
 //#include "details/autoconfigurer.h"
 //#include "details/robotImplementations/unrealRobotModelImplementation.h"
@@ -15,13 +16,13 @@ using namespace qReal;
 using namespace robotsInterpreterCore;
 
 Interpreter::Interpreter()
-//	: mGraphicalModelApi(NULL)
-//	, mLogicalModelApi(NULL)
-//	, mInterpretersInterface(NULL)
-//	, mState(idle)
+	: mGraphicalModelApi(NULL)
+	, mLogicalModelApi(NULL)
+	, mInterpretersInterface(NULL)
+	, mState(idle)
 //	, mRobotModel(new RobotModel())
-//	, mBlocksTable(NULL)
-//	, mParser(NULL)
+	, mBlocksTable(NULL)
+	, mParser(NULL)
 //	, mRobotCommunication(new RobotCommunicator())
 //	, mImplementationType(robots::enums::robotModelType::null)
 //	, mWatchListWindow(NULL)
@@ -40,17 +41,23 @@ Interpreter::Interpreter()
 //	connect(mRobotCommunication, SIGNAL(errorOccured(QString)), this, SLOT(reportError(QString)));
 }
 
-//void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
-//	, LogicalModelAssistInterface &logicalModelApi
-//	, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-//	, qReal::ProjectManagementInterface const &projectManager)
-//{
-//	mGraphicalModelApi = &graphicalModelApi;
-//	mLogicalModelApi = &logicalModelApi;
-//	mInterpretersInterface = &interpretersInterface;
+void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
+	, LogicalModelAssistInterface &logicalModelApi
+	, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+	, qReal::ProjectManagementInterface const &projectManager)
+{
+	mGraphicalModelApi = &graphicalModelApi;
+	mLogicalModelApi = &logicalModelApi;
+	mInterpretersInterface = &interpretersInterface;
 
-//	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
-//	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface->errorReporter(), mParser);
+	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
+	mBlocksTable = new BlocksTable(
+			graphicalModelApi
+			, logicalModelApi
+			, new commonRobotModel::CommonRobotModel()
+			, mInterpretersInterface->errorReporter()
+			, mParser
+			);
 
 //	connect(&projectManager, SIGNAL(beforeOpen(QString)), this, SLOT(stopRobot()));
 
@@ -66,14 +73,15 @@ Interpreter::Interpreter()
 //	setRobotImplementation(modelType);
 
 //	mWatchListWindow = new utils::WatchListWindow(mParser, mInterpretersInterface->windowWidget());
-//}
+}
 
 Interpreter::~Interpreter()
 {
-//	foreach (Thread * const thread, mThreads) {
-//		delete thread;
-//	}
-//	delete mBlocksTable;
+	foreach (Thread * const thread, mThreads) {
+		delete thread;
+	}
+
+	delete mBlocksTable;
 }
 
 //void Interpreter::interpret()
@@ -581,3 +589,8 @@ Interpreter::~Interpreter()
 //{
 //	connect(configurer, SIGNAL(saved()), mD2ModelWidget, SLOT(syncronizeSensors()));
 //}
+
+qReal::IdList Interpreter::commonBlocks() const
+{
+	return mBlocksTable->commonBlocks();
+}

@@ -49,21 +49,21 @@ BlocksFactory::BlocksFactory(GraphicalModelAssistInterface const &graphicalModel
 		, RobotModelInterface * const robotModel
 		, ErrorReporterInterface * const errorReporter
 		, BlocksTable * const blocksTable
-//		, RobotsBlockParser * const parser
+		, RobotsBlockParser * const parser
 		)
 		: mRobotModel(robotModel)
 		, mGraphicalModelApi(graphicalModelApi)
 		, mLogicalModelApi(logicalModelApi)
 		, mErrorReporter(errorReporter)
 		, mBlocksTable(blocksTable)
-//		, mParser(parser)
+		, mParser(parser)
 {
 }
 
-//RobotsBlockParser * BlocksFactory::getParser()
-//{
-//	return mParser;
-//}
+RobotsBlockParser * BlocksFactory::getParser()
+{
+	return mParser;
+}
 
 Block *BlocksFactory::block(Id const &element)
 {
@@ -140,5 +140,17 @@ Block *BlocksFactory::block(Id const &element)
 
 bool BlocksFactory::elementMetatypeIs(Id const &element, QString const &metatype)
 {
-	return element.type() == Id("RobotsMetamodel", "RobotsDiagram", metatype);
+	return element.type() == id(metatype);
+}
+
+qReal::IdList BlocksFactory::commonBlocks() const
+{
+	return IdList() << id("InitialNode") << id("FinalNode") << id("Beep") << id("Timer") << id("EnginesForward")
+			<< id("EnginesBackward") << id("EnginesStop") << id("Loop") << id("Fork") << id("Subprogram")
+			<< id("Function") << id("IfBlock") << id("CommentBlock");
+}
+
+qReal::Id BlocksFactory::id(QString const &metatype)
+{
+	return Id("RobotsMetamodel", "RobotsDiagram", metatype);
 }

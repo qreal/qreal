@@ -1,4 +1,4 @@
 #include <robotsInterpreterCore/commonRobotModel/commonRobotModel.h>
 
-using namespace robotsInterpreterCore;
+using namespace robotsInterpreterCore::commonRobotModel;
 

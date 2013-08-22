@@ -2,7 +2,8 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 	robotsInterpreterCore \
-#	virtualKitInterpreter \
+	nullKitInterpreter \
 #	nxtRobotsInterpreter \
 
+nullKitInterpreter.depends = robotsInterpreterCore
 #nxtRobotsInterpreter.depends = robotsInterpreterCore

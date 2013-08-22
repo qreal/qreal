@@ -17,7 +17,7 @@ RobotsSettingsPage::RobotsSettingsPage(RobotsSettingsPageExtensionsInterface con
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
 
-	QList<QString> const kitNames = mSettingsExtensions.kitNames();
+	QList<QString> const kitNames = mSettingsExtensions.kitIds();
 
 	if (kitNames.isEmpty()) {
 		QLabel * const label = new QLabel();
@@ -27,8 +27,10 @@ RobotsSettingsPage::RobotsSettingsPage(RobotsSettingsPageExtensionsInterface con
 		return;
 	}
 
-	if (kitNames.count() > 1) {
-		foreach (QString const &kitName, mSettingsExtensions.kitNames()) {
+	if (kitNames.count() == 1) {
+		mUi->constructorKitGroupBox->setVisible(false);
+	} else {
+		foreach (QString const &kitName, mSettingsExtensions.kitIds()) {
 			QRadioButton * const kitRadioButton = new QRadioButton();
 			kitRadioButton->setText(kitName);
 			if (mUi->constructorKitGroupBox->layout()->count() == 1) {
@@ -40,8 +42,12 @@ RobotsSettingsPage::RobotsSettingsPage(RobotsSettingsPageExtensionsInterface con
 		}
 	}
 
+	mUi->typeOfModelGroupBox->setVisible(false);
+
 	QWidget * const extensionWidget = mSettingsExtensions.kitSpecificSettingsWidget(kitNames[0]);
-	static_cast<QVBoxLayout *>(mUi->settingsExtensionFrame->layout())->insertWidget(0, extensionWidget);
+	if (extensionWidget != NULL) {
+		static_cast<QVBoxLayout *>(mUi->settingsExtensionFrame->layout())->insertWidget(0, extensionWidget);
+	}
 }
 
 RobotsSettingsPage::~RobotsSettingsPage()
@@ -51,7 +57,7 @@ RobotsSettingsPage::~RobotsSettingsPage()
 
 void RobotsSettingsPage::save()
 {
-//	SettingsManager::setValue("robotModel", selectedRobotModel());
+	SettingsManager::setValue("kitId", selectedKit());
 	emit saved();
 }
 
@@ -71,4 +77,14 @@ void RobotsSettingsPage::changeEvent(QEvent *e)
 	default:
 		break;
 	}
+}
+
+QString RobotsSettingsPage::selectedKit() const
+{
+	if (!mUi->constructorKitGroupBox->isVisible()) {
+		return mSettingsExtensions.kitIds()[0];
+	}
+
+	// TODO: Constructor kit selection based on radio buttons.
+	return mSettingsExtensions.kitIds()[0];
 }

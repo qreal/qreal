@@ -2079,3 +2079,23 @@ void MainWindow::setVersion(QString const &version)
 	// TODO: update title
 	SettingsManager::setValue("version", version);
 }
+
+void MainWindow::setElementInPaletteVisible(Id const &metatype, bool visible)
+{
+	mUi->paletteTree->setElementVisible(metatype, visible);
+}
+
+void MainWindow::setVisibleForAllElementsInPalette(bool visible)
+{
+	mUi->paletteTree->setVisibleForAllElements(visible);
+}
+
+void MainWindow::setElementInPaletteEnabled(Id const &metatype, bool enabled)
+{
+	mUi->paletteTree->setElementEnabled(metatype, enabled);
+}
+
+void MainWindow::setEnabledForAllElementsInPalette(bool enabled)
+{
+	mUi->paletteTree->setEnabledForAllElements(enabled);
+}

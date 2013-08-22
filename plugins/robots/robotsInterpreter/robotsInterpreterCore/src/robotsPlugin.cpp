@@ -32,7 +32,7 @@ RobotsPlugin::RobotsPlugin()
 	mRobotSettingsPage = new RobotsSettingsPage(mKitPluginManager);
 
 //	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
-	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
+//	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 
 	initActions();
 	initHotKeyActions();
@@ -112,14 +112,22 @@ void RobotsPlugin::initHotKeyActions()
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
 //	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
-//	mInterpreter.init(configurator.graphicalModelApi()
-//			, configurator.logicalModelApi()
-//			, configurator.mainWindowInterpretersInterface()
-//			, configurator.projectManager());
+	mInterpreter.init(configurator.graphicalModelApi()
+			, configurator.logicalModelApi()
+			, configurator.mainWindowInterpretersInterface()
+			, configurator.projectManager());
+
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();
 	SettingsManager::setValue("IndexGrid", gridWidth);
 //	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
+
+	if (SettingsManager::value("kitId").toString().isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
+		SettingsManager::setValue("kitId", mKitPluginManager.kitIds()[0]);
+	} else if (mKitPluginManager.kitIds().isEmpty()) {
+		mMainWindowInterpretersInterface->setEnabledForAllElementsInPalette(false);
+	}
+
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
 	updateEnabledActions();
@@ -221,6 +229,7 @@ void RobotsPlugin::rereadSettings()
 {
 	updateTitlesVisibility();
 //	mInterpreter.setNoiseSettings();
+	updateBlocksOnPalette();
 }
 
 void RobotsPlugin::titlesVisibilityChecked(bool checked)
@@ -256,4 +265,28 @@ void RobotsPlugin::updateEnabledActions()
 
 //	mRunAction->setEnabled(typeOfRobotModel != robots::enums::robotModelType::trik && enabled);
 //	mStopRobotAction->setEnabled(typeOfRobotModel != robots::enums::robotModelType::trik && enabled);
+}
+
+void RobotsPlugin::updateBlocksOnPalette()
+{
+	QString const kitId = qReal::SettingsManager::value("kitId", "").toString();
+	if (kitId.isEmpty()) {
+		return;
+	}
+
+	mMainWindowInterpretersInterface->setVisibleForAllElementsInPalette(false);
+	IdList const commonBlocks = mInterpreter.commonBlocks();
+	foreach (Id const &id, commonBlocks) {
+		mMainWindowInterpretersInterface->setElementInPaletteVisible(id, true);
+	}
+
+	IdList const specificBlocks = mKitPluginManager.specificBlocks(kitId);
+	foreach (Id const &id, specificBlocks) {
+		mMainWindowInterpretersInterface->setElementInPaletteVisible(id, true);
+	}
+
+	IdList const unsupportedBlocks = mKitPluginManager.unsupportedBlocks(kitId);
+	foreach (Id const &id, unsupportedBlocks) {
+		mMainWindowInterpretersInterface->setElementInPaletteEnabled(id, false);
+	}
 }

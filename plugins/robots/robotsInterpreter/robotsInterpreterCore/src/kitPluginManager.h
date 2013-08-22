@@ -11,6 +11,7 @@
 
 namespace robotsInterpreterCore {
 
+/// Loads kit plugins and provides interface to access them for the rest of RobotsInterpreterCore.
 class KitPluginManager : public RobotsSettingsPageExtensionsInterface
 {
 public:
@@ -21,19 +22,27 @@ public:
 	~KitPluginManager();
 
 	// Override.
-	virtual QList<QString> kitNames() const;
+	virtual QList<QString> kitIds() const;
 
 	// Override.
 	// Transfers ownership.
-	virtual QWidget *kitSpecificSettingsWidget(QString const &kitName) const;
+	virtual QWidget *kitSpecificSettingsWidget(QString const &kitId) const;
+
+	// Override.
+	virtual qReal::IdList specificBlocks(QString const &kitId) const;
+
+	// Override.
+	virtual qReal::IdList unsupportedBlocks(QString const &kitId) const;
 
 private:
-	QMap<QString, QString> mPluginFileNames;
-	QMap<QString, KitPluginInterface *> mPluginInterfaces;  // Has ownership.
+	/// Maps kit plugin name to corresponding plugin interface.
+	QMap<QString, KitPluginInterface *> mPluginInterfaces;  // Doesn't have ownership, objects are owned by mLoaders.
+
+	/// Maps kit plugin name to corresponding loader.
 	QMap<QString, QPluginLoader *> mLoaders;  // Has ownership.
 
+	/// Directory from which plugins shall be loaded.
 	QDir mPluginsDir;
 };
 
 }
-

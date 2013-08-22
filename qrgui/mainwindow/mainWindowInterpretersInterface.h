@@ -80,6 +80,24 @@ public:
 	/// Shows progress bar on operation start
 	/// @param operation Operation that going to be invoced
 	virtual void reportOperation(invocation::LongOperation *operation) = 0;
+
+	/// Shows or hides given element on a palette.
+	/// @param metatype - id of an element type to be shown/hidden.
+	/// @param visible - true, if element shall be visible, false if hidden.
+	virtual void setElementInPaletteVisible(Id const &metatype, bool visible) = 0;
+
+	/// Shows or hides all elements in palette.
+	/// @param visible - true, if all elements shall be visible, false if hidden.
+	virtual void setVisibleForAllElementsInPalette(bool visible) = 0;
+
+	/// Disables/enables given element on a palette.
+	/// @param metatype - id of an element type to be disabled/enabled.
+	/// @param enabled - true, if element shall be enabled, false if disabled (greyed out).
+	virtual void setElementInPaletteEnabled(Id const &metatype, bool enabled) = 0;
+
+	/// Enables or disables all elements in palette.
+	/// @param enabled - true, if all elements shall be enabled, false if all elements shall be disabled.
+	virtual void setEnabledForAllElementsInPalette(bool enabled) = 0;
 };
 
 }

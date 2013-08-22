@@ -2,8 +2,9 @@
 
 #include <QtWidgets/QTreeWidget>
 
-#include "paletteElement.h"
 #include "../../pluginManager/editorManagerInterface.h"
+#include "paletteElement.h"
+#include "draggableElement.h"
 
 namespace qReal {
 namespace gui {
@@ -35,6 +36,14 @@ public:
 	static void sortByFriendlyName(QList<PaletteElement> &elements);
 
 	void editItem(QTreeWidgetItem * const item);
+
+	void setElementVisible(Id const &metatype, bool visible);
+
+	void setVisibleForAllElements(bool visible);
+
+	void setElementEnabled(Id const &metatype, bool enabled);
+
+	void setEnabledForAllElements(bool enabled);
 
 protected:
 	void mousePressEvent(QMouseEvent *event);
@@ -75,6 +84,9 @@ private:
 	MainWindow &mMainWindow;
 	PaletteTree &mPaletteTree;
 	bool mEditable;
+
+	QHash<Id, DraggableElement *> mPaletteElements; // Does not take ownership.
+
 };
 
 }

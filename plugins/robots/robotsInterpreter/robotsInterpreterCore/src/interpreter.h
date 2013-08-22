@@ -7,12 +7,12 @@
 //#include "details/robotCommunication/robotCommunicator.h"
 //#include "sensorConstants.h"
 //#include "details/robotParts/robotModel.h"
-//#include "details/thread.h"
-//#include "details/blocksTable.h"
+#include "thread.h"
+#include "blocksTable.h"
 //#include "details/d2RobotModel/d2RobotModel.h"
 
 //#include "../../../qrutils/watchListWindow.h"
-//#include "../../../qrgui/mainwindow/projectManager/projectManagementInterface.h"
+#include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
 
 //#include "details/robotsBlockParser.h"
 //#include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
@@ -29,11 +29,11 @@ public:
 	Interpreter();
 	virtual ~Interpreter();
 
-//	virtual void init(GraphicalModelAssistInterface const &graphicalModelApi
-//			, LogicalModelAssistInterface &logicalModelApi
-//			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-//			, qReal::ProjectManagementInterface const &projectManager
-//	);
+	virtual void init(qReal::GraphicalModelAssistInterface const &graphicalModelApi
+			, qReal::LogicalModelAssistInterface &logicalModelApi
+			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, qReal::ProjectManagementInterface const &projectManager
+	);
 
 //	details::RobotModel *robotModel();
 //	void setRobotModel(details::RobotModel * const robotModel);
@@ -67,13 +67,15 @@ public:
 //	utils::WatchListWindow *watchWindow() const;
 //	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
-signals:
+	qReal::IdList commonBlocks() const;
+
+//signals:
 //	void noiseSettingsChanged();
 //	void noiseSettingsChangedBy2DModelWidget();
 
 //	void sensorsConfigurationChanged();
 
-public slots:
+//public slots:
 //	void connectToRobot();
 //	void interpret();
 //	void stopRobot();
@@ -82,7 +84,7 @@ public slots:
 //	void onTabChanged(Id const &diagramId, bool enabled);
 //	void saveSensorConfiguration();
 
-private slots:
+//private slots:
 //	void threadStopped();
 //	void newThread(details::blocks::Block * const startBlock);
 //	void runTimer();
@@ -108,27 +110,27 @@ private slots:
 //	void on2dModelChanged(QDomDocument const &xml);
 //	void loadSensorConfiguration(Id const &diagramId);
 
-private:
+//private:
 //	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
 //	void addThread(details::Thread * const thread);
 //	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
 //	void resetVariables();
 
-//	enum InterpreterState {
-//		interpreting
-//		, waitingForSensorsConfiguredToLaunch
-//		, idle
-//	};
+	enum InterpreterState {
+		interpreting
+		, waitingForSensorsConfiguredToLaunch
+		, idle
+	};
 
-//	GraphicalModelAssistInterface const *mGraphicalModelApi;
-//	LogicalModelAssistInterface *mLogicalModelApi;
-//	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
+	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
+	qReal::LogicalModelAssistInterface *mLogicalModelApi;
+	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
 
-//	InterpreterState mState;
-//	QList<details::Thread *> mThreads;  // Has ownership
+	InterpreterState mState;
+	QList<Thread *> mThreads;  // Has ownership
 //	details::RobotModel *mRobotModel;
-//	details::BlocksTable *mBlocksTable;  // Has ownership
-//	details::RobotsBlockParser *mParser;
+	BlocksTable *mBlocksTable;  // Has ownership
+	RobotsBlockParser *mParser;
 //	QTimer mTimer;
 //	details::d2Model::D2ModelWidget *mD2ModelWidget;
 //	details::d2Model::D2RobotModel *mD2RobotModel;

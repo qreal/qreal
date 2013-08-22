@@ -294,3 +294,23 @@ void PaletteTree::setExpansionButtonAppearance()
 		mChangeExpansionState->setToolTip(tr("Expand all"));
 	}
 }
+
+void PaletteTree::setElementVisible(Id const &metatype, bool visible)
+{
+	mTree->setElementVisible(metatype, visible);
+}
+
+void PaletteTree::setVisibleForAllElements(bool visible)
+{
+	mTree->setVisibleForAllElements(visible);
+}
+
+void PaletteTree::setElementEnabled(Id const &metatype, bool enabled)
+{
+	mTree->setElementEnabled(metatype, enabled);
+}
+
+void PaletteTree::setEnabledForAllElements(bool enabled)
+{
+	mTree->setEnabledForAllElements(enabled);
+}

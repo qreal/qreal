@@ -22,8 +22,7 @@ KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 		if (plugin) {
 			KitPluginInterface * const kitPlugin = qobject_cast<KitPluginInterface *>(plugin);
 			if (kitPlugin) {
-				mPluginFileNames.insert(kitPlugin->kitName(), fileName);
-				mPluginInterfaces[kitPlugin->kitName()] = kitPlugin;
+				mPluginInterfaces[kitPlugin->kitId()] = kitPlugin;
 				mLoaders.insert(fileName, loader);
 			} else {
 				// loader->unload();
@@ -39,20 +38,37 @@ KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 
 KitPluginManager::~KitPluginManager()
 {
-	qDeleteAll(mPluginInterfaces);
 	qDeleteAll(mLoaders);
 }
 
-QList<QString> KitPluginManager::kitNames() const
+QList<QString> KitPluginManager::kitIds() const
 {
 	return mPluginInterfaces.keys();
 }
 
-QWidget *KitPluginManager::kitSpecificSettingsWidget(QString const &kitName) const
+QWidget *KitPluginManager::kitSpecificSettingsWidget(QString const &kitId) const
 {
-	if (!mPluginInterfaces.contains(kitName)) {
+	if (!mPluginInterfaces.contains(kitId)) {
 		throw qReal::Exception("Trying to get settings widget for non-existing kit plugin");
 	}
 
-	return mPluginInterfaces[kitName]->settingsWidget();
+	return mPluginInterfaces[kitId]->settingsWidget();
+}
+
+qReal::IdList KitPluginManager::specificBlocks(QString const &kitId) const
+{
+	if (!mPluginInterfaces.contains(kitId)) {
+		throw qReal::Exception("Trying to get specific blocks for non-existing kit plugin");
+	}
+
+	return mPluginInterfaces[kitId]->specificBlocks();
+}
+
+qReal::IdList KitPluginManager::unsupportedBlocks(QString const &kitId) const
+{
+	if (!mPluginInterfaces.contains(kitId)) {
+		throw qReal::Exception("Trying to get unsupported blocks for non-existing kit plugin");
+	}
+
+	return mPluginInterfaces[kitId]->unsupportedBlocks();
 }

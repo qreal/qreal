@@ -24,7 +24,7 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, RobotModelInterface * const robotModel
 			, qReal::ErrorReporterInterface * const errorReporter
-//			, RobotsBlockParser * const parser
+			, RobotsBlockParser * const parser
 			);
 
 	~BlocksTable();
@@ -33,6 +33,8 @@ public:
 	void addBlock(qReal::Id const &element, Block *block);
 	void setFailure();
 	void setIdleForBlocks();
+
+	qReal::IdList commonBlocks() const;
 
 private:
 	QHash<qReal::Id, Block *> mBlocks;  // Has ownership

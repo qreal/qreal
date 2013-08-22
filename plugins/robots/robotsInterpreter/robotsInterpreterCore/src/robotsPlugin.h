@@ -9,6 +9,7 @@
 #include "robotsSettingsPage.h"
 #include "customizer.h"
 #include "kitPluginManager.h"
+#include "interpreter.h"
 
 //#include "details/interpreter.h"
 //#include "details/sensorsConfigurationWidget.h"
@@ -57,13 +58,16 @@ private:
 	/// selected robot model and so on.
 	void updateEnabledActions();
 
+	/// Disables/hides unsupported by current plugin blocks on a palette.
+	void updateBlocksOnPalette();
+
 	// details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
 
-	/// Main class for robot interpreter. Contains implementation of plugin functionality.
-//	details::Interpreter mInterpreter;
+	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
+	Interpreter mInterpreter;
 
 	/// Page with plugin settings. Created here, but then ownership is passed to
 	/// a caller of preferencesPage().
