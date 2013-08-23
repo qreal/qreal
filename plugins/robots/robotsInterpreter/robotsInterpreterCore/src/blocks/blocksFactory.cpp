@@ -1,44 +1,44 @@
 #include "blocksFactory.h"
 
-//#include "blocks/timerBlock.h"
-//#include "blocks/beepBlock.h"
-//#include "blocks/initialBlock.h"
-//#include "blocks/finalBlock.h"
-//#include "blocks/nullificationEncoderBlock.h"
+#include "details/finalBlock.h"
+#include "details/initialBlock.h"
+//#include "details/timerBlock.h"
+//#include "details/beepBlock.h"
+//#include "details/nullificationEncoderBlock.h"
 
-//#include "blocks/enginesForwardBlock.h"
-//#include "blocks/enginesBackwardBlock.h"
-//#include "blocks/enginesStopBlock.h"
+//#include "details/enginesForwardBlock.h"
+//#include "details/enginesBackwardBlock.h"
+//#include "details/enginesStopBlock.h"
 
-//#include "blocks/timerBlock.h"
-//#include "blocks/playToneBlock.h"
-//#include "blocks/functionBlock.h"
-//#include "blocks/beepBlock.h"
+//#include "details/timerBlock.h"
+//#include "details/playToneBlock.h"
+//#include "details/functionBlock.h"
+//#include "details/beepBlock.h"
 
-//#include "blocks/loopBlock.h"
-//#include "blocks/forkBlock.h"
-//#include "blocks/ifBlock.h"
-//#include "blocks/dummyBlock.h"
-//#include "blocks/commentBlock.h"
-//#include "blocks/subprogramBlock.h"
+//#include "details/loopBlock.h"
+//#include "details/forkBlock.h"
+//#include "details/ifBlock.h"
+//#include "details/dummyBlock.h"
+//#include "details/commentBlock.h"
+//#include "details/subprogramBlock.h"
 
-//#include "blocks/clearScreenBlock.h"
-//#include "blocks/drawPixelBlock.h"
-//#include "blocks/drawLineBlock.h"
-//#include "blocks/drawRectBlock.h"
-//#include "blocks/drawCircleBlock.h"
-//#include "blocks/printTextBlock.h"
+//#include "details/clearScreenBlock.h"
+//#include "details/drawPixelBlock.h"
+//#include "details/drawLineBlock.h"
+//#include "details/drawRectBlock.h"
+//#include "details/drawCircleBlock.h"
+//#include "details/printTextBlock.h"
 
-//#include "blocks/waitForTouchSensorBlock.h"
-//#include "blocks/waitForSonarDistanceBlock.h"
-//#include "blocks/waitForColorBlock.h"
-//#include "blocks/waitForColorIntensityBlock.h"
-//#include "blocks/waitForLightSensorBlock.h"
-//#include "blocks/waitForSoundSensorBlock.h"
-//#include "blocks/waitforGyroscopeSensorBlock.h"
-//#include "blocks/waitForAccelerometerBlock.h"
-//#include "blocks/waitForEncoderBlock.h"
-//#include "blocks/waitForButtonsBlock.h"
+//#include "details/waitForTouchSensorBlock.h"
+//#include "details/waitForSonarDistanceBlock.h"
+//#include "details/waitForColorBlock.h"
+//#include "details/waitForColorIntensityBlock.h"
+//#include "details/waitForLightSensorBlock.h"
+//#include "details/waitForSoundSensorBlock.h"
+//#include "details/waitforGyroscopeSensorBlock.h"
+//#include "details/waitForAccelerometerBlock.h"
+//#include "details/waitForEncoderBlock.h"
+//#include "details/waitForButtonsBlock.h"
 
 using namespace robotsInterpreterCore::blocks;
 
@@ -49,16 +49,19 @@ BlocksFactory::BlocksFactory(GraphicalModelAssistInterface const &graphicalModel
 		, LogicalModelAssistInterface const &logicalModelApi
 		, RobotModelInterface * const robotModel
 		, ErrorReporterInterface * const errorReporter
-		, BlocksTableInterface * const blocksTable
-		, BlockParserInterface * const parser
 		)
 		: mRobotModel(robotModel)
 		, mGraphicalModelApi(graphicalModelApi)
 		, mLogicalModelApi(logicalModelApi)
 		, mErrorReporter(errorReporter)
-		, mBlocksTable(blocksTable)
-		, mParser(parser)
+		, mParser(NULL)
 {
+}
+
+void BlocksFactory::setParser(BlockParserInterface * const parser)
+{
+	// TODO: make sure there is no parser already.
+	mParser = parser;
 }
 
 //RobotsBlockParser * BlocksFactory::getParser()
@@ -69,10 +72,10 @@ BlocksFactory::BlocksFactory(GraphicalModelAssistInterface const &graphicalModel
 BlockInterface *BlocksFactory::block(Id const &element)
 {
 	Block * newBlock = NULL;
-//	if (elementMetatypeIs(element, "InitialNode")) {
-//		newBlock = new InitialBlock(*mRobotModel);
-//	} else if (elementMetatypeIs(element, "FinalNode")) {
-//		newBlock = new FinalBlock();
+	if (elementMetatypeIs(element, "InitialNode")) {
+		newBlock = new details::InitialBlock(*mRobotModel);
+	} else if (elementMetatypeIs(element, "FinalNode")) {
+		newBlock = new details::FinalBlock();
 //	} else if (elementMetatypeIs(element, "Beep")) {
 //		newBlock = new BeepBlock(mRobotModel->brick(), mRobotModel->produceTimer());
 //	} else if (elementMetatypeIs(element, "Timer")) {
@@ -133,9 +136,9 @@ BlockInterface *BlocksFactory::block(Id const &element)
 //		newBlock = new ClearScreenBlock(mRobotModel->display());
 //	} else {
 //		newBlock = new DummyBlock();
-//	}
+	}
 
-//	newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, *mBlocksTable, mErrorReporter, mParser);
+	newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, mErrorReporter, mParser);
 	return newBlock;
 }
 
@@ -149,17 +152,17 @@ qReal::IdList BlocksFactory::providedBlocks() const
 	return IdList()
 			<< id("InitialNode")
 			<< id("FinalNode")
-			<< id("Beep")
-			<< id("Timer")
-			<< id("EnginesForward")
-			<< id("EnginesBackward")
-			<< id("EnginesStop")
-			<< id("Loop")
-			<< id("Fork")
-			<< id("Subprogram")
-			<< id("Function")
-			<< id("IfBlock")
-			<< id("CommentBlock")
+//			<< id("Beep")
+//			<< id("Timer")
+//			<< id("EnginesForward")
+//			<< id("EnginesBackward")
+//			<< id("EnginesStop")
+//			<< id("Loop")
+//			<< id("Fork")
+//			<< id("Subprogram")
+//			<< id("Function")
+//			<< id("IfBlock")
+//			<< id("CommentBlock")
 			;
 }
 

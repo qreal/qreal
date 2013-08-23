@@ -7,7 +7,7 @@ using namespace robotsInterpreterCore::blocks;
 using namespace qReal;
 
 Block::Block()
-	: mNextBlock(NULL)
+	: mNextBlockId(Id())
 //	, mGraphicalModelApi(NULL)
 //	, mLogicalModelApi(NULL)
 //	, mBlocksTable(NULL)
@@ -23,21 +23,19 @@ Block::~Block()
 {
 }
 
-//void Block::init(Id const &graphicalId
-//		, GraphicalModelAssistInterface const &graphicalModelApi
-//		, LogicalModelAssistInterface const &logicalModelApi
-//		, BlocksTable &blocksTable
-//		, ErrorReporterInterface * const errorReporter
-//		, RobotsBlockParser * const parser)
-//{
-//	mGraphicalId = graphicalId;
-//	mGraphicalModelApi = &graphicalModelApi;
-//	mLogicalModelApi = &logicalModelApi;
-//	mBlocksTable = &blocksTable;
-//	mErrorReporter = errorReporter;
-//	mParser = parser;
+void Block::init(Id const &graphicalId
+		, GraphicalModelAssistInterface const &graphicalModelApi
+		, LogicalModelAssistInterface const &logicalModelApi
+		, ErrorReporterInterface * const errorReporter
+		, BlockParserInterface * const parser)
+{
+	mGraphicalId = graphicalId;
+	mGraphicalModelApi = &graphicalModelApi;
+	mLogicalModelApi = &logicalModelApi;
+	mErrorReporter = errorReporter;
+	mParser = parser;
 //	additionalInit();
-//}
+}
 
 bool Block::initNextBlocks()
 {

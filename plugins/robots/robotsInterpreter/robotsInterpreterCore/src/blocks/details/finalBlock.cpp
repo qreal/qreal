@@ -1,11 +1,10 @@
 #include "finalBlock.h"
 
-using namespace qReal;
-using namespace interpreters::robots::details::blocks;
+using namespace robotsInterpreterCore::blocks::details;
 
 void FinalBlock::run()
 {
-	emit done(NULL);
+	emit done(qReal::Id());
 }
 
 bool FinalBlock::initNextBlocks()

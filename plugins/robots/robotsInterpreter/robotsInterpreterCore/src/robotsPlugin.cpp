@@ -4,6 +4,8 @@
 
 #include <qrkernel/settingsManager.h>
 
+#include "blocks/blocksFactory.h"
+
 //#include "details/tracer.h"
 //#include "details/nxtDisplay.h"
 
@@ -15,7 +17,8 @@ Id const oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNo
 int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
-		: mMainWindowInterpretersInterface(NULL)
+		: mInterpreter(NULL)
+		, mMainWindowInterpretersInterface(NULL)
 //		, m2dModelAction(NULL)
 //		, mRunAction(NULL)
 //		, mStopRobotAction(NULL)
@@ -112,10 +115,24 @@ void RobotsPlugin::initHotKeyActions()
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
 //	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
-	mInterpreter->init(configurator.graphicalModelApi()
+	robotModel::RobotModelInterface * const robotModel = new robotModel::RobotModel();
+
+	blocks::BlocksFactoryInterface * const blocksFactory = new blocks::BlocksFactory(
+			configurator.graphicalModelApi()
+			, configurator.logicalModelApi()
+			, robotModel
+			, configurator.mainWindowInterpretersInterface().errorReporter()
+			);
+
+	mInterpreter = new interpreter::Interpreter(configurator.graphicalModelApi()
 			, configurator.logicalModelApi()
 			, configurator.mainWindowInterpretersInterface()
-			, configurator.projectManager());
+			, configurator.projectManager()
+			, blocksFactory
+			, robotModel
+			);
+
+	blocksFactory->setParser(&mInterpreter->parser());
 
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();

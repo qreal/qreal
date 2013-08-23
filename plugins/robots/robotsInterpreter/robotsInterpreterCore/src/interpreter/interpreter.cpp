@@ -16,19 +16,34 @@
 using namespace qReal;
 using namespace robotsInterpreterCore::interpreter;
 
-Interpreter::Interpreter()
-	: mGraphicalModelApi(NULL)
-	, mLogicalModelApi(NULL)
-	, mInterpretersInterface(NULL)
-	, mState(idle)
-//	, mRobotModel(new RobotModel())
-	, mBlocksTable(NULL)
-	, mParser(NULL)
-//	, mRobotCommunication(new RobotCommunicator())
-//	, mImplementationType(robots::enums::robotModelType::null)
-//	, mWatchListWindow(NULL)
-//	, mActionConnectToRobot(NULL)
+Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
+		, LogicalModelAssistInterface &logicalModelApi
+		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+		, qReal::ProjectManagementInterface const &projectManager
+		, blocks::BlocksFactoryInterface * const blocksFactory
+		, robotModel::RobotModelInterface * const robotModel
+		)
+		: mGraphicalModelApi(&graphicalModelApi)
+		, mLogicalModelApi(&logicalModelApi)
+		, mInterpretersInterface(&interpretersInterface)
+		, mState(idle)
+		, mRobotModel(robotModel)
+		, mBlocksTable(NULL)
+		, mParser(new details::RobotsBlockParser(interpretersInterface.errorReporter()))
+	//	, mRobotCommunication(new RobotCommunicator())
+	//	, mImplementationType(robots::enums::robotModelType::null)
+	//	, mWatchListWindow(NULL)
+	//	, mActionConnectToRobot(NULL)
 {
+	mBlocksTable = new details::BlocksTable(
+			graphicalModelApi
+			, logicalModelApi
+			, robotModel
+			, mInterpretersInterface->errorReporter()
+			, mParser
+			, blocksFactory
+			);
+
 //	mD2RobotModel = new d2Model::D2RobotModel();
 //	mD2ModelWidget = mD2RobotModel->createModelWidget();
 
@@ -40,30 +55,6 @@ Interpreter::Interpreter()
 //	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 //	connect(mD2ModelWidget, SIGNAL(d2WasClosed()), this, SLOT(stopRobot()));
 //	connect(mRobotCommunication, SIGNAL(errorOccured(QString)), this, SLOT(reportError(QString)));
-}
-
-void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
-	, LogicalModelAssistInterface &logicalModelApi
-	, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-	, qReal::ProjectManagementInterface const &projectManager
-	, blocks::BlocksFactoryInterface * const blocksFactory
-	, robotModel::RobotModelInterface * const robotModel
-	)
-{
-	mGraphicalModelApi = &graphicalModelApi;
-	mLogicalModelApi = &logicalModelApi;
-	mInterpretersInterface = &interpretersInterface;
-
-	mParser = new details::RobotsBlockParser(mInterpretersInterface->errorReporter());
-
-	mBlocksTable = new details::BlocksTable(
-			graphicalModelApi
-			, logicalModelApi
-			, robotModel
-			, mInterpretersInterface->errorReporter()
-			, mParser
-			, blocksFactory
-			);
 
 //	connect(&projectManager, SIGNAL(beforeOpen(QString)), this, SLOT(stopRobot()));
 
@@ -88,6 +79,11 @@ Interpreter::~Interpreter()
 	}
 
 	delete mBlocksTable;
+}
+
+robotsInterpreterCore::blocks::BlockParserInterface &Interpreter::parser() const
+{
+	return *mParser;
 }
 
 //void Interpreter::interpret()

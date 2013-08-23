@@ -19,11 +19,11 @@ public:
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, robotModel::RobotModelInterface * const robotModel
 			, qReal::ErrorReporterInterface * const errorReporter
-			, BlocksTableInterface * const blocksTable
-			, BlockParserInterface * const parser
 			);
 
 	virtual BlockInterface *block(qReal::Id const &element);
+
+	virtual void setParser(BlockParserInterface * const parser);
 
 //	RobotsBlockParser * getParser();
 
@@ -37,7 +37,6 @@ private:
 	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface const &mLogicalModelApi;
 	qReal::ErrorReporterInterface * const mErrorReporter;  // Doesn't have ownership
-	BlocksTableInterface * const mBlocksTable;
 	BlockParserInterface * mParser;
 };
 

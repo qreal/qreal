@@ -1,12 +1,10 @@
 #pragma once
 
-#include "block.h"
+#include <robotsInterpreterCore/blocks/block.h>
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
-namespace details {
+namespace robotsInterpreterCore {
 namespace blocks {
+namespace details {
 
 class FinalBlock : public Block
 {
@@ -19,8 +17,6 @@ private:
 	virtual bool initNextBlocks();
 };
 
-}
-}
 }
 }
 }

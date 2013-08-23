@@ -8,6 +8,8 @@
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include <robotsInterpreterCore/blocks/blockInterface.h>
+#include <robotsInterpreterCore/blocks/blockParserInterface.h>
+#include <robotsInterpreterCore/blocks/blocksTableInterface.h>
 
 //#include "../blocksTable.h"
 
@@ -39,8 +41,8 @@ public:
 	virtual void finishedSteppingInto();
 
 signals:
-	void done(Block * const nextBlock);
-	void newThread(Block * const startBlock);
+	void done(qReal::Id const &nextBlock);
+	void newThread(qReal::Id const &startBlock);
 	void failure();
 
 	/// Emitted each time when execution must be continued from the initial block
@@ -67,26 +69,24 @@ protected:
 
 //	QVector<bool> parseEnginePorts() const;
 
-	Block *mNextBlock;  // Does not have ownership
-//	GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
-//	LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
-//	BlocksTable *mBlocksTable;  // Does not have ownership
+	qReal::Id mNextBlockId;
+	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
+	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
 
 	qReal::Id mGraphicalId;
-//	RobotsBlockParser * mParser;
+	BlockParserInterface * mParser;
 
 private slots:
 	void finishedRunning();
 
 private:
-//	friend class qReal::interpreters::robots::details::BlocksFactory;
-//	void init(Id const &graphicalId
-//			, GraphicalModelAssistInterface const &graphicalModelApi
-//			, LogicalModelAssistInterface const &logicalModelApi
-//			, BlocksTable &blocksTable
-//			, ErrorReporterInterface * const errorReporter
-//			, RobotsBlockParser * const parser
-//			);
+	friend class BlocksFactory;
+	void init(qReal::Id const &graphicalId
+			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
+			, qReal::LogicalModelAssistInterface const &logicalModelApi
+			, qReal::ErrorReporterInterface * const errorReporter
+			, BlockParserInterface * const parser
+			);
 
 private:
 	enum State {

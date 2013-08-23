@@ -1,6 +1,6 @@
-#include <robotsInterpreterCore/sensorId.h>
+#include <robotsInterpreterCore/robotModel/sensorId.h>
 
-using namespace robotsInterpreterCore;
+using namespace robotsInterpreterCore::robotModel;
 
 SensorId::SensorId(QString const &kitName, QString const &sensorName)
 		: mKitName(kitName), mSensorName(sensorName)

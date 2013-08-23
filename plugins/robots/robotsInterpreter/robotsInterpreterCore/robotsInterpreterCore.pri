@@ -11,6 +11,8 @@ HEADERS += \
 	$$PWD/src/robotsSettingsPage.h \
 	$$PWD/src/blocks/blockFactoryInterface.h \
 	$$PWD/src/blocks/blocksFactory.h \
+	$$PWD/src/blocks/details/finalBlock.h \
+	$$PWD/src/blocks/details/initialBlock.h \
 	$$PWD/src/interpreter/interpreter.h \
 	$$PWD/src/interpreter/interpreterInterface.h \
 	$$PWD/src/interpreter/details/autoconfigurer.h \
@@ -28,6 +30,8 @@ SOURCES += \
 	$$PWD/src/sensorId.cpp \
 	$$PWD/src/blocks/block.cpp \
 	$$PWD/src/blocks/blocksFactory.cpp \
+	$$PWD/src/blocks/details/finalBlock.cpp \
+	$$PWD/src/blocks/details/initialBlock.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \

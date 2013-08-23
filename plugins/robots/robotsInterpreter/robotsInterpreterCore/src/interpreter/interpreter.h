@@ -29,16 +29,17 @@ class Interpreter : public InterpreterInterface
 	Q_OBJECT
 
 public:
-	Interpreter();
-	virtual ~Interpreter();
-
-	virtual void init(qReal::GraphicalModelAssistInterface const &graphicalModelApi
+	Interpreter(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
 			, blocks::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
-			, robotModel::RobotModelInterface * const robotModel
+			, robotModel::RobotModelInterface * const robotModel  // Does not take ownership.
 			);
+
+	virtual ~Interpreter();
+
+	virtual blocks::BlockParserInterface &parser() const;
 
 //	details::RobotModel *robotModel();
 //	void setRobotModel(details::RobotModel * const robotModel);
@@ -133,7 +134,7 @@ public:
 
 	InterpreterState mState;
 	QList<details::Thread *> mThreads;  // Has ownership
-//	details::RobotModel *mRobotModel;
+	robotModel::RobotModelInterface *mRobotModel;
 	details::BlocksTable *mBlocksTable;  // Has ownership
 	details::RobotsBlockParser *mParser;
 //	QTimer mTimer;

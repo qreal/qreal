@@ -9,6 +9,8 @@
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 
+#include <robotsInterpreterCore/blocks/blockParserInterface.h>
+
 namespace robotsInterpreterCore {
 namespace interpreter {
 
@@ -19,13 +21,10 @@ class InterpreterInterface : public QObject
 public:
 	virtual ~InterpreterInterface() {}
 
-	virtual void init(qReal::GraphicalModelAssistInterface const &graphicalModelApi
-			, qReal::LogicalModelAssistInterface &logicalModelApi
-			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-			, qReal::ProjectManagementInterface const &projectManager
-	) = 0;
-
 	virtual qReal::IdList providedBlocks() const = 0;
+
+	// TODO: Unneeded.
+	virtual blocks::BlockParserInterface &parser() const = 0;
 };
 
 }
