@@ -12,12 +12,12 @@ using namespace qReal;
 RobotsSettingsPage::RobotsSettingsPage(RobotsSettingsPageExtensionsInterface const &settingsExtensions, QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesRobotSettingsPage)
-		, mSettingsExtensions(settingsExtensions)
+		, mKitPluginManager(settingsExtensions)
 {
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
 
-	QList<QString> const kitNames = mSettingsExtensions.kitIds();
+	QList<QString> const kitNames = mKitPluginManager.kitIds();
 
 	if (kitNames.isEmpty()) {
 		QLabel * const label = new QLabel();
@@ -30,7 +30,7 @@ RobotsSettingsPage::RobotsSettingsPage(RobotsSettingsPageExtensionsInterface con
 	if (kitNames.count() == 1) {
 		mUi->constructorKitGroupBox->setVisible(false);
 	} else {
-		foreach (QString const &kitName, mSettingsExtensions.kitIds()) {
+		foreach (QString const &kitName, mKitPluginManager.kitIds()) {
 			QRadioButton * const kitRadioButton = new QRadioButton();
 			kitRadioButton->setText(kitName);
 			if (mUi->constructorKitGroupBox->layout()->count() == 1) {
@@ -44,7 +44,7 @@ RobotsSettingsPage::RobotsSettingsPage(RobotsSettingsPageExtensionsInterface con
 
 	mUi->typeOfModelGroupBox->setVisible(false);
 
-	QWidget * const extensionWidget = mSettingsExtensions.kitSpecificSettingsWidget(kitNames[0]);
+	QWidget * const extensionWidget = mKitPluginManager.kitSpecificSettingsWidget(kitNames[0]);
 	if (extensionWidget != NULL) {
 		static_cast<QVBoxLayout *>(mUi->settingsExtensionFrame->layout())->insertWidget(0, extensionWidget);
 	}
@@ -82,9 +82,9 @@ void RobotsSettingsPage::changeEvent(QEvent *e)
 QString RobotsSettingsPage::selectedKit() const
 {
 	if (!mUi->constructorKitGroupBox->isVisible()) {
-		return mSettingsExtensions.kitIds()[0];
+		return mKitPluginManager.kitIds()[0];
 	}
 
 	// TODO: Constructor kit selection based on radio buttons.
-	return mSettingsExtensions.kitIds()[0];
+	return mKitPluginManager.kitIds()[0];
 }

@@ -1,10 +1,11 @@
 #include "blocksTable.h"
 
 //#include "blocks/block.h"
-#include "blocksFactory.h"
+#include "../../blocks/blockFactoryInterface.h"
 
 using namespace qReal;
-using namespace robotsInterpreterCore;
+using namespace robotsInterpreterCore::interpreter::details;
+using namespace robotsInterpreterCore::robotModel;
 
 BlocksTable::BlocksTable(GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi

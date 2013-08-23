@@ -7,11 +7,13 @@
 #include <qrkernel/ids.h>
 #include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 
-#include <robotsInterpreterCore/block.h>
+#include <robotsInterpreterCore/blocks/block.h>
 
 #include "blocksTable.h"
 
 namespace robotsInterpreterCore {
+namespace interpreter {
+namespace details {
 
 /// An invocation thread simulation. Has its own stack
 class Thread : public QObject
@@ -69,4 +71,6 @@ private:
 	QSignalMapper *mProcessEventsMapper;  // Has ownership
 };
 
+}
+}
 }

@@ -4,8 +4,8 @@
 #include <QtCore/QList>
 #include <QtWidgets/QWidget>
 
-#include "block.h"
-#include "sensorId.h"
+#include <robotsInterpreterCore/blocks/block.h>
+#include <robotsInterpreterCore/robotModel/robotModel.h>
 
 namespace robotsInterpreterCore {
 

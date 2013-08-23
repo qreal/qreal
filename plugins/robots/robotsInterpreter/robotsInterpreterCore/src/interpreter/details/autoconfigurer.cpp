@@ -1,20 +1,22 @@
 #include "autoconfigurer.h"
 
-#include <robotsInterpreterCore/block.h>
+#include <robotsInterpreterCore/blocks/block.h>
+#include <robotsInterpreterCore/robotModel/robotModelInterface.h>
 //#include "tracer.h"
 
 using namespace qReal;
-using namespace robotsInterpreterCore;
+using namespace robotsInterpreterCore::interpreter::details;
+using namespace robotsInterpreterCore::robotModel;
 
 Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalModelApi
-							   , BlocksTable * const blocksTable
-							   , ErrorReporterInterface * const errorReporter
-							   , RobotModelInterface *robotModel
-							   )
-	: mGraphicalModelApi(&graphicalModelApi)
-	, mBlocksTable(blocksTable)
-	, mErrorReporter(errorReporter)
-	, mRobotModel(robotModel)
+		, BlocksTable * const blocksTable
+		, ErrorReporterInterface * const errorReporter
+		, RobotModelInterface *robotModel
+		)
+		: mGraphicalModelApi(&graphicalModelApi)
+		, mBlocksTable(blocksTable)
+		, mErrorReporter(errorReporter)
+		, mRobotModel(robotModel)
 {
 //	mUsedSensors.resize(4);
 }

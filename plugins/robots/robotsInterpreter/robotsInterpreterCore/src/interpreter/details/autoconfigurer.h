@@ -1,8 +1,12 @@
 #pragma once
 
+#include <robotsInterpreterCore/robotModel/sensorId.h>
+
 #include "blocksTable.h"
 
 namespace robotsInterpreterCore {
+namespace interpreter {
+namespace details {
 
 class Autoconfigurer {
 public:
@@ -20,7 +24,9 @@ private:
 	qReal::ErrorReporterInterface * const mErrorReporter;  // Does not have ownership
 	RobotModelInterface *mRobotModel;  // Does not have ownership
 
-//	QVector<robots::enums::sensorType::SensorTypeEnum> mUsedSensors;
+	QVector<SensorId> mUsedSensors;
 };
 
+}
+}
 }

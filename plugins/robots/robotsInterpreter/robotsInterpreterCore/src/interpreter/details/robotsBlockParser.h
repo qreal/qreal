@@ -2,9 +2,13 @@
 
 #include <qrutils/expressionsParser/expressionsParser.h>
 
-namespace robotsInterpreterCore {
+#include <robotsInterpreterCore/blocks/blockParserInterface.h>
 
-class RobotsBlockParser : public utils::ExpressionsParser
+namespace robotsInterpreterCore {
+namespace interpreter {
+namespace details {
+
+class RobotsBlockParser : public utils::ExpressionsParser, public blocks::BlockParserInterface
 {
 public:
 	explicit RobotsBlockParser(qReal::ErrorReporterInterface* errorReporter);
@@ -23,4 +27,6 @@ private:
 	QStringList mReservedVariables;
 };
 
+}
+}
 }

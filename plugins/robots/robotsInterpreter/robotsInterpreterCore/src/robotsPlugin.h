@@ -9,7 +9,7 @@
 #include "robotsSettingsPage.h"
 #include "customizer.h"
 #include "kitPluginManager.h"
-#include "interpreter.h"
+#include "interpreter/interpreter.h"
 
 //#include "details/interpreter.h"
 //#include "details/sensorsConfigurationWidget.h"

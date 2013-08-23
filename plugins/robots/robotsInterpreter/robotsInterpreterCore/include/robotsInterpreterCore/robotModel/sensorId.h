@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 
 namespace robotsInterpreterCore {
+namespace robotModel {
 
 class SensorId
 {
@@ -16,4 +17,5 @@ private:
 	QString mSensorName;
 };
 
+}
 }

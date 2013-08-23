@@ -4,7 +4,7 @@
 #include <qrkernel/settingsManager.h>
 
 using namespace qReal;
-using namespace robotsInterpreterCore;
+using namespace robotsInterpreterCore::interpreter::details;
 
 Id const startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 int const blocksCountTillProcessingEvents = 100;

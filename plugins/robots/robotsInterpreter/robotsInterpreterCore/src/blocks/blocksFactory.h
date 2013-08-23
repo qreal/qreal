@@ -2,15 +2,17 @@
 
 #include <qrkernel/ids.h>
 
-#include <robotsInterpreterCore/block.h>
-#include <robotsInterpreterCore/robotModelInterface.h>
+#include <robotsInterpreterCore/blocks/block.h>
+#include <robotsInterpreterCore/blocks/blockParserInterface.h>
+#include <robotsInterpreterCore/blocks/blocksTableInterface.h>
+#include <robotsInterpreterCore/robotModel/robotModelInterface.h>
 
-#include "blocksTable.h"
-#include "robotsBlockParser.h"
+#include "blockFactoryInterface.h"
 
 namespace robotsInterpreterCore {
+namespace blocks {
 
-class BlocksFactory
+class BlocksFactory : public BlocksFactoryInterface
 {
 public:
 	BlocksFactory(qReal::GraphicalModelAssistInterface const &graphicalModelApi
@@ -23,7 +25,7 @@ public:
 
 	Block *block(qReal::Id const &element);
 
-	RobotsBlockParser * getParser();
+//	RobotsBlockParser * getParser();
 
 	qReal::IdList commonBlocks() const;
 
@@ -39,4 +41,5 @@ private:
 	RobotsBlockParser * mParser;
 };
 
+}
 }

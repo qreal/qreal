@@ -7,8 +7,8 @@
 //#include "details/robotCommunication/robotCommunicator.h"
 //#include "sensorConstants.h"
 //#include "details/robotParts/robotModel.h"
-#include "thread.h"
-#include "blocksTable.h"
+#include "details/thread.h"
+#include "details/blocksTable.h"
 //#include "details/d2RobotModel/d2RobotModel.h"
 
 //#include "../../../qrutils/watchListWindow.h"
@@ -19,9 +19,12 @@
 //#include "details/sensorsConfigurationWidget.h"
 //#include "details/nxtDisplay.h"
 
-namespace robotsInterpreterCore {
+#include "interpreterInterface.h"
 
-class Interpreter : public QObject
+namespace robotsInterpreterCore {
+namespace interpreter {
+
+class Interpreter : public InterpreterInterface
 {
 	Q_OBJECT
 
@@ -148,4 +151,5 @@ public:
 //	QString mLastCommunicationValue;
 };
 
+}
 }

@@ -1,7 +1,7 @@
 #include "robotsBlockParser.h"
 
-using namespace robotsInterpreterCore;
 using namespace qReal;
+using namespace robotsInterpreterCore::interpreter::details;
 using namespace utils;
 
 QString const sensorVariablePerfix = QObject::tr("Sensor");

@@ -2,7 +2,7 @@
 #include <QtWidgets/QAction>
 
 #include "interpreter.h"
-#include <robotsInterpreterCore/commonRobotModel/commonRobotModel.h>
+#include <robotsInterpreterCore/robotModel/robotModel.h>
 
 //#include "details/autoconfigurer.h"
 //#include "details/robotImplementations/unrealRobotModelImplementation.h"
@@ -13,7 +13,7 @@
 //#include "details/debugHelper.h"
 
 using namespace qReal;
-using namespace robotsInterpreterCore;
+using namespace robotsInterpreterCore::interpreter;
 
 Interpreter::Interpreter()
 	: mGraphicalModelApi(NULL)

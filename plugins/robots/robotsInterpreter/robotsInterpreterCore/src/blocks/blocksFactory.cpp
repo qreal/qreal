@@ -41,8 +41,7 @@
 //#include "blocks/waitForButtonsBlock.h"
 
 using namespace qReal;
-using namespace robotsInterpreterCore;
-//using namespace blocks;
+using namespace robotsInterpreterCore::blocks;
 
 BlocksFactory::BlocksFactory(GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
@@ -60,10 +59,10 @@ BlocksFactory::BlocksFactory(GraphicalModelAssistInterface const &graphicalModel
 {
 }
 
-RobotsBlockParser * BlocksFactory::getParser()
-{
-	return mParser;
-}
+//RobotsBlockParser * BlocksFactory::getParser()
+//{
+//	return mParser;
+//}
 
 Block *BlocksFactory::block(Id const &element)
 {
@@ -145,9 +144,21 @@ bool BlocksFactory::elementMetatypeIs(Id const &element, QString const &metatype
 
 qReal::IdList BlocksFactory::commonBlocks() const
 {
-	return IdList() << id("InitialNode") << id("FinalNode") << id("Beep") << id("Timer") << id("EnginesForward")
-			<< id("EnginesBackward") << id("EnginesStop") << id("Loop") << id("Fork") << id("Subprogram")
-			<< id("Function") << id("IfBlock") << id("CommentBlock");
+	return IdList()
+			<< id("InitialNode")
+			<< id("FinalNode")
+			<< id("Beep")
+			<< id("Timer")
+			<< id("EnginesForward")
+			<< id("EnginesBackward")
+			<< id("EnginesStop")
+			<< id("Loop")
+			<< id("Fork")
+			<< id("Subprogram")
+			<< id("Function")
+			<< id("IfBlock")
+			<< id("CommentBlock")
+			;
 }
 
 qReal::Id BlocksFactory::id(QString const &metatype)

@@ -7,14 +7,17 @@
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
+#include <robotsInterpreterCore/blocks/blockInterface.h>
+
 //#include "../blocksTable.h"
 
 //#include "../robotsBlockParser.h"
 
 namespace robotsInterpreterCore {
+namespace blocks {
 
 /// Base class for all blocks implementations used in interpreter
-class Block : public QObject
+class Block : public BlockInterface
 {
 	Q_OBJECT
 
@@ -101,4 +104,5 @@ private:
 	virtual void run() = 0;
 };
 
+}
 }

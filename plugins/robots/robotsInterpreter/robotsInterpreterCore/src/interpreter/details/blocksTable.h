@@ -7,38 +7,43 @@
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-#include <robotsInterpreterCore/robotModelInterface.h>
+#include <robotsInterpreterCore/blocks/blocksTableInterface.h>
+#include <robotsInterpreterCore/blocks/blockInterface.h>
+#include <robotsInterpreterCore/robotModel/robotModelInterface.h>
 
 #include "robotsBlockParser.h"
 
 namespace robotsInterpreterCore {
+namespace interpreter {
+namespace details {
 
-class Block;
-
-class BlocksFactory;
-
-class BlocksTable
+class BlocksTable : public blocks::BlocksTableInterface
 {
 public:
 	BlocksTable(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
-			, RobotModelInterface * const robotModel
+			, robotModel::RobotModelInterface * const robotModel
 			, qReal::ErrorReporterInterface * const errorReporter
 			, RobotsBlockParser * const parser
 			);
 
 	~BlocksTable();
-	Block *block(qReal::Id const &element);
+
+	// Override.
+	virtual blocks::BlockInterface *block(qReal::Id const &element);
+
 	void clear();
-	void addBlock(qReal::Id const &element, Block *block);
+	void addBlock(qReal::Id const &element, blocks::BlockInterface *block);
 	void setFailure();
 	void setIdleForBlocks();
 
 	qReal::IdList commonBlocks() const;
 
 private:
-	QHash<qReal::Id, Block *> mBlocks;  // Has ownership
+	QHash<qReal::Id, blocks::BlockInterface *> mBlocks;  // Has ownership
 	BlocksFactory *mBlocksFactory;  // Has ownership
 };
 
+}
+}
 }

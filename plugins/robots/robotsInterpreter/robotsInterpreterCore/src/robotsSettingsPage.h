@@ -1,10 +1,10 @@
 #pragma once
 
 #include <qrgui/dialogs/preferencesPages/preferencesPage.h>
-#include "robotsSettingsPageExtensionsInterface.h"
 
 //#include "sensorConstants.h"
 //#include "details/sensorsConfigurationWidget.h"
+#include "kitPluginManager.h"
 
 namespace Ui {
 class PreferencesRobotSettingsPage;
@@ -35,7 +35,7 @@ private:
 	QString selectedKit() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
-	RobotsSettingsPageExtensionsInterface const &mSettingsExtensions;
+	KitPluginManager const &mKitPluginManager;
 };
 
 }

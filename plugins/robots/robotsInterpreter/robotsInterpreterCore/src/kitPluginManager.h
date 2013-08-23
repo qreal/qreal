@@ -7,12 +7,10 @@
 
 #include <robotsInterpreterCore/kitPluginInterface.h>
 
-#include "robotsSettingsPageExtensionsInterface.h"
-
 namespace robotsInterpreterCore {
 
 /// Loads kit plugins and provides interface to access them for the rest of RobotsInterpreterCore.
-class KitPluginManager : public RobotsSettingsPageExtensionsInterface
+class KitPluginManager
 {
 public:
 	/// Constructor.
