@@ -23,6 +23,7 @@ isDiagram
 isElement
 
 propertyNames
+portTypes
 defaultPropertyValues
 propertiesWithDefaultValues
 

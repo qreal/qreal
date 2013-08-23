@@ -60,6 +60,7 @@ private:
 	class IsElementListGenerator;
 
 	class PropertyNamesListGenerator;
+	class PortTypesListGenerator;
 	class DefaultPropertyValuesListGenerator;
 	class PropertiesWithDefaultValuesListGenerator;
 

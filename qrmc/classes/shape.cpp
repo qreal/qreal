@@ -150,7 +150,7 @@ void Shape::generate(QString &classTemplate) const
 	MetaCompiler *compiler = mNode->diagram()->editor()->metaCompiler();
 	QString unused;
 	if (!hasPointPorts()) {
-		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
+		unused += nodeIndent + "Q_UNUSED(ports)" + endline;
 	}
 	//TODO: fix ports for qrmc
 	/*

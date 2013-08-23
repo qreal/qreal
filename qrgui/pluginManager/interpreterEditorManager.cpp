@@ -519,7 +519,8 @@ QStringList InterpreterEditorManager::portTypes(Id const &id) const
 	QSet<QString> result;
 
 	QDomDocument shape;
-	shape.setContent(repoAndMetaId(id).first->stringProperty(id, "shape"));
+
+	shape.setContent(repoAndMetaId(id).first->stringProperty(repoAndMetaId(id).second, "shape"));
 
 	QDomElement portsElement = shape.firstChildElement("graphics").firstChildElement("ports");
 	for (int i = 0; i < portsElement.childNodes().size(); i++) {

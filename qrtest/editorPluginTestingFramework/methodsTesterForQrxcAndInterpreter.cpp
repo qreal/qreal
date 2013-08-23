@@ -663,6 +663,35 @@ class MethodsTesterForQrxcAndInterpreter::PropertyNamesListGenerator
 	}
 };
 
+class MethodsTesterForQrxcAndInterpreter::PortTypesListGenerator
+: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForElements
+{
+	virtual QString methodName() const
+	{
+		return "Port types";
+	}
+
+	virtual QStringList callMethod(
+			EditorManagerInterface *editorManagerInterface
+			, const Id &editorId
+			, const Id &diagramId
+			, const Id &elementId
+			, const QString &propertyName
+			) const
+	{
+		Q_UNUSED(editorId);
+		Q_UNUSED(diagramId);
+		Q_UNUSED(propertyName);
+		return editorManagerInterface->portTypes(elementId);
+	}
+
+	virtual AbstractStringGenerator* clone() const
+	{
+		AbstractStringGenerator* clonedGenerator = new PortTypesListGenerator();
+		return clonedGenerator;
+	}
+};
+
 class MethodsTesterForQrxcAndInterpreter::DefaultPropertyValuesListGenerator
 		: public MethodsTesterForQrxcAndInterpreter::StringGeneratorForProperties
 {
@@ -1017,6 +1046,7 @@ void MethodsTesterForQrxcAndInterpreter::testMethods()
 	mGeneratedList.append(testMethodIfExistsInList(IsElementListGenerator(), "isElement"));
 
 	mGeneratedList.append(testMethodIfExistsInList(PropertyNamesListGenerator(), "propertyNames"));
+	mGeneratedList.append(testMethodIfExistsInList(PortTypesListGenerator(), "portTypes"));
 	mGeneratedList.append(testMethodIfExistsInList(DefaultPropertyValuesListGenerator(), "defaultPropertyValues"));
 	mGeneratedList.append(testMethodIfExistsInList(PropertiesWithDefaultValuesListGenerator()
 			, "propertiesWithDefaultValues"));
