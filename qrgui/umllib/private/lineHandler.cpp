@@ -100,11 +100,13 @@ void LineHandler::adjust()
 
 void LineHandler::layOut(bool needReconnect)
 {
-	if (needReconnect) {
-		reconnect(true, true);
-	}
+	connectAndArrange(needReconnect, needReconnect);
+	improveAppearance();
+}
 
-	handleIntersections();
+void LineHandler::connectAndArrange(bool reconnectSrc, bool reconnectDst)
+{
+	reconnect(reconnectSrc, reconnectDst);
 
 	if (mEdge->src()) {
 		mEdge->src()->arrangeLinearPorts();
@@ -114,8 +116,6 @@ void LineHandler::layOut(bool needReconnect)
 		mEdge->dst()->arrangeLinearPorts();
 		mEdge->dst()->adjustLinks();
 	}
-
-	improveAppearance();
 }
 
 void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
@@ -188,10 +188,6 @@ int LineHandler::defineSegment(QPointF const &pos)
 }
 
 void LineHandler::improveAppearance()
-{
-}
-
-void LineHandler::handleIntersections()
 {
 }
 

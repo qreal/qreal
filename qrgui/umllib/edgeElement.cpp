@@ -864,6 +864,10 @@ void EdgeElement::breakPointHandler(QPointF const &pos)
 EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart)
 {
 	NodeElement *node = isStart ? mSrc : mDst;
+	if (!node) {
+		return isStart ? EdgeElement::right : EdgeElement::top;
+	}
+
 	QPointF pos = node->portPos(isStart ? mPortFrom : mPortTo);
 	QRectF bounds = node->boundingRect();
 
@@ -1373,8 +1377,7 @@ void EdgeElement::tuneForLinker()
 	mLine.translate(-mLine.first());
 	mPortFrom = mSrc ? mSrc->portId(mapToItem(mSrc, mLine.first()), fromPortTypes()) : -1.0;
 	mGraphicalAssistApi.setFromPort(id(), mPortFrom);
-	adjustLink();
-	arrangeSrcAndDst();
+	layOut();
 	mGraphicalAssistApi.setPosition(id(), pos());
 	mMoving = false;
 }

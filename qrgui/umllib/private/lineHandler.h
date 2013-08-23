@@ -17,6 +17,7 @@ public:
 
 	virtual void adjust();
 	virtual void alignToGrid();
+	void connectAndArrange(bool reconnectSrc, bool reconnectDst);
 	virtual void reconnect(bool reconnectSrc, bool reconnectDst);
 	virtual void layOut(bool needReconnect = true);
 
@@ -31,7 +32,6 @@ protected:
 	int addPoint(QPointF const &pos);
 	int defineSegment(QPointF const &pos);
 	virtual void improveAppearance();
-	virtual void handleIntersections();
 	bool checkPort(QPointF const &pos, bool isStart) const;
 	bool nodeChanged(bool isStart) const;
 	int firstOutsidePoint(bool startFromSrc) const;

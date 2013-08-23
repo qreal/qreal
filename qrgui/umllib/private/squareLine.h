@@ -14,13 +14,12 @@ public:
 
 protected:
 	enum LineType {
-		vertical,
-		horizontal,
-		verticalTurn,
-		horizontalTurn
+		vertical
+		, horizontal
+		, verticalTurn
+		, horizontalTurn
 	};
 
-	virtual void handleIntersections();
 	virtual void improveAppearance();
 	void moveSegment(QPointF const &oldPos, QPointF const &newPos);
 
@@ -28,13 +27,25 @@ protected:
 	void adjustStart();
 	void adjustEnd();
 
+	bool needCorrect() const;
+	bool needCorrectSrc() const;
+	bool needCorrectDst() const;
+	bool intersects(QLineF const &line, NodeElement *node) const;
+
 	void squarize();
 	int defineType();
 
-	void verticalSquareLine(QPolygonF &line);
-	void horizontalSquareLine(QPolygonF &line);
+	void verticalSquareLine(QPolygonF &line, qreal middle);
+	void horizontalSquareLine(QPolygonF &line, qreal middle);
 	void verticalTurningSquareLine(QPolygonF &line);
 	void horizontalTurningSquareLine(QPolygonF &line);
+
+	void verticalSameSide(QPolygonF &line, bool topLoop);
+	void horizontalSameSide(QPolygonF &line, bool leftLoop);
+	QPointF outgoingPoint(bool isStart) const;
+
+	QPair<qreal, qreal> verticalIntermediateSpace() const;
+	QPair<qreal, qreal> horizontalIntermediateSpace() const;
 };
 
 }
