@@ -81,9 +81,9 @@ public:
 
 //	void sensorsConfigurationChanged();
 
-//public slots:
+public slots:
 //	void connectToRobot();
-//	void interpret();
+	virtual void interpret();
 //	void stopRobot();
 //	void showD2ModelWidget(bool isVisible);
 //	void showWatchList();
@@ -92,7 +92,7 @@ public:
 
 //private slots:
 //	void threadStopped();
-//	void newThread(details::blocks::Block * const startBlock);
+	void newThread(qReal::Id const &startBlockId);
 //	void runTimer();
 //	void readSensorValues();
 //	void slotFailure();
@@ -105,8 +105,8 @@ public:
 //	void responseSlotB(int encoderValue);
 //	void responseSlotC(int encoderValue);
 
-//	void connectedSlot(bool success);
-//	void sensorsConfiguredSlot();
+	void connectedSlot(bool success);
+	void sensorsConfiguredSlot();
 
 //	/// actions when robot disconnect
 //	void disconnectSlot();
@@ -116,9 +116,9 @@ public:
 //	void on2dModelChanged(QDomDocument const &xml);
 //	void loadSensorConfiguration(Id const &diagramId);
 
-//private:
+private:
 //	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
-//	void addThread(details::Thread * const thread);
+	void addThread(details::Thread * const thread);
 //	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
 //	void resetVariables();
 
@@ -142,7 +142,7 @@ public:
 //	details::d2Model::D2RobotModel *mD2RobotModel;
 //	details::RobotCommunicator* const mRobotCommunication;
 
-//	bool mConnected;
+	bool mConnected;
 
 //	robots::enums::robotModelType::robotModelTypeEnum mImplementationType;
 

@@ -8,6 +8,7 @@ using namespace robotsInterpreterCore;
 
 KitPluginManager::KitPluginManager(QString const &pluginDirectory)
 		: mPluginsDir(QDir(pluginDirectory))
+		, mSelectedPlugin(NULL)
 {
 	foreach (QString const &fileName, mPluginsDir.entryList(QDir::Files)) {
 		QFileInfo const fileInfo(fileName);
@@ -46,29 +47,20 @@ QList<QString> KitPluginManager::kitIds() const
 	return mPluginInterfaces.keys();
 }
 
-QWidget *KitPluginManager::kitSpecificSettingsWidget(QString const &kitId) const
+void KitPluginManager::selectKit(QString const &kitId)
 {
 	if (!mPluginInterfaces.contains(kitId)) {
-		throw qReal::Exception("Trying to get settings widget for non-existing kit plugin");
+		throw qReal::Exception("Trying to select non-existing kit plugin");
 	}
 
-	return mPluginInterfaces[kitId]->settingsWidget();
+	mSelectedPlugin = mPluginInterfaces.value(kitId);
 }
 
-qReal::IdList KitPluginManager::specificBlocks(QString const &kitId) const
+KitPluginInterface &KitPluginManager::selectedKit()
 {
-	if (!mPluginInterfaces.contains(kitId)) {
-		throw qReal::Exception("Trying to get specific blocks for non-existing kit plugin");
+	if (!mSelectedPlugin) {
+		throw qReal::Exception("No kit selected");
 	}
 
-	return mPluginInterfaces[kitId]->specificBlocks();
-}
-
-qReal::IdList KitPluginManager::unsupportedBlocks(QString const &kitId) const
-{
-	if (!mPluginInterfaces.contains(kitId)) {
-		throw qReal::Exception("Trying to get unsupported blocks for non-existing kit plugin");
-	}
-
-	return mPluginInterfaces[kitId]->unsupportedBlocks();
+	return *mSelectedPlugin;
 }

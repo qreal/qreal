@@ -5,7 +5,7 @@
 
 #include <robotsInterpreterCore/robotModel/robotModelInterface.h>
 
-//#include "details/autoconfigurer.h"
+#include "details/autoconfigurer.h"
 //#include "details/robotImplementations/unrealRobotModelImplementation.h"
 //#include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 //#include "details/robotCommunication/usbRobotCommunicationThread.h"
@@ -51,8 +51,8 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 //	connect(mD2ModelWidget, SIGNAL(noiseSettingsChanged()), this, SIGNAL(noiseSettingsChangedBy2DModelWidget()));
 //	connect(this, SIGNAL(noiseSettingsChanged()), mD2ModelWidget, SLOT(rereadNoiseSettings()));
 //	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
-//	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
-//	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
+	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
+	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 //	connect(mD2ModelWidget, SIGNAL(d2WasClosed()), this, SLOT(stopRobot()));
 //	connect(mRobotCommunication, SIGNAL(errorOccured(QString)), this, SLOT(reportError(QString)));
 
@@ -68,6 +68,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 //			);
 
 //	setRobotImplementation(modelType);
+	mRobotModel->init();
 
 //	mWatchListWindow = new utils::WatchListWindow(mParser, mInterpretersInterface->windowWidget());
 }
@@ -86,32 +87,33 @@ robotsInterpreterCore::blocks::BlockParserInterface &Interpreter::parser() const
 	return *mParser;
 }
 
-//void Interpreter::interpret()
-//{
+void Interpreter::interpret()
+{
 //	Tracer::debug(tracer::enums::initialization, "Interpreter::interpret", "Preparing for interpretation");
 
-//	mInterpretersInterface->errorReporter()->clear();
+	mInterpretersInterface->errorReporter()->clear();
 
-//	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
+	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
 
-//	if (!mConnected) {
-//		mInterpretersInterface->errorReporter()->addInformation(tr("No connection to robot"));
-//		return;
-//	}
-//	if (mState != idle) {
-//		mInterpretersInterface->errorReporter()->addInformation(tr("Interpreter is already running"));
-//		return;
-//	}
+	if (!mConnected) {
+		mInterpretersInterface->errorReporter()->addInformation(tr("No connection to robot"));
+		return;
+	}
 
-//	mBlocksTable->clear();
-//	mState = waitingForSensorsConfiguredToLaunch;
-//	mBlocksTable->setIdleForBlocks();
+	if (mState != idle) {
+		mInterpretersInterface->errorReporter()->addInformation(tr("Interpreter is already running"));
+		return;
+	}
 
-//	Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
-//	if (!configurer.configure(currentDiagramId)) {
-//		return;
-//	}
-//}
+	mBlocksTable->clear();
+	mState = waitingForSensorsConfiguredToLaunch;
+	mBlocksTable->setIdleForBlocks();
+
+	details::Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
+	if (!configurer.configure(currentDiagramId)) {
+		return;
+	}
+}
 
 //void Interpreter::stopRobot()
 //{
@@ -197,45 +199,46 @@ robotsInterpreterCore::blocks::BlockParserInterface &Interpreter::parser() const
 //	}
 //}
 
-//void Interpreter::connectedSlot(bool success)
-//{
-//	if (success) {
-//		if (mRobotModel->needsConnection()) {
-//			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
-//		}
-//	} else {
+void Interpreter::connectedSlot(bool success)
+{
+	if (success) {
+		if (mRobotModel->needsConnection()) {
+			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
+		}
+	} else {
 //		Tracer::debug(tracer::enums::initialization, "Interpreter::connectedSlot", "Robot connection status: " + QString::number(success));
-//		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
-//	}
-//	mConnected = success;
-//	mActionConnectToRobot->setChecked(success);
-//}
+		mInterpretersInterface->errorReporter()->addError(tr("Can't connect to a robot."));
+	}
 
-//void Interpreter::sensorsConfiguredSlot()
-//{
+	mConnected = success;
+//	mActionConnectToRobot->setChecked(success);
+}
+
+void Interpreter::sensorsConfiguredSlot()
+{
 //	Tracer::debug(tracer::enums::initialization, "Interpreter::sensorsConfiguredSlot", "Sensors are configured");
 
-//	mConnected = true;
+	mConnected = true;
 //	mActionConnectToRobot->setChecked(mConnected);
 
 //	resetVariables();
 
 //	mRobotModel->nextBlockAfterInitial(mConnected);
 
-//	if (mState == waitingForSensorsConfiguredToLaunch) {
-//		mState = interpreting;
+	if (mState == waitingForSensorsConfiguredToLaunch) {
+		mState = interpreting;
 
 //		runTimer();
 
 //		Tracer::debug(tracer::enums::initialization, "Interpreter::sensorsConfiguredSlot", "Starting interpretation");
 //		mRobotModel->startInterpretation();
 
-//		Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
-//		Thread * const initialThread = new Thread(mGraphicalModelApi
-//				, *mInterpretersInterface, currentDiagramId, *mBlocksTable);
-//		addThread(initialThread);
-//	}
-//}
+		Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
+		details::Thread * const initialThread = new details::Thread(mGraphicalModelApi
+				, *mInterpretersInterface, currentDiagramId, *mBlocksTable);
+		addThread(initialThread);
+	}
+}
 
 //void Interpreter::threadStopped()
 //{
@@ -249,12 +252,13 @@ robotsInterpreterCore::blocks::BlockParserInterface &Interpreter::parser() const
 //	}
 //}
 
-//void Interpreter::newThread(details::blocks::Block * const startBlock)
-//{
-//	Thread * const thread = new Thread(mGraphicalModelApi
-//			, *mInterpretersInterface, *mBlocksTable, startBlock->id());
-//	addThread(thread);
-//}
+void Interpreter::newThread(Id const &startBlockId)
+{
+	details::Thread * const thread = new details::Thread(mGraphicalModelApi
+			, *mInterpretersInterface, *mBlocksTable, startBlockId);
+
+	addThread(thread);
+}
 
 //void Interpreter::configureSensors(
 //		robots::enums::sensorType::SensorTypeEnum const &port1
@@ -267,15 +271,19 @@ robotsInterpreterCore::blocks::BlockParserInterface &Interpreter::parser() const
 //	}
 //}
 
-//void Interpreter::addThread(details::Thread * const thread)
-//{
-//	mThreads.append(thread);
-//	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
-//	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
+void Interpreter::addThread(details::Thread * const thread)
+{
+	mThreads.append(thread);
+	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 
-//	QCoreApplication::processEvents();
-//	thread->interpret();
-//}
+	connect(thread
+			, SIGNAL(newThread(Id const &))
+			, this, SLOT(newThread(Id const &))
+			);
+
+	QCoreApplication::processEvents();
+	thread->interpret();
+}
 
 //interpreters::robots::details::RobotModel *Interpreter::robotModel()
 //{

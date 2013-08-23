@@ -39,10 +39,10 @@ public:
 
 signals:
 	void stopped();
-	void newThread(blocks::BlockInterface * const startBlock);
+	void newThread(qReal::Id const &startBlockId);
 
 private slots:
-	void nextBlock(blocks::BlockInterface * const block);
+	void nextBlock(qReal::Id const &blockId);
 
 	void stepInto(qReal::Id const &diagram);
 	void finishedSteppingInto();

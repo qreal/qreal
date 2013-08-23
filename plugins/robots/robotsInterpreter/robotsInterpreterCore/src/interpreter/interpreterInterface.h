@@ -25,6 +25,9 @@ public:
 
 	// TODO: Unneeded.
 	virtual blocks::BlockParserInterface &parser() const = 0;
+
+public slots:
+	virtual void interpret() = 0;
 };
 
 }

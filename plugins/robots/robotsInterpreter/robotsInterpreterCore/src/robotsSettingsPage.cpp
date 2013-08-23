@@ -9,10 +9,10 @@
 using namespace robotsInterpreterCore;
 using namespace qReal;
 
-RobotsSettingsPage::RobotsSettingsPage(KitPluginManager const &settingsExtensions, QWidget *parent)
+RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager, QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesRobotSettingsPage)
-		, mKitPluginManager(settingsExtensions)
+		, mKitPluginManager(kitPluginManager)
 {
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
@@ -44,7 +44,9 @@ RobotsSettingsPage::RobotsSettingsPage(KitPluginManager const &settingsExtension
 
 	mUi->typeOfModelGroupBox->setVisible(false);
 
-	QWidget * const extensionWidget = mKitPluginManager.kitSpecificSettingsWidget(kitNames[0]);
+	mKitPluginManager.selectKit(kitNames[0]);
+
+	QWidget * const extensionWidget = mKitPluginManager.selectedKit().settingsWidget();
 	if (extensionWidget != NULL) {
 		static_cast<QVBoxLayout *>(mUi->settingsExtensionFrame->layout())->insertWidget(0, extensionWidget);
 	}

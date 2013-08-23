@@ -19,18 +19,11 @@ public:
 
 	~KitPluginManager();
 
-	// Override.
-	virtual QList<QString> kitIds() const;
+	QList<QString> kitIds() const;
 
-	// Override.
-	// Transfers ownership.
-	virtual QWidget *kitSpecificSettingsWidget(QString const &kitId) const;
+	void selectKit(QString const &kitId);
 
-	// Override.
-	virtual qReal::IdList specificBlocks(QString const &kitId) const;
-
-	// Override.
-	virtual qReal::IdList unsupportedBlocks(QString const &kitId) const;
+	KitPluginInterface &selectedKit();
 
 private:
 	/// Maps kit plugin name to corresponding plugin interface.
@@ -41,6 +34,9 @@ private:
 
 	/// Directory from which plugins shall be loaded.
 	QDir mPluginsDir;
+
+	/// Currently active kit plugin.
+	KitPluginInterface *mSelectedPlugin;  // Doesn't have ownership.
 };
 
 }

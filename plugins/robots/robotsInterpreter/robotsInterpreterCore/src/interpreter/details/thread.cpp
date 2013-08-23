@@ -69,9 +69,10 @@ void Thread::interpret()
 	}
 }
 
-void Thread::nextBlock(blocks::BlockInterface * const block)
+void Thread::nextBlock(Id const &blockId)
 {
 	turnOff(mCurrentBlock);
+	blocks::BlockInterface *const block = mBlocksTable.block(blockId);
 	turnOn(block);
 }
 

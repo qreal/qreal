@@ -11,7 +11,6 @@
 #include "kitPluginManager.h"
 #include "interpreter/interpreter.h"
 
-//#include "details/interpreter.h"
 //#include "details/sensorsConfigurationWidget.h"
 //#include "details/nxtDisplay.h"
 
@@ -80,7 +79,7 @@ private:
 //	QAction *m2dModelAction;
 
 	/// Action that runs program
-//	QAction *mRunAction;
+	QAction *mRunAction;
 
 	/// Action that stops program and also stops robot motors
 //	QAction *mStopRobotAction;

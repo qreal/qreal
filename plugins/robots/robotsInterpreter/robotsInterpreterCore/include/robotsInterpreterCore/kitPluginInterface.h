@@ -31,7 +31,7 @@ public:
 //	virtual QList<SensorId> sensorIds() const = 0;
 
 	/// A list of additional blocks whose implementations are provided by this plugin or shall override defaults.
-	virtual qReal::IdList specificBlocks() const = 0;
+//	virtual qReal::IdList specificBlocks() const = 0;
 
 	/// A list of common blocks which shall be disabled by this plugin.
 	virtual qReal::IdList unsupportedBlocks() const = 0;

@@ -20,7 +20,7 @@ RobotsPlugin::RobotsPlugin()
 		: mInterpreter(NULL)
 		, mMainWindowInterpretersInterface(NULL)
 //		, m2dModelAction(NULL)
-//		, mRunAction(NULL)
+		, mRunAction(NULL)
 //		, mStopRobotAction(NULL)
 //		, mConnectToRobotAction(NULL)
 		, mRobotSettingsAction(NULL)
@@ -36,9 +36,6 @@ RobotsPlugin::RobotsPlugin()
 
 //	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
 //	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
-
-	initActions();
-	initHotKeyActions();
 }
 
 RobotsPlugin::~RobotsPlugin()
@@ -52,9 +49,9 @@ void RobotsPlugin::initActions()
 //	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
 //	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
-//	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), NULL);
-//	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
-//	QObject::connect(mRunAction, SIGNAL(triggered()), &mInterpreter, SLOT(interpret()));
+	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), NULL);
+	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
+	QObject::connect(mRunAction, SIGNAL(triggered()), mInterpreter, SLOT(interpret()));
 
 //	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), NULL);
 //	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
@@ -82,10 +79,10 @@ void RobotsPlugin::initActions()
 
 	mActionInfos
 //			<< d2ModelActionInfo
-//			<< runActionInfo
+			<< runActionInfo
 //			<< stopRobotActionInfo
 //			<< connectToRobotActionInfo
-//			<< separatorActionInfo
+			<< separatorActionInfo
 			<< robotSettingsActionInfo
 			<< titlesActionInfo
 			;
@@ -94,19 +91,19 @@ void RobotsPlugin::initActions()
 void RobotsPlugin::initHotKeyActions()
 {
 //	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
-//	mRunAction->setShortcut(QKeySequence(Qt::Key_F5));
+	mRunAction->setShortcut(QKeySequence(Qt::Key_F5));
 //	m2dModelAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
 	mTitlesAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_T));
 
 //	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModel", tr("Show 2d model"), m2dModelAction);
-//	HotKeyActionInfo runActionInfo("Interpreter.Run", tr("Run interpreter"), mRunAction);
+	HotKeyActionInfo runActionInfo("Interpreter.Run", tr("Run interpreter"), mRunAction);
 //	HotKeyActionInfo stopRobotActionInfo("Interpreter.Stop", tr("Stop interpreter"), mStopRobotAction);
 	// TODO: move it into engine
 	HotKeyActionInfo titlesActionInfo("Editor.ToggleTitles", tr("Toggle titles visibility"), mTitlesAction);
 
 	mHotKeyActionInfos
 //			<< d2ModelActionInfo
-//			<< runActionInfo
+			<< runActionInfo
 //			<< stopRobotActionInfo
 			<< titlesActionInfo
 			;
@@ -114,7 +111,18 @@ void RobotsPlugin::initHotKeyActions()
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
-//	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
+	if (SettingsManager::value("kitId").toString().isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
+		SettingsManager::setValue("kitId", mKitPluginManager.kitIds()[0]);
+	} else if (mKitPluginManager.kitIds().isEmpty()) {
+		mMainWindowInterpretersInterface->setEnabledForAllElementsInPalette(false);
+
+		// TODO: Correctly handle unselected kit.
+		return;
+	}
+
+	mKitPluginManager.selectKit(SettingsManager::value("kitId").toString());
+
+	//	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
 	robotModel::RobotModelInterface * const robotModel = new robotModel::RobotModel();
 
 	blocks::BlocksFactoryInterface * const blocksFactory = new blocks::BlocksFactory(
@@ -139,11 +147,8 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	SettingsManager::setValue("IndexGrid", gridWidth);
 //	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
 
-	if (SettingsManager::value("kitId").toString().isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
-		SettingsManager::setValue("kitId", mKitPluginManager.kitIds()[0]);
-	} else if (mKitPluginManager.kitIds().isEmpty()) {
-		mMainWindowInterpretersInterface->setEnabledForAllElementsInPalette(false);
-	}
+	initActions();
+	initHotKeyActions();
 
 	rereadSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
@@ -286,18 +291,13 @@ void RobotsPlugin::updateEnabledActions()
 
 void RobotsPlugin::updateBlocksOnPalette()
 {
-	QString const kitId = qReal::SettingsManager::value("kitId", "").toString();
-	if (kitId.isEmpty()) {
-		return;
-	}
-
 	mMainWindowInterpretersInterface->setVisibleForAllElementsInPalette(false);
 	IdList const commonBlocks = mInterpreter->providedBlocks();
 	foreach (Id const &id, commonBlocks) {
 		mMainWindowInterpretersInterface->setElementInPaletteVisible(id, true);
 	}
 
-	IdList const unsupportedBlocks = mKitPluginManager.unsupportedBlocks(kitId);
+	IdList const unsupportedBlocks = mKitPluginManager.selectedKit().unsupportedBlocks();
 	foreach (Id const &id, unsupportedBlocks) {
 		mMainWindowInterpretersInterface->setElementInPaletteEnabled(id, false);
 	}
