@@ -34,7 +34,7 @@ public:
 	void setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi
 			, models::LogicalModelAssistApi &logicalAssistApi);
 	void setLogicalModel(QAbstractItemModel * const logicalModel);
-    Id rootId() const;
+	Id rootId() const;
 
 	EditorViewScene *scene() const;
 	models::GraphicalModelAssistApi *graphicalAssistApi() const;
