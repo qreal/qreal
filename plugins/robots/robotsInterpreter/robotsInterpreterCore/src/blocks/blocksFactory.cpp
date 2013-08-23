@@ -40,15 +40,17 @@
 //#include "blocks/waitForEncoderBlock.h"
 //#include "blocks/waitForButtonsBlock.h"
 
-using namespace qReal;
 using namespace robotsInterpreterCore::blocks;
+
+using namespace qReal;
+using namespace robotsInterpreterCore::robotModel;
 
 BlocksFactory::BlocksFactory(GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
 		, RobotModelInterface * const robotModel
 		, ErrorReporterInterface * const errorReporter
-		, BlocksTable * const blocksTable
-		, RobotsBlockParser * const parser
+		, BlocksTableInterface * const blocksTable
+		, BlockParserInterface * const parser
 		)
 		: mRobotModel(robotModel)
 		, mGraphicalModelApi(graphicalModelApi)
@@ -64,7 +66,7 @@ BlocksFactory::BlocksFactory(GraphicalModelAssistInterface const &graphicalModel
 //	return mParser;
 //}
 
-Block *BlocksFactory::block(Id const &element)
+BlockInterface *BlocksFactory::block(Id const &element)
 {
 	Block * newBlock = NULL;
 //	if (elementMetatypeIs(element, "InitialNode")) {
@@ -142,7 +144,7 @@ bool BlocksFactory::elementMetatypeIs(Id const &element, QString const &metatype
 	return element.type() == id(metatype);
 }
 
-qReal::IdList BlocksFactory::commonBlocks() const
+qReal::IdList BlocksFactory::providedBlocks() const
 {
 	return IdList()
 			<< id("InitialNode")

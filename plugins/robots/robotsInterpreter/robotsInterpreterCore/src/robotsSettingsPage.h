@@ -19,7 +19,7 @@ class RobotsSettingsPage : public PreferencesPage
 	Q_OBJECT
 
 public:
-	explicit RobotsSettingsPage(RobotsSettingsPageExtensionsInterface const &settingsExtensions, QWidget *parent = 0);
+	explicit RobotsSettingsPage(KitPluginManager const &settingsExtensions, QWidget *parent = 0);
 	~RobotsSettingsPage();
 
 	virtual void save();

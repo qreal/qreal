@@ -24,6 +24,8 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
 	) = 0;
+
+	virtual qReal::IdList providedBlocks() const = 0;
 };
 
 }

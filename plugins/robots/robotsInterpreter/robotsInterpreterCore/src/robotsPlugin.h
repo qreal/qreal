@@ -67,7 +67,7 @@ private:
 	Customizer mCustomizer;
 
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
-	Interpreter mInterpreter;
+	interpreter::InterpreterInterface *mInterpreter;  // Has ownership
 
 	/// Page with plugin settings. Created here, but then ownership is passed to
 	/// a caller of preferencesPage().

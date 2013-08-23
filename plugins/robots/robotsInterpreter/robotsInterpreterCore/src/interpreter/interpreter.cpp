@@ -1,8 +1,9 @@
-#include <QCoreApplication>
+#include "interpreter.h"
+
+#include <QtCore/QCoreApplication>
 #include <QtWidgets/QAction>
 
-#include "interpreter.h"
-#include <robotsInterpreterCore/robotModel/robotModel.h>
+#include <robotsInterpreterCore/robotModel/robotModelInterface.h>
 
 //#include "details/autoconfigurer.h"
 //#include "details/robotImplementations/unrealRobotModelImplementation.h"
@@ -44,19 +45,24 @@ Interpreter::Interpreter()
 void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	, LogicalModelAssistInterface &logicalModelApi
 	, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
-	, qReal::ProjectManagementInterface const &projectManager)
+	, qReal::ProjectManagementInterface const &projectManager
+	, blocks::BlocksFactoryInterface * const blocksFactory
+	, robotModel::RobotModelInterface * const robotModel
+	)
 {
 	mGraphicalModelApi = &graphicalModelApi;
 	mLogicalModelApi = &logicalModelApi;
 	mInterpretersInterface = &interpretersInterface;
 
-	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
-	mBlocksTable = new BlocksTable(
+	mParser = new details::RobotsBlockParser(mInterpretersInterface->errorReporter());
+
+	mBlocksTable = new details::BlocksTable(
 			graphicalModelApi
 			, logicalModelApi
-			, new commonRobotModel::CommonRobotModel()
+			, robotModel
 			, mInterpretersInterface->errorReporter()
 			, mParser
+			, blocksFactory
 			);
 
 //	connect(&projectManager, SIGNAL(beforeOpen(QString)), this, SLOT(stopRobot()));
@@ -77,7 +83,7 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 
 Interpreter::~Interpreter()
 {
-	foreach (Thread * const thread, mThreads) {
+	foreach (details::Thread * const thread, mThreads) {
 		delete thread;
 	}
 
@@ -590,7 +596,7 @@ Interpreter::~Interpreter()
 //	connect(configurer, SIGNAL(saved()), mD2ModelWidget, SLOT(syncronizeSensors()));
 //}
 
-qReal::IdList Interpreter::commonBlocks() const
+qReal::IdList Interpreter::providedBlocks() const
 {
-	return mBlocksTable->commonBlocks();
+	return mBlocksTable->providedBlocks();
 }

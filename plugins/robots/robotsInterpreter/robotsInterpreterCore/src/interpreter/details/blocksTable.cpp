@@ -1,19 +1,18 @@
 #include "blocksTable.h"
 
-//#include "blocks/block.h"
-#include "../../blocks/blockFactoryInterface.h"
-
 using namespace qReal;
-using namespace robotsInterpreterCore::interpreter::details;
 using namespace robotsInterpreterCore::robotModel;
+using namespace robotsInterpreterCore::blocks;
+using namespace robotsInterpreterCore::interpreter::details;
 
 BlocksTable::BlocksTable(GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
 		, RobotModelInterface * const robotModel
 		, ErrorReporterInterface * const errorReporter
 		, RobotsBlockParser * const parser
+		, blocks::BlocksFactoryInterface * const blocksFactory
 		)
-		: mBlocksFactory(new BlocksFactory(graphicalModelApi, logicalModelApi, robotModel, errorReporter, this, parser))
+		: mBlocksFactory(blocksFactory)
 {
 }
 
@@ -23,44 +22,44 @@ BlocksTable::~BlocksTable()
 	delete mBlocksFactory;
 }
 
-Block *BlocksTable::block(Id const &element)
+BlockInterface *BlocksTable::block(Id const &element)
 {
 	if (mBlocks.contains(element)) {
 		return mBlocks[element];
 	}
 
-	Block *newBlock = mBlocksFactory->block(element);
+	BlockInterface *newBlock = mBlocksFactory->block(element);
 	addBlock(element, newBlock);
 	return newBlock;
 }
 
 void BlocksTable::clear()
 {
-	mBlocksFactory->getParser()->robotsClearVariables();
+//	mBlocksFactory->getParser()->robotsClearVariables();
 	qDeleteAll(mBlocks);
 	mBlocks.clear();
 }
 
 void BlocksTable::setFailure()
 {
-	foreach (Block * const block, mBlocks.values()) {
+	foreach (BlockInterface * const block, mBlocks.values()) {
 		block->setFailedStatus();
 	}
 }
 
 void BlocksTable::setIdleForBlocks()
 {
-	foreach (Block * const block, mBlocks.values()) {
+	foreach (BlockInterface * const block, mBlocks.values()) {
 		block->setIdleStatus();
 	}
 }
 
-void BlocksTable::addBlock(Id const &element, Block *block)
+void BlocksTable::addBlock(Id const &element, BlockInterface *block)
 {
 	mBlocks.insert(element, block);
 }
 
-qReal::IdList BlocksTable::commonBlocks() const
+qReal::IdList BlocksTable::providedBlocks() const
 {
-	return mBlocksFactory->commonBlocks();
+	return mBlocksFactory->providedBlocks();
 }

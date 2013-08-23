@@ -17,28 +17,28 @@ class BlocksFactory : public BlocksFactoryInterface
 public:
 	BlocksFactory(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
-			, RobotModelInterface * const robotModel
+			, robotModel::RobotModelInterface * const robotModel
 			, qReal::ErrorReporterInterface * const errorReporter
-			, BlocksTable * const blocksTable
-			, RobotsBlockParser * const parser
+			, BlocksTableInterface * const blocksTable
+			, BlockParserInterface * const parser
 			);
 
-	Block *block(qReal::Id const &element);
+	virtual BlockInterface *block(qReal::Id const &element);
 
 //	RobotsBlockParser * getParser();
 
-	qReal::IdList commonBlocks() const;
+	virtual qReal::IdList providedBlocks() const;
 
 private:
 	static bool elementMetatypeIs(qReal::Id const &element, QString const &metatype);
 	static qReal::Id id(QString const &metatype);
 
-	RobotModelInterface * mRobotModel;  // Doesnt't have ownership
+	robotModel::RobotModelInterface * mRobotModel;  // Doesnt't have ownership
 	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface const &mLogicalModelApi;
 	qReal::ErrorReporterInterface * const mErrorReporter;  // Doesn't have ownership
-	BlocksTable * const mBlocksTable;
-	RobotsBlockParser * mParser;
+	BlocksTableInterface * const mBlocksTable;
+	BlockParserInterface * mParser;
 };
 
 }

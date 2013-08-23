@@ -112,7 +112,7 @@ void RobotsPlugin::initHotKeyActions()
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
 //	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
-	mInterpreter.init(configurator.graphicalModelApi()
+	mInterpreter->init(configurator.graphicalModelApi()
 			, configurator.logicalModelApi()
 			, configurator.mainWindowInterpretersInterface()
 			, configurator.projectManager());
@@ -275,13 +275,8 @@ void RobotsPlugin::updateBlocksOnPalette()
 	}
 
 	mMainWindowInterpretersInterface->setVisibleForAllElementsInPalette(false);
-	IdList const commonBlocks = mInterpreter.commonBlocks();
+	IdList const commonBlocks = mInterpreter->providedBlocks();
 	foreach (Id const &id, commonBlocks) {
-		mMainWindowInterpretersInterface->setElementInPaletteVisible(id, true);
-	}
-
-	IdList const specificBlocks = mKitPluginManager.specificBlocks(kitId);
-	foreach (Id const &id, specificBlocks) {
 		mMainWindowInterpretersInterface->setElementInPaletteVisible(id, true);
 	}
 

@@ -26,17 +26,16 @@ public:
 
 	virtual ~Block();
 
-	/// Starts block execution
+	// Override.
 	void interpret();
 
 	virtual void setFailedStatus();
-	void setIdleStatus();
-	qReal::Id const id() const;
+	virtual void setIdleStatus();
+	virtual qReal::Id const id() const;
 
 //	virtual QList<SensorPortPair> usedSensors() const;
 
-	/// Called each time when control flow has reached the end block of the
-	/// requested for stepping into diagram
+	// Override.
 	virtual void finishedSteppingInto();
 
 signals:

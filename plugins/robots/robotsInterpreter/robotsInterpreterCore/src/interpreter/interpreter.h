@@ -36,7 +36,9 @@ public:
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
-	);
+			, blocks::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
+			, robotModel::RobotModelInterface * const robotModel
+			);
 
 //	details::RobotModel *robotModel();
 //	void setRobotModel(details::RobotModel * const robotModel);
@@ -70,7 +72,7 @@ public:
 //	utils::WatchListWindow *watchWindow() const;
 //	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 
-	qReal::IdList commonBlocks() const;
+	qReal::IdList providedBlocks() const;
 
 //signals:
 //	void noiseSettingsChanged();
@@ -130,10 +132,10 @@ public:
 	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
 
 	InterpreterState mState;
-	QList<Thread *> mThreads;  // Has ownership
+	QList<details::Thread *> mThreads;  // Has ownership
 //	details::RobotModel *mRobotModel;
-	BlocksTable *mBlocksTable;  // Has ownership
-	RobotsBlockParser *mParser;
+	details::BlocksTable *mBlocksTable;  // Has ownership
+	details::RobotsBlockParser *mParser;
 //	QTimer mTimer;
 //	details::d2Model::D2ModelWidget *mD2ModelWidget;
 //	details::d2Model::D2RobotModel *mD2RobotModel;

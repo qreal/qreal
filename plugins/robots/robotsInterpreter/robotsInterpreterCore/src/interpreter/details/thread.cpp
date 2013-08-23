@@ -3,8 +3,10 @@
 #include <QtWidgets/QApplication>
 #include <qrkernel/settingsManager.h>
 
-using namespace qReal;
 using namespace robotsInterpreterCore::interpreter::details;
+
+using namespace qReal;
+using namespace robotsInterpreterCore::blocks;
 
 Id const startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 int const blocksCountTillProcessingEvents = 100;
@@ -40,7 +42,7 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 
 Thread::~Thread()
 {
-	foreach (Block *block, mStack) {
+	foreach (blocks::BlockInterface const * const block, mStack) {
 		if (block) {
 			mInterpretersInterface.dehighlight(block->id());
 		}
@@ -53,6 +55,7 @@ void Thread::initTimer()
 	mProcessEventsTimer->setInterval(true);
 	connect(mProcessEventsTimer, SIGNAL(timeout())
 			, mProcessEventsMapper, SLOT(map()));
+
 	connect(mProcessEventsMapper, SIGNAL(mapped(QObject*))
 			, this, SLOT(interpretAfterEventsProcessing(QObject*)));
 }
@@ -66,7 +69,7 @@ void Thread::interpret()
 	}
 }
 
-void Thread::nextBlock(Block * const block)
+void Thread::nextBlock(blocks::BlockInterface * const block)
 {
 	turnOff(mCurrentBlock);
 	turnOn(block);
@@ -75,7 +78,7 @@ void Thread::nextBlock(Block * const block)
 void Thread::stepInto(Id const &diagram)
 {
 	Id const initialNode = findStartingElement(diagram);
-	Block *block = mBlocksTable.block(initialNode);
+	BlockInterface * const block = mBlocksTable.block(initialNode);
 
 	if (!block) {
 		error(tr("No entry point found, please add Initial Node to a diagram"), diagram);
@@ -126,7 +129,7 @@ Id Thread::findStartingElement(Id const &diagram) const
 	return Id();
 }
 
-void Thread::turnOn(Block * const block)
+void Thread::turnOn(blocks::BlockInterface * const block)
 {
 	mCurrentBlock = block;
 	if (!mCurrentBlock) {
@@ -165,13 +168,13 @@ void Thread::turnOn(Block * const block)
 
 void Thread::interpretAfterEventsProcessing(QObject *blockObject)
 {
-	Block * const block = dynamic_cast<Block *>(blockObject);
+	blocks::BlockInterface * const block = dynamic_cast<blocks::BlockInterface *>(blockObject);
 	if (block) {
 		block->interpret();
 	}
 }
 
-void Thread::turnOff(Block * const block)
+void Thread::turnOff(blocks::BlockInterface * const block)
 {
 	// This is a signal not from a current block of this thread.
 	// Other thread shall process it, we will just ignore.

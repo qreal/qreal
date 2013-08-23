@@ -1,6 +1,7 @@
 #pragma once
 
 #include <robotsInterpreterCore/robotModel/sensorId.h>
+#include <robotsInterpreterCore/robotModel/robotModelInterface.h>
 
 #include "blocksTable.h"
 
@@ -13,7 +14,7 @@ public:
 	Autoconfigurer(qReal::GraphicalModelAssistInterface const &graphicalModelApi
 			, BlocksTable * const blocksTable
 			, qReal::ErrorReporterInterface * const errorReporter
-			, RobotModelInterface *robotModel
+			, robotModel::RobotModelInterface *robotModel
 			);
 
 	bool configure(qReal::Id const &diagram);
@@ -22,9 +23,9 @@ private:
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
 	BlocksTable *mBlocksTable;  // Does not have ownership
 	qReal::ErrorReporterInterface * const mErrorReporter;  // Does not have ownership
-	RobotModelInterface *mRobotModel;  // Does not have ownership
+	robotModel::RobotModelInterface *mRobotModel;  // Does not have ownership
 
-	QVector<SensorId> mUsedSensors;
+	QVector<robotModel::SensorId> mUsedSensors;
 };
 
 }

@@ -11,6 +11,7 @@
 #include <robotsInterpreterCore/blocks/blockInterface.h>
 #include <robotsInterpreterCore/robotModel/robotModelInterface.h>
 
+#include "../../blocks/blockFactoryInterface.h"
 #include "robotsBlockParser.h"
 
 namespace robotsInterpreterCore {
@@ -25,6 +26,7 @@ public:
 			, robotModel::RobotModelInterface * const robotModel
 			, qReal::ErrorReporterInterface * const errorReporter
 			, RobotsBlockParser * const parser
+			, blocks::BlocksFactoryInterface * const blocksFactory
 			);
 
 	~BlocksTable();
@@ -37,11 +39,11 @@ public:
 	void setFailure();
 	void setIdleForBlocks();
 
-	qReal::IdList commonBlocks() const;
+	qReal::IdList providedBlocks() const;
 
 private:
 	QHash<qReal::Id, blocks::BlockInterface *> mBlocks;  // Has ownership
-	BlocksFactory *mBlocksFactory;  // Has ownership
+	blocks::BlocksFactoryInterface *mBlocksFactory;  // Has ownership
 };
 
 }

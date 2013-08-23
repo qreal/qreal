@@ -1,6 +1,6 @@
 #pragma once
 
-#include <robotsInterpreterCore/blocks/block.h>
+#include <robotsInterpreterCore/blocks/blockInterface.h>
 
 namespace robotsInterpreterCore {
 namespace blocks {
@@ -9,7 +9,7 @@ class BlocksTableInterface
 {
 public:
 	virtual ~BlocksTableInterface() {}
-	virtual Block *block(qReal::Id const &element) = 0;
+	virtual BlockInterface *block(qReal::Id const &element) = 0;
 };
 
 }

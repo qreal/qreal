@@ -9,7 +9,7 @@
 using namespace robotsInterpreterCore;
 using namespace qReal;
 
-RobotsSettingsPage::RobotsSettingsPage(RobotsSettingsPageExtensionsInterface const &settingsExtensions, QWidget *parent)
+RobotsSettingsPage::RobotsSettingsPage(KitPluginManager const &settingsExtensions, QWidget *parent)
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesRobotSettingsPage)
 		, mKitPluginManager(settingsExtensions)

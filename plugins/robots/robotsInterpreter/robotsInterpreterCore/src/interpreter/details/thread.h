@@ -7,7 +7,7 @@
 #include <qrkernel/ids.h>
 #include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 
-#include <robotsInterpreterCore/blocks/block.h>
+#include <robotsInterpreterCore/blocks/blockInterface.h>
 
 #include "blocksTable.h"
 
@@ -39,10 +39,10 @@ public:
 
 signals:
 	void stopped();
-	void newThread(Block * const startBlock);
+	void newThread(blocks::BlockInterface * const startBlock);
 
 private slots:
-	void nextBlock(Block * const block);
+	void nextBlock(blocks::BlockInterface * const block);
 
 	void stepInto(qReal::Id const &diagram);
 	void finishedSteppingInto();
@@ -57,14 +57,14 @@ private:
 	qReal::Id findStartingElement(qReal::Id const &diagram) const;
 	void error(QString const &message, qReal::Id const &source = qReal::Id());
 
-	void turnOn(Block * const block);
-	void turnOff(Block * const block);
+	void turnOn(blocks::BlockInterface * const block);
+	void turnOff(blocks::BlockInterface * const block);
 
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Doesn't have ownership
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	BlocksTable &mBlocksTable;
-	Block *mCurrentBlock;  // Doesn't have ownership
-	QStack<Block *> mStack;
+	blocks::BlockInterface *mCurrentBlock;  // Doesn't have ownership
+	QStack<blocks::BlockInterface *> mStack;
 	qReal::Id const mInitialDiagram;
 	int mBlocksSincePreviousEventsProcessing;
 	QTimer *mProcessEventsTimer;  // Has ownership
