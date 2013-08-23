@@ -320,7 +320,8 @@ QStringList InterpreterEditorManager::propertiesFromParents(Id const &id
 				QString const &normalizedEditorName = NameNormalizer::normalize(repo->name(editorAndDiagramPair.first));
 				QString const &normalizedDiagramName = NameNormalizer::normalize(repo->name(editorAndDiagramPair.second));
 				QString const &normalizedElementName = NameNormalizer::normalize(repo->name(metaChildParent));
-				result << propertiesFromParents(Id(normalizedEditorName, normalizedDiagramName, normalizedElementName), propertyName, checker);
+				result << propertiesFromParents(Id(normalizedEditorName, normalizedDiagramName, normalizedElementName)
+						, propertyName, checker);
 			}
 		}
 	}
@@ -447,7 +448,8 @@ QIcon InterpreterEditorManager::icon(Id const &id) const
 ElementImpl *InterpreterEditorManager::elementImpl(Id const &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	InterpreterElementImpl * const impl = new InterpreterElementImpl(repoAndMetaIdPair.first, repoAndMetaIdPair.second);
+	InterpreterElementImpl * const impl = new InterpreterElementImpl(repoAndMetaIdPair.first
+			, repoAndMetaIdPair.second);
 	if (!impl) {
 		return 0;
 	}
