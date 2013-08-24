@@ -30,7 +30,14 @@ void LineHandler::rejectMovingEdge()
 	mEdge->setLine(mSavedLine);
 }
 
-void LineHandler::moveEdge(QPointF const &, bool)
+void LineHandler::moveEdge(QPointF const &pos, bool needAlign)
+{
+	if (!mEdge->isLoop() || (mDragType == 0) || (mDragType == mEdge->line().count() - 1)) {
+		handleEdgeMove(pos, needAlign);
+	}
+}
+
+void LineHandler::handleEdgeMove(QPointF const &, bool)
 {
 }
 
@@ -101,7 +108,9 @@ void LineHandler::adjust()
 void LineHandler::layOut(bool needReconnect)
 {
 	connectAndArrange(needReconnect, needReconnect);
-	improveAppearance();
+	if (!mEdge->isLoop()) {
+		improveAppearance();
+	}
 }
 
 void LineHandler::connectAndArrange(bool reconnectSrc, bool reconnectDst)
@@ -109,11 +118,11 @@ void LineHandler::connectAndArrange(bool reconnectSrc, bool reconnectDst)
 	reconnect(reconnectSrc, reconnectDst);
 
 	if (mEdge->src()) {
-		mEdge->src()->arrangeLinearPorts();
+		mEdge->isLoop() ? mEdge->src()->arrangeLinks() : mEdge->src()->arrangeLinearPorts();
 		mEdge->src()->adjustLinks();
 	}
 	if (mEdge->dst()) {
-		mEdge->dst()->arrangeLinearPorts();
+		mEdge->isLoop() ? mEdge->dst()->arrangeLinks() : mEdge->dst()->arrangeLinearPorts();
 		mEdge->dst()->adjustLinks();
 	}
 }

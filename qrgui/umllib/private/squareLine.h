@@ -9,7 +9,6 @@ class SquareLine : public LineHandler
 public:
 	SquareLine(EdgeElement *edge);
 
-	virtual void moveEdge(QPointF const &pos, bool needAlign);
 	virtual void adjust();
 
 	virtual QPointF portArrangePoint(bool startFromSrc) const;
@@ -22,6 +21,7 @@ protected:
 		, horizontalTurn
 	};
 
+	virtual void handleEdgeMove(QPointF const &pos, bool needAlign);
 	virtual void improveAppearance();
 	void moveSegment(QPointF const &oldPos, QPointF const &newPos);
 

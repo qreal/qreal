@@ -10,7 +10,7 @@ SquareLine::SquareLine(EdgeElement *edge)
 {
 }
 
-void SquareLine::moveEdge(QPointF const &pos, bool needAlign)
+void SquareLine::handleEdgeMove(QPointF const &pos, bool needAlign)
 {
 	Q_UNUSED(needAlign)
 	QPolygonF line = mEdge->line();

@@ -7,7 +7,7 @@ BrokenLine::BrokenLine(EdgeElement *edge)
 {
 }
 
-void BrokenLine::moveEdge(QPointF const &pos, bool needAlign)
+void BrokenLine::handleEdgeMove(QPointF const &pos, bool needAlign)
 {
 	QPolygonF line = mEdge->line();
 
