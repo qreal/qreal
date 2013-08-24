@@ -54,16 +54,16 @@ void SquareLine::adjustStart()
 	}
 
 	if (line[1] == line[2] && line.count() > 3) {
-		if (qAbs(line[2].x() - line[3].x()) < epsilon) {
+		if (qAbs(line[2].x() - line[3].x()) < qAbs(line[2].y() - line[3].y())) {
 			line[1].setX(line[0].x());
 		} else {
 			line[1].setY(line[0].y());
 		}
 	} else {
-		if (qAbs(line[1].x() - line[2].x()) < epsilon) {
-			line[1].setY(line[0].y());
-		} else {
+		if (qAbs(line[1].y() - line[2].y()) < qAbs(line[1].x() - line[2].x())) {
 			line[1].setX(line[0].x());
+		} else {
+			line[1].setY(line[0].y());
 		}
 	}
 
@@ -80,16 +80,18 @@ void SquareLine::adjustEnd()
 	}
 
 	if (line[line.count() - 2] == line[line.count() - 3] && line.count() > 3) {
-		if (qAbs(line[line.count() - 3].x() - line[line.count() - 4].x()) < epsilon) {
+		if (qAbs(line[line.count() - 3].x() - line[line.count() - 4].x())
+				< qAbs(line[line.count() - 3].y() - line[line.count() - 4].y())) {
 			line[line.count() - 2].setX(line[line.count() - 1].x());
 		} else {
 			line[line.count() - 2].setY(line[line.count() - 1].y());
 		}
 	} else {
-		if (qAbs(line[line.count() - 2].x() - line[line.count() - 3].x()) < epsilon) {
-			line[line.count() - 2].setY(line[line.count() - 1].y());
-		} else {
+		if (qAbs(line[line.count() - 2].y() - line[line.count() - 3].y())
+				< qAbs(line[line.count() - 2].x() - line[line.count() - 3].x())) {
 			line[line.count() - 2].setX(line[line.count() - 1].x());
+		} else {
+			line[line.count() - 2].setY(line[line.count() - 1].y());
 		}
 	}
 

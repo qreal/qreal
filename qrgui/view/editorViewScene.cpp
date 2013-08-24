@@ -545,7 +545,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 
 		Id const parentId = newParent ? newParent->id() : mMVIface->rootId();
 
-		createSingleElement(id, name, e, position, parentId, isFromLogicalModel
+		createSingleElement(id, name, isNode, position, parentId, isFromLogicalModel
 				, explosionTarget, createCommandPointer, executeImmediately);
 
 		NodeElement *parentNode = dynamic_cast<NodeElement*>(newParent);
@@ -697,12 +697,15 @@ EdgeElement* EditorViewScene::getEdgeById(qReal::Id const &itemId) const
 QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 {
 	QList<NodeElement *> list;
-	QPolygonF bounds = node->mapToScene(node->boundingRect());
-	QList<QGraphicsItem *> overlapping = items(bounds);
-	foreach (QGraphicsItem *item, overlapping) {
-		NodeElement *closeNode = dynamic_cast<NodeElement *>(item);
-		if (closeNode && (closeNode != node) && !closeNode->isAncestorOf(node) && !node->isAncestorOf(closeNode)) {
-			list.append(closeNode);
+
+	if (node) {
+		QPolygonF bounds = node->mapToScene(node->boundingRect());
+		QList<QGraphicsItem *> overlapping = items(bounds);
+		foreach (QGraphicsItem *item, overlapping) {
+			NodeElement *closeNode = dynamic_cast<NodeElement *>(item);
+			if (closeNode && (closeNode != node) && !closeNode->isAncestorOf(node) && !node->isAncestorOf(closeNode)) {
+				list.append(closeNode);
+			}
 		}
 	}
 

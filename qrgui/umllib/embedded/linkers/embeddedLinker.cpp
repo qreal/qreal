@@ -20,7 +20,6 @@ EmbeddedLinker::EmbeddedLinker()
 		, mMaster(NULL)
 		, mColor(Qt::blue)
 		, mPressed(false)
-		, mTimeOfUpdate(0)
 {
 	mSize = SettingsManager::value("EmbeddedLinkerSize").toFloat();
 	if (mSize > 10) {
@@ -243,20 +242,10 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			mEdge->highlight();
 			mEdge->tuneForLinker();
 			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
-			mMaster->arrangeLinks();
-			mMaster->adjustLinks();
 		}
 	}
 
-	if (mEdge) {
-		if (mTimeOfUpdate == 14) {
-			mTimeOfUpdate = 0;
-			mEdge->adjustLink();
-		} else {
-			mTimeOfUpdate++;
-		}
-		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
-	}
+	mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

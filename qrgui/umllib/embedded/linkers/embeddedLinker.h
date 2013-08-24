@@ -56,7 +56,6 @@ private:
 	bool mPressed;
 	qReal::Id mEdgeType;
 
-	int mTimeOfUpdate;
 	commands::CreateElementCommand *mCreateEdgeCommand;
 };
 
