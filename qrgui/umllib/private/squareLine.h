@@ -12,6 +12,8 @@ public:
 	virtual void moveEdge(QPointF const &pos, bool needAlign);
 	virtual void adjust();
 
+	virtual QPointF portArrangePoint(bool startFromSrc) const;
+
 protected:
 	enum LineType {
 		vertical

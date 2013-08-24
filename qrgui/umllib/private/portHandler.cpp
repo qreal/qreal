@@ -337,8 +337,6 @@ void PortHandler::arrangeLinearPorts()
 		//sort first by slope, then by current portNumber
 		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
 		QLineF const portLine = *mLinePorts.at(lpId);
-		qreal const dx = portLine.dx();
-		qreal const dy = portLine.dy();
 		foreach (EdgeElement* edge, mNode->edgeList()) {
 			//edge->portIdOn(mNode) returns a pair of ports id of the mNode associated with the ends of edge.
 			// returns -1.0 if the current end of edge is not connected to the mNode.
@@ -353,14 +351,10 @@ void PortHandler::arrangeLinearPorts()
 
 			if (currentPortId != -1.0) {
 				QPointF const conn = edge->connectionPoint(mNode);
-				QPointF const next = edge->nextFrom(mNode);
-				qreal const x1 = conn.x();
-				qreal const y1 = conn.y();
-				qreal const x2 = next.x();
-				qreal const y2 = next.y();
-				qreal const len = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-				qreal const scalarProduct = ((x2 - x1) * dx + (y2 - y1) * dy) / len;
-				sortedEdges.insertMulti(qMakePair(currentPortId, scalarProduct), edge);
+				QPointF const next = edge->portArrangePoint(mNode);
+				QLineF arrangeLine(conn, next);
+				arrangeLine.setAngle(arrangeLine.angleTo(portLine));
+				sortedEdges.insertMulti(qMakePair(arrangeLine.x2(), currentPortId), edge);
 			}
 		}
 
