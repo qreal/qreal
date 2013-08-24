@@ -84,9 +84,11 @@ QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal dire
 
 bool WorldModel::checkCollision(QPainterPath const &robotPath, int stroke) const
 {
+
 	QPainterPathStroker robotPathStroker;
-	robotPathStroker.setWidth(stroke);
-	QPainterPath const robotStrokedPath = stroke
+	int stroke2 = 0;
+	robotPathStroker.setWidth(stroke2);
+	QPainterPath const robotStrokedPath = stroke2
 			? robotPathStroker.createStroke(robotPath)
 			: robotPath;
 

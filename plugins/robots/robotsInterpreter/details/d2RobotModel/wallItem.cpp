@@ -165,7 +165,7 @@ void WallItem::VK_setLines()
 
 	QVector2D norm (y1 - y2, x2 - x1);
 	norm = norm.normalized();
-	norm.operator *=(mPen.widthF()); //= norm*mPen.widthF();
+	norm.operator *=(mPen.widthF()/2); //= norm*mPen.widthF();
 
 	VK_mP[0] = QPointF(x1 + norm.x(), y1 + norm.y());
     VK_mP[1] = QPointF(x1 - norm.x(), y1 - norm.y());

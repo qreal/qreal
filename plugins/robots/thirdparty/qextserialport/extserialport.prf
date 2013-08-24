@@ -12,6 +12,6 @@ defineReplace(qextLibraryName) {
 }
 
 LIBS += -l$$qextLibraryName(QtExtSerialPort)
-INCLUDEPATH += D:\Qt\Qt5.0.2\5.0.2\mingw47_32\include/QtExtSerialPort
+INCLUDEPATH += D:\Qt\Qt5.1.0\\5.1.0\mingw48_32\include/QtExtSerialPort
 
 DEFINES += QEXTSERIALPORT_USING_SHARED

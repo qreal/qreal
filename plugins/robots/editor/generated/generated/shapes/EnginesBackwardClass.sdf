@@ -1,9 +1,9 @@
  <picture sizex="50" sizey="50">
-  <image name="images/enginesBackwardBlock.png" y2="50" x1="0" x2="50" y1="0"/>
-  <rectangle y2="10" x1="0" x2="10" stroke-style="none" stroke="#000000" stroke-width="1" fill="#7cfc00" fill-style="solid" y1="0">
-   <showIf property="Mode" value="скользить" sign="="/>
+  <image y2="50" x1="0" x2="50" name="images/enginesBackwardBlock.png" y1="0"/>
+  <rectangle fill-style="solid" y2="10" x1="0" x2="10" stroke="#000000" stroke-style="none" fill="#7cfc00" stroke-width="1" y1="0">
+   <showIf sign="=" value="скользить" property="Mode"/>
   </rectangle>
-  <rectangle y2="10" x1="0" x2="10" stroke-style="none" stroke="#ffa500" stroke-width="1" fill="#ff0000" fill-style="solid" y1="0">
-   <showIf property="Mode" value="тормозить" sign="="/>
+  <rectangle fill-style="solid" y2="10" x1="0" x2="10" stroke="#ffa500" stroke-style="none" fill="#ff0000" stroke-width="1" y1="0">
+   <showIf sign="=" value="тормозить" property="Mode"/>
   </rectangle>
  </picture>

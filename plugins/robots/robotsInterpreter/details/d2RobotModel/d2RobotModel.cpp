@@ -42,9 +42,10 @@ D2RobotModel::D2RobotModel(QObject *parent)
 {
 	mAngle = 0;
 
-	VK_mFullSpeed = 1;
-	VK_mFullSpeedA = 1;
-	VK_mFullSpeedB = 1;
+	VK_mFullSpeed = 0;
+	VK_mFullSpeedA = 0.4;
+	VK_mFullSpeedB = 0.4;
+	VK_mMomentI = 400;
 
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
@@ -394,7 +395,7 @@ void D2RobotModel::startInit()
 
 
 
-	//mPos = QPointF (0, 0);
+	mPos = QPointF (0, 0);
 	mAngle = 0;
 
 
@@ -461,18 +462,18 @@ void D2RobotModel::startInterpretation()
 	startInit();
 
 
-	VK_mMass = 100;
-	VK_mV = QVector2D(0,0);
-	VK_mVA = QVector2D(0,0);
-	VK_mVB = QVector2D(0,0);
-	VK_mFullSpeed = 0.1;
-	VK_mFullSpeedA = 0.1;
-	VK_mFullSpeedB = 0.1;
+	VK_mMass = 1000;
+	//VK_mV = QVector2D(0,0);
+	//VK_mVA = QVector2D(0,0);
+	//VK_mVB = QVector2D(0,0);
+	VK_mFullSpeed = 0.05;
+	VK_mFullSpeedA = 0.05;
+	VK_mFullSpeedB = 0.05;
 	VK_mAngularVelocity = 0;
-	VK_mForce = QVector2D(0,0);
+	//VK_mForce = QVector2D(0,0);
 	VK_mForceMoment = 0;
-	mAngle = 0;
-	//mPos = QPointF(0,0);
+
+
 	VK_updateCoord();
 
 	mD2ModelWidget->startTimelineListening();
@@ -512,10 +513,12 @@ QVector2D D2RobotModel::VK_getVA()const
 }
 
 QVector2D D2RobotModel::VK_getVB()const
+
 {
     return VK_mVB;
 }
 QVector2D D2RobotModel::VK_getV()const
+
 {
     return VK_mV;
 }
@@ -557,6 +560,7 @@ QLineF D2RobotModel::VK_nearRobotLine(WallItem& wall, QPointF p) // Возвра
 }
 
 QPointF D2RobotModel::VK_normalPoint(qreal x1, qreal y1, qreal x2, qreal y2, qreal x3, qreal y3) // Возвращает точку прямой, в которую опустится перпендикуляр из заданной точки
+
 {
     if (x1 == x2) return QPointF(x2, y3);
     qreal x0 = (x1*(y2-y1)*(y2-y1) + x3*(x2-x1)*(x2-x1) + (x2-x1)*(y2-y1)*(y3-y1))/((y2-y1)*(y2-y1) + (x2-x1)*(x2-x1));
@@ -564,6 +568,7 @@ QPointF D2RobotModel::VK_normalPoint(qreal x1, qreal y1, qreal x2, qreal y2, qre
     return QPointF(x0, y0);
 }
 void D2RobotModel::VK_updateCoord() // Обновляет координаты вершин
+
 {
 
 
@@ -588,27 +593,39 @@ void D2RobotModel::VK_updateCoord() // Обновляет координаты �
     VK_mL[3] = QLineF(VK_mP[3], VK_mP[0]);
 
 }
+
+bool D2RobotModel::VK_isRobotWallCollision(WallItem &wall)
+{
+	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
+	return boundingRegion.intersects(wall.VK_mWallPath);
+}
+
 void D2RobotModel::VK_checkCollision(WallItem& wall) // Проверяет коллизии
 {
+
+
+
+
 	//mD2ModelWidget->VK_addR();
 	VK_mEdP.clear();
 	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
-	if (mWorldModel.checkCollision(boundingRegion)) {
+	if (VK_isRobotWallCollision(wall)){
+	//if (mWorldModel.checkCollision(boundingRegion, 10)) {
         for(int i = 0; i <4; i++)
         {
   //          QPointF new_p = wall.mapFromScene(VK_mP[i]);
 //			QPointF new_p = this-> mapToScene(VK_mP[i]);
 			QPointF new_p = VK_mP[i];
-			mD2ModelWidget->VK_addR(new_p.rx(), new_p.ry());
-			mD2ModelWidget->VK_addR(mPos.rx(), mPos.ry());
+			//mD2ModelWidget->VK_addR(new_p.rx(), new_p.ry());
+			//mD2ModelWidget->VK_addR(mPos.rx(), mPos.ry());
 
-			mD2ModelWidget->VK_addR(wall.VK_mP[0].rx(), wall.VK_mP[0].ry());
-			mD2ModelWidget->VK_addR(wall.VK_mP[1].rx(), wall.VK_mP[1].ry());
-			mD2ModelWidget->VK_addR(wall.VK_mP[2].rx(), wall.VK_mP[2].ry());
-			mD2ModelWidget->VK_addR(wall.VK_mP[3].rx(), wall.VK_mP[3].ry());
+			//mD2ModelWidget->VK_addR(wall.VK_mP[0].rx(), wall.VK_mP[0].ry());
+			//mD2ModelWidget->VK_addR(wall.VK_mP[1].rx(), wall.VK_mP[1].ry());
+			//mD2ModelWidget->VK_addR(wall.VK_mP[2].rx(), wall.VK_mP[2].ry());
+			//mD2ModelWidget->VK_addR(wall.VK_mP[3].rx(), wall.VK_mP[3].ry());
 
-			mD2ModelWidget->VK_addR(wall.begin().rx(), wall.begin().ry());
-			mD2ModelWidget->VK_addR(wall.end().rx(), wall.end().ry());
+			//mD2ModelWidget->VK_addR(wall.begin().rx(), wall.begin().ry());
+			//mD2ModelWidget->VK_addR(wall.end().rx(), wall.end().ry());
 
 			if (wall.VK_mWallPath.contains(new_p)) {
                 if(VK_mRobotWalls[i]== NULL) {
@@ -634,7 +651,7 @@ void D2RobotModel::VK_checkCollision(WallItem& wall) // Проверяет ко�
 				QPointF p = wall.VK_getPoint(i);
 				//bool isContain =
 
-				if (VK_mBoundingRegion.contains(p)) {
+				if (boundingRegion.contains(p)) {
                    // p = mapToScene(p);
                     QLineF border = VK_interWallLine(wall);
                     QPointF normPoint = VK_normalPoint(border.x1(), border.y1(), border.x2(), border.y2(), p.rx(), p.ry());
@@ -697,8 +714,8 @@ void D2RobotModel::countNewCoord()
 		VK_setForce(QVector2D(0,0));
 	    VK_setForceMoment(0);
 
-	    qreal rotationalFricFactor = VK_getV().length()*150; // Коэффициент трения поверхности, возникающего при повроте зависит от скорости робота
-	    qreal angularVelocityFricFactor = fabs(VK_mAngularVelocity*100); // Коэффициент момента силы трения поверхности, возникающего при повроте зависит от угловой скорости робота
+	    qreal rotationalFricFactor = VK_getV().length()*1500; // Коэффициент трения поверхности, возникающего при повроте зависит от скорости робота
+	    qreal angularVelocityFricFactor = fabs(VK_mAngularVelocity*1000); // Коэффициент момента силы трения поверхности, возникающего при повроте зависит от угловой скорости робота
 
 		QVector2D napr (cos(mAngle * M_PI / 180), sin (mAngle * M_PI / 180));
 

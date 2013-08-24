@@ -90,6 +90,7 @@ private:
 	};
 
 	void VK_checkCollision(WallItem &wall);
+	bool VK_isRobotWallCollision(WallItem &wall);
 	void VK_setWall(int index, WallItem* wall){VK_mRobotWalls[index] = wall;}
 	bool VK_isCollision(WallItem &wall, int i);
 	bool VK_isEdgeCollision(WallItem &wall, int i);
@@ -160,7 +161,7 @@ private:
 
     qreal VK_mMass;
     qreal VK_mSize;
-	const qreal VK_mMomentI = 200;
+	qreal VK_mMomentI;
 	QVector2D VK_getVA() const;
 	QVector2D VK_getVB() const;
 	QVector2D VK_getV() const;
