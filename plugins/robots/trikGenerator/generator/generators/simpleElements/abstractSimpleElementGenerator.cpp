@@ -35,8 +35,14 @@ QList<QString> AbstractSimpleElementGenerator::portsToEngineNames(QString const 
 		result.append("1");
 	}
 	if (portsProperty.contains("C")) {
-		result.append("4");
+		result.append("2");
 	}
+	if (portsProperty.contains("D")) {
+		result.append("3");
+	}
+	if (portsProperty.contains("E")) {
+		result.append("4");
+	}                       
 
 	return result;
 }

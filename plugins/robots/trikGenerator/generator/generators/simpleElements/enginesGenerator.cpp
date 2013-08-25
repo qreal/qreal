@@ -20,9 +20,11 @@ QList<SmartLine> EnginesGenerator::convertElementIntoDirectCommand(TrikRobotGene
 
 	QString const brakeModeRaw = generator->api()->stringProperty(logicElementId, "Mode");
 
+	QString const motorType = generator->api()->property(logicElementId, "powerMotors").toBool() ? "powerMotor" : "motor";
+
 	foreach (QString const &enginePort, portsToEngineNames(generator->api()->stringProperty(logicElementId, "Ports"))) {
 		result.append(
-				SmartLine("brick.powerMotor("
+				SmartLine("brick." + motorType + "("
 						+ enginePort + ").setPower("
 						+ intPower + ");"
 				, elementId));

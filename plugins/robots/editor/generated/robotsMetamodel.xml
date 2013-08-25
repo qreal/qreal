@@ -313,6 +313,9 @@
 						<property displayedName="Порты" type="string" name="Ports">
 							<default>B, C</default>
 						</property>
+						<property displayedName="Силовые моторы" type="bool" name="powerMotors">
+							<default>false</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
