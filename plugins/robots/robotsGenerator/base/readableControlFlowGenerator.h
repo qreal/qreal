@@ -37,6 +37,7 @@ private:
 
 	semantics::SemanticTree *mSemanticTree;  // Takes ownership
 	bool mTravelingForSecondTime;
+	QMap<Id, bool> mAlreadyApplied;
 };
 
 }

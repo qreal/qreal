@@ -29,6 +29,7 @@ ReadableControlFlowGenerator::ReadableControlFlowGenerator(
 
 ControlFlow *ReadableControlFlowGenerator::generate()
 {
+	mAlreadyApplied.clear();
 	mTravelingForSecondTime = false;
 
 	ControlFlow *result = ControlFlowGeneratorBase::generate();
@@ -146,8 +147,13 @@ bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
 		, QList<SemanticTransformationRule *> const &rules
 		, bool thereWillBeMoreRules)
 {
+	if (mAlreadyApplied[currentId]) {
+		return true;
+	}
+
 	foreach (SemanticTransformationRule * const rule, rules) {
 		if (rule->apply()) {
+			mAlreadyApplied[currentId] = true;
 			return true;
 		}
 	}
