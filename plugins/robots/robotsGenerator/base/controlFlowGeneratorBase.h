@@ -25,7 +25,9 @@ public:
 	virtual ControlFlow *generate();
 
 protected:
-	void error(QString const &message, Id const &id = Id());
+	void error(QString const &message, Id const &id = Id(), bool critical = true);
+	bool errorsOccured() const;
+
 	enums::semantics::Semantics semanticsOf(Id const &id) const;
 	Id initialNode() const;
 	QPair<LinkInfo, LinkInfo> ifBranchesFor(Id const &id) const;
@@ -39,6 +41,7 @@ private:
 	GeneratorCustomizer const &mCustomizer;
 	Id const mDiagram;
 	PrimaryControlFlowValidator mValidator;
+	bool mErrorsOccured;
 };
 
 }

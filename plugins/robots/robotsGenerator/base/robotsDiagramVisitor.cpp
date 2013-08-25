@@ -19,6 +19,11 @@ void RobotsDiagramVisitor::startSearch(qReal::Id const &startingBlock)
 	mDfser.startSearch(startingBlock, this);
 }
 
+void RobotsDiagramVisitor::terminateSearch()
+{
+	mDfser.terminateSearch();
+}
+
 RobotsDiagramVisitor::LinkGuard RobotsDiagramVisitor::guardOf(qReal::Id const &linkId) const
 {
 	QString const guardProperty = mModel.propertyByRoleName(linkId, "Guard").toString().toLower();

@@ -32,11 +32,14 @@ public:
 	void startSearch(qReal::Id const &firstId, VisitorInterface *visitor);
 	void startSearch(qReal::Id const &firstId, QList<VisitorInterface *> const &visitors);
 
+	void terminateSearch();
+
 private:
 	void dfs(qReal::Id const &id, QList<VisitorInterface *> const &visitors);
 
 	qReal::LogicalModelAssistInterface const &mModel;
 	QSet<qReal::Id> mVisitedNodes;
+	bool mSearchTerminated;
 };
 
 }

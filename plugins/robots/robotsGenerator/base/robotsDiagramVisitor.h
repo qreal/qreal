@@ -27,6 +27,7 @@ protected:
 	};
 
 	void startSearch(Id const &startingBlock);
+	void terminateSearch();
 
 	LinkGuard guardOf(Id const &linkId) const;
 

@@ -23,12 +23,35 @@ ReadableControlFlowGenerator::ReadableControlFlowGenerator(
 		, Id const &diagramId
 		, QObject *parent)
 	: ControlFlowGeneratorBase(logicalModel, graphicalModel, errorReporter, customizer, diagramId, parent)
+	, mTravelingForSecondTime(false)
 {
+}
+
+ControlFlow *ReadableControlFlowGenerator::generate()
+{
+	mTravelingForSecondTime = false;
+
+	ControlFlow *result = ControlFlowGeneratorBase::generate();
+	if (!result) {
+		return NULL;
+	}
+
+	mTravelingForSecondTime = true;
+	startSearch(initialNode());
+
+	if (errorsOccured()) {
+		delete result;
+		return NULL;
+	}
+
+	return result;
 }
 
 void ReadableControlFlowGenerator::beforeSearch()
 {
-	mSemanticTree = new SemanticTree(customizer(), initialNode(), this);
+	if (!mTravelingForSecondTime) {
+		mSemanticTree = new SemanticTree(customizer(), initialNode(), this);
+	}
 }
 
 void ReadableControlFlowGenerator::visitRegular(Id const &id
@@ -39,11 +62,14 @@ void ReadableControlFlowGenerator::visitRegular(Id const &id
 	SimpleMergedIfBranchesRule mergedBranchesRule(mSemanticTree, id, links[0]);
 	SimpleIfInsideCycleRule ifInsideCycle(mSemanticTree, id, links[0]);
 
-	applyFirstPossible(id, QList<SemanticTransformationRule *>()
-			<< &unvisitedRule
-			<< &visitedOneZoneRule
-			<< &mergedBranchesRule
-			<< &ifInsideCycle);
+	QList<SemanticTransformationRule *> rules;
+	if (mTravelingForSecondTime) {
+		rules << &visitedOneZoneRule << &ifInsideCycle;
+	} else {
+		rules << &unvisitedRule << &mergedBranchesRule;
+	}
+
+	applyFirstPossible(id, rules, !mTravelingForSecondTime);
 }
 
 void ReadableControlFlowGenerator::visitFinal(Id const &id
@@ -58,6 +84,10 @@ void ReadableControlFlowGenerator::visitConditional(Id const &id
 {
 	Q_UNUSED(links)
 
+	if (mTravelingForSecondTime) {
+		return;
+	}
+
 	QPair<LinkInfo, LinkInfo> const branches(ifBranchesFor(id));
 
 	IfWithBothUnvisitedRule bothUnvisitedRule(mSemanticTree, id
@@ -66,14 +96,17 @@ void ReadableControlFlowGenerator::visitConditional(Id const &id
 			, branches.first, branches.second);
 
 	applyFirstPossible(id, QList<SemanticTransformationRule *>()
-			<< &bothUnvisitedRule
-			<< &oneVisitedRule);
+			<< &oneVisitedRule << &bothUnvisitedRule, false);
 }
 
 void ReadableControlFlowGenerator::visitLoop(Id const &id
 		, QList<LinkInfo> const &links)
 {
 	Q_UNUSED(links)
+
+	if (mTravelingForSecondTime) {
+		return;
+	}
 
 	QPair<LinkInfo, LinkInfo> const branches(loopBranchesFor(id));
 
@@ -87,7 +120,7 @@ void ReadableControlFlowGenerator::visitLoop(Id const &id
 	applyFirstPossible(id, QList<SemanticTransformationRule *>()
 			<< &bothUnvisitedRule
 			<< &iterationVisitedRule
-			<< &nextVisitedRule);
+			<< &nextVisitedRule, false);
 }
 
 void ReadableControlFlowGenerator::visitSwitch(Id const &id
@@ -110,7 +143,8 @@ void ReadableControlFlowGenerator::afterSearch()
 }
 
 bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
-		, QList<SemanticTransformationRule *> const &rules)
+		, QList<SemanticTransformationRule *> const &rules
+		, bool thereWillBeMoreRules)
 {
 	foreach (SemanticTransformationRule * const rule, rules) {
 		if (rule->apply()) {
@@ -118,6 +152,9 @@ bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
 		}
 	}
 
-	error(tr("This diagram cannot be generated into the structured code"), currentId);
-	return false;
+	if (!thereWillBeMoreRules) {
+		error(tr("This diagram cannot be generated into the structured code"), currentId);
+	}
+
+	return thereWillBeMoreRules;
 }

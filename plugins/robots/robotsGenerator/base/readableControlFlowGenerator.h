@@ -19,6 +19,8 @@ public:
 			, Id const &diagramId
 			, QObject *parent = 0);
 
+	virtual ControlFlow *generate();
+
 	virtual void beforeSearch();
 	virtual void visitRegular(Id const &id, QList<LinkInfo> const &links);
 	virtual void visitFinal(Id const &id, QList<LinkInfo> const &links);
@@ -29,9 +31,12 @@ public:
 	virtual void afterSearch();
 
 private:
-	bool applyFirstPossible(Id const &currentId, QList<semantics::SemanticTransformationRule *> const &rules);
+	bool applyFirstPossible(Id const &currentId
+			, QList<semantics::SemanticTransformationRule *> const &rules
+			, bool thereWillBeMoreRules);
 
 	semantics::SemanticTree *mSemanticTree;  // Takes ownership
+	bool mTravelingForSecondTime;
 };
 
 }

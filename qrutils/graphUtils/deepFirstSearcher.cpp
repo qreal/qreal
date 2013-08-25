@@ -20,11 +20,18 @@ void DeepFirstSearcher::startSearch(Id const &firstId, QList<VisitorInterface *>
 		visitor->beforeSearch();
 	}
 
+	mSearchTerminated = false;
+	mVisitedNodes.clear();
 	dfs(firstId, visitors);
 
 	foreach (VisitorInterface * const visitor, visitors) {
 		visitor->afterSearch();
 	}
+}
+
+void DeepFirstSearcher::terminateSearch()
+{
+	mSearchTerminated = true;
 }
 
 void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visitors)
@@ -49,7 +56,7 @@ void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visit
 	}
 
 	foreach (LinkInfo const &link, linkInfos) {
-		if (!link.targetVisited && link.connected) {
+		if (!link.targetVisited && link.connected && !mSearchTerminated) {
 			dfs(link.target, visitors);
 		}
 	}

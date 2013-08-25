@@ -34,18 +34,35 @@ ControlFlow *ControlFlowGeneratorBase::generate()
 		return NULL;
 	}
 
+	mErrorsOccured = false;
 	ControlFlow *result = new ControlFlow;
 
 	// This will start dfs on model graph with processig every block
 	// in subclasses which must construct control flow in handlers
 	startSearch(initialNode());
 
+	if (mErrorsOccured) {
+		delete result;
+		return NULL;
+	}
+
 	return result;
 }
 
-void ControlFlowGeneratorBase::error(QString const &message, Id const &id)
+void ControlFlowGeneratorBase::error(QString const &message, Id const &id, bool critical)
 {
-	mErrorReporter.addError(message, id);
+	mErrorsOccured = true;
+	if (critical) {
+		mErrorReporter.addCritical(message, id);
+		terminateSearch();
+	} else {
+		mErrorReporter.addError(message, id);
+	}
+}
+
+bool ControlFlowGeneratorBase::errorsOccured() const
+{
+	return mErrorsOccured;
 }
 
 enums::semantics::Semantics ControlFlowGeneratorBase::semanticsOf(qReal::Id const &id) const
