@@ -46,7 +46,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/ellipse.png</normaloff>:/icons/ellipse.png</iconset>
      </property>
      <property name="iconSize">
@@ -87,7 +87,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/staticText.png</normaloff>:/icons/staticText.png</iconset>
      </property>
      <property name="iconSize">
@@ -128,7 +128,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/dynamicText.png</normaloff>:/icons/dynamicText.png</iconset>
      </property>
      <property name="iconSize">
@@ -179,7 +179,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/curve.png</normaloff>:/icons/curve.png</iconset>
      </property>
      <property name="iconSize">
@@ -473,7 +473,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/pencil.png</normaloff>:/icons/pencil.png</iconset>
      </property>
      <property name="iconSize">
@@ -514,7 +514,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/linePort.png</normaloff>:/icons/linePort.png</iconset>
      </property>
      <property name="iconSize">
@@ -561,7 +561,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/ellipse.png</normaloff>:/icons/ellipse.png</iconset>
      </property>
      <property name="iconSize">
@@ -602,7 +602,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/textPicture.png</normaloff>:/icons/textPicture.png</iconset>
      </property>
      <property name="iconSize">
@@ -640,7 +640,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/rect.png</normaloff>:/icons/rect.png</iconset>
      </property>
      <property name="iconSize">
@@ -979,7 +979,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/line.png</normaloff>:/icons/line.png</iconset>
      </property>
      <property name="iconSize">
@@ -1085,17 +1085,17 @@
   <customwidget>
    <class>graphicsUtils::AbstractView</class>
    <extends>QGraphicsView</extends>
-   <header>../../qrutils/graphicsUtils/abstractItemView.h</header>
+   <header>qrutils/graphicsUtils/abstractItemView.h</header>
   </customwidget>
   <customwidget>
    <class>graphicsUtils::ColorListEditor</class>
    <extends>QComboBox</extends>
-   <header>../../qrutils/graphicsUtils/colorlisteditor.h</header>
+   <header>qrutils/graphicsUtils/colorlisteditor.h</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../qrgui.qrc"/>
-  <include location="../../qrgui.qrc"/>
+  <include location="qrgui.qrc"/>
+  <include location="qrgui.qrc"/>
  </resources>
  <connections/>
 </ui>

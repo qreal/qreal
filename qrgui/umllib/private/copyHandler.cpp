@@ -1,6 +1,7 @@
-#include "../nodeElement.h"
-#include "../../view/editorViewScene.h"
 #include "copyHandler.h"
+
+#include "umllib/nodeElement.h"
+#include "view/editorViewScene.h"
 
 using namespace qReal;
 using namespace models;

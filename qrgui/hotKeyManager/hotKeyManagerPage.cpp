@@ -1,3 +1,6 @@
+#include "hotKeyManagerPage.h"
+#include "ui_hotKeyManagerPage.h"
+
 #include <QtCore/QString>
 #include <QtCore/QHash>
 #include <QtWidgets/QAction>
@@ -5,9 +8,7 @@
 #include <QtGui/QKeySequence>
 #include <QtGui/QWheelEvent>
 
-#include "hotKeyManagerPage.h"
-#include "ui_hotKeyManagerPage.h"
-#include "hotKeyManager.h"
+#include "hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 

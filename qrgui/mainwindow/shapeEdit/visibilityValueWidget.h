@@ -3,7 +3,7 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QComboBox>
 
-#include "visibilityConditionsDialog.h"
+#include "mainwindow/shapeEdit/visibilityConditionsDialog.h"
 
 class VisibilityValueWidget : public QWidget
 {

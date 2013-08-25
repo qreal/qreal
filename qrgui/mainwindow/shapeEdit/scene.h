@@ -6,23 +6,24 @@
 #include <QtWidgets/QGraphicsView>
 #include <QtCore/QList>
 
-#include "view.h"
-#include "item.h"
-#include "arch.h"
-#include "line.h"
-#include "ellipse.h"
-#include "rectangle.h"
-#include "text.h"
-#include "textPicture.h"
-#include "pointPort.h"
-#include "linePort.h"
-#include "stylus.h"
-#include "path.h"
-#include "curve.h"
-#include "image.h"
-#include "../../../umllib/label.h"
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../qrutils/graphicsUtils/abstractScene.h"
+#include <qrutils/graphicsUtils/abstractScene.h>
+#include <qrkernel/settingsManager.h>
+
+#include "mainwindow/shapeEdit/view.h"
+#include "mainwindow/shapeEdit/item.h"
+#include "mainwindow/shapeEdit/arch.h"
+#include "mainwindow/shapeEdit/line.h"
+#include "mainwindow/shapeEdit/ellipse.h"
+#include "mainwindow/shapeEdit/rectangle.h"
+#include "mainwindow/shapeEdit/text.h"
+#include "mainwindow/shapeEdit/textPicture.h"
+#include "mainwindow/shapeEdit/pointPort.h"
+#include "mainwindow/shapeEdit/linePort.h"
+#include "mainwindow/shapeEdit/stylus.h"
+#include "mainwindow/shapeEdit/path.h"
+#include "mainwindow/shapeEdit/curve.h"
+#include "mainwindow/shapeEdit/image.h"
+#include "umllib/label.h"
 
 const int sizeEmptyRectX = 680;
 const int sizeEmptyRectY = 580;

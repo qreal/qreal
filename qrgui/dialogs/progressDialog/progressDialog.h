@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QProgressDialog>
 
-#include "progressBar.h"
+#include "dialogs/progressDialog/progressBar.h"
 
 namespace qReal
 {

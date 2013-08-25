@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtGui/QIcon>
 
-#include "../mainwindow/mainWindowDockInterface.h"
+#include "mainwindow/mainWindowDockInterface.h"
 
 namespace qReal {
 

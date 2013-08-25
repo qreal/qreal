@@ -7,7 +7,8 @@
 #include <QtXml/QDomDocument>
 #include <QtCore/QPair>
 #include <QtCore/QList>
-#include "../../../qrutils/graphicsUtils/abstractItem.h"
+
+#include <qrutils/graphicsUtils/abstractItem.h>
 
 class Item : public graphicsUtils::AbstractItem
 {

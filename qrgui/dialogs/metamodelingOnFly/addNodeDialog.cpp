@@ -1,7 +1,7 @@
 #include "addNodeDialog.h"
 
 #include "ui_addNodeDialog.h"
-#include "../../mainwindow/mainWindow.h"
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 using namespace gui;

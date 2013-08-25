@@ -2,7 +2,8 @@
 
 #include <QtCore/QString>
 #include <QtCore/QTime>
-#include "../../qrkernel/ids.h"
+
+#include <qrkernel/ids.h>
 
 namespace qReal {
 namespace gui {

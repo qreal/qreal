@@ -10,10 +10,11 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLabel>
 
-#include "paletteElement.h"
-#include "../mainWindow.h"
-#include "../pluginManager/proxyEditorManager.h"
-#include "../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
+
+#include "mainwindow/palette/paletteElement.h"
+#include "mainwindow/mainWindow.h"
+#include "pluginManager/proxyEditorManager.h"
 
 namespace qReal {
 namespace gui {

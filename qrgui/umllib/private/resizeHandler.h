@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../nodeElement.h"
+#include "umllib/nodeElement.h"
 
 class ResizeHandler {
 public:

@@ -1,5 +1,6 @@
 #include "logicalModel.h"
-#include "graphicalModel.h"
+
+#include "models/details/graphicalModel.h"
 
 #include <QtCore/QUuid>
 

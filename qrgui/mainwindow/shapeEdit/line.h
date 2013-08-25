@@ -1,7 +1,8 @@
 #pragma once
 
-#include "item.h"
-#include "../../../qrutils/graphicsUtils/lineImpl.h"
+#include <qrutils/graphicsUtils/lineImpl.h>
+
+#include "mainwindow/shapeEdit/item.h"
 
 class Line : public Item
 {

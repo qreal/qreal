@@ -1,8 +1,9 @@
-#include "../../view/editorViewScene.h"
+#include "portHandler.h"
 
 #include <QtCore/qmath.h>
-#include "../nodeElement.h"
-#include "portHandler.h"
+
+#include "view/editorViewScene.h"
+#include "umllib/nodeElement.h"
 
 qreal const PortHandler::mMaximumFractionPartValue = 0.9999;
 

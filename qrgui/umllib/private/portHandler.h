@@ -6,9 +6,9 @@
 
 #pragma once
 
-#include "../../models/graphicalModelAssistApi.h"
-#include "../ports/statLine.h"
-#include "../ports/statPoint.h"
+#include "models/graphicalModelAssistApi.h"
+#include "umllib/ports/statLine.h"
+#include "umllib/ports/statPoint.h"
 
 /**
 * Useful information:

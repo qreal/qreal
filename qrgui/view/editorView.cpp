@@ -1,10 +1,8 @@
-#include <QtWidgets>
+#include "editorView.h"
 
 #ifdef QT_OPENGL_LIB
 #include <QtOpenGL/QGLWidget>
 #endif
-
-#include "editorView.h"
 
 using namespace qReal;
 

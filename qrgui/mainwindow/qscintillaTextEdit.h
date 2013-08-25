@@ -2,7 +2,7 @@
 
 #include <QtCore/QPersistentModelIndex>
 
-#include "../../thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintilla.h"
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintilla.h>
 
 namespace qReal {
 namespace gui {

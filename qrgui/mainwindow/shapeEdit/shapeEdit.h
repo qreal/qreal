@@ -5,14 +5,20 @@
 #include <QtXml/QDomDocument>
 #include <QtWidgets/QButtonGroup>
 
-#include "scene.h"
-#include "item.h"
-#include "../../../qrutils/graphicsUtils/abstractItemView.h"
-#include "../../../qrkernel/ids.h"
-#include "../../pluginManager/editorManagerInterface.h"
-#include "ui_mainWindow.h"
-#include "../../models/details/logicalModel.h"
-#include "visibilityConditionsDialog.h"
+#include <qrutils/graphicsUtils/abstractItemView.h>
+#include <qrkernel/ids.h>
+
+#include "mainwindow/shapeEdit/scene.h"
+#include "mainwindow/shapeEdit/item.h"
+#include "pluginManager/editorManagerInterface.h"
+
+// TODO: lolwut?
+//#include "ui_mainWindow.h"
+
+// TODO: lolwut?
+#include "models/details/logicalModel.h"
+
+#include "mainwindow/shapeEdit/visibilityConditionsDialog.h"
 
 namespace Ui {
 class ShapeEdit;
@@ -78,6 +84,7 @@ private:
 	QPoint mTopLeftPicture;
 	Ui::ShapeEdit *mUi;  // Has ownership.
 
+	// TODO: lolwut? Use assist API instead.
 	qReal::models::details::LogicalModel *mModel;  // Doesn't have ownership.
 	QPersistentModelIndex const mIndex;
 	int const mRole;

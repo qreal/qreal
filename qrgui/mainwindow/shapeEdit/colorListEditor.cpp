@@ -1,5 +1,3 @@
-#include <QtWidgets>
-
 #include "colorListEditor.h"
 
 ColorListEditor::ColorListEditor(QWidget *widget) : QComboBox(widget)
