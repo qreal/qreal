@@ -9,6 +9,7 @@ SUBDIRS	= \
 	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
+        guiEditor/editor/guiEditorMetamodel.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \
