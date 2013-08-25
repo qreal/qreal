@@ -15,18 +15,21 @@ class MockKitPlugin1Interface : public QObject, public robotsInterpreterCore::Ki
 
 public:
 	// Override.
-	virtual QString kitName() const;
+	virtual QString kitId() const;
 
 	// Override.
 	// Transfers ownership.
 	virtual QWidget *settingsWidget() const;
 
 	// Override.
-	// Transfers ownership.
-	virtual QList<QWidget *> toolWidgets() const;
+	virtual qReal::IdList unsupportedBlocks() const;
 
 	// Override.
-	virtual QList<robotsInterpreterCore::SensorId> sensorIds() const;
+	// Transfers ownership.
+//	virtual QList<QWidget *> toolWidgets() const;
+
+	// Override.
+//	virtual QList<robotsInterpreterCore::robotModel::SensorId> sensorIds() const;
 };
 
 }

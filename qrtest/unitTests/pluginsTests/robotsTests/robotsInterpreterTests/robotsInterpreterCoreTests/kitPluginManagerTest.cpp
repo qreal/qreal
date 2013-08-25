@@ -9,7 +9,7 @@ TEST_F(KitPluginManagerTest, pluginsLoadingTest)
 {
 	KitPluginManager kitPluginManager("plugins/unittests");
 
-	ASSERT_EQ(2, kitPluginManager.kitNames().size());
-	ASSERT_EQ("MockKitPlugin1", kitPluginManager.kitNames()[0]);
-	ASSERT_EQ("MockKitPlugin2", kitPluginManager.kitNames()[1]);
+	ASSERT_EQ(2, kitPluginManager.kitIds().size());
+	ASSERT_EQ("MockKitPlugin1", kitPluginManager.kitIds()[0]);
+	ASSERT_EQ("MockKitPlugin2", kitPluginManager.kitIds()[1]);
 }

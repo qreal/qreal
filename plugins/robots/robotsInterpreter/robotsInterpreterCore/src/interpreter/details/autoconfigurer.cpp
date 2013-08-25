@@ -1,11 +1,14 @@
 #include "autoconfigurer.h"
 
+#include <qrkernel/exception/exception.h>
+
 #include <robotsInterpreterCore/blocks/block.h>
 #include <robotsInterpreterCore/robotModel/robotModelInterface.h>
 //#include "tracer.h"
 
-using namespace qReal;
 using namespace robotsInterpreterCore::interpreter::details;
+
+using namespace qReal;
 using namespace robotsInterpreterCore::robotModel;
 
 Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalModelApi
@@ -18,12 +21,15 @@ Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalMod
 		, mErrorReporter(errorReporter)
 		, mRobotModel(robotModel)
 {
-//	mUsedSensors.resize(4);
 }
 
-bool Autoconfigurer::configure(Id const &diagram)
+QVector<SensorId> Autoconfigurer::configure(Id const &diagram, bool *success)
 {
-	bool result = true;
+	if (!success) {
+		throw Exception("Pass correct pointer to boolean as 'success' parameter");
+	}
+
+	*success = true;
 
 //	mUsedSensors[0] = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt());
 //	mUsedSensors[1] = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt());
@@ -56,5 +62,5 @@ bool Autoconfigurer::configure(Id const &diagram)
 //			);
 //	}
 
-	return result;
+	return QVector<SensorId>();
 }

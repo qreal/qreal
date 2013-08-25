@@ -17,7 +17,7 @@ public:
 			, robotModel::RobotModelInterface *robotModel
 			);
 
-	bool configure(qReal::Id const &diagram);
+	QVector<robotModel::SensorId> configure(qReal::Id const &diagram, bool *success);
 
 private:
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership

@@ -2,7 +2,7 @@
 
 using namespace qrTest::mockKitPlugin2;
 
-QString MockKitPlugin2Interface::kitName() const
+QString MockKitPlugin2Interface::kitId() const
 {
 	return "MockKitPlugin2";
 }
@@ -12,12 +12,7 @@ QWidget *MockKitPlugin2Interface::settingsWidget() const
 	return NULL;
 }
 
-QList<QWidget *> MockKitPlugin2Interface::toolWidgets() const
+qReal::IdList MockKitPlugin2Interface::unsupportedBlocks() const
 {
-	return QList<QWidget *>();
-}
-
-QList<robotsInterpreterCore::SensorId> MockKitPlugin2Interface::sensorIds() const
-{
-	return QList<robotsInterpreterCore::SensorId>();
+	return qReal::IdList();
 }

@@ -4,7 +4,7 @@
 
 namespace qrTest {
 
-class CommonRobotModelTest : public testing::Test
+class robotModelTest : public testing::Test
 {
 };
 

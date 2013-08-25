@@ -110,9 +110,20 @@ void Interpreter::interpret()
 	mBlocksTable->setIdleForBlocks();
 
 	details::Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
-	if (!configurer.configure(currentDiagramId)) {
+
+	bool configurationSucceeded = false;
+	QVector<robotModel::SensorId> const sensorConfiguration = configurer.configure(currentDiagramId, &configurationSucceeded);
+
+	if (!configurationSucceeded) {
 		return;
 	}
+
+//	mRobotModel->configureSensors(
+//			sensorConfiguration[0]
+//			, sensorConfiguration[1]
+//			, sensorConfiguration[2]
+//			, sensorConfiguration[3]
+//			);
 }
 
 //void Interpreter::stopRobot()
