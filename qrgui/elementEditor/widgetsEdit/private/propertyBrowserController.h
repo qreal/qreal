@@ -2,9 +2,9 @@
 
 #include <QtCore/QObject>
 
-#include "../../qtpropertybrowser/src/QtTreePropertyBrowser"
+#include "../../qtpropertybrowser/src/QtTreePropertyBrowser.h"
 #include "../../qtpropertybrowser/src/QtVariantPropertyManager"
-#include "../../qtpropertybrowser/src/QtVariantProperty"
+#include "../../qtpropertybrowser/src/QtVariantProperty.h"
 #include "../../qtpropertybrowser/src/QtVariantEditorFactory"
 
 namespace qReal

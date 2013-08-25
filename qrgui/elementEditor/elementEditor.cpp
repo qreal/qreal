@@ -13,7 +13,7 @@ ElementEditor::ElementEditor(const QPersistentModelIndex &index
 	, mIconWidgetsEditor(NULL), mIconShapeEditor(NULL), mDocumentBuilder(NULL)
 {
 	enableMenuSupport();
-	StartPage *startPage = new StartPage;
+    qReal::elementEdit::StartPage *startPage = new qReal::elementEdit::StartPage;
 	initStartPageInteraction(startPage);
 	mPages.insert(startPage, startPage);
 	mController->switchTo(startPage);
@@ -34,7 +34,7 @@ widgetsEdit::WidgetsEditor *ElementEditor::widgetEditor() const
 	return mWidgetsEditor;
 }
 
-void ElementEditor::initStartPageInteraction(StartPage *startPage)
+void ElementEditor::initStartPageInteraction(qReal::elementEdit::StartPage *startPage)
 {
 	connect(startPage, SIGNAL(widgetSelected()), this, SLOT(switchToWidgetsEditor()));
 	connect(startPage, SIGNAL(shapeSelected()), this, SLOT(switchToShapeEditor()));
