@@ -865,7 +865,7 @@ EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart)
 {
 	NodeElement *node = isStart ? mSrc : mDst;
 	if (!node) {
-		return isStart ? EdgeElement::right : EdgeElement::top;
+		return isStart ? right : top;
 	}
 
 	QPointF pos = node->portPos(isStart ? mPortFrom : mPortTo);
