@@ -123,3 +123,10 @@ void D2ModelScene::updateGrid()
 {
 	update();
 }
+
+void D2ModelScene::VK_add(qreal a, qreal b)
+{
+	this->addRect(a, b,1,1);
+
+}
+

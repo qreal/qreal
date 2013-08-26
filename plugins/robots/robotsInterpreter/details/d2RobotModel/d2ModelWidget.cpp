@@ -82,6 +82,17 @@ D2ModelWidget::~D2ModelWidget()
 	delete mUi;
 }
 
+void D2ModelWidget::VK_addR(qreal a, qreal b)
+{
+	mScene->VK_add(a, b);
+}
+
+QPointF D2ModelWidget::pointCoord(QPointF point)
+{
+	//return mRobot->mapToItem(*mScene, point);
+	return mRobot->mapToScene(point);
+}
+
 void D2ModelWidget::initWidget()
 {
 	mUi->setupUi(this);

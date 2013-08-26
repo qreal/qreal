@@ -25,6 +25,7 @@ public:
 	virtual void initParentsMap();
 	virtual void initPaletteGroupsMap();
 	virtual void initPaletteGroupsDescriptionMap();
+	virtual void initExplosionsMap();
 
 	virtual QString id() const { return "RobotsMetamodel"; }
 
@@ -33,17 +34,17 @@ public:
 	virtual QStringList getPropertiesWithDefaultValues(QString const &element) const;
 
 	virtual QStringList getTypesContainedBy(QString const &element) const;
-	virtual QStringList getConnectedTypes(QString const &element) const;
-	virtual QStringList getUsedTypes(QString const &element) const;
 	virtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const;
+	virtual QList<qReal::EditorInterface::ExplosionData> explosions(QString const &diagram, QString const &element) const;
 
 	virtual int isNodeOrEdge(QString const &element) const; 
 
-	virtual QIcon getIcon(SdfIconEngineV2Interface *engine) const;
-	virtual ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;
+	virtual QIcon getIcon(qReal::SdfIconEngineV2Interface *engine) const;
+	virtual qReal::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;
 	virtual QString getPropertyType(QString const &element, QString const &property) const;
 	virtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;
 	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;
+	virtual QStringList getPortTypes(QString const &diagram, QString const &element) const;
 	virtual QStringList getReferenceProperties(QString const &diagram, QString const &element) const;
 	virtual QStringList getEnumValues(QString name) const;
 	virtual QString getGroupsXML() const;
@@ -67,18 +68,19 @@ public:
 	virtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const;
 
 private:
-	QMap<QString, QIcon> iconMap;
-	QMap<QString, QString> diagramNameMap;
-	QMap<QString, QString> diagramNodeNameMap;
-	QMap<QString, QMap<QString, QString> > propertyTypes;
-	QMap<QString, QMap<QString, QString> > propertyDefault;
-	QMap<QString, QMap<QString, QString> > elementsNameMap;
-	QMap<QString, QMap<QString, QString> > elementsDescriptionMap;
-	QMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDescriptionMap;
-	QMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDisplayedNamesMap;
-	QMap<QString, QMap<QString, QString> > elementMouseGesturesMap;
-	QMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;  // Maps diagram and element to a list of diagram-element pairs of parents (generalization relation).
-	QMap<QString, QMap<QString, QStringList > > paletteGroupsMap;  // Maps element`s lists of all palette groups.
-	QMap<QString, QMap<QString, QString > > paletteGroupsDescriptionMap; 
+	QMap<QString, QIcon> mIconMap;
+	QMap<QString, QString> mDiagramNameMap;
+	QMap<QString, QString> mDiagramNodeNameMap;
+	QMap<QString, QMap<QString, QString> > mPropertyTypes;
+	QMap<QString, QMap<QString, QString> > mPropertyDefault;
+	QMap<QString, QMap<QString, QString> > mElementsNameMap;
+	QMap<QString, QMap<QString, QString> > mElementsDescriptionMap;
+	QMap<QString, QMap<QString, QMap<QString, QString> > > mPropertiesDescriptionMap;
+	QMap<QString, QMap<QString, QMap<QString, QString> > > mPropertiesDisplayedNamesMap;
+	QMap<QString, QMap<QString, QString> > mElementMouseGesturesMap;
+	QMap<QString, QMap<QString, QList<QPair<QString, QString> > > > mParentsMap;  // Maps diagram and element to a list of diagram-element pairs of parents (generalization relation).
+	QMap<QString, QMap<QString, QStringList > > mPaletteGroupsMap;  // Maps element`s lists of all palette groups.
+	QMap<QString, QMap<QString, QString > > mPaletteGroupsDescriptionMap; 
+	QMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData> > > mExplosionsMap;
 };
 

@@ -41,12 +41,13 @@ public:
 
 	QDomElement serialize(QDomDocument &document, QPointF const &topLeftPicture) const;
 	void deserialize(QDomElement const &element);
+	QList<WallItem *> mWalls;
 
 private:
 	bool checkSonarDistance(int const distance, QPointF const &position
 			, qreal const direction, QPainterPath const &wallPath) const;
 
-	QList<WallItem *> mWalls;
+//	QList<WallItem *> mWalls;
 	QList<ColorFieldItem *> mColorFields;
 	QMap<robots::enums::inputPort::InputPortEnum, QPointF> mTouchSensorPositionOld;
 	QMap<robots::enums::inputPort::InputPortEnum, qreal> mTouchSensorDirectionOld;
