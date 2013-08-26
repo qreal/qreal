@@ -7,6 +7,7 @@ HEADERS += \
 	$$PWD/gotoControlFlowGenerator.h \
 	$$PWD/robotsDiagramVisitor.h \
 	$$PWD/primaryControlFlowValidator.h \
+	$$PWD/generatorFactoryBase.h \
 	$$PWD/semanticTree/semanticTree.h \
 	$$PWD/semanticTree/semanticNode.h \
 	$$PWD/semanticTree/nonZoneNode.h \
@@ -30,6 +31,8 @@ HEADERS += \
 	$$PWD/rules/loopRules/loopWithBothUnvisitedRule.h \
 	$$PWD/rules/loopRules/loopWithIterationVisitedRule.h \
 	$$PWD/rules/loopRules/loopWithNextVisitedRule.h \
+	$$PWD/simpleGenerators/abstractSimpleGenerator.h \
+	$$PWD/simpleGenerators/bindingGenerator.h \
 
 SOURCES += \
 	$$PWD/smartLine.cpp \
@@ -40,6 +43,7 @@ SOURCES += \
 	$$PWD/gotoControlFlowGenerator.cpp \
 	$$PWD/robotsDiagramVisitor.cpp \
 	$$PWD/primaryControlFlowValidator.cpp \
+	$$PWD/generatorFactoryBase.cpp \
 	$$PWD/semanticTree/semanticTree.cpp \
 	$$PWD/semanticTree/semanticNode.cpp \
 	$$PWD/semanticTree/nonZoneNode.cpp \
@@ -63,3 +67,5 @@ SOURCES += \
 	$$PWD/rules/loopRules/loopWithBothUnvisitedRule.cpp \
 	$$PWD/rules/loopRules/loopWithIterationVisitedRule.cpp \
 	$$PWD/rules/loopRules/loopWithNextVisitedRule.cpp \
+	$$PWD/simpleGenerators/abstractSimpleGenerator.h \
+	$$PWD/simpleGenerators/bindingGenerator.cpp \

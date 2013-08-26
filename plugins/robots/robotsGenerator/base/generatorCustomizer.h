@@ -32,7 +32,6 @@ public:
 	enums::semantics::Semantics semanticsOf(Id const &block) const;
 
 protected:
-
 	virtual bool isConditional(Id const &block) const;
 	virtual bool isLoop(Id const &block) const;
 	virtual bool isSwitch(Id const &block) const;

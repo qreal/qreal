@@ -14,6 +14,7 @@ public:
 	explicit ControlFlow(QObject *parent = 0);
 
 private:
+	QList<SmartLine> mCode;
 };
 
 }
