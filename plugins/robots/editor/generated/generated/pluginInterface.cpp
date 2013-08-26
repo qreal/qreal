@@ -904,28 +904,28 @@ QString RobotsMetamodelPlugin::getGroupsXML() const
 QStringList RobotsMetamodelPlugin::getEnumValues(QString name) const 
 {
 	QStringList result;
-	if (name == "CallConcurrencyKind")
-		result << QString::fromUtf8("sequential") << QString::fromUtf8("guarded") << QString::fromUtf8("concurrent");
-	else if (name == "DistanceSign")
-		result << QString::fromUtf8("равно") << QString::fromUtf8("больше") << QString::fromUtf8("меньше") << QString::fromUtf8("не меньше") << QString::fromUtf8("не больше");
-	else if (name == "Color")
-		result << QString::fromUtf8("") << QString::fromUtf8("Чёрный") << QString::fromUtf8("Синий") << QString::fromUtf8("Зелёный") << QString::fromUtf8("Жёлтый") << QString::fromUtf8("Красный") << QString::fromUtf8("Белый");
-	else if (name == "ParameterDirectionKind")
-		result << QString::fromUtf8("in") << QString::fromUtf8("inout") << QString::fromUtf8("out") << QString::fromUtf8("return");
-	else if (name == "VisibilityKind")
-		result << QString::fromUtf8("private") << QString::fromUtf8("protected") << QString::fromUtf8("public") << QString::fromUtf8("package");
-	else if (name == "GuardType")
-		result << QString::fromUtf8("") << QString::fromUtf8("итерация") << QString::fromUtf8("истина") << QString::fromUtf8("ложь");
-	else if (name == "SensorPort")
-		result << QString::fromUtf8("1") << QString::fromUtf8("2") << QString::fromUtf8("3") << QString::fromUtf8("4");
-	else if (name == "AggregationKind")
-		result << QString::fromUtf8("none") << QString::fromUtf8("shared") << QString::fromUtf8("composite");
-	else if (name == "Bool")
-		result << QString::fromUtf8("false") << QString::fromUtf8("true");
+	if (name == "Accelerations")
+		result << QString::fromUtf8("ось x") << QString::fromUtf8("ось y") << QString::fromUtf8("ось z") << QString::fromUtf8("норма");
 	else if (name == "BreakEngineMode")
 		result << QString::fromUtf8("тормозить") << QString::fromUtf8("скользить");
-	else if (name == "Accelerations")
-		result << QString::fromUtf8("ось x") << QString::fromUtf8("ось y") << QString::fromUtf8("ось z") << QString::fromUtf8("норма");
+	else if (name == "SensorPort")
+		result << QString::fromUtf8("1") << QString::fromUtf8("2") << QString::fromUtf8("3") << QString::fromUtf8("4");
+	else if (name == "Bool")
+		result << QString::fromUtf8("false") << QString::fromUtf8("true");
+	else if (name == "GuardType")
+		result << QString::fromUtf8("") << QString::fromUtf8("итерация") << QString::fromUtf8("истина") << QString::fromUtf8("ложь");
+	else if (name == "AggregationKind")
+		result << QString::fromUtf8("none") << QString::fromUtf8("shared") << QString::fromUtf8("composite");
+	else if (name == "VisibilityKind")
+		result << QString::fromUtf8("private") << QString::fromUtf8("protected") << QString::fromUtf8("public") << QString::fromUtf8("package");
+	else if (name == "Color")
+		result << QString::fromUtf8("") << QString::fromUtf8("Чёрный") << QString::fromUtf8("Синий") << QString::fromUtf8("Зелёный") << QString::fromUtf8("Жёлтый") << QString::fromUtf8("Красный") << QString::fromUtf8("Белый");
+	else if (name == "DistanceSign")
+		result << QString::fromUtf8("равно") << QString::fromUtf8("больше") << QString::fromUtf8("меньше") << QString::fromUtf8("не меньше") << QString::fromUtf8("не больше");
+	else if (name == "ParameterDirectionKind")
+		result << QString::fromUtf8("in") << QString::fromUtf8("inout") << QString::fromUtf8("out") << QString::fromUtf8("return");
+	else if (name == "CallConcurrencyKind")
+		result << QString::fromUtf8("sequential") << QString::fromUtf8("guarded") << QString::fromUtf8("concurrent");
 	return result;
 }
 
