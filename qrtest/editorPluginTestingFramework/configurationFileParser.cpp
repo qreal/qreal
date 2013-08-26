@@ -4,7 +4,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QDebug>
 
-#include "../../../qrutils/xmlUtils.h"
+#include "../../qrutils/xmlUtils.h"
 
 using namespace editorPluginTestingFramework;
 

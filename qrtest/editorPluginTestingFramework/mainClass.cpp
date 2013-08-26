@@ -6,7 +6,7 @@
 #include "../../qrgui/pluginManager/interpreterEditorManager.h"
 #include "../../qrgui/pluginManager/editorManagerInterface.h"
 #include "../../qrgui/pluginManager/editorManager.h"
-#include "../../../qrutils/xmlUtils.h"
+#include "../../qrutils/xmlUtils.h"
 
 #include <QtCore/QDir>
 
