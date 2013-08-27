@@ -8,6 +8,10 @@ RCC_DIR = .moc
 
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
 
+INCLUDEPATH += \
+	../../../ \
+	../../../qrgui \
+
 TRANSLATIONS = trikGenerator_ru.ts
 
 RESOURCES = trikGenerator.qrc

@@ -9,6 +9,10 @@ RCC_DIR = .moc
 
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqextserialport
 
+INCLUDEPATH += \
+	../../../ \
+	../../../qrgui \
+
 TRANSLATIONS = robotsInterpreter_ru.ts
 
 HEADERS += \
