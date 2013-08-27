@@ -27,6 +27,7 @@ QString const pathToQrxcQrmcMethodsToTest = "methodsToTest/methodsToTestQrxcQrmc
 QString const pathToQrxcInterpreterMethodsToTest = "methodsToTest/methodsToTestInterpQrxc.txt";
 
 QString const configurationFileName = "configurationParameters.xml";
+QString const travisConfigurationFileName = "travisConfigurationParameters.xml";
 
 QString const stringSeparator = "-----------------------------------";
 }

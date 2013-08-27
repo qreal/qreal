@@ -45,7 +45,7 @@ private:
 	void appendPluginNames();
 
 	/// parses file with configuration settings
-	void parseConfigurationFile();
+	void parseConfigurationFile(bool const &travisMode);
 
 	/// returns loaded editorInterface
 	qReal::EditorInterface* loadedPlugin(QString const &fileName, QString const &pathToFile);

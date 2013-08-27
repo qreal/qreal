@@ -8,9 +8,9 @@
 
 using namespace editorPluginTestingFramework;
 
-void ConfigurationFileParser::parseConfigurationFile()
+void ConfigurationFileParser::parseConfigurationFile(QString const &configurationFile)
 {
-	mXml = utils::xmlUtils::loadDocument(pathToSourceCode + configurationFileName);
+	mXml = utils::xmlUtils::loadDocument(pathToSourceCode + configurationFile);
 
 	mQmakeParameter = valueByTag("qmake");
 	mMakeParameter = valueByTag("make");

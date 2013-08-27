@@ -7,7 +7,7 @@ namespace editorPluginTestingFramework {
 class ConfigurationFileParser
 {
 public:
-	void parseConfigurationFile();
+	void parseConfigurationFile(QString const &configurationFile);
 
 	QString qmakeParameter() const;
 	QString makeParameter() const;

@@ -21,7 +21,7 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc, bool co
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
 
-	parseConfigurationFile();
+	parseConfigurationFile(travisMode);
 
 	launchQrxc(normalizedFileName);
 	compilePlugin(pathToQrxcGeneratedCode);
@@ -151,9 +151,13 @@ void MainClass::appendPluginNames()
 	mQrxcGeneratedPluginsList.append(mPluginLoader.pluginNames());
 }
 
-void MainClass::parseConfigurationFile()
+void MainClass::parseConfigurationFile(bool const &travisMode)
 {
-	mConfigurationFileParser.parseConfigurationFile();
+	if (travisMode) {
+		mConfigurationFileParser.parseConfigurationFile(travisConfigurationFileName);
+	} else {
+		mConfigurationFileParser.parseConfigurationFile(configurationFileName);
+	}
 	mQmakeParameter = mConfigurationFileParser.qmakeParameter();
 	mMakeParameter = mConfigurationFileParser.makeParameter();
 	mConfigurationParameter = mConfigurationFileParser.configurationParameter();
