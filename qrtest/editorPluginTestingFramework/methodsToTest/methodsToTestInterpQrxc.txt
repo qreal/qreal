@@ -16,7 +16,7 @@ containedTypes
 explosions
 enumValues
 typeName
-allChildrenTypesOf
+//allChildrenTypesOf
 
 isEditor
 isDiagram
@@ -29,11 +29,11 @@ propertiesWithDefaultValues
 
 hasElement
 findElementByType
-isGraphicalElement
+//isGraphicalElement
 
 isNodeOrEdge
 diagramName
 diagramNodeName
 isParentProperty
 children
-shape
+//shape

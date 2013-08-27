@@ -36,14 +36,22 @@ int main(int argc, char *argv[])
 		app.installTranslator(&appTranslator);
 	}
 
-	if (argc != 2) {
-		qDebug() << "Usage: editorPluginTestFramework fileName.qrs";
-		return 1;
+	if (argc == 2) {
+		QString const workingCopyDir = argv[1];
+		MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/", false);
+		return 0;
+	} else {
+		if (argc == 3) {
+			QString const workingCopyDir = argv[1];
+			MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/", true);
+			return newMainClass.travisTestResult();
+		}
+		else {
+			qDebug() << "Usage: editorPluginTestTool fileName.qrs";
+			return 1;
+		}
 	}
 
-	QString const workingCopyDir = argv[1];
-
-	MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/");
 
 	return 0;
 }

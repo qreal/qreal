@@ -26,6 +26,10 @@ public:
 			, qReal::Id const &id = qReal::Id::rootId()
 			, QString const &name = ""
 			);
+
+	/// methods for parsing (common for htmlMaker and methodsCheckerForTravis)
+	/// parses result for one method - because results can be equal, but in different order
+	static QSet<QString> resultToCompare(QString const &method);
 };
 
 }

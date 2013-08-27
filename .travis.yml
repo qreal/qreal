@@ -22,7 +22,9 @@ script:
   - cd ./qrtest/editorPluginTestingFramework
   - qmake editorPluginTestingFramework.pro
   - make -j2
-  - cd ../../
+  - cd ../../bin
+  - editorPluginTestFramework ../qrtest/editorPluginTestingFramework/fileToTestWithTravis/testMetamodel.qrs 1
+  - cd ../
   - qmake qrealRobots.pro
   - make -j2
   - qmake qrealBP.pro

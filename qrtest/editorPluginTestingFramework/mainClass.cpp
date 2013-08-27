@@ -2,6 +2,7 @@
 #include "defs.h"
 #include "methodsTesterForQrxcAndQrmc.h"
 #include "methodsTesterForQrxcAndInterpreter.h"
+#include "methodsCheckerForTravis.h"
 
 #include "../../qrgui/pluginManager/interpreterEditorManager.h"
 #include "../../qrgui/pluginManager/editorManagerInterface.h"
@@ -14,7 +15,7 @@ using namespace qReal;
 using namespace editorPluginTestingFramework;
 using namespace qrRepo;
 
-MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
+MainClass::MainClass(QString const &fileName, QString const &pathToQrmc, bool const &travisMode)
 {
 	deleteOldBinaries(binariesDir);
 	createNewFolders();
@@ -43,10 +44,16 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 			interpreterMethodsTester->generatedResult();
 
 	if ((qrxcGeneratedPlugin != NULL) && (qrmcGeneratedPlugin != NULL)) {
-		MethodsTesterForQrxcAndQrmc* const methodsTester = new MethodsTesterForQrxcAndQrmc(qrmcGeneratedPlugin, qrxcGeneratedPlugin);
+		MethodsTesterForQrxcAndQrmc* const methodsTester = new MethodsTesterForQrxcAndQrmc(
+				qrmcGeneratedPlugin, qrxcGeneratedPlugin);
 
 		QList<QPair<QString, QPair<QString, QString> > > methodsTesterOutput = methodsTester->generatedOutput();
-		createHtml(methodsTesterOutput, interpreterMethodsTesterOutput);
+		if (!travisMode) {
+			createHtml(methodsTesterOutput, interpreterMethodsTesterOutput);
+		} else {
+			mResultOfTesting = MethodsCheckerForTravis::calculateResult(methodsTesterOutput
+					, interpreterMethodsTesterOutput);
+		}
 	} else {
 		qDebug() << "Generation of plugins failed";
 	}
@@ -54,6 +61,11 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc)
 	delete qrxcGeneratedPlugin;
 	delete qrmcGeneratedPlugin;
 	delete interpreterMethodsTester;
+}
+
+int MainClass::travisTestResult() const
+{
+	return mResultOfTesting;
 }
 
 void MainClass::createFolder(QString const &path)

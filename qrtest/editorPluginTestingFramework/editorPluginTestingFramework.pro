@@ -46,7 +46,8 @@ HEADERS += \
 	methodsTester.h \
 	methodsTesterForQrxcAndInterpreter.h \
 	configurationFileParser.h \
-	abstractStringGenerator.h
+	abstractStringGenerator.h \
+	methodsCheckerForTravis.h
 
 SOURCES += \
 	mainClass.cpp \
@@ -71,7 +72,8 @@ SOURCES += \
 	methodsTesterForQrxcAndQrmc.cpp \
 	methodsTester.cpp \
 	methodsTesterForQrxcAndInterpreter.cpp \
-	configurationFileParser.cpp
+	configurationFileParser.cpp \
+	methodsCheckerForTravis.cpp
 
 
 

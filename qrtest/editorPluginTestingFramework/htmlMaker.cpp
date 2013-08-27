@@ -1,5 +1,6 @@
 #include "htmlMaker.h"
 #include "defs.h"
+#include "convertingMethods.h"
 
 #include <QtXml/QDomDocument>
 #include <QtXml/QDomElement>
@@ -108,8 +109,8 @@ bool HtmlMaker::resultsAreTheSame(QString const &firstMethod, QString const &sec
 		return true;
 	}
 
-	QSet<QString> firstMethodParsed = resultToCompare(firstMethod);
-	QSet<QString> secondMethodParsed = resultToCompare(secondMethod);
+	QSet<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstMethod);
+	QSet<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondMethod);
 
 	return (firstMethodParsed == secondMethodParsed);
 }
@@ -246,26 +247,10 @@ QPair<QString, QStringList> HtmlMaker::parseOneElementResult(QString const &oneE
 	return resultPair;
 }
 
-QSet<QString> HtmlMaker::resultToCompare(QString const &method)
-{
-	QStringList methodOutput = method.split("|");
-
-	QStringList result;
-	foreach (QString const &string, methodOutput) {
-		QString output = string.split("-").last();
-		QStringList outputToList = output.split(",");
-
-		result.append(outputToList);
-	}
-
-	QSet<QString> methodParsed = result.toSet();
-	return methodParsed;
-}
-
 bool HtmlMaker::resultsAreEmpty(QString const &firstMethod, QString const &secondMethod)
 {
-	QList<QString> firstMethodParsed = resultToCompare(firstMethod).toList();
-	QList<QString> secondMethodParsed = resultToCompare(secondMethod).toList();
+	QList<QString> firstMethodParsed = ConvertingMethods::resultToCompare(firstMethod).toList();
+	QList<QString> secondMethodParsed = ConvertingMethods::resultToCompare(secondMethod).toList();
 
 	foreach (QString const &element, firstMethodParsed) {
 		if (!containsOnly(element, ' ')) {

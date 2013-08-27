@@ -59,12 +59,10 @@ private:
 			, QStringList const &secondColumn
 			);
 
-	/// finds out if string contains only of given symbol (for example, "aaa" contains only of symbol 'a')
+	/// finds out if string consists only of given symbol (for example, "aaa" consists only of symbol 'a')
 	static bool containsOnly(QString const &string, QChar const &symbol);
 	/// finds out if results of testing are equivalent
 	static bool resultsAreTheSame(QString const &firstMethod, QString const &secondMethod);
-	/// parses given result of testing (tested methods can give the same results, but in different order)
-	static QSet<QString> resultToCompare(QString const &method);
 	/// checks if results are empty
 	static bool resultsAreEmpty(QString const &firstMethod, QString const &secondMethod);
 

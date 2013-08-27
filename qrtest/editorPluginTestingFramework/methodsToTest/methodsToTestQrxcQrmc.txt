@@ -8,7 +8,7 @@ getPropertyNames
 getReferenceProperties
 getParentsOf
 
-getPropertyTypes
+//getPropertyTypes
 getPropertyDefaultValue
 
 diagramName

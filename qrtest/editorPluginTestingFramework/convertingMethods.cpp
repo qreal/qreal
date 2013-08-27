@@ -69,3 +69,19 @@ QString ConvertingMethods::transformateOutput(
 	return result;
 }
 
+QSet<QString> ConvertingMethods::resultToCompare(QString const &method)
+{
+	QStringList methodOutput = method.split("|");
+
+	QStringList result;
+	foreach (QString const &string, methodOutput) {
+		QString output = string.split("-").last();
+		QStringList outputToList = output.split(",");
+
+		result.append(outputToList);
+	}
+
+	QSet<QString> methodParsed = result.toSet();
+	return methodParsed;
+}
+

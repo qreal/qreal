@@ -20,7 +20,10 @@ class MainClass
 {
 public:
 	/// gets name of qrs-file and path to qrmc, launches all processes for testing
-	MainClass(QString const &fileName, QString const &pathToQrmc);
+	MainClass(QString const &fileName, QString const &pathToQrmc, bool const &travisMode);
+
+	/// returns result of comparison - 0, if all results are correct, and 1 otherwise
+	int travisTestResult() const;
 
 private:
 	/// creates qrtest/binaries and all inner folders
@@ -63,6 +66,8 @@ private:
 	QString mMakeParameter;
 	/// configuration: debug or release
 	QString mConfigurationParameter;
+	/// result of testing for travis
+	int mResultOfTesting;
 };
 
 }
