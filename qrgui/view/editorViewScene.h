@@ -5,6 +5,7 @@
 #include <QtCore/QSignalMapper>
 
 #include "../../qrkernel/roles.h"
+#include "../../qrutils/graphicsUtils/gridDrawer.h"
 #include "../umllib/nodeElement.h"
 #include "../controller/controller.h"
 #include "gestures/mouseMovementManager.h"
@@ -179,7 +180,6 @@ private:
 	void initCorners();
 	void setCorners(QPointF const &topLeft, QPointF const &bottomRight);
 
-	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
 
 	void initContextMenu(Element *e, QPointF const &pos);
@@ -204,6 +204,7 @@ private:
 
 	qreal mWidthOfGrid;
 	double mRealIndexGrid;
+	graphicsUtils::GridDrawer mGridDrawer;
 
 	NodeElement *mHighlightNode;
 
