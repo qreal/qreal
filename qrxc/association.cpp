@@ -1,6 +1,6 @@
 #include "association.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 bool Association::init(QDomElement const &element)
 {

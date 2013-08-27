@@ -1,12 +1,13 @@
 #include "editor.h"
+
 #include "xmlCompiler.h"
 #include "diagram.h"
 #include "type.h"
 #include "enumType.h"
 #include "portType.h"
-#include "../qrutils/outFile.h"
+#include <qrutils/outFile.h>
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 Editor::Editor(QDomDocument domDocument, XmlCompiler *xmlCompiler)
 	: mXmlCompiler(xmlCompiler), mXmlDomDocument(domDocument), mLoadingComplete(false)

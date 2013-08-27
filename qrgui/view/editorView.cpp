@@ -4,6 +4,8 @@
 #include <QtOpenGL/QGLWidget>
 #endif
 
+#include <QtCore/QTimeLine>
+
 using namespace qReal;
 
 EditorView::EditorView(QWidget *parent)

@@ -1,14 +1,16 @@
 #include "nodeType.h"
+
+#include <QtCore/QDebug>
+
+#include <qrutils/outFile.h>
+
 #include "diagram.h"
 #include "xmlCompiler.h"
-#include "../qrutils/outFile.h"
 #include "pointPort.h"
 #include "linePort.h"
 #include "editor.h"
 #include "nameNormalizer.h"
 #include "label.h"
-
-#include <QDebug>
 
 using namespace utils;
 

@@ -19,6 +19,7 @@
 #include "models/details/logicalModel.h"
 
 #include "mainwindow/shapeEdit/visibilityConditionsDialog.h"
+#include "view/editorView.h"
 
 namespace Ui {
 class ShapeEdit;

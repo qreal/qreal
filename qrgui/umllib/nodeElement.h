@@ -10,6 +10,7 @@
 #include <QtWidgets/QGraphicsSceneHoverEvent>
 #include <QtWidgets/QWidget>
 #include <QtCore/QList>
+#include <QtCore/QTimer>
 
 #include "umllib/sdfRenderer.h"
 #include "umllib/element.h"
