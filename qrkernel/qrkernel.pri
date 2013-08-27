@@ -1,7 +1,7 @@
 DEFINES += QRKERNEL_LIBRARY
 
 INCLUDEPATH += \
-	$$PWD\..
+	$$PWD/..
 
 HEADERS += \
 	$$PWD/ids.h \
