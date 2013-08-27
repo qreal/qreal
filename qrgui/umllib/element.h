@@ -3,19 +3,19 @@
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QAction>
 
-#include "../../qrkernel/ids.h"
-#include "../../qrkernel/settingsManager.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/settingsManager.h>
 
-#include "../editorPluginInterface/elementRepoInterface.h"
-#include "label.h"
+#include "editorPluginInterface/elementRepoInterface.h"
+#include "umllib/label.h"
 
-#include "contextMenuAction.h"
-#include "../editorPluginInterface/elementImpl.h"
+#include "umllib/contextMenuAction.h"
+#include "editorPluginInterface/elementImpl.h"
 
-#include "../models/graphicalModelAssistApi.h"
-#include "../models/logicalModelAssistApi.h"
+#include "models/graphicalModelAssistApi.h"
+#include "models/logicalModelAssistApi.h"
 
-#include "../controller/controller.h"
+#include "controller/controller.h"
 
 namespace qReal {
 

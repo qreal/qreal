@@ -1,8 +1,9 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "../../qrkernel/ids.h"
 #include <QtCore/QPersistentModelIndex>
+
+#include <qrkernel/ids.h>
 
 namespace qReal {
 

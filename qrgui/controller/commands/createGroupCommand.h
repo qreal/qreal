@@ -1,8 +1,8 @@
 #pragma once
 
-#include "abstractCommand.h"
-#include "createElementCommand.h"
-#include "../../view/editorViewScene.h"
+#include "controller/commands/abstractCommand.h"
+#include "controller/commands/createElementCommand.h"
+#include "view/editorViewScene.h"
 
 namespace qReal {
 namespace commands {

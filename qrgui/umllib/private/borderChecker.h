@@ -6,7 +6,7 @@
 #pragma once
 
 #include <QtCore/QPointF>
-#include <QList>
+#include <QtCore/QList>
 
 namespace qReal {
 

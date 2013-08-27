@@ -1,8 +1,10 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include "../editorPluginInterface/listenerInterface.h"
-#include "../../qrkernel/ids.h"
+
+#include <qrkernel/ids.h>
+
+#include "editorPluginInterface/listenerInterface.h"
 
 namespace qReal {
 

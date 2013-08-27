@@ -1,16 +1,18 @@
+#include "draggableElement.h"
+
 #include <QtCore/QUuid>
 #include <QtGui/QMouseEvent>
 #include <QtCore/QtAlgorithms>
 #include <QtWidgets/QVBoxLayout>
 
-#include "draggableElement.h"
-#include "../mainWindow.h"
-#include "paletteTree.h"
-#include "../../qrkernel/settingsManager.h"
-#include "../dialogs/metamodelingOnFly/propertiesDialog.h"
-#include "../../qrkernel/definitions.h"
-#include "../view/editorView.h"
-#include "../view/editorViewScene.h"
+#include <qrkernel/settingsManager.h>
+#include <qrkernel/definitions.h>
+
+#include "mainwindow/mainWindow.h"
+#include "mainwindow/palette/paletteTree.h"
+#include "dialogs/metamodelingOnFly/propertiesDialog.h"
+#include "view/editorView.h"
+#include "view/editorViewScene.h"
 
 using namespace qReal;
 using namespace gui;

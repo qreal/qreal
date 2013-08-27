@@ -1,11 +1,16 @@
-#include "../mainWindow.h"
-#include "ui_mainWindow.h"
-#include "../../models/models.h"
-#include "../../view/editorViewScene.h"
-#include "../../view/editorView.h"
-#include "../../dialogs/suggestToCreateDiagramDialog.h"
 #include "projectManager.h"
-#include "../../../../qrutils/outFile.h"
+
+#include <qrutils/outFile.h>
+
+#include "mainwindow/mainWindow.h"
+
+// TODO: lolwut?
+//#include "ui_mainWindow.h"
+
+#include "models/models.h"
+#include "view/editorViewScene.h"
+#include "view/editorView.h"
+#include "dialogs/suggestToCreateDiagramDialog.h"
 
 using namespace qReal;
 

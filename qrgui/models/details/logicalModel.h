@@ -1,14 +1,14 @@
 #pragma once
 
-#include <QMimeData>
-#include <QDebug>
+#include <QtCore/QMimeData>
 
-#include "../../../qrrepo/repoApi.h"
-#include "../../pluginManager/editorManagerInterface.h"
-#include "modelsImplementation/logicalModelItem.h"
-#include "modelsImplementation/abstractModel.h"
-#include "graphicalModelView.h"
-#include "../logicalModelAssistApi.h"
+#include <qrrepo/repoApi.h>
+
+#include "pluginManager/editorManagerInterface.h"
+#include "models/details/modelsImplementation/logicalModelItem.h"
+#include "models/details/modelsImplementation/abstractModel.h"
+#include "models/details/graphicalModelView.h"
+#include "models/logicalModelAssistApi.h"
 
 namespace qReal {
 

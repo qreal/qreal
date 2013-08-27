@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QObject>
-#include <QtWidgets>
-#include "mainWindowInterpretersInterface.h"
-#include "../models/logicalModelAssistApi.h"
-#include "../../qrgui/dialogs/findReplaceDialog.h"
+#include <QtCore/QObject>
+
+#include "mainwindow/mainWindowInterpretersInterface.h"
+#include "models/logicalModelAssistApi.h"
+#include "dialogs/findReplaceDialog.h"
 
 class MainWindowInterpretersInterface;
 

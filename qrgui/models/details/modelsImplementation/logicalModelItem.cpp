@@ -1,6 +1,6 @@
 #include "logicalModelItem.h"
 
-#include "../../qrkernel/exception/exception.h"
+#include <qrkernel/exception/exception.h>
 
 using namespace qReal;
 using namespace models::details::modelsImplementation;

@@ -2,8 +2,8 @@
 
 #include <QtWidgets/QTreeWidget>
 
-#include "paletteElement.h"
-#include "../../pluginManager/editorManagerInterface.h"
+#include "mainwindow/palette/paletteElement.h"
+#include "pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 namespace gui {

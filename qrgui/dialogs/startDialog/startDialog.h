@@ -3,8 +3,8 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QCommandLinkButton>
 
-#include "../../mainwindow/projectManager/projectManager.h"
-#include "../../pluginManager/editorManagerInterface.h"
+#include "mainwindow/projectManager/projectManager.h"
+#include "pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 

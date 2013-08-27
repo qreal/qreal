@@ -2,12 +2,10 @@
 
 #include <QtWidgets/QAbstractItemView>
 
-#include "modelsImplementation/abstractView.h"
+#include "models/details/modelsImplementation/abstractView.h"
 
 namespace qReal {
-
 namespace models {
-
 namespace details {
 
 class LogicalModel;
@@ -28,7 +26,5 @@ protected slots:
 };
 
 }
-
 }
-
 }

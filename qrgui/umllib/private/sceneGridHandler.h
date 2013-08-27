@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QtCore/QList>
-
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtGui/QPen>
 

@@ -3,11 +3,11 @@
 #include <QtCore/QMetaMethod>
 #include <QtCore/QDebug>
 
-#include "../../qrkernel/exception/exception.h"
-#include "listenerApi.h"
+#include <qrkernel/exception/exception.h>
 
-#include "../models/logicalModelAssistApi.h"
-#include "../models/graphicalModelAssistApi.h"
+#include "pluginManager/listenerApi.h"
+#include "models/logicalModelAssistApi.h"
+#include "models/graphicalModelAssistApi.h"
 
 using namespace qReal;
 

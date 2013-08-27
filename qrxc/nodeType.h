@@ -1,8 +1,8 @@
 #pragma once
 
-#include "graphicType.h"
+#include <QtCore/QList>
 
-#include <QList>
+#include "graphicType.h"
 
 class Port;
 

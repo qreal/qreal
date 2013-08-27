@@ -1,4 +1,5 @@
 #include "logicalModelAssistApi.h"
+
 #include <QtCore/QUuid>
 
 using namespace qReal;

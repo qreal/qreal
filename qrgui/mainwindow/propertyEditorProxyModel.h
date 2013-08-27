@@ -4,11 +4,12 @@
 
 #pragma once
 
-#include <QAbstractTableModel>
+#include <QtCore/QAbstractTableModel>
 #include <QtCore/QStringList>
 
-#include "../pluginManager/editorManagerInterface.h"
-#include "../../qrrepo/logicalRepoApi.h"
+#include <qrrepo/logicalRepoApi.h>
+
+#include "pluginManager/editorManagerInterface.h"
 
 /// Proxy model for property editor, maps single element from main model
 /// (logical or graphical) to a list model with element properties.

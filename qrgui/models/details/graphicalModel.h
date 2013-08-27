@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../../../qrrepo/repoApi.h"
-#include "../../pluginManager/editorManagerInterface.h"
-#include "modelsImplementation/graphicalModelItem.h"
-#include "modelsImplementation/abstractModel.h"
-#include "logicalModelView.h"
-#include "../graphicalModelAssistApi.h"
+#include <qrrepo/repoApi.h>
+
+#include "pluginManager/editorManagerInterface.h"
+#include "models/details/modelsImplementation/graphicalModelItem.h"
+#include "models/details/modelsImplementation/abstractModel.h"
+#include "models/details/logicalModelView.h"
+#include "models/graphicalModelAssistApi.h"
 
 namespace qReal {
 

@@ -1,11 +1,12 @@
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
-#include "preferencesPages/behaviourPage.h"
-#include "preferencesPages/debuggerPage.h"
-#include "preferencesPages/editorPage.h"
-#include "preferencesPages/miscellaniousPage.h"
-#include "preferencesPages/featuresPage.h"
-#include "../hotKeyManager/hotKeyManagerPage.h"
+
+#include "dialogs/preferencesPages/behaviourPage.h"
+#include "dialogs/preferencesPages/debuggerPage.h"
+#include "dialogs/preferencesPages/editorPage.h"
+#include "dialogs/preferencesPages/miscellaniousPage.h"
+#include "dialogs/preferencesPages/featuresPage.h"
+#include "hotKeyManager/hotKeyManagerPage.h"
 
 using namespace qReal;
 
