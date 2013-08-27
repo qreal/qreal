@@ -357,13 +357,13 @@ void PortHandler:: arrangeLinearPorts()
 
 				bool const turningLeft = arrangeLine.dx() < 0;
 				bool const above = arrangeLine.dy() < 0;
-				QPair<int, qreal> turnTypeAndOffset = qMakePair(1, arrangeLine.dy());
+				qreal yOffset = arrangeLine.dy();
 				if ((turningLeft && above) || (!turningLeft && !above)) {
-					turnTypeAndOffset.first = -turnTypeAndOffset.first;
-					turnTypeAndOffset.second = -turnTypeAndOffset.second;
+					yOffset = -yOffset;
 				}
 
-				sortedEdges.insertMulti(qMakePair(turnTypeAndOffset, arrangeLine.dx()), edge);
+				sortedEdges.insertMulti(qMakePair(qMakePair(turningLeft ? -1 : 1, yOffset)
+						, arrangeLine.dx()), edge);
 			}
 		}
 
