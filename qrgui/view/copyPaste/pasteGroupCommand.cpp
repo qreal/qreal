@@ -1,9 +1,9 @@
 #include <QtWidgets/QApplication>
 #include <QtGui/QClipboard>
 
-#include "pasteGroupCommand.h"
-#include "pasteNodeCommand.h"
-#include "pasteEdgeCommand.h"
+#include "view/copyPaste/pasteGroupCommand.h"
+#include "view/copyPaste/pasteNodeCommand.h"
+#include "view/copyPaste/pasteEdgeCommand.h"
 
 using namespace qReal::commands;
 

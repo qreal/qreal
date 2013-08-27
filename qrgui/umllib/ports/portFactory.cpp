@@ -1,7 +1,7 @@
 #include "portFactory.h"
 
-#include "statLine.h"
-#include "statPoint.h"
+#include "umllib/ports/statLine.h"
+#include "umllib/ports/statPoint.h"
 
 PortInterface * PortFactory::createPort(QLineF const &line, bool propX1, bool propY1, bool propX2, bool propY2
 		, int initWidth, int initHeight, PortImpl *impl) const

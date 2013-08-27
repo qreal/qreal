@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QtWidgets/QComboBox>
 
 class QColor;

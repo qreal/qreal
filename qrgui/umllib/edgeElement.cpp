@@ -6,14 +6,13 @@
 #include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QMenu>
-#include <QDebug>
 #include <math.h>
 
-#include "edgeElement.h"
-#include "nodeElement.h"
-#include "labelFactory.h"
-#include "private/reshapeEdgeCommand.h"
-#include "../view/editorViewScene.h"
+#include "umllib/edgeElement.h"
+#include "umllib/nodeElement.h"
+#include "umllib/labelFactory.h"
+#include "umllib/private/reshapeEdgeCommand.h"
+#include "view/editorViewScene.h"
 
 using namespace qReal;
 

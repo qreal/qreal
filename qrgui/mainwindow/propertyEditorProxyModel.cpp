@@ -2,12 +2,10 @@
 *	@brief Property editor model
 * */
 
-#include <QtCore/QDebug>
-
-#include "../../qrkernel/exception/exception.h"
-#include "../../qrkernel/definitions.h"
-
 #include "propertyEditorProxyModel.h"
+
+#include <qrkernel/exception/exception.h>
+#include <qrkernel/definitions.h>
 
 using namespace qReal;
 

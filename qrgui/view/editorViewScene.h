@@ -4,14 +4,14 @@
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtCore/QSignalMapper>
 
-#include "../../qrkernel/roles.h"
-#include "../umllib/nodeElement.h"
-#include "../controller/controller.h"
-#include "gestures/mouseMovementManager.h"
-#include "copyPaste/clipboardHandler.h"
+#include <qrkernel/roles.h>
+#include "umllib/nodeElement.h"
+#include "controller/controller.h"
+#include "view/gestures/mouseMovementManager.h"
+#include "view/copyPaste/clipboardHandler.h"
 
-#include "private/editorViewMVIface.h"
-#include "private/exploserView.h"
+#include "view/private/editorViewMVIface.h"
+#include "view/private/exploserView.h"
 
 namespace qReal {
 

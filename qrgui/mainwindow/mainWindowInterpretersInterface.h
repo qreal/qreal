@@ -2,9 +2,10 @@
 
 #include <QtGui/QColor>
 
-#include "../../qrkernel/ids.h"
-#include "../toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../../qrutils/invocationUtils/longOperation.h"
+#include <qrkernel/ids.h>
+#include <qrutils/invocationUtils/longOperation.h>
+
+#include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace qReal {
 namespace gui {

@@ -1,5 +1,10 @@
 QT += xml widgets
 
+INCLUDEPATH += \
+	$$PWD \
+	$$PWD/.. \
+	$$PWD/../qrgui \
+
 LIBS += -L$$PWD/../bin -lqrkernel
 
 DEFINES += QRUTILS_LIBRARY

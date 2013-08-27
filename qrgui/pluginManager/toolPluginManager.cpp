@@ -1,7 +1,8 @@
+#include "toolPluginManager.h"
+
 #include <QtWidgets/QApplication>
 
-#include "toolPluginManager.h"
-#include "../hotKeyManager/hotKeyManager.h"
+#include "hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 

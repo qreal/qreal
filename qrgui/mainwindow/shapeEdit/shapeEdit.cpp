@@ -1,9 +1,5 @@
 #include "shapeEdit.h"
 #include "ui_shapeEdit.h"
-#include "../../../qrutils/outFile.h"
-#include "../../../qrutils/xmlUtils.h"
-#include "xmlLoader.h"
-#include "../../../qrutils/graphicsUtils/colorlisteditor.h"
 
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QGraphicsItem>
@@ -13,7 +9,12 @@
 #include <QtGui/QImage>
 #include <QtWidgets/QMessageBox>
 
-#include <QtCore/QDebug>
+#include <qrutils/outFile.h>
+#include <qrutils/xmlUtils.h>
+#include <qrutils/graphicsUtils/colorlisteditor.h>
+
+#include "mainwindow/shapeEdit/xmlLoader.h"
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 using namespace utils;

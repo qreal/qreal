@@ -1,9 +1,10 @@
+#include "startDialog.h"
+
 #include <QtWidgets/QTabWidget>
 
-#include "startDialog.h"
-#include "suggestToCreateDiagramWidget.h"
-#include "recentProjectsListWidget.h"
-#include "../../mainwindow/mainWindow.h"
+#include "mainwindow/mainWindow.h"
+#include "dialogs/startDialog/suggestToCreateDiagramWidget.h"
+#include "dialogs/startDialog/recentProjectsListWidget.h"
 
 using namespace qReal;
 

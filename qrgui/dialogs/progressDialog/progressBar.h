@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QProgressBar>
 
-#include "../../../qrutils/invocationUtils/longOperation.h"
+#include <qrutils/invocationUtils/longOperation.h>
 
 namespace qReal
 {

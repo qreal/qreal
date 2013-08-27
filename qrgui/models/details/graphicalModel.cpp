@@ -1,9 +1,8 @@
 #include "graphicalModel.h"
 
-#include "logicalModel.h"
-
 #include <QtCore/QUuid>
-#include <QtCore/QDebug>
+
+#include "models/details/logicalModel.h"
 
 using namespace qReal;
 using namespace models;

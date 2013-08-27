@@ -5,11 +5,11 @@
 #include <QtCore/QPluginLoader>
 #include <QtWidgets/QAction>
 
-#include "../toolPluginInterface/toolPluginInterface.h"
-#include "../toolPluginInterface/customizer.h"
-#include "../toolPluginInterface/pluginConfigurator.h"
-#include "../dialogs/preferencesPages/preferencesPage.h"
-#include "../toolPluginInterface/hotKeyActionInfo.h"
+#include "toolPluginInterface/toolPluginInterface.h"
+#include "toolPluginInterface/customizer.h"
+#include "toolPluginInterface/pluginConfigurator.h"
+#include "dialogs/preferencesPages/preferencesPage.h"
+#include "toolPluginInterface/hotKeyActionInfo.h"
 
 namespace qReal {
 

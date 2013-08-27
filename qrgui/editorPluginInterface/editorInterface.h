@@ -3,12 +3,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QtPlugin>
 #include <QtCore/QString>
-
 #include <QtGui/QIcon>
 
-#include "sdfRendererInterface.h"
-#include "elementImpl.h"
-#include "listenerInterface.h"
+#include "editorPluginInterface/sdfRendererInterface.h"
+#include "editorPluginInterface/elementImpl.h"
+#include "editorPluginInterface/listenerInterface.h"
 
 namespace qReal {
 

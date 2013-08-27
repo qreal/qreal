@@ -1,6 +1,6 @@
 #pragma once
-#include <QSyntaxHighlighter>
 
+#include <QSyntaxHighlighter>
 
 /// Syntax Highlighter for sql code.
 class SQLHighlighter : public QSyntaxHighlighter

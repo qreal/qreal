@@ -2,8 +2,7 @@
 
 #include <QtCore/QPointF>
 
-#include "../../qrkernel/ids.h"
-#include "pattern.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
 class EditorManager;

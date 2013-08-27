@@ -1,4 +1,5 @@
 #include "line.h"
+
 #include <QtGui/QPainter>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrrepo/logicalRepoApi.h"
+#include <qrkernel/ids.h>
+#include <qrrepo/logicalRepoApi.h>
 
-#include "details/modelsAssistInterface.h"
+#include "toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
 
 namespace qReal {
 

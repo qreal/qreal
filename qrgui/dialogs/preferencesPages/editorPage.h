@@ -1,6 +1,8 @@
 #pragma once
-#include <QFontDialog>
-#include "preferencesPage.h"
+
+#include <QtWidgets/QFontDialog>
+
+#include "dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
 	class PreferencesEditorPage;

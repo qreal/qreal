@@ -1,7 +1,8 @@
 #include <QtCore/QDir>
 
+#include <qrkernel/settingsManager.h>
+
 #include "fontCache.h"
-#include "../../../qrkernel/settingsManager.h"
 
 using namespace qReal;
 

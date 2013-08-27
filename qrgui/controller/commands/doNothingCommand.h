@@ -1,6 +1,6 @@
 #pragma once
 
-#include "abstractCommand.h"
+#include "controller/commands/abstractCommand.h"
 
 namespace qReal {
 namespace commands {

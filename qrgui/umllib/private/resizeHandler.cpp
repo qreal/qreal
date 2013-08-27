@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "../../view/editorViewScene.h"
+#include "view/editorViewScene.h"
 
 ResizeHandler::ResizeHandler(NodeElement * const resizingNode)
 		: mTargetNode(resizingNode)

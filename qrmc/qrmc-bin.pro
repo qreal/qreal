@@ -6,6 +6,9 @@ TARGET = qrmc
 DEPENDPATH += . \
 	templates
 
+INCLUDEPATH += \
+	$$PWD/.. \
+
 DESTDIR = ../bin
 
 !macx {
