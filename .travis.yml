@@ -23,7 +23,7 @@ script:
   - qmake editorPluginTestingFramework.pro
   - make -j2
   - cd ../../bin
-  - editorPluginTestFramework ../qrtest/editorPluginTestingFramework/fileToTestWithTravis/testMetamodel.qrs 1
+  - ./editorPluginTestFramework ../qrtest/editorPluginTestingFramework/fileToTestWithTravis/testMetamodel.qrs 1
   - cd ../
   - qmake qrealRobots.pro
   - make -j2
