@@ -28,6 +28,8 @@ public:
 	QPolygonF savedLine() const;
 	bool isReshapeStarted() const;
 
+	virtual QPair<QPair<int, qreal>, qreal> arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+
 protected:
 	int addPoint(QPointF const &pos);
 	int defineSegment(QPointF const &pos);

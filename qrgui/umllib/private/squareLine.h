@@ -11,6 +11,8 @@ public:
 
 	virtual void adjust();
 
+	virtual QPair<QPair<int, qreal>, qreal> arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+
 protected:
 	enum LineType {
 		vertical
@@ -22,6 +24,8 @@ protected:
 	virtual void handleEdgeMove(QPointF const &pos, bool needAlign);
 	virtual void improveAppearance();
 	void moveSegment(QPointF const &oldPos, QPointF const &newPos);
+
+	QPointF portArrangePoint(NodeElement const *node) const;
 
 	void adjustEndSegments();
 	void adjustStart();

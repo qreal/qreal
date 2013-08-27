@@ -950,27 +950,9 @@ QPair<qreal, qreal> EdgeElement::portIdOn(NodeElement const *node) const
 	return qMakePair(-1.0, -1.0);
 }
 
-QPointF EdgeElement::portArrangePoint(NodeElement const *node) const
+QPair<QPair<int, qreal>, qreal> EdgeElement::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
 {
-	if (node == mSrc) {
-		return (mLine.count() == 2) ? mapToItem(mSrc, mLine[1]) : mapToItem(mSrc, mLine[2]);
-	}
-	if (node == mDst) {
-		return (mLine.count() == 2) ? mapToItem(mSrc, mLine[0]) : mapToItem(mDst, mLine[mLine.count() - 3]);
-	}
-	return QPointF();
-}
-
-QPointF EdgeElement::connectionPoint(NodeElement const *node) const
-{
-	if (node == mSrc) {
-		return mapToItem(mSrc, mLine[0]);
-	}
-	if (node == mDst) {
-		return mapToItem(mDst, mLine[mLine.count() - 1]);
-	}
-	return QPointF();
-
+	return mHandler->arrangeCriteria(node, portLine);
 }
 
 NodeElement* EdgeElement::otherSide(NodeElement const *node) const

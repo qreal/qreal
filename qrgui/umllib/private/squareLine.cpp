@@ -433,4 +433,35 @@ QPointF SquareLine::outgoingPoint(bool isStart) const
 	return outGoing;
 }
 
+QPair<QPair<int, qreal>, qreal> SquareLine::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
+{
+	QPointF const portCenter = (portLine.p1() + portLine.p2()) / 2;
+	QPointF const arrangePoint = portArrangePoint(node);
+	QLineF arrangeLine(portCenter, arrangePoint);
+	arrangeLine.setAngle(arrangeLine.angle() - portLine.angle());
+
+	bool const turningLeft = arrangeLine.dx() < 0;
+	bool const above = arrangeLine.dy() < 0;
+	qreal yOffset = arrangeLine.dy();
+	if ((turningLeft && above) || (!turningLeft && !above)) {
+		yOffset = -yOffset;
+	}
+	return qMakePair(qMakePair(turningLeft ? -1 : 1, yOffset), arrangeLine.dx());
+}
+
+QPointF SquareLine::portArrangePoint(NodeElement const *node) const
+{
+	QPolygonF line = mEdge->line();
+	NodeElement *src = mEdge->src();
+	NodeElement *dst = mEdge->dst();
+
+	if (node == src) {
+		return (line.count() == 2) ? mEdge->mapToItem(src, line[1]) : mEdge->mapToItem(src, line[2]);
+	}
+	if (node == dst) {
+		return (line.count() == 2) ? mEdge->mapToItem(src, line[0]) : mEdge->mapToItem(dst, line[line.count() - 3]);
+	}
+	return QPointF();
+}
+
 }

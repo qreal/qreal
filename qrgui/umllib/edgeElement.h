@@ -83,9 +83,10 @@ public:
 
 	/// prepare edge to moving from the linker
 	void tuneForLinker();
+
 	QPair<qreal, qreal> portIdOn(NodeElement const *node) const;
-	QPointF portArrangePoint(NodeElement const *node) const;
-	QPointF connectionPoint(NodeElement const *node) const;
+	QPair<QPair<int, qreal>, qreal> arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+
 	NodeElement* otherSide(NodeElement const *node) const;
 	void removeLink(NodeElement const *from);
 
