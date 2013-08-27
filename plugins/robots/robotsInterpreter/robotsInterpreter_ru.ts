@@ -544,6 +544,10 @@ p, li { white-space: pre-wrap; }
         <source>Collapse explosion</source>
         <translation>Схлопнуть эксплозию</translation>
     </message>
+    <message>
+        <source>Show grid</source>
+        <translation type="obsolete">Сетка</translation>
+    </message>
 </context>
 <context>
     <name>SensorsConfigurationWidget</name>
@@ -1209,10 +1213,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
     <message>
-        <location filename="details/d2RobotModel/gridParameters.cpp" line="16"/>
         <source>Show grid</source>
         <oldsource>Show grid223</oldsource>
-        <translation>Сетка</translation>
+        <translation type="obsolete">Сетка</translation>
     </message>
 </context>
 <context>
