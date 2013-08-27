@@ -282,9 +282,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GridParameters</name>
     <message>
-        <location filename="details/d2RobotModel/gridParameters.cpp" line="13"/>
-        <source>Show grid</source>
-        <translation>Сетка</translation>
+        <source>Show grid1</source>
+        <oldsource>Show grid</oldsource>
+        <translation type="obsolete">Сетка1</translation>
     </message>
 </context>
 <context>
@@ -815,12 +815,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::Thread</name>
     <message>
-        <location filename="details/thread.cpp" line="60"/>
+        <location filename="details/thread.cpp" line="81"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="details/thread.cpp" line="65"/>
+        <location filename="details/thread.cpp" line="86"/>
         <source>Stack overflow</source>
         <translation>Переполнение стека</translation>
     </message>
@@ -1003,9 +1003,8 @@ p, li { white-space: pre-wrap; }
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="41"/>
         <source>iteration</source>
-        <translation>итерация</translation>
+        <translation type="obsolete">итерация</translation>
     </message>
     <message>
         <location filename="details/blocks/loopBlock.cpp" line="46"/>
@@ -1044,7 +1043,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::SubprogramBlock</name>
     <message>
-        <location filename="details/blocks/subprogramBlock.cpp" line="18"/>
+        <location filename="details/blocks/subprogramBlock.cpp" line="20"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
     </message>
@@ -1124,7 +1123,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForEncoderBlock</name>
     <message>
-        <location filename="details/blocks/waitForEncoderBlock.cpp" line="27"/>
+        <location filename="details/blocks/waitForEncoderBlock.cpp" line="28"/>
         <source>Encoder sensor is not configured on this port </source>
         <translation>Энкодер не сконфигурирован на этом порту</translation>
     </message>
@@ -1191,20 +1190,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="739"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="741"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="739"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="758"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="741"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="760"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="758"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="760"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
+    <message>
+        <location filename="details/d2RobotModel/gridParameters.cpp" line="16"/>
+        <source>Show grid</source>
+        <oldsource>Show grid223</oldsource>
+        <translation>Сетка</translation>
     </message>
 </context>
 <context>

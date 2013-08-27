@@ -1,20 +1,22 @@
+#include "gridParameters.h"
+
 #include <QtWidgets/QHBoxLayout>
 #include <QtCore/QString>
 
-#include "gridParameters.h"
 #include "../../../qrkernel/settingsManager.h"
+
+using namespace qReal::interpreters::robots::details::d2Model;
 
 GridParameters::GridParameters(QWidget *parent)
 	: QFrame(parent)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
-	mShowGridCheckBox = new QCheckBox(this);
-	QString const checkBoxTitle = tr("Show grid");
-	mShowGridCheckBox->setText(checkBoxTitle);
+	mShowGridCheckBox = new QCheckBox;
+	mShowGridCheckBox->setText(tr("Show grid"));
 	mShowGridCheckBox->setTristate(false);
 
-	mCellSize = new QSlider(this);
+	mCellSize = new QSlider;
 	mCellSize->setOrientation(Qt::Horizontal);
 	mCellSize->setMinimum(50);
 	mCellSize->setMaximum(200);
