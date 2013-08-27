@@ -22,7 +22,9 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc, bool co
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
 
-	copyTestMetamodel(fileName);
+	if (travisMode) {
+		copyTestMetamodel(fileName);
+	}
 
 	parseConfigurationFile(travisMode);
 
