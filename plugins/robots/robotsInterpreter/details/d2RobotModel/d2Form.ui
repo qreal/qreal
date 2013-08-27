@@ -818,7 +818,7 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="0" column="2">
-	<widget class="qReal::interpreters::robots::details::d2Model::GridParameters" name="gridParametersBox">
+    <widget class="qReal::interpreters::robots::details::d2Model::GridParameters" name="gridParametersBox">
     </widget>
    </item>
   </layout>
