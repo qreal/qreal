@@ -10,6 +10,7 @@
 #include "../../qrutils/xmlUtils.h"
 
 #include <QtCore/QDir>
+#include <QtCore/QFileInfo>
 
 using namespace qReal;
 using namespace editorPluginTestingFramework;
@@ -20,6 +21,8 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc, bool co
 	deleteOldBinaries(binariesDir);
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
+
+	copyTestMetamodel(fileName);
 
 	parseConfigurationFile(travisMode);
 
@@ -113,6 +116,17 @@ void MainClass::deleteOldBinaries(QString const &directory)
 			dir.remove(fileInfo.fileName());
 		}
 	}
+}
+
+void MainClass::copyTestMetamodel(QString const &fileName)
+{
+	QString const workingDirName = pathToTestMetamodel;
+	QDir sourceDir(workingDirName);
+
+	QFileInfo const destDirInfo;
+	QDir destDir = destDirInfo.dir();
+
+	QFile::copy(sourceDir.absolutePath() + "/" + fileName, destDir.absolutePath() + "/" + fileName);
 }
 
 void MainClass::launchQrmc(QString const &fileName, QString const &pathToQrmc)

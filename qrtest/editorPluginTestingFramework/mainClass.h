@@ -35,6 +35,9 @@ private:
 	/// deletes old qrtest/binaries and all inner folders and files
 	static void deleteOldBinaries(QString const &directory);
 
+	/// copies testMetamodel.qrs from qrtest/editorPluginTestingFramework/fileToTestWithTravis to bin
+	static void copyTestMetamodel(QString const &fileName);
+
 	void launchQrmc(QString const &fileName, QString const &pathToQrmc);
 	void compilePlugin(QString const &directoryToCodeToCompile);
 	void launchQrxc(QString const &fileName);
