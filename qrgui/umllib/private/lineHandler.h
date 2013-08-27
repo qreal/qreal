@@ -28,8 +28,6 @@ public:
 	QPolygonF savedLine() const;
 	bool isReshapeStarted() const;
 
-	virtual QPointF portArrangePoint(bool startFromSrc) const;
-
 protected:
 	int addPoint(QPointF const &pos);
 	int defineSegment(QPointF const &pos);

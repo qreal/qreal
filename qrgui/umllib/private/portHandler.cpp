@@ -331,12 +331,12 @@ void PortHandler::checkConnectionsToPort()
 	connectLinksToPorts();
 }
 
-void PortHandler::arrangeLinearPorts()
+void PortHandler:: arrangeLinearPorts()
 {
 	for (int lpId = mPointPorts.size(); lpId < mPointPorts.size() + mLinePorts.size(); lpId++) {
 		//sort first by slope, then by current portNumber
-		QMap<QPair<qreal, qreal>, EdgeElement*> sortedEdges;
-		QLineF const portLine = *mLinePorts.at(lpId);
+		QMap<QPair<QPair<int, qreal>, qreal>, EdgeElement*> sortedEdges;
+		QLineF const portLine = mLinePorts.at(lpId)->transformForContents(mNode->contentsRect());
 		foreach (EdgeElement* edge, mNode->edgeList()) {
 			//edge->portIdOn(mNode) returns a pair of ports id of the mNode associated with the ends of edge.
 			// returns -1.0 if the current end of edge is not connected to the mNode.
@@ -350,11 +350,20 @@ void PortHandler::arrangeLinearPorts()
 			}
 
 			if (currentPortId != -1.0) {
-				QPointF const conn = edge->connectionPoint(mNode);
-				QPointF const next = edge->portArrangePoint(mNode);
-				QLineF arrangeLine(conn, next);
-				arrangeLine.setAngle(arrangeLine.angleTo(portLine));
-				sortedEdges.insertMulti(qMakePair(arrangeLine.x2(), currentPortId), edge);
+				QPointF const portCenter = (portLine.p1() + portLine.p2()) / 2;
+				QPointF const arrangePoint = edge->portArrangePoint(mNode);
+				QLineF arrangeLine(portCenter, arrangePoint);
+				arrangeLine.setAngle(arrangeLine.angle() - portLine.angle());
+
+				bool const turningLeft = arrangeLine.dx() < 0;
+				bool const above = arrangeLine.dy() < 0;
+				QPair<int, qreal> turnTypeAndOffset = qMakePair(1, arrangeLine.dy());
+				if ((turningLeft && above) || (!turningLeft && !above)) {
+					turnTypeAndOffset.first = -turnTypeAndOffset.first;
+					turnTypeAndOffset.second = -turnTypeAndOffset.second;
+				}
+
+				sortedEdges.insertMulti(qMakePair(turnTypeAndOffset, arrangeLine.dx()), edge);
 			}
 		}
 

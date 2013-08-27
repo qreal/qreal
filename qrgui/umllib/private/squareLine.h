@@ -11,8 +11,6 @@ public:
 
 	virtual void adjust();
 
-	virtual QPointF portArrangePoint(bool startFromSrc) const;
-
 protected:
 	enum LineType {
 		vertical

@@ -433,11 +433,4 @@ QPointF SquareLine::outgoingPoint(bool isStart) const
 	return outGoing;
 }
 
-QPointF SquareLine::portArrangePoint(bool startFromSrc) const
-{
-	QPolygonF line = mEdge->line();
-	return startFromSrc ? mEdge->mapToItem(mEdge->src(), line[line.count() - 1])
-			: mEdge->mapToItem(mEdge->dst(), line[0]);
-}
-
 }

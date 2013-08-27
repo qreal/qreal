@@ -953,10 +953,10 @@ QPair<qreal, qreal> EdgeElement::portIdOn(NodeElement const *node) const
 QPointF EdgeElement::portArrangePoint(NodeElement const *node) const
 {
 	if (node == mSrc) {
-		return mapToItem(mSrc, mHandler->portArrangePoint(true));
+		return (mLine.count() == 2) ? mapToItem(mSrc, mLine[1]) : mapToItem(mSrc, mLine[2]);
 	}
 	if (node == mDst) {
-		return mapToItem(mDst, mHandler->portArrangePoint(false));
+		return (mLine.count() == 2) ? mapToItem(mSrc, mLine[0]) : mapToItem(mDst, mLine[mLine.count() - 3]);
 	}
 	return QPointF();
 }

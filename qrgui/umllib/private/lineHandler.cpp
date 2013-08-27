@@ -297,9 +297,3 @@ bool LineHandler::isReshapeStarted() const
 }
 
 }
-
-QPointF LineHandler::portArrangePoint(bool startFromSrc) const
-{
-	return startFromSrc ? mEdge->mapToItem(mEdge->src(), mEdge->line()[1])
-			: mEdge->mapToItem(mEdge->dst(), mEdge->line()[mEdge->line().count() - 2]);
-}
