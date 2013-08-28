@@ -1,6 +1,7 @@
 #include "rectanglegesturesmanager.h"
-#include "curveKeyBuilder.h"
-#include "sorts.h"
+
+#include "view/gestures/curveKeyBuilder.h"
+#include "view/gestures/sorts.h"
 
 using namespace qReal::gestures;
 

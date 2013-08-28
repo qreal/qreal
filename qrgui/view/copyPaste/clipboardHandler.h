@@ -2,9 +2,9 @@
 
 #include <QtCore/QObject>
 
-#include "../../umllib/nodeElement.h"
-#include "../../umllib/edgeElement.h"
-#include "../../umllib/serializationData.h"
+#include "umllib/nodeElement.h"
+#include "umllib/edgeElement.h"
+#include "umllib/serializationData.h"
 
 namespace qReal
 {

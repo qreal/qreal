@@ -1,12 +1,11 @@
 #include "scene.h"
 
+#include <limits>
 #include <QtCore/QPointF>
 #include <QtGui/QKeyEvent>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtWidgets/QApplication>
-
-#include <limits>
 
 using namespace qReal;
 

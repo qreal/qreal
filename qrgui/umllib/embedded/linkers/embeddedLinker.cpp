@@ -1,17 +1,16 @@
-#include "../../edgeElement.h"
-#include "../../nodeElement.h"
 #include "embeddedLinker.h"
 
 #include <math.h>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 
-#include <QDebug>
-#include <QStyle>
-#include <QGraphicsItem>
-#include <QStyleOptionGraphicsItem>
+#include "umllib/edgeElement.h"
+#include "umllib/nodeElement.h"
 
-#include "../../../view/editorViewScene.h"
-#include "../../../mainwindow/mainWindow.h"
-#include "../../private/reshapeEdgeCommand.h"
+#include "view/editorViewScene.h"
+#include "mainwindow/mainWindow.h"
+#include "umllib/private/reshapeEdgeCommand.h"
 
 using namespace qReal;
 

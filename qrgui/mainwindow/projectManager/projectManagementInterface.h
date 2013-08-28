@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-#include "autosaver.h"
+#include "mainwindow/projectManager/autosaver.h"
 
 namespace qReal
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "projectManagementInterface.h"
+#include "mainwindow/projectManager/projectManagementInterface.h"
 
 namespace qReal {
 

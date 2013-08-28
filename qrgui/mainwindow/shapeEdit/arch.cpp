@@ -1,5 +1,6 @@
 #include "arch.h"
-#include "math.h"
+
+#include <math.h>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
 Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)

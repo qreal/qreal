@@ -1,9 +1,13 @@
-RESOURCES = $$PWD/qrgui.qrc
-
 QT += svg xml printsupport widgets help
+
+INCLUDEPATH += \
+	$$PWD \
+	$$PWD/.. \
 
 LIBS += -L$$PWD/../bin -lqrrepo -lqrkernel -lqrutils #-lqrmc
 LIBS += -L$$PWD/../bin/thirdparty -lqscintilla2
+
+RESOURCES = $$PWD/qrgui.qrc
 
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_

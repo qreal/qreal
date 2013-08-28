@@ -6,12 +6,13 @@
 #include <QtCore/QPointF>
 #include <QtGui/QPainter>
 
-#include "labelInterface.h"
-#include "labelFactoryInterface.h"
-#include "elementRepoInterface.h"
-#include "sdfRendererInterface.h"
-#include "../../qrkernel/ids.h"
-#include "portHelpers.h"
+#include <qrkernel/ids.h>
+
+#include "editorPluginInterface/labelInterface.h"
+#include "editorPluginInterface/labelFactoryInterface.h"
+#include "editorPluginInterface/elementRepoInterface.h"
+#include "editorPluginInterface/sdfRendererInterface.h"
+#include "editorPluginInterface/portHelpers.h"
 
 namespace qReal {
 

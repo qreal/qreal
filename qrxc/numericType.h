@@ -1,8 +1,8 @@
 #pragma once
 
-#include "nonGraphicType.h"
+#include <QtXml/QDomElement>
 
-#include <QDomElement>
+#include "nonGraphicType.h"
 
 enum BaseType
 {

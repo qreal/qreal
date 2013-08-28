@@ -1,22 +1,20 @@
 #pragma once
 
 #include <QtCore/QAbstractItemModel>
-#include <QMimeData>
-#include <QModelIndexList>
+#include <QtCore/QMimeData>
+#include <QtCore/QModelIndexList>
 
-#include "../modelsAssistApi.h"
-#include "../../../../qrrepo/repoApi.h"
-#include "../../../pluginManager/editorManagerInterface.h"
-#include "abstractModelItem.h"
-#include "../../../toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
-#include "modelIndexesInterface.h"
+#include <qrrepo/repoApi.h>
+
+#include "models/details/modelsAssistApi.h"
+#include "pluginManager/editorManagerInterface.h"
+#include "models/details/modelsImplementation/abstractModelItem.h"
+#include "toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
+#include "models/details/modelsImplementation/modelIndexesInterface.h"
 
 namespace qReal {
-
 namespace models {
-
 namespace details {
-
 namespace modelsImplementation {
 
 class AbstractModel : public QAbstractItemModel, public ModelIndexesInterface
@@ -71,9 +69,6 @@ private:
 };
 
 }
-
 }
-
 }
-
 }

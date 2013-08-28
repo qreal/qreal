@@ -2,9 +2,9 @@
 
 #include <QtWidgets/QGraphicsView>
 
-#include "editorViewScene.h"
-#include "private/editorViewMVIface.h"
-#include "private/touchSupportManager.h"
+#include "view/editorViewScene.h"
+#include "view/private/editorViewMVIface.h"
+#include "view/private/touchSupportManager.h"
 
 namespace qReal {
 

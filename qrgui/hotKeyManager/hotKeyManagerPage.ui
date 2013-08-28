@@ -214,7 +214,7 @@
   <customwidget>
    <class>ShortcutEdit</class>
    <extends>QLineEdit</extends>
-   <header>../hotKeyManager/shortcutEdit.h</header>
+   <header>hotKeyManager/shortcutEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

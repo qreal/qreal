@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QAbstractItemView>
 
-#include "abstractModel.h"
+#include "models/details/modelsImplementation/abstractModel.h"
 
 namespace qReal {
 namespace models {

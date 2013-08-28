@@ -2,9 +2,9 @@
 
 #include <QtWidgets/QTreeView>
 
-#include "../controller/controller.h"
-#include "../models/details/exploser.h"
-#include "../toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
+#include "controller/controller.h"
+#include "models/details/exploser.h"
+#include "toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
 
 namespace qReal {
 namespace gui {

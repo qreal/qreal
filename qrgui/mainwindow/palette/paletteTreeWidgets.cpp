@@ -1,6 +1,7 @@
 #include "paletteTreeWidgets.h"
-#include "paletteTree.h"
-#include "draggableElement.h"
+
+#include "mainwindow/palette/paletteTree.h"
+#include "mainwindow/palette/draggableElement.h"
 
 using namespace qReal;
 using namespace gui;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "item.h"
-#include "line.h"
+#include "mainwindow/shapeEdit/item.h"
+#include "mainwindow/shapeEdit/line.h"
 
 class LinePort : public Line
 {

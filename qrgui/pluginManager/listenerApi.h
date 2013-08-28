@@ -2,9 +2,9 @@
 
 #include <QtCore/QObject>
 
-#include "../editorPluginInterface/listenerApiInterface.h"
-#include "../models/graphicalModelAssistApi.h"
-#include "../models/logicalModelAssistApi.h"
+#include "editorPluginInterface/listenerApiInterface.h"
+#include "models/graphicalModelAssistApi.h"
+#include "models/logicalModelAssistApi.h"
 
 namespace qReal {
 
