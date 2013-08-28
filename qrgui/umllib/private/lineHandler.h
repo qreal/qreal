@@ -42,6 +42,8 @@ protected:
 	virtual void handleEdgeMove(QPointF const &pos, bool needAlign);
 	virtual void drawPort(QPainter *painter, int portNumber);
 
+	QPointF portArrangePoint(NodeElement const *node) const;
+
 	virtual QPointF alignedPoint(QPointF const &point) const;
 
 	EdgeElement *mEdge;

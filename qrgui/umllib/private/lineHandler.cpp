@@ -171,13 +171,23 @@ int LineHandler::firstOutsidePoint(bool startFromSrc) const
 QPair<QPair<int, qreal>, qreal> LineHandler::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
 {
 	QPointF const portCenter = (portLine.p1() + portLine.p2()) / 2;
-	QPointF const arrangePoint = (node == mEdge->src()) ? mEdge->mapToItem(mEdge->src(), mEdge->line()[1])
-			: mEdge->mapToItem(mEdge->dst(), mEdge->line()[mEdge->line().count() - 2]);
+	QPointF const arrangePoint = portArrangePoint(node);
 	QLineF arrangeLine(portCenter, arrangePoint);
 	arrangeLine.setAngle(arrangeLine.angle() - portLine.angle());
 
 	bool const turningLeft = arrangeLine.dx() < 0;
 	return qMakePair(qMakePair(turningLeft ? -1 : 1, 0.0), arrangeLine.dx());
+}
+
+
+QPointF LineHandler::portArrangePoint(NodeElement const *node) const
+{
+	if (!mEdge->isLoop()) {
+		return (node == mEdge->src()) ? mEdge->mapToItem(mEdge->src(), mEdge->line()[1])
+			: mEdge->mapToItem(mEdge->dst(), mEdge->line()[mEdge->line().count() - 2]);
+	} else {
+		return mEdge->mapToItem(mEdge->src(), mEdge->line()[3]);
+	}
 }
 
 int LineHandler::addPoint(QPointF const &pos)
