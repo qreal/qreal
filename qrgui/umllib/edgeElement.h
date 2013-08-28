@@ -40,8 +40,7 @@ class EdgeElement : public Element
 
 public:
 	enum DragType {
-		wholeEdge = -3,
-		overPointMax = -2,
+		wholeEdge = -2,
 		noPort = -1
 	};
 
@@ -107,11 +106,12 @@ public:
 
 	virtual void connectToPort();
 
-	virtual QList<ContextMenuAction*> contextMenuActions(const QPointF &pos);
+	virtual QList<ContextMenuAction*> contextMenuActions(QPointF const &pos);
 
 	QList<PossibleEdge> getPossibleEdges();
 
 	virtual void setColorRect(bool bl);
+
 	void breakPointHandler(QPointF const &pos);
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
@@ -120,18 +120,19 @@ public:
 
 	EdgeData& data();
 
-	void redrawing(QPointF const &pos);
+	void changeLineType();
 
 	void setGraphicApiPos();
+	void saveConfiguration();
 
 	bool isLoop();
-	void delCloseLinePoints();
-	/// Change line, if (mSrc && (mSrc == mDst)).
 	void createLoopEdge();
-	/// connectToPort for self-closing line (mSrc && (mSrc == mDst)).
 	void connectLoopEdge(NodeElement *newMaster);
-	void deleteLoops();
+
 	void layOut();
+	void delCloseLinePoints();
+	void deleteLoops();
+
 	NodeElement *getNodeAt(const QPointF &position, bool isStart);
 	NodeSide defineNodePortSide(bool isStart);
 
@@ -143,26 +144,15 @@ protected:
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
-	virtual void drawStartArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
-	virtual void drawEndArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
+	virtual void drawStartArrow(QPainter *painter) const;
+	virtual void drawEndArrow(QPainter *painter) const;
 
 	Qt::PenStyle mPenStyle;
 	int mPenWidth;
 	QColor mPenColor;
 
-public slots:
-	void saveConfiguration();
-	/// redraw a new mLine after delPointHandler or deleteSegmentHandler using contextMenu
-	void arrangeAndAdjustHandler(QPointF const &pos);
-
 private slots:
-	void delPointHandler(QPointF const &pos);
-	void minimizeHandler(QPointF const &pos);
-	/// delete Segment with nearest with pos ends
-	void deleteSegmentHandler(QPointF const &pos);
-
-	/// change link's direction
-	void reverseHandler(QPointF const &pos);
+	void reverse();
 
 private:
 	void initLineHandler();
@@ -185,23 +175,15 @@ private:
 
 	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const;
 	void updateLongestPart();
-	static QRectF getPortRect(QPointF const &point);
 
 	void delClosePoints();
-
-	int getPoint(const QPointF &location);
-
 	bool removeOneLinePoints(int startingPoint);
 
 	void deleteLoop(int startPos);
 	QPointF* haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4);
 
-	// these methods are called before the push action in the context menu
-	bool delPointActionIsPossible(const QPointF &pos);
-	bool delSegmentActionIsPossible(const QPointF &pos);
-	bool minimizeActionIsPossible();
-	bool reverseActionIsPossible();
-
+	bool reverseActionIsPossible() const;
+	bool canConnect(NodeElement const * const node, bool from) const;
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
 	QList<PossibleEdge> mPossibleEdges;
@@ -221,9 +203,6 @@ private:
 	QPolygonF mLine; // holds coordinates of polygon points in coordinate system with center in first point
 	QColor mColor;
 
-	ContextMenuAction mDelPointAction;
-	ContextMenuAction mMinimizeAction;
-	ContextMenuAction mDelSegmentAction;
 	ContextMenuAction mReverseAction;
 
 	bool mBreakPointPressed;

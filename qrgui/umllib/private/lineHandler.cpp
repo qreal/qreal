@@ -10,15 +10,17 @@ LineHandler::LineHandler(EdgeElement *edge)
 {
 }
 
-void LineHandler::startMovingEdge(int dragType, QPointF const &pos)
+int LineHandler::startMovingEdge(QPointF const &pos)
 {
 	mReshapeCommand = new commands::ReshapeEdgeCommand(static_cast<EditorViewScene *>(mEdge->scene()), mEdge->id());
 	mReshapeCommand->startTracking();
 	mReshapeStarted = true;
 
 	mSavedLine = mEdge->line();
-	mDragType = dragType;
+	mDragType = definePoint(pos);
 	mDragStartPoint = pos;
+
+	return mDragType;
 }
 
 void LineHandler::rejectMovingEdge()
@@ -203,7 +205,17 @@ int LineHandler::addPoint(QPointF const &pos)
 	return mDragType;
 }
 
-int LineHandler::defineSegment(QPointF const &pos)
+int LineHandler::definePoint(QPointF const &pos) const
+{
+	QPolygonF line = mEdge->line();
+	for (int i = 0; i < line.size(); ++i)
+		if (QRectF(line[i] - QPointF(kvadratik / 2, kvadratik / 2), QSizeF(kvadratik, kvadratik)).contains(pos))
+			return i;
+
+	return EdgeElement::noPort;
+}
+
+int LineHandler::defineSegment(QPointF const &pos) const
 {
 	QPainterPath path;
 	QPainterPathStroker ps;
@@ -316,6 +328,20 @@ QPolygonF LineHandler::savedLine() const
 bool LineHandler::isReshapeStarted() const
 {
 	return mReshapeStarted;
+}
+
+QList<ContextMenuAction *> LineHandler::extraActions(QPointF const &pos)
+{
+	Q_UNUSED(pos)
+	return QList<ContextMenuAction *>();
+}
+
+void LineHandler::minimize()
+{
+	QPolygonF line;
+	line << mEdge->line().first() << mEdge->line().last();
+	mEdge->setLine(line);
+	layOut();
 }
 
 }

@@ -1392,7 +1392,7 @@ void EditorViewScene::updateEdgeElements()
 	foreach (QGraphicsItem *item, items()) {
 		EdgeElement* element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
-			element->redrawing(QPoint());
+			element->changeLineType();
 			if (SettingsManager::value("ActivateGrid").toBool()) {
 				element->alignToGrid();
 			}

@@ -6,12 +6,15 @@ namespace qReal {
 
 class SquareLine : public LineHandler
 {
+	Q_OBJECT
 public:
 	SquareLine(EdgeElement *edge);
 
 	virtual void adjust();
 
 	virtual QPair<QPair<int, qreal>, qreal> arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+
+	virtual QList<ContextMenuAction *> extraActions(QPointF const &pos);
 
 protected:
 	enum LineType {
@@ -50,6 +53,8 @@ protected:
 
 	QPair<qreal, qreal> verticalIntermediateSpace() const;
 	QPair<qreal, qreal> horizontalIntermediateSpace() const;
+
+	ContextMenuAction mLayOutAction;
 };
 
 }

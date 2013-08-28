@@ -6,6 +6,7 @@ namespace qReal {
 
 class CurveLine : public LineHandler
 {
+	Q_OBJECT
 public:
 	CurveLine(EdgeElement *edge);
 

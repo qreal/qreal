@@ -5,12 +5,14 @@
 
 namespace qReal {
 
-class LineHandler
+class LineHandler : public QObject
 {
+	Q_OBJECT
 public:
 	LineHandler(EdgeElement *edge);
+	virtual ~LineHandler() {}
 
-	void startMovingEdge(int dragType, QPointF const &pos);
+	int startMovingEdge(QPointF const &pos);
 	void rejectMovingEdge();
 	void moveEdge(QPointF const &pos, bool needAlign);
 	void endMovingEdge();
@@ -30,14 +32,22 @@ public:
 
 	virtual QPair<QPair<int, qreal>, qreal> arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
 
+	virtual QList<ContextMenuAction *> extraActions(QPointF const &pos);
+
+protected slots:
+	void minimize();
+
 protected:
 	int addPoint(QPointF const &pos);
-	int defineSegment(QPointF const &pos);
+
 	virtual void improveAppearance();
 	bool checkPort(QPointF const &pos, bool isStart) const;
 	bool nodeChanged(bool isStart) const;
 	int firstOutsidePoint(bool startFromSrc) const;
 	void endReshape();
+
+	int definePoint(QPointF const &pos) const;
+	int defineSegment(QPointF const &pos) const;
 
 	virtual void handleEdgeMove(QPointF const &pos, bool needAlign);
 	virtual void drawPort(QPainter *painter, int portNumber);

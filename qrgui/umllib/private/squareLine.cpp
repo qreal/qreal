@@ -6,8 +6,10 @@ qreal const offset = 2 * kvadratik;
 namespace qReal {
 
 SquareLine::SquareLine(EdgeElement *edge)
-	: LineHandler(edge)
+		: LineHandler(edge)
+		, mLayOutAction(tr("Lay out"), this)
 {
+	connect(&mLayOutAction, SIGNAL(triggered()), this, SLOT(minimize()));
 }
 
 void SquareLine::handleEdgeMove(QPointF const &pos, bool needAlign)
@@ -462,6 +464,18 @@ QPointF SquareLine::portArrangePoint(NodeElement const *node) const
 		return (line.count() == 2) ? mEdge->mapToItem(src, line[0]) : mEdge->mapToItem(dst, line[line.count() - 3]);
 	}
 	return QPointF();
+}
+
+QList<ContextMenuAction *> SquareLine::extraActions(QPointF const &pos)
+{
+	Q_UNUSED(pos)
+
+	QList<ContextMenuAction *> result;
+	if (!mEdge->isLoop()) {
+		result << &mLayOutAction;
+	}
+
+	return result;
 }
 
 }
