@@ -31,5 +31,7 @@ QString const travisConfigurationFileName = "travisConfigurationParameters.xml";
 
 QString const pathToTestMetamodel = "../qrtest/editorPluginTestingFramework/fileToTestWithTravis";
 
+QString const tempValueForSettingsManager = "/unsaved";
+
 QString const stringSeparator = "-----------------------------------";
 }

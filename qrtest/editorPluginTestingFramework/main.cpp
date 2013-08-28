@@ -38,21 +38,19 @@ int main(int argc, char *argv[])
 
 	if (argc == 2) {
 		QString const workingCopyDir = argv[1];
-		MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/", false);
+		MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/"
+				, qApp->applicationDirPath(), false);
 		return 0;
 	} else {
 		if (argc == 3) {
 			QString const workingCopyDir = argv[1];
-			MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/", true);
+			MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../qrmc/"
+					, qApp->applicationDirPath(), true);
 			return newMainClass.travisTestResult();
-		}
-		else {
+		} else {
 			qDebug() << "Usage: editorPluginTestTool fileName.qrs";
 			return 1;
 		}
 	}
-
-
-	return 0;
 }
 

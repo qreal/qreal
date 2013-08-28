@@ -13,7 +13,7 @@ using namespace metaEditor;
 using namespace gui;
 using namespace editorPluginTestingFramework;
 
-void QrxcLauncher::launchQrxc(QString const &fileName)
+void QrxcLauncher::launchQrxc(QString const &fileName, QString const &pathToQRealSources)
 {
 	qDebug() << "STARTING QRXC LAUNCHING";
 	QString normalizedFileName = fileName;
@@ -28,15 +28,13 @@ void QrxcLauncher::launchQrxc(QString const &fileName)
 
 	QDir dir(".");
 
-	QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList();
+	QHash<Id, QString> metamodelList = editorGenerator.getMetamodelList(pathToQRealSources);
 
 	dir.mkpath(pathToQrxcGeneratedCode);
 	foreach (Id const &key, metamodelList.keys()) {
 		if (mRepoApi->isLogicalElement(key)) {
-
-			//QString const pathToQRealRoot = mRepoApi->stringProperty(key, "path to QReal Source Files");
-			QString const pathToQRealRoot = SettingsManager::value("pathToQRealSourceFiles").toString();
-			QString const &directoryToGeneratedCode = generatePathToPlugin(pathToQRealRoot);
+			/*SettingsManager::value("pathToQRealSourceFiles").toString();*/
+			QString const &directoryToGeneratedCode = generatePathToPlugin(pathToQRealSources);
 
 			if (!dir.exists(directoryToGeneratedCode)) {
 				dir.mkdir(directoryToGeneratedCode);
@@ -44,7 +42,7 @@ void QrxcLauncher::launchQrxc(QString const &fileName)
 
 			QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key
 					, pathToQrxcGeneratedCode
-					, pathToQRealRoot
+					, pathToQRealSources
 					, directoryToGeneratedCode);
 		}
 	}

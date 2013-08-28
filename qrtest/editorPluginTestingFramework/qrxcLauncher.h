@@ -10,7 +10,7 @@ class QrxcLauncher
 public:
 
 	/// launches qrxc (gets fileName, generates .xml-file and code)
-	void launchQrxc(QString const &fileName);
+	void launchQrxc(QString const &fileName, QString const &pathToQRealSources);
 
 private:
 

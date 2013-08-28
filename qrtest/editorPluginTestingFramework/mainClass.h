@@ -20,7 +20,12 @@ class MainClass
 {
 public:
 	/// gets name of qrs-file and path to qrmc, launches all processes for testing
-	MainClass(QString const &fileName, QString const &pathToQrmc, bool const &travisMode);
+	MainClass(
+			QString const &fileName
+			, QString const &pathToQrmc
+			, QString const &applicationPath
+			, bool const &travisMode
+		);
 
 	/// returns result of comparison - 0, if all results are correct, and 1 otherwise
 	int travisTestResult() const;
@@ -37,6 +42,11 @@ private:
 
 	/// copies testMetamodel.qrs from qrtest/editorPluginTestingFramework/fileToTestWithTravis to bin
 	static void copyTestMetamodel(QString const &fileName);
+
+	/// sets value of tamp variable
+	void setTempValueInSettingsManager() const;
+	/// returns old value
+	void returnOldValueOfTemp() const;
 
 	void launchQrmc(QString const &fileName, QString const &pathToQrmc);
 	void compilePlugin(QString const &directoryToCodeToCompile);
@@ -71,6 +81,11 @@ private:
 	QString mConfigurationParameter;
 	/// result of testing for travis
 	int mResultOfTesting;
+
+	/// old value of "temp" variable
+	QString mTempOldValue;
+	/// path to QReal sources
+	QString mApplicationPath;
 };
 
 }

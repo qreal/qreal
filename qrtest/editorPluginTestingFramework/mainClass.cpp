@@ -16,8 +16,16 @@ using namespace qReal;
 using namespace editorPluginTestingFramework;
 using namespace qrRepo;
 
-MainClass::MainClass(QString const &fileName, QString const &pathToQrmc, bool const &travisMode)
+MainClass::MainClass(
+		QString const &fileName
+		, QString const &pathToQrmc
+		, QString const &applicationPath
+		, bool const &travisMode)
+		: mTempOldValue(SettingsManager::value("temp").toString())
+		, mApplicationPath(applicationPath)
 {
+	setTempValueInSettingsManager();
+
 	deleteOldBinaries(binariesDir);
 	createNewFolders();
 	QString const normalizedFileName = normalizedName(fileName);
@@ -62,6 +70,8 @@ MainClass::MainClass(QString const &fileName, QString const &pathToQrmc, bool co
 	} else {
 		qDebug() << "Generation of plugins failed";
 	}
+
+	returnOldValueOfTemp();
 
 	delete qrxcGeneratedPlugin;
 	delete qrmcGeneratedPlugin;
@@ -131,6 +141,16 @@ void MainClass::copyTestMetamodel(QString const &fileName)
 	QFile::copy(sourceDir.absolutePath() + "/" + fileName, destDir.absolutePath() + "/" + fileName);
 }
 
+void MainClass::setTempValueInSettingsManager() const
+{
+	SettingsManager::setValue("temp", mApplicationPath + tempValueForSettingsManager);
+}
+
+void MainClass::returnOldValueOfTemp() const
+{
+	SettingsManager::setValue("temp", mTempOldValue);
+}
+
 void MainClass::launchQrmc(QString const &fileName, QString const &pathToQrmc)
 {
 	mQrmcLauncher.launchQrmc(fileName, pathToQrmc);
@@ -148,7 +168,8 @@ void MainClass::compilePlugin(QString const &directoryToCodeToCompile)
 
 void MainClass::launchQrxc(QString const &fileName)
 {
-	mQrxcLauncher.launchQrxc(fileName);
+	mApplicationPath.chop(4);
+	mQrxcLauncher.launchQrxc(fileName, mApplicationPath);
 }
 
 EditorInterface* MainClass::loadedPlugin(QString const &fileName, QString const &pathToFile)

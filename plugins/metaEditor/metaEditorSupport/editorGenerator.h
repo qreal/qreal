@@ -17,7 +17,7 @@ class EditorGenerator
 public:
 	explicit EditorGenerator(qrRepo::LogicalRepoApi const &api, qReal::ErrorReporterInterface &errorReporter);
 
-	QHash<qReal::Id, QString> getMetamodelList();
+	QHash<qReal::Id, QString> getMetamodelList(QString const &pathToQRealSources = "");
 	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId
 			, QString const &pathToFile
 			, QString const &pathToQrealRoot

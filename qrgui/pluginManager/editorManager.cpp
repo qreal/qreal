@@ -58,6 +58,7 @@ EditorManager::EditorManager(QString const &pathToFileRelativelyToQrealSources, 
 	while (!mPluginsDir.isRoot() && !mPluginsDir.entryList(QDir::Dirs).contains("bin")) {
 		mPluginsDir.cdUp();
 	}
+	mPluginsDir.cdUp();
 
 	mPluginsDir.cd(pathToFileRelativelyToQrealSources);
 
