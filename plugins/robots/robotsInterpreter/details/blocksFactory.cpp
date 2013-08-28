@@ -71,7 +71,7 @@ Block *BlocksFactory::block(Id const &element)
 	} else if (elementMetatypeIs(element, "FinalNode")) {
 		newBlock = new FinalBlock();
 	} else if (elementMetatypeIs(element, "Beep")) {
-		newBlock = new BeepBlock(mRobotModel->brick(), mRobotModel->produceTimer());
+		newBlock = new BeepBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "Timer")) {
 		newBlock = new TimerBlock(mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
@@ -91,7 +91,7 @@ Block *BlocksFactory::block(Id const &element)
 	} else if (elementMetatypeIs(element, "Subprogram")) {
 		newBlock = new SubprogramBlock();
 	} else if (elementMetatypeIs(element, "PlayTone")) {
-		newBlock = new PlayToneBlock(mRobotModel->brick());
+		newBlock = new PlayToneBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "Function")) {
 		newBlock = new FunctionBlock();
 	} else if (elementMetatypeIs(element, "WaitForColor")) {
