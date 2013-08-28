@@ -5,13 +5,13 @@
 #include <QtCore/QList>
 #include <QtWidgets/QAction>
 
-#include "../../qrrepo/repoControlInterface.h"
-#include "../dialogs/preferencesPages/preferencesPage.h"
+#include <qrrepo/repoControlInterface.h>
+#include "dialogs/preferencesPages/preferencesPage.h"
 
-#include "customizer.h"
-#include "pluginConfigurator.h"
-#include "actionInfo.h"
-#include "hotKeyActionInfo.h"
+#include "toolPluginInterface/customizer.h"
+#include "toolPluginInterface/pluginConfigurator.h"
+#include "toolPluginInterface/actionInfo.h"
+#include "toolPluginInterface/hotKeyActionInfo.h"
 
 namespace qReal {
 

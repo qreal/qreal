@@ -4,6 +4,9 @@ QT += xml
 
 LIBS += -L$$PWD/../bin/ -lqrkernel -lqrutils
 
+INCLUDEPATH += \
+	$$PWD/.. \
+
 HEADERS += \
 	$$PWD/private/repository.h \
 	$$PWD/private/folderCompressor.h \

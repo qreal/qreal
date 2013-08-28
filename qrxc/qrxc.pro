@@ -11,6 +11,9 @@ OBJECTS_DIR = .obj
 
 LIBS += -L../bin -lqrutils
 
+INCLUDEPATH += \
+	$$PWD/..
+
 DESTDIR += ../bin
 
 !macx {

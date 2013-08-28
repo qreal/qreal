@@ -1,8 +1,9 @@
-#include <QDebug>
-#include <QtAlgorithms>
 #include "codeArea.h"
-#include "textHighlighter.h"
-#include "sqlHighlighter.h"
+
+#include <QtCore/QtAlgorithms>
+
+#include "textEditor/textHighlighter.h"
+#include "textEditor/sqlHighlighter.h"
 
 CodeArea::CodeArea(QWidget *parent, highlighterType type): QPlainTextEdit(parent)
 {

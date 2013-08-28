@@ -1,8 +1,9 @@
 #pragma once
 #include <QtWidgets/QListWidget>
 
-#include "../../../qrkernel/ids.h"
-#include "listWidget.h"
+#include <qrkernel/ids.h>
+
+#include "dialogs/startDialog/listWidget.h"
 
 namespace qReal {
 

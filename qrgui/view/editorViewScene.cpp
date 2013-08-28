@@ -1,22 +1,22 @@
-﻿#include <QtWidgets/QGraphicsTextItem>
+﻿#include "editorViewScene.h"
+
+#include <QtWidgets/QGraphicsTextItem>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QGraphicsDropShadowEffect>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMessageBox>
+#include <math.h>
 
-#include "editorViewScene.h"
-#include "math.h"
+#include "view/editorView.h"
+#include "mainwindow/mainWindow.h"
+#include "dialogs/metamodelingOnFly/propertiesDialog.h"
 
-#include "editorView.h"
-#include "../mainwindow/mainWindow.h"
-#include "../dialogs/metamodelingOnFly/propertiesDialog.h"
-
-#include "../controller/commands/createElementCommand.h"
-#include "../controller/commands/createGroupCommand.h"
-#include "../umllib/private/reshapeEdgeCommand.h"
-#include "../umllib/private/resizeCommand.h"
-#include "../controller/commands/insertIntoEdgeCommand.h"
-#include "../umllib/private/expandCommand.h"
+#include "controller/commands/createElementCommand.h"
+#include "controller/commands/createGroupCommand.h"
+#include "umllib/private/reshapeEdgeCommand.h"
+#include "umllib/private/resizeCommand.h"
+#include "controller/commands/insertIntoEdgeCommand.h"
+#include "umllib/private/expandCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;

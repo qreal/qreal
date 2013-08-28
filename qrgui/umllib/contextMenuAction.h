@@ -7,14 +7,18 @@
 
 class ContextMenuAction: public QAction {
 	Q_OBJECT
+
 public:
 	ContextMenuAction(QString const &text, QObject *parent);
 	void setEventPos(QPointF const &pos);
 	QPointF eventPos() const;
+
 private slots:
 	void trigger();
+
 signals:
 	void triggered(QPointF const &pos);
+
 private:
 	QPointF mEventPos;
 };

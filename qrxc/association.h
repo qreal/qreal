@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QDomElement>
+#include <QtXml/QDomElement>
 
 class Association
 {

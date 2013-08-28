@@ -1,6 +1,7 @@
 #include "sceneGridHandler.h"
-#include "../nodeElement.h"
-#include "../../view/editorViewScene.h"
+
+#include "umllib/nodeElement.h"
+#include "view/editorViewScene.h"
 
 using namespace qReal;
 

@@ -1,12 +1,14 @@
 #pragma once
+
 #include <QtCore/QString>
 #include <QtCore/QMap>
 #include <QtWidgets/QWidget>
 #include <QtGui/QMouseEvent>
 
-#include "geometricForms.h"
-#include "pathCorrector.h"
-#include "../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
+
+#include "view/gestures/geometricForms.h"
+#include "view/gestures/pathCorrector.h"
 
 namespace qReal {
 namespace gestures {

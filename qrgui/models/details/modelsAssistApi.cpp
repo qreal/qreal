@@ -1,5 +1,6 @@
 #include "modelsAssistApi.h"
-#include "modelsImplementation/abstractModel.h"
+
+#include "models/details/modelsImplementation/abstractModel.h"
 
 using namespace qReal;
 using namespace models;

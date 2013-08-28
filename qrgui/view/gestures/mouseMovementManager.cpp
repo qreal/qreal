@@ -1,8 +1,9 @@
 #include "mouseMovementManager.h"
-#include "pathCorrector.h"
-#include "levenshteinDistance.h"
-#include "geometricForms.h"
-#include "mixedgesturesmanager.h"
+
+#include "view/gestures/pathCorrector.h"
+#include "view/gestures/levenshteinDistance.h"
+#include "view/gestures/geometricForms.h"
+#include "view/gestures/mixedgesturesmanager.h"
 
 QString const comma = ", ";
 QString const pointDelimeter = " : ";

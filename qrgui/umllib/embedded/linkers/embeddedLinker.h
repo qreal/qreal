@@ -3,9 +3,10 @@
 #include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
 
-#include "../../../../qrkernel/roles.h"
-#include "../../edgeElement.h"
-#include "../../../controller/commands/createElementCommand.h"
+#include <qrkernel/roles.h>
+
+#include "umllib/edgeElement.h"
+#include "controller/commands/createElementCommand.h"
 
 namespace qReal {
 

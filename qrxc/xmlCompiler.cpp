@@ -1,20 +1,21 @@
 #include "xmlCompiler.h"
-#include "editor.h"
-#include "nameNormalizer.h"
-#include "../qrutils/outFile.h"
-#include "../qrutils/xmlUtils.h"
-#include "diagram.h"
-#include "type.h"
-
-#include "edgeType.h"
-#include "nodeType.h"
-#include "portType.h"
-#include "enumType.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QDebug>
+
+#include <qrutils/outFile.h>
+#include <qrutils/xmlUtils.h>
+
+#include "editor.h"
+#include "nameNormalizer.h"
+#include "diagram.h"
+#include "type.h"
+#include "edgeType.h"
+#include "nodeType.h"
+#include "portType.h"
+#include "enumType.h"
 
 using namespace utils;
 

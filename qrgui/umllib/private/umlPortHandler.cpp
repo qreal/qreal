@@ -1,6 +1,7 @@
 #include "umlPortHandler.h"
-#include "../nodeElement.h"
-#include "borderChecker.h"
+
+#include "umllib/nodeElement.h"
+#include "umllib/private/borderChecker.h"
 
 UmlPortHandler::UmlPortHandler(NodeElement * const node)
 		: mNode(node), mBelongsToHorizontalBorders(true)

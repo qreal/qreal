@@ -1,10 +1,11 @@
 #pragma once
+
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QDialog>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 
-#include "listWidget.h"
+#include "dialogs/startDialog/listWidget.h"
 
 namespace qReal {
 

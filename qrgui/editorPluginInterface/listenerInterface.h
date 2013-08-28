@@ -1,7 +1,8 @@
 #pragma once
 
 #include <QtCore/QObject>
-#include "listenerApiInterface.h"
+
+#include "editorPluginInterface/listenerApiInterface.h"
 
 namespace qReal {
 

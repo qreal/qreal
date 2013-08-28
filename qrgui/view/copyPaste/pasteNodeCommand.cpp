@@ -1,5 +1,6 @@
 ﻿#include "pasteNodeCommand.h"
-#include "../../mainwindow/mainWindow.h"
+
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal::commands;
 
