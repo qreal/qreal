@@ -17,7 +17,7 @@ class PlayToneBlock : public Block
 	Q_OBJECT
 
 public:
-	PlayToneBlock(robotParts::Brick &brick, AbstractTimer &timer /* Takes ownership */);
+	PlayToneBlock(robotParts::Brick &brick, AbstractTimer &timer);
 
 	virtual void run();
 
