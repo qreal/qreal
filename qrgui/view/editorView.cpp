@@ -8,6 +8,9 @@
 
 using namespace qReal;
 
+int const zoomAnimationInterval = 20;
+int const zoomAnimationTimes = 4;
+
 EditorView::EditorView(QWidget *parent)
 	: QGraphicsView(parent)
 	, mMouseOldPosition()
@@ -97,8 +100,8 @@ void EditorView::checkGrid()
 
 void EditorView::startAnimation(char const *slot)
 {
-	QTimeLine *anim = new QTimeLine(300, this);
-	anim->setUpdateInterval(20);
+	QTimeLine *anim = new QTimeLine(zoomAnimationTimes * zoomAnimationInterval, this);
+	anim->setUpdateInterval(zoomAnimationInterval);
 
 	connect(anim, SIGNAL(valueChanged(qreal)), this, slot);
 	connect(anim, SIGNAL(finished()), this, SLOT(animFinished()));
