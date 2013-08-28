@@ -5,6 +5,7 @@
 #include <QtCore/QSignalMapper>
 
 #include <qrkernel/roles.h>
+#include <qrutils/graphicsUtils/gridDrawer.h>
 #include "umllib/nodeElement.h"
 #include "controller/controller.h"
 #include "view/gestures/mouseMovementManager.h"
