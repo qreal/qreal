@@ -265,7 +265,9 @@ void Interpreter::addThread(details::Thread * const thread)
 	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
 
 	QCoreApplication::processEvents();
-	thread->interpret();
+	if (mState != idle) {
+		thread->interpret();
+	}
 }
 
 interpreters::robots::details::RobotModel *Interpreter::robotModel()
