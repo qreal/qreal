@@ -138,27 +138,6 @@ void EditorViewScene::initMouseMoveManager()
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
 }
 
-void EditorViewScene::drawGrid(QPainter *painter, const QRectF &rect)
-{
-	int const indexGrid = SettingsManager::value("IndexGrid").toInt();
-
-	int const left = static_cast<int>(rect.left());
-	int const right = static_cast<int>(rect.right());
-	int const top = static_cast<int>(rect.top());
-	int const bottom = static_cast<int>(rect.bottom());
-
-	int const startX = left / indexGrid * indexGrid;
-	int const startY = top / indexGrid * indexGrid;
-
-	for (int i = startX; i <= right; i += indexGrid) {
-		painter->drawLine(i, top, i, bottom);
-	}
-
-	for (int i = startY; i <= bottom; i += indexGrid) {
-		painter->drawLine(left, i, right, i);
-	}
-}
-
 double EditorViewScene::realIndexGrid()
 {
 	return mRealIndexGrid;
@@ -1246,7 +1225,9 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 	if (mNeedDrawGrid) {
 		mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
 		painter->setPen(QPen(Qt::black, mWidthOfGrid));
-		drawGrid(painter, rect);
+
+		int const indexGrid = SettingsManager::value("IndexGrid").toInt();
+		mGridDrawer.drawGrid(painter, rect, indexGrid);
 	}
 }
 
