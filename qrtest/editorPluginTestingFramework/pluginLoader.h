@@ -9,8 +9,11 @@ class PluginLoader
 {
 public:
 
-	/// gets name of .dll and returns loaded plugin
-	qReal::EditorInterface* loadedPlugin(QString const &fileName, QString const &pathToFile);
+	/// gets name of dynamic library and returns loaded plugin
+	qReal::EditorInterface* loadedPlugin(
+			QString const &fileName
+			, QString const &pathToFile
+			, QString const &pluginExtension);
 
 	/// returns generated plugins names
 	QStringList pluginNames();

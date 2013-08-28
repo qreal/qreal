@@ -79,6 +79,9 @@ private:
 	QString mMakeParameter;
 	/// configuration: debug or release
 	QString mConfigurationParameter;
+	/// plugin extension (.dll for windows, .lib for linux, etc.)
+	QString mPluginExtension;
+
 	/// result of testing for travis
 	int mResultOfTesting;
 

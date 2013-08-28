@@ -2,4 +2,5 @@
 	<qmake>qmake</qmake>
 	<make>mingw32-make</make>
 	<configuration>debug</configuration>
+	<pluginExtension>dll</pluginExtension>
 </xml>
