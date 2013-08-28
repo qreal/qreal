@@ -21,6 +21,14 @@ void CurveLine::handleEdgeMove(QPointF const &pos, bool needAlign)
 	mEdge->update();
 }
 
+void CurveLine::adjust()
+{
+	LineHandler::adjust();
+	if (mEdge->line().count() != 4) {
+		setBezierPoints();
+	}
+}
+
 void CurveLine::drawLine(QPainter *painter, bool drawSavedLine)
 {
 	QPolygonF line = drawSavedLine ? mSavedLine : mEdge->line();

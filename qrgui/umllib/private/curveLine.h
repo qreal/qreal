@@ -13,6 +13,8 @@ public:
 	virtual void drawPorts(QPainter *painter);
 	virtual QPainterPath shape() const;
 
+	virtual void adjust();
+
 protected:
 	void setBezierPoints();
 	QPainterPath bezierCurve(QPolygonF const &line) const;
