@@ -1,8 +1,8 @@
-#include "xmlCompiler.h"
-
 #include <QtCore/QCoreApplication>
 #include <QtCore/QStringList>
 #include <QtCore/QDebug>
+
+#include "xmlCompiler.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {

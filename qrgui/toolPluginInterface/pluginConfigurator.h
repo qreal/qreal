@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../../qrrepo/repoControlInterface.h"
-#include "usedInterfaces/graphicalModelAssistInterface.h"
-#include "usedInterfaces/logicalModelAssistInterface.h"
-#include "../mainwindow/mainWindowInterpretersInterface.h"
-#include "../mainwindow/projectManager/projectManagementInterface.h"
-#include "../view/sceneCustomizationInterface.h"
+#include <qrrepo/repoControlInterface.h>
+
+#include "toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
+#include "toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "mainwindow/mainWindowInterpretersInterface.h"
+#include "mainwindow/projectManager/projectManagementInterface.h"
+#include "view/sceneCustomizationInterface.h"
 
 namespace qReal {
 

@@ -4,8 +4,9 @@
 
 #include "propertiesDialog.h"
 #include "ui_propertiesDialog.h"
-#include "../../view/editorView.h"
-#include "../../view/editorViewScene.h"
+
+#include "view/editorView.h"
+#include "view/editorViewScene.h"
 
 using namespace qReal;
 using namespace gui;

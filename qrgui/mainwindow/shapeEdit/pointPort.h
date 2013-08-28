@@ -1,8 +1,9 @@
 #pragma once
 
-#include "item.h"
-#include "ellipse.h"
-#include "../../../qrutils/graphicsUtils/pointImpl.h"
+#include <qrutils/graphicsUtils/pointImpl.h>
+
+#include "mainwindow/shapeEdit/item.h"
+#include "mainwindow/shapeEdit/ellipse.h"
 
 class PointPort : public Item
 {

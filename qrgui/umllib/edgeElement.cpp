@@ -6,7 +6,6 @@
 #include <QtWidgets/QStyle>
 #include <QtGui/QTextDocument>
 #include <QtWidgets/QMenu>
-#include <QDebug>
 #include <math.h>
 
 #include "edgeElement.h"

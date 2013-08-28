@@ -4,24 +4,25 @@
 
 #pragma once
 
-#include <QKeyEvent>
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSceneHoverEvent>
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneHoverEvent>
 #include <QtWidgets/QWidget>
-#include <QList>
+#include <QtCore/QList>
+#include <QtCore/QTimer>
 
-#include "sdfRenderer.h"
-#include "element.h"
-#include "edgeElement.h"
-#include "embedded/linkers/embeddedLinker.h"
-#include "../editorPluginInterface/elementImpl.h"
+#include "umllib/sdfRenderer.h"
+#include "umllib/element.h"
+#include "umllib/edgeElement.h"
+#include "umllib/embedded/linkers/embeddedLinker.h"
+#include "editorPluginInterface/elementImpl.h"
 
-#include "private/sceneGridHandler.h"
-#include "private/umlPortHandler.h"
-#include "private/portHandler.h"
+#include "umllib/private/sceneGridHandler.h"
+#include "umllib/private/umlPortHandler.h"
+#include "umllib/private/portHandler.h"
 
-#include "serializationData.h"
+#include "umllib/serializationData.h"
 
 namespace qReal {
 

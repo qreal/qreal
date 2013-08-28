@@ -1,4 +1,5 @@
 #include "image.h"
+
 #include <QtGui/QBitmap>
 #include <QtGui/QImageWriter>
 

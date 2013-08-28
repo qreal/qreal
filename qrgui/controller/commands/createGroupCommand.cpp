@@ -1,5 +1,6 @@
 #include "createGroupCommand.h"
-#include "insertIntoEdgeCommand.h"
+
+#include "controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal::commands;
 

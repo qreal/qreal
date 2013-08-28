@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../controller/commands/edgeElementCommand.h"
-#include "../../controller/commands/trackingEntity.h"
+#include "controller/commands/edgeElementCommand.h"
+#include "controller/commands/trackingEntity.h"
 
 namespace qReal
 {

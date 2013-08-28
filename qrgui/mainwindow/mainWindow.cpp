@@ -1,3 +1,6 @@
+#include "mainWindow.h"
+#include "ui_mainWindow.h"
+
 #include <QtCore/QProcess>
 #include <QtWidgets/QDialog>
 #include <QtPrintSupport/QPrinter>
@@ -17,40 +20,38 @@
 #include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
 
-#include "mainWindow.h"
-#include "ui_mainWindow.h"
+#include <qrkernel/settingsManager.h>
 
-#include "errorReporter.h"
+#include "mainwindow/errorReporter.h"
 
-#include "shapeEdit/shapeEdit.h"
-#include "propertyEditorProxyModel.h"
-#include "../dialogs/gesturesShow/gesturesWidget.h"
+#include "mainwindow/shapeEdit/shapeEdit.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "dialogs/gesturesShow/gesturesWidget.h"
 
-#include "../models/models.h"
-#include "../view/editorView.h"
+#include "models/models.h"
+#include "view/editorView.h"
 
-#include "../controller/commands/removeElementCommand.h"
-#include "../controller/commands/doNothingCommand.h"
-#include "../controller/commands/arrangeLinksCommand.h"
-#include "../controller/commands/updateElementCommand.h"
+#include "controller/commands/removeElementCommand.h"
+#include "controller/commands/doNothingCommand.h"
+#include "controller/commands/arrangeLinksCommand.h"
+#include "controller/commands/updateElementCommand.h"
 
-#include "../umllib/element.h"
-#include "../pluginManager/listenerManager.h"
-#include "../../qrkernel/settingsManager.h"
+#include "umllib/element.h"
+#include "pluginManager/listenerManager.h"
 
-#include "referenceList.h"
+#include "mainwindow/referenceList.h"
 
-#include "splashScreen.h"
-#include "../dialogs/startDialog/startDialog.h"
-#include "../dialogs/suggestToCreateProjectDialog.h"
-#include "../dialogs/progressDialog/progressDialog.h"
+#include "mainwindow/splashScreen.h"
+#include "dialogs/startDialog/startDialog.h"
+#include "dialogs/suggestToCreateProjectDialog.h"
+#include "dialogs/progressDialog/progressDialog.h"
 
-#include "qscintillaTextEdit.h"
+#include "mainwindow/qscintillaTextEdit.h"
 
-#include "dotRunner.h"
-#include "../view/sceneCustomizer.h"
+#include "mainwindow/dotRunner.h"
+#include "view/sceneCustomizer.h"
 
-#include "../hotKeyManager/hotKeyManager.h"
+#include "hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 using namespace qReal::commands;

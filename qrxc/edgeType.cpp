@@ -1,8 +1,10 @@
-#include <QDebug>
-
 #include "edgeType.h"
+
+#include <QtCore/QDebug>
+
+#include <qrutils/outFile.h>
+
 #include "association.h"
-#include "../qrutils/outFile.h"
 #include "xmlCompiler.h"
 #include "diagram.h"
 #include "editor.h"

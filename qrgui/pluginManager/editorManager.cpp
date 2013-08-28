@@ -4,12 +4,12 @@
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
 
-#include "../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/exception/exception.h>
+#include <qrrepo/repoApi.h>
 
-#include "../../qrrepo/repoApi.h"
-#include "../umllib/nodeElement.h"
-#include "../umllib/edgeElement.h"
-#include "../../qrkernel/exception/exception.h"
+#include "umllib/nodeElement.h"
+#include "umllib/edgeElement.h"
 
 using namespace qReal;
 

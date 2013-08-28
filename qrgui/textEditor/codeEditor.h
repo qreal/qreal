@@ -1,7 +1,8 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "codeArea.h"
+
+#include "textEditor/codeArea.h"
 
 namespace qReal {
 namespace gui {

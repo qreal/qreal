@@ -3,9 +3,9 @@
 #include <QtCore/QList>
 #include <QtCore/QPair>
 
-#include "element.h"
-#include "../editorPluginInterface/elementImpl.h"
-#include "serializationData.h"
+#include "umllib/element.h"
+#include "editorPluginInterface/elementImpl.h"
+#include "umllib/serializationData.h"
 
 namespace qReal {
 

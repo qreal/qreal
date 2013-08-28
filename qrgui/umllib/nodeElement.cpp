@@ -1,3 +1,5 @@
+#include "nodeElement.h"
+
 #include <QtCore/QUuid>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>
@@ -8,21 +10,20 @@
 
 #include <math.h>
 
-#include "nodeElement.h"
-#include "labelFactory.h"
-#include "../view/editorViewScene.h"
-#include "../editorPluginInterface/editorInterface.h"
-#include "../mainwindow/mainWindow.h"
-#include "ports/portFactory.h"
+#include "umllib/labelFactory.h"
+#include "view/editorViewScene.h"
+#include "editorPluginInterface/editorInterface.h"
+#include "mainwindow/mainWindow.h"
+#include "umllib/ports/portFactory.h"
 
-#include "private/resizeHandler.h"
-#include "private/copyHandler.h"
-#include "private/resizeCommand.h"
-#include "private/foldCommand.h"
+#include "umllib/private/resizeHandler.h"
+#include "umllib/private/copyHandler.h"
+#include "umllib/private/resizeCommand.h"
+#include "umllib/private/foldCommand.h"
 
-#include "../controller/commands/changeParentCommand.h"
-#include "../controller/commands/renameCommand.h"
-#include "../controller/commands/insertIntoEdgeCommand.h"
+#include "controller/commands/changeParentCommand.h"
+#include "controller/commands/renameCommand.h"
+#include "controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;

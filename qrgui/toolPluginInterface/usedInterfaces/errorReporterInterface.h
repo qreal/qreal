@@ -3,8 +3,8 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrkernel/definitions.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/definitions.h>
 
 namespace qReal {
 

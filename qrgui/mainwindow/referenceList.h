@@ -4,8 +4,9 @@
 #include <QtWidgets/QListWidgetItem>
 #include <QtCore/QModelIndex>
 
-#include "../../qrkernel/ids.h"
-#include "../models/models.h"
+#include <qrkernel/ids.h>
+
+#include "models/models.h"
 
 namespace Ui
 {

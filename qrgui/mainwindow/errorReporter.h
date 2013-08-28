@@ -3,12 +3,13 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 
-#include "mainWindow.h"
-#include "../../qrkernel/ids.h"
-#include "../../qrkernel/definitions.h"
-#include "error.h"
-#include "errorListWidget.h"
-#include "../toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/definitions.h>
+
+#include "mainwindow/mainWindow.h"
+#include "mainwindow/error.h"
+#include "mainwindow/errorListWidget.h"
+#include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace qReal {
 namespace gui {

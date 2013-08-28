@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../editorPluginInterface/labelInterface.h"
-#include "../editorPluginInterface/labelFactoryInterface.h"
-#include "../models/graphicalModelAssistApi.h"
+#include "editorPluginInterface/labelInterface.h"
+#include "editorPluginInterface/labelFactoryInterface.h"
+#include "models/graphicalModelAssistApi.h"
 
 namespace qReal {
 

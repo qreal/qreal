@@ -1,6 +1,6 @@
-#include <QtGui/QtEvents>
-
 #include "managedClosableDialog.h"
+
+#include <QtGui/QtEvents>
 
 using namespace qReal;
 

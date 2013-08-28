@@ -1,6 +1,6 @@
 #include "item.h"
-#include "math.h"
 
+#include <math.h>
 #include <QtGui/QPainter>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>

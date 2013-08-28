@@ -1,8 +1,9 @@
-#include "../../../qrkernel/settingsManager.h"
-#include <QFileDialog>
-
 #include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
+
+#include <QtWidgets/QFileDialog>
+
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal;
 

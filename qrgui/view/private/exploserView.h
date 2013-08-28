@@ -2,8 +2,8 @@
 
 #include <QtWidgets/QMenu>
 
-#include "../../models/logicalModelAssistApi.h"
-#include "../../models/graphicalModelAssistApi.h"
+#include "models/logicalModelAssistApi.h"
+#include "models/graphicalModelAssistApi.h"
 
 namespace qReal {
 

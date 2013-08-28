@@ -1,11 +1,12 @@
 #include "exploser.h"
-#include "../../mainwindow/palette/paletteTreeWidget.h"
-#include "../logicalModelAssistApi.h"
-#include "../controller/commands/doNothingCommand.h"
-#include "../controller/commands/explosionCommand.h"
-#include "../controller/commands/renameCommand.h"
-#include "../controller/commands/createElementCommand.h"
-#include "../controller/commands/renameExplosionCommand.h"
+
+#include "mainwindow/palette/paletteTreeWidget.h"
+#include "models/logicalModelAssistApi.h"
+#include "controller/commands/doNothingCommand.h"
+#include "controller/commands/explosionCommand.h"
+#include "controller/commands/renameCommand.h"
+#include "controller/commands/createElementCommand.h"
+#include "controller/commands/renameExplosionCommand.h"
 
 using namespace qReal;
 using namespace models;

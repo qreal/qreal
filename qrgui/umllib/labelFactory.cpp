@@ -1,5 +1,6 @@
 #include "labelFactory.h"
-#include "label.h"
+
+#include "umllib/label.h"
 
 using namespace qReal;
 

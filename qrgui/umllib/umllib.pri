@@ -19,6 +19,7 @@ HEADERS += \
 	$$PWD/private/foldCommand.h \
 	$$PWD/private/reshapeEdgeCommand.h \
 	$$PWD/private/fontCache.h \
+	$$PWD/private/expandCommand.h \
 	$$PWD/ports/portFactory.h \
 	$$PWD/ports/statLine.h \
 	$$PWD/ports/statPoint.h \

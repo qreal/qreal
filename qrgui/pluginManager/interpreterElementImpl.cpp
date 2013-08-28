@@ -1,8 +1,9 @@
 #include "interpreterElementImpl.h"
 
-#include "../../qrutils/outFile.h"
-#include "../../qrutils/scalableItem.h"
-#include "interpreterPortImpl.h"
+#include <qrutils/outFile.h>
+#include <qrutils/scalableItem.h>
+
+#include "pluginManager/interpreterPortImpl.h"
 
 using namespace qReal;
 using namespace utils;

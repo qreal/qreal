@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QDialog>
 
-#include "../../pluginManager/editorManagerInterface.h"
+#include "pluginManager/editorManagerInterface.h"
 
 namespace Ui {
 class EdgePropertiesDialog;

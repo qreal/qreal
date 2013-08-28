@@ -1,5 +1,6 @@
 #include "pointPort.h"
-#include "../qrutils/outFile.h"
+
+#include <qrutils/outFile.h>
 
 using namespace utils;
 

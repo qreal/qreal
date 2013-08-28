@@ -1,6 +1,7 @@
 #include "pointPort.h"
 
 const int step = 3;
+
 PointPort::PointPort(qreal x, qreal y, Item *parent) : Item(parent), mPointImpl(), mType("NonTyped")
 {
 	mNeedScalingRect = true;
