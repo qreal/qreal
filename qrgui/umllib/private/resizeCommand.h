@@ -3,8 +3,8 @@
 #include <QtCore/QMap>
 
 #include "resizeHandler.h"
-#include "../../controller/commands/nodeElementCommand.h"
-#include "../../controller/commands/trackingEntity.h"
+#include "controller/commands/nodeElementCommand.h"
+#include "controller/commands/trackingEntity.h"
 
 namespace qReal
 {

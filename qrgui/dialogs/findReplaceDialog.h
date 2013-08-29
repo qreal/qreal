@@ -5,7 +5,8 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QCheckBox>
 #include <QtCore/QSignalMapper>
-#include "../models/logicalModelAssistApi.h"
+
+#include "models/logicalModelAssistApi.h"
 
 namespace Ui {
 	class FindReplaceDialog;

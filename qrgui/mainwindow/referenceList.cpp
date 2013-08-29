@@ -1,6 +1,7 @@
 #include "referenceList.h"
 #include "ui_referenceList.h"
-#include "mainWindow.h"
+
+#include "mainwindow/mainWindow.h"
 
 ReferenceList::ReferenceList(qReal::MainWindow *mainWindow, QPersistentModelIndex const &index
 		, QString const &refType, QStringList const &currentValue, int role, QWidget *parent)

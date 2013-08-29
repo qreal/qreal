@@ -1,7 +1,8 @@
 #include "graphicalModelAssistApi.h"
-#include "../../qrkernel/exception/exception.h"
+
 #include <QtCore/QUuid>
-#include <QtCore/QDebug>
+
+#include <qrkernel/exception/exception.h>
 
 using namespace qReal;
 using namespace models;

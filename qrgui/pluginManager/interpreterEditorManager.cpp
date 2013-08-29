@@ -4,16 +4,16 @@
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
 
-#include "interpreterEditorManager.h"
-#include "../../qrkernel/ids.h"
-#include "../../qrrepo/repoApi.h"
-#include "../umllib/nodeElement.h"
-#include "../umllib/edgeElement.h"
-#include "../../qrkernel/exception/exception.h"
-#include "../../qrutils/outFile.h"
-#include "../mainwindow/mainWindow.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/exception/exception.h>
+#include <qrrepo/repoApi.h>
+#include <qrutils/outFile.h>
 
-#include "../../qrutils/nameNormalizer.h"
+#include "pluginManager/interpreterEditorManager.h"
+#include "umllib/nodeElement.h"
+#include "umllib/edgeElement.h"
+#include "pluginManager/interpreterElementImpl.h"
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 using namespace utils;

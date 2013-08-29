@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../controller/commands/nodeElementCommand.h"
+#include "controller/commands/nodeElementCommand.h"
 
 namespace qReal
 {

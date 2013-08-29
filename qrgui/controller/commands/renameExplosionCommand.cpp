@@ -1,5 +1,6 @@
 #include "renameExplosionCommand.h"
-#include "../../dialogs/renameDialog.h"
+
+#include "dialogs/renameDialog.h"
 
 using namespace qReal::commands;
 

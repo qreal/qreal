@@ -1,4 +1,5 @@
 #include "diagram.h"
+
 #include "type.h"
 #include "enumType.h"
 #include "numericType.h"
@@ -8,7 +9,7 @@
 #include "edgeType.h"
 #include "editor.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 Diagram::Diagram(QString const &name, QString const &nodeName, QString const &displayedName, Editor *editor)
 		: mDiagramName(name), mDiagramNodeName(nodeName), mDiagramDisplayedName(displayedName), mEditor(editor)

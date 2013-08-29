@@ -3,7 +3,7 @@
 #include <QtWidgets/QPinchGesture>
 #include <QtWidgets/QApplication>
 
-#include "../editorView.h"
+#include "view/editorView.h"
 
 using namespace qReal::view::details;
 

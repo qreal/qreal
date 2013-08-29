@@ -1,10 +1,9 @@
 #pragma once
 
-#include "nonGraphicType.h"
+#include <QtXml/QDomElement>
+#include <QtCore/QStringList>
 
-#include <QDomElement>
-#include <QStringList>
-#include <QDebug>
+#include "nonGraphicType.h"
 
 namespace utils {
 	class OutFile;
@@ -23,6 +22,6 @@ public:
 
 private:
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
-	
+
 	QStringList mValues;
 };

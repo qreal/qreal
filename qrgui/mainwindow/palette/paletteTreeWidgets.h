@@ -4,7 +4,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QSplitter>
 
-#include "paletteTreeWidget.h"
+#include "mainwindow/palette/paletteTreeWidget.h"
 
 namespace qReal {
 namespace gui {

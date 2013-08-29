@@ -3,7 +3,7 @@
 #include <QtCore/QList>
 #include <QtWidgets/QTreeWidgetItem>
 
-#include "../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
 
@@ -21,6 +21,7 @@ class GraphicalModelAssistApi;
 
 /// This class contains methods for processing all system explosion-based operations
 /// from the model aspect
+// TODO: Why it is in "details" folder, but not in "details" namespace?
 class Exploser : public QObject
 {
 	Q_OBJECT

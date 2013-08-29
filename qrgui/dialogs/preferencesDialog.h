@@ -5,9 +5,9 @@
 #include <QtCore/QSettings>
 #include <QtWidgets/QFileDialog>
 
-#include "preferencesPages/preferencesPage.h"
+#include <qrkernel/settingsManager.h>
 
-#include "../../qrkernel/settingsManager.h"
+#include "dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
 	class PreferencesDialog;

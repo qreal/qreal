@@ -1,6 +1,6 @@
-#include <QtWidgets/QApplication>
-
 #include "splashScreen.h"
+
+#include <QtWidgets/QApplication>
 
 using namespace qReal;
 

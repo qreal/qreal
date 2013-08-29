@@ -1,6 +1,7 @@
 #include "propertyEditorView.h"
-#include "../mainwindow/mainWindow.h"
-#include "../controller/commands/changePropertyCommand.h"
+
+#include "mainwindow/mainWindow.h"
+#include "controller/commands/changePropertyCommand.h"
 
 PropertyEditorView::PropertyEditorView(QWidget *parent)
 		: QWidget(parent), mChangingPropertyValue(false)

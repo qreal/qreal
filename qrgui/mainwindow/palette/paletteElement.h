@@ -3,8 +3,9 @@
 #include <QtCore/QSize>
 #include <QtGui/QIcon>
 
-#include "../../../qrkernel/ids.h"
-#include "../../pluginManager/editorManagerInterface.h"
+#include <qrkernel/ids.h>
+
+#include "pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 namespace gui {

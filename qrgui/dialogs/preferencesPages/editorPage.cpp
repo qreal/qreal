@@ -1,8 +1,11 @@
-#include "../../../qrkernel/settingsManager.h"
 #include "editorPage.h"
 #include "ui_editorPage.h"
-#include <QMessageBox>
-#include "../../mainwindow/mainWindow.h"
+
+#include <QtWidgets/QMessageBox>
+
+#include <qrkernel/settingsManager.h>
+
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 

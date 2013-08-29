@@ -1,6 +1,6 @@
 #include "pasteEdgeCommand.h"
-#include "../../mainwindow/mainWindow.h"
-#include "../../umllib/private/reshapeEdgeCommand.h"
+#include "mainwindow/mainWindow.h"
+#include "umllib/private/reshapeEdgeCommand.h"
 
 using namespace qReal::commands;
 

@@ -2,12 +2,12 @@
 
 #include <QtCore/QObject>
 
-#include "undoStack.h"
-#include "commands/abstractCommand.h"
-#include "../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
-namespace qReal
-{
+#include "controller/undoStack.h"
+#include "controller/commands/abstractCommand.h"
+
+namespace qReal {
 
 /// A controller class for all user actions watching.
 /// A part of global MVC architecture.

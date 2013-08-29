@@ -6,6 +6,9 @@ TARGET = qrmc
 DEPENDPATH += . \
 	templates
 
+INCLUDEPATH += \
+	$$PWD/.. \
+
 LIBS += -L../bin -lqrkernel -lqrrepo
 
 OBJECTS_DIR = .obj

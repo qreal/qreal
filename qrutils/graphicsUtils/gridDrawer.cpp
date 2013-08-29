@@ -10,21 +10,19 @@ GridDrawer::GridDrawer()
 
 void GridDrawer::drawGrid(QPainter *painter, QRectF const &rect, int const indexGrid)
 {
-	qreal const sceneX = rect.x();
-	qreal const sceneY = rect.y();
+	int const left = static_cast<int>(rect.left());
+	int const right = static_cast<int>(rect.right());
+	int const top = static_cast<int>(rect.top());
+	int const bottom = static_cast<int>(rect.bottom());
 
-	int const indent = (300 / indexGrid) * indexGrid; // should be enough
+	int const startX = left / indexGrid * indexGrid;
+	int const startY = top / indexGrid * indexGrid;
 
-	int const startX = static_cast<int>(sceneX + 10) / indexGrid * indexGrid - indent;
-	int const endX = static_cast<int>(sceneX + rect.width() - 10) / indexGrid * indexGrid + indent;
-	int const startY = static_cast<int>(sceneY + 10) / indexGrid * indexGrid - indent;
-	int const endY = static_cast<int>(sceneY + rect.height() - 10) / indexGrid * indexGrid + indent;
-	for (int i = startX; i <= endX; i = i + indexGrid) {
-		QLineF const line(i, startY, i, endY);
-		painter->drawLine(line);
+	for (int i = startX; i <= right; i += indexGrid) {
+		painter->drawLine(i, top, i, bottom);
 	}
-	for (int i = startY; i <= endY; i = i + indexGrid) {
-		QLineF const line(startX, i, endX, i);
-		painter->drawLine(line);
+
+	for (int i = startY; i <= bottom; i += indexGrid) {
+		painter->drawLine(left, i, right, i);
 	}
 }

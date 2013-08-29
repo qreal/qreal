@@ -1,5 +1,6 @@
 #include "portType.h"
-#include "../qrutils/outFile.h"
+
+#include <qrutils/outFile.h>
 
 bool PortType::init(QDomElement const &element, QString const &context)
 {

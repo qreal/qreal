@@ -1,9 +1,10 @@
 #pragma once
 
-#include <QDomElement>
+#include <QtXml/QDomElement>
+
+#include <qrutils/scalableCoordinate.h>
 
 #include "port.h"
-#include "../qrutils/scalableCoordinate.h"
 
 namespace utils {
 	class OutFile;

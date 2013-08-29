@@ -7,15 +7,16 @@
 #include <QtCore/QStringList>
 #include <QtGui/QIcon>
 
-#include "listenerManager.h"
-#include "../../qrkernel/ids.h"
-#include "../editorPluginInterface/editorInterface.h"
-#include "../../qrrepo/graphicalRepoApi.h"
-#include "../../qrrepo/logicalRepoApi.h"
-#include "../../qrkernel/settingsManager.h"
-#include "pattern.h"
-#include "patternParser.h"
-#include "explosion.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/settingsManager.h>
+#include <qrrepo/graphicalRepoApi.h>
+#include <qrrepo/logicalRepoApi.h>
+
+#include "pluginManager/listenerManager.h"
+#include "editorPluginInterface/editorInterface.h"
+#include "pluginManager/pattern.h"
+#include "pluginManager/patternParser.h"
+#include "pluginManager/explosion.h"
 
 namespace qReal {
 

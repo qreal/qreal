@@ -1,7 +1,8 @@
+#include "suggestToCreateProjectDialog.h"
+
 #include <QtWidgets/QVBoxLayout>
 
-#include "suggestToCreateProjectDialog.h"
-#include "../mainwindow/mainWindow.h"
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 

@@ -3,7 +3,7 @@
 #include <QtXml/QDomElement>
 #include <QtCore/QStringList>
 
-#include "../qrutils/scalableItem.h"
+#include <qrutils/scalableItem.h>
 
 namespace utils {
 class OutFile;

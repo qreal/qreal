@@ -1,8 +1,8 @@
 #pragma once
 
-#include "abstractCommand.h"
-#include "../../models/logicalModelAssistApi.h"
-#include "../../models/graphicalModelAssistApi.h"
+#include "controller/commands/abstractCommand.h"
+#include "models/logicalModelAssistApi.h"
+#include "models/graphicalModelAssistApi.h"
 
 namespace qReal {
 namespace commands {

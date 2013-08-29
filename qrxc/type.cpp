@@ -1,7 +1,8 @@
 #include "type.h"
-#include "property.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
+
+#include "property.h"
 
 Type::Type(bool isResolved, Diagram *diagram)
 	: mResolvingFinished(isResolved), mDiagram(diagram)
