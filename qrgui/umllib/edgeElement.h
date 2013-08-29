@@ -9,8 +9,6 @@
 
 namespace qReal {
 
-//QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
-
 namespace enums {
 namespace arrowTypeEnum {
 enum ArrowType
@@ -62,7 +60,7 @@ public:
 
 	virtual QRectF boundingRect() const;
 	QPainterPath shape() const;
-	virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* opt, QWidget* w);
+	virtual void paint(QPainter* p, QStyleOptionGraphicsItem const *opt, QWidget* w);
 
 	virtual bool initPossibleEdges();
 	virtual void initTitles();

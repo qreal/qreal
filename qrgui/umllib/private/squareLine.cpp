@@ -1,4 +1,4 @@
-#include "squareLine.h"
+#include "umllib/private/squareLine.h"
 
 qreal const epsilon = 0.0001;
 qreal const offset = 2 * kvadratik;
@@ -12,9 +12,8 @@ SquareLine::SquareLine(EdgeElement *edge)
 	connect(&mLayOutAction, SIGNAL(triggered()), this, SLOT(minimize()));
 }
 
-void SquareLine::handleEdgeMove(QPointF const &pos, bool needAlign)
+void SquareLine::handleEdgeMove(QPointF const &pos)
 {
-	Q_UNUSED(needAlign)
 	QPolygonF line = mEdge->line();
 
 	if (mDragType == EdgeElement::noPort) {
@@ -25,8 +24,6 @@ void SquareLine::handleEdgeMove(QPointF const &pos, bool needAlign)
 		mEdge->setLine(line);
 		adjustEndSegments();
 	}
-
-	mEdge->update();
 }
 
 void SquareLine::adjust()
@@ -55,7 +52,7 @@ void SquareLine::adjustStart()
 		return;
 	}
 
-	if (line[1] == line[2] && line.count() > 3) {
+	if ((line[1] == line[2]) && (line.count() > 3)) {
 		if (qAbs(line[2].x() - line[3].x()) < qAbs(line[2].y() - line[3].y())) {
 			line[1].setX(line[0].x());
 		} else {
@@ -81,7 +78,7 @@ void SquareLine::adjustEnd()
 		return;
 	}
 
-	if (line[line.count() - 2] == line[line.count() - 3] && line.count() > 3) {
+	if ((line[line.count() - 2] == line[line.count() - 3]) && (line.count() > 3)) {
 		if (qAbs(line[line.count() - 3].x() - line[line.count() - 4].x())
 				< qAbs(line[line.count() - 3].y() - line[line.count() - 4].y())) {
 			line[line.count() - 2].setX(line[line.count() - 1].x());
@@ -103,7 +100,7 @@ void SquareLine::adjustEnd()
 void SquareLine::moveSegment(QPointF const &oldPos, QPointF const &newPos)
 {
 	int segmentNumber = defineSegment(oldPos);
-	if (segmentNumber <= 0 || segmentNumber >= mEdge->line().count() - 2) {
+	if ((segmentNumber <= 0) || (segmentNumber >= mEdge->line().count() - 2)) {
 		return;
 	}
 
@@ -122,7 +119,6 @@ void SquareLine::moveSegment(QPointF const &oldPos, QPointF const &newPos)
 	line[segmentNumber] += offset;
 	line[segmentNumber + 1] += offset;
 	mEdge->setLine(line);
-	mEdge->update();
 }
 
 void SquareLine::improveAppearance()
@@ -237,100 +233,20 @@ void SquareLine::squarize()
 
 	switch (type) {
 	case vertical:
-	{
-		int const srcSide = mEdge->defineNodePortSide(true);
-		int const dstSide = mEdge->defineNodePortSide(false);
-		if (srcSide == dstSide) {
-			verticalSameSide(line, srcSide == EdgeElement::top);
-		} else {
-			verticalSquareLine(line, (line.first().y() + line.last().y()) / 2);
-		}
+		createVerticalLine(line);
 		break;
-	}
 	case horizontal:
-	{
-		int const srcSide = mEdge->defineNodePortSide(true);
-		int const dstSide = mEdge->defineNodePortSide(false);
-		if (srcSide == dstSide) {
-			horizontalSameSide(line, srcSide == EdgeElement::left);
-		} else {
-			horizontalSquareLine(line, (line.first().x() + line.last().x()) / 2);
-		}
+		createHorizontalLine(line);
 		break;
-	}
 	case verticalTurn:
 		verticalTurningSquareLine(line);
 		mEdge->setLine(line);
-		if (needCorrectSrc()) {
-			QPolygonF innerLine;
-			innerLine.append(outgoingPoint(true));
-			if (needCorrectDst()) {
-				innerLine.append(outgoingPoint(false));
-				horizontalTurningSquareLine(innerLine);
-				innerLine.insert(0, line.first());
-				innerLine.append(line.last());
-				line = innerLine;
-			} else if (mEdge->dst()){
-				QPair<qreal, qreal> space = horizontalIntermediateSpace();
-				innerLine.append(line.last());
-				if (space.first < space.second) {
-					horizontalSquareLine(innerLine, (space.first + space.second) / 2);
-				} else {
-					horizontalSameSide(innerLine, mEdge->defineNodePortSide(false) == EdgeElement::left);
-				}
-				innerLine.insert(0, line.first());
-				line = innerLine;
-			}
-		} else if (needCorrectDst() && mEdge->src()) {
-			QPolygonF innerLine;
-			innerLine.append(line.first());
-			innerLine.append(outgoingPoint(false));
-			QPair<qreal, qreal> space = verticalIntermediateSpace();
-			if (space.first < space.second) {
-				verticalSquareLine(innerLine, (space.first + space.second) / 2);
-			} else {
-				verticalSameSide(innerLine, mEdge->defineNodePortSide(true) == EdgeElement::top);
-			}
-			innerLine.append(line.last());
-			line = innerLine;
-		}
+		correctLine(line, needCorrectSrc(), needCorrectDst(), true);
 		break;
 	case horizontalTurn:
 		horizontalTurningSquareLine(line);
 		mEdge->setLine(line);
-		if (needCorrectSrc()) {
-			QPolygonF innerLine;
-			innerLine.append(outgoingPoint(true));
-			if (needCorrectDst()) {
-				innerLine.append(outgoingPoint(false));
-				verticalTurningSquareLine(innerLine);
-				innerLine.insert(0, line.first());
-				innerLine.append(line.last());
-				line = innerLine;
-			} else if (mEdge->dst()){
-				innerLine.append(line.last());
-				QPair<qreal, qreal> space = verticalIntermediateSpace();
-				if (space.first < space.second) {
-					verticalSquareLine(innerLine, (space.first + space.second) / 2);
-				} else {
-					verticalSameSide(innerLine, mEdge->defineNodePortSide(false) == EdgeElement::top);
-				}
-				innerLine.insert(0, line.first());
-				line = innerLine;
-			}
-		} else if (needCorrectDst() && mEdge->src()) {
-			QPolygonF innerLine;
-			innerLine.append(line.first());
-			innerLine.append(outgoingPoint(false));
-			QPair<qreal, qreal> space = horizontalIntermediateSpace();
-			if (space.first < space.second) {
-				horizontalSquareLine(innerLine, (space.first + space.second) / 2);
-			} else {
-				horizontalSameSide(innerLine, mEdge->defineNodePortSide(true) == EdgeElement::left);
-			}
-			innerLine.append(line.last());
-			line = innerLine;
-		}
+		correctLine(line, needCorrectSrc(), needCorrectDst(), false);
 		break;
 	default:
 		qDebug() << "incorrect link type";
@@ -339,7 +255,7 @@ void SquareLine::squarize()
 	mEdge->setLine(line);
 }
 
-int SquareLine::defineType()
+int SquareLine::defineType() const
 {
 	if (!(mEdge->src() && mEdge->dst())) {
 		return horizontalTurn;
@@ -362,85 +278,165 @@ int SquareLine::defineType()
 	}
 }
 
-void SquareLine::horizontalSquareLine(QPolygonF &line, qreal middle)
+void SquareLine::createHorizontalLine(QPolygonF &line) const
+{
+	if (mEdge->defineNodePortSide(true) == mEdge->defineNodePortSide(false)) {
+		horizontalSameSide(line, mEdge->defineNodePortSide(true) == EdgeElement::left);
+	} else {
+		horizontalSquareLine(line, (line.first().x() + line.last().x()) / 2);
+	}
+}
+
+void SquareLine::createVerticalLine(QPolygonF &line) const
+{
+	if (mEdge->defineNodePortSide(true) == mEdge->defineNodePortSide(false)) {
+		verticalSameSide(line, mEdge->defineNodePortSide(true) == EdgeElement::top);
+	} else {
+		verticalSquareLine(line, (line.first().y() + line.last().y()) / 2);
+	}
+}
+
+void SquareLine::correctLine(QPolygonF &line, bool correctSrc, bool correctDst, bool isVertical) const
+{
+	if (!correctSrc && !correctDst) {
+		return;
+	}
+
+	QPolygonF innerLine;
+	innerLine.append(correctSrc ? outgoingPoint(true) : line.first());
+	innerLine.append(correctDst ? outgoingPoint(false) : line.last());
+
+	if (isVertical) {
+		createVerticalInnerLine(innerLine, correctSrc, correctDst);
+	} else {
+		createHorizontalInnerLine(innerLine, correctSrc, correctDst);
+	}
+
+	if (correctSrc) {
+		innerLine.insert(0, line.first());
+	}
+	if (correctDst) {
+		innerLine.append(line.last());
+	}
+
+	line = innerLine;
+}
+
+void SquareLine::createHorizontalInnerLine(QPolygonF &line, bool correctSrc, bool correctDst) const
+{
+	if (correctSrc) {
+		if (correctDst) {
+			verticalTurningSquareLine(line);
+		} else if (mEdge->dst()) {
+			verticalInnerLine(line);
+		}
+	} else if (correctDst && mEdge->src()) {
+		horizontalInnerLine(line);
+	}
+
+}
+
+void SquareLine::createVerticalInnerLine(QPolygonF &line, bool correctSrc, bool correctDst) const
+{
+	if (correctSrc) {
+		if (correctDst) {
+			horizontalTurningSquareLine(line);
+		} else if (mEdge->dst()) {
+			horizontalInnerLine(line);
+		}
+	} else if (correctDst && mEdge->src()) {
+		verticalInnerLine(line);
+	}
+
+}
+
+void SquareLine::verticalInnerLine(QPolygonF &line) const
+{
+	QPair<qreal, qreal> space = verticalIntermediateSpace();
+	if (space.first < space.second) {
+		verticalSquareLine(line, (space.first + space.second) / 2);
+	} else {
+		verticalSameSide(line, mEdge->defineNodePortSide(false) == EdgeElement::top);
+	}
+}
+
+void SquareLine::horizontalInnerLine(QPolygonF &line) const
+{
+	QPair<qreal, qreal> space = horizontalIntermediateSpace();
+	if (space.first < space.second) {
+		horizontalSquareLine(line, (space.first + space.second) / 2);
+	} else {
+		horizontalSameSide(line, mEdge->defineNodePortSide(false) == EdgeElement::left);
+	}
+}
+
+void SquareLine::horizontalSquareLine(QPolygonF &line, qreal middleLine) const
 {
 	QPointF insertPoint1 = line.first();
 	QPointF insertPoint2 = line.last();
 
-	insertPoint1.setX(middle);
+	insertPoint1.setX(middleLine);
 	insertPoint2.setX(insertPoint1.x());
 
 	line.insert(1, insertPoint1);
 	line.insert(2, insertPoint2);
 }
 
-void SquareLine::verticalSquareLine(QPolygonF &line, qreal middle)
+void SquareLine::verticalSquareLine(QPolygonF &line, qreal middleLine) const
 {
 	QPointF insertPoint1 = line.first();
 	QPointF insertPoint2 = line.last();
 
-	insertPoint1.setY(middle);
+	insertPoint1.setY(middleLine);
 	insertPoint2.setY(insertPoint1.y());
 
 	line.insert(1, insertPoint1);
 	line.insert(2, insertPoint2);
 }
 
-void SquareLine::horizontalTurningSquareLine(QPolygonF &line)
+void SquareLine::horizontalTurningSquareLine(QPolygonF &line) const
 {
 	QPointF insertPoint = line.first();
 	insertPoint.setX(line.last().x());
 	line.insert(1, insertPoint);
 }
 
-void SquareLine::verticalTurningSquareLine(QPolygonF &line)
+void SquareLine::verticalTurningSquareLine(QPolygonF &line) const
 {
 	QPointF insertPoint = line.first();
 	insertPoint.setY(line.last().y());
 	line.insert(1, insertPoint);
 }
 
-void SquareLine::horizontalSameSide(QPolygonF &line, bool leftLoop)
+void SquareLine::horizontalSameSide(QPolygonF &line, bool leftLoop) const
 {
-	QRectF srcRect = mEdge->mapFromItem(mEdge->src(), mEdge->src()->contentsRect()).boundingRect();
-	QRectF dstRect = mEdge->mapFromItem(mEdge->dst(), mEdge->dst()->contentsRect()).boundingRect();
-
-	qreal const loopLine = leftLoop ? qMin(srcRect.left(), dstRect.left()) - offset
-			: qMax(srcRect.right(), dstRect.right()) + offset;
+	qreal const loopLine = leftLoop ? qMin(srcRect().left(), dstRect().left()) - offset
+			: qMax(srcRect().right(), dstRect().right()) + offset;
 	horizontalSquareLine(line, loopLine);
 }
 
-void SquareLine::verticalSameSide(QPolygonF &line, bool topLoop)
+void SquareLine::verticalSameSide(QPolygonF &line, bool topLoop) const
 {
-	QRectF srcRect = mEdge->mapFromItem(mEdge->src(), mEdge->src()->contentsRect()).boundingRect();
-	QRectF dstRect = mEdge->mapFromItem(mEdge->dst(), mEdge->dst()->contentsRect()).boundingRect();
-
-	qreal const loopLine = topLoop ? qMin(srcRect.top(), dstRect.top()) - offset
-			: qMax(srcRect.bottom(), dstRect.bottom()) + offset;
+	qreal const loopLine = topLoop ? qMin(srcRect().top(), dstRect().top()) - offset
+			: qMax(srcRect().bottom(), dstRect().bottom()) + offset;
 	verticalSquareLine(line, loopLine);
 }
 
 QPair<qreal, qreal> SquareLine::horizontalIntermediateSpace() const
 {
-	QRectF srcRect = mEdge->mapFromItem(mEdge->src(), mEdge->src()->contentsRect()).boundingRect();
-	QRectF dstRect = mEdge->mapFromItem(mEdge->dst(), mEdge->dst()->contentsRect()).boundingRect();
-
-	if (srcRect.right() < dstRect.left()) {
-		return qMakePair(srcRect.right(), dstRect.left());
+	if (srcRect().right() < dstRect().left()) {
+		return qMakePair(srcRect().right(), dstRect().left());
 	} else {
-		return qMakePair(dstRect.right(), srcRect.left());
+		return qMakePair(dstRect().right(), srcRect().left());
 	}
 }
 
 QPair<qreal, qreal> SquareLine::verticalIntermediateSpace() const
 {
-	QRectF srcRect = mEdge->mapFromItem(mEdge->src(), mEdge->src()->contentsRect()).boundingRect();
-	QRectF dstRect = mEdge->mapFromItem(mEdge->dst(), mEdge->dst()->contentsRect()).boundingRect();
-
-	if (srcRect.bottom() < dstRect.top()) {
-		return qMakePair(srcRect.bottom(), dstRect.top());
+	if (srcRect().bottom() < dstRect().top()) {
+		return qMakePair(srcRect().bottom(), dstRect().top());
 	} else {
-		return qMakePair(dstRect.bottom(), srcRect.top());
+		return qMakePair(dstRect().bottom(), srcRect().top());
 	}
 }
 
@@ -469,6 +465,16 @@ QPointF SquareLine::outgoingPoint(bool isStart) const
 	}
 
 	return outGoing;
+}
+
+QRectF SquareLine::srcRect() const
+{
+	return mEdge->mapFromItem(mEdge->src(), mEdge->src()->contentsRect()).boundingRect();
+}
+
+QRectF SquareLine::dstRect() const
+{
+	return mEdge->mapFromItem(mEdge->dst(), mEdge->dst()->contentsRect()).boundingRect();
 }
 
 QPair<QPair<int, qreal>, qreal> SquareLine::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
@@ -512,6 +518,13 @@ QList<ContextMenuAction *> SquareLine::extraActions(QPointF const &pos)
 	}
 
 	return result;
+}
+
+void SquareLine::drawPort(QPainter *painter, int portNumber)
+{
+	if ((portNumber == 0) || (portNumber == mEdge->line().count() - 1)) {
+		LineHandler::drawPort(painter, portNumber);
+	}
 }
 
 }

@@ -8,14 +8,14 @@
 #include <QtWidgets/QMenu>
 #include <math.h>
 
-#include "edgeElement.h"
-#include "nodeElement.h"
-#include "labelFactory.h"
-#include "../view/editorViewScene.h"
+#include "umllib/edgeElement.h"
+#include "umllib/nodeElement.h"
+#include "umllib/labelFactory.h"
+#include "view/editorViewScene.h"
 
-#include "private/brokenLine.h"
-#include "private/squareLine.h"
-#include "private/curveLine.h"
+#include "umllib/private/brokenLine.h"
+#include "umllib/private/squareLine.h"
+#include "umllib/private/curveLine.h"
 
 using namespace qReal;
 
@@ -130,6 +130,7 @@ void EdgeElement::setLine(QPolygonF const &line)
 	prepareGeometryChange();
 	mLine = line;
 	saveConfiguration();
+	update();
 	updateLongestPart();
 }
 
@@ -157,7 +158,7 @@ void EdgeElement::setToPort(qreal const &toPort)
 	mGraphicalAssistApi.setToPort(id(), mPortTo);
 }
 
-void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
+void EdgeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *option, QWidget*)
 {
 	if (SettingsManager::value("PaintOldEdgeMode").toBool() && mHandler->isReshapeStarted()) {
 		paintEdge(painter, option, true);
@@ -555,7 +556,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			return;
 		}
 
-		mHandler->moveEdge(event->pos(), SettingsManager::value("ActivateGrid").toBool());
+		mHandler->moveEdge(event->pos());
 	}
 }
 
@@ -652,8 +653,8 @@ bool EdgeElement::canConnect(NodeElement const * const node, bool from) const
 
 void EdgeElement::reverse()
 {
-	int length = mLine.size();
-	for (int i = 0; i < (length >> 1); ++i) {
+	int const length = mLine.size();
+	for (int i = 0; i < length / 2; ++i) {
 		QPointF tmp(mLine[i]);
 		mLine[i] = mLine[length - 1 - i];
 		mLine[length - 1 - i] = tmp;
@@ -817,7 +818,7 @@ QPair<QPair<int, qreal>, qreal> EdgeElement::arrangeCriteria(NodeElement const *
 	return mHandler->arrangeCriteria(node, portLine);
 }
 
-NodeElement* EdgeElement::otherSide(NodeElement const *node) const
+NodeElement * EdgeElement::otherSide(NodeElement const *node) const
 {
 	if (node == mSrc) {
 		return mDst;

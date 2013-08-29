@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lineHandler.h"
+#include "umllib/private/lineHandler.h"
 
 namespace qReal {
 
@@ -20,7 +20,7 @@ protected:
 	void setBezierPoints();
 	QPainterPath bezierCurve(QPolygonF const &line) const;
 
-	virtual void handleEdgeMove(QPointF const &pos, bool needAlign);
+	virtual void handleEdgeMove(QPointF const &pos);
 
 	virtual void drawPort(QPainter *painter, int portNumber);
 	void drawControlLines(QPainter *painter);

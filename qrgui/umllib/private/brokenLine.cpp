@@ -1,4 +1,4 @@
-#include "brokenLine.h"
+#include "umllib/private/brokenLine.h"
 
 namespace qReal {
 
@@ -13,7 +13,7 @@ BrokenLine::BrokenLine(EdgeElement *edge)
 	connect(&mMinimizeAction, SIGNAL(triggered(QPointF const &)), this, SLOT(minimize()));
 }
 
-void BrokenLine::handleEdgeMove(QPointF const &pos, bool needAlign)
+void BrokenLine::handleEdgeMove(QPointF const &pos)
 {
 	QPolygonF line = mEdge->line();
 
@@ -22,10 +22,21 @@ void BrokenLine::handleEdgeMove(QPointF const &pos, bool needAlign)
 	}
 
 	line = mEdge->line();
-	line[mDragType] = needAlign ? alignedPoint(pos) : pos;
+	line[mDragType] = SettingsManager::value("ActivateGrid").toBool() ? alignedPoint(pos) : pos;
 	mEdge->setLine(line);
+}
 
-	mEdge->update();
+int BrokenLine::addPoint(QPointF const &pos)
+{
+	int const segmentNumber = defineSegment(pos);
+	if (segmentNumber >= 0) {
+		QPolygonF line = mEdge->line();
+		line.insert(segmentNumber + 1, pos);
+		mEdge->setLine(line);
+		mDragType = segmentNumber + 1;
+	}
+
+	return mDragType;
 }
 
 void BrokenLine::improveAppearance()
@@ -92,6 +103,17 @@ bool BrokenLine::tooSmallTriangle(QPolygonF const &line, int i) const
 	return neighbourhood.createStroke(line1).contains(line[i + 2])
 			|| neighbourhood.createStroke(line2).contains(line[i])
 			|| neighbourhood.createStroke(line3).contains(line[i + 1]);
+}
+
+void BrokenLine::alignToGrid()
+{
+	QPolygonF line = mEdge->line();
+
+	for (int i = 1; i < line.size() - 1; ++i) {
+		line[i] = alignedPoint(line[i]);
+	}
+
+	mEdge->setLine(line);
 }
 
 QPointF BrokenLine::alignedPoint(QPointF const &point) const

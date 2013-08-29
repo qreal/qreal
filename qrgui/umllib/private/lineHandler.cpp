@@ -1,7 +1,7 @@
-#include "lineHandler.h"
+#include "umllib/private/lineHandler.h"
 
-#include "../nodeElement.h"
-#include "../../controller/controller.h"
+#include "umllib/nodeElement.h"
+#include "controller/controller.h"
 
 namespace qReal {
 
@@ -32,21 +32,21 @@ void LineHandler::rejectMovingEdge()
 	mEdge->setLine(mSavedLine);
 }
 
-void LineHandler::moveEdge(QPointF const &pos, bool needAlign)
+void LineHandler::moveEdge(QPointF const &pos)
 {
 	if (!mEdge->isLoop() || (mDragType == 0) || (mDragType == mEdge->line().count() - 1)) {
-		handleEdgeMove(pos, needAlign);
+		handleEdgeMove(pos);
 	}
 }
 
-void LineHandler::handleEdgeMove(QPointF const &, bool)
+void LineHandler::handleEdgeMove(QPointF const &)
 {
 }
 
 void LineHandler::endMovingEdge()
 {
-	if ((mDragType == 0) || (mDragType == mEdge->line().count() - 1)) {
-		bool isStart = mDragType == 0;
+	if ((mDragType == 0) || (mDragType == mSavedLine.count() - 1)) {
+		bool const isStart = (mDragType == 0);
 		if (nodeChanged(isStart)) {
 			mEdge->connectToPort();
 			layOut();
@@ -135,12 +135,12 @@ void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
 	NodeElement *dst = mEdge->dst();
 
 	if (src && reconnectSrc) {
-		int targetLinePoint = firstOutsidePoint(true);
+		int const targetLinePoint = firstOutsidePoint(true);
 		qreal newFrom = src->portId(mEdge->mapToItem(src, mEdge->line()[targetLinePoint]), mEdge->fromPortTypes());
 		mEdge->setFromPort(newFrom);
 	}
 	if (dst && reconnectDst) {
-		int targetLinePoint = firstOutsidePoint(false);
+		int const targetLinePoint = firstOutsidePoint(false);
 		qreal newTo = dst->portId(mEdge->mapToItem(dst, mEdge->line()[targetLinePoint]), mEdge->toPortTypes());
 		mEdge->setToPort(newTo);
 	}
@@ -152,8 +152,8 @@ int LineHandler::firstOutsidePoint(bool startFromSrc) const
 	if (!node) {
 		return 0;
 	}
-	int point = startFromSrc ? 0 : mEdge->line().count() - 1;
 
+	int point = startFromSrc ? 0 : mEdge->line().count() - 1;
 	while (point >= 0 && point < mEdge->line().count()
 			&& node->contentsRect().contains(mEdge->mapToItem(node, mEdge->line().at(point)))) {
 		startFromSrc ? point++ : point--;
@@ -186,28 +186,15 @@ QPointF LineHandler::portArrangePoint(NodeElement const *node) const
 {
 	if (!mEdge->isLoop()) {
 		return (node == mEdge->src()) ? mEdge->mapToItem(mEdge->src(), mEdge->line()[1])
-			: mEdge->mapToItem(mEdge->dst(), mEdge->line()[mEdge->line().count() - 2]);
+				: mEdge->mapToItem(mEdge->dst(), mEdge->line()[mEdge->line().count() - 2]);
 	} else {
 		return mEdge->mapToItem(mEdge->src(), mEdge->line()[3]);
 	}
 }
 
-int LineHandler::addPoint(QPointF const &pos)
-{
-	int segmentNumber = defineSegment(pos);
-	if (segmentNumber >= 0) {
-		QPolygonF line = mEdge->line();
-		line.insert(segmentNumber + 1, pos);
-		mEdge->setLine(line);
-		mDragType = segmentNumber + 1;
-		mEdge->update();
-	}
-	return mDragType;
-}
-
 int LineHandler::definePoint(QPointF const &pos) const
 {
-	QPolygonF line = mEdge->line();
+	QPolygonF const line = mEdge->line();
 	for (int i = 0; i < line.size(); ++i)
 		if (QRectF(line[i] - QPointF(kvadratik / 2, kvadratik / 2), QSizeF(kvadratik, kvadratik)).contains(pos))
 			return i;
@@ -227,6 +214,7 @@ int LineHandler::defineSegment(QPointF const &pos) const
 			return i;
 		}
 	}
+
 	return -1;
 }
 
@@ -284,19 +272,6 @@ void LineHandler::deleteLoop(QPolygonF &line, int startPos)
 
 void LineHandler::alignToGrid()
 {
-	QPolygonF line = mEdge->line();
-
-	for (int i = 1; i < line.size() - 1; ++i) {
-		line[i] = alignedPoint(line[i]);
-	}
-
-	mEdge->setLine(line);
-	mEdge->update();
-}
-
-QPointF LineHandler::alignedPoint(QPointF const &point) const
-{
-	return point;
 }
 
 bool LineHandler::checkPort(QPointF const &pos, bool isStart) const
@@ -311,7 +286,7 @@ bool LineHandler::checkPort(QPointF const &pos, bool isStart) const
 		return true;
 	}
 
-	QPointF point = mEdge->mapFromItem(node, node->portPos(port));
+	QPointF const point = mEdge->mapFromItem(node, node->portPos(port));
 	QRectF rect(point - QPointF(kvadratik, kvadratik), point + QPointF(kvadratik, kvadratik));
 	return rect.contains(pos);
 }
@@ -324,7 +299,7 @@ bool LineHandler::nodeChanged(bool isStart) const
 
 void LineHandler::drawLine(QPainter *painter, bool drawSavedLine)
 {
-	QPolygonF line = drawSavedLine ? mSavedLine : mEdge->line();
+	QPolygonF const line = drawSavedLine ? mSavedLine : mEdge->line();
 	painter->drawPolyline(line);
 }
 

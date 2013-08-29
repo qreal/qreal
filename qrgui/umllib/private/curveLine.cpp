@@ -1,4 +1,4 @@
-#include "curveLine.h"
+#include "umllib/private/curveLine.h"
 
 namespace qReal {
 
@@ -8,25 +8,20 @@ CurveLine::CurveLine(EdgeElement *edge)
 	setBezierPoints();
 }
 
-void CurveLine::handleEdgeMove(QPointF const &pos, bool needAlign)
+void CurveLine::handleEdgeMove(QPointF const &pos)
 {
-	Q_UNUSED(needAlign)
 	QPolygonF line = mEdge->line();
 
 	if (mDragType >= 0) {
 		line[mDragType] = pos;
 		mEdge->setLine(line);
 	}
-
-	mEdge->update();
 }
 
 void CurveLine::adjust()
 {
 	LineHandler::adjust();
-	if (mEdge->line().count() != 4) {
-		setBezierPoints();
-	}
+	setBezierPoints();
 }
 
 void CurveLine::drawLine(QPainter *painter, bool drawSavedLine)
@@ -99,6 +94,7 @@ void CurveLine::setBezierPoints()
 	if (line.size() == 4) {
 		return;
 	}
+
 	if (mEdge->isLoop()) {
 		QPolygonF newLine;
 		newLine << line[0] << line[2] << line[3] << line[5];

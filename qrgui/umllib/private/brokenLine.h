@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lineHandler.h"
+#include "umllib/private/lineHandler.h"
 
 namespace qReal {
 
@@ -10,6 +10,8 @@ class BrokenLine : public LineHandler
 public:
 	BrokenLine(EdgeElement *edge);
 
+	virtual void alignToGrid();
+
 	virtual QList<ContextMenuAction *> extraActions(QPointF const &pos);
 
 protected slots:
@@ -17,18 +19,15 @@ protected slots:
 	void deleteSegment(QPointF const &pos);
 
 protected:
-	virtual void handleEdgeMove(QPointF const &pos, bool needAlign);
+	virtual void handleEdgeMove(QPointF const &pos);
+	int addPoint(QPointF const &pos);
+	QPointF alignedPoint(QPointF const &point) const;
 
 	virtual void improveAppearance();
-
 	void deleteUnneededPoints();
 	void deleteClosePoints(QPolygonF &line) const;
 	void removeSmallTriangles(QPolygonF &line) const;
 	bool tooSmallTriangle(QPolygonF const &line, int i) const;
-
-	void deleteLoops() {}
-
-	virtual QPointF alignedPoint(QPointF const &point) const;
 
 	bool delPointActionIsPossible(QPointF const &pos) const;
 	bool delSegmentActionIsPossible(QPointF const &pos);
