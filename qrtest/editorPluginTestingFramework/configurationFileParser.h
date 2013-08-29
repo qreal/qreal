@@ -13,6 +13,7 @@ public:
 	QString makeParameter() const;
 	QString configurationParameter() const;
 	QString pluginExtension() const;
+	QString prefix() const;
 
 private:
 	QString valueByTag(QString const &tag) const;
@@ -21,6 +22,7 @@ private:
 	QString mMakeParameter;
 	QString mConfigurationParameter;
 	QString mPluginExtension;
+	QString mPrefix;
 
 	QDomDocument mXml;
 };

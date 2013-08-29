@@ -2,5 +2,6 @@
 	<qmake>qmake</qmake>
 	<make>make</make>
 	<configuration>debug</configuration>
-	<pluginExtension>lib</pluginExtension>
+	<pluginExtension>so</pluginExtension>
+	<prefix>lib</prefix>
 </xml>

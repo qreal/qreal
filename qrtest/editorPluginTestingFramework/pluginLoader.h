@@ -13,7 +13,8 @@ public:
 	qReal::EditorInterface* loadedPlugin(
 			QString const &fileName
 			, QString const &pathToFile
-			, QString const &pluginExtension);
+			, QString const &pluginExtension
+			, QString const &prefix);
 
 	/// returns generated plugins names
 	QStringList pluginNames();

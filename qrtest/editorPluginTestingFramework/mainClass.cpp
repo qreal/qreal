@@ -174,7 +174,7 @@ void MainClass::launchQrxc(QString const &fileName)
 
 EditorInterface* MainClass::loadedPlugin(QString const &fileName, QString const &pathToFile)
 {
-	return mPluginLoader.loadedPlugin(fileName, pathToFile, mPluginExtension);
+	return mPluginLoader.loadedPlugin(fileName, pathToFile, mPluginExtension, mPrefix);
 }
 
 void MainClass::createHtml(QList<QPair<QString, QPair<QString, QString> > > qrxcAndQrmcResult
@@ -199,5 +199,6 @@ void MainClass::parseConfigurationFile(const bool &travisMode)
 	mMakeParameter = mConfigurationFileParser.makeParameter();
 	mConfigurationParameter = mConfigurationFileParser.configurationParameter();
 	mPluginExtension = mConfigurationFileParser.pluginExtension();
+	mPrefix = mConfigurationFileParser.prefix();
 }
 

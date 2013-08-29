@@ -16,6 +16,7 @@ void ConfigurationFileParser::parseConfigurationFile(QString const &configuratio
 	mMakeParameter = valueByTag("make");
 	mConfigurationParameter = valueByTag("configuration");
 	mPluginExtension = valueByTag("pluginExtension");
+	mPrefix = valueByTag("prefix");
 }
 
 QString ConfigurationFileParser::valueByTag(QString const &tag) const
@@ -44,4 +45,9 @@ QString ConfigurationFileParser::configurationParameter() const
 QString ConfigurationFileParser::pluginExtension() const
 {
 	return mPluginExtension;
+}
+
+QString ConfigurationFileParser::prefix() const
+{
+	return mPrefix;
 }
