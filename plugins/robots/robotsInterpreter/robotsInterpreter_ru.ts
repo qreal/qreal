@@ -743,7 +743,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="details/interpreter.cpp" line="266"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
-        <translation type="unfinished">Превышено максимальное число возможных потоков (максимум %1 потоков)ы</translation>
+        <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
 </context>
 <context>
