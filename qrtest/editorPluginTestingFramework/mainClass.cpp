@@ -141,8 +141,9 @@ void MainClass::copyTestMetamodel(QString const &fileName)
 	QFile::copy(sourceDir.absolutePath() + "/" + fileName, destDir.absolutePath() + "/" + fileName);
 }
 
-void MainClass::setTempValueInSettingsManager() const
+void MainClass::setTempValueInSettingsManager()
 {
+	mApplicationPath.chop(4);
 	SettingsManager::setValue("temp", mApplicationPath + tempValueForSettingsManager);
 }
 
@@ -168,7 +169,6 @@ void MainClass::compilePlugin(QString const &directoryToCodeToCompile)
 
 void MainClass::launchQrxc(QString const &fileName)
 {
-	mApplicationPath.chop(4);
 	mQrxcLauncher.launchQrxc(fileName, mApplicationPath);
 }
 

@@ -44,7 +44,7 @@ private:
 	static void copyTestMetamodel(QString const &fileName);
 
 	/// sets value of tamp variable
-	void setTempValueInSettingsManager() const;
+	void setTempValueInSettingsManager();
 	/// returns old value
 	void returnOldValueOfTemp() const;
 
