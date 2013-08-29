@@ -1,7 +1,5 @@
 #include "forkBlock.h"
 
-#include <QtCore/QDebug>
-
 using namespace qReal;
 using namespace interpreters::robots::details::blocks;
 
