@@ -15,6 +15,8 @@ using namespace qReal;
 using namespace interpreters::robots;
 using namespace interpreters::robots::details;
 
+int const maxThreadsCound = 100;
+
 Interpreter::Interpreter()
 	: mGraphicalModelApi(NULL)
 	, mLogicalModelApi(NULL)
@@ -260,6 +262,11 @@ void Interpreter::configureSensors(
 
 void Interpreter::addThread(details::Thread * const thread)
 {
+	if (mThreads.count() >= maxThreadsCound) {
+		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCound));
+		stopRobot();
+	}
+
 	mThreads.append(thread);
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
