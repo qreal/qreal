@@ -14,8 +14,8 @@ public:
 
 private:
 
-	/// generates path to plugin from editorsSdk
-	static QString generatePathToPlugin(QString const &pathToQRealRoot);
+	/// generates path to plugin from .pro
+	static QString generatePathToPlugin();
 
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;
 };

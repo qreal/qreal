@@ -34,7 +34,7 @@ void QrxcLauncher::launchQrxc(QString const &fileName, QString const &pathToQRea
 	foreach (Id const &key, metamodelList.keys()) {
 		if (mRepoApi->isLogicalElement(key)) {
 			/*SettingsManager::value("pathToQRealSourceFiles").toString();*/
-			QString const &directoryToGeneratedCode = generatePathToPlugin(pathToQRealSources);
+			QString const &directoryToGeneratedCode = generatePathToPlugin();
 
 			if (!dir.exists(directoryToGeneratedCode)) {
 				dir.mkdir(directoryToGeneratedCode);
@@ -49,14 +49,11 @@ void QrxcLauncher::launchQrxc(QString const &fileName, QString const &pathToQRea
 	qDebug() << stringSeparator;
 }
 
-QString QrxcLauncher::generatePathToPlugin(QString const &pathToQRealRoot)
+QString QrxcLauncher::generatePathToPlugin()
 {
 	QString result;
 
-	QString pathToEditorsSdk = pathToQRealRoot + "/plugins";
-	int const levels = pathToEditorsSdk.split("/", QString::SkipEmptyParts).count();
-
-	for (int i = 0; i < levels - 1; i++) {
+	for (int i = 0; i < 3; i++) {
 		result += "../";
 	}
 
