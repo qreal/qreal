@@ -18,7 +18,15 @@ protected slots:
 
 protected:
 	virtual void handleEdgeMove(QPointF const &pos, bool needAlign);
+
 	virtual void improveAppearance();
+
+	void deleteUnneededPoints();
+	void deleteClosePoints(QPolygonF &line) const;
+	void removeSmallTriangles(QPolygonF &line) const;
+	bool tooSmallTriangle(QPolygonF const &line, int i) const;
+
+	void deleteLoops() {}
 
 	virtual QPointF alignedPoint(QPointF const &point) const;
 

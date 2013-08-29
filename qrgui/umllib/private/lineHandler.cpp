@@ -234,6 +234,54 @@ void LineHandler::improveAppearance()
 {
 }
 
+void LineHandler::deleteLoops()
+{
+	if (mEdge->isLoop()) {
+		return;
+	}
+
+	QPolygonF line = mEdge->line();
+	deleteLoop(line, 0);
+	mEdge->setLine(line);
+}
+
+void LineHandler::deleteLoop(QPolygonF &line, int startPos)
+{
+	for (int i = startPos; i < line.size() - 3; ++i)
+	{
+		bool isCut = false;
+		for (int j = i + 2; j < line.size() - 1; ++j)
+		{
+			QPointF cut;
+			if (QLineF(line[i], line[i + 1]).intersect(QLineF(line[j], line[j + 1]), &cut)
+					== QLineF::BoundedIntersection)
+			{
+				if ((i != 0) || !((j == line.size() - 2)
+						&& (QLineF(line.first(), line.last()).length() < (kvadratik * 2))))
+				{
+					QPainterPath path;
+					QPainterPathStroker ps;
+					ps.setWidth(kvadratik);
+					for (int k = 0; k < line.size() - 1; ++k) {
+						path.moveTo(line[k]);
+						path.lineTo(line[k + 1]);
+						if (ps.createStroke(path).contains(cut)) {
+							line.insert(k + 1, cut);
+							break;
+						}
+					}
+					line.remove(i + 2, j - i);
+					deleteLoop(line, i);
+					isCut = true;
+					break;
+				}
+			}
+		}
+		if (isCut)
+			break;
+	}
+}
+
 void LineHandler::alignToGrid()
 {
 	QPolygonF line = mEdge->line();
@@ -253,7 +301,7 @@ QPointF LineHandler::alignedPoint(QPointF const &point) const
 
 bool LineHandler::checkPort(QPointF const &pos, bool isStart) const
 {
-	NodeElement *node = dynamic_cast<NodeElement *>(mEdge->getNodeAt(pos, isStart));
+	NodeElement *node = mEdge->getNodeAt(pos, isStart);
 	if (!node) {
 		return true;
 	}
@@ -270,8 +318,7 @@ bool LineHandler::checkPort(QPointF const &pos, bool isStart) const
 
 bool LineHandler::nodeChanged(bool isStart) const
 {
-	NodeElement *node = dynamic_cast<NodeElement *>(mEdge->getNodeAt(isStart
-			? mEdge->line().first() : mEdge->line().last(), isStart));
+	NodeElement *node = mEdge->getNodeAt(isStart ? mEdge->line().first() : mEdge->line().last(), isStart);
 	return isStart ? (node != mEdge->src()) : (node != mEdge->dst());
 }
 

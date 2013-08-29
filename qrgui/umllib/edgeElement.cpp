@@ -579,90 +579,6 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	mHandler->endMovingEdge();
 }
 
-void EdgeElement::delClosePoints()
-{
-	int const rad = kvadratik * 2;
-	for (int i = 0; i < mLine.size() - 1; i++) {
-		if (QLineF(mLine[i], mLine[i + 1]).length() < rad) {
-			if (i != mLine.size() - 2) {
-				mLine.remove(i + 1);
-				i--;
-			} else if (i != 0) {
-				mLine.remove(i);
-				i = i - 2;
-			}
-		}
-	}
-}
-
-void EdgeElement::delCloseLinePoints()
-{
-	if (mIsLoop) { // rough prevention of transforming in the point (because #602)
-		return;
-	}
-
-	prepareGeometryChange();
-
-	int const width = kvadratik * 4;
-
-	delClosePoints();
-
-	for (int i = 0; i < mLine.size() - 2; i++) {
-		QPainterPath path;
-		QPainterPathStroker neighbourhood;
-		neighbourhood.setWidth(width);
-		path.moveTo(mLine[i]);
-		path.lineTo(mLine[i + 2]);
-		if (neighbourhood.createStroke(path).contains(mLine[i + 1])) {
-			mLine.remove(i + 1);
-			i--;
-		}
-	}
-
-	for (int i = 0; i < mLine.size() - 2; i++) {
-		QPainterPath path;
-		QPainterPathStroker neighbourhood;
-		neighbourhood.setWidth(width);
-		path.moveTo(mLine[i + 1]);
-		path.lineTo(mLine[i + 2]);
-		if (neighbourhood.createStroke(path).contains(mLine[i])) {
-			mLine.remove(i + 1);
-			i--;
-		}
-	}
-
-	for (int i = 0; i < mLine.size() - 2; i++) {
-		QPainterPath path;
-		QPainterPathStroker neighbourhood;
-		neighbourhood.setWidth(width);
-		path.moveTo(mLine[i]);
-		path.lineTo(mLine[i + 1]);
-		if (neighbourhood.createStroke(path).contains(mLine[i + 2])) {
-			mLine.remove(i + 1);
-			i--;
-			// may be unneeds i-- here because exist previous deletes
-		}
-	}
-
-	updateLongestPart();
-}
-
-bool EdgeElement::removeOneLinePoints(int startingPoint)
-{
-	if ((mLine[startingPoint].x() == mLine[startingPoint + 1].x() &&
-		mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
-		(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
-		mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
-	{
-		prepareGeometryChange();
-		mLine.remove(startingPoint + 1);
-		updateLongestPart();
-		return true;
-	} else {
-		return false;
-	}
-}
-
 // NOTE: using don`t forget about possible nodeElement`s overlaps (different Z-value)
 // connecting to the innermost node at the point
 NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
@@ -1051,48 +967,6 @@ void EdgeElement::changeLineType()
 	layOut();
 }
 
-QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3
-		, QPointF const &pos4)
-{
-	// use equation of line for solution
-	qreal a1 = pos1.y() - pos2.y();
-	qreal b1 = pos2.x() - pos1.x();
-	qreal c1 = pos1.x() * pos2.y() - pos2.x() * pos1.y();
-	qreal a2 = pos3.y() - pos4.y();
-	qreal b2 = pos4.x() - pos3.x();
-	qreal c2 = pos3.x() * pos4.y() - pos4.x() * pos3.y();
-	if (abs(a2 * b1 - a1 * b2) < epsilon) {
-		return NULL;
-	}
-	qreal y = 0;
-	qreal x = 0;
-	if (abs(a2) > epsilon) {
-		y = (-c1 + a1 * c2 / a2)/(-(a1 / a2) * b2 + b1);
-		x = (b2 * y + c2) / (-a2);
-	} else {
-		y = pos3.y();
-		x = -(b1 * y + c1) / a1;
-	}
-	QPointF* cut = new QPointF(x, y);
-
-	QPainterPath path;
-	QPainterPathStroker ps;
-	ps.setWidth(1);
-	path.moveTo(pos1);
-	path.lineTo(pos2);
-	if (ps.createStroke(path).contains(QPointF(cut->x(), cut->y()))) {
-		QPainterPath path1;
-		QPainterPathStroker ps1;
-		ps1.setWidth(1);
-		path1.moveTo(pos3);
-		path1.lineTo(pos4);
-		if (ps1.createStroke(path1).contains(QPointF(cut->x(), cut->y()))) {
-			return cut;
-		}
-	}
-	return NULL;
-
-}
 
 EdgeData& EdgeElement::data()
 {
@@ -1108,53 +982,6 @@ EdgeData& EdgeElement::data()
 	mData.pos = mGraphicalAssistApi.position(mId);
 
 	return mData;
-}
-
-void EdgeElement::deleteLoop(int startPos)
-{
-	for (int i = startPos; i < mLine.size() - 3; ++i)
-	{
-		bool isCut = false;
-		for (int j = i + 2; j < mLine.size() - 1; ++j)
-		{
-			QPointF* cut = haveIntersection(mLine[i], mLine[i + 1], mLine[j], mLine[j + 1]);
-			if (cut)
-			{
-				if ((i != 0) || !((j == mLine.size() - 2)
-						&& (QLineF(mLine.first(), mLine.last()).length() < (kvadratik * 2))))
-				{
-					QPointF const pos = QPointF(cut->x(), cut->y());
-					QPainterPath path;
-					QPainterPathStroker ps;
-					ps.setWidth(kvadratik);
-					for (int k = 0; k < mLine.size() - 1; ++k) {
-						path.moveTo(mLine[k]);
-						path.lineTo(mLine[k + 1]);
-						if (ps.createStroke(path).contains(pos)) {
-							mLine.insert(k + 1, pos);
-							break;
-						}
-					}
-					mLine.remove(i + 2, j - i);
-					deleteLoop(i);
-					isCut = true;
-					break;
-				}
-				delete(cut);
-			}
-		}
-		if (isCut)
-			break;
-	}
-}
-
-void EdgeElement::deleteLoops()
-{
-	if (mIsLoop) {
-		return;
-	}
-	prepareGeometryChange();
-	deleteLoop(0);
 }
 
 QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &value)

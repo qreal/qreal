@@ -30,8 +30,68 @@ void BrokenLine::handleEdgeMove(QPointF const &pos, bool needAlign)
 
 void BrokenLine::improveAppearance()
 {
-	mEdge->delCloseLinePoints();
-	mEdge->deleteLoops();
+	deleteUnneededPoints();
+	deleteLoops();
+}
+
+void BrokenLine::deleteUnneededPoints()
+{
+	if (mEdge->isLoop()) {
+		return;
+	}
+
+	QPolygonF line = mEdge->line();
+
+	deleteClosePoints(line);
+	removeSmallTriangles(line);
+
+	mEdge->setLine(line);
+}
+
+void BrokenLine::deleteClosePoints(QPolygonF &line) const
+{
+	int const rad = kvadratik * 2;
+
+	for (int i = 0; i < line.size() - 1; i++) {
+		if (QLineF(line[i], line[i + 1]).length() < rad) {
+			if (i != line.size() - 2) {
+				line.remove(i + 1);
+				i--;
+			} else if (i != 0) {
+				line.remove(i);
+				i = i - 2;
+			}
+		}
+	}
+}
+
+void BrokenLine::removeSmallTriangles(QPolygonF &line) const
+{
+	for (int i = 0; i < line.size() - 2; i++) {
+		if (tooSmallTriangle(line, i)) {
+			line.remove(i + 1);
+			i--;
+		}
+	}
+}
+
+bool BrokenLine::tooSmallTriangle(QPolygonF const &line, int i) const
+{
+	QPainterPath line1(line[i]);
+	line1.lineTo(line[i + 1]);
+
+	QPainterPath line2(line[i + 1]);
+	line2.lineTo(line[i + 2]);
+
+	QPainterPath line3(line[i]);
+	line3.lineTo(line[i + 2]);
+
+	QPainterPathStroker neighbourhood;
+	neighbourhood.setWidth(kvadratik * 4);
+
+	return neighbourhood.createStroke(line1).contains(line[i + 2])
+			|| neighbourhood.createStroke(line2).contains(line[i])
+			|| neighbourhood.createStroke(line3).contains(line[i + 1]);
 }
 
 QPointF BrokenLine::alignedPoint(QPointF const &point) const

@@ -25,8 +25,10 @@ protected:
 	};
 
 	virtual void handleEdgeMove(QPointF const &pos, bool needAlign);
-	virtual void improveAppearance();
 	void moveSegment(QPointF const &oldPos, QPointF const &newPos);
+
+	virtual void improveAppearance();
+	void deleteShortSegments();
 
 	QPointF portArrangePoint(NodeElement const *node) const;
 

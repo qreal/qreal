@@ -41,6 +41,9 @@ protected:
 	int addPoint(QPointF const &pos);
 
 	virtual void improveAppearance();
+	void deleteLoops();
+	void deleteLoop(QPolygonF &line, int startPos);
+
 	bool checkPort(QPointF const &pos, bool isStart) const;
 	bool nodeChanged(bool isStart) const;
 	int firstOutsidePoint(bool startFromSrc) const;

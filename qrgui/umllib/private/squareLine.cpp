@@ -20,7 +20,7 @@ void SquareLine::handleEdgeMove(QPointF const &pos, bool needAlign)
 	if (mDragType == EdgeElement::noPort) {
 		moveSegment(mDragStartPoint, pos);
 		return;
-	} else if (mDragType == 0 || mDragType == mSavedLine.size() - 1) {
+	} else if ((mDragType == 0) || (mDragType == mSavedLine.size() - 1)) {
 		line[mDragType] = pos;
 		mEdge->setLine(line);
 		adjustEndSegments();
@@ -111,11 +111,11 @@ void SquareLine::moveSegment(QPointF const &oldPos, QPointF const &newPos)
 	QLineF segment(line[segmentNumber], line[segmentNumber + 1]);
 	QPointF offset(newPos - line[segmentNumber]);
 
-	if (segment.x1() == segment.x2()) {
+	if (qAbs(segment.x1() - segment.x2()) < epsilon) {
 		offset.setY(0);
 	}
 
-	if (segment.y1() == segment.y2()) {
+	if (qAbs(segment.y1() - segment.y2()) < epsilon) {
 		offset.setX(0);
 	}
 
@@ -127,11 +127,47 @@ void SquareLine::moveSegment(QPointF const &oldPos, QPointF const &newPos)
 
 void SquareLine::improveAppearance()
 {
-//	mEdge->delCloseLinePoints();
-//	mEdge->deleteLoops();
 	if (needCorrect()) {
 		squarize();
 	}
+
+	deleteLoops();
+	deleteShortSegments();
+}
+
+void SquareLine::deleteShortSegments()
+{
+	QPolygonF line = mEdge->line();
+
+	for (int i = 1; i < line.size() - 2; i++) {
+		QLineF segment(line[i], line[i + 1]);
+		if (segment.length() < epsilon) {
+			line.remove(i, 2);
+			i--;
+		} else if (segment.length() < kvadratik * 2) {
+			if (i != 1) {
+				QLineF previousLine(line[i - 1], line[i]);
+				if (qAbs(previousLine.x1() - previousLine.x2()) < epsilon) {
+					line[i - 1] = QPointF(line[i + 1].x(), line[i - 1].y());
+				} else {
+					line[i - 1] = QPointF(line[i - 1].x(), line[i + 1].y());
+				}
+				line.remove(i, 2);
+				i--;
+			} else if (i != line.size() - 3) {
+				QLineF nextLine(line[i + 1], line[i + 2]);
+				if (qAbs(nextLine.x1() - nextLine.x2()) < epsilon) {
+					line[i + 2] = QPointF(line[i].x(), line[i + 2].y());
+				} else {
+					line[i + 2] = QPointF(line[i + 2].x(), line[i].y());
+				}
+				line.remove(i, 2);
+				i--;
+			}
+		}
+	}
+
+	mEdge->setLine(line);
 }
 
 bool SquareLine::needCorrect() const

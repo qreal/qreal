@@ -130,8 +130,6 @@ public:
 	void connectLoopEdge(NodeElement *newMaster);
 
 	void layOut();
-	void delCloseLinePoints();
-	void deleteLoops();
 
 	NodeElement *getNodeAt(const QPointF &position, bool isStart);
 	NodeSide defineNodePortSide(bool isStart);
@@ -175,12 +173,6 @@ private:
 
 	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const;
 	void updateLongestPart();
-
-	void delClosePoints();
-	bool removeOneLinePoints(int startingPoint);
-
-	void deleteLoop(int startPos);
-	QPointF* haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4);
 
 	bool reverseActionIsPossible() const;
 	bool canConnect(NodeElement const * const node, bool from) const;
