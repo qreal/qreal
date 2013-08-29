@@ -72,10 +72,6 @@ MainClass::MainClass(
 	}
 
 	returnOldValueOfTemp();
-
-	delete qrxcGeneratedPlugin;
-	delete qrmcGeneratedPlugin;
-	delete interpreterMethodsTester;
 }
 
 int MainClass::travisTestResult() const
