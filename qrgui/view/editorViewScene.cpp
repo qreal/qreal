@@ -752,16 +752,18 @@ void EditorViewScene::moveSelectedItems(int direction)
 			mController->execute(resizeCommand);
 		} else {
 			EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
-			ReshapeEdgeCommand *edgeCommand = new ReshapeEdgeCommand(this, edge->id());
-			edgeCommand->startTracking();
-			edge->setPos(newPos);
-			if (edge && !(edge->src() && edge->dst()) && (edge->src() || edge->dst())
-					&& (edge->src() ? !edge->src()->isSelected() : true)
-					&& (edge->dst() ? !edge->dst()->isSelected() : true)) {
-				edge->adjustLink();
+			if (edge) {
+				ReshapeEdgeCommand *edgeCommand = new ReshapeEdgeCommand(this, edge->id());
+				edgeCommand->startTracking();
+				edge->setPos(newPos);
+				if (edge && !(edge->src() && edge->dst()) && (edge->src() || edge->dst())
+						&& (edge->src() ? !edge->src()->isSelected() : true)
+						&& (edge->dst() ? !edge->dst()->isSelected() : true)) {
+					edge->adjustLink();
+				}
+				edgeCommand->stopTracking();
+				mController->execute(edgeCommand);
 			}
-			edgeCommand->stopTracking();
-			mController->execute(edgeCommand);
 		}
 	}
 
