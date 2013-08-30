@@ -4,8 +4,6 @@
 
 #include "fontCache.h"
 
-#include <QtCore/QDebug>
-
 using namespace qReal;
 
 FontCache::FontCache()
