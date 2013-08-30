@@ -229,7 +229,7 @@ void SquareLine::squarize()
 		return;
 	}
 
-	int type = defineType();
+	LineType type = defineType();
 
 	switch (type) {
 	case vertical:
@@ -248,14 +248,12 @@ void SquareLine::squarize()
 		mEdge->setLine(line);
 		correctLine(line, needCorrectSrc(), needCorrectDst(), false);
 		break;
-	default:
-		qDebug() << "incorrect link type";
 	}
 
 	mEdge->setLine(line);
 }
 
-int SquareLine::defineType() const
+SquareLine::LineType SquareLine::defineType() const
 {
 	if (!(mEdge->src() && mEdge->dst())) {
 		return horizontalTurn;

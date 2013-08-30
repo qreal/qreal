@@ -223,7 +223,7 @@ void NodeElement::arrangeLinks()
 
 void NodeElement::storeGeometry()
 {
-	QPolygon contents(mContents.toAlignedRect()); // saving correct current contents
+	QPolygon const contents(mContents.toAlignedRect()); // saving correct current contents
 
 	if ((pos() != mGraphicalAssistApi.position(id()))) { // check if it's been changed
 		mGraphicalAssistApi.setPosition(id(), pos());

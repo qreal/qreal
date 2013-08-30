@@ -394,8 +394,8 @@ void EdgeElement::createLoopEdge() // nice implementation makes sense after #602
 
 	QPolygonF newLine;
 
-	NodeSide startSide = defineNodePortSide(true);
-	NodeSide endSide = defineNodePortSide(false);
+	NodeSide const startSide = defineNodePortSide(true);
+	NodeSide const endSide = defineNodePortSide(false);
 
 	QPointF secondPoint = boundingRectIndent(mLine.first(), startSide);
 	QPointF penultPoint = boundingRectIndent(mLine.last(), endSide);
@@ -776,15 +776,6 @@ EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart)
 void EdgeElement::adjustLink()
 {
 	mHandler->adjust();
-}
-
-void EdgeElement::arrangeSrcAndDst()
-{
-	if (mSrc) {
-		mSrc->arrangeLinks();
-	} else if (mDst) {
-		mDst->arrangeLinks();
-	}
 }
 
 NodeElement *EdgeElement::src() const

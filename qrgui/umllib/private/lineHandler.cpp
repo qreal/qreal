@@ -199,7 +199,7 @@ int LineHandler::definePoint(QPointF const &pos) const
 		if (QRectF(line[i] - QPointF(kvadratik / 2, kvadratik / 2), QSizeF(kvadratik, kvadratik)).contains(pos))
 			return i;
 
-	return EdgeElement::noPort;
+	return -1;
 }
 
 int LineHandler::defineSegment(QPointF const &pos) const

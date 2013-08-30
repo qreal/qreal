@@ -3,7 +3,7 @@
 namespace qReal {
 
 CurveLine::CurveLine(EdgeElement *edge)
-	: LineHandler(edge)
+		: LineHandler(edge)
 {
 	setBezierPoints();
 }
@@ -83,7 +83,7 @@ QPainterPath CurveLine::shape() const
 QPainterPath CurveLine::bezierCurve(QPolygonF const &line) const
 {
 	QPainterPath curve(line[0]);
-	curve.cubicTo(line[1], line[2], line[3]);
+	curve.cubicTo(line[1], line[line.count() - 2], line[line.count() - 1]);
 	return curve;
 }
 

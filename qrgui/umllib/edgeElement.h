@@ -9,22 +9,6 @@
 
 namespace qReal {
 
-namespace enums {
-namespace arrowTypeEnum {
-enum ArrowType
-{
-	  filledArrow
-	, emptyArrow
-	, filledRhomb
-	, emptyRhomb
-	, noArrow
-	, openArrow
-	, crossedLine
-	, emptyCircle
-};
-}
-}
-
 class NodeElement;
 class LineHandler;
 
@@ -66,10 +50,13 @@ public:
 	virtual void initTitles();
 
 	bool isDividable();
-	void adjustLink();
 
+	/// Adjust link to make its' ends be placed exactly on corresponding ports
+	void adjustLink();
+	/// Reconnect, arrange links on linear ports and lay out the link depending on its' type
+	void layOut();
+	/// Reconnect link to exclude intersections with adjacent nodes
 	void reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
-	void arrangeSrcAndDst();
 
 	NodeElement *src() const;
 	NodeElement *dst() const;
@@ -82,6 +69,7 @@ public:
 	void tuneForLinker();
 
 	QPair<qreal, qreal> portIdOn(NodeElement const *node) const;
+	/// @return numeric criteria for sorting links on linear ports
 	QPair<QPair<int, qreal>, qreal> arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
 
 	NodeElement* otherSide(NodeElement const *node) const;
@@ -118,20 +106,26 @@ public:
 
 	EdgeData& data();
 
+	/// Change link type and redraw it
 	void changeLineType();
 
+	/// Save link position to the repo
 	void setGraphicApiPos();
+	/// Save link configuration to the repo
 	void saveConfiguration();
 
 	bool isLoop();
+	/// Create an edge connected with both ends to the same node
 	void createLoopEdge();
+	/// Connect link to nearest newMaster's ports
 	void connectLoopEdge(NodeElement *newMaster);
 
-	void layOut();
-
-	NodeElement *getNodeAt(const QPointF &position, bool isStart);
+	/// @return Node at position that is more appropriate for the link to connect to.
+	NodeElement *getNodeAt(QPointF const &position, bool isStart);
+	/// Determine on which side of a node (top, bottom, right or left) the link's end is placed
 	NodeSide defineNodePortSide(bool isStart);
 
+	/// Align link's intermediate points to grid
 	void alignToGrid();
 
 protected:
