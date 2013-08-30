@@ -5,11 +5,10 @@
 
 namespace qReal {
 
-/** Base class for classes representing different link types (Strategy pattern).
- *  Performs mouse events handling, link rendering and everything connected to laying the link out,
- *  reconnecting and adjusting of the link to adjacent nodes and grid.
- *  Apart of that, LineHandler's subclass may add extra actions to link's context menu.
- */
+/// Base class for classes representing different link types (Strategy pattern).
+/// Performs mouse events handling, link rendering and everything connected to laying the link out, reconnecting
+/// and adjusting of the link to adjacent nodes and grid.
+/// Apart of that, LineHandler's subclass may add extra actions to link's context menu.
 class LineHandler : public QObject
 {
 	Q_OBJECT

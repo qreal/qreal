@@ -243,7 +243,8 @@ QPainterPath EdgeElement::shape() const
 	path = ps.createStroke(path);
 
 	foreach (QPointF const &point, mLine) {
-		path.addRect(QRectF(point - QPointF(kvadratik / 2, kvadratik / 2), QSizeF(kvadratik, kvadratik)).adjusted(1, 1, -1, -1));
+		path.addRect(QRectF(point - QPointF(kvadratik / 2, kvadratik / 2)
+				, QSizeF(kvadratik, kvadratik)).adjusted(1, 1, -1, -1));
 	}
 
 	return path;

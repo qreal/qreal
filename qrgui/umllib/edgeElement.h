@@ -22,15 +22,15 @@ class EdgeElement : public Element
 
 public:
 	enum DragType {
-		wholeEdge = -2,
-		noPort = -1
+		wholeEdge = -2
+		, noPort = -1
 	};
 
 	enum NodeSide {
-		left,
-		top,
-		right,
-		bottom
+		left
+		, top
+		, right
+		, bottom
 	};
 
 	EdgeElement(ElementImpl *impl

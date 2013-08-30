@@ -4,9 +4,8 @@
 
 namespace qReal {
 
-/** @brief A strategy class for handling custom broken link
- *  User may move points or such link, create new points, delete points and segments
- */
+/// @brief A strategy class for handling custom broken link
+/// User may move points or such link, create new points, delete points and segments
 class BrokenLine : public LineHandler
 {
 	Q_OBJECT

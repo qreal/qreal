@@ -4,10 +4,9 @@
 
 namespace qReal {
 
-/** @brief A strategy class for handling square link (consisting of strict vertical or horizontal lines)
- *  User may move non-end segments of the link. Link is laid out in a way that is doesn't intersect
- *  adjacent nodes.
- */
+/// @brief A strategy class for handling square link (consisting of strict vertical or horizontal lines)
+/// User may move non-end segments of the link. Link is laid out in a way that is doesn't intersect
+/// adjacent nodes.
 class SquareLine : public LineHandler
 {
 	Q_OBJECT
