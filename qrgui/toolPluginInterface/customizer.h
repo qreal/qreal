@@ -92,6 +92,17 @@ public:
 	{
 		return QObject::tr("Collapse explosion");
 	}
+
+	virtual QString userPaletteTitle() const
+	{
+		return QObject::tr("Existing connections");
+	}
+
+	virtual QString userPaletteDescription() const
+	{
+		return QObject::tr("Elements from this group exist"\
+				" for reusing all created connections");
+	}
 };
 
 }
