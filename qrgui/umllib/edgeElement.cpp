@@ -242,7 +242,7 @@ void EdgeElement::drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *o
 {
 	if (option->state & (QStyle::State_Selected | QStyle::State_MouseOver)) {
 		painter->setBrush(Qt::SolidPattern);
-		if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine))
+		if (SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(curveLine))
 		{
 			drawCurvePorts(painter);
 			return;
@@ -250,7 +250,7 @@ void EdgeElement::drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *o
 		foreach (QPointF const point, mLine) {
 			// if the square mode is on then user can't edit links manually so there is no need in showing
 			// intermediate link points to him
-			if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)
+			if (SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(squareLine)
 					&& !(point == mLine.first() || point == mLine.last()))
 			{
 				continue;
@@ -328,7 +328,7 @@ void EdgeElement::paintSavedEdge(QPainter *painter) const
 		return;
 	}
 
-	if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
+	if (SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(curveLine)) {
 		return;
 	}
 
@@ -367,7 +367,7 @@ void EdgeElement::paintChangedEdge(QPainter *painter, const QStyleOptionGraphics
 	painter->save();
 	setEdgePainter(painter, edgePen(painter, mColor, mPenStyle, mPenWidth), painter->opacity());
 
-	if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
+	if (SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(curveLine)) {
 		painter->drawPath(bezierCurve());
 	} else {
 		painter->drawPolyline(mLine);
@@ -395,7 +395,7 @@ void EdgeElement::paintChangedEdge(QPainter *painter, const QStyleOptionGraphics
 
 void EdgeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
-	if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
+	if (SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(curveLine)) {
 		setBezierPoints();
 	}
 	paintSavedEdge(painter);
@@ -410,7 +410,7 @@ QPainterPath EdgeElement::shape() const
 	QPainterPathStroker ps;
 	ps.setWidth(kvadratik - 2.5);
 
-	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) && mLine.size() == 4) {
+	if ((SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(curveLine)) && mLine.size() == 4) {
 		path.addPath(bezierCurve());
 	} else {
 		path.addPolygon(mLine);
@@ -732,7 +732,7 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	mReshapeCommand = new commands::ReshapeEdgeCommand(this);
 	mReshapeCommand->startTracking();
 
-	if (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)
+	if (SettingsManager::value("LineType", brokenLine).toInt() != static_cast<int>(squareLine)
 			&& (event->modifiers() & Qt::AltModifier) && (getPoint(event->pos()) != noPort)
 			&& (event->button() == Qt::LeftButton) && delPointActionIsPossible(event->pos()))
 	{
@@ -768,7 +768,7 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		Element::mousePressEvent(event);
 
 
-		if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
+		if (SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(curveLine)) {
 			return;
 		}
 		if ((mSrc) || (mDst)) {
@@ -849,7 +849,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			return;
 		}
 		Element::mouseMoveEvent(event);
-		if (SettingsManager::value("LineType").toInt() == static_cast<int>(curveLine)) {
+		if (SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(curveLine)) {
 			return;
 		}
 	} else {
@@ -866,7 +866,7 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		mLine[mDragPoint] = event->pos();
 
-		if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
+		if ((SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
 			squarize();
 		} else {
 			if (SettingsManager::value("ActivateGrid").toBool()) {
@@ -903,7 +903,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	connectToPort();
 
-	if (SettingsManager::value("LineType").toInt() != static_cast<int>(curveLine)) {
+	if (SettingsManager::value("LineType", brokenLine).toInt() != static_cast<int>(curveLine)) {
 		delCloseLinePoints();
 	}
 
@@ -1085,7 +1085,7 @@ bool EdgeElement::delPointActionIsPossible(const QPointF &pos)
 	if (mIsLoop && mLine.size() <= 4) {
 		return false;
 	}
-	if (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)) {
+	if (SettingsManager::value("LineType", brokenLine).toInt() != static_cast<int>(squareLine)) {
 		int pointIndex = getPoint(pos);
 		// it is understood that there is a point and its index is equal to the index of the first and last (end) points
 		return (pointIndex != noPort && pointIndex != mLine.count() - 1 && pointIndex);
@@ -1124,7 +1124,7 @@ bool EdgeElement::minimizeActionIsPossible()
 		return false;
 	}
 	return !(mLine.size() == 2) && !(mSrc == mDst)
-			&& ((SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)) && mLine.size() == 3);
+			&& ((SettingsManager::value("LineType", brokenLine).toInt() != static_cast<int>(squareLine)) && mLine.size() == 3);
 }
 
 bool EdgeElement::reverseActionIsPossible()
@@ -1361,7 +1361,7 @@ void EdgeElement::adjustLink(bool isDragging)
 			mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
 		}
 
-		if ((SettingsManager::value("LineType").toInt() != static_cast<int>(curveLine)) && !mIsLoop) {
+		if ((SettingsManager::value("LineType", brokenLine).toInt() != static_cast<int>(curveLine)) && !mIsLoop) {
 			delCloseLinePoints();
 			deleteLoops();
 		}
@@ -1397,7 +1397,7 @@ void EdgeElement::adjustLink(bool isDragging)
 		createLoopEdge();
 	}
 
-	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
+	if ((SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
 		squarize();
 	}
 }
@@ -1498,7 +1498,7 @@ bool EdgeElement::reconnectToNearestPorts(bool reconnectSrc, bool reconnectDst)
 {
 	bool reconnectedSrc = false;
 	bool reconnectedDst = false;
-	bool isSquareLine = (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine));
+	bool isSquareLine = (SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(squareLine));
 
 	if (mSrc && reconnectSrc) {
 		int targetLinePoint = isSquareLine ? mLine.count() - 1 : 1;
@@ -1613,7 +1613,7 @@ void EdgeElement::placeEndTo(QPointF const &place)
 	prepareGeometryChange();
 	mLine[mLine.size() - 1] = place;
 
-	if ((SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
+	if ((SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(squareLine)) && (!mIsLoop)){
 		squarize();
 	}
 
@@ -1919,7 +1919,7 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 				updateLongestPart();
 			}
 		}
-		if (SettingsManager::value("LineType").toInt() == static_cast<int>(squareLine)) {
+		if (SettingsManager::value("LineType", brokenLine).toInt() == static_cast<int>(squareLine)) {
 			squarize();
 		}
 		return value;
@@ -1970,7 +1970,7 @@ bool EdgeElement::isLoop()
 
 void EdgeElement::alignToGrid()
 {
-	if (mLine.size() >= 3 && (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine))) {
+	if (mLine.size() >= 3 && (SettingsManager::value("LineType", brokenLine).toInt() != static_cast<int>(squareLine))) {
 		int const indexGrid = SettingsManager::value("IndexGrid").toInt();
 
 		prepareGeometryChange();
