@@ -157,7 +157,7 @@
                             <origin>%1/installer/icon.ico</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>%1/bin/DejaVuSansCondensed.ttf</origin>
+                            <origin>%1/bin/Pfennig.ttf</origin>
                         </distributionFile>
                     </distributionFileList>
                     <shortcutList>

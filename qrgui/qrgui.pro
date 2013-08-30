@@ -17,10 +17,10 @@ TRANSLATIONS = qrgui_ru.ts
 }
 
 win32 {
-	QMAKE_POST_LINK = "xcopy DejaVuSansCondensed.ttf ..\\bin /q /y"
+	QMAKE_POST_LINK = "xcopy Pfennig.ttf ..\\bin /q /y"
 }
 else {
-	QMAKE_POST_LINK = "cp DejaVuSansCondensed.ttf ../bin/"
+	QMAKE_POST_LINK = "cp Pfennig.ttf ../bin/"
 }
 
 OBJECTS_DIR = .obj
