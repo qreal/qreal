@@ -721,24 +721,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::Interpreter</name>
     <message>
-        <location filename="details/interpreter.cpp" line="89"/>
+        <location filename="details/interpreter.cpp" line="91"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="93"/>
+        <location filename="details/interpreter.cpp" line="95"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="195"/>
+        <location filename="details/interpreter.cpp" line="197"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="199"/>
+        <location filename="details/interpreter.cpp" line="201"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
+    </message>
+    <message>
+        <location filename="details/interpreter.cpp" line="266"/>
+        <source>Threads limit exceeded. Maximum threads count is %1</source>
+        <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
 </context>
 <context>
@@ -920,17 +925,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::ForkBlock</name>
     <message>
-        <location filename="details/blocks/forkBlock.cpp" line="26"/>
+        <location filename="details/blocks/forkBlock.cpp" line="28"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="details/blocks/forkBlock.cpp" line="39"/>
+        <location filename="details/blocks/forkBlock.cpp" line="41"/>
         <source>There must be an outgoing link, use &quot;End&quot; block to finish a program</source>
         <translation>Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
     </message>
     <message>
-        <location filename="details/blocks/forkBlock.cpp" line="44"/>
+        <location filename="details/blocks/forkBlock.cpp" line="46"/>
         <source>There must be at least two outgoing links</source>
         <translation>Должно быть как минимум две исходящие связи</translation>
     </message>
