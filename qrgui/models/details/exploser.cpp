@@ -12,9 +12,6 @@ using namespace qReal;
 using namespace models;
 using namespace commands;
 
-QString Exploser::mUserGroupTitle = "";
-QString Exploser::mUserGroupDescription = "";
-
 Exploser::Exploser(LogicalModelAssistApi &api)
 	: mApi(api)
 {
@@ -35,11 +32,9 @@ void Exploser::refreshAllPalettes()
 
 void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram)
 {
-	QString const groupName = userGroupTitle();
-	QString const groupDescription = userGroupDescription();
 	QMap<QString, QList<gui::PaletteElement> > groups;
 	QMap<QString, QString> descriptions;
-	descriptions[groupName] = groupDescription;
+	descriptions[mUserGroupTitle] = mUserGroupDescription;
 
 	IdList const childTypes = mApi.editorManagerInterface().elements(diagram);
 	foreach (Id const &child, childTypes) {
@@ -54,7 +49,7 @@ void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &dia
 				if (mApi.isLogicalId(targetInstance) &&
 						!mApi.logicalRepoApi().incomingExplosions(targetInstance).isEmpty())
 				{
-					groups[groupName] << gui::PaletteElement(child
+					groups[mUserGroupTitle] << gui::PaletteElement(child
 							, mApi.logicalRepoApi().name(targetInstance)
 							, QString(), mApi.editorManagerInterface().icon(child)
 							, mApi.editorManagerInterface().iconSize(child)
@@ -65,16 +60,6 @@ void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &dia
 	}
 
 	tree->addGroups(groups, descriptions, true, mApi.editorManagerInterface().friendlyName(diagram));
-}
-
-QString Exploser::userGroupTitle()
-{
-	return mUserGroupTitle;
-}
-
-QString Exploser::userGroupDescription()
-{
-	return mUserGroupDescription;
 }
 
 void Exploser::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)

@@ -29,12 +29,6 @@ class Exploser : public QObject
 public:
 	explicit Exploser(LogicalModelAssistApi &api);
 
-	/// Returns current system name of each group with reusable explosions in user palette
-	static QString userGroupTitle();
-
-	/// Returns current system description of each group with reusable explosions in user palette
-	static QString userGroupDescription();
-
 	void customizeExplosionTitles(QString const &userGroupTitle
 			, QString const &userGroupDescription);
 
@@ -102,8 +96,8 @@ private:
 	LogicalModelAssistApi &mApi;
 	QMap<Id, gui::PaletteTreeWidget *> mUserPalettes;
 
-	static QString mUserGroupTitle;
-	static QString mUserGroupDescription;
+	QString mUserGroupTitle;
+	QString mUserGroupDescription;
 };
 
 }
