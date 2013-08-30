@@ -1002,6 +1002,7 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, QVariant const &valu
 				mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
 			}
 		}
+
 		updateLongestPart();
 		return value;
 	default:

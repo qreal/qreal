@@ -912,7 +912,7 @@
     <message>
         <location filename="mainwindow/mainWindow.ui" line="784"/>
         <source>Export to XML</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспортировать в XML</translation>
     </message>
     <message>
         <source>Find</source>
@@ -2392,7 +2392,7 @@
     <message>
         <location filename="toolPluginInterface/customizer.h" line="68"/>
         <source>Connect to other</source>
-        <translation type="unfinished"></translation>
+        <translation>Присоединить к другому</translation>
     </message>
     <message>
         <location filename="toolPluginInterface/customizer.h" line="73"/>
@@ -2402,17 +2402,27 @@
     <message>
         <location filename="toolPluginInterface/customizer.h" line="78"/>
         <source>Go to connected element</source>
-        <translation type="unfinished"></translation>
+        <translation>Перейти к присоединенному элементу</translation>
     </message>
     <message>
         <location filename="toolPluginInterface/customizer.h" line="88"/>
         <source>Expand explosion</source>
-        <translation type="unfinished"></translation>
+        <translation>Развернуть эксплозию</translation>
     </message>
     <message>
         <location filename="toolPluginInterface/customizer.h" line="93"/>
         <source>Collapse explosion</source>
-        <translation type="unfinished"></translation>
+        <translation>Свернуть эксплозию</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="98"/>
+        <source>Existing connections</source>
+        <translation>Существующие соединения</translation>
+    </message>
+    <message>
+        <location filename="toolPluginInterface/customizer.h" line="103"/>
+        <source>Elements from this group exist for reusing all created connections</source>
+        <translation>Элементы из этой группы предназначены для переиспользования всех существующих в проекте соединений</translation>
     </message>
     <message>
         <source>Add usage</source>
@@ -3706,26 +3716,26 @@
 <context>
     <name>qReal::EditorViewScene</name>
     <message>
-        <location filename="view/editorViewScene.cpp" line="355"/>
-        <location filename="view/editorViewScene.cpp" line="426"/>
+        <location filename="view/editorViewScene.cpp" line="334"/>
+        <location filename="view/editorViewScene.cpp" line="406"/>
         <source>Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="358"/>
+        <location filename="view/editorViewScene.cpp" line="337"/>
         <source>Create new element</source>
-        <translation type="unfinished">Создать новый элемент</translation>
+        <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="417"/>
-        <location filename="view/editorViewScene.cpp" line="427"/>
+        <location filename="view/editorViewScene.cpp" line="397"/>
+        <location filename="view/editorViewScene.cpp" line="407"/>
         <source>Connect with the current item</source>
-        <translation type="unfinished">Соединить с данным элементом</translation>
+        <translation>Соединить с данным элементом</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="921"/>
+        <location filename="view/editorViewScene.cpp" line="891"/>
         <source>Add child</source>
-        <translation type="unfinished">Добавить элемент</translation>
+        <translation>Добавить элемент</translation>
     </message>
 </context>
 <context>
@@ -3979,17 +3989,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1953"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1957"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1983"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1987"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1983"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1987"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -4547,7 +4557,7 @@
     <message>
         <location filename="dialogs/renameDialog.cpp" line="11"/>
         <source>Enter new name</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите имя</translation>
     </message>
 </context>
 <context>
@@ -4828,21 +4838,11 @@
     </message>
 </context>
 <context>
-    <name>qReal::models::Exploser</name>
+    <name>qReal::models::details::modelsImplementation::AbstractModel</name>
     <message>
-        <location filename="models/details/exploser.cpp" line="70"/>
-        <source> - inside</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="models/details/exploser.cpp" line="76"/>
-        <source>Existing connections</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="models/details/exploser.cpp" line="82"/>
-        <source>Elements from this group exist for reusing all created connections</source>
-        <translation type="unfinished"></translation>
+        <location filename="models/details/modelsImplementation/abstractModel.cpp" line="28"/>
+        <source>name</source>
+        <translation type="unfinished">имя</translation>
     </message>
 </context>
 <context>
