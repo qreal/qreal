@@ -442,6 +442,16 @@ p, li { white-space: pre-wrap; }
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
+        <location filename="customizer.cpp" line="57"/>
+        <source>Subprograms</source>
+        <translation>Подпрограммы</translation>
+    </message>
+    <message>
+        <location filename="customizer.cpp" line="62"/>
+        <source>The list of all declared subprograms in the project</source>
+        <translation>Список всех объявленных в проекте подпрограмм</translation>
+    </message>
+    <message>
         <source>Nxt display</source>
         <translation type="obsolete">Дисплей</translation>
     </message>
@@ -543,6 +553,16 @@ p, li { white-space: pre-wrap; }
         <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="93"/>
         <source>Collapse explosion</source>
         <translation>Схлопнуть эксплозию</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="98"/>
+        <source>Existing connections</source>
+        <translation>Существующие соединения</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="103"/>
+        <source>Elements from this group exist for reusing all created connections</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show grid</source>
@@ -925,17 +945,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::ForkBlock</name>
     <message>
-        <location filename="details/blocks/forkBlock.cpp" line="28"/>
+        <location filename="details/blocks/forkBlock.cpp" line="26"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="details/blocks/forkBlock.cpp" line="41"/>
+        <location filename="details/blocks/forkBlock.cpp" line="39"/>
         <source>There must be an outgoing link, use &quot;End&quot; block to finish a program</source>
         <translation>Должна быть исходящая связь, используйте блок &quot;Конец&quot;, чтобы закончить программу</translation>
     </message>
     <message>
-        <location filename="details/blocks/forkBlock.cpp" line="46"/>
+        <location filename="details/blocks/forkBlock.cpp" line="44"/>
         <source>There must be at least two outgoing links</source>
         <translation>Должно быть как минимум две исходящие связи</translation>
     </message>

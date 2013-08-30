@@ -51,3 +51,13 @@ QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *conten
 	dock->setWidget(content);
 	return dock;
 }
+
+QString Customizer::userPaletteTitle() const
+{
+	return QObject::tr("Subprograms");
+}
+
+QString Customizer::userPaletteDescription() const
+{
+	return QObject::tr("The list of all declared subprograms in the project");
+}

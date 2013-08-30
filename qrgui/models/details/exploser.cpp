@@ -12,6 +12,9 @@ using namespace qReal;
 using namespace models;
 using namespace commands;
 
+QString Exploser::mUserGroupTitle = "";
+QString Exploser::mUserGroupDescription = "";
+
 Exploser::Exploser(LogicalModelAssistApi &api)
 	: mApi(api)
 {
@@ -64,22 +67,20 @@ void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &dia
 	tree->addGroups(groups, descriptions, true, mApi.editorManagerInterface().friendlyName(diagram));
 }
 
-QString Exploser::insideSuffix()
-{
-	// TODO: pluginize it
-	return tr(" - inside");
-}
-
 QString Exploser::userGroupTitle()
 {
-	// TODO: pluginize it
-	return tr("Existing connections");
+	return mUserGroupTitle;
 }
 
 QString Exploser::userGroupDescription()
 {
-	// TODO: pluginize it
-	return tr("Elements from this group exist for reusing all created connections");
+	return mUserGroupDescription;
+}
+
+void Exploser::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)
+{
+	mUserGroupTitle = userGroupTitle;
+	mUserGroupDescription = userGroupDescription;
 }
 
 IdList Exploser::elementsWithHardDependencyFrom(Id const &id) const
