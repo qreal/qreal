@@ -352,6 +352,14 @@ void EdgeElement::connectLoopEdge(NodeElement *newMaster)
 	mPortFrom = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.first()), fromPortTypes()) : -1.0;
 	mPortTo = newMaster ? newMaster->portId(mapToItem(newMaster, mLine.last()), toPortTypes()) : -1.0;
 
+	if (mSrc) {
+		mSrc->delEdge(this);
+	}
+
+	if (mDst) {
+		mDst->delEdge(this);
+	}
+
 	if (mPortFrom >= -epsilon) {
 		newMaster->delEdge(this);
 		mSrc = newMaster;
