@@ -267,7 +267,7 @@ void NodeElement::switchGrid(bool isChecked)
 		alignToGrid();
 
 		// Align mode doesn`t work in a square mode
-		if (SettingsManager::value("LineType").toInt() != static_cast<int>(squareLine)) {
+		if (SettingsManager::value("LineType", brokenLine).toInt() != static_cast<int>(squareLine)) {
 			foreach (EdgeElement * const edge, mEdgeList) {
 				edge->alignToGrid();
 			}
