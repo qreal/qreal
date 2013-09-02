@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ids.h>
+#include "generatorFactoryBase.h"
 
 namespace qReal {
 namespace robots {
@@ -30,6 +31,8 @@ public:
 	virtual bool isFinalNode(Id const &block) const;
 
 	enums::semantics::Semantics semanticsOf(Id const &block) const;
+
+	virtual GeneratorFactoryBase *factory() = 0;
 
 protected:
 	virtual bool isConditional(Id const &block) const;

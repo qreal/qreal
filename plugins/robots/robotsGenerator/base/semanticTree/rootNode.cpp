@@ -11,7 +11,7 @@ RootNode::RootNode(Id const &initialBlock, QObject *parent)
 	mZone->appendChild(new SimpleNode(initialBlock, mZone));
 }
 
-QString RootNode::toString() const
+QString RootNode::toString(GeneratorCustomizer &customizer) const
 {
 	return "begin";
 }

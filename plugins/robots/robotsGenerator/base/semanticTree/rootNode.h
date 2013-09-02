@@ -12,7 +12,7 @@ class RootNode : public SemanticNode
 public:
 	RootNode(Id const &initialBlock, QObject *parent = 0);
 
-	virtual QString toString() const;
+	virtual QString toString(GeneratorCustomizer &customizer) const;
 
 protected:
 	virtual QLinkedList<SemanticNode *> children() const;

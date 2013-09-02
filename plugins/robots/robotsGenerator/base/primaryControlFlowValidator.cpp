@@ -6,7 +6,7 @@ PrimaryControlFlowValidator::PrimaryControlFlowValidator(
 		LogicalModelAssistInterface const &logicalModel
 		, GraphicalModelAssistInterface const &graphicalModel
 		, ErrorReporterInterface &errorReporter
-		, GeneratorCustomizer const &customizer
+		, GeneratorCustomizer &customizer
 		, Id const &diagramId)
 	: RobotsDiagramVisitor(logicalModel, customizer)
 	, mLogicalModel(logicalModel)

@@ -44,13 +44,13 @@ SemanticNode *SemanticNode::findNodeFor(qReal::Id const &id)
 // TODO: Remove this
 #include <QtCore/QDebug>
 
-void SemanticNode::debugPrint(int indent)
+void SemanticNode::debugPrint(GeneratorCustomizer &customizer, int indent)
 {
 	QString const indentString(indent, '\t');
-	qDebug() << indentString + toString();
+	qDebug() << indentString + toString(customizer);
 
 	QLinkedList<SemanticNode *> const children = this->children();
 	foreach (SemanticNode * const child, children) {
-		child->debugPrint(indent + 1);
+		child->debugPrint(customizer, indent + 1);
 	}
 }

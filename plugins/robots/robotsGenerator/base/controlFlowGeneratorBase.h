@@ -15,7 +15,7 @@ public:
 			LogicalModelAssistInterface const &logicalModel
 			, GraphicalModelAssistInterface const &graphicalModel
 			, ErrorReporterInterface &errorReporter
-			, GeneratorCustomizer const &customizer
+			, GeneratorCustomizer &customizer
 			, Id const &diagramId
 			, QObject *parent = 0);
 	virtual ~ControlFlowGeneratorBase();
@@ -33,12 +33,12 @@ protected:
 	QPair<LinkInfo, LinkInfo> ifBranchesFor(Id const &id) const;
 	QPair<LinkInfo, LinkInfo> loopBranchesFor(Id const &id) const;
 
-	GeneratorCustomizer const &customizer() const;
+	GeneratorCustomizer &customizer() const;
 
 private:
 	LogicalModelAssistInterface const &mModel;
 	ErrorReporterInterface &mErrorReporter;
-	GeneratorCustomizer const &mCustomizer;
+	GeneratorCustomizer &mCustomizer;
 	Id const mDiagram;
 	PrimaryControlFlowValidator mValidator;
 	bool mErrorsOccured;

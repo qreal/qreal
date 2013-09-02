@@ -4,6 +4,7 @@
 #include <QtCore/QLinkedList>
 
 #include <ids.h>
+#include "../generatorCustomizer.h"
 
 namespace qReal {
 namespace robots {
@@ -18,9 +19,9 @@ public:
 
 	void setParentNode(SemanticNode *parent);
 
-	virtual QString toString() const = 0;
+	virtual QString toString(GeneratorCustomizer &customizer) const = 0;
 
-	void debugPrint(int indent);
+	void debugPrint(GeneratorCustomizer &customizer, int indent);
 
 	SemanticNode *findNodeFor(Id const &id);
 

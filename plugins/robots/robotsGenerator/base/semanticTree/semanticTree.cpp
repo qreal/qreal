@@ -5,7 +5,7 @@
 
 using namespace qReal::robots::generators::semantics;
 
-SemanticTree::SemanticTree(GeneratorCustomizer const &customizer, Id const &initialBlock
+SemanticTree::SemanticTree(GeneratorCustomizer &customizer, Id const &initialBlock
 		, QObject *parent)
 	: QObject(parent)
 	, mCustomizer(customizer)
@@ -17,7 +17,7 @@ void SemanticTree::debugPrint()
 {
 	qDebug() << "Semantic tree:";
 	qDebug() << "-----------------";
-	mRoot->debugPrint(0);
+	mRoot->debugPrint(mCustomizer, 0);
 	qDebug() << "-----------------";
 }
 
@@ -57,4 +57,8 @@ NonZoneNode *SemanticTree::findNodeFor(qReal::Id const &id)
 	// Also only non-zone nodes can be binded to id.
 	// So result MUST NOT be null. Never.
 	return static_cast<NonZoneNode *>(mRoot->findNodeFor(id));
+}
+
+SemanticTree::VisitorInterface::~VisitorInterface()
+{
 }

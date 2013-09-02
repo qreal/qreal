@@ -9,15 +9,15 @@ SimpleNode::SimpleNode(Id const &idBinded, QObject *parent)
 {
 }
 
-QString SimpleNode::toString() const
+QString SimpleNode::toString(GeneratorCustomizer &customizer) const
 {
 	switch (mSyntheticBinding) {
 	case breakNode:
-		return "break";
+		return customizer.factory()->breakGenerator(mId, customizer)->generate();
 	case continueNode:
-		return "continue";
+		return customizer.factory()->continueGenerator(mId, customizer)->generate();
 	default:
-		return mId.element() + " (simp)";
+		return customizer.factory()->generatorFor(mId, customizer)->generate();
 	}
 }
 

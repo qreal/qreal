@@ -1,6 +1,7 @@
 #pragma once
 
 #include "abstractSimpleGenerator.h"
+#include "binding.h"
 
 namespace qReal {
 namespace robots {
@@ -10,24 +11,20 @@ namespace simple {
 class BindingGenerator : public AbstractSimpleGenerator
 {
 public:
-	class ConverterInterface
-	{
-	public:
-		virtual ~ConverterInterface();
-
-		virtual QString convert(QString const &data) = 0;
-	};
-
-	class EmptyConverter : public ConverterInterface
-	{
-	public:
-		virtual QString convert(QString const &data);
-	}
-
 	BindingGenerator(LogicalModelAssistInterface const &model
+			, GeneratorCustomizer &customizer
 			, Id const &id
-			, QList<>
+			, QString const &pathToTemplate
+			, QList<Binding *> const &bindings
 			, QObject *parent = 0);
+
+	virtual ~BindingGenerator();
+
+	virtual QString generate();
+
+private:
+	QString const mPathToTemplate;
+	QList<Binding *> const mBindings;  // Takes ownership
 };
 
 }

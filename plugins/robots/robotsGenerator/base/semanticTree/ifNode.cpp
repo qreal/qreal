@@ -26,9 +26,9 @@ ZoneNode *IfNode::elseZone()
 	return mElseZone;
 }
 
-QString IfNode::toString() const
+QString IfNode::toString(GeneratorCustomizer &customizer) const
 {
-	return QString("if") + ConditionalNode::toString();
+	return QString("if") + ConditionalNode::toString(customizer);
 }
 
 QLinkedList<SemanticNode *> IfNode::children() const

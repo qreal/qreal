@@ -14,7 +14,7 @@ public:
 
 	void invertCondition();
 
-	virtual QString toString() const;
+	virtual QString toString(GeneratorCustomizer &customizer) const;
 
 protected:
 	bool mAddNotToCondition;

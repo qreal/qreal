@@ -13,7 +13,7 @@ public:
 			LogicalModelAssistInterface const &logicalModel
 			, GraphicalModelAssistInterface const &graphicalModel
 			, ErrorReporterInterface &errorReporter
-			, GeneratorCustomizer const &customizer
+			, GeneratorCustomizer &customizer
 			, Id const &diagramId
 			, QObject *parent = 0);
 };

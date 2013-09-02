@@ -26,7 +26,7 @@ public:
 	/// themselves and returns removed tail. Removes all if node is null.
 	QLinkedList<SemanticNode *> removeStartingFrom(SemanticNode *node);
 
-	virtual QString toString() const;
+	virtual QString toString(GeneratorCustomizer &customizer) const;
 
 	SemanticNode *parentNode();
 

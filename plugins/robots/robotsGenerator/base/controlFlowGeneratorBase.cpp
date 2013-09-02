@@ -6,7 +6,7 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(
 		LogicalModelAssistInterface const &logicalModel
 		, GraphicalModelAssistInterface const &graphicalModel
 		, ErrorReporterInterface &errorReporter
-		, GeneratorCustomizer const &customizer
+		, GeneratorCustomizer &customizer
 		, Id const &diagramId
 		, QObject *parent)
 	: QObject(parent)
@@ -85,7 +85,7 @@ QPair<LinkInfo, LinkInfo> ControlFlowGeneratorBase::loopBranchesFor(qReal::Id co
 	return mValidator.loopBranchesFor(id);
 }
 
-GeneratorCustomizer const &ControlFlowGeneratorBase::customizer() const
+GeneratorCustomizer &ControlFlowGeneratorBase::customizer() const
 {
 	return mCustomizer;
 }

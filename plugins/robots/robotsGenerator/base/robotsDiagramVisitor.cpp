@@ -3,7 +3,7 @@
 using namespace qReal::robots::generators;
 
 RobotsDiagramVisitor::RobotsDiagramVisitor(LogicalModelAssistInterface const &model
-		, GeneratorCustomizer const &customizer)
+		, GeneratorCustomizer &customizer)
 	: mModel(model)
 	, mCustomizer(customizer)
 	, mDfser(model)

@@ -20,4 +20,6 @@ bool IfWithBothUnvisitedRule::apply()
 	IfNode * const thisNode = static_cast<IfNode *>(mTree->findNodeFor(mId));
 	thisNode->thenZone()->appendChild(thenNode);
 	thisNode->elseZone()->appendChild(elseNode);
+
+	return true;
 }

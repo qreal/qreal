@@ -34,6 +34,7 @@ bool GeneratorCustomizer::isLoop(Id const &block) const
 bool GeneratorCustomizer::isSwitch(Id const &block) const
 {
 	// TODO:
+	Q_UNUSED(block)
 	return false;
 }
 

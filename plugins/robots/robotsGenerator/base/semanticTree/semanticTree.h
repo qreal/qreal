@@ -16,7 +16,18 @@ namespace semantics {
 class SemanticTree : public QObject
 {
 public:
-	SemanticTree(GeneratorCustomizer const &customizer, Id const &initialBlock
+	class VisitorInterface
+	{
+	public:
+		virtual ~VisitorInterface();
+
+		virtual void visitRoot(RootNode *node) = 0;
+		virtual void visitSimple(SimpleNode *node) = 0;
+		virtual void visitConditional(ConditionalNode *node) = 0;
+		virtual void visitLoop(LoopNode *node) = 0;
+	};
+
+	SemanticTree(GeneratorCustomizer &customizer, Id const &initialBlock
 			, QObject *parent = 0);
 
 	void debugPrint();
@@ -30,7 +41,7 @@ public:
 	NonZoneNode *findNodeFor(Id const &id);
 
 private:
-	GeneratorCustomizer const &mCustomizer;
+	GeneratorCustomizer &mCustomizer;
 	RootNode *mRoot;  // Takes ownership
 };
 

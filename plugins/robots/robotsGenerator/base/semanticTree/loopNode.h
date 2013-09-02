@@ -12,7 +12,7 @@ class LoopNode : public ConditionalNode
 public:
 	LoopNode(Id const &idBinded, QObject *parent = 0);
 
-	virtual QString toString() const;
+	virtual QString toString(GeneratorCustomizer &customizer) const;
 
 	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
 

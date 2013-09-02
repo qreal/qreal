@@ -21,7 +21,7 @@ public:
 
 	SimpleNode(Id const &idBinded, QObject *parent = 0);
 
-	virtual QString toString() const;
+	virtual QString toString(GeneratorCustomizer &customizer) const;
 
 	void bindToSyntheticConstruction(SyntheticBlockType type);
 

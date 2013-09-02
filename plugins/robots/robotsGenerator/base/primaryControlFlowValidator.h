@@ -20,7 +20,7 @@ public:
 	PrimaryControlFlowValidator(LogicalModelAssistInterface const &logicalModel
 			, GraphicalModelAssistInterface const &graphicalModel
 			, ErrorReporterInterface &errorReporter
-			, GeneratorCustomizer const &customizer
+			, GeneratorCustomizer &customizer
 			, Id const &diagramId);
 	virtual ~PrimaryControlFlowValidator();
 
@@ -46,7 +46,7 @@ private:
 	LogicalModelAssistInterface const &mLogicalModel;
 	GraphicalModelAssistInterface const &mGraphicalModel;
 	ErrorReporterInterface &mErrorReporter;
-	GeneratorCustomizer const &mCustomizer;
+	GeneratorCustomizer &mCustomizer;
 	Id const mDiagram;
 	bool mErrorsOccured;
 

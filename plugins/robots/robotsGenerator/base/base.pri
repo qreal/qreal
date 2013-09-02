@@ -8,6 +8,7 @@ HEADERS += \
 	$$PWD/robotsDiagramVisitor.h \
 	$$PWD/primaryControlFlowValidator.h \
 	$$PWD/generatorFactoryBase.h \
+	$$PWD/templateParametrizedEntity.h \
 	$$PWD/semanticTree/semanticTree.h \
 	$$PWD/semanticTree/semanticNode.h \
 	$$PWD/semanticTree/nonZoneNode.h \
@@ -31,8 +32,6 @@ HEADERS += \
 	$$PWD/rules/loopRules/loopWithBothUnvisitedRule.h \
 	$$PWD/rules/loopRules/loopWithIterationVisitedRule.h \
 	$$PWD/rules/loopRules/loopWithNextVisitedRule.h \
-	$$PWD/simpleGenerators/abstractSimpleGenerator.h \
-	$$PWD/simpleGenerators/bindingGenerator.h \
 
 SOURCES += \
 	$$PWD/smartLine.cpp \
@@ -44,6 +43,7 @@ SOURCES += \
 	$$PWD/robotsDiagramVisitor.cpp \
 	$$PWD/primaryControlFlowValidator.cpp \
 	$$PWD/generatorFactoryBase.cpp \
+	$$PWD/templateParametrizedEntity.cpp \
 	$$PWD/semanticTree/semanticTree.cpp \
 	$$PWD/semanticTree/semanticNode.cpp \
 	$$PWD/semanticTree/nonZoneNode.cpp \
@@ -67,5 +67,97 @@ SOURCES += \
 	$$PWD/rules/loopRules/loopWithBothUnvisitedRule.cpp \
 	$$PWD/rules/loopRules/loopWithIterationVisitedRule.cpp \
 	$$PWD/rules/loopRules/loopWithNextVisitedRule.cpp \
+
+# Simple element generators & converters
+
+HEADERS += \
+	$$PWD/converters/templateParametrizedConverter.h \
+	$$PWD/converters/enumConverterBase.h \
+	$$PWD/converters/intPropertyConverterBase.h \
+	$$PWD/converters/boolPropertyConverterBase.h \
+	$$PWD/converters/stringPropertyConverterBase.h \
+	$$PWD/converters/nameNormalizerConverter.h \
+	$$PWD/converters/functionBlockConverterBase.h \
+	$$PWD/converters/inequalitySignConverter.h \
+	$$PWD/converters/colorConverter.h \
 	$$PWD/simpleGenerators/abstractSimpleGenerator.h \
+	$$PWD/simpleGenerators/commentElementGenerator.h \
+	$$PWD/simpleGenerators/functionElementGenerator.h \
+	$$PWD/simpleGenerators/ifElementGenerator.h \
+	$$PWD/simpleGenerators/loopElementGenerator.h \
+	$$PWD/simpleGenerators/bindingGenerator.h \
+	$$PWD/simpleGenerators/binding.h \
+	$$PWD/simpleGenerators/enginesStopGenerator.h \
+	$$PWD/simpleGenerators/timerGenerator.h \
+	$$PWD/simpleGenerators/beepGenerator.h \
+	$$PWD/simpleGenerators/playToneGenerator.h \
+	$$PWD/simpleGenerators/finalNodeGenerator.h \
+	$$PWD/simpleGenerators/nullificationEncoderGenerator.h \
+	$$PWD/simpleGenerators/waitForColorBlockGenerator.h \
+	$$PWD/simpleGenerators/waitForColorIntensityBlockGenerator.h \
+	$$PWD/simpleGenerators/waitForLightBlockGenerator.h \
+	$$PWD/simpleGenerators/waitForSonarBlockGenerator.h \
+	$$PWD/simpleGenerators/waitForEncoderBlockGenerator.h \
+	$$PWD/simpleGenerators/waitForTouchSensorBlockGenerator.h \
+	$$PWD/simpleGenerators/initialNodeGenerator.h \
+	$$PWD/simpleGenerators/enginesGenerator.h \
+	$$PWD/simpleGenerators/waitForSoundBlockGenerator.h \
+	$$PWD/simpleGenerators/waitForGyroscopeBlockGenerator.h \
+	$$PWD/simpleGenerators/waitForAccelerometerBlockGenerator.h \
+	$$PWD/simpleGenerators/drawPixelBlockGenerator.h \
+	$$PWD/simpleGenerators/waitForButtonsBlockGenerator.h \
+	$$PWD/simpleGenerators/drawLineBlockGenerator.h \
+	$$PWD/simpleGenerators/drawCircleBlockGenerator.h \
+	$$PWD/simpleGenerators/printTextBlockGenerator.h \
+	$$PWD/simpleGenerators/drawRectBlockGenerator.h \
+	$$PWD/simpleGenerators/clearScreenBlockGenerator.h \
+	$$PWD/simpleGenerators/drawBlockGenerator.h \
+	$$PWD/simpleGenerators/subprogramsSimpleGenerator.h \
+	$$PWD/simpleGenerators/breakGenerator.h \
+	$$PWD/simpleGenerators/continueGenerator.h \
+
+SOURCES += \
+	$$PWD/converters/templateParametrizedConverter.cpp \
+	$$PWD/converters/enumConverterBase.cpp \
+	$$PWD/converters/intPropertyConverterBase.cpp \
+	$$PWD/converters/boolPropertyConverterBase.cpp \
+	$$PWD/converters/stringPropertyConverterBase.cpp \
+	$$PWD/converters/nameNormalizerConverter.cpp \
+	$$PWD/converters/functionBlockConverterBase.cpp \
+	$$PWD/converters/inequalitySignConverter.cpp \
+	$$PWD/converters/colorConverter.cpp \
+	$$PWD/simpleGenerators/abstractSimpleGenerator.cpp \
+	$$PWD/simpleGenerators/commentElementGenerator.cpp \
+	$$PWD/simpleGenerators/functionElementGenerator.cpp \
+	$$PWD/simpleGenerators/ifElementGenerator.cpp \
+	$$PWD/simpleGenerators/loopElementGenerator.cpp \
 	$$PWD/simpleGenerators/bindingGenerator.cpp \
+	$$PWD/simpleGenerators/binding.cpp \
+	$$PWD/simpleGenerators/enginesStopGenerator.cpp \
+	$$PWD/simpleGenerators/timerGenerator.cpp \
+	$$PWD/simpleGenerators/beepGenerator.cpp \
+	$$PWD/simpleGenerators/playToneGenerator.cpp \
+	$$PWD/simpleGenerators/finalNodeGenerator.cpp \
+	$$PWD/simpleGenerators/nullificationEncoderGenerator.cpp \
+	$$PWD/simpleGenerators/waitForColorBlockGenerator.cpp \
+	$$PWD/simpleGenerators/waitForColorIntensityBlockGenerator.cpp \
+	$$PWD/simpleGenerators/waitForLightBlockGenerator.cpp \
+	$$PWD/simpleGenerators/waitForSonarBlockGenerator.cpp \
+	$$PWD/simpleGenerators/waitForEncoderBlockGenerator.cpp \
+	$$PWD/simpleGenerators/waitForTouchSensorBlockGenerator.cpp \
+	$$PWD/simpleGenerators/initialNodeGenerator.cpp \
+	$$PWD/simpleGenerators/enginesGenerator.cpp \
+	$$PWD/simpleGenerators/waitForSoundBlockGenerator.cpp \
+	$$PWD/simpleGenerators/waitForGyroscopeBlockGenerator.cpp \
+	$$PWD/simpleGenerators/waitForAccelerometerBlockGenerator.cpp \
+	$$PWD/simpleGenerators/drawPixelBlockGenerator.cpp \
+	$$PWD/simpleGenerators/waitForButtonsBlockGenerator.cpp \
+	$$PWD/simpleGenerators/drawLineBlockGenerator.cpp \
+	$$PWD/simpleGenerators/drawCircleBlockGenerator.cpp \
+	$$PWD/simpleGenerators/printTextBlockGenerator.cpp \
+	$$PWD/simpleGenerators/drawRectBlockGenerator.cpp \
+	$$PWD/simpleGenerators/clearScreenBlockGenerator.cpp \
+	$$PWD/simpleGenerators/drawBlockGenerator.cpp \
+	$$PWD/simpleGenerators/subprogramsSimpleGenerator.cpp \
+	$$PWD/simpleGenerators/breakGenerator.cpp \
+	$$PWD/simpleGenerators/continueGenerator.cpp \

@@ -13,7 +13,7 @@ void ConditionalNode::invertCondition()
 	mAddNotToCondition = !mAddNotToCondition;
 }
 
-QString ConditionalNode::toString() const
+QString ConditionalNode::toString(GeneratorCustomizer &customizer) const
 {
 	return QString(mAddNotToCondition ? "!" : "");
 }

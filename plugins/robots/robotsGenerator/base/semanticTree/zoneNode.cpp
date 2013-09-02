@@ -54,8 +54,9 @@ QLinkedList<SemanticNode *> ZoneNode::removeStartingFrom(SemanticNode *node)
 	return result;
 }
 
-QString ZoneNode::toString() const
+QString ZoneNode::toString(GeneratorCustomizer &customizer) const
 {
+	Q_UNUSED(customizer)
 	return "";
 }
 

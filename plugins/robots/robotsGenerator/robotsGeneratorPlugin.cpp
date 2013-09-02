@@ -2,6 +2,7 @@
 
 #include "robotsGeneratorPlugin.h"
 #include "nxtOSEK/nxtOSEKRobotGenerator.h"
+#include "nxtOSEK/nxtOsekGeneratorCustomizer.h"
 #include "base/readableControlFlowGenerator.h"
 
 using namespace qReal;
@@ -88,7 +89,7 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mProjectManager->save();
 
-	GeneratorCustomizer customizer;
+	nxtOsek::NxtOsekGeneratorCustomizer customizer(*mLogicalModel);
 	ReadableControlFlowGenerator generator(*mLogicalModel
 			, *mGraphicalModel
 			, *mMainWindowInterface->errorReporter()

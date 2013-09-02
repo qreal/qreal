@@ -13,7 +13,7 @@ class RobotsDiagramVisitor : public utils::DeepFirstSearcher::VisitorInterface
 {
 public:
 	RobotsDiagramVisitor(LogicalModelAssistInterface const &model
-			, GeneratorCustomizer const &customizer);
+			, GeneratorCustomizer &customizer);
 	virtual ~RobotsDiagramVisitor();
 
 protected:
@@ -43,7 +43,7 @@ private:
 	virtual void visit(Id const &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 
 	LogicalModelAssistInterface const &mModel;
-	GeneratorCustomizer const &mCustomizer;
+	GeneratorCustomizer &mCustomizer;
 	utils::DeepFirstSearcher mDfser;
 };
 
