@@ -127,7 +127,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 
 	if (progress->value() != 100) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new constraints plugin"));
-		deleteGeneratedFiles(directoryName, normalizerPluginName);
+//		deleteGeneratedFiles(directoryName, normalizerPluginName); //qwerty_temp
 	}
 	progress->setValue(100);
 	progress->close();

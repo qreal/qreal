@@ -8,6 +8,7 @@ class ConstraintsPlugin : public QObject, public qReal::ConstraintsPluginInterfa
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ConstraintsPluginInterface)
+	Q_PLUGIN_METADATA(IID "constraints::ConstraintsPlugin")
 
 public:
 	ConstraintsPlugin();

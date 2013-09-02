@@ -2,8 +2,6 @@
 #include <QtCore/QtPlugin>
 #include <QtCore/QVariant>
 
-Q_EXPORT_PLUGIN2(constraints@@metamodelName@@Plugin, constraints::ConstraintsPlugin)
-
 using namespace constraints;
 
 ConstraintsPlugin::ConstraintsPlugin()

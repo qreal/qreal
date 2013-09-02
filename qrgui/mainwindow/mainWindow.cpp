@@ -1232,7 +1232,15 @@ void MainWindow::openFirstDiagram()
 	if (rootIds.count() == 0) {
 		return;
 	}
-	openNewTab(mModels->graphicalModelAssistApi().indexById(rootIds[0]));
+
+	Id firstDiagram = Id::rootId();
+	foreach (Id currentChild, rootIds) { // qwerty_asd_temp
+		if (mModels->graphicalModelAssistApi().isGraphicalId(currentChild)) {
+			firstDiagram = currentChild;
+			break;
+		}
+	}
+	openNewTab(mModels->graphicalModelAssistApi().indexById(firstDiagram));
 }
 
 void MainWindow::closeTabsWithRemovedRootElements()

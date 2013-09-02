@@ -3,14 +3,15 @@ TEMPLATE = subdirs
 SUBDIRS	= \
 #	additionsEditor/additionsEditor.pro \
 #	android/android.pro \
-#	dragonDiagram/dragonDiagram.pro \ #qwerty_temp
+	dragonDiagram/dragonDiagram.pro \
 	blockDiagram/blockDiagram.pro \
 #	bpel/bpel.pro \
-#	exterminatus/exterminatus.pro \ #qwerty_temp
+	exterminatus/exterminatus.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 	constraintsEditor/constraintsEditor.pro \
-#	constraintsAllMetamodels/constraintsAllMetamodels.pro \ #qwerty_temp
+	constraintsAllMetamodels/constraintsAllMetamodels.pro \
+#	constraintsTestConstraintsBlockMetamodel\constraintsTestConstraintsBlockMetamodel.pro \
 #	network/network.pro \
 #	orthodoxEditor/orthodoxEditor.pro \
 #	parallel/parallel.pro \
@@ -30,5 +31,5 @@ SUBDIRS	= \
 #	umlStateMachinesDiagram/umlStateMachinesDiagram.pro \
 #	umlTimingDiagram/umlTimingDiagram.pro \
 #	umlUseCaseDiagram/umlUseCaseDiagram.pro \
-#	visualInterpreter/visualInterpreter.pro \ #qwerty_temp
-#	refactoring/refactoring.pro \ #qwerty_temp
+	visualInterpreter/visualInterpreter.pro \
+	refactoring/refactoring.pro \
