@@ -1,4 +1,5 @@
 #include "beepGenerator.h"
+#include "../generatorCustomizer.h"
 
 using namespace qReal::robots::generators::simple;
 
