@@ -11,4 +11,3 @@ qReal::robots::generators::GeneratorFactoryBase *NxtOsekGeneratorCustomizer::fac
 {
 	return mFactory;
 }
-

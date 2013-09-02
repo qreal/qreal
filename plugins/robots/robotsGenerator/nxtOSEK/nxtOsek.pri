@@ -1,6 +1,6 @@
 HEADERS += \
 #	nxtOSEK/elementGeneratorFactory.h \
-#	nxtOSEK/nxtFlashTool.h \
+	nxtOSEK/nxtFlashTool.h \
 #	nxtOSEK/nxtOSEKRobotGenerator.h \
 #	#nxtOSEK/smartLine.h \
 #	nxtOSEK/generators/controlFlowGenerator.h \
@@ -50,7 +50,7 @@ HEADERS += \
 
 SOURCES += \
 #	nxtOSEK/elementGeneratorFactory.cpp \
-#	nxtOSEK/nxtFlashTool.cpp \
+	nxtOSEK/nxtFlashTool.cpp \
 #	nxtOSEK/nxtOSEKRobotGenerator.cpp \
 #	#nxtOSEK/smartLine.cpp \
 #	nxtOSEK/generators/controlFlowGenerator.cpp \

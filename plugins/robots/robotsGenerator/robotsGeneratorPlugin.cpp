@@ -1,7 +1,7 @@
 #include <QtWidgets/QApplication>
+#include <QtCore/QDir>
 
 #include "robotsGeneratorPlugin.h"
-#include "nxtOSEK/nxtOSEKRobotGenerator.h"
 #include "nxtOSEK/nxtOsekGeneratorCustomizer.h"
 #include "base/readableControlFlowGenerator.h"
 

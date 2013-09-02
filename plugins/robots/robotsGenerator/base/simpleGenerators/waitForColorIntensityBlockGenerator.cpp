@@ -1,42 +1,44 @@
 #include "waitForColorIntensityBlockGenerator.h"
-#include "../../nxtOSEKRobotGenerator.h"
-#include "../listsmartline.h"
 
 using namespace qReal::robots::generators::simple;
 
-WaitForColorIntensityBlockGenerator::WaitForColorIntensityBlockGenerator()
+WaitForColorIntensityBlockGenerator::WaitForColorIntensityBlockGenerator(LogicalModelAssistInterface const &model
+		, GeneratorCustomizer &customizer
+		, Id const &id
+		, QObject *parent)
+	: BindingGenerator(model, customizer, id, "waitColorIntensity.t", QList<Binding *>(), parent)
 {
 }
 
-void WaitForColorIntensityBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen
-		, QString const &port, qReal::Id const &elementId)
-{
-	QString const partInitCode = "ecrobot_init_nxtcolorsensor(" + port;
-	if (!ListSmartLine::isContainsPart(nxtGen->initCode(), partInitCode)) {
-		// i don't no, mb NXT_LIGHTSENSOR_NONE, NXT_COLORSENSOR_DEACTIVATE
-		QString const initCode = "ecrobot_init_nxtcolorsensor(" + port + "," + "NXT_COLORSENSOR);";
-		QString const terminateCode = "ecrobot_term_nxtcolorsensor(" + port + ");";
-		nxtGen->initCode().append(SmartLine_old(initCode, elementId));
-		nxtGen->terminateCode().append(SmartLine_old(terminateCode, elementId));
-	}
-}
+//void WaitForColorIntensityBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen
+//		, QString const &port, qReal::Id const &elementId)
+//{
+//	QString const partInitCode = "ecrobot_init_nxtcolorsensor(" + port;
+//	if (!ListSmartLine::isContainsPart(nxtGen->initCode(), partInitCode)) {
+//		// i don't no, mb NXT_LIGHTSENSOR_NONE, NXT_COLORSENSOR_DEACTIVATE
+//		QString const initCode = "ecrobot_init_nxtcolorsensor(" + port + "," + "NXT_COLORSENSOR);";
+//		QString const terminateCode = "ecrobot_term_nxtcolorsensor(" + port + ");";
+//		nxtGen->initCode().append(SmartLine_old(initCode, elementId));
+//		nxtGen->terminateCode().append(SmartLine_old(terminateCode, elementId));
+//	}
+//}
 
-QList<SmartLine_old> WaitForColorIntensityBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		, qReal::Id const &elementId, qReal::Id const &logicElementId)
-{
-	QList<SmartLine_old> result;
-	QString portStr = nxtGen->api()->stringProperty(logicElementId, "Port");
-	QString const intensity = nxtGen->api()->stringProperty(logicElementId,  "Intensity");
-	QString const inequalitySign = transformSign(QString(nxtGen->api()->stringProperty(logicElementId
-			, "Sign").toUtf8()));
+//QList<SmartLine_old> WaitForColorIntensityBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
+//		, qReal::Id const &elementId, qReal::Id const &logicElementId)
+//{
+//	QList<SmartLine_old> result;
+//	QString portStr = nxtGen->api()->stringProperty(logicElementId, "Port");
+//	QString const intensity = nxtGen->api()->stringProperty(logicElementId,  "Intensity");
+//	QString const inequalitySign = transformSign(QString(nxtGen->api()->stringProperty(logicElementId
+//			, "Sign").toUtf8()));
 
-	QString const condition = inequalitySign + " " + intensity;
+//	QString const condition = inequalitySign + " " + intensity;
 
-	result.append(SmartLine_old("while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + portStr
-			+ ") * 100 / 1023 " + condition + ")) {", elementId));
-	result.append(SmartLine_old("}", elementId));
+//	result.append(SmartLine_old("while (!(ecrobot_get_nxtcolorsensor_light(NXT_PORT_S" + portStr
+//			+ ") * 100 / 1023 " + condition + ")) {", elementId));
+//	result.append(SmartLine_old("}", elementId));
 
-	addInitAndTerminateCode(nxtGen, "NXT_PORT_S" + portStr, elementId);
+//	addInitAndTerminateCode(nxtGen, "NXT_PORT_S" + portStr, elementId);
 
-	return result;
-}
+//	return result;
+//}

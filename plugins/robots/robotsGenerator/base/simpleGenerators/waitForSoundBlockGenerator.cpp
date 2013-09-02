@@ -1,9 +1,11 @@
 #include "waitForSoundBlockGenerator.h"
-#include "../../nxtOSEKRobotGenerator.h"
-#include "../listsmartline.h"
 
 using namespace qReal::robots::generators::simple;
 
-WaitForSoundBlockGenerator::WaitForSoundBlockGenerator()
+WaitForSoundBlockGenerator::WaitForSoundBlockGenerator(LogicalModelAssistInterface const &model
+		, GeneratorCustomizer &customizer
+		, Id const &id
+		, QObject *parent)
+	: BindingGenerator(model, customizer, id, "waitSound.t", QList<Binding *>(), parent)
 {
 }

@@ -1,8 +1,11 @@
 #include "timerGenerator.h"
-#include "../../nxtOSEKRobotGenerator.h"
 
 using namespace qReal::robots::generators::simple;
 
-TimerGenerator::TimerGenerator()
+TimerGenerator::TimerGenerator(LogicalModelAssistInterface const &model
+		, GeneratorCustomizer &customizer
+		, Id const &id
+		, QObject *parent)
+	: BindingGenerator(model, customizer, id, "timer.t", QList<Binding *>(), parent)
 {
 }

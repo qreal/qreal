@@ -10,7 +10,10 @@ namespace simple {
 class InitialNodeGenerator : public BindingGenerator
 {
 public:
-	InitialNodeGenerator();
+	InitialNodeGenerator(LogicalModelAssistInterface const &model
+			, GeneratorCustomizer &customizer
+			, Id const &id
+			, QObject *parent = 0);
 };
 
 }
