@@ -1,6 +1,6 @@
 #pragma once
 
-#include "bindingGenerator.h"
+#include "drawBlockGenerator.h"
 
 namespace qReal {
 namespace robots {

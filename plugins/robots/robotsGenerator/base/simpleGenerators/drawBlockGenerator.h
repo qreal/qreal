@@ -18,7 +18,10 @@ class NxtOSEKRobotGenerator;
 class DrawBlockGenerator : public BindingGenerator
 {
 public:
-	DrawBlockGenerator();
+	DrawBlockGenerator(LogicalModelAssistInterface const &model
+			, GeneratorCustomizer &customizer
+			, Id const &id
+			, QObject *parent = 0);
 };
 
 }

@@ -45,8 +45,8 @@ HEADERS += \
 #	nxtOSEK/generators/simpleElements/drawBlockGenerator.h \
 #	nxtOSEK/generators/simpleElements/subprogramsSimpleGenerator.h \
 #	nxtOSEK/generators/subprogramsGenerator.h \
-    nxtOSEK/nxtOsekGeneratorCustomizer.h \
-    nxtOSEK/nxtOsekGeneratorFactory.h
+	$$PWD/nxtOsekGeneratorCustomizer.h \
+	$$PWD/nxtOsekGeneratorFactory.h \
 
 SOURCES += \
 #	nxtOSEK/elementGeneratorFactory.cpp \
@@ -95,8 +95,8 @@ SOURCES += \
 #	nxtOSEK/generators/simpleElements/drawBlockGenerator.cpp \
 #	nxtOSEK/generators/simpleElements/subprogramsSimpleGenerator.cpp \
 #	nxtOSEK/generators/subprogramsGenerator.cpp \
-    nxtOSEK/nxtOsekGeneratorCustomizer.cpp \
-    nxtOSEK/nxtOsekGeneratorFactory.cpp
+	$$PWD/nxtOsekGeneratorCustomizer.cpp \
+	$$PWD/nxtOsekGeneratorFactory.cpp \
 
 RESOURCES += \
-    nxtOSEK/templates.qrc
+	$$PWD/templates.qrc \
