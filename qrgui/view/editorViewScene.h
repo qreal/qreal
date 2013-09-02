@@ -242,7 +242,7 @@ private:
 	QGraphicsRectItem *mBottomRightCorner;
 
 	/** @brief list of selected items for additional selection */
-	QList<QGraphicsItem* >* mSelectList;
+	QList<QGraphicsItem* > mSelectList;
 
 	bool mIsSelectEvent;
 	bool mTitlesVisible;

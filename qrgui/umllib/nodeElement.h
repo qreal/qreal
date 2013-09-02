@@ -81,7 +81,7 @@ public:
 	static int portNumber(qreal id);
 	qreal portId(QPointF const &location, QStringList const &types) const;
 
-	QList<EdgeElement *> getEdges();
+	QList<EdgeElement *> getEdges() const;
 	void addEdge(EdgeElement *edge);
 	void delEdge(EdgeElement *edge);
 
@@ -148,6 +148,9 @@ public:
 	 * newContents equals to current shape (mContents).
 	 */
 	void resize();
+
+	void startResize();
+	void endResize();
 
 	/**
 	 * @brief sortedChildren

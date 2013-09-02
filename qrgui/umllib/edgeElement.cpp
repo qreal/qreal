@@ -543,6 +543,11 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	Element::mousePressEvent(event);
 	if ((mSrc && mSrc->isSelected() && isSelected()) || (mDst && mDst->isSelected() && isSelected())) {
 		mDragType = wholeEdge;
+		if (mSrc && mSrc->isSelected()) {
+			mSrc->startResize();
+		} else {
+			mDst->startResize();
+		}
 	} else if (event->button() == Qt::LeftButton && !event->modifiers()) {
 		mDragType = mHandler->startMovingEdge(event->pos());
 	}
@@ -586,7 +591,15 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mDst->setPortsVisible(false);
 	}
 
-	mHandler->endMovingEdge();
+	if (mDragType == wholeEdge) {
+		if (mSrc && mSrc->isSelected()) {
+			mSrc->endResize();
+		} else {
+			mDst->endResize();
+		}
+	} else {
+		mHandler->endMovingEdge();
+	}
 }
 
 // NOTE: using don`t forget about possible nodeElement`s overlaps (different Z-value)

@@ -2,7 +2,8 @@
 
 #include <QtCore/QMap>
 
-#include "resizeHandler.h"
+#include "umllib/private/resizeHandler.h"
+#include "umllib/private/reshapeEdgeCommand.h"
 #include "controller/commands/nodeElementCommand.h"
 #include "controller/commands/trackingEntity.h"
 
@@ -51,6 +52,10 @@ private:
 	/// Performs geometries snapshot for specified item`s children
 	void makeChildrenSnapshot(NodeElement const *element, QMap<Id, QRectF> &target);
 
+	void addEdges(NodeElement const *node);
+	void startEdgeTracking();
+	void stopEdgeTracking();
+
 	void resizeHierarchy(QMap<Id, QRectF> const &snapshot);
 	void resizeTree(QMap<Id, QRectF> const &snapshot, Id const &root);
 
@@ -58,6 +63,9 @@ private:
 
 	QMap<Id, QRectF> mOldGeometrySnapshot;
 	QMap<Id, QRectF> mNewGeometrySnapshot;
+
+	QSet<EdgeElement *> mEdges;
+	QSet<ReshapeEdgeCommand *> mEdgeCommands;
 };
 
 }

@@ -280,34 +280,27 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	mResizeCommand = new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id());
-	mResizeCommand->startTracking();
+	startResize();
 	if (isSelected()) {
 		int dragArea = SettingsManager::instance()->value("DragArea").toInt();
 		if (QRectF(mContents.topLeft(), QSizeF(dragArea, dragArea)).contains(event->pos())
-				&& mElementImpl->isResizeable())
-		{
+				&& mElementImpl->isResizeable()) {
 			mDragState = TopLeft;
 		} else if (QRectF(mContents.topRight(), QSizeF(-dragArea, dragArea)).contains(event->pos())
-				&& mElementImpl->isResizeable())
-		{
+				&& mElementImpl->isResizeable()) {
 			mDragState = TopRight;
 		} else if (QRectF(mContents.bottomRight(), QSizeF(-dragArea, -dragArea)).contains(event->pos())
-				&& mElementImpl->isResizeable())
-		{
+				&& mElementImpl->isResizeable()) {
 			mDragState = BottomRight;
 		} else if (QRectF(mContents.bottomLeft(), QSizeF(dragArea, -dragArea)).contains(event->pos())
-				&& mElementImpl->isResizeable())
-		{
+				&& mElementImpl->isResizeable()) {
 			mDragState = BottomLeft;
 		} else if (QRectF(QPointF(-20, 0), QPointF(0, 20)).contains(event->pos())
-				&& mElementImpl->isContainer())
-		{
+				&& mElementImpl->isContainer()) {
 			changeFoldState();
 		} else {
 			Element::mousePressEvent(event);
 		}
-
 	} else {
 		Element::mousePressEvent(event);
 	}
@@ -499,7 +492,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	storeGeometry();
 
-	if (scene() && scene()->selectedItems().size() == 1 && isSelected()) {
+	if (scene() && (scene()->selectedItems().size() == 1) && isSelected()) {
 		setVisibleEmbeddedLinkers(true);
 	}
 
@@ -551,17 +544,6 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			shouldProcessResize = parentCommand == NULL;
 		}
 	}
-	if (shouldProcessResize && mResizeCommand) {
-		mResizeCommand->stopTracking();
-		if (mResizeCommand->modificationsHappened()) {
-			mResizeCommand->addPostAction(insertCommand);
-			mController->execute(mResizeCommand);
-		} else {
-			delete mResizeCommand;
-		}
-		// Undo stack took ownership
-		mResizeCommand = NULL;
-	}
 
 	foreach (EdgeElement* edge, mEdgeList) {
 		edge->layOut();
@@ -569,6 +551,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		{
 			edge->alignToGrid();
 		}
+	}
+
+	if (shouldProcessResize && mResizeCommand) {
+		mResizeCommand->addPostAction(insertCommand);
+		endResize();
 	}
 
 	mDragState = None;
@@ -596,6 +583,26 @@ void NodeElement::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 void NodeElement::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	Q_UNUSED(event);
+}
+
+void NodeElement::startResize()
+{
+	mResizeCommand = new ResizeCommand(dynamic_cast<EditorViewScene *>(scene()), id());
+	mResizeCommand->startTracking();
+}
+
+void NodeElement::endResize()
+{
+	if (mResizeCommand) {
+		mResizeCommand->stopTracking();
+		if (mResizeCommand->modificationsHappened()) {
+			mController->execute(mResizeCommand);
+		} else {
+			delete mResizeCommand;
+		}
+		// Undo stack took ownership
+		mResizeCommand = NULL;
+	}
 }
 
 bool NodeElement::connectionInProgress()
@@ -867,7 +874,7 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 	}
 }
 
-QList<EdgeElement*> NodeElement::getEdges()
+QList<EdgeElement*> NodeElement::getEdges() const
 {
 	return mEdgeList;
 }

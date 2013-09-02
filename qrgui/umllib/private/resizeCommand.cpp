@@ -1,4 +1,4 @@
-#include "resizeCommand.h"
+#include "umllib/private/resizeCommand.h"
 
 using namespace qReal::commands;
 
@@ -104,12 +104,14 @@ void ResizeCommand::startTracking()
 	}
 	TrackingEntity::startTracking();
 	makeCommonSnapshot(mOldGeometrySnapshot);
+	startEdgeTracking();
 }
 
 void ResizeCommand::stopTracking()
 {
 	TrackingEntity::stopTracking();
 	makeCommonSnapshot(mNewGeometrySnapshot);
+	stopEdgeTracking();
 }
 
 void ResizeCommand::rejectTracking()
@@ -126,6 +128,11 @@ void ResizeCommand::makeCommonSnapshot(QMap<Id, QRectF> &target)
 		NodeElement *node = dynamic_cast<NodeElement *>(item);
 		if (node && node != mNode) {
 			makeHierarchySnapshot(node, target);
+		} else {
+			EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
+			if (edge) {
+				mEdges.insert(edge);
+			}
 		}
 	}
 }
@@ -140,17 +147,43 @@ void ResizeCommand::makeHierarchySnapshot(NodeElement *node, QMap<Id, QRectF> &t
 			parentElement = dynamic_cast<NodeElement *>(parentElement->parentItem()))
 	{
 		target.insert(parentElement->id(), geometryOf(parentElement));
+		addEdges(parentElement);
 	}
 }
 
 void ResizeCommand::makeChildrenSnapshot(NodeElement const *element, QMap<Id, QRectF> &target)
 {
 	target.insert(element->id(), geometryOf(element));
+	addEdges(element);
 	foreach (QGraphicsItem const *childItem, element->childItems()) {
 		NodeElement const *child = dynamic_cast<NodeElement const *>(childItem);
 		if (child) {
 			makeChildrenSnapshot(child, target);
 		}
+	}
+}
+
+void ResizeCommand::addEdges(NodeElement const *node)
+{
+	foreach (EdgeElement *edge, node->getEdges()) {
+		mEdges.insert(edge);
+	}
+}
+
+void ResizeCommand::startEdgeTracking()
+{
+	foreach (EdgeElement *edge, mEdges) {
+		ReshapeEdgeCommand *reshapeCommand = new ReshapeEdgeCommand(edge);
+		mEdgeCommands << reshapeCommand;
+		reshapeCommand->startTracking();
+		addPostAction(reshapeCommand);
+	}
+}
+
+void ResizeCommand::stopEdgeTracking()
+{
+	foreach (ReshapeEdgeCommand *command, mEdgeCommands) {
+		command->stopTracking();
 	}
 }
 

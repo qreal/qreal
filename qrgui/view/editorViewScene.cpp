@@ -54,8 +54,6 @@ EditorViewScene::EditorViewScene(QObject *parent)
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(deselectLabels()));
-
-	mSelectList = new QList<QGraphicsItem *>();
 }
 
 void EditorViewScene::addItem(QGraphicsItem *item)
@@ -92,7 +90,6 @@ EditorViewScene::~EditorViewScene()
 {
 	delete mActionSignalMapper;
 	delete mMouseMovementManager;
-	delete mSelectList;
 }
 
 void EditorViewScene::setMVIface(EditorViewMViface *mvIface)
@@ -167,7 +164,7 @@ void EditorViewScene::clearScene()
 
 void EditorViewScene::itemSelectUpdate()
 {
-	foreach (QGraphicsItem* item, *mSelectList) {
+	foreach (QGraphicsItem* item, mSelectList) {
 		item->setSelected(true);
 	}
 }
@@ -826,21 +823,21 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			&& !(event->buttons() & Qt::RightButton))
 	{
 		mIsSelectEvent = true;
-		mSelectList->append(selectedItems());
+		mSelectList.append(selectedItems());
 		foreach (QGraphicsItem * const item, items()) {
 			item->setAcceptedMouseButtons(0);
 		}
 
-		foreach (QGraphicsItem * const item, *mSelectList) {
+		foreach (QGraphicsItem * const item, mSelectList) {
 			item->setSelected(true);
 		}
 
 		if (item) {
-			item->setSelected(!mSelectList->contains(item));
+			item->setSelected(!mSelectList.contains(item));
 			if (item->isSelected()) {
-				mSelectList->append(item);
+				mSelectList.append(item);
 			} else {
-				mSelectList->removeAll(item);
+				mSelectList.removeAll(item);
 			}
 		}
 	} else if (event->button() == Qt::LeftButton) {
@@ -853,16 +850,14 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 		if (item) {
 			item->setSelected(true);
-			mSelectList->clear();
-			mSelectList->append(item);
+			mSelectList.clear();
+			mSelectList.append(item);
 			event->accept();
 		}
-	} else {
-		if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
-			mTimer->stop();
-			mMouseMovementManager->mousePress(event->scenePos());
-			mRightButtonPressed = true;
-		}
+	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
+		mTimer->stop();
+		mMouseMovementManager->mousePress(event->scenePos());
+		mRightButtonPressed = true;
 	}
 
 	redraw();
@@ -1051,10 +1046,10 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			item->setAcceptedMouseButtons(Qt::MouseButtons(Qt::RightButton | Qt::LeftButton));
 		}
 		mIsSelectEvent = false;
-		foreach (QGraphicsItem* item, *mSelectList) {
+		foreach (QGraphicsItem* item, mSelectList) {
 			item->setSelected(true);
 		}
-		mSelectList->clear();
+		mSelectList.clear();
 		return;
 	}
 
