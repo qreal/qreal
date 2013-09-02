@@ -11,12 +11,6 @@ LoopElementGenerator::LoopElementGenerator(LogicalModelAssistInterface const &mo
 {
 }
 
-//LoopElementGenerator::LoopElementGenerator(NxtOSEKRobotGenerator *gen
-//		, qReal::Id const &elementId)
-//	: AbstractElementGenerator(gen, elementId)
-//{
-//}
-
 //bool LoopElementGenerator::nextElementsGeneration()
 //{
 //	IdList const outgoingLinks = mNxtGen->api()->outgoingLinks(mElementId);
