@@ -18,7 +18,7 @@ class BeepBlock : public Block
 	Q_OBJECT
 
 public:
-	BeepBlock(robotParts::Brick &brick, AbstractTimer *timer /* Takes ownership */);
+	BeepBlock(robotParts::Brick &brick, AbstractTimer &timer);
 	virtual void run();
 
 private slots:
@@ -26,7 +26,7 @@ private slots:
 
 private:
 	robotParts::Brick &mBrick;
-	AbstractTimer *mTimer;
+	AbstractTimer &mTimer;
 };
 
 }

@@ -1,8 +1,10 @@
+#include "pattern.h"
+
 #include <QtCore/QPointF>
 
-#include "../../qrkernel/ids.h"
-#include "pattern.h"
-#include "editorManager.h"
+#include <qrkernel/ids.h>
+
+#include "pluginManager/editorManager.h"
 
 using namespace qReal;
 GroupNode::GroupNode(QString const &typeArg, QString const &idArg, QPointF const &positionArg)

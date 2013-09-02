@@ -3,7 +3,7 @@
 #include <QtCore/QList>
 #include <QtWidgets/QTreeWidgetItem>
 
-#include "../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
 
@@ -21,6 +21,7 @@ class GraphicalModelAssistApi;
 
 /// This class contains methods for processing all system explosion-based operations
 /// from the model aspect
+// TODO: Why it is in "details" folder, but not in "details" namespace?
 class Exploser : public QObject
 {
 	Q_OBJECT
@@ -28,14 +29,8 @@ class Exploser : public QObject
 public:
 	explicit Exploser(LogicalModelAssistApi &api);
 
-	/// Returns current system suffix that would be added to every explosion target name
-	static QString insideSuffix();
-
-	/// Returns current system name of each group with reusable explosions in user palette
-	static QString userGroupTitle();
-
-	/// Returns current system description of each group with reusable explosions in user palette
-	static QString userGroupDescription();
+	void customizeExplosionTitles(QString const &userGroupTitle
+			, QString const &userGroupDescription);
 
 	/// Passed to this method palette tree will be automatically updated
 	/// with actual reusable explosions information
@@ -100,6 +95,9 @@ private:
 
 	LogicalModelAssistApi &mApi;
 	QMap<Id, gui::PaletteTreeWidget *> mUserPalettes;
+
+	QString mUserGroupTitle;
+	QString mUserGroupDescription;
 };
 
 }

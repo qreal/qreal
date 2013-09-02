@@ -14,6 +14,7 @@ LIBS += -L../../../../bin/plugins -lrobotsInterpreterCore
 INCLUDEPATH += \
 	../robotsInterpreterCore/include \
 	../../../../ \
+	$$PWD/../../../../qrgui/ \
 
 HEADERS += \
 	nullKitInterpreterInterface.h \

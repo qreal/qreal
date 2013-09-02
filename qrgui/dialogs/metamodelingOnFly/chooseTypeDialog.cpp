@@ -1,7 +1,8 @@
 #include "chooseTypeDialog.h"
 #include "ui_chooseTypeDialog.h"
-#include "addNodeDialog.h"
-#include "edgePropertiesDialog.h"
+
+#include "dialogs/metamodelingOnFly/addNodeDialog.h"
+#include "dialogs/metamodelingOnFly/edgePropertiesDialog.h"
 
 using namespace qReal;
 using namespace gui;

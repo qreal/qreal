@@ -2,9 +2,9 @@
 
 #include <QtWidgets/QTreeWidget>
 
-#include "../../pluginManager/editorManagerInterface.h"
-#include "paletteElement.h"
-#include "draggableElement.h"
+#include "mainwindow/palette/paletteElement.h"
+#include "pluginManager/editorManagerInterface.h"
+#include "mainwindow/palette/draggableElement.h"
 
 namespace qReal {
 namespace gui {

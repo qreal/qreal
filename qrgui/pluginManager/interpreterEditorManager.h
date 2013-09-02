@@ -8,14 +8,15 @@
 #include <QtCore/QPair>
 #include <QtGui/QIcon>
 
-#include "listenerManager.h"
-#include "../../qrkernel/ids.h"
-#include "../editorPluginInterface/editorInterface.h"
-#include "../../qrrepo/graphicalRepoApi.h"
-#include "../../qrrepo/logicalRepoApi.h"
-#include "../../qrkernel/settingsManager.h"
-#include "../../qrrepo/repoApi.h"
-#include "editorManagerInterface.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/settingsManager.h>
+#include <qrrepo/graphicalRepoApi.h>
+#include <qrrepo/logicalRepoApi.h>
+#include <qrrepo/repoApi.h>
+
+#include "pluginManager/listenerManager.h"
+#include "editorPluginInterface/editorInterface.h"
+#include "pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 

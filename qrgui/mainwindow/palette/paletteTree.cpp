@@ -1,3 +1,5 @@
+#include "paletteTree.h"
+
 #include <QtCore/QUuid>
 #include <QtGui/QMouseEvent>
 #include <QtCore/QtAlgorithms>
@@ -5,12 +7,12 @@
 #include <QtCore/QMimeData>
 #include <QtGui/QDrag>
 
-#include "../../qrkernel/settingsManager.h"
-#include "../../qrkernel/definitions.h"
-#include "paletteTree.h"
-#include "../../qrkernel/settingsManager.h"
-#include "draggableElement.h"
-#include "../dialogs/metamodelingOnFly/propertiesDialog.h"
+#include <qrkernel/settingsManager.h>
+#include <qrkernel/definitions.h>
+#include <qrkernel/settingsManager.h>
+
+#include "mainwindow/palette/draggableElement.h"
+#include "dialogs/metamodelingOnFly/propertiesDialog.h"
 
 using namespace qReal;
 using namespace gui;

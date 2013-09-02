@@ -213,9 +213,9 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Ports" hard="true"/>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
 						<label x="-8" y="-25" text="Порты:" hard="true"/>
-						<label x="33" y="60" textBinded="Power"/>
+						<label x="40" y="60" textBinded="Power"/>
 						<label x="-50" y="60" text="Мощность (%):"/>
 					</labels>
 					<ports>
@@ -257,9 +257,9 @@
 						</rectangle>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Ports" hard="true"/>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
 						<label x="-8" y="-25" text="Порты:" hard="true"/>
-						<label x="33" y="60" textBinded="Power"/>
+						<label x="40" y="60" textBinded="Power"/>
 						<label x="-50" y="60" text="Мощность (%):"/>
 					</labels>
 					<ports>
@@ -445,15 +445,14 @@
 					<container/>
 				</logic>
 			</node>
-
 			<node displayedName="Моторы стоп" name="EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Выключить моторы по заданным портам">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Ports" hard="true"/>
-						<label x="-5" y="-25" text="Порты:" hard="true"/>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-10" y="-25" text="Порты:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -488,7 +487,7 @@
 						<image y1="0" name="images/timerBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="50" y="-25" textBinded="Delay" hard="true"/>
+						<label x="65" y="-25" textBinded="Delay" hard="true"/>
 						<label x="-30" y="-25" text="Задержка (мс):" hard="true"/>
 					</labels>
 					<ports>
@@ -529,7 +528,7 @@
 						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
 					</labels>
 					<ports>
@@ -565,12 +564,12 @@
 						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Volume"/>
-						<label x="-26" y="60" text="Громкость:"/>
-						<label x="33" y="80" textBinded="Sign"/>
-						<label x="-80" y="80" text="Считанное значение:"/>
+						<label x="45" y="60" textBinded="Volume"/>
+						<label x="-30" y="60" text="Громкость:"/>
+						<label x="50" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -613,12 +612,12 @@
 						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Degrees"/>
+						<label x="35" y="60" textBinded="Degrees"/>
 						<label x="-26" y="60" text="Градусы:"/>
-						<label x="33" y="80" textBinded="Sign"/>
-						<label x="-80" y="80" text="Считанное значение:"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -716,8 +715,8 @@
 					<labels>
 						<label x="-35" y="-25" text="Громкость (%):" hard="true"/>
 						<label x="-60" y="60" text="Ждать завершения:"/>
-						<label x="35" y="-25" textBinded="Volume" hard="true"/>
-						<label x="30" y="60" textBinded="WaitForCompletion"/>
+						<label x="60" y="-25" textBinded="Volume" hard="true"/>
+						<label x="70" y="60" textBinded="WaitForCompletion"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -760,8 +759,8 @@
 						<image y1="0" name="images/loopBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Iterations" hard="true"/>
-						<label x="-37" y="-25" text="Итераций:" hard="true"/>
+						<label x="40" y="-25" textBinded="Iterations" hard="true"/>
+						<label x="-30" y="-25" text="Итераций:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -875,12 +874,12 @@
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Distance"/>
-						<label x="-55" y="60" text="Расстояние (см):"/>
-						<label x="33" y="80" textBinded="Sign"/>
-						<label x="-80" y="80" text="Считанное значение:"/>
+						<label x="50" y="60" textBinded="Distance"/>
+						<label x="-60" y="60" text="Расстояние (см):"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -941,12 +940,12 @@
 						<image y1="0" name="images/waitForColorIntensityBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Intensity"/>
-						<label x="-50" y="60" text="Интенсивность:"/>
-						<label x="33" y="80" textBinded="Sign"/>
-						<label x="-80" y="80" text="Считанное значение:"/>
+						<label x="55" y="60" textBinded="Intensity"/>
+						<label x="-55" y="60" text="Интенсивность:"/>
+						<label x="55" y="80" textBinded="Sign"/>
+						<label x="-85" y="80" text="Считанное значение:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -989,9 +988,9 @@
 						<image y1="0" name="images/waitForColorBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="37" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Color"/>
+						<label x="37" y="60" textBinded="Color"/>
 						<label x="0" y="60" text="Цвет:"/>
 					</labels>
 					<ports>
@@ -1030,12 +1029,12 @@
 						<image y1="0" name="images/waitForLight.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="Percents"/>
+						<label x="45" y="60" textBinded="Percents"/>
 						<label x="-26" y="60" text="Проценты:"/>
-						<label x="33" y="80" textBinded="Sign"/>
-						<label x="-80" y="80" text="Считанное значение:"/>
+						<label x="50" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1078,12 +1077,12 @@
 						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Port" hard="true"/>
+						<label x="40" y="-25" textBinded="Port" hard="true"/>
 						<label x="0" y="-25" text="Порт:" hard="true"/>
-						<label x="33" y="60" textBinded="TachoLimit"/>
-						<label x="-60" y="60" text="Предел оборотов:"/>
-						<label x="33" y="80" textBinded="Sign"/>
-						<label x="-80" y="80" text="Считанное значение:"/>
+						<label x="40" y="60" textBinded="TachoLimit"/>
+						<label x="-90" y="60" text="Предел оборотов:"/>
+						<label x="60" y="80" textBinded="Sign"/>
+						<label x="-90" y="80" text="Считанное значение:"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1127,8 +1126,8 @@
 						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="-25" textBinded="Ports" hard="true"/>
-						<label x="0" y="-25" text="Порты:" hard="true"/>
+						<label x="40" y="-25" textBinded="Ports" hard="true"/>
+						<label x="-10" y="-25" text="Порты:" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1169,7 +1168,7 @@
 					</picture>
 					<labels>
 						<label x="-37" y="60" text="Функция:"/>
-						<label x="15" y="60" textBinded="Body"/>
+						<label x="30" y="60" textBinded="Body"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1208,7 +1207,7 @@
 						<image y1="0" name="images/ifBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="33" y="60" textBinded="Condition" isPlainText="true" />
+						<label x="35" y="60" textBinded="Condition" isPlainText="true" />
 						<label x="-25" y="60" text="Условие:"/>
 					</labels>
 					<ports>
@@ -1249,14 +1248,14 @@
 						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="60" y="60" textBinded="RightButtonClicks"/>
-						<label x="0" y="60" text="Правая: "/>
-						<label x="60" y="80" textBinded="LeftButtonClicks"/>
-						<label x="0" y="80" text="Левая: "/>
-						<label x="60" y="100" textBinded="CentralButtonClicks"/>
-						<label x="0" y="100" text="Центральная: "/>
-						<label x="60" y="120" textBinded="BottomButtonClicks"/>
-						<label x="0" y="120" text="Нижняя: "/>
+						<label x="70" y="60" textBinded="RightButtonClicks"/>
+						<label x="-20" y="60" text="Правая: "/>
+						<label x="70" y="80" textBinded="LeftButtonClicks"/>
+						<label x="-20" y="80" text="Левая: "/>
+						<label x="70" y="100" textBinded="CentralButtonClicks"/>
+						<label x="-20" y="100" text="Центральная: "/>
+						<label x="70" y="120" textBinded="BottomButtonClicks"/>
+						<label x="-20" y="120" text="Нижняя: "/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1440,14 +1439,14 @@
 						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="40" y="60" textBinded="XCoordinateRect"/>
-						<label x="0" y="60" text="X: "/>
-						<label x="40" y="80" textBinded="YCoordinateRect"/>
-						<label x="0" y="80" text="Y: "/>
-						<label x="40" y="100" textBinded="WidthRect"/>
-						<label x="0" y="100" text="Ширина: "/>
-						<label x="40" y="120" textBinded="HeightRect"/>
-						<label x="0" y="120" text="Высота: "/>
+						<label x="50" y="60" textBinded="XCoordinateRect"/>
+						<label x="-10" y="60" text="X: "/>
+						<label x="50" y="80" textBinded="YCoordinateRect"/>
+						<label x="-10" y="80" text="Y: "/>
+						<label x="50" y="100" textBinded="WidthRect"/>
+						<label x="-10" y="100" text="Ширина: "/>
+						<label x="50" y="120" textBinded="HeightRect"/>
+						<label x="-10" y="120" text="Высота: "/>
 					</labels>
 					<ports>
 						<linePort>
@@ -1496,11 +1495,11 @@
 						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="36" y="60" textBinded="XCoordinateCircle"/>
+						<label x="50" y="60" textBinded="XCoordinateCircle"/>
 						<label x="0" y="60" text="X: "/>
-						<label x="36" y="80" textBinded="YCoordinateCircle"/>
+						<label x="50" y="80" textBinded="YCoordinateCircle"/>
 						<label x="0" y="80" text="Y: "/>
-						<label x="36" y="100" textBinded="CircleRadius"/>
+						<label x="50" y="100" textBinded="CircleRadius"/>
 						<label x="0" y="100" text="Радиус: "/>
 					</labels>
 					<ports>
@@ -1547,11 +1546,11 @@
 						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="36" y="60" textBinded="XCoordinateText"/>
+						<label x="50" y="60" textBinded="XCoordinateText"/>
 						<label x="0" y="60" text="X: "/>
-						<label x="36" y="80" textBinded="YCoordinateText"/>
+						<label x="50" y="80" textBinded="YCoordinateText"/>
 						<label x="0" y="80" text="Y: "/>
-						<label x="36" y="100" textBinded="PrintText"/>
+						<label x="50" y="100" textBinded="PrintText"/>
 						<label x="0" y="100" text="Текст: "/>
 					</labels>
 					<ports>
@@ -1645,7 +1644,7 @@
 						<image y1="0" name="images/subprogramRobots.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-10" y="-25" textBinded="name" hard="true"/>
+						<label x="-20" y="-25" textBinded="name" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>

@@ -6,15 +6,16 @@
 #include <QtCore/QPluginLoader>
 #include <QtGui/QIcon>
 
-#include "listenerManager.h"
-#include "../../qrkernel/ids.h"
-#include "../editorPluginInterface/editorInterface.h"
-#include "../../qrrepo/graphicalRepoApi.h"
-#include "../../qrrepo/logicalRepoApi.h"
-#include "../../qrkernel/settingsManager.h"
-#include "editorManagerInterface.h"
-#include "pattern.h"
-#include "patternParser.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/settingsManager.h>
+#include <qrrepo/graphicalRepoApi.h>
+#include <qrrepo/logicalRepoApi.h>
+
+#include "pluginManager/listenerManager.h"
+#include "pluginManager/editorManagerInterface.h"
+#include "pluginManager/pattern.h"
+#include "pluginManager/patternParser.h"
+#include "editorPluginInterface/editorInterface.h"
 
 namespace qReal {
 

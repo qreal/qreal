@@ -1,10 +1,11 @@
 #include "exploserView.h"
-#include "../../mainwindow/mainWindow.h"
-#include "../../umllib/element.h"
-#include "../../umllib/nodeElement.h"
-#include "../../view/editorViewScene.h"
-#include "../../controller/commands/createElementCommand.h"
-#include "../../umllib/private/expandCommand.h"
+
+#include "mainwindow/mainWindow.h"
+#include "umllib/element.h"
+#include "umllib/nodeElement.h"
+#include "view/editorViewScene.h"
+#include "controller/commands/createElementCommand.h"
+#include "umllib/private/expandCommand.h"
 
 using namespace qReal;
 using namespace view::details;

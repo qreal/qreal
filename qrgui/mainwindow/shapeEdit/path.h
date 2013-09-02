@@ -1,6 +1,8 @@
 #pragma once
-#include "item.h"
+
 #include <QtCore/QPair>
+
+#include "mainwindow/shapeEdit/item.h"
 
 class Path : public Item
 {

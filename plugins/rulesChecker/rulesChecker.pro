@@ -6,6 +6,10 @@ DESTDIR = ../../bin/plugins/
 
 LIBS += -L../../bin -lqrkernel -lqrutils
 
+INCLUDEPATH += \
+	../../ \
+	../../qrgui \
+
 TRANSLATIONS = rulesChecker_ru.ts
 
 RESOURCES += rulesChecker.qrc \

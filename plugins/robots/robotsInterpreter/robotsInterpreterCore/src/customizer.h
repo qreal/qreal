@@ -16,6 +16,9 @@ public:
 	virtual void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface);
 	virtual bool showInterpeterButton() const;
 
+	virtual QString userPaletteTitle() const;
+	virtual QString userPaletteDescription() const;
+
 private:
 	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
 	QDockWidget *produceDockWidget(QString const &title, QWidget *content) const;

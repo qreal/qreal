@@ -1,20 +1,23 @@
+#include "gridParameters.h"
+
 #include <QtWidgets/QHBoxLayout>
 #include <QtCore/QString>
 
-#include "gridParameters.h"
 #include "../../../qrkernel/settingsManager.h"
+
+using namespace qReal::interpreters::robots::details::d2Model;
 
 GridParameters::GridParameters(QWidget *parent)
 	: QFrame(parent)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
-	mShowGridCheckBox = new QCheckBox(this);
-	QString const checkBoxTitle = tr("Show grid");
-	mShowGridCheckBox->setText(checkBoxTitle);
+	mShowGridCheckBox = new QCheckBox;
+	// TODO: for some reason qt translits doesn`t work in this case
+	mShowGridCheckBox->setText("Сетка");
 	mShowGridCheckBox->setTristate(false);
 
-	mCellSize = new QSlider(this);
+	mCellSize = new QSlider;
 	mCellSize->setOrientation(Qt::Horizontal);
 	mCellSize->setMinimum(50);
 	mCellSize->setMaximum(200);
@@ -29,10 +32,13 @@ GridParameters::GridParameters(QWidget *parent)
 	connect(mShowGridCheckBox, SIGNAL(toggled(bool)), this, SLOT(showGrid(bool)));
 	connect(mCellSize, SIGNAL(valueChanged(int)), this, SLOT(setCellSize(int)));
 
+	bool const showGrid = qReal::SettingsManager::value("2dShowGrid").toBool();
+	int const gridSize = qReal::SettingsManager::value("2dGridCellSize").toInt();
+	mShowGridCheckBox->setChecked(showGrid);
+	mCellSize->setValue(gridSize);
+
 	setLayout(layout);
 
-	showGrid(qReal::SettingsManager::value("2dShowGrid").toBool());
-	setCellSize(qReal::SettingsManager::value("2dGridCellSize").toInt());
 }
 
 GridParameters::~GridParameters()

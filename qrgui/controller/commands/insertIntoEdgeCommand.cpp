@@ -1,6 +1,6 @@
 #include "insertIntoEdgeCommand.h"
 
-#include "../../mainwindow/mainWindow.h"
+#include "mainwindow/mainWindow.h"
 
 namespace qReal
 {

@@ -1,5 +1,6 @@
 #include "renameCommand.h"
-#include "../../models/graphicalModelAssistApi.h"
+
+#include "models/graphicalModelAssistApi.h"
 
 using namespace qReal::commands;
 

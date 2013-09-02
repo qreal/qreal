@@ -1,7 +1,8 @@
 #include "label.h"
-#include "../qrutils/outFile.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
+
+#include <qrutils/outFile.h>
 
 using namespace utils;
 

@@ -1,7 +1,6 @@
-#include <QtWidgets>
-
 #include "element.h"
-#include "../controller/commands/changePropertyCommand.h"
+
+#include "controller/commands/changePropertyCommand.h"
 
 using namespace qReal;
 

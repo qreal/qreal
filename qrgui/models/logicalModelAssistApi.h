@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../../qrkernel/ids.h"
-#include "details/logicalModel.h"
-#include "details/modelsAssistApi.h"
-#include "details/exploser.h"
-#include "../toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "../pluginManager/proxyEditorManager.h"
+#include <qrkernel/ids.h>
+
+#include "models/details/logicalModel.h"
+#include "models/details/modelsAssistApi.h"
+#include "models/details/exploser.h"
+#include "toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "pluginManager/proxyEditorManager.h"
 
 namespace qReal {
 

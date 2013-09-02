@@ -9,36 +9,37 @@
 #include <QtWidgets/QListWidget>
 #include <QtSql/QSqlDatabase>
 
-#include "mainWindowInterpretersInterface.h"
-#include "mainWindowDockInterface.h"
-#include "propertyEditorProxyModel.h"
-#include "gesturesPainterInterface.h"
-#include "findManager.h"
-#include "referenceList.h"
+#include <qrkernel/settingsManager.h>
 
-#include "projectManager/projectManager.h"
+#include "mainwindow/mainWindowInterpretersInterface.h"
+#include "mainwindow/mainWindowDockInterface.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "mainwindow/gesturesPainterInterface.h"
+#include "mainwindow/findManager.h"
+#include "mainwindow/referenceList.h"
 
-#include "../pluginManager/editorManagerInterface.h"
-#include "../pluginManager/editorManager.h"
-#include "../pluginManager/interpreterEditorManager.h"
-#include "../pluginManager/proxyEditorManager.h"
-#include "../pluginManager/toolPluginManager.h"
-#include "../models/logicalModelAssistApi.h"
-#include "../view/propertyEditorView.h"
-#include "../controller/controller.h"
+#include "mainwindow/projectManager/projectManager.h"
 
-#include "../../qrgui/dialogs/preferencesDialog.h"
-#include "../../qrgui/dialogs/findReplaceDialog.h"
-#include "../dialogs/startDialog/startDialog.h"
-#include "propertyEditorProxyModel.h"
-#include "gesturesPainterInterface.h"
-#include "../dialogs/gesturesShow/gesturesWidget.h"
+#include "pluginManager/editorManagerInterface.h"
+#include "pluginManager/editorManager.h"
+#include "pluginManager/interpreterEditorManager.h"
+#include "pluginManager/proxyEditorManager.h"
+#include "pluginManager/toolPluginManager.h"
+#include "models/logicalModelAssistApi.h"
+#include "view/propertyEditorView.h"
+#include "controller/controller.h"
 
-#include "../textEditor/codeEditor.h"
+#include "dialogs/preferencesDialog.h"
+#include "dialogs/findReplaceDialog.h"
+#include "dialogs/startDialog/startDialog.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "mainwindow/gesturesPainterInterface.h"
+#include "dialogs/gesturesShow/gesturesWidget.h"
 
-#include "../../qrkernel/settingsManager.h"
-#include "../dialogs/suggestToCreateDiagramDialog.h"
-#include "tabWidget.h"
+#include "textEditor/codeEditor.h"
+
+#include "dialogs/suggestToCreateDiagramDialog.h"
+#include "mainwindow/tabWidget.h"
 
 namespace Ui {
 class MainWindowUi;

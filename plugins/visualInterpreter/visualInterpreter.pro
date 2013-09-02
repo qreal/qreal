@@ -10,6 +10,10 @@ RCC_DIR = .moc
 
 LIBS += -L../../bin -lqrkernel -lqrutils
 
+INCLUDEPATH += \
+	$$PWD/../.. \
+	$$PWD/../../qrgui/ \
+
 TRANSLATIONS = visualInterpreter_ru.ts
 
 HEADERS = \

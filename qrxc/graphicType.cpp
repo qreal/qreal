@@ -1,11 +1,13 @@
 #include "graphicType.h"
+
+#include <QtCore/QDebug>
+
+#include <qrutils/outFile.h>
+
 #include "property.h"
 #include "label.h"
 #include "diagram.h"
 #include "nameNormalizer.h"
-#include "../qrutils/outFile.h"
-
-#include <QtCore/QDebug>
 
 using namespace utils;
 

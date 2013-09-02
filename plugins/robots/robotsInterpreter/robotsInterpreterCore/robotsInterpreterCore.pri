@@ -1,6 +1,8 @@
 QT += xml widgets
 
-INCLUDEPATH += $$PWD/../../../../
+INCLUDEPATH += \
+	$$PWD/../../../../ \
+	$$PWD/../../../../qrgui/ \
 
 LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils
 
