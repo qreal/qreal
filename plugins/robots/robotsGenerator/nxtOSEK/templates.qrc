@@ -55,5 +55,7 @@
         <file>templates/conditional/infinite.t</file>
         <file>templates/conditional/negation.t</file>
         <file>templates/conditional/whileDo.t</file>
+        <file>templates/types/float.t</file>
+        <file>templates/types/int.t</file>
     </qresource>
 </RCC>

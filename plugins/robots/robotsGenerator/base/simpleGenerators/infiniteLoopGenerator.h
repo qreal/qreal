@@ -7,10 +7,10 @@ namespace robots {
 namespace generators {
 namespace simple {
 
-class LoopElementGenerator : public BindingGenerator
+class InfiniteLoopGenerator : public BindingGenerator
 {
 public:
-	LoopElementGenerator(LogicalModelAssistInterface const &model
+	InfiniteLoopGenerator(LogicalModelAssistInterface const &model
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

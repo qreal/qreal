@@ -63,9 +63,10 @@ QString ZoneNode::toString(GeneratorCustomizer &customizer, int indent) const
 {
 	QString result;
 	foreach (SemanticNode const * const child, mChildren) {
-		result += child->toString(customizer, indent).trimmed() + "\n";
+		result += addIndent(child->toString(customizer, 0).trimmed(), indent)+ "\n";
 	}
 
+	result.chop(1);
 	return result;
 }
 

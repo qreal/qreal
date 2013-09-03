@@ -9,7 +9,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
-/// Binds property from repo to substring in the given string data
+/// Binds property from repo or a static string to a given substring of a given data
 class Binding
 {
 public:
@@ -39,10 +39,17 @@ public:
 		virtual QString convert(QString const &data) const;
 	};
 
-	/// Creates new instance of binding without converting data in repo before applying
+	/// Creates new instance of binding that simply replaces given label with a given value
+	static Binding *createStatic(QString const &label, QString const &value);
+
+	/// Creates new instance of binding to static string with a given converter
+	static Binding *createStaticConverting(QString const &label, QString const &value
+			, ConverterInterface const *converter);
+
+	/// Creates new instance of binding without converting data form repo before applying
 	static Binding *createDirect(QString const &label, QString const &property);
 
-	/// Creates new instance of binding with given converter
+	/// Creates new instance of binding to a repo property with a given converter
 	static Binding *createConverting(QString const &label, QString const &property
 			, ConverterInterface const *converter);
 
@@ -60,9 +67,9 @@ public:
 			, Id const &id, QString &data);
 
 private:
-	Binding(QString const &label, QString const &property);
+	Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo);
 
-	Binding(QString const &label, QString const &property
+	Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo
 			, ConverterInterface const *converter);
 
 	Binding(QString const &label, QString const &property
@@ -72,6 +79,7 @@ private:
 
 	QString const mLabel;
 	QString const mProperty;
+	QString const mValue;
 	ConverterInterface const *mConverter; // Takes ownership
 	MultiConverterInterface const *mMultiConverter; // Takes ownership
 };

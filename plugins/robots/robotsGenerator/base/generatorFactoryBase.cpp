@@ -2,10 +2,12 @@
 #include "generatorCustomizer.h"
 
 #include "simpleGenerators/commentElementGenerator.h"
-#include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/ifElementGenerator.h"
-#include "simpleGenerators/loopElementGenerator.h"
+#include "simpleGenerators/infiniteLoopGenerator.h"
+#include "simpleGenerators/forLoopGenerator.h"
+#include "simpleGenerators/whileLoopGenerator.h"
 #include "simpleGenerators/bindingGenerator.h"
+#include "simpleGenerators/functionElementGenerator.h"
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
 #include "simpleGenerators/timerGenerator.h"
@@ -40,6 +42,7 @@
 #include "converters/breakModeConverter.h"
 #include "converters/enginePortConverter.h"
 #include "converters/enginePortsConverter.h"
+#include "converters/typeConverter.h"
 
 using namespace qReal::robots::generators;
 using namespace simple;
@@ -61,16 +64,24 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(Id const &id
 	return new IfElementGenerator(mModel, customizer, id, elseIsEmpty, needInverting, this);
 }
 
+simple::AbstractSimpleGenerator *GeneratorFactoryBase::infiniteLoopGenerator(Id const &id
+		, GeneratorCustomizer &customizer)
+{
+	return new InfiniteLoopGenerator(mModel, customizer, id, this);
+}
+
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::whileLoopGenerator(Id const &id
 		, GeneratorCustomizer &customizer
+		, bool doWhileForm
 		, bool needInverting)
 {
+	return new WhileLoopGenerator(mModel, customizer, id, doWhileForm, needInverting, this);
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(Id const &id
-		, GeneratorCustomizer &customizer
-		, bool needInverting)
+		, GeneratorCustomizer &customizer)
 {
+	return new ForLoopGenerator(mModel, customizer, id, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &id
@@ -134,70 +145,6 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 		return new SubprogramsSimpleGenerator(mModel, customizer, id, this);
 	}
 
-//	if (elementType == "IfBlock") {
-//		return ifBlock(id);
-//	} else if (elementType == "Loop") {
-//		return loop(id);
-//	} else if (elementType == "Function") {
-//		return function(id);
-//	} else if (elementType == "CommentBlock") {
-//		return comment(id);
-//	} else if (elementType == "EnginesForward") {
-//		return enginesForward(id);
-//	} else if (elementType == "EnginesBackward") {
-//		return enginesBackward(id);
-//	} else if (elementType == "EnginesStop") {
-//		return enginesStop(id);
-//	} else if (elementType == "Timer") {
-//		return timer(id);
-//	} else if (elementType == "Beep") {
-//		return beep(id);
-//	} else if (elementType == "PlayTone") {
-//		return playTone(id);
-//	} else if (elementType == "FinalNode") {
-//		return finalNode(id);
-//	} else if (elementType == "NullificationEncoder") {
-//		return nullificationEncoder(id);
-//	} else if (elementType == "WaitForColor") {
-//		return waitForColor(id);
-//	} else if (elementType == "WaitForColorIntensity") {
-//		return waitForColorIntensity(id);
-//	} else if (elementType == "WaitForLight") {
-//		return waitForLight(id);
-//	} else if (elementType == "WaitForTouchSensor") {
-//		return waitForTouchSensor(id);
-//	} else if (elementType == "WaitForSonarDistance") {
-//		return waitForSonarDistance(id);
-//	} else if (elementType == "WaitForEncoder") {
-//		return waitForEncoder(id);
-//	} else if (elementType == "WaitForSound") {
-//		return waitForSound(id);
-//	} else if (elementType == "WaitForGyroscope") {
-//		return waitForGyroscope(id);
-//	} else if (elementType == "WaitForAccelerometer") {
-//		return waitForAccelerometer(id);
-//	} else if (elementType == "Balance") {
-//		return balance(id);
-//	} else if (elementType == "BalanceInit") {
-//		return balanceInit(id);
-//	} else if (elementType == "WaitForButtons") {
-//		return waitForButtons(id);
-//	} else if (elementType == "DrawPixel") {
-//		return drawPixel(id);
-//	} else if (elementType == "DrawLine") {
-//		return drawLine(id);
-//	} else if (elementType == "DrawCircle") {
-//		return drawCircle(id);
-//	} else if (elementType == "PrintText") {
-//		return printText(id);
-//	} else if (elementType == "DrawRect") {
-//		return drawRect(id);
-//	} else if (elementType == "ClearScreen") {
-//		return clearScreen(id);
-//	} else if (elementType == "Subprogram") {
-//		return subprogram(id);
-//	}
-
 	return NULL;
 }
 
@@ -215,55 +162,60 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::continueGenerator(Id cons
 
 // Converters can be instantiated without taking ownership because bindinders do this
 
-Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter()
+Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 {
 	return new Binding::EmptyConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting)
+Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
 {
 	return new Binding::EmptyConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter()
+Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const
 {
 	return new Binding::EmptyConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter()
+Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() const
 {
 	return new converters::NameNormalizerConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter()
+Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() const
 {
 	return new Binding::EmptyConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter()
+Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() const
 {
 	return new converters::InequalitySignConverter(pathToTemplates());
 }
 
-Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter()
+Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter() const
 {
 	return new converters::EnginePortsConverter(pathToTemplates()
 			, new converters::EnginePortConverter(pathToTemplates()));
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::portConverter()
+Binding::ConverterInterface *GeneratorFactoryBase::portConverter() const
 {
 	return new Binding::EmptyConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::colorConverter()
+Binding::ConverterInterface *GeneratorFactoryBase::colorConverter() const
 {
 	return new converters::ColorConverter(pathToTemplates());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter()
+Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter() const
 {
 	return new converters::BreakModeConverter(pathToTemplates());
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::typeConverter() const
+{
+	return new converters::TypeConverter(pathToTemplates());
 }
 
 /*

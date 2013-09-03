@@ -15,15 +15,26 @@ QString Binding::EmptyConverter::convert(QString const &data) const
 	return data;
 }
 
+Binding *Binding::createStatic(QString const &label, QString const &value)
+{
+	return new Binding(label, value, false);
+}
+
+Binding *Binding::createStaticConverting(QString const &label, QString const &value
+		, ConverterInterface const *converter)
+{
+	return new Binding(label, value, false, converter);
+}
+
 Binding *Binding::createDirect(QString const &label, QString const &property)
 {
-	return new Binding(label, property);
+	return new Binding(label, property, true);
 }
 
 Binding *Binding::createConverting(QString const &label, QString const &property
 		, ConverterInterface const *converter)
 {
-	return new Binding(label, property, converter);
+	return new Binding(label, property, true, converter);
 }
 
 Binding *Binding::createMultiTarget(QString const &label, QString const &property
@@ -32,20 +43,31 @@ Binding *Binding::createMultiTarget(QString const &label, QString const &propert
 	return new Binding(label, property, converter);
 }
 
-Binding::Binding(QString const &label, QString const &property)
-	: mLabel(label), mProperty(property), mConverter(new EmptyConverter), mMultiConverter(NULL)
+Binding::Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo)
+	: mLabel(label)
+	, mProperty(takeFromRepo ? propertyOrValue : "")
+	, mValue(takeFromRepo ? "" : propertyOrValue)
+	, mConverter(new EmptyConverter)
+	, mMultiConverter(NULL)
 {
 }
 
-Binding::Binding(QString const &label, QString const &property
+Binding::Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo
 		, ConverterInterface const *converter)
-	: mLabel(label), mProperty(property), mConverter(converter), mMultiConverter(NULL)
+	: mLabel(label)
+	, mProperty(takeFromRepo ? propertyOrValue : "")
+	, mValue(takeFromRepo ? "" : propertyOrValue)
+	, mConverter(converter)
+	, mMultiConverter(NULL)
 {
 }
 
 Binding::Binding(QString const &label, QString const &property
 		, MultiConverterInterface const *converter)
-	: mLabel(label), mProperty(property), mConverter(NULL), mMultiConverter(converter)
+	: mLabel(label)
+	, mProperty(property)
+	, mConverter(NULL)
+	, mMultiConverter(converter)
 {
 }
 
@@ -57,9 +79,11 @@ Binding::~Binding()
 void Binding::apply(LogicalModelAssistInterface const &model
 		, Id const &id, QString &data)
 {
-	QString const property = mProperty == "name"
-			? model.name(id)
-			: model.propertyByRoleName(id, mProperty).toString();
+	QString const property = mProperty.isEmpty()
+			? mValue
+			: mProperty == "name"
+					? model.name(id)
+					: model.propertyByRoleName(id, mProperty).toString();
 
 	if (mConverter) {
 		data.replace(mLabel, mConverter->convert(property));

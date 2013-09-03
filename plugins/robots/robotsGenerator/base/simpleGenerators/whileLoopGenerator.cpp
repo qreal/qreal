@@ -1,17 +1,16 @@
-#include "ifElementGenerator.h"
+#include "whileLoopGenerator.h"
 #include "../generatorCustomizer.h"
 
-using namespace qReal;
-using namespace robots::generators::simple;
+using namespace qReal::robots::generators::simple;
 
-IfElementGenerator::IfElementGenerator(LogicalModelAssistInterface const &model
+WhileLoopGenerator::WhileLoopGenerator(LogicalModelAssistInterface const &model
 		, GeneratorCustomizer &customizer
 		, Id const &id
-		, bool elseIsEmpty
+		, bool doWhileForm
 		, bool needInverting
 		, QObject *parent)
 	: BindingGenerator(model, customizer, id
-			, elseIsEmpty ? "conditional/if.t" : "conditional/ifElse.t"
+			, doWhileForm ? "conditional/doWhile.t" : "conditional/whileDo.t"
 			, QList<Binding *>() << Binding::createConverting("@@CONDITION@@", "Condition"
 					, customizer.factory()->boolPropertyConverter(needInverting))
 			, parent)

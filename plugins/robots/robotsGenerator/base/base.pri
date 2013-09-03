@@ -84,11 +84,14 @@ HEADERS += \
 	$$PWD/converters/breakModeConverter.h \
 	$$PWD/converters/enginePortConverter.h \
 	$$PWD/converters/enginePortsConverter.h \
+	$$PWD/converters/typeConverter.h \
 	$$PWD/simpleGenerators/abstractSimpleGenerator.h \
 	$$PWD/simpleGenerators/commentElementGenerator.h \
 	$$PWD/simpleGenerators/functionElementGenerator.h \
 	$$PWD/simpleGenerators/ifElementGenerator.h \
-	$$PWD/simpleGenerators/loopElementGenerator.h \
+	$$PWD/simpleGenerators/infiniteLoopGenerator.h \
+	$$PWD/simpleGenerators/forLoopGenerator.h \
+	$$PWD/simpleGenerators/whileLoopGenerator.h \
 	$$PWD/simpleGenerators/bindingGenerator.h \
 	$$PWD/simpleGenerators/binding.h \
 	$$PWD/simpleGenerators/enginesStopGenerator.h \
@@ -134,11 +137,14 @@ SOURCES += \
 	$$PWD/converters/breakModeConverter.cpp \
 	$$PWD/converters/enginePortConverter.cpp \
 	$$PWD/converters/enginePortsConverter.cpp \
+	$$PWD/converters/typeConverter.cpp \
 	$$PWD/simpleGenerators/abstractSimpleGenerator.cpp \
 	$$PWD/simpleGenerators/commentElementGenerator.cpp \
 	$$PWD/simpleGenerators/functionElementGenerator.cpp \
 	$$PWD/simpleGenerators/ifElementGenerator.cpp \
-	$$PWD/simpleGenerators/loopElementGenerator.cpp \
+	$$PWD/simpleGenerators/infiniteLoopGenerator.cpp \
+	$$PWD/simpleGenerators/forLoopGenerator.cpp \
+	$$PWD/simpleGenerators/whileLoopGenerator.cpp \
 	$$PWD/simpleGenerators/bindingGenerator.cpp \
 	$$PWD/simpleGenerators/binding.cpp \
 	$$PWD/simpleGenerators/enginesStopGenerator.cpp \

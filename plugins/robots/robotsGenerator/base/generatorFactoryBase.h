@@ -24,13 +24,16 @@ public:
 			, bool elseIsEmpty
 			, bool needInverting);
 
+	virtual simple::AbstractSimpleGenerator *infiniteLoopGenerator(Id const &id
+			, GeneratorCustomizer &customizer);
+
 	virtual simple::AbstractSimpleGenerator *whileLoopGenerator(Id const &id
 			, GeneratorCustomizer &customizer
+			, bool doWhileForm
 			, bool needInverting);
 
 	virtual simple::AbstractSimpleGenerator *forLoopGenerator(Id const &id
-			, GeneratorCustomizer &customizer
-			, bool needInverting);
+			, GeneratorCustomizer &customizer);
 
 	virtual simple::AbstractSimpleGenerator *simpleGenerator(Id const &id
 			, GeneratorCustomizer &customizer);
@@ -42,16 +45,17 @@ public:
 
 	virtual QString pathToTemplates() const = 0;
 
-	virtual simple::Binding::ConverterInterface *intPropertyConverter();
-	virtual simple::Binding::ConverterInterface *boolPropertyConverter(bool needInverting);
-	virtual simple::Binding::ConverterInterface *stringPropertyConverter();
-	virtual simple::Binding::ConverterInterface *nameNormalizerConverter();
-	virtual simple::Binding::ConverterInterface *functionBlockConverter();
-	virtual simple::Binding::ConverterInterface *inequalitySignConverter();
-	virtual simple::Binding::MultiConverterInterface *enginesConverter();
-	virtual simple::Binding::ConverterInterface *portConverter();
-	virtual simple::Binding::ConverterInterface *colorConverter();
-	virtual simple::Binding::ConverterInterface *breakModeConverter();
+	virtual simple::Binding::ConverterInterface *intPropertyConverter() const;
+	virtual simple::Binding::ConverterInterface *boolPropertyConverter(bool needInverting) const;
+	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
+	virtual simple::Binding::ConverterInterface *nameNormalizerConverter() const;
+	virtual simple::Binding::ConverterInterface *functionBlockConverter() const;
+	virtual simple::Binding::ConverterInterface *inequalitySignConverter() const;
+	virtual simple::Binding::MultiConverterInterface *enginesConverter() const;
+	virtual simple::Binding::ConverterInterface *portConverter() const;
+	virtual simple::Binding::ConverterInterface *colorConverter() const;
+	virtual simple::Binding::ConverterInterface *breakModeConverter() const;
+	virtual simple::Binding::ConverterInterface *typeConverter() const;
 
 //	virtual simple::AbstractSimpleGenerator *templateGenratorFor(Id const &id
 //			, QString const &templateFile, QList<simple::Binding *> const &bindings);
