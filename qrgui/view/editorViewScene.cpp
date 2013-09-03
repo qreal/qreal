@@ -774,8 +774,8 @@ bool EditorViewScene::moveNodes()
 	bool movedNodesPresent = false;
 	ResizeCommand *resizeCommand = NULL;
 
-	foreach (QGraphicsItem* item, selectedItems()) {
-		NodeElement* node = dynamic_cast<NodeElement*>(item);
+	foreach (QGraphicsItem *item, selectedItems()) {
+		NodeElement *node = dynamic_cast<NodeElement *>(item);
 		if (!node) {
 			continue;
 		}
@@ -805,7 +805,7 @@ bool EditorViewScene::moveNodes()
 void EditorViewScene::moveEdges()
 {
 	foreach (QGraphicsItem *item, selectedItems()) {
-		EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
+		EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
 		if (edge) {
 			ReshapeEdgeCommand *edgeCommand = new ReshapeEdgeCommand(this, edge->id());
 			edgeCommand->startTracking();

@@ -9,6 +9,7 @@ namespace qReal {
 /// Performs mouse events handling, link rendering and everything connected to laying the link out, reconnecting
 /// and adjusting of the link to adjacent nodes and grid.
 /// Apart of that, LineHandler's subclass may add extra actions to link's context menu.
+/// To support undo-redo for custom context actions use connectAction() function instead of QObject::connect().
 class LineHandler : public QObject
 {
 	Q_OBJECT
@@ -53,10 +54,17 @@ public:
 
 	/// @return List of context menu actions available for a particular link type
 	virtual QList<ContextMenuAction *> extraActions(QPointF const &pos);
+	/// Provide undo-redo support for context actions
+	void connectAction(ContextMenuAction *action, char const *slot) const;
 
 protected slots:
 	/// Remove all intermediate points
 	void minimize();
+
+	/// Start tracking edge changes
+	void startReshape();
+	/// Execute and reset reshape command
+	void endReshape();
 
 protected:
 	/// Reimplement this method in subclass to make type-dependent actions when lay out
@@ -72,8 +80,6 @@ protected:
 	bool nodeChanged(bool isStart) const;
 	/// @return index of the point, that is not contained in link's src/dst, while the previous point is
 	int firstOutsidePoint(bool startFromSrc) const;
-	/// Execute and reset reshape command
-	void endReshape();
 
 	void connectAndArrange(bool reconnectSrc, bool reconnectDst);
 

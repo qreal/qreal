@@ -12,9 +12,7 @@ LineHandler::LineHandler(EdgeElement *edge)
 
 int LineHandler::startMovingEdge(QPointF const &pos)
 {
-	mReshapeCommand = new commands::ReshapeEdgeCommand(static_cast<EditorViewScene *>(mEdge->scene()), mEdge->id());
-	mReshapeCommand->startTracking();
-	mReshapeStarted = true;
+	startReshape();
 
 	mSavedLine = mEdge->line();
 	mDragType = definePoint(pos);
@@ -63,6 +61,13 @@ void LineHandler::endMovingEdge()
 
 	endReshape();
 	mDragType = EdgeElement::noPort;
+}
+
+void LineHandler::startReshape()
+{
+	mReshapeCommand = new commands::ReshapeEdgeCommand(static_cast<EditorViewScene *>(mEdge->scene()), mEdge->id());
+	mReshapeCommand->startTracking();
+	mReshapeStarted = true;
 }
 
 void LineHandler::endReshape()
@@ -356,6 +361,13 @@ QList<ContextMenuAction *> LineHandler::extraActions(QPointF const &pos)
 {
 	Q_UNUSED(pos)
 	return QList<ContextMenuAction *>();
+}
+
+void LineHandler::connectAction(ContextMenuAction *action, char const *slot) const
+{
+	connect(action, SIGNAL(triggered(QPointF const &)), this, SLOT(startReshape()));
+	connect(action, SIGNAL(triggered(QPointF const &)), this, slot);
+	connect(action, SIGNAL(triggered(QPointF const &)), this, SLOT(endReshape()));
 }
 
 void LineHandler::minimize()

@@ -9,7 +9,7 @@ SquareLine::SquareLine(EdgeElement *edge)
 		: LineHandler(edge)
 		, mLayOutAction(tr("Lay out"), this)
 {
-	connect(&mLayOutAction, SIGNAL(triggered()), this, SLOT(minimize()));
+	connectAction(&mLayOutAction, SLOT(minimize()));
 }
 
 void SquareLine::handleEdgeMove(QPointF const &pos)
