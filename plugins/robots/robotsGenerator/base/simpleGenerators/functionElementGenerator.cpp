@@ -1,4 +1,5 @@
 #include "functionElementGenerator.h"
+#include "../generatorCustomizer.h"
 
 using namespace qReal;
 using namespace robots::generators::simple;
@@ -8,7 +9,9 @@ FunctionElementGenerator::FunctionElementGenerator(LogicalModelAssistInterface c
 		, Id const &id
 		, bool generateToInit
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "function.t", QList<Binding *>(), parent)
+	: BindingGenerator(model, customizer, id, "function.t", QList<Binding *>()
+			<< Binding::createConverting("@@BODY@@", "Body", customizer.factory()->functionBlockConverter())
+			, parent)
 	, mGenerateToInit(generateToInit)
 {
 }

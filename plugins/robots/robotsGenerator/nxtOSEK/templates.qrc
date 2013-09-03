@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/templates/nxtOSEK">
+    <qresource prefix="/nxtOSEK">
         <file>templates/beep.t</file>
         <file>templates/break.t</file>
         <file>templates/continue.t</file>
@@ -46,5 +46,8 @@
         <file>templates/wait/waitForSonarDistance.t</file>
         <file>templates/wait/waitForSound.t</file>
         <file>templates/wait/waitForTouchSensor.t</file>
+        <file>templates/initialNode.t</file>
+        <file>templates/engines/breakMode/break.t</file>
+        <file>templates/engines/breakMode/float.t</file>
     </qresource>
 </RCC>

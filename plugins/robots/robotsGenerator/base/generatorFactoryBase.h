@@ -35,8 +35,10 @@ public:
 	virtual simple::Binding::ConverterInterface *nameNormalizerConverter();
 	virtual simple::Binding::ConverterInterface *functionBlockConverter();
 	virtual simple::Binding::ConverterInterface *inequalitySignConverter();
+	virtual simple::Binding::MultiConverterInterface *enginesConverter();
 	virtual simple::Binding::ConverterInterface *portConverter();
 	virtual simple::Binding::ConverterInterface *colorConverter();
+	virtual simple::Binding::ConverterInterface *breakModeConverter();
 
 //	virtual simple::AbstractSimpleGenerator *templateGenratorFor(Id const &id
 //			, QString const &templateFile, QList<simple::Binding *> const &bindings);

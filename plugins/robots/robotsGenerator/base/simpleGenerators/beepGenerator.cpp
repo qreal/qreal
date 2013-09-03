@@ -8,7 +8,7 @@ BeepGenerator::BeepGenerator(LogicalModelAssistInterface const &model
 		, Id const &id
 		, QObject *parent)
 	: BindingGenerator(model, customizer, id, "beep.t", QList<Binding *>()
-			<< new Binding("@@VOLUME@@", "Volume", customizer.factory()->intPropertyConverter())
+			<< Binding::createConverting("@@VOLUME@@", "Volume", customizer.factory()->intPropertyConverter())
 			, parent)
 {
 }

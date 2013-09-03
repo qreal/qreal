@@ -9,9 +9,13 @@ EnginesGenerator::EnginesGenerator(LogicalModelAssistInterface const &model
 		, QString const &engineType
 		, QObject *parent)
 	: BindingGenerator(model, customizer, id
-			, engineType == "EnginesBackward" ? "enginesBackward.t" : "enginesForward.t"
+			, engineType == "EnginesBackward"
+					? "engines/enginesBackward.t"
+					: "engines/enginesForward.t"
 			, QList<Binding *>()
-					<< new Binding("@@POWER@@", "Power", customizer.factory()->intPropertyConverter())
+					<< Binding::createMultiTarget("@@PORT@@", "Ports", customizer.factory()->enginesConverter())
+					<< Binding::createConverting("@@POWER@@", "Power", customizer.factory()->intPropertyConverter())
+					<< Binding::createConverting("@@BREAK_MODE@@", "Mode", customizer.factory()->breakModeConverter())
 			, parent)
 {
 }

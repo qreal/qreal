@@ -22,6 +22,16 @@ public:
 		virtual QString convert(QString const &data) const = 0;
 	};
 
+	/// Can be overloaded for creating the converter that splits given string
+	/// into multiple tokens and converts each of them
+	class MultiConverterInterface
+	{
+	public:
+		virtual ~MultiConverterInterface();
+
+		virtual QStringList convert(QString const &data) const = 0;
+	};
+
 	// TODO: make it private
 	class EmptyConverter : public ConverterInterface
 	{
@@ -30,11 +40,16 @@ public:
 	};
 
 	/// Creates new instance of binding without converting data in repo before applying
-	Binding(QString const &label, QString const &property);
+	static Binding *createDirect(QString const &label, QString const &property);
 
 	/// Creates new instance of binding with given converter
-	Binding(QString const &label, QString const &property
+	static Binding *createConverting(QString const &label, QString const &property
 			, ConverterInterface const *converter);
+
+	/// Creates new instance of binding that multiplies given data and substitutes
+	/// into each converted by multiconverter property part
+	static Binding *createMultiTarget(QString const &label, QString const &property
+			, MultiConverterInterface const *converter);
 
 	~Binding();
 
@@ -45,9 +60,20 @@ public:
 			, Id const &id, QString &data);
 
 private:
+	Binding(QString const &label, QString const &property);
+
+	Binding(QString const &label, QString const &property
+			, ConverterInterface const *converter);
+
+	Binding(QString const &label, QString const &property
+			, MultiConverterInterface const *converter);
+
+	void applyMulti(QString const &property, QString &data);
+
 	QString const mLabel;
 	QString const mProperty;
 	ConverterInterface const *mConverter; // Takes ownership
+	MultiConverterInterface const *mMultiConverter; // Takes ownership
 };
 
 }

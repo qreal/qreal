@@ -72,6 +72,7 @@ SOURCES += \
 
 HEADERS += \
 	$$PWD/converters/templateParametrizedConverter.h \
+	$$PWD/converters/templateParametrizedMultiConverter.h \
 	$$PWD/converters/enumConverterBase.h \
 	$$PWD/converters/intPropertyConverterBase.h \
 	$$PWD/converters/boolPropertyConverterBase.h \
@@ -80,6 +81,9 @@ HEADERS += \
 	$$PWD/converters/functionBlockConverterBase.h \
 	$$PWD/converters/inequalitySignConverter.h \
 	$$PWD/converters/colorConverter.h \
+	$$PWD/converters/breakModeConverter.h \
+	$$PWD/converters/enginePortConverter.h \
+	$$PWD/converters/enginePortsConverter.h \
 	$$PWD/simpleGenerators/abstractSimpleGenerator.h \
 	$$PWD/simpleGenerators/commentElementGenerator.h \
 	$$PWD/simpleGenerators/functionElementGenerator.h \
@@ -118,6 +122,7 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/converters/templateParametrizedConverter.cpp \
+	$$PWD/converters/templateParametrizedMultiConverter.cpp \
 	$$PWD/converters/enumConverterBase.cpp \
 	$$PWD/converters/intPropertyConverterBase.cpp \
 	$$PWD/converters/boolPropertyConverterBase.cpp \
@@ -126,6 +131,9 @@ SOURCES += \
 	$$PWD/converters/functionBlockConverterBase.cpp \
 	$$PWD/converters/inequalitySignConverter.cpp \
 	$$PWD/converters/colorConverter.cpp \
+	$$PWD/converters/breakModeConverter.cpp \
+	$$PWD/converters/enginePortConverter.cpp \
+	$$PWD/converters/enginePortsConverter.cpp \
 	$$PWD/simpleGenerators/abstractSimpleGenerator.cpp \
 	$$PWD/simpleGenerators/commentElementGenerator.cpp \
 	$$PWD/simpleGenerators/functionElementGenerator.cpp \

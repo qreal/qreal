@@ -37,6 +37,9 @@
 #include "converters/nameNormalizerConverter.h"
 #include "converters/inequalitySignConverter.h"
 #include "converters/colorConverter.h"
+#include "converters/breakModeConverter.h"
+#include "converters/enginePortConverter.h"
+#include "converters/enginePortsConverter.h"
 
 using namespace qReal::robots::generators;
 using namespace simple;
@@ -73,6 +76,8 @@ AbstractSimpleGenerator *GeneratorFactoryBase::generatorFor(qReal::Id const &id
 		return new BeepGenerator(mModel, customizer, id, this);
 	} else if (elementType == "PlayTone") {
 		return new PlayToneGenerator(mModel, customizer, id, this);
+	} else if (elementType == "InitialNode") {
+		return new InitialNodeGenerator(mModel, customizer, id, this);
 	} else if (elementType == "FinalNode") {
 		return new FinalNodeGenerator(mModel, customizer, id, this);
 	} else if (elementType == "NullificationEncoder") {
@@ -224,6 +229,12 @@ Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter()
 	return new converters::InequalitySignConverter(pathToTemplates());
 }
 
+Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter()
+{
+	return new converters::EnginePortsConverter(pathToTemplates()
+			, new converters::EnginePortConverter(pathToTemplates()));
+}
+
 Binding::ConverterInterface *GeneratorFactoryBase::portConverter()
 {
 	return new Binding::EmptyConverter;
@@ -232,6 +243,11 @@ Binding::ConverterInterface *GeneratorFactoryBase::portConverter()
 Binding::ConverterInterface *GeneratorFactoryBase::colorConverter()
 {
 	return new converters::ColorConverter(pathToTemplates());
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter()
+{
+	return new converters::BreakModeConverter(pathToTemplates());
 }
 
 /*

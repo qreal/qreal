@@ -13,5 +13,5 @@ NxtOsekGeneratorFactory::~NxtOsekGeneratorFactory()
 
 QString NxtOsekGeneratorFactory::pathToTemplates() const
 {
-	return ":/templates/nxtOSEK";
+	return ":/nxtOSEK/templates";
 }
