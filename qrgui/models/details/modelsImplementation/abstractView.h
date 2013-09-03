@@ -2,30 +2,32 @@
 
 #include <QtWidgets/QAbstractItemView>
 
-#include "abstractModel.h"
+#include "models/details/modelsImplementation/abstractModel.h"
 
 namespace qReal {
-
 namespace models {
-
 namespace details {
-
 namespace modelsImplementation {
 
 class AbstractView : public QAbstractItemView
 {
 	Q_OBJECT
+
 public:
-	AbstractView(AbstractModel * const model);
+	explicit AbstractView(AbstractModel * const model);
+	virtual ~AbstractView();
 
 public slots:
-	void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
-	void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow);
+	void rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
+			, QModelIndex const &destinationParent, int destinationRow);
+	void rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
+			, QModelIndex const &destinationParent, int destinationRow);
 
 protected slots:
-	void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight);
+	virtual void dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight
+			, QVector<int> const &roles = QVector<int>());
 	virtual void rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end);
-	void rowsInserted(QModelIndex const &parent, int start, int end);
+	virtual void rowsInserted(QModelIndex const &parent, int start, int end);
 
 protected:
 	AbstractModel * const mModel;
@@ -46,9 +48,6 @@ protected:
 };
 
 }
-
 }
-
 }
-
 }

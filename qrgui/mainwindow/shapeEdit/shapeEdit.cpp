@@ -1,9 +1,5 @@
 #include "shapeEdit.h"
 #include "ui_shapeEdit.h"
-#include "../../../qrutils/outFile.h"
-#include "../../../qrutils/xmlUtils.h"
-#include "xmlLoader.h"
-#include "../../../qrutils/graphicsUtils/colorlisteditor.h"
 
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QGraphicsItem>
@@ -13,7 +9,12 @@
 #include <QtGui/QImage>
 #include <QtWidgets/QMessageBox>
 
-#include <QDebug>
+#include <qrutils/outFile.h>
+#include <qrutils/xmlUtils.h>
+#include <qrutils/graphicsUtils/colorlisteditor.h>
+
+#include "mainwindow/shapeEdit/xmlLoader.h"
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 using namespace utils;
@@ -74,6 +75,8 @@ void ShapeEdit::init()
 	mUi->brushColorComboBox->setColorList(QColor::colorNames());
 	mUi->brushColorComboBox->setColor(QColor("white"));
 
+	mUi->portsComboBox->addItems(getPortTypes());
+
 	mUi->textPixelSizeSpinBox->setRange(5, 72);
 	initFontPalette();
 
@@ -93,16 +96,21 @@ void ShapeEdit::init()
 	connect(mUi->penStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenStyle(QString const &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
 	connect(mUi->penColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenColor(QString const &)));
-	connect(mUi->brushStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeBrushStyle(QString const &)));
-	connect(mUi->brushColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeBrushColor(QString const &)));
+	connect(mUi->brushStyleComboBox, SIGNAL(activated(QString const &))
+			, mScene, SLOT(changeBrushStyle(QString const &)));
+	connect(mUi->brushColorComboBox, SIGNAL(activated(QString const &))
+			, mScene, SLOT(changeBrushColor(QString const &)));
 
-	connect(mUi->textFamilyFontComboBox, SIGNAL(currentFontChanged(const QFont&)), mScene, SLOT(changeFontFamily(const QFont&)));
+	connect(mUi->textFamilyFontComboBox, SIGNAL(currentFontChanged(const QFont&))
+			, mScene, SLOT(changeFontFamily(const QFont&)));
 	connect(mUi->textPixelSizeSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changeFontPixelSize(int)));
 	connect(mUi->textColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeFontColor(QString const &)));
 	connect(mUi->textEditField, SIGNAL(textChanged()), this, SLOT(changeTextName()));
 	connect(mUi->italicCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontItalic(bool)));
 	connect(mUi->boldCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontBold(bool)));
 	connect(mUi->underlineCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontUnderline(bool)));
+
+	connect(mUi->portsComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePortsType(QString const &)));
 
 	connect(mUi->visibilityConditionsButton, SIGNAL(clicked()), this, SLOT(visibilityButtonClicked()));
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
@@ -116,10 +124,14 @@ void ShapeEdit::init()
 	connect(this, SIGNAL(openSignal()), this, SLOT(open()));
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
-	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &)), this, SLOT(setItemPalette(QPen const&, QBrush const&)));
+	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &))
+			, this, SLOT(setItemPalette(QPen const&, QBrush const&)));
 	connect(mScene, SIGNAL(resetHighlightAllButtons()), this, SLOT(resetHighlightAllButtons()));
 	connect(mScene, SIGNAL(noSelectedTextPictureItems()), this, SLOT(setNoFontPalette()));
-	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &)), this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
+	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &))
+			, this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
+	connect(mScene, SIGNAL(noSelectedPortItems()), this, SLOT(setNoPortType()));
+	connect(mScene, SIGNAL(existSelectedPortItems(QString const &)), this, SLOT(setPortType(QString const &)));
 }
 
 void ShapeEdit::resetHighlightAllButtons()
@@ -249,8 +261,9 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 			}
 		}
 	}
-	picture.setAttribute("sizex", static_cast<int>(sceneBoundingRect.width()));
-	picture.setAttribute("sizey", static_cast<int>(sceneBoundingRect.height()));
+
+	picture.setAttribute("sizex", static_cast<int>(sceneBoundingRect.width() + 1));
+	picture.setAttribute("sizey", static_cast<int>(sceneBoundingRect.height() + 1));
 
 	QList<QDomElement> domList;
 	domList.push_back(picture);
@@ -481,6 +494,16 @@ void ShapeEdit::setNoFontPalette()
 	mUi->fontToolBox->setEnabled(false);
 }
 
+void ShapeEdit::setNoPortType()
+{
+	mUi->portsComboBox->setCurrentText("NonTyped");
+}
+
+void ShapeEdit::setPortType(QString const &type)
+{
+	mUi->portsComboBox->setCurrentText(type);
+}
+
 void ShapeEdit::changeTextName()
 {
 	QString newName = mUi->textEditField->toPlainText();
@@ -617,5 +640,22 @@ QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties
 			}
 		}
 	}
+	return result;
+}
+
+QStringList ShapeEdit::getPortTypes() const
+{
+	QStringList result;
+	result << "NonTyped";
+
+	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
+	if (repoApi) {
+		foreach (qReal::Id const &port, repoApi->elementsByType("MetaEntityPort")) {
+			if (repoApi->isLogicalElement(port)) {
+				result << repoApi->name(port);
+			}
+		}
+	}
+
 	return result;
 }

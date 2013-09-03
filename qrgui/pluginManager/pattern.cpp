@@ -1,8 +1,10 @@
+#include "pattern.h"
+
 #include <QtCore/QPointF>
 
-#include "../../qrkernel/ids.h"
-#include "pattern.h"
-#include "editorManager.h"
+#include <qrkernel/ids.h>
+
+#include "pluginManager/editorManager.h"
 
 using namespace qReal;
 GroupNode::GroupNode(QString const &typeArg, QString const &idArg, QPointF const &positionArg)
@@ -21,7 +23,7 @@ Pattern::Pattern()
 
 Pattern::Pattern(QString const &editor, QString const &diagram, QString const &name
 		, QString const &inNode, QString const &outNode)
-	: mEditor(editor), mDiagram(diagram), mGroupName(name), mInNode(inNode), mOutNode(outNode)
+		: mEditor(editor), mDiagram(diagram), mGroupName(name), mInNode(inNode), mOutNode(outNode)
 {
 }
 

@@ -5,8 +5,8 @@
 #include <QtCore/QObject>
 
 enum highlighterType {
-	text,
-	sql
+	text
+	, sql
 };
 
 class CodeArea : public QPlainTextEdit {

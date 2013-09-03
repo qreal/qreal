@@ -1,6 +1,6 @@
 #include "item.h"
-#include "math.h"
 
+#include <math.h>
 #include <QtGui/QPainter>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>
@@ -82,14 +82,15 @@ void Item::drawScalingRects(QPainter* painter)
 		QBrush brush(Qt::SolidPattern);
 		brush.setColor(point.second);
 		painter->setBrush(brush);
-		if (point.first == Item::topLeftX)
+		if (point.first == Item::topLeftX) {
 			painter->drawRect(x1, y1 - scalingRect, scalingRect, scalingRect);
-		else if (point.first == Item::bottomRightX)
+		} else if (point.first == Item::bottomRightX) {
 			painter->drawRect(x2 - scalingRect, y2, scalingRect, scalingRect);
-		else if (point.first == Item::topLeftY)
+		} else if (point.first == Item::topLeftY) {
 			painter->drawRect(x1 - scalingRect, y1, scalingRect, scalingRect);
-		else if (point.first == Item::bottomRightY)
+		} else if (point.first == Item::bottomRightY) {
 			painter->drawRect(x2, y2 - scalingRect, scalingRect, scalingRect);
+		}
 	}
 }
 
@@ -105,7 +106,8 @@ void Item::setNoneDragState()
 	mDragState = None;
 }
 
-void Item::calcForChangeScalingState(QPointF const&pos, QPointF const& point1, QPointF const& point2, int const &correction)
+void Item::calcForChangeScalingState(QPointF const&pos, QPointF const& point1, QPointF const& point2
+		, int correction)
 {
 	qreal x = pos.x();
 	qreal y = pos.y();
@@ -113,27 +115,47 @@ void Item::calcForChangeScalingState(QPointF const&pos, QPointF const& point1, Q
 	qreal x2 = point2.x();
 	qreal y1 = point1.y();
 	qreal y2 = point2.y();
-	if (QRectF(x1 + scenePos().x() - correction, y1 - scalingRect + scenePos().y() - correction, scalingRect, scalingRect).contains(QPointF(x, y)))
-		mScalingState = topLeftX;
-	else if (QRectF(x2 - scalingRect + scenePos().x() + correction, y1 - scalingRect + scenePos().y() - correction, scalingRect, scalingRect).contains(QPointF(x, y)))
-		mScalingState = topRightX;
-	else if (QRectF(x1 + scenePos().x() - correction, y2 + scenePos().y(), scalingRect + correction, scalingRect).contains(QPointF(x, y)))
-		mScalingState = bottomLeftX;
-	else if (QRectF(x2 - scalingRect + scenePos().x() + correction, y2 + scenePos().y() + correction, scalingRect, scalingRect).contains(QPointF(x, y)))
-		mScalingState = bottomRightX;
 
-	else if (QRectF(x1 - scalingRect + scenePos().x() - correction, y1 + scenePos().y() - correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	if (QRectF(x1 + scenePos().x() - correction, y1 - scalingRect + scenePos().y() - correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
+		mScalingState = topLeftX;
+	} else if (QRectF(x2 - scalingRect + scenePos().x() + correction, y1 - scalingRect + scenePos().y() - correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
+		mScalingState = topRightX;
+	} else if (QRectF(x1 + scenePos().x() - correction, y2 + scenePos().y(), scalingRect + correction
+			, scalingRect).contains(QPointF(x, y)))
+	{
+		mScalingState = bottomLeftX;
+	} else if (QRectF(x2 - scalingRect + scenePos().x() + correction, y2 + scenePos().y() + correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
+		mScalingState = bottomRightX;
+	} else if (QRectF(x1 - scalingRect + scenePos().x() - correction, y1 + scenePos().y() - correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = topLeftY;
-	else if (QRectF(x2 + scenePos().x() + correction, y1 + scenePos().y() - correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	} else if (QRectF(x2 + scenePos().x() + correction, y1 + scenePos().y() - correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = topRightY;
-	else if (QRectF(x1 - scalingRect + scenePos().x() - correction, y2 - scalingRect + scenePos().y() + correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	} else if (QRectF(x1 - scalingRect + scenePos().x() - correction, y2 - scalingRect + scenePos().y() + correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = bottomLeftY;
-	else if (QRectF(x2 + scenePos().x() + correction, y2 - scalingRect + scenePos().y() + correction, scalingRect, scalingRect).contains(QPointF(x, y)))
+	} else if (QRectF(x2 + scenePos().x() + correction, y2 - scalingRect + scenePos().y() + correction
+			, scalingRect, scalingRect).contains(QPointF(x, y)))
+	{
 		mScalingState = bottomRightY;
-	else
+	} else {
 		mScalingState = noneScale;
-	if (mScalingState == topLeftX || mScalingState == topLeftY || mScalingState == bottomRightX || mScalingState == bottomRightY)
+	}
+	if (mScalingState == topLeftX || mScalingState == topLeftY || mScalingState == bottomRightX
+			|| mScalingState == bottomRightY)
+	{
 		mDragState = None;
+	}
 }
 
 void Item::changeScalingPointState(qreal x, qreal y)
@@ -154,10 +176,11 @@ Item::ScalingPointState Item::getScalingPointState() const
 
 QColor Item::changeScaleColor(QPair<Item::ScalingPointState, QColor> point)
 {
-	if(point.second == QColor(Qt::black))
+	if(point.second == QColor(Qt::black)) {
 		return QColor(Qt::red);
-	else
+	} else {
 		return QColor(Qt::black);
+	}
 }
 
 void Item::setScalingPointColor()
@@ -179,37 +202,55 @@ void Item::setListScalePoint(QList<QPair<ScalingPointState, QColor> > list)
 
 QString Item::setScaleForDoc(int i, QRect const &rect)
 {
-	QString text = "";
-	if (i == 0)
+	QString text;
+
+	switch (i) {
+	case 0:
 		text = QString::number(rect.left());
-	else if (i == 4)
+		break;
+	case 4:
 		text = QString::number(rect.top());
-	else if (i == 3)
+		break;
+	case 3:
 		text = QString::number(rect.right());
-	else if (i == 7)
+		break;
+	case 7:
 		text = QString::number(rect.bottom());
-	else if (i == 2)
+		break;
+	case 2:
 		text = QString::number(rect.left());
-	else if (i == 5)
+		break;
+	case 5:
 		text = QString::number(rect.top());
-	else if (i == 1)
+		break;
+	case 1:
 		text = QString::number(rect.right());
-	else if (i == 6)
+		break;
+	case 6:
 		text = QString::number(rect.bottom());
-	if (mListScalePoint.at(i).second == QColor(Qt::red))
+		break;
+	}
+
+	if (mListScalePoint.at(i).second == QColor(Qt::red)) {
 		text += "a";
+	}
+
 	return text;
 }
 
 QString Item::setSingleScaleForDoc(int i, int x, int y)
 {
 	QString text = "";
-	if (i == 0)
+
+	if (i == 0) {
 		text = QString::number(x);
-	else if (i == 4)
+	} else if (i == 4) {
 		text = QString::number(y);
-	if (mListScalePoint.at(i).second == QColor(Qt::red))
+	}
+
+	if (mListScalePoint.at(i).second == QColor(Qt::red)) {
 		text += "a";
+	}
 	return text;
 }
 

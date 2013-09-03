@@ -1,9 +1,11 @@
+#include "errorReporter.h"
+
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QDockWidget>
 
-#include "errorReporter.h"
-#include "errorListWidget.h"
-#include "../../qrkernel/exception/exception.h"
+#include <qrkernel/exception/exception.h>
+
+#include "mainwindow/errorListWidget.h"
 
 using namespace qReal;
 using namespace gui;

@@ -1,35 +1,44 @@
 #include "blocksFactory.h"
 
-#include "../../../../qrkernel/exception/exception.h"
 #include "blocks/timerBlock.h"
 #include "blocks/beepBlock.h"
 #include "blocks/initialBlock.h"
-#include "blocks/initialBlockWithPorts.h"
 #include "blocks/finalBlock.h"
-#include "blocks/dummyBlock.h"
-#include "blocks/waitForTouchSensorBlock.h"
-#include "blocks/waitForSonarDistanceBlock.h"
-#include "blocks/waitForButtonsBlock.h"
-#include "blocks/drawPixelBlock.h"
-#include "blocks/drawLineBlock.h"
-#include "blocks/drawRectBlock.h"
-#include "blocks/clearScreenBlock.h"
-#include "blocks/drawCircleBlock.h"
-#include "blocks/printTextBlock.h"
+#include "blocks/nullificationEncoderBlock.h"
+
 #include "blocks/enginesForwardBlock.h"
 #include "blocks/enginesBackwardBlock.h"
 #include "blocks/enginesStopBlock.h"
-#include "blocks/loopBlock.h"
-#include "blocks/forkBlock.h"
+
+#include "blocks/timerBlock.h"
 #include "blocks/playToneBlock.h"
 #include "blocks/functionBlock.h"
+#include "blocks/beepBlock.h"
+
+#include "blocks/loopBlock.h"
+#include "blocks/forkBlock.h"
+#include "blocks/ifBlock.h"
+#include "blocks/dummyBlock.h"
+#include "blocks/commentBlock.h"
+#include "blocks/subprogramBlock.h"
+
+#include "blocks/clearScreenBlock.h"
+#include "blocks/drawPixelBlock.h"
+#include "blocks/drawLineBlock.h"
+#include "blocks/drawRectBlock.h"
+#include "blocks/drawCircleBlock.h"
+#include "blocks/printTextBlock.h"
+
+#include "blocks/waitForTouchSensorBlock.h"
+#include "blocks/waitForSonarDistanceBlock.h"
 #include "blocks/waitForColorBlock.h"
 #include "blocks/waitForColorIntensityBlock.h"
-#include "blocks/ifBlock.h"
-#include "blocks/waitForEncoderBlock.h"
-#include "blocks/nullificationEncoderBlock.h"
 #include "blocks/waitForLightSensorBlock.h"
-#include "blocks/commentBlock.h"
+#include "blocks/waitForSoundSensorBlock.h"
+#include "blocks/waitforGyroscopeSensorBlock.h"
+#include "blocks/waitForAccelerometerBlock.h"
+#include "blocks/waitForEncoderBlock.h"
+#include "blocks/waitForButtonsBlock.h"
 
 using namespace qReal;
 using namespace interpreters::robots::details;
@@ -59,12 +68,10 @@ Block *BlocksFactory::block(Id const &element)
 	Block * newBlock = NULL;
 	if (elementMetatypeIs(element, "InitialNode")) {
 		newBlock = new InitialBlock(*mRobotModel);
-	} else if (elementMetatypeIs(element, "InitialBlock")) {
-		newBlock = new InitialBlockWithPorts(*mRobotModel);
 	} else if (elementMetatypeIs(element, "FinalNode")) {
 		newBlock = new FinalBlock();
 	} else if (elementMetatypeIs(element, "Beep")) {
-		newBlock = new BeepBlock(mRobotModel->brick(), mRobotModel->produceTimer());
+		newBlock = new BeepBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "Timer")) {
 		newBlock = new TimerBlock(mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
@@ -81,8 +88,10 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new LoopBlock();
 	} else if (elementMetatypeIs(element, "Fork")) {
 		newBlock = new ForkBlock();
+	} else if (elementMetatypeIs(element, "Subprogram")) {
+		newBlock = new SubprogramBlock();
 	} else if (elementMetatypeIs(element, "PlayTone")) {
-		newBlock = new PlayToneBlock(mRobotModel->brick());
+		newBlock = new PlayToneBlock(mRobotModel->brick(), *mRobotModel->produceTimer());
 	} else if (elementMetatypeIs(element, "Function")) {
 		newBlock = new FunctionBlock();
 	} else if (elementMetatypeIs(element, "WaitForColor")) {
@@ -97,6 +106,12 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new NullificationEncoderBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "WaitForLight")) {
 		newBlock = new WaitForLightSensorBlock(mRobotModel);
+	} else if (elementMetatypeIs(element, "WaitForSound")) {
+		newBlock = new WaitForSoundSensorBlock(mRobotModel);
+	} else if (elementMetatypeIs(element, "WaitForGyroscope")) {
+		newBlock = new WaitForGyroscopeSensorBlock(mRobotModel);
+	} else if (elementMetatypeIs(element,"WaitForAccelerometer")) {
+		newBlock = new WaitForAccelerometerSensorBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "CommentBlock")) {
 		newBlock = new CommentBlock();
 	} else if (elementMetatypeIs(element, "WaitForButtons")) {

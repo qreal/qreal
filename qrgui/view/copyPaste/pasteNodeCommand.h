@@ -1,7 +1,7 @@
 #pragma once
 
-#include "pasteCommand.h"
-#include "../../controller/commands/createElementCommand.h"
+#include "view/copyPaste/pasteCommand.h"
+#include "controller/commands/createElementCommand.h"
 
 namespace qReal
 {
@@ -25,10 +25,15 @@ protected:
 	virtual void restoreElement();
 
 private:
+	//! @returns real new pos on scene
 	QPointF getNewPos() const;
+	//! @returns pos for normal CreateElementCommand usage
+	QPointF getNewGraphicalPos() const;
+	Id newGraphicalParent() const;
+
+	QPointF vectorFromContainer() const;
 
 	NodeData const mNodeData;
-	QPointF const mNewPos;
 	CreateElementCommand *mCreateCommand;
 };
 

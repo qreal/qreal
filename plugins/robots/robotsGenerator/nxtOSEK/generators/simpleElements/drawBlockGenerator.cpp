@@ -9,7 +9,7 @@ DrawBlockGenerator::DrawBlockGenerator()
 }
 
 QList<SmartLine> DrawBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		, qReal::Id const elementId, qReal::Id const logicElementId)
+		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	QList<SmartLine> result;
 
@@ -41,11 +41,12 @@ QList<SmartLine> DrawBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobo
 	return result;
 }
 
-void DrawBlockGenerator::generateBmpFile(NxtOSEKRobotGenerator *nxtGen, QString name, qReal::Id const logicElementId)
+void DrawBlockGenerator::generateBmpFile(NxtOSEKRobotGenerator *nxtGen
+		, QString const &name, qReal::Id const &logicElementId)
 {
-	QImage *im = new QImage(displayWidth, displayHeight, QImage::Format_Mono);
-	QPainter *p = new QPainter(im);
-	p->eraseRect(0, 0, displayWidth, displayHeight);
-	drawBmp(nxtGen, logicElementId, p);
-	im->save("nxt-tools/example0/" + name + ".bmp", "BMP", -1);
+	QImage image(displayWidth, displayHeight, QImage::Format_Mono);
+	QPainter painter(&image);
+	painter.eraseRect(0, 0, displayWidth, displayHeight);
+	drawBmp(nxtGen, logicElementId, &painter);
+	image.save("nxt-tools/example0/" + name + ".bmp", "BMP", -1);
 }

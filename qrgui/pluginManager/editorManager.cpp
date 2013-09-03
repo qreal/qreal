@@ -4,17 +4,16 @@
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
 
-#include "../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/exception/exception.h>
+#include <qrrepo/repoApi.h>
 
-#include "../../qrrepo/repoApi.h"
-#include "../umllib/nodeElement.h"
-#include "../umllib/edgeElement.h"
-#include "../../qrkernel/exception/exception.h"
+#include "umllib/nodeElement.h"
+#include "umllib/edgeElement.h"
 
 using namespace qReal;
 
-EditorManager::EditorManager(QObject *parent)
-	: QObject(parent)
+EditorManager::EditorManager(QObject *parent) : QObject(parent)
 {
 	mPluginsDir = QDir(qApp->applicationDirPath());
 
@@ -254,19 +253,16 @@ QSize EditorManager::iconSize(Id const &id) const
 	return engine->preferedSize();
 }
 
-Element* EditorManager::graphicalObject(const Id &id) const
+ElementImpl *EditorManager::elementImpl(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	ElementImpl *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
-	if( !impl ) {
+	if (!impl) {
 		qDebug() << "no impl";
 		return 0;
 	}
-	if (impl->isNode()) {
-		return new NodeElement(impl);
-	}
 
-	return  new EdgeElement(impl);
+	return impl;
 }
 
 QStringList EditorManager::propertyNames(const Id &id) const
@@ -274,6 +270,13 @@ QStringList EditorManager::propertyNames(const Id &id) const
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
+}
+
+QStringList EditorManager::portTypes(Id const &id) const
+{
+	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getPortTypes(id.diagram(), id.element());
 }
 
 QStringList EditorManager::referenceProperties(const Id &id) const
@@ -290,35 +293,14 @@ IdList EditorManager::containedTypes(const Id &id) const
 
 	IdList result;
 	foreach (QString const &type, mPluginIface[id.editor()]->getTypesContainedBy(id.element())) {
-		result.append(Id(type));
-	}
-	return result;
-}
-
-IdList EditorManager::connectedTypes(const Id &id) const
-{
-	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
-
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-
-	IdList result;
-	foreach (QString const &type, mPluginIface[id.editor()]->getConnectedTypes(id.element())) {
-		// a hack caused by absence of ID entity in editors generator
-		result.append(Id("?", "?", type));
+		result.append(Id(id.editor(), id.diagram(), type));
 	}
 
-	return result;
-}
+	typedef QPair<QString, QString> StringPair;
+	QList<StringPair> const parents = mPluginIface[id.editor()]->getParentsOf(id.diagram(), id.element());
 
-IdList EditorManager::usedTypes(const Id &id) const
-{
-	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
-
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-
-	IdList result;
-	foreach (QString const &type, mPluginIface[id.editor()]->getUsedTypes(id.element())) {
-		result.append(Id("?", "?", type));
+	foreach (StringPair const &pair, parents) {
+		result.append(containedTypes(Id(id.editor(), pair.first, pair.second)));
 	}
 
 	return result;
@@ -472,6 +454,20 @@ QStringList EditorManager::allChildrenTypesOf(Id const &parent) const
 		if (isParentOf(id, parent)) {
 			result << id.element();
 		}
+	}
+	return result;
+}
+
+QList<Explosion> EditorManager::explosions(Id const &source) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(source.editor()));
+	EditorInterface const *plugin = mPluginIface[source.editor()];
+	QList<Explosion> result;
+	QList<EditorInterface::ExplosionData> const rawExplosions =
+			plugin->explosions(source.diagram(), source.element());
+	foreach (EditorInterface::ExplosionData const &rawExplosion, rawExplosions) {
+		Id const target(source.editor(), rawExplosion.targetDiagram, rawExplosion.targetElement, "");
+		result << Explosion(source, target, rawExplosion.isReusable, rawExplosion.requiresImmediateLinkage);
 	}
 	return result;
 }
@@ -634,8 +630,8 @@ void EditorManager::addNodeElement(Id const &diagram, QString const &name, bool 
 	Q_UNUSED(isRootDiagramNode);
 }
 
-void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
-		, QString const &lineType, QString const &beginType, QString const &endType) const
+void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
 {
 	Q_UNUSED(diagram);
 	Q_UNUSED(name);

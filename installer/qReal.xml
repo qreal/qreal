@@ -5,7 +5,10 @@
     <licenseFile>gpl-3.0.txt</licenseFile>
     <leftImage>left.png</leftImage>
     <logoImage>logo.png</logoImage>
-    <defaultLanguage>ru</defaultLanguage>
+    <defaultLanguage>en</defaultLanguage>
+    <outputDirectory>.</outputDirectory>
+    <width>600</width>
+    <vendor>SPbSU</vendor>
     <disableSplashScreen>1</disableSplashScreen>
     <componentList>
         <component>
@@ -38,6 +41,26 @@
                     </shortcutList>
                 </folder>
                 <folder>
+                    <destination>${installdir}/sqldrivers</destination>
+                    <name>sqldriverswindows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>%2/../plugins/sqldrivers/qsqlite.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <destination>${installdir}/platforms</destination>
+                    <name>platformswindows</name>
+                    <platforms>windows</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>%2/../plugins/platforms/qwindows.dll</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
                     <description>Program Files</description>
                     <destination>${installdir}</destination>
                     <name>programfileslinux</name>
@@ -50,42 +73,83 @@
                     <platforms>windows</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../bin/qrgui.exe</origin>
+                            <origin>%1/bin/qrgui.exe</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../bin/qrkernel.dll</origin>
+                            <origin>%1/bin/qrkernel.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../bin/qrrepo.dll</origin>
+                            <origin>%1/bin/qrrepo.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../bin/qrutils.dll</origin>
-                        </distributionFile>
-                        
-                        <distributionFile>
-                            <origin>%2/QtCore4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/QtGui4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/QtSvg4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/mingwm10.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/QtXml4.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/libgcc_s_dw2-1.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>icon.ico</origin>
+                            <origin>%1/bin/qrutils.dll</origin>
                         </distributionFile>
                         <distributionDirectory>
-                            <origin>../bin/plugins/</origin>
+                            <origin>%1/bin/plugins</origin>
                         </distributionDirectory>
+                        <distributionFile>
+                            <origin>%2/Qt5Network.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/Qt5CLucene.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/Qt5Help.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/Qt5Sql.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/Qt5Core.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/Qt5Gui.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/Qt5Widgets.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/Qt5Svg.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/Qt5Xml.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/Qt5PrintSupport.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/icuin49.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libgcc_s_sjlj-1.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libwinpthread-1.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libstdc++-6.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/icuuc49.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/icudt49.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libGLESv2.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/libEGL.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%2/D3DCompiler_43.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%1/installer/icon.ico</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>%1/bin/Pfennig.ttf</origin>
+                        </distributionFile>
                     </distributionFileList>
                     <shortcutList>
                         <shortcut>
@@ -164,7 +228,7 @@
         <runProgram>
             <program>${installdir}/qrgui.exe</program>
             <programArguments></programArguments>
-            <progressText>Запустить QReal</progressText>
+            <progressText>Launch QReal</progressText>
         </runProgram>
     </finalPageActionList>
     <parameterList>

@@ -19,7 +19,7 @@ class BluetoothLightSensorImplementation : public BluetoothSensorImplementation
 {
 public:
 	BluetoothLightSensorImplementation(RobotCommunicator *robotCommunicationInterface
-			, inputPort::InputPortEnum const &port);
+			, robots::enums::inputPort::InputPortEnum const port);
 
 	virtual void read();
 

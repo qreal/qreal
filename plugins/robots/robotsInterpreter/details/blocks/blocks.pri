@@ -5,7 +5,6 @@ HEADERS += \
 	details/blocks/beepBlock.h \
 	details/blocks/playToneBlock.h \
 	details/blocks/initialBlock.h \
-	details/blocks/initialBlockWithPorts.h \
 	details/blocks/finalBlock.h \
 	details/blocks/waitForTouchSensorBlock.h \
 	details/blocks/waitForSonarDistanceBlock.h \
@@ -25,6 +24,9 @@ HEADERS += \
 	details/blocks/waitBlock.h \
 	details/blocks/waitForSensorBlock.h \
 	details/blocks/waitForColorSensorBlockBase.h \
+	details/blocks/waitForSoundSensorBlock.h \
+	details/blocks/waitforGyroscopeSensorBlock.h \
+	details/blocks/waitForAccelerometerBlock.h \
 	details/blocks/commentBlock.h \
 	details/blocks/waitForButtonsBlock.h \
 	details/blocks/drawPixelBlock.h \
@@ -33,6 +35,7 @@ HEADERS += \
 	details/blocks/printTextBlock.h \
 	details/blocks/drawRectBlock.h \
 	details/blocks/clearScreenBlock.h \
+	details/blocks/subprogramBlock.h \
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -41,7 +44,6 @@ SOURCES +=\
 	details/blocks/beepBlock.cpp \
 	details/blocks/playToneBlock.cpp \
 	details/blocks/initialBlock.cpp \
-	details/blocks/initialBlockWithPorts.cpp \
 	details/blocks/finalBlock.cpp \
 	details/blocks/waitForTouchSensorBlock.cpp \
 	details/blocks/waitForSonarDistanceBlock.cpp \
@@ -61,6 +63,9 @@ SOURCES +=\
 	details/blocks/waitBlock.cpp \
 	details/blocks/waitForSensorBlock.cpp \
 	details/blocks/waitForColorSensorBlockBase.cpp \
+	details/blocks/waitForSoundSensorBlock.cpp \
+	details/blocks/waitForAccelerometerBlock.cpp \
+	details/blocks/waitForGyroscopeSensorBlock.cpp \
 	details/blocks/commentBlock.cpp \
 	details/blocks/waitForButtonsBlock.cpp \
 	details/blocks/drawPixelBlock.cpp \
@@ -69,3 +74,4 @@ SOURCES +=\
 	details/blocks/printTextBlock.cpp \
 	details/blocks/drawRectBlock.cpp \
 	details/blocks/clearScreenBlock.cpp \
+	details/blocks/subprogramBlock.cpp \

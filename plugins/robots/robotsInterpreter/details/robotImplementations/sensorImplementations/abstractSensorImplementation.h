@@ -13,12 +13,12 @@ class AbstractSensorImplementation : public QObject
 {
 	Q_OBJECT
 public:
-	AbstractSensorImplementation(inputPort::InputPortEnum const &port, sensorType::SensorTypeEnum const &sensorType);
+	AbstractSensorImplementation(robots::enums::inputPort::InputPortEnum const port, robots::enums::sensorType::SensorTypeEnum const &sensorType);
 	virtual ~AbstractSensorImplementation() {}
 	virtual void read() = 0;
-	void setPort(inputPort::InputPortEnum const &port);
-	inputPort::InputPortEnum port() const;
-	sensorType::SensorTypeEnum type() const;
+	void setPort(robots::enums::inputPort::InputPortEnum const port);
+	robots::enums::inputPort::InputPortEnum port() const;
+	robots::enums::sensorType::SensorTypeEnum type() const;
 	virtual void configure() = 0;
 
 	/// Performs dummy sensor reading with 0 result; used for sensor variables nullification
@@ -35,9 +35,9 @@ protected:
 		, pending
 	};
 
-	inputPort::InputPortEnum mPort;
+	robots::enums::inputPort::InputPortEnum mPort;
 	State mState;
-	sensorType::SensorTypeEnum mType;
+	robots::enums::sensorType::SensorTypeEnum mType;
 };
 
 }

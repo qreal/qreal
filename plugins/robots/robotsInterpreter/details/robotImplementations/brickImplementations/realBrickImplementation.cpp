@@ -13,8 +13,8 @@ void RealBrickImplementation::playTone(unsigned freq, unsigned time)
 	QByteArray command(8, 0);
 	command[0] = 0x06;  //command length
 	command[1] = 0x00;
-	command[2] = telegramType::directCommandNoResponse;
-	command[3] = commandCode::PLAYTONE;
+	command[2] = enums::telegramType::directCommandNoResponse;
+	command[3] = enums::commandCode::PLAYTONE;
 	command[4] = freq;
 	command[5] = freq >> 8;
 	command[6] = time;

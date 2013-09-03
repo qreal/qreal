@@ -2,15 +2,14 @@
 
 #include <QtCore/QObject>
 
-#include "../../umllib/nodeElement.h"
-#include "../../umllib/edgeElement.h"
-#include "../../umllib/serializationData.h"
-
-class EditorViewScene;
+#include "umllib/nodeElement.h"
+#include "umllib/edgeElement.h"
+#include "umllib/serializationData.h"
 
 namespace qReal
 {
 
+class EditorViewScene;
 class EditorViewMViface;
 
 class ClipboardHandler

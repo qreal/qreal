@@ -1,13 +1,10 @@
 #pragma once
 
-#include "../../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
-
 namespace models {
-
 namespace details {
-
 namespace modelsImplementation {
 
 class AbstractModelItem
@@ -37,9 +34,6 @@ private:
 };
 
 }
-
 }
-
 }
-
 }

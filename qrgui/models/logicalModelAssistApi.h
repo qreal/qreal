@@ -1,9 +1,12 @@
 #pragma once
-#include "../../qrkernel/ids.h"
-#include "details/logicalModel.h"
-#include "details/modelsAssistApi.h"
-#include "../toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
-#include "../pluginManager/proxyEditorManager.h"
+
+#include <qrkernel/ids.h>
+
+#include "models/details/logicalModel.h"
+#include "models/details/modelsAssistApi.h"
+#include "models/details/exploser.h"
+#include "toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "pluginManager/proxyEditorManager.h"
 
 namespace qReal {
 
@@ -13,72 +16,67 @@ class ConstraintsManager;
 
 namespace models {
 
-namespace details {
-class LogicalModel;
-}
-
 class LogicalModelAssistApi : public QObject, public qReal::LogicalModelAssistInterface
 {
 	Q_OBJECT
 
 public:
 	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager);
-	virtual ~LogicalModelAssistApi() {}
+	virtual ~LogicalModelAssistApi();
+
 	EditorManagerInterface const &editorManagerInterface() const;
+	Exploser &exploser();
 	ConstraintsManager const &constraintsManager() const;
-	qrRepo::LogicalRepoApi const &logicalRepoApi() const;
-	qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
-	Id createElement(Id const &parent, Id const &type);
-	Id createElement(Id const &parent, Id const &id
+
+	virtual qrRepo::LogicalRepoApi const &logicalRepoApi() const;
+	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
+	virtual Id createElement(Id const &parent, Id const &type);
+	virtual Id createElement(Id const &parent, Id const &id
 			, bool isFromLogicalModel, QString const &name
 			, QPointF const &position, Id const &preferedLogicalId = Id());
-	IdList children(Id const &element) const;
-	void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF());
 
-	void connect(Id const &source, Id const &destination);
-	void disconnect(Id const &source, Id const &destination);
-	void addUsage(Id const &source, Id const &destination);
-	void deleteUsage(Id const &source, Id const &destination);
-	void createConnected(Id const &sourceElement, Id const &elementType);
-	void createUsed(Id const &sourceElement, Id const &elementType);
-	Id createConnectedElement(Id const &source, Id const &elementType);
-	IdList diagramsAbleToBeConnectedTo(Id const &element) const;
-	IdList diagramsAbleToBeUsedIn(Id const &element) const;
+	virtual IdList children(Id const &element) const;
+	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF());
+
+	virtual void addExplosion(Id const &source, Id const &destination);
+	virtual void removeExplosion(Id const &source, Id const &destination);
+
 	virtual void stackBefore(Id const &element, Id const &sibling);
-
-	virtual QVariant property(Id const &id, QString const &name) const;
-	virtual void setProperty(Id const &id, QString const &name, QVariant const &value);
 
 	virtual void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName);
 	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const;
 
-	bool isLogicalId(Id const &id) const;
+	virtual bool isLogicalId(Id const &id) const;
 
-	void removeReferencesTo(Id const &id);
-	void removeReferencesFrom(Id const &id);
-	void removeReference(Id const &id, Id const &reference);
+	virtual void removeReferencesTo(Id const &id);
+	virtual void removeReferencesFrom(Id const &id);
+	virtual void removeReference(Id const &id, Id const &reference);
 
-	void setTo(Id const &elem, Id const &newValue);
-	Id to(Id const &elem) const;
+	virtual void setName(Id const &elem, QString const &newValue);
+	virtual QString name(Id const &elem) const;
 
-	void setFrom(Id const &elem, Id const &newValue);
-	Id from(Id const &elem) const;
+	virtual void setTo(Id const &elem, Id const &newValue);
+	virtual Id to(Id const &elem) const;
 
-	QModelIndex indexById(Id const &id) const;
-	Id idByIndex(QModelIndex const &index) const;
-	QPersistentModelIndex rootIndex() const;
-	Id rootId() const;
+	virtual void setFrom(Id const &elem, Id const &newValue);
+	virtual Id from(Id const &elem) const;
 
-	bool hasRootDiagrams() const;
-	int childrenOfRootDiagram() const;
-	int childrenOfDiagram(const Id &parent) const;
+	virtual QModelIndex indexById(Id const &id) const;
+	virtual Id idByIndex(QModelIndex const &index) const;
+	virtual QPersistentModelIndex rootIndex() const;
+	virtual Id rootId() const;
 
-	void removeElement(Id const &logicalId);
+	virtual bool hasRootDiagrams() const;
+	virtual int childrenOfRootDiagram() const;
+	virtual int childrenOfDiagram(const Id &parent) const;
 public slots:
 	void propertyChangedSlot(Id const &elem);
 	void parentChangedSlot(IdList const &elements);
 	void nameChangedSlot(Id const &element);
 	void addedElementToModelSlot(Id const &element);
+
+	
+	virtual void removeElement(Id const &logicalId);
 
 signals:
 	void propertyChanged(Id const &elem);
@@ -87,14 +85,14 @@ signals:
 	void addedElementToModel(Id const &element);
 
 private:
-	details::ModelsAssistApi mModelsAssistApi;
-	details::LogicalModel &mLogicalModel;
-	EditorManagerInterface const &mEditorManager;
-
 	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden
 	LogicalModelAssistApi& operator =(LogicalModelAssistApi const &); // Assignment is forbidden also
 
-	IdList diagramsFromList(IdList const &list) const;
+	details::ModelsAssistApi mModelsAssistApi;
+	details::LogicalModel &mLogicalModel;
+	Exploser mExploser;
+	EditorManagerInterface const &mEditorManager;
 };
+
 }
 }

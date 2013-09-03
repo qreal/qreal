@@ -1,6 +1,8 @@
 #pragma once
-#include <QFontDialog>
-#include "preferencesPage.h"
+
+#include <QtWidgets/QFontDialog>
+
+#include "dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
 	class PreferencesEditorPage;
@@ -31,6 +33,7 @@ signals:
 private slots:
 	void widthGridSliderMoved(int value);
 	void indexGridSliderMoved(int value);
+	void dragAreaSliderMoved(int value);
 	void manualFontCheckBoxChecked(bool);
 	void fontSelectionButtonClicked();
 	void paletteComboBoxClicked(int index);
@@ -46,6 +49,7 @@ private:
 	bool mFontButtonWasPressed;
 	int mWidthGrid;
 	int mIndexGrid;
+	int mDragArea;
 	QString mFont;
 
 	QAction * const mShowGridAction;

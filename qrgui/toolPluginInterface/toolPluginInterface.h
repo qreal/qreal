@@ -3,13 +3,15 @@
 #include <QtCore/QObject>
 #include <QtCore/QtPlugin>
 #include <QtCore/QList>
+#include <QtWidgets/QAction>
 
-#include "../../qrrepo/repoControlInterface.h"
-#include "../dialogs/preferencesPages/preferencesPage.h"
+#include <qrrepo/repoControlInterface.h>
+#include "dialogs/preferencesPages/preferencesPage.h"
 
-#include "customizer.h"
-#include "pluginConfigurator.h"
-#include "actionInfo.h"
+#include "toolPluginInterface/customizer.h"
+#include "toolPluginInterface/pluginConfigurator.h"
+#include "toolPluginInterface/actionInfo.h"
+#include "toolPluginInterface/hotKeyActionInfo.h"
 
 namespace qReal {
 
@@ -57,6 +59,13 @@ public:
 		return QPair<QString, PreferencesPage *>(QString(), NULL);
 	}
 
+	/// Shall be overridden to return QAction instances for their customization in
+	/// hot key manager.
+	virtual QList<HotKeyActionInfo> hotKeyActions()
+	{
+		return QList<HotKeyActionInfo>();
+	}
+
 	/// Shall be overriden if plugin needs to do some action on closing of main window,
 	/// like closing its own windows.
 	// TODO: Properly rename it or remove at all.
@@ -70,6 +79,7 @@ public:
 	{
 		Q_UNUSED(rootElementId);
 	}
+
 };
 
 }

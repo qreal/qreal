@@ -43,7 +43,7 @@ signals:
 	void motorImplTimeout();
 
 protected:
-	outputPort::OutputPortEnum mPort;
+	enums::outputPort::OutputPortEnum mPort;
 };
 
 }

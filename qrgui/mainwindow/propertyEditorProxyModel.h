@@ -1,13 +1,15 @@
 /** @file propertyeditorproxymodel.h
- *	@brief Модель редактора свойств
- * */
+*	@brief Property editor model
+* */
+
 #pragma once
 
-#include <QAbstractTableModel>
+#include <QtCore/QAbstractTableModel>
 #include <QtCore/QStringList>
 
-#include "../pluginManager/editorManagerInterface.h"
-#include "../../qrrepo/logicalRepoApi.h"
+#include <qrrepo/logicalRepoApi.h>
+
+#include "pluginManager/editorManagerInterface.h"
 
 /// Proxy model for property editor, maps single element from main model
 /// (logical or graphical) to a list model with element properties.
@@ -16,8 +18,7 @@ class PropertyEditorModel : public QAbstractTableModel
 	Q_OBJECT
 
 public:
-	explicit PropertyEditorModel(qReal::EditorManagerInterface const &editorManagerInterface,
-			QObject *parent = 0);
+	explicit PropertyEditorModel(qReal::EditorManagerInterface const &editorManagerInterface, QObject *parent = 0);
 
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;

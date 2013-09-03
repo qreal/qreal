@@ -3,9 +3,12 @@
 #include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
 
-#include "../../../../qrkernel/roles.h"
-#include "../../edgeElement.h"
-#include "../../../controller/commands/createElementCommand.h"
+#include <qrkernel/roles.h>
+
+#include "umllib/edgeElement.h"
+#include "controller/commands/createElementCommand.h"
+
+namespace qReal {
 
 class NodeElement;
 
@@ -22,9 +25,9 @@ public:
 	void initTitle();
 	void generateColor();
 
-	bool isDirected();
-	qReal::Id getEdgeType();
-	NodeElement* getMaster();
+	bool isDirected() const;
+	qReal::Id edgeType() const;
+	NodeElement* master() const;
 
 	void setDirected(const bool directed);
 	void setMaster(NodeElement* const master);
@@ -40,12 +43,12 @@ public:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
 private slots:
-	void updateMasterEdges();
+	void updateMasterEdge();
 
 private:
 	EdgeElement* mEdge;
 	NodeElement* mMaster;
-	ElementTitle* mTitle;
+	Label* mTitle;
 
 	float mSize;
 	float mIndent;
@@ -61,3 +64,5 @@ private:
 	QTimer *mTimer;
 	commands::CreateElementCommand *mCreateEdgeCommand;
 };
+
+}

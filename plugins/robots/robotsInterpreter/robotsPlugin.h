@@ -4,10 +4,11 @@
 
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "../../../qrgui/toolPluginInterface/hotKeyActionInfo.h"
 
-#include "interpreter.h"
 #include "robotSettingsPage.h"
 #include "customizer.h"
+#include "details/interpreter.h"
 #include "details/sensorsConfigurationWidget.h"
 #include "details/nxtDisplay.h"
 
@@ -27,6 +28,7 @@ public:
 
 	virtual void init(PluginConfigurator const &configurator);
 	virtual QList<ActionInfo> actions();
+	virtual QList<HotKeyActionInfo> hotKeyActions();
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual qReal::Customizer* customizationInterface();
 	virtual void updateSettings();
@@ -40,23 +42,20 @@ private slots:
 	void showRobotSettings();
 	void show2dModel();
 	void rereadSettings();
+	void titlesVisibilityCheckedInPlugin(bool checked);
 	void titlesVisibilityChecked(bool checked);
 
 private:
 	/// Initializes and connects actions, fills action info list
 	void initActions();
 
-	/// Disable/enable tab in QList<ActionInfo> info
-	void changeActiveTab(QList<ActionInfo> const &info, bool const &trigger);
-
-	/// Tells whether we need to disable or enable particular action on tab change.
-	/// For example, we shall be able to access robot settings regardless of currently
-	/// open diagram type, but we can't run UML Class diagram as robot program.
-	/// @param action Action to be checked
-	/// @returns True, if action shall be disabled when current diagram is not robots
-	bool needToDisableWhenNotRobotsDiagram(QAction const * const action) const;
+	void initHotKeyActions();
 
 	void updateTitlesVisibility();
+
+	/// Updates "enabled" status of interpreter actions taking into account current tab,
+	/// selected robot model and so on.
+	void updateEnabledActions();
 
 	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 
@@ -64,7 +63,7 @@ private:
 	Customizer mCustomizer;
 
 	/// Main class for robot interpreter. Contains implementation of plugin functionality.
-	Interpreter mInterpreter;
+	details::Interpreter mInterpreter;
 
 	/// Page with plugin settings. Created here, but then ownership is passed to
 	/// a caller of preferencesPage().
@@ -89,13 +88,14 @@ private:
 	/// Action that shows robots tab in settings dialog
 	QAction *mRobotSettingsAction;
 
-	/// Action that shows watch list that allows to see current values of variables in a program
-	/// and current sensor readings
-	QAction *mWatchListAction;
+	/// Action that shows or hides titles on diagram
+	QAction *mTitlesAction;
 
 	/// List of action infos with plugin actions, for convenient initialization.
 	/// Contains all actions which already present as fields.
 	QList<qReal::ActionInfo> mActionInfos;
+
+	QList<HotKeyActionInfo> mHotKeyActionInfos;
 
 	/// Plugin translator object
 	QTranslator *mAppTranslator;  // Has ownership

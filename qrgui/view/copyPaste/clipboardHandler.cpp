@@ -1,9 +1,9 @@
 #include <QtWidgets/QApplication>
 #include <QtGui/QClipboard>
 
-#include "clipboardHandler.h"
-#include "pasteGroupCommand.h"
-#include "../editorViewScene.h"
+#include "view/copyPaste/clipboardHandler.h"
+#include "view/copyPaste/pasteGroupCommand.h"
+#include "view/editorViewScene.h"
 
 using namespace qReal;
 

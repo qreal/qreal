@@ -3,7 +3,7 @@
 using namespace qReal::interpreters::robots::details::blocks;
 
 WaitForColorSensorBlockBase::WaitForColorSensorBlockBase(details::RobotModel * const robotModel
-		, sensorType::SensorTypeEnum type)
+		, robots::enums::sensorType::SensorTypeEnum type)
 	: WaitForSensorBlock(robotModel, type)
 {
 }

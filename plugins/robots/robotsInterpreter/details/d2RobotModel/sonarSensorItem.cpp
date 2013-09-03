@@ -4,7 +4,7 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 
 SonarSensorItem::SonarSensorItem(WorldModel const &worldModel
-		, SensorsConfiguration &configuration, inputPort::InputPortEnum port)
+		, SensorsConfiguration &configuration, robots::enums::inputPort::InputPortEnum port)
 	: SensorItem(configuration, port)
 	, mWorldModel(worldModel)
 	, mIcon(":/icons/sensors/2d_sonar.png")

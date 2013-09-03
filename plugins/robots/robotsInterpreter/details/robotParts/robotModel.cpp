@@ -13,9 +13,9 @@ RobotModel::RobotModel()
 	, mMotorA(0, &mRobotImpl->motorA())
 	, mMotorB(1, &mRobotImpl->motorA())
 	, mMotorC(2, &mRobotImpl->motorA())
-	, mEncoderA(&mRobotImpl->encoderA(), outputPort::port1)
-	, mEncoderB(&mRobotImpl->encoderB(), outputPort::port2)
-	, mEncoderC(&mRobotImpl->encoderC(), outputPort::port3)
+	, mEncoderA(&mRobotImpl->encoderA(), enums::outputPort::port1)
+	, mEncoderB(&mRobotImpl->encoderB(), enums::outputPort::port2)
+	, mEncoderC(&mRobotImpl->encoderC(), enums::outputPort::port3)
 {
 	mSensors.resize(4);
 	connect(mRobotImpl, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
@@ -40,96 +40,124 @@ robotParts::Display &RobotModel::display()
 	return mDisplay;
 }
 
-robotParts::TouchSensor *RobotModel::touchSensor(inputPort::InputPortEnum const &port) const
+robotParts::TouchSensor *RobotModel::touchSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::TouchSensor *>(mSensors[port]);
 }
 
-robotParts::SonarSensor *RobotModel::sonarSensor(inputPort::InputPortEnum const &port) const
+robotParts::SonarSensor *RobotModel::sonarSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::SonarSensor *>(mSensors[port]);
 }
 
-robotParts::ColorSensor *RobotModel::colorSensor(inputPort::InputPortEnum const &port) const
+robotParts::ColorSensor *RobotModel::colorSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::ColorSensor *>(mSensors[port]);
 }
 
-robotParts::LightSensor *RobotModel::lightSensor(inputPort::InputPortEnum const &port) const
+robotParts::LightSensor *RobotModel::lightSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	return dynamic_cast<robotParts::LightSensor *>(mSensors[port]);
 }
 
-robotParts::Sensor *RobotModel::sensor(const inputPort::InputPortEnum &port) const
+robotParts::SoundSensor *RobotModel::soundSensor(robots::enums::inputPort::InputPortEnum const port) const
+{
+	return dynamic_cast<robotParts::SoundSensor *>(mSensors[port]);
+}
+
+robotParts::GyroscopeSensor *RobotModel::gyroscopeSensor(robots::enums::inputPort::InputPortEnum const port) const
+{
+	return dynamic_cast<robotParts::GyroscopeSensor *>(mSensors[port]);
+}
+
+robotParts::AccelerometerSensor *RobotModel::accelerometerSensor(robots::enums::inputPort::InputPortEnum const port) const
+{
+	return dynamic_cast<robotParts::AccelerometerSensor *>(mSensors[port]);
+}
+
+robotParts::Sensor *RobotModel::sensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	return mSensors[port];
 }
 
-void RobotModel::configureSensors(sensorType::SensorTypeEnum const &port1
-		, sensorType::SensorTypeEnum const &port2
-		, sensorType::SensorTypeEnum const &port3
-		, sensorType::SensorTypeEnum const &port4)
+void RobotModel::configureSensors(
+		robots::enums::sensorType::SensorTypeEnum const &port1
+		, robots::enums::sensorType::SensorTypeEnum const &port2
+		, robots::enums::sensorType::SensorTypeEnum const &port3
+		, robots::enums::sensorType::SensorTypeEnum const &port4
+		)
 {
-	Tracer::debug(tracer::initialization, "RobotModel::configureSensors", "Request for sensors configuration in Model");
+	Tracer::debug(tracer::enums::initialization, "RobotModel::configureSensors", "Request for sensors configuration in Model");
 
-	if (port1 == sensorType::unused && port2 == sensorType::unused
-			&& port3 == sensorType::unused && port4 == sensorType::unused)
+	if (port1 == robots::enums::sensorType::unused && port2 == robots::enums::sensorType::unused
+			&& port3 == robots::enums::sensorType::unused && port4 == robots::enums::sensorType::unused)
 	{
-		Tracer::debug(tracer::initialization, "RobotModel::configureSensors", "There is no need to initialize anything, emitting and exiting");
+		Tracer::debug(tracer::enums::initialization, "RobotModel::configureSensors", "There is no need to initialize anything, emitting and exiting");
 		emit sensorsConfigured();
 		return;
 	}
 
 	mRobotImpl->lockSensorsConfiguration();
-	configureSensor(port1, inputPort::port1);
-	configureSensor(port2, inputPort::port2);
-	configureSensor(port3, inputPort::port3);
-	configureSensor(port4, inputPort::port4);
+	configureSensor(port1, robots::enums::inputPort::port1);
+	configureSensor(port2, robots::enums::inputPort::port2);
+	configureSensor(port3, robots::enums::inputPort::port3);
+	configureSensor(port4, robots::enums::inputPort::port4);
 	mRobotImpl->unlockSensorsConfiguration();
 }
 
-void RobotModel::configureSensor(sensorType::SensorTypeEnum const &sensorType
-		, inputPort::InputPortEnum const &port)
+void RobotModel::configureSensor(
+		robots::enums::sensorType::SensorTypeEnum const &sensorType
+		, robots::enums::inputPort::InputPortEnum const port
+		)
 {
 	mRobotImpl->configureSensor(sensorType, port);
 }
 
 void RobotModel::sensorsConfiguredSlot()
 {
-	Tracer::debug(tracer::initialization, "RobotModel::sensorsConfiguredSlot", "Sensors configured in implementation, synching with sensors in model. Why the hell it is needed?");
+	Tracer::debug(tracer::enums::initialization, "RobotModel::sensorsConfiguredSlot", "Sensors configured in implementation, synching with sensors in model. Why the hell it is needed?");
 
 	for (int i = 0; i < 4; ++i) {
 		delete mSensors[i];  // Since it deletes a sensor that is exposed to blocks, this method can not be called when diagram is interpreted. Blocks shall be recreated after calling this one.
 		mSensors[i] = NULL;
 	}
 	for (int i = 0; i < 4; ++i) {
-		inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(i);
+		robots::enums::inputPort::InputPortEnum const port = static_cast<robots::enums::inputPort::InputPortEnum>(i);
 		sensorImplementations::AbstractSensorImplementation const * const sensorImpl = mRobotImpl->sensor(port);
 		if (sensorImpl == NULL)
 			continue;
 
-		sensorType::SensorTypeEnum const sensorType = mRobotImpl->sensor(port)->type();
+		robots::enums::sensorType::SensorTypeEnum const sensorType = mRobotImpl->sensor(port)->type();
 
 		switch (sensorType) {
-		case sensorType::unused:
+		case robots::enums::sensorType::unused:
 			break;
-		case sensorType::touchBoolean:
+		case robots::enums::sensorType::touchBoolean:
 			mSensors[port] = new robotParts::TouchSensor(mRobotImpl->sensor(port), port);
 			break;
-		case sensorType::touchRaw:
+		case robots::enums::sensorType::touchRaw:
 			break;
-		case sensorType::sonar:
+		case robots::enums::sensorType::sonar:
 			mSensors[port] = new robotParts::SonarSensor(mRobotImpl->sensor(port), port);
 			break;
-		case sensorType::colorFull:
-		case sensorType::colorRed:
-		case sensorType::colorGreen:
-		case sensorType::colorBlue:
-		case sensorType::colorNone:
+		case robots::enums::sensorType::colorFull:
+		case robots::enums::sensorType::colorRed:
+		case robots::enums::sensorType::colorGreen:
+		case robots::enums::sensorType::colorBlue:
+		case robots::enums::sensorType::colorNone:
 			mSensors[port] = new robotParts::ColorSensor(mRobotImpl->sensor(port), port);
 			break;
-		case sensorType::light:
+		case robots::enums::sensorType::light:
 			mSensors[port] = new robotParts::LightSensor(mRobotImpl->sensor(port), port);
+			break;
+		case robots::enums::sensorType::sound:
+			mSensors[port] = new robotParts::SoundSensor(mRobotImpl->sensor(port), port);
+			break;
+		case robots::enums::sensorType::gyroscope:
+			mSensors[port] = new robotParts::GyroscopeSensor(mRobotImpl->sensor(port), port);
+			break;
+		case robots::enums::sensorType::accelerometer:
+			mSensors[port] = new robotParts::AccelerometerSensor(mRobotImpl->sensor(port), port);
 			break;
 		default:
 			// TODO: Throw an exception
@@ -160,13 +188,13 @@ void RobotModel::nullifySensors()
 
 void RobotModel::connectedSlot(bool success)
 {
-	Tracer::debug(tracer::initialization, "RobotModel::connectedSlot", QString("Model connection status: %1").arg(success));
+	Tracer::debug(tracer::enums::initialization, "RobotModel::connectedSlot", QString("Model connection status: %1").arg(success));
 	emit connected(success);
 }
 
 void RobotModel::init()
 {
-	Tracer::debug(tracer::initialization, "RobotModel::init", "Initializing robot model");
+	Tracer::debug(tracer::enums::initialization, "RobotModel::init", "Initializing robot model");
 	mRobotImpl->init();
 }
 
@@ -212,7 +240,7 @@ robotParts::EncoderSensor &RobotModel::encoderC()
 
 void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModelImplementation *robotImpl)
 {
-	Tracer::debug(tracer::initialization, "RobotModel::setRobotImplementation", "Setting robot implementation, current implementation is "
+	Tracer::debug(tracer::enums::initialization, "RobotModel::setRobotImplementation", "Setting robot implementation, current implementation is "
 			+ QString(mRobotImpl->metaObject()->className()) + ", new model implementation is "
 			+ QString(robotImpl->metaObject()->className()));
 
@@ -236,16 +264,16 @@ void RobotModel::setRobotImplementation(robotImplementations::AbstractRobotModel
 
 	for (int i = 0; i < 4; ++i) {
 		if (mSensors[i] != NULL) {
-			Tracer::debug(tracer::initialization, "RobotModel::setRobotImplementation"
+			Tracer::debug(tracer::enums::initialization, "RobotModel::setRobotImplementation"
 					, "Sensor on port " + QString::number(i) + " is not null, setting implementation for it");
 
-			if (mRobotImpl->sensor(static_cast<inputPort::InputPortEnum>(i))) {
-				mSensors[i]->setImplementation(mRobotImpl->sensor(static_cast<inputPort::InputPortEnum>(i)));
-				Tracer::debug(tracer::initialization, "RobotModel::setRobotImplementation", "Done");
+			if (mRobotImpl->sensor(static_cast<robots::enums::inputPort::InputPortEnum>(i))) {
+				mSensors[i]->setImplementation(mRobotImpl->sensor(static_cast<robots::enums::inputPort::InputPortEnum>(i)));
+				Tracer::debug(tracer::enums::initialization, "RobotModel::setRobotImplementation", "Done");
 			} else {
 				delete mSensors[i];
 				mSensors[i] = NULL;
-				Tracer::debug(tracer::initialization, "RobotModel::setRobotImplementation", "In current implementation it is null, sensor deleted");
+				Tracer::debug(tracer::enums::initialization, "RobotModel::setRobotImplementation", "In current implementation it is null, sensor deleted");
 			}
 		}
 	}

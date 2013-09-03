@@ -1,7 +1,7 @@
-#include <QtWidgets/QPushButton>
-
 #include "visibilityConditionsDialog.h"
 #include "ui_visibilityConditionsDialog.h"
+
+#include <QtWidgets/QPushButton>
 
 VisibilityConditionsDialog::VisibilityConditionsDialog(QMap<QString, PropertyInfo> const &properties
 		, QList<Item *> const &items, QWidget *parent)

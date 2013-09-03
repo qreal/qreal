@@ -9,14 +9,10 @@ namespace Ui
 	class SensorsConfigurationWidget;
 }
 
-namespace qReal
-{
-namespace interpreters
-{
-namespace robots
-{
-namespace details
-{
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace details {
 
 /// A number of combo boxes for sensors selection
 class SensorsConfigurationWidget : public QWidget
@@ -44,10 +40,10 @@ protected:
 
 private:
 	void startChangesListening();
-	sensorType::SensorTypeEnum selectedPort1Sensor() const;
-	sensorType::SensorTypeEnum selectedPort2Sensor() const;
-	sensorType::SensorTypeEnum selectedPort3Sensor() const;
-	sensorType::SensorTypeEnum selectedPort4Sensor() const;
+	robots::enums::sensorType::SensorTypeEnum selectedPort1Sensor() const;
+	robots::enums::sensorType::SensorTypeEnum selectedPort2Sensor() const;
+	robots::enums::sensorType::SensorTypeEnum selectedPort3Sensor() const;
+	robots::enums::sensorType::SensorTypeEnum selectedPort4Sensor() const;
 
 	Ui::SensorsConfigurationWidget *mUi;
 };

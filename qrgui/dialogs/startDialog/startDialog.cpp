@@ -1,10 +1,10 @@
+#include "startDialog.h"
+
 #include <QtWidgets/QTabWidget>
 
-#include "startDialog.h"
-#include "suggestToCreateDiagramWidget.h"
-#include "recentProjectsListWidget.h"
-#include "../mainwindow/mainWindow.h"
-#include "../models/models.h"
+#include "mainwindow/mainWindow.h"
+#include "dialogs/startDialog/suggestToCreateDiagramWidget.h"
+#include "dialogs/startDialog/recentProjectsListWidget.h"
 
 using namespace qReal;
 
@@ -24,7 +24,7 @@ StartDialog::StartDialog(MainWindow &mainWindow, ProjectManager &projectManager)
 	tabWidget->addTab(recentProjects, tr("&Recent projects"));
 
 	Id const theOnlyDiagram = mMainWindow.editorManager().theOnlyDiagram();
-	if (theOnlyDiagram == Id()) {
+	if (theOnlyDiagram.isNull()) {
 		SuggestToCreateDiagramWidget *diagrams = new SuggestToCreateDiagramWidget(&mMainWindow, this);
 		tabWidget->addTab(diagrams, tr("&New project with diagram"));
 		connect(diagrams, SIGNAL(userDataSelected(QString)), this, SLOT(createProjectWithDiagram(QString)));
@@ -170,9 +170,11 @@ void StartDialog::createInterpretedDiagram()
 	ProxyEditorManager &editorManagerProxy = mMainWindow.editorManagerProxy();
 	editorManagerProxy.setProxyManager(new InterpreterEditorManager(""));
 	bool ok = false;
-	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
+	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
+			, QLineEdit::Normal, "", &ok);
 	while (ok && name.isEmpty()) {
-		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
+		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
+				, QLineEdit::Normal, "", &ok);
 	}
 
 	if (ok) {

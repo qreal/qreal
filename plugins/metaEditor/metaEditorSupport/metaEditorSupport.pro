@@ -8,6 +8,10 @@ RCC_DIR = .moc
 
 QT += widgets
 
+INCLUDEPATH += \
+	$$PWD/../../.. \
+	$$PWD/../../../qrgui/ \
+
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrmc
 
 TRANSLATIONS = metaEditorSupport_ru.ts

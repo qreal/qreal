@@ -16,6 +16,7 @@ RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 	mAppTranslator.load(":/robotsGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
 	checkNxtTools();
+	initHotKeyActions();
 }
 
 RobotsGeneratorPlugin::~RobotsGeneratorPlugin()
@@ -57,6 +58,22 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 	*/
 	return QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo
 			<< uploadProgramActionInfo;
+}
+
+void RobotsGeneratorPlugin::initHotKeyActions()
+{
+	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
+	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
+
+	HotKeyActionInfo generateActionInfo("Generator.Generate", tr("Generate code"), &mGenerateCodeAction);
+	HotKeyActionInfo uploadActionInfo("Generator.Upload", tr("Upload program to robot"), &mUploadProgramAction);
+
+	mHotKeyActionInfos << generateActionInfo << uploadActionInfo;
+}
+
+QList<HotKeyActionInfo> RobotsGeneratorPlugin::hotKeyActions()
+{
+	return mHotKeyActionInfos;
 }
 
 void RobotsGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)

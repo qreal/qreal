@@ -2,14 +2,18 @@
 
 using namespace qReal::interpreters::robots::details::blocks;
 
-WaitForSensorBlock::WaitForSensorBlock(RobotModel * const robotModel, sensorType::SensorTypeEnum type)
+WaitForSensorBlock::WaitForSensorBlock(RobotModel * const robotModel, robots::enums::sensorType::SensorTypeEnum type)
 	: WaitBlock(robotModel), mType(type)
+{
+}
+
+WaitForSensorBlock::~WaitForSensorBlock()
 {
 }
 
 void WaitForSensorBlock::run()
 {
-	mPort = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
+	mPort = static_cast<robots::enums::inputPort::InputPortEnum>(intProperty("Port") - 1);
 	robotParts::Sensor * const sensorInstance = sensor();
 
 	if (!sensorInstance) {
@@ -27,10 +31,10 @@ void WaitForSensorBlock::run()
 
 QList<Block::SensorPortPair> WaitForSensorBlock::usedSensors() const
 {
-	if (mType == sensorType::unused) {
+	if (mType == robots::enums::sensorType::unused) {
 		return QList<SensorPortPair>();
 	}
-	inputPort::InputPortEnum const port = static_cast<inputPort::InputPortEnum>(intProperty("Port") - 1);
+	robots::enums::inputPort::InputPortEnum const port = static_cast<robots::enums::inputPort::InputPortEnum>(intProperty("Port") - 1);
 	return QList<SensorPortPair>() << qMakePair(mType, static_cast<int>(port));
 }
 

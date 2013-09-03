@@ -1,4 +1,5 @@
 #include "logicalModelAssistApi.h"
+
 #include <QtCore/QUuid>
 
 using namespace qReal;
@@ -7,7 +8,9 @@ using namespace models::details;
 
 LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager)
 	: mModelsAssistApi(logicalModel, editorManagerInterface, constraintsManager)
-	, mLogicalModel(logicalModel), mEditorManager(editorManagerInterface)
+	, mLogicalModel(logicalModel)
+	, mExploser(*this)
+	, mEditorManager(editorManagerInterface)
 {
 	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChangedInModelApi(Id)), this, SLOT(propertyChangedSlot(Id)));
 	QObject::connect(&mLogicalModel, SIGNAL(parentChanged(IdList)), this, SLOT(parentChangedSlot(IdList)));
@@ -36,6 +39,10 @@ void LogicalModelAssistApi::addedElementToModelSlot(Id const &element)
 	emit addedElementToModel(element);
 }
 
+LogicalModelAssistApi::~LogicalModelAssistApi()
+{
+}
+
 EditorManagerInterface const &LogicalModelAssistApi::editorManagerInterface() const
 {
 	return mModelsAssistApi.editorManagerInterface();
@@ -44,6 +51,11 @@ EditorManagerInterface const &LogicalModelAssistApi::editorManagerInterface() co
 ConstraintsManager const &LogicalModelAssistApi::constraintsManager() const
 {
 	return mModelsAssistApi.constraintsManager();
+}
+
+Exploser &LogicalModelAssistApi::exploser()
+{
+	return mExploser;
 }
 
 qrRepo::LogicalRepoApi const &LogicalModelAssistApi::logicalRepoApi() const
@@ -91,86 +103,22 @@ void LogicalModelAssistApi::changeParent(Id const &element, Id const &parent, QP
 	mLogicalModel.changeParent(mLogicalModel.indexById(element), mLogicalModel.indexById(parent), QPointF());
 }
 
-void LogicalModelAssistApi::connect(Id const &source, Id const &destination)
+void LogicalModelAssistApi::addExplosion(Id const &source, Id const &destination)
 {
-	mLogicalModel.mutableApi().connect(source, destination);
+	mLogicalModel.mutableApi().addExplosion(source, destination);
 }
 
-void LogicalModelAssistApi::disconnect(Id const &source, Id const &destination)
+void LogicalModelAssistApi::removeExplosion(Id const &source, Id const &destination)
 {
-	mLogicalModel.mutableApi().disconnect(source, destination);
-}
-
-void LogicalModelAssistApi::addUsage(Id const &source, Id const &destination)
-{
-	mLogicalModel.mutableApi().addUsage(source, destination);
-}
-
-void LogicalModelAssistApi::deleteUsage(Id const &source, Id const &destination)
-{
-	mLogicalModel.mutableApi().deleteUsage(source, destination);
-}
-
-Id LogicalModelAssistApi::createConnectedElement(Id const &source, Id const &elementType)
-{
-	Id element = createElement(Id::rootId(), elementType);
-	QString sourceName = mLogicalModel.data(mLogicalModel.indexById(source), Qt::DisplayRole).toString();
-	QString typeName = editorManagerInterface().friendlyName(elementType);
-	mLogicalModel.setData(mLogicalModel.indexById(element), sourceName + " " + typeName, Qt::DisplayRole);
-	return element;
-}
-
-void LogicalModelAssistApi::createConnected(Id const &sourceElement, Id const &elementType)
-{
-	Id element = createConnectedElement(sourceElement, elementType);
-	connect(sourceElement, element);
-}
-
-void LogicalModelAssistApi::createUsed(Id const &sourceElement, Id const &elementType)
-{
-	Id element = createConnectedElement(sourceElement, elementType);
-	addUsage(sourceElement, element);
-}
-
-IdList LogicalModelAssistApi::diagramsFromList(IdList const &list) const
-{
-	// TODO: diagrams are kinda special, so we need the editor to be able to
-	// tell us whether this particular element is a diagram or not
-	IdList result;
-	foreach (Id type, list) {
-		if (type.element().split("_").back().contains("Diagram", Qt::CaseInsensitive)) {
-			if (!result.contains(type))
-				result.append(type);
-		}
-	}
-	return result;
-}
-
-IdList LogicalModelAssistApi::diagramsAbleToBeConnectedTo(Id const &element) const
-{
-	return diagramsFromList(editorManagerInterface().connectedTypes(element.type()));
-}
-
-IdList LogicalModelAssistApi::diagramsAbleToBeUsedIn(Id const &element) const
-{
-	return diagramsFromList(editorManagerInterface().usedTypes(element.type()));
-}
-
-QVariant LogicalModelAssistApi::property(Id const &id, QString const &name) const
-{
-	return mLogicalModel.mutableApi().property(id, name);
-}
-
-void LogicalModelAssistApi::setProperty(Id const &id, QString const &name, QVariant const &value)
-{
-	mLogicalModel.mutableApi().setProperty(id, name, value);
+	mLogicalModel.mutableApi().removeExplosion(source, destination);
 }
 
 void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName)
 {
-	int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
-	if (roleIndex < roles::customPropertiesBeginRole)
+	int const roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
+	if (roleIndex < roles::customPropertiesBeginRole) {
 		return;
+	}
 	mModelsAssistApi.setProperty(elem, newValue, roleIndex);
 	emit propertyChanged(elem);
 }
@@ -186,6 +134,16 @@ QVariant LogicalModelAssistApi::propertyByRoleName(Id const &elem, QString const
 bool LogicalModelAssistApi::isLogicalId(Id const &id) const
 {
 	return mModelsAssistApi.indexById(id) != QModelIndex();
+}
+
+void LogicalModelAssistApi::setName(Id const &elem, QString const &newValue)
+{
+	mModelsAssistApi.setProperty(elem, QVariant(newValue), Qt::DisplayRole);
+}
+
+QString LogicalModelAssistApi::name(Id const &elem) const
+{
+	return mModelsAssistApi.property(elem, Qt::DisplayRole).value<QString>();
 }
 
 void LogicalModelAssistApi::setTo(Id const &elem, Id const &newValue)
@@ -258,10 +216,11 @@ void LogicalModelAssistApi::removeReferencesFrom(Id const &id)
 	QStringList referenceProperties = mEditorManager.referenceProperties(id.type());
 
 	foreach (QString const &property, referenceProperties) {
-		QString propertyString = mLogicalModel.api().property(id, property).toString();
-		if (!propertyString.isEmpty()) {
-			Id propertyValue = Id::loadFromString(propertyString);
-			mLogicalModel.api().removeBackReference(propertyValue, id);
+		QStringList propertyValue = mLogicalModel.api().property(id, property).toString().split(','
+				, QString::SkipEmptyParts);
+		foreach (QString const &value, propertyValue) {
+			Id idValue = Id::loadFromString(value);
+			mLogicalModel.api().removeBackReference(idValue, id);
 		}
 	}
 }
@@ -271,10 +230,10 @@ void LogicalModelAssistApi::removeReference(Id const &id, Id const &reference)
 	QStringList referenceProperties = mEditorManager.referenceProperties(id.type());
 
 	foreach (QString const &propertyName, referenceProperties) {
-		QString stringData = mLogicalModel.api().property(id, propertyName).toString();
-		if (stringData == reference.toString()) {
-			mLogicalModel.mutableApi().setProperty(id, propertyName, "");
-		}
+		QStringList stringData = mLogicalModel.api().property(id, propertyName).toString().split(','
+				, QString::SkipEmptyParts);
+		stringData.removeAll(reference.toString());
+		mLogicalModel.mutableApi().setProperty(id, propertyName, stringData.join(','));
 	}
 }
 

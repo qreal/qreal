@@ -1,7 +1,7 @@
 #pragma once
 
-#include "item.h"
-#include "line.h"
+#include "mainwindow/shapeEdit/item.h"
+#include "mainwindow/shapeEdit/line.h"
 
 class LinePort : public Line
 {
@@ -11,4 +11,10 @@ public:
 	virtual Item* clone();
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document, QPoint const &topLeftPicture);
+
+	void setType(QString const &type);
+	QString getType() const;
+
+private:
+	QString mType;
 };

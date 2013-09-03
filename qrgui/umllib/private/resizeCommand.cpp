@@ -40,7 +40,9 @@ bool ResizeCommand::execute()
 	if (!mTrackStopped) {
 		return true;
 	}
-	NodeElementCommand::execute();
+	if (!NodeElementCommand::execute()) {
+		return false;
+	}
 	resizeHierarchy(mNewGeometrySnapshot);
 	return true;
 }
@@ -50,7 +52,9 @@ bool ResizeCommand::restoreState()
 	if (!mTrackStopped) {
 		return true;
 	}
-	NodeElementCommand::restoreState();
+	if (!NodeElementCommand::restoreState()) {
+		return false;
+	}
 	resizeHierarchy(mOldGeometrySnapshot);
 	return true;
 }
@@ -59,7 +63,9 @@ void ResizeCommand::resizeHierarchy(QMap<Id, QRectF> const &snapshot)
 {
 	foreach (Id const &id, snapshot.keys()) {
 		NodeElement *element = nodeById(id);
-		resize(element, snapshot[id]);
+		if (!element->parentItem()) {
+			resizeTree(snapshot, id);
+		}
 	}
 	// Updating linker position
 	if (mScene->selectedItems().size() == 1) {
@@ -71,11 +77,22 @@ void ResizeCommand::resizeHierarchy(QMap<Id, QRectF> const &snapshot)
 	}
 }
 
+void ResizeCommand::resizeTree(QMap<Id, QRectF> const &snapshot, Id const &root)
+{
+	NodeElement *element = nodeById(root);
+	foreach (NodeElement *child, element->childNodes()) {
+		if (snapshot.contains(child->id())) {
+			resizeTree(snapshot, child->id());
+		}
+	}
+	resize(element, snapshot[root]);
+}
+
 void ResizeCommand::resize(NodeElement * const element, QRectF const &geometry)
 {
 	if (element && geometryOf(element) != geometry) {
 		ResizeHandler handler(element);
-		handler.resize(geometry.translated(-geometry.topLeft()), geometry.topLeft());
+		handler.resize(geometry.translated(-geometry.topLeft()), geometry.topLeft(), false);
 	}
 }
 
@@ -86,13 +103,13 @@ void ResizeCommand::startTracking()
 		return;
 	}
 	TrackingEntity::startTracking();
-	makeHierarchySnapshot(mOldGeometrySnapshot);
+	makeCommonSnapshot(mOldGeometrySnapshot);
 }
 
 void ResizeCommand::stopTracking()
 {
 	TrackingEntity::stopTracking();
-	makeHierarchySnapshot(mNewGeometrySnapshot);
+	makeCommonSnapshot(mNewGeometrySnapshot);
 }
 
 void ResizeCommand::rejectTracking()
@@ -100,13 +117,26 @@ void ResizeCommand::rejectTracking()
 	TrackingEntity::stopTracking();
 }
 
-void ResizeCommand::makeHierarchySnapshot(QMap<Id, QRectF> &target)
+void ResizeCommand::makeCommonSnapshot(QMap<Id, QRectF> &target)
+{
+	/// This must be invoked even if we start element dragging when it isn`t selected
+	makeHierarchySnapshot(mNode, target);
+	QList<QGraphicsItem *> const selectedItems = mNode->scene()->selectedItems();
+	foreach (QGraphicsItem *item, selectedItems) {
+		NodeElement *node = dynamic_cast<NodeElement *>(item);
+		if (node && node != mNode) {
+			makeHierarchySnapshot(node, target);
+		}
+	}
+}
+
+void ResizeCommand::makeHierarchySnapshot(NodeElement *node, QMap<Id, QRectF> &target)
 {
 	// Here we remembering all binded items geometries.
 	// Binded items are just element`s hierarchy:
 	// all parents and children (siblings are not considered)
-	makeChildrenSnapshot(mNode, target);
-	for (NodeElement *parentElement = mNode; parentElement;
+	makeChildrenSnapshot(node, target);
+	for (NodeElement *parentElement = node; parentElement;
 			parentElement = dynamic_cast<NodeElement *>(parentElement->parentItem()))
 	{
 		target.insert(parentElement->id(), geometryOf(parentElement));
@@ -128,7 +158,6 @@ QRectF ResizeCommand::geometryOf(NodeElement const *element) const
 {
 	QRectF const geom = element->contentsRect();
 	return geom.translated(element->pos() - geom.topLeft());
-//	return element->contentsRect().translated(element->pos());
 }
 
 QRectF ResizeCommand::geometryBeforeDrag() const

@@ -2,8 +2,7 @@
 
 #include <QtCore/QPointF>
 
-#include "../../qrkernel/ids.h"
-#include "pattern.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
 class EditorManager;
@@ -28,7 +27,8 @@ public:
 class Pattern{
 public:
 	Pattern();
-	Pattern(QString const &editor, QString const &diagram, QString const &name, QString const &inNode, QString const &outNode);
+	Pattern(QString const &editor, QString const &diagram, QString const &name, QString const &inNode
+			, QString const &outNode);
 	void setName(QString const &name);
 	QString name() const;
 	void setEditor(QString const &editor);

@@ -5,8 +5,13 @@ CONFIG += plugin
 DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
+OBJECTS_DIR = .obj
 
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
+
+INCLUDEPATH += \
+	../../../ \
+	../../../qrgui \
 
 TRANSLATIONS = robotsGenerator_ru.ts
 

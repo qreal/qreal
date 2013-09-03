@@ -5,7 +5,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-UnrealColorSensorImplementation::UnrealColorSensorImplementation(inputPort::InputPortEnum const &port, d2Model::D2RobotModel *d2Model, sensorType::SensorTypeEnum const &sensorType)
+UnrealColorSensorImplementation::UnrealColorSensorImplementation(robots::enums::inputPort::InputPortEnum const port, d2Model::D2RobotModel *d2Model, robots::enums::sensorType::SensorTypeEnum const &sensorType)
 	: UnrealSensorImplementation(port, d2Model, sensorType)
 {
 }

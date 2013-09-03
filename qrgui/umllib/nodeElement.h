@@ -1,35 +1,33 @@
 /** @file nodeElement.h
- *  @brief class for an element object on a diagram
- * */
+*  @brief class for an element object on a diagram
+**/
 
 #pragma once
 
-#include <QKeyEvent>
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSceneHoverEvent>
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneHoverEvent>
 #include <QtWidgets/QWidget>
-#include <QList>
+#include <QtCore/QList>
+#include <QtCore/QTimer>
 
-#include "sdfRenderer.h"
-#include "element.h"
-#include "edgeElement.h"
-#include "embedded/linkers/embeddedLinker.h"
-#include "../editorPluginInterface/elementImpl.h"
-#include "embedded/linkers/embeddedLinker.h"
+#include "umllib/sdfRenderer.h"
+#include "umllib/element.h"
+#include "umllib/edgeElement.h"
+#include "umllib/embedded/linkers/embeddedLinker.h"
+#include "editorPluginInterface/elementImpl.h"
 
-#include "private/sceneGridHandler.h"
-#include "private/umlPortHandler.h"
-#include "private/portHandler.h"
+#include "umllib/private/sceneGridHandler.h"
+#include "umllib/private/umlPortHandler.h"
+#include "umllib/private/portHandler.h"
 
-#include "serializationData.h"
+#include "umllib/serializationData.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+
+namespace commands {
 class ResizeCommand;
-}
 }
 
 class NodeElement : public Element
@@ -37,7 +35,11 @@ class NodeElement : public Element
 	Q_OBJECT
 
 public:
-	explicit NodeElement(ElementImpl *impl);
+	explicit NodeElement(ElementImpl *impl
+			, Id const &id
+			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
+
 	virtual ~NodeElement();
 
 	/**
@@ -51,7 +53,6 @@ public:
 	QMap<QString, QVariant> graphicalProperties() const;
 	QMap<QString, QVariant> logicalProperties() const;
 
-	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w, SdfRenderer *portrenderer);
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
 
 	QRectF boundingRect() const;
@@ -71,13 +72,14 @@ public:
 	bool isContainer() const;
 
 	void storeGeometry();
-	virtual void setName(QString name);
+	virtual void setName(QString const &name, bool withUndoRedo = false);
 	//void shift(QPointF const &pos, EdgeElement* called);
 
 	QPointF const portPos(qreal id) const;
-	QPointF const nearestPort(QPointF const &location) const;
+	QPointF const nearestPort(QPointF const &location, QStringList const &types) const;
+	int numberOfPorts() const;
 	static int portNumber(qreal id);
-	qreal portId(QPointF const &location) const;
+	qreal portId(QPointF const &location, QStringList const &types) const;
 
 	QList<EdgeElement *> getEdges();
 	void addEdge(EdgeElement *edge);
@@ -89,8 +91,6 @@ public:
 	QList<PossibleEdge> getPossibleEdges();
 
 	void setPortsVisible(bool value);
-
-	void hideEmbeddedLinkers();
 
 	bool isPort() const;
 	bool canHavePorts();
@@ -127,6 +127,9 @@ public:
 
 	void highlightEdges();
 
+	void changeExpanded();
+	bool isExpanded() const;
+
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
 
@@ -136,13 +139,25 @@ public:
 	QList<EdgeElement *> const edgeList() const;
 	QList<NodeElement *> const childNodes() const;
 
-	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
-
 	void setVisibleEmbeddedLinkers(bool const show);
 	void updateShape(QString const &shape) const;
 
 	void changeFoldState();
+
+	void updateLabels();
+
+	/**
+	 * Calls resize(QRectF newContents, QPointF newPos) with
+	 * newPos equals to current position of node and
+	 * newContents equals to current shape (mContents).
+	 */
+	void resize();
+
+	/**
+	 * @brief sortedChildren
+	 * @return children of sorting container sorted in correct order
+	 */
+	IdList sortedChildren() const;
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
@@ -152,18 +167,19 @@ public slots:
 
 private slots:
 	void updateNodeEdges();
+	void initRenderedDiagram();
 
 private:
 	enum DragState {
-		None,
-		TopLeft,
-		Top,
-		TopRight,
-		Left,
-		Right,
-		BottomLeft,
-		Bottom,
-		BottomRight
+		None
+		, TopLeft
+		, Top
+		, TopRight
+		, Left
+		, Right
+		, BottomLeft
+		, Bottom
+		, BottomRight
 	};
 
 	/**
@@ -175,7 +191,7 @@ private:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF const &newContents, QPointF const &newPos);
+	void resize(QRectF const &newContents, QPointF const &newPos, bool needResizeParent = true);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
@@ -184,15 +200,11 @@ private:
 	 */
 	void resize(QRectF const &newContents);
 
-	/**
-	 * Calls resize(QRectF newContents, QPointF newPos) with
-	 * newPos equals to current position of node and
-	 * newContents equals to current shape (mContents).
-	 */
-	void resize();
+	void drawLinesForResize(QPainter *painter);
+	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
 	void delUnusedLines();
-	PossibleEdge toPossibleEdge(StringPossibleEdge const &strPossibleEdge);
+	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -202,6 +214,8 @@ private:
 	virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
+	void paint(QPainter *p, QStyleOptionGraphicsItem const *opt);
 
 	/**
 	 * Recalculates mHighlightedNode according to current mouse scene position.
@@ -217,7 +231,11 @@ private:
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
+	void updateChildrenOrder();
+
 	void initEmbeddedLinkers();
+
+	QRectF diagramRenderingRect() const;
 
 	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
 
@@ -239,8 +257,9 @@ private:
 
 	QTransform mTransform;
 
-	SdfRenderer *mPortRenderer;
 	SdfRenderer *mRenderer;
+
+	bool mIsExpanded;
 
 	bool mIsFolded;
 	QRectF mFoldedContents;
@@ -268,4 +287,9 @@ private:
 
 	int mTimeOfUpdate;
 	QTimer *mTimer;
+
+	QImage mRenderedDiagram;
+	QTimer mRenderTimer;
 };
+
+}

@@ -41,13 +41,12 @@ HEADERS += association.h \
 	numericType.h \
 	pointPort.h \
 	port.h \
+	portType.h \
 	property.h \
-	scalableCoordinate.h \
 	sdftocpp.h \
 	stringType.h \
 	type.h \
 	xmlCompiler.h \
-	scalableItem.h
 
 SOURCES += association.cpp \
 	diagram.cpp \
@@ -64,13 +63,12 @@ SOURCES += association.cpp \
 	numericType.cpp \
 	pointPort.cpp \
 	port.cpp \
+	portType.cpp \
 	property.cpp \
-	scalableCoordinate.cpp \
 	sdftocpp.cpp \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
-	scalableItem.cpp
 
 # Unit tests
 include (unitTests/unitTests.pri)

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../controller/commands/edgeElementCommand.h"
-#include "../../controller/commands/trackingEntity.h"
+#include "controller/commands/edgeElementCommand.h"
+#include "controller/commands/trackingEntity.h"
 
 namespace qReal
 {
@@ -17,6 +17,8 @@ public:
 
 	virtual void startTracking();
 	virtual void stopTracking();
+
+	bool somethingChanged() const;
 
 protected:
 	bool execute();

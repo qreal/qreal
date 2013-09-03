@@ -6,23 +6,24 @@
 #include <QtWidgets/QGraphicsView>
 #include <QtCore/QList>
 
-#include "view.h"
-#include "item.h"
-#include "arch.h"
-#include "line.h"
-#include "ellipse.h"
-#include "rectangle.h"
-#include "text.h"
-#include "textPicture.h"
-#include "pointPort.h"
-#include "linePort.h"
-#include "stylus.h"
-#include "path.h"
-#include "curve.h"
-#include "image.h"
-#include "../umllib/elementTitle.h"
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../qrutils/graphicsUtils/abstractScene.h"
+#include <qrutils/graphicsUtils/abstractScene.h>
+#include <qrkernel/settingsManager.h>
+
+#include "mainwindow/shapeEdit/view.h"
+#include "mainwindow/shapeEdit/item.h"
+#include "mainwindow/shapeEdit/arch.h"
+#include "mainwindow/shapeEdit/line.h"
+#include "mainwindow/shapeEdit/ellipse.h"
+#include "mainwindow/shapeEdit/rectangle.h"
+#include "mainwindow/shapeEdit/text.h"
+#include "mainwindow/shapeEdit/textPicture.h"
+#include "mainwindow/shapeEdit/pointPort.h"
+#include "mainwindow/shapeEdit/linePort.h"
+#include "mainwindow/shapeEdit/stylus.h"
+#include "mainwindow/shapeEdit/path.h"
+#include "mainwindow/shapeEdit/curve.h"
+#include "mainwindow/shapeEdit/image.h"
+#include "umllib/label.h"
 
 const int sizeEmptyRectX = 680;
 const int sizeEmptyRectY = 580;
@@ -56,6 +57,8 @@ signals:
 	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
 	void noSelectedTextPictureItems();
 	void existSelectedTextPictureItems(QPen const &penItem, QFont const &fontItem, QString const &name);
+	void noSelectedPortItems();
+	void existSelectedPortItems(QString const &type);
 	void resetHighlightAllButtons();
 
 private slots:
@@ -64,8 +67,11 @@ private slots:
 	void changePenColor(QString const &text);
 	void changeBrushStyle(QString const &text);
 	void changeBrushColor(QString const &text);
+	void changePortsType(QString const &type);
+
 	void changePalette();
 	void changeFontPalette();
+	void changePortsComboBox();
 
 	void changeFontFamily(const QFont& font);
 	void changeFontPixelSize(int size);
@@ -79,23 +85,24 @@ private slots:
 
 private:
 	enum ItemTypes {
-		none,
-		line,
-		ellipse,
-		rectangle,
-		text,
-		dynamicText,
-		textPicture,
-		pointPort,
-		linePort,
-		stylus,
-		curve,
-		image
+		none
+		, line
+		, ellipse
+		, rectangle
+		, text
+		, dynamicText
+		, textPicture
+		, pointPort
+		, linePort
+		, stylus
+		, curve
+		, image
 	};
+
 	enum CopyPasteType {
-		nonePaste,
-		copy,
-		cut
+		nonePaste
+		, copy
+		, cut
 	};
 
 	int mZValue;
@@ -120,6 +127,7 @@ private:
 	QList<TextPicture *> mListSelectedTextPictureItems;
 	TextPicture *mSelectedTextPicture;
 	QPair<bool, Item *> mNeedResize;
+	QString mPortType;
 
 	void initListSelectedItemsForPaste();
 	QRectF selectedItemsBoundingRect() const;

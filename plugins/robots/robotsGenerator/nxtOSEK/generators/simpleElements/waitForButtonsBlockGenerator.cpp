@@ -9,7 +9,7 @@ WaitForButtonsBlockGenerator::WaitForButtonsBlockGenerator()
 }
 
 QList<SmartLine> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-		, qReal::Id const elementId, qReal::Id const logicElementId)
+		, qReal::Id const &elementId, qReal::Id const &logicElementId)
 {
 	QList<SmartLine> result;
 	QString condition = "";

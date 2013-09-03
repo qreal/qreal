@@ -1,17 +1,16 @@
-#include "../../edgeElement.h"
-#include "../../nodeElement.h"
 #include "embeddedLinker.h"
 
 #include <math.h>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 
-#include <QDebug>
-#include <QStyle>
-#include <QGraphicsItem>
-#include <QStyleOptionGraphicsItem>
+#include "umllib/edgeElement.h"
+#include "umllib/nodeElement.h"
 
-#include "../../../view/editorViewScene.h"
-#include "../../../mainwindow/mainWindow.h"
-#include "../../private/reshapeEdgeCommand.h"
+#include "view/editorViewScene.h"
+#include "mainwindow/mainWindow.h"
+#include "umllib/private/reshapeEdgeCommand.h"
 
 using namespace qReal;
 
@@ -39,14 +38,14 @@ EmbeddedLinker::EmbeddedLinker()
 
 	setAcceptHoverEvents(true);
 
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdges()));
+	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdge()));
 }
 
 EmbeddedLinker::~EmbeddedLinker()
 {
 }
 
-NodeElement* EmbeddedLinker::getMaster()
+NodeElement* EmbeddedLinker::master() const
 {
 	return mMaster;
 }
@@ -62,6 +61,7 @@ void EmbeddedLinker::generateColor()
 	int result = 0;
 	mColor = QColor(result % 192 + 64, result % 128 + 128, result % 64 + 192).darker(0);
 }
+
 void EmbeddedLinker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
 	Q_UNUSED(option);
@@ -95,29 +95,36 @@ void EmbeddedLinker::setDirected(const bool directed)
 
 void EmbeddedLinker::initTitle()
 {
-	EditorManagerInterface const &editorManagerInterface = dynamic_cast<EditorViewScene*>(scene())->mainWindow()->editorManager();
-	QString edgeTypeFriendly = editorManagerInterface.friendlyName(Id::loadFromString("qrm:/"+ mMaster->id().editor() + "/" + mMaster->id().diagram() + "/" + mEdgeType.element()));
+	// TODO: It is not Label, it is simply some text on a scene. Refactor this.
+	// Temporarily commented out.
+//	EditorManagerInterface const &editorManagerInterface
+//			= dynamic_cast<EditorViewScene *>(scene())->mainWindow()->editorManager();
 
-	float textWidth = edgeTypeFriendly.size()*10;
-	float rectWidth = mMaster->boundingRect().right() - mMaster->boundingRect().left();
-	float rectHeight = mMaster->boundingRect().bottom() - mMaster->boundingRect().top();
+//	QString edgeTypeFriendly = editorManagerInterface.friendlyName(Id::loadFromString("qrm:/"+ mMaster->id().editor()
+//			+ "/" + mMaster->id().diagram() + "/" + mEdgeType.element()));
 
-	int x = 0;
-	int y = 0;
-	if (scenePos().y() < mMaster->scenePos().y() + rectHeight/3)
-		y = -boundingRect().height() - 10;
-	else if (scenePos().y() > mMaster->scenePos().y() + 2*rectHeight/3)
-		y = +boundingRect().height() - 10;
+//	float textWidth = edgeTypeFriendly.size() * 10;
+//	float rectWidth = mMaster->boundingRect().right() - mMaster->boundingRect().left();
+//	float rectHeight = mMaster->boundingRect().bottom() - mMaster->boundingRect().top();
 
-	if (scenePos().x() < mMaster->scenePos().x() + rectWidth/3)
-		x = -boundingRect().width() - textWidth + 20;
-	else if (scenePos().x() > mMaster->scenePos().x() + 2*rectWidth/3)
-		x = +boundingRect().width() - 10;
+//	int x = 0;
+//	int y = 0;
+//	if (scenePos().y() < mMaster->scenePos().y() + rectHeight/3)
+//		y = -boundingRect().height() - 10;
+//	else if (scenePos().y() > mMaster->scenePos().y() + 2*rectHeight/3)
+//		y = +boundingRect().height() - 10;
 
-	mTitle = new ElementTitle(static_cast<qreal>(x) / boundingRect().width(), static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly);
-	mTitle->init(boundingRect());
-	mTitle->setTextWidth(textWidth);
-	mTitle->setParentItem(this);
+//	if (scenePos().x() < mMaster->scenePos().x() + rectWidth/3)
+//		x = -boundingRect().width() - textWidth + 20;
+//	else if (scenePos().x() > mMaster->scenePos().x() + 2*rectWidth/3)
+//		x = +boundingRect().width() - 10;
+
+//	mTitle = new Label(static_cast<qreal>(x) / boundingRect().width()
+//			, static_cast<qreal>(y) / boundingRect().height(), edgeTypeFriendly, 0);
+
+//	mTitle->init(boundingRect());
+//	mTitle->setTextWidth(textWidth);
+//	mTitle->setParentItem(this);
 }
 
 void EmbeddedLinker::setEdgeType(const qReal::Id &edgeType)
@@ -126,12 +133,12 @@ void EmbeddedLinker::setEdgeType(const qReal::Id &edgeType)
 	generateColor();
 }
 
-qReal::Id EmbeddedLinker::getEdgeType()
+qReal::Id EmbeddedLinker::edgeType() const
 {
 	return mEdgeType;
 }
 
-bool EmbeddedLinker::isDirected()
+bool EmbeddedLinker::isDirected() const
 {
 	return mDirected;
 }
@@ -257,20 +264,19 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void EmbeddedLinker::updateMasterEdges()
+void EmbeddedLinker::updateMasterEdge()
 {
 	mTimer->stop();
 	mTimeOfUpdate = 0;
 
 	if (mEdge) {
-		mEdge->adjustNeighborLinks();
 		mEdge->arrangeSrcAndDst();
+		mEdge->adjustNeighborLinks();
 	}
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	updateMasterEdges();
 	hide();
 	mMaster->selectionState(false);
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(mMaster->scene());
@@ -284,13 +290,18 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 		commands::CreateElementCommand *createElementFromMenuCommand = NULL;
 		if (!under) {
-			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, &createElementFromMenuCommand);
-			NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
-			if (result == -1) {
-				mEdge = NULL;
-			} else if ((result == 1) && target) {
-				mEdge->setDst(target);
-				target->storeGeometry();
+			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
+		} else {
+			bool canBeConnected = false;
+			foreach(PossibleEdge const &pEdge, mEdge->src()->getPossibleEdges()) {
+				if (pEdge.first.second.element() == under->id().element()) {
+					canBeConnected = true;
+				} else {
+					// pEdge.second.first is true, if edge can connect items in only one direction.
+					if (!pEdge.second.first) {
+						canBeConnected = (pEdge.first.first.element() == under->id().element());
+					}
+				}
 /* // qwerty_old
 QPointF const &posRelativeToTheTarget = target->mapFromScene(eScenePos);
 				mEdge->placeEndTo(mapFromItem(target, target->nearestPort(posRelativeToTheTarget)));
@@ -299,13 +310,28 @@ QPointF const &posRelativeToTheTarget = target->mapFromScene(eScenePos);
 				mEdge->adjustLink();
 */
 			}
+
+			if (under->isContainer()) {
+				result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos
+						, canBeConnected, &createElementFromMenuCommand);
+			} else {
+				if (!canBeConnected) {
+					result = -1;
+				}
+			}
+		}
+		NodeElement *target = dynamic_cast<NodeElement*>(scene->getLastCreated());
+
+		if (result == -1) {
+			mEdge = NULL;
+		} else if ((result == 1) && target) {
+			mEdge->setDst(target);
+			target->storeGeometry();
 		}
 		if (result != -1) {
 			mEdge->connectToPort();
-			mEdge->adjustNeighborLinks();
-			mEdge->correctArrow();
-			mEdge->correctInception();
-			mEdge->adjustNeighborLinks();
+
+			updateMasterEdge();
 			// This will restore edge state after undo/redo
 			commands::ReshapeEdgeCommand *reshapeEdge = new commands::ReshapeEdgeCommand(mEdge);
 			reshapeEdge->startTracking();

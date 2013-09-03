@@ -1,9 +1,15 @@
-win32{
+win32 {
 	HEADERS += \
-		thirdparty/windowsmodernstyle.h \
+		$$PWD/windowsmodernstyle.h \
 
 	SOURCES += \
-		thirdparty/windowsmodernstyle.cpp \
+		$$PWD/windowsmodernstyle.cpp \
 }
 
-include (qtpropertybrowser/src/qtpropertybrowser.pri)
+HEADERS += \
+	$$PWD/qsKineticScroller.h \
+
+SOURCES += \
+	$$PWD/qsKineticScroller.cpp \
+
+include ($$PWD/qtpropertybrowser/src/qtpropertybrowser.pri)

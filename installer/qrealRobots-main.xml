@@ -54,6 +54,9 @@
                 <distributionFile>
                     <origin>%1/bin/qrutils.dll</origin>
                 </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/qscintilla2.dll</origin>
+                </distributionFile>
                 <distributionDirectory>
                     <origin>%1/bin/plugins</origin>
                 </distributionDirectory>
@@ -91,10 +94,10 @@
                     <origin>%2/Qt5PrintSupport.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%2/icuin49.dll</origin>
+                    <origin>%2/icuin51.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%2/libgcc_s_sjlj-1.dll</origin>
+                    <origin>%2/libgcc_s_dw2-1.dll</origin>
                 </distributionFile>
                 <distributionFile>
                     <origin>%2/libwinpthread-1.dll</origin>
@@ -103,19 +106,10 @@
                     <origin>%2/libstdc++-6.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%2/icuuc49.dll</origin>
+                    <origin>%2/icuuc51.dll</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%2/icudt49.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/libGLESv2.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/libEGL.dll</origin>
-                </distributionFile>
-                <distributionFile>
-                    <origin>%2/D3DCompiler_43.dll</origin>
+                    <origin>%2/icudt51.dll</origin>
                 </distributionFile>
                 <distributionFile>
                     <origin>%1/installer/icon.ico</origin>
@@ -124,7 +118,7 @@
                     <origin>%1/bin/changelog.txt</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/bin/DejaVuSansCondensed.ttf</origin>
+                    <origin>%1/bin/Pfennig.ttf</origin>
                 </distributionFile>
                 <distributionDirectory>
                     <origin>%1/plugins/robots/editor/images</origin>
@@ -189,6 +183,9 @@
                 </distributionFile>
                 <distributionFile>
                     <origin>%1/plugins/robots/examples/movingAlongTheLine.qrs</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/plugins/robots/examples/movingAlongTheBox.qrs</origin>
                 </distributionFile>
             </distributionFileList>
         </folder>

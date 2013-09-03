@@ -9,12 +9,18 @@ namespace generatorsUtils {
 class QRUTILS_EXPORT NameNormalizer
 {
 public:
-	/** Makes from given name correct C++/C# identifier.
-	  @param name String to transform to an identifier.
-	  @param upperFirst Makes first letter capital when true or small when false.
-	  @return Transformed string.
-	*/
+	/// Makes from given name correct C++/C# identifier.
+	/// @param name String to transform to an identifier.
+	/// @param upperFirst Makes first letter capital when true or small when false.
+	/// @return Transformed string.
 	static QString normalize(QString const &name, bool const upperFirst = true);
+
+	/// Makes from given name correct C++/C# identifier. Illegal characters would
+	/// be thrown away
+	/// @param name String to transform to an identifier.
+	/// @param upperFirst Makes first letter capital when true or small when false.
+	/// @return Transformed string.
+	static QString normalizeStrongly(QString const &name, bool const upperFirst = true);
 
 private:
 	/// Makes all letters that start words capital and replaces spaces with underscore,

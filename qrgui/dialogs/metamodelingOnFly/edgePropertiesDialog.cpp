@@ -3,12 +3,14 @@
 
 #include "edgePropertiesDialog.h"
 #include "ui_edgePropertiesDialog.h"
-#include "../mainwindow/mainWindow.h"
+
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 using namespace gui;
 
-EdgePropertiesDialog::EdgePropertiesDialog(MainWindow &mainWindow, Id const &diagram, EditorManagerInterface const &editorManagerProxy)
+EdgePropertiesDialog::EdgePropertiesDialog(MainWindow &mainWindow, Id const &diagram
+		, EditorManagerInterface const &editorManagerProxy)
 		: QDialog(&mainWindow)
 		, mUi(new Ui::EdgePropertiesDialog)
 		, mMainWindow(mainWindow)

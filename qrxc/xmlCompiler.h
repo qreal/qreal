@@ -1,11 +1,12 @@
 #pragma once
 
-#include <QMap>
-#include <QString>
-#include <QDir>
+#include <QtCore/QMap>
+#include <QtCore/QString>
+#include <QtCore/QDir>
 
 class Editor;
 class Diagram;
+
 namespace utils {
 	class OutFile;
 }
@@ -21,12 +22,6 @@ public:
 	void addResource(QString const &resourceName);
 
 private:
-	QMap<QString, Editor*> mEditors;
-	QString mPluginName;
-	QString mResources;
-	QString mCurrentEditor;
-	QString mSourcesRootFolder;
-
 	void generateCode();
 	void generateElementClasses();
 	void generatePluginHeader();
@@ -39,15 +34,15 @@ private:
 	void generatePropertyDefaultsMap(utils::OutFile &out);
 	void generateDescriptionMappings(utils::OutFile &out);
 	void generateParentsMappings(utils::OutFile &out);
+	void generateExplosionsMappings(utils::OutFile &out);
 	void generateNameMappingsRequests(utils::OutFile &out);
 	void generateGraphicalObjectRequest(utils::OutFile &out);
 	void generateIsParentOfRequest(utils::OutFile &out);
 	void generateGetParentsOfRequest(utils::OutFile &out);
 	void generateProperties(utils::OutFile &out);
+	void generatePortTypes(utils::OutFile &out);
 	void generateReferenceProperties(utils::OutFile &out);
 	void generateContainedTypes(utils::OutFile &out);
-	void generateConnections(utils::OutFile &out);
-	void generateUsages(utils::OutFile &out);
 	void generatePossibleEdges(utils::OutFile &out);
 	void generateNodesAndEdges(utils::OutFile &out);
 	void generateGroupsXML(utils::OutFile &out);
@@ -60,12 +55,17 @@ private:
 
 	class ListMethodGenerator;
 	class PropertiesGenerator;
+	class PortsGenerator;
 	class ReferencePropertiesGenerator;
 	class ContainedTypesGenerator;
-	class ConnectionsGenerator;
-	class UsagesGenerator;
 	class PossibleEdgesGenerator;
 	class EnumValuesGenerator;
 
 	void generateListMethod(utils::OutFile &out, QString const &signature, ListMethodGenerator const &generator);
+
+	QMap<QString, Editor *> mEditors;
+	QString mPluginName;
+	QString mResources;
+	QString mCurrentEditor;
+	QString mSourcesRootFolder;
 };

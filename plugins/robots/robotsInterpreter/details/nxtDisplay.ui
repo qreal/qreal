@@ -439,28 +439,28 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QPushButton#bottomButton{
-	border-image: url(://icons/bottomButton.bmp);
+	border-image: url(://icons/bottomButton.png);
 }
 QPushButton#bottomButton:pressed{
-	border-image: url(://icons/bottomButtonPressed.bmp);
+	border-image: url(://icons/bottomButtonPressed.png);
 }
 QPushButton#centralButton{
-	border-image: url(://icons/centralButton.bmp);
+	border-image: url(://icons/centralButton.png);
 }
 QPushButton#centralButton:pressed{
-	border-image: url(://icons/centralButtonPressed.bmp);
+	border-image: url(://icons/centralButtonPressed.png);
 }
 QPushButton#leftButton{
-	border-image: url(://icons/leftButton.bmp);
+	border-image: url(://icons/leftButton.png);
 }
 QPushButton#leftButton:pressed{
-	border-image: url(://icons/leftButtonPressed.bmp);
+	border-image: url(://icons/leftButtonPressed.png);
 }
 QPushButton#rightButton{
-	border-image: url(://icons/rightButton.bmp);
+	border-image: url(://icons/rightButton.png);
 }
 QPushButton#rightButton:pressed{
-	border-image: url(://icons/rightButtonPressed.bmp);
+	border-image: url(://icons/rightButtonPressed.png);
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">

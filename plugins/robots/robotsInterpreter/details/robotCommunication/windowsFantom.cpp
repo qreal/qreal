@@ -4,7 +4,7 @@
 #include "robotCommunicationException.h"
 #include "fantomMethods.h"
 
-using namespace robotsInterpreter::robotCommunication;
+using namespace qReal::interpreters::robots::details;
 
 unsigned long const fantomDriverUnavailableResult = 100500;
 

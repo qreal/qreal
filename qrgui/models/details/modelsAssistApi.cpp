@@ -1,5 +1,6 @@
 #include "modelsAssistApi.h"
-#include "modelsImplementation/abstractModel.h"
+
+#include "models/details/modelsImplementation/abstractModel.h"
 
 using namespace qReal;
 using namespace models;
@@ -31,6 +32,7 @@ Id ModelsAssistApi::createElement(Id const &parent, Id const &id, Id const &logi
 		realLogicalId = id;
 		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
 	}
+
 	mModel.addElementToModel(parent, newId, realLogicalId, name, position);
 	return newId;
 }

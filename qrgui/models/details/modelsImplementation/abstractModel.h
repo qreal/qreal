@@ -1,24 +1,23 @@
 #pragma once
 
 #include <QtCore/QAbstractItemModel>
-#include <QMimeData>
-#include <QModelIndexList>
+#include <QtCore/QMimeData>
+#include <QtCore/QModelIndexList>
 
-#include "../modelsAssistApi.h"
-#include "../../../../qrrepo/repoApi.h"
-#include "../../../pluginManager/editorManagerInterface.h"
-#include "abstractModelItem.h"
-#include "../../../toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
+#include <qrrepo/repoApi.h>
+
+#include "models/details/modelsAssistApi.h"
+#include "pluginManager/editorManagerInterface.h"
+#include "models/details/modelsImplementation/abstractModelItem.h"
+#include "toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
+#include "models/details/modelsImplementation/modelIndexesInterface.h"
 
 namespace qReal {
-
 namespace models {
-
 namespace details {
-
 namespace modelsImplementation {
 
-class AbstractModel : public QAbstractItemModel
+class AbstractModel : public QAbstractItemModel, public ModelIndexesInterface
 {
 	Q_OBJECT
 
@@ -35,7 +34,8 @@ public:
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const = 0;
 	bool dropMimeData(QMimeData const *data, Qt::DropAction action, int row, int column, QModelIndex const &parent);
 
-	virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId, QString const &name, QPointF const &position) = 0;
+	virtual void addElementToModel(Id const &parent, Id const &id, Id const &logicalId
+			, QString const &name, QPointF const &position) = 0;
 	QPersistentModelIndex rootIndex() const;
 	EditorManagerInterface const &editorManagerInterface() const;
 	ConstraintsManager const &constraintsManager() const;
@@ -66,13 +66,11 @@ protected:
 private:
 	virtual AbstractModelItem *createModelItem(Id const &id, AbstractModelItem *parentItem) const = 0;
 	virtual void init() = 0;
-	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child) = 0;
+	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
+			, details::modelsImplementation::AbstractModelItem *child) = 0;
 };
 
 }
-
 }
-
 }
-
 }

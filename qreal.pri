@@ -36,24 +36,3 @@ plugins.depends = \
 	qrutils \
 	qrkernel \
 	qrmc \
-
-infile(qrtest/unitTests/unittestDeclaration.cfg, UNIT_TEST, TRUE) {
-	SUBDIRS += \
-		qrtest \
-		qrxcTest \
-		qrguiTest \
-
-	qrtest.depends = \
-		thirdparty \
-
-	qrxcTest.file = qrxc/qrxcTest.pro
-	qrguiTest.file = qrgui/qrguiTest.pro
-
-	qrxcTest.depends = \
-		qrxc \
-		thirdparty \
-
-	qrguiTest.depends = \
-		qrgui \
-		thirdparty \
-}

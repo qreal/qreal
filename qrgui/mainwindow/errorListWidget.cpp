@@ -1,14 +1,15 @@
+#include "errorListWidget.h"
+
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
 #include <QtGui/QClipboard>
 
-#include "errorListWidget.h"
-#include "mainWindow.h"
+#include "mainwindow/mainWindow.h"
 
 ErrorListWidget::ErrorListWidget(QWidget *parent)
 {
 	Q_UNUSED(parent);
-	connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(clickList()));
+	connect(this, SIGNAL(itemSelectionChanged()), this, SLOT(clickList()));
 	initContextMenu();
 }
 

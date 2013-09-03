@@ -9,37 +9,37 @@
 #include <QtWidgets/QListWidget>
 #include <QtSql/QSqlDatabase>
 
-#include "mainWindowInterpretersInterface.h"
-#include "mainWindowDockInterface.h"
-#include "../pluginManager/constraintsManager.h"
-#include "propertyEditorProxyModel.h"
-#include "gesturesPainterInterface.h"
-#include "findManager.h"
-#include "referenceList.h"
+#include <qrkernel/settingsManager.h>
 
-#include "projectManager/projectManager.h"
+#include "mainwindow/mainWindowInterpretersInterface.h"
+#include "mainwindow/mainWindowDockInterface.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "mainwindow/gesturesPainterInterface.h"
+#include "mainwindow/findManager.h"
+#include "mainwindow/referenceList.h"
 
-#include "../pluginManager/editorManagerInterface.h"
-#include "../pluginManager/editorManager.h"
-#include "../pluginManager/interpreterEditorManager.h"
-#include "../pluginManager/proxyEditorManager.h"
-#include "../pluginManager/toolPluginManager.h"
-#include "../models/logicalModelAssistApi.h"
-#include "../view/propertyEditorView.h"
-#include "../controller/controller.h"
+#include "mainwindow/projectManager/projectManager.h"
 
-#include "../../qrgui/dialogs/preferencesDialog.h"
-#include "../../qrgui/dialogs/findReplaceDialog.h"
-#include "../dialogs/startDialog/startDialog.h"
-#include "propertyEditorProxyModel.h"
-#include "gesturesPainterInterface.h"
-#include "../dialogs/gesturesShow/gesturesWidget.h"
+#include "pluginManager/editorManagerInterface.h"
+#include "pluginManager/editorManager.h"
+#include "pluginManager/interpreterEditorManager.h"
+#include "pluginManager/proxyEditorManager.h"
+#include "pluginManager/toolPluginManager.h"
+#include "models/logicalModelAssistApi.h"
+#include "view/propertyEditorView.h"
+#include "controller/controller.h"
 
-#include "../textEditor/codeEditor.h"
+#include "dialogs/preferencesDialog.h"
+#include "dialogs/findReplaceDialog.h"
+#include "dialogs/startDialog/startDialog.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "mainwindow/gesturesPainterInterface.h"
+#include "dialogs/gesturesShow/gesturesWidget.h"
 
-#include "../../qrkernel/settingsManager.h"
-#include "../dialogs/suggestToCreateDiagramDialog.h"
-#include "tabWidget.h"
+#include "textEditor/codeEditor.h"
+
+#include "dialogs/suggestToCreateDiagramDialog.h"
+#include "mainwindow/tabWidget.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -72,6 +72,7 @@ public:
 
 	EditorManagerInterface &editorManager();
 	EditorView *getCurrentTab() const;
+	bool isCurrentTabShapeEdit() const;
 	ListenerManager *listenerManager() const;
 	models::Models *models() const;
 	Controller *controller() const;
@@ -107,6 +108,7 @@ public:
 
 	/// Tells if we should display trace connections menu or not
 	bool showConnectionRelatedMenus() const;
+	bool showUsagesRelatedMenus() const;
 
 	virtual void showInTextEditor(QString const &title, QString const &text);
 	virtual void reinitModels();
@@ -165,8 +167,8 @@ public slots:
 	void deleteFromScene();
 	void propertyEditorScrollTo(QModelIndex const &index);
 
-	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true);
-	void activateItemOrDiagram(QModelIndex const &idx, bool bl = true, bool isSetSel = true);
+	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true);
+	void activateItemOrDiagram(QModelIndex const &idx, bool setSelected = true);
 	virtual void selectItem(Id const &id);
 	virtual void selectItemOrDiagram(Id const &graphicalId);
 
@@ -219,9 +221,6 @@ private slots:
 
 	void sceneSelectionChanged();
 
-	void exportToXmi();
-	void generateToJava();
-	void parseJavaLibraries();
 	void applySettings();
 
 	commands::AbstractCommand *logicalDeleteCommand(QGraphicsItem *target);
@@ -230,6 +229,7 @@ private slots:
 	commands::AbstractCommand *graphicalDeleteCommand(QModelIndex const &index);
 	commands::AbstractCommand *logicalDeleteCommand(Id const &index);
 	commands::AbstractCommand *graphicalDeleteCommand(Id const &index);
+	void appendExplosionsCommands(commands::AbstractCommand *parentCommand, Id const &logicalId);
 
 	void deleteFromDiagram();
 	void copyElementsOnDiagram();
@@ -238,6 +238,7 @@ private slots:
 
 	void cropSceneToItems();
 
+	void closeCurrentTab();
 	void closeTab(int index);
 
 	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs
@@ -266,7 +267,7 @@ private slots:
 	void switchAlignment(bool isChecked);
 
 	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
-	void setReference(QString const &data, QPersistentModelIndex const &index, int const &role);
+	void setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role);
 	void openShapeEditor();
 
 	void updatePaletteIcons();
@@ -291,6 +292,8 @@ private:
 	/// @param tab Tab to be initialized with shortcuts
 	void setShortcuts(EditorView * const tab);
 
+	void setDefaultShortcuts();
+
 	void registerMetaTypes();
 
 	QListWidget* createSaveListWidget();
@@ -298,7 +301,7 @@ private:
 	virtual void closeEvent(QCloseEvent *event);
 
 	void deleteFromExplorer(bool isLogicalModel);
-	void deleteItems(IdList &itemsToDelete);
+	void deleteItems(IdList &itemsToDelete, bool global = false);
 	void deleteFromHighlightedElements(Element *element);
 	void keyPressEvent(QKeyEvent *event);
 
@@ -341,6 +344,10 @@ private:
 	/// @param dockWidget QDockWidget to show
 	/// @param name Widget's name in internal map
 	void showDockWidget(QDockWidget *dockWidget, QString const &name);
+
+	/// Find edges that connect items from itemsToDelete and should be deleted with them
+	/// @param itemsToDelete selected items that should be deleted
+	void addEdgesToBeDeleted(IdList &itemsToDelete);
 
 	QString getNextDirName(QString const &name);
 

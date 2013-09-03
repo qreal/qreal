@@ -1,9 +1,10 @@
 #include "referenceList.h"
 #include "ui_referenceList.h"
-#include "mainWindow.h"
+
+#include "mainwindow/mainWindow.h"
 
 ReferenceList::ReferenceList(qReal::MainWindow *mainWindow, QPersistentModelIndex const &index
-		, QString const &refType, QString const &currentValue, int role, QWidget *parent)
+		, QString const &refType, QStringList const &currentValue, int role, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::ReferenceList)
 	, mIndex(index)
@@ -44,11 +45,11 @@ void ReferenceList::addItem(qReal::Id const &element)
 	item->setData(Qt::UserRole, element.toString());
 }
 
-void ReferenceList::highlightCurrentValue(QString const &currentValue)
+void ReferenceList::highlightCurrentValue(QStringList const &currentValue)
 {
 	for (int i = 0; i < mUi->listWidget->count(); i++) {
 		QListWidgetItem* currItem = mUi->listWidget->item(i);
-		if (currItem->data(Qt::UserRole) == currentValue) {
+		if (currentValue.contains(currItem->data(Qt::UserRole).toString())) {
 			currItem->setSelected(true);
 		}
 	}
@@ -65,20 +66,20 @@ void ReferenceList::initConnections()
 void ReferenceList::activateElement(QListWidgetItem *item)
 {
 	qReal::Id id = qReal::Id::loadFromString(item->data(Qt::UserRole).toString());
-	mWindow->activateItemOrDiagram(id, false, true);
+	mWindow->activateItemOrDiagram(id, true);
 }
 
 void ReferenceList::valueChanged()
 {
-	QString newValue = getNewValue();
+	QStringList newValue = getNewValue();
 	emit referenceSet(newValue, mIndex, mRole);
 }
 
-QString ReferenceList::getNewValue()
+QStringList ReferenceList::getNewValue() const
 {
-	QString newValue;
-	if (!mUi->listWidget->selectedItems().isEmpty()) {
-		newValue = mUi->listWidget->selectedItems()[0]->data(Qt::UserRole).toString();
+	QStringList newValue;
+	foreach(QListWidgetItem *item, mUi->listWidget->selectedItems()) {
+		newValue << item->data(Qt::UserRole).toString();
 	}
 	return newValue;
 }
@@ -86,5 +87,5 @@ QString ReferenceList::getNewValue()
 void ReferenceList::restoreSelected()
 {
 	qReal::Id indexId = mWindow->models()->logicalModelAssistApi().idByIndex(mIndex);
-	mWindow->activateItemOrDiagram(indexId, false, true);
+	mWindow->activateItemOrDiagram(indexId, true);
 }

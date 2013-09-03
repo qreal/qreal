@@ -4,12 +4,13 @@
 #include <QtWidgets/QAbstractItemView>
 #include <QtGui/QResizeEvent>
 
-#include "../mainwindow/propertyEditorProxyModel.h"
-#include "../controller/controller.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "controller/controller.h"
 
-#include "../thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h"
-#include "../models/logicalModelAssistApi.h"
-#include "pushButtonProperty.h"
+#include "thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h"
+#include "models/logicalModelAssistApi.h"
+
+#include "view/private/pushButtonProperty.h"
 
 namespace qReal {
 	class MainWindow;
@@ -27,8 +28,7 @@ public:
 	// QAbstractItemView's methods
 	void setModel(PropertyEditorModel *model);
 	/** @brief editor initialization */
-	void init(qReal::MainWindow *mainWindow,
-		qReal::models::LogicalModelAssistApi * const logicalModelAssistApi);
+	void init(qReal::MainWindow *mainWindow, qReal::models::LogicalModelAssistApi * const logicalModelAssistApi);
 	/** @brief unimplemented */
 	void scrollTo(const QModelIndex &index, QAbstractItemView::ScrollHint hint = QAbstractItemView::EnsureVisible);
 

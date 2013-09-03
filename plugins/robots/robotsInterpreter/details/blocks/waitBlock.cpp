@@ -9,22 +9,24 @@ WaitBlock::WaitBlock(details::RobotModel * const robotModel)
 	connect(&mActiveWaitingTimer, SIGNAL(timeout()), this, SLOT(timerTimeout()));
 }
 
+void WaitBlock::setFailedStatus()
+{
+	Block::setFailedStatus();
+	stopActiveTimerInBlock();
+}
+
 void WaitBlock::processResponce(int reading, int targetValue)
 {
 	QString const sign = stringProperty("Sign");
 	if (sign == QString::fromUtf8("равно") && reading == targetValue) {
 		stop();
-	}
-	if (sign == QString::fromUtf8("больше") && reading > targetValue) {
+	} else if (sign == QString::fromUtf8("больше") && reading > targetValue) {
 		stop();
-	}
-	if (sign == QString::fromUtf8("меньше") && reading < targetValue) {
+	} else if (sign == QString::fromUtf8("меньше") && reading < targetValue) {
 		stop();
-	}
-	if (sign == QString::fromUtf8("не меньше") && reading >= targetValue) {
+	} else if (sign == QString::fromUtf8("не меньше") && reading >= targetValue) {
 		stop();
-	}
-	if (sign == QString::fromUtf8("не больше") && reading <= targetValue) {
+	} else if (sign == QString::fromUtf8("не больше") && reading <= targetValue) {
 		stop();
 	}
 }

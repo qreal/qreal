@@ -4,6 +4,7 @@ SUBDIRS = \
 	editor \
 	robotsInterpreter \
 	robotsGenerator \
+	trikGenerator \
 	qextserialport \
 	constraintsRobotsMetamodel/constraintsRobotsMetamodel.pro \
 

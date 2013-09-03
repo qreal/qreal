@@ -43,8 +43,14 @@ public:
 	/// registry), making them available to new instances of an application.
 	void saveData();
 
+	/// Saves settings into selected file with name fileNameForExport.
+	void saveSettings(QString fileNameForExport);
+
 	/// Loads settings from persistent external storage into SettingsManager.
 	void load();
+
+	/// Loads settings from selected file with name fileNameForImport.
+	void loadSettings(const QString &fileNameForImport);
 
 private:
 	/// Private constructor.

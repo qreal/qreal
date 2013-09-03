@@ -1,7 +1,6 @@
 HEADERS += \
 	details/robotImplementations/sensorImplementations/abstractSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/abstractEncoderImplementation.h \
-	details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothTouchSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothSonarSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/bluetoothColorSensorImplementation.h \
@@ -32,10 +31,20 @@ HEADERS += \
 	details/robotImplementations/sensorImplementations/bluetoothLightSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/nullLightSensorImplementation.h \
 	details/robotImplementations/sensorImplementations/unrealLightSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/bluetoothSoundSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/bluetoothSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/bluetoothAccelerometerSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/bluetoothGyroscopeSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/nullSoundSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/unrealSoundSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/unrealGyroscopeSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/nullAccelerometerSensorImplementation.h \
+	details/robotImplementations/sensorImplementations/unrealAccelerometerSensorImplementation.h \
 	details/robotImplementations/displayImplementations/abstractDisplayImplementation.h \
 	details/robotImplementations/displayImplementations/realDisplayImplementation.h \
 	details/robotImplementations/displayImplementations/unrealDisplayImplementation.h \
-	details/robotImplementations/displayImplementations/nullDisplayImplementation.h
+	details/robotImplementations/displayImplementations/nullDisplayImplementation.h \
+	details/robotImplementations/sensorImplementations/nullGyroscopeSensorImplementation.h \
 
 SOURCES += \
 	details/robotImplementations/sensorImplementations/abstractSensorImplementation.cpp \
@@ -71,7 +80,16 @@ SOURCES += \
 	details/robotImplementations/sensorImplementations/bluetoothLightSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/nullLightSensorImplementation.cpp \
 	details/robotImplementations/sensorImplementations/unrealLightSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/bluetoothSoundSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/bluetoothAccelerometerSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/bluetoothGyroscopeSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/nullSoundSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/unrealSoundSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/unrealGyroscopeSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/nullAccelerometerSensorImplementation.cpp \
+	details/robotImplementations/sensorImplementations/unrealAccelerometerSensorImplementation.cpp \
 	details/robotImplementations/displayImplementations/abstractDisplayImplementation.cpp \
 	details/robotImplementations/displayImplementations/realDisplayImplementation.cpp \
 	details/robotImplementations/displayImplementations/unrealDisplayImplementation.cpp \
-	details/robotImplementations/displayImplementations/nullDisplayImplementation.cpp
+	details/robotImplementations/displayImplementations/nullDisplayImplementation.cpp \
+	details/robotImplementations/sensorImplementations/nullGyroscopeSensorImplementation.cpp \
