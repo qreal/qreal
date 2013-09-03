@@ -191,6 +191,8 @@ private:
 	inline bool isArrow(int key);
 
 	void moveSelectedItems(int direction);
+	bool moveNodes();
+	void moveEdges();
 	QPointF offsetByDirection(int direction);
 
 	Element *mLastCreatedWithEdge;

@@ -741,34 +741,8 @@ void EditorViewScene::moveSelectedItems(int direction)
 		return;
 	}
 
-	foreach (QGraphicsItem* item, selectedItems()) {
-		QPointF newPos = item->pos();
-		newPos += mOffset;
-
-		NodeElement* node = dynamic_cast<NodeElement*>(item);
-		if (node) {
-			ResizeCommand *resizeCommand = new ResizeCommand(this, node->id());
-			resizeCommand->startTracking();
-			node->setPos(newPos);
-			node->alignToGrid();
-			node->adjustLinks();
-			resizeCommand->stopTracking();
-			mController->execute(resizeCommand);
-		} else {
-			EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
-			if (edge) {
-				ReshapeEdgeCommand *edgeCommand = new ReshapeEdgeCommand(this, edge->id());
-				edgeCommand->startTracking();
-				edge->setPos(newPos);
-				if (edge && !(edge->src() && edge->dst()) && (edge->src() || edge->dst())
-						&& (edge->src() ? !edge->src()->isSelected() : true)
-						&& (edge->dst() ? !edge->dst()->isSelected() : true)) {
-					edge->adjustLink();
-				}
-				edgeCommand->stopTracking();
-				mController->execute(edgeCommand);
-			}
-		}
+	if (!moveNodes()) {
+		moveEdges();
 	}
 
 	mTimerForArrowButtons->start(700);
@@ -792,6 +766,62 @@ QPointF EditorViewScene::offsetByDirection(int direction)
 		default:
 			qDebug() << "Incorrect direction";
 			return QPointF(0, 0);
+	}
+}
+
+bool EditorViewScene::moveNodes()
+{
+	bool movedNodesPresent = false;
+	ResizeCommand *resizeCommand = NULL;
+
+	foreach (QGraphicsItem* item, selectedItems()) {
+		NodeElement* node = dynamic_cast<NodeElement*>(item);
+		if (!node) {
+			continue;
+		}
+
+		if (!resizeCommand) {
+			resizeCommand = new ResizeCommand(this, node->id());
+			resizeCommand->startTracking();
+		}
+
+		QPointF newPos = node->pos();
+		newPos += mOffset;
+		node->setPos(newPos);
+		node->alignToGrid();
+		node->adjustLinks();
+
+		movedNodesPresent = true;
+	}
+
+	if (resizeCommand) {
+		resizeCommand->stopTracking();
+		mController->execute(resizeCommand);
+	}
+
+	return movedNodesPresent;
+}
+
+void EditorViewScene::moveEdges()
+{
+	foreach (QGraphicsItem *item, selectedItems()) {
+		EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
+		if (edge) {
+			ReshapeEdgeCommand *edgeCommand = new ReshapeEdgeCommand(this, edge->id());
+			edgeCommand->startTracking();
+
+			QPointF newPos = edge->pos();
+			newPos += mOffset;
+			edge->setPos(newPos);
+			if (edge && !(edge->src() && edge->dst()) && (edge->src() || edge->dst())
+					&& (edge->src() ? !edge->src()->isSelected() : true)
+					&& (edge->dst() ? !edge->dst()->isSelected() : true)) {
+				edge->adjustLink();
+			}
+
+			edgeCommand->stopTracking();
+			mController->execute(edgeCommand);
+		}
 	}
 }
 

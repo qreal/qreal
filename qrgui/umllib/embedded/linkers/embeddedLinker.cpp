@@ -307,9 +307,10 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				createElementFromMenuCommand->addPostAction(reshapeEdge);
 				createElementFromMenuCommand->addPreAction(mCreateEdgeCommand);
 			} else {
+				Controller *controller = mEdge->controller();
 				mCreateEdgeCommand->undo();
 				mCreateEdgeCommand->addPostAction(reshapeEdge);
-				mEdge->controller()->execute(mCreateEdgeCommand);
+				controller->execute(mCreateEdgeCommand);
 			}
 		}
 	}
