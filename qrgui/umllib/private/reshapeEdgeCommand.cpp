@@ -82,10 +82,10 @@ void ReshapeEdgeCommand::applyConfiguration(QPolygonF const &configuration
 	NodeElement *srcElem = dynamic_cast<NodeElement *>(elementById(src));
 	NodeElement *dstElem = dynamic_cast<NodeElement *>(elementById(dst));
 	mEdge->setLine(configuration);
-	mEdge->setSrc(srcElem);
-	mEdge->setDst(dstElem);
 	mEdge->setFromPort(fromPort);
 	mEdge->setToPort(toPort);
+	mEdge->setSrc(srcElem);
+	mEdge->setDst(dstElem);
 	mEdge->setPos(pos);
 	mEdge->scene()->update();
 }

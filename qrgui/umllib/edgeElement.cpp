@@ -897,6 +897,7 @@ void EdgeElement::updateData()
 
 	update();
 	updateLongestPart();
+	highlight((mSrc && mDst) ? mPenColor : Qt::red);
 }
 
 void EdgeElement::removeLink(NodeElement const *from)

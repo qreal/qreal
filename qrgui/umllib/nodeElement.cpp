@@ -90,8 +90,6 @@ NodeElement::NodeElement(ElementImpl *impl
 
 NodeElement::~NodeElement()
 {
-	highlightEdges();
-
 	foreach (EdgeElement *edge, mEdgeList) {
 		edge->removeLink(this);
 	}
@@ -884,11 +882,15 @@ void NodeElement::addEdge(EdgeElement *edge)
 	if (!mEdgeList.contains(edge)) {
 		mEdgeList << edge;
 	}
+	arrangeLinearPorts();
+	adjustLinks();
 }
 
 void NodeElement::delEdge(EdgeElement *edge)
 {
 	mEdgeList.removeAll(edge);
+	arrangeLinearPorts();
+	adjustLinks();
 }
 
 void NodeElement::changeExpanded()
@@ -1134,13 +1136,6 @@ void NodeElement::singleSelectionState(bool const singleSelected)
 void NodeElement::selectionState(bool const selected)
 {
 	Element::selectionState(selected);
-}
-
-void NodeElement::highlightEdges()
-{
-	foreach (EdgeElement *edge, mEdgeList) {
-		edge->highlight();
-	}
 }
 
 NodeData& NodeElement::data()

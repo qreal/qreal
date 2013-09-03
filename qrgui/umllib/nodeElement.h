@@ -124,8 +124,6 @@ public:
 	*/
 	Element *getPlaceholderNextElement();
 
-	void highlightEdges();
-
 	void changeExpanded();
 	bool isExpanded() const;
 
