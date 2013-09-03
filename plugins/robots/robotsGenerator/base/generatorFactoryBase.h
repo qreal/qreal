@@ -19,7 +19,20 @@ public:
 
 	virtual ~GeneratorFactoryBase();
 
-	virtual simple::AbstractSimpleGenerator *generatorFor(Id const &id
+	virtual simple::AbstractSimpleGenerator *ifGenerator(Id const &id
+			, GeneratorCustomizer &customizer
+			, bool elseIsEmpty
+			, bool needInverting);
+
+	virtual simple::AbstractSimpleGenerator *whileLoopGenerator(Id const &id
+			, GeneratorCustomizer &customizer
+			, bool needInverting);
+
+	virtual simple::AbstractSimpleGenerator *forLoopGenerator(Id const &id
+			, GeneratorCustomizer &customizer
+			, bool needInverting);
+
+	virtual simple::AbstractSimpleGenerator *simpleGenerator(Id const &id
 			, GeneratorCustomizer &customizer);
 
 	virtual simple::AbstractSimpleGenerator *breakGenerator(Id const &id
@@ -30,7 +43,7 @@ public:
 	virtual QString pathToTemplates() const = 0;
 
 	virtual simple::Binding::ConverterInterface *intPropertyConverter();
-	virtual simple::Binding::ConverterInterface *boolPropertyConverter();
+	virtual simple::Binding::ConverterInterface *boolPropertyConverter(bool needInverting);
 	virtual simple::Binding::ConverterInterface *stringPropertyConverter();
 	virtual simple::Binding::ConverterInterface *nameNormalizerConverter();
 	virtual simple::Binding::ConverterInterface *functionBlockConverter();

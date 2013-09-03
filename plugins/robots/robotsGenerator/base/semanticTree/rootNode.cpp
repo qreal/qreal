@@ -11,9 +11,9 @@ RootNode::RootNode(Id const &initialBlock, QObject *parent)
 	mZone->appendChild(new SimpleNode(initialBlock, mZone));
 }
 
-QString RootNode::toString(GeneratorCustomizer &customizer) const
+QString RootNode::toString(GeneratorCustomizer &customizer, int indent) const
 {
-	return "begin";
+	return mZone->toString(customizer, indent);
 }
 
 QLinkedList<SemanticNode *> RootNode::children() const

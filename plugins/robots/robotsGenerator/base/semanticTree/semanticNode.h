@@ -19,9 +19,7 @@ public:
 
 	void setParentNode(SemanticNode *parent);
 
-	virtual QString toString(GeneratorCustomizer &customizer) const = 0;
-
-	void debugPrint(GeneratorCustomizer &customizer, int indent);
+	virtual QString toString(GeneratorCustomizer &customizer, int indent) const = 0;
 
 	SemanticNode *findNodeFor(Id const &id);
 
@@ -29,6 +27,8 @@ protected:
 	SemanticNode(Id const &idBinded = Id(), QObject *parent = 0);
 
 	virtual QLinkedList<SemanticNode *> children() const = 0;
+
+	QString addIndent(QString const &code, int indent) const;
 
 	Id mId;
 	SemanticNode *mParentNode;

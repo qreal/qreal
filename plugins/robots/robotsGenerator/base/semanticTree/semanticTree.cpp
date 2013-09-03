@@ -17,7 +17,7 @@ void SemanticTree::debugPrint()
 {
 	qDebug() << "Semantic tree:";
 	qDebug() << "-----------------";
-	mRoot->debugPrint(mCustomizer, 0);
+	qDebug() << mRoot->toString(mCustomizer, 0);
 	qDebug() << "-----------------";
 }
 

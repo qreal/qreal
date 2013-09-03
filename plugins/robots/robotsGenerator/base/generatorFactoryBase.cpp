@@ -53,17 +53,33 @@ GeneratorFactoryBase::~GeneratorFactoryBase()
 {
 }
 
-AbstractSimpleGenerator *GeneratorFactoryBase::generatorFor(qReal::Id const &id
+simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(Id const &id
+		, GeneratorCustomizer &customizer
+		, bool elseIsEmpty
+		, bool needInverting)
+{
+	return new IfElementGenerator(mModel, customizer, id, elseIsEmpty, needInverting, this);
+}
+
+simple::AbstractSimpleGenerator *GeneratorFactoryBase::whileLoopGenerator(Id const &id
+		, GeneratorCustomizer &customizer
+		, bool needInverting)
+{
+}
+
+simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(Id const &id
+		, GeneratorCustomizer &customizer
+		, bool needInverting)
+{
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &id
 		, GeneratorCustomizer &customizer)
 {
 	QString const elementType = id.element();
 
 	if (elementType == "CommentBlock") {
 		return new CommentElementGenerator(mModel, customizer, id, this);
-	} else if (elementType == "IfBlock") {
-		return new IfElementGenerator(mModel, customizer, id, this);
-	} else if (elementType == "Loop") {
-		return new LoopElementGenerator(mModel, customizer, id, this);
 	} else if (elementType == "Function") {
 		return new FunctionElementGenerator(mModel, customizer, id, this);
 	} else if (elementType == "EnginesForward" || elementType == "EnginesBackward") {
@@ -204,7 +220,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter()
 	return new Binding::EmptyConverter;
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter()
+Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting)
 {
 	return new Binding::EmptyConverter;
 }

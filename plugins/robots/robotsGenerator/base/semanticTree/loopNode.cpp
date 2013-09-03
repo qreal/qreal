@@ -10,9 +10,9 @@ LoopNode::LoopNode(Id const &idBinded, QObject *parent)
 	mBodyZone->setParentNode(this);
 }
 
-QString LoopNode::toString(GeneratorCustomizer &customizer) const
+QString LoopNode::toString(GeneratorCustomizer &customizer, int indent) const
 {
-	return QString(mDoWhileForm ? "DO-WHILE " : "while-do ") + ConditionalNode::toString(customizer);
+	return QString(mDoWhileForm ? "DO-WHILE " : "while-do ") + ConditionalNode::toString(customizer, indent);
 }
 
 void LoopNode::appendChildren(QLinkedList<SemanticNode *> const &nodes)

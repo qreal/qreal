@@ -7,6 +7,11 @@ ZoneNode::ZoneNode(QObject *parent)
 {
 }
 
+bool ZoneNode::isEmpty() const
+{
+	return mChildren.isEmpty();
+}
+
 void ZoneNode::appendChild(SemanticNode *node)
 {
 	mChildren << node;
@@ -54,10 +59,14 @@ QLinkedList<SemanticNode *> ZoneNode::removeStartingFrom(SemanticNode *node)
 	return result;
 }
 
-QString ZoneNode::toString(GeneratorCustomizer &customizer) const
+QString ZoneNode::toString(GeneratorCustomizer &customizer, int indent) const
 {
-	Q_UNUSED(customizer)
-	return "";
+	QString result;
+	foreach (SemanticNode const * const child, mChildren) {
+		result += child->toString(customizer, indent).trimmed() + "\n";
+	}
+
+	return result;
 }
 
 SemanticNode *ZoneNode::parentNode()

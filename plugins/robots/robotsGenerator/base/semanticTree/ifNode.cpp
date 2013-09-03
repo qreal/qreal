@@ -26,9 +26,22 @@ ZoneNode *IfNode::elseZone()
 	return mElseZone;
 }
 
-QString IfNode::toString(GeneratorCustomizer &customizer) const
+QString IfNode::toString(GeneratorCustomizer &customizer, int indent) const
 {
-	return QString("if") + ConditionalNode::toString(customizer);
+	if (mThenZone->isEmpty() && mElseZone->isEmpty()) {
+		return QString();
+	}
+
+	bool const elseIsEmpty = mElseZone->isEmpty();
+	QString result = addIndent(customizer.factory()->
+			ifGenerator(mId, customizer, elseIsEmpty, mAddNotToCondition)->generate(), indent);
+
+	QString const thenBlock = mThenZone->toString(customizer, indent + 1);
+	QString const elseBlock = mElseZone->toString(customizer, indent + 1);
+
+	result.replace("@@THEN_BODY@@", thenBlock);
+	result.replace("@@THEN_ELSE@@", elseBlock);
+	return result;
 }
 
 QLinkedList<SemanticNode *> IfNode::children() const

@@ -6,7 +6,6 @@
         <file>templates/finalNodeMain.t</file>
         <file>templates/finalNodeSubprogram.t</file>
         <file>templates/function.t</file>
-        <file>templates/if.t</file>
         <file>templates/nullificationEncoder.t</file>
         <file>templates/playTone.t</file>
         <file>templates/subprogramCall.t</file>
@@ -49,5 +48,12 @@
         <file>templates/initialNode.t</file>
         <file>templates/engines/breakMode/break.t</file>
         <file>templates/engines/breakMode/float.t</file>
+        <file>templates/conditional/doWhile.t</file>
+        <file>templates/conditional/for.t</file>
+        <file>templates/conditional/if.t</file>
+        <file>templates/conditional/ifElse.t</file>
+        <file>templates/conditional/infinite.t</file>
+        <file>templates/conditional/negation.t</file>
+        <file>templates/conditional/whileDo.t</file>
     </qresource>
 </RCC>

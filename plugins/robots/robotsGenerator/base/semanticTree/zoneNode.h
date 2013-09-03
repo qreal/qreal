@@ -12,6 +12,8 @@ class ZoneNode : public SemanticNode
 public:
 	explicit ZoneNode(QObject *parent = 0);
 
+	bool isEmpty() const;
+
 	void appendChild(SemanticNode *node);
 
 	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
@@ -26,7 +28,7 @@ public:
 	/// themselves and returns removed tail. Removes all if node is null.
 	QLinkedList<SemanticNode *> removeStartingFrom(SemanticNode *node);
 
-	virtual QString toString(GeneratorCustomizer &customizer) const;
+	virtual QString toString(GeneratorCustomizer &customizer, int indent) const;
 
 	SemanticNode *parentNode();
 

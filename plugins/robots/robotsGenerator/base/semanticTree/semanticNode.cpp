@@ -41,16 +41,14 @@ SemanticNode *SemanticNode::findNodeFor(qReal::Id const &id)
 	return NULL;
 }
 
-// TODO: Remove this
-#include <QtCore/QDebug>
-
-void SemanticNode::debugPrint(GeneratorCustomizer &customizer, int indent)
+QString SemanticNode::addIndent(QString const &code, int indent) const
 {
+	QStringList const lines = code.split("\n", QString::SkipEmptyParts);
 	QString const indentString(indent, '\t');
-	qDebug() << indentString + toString(customizer);
-
-	QLinkedList<SemanticNode *> const children = this->children();
-	foreach (SemanticNode * const child, children) {
-		child->debugPrint(customizer, indent + 1);
+	QStringList result;
+	foreach (QString const &line, lines) {
+		result << indentString + line;
 	}
+
+	return result.join('\n');
 }

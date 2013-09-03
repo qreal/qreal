@@ -9,15 +9,15 @@ SimpleNode::SimpleNode(Id const &idBinded, QObject *parent)
 {
 }
 
-QString SimpleNode::toString(GeneratorCustomizer &customizer) const
+QString SimpleNode::toString(GeneratorCustomizer &customizer, int indent) const
 {
 	switch (mSyntheticBinding) {
 	case breakNode:
-		return customizer.factory()->breakGenerator(mId, customizer)->generate();
+		return addIndent(customizer.factory()->breakGenerator(mId, customizer)->generate(), indent);
 	case continueNode:
-		return customizer.factory()->continueGenerator(mId, customizer)->generate();
+		return addIndent(customizer.factory()->continueGenerator(mId, customizer)->generate(), indent);
 	default:
-		return customizer.factory()->generatorFor(mId, customizer)->generate();
+		return addIndent(customizer.factory()->simpleGenerator(mId, customizer)->generate(), indent);
 	}
 }
 
