@@ -1,6 +1,6 @@
 #include "umllib/private/curveLine.h"
 
-namespace qReal {
+using namespace qReal;
 
 CurveLine::CurveLine(EdgeElement *edge)
 		: LineHandler(edge)
@@ -117,6 +117,4 @@ void CurveLine::setBezierPoints()
 	}
 
 	mEdge->setLine(line);
-}
-
 }

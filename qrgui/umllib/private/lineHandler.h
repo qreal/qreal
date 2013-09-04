@@ -36,7 +36,7 @@ public:
 	/// link to points not contained in src/dst bounding rectangles
 	virtual void reconnect(bool reconnectSrc, bool reconnectDst);
 	/// @return criteria for sorting links on linear ports (depends on concrete link type)
-	virtual QPair<QPair<int, qreal>, qreal> arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+	virtual EdgeArrangeCriteria arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
 
 	/// Draw link line (depending on a link type, default implementation draw link's line() polygon)
 	/// If drawSavedLine is true, method draw old (before reshape) link's configuration

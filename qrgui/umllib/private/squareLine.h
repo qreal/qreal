@@ -17,7 +17,7 @@ public:
 	virtual void adjust();
 
 	/// @return criteria for sorting square links on a linear port
-	virtual QPair<QPair<int, qreal>, qreal> arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+	virtual EdgeArrangeCriteria arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
 
 	/// @return list of context menu actions available for square link at position pos
 	virtual QList<ContextMenuAction *> extraActions(QPointF const &pos);

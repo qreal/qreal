@@ -3,10 +3,10 @@
 #include "umllib/nodeElement.h"
 #include "controller/controller.h"
 
-namespace qReal {
+using namespace qReal;
 
 LineHandler::LineHandler(EdgeElement *edge)
-	: mEdge(edge), mReshapeCommand(NULL), mReshapeStarted(false)
+		: mEdge(edge), mReshapeCommand(NULL), mReshapeStarted(false)
 {
 }
 
@@ -170,7 +170,7 @@ int LineHandler::firstOutsidePoint(bool startFromSrc) const
 	return point;
 }
 
-QPair<QPair<int, qreal>, qreal> LineHandler::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
+EdgeArrangeCriteria LineHandler::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
 {
 	QPointF const portCenter = (portLine.p1() + portLine.p2()) / 2;
 	QPointF const arrangePoint = portArrangePoint(node);
@@ -178,7 +178,7 @@ QPair<QPair<int, qreal>, qreal> LineHandler::arrangeCriteria(NodeElement const *
 	arrangeLine.setAngle(arrangeLine.angle() - portLine.angle());
 
 	bool const turningLeft = arrangeLine.dx() < 0;
-	return qMakePair(qMakePair(turningLeft ? -1 : 1, 0.0), arrangeLine.dx());
+	return EdgeArrangeCriteria(turningLeft ? -1 : 1, 0.0, arrangeLine.dx());
 }
 
 
@@ -364,6 +364,4 @@ void LineHandler::minimize()
 	line << mEdge->line().first() << mEdge->line().last();
 	mEdge->setLine(line);
 	layOut();
-}
-
 }

@@ -6,6 +6,7 @@
 #include "umllib/element.h"
 #include "editorPluginInterface/elementImpl.h"
 #include "umllib/serializationData.h"
+#include "umllib/private/edgeArrangeCriteria.h"
 
 namespace qReal {
 
@@ -53,8 +54,10 @@ public:
 
 	/// Adjust link to make its' ends be placed exactly on corresponding ports
 	void adjustLink();
+
 	/// Reconnect, arrange links on linear ports and lay out the link depending on its' type
 	void layOut();
+
 	/// Reconnect link to exclude intersections with adjacent nodes
 	void reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
 
@@ -69,8 +72,9 @@ public:
 	void tuneForLinker();
 
 	QPair<qreal, qreal> portIdOn(NodeElement const *node) const;
+
 	/// @return numeric criteria for sorting links on linear ports
-	QPair<QPair<int, qreal>, qreal> arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+	EdgeArrangeCriteria arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
 
 	NodeElement* otherSide(NodeElement const *node) const;
 	void removeLink(NodeElement const *from);
@@ -115,13 +119,16 @@ public:
 	void saveConfiguration();
 
 	bool isLoop();
+
 	/// Create an edge connected with both ends to the same node
 	void createLoopEdge();
+
 	/// Connect link to nearest newMaster's ports
 	void connectLoopEdge(NodeElement *newMaster);
 
 	/// @return Node at position that is more appropriate for the link to connect to.
 	NodeElement *getNodeAt(QPointF const &position, bool isStart);
+
 	/// Determine on which side of a node (top, bottom, right or left) the link's end is placed
 	NodeSide defineNodePortSide(bool isStart);
 
@@ -148,13 +155,16 @@ private:
 	void initLineHandler();
 
 	int indentReductCoeff();
+
 	/// Set mPortTo to next port.
 	void searchNextPort();
 
 	/// Create indent of bounding rect, depending on the rect size.
 	QPointF boundingRectIndent(QPointF const &point, NodeSide direction);
+
 	/// Returns true, if the sides adjacent.
-	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const ;
+	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const;
+
 	/// Returns the next clockwise side.
 	NodeSide rotateRight(NodeSide side) const;
 
@@ -163,7 +173,7 @@ private:
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
-	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const;
+	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement * const element) const;
 	void updateLongestPart();
 
 	bool reverseActionIsPossible() const;

@@ -335,7 +335,7 @@ void PortHandler::checkConnectionsToPort()
 void PortHandler:: arrangeLinearPorts()
 {
 	for (int lpId = mPointPorts.size(); lpId < mPointPorts.size() + mLinePorts.size(); lpId++) {
-		QMap<QPair<QPair<int, qreal>, qreal>, EdgeElement*> sortedEdges;
+		QMap<EdgeArrangeCriteria, EdgeElement*> sortedEdges;
 		QLineF const portLine = mLinePorts.at(lpId)->transformForContents(mNode->contentsRect());
 		foreach (EdgeElement* edge, mNode->edgeList()) {
 			QPair<qreal, qreal> edgePortId = edge->portIdOn(mNode);
@@ -348,7 +348,7 @@ void PortHandler:: arrangeLinearPorts()
 			}
 
 			if (currentPortId != -1.0) {
-				QPair<QPair<int, qreal>, qreal> arrangeCriteria = edge->arrangeCriteria(mNode, portLine);
+				EdgeArrangeCriteria arrangeCriteria = edge->arrangeCriteria(mNode, portLine);
 				sortedEdges.insertMulti(arrangeCriteria, edge);
 			}
 		}

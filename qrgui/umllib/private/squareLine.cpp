@@ -3,7 +3,7 @@
 qreal const epsilon = 0.0001;
 qreal const offset = 2 * kvadratik;
 
-namespace qReal {
+using namespace qReal;
 
 SquareLine::SquareLine(EdgeElement *edge)
 		: LineHandler(edge)
@@ -475,7 +475,7 @@ QRectF SquareLine::dstRect() const
 	return mEdge->mapFromItem(mEdge->dst(), mEdge->dst()->contentsRect()).boundingRect();
 }
 
-QPair<QPair<int, qreal>, qreal> SquareLine::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
+EdgeArrangeCriteria SquareLine::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
 {
 	QPointF const portCenter = (portLine.p1() + portLine.p2()) / 2;
 	QPointF const arrangePoint = portArrangePoint(node);
@@ -488,7 +488,7 @@ QPair<QPair<int, qreal>, qreal> SquareLine::arrangeCriteria(NodeElement const *n
 	if ((turningLeft && above) || (!turningLeft && !above)) {
 		yOffset = -yOffset;
 	}
-	return qMakePair(qMakePair(turningLeft ? -1 : 1, yOffset), arrangeLine.dx());
+	return EdgeArrangeCriteria(turningLeft ? -1 : 1, yOffset, arrangeLine.dx());
 }
 
 QPointF SquareLine::portArrangePoint(NodeElement const *node) const
@@ -523,6 +523,4 @@ void SquareLine::drawPort(QPainter *painter, int portNumber)
 	if ((portNumber == 0) || (portNumber == mEdge->line().count() - 1)) {
 		LineHandler::drawPort(painter, portNumber);
 	}
-}
-
 }

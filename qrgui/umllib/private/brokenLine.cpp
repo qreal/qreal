@@ -1,6 +1,6 @@
 #include "umllib/private/brokenLine.h"
 
-namespace qReal {
+using namespace qReal;
 
 BrokenLine::BrokenLine(EdgeElement *edge)
 		: LineHandler(edge)
@@ -21,7 +21,6 @@ void BrokenLine::handleEdgeMove(QPointF const &pos)
 		mDragType = addPoint(mDragStartPoint);
 	}
 
-	line = mEdge->line();
 	line[mDragType] = SettingsManager::value("ActivateGrid").toBool() ? alignedPoint(pos) : pos;
 	mEdge->setLine(line);
 }
@@ -152,7 +151,7 @@ QList<ContextMenuAction *> BrokenLine::extraActions(QPointF const &pos)
 void BrokenLine::deletePoint(QPointF const &pos)
 {
 	if (delPointActionIsPossible(pos)) {
-		int pointNumber = definePoint(pos);
+		int const pointNumber = definePoint(pos);
 		QPolygonF line = mEdge->line();
 		line.remove(pointNumber);
 		mEdge->setLine(line);
@@ -163,7 +162,7 @@ void BrokenLine::deletePoint(QPointF const &pos)
 void BrokenLine::deleteSegment(QPointF const &pos)
 {
 	if (delSegmentActionIsPossible(pos)) {
-		int segmentNumber = defineSegment(pos);
+		int const segmentNumber = defineSegment(pos);
 		deletePoint(mEdge->line()[segmentNumber]);
 		deletePoint(mEdge->line()[segmentNumber]);
 	}
@@ -175,7 +174,7 @@ bool BrokenLine::delPointActionIsPossible(QPointF const &pos) const
 		return false;
 	}
 
-	int pointIndex = definePoint(pos);
+	int const pointIndex = definePoint(pos);
 	return (pointIndex > 0) && (pointIndex < mEdge->line().count() - 1);
 }
 
@@ -193,6 +192,4 @@ bool BrokenLine::delSegmentActionIsPossible(const QPointF &pos)
 bool BrokenLine::minimizeActionIsPossible() const
 {
 	return !mEdge->isLoop() && (mEdge->line().count() > 2);
-}
-
 }
