@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-DrawBlockGenerator::DrawBlockGenerator(LogicalModelAssistInterface const &model
+DrawBlockGenerator::DrawBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "zopa.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "zopa.t", QList<Binding *>(), parent)
 {
 }
 

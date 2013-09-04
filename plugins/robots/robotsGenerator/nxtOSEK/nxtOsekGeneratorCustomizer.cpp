@@ -2,8 +2,8 @@
 
 using namespace qReal::robots::generators::nxtOsek;
 
-NxtOsekGeneratorCustomizer::NxtOsekGeneratorCustomizer(LogicalModelAssistInterface const &model)
-	: mFactory(new NxtOsekGeneratorFactory(model))
+NxtOsekGeneratorCustomizer::NxtOsekGeneratorCustomizer(qrRepo::RepoApi const &repo)
+	: mFactory(new NxtOsekGeneratorFactory(repo))
 {
 }
 

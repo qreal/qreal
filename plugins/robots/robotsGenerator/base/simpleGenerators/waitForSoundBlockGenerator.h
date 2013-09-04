@@ -10,7 +10,7 @@ namespace simple {
 class WaitForSoundBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForSoundBlockGenerator(LogicalModelAssistInterface const &model
+	WaitForSoundBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

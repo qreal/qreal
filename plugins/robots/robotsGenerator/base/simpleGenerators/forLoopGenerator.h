@@ -10,7 +10,7 @@ namespace simple {
 class ForLoopGenerator : public BindingGenerator
 {
 public:
-	ForLoopGenerator(LogicalModelAssistInterface const &model
+	ForLoopGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

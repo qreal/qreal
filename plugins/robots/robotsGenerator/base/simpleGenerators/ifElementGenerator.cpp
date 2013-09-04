@@ -4,13 +4,13 @@
 using namespace qReal;
 using namespace robots::generators::simple;
 
-IfElementGenerator::IfElementGenerator(LogicalModelAssistInterface const &model
+IfElementGenerator::IfElementGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, bool elseIsEmpty
 		, bool needInverting
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id
+	: BindingGenerator(repo, customizer, id
 			, elseIsEmpty ? "conditional/if.t" : "conditional/ifElse.t"
 			, QList<Binding *>() << Binding::createConverting("@@CONDITION@@", "Condition"
 					, customizer.factory()->boolPropertyConverter(needInverting))

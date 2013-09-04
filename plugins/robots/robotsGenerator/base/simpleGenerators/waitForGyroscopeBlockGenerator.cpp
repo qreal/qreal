@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-WaitForGyroscopeBlockGenerator::WaitForGyroscopeBlockGenerator(LogicalModelAssistInterface const &model
+WaitForGyroscopeBlockGenerator::WaitForGyroscopeBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "waitGyroscope.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "waitGyroscope.t", QList<Binding *>(), parent)
 {
 }
 

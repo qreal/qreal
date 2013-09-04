@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-WaitForEncoderBlockGenerator::WaitForEncoderBlockGenerator(LogicalModelAssistInterface const &model
+WaitForEncoderBlockGenerator::WaitForEncoderBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "waitEncoder.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "waitEncoder.t", QList<Binding *>(), parent)
 {
 }
 

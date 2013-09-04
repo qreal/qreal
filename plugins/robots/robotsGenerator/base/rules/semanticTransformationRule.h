@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include <graphUtils/deepFirstSearcher.h>
+#include <qrutils/graphUtils/deepFirstSearcher.h>
 #include "../semanticTree/semanticTree.h"
 
 namespace qReal {

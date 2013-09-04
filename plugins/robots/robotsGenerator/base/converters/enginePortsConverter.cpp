@@ -3,7 +3,7 @@
 using namespace qReal::robots::generators::converters;
 
 EnginePortsConverter::EnginePortsConverter(QString const &pathToTemplates
-		, EnginePortConverter const *oneEngineConverter)
+		, simple::Binding::ConverterInterface const *oneEngineConverter)
 	: TemplateParametrizedMultiConverter(pathToTemplates)
 	, mOneEngineConverter(oneEngineConverter)
 {

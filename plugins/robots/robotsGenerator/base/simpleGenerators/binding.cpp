@@ -76,14 +76,14 @@ Binding::~Binding()
 	delete mConverter;
 }
 
-void Binding::apply(LogicalModelAssistInterface const &model
+void Binding::apply(qrRepo::RepoApi const &repo
 		, Id const &id, QString &data)
 {
 	QString const property = mProperty.isEmpty()
 			? mValue
 			: mProperty == "name"
-					? model.name(id)
-					: model.propertyByRoleName(id, mProperty).toString();
+					? repo.name(id)
+					: repo.property(id, mProperty).toString();
 
 	if (mConverter) {
 		data.replace(mLabel, mConverter->convert(property));

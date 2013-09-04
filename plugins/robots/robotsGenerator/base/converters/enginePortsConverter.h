@@ -1,7 +1,6 @@
 #pragma once
 
 #include "templateParametrizedMultiConverter.h"
-#include "enginePortConverter.h"
 
 namespace qReal {
 namespace robots {
@@ -11,13 +10,14 @@ namespace converters {
 class EnginePortsConverter : public TemplateParametrizedMultiConverter
 {
 public:
-	EnginePortsConverter(QString const &pathToTemplates, EnginePortConverter const *oneEngineConverter);
+	EnginePortsConverter(QString const &pathToTemplates
+			, simple::Binding::ConverterInterface const *oneEngineConverter);
 	virtual ~EnginePortsConverter();
 
 	virtual QStringList convert(QString const &data) const;
 
 private:
-	EnginePortConverter const *mOneEngineConverter;  // Takes ownership
+	simple::Binding::ConverterInterface const *mOneEngineConverter;  // Takes ownership
 };
 
 }

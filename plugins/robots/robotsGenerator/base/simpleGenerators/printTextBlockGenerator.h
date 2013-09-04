@@ -10,7 +10,7 @@ namespace simple {
 class PrintTextBlockGenerator : public BindingGenerator
 {
 public:
-	PrintTextBlockGenerator(LogicalModelAssistInterface const &model
+	PrintTextBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

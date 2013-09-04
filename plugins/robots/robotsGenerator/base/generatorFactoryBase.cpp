@@ -40,15 +40,18 @@
 #include "converters/inequalitySignConverter.h"
 #include "converters/colorConverter.h"
 #include "converters/breakModeConverter.h"
-#include "converters/enginePortConverter.h"
+#include "converters/inputPortConverter.h"
+#include "converters/outputPortConverter.h"
 #include "converters/enginePortsConverter.h"
 #include "converters/typeConverter.h"
+#include "converters/functionInvocationConverter.h"
+#include "converters/functionBlockConverter.h"
 
 using namespace qReal::robots::generators;
 using namespace simple;
 
-GeneratorFactoryBase::GeneratorFactoryBase(LogicalModelAssistInterface const &model)
-	: mModel(model)
+GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo)
+	: mRepo(repo)
 {
 }
 
@@ -61,13 +64,13 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(Id const &id
 		, bool elseIsEmpty
 		, bool needInverting)
 {
-	return new IfElementGenerator(mModel, customizer, id, elseIsEmpty, needInverting, this);
+	return new IfElementGenerator(mRepo, customizer, id, elseIsEmpty, needInverting, this);
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::infiniteLoopGenerator(Id const &id
 		, GeneratorCustomizer &customizer)
 {
-	return new InfiniteLoopGenerator(mModel, customizer, id, this);
+	return new InfiniteLoopGenerator(mRepo, customizer, id, this);
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::whileLoopGenerator(Id const &id
@@ -75,13 +78,13 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::whileLoopGenerator(Id con
 		, bool doWhileForm
 		, bool needInverting)
 {
-	return new WhileLoopGenerator(mModel, customizer, id, doWhileForm, needInverting, this);
+	return new WhileLoopGenerator(mRepo, customizer, id, doWhileForm, needInverting, this);
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(Id const &id
 		, GeneratorCustomizer &customizer)
 {
-	return new ForLoopGenerator(mModel, customizer, id, this);
+	return new ForLoopGenerator(mRepo, customizer, id, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &id
@@ -90,59 +93,59 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 	QString const elementType = id.element();
 
 	if (elementType == "CommentBlock") {
-		return new CommentElementGenerator(mModel, customizer, id, this);
+		return new CommentElementGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Function") {
-		return new FunctionElementGenerator(mModel, customizer, id, this);
+		return new FunctionElementGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "EnginesForward" || elementType == "EnginesBackward") {
-		return new EnginesGenerator(mModel, customizer, id, elementType, this);
+		return new EnginesGenerator(mRepo, customizer, id, elementType, this);
 	} else if (elementType == "EnginesStop") {
-		return new EnginesStopGenerator(mModel, customizer, id, this);
+		return new EnginesStopGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Timer") {
-		return new TimerGenerator(mModel, customizer, id, this);
+		return new TimerGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Beep") {
-		return new BeepGenerator(mModel, customizer, id, this);
+		return new BeepGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "PlayTone") {
-		return new PlayToneGenerator(mModel, customizer, id, this);
+		return new PlayToneGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "InitialNode") {
-		return new InitialNodeGenerator(mModel, customizer, id, this);
+		return new InitialNodeGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "FinalNode") {
-		return new FinalNodeGenerator(mModel, customizer, id, this);
+		return new FinalNodeGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "NullificationEncoder") {
-		return new NullificationEncoderGenerator(mModel, customizer, id, this);
+		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForColor") {
-		return new WaitForColorBlockGenerator(mModel, customizer, id, this);
+		return new WaitForColorBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForColorIntensity") {
-		return new WaitForColorIntensityBlockGenerator(mModel, customizer, id, this);
+		return new WaitForColorIntensityBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForLight") {
-		return new WaitForLightBlockGenerator(mModel, customizer, id, this);
+		return new WaitForLightBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForTouchSensor") {
-		return new WaitForTouchSensorBlockGenerator(mModel, customizer, id, this);
+		return new WaitForTouchSensorBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForSonarDistance") {
-		return new WaitForSonarBlockGenerator(mModel, customizer, id, this);
+		return new WaitForSonarBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForEncoder") {
-		return new WaitForEncoderBlockGenerator(mModel, customizer, id, this);
+		return new WaitForEncoderBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForSound") {
-		return new WaitForSoundBlockGenerator(mModel, customizer, id, this);
+		return new WaitForSoundBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForGyroscope") {
-		return new WaitForGyroscopeBlockGenerator(mModel, customizer, id, this);
+		return new WaitForGyroscopeBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForAccelerometer") {
-		return new WaitForAccelerometerBlockGenerator(mModel, customizer, id, this);
+		return new WaitForAccelerometerBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForButtons") {
-		return new WaitForButtonsBlockGenerator(mModel, customizer, id, this);
+		return new WaitForButtonsBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "DrawPixel") {
-		return new DrawPixelBlockGenerator(mModel, customizer, id, this);
+		return new DrawPixelBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "DrawLine") {
-		return new DrawLineBlockGenerator(mModel, customizer, id, this);
+		return new DrawLineBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "DrawCircle") {
-		return new DrawCircleBlockGenerator(mModel, customizer, id, this);
+		return new DrawCircleBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "PrintText") {
-		return new PrintTextBlockGenerator(mModel, customizer, id, this);
+		return new PrintTextBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "DrawRect") {
-		return new DrawRectBlockGenerator(mModel, customizer, id, this);
+		return new DrawRectBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "ClearScreen") {
-		return new ClearScreenBlockGenerator(mModel, customizer, id, this);
+		return new ClearScreenBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Subprogram") {
-		return new SubprogramsSimpleGenerator(mModel, customizer, id, this);
+		return new SubprogramsSimpleGenerator(mRepo, customizer, id, this);
 	}
 
 	return NULL;
@@ -151,13 +154,13 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::breakGenerator(Id const &id
 		, GeneratorCustomizer &customizer)
 {
-	return new BreakGenerator(mModel, customizer, id, this);
+	return new BreakGenerator(mRepo, customizer, id, this);
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::continueGenerator(Id const &id
 		, GeneratorCustomizer &customizer)
 {
-	return new ContinueGenerator(mModel, customizer, id, this);
+	return new ContinueGenerator(mRepo, customizer, id, this);
 }
 
 // Converters can be instantiated without taking ownership because bindinders do this
@@ -182,9 +185,17 @@ Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() con
 	return new converters::NameNormalizerConverter;
 }
 
+Binding::ConverterInterface *GeneratorFactoryBase::functionInvocationConverter() const
+{
+	return new converters::FunctionInvocationConverter(pathToTemplates());
+}
+
 Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter() const
 {
-	return new Binding::EmptyConverter;
+	return new converters::FunctionBlockConverter(pathToTemplates()
+			, inputPortConverter()
+			, outputPortConverter()
+			, functionInvocationConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() const
@@ -194,13 +205,17 @@ Binding::ConverterInterface *GeneratorFactoryBase::inequalitySignConverter() con
 
 Binding::MultiConverterInterface *GeneratorFactoryBase::enginesConverter() const
 {
-	return new converters::EnginePortsConverter(pathToTemplates()
-			, new converters::EnginePortConverter(pathToTemplates()));
+	return new converters::EnginePortsConverter(pathToTemplates(), outputPortConverter());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::portConverter() const
+Binding::ConverterInterface *GeneratorFactoryBase::inputPortConverter() const
 {
-	return new Binding::EmptyConverter;
+	return new converters::InputPortConverter(pathToTemplates());
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::outputPortConverter() const
+{
+	return new converters::OutputPortConverter(pathToTemplates());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::colorConverter() const

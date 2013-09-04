@@ -10,7 +10,7 @@ namespace simple {
 class DrawRectBlockGenerator : public DrawBlockGenerator
 {
 public:
-	DrawRectBlockGenerator(LogicalModelAssistInterface const &model
+	DrawRectBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

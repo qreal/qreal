@@ -11,7 +11,7 @@ namespace simple {
 class BindingGenerator : public AbstractSimpleGenerator
 {
 public:
-	BindingGenerator(LogicalModelAssistInterface const &model
+	BindingGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QString const &pathToTemplate

@@ -3,12 +3,12 @@
 
 using namespace qReal::robots::generators::simple;
 
-EnginesGenerator::EnginesGenerator(LogicalModelAssistInterface const &model
+EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QString const &engineType
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id
+	: BindingGenerator(repo, customizer, id
 			, engineType == "EnginesBackward"
 					? "engines/enginesBackward.t"
 					: "engines/enginesForward.t"

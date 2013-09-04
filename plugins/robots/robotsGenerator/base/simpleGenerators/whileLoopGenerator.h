@@ -10,7 +10,7 @@ namespace simple {
 class WhileLoopGenerator : public BindingGenerator
 {
 public:
-	WhileLoopGenerator(LogicalModelAssistInterface const &model
+	WhileLoopGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, bool doWhileForm

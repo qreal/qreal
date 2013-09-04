@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-FinalNodeGenerator::FinalNodeGenerator(LogicalModelAssistInterface const &model
+FinalNodeGenerator::FinalNodeGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "finalNode.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "finalNode.t", QList<Binding *>(), parent)
 {
 }
 

@@ -10,7 +10,7 @@ namespace simple {
 class InitialNodeGenerator : public BindingGenerator
 {
 public:
-	InitialNodeGenerator(LogicalModelAssistInterface const &model
+	InitialNodeGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

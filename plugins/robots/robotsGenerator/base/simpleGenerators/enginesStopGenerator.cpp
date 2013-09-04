@@ -2,10 +2,10 @@
 
 using namespace qReal::robots::generators::simple;
 
-EnginesStopGenerator::EnginesStopGenerator(LogicalModelAssistInterface const &model
+EnginesStopGenerator::EnginesStopGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "enginesStop.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "enginesStop.t", QList<Binding *>(), parent)
 {
 }

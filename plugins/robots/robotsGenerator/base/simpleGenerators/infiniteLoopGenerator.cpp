@@ -2,10 +2,10 @@
 
 using namespace qReal::robots::generators::simple;
 
-InfiniteLoopGenerator::InfiniteLoopGenerator(LogicalModelAssistInterface const &model
+InfiniteLoopGenerator::InfiniteLoopGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "conditional/infinite.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "conditional/infinite.t", QList<Binding *>(), parent)
 {
 }

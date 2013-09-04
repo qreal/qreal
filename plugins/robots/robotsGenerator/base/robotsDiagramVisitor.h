@@ -1,7 +1,7 @@
 #pragma once
 
-#include <logicalModelAssistInterface.h>
-#include <graphUtils/deepFirstSearcher.h>
+#include <qrrepo/repoApi.h>
+#include <qrutils/graphUtils/deepFirstSearcher.h>
 
 #include "generatorCustomizer.h"
 
@@ -12,7 +12,7 @@ namespace generators {
 class RobotsDiagramVisitor : public utils::DeepFirstSearcher::VisitorInterface
 {
 public:
-	RobotsDiagramVisitor(LogicalModelAssistInterface const &model
+	RobotsDiagramVisitor(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer);
 	virtual ~RobotsDiagramVisitor();
 
@@ -42,7 +42,7 @@ protected:
 private:
 	virtual void visit(Id const &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 
-	LogicalModelAssistInterface const &mModel;
+	qrRepo::RepoApi const &mRepo;
 	GeneratorCustomizer &mCustomizer;
 	utils::DeepFirstSearcher mDfser;
 };

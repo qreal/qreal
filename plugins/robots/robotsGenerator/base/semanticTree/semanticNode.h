@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QLinkedList>
 
-#include <ids.h>
+#include <qrkernel/ids.h>
 #include "../generatorCustomizer.h"
 
 namespace qReal {

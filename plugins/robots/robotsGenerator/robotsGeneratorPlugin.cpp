@@ -28,8 +28,7 @@ RobotsGeneratorPlugin::~RobotsGeneratorPlugin()
 void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
-	mLogicalModel = &configurator.logicalModelApi();
-	mGraphicalModel = &configurator.graphicalModelApi();
+	mRepo = dynamic_cast<qrRepo::RepoApi const *>(&configurator.logicalModelApi().logicalRepoApi());
 	mProjectManager = &configurator.projectManager();
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
@@ -89,9 +88,8 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mProjectManager->save();
 
-	nxtOsek::NxtOsekGeneratorCustomizer customizer(*mLogicalModel);
-	ReadableControlFlowGenerator generator(*mLogicalModel
-			, *mGraphicalModel
+	nxtOsek::NxtOsekGeneratorCustomizer customizer(*mRepo);
+	ReadableControlFlowGenerator generator(*mRepo
 			, *mMainWindowInterface->errorReporter()
 			, customizer
 			, mMainWindowInterface->activeDiagram());

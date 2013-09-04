@@ -2,10 +2,10 @@
 
 using namespace qReal::robots::generators::simple;
 
-NullificationEncoderGenerator::NullificationEncoderGenerator(LogicalModelAssistInterface const &model
+NullificationEncoderGenerator::NullificationEncoderGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "nullifyEncoder.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "nullifyEncoder.t", QList<Binding *>(), parent)
 {
 }

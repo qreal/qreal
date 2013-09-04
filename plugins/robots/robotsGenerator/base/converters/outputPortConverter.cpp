@@ -1,8 +1,8 @@
-#include "enginePortConverter.h"
+#include "outputPortConverter.h"
 
 using namespace qReal::robots::generators::converters;
 
-EnginePortConverter::EnginePortConverter(QString const &pathToTemplates)
+OutputPortConverter::OutputPortConverter(QString const &pathToTemplates)
 	: EnumConverterBase(pathToTemplates)
 {
 	addMapping("A", "engines/engineA.t");

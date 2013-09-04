@@ -7,10 +7,10 @@ namespace robots {
 namespace generators {
 namespace converters {
 
-class EnginePortConverter : public EnumConverterBase
+class OutputPortConverter : public EnumConverterBase
 {
 public:
-	explicit EnginePortConverter(QString const &pathToTemplates);
+	explicit OutputPortConverter(QString const &pathToTemplates);
 };
 
 }

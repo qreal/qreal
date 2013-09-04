@@ -10,7 +10,7 @@ namespace simple {
 class WaitForTouchSensorBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForTouchSensorBlockGenerator(LogicalModelAssistInterface const &model
+	WaitForTouchSensorBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

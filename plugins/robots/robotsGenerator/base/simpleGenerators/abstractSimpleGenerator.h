@@ -2,7 +2,7 @@
 
 #include <QtCore/QObject>
 
-#include <logicalModelAssistInterface.h>
+#include <qrrepo/repoApi.h>
 #include "../templateParametrizedEntity.h"
 
 namespace qReal {
@@ -16,7 +16,7 @@ namespace simple {
 class AbstractSimpleGenerator : public QObject, public TemplateParametrizedEntity
 {
 public:
-	AbstractSimpleGenerator(LogicalModelAssistInterface const &model
+	AbstractSimpleGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);
@@ -26,7 +26,7 @@ public:
 	virtual QString generate() = 0;
 
 protected:
-	LogicalModelAssistInterface const &mModel;
+	qrRepo::RepoApi const &mRepo;
 	GeneratorCustomizer &mCustomizer;
 
 	Id const mId;

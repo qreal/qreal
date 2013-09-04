@@ -12,14 +12,13 @@ class ReadableControlFlowGenerator : public ControlFlowGeneratorBase
 {
 public:
 	ReadableControlFlowGenerator(
-			LogicalModelAssistInterface const &logicalModel
-			, GraphicalModelAssistInterface const &graphicalModel
+			qrRepo::RepoApi const &repo
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, Id const &diagramId
 			, QObject *parent = 0);
 
-	virtual ControlFlow *generate();
+	virtual semantics::SemanticTree *generate();
 
 	virtual void beforeSearch();
 	virtual void visitRegular(Id const &id, QList<LinkInfo> const &links);
@@ -35,7 +34,6 @@ private:
 			, QList<semantics::SemanticTransformationRule *> const &rules
 			, bool thereWillBeMoreRules);
 
-	semantics::SemanticTree *mSemanticTree;  // Takes ownership
 	bool mTravelingForSecondTime;
 	QMap<Id, bool> mAlreadyApplied;
 };

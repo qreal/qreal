@@ -2,10 +2,10 @@
 
 using namespace qReal::robots::generators::simple;
 
-WaitForSoundBlockGenerator::WaitForSoundBlockGenerator(LogicalModelAssistInterface const &model
+WaitForSoundBlockGenerator::WaitForSoundBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "waitSound.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "waitSound.t", QList<Binding *>(), parent)
 {
 }

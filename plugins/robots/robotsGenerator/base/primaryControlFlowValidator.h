@@ -1,9 +1,8 @@
 #pragma once
 
-#include <ids.h>
-#include <logicalModelAssistInterface.h>
-#include <graphicalModelAssistInterface.h>
-#include <errorReporterInterface.h>
+#include <qrkernel/ids.h>
+#include <qrrepo/repoApi.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "generatorCustomizer.h"
 #include "robotsDiagramVisitor.h"
@@ -17,8 +16,7 @@ typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
 class PrimaryControlFlowValidator : public RobotsDiagramVisitor
 {
 public:
-	PrimaryControlFlowValidator(LogicalModelAssistInterface const &logicalModel
-			, GraphicalModelAssistInterface const &graphicalModel
+	PrimaryControlFlowValidator(qrRepo::RepoApi const &repo
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, Id const &diagramId);
@@ -43,8 +41,7 @@ private:
 	virtual void visitFork(Id const &id, QList<LinkInfo> const &links);
 	virtual void visitUnknown(Id const &id, QList<LinkInfo> const &links);
 
-	LogicalModelAssistInterface const &mLogicalModel;
-	GraphicalModelAssistInterface const &mGraphicalModel;
+	qrRepo::RepoApi const &mRepo;
 	ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
 	Id const mDiagram;

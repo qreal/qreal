@@ -10,7 +10,7 @@ namespace simple {
 class EnginesStopGenerator : public BindingGenerator
 {
 public:
-	EnginesStopGenerator(LogicalModelAssistInterface const &model
+	EnginesStopGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

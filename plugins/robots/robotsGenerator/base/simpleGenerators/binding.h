@@ -2,7 +2,7 @@
 
 #include <QtCore/QString>
 
-#include <logicalModelAssistInterface.h>
+#include <qrrepo/repoApi.h>
 
 namespace qReal {
 namespace robots {
@@ -63,7 +63,7 @@ public:
 	/// Replaces all occurences of specified in constructor label with
 	/// specified property value from repo with pre-converting it using
 	/// specified converter.
-	void apply(LogicalModelAssistInterface const &model
+	void apply(qrRepo::RepoApi const &repoApi
 			, Id const &id, QString &data);
 
 private:

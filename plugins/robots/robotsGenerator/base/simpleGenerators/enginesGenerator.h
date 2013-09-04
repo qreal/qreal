@@ -10,7 +10,7 @@ namespace simple {
 class EnginesGenerator : public BindingGenerator
 {
 public:
-	EnginesGenerator(LogicalModelAssistInterface const &model
+	EnginesGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QString const &engineType

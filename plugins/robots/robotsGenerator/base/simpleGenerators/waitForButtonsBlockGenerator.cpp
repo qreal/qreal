@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-WaitForButtonsBlockGenerator::WaitForButtonsBlockGenerator(LogicalModelAssistInterface const &model
+WaitForButtonsBlockGenerator::WaitForButtonsBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "waitButtons.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "waitButtons.t", QList<Binding *>(), parent)
 {
 }
 

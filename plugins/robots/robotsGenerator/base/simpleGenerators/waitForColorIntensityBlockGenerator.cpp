@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-WaitForColorIntensityBlockGenerator::WaitForColorIntensityBlockGenerator(LogicalModelAssistInterface const &model
+WaitForColorIntensityBlockGenerator::WaitForColorIntensityBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "waitColorIntensity.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "waitColorIntensity.t", QList<Binding *>(), parent)
 {
 }
 

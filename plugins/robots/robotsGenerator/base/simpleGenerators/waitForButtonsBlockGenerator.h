@@ -10,7 +10,7 @@ namespace simple {
 class WaitForButtonsBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForButtonsBlockGenerator(LogicalModelAssistInterface const &model
+	WaitForButtonsBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

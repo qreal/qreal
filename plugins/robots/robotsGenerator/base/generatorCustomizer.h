@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ids.h>
+#include <qrkernel/ids.h>
 #include "generatorFactoryBase.h"
 
 namespace qReal {

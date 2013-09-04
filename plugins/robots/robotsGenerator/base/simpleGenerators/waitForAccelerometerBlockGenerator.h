@@ -10,7 +10,7 @@ namespace simple {
 class WaitForAccelerometerBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForAccelerometerBlockGenerator(LogicalModelAssistInterface const &model
+	WaitForAccelerometerBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

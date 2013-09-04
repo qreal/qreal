@@ -3,14 +3,12 @@
 using namespace qReal::robots::generators;
 
 PrimaryControlFlowValidator::PrimaryControlFlowValidator(
-		LogicalModelAssistInterface const &logicalModel
-		, GraphicalModelAssistInterface const &graphicalModel
+		qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
 		, Id const &diagramId)
-	: RobotsDiagramVisitor(logicalModel, customizer)
-	, mLogicalModel(logicalModel)
-	, mGraphicalModel(graphicalModel)
+	: RobotsDiagramVisitor(repo, customizer)
+	, mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
 	, mDiagram(diagramId)
@@ -224,10 +222,10 @@ bool PrimaryControlFlowValidator::checkForConnected(LinkInfo const &link)
 
 void PrimaryControlFlowValidator::findInitialNode()
 {
-	qReal::IdList const diagramNodes(mLogicalModel.children(mDiagram));
+	qReal::IdList const diagramNodes(mRepo.children(mDiagram));
 	foreach (qReal::Id const &diagramNode, diagramNodes) {
 		if (mCustomizer.isInitialNode(diagramNode)) {
-			mInitialNode = mGraphicalModel.logicalId(diagramNode);
+			mInitialNode = mRepo.logicalId(diagramNode);
 			return;
 		}
 	}

@@ -10,7 +10,7 @@ namespace simple {
 class FunctionElementGenerator : public BindingGenerator
 {
 public:
-	FunctionElementGenerator(LogicalModelAssistInterface const &model
+	FunctionElementGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, bool generateToInit

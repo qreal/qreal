@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-DrawPixelBlockGenerator::DrawPixelBlockGenerator(LogicalModelAssistInterface const &model
+DrawPixelBlockGenerator::DrawPixelBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: DrawBlockGenerator(model, customizer, id, parent)
+	: DrawBlockGenerator(repo, customizer, id, parent)
 {
 }
 

@@ -2,9 +2,10 @@
 
 #include <QtCore/QTranslator>
 
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
-#include "../../../qrgui/toolPluginInterface/hotKeyActionInfo.h"
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
+#include <qrrepo/repoApi.h>
 #include "nxtOSEK/nxtFlashTool.h"
 
 
@@ -69,11 +70,8 @@ private:
 	/// Interface of project manager (allows to perform open/save activities)
 	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership
 
-	/// Logical model API
-	LogicalModelAssistInterface *mLogicalModel;  // Does not have ownership
-
-	/// Graphical model API
-	GraphicalModelAssistInterface *mGraphicalModel;  // Does not have ownership
+	/// Repository API
+	qrRepo::RepoApi const *mRepo;  // Does not have ownership
 
 	/// When true, nxt-tools are found by QReal and flashing and uploading is possible
 	bool mNxtToolsPresent;

@@ -10,7 +10,7 @@ namespace simple {
 class WaitForGyroscopeBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForGyroscopeBlockGenerator(LogicalModelAssistInterface const &model
+	WaitForGyroscopeBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

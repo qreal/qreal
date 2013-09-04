@@ -10,7 +10,7 @@ namespace simple {
 class BeepGenerator : public BindingGenerator
 {
 public:
-	BeepGenerator(LogicalModelAssistInterface const &model
+	BeepGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

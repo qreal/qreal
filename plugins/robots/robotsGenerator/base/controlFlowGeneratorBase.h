@@ -1,8 +1,8 @@
 #pragma once
 
-#include "controlFlow.h"
 #include "primaryControlFlowValidator.h"
 #include "robotsDiagramVisitor.h"
+#include "semanticTree/semanticTree.h"
 
 namespace qReal {
 namespace robots {
@@ -12,8 +12,7 @@ class ControlFlowGeneratorBase : public QObject, public RobotsDiagramVisitor
 {
 public:
 	ControlFlowGeneratorBase(
-			LogicalModelAssistInterface const &logicalModel
-			, GraphicalModelAssistInterface const &graphicalModel
+			qrRepo::RepoApi const &repo
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, Id const &diagramId
@@ -22,7 +21,7 @@ public:
 
 	bool preGenerationCheck();
 
-	virtual ControlFlow *generate();
+	virtual semantics::SemanticTree *generate();
 
 protected:
 	void error(QString const &message, Id const &id = Id(), bool critical = true);
@@ -35,8 +34,10 @@ protected:
 
 	GeneratorCustomizer &customizer() const;
 
+	semantics::SemanticTree *mSemanticTree;  // Takes ownership
+
 private:
-	LogicalModelAssistInterface const &mModel;
+	qrRepo::RepoApi const &mRepo;
 	ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
 	Id const mDiagram;

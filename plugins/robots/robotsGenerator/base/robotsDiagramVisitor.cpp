@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators;
 
-RobotsDiagramVisitor::RobotsDiagramVisitor(LogicalModelAssistInterface const &model
+RobotsDiagramVisitor::RobotsDiagramVisitor(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer)
-	: mModel(model)
+	: mRepo(repo)
 	, mCustomizer(customizer)
-	, mDfser(model)
+	, mDfser(repo)
 {
 }
 
@@ -26,7 +26,7 @@ void RobotsDiagramVisitor::terminateSearch()
 
 RobotsDiagramVisitor::LinkGuard RobotsDiagramVisitor::guardOf(qReal::Id const &linkId) const
 {
-	QString const guardProperty = mModel.propertyByRoleName(linkId, "Guard").toString().toLower();
+	QString const guardProperty = mRepo.property(linkId, "Guard").toString().toLower();
 	if (guardProperty == QString::fromUtf8("истина")) {
 		return trueGuard;
 	} else if (guardProperty == QString::fromUtf8("ложь")) {

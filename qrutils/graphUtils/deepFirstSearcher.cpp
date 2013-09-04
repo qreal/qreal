@@ -3,8 +3,8 @@
 using namespace qReal;
 using namespace utils;
 
-DeepFirstSearcher::DeepFirstSearcher(LogicalModelAssistInterface const &model)
-	: mModel(model)
+DeepFirstSearcher::DeepFirstSearcher(qrRepo::LogicalRepoApi const &repo)
+	: mRepo(repo)
 {
 }
 
@@ -38,11 +38,11 @@ void DeepFirstSearcher::dfs(Id const &id, QList<VisitorInterface *> const &visit
 {
 	mVisitedNodes << id;
 
-	IdList const outgoingLinks = mModel.logicalRepoApi().outgoingLinks(id);
+	IdList const outgoingLinks = mRepo.outgoingLinks(id);
 	QList<LinkInfo> linkInfos;
 
 	foreach (Id const &link, outgoingLinks) {
-		Id const connectedNode = mModel.logicalRepoApi().otherEntityFromLink(link, id);
+		Id const connectedNode = mRepo.otherEntityFromLink(link, id);
 		LinkInfo info;
 		info.linkId = link;
 		info.target = connectedNode;

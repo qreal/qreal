@@ -3,11 +3,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-BeepGenerator::BeepGenerator(LogicalModelAssistInterface const &model
+BeepGenerator::BeepGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "beep.t", QList<Binding *>()
+	: BindingGenerator(repo, customizer, id, "beep.t", QList<Binding *>()
 			<< Binding::createConverting("@@VOLUME@@", "Volume", customizer.factory()->intPropertyConverter())
 			, parent)
 {

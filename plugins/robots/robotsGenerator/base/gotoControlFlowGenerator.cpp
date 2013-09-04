@@ -3,12 +3,11 @@
 using namespace qReal::robots::generators;
 
 GotoControlFlowGenerator::GotoControlFlowGenerator(
-		LogicalModelAssistInterface const &logicalModel
-		, GraphicalModelAssistInterface const &graphicalModel
+		qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
 		, Id const &diagramId
 		, QObject *parent)
-	: ControlFlowGeneratorBase(logicalModel, graphicalModel, errorReporter, customizer, diagramId, parent)
+	: ControlFlowGeneratorBase(repo, errorReporter, customizer, diagramId, parent)
 {
 }

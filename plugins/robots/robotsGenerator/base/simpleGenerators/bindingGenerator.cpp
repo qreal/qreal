@@ -3,13 +3,13 @@
 
 using namespace qReal::robots::generators::simple;
 
-BindingGenerator::BindingGenerator(LogicalModelAssistInterface const &model
+BindingGenerator::BindingGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QString const &pathToTemplate
 		, QList<Binding *> const &bindings
 		, QObject *parent)
-	: AbstractSimpleGenerator(model, customizer, id, parent)
+	: AbstractSimpleGenerator(repo, customizer, id, parent)
 	, mPathToTemplate(pathToTemplate)
 	, mBindings(bindings)
 {
@@ -24,7 +24,7 @@ QString BindingGenerator::generate()
 {
 	QString input = readTemplate(mPathToTemplate);
 	foreach (Binding * const binding, mBindings) {
-		binding->apply(mModel, mId, input);
+		binding->apply(mRepo, mId, input);
 	}
 
 	return input;

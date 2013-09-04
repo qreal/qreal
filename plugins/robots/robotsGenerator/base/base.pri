@@ -1,7 +1,5 @@
 HEADERS += \
-	$$PWD/smartLine.h \
 	$$PWD/generatorCustomizer.h \
-	$$PWD/controlFlow.h \
 	$$PWD/controlFlowGeneratorBase.h \
 	$$PWD/readableControlFlowGenerator.h \
 	$$PWD/gotoControlFlowGenerator.h \
@@ -34,9 +32,7 @@ HEADERS += \
 	$$PWD/rules/loopRules/loopWithNextVisitedRule.h \
 
 SOURCES += \
-	$$PWD/smartLine.cpp \
 	$$PWD/generatorCustomizer.cpp \
-	$$PWD/controlFlow.cpp \
 	$$PWD/controlFlowGeneratorBase.cpp \
 	$$PWD/readableControlFlowGenerator.cpp \
 	$$PWD/gotoControlFlowGenerator.cpp \
@@ -74,17 +70,20 @@ HEADERS += \
 	$$PWD/converters/templateParametrizedConverter.h \
 	$$PWD/converters/templateParametrizedMultiConverter.h \
 	$$PWD/converters/enumConverterBase.h \
-	$$PWD/converters/intPropertyConverterBase.h \
-	$$PWD/converters/boolPropertyConverterBase.h \
-	$$PWD/converters/stringPropertyConverterBase.h \
+	$$PWD/converters/codeConverterBase.h \
+	$$PWD/converters/intPropertyConverter.h \
+	$$PWD/converters/boolPropertyConverter.h \
+	$$PWD/converters/stringPropertyConverter.h \
 	$$PWD/converters/nameNormalizerConverter.h \
-	$$PWD/converters/functionBlockConverterBase.h \
+	$$PWD/converters/functionBlockConverter.h \
 	$$PWD/converters/inequalitySignConverter.h \
 	$$PWD/converters/colorConverter.h \
 	$$PWD/converters/breakModeConverter.h \
-	$$PWD/converters/enginePortConverter.h \
+	$$PWD/converters/outputPortConverter.h \
 	$$PWD/converters/enginePortsConverter.h \
 	$$PWD/converters/typeConverter.h \
+	$$PWD/converters/inputPortConverter.h \
+	$$PWD/converters/functionInvocationConverter.h \
 	$$PWD/simpleGenerators/abstractSimpleGenerator.h \
 	$$PWD/simpleGenerators/commentElementGenerator.h \
 	$$PWD/simpleGenerators/functionElementGenerator.h \
@@ -127,17 +126,20 @@ SOURCES += \
 	$$PWD/converters/templateParametrizedConverter.cpp \
 	$$PWD/converters/templateParametrizedMultiConverter.cpp \
 	$$PWD/converters/enumConverterBase.cpp \
-	$$PWD/converters/intPropertyConverterBase.cpp \
-	$$PWD/converters/boolPropertyConverterBase.cpp \
-	$$PWD/converters/stringPropertyConverterBase.cpp \
+	$$PWD/converters/codeConverterBase.cpp \
+	$$PWD/converters/intPropertyConverter.cpp \
+	$$PWD/converters/boolPropertyConverter.cpp \
+	$$PWD/converters/stringPropertyConverter.cpp \
 	$$PWD/converters/nameNormalizerConverter.cpp \
-	$$PWD/converters/functionBlockConverterBase.cpp \
+	$$PWD/converters/functionBlockConverter.cpp \
 	$$PWD/converters/inequalitySignConverter.cpp \
 	$$PWD/converters/colorConverter.cpp \
 	$$PWD/converters/breakModeConverter.cpp \
-	$$PWD/converters/enginePortConverter.cpp \
+	$$PWD/converters/outputPortConverter.cpp \
 	$$PWD/converters/enginePortsConverter.cpp \
 	$$PWD/converters/typeConverter.cpp \
+	$$PWD/converters/inputPortConverter.cpp \
+	$$PWD/converters/functionInvocationConverter.cpp \
 	$$PWD/simpleGenerators/abstractSimpleGenerator.cpp \
 	$$PWD/simpleGenerators/commentElementGenerator.cpp \
 	$$PWD/simpleGenerators/functionElementGenerator.cpp \

@@ -2,7 +2,7 @@
 
 #include <QtCore/QSet>
 
-#include "../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
+#include "../../qrrepo/logicalRepoApi.h"
 
 namespace utils {
 
@@ -27,7 +27,7 @@ public:
 		virtual void afterSearch();
 	};
 
-	explicit DeepFirstSearcher(qReal::LogicalModelAssistInterface const &model);
+	explicit DeepFirstSearcher(qrRepo::LogicalRepoApi const &repo);
 
 	void startSearch(qReal::Id const &firstId, VisitorInterface *visitor);
 	void startSearch(qReal::Id const &firstId, QList<VisitorInterface *> const &visitors);
@@ -37,7 +37,7 @@ public:
 private:
 	void dfs(qReal::Id const &id, QList<VisitorInterface *> const &visitors);
 
-	qReal::LogicalModelAssistInterface const &mModel;
+	qrRepo::LogicalRepoApi const &mRepo;
 	QSet<qReal::Id> mVisitedNodes;
 	bool mSearchTerminated;
 };

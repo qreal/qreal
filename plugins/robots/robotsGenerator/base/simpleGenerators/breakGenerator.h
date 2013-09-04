@@ -10,7 +10,7 @@ namespace simple {
 class BreakGenerator : public BindingGenerator
 {
 public:
-	BreakGenerator(LogicalModelAssistInterface const &model
+	BreakGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

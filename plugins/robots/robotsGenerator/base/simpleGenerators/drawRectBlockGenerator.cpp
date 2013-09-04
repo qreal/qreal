@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-DrawRectBlockGenerator::DrawRectBlockGenerator(LogicalModelAssistInterface const &model
+DrawRectBlockGenerator::DrawRectBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: DrawBlockGenerator(model, customizer, id, parent)
+	: DrawBlockGenerator(repo, customizer, id, parent)
 {
 }
 

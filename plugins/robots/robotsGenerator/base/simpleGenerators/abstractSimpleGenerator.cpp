@@ -3,13 +3,13 @@
 
 using namespace qReal::robots::generators::simple;
 
-AbstractSimpleGenerator::AbstractSimpleGenerator(LogicalModelAssistInterface const &model
+AbstractSimpleGenerator::AbstractSimpleGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
 	: QObject(parent)
 	, TemplateParametrizedEntity(customizer.factory()->pathToTemplates())
-	, mModel(model)
+	, mRepo(repo)
 	, mCustomizer(customizer)
 	, mId(id)
 {

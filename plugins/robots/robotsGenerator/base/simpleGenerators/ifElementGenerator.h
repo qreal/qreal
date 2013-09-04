@@ -10,7 +10,7 @@ namespace simple {
 class IfElementGenerator : public BindingGenerator
 {
 public:
-	IfElementGenerator(LogicalModelAssistInterface const &model
+	IfElementGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, bool elseIsEmpty

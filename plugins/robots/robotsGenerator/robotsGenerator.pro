@@ -7,10 +7,8 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
-INCLUDEPATH = \
-	../../../qrkernel \
-	../../../qrutils \
-	../../../qrgui/toolPluginInterface/usedInterfaces \
+INCLUDEPATH += \
+	../../.. \
 
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
 

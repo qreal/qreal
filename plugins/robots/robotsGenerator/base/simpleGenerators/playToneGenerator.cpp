@@ -6,11 +6,11 @@ QString const defaultFrequency = "1000";
 QString const defaultDuration = "100";
 QString const defaultVolume = "50";
 
-PlayToneGenerator::PlayToneGenerator(LogicalModelAssistInterface const &model
+PlayToneGenerator::PlayToneGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "playTone.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "playTone.t", QList<Binding *>(), parent)
 {
 }
 

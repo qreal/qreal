@@ -5,10 +5,10 @@ namespace robots {
 namespace generators {
 namespace converters {
 
-class BoolPropertyConverterBase
+class IntPropertyConverter
 {
 public:
-	BoolPropertyConverterBase();
+	IntPropertyConverter();
 };
 
 }

@@ -1,6 +1,6 @@
 #include "nameNormalizerConverter.h"
 
-#include <nameNormalizer.h>
+#include <qrutils/nameNormalizer.h>
 
 using namespace qReal::robots::generators::converters;
 

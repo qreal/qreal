@@ -10,7 +10,7 @@ namespace nxtOsek {
 class NxtOsekGeneratorFactory : public GeneratorFactoryBase
 {
 public:
-	explicit NxtOsekGeneratorFactory(LogicalModelAssistInterface const &model);
+	explicit NxtOsekGeneratorFactory(qrRepo::RepoApi const &repo);
 	virtual ~NxtOsekGeneratorFactory();
 
 	virtual QString pathToTemplates() const;

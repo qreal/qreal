@@ -10,7 +10,7 @@ namespace simple {
 class DrawPixelBlockGenerator : public DrawBlockGenerator
 {
 public:
-	DrawPixelBlockGenerator(LogicalModelAssistInterface const &model
+	DrawPixelBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

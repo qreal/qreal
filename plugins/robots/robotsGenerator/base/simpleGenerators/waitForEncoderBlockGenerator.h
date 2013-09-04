@@ -10,7 +10,7 @@ namespace simple {
 class WaitForEncoderBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForEncoderBlockGenerator(LogicalModelAssistInterface const &model
+	WaitForEncoderBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-WaitForAccelerometerBlockGenerator::WaitForAccelerometerBlockGenerator(LogicalModelAssistInterface const &model
+WaitForAccelerometerBlockGenerator::WaitForAccelerometerBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "waitAccelerometer.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "waitAccelerometer.t", QList<Binding *>(), parent)
 {
 }
 

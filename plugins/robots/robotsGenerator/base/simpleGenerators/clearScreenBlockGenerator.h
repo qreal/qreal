@@ -10,7 +10,7 @@ namespace simple {
 class ClearScreenBlockGenerator : public BindingGenerator
 {
 public:
-	ClearScreenBlockGenerator(LogicalModelAssistInterface const &model
+	ClearScreenBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

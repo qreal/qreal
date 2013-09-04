@@ -3,19 +3,18 @@
 using namespace qReal::robots::generators;
 
 ControlFlowGeneratorBase::ControlFlowGeneratorBase(
-		LogicalModelAssistInterface const &logicalModel
-		, GraphicalModelAssistInterface const &graphicalModel
+		qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
 		, Id const &diagramId
 		, QObject *parent)
 	: QObject(parent)
-	, RobotsDiagramVisitor(logicalModel, customizer)
-	, mModel(logicalModel)
+	, RobotsDiagramVisitor(repo, customizer)
+	, mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
 	, mDiagram(diagramId)
-	, mValidator(logicalModel, graphicalModel, errorReporter, customizer, diagramId)
+	, mValidator(repo, errorReporter, customizer, diagramId)
 {
 }
 
@@ -28,25 +27,24 @@ bool ControlFlowGeneratorBase::preGenerationCheck()
 	return mValidator.validate();
 }
 
-ControlFlow *ControlFlowGeneratorBase::generate()
+semantics::SemanticTree *ControlFlowGeneratorBase::generate()
 {
 	if (!preGenerationCheck()) {
 		return NULL;
 	}
 
 	mErrorsOccured = false;
-	ControlFlow *result = new ControlFlow;
+	mSemanticTree = new semantics::SemanticTree(customizer(), initialNode(), this);
 
 	// This will start dfs on model graph with processig every block
 	// in subclasses which must construct control flow in handlers
 	startSearch(initialNode());
 
 	if (mErrorsOccured) {
-		delete result;
-		return NULL;
+		mSemanticTree = NULL;
 	}
 
-	return result;
+	return mSemanticTree;
 }
 
 void ControlFlowGeneratorBase::error(QString const &message, Id const &id, bool critical)

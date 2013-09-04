@@ -10,7 +10,7 @@ namespace simple {
 class PlayToneGenerator : public BindingGenerator
 {
 public:
-	PlayToneGenerator(LogicalModelAssistInterface const &model
+	PlayToneGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

@@ -10,7 +10,7 @@ namespace simple {
 class WaitForLightBlockGenerator : public BindingGenerator
 {
 public:
-	WaitForLightBlockGenerator(LogicalModelAssistInterface const &model
+	WaitForLightBlockGenerator(qrRepo::RepoApi const &repo
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);

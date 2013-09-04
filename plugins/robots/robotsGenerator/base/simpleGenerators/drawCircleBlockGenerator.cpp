@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-DrawCircleBlockGenerator::DrawCircleBlockGenerator(LogicalModelAssistInterface const &model
+DrawCircleBlockGenerator::DrawCircleBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: DrawBlockGenerator(model, customizer, id, parent)
+	: DrawBlockGenerator(repo, customizer, id, parent)
 {
 }
 

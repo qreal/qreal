@@ -16,24 +16,23 @@ using namespace qReal::robots::generators;
 using namespace semantics;
 
 ReadableControlFlowGenerator::ReadableControlFlowGenerator(
-		LogicalModelAssistInterface const &logicalModel
-		, GraphicalModelAssistInterface const &graphicalModel
+		qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
 		, Id const &diagramId
 		, QObject *parent)
-	: ControlFlowGeneratorBase(logicalModel, graphicalModel, errorReporter, customizer, diagramId, parent)
+	: ControlFlowGeneratorBase(repo, errorReporter, customizer, diagramId, parent)
 	, mTravelingForSecondTime(false)
 {
 }
 
-ControlFlow *ReadableControlFlowGenerator::generate()
+semantics::SemanticTree *ReadableControlFlowGenerator::generate()
 {
 	mAlreadyApplied.clear();
 	mTravelingForSecondTime = false;
 
-	ControlFlow *result = ControlFlowGeneratorBase::generate();
-	if (!result) {
+	ControlFlowGeneratorBase::generate();
+	if (!mSemanticTree) {
 		return NULL;
 	}
 
@@ -41,18 +40,14 @@ ControlFlow *ReadableControlFlowGenerator::generate()
 	startSearch(initialNode());
 
 	if (errorsOccured()) {
-		delete result;
-		return NULL;
+		mSemanticTree = NULL;
 	}
 
-	return result;
+	return mSemanticTree;
 }
 
 void ReadableControlFlowGenerator::beforeSearch()
 {
-	if (!mTravelingForSecondTime) {
-		mSemanticTree = new SemanticTree(customizer(), initialNode(), this);
-	}
 }
 
 void ReadableControlFlowGenerator::visitRegular(Id const &id

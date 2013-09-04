@@ -1,7 +1,7 @@
 #pragma once
 
-#include <ids.h>
-#include <logicalModelAssistInterface.h>
+#include <qrkernel/ids.h>
+#include <qrrepo/repoApi.h>
 
 #include "simpleGenerators/abstractSimpleGenerator.h"
 #include "simpleGenerators/binding.h"
@@ -15,7 +15,7 @@ class GeneratorCustomizer;
 class GeneratorFactoryBase : public QObject
 {
 public:
-	explicit GeneratorFactoryBase(LogicalModelAssistInterface const &model);
+	explicit GeneratorFactoryBase(qrRepo::RepoApi const &repo);
 
 	virtual ~GeneratorFactoryBase();
 
@@ -49,10 +49,12 @@ public:
 	virtual simple::Binding::ConverterInterface *boolPropertyConverter(bool needInverting) const;
 	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
 	virtual simple::Binding::ConverterInterface *nameNormalizerConverter() const;
+	virtual simple::Binding::ConverterInterface *functionInvocationConverter() const;
 	virtual simple::Binding::ConverterInterface *functionBlockConverter() const;
 	virtual simple::Binding::ConverterInterface *inequalitySignConverter() const;
 	virtual simple::Binding::MultiConverterInterface *enginesConverter() const;
-	virtual simple::Binding::ConverterInterface *portConverter() const;
+	virtual simple::Binding::ConverterInterface *inputPortConverter() const;
+	virtual simple::Binding::ConverterInterface *outputPortConverter() const;
 	virtual simple::Binding::ConverterInterface *colorConverter() const;
 	virtual simple::Binding::ConverterInterface *breakModeConverter() const;
 	virtual simple::Binding::ConverterInterface *typeConverter() const;
@@ -94,7 +96,7 @@ public:
 //	virtual simple::AbstractSimpleGenerator *subprogram(Id const &id) const;
 
 private:
-	LogicalModelAssistInterface const &mModel;
+	qrRepo::RepoApi const &mRepo;
 };
 
 }

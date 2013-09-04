@@ -57,5 +57,18 @@
         <file>templates/conditional/whileDo.t</file>
         <file>templates/types/float.t</file>
         <file>templates/types/int.t</file>
+        <file>templates/sensors/readColor.t</file>
+        <file>templates/sensors/readEncoder.t</file>
+        <file>templates/sensors/readGyroscore.t</file>
+        <file>templates/sensors/readLight.t</file>
+        <file>templates/sensors/readSonar.t</file>
+        <file>templates/sensors/readSound.t</file>
+        <file>templates/sensors/readTouch.t</file>
+        <file>templates/sensors/port1.t</file>
+        <file>templates/sensors/port2.t</file>
+        <file>templates/sensors/port3.t</file>
+        <file>templates/sensors/port4.t</file>
+        <file>templates/functions/random.t</file>
+        <file>templates/functions/randomize.t</file>
     </qresource>
 </RCC>

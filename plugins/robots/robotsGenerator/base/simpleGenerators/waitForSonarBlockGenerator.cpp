@@ -5,11 +5,11 @@ using namespace qReal::robots::generators::simple;
 // TODO: make it customizable
 int const sleepInterval = 10;
 
-WaitForSonarBlockGenerator::WaitForSonarBlockGenerator(LogicalModelAssistInterface const &model
+WaitForSonarBlockGenerator::WaitForSonarBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "waitSonar.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "waitSonar.t", QList<Binding *>(), parent)
 {
 }
 

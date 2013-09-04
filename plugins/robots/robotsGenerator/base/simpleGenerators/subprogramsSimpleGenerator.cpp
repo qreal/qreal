@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-SubprogramsSimpleGenerator::SubprogramsSimpleGenerator(LogicalModelAssistInterface const &model
+SubprogramsSimpleGenerator::SubprogramsSimpleGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "subprogram.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "subprogram.t", QList<Binding *>(), parent)
 {
 }
 

@@ -10,8 +10,7 @@ class GotoControlFlowGenerator : public ControlFlowGeneratorBase
 {
 public:
 	GotoControlFlowGenerator(
-			LogicalModelAssistInterface const &logicalModel
-			, GraphicalModelAssistInterface const &graphicalModel
+			qrRepo::RepoApi const &repo
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, Id const &diagramId

@@ -2,11 +2,11 @@
 
 using namespace qReal::robots::generators::simple;
 
-WaitForLightBlockGenerator::WaitForLightBlockGenerator(LogicalModelAssistInterface const &model
+WaitForLightBlockGenerator::WaitForLightBlockGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(model, customizer, id, "waitLight.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "waitLight.t", QList<Binding *>(), parent)
 {
 }
 
