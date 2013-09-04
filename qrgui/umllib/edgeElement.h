@@ -90,6 +90,9 @@ public:
 	void placeEndTo(QPointF const &place);
 	void moveConnection(NodeElement *node, qreal const portId);
 
+	/// Resort edges connected to linear ports of adjacent nodes
+	void arrangeLinearPorts();
+
 	virtual void connectToPort();
 
 	virtual QList<ContextMenuAction*> contextMenuActions(QPointF const &pos);

@@ -186,6 +186,7 @@ void NodeElement::adjustLinks()
 void NodeElement::arrangeLinearPorts()
 {
 	mPortHandler->arrangeLinearPorts();
+	adjustLinks();
 }
 
 void NodeElement::arrangeLinks()
@@ -883,14 +884,12 @@ void NodeElement::addEdge(EdgeElement *edge)
 		mEdgeList << edge;
 	}
 	arrangeLinearPorts();
-	adjustLinks();
 }
 
 void NodeElement::delEdge(EdgeElement *edge)
 {
 	mEdgeList.removeAll(edge);
 	arrangeLinearPorts();
-	adjustLinks();
 }
 
 void NodeElement::changeExpanded()

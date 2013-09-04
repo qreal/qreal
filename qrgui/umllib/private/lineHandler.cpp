@@ -123,15 +123,7 @@ void LineHandler::layOut(bool needReconnect)
 void LineHandler::connectAndArrange(bool reconnectSrc, bool reconnectDst)
 {
 	reconnect(reconnectSrc, reconnectDst);
-
-	if (mEdge->src()) {
-		mEdge->src()->arrangeLinearPorts();
-		mEdge->src()->adjustLinks();
-	}
-	if (mEdge->dst()) {
-		mEdge->dst()->arrangeLinearPorts();
-		mEdge->dst()->adjustLinks();
-	}
+	mEdge->arrangeLinearPorts();
 }
 
 void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
@@ -193,6 +185,7 @@ QPointF LineHandler::portArrangePoint(NodeElement const *node) const
 		return (node == mEdge->src()) ? mEdge->mapToItem(mEdge->src(), mEdge->line()[1])
 				: mEdge->mapToItem(mEdge->dst(), mEdge->line()[mEdge->line().count() - 2]);
 	} else {
+		mEdge->createLoopEdge();
 		return mEdge->mapToItem(mEdge->src(), mEdge->line()[3]);
 	}
 }
@@ -363,10 +356,10 @@ QList<ContextMenuAction *> LineHandler::extraActions(QPointF const &pos)
 	return QList<ContextMenuAction *>();
 }
 
-void LineHandler::connectAction(ContextMenuAction *action, char const *slot) const
+void LineHandler::connectAction(ContextMenuAction *action, QObject *receiver, char const *slot) const
 {
 	connect(action, SIGNAL(triggered(QPointF const &)), this, SLOT(startReshape()));
-	connect(action, SIGNAL(triggered(QPointF const &)), this, slot);
+	connect(action, SIGNAL(triggered(QPointF const &)), receiver, slot);
 	connect(action, SIGNAL(triggered(QPointF const &)), this, SLOT(endReshape()));
 }
 

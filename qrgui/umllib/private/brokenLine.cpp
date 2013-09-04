@@ -8,9 +8,9 @@ BrokenLine::BrokenLine(EdgeElement *edge)
 		, mDeleteSegmentAction(tr("Delete segment"), this)
 		, mMinimizeAction(tr("Remove all points"), this)
 {
-	connectAction(&mDeletePointAction, SLOT(deletePoint(QPointF const &)));
-	connectAction(&mDeleteSegmentAction, SLOT(deleteSegment(QPointF const &)));
-	connectAction(&mMinimizeAction, SLOT(minimize()));
+	connectAction(&mDeletePointAction, this, SLOT(deletePoint(QPointF const &)));
+	connectAction(&mDeleteSegmentAction, this, SLOT(deleteSegment(QPointF const &)));
+	connectAction(&mMinimizeAction, this, SLOT(minimize()));
 }
 
 void BrokenLine::handleEdgeMove(QPointF const &pos)

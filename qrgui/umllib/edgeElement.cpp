@@ -63,8 +63,6 @@ EdgeElement::EdgeElement(
 
 	setAcceptHoverEvents(true);
 
-	connect(&mReverseAction, SIGNAL(triggered()), SLOT(reverse()));
-
 	LabelFactory factory(graphicalAssistApi, mId);
 	QList<LabelInterface*> titles;
 
@@ -113,6 +111,8 @@ void EdgeElement::initLineHandler()
 	default:
 		mHandler = new SquareLine(this);
 	}
+
+	mHandler->connectAction(&mReverseAction, this, SLOT(reverse()));
 }
 
 QRectF EdgeElement::boundingRect() const
@@ -284,9 +284,6 @@ void EdgeElement::connectToPort()
 	NodeElement *newDst = getNodeAt(mLine.last(), false);
 
 	mIsLoop = ((newSrc == newDst) && newSrc);
-
-	setPos(pos() + mLine.first());
-	mLine.translate(-mLine.first());
 
 	if (mIsLoop) {
 		connectLoopEdge(newSrc);
@@ -690,9 +687,6 @@ void EdgeElement::reversingReconnectToPorts(NodeElement *newSrc, NodeElement *ne
 {
 	mMoving = true;
 
-	setPos(pos() + mLine.first());
-	mLine.translate(-mLine.first());
-
 	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first()), fromPortTypes()) : -1.0;
 	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last()), toPortTypes()) : -1.0;
 
@@ -950,6 +944,17 @@ void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
 	}
 	if ((!mIsLoop || ((int) mPortTo == (int) portId)) && (node == mDst)) {
 		setToPort(portId);
+	}
+}
+
+void EdgeElement::arrangeLinearPorts()
+{
+	if (mSrc) {
+		mSrc->arrangeLinearPorts();
+	}
+
+	if (mDst) {
+		mDst->arrangeLinearPorts();
 	}
 }
 
