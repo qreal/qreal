@@ -13,6 +13,10 @@ HEADERS += \
 	interpreterTests/interpreterTest.h \
 	robotModelTests/robotModelTest.h \
 
+# Mocks
+HEADERS +=
+	../../../../mocks/qrgui/mainwindow/mainWindowInterpretersInterfaceMock.h \
+
 SOURCES += \
 	kitPluginManagerTest.cpp \
 	interpreterTests/interpreterTest.cpp \
