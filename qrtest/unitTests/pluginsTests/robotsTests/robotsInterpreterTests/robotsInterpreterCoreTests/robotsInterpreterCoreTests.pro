@@ -8,16 +8,28 @@ include(../../../../../../qrgui/qrgui.pri)
 INCLUDEPATH += \
 	../../../../../../plugins/robots/robotsInterpreter/robotsInterpreterCore \
 
+# Tests
 HEADERS += \
 	kitPluginManagerTest.h \
 	interpreterTests/interpreterTest.h \
 	robotModelTests/robotModelTest.h \
 
-# Mocks
-HEADERS +=
-	../../../../mocks/qrgui/mainwindow/mainWindowInterpretersInterfaceMock.h \
-
 SOURCES += \
 	kitPluginManagerTest.cpp \
 	interpreterTests/interpreterTest.cpp \
 	robotModelTests/robotModelTest.cpp \
+
+# Mocks
+HEADERS += \
+	../../../../mocks/qrgui/mainwindow/mainWindowInterpretersInterfaceMock.h \
+	../../../../mocks/qrgui/mainwindow/projectManager/projectManagerInterfaceMock.h \
+	../../../../mocks/qrgui/view/sceneCustomizationInterfaceMock.h \
+
+# Supporting code
+HEADERS += \
+	support/dummyBlock.h \
+	support/dummyBlocksFactory.h \
+
+SOURCES += \
+	support/dummyBlock.cpp \
+	support/dummyBlocksFactory.cpp \
