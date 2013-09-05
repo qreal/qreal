@@ -2,8 +2,9 @@
 
 using namespace qReal::robots::generators::nxtOsek;
 
-NxtOsekGeneratorFactory::NxtOsekGeneratorFactory(qrRepo::RepoApi const &repo)
-	: GeneratorFactoryBase(repo)
+NxtOsekGeneratorFactory::NxtOsekGeneratorFactory(qrRepo::RepoApi const &repo
+		, ErrorReporterInterface &errorReporter)
+	: GeneratorFactoryBase(repo, errorReporter)
 {
 }
 

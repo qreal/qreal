@@ -16,7 +16,10 @@ public:
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, Id const &diagramId
-			, QObject *parent = 0);
+			, QObject *parent = 0
+			, bool isThisDiagramMain = true);
+
+	virtual ControlFlowGeneratorBase *cloneFor(Id const &diagramId);
 
 	virtual semantics::SemanticTree *generate();
 

@@ -71,5 +71,13 @@
         <file>templates/wait/sound.t</file>
         <file>templates/wait/touch.t</file>
         <file>templates/subprograms/subprogramCall.t</file>
+        <file>templates/subprograms/declarationsSectionHeader.t</file>
+        <file>templates/subprograms/forwardDeclaration.t</file>
+        <file>templates/subprograms/implementation.t</file>
+        <file>templates/subprograms/implementationsSectionHeader.t</file>
+        <file>templates/main.t</file>
+        <file>templates/makefile.t</file>
+        <file>templates/oil.t</file>
+        <file>templates/oilTask.t</file>
     </qresource>
 </RCC>

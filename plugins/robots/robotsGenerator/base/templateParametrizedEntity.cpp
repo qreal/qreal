@@ -4,6 +4,10 @@
 
 using namespace qReal::robots::generators;
 
+TemplateParametrizedEntity::TemplateParametrizedEntity()
+{
+}
+
 TemplateParametrizedEntity::TemplateParametrizedEntity(QString const &pathToTemplates)
 	: mPathToRoot(pathToTemplates)
 {
@@ -17,4 +21,9 @@ QString TemplateParametrizedEntity::readTemplate(QString const &pathFromRoot) co
 {
 	QString const fullPath = mPathToRoot + '/' + pathFromRoot;
 	return utils::InFile::readAll(fullPath);
+}
+
+void TemplateParametrizedEntity::setPathToTemplates(QString const &pathTemplates)
+{
+	mPathToRoot = pathTemplates;
 }

@@ -11,7 +11,8 @@ namespace nxtOsek {
 class NxtOsekGeneratorCustomizer : public GeneratorCustomizer
 {
 public:
-	explicit NxtOsekGeneratorCustomizer(qrRepo::RepoApi const &repo);
+	NxtOsekGeneratorCustomizer(qrRepo::RepoApi const &repo
+			, ErrorReporterInterface &errorReporter);
 
 	virtual GeneratorFactoryBase *factory();
 

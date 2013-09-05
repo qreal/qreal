@@ -1,4 +1,5 @@
 HEADERS += \
+	$$PWD/masterGeneratorBase.h \
 	$$PWD/generatorCustomizer.h \
 	$$PWD/controlFlowGeneratorBase.h \
 	$$PWD/readableControlFlowGenerator.h \
@@ -8,7 +9,7 @@ HEADERS += \
 	$$PWD/generatorFactoryBase.h \
 	$$PWD/templateParametrizedEntity.h \
 	$$PWD/parts/variables.h \
-#	$$PWD/parts/subprograms.h \
+	$$PWD/parts/subprograms.h \
 #	$$PWD/parts/images.h \
 	$$PWD/semanticTree/semanticTree.h \
 	$$PWD/semanticTree/semanticNode.h \
@@ -35,6 +36,7 @@ HEADERS += \
 	$$PWD/rules/loopRules/loopWithNextVisitedRule.h \
 
 SOURCES += \
+	$$PWD/masterGeneratorBase.cpp \
 	$$PWD/generatorCustomizer.cpp \
 	$$PWD/controlFlowGeneratorBase.cpp \
 	$$PWD/readableControlFlowGenerator.cpp \
@@ -44,7 +46,7 @@ SOURCES += \
 	$$PWD/generatorFactoryBase.cpp \
 	$$PWD/templateParametrizedEntity.cpp \
 	$$PWD/parts/variables.cpp \
-#	$$PWD/parts/subprograms.cpp \
+	$$PWD/parts/subprograms.cpp \
 #	$$PWD/parts/images.cpp \
 	$$PWD/semanticTree/semanticTree.cpp \
 	$$PWD/semanticTree/semanticNode.cpp \

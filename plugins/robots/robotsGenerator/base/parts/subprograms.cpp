@@ -1,30 +1,43 @@
 #include "subprograms.h"
 
+#include "../controlFlowGeneratorBase.h"
+
 using namespace qReal;
-using namespace robots::generator;
+using namespace robots::generators::parts;
 
-SubprogramsGenerator::SubprogramsGenerator(NxtOSEKRobotGenerator * const nxtGenerator)
-	: mMainGenerator(nxtGenerator)
+Subprograms::Subprograms(qrRepo::RepoApi const &repo
+		, ErrorReporterInterface &errorReporter
+		, QString const &pathToTemplates
+		, simple::Binding::ConverterInterface const *nameNormalizer)
+	: TemplateParametrizedEntity(pathToTemplates)
+	, mRepo(repo)
+	, mErrorReporter(errorReporter)
+	, mNameNormalizer(nameNormalizer)
 {
 }
 
-QList<SmartLine_old> &SubprogramsGenerator::generatedCode()
+Subprograms::~Subprograms()
 {
-	return mGeneratedCode;
+	delete mNameNormalizer;
 }
 
-void SubprogramsGenerator::usageFound(Id const &logicalId)
+QString Subprograms::generatedCode() const
 {
-	Id const diagram = mMainGenerator->api()->outgoingExplosion(logicalId);
+	return mGeneratedCode.join('\n');
+}
+
+void Subprograms::usageFound(Id const &logicalId)
+{
+	Id const diagram = mRepo.outgoingExplosion(logicalId);
 	if (diagram != Id() && !mDiscoveredSubprograms.contains(diagram)) {
 		mDiscoveredSubprograms[diagram] = false;
 	}
 }
 
-bool SubprogramsGenerator::generate()
+bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator)
 {
-	QMap<Id, QList<SmartLine_old> > declarations;
-	QMap<Id, QList<SmartLine_old> > implementations;
+	QMap<Id, QString> declarations;
+	QMap<Id, QString> implementations;
 
 	Id toGen = firstToGenerate();
 	while (toGen != Id()) {
@@ -32,24 +45,26 @@ bool SubprogramsGenerator::generate()
 
 		Id const graphicalDiagramId = graphicalId(toGen);
 		if (graphicalDiagramId.isNull()) {
-			mMainGenerator->errorReporter().addError(QObject::tr("Graphical diagram instance not found"));
+			mErrorReporter.addError(QObject::tr("Graphical diagram instance not found"));
 			return false;
 		}
 
-		QString const identifier = SubprogramsSimpleGenerator::identifier(mMainGenerator, toGen);
-		if (!checkIdentifier(identifier, mMainGenerator->api()->name(toGen))) {
+		QString const rawIdentifier = mRepo.name(toGen);
+		QString const identifier = mNameNormalizer->convert(rawIdentifier);
+		if (!checkIdentifier(identifier, rawIdentifier)) {
 			return false;
 		}
 
-		ControlFlowGenerator generator(mMainGenerator, graphicalDiagramId);
-		mMainGenerator->beforeSubprogramGeneration(&generator);
-		if (!generator.generate()) {
+		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId);
+		semantics::SemanticTree *controlFlow = generator->generate();
+		if (!controlFlow) {
 			return false;
 		}
-		implementations[toGen] = generator.generatedCode();
 
-		QString const forwardDeclaration = QString("void %1();").arg(identifier);
-		declarations[toGen] = QList<SmartLine_old>() << SmartLine_old(forwardDeclaration, toGen);
+		implementations[toGen] = controlFlow->toString(1);
+
+		QString const forwardDeclaration = readSubprogramTemplate(toGen, "subprograms/forwardDeclaration.t");
+		declarations[toGen] = forwardDeclaration;
 
 		toGen = firstToGenerate();
 	}
@@ -59,40 +74,42 @@ bool SubprogramsGenerator::generate()
 	return true;
 }
 
-void SubprogramsGenerator::mergeCode(QMap<Id, QList<SmartLine_old> > const &declarations
-		, QMap<Id, QList<SmartLine_old> > const &implementations)
+void Subprograms::mergeCode(QMap<Id, QString> const &declarations
+		, QMap<Id, QString> const &implementations)
 {
 	if (!declarations.keys().isEmpty()) {
-		mGeneratedCode << SmartLine_old("/* Subprograms declarations */", Id())
-				<< SmartLine_old("", Id());
+		mGeneratedCode << readTemplate("subprograms/declarationsSectionHeader.t");
 	}
 
 	foreach (Id const &id, declarations.keys()) {
-		mGeneratedCode += declarations[id];
+		mGeneratedCode << declarations[id];
 	}
 
-	mGeneratedCode << SmartLine_old("", Id());
+	mGeneratedCode << QString();
 
 	if (!implementations.keys().isEmpty()) {
-		mGeneratedCode << SmartLine_old("/* Subprograms implementations */", Id())
-				 << SmartLine_old("", Id());
+		mGeneratedCode << readTemplate("subprograms/implementationsSectionHeader.t");
 	}
 
 	foreach (Id const &id, implementations.keys()) {
-		QString const signature = QString("void %1()").arg(
-				SubprogramsSimpleGenerator::identifier(mMainGenerator, id));
-		mGeneratedCode << SmartLine_old(signature, id) << SmartLine_old("{", id, SmartLine_old::increase);
-		mGeneratedCode += implementations[id];
-		mGeneratedCode << SmartLine_old("}", id, SmartLine_old::decrease)
-				<< SmartLine_old("", id);
+		QString const signature = readSubprogramTemplate(id, "subprograms/implementation.t");
+		QString subprogramCode = signature;
+		subprogramCode.replace("@@BODY@@", implementations[id]);
+		mGeneratedCode << subprogramCode;
 	}
 }
 
-Id SubprogramsGenerator::graphicalId(Id const &logicalId) const
+QString Subprograms::readSubprogramTemplate(Id const &id, QString const &pathToTemplate)
 {
-	IdList const graphicalIds = mMainGenerator->api()->graphicalElements(logicalId.type());
+	QString const rawName = mRepo.name(id);
+	return readTemplate(pathToTemplate).replace("@@NAME@@", mNameNormalizer->convert(rawName));
+}
+
+Id Subprograms::graphicalId(Id const &logicalId) const
+{
+	IdList const graphicalIds = mRepo.graphicalElements(logicalId.type());
 	foreach (Id const &id, graphicalIds) {
-		if (mMainGenerator->api()->logicalId(id) == logicalId) {
+		if (mRepo.logicalId(id) == logicalId) {
 			return id;
 		}
 	}
@@ -100,16 +117,16 @@ Id SubprogramsGenerator::graphicalId(Id const &logicalId) const
 	return Id();
 }
 
-bool SubprogramsGenerator::checkIdentifier(QString const &identifier, QString const &rawName)
+bool Subprograms::checkIdentifier(QString const &identifier, QString const &rawName)
 {
 	if (identifier.isEmpty()) {
-		mMainGenerator->errorReporter().addError(
-				QObject::tr("Please enter valid c-style name for subprogram \"") + rawName + "\"");
+		mErrorReporter.addError(QObject::tr(
+				"Please enter valid c-style name for subprogram \"") + rawName + "\"");
 		return false;
 	}
 
 	if (mUsedNames.contains(identifier)) {
-		mMainGenerator->errorReporter().addError(QObject::tr("Duplicate identifier: ") + identifier);
+		mErrorReporter.addError(QObject::tr("Duplicate identifier: ") + identifier);
 		return false;
 	}
 
@@ -118,7 +135,7 @@ bool SubprogramsGenerator::checkIdentifier(QString const &identifier, QString co
 	return true;
 }
 
-Id SubprogramsGenerator::firstToGenerate() const
+Id Subprograms::firstToGenerate() const
 {
 	foreach (Id const &id, mDiscoveredSubprograms.keys()) {
 		if (!mDiscoveredSubprograms[id]) {

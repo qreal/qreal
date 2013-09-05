@@ -2,11 +2,13 @@
 
 #include <qrkernel/ids.h>
 #include <qrrepo/repoApi.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "simpleGenerators/abstractSimpleGenerator.h"
 #include "simpleGenerators/binding.h"
 
 #include "parts/variables.h"
+#include "parts/subprograms.h"
 
 namespace qReal {
 namespace robots {
@@ -17,13 +19,17 @@ class GeneratorCustomizer;
 class GeneratorFactoryBase : public QObject
 {
 public:
-	explicit GeneratorFactoryBase(qrRepo::RepoApi const &repo);
+	GeneratorFactoryBase(qrRepo::RepoApi const &repo
+			, ErrorReporterInterface &errorReporter);
 
 	virtual ~GeneratorFactoryBase();
+
+	void initialize();
 
 	/// Immutable version of variables()
 	virtual parts::Variables *variablesInfo() const;
 	virtual parts::Variables *variables();
+	virtual parts::Subprograms *subprograms();
 
 	virtual simple::AbstractSimpleGenerator *ifGenerator(Id const &id
 			, GeneratorCustomizer &customizer
@@ -66,45 +72,15 @@ public:
 	virtual simple::Binding::ConverterInterface *breakModeConverter() const;
 	virtual simple::Binding::ConverterInterface *typeConverter() const;
 
-//	virtual simple::AbstractSimpleGenerator *templateGenratorFor(Id const &id
-//			, QString const &templateFile, QList<simple::Binding *> const &bindings);
-
-	// This group of methods can be overridden to customize concrete generator
-//	virtual simple::AbstractSimpleGenerator *ifBlock(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *loop(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *function(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *comment(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *enginesForward(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *enginesBackward(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *enginesStop(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *timer(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *beep(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *playTone(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *finalNode(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *nullificationEncoder(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *waitForColor(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *waitForColorIntensity(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *waitForLight(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *waitForTouchSensor(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *waitForSonarDistance(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *waitForEncoder(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *waitForSound(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *waitForGyroscope(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *waitForAccelerometer(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *balance(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *balanceInit(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *waitForButtons(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *drawPixel(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *drawLine(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *drawCircle(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *printText(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *drawRect(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *clearScreen(Id const &id) const;
-//	virtual simple::AbstractSimpleGenerator *subprogram(Id const &id) const;
+protected:
+	virtual void initVariables();
+	virtual void initSubprograms();
 
 private:
 	qrRepo::RepoApi const &mRepo;
+	ErrorReporterInterface &mErrorReporter;
 	parts::Variables *mVariables;
+	parts::Subprograms *mSubprograms;
 };
 
 }

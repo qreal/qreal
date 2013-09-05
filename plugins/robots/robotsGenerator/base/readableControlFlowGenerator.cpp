@@ -20,10 +20,17 @@ ReadableControlFlowGenerator::ReadableControlFlowGenerator(
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
 		, Id const &diagramId
-		, QObject *parent)
-	: ControlFlowGeneratorBase(repo, errorReporter, customizer, diagramId, parent)
+		, QObject *parent
+		, bool isThisDiagramMain)
+	: ControlFlowGeneratorBase(repo, errorReporter, customizer, diagramId, parent, isThisDiagramMain)
 	, mTravelingForSecondTime(false)
 {
+}
+
+ControlFlowGeneratorBase *ReadableControlFlowGenerator::cloneFor(Id const &diagramId)
+{
+	return new ReadableControlFlowGenerator(mRepo, mErrorReporter, mCustomizer
+			, diagramId, parent(), false);
 }
 
 semantics::SemanticTree *ReadableControlFlowGenerator::generate()

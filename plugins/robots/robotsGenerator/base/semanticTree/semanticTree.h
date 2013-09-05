@@ -30,6 +30,7 @@ public:
 	SemanticTree(GeneratorCustomizer &customizer, Id const &initialBlock
 			, QObject *parent = 0);
 
+	QString toString(int indent) const;
 	void debugPrint();
 
 	SemanticNode *produceNodeFor(Id const &id);

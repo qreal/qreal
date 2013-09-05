@@ -11,6 +11,11 @@ GeneratorCustomizer::GeneratorCustomizer()
 {
 }
 
+void GeneratorCustomizer::initialize()
+{
+	factory()->initialize();
+}
+
 bool GeneratorCustomizer::isInitialNode(qReal::Id const &block) const
 {
 	return block.type() == mDefaultInitialBlockType;
@@ -48,14 +53,18 @@ enums::semantics::Semantics GeneratorCustomizer::semanticsOf(Id const &block) co
 	if (isConditional(block)) {
 		return enums::semantics::condidionalBlock;
 	}
+
 	if (isLoop(block)) {
 		return enums::semantics::loopBlock;
 	}
+
 	if (isSwitch(block)) {
 		return enums::semantics::switchBlock;
 	}
+
 	if (isFork(block)) {
 		return enums::semantics::forkBlock;
 	}
+
 	return enums::semantics::regularBlock;
 }

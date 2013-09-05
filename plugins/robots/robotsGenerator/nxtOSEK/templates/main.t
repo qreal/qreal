@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-@@BALANCER@@
-
 @@VARIABLES@@
 
 @@BMPFILES@@
@@ -32,4 +30,7 @@ void user_1ms_isr_type2(void)
 @@SUBPROGRAMS@@
 
 /* Main task */
-@@CODE@@
+TASK(OSEK_Task_Number_0)
+{
+@@MAIN_CODE@@
+}

@@ -7,13 +7,15 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(
 		, ErrorReporterInterface &errorReporter
 		, GeneratorCustomizer &customizer
 		, Id const &diagramId
-		, QObject *parent)
+		, QObject *parent
+		, bool isThisDiagramMain)
 	: QObject(parent)
 	, RobotsDiagramVisitor(repo, customizer)
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mCustomizer(customizer)
 	, mDiagram(diagramId)
+	, mIsMainGenerator(isThisDiagramMain)
 	, mValidator(repo, errorReporter, customizer, diagramId)
 {
 }

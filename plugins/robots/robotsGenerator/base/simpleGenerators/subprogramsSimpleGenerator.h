@@ -15,7 +15,7 @@ public:
 			, Id const &id
 			, QObject *parent = 0);
 
-//	static QString identifier(qReal::Id const &id);
+	virtual QString generate();
 };
 
 }

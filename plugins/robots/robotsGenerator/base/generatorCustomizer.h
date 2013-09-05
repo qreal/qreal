@@ -32,6 +32,8 @@ public:
 
 	enums::semantics::Semantics semanticsOf(Id const &block) const;
 
+	void initialize();
+
 	virtual GeneratorFactoryBase *factory() = 0;
 
 protected:

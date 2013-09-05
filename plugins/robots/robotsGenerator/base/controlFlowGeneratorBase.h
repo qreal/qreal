@@ -16,10 +16,13 @@ public:
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, Id const &diagramId
-			, QObject *parent = 0);
+			, QObject *parent = 0
+			, bool isThisDiagramMain = true);
 	virtual ~ControlFlowGeneratorBase();
 
 	bool preGenerationCheck();
+
+	virtual ControlFlowGeneratorBase *cloneFor(Id const &diagramId) = 0;
 
 	virtual semantics::SemanticTree *generate();
 
@@ -35,12 +38,13 @@ protected:
 	GeneratorCustomizer &customizer() const;
 
 	semantics::SemanticTree *mSemanticTree;  // Takes ownership
-
-private:
 	qrRepo::RepoApi const &mRepo;
 	ErrorReporterInterface &mErrorReporter;
 	GeneratorCustomizer &mCustomizer;
+
+private:
 	Id const mDiagram;
+	bool const mIsMainGenerator;
 	PrimaryControlFlowValidator mValidator;
 	bool mErrorsOccured;
 };

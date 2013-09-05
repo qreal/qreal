@@ -1,9 +1,10 @@
+#include "robotsGeneratorPlugin.h"
+
 #include <QtWidgets/QApplication>
 #include <QtCore/QDir>
 
-#include "robotsGeneratorPlugin.h"
-#include "nxtOSEK/nxtOsekGeneratorCustomizer.h"
-#include "base/readableControlFlowGenerator.h"
+#include <qrutils/inFile.h>
+#include "nxtOSEK/nxtOsekMasterGenerator.h"
 
 using namespace qReal;
 using namespace qReal::robots::generators;
@@ -87,41 +88,31 @@ void RobotsGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool 
 bool RobotsGeneratorPlugin::generateRobotSourceCode()
 {
 	mProjectManager->save();
+	mMainWindowInterface->errorReporter()->clearErrors();
 
-	nxtOsek::NxtOsekGeneratorCustomizer customizer(*mRepo);
-	ReadableControlFlowGenerator generator(*mRepo
+	nxtOsek::NxtOsekMasterGenerator generator(*mRepo
 			, *mMainWindowInterface->errorReporter()
-			, customizer
 			, mMainWindowInterface->activeDiagram());
-	if (generator.generate()) {
-		mMainWindowInterface->errorReporter()->addInformation("Diagram is valid");
+	generator.initialize();
+
+	QString const pathToGeneratedCode = generator.generate();
+	if (mMainWindowInterface->errorReporter()->wereErrors()) {
+		return false;
 	}
 
-//	robots::generator::NxtOSEKRobotGenerator gen(mMainWindowInterface->activeDiagram(),
-//			 *mRepoControlApi,
-//			 *mMainWindowInterface->errorReporter());
-//	mMainWindowInterface->errorReporter()->clearErrors();
-//	gen.generate();
-//	if (mMainWindowInterface->errorReporter()->wereErrors()) {
-//		return false;
-//	}
+	QString const generatedCode = utils::InFile::readAll(pathToGeneratedCode);
+	if (!generatedCode.isEmpty()) {
+		mMainWindowInterface->showInTextEditor(tr("Generated code"), generatedCode);
+	}
 
-//	QFile file("nxt-tools/example0/example0.c");
-//	QTextStream *inStream = NULL;
-//	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//		inStream = new QTextStream(&file);
-//	}
-
-//	if (inStream) {
-//		mMainWindowInterface->showInTextEditor("example0", inStream->readAll());
-//	}
 	return true;
 }
 
 void RobotsGeneratorPlugin::flashRobot()
 {
 	if (!mNxtToolsPresent) {
-		mMainWindowInterface->errorReporter()->addError(tr("flash.sh not found. Make sure it is present in QReal installation directory"));
+		mMainWindowInterface->errorReporter()->addError(tr("flash.sh not found."\
+				" Make sure it is present in QReal installation directory"));
 	} else {
 		mFlashTool->flashRobot();
 	}
@@ -130,7 +121,8 @@ void RobotsGeneratorPlugin::flashRobot()
 void RobotsGeneratorPlugin::uploadProgram()
 {
 	if (!mNxtToolsPresent) {
-		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
+		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found."\
+				" Make sure it is present in QReal installation directory"));
 	} else {
 		if (generateRobotSourceCode()) {
 			mFlashTool->uploadProgram();

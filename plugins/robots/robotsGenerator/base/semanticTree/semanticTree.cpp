@@ -13,11 +13,16 @@ SemanticTree::SemanticTree(GeneratorCustomizer &customizer, Id const &initialBlo
 {
 }
 
+QString SemanticTree::toString(int indent) const
+{
+	return mRoot->toString(mCustomizer, indent);
+}
+
 void SemanticTree::debugPrint()
 {
 	qDebug() << "Semantic tree:";
 	qDebug() << "-----------------";
-	qDebug() << mRoot->toString(mCustomizer, 0);
+	qDebug() << toString(0);
 	qDebug() << "-----------------";
 }
 

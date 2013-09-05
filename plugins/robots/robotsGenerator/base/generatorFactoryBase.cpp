@@ -53,14 +53,32 @@
 using namespace qReal::robots::generators;
 using namespace simple;
 
-GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo)
+GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo
+		, ErrorReporterInterface &errorReporter)
 	: mRepo(repo)
-	, mVariables(new parts::Variables)
+	, mErrorReporter(errorReporter)
 {
 }
 
 GeneratorFactoryBase::~GeneratorFactoryBase()
 {
+}
+
+void GeneratorFactoryBase::initialize()
+{
+	initVariables();
+	initSubprograms();
+}
+
+void GeneratorFactoryBase::initVariables()
+{
+	mVariables = new parts::Variables;
+}
+
+void GeneratorFactoryBase::initSubprograms()
+{
+	mSubprograms = new parts::Subprograms(mRepo, mErrorReporter
+			, pathToTemplates(), nameNormalizerConverter());
 }
 
 parts::Variables *GeneratorFactoryBase::variablesInfo() const
@@ -71,6 +89,11 @@ parts::Variables *GeneratorFactoryBase::variablesInfo() const
 parts::Variables *GeneratorFactoryBase::variables()
 {
 	return mVariables;
+}
+
+parts::Subprograms *GeneratorFactoryBase::subprograms()
+{
+	return mSubprograms;
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(Id const &id
@@ -263,213 +286,3 @@ Binding::ConverterInterface *GeneratorFactoryBase::typeConverter() const
 {
 	return new converters::TypeConverter(pathToTemplates());
 }
-
-/*
-AbstractSimpleGenerator *GeneratorFactoryBase::templateGenratorFor(Id const &id
-		, QString const &templateFile, QList<Binding *> const &bindings)
-{
-	return new BindingGenerator(mModel, id, pathToTemplates() + '/' + templateFile, bindings, this);
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::ifBlock(Id const &id) const
-{
-	return templateGenratorFor(id, "ifBlock.t", QList<Binding *>()
-			<< new Binding("@@CONDITION@@", "Condition", boolPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::loop(Id const &id) const
-{
-	return templateGenratorFor(id, "loop.t", QList<Binding *>()
-			<< new Binding("@@CONDITION@@", "Condition", boolPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::function(Id const &id) const
-{
-	return templateGenratorFor(id, "function.t", QList<Binding *>()
-			<< new Binding("@@BODY@@", "Body", functionBlockConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::comment(Id const &id) const
-{
-	return NULL;
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::enginesForward(Id const &id) const
-{
-	return templateGenratorFor(id, "enginesForward.t", QList<Binding *>()
-			<< new Binding("@@POWER@@", "Power", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::enginesBackward(Id const &id) const
-{
-	return templateGenratorFor(id, "enginesBackward.t", QList<Binding *>()
-			<< new Binding("@@POWER@@", "Power", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::enginesStop(Id const &id) const
-{
-	return templateGenratorFor(id, "enginesStop.t", QList<Binding *>()
-			<< new Binding("@@POWER@@", "Power", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::timer(Id const &id) const
-{
-	return templateGenratorFor(id, "timer.t", QList<Binding *>()
-			<< new Binding("@@DELAY@@", "Delay", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::beep(Id const &id) const
-{
-	return templateGenratorFor(id, "beep.t", QList<Binding *>()
-			<< new Binding("@@VOLUME@@", "Volume", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::playTone(Id const &id) const
-{
-	return templateGenratorFor(id, "playTone.t", QList<Binding *>()
-			<< new Binding("@@FREQUENCY@@", "Frequency", intPropertyConverter())
-			<< new Binding("@@VOLUME@@", "Volume", intPropertyConverter())
-			<< new Binding("@@DURATION@@", "Duration", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::finalNode(Id const &id) const
-{
-	templateGenratorFor(id, "finalBlock.t", QList<Binding *>());
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::nullificationEncoder(Id const &id) const
-{
-	templateGenratorFor(id, "nullificationEncoder.t", QList<Binding *>());
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::waitForColor(Id const &id) const
-{
-	templateGenratorFor(id, "waitForColor.t", QList<Binding *>());
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::waitForColorIntensity(Id const &id) const
-{
-	return templateGenratorFor(id, "waitForColorIntensity.t", QList<Binding *>()
-			<< new Binding("@@INTENSITY@@", "Intensity", intPropertyConverter())
-			<< new Binding("@@SIGN@@", "Sign", inequalitySignConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::waitForLight(Id const &id) const
-{
-	return templateGenratorFor(id, "waitForLight.t", QList<Binding *>()
-			<< new Binding("@@PERCENTS@@", "Percents", intPropertyConverter())
-			<< new Binding("@@SIGN@@", "Sign", inequalitySignConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::waitForTouchSensor(Id const &id) const
-{
-	return templateGenratorFor(id, "waitForTouchSensor.t", QList<Binding *>());
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::waitForSonarDistance(Id const &id) const
-{
-	return templateGenratorFor(id, "waitForSonarDistance.t", QList<Binding *>()
-			<< new Binding("@@DISTANCE@@", "Distance", intPropertyConverter())
-			<< new Binding("@@SIGN@@", "Sign", inequalitySignConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::waitForEncoder(Id const &id) const
-{
-	return templateGenratorFor(id, "waitForEncoder.t", QList<Binding *>()
-			<< new Binding("@@TACHO_LIMIT@@", "TachoLimit", intPropertyConverter())
-			<< new Binding("@@SIGN@@", "Sign", inequalitySignConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::waitForSound(Id const &id) const
-{
-	return templateGenratorFor(id, "waitForSound.t", QList<Binding *>()
-			<< new Binding("@@VOLUME@@", "Volume", intPropertyConverter())
-			<< new Binding("@@SIGN@@", "Sign", inequalitySignConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::waitForGyroscope(Id const &id) const
-{
-	return templateGenratorFor(id, "waitForGyroscope.t", QList<Binding *>()
-			<< new Binding("@@DEGREES@@", "Degrees", intPropertyConverter())
-			<< new Binding("@@SIGN@@", "Sign", inequalitySignConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::waitForAccelerometer(Id const &id) const
-{
-	// TODO:
-	return NULL;
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::balance(Id const &id) const
-{
-	// TODO: Maybe remove balancers at all?
-	return NULL;
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::balanceInit(Id const &id) const
-{
-	// TODO: Maybe remove balancers at all?
-	return NULL;
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::waitForButtons(Id const &id) const
-{
-	return templateGenratorFor(id, "waitForButtons.t", QList<Binding *>()
-			<< new Binding("@@RIGHT_BUTTON_CLICKS@@", "RightButtonClicks", intPropertyConverter())
-			<< new Binding("@@LEFT_BUTTON_CLICKS@@", "LeftButtonClicks", intPropertyConverter())
-			<< new Binding("@@CENTRAL_BUTTON_CLICKS@@", "CentralButtonClicks", intPropertyConverter())
-			<< new Binding("@@BOTTOM_BUTTON_CLICKS@@", "BottomButtonClicks", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::drawPixel(Id const &id) const
-{
-	return templateGenratorFor(id, "drawPixel.t", QList<Binding *>()
-			<< new Binding("@@X@@", "XCoordinatePix", intPropertyConverter())
-			<< new Binding("@@Y@@", "YCoordinatePix", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::drawLine(Id const &id) const
-{
-	return templateGenratorFor(id, "drawLine.t", QList<Binding *>()
-			<< new Binding("@@X1@@", "X1CoordinateLine", intPropertyConverter())
-			<< new Binding("@@Y1@@", "Y1CoordinateLine", intPropertyConverter())
-			<< new Binding("@@X2@@", "X2CoordinateLine", intPropertyConverter())
-			<< new Binding("@@Y2@@", "Y2CoordinateLine", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::drawCircle(Id const &id) const
-{
-	return templateGenratorFor(id, "drawCircle.t", QList<Binding *>()
-			<< new Binding("@@X@@", "XCoordinateCircle", intPropertyConverter())
-			<< new Binding("@@Y@@", "YCoordinateCircle", intPropertyConverter())
-			<< new Binding("@@RADIUS@@", "CircleRadius", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::printText(Id const &id) const
-{
-	return templateGenratorFor(id, "printText.t", QList<Binding *>()
-			<< new Binding("@@X@@", "XCoordinateText", intPropertyConverter())
-			<< new Binding("@@Y@@", "YCoordinateText", intPropertyConverter())
-			<< new Binding("@@TEXT@@", "PrintText", stringPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::drawRect(Id const &id) const
-{
-	return templateGenratorFor(id, "drawRect.t", QList<Binding *>()
-			<< new Binding("@@X@@", "XCoordinateRect", intPropertyConverter())
-			<< new Binding("@@Y@@", "YCoordinateRect", intPropertyConverter())
-			<< new Binding("@@WIDTH@@", "WidthRect", intPropertyConverter())
-			<< new Binding("@@HEIGHT@@", "HeightRect", intPropertyConverter()));
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::clearScreen(Id const &id) const
-{
-	return templateGenratorFor(id, "clearScreen.t", QList<Binding *>());
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::subprogram(Id const &id) const
-{
-	return templateGenratorFor(id, "subprogramCall.t", QList<Binding *>()
-			<< new Binding("@@NAME@@", "name", nameNormalizerConverter()));
-}
-*/
