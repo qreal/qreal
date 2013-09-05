@@ -22,14 +22,16 @@ SOURCES += \
 # Mocks
 HEADERS += \
 	../../../../mocks/qrgui/mainwindow/mainWindowInterpretersInterfaceMock.h \
-	../../../../mocks/qrgui/mainwindow/projectManager/projectManagerInterfaceMock.h \
+	../../../../mocks/qrgui/mainwindow/projectManager/projectManagementInterfaceMock.h \
 	../../../../mocks/qrgui/view/sceneCustomizationInterfaceMock.h \
 
 # Supporting code
 HEADERS += \
 	support/dummyBlock.h \
 	support/dummyBlocksFactory.h \
+	support/qrguiFacade.h \
 
 SOURCES += \
 	support/dummyBlock.cpp \
 	support/dummyBlocksFactory.cpp \
+	support/qrguiFacade.cpp \

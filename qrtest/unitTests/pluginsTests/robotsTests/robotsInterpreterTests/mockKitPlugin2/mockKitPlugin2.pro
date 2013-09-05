@@ -13,6 +13,7 @@ LIBS += -L../../../../../../bin/plugins -lrobotsInterpreterCore
 
 INCLUDEPATH += \
 	../../../../../../plugins/robots/robotsInterpreter/robotsInterpreterCore/include \
+	../../../../../../qrgui/ \
 	../../../../../../ \
 
 HEADERS += \

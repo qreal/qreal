@@ -1,5 +1,5 @@
 TEMPLATE = app
-CONFIG += console
+CONFIG += console c++11
 
 DESTDIR = $$PWD/../../bin
 

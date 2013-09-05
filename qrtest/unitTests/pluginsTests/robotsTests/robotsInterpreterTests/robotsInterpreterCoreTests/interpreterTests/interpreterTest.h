@@ -3,6 +3,10 @@
 #include <gtest/gtest.h>
 
 #include <src/interpreter/interpreterInterface.h>
+#include <robotsInterpreterCore/robotModel/robotModel.h>
+
+#include "support/qrguiFacade.h"
+#include "support/dummyBlocksFactory.h"
 
 namespace qrTest {
 namespace robotsInterpreterCoreTests {
@@ -15,6 +19,9 @@ protected:
 	virtual void TearDown();
 
 	robotsInterpreterCore::interpreter::InterpreterInterface *mInterpreter;  // Has ownership.
+	QrguiFacade *mQrguiFacade;  // Has ownership.
+	DummyBlockFactory mBlocksFactory;
+	robotsInterpreterCore::robotModel::RobotModel mModel;
 };
 
 }
