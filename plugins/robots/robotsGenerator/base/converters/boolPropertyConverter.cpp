@@ -17,7 +17,7 @@ BoolPropertyConverter::BoolPropertyConverter(QString const &pathToTemplates
 
 QString BoolPropertyConverter::convert(QString const &data) const
 {
-	QString const preparedCode = convert(data);
+	QString const preparedCode = CodeConverterBase::convert(data);
 	return mNeedInverting ? invert(preparedCode) : preparedCode;
 }
 

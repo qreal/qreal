@@ -40,7 +40,7 @@ QString IfNode::toString(GeneratorCustomizer &customizer, int indent) const
 	QString const elseBlock = mElseZone->toString(customizer, indent + 1);
 
 	result.replace("@@THEN_BODY@@", thenBlock);
-	result.replace("@@THEN_ELSE@@", elseBlock);
+	result.replace("@@ELSE_BODY@@", elseBlock);
 	return result;
 }
 

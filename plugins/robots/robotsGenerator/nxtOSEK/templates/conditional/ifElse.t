@@ -1,5 +1,5 @@
-if (@@CONDOTION@@) {
-@@IF_BODY@@
+if (@@CONDITION@@) {
+@@THEN_BODY@@
 } else {
 @@ELSE_BODY@@
 }

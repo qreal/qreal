@@ -48,6 +48,7 @@
 #include "converters/functionBlockConverter.h"
 #include "converters/intPropertyConverter.h"
 #include "converters/floatPropertyConverter.h"
+#include "converters/boolPropertyConverter.h"
 
 using namespace qReal::robots::generators;
 using namespace simple;
@@ -198,7 +199,11 @@ Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() cons
 
 Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
 {
-	return new Binding::EmptyConverter;
+	return new converters::BoolPropertyConverter(pathToTemplates()
+			, intPropertyConverter()
+			, outputPortConverter()
+			, functionInvocationConverter()
+			, needInverting);
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const

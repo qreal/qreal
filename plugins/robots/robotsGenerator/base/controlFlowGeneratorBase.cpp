@@ -30,6 +30,7 @@ bool ControlFlowGeneratorBase::preGenerationCheck()
 semantics::SemanticTree *ControlFlowGeneratorBase::generate()
 {
 	if (!preGenerationCheck()) {
+		mSemanticTree = NULL;
 		return NULL;
 	}
 

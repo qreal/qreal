@@ -1,3 +1,3 @@
 if (@@CONDITION@@) {
-@@IF_BODY@@
+@@THEN_BODY@@
 }

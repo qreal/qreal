@@ -1,6 +1,6 @@
 #include "templateParametrizedEntity.h"
 
-#include <inFile.h>
+#include <qrutils/inFile.h>
 
 using namespace qReal::robots::generators;
 
