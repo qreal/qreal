@@ -70,5 +70,6 @@
         <file>templates/sensors/port4.t</file>
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
+        <file>templates/types/cast.t</file>
     </qresource>
 </RCC>

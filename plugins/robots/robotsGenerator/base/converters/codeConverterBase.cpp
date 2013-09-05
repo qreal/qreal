@@ -24,7 +24,7 @@ CodeConverterBase::~CodeConverterBase()
 
 QString CodeConverterBase::convert(QString const &data) const
 {
-	return replaceFunctionInvocations(replaceSensorAndEncoderVariables(data));
+	return replaceFunctionInvocations(replaceSensorAndEncoderVariables(data)).trimmed();
 }
 
 QString CodeConverterBase::replaceSensorAndEncoderVariables(QString const &expression) const

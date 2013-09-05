@@ -46,17 +46,30 @@
 #include "converters/typeConverter.h"
 #include "converters/functionInvocationConverter.h"
 #include "converters/functionBlockConverter.h"
+#include "converters/intPropertyConverter.h"
+#include "converters/floatPropertyConverter.h"
 
 using namespace qReal::robots::generators;
 using namespace simple;
 
 GeneratorFactoryBase::GeneratorFactoryBase(qrRepo::RepoApi const &repo)
 	: mRepo(repo)
+	, mVariables(new parts::Variables)
 {
 }
 
 GeneratorFactoryBase::~GeneratorFactoryBase()
 {
+}
+
+parts::Variables *GeneratorFactoryBase::variablesInfo() const
+{
+	return mVariables;
+}
+
+parts::Variables *GeneratorFactoryBase::variables()
+{
+	return mVariables;
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(Id const &id
@@ -167,7 +180,20 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::continueGenerator(Id cons
 
 Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 {
-	return new Binding::EmptyConverter;
+	return new converters::IntPropertyConverter(pathToTemplates()
+			, inputPortConverter()
+			, outputPortConverter()
+			, functionInvocationConverter()
+			, typeConverter()
+			, variablesInfo());
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() const
+{
+	return new converters::FloatPropertyConverter(pathToTemplates()
+			, intPropertyConverter()
+			, outputPortConverter()
+			, functionInvocationConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const

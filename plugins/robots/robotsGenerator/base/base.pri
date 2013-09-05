@@ -7,6 +7,9 @@ HEADERS += \
 	$$PWD/primaryControlFlowValidator.h \
 	$$PWD/generatorFactoryBase.h \
 	$$PWD/templateParametrizedEntity.h \
+	$$PWD/parts/variables.h \
+#	$$PWD/parts/subprograms.h \
+#	$$PWD/parts/images.h \
 	$$PWD/semanticTree/semanticTree.h \
 	$$PWD/semanticTree/semanticNode.h \
 	$$PWD/semanticTree/nonZoneNode.h \
@@ -40,6 +43,9 @@ SOURCES += \
 	$$PWD/primaryControlFlowValidator.cpp \
 	$$PWD/generatorFactoryBase.cpp \
 	$$PWD/templateParametrizedEntity.cpp \
+	$$PWD/parts/variables.cpp \
+#	$$PWD/parts/subprograms.cpp \
+#	$$PWD/parts/images.cpp \
 	$$PWD/semanticTree/semanticTree.cpp \
 	$$PWD/semanticTree/semanticNode.cpp \
 	$$PWD/semanticTree/nonZoneNode.cpp \
@@ -72,6 +78,7 @@ HEADERS += \
 	$$PWD/converters/enumConverterBase.h \
 	$$PWD/converters/codeConverterBase.h \
 	$$PWD/converters/intPropertyConverter.h \
+	$$PWD/converters/floatPropertyConverter.h \
 	$$PWD/converters/boolPropertyConverter.h \
 	$$PWD/converters/stringPropertyConverter.h \
 	$$PWD/converters/nameNormalizerConverter.h \
@@ -128,6 +135,7 @@ SOURCES += \
 	$$PWD/converters/enumConverterBase.cpp \
 	$$PWD/converters/codeConverterBase.cpp \
 	$$PWD/converters/intPropertyConverter.cpp \
+	$$PWD/converters/floatPropertyConverter.cpp \
 	$$PWD/converters/boolPropertyConverter.cpp \
 	$$PWD/converters/stringPropertyConverter.cpp \
 	$$PWD/converters/nameNormalizerConverter.cpp \

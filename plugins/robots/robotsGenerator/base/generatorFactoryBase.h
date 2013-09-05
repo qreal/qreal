@@ -6,6 +6,8 @@
 #include "simpleGenerators/abstractSimpleGenerator.h"
 #include "simpleGenerators/binding.h"
 
+#include "parts/variables.h"
+
 namespace qReal {
 namespace robots {
 namespace generators {
@@ -18,6 +20,10 @@ public:
 	explicit GeneratorFactoryBase(qrRepo::RepoApi const &repo);
 
 	virtual ~GeneratorFactoryBase();
+
+	/// Immutable version of variables()
+	virtual parts::Variables *variablesInfo() const;
+	virtual parts::Variables *variables();
 
 	virtual simple::AbstractSimpleGenerator *ifGenerator(Id const &id
 			, GeneratorCustomizer &customizer
@@ -46,6 +52,7 @@ public:
 	virtual QString pathToTemplates() const = 0;
 
 	virtual simple::Binding::ConverterInterface *intPropertyConverter() const;
+	virtual simple::Binding::ConverterInterface *floatPropertyConverter() const;
 	virtual simple::Binding::ConverterInterface *boolPropertyConverter(bool needInverting) const;
 	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
 	virtual simple::Binding::ConverterInterface *nameNormalizerConverter() const;
@@ -97,6 +104,7 @@ public:
 
 private:
 	qrRepo::RepoApi const &mRepo;
+	parts::Variables *mVariables;
 };
 
 }
