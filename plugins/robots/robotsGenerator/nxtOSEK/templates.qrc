@@ -79,5 +79,6 @@
         <file>templates/makefile.t</file>
         <file>templates/oil.t</file>
         <file>templates/oilTask.t</file>
+        <file>templates/comment.t</file>
     </qresource>
 </RCC>

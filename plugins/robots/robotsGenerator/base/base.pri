@@ -94,6 +94,7 @@ HEADERS += \
 	$$PWD/converters/inputPortConverter.h \
 	$$PWD/converters/functionInvocationConverter.h \
 	$$PWD/simpleGenerators/abstractSimpleGenerator.h \
+	$$PWD/simpleGenerators/nullGenerator.h \
 	$$PWD/simpleGenerators/commentElementGenerator.h \
 	$$PWD/simpleGenerators/functionElementGenerator.h \
 	$$PWD/simpleGenerators/ifElementGenerator.h \
@@ -151,6 +152,7 @@ SOURCES += \
 	$$PWD/converters/inputPortConverter.cpp \
 	$$PWD/converters/functionInvocationConverter.cpp \
 	$$PWD/simpleGenerators/abstractSimpleGenerator.cpp \
+	$$PWD/simpleGenerators/nullGenerator.cpp \
 	$$PWD/simpleGenerators/commentElementGenerator.cpp \
 	$$PWD/simpleGenerators/functionElementGenerator.cpp \
 	$$PWD/simpleGenerators/ifElementGenerator.cpp \

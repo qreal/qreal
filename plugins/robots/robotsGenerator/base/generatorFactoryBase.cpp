@@ -1,6 +1,7 @@
 #include "generatorFactoryBase.h"
 #include "generatorCustomizer.h"
 
+#include "simpleGenerators/nullGenerator.h"
 #include "simpleGenerators/commentElementGenerator.h"
 #include "simpleGenerators/ifElementGenerator.h"
 #include "simpleGenerators/infiniteLoopGenerator.h"
@@ -185,7 +186,7 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 		return new SubprogramsSimpleGenerator(mRepo, customizer, id, this);
 	}
 
-	return NULL;
+	return new NullGenerator(mRepo, customizer, id, this);
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::breakGenerator(Id const &id
