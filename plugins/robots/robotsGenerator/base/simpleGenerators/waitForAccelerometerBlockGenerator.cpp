@@ -6,7 +6,7 @@ WaitForAccelerometerBlockGenerator::WaitForAccelerometerBlockGenerator(qrRepo::R
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "waitAccelerometer.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "wait/accelerometer.t", QList<Binding *>(), parent)
 {
 }
 

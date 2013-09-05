@@ -6,7 +6,7 @@ WaitForButtonsBlockGenerator::WaitForButtonsBlockGenerator(qrRepo::RepoApi const
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "waitButtons.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "wait/buttons.t", QList<Binding *>(), parent)
 {
 }
 

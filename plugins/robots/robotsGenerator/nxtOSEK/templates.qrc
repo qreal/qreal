@@ -35,15 +35,6 @@
         <file>templates/signs/notGreater.t</file>
         <file>templates/signs/notLess.t</file>
         <file>templates/wait/timer.t</file>
-        <file>templates/wait/waitForButtons.t</file>
-        <file>templates/wait/waitForColor.t</file>
-        <file>templates/wait/waitForColorIntensity.t</file>
-        <file>templates/wait/waitForEncoder.t</file>
-        <file>templates/wait/waitForGyroscope.t</file>
-        <file>templates/wait/waitForLight.t</file>
-        <file>templates/wait/waitForSonarDistance.t</file>
-        <file>templates/wait/waitForSound.t</file>
-        <file>templates/wait/waitForTouchSensor.t</file>
         <file>templates/initialNode.t</file>
         <file>templates/engines/breakMode/break.t</file>
         <file>templates/engines/breakMode/float.t</file>
@@ -71,5 +62,14 @@
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>
         <file>templates/engines/nullifyEncoder.t</file>
+        <file>templates/wait/buttons.t</file>
+        <file>templates/wait/color.t</file>
+        <file>templates/wait/colorIntensity.t</file>
+        <file>templates/wait/encoder.t</file>
+        <file>templates/wait/gyroscope.t</file>
+        <file>templates/wait/light.t</file>
+        <file>templates/wait/sonar.t</file>
+        <file>templates/wait/sound.t</file>
+        <file>templates/wait/touch.t</file>
     </qresource>
 </RCC>

@@ -1,4 +1,5 @@
 #include "waitForColorBlockGenerator.h"
+#include "../generatorCustomizer.h"
 
 using namespace qReal::robots::generators::simple;
 
@@ -6,7 +7,10 @@ WaitForColorBlockGenerator::WaitForColorBlockGenerator(qrRepo::RepoApi const &re
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "waitColor.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "wait/color.t", QList<Binding *>()
+			<< Binding::createConverting("@@PORT@@", "Port", customizer.factory()->inputPortConverter())
+			<< Binding::createConverting("@@COLOR@@", "Color", customizer.factory()->colorConverter())
+			, parent)
 {
 }
 
@@ -21,38 +25,4 @@ WaitForColorBlockGenerator::WaitForColorBlockGenerator(qrRepo::RepoApi const &re
 //		nxtGen->initCode().append(SmartLine_old(initCode, elementId));
 //		nxtGen->terminateCode().append(SmartLine_old(terminateCode, elementId));
 //	}
-//}
-
-//QList<SmartLine_old> WaitForColorBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-//		, qReal::Id const &elementId, qReal::Id const &logicElementId)
-//{
-//	QList<SmartLine_old> result;
-//	int const port = nxtGen->api()->stringProperty(logicElementId, "Port").toInt();
-//	QByteArray const colorStr = nxtGen->api()->stringProperty(logicElementId, "Color").toUtf8();
-
-//	QString colorNxtType;
-
-//	if (colorStr == QString::fromUtf8("Красный")) {
-//		colorNxtType = "NXT_COLOR_RED";
-//	} else if (colorStr == QString::fromUtf8("Зелёный")) {
-//		colorNxtType = "NXT_COLOR_GREEN";
-//	} else if (colorStr == QString::fromUtf8("Синий")) {
-//		colorNxtType = "NXT_COLOR_BLUE";
-//	} else if (colorStr == QString::fromUtf8("Чёрный")) {
-//		colorNxtType = "NXT_COLOR_BLACK";
-//	} else if (colorStr == QString::fromUtf8("Жёлтый")) {
-//		colorNxtType = "NXT_COLOR_YELLOW";
-//	} else if (colorStr == QString::fromUtf8("Белый")) {
-//		colorNxtType = "NXT_COLOR_WHITE";
-//	}
-
-//	if (!colorNxtType.isEmpty()) {
-//		QString portStr = QString::number(port);
-//		result.append(SmartLine_old("while (ecrobot_get_nxtcolorsensor_id(NXT_PORT_S" + portStr
-//				+ ") != " + colorNxtType + ") {", elementId));
-//		result.append(SmartLine_old("}", elementId));
-//		addInitAndTerminateCode(nxtGen, portStr, colorNxtType, elementId);
-//	}
-
-//	return result;
 //}
