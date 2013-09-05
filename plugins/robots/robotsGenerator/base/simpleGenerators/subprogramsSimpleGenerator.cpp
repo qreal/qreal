@@ -1,4 +1,5 @@
 #include "subprogramsSimpleGenerator.h"
+#include "../generatorCustomizer.h"
 
 using namespace qReal::robots::generators::simple;
 
@@ -6,7 +7,9 @@ SubprogramsSimpleGenerator::SubprogramsSimpleGenerator(qrRepo::RepoApi const &re
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "subprogram.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, "subprograms/subprogramCall.t", QList<Binding *>()
+			<< Binding::createConverting("@@NAME@@", "name", customizer.factory()->nameNormalizerConverter())
+			, parent)
 {
 }
 

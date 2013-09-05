@@ -7,7 +7,6 @@
         <file>templates/finalNodeSubprogram.t</file>
         <file>templates/function.t</file>
         <file>templates/playTone.t</file>
-        <file>templates/subprogramCall.t</file>
         <file>templates/colors/black.t</file>
         <file>templates/colors/blue.t</file>
         <file>templates/colors/green.t</file>
@@ -71,5 +70,6 @@
         <file>templates/wait/sonar.t</file>
         <file>templates/wait/sound.t</file>
         <file>templates/wait/touch.t</file>
+        <file>templates/subprograms/subprogramCall.t</file>
     </qresource>
 </RCC>
