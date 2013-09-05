@@ -25,6 +25,10 @@ IntPropertyConverter::~IntPropertyConverter()
 QString IntPropertyConverter::convert(QString const &data) const
 {
 	QString const preparedCode = CodeConverterBase::convert(data);
+	if (preparedCode.isEmpty()) {
+		return "0";
+	}
+
 	enums::variableType::VariableType const expressionType = mVariables->expressionType(preparedCode);
 	if (expressionType == enums::variableType::intType) {
 		return preparedCode;

@@ -38,27 +38,3 @@ EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
 //		nxtGen->terminateCode().append(SmartLine_old(terminateCodeEngines, elementId));
 //	}
 //}
-
-//QList<SmartLine_old> EnginesGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-//		 , qReal::Id const &elementId, qReal::Id const &logicElementId)
-//{
-//	QList<SmartLine_old> result;
-
-//	QString const signRotate = mEngineType == "EnginesBackward" ? "-" : "";
-//	QString const power = nxtGen->api()->stringProperty(logicElementId, "Power");
-//	QString const signedPower = signRotate + power;
-//	QString const intPower = nxtGen->variables().expressionToInt(signedPower);
-
-//	QString const brakeModeRaw = nxtGen->api()->stringProperty(logicElementId, "Mode");
-//	QByteArray const brakeMode = brakeModeRaw == QString::fromUtf8("скользить") ? "0" : "1";
-
-//	foreach (QString const &enginePort, portsToEngineNames(nxtGen->api()->stringProperty(logicElementId, "Ports"))) {
-//		result.append(SmartLine_old("nxt_motor_set_speed("
-//				+ enginePort + ", "
-//				+ intPower + ", "
-//				+ brakeMode + ");", elementId));
-//		addInitAndTerminateCode(nxtGen, elementId, enginePort);
-//	}
-
-//	return result;
-//}

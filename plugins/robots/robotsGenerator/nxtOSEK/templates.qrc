@@ -6,7 +6,6 @@
         <file>templates/finalNodeMain.t</file>
         <file>templates/finalNodeSubprogram.t</file>
         <file>templates/function.t</file>
-        <file>templates/nullificationEncoder.t</file>
         <file>templates/playTone.t</file>
         <file>templates/subprogramCall.t</file>
         <file>templates/colors/black.t</file>
@@ -71,5 +70,6 @@
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>
+        <file>templates/engines/nullifyEncoder.t</file>
     </qresource>
 </RCC>
