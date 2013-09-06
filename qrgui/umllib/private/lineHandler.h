@@ -43,7 +43,7 @@ public:
 	/// If drawSavedLine is true, method draw old (before reshape) link's configuration
 	virtual void drawLine(QPainter *painter, bool drawSavedLine);
 	/// Draw link points one by one with the given painter
-	void drawPorts(QPainter *painter);
+	virtual void drawPorts(QPainter *painter);
 	/// @return link shape (depending on a link type, default implementation returns link's line() polygon)
 	virtual QPainterPath shape() const;
 

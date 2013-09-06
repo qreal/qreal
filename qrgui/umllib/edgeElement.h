@@ -2,6 +2,7 @@
 
 #include <QtCore/QList>
 #include <QtCore/QPair>
+#include <QtWidgets/QMenu>
 
 #include "umllib/element.h"
 #include "editorPluginInterface/elementImpl.h"
@@ -110,10 +111,11 @@ public:
 	EdgeData& data();
 
 	/// Change link type and redraw it
-	void changeLineType();
+	void changeShapeType(enums::linkShape::LinkShape const &shapeType);
 
 	/// Save link position to the repo
 	void setGraphicApiPos();
+
 	/// Save link configuration to the repo
 	void saveConfiguration();
 
@@ -147,8 +149,12 @@ protected:
 private slots:
 	void reverse();
 
+	void setSquareLine();
+	void setBrokenLine();
+	void setCurveLine();
+
 private:
-	void initLineHandler();
+	void initLineHandler(enums::linkShape::LinkShape const &shapeType);
 
 	int indentReductCoeff();
 	/// Set mPortTo to next port.
@@ -173,6 +179,8 @@ private:
 	bool canConnect(NodeElement const * const node, bool from) const;
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
+	void initShapeTypeMenu();
+
 	QList<PossibleEdge> mPossibleEdges;
 
 	NodeElement *mSrc;
@@ -191,6 +199,7 @@ private:
 	QColor mColor;
 
 	ContextMenuAction mReverseAction;
+	ContextMenuAction mChangeShapeAction;
 
 	bool mBreakPointPressed;
 

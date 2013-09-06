@@ -18,6 +18,7 @@
 #include "umllib/private/curveLine.h"
 
 using namespace qReal;
+using namespace enums;
 
 const double pi = 3.14159265358979;
 
@@ -47,6 +48,7 @@ EdgeElement::EdgeElement(
 		, mDragType(noPort)
 		, mLongPart(0)
 		, mReverseAction(tr("Reverse"), this)
+		, mChangeShapeAction(tr("Change shape type"), this)
 		, mModelUpdateIsCalled(false)
 		, mIsLoop(false)
 {
@@ -78,7 +80,8 @@ EdgeElement::EdgeElement(
 		mLabels.append(title);
 	}
 
-	initLineHandler();
+	initLineHandler(mElementImpl->shapeType());
+	initShapeTypeMenu();
 }
 
 EdgeElement::~EdgeElement()
@@ -98,14 +101,14 @@ void EdgeElement::initTitles()
 	updateLongestPart();
 }
 
-void EdgeElement::initLineHandler()
+void EdgeElement::initLineHandler(linkShape::LinkShape const &shapeType)
 {
 	delete mHandler;
-	switch(SettingsManager::value("LineType").toInt()) {
-	case brokenLine:
+	switch(shapeType) {
+	case linkShape::broken:
 		mHandler = new BrokenLine(this);
 		break;
-	case curveLine:
+	case linkShape::curve:
 		mHandler = new CurveLine(this);
 		break;
 	default:
@@ -113,6 +116,22 @@ void EdgeElement::initLineHandler()
 	}
 
 	mHandler->connectAction(&mReverseAction, this, SLOT(reverse()));
+}
+
+void EdgeElement::initShapeTypeMenu()
+{
+	QMenu *menu = new QMenu();
+
+	QAction *brokenLine = menu->addAction("Broken");
+	connect(brokenLine, SIGNAL(triggered()), this, SLOT(setBrokenLine()));
+
+	QAction *squareLine = menu->addAction("Square");
+	connect(squareLine, SIGNAL(triggered()), this, SLOT(setSquareLine()));
+
+	QAction *curveLine = menu->addAction("Curve");
+	connect(curveLine, SIGNAL(triggered()), this, SLOT(setCurveLine()));
+
+	mChangeShapeAction.setMenu(menu);
 }
 
 QRectF EdgeElement::boundingRect() const
@@ -169,14 +188,15 @@ void EdgeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 void EdgeElement::paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *option, bool drawSavedLine) const
 {
 	painter->save();
+
 	if (drawSavedLine) {
 		QColor color = QColor(SettingsManager::value("oldLineColor").toString());
 		setEdgePainter(painter, edgePen(painter, color, Qt::DashDotLine, mPenWidth), 0.5);
 	} else {
 		setEdgePainter(painter, edgePen(painter, mColor, mPenStyle, mPenWidth), painter->opacity());
 	}
+
 	mHandler->drawLine(painter, drawSavedLine);
-	painter->restore();
 
 	drawArrows(painter, drawSavedLine);
 
@@ -184,6 +204,8 @@ void EdgeElement::paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *o
 		painter->setBrush(Qt::SolidPattern);
 		mHandler->drawPorts(painter);
 	}
+
+	painter->restore();
 }
 
 void EdgeElement::drawArrows(QPainter *painter, bool savedLine) const
@@ -646,10 +668,14 @@ NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, No
 QList<ContextMenuAction*> EdgeElement::contextMenuActions(QPointF const &pos)
 {
 	QList<ContextMenuAction*> result;
+
+	result.push_back(&mChangeShapeAction);
 	if (reverseActionIsPossible()) {
 		result.push_back(&mReverseAction);
 	}
+
 	result.append(mHandler->extraActions(pos));
+
 	return result;
 }
 
@@ -981,9 +1007,24 @@ void EdgeElement::highlight(QColor const color)
 	update();
 }
 
-void EdgeElement::changeLineType()
+void EdgeElement::setSquareLine()
 {
-	initLineHandler();
+	changeShapeType(linkShape::square);
+}
+
+void EdgeElement::setBrokenLine()
+{
+	changeShapeType(linkShape::broken);
+}
+
+void EdgeElement::setCurveLine()
+{
+	changeShapeType(linkShape::curve);
+}
+
+void EdgeElement::changeShapeType(linkShape::LinkShape const &shapeType)
+{
+	initLineHandler(shapeType);
 	layOut();
 }
 

@@ -8,6 +8,7 @@
 #include "mainwindow/mainWindow.h"
 
 using namespace qReal;
+using namespace enums::linkShape;
 
 PreferencesEditorPage::PreferencesEditorPage(QAction * const showGridAction, QAction * const showAlignmentAction
 		, QAction * const activateGridAction, QAction * const activateAlignmentAction, QWidget *parent)
@@ -166,7 +167,7 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->enableResizeLabelsCheckBox->setChecked(SettingsManager::value("ResizeLabels").toBool());
 	mUi->labelDistanceSlider->setValue(SettingsManager::value("LabelsDistance").toInt());
 
-	LineType type = static_cast<LineType>(SettingsManager::value("LineType", brokenLine).toInt());
+	LinkShape type = static_cast<LinkShape>(SettingsManager::value("LineType", square).toInt());
 	mUi->lineMode->setCurrentIndex(type);
 
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());
