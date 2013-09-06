@@ -14,6 +14,17 @@
 #include "editorPluginInterface/sdfRendererInterface.h"
 #include "editorPluginInterface/portHelpers.h"
 
+namespace enums {
+namespace linkShape {
+enum LinkShape
+{
+	broken
+	, square
+	, curve
+};
+}
+}
+
 namespace qReal {
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
@@ -56,6 +67,8 @@ public:
 
 	virtual QStringList fromPortTypes() const = 0;
 	virtual QStringList toPortTypes() const = 0;
+
+	virtual enums::linkShape::LinkShape shapeType() const = 0;
 
 	virtual bool isPort() const = 0;
 	virtual bool hasPin() const = 0;

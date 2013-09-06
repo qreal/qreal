@@ -292,9 +292,14 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	if (mApi.stringProperty(id, "lineType") != "") {
 		QDomElement graphics = mDocument.createElement("graphics");
 		edge.appendChild(graphics);
+
 		QDomElement lineType = mDocument.createElement("lineType");
 		ensureCorrectness(id, lineType, "type", mApi.stringProperty(id, "lineType"));
 		graphics.appendChild(lineType);
+
+		QDomElement shapeType = mDocument.createElement("shape");
+		ensureCorrectness(id, shapeType, "type", mApi.stringProperty(id, "shape"));
+		graphics.appendChild(shapeType);
 
 		QString const labelText = mApi.stringProperty(id, "labelText");
 		if (!labelText.isEmpty()) {
