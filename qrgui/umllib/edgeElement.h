@@ -2,7 +2,6 @@
 
 #include <QtCore/QList>
 #include <QtCore/QPair>
-#include <QtWidgets/QMenu>
 
 #include "umllib/element.h"
 #include "editorPluginInterface/elementImpl.h"
@@ -111,7 +110,7 @@ public:
 	EdgeData& data();
 
 	/// Change link type and redraw it
-	void changeShapeType(enums::linkShape::LinkShape const &shapeType);
+	void changeShapeType(const enums::linkShape::LinkShape shapeType);
 
 	/// Save link position to the repo
 	void setGraphicApiPos();
@@ -154,7 +153,7 @@ private slots:
 	void setCurveLine();
 
 private:
-	void initLineHandler(enums::linkShape::LinkShape const &shapeType);
+	void initLineHandler();
 
 	int indentReductCoeff();
 	/// Set mPortTo to next port.
@@ -180,6 +179,8 @@ private:
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
 	void initShapeTypeMenu();
+	QString shapeToString(enums::linkShape::LinkShape const shapeType) const;
+	enums::linkShape::LinkShape stringToShape(QString const &string) const;
 
 	QList<PossibleEdge> mPossibleEdges;
 

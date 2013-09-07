@@ -1397,7 +1397,7 @@ void EditorViewScene::updateEdgeElements()
 		EdgeElement* element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
 			element->changeShapeType(static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType"
-					, enums::linkShape::square).toInt()));
+					, enums::linkShape::unset).toInt()));
 			if (SettingsManager::value("ActivateGrid").toBool()) {
 				element->alignToGrid();
 			}

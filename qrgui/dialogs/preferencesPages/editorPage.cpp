@@ -114,7 +114,7 @@ void PreferencesEditorPage::save()
 {
 	SettingsManager::setValue("EmbeddedLinkerIndent", mUi->embeddedLinkerIndentSlider->value());
 	SettingsManager::setValue("EmbeddedLinkerSize", mUi->embeddedLinkerSizeSlider->value());
-	SettingsManager::setValue("LineType", mUi->lineMode->currentIndex());
+	SettingsManager::setValue("LineType", mUi->lineMode->currentIndex() - 1);
 	SettingsManager::setValue("LoopEdgeBoundsIndent", mUi->loopEdgeBoundsIndent->value());
 	SettingsManager::setValue("zoomFactor", mUi->zoomFactorSlider->value());
 	SettingsManager::setValue("ShowGrid", mUi->showGridCheckBox->isChecked());
@@ -167,8 +167,8 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->enableResizeLabelsCheckBox->setChecked(SettingsManager::value("ResizeLabels").toBool());
 	mUi->labelDistanceSlider->setValue(SettingsManager::value("LabelsDistance").toInt());
 
-	LinkShape type = static_cast<LinkShape>(SettingsManager::value("LineType", square).toInt());
-	mUi->lineMode->setCurrentIndex(type);
+	LinkShape type = static_cast<LinkShape>(SettingsManager::value("LineType", unset).toInt());
+	mUi->lineMode->setCurrentIndex(type + 1);
 
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());
 	mUi->fontSelectionButton->setVisible(SettingsManager::value("CustomFont").toBool());

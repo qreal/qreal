@@ -80,7 +80,7 @@ EdgeElement::EdgeElement(
 		mLabels.append(title);
 	}
 
-	initLineHandler(mElementImpl->shapeType());
+	initLineHandler();
 	initShapeTypeMenu();
 }
 
@@ -101,10 +101,21 @@ void EdgeElement::initTitles()
 	updateLongestPart();
 }
 
-void EdgeElement::initLineHandler(linkShape::LinkShape const &shapeType)
+void EdgeElement::initLineHandler()
 {
 	delete mHandler;
-	switch(shapeType) {
+
+	linkShape::LinkShape shape = static_cast<linkShape::LinkShape>(SettingsManager::value("LineType"
+			, linkShape::unset).toInt());
+	if (shape == linkShape::unset) {
+		QString shapeString = mGraphicalAssistApi.property("linkShape").toString();
+		shape = stringToShape(shapeString);
+		if (shape == linkShape::unset) {
+			shape = mElementImpl->shapeType();
+		}
+	}
+
+	switch(shape) {
 	case linkShape::broken:
 		mHandler = new BrokenLine(this);
 		break;
@@ -669,7 +680,10 @@ QList<ContextMenuAction*> EdgeElement::contextMenuActions(QPointF const &pos)
 {
 	QList<ContextMenuAction*> result;
 
-	result.push_back(&mChangeShapeAction);
+	if (SettingsManager::value("LineType", linkShape::unset).toInt() == linkShape::unset) {
+		result.push_back(&mChangeShapeAction);
+	}
+
 	if (reverseActionIsPossible()) {
 		result.push_back(&mReverseAction);
 	}
@@ -1022,12 +1036,37 @@ void EdgeElement::setCurveLine()
 	changeShapeType(linkShape::curve);
 }
 
-void EdgeElement::changeShapeType(linkShape::LinkShape const &shapeType)
+void EdgeElement::changeShapeType(linkShape::LinkShape const shapeType)
 {
-	initLineHandler(shapeType);
+	mGraphicalAssistApi.setProperty("linkShape", shapeToString(shapeType));
+	initLineHandler();
 	layOut();
 }
 
+QString EdgeElement::shapeToString(linkShape::LinkShape const shapeType) const
+{
+	switch (shapeType) {
+	case linkShape::broken:
+		return "broken";
+	case linkShape::curve:
+		return "curve";
+	default:
+		return "square";
+	}
+}
+
+linkShape::LinkShape EdgeElement::stringToShape(QString const &string) const
+{
+	if (string == "broken") {
+		return linkShape::broken;
+	} else if (string == "square") {
+		return linkShape::square;
+	} else if (string == "curve") {
+		return linkShape::curve;
+	} else {
+		return linkShape::unset;
+	}
+}
 
 EdgeData& EdgeElement::data()
 {
