@@ -74,20 +74,23 @@ void SquareLine::adjustEnd()
 	QPolygonF line = mEdge->line();
 
 	if ((qAbs(line[line.count() - 1].x() - line[line.count() - 2].x()) < epsilon)
-			|| qAbs(line[line.count() - 1].y() - line[line.count() - 2].y()) < epsilon) {
+			|| qAbs(line[line.count() - 1].y() - line[line.count() - 2].y()) < epsilon)
+	{
 		return;
 	}
 
 	if ((line[line.count() - 2] == line[line.count() - 3]) && (line.count() > 3)) {
 		if (qAbs(line[line.count() - 3].x() - line[line.count() - 4].x())
-				< qAbs(line[line.count() - 3].y() - line[line.count() - 4].y())) {
+				< qAbs(line[line.count() - 3].y() - line[line.count() - 4].y()))
+		{
 			line[line.count() - 2].setX(line[line.count() - 1].x());
 		} else {
 			line[line.count() - 2].setY(line[line.count() - 1].y());
 		}
 	} else {
 		if (qAbs(line[line.count() - 2].y() - line[line.count() - 3].y())
-				< qAbs(line[line.count() - 2].x() - line[line.count() - 3].x())) {
+				< qAbs(line[line.count() - 2].x() - line[line.count() - 3].x()))
+		{
 			line[line.count() - 2].setX(line[line.count() - 1].x());
 		} else {
 			line[line.count() - 2].setY(line[line.count() - 1].y());
@@ -99,7 +102,7 @@ void SquareLine::adjustEnd()
 
 void SquareLine::moveSegment(QPointF const &oldPos, QPointF const &newPos)
 {
-	int segmentNumber = defineSegment(oldPos);
+	int const segmentNumber = defineSegment(oldPos);
 	if ((segmentNumber <= 0) || (segmentNumber >= mEdge->line().count() - 2)) {
 		return;
 	}
@@ -148,6 +151,7 @@ void SquareLine::deleteShortSegments()
 				} else {
 					line[i - 1] = QPointF(line[i - 1].x(), line[i + 1].y());
 				}
+
 				line.remove(i, 2);
 				i--;
 			} else if (i != line.size() - 3) {
@@ -157,6 +161,7 @@ void SquareLine::deleteShortSegments()
 				} else {
 					line[i + 2] = QPointF(line[i + 2].x(), line[i].y());
 				}
+
 				line.remove(i, 2);
 				i--;
 			}
@@ -201,8 +206,9 @@ bool SquareLine::intersects(QLineF const &line, NodeElement *node) const
 	bool const isLineVertical = qAbs(line.x1() - line.x2()) < epsilon;
 	int const side = mEdge->defineNodePortSide(node == mEdge->src());
 
-	if ((isLineVertical && ((side == EdgeElement::left) || (side == EdgeElement::right)))
-			|| (!isLineVertical && ((side == EdgeElement::top) || (side == EdgeElement::bottom)))) {
+	if ((isLineVertical && (side == EdgeElement::left || side == EdgeElement::right))
+			|| (!isLineVertical && (side == EdgeElement::top || side == EdgeElement::bottom)))
+	{
 		return true;
 	}
 
@@ -350,7 +356,7 @@ void SquareLine::createVerticalInnerLine(QPolygonF &line, bool correctSrc, bool 
 
 void SquareLine::verticalInnerLine(QPolygonF &line) const
 {
-	QPair<qreal, qreal> space = verticalIntermediateSpace();
+	QPair<qreal, qreal> const space = verticalIntermediateSpace();
 	if (space.first < space.second) {
 		verticalSquareLine(line, (space.first + space.second) / 2);
 	} else {
@@ -360,7 +366,7 @@ void SquareLine::verticalInnerLine(QPolygonF &line) const
 
 void SquareLine::horizontalInnerLine(QPolygonF &line) const
 {
-	QPair<qreal, qreal> space = horizontalIntermediateSpace();
+	QPair<qreal, qreal> const space = horizontalIntermediateSpace();
 	if (space.first < space.second) {
 		horizontalSquareLine(line, (space.first + space.second) / 2);
 	} else {

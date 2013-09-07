@@ -27,7 +27,7 @@ HEADERS += \
 	$$PWD/private/squareLine.h \
 	$$PWD/private/brokenLine.h \
 	$$PWD/private/curveLine.h \
-	$$PWD/private/edgeArrangeCriteria.h
+	$$PWD/private/edgeArrangeCriteria.h \
 
 SOURCES += \
 	$$PWD/edgeElement.cpp \
@@ -58,7 +58,7 @@ SOURCES += \
 	$$PWD/private/squareLine.cpp \
 	$$PWD/private/brokenLine.cpp \
 	$$PWD/private/curveLine.cpp \
-	$$PWD/private/edgeArrangeCriteria.cpp
+	$$PWD/private/edgeArrangeCriteria.cpp \
 
 RESOURCES += \
 	$$PWD/contextIcons.qrc \

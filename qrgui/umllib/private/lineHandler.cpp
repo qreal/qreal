@@ -131,24 +131,25 @@ void LineHandler::connectAndArrange(bool reconnectSrc, bool reconnectDst)
 
 void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
 {
-	NodeElement *src = mEdge->src();
-	NodeElement *dst = mEdge->dst();
+	NodeElement const * const src = mEdge->src();
+	NodeElement const * const dst = mEdge->dst();
 
 	if (src && reconnectSrc) {
 		int const targetLinePoint = firstOutsidePoint(true);
-		qreal newFrom = src->portId(mEdge->mapToItem(src, mEdge->line()[targetLinePoint]), mEdge->fromPortTypes());
+		qreal const newFrom = src->portId(mEdge->mapToItem(src, mEdge->line()[targetLinePoint]), mEdge->fromPortTypes());
 		mEdge->setFromPort(newFrom);
 	}
+
 	if (dst && reconnectDst) {
 		int const targetLinePoint = firstOutsidePoint(false);
-		qreal newTo = dst->portId(mEdge->mapToItem(dst, mEdge->line()[targetLinePoint]), mEdge->toPortTypes());
+		qreal const newTo = dst->portId(mEdge->mapToItem(dst, mEdge->line()[targetLinePoint]), mEdge->toPortTypes());
 		mEdge->setToPort(newTo);
 	}
 }
 
 int LineHandler::firstOutsidePoint(bool startFromSrc) const
 {
-	NodeElement *node = startFromSrc ? mEdge->src() : mEdge->dst();
+	NodeElement const * const node = startFromSrc ? mEdge->src() : mEdge->dst();
 	if (!node) {
 		return 0;
 	}
@@ -235,11 +236,9 @@ void LineHandler::deleteLoops()
 
 void LineHandler::deleteLoop(QPolygonF &line, int startPos)
 {
-	for (int i = startPos; i < line.size() - 3; ++i)
-	{
+	for (int i = startPos; i < line.size() - 3; ++i) {
 		bool isCut = false;
-		for (int j = i + 2; j < line.size() - 1; ++j)
-		{
+		for (int j = i + 2; j < line.size() - 1; ++j) {
 			QPointF cut;
 			if (QLineF(line[i], line[i + 1]).intersect(QLineF(line[j], line[j + 1]), &cut)
 					== QLineF::BoundedIntersection)
@@ -258,6 +257,7 @@ void LineHandler::deleteLoop(QPolygonF &line, int startPos)
 							break;
 						}
 					}
+
 					line.remove(i + 2, j - i);
 					deleteLoop(line, i);
 					isCut = true;
@@ -265,8 +265,10 @@ void LineHandler::deleteLoop(QPolygonF &line, int startPos)
 				}
 			}
 		}
-		if (isCut)
+
+		if (isCut) {
 			break;
+		}
 	}
 }
 
@@ -276,12 +278,12 @@ void LineHandler::alignToGrid()
 
 bool LineHandler::checkPort(QPointF const &pos, bool isStart) const
 {
-	NodeElement *node = mEdge->getNodeAt(pos, isStart);
+	NodeElement const * const node = mEdge->getNodeAt(pos, isStart);
 	if (!node) {
 		return true;
 	}
 
-	qreal port = node->portId(mEdge->mapToItem(node, pos), isStart ? mEdge->fromPortTypes() : mEdge->toPortTypes());
+	qreal const port = node->portId(mEdge->mapToItem(node, pos), isStart ? mEdge->fromPortTypes() : mEdge->toPortTypes());
 	if (port < 0) {
 		return true;
 	}
@@ -293,7 +295,7 @@ bool LineHandler::checkPort(QPointF const &pos, bool isStart) const
 
 bool LineHandler::nodeChanged(bool isStart) const
 {
-	NodeElement *node = mEdge->getNodeAt(isStart ? mEdge->line().first() : mEdge->line().last(), isStart);
+	NodeElement const * const node = mEdge->getNodeAt(isStart ? mEdge->line().first() : mEdge->line().last(), isStart);
 	return isStart ? (node != mEdge->src()) : (node != mEdge->dst());
 }
 
@@ -318,8 +320,8 @@ void LineHandler::drawPort(QPainter *painter, int portNumber)
 	Q_UNUSED(portNumber)
 
 	QPen pen;
-	QPointF p1(-0.25,0);
-	QPointF p2(0.25,0);
+	QPointF const p1(-0.25, 0);
+	QPointF const p2(0.25, 0);
 
 	QColor const portColor("#465945");
 	QColor const highlightColor("#c3dcc4");

@@ -33,12 +33,14 @@ protected:
 	/// If link reshaping is started on a segment, move that segment to position pos (in link's local coordinates)
 	/// If user is trying to move port, do it. Otherwise do nothing
 	virtual void handleEdgeMove(QPointF const &pos);
+
 	/// Move segment at point oldPos to newPos, keeping the link square
 	void moveSegment(QPointF const &oldPos, QPointF const &newPos);
 
 	/// Remove loops, too short segments and coinciding points,
 	/// ensure that link doesn't intersect adjacent nodes and stays square
 	virtual void improveAppearance();
+
 	/// Delete very short (non-end) segments
 	void deleteShortSegments();
 
@@ -47,8 +49,10 @@ protected:
 
 	/// Ensure that both end segments are strict
 	void adjustEndSegments();
+
 	/// Ensure that first segment is strict
 	void adjustStart();
+
 	/// Ensure that last segment is strict
 	void adjustEnd();
 
@@ -56,11 +60,13 @@ protected:
 	bool needCorrect() const;
 	bool needCorrectSrc() const;
 	bool needCorrectDst() const;
+
 	/// Determine whether given line intersects given node
 	bool intersects(QLineF const &line, NodeElement *node) const;
 
 	/// Make the link square, ensure it doesn't intersect adjacent nodes
 	void squarize();
+
 	/// Define the type of square link configuration
 	LineType defineType() const;
 
@@ -91,12 +97,14 @@ protected:
 	/// If there is some space (horizontal lane) between src and dst return bounds of this lane.
 	/// Otherwise, the first element of return value would be greater than the second.
 	QPair<qreal, qreal> verticalIntermediateSpace() const;
+
 	/// If there is some space (vertical lane) between src and dst return bounds of this lane.
 	/// Otherwise, the first element of return value would be greater than the second.
 	QPair<qreal, qreal> horizontalIntermediateSpace() const;
 
 	/// @return link src's contents rectangle in link's coordinates
 	QRectF srcRect() const;
+
 	/// @return link dst's contents rectangle in link's coordinates
 	QRectF dstRect() const;
 

@@ -213,7 +213,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 				}
 			}
 
-			EdgeElement *edgeElem = dynamic_cast<EdgeElement *>(elem);
+			EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem);
 			if (edgeElem) {
 				edgeElem->layOut();
 			}

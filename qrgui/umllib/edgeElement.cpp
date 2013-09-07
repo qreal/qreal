@@ -144,14 +144,14 @@ qreal EdgeElement::toPort() const
 	return mPortTo;
 }
 
-void EdgeElement::setFromPort(qreal const &fromPort)
+void EdgeElement::setFromPort(qreal const fromPort)
 {
 	mPortFrom = fromPort;
 	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi.setFromPort(id(), mPortFrom);
 }
 
-void EdgeElement::setToPort(qreal const &toPort)
+void EdgeElement::setToPort(qreal const toPort)
 {
 	mPortTo = toPort;
 	mModelUpdateIsCalled = true;
@@ -172,7 +172,7 @@ void EdgeElement::paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *o
 	painter->save();
 
 	if (drawSavedLine) {
-		QColor color = QColor(SettingsManager::value("oldLineColor").toString());
+		QColor const color = QColor(SettingsManager::value("oldLineColor").toString());
 		setEdgePainter(painter, edgePen(painter, color, Qt::DashDotLine, mPenWidth), 0.5);
 	} else {
 		setEdgePainter(painter, edgePen(painter, mColor, mPenStyle, mPenWidth), painter->opacity());
@@ -196,7 +196,7 @@ void EdgeElement::drawArrows(QPainter *painter, bool savedLine) const
 	painter->save();
 
 	if (savedLine) {
-		QColor color = QColor(SettingsManager::value("oldLineColor").toString());
+		QColor const color = QColor(SettingsManager::value("oldLineColor").toString());
 		setEdgePainter(painter, edgePen(painter, color, Qt::SolidLine, 3), 0.5);
 	} else {
 		setEdgePainter(painter, edgePen(painter, mColor, style, 3), painter->opacity());
@@ -608,7 +608,7 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 		return innermostChild(items, mDst);
 	}
 
-	foreach (QGraphicsItem *item, items) {
+	foreach (QGraphicsItem * const item, items) {
 		NodeElement * const e = dynamic_cast<NodeElement *>(item);
 		if (e) {
 			NodeElement * const innerChild = innermostChild(items, e);
@@ -670,9 +670,7 @@ void EdgeElement::reverse()
 {
 	int const length = mLine.size();
 	for (int i = 0; i < length / 2; ++i) {
-		QPointF tmp(mLine[i]);
-		mLine[i] = mLine[length - 1 - i];
-		mLine[length - 1 - i] = tmp;
+		qSwap(mLine[i], mLine[length - 1 - i]);
 	}
 
 	reversingReconnectToPorts(mDst, mSrc);

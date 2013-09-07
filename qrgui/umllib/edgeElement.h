@@ -84,8 +84,8 @@ public:
 
 	qreal fromPort() const;
 	qreal toPort() const;
-	void setFromPort(qreal const &fromPort);
-	void setToPort(qreal const &toPort);
+	void setFromPort(qreal const fromPort);
+	void setToPort(qreal const toPort);
 
 	QStringList fromPortTypes() const;
 	QStringList toPortTypes() const;
@@ -115,6 +115,7 @@ public:
 
 	/// Save link position to the repo
 	void setGraphicApiPos();
+
 	/// Save link configuration to the repo
 	void saveConfiguration();
 
@@ -163,7 +164,7 @@ private:
 	QPointF boundingRectIndent(QPointF const &point, NodeSide direction);
 
 	/// Returns true, if the sides adjacent.
-	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const;
+	bool isNeighbor(NodeSide const &startSide, NodeSide const &endSide) const;
 
 	/// Returns the next clockwise side.
 	NodeSide rotateRight(NodeSide side) const;
