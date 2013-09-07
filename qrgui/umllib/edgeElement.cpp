@@ -108,7 +108,7 @@ void EdgeElement::initLineHandler()
 	linkShape::LinkShape shape = static_cast<linkShape::LinkShape>(SettingsManager::value("LineType"
 			, linkShape::unset).toInt());
 	if (shape == linkShape::unset) {
-		QString shapeString = mGraphicalAssistApi.property("linkShape").toString();
+		QString shapeString = mGraphicalAssistApi.mutableGraphicalRepoApi().property(id(), "linkShape").toString();
 		shape = stringToShape(shapeString);
 		if (shape == linkShape::unset) {
 			shape = mElementImpl->shapeType();
@@ -1038,7 +1038,7 @@ void EdgeElement::setCurveLine()
 
 void EdgeElement::changeShapeType(linkShape::LinkShape const shapeType)
 {
-	mGraphicalAssistApi.setProperty("linkShape", shapeToString(shapeType));
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape", shapeToString(shapeType));
 	initLineHandler();
 	layOut();
 }
