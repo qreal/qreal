@@ -697,7 +697,6 @@ bool ExpressionsParser::isFunction(QString const &variable)
 			|| variable == "sgn"
 			|| variable == "sqrt"
 			|| variable == "abs"
-			|| variable == "abs"
 			|| variable == "random"
 			;
 }
