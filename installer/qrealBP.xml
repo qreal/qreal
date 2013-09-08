@@ -11,6 +11,7 @@
     <vendor>MobTech</vendor>
     <disableSplashScreen>1</disableSplashScreen>
     <componentList>
+        <include file="qRealBase.xml" />
         <component>
             <name>default</name>
             <description>Default Component</description>
@@ -41,16 +42,6 @@
                     </shortcutList>
                 </folder>
                 <folder>
-                    <destination>${installdir}/sqldrivers</destination>
-                    <name>sqldriverswindows</name>
-                    <platforms>windows</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>%2/../plugins/sqldrivers/qsqlite.dll</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-                <folder>
                     <destination>${installdir}/platforms</destination>
                     <name>platformswindows</name>
                     <platforms>windows</platforms>
@@ -63,27 +54,9 @@
                 <folder>
                     <description>Program Files</description>
                     <destination>${installdir}</destination>
-                    <name>programfileslinux</name>
-                    <platforms>linux</platforms>
-                </folder>
-                <folder>
-                    <description>Program Files</description>
-                    <destination>${installdir}</destination>
                     <name>programfileswindows</name>
                     <platforms>windows</platforms>
                     <distributionFileList>
-                        <distributionFile>
-                            <origin>%1/bin/qrgui.exe</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/bin/qrkernel.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/bin/qrrepo.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/bin/qrutils.dll</origin>
-                        </distributionFile>
                         <distributionDirectory>
                             <origin>%1/bin/plugins</origin>
                         </distributionDirectory>
@@ -95,69 +68,6 @@
                         </distributionDirectory>
                         <distributionFile>
                             <origin>%1/bin/changelog.txt</origin>
-                        </distributionFile>
-                         <distributionFile>
-                            <origin>%2/Qt5Network.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/Qt5CLucene.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/Qt5Help.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/Qt5Sql.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/Qt5Core.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/Qt5Gui.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/Qt5Widgets.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/Qt5Svg.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/Qt5Xml.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/Qt5PrintSupport.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/icuin49.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/libgcc_s_sjlj-1.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/libwinpthread-1.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/libstdc++-6.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/icuuc49.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/icudt49.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/libGLESv2.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/libEGL.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%2/D3DCompiler_43.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/installer/icon.ico</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>%1/bin/Pfennig.ttf</origin>
                         </distributionFile>
                     </distributionFileList>
                     <shortcutList>
