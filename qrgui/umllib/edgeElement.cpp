@@ -1745,13 +1745,13 @@ QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2,
 
 void EdgeElement::disconnectFromNode(Id const &nodeLogicalId)
 {
-	if (mLogicalAssistApi->to(logicalId()) == nodeLogicalId) {
-		mLogicalAssistApi->setTo(logicalId(), Id::rootId());
+	if (mLogicalAssistApi.to(logicalId()) == nodeLogicalId) {
+		mLogicalAssistApi.setTo(logicalId(), Id::rootId());
 		mDst = NULL;
 	}
 
-	if (mLogicalAssistApi->from(logicalId()) == nodeLogicalId) {
-		mLogicalAssistApi->setFrom(logicalId(), Id::rootId());
+	if (mLogicalAssistApi.from(logicalId()) == nodeLogicalId) {
+		mLogicalAssistApi.setFrom(logicalId(), Id::rootId());
 		mSrc = NULL;
 	}
 }

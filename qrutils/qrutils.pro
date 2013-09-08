@@ -9,3 +9,5 @@ RCC_DIR = .moc
 TRANSLATIONS = $$PWD/qrutils_ru.ts
 
 include(qrutils.pri)
+
+include(generatorsUtils/generatorsUtils.pri)

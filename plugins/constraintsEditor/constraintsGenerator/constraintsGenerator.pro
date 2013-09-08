@@ -2,6 +2,10 @@ TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../../bin/plugins/
 
+INCLUDEPATH += \
+	$$PWD/../../.. \
+	$$PWD/../../../qrgui/ \
+
 QT += widgets
 
 LIBS += -L../../../bin -lqrkernel -lqrutils

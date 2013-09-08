@@ -13,11 +13,11 @@ GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerI
 	: AbstractModel(editorManagerInterface, constraintsManager)
 	, mLogicalModelView(this)
 	, mApi(*repoApi)
-	
+	, mGraphicalAssistApi(NULL)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	init();
-	mGraphicalAssistApi = new GraphicalModelAssistApi(NULL, editorManagerInterface, constraintsManager);
+//	mGraphicalAssistApi = new GraphicalModelAssistApi(NULL, NULL, editorManagerInterface, constraintsManager);//qwerty_asd
 }
 
 GraphicalModel::~GraphicalModel()

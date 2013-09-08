@@ -7,7 +7,7 @@ SUBDIRS	= \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 	constraintsEditor/constraintsEditor.pro \
-	constraintsAllMetamodels/constraintsAllMetamodels.pro \
+#	constraintsAllMetamodels/constraintsAllMetamodels.pro \
 #	constraintsTestConstraintsBlockMetamodel\constraintsTestConstraintsBlockMetamodel.pro \
 	requirements/requirements.pro \
 
@@ -18,7 +18,6 @@ SUBDIRS += \
 	exterminatus/exterminatus.pro \
 	visualInterpreter/visualInterpreter.pro \
 	refactoring/refactoring.pro \
-
 
 # QReal:Robots
 SUBDIRS += \

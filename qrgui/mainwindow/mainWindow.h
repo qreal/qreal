@@ -25,6 +25,7 @@
 #include "pluginManager/interpreterEditorManager.h"
 #include "pluginManager/proxyEditorManager.h"
 #include "pluginManager/toolPluginManager.h"
+#include "pluginManager/constraintsManager.h"
 #include "models/logicalModelAssistApi.h"
 #include "view/propertyEditorView.h"
 #include "controller/controller.h"

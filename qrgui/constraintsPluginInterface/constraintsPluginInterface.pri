@@ -1,8 +1,8 @@
 HEADERS += \
-	constraintsPluginInterface/constraintsPluginInterface.h \
-	constraintsPluginInterface/checkStatus.h
+	$$PWD/constraintsPluginInterface.h \
+	$$PWD/checkStatus.h
 
 SOURCES += \
-	constraintsPluginInterface/checkStatus.cpp
+	$$PWD/checkStatus.cpp
 
 

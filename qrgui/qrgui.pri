@@ -47,3 +47,6 @@ include(textEditor/textEditor.pri)
 
 # Hot Key Manager
 include(hotKeyManager/hotKeyManager.pri)
+
+# Interfaces for plugins with constraints
+include(constraintsPluginInterface/constraintsPluginInterface.pri)

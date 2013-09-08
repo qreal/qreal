@@ -1,7 +1,7 @@
 HEADERS += \
-	generatorsUtils/abstractGenerator.h \
-	generatorsUtils/nameNormalizer.h \
+	$$PWD/abstractGenerator.h \
+	$$PWD/nameNormalizer.h \
 
 SOURCES += \
-	generatorsUtils/abstractGenerator.cpp \
-	generatorsUtils/nameNormalizer.cpp \
+	$$PWD/abstractGenerator.cpp \
+	$$PWD/nameNormalizer.cpp \

@@ -7,17 +7,17 @@ Models::Models(QString const &workingCopy, EditorManagerInterface &editorManager
 {
 	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingCopy);
 	mGraphicalModel = new models::details::GraphicalModel(repoApi, editorManager, constraintsManager);
-	mGraphicalPartModel = new models::details::GraphicalPartModel(*repoApi, *mGraphicalModel, constraintsManager);
+	mGraphicalPartModel = new models::details::GraphicalPartModel(*repoApi, *mGraphicalModel);
 
 	GraphicalModelAssistApi * const graphicalAssistApi
-			= new GraphicalModelAssistApi(*mGraphicalModel, *mGraphicalPartModel, editorManager);
+			= new GraphicalModelAssistApi(*mGraphicalModel, *mGraphicalPartModel, editorManager, constraintsManager);
 
 	mGraphicalModel->setAssistApi(graphicalAssistApi);
 
 	QObject::connect(mGraphicalModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int))
 			, mGraphicalPartModel, SLOT(rowsAboutToBeRemovedInGraphicalModel(QModelIndex, int, int)));
 
-	mLogicalModel = new models::details::LogicalModel(repoApi, editorManager);
+	mLogicalModel = new models::details::LogicalModel(repoApi, editorManager, constraintsManager);
 	mRepoApi = repoApi;
 
 	mLogicalModel->connectToGraphicalModel(mGraphicalModel);

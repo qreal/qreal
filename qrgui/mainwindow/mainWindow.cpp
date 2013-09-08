@@ -1,4 +1,4 @@
-#include "mainWindow.h"
+п»ї#include "mainWindow.h"
 #include "ui_mainWindow.h"
 
 #include <QtCore/QProcess>
@@ -100,7 +100,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	splashScreen.setProgress(40);
 
 	initDocks();
-	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -132,11 +131,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	}
 	splashScreen.close();
 
-<<<<<<< .mine
 	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy, mConstraintsManager);
-=======
 
->>>>>>> .theirs
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
 	connectActions();
@@ -146,13 +142,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// here then we have some problems with correct main window initialization
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
-<<<<<<< .mine
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));
-
-=======
-	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));
-}
->>>>>>> .theirs
 
 	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));
 	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex)), this, SLOT(checkConstraints(QModelIndex)));
@@ -656,11 +646,11 @@ void MainWindow::deleteItems(IdList &itemsToDelete, bool global)
 	/*foreach (NodeElement *item, itemsToArrangeLinks) { // qwerty_old
 		if (item) {
 			item->arrangeLinks();
-			checkConstraints(item->logicalId());//проверяем на ограничения связанные элементы удаляемого линка в логической модели
+			checkConstraints(item->logicalId());//РїСЂРѕРІРµСЂСЏРµРј РЅР° РѕРіСЂР°РЅРёС‡РµРЅРёСЏ СЃРІСЏР·Р°РЅРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ СѓРґР°Р»СЏРµРјРѕРіРѕ Р»РёРЅРєР° РІ Р»РѕРіРёС‡РµСЃРєРѕР№ РјРѕРґРµР»Рё
 		}
 	}
 	if (parentIndex != mModels->logicalModelAssistApi().indexById(Id::rootId())) {
-		checkConstraints(parentIndex);//проверяем на ограничения родителя удаляемого элемента в логической модели
+		checkConstraints(parentIndex);//РїСЂРѕРІРµСЂСЏРµРј РЅР° РѕРіСЂР°РЅРёС‡РµРЅРёСЏ СЂРѕРґРёС‚РµР»СЏ СѓРґР°Р»СЏРµРјРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РІ Р»РѕРіРёС‡РµСЃРєРѕР№ РјРѕРґРµР»Рё
 	}*/
 }
 
