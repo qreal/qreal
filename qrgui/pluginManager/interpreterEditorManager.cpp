@@ -15,6 +15,8 @@
 #include "pluginManager/interpreterElementImpl.h"
 #include "mainwindow/mainWindow.h"
 
+#include "../../qrutils/nameNormalizer.h"
+
 using namespace qReal;
 using namespace utils;
 
