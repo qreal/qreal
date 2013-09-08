@@ -1394,7 +1394,7 @@ void EditorViewScene::cropToItems()
 void EditorViewScene::updateEdgeElements()
 {
 	foreach (QGraphicsItem *item, items()) {
-		EdgeElement* element = dynamic_cast<EdgeElement*>(item);
+		EdgeElement *const element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
 			enums::linkShape::LinkShape const shape
 					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType"

@@ -13,9 +13,8 @@
 #include "umllib/labelFactory.h"
 #include "view/editorViewScene.h"
 
-#include "umllib/private/brokenLine.h"
-#include "umllib/private/squareLine.h"
-#include "umllib/private/curveLine.h"
+#include "umllib/private/lineFactory.h"
+#include "umllib/private/lineHandler.h"
 
 using namespace qReal;
 using namespace enums;
@@ -42,6 +41,7 @@ EdgeElement::EdgeElement(
 		, mPenColor(Qt::black)
 		, mSrc(NULL)
 		, mDst(NULL)
+		, mLineFactory(new LineFactory(this))
 		, mHandler(NULL)
 		, mPortFrom(0)
 		, mPortTo(0)
@@ -81,7 +81,7 @@ EdgeElement::EdgeElement(
 	}
 
 	initLineHandler();
-	initShapeTypeMenu();
+	mChangeShapeAction.setMenu(mLineFactory->shapeTypeMenu());
 }
 
 EdgeElement::~EdgeElement()
@@ -92,6 +92,7 @@ EdgeElement::~EdgeElement()
 		mDst->delEdge(this);
 
 	delete mElementImpl;
+	delete mLineFactory;
 	delete mHandler;
 }
 
@@ -103,48 +104,34 @@ void EdgeElement::initTitles()
 
 void EdgeElement::initLineHandler()
 {
-	delete mHandler;
+	updateShapeType();
 
+	delete mHandler;
+	mHandler = mLineFactory->createHandler(mShapeType);
+	mHandler->connectAction(&mReverseAction, this, SLOT(reverse()));
+}
+
+void EdgeElement::updateShapeType()
+{
 	mShapeType = static_cast<linkShape::LinkShape>(SettingsManager::value("LineType", linkShape::unset).toInt());
 
 	if (mShapeType == linkShape::unset) {
 		QString const shapeString
 				= mGraphicalAssistApi.mutableGraphicalRepoApi().property(id(), "linkShape").toString();
-		mShapeType = stringToShape(shapeString);
+		mShapeType = mLineFactory->stringToShape(shapeString);
 
 		if (mShapeType == linkShape::unset) {
 			mShapeType = mElementImpl->shapeType();
 		}
 	}
-
-	switch(mShapeType) {
-	case linkShape::broken:
-		mHandler = new BrokenLine(this);
-		break;
-	case linkShape::curve:
-		mHandler = new CurveLine(this);
-		break;
-	default:
-		mHandler = new SquareLine(this);
-	}
-
-	mHandler->connectAction(&mReverseAction, this, SLOT(reverse()));
 }
 
-void EdgeElement::initShapeTypeMenu()
+void EdgeElement::changeShapeType(linkShape::LinkShape const shapeType)
 {
-	QMenu *menu = new QMenu();
-
-	QAction * const brokenLine = menu->addAction("Broken");
-	connect(brokenLine, SIGNAL(triggered()), this, SLOT(setBrokenLine()));
-
-	QAction * const squareLine = menu->addAction("Square");
-	connect(squareLine, SIGNAL(triggered()), this, SLOT(setSquareLine()));
-
-	QAction * const curveLine = menu->addAction("Curve");
-	connect(curveLine, SIGNAL(triggered()), this, SLOT(setCurveLine()));
-
-	mChangeShapeAction.setMenu(menu);
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape"
+			, mLineFactory->shapeToString(shapeType));
+	initLineHandler();
+	layOut();
 }
 
 QRectF EdgeElement::boundingRect() const
@@ -1014,53 +1001,6 @@ void EdgeElement::highlight(QColor const color)
 {
 	mColor = color;
 	update();
-}
-
-void EdgeElement::setSquareLine()
-{
-	changeShapeType(linkShape::square);
-}
-
-void EdgeElement::setBrokenLine()
-{
-	changeShapeType(linkShape::broken);
-}
-
-void EdgeElement::setCurveLine()
-{
-	changeShapeType(linkShape::curve);
-}
-
-void EdgeElement::changeShapeType(linkShape::LinkShape const shapeType)
-{
-	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape", shapeToString(shapeType));
-	initLineHandler();
-	layOut();
-}
-
-QString EdgeElement::shapeToString(linkShape::LinkShape const shapeType) const
-{
-	switch (shapeType) {
-	case linkShape::broken:
-		return "broken";
-	case linkShape::curve:
-		return "curve";
-	default:
-		return "square";
-	}
-}
-
-linkShape::LinkShape EdgeElement::stringToShape(QString const &string) const
-{
-	if (string == "broken") {
-		return linkShape::broken;
-	} else if (string == "square") {
-		return linkShape::square;
-	} else if (string == "curve") {
-		return linkShape::curve;
-	} else {
-		return linkShape::unset;
-	}
 }
 
 EdgeData& EdgeElement::data()

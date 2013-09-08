@@ -10,6 +10,8 @@
 namespace qReal {
 
 class NodeElement;
+
+class LineFactory;
 class LineHandler;
 
 /** @class EdgeElement
@@ -148,12 +150,9 @@ protected:
 private slots:
 	void reverse();
 
-	void setSquareLine();
-	void setBrokenLine();
-	void setCurveLine();
-
 private:
 	void initLineHandler();
+	void updateShapeType();
 
 	int indentReductCoeff();
 	/// Set mPortTo to next port.
@@ -178,15 +177,12 @@ private:
 	bool canConnect(NodeElement const * const node, bool from) const;
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
-	void initShapeTypeMenu();
-	QString shapeToString(enums::linkShape::LinkShape const shapeType) const;
-	enums::linkShape::LinkShape stringToShape(QString const &string) const;
-
 	QList<PossibleEdge> mPossibleEdges;
 
 	NodeElement *mSrc;
 	NodeElement *mDst;
 
+	LineFactory *mLineFactory; // Takes ownership
 	LineHandler *mHandler; // Takes ownership
 
 	qreal mPortFrom;
