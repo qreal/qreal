@@ -282,9 +282,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GridParameters</name>
     <message>
-        <location filename="details/d2RobotModel/gridParameters.cpp" line="13"/>
-        <source>Show grid</source>
-        <translation>Сетка</translation>
+        <source>Show grid1</source>
+        <oldsource>Show grid</oldsource>
+        <translation type="obsolete">Сетка1</translation>
     </message>
 </context>
 <context>
@@ -442,6 +442,16 @@ p, li { white-space: pre-wrap; }
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
+        <location filename="customizer.cpp" line="57"/>
+        <source>Subprograms</source>
+        <translation>Подпрограммы</translation>
+    </message>
+    <message>
+        <location filename="customizer.cpp" line="62"/>
+        <source>The list of all declared subprograms in the project</source>
+        <translation>Список всех объявленных в проекте подпрограмм</translation>
+    </message>
+    <message>
         <source>Nxt display</source>
         <translation type="obsolete">Дисплей</translation>
     </message>
@@ -543,6 +553,20 @@ p, li { white-space: pre-wrap; }
         <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="93"/>
         <source>Collapse explosion</source>
         <translation>Схлопнуть эксплозию</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="98"/>
+        <source>Existing connections</source>
+        <translation>Существующие соединения</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="103"/>
+        <source>Elements from this group exist for reusing all created connections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show grid</source>
+        <translation type="obsolete">Сетка</translation>
     </message>
 </context>
 <context>
@@ -717,24 +741,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::Interpreter</name>
     <message>
-        <location filename="details/interpreter.cpp" line="89"/>
+        <location filename="details/interpreter.cpp" line="91"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="93"/>
+        <location filename="details/interpreter.cpp" line="95"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="195"/>
+        <location filename="details/interpreter.cpp" line="197"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="199"/>
+        <location filename="details/interpreter.cpp" line="201"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
+    </message>
+    <message>
+        <location filename="details/interpreter.cpp" line="266"/>
+        <source>Threads limit exceeded. Maximum threads count is %1</source>
+        <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
 </context>
 <context>
@@ -815,12 +844,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::Thread</name>
     <message>
-        <location filename="details/thread.cpp" line="60"/>
+        <location filename="details/thread.cpp" line="81"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="details/thread.cpp" line="65"/>
+        <location filename="details/thread.cpp" line="86"/>
         <source>Stack overflow</source>
         <translation>Переполнение стека</translation>
     </message>
@@ -1003,9 +1032,8 @@ p, li { white-space: pre-wrap; }
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="details/blocks/loopBlock.cpp" line="41"/>
         <source>iteration</source>
-        <translation>итерация</translation>
+        <translation type="obsolete">итерация</translation>
     </message>
     <message>
         <location filename="details/blocks/loopBlock.cpp" line="46"/>
@@ -1044,7 +1072,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::SubprogramBlock</name>
     <message>
-        <location filename="details/blocks/subprogramBlock.cpp" line="18"/>
+        <location filename="details/blocks/subprogramBlock.cpp" line="20"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
     </message>
@@ -1124,7 +1152,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForEncoderBlock</name>
     <message>
-        <location filename="details/blocks/waitForEncoderBlock.cpp" line="27"/>
+        <location filename="details/blocks/waitForEncoderBlock.cpp" line="28"/>
         <source>Encoder sensor is not configured on this port </source>
         <translation>Энкодер не сконфигурирован на этом порту</translation>
     </message>
@@ -1191,20 +1219,28 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="739"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="741"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="739"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="758"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="741"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="760"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="758"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="760"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
+    <message>
+        <source>Show grid</source>
+        <oldsource>Show grid223</oldsource>
+        <translation type="obsolete">Сетка</translation>
     </message>
 </context>
 <context>

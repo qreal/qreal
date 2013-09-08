@@ -1,11 +1,10 @@
 #pragma once
 
-#include <QtCore>
-#include <QMap>
-#include <QDataStream>
-#include <QPolygon>
+#include <QtCore/QMap>
+#include <QtCore/QDataStream>
+#include <QtGui/QPolygon>
 
-#include "../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 using namespace qReal;
 

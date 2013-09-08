@@ -1,6 +1,7 @@
 #include "pathCorrector.h"
-#include "math.h"
-#include <QPointF>
+
+#include <math.h>
+#include <QtCore/QPointF>
 
 const double mouseSpeed = 5;
 

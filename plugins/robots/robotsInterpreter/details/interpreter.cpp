@@ -1,4 +1,4 @@
-#include <QCoreApplication>
+#include <QtCore/QCoreApplication>
 #include <QtWidgets/QAction>
 
 #include "interpreter.h"
@@ -14,6 +14,8 @@
 using namespace qReal;
 using namespace interpreters::robots;
 using namespace interpreters::robots::details;
+
+int const maxThreadsCount = 100;
 
 Interpreter::Interpreter()
 	: mGraphicalModelApi(NULL)
@@ -260,12 +262,19 @@ void Interpreter::configureSensors(
 
 void Interpreter::addThread(details::Thread * const thread)
 {
+	if (mThreads.count() >= maxThreadsCount) {
+		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
+		stopRobot();
+	}
+
 	mThreads.append(thread);
 	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
 	connect(thread, SIGNAL(newThread(details::blocks::Block*const)), this, SLOT(newThread(details::blocks::Block*const)));
 
 	QCoreApplication::processEvents();
-	thread->interpret();
+	if (mState != idle) {
+		thread->interpret();
+	}
 }
 
 interpreters::robots::details::RobotModel *Interpreter::robotModel()

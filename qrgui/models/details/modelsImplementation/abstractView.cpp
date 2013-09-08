@@ -1,7 +1,8 @@
 #include "abstractView.h"
 
-#include "abstractModel.h"
-#include "../../qrkernel/definitions.h"
+#include <qrkernel/definitions.h>
+
+#include "models/details/modelsImplementation/abstractModel.h"
 
 using namespace qReal;
 using namespace models::details::modelsImplementation;

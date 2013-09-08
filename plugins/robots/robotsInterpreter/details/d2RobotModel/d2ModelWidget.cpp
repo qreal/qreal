@@ -214,6 +214,10 @@ void D2ModelWidget::init(bool isActive)
 	if (isHidden()) {
 		show();
 	}
+
+	if (!isActiveWindow()) {
+		activateWindow();
+	}
 	update();
 }
 

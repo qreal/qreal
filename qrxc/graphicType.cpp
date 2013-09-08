@@ -1,11 +1,13 @@
 #include "graphicType.h"
+
+#include <QtCore/QDebug>
+
+#include <qrutils/outFile.h>
+
 #include "property.h"
 #include "label.h"
 #include "diagram.h"
 #include "nameNormalizer.h"
-#include "../qrutils/outFile.h"
-
-#include <QtCore/QDebug>
 
 using namespace utils;
 
@@ -662,6 +664,25 @@ void GraphicType::generateParentsMapping(utils::OutFile &out)
 	out() << "\t;\n";
 }
 
+QVector<int> GraphicType::toIntVector(QString const &s, bool *isOk) const
+{
+	QStringList const strings = s.split(',');
+	QVector<int> result(4, 0);
+
+	if (strings.size() != 4) {
+		*isOk = false;
+		return result;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		result[i] = strings[i].toInt(isOk);
+		if (!*isOk)
+			return result;
+	}
+
+	return result;
+}
+
 void GraphicType::generateExplosionsMap(OutFile &out)
 {
 	if (mExplosions.isEmpty()) {
@@ -680,23 +701,4 @@ void GraphicType::generateExplosionsMap(OutFile &out)
 				, reusable ? "true" : "false"
 				, immediateLinkage ? "true" : "false");
 	}
-}
-
-QVector<int> GraphicType::toIntVector(QString const &s, bool *isOk) const
-{
-	QStringList const strings = s.split(',');
-	QVector<int> result(4, 0);
-
-	if (strings.size() != 4) {
-		*isOk = false;
-		return result;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		result[i] = strings[i].toInt(isOk);
-		if (!*isOk)
-			return result;
-	}
-
-	return result;
 }

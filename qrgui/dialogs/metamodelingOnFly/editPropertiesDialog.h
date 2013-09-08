@@ -3,7 +3,7 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QListWidgetItem>
 
-#include "../../pluginManager/interpreterEditorManager.h"
+#include "pluginManager/interpreterEditorManager.h"
 
 namespace Ui {
 class EditPropertiesDialog;

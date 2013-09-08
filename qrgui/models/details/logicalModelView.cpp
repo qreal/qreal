@@ -1,6 +1,6 @@
 #include "logicalModelView.h"
 
-#include "graphicalModel.h"
+#include "models/details/graphicalModel.h"
 
 using namespace qReal;
 using namespace models::details;

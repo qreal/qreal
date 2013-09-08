@@ -1,12 +1,11 @@
 #pragma once
 
-#include "details/graphicalModel.h"
-#include "details/logicalModel.h"
-#include "graphicalModelAssistApi.h"
-#include "logicalModelAssistApi.h"
+#include "models/details/graphicalModel.h"
+#include "models/details/logicalModel.h"
+#include "models/graphicalModelAssistApi.h"
+#include "models/logicalModelAssistApi.h"
 
 namespace qReal {
-
 namespace models {
 
 class Models
@@ -38,5 +37,4 @@ private:
 };
 
 }
-
 }

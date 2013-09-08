@@ -5,9 +5,9 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QUuid>
 
-#include "../../../qrkernel/ids.h"
-//#include "../../toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
-#include "../../pluginManager/editorManagerInterface.h"
+#include <qrkernel/ids.h>
+
+#include "pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 

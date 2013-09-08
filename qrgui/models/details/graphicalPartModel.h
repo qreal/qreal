@@ -4,10 +4,11 @@
 #include <QtCore/QList>
 #include <QtCore/QHash>
 
-#include "../../../qrrepo/repoApi.h"
-#include "../../pluginManager/editorManagerInterface.h"
-#include "modelsImplementation/graphicalPartModelItem.h"
-#include "modelsImplementation/modelIndexesInterface.h"
+#include <qrrepo/repoApi.h>
+
+#include "pluginManager/editorManagerInterface.h"
+#include "models/details/modelsImplementation/graphicalPartModelItem.h"
+#include "models/details/modelsImplementation/modelIndexesInterface.h"
 
 namespace qReal {
 namespace models {

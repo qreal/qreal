@@ -1,9 +1,10 @@
 #include "xmlLoader.h"
-#include "../../../qrutils/xmlUtils.h"
 
 #include <QtCore/QDir>
 #include <QtWidgets/QApplication>
 #include <QtCore/QDebug>
+
+#include <qrutils/xmlUtils.h>
 
 using namespace qReal;
 

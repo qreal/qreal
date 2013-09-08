@@ -4,13 +4,13 @@
 #include <QtWidgets/QAbstractItemView>
 #include <QtGui/QResizeEvent>
 
-#include "../mainwindow/propertyEditorProxyModel.h"
-#include "../controller/controller.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "controller/controller.h"
 
-#include "../thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h"
-#include "../models/logicalModelAssistApi.h"
+#include "thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h"
+#include "models/logicalModelAssistApi.h"
 
-#include "private/pushButtonProperty.h"
+#include "view/private/pushButtonProperty.h"
 
 namespace qReal {
 	class MainWindow;

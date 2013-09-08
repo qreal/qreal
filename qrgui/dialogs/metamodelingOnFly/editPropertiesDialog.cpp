@@ -2,7 +2,8 @@
 
 #include "editPropertiesDialog.h"
 #include "ui_editPropertiesDialog.h"
-#include "propertiesDialog.h"
+
+#include "dialogs/metamodelingOnFly/propertiesDialog.h"
 
 using namespace qReal;
 

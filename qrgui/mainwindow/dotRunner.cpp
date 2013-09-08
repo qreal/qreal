@@ -1,5 +1,3 @@
-#include <QtCore/QDebug>
-
 #include "dotRunner.h"
 
 using namespace qReal;
