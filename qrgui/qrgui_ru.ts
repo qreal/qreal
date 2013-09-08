@@ -3590,6 +3590,24 @@
     </message>
 </context>
 <context>
+    <name>qReal::BrokenLine</name>
+    <message>
+        <location filename="umllib/private/brokenLine.cpp" line="7"/>
+        <source>Delete point</source>
+        <translation>Удалить точку</translation>
+    </message>
+    <message>
+        <location filename="umllib/private/brokenLine.cpp" line="8"/>
+        <source>Delete segment</source>
+        <translation>Удалить отрезок</translation>
+    </message>
+    <message>
+        <location filename="umllib/private/brokenLine.cpp" line="9"/>
+        <source>Remove all points</source>
+        <translation>Удалить все точки</translation>
+    </message>
+</context>
+<context>
     <name>qReal::ChooseTypeDialog</name>
     <message>
         <source>Choose type of adding element:</source>
@@ -3599,27 +3617,7 @@
 <context>
     <name>qReal::EdgeElement</name>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="47"/>
-        <source>Add point</source>
-        <translation>Добавить точку</translation>
-    </message>
-    <message>
-        <location filename="umllib/edgeElement.cpp" line="48"/>
-        <source>Delete point</source>
-        <translation>Удалить точку</translation>
-    </message>
-    <message>
         <location filename="umllib/edgeElement.cpp" line="49"/>
-        <source>Remove all points</source>
-        <translation>Удалить все точки</translation>
-    </message>
-    <message>
-        <location filename="umllib/edgeElement.cpp" line="50"/>
-        <source>Remove segment</source>
-        <translation>Удалить отрезок</translation>
-    </message>
-    <message>
-        <location filename="umllib/edgeElement.cpp" line="51"/>
         <source>Reverse</source>
         <translation>Развернуть</translation>
     </message>
@@ -4236,6 +4234,14 @@
     </message>
 </context>
 <context>
+    <name>qReal::SquareLine</name>
+    <message>
+        <location filename="umllib/private/squareLine.cpp" line="10"/>
+        <source>Lay out</source>
+        <translation>Переразложить</translation>
+    </message>
+</context>
+<context>
     <name>qReal::StartDialog</name>
     <message>
         <location filename="dialogs/startDialog/startDialog.cpp" line="71"/>
@@ -4829,6 +4835,14 @@
     <message>
         <source>2D model saves (*.xml)</source>
         <translation type="obsolete">Сохранения 2D-модели (*.xml)</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::models::details::modelsImplementation::AbstractModel</name>
+    <message>
+        <location filename="models/details/modelsImplementation/abstractModel.cpp" line="28"/>
+        <source>name</source>
+        <translation type="unfinished">имя</translation>
     </message>
 </context>
 <context>

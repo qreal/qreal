@@ -212,6 +212,11 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 							, false,  "(anonymous something)", QPointF(0, 0));
 				}
 			}
+
+			EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem);
+			if (edgeElem) {
+				edgeElem->layOut();
+			}
 		}
 
 		if (needToProcessChildren && model()->hasChildren(current)) {
