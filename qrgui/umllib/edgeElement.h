@@ -110,7 +110,7 @@ public:
 	EdgeData& data();
 
 	/// Change link type and redraw it
-	void changeShapeType(const enums::linkShape::LinkShape shapeType);
+	void changeShapeType(enums::linkShape::LinkShape const shapeType);
 
 	/// Save link position to the repo
 	void setGraphicApiPos();
@@ -187,10 +187,12 @@ private:
 	NodeElement *mSrc;
 	NodeElement *mDst;
 
-	LineHandler *mHandler;
+	LineHandler *mHandler; // Takes ownership
 
 	qreal mPortFrom;
 	qreal mPortTo;
+
+	enums::linkShape::LinkShape mShapeType;
 
 	int mDragType; // is a number of mLine's point we're trying to drag
 

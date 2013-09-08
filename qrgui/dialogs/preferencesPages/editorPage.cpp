@@ -167,7 +167,7 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->enableResizeLabelsCheckBox->setChecked(SettingsManager::value("ResizeLabels").toBool());
 	mUi->labelDistanceSlider->setValue(SettingsManager::value("LabelsDistance").toInt());
 
-	LinkShape type = static_cast<LinkShape>(SettingsManager::value("LineType", unset).toInt());
+	LinkShape const type = static_cast<LinkShape>(SettingsManager::value("LineType", unset).toInt());
 	mUi->lineMode->setCurrentIndex(type + 1);
 
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());

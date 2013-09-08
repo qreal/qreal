@@ -54,6 +54,7 @@ public:
 
 	/// @return List of context menu actions available for a particular link type
 	virtual QList<ContextMenuAction *> extraActions(QPointF const &pos);
+
 	/// Provide undo-redo support for context actions
 	void connectAction(ContextMenuAction *action, QObject *receiver, char const *slot) const;
 
@@ -63,6 +64,7 @@ protected slots:
 
 	/// Start tracking edge changes
 	void startReshape();
+
 	/// Execute and reset reshape command
 	void endReshape();
 

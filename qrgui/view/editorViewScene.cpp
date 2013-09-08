@@ -1396,8 +1396,13 @@ void EditorViewScene::updateEdgeElements()
 	foreach (QGraphicsItem *item, items()) {
 		EdgeElement* element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
-			element->changeShapeType(static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType"
-					, enums::linkShape::unset).toInt()));
+			enums::linkShape::LinkShape const shape
+					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType"
+							, enums::linkShape::unset).toInt());
+			if (shape != enums::linkShape::unset) {
+				element->changeShapeType(shape);
+			}
+
 			if (SettingsManager::value("ActivateGrid").toBool()) {
 				element->alignToGrid();
 			}

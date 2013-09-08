@@ -105,17 +105,19 @@ void EdgeElement::initLineHandler()
 {
 	delete mHandler;
 
-	linkShape::LinkShape shape = static_cast<linkShape::LinkShape>(SettingsManager::value("LineType"
-			, linkShape::unset).toInt());
-	if (shape == linkShape::unset) {
-		QString shapeString = mGraphicalAssistApi.mutableGraphicalRepoApi().property(id(), "linkShape").toString();
-		shape = stringToShape(shapeString);
-		if (shape == linkShape::unset) {
-			shape = mElementImpl->shapeType();
+	mShapeType = static_cast<linkShape::LinkShape>(SettingsManager::value("LineType", linkShape::unset).toInt());
+
+	if (mShapeType == linkShape::unset) {
+		QString const shapeString
+				= mGraphicalAssistApi.mutableGraphicalRepoApi().property(id(), "linkShape").toString();
+		mShapeType = stringToShape(shapeString);
+
+		if (mShapeType == linkShape::unset) {
+			mShapeType = mElementImpl->shapeType();
 		}
 	}
 
-	switch(shape) {
+	switch(mShapeType) {
 	case linkShape::broken:
 		mHandler = new BrokenLine(this);
 		break;
@@ -133,13 +135,13 @@ void EdgeElement::initShapeTypeMenu()
 {
 	QMenu *menu = new QMenu();
 
-	QAction *brokenLine = menu->addAction("Broken");
+	QAction * const brokenLine = menu->addAction("Broken");
 	connect(brokenLine, SIGNAL(triggered()), this, SLOT(setBrokenLine()));
 
-	QAction *squareLine = menu->addAction("Square");
+	QAction * const squareLine = menu->addAction("Square");
 	connect(squareLine, SIGNAL(triggered()), this, SLOT(setSquareLine()));
 
-	QAction *curveLine = menu->addAction("Curve");
+	QAction * const curveLine = menu->addAction("Curve");
 	connect(curveLine, SIGNAL(triggered()), this, SLOT(setCurveLine()));
 
 	mChangeShapeAction.setMenu(menu);
@@ -571,6 +573,7 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	Element::mousePressEvent(event);
+
 	if ((mSrc && mSrc->isSelected() && isSelected()) || (mDst && mDst->isSelected() && isSelected())) {
 		mDragType = wholeEdge;
 		if (mSrc && mSrc->isSelected()) {
@@ -1072,6 +1075,8 @@ EdgeData& EdgeElement::data()
 
 	mData.configuration = mGraphicalAssistApi.configuration(mId);
 	mData.pos = mGraphicalAssistApi.position(mId);
+
+	mData.shapeType = mShapeType;
 
 	return mData;
 }

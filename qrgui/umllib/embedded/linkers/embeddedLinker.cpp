@@ -230,7 +230,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (scene->mainWindow()->editorManager().hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
 			// FIXME: I am raw. return strange pos() and inside me a small trash
-			Id edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand, false);
+			Id const edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand, false);
 			mCreateEdgeCommand->redo();
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
@@ -307,7 +307,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				createElementFromMenuCommand->addPostAction(reshapeEdge);
 				createElementFromMenuCommand->addPreAction(mCreateEdgeCommand);
 			} else {
-				Controller *controller = mEdge->controller();
+				Controller * const controller = mEdge->controller();
 				mCreateEdgeCommand->undo();
 				mCreateEdgeCommand->addPostAction(reshapeEdge);
 				controller->execute(mCreateEdgeCommand);
