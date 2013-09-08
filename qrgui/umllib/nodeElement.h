@@ -81,8 +81,13 @@ public:
 	static int portNumber(qreal id);
 	qreal portId(QPointF const &location, QStringList const &types) const;
 
+	/// @return List of edges connected to the node
 	QList<EdgeElement *> getEdges() const;
+
+	/// Add edge to node's edge list, rearrange linear ports
 	void addEdge(EdgeElement *edge);
+
+	/// Remove edge from node's edge list, rearrange linear ports
 	void delEdge(EdgeElement *edge);
 
 	NodeData& data();
@@ -90,6 +95,7 @@ public:
 	virtual bool initPossibleEdges();
 	QList<PossibleEdge> getPossibleEdges();
 
+	/// Make ports of specified types visible, hide other ports
 	void setPortsVisible(QStringList const &types);
 
 	bool isPort() const;
@@ -147,7 +153,10 @@ public:
 	 */
 	void resize();
 
+	/// Create resize command and start tracking resize
 	void startResize();
+
+	/// Stop tracking resize, execute resize command
 	void endResize();
 
 	/**

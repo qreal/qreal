@@ -607,6 +607,7 @@ void NodeElement::endResize()
 		} else {
 			delete mResizeCommand;
 		}
+
 		// Undo stack took ownership
 		mResizeCommand = NULL;
 	}
