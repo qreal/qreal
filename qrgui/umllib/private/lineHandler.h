@@ -90,17 +90,23 @@ protected:
 
 	/// Should be redefined in subclasses to handle mouse move events. Default implementation does nothing.
 	virtual void handleEdgeMove(QPointF const &pos);
+
+	/// Highlight ports of node under link's end
+	void highlightPorts(bool isStart);
+
 	/// Draw a port with a given portNumber
 	virtual void drawPort(QPainter *painter, int portNumber);
 
 	/// Helper function for sorting edges on linear ports
 	QPointF portArrangePoint(NodeElement const *node) const;
 
-	EdgeElement *mEdge;
+	EdgeElement *mEdge; // Doesn't take ownership
 
 	QPolygonF mSavedLine;
 	int mDragType;
 	QPointF mDragStartPoint;
+
+	NodeElement *mNodeWithHighlightedPorts; // Doesn't take ownership
 
 	commands::ReshapeEdgeCommand *mReshapeCommand;
 	bool mReshapeStarted;

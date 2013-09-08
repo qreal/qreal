@@ -1104,7 +1104,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				}
 				if (list.size() > 1 && nodeItem) {
 					nodeItem->setVisibleEmbeddedLinkers(false);
-					nodeItem->setPortsVisible(false);
+					nodeItem->setPortsVisible(QStringList());
 				}
 			}
 		}

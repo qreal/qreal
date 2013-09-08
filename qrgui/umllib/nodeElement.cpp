@@ -35,7 +35,6 @@ NodeElement::NodeElement(ElementImpl *impl
 		)
 		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
 		, mSwitchGridAction(tr("Switch on grid"), this)
-		, mPortsVisible(false)
 		, mDragState(None)
 		, mResizeCommand(NULL)
 		, mIsExpanded(false)
@@ -85,6 +84,8 @@ NodeElement::NodeElement(ElementImpl *impl
 	mGrid = new SceneGridHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
+	initPortsVisibility();
+
 	connect(&mRenderTimer, SIGNAL(timeout()), this, SLOT(initRenderedDiagram()));
 }
 
@@ -107,6 +108,13 @@ NodeElement::~NodeElement()
 
 	delete mGrid;
 	delete mPortHandler;
+}
+
+void NodeElement::initPortsVisibility()
+{
+	foreach (QString const &portType, mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())) {
+		mPortsVisibility.insert(portType, false);
+	}
 }
 
 NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
@@ -801,10 +809,13 @@ qreal NodeElement::portId(QPointF const &location, QStringList const &types) con
 	return mPortHandler->portId(location, types);
 }
 
-void NodeElement::setPortsVisible(bool value)
+void NodeElement::setPortsVisible(QStringList const &types)
 {
 	prepareGeometryChange();
-	mPortsVisible = value;
+
+	foreach (QString const &portType, mPortsVisibility.keys()) {
+		mPortsVisibility[portType] = types.contains(portType);
+	}
 }
 
 void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *)
@@ -858,12 +869,8 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 
 			painter->restore();
 		}
-		if ((option->state & QStyle::State_MouseOver) || mPortsVisible) {
-			painter->save();
-			painter->setOpacity(0.7);
-			mPortHandler->drawPorts(painter, mContents, QStringList());
-			painter->restore();
-		}
+
+		drawPorts(painter, option->state & QStyle::State_MouseOver);
 
 		if (mIsExpanded && mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != qReal::Id()) {
 			QRectF rect = diagramRenderingRect();
@@ -871,6 +878,18 @@ void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 					, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		}
 	}
+}
+
+void NodeElement::drawPorts(QPainter *painter, bool mouseOver)
+{
+	painter->save();
+	painter->setOpacity(0.7);
+
+	QStringList const portTypes = mouseOver ? mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())
+			: mPortsVisibility.keys(true);
+	mPortHandler->drawPorts(painter, mContents, portTypes);
+
+	painter->restore();
 }
 
 QList<EdgeElement*> NodeElement::getEdges() const

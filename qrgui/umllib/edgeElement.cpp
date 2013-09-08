@@ -613,14 +613,6 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	Element::mouseReleaseEvent(event);
 
-	if (mSrc) {
-		mSrc->setPortsVisible(false);
-	}
-
-	if (mDst) {
-		mDst->setPortsVisible(false);
-	}
-
 	if (mDragType == wholeEdge) {
 		if (mSrc && mSrc->isSelected()) {
 			mSrc->endResize();

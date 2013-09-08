@@ -90,7 +90,7 @@ public:
 	virtual bool initPossibleEdges();
 	QList<PossibleEdge> getPossibleEdges();
 
-	void setPortsVisible(bool value);
+	void setPortsVisible(QStringList const &types);
 
 	bool isPort() const;
 	bool canHavePorts();
@@ -203,6 +203,8 @@ private:
 	void delUnusedLines();
 	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);
 
+	void initPortsVisibility();
+
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -213,6 +215,7 @@ private:
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
 	void paint(QPainter *p, QStyleOptionGraphicsItem const *opt);
+	void drawPorts(QPainter *painter, bool mouseOver);
 
 	/**
 	 * Recalculates mHighlightedNode according to current mouse scene position.
@@ -236,7 +239,7 @@ private:
 
 	ContextMenuAction mSwitchGridAction;
 
-	bool mPortsVisible;
+	QMap<QString, bool> mPortsVisibility;
 
 	QRectF mContents;
 	QList<EdgeElement *> mEdgeList;

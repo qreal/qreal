@@ -6,7 +6,12 @@
 namespace qReal {
 
 LineHandler::LineHandler(EdgeElement *edge)
-	: mEdge(edge), mReshapeCommand(NULL), mReshapeStarted(false)
+		: mEdge(edge)
+		, mSavedLine(mEdge->line())
+		, mDragType(EdgeElement::noPort)
+		, mNodeWithHighlightedPorts(NULL)
+		, mReshapeCommand(NULL)
+		, mReshapeStarted(false)
 {
 }
 
@@ -35,6 +40,10 @@ void LineHandler::moveEdge(QPointF const &pos)
 	if (!mEdge->isLoop() || (mDragType == 0) || (mDragType == mEdge->line().count() - 1)) {
 		handleEdgeMove(pos);
 	}
+
+	if ((mDragType == 0) || (mDragType == mEdge->line().count() - 1)) {
+		highlightPorts(mDragType == 0);
+	}
 }
 
 void LineHandler::handleEdgeMove(QPointF const &)
@@ -61,6 +70,11 @@ void LineHandler::endMovingEdge()
 
 	endReshape();
 	mDragType = EdgeElement::noPort;
+
+	if (mNodeWithHighlightedPorts) {
+		mNodeWithHighlightedPorts->setPortsVisible(QStringList());
+		mNodeWithHighlightedPorts = NULL;
+	}
 }
 
 void LineHandler::startReshape()
@@ -83,6 +97,19 @@ void LineHandler::endReshape()
 	}
 
 	mReshapeStarted = false;
+}
+
+void LineHandler::highlightPorts(bool isStart)
+{
+	if (mNodeWithHighlightedPorts) {
+		mNodeWithHighlightedPorts->setPortsVisible(QStringList());
+	}
+
+	QPolygonF const line = mEdge->line();
+	mNodeWithHighlightedPorts = mEdge->getNodeAt(isStart ? line[0] : line[line.count() - 1], isStart);
+	if (mNodeWithHighlightedPorts) {
+		mNodeWithHighlightedPorts->setPortsVisible(isStart ? mEdge->fromPortTypes() : mEdge->toPortTypes());
+	}
 }
 
 void LineHandler::adjust()
