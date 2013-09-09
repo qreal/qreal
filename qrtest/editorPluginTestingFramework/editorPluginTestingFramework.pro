@@ -42,7 +42,6 @@ HEADERS += \
 	../../qrgui/pluginManager/pattern.h \
 	../../qrgui/pluginManager/editorManager.h \
 	../../qrgui/pluginManager/patternParser.h \
-#	../../qrkernel/exception/exception.h \
 	defs.h \
 	htmlMaker.h \
 	convertingMethods.h \
