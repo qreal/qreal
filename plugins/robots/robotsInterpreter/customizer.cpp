@@ -16,7 +16,7 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	// TODO: other storage for it?
-	return "2.4.0";
+	return "2.4.2";
 }
 
 QString Customizer::aboutText() const
@@ -50,4 +50,14 @@ QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *conten
 	QDockWidget *dock = new QDockWidget(title);
 	dock->setWidget(content);
 	return dock;
+}
+
+QString Customizer::userPaletteTitle() const
+{
+	return QObject::tr("Subprograms");
+}
+
+QString Customizer::userPaletteDescription() const
+{
+	return QObject::tr("The list of all declared subprograms in the project");
 }

@@ -442,6 +442,16 @@ p, li { white-space: pre-wrap; }
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
+        <location filename="customizer.cpp" line="57"/>
+        <source>Subprograms</source>
+        <translation>Подпрограммы</translation>
+    </message>
+    <message>
+        <location filename="customizer.cpp" line="62"/>
+        <source>The list of all declared subprograms in the project</source>
+        <translation>Список всех объявленных в проекте подпрограмм</translation>
+    </message>
+    <message>
         <source>Nxt display</source>
         <translation type="obsolete">Дисплей</translation>
     </message>
@@ -543,6 +553,16 @@ p, li { white-space: pre-wrap; }
         <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="93"/>
         <source>Collapse explosion</source>
         <translation>Схлопнуть эксплозию</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="98"/>
+        <source>Existing connections</source>
+        <translation>Существующие соединения</translation>
+    </message>
+    <message>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="103"/>
+        <source>Elements from this group exist for reusing all created connections</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show grid</source>
@@ -721,24 +741,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::Interpreter</name>
     <message>
-        <location filename="details/interpreter.cpp" line="89"/>
+        <location filename="details/interpreter.cpp" line="91"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="93"/>
+        <location filename="details/interpreter.cpp" line="95"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="195"/>
+        <location filename="details/interpreter.cpp" line="197"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="199"/>
+        <location filename="details/interpreter.cpp" line="201"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
+    </message>
+    <message>
+        <location filename="details/interpreter.cpp" line="266"/>
+        <source>Threads limit exceeded. Maximum threads count is %1</source>
+        <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
 </context>
 <context>

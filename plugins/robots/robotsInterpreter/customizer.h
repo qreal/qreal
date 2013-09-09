@@ -22,6 +22,9 @@ public:
 	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
 	virtual bool showInterpeterButton() const;
 
+	virtual QString userPaletteTitle() const;
+	virtual QString userPaletteDescription() const;
+
 private:
 	QDockWidget *produceDockWidget(QString const &title, QWidget *content) const;
 

@@ -1821,6 +1821,10 @@ void MainWindow::initToolPlugins()
 	foreach (PageDescriptor const page, preferencesPages) {
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
+
+	mModels->logicalModelAssistApi().exploser().customizeExplosionTitles(
+			toolManager().customizer()->userPaletteTitle()
+			, toolManager().customizer()->userPaletteDescription());
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)

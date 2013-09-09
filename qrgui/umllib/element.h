@@ -63,12 +63,10 @@ public:
 
 	// TODO: Move this to constructor.
 	void setController(qReal::Controller *controller);
+	qReal::Controller *controller() const;
 
 	ElementImpl* elementImpl() const;
 	bool createChildrenFromMenu() const;
-
-	/// Perform element-specific actions before being deleted
-	virtual void deleteFromScene() = 0;
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
