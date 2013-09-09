@@ -13,13 +13,7 @@
         <file>templates/colors/red.t</file>
         <file>templates/colors/white.t</file>
         <file>templates/colors/yellow.t</file>
-        <file>templates/drawing/clearScreen.t</file>
-        <file>templates/drawing/drawCircle.t</file>
-        <file>templates/drawing/drawLine.t</file>
-        <file>templates/drawing/drawPixel.t</file>
-        <file>templates/drawing/drawRect.t</file>
         <file>templates/drawing/printText.t</file>
-        <file>templates/drawing/resetBitmaps.t</file>
         <file>templates/engines/engineA.t</file>
         <file>templates/engines/engineB.t</file>
         <file>templates/engines/engineC.t</file>
@@ -101,5 +95,10 @@
         <file>templates/isrHooks/colorGreen.t</file>
         <file>templates/isrHooks/colorNone.t</file>
         <file>templates/isrHooks/colorRed.t</file>
+        <file>templates/drawing/bmpDeclaration.t</file>
+        <file>templates/drawing/clearUnusedScreen.t</file>
+        <file>templates/drawing/clearUsedScreen.t</file>
+        <file>templates/drawing/drawBitmap.t</file>
+        <file>templates/drawing/variablesDeclaration.t</file>
     </qresource>
 </RCC>

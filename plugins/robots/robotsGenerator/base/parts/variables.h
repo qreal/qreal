@@ -39,14 +39,10 @@ public:
 	/// Returns given expression if it has int type or casts it to int otherwise
 	enums::variableType::VariableType expressionType(QString const &expression) const;
 
-	/// Must be called when enter button usage found
-	void enterButtonUsed();
-
-	/// Must be called when run button usage found
-	void cancelButtonUsed();
-
-	/// Must be called when image usage found
-	void hasImages();
+	/// Adds given string to variables declaration section.
+	/// This method can be called multiple times with the same string but it
+	/// will be deduplicated.
+	void appendManualDeclaration(QString const &variables);
 
 private:
 	QMap<QString, enums::variableType::VariableType> nonGenerableReservedVariables() const;
@@ -79,9 +75,7 @@ private:
 	bool isIdentifier(QString const &token) const;
 
 	QMap<QString, enums::variableType::VariableType> mVariables;
-	bool mCancelButtonUsed;
-	bool mEnterButtonUsed;
-	bool mHasImages;
+	QStringList mManualDeclarations;
 };
 
 }

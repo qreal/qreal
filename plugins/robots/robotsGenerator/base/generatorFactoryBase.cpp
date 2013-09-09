@@ -50,6 +50,7 @@
 #include "converters/intPropertyConverter.h"
 #include "converters/floatPropertyConverter.h"
 #include "converters/boolPropertyConverter.h"
+#include "converters/stringPropertyConverter.h"
 
 using namespace qReal::robots::generators;
 using namespace simple;
@@ -72,6 +73,7 @@ void GeneratorFactoryBase::initialize()
 	initEngines();
 	initSensors();
 	initFunctions();
+	initImages();
 }
 
 void GeneratorFactoryBase::initVariables()
@@ -98,6 +100,11 @@ void GeneratorFactoryBase::initSensors()
 void GeneratorFactoryBase::initFunctions()
 {
 	mFunctions = new parts::Functions(pathToTemplates());
+}
+
+void GeneratorFactoryBase::initImages()
+{
+	mImages = new parts::Images(pathToTemplates());
 }
 
 QList<parts::InitTerminateCodeGenerator *> GeneratorFactoryBase::initTerminateGenerators()
@@ -134,6 +141,11 @@ parts::Sensors *GeneratorFactoryBase::sensors()
 parts::Functions *GeneratorFactoryBase::functions()
 {
 	return mFunctions;
+}
+
+parts::Images *GeneratorFactoryBase::images()
+{
+	return mImages;
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(Id const &id
@@ -271,7 +283,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool ne
 
 Binding::ConverterInterface *GeneratorFactoryBase::stringPropertyConverter() const
 {
-	return new Binding::EmptyConverter;
+	return new converters::StringPropertyConverter;
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() const

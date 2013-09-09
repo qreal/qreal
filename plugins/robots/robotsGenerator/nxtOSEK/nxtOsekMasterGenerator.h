@@ -27,6 +27,7 @@ private:
 
 	void generateOilFile(QString const &projectName, QString const &projectDir);
 	void generateMakeFile(QString const &projectName, QString const &projectDir);
+	void saveImages(QString const &projectDir);
 
 	int mCurInitialNodeNumber;
 	QString mProjectName;

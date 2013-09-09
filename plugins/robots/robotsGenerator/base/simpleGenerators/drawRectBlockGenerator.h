@@ -16,7 +16,7 @@ public:
 			, QObject *parent = 0);
 
 protected:
-//	virtual void drawBmp(NxtOSEKRobotGenerator *nxtGen, qReal::Id const logicElementId, QPainter *p);
+	virtual void drawBmp(QPainter *painter);
 };
 
 }

@@ -25,9 +25,6 @@ void Variables::reinit(qrRepo::RepoApi const &api)
 	}
 
 	inferTypes(expressions);
-	mEnterButtonUsed = false;
-	mCancelButtonUsed = false;
-	mHasImages = false;
 }
 
 QString Variables::generateVariableString() const
@@ -56,17 +53,16 @@ QString Variables::generateVariableString() const
 		result += QString("static %1 %2;\n").arg(type, curVariable);
 	}
 
-	if (mEnterButtonUsed) {
-		result = "int enterCounter;\nint enterWasDown;\n" + result;
-	}
+	result += mManualDeclarations.join('\n');
 
-	if (mCancelButtonUsed) {
-		result = "int cancelCounter;\nint cancelWasDown;\n" + result;
-	}
+	// TODO:
+//	if (mEnterButtonUsed) {
+//		result = "int enterCounter;\nint enterWasDown;\n" + result;
+//	}
 
-	if (mHasImages) {
-		result = "U8 lcd[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\nU8 lcd_copy[NXT_LCD_DEPTH*NXT_LCD_WIDTH];\n" + result;
-	}
+//	if (mCancelButtonUsed) {
+//		result = "int cancelCounter;\nint cancelWasDown;\n" + result;
+//	}
 
 	return result;
 }
@@ -349,17 +345,9 @@ enums::variableType::VariableType Variables::expressionType(QString const &expre
 	return enums::variableType::intType;
 }
 
-void Variables::enterButtonUsed()
+void Variables::appendManualDeclaration(QString const &variables)
 {
-	mEnterButtonUsed = true;
-}
-
-void Variables::cancelButtonUsed()
-{
-	mCancelButtonUsed = true;
-}
-
-void Variables::hasImages()
-{
-	mHasImages = true;
+	if (!mManualDeclarations.contains(variables)) {
+		mManualDeclarations << variables;
+	}
 }

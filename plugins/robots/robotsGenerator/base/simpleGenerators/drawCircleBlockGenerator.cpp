@@ -10,11 +10,11 @@ DrawCircleBlockGenerator::DrawCircleBlockGenerator(qrRepo::RepoApi const &repo
 {
 }
 
-//void DrawCircleBlockGenerator::drawBmp(NxtOSEKRobotGenerator *nxtGen, qReal::Id const logicElementId, QPainter *p)
-//{
-//	int const x = nxtGen->api()->stringProperty(logicElementId, "XCoordinateCircle").toInt();
-//	int const y = nxtGen->api()->stringProperty(logicElementId, "YCoordinateCircle").toInt();
-//	int const radius = nxtGen->api()->stringProperty(logicElementId, "CircleRadius").toInt();
+void DrawCircleBlockGenerator::drawBmp(QPainter *painter)
+{
+	int const x = mRepo.property(mId, "XCoordinateCircle").toInt();
+	int const y = mRepo.property(mId, "YCoordinateCircle").toInt();
+	int const radius = mRepo.property(mId, "CircleRadius").toInt();
 
-//	p->drawEllipse(x - radius, y - radius, radius * 2, radius * 2);
-//}
+	painter->drawEllipse(x - radius, y - radius, radius * 2, radius * 2);
+}

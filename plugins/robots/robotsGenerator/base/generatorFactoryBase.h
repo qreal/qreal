@@ -12,6 +12,7 @@
 #include "parts/engines.h"
 #include "parts/sensors.h"
 #include "parts/functions.h"
+#include "parts/images.h"
 
 namespace qReal {
 namespace robots {
@@ -36,6 +37,7 @@ public:
 	virtual parts::Engines *engines();
 	virtual parts::Sensors *sensors();
 	virtual parts::Functions *functions();
+	virtual parts::Images *images();
 
 	virtual simple::AbstractSimpleGenerator *ifGenerator(Id const &id
 			, GeneratorCustomizer &customizer
@@ -90,6 +92,7 @@ protected:
 	virtual void initEngines();
 	virtual void initSensors();
 	virtual void initFunctions();
+	virtual void initImages();
 
 private:
 	qrRepo::RepoApi const &mRepo;
@@ -99,6 +102,7 @@ private:
 	parts::Engines *mEngines;
 	parts::Sensors *mSensors;
 	parts::Functions *mFunctions;
+	parts::Images *mImages;
 };
 
 }

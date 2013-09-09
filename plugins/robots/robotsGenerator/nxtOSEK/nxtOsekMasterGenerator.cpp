@@ -33,6 +33,7 @@ void NxtOsekMasterGenerator::afterGeneration()
 {
 	generateOilFile(mProjectName, mProjectDir);
 	generateMakeFile(mProjectName, mProjectDir);
+	saveImages(mProjectDir);
 }
 
 void NxtOsekMasterGenerator::createProjectDir(QString const &projectDir)
@@ -57,8 +58,18 @@ void NxtOsekMasterGenerator::generateOilFile(QString const &projectName
 void NxtOsekMasterGenerator::generateMakeFile(QString const &projectName
 		, QString const &projectDir)
 {
+	QString const bmps = mCustomizer->factory()->images()->generateBmpFilesStringForMake().toUtf8();
+
 	QString makefileTemplate = readTemplate("makefile.t");
 	outputCode(projectDir + "/makefile", makefileTemplate
-			.replace("@@PROJECT_NAME@@", projectName.toUtf8()));
-			//TODO: .replace("@@BMPFILES@@", mImageGenerator.generateBmpFilesStringForMake().toUtf8()));
+			.replace("@@PROJECT_NAME@@", projectName.toUtf8())
+			.replace("@@BMPFILES@@", bmps));
+}
+
+void NxtOsekMasterGenerator::saveImages(QString const &projectDir)
+{
+	QMap<QString, QImage> &images = mCustomizer->factory()->images()->bmpFiles();
+	foreach (QString const &fileName, images.keys()) {
+		images[fileName].save(projectDir + fileName + ".bmp", "BMP", -1);
+	}
 }

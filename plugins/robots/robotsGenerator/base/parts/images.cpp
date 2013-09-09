@@ -1,50 +1,63 @@
 #include "images.h"
 
-using namespace robots::generator;
+#include <QtCore/QStringList>
 
-ImageGenerator::ImageGenerator()
+using namespace qReal::robots::generators::parts;
+
+Images::Images(QString const &pathToTemplates)
+	: TemplateParametrizedEntity(pathToTemplates)
 {
 	reinit();
 }
 
-void ImageGenerator::addBmpFileName(QString const &name)
+// TODO: display width and bmps are NXT-only concepts, get rid of it here
+int Images::displayWidth() const
 {
-	mBmpFileNames.append(name);
+	return 100;
 }
 
-QString ImageGenerator::generateBmpFilesStringForC() const
+int Images::displayHeight() const
 {
-	QString result = "";
-	foreach(QString const &file, mBmpFileNames) {
-		result += QString("EXTERNAL_BMP_DATA(%1);\n").arg(file);
+	return 64;
+}
+
+void Images::registerBmpFile(QString const &name, QImage const &image)
+{
+	mBmpFiles[name] = image;
+}
+
+QString Images::generate() const
+{
+	QStringList result;
+	foreach (QString const &file, mBmpFiles.keys()) {
+		result << readTemplate("drawing/bmpDeclaration.t").replace("@@FILE@@", file);
 	}
 
-	return result;
+	return result.join('\n');
 }
 
-QString ImageGenerator::generateBmpFilesStringForMake() const
+// TODO: consider moving it into nxt-gen
+QString Images::generateBmpFilesStringForMake() const
 {
 	QString result = "BMP_SOURCES :=";
-
-	foreach (QString const &file, mBmpFileNames) {
+	foreach (QString const &file, mBmpFiles.keys()) {
 		result += QString("\\\n%1.bmp").arg(file);
 	}
 
 	return result;
 }
 
-void ImageGenerator::increaseBmpCounter()
+QMap<QString, QImage> &Images::bmpFiles()
 {
-	mBmpFilesCounter++;
+	return mBmpFiles;
 }
 
-int ImageGenerator::bmpFilesCount() const
+int Images::bmpFilesCount() const
 {
-	return mBmpFilesCounter;
+	return mBmpFiles.count();
 }
 
-void ImageGenerator::reinit()
+void Images::reinit()
 {
-	mBmpFilesCounter = 0;
-	mBmpFileNames.clear();
+	mBmpFiles.clear();
 }

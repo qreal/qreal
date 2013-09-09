@@ -2,6 +2,8 @@
 
 using namespace qReal::robots::generators::converters;
 
-StringPropertyConverter::StringPropertyConverter()
+QString StringPropertyConverter::convert(QString const &data) const
 {
+	QString result = data;
+	return result.replace("\"", "\\\"");
 }

@@ -8,7 +8,7 @@
 
 @@VARIABLES@@
 
-@@BMPFILES@@
+@@BMP_FILES@@
 
 void ecrobot_device_initialize(void)
 {

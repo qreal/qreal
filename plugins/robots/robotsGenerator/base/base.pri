@@ -13,8 +13,8 @@ HEADERS += \
 	$$PWD/parts/engines.h \
 	$$PWD/parts/initTerminateCodeGenerator.h \
 	$$PWD/parts/sensors.h \
-	$$PWDase/parts/functions.h \
-#	$$PWD/parts/images.h \
+	$$PWD/parts/functions.h \
+	$$PWD/parts/images.h \
 	$$PWD/semanticTree/semanticTree.h \
 	$$PWD/semanticTree/semanticNode.h \
 	$$PWD/semanticTree/nonZoneNode.h \
@@ -55,7 +55,7 @@ SOURCES += \
 	$$PWD/parts/initTerminateCodeGenerator.cpp \
 	$$PWD/parts/sensors.cpp \
 	$$PWD/parts/functions.cpp \
-#	$$PWD/parts/images.cpp \
+	$$PWD/parts/images.cpp \
 	$$PWD/semanticTree/semanticTree.cpp \
 	$$PWD/semanticTree/semanticNode.cpp \
 	$$PWD/semanticTree/nonZoneNode.cpp \

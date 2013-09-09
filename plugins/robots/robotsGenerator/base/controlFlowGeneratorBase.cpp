@@ -39,9 +39,6 @@ semantics::SemanticTree *ControlFlowGeneratorBase::generate()
 	mErrorsOccured = false;
 	mSemanticTree = new semantics::SemanticTree(customizer(), initialNode(), this);
 
-	// TODO: move this into global generator
-	mCustomizer.factory()->variables()->reinit(mRepo);
-
 	// This will start dfs on model graph with processig every block
 	// in subclasses which must construct control flow in handlers
 	startSearch(initialNode());

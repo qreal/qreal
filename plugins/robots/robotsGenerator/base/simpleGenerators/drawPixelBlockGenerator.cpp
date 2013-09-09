@@ -10,10 +10,10 @@ DrawPixelBlockGenerator::DrawPixelBlockGenerator(qrRepo::RepoApi const &repo
 {
 }
 
-//void DrawPixelBlockGenerator::drawBmp(NxtOSEKRobotGenerator *nxtGen, qReal::Id const logicElementId, QPainter *p)
-//{
-//	int const x = nxtGen->api()->stringProperty(logicElementId, "XCoordinatePix").toInt();
-//	int const y = nxtGen->api()->stringProperty(logicElementId, "YCoordinatePix").toInt();
+void DrawPixelBlockGenerator::drawBmp(QPainter *painter)
+{
+	int const x = mRepo.property(mId, "XCoordinatePix").toInt();
+	int const y = mRepo.property(mId, "YCoordinatePix").toInt();
 
-//	p->drawPoint(x, y);
-//}
+	painter->drawPoint(x, y);
+}

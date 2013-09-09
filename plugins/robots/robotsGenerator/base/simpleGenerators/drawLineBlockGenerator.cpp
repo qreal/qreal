@@ -10,12 +10,12 @@ DrawLineBlockGenerator::DrawLineBlockGenerator(qrRepo::RepoApi const &repo
 {
 }
 
-//void DrawLineBlockGenerator::drawBmp(NxtOSEKRobotGenerator *nxtGen, qReal::Id const logicElementId, QPainter *p)
-//{
-//	int const x1 = nxtGen->api()->stringProperty(logicElementId, "X1CoordinateLine").toInt();
-//	int const y1 = nxtGen->api()->stringProperty(logicElementId, "Y1CoordinateLine").toInt();
-//	int const x2 = nxtGen->api()->stringProperty(logicElementId, "X2CoordinateLine").toInt();
-//	int const y2 = nxtGen->api()->stringProperty(logicElementId, "Y2CoordinateLine").toInt();
+void DrawLineBlockGenerator::drawBmp(QPainter *painter)
+{
+	int const x1 = mRepo.property(mId, "X1CoordinateLine").toInt();
+	int const y1 = mRepo.property(mId, "Y1CoordinateLine").toInt();
+	int const x2 = mRepo.property(mId, "X2CoordinateLine").toInt();
+	int const y2 = mRepo.property(mId, "Y2CoordinateLine").toInt();
 
-//	p->drawLine(x1, y1, x2, y2);
-//}
+	painter->drawLine(x1, y1, x2, y2);
+}

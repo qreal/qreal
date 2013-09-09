@@ -10,12 +10,12 @@ DrawRectBlockGenerator::DrawRectBlockGenerator(qrRepo::RepoApi const &repo
 {
 }
 
-//void DrawRectBlockGenerator::drawBmp(NxtOSEKRobotGenerator *nxtGen, qReal::Id const logicElementId, QPainter *p)
-//{
-//	int const x = nxtGen->api()->stringProperty(logicElementId, "XCoordinateRect").toInt();
-//	int const y = nxtGen->api()->stringProperty(logicElementId, "YCoordinateRect").toInt();
-//	int const width = nxtGen->api()->stringProperty(logicElementId, "WidthRect").toInt();
-//	int const height = nxtGen->api()->stringProperty(logicElementId, "HeightRect").toInt();
+void DrawRectBlockGenerator::drawBmp(QPainter *painter)
+{
+	int const x = mRepo.property(mId, "XCoordinateRect").toInt();
+	int const y = mRepo.property(mId, "YCoordinateRect").toInt();
+	int const width = mRepo.property(mId, "WidthRect").toInt();
+	int const height = mRepo.property(mId, "HeightRect").toInt();
 
-//	p->drawRect(x, y, width, height);
-//}
+	painter->drawRect(x, y, width, height);
+}

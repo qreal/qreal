@@ -1,28 +1,42 @@
 #pragma once
 
 #include <QtCore/QString>
-#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtGui/QImage>
 
+#include "../templateParametrizedEntity.h"
+
+namespace qReal {
 namespace robots {
-namespace generator {
+namespace generators {
+namespace parts {
+
+// TODO: rewrite it with generating code that generates buffer
 
 /// Class responsible for everything with images generation
-class ImageGenerator
+class Images : public TemplateParametrizedEntity
 {
 public:
-	ImageGenerator();
+	explicit Images(QString const &pathToTemplates);
 
-	void addBmpFileName(QString const &name);
-	QString generateBmpFilesStringForC() const;
-	QString generateBmpFilesStringForMake() const;
-	void increaseBmpCounter();
-	int bmpFilesCount() const;
+	virtual int displayWidth() const;
+	virtual int displayHeight() const;
+
 	void reinit();
 
+	QString generate() const;
+	QString generateBmpFilesStringForMake() const;
+
+	QMap<QString, QImage> &bmpFiles();
+	int bmpFilesCount() const;
+
+	void registerBmpFile(QString const &name, QImage const &image);
+
 private:
-	QList<QString> mBmpFileNames;
-	int mBmpFilesCounter;
+	QMap<QString, QImage> mBmpFiles;
 };
 
+}
+}
 }
 }

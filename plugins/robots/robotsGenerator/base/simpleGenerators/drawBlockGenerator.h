@@ -10,11 +10,6 @@ namespace robots {
 namespace generators {
 namespace simple {
 
-int const displayWidth = 100;
-int const displayHeight = 64;
-
-class NxtOSEKRobotGenerator;
-
 class DrawBlockGenerator : public BindingGenerator
 {
 public:
@@ -22,6 +17,14 @@ public:
 			, GeneratorCustomizer &customizer
 			, Id const &id
 			, QObject *parent = 0);
+
+	virtual QString generate();
+
+protected:
+	virtual void drawBmp(QPainter *painter) = 0;
+
+private:
+	QString imageName(GeneratorCustomizer &customizer) const;
 };
 
 }
