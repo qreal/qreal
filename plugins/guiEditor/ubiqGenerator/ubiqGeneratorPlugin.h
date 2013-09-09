@@ -14,8 +14,8 @@ class UbiqGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
     Q_PLUGIN_METADATA(IID "qReal.ubiq.generator.UbiqGeneratorPlugin")
 
 public:
-	QUbiqGeneratorPlugin();
-	virtual ~QUbiqGeneratorPlugin();
+    UbiqGeneratorPlugin();
+    virtual ~UbiqGeneratorPlugin();
 
 	/// Initializes generator with ref to logical model.
 	virtual void init(qReal::PluginConfigurator const &configurator);

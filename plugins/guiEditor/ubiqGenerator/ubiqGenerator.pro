@@ -11,7 +11,7 @@ MOC_DIR = .moc
 
 
 HEADERS = \
-    biqGeneratorPlugin.h \
+    ubiqGeneratorPlugin.h \
     generator.h
 
 SOURCES = \

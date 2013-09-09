@@ -3,7 +3,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QDebug>
 
-using namespace qUbiq::qUbiqGenerator;
+using namespace ubiq::generator;
 using namespace qReal;
 using namespace utils;
 

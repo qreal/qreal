@@ -1,16 +1,14 @@
-#include "qUbiqGeneratorPlugin.h"
-#include <QtGui/QMessageBox>
-#include <QtGui/QProgressBar>
+#include "ubiqGeneratorPlugin.h"
+#include <QMessageBox>
+#include <QProgressBar>
 #include <QtCore/QProcess>
-#include <QtGui/QFileDialog>
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
+#include <QFileDialog>
+#include <QApplication>
+#include <QDesktopWidget>
 
 #include "../../../qrkernel/settingsManager.h"
 
-Q_EXPORT_PLUGIN2(QUbiqGeneratorPlugin, qUbiq::qUbiqGenerator::QUbiqGeneratorPlugin)
-
-using namespace qUbiq::qUbiqGenerator;
+using namespace ubiq::generator;
 using namespace qReal;
 
 QUbiqGeneratorPlugin::QUbiqGeneratorPlugin()
