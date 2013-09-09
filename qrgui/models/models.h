@@ -4,6 +4,7 @@
 #include "models/details/logicalModel.h"
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
+#include "../../qrkernel/ids.h"
 
 namespace qReal {
 namespace models {
@@ -11,7 +12,7 @@ namespace models {
 class Models
 {
 public:
-	explicit Models(QString const &workingCopy, EditorManagerInterface &editorManager);
+	explicit Models(QString const &workingCopy, EditorManagerInterface &editorManager, ConstraintsManager const &constraintsManager);
 	~Models();
 
 	QAbstractItemModel *graphicalModel() const;
@@ -26,6 +27,8 @@ public:
 	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() const;
 
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
+
+	Id logicalId(Id const &element) const;
 
 	void reinit();
 

@@ -9,16 +9,15 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
-		, EditorManagerInterface const &editorManagerInterface
-		)
-	: AbstractModel(editorManagerInterface)
+GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager)
+	: AbstractModel(editorManagerInterface, constraintsManager)
 	, mLogicalModelView(this)
 	, mApi(*repoApi)
 	, mGraphicalAssistApi(NULL)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), NULL);
 	init();
+//	mGraphicalAssistApi = new GraphicalModelAssistApi(NULL, NULL, editorManagerInterface, constraintsManager);//qwerty_asd
 }
 
 GraphicalModel::~GraphicalModel()

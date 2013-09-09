@@ -7,6 +7,7 @@
 #include <QtCore/QStringList>
 #include <QtGui/QIcon>
 
+#include "editorManagerInterface.h"
 #include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>
 #include <qrrepo/graphicalRepoApi.h>
@@ -74,6 +75,7 @@ public:
 
 	virtual Id findElementByType(QString const &type) const;
 	virtual QList<ListenerInterface *> listeners() const;
+		MetaType metaTypeOfElement(Id const& element) const;
 
 	virtual bool isDiagramNode(Id const &id) const;
 

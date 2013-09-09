@@ -12,17 +12,21 @@ namespace qReal {
 
 class EditorManager;
 class EditorManagerInterface;
+class ConstraintsManager;
 
 namespace models {
 
-class LogicalModelAssistApi : public qReal::LogicalModelAssistInterface
+class LogicalModelAssistApi : public QObject, public qReal::LogicalModelAssistInterface
 {
+	Q_OBJECT
+
 public:
-	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface);
+	LogicalModelAssistApi(details::LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager);
 	virtual ~LogicalModelAssistApi();
 
 	EditorManagerInterface const &editorManagerInterface() const;
 	Exploser &exploser();
+	ConstraintsManager const &constraintsManager() const;
 
 	virtual qrRepo::LogicalRepoApi const &logicalRepoApi() const;
 	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi();
@@ -65,8 +69,20 @@ public:
 	virtual bool hasRootDiagrams() const;
 	virtual int childrenOfRootDiagram() const;
 	virtual int childrenOfDiagram(const Id &parent) const;
+public slots:
+	void propertyChangedSlot(Id const &elem);
+	void parentChangedSlot(IdList const &elements);
+	void nameChangedSlot(Id const &element);
+	void addedElementToModelSlot(Id const &element);
 
+	
 	virtual void removeElement(Id const &logicalId);
+
+signals:
+	void propertyChanged(Id const &elem);
+	void parentChanged(IdList const &elements);
+	void nameChanged(Id const &element);
+	void addedElementToModel(Id const &element);
 
 private:
 	LogicalModelAssistApi(LogicalModelAssistApi const &);  // Copying is forbidden

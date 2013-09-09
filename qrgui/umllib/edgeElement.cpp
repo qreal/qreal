@@ -13,6 +13,8 @@
 #include "umllib/labelFactory.h"
 #include "umllib/private/reshapeEdgeCommand.h"
 #include "view/editorViewScene.h"
+#include "../pluginManager/constraintsManager.h"
+#include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -472,6 +474,7 @@ void EdgeElement::connectToPort()
 {
 	mMoving = true;
 
+	IdList nodesForCheckConstraints; // qwerty_old
 	NodeElement *newSrc = getNodeAt(mLine.first(), true);
 	NodeElement *newDst = getNodeAt(mLine.last(), false);
 
@@ -490,6 +493,7 @@ void EdgeElement::connectToPort()
 	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last()), toPortTypes()) : -1.0;
 
 	if (mSrc) {
+		nodesForCheckConstraints.push_back(mSrc->logicalId());
 		mSrc->delEdge(this);
 		mSrc = NULL;
 	}
@@ -500,6 +504,7 @@ void EdgeElement::connectToPort()
 	}
 
 	if (mPortFrom >= -epsilon) {
+		nodesForCheckConstraints.push_back(newSrc->logicalId());
 		mSrc = newSrc;
 		mSrc->addEdge(this);
 	}
@@ -507,7 +512,8 @@ void EdgeElement::connectToPort()
 	mGraphicalAssistApi.setFrom(id(), (mSrc ? mSrc->id() : Id::rootId()));
 	mGraphicalAssistApi.setFromPort(id(), mPortFrom);
 
-	if (mPortTo >= -epsilon) {
+	if (mPortTo >= -epsilon) { // qwerty_old   BUT : see my version
+		nodesForCheckConstraints.push_back(newDst->logicalId());
 		mDst = newDst;
 		mDst->addEdge(this);
 	}
@@ -526,10 +532,15 @@ void EdgeElement::connectToPort()
 
 	mMoving = false;
 
-	if (newSrc && newDst) {
+	if (newSrc && newDst) { //qwerty_old   BUT : see my version
 		highlight(mPenColor);
 	} else {
 		highlight(Qt::red);
+
+/* // qwerty_old
+MainWindow *mainWindow = (dynamic_cast<EditorViewScene*>(scene()))->mainWindow();
+	mainWindow->checkConstraints(nodesForCheckConstraints);
+*/
 	}
 }
 
@@ -1002,9 +1013,9 @@ void EdgeElement::delCloseLinePoints()
 bool EdgeElement::removeOneLinePoints(int startingPoint)
 {
 	if ((mLine[startingPoint].x() == mLine[startingPoint + 1].x() &&
-		mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
-		(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
-		mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
+			 mLine[startingPoint].x() == mLine[startingPoint + 2].x()) ||
+				(mLine[startingPoint].y() == mLine[startingPoint + 1].y() &&
+				 mLine[startingPoint].y() == mLine[startingPoint + 2].y()))
 	{
 		prepareGeometryChange();
 		mLine.remove(startingPoint + 1);
@@ -1730,6 +1741,19 @@ QPointF* EdgeElement::haveIntersection(QPointF const &pos1, QPointF const &pos2,
 	}
 	return NULL;
 
+}
+
+void EdgeElement::disconnectFromNode(Id const &nodeLogicalId)
+{
+	if (mLogicalAssistApi.to(logicalId()) == nodeLogicalId) {
+		mLogicalAssistApi.setTo(logicalId(), Id::rootId());
+		mDst = NULL;
+	}
+
+	if (mLogicalAssistApi.from(logicalId()) == nodeLogicalId) {
+		mLogicalAssistApi.setFrom(logicalId(), Id::rootId());
+		mSrc = NULL;
+	}
 }
 
 EdgeData& EdgeElement::data()

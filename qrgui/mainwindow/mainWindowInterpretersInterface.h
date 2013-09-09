@@ -58,6 +58,9 @@ public:
 	/// @returns True, if plugin is present and loaded
 	virtual bool pluginLoaded(QString const &pluginName) = 0;
 
+	virtual bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId) = 0;
+	virtual bool loadConstraintsPlugin(QString const &fileName) = 0;
+
 	/// Saves active diagram to .png with chosen file name
 	/// @param fileName Name for saving
 	virtual void saveDiagramAsAPictureToFile(QString const &fileName) = 0;

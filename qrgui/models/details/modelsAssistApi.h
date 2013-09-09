@@ -12,6 +12,7 @@
 namespace qReal {
 
 class EditorManagerInterface;
+class ConstraintsManager;
 
 namespace models {
 
@@ -21,12 +22,14 @@ namespace modelsImplementation {
 class AbstractModel;
 }
 
-class ModelsAssistApi
+class ModelsAssistApi : public QObject
 {
+	Q_OBJECT
+
 public:
-	ModelsAssistApi(details::modelsImplementation::AbstractModel &model
-			, EditorManagerInterface const &editorManagerInterface);
+	ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager);
 	EditorManagerInterface const &editorManagerInterface() const;
+	ConstraintsManager const &constraintsManager() const;
 	Id createElement(Id const &parent, Id const &id, Id const &logicalId
 			, bool isFromLogicalModel, QString const &name, QPointF const &position);
 
@@ -53,6 +56,9 @@ public:
 	QVariant property(Id const &elem, int const role) const;
 	int roleIndexByName(Id const &elem, QString const &roleName) const;
 
+signals:
+	void propertyChangedInModelApi(Id const &elem);
+
 private:
 
 	ModelsAssistApi(ModelsAssistApi const &);
@@ -60,6 +66,7 @@ private:
 
 	details::modelsImplementation::AbstractModel &mModel;
 	EditorManagerInterface const &mEditorManagerInterface;
+	ConstraintsManager const &mConstraintsManager;
 };
 }
 }

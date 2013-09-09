@@ -24,7 +24,7 @@ class LogicalModel : public modelsImplementation::AbstractModel
 	Q_OBJECT
 
 public:
-	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface);
+	LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager);
 	virtual ~LogicalModel();
 
 	void connectToGraphicalModel(GraphicalModel * const graphicalModel);
@@ -42,6 +42,12 @@ public:
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
 	virtual void stackBefore(QModelIndex const &element, QModelIndex const &sibling);
+
+signals:
+	void parentChanged(IdList const &idList);
+	void nameChanged(Id const &id);
+	void addedElementToModel(Id const &id);
+	void propertyChanged(Id const &id);
 
 private:
 	virtual void init();

@@ -7,14 +7,19 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManagerInterface const &editorManagerInterface)
-	: mModel(model), mEditorManagerInterface(editorManagerInterface)
+ModelsAssistApi::ModelsAssistApi(AbstractModel &model, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager)
+	: mModel(model), mEditorManagerInterface(editorManagerInterface), mConstraintsManager(constraintsManager)
 {
 }
 
 EditorManagerInterface const &ModelsAssistApi::editorManagerInterface() const
 {
 	return mEditorManagerInterface;
+}
+
+ConstraintsManager const &ModelsAssistApi::constraintsManager() const
+{
+	return mConstraintsManager;
 }
 
 Id ModelsAssistApi::createElement(Id const &parent, Id const &id, Id const &logicalId
@@ -35,6 +40,7 @@ Id ModelsAssistApi::createElement(Id const &parent, Id const &id, Id const &logi
 void ModelsAssistApi::setProperty(Id const &elem, QVariant const &newValue, int const role)
 {
 	mModel.setData(indexById(elem), newValue, role);
+	emit propertyChangedInModelApi(elem);
 }
 
 void ModelsAssistApi::stackBefore(Id const &element, Id const &sibling)

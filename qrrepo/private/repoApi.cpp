@@ -1,4 +1,4 @@
-﻿#include "../repoApi.h"
+#include "../repoApi.h"
 
 #include <QtCore/QDebug>
 
@@ -171,6 +171,24 @@ IdList RepoApi::incomingLinks(Id const &id) const
 IdList RepoApi::links(Id const &id) const
 {
 	return incomingLinks(id) << outgoingLinks(id);
+}
+
+IdList RepoApi::outgoingNodes(Id const &id) const
+{
+	IdList outNodes;
+	foreach(Id const &outLink, outgoingLinks(id)) {
+		outNodes.push_back(to(outLink));
+	}
+	return outNodes;
+}
+
+IdList RepoApi::incomingNodes(Id const &id) const
+{
+	IdList inNodes;
+	foreach(Id const &inLink, incomingLinks(id)) {
+		inNodes.push_back(from(inLink));
+	}
+	return inNodes;
 }
 
 qReal::Id RepoApi::outgoingExplosion(qReal::Id const &id) const

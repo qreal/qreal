@@ -22,9 +22,7 @@ class GraphicalModel : public modelsImplementation::AbstractModel
 	Q_OBJECT
 
 public:
-	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
-			, EditorManagerInterface const &editorManagerInterface);
-
+	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager);
 	virtual ~GraphicalModel();
 
 	/// Sets graphical assist interface for this model. Takes ownership.

@@ -302,6 +302,13 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 						canBeConnected = (pEdge.first.first.element() == under->id().element());
 					}
 				}
+/* // qwerty_old
+QPointF const &posRelativeToTheTarget = target->mapFromScene(eScenePos);
+				mEdge->placeEndTo(mapFromItem(target, target->nearestPort(posRelativeToTheTarget)));
+				mEdge->connectToPort(); //it provokes to move target somehow, so it needs to place edge end and connect to port again
+				mEdge->placeEndTo(mapFromItem(target, target->nearestPort(posRelativeToTheTarget)));
+				mEdge->adjustLink();
+*/
 			}
 
 			if (under->isContainer()) {

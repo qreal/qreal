@@ -33,6 +33,24 @@ InterpreterEditorManager::~InterpreterEditorManager()
 	}
 }
 
+EditorManagerInterface::MetaType InterpreterEditorManager::metaTypeOfElement(qReal::Id const& element) const
+{
+	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
+		foreach (Id const &currentElement,  repo->elementsByType(element.element())) {
+			if (currentElement.editor() == element.editor() && currentElement.diagram() == element.diagram() && repo->isLogicalElement(currentElement)) {
+				int isNodeOrEdge = 0; // qwerty_TODO
+				if (isNodeOrEdge == -1) {
+					return EditorManagerInterface::edge;
+				} else if (isNodeOrEdge == 1) {
+					return EditorManagerInterface::node;
+				}
+			}
+		}
+	}
+
+	return EditorManagerInterface::none;
+}
+
 Id InterpreterEditorManager::element(Id const &id, qrRepo::RepoApi const * const repo, Id const &diagram) const
 {
 	foreach (Id const &element, repo->children(diagram)) {

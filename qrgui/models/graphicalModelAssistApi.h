@@ -12,6 +12,7 @@
 namespace qReal {
 
 class EditorManagerInterface;
+class ConstraintsManager;
 
 namespace models {
 
@@ -28,6 +29,7 @@ public:
 			details::GraphicalModel &graphicalModel
 			, details::GraphicalPartModel &graphicalPartModel
 			, EditorManagerInterface const &editorManagerInterface
+			, ConstraintsManager const &constraintsManager
 			);
 
 	void setModel(details::GraphicalModel * const graphicalModel);
@@ -35,6 +37,7 @@ public:
 	/// Interface for accessing metamodel information.
 	EditorManagerInterface const &editorManagerInterface() const;
 
+	ConstraintsManager const &constraintsManager() const;
 	qrRepo::GraphicalRepoApi const &graphicalRepoApi() const;
 	qrRepo::GraphicalRepoApi &mutableGraphicalRepoApi() const;
 	Id createElement(Id const &parent, Id const &type);
@@ -93,7 +96,6 @@ public:
 	bool hasRootDiagrams() const;
 	int childrenOfRootDiagram() const;
 	int childrenOfDiagram(const Id &parent) const;
-
 	void removeElement(Id const &graphicalId);
 
 	/// Returns true, if a label already exists in repository.
@@ -130,6 +132,9 @@ public:
 	/// @param graphicalId - id of an element to which label belongs.
 	/// @param index - index of a part, which uniquely identifies label in an element.
 	QSizeF labelSize(Id const &graphicalId, int index) const;
+
+public slots:
+	void nameChangedSlot(Id const &element);
 
 signals:
 	void nameChanged(Id const &id);

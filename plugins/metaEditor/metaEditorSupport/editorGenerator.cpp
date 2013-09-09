@@ -10,13 +10,14 @@
 #include "../../../qrkernel/roles.h"
 
 #include "../../../qrutils/outFile.h"
-#include "../../../qrutils/nameNormalizer.h"
+#include "../../../qrutils/generatorsUtils/nameNormalizer.h"
 
 #include "../../../qrkernel/settingsManager.h"
 
 using namespace qReal;
 using namespace metaEditor;
 using namespace utils;
+using namespace generatorsUtils;
 
 EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api, ErrorReporterInterface &errorReporter)
 		: mApi(api)

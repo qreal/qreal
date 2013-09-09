@@ -25,6 +25,7 @@
 #include "pluginManager/interpreterEditorManager.h"
 #include "pluginManager/proxyEditorManager.h"
 #include "pluginManager/toolPluginManager.h"
+#include "pluginManager/constraintsManager.h"
 #include "models/logicalModelAssistApi.h"
 #include "view/propertyEditorView.h"
 #include "controller/controller.h"
@@ -119,6 +120,8 @@ public:
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
 
+	virtual bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId);
+	virtual bool loadConstraintsPlugin(QString const &fileName);
 	virtual void saveDiagramAsAPictureToFile(QString const &fileName);
 	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles);
 	virtual IdList selectedElementsOnActiveDiagram();
@@ -183,6 +186,9 @@ public slots:
 	void openFirstDiagram();
 	void closeTabsWithRemovedRootElements();
 
+	void checkConstraints(Id const &id);
+	void checkConstraints(QModelIndex const &index);
+	void checkConstraints(IdList const &idList);
 private slots:
 	/// Suggests user to select a root diagram for the new project
 	/// if more than one diagram loaded or creates project with the only diagram
@@ -268,6 +274,13 @@ private slots:
 	void updatePaletteIcons();
 
 private:
+
+	gui::Error::Severity severityByErrorType(CheckStatus::ErrorType const &errorType); //forCheckConstraints
+	void checkOwnConstraints(Id const &id);
+	void checkParentsConstraints(QModelIndex const &index);
+	void checkChildrensConstraints(Id const &id);
+	void checkLinksConstraints(Id const &id);
+
 	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
@@ -290,7 +303,7 @@ private:
 
 	void deleteFromExplorer(bool isLogicalModel);
 	void deleteItems(IdList &itemsToDelete, bool global = false);
-
+	void deleteFromHighlightedElements(Element *element);
 	void keyPressEvent(QKeyEvent *event);
 
 	QString getSaveFileName(QString const &dialogWindowTitle);
@@ -363,6 +376,7 @@ private:
 	Controller *mController;
 	ProxyEditorManager mEditorManagerProxy;
 	ToolPluginManager mToolManager;
+	ConstraintsManager mConstraintsManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;

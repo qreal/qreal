@@ -46,7 +46,7 @@ public:
 	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > >
 			getPossibleEdges(QString const &element) const = 0;
 
-	virtual int isNodeOrEdge(QString const &element) const = 0;
+	virtual int isNodeOrEdge(QString const &element) const = 0;//(-1) means "edge", (+1) means "node"
 
 	virtual QIcon getIcon(SdfIconEngineV2Interface *engine) const = 0;
 	virtual ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const = 0;

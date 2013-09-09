@@ -106,6 +106,8 @@ public:
 
 	void highlight(QColor const color = Qt::red);
 
+	void disconnectFromNode(qReal::Id const &nodeLogicalId);
+
 	EdgeData& data();
 
 	virtual void deleteFromScene();

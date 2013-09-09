@@ -11,6 +11,7 @@ RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 		, mFlashRobotAction(NULL)
 		, mUploadProgramAction(NULL)
 		, mNxtToolsPresent(false)
+		, mFlashTool(NULL)
 {
 	mAppTranslator.load(":/robotsGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);

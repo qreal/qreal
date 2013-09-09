@@ -1285,11 +1285,22 @@ void EditorViewScene::redraw()
 	}
 }
 
+void EditorViewScene::deleteFromHighlightedElements(Element *element)
+{
+	foreach (Element *curElement, mHighlightedElements) {
+		if (element == curElement) {
+			mHighlightedElements.remove(curElement);
+		}
+	}
+}
+
 void EditorViewScene::highlight(Id const &graphicalId, bool exclusive, QColor const &color)
 {
 	if (exclusive) {
 		foreach (Element *element, mHighlightedElements) {
-			element->setGraphicsEffect(NULL);
+			if(element) {
+				element->setGraphicsEffect(NULL);
+			}
 		}
 	}
 

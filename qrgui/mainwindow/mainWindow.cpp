@@ -1,4 +1,4 @@
-#include "mainWindow.h"
+﻿#include "mainWindow.h"
 #include "ui_mainWindow.h"
 
 #include <QtCore/QProcess>
@@ -100,7 +100,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	splashScreen.setProgress(40);
 
 	initDocks();
-	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
+	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy, mConstraintsManager);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -108,16 +108,13 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mPreferencesDialog.init(mUi->actionShow_grid, mUi->actionShow_alignment
 			, mUi->actionSwitch_on_grid, mUi->actionSwitch_on_alignment);
 
-
 	splashScreen.setProgress(60);
 
 	loadPlugins();
 
-
 	splashScreen.setProgress(70);
 
 	mDocksVisibility.clear();
-
 
 	splashScreen.setProgress(80);
 
@@ -143,6 +140,13 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));
+
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(propertyChanged(Id)), this, SLOT(checkConstraints(Id)));
+	connect(&mPropertyModel, SIGNAL(propertyChangedFromPropertyEditor(QModelIndex)), this, SLOT(checkConstraints(QModelIndex)));
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(parentChanged(IdList)), this, SLOT(checkConstraints(IdList)));
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
+	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id)), this, SLOT(checkConstraints(Id)));
+	connect(&mModels->logicalModelAssistApi(), SIGNAL(addedElementToModel(Id)), this, SLOT(checkConstraints(Id)));
 }
 
 void MainWindow::connectActions()
@@ -184,7 +188,6 @@ void MainWindow::connectActions()
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
 	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
-
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
 	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
@@ -549,6 +552,18 @@ void MainWindow::makeSvg()
 	getCurrentTab()->scene()->render(&painter);
 }
 
+void MainWindow::deleteFromHighlightedElements(Element *element)
+{
+	EditorView const * const view = getCurrentTab();
+	EditorViewScene* scene = NULL;
+	if (view) {
+		scene = dynamic_cast<EditorViewScene*>(view->scene());
+	}
+	if (scene) {
+		scene->deleteFromHighlightedElements(element);
+	}
+}
+
 void MainWindow::deleteElementFromDiagram(Id const &id)
 {
 	bool isLogical = mModels->logicalModelAssistApi().isLogicalId(id);
@@ -581,6 +596,7 @@ void MainWindow::deleteFromExplorer(bool isLogicalModel)
 	if (id != Id()) {
 		deleteItems(IdList() << id, true);
 	}
+/* BUT : see my version */ //qwerty_old
 }
 
 void MainWindow::deleteItems(IdList &itemsToDelete, bool global)
@@ -623,6 +639,16 @@ void MainWindow::deleteItems(IdList &itemsToDelete, bool global)
 	} else {
 		mController->execute(multipleRemoveCommand);
 	}
+
+	/*foreach (NodeElement *item, itemsToArrangeLinks) { // qwerty_old
+		if (item) {
+			item->arrangeLinks();
+			checkConstraints(item->logicalId());//проверяем на ограничения связанные элементы удаляемого линка в логической модели
+		}
+	}
+	if (parentIndex != mModels->logicalModelAssistApi().indexById(Id::rootId())) {
+		checkConstraints(parentIndex);//проверяем на ограничения родителя удаляемого элемента в логической модели
+	}*/
 }
 
 void MainWindow::addEdgesToBeDeleted(IdList &itemsToDelete)
@@ -683,6 +709,7 @@ AbstractCommand *MainWindow::graphicalDeleteCommand(QGraphicsItem *target)
 		return NULL;
 	}
 	return graphicalDeleteCommand(elem->id());
+/* BUT : see my version */ //qwerty_old
 }
 
 AbstractCommand *MainWindow::logicalDeleteCommand(QModelIndex const &index)
@@ -859,6 +886,16 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 	return true;
 }
 
+bool MainWindow::unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId)
+{
+	if (mConstraintsManager.pluginsIds().contains(Id(pluginId)) && mConstraintsManager.pluginsNames().contains(pluginName)) {
+		if (!mConstraintsManager.unloadPlugin(pluginId)) {
+			return false;
+		}
+	}
+	return true;
+}
+
 bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
 	if (!mEditorManagerProxy.loadPlugin(fileName)) {
@@ -870,6 +907,14 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 	}
 
 	mUi->paletteTree->initDone();
+	return true;
+}
+
+bool MainWindow::loadConstraintsPlugin(QString const &fileName)
+{
+	if (!mConstraintsManager.loadPlugin(fileName)) {
+		return false;
+	}
 	return true;
 }
 
@@ -977,7 +1022,8 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 	connect(shapeEdit, SIGNAL(shapeSaved(QString, QPersistentModelIndex const &, int const &))
 			, this, SLOT(setData(QString, QPersistentModelIndex const &, int const &)));
 
-	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
+	QString elementName = model->data(index, Qt::DisplayRole).toString();
+	mUi->tabs->addTab(shapeEdit, tr("Shape Editor : %1").arg(elementName));
 	mUi->tabs->setCurrentWidget(shapeEdit);
 	setConnectActionZoomTo(shapeEdit);
 }
@@ -1188,7 +1234,15 @@ void MainWindow::openFirstDiagram()
 	if (rootIds.count() == 0) {
 		return;
 	}
-	openNewTab(mModels->graphicalModelAssistApi().indexById(rootIds[0]));
+
+	Id firstDiagram = Id::rootId();
+	foreach (Id currentChild, rootIds) { // qwerty_asd_temp
+		if (mModels->graphicalModelAssistApi().isGraphicalId(currentChild)) {
+			firstDiagram = currentChild;
+			break;
+		}
+	}
+	openNewTab(mModels->graphicalModelAssistApi().indexById(firstDiagram));
 }
 
 void MainWindow::closeTabsWithRemovedRootElements()
@@ -2039,6 +2093,108 @@ void MainWindow::updateActiveDiagram()
 	reinitModels();
 	activateItemOrDiagram(diagramId);
 	mUi->graphicalModelExplorer->setRootIndex(QModelIndex());
+}
+
+gui::Error::Severity MainWindow::severityByErrorType(CheckStatus::ErrorType const &errorType)
+{
+	if (errorType == CheckStatus::warning) {
+		return gui::Error::warning;
+	} else if (errorType == CheckStatus::critical) {
+		return gui::Error::critical;
+	} else if (errorType == CheckStatus::verification) {
+		return gui::Error::error; //else gui::Error::warning
+	}
+	return gui::Error::warning;
+}
+
+void MainWindow::checkOwnConstraints(Id const &id)
+{
+	Id const logicalId = mModels->logicalId(id);
+	IdList const graphicalIds = mModels->graphicalModelAssistApi().graphicalIdsByLogicalId(logicalId);
+
+	QList<CheckStatus> checkStatusList = mConstraintsManager.check(logicalId, mModels->logicalModelAssistApi().logicalRepoApi(), mEditorManagerProxy);
+	bool checkStatus = true;
+	foreach (CheckStatus check, checkStatusList) {
+		gui::Error::Severity errorSeverity = severityByErrorType(check.errorType());
+		QString errorMessage = check.message();
+
+		if (check.checkStatus()) {
+			if (errorSeverity != gui::Error::warning) {
+				mErrorReporter->delUniqueError(errorMessage, errorSeverity, id);
+			}
+		} else {
+			checkStatus = false;
+			if (errorSeverity != gui::Error::warning) {
+				mErrorReporter->addUniqueError(errorMessage, errorSeverity, id);
+			}
+		}
+	}
+
+	if (checkStatus) {
+		foreach (Id const &graphicalId, graphicalIds) {
+			dehighlight(graphicalId);
+		}
+	} else {
+		foreach (Id const &graphicalId, graphicalIds) {
+			highlight(graphicalId, false);
+		}
+	}
+}
+
+void MainWindow::checkConstraints(Id const &id)
+{
+	EditorManagerInterface::MetaType metaType = mEditorManagerProxy.metaTypeOfElement(id);
+	checkOwnConstraints(id);
+	if (metaType == EditorManagerInterface::node) {
+		QModelIndex index = mModels->logicalModelAssistApi().indexById(id);
+		checkChildrensConstraints(id);
+		checkParentsConstraints(index);
+		checkLinksConstraints(id);
+	}
+}
+
+void MainWindow::checkConstraints(QModelIndex const &index)
+{
+	Id const id = mModels->logicalModelAssistApi().idByIndex(index);
+	checkConstraints(id);
+}
+
+void MainWindow::checkConstraints(IdList const &idList)
+{
+	foreach (Id const &id, idList) {
+		checkConstraints(id);
+	}
+}
+
+void MainWindow::checkParentsConstraints(QModelIndex const &index)
+{
+	QModelIndex parent = mModels->logicalModel()->parent(index);
+	Id const parentId = mModels->logicalModelAssistApi().idByIndex(parent);
+	if (mModels->logicalModelAssistApi().isLogicalId(parentId)) {
+		checkOwnConstraints(parentId);
+		checkParentsConstraints(parent);
+	}
+}
+
+void MainWindow::checkChildrensConstraints(Id const &id)
+{
+	IdList childrenList = mModels->logicalModelAssistApi().children(id);
+	foreach (Id const &childrenId, childrenList) {
+		if (mModels->logicalModelAssistApi().isLogicalId(childrenId)) {
+			checkOwnConstraints(childrenId);
+			checkChildrensConstraints(childrenId);
+		}
+	}
+}
+
+void MainWindow::checkLinksConstraints(Id const &id)
+{
+	IdList linksList = mModels->logicalRepoApi().links(id);
+	foreach (Id const &linkId, linksList) {
+		if (mModels->logicalModelAssistApi().isLogicalId(linkId)) {
+			checkOwnConstraints(linkId);
+		}
+	}
 }
 
 QDockWidget *MainWindow::logicalModelDock() const

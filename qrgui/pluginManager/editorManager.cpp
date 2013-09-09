@@ -187,6 +187,10 @@ QString EditorManager::friendlyName(const Id &id) const
 		} else {
 			return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
 		}
+	/*case 3: { // qwerty_old
+		QString elementName = id.element();
+		return mPluginIface[id.editor()]->elementName(id.diagram(), elementName.at(0).toUpper() + elementName.mid(1));
+	}*/
 	default:
 		Q_ASSERT(!"Malformed Id");
 		return "";
@@ -652,4 +656,15 @@ void EditorManager::saveMetamodel(QString const &newMetamodelFileName)
 QString EditorManager::saveMetamodelFilePath() const
 {
 	return "";
+}
+
+EditorManagerInterface::MetaType EditorManager::metaTypeOfElement(Id const& element) const
+{
+	int isNodeOrEdge = mPluginIface[element.editor()]->isNodeOrEdge(element.element()); //(-1) means "edge", (+1) means "node"
+	if (isNodeOrEdge == -1) {
+		return EditorManagerInterface::edge;
+	} else if (isNodeOrEdge == 1) {
+		return EditorManagerInterface::node;
+	}
+	return EditorManagerInterface::none;
 }

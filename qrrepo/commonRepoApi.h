@@ -54,6 +54,9 @@ public:
 	/// @returns Id of second element connected to a link.
 	virtual qReal::Id otherEntityFromLink(qReal::Id const &linkId, qReal::Id const &firstNode) const = 0;
 
+	virtual qReal::IdList outgoingNodes(qReal::Id const &id) const = 0;
+	virtual qReal::IdList incomingNodes(qReal::Id const &id) const = 0;
+
 	/// Get a property of given element.
 	/// @param id Id of an element.
 	/// @param propertyName Name of a property from which we want to get value.

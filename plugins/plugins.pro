@@ -6,6 +6,10 @@ SUBDIRS	= \
 	blockDiagram/blockDiagram.pro \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
+	constraintsEditor/constraintsEditor.pro \
+#	constraintsAllMetamodels/constraintsAllMetamodels.pro \
+#	constraintsTestConstraintsBlockMetamodel/constraintsTestConstraintsBlockMetamodel.pro \
+	TEMP/constraintsBlockDiagramMetamodelConstraints_1/constraintsBlockDiagramMetamodelConstraints_1.pro \
 	requirements/requirements.pro \
 
 
@@ -15,7 +19,6 @@ SUBDIRS += \
 	exterminatus/exterminatus.pro \
 	visualInterpreter/visualInterpreter.pro \
 	refactoring/refactoring.pro \
-
 
 # QReal:Robots
 SUBDIRS += \

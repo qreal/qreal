@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../../qrutils/generator/abstractGenerator.h"
+#include "../../../qrutils/generatorsUtils/abstractGenerator.h"
 
-using namespace utils;
+
 
 namespace ubiq {
 namespace generator {
@@ -10,7 +10,7 @@ namespace generator {
 QString const customClassLabel = "CustomClass";
 
 /// Generator for custom class that can be used in Message, handlers or helper functions.
-class CustomClassGenerator : public AbstractGenerator
+class CustomClassGenerator : public generatorsUtils::AbstractGenerator
 {
 public:
 	/** Constructor.

@@ -12,17 +12,28 @@ GraphicalModelAssistApi::GraphicalModelAssistApi(
 		GraphicalModel &graphicalModel
 		, GraphicalPartModel &graphicalPartModel
 		, EditorManagerInterface const &editorManagerInterface
+		, ConstraintsManager const &constraintsManager
 		)
 	: mGraphicalModel(graphicalModel)
-	, mModelsAssistApi(graphicalModel, editorManagerInterface)
+	, mModelsAssistApi(graphicalModel, editorManagerInterface, constraintsManager)
 	, mGraphicalPartModel(graphicalPartModel)
 {
-	connect(&graphicalModel, SIGNAL(nameChanged(Id)), this, SIGNAL(nameChanged(Id)));
+	connect(&mGraphicalModel, SIGNAL(nameChanged(Id)), this, SLOT(nameChangedSlot(Id)));
+}
+
+void GraphicalModelAssistApi::nameChangedSlot(Id const &element)
+{
+	emit nameChanged(element);
 }
 
 EditorManagerInterface const &GraphicalModelAssistApi::editorManagerInterface() const
 {
 	return mModelsAssistApi.editorManagerInterface();
+}
+
+ConstraintsManager const &GraphicalModelAssistApi::constraintsManager() const
+{
+	return mModelsAssistApi.constraintsManager();
 }
 
 qrRepo::GraphicalRepoApi const &GraphicalModelAssistApi::graphicalRepoApi() const

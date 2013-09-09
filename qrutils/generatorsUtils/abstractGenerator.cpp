@@ -2,10 +2,10 @@
 #include <QtCore/QDebug>
 
 #include "abstractGenerator.h"
-#include "../nameNormalizer.h"
+#include "nameNormalizer.h"
 
+using namespace generatorsUtils;
 using namespace qReal;
-using namespace utils;
 
 AbstractGenerator::AbstractGenerator(QString const &templateDirPath
 		, QString const &outputDirPath
@@ -17,7 +17,6 @@ AbstractGenerator::AbstractGenerator(QString const &templateDirPath
 		, mOutputDirPath(outputDirPath)
 		, mTemplateDirPath(templateDirPath)
 {
-	loadUtilsTemplates();
 }
 
 AbstractGenerator::~AbstractGenerator()
@@ -28,7 +27,7 @@ QDir AbstractGenerator::getDir(QString const &path)
 {
 	QDir const result(path);
 	if (!result.exists()) {
-		qDebug() << "cannot find directory " << path;
+		qDebug() << "Cannot find directory " << path;
 		return QDir();
 	}
 
@@ -43,10 +42,9 @@ bool AbstractGenerator::loadTemplateFromFile(QString const &templateFileName, QS
 	}
 
 	QString const fileName = dir.absoluteFilePath(templateFileName);
-	qDebug() << fileName;
 	QFile file(fileName);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		qDebug() << "cannot load file \"" << fileName << "\"";
+		mErrorReporter.addError(QObject::tr("Cannot load file \"%1\"").arg(fileName));
 		return false;
 	}
 	QTextStream in(&file);
@@ -66,7 +64,7 @@ bool AbstractGenerator::loadUtilsFromFile()
 	QString const fileName = dir.absoluteFilePath(utilsFileName);
 	QFile utilsFile(fileName);
 	if (!utilsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		qDebug() << "cannot load file \"" << fileName << "\"";
+		mErrorReporter.addError(QObject::tr("Cannot load file \"%1\"").arg(fileName));
 		return false;
 	}
 	QTextStream in(&utilsFile);
@@ -109,7 +107,7 @@ bool AbstractGenerator::loadUtilsFromDir()
 		QFile templateFile(file);
 
 		if (!templateFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			qDebug() << "cannot load file \"" << file << "\"";
+			mErrorReporter.addError(QObject::tr("Cannot load file \"%1\"").arg(file));
 			return false;
 		}
 
@@ -145,14 +143,19 @@ void AbstractGenerator::saveOutputFile(QString const &fileName, QString const &c
 	QDir dir;
 
 	if (!dir.exists(mOutputDirPath)) {
-		dir.mkdir(mOutputDirPath);
+		QString messageText = QObject::tr("Cannot create directory %1").arg(mOutputDirPath);
+		if (!dir.mkdir(mOutputDirPath)) {
+			mErrorReporter.addUniqueError(messageText);
+		} else {
+			mErrorReporter.delUniqueError(messageText);
+		}
 	}
 	dir.cd(mOutputDirPath);
 
 	QString const outputFileName = dir.absoluteFilePath(fileName);
 	QFile file(outputFileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		qDebug() << "cannot open \"" << outputFileName << "\"";
+		mErrorReporter.addError(QObject::tr("Cannot open \"%1\"").arg(outputFileName));
 		return;
 	}
 
@@ -183,7 +186,7 @@ QString AbstractGenerator::generatePropertiesCode(Id const &element)
 		QString propertyTemplate = mTemplateUtils["@@Property@@"];
 		QString const name = mApi.name(property);
 		propertyTemplate.replace("@@Name@@", NameNormalizer::normalize(name))
-				.replace("@@Type@@", mApi.stringProperty(property, "Type"));
+				.replace("@@Type@@", mApi.stringProperty(property, "type"));
 
 		properties += propertyTemplate;
 	}

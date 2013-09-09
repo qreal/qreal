@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "../qrkernel/roles.h"
 #include "private/repository.h"
@@ -61,6 +61,8 @@ public:
 	qReal::IdList incomingLinks(qReal::Id const &id) const;
 	qReal::IdList links(qReal::Id const &id) const;
 
+		qReal::IdList outgoingNodes(qReal::Id const &id) const;
+		qReal::IdList incomingNodes(qReal::Id const &id) const;
 	qReal::Id outgoingExplosion(qReal::Id const &id) const;
 	qReal::IdList incomingExplosions(qReal::Id const &id) const;
 	void addExplosion(qReal::Id const &source, qReal::Id const &destination);

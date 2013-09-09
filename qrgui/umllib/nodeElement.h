@@ -134,6 +134,7 @@ public:
 	QGraphicsRectItem* placeholder() const;
 
 	virtual void deleteFromScene();
+	void disconnectEdges();
 
 	QList<EdgeElement *> const edgeList() const;
 	QList<NodeElement *> const childNodes() const;
@@ -201,8 +202,6 @@ private:
 
 	void drawLinesForResize(QPainter *painter);
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
-
-	void disconnectEdges();
 
 	void delUnusedLines();
 	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);

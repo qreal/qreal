@@ -2,19 +2,21 @@
 
 #include <QtCore/QDir>
 
-#include "../utilsDeclSpec.h"
 #include "../../qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h"
 #include "../../qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "../utilsDeclSpec.h"
 
-namespace utils {
+namespace generatorsUtils {
+
 /// File name for generation utility templates. Searched in templates folder.
 QString const utilsFileName = "utils.template";
 
 /// Separator used in utility templates file to separate templates.
 QString const utilsSeparator = "==========";
 
-/// Base class for all generators, contains common methods and infrastructure to
-/// generate one file.
+/** Base class for all generators, contains common methods and infrastructure to
+  generate one file.
+  */
 class QRUTILS_EXPORT AbstractGenerator
 {
 public:
@@ -60,6 +62,9 @@ protected:
 	/// A map with utility templates, maps template name to template.
 	QMap<QString, QString> mTemplateUtils;
 
+	/// Directory to place output files to.
+	QString const mOutputDirPath;
+
 private:
 	/// Loads utility templates from a file whose name in utilsFileName.
 	bool loadUtilsFromFile();
@@ -68,13 +73,11 @@ private:
 	/// This method loads them and puts to mTemplateUtils.
 	bool loadUtilsFromDir();
 
-	/// Directory to place output files to.
-	QString const mOutputDirPath;
-
 	/// Returns a directory by given path or QDir() if there is no such path.
 	QDir getDir(QString const &path);
 
 	/// Path to a directory with templates.
 	QString const mTemplateDirPath;
 };
+
 }

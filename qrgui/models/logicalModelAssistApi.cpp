@@ -6,13 +6,37 @@ using namespace qReal;
 using namespace models;
 using namespace models::details;
 
-LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel
-		, EditorManagerInterface const &editorManagerInterface)
-		: mModelsAssistApi(logicalModel, editorManagerInterface)
-		, mLogicalModel(logicalModel)
-		, mExploser(*this)
-		, mEditorManager(editorManagerInterface)
+LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager)
+	: mModelsAssistApi(logicalModel, editorManagerInterface, constraintsManager)
+	, mLogicalModel(logicalModel)
+	, mExploser(*this)
+	, mEditorManager(editorManagerInterface)
 {
+	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChangedInModelApi(Id)), this, SLOT(propertyChangedSlot(Id)));
+	QObject::connect(&mLogicalModel, SIGNAL(parentChanged(IdList)), this, SLOT(parentChangedSlot(IdList)));
+	QObject::connect(&mLogicalModel, SIGNAL(nameChanged(Id)), this, SLOT(nameChangedSlot(Id)));
+	QObject::connect(&mLogicalModel, SIGNAL(addedElementToModel(Id)), this, SLOT(addedElementToModelSlot(Id)));
+	QObject::connect(&mLogicalModel, SIGNAL(propertyChanged(Id)), this, SLOT(propertyChangedSlot(Id)));
+}
+
+void LogicalModelAssistApi::propertyChangedSlot(Id const &elem)
+{
+	emit propertyChanged(elem);
+}
+
+void LogicalModelAssistApi::parentChangedSlot(IdList const &elements)
+{
+	emit parentChanged(elements);
+}
+
+void LogicalModelAssistApi::nameChangedSlot(Id const &element)
+{
+	emit nameChanged(element);
+}
+
+void LogicalModelAssistApi::addedElementToModelSlot(Id const &element)
+{
+	emit addedElementToModel(element);
 }
 
 LogicalModelAssistApi::~LogicalModelAssistApi()
@@ -22,6 +46,11 @@ LogicalModelAssistApi::~LogicalModelAssistApi()
 EditorManagerInterface const &LogicalModelAssistApi::editorManagerInterface() const
 {
 	return mModelsAssistApi.editorManagerInterface();
+}
+
+ConstraintsManager const &LogicalModelAssistApi::constraintsManager() const
+{
+	return mModelsAssistApi.constraintsManager();
 }
 
 Exploser &LogicalModelAssistApi::exploser()
@@ -91,6 +120,7 @@ void LogicalModelAssistApi::setPropertyByRoleName(Id const &elem, QVariant const
 		return;
 	}
 	mModelsAssistApi.setProperty(elem, newValue, roleIndex);
+	emit propertyChanged(elem);
 }
 
 QVariant LogicalModelAssistApi::propertyByRoleName(Id const &elem, QString const &roleName) const

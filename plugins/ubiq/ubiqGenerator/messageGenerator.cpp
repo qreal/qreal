@@ -1,6 +1,6 @@
 #include "messageGenerator.h"
 
-#include "../../../qrutils/nameNormalizer.h"
+#include "../../../qrutils/generatorsUtils/nameNormalizer.h"
 
 #include <QtCore/QFile>
 
@@ -8,7 +8,7 @@
 
 using namespace ubiq::generator;
 using namespace qReal;
-using namespace utils;
+using namespace generatorsUtils;
 
 /// Generation target file
 QString const fileName = "Message.cs";

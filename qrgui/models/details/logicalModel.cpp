@@ -9,12 +9,12 @@ using namespace models;
 using namespace models::details;
 using namespace modelsImplementation;
 
-LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface)
-		: AbstractModel(editorManagerInterface), mGraphicalModelView(this), mApi(*repoApi)
+LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface, ConstraintsManager const &constraintsManager)
+	: AbstractModel(editorManagerInterface, constraintsManager), mGraphicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
 	init();
-	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManagerInterface);
+	mLogicalAssistApi = new LogicalModelAssistApi(*this, editorManagerInterface, constraintsManager);
 }
 
 LogicalModel::~LogicalModel()
@@ -164,6 +164,7 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 	} else {
 		newItem = createModelItem(id, parentItem);
 		initializeElement(id, parentItem, newItem, name, position);
+		emit addedElementToModel(id);
 	}
 }
 
@@ -222,6 +223,7 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 		case Qt::DisplayRole:
 		case Qt::EditRole:
 			mApi.setName(item->id(), value.toString());
+			emit nameChanged(item->id());
 			break;
 		case roles::fromRole:
 			mApi.setFrom(item->id(), value.value<Id>());
@@ -233,6 +235,7 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 			if (role >= roles::customPropertiesBeginRole) {
 				QString selectedProperty = findPropertyName(item->id(), role);
 				mApi.setProperty(item->id(), selectedProperty, value);
+				emit propertyChanged(item->id());
 				break;
 			}
 			Q_ASSERT(role < Qt::UserRole);
@@ -265,6 +268,11 @@ void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &p
 		parentItem->addChild(elementItem);
 
 		endMoveRows();
+
+		IdList elements;
+		elements.append(elementItem->id());
+		elements.append(parentItem->id());
+		emit parentChanged(elements);
 	}
 }
 
