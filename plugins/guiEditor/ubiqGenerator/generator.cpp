@@ -31,8 +31,12 @@ Generator::~Generator()
 
 void Generator::generate()
 {
+/*
     QMessageBox msgBox;
-    msgBox.setText("generate executed");
+    msgBox.setText("Generator::generate() executed");
     msgBox.setInformativeText("ubiq generators 'generate()'");
     msgBox.exec();
+    */
+    //IdList toGenerate;
+    //toGenerate << mApi.elementsByType("Frame");
 }

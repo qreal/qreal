@@ -26,7 +26,7 @@ public:
 private slots:
 	void generate();
 private:
-	Generator *mGenerator;
+    Generator *mGenerator;
 
 	/// Interface of MainWindow, used, for example, to reinit models when finished parsing
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership

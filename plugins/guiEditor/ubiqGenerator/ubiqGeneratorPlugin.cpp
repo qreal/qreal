@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QDebug>
 
 #include "../../../qrkernel/settingsManager.h"
 
@@ -41,15 +42,11 @@ void UbiqGeneratorPlugin::generate()
 		if (!mLogicalModel->logicalRepoApi().isLogicalElement(diagram)) {
 			continue;
 		}
+    }
 
 //		QString programName = mLogicalModel->logicalRepoApi().property(diagram, "programName").toString();
 //		QString pathToGenerate = mLogicalModel->logicalRepoApi().property(diagram, "pathToGenerate").toString();
 
-//		mGenerator = new Generator(pathToGenerate, programName, *mLogicalModel, *mErrorReporter);
-//		mGenerator->generate();
-        QMessageBox msgBox;
-        msgBox.setText("ubiq generator plugin 'generate()'");
-        msgBox.setInformativeText("test");
-        msgBox.exec();
-	}
+        mGenerator = new Generator("./pathToGenerate", "programName", *mLogicalModel, *mErrorReporter);
+        mGenerator->generate();
 }
