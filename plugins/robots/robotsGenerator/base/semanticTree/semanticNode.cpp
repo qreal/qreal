@@ -40,19 +40,3 @@ SemanticNode *SemanticNode::findNodeFor(qReal::Id const &id)
 
 	return NULL;
 }
-
-QString SemanticNode::addIndent(QString const &code, int indent) const
-{
-	if (!indent) {
-		return code;
-	}
-
-	QStringList const lines = code.split("\n", QString::SkipEmptyParts);
-	QString const indentString(indent, '\t');
-	QStringList result;
-	foreach (QString const &line, lines) {
-		result << indentString + line;
-	}
-
-	return result.join('\n');
-}

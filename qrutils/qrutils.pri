@@ -17,6 +17,7 @@ HEADERS += \
 	$$PWD/scalableCoordinate.h \
 	$$PWD/nameNormalizer.h \
 	$$PWD/fileSystemUtils.h \
+	$$PWD/stringUtils.h \
 	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \
@@ -29,6 +30,7 @@ SOURCES += \
 	$$PWD/scalableCoordinate.cpp \
 	$$PWD/nameNormalizer.cpp \
 	$$PWD/fileSystemUtils.cpp \
+	$$PWD/stringUtils.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
 
 FORMS += \

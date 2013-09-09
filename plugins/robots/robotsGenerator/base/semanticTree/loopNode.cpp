@@ -1,4 +1,5 @@
 #include "loopNode.h"
+#include <qrutils/stringUtils.h>
 
 using namespace qReal::robots::generators::semantics;
 
@@ -27,7 +28,7 @@ QString LoopNode::toString(GeneratorCustomizer &customizer, int indent) const
 		}
 	}
 
-	QString result = addIndent(generator->generate(), indent);
+	QString result = utils::StringUtils::addIndent(generator->generate(), indent);
 	QString const bodyCode = mBodyZone->toString(customizer, indent + 1);
 	result.replace("@@BODY@@", bodyCode);
 	return result;

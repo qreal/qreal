@@ -13,8 +13,9 @@ public:
 	FunctionElementGenerator(qrRepo::RepoApi const &repo
 		, GeneratorCustomizer &customizer
 		, Id const &id
-		, bool generateToInit
 		, QObject *parent = 0);
+
+	virtual QString generate();
 
 private:
 	bool const mGenerateToInit;

@@ -69,6 +69,9 @@ void GeneratorFactoryBase::initialize()
 {
 	initVariables();
 	initSubprograms();
+	initEngines();
+	initSensors();
+	initFunctions();
 }
 
 void GeneratorFactoryBase::initVariables()
@@ -80,6 +83,27 @@ void GeneratorFactoryBase::initSubprograms()
 {
 	mSubprograms = new parts::Subprograms(mRepo, mErrorReporter
 			, pathToTemplates(), nameNormalizerConverter());
+}
+
+void GeneratorFactoryBase::initEngines()
+{
+	mEngines = new parts::Engines(pathToTemplates(), outputPortConverter(), enginesConverter());
+}
+
+void GeneratorFactoryBase::initSensors()
+{
+	mSensors = new parts::Sensors(pathToTemplates(), inputPortConverter());
+}
+
+void GeneratorFactoryBase::initFunctions()
+{
+	mFunctions = new parts::Functions(pathToTemplates());
+}
+
+QList<parts::InitTerminateCodeGenerator *> GeneratorFactoryBase::initTerminateGenerators()
+{
+	return QList<parts::InitTerminateCodeGenerator *>()
+			<< engines() << sensors() << functions();
 }
 
 parts::Variables *GeneratorFactoryBase::variablesInfo() const
@@ -95,6 +119,21 @@ parts::Variables *GeneratorFactoryBase::variables()
 parts::Subprograms *GeneratorFactoryBase::subprograms()
 {
 	return mSubprograms;
+}
+
+parts::Engines *GeneratorFactoryBase::engines()
+{
+	return mEngines;
+}
+
+parts::Sensors *GeneratorFactoryBase::sensors()
+{
+	return mSensors;
+}
+
+parts::Functions *GeneratorFactoryBase::functions()
+{
+	return mFunctions;
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(Id const &id
@@ -286,4 +325,37 @@ Binding::ConverterInterface *GeneratorFactoryBase::breakModeConverter() const
 Binding::ConverterInterface *GeneratorFactoryBase::typeConverter() const
 {
 	return new converters::TypeConverter(pathToTemplates());
+}
+
+QString GeneratorFactoryBase::initCode()
+{
+	QStringList result;
+	QList<parts::InitTerminateCodeGenerator *> const generators(initTerminateGenerators());
+	foreach (parts::InitTerminateCodeGenerator *generator, generators) {
+		result << generator->initCode();
+	}
+
+	return result.join('\n');
+}
+
+QString GeneratorFactoryBase::terminateCode()
+{
+	QStringList result;
+	QList<parts::InitTerminateCodeGenerator *> const generators(initTerminateGenerators());
+	foreach (parts::InitTerminateCodeGenerator *generator, generators) {
+		result << generator->terminateCode();
+	}
+
+	return result.join('\n');
+}
+
+QString GeneratorFactoryBase::isrHooksCode()
+{
+	QStringList result;
+	QList<parts::InitTerminateCodeGenerator *> const generators(initTerminateGenerators());
+	foreach (parts::InitTerminateCodeGenerator *generator, generators) {
+		result << generator->isrHooksCode();
+	}
+
+	return result.join('\n');
 }

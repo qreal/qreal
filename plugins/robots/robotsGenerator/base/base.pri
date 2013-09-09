@@ -10,6 +10,10 @@ HEADERS += \
 	$$PWD/templateParametrizedEntity.h \
 	$$PWD/parts/variables.h \
 	$$PWD/parts/subprograms.h \
+	$$PWD/parts/engines.h \
+	$$PWD/parts/initTerminateCodeGenerator.h \
+	$$PWD/parts/sensors.h \
+	$$PWDase/parts/functions.h \
 #	$$PWD/parts/images.h \
 	$$PWD/semanticTree/semanticTree.h \
 	$$PWD/semanticTree/semanticNode.h \
@@ -47,6 +51,10 @@ SOURCES += \
 	$$PWD/templateParametrizedEntity.cpp \
 	$$PWD/parts/variables.cpp \
 	$$PWD/parts/subprograms.cpp \
+	$$PWD/parts/engines.cpp \
+	$$PWD/parts/initTerminateCodeGenerator.cpp \
+	$$PWD/parts/sensors.cpp \
+	$$PWD/parts/functions.cpp \
 #	$$PWD/parts/images.cpp \
 	$$PWD/semanticTree/semanticTree.cpp \
 	$$PWD/semanticTree/semanticNode.cpp \

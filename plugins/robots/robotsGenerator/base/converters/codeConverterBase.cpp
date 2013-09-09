@@ -89,7 +89,6 @@ QString CodeConverterBase::sensorExpression(int port) const
 {
 	QString const portString = QString::number(port);
 
-	// TODO: do something with it!
 	int const portValue = SettingsManager::value("port" + portString + "SensorType").toInt();
 
 	QString const templatePath = readSensorTemplatePath(

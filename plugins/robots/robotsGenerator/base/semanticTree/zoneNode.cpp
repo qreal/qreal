@@ -1,4 +1,5 @@
 #include "zoneNode.h"
+#include <qrutils/stringUtils.h>
 
 using namespace qReal::robots::generators::semantics;
 
@@ -63,7 +64,7 @@ QString ZoneNode::toString(GeneratorCustomizer &customizer, int indent) const
 {
 	QString result;
 	foreach (SemanticNode const * const child, mChildren) {
-		result += addIndent(child->toString(customizer, 0).trimmed(), indent)+ "\n";
+		result += utils::StringUtils::addIndent(child->toString(customizer, 0).trimmed(), indent)+ "\n";
 	}
 
 	result.chop(1);

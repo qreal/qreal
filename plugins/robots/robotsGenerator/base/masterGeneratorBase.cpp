@@ -1,6 +1,7 @@
 #include "masterGeneratorBase.h"
 
 #include <qrutils/outFile.h>
+#include <qrutils/stringUtils.h>
 #include "readableControlFlowGenerator.h"
 
 using namespace qReal::robots::generators;
@@ -32,6 +33,10 @@ QString MasterGeneratorBase::generate()
 
 	beforeGeneration();
 
+	foreach (parts::InitTerminateCodeGenerator *generator, mCustomizer->factory()->initTerminateGenerators()) {
+		generator->reinit();
+	}
+
 	semantics::SemanticTree const *mainControlFlow = mReadableControlFlowGenerator->generate();
 	bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator);
 	if (!mainControlFlow || !subprogramsResult) {
@@ -41,6 +46,12 @@ QString MasterGeneratorBase::generate()
 	QString resultCode = readTemplate("main.t");
 	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->generatedCode());
 	resultCode.replace("@@MAIN_CODE@@", mainControlFlow->toString(1));
+	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
+			mCustomizer->factory()->initCode(), 1));
+	resultCode.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
+			mCustomizer->factory()->terminateCode(), 1));
+	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
+			mCustomizer->factory()->isrHooksCode(), 1));
 
 	QString const pathToOutput = pathToGenerate();
 	outputCode(pathToOutput, resultCode);

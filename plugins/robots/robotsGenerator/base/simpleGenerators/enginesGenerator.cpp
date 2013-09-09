@@ -18,23 +18,5 @@ EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
 					<< Binding::createConverting("@@BREAK_MODE@@", "Mode", customizer.factory()->breakModeConverter())
 			, parent)
 {
+	mCustomizer.factory()->engines()->registerUsageOnPorts(repo.property(id, "Ports").toString());
 }
-
-//void EnginesGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen  // duplicated code - not true
-//		, qReal::Id const &elementId, QString const &enginePort)
-//{
-//	QString const initTerminateVelocity = "0";
-//	QString const initTerminateBrakeMode = "1";
-//	QString const initCodeEngines = "nxt_motor_set_speed("
-//			+ enginePort + ", "
-//			+ initTerminateVelocity + ", "
-//			+ initTerminateBrakeMode + ");";
-//	QString const terminateCodeEngines = "nxt_motor_set_speed("
-//			+ enginePort + ", "
-//			+ initTerminateVelocity + ", "
-//			+ initTerminateBrakeMode + ");";
-//	if (!ListSmartLine::isContains(nxtGen->initCode(), initCodeEngines)) {
-//		nxtGen->initCode().append(SmartLine_old(initCodeEngines, elementId));
-//		nxtGen->terminateCode().append(SmartLine_old(terminateCodeEngines, elementId));
-//	}
-//}

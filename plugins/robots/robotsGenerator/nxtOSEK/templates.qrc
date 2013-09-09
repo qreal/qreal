@@ -80,5 +80,26 @@
         <file>templates/oil.t</file>
         <file>templates/oilTask.t</file>
         <file>templates/comment.t</file>
+        <file>templates/initialization/colorBlue.t</file>
+        <file>templates/initialization/colorFull.t</file>
+        <file>templates/initialization/colorGreen.t</file>
+        <file>templates/initialization/colorNone.t</file>
+        <file>templates/initialization/colorRed.t</file>
+        <file>templates/initialization/engines.t</file>
+        <file>templates/initialization/light.t</file>
+        <file>templates/initialization/sonar.t</file>
+        <file>templates/termination/colorBlue.t</file>
+        <file>templates/termination/colorFull.t</file>
+        <file>templates/termination/colorGreen.t</file>
+        <file>templates/termination/colorNone.t</file>
+        <file>templates/termination/colorRed.t</file>
+        <file>templates/termination/engines.t</file>
+        <file>templates/termination/light.t</file>
+        <file>templates/termination/sonar.t</file>
+        <file>templates/isrHooks/colorBlue.t</file>
+        <file>templates/isrHooks/colorFull.t</file>
+        <file>templates/isrHooks/colorGreen.t</file>
+        <file>templates/isrHooks/colorNone.t</file>
+        <file>templates/isrHooks/colorRed.t</file>
     </qresource>
 </RCC>

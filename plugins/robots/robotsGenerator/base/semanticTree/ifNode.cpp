@@ -1,4 +1,5 @@
 #include "ifNode.h"
+#include <qrutils/stringUtils.h>
 
 using namespace qReal::robots::generators::semantics;
 
@@ -33,7 +34,7 @@ QString IfNode::toString(GeneratorCustomizer &customizer, int indent) const
 	}
 
 	bool const elseIsEmpty = mElseZone->isEmpty();
-	QString result = addIndent(customizer.factory()->
+	QString result = utils::StringUtils::addIndent(customizer.factory()->
 			ifGenerator(mId, customizer, elseIsEmpty, mAddNotToCondition)->generate(), indent);
 
 	QString const thenBlock = mThenZone->toString(customizer, indent + 1);

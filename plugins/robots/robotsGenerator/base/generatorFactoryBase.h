@@ -9,6 +9,9 @@
 
 #include "parts/variables.h"
 #include "parts/subprograms.h"
+#include "parts/engines.h"
+#include "parts/sensors.h"
+#include "parts/functions.h"
 
 namespace qReal {
 namespace robots {
@@ -30,6 +33,9 @@ public:
 	virtual parts::Variables *variablesInfo() const;
 	virtual parts::Variables *variables();
 	virtual parts::Subprograms *subprograms();
+	virtual parts::Engines *engines();
+	virtual parts::Sensors *sensors();
+	virtual parts::Functions *functions();
 
 	virtual simple::AbstractSimpleGenerator *ifGenerator(Id const &id
 			, GeneratorCustomizer &customizer
@@ -72,15 +78,27 @@ public:
 	virtual simple::Binding::ConverterInterface *breakModeConverter() const;
 	virtual simple::Binding::ConverterInterface *typeConverter() const;
 
+	virtual QList<parts::InitTerminateCodeGenerator *> initTerminateGenerators();
+
+	QString initCode();
+	QString terminateCode();
+	QString isrHooksCode();
+
 protected:
 	virtual void initVariables();
 	virtual void initSubprograms();
+	virtual void initEngines();
+	virtual void initSensors();
+	virtual void initFunctions();
 
 private:
 	qrRepo::RepoApi const &mRepo;
 	ErrorReporterInterface &mErrorReporter;
 	parts::Variables *mVariables;
 	parts::Subprograms *mSubprograms;
+	parts::Engines *mEngines;
+	parts::Sensors *mSensors;
+	parts::Functions *mFunctions;
 };
 
 }

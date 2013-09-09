@@ -28,8 +28,6 @@ protected:
 
 	virtual QLinkedList<SemanticNode *> children() const = 0;
 
-	QString addIndent(QString const &code, int indent) const;
-
 	Id mId;
 	SemanticNode *mParentNode;
 };

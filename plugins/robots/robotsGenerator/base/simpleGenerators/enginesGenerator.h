@@ -15,7 +15,6 @@ public:
 			, Id const &id
 			, QString const &engineType
 			, QObject *parent);
-
 };
 
 }

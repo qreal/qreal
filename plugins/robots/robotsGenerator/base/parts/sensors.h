@@ -1,0 +1,45 @@
+#pragma once
+
+#include "initTerminateCodeGenerator.h"
+#include "../simpleGenerators/binding.h"
+#include "../../../robotsInterpreter/sensorConstants.h"
+
+namespace qReal {
+namespace robots {
+namespace generators {
+namespace parts {
+
+class Sensors : public InitTerminateCodeGenerator
+{
+public:
+	Sensors(QString const &pathToTemplates, simple::Binding::ConverterInterface const *inputPortConverter);
+	virtual ~Sensors();
+
+	virtual void reinit();
+	virtual QString initCode();
+	virtual QString terminateCode();
+	virtual QString isrHooksCode();
+
+protected:
+	void reinitPort(int port);
+
+	virtual QString initCode(QString const &port
+			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
+
+	virtual QString terminateCode(QString const &port
+			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
+
+	virtual QString isrHooks(QString const &port
+			, interpreters::robots::enums::sensorType::SensorTypeEnum type);
+
+private:
+	simple::Binding::ConverterInterface const *mInputPortConverter;  // Takes ownership
+	QStringList mInitCode;
+	QStringList mTerminateCode;
+	QStringList mIsrHooksCode;
+};
+
+}
+}
+}
+}
