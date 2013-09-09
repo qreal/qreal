@@ -9,10 +9,7 @@ using namespace qReal;
 using namespace utils;
 
 QString const templateDir = "./templates";
-QString const templateFileNameForms = "qUbiqForms.cs";
-QString const templateFileNameVariables = "qUbiqVariables.cs";
-QString const templateFileNameCSProj = "qUbiqCSProject.csproj";
-QString const templateFileNameAppConfig = "qUbiqApp.config";
+QString const templateFileNameTest = "testFile.cs";
 
 /// Generation target file
 
@@ -21,8 +18,10 @@ Generator::Generator(QString const &outputDirPath
 		, qReal::LogicalModelAssistInterface const &logicalModel
 		, qReal::ErrorReporterInterface &errorReporter
 		)
-	: AbstractGenerator(templateDir, QString(outputDirPath + "/" + programName).replace("\\", "/"), logicalModel, errorReporter)
+    : AbstractGenerator(templateDir, QString("C:\\Users\\efimw_000\\Documents\\study\\").replace("\\", "/"), logicalModel, errorReporter)
 {
+    Q_UNUSED outputDirPath;
+    Q_UNUSED programName;
 }
 
 Generator::~Generator()
@@ -34,9 +33,24 @@ void Generator::generate()
 /*
     QMessageBox msgBox;
     msgBox.setText("Generator::generate() executed");
-    msgBox.setInformativeText("ubiq generators 'generate()'");
+    msgBox.setInformativeText(outpudDirPath);
     msgBox.exec();
-    */
+*/
     //IdList toGenerate;
     //toGenerate << mApi.elementsByType("Frame");
+
+    initGeneratingFiles();
+    saveGeneratedFiles();
+}
+
+void Generator::initGeneratingFiles()
+{
+    loadTemplateFromFile(templateFileNameTest, mResultTestFile);
+}
+
+void Generator::saveGeneratedFiles()
+{
+    QString outputFileName = "test.cs";
+
+    saveOutputFile(outputFileName, mResultTestFile);
 }

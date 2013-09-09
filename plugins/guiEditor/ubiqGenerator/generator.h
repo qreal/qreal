@@ -27,6 +27,11 @@ public:
 
 private:
 
+    void initGeneratingFiles();
+    void saveGeneratedFiles();
+
+
+    QString mResultTestFile;
 };
 
 }
