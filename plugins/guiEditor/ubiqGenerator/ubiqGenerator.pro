@@ -12,11 +12,11 @@ MOC_DIR = .moc
 
 HEADERS = \
     ubiqGeneratorPlugin.h \
-    generator.h
+#    generator.h
 
 SOURCES = \
     ubiqGeneratorPlugin.cpp \
-    generator.cpp
+#    generator.cpp
 
 win32 {
         QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "

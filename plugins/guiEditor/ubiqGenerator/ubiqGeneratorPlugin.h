@@ -4,7 +4,7 @@
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "generator.h"
 
-namespace qUbiq {
+namespace ubiq {
 namespace generator {
 
 class UbiqGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
