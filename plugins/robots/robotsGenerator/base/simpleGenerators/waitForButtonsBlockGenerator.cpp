@@ -1,4 +1,5 @@
 #include "waitForButtonsBlockGenerator.h"
+#include "../generatorCustomizer.h"
 
 using namespace qReal::robots::generators::simple;
 
@@ -6,59 +7,53 @@ WaitForButtonsBlockGenerator::WaitForButtonsBlockGenerator(qrRepo::RepoApi const
 		, GeneratorCustomizer &customizer
 		, Id const &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "wait/buttons.t", QList<Binding *>(), parent)
+	: BindingGenerator(repo, customizer, id, templatePath(repo, id), QList<Binding *>()
+			<< Binding::createConverting("@@ENTER_CLICKS@@", "CentralButtonClicks"
+					, customizer.factory()->intPropertyConverter())
+			<< Binding::createConverting("@@RUN_CLICKS@@", "LeftButtonClicks"
+					, customizer.factory()->intPropertyConverter())
+			, parent)
 {
+	if (enterUsed(repo, id)) {
+		QString const enterDeclaration = readTemplate("buttons/enterVariableDeclaration.t");
+		customizer.factory()->variables()->appendManualDeclaration(enterDeclaration);
+	}
+
+	if (runUsed(repo, id)) {
+		QString const runDeclaration = readTemplate("buttons/runVariableDeclaration.t");
+		customizer.factory()->variables()->appendManualDeclaration(runDeclaration);
+	}
 }
 
-//QList<SmartLine_old> WaitForButtonsBlockGenerator::convertElementIntoDirectCommand(NxtOSEKRobotGenerator *nxtGen
-//		, qReal::Id const &elementId, qReal::Id const &logicElementId)
-//{
-//	QList<SmartLine_old> result;
-//	QString condition = "";
+bool WaitForButtonsBlockGenerator::enterUsed(qrRepo::RepoApi const &repo, Id const &id) const
+{
+	QString const enterButtonClicks = repo.property(id, "CentralButtonClicks").toString();
+	return !enterButtonClicks.isEmpty() && enterButtonClicks.trimmed() != "0";
+}
 
-//	QString const enterButtonClicks = nxtGen->intExpression(logicElementId, "CentralButtonClicks");
-//	QString const cancelButtonClicks = nxtGen->intExpression(logicElementId, "BottomButtonClicks");
-//	bool const listenEnter = !enterButtonClicks.isEmpty() && enterButtonClicks.trimmed() != "0";
-//	bool const listenCancel = !cancelButtonClicks.isEmpty() && cancelButtonClicks.trimmed() != "0";
+bool WaitForButtonsBlockGenerator::runUsed(qrRepo::RepoApi const &repo, Id const &id) const
+{
+	QString const runButtonClicks = repo.property(id, "LeftButtonClicks").toString();
+	return !runButtonClicks.isEmpty() && runButtonClicks.trimmed() != "0";
+}
 
-//	if (listenCancel) {
-//		result.append(SmartLine_old("cancelCounter = 0;", elementId));
-//		result.append(SmartLine_old("cancelWasDown = 0;", elementId));
-//		condition += "cancelCounter < " + cancelButtonClicks;
-//		nxtGen->variables().cancelButtonUsed();
-//	}
-//	if (listenEnter) {
-//		result.append(SmartLine_old("enterCounter = 0;", elementId));
-//		result.append(SmartLine_old("enterWasDown = 0;", elementId));
-//		if (listenCancel) {
-//			condition += " || ";
-//		}
-//		condition += "enterCounter < " + enterButtonClicks;
-//		nxtGen->variables().enterButtonUsed();
-//	}
+QString WaitForButtonsBlockGenerator::templatePath(qrRepo::RepoApi const &repo, Id const &id) const
+{
+	bool const listenEnter = enterUsed(repo, id);
+	bool const listenRun = runUsed(repo, id);
 
-//	if (listenEnter || listenCancel) {
-//		result.append(SmartLine_old("while (" + condition + ") {", elementId, SmartLine_old::increase));
-//		if (listenEnter) {
-//			result.append(SmartLine_old("if (!ecrobot_is_ENTER_button_pressed() && enterWasDown) {", elementId, SmartLine_old::increase));
-//			result.append(SmartLine_old("enterCounter++;", elementId));
-//			result.append(SmartLine_old("enterWasDown = 0;", elementId));
-//			result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
-//			result.append(SmartLine_old("if (ecrobot_is_ENTER_button_pressed()) {", elementId, SmartLine_old::increase));
-//			result.append(SmartLine_old("enterWasDown = 1;", elementId));
-//			result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
-//		}
-//		if (listenCancel) {
-//			result.append(SmartLine_old("if (!ecrobot_is_RUN_button_pressed() && cancelWasDown) {", elementId, SmartLine_old::increase));
-//			result.append(SmartLine_old("cancelCounter++;", elementId));
-//			result.append(SmartLine_old("cancelWasDown = 0;", elementId));
-//			result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
-//			result.append(SmartLine_old("if (ecrobot_is_RUN_button_pressed()) {", elementId, SmartLine_old::increase));
-//			result.append(SmartLine_old("cancelWasDown = 1;", elementId));
-//			result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
-//		}
-//		result.append(SmartLine_old("}", elementId, SmartLine_old::decrease));
-//		return result;
-//	}
-//	return result;
-//}
+	if (!listenEnter && !listenRun) {
+		return "buttons/doNotWaitButtons.t";
+	}
+
+	if (listenEnter && !listenRun) {
+		return "buttons/waitForEnterOnly.t";
+	}
+
+
+	if (!listenEnter && listenRun) {
+		return "buttons/waitForRunOnly.t";
+	}
+
+	return "buttons/waitForBothButtons.t";
+}

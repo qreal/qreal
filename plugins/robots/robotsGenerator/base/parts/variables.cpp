@@ -55,15 +55,6 @@ QString Variables::generateVariableString() const
 
 	result += mManualDeclarations.join('\n');
 
-	// TODO:
-//	if (mEnterButtonUsed) {
-//		result = "int enterCounter;\nint enterWasDown;\n" + result;
-//	}
-
-//	if (mCancelButtonUsed) {
-//		result = "int cancelCounter;\nint cancelWasDown;\n" + result;
-//	}
-
 	return result;
 }
 
