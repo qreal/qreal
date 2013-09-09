@@ -2,8 +2,8 @@
 #include <QtCore/QPluginLoader>
 #include <QtCore/QDir>
 
-#include "../../qrrepo/repoApi.h"
-#include "../../qrutils/nameNormalizer.h"
+#include "qrrepo/repoApi.h"
+#include "qrutils/nameNormalizer.h"
 
 using namespace qReal;
 using namespace editorPluginTestingFramework;

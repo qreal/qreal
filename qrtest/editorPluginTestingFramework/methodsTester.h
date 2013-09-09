@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../qrgui/pluginManager/editorManagerInterface.h"
-#include "../../qrgui/pluginManager/interpreterEditorManager.h"
-#include "../../qrgui/pluginManager/editorManager.h"
-#include "../../qrgui/editorPluginInterface/editorInterface.h"
+#include "qrgui/pluginManager/editorManagerInterface.h"
+#include "qrgui/pluginManager/interpreterEditorManager.h"
+#include "qrgui/pluginManager/editorManager.h"
+#include "qrgui/editorPluginInterface/editorInterface.h"
 
 #include "abstractStringGenerator.h"
 

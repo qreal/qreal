@@ -1,7 +1,7 @@
 #include "methodsTesterForQrxcAndInterpreter.h"
 #include "convertingMethods.h"
 #include "defs.h"
-#include "../../qrkernel/exception/exception.h"
+#include "qrkernel/exception/exception.h"
 
 #include <QtCore/QDebug>
 

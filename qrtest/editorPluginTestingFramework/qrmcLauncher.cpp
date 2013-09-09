@@ -1,5 +1,5 @@
 #include "qrmcLauncher.h"
-#include "../../qrmc/metaCompiler.h"
+#include "qrmc/metaCompiler.h"
 #include "defs.h"
 
 using namespace qReal;

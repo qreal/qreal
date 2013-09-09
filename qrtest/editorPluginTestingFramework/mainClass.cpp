@@ -4,10 +4,10 @@
 #include "methodsTesterForQrxcAndInterpreter.h"
 #include "methodsCheckerForTravis.h"
 
-#include "../../qrgui/pluginManager/interpreterEditorManager.h"
-#include "../../qrgui/pluginManager/editorManagerInterface.h"
-#include "../../qrgui/pluginManager/editorManager.h"
-#include "../../qrutils/xmlUtils.h"
+#include "qrgui/pluginManager/interpreterEditorManager.h"
+#include "qrgui/pluginManager/editorManagerInterface.h"
+#include "qrgui/pluginManager/editorManager.h"
+#include "qrutils/xmlUtils.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>

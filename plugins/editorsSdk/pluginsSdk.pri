@@ -1,3 +1,8 @@
+INCLUDEPATH += \
+	$$PWD/../.. \
+	$$PWD/../../qrgui \
+
+
 SOURCES		+=
 
 HEADERS		+= \

@@ -3,7 +3,7 @@
 #include <QtCore/QProcess>
 #include <QtCore/QDebug>
 
-#include "../../qrkernel/settingsManager.h"
+#include "qrkernel/settingsManager.h"
 
 using namespace qReal;
 using namespace editorPluginTestingFramework;

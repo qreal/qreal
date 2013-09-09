@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
+#include "qrgui/mainwindow/mainWindowInterpretersInterface.h"
 
 namespace editorPluginTestingFramework {
 

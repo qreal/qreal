@@ -7,10 +7,10 @@
 #include "htmlMaker.h"
 #include "configurationFileParser.h"
 
-#include "../../qrrepo/repoApi.h"
-#include "../../qrgui/pluginManager/interpreterEditorManager.h"
+#include "qrrepo/repoApi.h"
+#include "qrgui/pluginManager/interpreterEditorManager.h"
 
-#include "../../qrgui/editorPluginInterface/editorInterface.h"
+#include "qrgui/editorPluginInterface/editorInterface.h"
 
 #include <QtCore/QString>
 

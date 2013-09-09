@@ -3,8 +3,8 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore>
-#include "../../qrkernel/ids.h"
-#include "../../qrgui/pluginManager/explosion.h"
+#include "qrkernel/ids.h"
+#include "qrgui/pluginManager/explosion.h"
 
 namespace editorPluginTestingFramework {
 

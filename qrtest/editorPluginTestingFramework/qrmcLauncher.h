@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "qrgui/toolPluginInterface/pluginConfigurator.h"
 
 namespace editorPluginTestingFramework {
 

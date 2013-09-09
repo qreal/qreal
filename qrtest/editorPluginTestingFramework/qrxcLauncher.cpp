@@ -1,10 +1,10 @@
 #include "qrxcLauncher.h"
 
-#include "../../plugins/metaEditor/metaEditorSupport/editorGenerator.h"
-#include "../../qrgui/mainwindow/mainWindowInterpretersInterface.h"
-#include "../../qrrepo/repoApi.h"
-#include "../../qrgui/mainwindow/errorReporter.h"
-#include "../../qrxc/xmlCompiler.h"
+#include "plugins/metaEditor/metaEditorSupport/editorGenerator.h"
+#include "qrgui/mainwindow/mainWindowInterpretersInterface.h"
+#include "qrrepo/repoApi.h"
+#include "qrgui/mainwindow/errorReporter.h"
+#include "qrxc/xmlCompiler.h"
 #include "defs.h"
 
 using namespace qReal;

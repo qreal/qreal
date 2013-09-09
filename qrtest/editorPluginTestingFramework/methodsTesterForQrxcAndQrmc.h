@@ -2,8 +2,8 @@
 
 #include <QtCore/QString>
 
-#include "../../qrgui/editorPluginInterface/editorInterface.h"
-#include "../../qrgui/pluginManager/interpreterEditorManager.h"
+#include "qrgui/editorPluginInterface/editorInterface.h"
+#include "qrgui/pluginManager/interpreterEditorManager.h"
 #include "abstractStringGenerator.h"
 #include "methodsTester.h"
 

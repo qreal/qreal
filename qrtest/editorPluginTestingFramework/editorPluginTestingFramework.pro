@@ -3,6 +3,10 @@ QT += xml widgets
 CONFIG += console
 TARGET = editorPluginTestFramework
 
+INCLUDEPATH += \
+	$$PWD/../.. \
+	$$PWD/../../qrgui/ \
+
 DESTDIR = ../../bin
 
 !macx {

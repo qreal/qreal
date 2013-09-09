@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "../../qrkernel/settingsManager.h"
+#include "qrkernel/settingsManager.h"
 
 namespace editorPluginTestingFramework {
 

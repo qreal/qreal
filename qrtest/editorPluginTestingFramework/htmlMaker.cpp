@@ -9,7 +9,7 @@
 #include <QtCore/QTranslator>
 #include <QtCore/QStringList>
 
-#include "../../qrutils/outFile.h"
+#include "qrutils/outFile.h"
 
 using namespace editorPluginTestingFramework;
 using namespace utils;
