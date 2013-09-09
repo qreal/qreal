@@ -79,13 +79,14 @@
     <componentList>
         <include file="qrealRobots-main.xml" />
         <include file="qrealRobots-nxtTools.xml" />
+        <include file="qRealBase.xml" />
     </componentList>
     
     <postInstallationActionList>
         <!-- Adding desktop shortcut -->
         <copyFile>
             <destination>${windows_folder_desktopdirectory}/QReal-Robots.lnk</destination>
-            <origin>${installdir}/Run QReal-Robots.lnk</origin>
+            <origin>${installdir}/QReal-Robots.lnk</origin>
         </copyFile>
 
         <!-- Associating file extension -->

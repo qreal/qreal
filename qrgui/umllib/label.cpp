@@ -7,7 +7,6 @@
 #include "umllib/private/fontCache.h"
 
 using namespace qReal;
-using namespace enums;
 
 Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elementId
 		, int index, qreal x, qreal y, QString const &text, qreal rotation)

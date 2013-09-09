@@ -108,12 +108,11 @@ public:
 	bool connectionInProgress();
 	void setConnectingState(bool arg);
 
-	void adjustLinks(bool isDragging = false);
+	void adjustLinks();
 	void arrangeLinearPorts();
 	void arrangeLinks();
 
 	virtual void checkConnectionsToPort();
-	virtual void connectLinksToPorts();
 
 	/** @brief Drawing placeholder at the appropriate position (calculated using event data) */
 	void drawPlaceholder(QGraphicsRectItem *placeholder, QPointF scenePos);
@@ -132,8 +131,6 @@ public:
 
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
-
-	virtual void deleteFromScene();
 
 	QList<EdgeElement *> const edgeList() const;
 	QList<NodeElement *> const childNodes() const;
@@ -202,8 +199,6 @@ private:
 	void drawLinesForResize(QPainter *painter);
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
-	void disconnectEdges();
-
 	void delUnusedLines();
 	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);
 
@@ -226,8 +221,6 @@ private:
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
 	void setLinksVisible(bool);
-
-	NodeElement *getNodeAt(QPointF const &position);
 
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
@@ -278,16 +271,12 @@ private:
 	QList<ContextMenuAction *> mBonusContextMenuActions;
 
 	SceneGridHandler *mGrid;
-	UmlPortHandler *mUmlPortHandler;
 	PortHandler *mPortHandler;
 
 	QGraphicsRectItem *mPlaceholder;
 	NodeElement *mHighlightedNode;
 
 	NodeData mData;
-
-	int mTimeOfUpdate;
-	QTimer *mTimer;
 
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;
