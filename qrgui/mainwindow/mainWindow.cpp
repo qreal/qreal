@@ -100,6 +100,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	splashScreen.setProgress(40);
 
 	initDocks();
+	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy, mConstraintsManager);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow").toBool());
@@ -111,11 +112,9 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	loadPlugins();
 
-
 	splashScreen.setProgress(70);
 
 	mDocksVisibility.clear();
-
 
 	splashScreen.setProgress(80);
 
@@ -130,8 +129,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		showMaximized();
 	}
 	splashScreen.close();
-
-	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy, mConstraintsManager);
 
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);

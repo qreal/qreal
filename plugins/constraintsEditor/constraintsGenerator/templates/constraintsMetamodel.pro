@@ -6,6 +6,10 @@ RCC_DIR = .moc
 
 LIBS += -L@@pathToQReal@@/bin -lqrkernel -lqrutils -lqrrepo
 
+INCLUDEPATH += \
+	$$PWD/@@pathToQReal@@ \
+	$$PWD/@@pathToQReal@@/qrgui/ \
+
 HEADERS += \
 	constraints@@metamodelName@@Plugin.h \
 	@@pathToQReal@@/qrgui/pluginManager/editorManagerInterface.h \

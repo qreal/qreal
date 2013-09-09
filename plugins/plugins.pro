@@ -8,7 +8,8 @@ SUBDIRS	= \
 	metaEditor/metaEditor.pro \
 	constraintsEditor/constraintsEditor.pro \
 #	constraintsAllMetamodels/constraintsAllMetamodels.pro \
-#	constraintsTestConstraintsBlockMetamodel\constraintsTestConstraintsBlockMetamodel.pro \
+#	constraintsTestConstraintsBlockMetamodel/constraintsTestConstraintsBlockMetamodel.pro \
+	TEMP/constraintsBlockDiagramMetamodelConstraints_1/constraintsBlockDiagramMetamodelConstraints_1.pro \
 	requirements/requirements.pro \
 
 
