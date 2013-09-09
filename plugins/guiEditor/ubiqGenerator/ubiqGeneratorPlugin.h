@@ -5,12 +5,13 @@
 #include "generator.h"
 
 namespace qUbiq {
-namespace qUbiqGenerator {
+namespace generator {
 
-class QUbiqGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
+class UbiqGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
+    Q_PLUGIN_METADATA(IID "qReal.ubiq.generator.UbiqGeneratorPlugin")
 
 public:
 	QUbiqGeneratorPlugin();

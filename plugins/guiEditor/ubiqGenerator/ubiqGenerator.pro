@@ -1,3 +1,5 @@
+QT += widgets xml
+
 TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../../bin/plugins/
@@ -9,15 +11,11 @@ MOC_DIR = .moc
 
 
 HEADERS = \
-	ubiqGeneratorPlugin.h \
-#	generator.h \
-    qUbiqGeneratorPlugin.h \
+    biqGeneratorPlugin.h \
     generator.h
 
 SOURCES = \
-	ubiqGeneratorPlugin.cpp \
-#	generator.cpp \
-    qUbiqGeneratorPlugin.cpp \
+    ubiqGeneratorPlugin.cpp \
     generator.cpp
 
 win32 {
