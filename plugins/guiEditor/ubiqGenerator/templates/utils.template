@@ -5,6 +5,7 @@
 		{
 			@@caseForConnectedFrame@@
 		}
+		brake;
 ==========
 @@outconnectedFrameCase@@
 			case @@rightHandFrameName@@:
