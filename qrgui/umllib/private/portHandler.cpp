@@ -332,31 +332,31 @@ void PortHandler::checkConnectionsToPort()
 	connectLinksToPorts();
 }
 
-void PortHandler:: arrangeLinearPorts()
+void PortHandler::arrangeLinearPorts()
 {
-	for (int lpId = mPointPorts.size(); lpId < mPointPorts.size() + mLinePorts.size(); lpId++) {
-		QMap<QPair<QPair<int, qreal>, qreal>, EdgeElement*> sortedEdges;
-		QLineF const portLine = mLinePorts.at(lpId)->transformForContents(mNode->contentsRect());
+	for (int linePortId = mPointPorts.size(); linePortId < mPointPorts.size() + mLinePorts.size(); linePortId++) {
+		QMap<EdgeArrangeCriteria, EdgeElement*> sortedEdges;
+		QLineF const portLine = mLinePorts.at(linePortId)->transformForContents(mNode->contentsRect());
 		foreach (EdgeElement* edge, mNode->edgeList()) {
 			QPair<qreal, qreal> edgePortId = edge->portIdOn(mNode);
 			qreal currentPortId = -1.0;
-			if (portNumber(edgePortId.first) == lpId) {
+			if (portNumber(edgePortId.first) == linePortId) {
 				currentPortId = edgePortId.first;
 			}
-			if (portNumber(edgePortId.second) == lpId) {
+			if (portNumber(edgePortId.second) == linePortId) {
 				currentPortId = edgePortId.second;
 			}
 
 			if (currentPortId != -1.0) {
-				QPair<QPair<int, qreal>, qreal> arrangeCriteria = edge->arrangeCriteria(mNode, portLine);
+				EdgeArrangeCriteria const arrangeCriteria = edge->arrangeCriteria(mNode, portLine);
 				sortedEdges.insertMulti(arrangeCriteria, edge);
 			}
 		}
 
 		int const n = sortedEdges.size();
 		int i = 0;
-		foreach (EdgeElement* edge, sortedEdges) {
-			qreal const newId = lpId + (i + 1.0) / (n + 1);
+		foreach (EdgeElement * const edge, sortedEdges) {
+			qreal const newId = linePortId + (i + 1.0) / (n + 1);
 			edge->moveConnection(mNode, newId);
 			i++;
 		}

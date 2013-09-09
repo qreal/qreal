@@ -680,10 +680,10 @@ QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 	QList<NodeElement *> list;
 
 	if (node) {
-		QPolygonF bounds = node->mapToScene(node->boundingRect());
+		QPolygonF const bounds = node->mapToScene(node->boundingRect());
 		QList<QGraphicsItem *> overlapping = items(bounds);
-		foreach (QGraphicsItem *item, overlapping) {
-			NodeElement *closeNode = dynamic_cast<NodeElement *>(item);
+		foreach (QGraphicsItem * const item, overlapping) {
+			NodeElement * const closeNode = dynamic_cast<NodeElement *>(item);
 			if (closeNode && (closeNode != node) && !closeNode->isAncestorOf(node) && !node->isAncestorOf(closeNode)) {
 				list.append(closeNode);
 			}
@@ -1095,10 +1095,10 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (mShouldReparentItems) {
 		QList<QGraphicsItem *> const list = selectedItems();
-		foreach(QGraphicsItem *item, list) {
-			NodeElement* nodeItem = dynamic_cast<NodeElement*>(item);
+		foreach(QGraphicsItem * const item, list) {
+			NodeElement * const nodeItem = dynamic_cast<NodeElement *>(item);
 			if (nodeItem) {
-				Element *e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
+				Element * const e = dynamic_cast<Element *>(itemAt(event->scenePos(), QTransform()));
 				if ((e && (nodeItem->id() != e->id())) || !e) {
 					sendEvent(item, event);
 				}

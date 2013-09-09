@@ -163,14 +163,14 @@ qreal EdgeElement::toPort() const
 	return mPortTo;
 }
 
-void EdgeElement::setFromPort(qreal const &fromPort)
+void EdgeElement::setFromPort(qreal const fromPort)
 {
 	mPortFrom = fromPort;
 	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi.setFromPort(id(), mPortFrom);
 }
 
-void EdgeElement::setToPort(qreal const &toPort)
+void EdgeElement::setToPort(qreal const toPort)
 {
 	mPortTo = toPort;
 	mModelUpdateIsCalled = true;
@@ -182,6 +182,7 @@ void EdgeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *optio
 	if (SettingsManager::value("PaintOldEdgeMode").toBool() && mHandler->isReshapeStarted()) {
 		paintEdge(painter, option, true);
 	}
+
 	paintEdge(painter, option, false);
 }
 
@@ -190,7 +191,7 @@ void EdgeElement::paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *o
 	painter->save();
 
 	if (drawSavedLine) {
-		QColor color = QColor(SettingsManager::value("oldLineColor").toString());
+		QColor const color = QColor(SettingsManager::value("oldLineColor").toString());
 		setEdgePainter(painter, edgePen(painter, color, Qt::DashDotLine, mPenWidth), 0.5);
 	} else {
 		setEdgePainter(painter, edgePen(painter, mColor, mPenStyle, mPenWidth), painter->opacity());
@@ -213,12 +214,14 @@ void EdgeElement::drawArrows(QPainter *painter, bool savedLine) const
 	Qt::PenStyle style(QPen(painter->pen()).style());
 
 	painter->save();
+
 	if (savedLine) {
-		QColor color = QColor(SettingsManager::value("oldLineColor").toString());
+		QColor const color = QColor(SettingsManager::value("oldLineColor").toString());
 		setEdgePainter(painter, edgePen(painter, color, Qt::SolidLine, 3), 0.5);
 	} else {
 		setEdgePainter(painter, edgePen(painter, mColor, style, 3), painter->opacity());
 	}
+
 	QPolygonF line = savedLine ? mHandler->savedLine() : mLine;
 
 	painter->save();
@@ -628,10 +631,10 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 		return innermostChild(items, mDst);
 	}
 
-	foreach (QGraphicsItem *item, items) {
-		NodeElement *e = dynamic_cast<NodeElement *>(item);
+	foreach (QGraphicsItem * const item, items) {
+		NodeElement * const e = dynamic_cast<NodeElement *>(item);
 		if (e) {
-			NodeElement *innerChild = innermostChild(items, e);
+			NodeElement * const innerChild = innermostChild(items, e);
 			if (innerChild) {
 				return innerChild;
 			}
@@ -640,7 +643,7 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 	return NULL;
 }
 
-NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const
+NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, NodeElement * const element) const
 {
 	foreach (NodeElement *child, element->childNodes()) {
 		if (items.contains(child)) {
@@ -696,9 +699,7 @@ void EdgeElement::reverse()
 {
 	int const length = mLine.size();
 	for (int i = 0; i < length / 2; ++i) {
-		QPointF tmp(mLine[i]);
-		mLine[i] = mLine[length - 1 - i];
-		mLine[length - 1 - i] = tmp;
+		qSwap(mLine[i], mLine[length - 1 - i]);
 	}
 
 	reversingReconnectToPorts(mDst, mSrc);
@@ -719,10 +720,12 @@ void EdgeElement::reversingReconnectToPorts(NodeElement *newSrc, NodeElement *ne
 		mSrc = newSrc;
 		mSrc->addEdge(this);
 	}
+
 	if (mPortTo >= -epsilon) {
 		mDst = newDst;
 		mDst->addEdge(this);
 	}
+
 	mGraphicalAssistApi.setFrom(id(), (mSrc ? mSrc->id() : Id::rootId()));
 	mGraphicalAssistApi.setFromPort(id(), mPortFrom);
 	mGraphicalAssistApi.setTo(id(), (mDst ? mDst->id() : Id::rootId()));
@@ -777,7 +780,7 @@ QList<PossibleEdge> EdgeElement::getPossibleEdges()
 
 EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart)
 {
-	NodeElement *node = isStart ? mSrc : mDst;
+	NodeElement const * const node = isStart ? mSrc : mDst;
 	if (!node) {
 		return isStart ? right : top;
 	}
@@ -842,7 +845,7 @@ QPair<qreal, qreal> EdgeElement::portIdOn(NodeElement const *node) const
 	return qMakePair(-1.0, -1.0);
 }
 
-QPair<QPair<int, qreal>, qreal> EdgeElement::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
+EdgeArrangeCriteria EdgeElement::arrangeCriteria(NodeElement const *node, QLineF const &portLine) const
 {
 	return mHandler->arrangeCriteria(node, portLine);
 }

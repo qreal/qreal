@@ -13,8 +13,10 @@ public:
 
 	/// Draws Bezier curve
 	virtual void drawLine(QPainter *painter, bool drawSavedLine);
+
 	/// Draw ports and control lines for editing curve link
 	virtual void drawPorts(QPainter *painter);
+
 	/// @return Link's Bezier curve
 	virtual QPainterPath shape() const;
 
@@ -24,6 +26,7 @@ public:
 protected:
 	/// Create correct curve configuration (two ports, two intermediate points)
 	void setBezierPoints();
+
 	/// Create Bezier curve based on the line
 	QPainterPath bezierCurve(QPolygonF const &line) const;
 
@@ -32,6 +35,7 @@ protected:
 
 	/// Draw ordinary port or special curve control point
 	virtual void drawPort(QPainter *painter, int portNumber);
+
 	/// Draw dash lines used for editing of Bezier curve
 	void drawControlLines(QPainter *painter);
 };
