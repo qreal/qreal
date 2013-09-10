@@ -29,6 +29,7 @@ private:
 
     void initGeneratingFiles();
     void saveGeneratedFiles();
+    void generateMainSwitch();
 
 
     QString mResultTestFile;

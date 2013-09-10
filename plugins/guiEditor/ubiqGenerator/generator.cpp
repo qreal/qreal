@@ -20,8 +20,6 @@ Generator::Generator(QString const &outputDirPath
 		)
     : AbstractGenerator(templateDir, QString("C:\\Users\\efimw_000\\Documents\\study\\").replace("\\", "/"), logicalModel, errorReporter)
 {
-    Q_UNUSED outputDirPath;
-    Q_UNUSED programName;
 }
 
 Generator::~Generator()
@@ -30,16 +28,11 @@ Generator::~Generator()
 
 void Generator::generate()
 {
-/*
-    QMessageBox msgBox;
-    msgBox.setText("Generator::generate() executed");
-    msgBox.setInformativeText(outpudDirPath);
-    msgBox.exec();
-*/
-    //IdList toGenerate;
-    //toGenerate << mApi.elementsByType("Frame");
 
     initGeneratingFiles();
+
+    generateMainSwitch();
+
     saveGeneratedFiles();
 }
 
@@ -53,4 +46,25 @@ void Generator::saveGeneratedFiles()
     QString outputFileName = "test.cs";
 
     saveOutputFile(outputFileName, mResultTestFile);
+}
+
+void Generator::generateMainSwitch()
+{
+    IdList toGenerate;
+    toGenerate << mApi.elementsByType("Frame");
+
+    QString outerSwitchBody = "";
+    foreach (Id const &curFrame, toGenerate) {
+        if (!mApi.isLogicalElement(curFrame)) {
+            continue;
+        }
+
+        QString currentFrameCase = mTemplateUtils["@@eachFrameSwitchBody@@"];
+        QString currentFrameName = mApi.property(curFrame, "name").toString();
+
+        currentFrameCase.replace("@@frameName@@", currentFrameName);
+        outerSwitchBody += currentFrameCase;
+    }
+
+    mResultTestFile.replace("@@eachFrameSwitches@@", outerSwitchBody);
 }

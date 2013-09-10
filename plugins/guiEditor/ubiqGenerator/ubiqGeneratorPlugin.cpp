@@ -38,12 +38,6 @@ QList<ActionInfo> UbiqGeneratorPlugin::actions()
 
 void UbiqGeneratorPlugin::generate()
 {
-	foreach (qReal::Id const &diagram, mLogicalModel->logicalRepoApi().elementsByType("qUbiqPresentationDiagram")) {
-		if (!mLogicalModel->logicalRepoApi().isLogicalElement(diagram)) {
-			continue;
-		}
-    }
-
 //		QString programName = mLogicalModel->logicalRepoApi().property(diagram, "programName").toString();
 //		QString pathToGenerate = mLogicalModel->logicalRepoApi().property(diagram, "pathToGenerate").toString();
 
