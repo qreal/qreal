@@ -297,6 +297,8 @@ void NodeType::generateCode(OutFile &out)
 
 	<< "\t\tQStringList toPortTypes() const\n\t\t{\n\t\t\treturn QStringList(\"NonTyped\");\n\t\t}\n\n"
 
+	<< "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n\t\t\treturn enums::linkShape::square;\n\t\t}\n\n"
+
 	<< "\t\tbool isPort() const\n\t\t{\n"
 	<< (mIsPin ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
