@@ -127,7 +127,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -375,7 +375,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -530,7 +530,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -579,13 +579,13 @@
 			title_2->setHard(false);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.7, -0.5, "Volume", false, 0);
+			title_3 = factory.createLabel(3, 1.2, -0.5, "Volume", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(true);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createLabel(4, 0.6, 1.2, "WaitForCompletion", false, 0);
+			title_4 = factory.createLabel(4, 1.4, 1.2, "WaitForCompletion", false, 0);
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
 			title_4->setHard(false);
@@ -694,7 +694,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -1112,7 +1112,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.72, 1.2, "XCoordinateCircle", false, 0);
+			title_1 = factory.createLabel(1, 1, 1.2, "XCoordinateCircle", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(false);
@@ -1124,7 +1124,7 @@
 			title_2->setHard(false);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.72, 1.6, "YCoordinateCircle", false, 0);
+			title_3 = factory.createLabel(3, 1, 1.6, "YCoordinateCircle", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
@@ -1136,7 +1136,7 @@
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 0.72, 2, "CircleRadius", false, 0);
+			title_5 = factory.createLabel(5, 1, 2, "CircleRadius", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(false);
@@ -1664,49 +1664,49 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.8, 1.2, "XCoordinateRect", false, 0);
+			title_1 = factory.createLabel(1, 1, 1.2, "XCoordinateRect", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(false);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createLabel(2, 0, 1.2, QString::fromUtf8("X: "), 0);
+			title_2 = factory.createLabel(2, -0.2, 1.2, QString::fromUtf8("X: "), 0);
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
 			title_2->setHard(false);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.8, 1.6, "YCoordinateRect", false, 0);
+			title_3 = factory.createLabel(3, 1, 1.6, "YCoordinateRect", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createLabel(4, 0, 1.6, QString::fromUtf8("Y: "), 0);
+			title_4 = factory.createLabel(4, -0.2, 1.6, QString::fromUtf8("Y: "), 0);
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 0.8, 2, "WidthRect", false, 0);
+			title_5 = factory.createLabel(5, 1, 2, "WidthRect", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(false);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createLabel(6, 0, 2, QString::fromUtf8("Ширина: "), 0);
+			title_6 = factory.createLabel(6, -0.2, 2, QString::fromUtf8("Ширина: "), 0);
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
 			title_6->setHard(false);
 			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_6);
-			title_7 = factory.createLabel(7, 0.8, 2.4, "HeightRect", false, 0);
+			title_7 = factory.createLabel(7, 1, 2.4, "HeightRect", false, 0);
 			title_7->setBackground(Qt::transparent);
 			title_7->setScaling(false, false);
 			title_7->setHard(false);
 			title_7->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_7);
-			title_8 = factory.createLabel(8, 0, 2.4, QString::fromUtf8("Высота: "), 0);
+			title_8 = factory.createLabel(8, -0.2, 2.4, QString::fromUtf8("Высота: "), 0);
 			title_8->setBackground(Qt::transparent);
 			title_8->setScaling(false, false);
 			title_8->setHard(false);
@@ -1964,7 +1964,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -2101,7 +2101,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -2138,7 +2138,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Ports", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Ports", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -2150,7 +2150,7 @@
 			title_2->setHard(true);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.66, 1.2, "Power", false, 0);
+			title_3 = factory.createLabel(3, 0.8, 1.2, "Power", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
@@ -2265,7 +2265,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -2306,7 +2306,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Ports", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Ports", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -2318,7 +2318,7 @@
 			title_2->setHard(true);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.66, 1.2, "Power", false, 0);
+			title_3 = factory.createLabel(3, 0.8, 1.2, "Power", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
@@ -2433,7 +2433,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -2474,13 +2474,13 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Ports", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Ports", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createLabel(2, -0.1, -0.5, QString::fromUtf8("Порты:"), 0);
+			title_2 = factory.createLabel(2, -0.2, -0.5, QString::fromUtf8("Порты:"), 0);
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
 			title_2->setHard(true);
@@ -2587,7 +2587,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -2728,7 +2728,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -2867,7 +2867,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -2910,7 +2910,7 @@
 			title_1->setHard(false);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createLabel(2, 0.3, 1.2, "Body", false, 0);
+			title_2 = factory.createLabel(2, 0.6, 1.2, "Body", false, 0);
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
 			title_2->setHard(false);
@@ -3056,7 +3056,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, 1.2, "Condition", false, 0);
+			title_1 = factory.createLabel(1, 0.7, 1.2, "Condition", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(false);
@@ -3310,7 +3310,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -3347,13 +3347,13 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Iterations", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Iterations", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createLabel(2, -0.74, -0.5, QString::fromUtf8("Итераций:"), 0);
+			title_2 = factory.createLabel(2, -0.6, -0.5, QString::fromUtf8("Итераций:"), 0);
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
 			title_2->setHard(true);
@@ -3460,7 +3460,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -3499,13 +3499,13 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Ports", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Ports", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createLabel(2, 0, -0.5, QString::fromUtf8("Порты:"), 0);
+			title_2 = factory.createLabel(2, -0.2, -0.5, QString::fromUtf8("Порты:"), 0);
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
 			title_2->setHard(true);
@@ -3675,25 +3675,25 @@
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 0.8, -0.5, "Frequency", false, 0);
+			title_5 = factory.createLabel(5, 1, -0.5, "Frequency", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(true);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createLabel(6, 0.9, 1.2, "Volume", false, 0);
+			title_6 = factory.createLabel(6, 1.2, 1.2, "Volume", false, 0);
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
 			title_6->setHard(false);
 			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_6);
-			title_7 = factory.createLabel(7, 0.9, 1.6, "Duration", false, 0);
+			title_7 = factory.createLabel(7, 1.2, 1.6, "Duration", false, 0);
 			title_7->setBackground(Qt::transparent);
 			title_7->setScaling(false, false);
 			title_7->setHard(false);
 			title_7->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_7);
-			title_8 = factory.createLabel(8, 0.9, 2, "WaitForCompletion", false, 0);
+			title_8 = factory.createLabel(8, 1.2, 2, "WaitForCompletion", false, 0);
 			title_8->setBackground(Qt::transparent);
 			title_8->setScaling(false, false);
 			title_8->setHard(false);
@@ -3806,7 +3806,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -3851,7 +3851,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.72, 1.2, "XCoordinateText", false, 0);
+			title_1 = factory.createLabel(1, 1, 1.2, "XCoordinateText", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(false);
@@ -3863,7 +3863,7 @@
 			title_2->setHard(false);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.72, 1.6, "YCoordinateText", false, 0);
+			title_3 = factory.createLabel(3, 1, 1.6, "YCoordinateText", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
@@ -3875,7 +3875,7 @@
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 0.72, 2, "PrintText", false, 0);
+			title_5 = factory.createLabel(5, 1, 2, "PrintText", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(false);
@@ -4141,7 +4141,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -4279,7 +4279,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -4316,7 +4316,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, -0.2, -0.5, "name", false, 0);
+			title_1 = factory.createLabel(1, -0.4, -0.5, "name", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -4460,7 +4460,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 1, -0.5, "Delay", false, 0);
+			title_1 = factory.createLabel(1, 1.3, -0.5, "Delay", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -4573,7 +4573,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -4739,7 +4739,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -4935,7 +4935,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -4980,49 +4980,49 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 1.2, 1.2, "RightButtonClicks", false, 0);
+			title_1 = factory.createLabel(1, 1.4, 1.2, "RightButtonClicks", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(false);
 			title_1->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_1);
-			title_2 = factory.createLabel(2, 0, 1.2, QString::fromUtf8("Правая: "), 0);
+			title_2 = factory.createLabel(2, -0.4, 1.2, QString::fromUtf8("Правая: "), 0);
 			title_2->setBackground(Qt::transparent);
 			title_2->setScaling(false, false);
 			title_2->setHard(false);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 1.2, 1.6, "LeftButtonClicks", false, 0);
+			title_3 = factory.createLabel(3, 1.4, 1.6, "LeftButtonClicks", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createLabel(4, 0, 1.6, QString::fromUtf8("Левая: "), 0);
+			title_4 = factory.createLabel(4, -0.4, 1.6, QString::fromUtf8("Левая: "), 0);
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 1.2, 2, "CentralButtonClicks", false, 0);
+			title_5 = factory.createLabel(5, 1.4, 2, "CentralButtonClicks", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(false);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createLabel(6, 0, 2, QString::fromUtf8("Центральная: "), 0);
+			title_6 = factory.createLabel(6, -0.4, 2, QString::fromUtf8("Центральная: "), 0);
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
 			title_6->setHard(false);
 			title_6->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_6);
-			title_7 = factory.createLabel(7, 1.2, 2.4, "BottomButtonClicks", false, 0);
+			title_7 = factory.createLabel(7, 1.4, 2.4, "BottomButtonClicks", false, 0);
 			title_7->setBackground(Qt::transparent);
 			title_7->setScaling(false, false);
 			title_7->setHard(false);
 			title_7->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_7);
-			title_8 = factory.createLabel(8, 0, 2.4, QString::fromUtf8("Нижняя: "), 0);
+			title_8 = factory.createLabel(8, -0.4, 2.4, QString::fromUtf8("Нижняя: "), 0);
 			title_8->setBackground(Qt::transparent);
 			title_8->setScaling(false, false);
 			title_8->setHard(false);
@@ -5180,7 +5180,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Port", false, 0);
+			title_1 = factory.createLabel(1, 0.74, -0.5, "Port", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -5192,7 +5192,7 @@
 			title_2->setHard(true);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.66, 1.2, "Color", false, 0);
+			title_3 = factory.createLabel(3, 0.74, 1.2, "Color", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
@@ -5307,7 +5307,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -5348,7 +5348,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Port", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Port", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -5360,25 +5360,25 @@
 			title_2->setHard(true);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.66, 1.2, "Intensity", false, 0);
+			title_3 = factory.createLabel(3, 1.1, 1.2, "Intensity", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createLabel(4, -1, 1.2, QString::fromUtf8("Интенсивность:"), 0);
+			title_4 = factory.createLabel(4, -1.1, 1.2, QString::fromUtf8("Интенсивность:"), 0);
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 0.66, 1.6, "Sign", false, 0);
+			title_5 = factory.createLabel(5, 1.1, 1.6, "Sign", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(false);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createLabel(6, -1.6, 1.6, QString::fromUtf8("Считанное значение:"), 0);
+			title_6 = factory.createLabel(6, -1.7, 1.6, QString::fromUtf8("Считанное значение:"), 0);
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
 			title_6->setHard(false);
@@ -5489,7 +5489,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -5532,7 +5532,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Port", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Port", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -5544,25 +5544,25 @@
 			title_2->setHard(true);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.66, 1.2, "TachoLimit", false, 0);
+			title_3 = factory.createLabel(3, 0.8, 1.2, "TachoLimit", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createLabel(4, -1.2, 1.2, QString::fromUtf8("Предел оборотов:"), 0);
+			title_4 = factory.createLabel(4, -1.8, 1.2, QString::fromUtf8("Предел оборотов:"), 0);
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 0.66, 1.6, "Sign", false, 0);
+			title_5 = factory.createLabel(5, 1.2, 1.6, "Sign", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(false);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createLabel(6, -1.6, 1.6, QString::fromUtf8("Считанное значение:"), 0);
+			title_6 = factory.createLabel(6, -1.8, 1.6, QString::fromUtf8("Считанное значение:"), 0);
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
 			title_6->setHard(false);
@@ -5673,7 +5673,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -5716,7 +5716,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Port", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Port", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -5728,7 +5728,7 @@
 			title_2->setHard(true);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.66, 1.2, "Degrees", false, 0);
+			title_3 = factory.createLabel(3, 0.7, 1.2, "Degrees", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
@@ -5740,13 +5740,13 @@
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 0.66, 1.6, "Sign", false, 0);
+			title_5 = factory.createLabel(5, 1.1, 1.6, "Sign", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(false);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createLabel(6, -1.6, 1.6, QString::fromUtf8("Считанное значение:"), 0);
+			title_6 = factory.createLabel(6, -1.8, 1.6, QString::fromUtf8("Считанное значение:"), 0);
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
 			title_6->setHard(false);
@@ -5857,7 +5857,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -5900,7 +5900,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Port", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Port", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -5912,7 +5912,7 @@
 			title_2->setHard(true);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.66, 1.2, "Percents", false, 0);
+			title_3 = factory.createLabel(3, 0.9, 1.2, "Percents", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
@@ -5924,13 +5924,13 @@
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 0.66, 1.6, "Sign", false, 0);
+			title_5 = factory.createLabel(5, 1, 1.6, "Sign", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(false);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createLabel(6, -1.6, 1.6, QString::fromUtf8("Считанное значение:"), 0);
+			title_6 = factory.createLabel(6, -1.8, 1.6, QString::fromUtf8("Считанное значение:"), 0);
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
 			title_6->setHard(false);
@@ -6041,7 +6041,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -6084,7 +6084,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Port", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Port", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -6096,25 +6096,25 @@
 			title_2->setHard(true);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.66, 1.2, "Distance", false, 0);
+			title_3 = factory.createLabel(3, 1, 1.2, "Distance", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createLabel(4, -1.1, 1.2, QString::fromUtf8("Расстояние (см):"), 0);
+			title_4 = factory.createLabel(4, -1.2, 1.2, QString::fromUtf8("Расстояние (см):"), 0);
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 0.66, 1.6, "Sign", false, 0);
+			title_5 = factory.createLabel(5, 1.1, 1.6, "Sign", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(false);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createLabel(6, -1.6, 1.6, QString::fromUtf8("Считанное значение:"), 0);
+			title_6 = factory.createLabel(6, -1.8, 1.6, QString::fromUtf8("Считанное значение:"), 0);
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
 			title_6->setHard(false);
@@ -6225,7 +6225,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -6268,7 +6268,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Port", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Port", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -6280,25 +6280,25 @@
 			title_2->setHard(true);
 			title_2->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_2);
-			title_3 = factory.createLabel(3, 0.66, 1.2, "Volume", false, 0);
+			title_3 = factory.createLabel(3, 0.9, 1.2, "Volume", false, 0);
 			title_3->setBackground(Qt::transparent);
 			title_3->setScaling(false, false);
 			title_3->setHard(false);
 			title_3->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_3);
-			title_4 = factory.createLabel(4, -0.52, 1.2, QString::fromUtf8("Громкость:"), 0);
+			title_4 = factory.createLabel(4, -0.6, 1.2, QString::fromUtf8("Громкость:"), 0);
 			title_4->setBackground(Qt::transparent);
 			title_4->setScaling(false, false);
 			title_4->setHard(false);
 			title_4->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_4);
-			title_5 = factory.createLabel(5, 0.66, 1.6, "Sign", false, 0);
+			title_5 = factory.createLabel(5, 1, 1.6, "Sign", false, 0);
 			title_5->setBackground(Qt::transparent);
 			title_5->setScaling(false, false);
 			title_5->setHard(false);
 			title_5->setTextInteractionFlags(Qt::NoTextInteraction);
 			titles.append(title_5);
-			title_6 = factory.createLabel(6, -1.6, 1.6, QString::fromUtf8("Считанное значение:"), 0);
+			title_6 = factory.createLabel(6, -1.8, 1.6, QString::fromUtf8("Считанное значение:"), 0);
 			title_6->setBackground(Qt::transparent);
 			title_6->setScaling(false, false);
 			title_6->setHard(false);
@@ -6409,7 +6409,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -6452,7 +6452,7 @@
 			ports << portFactory.createPort(QLineF(0.1, 0, 0.9, 0), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(1, 0.1, 1, 0.9), false, false, false, false, 50, 50, new NonTyped());
 			ports << portFactory.createPort(QLineF(0.1, 1, 0.9, 1), false, false, false, false, 50, 50, new NonTyped());
-			title_1 = factory.createLabel(1, 0.66, -0.5, "Port", false, 0);
+			title_1 = factory.createLabel(1, 0.8, -0.5, "Port", false, 0);
 			title_1->setBackground(Qt::transparent);
 			title_1->setScaling(false, false);
 			title_1->setHard(true);
@@ -6565,7 +6565,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const

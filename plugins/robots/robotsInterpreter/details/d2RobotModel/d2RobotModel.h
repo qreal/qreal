@@ -151,6 +151,7 @@ private:
 
 	QVector2D VK_mForce;//vector
     qreal VK_mForceMoment;
+	qreal mFric;
     QVector2D VK_mV; //velocity vector
 	QVector2D VK_mVA;
 	QVector2D VK_mVB;

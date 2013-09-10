@@ -24,6 +24,11 @@ INPUT(
 ./.obj\portFactory.o
 ./.obj\statLine.o
 ./.obj\statPoint.o
+./.obj\lineHandler.o
+./.obj\squareLine.o
+./.obj\brokenLine.o
+./.obj\curveLine.o
+./.obj\edgeArrangeCriteria.o
 ./.obj\gesturesWidget.o
 ./.obj\propertiesDialog.o
 ./.obj\editPropertiesDialog.o
@@ -182,6 +187,10 @@ INPUT(
 ./.obj\moc_label.o
 ./.obj\moc_contextMenuAction.o
 ./.obj\moc_embeddedLinker.o
+./.obj\moc_lineHandler.o
+./.obj\moc_squareLine.o
+./.obj\moc_brokenLine.o
+./.obj\moc_curveLine.o
 ./.obj\moc_gesturesWidget.o
 ./.obj\moc_propertiesDialog.o
 ./.obj\moc_editPropertiesDialog.o

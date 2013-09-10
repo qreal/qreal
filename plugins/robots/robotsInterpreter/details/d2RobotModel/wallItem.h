@@ -33,6 +33,8 @@ public:
 	virtual QDomElement serialize(QDomDocument &document, QPoint const &topLeftPicture);
 	virtual void deserializePenBrush(QDomElement const &element);
 
+
+
 	void onOverlappedWithRobot(bool overlapped = true);
 
 	QLineF VK_getLine(int i)
