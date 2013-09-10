@@ -1,13 +1,12 @@
-#include <QtWidgets>
-#include <QtCore/QDebug>
-
 #include "editorViewMVIface.h"
-#include "../editorView.h"
-#include "../editorViewScene.h"
-#include "../../../qrkernel/definitions.h"
-#include "../../umllib/element.h"
-#include "../../pluginManager/editorManagerInterface.h"
-#include "../../mainwindow/mainWindow.h"
+
+#include <qrkernel/definitions.h>
+
+#include "view/editorView.h"
+#include "view/editorViewScene.h"
+#include "umllib/element.h"
+#include "pluginManager/editorManagerInterface.h"
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -207,16 +206,16 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 			{
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {
-					QString curChildElementType;
-					if (i == 0)
-						curChildElementType = "MethodsContainer";
-					else
-						curChildElementType = "FieldsContainer";
-					Id newUuid = Id("Kernel_metamodel", "Kernel",
-							curChildElementType, QUuid::createUuid().toString());
-
-					mGraphicalAssistApi->createElement(currentId, newUuid, false,  "(anonymous something)", QPointF(0, 0));
+					QString curChildElementType = (i == 0) ? "MethodsContainer" : "FieldsContainer";
+					Id newUuid = Id("Kernel_metamodel", "Kernel", curChildElementType, QUuid::createUuid().toString());
+					mGraphicalAssistApi->createElement(currentId, newUuid
+							, false,  "(anonymous something)", QPointF(0, 0));
 				}
+			}
+
+			EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem);
+			if (edgeElem) {
+				edgeElem->layOut();
 			}
 		}
 
@@ -259,15 +258,16 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 	QAbstractItemView::rowsAboutToBeRemoved(parent, start, end);
 }
 
-void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
+void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
+		, QModelIndex const &destinationParent, int destinationRow)
 {
 	Q_UNUSED(sourceEnd);
 	Q_ASSERT(sourceStart == sourceEnd);  // only one element is permitted to be moved
 	QPersistentModelIndex movedElementIndex = sourceParent.child(sourceStart, 0);
 	QPersistentModelIndex newSiblingIndex = destinationParent.child(destinationRow, 0);
 
-	Element *movedElement = item(movedElementIndex),
-		*sibling = item(newSiblingIndex);
+	Element *movedElement = item(movedElementIndex);
+	Element *sibling = item(newSiblingIndex);
 	if (!movedElement) {
 		// there's no such element on the scene already
 		// TODO: add element on the scene if there's no such element here, but there's in the model
@@ -289,7 +289,8 @@ void EditorViewMViface::rowsAboutToBeMoved(QModelIndex const &sourceParent, int 
 	}
 }
 
-void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd, QModelIndex const &destinationParent, int destinationRow)
+void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceStart, int sourceEnd
+		, QModelIndex const &destinationParent, int destinationRow)
 {
 	Q_UNUSED(sourceParent);
 	Q_UNUSED(sourceStart);
@@ -308,8 +309,7 @@ void EditorViewMViface::rowsMoved(QModelIndex const &sourceParent, int sourceSta
 	movedElement->updateData();
 }
 
-void EditorViewMViface::dataChanged(const QModelIndex &topLeft,
-	const QModelIndex &bottomRight)
+void EditorViewMViface::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex const curr = topLeft.sibling(row, 0);
@@ -378,7 +378,8 @@ void EditorViewMViface::removeItem(QPersistentModelIndex const &index)
 	}
 }
 
-void EditorViewMViface::setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi)
+void EditorViewMViface::setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi
+		, models::LogicalModelAssistApi &logicalAssistApi)
 {
 	mGraphicalAssistApi = &graphicalAssistApi;
 	mLogicalAssistApi = &logicalAssistApi;

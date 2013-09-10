@@ -5,6 +5,12 @@
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QLabel>
 
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace details {
+namespace d2Model {
+
 class GridParameters : public QFrame
 {
 	Q_OBJECT
@@ -25,3 +31,8 @@ private:
 	QCheckBox *mShowGridCheckBox;
 };
 
+}
+}
+}
+}
+}

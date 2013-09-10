@@ -1,6 +1,6 @@
 #include "graphicalPartModel.h"
 
-#include "graphicalModel.h"
+#include "models/details/graphicalModel.h"
 
 using namespace qReal;
 using namespace qReal::models::details;
@@ -125,14 +125,15 @@ bool GraphicalPartModel::removeRows(int row, int count, QModelIndex const &paren
 	}
 
 	beginRemoveRows(parent, row, row + count - 1);
+	mIdPositions.clear();
 	for (int i = row; i < row + count; ++i) {
 		qDeleteAll(mItems[i]);
 		mItems.removeAt(i);
-		mIdPositions.clear();
-		for (int j = i; j < mItems.size(); ++j) {
-			if (mItems[j].size() > 0) {
-				mIdPositions[mItems[j][0]->id()] = j;
-			}
+	}
+
+	for (int i = 0; i < mItems.size(); ++i) {
+		if (mItems[i].size() > 0) {
+			mIdPositions[mItems[i][0]->id()] = i;
 		}
 	}
 

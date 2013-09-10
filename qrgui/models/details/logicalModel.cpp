@@ -1,5 +1,6 @@
 #include "logicalModel.h"
-#include "graphicalModel.h"
+
+#include "models/details/graphicalModel.h"
 
 #include <QtCore/QUuid>
 
@@ -9,7 +10,7 @@ using namespace models::details;
 using namespace modelsImplementation;
 
 LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface)
-	: AbstractModel(editorManagerInterface), mGraphicalModelView(this), mApi(*repoApi)
+		: AbstractModel(editorManagerInterface), mGraphicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
 	init();
@@ -246,8 +247,9 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
 {
 	Q_UNUSED(position)
-	if (!parent.isValid() || element.parent() == parent)
+	if (!parent.isValid() || element.parent() == parent) {
 		return;
+	}
 
 	int destinationRow = parentAbstractItem(parent)->children().size();
 
@@ -308,9 +310,9 @@ LogicalModelAssistApi &LogicalModel::logicalModelAssistApi() const
 bool LogicalModel::removeRows(int row, int count, QModelIndex const &parent)
 {
 	AbstractModelItem *parentItem = parentAbstractItem(parent);
-	if (parentItem->children().size() < row + count)
+	if (parentItem->children().size() < row + count) {
 		return false;
-	else {
+	} else {
 		for (int i = row; i < row + count; ++i) {
 			AbstractModelItem *child = parentItem->children().at(i);
 			removeModelItems(child);
@@ -329,7 +331,8 @@ bool LogicalModel::removeRows(int row, int count, QModelIndex const &parent)
 	}
 }
 
-void LogicalModel::removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child)
+void LogicalModel::removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
+		, details::modelsImplementation::AbstractModelItem *child)
 {
 	if (mModelItems.count(child->id())==0) {
 		mApi.removeChild(root->id(),child->id());

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../editorPluginInterface/portHelpers.h"
+#include "editorPluginInterface/portHelpers.h"
 
 /** @brief A factory creating concrete port types (StatLine and StatPoint) */
 class PortFactory : public PortFactoryInterface

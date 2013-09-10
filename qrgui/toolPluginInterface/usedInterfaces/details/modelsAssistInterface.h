@@ -5,7 +5,7 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QUuid>
 
-#include "../../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
 namespace details {

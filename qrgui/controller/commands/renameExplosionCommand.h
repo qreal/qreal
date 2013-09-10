@@ -1,10 +1,10 @@
 #pragma once
 
-#include "abstractCommand.h"
-#include "trackingEntity.h"
-#include "../../models/logicalModelAssistApi.h"
-#include "../../mainwindow/palette/paletteTreeWidget.h"
-#include "../../mainwindow/palette/draggableElement.h"
+#include "controller/commands/abstractCommand.h"
+#include "controller/commands/trackingEntity.h"
+#include "models/logicalModelAssistApi.h"
+#include "mainwindow/palette/paletteTreeWidget.h"
+#include "mainwindow/palette/draggableElement.h"
 
 namespace qReal {
 namespace commands {

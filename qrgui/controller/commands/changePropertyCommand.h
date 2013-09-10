@@ -3,9 +3,9 @@
 #include <QtCore/QVariant>
 #include <QtCore/QModelIndex>
 
-#include "abstractCommand.h"
-#include "../../mainwindow/propertyEditorProxyModel.h"
-#include "../../models/logicalModelAssistApi.h"
+#include "controller/commands/abstractCommand.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "models/logicalModelAssistApi.h"
 
 namespace qReal {
 namespace commands {

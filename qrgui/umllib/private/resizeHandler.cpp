@@ -2,11 +2,11 @@
 
 #include <algorithm>
 
-#include "../../view/editorViewScene.h"
+#include "view/editorViewScene.h"
 
 ResizeHandler::ResizeHandler(NodeElement * const resizingNode)
-	: mTargetNode(resizingNode)
-	, mElementImpl(resizingNode->elementImpl())
+		: mTargetNode(resizingNode)
+		, mElementImpl(resizingNode->elementImpl())
 {
 }
 
@@ -70,8 +70,7 @@ void ResizeHandler::sortChildrenIfNeeded() const
 		QGraphicsRectItem * const placeholder = mTargetNode->placeholder();
 
 		if(placeholder != NULL && childItem == placeholder) {
-			QRectF const rect(forestallingLeft, curChildY,
-					maxChildWidthValue, placeholder->rect().height());
+			QRectF const rect(forestallingLeft, curChildY, maxChildWidthValue, placeholder->rect().height());
 			placeholder->setRect(rect);
 			curChildY += placeholder->rect().height();
 		}

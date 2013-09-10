@@ -1,27 +1,28 @@
 /** @file nodeElement.h
- *  @brief class for an element object on a diagram
- * */
+*  @brief class for an element object on a diagram
+**/
 
 #pragma once
 
-#include <QKeyEvent>
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSceneHoverEvent>
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneHoverEvent>
 #include <QtWidgets/QWidget>
-#include <QList>
+#include <QtCore/QList>
+#include <QtCore/QTimer>
 
-#include "sdfRenderer.h"
-#include "element.h"
-#include "edgeElement.h"
-#include "embedded/linkers/embeddedLinker.h"
-#include "../editorPluginInterface/elementImpl.h"
+#include "umllib/sdfRenderer.h"
+#include "umllib/element.h"
+#include "umllib/edgeElement.h"
+#include "umllib/embedded/linkers/embeddedLinker.h"
+#include "editorPluginInterface/elementImpl.h"
 
-#include "private/sceneGridHandler.h"
-#include "private/umlPortHandler.h"
-#include "private/portHandler.h"
+#include "umllib/private/sceneGridHandler.h"
+#include "umllib/private/umlPortHandler.h"
+#include "umllib/private/portHandler.h"
 
-#include "serializationData.h"
+#include "umllib/serializationData.h"
 
 namespace qReal {
 
@@ -37,8 +38,7 @@ public:
 	explicit NodeElement(ElementImpl *impl
 			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			);
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
 
 	virtual ~NodeElement();
 
@@ -108,12 +108,11 @@ public:
 	bool connectionInProgress();
 	void setConnectingState(bool arg);
 
-	void adjustLinks(bool isDragging = false);
+	void adjustLinks();
 	void arrangeLinearPorts();
 	void arrangeLinks();
 
 	virtual void checkConnectionsToPort();
-	virtual void connectLinksToPorts();
 
 	/** @brief Drawing placeholder at the appropriate position (calculated using event data) */
 	void drawPlaceholder(QGraphicsRectItem *placeholder, QPointF scenePos);
@@ -132,8 +131,6 @@ public:
 
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
-
-	virtual void deleteFromScene();
 
 	QList<EdgeElement *> const edgeList() const;
 	QList<NodeElement *> const childNodes() const;
@@ -170,15 +167,15 @@ private slots:
 
 private:
 	enum DragState {
-		None,
-		TopLeft,
-		Top,
-		TopRight,
-		Left,
-		Right,
-		BottomLeft,
-		Bottom,
-		BottomRight
+		None
+		, TopLeft
+		, Top
+		, TopRight
+		, Left
+		, Right
+		, BottomLeft
+		, Bottom
+		, BottomRight
 	};
 
 	/**
@@ -202,8 +199,6 @@ private:
 	void drawLinesForResize(QPainter *painter);
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
-	void disconnectEdges();
-
 	void delUnusedLines();
 	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);
 
@@ -226,8 +221,6 @@ private:
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
 	void setLinksVisible(bool);
-
-	NodeElement *getNodeAt(QPointF const &position);
 
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
@@ -278,16 +271,12 @@ private:
 	QList<ContextMenuAction *> mBonusContextMenuActions;
 
 	SceneGridHandler *mGrid;
-	UmlPortHandler *mUmlPortHandler;
 	PortHandler *mPortHandler;
 
 	QGraphicsRectItem *mPlaceholder;
 	NodeElement *mHighlightedNode;
 
 	NodeData mData;
-
-	int mTimeOfUpdate;
-	QTimer *mTimer;
 
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;

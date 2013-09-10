@@ -1,13 +1,13 @@
 #pragma once
 
-#include "nonGraphicType.h"
+#include <QtXml/QDomElement>
 
-#include <QDomElement>
+#include "nonGraphicType.h"
 
 enum BaseType
 {
-	IntType,
-	FloatType
+	intType
+	, floatType
 };
 
 class NumericType : public NonGraphicType

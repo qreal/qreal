@@ -3,7 +3,7 @@
 #include <QtWidgets/QPinchGesture>
 #include <QtWidgets/QApplication>
 
-#include "../editorView.h"
+#include "view/editorView.h"
 
 using namespace qReal::view::details;
 
@@ -64,7 +64,8 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 	return false;
 }
 
-void TouchSupportManager::simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos, Qt::MouseButtons buttons)
+void TouchSupportManager::simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos
+		, Qt::MouseButtons buttons)
 {
 	QMouseEvent *mouseEvent = new QMouseEvent(event, pos, mButton, buttons, Qt::NoModifier);
 	QApplication::postEvent(reciever, mouseEvent);

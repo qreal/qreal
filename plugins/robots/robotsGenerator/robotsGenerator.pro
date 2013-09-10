@@ -8,7 +8,8 @@ RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
 INCLUDEPATH += \
-	../../.. \
+	../../../ \
+	../../../qrgui \
 
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
 

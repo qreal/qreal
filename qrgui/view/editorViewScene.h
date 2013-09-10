@@ -1,17 +1,18 @@
-﻿#pragma once
+#pragma once
 
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtCore/QSignalMapper>
 
-#include "../../qrkernel/roles.h"
-#include "../umllib/nodeElement.h"
-#include "../controller/controller.h"
-#include "gestures/mouseMovementManager.h"
-#include "copyPaste/clipboardHandler.h"
+#include <qrkernel/roles.h>
+#include <qrutils/graphicsUtils/gridDrawer.h>
+#include "umllib/nodeElement.h"
+#include "controller/controller.h"
+#include "view/gestures/mouseMovementManager.h"
+#include "view/copyPaste/clipboardHandler.h"
 
-#include "private/editorViewMVIface.h"
-#include "private/exploserView.h"
+#include "view/private/editorViewMVIface.h"
+#include "view/private/exploserView.h"
 
 namespace qReal {
 
@@ -179,7 +180,6 @@ private:
 	void initCorners();
 	void setCorners(QPointF const &topLeft, QPointF const &bottomRight);
 
-	void drawGrid(QPainter *painter, const QRectF &rect);
 	void redraw();
 
 	void initContextMenu(Element *e, QPointF const &pos);
@@ -204,6 +204,7 @@ private:
 
 	qreal mWidthOfGrid;
 	double mRealIndexGrid;
+	graphicsUtils::GridDrawer mGridDrawer;
 
 	NodeElement *mHighlightNode;
 

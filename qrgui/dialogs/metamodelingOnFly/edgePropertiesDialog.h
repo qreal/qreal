@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QDialog>
 
-#include "../../pluginManager/editorManagerInterface.h"
+#include "pluginManager/editorManagerInterface.h"
 
 namespace Ui {
 class EdgePropertiesDialog;
@@ -21,7 +21,8 @@ public:
 	/// @param mainWindow Reference to QReal main window.
 	/// @param diagram Id of a diagram to which we will add new edge.
 	/// @param editorManagerProxy Editor manager.
-	explicit EdgePropertiesDialog(MainWindow &mainWindow, Id const &diagram, EditorManagerInterface const &editorManagerProxy);
+	explicit EdgePropertiesDialog(MainWindow &mainWindow, Id const &diagram
+			, EditorManagerInterface const &editorManagerProxy);
 
 	/// Destructor.
 	~EdgePropertiesDialog();

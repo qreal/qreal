@@ -1,5 +1,6 @@
 #include "createGroupCommand.h"
-#include "insertIntoEdgeCommand.h"
+
+#include "controller/commands/insertIntoEdgeCommand.h"
 
 using namespace qReal::commands;
 
@@ -57,7 +58,6 @@ bool CreateGroupCommand::execute()
 		Id const newEdgeId = createEdgeCommand->result();
 		mGraphicalApi.setFrom(newEdgeId, nodes.value(groupEdge.from));
 		mGraphicalApi.setTo(newEdgeId, nodes.value(groupEdge.to));
-		mScene.getNodeById(nodes.value(groupEdge.to))->connectLinksToPorts();
 		mScene.reConnectLink(mScene.getEdgeById(newEdgeId));
 	}
 	InsertIntoEdgeCommand *insertCommand = new InsertIntoEdgeCommand(mScene, mLogicalApi, mGraphicalApi

@@ -1,3 +1,6 @@
+#include "mainWindow.h"
+#include "ui_mainWindow.h"
+
 #include <QtCore/QProcess>
 #include <QtWidgets/QDialog>
 #include <QtPrintSupport/QPrinter>
@@ -17,42 +20,38 @@
 #include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
 
-#include "mainWindow.h"
-#include "ui_mainWindow.h"
+#include <qrkernel/settingsManager.h>
 
-#include "errorReporter.h"
+#include "mainwindow/errorReporter.h"
 
-#include "shapeEdit/shapeEdit.h"
-#include "propertyEditorProxyModel.h"
-#include "../dialogs/gesturesShow/gesturesWidget.h"
+#include "mainwindow/shapeEdit/shapeEdit.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "dialogs/gesturesShow/gesturesWidget.h"
 
-#include "../models/models.h"
-#include "../view/editorView.h"
+#include "models/models.h"
+#include "view/editorView.h"
 
-#include "../controller/commands/removeElementCommand.h"
-#include "../controller/commands/doNothingCommand.h"
-#include "../controller/commands/arrangeLinksCommand.h"
-#include "../controller/commands/updateElementCommand.h"
+#include "controller/commands/removeElementCommand.h"
+#include "controller/commands/doNothingCommand.h"
+#include "controller/commands/arrangeLinksCommand.h"
+#include "controller/commands/updateElementCommand.h"
 
-#include "../umllib/element.h"
-#include "../generators/xmi/xmiHandler.h"
-#include "../generators/java/javaHandler.h"
-#include "../pluginManager/listenerManager.h"
-#include "../../qrkernel/settingsManager.h"
+#include "umllib/element.h"
+#include "pluginManager/listenerManager.h"
 
-#include "referenceList.h"
+#include "mainwindow/referenceList.h"
 
-#include "splashScreen.h"
-#include "../dialogs/startDialog/startDialog.h"
-#include "../dialogs/suggestToCreateProjectDialog.h"
-#include "../dialogs/progressDialog/progressDialog.h"
+#include "mainwindow/splashScreen.h"
+#include "dialogs/startDialog/startDialog.h"
+#include "dialogs/suggestToCreateProjectDialog.h"
+#include "dialogs/progressDialog/progressDialog.h"
 
-#include "qscintillaTextEdit.h"
+#include "mainwindow/qscintillaTextEdit.h"
 
-#include "dotRunner.h"
-#include "../view/sceneCustomizer.h"
+#include "mainwindow/dotRunner.h"
+#include "view/sceneCustomizer.h"
 
-#include "../hotKeyManager/hotKeyManager.h"
+#include "hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -190,8 +189,10 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
-	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&)), mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
-	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList)), mFindHelper, SLOT(handleFindDialog(QStringList)));
+	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&))
+			, mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
+	connect(mFindReplaceDialog, SIGNAL(findModelByName(QStringList))
+			, mFindHelper, SLOT(handleFindDialog(QStringList)));
 	connect(mFindReplaceDialog, SIGNAL(chosenElement(qReal::Id)), mFindHelper, SLOT(handleRefsDialog(qReal::Id)));
 
 	connect(&mPreferencesDialog, SIGNAL(paletteRepresentationChanged()), this, SLOT(changePaletteRepresentation()));
@@ -201,11 +202,13 @@ void MainWindow::connectActions()
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(modifiedChanged(bool)), mProjectManager, SLOT(setUnsavedIndicator(bool)));
 
-	connect(mProjectManager, SIGNAL(afterOpen(QString)), &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
+	connect(mProjectManager, SIGNAL(afterOpen(QString))
+			, &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
 	connect(mProjectManager, SIGNAL(closed()), &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
 	connect(mProjectManager, SIGNAL(closed()), mController, SLOT(projectClosed()));
 
-	connect(&mModels->logicalModelAssistApi().exploser(), SIGNAL(explosionTargetRemoved()), this, SLOT(closeTabsWithRemovedRootElements()));
+	connect(&mModels->logicalModelAssistApi().exploser(), SIGNAL(explosionTargetRemoved())
+			, this, SLOT(closeTabsWithRemovedRootElements()));
 
 	setDefaultShortcuts();
 }
@@ -841,60 +844,6 @@ void MainWindow::toggleShowSplash(bool show)
 	SettingsManager::setValue("Splashscreen", show);
 }
 
-void MainWindow::exportToXmi()
-{
-	generators::XmiHandler xmi(mModels->logicalRepoApi());
-
-	QString const fileName = QFileDialog::getSaveFileName(this);
-	if (fileName.isEmpty()) {
-		return;
-	}
-
-	QString const errors = xmi.exportToXmi(fileName);
-
-	if (!errors.isEmpty()) {
-		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-	} else {
-		QMessageBox::information(this, tr("finished"), "Export is finished");
-	}
-}
-
-void MainWindow::generateToJava()
-{
-	generators::JavaHandler java(mModels->logicalRepoApi());
-
-	QString const dirName = QFileDialog::getExistingDirectory(this);
-	if (dirName.isEmpty()) {
-		return;
-	}
-
-	QString const errors = java.generateToJava(dirName);
-
-	if (!errors.isEmpty()) {
-		QMessageBox::warning(this, tr("errors"), "Some errors occured. Export may be incorrect. Errors list: \n" + errors);
-	} else {
-		QMessageBox::information(this, tr("finished"), "Export is finished");
-	}
-}
-
-void MainWindow::parseJavaLibraries()
-{
-	generators::JavaHandler java(mModels->logicalRepoApi());
-
-	QString const dirName = QFileDialog::getExistingDirectory(this);
-	if (dirName.isEmpty()) {
-		return;
-	}
-
-	QString const errors = java.parseJavaLibraries(dirName);
-
-	if (!errors.isEmpty()) {
-		QMessageBox::warning(this, tr("errors"), tr("Some errors occured. Export may be incorrect. Errors list:") + " \n" + errors);
-	} else {
-		QMessageBox::information(this, tr("finished"), tr("Parsing is finished"));
-	}
-}
-
 bool MainWindow::unloadPlugin(QString const &pluginName)
 {
 	if (mEditorManagerProxy.editors().contains(Id(pluginName))) {
@@ -1046,7 +995,8 @@ void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, Edi
 	setConnectActionZoomTo(shapeEdit);
 }
 
-void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue)
+void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role
+		, QString const &propertyValue)
 {
 	gui::QScintillaTextEdit *textEdit = new gui::QScintillaTextEdit(index, role);
 	if (!propertyValue.isEmpty()) {
@@ -1871,6 +1821,10 @@ void MainWindow::initToolPlugins()
 	foreach (PageDescriptor const page, preferencesPages) {
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
+
+	mModels->logicalModelAssistApi().exploser().customizeExplosionTitles(
+			toolManager().customizer()->userPaletteTitle()
+			, toolManager().customizer()->userPaletteDescription());
 }
 
 void MainWindow::showErrors(gui::ErrorReporter const * const errorReporter)

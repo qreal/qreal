@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtGui/QIcon>
 
-#include "../mainwindow/mainWindowDockInterface.h"
+#include "mainwindow/mainWindowDockInterface.h"
 
 namespace qReal {
 
@@ -91,6 +91,17 @@ public:
 	virtual QString collapseExplosionActionText() const
 	{
 		return QObject::tr("Collapse explosion");
+	}
+
+	virtual QString userPaletteTitle() const
+	{
+		return QObject::tr("Existing connections");
+	}
+
+	virtual QString userPaletteDescription() const
+	{
+		return QObject::tr("Elements from this group exist"\
+				" for reusing all created connections");
 	}
 };
 

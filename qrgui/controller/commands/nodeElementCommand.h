@@ -1,11 +1,9 @@
 #pragma once
 
-#include "elementCommand.h"
+#include "controller/commands/elementCommand.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace commands {
 
 /// A base for all commands using concrete node element instance on some scene
 class NodeElementCommand : public ElementCommand

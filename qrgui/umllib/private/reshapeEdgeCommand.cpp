@@ -20,7 +20,7 @@ bool ReshapeEdgeCommand::execute()
 	if (!EdgeElementCommand::execute()) {
 		return false;
 	}
-	applyConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos);
+	applyConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos, mNewFromPort, mNewToPort);
 	return true;
 }
 
@@ -32,7 +32,7 @@ bool ReshapeEdgeCommand::restoreState()
 	if (!EdgeElementCommand::restoreState()) {
 		return false;
 	}
-	applyConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos);
+	applyConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos, mOldFromPort, mOldToPort);
 	return true;
 }
 
@@ -40,14 +40,14 @@ void ReshapeEdgeCommand::startTracking()
 {
 	EdgeElementCommand::reinitElement();
 	TrackingEntity::startTracking();
-	saveConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos);
+	saveConfiguration(mOldConfiguration, mOldSrc, mOldDst, mOldPos, mOldFromPort, mOldToPort);
 }
 
 void ReshapeEdgeCommand::stopTracking()
 {
 	EdgeElementCommand::reinitElement();
 	TrackingEntity::stopTracking();
-	saveConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos);
+	saveConfiguration(mNewConfiguration, mNewSrc, mNewDst, mNewPos, mNewFromPort, mNewToPort);
 }
 
 bool ReshapeEdgeCommand::somethingChanged() const
@@ -55,22 +55,26 @@ bool ReshapeEdgeCommand::somethingChanged() const
 	return mOldConfiguration != mNewConfiguration
 			|| mOldPos != mNewPos
 			|| mOldSrc != mNewSrc
-			|| mOldDst != mNewDst;
+			|| mOldDst != mNewDst
+			|| mOldFromPort != mNewFromPort
+			|| mOldToPort != mNewToPort;
 }
 
 void ReshapeEdgeCommand::saveConfiguration(QPolygonF &target, Id &src, Id &dst
-		, QPointF &pos)
+		, QPointF &pos, qreal &fromPort, qreal &toPort)
 {
 	if (mEdge) {
 		target = mEdge->line();
 		src = mEdge->src() ? mEdge->src()->id() : Id();
 		dst = mEdge->dst() ? mEdge->dst()->id() : Id();
 		pos = mEdge->pos();
+		fromPort = mEdge->fromPort();
+		toPort = mEdge->toPort();
 	}
 }
 
 void ReshapeEdgeCommand::applyConfiguration(QPolygonF const &configuration
-		, Id const &src, Id const &dst, QPointF const &pos)
+		, Id const &src, Id const &dst, QPointF const &pos, qreal const &fromPort, qreal const &toPort)
 {
 	if (!mEdge) {
 		return;
@@ -80,15 +84,8 @@ void ReshapeEdgeCommand::applyConfiguration(QPolygonF const &configuration
 	mEdge->setLine(configuration);
 	mEdge->setSrc(srcElem);
 	mEdge->setDst(dstElem);
+	mEdge->setFromPort(fromPort);
+	mEdge->setToPort(toPort);
 	mEdge->setPos(pos);
-	mEdge->connectToPort();
-	if (srcElem) {
-		srcElem->arrangeLinks();
-		srcElem->adjustLinks();
-	}
-	if (dstElem) {
-		dstElem->arrangeLinks();
-		dstElem->adjustLinks();
-	}
 	mEdge->scene()->update();
 }

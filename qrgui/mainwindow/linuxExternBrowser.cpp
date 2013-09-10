@@ -1,8 +1,9 @@
+#include "linuxExternBrowser.h"
+
 #include <QtWidgets/QTextEdit>
 #include <QtCore/QProcess>
 
-#include "linuxExternBrowser.h"
-#include "../../../../qrutils/inFile.h"
+#include <qrutils/inFile.h>
 
 void ExternBrowser::openPage(QString const &url)
 {

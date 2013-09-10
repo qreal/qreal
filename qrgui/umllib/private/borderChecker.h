@@ -1,12 +1,12 @@
 /** @file borderChecker.h
- * 	@brief Class for checking is argument point belongs to one of NodeElement borders.
- * 	Operates with instant NodeElement state.
- * */
+* 	@brief Class for checking is argument point belongs to one of NodeElement borders.
+* 	Operates with instant NodeElement state.
+**/
 
 #pragma once
 
 #include <QtCore/QPointF>
-#include <QList>
+#include <QtCore/QList>
 
 namespace qReal {
 
@@ -16,9 +16,9 @@ class BorderChecker
 {
 public:
 	/**
-	 * Constructs a BorderChecker.
-	 * @param node Node that is actually dealt with.
-	 */
+	* Constructs a BorderChecker.
+	* @param node Node that is actually dealt with.
+	*/
 	BorderChecker(const NodeElement* const node);
 
 	/*
@@ -26,24 +26,24 @@ public:
 	 * There is idea to remove all these stuff from project.
 	 */
 	/**
-	 * Checks is point belongs to NodeElement lower border.
-	 * @param point Point that is checked to belong to lower border.
-	 */
+	* Checks is point belongs to NodeElement lower border.
+	* @param point Point that is checked to belong to lower border.
+	*/
 	bool checkLowerBorder(QPointF const &point) const;
 	/**
-	 * Checks is point belongs to NodeElement upper border.
-	 * @param point Point that is checked to belong to upper border.
-	 */
+	* Checks is point belongs to NodeElement upper border.
+	* @param point Point that is checked to belong to upper border.
+	*/
 	bool checkUpperBorder(QPointF const &point) const;
 	/**
-	 * Checks is point belongs to NodeElement left border.
-	 * @param point Point that is checked to belong to upper border.
-	 */
+	* Checks is point belongs to NodeElement left border.
+	* @param point Point that is checked to belong to upper border.
+	*/
 	bool checkLeftBorder(QPointF const &point) const;
 	/**
-	 * Checks is point belongs to NodeElement right border.
-	 * @param point Point that is checked to belong to right border.
-	 */
+	* Checks is point belongs to NodeElement right border.
+	* @param point Point that is checked to belong to right border.
+	*/
 	bool checkRightBorder(QPointF const &point) const;
 
 	bool checkNoBorderX(QPointF const &point, qreal y) const; // TODO: rename
@@ -54,15 +54,15 @@ private:
 	const NodeElement* const mNode;
 
 	/**
-	 * List of NodeElement border corner coordinates.
-	 * Uses only for initializing mXHor, mYHor, mXVert, mYVert constants.
-	 */
+	* List of NodeElement border corner coordinates.
+	* Uses only for initializing mXHor, mYHor, mXVert, mYVert constants.
+	*/
 	QList<double> const mBorderValues;
 
 	/**
-	 * Some kind of tabulation for ports.
-	 * TODO: understand that it actually is.
-	 */
+	* Some kind of tabulation for ports.
+	* TODO: understand that it actually is.
+	*/
 	double const mXHor;
 	double const mYHor;
 	double const mXVert;

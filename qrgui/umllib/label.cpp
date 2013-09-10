@@ -1,12 +1,12 @@
+#include "label.h"
+
 #include <QtGui/QTextCursor>
 
-#include "label.h"
-#include "nodeElement.h"
-#include "edgeElement.h"
-#include "private/fontCache.h"
+#include "umllib/nodeElement.h"
+#include "umllib/edgeElement.h"
+#include "umllib/private/fontCache.h"
 
 using namespace qReal;
-using namespace enums;
 
 Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi, Id const &elementId
 		, int index, qreal x, qreal y, QString const &text, qreal rotation)

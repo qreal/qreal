@@ -6,12 +6,13 @@
 #include <QtCore/QPointF>
 #include <QtGui/QPainter>
 
-#include "labelInterface.h"
-#include "labelFactoryInterface.h"
-#include "elementRepoInterface.h"
-#include "sdfRendererInterface.h"
-#include "../../qrkernel/ids.h"
-#include "portHelpers.h"
+#include <qrkernel/ids.h>
+
+#include "editorPluginInterface/labelInterface.h"
+#include "editorPluginInterface/labelFactoryInterface.h"
+#include "editorPluginInterface/elementRepoInterface.h"
+#include "editorPluginInterface/sdfRendererInterface.h"
+#include "editorPluginInterface/portHelpers.h"
 
 namespace qReal {
 
@@ -21,17 +22,18 @@ typedef QPair<bool, qReal::Id> PossibleEdgeType;
 typedef QPair<qReal::Id, qReal::Id> ElementPair;
 
 /** @class ElementImpl
-  *	@brief base class for generated stuff in plugins
-  *	TODO: split into NodeElementImpl and EdgeElementImpl
-  * */
+*	@brief base class for generated stuff in plugins
+*	TODO: split into NodeElementImpl and EdgeElementImpl
+* */
+
 class ElementImpl {
 public:
 	virtual ~ElementImpl() {}
 	virtual void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
-					  , LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
-					  , SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0) = 0;
-	virtual void init(LabelFactoryInterface &factory,
-					  QList<LabelInterface*> &titles) = 0;
+			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
+			, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0) = 0;
+	virtual void init(LabelFactoryInterface &factory
+			, QList<LabelInterface*> &titles) = 0;
 	virtual void paint(QPainter *painter, QRectF &contents) = 0;
 	virtual void updateData(ElementRepoInterface *repo) const = 0;
 	virtual bool isNode() const = 0;

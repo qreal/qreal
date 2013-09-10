@@ -1,6 +1,6 @@
-#include <QtWidgets/QVBoxLayout>
-
 #include "listWidget.h"
+
+#include <QtWidgets/QVBoxLayout>
 
 using namespace qReal;
 

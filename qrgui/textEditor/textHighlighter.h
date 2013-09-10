@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QSyntaxHighlighter>
+#include <QtGui/QSyntaxHighlighter>
 
 class TextHighlighter : public QSyntaxHighlighter {
 	public:

@@ -4,8 +4,9 @@
 #include <QtWidgets/QListWidgetItem>
 #include <QtCore/QModelIndex>
 
-#include "../../qrkernel/ids.h"
-#include "../models/models.h"
+#include <qrkernel/ids.h>
+
+#include "models/models.h"
 
 namespace Ui
 {
@@ -18,9 +19,10 @@ class MainWindow;
 }
 
 /** @brief ReferenceList is a widget which allows to edit reference properties
-  *
-  * Shows all the logical elements of needed type and sets reference property to chosen value
-  */
+*
+* Shows all the logical elements of needed type and sets reference property to chosen value
+*/
+
 class ReferenceList : public QDialog
 {
 	Q_OBJECT

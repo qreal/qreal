@@ -1,4 +1,5 @@
 #include "levenshteinDistance.h"
+
 #include <QtCore/QList>
 
 using namespace qReal::gestures;
