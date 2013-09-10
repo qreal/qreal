@@ -21,10 +21,10 @@ public:
 	QMenu *shapeTypeMenu() const;
 
 	/// @return String representation of shapeType
-	QString shapeToString(linkShape::LinkShape const shapeType) const;
+	static QString shapeToString(linkShape::LinkShape const shapeType);
 
 	/// @return LinkShape represented by string; return linkShape::unset if string is incorrect
-	linkShape::LinkShape stringToShape(QString const &string) const;
+	static linkShape::LinkShape stringToShape(QString const &string);
 
 private slots:
 	void setSquareLine() const;

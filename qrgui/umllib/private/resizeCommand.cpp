@@ -124,12 +124,12 @@ void ResizeCommand::makeCommonSnapshot(QMap<Id, QRectF> &target)
 	/// This must be invoked even if we start element dragging when it isn`t selected
 	makeHierarchySnapshot(mNode, target);
 	QList<QGraphicsItem *> const selectedItems = mNode->scene()->selectedItems();
-	foreach (QGraphicsItem *item, selectedItems) {
-		NodeElement *node = dynamic_cast<NodeElement *>(item);
+	foreach (QGraphicsItem *const item, selectedItems) {
+		NodeElement * const node = dynamic_cast<NodeElement *>(item);
 		if (node && node != mNode) {
 			makeHierarchySnapshot(node, target);
 		} else {
-			EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
+			EdgeElement * const edge = dynamic_cast<EdgeElement *>(item);
 			if (edge) {
 				mEdges.insert(edge);
 			}
@@ -155,8 +155,8 @@ void ResizeCommand::makeChildrenSnapshot(NodeElement const *element, QMap<Id, QR
 {
 	target.insert(element->id(), geometryOf(element));
 	addEdges(element);
-	foreach (QGraphicsItem const *childItem, element->childItems()) {
-		NodeElement const *child = dynamic_cast<NodeElement const *>(childItem);
+	foreach (QGraphicsItem const * const childItem, element->childItems()) {
+		NodeElement const * const child = dynamic_cast<NodeElement const * const>(childItem);
 		if (child) {
 			makeChildrenSnapshot(child, target);
 		}
@@ -165,14 +165,14 @@ void ResizeCommand::makeChildrenSnapshot(NodeElement const *element, QMap<Id, QR
 
 void ResizeCommand::addEdges(NodeElement const *node)
 {
-	foreach (EdgeElement *edge, node->getEdges()) {
+	foreach (EdgeElement * const edge, node->getEdges()) {
 		mEdges.insert(edge);
 	}
 }
 
 void ResizeCommand::startEdgeTracking()
 {
-	foreach (EdgeElement *edge, mEdges) {
+	foreach (EdgeElement * const edge, mEdges) {
 		ReshapeEdgeCommand *reshapeCommand = new ReshapeEdgeCommand(edge);
 		mEdgeCommands << reshapeCommand;
 		reshapeCommand->startTracking();
@@ -182,7 +182,7 @@ void ResizeCommand::startEdgeTracking()
 
 void ResizeCommand::stopEdgeTracking()
 {
-	foreach (ReshapeEdgeCommand *command, mEdgeCommands) {
+	foreach (ReshapeEdgeCommand * const command, mEdgeCommands) {
 		command->stopTracking();
 	}
 }

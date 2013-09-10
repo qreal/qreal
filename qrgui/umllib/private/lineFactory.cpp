@@ -39,7 +39,7 @@ QMenu * LineFactory::shapeTypeMenu() const
 	return menu;
 }
 
-QString LineFactory::shapeToString(linkShape::LinkShape const shapeType) const
+QString LineFactory::shapeToString(linkShape::LinkShape const shapeType)
 {
 	switch (shapeType) {
 	case linkShape::broken:
@@ -51,7 +51,7 @@ QString LineFactory::shapeToString(linkShape::LinkShape const shapeType) const
 	}
 }
 
-linkShape::LinkShape LineFactory::stringToShape(QString const &string) const
+linkShape::LinkShape LineFactory::stringToShape(QString const &string)
 {
 	if (string == "broken") {
 		return linkShape::broken;

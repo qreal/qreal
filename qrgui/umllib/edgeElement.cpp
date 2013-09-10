@@ -117,7 +117,7 @@ void EdgeElement::updateShapeType()
 
 	if (mShapeType == linkShape::unset) {
 		QString const shapeString
-				= mGraphicalAssistApi.mutableGraphicalRepoApi().property(id(), "linkShape").toString();
+				= mGraphicalAssistApi.graphicalRepoApi().property(id(), "linkShape").toString();
 		mShapeType = mLineFactory->stringToShape(shapeString);
 
 		if (mShapeType == linkShape::unset) {
