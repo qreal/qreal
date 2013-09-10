@@ -106,8 +106,13 @@ void InsertIntoEdgeCommand::makeLink(CreateElementCommand *command, NodeElement 
 {
 	command->redo();
 	Id newLink = command->result();
-	mGraphicalAssistApi.setFrom(newLink, src->id());
-	mGraphicalAssistApi.setTo(newLink, dst->id());
+	if (src) {
+		mGraphicalAssistApi.setFrom(newLink, src->id());
+	}
+
+	if (dst) {
+		mGraphicalAssistApi.setTo(newLink, dst->id());
+	}
 
 	EdgeElement * const edge = mScene.getEdgeById(newLink);
 	edge->setSrc(src);
