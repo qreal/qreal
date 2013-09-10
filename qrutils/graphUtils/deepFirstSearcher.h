@@ -2,11 +2,12 @@
 
 #include <QtCore/QSet>
 
+#include "../utilsDeclSpec.h"
 #include "../../qrrepo/logicalRepoApi.h"
 
 namespace utils {
 
-class DeepFirstSearcher
+class QRUTILS_EXPORT DeepFirstSearcher
 {
 public:
 	struct LinkInfo
@@ -18,7 +19,7 @@ public:
 		bool targetVisited;
 	};
 
-	class VisitorInterface
+	class QRUTILS_EXPORT VisitorInterface
 	{
 	public:
 		virtual ~VisitorInterface() {}
