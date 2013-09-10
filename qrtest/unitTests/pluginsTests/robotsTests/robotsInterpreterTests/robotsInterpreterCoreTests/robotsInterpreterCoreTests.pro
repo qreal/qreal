@@ -35,3 +35,10 @@ SOURCES += \
 	support/dummyBlock.cpp \
 	support/dummyBlocksFactory.cpp \
 	support/qrguiFacade.cpp \
+
+win32 {
+	QMAKE_POST_LINK = "xcopy ..\\testData\\* ..\\..\\..\\..\\..\\..\\bin\\unittests\\ /q /y"
+}
+else {
+	QMAKE_POST_LINK = "cp ../testData/* ../../../../../../bin/unittests/"
+}
