@@ -18,14 +18,6 @@ QString SemanticTree::toString(int indent) const
 	return mRoot->toString(mCustomizer, indent);
 }
 
-void SemanticTree::debugPrint()
-{
-	qDebug() << "Semantic tree:";
-	qDebug() << "-----------------";
-	qDebug() << toString(0);
-	qDebug() << "-----------------";
-}
-
 SemanticNode *SemanticTree::produceNodeFor(qReal::Id const &id)
 {
 	switch (mCustomizer.semanticsOf(id)) {

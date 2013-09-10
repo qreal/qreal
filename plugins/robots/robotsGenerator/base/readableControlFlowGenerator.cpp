@@ -142,7 +142,6 @@ void ReadableControlFlowGenerator::visitFork(Id const &id
 
 void ReadableControlFlowGenerator::afterSearch()
 {
-	mSemanticTree->debugPrint();
 }
 
 bool ReadableControlFlowGenerator::applyFirstPossible(Id const &currentId
