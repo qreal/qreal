@@ -1,1 +1,1 @@
-ecrobot_term_nxtcolorsensor(@@PORT@@, NXT_LIGHTSENSOR_GREEN);
+ecrobot_term_nxtcolorsensor(@@PORT@@);
