@@ -93,9 +93,6 @@ public:
 	void drawPorts(QPainter *painter, QRectF const &contents, QStringList const &types);
 
 private:
-	/// Value for determing ID of nonexistent port.
-	static qreal const mNonexistentPortId = -1; // just smth negative
-
 	/**
 	 * Maximum fraction part value of line port ID.
 	 * They use it for avoiding confusion with next port in our model of port IDs.
