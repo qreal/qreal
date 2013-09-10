@@ -6,9 +6,10 @@
 using namespace qReal::robots::generators::semantics;
 
 SemanticTree::SemanticTree(GeneratorCustomizer &customizer, Id const &initialBlock
-		, QObject *parent)
+		, bool isMainTree, QObject *parent)
 	: QObject(parent)
 	, mCustomizer(customizer)
+	, mIsMainTree(isMainTree)
 	, mRoot(new RootNode(initialBlock, this))
 {
 }
@@ -27,6 +28,8 @@ SemanticNode *SemanticTree::produceNodeFor(qReal::Id const &id)
 		return produceConditional(id);
 	case enums::semantics::loopBlock:
 		return produceLoop(id);
+	case enums::semantics::finalBlock:
+		return produceFinal(id);
 	default:
 		// TODO: implement fork and switch
 		return produceSimple(id);
@@ -48,14 +51,15 @@ LoopNode *SemanticTree::produceLoop(qReal::Id const &id)
 	return new LoopNode(id, this);
 }
 
+FinalNode *SemanticTree::produceFinal(qReal::Id const &id)
+{
+	return new FinalNode(id, mIsMainTree, this);
+}
+
 NonZoneNode *SemanticTree::findNodeFor(qReal::Id const &id)
 {
 	// Due to inner rule node for given id must exist when we visit it.
 	// Also only non-zone nodes can be binded to id.
-	// So result MUST NOT be null. Never.
+	// So result MUST be correct. Always.
 	return static_cast<NonZoneNode *>(mRoot->findNodeFor(id));
-}
-
-SemanticTree::VisitorInterface::~VisitorInterface()
-{
 }

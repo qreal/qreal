@@ -197,8 +197,6 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(qReal::Id const &
 		return new PlayToneGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "InitialNode") {
 		return new InitialNodeGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "FinalNode") {
-		return new FinalNodeGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "NullificationEncoder") {
 		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "WaitForColor") {
@@ -250,6 +248,12 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::continueGenerator(Id cons
 		, GeneratorCustomizer &customizer)
 {
 	return new ContinueGenerator(mRepo, customizer, id, this);
+}
+
+AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(qReal::Id const &id
+		, GeneratorCustomizer &customizer, bool fromMainGenerator)
+{
+	return new FinalNodeGenerator(mRepo, customizer, id, fromMainGenerator, this);
 }
 
 // Converters can be instantiated without taking ownership because bindinders do this

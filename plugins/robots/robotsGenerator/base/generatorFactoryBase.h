@@ -63,6 +63,9 @@ public:
 	virtual simple::AbstractSimpleGenerator *continueGenerator(Id const &id
 			, GeneratorCustomizer &customizer);
 
+	virtual simple::AbstractSimpleGenerator *finalNodeGenerator(Id const &id
+			, GeneratorCustomizer &customizer, bool fromMainGenerator);
+
 	virtual QString pathToTemplates() const = 0;
 
 	virtual simple::Binding::ConverterInterface *intPropertyConverter() const;

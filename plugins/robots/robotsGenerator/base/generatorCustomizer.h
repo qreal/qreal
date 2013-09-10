@@ -12,6 +12,7 @@ namespace semantics {
 
 enum Semantics {
 	regularBlock = 0
+	, finalBlock
 	, condidionalBlock
 	, loopBlock
 	, switchBlock

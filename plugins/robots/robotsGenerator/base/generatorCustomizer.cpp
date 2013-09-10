@@ -66,5 +66,9 @@ enums::semantics::Semantics GeneratorCustomizer::semanticsOf(Id const &block) co
 		return enums::semantics::forkBlock;
 	}
 
+	if (isFinalNode(block)) {
+		return enums::semantics::finalBlock;
+	}
+
 	return enums::semantics::regularBlock;
 }

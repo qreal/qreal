@@ -14,14 +14,3 @@ WaitForLightBlockGenerator::WaitForLightBlockGenerator(qrRepo::RepoApi const &re
 			, parent)
 {
 }
-
-//void WaitForLightBlockGenerator::addInitAndTerminateCode(NxtOSEKRobotGenerator *nxtGen
-//			, QString const &port, qReal::Id const &elementId)
-//{
-//	QString const initCode = "ecrobot_set_light_sensor_active(" + port + ");";
-//	if (!ListSmartLine::isContains(nxtGen->initCode(), initCode)) {
-//		QString const terminateCode = "ecrobot_set_light_sensor_inactive(" + port + ");";
-//		nxtGen->initCode().append(SmartLine_old(initCode, elementId));
-//		nxtGen->terminateCode().append(SmartLine_old(terminateCode, elementId));
-//	}
-//}

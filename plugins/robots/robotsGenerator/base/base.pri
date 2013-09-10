@@ -20,6 +20,7 @@ HEADERS += \
 	$$PWD/semanticTree/nonZoneNode.h \
 	$$PWD/semanticTree/zoneNode.h \
 	$$PWD/semanticTree/simpleNode.h \
+	$$PWD/semanticTree/finalNode.h \
 	$$PWD/semanticTree/conditionalNode.h \
 	$$PWD/semanticTree/ifNode.h \
 	$$PWD/semanticTree/loopNode.h \
@@ -61,6 +62,7 @@ SOURCES += \
 	$$PWD/semanticTree/nonZoneNode.cpp \
 	$$PWD/semanticTree/zoneNode.cpp \
 	$$PWD/semanticTree/simpleNode.cpp \
+	$$PWD/semanticTree/finalNode.cpp \
 	$$PWD/semanticTree/conditionalNode.cpp \
 	$$PWD/semanticTree/ifNode.cpp \
 	$$PWD/semanticTree/loopNode.cpp \
