@@ -37,7 +37,7 @@ SOURCES += \
 	support/qrguiFacade.cpp \
 
 win32 {
-	QMAKE_POST_LINK = "xcopy ..\\testData\\* ..\\..\\..\\..\\..\\..\\bin\\unittests\\ /q /y"
+	QMAKE_POST_LINK = "cmd /C "xcopy testData ..\\..\\..\\..\\..\\..\\bin\\unittests /s /e /q /y /i""
 }
 else {
 	QMAKE_POST_LINK = "cp ../testData/* ../../../../../../bin/unittests/"
