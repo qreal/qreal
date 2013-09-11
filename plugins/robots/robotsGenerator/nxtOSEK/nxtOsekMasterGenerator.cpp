@@ -70,6 +70,6 @@ void NxtOsekMasterGenerator::saveImages(QString const &projectDir)
 {
 	QMap<QString, QImage> &images = mCustomizer->factory()->images()->bmpFiles();
 	foreach (QString const &fileName, images.keys()) {
-		images[fileName].save(projectDir + fileName + ".bmp", "BMP", -1);
+		images[fileName].save(projectDir + '/' + fileName + ".bmp", "BMP", -1);
 	}
 }

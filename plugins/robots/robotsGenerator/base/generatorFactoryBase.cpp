@@ -271,7 +271,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() const
 {
 	return new converters::FloatPropertyConverter(pathToTemplates()
-			, intPropertyConverter()
+			, inputPortConverter()
 			, outputPortConverter()
 			, functionInvocationConverter());
 }
@@ -279,7 +279,7 @@ Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter() cons
 Binding::ConverterInterface *GeneratorFactoryBase::boolPropertyConverter(bool needInverting) const
 {
 	return new converters::BoolPropertyConverter(pathToTemplates()
-			, intPropertyConverter()
+			, inputPortConverter()
 			, outputPortConverter()
 			, functionInvocationConverter()
 			, needInverting);

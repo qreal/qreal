@@ -45,17 +45,17 @@ QString MasterGeneratorBase::generate()
 		return QString();
 	}
 
-	QString const resultCode = readTemplate("main.t")
-			.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->generatedCode())
-			.replace("@@MAIN_CODE@@", mainControlFlow->toString(1))
-			.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
-					mCustomizer->factory()->initCode(), 1))
-			.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
-					mCustomizer->factory()->terminateCode(), 1))
-			.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
-					mCustomizer->factory()->isrHooksCode(), 1))
-			.replace("@@BMP_FILES@@", mCustomizer->factory()->images()->generate())
-			.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
+	QString resultCode = readTemplate("main.t");
+	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->generatedCode());
+	resultCode.replace("@@MAIN_CODE@@", mainControlFlow->toString(1));
+	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
+			mCustomizer->factory()->initCode(), 1));
+	resultCode.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
+			mCustomizer->factory()->terminateCode(), 1));
+	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
+			mCustomizer->factory()->isrHooksCode(), 1));
+	resultCode.replace("@@BMP_FILES@@", mCustomizer->factory()->images()->generate());
+	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
 
 	QString const pathToOutput = pathToGenerate();
 	outputCode(pathToOutput, resultCode);

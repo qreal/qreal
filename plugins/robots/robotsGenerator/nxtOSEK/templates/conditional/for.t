@@ -1,3 +1,3 @@
-for (@@ITERATOR_TYPE@@ @@ITERATOR@@ = @@INITIAL_VALUE@@; @@ITEERATOR@@ < @@BOUND@@; ++@@ITERATOR@@) {
+for (@@ITERATOR_TYPE@@ @@ITERATOR@@ = @@INITIAL_VALUE@@; @@ITERATOR@@ < @@BOUND@@; ++@@ITERATOR@@) {
 @@BODY@@
 }
