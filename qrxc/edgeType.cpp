@@ -35,6 +35,7 @@ Type* EdgeType::clone() const
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
 	result->mLineType = mLineType;
+	result->mShapeType = mShapeType;
 	result->mFromPorts = mFromPorts;
 	result->mToPorts = mToPorts;
 	return result;
@@ -73,6 +74,14 @@ bool EdgeType::initAssociations()
 bool EdgeType::initGraphics()
 {
 	mVisible = true;
+
+	QDomElement shapeType = mGraphics.firstChildElement("shape");
+	if (shapeType.isNull()) {
+		mShapeType = "square";
+	} else {
+		mShapeType = shapeType.attribute("type", "square");
+	}
+
 	QDomElement lineTypeElement = mGraphics.firstChildElement("lineType");
 	if (lineTypeElement.isNull()) {
 		mVisible = false;
@@ -133,6 +142,7 @@ bool EdgeType::initGraphics()
 	}
 
 	mLineType = "Qt::" + lineType.replace(0, 1, lineType.at(0).toUpper());
+
 	return true;
 }
 
@@ -248,6 +258,9 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\tQStringList toPortTypes() const\n\t\t{\n\t\t\t";
 	generatePorts(out, mToPorts);
+
+	out() << "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n"
+	<< "\t\t\treturn enums::linkShape::" << mShapeType << ";\n\t\t}\n";
 
 	out() << "\t\tbool isPort() const { return false; }\n"
 	<< "\t\tbool hasPin() const { return false; }\n"

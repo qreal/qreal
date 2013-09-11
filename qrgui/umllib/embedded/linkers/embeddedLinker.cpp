@@ -230,7 +230,8 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (scene->mainWindow()->editorManager().hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
 			// FIXME: I am raw. return strange pos() and inside me a small trash
-			Id edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand);
+			Id const edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand, false);
+			mCreateEdgeCommand->redo();
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
 
@@ -293,6 +294,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			mEdge->setDst(target);
 			target->storeGeometry();
 		}
+
 		if (result != -1) {
 			mEdge->connectToPort();
 			// This will restore edge state after undo/redo
@@ -303,9 +305,12 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			reshapeEdge->setUndoEnabled(false);
 			if (createElementFromMenuCommand) {
 				createElementFromMenuCommand->addPostAction(reshapeEdge);
-				mCreateEdgeCommand->addPostAction(createElementFromMenuCommand);
+				createElementFromMenuCommand->addPreAction(mCreateEdgeCommand);
 			} else {
+				Controller * const controller = mEdge->controller();
+				mCreateEdgeCommand->undo();
 				mCreateEdgeCommand->addPostAction(reshapeEdge);
+				controller->execute(mCreateEdgeCommand);
 			}
 		}
 	}

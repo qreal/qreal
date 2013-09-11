@@ -363,12 +363,17 @@ void PortHandler::arrangeLinearPorts()
 	}
 }
 
-void PortHandler::drawPorts(QPainter *painter, QRectF const &contents, QStringList const &)
+void PortHandler::drawPorts(QPainter *painter, QRectF const &contents, QStringList const &types)
 {
 	foreach (StatPoint const * const pointPort, mPointPorts) {
-		pointPort->paint(painter, contents);
+		if (types.contains(pointPort->type())) {
+			pointPort->paint(painter, contents);
+		}
 	}
+
 	foreach (StatLine const * const linePort, mLinePorts) {
-		linePort->paint(painter, contents);
+		if (types.contains(linePort->type())) {
+			linePort->paint(painter, contents);
+		}
 	}
 }
