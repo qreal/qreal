@@ -4,7 +4,7 @@ SUBDIRS = \
 	editor \
 	robotsInterpreter \
 	robotsGenerator \
-	trikGenerator \
+#	trikGenerator \
 	qextserialport \
 
 qextserialport.file = thirdparty/qextserialport/qextserialport.pro
