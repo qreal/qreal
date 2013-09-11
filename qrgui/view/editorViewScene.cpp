@@ -54,8 +54,6 @@ EditorViewScene::EditorViewScene(QObject *parent)
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(deselectLabels()));
-
-	mSelectList = new QList<QGraphicsItem *>();
 }
 
 void EditorViewScene::addItem(QGraphicsItem *item)
@@ -92,7 +90,6 @@ EditorViewScene::~EditorViewScene()
 {
 	delete mActionSignalMapper;
 	delete mMouseMovementManager;
-	delete mSelectList;
 }
 
 void EditorViewScene::setMVIface(EditorViewMViface *mvIface)
@@ -167,7 +164,7 @@ void EditorViewScene::clearScene()
 
 void EditorViewScene::itemSelectUpdate()
 {
-	foreach (QGraphicsItem* item, *mSelectList) {
+	foreach (QGraphicsItem * const item, mSelectList) {
 		item->setSelected(true);
 	}
 }
@@ -744,34 +741,8 @@ void EditorViewScene::moveSelectedItems(int direction)
 		return;
 	}
 
-	foreach (QGraphicsItem* item, selectedItems()) {
-		QPointF newPos = item->pos();
-		newPos += mOffset;
-
-		NodeElement* node = dynamic_cast<NodeElement*>(item);
-		if (node) {
-			ResizeCommand *resizeCommand = new ResizeCommand(this, node->id());
-			resizeCommand->startTracking();
-			node->setPos(newPos);
-			node->alignToGrid();
-			node->adjustLinks();
-			resizeCommand->stopTracking();
-			mController->execute(resizeCommand);
-		} else {
-			EdgeElement* edge = dynamic_cast<EdgeElement*>(item);
-			if (edge) {
-				ReshapeEdgeCommand *edgeCommand = new ReshapeEdgeCommand(this, edge->id());
-				edgeCommand->startTracking();
-				edge->setPos(newPos);
-				if (edge && !(edge->src() && edge->dst()) && (edge->src() || edge->dst())
-						&& (edge->src() ? !edge->src()->isSelected() : true)
-						&& (edge->dst() ? !edge->dst()->isSelected() : true)) {
-					edge->adjustLink();
-				}
-				edgeCommand->stopTracking();
-				mController->execute(edgeCommand);
-			}
-		}
+	if (!moveNodes()) {
+		moveEdges();
 	}
 
 	mTimerForArrowButtons->start(700);
@@ -795,6 +766,62 @@ QPointF EditorViewScene::offsetByDirection(int direction)
 		default:
 			qDebug() << "Incorrect direction";
 			return QPointF(0, 0);
+	}
+}
+
+bool EditorViewScene::moveNodes()
+{
+	bool movedNodesPresent = false;
+	ResizeCommand *resizeCommand = NULL;
+
+	foreach (QGraphicsItem * const item, selectedItems()) {
+		NodeElement * const node = dynamic_cast<NodeElement *>(item);
+		if (!node) {
+			continue;
+		}
+
+		if (!resizeCommand) {
+			resizeCommand = new ResizeCommand(this, node->id());
+			resizeCommand->startTracking();
+		}
+
+		QPointF newPos = node->pos();
+		newPos += mOffset;
+		node->setPos(newPos);
+		node->alignToGrid();
+		node->adjustLinks();
+
+		movedNodesPresent = true;
+	}
+
+	if (resizeCommand) {
+		resizeCommand->stopTracking();
+		mController->execute(resizeCommand);
+	}
+
+	return movedNodesPresent;
+}
+
+void EditorViewScene::moveEdges()
+{
+	foreach (QGraphicsItem * const item, selectedItems()) {
+		EdgeElement * const edge = dynamic_cast<EdgeElement *>(item);
+		if (edge) {
+			ReshapeEdgeCommand * const edgeCommand = new ReshapeEdgeCommand(this, edge->id());
+			edgeCommand->startTracking();
+
+			QPointF newPos = edge->pos();
+			newPos += mOffset;
+			edge->setPos(newPos);
+			if (edge && !(edge->src() && edge->dst()) && (edge->src() || edge->dst())
+					&& (edge->src() ? !edge->src()->isSelected() : true)
+					&& (edge->dst() ? !edge->dst()->isSelected() : true)) {
+				edge->adjustLink();
+			}
+
+			edgeCommand->stopTracking();
+			mController->execute(edgeCommand);
+		}
 	}
 }
 
@@ -826,21 +853,21 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			&& !(event->buttons() & Qt::RightButton))
 	{
 		mIsSelectEvent = true;
-		mSelectList->append(selectedItems());
+		mSelectList.append(selectedItems());
 		foreach (QGraphicsItem * const item, items()) {
 			item->setAcceptedMouseButtons(0);
 		}
 
-		foreach (QGraphicsItem * const item, *mSelectList) {
+		foreach (QGraphicsItem * const item, mSelectList) {
 			item->setSelected(true);
 		}
 
 		if (item) {
-			item->setSelected(!mSelectList->contains(item));
+			item->setSelected(!mSelectList.contains(item));
 			if (item->isSelected()) {
-				mSelectList->append(item);
+				mSelectList.append(item);
 			} else {
-				mSelectList->removeAll(item);
+				mSelectList.removeAll(item);
 			}
 		}
 	} else if (event->button() == Qt::LeftButton) {
@@ -853,16 +880,14 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 		if (item) {
 			item->setSelected(true);
-			mSelectList->clear();
-			mSelectList->append(item);
+			mSelectList.clear();
+			mSelectList.append(item);
 			event->accept();
 		}
-	} else {
-		if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
-			mTimer->stop();
-			mMouseMovementManager->mousePress(event->scenePos());
-			mRightButtonPressed = true;
-		}
+	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton)) {
+		mTimer->stop();
+		mMouseMovementManager->mousePress(event->scenePos());
+		mRightButtonPressed = true;
 	}
 
 	redraw();
@@ -1051,10 +1076,10 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			item->setAcceptedMouseButtons(Qt::MouseButtons(Qt::RightButton | Qt::LeftButton));
 		}
 		mIsSelectEvent = false;
-		foreach (QGraphicsItem* item, *mSelectList) {
+		foreach (QGraphicsItem* item, mSelectList) {
 			item->setSelected(true);
 		}
-		mSelectList->clear();
+		mSelectList.clear();
 		return;
 	}
 
@@ -1079,7 +1104,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				}
 				if (list.size() > 1 && nodeItem) {
 					nodeItem->setVisibleEmbeddedLinkers(false);
-					nodeItem->setPortsVisible(false);
+					nodeItem->setPortsVisible(QStringList());
 				}
 			}
 		}
@@ -1369,9 +1394,15 @@ void EditorViewScene::cropToItems()
 void EditorViewScene::updateEdgeElements()
 {
 	foreach (QGraphicsItem *item, items()) {
-		EdgeElement* element = dynamic_cast<EdgeElement*>(item);
+		EdgeElement *const element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
-			element->changeLineType();
+			enums::linkShape::LinkShape const shape
+					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType"
+							, enums::linkShape::unset).toInt());
+			if (shape != enums::linkShape::unset) {
+				element->changeShapeType(shape);
+			}
+
 			if (SettingsManager::value("ActivateGrid").toBool()) {
 				element->alignToGrid();
 			}

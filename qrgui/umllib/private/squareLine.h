@@ -61,6 +61,9 @@ protected:
 	bool needCorrectSrc() const;
 	bool needCorrectDst() const;
 
+	/// Determine whether the link is already square
+	bool isSquareLine() const;
+
 	/// Determine whether given line intersects given node
 	bool intersects(QLineF const &line, NodeElement *node) const;
 

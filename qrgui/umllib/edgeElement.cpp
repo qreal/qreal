@@ -13,11 +13,11 @@
 #include "umllib/labelFactory.h"
 #include "view/editorViewScene.h"
 
-#include "umllib/private/brokenLine.h"
-#include "umllib/private/squareLine.h"
-#include "umllib/private/curveLine.h"
+#include "umllib/private/lineFactory.h"
+#include "umllib/private/lineHandler.h"
 
 using namespace qReal;
+using namespace enums;
 
 const double pi = 3.14159265358979;
 
@@ -41,12 +41,14 @@ EdgeElement::EdgeElement(
 		, mPenColor(Qt::black)
 		, mSrc(NULL)
 		, mDst(NULL)
+		, mLineFactory(new LineFactory(this))
 		, mHandler(NULL)
 		, mPortFrom(0)
 		, mPortTo(0)
 		, mDragType(noPort)
 		, mLongPart(0)
 		, mReverseAction(tr("Reverse"), this)
+		, mChangeShapeAction(tr("Change shape type"), this)
 		, mModelUpdateIsCalled(false)
 		, mIsLoop(false)
 {
@@ -62,8 +64,6 @@ EdgeElement::EdgeElement(
 	mLine << QPointF(0, 0) << QPointF(200, 60);
 
 	setAcceptHoverEvents(true);
-
-	connect(&mReverseAction, SIGNAL(triggered()), SLOT(reverse()));
 
 	LabelFactory factory(graphicalAssistApi, mId);
 	QList<LabelInterface*> titles;
@@ -81,6 +81,7 @@ EdgeElement::EdgeElement(
 	}
 
 	initLineHandler();
+	mChangeShapeAction.setMenu(mLineFactory->shapeTypeMenu());
 }
 
 EdgeElement::~EdgeElement()
@@ -91,6 +92,7 @@ EdgeElement::~EdgeElement()
 		mDst->delEdge(this);
 
 	delete mElementImpl;
+	delete mLineFactory;
 	delete mHandler;
 }
 
@@ -102,17 +104,34 @@ void EdgeElement::initTitles()
 
 void EdgeElement::initLineHandler()
 {
+	updateShapeType();
+
 	delete mHandler;
-	switch(SettingsManager::value("LineType").toInt()) {
-	case brokenLine:
-		mHandler = new BrokenLine(this);
-		break;
-	case curveLine:
-		mHandler = new CurveLine(this);
-		break;
-	default:
-		mHandler = new SquareLine(this);
+	mHandler = mLineFactory->createHandler(mShapeType);
+	mHandler->connectAction(&mReverseAction, this, SLOT(reverse()));
+}
+
+void EdgeElement::updateShapeType()
+{
+	mShapeType = static_cast<linkShape::LinkShape>(SettingsManager::value("LineType", linkShape::unset).toInt());
+
+	if (mShapeType == linkShape::unset) {
+		QString const shapeString
+				= mGraphicalAssistApi.graphicalRepoApi().property(id(), "linkShape").toString();
+		mShapeType = mLineFactory->stringToShape(shapeString);
+
+		if (mShapeType == linkShape::unset) {
+			mShapeType = mElementImpl->shapeType();
+		}
 	}
+}
+
+void EdgeElement::changeShapeType(linkShape::LinkShape const shapeType)
+{
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape"
+			, mLineFactory->shapeToString(shapeType));
+	initLineHandler();
+	layOut();
 }
 
 QRectF EdgeElement::boundingRect() const
@@ -179,7 +198,6 @@ void EdgeElement::paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *o
 	}
 
 	mHandler->drawLine(painter, drawSavedLine);
-	painter->restore();
 
 	drawArrows(painter, drawSavedLine);
 
@@ -187,6 +205,8 @@ void EdgeElement::paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *o
 		painter->setBrush(Qt::SolidPattern);
 		mHandler->drawPorts(painter);
 	}
+
+	painter->restore();
 }
 
 void EdgeElement::drawArrows(QPainter *painter, bool savedLine) const
@@ -289,9 +309,6 @@ void EdgeElement::connectToPort()
 	NodeElement *newDst = getNodeAt(mLine.last(), false);
 
 	mIsLoop = ((newSrc == newDst) && newSrc);
-
-	setPos(pos() + mLine.first());
-	mLine.translate(-mLine.first());
 
 	if (mIsLoop) {
 		connectLoopEdge(newSrc);
@@ -546,8 +563,14 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 
 	Element::mousePressEvent(event);
+
 	if ((mSrc && mSrc->isSelected() && isSelected()) || (mDst && mDst->isSelected() && isSelected())) {
 		mDragType = wholeEdge;
+		if (mSrc && mSrc->isSelected()) {
+			mSrc->startResize();
+		} else {
+			mDst->startResize();
+		}
 	} else if (event->button() == Qt::LeftButton && !event->modifiers()) {
 		mDragType = mHandler->startMovingEdge(event->pos());
 	}
@@ -583,15 +606,15 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	Element::mouseReleaseEvent(event);
 
-	if (mSrc) {
-		mSrc->setPortsVisible(false);
+	if (mDragType == wholeEdge) {
+		if (mSrc && mSrc->isSelected()) {
+			mSrc->endResize();
+		} else {
+			mDst->endResize();
+		}
+	} else {
+		mHandler->endMovingEdge();
 	}
-
-	if (mDst) {
-		mDst->setPortsVisible(false);
-	}
-
-	mHandler->endMovingEdge();
 }
 
 // NOTE: using don`t forget about possible nodeElement`s overlaps (different Z-value)
@@ -641,11 +664,17 @@ NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, No
 QList<ContextMenuAction*> EdgeElement::contextMenuActions(QPointF const &pos)
 {
 	QList<ContextMenuAction*> result;
+
+	if (SettingsManager::value("LineType", linkShape::unset).toInt() == linkShape::unset) {
+		result.push_back(&mChangeShapeAction);
+	}
+
 	if (reverseActionIsPossible()) {
 		result.push_back(&mReverseAction);
 	}
 
 	result.append(mHandler->extraActions(pos));
+
 	return result;
 }
 
@@ -680,9 +709,6 @@ void EdgeElement::reverse()
 void EdgeElement::reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst)
 {
 	mMoving = true;
-
-	setPos(pos() + mLine.first());
-	mLine.translate(-mLine.first());
 
 	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first()), fromPortTypes()) : -1.0;
 	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last()), toPortTypes()) : -1.0;
@@ -890,6 +916,7 @@ void EdgeElement::updateData()
 
 	update();
 	updateLongestPart();
+	highlight((mSrc && mDst) ? mPenColor : Qt::red);
 }
 
 void EdgeElement::removeLink(NodeElement const *from)
@@ -945,6 +972,17 @@ void EdgeElement::moveConnection(NodeElement *node, qreal const portId) {
 	}
 }
 
+void EdgeElement::arrangeLinearPorts()
+{
+	if (mSrc) {
+		mSrc->arrangeLinearPorts();
+	}
+
+	if (mDst) {
+		mDst->arrangeLinearPorts();
+	}
+}
+
 void EdgeElement::drawStartArrow(QPainter *painter) const
 {
 	if (mElementImpl)
@@ -968,13 +1006,6 @@ void EdgeElement::highlight(QColor const color)
 	update();
 }
 
-void EdgeElement::changeLineType()
-{
-	initLineHandler();
-	layOut();
-}
-
-
 EdgeData& EdgeElement::data()
 {
 	mData.id = id();
@@ -987,6 +1018,8 @@ EdgeData& EdgeElement::data()
 
 	mData.configuration = mGraphicalAssistApi.configuration(mId);
 	mData.pos = mGraphicalAssistApi.position(mId);
+
+	mData.shapeType = mShapeType;
 
 	return mData;
 }
