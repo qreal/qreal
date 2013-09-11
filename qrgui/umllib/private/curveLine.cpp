@@ -40,7 +40,7 @@ void CurveLine::drawControlLines(QPainter *painter)
 {
 	QPolygonF line = mEdge->line();
 
-	QPen pen;
+	QPen pen = painter->pen();
 	pen.setStyle(Qt::DashLine);
 	painter->save();
 	painter->setPen(pen);

@@ -35,6 +35,7 @@ public:
 	QPolygon configuration;
 	QPointF pos;
 
+	int shapeType;
 };
 
 /**
