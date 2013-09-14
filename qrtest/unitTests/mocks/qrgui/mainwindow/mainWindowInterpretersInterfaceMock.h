@@ -8,7 +8,8 @@
 
 namespace qrTest {
 
-class MainWindowInterpretersInterfaceMock : public qReal::gui::MainWindowInterpretersInterface {
+class MainWindowInterpretersInterfaceMock : public qReal::gui::MainWindowInterpretersInterface 
+{
 public:
 	MOCK_METHOD1(selectItem, void(qReal::Id const &graphicalId));
 	MOCK_METHOD1(selectItemOrDiagram, void(qReal::Id const &graphicalId));
