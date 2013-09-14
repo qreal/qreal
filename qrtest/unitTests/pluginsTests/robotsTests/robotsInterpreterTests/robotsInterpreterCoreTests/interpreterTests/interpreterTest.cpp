@@ -8,6 +8,8 @@ using namespace robotsInterpreterCore::interpreter;
 
 void InterpreterTest::SetUp()
 {
+	mBlocksFactory = new DummyBlockFactory();
+
 	mQrguiFacade = new QrguiFacade("unittests/testModel.qrs");
 
 	mInterpreter = new Interpreter(
@@ -15,7 +17,7 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mQrguiFacade->mainWindowInterpretersInterface()
 			, mQrguiFacade->projectManagementInterface()
-			, &mBlocksFactory
+			, mBlocksFactory
 			, &mModel
 			);
 }
@@ -28,4 +30,9 @@ void InterpreterTest::TearDown()
 
 TEST_F(InterpreterTest, sanityCheck)
 {
+}
+
+TEST_F(InterpreterTest, interpret)
+{
+	mInterpreter->interpret();
 }

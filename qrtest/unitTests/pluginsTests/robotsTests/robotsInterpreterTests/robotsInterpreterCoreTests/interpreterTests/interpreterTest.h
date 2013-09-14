@@ -20,7 +20,7 @@ protected:
 
 	robotsInterpreterCore::interpreter::InterpreterInterface *mInterpreter;  // Has ownership.
 	QrguiFacade *mQrguiFacade;  // Has ownership.
-	DummyBlockFactory mBlocksFactory;
+	DummyBlockFactory *mBlocksFactory;  // Does not have ownership.
 	robotsInterpreterCore::robotModel::RobotModel mModel;
 };
 
