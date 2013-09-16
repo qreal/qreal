@@ -2,7 +2,7 @@
 <metamodel xmlns="http://schema.real.com/schema/">
     <include>../../commonMetamodels/kernelMetamodel.xml</include>
     <namespace>UML 2.0</namespace>
-    <diagram nodeName="GuiEditorDiagram" name="GuiEditor" displayedName="GUI Editor">
+    <diagram name="GuiEditor" displayedName="GUI Editor" nodeName="GuiEditorDiagram">
         <nonGraphicTypes>
             <enum name="FrameShape">
                 <value>NoFrame</value>
@@ -57,7 +57,7 @@
             <node name="GuiEditorDiagram" displayedName="GUI Editor Diagram" description="GUI Editor Diagram">
                 <graphics>
                     <picture sizex="33" sizey="30">
-                        <image y1="0" y2="29" x1="0" name="images/gui.png" x2="32"/>
+                        <image name="images/gui.png" y1="0" y2="29" x1="0" x2="32"/>
                     </picture>
                     <labels/>
                     <ports/>
@@ -70,37 +70,37 @@
                 <graphics>
                     <widget-template>
                         <Root layout="NoLayout">
-                            <property type="Bool" value="false" propertyName="transparent">
+                            <property value="false" propertyName="transparent" type="Bool">
                                 <outerBinding target="TransparentProperty"/>
                             </property>
-                            <property type="Bool" value="true" propertyName="enabled">
+                            <property value="true" propertyName="enabled" type="Bool">
                                 <outerBinding target="EnabledProperty"/>
                             </property>
-                            <property width="300" x="0" type="Rect" y="0" height="300" propertyName="geometry">
+                            <property width="300" propertyName="geometry" height="300" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip">
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String">
                                 <outerBinding target="ToolTipProperty"/>
                             </property>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy"/>
-                            <property type="Int" value="3" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="3" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="3" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="3" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="&lt;picture sizex=&quot;-680&quot; sizey=&quot;-580&quot;/>&#xa;" propertyName="shapeXml"/>
+                            <property verticalPolicy="5" propertyName="sizePolicy" horizontalPolicy="5" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="3" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="3" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="3" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="3" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="&lt;picture sizex=&quot;-680&quot; sizey=&quot;-580&quot;/>&#xa;" propertyName="shapeXml" type="String"/>
                         </Root>
                     </widget-template>
                     <icon>
                         <graphics>
                             <picture sizex="32" sizey="34">
-                                <image y1="0" y2="33" x1="0" name="images/widget.png" x2="31"/>
+                                <image name="images/widget.png" y1="0" y2="33" x1="0" x2="31"/>
                             </picture>
                             <labels/>
                             <ports/>
@@ -121,62 +121,62 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <PushButton>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
-                                <property width="105" x="0" type="Rect" y="0" height="27" propertyName="geometry"/>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="minimumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="Bool" value="true" propertyName="transparent">
+                                <property width="105" propertyName="geometry" height="27" x="0" y="0" type="Rect"/>
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="true" propertyName="transparent" type="Bool">
                                     <outerBinding target="TransparentProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="1" horizontalPolicy="1" propertyName="sizePolicy"/>
-                                <property type="Bool" value="false" propertyName="autoRepeat">
+                                <property verticalPolicy="1" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="false" propertyName="autoRepeat" type="Bool">
                                     <outerBinding target="AutoRepeatProperty"/>
                                 </property>
-                                <property type="Int" value="300" propertyName="autoRepeatDelay">
+                                <property value="300" propertyName="autoRepeatDelay" type="Int">
                                     <outerBinding target="AutoRepeatDelayProperty"/>
                                 </property>
-                                <property type="Int" value="100" propertyName="autoRepeatInterval">
+                                <property value="100" propertyName="autoRepeatInterval" type="Int">
                                     <outerBinding target="AutoRepeatIntervalProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="flat">
+                                <property value="false" propertyName="flat" type="Bool">
                                     <outerBinding target="FlatProperty"/>
                                 </property>
-                                <property type="String" value="pushButton" propertyName="text">
+                                <property value="pushButton" propertyName="text" type="String">
                                     <outerBinding target="TextProperty"/>
                                 </property>
                                 <layoutAttachedProperty index="0"/>
                             </PushButton>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="Bool" value="true" propertyName="transparent"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="0" horizontalPolicy="1" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
-                            <property width="105" x="0" type="Rect" y="0" height="27" propertyName="geometry">
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="true" propertyName="transparent" type="Bool"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="0" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
+                            <property width="105" propertyName="geometry" height="27" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property type="Bool" value="true" propertyName="enabled"/>
+                            <property value="true" propertyName="enabled" type="Bool"/>
                         </Root>
                     </widget-template>
                     <icon>
                         <graphics>
                             <picture sizex="21" sizey="20">
-                                <image y1="0" y2="19" x1="0" name="images/pushButton.png" x2="20"/>
+                                <image name="images/pushButton.png" y1="0" y2="19" x1="0" x2="20"/>
                             </picture>
                             <labels/>
                             <ports/>
@@ -186,7 +186,7 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property type="bool" name="FlatProperty" displayedName="Is Flat">
+                        <property name="FlatProperty" displayedName="Is Flat" type="bool">
                             <default>false</default>
                         </property>
                     </properties>
@@ -200,64 +200,64 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <CheckBox>
-                                <property type="Bool" value="true" propertyName="transparent">
+                                <property value="true" propertyName="transparent" type="Bool">
                                     <outerBinding target="TransparentProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
-                                <property width="93" x="0" type="Rect" y="0" height="25" propertyName="geometry"/>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="minimumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property width="93" propertyName="geometry" height="25" x="0" y="0" type="Rect"/>
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="1" horizontalPolicy="1" propertyName="sizePolicy"/>
-                                <property type="Bool" value="false" propertyName="autoRepeat">
+                                <property verticalPolicy="1" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="false" propertyName="autoRepeat" type="Bool">
                                     <outerBinding target="AutoRepeatProperty"/>
                                 </property>
-                                <property type="Int" value="300" propertyName="autoRepeatDelay">
+                                <property value="300" propertyName="autoRepeatDelay" type="Int">
                                     <outerBinding target="AutoRepeatDelayProperty"/>
                                 </property>
-                                <property type="Int" value="100" propertyName="autoRepeatInterval">
+                                <property value="100" propertyName="autoRepeatInterval" type="Int">
                                     <outerBinding target="AutoRepeatIntervalProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="binding"/>
-                                <property type="Bool" value="false" propertyName="checked">
+                                <property value="" propertyName="binding" type="String"/>
+                                <property value="false" propertyName="checked" type="Bool">
                                     <outerBinding target="CheckedProperty"/>
                                 </property>
-                                <property type="String" value="checkBox" propertyName="text">
+                                <property value="checkBox" propertyName="text" type="String">
                                     <outerBinding target="TextProperty"/>
                                 </property>
                                 <layoutAttachedProperty index="0"/>
                             </CheckBox>
-                            <property type="Bool" value="true" propertyName="transparent"/>
-                            <property type="Bool" value="true" propertyName="enabled"/>
-                            <property width="93" x="0" type="Rect" y="0" height="28" propertyName="geometry">
+                            <property value="true" propertyName="transparent" type="Bool"/>
+                            <property value="true" propertyName="enabled" type="Bool"/>
+                            <property width="93" propertyName="geometry" height="28" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="0" horizontalPolicy="1" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="3" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="0" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="3" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Bool" name="CheckedProperty" displayedName="Checked">
+                        <property name="CheckedProperty" displayedName="Checked" type="Bool">
                             <default>False</default>
                         </property>
                     </properties>
@@ -270,16 +270,16 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Bool" name="AutoRepeatProperty" displayedName="AutoRepeat">
+                        <property name="AutoRepeatProperty" displayedName="AutoRepeat" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="Int" name="AutoRepeatDelayProperty" displayedName="AutoRepeatDelay">
+                        <property name="AutoRepeatDelayProperty" displayedName="AutoRepeatDelay" type="Int">
                             <default>100</default>
                         </property>
-                        <property type="Int" name="AutoRepeatIntervalProperty" displayedName="AutoRepeatInterval">
+                        <property name="AutoRepeatIntervalProperty" displayedName="AutoRepeatInterval" type="Int">
                             <default>300</default>
                         </property>
-                        <property type="String" name="TextProperty" displayedName="Text">
+                        <property name="TextProperty" displayedName="Text" type="String">
                             <default>Button</default>
                         </property>
                     </properties>
@@ -293,62 +293,62 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <GroupBox layout="NoLayout">
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property type="Int" value="1" propertyName="alignment"/>
-                                <property type="Bool" value="false" propertyName="flat">
+                                <property value="1" propertyName="alignment" type="Int"/>
+                                <property value="false" propertyName="flat" type="Bool">
                                     <outerBinding target="FlatProperty"/>
                                 </property>
-                                <property width="200" x="0" type="Rect" y="0" height="200" propertyName="geometry"/>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="minimumSize"/>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy"/>
-                                <property type="Int" value="3" propertyName="layoutLeftMargin"/>
-                                <property type="Int" value="3" propertyName="layoutRightMargin"/>
-                                <property type="Int" value="3" propertyName="layoutTopMargin"/>
-                                <property type="Int" value="3" propertyName="layoutBottomMargin"/>
-                                <property type="String" value="groupBox" propertyName="title">
+                                <property width="200" propertyName="geometry" height="200" x="0" y="0" type="Rect"/>
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+                                <property verticalPolicy="5" propertyName="sizePolicy" horizontalPolicy="5" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="3" propertyName="layoutLeftMargin" type="Int"/>
+                                <property value="3" propertyName="layoutRightMargin" type="Int"/>
+                                <property value="3" propertyName="layoutTopMargin" type="Int"/>
+                                <property value="3" propertyName="layoutBottomMargin" type="Int"/>
+                                <property value="groupBox" propertyName="title" type="String">
                                     <outerBinding target="TextProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="transparent">
+                                <property value="true" propertyName="transparent" type="Bool">
                                     <outerBinding target="TransparentProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
                                 <layoutAttachedProperty index="0"/>
                             </GroupBox>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property type="Bool" value="true" propertyName="transparent"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
-                            <property width="200" x="0" type="Rect" y="0" height="200" propertyName="geometry">
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property value="true" propertyName="transparent" type="Bool"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
+                            <property width="200" propertyName="geometry" height="200" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="Bool" value="true" propertyName="enabled"/>
+                            <property verticalPolicy="5" propertyName="sizePolicy" horizontalPolicy="5" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="true" propertyName="enabled" type="Bool"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Bool" name="FlatProperty" displayedName="IsFlat">
+                        <property name="FlatProperty" displayedName="IsFlat" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="String" name="TextProperty" displayedName="Text">
+                        <property name="TextProperty" displayedName="Text" type="String">
                             <default>Group Box</default>
                         </property>
                     </properties>
@@ -362,63 +362,63 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <RadioButton>
-                                <property type="Bool" value="true" propertyName="transparent">
+                                <property value="true" propertyName="transparent" type="Bool">
                                     <outerBinding target="TransparentProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
-                                <property width="101" x="0" type="Rect" y="0" height="22" propertyName="geometry"/>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="minimumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property width="101" propertyName="geometry" height="22" x="0" y="0" type="Rect"/>
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="1" horizontalPolicy="1" propertyName="sizePolicy"/>
-                                <property type="Bool" value="false" propertyName="autoRepeat">
+                                <property verticalPolicy="1" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="false" propertyName="autoRepeat" type="Bool">
                                     <outerBinding target="AutoRepeatProperty"/>
                                 </property>
-                                <property type="Int" value="300" propertyName="autoRepeatDelay">
+                                <property value="300" propertyName="autoRepeatDelay" type="Int">
                                     <outerBinding target="AutoRepeatDelayProperty"/>
                                 </property>
-                                <property type="Int" value="100" propertyName="autoRepeatInterval">
+                                <property value="100" propertyName="autoRepeatInterval" type="Int">
                                     <outerBinding target="AutoRepeatIntervalProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="checked">
+                                <property value="true" propertyName="checked" type="Bool">
                                     <outerBinding target="CheckedProperty"/>
                                 </property>
-                                <property type="String" value="radioButton" propertyName="text">
+                                <property value="radioButton" propertyName="text" type="String">
                                     <outerBinding target="TextProperty"/>
                                 </property>
                                 <layoutAttachedProperty index="0"/>
                             </RadioButton>
-                            <property type="Bool" value="true" propertyName="transparent"/>
-                            <property type="Bool" value="true" propertyName="enabled"/>
-                            <property width="101" x="0" type="Rect" y="0" height="22" propertyName="geometry">
+                            <property value="true" propertyName="transparent" type="Bool"/>
+                            <property value="true" propertyName="enabled" type="Bool"/>
+                            <property width="101" propertyName="geometry" height="22" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="0" horizontalPolicy="1" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="0" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Bool" name="CheckedProperty" displayedName="Checked">
+                        <property name="CheckedProperty" displayedName="Checked" type="Bool">
                             <default>False</default>
                         </property>
                     </properties>
@@ -432,73 +432,73 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <Frame layout="NoLayout">
-                                <property type="Bool" value="true" propertyName="transparent"/>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property value="true" propertyName="transparent" type="Bool"/>
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
-                                <property width="200" x="0" type="Rect" y="0" height="200" propertyName="geometry"/>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property width="10" type="Size" height="10" propertyName="minimumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property width="200" propertyName="geometry" height="200" x="0" y="0" type="Rect"/>
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property width="10" propertyName="minimumSize" height="10" type="Size"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy"/>
-                                <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                                <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                                <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                                <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                                <property type="enum" value="2" propertyName="frameShape">
+                                <property verticalPolicy="5" propertyName="sizePolicy" horizontalPolicy="5" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                                <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                                <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                                <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                                <property value="2" propertyName="frameShape" type="enum">
                                     <outerBinding target="FrameShapeProperty"/>
                                 </property>
-                                <property type="enum" value="32" propertyName="frameShadow">
+                                <property value="32" propertyName="frameShadow" type="enum">
                                     <outerBinding target="FrameShadowProperty"/>
                                 </property>
-                                <property type="Int" value="1" propertyName="lineWidth">
+                                <property value="1" propertyName="lineWidth" type="Int">
                                     <outerBinding target="LineWidthProperty"/>
                                 </property>
-                                <property type="Int" value="0" propertyName="midLineWidth">
+                                <property value="0" propertyName="midLineWidth" type="Int">
                                     <outerBinding target="MidLineWidthProperty"/>
                                 </property>
                                 <layoutAttachedProperty index="0"/>
                             </Frame>
-                            <property type="Bool" value="false" propertyName="transparent">
+                            <property value="false" propertyName="transparent" type="Bool">
                                 <outerBinding target="TransparentProperty"/>
                             </property>
-                            <property type="Bool" value="true" propertyName="enabled"/>
-                            <property width="200" x="0" type="Rect" y="0" height="200" propertyName="geometry">
+                            <property value="true" propertyName="enabled" type="Bool"/>
+                            <property width="200" propertyName="geometry" height="200" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="5" propertyName="sizePolicy" horizontalPolicy="5" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="FrameShape" name="FrameShapeProperty" displayedName="Shape">
+                        <property name="FrameShapeProperty" displayedName="Shape" type="FrameShape">
                             <default>Panel</default>
                         </property>
-                        <property type="FrameShadow" name="FrameShadowProperty" displayedName="Shadow">
+                        <property name="FrameShadowProperty" displayedName="Shadow" type="FrameShadow">
                             <default>Raised</default>
                         </property>
-                        <property type="Int" name="LineWidthProperty" displayedName="Line Width">
+                        <property name="LineWidthProperty" displayedName="Line Width" type="Int">
                             <default>1</default>
                         </property>
-                        <property type="int" name="MidLineWidthProperty" displayedName="Middle Line Width">
+                        <property name="MidLineWidthProperty" displayedName="Middle Line Width" type="int">
                             <default>1</default>
                         </property>
                     </properties>
@@ -512,88 +512,88 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <ComboBox>
-                                <property type="Bool" value="true" propertyName="transparent">
+                                <property value="true" propertyName="transparent" type="Bool">
                                     <outerBinding target="TransparentProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
-                                <property width="103" x="0" type="Rect" y="0" height="27" propertyName="geometry"/>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="minimumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property width="103" propertyName="geometry" height="27" x="0" y="0" type="Rect"/>
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="1" horizontalPolicy="1" propertyName="sizePolicy"/>
-                                <property type="Bool" value="false" propertyName="duplicatesEnabled">
+                                <property verticalPolicy="1" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="false" propertyName="duplicatesEnabled" type="Bool">
                                     <outerBinding target="DuplicatesEnabledProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="editable">
+                                <property value="false" propertyName="editable" type="Bool">
                                     <outerBinding target="EditableProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="frame">
+                                <property value="true" propertyName="frame" type="Bool">
                                     <outerBinding target="HasFrameProperty"/>
                                 </property>
-                                <property type="Int" value="2147483647" propertyName="maxCount">
+                                <property value="2147483647" propertyName="maxCount" type="Int">
                                     <outerBinding target="MaxCountProperty"/>
                                 </property>
-                                <property type="Int" value="10" propertyName="maxVisibleItems">
+                                <property value="10" propertyName="maxVisibleItems" type="Int">
                                     <outerBinding target="MaxVisibleItems"/>
                                 </property>
-                                <property type="Int" value="0" propertyName="minimumContentsLength">
+                                <property value="0" propertyName="minimumContentsLength" type="Int">
                                     <outerBinding target="MinimumContentsLengthProperty"/>
                                 </property>
-                                <property type="enum" value="1" propertyName="sizeAdjustPolicy">
+                                <property value="1" propertyName="sizeAdjustPolicy" type="enum">
                                     <outerBinding target="SizeAdjustPolicyProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="binding"/>
+                                <property value="" propertyName="binding" type="String"/>
                                 <layoutAttachedProperty index="0"/>
                             </ComboBox>
-                            <property type="Bool" value="true" propertyName="transparent"/>
-                            <property type="Bool" value="true" propertyName="enabled"/>
-                            <property width="103" x="0" type="Rect" y="0" height="27" propertyName="geometry">
+                            <property value="true" propertyName="transparent" type="Bool"/>
+                            <property value="true" propertyName="enabled" type="Bool"/>
+                            <property width="103" propertyName="geometry" height="27" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="0" horizontalPolicy="5" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="0" propertyName="sizePolicy" horizontalPolicy="5" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="SizeAdjustPolicy" name="SizeAdjustPolicyProperty" displayedName="Size Adjust Policy">
+                        <property name="SizeAdjustPolicyProperty" displayedName="Size Adjust Policy" type="SizeAdjustPolicy">
                             <default>Adjust To Contents</default>
                         </property>
-                        <property type="Bool" name="EditableProperty" displayedName="Editable">
+                        <property name="EditableProperty" displayedName="Editable" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="Bool" name="DuplicatesEnabledProperty" displayedName="Duplicates Enabled">
+                        <property name="DuplicatesEnabledProperty" displayedName="Duplicates Enabled" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="Bool" name="HasFrameProperty" displayedName="Has Frame">
+                        <property name="HasFrameProperty" displayedName="Has Frame" type="Bool">
                             <default>True</default>
                         </property>
-                        <property type="Int" name="MaxCountProperty" displayedName="Max Count">
+                        <property name="MaxCountProperty" displayedName="Max Count" type="Int">
                             <default>100</default>
                         </property>
-                        <property type="Int" name="MaxVisibleItemsProperty" displayedName="Max Visible Items">
+                        <property name="MaxVisibleItemsProperty" displayedName="Max Visible Items" type="Int">
                             <default>10</default>
                         </property>
-                        <property type="Int" name="MinimumContentsLengthProperty" displayedName="Minimum Contents Length">
+                        <property name="MinimumContentsLengthProperty" displayedName="Minimum Contents Length" type="Int">
                             <default>0</default>
                         </property>
                     </properties>
@@ -606,22 +606,22 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Bool" name="AcceleratedProperty" displayedName="Accelerated">
+                        <property name="AcceleratedProperty" displayedName="Accelerated" type="Bool">
                             <default>True</default>
                         </property>
-                        <property type="CorrectionMode" name="CorrectionModeProperty" displayedName="Correction Mode">
+                        <property name="CorrectionModeProperty" displayedName="Correction Mode" type="CorrectionMode">
                             <default>Correct To Provious Value</default>
                         </property>
-                        <property type="Bool" name="HasButtonsProperty" displayedName="Has Buttons">
+                        <property name="HasButtonsProperty" displayedName="Has Buttons" type="Bool">
                             <default>True</default>
                         </property>
-                        <property type="Bool" name="ReadOnlyProperty" displayedName="Read Only">
+                        <property name="ReadOnlyProperty" displayedName="Read Only" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="String" name="SpecialValueTextProperty" displayedName="Special Value Text"/>
-                        <property type="String" name="PrefixProperty" displayedName="Prefix"/>
-                        <property type="String" name="SuffixProperty" displayedName="Suffix"/>
-                        <property type="Bool" name="WrappingProperty" displayedName="Wrapping">
+                        <property name="SpecialValueTextProperty" displayedName="Special Value Text" type="String"/>
+                        <property name="PrefixProperty" displayedName="Prefix" type="String"/>
+                        <property name="SuffixProperty" displayedName="Suffix" type="String"/>
+                        <property name="WrappingProperty" displayedName="Wrapping" type="Bool">
                             <default>False</default>
                         </property>
                     </properties>
@@ -635,94 +635,94 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <SpinBox>
-                                <property type="Bool" value="true" propertyName="transparent">
+                                <property value="true" propertyName="transparent" type="Bool">
                                     <outerBinding target="TransparentProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
-                                <property width="88" x="0" type="Rect" y="0" height="27" propertyName="geometry"/>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="minimumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property width="88" propertyName="geometry" height="27" x="0" y="0" type="Rect"/>
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="1" horizontalPolicy="1" propertyName="sizePolicy"/>
-                                <property type="Bool" value="false" propertyName="accelerated">
+                                <property verticalPolicy="1" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="false" propertyName="accelerated" type="Bool">
                                     <outerBinding target="AcceleratedProperty"/>
                                 </property>
-                                <property type="enum" value="0" propertyName="correctionMode">
+                                <property value="0" propertyName="correctionMode" type="enum">
                                     <outerBinding target="CorrectionModeProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="hasButtons">
+                                <property value="true" propertyName="hasButtons" type="Bool">
                                     <outerBinding target="HasButtonsProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="readonly">
+                                <property value="false" propertyName="readonly" type="Bool">
                                     <outerBinding target="ReadOnlyProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="wrapping">
+                                <property value="false" propertyName="wrapping" type="Bool">
                                     <outerBinding target="WrappingProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="specialValueText">
+                                <property value="" propertyName="specialValueText" type="String">
                                     <outerBinding target="SpecialValueTextProperty"/>
                                 </property>
-                                <property type="Int" value="99" propertyName="maximum">
+                                <property value="99" propertyName="maximum" type="Int">
                                     <outerBinding target="MaximumValueProperty"/>
                                 </property>
-                                <property type="Int" value="0" propertyName="minimum">
+                                <property value="0" propertyName="minimum" type="Int">
                                     <outerBinding target="MinimumValueProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="binding"/>
-                                <property type="String" value="" propertyName="prefix">
+                                <property value="" propertyName="binding" type="String"/>
+                                <property value="" propertyName="prefix" type="String">
                                     <outerBinding target="PrefixProperty"/>
                                 </property>
-                                <property type="Int" value="0" propertyName="value">
+                                <property value="0" propertyName="value" type="Int">
                                     <outerBinding target="ValueProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="suffix">
+                                <property value="" propertyName="suffix" type="String">
                                     <outerBinding target="SuffixProperty"/>
                                 </property>
-                                <property type="Int" value="1" propertyName="singleStep">
+                                <property value="1" propertyName="singleStep" type="Int">
                                     <outerBinding target="SingleStepProperty"/>
                                 </property>
                                 <layoutAttachedProperty index="0"/>
                             </SpinBox>
-                            <property type="Bool" value="true" propertyName="transparent"/>
-                            <property type="Bool" value="true" propertyName="enabled"/>
-                            <property width="88" x="0" type="Rect" y="0" height="27" propertyName="geometry">
+                            <property value="true" propertyName="transparent" type="Bool"/>
+                            <property value="true" propertyName="enabled" type="Bool"/>
+                            <property width="88" propertyName="geometry" height="27" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="0" horizontalPolicy="1" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="0" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Int" name="ValueProperty" displayedName="Value">
+                        <property name="ValueProperty" displayedName="Value" type="Int">
                             <default>0</default>
                         </property>
-                        <property type="Int" name="MinimumValueProperty" displayedName="Minimum Value">
+                        <property name="MinimumValueProperty" displayedName="Minimum Value" type="Int">
                             <default>0</default>
                         </property>
-                        <property type="Int" name="MaximumValueProperty" displayedName="Maximum Value">
+                        <property name="MaximumValueProperty" displayedName="Maximum Value" type="Int">
                             <default>100</default>
                         </property>
-                        <property type="Int" name="SingleStepProperty" displayedName="Single Step">
+                        <property name="SingleStepProperty" displayedName="Single Step" type="Int">
                             <default>1</default>
                         </property>
                     </properties>
@@ -736,94 +736,94 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <DoubleSpinBox>
-                                <property type="Bool" value="true" propertyName="transparent">
+                                <property value="true" propertyName="transparent" type="Bool">
                                     <outerBinding target="TransparentProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
-                                <property width="98" x="0" type="Rect" y="0" height="27" propertyName="geometry"/>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="minimumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property width="98" propertyName="geometry" height="27" x="0" y="0" type="Rect"/>
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="1" horizontalPolicy="1" propertyName="sizePolicy"/>
-                                <property type="Bool" value="false" propertyName="accelerated">
+                                <property verticalPolicy="1" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="false" propertyName="accelerated" type="Bool">
                                     <outerBinding target="AcceleratedProperty"/>
                                 </property>
-                                <property type="enum" value="0" propertyName="correctionMode">
+                                <property value="0" propertyName="correctionMode" type="enum">
                                     <outerBinding target="CorrectionModeProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="hasButtons">
+                                <property value="true" propertyName="hasButtons" type="Bool">
                                     <outerBinding target="HasButtonsProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="readonly">
+                                <property value="false" propertyName="readonly" type="Bool">
                                     <outerBinding target="ReadOnlyProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="wrapping">
+                                <property value="false" propertyName="wrapping" type="Bool">
                                     <outerBinding target="WrappingProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="specialValueText">
+                                <property value="" propertyName="specialValueText" type="String">
                                     <outerBinding target="SpecialValueTextProperty"/>
                                 </property>
-                                <property type="Double" value="99.99" propertyName="maximum">
+                                <property value="99.99" propertyName="maximum" type="Double">
                                     <outerBinding target="MaximumValueProperty"/>
                                 </property>
-                                <property type="Double" value="0" propertyName="minimum">
+                                <property value="0" propertyName="minimum" type="Double">
                                     <outerBinding target="MinimumValueProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="prefix">
+                                <property value="" propertyName="prefix" type="String">
                                     <outerBinding target="PrefixProperty"/>
                                 </property>
-                                <property type="Double" value="1" propertyName="singleStep">
+                                <property value="1" propertyName="singleStep" type="Double">
                                     <outerBinding target="SingleStepProperty"/>
                                 </property>
-                                <property type="Double" value="0" propertyName="value">
+                                <property value="0" propertyName="value" type="Double">
                                     <outerBinding target="ValueProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="suffix">
+                                <property value="" propertyName="suffix" type="String">
                                     <outerBinding target="SuffixProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="binding"/>
+                                <property value="" propertyName="binding" type="String"/>
                                 <layoutAttachedProperty index="0"/>
                             </DoubleSpinBox>
-                            <property type="Bool" value="true" propertyName="transparent"/>
-                            <property type="Bool" value="true" propertyName="enabled"/>
-                            <property width="98" x="0" type="Rect" y="0" height="27" propertyName="geometry">
+                            <property value="true" propertyName="transparent" type="Bool"/>
+                            <property value="true" propertyName="enabled" type="Bool"/>
+                            <property width="98" propertyName="geometry" height="27" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="0" horizontalPolicy="1" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="0" propertyName="sizePolicy" horizontalPolicy="1" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Double" name="MinimumValueProperty" displayedName="Minimum Value">
+                        <property name="MinimumValueProperty" displayedName="Minimum Value" type="Double">
                             <default>0</default>
                         </property>
-                        <property type="Double" name="MaximumValueProperty" displayedName="Maximum Value">
+                        <property name="MaximumValueProperty" displayedName="Maximum Value" type="Double">
                             <default>100.0</default>
                         </property>
-                        <property type="Double" name="SingleStepProperty" displayedName="Single Step">
+                        <property name="SingleStepProperty" displayedName="Single Step" type="Double">
                             <default>0.1</default>
                         </property>
-                        <property type="Double" name="ValueProperty" displayedName="Value">
+                        <property name="ValueProperty" displayedName="Value" type="Double">
                             <default>0.00</default>
                         </property>
                     </properties>
@@ -836,10 +836,10 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property type="ScrollBarPolicy" name="VerticalPolicyProperty" displayedName="Vertical Policy">
+                        <property name="VerticalPolicyProperty" displayedName="Vertical Policy" type="ScrollBarPolicy">
                             <default>As Needed</default>
                         </property>
-                        <property type="ScrollBarPolicy" name="HorizontalPolicyProperty" displayedName="Horizontal Policy">
+                        <property name="HorizontalPolicyProperty" displayedName="Horizontal Policy" type="ScrollBarPolicy">
                             <default>As Needed</default>
                         </property>
                     </properties>
@@ -853,69 +853,69 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <ScrollArea layout="NoLayout">
-                                <property width="10" type="Size" height="10" propertyName="minimumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="Bool" value="true" propertyName="transparent"/>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property width="10" propertyName="minimumSize" height="10" type="Size"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="true" propertyName="transparent" type="Bool"/>
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="7" horizontalPolicy="7" propertyName="sizePolicy"/>
-                                <property type="Int" value="3" propertyName="layoutLeftMargin"/>
-                                <property type="Int" value="3" propertyName="layoutRightMargin"/>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property verticalPolicy="7" propertyName="sizePolicy" horizontalPolicy="7" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="3" propertyName="layoutLeftMargin" type="Int"/>
+                                <property value="3" propertyName="layoutRightMargin" type="Int"/>
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
-                                <property type="Int" value="3" propertyName="layoutTopMargin"/>
-                                <property type="Int" value="3" propertyName="layoutBottomMargin"/>
-                                <property type="enum" value="6" propertyName="frameShape">
+                                <property value="3" propertyName="layoutTopMargin" type="Int"/>
+                                <property value="3" propertyName="layoutBottomMargin" type="Int"/>
+                                <property value="6" propertyName="frameShape" type="enum">
                                     <outerBinding target="FrameShapeProperty"/>
                                 </property>
-                                <property type="enum" value="48" propertyName="frameShadow">
+                                <property value="48" propertyName="frameShadow" type="enum">
                                     <outerBinding target="FrameShadowProperty"/>
                                 </property>
-                                <property type="Int" value="1" propertyName="lineWidth">
+                                <property value="1" propertyName="lineWidth" type="Int">
                                     <outerBinding target="LineWidthProperty"/>
                                 </property>
-                                <property type="Int" value="0" propertyName="midLineWidth">
+                                <property value="0" propertyName="midLineWidth" type="Int">
                                     <outerBinding target="MidLineWidthProperty"/>
                                 </property>
-                                <property type="enum" value="0" propertyName="verticalScrollBarPolicy">
+                                <property value="0" propertyName="verticalScrollBarPolicy" type="enum">
                                     <outerBinding target="VerticalPolicyProperty"/>
                                 </property>
-                                <property type="enum" value="0" propertyName="horizontalScrollBarPolicy">
+                                <property value="0" propertyName="horizontalScrollBarPolicy" type="enum">
                                     <outerBinding target="HorizontalPolicyProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="widgetResizable"/>
-                                <property width="200" x="0" type="Rect" y="0" height="200" propertyName="geometry"/>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
+                                <property value="false" propertyName="widgetResizable" type="Bool"/>
+                                <property width="200" propertyName="geometry" height="200" x="0" y="0" type="Rect"/>
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
                                 <layoutAttachedProperty index="0"/>
                             </ScrollArea>
-                            <property type="Bool" value="true" propertyName="enabled"/>
-                            <property width="200" x="0" type="Rect" y="0" height="200" propertyName="geometry">
+                            <property value="true" propertyName="enabled" type="Bool"/>
+                            <property width="200" propertyName="geometry" height="200" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
-                            <property type="Bool" value="true" propertyName="transparent"/>
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="5" propertyName="sizePolicy" horizontalPolicy="5" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
+                            <property value="true" propertyName="transparent" type="Bool"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Bool" name="WidgetResizableProperty" displayedName="Widget Resizable">
+                        <property name="WidgetResizableProperty" displayedName="Widget Resizable" type="Bool">
                             <default>False</default>
                         </property>
                     </properties>
@@ -929,106 +929,106 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <PlainTextEdit layout="NoLayout">
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property type="Int" value="3" propertyName="layoutLeftMargin"/>
-                                <property type="Int" value="3" propertyName="layoutRightMargin"/>
-                                <property type="Int" value="3" propertyName="layoutTopMargin"/>
-                                <property type="Int" value="3" propertyName="layoutBottomMargin"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="Bool" value="true" propertyName="transparent"/>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property value="3" propertyName="layoutLeftMargin" type="Int"/>
+                                <property value="3" propertyName="layoutRightMargin" type="Int"/>
+                                <property value="3" propertyName="layoutTopMargin" type="Int"/>
+                                <property value="3" propertyName="layoutBottomMargin" type="Int"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="true" propertyName="transparent" type="Bool"/>
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property width="200" x="0" type="Rect" y="0" height="200" propertyName="geometry"/>
-                                <property type="String" value="" propertyName="binding"/>
-                                <property width="10" type="Size" height="10" propertyName="minimumSize"/>
-                                <property type="String" value="" propertyName="plainText">
+                                <property width="200" propertyName="geometry" height="200" x="0" y="0" type="Rect"/>
+                                <property value="" propertyName="binding" type="String"/>
+                                <property width="10" propertyName="minimumSize" height="10" type="Size"/>
+                                <property value="" propertyName="plainText" type="String">
                                     <outerBinding target="PlainTextProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="readOnly">
+                                <property value="false" propertyName="readOnly" type="Bool">
                                     <outerBinding target="ReadOnlyProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="undoRedoEnabled">
+                                <property value="true" propertyName="undoRedoEnabled" type="Bool">
                                     <outerBinding target="UndoRedoEnabledProperty"/>
                                 </property>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="7" horizontalPolicy="7" propertyName="sizePolicy"/>
-                                <property type="Bool" value="false" propertyName="backgroundVisible">
+                                <property verticalPolicy="7" propertyName="sizePolicy" horizontalPolicy="7" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="false" propertyName="backgroundVisible" type="Bool">
                                     <outerBinding target="BackgroundVisibleProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="centerOnScroll">
+                                <property value="false" propertyName="centerOnScroll" type="Bool">
                                     <outerBinding target="CenterOnScrollProperty"/>
                                 </property>
-                                <property type="Int" value="1" propertyName="cursorWidth">
+                                <property value="1" propertyName="cursorWidth" type="Int">
                                     <outerBinding target="CursorWidthProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="overwriteMode">
+                                <property value="false" propertyName="overwriteMode" type="Bool">
                                     <outerBinding target="OverwriteModeProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
-                                <property type="enum" value="0" propertyName="frameShape">
+                                <property value="0" propertyName="frameShape" type="enum">
                                     <outerBinding target="FrameShapeProperty"/>
                                 </property>
-                                <property type="enum" value="16" propertyName="frameShadow">
+                                <property value="16" propertyName="frameShadow" type="enum">
                                     <outerBinding target="FrameShadowProperty"/>
                                 </property>
-                                <property type="Int" value="1" propertyName="lineWidth">
+                                <property value="1" propertyName="lineWidth" type="Int">
                                     <outerBinding target="LineWidthProperty"/>
                                 </property>
-                                <property type="Int" value="0" propertyName="midLineWidth">
+                                <property value="0" propertyName="midLineWidth" type="Int">
                                     <outerBinding target="MidLineWidthProperty"/>
                                 </property>
-                                <property type="enum" value="0" propertyName="verticalScrollBarPolicy">
+                                <property value="0" propertyName="verticalScrollBarPolicy" type="enum">
                                     <outerBinding target="VerticalPolicyProperty"/>
                                 </property>
-                                <property type="enum" value="0" propertyName="horizontalScrollBarPolicy">
+                                <property value="0" propertyName="horizontalScrollBarPolicy" type="enum">
                                     <outerBinding target="HorizontalPolicyProperty"/>
                                 </property>
                                 <layoutAttachedProperty index="0"/>
                             </PlainTextEdit>
-                            <property type="Bool" value="true" propertyName="transparent"/>
-                            <property type="Bool" value="true" propertyName="enabled"/>
-                            <property width="200" x="0" type="Rect" y="0" height="200" propertyName="geometry">
+                            <property value="true" propertyName="transparent" type="Bool"/>
+                            <property value="true" propertyName="enabled" type="Bool"/>
+                            <property width="200" propertyName="geometry" height="200" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="5" propertyName="sizePolicy" horizontalPolicy="5" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Bool" name="BackgroundVisibleProperty" displayedName="Background Visible">
+                        <property name="BackgroundVisibleProperty" displayedName="Background Visible" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="Bool" name="CenterOnScrollProperty" displayedName="Center On Scroll">
+                        <property name="CenterOnScrollProperty" displayedName="Center On Scroll" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="Int" name="CursorWidthProperty" displayedName="Cursor Width">
+                        <property name="CursorWidthProperty" displayedName="Cursor Width" type="Int">
                             <default>1</default>
                         </property>
-                        <property type="Bool" name="OverwriteModeProperty" displayedName="Overwrite Mode">
+                        <property name="OverwriteModeProperty" displayedName="Overwrite Mode" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="String" name="PlainTextProperty" displayedName="Plain Text"/>
-                        <property type="Bool" name="ReadOnlyProperty" displayedName="Read Only">
+                        <property name="PlainTextProperty" displayedName="Plain Text" type="String"/>
+                        <property name="ReadOnlyProperty" displayedName="Read Only" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="Bool" name="UndoRedoEnabledProperty" displayedName="Undo/Redo Enabled">
+                        <property name="UndoRedoEnabledProperty" displayedName="Undo/Redo Enabled" type="Bool">
                             <default>True</default>
                         </property>
                     </properties>
@@ -1042,79 +1042,79 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <LineEdit>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="minimumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="String" value="" propertyName="toolTip"/>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="1" horizontalPolicy="7" propertyName="sizePolicy"/>
-                                <property type="String" value="" propertyName="inputMask">
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property width="0" propertyName="minimumSize" height="0" type="Size"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="" propertyName="toolTip" type="String"/>
+                                <property verticalPolicy="1" propertyName="sizePolicy" horizontalPolicy="7" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="" propertyName="inputMask" type="String">
                                     <outerBinding target="InputMaskProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="transparent"/>
-                                <property type="Bool" value="true" propertyName="enabled"/>
-                                <property width="124" x="0" type="Rect" y="0" height="27" propertyName="geometry"/>
-                                <property type="Int" value="129" propertyName="alignment"/>
-                                <property type="enum" value="0" propertyName="echoMode">
+                                <property value="true" propertyName="transparent" type="Bool"/>
+                                <property value="true" propertyName="enabled" type="Bool"/>
+                                <property width="124" propertyName="geometry" height="27" x="0" y="0" type="Rect"/>
+                                <property value="129" propertyName="alignment" type="Int"/>
+                                <property value="0" propertyName="echoMode" type="enum">
                                     <outerBinding target="EchoModeProperty"/>
                                 </property>
-                                <property type="Bool" value="true" propertyName="frame">
+                                <property value="true" propertyName="frame" type="Bool">
                                     <outerBinding target="HasFrameProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="readonly">
+                                <property value="false" propertyName="readonly" type="Bool">
                                     <outerBinding target="ReadOnlyProperty"/>
                                 </property>
-                                <property type="Int" value="32767" propertyName="maxLength">
+                                <property value="32767" propertyName="maxLength" type="Int">
                                     <outerBinding target="MaxLengthProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="text">
+                                <property value="" propertyName="text" type="String">
                                     <outerBinding target="TextProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="placeholderText">
+                                <property value="" propertyName="placeholderText" type="String">
                                     <outerBinding target="PlaceholderTextProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="binding"/>
+                                <property value="" propertyName="binding" type="String"/>
                                 <layoutAttachedProperty index="0"/>
                             </LineEdit>
-                            <property width="124" x="0" type="Rect" y="0" height="27" propertyName="geometry">
+                            <property width="124" propertyName="geometry" height="27" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="Bool" value="true" propertyName="transparent"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="0" horizontalPolicy="7" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
-                            <property type="Bool" value="true" propertyName="enabled"/>
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="true" propertyName="transparent" type="Bool"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="0" propertyName="sizePolicy" horizontalPolicy="7" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
+                            <property value="true" propertyName="enabled" type="Bool"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="EchoMode" name="EchoModeProperty" displayedName="Echo Mode">
+                        <property name="EchoModeProperty" displayedName="Echo Mode" type="EchoMode">
                             <default>Normal</default>
                         </property>
-                        <property type="Bool" name="HasFrameProperty" displayedName="Has Frame">
+                        <property name="HasFrameProperty" displayedName="Has Frame" type="Bool">
                             <default>True</default>
                         </property>
-                        <property type="String" name="InputMaskProperty" displayedName="Input Mask"/>
-                        <property type="Int" name="MaxLengthProperty" displayedName="Maximal Length">
+                        <property name="InputMaskProperty" displayedName="Input Mask" type="String"/>
+                        <property name="MaxLengthProperty" displayedName="Maximal Length" type="Int">
                             <default>255</default>
                         </property>
-                        <property type="String" name="PlaceholderTextProperty" displayedName="Placeholder Text"/>
-                        <property type="Bool" name="ReadOnlyProperty" displayedName="Read Only">
+                        <property name="PlaceholderTextProperty" displayedName="Placeholder Text" type="String"/>
+                        <property name="ReadOnlyProperty" displayedName="Read Only" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="String" name="TextProperty" displayedName="Text"/>
+                        <property name="TextProperty" displayedName="Text" type="String"/>
                     </properties>
                     <generalizations>
                         <parent parentName="AbstractItem"/>
@@ -1126,103 +1126,103 @@
                     <widget-template>
                         <Root layout="Vertical">
                             <Label layout="NoLayout">
-                                <property type="Bool" value="true" propertyName="transparent"/>
-                                <property type="Bool" value="true" propertyName="enabled">
+                                <property value="true" propertyName="transparent" type="Bool"/>
+                                <property value="true" propertyName="enabled" type="Bool">
                                     <outerBinding target="EnabledProperty"/>
                                 </property>
-                                <property width="100" x="0" type="Rect" y="0" height="20" propertyName="geometry"/>
-                                <property width="16777215" type="Size" height="16777215" propertyName="maximumSize"/>
-                                <property width="10" type="Size" height="10" propertyName="minimumSize"/>
-                                <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                                <property type="String" value="" propertyName="toolTip">
+                                <property width="100" propertyName="geometry" height="20" x="0" y="0" type="Rect"/>
+                                <property width="16777215" propertyName="maximumSize" height="16777215" type="Size"/>
+                                <property width="10" propertyName="minimumSize" height="10" type="Size"/>
+                                <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                                <property value="" propertyName="toolTip" type="String">
                                     <outerBinding target="ToolTipProperty"/>
                                 </property>
-                                <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy"/>
-                                <property type="Int" value="3" propertyName="layoutLeftMargin"/>
-                                <property type="Int" value="3" propertyName="layoutRightMargin"/>
-                                <property type="Int" value="3" propertyName="layoutTopMargin"/>
-                                <property type="Int" value="3" propertyName="layoutBottomMargin"/>
-                                <property type="enum" value="0" propertyName="frameShape">
+                                <property verticalPolicy="5" propertyName="sizePolicy" horizontalPolicy="5" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                                <property value="3" propertyName="layoutLeftMargin" type="Int"/>
+                                <property value="3" propertyName="layoutRightMargin" type="Int"/>
+                                <property value="3" propertyName="layoutTopMargin" type="Int"/>
+                                <property value="3" propertyName="layoutBottomMargin" type="Int"/>
+                                <property value="0" propertyName="frameShape" type="enum">
                                     <outerBinding target="FrameShapeProperty"/>
                                 </property>
-                                <property type="enum" value="16" propertyName="frameShadow">
+                                <property value="16" propertyName="frameShadow" type="enum">
                                     <outerBinding target="FrameShadowProperty"/>
                                 </property>
-                                <property type="Int" value="1" propertyName="lineWidth">
+                                <property value="1" propertyName="lineWidth" type="Int">
                                     <outerBinding target="LineWidthProperty"/>
                                 </property>
-                                <property type="Int" value="0" propertyName="midLineWidth">
+                                <property value="0" propertyName="midLineWidth" type="Int">
                                     <outerBinding target="MidLineWidthProperty"/>
                                 </property>
-                                <property type="String" value="label" propertyName="text">
+                                <property value="label" propertyName="text" type="String">
                                     <outerBinding target="TextProperty"/>
                                 </property>
-                                <property type="enum" value="2" propertyName="textFormat">
+                                <property value="2" propertyName="textFormat" type="enum">
                                     <outerBinding target="TextFormatProperty"/>
                                 </property>
-                                <property type="Int" value="129" propertyName="alignment"/>
-                                <property type="Int" value="-1" propertyName="indent">
+                                <property value="129" propertyName="alignment" type="Int"/>
+                                <property value="-1" propertyName="indent" type="Int">
                                     <outerBinding target="IndentProperty"/>
                                 </property>
-                                <property type="Int" value="0" propertyName="margin">
+                                <property value="0" propertyName="margin" type="Int">
                                     <outerBinding target="MarginProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="openExternalLinks">
+                                <property value="false" propertyName="openExternalLinks" type="Bool">
                                     <outerBinding target="OpenExternalLinksProperty"/>
                                 </property>
-                                <property type="Bool" value="false" propertyName="scaledContents">
+                                <property value="false" propertyName="scaledContents" type="Bool">
                                     <outerBinding target="ScaledContentsProperty"/>
                                 </property>
-                                <property type="String" value="" propertyName="binding"/>
-                                <property type="Bool" value="false" propertyName="wordWrap">
+                                <property value="" propertyName="binding" type="String"/>
+                                <property value="false" propertyName="wordWrap" type="Bool">
                                     <outerBinding target="WordWrapProperty"/>
                                 </property>
                                 <layoutAttachedProperty index="0"/>
                             </Label>
-                            <property type="Bool" value="true" propertyName="transparent"/>
-                            <property type="Bool" value="true" propertyName="enabled"/>
-                            <property width="100" x="0" type="Rect" y="0" height="20" propertyName="geometry">
+                            <property value="true" propertyName="transparent" type="Bool"/>
+                            <property value="true" propertyName="enabled" type="Bool"/>
+                            <property width="100" propertyName="geometry" height="20" x="0" y="0" type="Rect">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" type="Size" height="16777215" propertyName="maximumSize">
+                            <property width="16777215" propertyName="maximumSize" height="16777215" type="Size">
                                 <outerBinding target="MaximumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="minimumSize">
+                            <property width="0" propertyName="minimumSize" height="0" type="Size">
                                 <outerBinding target="MinimumSizeProperty"/>
                             </property>
-                            <property width="0" type="Size" height="0" propertyName="sizeIncrement"/>
-                            <property type="String" value="" propertyName="toolTip"/>
-                            <property verticalStretch="0" horizontalStretch="0" type="SizePolicy" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy"/>
-                            <property type="Int" value="0" propertyName="layoutLeftMargin"/>
-                            <property type="Int" value="0" propertyName="layoutRightMargin"/>
-                            <property type="Int" value="0" propertyName="layoutTopMargin"/>
-                            <property type="Int" value="0" propertyName="layoutBottomMargin"/>
-                            <property type="String" value="" propertyName="shapeXml"/>
+                            <property width="0" propertyName="sizeIncrement" height="0" type="Size"/>
+                            <property value="" propertyName="toolTip" type="String"/>
+                            <property verticalPolicy="5" propertyName="sizePolicy" horizontalPolicy="5" verticalStretch="0" horizontalStretch="0" type="SizePolicy"/>
+                            <property value="0" propertyName="layoutLeftMargin" type="Int"/>
+                            <property value="0" propertyName="layoutRightMargin" type="Int"/>
+                            <property value="0" propertyName="layoutTopMargin" type="Int"/>
+                            <property value="0" propertyName="layoutBottomMargin" type="Int"/>
+                            <property value="" propertyName="shapeXml" type="String"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Int" name="IndentProperty" displayedName="Indent">
+                        <property name="IndentProperty" displayedName="Indent" type="Int">
                             <default>0</default>
                         </property>
-                        <property type="Int" name="MarginProperty" displayedName="Margin">
+                        <property name="MarginProperty" displayedName="Margin" type="Int">
                             <default>0</default>
                         </property>
-                        <property type="Bool" name="OpenExternalLinksProperty" displayedName="Open External Links">
+                        <property name="OpenExternalLinksProperty" displayedName="Open External Links" type="Bool">
                             <default>True</default>
                         </property>
-                        <property type="Bool" name="ScaledContentsProperty" displayedName="Scaled Contents">
+                        <property name="ScaledContentsProperty" displayedName="Scaled Contents" type="Bool">
                             <default>False</default>
                         </property>
-                        <property type="String" name="TextProperty" displayedName="Text">
+                        <property name="TextProperty" displayedName="Text" type="String">
                             <default>Label</default>
                         </property>
-                        <property type="TextFormat" name="TextFormatProperty" displayedName="Text Format">
+                        <property name="TextFormatProperty" displayedName="Text Format" type="TextFormat">
                             <default>Auto Text</default>
                         </property>
-                        <property type="Bool" name="WordWrapProperty" displayedName="Word Wrap">
+                        <property name="WordWrapProperty" displayedName="Word Wrap" type="Bool">
                             <default>False</default>
                         </property>
                     </properties>
@@ -1235,14 +1235,14 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property type="Rect" name="GeometryProperty" displayedName="Geometry"/>
-                        <property type="String" name="ToolTipProperty" displayedName="Tool Tip"/>
-                        <property type="Bool" name="EnabledProperty" displayedName="Enabled">
+                        <property name="GeometryProperty" displayedName="Geometry" type="Rect"/>
+                        <property name="ToolTipProperty" displayedName="Tool Tip" type="String"/>
+                        <property name="EnabledProperty" displayedName="Enabled" type="Bool">
                             <default>True</default>
                         </property>
-                        <property type="Size" name="MaximumSizeProperty" displayedName="Maximum Size"/>
-                        <property type="Size" name="MinimumSizeProperty" displayedName="Minimum Size"/>
-                        <property type="Bool" name="TransparentProperty" displayedName="Transparent">
+                        <property name="MaximumSizeProperty" displayedName="Maximum Size" type="Size"/>
+                        <property name="MinimumSizeProperty" displayedName="Minimum Size" type="Size"/>
+                        <property name="TransparentProperty" displayedName="Transparent" type="Bool">
                             <default>False</default>
                         </property>
                     </properties>
@@ -1258,7 +1258,7 @@
                         </properties>
                     </container>
                     <properties>
-                        <property type="LayoutType" name="LayoutProperty" displayedName="Layout">
+                        <property name="LayoutProperty" displayedName="Layout" type="LayoutType">
                             <default>None</default>
                         </property>
                     </properties>
@@ -1271,19 +1271,22 @@
                 <graphics>
                     <lineType type="solidLine"/>
                     <labels>
-                        <label textBinded="add label"/>
+                        <label textBinded="labelText"/>
                     </labels>
                 </graphics>
                 <logic>
-                    <associations endType="open_arrow" beginType="no_arrow">
+                    <associations beginType="no_arrow" endType="open_arrow">
                         <association endName="to" beginName="from"/>
                     </associations>
+                    <properties>
+                        <property name="labelText" displayedName="Labal Text" type="String"/>
+                    </properties>
                 </logic>
             </edge>
             <node name="startElement" displayedName="Start" description="Beginning of user story">
                 <graphics>
                     <picture sizex="57" sizey="55">
-                        <ellipse fill="#ffffff" stroke-style="solid" y1="0" y2="54" stroke-width="0" stroke="#000000" x1="0" fill-style="none" x2="56"/>
+                        <ellipse stroke-width="0" stroke="#000000" fill-style="none" y1="0" y2="54" fill="#ffffff" x1="0" x2="56" stroke-style="solid"/>
                     </picture>
                     <labels/>
                     <ports/>
