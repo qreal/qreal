@@ -5,6 +5,8 @@ TARGET_SOURCES = \
 
 TOPPERS_OSEK_OIL_SOURCE = ./@@PROJECT_NAME@@.oil
 
+@@BMPFILES@@
+
 # Don't modify below part
 O_PATH ?= build
 include ../nxtOSEK/ecrobot/ecrobot.mak
