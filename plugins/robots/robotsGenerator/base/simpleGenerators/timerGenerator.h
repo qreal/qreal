@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'Timer' block
 class TimerGenerator : public BindingGenerator
 {
 public:

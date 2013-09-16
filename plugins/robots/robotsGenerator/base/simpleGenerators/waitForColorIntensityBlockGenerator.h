@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'WaitForColorIntensity' block
 class WaitForColorIntensityBlockGenerator : public BindingGenerator
 {
 public:

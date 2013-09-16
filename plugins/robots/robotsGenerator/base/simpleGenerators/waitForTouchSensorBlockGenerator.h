@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'WaitForTouch' block
 class WaitForTouchSensorBlockGenerator : public BindingGenerator
 {
 public:

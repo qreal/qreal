@@ -17,7 +17,7 @@ public:
 
 protected:
 	virtual GeneratorCustomizer *createCustomizer();
-	virtual QString pathToGenerate();
+	virtual QString targetPath();
 
 	virtual void beforeGeneration();
 	virtual void afterGeneration();

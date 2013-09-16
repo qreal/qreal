@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'continue' construction
 class ContinueGenerator : public BindingGenerator
 {
 public:

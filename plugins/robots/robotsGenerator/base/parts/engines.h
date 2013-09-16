@@ -10,6 +10,7 @@ namespace robots {
 namespace generators {
 namespace parts {
 
+/// Inspects engines usage and generates code for their initialization and termination.
 class Engines : public InitTerminateCodeGenerator
 {
 public:
@@ -22,7 +23,11 @@ public:
 	virtual QString initCode();
 	virtual QString terminateCode();
 
+	/// Marks given output port used in resulting program. Adds init/termnate code for it.
 	void registerUsageOnPort(QString const &outputPort);
+
+	/// Marks given output ports used in resulting program. Adds init/termnate code for them.
+	/// Output ports are splitted with system engines multiconverter.
 	void registerUsageOnPorts(QString const &outputPorts);
 
 private:

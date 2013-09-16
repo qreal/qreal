@@ -13,6 +13,7 @@ class GeneratorCustomizer;
 
 namespace simple {
 
+/// A base for all code generators generating code for one block.
 class AbstractSimpleGenerator : public QObject, public TemplateParametrizedEntity
 {
 public:
@@ -23,6 +24,7 @@ public:
 
 	virtual ~AbstractSimpleGenerator();
 
+	/// Generates and returns code using parameters specified in constructor
 	virtual QString generate() = 0;
 
 protected:

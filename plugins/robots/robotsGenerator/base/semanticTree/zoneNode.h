@@ -7,15 +7,19 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// Stores a list of semantic nodes. In fact an analogue of block operator in c++
 class ZoneNode : public SemanticNode
 {
 public:
 	explicit ZoneNode(QObject *parent = 0);
 
+	/// Returns 'true' if this zone doesn`t have children
 	bool isEmpty() const;
 
+	/// Adds given node into child list`s end
 	void appendChild(SemanticNode *node);
 
+	/// Adds given nodes list into child list`s end
 	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
 
 	/// Removes given node from children list without deleting the child itself
@@ -30,6 +34,7 @@ public:
 
 	virtual QString toString(GeneratorCustomizer &customizer, int indent) const;
 
+	/// Returns parent semantic node. The result is never NULL.
 	SemanticNode *parentNode();
 
 protected:

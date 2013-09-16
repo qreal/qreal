@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'DrawRect' block
 class DrawRectBlockGenerator : public DrawBlockGenerator
 {
 public:

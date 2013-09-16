@@ -7,10 +7,11 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// A base for all semantic nodes except zones
 class NonZoneNode : public SemanticNode
 {
 public:
-	NonZoneNode(Id const &idBinded, QObject *parent = 0);
+	explicit NonZoneNode(Id const &idBinded, QObject *parent = 0);
 
 	ZoneNode *parentZone();
 

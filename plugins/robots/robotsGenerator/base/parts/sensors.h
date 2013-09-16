@@ -9,6 +9,7 @@ namespace robots {
 namespace generators {
 namespace parts {
 
+/// Inspects sensors usage and generates code for their initialization and termination.
 class Sensors : public InitTerminateCodeGenerator
 {
 public:

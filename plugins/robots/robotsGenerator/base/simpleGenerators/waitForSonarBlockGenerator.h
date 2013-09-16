@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'WaitForSonar' block
 class WaitForSonarBlockGenerator : public BindingGenerator
 {
 public:

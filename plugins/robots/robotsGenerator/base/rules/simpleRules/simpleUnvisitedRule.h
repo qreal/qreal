@@ -7,6 +7,8 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// This rule is applied to blocks with simple semantics when it is connected to the
+/// unvisited node. The simplest case, just adding sibling to current semantic node.
 class SimpleUnvisitedRule : public SimpleBlockRuleBase
 {
 public:

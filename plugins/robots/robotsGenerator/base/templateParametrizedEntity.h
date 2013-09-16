@@ -17,6 +17,7 @@ public:
 
 	virtual ~TemplateParametrizedEntity();
 
+	/// Resets a path to a folder containing all concrete generator templates
 	void setPathToTemplates(QString const &pathTemplates);
 
 protected:

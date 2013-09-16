@@ -7,10 +7,11 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// A semantic node for loops inside program
 class LoopNode : public ConditionalNode
 {
 public:
-	LoopNode(Id const &idBinded, QObject *parent = 0);
+	explicit LoopNode(Id const &idBinded, QObject *parent = 0);
 
 	virtual QString toString(GeneratorCustomizer &customizer, int indent) const;
 

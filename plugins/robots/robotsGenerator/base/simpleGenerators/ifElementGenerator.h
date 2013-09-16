@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for conditional construnctions
 class IfElementGenerator : public BindingGenerator
 {
 public:

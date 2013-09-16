@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// A base class for all transformation rules for loops
 class LoopBlockRuleBase : public SemanticTransformationRule
 {
 public:

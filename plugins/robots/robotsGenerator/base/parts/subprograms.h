@@ -38,7 +38,7 @@ public:
 	/// Starts subprograms code generation process
 	bool generate(ControlFlowGeneratorBase *mainGenerator);
 
-	/// Returns generation process result. If it was unsuccessfull returns empty list
+	/// Returns the generation process result. If it was unsuccessfull returns an empty string.
 	QString generatedCode() const;
 
 private:

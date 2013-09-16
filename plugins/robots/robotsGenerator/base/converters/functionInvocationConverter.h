@@ -7,10 +7,11 @@ namespace robots {
 namespace generators {
 namespace converters {
 
+/// Converts given function invocation into useful generator-dependent code.
+/// Possible function identifiers: "random", "randomize".
 class FunctionInvocationConverter : public EnumConverterBase
 {
 public:
-	/// Possible function identifiers: "random", "randomize"
 	explicit FunctionInvocationConverter(QString const &pathToTemplates);
 };
 

@@ -7,6 +7,9 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// This rule is applied to blocks with loop semantics with iteration branch visited.
+/// If branch comes into the node in the same with current loop block zone creates
+/// do-while cycle, otherwise this rule is considered non-applicable.
 class LoopWithIterationVisitedRule : public LoopBlockRuleBase
 {
 public:

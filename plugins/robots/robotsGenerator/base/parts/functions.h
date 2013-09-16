@@ -10,6 +10,8 @@ namespace robots {
 namespace generators {
 namespace parts {
 
+/// Inspects function blocks with initialization marker and generates code
+/// for initialization section.
 class Functions : public InitTerminateCodeGenerator
 {
 public:
@@ -18,6 +20,7 @@ public:
 	virtual void reinit();
 	virtual QString initCode();
 
+	/// Adds given function block body into resulting initialization code.
 	void registerFunctionInInitialization(QString const &body);
 
 private:

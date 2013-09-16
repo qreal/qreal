@@ -57,7 +57,7 @@ QString MasterGeneratorBase::generate()
 			.replace("@@BMP_FILES@@", mCustomizer->factory()->images()->generate())
 			.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
 
-	QString const pathToOutput = pathToGenerate();
+	QString const pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
 
 	afterGeneration();

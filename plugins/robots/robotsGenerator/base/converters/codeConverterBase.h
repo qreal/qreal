@@ -8,6 +8,10 @@ namespace robots {
 namespace generators {
 namespace converters {
 
+/// A base class for all converters processing code. Processes input string
+/// replacing sensor and encoder variables with code specified in templates from
+/// "sensors" folder, and function invocations with code specified in templates
+/// from "functions" folder
 class CodeConverterBase : public TemplateParametrizedConverter
 {
 public:

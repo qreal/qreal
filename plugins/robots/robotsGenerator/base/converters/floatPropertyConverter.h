@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace converters {
 
+/// Processes input string treating it as an expression of the float type.
 class FloatPropertyConverter : public CodeConverterBase
 {
 public:

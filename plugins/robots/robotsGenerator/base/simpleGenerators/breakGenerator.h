@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'break' construction
 class BreakGenerator : public BindingGenerator
 {
 public:

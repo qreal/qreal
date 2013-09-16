@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// This generator always returns an empty string
 class NullGenerator : public AbstractSimpleGenerator
 {
 public:

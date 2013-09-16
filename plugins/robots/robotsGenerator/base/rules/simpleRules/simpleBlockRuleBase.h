@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// A base class for all simple-block semantic transformation rules
 class SimpleBlockRuleBase : public SemanticTransformationRule
 {
 public:

@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'CommentBlock' block
 class CommentElementGenerator : public BindingGenerator
 {
 public:

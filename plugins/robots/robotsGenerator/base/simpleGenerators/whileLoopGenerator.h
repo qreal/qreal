@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for loops in 'while-do' and 'do-while' forms
 class WhileLoopGenerator : public BindingGenerator
 {
 public:

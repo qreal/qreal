@@ -13,6 +13,9 @@ namespace generators {
 
 typedef utils::DeepFirstSearcher::LinkInfo LinkInfo;
 
+/// Validates given diagram checking all nessesary for each generator conditions
+/// (like all links are connected correctly marekd and so on). Also collects
+/// simplest info about diagram (like initial node id, if/then branches and so on).
 class PrimaryControlFlowValidator : public RobotsDiagramVisitor
 {
 public:
@@ -22,10 +25,23 @@ public:
 			, Id const &diagramId);
 	virtual ~PrimaryControlFlowValidator();
 
+	/// Validates diagram with id specified in constructor. Returns 'true' if
+	/// diagram is correct, 'false' otherwise
 	bool validate();
 
+	/// Returns id of the only node with initial semantics on diagram. The result
+	/// is ready only after validation process was successfully finished.
 	Id initialNode() const;
+
+	/// Returns brachces of the given block with if semantics. First value in the
+	/// resulting pair is the first block of 'then' branch, second - 'else'. The
+	/// result is ready only after validation process was successfully finished.
 	QPair<LinkInfo, LinkInfo> ifBranchesFor(Id const &id) const;
+
+	/// Returns brachces of the given block with loop semantics. First value in the
+	/// resulting pair is the first block of 'iteration' branch, second - of the
+	/// non-markedd one. The result is ready only after validation process was
+	/// successfully finished.
 	QPair<LinkInfo, LinkInfo> loopBranchesFor(Id const &id) const;
 
 private:

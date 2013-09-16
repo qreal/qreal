@@ -7,6 +7,8 @@ namespace robots {
 namespace generators {
 namespace converters {
 
+/// Splits given string selecting just 'A', 'B' and 'C' symbols and returns
+/// converted output port values.
 class EnginePortsConverter : public TemplateParametrizedMultiConverter
 {
 public:

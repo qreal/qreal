@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'Function' block
 class FunctionElementGenerator : public BindingGenerator
 {
 public:

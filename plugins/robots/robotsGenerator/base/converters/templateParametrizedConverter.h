@@ -8,6 +8,7 @@ namespace robots {
 namespace generators {
 namespace converters {
 
+/// A base class for all converters that use external templates
 class TemplateParametrizedConverter : public simple::Binding::ConverterInterface
 		, public TemplateParametrizedEntity
 {

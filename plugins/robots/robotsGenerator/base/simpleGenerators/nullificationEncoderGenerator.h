@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'NullifyEncoder' block
 class NullificationEncoderGenerator: public BindingGenerator
 {
 public:

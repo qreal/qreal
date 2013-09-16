@@ -8,6 +8,9 @@ namespace robots {
 namespace generators {
 namespace converters {
 
+/// Processes input string treating it as an expression of the int type.
+/// Casts this expression to int type if type inferer hints returns other one.
+/// Casting code must be specified in "types/cast.t" template.
 class IntPropertyConverter : public CodeConverterBase
 {
 public:

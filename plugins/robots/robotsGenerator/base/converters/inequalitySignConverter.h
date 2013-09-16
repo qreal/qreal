@@ -7,6 +7,8 @@ namespace robots {
 namespace generators {
 namespace converters {
 
+/// Converts wait block complarison property into generator-denendent inequality
+/// infix operator.
 class InequalitySignConverter : public EnumConverterBase
 {
 public:

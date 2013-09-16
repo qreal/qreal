@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for subprogram call block
 class SubprogramsSimpleGenerator : public BindingGenerator
 {
 public:

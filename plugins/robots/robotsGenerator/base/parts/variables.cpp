@@ -34,10 +34,12 @@ QString Variables::generateVariableString() const
 	QMap<QString, float> const floatConsts = floatConstants();
 	QString result = "\n";
 
+	// TODO: read it from template
 	foreach (QString const &intConst, intConsts.keys()) {
 		result += QString("static const int %1 = %2;\n").arg(intConst
 				, QString::number(intConsts[intConst]));
 	}
+
 	foreach (QString const &floatConst, floatConsts.keys()) {
 		result += QString("static const float %1 = %2;\n").arg(floatConst
 				, QString::number(floatConsts[floatConst]));

@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// A semantic node for the block with simple semantics
 class SimpleNode : public NonZoneNode
 {
 public:
@@ -19,10 +20,11 @@ public:
 		, continueNode
 	};
 
-	SimpleNode(Id const &idBinded, QObject *parent = 0);
+	explicit SimpleNode(Id const &idBinded, QObject *parent = 0);
 
 	virtual QString toString(GeneratorCustomizer &customizer, int indent) const;
 
+	/// Binds this block to given artificial construction instead of binding to id.
 	void bindToSyntheticConstruction(SyntheticBlockType type);
 
 protected:

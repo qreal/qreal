@@ -7,6 +7,8 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// A base for all rules applied to blocks with simple semantics who lead to a
+/// visited block.
 class SimpleVisitedRuleBase : public SimpleBlockRuleBase
 {
 public:

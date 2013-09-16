@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'EnginesStop' block
 class EnginesStopGenerator : public BindingGenerator
 {
 public:

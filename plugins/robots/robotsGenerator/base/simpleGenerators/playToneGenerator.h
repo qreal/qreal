@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'PlayTone' block
 class PlayToneGenerator : public BindingGenerator
 {
 public:

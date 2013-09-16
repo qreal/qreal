@@ -8,6 +8,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// A base for all generators that use bindings and templates for generating code
 class BindingGenerator : public AbstractSimpleGenerator
 {
 public:

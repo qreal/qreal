@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// A base class for all if-block semantic transformation rules
 class IfBlockRuleBase : public SemanticTransformationRule
 {
 public:

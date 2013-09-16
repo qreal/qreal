@@ -10,6 +10,7 @@ namespace robots {
 namespace generators {
 namespace semantics {
 
+/// A base for all commands that perform semantic tree transformations.
 class SemanticTransformationRule
 {
 public:

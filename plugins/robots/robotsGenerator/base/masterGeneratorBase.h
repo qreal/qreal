@@ -13,6 +13,8 @@ namespace qReal {
 namespace robots {
 namespace generators {
 
+/// The main class for every code generator. Produces nessesary components and
+/// controls their work. Must be reimplemented in each concrete generator.
 class MasterGeneratorBase : public QObject, public TemplateParametrizedEntity
 {
 public:
@@ -30,7 +32,11 @@ public:
 
 protected:
 	virtual GeneratorCustomizer *createCustomizer() = 0;
-	virtual QString pathToGenerate() = 0;
+
+	/// Implementation must return a path to a file where all generated code
+	/// will be written. Called on the last stage of the generation process
+	/// so concrete generators have time to 'prepare' this path
+	virtual QString targetPath() = 0;
 
 	virtual void beforeGeneration();
 	virtual void processGeneratedCode(QString &generatedCode);

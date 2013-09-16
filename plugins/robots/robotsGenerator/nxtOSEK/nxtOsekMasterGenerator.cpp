@@ -15,7 +15,7 @@ qReal::robots::generators::GeneratorCustomizer *NxtOsekMasterGenerator::createCu
 	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter);
 }
 
-QString NxtOsekMasterGenerator::pathToGenerate()
+QString NxtOsekMasterGenerator::targetPath()
 {
 	return QString("%1/%2.c").arg(mProjectDir, mProjectName);
 }

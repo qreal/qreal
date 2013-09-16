@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for infinite loops
 class InfiniteLoopGenerator : public BindingGenerator
 {
 public:

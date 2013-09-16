@@ -10,6 +10,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// A base for all generators for drawing blocks
 class DrawBlockGenerator : public BindingGenerator
 {
 public:
@@ -21,6 +22,7 @@ public:
 	virtual QString generate();
 
 protected:
+	/// Implementation must draw resulting picture using given painter
 	virtual void drawBmp(QPainter *painter) = 0;
 
 private:

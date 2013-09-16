@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace simple {
 
+/// Generator for 'for' loops
 class ForLoopGenerator : public BindingGenerator
 {
 public:
