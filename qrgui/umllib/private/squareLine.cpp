@@ -9,7 +9,7 @@ SquareLine::SquareLine(EdgeElement *edge)
 		: LineHandler(edge)
 		, mLayOutAction(tr("Lay out"), this)
 {
-	connect(&mLayOutAction, SIGNAL(triggered()), this, SLOT(minimize()));
+	connectAction(&mLayOutAction, this, SLOT(minimize()));
 }
 
 void SquareLine::handleEdgeMove(QPointF const &pos)
@@ -173,7 +173,7 @@ void SquareLine::deleteShortSegments()
 
 bool SquareLine::needCorrect() const
 {
-	return needCorrectSrc() || needCorrectDst();
+	return needCorrectSrc() || needCorrectDst() || !isSquareLine();
 }
 
 bool SquareLine::needCorrectSrc() const
@@ -222,6 +222,18 @@ bool SquareLine::intersects(QLineF const &line, NodeElement *node) const
 	} else {
 		return line.intersect(firstLine, 0) == QLineF::BoundedIntersection;
 	}
+}
+
+bool SquareLine::isSquareLine() const
+{
+	QPolygonF const line = mEdge->line();
+	for (int i = 0; i < line.count() - 1; i++) {
+		if ((qAbs(line[i].x() - line[i + 1].x()) > epsilon) && (qAbs(line[i].y() - line[i + 1].y()) > epsilon)) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void SquareLine::squarize()
