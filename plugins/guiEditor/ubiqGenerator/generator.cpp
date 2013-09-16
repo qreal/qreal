@@ -60,11 +60,42 @@ void Generator::generateMainSwitch()
         }
 
         QString currentFrameCase = mTemplateUtils["@@eachFrameSwitchBody@@"];
+
         QString currentFrameName = mApi.property(curFrame, "name").toString();
 
+        QString innerSwitch = generateFrameRelatedSwitch(curFrame);
+
+
         currentFrameCase.replace("@@frameName@@", currentFrameName);
+        currentFrameCase.replace("@@caseForConnectedFrame@@", innerSwitch);
+
         outerSwitchBody += currentFrameCase;
     }
 
     mResultTestFile.replace("@@eachFrameSwitches@@", outerSwitchBody);
+}
+
+QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
+{
+    QString frameSwitch = "";
+
+    IdList edges = mApi.elementsByType("screenFlow");
+    foreach (Id const &edge, edges) {
+        Id from = mApi.from(edge);
+
+        if (from != currentFrame) {
+            continue;
+        }
+
+        QString linkCase = mTemplateUtils["@@outconnectedFrameCase@@"];
+
+        Id rightHandFrame = mApi.to(edge);
+
+        QString rightHandFrameName = mApi.property(rightHandFrame, "name").toString();
+
+        linkCase.replace("rightHandFrameName", rightHandFrameName);
+        frameSwitch += linkCase;
+    }
+
+    return frameSwitch;
 }

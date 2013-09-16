@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../../../qrrepo/repoApi.h"
+
 #include "../../../qrutils/generator/abstractGenerator.h"
 
 namespace ubiq {
@@ -30,6 +32,7 @@ private:
     void initGeneratingFiles();
     void saveGeneratedFiles();
     void generateMainSwitch();
+    QString generateFrameRelatedSwitch(const qReal::Id &currentFrame);
 
 
     QString mResultTestFile;
