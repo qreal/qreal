@@ -14,11 +14,13 @@ QString const templateFileNameTest = "testFile.cs";
 /// Generation target file
 
 Generator::Generator(QString const &outputDirPath
-		, QString const &programName
-		, qReal::LogicalModelAssistInterface const &logicalModel
-		, qReal::ErrorReporterInterface &errorReporter
-		)
+        , QString const &programName
+        , qReal::LogicalModelAssistInterface const &logicalModel
+        , qReal::GraphicalModelAssistInterface const &graphicalModel
+        , qReal::ErrorReporterInterface &errorReporter
+        )
     : AbstractGenerator(templateDir, QString("C:\\Users\\efimw_000\\Documents\\study\\").replace("\\", "/"), logicalModel, errorReporter)
+    , mGraphicalModel(graphicalModel)
 {
 }
 

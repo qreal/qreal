@@ -4,6 +4,12 @@
 
 #include "../../../qrutils/generator/abstractGenerator.h"
 
+//have no idea why is this nessesary
+namespace qReal {
+class GraphicalModelAssistInterface;
+}
+
+
 namespace ubiq {
 namespace generator {
 
@@ -16,10 +22,11 @@ public:
 	  @param logicalModel Logical model reference.
 	  @param errorReporter Object to return errors to.
 	  */
-	Generator(QString const &outputDirPath
+    Generator(QString const &outputDirPath
 			, QString const &programName
 			, qReal::LogicalModelAssistInterface const &logicalModel
-			, qReal::ErrorReporterInterface &errorReporter
+            , qReal::GraphicalModelAssistInterface const &graphicalModel
+            , qReal::ErrorReporterInterface &errorReporter\
 			);
 
 	virtual ~Generator();
@@ -35,6 +42,7 @@ private:
     QString generateFrameRelatedSwitch(const qReal::Id &currentFrame);
 
 
+    qReal::GraphicalModelAssistInterface const &mGraphicalModel;
     QString mResultTestFile;
 };
 

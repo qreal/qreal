@@ -31,8 +31,9 @@ private:
 	/// Interface of MainWindow, used, for example, to reinit models when finished parsing
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
 
-	/// Logical model, from which generator takes all information.
 	qReal::LogicalModelAssistInterface const *mLogicalModel;
+
+    qReal::GraphicalModelAssistInterface const *mGraphicalModel;
 
 	/// Error reporter object, used to show generation errors in output window.
 	qReal::ErrorReporterInterface *mErrorReporter;

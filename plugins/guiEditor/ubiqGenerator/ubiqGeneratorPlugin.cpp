@@ -25,6 +25,7 @@ void UbiqGeneratorPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mLogicalModel = &configurator.logicalModelApi();
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
+    mGraphicalModel = &configurator.graphicalModelApi();
 }
 
 QList<ActionInfo> UbiqGeneratorPlugin::actions()
@@ -41,6 +42,6 @@ void UbiqGeneratorPlugin::generate()
 //		QString programName = mLogicalModel->logicalRepoApi().property(diagram, "programName").toString();
 //		QString pathToGenerate = mLogicalModel->logicalRepoApi().property(diagram, "pathToGenerate").toString();
 
-        mGenerator = new Generator("./pathToGenerate", "programName", *mLogicalModel, *mErrorReporter);
+        mGenerator = new Generator("./pathToGenerate", "programName", *mLogicalModel, *mGraphicalModel, *mErrorReporter);
         mGenerator->generate();
 }
