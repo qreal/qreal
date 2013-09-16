@@ -211,7 +211,7 @@ void VisualDebugger::doStep(Id const &id)
 	mCurrentId = id;
 	highlight(mCurrentId);
 
-	if (mCurrentId.element() == "Action") {
+    if (mCurrentId.element() == "ActionElement") {
 		processAction();
 	}
 }
@@ -416,7 +416,7 @@ void VisualDebugger::getConditionLinks(IdList const &outLinks, Id &falseEdge, Id
 
 void VisualDebugger::generateCode(Id const &id, QFile &codeFile)
 {
-	if (id.element() == "Action") {
+    if (id.element() == "ActionElement") {
 		QString const code = getProperty(id, "process").toString();
 		if (code.mid(0,4) == "var ") {
 			codeFile.write(code.mid(4).toLatin1());
@@ -493,7 +493,7 @@ void VisualDebugger::createIdByLineCorrelation()
 
 void VisualDebugger::createIdByLineCorrelation(Id const &id, int& line)
 {
-	if (id.element() == "Action") {
+    if (id.element() == "ActionElement") {
 		mIdByLineCorrelation[line] = id;
 		line++;
 

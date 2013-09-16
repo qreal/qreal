@@ -19,8 +19,8 @@ public:
 	enum DebugType {
 		noDebug,
 		singleStepDebug,
-		fullDebug,
-		debugWithDebugger
+        fullDebug,
+        debugWithDebugger
 	};
 
 public:
