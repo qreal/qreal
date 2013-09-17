@@ -101,19 +101,19 @@ public:
 
 	// ----------------------------- Converters --------------------------------
 
-	/// Produces converter for expressions whitch should have int type
+	/// Produces converter for expressions which should have int type
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *intPropertyConverter() const;
 
-	/// Produces converter for expressions whitch should have float type
+	/// Produces converter for expressions which should have float type
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *floatPropertyConverter() const;
 
-	/// Produces converter for expressions whitch should have bool type
+	/// Produces converter for expressions which should have bool type
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *boolPropertyConverter(bool needInverting) const;
 
-	/// Produces converter for expressions whitch should have string type
+	/// Produces converter for expressions which should have string type
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
 
