@@ -29,12 +29,6 @@ void TrikMasterGenerator::beforeGeneration()
 	createProjectDir(mProjectDir);
 }
 
-void TrikMasterGenerator::afterGeneration()
-{
-	generateOilFile(mProjectName, mProjectDir);
-	generateMakeFile(mProjectName, mProjectDir);
-	saveImages(mProjectDir);
-}
 
 void TrikMasterGenerator::createProjectDir(QString const &projectDir)
 {

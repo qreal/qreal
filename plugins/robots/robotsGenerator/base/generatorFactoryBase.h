@@ -188,7 +188,6 @@ protected:
 	/// Implementation must prepare images controller
 	virtual void initImages();
 
-private:
 	qrRepo::RepoApi const &mRepo;
 	ErrorReporterInterface &mErrorReporter;
 	parts::Variables *mVariables;

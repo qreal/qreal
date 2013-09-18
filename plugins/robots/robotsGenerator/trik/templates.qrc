@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/nxtOSEK">
+    <qresource prefix="/trik">
         <file>templates/beep.t</file>
         <file>templates/break.t</file>
         <file>templates/continue.t</file>

@@ -32,6 +32,13 @@ public:
 		virtual QStringList convert(QString const &data) const = 0;
 	};
 
+	/// Doesn`t process input string returning itself
+	class EmptyConverter : public ConverterInterface
+	{
+	public:
+		virtual QString convert(QString const &data) const;
+	};
+
 	/// Creates new instance of binding that simply replaces given label with a given value
 	static Binding *createStatic(QString const &label, QString const &value);
 
@@ -60,12 +67,6 @@ public:
 			, Id const &id, QString &data);
 
 private:
-	class EmptyConverter : public ConverterInterface
-	{
-	public:
-		virtual QString convert(QString const &data) const;
-	};
-
 	Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo);
 
 	Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo
