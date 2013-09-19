@@ -24,17 +24,17 @@ bool IfWithOneVisitedRule::apply()
 		return false;
 	}
 
-	IfNode *thisNode = static_cast<IfNode *>(mTree->findNodeFor(mId));
+	IfNode * const thisNode = static_cast<IfNode *>(mTree->findNodeFor(mId));
 
 	LinkInfo const &visitedLink = mThenLink.targetVisited ? mThenLink : mElseLink;
 	LinkInfo const &unvisitedLink = mThenLink.targetVisited ? mElseLink : mThenLink;
 
-	NonZoneNode *nextNode = mTree->findNodeFor(visitedLink.target);
+	NonZoneNode * const nextNode = mTree->findNodeFor(visitedLink.target);
 	if (nextNode->parentZone() != thisNode->parentZone()) {
 		return false;
 	}
 
-	LoopNode *loop = makeLoopStartingFrom(nextNode);
+	LoopNode * const loop = makeLoopStartingFrom(nextNode);
 	loop->bodyZone()->removeChild(thisNode);
 	loop->bindTo(mId);
 	loop->setForm(true);

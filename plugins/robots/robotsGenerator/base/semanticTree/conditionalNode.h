@@ -14,7 +14,7 @@ public:
 	explicit ConditionalNode(Id const &idBinded, QObject *parent = 0);
 
 	/// Remembers that binded condition must be inverted in the resulting code.
-	/// Calling this method even number of times condition without changes.
+	/// Calling this method even number of times leaves condition without changes.
 	void invertCondition();
 
 protected:

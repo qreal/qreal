@@ -12,7 +12,7 @@ IfNode::IfNode(Id const &idBinded, QObject *parent)
 	mElseZone->setParentNode(this);
 }
 
-ZoneNode *IfNode::parentZone()
+ZoneNode *IfNode::parentZone() const
 {
 	return static_cast<ZoneNode *>(mParentNode);
 }

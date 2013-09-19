@@ -24,7 +24,7 @@ SemanticNode *SemanticTree::produceNodeFor(qReal::Id const &id)
 	switch (mCustomizer.semanticsOf(id)) {
 	case enums::semantics::regularBlock:
 		return produceSimple(id);
-	case enums::semantics::condidionalBlock:
+	case enums::semantics::conditionalBlock:
 		return produceConditional(id);
 	case enums::semantics::loopBlock:
 		return produceLoop(id);

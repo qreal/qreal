@@ -256,7 +256,7 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(qReal::Id cons
 	return new FinalNodeGenerator(mRepo, customizer, id, fromMainGenerator, this);
 }
 
-// Converters can be instantiated without taking ownership because bindinders do this
+// Converters can be instantiated without taking ownership because binders do this
 
 Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter() const
 {

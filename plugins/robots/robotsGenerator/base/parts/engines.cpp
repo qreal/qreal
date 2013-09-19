@@ -4,7 +4,7 @@ using namespace qReal::robots::generators::parts;
 
 Engines::Engines(QString const &pathToTemplates
 		, simple::Binding::ConverterInterface const *outputPortConverter
-, simple::Binding::MultiConverterInterface const *outputPortsConverter)
+		, simple::Binding::MultiConverterInterface const *outputPortsConverter)
 	: InitTerminateCodeGenerator(pathToTemplates)
 	, mOutputPortConverter(outputPortConverter)
 	, mOutputPortsConverter(outputPortsConverter)

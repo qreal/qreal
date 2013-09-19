@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../templateParametrizedEntity.h"
+#include "base/templateParametrizedEntity.h"
 
 namespace qReal {
 namespace robots {
@@ -16,7 +16,7 @@ public:
 	virtual ~InitTerminateCodeGenerator();
 
 	/// Called each time before new generation process.
-	/// Default immplementation does nothing.
+	/// Default implementation does nothing.
 	virtual void reinit();
 
 	/// Override must return code for initialization some robot part.

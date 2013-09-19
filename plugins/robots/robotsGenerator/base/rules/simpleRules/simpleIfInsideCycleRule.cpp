@@ -19,7 +19,7 @@ bool SimpleIfInsideCycleRule::apply()
 		return false;
 	}
 
-	LoopNode *parentLoop = makeLoopStartingFrom(mNextNode);
+	LoopNode * const parentLoop = makeLoopStartingFrom(mNextNode);
 
 	ZoneNode * const thisZone = mThisNode->parentZone();
 	ZoneNode * const otherZone = parentIf->thenZone() == thisZone
@@ -35,7 +35,7 @@ bool SimpleIfInsideCycleRule::apply()
 		parentIf->invertCondition();
 	}
 
-	SimpleNode *breakNode = mTree->produceSimple(Id());
+	SimpleNode * const breakNode = mTree->produceSimple(Id());
 	breakNode->bindToSyntheticConstruction(SimpleNode::breakNode);
 	parentIf->thenZone()->appendChild(breakNode);
 

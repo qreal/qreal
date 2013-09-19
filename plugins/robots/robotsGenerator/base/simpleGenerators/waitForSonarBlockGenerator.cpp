@@ -3,7 +3,6 @@
 
 using namespace qReal::robots::generators::simple;
 
-// TODO: make it customizable
 int const sleepInterval = 10;
 
 WaitForSonarBlockGenerator::WaitForSonarBlockGenerator(qrRepo::RepoApi const &repo

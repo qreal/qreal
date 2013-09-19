@@ -65,7 +65,7 @@ void PrimaryControlFlowValidator::visitFinal(Id const &id
 		, QList<LinkInfo> const &links)
 {
 	if (!links.isEmpty()) {
-		error(QObject::tr("Final node must not have outgioing links"), id);
+		error(QObject::tr("Final node must not have outgoing links"), id);
 	}
 }
 

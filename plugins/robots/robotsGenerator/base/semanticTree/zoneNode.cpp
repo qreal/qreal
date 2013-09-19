@@ -34,7 +34,7 @@ void ZoneNode::removeChild(SemanticNode *node)
 
 SemanticNode *ZoneNode::removeLast()
 {
-	SemanticNode *result = mChildren.last();
+	SemanticNode * const result = mChildren.last();
 	mChildren.removeLast();
 	result->setParentNode(NULL);
 	return result;
@@ -64,7 +64,7 @@ QString ZoneNode::toString(GeneratorCustomizer &customizer, int indent) const
 {
 	QString result;
 	foreach (SemanticNode const * const child, mChildren) {
-		result += utils::StringUtils::addIndent(child->toString(customizer, 0).trimmed(), indent)+ "\n";
+		result += utils::StringUtils::addIndent(child->toString(customizer, 0).trimmed(), indent) + "\n";
 	}
 
 	result.chop(1);

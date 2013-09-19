@@ -14,8 +14,8 @@ bool SimpleMergedIfBranchesRule::apply()
 		return false;
 	}
 
-	ZoneNode *thisZone = mThisNode->parentZone();
-	ZoneNode *nextZone = mNextNode->parentZone();
+	ZoneNode * const thisZone = mThisNode->parentZone();
+	ZoneNode * const nextZone = mNextNode->parentZone();
 
 	IfNode *ifParent = dynamic_cast<IfNode *>(thisZone->parentNode());
 	IfNode *nextIfParent = dynamic_cast<IfNode *>(nextZone->parentNode());

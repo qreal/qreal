@@ -51,7 +51,7 @@ bool GeneratorCustomizer::isFork(Id const &block) const
 enums::semantics::Semantics GeneratorCustomizer::semanticsOf(Id const &block) const
 {
 	if (isConditional(block)) {
-		return enums::semantics::condidionalBlock;
+		return enums::semantics::conditionalBlock;
 	}
 
 	if (isLoop(block)) {

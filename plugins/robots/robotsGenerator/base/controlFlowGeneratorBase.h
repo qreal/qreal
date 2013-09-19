@@ -19,7 +19,7 @@ public:
 			, ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, Id const &diagramId
-			, QObject *parent = 0h
+			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
 	virtual ~ControlFlowGeneratorBase();
 

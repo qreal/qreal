@@ -19,7 +19,7 @@ public:
 	virtual ~RobotsDiagramVisitor();
 
 protected:
-	// TODO: move this enum to global robots difinitions and use it
+	// TODO: move this enum to global robots definitions and use it
 	/// A property that used for marking links in model
 	enum LinkGuard
 	{

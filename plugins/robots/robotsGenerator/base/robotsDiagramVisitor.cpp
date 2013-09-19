@@ -55,7 +55,7 @@ void RobotsDiagramVisitor::visit(qReal::Id const &nodeId
 	case enums::semantics::finalBlock:
 		visitFinal(nodeId, links);
 		break;
-	case enums::semantics::condidionalBlock:
+	case enums::semantics::conditionalBlock:
 		visitConditional(nodeId, links);
 		break;
 	case enums::semantics::loopBlock:

@@ -4,7 +4,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QImage>
 
-#include "../templateParametrizedEntity.h"
+#include "base/templateParametrizedEntity.h"
 
 namespace qReal {
 namespace robots {
