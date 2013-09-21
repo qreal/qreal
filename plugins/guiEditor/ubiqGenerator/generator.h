@@ -3,11 +3,8 @@
 #include "../../../../qrrepo/repoApi.h"
 
 #include "../../../qrutils/generator/abstractGenerator.h"
+#include "../../../qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 
-//have no idea why is this nessesary
-namespace qReal {
-class GraphicalModelAssistInterface;
-}
 
 
 namespace ubiq {
@@ -40,7 +37,6 @@ private:
     void saveGeneratedFiles();
     void generateMainSwitch();
     QString generateFrameRelatedSwitch(const qReal::Id &currentFrame);
-
 
     qReal::GraphicalModelAssistInterface const &mGraphicalModel;
     QString mResultTestFile;

@@ -79,11 +79,25 @@ void Generator::generateMainSwitch()
 
 QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 {
+/*    QMessageBox msgBox;
+    msgBox.setText("The document has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    int ret = msgBox.exec();
+*/
+
     QString frameSwitch = "";
 
     IdList edges = mApi.elementsByType("screenFlow");
+\
     foreach (Id const &edge, edges) {
-        Id from = mApi.from(edge);
+        if (mApi.isLogicalElement(edge)) {
+            continue;
+        }
+
+        //IdList const &graphicalEdges = mGraphicalModel.graphicalIdsByLogicalId(edge);
+        Id from = mGraphicalModel.from(edge);
 
         if (from != currentFrame) {
             continue;
@@ -91,7 +105,7 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 
         QString linkCase = mTemplateUtils["@@outconnectedFrameCase@@"];
 
-        Id rightHandFrame = mApi.to(edge);
+        Id rightHandFrame = mGraphicalModel.to(edge);
 
         QString rightHandFrameName = mApi.property(rightHandFrame, "name").toString();
 
@@ -101,3 +115,5 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 
     return frameSwitch;
 }
+
+
