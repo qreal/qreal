@@ -95,7 +95,7 @@ void TouchSupportManager::simulateDoubleClick(QTouchEvent *event)
 
 bool TouchSupportManager::isElementUnder(QPointF const &pos)
 {
-	return mEditorView->itemAt(pos.toPoint());
+	return dynamic_cast<Element *>(mEditorView->itemAt(pos.toPoint()));
 }
 
 bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
