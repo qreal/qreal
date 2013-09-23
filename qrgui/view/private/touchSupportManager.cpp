@@ -93,6 +93,12 @@ void TouchSupportManager::simulateDoubleClick(QTouchEvent *event)
 	simulateMouse(event->target(), QEvent::MouseButtonDblClick, event->touchPoints()[0].pos(), mButton);
 }
 
+void TouchSupportManager::simulateRightClick(QTapAndHoldGesture *gesture)
+{
+	simulateMouse(mEditorView, QEvent::MouseButtonPress, gesture->position(), Qt::RightButton);
+	simulateMouse(mEditorView, QEvent::MouseButtonRelease, gesture->position(), Qt::RightButton);
+}
+
 bool TouchSupportManager::isElementUnder(QPointF const &pos)
 {
 	return dynamic_cast<Element *>(mEditorView->itemAt(pos.toPoint()));
@@ -102,9 +108,14 @@ bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
 {
 	if (gestureEvent->gesture(Qt::TapGesture)) {
 		mScroller.onTap();
+	} else if (QGesture *tapAndHold = gestureEvent->gesture(Qt::TapAndHoldGesture)) {
+		simulateRightClick(static_cast<QTapAndHoldGesture *>(tapAndHold));
 	} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
-		processGestureState(pan);
-		mScroller.onPan(pan);
+		// Else we get a mess between pinch and pan
+		if (mFingersInGesture > 2) {
+			processGestureState(pan);
+			mScroller.onPan(pan);
+		}
 	} else if (QGesture *pinch = gestureEvent->gesture(Qt::PinchGesture)) {
 		processGestureState(pinch);
 		QPinchGesture *pinchGesture = static_cast<QPinchGesture *>(pinch);

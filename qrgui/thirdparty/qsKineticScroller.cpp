@@ -126,7 +126,7 @@ void QsKineticScroller::onTap()
 void QsKineticScroller::onPan(QGesture *pan)
 {
 	QPanGesture *panGesture = static_cast<QPanGesture *>(pan);
-	d->averageDelta = (2 * d->averageDelta + 3 * panGesture->delta().toPoint()) / 5;
+//	d->averageDelta = (2 * d->averageDelta + 3 * panGesture->delta().toPoint()) / 5;
 
 	if (pan->state() == Qt::GestureFinished) {
 //		QPoint offset(5 * d->averageDelta);
