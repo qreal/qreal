@@ -12,6 +12,7 @@ TouchSupportManager::TouchSupportManager(EditorView *editorView)
 	, mGestureIsRunning(false)
 {
 	mEditorView->grabGesture(Qt::TapGesture);
+	mEditorView->grabGesture(Qt::TapAndHoldGesture);
 	mEditorView->grabGesture(Qt::PanGesture);
 	mEditorView->grabGesture(Qt::PinchGesture);
 	mEditorView->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
