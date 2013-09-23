@@ -143,16 +143,16 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 
 		if (QDateTime::currentMSecsSinceEpoch() - mLastTapTimestamp <= QApplication::doubleClickInterval()) {
 			if (elementUnder) {
-				// Simulating right button click for links gesture
-				simulatePress(event, Qt::RightButton);
+				// Simulating regular left button click
+				simulatePress(event);
 			} else {
 				// Simulating double-click
 				simulateDoubleClick(event);
 			}
 		} else {
 			if (elementUnder) {
-				// Simulating regular left button click
-				simulatePress(event);
+				// Simulating right button click for links gesture
+				simulatePress(event, Qt::RightButton);
 			} else {
 				// Simulating right button click for mouse gestures drawing or left button click
 				// for clearing selection
