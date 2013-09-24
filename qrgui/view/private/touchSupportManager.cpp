@@ -96,9 +96,6 @@ void TouchSupportManager::simulateDoubleClick(QTouchEvent *event)
 
 void TouchSupportManager::simulateRightClick(QTapAndHoldGesture *gesture)
 {
-	mButton = Qt::LeftButton;
-	simulateMouse(mEditorView, QEvent::MouseButtonPress, gesture->position(), Qt::LeftButton);
-	simulateMouse(mEditorView, QEvent::MouseButtonRelease, gesture->position(), Qt::NoButton);
 	mButton = Qt::RightButton;
 	simulateMouse(mEditorView, QEvent::MouseButtonPress, gesture->position(), Qt::RightButton);
 	simulateMouse(mEditorView, QEvent::MouseButtonRelease, gesture->position(), Qt::NoButton);
