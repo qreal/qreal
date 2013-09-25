@@ -606,8 +606,13 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	Element::mouseReleaseEvent(event);
 
-	mSrc->setPortsVisible(QStringList());
-	mDst->setPortsVisible(QStringList());
+	if (mSrc) {
+		mSrc->setPortsVisible(QStringList());
+	}
+
+	if (mDst) {
+		mDst->setPortsVisible(QStringList());
+	}
 
 	if (mDragType == wholeEdge) {
 		if (mSrc && mSrc->isSelected()) {
