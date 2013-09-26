@@ -52,7 +52,7 @@ void LineHandler::handleEdgeMove(QPointF const &)
 
 void LineHandler::endMovingEdge()
 {
-	if ((mDragType == 0) || (mDragType == mSavedLine.count() - 1)) {
+	if ((mDragType == 0) || (mDragType == mEdge->line().count() - 1)) {
 		bool const isStart = (mDragType == 0);
 		if (nodeChanged(isStart)) {
 			mEdge->connectToPort();
