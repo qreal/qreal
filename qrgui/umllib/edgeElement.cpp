@@ -606,14 +606,6 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	Element::mouseReleaseEvent(event);
 
-	if (mSrc) {
-		mSrc->setPortsVisible(QStringList());
-	}
-
-	if (mDst) {
-		mDst->setPortsVisible(QStringList());
-	}
-
 	if (mDragType == wholeEdge) {
 		if (mSrc && mSrc->isSelected()) {
 			mSrc->endResize();
@@ -794,7 +786,7 @@ EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart) const
 	}
 
 	QPointF pos = node->portPos(isStart ? mPortFrom : mPortTo);
-	QRectF bounds = node->contentsRect();
+	QRectF const bounds = node->contentsRect();
 
 	// divide bounding rectangle with it's diagonals, then determine in which part the port lies
 	bool isTop = pos.y() < bounds.height() / bounds.width() * pos.x();
