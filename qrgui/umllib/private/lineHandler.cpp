@@ -65,6 +65,7 @@ void LineHandler::endMovingEdge()
 			layOut(false);
 		}
 	} else {
+		mEdge->connectToPort();
 		layOut();
 	}
 
