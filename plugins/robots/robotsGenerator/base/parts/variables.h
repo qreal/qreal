@@ -44,10 +44,12 @@ public:
 	/// will be deduplicated.
 	void appendManualDeclaration(QString const &variables);
 
+protected:
+	virtual QMap<QString, enums::variableType::VariableType> nonGenerableReservedVariables() const;
+	virtual QMap<QString, int> intConstants() const;
+	virtual QMap<QString, float> floatConstants() const;
+
 private:
-	QMap<QString, enums::variableType::VariableType> nonGenerableReservedVariables() const;
-	QMap<QString, int> intConstants() const;
-	QMap<QString, float> floatConstants() const;
 	QMap<QString, enums::variableType::VariableType> reservedVariables() const;
 
 	void inferTypes(QStringList const &expressions);

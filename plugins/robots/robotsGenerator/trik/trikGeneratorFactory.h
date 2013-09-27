@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base/generatorFactoryBase.h"
+#include "base/generatorFactoryBase.h"
 
 namespace qReal {
 namespace robots {
@@ -25,6 +25,9 @@ public:
 	virtual simple::Binding::ConverterInterface *inputPortConverter() const;
 
 	virtual simple::Binding::ConverterInterface *outputPortConverter() const;
+
+protected:
+	virtual void initVariables();
 };
 
 }

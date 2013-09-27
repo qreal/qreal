@@ -2,6 +2,7 @@
 #include "converters/trikEnginePortsConverter.h"
 #include "simpleGenerators/trikEnginesGenerator.h"
 #include "simpleGenerators/trikEnginesStopGenerator.h"
+#include "parts/trikVariables.h"
 
 using namespace qReal::robots::generators;
 using namespace simple;
@@ -48,4 +49,9 @@ Binding::ConverterInterface *TrikGeneratorFactory::inputPortConverter() const
 Binding::ConverterInterface *TrikGeneratorFactory::outputPortConverter() const
 {
 	return new Binding::EmptyConverter;
+}
+
+void TrikGeneratorFactory::initVariables()
+{
+	mVariables = new parts::TrikVariables;
 }
