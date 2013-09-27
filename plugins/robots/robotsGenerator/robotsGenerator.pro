@@ -26,3 +26,5 @@ SOURCES += \
 include(base/base.pri)
 
 include(nxtOSEK/nxtOsek.pri)
+
+include(trik/trik.pri)
