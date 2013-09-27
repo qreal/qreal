@@ -12,7 +12,7 @@ class FinalNode : public NonZoneNode
 {
 public:
 	/// @param inMainDiagram Is corresponding final node placed on the main diagram.
-	/// It is important to defferentiate this cases because generated code for
+	/// It is important to differentiate theese cases because generated code for
 	/// the main diagram final block may differ from subprograms one
 	/// (for example, terminating task vs 'return')
 	FinalNode(Id const &idBinded, bool inMainDigram, QObject *parent = 0);

@@ -13,7 +13,7 @@ class IfNode : public ConditionalNode
 public:
 	explicit IfNode(Id const &idBinded, QObject *parent = 0);
 
-	ZoneNode *parentZone();
+	ZoneNode *parentZone() const;
 
 	ZoneNode *thenZone();
 	ZoneNode *elseZone();

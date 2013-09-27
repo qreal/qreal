@@ -1,7 +1,7 @@
 #pragma once
 
 #include "templateParametrizedConverter.h"
-#include "../../../robotsInterpreter/sensorConstants.h"
+#include "plugins/robots/robotsInterpreter/sensorConstants.h"
 
 namespace qReal {
 namespace robots {

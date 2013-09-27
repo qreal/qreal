@@ -7,8 +7,8 @@
 #include <qrrepo/repoApi.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-#include "../templateParametrizedEntity.h"
-#include "../simpleGenerators/binding.h"
+#include "base/templateParametrizedEntity.h"
+#include "base/simpleGenerators/binding.h"
 
 namespace qReal {
 namespace robots {
@@ -42,7 +42,7 @@ public:
 	QString generatedCode() const;
 
 private:
-	bool checkIdentifier(QString const &identificator, QString const &rawName);
+	bool checkIdentifier(QString const &identifier, QString const &rawName);
 
 	void mergeCode(QMap<Id, QString> const &declarations
 			, QMap<Id, QString> const &implementations);

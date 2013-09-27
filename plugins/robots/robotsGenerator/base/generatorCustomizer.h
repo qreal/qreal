@@ -13,7 +13,7 @@ namespace semantics {
 enum Semantics {
 	regularBlock = 0
 	, finalBlock
-	, condidionalBlock
+	, conditionalBlock
 	, loopBlock
 	, switchBlock
 	, forkBlock
@@ -24,7 +24,7 @@ enum Semantics {
 
 /// This class must be inherited in each concrete generator. Implementation
 /// must customize such aspects like blocks-semantics mapping and factory
-/// for producing different geenrator parts.
+/// for producing different generator parts.
 class GeneratorCustomizer
 {
 public:
