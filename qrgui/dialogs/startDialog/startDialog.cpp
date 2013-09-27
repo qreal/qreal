@@ -1,9 +1,10 @@
+#include "startDialog.h"
+
 #include <QtWidgets/QTabWidget>
 
-#include "startDialog.h"
-#include "suggestToCreateDiagramWidget.h"
-#include "recentProjectsListWidget.h"
-#include "../../mainwindow/mainWindow.h"
+#include "mainwindow/mainWindow.h"
+#include "dialogs/startDialog/suggestToCreateDiagramWidget.h"
+#include "dialogs/startDialog/recentProjectsListWidget.h"
 
 using namespace qReal;
 
@@ -169,9 +170,11 @@ void StartDialog::createInterpretedDiagram()
 	ProxyEditorManager &editorManagerProxy = mMainWindow.editorManagerProxy();
 	editorManagerProxy.setProxyManager(new InterpreterEditorManager(""));
 	bool ok = false;
-	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
+	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
+			, QLineEdit::Normal, "", &ok);
 	while (ok && name.isEmpty()) {
-		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:"), QLineEdit::Normal, "", &ok);
+		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
+				, QLineEdit::Normal, "", &ok);
 	}
 
 	if (ok) {

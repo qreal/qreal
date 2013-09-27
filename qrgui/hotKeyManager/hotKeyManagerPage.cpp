@@ -1,3 +1,6 @@
+#include "hotKeyManagerPage.h"
+#include "ui_hotKeyManagerPage.h"
+
 #include <QtCore/QString>
 #include <QtCore/QHash>
 #include <QtWidgets/QAction>
@@ -5,9 +8,7 @@
 #include <QtGui/QKeySequence>
 #include <QtGui/QWheelEvent>
 
-#include "hotKeyManagerPage.h"
-#include "ui_hotKeyManagerPage.h"
-#include "hotKeyManager.h"
+#include "hotKeyManager/hotKeyManager.h"
 
 using namespace qReal;
 
@@ -33,7 +34,8 @@ PreferencesHotKeyManagerPage:: PreferencesHotKeyManagerPage(QWidget *parent)
 
 	connect(mUi->hotKeysTable, SIGNAL(cellClicked(int,int)), this, SLOT(activateShortcutLineEdit(int,int)));
 	connect(mUi->hotKeysTable, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(doubleClicked(int,int)));
-	connect(mUi->shortcutLineEdit, SIGNAL(newModifiers(Qt::KeyboardModifiers)), this, SLOT(newModifiers(Qt::KeyboardModifiers)));
+	connect(mUi->shortcutLineEdit, SIGNAL(newModifiers(Qt::KeyboardModifiers))
+			, this, SLOT(newModifiers(Qt::KeyboardModifiers)));
 	connect(mUi->shortcutLineEdit, SIGNAL(newKey(int)), this, SLOT(newKey(int)));
 	connect(mUi->resetShortcutPushButton, SIGNAL(clicked()), this, SLOT(resetShortcuts()));
 	connect(mUi->resetAllPushButton, SIGNAL(clicked()), this, SLOT(resetAllShortcuts()));

@@ -3,7 +3,7 @@
 #include <QtCore/QList>
 #include <QtWidgets/QUndoCommand>
 
-#include "../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
 namespace commands {

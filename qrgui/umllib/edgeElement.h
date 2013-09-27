@@ -3,49 +3,43 @@
 #include <QtCore/QList>
 #include <QtCore/QPair>
 
-#include "element.h"
-#include "../editorPluginInterface/elementImpl.h"
-#include "serializationData.h"
+#include "umllib/element.h"
+#include "editorPluginInterface/elementImpl.h"
+#include "umllib/serializationData.h"
+#include "umllib/private/edgeArrangeCriteria.h"
 
 namespace qReal {
 
-//QPainterPath qt_graphicsItem_shapeFromPath(const QPainterPath &path, const QPen &pen);
-
-namespace enums {
-namespace arrowTypeEnum {
-enum ArrowType
-{
-	  filledArrow
-	, emptyArrow
-	, filledRhomb
-	, emptyRhomb
-	, noArrow
-	, openArrow
-	, crossedLine
-	, emptyCircle
-};
-}
-}
-
 class NodeElement;
-/** @class EdgeElement
-  * @brief class for an edge on a diagram
- */
 
-namespace commands {
-class ReshapeEdgeCommand;
-}
+class LineFactory;
+class LineHandler;
+
+/** @class EdgeElement
+* @brief class for an edge on a diagram
+*/
 
 class EdgeElement : public Element
 {
 	Q_OBJECT
 
 public:
+	enum DragType {
+		wholeEdge = -2
+		, noPort = -1
+	};
+
+	enum NodeSide {
+		left
+		, top
+		, right
+		, bottom
+	};
+
 	EdgeElement(ElementImpl *impl
 			, Id const &id
 			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			);
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
 
 	virtual ~EdgeElement();
 
@@ -53,39 +47,47 @@ public:
 
 	virtual QRectF boundingRect() const;
 	QPainterPath shape() const;
-	virtual void paint(QPainter* p, const QStyleOptionGraphicsItem* opt, QWidget* w);
+	virtual void paint(QPainter* p, QStyleOptionGraphicsItem const *opt, QWidget* w);
 
 	virtual bool initPossibleEdges();
 	virtual void initTitles();
 
 	bool isDividable();
-	void adjustLink(bool isDragging = false);
 
-	/// use adjustLink() to all links that have with this general master
-	void adjustNeighborLinks();
-	bool reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
-	bool shouldReconnect() const;
-	void arrangeSrcAndDst();
+	/// Adjust link to make its' ends be placed exactly on corresponding ports
+	void adjustLink();
+
+	/// Reconnect, arrange links on linear ports and lay out the link depending on its' type
+	void layOut();
+
+	/// Reconnect link to exclude intersections with adjacent nodes
+	void reconnectToNearestPorts(bool reconnectSrc = true, bool reconnectDst = true);
+
 	NodeElement *src() const;
 	NodeElement *dst() const;
 	bool isSrc(NodeElement const *node) const;
 	bool isDst(NodeElement const *node) const;
 	void setSrc(NodeElement *node);
 	void setDst(NodeElement *node);
+
 	/// prepare edge to moving from the linker
 	void tuneForLinker();
+
 	QPair<qreal, qreal> portIdOn(NodeElement const *node) const;
-	QPointF nextFrom(NodeElement const *node) const;
-	QPointF connectionPoint(NodeElement const *node) const;
+
+	/// @return numeric criteria for sorting links on linear ports
+	EdgeArrangeCriteria arrangeCriteria(NodeElement const *node, QLineF const &portLine) const;
+
 	NodeElement* otherSide(NodeElement const *node) const;
 	void removeLink(NodeElement const *from);
+
 	QPolygonF line() const;
 	void setLine(QPolygonF const &line);
 
-	/** @brief Get position of edge's start point*/
-	QPointF from() const;
-	/** @brief Get position of edge's end point*/
-	QPointF to() const;
+	qreal fromPort() const;
+	qreal toPort() const;
+	void setFromPort(qreal const fromPort);
+	void setToPort(qreal const toPort);
 
 	QStringList fromPortTypes() const;
 	QStringList toPortTypes() const;
@@ -94,13 +96,17 @@ public:
 	void placeEndTo(QPointF const &place);
 	void moveConnection(NodeElement *node, qreal const portId);
 
+	/// Resort edges connected to linear ports of adjacent nodes
+	void arrangeLinearPorts();
+
 	virtual void connectToPort();
 
-	virtual QList<ContextMenuAction*> contextMenuActions(const QPointF &pos);
+	virtual QList<ContextMenuAction*> contextMenuActions(QPointF const &pos);
 
 	QList<PossibleEdge> getPossibleEdges();
 
 	virtual void setColorRect(bool bl);
+
 	void breakPointHandler(QPointF const &pos);
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
@@ -109,18 +115,31 @@ public:
 
 	EdgeData& data();
 
-	virtual void deleteFromScene();
+	/// Change link type and redraw it
+	void changeShapeType(enums::linkShape::LinkShape const shapeType);
 
-	// redrawing of this edgeElement in squarize
-	void redrawing(QPointF const &pos);
-
+	/// Save link position to the repo
 	void setGraphicApiPos();
+
+	/// Save link configuration to the repo
+	void saveConfiguration();
 
 	bool isLoop();
 
+	/// Create an edge connected with both ends to the same node
+	void createLoopEdge();
+
+	/// Connect link to nearest newMaster's ports
+	void connectLoopEdge(NodeElement *newMaster);
+
+	/// @return Node at position that is more appropriate for the link to connect to.
+	NodeElement *getNodeAt(QPointF const &position, bool isStart);
+
+	/// Determine on which side of a node (top, bottom, right or left) the link's end is placed
+	NodeSide defineNodePortSide(bool isStart);
+
+	/// Align link's intermediate points to grid
 	void alignToGrid();
-	qreal alignedCoordinate(qreal const coord, int const coef, int const indexGrid) const;
-	QPointF alignedPoint(QPointF const &point, int const indexGrid) const;
 
 protected:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -128,147 +147,68 @@ protected:
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
-	virtual void drawStartArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
-	virtual void drawEndArrow(QPainter * /**< Объект, осуществляющий отрисовку элементов */) const;
+	virtual void drawStartArrow(QPainter *painter) const;
+	virtual void drawEndArrow(QPainter *painter) const;
 
 	Qt::PenStyle mPenStyle;
 	int mPenWidth;
 	QColor mPenColor;
-	QString mText;
-	QString mFromMult, mToMult;
-	enums::arrowTypeEnum::ArrowType mStartArrowStyle;
-	enums::arrowTypeEnum::ArrowType mEndArrowStyle;
-
-public slots:
-	void saveConfiguration(QPointF const &pos);
-	/// redraw a new mLine after delPointHandler or deleteSegmentHandler using contextMenu
-	void arrangeAndAdjustHandler(QPointF const &pos);
 
 private slots:
-	void addPointHandler(QPointF const &pos);
-	/// add the closest point on edge to the parameter`s point
-	void addClosestPointHandler(QPointF const &pos);
-	void delPointHandler(QPointF const &pos);
-	void minimizeHandler(QPointF const &pos);
-	/// delete Segment with nearest with pos ends
-	void deleteSegmentHandler(QPointF const &pos);
-
-	/// change link's direction
-	void reverseHandler(QPointF const &pos);
+	void reverse();
 
 private:
-	enum DragPointType {
-		noDrag = -3,
-		overPointMax = -2,
-		noPort = -1
-	};
-
-	enum LineType {
-		vertical,
-		horizontal,
-		verticalTurn,
-		horizontalTurn
-	};
-
-	enum NodeSide {
-		left,
-		top,
-		right,
-		bottom
-	};
+	void initLineHandler();
+	void updateShapeType();
 
 	int indentReductCoeff();
+
 	/// Set mPortTo to next port.
 	void searchNextPort();
-	/// Change line, if (mSrc && (mSrc == mDst)).
-	void createLoopEdge();
-	/// connectToPort for self-closing line (mSrc && (mSrc == mDst)).
-	void connectLoopEdge(NodeElement *newMaster);
 
 	/// Create indent of bounding rect, depending on the rect size.
 	QPointF boundingRectIndent(QPointF const &point, NodeSide direction);
+
 	/// Returns true, if the sides adjacent.
-	bool isNeighbor(const NodeSide &startSide, const NodeSide &endSide) const ;
+	bool isNeighbor(NodeSide const &startSide, NodeSide const &endSide) const;
+
 	/// Returns the next clockwise side.
 	NodeSide rotateRight(NodeSide side) const;
 
-	void paintSavedEdge(QPainter *painter) const;
-	void paintChangedEdge(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
+	void paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *option, bool drawSavedLine) const;
+	void drawArrows(QPainter *painter, bool savedLine) const;
 	QPen edgePen(QPainter *painter, QColor color, Qt::PenStyle style, int width) const;
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
-	/// Changed size of mLine to 4. Selects 2 intermediate points depending on the size and type of line.
-	void setBezierPoints();
-	/// Returns the bezier curve built on the mLine points.
-	QPainterPath bezierCurve() const;
+	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement * const element) const;
+	void updateLongestPart();
+
+	bool reverseActionIsPossible() const;
+	bool canConnect(NodeElement const * const node, bool from) const;
+	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
 	QList<PossibleEdge> mPossibleEdges;
-
-	bool mIsDissectable;
-	int getPoint(const QPointF &location);
-	NodeElement *getNodeAt(const QPointF &position, bool isStart);
-	NodeElement *innermostChild(QList<QGraphicsItem *> const &items, NodeElement *element) const;
-	void updateLongestPart();
-	static QRectF getPortRect(QPointF const &point);
-
-	void drawCurveIntermediatePoints(QPainter* painter) const;
-	void drawCurvePorts(QPainter* painter) const;
-	void drawPort(QPainter *painter) const;
-	void drawPorts(QPainter *painter, const QStyleOptionGraphicsItem *option) const;
-
-	qreal lengthOfSegment(QPointF const &pos1, QPointF const &pos2) const;
-
-	void delCloseLinePoints();
-	void delClosePoints();
-
-	void squarize();
-	int defineType();
-	int defineSide(qreal port);
-	void verticalSquareLine();
-	void horizontalSquareLine();
-	void verticalTurningSquareLine();
-	void horizontalTurningSquareLine();
-
-	bool removeOneLinePoints(int startingPoint);
-
-	void deleteLoops();
-	void deleteLoop(int startPos);
-	QPointF* haveIntersection(QPointF const &pos1, QPointF const &pos2, QPointF const &pos3, QPointF const &pos4);
-
-	// these methods are called before the push action in the context menu
-	bool delPointActionIsPossible(const QPointF &pos);
-	bool addPointActionIsPossible(const QPointF &pos);
-	bool delSegmentActionIsPossible(const QPointF &pos);
-	bool minimizeActionIsPossible();
-	bool reverseActionIsPossible();
-
-	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
 	NodeElement *mSrc;
 	NodeElement *mDst;
 
+	LineFactory *mLineFactory; // Takes ownership
+	LineHandler *mHandler; // Takes ownership
+
 	qreal mPortFrom;
 	qreal mPortTo;
 
-	int mDragPoint; // is a number of mLine's point we're trying to drag
+	enums::linkShape::LinkShape mShapeType;
+
+	int mDragType; // is a number of mLine's point we're trying to drag
 
 	int mLongPart;
 
 	QPolygonF mLine; // holds coordinates of polygon points in coordinate system with center in first point
 	QColor mColor;
 
-	ContextMenuAction mAddPointAction;
-	ContextMenuAction mDelPointAction;
-	ContextMenuAction mMinimizeAction;
-	ContextMenuAction mDelSegmentAction;
 	ContextMenuAction mReverseAction;
-
-	bool mChaoticEdition;
-
-	QPolygonF mLastLine;
-	bool mLastLineIsLoop;
-	QPolygonF mSavedLineForChanges;
-	bool mLeftButtonIsPressed;
+	ContextMenuAction mChangeShapeAction;
 
 	bool mBreakPointPressed;
 
@@ -277,8 +217,6 @@ private:
 	bool mModelUpdateIsCalled;  // flag for the infinite updateData()-s liquidating
 
 	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst)
-
-	qReal::commands::ReshapeEdgeCommand *mReshapeCommand;
 };
 
 }

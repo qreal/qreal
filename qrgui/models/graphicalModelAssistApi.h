@@ -2,11 +2,12 @@
 
 #include <QtCore/QObject>
 
-#include "../../qrkernel/ids.h"
-#include "details/graphicalModel.h"
-#include "details/graphicalPartModel.h"
-#include "details/modelsAssistApi.h"
-#include "../toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
+#include <qrkernel/ids.h>
+
+#include "models/details/graphicalModel.h"
+#include "models/details/graphicalPartModel.h"
+#include "models/details/modelsAssistApi.h"
+#include "toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h"
 
 namespace qReal {
 

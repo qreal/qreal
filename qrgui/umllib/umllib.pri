@@ -19,9 +19,16 @@ HEADERS += \
 	$$PWD/private/foldCommand.h \
 	$$PWD/private/reshapeEdgeCommand.h \
 	$$PWD/private/fontCache.h \
+	$$PWD/private/expandCommand.h \
 	$$PWD/ports/portFactory.h \
 	$$PWD/ports/statLine.h \
 	$$PWD/ports/statPoint.h \
+	$$PWD/private/lineHandler.h \
+	$$PWD/private/squareLine.h \
+	$$PWD/private/brokenLine.h \
+	$$PWD/private/curveLine.h \
+	$$PWD/private/lineFactory.h \
+	$$PWD/private/edgeArrangeCriteria.h \
 
 SOURCES += \
 	$$PWD/edgeElement.cpp \
@@ -48,6 +55,12 @@ SOURCES += \
 	$$PWD/ports/portFactory.cpp \
 	$$PWD/ports/statLine.cpp \
 	$$PWD/ports/statPoint.cpp \
+	$$PWD/private/lineHandler.cpp \
+	$$PWD/private/squareLine.cpp \
+	$$PWD/private/brokenLine.cpp \
+	$$PWD/private/curveLine.cpp \
+	$$PWD/private/lineFactory.cpp \
+	$$PWD/private/edgeArrangeCriteria.cpp \
 
 RESOURCES += \
 	$$PWD/contextIcons.qrc \

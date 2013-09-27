@@ -1,14 +1,13 @@
 #pragma once
 
-
 #include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
-#include <QPen>
-#include <QBrush>
-#include <QPainter>
-#include <QFont>
-#include <QFile>
-#include <QTextStream>
+#include <QtGui/QPen>
+#include <QtGui/QBrush>
+#include <QtGui/QPainter>
+#include <QtGui/QFont>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 #include <QtGui/QIconEngine>
 
 class SdfRenderer : public QObject

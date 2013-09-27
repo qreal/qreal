@@ -1,11 +1,15 @@
 #include "graphicalPartModel.h"
 
+#include "models/details/graphicalModel.h"
+
 using namespace qReal;
 using namespace qReal::models::details;
 using namespace qReal::models::details::modelsImplementation;
 
-GraphicalPartModel::GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi)
+GraphicalPartModel::GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi
+		, modelsImplementation::ModelIndexesInterface const &graphicalModel)
 	: mRepoApi(repoApi)
+	, mGraphicalModel(graphicalModel)
 {
 	load();
 }
@@ -20,6 +24,7 @@ void GraphicalPartModel::reinit()
 	blockSignals(true);
 	clear();
 	mItems.clear();
+	mIdPositions.clear();
 	load();
 	blockSignals(false);
 }
@@ -120,10 +125,16 @@ bool GraphicalPartModel::removeRows(int row, int count, QModelIndex const &paren
 	}
 
 	beginRemoveRows(parent, row, row + count - 1);
+	mIdPositions.clear();
 	for (int i = row; i < row + count; ++i) {
 		qDeleteAll(mItems[i]);
 		mItems.removeAt(i);
-		mIdPositions.remove(mIdPositions.key(i));
+	}
+
+	for (int i = 0; i < mItems.size(); ++i) {
+		if (mItems[i].size() > 0) {
+			mIdPositions[mItems[i][0]->id()] = i;
+		}
 	}
 
 	endRemoveRows();
@@ -158,6 +169,21 @@ QModelIndex GraphicalPartModel::findIndex(Id const &element, int index) const
 	}
 
 	return this->index(partRow, 0, parent);
+}
+
+void GraphicalPartModel::rowsAboutToBeRemovedInGraphicalModel(QModelIndex const &parent, int start, int end)
+{
+	for (int row = start; row <= end; ++row) {
+		QModelIndex const current = mGraphicalModel.index(row, 0, parent);
+		if (current.isValid()) {
+			Id const graphicalId = current.data(roles::idRole).value<Id>();
+			if (!mIdPositions.contains(graphicalId)) {
+				return;
+			}
+
+			removeRow(mIdPositions.value(graphicalId));
+		}
+	}
 }
 
 void GraphicalPartModel::clear()

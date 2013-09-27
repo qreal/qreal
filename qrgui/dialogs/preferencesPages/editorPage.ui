@@ -38,9 +38,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-109</y>
+        <y>0</y>
         <width>466</width>
-        <height>823</height>
+        <height>806</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -400,6 +400,11 @@
               <height>20</height>
              </size>
             </property>
+            <item>
+             <property name="text">
+              <string>unset</string>
+             </property>
+            </item>
             <item>
              <property name="text">
               <string>broken</string>

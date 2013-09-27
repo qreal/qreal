@@ -7,16 +7,22 @@ MOC_DIR = .moc
 RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
+INCLUDEPATH += \
+	../../../ \
+	../../../qrgui \
+
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
 
 TRANSLATIONS = robotsGenerator_ru.ts
 
-RESOURCES = robotsGenerator.qrc
+RESOURCES =
 
 HEADERS += \
 	robotsGeneratorPlugin.h \
 
 SOURCES += \
 	robotsGeneratorPlugin.cpp \
+
+include(base/base.pri)
 
 include(nxtOSEK/nxtOsek.pri)

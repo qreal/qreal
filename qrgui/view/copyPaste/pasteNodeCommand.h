@@ -1,7 +1,7 @@
-﻿#pragma once
+#pragma once
 
-#include "pasteCommand.h"
-#include "../../controller/commands/createElementCommand.h"
+#include "view/copyPaste/pasteCommand.h"
+#include "controller/commands/createElementCommand.h"
 
 namespace qReal
 {

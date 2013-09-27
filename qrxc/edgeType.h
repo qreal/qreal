@@ -1,9 +1,9 @@
 #pragma once
 
-#include "graphicType.h"
+#include <QtCore/QList>
+#include <QtGui/QColor>
 
-#include <QList>
-#include <QColor>
+#include "graphicType.h"
 
 class Association;
 namespace utils {
@@ -24,6 +24,7 @@ private:
 	QString mBeginType;
 	QString mEndType;
 	QString mLineType;
+	QString mShapeType;
 	QColor mLineColor;
 	int mLineWidth;
 	QString mIsDividable;

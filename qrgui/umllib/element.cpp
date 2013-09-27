@@ -1,7 +1,6 @@
-#include <QtWidgets>
-
 #include "element.h"
-#include "../controller/commands/changePropertyCommand.h"
+
+#include "controller/commands/changePropertyCommand.h"
 
 using namespace qReal;
 
@@ -70,6 +69,11 @@ void Element::setLogicalProperty(QString const &roleName, QString const &value, 
 void Element::setController(Controller *controller)
 {
 	mController = controller;
+}
+
+qReal::Controller * Element::controller() const
+{
+	return mController;
 }
 
 void Element::initTitles()

@@ -3,9 +3,10 @@
 #include <QtWidgets/QGraphicsItem>
 #include <QtGui/QPainter>
 
-#include "../../../../qrkernel/roles.h"
-#include "../../edgeElement.h"
-#include "../../../controller/commands/createElementCommand.h"
+#include <qrkernel/roles.h>
+
+#include "umllib/edgeElement.h"
+#include "controller/commands/createElementCommand.h"
 
 namespace qReal {
 
@@ -41,9 +42,6 @@ public:
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
-private slots:
-	void updateMasterEdge();
-
 private:
 	EdgeElement* mEdge;
 	NodeElement* mMaster;
@@ -59,8 +57,6 @@ private:
 	bool mPressed;
 	qReal::Id mEdgeType;
 
-	int mTimeOfUpdate;
-	QTimer *mTimer;
 	commands::CreateElementCommand *mCreateEdgeCommand;
 };
 

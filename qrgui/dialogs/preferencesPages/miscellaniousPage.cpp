@@ -1,8 +1,9 @@
-#include "../../../qrkernel/settingsManager.h"
-#include <QFileDialog>
-
 #include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
+
+#include <QtWidgets/QFileDialog>
+
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal;
 
@@ -14,8 +15,6 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 	mUi->setupUi(this);
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
-
-//	mUi->chaoticEditionCheckBox->setChecked(SettingsManager::value("ChaoticEdition").toBool());
 
 	mUi->colorComboBox->addItems(QColor::colorNames());
 
@@ -52,7 +51,6 @@ void PreferencesMiscellaniousPage::save()
 	SettingsManager::setValue("Antialiasing", mUi->antialiasingCheckBox->isChecked());
 	SettingsManager::setValue("OpenGL", mUi->openGLCheckBox->isChecked());
 
-//	SettingsManager::setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
 	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
 	SettingsManager::setValue("recentProjectsLimit", mUi->recentProjectsLimitSpinBox->value());
 	SettingsManager::setValue("PaintOldEdgeMode", mUi->paintOldLineCheckBox->isChecked());

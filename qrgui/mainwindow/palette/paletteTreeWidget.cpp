@@ -1,10 +1,11 @@
+#include "paletteTreeWidget.h"
+
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QMenu>
 
-#include "paletteTreeWidget.h"
-#include "paletteTree.h"
-#include "draggableElement.h"
-#include "../dialogs/metamodelingOnFly/chooseTypeDialog.h"
+#include "mainwindow/palette/paletteTree.h"
+#include "mainwindow/palette/draggableElement.h"
+#include "dialogs/metamodelingOnFly/chooseTypeDialog.h"
 
 using namespace qReal;
 using namespace gui;

@@ -1,0 +1,2 @@
+int enterCounter;
+int enterWasDown;

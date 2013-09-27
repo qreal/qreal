@@ -1,8 +1,8 @@
 #pragma once
 
-#include "abstractCommand.h"
-#include "createRemoveCommandImplementation.h"
-#include "../../umllib/element.h"
+#include "controller/commands/abstractCommand.h"
+#include "controller/commands/createRemoveCommandImplementation.h"
+#include "umllib/element.h"
 
 namespace qReal {
 namespace commands {

@@ -3,7 +3,7 @@
 #include <QtCore/QCoreApplication>
 
 using namespace qReal;
-using namespace robots::generator;
+using namespace qReal::robots::generators;
 
 NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 		: mErrorReporter(errorReporter)

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "sceneCustomizationInterface.h"
-#include "editorView.h"
-#include "../mainwindow/mainWindow.h"
+#include "view/sceneCustomizationInterface.h"
+#include "view/editorView.h"
+#include "mainwindow/mainWindow.h"
 
 namespace qReal
 {

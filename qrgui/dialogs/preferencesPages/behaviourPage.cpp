@@ -1,6 +1,7 @@
-#include "../../../qrkernel/settingsManager.h"
 #include "behaviourPage.h"
 #include "ui_behaviourPage.h"
+
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal;
 

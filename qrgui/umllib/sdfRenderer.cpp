@@ -702,8 +702,7 @@ void SdfRenderer::parsestyle(QDomElement &element)
 	painter->setBrush(brush);
 }
 
-float SdfRenderer::coord_def(QDomElement &element, QString coordName,
-	int current_size, int first_size)
+float SdfRenderer::coord_def(QDomElement &element, QString coordName, int current_size, int first_size)
 {
 	float coord = 0;
 	QString coordStr = element.attribute(coordName);
@@ -780,8 +779,7 @@ SdfIconEngineV2::SdfIconEngineV2(QDomDocument const &document)
 	mRenderer.noScale();
 }
 
-void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect,
-		QIcon::Mode mode, QIcon::State state)
+void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state)
 {
 	Q_UNUSED(mode)
 	Q_UNUSED(state)

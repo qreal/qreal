@@ -1,6 +1,6 @@
 #include "pasteEdgeCommand.h"
-#include "../../mainwindow/mainWindow.h"
-#include "../../umllib/private/reshapeEdgeCommand.h"
+#include "mainwindow/mainWindow.h"
+#include "umllib/private/reshapeEdgeCommand.h"
 
 using namespace qReal::commands;
 
@@ -80,6 +80,7 @@ void PasteEdgeCommand::restoreElement()
 
 	EdgeElement *edge = mScene->getEdgeById(edgeId);
 	if (edge) {
+		edge->changeShapeType(static_cast<enums::linkShape::LinkShape>(mEdgeData.shapeType));
 		edge->setPos(mEdgeData.pos + mOffset);
 		edge->setLine(mEdgeData.configuration);
 		edge->connectToPort();

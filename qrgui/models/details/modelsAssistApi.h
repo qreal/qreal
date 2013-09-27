@@ -5,9 +5,9 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QUuid>
 
-#include "../../../qrkernel/ids.h"
-//#include "../../toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
-#include "../../pluginManager/editorManagerInterface.h"
+#include <qrkernel/ids.h>
+
+#include "pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 
@@ -24,7 +24,8 @@ class AbstractModel;
 class ModelsAssistApi
 {
 public:
-	ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManagerInterface const &editorManagerInterface);
+	ModelsAssistApi(details::modelsImplementation::AbstractModel &model
+			, EditorManagerInterface const &editorManagerInterface);
 	EditorManagerInterface const &editorManagerInterface() const;
 	Id createElement(Id const &parent, Id const &id, Id const &logicalId
 			, bool isFromLogicalModel, QString const &name, QPointF const &position);

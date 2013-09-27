@@ -1,9 +1,8 @@
 #include "graphicalModel.h"
 
-#include "logicalModel.h"
-
 #include <QtCore/QUuid>
-#include <QtCore/QDebug>
+
+#include "models/details/logicalModel.h"
 
 using namespace qReal;
 using namespace models;
@@ -111,8 +110,9 @@ void GraphicalModel::addElementToModel(const Id &parent, const Id &id
 	initializeElement(id, actualLogicalId, parentItem, newGraphicalModelItem, name, position);
 }
 
-void GraphicalModel::initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
-		, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position)
+void GraphicalModel::initializeElement(const Id &id, const Id &logicalId
+		, modelsImplementation::AbstractModelItem *parentItem, modelsImplementation::AbstractModelItem *item
+		, QString const &name, const QPointF &position)
 {
 	int const newRow = parentItem->children().size();
 
@@ -284,9 +284,9 @@ GraphicalModelAssistApi &GraphicalModel::graphicalModelAssistApi() const
 bool GraphicalModel::removeRows(int row, int count, QModelIndex const &parent)
 {
 	AbstractModelItem *parentItem = parentAbstractItem(parent);
-	if (parentItem->children().size() < row + count)
+	if (parentItem->children().size() < row + count) {
 		return false;
-	else {
+	} else {
 		for (int i = row; i < row + count; ++i) {
 			AbstractModelItem *child = parentItem->children().at(i);
 			removeModelItems(child);
@@ -304,7 +304,8 @@ bool GraphicalModel::removeRows(int row, int count, QModelIndex const &parent)
 	}
 }
 
-void GraphicalModel::removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child)
+void GraphicalModel::removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
+		, details::modelsImplementation::AbstractModelItem *child)
 {
 	mApi.removeProperty(child->id(), "position");
 	mApi.removeProperty(child->id(), "configuration");

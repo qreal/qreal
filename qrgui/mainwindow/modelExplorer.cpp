@@ -1,6 +1,7 @@
 #include "modelExplorer.h"
-#include "../controller/commands/renameCommand.h"
-#include "../models/details/modelsImplementation/abstractModel.h"
+
+#include "controller/commands/renameCommand.h"
+#include "models/details/modelsImplementation/abstractModel.h"
 
 using namespace qReal;
 using namespace gui;

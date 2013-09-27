@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GeometricForms.h"
+#include "view/gestures/geometricForms.h"
 
 namespace qReal {
 namespace gestures {

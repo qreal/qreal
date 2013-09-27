@@ -8,12 +8,13 @@
 #include <QtCore/QPointF>
 #include <QtGui/QPainter>
 
-#include "../editorPluginInterface/elementImpl.h"
-#include "../editorPluginInterface/labelInterface.h"
-#include "../editorPluginInterface/elementRepoInterface.h"
-#include "../umllib/sdfRenderer.h"
-#include "../../qrkernel/ids.h"
-#include "../../qrrepo/repoApi.h"
+#include <qrkernel/ids.h>
+#include <qrrepo/repoApi.h>
+
+#include "editorPluginInterface/elementImpl.h"
+#include "editorPluginInterface/labelInterface.h"
+#include "editorPluginInterface/elementRepoInterface.h"
+#include "umllib/sdfRenderer.h"
 
 namespace qReal {
 
@@ -75,6 +76,8 @@ public:
 	QStringList fromPortTypes() const;
 	QStringList toPortTypes() const;
 
+	enums::linkShape::LinkShape shapeType() const;
+
 	bool isPort() const;
 	bool hasPin() const;
 
@@ -96,6 +99,8 @@ private:
 	QStringList getListOfStr(QString const &labelText) const;
 	QString getResultStr(QStringList const &list, ElementRepoInterface *repo) const;
 	void drawArrow(QPainter *painter, QString const &type) const;
+
+	enums::linkShape::LinkShape shapeTypeByString(QString const &type) const;
 
 	qrRepo::RepoApi *mEditorRepoApi;  // Doesn't have ownership.
 	Id mId;

@@ -7,6 +7,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details;
 
 Id const startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
+int const blocksCountTillProcessingEvents = 100;
 
 Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
@@ -15,7 +16,11 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 	, mInterpretersInterface(interpretersInterface)
 	, mBlocksTable(blocksTable)
 	, mCurrentBlock(mBlocksTable.block(initialNode))
+	, mBlocksSincePreviousEventsProcessing(0)
+	, mProcessEventsTimer(new QTimer(this))
+	, mProcessEventsMapper(new QSignalMapper(this))
 {
+	initTimer();
 }
 
 Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
@@ -26,7 +31,11 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 	, mBlocksTable(blocksTable)
 	, mCurrentBlock(NULL)
 	, mInitialDiagram(diagramToInterpret)
+	, mBlocksSincePreviousEventsProcessing(0)
+	, mProcessEventsTimer(new QTimer(this))
+	, mProcessEventsMapper(new QSignalMapper(this))
 {
+	initTimer();
 }
 
 Thread::~Thread()
@@ -36,6 +45,16 @@ Thread::~Thread()
 			mInterpretersInterface.dehighlight(block->id());
 		}
 	}
+}
+
+void Thread::initTimer()
+{
+	mProcessEventsTimer->setSingleShot(true);
+	mProcessEventsTimer->setInterval(true);
+	connect(mProcessEventsTimer, SIGNAL(timeout())
+			, mProcessEventsMapper, SLOT(map()));
+	connect(mProcessEventsMapper, SIGNAL(mapped(QObject*))
+			, this, SLOT(interpretAfterEventsProcessing(QObject*)));
 }
 
 void Thread::interpret()
@@ -123,14 +142,33 @@ void Thread::turnOn(blocks::Block * const block)
 
 	mStack.push(mCurrentBlock);
 
-	// After QApplication::processEvents() call thread can be destroyed, so we can not access fields, but can access
-	// variables on a stack. Kind of hack, but quite an easy way not to suspend everything if interpreted program
-	// has an infinite loop without timers.
-	blocks::Block *currentBlock = mCurrentBlock;
+	++mBlocksSincePreviousEventsProcessing;
+	if (mBlocksSincePreviousEventsProcessing > blocksCountTillProcessingEvents) {
+		// Here we want to process all accumulated events and terminate blocks recursion
+		mBlocksSincePreviousEventsProcessing = 0;
 
-	QApplication::processEvents();
+		// After timer was started control flow returns to event loop and
+		// among events there can be the one that destroys this thread instance.
+		// There are some suspicions that in QObject destructor children are removed
+		// not immediately but with deleteLater() method. So there is a small probability
+		// that slot will be triggered after this object is destroyed. Then
+		// we can not access fields, but can access alive block instance in mapper.
+		// Kind of hack, but quite an easy way not to suspend everything if
+		// interpreted program has an infinite loop without timers.
+		mProcessEventsMapper->removeMappings(mProcessEventsTimer);
+		mProcessEventsMapper->setMapping(mProcessEventsTimer, mCurrentBlock);
+		mProcessEventsTimer->start();
+	} else {
+		mCurrentBlock->interpret();
+	}
+}
 
-	currentBlock->interpret();
+void Thread::interpretAfterEventsProcessing(QObject *blockObject)
+{
+	blocks::Block * const block = dynamic_cast<blocks::Block *>(blockObject);
+	if (block) {
+		block->interpret();
+	}
 }
 
 void Thread::turnOff(blocks::Block * const block)

@@ -1,10 +1,10 @@
 /** @file resizeHandler.h
- * 	@brief Class for handling resize behavior of NodeElement. Provides methods for container resizing.
- * */
+* 	@brief Class for handling resize behavior of NodeElement. Provides methods for container resizing.
+**/
 
 #pragma once
 
-#include "../nodeElement.h"
+#include "umllib/nodeElement.h"
 
 class ResizeHandler {
 public:

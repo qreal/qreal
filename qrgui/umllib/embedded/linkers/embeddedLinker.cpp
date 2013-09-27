@@ -1,17 +1,16 @@
-#include "../../edgeElement.h"
-#include "../../nodeElement.h"
 #include "embeddedLinker.h"
 
 #include <math.h>
+#include <QtWidgets/QStyle>
+#include <QtWidgets/QGraphicsItem>
+#include <QtWidgets/QStyleOptionGraphicsItem>
 
-#include <QDebug>
-#include <QStyle>
-#include <QGraphicsItem>
-#include <QStyleOptionGraphicsItem>
+#include "umllib/edgeElement.h"
+#include "umllib/nodeElement.h"
 
-#include "../../../view/editorViewScene.h"
-#include "../../../mainwindow/mainWindow.h"
-#include "../../private/reshapeEdgeCommand.h"
+#include "view/editorViewScene.h"
+#include "mainwindow/mainWindow.h"
+#include "umllib/private/reshapeEdgeCommand.h"
 
 using namespace qReal;
 
@@ -20,8 +19,6 @@ EmbeddedLinker::EmbeddedLinker()
 		, mMaster(NULL)
 		, mColor(Qt::blue)
 		, mPressed(false)
-		, mTimeOfUpdate(0)
-		, mTimer(new QTimer(this))
 {
 	mSize = SettingsManager::value("EmbeddedLinkerSize").toFloat();
 	if (mSize > 10) {
@@ -38,8 +35,6 @@ EmbeddedLinker::EmbeddedLinker()
 	setFlag(ItemStacksBehindParent, false);
 
 	setAcceptHoverEvents(true);
-
-	connect(mTimer, SIGNAL(timeout()), this, SLOT(updateMasterEdge()));
 }
 
 EmbeddedLinker::~EmbeddedLinker()
@@ -223,8 +218,6 @@ void EmbeddedLinker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	mTimer->start(400);
-
 	if (mPressed) {
 		mPressed = false;
 		EditorViewScene *scene = dynamic_cast<EditorViewScene*>(mMaster->scene());
@@ -237,7 +230,8 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (scene->mainWindow()->editorManager().hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
 			// FIXME: I am raw. return strange pos() and inside me a small trash
-			Id edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand);
+			Id const edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand, false);
+			mCreateEdgeCommand->redo();
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
 
@@ -248,32 +242,10 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			mEdge->highlight();
 			mEdge->tuneForLinker();
 			mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
-			mMaster->arrangeLinks();
-			mMaster->adjustLinks();
 		}
 	}
 
-	if (mEdge) {
-		if (mTimeOfUpdate == 14) {
-			mTimeOfUpdate = 0;
-			mEdge->adjustNeighborLinks();
-			mEdge->arrangeSrcAndDst();
-		} else {
-			mTimeOfUpdate++;
-		}
-		mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
-	}
-}
-
-void EmbeddedLinker::updateMasterEdge()
-{
-	mTimer->stop();
-	mTimeOfUpdate = 0;
-
-	if (mEdge) {
-		mEdge->arrangeSrcAndDst();
-		mEdge->adjustNeighborLinks();
-	}
+	mEdge->placeEndTo(mEdge->mapFromScene(mapToScene(event->pos())));
 }
 
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -306,8 +278,8 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			}
 
 			if (under->isContainer()) {
-				result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos,
-							canBeConnected, &createElementFromMenuCommand);
+				result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos
+						, canBeConnected, &createElementFromMenuCommand);
 			} else {
 				if (!canBeConnected) {
 					result = -1;
@@ -322,20 +294,23 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			mEdge->setDst(target);
 			target->storeGeometry();
 		}
+
 		if (result != -1) {
 			mEdge->connectToPort();
-
-			updateMasterEdge();
 			// This will restore edge state after undo/redo
 			commands::ReshapeEdgeCommand *reshapeEdge = new commands::ReshapeEdgeCommand(mEdge);
 			reshapeEdge->startTracking();
+			mEdge->layOut();
 			reshapeEdge->stopTracking();
 			reshapeEdge->setUndoEnabled(false);
 			if (createElementFromMenuCommand) {
 				createElementFromMenuCommand->addPostAction(reshapeEdge);
-				mCreateEdgeCommand->addPostAction(createElementFromMenuCommand);
+				createElementFromMenuCommand->addPreAction(mCreateEdgeCommand);
 			} else {
+				Controller * const controller = mEdge->controller();
+				mCreateEdgeCommand->undo();
 				mCreateEdgeCommand->addPostAction(reshapeEdge);
+				controller->execute(mCreateEdgeCommand);
 			}
 		}
 	}

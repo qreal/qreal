@@ -4,17 +4,16 @@
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QIcon>
 
-#include "../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/exception/exception.h>
+#include <qrrepo/repoApi.h>
 
-#include "../../qrrepo/repoApi.h"
-#include "../umllib/nodeElement.h"
-#include "../umllib/edgeElement.h"
-#include "../../qrkernel/exception/exception.h"
+#include "umllib/nodeElement.h"
+#include "umllib/edgeElement.h"
 
 using namespace qReal;
 
-EditorManager::EditorManager(QObject *parent)
-	: QObject(parent)
+EditorManager::EditorManager(QObject *parent) : QObject(parent)
 {
 	mPluginsDir = QDir(qApp->applicationDirPath());
 
@@ -627,8 +626,8 @@ void EditorManager::addNodeElement(Id const &diagram, QString const &name, bool 
 	Q_UNUSED(isRootDiagramNode);
 }
 
-void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
-		, QString const &lineType, QString const &beginType, QString const &endType) const
+void EditorManager::addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+		, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const
 {
 	Q_UNUSED(diagram);
 	Q_UNUSED(name);
