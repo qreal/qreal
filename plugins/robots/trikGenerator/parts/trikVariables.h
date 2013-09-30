@@ -13,6 +13,11 @@ class TrikVariables : public Variables
 protected:
 	virtual QMap<QString, int> intConstants() const;
 	virtual QMap<QString, float> floatConstants() const;
+
+	virtual QString intConstantDeclaration() const;
+	virtual QString floatConstantDeclaration() const;
+	virtual QString intVariableDeclaration() const;
+	virtual QString floatVariableDeclaration() const;
 };
 
 }

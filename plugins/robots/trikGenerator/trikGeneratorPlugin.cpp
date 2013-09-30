@@ -12,6 +12,8 @@
 using namespace qReal;
 using namespace qReal::robots::generators::trik;
 
+QString const scriptExtension = ".qts";
+
 TrikGeneratorPlugin::TrikGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
 		, mUploadProgramAction(NULL)
@@ -110,4 +112,11 @@ void TrikGeneratorPlugin::stopRobot()
 	if (!communicator.stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
+}
+
+QString TrikGeneratorPlugin::currentProgramName() const
+{
+	QString const saveFileName = mRepo->workingFile();
+	QFileInfo const fileInfo(saveFileName);
+	return fileInfo.baseName() + scriptExtension;
 }

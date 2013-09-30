@@ -36,12 +36,12 @@ QString Variables::generateVariableString() const
 
 	// TODO: read it from template
 	foreach (QString const &intConst, intConsts.keys()) {
-		result += QString("static const int %1 = %2;\n").arg(intConst
+		result += QString(intConstantDeclaration()).arg(intConst
 				, QString::number(intConsts[intConst]));
 	}
 
 	foreach (QString const &floatConst, floatConsts.keys()) {
-		result += QString("static const float %1 = %2;\n").arg(floatConst
+		result += QString(floatConstantDeclaration()).arg(floatConst
 				, QString::number(floatConsts[floatConst]));
 	}
 
@@ -51,8 +51,9 @@ QString Variables::generateVariableString() const
 		}
 		// If every code path decided that this variable has int type
 		// then it has int one. Unknown types are maximal ones (float)
-		QString const type = mVariables.value(curVariable) == enums::variableType::intType ? "int" : "float";
-		result += QString("static %1 %2;\n").arg(type, curVariable);
+		QString const pattern = mVariables.value(curVariable) == enums::variableType::intType
+				? intVariableDeclaration() : floatVariableDeclaration();
+		result += pattern.arg(curVariable);
 	}
 
 	result += mManualDeclarations.join('\n');
@@ -156,6 +157,27 @@ QMap<QString, float> Variables::floatConstants() const
 	QMap<QString, float> result;
 	result.insert("pi", 3.14159265);
 	return result;
+}
+
+// TODO: read it from template
+QString Variables::intConstantDeclaration() const
+{
+	return "static const int %1 = %2;\n";
+}
+
+QString Variables::floatConstantDeclaration() const
+{
+	return "static const float %1 = %2;\n";
+}
+
+QString Variables::intVariableDeclaration() const
+{
+	return "static int %1;\n";
+}
+
+QString Variables::floatVariableDeclaration() const
+{
+	return "static float %1;\n";
 }
 
 QMap<QString, enums::variableType::VariableType> Variables::reservedVariables() const

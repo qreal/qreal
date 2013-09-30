@@ -19,25 +19,27 @@ qReal::robots::generators::GeneratorCustomizer *TrikMasterGenerator::createCusto
 
 QString TrikMasterGenerator::targetPath()
 {
-	return QString("%1/%2.qts").arg(mProjectDir, mProjectName);
+	return QString("%1/%2").arg(mProjectDir, mProjectName);
 }
 
 void TrikMasterGenerator::beforeGeneration()
 {
+//	mProjectName = currentProgramName();
+//	mProjectDir = "trik/" + mProjectName;
+//	createProjectDir(mProjectDir);
+	mProjectDir = ".";
 	mProjectName = currentProgramName();
-	mProjectDir = "trik/" + mProjectName;
-	createProjectDir(mProjectDir);
 }
 
 
 void TrikMasterGenerator::createProjectDir(QString const &projectDir)
 {
-	if (!QDir(projectDir).exists()) {
-		if (!QDir("trik/").exists()) {
-			QDir().mkdir("trik/");
-		}
-		QDir().mkdir(projectDir);
-	}
+//	if (!QDir(projectDir).exists()) {
+//		if (!QDir("trik/").exists()) {
+//			QDir().mkdir("trik/");
+//		}
+//		QDir().mkdir(projectDir);
+//	}
 }
 
 QString TrikMasterGenerator::currentProgramName() const
