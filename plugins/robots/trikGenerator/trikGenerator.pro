@@ -6,16 +6,25 @@ DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
 
-LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo -L../../../bin/plugins/ -lrobotsGenerator
+LIBS += -L../../../bin -L../../../bin/plugins -lqrkernel -lqrutils -lqrrepo -lrobotsGenerator
 
 INCLUDEPATH += \
 	$$PWD/../robotsGenerator/ \
 	$$PWD/../../../ \
 	$$PWD/../../../qrgui \
 
+# workaround for http://bugreports.qt.nokia.com/browse/QTBUG-8110
+# when fixed it would become possible to use QMAKE_LFLAGS_RPATH
+!macx {
+	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../../../bin/
+	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../../../bin/plugins/
+}
+
 TRANSLATIONS = trikGenerator_ru.ts
 
-RESOURCES = trikGenerator.qrc
+RESOURCES = \
+	$$PWD/trikGenerator.qrc \
+	$$PWD/templates.qrc \
 
 HEADERS += \
 	$$PWD/trikGeneratorPlugin.h \
@@ -25,7 +34,7 @@ HEADERS += \
 	$$PWD/parts/trikVariables.h \
 	$$PWD/converters/trikEnginePortsConverter.h \
 	$$PWD/simpleGenerators/trikEnginesGenerator.h \
-	$$PWD/simpleGenerators/trikEnginesStopGenerator.h \
+	$$PWD/simpleGenerators/trikEnginesStopGenerator.h
 
 SOURCES += \
 	$$PWD/trikGeneratorPlugin.cpp \

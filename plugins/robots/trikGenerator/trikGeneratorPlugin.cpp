@@ -7,7 +7,7 @@
 
 #include <qrutils/inFile.h>
 #include "robotCommunication/tcpRobotCommunicator.h"
-#include "plugins/robots/robotsGenerator/trik/trikMasterGenerator.h"
+#include "trikMasterGenerator.h"
 
 using namespace qReal;
 using namespace qReal::robots::generators::trik;
