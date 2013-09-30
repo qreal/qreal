@@ -3,6 +3,8 @@
 
 using namespace qReal::robots::generators::trik;
 
+QString const scriptExtension = ".qts";
+
 TrikMasterGenerator::TrikMasterGenerator(qrRepo::RepoApi const &repo
 		, ErrorReporterInterface &errorReporter
 		, Id const &diagramId)
@@ -22,9 +24,7 @@ QString TrikMasterGenerator::targetPath()
 
 void TrikMasterGenerator::beforeGeneration()
 {
-	// TODO: increment it or smth...
-	mCurInitialNodeNumber = 0;
-	mProjectName = "example" + QString::number(mCurInitialNodeNumber);
+	mProjectName = currentProgramName();
 	mProjectDir = "trik/" + mProjectName;
 	createProjectDir(mProjectDir);
 }
@@ -38,4 +38,11 @@ void TrikMasterGenerator::createProjectDir(QString const &projectDir)
 		}
 		QDir().mkdir(projectDir);
 	}
+}
+
+QString TrikMasterGenerator::currentProgramName() const
+{
+	QString const saveFileName = mRepo.workingFile();
+	QFileInfo const fileInfo(saveFileName);
+	return fileInfo.baseName() + scriptExtension;
 }

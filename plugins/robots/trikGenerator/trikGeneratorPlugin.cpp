@@ -5,13 +5,12 @@
 
 #include <QtCore/QDebug>
 
+#include <qrutils/inFile.h>
 #include "robotCommunication/tcpRobotCommunicator.h"
-#include "generator/trikRobotGenerator.h"
+#include "plugins/robots/robotsGenerator/trik/trikMasterGenerator.h"
 
 using namespace qReal;
-using namespace robots::trikGenerator;
-
-QString const scriptExtension = ".qts";
+using namespace qReal::robots::generators::trik;
 
 TrikGeneratorPlugin::TrikGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
@@ -30,7 +29,7 @@ TrikGeneratorPlugin::~TrikGeneratorPlugin()
 void TrikGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
-	mRepoControlApi = &configurator.repoControlInterface();
+	mRepo = dynamic_cast<qrRepo::RepoApi const *>(&configurator.logicalModelApi().logicalRepoApi());
 	mProjectManager = &configurator.projectManager();
 }
 
@@ -59,27 +58,21 @@ QList<ActionInfo> TrikGeneratorPlugin::actions()
 bool TrikGeneratorPlugin::generateCode()
 {
 	mProjectManager->save();
-
-	TrikRobotGenerator generator(mMainWindowInterface->activeDiagram()
-			, *mRepoControlApi
-			, *mMainWindowInterface->errorReporter()
-			);
-
 	mMainWindowInterface->errorReporter()->clearErrors();
-	generator.generate(currentProgramName());
 
+	TrikMasterGenerator generator(*mRepo
+			, *mMainWindowInterface->errorReporter()
+			, mMainWindowInterface->activeDiagram());
+	generator.initialize();
+
+	QString const generatedSrcPath = generator.generate();
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
 		return false;
 	}
 
-	QTextStream *inStream = NULL;
-	QFile inFile(currentProgramName());
-	if (!inFile.isOpen() && inFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		inStream = new QTextStream(&inFile);
-	}
-
-	if (inStream) {
-		mMainWindowInterface->showInTextEditor(currentProgramName(), inStream->readAll());
+	QString const generatedCode = utils::InFile::readAll(generatedSrcPath);
+	if (!generatedCode.isEmpty()) {
+		mMainWindowInterface->showInTextEditor(tr("Generated code"), generatedCode);
 	}
 
 	return true;
@@ -117,11 +110,4 @@ void TrikGeneratorPlugin::stopRobot()
 	if (!communicator.stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
-}
-
-QString TrikGeneratorPlugin::currentProgramName() const
-{
-	QString const saveFileName = mRepoControlApi->workingFile();
-	QFileInfo const fileInfo(saveFileName);
-	return fileInfo.baseName() + scriptExtension;
 }

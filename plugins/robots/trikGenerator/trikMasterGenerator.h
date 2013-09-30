@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base/masterGeneratorBase.h"
+#include "base/masterGeneratorBase.h"
 
 namespace qReal {
 namespace robots {
@@ -22,7 +22,9 @@ protected:
 	virtual void beforeGeneration();
 
 private:
+	QString currentProgramName() const;
 	void createProjectDir(QString const &projectDir);
+
 	int mCurInitialNodeNumber;
 	QString mProjectName;
 	QString mProjectDir;

@@ -2,11 +2,14 @@
 
 #include <QtCore/QTranslator>
 
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "qrgui/toolPluginInterface/toolPluginInterface.h"
+#include "qrgui/toolPluginInterface/pluginConfigurator.h"
+#include "qrrepo/repoApi.h"
 
+namespace qReal {
 namespace robots {
-namespace trikGenerator {
+namespace generators {
+namespace trik {
 
 /// Generation of QtScript program for TRIK, uploading and execution of a program.
 /// Uses settings "tcpServer" and "tcpPort" from RobotsInterpreter.
@@ -67,8 +70,10 @@ private:
 	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership
 
 	/// Control interface of the repository
-	qrRepo::RepoControlInterface *mRepoControlApi;  // Does not have ownership
+	qrRepo::RepoApi const *mRepo;  // Does not have ownership
 };
 
+}
+}
 }
 }

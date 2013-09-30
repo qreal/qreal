@@ -8,8 +8,8 @@ RCC_DIR = .moc
 OBJECTS_DIR = .obj
 
 INCLUDEPATH += \
-	../../../ \
-	../../../qrgui \
+	$$PWD/../../../ \
+	$$PWD/../../../qrgui \
 
 LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
 
@@ -26,5 +26,3 @@ SOURCES += \
 include(base/base.pri)
 
 include(nxtOSEK/nxtOsek.pri)
-
-include(trik/trik.pri)

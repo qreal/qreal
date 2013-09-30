@@ -7,7 +7,7 @@
 #include "../../../../qrkernel/settingsManager.h"
 #include "../../../../qrutils/inFile.h"
 
-using namespace robots::trikGenerator;
+using namespace qReal::robots::generators::trik;
 
 TcpRobotCommunicator::TcpRobotCommunicator()
 {
