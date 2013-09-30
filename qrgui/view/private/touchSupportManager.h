@@ -37,6 +37,7 @@ private:
 	void simulateMove(QTouchEvent *event);
 	void simulateRelease(QTouchEvent *event);
 	void simulateDoubleClick(QTouchEvent *event);
+	void simulateRightClick(QTapAndHoldGesture *gesture);
 
 	bool isElementUnder(QPointF const &pos);
 
