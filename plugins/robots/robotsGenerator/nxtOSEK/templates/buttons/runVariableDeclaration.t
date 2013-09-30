@@ -1,0 +1,2 @@
+int runCounter;
+int runWasDown;
