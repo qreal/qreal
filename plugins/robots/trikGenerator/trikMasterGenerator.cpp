@@ -34,6 +34,7 @@ void TrikMasterGenerator::beforeGeneration()
 
 void TrikMasterGenerator::createProjectDir(QString const &projectDir)
 {
+	Q_UNUSED(projectDir)
 //	if (!QDir(projectDir).exists()) {
 //		if (!QDir("trik/").exists()) {
 //			QDir().mkdir("trik/");

@@ -2,8 +2,9 @@
 
 #include <QtCore/QSet>
 
+#include "robotsGeneratorDeclSpec.h"
 #include "initTerminateCodeGenerator.h"
-#include "../simpleGenerators/binding.h"
+#include "base/simpleGenerators/binding.h"
 
 namespace qReal {
 namespace robots {
@@ -11,7 +12,7 @@ namespace generators {
 namespace parts {
 
 /// Inspects engines usage and generates code for their initialization and termination.
-class Engines : public InitTerminateCodeGenerator
+class ROBOTS_GENERATOR_EXPORT Engines : public InitTerminateCodeGenerator
 {
 public:
 	Engines(QString const &pathToTemplates
