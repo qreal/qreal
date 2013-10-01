@@ -5,6 +5,7 @@
 #include <qrrepo/repoApi.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
+#include "robotsGeneratorDeclSpec.h"
 #include "generatorCustomizer.h"
 #include "controlFlowGeneratorBase.h"
 #include "templateParametrizedEntity.h"
@@ -15,7 +16,7 @@ namespace generators {
 
 /// The main class for every code generator. Produces nessesary components and
 /// controls their work. Must be reimplemented in each concrete generator.
-class MasterGeneratorBase : public QObject, public TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT MasterGeneratorBase : public QObject, public TemplateParametrizedEntity
 {
 public:
 	MasterGeneratorBase(qrRepo::RepoApi const &repo

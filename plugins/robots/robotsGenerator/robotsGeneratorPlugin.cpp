@@ -4,8 +4,7 @@
 #include <QtCore/QDir>
 
 #include <qrutils/inFile.h>
-//#include "nxtOSEK/nxtOsekMasterGenerator.h"
-#include "trik/trikMasterGenerator.h"
+#include "nxtOSEK/nxtOsekMasterGenerator.h"
 
 using namespace qReal;
 using namespace qReal::robots::generators;
@@ -91,7 +90,7 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 	mProjectManager->save();
 	mMainWindowInterface->errorReporter()->clearErrors();
 
-	trik::TrikMasterGenerator generator(*mRepo
+	nxtOsek::NxtOsekMasterGenerator generator(*mRepo
 			, *mMainWindowInterface->errorReporter()
 			, mMainWindowInterface->activeDiagram());
 	generator.initialize();
