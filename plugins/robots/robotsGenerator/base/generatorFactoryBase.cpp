@@ -78,7 +78,7 @@ void GeneratorFactoryBase::initialize()
 
 void GeneratorFactoryBase::initVariables()
 {
-	mVariables = new parts::Variables;
+	mVariables = new parts::Variables(pathToTemplates());
 }
 
 void GeneratorFactoryBase::initSubprograms()

@@ -4,6 +4,7 @@
 #include <QtCore/QStringList>
 
 #include <qrrepo/repoApi.h>
+#include "base/templateParametrizedEntity.h"
 
 namespace qReal {
 namespace robots {
@@ -24,10 +25,10 @@ namespace parts {
 // TODO: make this class customizable in other generators
 
 /// Manages everything about variables and their types
-class Variables
+class Variables : public TemplateParametrizedEntity
 {
 public:
-	Variables();
+	explicit Variables(QString const &pathToTemplates);
 
 	/// Tries to infer types for all variables declared in all function blocks
 	/// on the specified diagram
