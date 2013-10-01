@@ -1,0 +1,1 @@
+static float %1;

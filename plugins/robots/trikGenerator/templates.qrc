@@ -73,5 +73,9 @@
         <file>templates/engines/power/backward.t</file>
         <file>templates/engines/power/forward.t</file>
         <file>templates/engines/power/stop.t</file>
+        <file>templates/variables/floatConstantDeclaration.t</file>
+        <file>templates/variables/floatVariableDeclaration.t</file>
+        <file>templates/variables/intConstantDeclaration.t</file>
+        <file>templates/variables/intVariableDeclaration.t</file>
     </qresource>
 </RCC>

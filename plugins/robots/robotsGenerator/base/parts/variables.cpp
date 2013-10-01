@@ -4,7 +4,8 @@ using namespace qReal;
 using namespace robots::generators;
 using namespace parts;
 
-Variables::Variables()
+Variables::Variables(QString const &pathToTemplates)
+	: TemplateParametrizedEntity(pathToTemplates)
 {
 }
 
@@ -159,25 +160,24 @@ QMap<QString, float> Variables::floatConstants() const
 	return result;
 }
 
-// TODO: read it from template
 QString Variables::intConstantDeclaration() const
 {
-	return "static const int %1 = %2;\n";
+	return readTemplate("variables/intConstantDeclaration.t");
 }
 
 QString Variables::floatConstantDeclaration() const
 {
-	return "static const float %1 = %2;\n";
+	return readTemplate("variables/floatConstantDeclaration.t");
 }
 
 QString Variables::intVariableDeclaration() const
 {
-	return "static int %1;\n";
+	return readTemplate("variables/intVariableDeclaration.t");
 }
 
 QString Variables::floatVariableDeclaration() const
 {
-	return "static float %1;\n";
+	return readTemplate("variables/floatVariableDeclaration.t");
 }
 
 QMap<QString, enums::variableType::VariableType> Variables::reservedVariables() const
