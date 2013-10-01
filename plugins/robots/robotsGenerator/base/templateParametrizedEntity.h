@@ -2,12 +2,14 @@
 
 #include <QtCore/QString>
 
+#include "robotsGeneratorDeclSpec.h"
+
 namespace qReal {
 namespace robots {
 namespace generators {
 
 /// This class can be inherited by those entities who need to use generator templates
-class TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT TemplateParametrizedEntity
 {
 public:
 	TemplateParametrizedEntity();

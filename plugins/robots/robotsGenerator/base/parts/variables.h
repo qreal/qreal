@@ -5,6 +5,7 @@
 
 #include <qrrepo/repoApi.h>
 #include "base/templateParametrizedEntity.h"
+#include "robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {
@@ -25,7 +26,7 @@ namespace parts {
 // TODO: make this class customizable in other generators
 
 /// Manages everything about variables and their types
-class Variables : public TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT Variables : public TemplateParametrizedEntity
 {
 public:
 	explicit Variables(QString const &pathToTemplates);
