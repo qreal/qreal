@@ -169,7 +169,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent *event)
 
 void EditorView::mousePressEvent(QMouseEvent *event)
 {
-	mWheelPressed  = (event->buttons() & Qt::MidButton);
+	mWheelPressed = (event->buttons() & Qt::MidButton);
 	mMouseOldPosition = QPointF();
 	if (!mWheelPressed) {
 		QGraphicsView::mousePressEvent(event);
