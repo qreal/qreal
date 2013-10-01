@@ -7,7 +7,7 @@
 #include "../../../../qrkernel/settingsManager.h"
 #include "../../../../qrutils/inFile.h"
 
-using namespace robots::trikGenerator;
+using namespace qReal::robots::generators::trik;
 
 TcpRobotCommunicator::TcpRobotCommunicator()
 {
@@ -41,6 +41,20 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 	}
 
 	QString const command = "run:" + programName;
+	mSocket.write(command.toLatin1());
+	mSocket.waitForBytesWritten();
+
+	return true;
+}
+
+bool TcpRobotCommunicator::stopRobot()
+{
+	connect();
+	if (!mSocket.isValid()) {
+		return false;
+	}
+
+	QString const command = "stop";
 	mSocket.write(command.toLatin1());
 	mSocket.waitForBytesWritten();
 
