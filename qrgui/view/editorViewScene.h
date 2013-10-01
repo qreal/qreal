@@ -249,6 +249,8 @@ private:
 	bool mIsSelectEvent;
 	bool mTitlesVisible;
 
+	QMenu mContextMenu;
+
 	view::details::ExploserView *mExploser; // Takes ownership
 
 	friend class qReal::EditorViewMViface;

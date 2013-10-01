@@ -12,6 +12,7 @@ TouchSupportManager::TouchSupportManager(EditorView *editorView)
 	, mGestureIsRunning(false)
 {
 	mEditorView->grabGesture(Qt::TapGesture);
+	mEditorView->grabGesture(Qt::TapAndHoldGesture);
 	mEditorView->grabGesture(Qt::PanGesture);
 	mEditorView->grabGesture(Qt::PinchGesture);
 	mEditorView->viewport()->setAttribute(Qt::WA_AcceptTouchEvents);
@@ -93,15 +94,29 @@ void TouchSupportManager::simulateDoubleClick(QTouchEvent *event)
 	simulateMouse(event->target(), QEvent::MouseButtonDblClick, event->touchPoints()[0].pos(), mButton);
 }
 
+void TouchSupportManager::simulateRightClick(QTapAndHoldGesture *gesture)
+{
+	QPointF const position(mEditorView->viewport()->mapFromGlobal(gesture->position().toPoint()));
+	mButton = Qt::LeftButton;
+	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonPress, position, Qt::LeftButton);
+	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonRelease, position, Qt::NoButton);
+	mButton = Qt::RightButton;
+	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonPress, position, Qt::RightButton);
+	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonRelease, position, Qt::NoButton);
+}
+
 bool TouchSupportManager::isElementUnder(QPointF const &pos)
 {
-	return mEditorView->itemAt(pos.toPoint());
+	return dynamic_cast<Element *>(mEditorView->itemAt(pos.toPoint()));
 }
 
 bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
 {
 	if (gestureEvent->gesture(Qt::TapGesture)) {
 		mScroller.onTap();
+	} else if (QGesture *tapAndHold = gestureEvent->gesture(Qt::TapAndHoldGesture)) {
+		processGestureState(tapAndHold);
+		simulateRightClick(static_cast<QTapAndHoldGesture *>(tapAndHold));
 	} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
 		processGestureState(pan);
 		mScroller.onPan(pan);
@@ -143,16 +158,16 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 
 		if (QDateTime::currentMSecsSinceEpoch() - mLastTapTimestamp <= QApplication::doubleClickInterval()) {
 			if (elementUnder) {
-				// Simulating right button click for links gesture
-				simulatePress(event, Qt::RightButton);
+				// Simulating regular left button click
+				simulatePress(event);
 			} else {
 				// Simulating double-click
 				simulateDoubleClick(event);
 			}
 		} else {
 			if (elementUnder) {
-				// Simulating regular left button click
-				simulatePress(event);
+				// Simulating right button click for links gesture
+				simulatePress(event, Qt::RightButton);
 			} else {
 				// Simulating right button click for mouse gestures drawing or left button click
 				// for clearing selection

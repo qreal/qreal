@@ -126,23 +126,23 @@ void QsKineticScroller::onTap()
 void QsKineticScroller::onPan(QGesture *pan)
 {
 	QPanGesture *panGesture = static_cast<QPanGesture *>(pan);
-	d->averageDelta = (2 * d->averageDelta + 3 * panGesture->delta().toPoint()) / 5;
+//	d->averageDelta = (2 * d->averageDelta + 3 * panGesture->delta().toPoint()) / 5;
 
 	if (pan->state() == Qt::GestureFinished) {
-		QPoint offset(5 * d->averageDelta);
+//		QPoint offset(5 * d->averageDelta);
 
-		d->isPressed = false;
-		d->isMoving = true;
-		d->averageDelta = QPoint();
+//		d->isPressed = false;
+//		d->isMoving = true;
+//		d->averageDelta = QPoint();
 
-		d->velocityY = (offset.y() + d->velocityY) / 2;
-		d->velocityX = (offset.x() + d->velocityX) / 2;
+//		d->velocityY = (offset.y() + d->velocityY) / 2;
+//		d->velocityX = (offset.x() + d->velocityX) / 2;
 
-		computeFriction();
+//		computeFriction();
 
-		if (!d->kineticTimer.isActive()) {
-			d->kineticTimer.start(gTimerInterval);
-		}
+//		if (!d->kineticTimer.isActive()) {
+//			d->kineticTimer.start(gTimerInterval);
+//		}
 	} else {
 		QVector2D offset(-panGesture->delta().toPoint());
 		d->lastVerticalScrollBarPosition = d->scrollArea->verticalScrollBar()->value();
@@ -178,9 +178,9 @@ void QsKineticScroller::onMouseMove(QMouseEvent *mouseEvent)
 			d->lastMouseYPos = mouseEvent->pos().y();
 			d->lastMouseXPos = mouseEvent->pos().x();
 
-			if (!d->kineticTimer.isActive()) {
-				d->kineticTimer.start(gTimerInterval);
-			}
+//			if (!d->kineticTimer.isActive()) {
+//				d->kineticTimer.start(gTimerInterval);
+//			}
 		}
 	} else {
 		// manual scroll
