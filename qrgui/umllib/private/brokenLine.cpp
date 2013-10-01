@@ -15,12 +15,11 @@ BrokenLine::BrokenLine(EdgeElement *edge)
 
 void BrokenLine::handleEdgeMove(QPointF const &pos)
 {
-	QPolygonF line = mEdge->line();
-
 	if (mDragType == EdgeElement::noPort) {
 		mDragType = addPoint(mDragStartPoint);
 	}
 
+	QPolygonF line = mEdge->line();
 	line[mDragType] = SettingsManager::value("ActivateGrid").toBool() ? alignedPoint(pos) : pos;
 	mEdge->setLine(line);
 }

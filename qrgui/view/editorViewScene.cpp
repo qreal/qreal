@@ -574,7 +574,7 @@ EdgeElement * EditorViewScene::edgeForInsertion(QPointF const &scenePos)
 			QSizeF portSize(kvadratik, kvadratik);
 			QRectF startPort(edge->mapToScene(edge->line().first()) - QPointF(kvadratik / 2, kvadratik / 2), portSize);
 			QRectF endPort(edge->mapToScene(edge->line().last()) - QPointF(kvadratik / 2, kvadratik / 2), portSize);
-			if (startPort.contains(scenePos) || endPort.contains(scenePos)) {
+			if (!startPort.contains(scenePos) && !endPort.contains(scenePos)) {
 				return edge;
 			}
 		}
@@ -632,13 +632,11 @@ void EditorViewScene::returnElementsToOldPositions(const QMap<Id, QPointF> &shif
 
 void EditorViewScene::reConnectLink(EdgeElement * edgeElem)
 {
-	if (edgeElem->src()) {
-		arrangeNodeLinks(edgeElem->src());
-	}
-	if (edgeElem->dst()) {
-		arrangeNodeLinks(edgeElem->dst());
-	}
 	edgeElem->connectToPort();
+	QPolygonF line;
+	line << edgeElem->line()[0] << edgeElem->line().last();
+	edgeElem->setLine(line);
+	edgeElem->layOut();
 }
 
 void EditorViewScene::arrangeNodeLinks(NodeElement* node) const
