@@ -1,1 +1,1 @@
-static float %1;
+static float @@NAME@@;

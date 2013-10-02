@@ -1,1 +1,1 @@
-static int %1;
+static int @@NAME@@;

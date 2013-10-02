@@ -1,1 +1,1 @@
-static const int %1 = %2;
+static const int @@NAME@@ = @@VALUE@@;

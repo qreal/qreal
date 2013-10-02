@@ -37,13 +37,13 @@ QString Variables::generateVariableString() const
 
 	// TODO: read it from template
 	foreach (QString const &intConst, intConsts.keys()) {
-		result += QString(intConstantDeclaration()).arg(intConst
-				, QString::number(intConsts[intConst]));
+		result += QString(intConstantDeclaration()).replace("@@NAME@@", intConst)
+				.replace("@@VALUE@@", QString::number(intConsts[intConst]));
 	}
 
 	foreach (QString const &floatConst, floatConsts.keys()) {
-		result += QString(floatConstantDeclaration()).arg(floatConst
-				, QString::number(floatConsts[floatConst]));
+		result += QString(floatConstantDeclaration()).replace("@@NAME@@", floatConst)
+				.replace("@@VALUE@@", QString::number(floatConsts[floatConst]));
 	}
 
 	foreach (QString const &curVariable, mVariables.keys()) {
@@ -52,9 +52,9 @@ QString Variables::generateVariableString() const
 		}
 		// If every code path decided that this variable has int type
 		// then it has int one. Unknown types are maximal ones (float)
-		QString const pattern = mVariables.value(curVariable) == enums::variableType::intType
+		QString pattern = mVariables.value(curVariable) == enums::variableType::intType
 				? intVariableDeclaration() : floatVariableDeclaration();
-		result += pattern.arg(curVariable);
+		result += pattern.replace("@@NAME@@", curVariable);
 	}
 
 	result += mManualDeclarations.join('\n');
