@@ -1,1 +1,1 @@
-static const float %1 = %2;
+static const float @@NAME@@ = @@VALUE@@;

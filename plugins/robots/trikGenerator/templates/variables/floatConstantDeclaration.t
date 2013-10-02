@@ -1,1 +1,1 @@
-const var %1 = %2;
+const var @@NAME@@ = @@VALUE@@;
