@@ -32,11 +32,6 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	connect(mUi->tcpRadioButton, SIGNAL(toggled(bool)), this, SLOT(onSomethingChanged()));
 
 	connect(mUi->manualComPortCheckbox, SIGNAL(toggled(bool)), this, SLOT(manualComPortCheckboxChecked(bool)));
-
-	connect(mUi->d2ModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
-	connect(mUi->nullModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
-	connect(mUi->nxtModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
-	connect(mUi->trikModelRadioButton, SIGNAL(toggled(bool)), this, SLOT(refreshCommunicationGroup()));
 	connect(mUi->textVisibleCheckBox, SIGNAL(toggled(bool)), this, SIGNAL(textVisibleChanged(bool)));
 
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
