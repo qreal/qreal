@@ -2,6 +2,7 @@
 
 #include <QtCore/QUuid>
 #include <QtCore/QDebug>
+#include <QMessageBox>
 
 using namespace qReal;
 using namespace models::details::modelsImplementation;
@@ -175,6 +176,12 @@ bool AbstractModel::dropMimeData(QMimeData const *data, Qt::DropAction action, i
 
 	Id id = Id::loadFromString(idString);
 	Q_ASSERT(id.idSize() == 4);
+
+    if (!mEditorManagerInterface.isRootDiagramNode(id) && parentItem->id() == rootId()) {
+        QMessageBox messageBox;
+        messageBox.warning(0, tr("Error"), tr("This element can't be root."));
+        return false;
+    }
 
 	if (mModelItems.contains(id)) {
 		modelAssistInterface()->changeParent(id, parentItem->id());
