@@ -1,1 +1,1 @@
-brick.delay(@@DELAY@@);
+brick.wait(@@DELAY@@);
