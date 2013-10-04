@@ -1031,7 +1031,9 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Цвет" type="Color" name="Color"/>
+						<property displayedName="Цвет" type="Color" name="Color">
+							<default>Красный</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="SensorBlock"/>
