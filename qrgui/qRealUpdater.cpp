@@ -2,30 +2,29 @@
 
 using namespace qReal;
 
-QRealUpdater::QRealUpdater(char *argv[])
+QRealUpdater::QRealUpdater(char *applicationPath)
 	: QObject()
-	, mHasAnswer(false)
 	, mHasNewUpdates(false)
 	, mUpdaterProcess(NULL)
-	, mQRealPath(argv[0])
+	, mQRealPath(applicationPath)
 
 {
 	mUpdaterPath = QFileInfo(mQRealPath).absolutePath() + "/QRealUpdater/";
-	SettingsManager::instance()->load();
 }
 
 bool QRealUpdater::hasUpdates()
 {
-
-	while (!mHasAnswer) {
-		QCoreApplication::processEvents();
-	}
 	return mHasNewUpdates;
 }
 
 void QRealUpdater::startUpdater()
 {
+	if (!hasUpdatePermission()) {
+		mHasNewUpdates = false;
+		return;
+	}
 	executeUpdater();
+	transferInfo();
 }
 
 void QRealUpdater::executeUpdater()
@@ -39,16 +38,34 @@ void QRealUpdater::executeUpdater()
 	mUpdaterProcess = new QProcess();
 	mUpdaterProcess->setWorkingDirectory(mUpdaterPath);
 
-	connect(mUpdaterProcess, SIGNAL(readyRead()), this, SLOT(readAnswer()));
-
 	mUpdaterProcess->start(programPath, arguments);
+}
 
+void QRealUpdater::transferInfo()
+{
 	mUpdaterProcess->write(QString(mQRealPath + "\n").toUtf8());
+	mUpdaterProcess->waitForReadyRead(updaterTimeout);
+	readAnswer();
+}
+
+bool QRealUpdater::hasUpdatePermission()
+{
+	SettingsManager::instance()->load();
+	return !SettingsManager::value("version", "").toString().isEmpty()
+			&& SettingsManager::value("updaterActive", true).toBool();
+}
+
+void QRealUpdater::prepareForClose()
+{
+	SettingsManager::setValue("version", "");  // 'couz I cant just get version from inside
+	SettingsManager::instance()->saveData();
 }
 
 void QRealUpdater::readAnswer()
 {
 	QString input(mUpdaterProcess->readAll());
 	mHasNewUpdates = input.contains("Terminate!");
-	mHasAnswer = true;
+	if (mHasNewUpdates) {
+		prepareForClose();
+	}
 }

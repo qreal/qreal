@@ -11,16 +11,20 @@ class QRealUpdater : public QObject
 {
 	Q_OBJECT
 public:
-	explicit QRealUpdater(char *argv[]);
+	explicit QRealUpdater(char *applicationPath);
 
 	bool hasUpdates();
 
 	void startUpdater();
 
 protected:
+	bool hasUpdatePermission();
 	void executeUpdater();
+	void transferInfo();
 
-	bool mHasAnswer;
+	void prepareForClose();
+
+	static int const updaterTimeout = 1000;
 	bool mHasNewUpdates;
 	QProcess *mUpdaterProcess;
 	QString const mQRealPath;
@@ -28,6 +32,5 @@ protected:
 
 protected slots:
 	void readAnswer();
-
 };
 

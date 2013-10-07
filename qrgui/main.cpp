@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 	app.setStyle(new WindowsModernStyle());
 #endif
 
-	QRealUpdater updater(argv);
+	QRealUpdater updater(argv[0]);
 	updater.startUpdater();
 	if (updater.hasUpdates()) {
 		return 0;
