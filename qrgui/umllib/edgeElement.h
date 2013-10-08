@@ -136,7 +136,7 @@ public:
 	NodeElement *getNodeAt(QPointF const &position, bool isStart);
 
 	/// Determine on which side of a node (top, bottom, right or left) the link's end is placed
-	NodeSide defineNodePortSide(bool isStart);
+	NodeSide defineNodePortSide(bool isStart) const;
 
 	/// Align link's intermediate points to grid
 	void alignToGrid();

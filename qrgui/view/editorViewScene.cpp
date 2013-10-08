@@ -574,7 +574,7 @@ EdgeElement * EditorViewScene::edgeForInsertion(QPointF const &scenePos)
 			QSizeF portSize(kvadratik, kvadratik);
 			QRectF startPort(edge->mapToScene(edge->line().first()) - QPointF(kvadratik / 2, kvadratik / 2), portSize);
 			QRectF endPort(edge->mapToScene(edge->line().last()) - QPointF(kvadratik / 2, kvadratik / 2), portSize);
-			if (startPort.contains(scenePos) || endPort.contains(scenePos)) {
+			if (!startPort.contains(scenePos) && !endPort.contains(scenePos)) {
 				return edge;
 			}
 		}
@@ -632,13 +632,11 @@ void EditorViewScene::returnElementsToOldPositions(const QMap<Id, QPointF> &shif
 
 void EditorViewScene::reConnectLink(EdgeElement * edgeElem)
 {
-	if (edgeElem->src()) {
-		arrangeNodeLinks(edgeElem->src());
-	}
-	if (edgeElem->dst()) {
-		arrangeNodeLinks(edgeElem->dst());
-	}
 	edgeElem->connectToPort();
+	QPolygonF line;
+	line << edgeElem->line()[0] << edgeElem->line().last();
+	edgeElem->setLine(line);
+	edgeElem->layOut();
 }
 
 void EditorViewScene::arrangeNodeLinks(NodeElement* node) const
@@ -897,22 +895,25 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 {
-	QMenu menu;
+	if (mContextMenu.isVisible()) {
+		mContextMenu.close();
+	}
 
 	disableActions(e);
-	menu.addActions(mContextMenuActions);
+	mContextMenu.clear();
+	mContextMenu.addActions(mContextMenuActions);
 
 	QSignalMapper *createChildMapper = NULL;
 	if (e) {
 		QList<ContextMenuAction*> elementActions = e->contextMenuActions(e->mapFromScene(pos));
 
 		if (!elementActions.isEmpty()) {
-			menu.addSeparator();
+			mContextMenu.addSeparator();
 		}
 
 		foreach (ContextMenuAction* action, elementActions) {
 			action->setEventPos(e->mapFromScene(pos));
-			menu.addAction(action);
+			mContextMenu.addAction(action);
 
 			connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()), Qt::UniqueConnection);
 			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
@@ -920,7 +921,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 		if (e->createChildrenFromMenu() && !mWindow->editorManager().containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
-			QMenu *createChildMenu = menu.addMenu(tr("Add child"));
+			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
 			createChildMapper = new QSignalMapper();
 			foreach (Id const &type, mWindow->editorManager().containedTypes(e->id().type())) {
 				QAction *createAction = createChildMenu->addAction(mWindow->editorManager().friendlyName(type));
@@ -930,11 +931,11 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 			}
 		}
 
-		menu.addSeparator();
-		mExploser->createConnectionSubmenus(menu, e);
+		mContextMenu.addSeparator();
+		mExploser->createConnectionSubmenus(mContextMenu, e);
 	}
 
-	menu.exec(QCursor::pos());
+	mContextMenu.exec(QCursor::pos());
 
 	enableActions();
 	delete createChildMapper;

@@ -778,7 +778,7 @@ QList<PossibleEdge> EdgeElement::getPossibleEdges()
 	return mPossibleEdges;
 }
 
-EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart)
+EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart) const
 {
 	NodeElement const * const node = isStart ? mSrc : mDst;
 	if (!node) {
@@ -786,7 +786,7 @@ EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart)
 	}
 
 	QPointF pos = node->portPos(isStart ? mPortFrom : mPortTo);
-	QRectF bounds = node->boundingRect();
+	QRectF const bounds = node->contentsRect();
 
 	// divide bounding rectangle with it's diagonals, then determine in which part the port lies
 	bool isTop = pos.y() < bounds.height() / bounds.width() * pos.x();

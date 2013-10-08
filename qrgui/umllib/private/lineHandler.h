@@ -112,6 +112,9 @@ protected:
 	/// Highlight ports of node under link's end
 	void highlightPorts(bool isStart);
 
+	/// Clear highlights
+	void dehighlightPorts();
+
 	/// Draw a port with a given portNumber
 	virtual void drawPort(QPainter *painter, int portNumber);
 
