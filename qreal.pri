@@ -13,6 +13,7 @@ SUBDIRS = \
 	plugins \
 	qrkernel \
 	qrutils \
+	qrupdater \
 	thirdparty \
 
 qrutils.depends = qrkernel
@@ -20,6 +21,8 @@ qrrepo.depends = qrkernel qrutils
 qrxc.depends = qrutils
 qrmc.depends = qrrepo
 qrmc.file = qrmc/qrmc-lib.pro
+qrupdater.file = qrupdater/softUpdater.pro
+
 
 qrgui.depends = \
 #	doc \
@@ -28,6 +31,7 @@ qrgui.depends = \
 	qrutils \
 	qrkernel \
 	qrmc \
+	qrupdater \
 	thirdparty \
 
 plugins.depends = \
