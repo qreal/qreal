@@ -40,9 +40,13 @@ QString MasterGeneratorBase::generate()
 	}
 
 	semantics::SemanticTree const *mainControlFlow = mReadableControlFlowGenerator->generate();
+	if (!mainControlFlow) {
+		return QString();
+	}
+
 	QString const mainCode = mainControlFlow->toString(1);
 	bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator);
-	if (!mainControlFlow || !subprogramsResult) {
+	if (!subprogramsResult) {
 		return QString();
 	}
 
