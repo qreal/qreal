@@ -1219,18 +1219,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="741"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="97"/>
+        <source>Black</source>
+        <translation>Чёрный</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="98"/>
+        <source>Blue</source>
+        <translation>Синий</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="99"/>
+        <source>Green</source>
+        <translation>Зелёный</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="100"/>
+        <source>Yellow</source>
+        <translation>Жёлтый</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="101"/>
+        <source>Red</source>
+        <translation>Красный</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="743"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="741"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="760"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="743"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="762"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="760"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="762"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>
