@@ -253,10 +253,11 @@ QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum co
 	if (mSensorsConfiguration.type(port) == robots::enums::sensorType::unused) {
 		return QImage();
 	}
+
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
 	qreal const width = sensorWidth / 2.0;
-	QRectF const scanningRect = QRectF(position.x() -  width, position.y() - width
+	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width
 			, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
@@ -265,8 +266,8 @@ QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum co
 	QBrush brush(Qt::SolidPattern);
 	brush.setColor(Qt::white);
 	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::black));
-	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
+	painter.setPen(QPen(Qt::white));
+	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
 
 	bool const wasSelected = mD2ModelWidget->sensorItems()[port]->isSelected();
 	mD2ModelWidget->setSensorVisible(port, false);
