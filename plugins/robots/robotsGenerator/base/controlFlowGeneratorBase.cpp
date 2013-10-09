@@ -37,7 +37,7 @@ semantics::SemanticTree *ControlFlowGeneratorBase::generate()
 	}
 
 	mErrorsOccured = false;
-	mSemanticTree = new semantics::SemanticTree(customizer(), initialNode(), this);
+	mSemanticTree = new semantics::SemanticTree(customizer(), initialNode(), mIsMainGenerator, this);
 
 	// This will start dfs on model graph with processing every block
 	// in subclasses which must construct control flow in handlers
