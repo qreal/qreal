@@ -1784,12 +1784,12 @@
 <context>
     <name>PreferencesEditorPage</name>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="516"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="521"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="523"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="528"/>
         <source>Indent</source>
         <translation>Отступ</translation>
     </message>
@@ -1829,22 +1829,22 @@
         <translation>Связи</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="423"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="428"/>
         <source>Line mode</source>
         <translation>Тип связей</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="405"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="410"/>
         <source>broken</source>
         <translation>Ломаные линии</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="410"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="415"/>
         <source>square</source>
         <translation>Прямоугольные линии</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="415"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="420"/>
         <source>curve</source>
         <translation>Кривые Безье</translation>
     </message>
@@ -1853,27 +1853,27 @@
         <translation type="obsolete">Связи-петли</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="634"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="639"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="650"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="655"/>
         <source>   Representation   </source>
         <translation>Представление</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="677"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="682"/>
         <source>Icons  and names</source>
         <translation>Иконки и названия</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="682"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="687"/>
         <source>Icons</source>
         <translation>Иконки</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="657"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="662"/>
         <source>   Count of items in a row </source>
         <translation>Количество иконок в строке</translation>
     </message>
@@ -1893,42 +1893,47 @@
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="436"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="405"/>
+        <source>unset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="441"/>
         <source>Loop edges indent</source>
         <translation>Отступ связей-петель</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="474"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="479"/>
         <source>Embedded Linkers</source>
         <translation>Встроенные линкеры</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="533"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="538"/>
         <source>Labels</source>
         <translation>Надписи на элементах</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="549"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="554"/>
         <source>Enable move</source>
         <translation>Разрешить перемещать</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="559"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="564"/>
         <source>Enable resize</source>
         <translation>Разрешить изменять размер</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="569"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="574"/>
         <source>Label distance</source>
         <translation>Расстояние от надписей до элемента</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="605"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="610"/>
         <source>Zoom factor</source>
         <translation>Коэффициент масштабирования</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.ui" line="589"/>
+        <location filename="dialogs/preferencesPages/editorPage.ui" line="594"/>
         <source>Zoom</source>
         <translation>Увеличение</translation>
     </message>
@@ -1948,17 +1953,17 @@
         <translation>Выбрать шрифт</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="148"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="149"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="148"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="149"/>
         <source>You should restart QReal:Robots to apply changes</source>
         <translation>Перезапустите программу, чтобы применить изменения</translation>
     </message>
     <message>
-        <location filename="dialogs/preferencesPages/editorPage.cpp" line="148"/>
+        <location filename="dialogs/preferencesPages/editorPage.cpp" line="149"/>
         <source>Ok</source>
         <translation>ОК</translation>
     </message>
@@ -3617,9 +3622,14 @@
 <context>
     <name>qReal::EdgeElement</name>
     <message>
-        <location filename="umllib/edgeElement.cpp" line="49"/>
+        <location filename="umllib/edgeElement.cpp" line="50"/>
         <source>Reverse</source>
         <translation>Развернуть</translation>
+    </message>
+    <message>
+        <location filename="umllib/edgeElement.cpp" line="51"/>
+        <source>Change shape type</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3716,24 +3726,24 @@
 <context>
     <name>qReal::EditorViewScene</name>
     <message>
-        <location filename="view/editorViewScene.cpp" line="334"/>
-        <location filename="view/editorViewScene.cpp" line="406"/>
+        <location filename="view/editorViewScene.cpp" line="331"/>
+        <location filename="view/editorViewScene.cpp" line="402"/>
         <source>Discard</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="337"/>
+        <location filename="view/editorViewScene.cpp" line="334"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="397"/>
-        <location filename="view/editorViewScene.cpp" line="407"/>
+        <location filename="view/editorViewScene.cpp" line="393"/>
+        <location filename="view/editorViewScene.cpp" line="403"/>
         <source>Connect with the current item</source>
         <translation>Соединить с данным элементом</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="891"/>
+        <location filename="view/editorViewScene.cpp" line="924"/>
         <source>Add child</source>
         <translation>Добавить элемент</translation>
     </message>
@@ -4835,14 +4845,6 @@
     <message>
         <source>2D model saves (*.xml)</source>
         <translation type="obsolete">Сохранения 2D-модели (*.xml)</translation>
-    </message>
-</context>
-<context>
-    <name>qReal::models::details::modelsImplementation::AbstractModel</name>
-    <message>
-        <location filename="models/details/modelsImplementation/abstractModel.cpp" line="28"/>
-        <source>name</source>
-        <translation type="unfinished">имя</translation>
     </message>
 </context>
 <context>

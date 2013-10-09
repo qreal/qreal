@@ -280,14 +280,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>GridParameters</name>
-    <message>
-        <source>Show grid1</source>
-        <oldsource>Show grid</oldsource>
-        <translation type="obsolete">Сетка1</translation>
-    </message>
-</context>
-<context>
     <name>NxtDisplay</name>
     <message>
         <location filename="details/nxtDisplay.ui" line="435"/>
@@ -1219,18 +1211,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="741"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="97"/>
+        <source>Black</source>
+        <translation>Чёрный</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="98"/>
+        <source>Blue</source>
+        <translation>Синий</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="99"/>
+        <source>Green</source>
+        <translation>Зелёный</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="100"/>
+        <source>Yellow</source>
+        <translation>Жёлтый</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="101"/>
+        <source>Red</source>
+        <translation>Красный</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="743"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="741"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="760"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="743"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="762"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="760"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="762"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>
@@ -1238,8 +1255,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
     <message>
-        <source>Show grid</source>
-        <oldsource>Show grid223</oldsource>
+        <source>Grid</source>
         <translation type="obsolete">Сетка</translation>
     </message>
 </context>

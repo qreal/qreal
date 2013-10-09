@@ -17,6 +17,8 @@ LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
 
 TRANSLATIONS = robotsGenerator_ru.ts
 
+RESOURCES = robotsGenerator.qrc
+
 HEADERS += \
 	robotsGeneratorPlugin.h \
 	robotsGeneratorDeclSpec.h \

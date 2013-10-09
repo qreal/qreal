@@ -15,7 +15,8 @@
     </message>
     <message>
         <location filename="base/primaryControlFlowValidator.cpp" line="68"/>
-        <source>Final node must not have outgioing links</source>
+        <source>Final node must not have outgoing links</source>
+        <oldsource>Final node must not have outgioing links</oldsource>
         <translation>От блока &quot;Конец&quot; не должно отходить связей</translation>
     </message>
     <message>

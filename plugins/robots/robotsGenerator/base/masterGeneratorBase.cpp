@@ -40,14 +40,19 @@ QString MasterGeneratorBase::generate()
 	}
 
 	semantics::SemanticTree const *mainControlFlow = mReadableControlFlowGenerator->generate();
+	if (!mainControlFlow) {
+		return QString();
+	}
+
+	QString const mainCode = mainControlFlow->toString(1);
 	bool const subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator);
-	if (!mainControlFlow || !subprogramsResult) {
+	if (!subprogramsResult) {
 		return QString();
 	}
 
 	QString resultCode = readTemplate("main.t");
 	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->generatedCode());
-	resultCode.replace("@@MAIN_CODE@@", mainControlFlow->toString(1));
+	resultCode.replace("@@MAIN_CODE@@", mainCode);
 	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->initCode(), 1));
 	resultCode.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
