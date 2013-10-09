@@ -1190,8 +1190,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 				title->startTextInteraction();
 				return;
 			}
-		}
-		else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
+		} else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
 			event->accept();
 			mExploser->handleDoubleClick(element->logicalId());
 		}

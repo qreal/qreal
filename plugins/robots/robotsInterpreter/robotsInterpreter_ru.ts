@@ -280,14 +280,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>GridParameters</name>
-    <message>
-        <source>Show grid1</source>
-        <oldsource>Show grid</oldsource>
-        <translation type="obsolete">Сетка1</translation>
-    </message>
-</context>
-<context>
     <name>NxtDisplay</name>
     <message>
         <location filename="details/nxtDisplay.ui" line="435"/>
@@ -1263,8 +1255,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
     <message>
-        <source>Show grid</source>
-        <oldsource>Show grid223</oldsource>
+        <source>Grid</source>
         <translation type="obsolete">Сетка</translation>
     </message>
 </context>
