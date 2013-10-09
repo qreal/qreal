@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 
 #include <qrrepo/repoApi.h>
+#include "robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {
@@ -10,11 +11,11 @@ namespace generators {
 namespace simple {
 
 /// Binds property from repo or a static string to a given substring of a given data
-class Binding
+class ROBOTS_GENERATOR_EXPORT Binding
 {
 public:
 	/// Can be overriden for creating WPF-like bindings with converters
-	class ConverterInterface
+	class ROBOTS_GENERATOR_EXPORT ConverterInterface
 	{
 	public:
 		virtual ~ConverterInterface();
@@ -24,12 +25,19 @@ public:
 
 	/// Can be overloaded for creating the converter that splits given string
 	/// into multiple tokens and converts each of them
-	class MultiConverterInterface
+	class ROBOTS_GENERATOR_EXPORT MultiConverterInterface
 	{
 	public:
 		virtual ~MultiConverterInterface();
 
 		virtual QStringList convert(QString const &data) const = 0;
+	};
+
+	/// Doesn`t process input string returning itself
+	class ROBOTS_GENERATOR_EXPORT EmptyConverter : public ConverterInterface
+	{
+	public:
+		virtual QString convert(QString const &data) const;
 	};
 
 	/// Creates new instance of binding that simply replaces given label with a given value
@@ -60,12 +68,6 @@ public:
 			, Id const &id, QString &data);
 
 private:
-	class EmptyConverter : public ConverterInterface
-	{
-	public:
-		virtual QString convert(QString const &data) const;
-	};
-
 	Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo);
 
 	Binding(QString const &label, QString const &propertyOrValue, bool takeFromRepo

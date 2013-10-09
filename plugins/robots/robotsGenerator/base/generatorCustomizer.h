@@ -2,6 +2,7 @@
 
 #include <qrkernel/ids.h>
 #include "generatorFactoryBase.h"
+#include "robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {
@@ -25,7 +26,7 @@ enum Semantics {
 /// This class must be inherited in each concrete generator. Implementation
 /// must customize such aspects like blocks-semantics mapping and factory
 /// for producing different generator parts.
-class GeneratorCustomizer
+class ROBOTS_GENERATOR_EXPORT GeneratorCustomizer
 {
 public:
 	// TODO: make it protected
