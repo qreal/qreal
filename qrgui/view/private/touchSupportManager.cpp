@@ -115,8 +115,10 @@ bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
 	if (gestureEvent->gesture(Qt::TapGesture)) {
 		mScroller.onTap();
 	} else if (QGesture *tapAndHold = gestureEvent->gesture(Qt::TapAndHoldGesture)) {
-		processGestureState(tapAndHold);
-		simulateRightClick(static_cast<QTapAndHoldGesture *>(tapAndHold));
+		if (mFingersInGesture > 0) {
+			processGestureState(tapAndHold);
+			simulateRightClick(static_cast<QTapAndHoldGesture *>(tapAndHold));
+		}
 	} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
 		processGestureState(pan);
 		mScroller.onPan(pan);
