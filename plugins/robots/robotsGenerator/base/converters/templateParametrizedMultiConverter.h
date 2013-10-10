@@ -2,6 +2,7 @@
 
 #include "../simpleGenerators/binding.h"
 #include "../templateParametrizedEntity.h"
+#include "robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {
@@ -9,7 +10,7 @@ namespace generators {
 namespace converters {
 
 /// A base class for all multi-converters that use external templates
-class TemplateParametrizedMultiConverter : public simple::Binding::MultiConverterInterface
+class ROBOTS_GENERATOR_EXPORT TemplateParametrizedMultiConverter : public simple::Binding::MultiConverterInterface
 		, public TemplateParametrizedEntity
 {
 public:

@@ -2,6 +2,7 @@
 
 #include "abstractSimpleGenerator.h"
 #include "binding.h"
+#include "robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {
@@ -9,7 +10,7 @@ namespace generators {
 namespace simple {
 
 /// A base for all generators that use bindings and templates for generating code
-class BindingGenerator : public AbstractSimpleGenerator
+class ROBOTS_GENERATOR_EXPORT BindingGenerator : public AbstractSimpleGenerator
 {
 public:
 	BindingGenerator(qrRepo::RepoApi const &repo
