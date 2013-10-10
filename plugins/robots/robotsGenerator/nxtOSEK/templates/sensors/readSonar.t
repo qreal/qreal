@@ -1,1 +1,1 @@
-ecrobot_get_sonar_sensor(@@PORT@@) * 100 / 1023
+ecrobot_get_sonar_sensor(@@PORT@@)
