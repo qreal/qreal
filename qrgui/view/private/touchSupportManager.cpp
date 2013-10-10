@@ -10,6 +10,7 @@ using namespace qReal::view::details;
 TouchSupportManager::TouchSupportManager(EditorView *editorView)
 	: mEditorView(editorView)
 	, mGestureIsRunning(false)
+	, mFingersInGesture(0)
 {
 	mEditorView->grabGesture(Qt::TapGesture);
 	mEditorView->grabGesture(Qt::TapAndHoldGesture);
