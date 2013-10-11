@@ -40,6 +40,8 @@ bool Diagram::init(QDomElement const &diagramElement)
 			}
 		} else if (element.nodeName() == "palette") {
 			initPaletteGroups(element);
+		} else if (element.nodeName() == "subDiagramNames") {
+			initSubDiagramNames(element);
 		} else {
 			qDebug() << "ERROR: unknown tag" << element.nodeName();
 		}
@@ -161,6 +163,20 @@ void Diagram::initPaletteGroups(const QDomElement &paletteGroupsElement)
 	}
 }
 
+void Diagram::initSubDiagramNames(const QDomElement &subDiagramNamesElement)
+{
+	for (QDomElement element = subDiagramNamesElement.firstChildElement("subDiagram");
+			!element.isNull();
+			element = element.nextSiblingElement("subDiagram")) {
+
+		mSubDiagramNames.append(element.attribute("name"));
+	}
+}
+
+QStringList Diagram::subDiagramNames() const
+{
+	return mSubDiagramNames;
+}
 
 bool Diagram::resolve()
 {

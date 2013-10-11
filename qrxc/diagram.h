@@ -4,6 +4,7 @@
 #include <QtXml/QDomElement>
 #include <QtCore/QMap>
 #include <QtCore/QPair>
+#include <QtCore/QStringList>
 
 class Type;
 class Editor;
@@ -20,6 +21,7 @@ public:
 	QMap<QString, Type*> types() const;
 	QString name() const;
 	QString nodeName() const;
+	QStringList subDiagramNames() const;
 	QString displayedName() const;
 	QString getGroupsXML() const;
 	QMap<QString, QStringList> paletteGroups() const;
@@ -41,8 +43,10 @@ private:
 	QMap<QString, QStringList> mPaletteGroups;
 	QMap<QString, QString> mPaletteGroupsDescriptions;
 	QList<ImportSpecification> mImports;
+	QStringList mSubDiagramNames;
 
 	bool initGraphicTypes(QDomElement const &graphicTypesElement);
 	bool initNonGraphicTypes(QDomElement const &nonGraphicTypesElement);
 	void initPaletteGroups(QDomElement const &paletteGroupsElement);
+	void initSubDiagramNames(QDomElement const &subDiagramNamesElement);
 };

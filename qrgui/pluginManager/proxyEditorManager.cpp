@@ -209,6 +209,13 @@ QString ProxyEditorManager::diagramNodeName(QString const &editor, QString const
 	return mProxiedEditorManager->diagramNodeName(editor, diagram);
 }
 
+QStringList ProxyEditorManager::diagramNodeNames(QString const &editor, QString const &diagram) const
+{
+	Q_UNUSED(editor)
+	Q_UNUSED(diagram)
+	return QStringList();
+}
+
 void ProxyEditorManager::setProxyManager(EditorManagerInterface *editorManagerInterface)
 {
 	delete mProxiedEditorManager;
