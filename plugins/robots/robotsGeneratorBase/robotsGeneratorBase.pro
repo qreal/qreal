@@ -1,4 +1,26 @@
+QT += widgets
+
+TEMPLATE = lib
+CONFIG += plugin
+DESTDIR = ../../../bin/
+MOC_DIR = .moc
+RCC_DIR = .moc
+OBJECTS_DIR = .obj
+
+DEFINES += ROBOTS_GENERATOR_LIBRARY
+
+INCLUDEPATH += \
+	$$PWD/../../../ \
+	$$PWD/../../../qrgui \
+
+LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo
+
+TRANSLATIONS = robotsGeneratorBase_ru.ts
+
+RESOURCES = robotsGeneratorBase.qrc
+
 HEADERS += \
+	$$PWD/robotsGeneratorDeclSpec.h \
 	$$PWD/masterGeneratorBase.h \
 	$$PWD/generatorCustomizer.h \
 	$$PWD/controlFlowGeneratorBase.h \

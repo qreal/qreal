@@ -1,15 +1,15 @@
-#include "robotsGeneratorPlugin.h"
+#include "nxtGeneratorPlugin.h"
 
 #include <QtWidgets/QApplication>
 #include <QtCore/QDir>
 
 #include <qrutils/inFile.h>
-#include "nxtOSEK/nxtOsekMasterGenerator.h"
+#include "nxtOsekMasterGenerator.h"
 
 using namespace qReal;
 using namespace qReal::robots::generators;
 
-RobotsGeneratorPlugin::RobotsGeneratorPlugin()
+NxtGeneratorPlugin::NxtGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
 		, mFlashRobotAction(NULL)
 		, mUploadProgramAction(NULL)
@@ -21,12 +21,12 @@ RobotsGeneratorPlugin::RobotsGeneratorPlugin()
 	initHotKeyActions();
 }
 
-RobotsGeneratorPlugin::~RobotsGeneratorPlugin()
+NxtGeneratorPlugin::~NxtGeneratorPlugin()
 {
 	delete mFlashTool;
 }
 
-void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
+void NxtGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mRepo = dynamic_cast<qrRepo::RepoApi const *>(&configurator.logicalModelApi().logicalRepoApi());
@@ -35,7 +35,7 @@ void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 }
 
-QList<ActionInfo> RobotsGeneratorPlugin::actions()
+QList<ActionInfo> NxtGeneratorPlugin::actions()
 {
 	mGenerateCodeAction.setText(tr("Generate code"));
 	mGenerateCodeAction.setIcon(QIcon(":/icons/robots_generate_nxt.png"));
@@ -62,7 +62,7 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 			<< uploadProgramActionInfo;
 }
 
-void RobotsGeneratorPlugin::initHotKeyActions()
+void NxtGeneratorPlugin::initHotKeyActions()
 {
 	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
 	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
@@ -73,19 +73,19 @@ void RobotsGeneratorPlugin::initHotKeyActions()
 	mHotKeyActionInfos << generateActionInfo << uploadActionInfo;
 }
 
-QList<HotKeyActionInfo> RobotsGeneratorPlugin::hotKeyActions()
+QList<HotKeyActionInfo> NxtGeneratorPlugin::hotKeyActions()
 {
 	return mHotKeyActionInfos;
 }
 
-void RobotsGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
+void NxtGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
 {
 	foreach (ActionInfo const &actionInfo, info) {
 			actionInfo.action()->setEnabled(trigger);
 	}
 }
 
-bool RobotsGeneratorPlugin::generateRobotSourceCode()
+bool NxtGeneratorPlugin::generateRobotSourceCode()
 {
 	mProjectManager->save();
 	mMainWindowInterface->errorReporter()->clearErrors();
@@ -108,7 +108,7 @@ bool RobotsGeneratorPlugin::generateRobotSourceCode()
 	return true;
 }
 
-void RobotsGeneratorPlugin::flashRobot()
+void NxtGeneratorPlugin::flashRobot()
 {
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("flash.sh not found."\
@@ -118,7 +118,7 @@ void RobotsGeneratorPlugin::flashRobot()
 	}
 }
 
-void RobotsGeneratorPlugin::uploadProgram()
+void NxtGeneratorPlugin::uploadProgram()
 {
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found."\
@@ -130,7 +130,7 @@ void RobotsGeneratorPlugin::uploadProgram()
 	}
 }
 
-void RobotsGeneratorPlugin::checkNxtTools()
+void NxtGeneratorPlugin::checkNxtTools()
 {
 	QDir dir(qApp->applicationDirPath());
 	if (!QDir().exists(dir.absolutePath() + "/nxt-tools")) {

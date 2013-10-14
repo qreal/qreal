@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base/masterGeneratorBase.h"
+#include "masterGeneratorBase.h"
 
 namespace qReal {
 namespace robots {
@@ -13,7 +13,6 @@ public:
 	NxtOsekMasterGenerator(qrRepo::RepoApi const &repo
 			, ErrorReporterInterface &errorReporter
 			, Id const &diagramId);
-
 
 protected:
 	virtual GeneratorCustomizer *createCustomizer();
