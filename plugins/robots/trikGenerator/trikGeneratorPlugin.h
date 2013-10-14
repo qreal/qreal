@@ -2,9 +2,9 @@
 
 #include <QtCore/QTranslator>
 
-#include "qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "qrgui/toolPluginInterface/pluginConfigurator.h"
-#include "qrrepo/repoApi.h"
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrrepo/repoApi.h>
 
 namespace qReal {
 namespace robots {

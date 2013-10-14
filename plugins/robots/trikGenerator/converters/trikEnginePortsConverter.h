@@ -11,7 +11,7 @@ namespace converters {
 class TrikEnginePortsConverter : public TemplateParametrizedMultiConverter
 {
 public:
-	TrikEnginePortsConverter(QString const &pathToTemplates);
+	explicit TrikEnginePortsConverter(QString const &pathToTemplates);
 
 	virtual QStringList convert(QString const &data) const;
 };

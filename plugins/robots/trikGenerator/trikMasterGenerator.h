@@ -7,13 +7,13 @@ namespace robots {
 namespace generators {
 namespace trik {
 
+/// Master generator implementation for TRIK platform
 class TrikMasterGenerator : public MasterGeneratorBase
 {
 public:
 	TrikMasterGenerator(qrRepo::RepoApi const &repo
 			, ErrorReporterInterface &errorReporter
 			, Id const &diagramId);
-
 
 protected:
 	virtual GeneratorCustomizer *createCustomizer();

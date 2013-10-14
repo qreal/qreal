@@ -4,7 +4,7 @@
 #include <QtCore/QDir>
 
 #include <qrutils/inFile.h>
-#include "nxtOsekMasterGenerator.h"
+#include <nxtOsekMasterGenerator.h>
 
 using namespace qReal;
 using namespace qReal::robots::generators;

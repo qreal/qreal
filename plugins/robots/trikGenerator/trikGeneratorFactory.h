@@ -7,6 +7,7 @@ namespace robots {
 namespace generators {
 namespace trik {
 
+/// Generator factory implemtation for TRIK platform
 class TrikGeneratorFactory : public GeneratorFactoryBase
 {
 public:
