@@ -4,6 +4,8 @@
 #include <qrrepo/repoApi.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
+#include "robotsGeneratorDeclSpec.h"
+
 #include "simpleGenerators/abstractSimpleGenerator.h"
 #include "simpleGenerators/binding.h"
 
@@ -23,7 +25,7 @@ class GeneratorCustomizer;
 /// This class must be inherited in each concrete generator. Implementation
 /// must specify every generator part (starting from simple block generators
 /// and converters to init/terminate code generators and path to templates)
-class GeneratorFactoryBase : public QObject
+class ROBOTS_GENERATOR_EXPORT GeneratorFactoryBase : public QObject
 {
 public:
 	GeneratorFactoryBase(qrRepo::RepoApi const &repo
@@ -188,7 +190,6 @@ protected:
 	/// Implementation must prepare images controller
 	virtual void initImages();
 
-private:
 	qrRepo::RepoApi const &mRepo;
 	ErrorReporterInterface &mErrorReporter;
 	parts::Variables *mVariables;

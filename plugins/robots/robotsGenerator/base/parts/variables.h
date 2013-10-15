@@ -4,6 +4,8 @@
 #include <QtCore/QStringList>
 
 #include <qrrepo/repoApi.h>
+#include "base/templateParametrizedEntity.h"
+#include "robotsGeneratorDeclSpec.h"
 
 namespace qReal {
 namespace robots {
@@ -24,10 +26,10 @@ namespace parts {
 // TODO: make this class customizable in other generators
 
 /// Manages everything about variables and their types
-class Variables
+class ROBOTS_GENERATOR_EXPORT Variables : public TemplateParametrizedEntity
 {
 public:
-	Variables();
+	explicit Variables(QString const &pathToTemplates);
 
 	/// Tries to infer types for all variables declared in all function blocks
 	/// on the specified diagram
@@ -44,10 +46,17 @@ public:
 	/// will be deduplicated.
 	void appendManualDeclaration(QString const &variables);
 
+protected:
+	virtual QMap<QString, enums::variableType::VariableType> nonGenerableReservedVariables() const;
+	virtual QMap<QString, int> intConstants() const;
+	virtual QMap<QString, float> floatConstants() const;
+
+	virtual QString intConstantDeclaration() const;
+	virtual QString floatConstantDeclaration() const;
+	virtual QString intVariableDeclaration() const;
+	virtual QString floatVariableDeclaration() const;
+
 private:
-	QMap<QString, enums::variableType::VariableType> nonGenerableReservedVariables() const;
-	QMap<QString, int> intConstants() const;
-	QMap<QString, float> floatConstants() const;
 	QMap<QString, enums::variableType::VariableType> reservedVariables() const;
 
 	void inferTypes(QStringList const &expressions);

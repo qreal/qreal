@@ -106,5 +106,9 @@
         <file>templates/buttons/waitForBothButtons.t</file>
         <file>templates/buttons/waitForEnterOnly.t</file>
         <file>templates/buttons/waitForRunOnly.t</file>
+        <file>templates/variables/floatConstantDeclaration.t</file>
+        <file>templates/variables/floatVariableDeclaration.t</file>
+        <file>templates/variables/intConstantDeclaration.t</file>
+        <file>templates/variables/intVariableDeclaration.t</file>
     </qresource>
 </RCC>
