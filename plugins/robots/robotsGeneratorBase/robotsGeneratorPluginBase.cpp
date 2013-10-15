@@ -22,7 +22,7 @@ bool RobotsGeneratorPluginBase::generateCode()
 	mProjectManager->save();
 	mMainWindowInterface->errorReporter()->clearErrors();
 
-	MasterGeneratorBase *generator = masterGenerator();
+	MasterGeneratorBase * const generator = masterGenerator();
 	generator->initialize();
 
 	QString const generatedSrcPath = generator->generate();
