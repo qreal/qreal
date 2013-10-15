@@ -6,13 +6,14 @@
 #include <qrgui/toolPluginInterface/toolPluginInterface.h>
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
 #include <qrrepo/repoApi.h>
+#include "robotsGeneratorDeclSpec.h"
 #include "masterGeneratorBase.h"
 
 namespace qReal {
 namespace robots {
 namespace generators {
 
-class RobotsGeneratorPluginBase : public QObject, public qReal::ToolPluginInterface
+class ROBOTS_GENERATOR_EXPORT RobotsGeneratorPluginBase : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)

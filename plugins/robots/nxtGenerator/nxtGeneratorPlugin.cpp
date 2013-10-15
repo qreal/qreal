@@ -9,10 +9,10 @@ using namespace qReal;
 using namespace qReal::robots::generators;
 
 NxtGeneratorPlugin::NxtGeneratorPlugin()
-		: mGenerateCodeAction(NULL)
-		, mFlashRobotAction(NULL)
-		, mUploadProgramAction(NULL)
-		, mNxtToolsPresent(false)
+	: mGenerateCodeAction(NULL)
+	, mFlashRobotAction(NULL)
+	, mUploadProgramAction(NULL)
+	, mNxtToolsPresent(false)
 {
 	mAppTranslator.load(":/nxtGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);

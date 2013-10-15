@@ -4,6 +4,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QImage>
 
+#include "robotsGeneratorDeclSpec.h"
 #include "templateParametrizedEntity.h"
 
 namespace qReal {
@@ -15,7 +16,7 @@ namespace parts {
 // TODO: move this class into NxtOSEK-only generator
 
 /// Class responsible for everything with images generation
-class Images : public TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT Images : public TemplateParametrizedEntity
 {
 public:
 	explicit Images(QString const &pathToTemplates);
