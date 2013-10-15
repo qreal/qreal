@@ -156,6 +156,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtCore/QMap>\n"
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QPair>"
+//		<< "#include <QStringList>"
 		<< "\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
@@ -229,7 +230,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QIcon> mIconMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNameMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNodeNameMap;\n"
-		<< "\tQMap<QString, QStringList> subDiagramNamesMap;\n"
+		<< "\tQMap<QString, QStringList> mDiagramNamesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > mPropertyTypes;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > mPropertyDefault;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > mElementsNameMap;\n"
@@ -325,7 +326,16 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 		out() << "\tmDiagramNameMap[\"" << diagramName << "\"] = QString::fromUtf8(\""
 				<< diagram->displayedName() << "\");\n";
 		out() << "\tmDiagramNodeNameMap[\"" << diagramName << "\"] = \"" << diagram->nodeName() << "\"" << ";\n";
-		out() << "\n";
+		out() << "\tmDiagramNamesMap[\"" << diagramName << "\"] = (QString::fromUtf8(\"";
+		QStringList names = diagram->subDiagramNames();
+		QString last = "";
+		if (!names.isEmpty())
+			last = names.takeLast();
+		foreach (QString const & name, names) {
+			out() << name << ',';
+		}
+
+		out() << last << "\")).split(\',\');\n";
 	}
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
@@ -526,7 +536,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "}\n\n"
 
 		<< "QStringList " << mPluginName << "Plugin::diagramNodeNames(QString const &diagram) const\n{\n"
-		<< "\treturn subDiagramNamesMap[diagram];\n"
+		<< "\treturn mDiagramNamesMap[diagram];\n"
 		<< "}\n\n"
 
 		<< "QString " << mPluginName << "Plugin::diagramNodeName(QString const &diagram) const\n{\n"

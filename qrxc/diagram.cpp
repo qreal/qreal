@@ -40,7 +40,7 @@ bool Diagram::init(QDomElement const &diagramElement)
 			}
 		} else if (element.nodeName() == "palette") {
 			initPaletteGroups(element);
-		} else if (element.nodeName() == "subDiagramNames") {
+		} else if (element.nodeName() == "diagramNames") {
 			initSubDiagramNames(element);
 		} else {
 			qDebug() << "ERROR: unknown tag" << element.nodeName();
@@ -165,9 +165,9 @@ void Diagram::initPaletteGroups(const QDomElement &paletteGroupsElement)
 
 void Diagram::initSubDiagramNames(const QDomElement &subDiagramNamesElement)
 {
-	for (QDomElement element = subDiagramNamesElement.firstChildElement("subDiagram");
+	for (QDomElement element = subDiagramNamesElement.firstChildElement("diagram");
 			!element.isNull();
-			element = element.nextSiblingElement("subDiagram")) {
+			element = element.nextSiblingElement("diagram")) {
 
 		mSubDiagramNames.append(element.attribute("name"));
 	}
