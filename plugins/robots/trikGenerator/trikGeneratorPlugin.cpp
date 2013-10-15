@@ -5,12 +5,12 @@
 
 #include <QtCore/QDebug>
 
-#include <qrutils/inFile.h>
 #include "robotCommunication/tcpRobotCommunicator.h"
 #include "trikMasterGenerator.h"
 
 using namespace qReal;
-using namespace qReal::robots::generators::trik;
+using namespace qReal::robots::generators;
+using namespace trik;
 
 QString const scriptExtension = ".qts";
 
@@ -26,13 +26,6 @@ TrikGeneratorPlugin::TrikGeneratorPlugin()
 
 TrikGeneratorPlugin::~TrikGeneratorPlugin()
 {
-}
-
-void TrikGeneratorPlugin::init(PluginConfigurator const &configurator)
-{
-	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
-	mRepo = dynamic_cast<qrRepo::RepoApi const *>(&configurator.logicalModelApi().logicalRepoApi());
-	mProjectManager = &configurator.projectManager();
 }
 
 QList<ActionInfo> TrikGeneratorPlugin::actions()
@@ -57,27 +50,11 @@ QList<ActionInfo> TrikGeneratorPlugin::actions()
 			<< runProgramActionInfo << stopRobotActionInfo;
 }
 
-bool TrikGeneratorPlugin::generateCode()
+MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()
 {
-	mProjectManager->save();
-	mMainWindowInterface->errorReporter()->clearErrors();
-
-	TrikMasterGenerator generator(*mRepo
+	return new TrikMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
 			, mMainWindowInterface->activeDiagram());
-	generator.initialize();
-
-	QString const generatedSrcPath = generator.generate();
-	if (mMainWindowInterface->errorReporter()->wereErrors()) {
-		return false;
-	}
-
-	QString const generatedCode = utils::InFile::readAll(generatedSrcPath);
-	if (!generatedCode.isEmpty()) {
-		mMainWindowInterface->showInTextEditor(tr("Generated code"), generatedCode);
-	}
-
-	return true;
 }
 
 bool TrikGeneratorPlugin::uploadProgram()
