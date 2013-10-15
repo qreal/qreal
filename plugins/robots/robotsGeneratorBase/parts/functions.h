@@ -3,7 +3,7 @@
 #include <QtCore/QSet>
 
 #include "initTerminateCodeGenerator.h"
-#include "base/simpleGenerators/binding.h"
+#include "simpleGenerators/binding.h"
 
 namespace qReal {
 namespace robots {

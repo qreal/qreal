@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>robotsGenerator_ru.qm</file>
+        <file>robotsGeneratorBase_ru.qm</file>
     </qresource>
 </RCC>

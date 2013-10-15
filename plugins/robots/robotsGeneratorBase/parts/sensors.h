@@ -1,7 +1,7 @@
 #pragma once
 
 #include "initTerminateCodeGenerator.h"
-#include "base/simpleGenerators/binding.h"
+#include "simpleGenerators/binding.h"
 #include "plugins/robots/robotsInterpreter/sensorConstants.h"
 
 namespace qReal {

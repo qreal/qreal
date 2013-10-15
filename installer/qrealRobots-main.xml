@@ -36,6 +36,9 @@
                 <distributionFile>
                     <origin>%1/bin/qextserialport.dll</origin>
                 </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/robotsGeneratorBase.dll</origin>
+                </distributionFile>
                 <distributionDirectory>
                     <origin>%1/bin/help</origin>
                 </distributionDirectory>
@@ -79,7 +82,7 @@
             <platforms>windows</platforms>
             <distributionFileList>
                 <distributionFile>
-                    <origin>%1/bin/plugins/robotsGenerator.dll</origin>
+                    <origin>%1/bin/plugins/nxtGenerator.dll</origin>
                 </distributionFile>
                 <distributionFile>
                     <origin>%1/bin/plugins/robotsInterpreter.dll</origin>

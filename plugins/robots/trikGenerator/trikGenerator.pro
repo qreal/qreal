@@ -5,11 +5,12 @@ CONFIG += plugin
 DESTDIR = ../../../bin/plugins/
 MOC_DIR = .moc
 RCC_DIR = .moc
+OBJECTS_DIR = .obj
 
-LIBS += -L../../../bin -L../../../bin/plugins -lqrkernel -lqrutils -lqrrepo -lrobotsGenerator
+LIBS += -L../../../bin -lqrkernel -lqrutils -lqrrepo -lrobotsGeneratorBase
 
 INCLUDEPATH += \
-	$$PWD/../robotsGenerator/ \
+	$$PWD/../robotsGeneratorBase/ \
 	$$PWD/../../../ \
 	$$PWD/../../../qrgui \
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "robotsGeneratorDeclSpec.h"
 #include "primaryControlFlowValidator.h"
 #include "robotsDiagramVisitor.h"
 #include "semanticTree/semanticTree.h"
@@ -9,8 +10,10 @@ namespace robots {
 namespace generators {
 
 /// A base class for generators that build sementic tree from model in repo
-class ControlFlowGeneratorBase : public QObject, public RobotsDiagramVisitor
+class ROBOTS_GENERATOR_EXPORT ControlFlowGeneratorBase : public QObject, public RobotsDiagramVisitor
 {
+	Q_OBJECT
+
 public:
 	/// @param isThisDiagramMain 'true' if this generator generates code for main diagram
 	/// (main diagram is the one which was active when user requested generation)
