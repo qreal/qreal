@@ -1,4 +1,4 @@
-QT += widgets network
+QT += widgets
 
 TEMPLATE = lib
 CONFIG += plugin
