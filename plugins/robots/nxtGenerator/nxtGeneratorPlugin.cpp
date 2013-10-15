@@ -1,46 +1,42 @@
-#include "robotsGeneratorPlugin.h"
+#include "nxtGeneratorPlugin.h"
 
 #include <QtWidgets/QApplication>
 #include <QtCore/QDir>
 
-#include <qrutils/inFile.h>
-#include "nxtOSEK/nxtOsekMasterGenerator.h"
+#include <nxtOsekMasterGenerator.h>
 
 using namespace qReal;
 using namespace qReal::robots::generators;
 
-RobotsGeneratorPlugin::RobotsGeneratorPlugin()
-		: mGenerateCodeAction(NULL)
-		, mFlashRobotAction(NULL)
-		, mUploadProgramAction(NULL)
-		, mNxtToolsPresent(false)
+NxtGeneratorPlugin::NxtGeneratorPlugin()
+	: mGenerateCodeAction(NULL)
+	, mFlashRobotAction(NULL)
+	, mUploadProgramAction(NULL)
+	, mNxtToolsPresent(false)
 {
-	mAppTranslator.load(":/robotsGenerator_" + QLocale::system().name());
+	mAppTranslator.load(":/nxtGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
 	checkNxtTools();
 	initHotKeyActions();
 }
 
-RobotsGeneratorPlugin::~RobotsGeneratorPlugin()
+NxtGeneratorPlugin::~NxtGeneratorPlugin()
 {
 	delete mFlashTool;
 }
 
-void RobotsGeneratorPlugin::init(PluginConfigurator const &configurator)
+void NxtGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
-	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
-	mRepo = dynamic_cast<qrRepo::RepoApi const *>(&configurator.logicalModelApi().logicalRepoApi());
-	mProjectManager = &configurator.projectManager();
-
+	RobotsGeneratorPluginBase::init(configurator);
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 }
 
-QList<ActionInfo> RobotsGeneratorPlugin::actions()
+QList<ActionInfo> NxtGeneratorPlugin::actions()
 {
 	mGenerateCodeAction.setText(tr("Generate code"));
 	mGenerateCodeAction.setIcon(QIcon(":/icons/robots_generate_nxt.png"));
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
-	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateRobotSourceCode()));
+	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
 	mFlashRobotAction.setText(tr("Flash robot"));
 	ActionInfo flashRobotActionInfo(&mFlashRobotAction, "generators", "tools");
@@ -52,17 +48,11 @@ QList<ActionInfo> RobotsGeneratorPlugin::actions()
 
 	checkNxtTools();
 
-	/*
-	/// Set tabs, unused at the opening, enabled
-	QList<ActionInfo> unusedAtTheOpeningTab;
-	unusedAtTheOpeningTab << generateCodeActionInfo;
-	changeActiveTab(unusedAtTheOpeningTab, false);
-	*/
 	return QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo
 			<< uploadProgramActionInfo;
 }
 
-void RobotsGeneratorPlugin::initHotKeyActions()
+void NxtGeneratorPlugin::initHotKeyActions()
 {
 	mGenerateCodeAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_G));
 	mUploadProgramAction.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
@@ -73,42 +63,26 @@ void RobotsGeneratorPlugin::initHotKeyActions()
 	mHotKeyActionInfos << generateActionInfo << uploadActionInfo;
 }
 
-QList<HotKeyActionInfo> RobotsGeneratorPlugin::hotKeyActions()
+QList<HotKeyActionInfo> NxtGeneratorPlugin::hotKeyActions()
 {
 	return mHotKeyActionInfos;
 }
 
-void RobotsGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
+MasterGeneratorBase *NxtGeneratorPlugin::masterGenerator()
+{
+	return new nxtOsek::NxtOsekMasterGenerator(*mRepo
+			, *mMainWindowInterface->errorReporter()
+			, mMainWindowInterface->activeDiagram());
+}
+
+void NxtGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
 {
 	foreach (ActionInfo const &actionInfo, info) {
 			actionInfo.action()->setEnabled(trigger);
 	}
 }
 
-bool RobotsGeneratorPlugin::generateRobotSourceCode()
-{
-	mProjectManager->save();
-	mMainWindowInterface->errorReporter()->clearErrors();
-
-	nxtOsek::NxtOsekMasterGenerator generator(*mRepo
-			, *mMainWindowInterface->errorReporter()
-			, mMainWindowInterface->activeDiagram());
-	generator.initialize();
-
-	QString const pathToGeneratedCode = generator.generate();
-	if (mMainWindowInterface->errorReporter()->wereErrors()) {
-		return false;
-	}
-
-	QString const generatedCode = utils::InFile::readAll(pathToGeneratedCode);
-	if (!generatedCode.isEmpty()) {
-		mMainWindowInterface->showInTextEditor(tr("Generated code"), generatedCode);
-	}
-
-	return true;
-}
-
-void RobotsGeneratorPlugin::flashRobot()
+void NxtGeneratorPlugin::flashRobot()
 {
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("flash.sh not found."\
@@ -118,19 +92,19 @@ void RobotsGeneratorPlugin::flashRobot()
 	}
 }
 
-void RobotsGeneratorPlugin::uploadProgram()
+void NxtGeneratorPlugin::uploadProgram()
 {
 	if (!mNxtToolsPresent) {
 		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found."\
 				" Make sure it is present in QReal installation directory"));
 	} else {
-		if (generateRobotSourceCode()) {
+		if (generateCode()) {
 			mFlashTool->uploadProgram();
 		}
 	}
 }
 
-void RobotsGeneratorPlugin::checkNxtTools()
+void NxtGeneratorPlugin::checkNxtTools()
 {
 	QDir dir(qApp->applicationDirPath());
 	if (!QDir().exists(dir.absolutePath() + "/nxt-tools")) {

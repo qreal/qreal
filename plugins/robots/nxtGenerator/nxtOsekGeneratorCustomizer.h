@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base/generatorCustomizer.h"
+#include <generatorCustomizer.h>
 #include "nxtOsekGeneratorFactory.h"
 
 namespace qReal {

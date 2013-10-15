@@ -1,5 +1,6 @@
 #pragma once
 
+#include "robotsGeneratorDeclSpec.h"
 #include "controlFlowGeneratorBase.h"
 #include "semanticTree/semanticTree.h"
 #include "rules/semanticTransformationRule.h"
@@ -12,8 +13,10 @@ namespace generators {
 /// human style: it consists of if-operators, loop-blocks, switches and so on.
 /// If control flow can`t be represented with structured code generation process
 /// is considered to be unsuccessfull.
-class ReadableControlFlowGenerator : public ControlFlowGeneratorBase
+class ROBOTS_GENERATOR_EXPORT ReadableControlFlowGenerator : public ControlFlowGeneratorBase
 {
+	Q_OBJECT
+
 public:
 	ReadableControlFlowGenerator(
 			qrRepo::RepoApi const &repo
