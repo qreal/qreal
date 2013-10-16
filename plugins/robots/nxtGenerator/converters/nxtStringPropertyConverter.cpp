@@ -11,12 +11,12 @@ NxtStringPropertyConverter::NxtStringPropertyConverter(Variables const &variable
 	QString const formatStringCode =
 			"char *formatString(char *format, ...)\n"\
 			"{\n"\
-			"	char *buffer[256]n"\
+			"	char buffer[256];\n"\
 			"	va_list args;\n"\
 			"	va_start(args, format);\n"\
 			"	vsnprintf(buffer, 256, format, args);\n"\
 			"	va_end(args);\n"\
-			"	return beffer;\n"\
+			"	return buffer;\n"\
 			"}";
 	subprograms.appendManualSubprogram("formatString", formatStringCode);
 }

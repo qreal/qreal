@@ -7,6 +7,7 @@
 #include <qrrepo/repoApi.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
+#include "robotsGeneratorDeclSpec.h"
 #include "templateParametrizedEntity.h"
 #include "simpleGenerators/binding.h"
 
@@ -20,7 +21,7 @@ namespace parts {
 // TODO: make this class more customizable for concrete generators
 
 /// Incapsulates operations used for subprograms processing
-class Subprograms : public TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT Subprograms : public TemplateParametrizedEntity
 {
 public:
 	Subprograms(qrRepo::RepoApi const &repo
