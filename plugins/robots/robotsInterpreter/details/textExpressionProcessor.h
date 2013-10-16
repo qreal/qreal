@@ -2,6 +2,7 @@
 
 #include <QtCore/QMap>
 
+#include <qrutils/expressionsParser/textExpressionProcessorBase.h>
 #include <qrutils/expressionsParser/number.h>
 
 namespace qReal {
@@ -9,10 +10,19 @@ namespace interpreters {
 namespace robots {
 namespace details {
 
-class TextExpressionProcessor
+class TextExpressionProcessor : public utils::TextExpressionProcessorBase
 {
 public:
-	QString processExpression(QString const &expression, QMap<QString, utils::Number> const &variables) const;
+	explicit TextExpressionProcessor(QMap<QString, utils::Number> const &variables);
+
+	QString processExpression(QString const &expression) const;
+
+protected:
+	virtual bool variableExists(QString const &variable) const;
+	virtual QString value(QString const &variable) const;
+
+private:
+	QMap<QString, utils::Number> const mVariables;
 };
 
 }

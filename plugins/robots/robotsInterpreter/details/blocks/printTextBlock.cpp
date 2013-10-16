@@ -16,7 +16,7 @@ void PrintTextBlock::run()
 	int const x = evaluate("XCoordinateText").toInt();
 	int const y = evaluate("YCoordinateText").toInt();
 	QString const rawText = stringProperty("PrintText");
-	QString const text = TextExpressionProcessor().processExpression(rawText, *mParser->getVariables());
+	QString const text = TextExpressionProcessor(*mParser->getVariables()).processExpression(rawText);
 
 	mDisplay.printText(x, y, text);
 	emit done(mNextBlock);
