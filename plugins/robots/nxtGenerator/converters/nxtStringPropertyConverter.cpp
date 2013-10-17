@@ -38,8 +38,11 @@ QString NxtStringPropertyConverter::convert(QString const &data) const
 					<< QString("((int)((%1 - (int)%1) * 1000))").arg(variable);
 		}
 	}
+
 	QString const formatVariables = hackedVariables.join(", ");
-	return QString("formatString(%1, %2)").arg(formatString, formatVariables);
+	return hackedVariables.isEmpty()
+			? formatString
+			: QString("formatString(%1, %2)").arg(formatString, formatVariables);
 }
 
 bool NxtStringPropertyConverter::variableExists(QString const &variable) const
