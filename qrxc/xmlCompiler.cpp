@@ -156,7 +156,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtCore/QMap>\n"
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QPair>"
-//		<< "#include <QStringList>"
 		<< "\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
