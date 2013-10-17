@@ -1803,10 +1803,6 @@ void MainWindow::initToolPlugins()
 		}
 	}
 
-	if (mUi->parsersToolbar->actions().isEmpty()) {
-		mUi->parsersToolbar->hide();
-	}
-
 	if (mUi->generatorsToolbar->actions().isEmpty()) {
 		mUi->generatorsToolbar->hide();
 	}
