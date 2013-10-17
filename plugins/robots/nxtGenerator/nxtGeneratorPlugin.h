@@ -1,13 +1,7 @@
 #pragma once
 
-#include <QtCore/QTranslator>
-
-#include <qrgui/toolPluginInterface/toolPluginInterface.h>
-#include <qrgui/toolPluginInterface/pluginConfigurator.h>
-#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
-#include <qrrepo/repoApi.h>
-#include "nxtOSEK/nxtFlashTool.h"
-
+#include <robotsGeneratorPluginBase.h>
+#include "nxtFlashTool.h"
 
 namespace qReal {
 namespace robots {
@@ -17,24 +11,23 @@ namespace generators {
 /// C code for nxtOSEK from robot diagrams, and interface for standalone nxt-tools
 /// toolset, used to compile generated sources and flash them to robot, or
 /// install nxtOSEK on a robot.
-class RobotsGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
+class NxtGeneratorPlugin : public RobotsGeneratorPluginBase
 {
 	Q_OBJECT
-	Q_INTERFACES(qReal::ToolPluginInterface)
-	Q_PLUGIN_METADATA(IID "qReal.robots.generator.RobotsGeneratorPlugin")
+	Q_PLUGIN_METADATA(IID "qReal.robots.generator.NxtGeneratorPlugin")
 
 public:
-	RobotsGeneratorPlugin();
-	virtual ~RobotsGeneratorPlugin();
+	NxtGeneratorPlugin();
+	virtual ~NxtGeneratorPlugin();
 
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
 	virtual QList<qReal::HotKeyActionInfo> hotKeyActions();
 
-private slots:
-	/// Calls code generator. Returns true if operation was successfull.
-	bool generateRobotSourceCode();
+protected:
+	virtual MasterGeneratorBase *masterGenerator();
 
+private slots:
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
 	void flashRobot();
 
@@ -61,18 +54,6 @@ private:
 	/// Action that compiles and uploads program on a robot
 	QAction mUploadProgramAction;
 
-	/// Translator object for this plugin
-	QTranslator mAppTranslator;
-
-	/// Interface of MainWindow
-	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
-
-	/// Interface of project manager (allows to perform open/save activities)
-	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership
-
-	/// Repository API
-	qrRepo::RepoApi const *mRepo;  // Does not have ownership
-
 	/// When true, nxt-tools are found by QReal and flashing and uploading is possible
 	bool mNxtToolsPresent;
 
@@ -80,6 +61,8 @@ private:
 	NxtFlashTool *mFlashTool;  // Has ownership
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
+
+	QTranslator mAppTranslator;
 };
 
 }

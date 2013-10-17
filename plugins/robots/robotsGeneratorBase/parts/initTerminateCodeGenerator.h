@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base/templateParametrizedEntity.h"
+#include "templateParametrizedEntity.h"
 
 namespace qReal {
 namespace robots {
