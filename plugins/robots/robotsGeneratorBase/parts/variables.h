@@ -38,7 +38,7 @@ public:
 	/// Returns global variables declarations string
 	QString generateVariableString() const;
 
-	/// Returns given expression if it has int type or casts it to int otherwise
+	/// Returns given expression type using inner type inference algorithm
 	enums::variableType::VariableType expressionType(QString const &expression) const;
 
 	/// Adds given string to variables declaration section.
