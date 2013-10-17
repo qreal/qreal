@@ -1229,7 +1229,6 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	// Connect after setModel etc. because of signal selectionChanged was sent when there were old indexes
 	connect(tab->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), tab, SLOT(toggleAntialiasing(bool)));
-	connect(mUi->actionOpenGL_Renderer, SIGNAL(toggled(bool)), tab, SLOT(toggleOpenGL(bool)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, tab->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
