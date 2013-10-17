@@ -26,6 +26,11 @@ QString Subprograms::generatedCode() const
 	return mGeneratedCode.join('\n');
 }
 
+void Subprograms::appendManualSubprogram(QString const &name, QString const &body)
+{
+	mManualDeclarations[name] = body;
+}
+
 void Subprograms::usageFound(Id const &logicalId)
 {
 	Id const diagram = mRepo.outgoingExplosion(logicalId);
@@ -97,6 +102,13 @@ void Subprograms::mergeCode(QMap<Id, QString> const &declarations
 		subprogramCode.replace("@@BODY@@", implementations[id]);
 		mGeneratedCode << subprogramCode;
 	}
+
+	mGeneratedCode.insert(0, generateManualDeclarations() + "\n\n");
+}
+
+QString Subprograms::generateManualDeclarations() const
+{
+	return QStringList(mManualDeclarations.values()).join("\n\n");
 }
 
 QString Subprograms::readSubprogramTemplate(Id const &id, QString const &pathToTemplate)

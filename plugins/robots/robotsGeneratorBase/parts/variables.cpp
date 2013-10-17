@@ -351,6 +351,10 @@ enums::variableType::VariableType Variables::expressionType(QString const &expre
 	}
 
 	foreach (QString const &variable, variables) {
+		if (!mVariables.contains(variable)) {
+			return enums::variableType::unknown;
+		}
+
 		if (mVariables.value(variable) != enums::variableType::intType) {
 			return enums::variableType::floatType;
 		}

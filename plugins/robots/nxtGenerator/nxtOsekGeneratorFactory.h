@@ -15,6 +15,8 @@ public:
 	virtual ~NxtOsekGeneratorFactory();
 
 	virtual QString pathToTemplates() const;
+
+	virtual simple::Binding::ConverterInterface *stringPropertyConverter() const;
 };
 
 }
