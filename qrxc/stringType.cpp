@@ -1,7 +1,8 @@
 #include "stringType.h"
 
-#include <QDebug>
-#include "../qrutils/outFile.h"
+#include <QtCore/QDebug>
+
+#include <qrutils/outFile.h>
 
 bool StringType::init(QDomElement const &element, QString const &context)
 {
@@ -21,14 +22,14 @@ Type* StringType::clone() const
 	return result;
 }
 
-bool StringType::generateEnumValues(utils::OutFile &out, bool isNotFirst) 
-{ 
+bool StringType::generateEnumValues(utils::OutFile &out, bool isNotFirst)
+{
 	Q_UNUSED(out);
 	Q_UNUSED(isNotFirst);
-	return false; 
+	return false;
 }
 
-void StringType::generatePropertyTypes(utils::OutFile &out) 
+void StringType::generatePropertyTypes(utils::OutFile &out)
 {
 	Q_UNUSED(out);
 }
@@ -43,3 +44,7 @@ void StringType::generateMouseGesturesMap(utils::OutFile &out)
 	Q_UNUSED(out);
 }
 
+void StringType::generateExplosionsMap(utils::OutFile &out)
+{
+	Q_UNUSED(out)
+}

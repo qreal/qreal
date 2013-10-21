@@ -8,26 +8,26 @@
 #include <QtCore/QPointF>
 #include <QtGui/QPainter>
 
-#include "../editorPluginInterface/elementImpl.h"
-#include "../editorPluginInterface/elementTitleHelpers.h"
-#include "../editorPluginInterface/elementRepoInterface.h"
-#include "../umllib/sdfRenderer.h"
-#include "../../qrkernel/ids.h"
-#include "../../qrrepo/repoApi.h"
-#include "../../qrxc/graphicType.h"
+#include <qrkernel/ids.h>
+#include <qrrepo/repoApi.h>
+
+#include "editorPluginInterface/elementImpl.h"
+#include "editorPluginInterface/labelInterface.h"
+#include "editorPluginInterface/elementRepoInterface.h"
+#include "umllib/sdfRenderer.h"
+
+namespace qReal {
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
 typedef QPair<bool, qReal::Id> PossibleEdgeType;
 
-namespace qReal {
-
 struct EdgeLabel {
 	QString labelText;
 	QString labelType;
-	ElementTitleInterface* title;
+	LabelInterface* title;
 
-	EdgeLabel(QString const &labelText_, QString const &labelType_, ElementTitleInterface* title_)
+	EdgeLabel(QString const &labelText_, QString const &labelType_, LabelInterface* title_)
 		: labelText(labelText_), labelType(labelType_), title(title_)
 	{}
 };
@@ -35,9 +35,9 @@ struct EdgeLabel {
 struct NodeLabel {
 	QString textBinded;
 	QString center;
-	ElementTitleInterface* title;
+	LabelInterface* title;
 
-	NodeLabel(QString const &textBinded_, QString const &center_, ElementTitleInterface* title_)
+	NodeLabel(QString const &textBinded_, QString const &center_, LabelInterface* title_)
 		: textBinded(textBinded_), center(center_), title(title_)
 	{}
 };
@@ -47,17 +47,13 @@ class InterpreterElementImpl : public ElementImpl
 {
 public:
 	InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId);
-	void init(QRectF &contents, QList<StatPoint> &pointPorts
-			, QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory
-			, QList<ElementTitleInterface*> &titles
-			, SdfRendererInterface *renderer, SdfRendererInterface *portRenderer
-			, ElementRepoInterface *elementRepo = 0);
-	void init(ElementTitleFactoryInterface &factory
-			, QList<ElementTitleInterface*> &titles);
+	void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
+			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
+			, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0);
+	void init(LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels);
 	void paint(QPainter *painter, QRectF &contents);
 	void updateData(ElementRepoInterface *repo) const;
 	bool isNode() const;
-	bool hasPorts() const;
 	bool isResizeable() const;
 	Qt::PenStyle getPenStyle() const;
 	int getPenWidth() const;
@@ -71,14 +67,21 @@ public:
 	bool hasContainerProperty(QString const &property) const;
 	bool isContainer() const;
 	bool isSortingContainer() const;
-	int sizeOfForestalling() const;
+	QVector<int> sizeOfForestalling() const;
 	int sizeOfChildrenForestalling() const;
 	bool hasMovableChildren() const;
 	bool minimizesToChildren() const;
 	bool maximizesChildren() const;
 
+	QStringList fromPortTypes() const;
+	QStringList toPortTypes() const;
+
+	enums::linkShape::LinkShape shapeType() const;
+
 	bool isPort() const;
 	bool hasPin() const;
+
+	bool createChildrenFromMenu() const;
 
 	QList<double> border() const;
 
@@ -86,13 +89,18 @@ public:
 	void updateRendererContent(QString const &shape);
 
 private:
-	void initPointPorts(QList<StatPoint> &pointPorts, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height);
-	void initLinePorts(QList<StatLine> &linePorts, QDomDocument &portsDoc, QDomNode &portsPicture, int const &width, int const &height);
-	void initLabels(int const &width, int const &height, ElementTitleFactoryInterface &factory, QList<ElementTitleInterface*> &titles);
-	int getSizeOfContainerProperty(QString const &property) const;
+	void initPointPorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+			, int const &width, int const &height);
+	void initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
+			, int const &width, int const &height);
+	void initEdgePorts(QStringList &ports, QString const &direction) const;
+	void initLabels(int const &width, int const &height, LabelFactoryInterface &factory, QList<LabelInterface*> &titles);
+	QVector<int> getSizeOfContainerProperty(QString const &property) const;
 	QStringList getListOfStr(QString const &labelText) const;
 	QString getResultStr(QStringList const &list, ElementRepoInterface *repo) const;
 	void drawArrow(QPainter *painter, QString const &type) const;
+
+	enums::linkShape::LinkShape shapeTypeByString(QString const &type) const;
 
 	qrRepo::RepoApi *mEditorRepoApi;  // Doesn't have ownership.
 	Id mId;
@@ -100,6 +108,9 @@ private:
 	QDomDocument mGraphics;
 	QList<NodeLabel> mNodeLabels;
 	QList<EdgeLabel> mEdgeLabels;
+
+	QStringList mFromPorts;
+	QStringList mToPorts;
 };
 }
 

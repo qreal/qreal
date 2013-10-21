@@ -1,7 +1,7 @@
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
 #include "codeEditor.h"
+
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 
 using namespace qReal;
 using namespace gui;

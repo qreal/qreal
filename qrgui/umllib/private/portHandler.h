@@ -1,21 +1,23 @@
 /** @file portHandler.h
- * 	@brief Class for handling ports of NodeElement.
- * 	Provides methods for getting port information, calculating distance between point and port,
- * 	connecting ports and links (some cases).
- * */
+* @brief Class for handling ports of NodeElement.
+* Provides methods for getting port information, calculating distance between point and
+* port, connecting ports and links (some cases).
+**/
 
 #pragma once
 
-#include "../../models/graphicalModelAssistApi.h"
-#include <QPointF>
+#include "models/graphicalModelAssistApi.h"
+#include "umllib/ports/statLine.h"
+#include "umllib/ports/statPoint.h"
 
 /**
- * Useful information:
- * 	In this class port ID represents by qreal type.
- * 	Integral part of ID means number of port considering that point ports begin numeration,
- * 	and line ports go after them.
- * 	In case of line port fractional part ID means position at line port.
- */
+* Useful information:
+* In this class port ID represents by qreal type.
+* Integral part of ID means number of port considering that point ports begin
+* numeration, and line ports go after them. In case of line port fractional part ID means position at line port.
+**/
+
+namespace qReal {
 
 class NodeElement;
 
@@ -25,29 +27,30 @@ public:
 	 * Constructs a PortHandler.
 	 * @param node Node that ports are actually dealt with.
 	 * @param graphicalAssistApi GraphicalModelAssistApi that used by node.
-	 * @param pointPorts Point ports those are belonged to node.
-	 * @param linePorts Line ports those are belonged to node.
+	 * @param pointPorts Point ports which belong to node.
+	 * @param linePorts Line ports which belong to node.
 	 */
-	PortHandler(
-			NodeElement *node, qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
-			QList<StatPoint> const &pointPorts, QList<StatLine> const &linePorts
-			);
+	PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, QList<PortInterface *> const &ports);
+
+	~PortHandler();
 
 	/**
 	 * Returns port ID in terms described below *'Useful information' before class*.
 	 * @param location For this point port will be seen. location is assumed to be in LOCAL NodeElement coordinates!
 	 * @return Port ID in terms described below *'Useful information' before class*.
 	 */
-	qreal portId(QPointF const &location) const;
+	qreal portId(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Calculates port number.
-	 * Number of port considering that point ports begin numeration,
-	 * and line ports go after them.
+	 * Number of port considering that point ports begin numeration, and line ports go after them.
 	 * @param id qreal Id that will be truncated.
 	 * @return Port number.
 	 */
 	static int portNumber(qreal id);
+
+	int numberOfPorts() const;
 
 	/**
 	 * Returns port position relative to the top left corner of NodeElement
@@ -62,7 +65,7 @@ public:
 	 * @param location To this point nearest port will be calculated. location is assumed to be in SCENE coordinates!
 	 * @return Nearest point of NodeElement ports to parameter point.
 	 */
-	QPointF const nearestPort(QPointF const &location) const;
+	QPointF const nearestPort(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Connects all temporary removed from working NodeElement edges.
@@ -82,10 +85,12 @@ public:
 	void arrangeLinearPorts();
 
 	/**
-	 * Sets GraphicalModelAssistApi.
-	 * @param graphicalAssistApi New value for GraphicalModelAssistApi.
+	 * @brief drawPorts Renders all ports of specified types
+	 * @param painter A painter used for rendering
+	 * @param contents Rectangle inside of which ports will be rendered
+	 * @param types Types of ports that must be rendered
 	 */
-	void setGraphicalAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi);
+	void drawPorts(QPainter *painter, QRectF const &contents, QStringList const &types);
 
 private:
 	/// Value for determing ID of nonexistent port.
@@ -110,37 +115,46 @@ private:
 	void connectTemporaryRemovedLinksToPort(qReal::IdList const &temporaryRemovedLinks, QString const &direction);
 
 	/**
-	 * Returns point port ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
-	 * @param location Point that is considered for locate in locality (kvadratik, kvadratik) of point ports. location is assumed to be in LOCAL NodeElement coordinates!
-	 * @return Point port ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
+	 * Returns point port ID that locality contains parameter point. If there is no such locality, it
+	 * returns mNonexistentPortId.
+	 * @param location Point that is considered for locate in locality (kvadratik, kvadratik) of point ports.
+	 * location is assumed to be in LOCAL NodeElement coordinates!
+	 * @return Point port ID that locality contains parameter point. If there is no such locality, it
+	 * returns mNonexistentPortId.
 	 */
-	qreal pointPortId(QPointF const &location) const;
+	qreal pointPortId(QPointF const &location, QStringList const &types) const;
 
 	/**
-	 * Returns line port point ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
-	 * @param location Point that is considered for locate in locality (kvadratik - 5, kvadratik - 5) of line port points. location is assumed to be in LOCAL NodeElement coordinates!
-	 * @return line port point ID that locality contains parameter point. If there is no such locality, it returns mNonexistentPortId.
+	 * Returns line port point ID that locality contains parameter point. If there is no such locality, it
+	 * returns mNonexistentPortId.
+	 * @param location Point that is considered for locate in locality (kvadratik - 5, kvadratik - 5) of line port
+	 * points. location is assumed to be in LOCAL NodeElement coordinates!
+	 * @return line port point ID that locality contains parameter point. If there is no such locality, it
+	 * returns mNonexistentPortId.
 	 */
-	qreal linePortId(QPointF const &location) const;
+	qreal linePortId(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Returns distance from location to closest point port of NodeElement and this port number in list of point ports.
-	 * @param location Result will be calculated for this point. location is assumed to be in LOCAL NodeElement coordinates!
+	 * @param location Result will be calculated for this point. location is assumed to be in
+	 * LOCAL NodeElement coordinates!
 	 * @return The closest point port number in list of line ports and distance from location to it.
 	 */
-	QPair<int, qreal> nearestPointPortNumberAndDistance(QPointF const &location) const;
+	QPair<int, qreal> nearestPointPortNumberAndDistance(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Returns distance from location to closest line port of NodeElement and this port number in list of line ports.
-	 * @param location Result will be calculated for this point. location is assumed to be in LOCAL NodeElement coordinates!
+	 * @param location Result will be calculated for this point. location is assumed to be in
+	 * LOCAL NodeElement coordinates!
 	 * @return The closest line port number in list of line ports and distance from location to it.
 	 */
-	QPair<int, qreal> nearestLinePortNumberAndDistance(QPointF const &location) const;
+	QPair<int, qreal> nearestLinePortNumberAndDistance(QPointF const &location, QStringList const &types) const;
 
 	/**
 	 * Returns nearest point parameter at line port to point.
 	 * @param linePortNumber Number of line port at line port list.
-	 * @param location To this point nearest point parameter will be calculated. location is assumed to be in LOCAL NodeElement coordinates!
+	 * @param location To this point nearest point parameter will be calculated. location is assumed to be in
+	 * LOCAL NodeElement coordinates!
 	 * @return Nearest point parameter at line port to point.
 	 */
 	qreal nearestPointOfLinePort(int const linePortNumber, QPointF const &location) const;
@@ -148,7 +162,8 @@ private:
 	/**
 	 * Returns minimum distance from line port to point.
 	 * @param linePortNumber Number of line port at line port list.
-	 * @param location To this point distance will be calculated. location is assumed to be in LOCAL NodeElement coordinates!
+	 * @param location To this point distance will be calculated. location is assumed to be in
+	 * LOCAL NodeElement coordinates!
 	 * @return Minimum distance from line port to point.
 	 */
 	qreal minDistanceFromLinePort(int const linePortNumber, QPointF const &location) const;
@@ -156,7 +171,8 @@ private:
 	/**
 	 * Returns distance between point port and point.
 	 * @param pointPortNumber Number of point port at point port list.
-	 * @param location To this point distance will be calculated. location is assumed to be in LOCAL NodeElement coordinates!
+	 * @param location To this point distance will be calculated. location is assumed to be in
+	 * LOCAL NodeElement coordinates!
 	 * @return Distance between point port and point.
 	 */
 	qreal distanceFromPointPort(int const pointPortNumber, QPointF const &location) const;
@@ -165,13 +181,13 @@ private:
 	 * Transforms point port for current node size.
 	 * @param port Port that will be actually dealt with.
 	 */
-	QLineF transformPortForNodeSize(StatLine const &port) const;
+	QLineF transformPortForNodeSize(StatLine const * const port) const;
 
 	/**
 	 * Transforms line port for current node size.
 	 * @param port Port that will be actually dealt with.
 	 */
-	QPointF transformPortForNodeSize(StatPoint const &port) const;
+	QPointF transformPortForNodeSize(StatPoint const * const port) const;
 
 	/// Node that ports are actually dealt with.
 	NodeElement *mNode;
@@ -180,11 +196,13 @@ private:
 	 * GraphicalModelAssistApi that used to reconnect some links
 	 * and ports (temporary disconnected and etc).
 	 */
-	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
+	qReal::models::GraphicalModelAssistApi &mGraphicalAssistApi;
 
 	/// List of point ports that belongs to mNode.
-	QList<StatPoint> const mPointPorts;
+	QList<StatPoint *> mPointPorts;
 
 	/// List of line ports that belongs to mNode.
-	QList<StatLine> const mLinePorts;
+	QList<StatLine *> mLinePorts;
 };
+
+}

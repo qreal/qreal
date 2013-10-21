@@ -1,6 +1,6 @@
 #include "qscintillaTextEdit.h"
 
-#include "../../thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpython.h"
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpython.h>
 
 using namespace qReal;
 using namespace gui;

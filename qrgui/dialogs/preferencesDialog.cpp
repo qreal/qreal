@@ -1,11 +1,12 @@
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
-#include "preferencesPages/behaviourPage.h"
-#include "preferencesPages/debuggerPage.h"
-#include "preferencesPages/editorPage.h"
-#include "preferencesPages/miscellaniousPage.h"
-#include "preferencesPages/featuresPage.h"
-#include "../hotKeyManager/hotKeyManagerPage.h"
+
+#include "dialogs/preferencesPages/behaviourPage.h"
+#include "dialogs/preferencesPages/debuggerPage.h"
+#include "dialogs/preferencesPages/editorPage.h"
+#include "dialogs/preferencesPages/miscellaniousPage.h"
+#include "dialogs/preferencesPages/featuresPage.h"
+#include "hotKeyManager/hotKeyManagerPage.h"
 
 using namespace qReal;
 
@@ -30,7 +31,7 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	PreferencesPage *miscellaniousPage = new PreferencesMiscellaniousPage(ui->pageContentWigdet);
 	PreferencesPage *editorPage = new PreferencesEditorPage(showGridAction
 		, showAlignmentAction, activateGridAction, activateAlignmentAction, ui->pageContentWigdet);
-	PreferencesPage *hotKeyManagerPage = new  PreferencesHotKeyManagerPage(ui->pageContentWigdet);
+	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(ui->pageContentWigdet);
 
 	connect(ui->listWidget, SIGNAL(clicked(QModelIndex))
 			, this, SLOT(chooseTab(const QModelIndex &)));
@@ -39,6 +40,8 @@ void PreferencesDialog::init(QAction * const showGridAction, QAction * const sho
 	connect(ui->applyButton, SIGNAL(clicked()), this, SLOT(applyChanges()));
 	connect(ui->okButton, SIGNAL(clicked()), this, SLOT(saveAndClose()));
 	connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
+	connect(ui->exportButton, SIGNAL(clicked()), this, SLOT(exportSettings()));
+	connect(ui->importButton, SIGNAL(clicked()), this, SLOT(importSettings()));
 
 	connect(editorPage, SIGNAL(gridChanged()), this, SIGNAL(gridChanged()));
 	connect(editorPage, SIGNAL(fontChanged()), this, SIGNAL(fontChanged()));
@@ -129,4 +132,19 @@ void PreferencesDialog::changePaletteParameters()
 	if (mCustomPages.count(tr("Editor")) > 0) {
 		static_cast<PreferencesEditorPage*>(mCustomPages[tr("Editor")])->changePaletteParameters();
 	}
+}
+
+void PreferencesDialog::exportSettings()
+{
+	QString fileNameForExport = QFileDialog::getSaveFileName(this, tr("Save File"),"/mySettings",tr("*.ini"));
+	if (!fileNameForExport.endsWith(".ini")) {
+		fileNameForExport += ".ini";
+	}
+	SettingsManager::instance()->saveSettings(fileNameForExport);
+}
+
+void PreferencesDialog::importSettings()
+{
+	QString fileNameForImport = QFileDialog::getOpenFileName(this, tr("Open File"),"/mySettings",tr("*.ini"));
+	SettingsManager::instance()->loadSettings(fileNameForImport);
 }

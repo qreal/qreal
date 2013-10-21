@@ -8,18 +8,19 @@
 #include <QtCore/QPair>
 #include <QtGui/QIcon>
 
-#include "listenerManager.h"
-#include "../../qrkernel/ids.h"
-#include "../editorPluginInterface/editorInterface.h"
-#include "../../qrrepo/graphicalRepoApi.h"
-#include "../../qrrepo/logicalRepoApi.h"
-#include "../../qrkernel/settingsManager.h"
-#include "../../qrrepo/repoApi.h"
-#include "editorManagerInterface.h"
+#include <qrkernel/ids.h>
+#include <qrkernel/settingsManager.h>
+#include <qrrepo/graphicalRepoApi.h>
+#include <qrrepo/logicalRepoApi.h>
+#include <qrrepo/repoApi.h>
 
-class Element;
+#include "pluginManager/listenerManager.h"
+#include "editorPluginInterface/editorInterface.h"
+#include "pluginManager/editorManagerInterface.h"
 
 namespace qReal {
+
+class Element;
 
 class InterpreterEditorManager : public QObject, public EditorManagerInterface
 {
@@ -41,20 +42,21 @@ public:
 	virtual QString propertyDescription(Id const &id, QString const &propertyName) const;
 	virtual QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
 	virtual QIcon icon(Id const &id) const;
-	virtual Element* graphicalObject(Id const &id) const;
+	virtual ElementImpl* elementImpl(Id const &id) const;
 
 	virtual IdList containedTypes(const Id &id) const;
-	virtual IdList connectedTypes(const Id &id) const;
-	virtual IdList usedTypes(const Id &id) const;
 	virtual QStringList enumValues(Id const &id, const QString &name) const;
 	virtual QString typeName(Id const &id, const QString &name) const;
 	virtual QStringList allChildrenTypesOf(Id const &parent) const;
+
+	virtual QList<Explosion> explosions(Id const &source) const;
 
 	virtual bool isEditor(Id const &id) const;
 	virtual bool isDiagram(Id const &id) const;
 	virtual bool isElement(Id const &id) const;
 
 	virtual QStringList propertyNames(Id const &id) const;
+	virtual QStringList portTypes(Id const &id) const;
 	virtual QString defaultPropertyValue(Id const &id, QString name) const;
 	virtual QStringList propertiesWithDefaultValues(Id const &id) const;
 
@@ -97,8 +99,8 @@ public:
 	virtual void deleteElement(qReal::MainWindow *mainWindow, Id const &id) const;
 	virtual bool isRootDiagramNode(Id const &id) const;
 	virtual void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const;
-	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText, QString const &labelType
-			, QString const &lineType, QString const &beginType, QString const &endType) const;
+	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+			, QString const &labelType, QString const &lineType, QString const &beginType, QString const &endType) const;
 	virtual QPair<Id, Id> createEditorAndDiagram(QString const &name) const;
 	virtual void saveMetamodel(QString const &newMetamodelFileName);
 	virtual QString saveMetamodelFilePath() const;
@@ -128,7 +130,8 @@ private:
 	QPair<qrRepo::RepoApi*, Id> repoAndElement(QString const &editor, QString const &element) const;
 	QPair<qrRepo::RepoApi*, Id> repoAndDiagram(QString const &editor, QString const &diagram) const;
 	QPair<Id, Id> editorAndDiagram(qrRepo::RepoApi const * const repo, Id const &element) const;
-	QStringList propertiesFromParents(Id const &id, QString const &propertyName, CheckPropertyForParent const &checker) const;
+	QStringList propertiesFromParents(Id const &id, QString const &propertyName
+			, CheckPropertyForParent const &checker) const;
 	QString valueOfProperty(Id const &id, QString const &propertyName, QString const &value) const;
 };
 

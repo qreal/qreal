@@ -1,9 +1,10 @@
 #pragma once
 
-#include "port.h"
-#include "../qrutils/scalableCoordinate.h"
+#include <QtXml/QDomElement>
 
-#include <QDomElement>
+#include <qrutils/scalableCoordinate.h>
+
+#include "port.h"
 
 namespace utils {
 	class OutFile;
@@ -13,7 +14,7 @@ class PointPort : public Port
 {
 public:
 	virtual bool init(QDomElement const &element, int width, int height);
-	virtual void generateCode(utils::OutFile &out);
+	virtual void generateCode(utils::OutFile &out, QStringList const &portTypes);
 	virtual Port* clone() const;
 
 private:

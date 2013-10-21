@@ -1,6 +1,8 @@
 #include "enumType.h"
+
+#include <qrutils/outFile.h>
+
 #include "nameNormalizer.h"
-#include "../qrutils/outFile.h"
 
 bool EnumType::init(QDomElement const &element, QString const &context)
 {
@@ -60,5 +62,10 @@ void EnumType::generatePropertyDefaults(utils::OutFile &out)
 void EnumType::generateMouseGesturesMap(utils::OutFile &out)
 {
 	Q_UNUSED(out);
+}
+
+void EnumType::generateExplosionsMap(utils::OutFile &out)
+{
+	Q_UNUSED(out)
 }
 

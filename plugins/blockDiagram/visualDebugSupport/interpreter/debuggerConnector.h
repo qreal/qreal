@@ -4,7 +4,7 @@
 #include <QtCore/QThread>
 #include <QtCore/QProcess>
 
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 namespace qReal {
 

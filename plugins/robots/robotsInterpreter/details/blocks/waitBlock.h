@@ -21,6 +21,7 @@ public:
 	explicit WaitBlock(RobotModel * const robotModel);
 	virtual ~WaitBlock() {}
 
+	virtual void setFailedStatus();
 	virtual void stopActiveTimerInBlock();
 
 protected slots:

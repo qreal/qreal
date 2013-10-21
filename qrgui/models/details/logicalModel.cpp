@@ -1,5 +1,6 @@
 #include "logicalModel.h"
-#include "graphicalModel.h"
+
+#include "models/details/graphicalModel.h"
 
 #include <QtCore/QUuid>
 
@@ -9,7 +10,7 @@ using namespace models::details;
 using namespace modelsImplementation;
 
 LogicalModel::LogicalModel(qrRepo::LogicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface)
-	: AbstractModel(editorManagerInterface), mGraphicalModelView(this), mApi(*repoApi)
+		: AbstractModel(editorManagerInterface), mGraphicalModelView(this), mApi(*repoApi)
 {
 	mRootItem = new LogicalModelItem(Id::rootId(), NULL);
 	init();
@@ -44,15 +45,11 @@ void LogicalModel::loadSubtreeFromClient(LogicalModelItem * const parent)
 
 LogicalModelItem *LogicalModel::loadElement(LogicalModelItem *parentItem, Id const &id)
 {
-//	if (isDiagram(id)) {
-//		mApi.addOpenedDiagram(id);
-//	}
-
-	int newRow = parentItem->children().size();
+	int const newRow = parentItem->children().size();
 
 	beginInsertRows(index(parentItem), newRow, newRow);
 	LogicalModelItem *item = new LogicalModelItem(id, parentItem);
-	checkProperties(id);
+	addInsufficientProperties(id);
 	parentItem->addChild(item);
 	mModelItems.insert(id, item);
 	endInsertRows();
@@ -60,18 +57,33 @@ LogicalModelItem *LogicalModel::loadElement(LogicalModelItem *parentItem, Id con
 	return item;
 }
 
-void LogicalModel::checkProperties(Id const &id)
+void LogicalModel::addInsufficientProperties(Id const &id, QString const &name)
 {
-	if (!mEditorManagerInterface.hasElement(id.type()))
+	if (!mEditorManagerInterface.hasElement(id.type())) {
 		return;
-	QStringList const propertiesThatShallBe = mEditorManagerInterface.propertyNames(id.type());
-	foreach (QString const property, propertiesThatShallBe)
-		if (!api().hasProperty(id, property))
-			mApi.setProperty(id, property, "");  // There shall be default value.
-	if (!mApi.hasProperty(id, "outgoingUsages"))
-		mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
-	if (!mApi.hasProperty(id, "incomingUsages"))
-		mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
+	}
+
+	QMap<QString, QVariant> standardProperties;
+	standardProperties.insert("name", name);
+	standardProperties.insert("from", Id::rootId().toVariant());
+	standardProperties.insert("to", Id::rootId().toVariant());
+	standardProperties.insert("linkShape", static_cast<int>(enums::linkShape::unset));
+	standardProperties.insert("links", IdListHelper::toVariant(IdList()));
+	standardProperties.insert("outgoingExplosion", Id().toVariant());
+	standardProperties.insert("incomingExplosions", IdListHelper::toVariant(IdList()));
+	foreach (QString const &property, standardProperties.keys()) {
+		if (!mApi.hasProperty(id, property)) {
+			mApi.setProperty(id, property, standardProperties[property]);
+		}
+	}
+
+	QStringList const properties = mEditorManagerInterface.propertyNames(id.type());
+	foreach (QString const &property, properties) {
+		// for those properties that doesn't have default values, plugin will return empty string
+		if (!mApi.hasProperty(id, property)) {
+			mApi.setProperty(id, property, mEditorManagerInterface.defaultPropertyValue(id, property));
+		}
+	}
 }
 
 void LogicalModel::connectToGraphicalModel(GraphicalModel * const graphicalModel)
@@ -86,7 +98,7 @@ AbstractModelItem *LogicalModel::createModelItem(Id const &id, AbstractModelItem
 
 void LogicalModel::updateElements(Id const &logicalId, QString const &name)
 {
-	if ((logicalId == Id()) || (mApi.name(logicalId) == name)) {
+	if ((logicalId.isNull()) || (mApi.name(logicalId) == name)) {
 		return;
 	}
 	mApi.setName(logicalId, name);
@@ -156,8 +168,8 @@ void LogicalModel::addElementToModel(const Id &parent, const Id &id, const Id &l
 	}
 }
 
-void LogicalModel::initializeElement(const Id &id, modelsImplementation::AbstractModelItem *parentItem
-		, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position)
+void LogicalModel::initializeElement(Id const &id, modelsImplementation::AbstractModelItem *parentItem
+		, modelsImplementation::AbstractModelItem *item, QString const &name, QPointF const &position)
 {
 	Q_UNUSED(position)
 
@@ -166,20 +178,8 @@ void LogicalModel::initializeElement(const Id &id, modelsImplementation::Abstrac
 	beginInsertRows(index(parentItem), newRow, newRow);
 	parentItem->addChild(item);
 	mApi.addChild(parentItem->id(), id);
-	mApi.setProperty(id, "name", name);
-	mApi.setProperty(id, "from", Id::rootId().toVariant());
-	mApi.setProperty(id, "to", Id::rootId().toVariant());
-	mApi.setProperty(id, "links", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "outgoingConnections", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "incomingConnections", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "outgoingUsages", IdListHelper::toVariant(IdList()));
-	mApi.setProperty(id, "incomingUsages", IdListHelper::toVariant(IdList()));
 
-	QStringList const properties = mEditorManagerInterface.propertyNames(id.type());
-	foreach (QString const property, properties) {
-		// for those properties that doesn't have default values, plugin will return empty string
-		mApi.setProperty(id, property, mEditorManagerInterface.defaultPropertyValue(id, property));
-	}
+	addInsufficientProperties(id, name);
 
 	mModelItems.insert(id, item);
 	endInsertRows();
@@ -248,8 +248,9 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 void LogicalModel::changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position)
 {
 	Q_UNUSED(position)
-	if (!parent.isValid() || element.parent() == parent)
+	if (!parent.isValid() || element.parent() == parent) {
 		return;
+	}
 
 	int destinationRow = parentAbstractItem(parent)->children().size();
 
@@ -310,9 +311,9 @@ LogicalModelAssistApi &LogicalModel::logicalModelAssistApi() const
 bool LogicalModel::removeRows(int row, int count, QModelIndex const &parent)
 {
 	AbstractModelItem *parentItem = parentAbstractItem(parent);
-	if (parentItem->children().size() < row + count)
+	if (parentItem->children().size() < row + count) {
 		return false;
-	else {
+	} else {
 		for (int i = row; i < row + count; ++i) {
 			AbstractModelItem *child = parentItem->children().at(i);
 			removeModelItems(child);
@@ -331,7 +332,8 @@ bool LogicalModel::removeRows(int row, int count, QModelIndex const &parent)
 	}
 }
 
-void LogicalModel::removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child)
+void LogicalModel::removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
+		, details::modelsImplementation::AbstractModelItem *child)
 {
 	if (mModelItems.count(child->id())==0) {
 		mApi.removeChild(root->id(),child->id());

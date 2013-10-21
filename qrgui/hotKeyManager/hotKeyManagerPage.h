@@ -3,7 +3,7 @@
 #include <QtGui/QKeySequence>
 #include <QtWidgets/QTableWidgetItem>
 
-#include "../dialogs/preferencesPages/preferencesPage.h"
+#include "dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
 	class hotKeyManagerPage;
@@ -12,9 +12,9 @@ namespace Ui {
 class PreferencesHotKeyManagerPage : public PreferencesPage
 {
 	Q_OBJECT
-	
+
 public:
-	explicit  PreferencesHotKeyManagerPage(QWidget *parent = 0);
+	explicit PreferencesHotKeyManagerPage(QWidget *parent = 0);
 	~PreferencesHotKeyManagerPage();
 
 	void save();
@@ -27,6 +27,9 @@ private slots:
 	void newKey(int const key);
 	void resetShortcuts();
 	void resetAllShortcuts();
+
+protected:
+	void showEvent(QShowEvent *e);
 
 private:
 	void loadHotKeys();

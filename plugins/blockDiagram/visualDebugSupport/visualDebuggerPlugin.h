@@ -2,19 +2,19 @@
 
 #include <QtCore/QTranslator>
 
-#include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "../../../qrgui/toolPluginInterface/pluginConfigurator.h"
-#include "../../../qrutils/expressionsParser/expressionsParser.h"
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrutils/expressionsParser/expressionsParser.h>
 
 #include "visualDebuggerPreferencesPage.h"
 
 #include "interpreter/visualDebugger.h"
 #include "interpreter/debuggerConnector.h"
 
-#include "../../../qrutils/watchListWindow.h"
-#include "../../../qrgui/mainwindow/errorReporter.h"
+#include <qrutils/watchListWindow.h>
+#include <qrgui/mainwindow/errorReporter.h>
 
-#include "../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 namespace qReal {
 namespace visualDebugger {

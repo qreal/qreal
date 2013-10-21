@@ -1,13 +1,13 @@
 #pragma once
 
-#include "nonGraphicType.h"
+#include <QtXml/QDomElement>
 
-#include <QDomElement>
+#include "nonGraphicType.h"
 
 enum BaseType
 {
-	IntType,
-	FloatType
+	intType
+	, floatType
 };
 
 class NumericType : public NonGraphicType
@@ -19,6 +19,7 @@ public:
 	virtual void generatePropertyTypes(utils::OutFile &out);
 	virtual void generatePropertyDefaults(utils::OutFile &out);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
+	virtual void generateExplosionsMap(utils::OutFile &out);
 
 private:
 	BaseType mBaseType;

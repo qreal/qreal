@@ -18,7 +18,7 @@ class WaitForColorSensorBlockBase : public WaitForSensorBlock
 	Q_OBJECT
 
 public:
-	WaitForColorSensorBlockBase(RobotModel * const robotModel, sensorType::SensorTypeEnum type);
+	WaitForColorSensorBlockBase(RobotModel * const robotModel, robots::enums::sensorType::SensorTypeEnum type);
 	virtual ~WaitForColorSensorBlockBase() {}
 
 protected:

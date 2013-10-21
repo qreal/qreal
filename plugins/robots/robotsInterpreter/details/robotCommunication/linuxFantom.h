@@ -1,7 +1,9 @@
 #pragma once
 
-namespace robotsInterpreter {
-namespace robotCommunication {
+namespace qReal {
+namespace interpreters {
+namespace robots {
+namespace details {
 
 /// Fantom driver is not available for Linux, so there is empty implementation.
 class Fantom
@@ -24,5 +26,7 @@ public:
 	void nFANTOM100_destroyNXT(unsigned long nxtHandle, int &status);
 };
 
+}
+}
 }
 }

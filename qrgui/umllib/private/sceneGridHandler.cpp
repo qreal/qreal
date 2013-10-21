@@ -1,6 +1,7 @@
 #include "sceneGridHandler.h"
-#include "../nodeElement.h"
-#include "../../view/editorViewScene.h"
+
+#include "umllib/nodeElement.h"
+#include "view/editorViewScene.h"
 
 using namespace qReal;
 
@@ -306,5 +307,4 @@ void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 	drawGuides();
-	mNode->adjustLinks();
 }

@@ -2,18 +2,20 @@
 
 #include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
-#include <QPen>
-#include <QBrush>
-#include <QPainter>
-#include <QFont>
-#include <QFile>
-#include <QTextStream>
+#include <QtGui/QPen>
+#include <QtGui/QBrush>
+#include <QtGui/QPainter>
+#include <QtGui/QFont>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 #include <QtGui/QIconEngine>
-#include <QDebug>
 
-#include "../editorPluginInterface/sdfRendererInterface.h"
-#include "../../qrkernel/settingsManager.h"
-#include "../editorPluginInterface/elementRepoInterface.h"
+#include <qrkernel/settingsManager.h>
+
+#include "editorPluginInterface/sdfRendererInterface.h"
+#include "editorPluginInterface/elementRepoInterface.h"
+
+namespace qReal {
 
 class SdfRenderer : public SdfRendererInterface
 {
@@ -84,8 +86,7 @@ private:
 	float y1_def(QDomElement &element);
 	float x2_def(QDomElement &element);
 	float y2_def(QDomElement &element);
-	float coord_def(QDomElement &element, QString coordName, int current_size,
-		int first_size);
+	float coord_def(QDomElement &element, QString coordName, int current_size, int first_size);
 	void logger(QString path, QString string);
 
 	/** @brief checks that str[i] is not L, C, M or Z*/
@@ -107,3 +108,5 @@ private:
 	SdfRenderer mRenderer;
 	QSize mSize;
 };
+
+}

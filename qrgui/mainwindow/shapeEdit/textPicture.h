@@ -1,5 +1,6 @@
 #pragma once
-#include "text.h"
+
+#include "mainwindow/shapeEdit/text.h"
 
 class TextPicture : public Text
 {

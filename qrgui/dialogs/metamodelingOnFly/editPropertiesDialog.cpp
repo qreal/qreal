@@ -2,11 +2,13 @@
 
 #include "editPropertiesDialog.h"
 #include "ui_editPropertiesDialog.h"
-#include "propertiesDialog.h"
+
+#include "dialogs/metamodelingOnFly/propertiesDialog.h"
 
 using namespace qReal;
 
-EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager, Id const &id, QWidget *parent)
+EditPropertiesDialog::EditPropertiesDialog(EditorManagerInterface &interpreterEditorManager
+		, Id const &id, QWidget *parent)
 		: QDialog(parent)
 		, mUi(new Ui::EditPropertiesDialog)
 		, mInterperterEditorManager(interpreterEditorManager)
@@ -67,7 +69,8 @@ void EditPropertiesDialog::okButtonClicked()
 		{
 			// TODO: Remove connects.
 			QMessageBox messageBox(tr("Warning:")
-					, tr("You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.")
+					, tr("You changed the type of property. In case of incorrect conversion it may"
+							" result in resetting of the existing property value.")
 					, QMessageBox::Warning, QMessageBox::Ok, QMessageBox::Cancel, QMessageBox::NoButton);
 			messageBox.button(QMessageBox::Ok)->setText(tr("Proceed anyway"));
 			messageBox.button(QMessageBox::Cancel)->setText(tr("Cancel the type conversion"));

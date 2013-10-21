@@ -14,7 +14,7 @@
    <string>QReal</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../qrgui.qrc">
+   <iconset resource="qrgui.qrc">
     <normaloff>:/icons/qreal.png</normaloff>:/icons/qreal.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>843</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -139,7 +139,7 @@
    <property name="minimumSize">
     <size>
      <width>80</width>
-     <height>140</height>
+     <height>211</height>
     </size>
    </property>
    <property name="windowTitle">
@@ -268,7 +268,7 @@
    <widget class="QWidget" name="logicalModelDockWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTreeView" name="logicalModelExplorer">
+	  <widget class="qReal::gui::ModelExplorer" name="logicalModelExplorer">
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
        </property>
@@ -352,7 +352,7 @@
    <widget class="QWidget" name="graphicalModelDockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QTreeView" name="graphicalModelExplorer">
+	  <widget class="qReal::gui::ModelExplorer" name="graphicalModelExplorer">
        <property name="contextMenuPolicy">
         <enum>Qt::ActionsContextMenu</enum>
        </property>
@@ -445,7 +445,7 @@
   </action>
   <action name="actionZoom_In">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset resource="qrgui.qrc">
      <normaloff>:/icons/zoomin.png</normaloff>:/icons/zoomin.png</iconset>
    </property>
    <property name="text">
@@ -457,7 +457,7 @@
   </action>
   <action name="actionZoom_Out">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset resource="qrgui.qrc">
      <normaloff>:/icons/zoomout.png</normaloff>:/icons/zoomout.png</iconset>
    </property>
    <property name="text">
@@ -488,7 +488,7 @@
   </action>
   <action name="actionPrint">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset resource="qrgui.qrc">
      <normaloff>:/icons/print.png</normaloff>:/icons/print.png</iconset>
    </property>
    <property name="text">
@@ -630,7 +630,7 @@
   </action>
   <action name="actionGenerate_and_build">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset resource="qrgui.qrc">
      <normaloff>:/icons/build.png</normaloff>:/icons/build.png</iconset>
    </property>
    <property name="text">
@@ -757,7 +757,7 @@
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset resource="qrgui.qrc">
      <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
    </property>
    <property name="text">
@@ -769,7 +769,7 @@
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset resource="../qrgui.qrc">
+    <iconset resource="qrgui.qrc">
      <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
    </property>
    <property name="text">
@@ -779,40 +779,50 @@
     <string>Ctrl+Shift+Z</string>
    </property>
   </action>
+  <action name="actionExportToXml">
+   <property name="text">
+    <string>Export to XML</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <customwidgets>
   <customwidget>
    <class>qReal::gui::PaletteTree</class>
    <extends>QToolBox</extends>
-   <header>../mainwindow/paletteTree.h</header>
+   <header>mainwindow/palette/paletteTree.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ErrorListWidget</class>
    <extends>QListWidget</extends>
-   <header>../mainwindow/errorListWidget.h</header>
+   <header>mainwindow/errorListWidget.h</header>
   </customwidget>
   <customwidget>
    <class>PropertyEditorView</class>
    <extends>QWidget</extends>
-   <header>../view/propertyEditorView.h</header>
+   <header>view/propertyEditorView.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MiniMap</class>
    <extends>QGraphicsView</extends>
-   <header>../mainwindow/miniMap.h</header>
+   <header>mainwindow/miniMap.h</header>
   </customwidget>
   <customwidget>
    <class>qReal::gui::TabWidget</class>
    <extends>QWidget</extends>
-   <header>../mainwindow/tabWidget.h</header>
+   <header>mainwindow/tabWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>qReal::gui::ModelExplorer</class>
+   <extends>QWidget</extends>
+   <header>mainwindow/modelExplorer.h</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../qrgui.qrc"/>
-  <include location="../qrgui.qrc"/>
+  <include location="qrgui.qrc"/>
+  <include location="qrgui.qrc"/>
  </resources>
  <connections/>
 </ui>

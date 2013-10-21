@@ -143,3 +143,13 @@ void TextManager::setModified(gui::QScintillaTextEdit *code)
 		emit textChanged();
 	}
 }
+
+void TextManager::addExtension(QString const &ext, QString const &description)
+{
+	mExtensions.insert(ext, QString("%1 (*.%2)").arg(description, ext));
+}
+
+QString TextManager::extDescription(QString const &ext)
+{
+	return mExtensions.value(ext);
+}

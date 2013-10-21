@@ -2,8 +2,9 @@
 
 #include <QtGui/QPainter>
 
-#include "item.h"
-#include "../../../qrutils/graphicsUtils/rectangleImpl.h"
+#include <qrutils/graphicsUtils/rectangleImpl.h>
+
+#include "mainwindow/shapeEdit/item.h"
 
 class QRealEllipse : public Item
 {

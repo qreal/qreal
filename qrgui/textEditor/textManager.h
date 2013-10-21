@@ -31,6 +31,8 @@ public:
 	bool isDefaultPath(QString const &path);
 	bool isModified(QString const &path);
 	bool isModifiedEver(QString const &path);
+	void addExtension(QString const &ext, QString const &description);
+	QString extDescription(QString const &ext);
 
 private slots:
 	void setModified(gui::QScintillaTextEdit *code);
@@ -45,6 +47,7 @@ private:
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMultiHash<EditorView*, QString> mDiagramCodeManager;
+	QMap<QString, QString> mExtensions;
 };
 
 }

@@ -2,14 +2,15 @@
 
 #include <QtCore/QPersistentModelIndex>
 
-#include "../../thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintilla.h"
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintilla.h>
 
 namespace qReal {
 namespace gui {
 
-/// QScintillaTextEdit is text editor widget based on QsciScintilla (Qt version of Scintilla project) which can highlight 
-/// source code on different textual programming languages, can do autocompletion and have lots of other functionalities
-/// of standart code editors.
+/// QScintillaTextEdit is text editor widget based on QsciScintilla (Qt version of Scintilla project) which
+/// can highlight source code on different textual programming languages, can do autocompletion and have lots
+/// of other functionalities of standart code editors.
+
 class QScintillaTextEdit : public QsciScintilla
 {
 	Q_OBJECT

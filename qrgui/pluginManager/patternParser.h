@@ -3,8 +3,9 @@
 #include <QtXml/QDomElement>
 #include <QtCore/QPointF>
 
-#include "../../qrkernel/ids.h"
-#include "pattern.h"
+#include <qrkernel/ids.h>
+
+#include "pluginManager/pattern.h"
 
 namespace qReal {
 class EditorManager;

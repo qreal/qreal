@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../../../qrrepo/repoApi.h"
-#include "../../pluginManager/editorManagerInterface.h"
-#include "modelsImplementation/graphicalModelItem.h"
-#include "modelsImplementation/abstractModel.h"
-#include "logicalModelView.h"
-#include "../graphicalModelAssistApi.h"
+#include <qrrepo/repoApi.h>
+
+#include "pluginManager/editorManagerInterface.h"
+#include "models/details/modelsImplementation/graphicalModelItem.h"
+#include "models/details/modelsImplementation/abstractModel.h"
+#include "models/details/logicalModelView.h"
+#include "models/graphicalModelAssistApi.h"
 
 namespace qReal {
 
@@ -21,12 +22,18 @@ class GraphicalModel : public modelsImplementation::AbstractModel
 	Q_OBJECT
 
 public:
-	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi, EditorManagerInterface const &editorManagerInterface);
+	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
+			, EditorManagerInterface const &editorManagerInterface);
+
 	virtual ~GraphicalModel();
+
+	/// Sets graphical assist interface for this model. Takes ownership.
+	void setAssistApi(GraphicalModelAssistApi * const graphicalAssistApi);
 
 	void connectToLogicalModel(LogicalModel * const logicalModel);
 	void updateElements(Id const &logicalId, QString const &name);
-	void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, QString const &name, QPointF const &position);
+	void addElementToModel(Id const &parent, Id const &id,Id const &logicalId, QString const &name
+			, QPointF const &position);
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 	virtual void changeParent(QModelIndex const &element, QModelIndex const &parent, QPointF const &position);
@@ -44,17 +51,20 @@ signals:
 private:
 	LogicalModelView mLogicalModelView;
 	qrRepo::GraphicalRepoApi &mApi;
-	GraphicalModelAssistApi *mGraphicalAssistApi;
+	GraphicalModelAssistApi *mGraphicalAssistApi;  // Has ownership.
 
 	virtual void init();
 	void loadSubtreeFromClient(modelsImplementation::GraphicalModelItem * const parent);
-	modelsImplementation::GraphicalModelItem *loadElement(modelsImplementation::GraphicalModelItem *parentItem, Id const &id);
+	modelsImplementation::GraphicalModelItem *loadElement(modelsImplementation::GraphicalModelItem *parentItem
+			, Id const &id);
 
 	void setNewName(Id const &id, QString const newValue);
-	virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id, modelsImplementation::AbstractModelItem *parentItem) const;
-	void initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem,
-						   modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position);
-	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root, details::modelsImplementation::AbstractModelItem *child);
+	virtual modelsImplementation::AbstractModelItem *createModelItem(Id const &id
+			, modelsImplementation::AbstractModelItem *parentItem) const;
+	void initializeElement(const Id &id, const Id &logicalId, modelsImplementation::AbstractModelItem *parentItem
+			, modelsImplementation::AbstractModelItem *item, QString const &name, const QPointF &position);
+	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
+			, details::modelsImplementation::AbstractModelItem *child);
 };
 }
 }

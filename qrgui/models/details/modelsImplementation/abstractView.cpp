@@ -1,13 +1,18 @@
 #include "abstractView.h"
 
-#include "abstractModel.h"
-#include "../../qrkernel/definitions.h"
+#include <qrkernel/definitions.h>
+
+#include "models/details/modelsImplementation/abstractModel.h"
 
 using namespace qReal;
 using namespace models::details::modelsImplementation;
 
 AbstractView::AbstractView(AbstractModel * const model)
 	: mModel(model)
+{
+}
+
+AbstractView::~AbstractView()
 {
 }
 
@@ -31,10 +36,12 @@ void AbstractView::rowsMoved(QModelIndex const &sourceParent, int sourceStart
 	Q_UNUSED(destinationRow)
 }
 
-void AbstractView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight)
+void AbstractView::dataChanged(QModelIndex const &topLeft, QModelIndex const &bottomRight
+		, QVector<int> const &roles)
 {
 	Q_UNUSED(topLeft)
 	Q_UNUSED(bottomRight)
+	Q_UNUSED(roles)
 }
 
 void AbstractView::rowsAboutToBeRemoved(QModelIndex const &parent, int start, int end)

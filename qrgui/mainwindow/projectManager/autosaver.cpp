@@ -3,9 +3,10 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
 
-#include "../../qrkernel/settingsManager.h"
-#include "projectManager.h"
-#include "autosaver.h"
+#include <qrkernel/settingsManager.h>
+
+#include "mainwindow/projectManager/projectManager.h"
+#include "mainwindow/projectManager/autosaver.h"
 
 using namespace qReal;
 

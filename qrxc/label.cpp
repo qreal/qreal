@@ -1,7 +1,8 @@
 #include "label.h"
-#include "../qrutils/outFile.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
+
+#include <qrutils/outFile.h>
 
 using namespace utils;
 
@@ -14,6 +15,8 @@ bool Label::init(QDomElement const &element, int index, bool nodeLabel, int widt
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
 	mReadOnly = element.attribute("readOnly", "false");
+	mRotation = element.attribute("rotation", "0").toDouble();
+
 	if (mTextBinded.contains("##")) {
 		mReadOnly = "true";
 	}
@@ -36,13 +39,15 @@ QString Label::titleName() const
 void Label::generateCodeForConstructor(OutFile &out)
 {
 	if (mText.isEmpty()) {
-		// Это бинденный лейбл, текст для него будет браться из репозитория
-		out() << "			" + titleName() + " = factory.createTitle("
-				+ QString::number(mX.value()) + ", " + QString::number(mY.value()) + ", \"" + mTextBinded + "\", " + mReadOnly + ");\n";
+		// It is binded label, text for it will be fetched from repo.
+		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
+				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
+				+ ", \"" + mTextBinded + "\", " + mReadOnly + ", " + QString::number(mRotation) + ");\n";
 	} else {
-		// Это статический лейбл, репозиторий ему не нужен
-		out() << "			" + titleName() + " = factory.createTitle("
-				+ QString::number(mX.value()) + ", " + QString::number(mY.value()) + ", QString::fromUtf8(\"" + mText + "\"));\n";
+		// It is a static label, text for it is fixed.
+		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
+				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
+				+ ", QString::fromUtf8(\"" + mText + "\"), " + QString::number(mRotation) + ");\n";
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 
@@ -51,8 +56,7 @@ void Label::generateCodeForConstructor(OutFile &out)
 	out() << "			" + titleName() + "->setScaling(" + scalingX + ", " + scalingY + ");\n";
 	out() << "			" + titleName() + "->setHard(" + (mIsHard ? "true" : "false") + ");\n";
 
-	// TODO: вынести отсюда в родительский класс.
-	out() << "			" + titleName() + "->setFlags(0);\n"
+	out()
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
 		<< "			titles.append(" + titleName() + ");\n";
 }
@@ -102,14 +106,14 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		out() << QString("\t\t\t%1->setPlainText(%2);\n")
 				.arg(titleName(), resultStr);
 	} else {
-		out() << "\t\t\t" + titleName() + "->setHtml(QString(\""
-			+ (mCenter == "true" ? "<center>%1</center>" : "<b>%1</b>") + "\").arg(" + resultStr + ").replace(\"\\n\", \"<br>\"));\n";
+		out() << "\t\t\t" + titleName() + "->setTextFromRepo("
+			 + resultStr + ");\n";
 	}
 }
 
 void Label::generateCodeForFields(OutFile &out)
 {
-	out() << "		ElementTitleInterface *" + titleName() + ";\n";
+	out() << "		qReal::LabelInterface *" + titleName() + ";\n";
 }
 
 

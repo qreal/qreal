@@ -27,6 +27,8 @@ public:
 	virtual bool isDefaultPath(QString const &path) = 0;
 	virtual bool isModified(QString const &path) = 0;
 	virtual bool isModifiedEver(QString const &path) = 0;
+	virtual void addExtension(QString const &ext, QString const &description) = 0;
+	virtual QString extDescription(QString const &ext) = 0;
 
 signals:
 	void textChanged();

@@ -1,14 +1,14 @@
 HEADERS += \
-	toolPluginInterface/toolPluginInterface.h \
-	toolPluginInterface/customizer.h \
-	toolPluginInterface/pluginConfigurator.h \
-	toolPluginInterface/actionInfo.h \
-	toolPluginInterface/usedInterfaces/errorReporterInterface.h \
-	toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h \
-	toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h \
-	toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h \
-	toolPluginInterface/hotKeyActionInfo.h \
-    toolPluginInterface/systemEvents.h \
-    toolPluginInterface/systemEventsInterface.h
+        $$PWD/toolPluginInterface.h \
+        $$PWD/customizer.h \
+        $$PWD/pluginConfigurator.h \
+        $$PWD/actionInfo.h \
+        $$PWD/usedInterfaces/errorReporterInterface.h \
+        $$PWD/usedInterfaces/details/modelsAssistInterface.h \
+        $$PWD/usedInterfaces/graphicalModelAssistInterface.h \
+        $$PWD/usedInterfaces/logicalModelAssistInterface.h \
+        $$PWD/hotKeyActionInfo.h \
+        $$PWD/systemEvents.h \
+        $$PWD/systemEventsInterface.h
 
 SOURCES +=

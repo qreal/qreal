@@ -14,7 +14,7 @@ class NullGyroscopeSensorImplementation : public NullSensorImplementation
 	Q_OBJECT
 
 public:
-	NullGyroscopeSensorImplementation(inputPort::InputPortEnum const port);
+	NullGyroscopeSensorImplementation(robots::enums::inputPort::InputPortEnum const port);
 
 protected slots:
 	virtual void timerTimeout();
