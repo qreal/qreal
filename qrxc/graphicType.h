@@ -54,7 +54,7 @@ protected:
 		QString layoutBinding;
 	};
 
-	bool isResolving() const;
+	virtual bool isResolving() const;
 	virtual bool isWidgetBased(QDomElement const &graphics) const = 0;
 
 	QDomElement mLogic;
@@ -87,6 +87,8 @@ private:
 	private:
 		bool &mResolvingFlag;
 	};
+
+	bool mResolving;
 
 	bool initLabels();
 	bool initUsages();

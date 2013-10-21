@@ -41,6 +41,7 @@ GraphicType::GraphicType(Diagram *diagram)
 	, mVisible(false)
 	, mWidth(-1)
 	, mHeight(-1)
+	, mResolving(false)
 	, mContainerProperties(NULL)
 {
 }
@@ -355,6 +356,11 @@ bool GraphicType::addProperty(Property *property)
 		mProperties[propertyName] = property;
 	}
 	return true;
+}
+
+bool GraphicType::isResolving() const
+{
+		return mResolving;
 }
 
 bool GraphicType::resolve()
