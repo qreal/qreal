@@ -33,7 +33,7 @@ namespace qrmc {
 		virtual QString generateEnums(QString const &lineTemplate) const;
 		virtual QString generatePossibleEdges(QString const &lineTemplate) const;
 
-		bool isResolving() const;
+		virtual bool isResolving() const;
 
 	protected:
 		typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;

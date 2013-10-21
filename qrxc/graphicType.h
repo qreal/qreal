@@ -54,7 +54,7 @@ protected:
 		QString layoutBinding;
 	};
 
-	virtual bool isResolving() const;
+	bool isResolving() const;
 	virtual bool isWidgetBased(QDomElement const &graphics) const = 0;
 
 	QDomElement mLogic;

@@ -473,7 +473,7 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\n\n";
 }
 
-bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
+bool NodeType::generatePorts(OutFile &out, bool isNotFirst) const
 {
 	GraphicType::generateOneCase(out, isNotFirst);
 
