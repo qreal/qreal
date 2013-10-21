@@ -6,6 +6,7 @@
 #include "brickImplementations/abstractBrickImplementation.h"
 #include "motorImplementations/abstractMotorImplementation.h"
 #include "sensorImplementations/abstractSensorImplementation.h"
+#include "displayImplementations/abstractDisplayImplementation.h"
 #include "sensorImplementations/abstractEncoderImplementation.h"
 #include "../../sensorConstants.h"
 #include "../d2RobotModel/d2RobotModel.h"
@@ -32,17 +33,45 @@ public:
 	AbstractRobotModelImplementation();
 	virtual ~AbstractRobotModelImplementation();
 
-	static AbstractRobotModelImplementation *robotModel(robotModelType::robotModelTypeEnum type, RobotCommunicator * const robotCommunicationInterface = NULL, d2Model::D2RobotModel *d2RobotModel = NULL);
+	static AbstractRobotModelImplementation *robotModel(robots::enums::robotModelType::robotModelTypeEnum type
+			, RobotCommunicator * const robotCommunicationInterface = NULL
+			, d2Model::D2RobotModel *d2RobotModel = NULL
+			);
 
 	virtual void init();
 	virtual void stopRobot() = 0;
 	virtual void disconnectFromRobot();
 
 	virtual brickImplementations::AbstractBrickImplementation &brick() = 0;
-	virtual sensorImplementations::AbstractSensorImplementation *touchSensor(inputPort::InputPortEnum const &port) const = 0;
-	virtual sensorImplementations::AbstractSensorImplementation *sonarSensor(inputPort::InputPortEnum const &port) const = 0;
-	virtual sensorImplementations::AbstractSensorImplementation *lightSensor(inputPort::InputPortEnum const &port) const = 0;
-	virtual sensorImplementations::AbstractSensorImplementation *colorSensor(inputPort::InputPortEnum const &port) const = 0;
+	virtual displayImplementations::AbstractDisplayImplementation &display() = 0;
+
+	virtual sensorImplementations::AbstractSensorImplementation *touchSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const = 0;
+
+	virtual sensorImplementations::AbstractSensorImplementation *sonarSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const = 0;
+
+	virtual sensorImplementations::AbstractSensorImplementation *lightSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const = 0;
+
+	virtual sensorImplementations::AbstractSensorImplementation *colorSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const = 0;
+
+	virtual sensorImplementations::AbstractSensorImplementation *soundSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const = 0;
+
+	virtual sensorImplementations::AbstractSensorImplementation *accelerometerSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const = 0;
+
+	virtual sensorImplementations::AbstractSensorImplementation *gyroscopeSensor(
+			robots::enums::inputPort::InputPortEnum const port
+			) const = 0;
 
 	virtual motorImplementations::AbstractMotorImplementation &motorA() = 0;
 	virtual motorImplementations::AbstractMotorImplementation &motorB() = 0;
@@ -54,9 +83,14 @@ public:
 
 	virtual AbstractTimer *produceTimer() = 0;
 
-	virtual void configureSensor(sensorType::SensorTypeEnum const &sensorType
-			, inputPort::InputPortEnum const &port);
-	virtual sensorImplementations::AbstractSensorImplementation * sensor(inputPort::InputPortEnum const &port);
+	virtual void configureSensor(
+			robots::enums::sensorType::SensorTypeEnum const &sensorType
+			, robots::enums::inputPort::InputPortEnum const port
+			);
+
+	virtual sensorImplementations::AbstractSensorImplementation * sensor(
+			robots::enums::inputPort::InputPortEnum const port
+			);
 
 	virtual bool needsConnection() const;
 	virtual void startInterpretation();
@@ -75,17 +109,29 @@ signals:
 	void disconnected();
 
 protected:
-	virtual void addTouchSensor(inputPort::InputPortEnum const &port) = 0;
-	virtual void addSonarSensor(inputPort::InputPortEnum const &port) = 0;
-	virtual void addColorSensor(inputPort::InputPortEnum const &port, lowLevelSensorType::SensorTypeEnum mode, sensorType::SensorTypeEnum const &sensorType) = 0;
-	virtual void addLightSensor(inputPort::InputPortEnum const &port) = 0;
-	virtual void nullifySensor(inputPort::InputPortEnum port);
+	virtual void addTouchSensor(robots::enums::inputPort::InputPortEnum const port) = 0;
+	virtual void addSonarSensor(robots::enums::inputPort::InputPortEnum const port) = 0;
+
+	virtual void addColorSensor(robots::enums::inputPort::InputPortEnum const port
+			, enums::lowLevelSensorType::SensorTypeEnum mode
+			, robots::enums::sensorType::SensorTypeEnum const &sensorType
+			) = 0;
+
+	virtual void addLightSensor(robots::enums::inputPort::InputPortEnum const port) = 0;
+	virtual void addSoundSensor(robots::enums::inputPort::InputPortEnum const port) = 0;
+	virtual void addAccelerometerSensor(robots::enums::inputPort::InputPortEnum const port) = 0;
+	virtual void addGyroscopeSensor(robots::enums::inputPort::InputPortEnum const port) = 0;
+	virtual void nullifySensor(robots::enums::inputPort::InputPortEnum const port);
 
 	/// Connect to robot if connection doesn't established
 	virtual void connectRobot();
 
 	static NullRobotModelImplementation *nullRobotModel();
-	static RealRobotModelImplementation *realRobotModel(RobotCommunicator * const robotCommunicationInterface);
+
+	static RealRobotModelImplementation *realRobotModel(
+			RobotCommunicator * const robotCommunicationInterface
+			);
+
 	static UnrealRobotModelImplementation *unrealRobotModel(d2Model::D2RobotModel *d2RobotModel);
 
 	static NullRobotModelImplementation *mNullRobotModel;

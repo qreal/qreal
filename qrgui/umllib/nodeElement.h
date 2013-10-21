@@ -1,6 +1,6 @@
 /** @file nodeElement.h
- *  @brief class for an element object on a diagram
- * */
+*  @brief class for an element object on a diagram
+**/
 
 #pragma once
 
@@ -11,30 +11,37 @@
 #include <QtWidgets/QWidget>
 #include <QtCore/QList>
 
-#include "sdfRenderer.h"
-#include "element.h"
-#include "edgeElement.h"
-#include "serializationData.h"
+#include <QtCore/QTimer>
 
-#include "embedded/linkers/embeddedLinker.h"
-#include "../editorPluginInterface/elementImpl.h"
-#include "embedded/linkers/embeddedLinker.h"
+#include "umllib/sdfRenderer.h"
+#include "umllib/element.h"
+#include "umllib/edgeElement.h"
+#include "umllib/embedded/linkers/embeddedLinker.h"
+#include "editorPluginInterface/elementImpl.h"
 
-#include "private/sceneGridHandler.h"
-#include "private/umlPortHandler.h"
-#include "private/portHandler.h"
-#include "private/nodeElementLayoutFactory.h"
+#include "umllib/private/sceneGridHandler.h"
+#include "umllib/private/umlPortHandler.h"
+#include "umllib/private/portHandler.h"
 
-#include "../editorPluginInterface/elementImpl.h"
+#include "umllib/serializationData.h"
 
+namespace qReal {
 class WidgetsHelper;
+
+namespace commands {
+class ResizeCommand;
+}
 
 class NodeElement : public Element
 {
 	Q_OBJECT
 
 public:
-	explicit NodeElement(ElementImpl *impl);
+	explicit NodeElement(ElementImpl *impl
+			, Id const &id
+			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
+
 	virtual ~NodeElement();
 
 	/**
@@ -45,11 +52,9 @@ public:
 	 */
 	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
 
-	virtual void setId(Id &id);
+	QMap<QString, QVariant> graphicalProperties() const;
+	QMap<QString, QVariant> logicalProperties() const;
 
-	QMap<QString, QVariant> properties();
-
-	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w, SdfRenderer *portrenderer);
 	virtual void paint(QPainter *p, QStyleOptionGraphicsItem const *opt, QWidget *w);
 
 	QRectF boundingRect() const;
@@ -69,15 +74,21 @@ public:
 	bool isContainer() const;
 
 	void storeGeometry();
-	virtual void setName(QString const &value);
+	virtual void setName(QString const &name, bool withUndoRedo = false);
 
 	QPointF const portPos(qreal id) const;
-	QPointF const nearestPort(QPointF const &location) const;
+	QPointF const nearestPort(QPointF const &location, QStringList const &types) const;
+	int numberOfPorts() const;
 	static int portNumber(qreal id);
-	qreal portId(QPointF const &location) const;
+	qreal portId(QPointF const &location, QStringList const &types) const;
 
-	QList<EdgeElement *> getEdges();
+	/// @return List of edges connected to the node
+	QList<EdgeElement *> getEdges() const;
+
+	/// Add edge to node's edge list, rearrange linear ports
 	void addEdge(EdgeElement *edge);
+
+	/// Remove edge from node's edge list, rearrange linear ports
 	void delEdge(EdgeElement *edge);
 
 	NodeData& data();
@@ -85,9 +96,8 @@ public:
 	virtual bool initPossibleEdges();
 	QList<PossibleEdge> getPossibleEdges();
 
-	void setPortsVisible(bool value);
-
-	void hideEmbeddedLinkers();
+	/// Make ports of specified types visible, hide other ports
+	void setPortsVisible(QStringList const &types);
 
 	bool isPort() const;
 	bool canHavePorts();
@@ -105,12 +115,11 @@ public:
 	bool connectionInProgress();
 	void setConnectingState(bool arg);
 
-	void adjustLinks(bool isDragging = false);
+	void adjustLinks();
 	void arrangeLinearPorts();
 	void arrangeLinks();
 
 	virtual void checkConnectionsToPort();
-	virtual void connectLinksToPorts();
 
 	/** @brief Drawing placeholder at the appropriate position (calculated using event data) */
 	void drawPlaceholder(QGraphicsRectItem *placeholder, QPointF const &scenePos);
@@ -122,22 +131,42 @@ public:
 	*/
 	Element *getPlaceholderNextElement();
 
-	void highlightEdges();
+	void changeExpanded();
+	bool isExpanded() const;
 
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
 
 	layouts::NodeElementLayoutFactory *layoutFactory() const;
 
-	virtual void deleteFromScene();
-
 	QList<EdgeElement *> const edgeList() const;
 	QList<NodeElement *> const childNodes() const;
 
-	virtual void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi *logicalAssistApi);
-
 	void setVisibleEmbeddedLinkers(bool const show);
+	void updateShape(QString const &shape) const;
+
+	void changeFoldState();
+
+	void updateLabels();
+
+	/**
+	 * Calls resize(QRectF newContents, QPointF newPos) with
+	 * newPos equals to current position of node and
+	 * newContents equals to current shape (mContents).
+	 */
+	void resize();
+
+	/// Create resize command and start tracking resize
+	void startResize();
+
+	/// Stop tracking resize, execute resize command
+	void endResize();
+
+	/**
+	 * @brief sortedChildren
+	 * @return children of sorting container sorted in correct order
+	 */
+	IdList sortedChildren() const;
 
 public slots:
 	virtual void singleSelectionState(bool const singleSelected);
@@ -149,18 +178,19 @@ private slots:
 	void updateNodeEdges();
 	/// Sets QReal-engine geometry to Qt-engine one
 	void synchronizeGeometries();
+	void initRenderedDiagram();
 
 private:
 	enum DragState {
-		None,
-		TopLeft,
-		Top,
-		TopRight,
-		Left,
-		Right,
-		BottomLeft,
-		Bottom,
-		BottomRight
+		None
+		, TopLeft
+		, Top
+		, TopRight
+		, Left
+		, Right
+		, BottomLeft
+		, Bottom
+		, BottomRight
 	};
 
 	/**
@@ -172,7 +202,7 @@ private:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF const &newContents, QPointF const &newPos);
+	void resize(QRectF const &newContents, QPointF const &newPos, bool needResizeParent = true);
 
 	/**
 	 * Calls resize(QRectF newContents, QPointF newPos) with
@@ -188,10 +218,13 @@ private:
 	 */
 	void resize();
 
-	void disconnectEdges();
+	void drawLinesForResize(QPainter *painter);
+	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
 	void delUnusedLines();
-	PossibleEdge toPossibleEdge(StringPossibleEdge const &strPossibleEdge);
+	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);
+
+	void initPortsVisibility();
 
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -202,6 +235,9 @@ private:
 	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
+	void paint(QPainter *p, QStyleOptionGraphicsItem const *opt);
+	void drawPorts(QPainter *painter, bool mouseOver);
+
 	/**
 	 * Recalculates mHighlightedNode according to current mouse scene position.
 	 * @param mouseScenePos Current mouse scene position.
@@ -209,27 +245,30 @@ private:
 	void recalculateHighlightedNode(QPointF const &mouseScenePos);
 	virtual QVariant itemChange(GraphicsItemChange change, QVariant const &value);
 
-	void changeFoldState();
 	void setLinksVisible(bool);
-
-	NodeElement *getNodeAt(QPointF const &position);
 
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
 
+	void updateChildrenOrder();
+
 	void initEmbeddedLinkers();
 
 	bool inLayout() const;
+	QRectF diagramRenderingRect() const;
+
+	commands::AbstractCommand *changeParentCommand(Id const &newParent, QPointF const &position) const;
 
 	ContextMenuAction mSwitchGridAction;
 
-	bool mPortsVisible;
+	QMap<QString, bool> mPortsVisibility;
 
 	QRectF mContents;
 	QList<EdgeElement *> mEdgeList;
 
 	DragState mDragState;
 	QPointF mDragPosition;
+	qReal::commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
 
@@ -238,8 +277,9 @@ private:
 
 	QTransform mTransform;
 
-	SdfRenderer *mPortRenderer;
 	SdfRenderer *mRenderer;
+
+	bool mIsExpanded;
 
 	bool mIsFolded;
 	QRectF mFoldedContents;
@@ -257,7 +297,6 @@ private:
 	QList<ContextMenuAction *> mBonusContextMenuActions;
 
 	SceneGridHandler *mGrid;
-	UmlPortHandler *mUmlPortHandler;
 	PortHandler *mPortHandler;
 
 	QGraphicsRectItem *mPlaceholder;
@@ -270,4 +309,8 @@ private:
 
 	int mTimeOfUpdate;
 	QTimer *mTimer;
+	QImage mRenderedDiagram;
+	QTimer mRenderTimer;
 };
+
+}

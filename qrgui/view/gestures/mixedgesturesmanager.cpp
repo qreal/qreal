@@ -1,10 +1,13 @@
 #include "mixedgesturesmanager.h"
-#include "rectanglegesturesmanager.h"
-#include "nearestposgridgesturesmanager.h"
-#include "curveKeyBuilder.h"
+
+#include "view/gestures/rectanglegesturesmanager.h"
+#include "view/gestures/nearestposgridgesturesmanager.h"
+#include "view/gestures/curveKeyBuilder.h"
 
 const double weight1 = 0.2; //0.3: 891 0.2: 899
 const double weight2 = 1 - weight1;
+
+using namespace qReal::gestures;
 
 MixedGesturesManager::MixedGesturesManager()
 {
@@ -29,8 +32,7 @@ bool MixedGesturesManager::isMultistroke()
 	return true;
 }
 
-double MixedGesturesManager::getDistance(QPair<double *,double *> const &key1,
-										 QPair<double *, double *> const &key2)
+double MixedGesturesManager::getDistance(QPair<double *,double *> const &key1, QPair<double *, double *> const &key2)
 {
 	RectangleGesturesManager rectMan;
 	NearestPosGridGesturesManager gridMan;

@@ -5,20 +5,36 @@
 #include <QtXml/QDomDocument>
 #include <QtWidgets/QButtonGroup>
 
-#include "scene.h"
-#include "item.h"
-#include "../common/controlButtons.h"
-#include "../common/templateDocumentBuilder.h"
-#include "../../../qrutils/graphicsUtils/abstractItemView.h"
-#include "../../../qrutils/navigationUtils/navigationPageWithMenu.h"
+#include <qrutils/graphicsUtils/abstractItemView.h>
+#include <qrutils/graphicsUtils/abstractItemView.h>
+#include <qrutils/navigationUtils/navigationPageWithMenu.h>
+#include <qrkernel/ids.h>
+
+#include "elementEditor/shapeEdit/scene.h"
+#include "elementEditor/shapeEdit/item.h"
+#include "elementEditor/common/controlButtons.h"
+#include "elementEditor/common/templateDocumentBuilder.h"
+#include "pluginManager/editorManagerInterface.h"
+
+// TODO: lolwut?
+//#include "ui_mainWindow.h"
+
+// TODO: lolwut?
+#include "models/details/logicalModel.h"
+
+#include "mainwindow/shapeEdit/visibilityConditionsDialog.h"
+#include "view/editorView.h"
 
 namespace Ui {
-	class ShapeEdit;
+class ShapeEdit;
 }
+
+namespace qReal {
 
 class ShapeEdit : public QWidget, public navigation::NavigationPageWithMenu
 {
 	Q_OBJECT
+
 public:
 	ShapeEdit(bool isIconEditor, QWidget *parent = NULL);
 	~ShapeEdit();
@@ -53,6 +69,8 @@ private slots:
 	void addLinePort(bool checked);
 	void addStylus(bool checked);
 
+	void visibilityButtonClicked();
+
 	void savePicture();
 	void saveToXml();
 	void save();
@@ -64,6 +82,8 @@ private slots:
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoFontPalette();
 	void setItemFontPalette(QPen const &penItem, QFont const &fontItem, QString const &name);
+	void setNoPortType();
+	void setPortType(QString const &type);
 	void changeTextName();
 	void resetHighlightAllButtons();
 
@@ -88,19 +108,35 @@ private:
 	void setValueItalicCheckBox(bool check);
 	void setValueBoldCheckBox(bool check);
 	void setValueUnderlineCheckBox(bool check);
-	void setValueTextNameLineEdit(QString const& name);
+	void setValueTextNameLineEdit(QString const &name);
 
 	void generateDom();
 	void exportToXml(QString const &fileName);
 	QList<QDomElement> generateGraphics();
 
+	QMap<QString, VisibilityConditionsDialog::PropertyInfo> getProperties() const;
+	QStringList getPortTypes() const;
+
 	bool mIsIconEditor;
-	Scene *mScene;
+	Scene *mScene;  // Has ownership.
 	QGraphicsItemGroup mItemGroup;
-	QList<QAbstractButton *> mButtonGroup;
+	QList<QAbstractButton *> mButtonGroup;  // Doesn't have direct ownership (owned by mUi).
 	QDomDocument mDocument;
 	QPoint mTopLeftPicture;
-	Ui::ShapeEdit *mUi;
+	Ui::ShapeEdit *mUi;  // Has ownership.
+
+	// TODO: lolwut? Use assist API instead.
+	qReal::models::details::LogicalModel *mModel;  // Doesn't have ownership.
+	QPersistentModelIndex const mIndex;
+	int const mRole;
+	Id mId;
+	EditorManagerInterface *mEditorManager;  // Doesn't have ownership.
+	IdList mGraphicalElements;
+	MainWindow *mMainWindow;  // Doesn't have ownership.
+	EditorView *mEditorView;  // Doesn't have ownership.
+
 	qReal::elementEdit::ControlButtons *mControlButtons;
 	qReal::elementEdit::TemplateDocumentBuilder *mDocumentBuilder;
 };
+
+}

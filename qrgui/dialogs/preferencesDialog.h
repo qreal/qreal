@@ -2,10 +2,12 @@
 
 #include <QtCore/QModelIndex>
 #include <QtWidgets/QDialog>
+#include <QtCore/QSettings>
+#include <QtWidgets/QFileDialog>
 
-#include "preferencesPages/preferencesPage.h"
+#include <qrkernel/settingsManager.h>
 
-#include "../../qrkernel/settingsManager.h"
+#include "dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
 	class PreferencesDialog;
@@ -28,6 +30,7 @@ public:
 
 protected:
 	void changeEvent(QEvent *e);
+	void showEvent(QShowEvent *e);
 
 signals:
 	void gridChanged();
@@ -38,13 +41,18 @@ signals:
 
 public slots:
 	void changePaletteParameters();
+
 private slots:
 	void cancel();
 	void applyChanges();
+	void restoreSettings();
 	void saveAndClose();
 	void chooseTab(const QModelIndex &);
+	void exportSettings();
+	void importSettings();
 
 private:
+
 	Ui::PreferencesDialog *ui;
 	QMap<QString, PreferencesPage *> mCustomPages;
 };

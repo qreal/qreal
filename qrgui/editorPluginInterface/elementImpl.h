@@ -5,106 +5,57 @@
 #include <QtCore/QRectF>
 #include <QtCore/QPointF>
 #include <QtGui/QPainter>
-#include "elementTitleHelpers.h"
-#include "elementRepoInterface.h"
-#include "sdfRendererInterface.h"
-#include "widgetsHelperInterface.h"
-#include "propertyEditorInterface.h"
-#include "../../qrkernel/ids.h"
+
+#include <qrkernel/ids.h>
+
+#include "editorPluginInterface/labelInterface.h"
+#include "editorPluginInterface/labelFactoryInterface.h"
+#include "editorPluginInterface/elementRepoInterface.h"
+#include "editorPluginInterface/sdfRendererInterface.h"
+#include "editorPluginInterface/widgetsHelperInterface.h"
+#include "editorPluginInterface/portHelpers.h"
+
+namespace enums {
+namespace linkShape {
+enum LinkShape
+{
+	unset = -1
+	, broken
+	, square
+	, curve
+};
+}
+}
+
+namespace qReal {
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
 typedef QPair<bool, qReal::Id> PossibleEdgeType;
-
-/** @brief point port description */
-struct StatPoint
-{
-	QPointF point;
-
-	/// Denote is the port need to be scaled on X dimension or not.
-	/// 'true' - means that the port isn't need to be scaled.
-	/// 'false' - means that the port is need to be scaled.
-	bool prop_x;
-
-	/// Denote is the port need to be scaled on Y dimension or not.
-	/// 'true' - means that the port isn't need to be scaled.
-	/// 'false' - means that the port is need to be scaled.
-	bool prop_y;
-
-	int initWidth;
-	int initHeight;
-
-	StatPoint() : point(QPointF(0, 0)), prop_x(false), prop_y(false),
-		initWidth(1), initHeight(1) {}
-
-	operator QPointF () const
-	{
-		return point;
-	}
-
-	void operator = (QPointF const &p)
-	{
-		point = p;
-		prop_x = false;
-		prop_y = false;
-		initHeight = 1;
-		initWidth = 1;
-	}
-};
-
-/** @brief line port description */
-struct StatLine
-{
-	QLineF line;
-	bool prop_x1;
-	bool prop_y1;
-	bool prop_x2;
-	bool prop_y2;
-	int initWidth;
-	int initHeight;
-
-	StatLine() : line(QLineF(0, 0, 0, 0)), prop_x1(false), prop_y1(false),
-		prop_x2(false), prop_y2(false), initWidth(1), initHeight(1) {}
-
-	operator QLineF () const
-	{
-		return line;
-	}
-
-
-	void operator = (QLineF const &l)
-	{
-		line = l;
-		prop_x1 = false;
-		prop_x2 = false;
-		prop_y1 = false;
-		prop_y2 = false;
-		initHeight = 1;
-		initWidth = 1;
-	}
-};
+typedef QPair<qReal::Id, qReal::Id> ElementPair;
 
 /** @class ElementImpl
-  *	@brief base class for generated stuff in plugins
-  *	TODO: split into NodeElementImpl and EdgeElementImpl
-  * */
+*	@brief base class for generated stuff in plugins
+*	TODO: split into NodeElementImpl and EdgeElementImpl
+* */
+
 class ElementImpl {
 public:
 	virtual ~ElementImpl() {}
-	virtual void init(QRectF &contents, QList<StatPoint> &pointPorts,
-					  QList<StatLine> &linePorts, ElementTitleFactoryInterface &factory,
-					  QList<ElementTitleInterface*> &titles,
-					  SdfRendererInterface *renderer, SdfRendererInterface *portRenderer,
-					  WidgetsHelperInterface *widgetsHelper) = 0;
-	virtual void init(ElementTitleFactoryInterface &factory,
-					  QList<ElementTitleInterface*> &titles) = 0;
+
+	virtual void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
+			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
+			, SdfRendererInterface *renderer, WidgetsHelperInterface *widgetsHelper
+			, ElementRepoInterface *elementRepo = 0) = 0;
+	virtual void init(LabelFactoryInterface &factory
+			, QList<LabelInterface*> &titles) = 0;
+
 	virtual void paint(QPainter *painter, QRectF &contents) = 0;
 	virtual void updateData(ElementRepoInterface *repo) const = 0;
 	virtual bool isNode() const = 0;
-	virtual bool hasPorts() const = 0;
 	virtual bool isResizeable() const = 0;
 	virtual Qt::PenStyle getPenStyle() const = 0;
-	virtual int getPenWidth() const = 0; //
+	virtual int getPenWidth() const = 0;
 	virtual QColor getPenColor() const = 0;
 	virtual void drawStartArrow(QPainter *painter) const = 0;
 	virtual void drawEndArrow(QPainter *painter) const = 0;
@@ -113,7 +64,7 @@ public:
 	/*Container properties*/
 	virtual bool isContainer() const = 0;
 	virtual bool isSortingContainer() const = 0;
-	virtual int sizeOfForestalling() const = 0;
+	virtual QVector<int> sizeOfForestalling() const = 0;
 	virtual int sizeOfChildrenForestalling() const = 0;
 	virtual bool hasMovableChildren() const = 0;
 	virtual bool minimizesToChildren() const = 0;
@@ -121,10 +72,25 @@ public:
 	virtual QString layout() const = 0;
 	virtual QString layoutBinding() const = 0;
 
+	virtual QStringList fromPortTypes() const = 0;
+	virtual QStringList toPortTypes() const = 0;
+
+	virtual enums::linkShape::LinkShape shapeType() const = 0;
+
 	virtual bool isPort() const = 0;
 	virtual bool hasPin() const = 0;
+
+	virtual bool createChildrenFromMenu() const = 0;
 
 	virtual QList<double> border() const = 0;
 
 	virtual QStringList bonusContextMenuFields() const = 0;
+
+	/// Update shape of an element. Does nothing in case of generated editors, used by metamodel interpreter.
+	virtual void updateRendererContent(QString const &shape)
+	{
+		Q_UNUSED(shape);
+	}
 };
+
+}

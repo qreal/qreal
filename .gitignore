@@ -17,3 +17,7 @@ Thumbs.db
 Makefile*
 *.pro.user*
 bin/*
+*.sdf
+*.Debug
+*.Release
+*.prf

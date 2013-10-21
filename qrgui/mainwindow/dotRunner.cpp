@@ -1,18 +1,19 @@
-#include <QtCore/QDebug>
-
 #include "dotRunner.h"
 
 using namespace qReal;
 
-DotRunner::DotRunner(Id const &diagramId
+DotRunner::DotRunner(
+		Id const &diagramId
 		, models::GraphicalModelAssistApi const &graphicalModelApi
 		, models::LogicalModelAssistApi const &logicalModelApi
-		, EditorManager const &editorManager, QString const &absolutePathToDotFiles)
+		, EditorManagerInterface const &editorManagerProxy
+		, QString const &absolutePathToDotFiles
+		)
 		: QObject(NULL)
 		, mDiagramId(diagramId)
 		, mGraphicalModelApi(graphicalModelApi)
 		, mLogicalModelApi(logicalModelApi)
-		, mEditorManager(editorManager)
+		, mEditorManagerInterface(editorManagerProxy)
 		, mAlgorithm("")
 		, mAbsolutePathToDotFiles(absolutePathToDotFiles)
 {
@@ -37,14 +38,14 @@ bool DotRunner::run(QString const &algorithm)
 		IdList const childrenId = mGraphicalModelApi.children(mDiagramId);
 		int index = 1;
 		foreach (Id id, childrenId) {
-			if (mEditorManager.isGraphicalElementNode(id)) {
+			if (mEditorManagerInterface.isGraphicalElementNode(id)) {
 				buildSubgraph(outFile, id, index);
 				writeGraphToDotFile(outFile, id);
 			}
 		}
 		outFile << "}";
 		data.close();
-		
+
 		mProcess.setWorkingDirectory(mAbsolutePathToDotFiles);
 		QString const dotPath = SettingsManager::value("pathToDot").toString();
 		mProcess.start(dotPath + " graph.dot");
@@ -67,7 +68,7 @@ void DotRunner::writeGraphToDotFile(QTextStream &outFile, const Id &id)
 	}
 	foreach (Id linkId, outgoingLinks) {
 		Id const elementId = mGraphicalModelApi.graphicalRepoApi().otherEntityFromLink(linkId, id);
-		if (mEditorManager.isGraphicalElementNode(elementId)) {
+		if (mEditorManagerInterface.isGraphicalElementNode(elementId)) {
 			outFile << nameOfElement(id) << " -> " << nameOfElement(elementId) << ";\n";
 		}
 	}
@@ -117,7 +118,8 @@ void DotRunner::parseDOTCoordinates()
 			continue;
 		}
 		QPointF const pointF = QPointF(qpointFCoordinates.at(0).toDouble(), qpointFCoordinates.at(1).toDouble());
-		QPair<qreal, qreal> const pair = qMakePair(regexp.capturedTexts().at(3).toDouble(), regexp.capturedTexts().at(4).toDouble());
+		QPair<qreal, qreal> const pair = qMakePair(regexp.capturedTexts().at(3).toDouble()
+				, regexp.capturedTexts().at(4).toDouble());
 		mDOTCoordinatesOfElements.insert(id, qMakePair(pointF, pair));
 	}
 	foreach (Id const &id, mDOTCoordinatesOfElements.keys()) {

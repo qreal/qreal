@@ -17,17 +17,23 @@ class SonarSensorItem : public SensorItem
 	Q_INTERFACES(QGraphicsItem)
 
 public:
-	SonarSensorItem(WorldModel const &worldModel, SensorsConfiguration &configuration, inputPort::InputPortEnum port);
+	SonarSensorItem(
+			WorldModel const &worldModel
+			, SensorsConfiguration &configuration
+			, robots::enums::inputPort::InputPortEnum port
+			);
+
 	virtual void drawItem(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *widget);
 	virtual void drawExtractionForItem(QPainter *painter);
 	virtual QRectF boundingRect() const;
 	QPainterPath shape() const;
 
 private:
-	WorldModel const &mWorldModel;
-
 	/// Returns scanning region of a sensor as painter path, in relative to sensor coordinates
 	QPainterPath scanningRegion() const;
+
+	WorldModel const &mWorldModel;
+	QImage const mIcon;
 };
 
 }

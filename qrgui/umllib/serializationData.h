@@ -1,17 +1,17 @@
 #pragma once
 
-#include <QtCore>
-#include <QMap>
-#include <QDataStream>
-#include <QPolygon>
+#include <QtCore/QMap>
+#include <QtCore/QDataStream>
+#include <QtGui/QPolygon>
 
-#include "../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 
 using namespace qReal;
 
 /**
- * @brief EdgeElement serialization data for copy/paste
- */
+* @brief EdgeElement serialization data for copy/paste
+*/
+
 class EdgeData
 {
 public:
@@ -35,11 +35,13 @@ public:
 	QPolygon configuration;
 	QPointF pos;
 
+	int shapeType;
 };
 
 /**
- * @brief NodeElement serialization data for copy/paste
- */
+* @brief NodeElement serialization data for copy/paste
+*/
+
 class NodeData
 {
 public:
@@ -53,7 +55,8 @@ public:
 	Id id;
 	Id logicalId;
 
-	QMap<QString, QVariant> properties;
+	QMap<QString, QVariant> logicalProperties;
+	QMap<QString, QVariant> graphicalProperties;
 
 	Id parentId;
 

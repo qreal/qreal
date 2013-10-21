@@ -1,7 +1,10 @@
 #include "xmlLoader.h"
-#include "../../../qrutils/xmlUtils.h"
 
+#include <QtCore/QDir>
+#include <QtWidgets/QApplication>
 #include <QtCore/QDebug>
+
+#include <qrutils/xmlUtils.h>
 
 using namespace qReal;
 
@@ -78,7 +81,8 @@ void XmlLoader::readGraphics(QDomElement const &graphic)
 				}
 				mDrift = QPoint(mStrX + distanceFigure, mStrY + distanceFigure);
 			} else
-				mDrift = QPoint(mScene->centerEmpty().x() - sizePictureX / 2, mScene->centerEmpty().y() - sizePictureY / 2);
+				mDrift = QPoint(mScene->centerEmpty().x() - sizePictureX / 2
+						, mScene->centerEmpty().y() - sizePictureY / 2);
 			readPicture(type);
 		}
 		else if (type.tagName() == "labels")
@@ -101,26 +105,27 @@ void XmlLoader::readPicture(QDomElement const &picture)
 
 	for (int i = 0; i < pictureAttributes.length(); ++i) {
 		QDomElement type = pictureAttributes.at(i).toElement();
-		if (type.tagName() == "line")
+		if (type.tagName() == "line") {
 			readLine(type);
-		else if (type.tagName() == "ellipse")
+		} else if (type.tagName() == "ellipse") {
 			readEllipse(type);
-		else if (type.tagName() == "arc")
+		} else if (type.tagName() == "arc") {
 			readArch(type);
-		else if (type.tagName() == "rectangle")
+		} else if (type.tagName() == "rectangle") {
 			readRectangle(type);
-		else if (type.tagName() == "stylus")
+		} else if (type.tagName() == "stylus") {
 			readStylus(type);
-		else if (type.tagName() == "path")
+		} else if (type.tagName() == "path") {
 			readPath(type);
-		else if (type.tagName() == "curve")
+		} else if (type.tagName() == "curve") {
 			readCurve(type);
-		else if (type.tagName() == "text")
+		} else if (type.tagName() == "text") {
 			readText(type);
-		else if (type.tagName() == "image")
+		} else if (type.tagName() == "image") {
 			readImage(type);
-		else
+		} else {
 			qDebug() << "Incorrect picture tag";
+		}
 	}
 }
 
@@ -130,10 +135,11 @@ void XmlLoader::readLabels(QDomElement const &label)
 
 	for (int i = 0; i < labelAttributes.length(); ++i) {
 		QDomElement type = labelAttributes.at(i).toElement();
-		if (type.tagName() == "label")
+		if (type.tagName() == "label") {
 			readLabel(type);
-		else
+		} else {
 			qDebug() << "Incorrect labels tag";
+		}
 	}
 }
 
@@ -143,12 +149,13 @@ void XmlLoader::readPorts(QDomElement const &port)
 
 	for (int i = 0; i < portAttributes.length(); ++i) {
 		QDomElement type = portAttributes.at(i).toElement();
-		if (type.tagName() == "linePort")
+		if (type.tagName() == "linePort") {
 			readLinePort(type);
-		else if (type.tagName() == "pointPort")
+		} else if (type.tagName() == "pointPort")
 			readPointPort(type);
-		else
+		else {
 			qDebug() << "Incorrect ports tag";
+		}
 	}
 }
 
@@ -168,16 +175,24 @@ void XmlLoader::changeScaleColor(int i)
 	mListScalePoint.removeAt(i + 1);
 }
 
-void XmlLoader::checkScale(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2)
+void XmlLoader::checkScale(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2
+		, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2)
 {
-	if (pointX1.second)
+	if (pointX1.second) {
 		changeScaleColor(0);
-	if (pointX2.second)
+	}
+
+	if (pointX2.second) {
 		changeScaleColor(3);
-	if (pointY1.second)
+	}
+
+	if (pointY1.second) {
 		changeScaleColor(4);
-	if (pointY2.second)
+	}
+
+	if (pointY2.second) {
 		changeScaleColor(7);
+	}
 }
 
 QRectF XmlLoader::readRectOfXandY(QDomElement const &docItem)
@@ -198,7 +213,8 @@ QRectF XmlLoader::readRectOfXandY(QDomElement const &docItem)
 	return QRectF(x1, y1, x2 - x1, y2 - y1);
 }
 
-QPair<QPointF, QPointF> XmlLoader::calcLineOfXandY(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2)
+QPair<QPointF, QPointF> XmlLoader::calcLineOfXandY(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2
+		, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2)
 {
 	qreal x1 = pointX1.first.toDouble() + mDrift.x();
 	qreal x2 = pointX2.first.toDouble() + mDrift.x();
@@ -246,6 +262,7 @@ QPair<QPointF, QPointF> XmlLoader::calcLineOfXandY(QPair<QString, bool> pointX1,
 				changeScaleColor(4);
 		}
 	}
+
 	return QPair<QPointF, QPointF>(QPointF(x1, y1), QPointF(x2, y2));
 }
 
@@ -288,6 +305,7 @@ void XmlLoader::readLine(QDomElement const &line)
 	Line* item = new Line(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), NULL);
 	item->readPenBrush(line);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(line));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -298,6 +316,7 @@ void XmlLoader::readEllipse(QDomElement const &ellipse)
 	QRealEllipse* item = new QRealEllipse(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	item->readPenBrush(ellipse);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(ellipse));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -308,6 +327,7 @@ void XmlLoader::readArch(QDomElement const &arch)
 	int spanAngle = arch.attribute("spanAngle", "0").toInt();
 	int startAngle = arch.attribute("startAngle", "0").toInt();
 	Arch* item = new Arch(rect, startAngle, spanAngle, NULL);
+	item->setVisibilityCondition(readVisibility(arch));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -318,6 +338,7 @@ void XmlLoader::readRectangle(QDomElement const &rectangle)
 	QRealRectangle* item = new QRealRectangle(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 	item->readPenBrush(rectangle);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(rectangle));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -326,11 +347,12 @@ void XmlLoader::readImage(QDomElement const &image)
 {
 	QRectF rect = readRectOfXandY(image);
 	QString fileName = image.attribute("name", "error");
-	QString workingDirName = SettingsManager::value("workingDir").toString();
-	QString fullFileName = workingDirName +"/" + fileName;
+	QString const workingDirName = QFileInfo(QApplication::applicationFilePath()).absoluteDir().absolutePath();
+	QString const fullFileName = workingDirName + "/" + fileName;
 	Image* item = new Image(fullFileName, rect.left(), rect.top(), NULL);
 	item->setX2andY2(rect.right(), rect.bottom());
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(image));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -346,13 +368,16 @@ void XmlLoader::readStylus(QDomElement const &stylus)
 			QRectF rect = readRectOfXandY(type);
 			Line* item = new Line(rect.left(), rect.top(), rect.right(), rect.bottom(), NULL);
 			item->readPenBrush(type);
+			item->setVisibilityCondition(readVisibility(type));
 			stylusItem->addLineInList(item);
 			stylusItem->setPen(item->pen());
 			stylusItem->setBrush(item->brush());
-		}
-		else
+		} else {
 			qDebug() << "Incorrect stylus tag";
+		}
 	}
+
+	stylusItem->setVisibilityCondition(readVisibility(stylus));
 	mScene->addItem(stylusItem);
 	mScene->setZValue(stylusItem);
 }
@@ -372,22 +397,17 @@ void XmlLoader::readPath(QDomElement const &element)
 	QDomElement elem = element;
 	QPainterPath path;
 
-	if (!elem.isNull())
-	{
+	if (!elem.isNull()) {
 		QString dCont;
 		dCont = elem.attribute("d").remove(0, 1);
 		dCont.append(" Z");
 
-		for (int i = 0; i < dCont.length() - 1;)
-		{
+		for (int i = 0; i < dCont.length() - 1;) {
 			int j = 0;
-			if (dCont[i] == 'M')
-			{
+			if (dCont[i] == 'M') {
 				j = i + 2;
-				while (isNotLCMZ(dCont, j))
-				{
-					while (dCont[j] != ' ')
-					{
+				while (isNotLCMZ(dCont, j)) {
+					while (dCont[j] != ' ') {
 						tempStr.append(dCont[j]);
 						++j;
 					}
@@ -396,8 +416,7 @@ void XmlLoader::readPath(QDomElement const &element)
 					tempStr.clear();
 					++j;
 
-					while (dCont[j] != ' ')
-					{
+					while (dCont[j] != ' ') {
 						tempStr.append(dCont[j]);
 						++j;
 					}
@@ -410,13 +429,10 @@ void XmlLoader::readPath(QDomElement const &element)
 				path.moveTo(endPoint);
 				i = j;
 			}
-			else if (dCont[i] == 'L')
-			{
+			else if (dCont[i] == 'L') {
 				j = i + 2;
-				while (isNotLCMZ(dCont, j))
-				{
-					while (dCont[j] != ' ')
-					{
+				while (isNotLCMZ(dCont, j)) {
+					while (dCont[j] != ' ') {
 						tempStr.append(dCont[j]);
 						++j;
 					}
@@ -425,8 +441,7 @@ void XmlLoader::readPath(QDomElement const &element)
 					tempStr.clear();
 					++j;
 
-					while (dCont[j] != ' ')
-					{
+					while (dCont[j] != ' ') {
 						tempStr.append(dCont[j]);
 						++j;
 					}
@@ -438,13 +453,10 @@ void XmlLoader::readPath(QDomElement const &element)
 				 path.lineTo(endPoint);
 				 i = j;
 			}
-			 else if (dCont[i] == 'C')
-			{
+			else if (dCont[i] == 'C') {
 				j = i + 2;
-				while(isNotLCMZ(dCont, j))
-				{
-					while (!(dCont[j] == ' '))
-					{
+				while(isNotLCMZ(dCont, j)) {
+					while (!(dCont[j] == ' ')) {
 						tempStr.append(dCont[j]);
 						++j;
 					}
@@ -453,8 +465,7 @@ void XmlLoader::readPath(QDomElement const &element)
 					tempStr.clear();
 					++j;
 
-					while (dCont[j] != ' ')
-					{
+					while (dCont[j] != ' ') {
 						tempStr.append(dCont[j]);
 						++j;
 					}
@@ -463,8 +474,7 @@ void XmlLoader::readPath(QDomElement const &element)
 					tempStr.clear();
 					++j;
 
-					while (dCont[j] != ' ')
-					{
+					while (dCont[j] != ' ') {
 						tempStr.append(dCont[j]);
 						++j;
 					}
@@ -473,8 +483,7 @@ void XmlLoader::readPath(QDomElement const &element)
 					tempStr.clear();
 					++j;
 
-					while (dCont[j] != ' ')
-					{
+					while (dCont[j] != ' ') {
 						tempStr.append(dCont[j]);
 						++j;
 					}
@@ -483,8 +492,7 @@ void XmlLoader::readPath(QDomElement const &element)
 					tempStr.clear();
 					++j;
 
-					while (dCont[j] != ' ')
-					{
+					while (dCont[j] != ' ') {
 						tempStr.append(dCont[j]);
 						++j;
 					}
@@ -493,8 +501,7 @@ void XmlLoader::readPath(QDomElement const &element)
 					tempStr.clear();
 					++j;
 
-					while (dCont[j] != ' ')
-					{
+					while (dCont[j] != ' ') {
 						tempStr.append(dCont[j]);
 						++j;
 					}
@@ -507,15 +514,16 @@ void XmlLoader::readPath(QDomElement const &element)
 				path.cubicTo(c1, c2, endPoint);
 				i = j;
 
-			} else if (dCont[i] == 'Z')
-			{
+			} else if (dCont[i] == 'Z') {
 				path.closeSubpath();
 			}
 		}
 	}
+
 	Path *item = new Path(path);
 	item->setTransform(QTransform::fromTranslate(mDrift.x(), mDrift.y()), true);
 	item->readPenBrush(elem);
+	item->setVisibilityCondition(readVisibility(elem));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -534,19 +542,20 @@ void XmlLoader::readCurve(QDomElement const &curve)
 		if (type.tagName() == "start") {
 			x1 = (type.attribute("startx", "0")).toDouble() + mDrift.x();
 			y1 = (type.attribute("starty", "0")).toDouble() + mDrift.y();
-		}
-		else if (type.tagName() == "end") {
+		} else if (type.tagName() == "end") {
 			x2 = (type.attribute("endx", "0")).toDouble() + mDrift.x();
 			y2 = (type.attribute("endy", "0")).toDouble() + mDrift.y();
 		} else if (type.tagName() == "ctrl") {
 			x3 = (type.attribute("x", "0")).toDouble() + mDrift.x();
 			y3 = (type.attribute("y", "0")).toDouble() + mDrift.y();
-		} else
+		} else {
 			qDebug() << "Incorrect curve tag";
-
+		}
 	}
+
 	Curve* item = new Curve(QPointF(x1, y1), QPointF(x2, y2), QPointF(x3, y3));
 	item->readPenBrush(curve);
+	item->setVisibilityCondition(readVisibility(curve));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -560,6 +569,7 @@ void XmlLoader::readText(QDomElement const &text)
 	TextPicture* item = new TextPicture(x, y, str);
 	item->readFont(text);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(text));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -574,10 +584,12 @@ void XmlLoader::readLabel(QDomElement const &label)
 	} else if (label.hasAttribute("textBinded")) {
 		item = new Text(static_cast<int>(point.x()), static_cast<int>(point.y()), label.attribute("textBinded", ""));
 		item->setIsDynamicText(true);
-	}
-	else
+	} else {
 		qDebug() << "Incorrect label tag";
+	}
+
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(label));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -587,18 +599,23 @@ void XmlLoader::readLinePort(QDomElement const &linePort)
 	QDomNodeList linePortAttributes = linePort.childNodes();
 	QDomElement start;
 	QDomElement end;
+
 	for (int i = 0; i < linePortAttributes.length(); ++i) {
 		QDomElement type = linePortAttributes.at(i).toElement();
-		if (type.tagName() == "start")
+		if (type.tagName() == "start") {
 			start = type;
-		else if (type.tagName() == "end")
+		} else if (type.tagName() == "end") {
 			end = type;
-		else
+		} else {
 			qDebug() << "Incorrect linePort tag";
+		}
 	}
+
 	QPair<QPointF, QPointF> rect = readLinePortOfXandY(start, end);
 	LinePort* item = new LinePort(rect.first.x(), rect.first.y(), rect.second.x(), rect.second.y(), NULL);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(linePort));
+	item->setType(linePort.attribute("type", "NonTyped"));
 	mScene->addItem(item);
 	mScene->setZValue(item);
 }
@@ -608,6 +625,24 @@ void XmlLoader::readPointPort(QDomElement const &pointPort)
 	QPointF point = readXandY(pointPort);
 	PointPort* item = new PointPort(point.x(), point.y(), NULL);
 	item->setListScalePoint(mListScalePoint);
+	item->setVisibilityCondition(readVisibility(pointPort));
+	item->setType(pointPort.attribute("type", "NonTyped"));
+	mScene->addItem(item);
 	mScene->addItem(item);
 	mScene->setZValue(item);
+}
+
+Item::VisibilityCondition XmlLoader::readVisibility(QDomElement const &item)
+{
+	QDomElement visibility = item.elementsByTagName("showIf").item(0).toElement();
+	if (visibility.isNull()) {
+		return Item::VisibilityCondition();
+	}
+
+	Item::VisibilityCondition result;
+	result.property = visibility.attribute("property");
+	result.sign = visibility.attribute("sign");
+	result.value = visibility.attribute("value");
+
+	return result;
 }

@@ -1,14 +1,23 @@
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QPainter>
 
+#include "../../../../../qrkernel/settingsManager.h"
 #include "d2ModelScene.h"
+#include "../../../../../qrutils/graphicsUtils/gridDrawer.h"
+#include "../../../../../qrkernel/settingsManager.h"
+#include "wallItem.h"
 
+using namespace qReal::interpreters::robots;
+using namespace details::d2Model;
+using namespace graphicsUtils;
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
 D2ModelScene::D2ModelScene(AbstractView *view, QObject *parent)
 		: AbstractScene(view, parent)
+		, mGridDrawer()
 {
 	mFirstPenWidth = 6;
 	mSizeEmptyRectX = 1000;
@@ -24,8 +33,13 @@ D2ModelScene::~D2ModelScene()
 
 void D2ModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	QGraphicsScene::mousePressEvent(mouseEvent);
-	emit mousePressed(mouseEvent);
+	if (SettingsManager::value("ChaoticEdition").toBool()) {
+		emit mousePressed(mouseEvent);
+		QGraphicsScene::mousePressEvent(mouseEvent);
+	} else {
+		QGraphicsScene::mousePressEvent(mouseEvent);
+		emit mousePressed(mouseEvent);
+	}
 }
 
 void D2ModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -70,14 +84,14 @@ void D2ModelScene::reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &re
 {
 	setX2andY2(event);
 	if (mGraphicsItem) {
-		QPointF oldBegin = mGraphicsItem->getX1andY1();
-		QPointF oldEnd = mGraphicsItem->getX2andY2();
+		QPointF const oldBegin = mGraphicsItem->getX1andY1();
+		QPointF const oldEnd = mGraphicsItem->getX2andY2();
 		if (mGraphicsItem->getDragState() != graphicsUtils::AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
 		mGraphicsItem->resizeItem(event);
 
-		if (mGraphicsItem->realShape().intersects(rect)) {
+		if (mGraphicsItem->realShape().intersects(rect) && dynamic_cast<WallItem *> (mGraphicsItem)) {
 			mGraphicsItem->reverseOldResizingItem(oldBegin, oldEnd);
 		}
 	}
@@ -92,4 +106,20 @@ void D2ModelScene::keyPressEvent(QKeyEvent *event)
 	} else {
 		QGraphicsScene::keyPressEvent(event);
 	}
+}
+
+void D2ModelScene::drawBackground(QPainter *painter, QRectF const &rect)
+{
+	if (SettingsManager::value("2dShowGrid").toBool()) {
+		mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
+		painter->setPen(QPen(Qt::black, mWidthOfGrid));
+		QGraphicsScene::drawBackground(painter, rect);
+		int const cellSize = SettingsManager::value("2dGridCellSize").toInt();
+		mGridDrawer.drawGrid(painter, rect, cellSize);
+	}
+}
+
+void D2ModelScene::updateGrid()
+{
+	update();
 }

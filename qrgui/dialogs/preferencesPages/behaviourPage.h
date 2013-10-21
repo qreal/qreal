@@ -1,6 +1,6 @@
 #pragma once
 
-#include "preferencesPage.h"
+#include "dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
 	class PreferencesBehaviourPage;
@@ -15,6 +15,7 @@ public:
 	~PreferencesBehaviourPage();
 
 	void save();
+	virtual void restoreSettings();
 
 protected:
 	void changeEvent(QEvent *e);

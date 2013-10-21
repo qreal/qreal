@@ -11,6 +11,9 @@ OBJECTS_DIR = .obj
 
 LIBS += -L../bin -lqrutils
 
+INCLUDEPATH += \
+	$$PWD/..
+
 DESTDIR += ../bin
 
 !macx {
@@ -32,13 +35,13 @@ HEADERS += association.h \
 	pointPort.h \
 	port.h \
 	property.h \
-	scalableCoordinate.h \
 	sdftocpp.h \
 	stringType.h \
 	type.h \
 	xmlCompiler.h \
 	scalableItem.h \
 	documentLoader.h \
+	portType.h \
 
 SOURCES += association.cpp \
 	diagram.cpp \
@@ -56,10 +59,10 @@ SOURCES += association.cpp \
 	pointPort.cpp \
 	port.cpp \
 	property.cpp \
-	scalableCoordinate.cpp \
 	sdftocpp.cpp \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
 	scalableItem.cpp \
 	documentLoader.cpp \
+	portType.cpp \

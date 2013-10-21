@@ -3,7 +3,7 @@
 using namespace qReal::interpreters::robots;
 using namespace details::robotImplementations::sensorImplementations;
 
-NullColorSensorImplementation::NullColorSensorImplementation(inputPort::InputPortEnum const &port, sensorType::SensorTypeEnum const &sensorType)
+NullColorSensorImplementation::NullColorSensorImplementation(robots::enums::inputPort::InputPortEnum const port, robots::enums::sensorType::SensorTypeEnum const &sensorType)
 	: NullSensorImplementation(port, sensorType)
 {
 }

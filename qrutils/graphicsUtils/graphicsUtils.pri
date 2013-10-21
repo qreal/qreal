@@ -15,6 +15,9 @@ HEADERS += \
 	$$PWD/layoutHandlers/layoutHandlerFactory.h \
 	$$PWD/layoutHandlers/gridApproximizer.h \
 	$$PWD/layoutHandlers/gridIndex.h \
+	$$PWD/gridDrawer.h \
+	$$PWD/paintWidget.h \
+	$$PWD/painterInterface.h \
 
 SOURCES += \
 	$$PWD/abstractItem.cpp \
@@ -32,3 +35,6 @@ SOURCES += \
 	$$PWD/layoutHandlers/layoutHandlerFactory.cpp \
 	$$PWD/layoutHandlers/gridApproximizer.cpp \
 	$$PWD/layoutHandlers/gridIndex.cpp \
+	$$PWD/gridDrawer.cpp \
+	$$PWD/paintWidget.cpp \
+	$$PWD/painterInterface.cpp \

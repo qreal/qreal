@@ -1,6 +1,8 @@
 #include "expressionsParser.h"
 
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace utils;
 using namespace qReal;
@@ -8,6 +10,7 @@ using namespace qReal;
 ExpressionsParser::ExpressionsParser(ErrorReporterInterface *errorReporter)
 	: mHasParseErrors(false), mErrorReporter(errorReporter), mCurrentId (Id::rootId())
 {
+	srand(time(NULL));
 }
 
 QMap<QString, Number>* ExpressionsParser::getVariables()
@@ -241,8 +244,7 @@ Number ExpressionsParser::parseTerm(QString const &stream, int &pos)
 						res = applyFunction(variable, value);
 					}
 				}
-			}
-			if (mVariables.contains(variable)) {
+			} else if (mVariables.contains(variable)) {
 				res = mVariables[variable];
 			} else {
 				error(unknownIdentifier, QString::number(unknownIdentifierIndex + 1), "", variable);
@@ -313,9 +315,12 @@ void ExpressionsParser::parseCommand(QString const &stream, int &pos)
 		pos++;
 		Number n = parseExpression(stream, pos);
 		if (!hasErrors()) {
-			Number::Type t1 = mVariables[variable].property("Type").toInt() ? Number::intType : Number::doubleType;
-			Number::Type t2 = n.property("Type").toInt() ? Number::intType : Number::doubleType;
-			if (t1==t2) {
+			bool const containsVariable = mVariables.keys().contains(variable);
+			Number::Type const t1 = containsVariable
+					? (mVariables[variable].property("Type").toInt() ? Number::intType : Number::doubleType)
+					: Number::intType;
+			Number::Type const t2 = n.property("Type").toInt() ? Number::intType : Number::doubleType;
+			if (!containsVariable || t1 == t2) {
 				mVariables[variable] = n;
 			} else {
 				if (t1 == Number::intType) {
@@ -682,35 +687,46 @@ void ExpressionsParser::checkForVariable(QString const &nameOfVariable, int &ind
 
 bool ExpressionsParser::isFunction(QString const &variable)
 {
-	return ((variable == "cos")||(variable == "sin")||(variable == "ln")
-			||(variable == "exp")||(variable == "asin") || (variable == "acos")
-			||(variable == "atan")||(variable == "sgn")||(variable == "sqrt")
-			||(variable == "abs"));
+	return variable == "cos"
+			|| variable == "sin"
+			|| variable == "ln"
+			|| variable == "exp"
+			|| variable == "asin"
+			|| variable == "acos"
+			|| variable == "atan"
+			|| variable == "sgn"
+			|| variable == "sqrt"
+			|| variable == "abs"
+			|| variable == "random"
+			;
 }
 
 Number ExpressionsParser::applyFunction(QString const &variable, Number value)
 {
 	Number result;
 	double argument = value.property("Number").toDouble();
-	if (variable == "cos")
+	if (variable == "cos") {
 		result = Number(cos(argument), Number::doubleType);
-	else if (variable == "sin")
+	} else if (variable == "sin") {
 		result = Number(sin(argument), Number::doubleType);
-	else if (variable == "ln")
+	} else if (variable == "ln") {
 		result = Number(log(argument), Number::doubleType);
-	else if (variable == "exp")
+	} else if (variable == "exp") {
 		result = Number(exp(argument), Number::doubleType);
-	else if (variable == "sgn")
+	} else if (variable == "sgn") {
 		result = Number((argument >= 0 ? 1 : -1), Number::intType);
-	else if (variable == "acos")
+	} else if (variable == "acos") {
 		result = Number(acos(argument), Number::doubleType);
-	else if (variable == "asin")
+	} else if (variable == "asin") {
 		result = Number(asin(argument), Number::doubleType);
-	else if (variable == "atan")
+	} else if (variable == "atan") {
 		result = Number(atan(argument), Number::doubleType);
-	else if (variable == "sqrt")
+	} else if (variable == "sqrt") {
 		result = Number(sqrt(argument), Number::doubleType);
-	else if (variable == "abs")
+	} else if (variable == "abs") {
 		result = Number(fabs(argument), Number::doubleType);
+	} else if (variable == "random") {
+		result = Number(static_cast<int>(rand() % static_cast<int>(argument)), Number::intType);
+	}
 	return result;
 }

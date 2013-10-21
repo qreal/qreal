@@ -17,38 +17,39 @@ namespace robots {
 namespace details {
 namespace blocks {
 
+/// Base class for all blocks implementations used in interpreter
 class Block : public QObject
 {
 	Q_OBJECT
 
 public:
-	typedef QPair<sensorType::SensorTypeEnum, int> SensorPortPair;
+	typedef QPair<robots::enums::sensorType::SensorTypeEnum, int> SensorPortPair;
 
-	virtual ~Block() {}
+	virtual ~Block();
 
+	/// Starts block execution
 	void interpret();
-	void setFailedStatus();
+
+	virtual void setFailedStatus();
 	void setIdleStatus();
 	Id const id() const;
 
 	virtual QList<SensorPortPair> usedSensors() const;
 
-	virtual void stopActiveTimerInBlock();
+	/// Called each time when control flow has reached the end block of the
+	/// requested for stepping into diagram
+	virtual void finishedSteppingInto();
 
 signals:
 	void done(blocks::Block * const nextBlock);
 	void newThread(details::blocks::Block * const startBlock);
 	void failure();
 
+	/// Emitted each time when execution must be continued from the initial block
+	/// of the specified diagram
+	void stepInto(Id const &diagram);
+
 protected:
-	Block *mNextBlock;  // Does not have ownership
-	GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
-	LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
-	BlocksTable *mBlocksTable;  // Does not have ownership
-
-	Id mGraphicalId;
-	RobotsBlockParser * mParser;
-
 	Block();
 
 	QVariant property(QString const &propertyName) const;
@@ -64,6 +65,17 @@ protected:
 	void error(QString const &message);
 
 	QVariant evaluate(QString const &propertyName);
+	bool evaluateBool(QString const &propertyName);
+
+	QVector<bool> parseEnginePorts() const;
+
+	Block *mNextBlock;  // Does not have ownership
+	GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
+	LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
+	BlocksTable *mBlocksTable;  // Does not have ownership
+
+	Id mGraphicalId;
+	RobotsBlockParser * mParser;
 
 private slots:
 	void finishedRunning();

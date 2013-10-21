@@ -4,19 +4,23 @@
 
 #include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
 #include "../../thirdparty/qextserialport/src/qextserialport.h"
-using namespace qReal::interpreters::robots;
 
-RobotCommunicator::RobotCommunicator(QString const &portName)
-		: mPortName(portName)
-		, mRobotCommunicationThreadObject(NULL)
+using namespace qReal::interpreters;
+using namespace qReal::interpreters::robots::details;
+
+RobotCommunicator::RobotCommunicator()
+		: mRobotCommunicationThreadObject(NULL)
 {
-	qRegisterMetaType<inputPort::InputPortEnum>("inputPort::InputPortEnum");
+	qRegisterMetaType<qReal::interpreters::robots::enums::inputPort::InputPortEnum>(
+			"robots::enums::inputPort::InputPortEnum");
 }
 
 RobotCommunicator::~RobotCommunicator()
 {
+	mRobotCommunicationThreadObject->allowLongJobs(false);
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
+	delete mRobotCommunicationThreadObject;
 }
 
 void RobotCommunicator::send(QObject *addressee, QByteArray const &buffer, unsigned const responseSize)
@@ -25,28 +29,19 @@ void RobotCommunicator::send(QObject *addressee, QByteArray const &buffer, unsig
 }
 
 void RobotCommunicator::sendI2C(QObject *addressee, QByteArray const &buffer
-		, unsigned const responseSize, inputPort::InputPortEnum const &port)
+		, unsigned const responseSize, robots::enums::inputPort::InputPortEnum const port)
 {
-	emit threadSendI2C(addressee, buffer, responseSize, static_cast<inputPort::InputPortEnum>(port));
+	emit threadSendI2C(addressee, buffer, responseSize, static_cast<robots::enums::inputPort::InputPortEnum>(port));
 }
 
 void RobotCommunicator::connect()
 {
-	emit threadConnect(mPortName);
+	emit threadConnect();
 }
 
 void RobotCommunicator::disconnect()
 {
 	emit threadDisconnect();
-}
-
-void RobotCommunicator::setPortName(QString const &portName)
-{
-	bool needReconnect = portName != mPortName;
-	mPortName = portName;
-	if (needReconnect) {
-		emit threadReconnect(mPortName);
-	}
 }
 
 void RobotCommunicator::connectedSlot(bool success)
@@ -64,23 +59,36 @@ void RobotCommunicator::responseSlot(QObject *addressee, QByteArray const &buffe
 	emit response(addressee, buffer);
 }
 
+void RobotCommunicator::onErrorOccured(const QString &message)
+{
+	emit errorOccured(message);
+}
+
 void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication)
 {
+	if (mRobotCommunicationThreadObject) {
+		mRobotCommunicationThreadObject->allowLongJobs(false);
+	}
+
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
 	delete mRobotCommunicationThreadObject;
 	mRobotCommunicationThreadObject = robotCommunication;
 	mRobotCommunicationThreadObject->moveToThread(&mRobotCommunicationThread);
+	mRobotCommunicationThreadObject->allowLongJobs();
 	mRobotCommunicationThread.start();
 
-	QObject::connect(this, SIGNAL(threadConnect(QString)), mRobotCommunicationThreadObject, SLOT(connect(QString)));
-	QObject::connect(this, SIGNAL(threadReconnect(QString)), mRobotCommunicationThreadObject, SLOT(reconnect(QString)));
+	QObject::connect(this, SIGNAL(threadConnect()), mRobotCommunicationThreadObject, SLOT(connect()));
+	QObject::connect(this, SIGNAL(threadReconnect()), mRobotCommunicationThreadObject, SLOT(reconnect()));
 	QObject::connect(this, SIGNAL(threadDisconnect()), mRobotCommunicationThreadObject, SLOT(disconnect()));
 	QObject::connect(this, SIGNAL(threadSend(QObject*, QByteArray, unsigned)), mRobotCommunicationThreadObject, SLOT(send(QObject*, QByteArray, unsigned)));
-	QObject::connect(this, SIGNAL(threadSendI2C(QObject*, QByteArray, unsigned, inputPort::InputPortEnum))
-			, mRobotCommunicationThreadObject, SLOT(sendI2C(QObject*, QByteArray, unsigned, inputPort::InputPortEnum)));
+	QObject::connect(this, SIGNAL(threadSendI2C(QObject*, QByteArray, unsigned, robots::enums::inputPort::InputPortEnum))
+			, mRobotCommunicationThreadObject, SLOT(sendI2C(QObject*, QByteArray, unsigned, robots::enums::inputPort::InputPortEnum)));
 
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(disconnected()), this, SLOT(disconnectedSlot()));
 	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(response(QObject*, QByteArray)), this, SLOT(responseSlot(QObject*, QByteArray)));
+	QObject::connect(mRobotCommunicationThreadObject, SIGNAL(errorOccured(QString)), this, SLOT(onErrorOccured(QString)));
+
+	mRobotCommunicationThreadObject->checkConsistency();
 }

@@ -1,68 +1,76 @@
 HEADERS += \
-	mainwindow/mainWindow.h \
-	mainwindow/propertyEditorProxyModel.h \
-	mainwindow/errorReporter.h \
-	mainwindow/gesturesPainterInterface.h \
-	mainwindow/gesturesPainterInterface.h \
-	mainwindow/error.h \
-	mainwindow/errorListWidget.h \
-	mainwindow/mainWindowInterpretersInterface.h \
-	mainwindow/paletteTree.h \
-	mainwindow/findManager.h \
-	mainwindow/dotRunner.h \
-	mainwindow/splashScreen.h \
-	mainwindow/projectManager/projectManagementInterface.h \
-	mainwindow/projectManager/projectManager.h \
-	mainwindow/tabWidget.h \
-	mainwindow/miniMap.h \
-	mainwindow/referenceList.h \
-	mainwindow/projectManager/autosaver.h \
-	mainwindow/externBrowser.h \
-	mainwindow/mainWindowDockInterface.h \
-	mainwindow/qscintillaTextEdit.h
+	$$PWD/mainWindow.h \
+	$$PWD/propertyEditorProxyModel.h \
+	$$PWD/errorReporter.h \
+	$$PWD/gesturesPainterInterface.h \
+	$$PWD/gesturesPainterInterface.h \
+	$$PWD/error.h \
+	$$PWD/errorListWidget.h \
+	$$PWD/mainWindowInterpretersInterface.h \
+	$$PWD/findManager.h \
+	$$PWD/dotRunner.h \
+	$$PWD/splashScreen.h \
+	$$PWD/tabWidget.h \
+	$$PWD/modelExplorer.h \
+	$$PWD/miniMap.h \
+	$$PWD/referenceList.h \
+	$$PWD/externBrowser.h \
+	$$PWD/qscintillaTextEdit.h \
+	$$PWD/projectManager/autosaver.h \
+	$$PWD/projectManager/projectManagementInterface.h \
+	$$PWD/projectManager/projectManager.h \
+	$$PWD/palette/paletteTree.h \
+	$$PWD/palette/paletteTreeWidget.h \
+	$$PWD/palette/draggableElement.h \
+	$$PWD/palette/paletteTreeWidgets.h \
+	$$PWD/palette/paletteElement.h \
 
 SOURCES += \
-	mainwindow/mainWindow.cpp \
-	mainwindow/propertyEditorProxyModel.cpp \
-	mainwindow/errorReporter.cpp \
-	mainwindow/error.cpp \
-	mainwindow/errorListWidget.cpp \
-	mainwindow/paletteTree.cpp \
-	mainwindow/findManager.cpp \
-	mainwindow/dotRunner.cpp \
-	mainwindow/splashScreen.cpp \
-	mainwindow/projectManager/projectManager.cpp \
-	mainwindow/tabWidget.cpp \
-	mainwindow/miniMap.cpp \
-	mainwindow/referenceList.cpp \
-	mainwindow/projectManager/autosaver.cpp \
-	mainwindow/macExternBrowser.cpp \
-	mainwindow/qscintillaTextEdit.cpp
+	$$PWD/mainWindow.cpp \
+	$$PWD/propertyEditorProxyModel.cpp \
+	$$PWD/errorReporter.cpp \
+	$$PWD/error.cpp \
+	$$PWD/errorListWidget.cpp \
+	$$PWD/findManager.cpp \
+	$$PWD/dotRunner.cpp \
+	$$PWD/splashScreen.cpp \
+	$$PWD/tabWidget.cpp \
+	$$PWD/miniMap.cpp \
+	$$PWD/modelExplorer.cpp \
+	$$PWD/referenceList.cpp \
+	$$PWD/qscintillaTextEdit.cpp \
+	$$PWD/projectManager/autosaver.cpp \
+	$$PWD/projectManager/projectManager.cpp \
+	$$PWD/palette/paletteTree.cpp \
+	$$PWD/palette/paletteTreeWidget.cpp \
+	$$PWD/palette/draggableElement.cpp \
+	$$PWD/palette/paletteTreeWidgets.cpp \
+	$$PWD/palette/paletteElement.cpp \
 
 win32 {
 	HEADERS += \
-		mainwindow/windowsExternBrowser.h \
+		$$PWD/windowsExternBrowser.h \
 
 	SOURCES += \
-		mainwindow/windowsExternBrowser.cpp \
+		$$PWD/windowsExternBrowser.cpp \
 }
 
 unix {
 	HEADERS += \
-		mainwindow/linuxExternBrowser.h \
+		$$PWD/linuxExternBrowser.h \
 
 	SOURCES += \
-		mainwindow/linuxExternBrowser.cpp \
+		$$PWD/linuxExternBrowser.cpp \
 }
 
 macx {
 	HEADERS += \
-		mainwindow/macExternBrowser.h \
+		$$PWD/macExternBrowser.h \
 
 	SOURCES += \
-		mainwindow/macExternBrowser.cpp \
+		$$PWD/macExternBrowser.cpp \
 }
 
 FORMS += \
-	mainwindow/mainWindow.ui \
-	mainwindow/referenceList.ui
+	$$PWD/mainWindow.ui \
+	$$PWD/referenceList.ui \

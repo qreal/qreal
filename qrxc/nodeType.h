@@ -18,14 +18,14 @@ public:
 	virtual ~NodeType();
 	virtual void generateCode(utils::OutFile &out);
 	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
+	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
 
 private:
 	virtual bool initAssociations();
 	virtual bool initGraphics();
 	virtual bool initDividability();
+	virtual bool initPortTypes();
 
-	bool hasLinePorts();
-	bool hasPointPorts();
 	bool initSdf();
 	void initSizeFromRoot(QDomElement const &root);
 	void generateSdf() const;

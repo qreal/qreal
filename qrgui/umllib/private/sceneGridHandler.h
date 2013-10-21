@@ -1,9 +1,10 @@
 #pragma once
 
 #include <QtCore/QList>
-
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtGui/QPen>
+
+namespace qReal {
 
 class NodeElement;
 
@@ -29,6 +30,9 @@ public:
 
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
+	/// return coordinate aligned to grid
+	static qreal alignedCoordinate(qreal coord, int coef, int indexGrid);
+
 private:
 
 	/// returns list of elements lying in the same layer
@@ -52,9 +56,6 @@ private:
 
 	/// move element horizontally according to the grid
 	void makeGridMovingY(qreal myY, int coef, int indexGrid);
-
-	/// return coordinate aligned to grid
-	qreal alignedCoordinate(qreal coord, int coef, int indexGrid);
 
 	qreal recalculateX1() const;
 	qreal recalculateX2(qreal myX1) const;
@@ -83,3 +84,5 @@ private:
 	/** @brief guides that have distance equal or less will be represented by only one of them */
 	static qreal const indistinguishabilitySpace = 10;
 };
+
+}

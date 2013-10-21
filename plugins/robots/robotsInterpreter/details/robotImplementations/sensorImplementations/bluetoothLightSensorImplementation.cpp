@@ -6,9 +6,19 @@ using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace robotImplementations::sensorImplementations;
 
-BluetoothLightSensorImplementation::BluetoothLightSensorImplementation(RobotCommunicator *robotCommunicationInterface
-		, inputPort::InputPortEnum const &port)
-	: BluetoothSensorImplementation(robotCommunicationInterface, sensorType::light, lowLevelSensorType::LIGHT_ACTIVE, sensorMode::RAWMODE, port)
+int const maxLightValue = 1023;
+
+BluetoothLightSensorImplementation::BluetoothLightSensorImplementation(
+		RobotCommunicator *robotCommunicationInterface
+		, robots::enums::inputPort::InputPortEnum const port
+		)
+		: BluetoothSensorImplementation(
+				robotCommunicationInterface
+				, robots::enums::sensorType::light
+				, enums::lowLevelSensorType::LIGHT_ACTIVE
+				, enums::sensorMode::RAWMODE
+				, port
+				)
 {
 }
 
@@ -30,8 +40,8 @@ void BluetoothLightSensorImplementation::read()
 	QByteArray command(5, 0);
 	command[0] = 0x03;  //command length
 	command[1] = 0x00;
-	command[2] = telegramType::directCommandResponseRequired;
-	command[3] = commandCode::GETINPUTVALUES;
+	command[2] = enums::telegramType::directCommandResponseRequired;
+	command[3] = enums::commandCode::GETINPUTVALUES;
 	command[4] = mPort;
 	mRobotCommunicationInterface->send(this, command, 18);
 }
@@ -40,6 +50,6 @@ void BluetoothLightSensorImplementation::sensorSpecificProcessResponse(QByteArra
 {
 	mState = idle;
 	int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
-	Tracer::debug(tracer::sensors, "BluetoothLightSensorImplementation::sensorSpecificProcessResponse", QString::number(sensorValue));
-	emit response(sensorValue);
+	Tracer::debug(tracer::enums::sensors, "BluetoothLightSensorImplementation::sensorSpecificProcessResponse", QString::number(sensorValue));
+	emit response(sensorValue * 100 / maxLightValue);
 }

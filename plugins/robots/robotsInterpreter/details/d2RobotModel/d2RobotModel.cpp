@@ -1,21 +1,30 @@
 #include "d2RobotModel.h"
 #include "../tracer.h"
+#include "../../../qrkernel/settingsManager.h"
+#include "../../../../../qrutils/mathUtils/gaussNoise.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace d2Model;
+using namespace mathUtils;
 
-unsigned long const black   = 0xFF000000;
-unsigned long const white   = 0xFFFFFFFF;
-unsigned long const red     = 0xFFFF0000;
-unsigned long const green   = 0xFF008000;
-unsigned long const blue    = 0xFF0000FF;
-unsigned long const yellow  = 0xFFFFFF00;
-unsigned long const cyan    = 0xFF00FFFF;
-unsigned long const magenta = 0xFFFF00FF;
+uint const black   = 0xFF000000;
+uint const white   = 0xFFFFFFFF;
+uint const red     = 0xFFFF0000;
+uint const green   = 0xFF008000;
+uint const blue    = 0xFF0000FF;
+uint const yellow  = 0xFFFFFF00;
+uint const cyan    = 0xFF00FFFF;
+uint const magenta = 0xFFFF00FF;
 
 unsigned const touchSensorPressedSignal = 1;
 unsigned const touchSensorNotPressedSignal = 0;
+
+qreal const spoilColorDispersion = 2.0;
+qreal const spoilLightDispersion = 1.0;
+qreal const spoilSonarDispersion = 1.5;
+qreal const varySpeedDispersion = 0.0125;
+qreal const percentSaltPepperNoise = 20.0;
 
 D2RobotModel::D2RobotModel(QObject *parent)
 		: QObject(parent)
@@ -23,10 +32,15 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		, mMotorA(NULL)
 		, mMotorB(NULL)
 		, mMotorC(NULL)
+		, mDisplay(new NxtDisplay)
 		, mTimeline(new Timeline(this))
+		, mNoiseGen()
 		, mNeedSync(false)
+		, mNeedSensorNoise(SettingsManager::value("enableNoiseOfSensors").toBool())
+		, mNeedMotorNoise(SettingsManager::value("enableNoiseOfMotors").toBool())
 {
 	mAngle = 0;
+	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
 	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()), Qt::UniqueConnection);
 	initPosition();
@@ -47,9 +61,9 @@ void D2RobotModel::initPosition()
 	if (mMotorC) {
 		delete mMotorC;
 	}
-	mMotorA = initMotor(5, 0, 0, 0, false);
-	mMotorB = initMotor(5, 0, 0, 1, false);
-	mMotorC = initMotor(5, 0, 0, 2, false);
+	mMotorA = initMotor(robotWheelDiameterInPx / 2, 0, 0, 0, false);
+	mMotorB = initMotor(robotWheelDiameterInPx / 2, 0, 0, 1, false);
+	mMotorC = initMotor(robotWheelDiameterInPx / 2, 0, 0, 2, false);
 	setBeep(0, 0);
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 }
@@ -84,7 +98,7 @@ void D2RobotModel::setBeep(unsigned freq, unsigned time)
 	mBeep.time = time;
 }
 
-void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
+void D2RobotModel::setNewMotor(int speed, uint degrees, const int port)
 {
 	mMotors[port]->speed = speed;
 	mMotors[port]->degrees = degrees;
@@ -94,15 +108,20 @@ void D2RobotModel::setNewMotor(int speed, unsigned long degrees, const int port)
 	} else {
 		mMotors[port]->activeTimeType = DoByLimit;
 	}
-	mTurnoverMotors[port] = 0;
+}
+
+int D2RobotModel::varySpeed(int const speed) const
+{
+	qreal const ran = mNoiseGen.generate(mNoiseGen.approximationLevel(), varySpeedDispersion);
+	return truncateToInterval(-100, 100, round(speed * (1 + ran)));
 }
 
 void D2RobotModel::countMotorTurnover()
 {
 	foreach (Motor * const motor, mMotors) {
 		int const port = mMotors.key(motor);
-		qreal const degrees = Timeline::timeInterval * 1.0 * motor->speed / oneReciprocalTime;
-		mTurnoverMotors[port] += qAbs(degrees);
+		qreal const degrees = Timeline::timeInterval * motor->speed * onePercentAngularVelocity;
+		mTurnoverMotors[port] += degrees;
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
 			motor->speed = 0;
 			motor->activeTimeType = End;
@@ -128,11 +147,11 @@ SensorsConfiguration &D2RobotModel::configuration()
 
 D2ModelWidget *D2RobotModel::createModelWidget()
 {
-	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel);
+	mD2ModelWidget = new D2ModelWidget(this, &mWorldModel, mDisplay);
 	return mD2ModelWidget;
 }
 
-QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPortEnum const port) const
+QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(robots::enums::inputPort::InputPortEnum const port) const
 {
 	QVector<SensorItem *> items = mD2ModelWidget->sensorItems();
 	SensorItem *sensor = items[port];
@@ -141,10 +160,10 @@ QPair<QPointF, qreal> D2RobotModel::countPositionAndDirection(inputPort::InputPo
 	return QPair<QPointF, qreal>(position, direction);
 }
 
-int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
+int D2RobotModel::readTouchSensor(robots::enums::inputPort::InputPortEnum const port)
 {
-	if (mSensorsConfiguration.type(port) != sensorType::touchBoolean
-			&& mSensorsConfiguration.type(port) != sensorType::touchRaw)
+	if (mSensorsConfiguration.type(port) != robots::enums::sensorType::touchBoolean
+			&& mSensorsConfiguration.type(port) != robots::enums::sensorType::touchRaw)
 	{
 		return touchSensorNotPressedSignal;
 	}
@@ -164,49 +183,81 @@ int D2RobotModel::readTouchSensor(inputPort::InputPortEnum const port)
 	return res ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
 
-int D2RobotModel::readSonarSensor(inputPort::InputPortEnum const port) const
+int D2RobotModel::readSonarSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
-	return mWorldModel.sonarReading(neededPosDir.first, neededPosDir.second);
+	int const res = mWorldModel.sonarReading(neededPosDir.first, neededPosDir.second);
+
+	return mNeedSensorNoise ? spoilSonarReading(res) : res;
 }
 
-int D2RobotModel::readColorSensor(inputPort::InputPortEnum const port) const
+int D2RobotModel::spoilSonarReading(int const distance) const
+{
+	qreal const ran = mNoiseGen.generate(
+					mNoiseGen.approximationLevel()
+					, spoilSonarDispersion
+				);
+
+	return truncateToInterval(0, 255, round(distance + ran));
+}
+
+int D2RobotModel::readColorSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	QImage const image = printColorSensor(port);
-	QHash<unsigned long, int> countsColor;
+	QHash<uint, int> countsColor;
 
-	unsigned long *data = (unsigned long *) image.bits();
+	uint const *data = reinterpret_cast<uint const *>(image.bits());
 	int const n = image.byteCount() / 4;
 	for (int i = 0; i < n; ++i) {
-		unsigned long color = data[i];
-		countsColor[color]++;
+		uint const color = mNeedSensorNoise ? spoilColor(data[i]) : data[i];
+		++countsColor[color];
 	}
 
 	switch (mSensorsConfiguration.type(port)) {
-	case (sensorType::colorFull):
+	case robots::enums::sensorType::colorFull:
 		return readColorFullSensor(countsColor);
-	case (sensorType::colorNone):
+	case robots::enums::sensorType::colorNone:
 		return readColorNoneSensor(countsColor, n);
-	case (sensorType::colorRed):
+	case robots::enums::sensorType::colorRed:
 		return readSingleColorSensor(red, countsColor, n);
-	case (sensorType::colorGreen):
+	case robots::enums::sensorType::colorGreen:
 		return readSingleColorSensor(green, countsColor, n);
-	case (sensorType::colorBlue):
+	case robots::enums::sensorType::colorBlue:
 		return readSingleColorSensor(blue, countsColor, n);
 	default:
 		return 0;
 	}
 }
 
-QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
+uint D2RobotModel::spoilColor(uint const color) const
 {
-	if (mSensorsConfiguration.type(port) == sensorType::unused) {
+	qreal const ran = mNoiseGen.generate(
+			mNoiseGen.approximationLevel()
+			, spoilColorDispersion
+			);
+
+	int r = round(((color >> 16) & 0xFF) + ran);
+	int g = round(((color >> 8) & 0xFF) + ran);
+	int b = round(((color >> 0) & 0xFF) + ran);
+	int const a = (color >> 24) & 0xFF;
+
+	r = truncateToInterval(0, 255, r);
+	g = truncateToInterval(0, 255, g);
+	b = truncateToInterval(0, 255, b);
+
+	return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
+}
+
+QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum const port) const
+{
+	if (mSensorsConfiguration.type(port) == robots::enums::sensorType::unused) {
 		return QImage();
 	}
+
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
 	qreal const width = sensorWidth / 2.0;
-	QRectF const scanningRect = QRectF(position.x() -  width, position.y() - width
+	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width
 			, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
@@ -215,72 +266,82 @@ QImage D2RobotModel::printColorSensor(inputPort::InputPortEnum const port) const
 	QBrush brush(Qt::SolidPattern);
 	brush.setColor(Qt::white);
 	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::black));
-	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
+	painter.setPen(QPen(Qt::white));
+	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
 
+	bool const wasSelected = mD2ModelWidget->sensorItems()[port]->isSelected();
 	mD2ModelWidget->setSensorVisible(port, false);
 	mD2ModelWidget->scene()->render(&painter, QRectF(), scanningRect);
 	mD2ModelWidget->setSensorVisible(port, true);
+	mD2ModelWidget->sensorItems()[port]->setSelected(wasSelected);
 
 	return image;
 }
 
-int D2RobotModel::readColorFullSensor(QHash<unsigned long, int> countsColor) const
+int D2RobotModel::readColorFullSensor(QHash<uint, int> const &countsColor) const
 {
-	QList<int> values = countsColor.values();
-	qSort(values);
-	int maxValue = values.last();
-	unsigned long maxColor = countsColor.key(maxValue);
+	if (countsColor.isEmpty()) {
+		return 0;
+	}
 
+	QList<int> const values = countsColor.values();
+	int maxValue = INT_MIN;
+	foreach (int value, values) {
+		if (value > maxValue) {
+			maxValue = value;
+		}
+	}
+
+	uint const maxColor = countsColor.key(maxValue);
 	switch (maxColor) {
 	case (black):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "BLACK");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "BLACK");
 		return 1;
 	case (red):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "RED");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "RED");
 		return 5;
 	case (green):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "GREEN");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "GREEN");
 		return 3;
 	case (blue) :
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "BLUE");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "BLUE");
 		return 2;
 	case (yellow):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "YELLOW");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "YELLOW");
 		return 4;
 	case (white):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "WHITE");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "WHITE");
 		return 6;
 	case (cyan):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "CYAN");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "CYAN");
 		return 7;
 	case (magenta):
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "MAGENTA");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "MAGENTA");
 		return 8;
 	default:
-		Tracer::debug(tracer::d2Model, "D2RobotModel::readColorFullSensor", "Other Color");
+		Tracer::debug(tracer::enums::d2Model, "D2RobotModel::readColorFullSensor", "Other Color");
 		return 0;
 	}
 }
 
-int D2RobotModel::readSingleColorSensor(unsigned long color, QHash<unsigned long, int> const &countsColor, int n) const
+int D2RobotModel::readSingleColorSensor(uint color, QHash<uint, int> const &countsColor, int n) const
 {
 	return (static_cast<double>(countsColor[color]) / static_cast<double>(n)) * 100.0;
 }
 
-int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsColor, int n) const
+int D2RobotModel::readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const
 {
 	double allWhite = static_cast<double>(countsColor[white]);
 
-	QHashIterator<unsigned long, int> i(countsColor);
+	QHashIterator<uint, int> i(countsColor);
 	while(i.hasNext()) {
 		i.next();
-		unsigned long color = i.key();
+		uint const color = i.key();
 		if (color != white) {
-			int b = (color >> 0) & 0xFF;
-			int g = (color >> 8) & 0xFF;
-			int r = (color >> 16) & 0xFF;
-			qreal k = qSqrt(static_cast<qreal>(b * b + g * g + r * r)) / 500.0;
+			int const b = (color >> 0) & 0xFF;
+			int const g = (color >> 8) & 0xFF;
+			int const r = (color >> 16) & 0xFF;
+			qreal const k = qSqrt(static_cast<qreal>(b * b + g * g + r * r)) / 500.0;
 			allWhite += static_cast<qreal>(i.value()) * k;
 		}
 	}
@@ -288,21 +349,25 @@ int D2RobotModel::readColorNoneSensor(QHash<unsigned long, int> const &countsCol
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
 }
 
-int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
+int D2RobotModel::readLightSensor(robots::enums::inputPort::InputPortEnum const port) const
 {
 	// Must return 1023 on white and 0 on black normalized to percents
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
 
 	QImage const image = printColorSensor(port);
+	if (image.isNull()) {
+		return 0;
+	}
 
-	unsigned long sum = 0;
-	unsigned long *data = (unsigned long *) image.bits();
+	uint sum = 0;
+	uint const *data = reinterpret_cast<uint const *>(image.bits());
 	int const n = image.byteCount() / 4;
 
 	for (int i = 0; i < n; ++i) {
-		int const b = (data[i] >> 0) & 0xFF;
-		int const g = (data[i] >> 8) & 0xFF;
-		int const r = (data[i] >> 16) & 0xFF;
+		int const color = mNeedSensorNoise ? spoilLight(data[i]) : data[i];
+		int const b = (color >> 0) & 0xFF;
+		int const g = (color >> 8) & 0xFF;
+		int const r = (color >> 16) & 0xFF;
 		// brightness in [0..256]
 		int const brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
@@ -312,10 +377,33 @@ int D2RobotModel::readLightSensor(inputPort::InputPortEnum const port) const
 	return rawValue * 100 / maxLightSensorValur; // Normalizing to percents
 }
 
+uint D2RobotModel::spoilLight(uint const color) const
+{
+	qreal const ran = mNoiseGen.generate(
+			mNoiseGen.approximationLevel()
+			, spoilLightDispersion
+			);
+
+	if (ran > (1.0 - percentSaltPepperNoise / 100.0)) {
+		return white;
+	} else if (ran < (-1.0 + percentSaltPepperNoise / 100.0)) {
+		return black;
+	}
+
+	return color;
+}
+
+
 void D2RobotModel::startInit()
 {
 	initPosition();
 	mTimeline->start();
+}
+
+void D2RobotModel::startInterpretation()
+{
+	startInit();
+	mD2ModelWidget->startTimelineListening();
 }
 
 void D2RobotModel::stopRobot()
@@ -323,6 +411,7 @@ void D2RobotModel::stopRobot()
 	mMotorA->speed = 0;
 	mMotorB->speed = 0;
 	mMotorC->speed = 0;
+	mD2ModelWidget->stopTimelineListening();
 }
 
 void D2RobotModel::countBeep()
@@ -337,7 +426,6 @@ void D2RobotModel::countBeep()
 
 void D2RobotModel::countNewCoord()
 {
-
 	Motor *motor1 = mMotorA;
 	Motor *motor2 = mMotorB;
 
@@ -349,8 +437,11 @@ void D2RobotModel::countNewCoord()
 		}
 	}
 
-	qreal const vSpeed = motor1->speed * 2 * M_PI * motor1->radius * 1.0 / onePercentReciprocalSpeed * multiplicator;
-	qreal const uSpeed = motor2->speed * 2 * M_PI * motor2->radius * 1.0 / onePercentReciprocalSpeed * multiplicator;
+	int const sspeed1 = mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
+	int const sspeed2 = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
+
+	qreal const vSpeed = sspeed1 * 2 * M_PI * motor1->radius * onePercentAngularVelocity / 360;
+	qreal const uSpeed = sspeed2 * 2 * M_PI * motor2->radius * onePercentAngularVelocity / 360;
 
 	qreal deltaY = 0;
 	qreal deltaX = 0;
@@ -359,7 +450,7 @@ void D2RobotModel::countNewCoord()
 	qreal const oldAngle = mAngle;
 	QPointF const oldPosition = mPos;
 
-	if (vSpeed != uSpeed) {
+	if (sspeed1 != sspeed2) {
 		qreal const vRadius = vSpeed * robotHeight / (vSpeed - uSpeed);
 		qreal const averageRadius = vRadius - robotHeight / 2;
 		qreal angularSpeed = 0;
@@ -486,10 +577,28 @@ void D2RobotModel::deserialize(QDomElement const &robotElement)
 
 	configuration().deserialize(robotElement);
 
+	mNeedSync = false;
 	nextFragment();
 }
 
 Timeline *D2RobotModel::timeline() const
 {
 	return mTimeline;
+}
+
+details::NxtDisplay *D2RobotModel::display()
+{
+	return mDisplay;
+}
+
+void D2RobotModel::setNoiseSettings()
+{
+	mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
+	mNeedMotorNoise = SettingsManager::value("enableNoiseOfMotors").toBool();
+	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
+}
+
+int D2RobotModel::truncateToInterval(int const a, int const b, int const res) const
+{
+	return (res >= a && res <= b) ? res : (res < a ? a : b);
 }

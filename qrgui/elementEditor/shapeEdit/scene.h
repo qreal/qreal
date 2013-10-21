@@ -6,23 +6,24 @@
 #include <QtWidgets/QGraphicsView>
 #include <QtCore/QList>
 
-#include "view.h"
-#include "item.h"
-#include "arch.h"
-#include "line.h"
-#include "ellipse.h"
-#include "rectangle.h"
-#include "text.h"
-#include "textPicture.h"
-#include "pointPort.h"
-#include "linePort.h"
-#include "stylus.h"
-#include "path.h"
-#include "curve.h"
-#include "image.h"
-#include "../umllib/elementTitle.h"
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../qrutils/graphicsUtils/abstractScene.h"
+#include <qrutils/graphicsUtils/abstractScene.h>
+#include <qrkernel/settingsManager.h>
+
+#include "elementEditor/shapeEdit/view.h"
+#include "elementEditor/shapeEdit/item.h"
+#include "elementEditor/shapeEdit/arch.h"
+#include "elementEditor/shapeEdit/line.h"
+#include "elementEditor/shapeEdit/ellipse.h"
+#include "elementEditor/shapeEdit/rectangle.h"
+#include "elementEditor/shapeEdit/text.h"
+#include "elementEditor/shapeEdit/textPicture.h"
+#include "elementEditor/shapeEdit/pointPort.h"
+#include "elementEditor/shapeEdit/linePort.h"
+#include "elementEditor/shapeEdit/stylus.h"
+#include "elementEditor/shapeEdit/path.h"
+#include "elementEditor/shapeEdit/curve.h"
+#include "elementEditor/shapeEdit/image.h"
+#include "umllib/label.h"
 
 int const sizeEmptyRectX = 680;
 int const sizeEmptyRectY = 580;
@@ -51,12 +52,15 @@ public:
 
 public slots:
 	void clearScene();
+	QList<Item *> selectedSceneItems();
 
 signals:
 	void noSelectedItems();
 	void existSelectedItems(QPen const &penItem, QBrush const &brushItem);
 	void noSelectedTextPictureItems();
 	void existSelectedTextPictureItems(QPen const &penItem, QFont const &fontItem, QString const &name);
+	void noSelectedPortItems();
+	void existSelectedPortItems(QString const &type);
 	void resetHighlightAllButtons();
 
 private slots:
@@ -65,8 +69,11 @@ private slots:
 	void changePenColor(QString const &text);
 	void changeBrushStyle(QString const &text);
 	void changeBrushColor(QString const &text);
+	void changePortsType(QString const &type);
+
 	void changePalette();
 	void changeFontPalette();
+	void changePortsComboBox();
 
 	void changeFontFamily(const QFont& font);
 	void changeFontPixelSize(int size);
@@ -92,6 +99,7 @@ private:
 		, curve
 		, image
 	};
+
 	enum CopyPasteType {
 		nonePaste = 0
 		, copy
@@ -143,5 +151,5 @@ private:
 	QList<TextPicture *> mListSelectedTextPictureItems;
 	TextPicture *mSelectedTextPicture;
 	QPair<bool, Item *> mNeedResize;
-
+	QString mPortType;
 };

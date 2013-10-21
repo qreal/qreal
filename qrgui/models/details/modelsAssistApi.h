@@ -5,12 +5,13 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QUuid>
 
-#include "../../../qrkernel/ids.h"
-//#include "../../toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
+#include <qrkernel/ids.h>
+
+#include "pluginManager/editorManagerInterface.h"
 
 namespace qReal {
 
-class EditorManager;
+class EditorManagerInterface;
 
 namespace models {
 
@@ -23,9 +24,11 @@ class AbstractModel;
 class ModelsAssistApi
 {
 public:
-	ModelsAssistApi(details::modelsImplementation::AbstractModel &model, EditorManager const &editorManager);
-	EditorManager const &editorManager() const;
-	Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);
+	ModelsAssistApi(details::modelsImplementation::AbstractModel &model
+			, EditorManagerInterface const &editorManagerInterface);
+	EditorManagerInterface const &editorManagerInterface() const;
+	Id createElement(Id const &parent, Id const &id, Id const &logicalId
+			, bool isFromLogicalModel, QString const &name, QPointF const &position);
 
 	/// Stacks item element before sibling (they should have the same parent)
 	void stackBefore(Id const &element, Id const &sibling);
@@ -56,7 +59,7 @@ private:
 	ModelsAssistApi& operator =(ModelsAssistApi const &);
 
 	details::modelsImplementation::AbstractModel &mModel;
-	EditorManager const &mEditorManager;
+	EditorManagerInterface const &mEditorManagerInterface;
 };
 }
 }

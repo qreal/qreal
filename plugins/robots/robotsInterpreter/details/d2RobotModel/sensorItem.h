@@ -21,7 +21,7 @@ class SensorItem : public QObject, public graphicsUtils::RotateItem
 {
 	Q_OBJECT
 public:
-	SensorItem(SensorsConfiguration &configuration, inputPort::InputPortEnum port);
+	SensorItem(SensorsConfiguration &configuration, robots::enums::inputPort::InputPortEnum port);
 
 	virtual void rotate(double angle);
 	virtual QRectF rect() const;
@@ -52,18 +52,23 @@ public:
 	void onDirectionChanged();
 
 protected:
-	static int const size = 6;
+	QRectF imageRect() const;
+	QString name() const;
+	QString pathToImage() const;
 
-	QColor color() const;
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 	SensorsConfiguration &mConfiguration;
-	inputPort::InputPortEnum const mPort;
+	robots::enums::inputPort::InputPortEnum const mPort;
 	QPointF mRotatePoint;
 	bool mDragged;
 	graphicsUtils::PointImpl mPointImpl;
 	Rotater *mRotater;
 	QSet<QGraphicsItem *> mStickyItems;
+
+	QRectF const mImageRect;
+	QRectF const mBoundingRect;
+	QImage const mImage;
 };
 
 }

@@ -1,4 +1,5 @@
 #include "path.h"
+
 #include <QtCore/QTextStream>
 
 Path::Path(QPainterPath const &path) : Item(NULL)

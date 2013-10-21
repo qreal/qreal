@@ -7,115 +7,31 @@
     <x>0</x>
     <y>0</y>
     <width>717</width>
-    <height>677</height>
+    <height>693</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="1">
-    <widget class="QPushButton" name="drawCurveButton">
+   <item row="19" column="0" colspan="4">
+    <widget class="QPushButton" name="saveButton">
      <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>65</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string>Draw curve</string>
+      <bool>false</bool>
      </property>
      <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../qrgui.qrc">
-       <normaloff>:/icons/curve.png</normaloff>:/icons/curve.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>45</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="autoExclusive">
-      <bool>false</bool>
-     </property>
-     <property name="autoDefault">
-      <bool>false</bool>
-     </property>
-     <property name="default">
-      <bool>false</bool>
+      <string>Save</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="2" rowspan="14">
-    <widget class="graphicsUtils::AbstractView" name="graphicsView">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>2</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QPushButton" name="drawRectButton">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>65</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string>Draw rectangle</string>
-     </property>
+   <item row="20" column="0" colspan="4">
+    <widget class="QPushButton" name="openButton">
      <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../qrgui.qrc">
-       <normaloff>:/icons/rect.png</normaloff>:/icons/rect.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>45</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="autoExclusive">
-      <bool>false</bool>
-     </property>
-     <property name="autoDefault">
-      <bool>false</bool>
-     </property>
-     <property name="default">
-      <bool>false</bool>
+      <string>Open</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="3">
     <widget class="QPushButton" name="drawEllipseButton">
      <property name="maximumSize">
       <size>
@@ -130,153 +46,8 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/ellipse.png</normaloff>:/icons/ellipse.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>45</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="autoExclusive">
-      <bool>false</bool>
-     </property>
-     <property name="autoDefault">
-      <bool>false</bool>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="addTextButton">
-     <property name="maximumSize">
-      <size>
-       <width>65</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string>Add static text</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../qrgui.qrc">
-       <normaloff>:/icons/staticText.png</normaloff>:/icons/staticText.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>45</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="autoExclusive">
-      <bool>false</bool>
-     </property>
-     <property name="autoDefault">
-      <bool>false</bool>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QPushButton" name="addDynamicTextButton">
-     <property name="maximumSize">
-      <size>
-       <width>65</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string>Add dynamic text</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../qrgui.qrc">
-       <normaloff>:/icons/dynamicText.png</normaloff>:/icons/dynamicText.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>45</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="autoExclusive">
-      <bool>false</bool>
-     </property>
-     <property name="autoDefault">
-      <bool>false</bool>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="0" colspan="2">
-    <widget class="Line" name="line">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QPushButton" name="stylusButton">
-     <property name="maximumSize">
-      <size>
-       <width>65</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string>Stylus</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../qrgui.qrc">
-       <normaloff>:/icons/pencil.png</normaloff>:/icons/pencil.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -302,7 +73,7 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QPushButton" name="addTextPictureButton">
+    <widget class="QPushButton" name="addTextButton">
      <property name="maximumSize">
       <size>
        <width>65</width>
@@ -310,46 +81,14 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>Add picture text</string>
+      <string>Add static text</string>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
-       <normaloff>:/icons/textPicture.png</normaloff>:/icons/textPicture.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>45</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="autoExclusive">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QPushButton" name="addLinePortButton">
-     <property name="maximumSize">
-      <size>
-       <width>65</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="toolTip">
-      <string>Add line port</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../qrgui.qrc">
-       <normaloff>:/icons/linePort.png</normaloff>:/icons/linePort.png</iconset>
+      <iconset resource="qrgui.qrc">
+       <normaloff>:/icons/staticText.png</normaloff>:/icons/staticText.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -374,14 +113,8 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
-    <widget class="QPushButton" name="addPointPortButton">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>25</height>
-      </size>
-     </property>
+   <item row="3" column="3">
+    <widget class="QPushButton" name="addDynamicTextButton">
      <property name="maximumSize">
       <size>
        <width>65</width>
@@ -389,19 +122,19 @@
       </size>
      </property>
      <property name="toolTip">
-      <string>Add point port</string>
+      <string>Add dynamic text</string>
      </property>
      <property name="text">
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
-       <normaloff>:/icons/ellipse.png</normaloff>:/icons/ellipse.png</iconset>
+      <iconset resource="qrgui.qrc">
+       <normaloff>:/icons/dynamicText.png</normaloff>:/icons/dynamicText.png</iconset>
      </property>
      <property name="iconSize">
       <size>
-       <width>6</width>
-       <height>6</height>
+       <width>45</width>
+       <height>16</height>
       </size>
      </property>
      <property name="checkable">
@@ -421,7 +154,65 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0" rowspan="2" colspan="2">
+   <item row="17" column="0" colspan="4">
+    <widget class="QPushButton" name="saveAsPictureButton">
+     <property name="text">
+      <string>Save as picture</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="drawCurveButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>65</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Draw curve</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="qrgui.qrc">
+       <normaloff>:/icons/curve.png</normaloff>:/icons/curve.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>45</width>
+       <height>16</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>false</bool>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="18" column="0" colspan="4">
+    <widget class="QPushButton" name="saveToXmlButton">
+     <property name="text">
+      <string>Save to Xml</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0" rowspan="2" colspan="4">
     <widget class="QToolBox" name="fontToolBox">
      <property name="enabled">
       <bool>false</bool>
@@ -446,8 +237,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>136</width>
-        <height>79</height>
+        <width>135</width>
+        <height>77</height>
        </rect>
       </property>
       <attribute name="label">
@@ -585,8 +376,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>98</width>
-        <height>28</height>
+        <width>135</width>
+        <height>77</height>
        </rect>
       </property>
       <attribute name="label">
@@ -667,33 +458,215 @@
      </widget>
     </widget>
    </item>
-   <item row="11" column="0">
-    <widget class="QPushButton" name="deleteItemButton">
+   <item row="4" column="3">
+    <widget class="QPushButton" name="stylusButton">
      <property name="maximumSize">
       <size>
-       <width>64</width>
+       <width>65</width>
        <height>16777215</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>Stylus</string>
+     </property>
      <property name="text">
-      <string>Delete Item</string>
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="qrgui.qrc">
+       <normaloff>:/icons/pencil.png</normaloff>:/icons/pencil.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>45</width>
+       <height>16</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>false</bool>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
-   <item row="11" column="1">
-    <widget class="QPushButton" name="clearButton">
+   <item row="5" column="0">
+    <widget class="QPushButton" name="addLinePortButton">
      <property name="maximumSize">
       <size>
-       <width>60</width>
+       <width>65</width>
        <height>16777215</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>Add line port</string>
+     </property>
      <property name="text">
-      <string>Clear</string>
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="qrgui.qrc">
+       <normaloff>:/icons/linePort.png</normaloff>:/icons/linePort.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>45</width>
+       <height>16</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>false</bool>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
-   <item row="8" column="0" rowspan="3" colspan="2">
+   <item row="5" column="3">
+    <widget class="QPushButton" name="addPointPortButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>25</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>65</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Add point port</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="qrgui.qrc">
+       <normaloff>:/icons/ellipse.png</normaloff>:/icons/ellipse.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>6</width>
+       <height>6</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>false</bool>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QPushButton" name="addTextPictureButton">
+     <property name="maximumSize">
+      <size>
+       <width>65</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Add picture text</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="qrgui.qrc">
+       <normaloff>:/icons/textPicture.png</normaloff>:/icons/textPicture.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>45</width>
+       <height>16</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="drawRectButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>65</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Draw rectangle</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="qrgui.qrc">
+       <normaloff>:/icons/rect.png</normaloff>:/icons/rect.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>45</width>
+       <height>16</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
+      <bool>false</bool>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+     <property name="default">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0" rowspan="3" colspan="4">
     <widget class="QToolBox" name="penBrushToolBox">
      <property name="enabled">
       <bool>true</bool>
@@ -720,15 +693,15 @@
       </font>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="widget">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>98</width>
-        <height>28</height>
+        <width>135</width>
+        <height>76</height>
        </rect>
       </property>
       <attribute name="label">
@@ -875,8 +848,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>136</width>
-        <height>96</height>
+        <width>135</width>
+        <height>76</height>
        </rect>
       </property>
       <attribute name="label">
@@ -972,7 +945,7 @@
      </widget>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QPushButton" name="addImageButton">
      <property name="maximumSize">
       <size>
@@ -991,7 +964,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QPushButton" name="drawLineButton">
      <property name="maximumSize">
       <size>
@@ -1006,7 +979,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="../../qrgui.qrc">
+      <iconset resource="qrgui.qrc">
        <normaloff>:/icons/line.png</normaloff>:/icons/line.png</iconset>
      </property>
      <property name="iconSize">
@@ -1032,23 +1005,97 @@
      </property>
     </widget>
    </item>
+   <item row="15" column="0" colspan="4">
+    <widget class="QPushButton" name="visibilityConditionsButton">
+     <property name="text">
+      <string>VisibilityConditions</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="0" colspan="4">
+    <widget class="QPushButton" name="clearButton">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Clear</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4" rowspan="20">
+    <widget class="graphicsUtils::AbstractView" name="graphicsView">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>170</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>2</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0" colspan="4">
+    <widget class="QPushButton" name="deleteItemButton">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Delete Item</string>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0" colspan="4">
+    <widget class="QComboBox" name="portsComboBox"/>
+   </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
    <class>graphicsUtils::AbstractView</class>
    <extends>QGraphicsView</extends>
-   <header>../../qrutils/graphicsUtils/abstractItemView.h</header>
+   <header>qrutils/graphicsUtils/abstractItemView.h</header>
   </customwidget>
   <customwidget>
    <class>graphicsUtils::ColorListEditor</class>
    <extends>QComboBox</extends>
-   <header>../../qrutils/graphicsUtils/colorlisteditor.h</header>
+   <header>qrutils/graphicsUtils/colorlisteditor.h</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../qrgui.qrc"/>
-  <include location="../../qrgui.qrc"/>
+  <include location="qrgui.qrc"/>
+  <include location="qrgui.qrc"/>
  </resources>
  <connections/>
 </ui>

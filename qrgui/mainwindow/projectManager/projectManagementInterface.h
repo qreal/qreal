@@ -3,12 +3,12 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
-#include "autosaver.h"
+#include "mainwindow/projectManager/autosaver.h"
 
 namespace qReal
 {
 
-/// Interfase that provides all of the work load project from a file, stored in the project file, and so on
+/// Interface that provides all of the work load project from a file, stored in the project file, and so on
 class ProjectManagementInterface : public QObject
 {
 	Q_OBJECT
@@ -34,8 +34,6 @@ public slots:
 
 	/// Save the project in the user file, if it specified. Otherwise save to autosave file
 	virtual void save() = 0;
-	/// Save the project to the temporary file in set time period
-	virtual void saveTemp() = 0;
 	/// Save the project in the file with the name fileName, if it not empty (fileName). Otherwise return false only.
 	virtual bool saveAs(QString const &fileName) = 0;
 	/// Similarly @see saveAs(QString const &fileName), but offers the user specified file location (by a dialog)
@@ -51,7 +49,18 @@ public:
 	virtual bool open(QString const &fileName = "") = 0;
 	virtual bool suggestToSaveChangesOrCancel() = 0;
 	virtual void setUnsavedIndicator(bool isUnsaved) = 0;
-	virtual void reinitAutosaver() = 0;
+
+signals:
+	/// Emitted each time when project manager is going to open new project
+	/// @param fileName Project location
+	void beforeOpen(QString const &fileName);
+
+	/// Emitted each time when project manager has opened new project
+	/// @param fileName Opened project location
+	void afterOpen(QString const &fileName);
+
+	/// Emitted each time when project manager has closed current project
+	void closed();
 };
 
 }

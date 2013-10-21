@@ -2,7 +2,8 @@
 
 #include <QtCore/QString>
 #include <QtCore/QTime>
-#include "../../qrkernel/ids.h"
+
+#include <qrkernel/ids.h>
 
 namespace qReal {
 namespace gui {
@@ -10,10 +11,10 @@ namespace gui {
 class Error {
 public:
 	enum Severity {
-		information,
-		warning,
-		error,
-		critical
+		information
+		, warning
+		, error
+		, critical
 	};
 
 	Error(QString const &message, Severity const &severity, qReal::Id  const &position);

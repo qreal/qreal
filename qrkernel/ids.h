@@ -40,8 +40,8 @@ public:
 	/// @param diagram Diagram part of an Id (palette tab name).
 	/// @param element Element part of an Id (element type name).
 	/// @param id Id part of an, mm, Id. Represents identity of a model element.
-	explicit Id(QString const &editor = "", QString  const &diagram = "",
-				QString  const &element = "", QString  const &id = "");
+	explicit Id(QString const &editor = "", QString  const &diagram = ""
+			, QString  const &element = "", QString  const &id = "");
 
 	/// Convenience constructor, creates Id by given base Id adding new part as
 	/// a next section. For example, by given editor Id and diagram name
@@ -49,6 +49,9 @@ public:
 	/// @param base Id that will be extended.
 	/// @param additional Part of Id that will be added to base Id.
 	Id(Id const &base, QString const &additional);
+
+	/// Returns true if this id is an empty one (same as == Id())
+	bool isNull() const;
 
 	/// Converts Id to URI in format "qrm:/<editor>/<diagram>/<element>/<id>".
 	QUrl toUrl() const;
@@ -82,13 +85,13 @@ public:
 
 	// default destructor and copy constuctor are OK
 private:
+	/// Used only for debug. Checks that Id is correct.
+	bool checkIntegrity() const;
+
 	QString mEditor;
 	QString mDiagram;
 	QString mElement;
 	QString mId;
-
-	/// Used only for debug. Checks that Id is correct.
-	bool checkIntegrity() const;
 };
 
 /// Id equality operator. Ids are equal when all their parts are equal.
@@ -104,6 +107,12 @@ inline bool operator==(Id const &i1, Id const &i2)
 inline bool operator!=(Id const &i1, Id const &i2)
 {
 	return !(i1 == i2);
+}
+
+/// Comparison operator for using Id in maps
+inline bool operator<(Id const &i1, Id const &i2)
+{
+	return i1.toString() < i2.toString();
 }
 
 /// Hash function for Id for using it in QHash.

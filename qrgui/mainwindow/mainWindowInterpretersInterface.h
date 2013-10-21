@@ -2,9 +2,10 @@
 
 #include <QtGui/QColor>
 
-#include "../../qrkernel/ids.h"
-#include "../toolPluginInterface/usedInterfaces/errorReporterInterface.h"
-#include "../../qrutils/invocationUtils/longOperation.h"
+#include <qrkernel/ids.h>
+#include <qrutils/invocationUtils/longOperation.h>
+
+#include "toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace qReal {
 namespace gui {
@@ -69,7 +70,8 @@ public:
 	/// returns selected elements on current tab
 	virtual IdList selectedElementsOnActiveDiagram() = 0;
 
-	virtual void activateItemOrDiagram(Id const &id, bool bl = true, bool isSetSel = true) = 0;
+	/// Shows element`s tab if it is not active and selects element if @see setSelected is true
+	virtual void activateItemOrDiagram(Id const &id, bool setSelected = true) = 0;
 
 	virtual void updateActiveDiagram() = 0;
 

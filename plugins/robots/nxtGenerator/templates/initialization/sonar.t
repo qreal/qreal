@@ -1,0 +1,1 @@
+ecrobot_init_sonar_sensor(@@PORT@@);

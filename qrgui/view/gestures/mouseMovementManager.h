@@ -1,23 +1,26 @@
 #pragma once
 
-#include "keyManagerInterface.h"
-#include "keyManager.h"
-#include "../../../qrkernel/ids.h"
-#include "../../pluginManager/editorManager.h"
-#include "../../mainwindow/gesturesPainterInterface.h"
-#include "abstractRecognizer.h"
-#include <QPointF>
-#include <QPoint>
-#include <QLineF>
-#include <QList>
-#include <QString>
-#include <QMap>
+#include <qrkernel/ids.h>
 
+#include "view/gestures/keyManagerInterface.h"
+#include "view/gestures/keyManager.h"
+#include "pluginManager/editorManagerInterface.h"
+#include "mainwindow/gesturesPainterInterface.h"
+#include "view/gestures/abstractRecognizer.h"
+#include <QtCore/QPointF>
+#include <QtCore/QPoint>
+#include <QtCore/QLineF>
+#include <QtCore/QList>
+#include <QtCore/QString>
+#include <QtCore/QMap>
+
+namespace qReal {
+namespace gestures {
 
 class MouseMovementManager
 {
 public:
-	MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager *editorManager
+	MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManagerInterface *editorManagerInterface
 			, GesturesPainterInterface *gesturesPaintManager);
 
 	~MouseMovementManager();
@@ -45,9 +48,12 @@ private:
 	PathVector mPath;
 	IKeyManager *mKeyManager;
 	KeyManager mKeyStringManager;
-	qReal::EditorManager *mEditorManager;
+	qReal::EditorManagerInterface * mEditorManagerInterface;
 	QList<qReal::Id> mElements;
 	QPointF mCentre;
 	GesturesPainterInterface *mGesturesPaintMan;
 	GesturesManager *mGesturesManager;
 };
+
+}
+}

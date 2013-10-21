@@ -3,11 +3,13 @@
 #include <QtCore/QDir>
 #include <QtCore/QList>
 #include <QtCore/QPluginLoader>
+#include <QtWidgets/QAction>
 
-#include "../toolPluginInterface/toolPluginInterface.h"
-#include "../toolPluginInterface/customizer.h"
-#include "../toolPluginInterface/pluginConfigurator.h"
-#include "../dialogs/preferencesPages/preferencesPage.h"
+#include "toolPluginInterface/toolPluginInterface.h"
+#include "toolPluginInterface/customizer.h"
+#include "toolPluginInterface/pluginConfigurator.h"
+#include "dialogs/preferencesPages/preferencesPage.h"
+#include "toolPluginInterface/hotKeyActionInfo.h"
 
 namespace qReal {
 
@@ -35,6 +37,9 @@ public:
 	QList<ToolPluginInterface *> getPlugins();
 
 private:
+	QList<HotKeyActionInfo> hotKeyActions() const;
+	void setHotKeyActions() const;
+
 	QDir mPluginsDir;
 
 	QList<ToolPluginInterface *> mPlugins;

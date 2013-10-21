@@ -6,7 +6,7 @@ using namespace details;
 using namespace robotImplementations::sensorImplementations;
 using namespace robotParts;
 
-Sensor::Sensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, inputPort::InputPortEnum const &port)
+Sensor::Sensor(robotImplementations::sensorImplementations::AbstractSensorImplementation *sensorImpl, robots::enums::inputPort::InputPortEnum const port)
 	: mPort(port), mSensorImpl(sensorImpl)
 {
 
@@ -31,4 +31,9 @@ void Sensor::setImplementation(robotImplementations::sensorImplementations::Abst
 {
 	mSensorImpl = sensorImpl;
 	mSensorImpl->setPort(mPort);
+}
+
+void Sensor::nullify()
+{
+	mSensorImpl->nullify();
 }

@@ -14,14 +14,14 @@ class RealMotorImplementation : public AbstractMotorImplementation
 	Q_OBJECT
 public:
 	RealMotorImplementation(int const port, RobotCommunicator *robotCommunicationInterface);
-	virtual void on(int speed);
-	virtual void on(int speed, long unsigned int degrees);
-	virtual void stop();
+	virtual void on(int speed, bool breakMode = true);
+	virtual void on(int speed, long unsigned int degrees, bool breakMode = true);
+	virtual void stop(bool breakMode = true);
 	virtual void off();
 	virtual void resetMotorPosition(bool relative);
 private:
 	void setOutputState(int speed, int mode
-			, regulationMode::RegulationModeEnum regulation, int turnRatio, runState::RunStateEnum runState
+			, enums::regulationMode::RegulationModeEnum regulation, int turnRatio, enums::runState::RunStateEnum runState
 			, unsigned long tachoLimit);
 	RobotCommunicator *mRobotCommunicationInterface;
 };

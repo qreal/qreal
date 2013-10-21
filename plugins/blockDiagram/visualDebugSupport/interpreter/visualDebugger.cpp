@@ -4,10 +4,10 @@
 
 #include "visualDebugger.h"
 
-#include "../../../qrgui/mainwindow/propertyEditorProxyModel.h"
-#include "../../../qrgui/models/models.h"
+#include <qrgui/mainwindow/propertyEditorProxyModel.h>
+#include <qrgui/models/models.h>
 
-#include "../../../qrkernel/exception/exception.h"
+#include <qrkernel/exception/exception.h>
 
 using namespace qReal;
 

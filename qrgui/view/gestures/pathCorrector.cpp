@@ -1,8 +1,11 @@
 #include "pathCorrector.h"
-#include "math.h"
-#include <QPointF>
+
+#include <math.h>
+#include <QtCore/QPointF>
 
 const double mouseSpeed = 5;
+
+using namespace qReal::gestures;
 
 QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const &path)
 {
@@ -18,8 +21,8 @@ QList<QPoint> PathCorrector::getMousePath(QList<QPoint> const &path)
 		int number = static_cast<int>((sqrt(pow(static_cast<double>(length), 2)
 											+ pow(static_cast<double>(width), 2))) / mouseSpeed + 1);
 		for (int j = 1; j <= number; j++) {
-			QPoint point(int(previousPoint.x() + length * j / number),
-						 int(previousPoint.y() + width * j / number));
+			QPoint point(int(previousPoint.x() + length * j / number)
+					, int(previousPoint.y() + width * j / number));
 			mousePath.append(point);
 		}
 	}

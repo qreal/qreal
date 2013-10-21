@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtWidgets/QWidget>
+#include FQtWidgets/QWidget>
 #include <QtXml/QDomDocument>
 #include <QtGui/QPen>
 #include <QtGui/QBrush>
@@ -9,10 +9,13 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtGui/QIconEngine>
-#include <QtCore/QDebug>
 
-#include "../editorPluginInterface/sdfRendererInterface.h"
-#include "../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
+
+#include "editorPluginInterface/sdfRendererInterface.h"
+#include "editorPluginInterface/elementRepoInterface.h"
+
+namespace qReal {
 
 class SdfRenderer : public SdfRendererInterface
 {
@@ -24,17 +27,49 @@ public:
 	SdfRenderer(QDomDocument const &document);
 	~SdfRenderer();
 
-	bool load(QString const &filename);
-	void load(QDomDocument const &document);
-	void render(QPainter *mPainter, const QRectF &bounds);
+	bool load (QString const &filename);
+	bool load(QDomDocument const &document);
+	void render(QPainter *painter, QRectF const &bounds, bool isIcon = false);
 	void noScale();
 
 	int pictureWidth() const { return mFirstSizeX; }
 	int pictureHeight() const { return mFirstSizeY; }
 
+	void setElementRepo(ElementRepoInterface *elementRepo);
+
 private:
 	void initWorkingDir();
 	void initFirstSizes();
+
+	QString mWorkingDirName;
+	QMap<QString, QPixmap> mMapFileImage;
+	int first_size_x;
+	int first_size_y;
+	int current_size_x;
+	int current_size_y;
+	int mStartX;
+	int mStartY;
+	int i;
+	int j;
+	int sep;
+	QPainter *painter;
+	QPen pen;
+	QBrush brush;
+	QString s1;
+	QString s2;
+	QFont font;
+	QFile log;
+	QTextStream logtext;
+	QDomDocument doc;
+
+	/** @brief is false if we don't need to scale according to absolute
+	 * coords, is useful for rendering icons. default is true
+	**/
+	bool mNeedScale;
+	ElementRepoInterface *mElementRepo;
+
+	bool checkShowConditions(QDomElement const &element, bool isIcon) const;
+	bool checkCondition(QDomElement const &condition) const;
 
 	void line(QDomElement &element);
 	void ellipse(QDomElement &element);
@@ -51,6 +86,7 @@ private:
 	void stylus_draw(QDomElement &element);
 	void curve_draw(QDomElement &element);
 	void image_draw(QDomElement &element);
+
 	qreal x1_def(QDomElement &element);
 	qreal y1_def(QDomElement &element);
 	qreal x2_def(QDomElement &element);
@@ -58,6 +94,7 @@ private:
 	qreal coord_def(QDomElement &element, QString const &coordName
 		, int current_size, int first_size);
 	void logger(QString const &path, QString const &string);
+
 	/** @brief checks that str[i] is not L, C, M or Z*/
 	bool isNotLCMZ(QString const &str, int i);
 
@@ -91,9 +128,8 @@ class SdfIconEngineV2: public SdfIconEngineV2Interface
 {
 public:
 	SdfIconEngineV2(QString const &file);
+	SdfIconEngineV2(QDomDocument const &document);
 	QSize preferedSize() const;
-
-protected:
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
 	virtual QIconEngine *clone() const
 	{
@@ -103,3 +139,5 @@ private:
 	SdfRenderer mRenderer;
 	QSize mSize;
 };
+
+}

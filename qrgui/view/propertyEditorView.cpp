@@ -1,6 +1,7 @@
 #include "propertyEditorView.h"
-#include "../mainwindow/mainWindow.h"
 
+#include "mainwindow/mainWindow.h"
+#include "controller/commands/changePropertyCommand.h"
 
 PropertyEditorView::PropertyEditorView(QWidget *parent)
 		: QWidget(parent), mChangingPropertyValue(false)
@@ -10,6 +11,7 @@ PropertyEditorView::PropertyEditorView(QWidget *parent)
 		, mVariantFactory(NULL)
 		, mButtonManager(NULL)
 		, mButtonFactory(NULL)
+		, mController(NULL)
 {
 	mPropertyEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
@@ -23,10 +25,12 @@ PropertyEditorView::~PropertyEditorView()
 	delete mButtonFactory;
 }
 
-void PropertyEditorView::init(qReal::MainWindow *mainWindow, qReal::models::LogicalModelAssistApi *const logicalModelAssistApi)
+void PropertyEditorView::init(qReal::MainWindow *mainWindow
+		, qReal::models::LogicalModelAssistApi *const logicalModelAssistApi)
 {
 	mMainWindow = mainWindow;
 	mLogicalModelAssistApi = logicalModelAssistApi; // unused
+	mController = mainWindow->controller();
 }
 
 /*
@@ -35,8 +39,7 @@ void PropertyEditorView::init(qReal::MainWindow *mainWindow, qReal::models::Logi
 void PropertyEditorView::setModel(PropertyEditorModel *model)
 {
 	mModel = model;
-	connect(mModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
-		this, SLOT(dataChanged(QModelIndex,QModelIndex)));
+	connect(mModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
 	connect(mModel, SIGNAL(modelReset()), this, SLOT(reset()));
 }
 
@@ -187,11 +190,13 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 {
-	if(mChangingPropertyValue) return;
+	if (mChangingPropertyValue) {
+		return;
+	}
 
 	QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(prop);
-	int propertyType = property->propertyType(),
-		row = mPropertyEditor->properties().indexOf(property);
+	int propertyType = property->propertyType();
+	int row = mPropertyEditor->properties().indexOf(property);
 	QModelIndex const &index = mModel->index(row, 1);
 
 	if (propertyType == QtVariantPropertyManager::enumTypeId()) {
@@ -201,7 +206,15 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 			value = values.at(intValue);
 		}
 	}
-	mModel->setData(index, value);
+
+	value = QVariant(value.toString());
+	QVariant const oldValue = mModel->data(index);
+
+	// TODO: edit included Qt Property Browser framework or inherit new browser
+	// from it and create propertyCommited() and propertyCancelled() signal
+	qReal::commands::ChangePropertyCommand *changeCommand =
+			new qReal::commands::ChangePropertyCommand(mModel, index, oldValue, value);
+	mController->execute(changeCommand);
 }
 
 void PropertyEditorView::setPropertyValue(QtVariantProperty *property, const QVariant &value)

@@ -1,12 +1,14 @@
 #pragma once
+
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QSplashScreen>
 
 namespace qReal {
 
 /**
- * @brief Splash screen with progress bar
- */
+* @brief Splash screen with progress bar
+*/
+
 class SplashScreen : public QSplashScreen
 {
 	Q_OBJECT

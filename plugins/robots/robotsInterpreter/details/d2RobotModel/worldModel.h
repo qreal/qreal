@@ -11,7 +11,9 @@
 #include "wallItem.h"
 #include "colorFieldItem.h"
 
-qreal const pixelsInCm = 16 / 5.6; // robot`s wheel length in px / its real length
+qreal const robotWheelDiameterInPx = 16;
+qreal const robotWheelDiameterInCm = 5.6;
+qreal const pixelsInCm = robotWheelDiameterInPx / robotWheelDiameterInCm;
 
 namespace qReal {
 namespace interpreters {
@@ -24,7 +26,7 @@ class WorldModel
 public:
 	WorldModel();
 	int sonarReading(QPointF const &position, qreal direction) const;
-	bool touchSensorReading(QPointF const &position, qreal direction, inputPort::InputPortEnum const port);
+	bool touchSensorReading(QPointF const &position, qreal direction, robots::enums::inputPort::InputPortEnum const port);
 	QPainterPath sonarScanningRegion(QPointF const &position, qreal direction, int range = 255) const;
 	QPainterPath sonarScanningRegion(QPointF const &position, int range = 255) const;
 	bool checkCollision(QPainterPath const &robotPath, int stroke = 3) const;
@@ -46,8 +48,8 @@ private:
 
 	QList<WallItem *> mWalls;
 	QList<ColorFieldItem *> mColorFields;
-	QMap<inputPort::InputPortEnum, QPointF> mTouchSensorPositionOld;
-	QMap<inputPort::InputPortEnum, qreal> mTouchSensorDirectionOld;
+	QMap<robots::enums::inputPort::InputPortEnum, QPointF> mTouchSensorPositionOld;
+	QMap<robots::enums::inputPort::InputPortEnum, qreal> mTouchSensorDirectionOld;
 
 	QPainterPath buildWallPath() const;
 };

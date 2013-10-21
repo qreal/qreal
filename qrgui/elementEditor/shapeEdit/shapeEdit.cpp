@@ -1,3 +1,6 @@
+#include "shapeEdit.h"
+#include "ui_shapeEdit.h"
+
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QGraphicsItem>
 #include <QtCore/QList>
@@ -6,13 +9,14 @@
 #include <QtGui/QImage>
 #include <QtWidgets/QMessageBox>
 
-#include "shapeEdit.h"
-#include "ui_shapeEdit.h"
-#include "xmlLoader.h"
-#include "../../../qrutils/outFile.h"
-#include "../../../qrutils/xmlUtils.h"
-#include "../../../qrutils/graphicsUtils/colorlisteditor.h"
+#include <qrutils/outFile.h>
+#include <qrutils/xmlUtils.h>
+#include <qrutils/graphicsUtils/colorlisteditor.h>
 
+#include "elementEditor/shapeEdit/xmlLoader.h"
+#include "mainwindow/mainWindow.h"
+
+using namespace qReal;
 using namespace utils;
 
 ShapeEdit::ShapeEdit(bool isIconEditor, QWidget *parent)
@@ -25,8 +29,30 @@ ShapeEdit::ShapeEdit(bool isIconEditor, QWidget *parent)
 	init();
 }
 
+ShapeEdit::ShapeEdit(
+		Id const &id
+		, EditorManagerInterface *editorManager
+		, qrRepo::GraphicalRepoApi const &graphicalRepoApi
+		, MainWindow *mainWindow
+		, EditorView *editorView
+		)
+		: QWidget(NULL)
+		, mUi(new Ui::ShapeEdit)
+		, mRole(0)
+		, mId(id)
+		, mEditorManager(editorManager)
+		, mMainWindow(mainWindow)
+		, mEditorView(editorView)
+{
+	mGraphicalElements = graphicalRepoApi.graphicalElements(Id(mId.editor(), mId.diagram(), mId.element()));
+	init();
+	mUi->saveButton->setEnabled(true);
+	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+}
+
 ShapeEdit::~ShapeEdit()
 {
+	delete mScene;
 	delete mUi;
 }
 
@@ -57,6 +83,8 @@ void ShapeEdit::init()
 	mUi->brushColorComboBox->setColorList(QColor::colorNames());
 	mUi->brushColorComboBox->setColor(QColor("white"));
 
+	mUi->portsComboBox->addItems(getPortTypes());
+
 	mUi->textPixelSizeSpinBox->setRange(5, 72);
 	initFontPalette();
 
@@ -77,10 +105,13 @@ void ShapeEdit::init()
 	connect(mUi->penStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenStyle(QString const &)));
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changePenWidth(int)));
 	connect(mUi->penColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePenColor(QString const &)));
-	connect(mUi->brushStyleComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeBrushStyle(QString const &)));
-	connect(mUi->brushColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeBrushColor(QString const &)));
+	connect(mUi->brushStyleComboBox, SIGNAL(activated(QString const &))
+			, mScene, SLOT(changeBrushStyle(QString const &)));
+	connect(mUi->brushColorComboBox, SIGNAL(activated(QString const &))
+			, mScene, SLOT(changeBrushColor(QString const &)));
 
-	connect(mUi->textFamilyFontComboBox, SIGNAL(currentFontChanged(const QFont&)), mScene, SLOT(changeFontFamily(const QFont&)));
+	connect(mUi->textFamilyFontComboBox, SIGNAL(currentFontChanged(const QFont&))
+			, mScene, SLOT(changeFontFamily(const QFont&)));
 	connect(mUi->textPixelSizeSpinBox, SIGNAL(valueChanged(int)), mScene, SLOT(changeFontPixelSize(int)));
 	connect(mUi->textColorComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changeFontColor(QString const &)));
 	connect(mUi->textEditField, SIGNAL(textChanged()), this, SLOT(changeTextName()));
@@ -88,6 +119,9 @@ void ShapeEdit::init()
 	connect(mUi->boldCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontBold(bool)));
 	connect(mUi->underlineCheckBox, SIGNAL(toggled(bool)), mScene, SLOT(changeFontUnderline(bool)));
 
+	connect(mUi->portsComboBox, SIGNAL(activated(QString const &)), mScene, SLOT(changePortsType(QString const &)));
+
+	connect(mUi->visibilityConditionsButton, SIGNAL(clicked()), this, SLOT(visibilityButtonClicked()));
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
 	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
@@ -95,10 +129,14 @@ void ShapeEdit::init()
 	connect(this, SIGNAL(openSignal()), this, SLOT(open()));
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
-	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &)), this, SLOT(setItemPalette(QPen const&, QBrush const&)));
+	connect(mScene, SIGNAL(existSelectedItems(QPen const &, QBrush const &))
+			, this, SLOT(setItemPalette(QPen const&, QBrush const&)));
 	connect(mScene, SIGNAL(resetHighlightAllButtons()), this, SLOT(resetHighlightAllButtons()));
 	connect(mScene, SIGNAL(noSelectedTextPictureItems()), this, SLOT(setNoFontPalette()));
-	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &)), this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
+	connect(mScene, SIGNAL(existSelectedTextPictureItems(QPen const &, QFont const &, QString const &))
+			, this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
+	connect(mScene, SIGNAL(noSelectedPortItems()), this, SLOT(setNoPortType()));
+	connect(mScene, SIGNAL(existSelectedPortItems(QString const &)), this, SLOT(setPortType(QString const &)));
 }
 
 void ShapeEdit::initControlButtons()
@@ -120,6 +158,7 @@ void ShapeEdit::resetHighlightAllButtons()
 	}
 	mScene->addNone(true);
 }
+
 void ShapeEdit::setHighlightOneButton(QAbstractButton *oneButton)
 {
 	foreach (QAbstractButton *button, mButtonGroup) {
@@ -192,11 +231,9 @@ void ShapeEdit::keyPressEvent(QKeyEvent *event)
 		emit saveToXmlSignal();
 	} else if (event->key() == Qt::Key_F2) {
 		emit saveSignal();
-	}
-	if (event->matches(QKeySequence::Open)) {
+	} else if (event->matches(QKeySequence::Open)) {
 		emit openSignal();
-	}
-	if (event->matches(QKeySequence::ZoomIn)) {
+	} else if (event->matches(QKeySequence::ZoomIn)) {
 		mScene->mainView()->zoomIn();
 	} else if (event->matches(QKeySequence::ZoomOut)) {
 		mScene->mainView()->zoomOut();
@@ -217,7 +254,7 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 
 		Item* item = dynamic_cast<Item*>(graphicsItem);
 		if (item != NULL) {
-			QPair<QDomElement, Item::DomElementTypes> genItem = item->generateItem(mDocument, mTopLeftPicture);
+			QPair<QDomElement, Item::DomElementTypes> genItem = item->generateDom(mDocument, mTopLeftPicture);
 			QDomElement domItem = genItem.first;
 			Item::DomElementTypes const domType = genItem.second;
 			switch (domType) {
@@ -235,8 +272,9 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 			}
 		}
 	}
-	picture.setAttribute("sizex", static_cast<int>(sceneBoundingRect.width()));
-	picture.setAttribute("sizey", static_cast<int>(sceneBoundingRect.height()));
+
+	picture.setAttribute("sizex", static_cast<int>(sceneBoundingRect.width() + 1));
+	picture.setAttribute("sizey", static_cast<int>(sceneBoundingRect.height() + 1));
 
 	QList<QDomElement> domList;
 	domList.push_back(picture);
@@ -274,6 +312,7 @@ void ShapeEdit::saveToXml()
 	if (fileName.isEmpty()) {
 		return;
 	}
+
 	exportToXml(fileName);
 	QMessageBox::information(this, tr("Saving"), tr("Saved successfully"));
 }
@@ -296,6 +335,7 @@ void ShapeEdit::savePicture()
 	if (fileName.isEmpty()) {
 		return;
 	}
+
 	QRectF sceneRect = mScene->itemsBoundingRect();
 	QImage image(sceneRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
@@ -318,6 +358,7 @@ void ShapeEdit::open()
 	if (fileName.isEmpty()) {
 		return;
 	}
+
 	XmlLoader loader(mScene);
 	loader.readFile(fileName);
 }
@@ -335,6 +376,7 @@ void ShapeEdit::load(QDomDocument const &document)
 	if (document.isNull()) {
 		return;
 	}
+
 	XmlLoader loader(mScene);
 	loader.readDocument(document);
 	mDocumentBuilder->mergeDocument(document);
@@ -348,6 +390,7 @@ void ShapeEdit::addImage(bool checked)
 		if (fileName.isEmpty()) {
 			return;
 		}
+
 		mScene->addImage(fileName);
 	}
 }
@@ -369,7 +412,7 @@ void ShapeEdit::setValuePenStyleComboBox(const Qt::PenStyle penStyle)
 	}
 }
 
-void ShapeEdit::setValuePenColorComboBox(const QColor &penColor)
+void ShapeEdit::setValuePenColorComboBox(QColor const &penColor)
 {
 	mUi->penColorComboBox->setColor(penColor);
 }
@@ -438,7 +481,7 @@ void ShapeEdit::setValueUnderlineCheckBox(bool check)
 	mUi->underlineCheckBox->setChecked(check);
 }
 
-void ShapeEdit::setValueTextNameLineEdit(QString const& name)
+void ShapeEdit::setValueTextNameLineEdit(QString const &name)
 {
 	mUi->textEditField->setPlainText(name);
 }
@@ -459,6 +502,16 @@ void ShapeEdit::setNoFontPalette()
 {
 	initFontPalette();
 	mUi->fontToolBox->setEnabled(false);
+}
+
+void ShapeEdit::setNoPortType()
+{
+	mUi->portsComboBox->setCurrentText("NonTyped");
+}
+
+void ShapeEdit::setPortType(QString const &type)
+{
+	mUi->portsComboBox->setCurrentText(type);
 }
 
 void ShapeEdit::changeTextName()
@@ -563,4 +616,73 @@ QDomDocument ShapeEdit::currentShape()
 qReal::elementEdit::ControlButtons *ShapeEdit::controlButtons() const
 {
 	return mControlButtons;
+}
+
+void ShapeEdit::visibilityButtonClicked()
+{
+	QList<Item *> selectedItems = mScene->selectedSceneItems();
+	if (selectedItems.isEmpty()) {
+		return;
+	}
+	VisibilityConditionsDialog vcDialog(getProperties(), selectedItems);
+	vcDialog.exec();
+}
+
+QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties() const
+{
+	typedef VisibilityConditionsDialog::PropertyInfo PropertyInfo;
+
+	QMap<QString, PropertyInfo> result;
+
+	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
+	qReal::IdList enums = repoApi->elementsByType("MetaEntityEnum");
+
+	foreach (qReal::Id const &child, repoApi->children(mModel->idByIndex(mIndex))) {
+		if (child.element() != "MetaEntity_Attribute") {
+			continue;
+		}
+
+		QString type = repoApi->stringProperty(child, "attributeType");
+		if (type == "int") {
+			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Int, QStringList()));
+		} else if (type == "bool") {
+			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Bool
+					, QStringList() << "true" << "false"));
+		} else if (type == "string") {
+			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::String, QStringList()));
+		} else {
+			foreach (qReal::Id const &enumElement, enums) {
+				if (!repoApi->isLogicalElement(enumElement)) {
+					continue;
+				}
+
+				if (repoApi->name(enumElement) == type) {
+					QStringList enumValues;
+					foreach (qReal::Id const &value, repoApi->children(enumElement)) {
+						enumValues << repoApi->stringProperty(value, "valueName");
+					}
+
+					result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::Enum, enumValues));
+				}
+			}
+		}
+	}
+	return result;
+}
+
+QStringList ShapeEdit::getPortTypes() const
+{
+	QStringList result;
+	result << "NonTyped";
+
+	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
+	if (repoApi) {
+		foreach (qReal::Id const &port, repoApi->elementsByType("MetaEntityPort")) {
+			if (repoApi->isLogicalElement(port)) {
+				result << repoApi->name(port);
+			}
+		}
+	}
+
+	return result;
 }

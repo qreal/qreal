@@ -1,6 +1,7 @@
 #include "sceneGridHandler.h"
-#include "../nodeElement.h"
-#include "../../view/editorViewScene.h"
+
+#include "umllib/nodeElement.h"
+#include "view/editorViewScene.h"
 
 using namespace qReal;
 
@@ -150,7 +151,7 @@ qreal SceneGridHandler::alignedCoordinate(qreal coord, int coef, int indexGrid)
 
 	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid / 2) {
 		return coef * indexGrid;
-	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) < indexGrid / 2) {
+	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) <= indexGrid / 2) {
 		return (coef + coefSign) * indexGrid;
 	}
 	return coord;
@@ -306,5 +307,4 @@ void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 	}
 	drawGuides();
-	mNode->adjustLinks();
 }

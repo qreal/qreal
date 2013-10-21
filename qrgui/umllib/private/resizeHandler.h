@@ -1,19 +1,18 @@
 /** @file resizeHandler.h
- * 	@brief Class for handling resize behavior of NodeElement. Provides methods for container resizing.
- * */
+* 	@brief Class for handling resize behavior of NodeElement. Provides methods for container resizing.
+**/
 
 #pragma once
 
-#include "../nodeElement.h"
+#include "umllib/nodeElement.h"
 
 class ResizeHandler {
 public:
 	/**
 	 * Constructs a ResizeHandler.
 	 * @param resizingNode Node that is actually dealt with.
-	 * @param elementImpl ElementImpl of resizingNode.
 	 */
-	ResizeHandler(NodeElement * const resizingNode, ElementImpl * const elementImpl);
+	ResizeHandler(NodeElement * const resizingNode);
 
 	/**
 	 * Resizes node trying to use newContents as new shape
@@ -24,13 +23,9 @@ public:
 	 * @param newContents Recommendation for new shape of node.
 	 * @param newPos Recommendation for new position of node.
 	 */
-	void resize(QRectF newContents, QPointF newPos) const;
+	void resize(QRectF newContents, QPointF newPos, bool needResizeParent = true) const;
 
 private:
-	/// Padding that reserves space for title.
-	static int const mTitlePadding = 25;
-	/// Space between children inside sorting containers.
-	static int const mChildSpacing = 10;
 	/// Minimum size of node
 	static int const mMinSize = 10;
 
@@ -49,7 +44,7 @@ private:
 	void gripeIfMinimizesToChildrenContainer(QRectF &contents) const;
 
 	/// Calls resize() method for parent item.
-	void parentResizeCall() const;
+	void resizeParent() const;
 
 	/**
 	 * Changes contents to size that not smaller than folded contents.
@@ -98,10 +93,10 @@ private:
 	 */
 	void printChildPos() const;
 
-	int upperForestalling() const;
+	QList<NodeElement *> sortedChildrenList() const;
 
 	/// Node that is actually dealt with.
-	NodeElement * const mResizingNode;
+	NodeElement * const mTargetNode;
 
 	/// ElementImpl of node that is actually dealt with.
 	ElementImpl * const mElementImpl;

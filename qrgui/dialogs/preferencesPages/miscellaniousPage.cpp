@@ -1,8 +1,9 @@
-#include "../../../qrkernel/settingsManager.h"
-#include <QFileDialog>
-
 #include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
+
+#include <QtWidgets/QFileDialog>
+
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal;
 
@@ -15,21 +16,9 @@ PreferencesMiscellaniousPage::PreferencesMiscellaniousPage(QWidget *parent)
 
 	connect(mUi->imagesPathBrowseButton, SIGNAL(clicked()), this, SLOT(browseImagesPath()));
 
-//	mUi->chaoticEditionCheckBox->setChecked(SettingsManager::value("ChaoticEdition").toBool());
-
-	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing").toBool());
-	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
-	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL").toBool());
-	mUi->squareLineModeCheckBox->setChecked(SettingsManager::value("SquareLine").toBool());
-
-	mUi->paintOldLineCheckBox->setChecked(SettingsManager::value("PaintOldEdgeMode").toBool());
 	mUi->colorComboBox->addItems(QColor::colorNames());
-	QString curColor = SettingsManager::value("oldLineColor").toString();
-	int curColorIndex = mUi->colorComboBox->findText(curColor);
-	mUi->colorComboBox->setCurrentIndex(curColorIndex);
 
-	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
-	mUi->imagesPathEdit->setText(mLastIconsetPath);
+	restoreSettings();
 }
 
 PreferencesMiscellaniousPage::~PreferencesMiscellaniousPage()
@@ -61,14 +50,29 @@ void PreferencesMiscellaniousPage::save()
 	SettingsManager::setValue("Splashscreen", mUi->splashScreenCheckBox->isChecked());
 	SettingsManager::setValue("Antialiasing", mUi->antialiasingCheckBox->isChecked());
 	SettingsManager::setValue("OpenGL", mUi->openGLCheckBox->isChecked());
-	SettingsManager::setValue("SquareLine", mUi->squareLineModeCheckBox->isChecked());
-//	SettingsManager::setValue("ChaoticEdition", mUi->chaoticEditionCheckBox->isChecked());
-	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
 
+	SettingsManager::setValue("pathToImages", mUi->imagesPathEdit->text());
+	SettingsManager::setValue("recentProjectsLimit", mUi->recentProjectsLimitSpinBox->value());
 	SettingsManager::setValue("PaintOldEdgeMode", mUi->paintOldLineCheckBox->isChecked());
 	SettingsManager::setValue("oldLineColor", mUi->colorComboBox->currentText());
 
 	if (mLastIconsetPath != mUi->imagesPathEdit->text()) {
 		emit iconsetChanged();
 	}
+}
+
+void PreferencesMiscellaniousPage::restoreSettings()
+{
+	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing").toBool());
+	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
+	mUi->openGLCheckBox->setChecked(SettingsManager::value("OpenGL").toBool());
+
+	mUi->paintOldLineCheckBox->setChecked(SettingsManager::value("PaintOldEdgeMode").toBool());
+
+	QString curColor = SettingsManager::value("oldLineColor").toString();
+	int curColorIndex = mUi->colorComboBox->findText(curColor);
+	mUi->colorComboBox->setCurrentIndex(curColorIndex);
+
+	mLastIconsetPath = SettingsManager::value("pathToImages").toString();
+	mUi->imagesPathEdit->setText(mLastIconsetPath);
 }

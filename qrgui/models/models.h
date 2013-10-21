@@ -1,18 +1,17 @@
 #pragma once
 
-#include "details/graphicalModel.h"
-#include "details/logicalModel.h"
-#include "graphicalModelAssistApi.h"
-#include "logicalModelAssistApi.h"
+#include "models/details/graphicalModel.h"
+#include "models/details/logicalModel.h"
+#include "models/graphicalModelAssistApi.h"
+#include "models/logicalModelAssistApi.h"
 
 namespace qReal {
-
 namespace models {
 
 class Models
 {
 public:
-	explicit Models(QString const &workingCopy, EditorManager const &editorManager);
+	explicit Models(QString const &workingCopy, EditorManagerInterface &editorManager);
 	~Models();
 
 	QAbstractItemModel *graphicalModel() const;
@@ -32,10 +31,10 @@ public:
 
 private:
 	models::details::GraphicalModel *mGraphicalModel;
+	models::details::GraphicalPartModel *mGraphicalPartModel;
 	models::details::LogicalModel *mLogicalModel;
 	qrRepo::RepoControlInterface *mRepoApi;
 };
 
 }
-
 }

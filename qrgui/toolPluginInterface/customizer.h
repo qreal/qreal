@@ -3,7 +3,7 @@
 #include <QtCore/QObject>
 #include <QtGui/QIcon>
 
-#include "../mainwindow/mainWindowDockInterface.h"
+#include "mainwindow/mainWindowDockInterface.h"
 
 namespace qReal {
 
@@ -11,6 +11,12 @@ namespace qReal {
 class Customizer
 {
 public:
+	/// Tells if we should show the button of opening the interpreted diagram or not
+	virtual bool showInterpeterButton() const
+	{
+		return true;
+	}
+
 	/// Allows to customize main window's title from plugin
 	virtual QString windowTitle() const
 	{
@@ -41,10 +47,61 @@ public:
 		return false;
 	}
 
+	virtual bool showUsagesRelatedMenus() const
+	{
+		return false;
+	}
+
 	/// Customizes docks placement and visibility. Default implementation does nothing
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	{
 		Q_UNUSED(dockInterface)
+	}
+
+	virtual QString addExplosionMenuName() const
+	{
+		return QObject::tr("Add connection");
+	}
+
+	virtual QString changeExplosionMenuName() const
+	{
+		return QObject::tr("Connect to other");
+	}
+
+	virtual QString deleteExplosionMenuName() const
+	{
+		return QObject::tr("Disconnect");
+	}
+
+	virtual QString goToConnectedMenuName() const
+	{
+		return QObject::tr("Go to connected element");
+	}
+
+	virtual bool showExpandConnectionAction() const
+	{
+		return false;
+	}
+
+	virtual QString expandExplosionActionText() const
+	{
+		return QObject::tr("Expand explosion");
+	}
+
+	virtual QString collapseExplosionActionText() const
+	{
+		return QObject::tr("Collapse explosion");
+	}
+
+	virtual QString userPaletteTitle() const
+	{
+		return QObject::tr("Existing connections");
+	}
+
+	virtual QString userPaletteDescription() const
+	{
+		return QObject::tr("Elements from this group exist"\
+				" for reusing all created connections");
 	}
 };
 

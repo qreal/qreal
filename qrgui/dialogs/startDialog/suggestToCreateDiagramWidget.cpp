@@ -1,5 +1,6 @@
 #include "suggestToCreateDiagramWidget.h"
-#include "../../mainwindow/mainWindow.h"
+
+#include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 
@@ -7,9 +8,9 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindo
 		: ListWidget(parent)
 		, mMainWindow(mainWindow)
 {
-	foreach(Id const &editor, mMainWindow->manager()->editors()) {
+	foreach (Id const &editor, mMainWindow->editorManager().editors()) {
 		Id editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
-		foreach(Id const &diagram, mMainWindow->manager()->diagrams(editorTmpId)) {
+		foreach(Id const &diagram, mMainWindow->editorManager().diagrams(editorTmpId)) {
 			addItem(editor, diagram);
 		}
 	}
@@ -18,14 +19,15 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindo
 
 void SuggestToCreateDiagramWidget::addItem(Id const &editor, Id const &diagram)
 {
-	EditorInterface *editorInterface = mMainWindow->manager()->editorInterface(editor.editor());
+	EditorManagerInterface const &editorManagerInterface = mMainWindow->editorManager();
 
-	QString const diagramName = editorInterface->diagramName(diagram.diagram());
-	QString const diagramNodeName = editorInterface->diagramNodeName(diagram.diagram());
+	QString const diagramName = editorManagerInterface.diagramName(editor.editor(), diagram.diagram());
+	QString const diagramNodeName = editorManagerInterface.diagramNodeName(editor.editor(), diagram.diagram());
 
 	if (diagramNodeName.isEmpty()) {
 		return;
 	}
+
 	ListWidget::addItem(diagramName
 			, "qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName
 			, tr("editor: ") + editor.editor() + tr(", diagram: ") + diagram.diagram());

@@ -25,8 +25,6 @@ protected slots:
 
 protected:
 	QVector<robotParts::Motor *> mMotors;  // Doesn't have ownership.
-
-	QVector<bool> parsePorts();
 };
 
 }

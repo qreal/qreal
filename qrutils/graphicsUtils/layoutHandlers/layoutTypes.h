@@ -1,13 +1,9 @@
 #pragma once
 
-#include "../../utilsDeclSpec.h"
+namespace qReal {
+namespace layouts {
 
-namespace qReal
-{
-namespace layouts
-{
-
-enum QRUTILS_EXPORT LayoutType
+enum LayoutType
 {
 	none = 0
 	, vertical

@@ -16,12 +16,17 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	// TODO: other storage for it?
-	return "2.1.0";
+	return "2.4.3";
 }
 
 QString Customizer::aboutText() const
 {
-	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
+	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://robots.qreal.ru/\">http://robots.qreal.ru/</a>";
+}
+
+bool Customizer::showInterpeterButton() const
+{
+	return false;
 }
 
 void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
@@ -29,6 +34,7 @@ void Customizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
 	mDockInterface = dockInterface;
 	dockInterface->logicalModelDock()->hide();
 	dockInterface->tabifyDockWidget(dockInterface->graphicalModelDock(), dockInterface->propertyEditorDock());
+	dockInterface->graphicalModelDock()->setWindowTitle(tr("Blocks"));
 }
 
 void Customizer::placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget)
@@ -44,4 +50,14 @@ QDockWidget *Customizer::produceDockWidget(QString const &title, QWidget *conten
 	QDockWidget *dock = new QDockWidget(title);
 	dock->setWidget(content);
 	return dock;
+}
+
+QString Customizer::userPaletteTitle() const
+{
+	return QObject::tr("Subprograms");
+}
+
+QString Customizer::userPaletteDescription() const
+{
+	return QObject::tr("The list of all declared subprograms in the project");
 }

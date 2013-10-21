@@ -23,8 +23,11 @@ private:
 	virtual bool initAssociations();
 	virtual bool initGraphics();
 	virtual bool initDividability();
+	virtual bool initPortTypes();
+	void initPortTypes(QDomElement const &portsElement, QStringList &ports);
 	void generateGraphics() const;
 	void generateEdgeStyle(QString const &styleString, utils::OutFile &out);
+	void generatePorts(utils::OutFile &out, QStringList const &portTypes);
 	virtual bool initLabel(Label *label, QDomElement const &element, int const &count);
 	virtual bool isWidgetBased(QDomElement const &graphics) const;
 
@@ -32,7 +35,10 @@ private:
 	QString mBeginType;
 	QString mEndType;
 	QString mLineType;
+	QString mShapeType;
 	QColor mLineColor;
 	int mLineWidth;
 	QString mIsDividable;
+	QStringList mFromPorts;
+	QStringList mToPorts;
 };

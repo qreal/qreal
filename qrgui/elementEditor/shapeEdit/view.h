@@ -1,6 +1,7 @@
 #pragma once
-#include <QGraphicsView>
-#include <QKeyEvent>
+
+#include <QtWidgets/QGraphicsView>
+#include <QtGui/QKeyEvent>
 
 class View : public QGraphicsView
 {

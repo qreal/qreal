@@ -1,8 +1,10 @@
 #include "widgetsHelper.h"
-#include "../nodeElement.h"
-#include "../../elementEditor/widgetsEdit/widgetsEditor.h"
-#include "../../elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.h"
-#include "../../../qrutils/xmlUtils.h"
+
+#include <qrutils/xmlUtils.h>
+
+#include "umllib/nodeElement.h"
+#include "elementEditor/widgetsEdit/widgetsEditor.h"
+#include "elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.h"
 
 WidgetsHelper::WidgetsHelper(NodeElement * const element)
 	: mElement(element), mEditorManager(NULL), mWidget(NULL)

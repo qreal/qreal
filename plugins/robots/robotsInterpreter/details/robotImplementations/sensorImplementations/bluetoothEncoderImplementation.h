@@ -15,7 +15,7 @@ class BluetoothEncoderImplementation : public AbstractEncoderImplementation
 	Q_OBJECT
 public:
 	BluetoothEncoderImplementation(RobotCommunicator *robotCommunicationInterface
-			,outputPort::OutputPortEnum const &port);
+			, enums::outputPort::OutputPortEnum const &port);
 	virtual void read();
 	virtual void nullificate();
 

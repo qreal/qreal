@@ -2,8 +2,8 @@
 
 #include <QtXml/QDomDocument>
 
-#include "scene.h"
-#include "item.h"
+#include "mainwindow/shapeEdit/scene.h"
+#include "mainwindow/shapeEdit/item.h"
 
 const int distanceFigure = 50;
 
@@ -33,9 +33,11 @@ private:
 	void readPorts(QDomElement const &port);
 	void readImage(QDomElement const &image);
 	void changeScaleColor(int i);
-	void checkScale(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2);
+	void checkScale(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2
+			, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2);
 	QPair<QString, bool> readScaleCoord(QString point, QDomElement const &docItem);
-	QPair<QPointF, QPointF> calcLineOfXandY(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2);
+	QPair<QPointF, QPointF> calcLineOfXandY(QPair<QString, bool> pointX1, QPair<QString, bool> pointX2
+			, QPair<QString, bool> pointY1, QPair<QString, bool> pointY2);
 	QPair<QPointF, QPointF> readLineOfXandY(QDomElement const &docItem);
 	QPair<QPointF, QPointF> readLinePortOfXandY(QDomElement const &start, QDomElement const &end);
 	QRectF readRectOfXandY(QDomElement const &docItem);
@@ -51,6 +53,8 @@ private:
 	void readLabel(QDomElement const &label);
 	void readLinePort(QDomElement const &linePort);
 	void readPointPort(QDomElement const &pointPort);
+
+	Item::VisibilityCondition readVisibility(QDomElement const &item);
 
 	bool isNotLCMZ(QString str, int i);
 };

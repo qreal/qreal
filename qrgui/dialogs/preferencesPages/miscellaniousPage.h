@@ -1,6 +1,6 @@
 #pragma once
 
-#include "preferencesPage.h"
+#include "dialogs/preferencesPages/preferencesPage.h"
 
 namespace Ui {
 	class PreferencesMiscellaniousPage;
@@ -15,6 +15,7 @@ public:
 	~PreferencesMiscellaniousPage();
 
 	void save();
+	virtual void restoreSettings();
 
 signals:
 	void iconsetChanged();

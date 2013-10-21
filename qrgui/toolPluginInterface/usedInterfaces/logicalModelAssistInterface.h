@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrrepo/logicalRepoApi.h"
+#include <qrkernel/ids.h>
+#include <qrrepo/logicalRepoApi.h>
 
-#include "details/modelsAssistInterface.h"
+#include "toolPluginInterface/usedInterfaces/details/modelsAssistInterface.h"
 
 namespace qReal {
 
@@ -17,19 +17,14 @@ public:
 	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi() = 0;
 
 	virtual Id createElement(Id const &parent, Id const &type) = 0;
-	virtual Id createElement(Id const &parent, Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position) = 0;
+	virtual Id createElement(Id const &parent, Id const &id
+			, bool isFromLogicalModel, QString const &name
+			, QPointF const &position, Id const &preferedLogicalId = Id()) = 0;
 	virtual IdList children(Id const &element) const = 0;
 	virtual void changeParent(Id const &element, Id const &parent, QPointF const &position = QPointF()) = 0;
 
-	virtual void connect(Id const &source, Id const &destination) = 0;
-	virtual void disconnect(Id const &source, Id const &destination) = 0;
-	virtual void addUsage(Id const &source, Id const &destination) = 0;
-	virtual void deleteUsage(Id const &source, Id const &destination) = 0;
-	virtual void createConnected(Id const &sourceElement, Id const &elementType) = 0;
-	virtual void createUsed(Id const &sourceElement, Id const &elementType) = 0;
-	virtual Id createConnectedElement(Id const &source, Id const &elementType) = 0;
-	virtual IdList diagramsAbleToBeConnectedTo(Id const &element) const = 0;
-	virtual IdList diagramsAbleToBeUsedIn(Id const &element) const = 0;
+	virtual void addExplosion(Id const &source, Id const &destination) = 0;
+	virtual void removeExplosion(Id const &source, Id const &destination) = 0;
 
 	virtual void setPropertyByRoleName(Id const &elem, QVariant const &newValue, QString const &roleName) = 0;
 	virtual QVariant propertyByRoleName(Id const &elem, QString const &roleName) const = 0;
