@@ -1,6 +1,6 @@
 #pragma once
 
-#include FQtWidgets/QWidget>
+#include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
 #include <QtGui/QPen>
 #include <QtGui/QBrush>
@@ -47,6 +47,10 @@ private:
 	int first_size_y;
 	int current_size_x;
 	int current_size_y;
+	int mFirstSizeX;
+	int mFirstSizeY;
+	int mCurrentSizeX;
+	int mCurrentSizeY;
 	int mStartX;
 	int mStartY;
 	int i;
@@ -98,16 +102,6 @@ private:
 	/** @brief checks that str[i] is not L, C, M or Z*/
 	bool isNotLCMZ(QString const &str, int i);
 
-	QString mWorkingDirName;
-	QMap<QString, QPixmap> mMapFileImage;
-	int mFirstSizeX;
-	int mFirstSizeY;
-	int mCurrentSizeX;
-	int mCurrentSizeY;
-	int mStartX;
-	int mStartY;
-	int i;
-	int j;
 	QPainter *mPainter;
 	QPen mPen;
 	QBrush mBrush;
@@ -120,7 +114,6 @@ private:
 	/** @brief is false if we don't need to scale according to absolute
 	 * coords, is useful for rendering icons. default is true
 	**/
-	bool mNeedScale;
 
 };
 

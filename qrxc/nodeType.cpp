@@ -239,7 +239,6 @@ void NodeType::generateIcon()
 void NodeType::generateCode(OutFile &out)
 {
 	generateSdf();
-	generatePorts();
 	generateIcon();
 
 	QString const className = NameNormalizer::normalize(qualifiedName());

@@ -211,13 +211,6 @@ private:
 	 */
 	void resize(QRectF const &newContents);
 
-	/**
-	 * Calls resize(QRectF newContents, QPointF newPos) with
-	 * newPos equals to current position of node and
-	 * newContents equals to current shape (mContents).
-	 */
-	void resize();
-
 	void drawLinesForResize(QPainter *painter);
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
