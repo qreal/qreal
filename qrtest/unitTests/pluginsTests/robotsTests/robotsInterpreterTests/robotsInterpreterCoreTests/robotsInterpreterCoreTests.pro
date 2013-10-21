@@ -7,6 +7,7 @@ include(../../../../../../qrgui/qrgui.pri)
 
 INCLUDEPATH += \
 	../../../../../../plugins/robots/robotsInterpreter/robotsInterpreterCore \
+	../../../../mocks/plugins/robots/robotsInterpreter/robotsInterpreterCore/include \
 
 # Tests
 HEADERS += \

@@ -5,17 +5,27 @@
 using namespace qrTest::robotsInterpreterCoreTests;
 
 using namespace robotsInterpreterCore::interpreter;
+using namespace ::testing;
 
 void InterpreterTest::SetUp()
 {
+	mBlocksFactory = new DummyBlockFactory();
+
 	mQrguiFacade = new QrguiFacade("unittests/testModel.qrs");
+
+	ON_CALL(mModel, needsConnection()).WillByDefault(Return(false));
+
+	ON_CALL(mModel, init()).WillByDefault(Invoke([&] {
+		QMetaObject::invokeMethod(&mModel, "connected", Q_ARG(bool, true));
+		QMetaObject::invokeMethod(&mModel, "sensorsConfigured");
+	}));
 
 	mInterpreter = new Interpreter(
 			mQrguiFacade->graphicalModelAssistInterface()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mQrguiFacade->mainWindowInterpretersInterface()
 			, mQrguiFacade->projectManagementInterface()
-			, &mBlocksFactory
+			, mBlocksFactory
 			, &mModel
 			);
 }
@@ -28,4 +38,9 @@ void InterpreterTest::TearDown()
 
 TEST_F(InterpreterTest, sanityCheck)
 {
+}
+
+TEST_F(InterpreterTest, interpret)
+{
+	mInterpreter->interpret();
 }

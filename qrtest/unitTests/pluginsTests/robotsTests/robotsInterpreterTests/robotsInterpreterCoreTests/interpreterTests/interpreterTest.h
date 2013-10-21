@@ -4,6 +4,7 @@
 
 #include <src/interpreter/interpreterInterface.h>
 #include <robotsInterpreterCore/robotModel/robotModel.h>
+#include <robotsInterpreterCore/robotModel/robotModelInterfaceMock.h>
 
 #include "support/qrguiFacade.h"
 #include "support/dummyBlocksFactory.h"
@@ -20,8 +21,8 @@ protected:
 
 	robotsInterpreterCore::interpreter::InterpreterInterface *mInterpreter;  // Has ownership.
 	QrguiFacade *mQrguiFacade;  // Has ownership.
-	DummyBlockFactory mBlocksFactory;
-	robotsInterpreterCore::robotModel::RobotModel mModel;
+	DummyBlockFactory *mBlocksFactory;  // Does not have ownership.
+	qrTest::RobotModelInterfaceMock mModel;
 };
 
 }

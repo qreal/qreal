@@ -7,6 +7,7 @@
 #include <qrgui/pluginManager/editorManager.h>
 #include <mocks/qrgui/mainwindow/mainWindowInterpretersInterfaceMock.h>
 #include <mocks/qrgui/mainwindow/projectManager/projectManagementInterfaceMock.h>
+#include <mocks/qrgui/toolPluginInterface/usedInterface/errorReporterMock.h>
 #include <mocks/qrgui/view/sceneCustomizationInterfaceMock.h>
 
 namespace qrTest {
@@ -47,6 +48,7 @@ private:
 	qReal::models::Models mModels;
 	qrTest::MainWindowInterpretersInterfaceMock mMainWindowInterpretersInterfaceMock;
 	qrTest::ProjectManagementInterfaceMock mProjectManagementInterfaceMock;
+	qrTest::ErrorReporterMock mErrorReporterMock;
 };
 
 }
