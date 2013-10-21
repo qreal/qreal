@@ -204,11 +204,14 @@ bool NodeType::initBooleanProperties()
 	QDomElement const element1 = mLogic.firstChildElement("action");
 	if (!element1.isNull()) {
 		mIsHavePin = true;
-		QDomElement const element2 = mGraphics.firstChildElement("nonResizeable");
-		if (!element2.isNull()) {
-			mIsResizeable = false;
-		}
 	}
+
+	QDomElement const element2 = mGraphics.firstChildElement("nonResizeable");
+	if (!element2.isNull()) {
+		mIsResizeable = false;
+	}
+
+	return true;
 }
 
 bool NodeType::initIcon()
@@ -233,28 +236,6 @@ void NodeType::generateIcon()
 	mIconDomElement.save(out(), 1);
 }
 
-bool NodeType::hasPointPorts()
-{
-	foreach (Port *port, mPorts) {
-		if (dynamic_cast<PointPort*>(port)) {
-			return true;
-		}
-	}
-
-	return true;
-}
-
-bool NodeType::hasLinePorts()
-{
-	foreach (Port *port, mPorts) {
-		if (dynamic_cast<LinePort*>(port)) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
 void NodeType::generateCode(OutFile &out)
 {
 	generateSdf();
@@ -265,9 +246,6 @@ void NodeType::generateCode(OutFile &out)
 	bool hasSdf = false;
 	bool hasWtf = false;
 	bool hasPorts = false;
-
-	QString const className = NameNormalizer::normalize(qualifiedName());
-	bool hasSdf = false;
 
 	out() << "\tclass " << className << " : public qReal::ElementImpl\n\t{\n"
 			<< "\tpublic:\n";
@@ -392,11 +370,11 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\t}\n\n"
 
 	<< "\t\tbool isSortingContainer() const\n\t\t{\n"
-	<< (mContainerProperties.isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
+	<< (mContainerProperties->isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n";
 
 	QStringList forestalling;
-	foreach (int size, mContainerProperties.sizeOfForestalling) {
+	foreach (int size, mContainerProperties->sizeOfForestalling) {
 		forestalling << QString::number(size);
 	}
 
