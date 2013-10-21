@@ -615,10 +615,10 @@ void EditorManager::deleteElement(MainWindow *mainWindow, Id const &id) const
 
 bool EditorManager::isRootDiagramNode(Id const &id) const
 {
-    foreach (EditorInterface *editor, mPluginIface.values()) {
-        if (editor->diagramNodeName(id.diagram()) == id.element())
-            return true;
-    }
+	foreach (EditorInterface const *editor, mPluginIface.values()) {
+		if (editor->diagramNodeName(id.diagram()) == id.element())
+			return true;
+	}
 
 	return false;
 }
