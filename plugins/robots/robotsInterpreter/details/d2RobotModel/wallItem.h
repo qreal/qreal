@@ -21,6 +21,12 @@ public:
 	QPointF begin();
 	QPointF end();
 	bool isDragged();
+	bool isCircle() {
+		return mIsCircle;
+	}
+	qreal width() {
+		return mPen.width();
+	}
 
 	/// Draws selection rect around sensorBoundingBox
 	virtual void drawExtractionForItem(QPainter *painter);
@@ -51,6 +57,7 @@ public:
 	void VK_setLines();
 	void VK_setWallPath(int stroke = 3);
 	QPointF VK_mP[4];
+	QPointF VK_mCenter;
 
 signals:
 	void wallDragged(WallItem *item, QPainterPath const &shape, QPointF const& oldPos);
@@ -59,6 +66,7 @@ protected:
 	virtual void setPrivateData();
 
 private:
+	bool mIsCircle = false;
 	bool mDragged;
 	bool mOverlappedWithRobot;
 	QImage mImage;

@@ -96,11 +96,14 @@ private:
 	bool VK_isEdgeCollision(WallItem &wall, int i);
 	void VK_getRobotFromWall(WallItem& wall, int index);
     void VK_getEdgeRobotFromWall(WallItem& wall, int index);
+	void getFromWalls();
 	void VK_setEdgeWall(int index, WallItem* wall){VK_mRobotEdgeWalls[index] = wall;}
     void VK_updateVelocity(qreal dt);
     void VK_updateCoord();
 	QLineF VK_interRobotLine(WallItem& wall);
+	QLineF VK_intersectRobotLine(WallItem& wall);
     QLineF VK_interWallLine(WallItem& wall);
+	QLineF VK_tangentLine(WallItem& wall);
 	QLineF VK_nearRobotLine(WallItem& wall, QPointF p);
 	QPointF VK_normalPoint(qreal x1, qreal y1, qreal x2, qreal y2, qreal x3, qreal y3);
 

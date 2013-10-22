@@ -24,14 +24,20 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 
 void WallItem::VK_setWallPath(int stroke)
 {
-
 	QPainterPath wallPath;
-	wallPath.moveTo(VK_mP[0]);
-	wallPath.lineTo(VK_mP[1]);
-	wallPath.lineTo(VK_mP[2]);
-	wallPath.lineTo(VK_mP[3]);
-	wallPath.lineTo(VK_mP[0]);
-	VK_mWallPath = wallPath;
+	if ((this->mX1 == this->mX2)&&(this->mY1 == this->mY2)) {
+		wallPath.addEllipse(mX1, mY1, 10, 10);
+		VK_mCenter = QPointF(mX1, mY1);
+		mIsCircle = true;
+	} else {
+		wallPath.moveTo(VK_mP[0]);
+		wallPath.lineTo(VK_mP[1]);
+		wallPath.lineTo(VK_mP[2]);
+		wallPath.lineTo(VK_mP[3]);
+		wallPath.lineTo(VK_mP[0]);
+		VK_mWallPath = wallPath;
+		mIsCircle = false;
+	}
 }
 
 
