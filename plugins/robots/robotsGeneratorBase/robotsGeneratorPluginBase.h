@@ -43,6 +43,7 @@ protected:
 	virtual QFileInfo defaultFilePath(QString const projectName) = 0;
 	virtual QString extension() = 0;
 	virtual QString extDescrition() = 0;
+	QFileInfo currentSource();
 
 	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership

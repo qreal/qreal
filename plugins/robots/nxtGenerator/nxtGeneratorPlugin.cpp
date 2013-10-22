@@ -129,27 +129,11 @@ void NxtGeneratorPlugin::uploadProgram()
 	if (!mNxtToolsPresent) {
 					mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-			QFileInfo fileInfo;
-			Id const &activeDiagram = mMainWindowInterface->activeDiagram();
+			QFileInfo const fileInfo = currentSource();
 
-			if (activeDiagram != Id()) {
-					if (generateCode()) {
-							foreach(QFileInfo const &path, mCodePath.values(activeDiagram)) {
-									if (mTextManager->isDefaultPath(path.absoluteFilePath())
-									&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))) {
-											fileInfo = path;
-											break;
-									}
-							}
-					} else {
-							return;
-					}
-			} else {
-					QScintillaTextEdit *code = static_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab());
-					fileInfo = QFileInfo(mTextManager->path(code));
+			if (fileInfo != QFileInfo()) {
+				mFlashTool->uploadProgram(fileInfo);
 			}
-
-			mFlashTool->uploadProgram(fileInfo);
 	}
 }
 

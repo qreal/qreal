@@ -12,8 +12,6 @@ using namespace qReal;
 using namespace qReal::robots::generators;
 using namespace trik;
 
-QString const scriptExtension = ".qts";
-
 TrikGeneratorPlugin::TrikGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
 		, mUploadProgramAction(NULL)
@@ -79,9 +77,11 @@ QString TrikGeneratorPlugin::extDescrition()
 
 bool TrikGeneratorPlugin::uploadProgram()
 {
-	if (generateCode()) {
+	QFileInfo const fileInfo = currentSource();
+
+	if (fileInfo != QFileInfo()) {
 		TcpRobotCommunicator communicator;
-		bool const result = communicator.uploadProgram(currentProgramName());
+		bool const result = communicator.uploadProgram(fileInfo.absoluteFilePath());
 		if (!result) {
 			mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 		}
@@ -97,7 +97,8 @@ void TrikGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
 		TcpRobotCommunicator communicator;
-		communicator.runProgram(currentProgramName());
+		QFileInfo const fileInfo = currentSource();
+		communicator.runProgram(fileInfo.absoluteFilePath());
 	} else {
 		qDebug() << "Program upload failed, aborting";
 	}
@@ -109,10 +110,4 @@ void TrikGeneratorPlugin::stopRobot()
 	if (!communicator.stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
-}
-
-QString TrikGeneratorPlugin::currentProgramName() const
-{
-	QFileInfo const fileInfo(mRepo->workingFile());
-	return fileInfo.baseName() + scriptExtension;
 }

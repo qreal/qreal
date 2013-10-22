@@ -54,6 +54,7 @@
 
 #include "../../../../qrutils/outFile.h"
 #include "../toolPluginInterface/systemEvents.h"
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -498,11 +499,22 @@ void MainWindow::setData(QString const &data, QPersistentModelIndex const &index
 
 void MainWindow::print()
 {
-	QPrinter printer(QPrinter::HighResolution);
-	QPrintDialog dialog(&printer, this);
-	if (dialog.exec() == QDialog::Accepted) {
-		QPainter painter(&printer);
-		getCurrentTab()->scene()->render(&painter);
+	bool const isEditorTab = getCurrentTab() != NULL;
+
+	if (isEditorTab) {
+		QPrinter printer(QPrinter::HighResolution);
+		QPrintDialog dialog(&printer, this);
+		if (dialog.exec() == QDialog::Accepted) {
+			QPainter painter(&printer);
+			getCurrentTab()->scene()->render(&painter);
+		}
+	} else {
+		QScintillaTextEdit *textTab = static_cast<QScintillaTextEdit *> (currentTab());
+		QsciPrinter printer(QPrinter::HighResolution);
+		QPrintDialog dialog(&printer, this);
+		if (dialog.exec() == QDialog::Accepted) {
+			printer.printRange(textTab);
+		}
 	}
 }
 
@@ -1345,7 +1357,7 @@ void MainWindow::currentTabChanged(int newIndex)
 
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	// TODO: implement printing for text tabs
-	mUi->actionPrint->setEnabled(isEditorTab);
+	//mUi->actionPrint->setEnabled(isEditorTab);
 
 	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
 	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);

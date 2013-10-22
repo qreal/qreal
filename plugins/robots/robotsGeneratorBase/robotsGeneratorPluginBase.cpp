@@ -1,8 +1,10 @@
 #include "robotsGeneratorPluginBase.h"
 
 #include <qrutils/inFile.h>
+#include "qrgui/mainwindow/qscintillaTextEdit.h"
 
 using namespace qReal::robots::generators;
+using namespace gui;
 
 RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 {
@@ -35,6 +37,34 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 
 	if (newCode) {
 		mCurrentCodeNumber++;
+	}
+
+	return fileInfo;
+}
+
+QFileInfo RobotsGeneratorPluginBase::currentSource()
+{
+	QFileInfo fileInfo;
+	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
+
+	if (activeDiagram != Id()) {
+			if (generateCode()) {
+					QString const ext = extension();
+
+					foreach(QFileInfo const &path, mCodePath.values(activeDiagram)) {
+						if (mTextManager->isDefaultPath(path.absoluteFilePath())
+						&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
+						&& !path.completeSuffix().compare(ext)) {
+									fileInfo = path;
+									break;
+							}
+					}
+			} else {
+					return QFileInfo();
+			}
+	} else {
+			QScintillaTextEdit *code = static_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab());
+			fileInfo = QFileInfo(mTextManager->path(code));
 	}
 
 	return fileInfo;

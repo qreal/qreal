@@ -43,9 +43,6 @@ private slots:
 	void stopRobot();
 
 private:
-	/// Returns filename of a currently generated program.
-	QString currentProgramName() const;
-
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;
 
