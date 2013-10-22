@@ -33,6 +33,7 @@ HEADERS += \
 	$$PWD/nxtOsekMasterGenerator.h \
 	$$PWD/nxtOsekGeneratorCustomizer.h \
 	$$PWD/nxtOsekGeneratorFactory.h \
+	$$PWD/converters/nxtStringPropertyConverter.h \
 
 SOURCES += \
 	$$PWD/nxtGeneratorPlugin.cpp \
@@ -40,3 +41,4 @@ SOURCES += \
 	$$PWD/nxtOsekMasterGenerator.cpp \
 	$$PWD/nxtOsekGeneratorCustomizer.cpp \
 	$$PWD/nxtOsekGeneratorFactory.cpp \
+	$$PWD/converters/nxtStringPropertyConverter.cpp \

@@ -7,6 +7,7 @@
 #include <qrrepo/repoApi.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
+#include "robotsGeneratorDeclSpec.h"
 #include "templateParametrizedEntity.h"
 #include "simpleGenerators/binding.h"
 
@@ -17,11 +18,10 @@ class ControlFlowGeneratorBase;
 
 namespace parts {
 
-
 // TODO: make this class more customizable for concrete generators
 
 /// Incapsulates operations used for subprograms processing
-class Subprograms : public TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT Subprograms : public TemplateParametrizedEntity
 {
 public:
 	Subprograms(qrRepo::RepoApi const &repo
@@ -41,11 +41,15 @@ public:
 	/// Returns the generation process result. If it was unsuccessfull returns an empty string.
 	QString generatedCode() const;
 
+	void appendManualSubprogram(QString const &name, QString const &body);
+
 private:
 	bool checkIdentifier(QString const &identifier, QString const &rawName);
 
 	void mergeCode(QMap<Id, QString> const &declarations
 			, QMap<Id, QString> const &implementations);
+
+	QString generateManualDeclarations() const;
 
 	// TODO: this must be obtained via models or smth
 	Id graphicalId(Id const &logicalId) const;
@@ -67,6 +71,7 @@ private:
 
 	QSet<QString> mUsedNames;
 
+	QMap<QString, QString> mManualDeclarations;
 };
 
 }
