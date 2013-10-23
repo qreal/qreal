@@ -1681,6 +1681,148 @@
 					</explodesTo>
 				</logic>
 			</node>
+
+
+			<node displayedName="Смайлик" name="Smile">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/smileBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Грустный смайлик" name="SadSmile">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/sadSmileBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Цвет фона" name="SetBackground">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/setBackgroundBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="-25" text="Цвет" hard="true"/>
+						<label x="40" y="-25" textBinded="Color" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<property displayedName="Цвет" type="string" name="Color"/>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Светодиод" name="Led">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/ledBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="-25" text="Цвет" hard="true"/>
+						<label x="40" y="-25" textBinded="Color" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<property displayedName="Цвет" type="string" name="Color"/>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+
 		</graphicTypes>
 		<palette>
 			<group name="ТРИК">
@@ -1723,6 +1865,10 @@
 <!--			<group name="Инициализация"> -->
 				<element name="InitialNode"/>
 				<element name="FinalNode"/>
+				<element name="Smile"/>
+				<element name="SadSmile"/>
+				<element name="SetBackground"/>
+				<element name="Led"/>
 <!--				<element name="NullificationEncoder"/> -->
 <!--			</group> -->
 <!--			<group name="Сегвей">
