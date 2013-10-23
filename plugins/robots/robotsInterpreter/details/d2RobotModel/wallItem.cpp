@@ -22,20 +22,20 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	setAcceptDrops(true);
 }
 
-void WallItem::VK_setWallPath(int stroke)
+void WallItem::setWallPath()
 {
 	QPainterPath wallPath;
 	if ((this->mX1 == this->mX2)&&(this->mY1 == this->mY2)) {
 		wallPath.addEllipse(mX1, mY1, 10, 10);
-		VK_mCenter = QPointF(mX1, mY1);
+		mCenter = QPointF(mX1, mY1);
 		mIsCircle = true;
 	} else {
-		wallPath.moveTo(VK_mP[0]);
-		wallPath.lineTo(VK_mP[1]);
-		wallPath.lineTo(VK_mP[2]);
-		wallPath.lineTo(VK_mP[3]);
-		wallPath.lineTo(VK_mP[0]);
-		VK_mWallPath = wallPath;
+		wallPath.moveTo(mP[0]);
+		wallPath.lineTo(mP[1]);
+		wallPath.lineTo(mP[2]);
+		wallPath.lineTo(mP[3]);
+		wallPath.lineTo(mP[0]);
+		mWallPath = wallPath;
 		mIsCircle = false;
 	}
 }
@@ -72,8 +72,8 @@ void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* optio
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	painter->drawPath(shape());
-	VK_setLines();
-	VK_setWallPath();
+	setLines();
+	setWallPath();
 }
 
 void WallItem::drawExtractionForItem(QPainter *painter)
@@ -163,9 +163,9 @@ void WallItem::onOverlappedWithRobot(bool overlapped)
 
 }
 
-void WallItem::VK_setLines()
+void WallItem::setLines()
 {
-	VK_linesList.clear();
+	linesList.clear();
 
 	qreal x1 = begin().rx();// mX1;// + scenePos().rx();
 	qreal x2 = end().rx();// mX2;// + scenePos().rx();
@@ -184,18 +184,18 @@ void WallItem::VK_setLines()
 	norm = norm.normalized();
 	norm.operator *=(mPen.widthF()/2); //= norm*mPen.widthF();
 
-	VK_mP[0] = QPointF(x1 - deltx + norm.x(), y1 - delty + norm.y());
-    VK_mP[1] = QPointF(x1 - deltx - norm.x(), y1 - delty - norm.y());
-    VK_mP[2] = QPointF(x2 + deltx - norm.x(), y2 + delty - norm.y());
-    VK_mP[3] = QPointF(x2 + deltx + norm.x(), y2 + delty + norm.y());
+	mP[0] = QPointF(x1 - deltx + norm.x(), y1 - delty + norm.y());
+    mP[1] = QPointF(x1 - deltx - norm.x(), y1 - delty - norm.y());
+    mP[2] = QPointF(x2 + deltx - norm.x(), y2 + delty - norm.y());
+    mP[3] = QPointF(x2 + deltx + norm.x(), y2 + delty + norm.y());
 
-	//VK_mP[0] += scenePos();
-	//VK_mP[1] += scenePos();
-	//VK_mP[2] += scenePos();
-	//VK_mP[3] += scenePos();
+	//mP[0] += scenePos();
+	//mP[1] += scenePos();
+	//mP[2] += scenePos();
+	//mP[3] += scenePos();
 
-	VK_linesList.push_back(QLineF(VK_mP[0],VK_mP[1]));
-    VK_linesList.push_back(QLineF(VK_mP[1],VK_mP[2]));
-    VK_linesList.push_back(QLineF(VK_mP[2],VK_mP[3]));
-    VK_linesList.push_back(QLineF(VK_mP[3],VK_mP[0]));
+	linesList.push_back(QLineF(mP[0],mP[1]));
+    linesList.push_back(QLineF(mP[1],mP[2]));
+    linesList.push_back(QLineF(mP[2],mP[3]));
+    linesList.push_back(QLineF(mP[3],mP[0]));
 }

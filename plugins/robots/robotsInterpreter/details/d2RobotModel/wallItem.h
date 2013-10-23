@@ -43,21 +43,21 @@ public:
 
 	void onOverlappedWithRobot(bool overlapped = true);
 
-	QLineF VK_getLine(int i)
+	QLineF getLine(int i)
     {
-        return VK_linesList.at(i);
+        return linesList.at(i);
     }
-	QPointF VK_getPoint(int i)
+	QPointF getPoint(int i)
     {
-        return VK_mP[i];
+        return mP[i];
     }
-	QPainterPath VK_mWallPath;
+	QPainterPath mWallPath;
 
-	//void VK_setLines(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
-	void VK_setLines();
-	void VK_setWallPath(int stroke = 3);
-	QPointF VK_mP[4];
-	QPointF VK_mCenter;
+	//void setLines(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
+	void setLines();
+	void setWallPath();
+	QPointF mP[4];
+	QPointF mCenter;
 
 signals:
 	void wallDragged(WallItem *item, QPainterPath const &shape, QPointF const& oldPos);
@@ -74,7 +74,7 @@ private:
 	int mOldX1;
 	int mOldY1;
 
-	QList<QLineF> VK_linesList;
+	QList<QLineF> linesList;
 };
 
 }
