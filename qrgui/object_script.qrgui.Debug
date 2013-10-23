@@ -28,6 +28,7 @@ INPUT(
 ./.obj\squareLine.o
 ./.obj\brokenLine.o
 ./.obj\curveLine.o
+./.obj\lineFactory.o
 ./.obj\edgeArrangeCriteria.o
 ./.obj\gesturesWidget.o
 ./.obj\propertiesDialog.o
@@ -191,6 +192,7 @@ INPUT(
 ./.obj\moc_squareLine.o
 ./.obj\moc_brokenLine.o
 ./.obj\moc_curveLine.o
+./.obj\moc_lineFactory.o
 ./.obj\moc_gesturesWidget.o
 ./.obj\moc_propertiesDialog.o
 ./.obj\moc_editPropertiesDialog.o

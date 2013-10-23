@@ -115,6 +115,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -127,7 +132,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -363,6 +368,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -375,7 +385,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -518,6 +528,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -530,7 +545,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -682,6 +697,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -694,7 +714,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -823,6 +843,11 @@
 		QStringList toPortTypes() const
 		{
 			return QStringList("NonTyped");
+		}
+
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
 		}
 
 		bool isPort() const
@@ -969,6 +994,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -1042,6 +1072,10 @@
 			QStringList result;
 			result << "NonTyped";
 			return result;
+		}
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::broken;
 		}
 		bool isPort() const { return false; }
 		bool hasPin() const { return false; }
@@ -1239,6 +1273,11 @@
 		QStringList toPortTypes() const
 		{
 			return QStringList("NonTyped");
+		}
+
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
 		}
 
 		bool isPort() const
@@ -1439,6 +1478,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -1609,6 +1653,11 @@
 		QStringList toPortTypes() const
 		{
 			return QStringList("NonTyped");
+		}
+
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
 		}
 
 		bool isPort() const
@@ -1807,6 +1856,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -1952,6 +2006,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -1964,7 +2023,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -2089,6 +2148,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -2101,7 +2165,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -2253,6 +2317,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -2265,7 +2334,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -2421,6 +2490,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -2433,7 +2507,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -2575,6 +2649,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -2587,7 +2666,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -2716,6 +2795,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -2728,7 +2812,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -2855,6 +2939,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -2867,7 +2956,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -3005,6 +3094,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -3017,7 +3111,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -3157,6 +3251,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -3169,7 +3268,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return true;
+			return false;
 		}
 
 		QList<double> border() const
@@ -3298,6 +3397,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -3310,7 +3414,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -3448,6 +3552,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -3460,7 +3569,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -3600,6 +3709,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -3612,7 +3726,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -3794,6 +3908,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -3806,7 +3925,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -3980,6 +4099,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -4129,6 +4253,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -4141,7 +4270,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -4267,6 +4396,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -4279,7 +4413,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -4408,6 +4542,11 @@
 		QStringList toPortTypes() const
 		{
 			return QStringList("NonTyped");
+		}
+
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
 		}
 
 		bool isPort() const
@@ -4561,6 +4700,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -4573,7 +4717,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -4727,6 +4871,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -4739,7 +4888,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -4923,6 +5072,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -4935,7 +5089,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -5123,6 +5277,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -5295,6 +5454,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -5307,7 +5471,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -5477,6 +5641,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -5489,7 +5658,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -5661,6 +5830,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -5673,7 +5847,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -5845,6 +6019,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -5857,7 +6036,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -6029,6 +6208,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -6041,7 +6225,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -6213,6 +6397,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -6225,7 +6414,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -6397,6 +6586,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -6409,7 +6603,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const
@@ -6553,6 +6747,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		bool isPort() const
 		{
 			return false;
@@ -6565,7 +6764,7 @@
 
 		bool createChildrenFromMenu() const
 		{
-			return false;
+			return true;
 		}
 
 		QList<double> border() const

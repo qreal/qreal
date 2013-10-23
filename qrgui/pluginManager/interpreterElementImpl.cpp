@@ -484,6 +484,22 @@ QStringList InterpreterElementImpl::toPortTypes() const
 	return mToPorts;
 }
 
+enums::linkShape::LinkShape InterpreterElementImpl::shapeType() const
+{
+	return shapeTypeByString(mEditorRepoApi->stringProperty(mId, "shape"));
+}
+
+enums::linkShape::LinkShape InterpreterElementImpl::shapeTypeByString(QString const &type) const
+{
+	if (type == "broken") {
+		return enums::linkShape::broken;
+	} else if (type == "curve") {
+		return enums::linkShape::curve;
+	} else {
+		return enums::linkShape::square;
+	}
+}
+
 bool InterpreterElementImpl::isPort() const
 {
 	return mEditorRepoApi->stringProperty(mId, "isPin") == "true";

@@ -104,14 +104,12 @@ void D2ModelWidget::initWidget()
 
 	mUi->penWidthSpinBox->setRange(1, 30);
 
-	QStringList colorNames;
-	colorNames.push_back("Black");
-	colorNames.push_back("Blue");
-	colorNames.push_back("Green");
-	colorNames.push_back("Yellow");
-	colorNames.push_back("Red");
-
-	mUi->penColorComboBox->setColorList(colorNames);
+	mUi->penColorComboBox->setColorList(QStringList()
+			<< tr("Black")
+			<< tr("Blue")
+			<< tr("Green")
+			<< tr("Yellow")
+			<< tr("Red"));
 	mUi->penColorComboBox->setColor(QColor("black"));
 
 	initButtonGroups();

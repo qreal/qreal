@@ -1,0 +1,1 @@
+EXTERNAL_BMP_DATA(@@FILE@@);

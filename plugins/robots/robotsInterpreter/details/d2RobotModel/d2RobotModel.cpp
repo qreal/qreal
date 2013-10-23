@@ -261,11 +261,13 @@ QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum co
 	if (mSensorsConfiguration.type(port) == robots::enums::sensorType::unused) {
 		return QImage();
 	}
+
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
 	qreal const width = sensorWidth / 2.0;
 	QRectF const scanningRect = QRectF(position.x() -  width, position.y() - width
 									   , 2 * width, 2 * width);
+
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
 	QPainter painter(&image);
@@ -273,8 +275,8 @@ QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum co
 	QBrush brush(Qt::SolidPattern);
 	brush.setColor(Qt::white);
 	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::black));
-	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
+	painter.setPen(QPen(Qt::white));
+	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
 
 	bool const wasSelected = mD2ModelWidget->sensorItems()[port]->isSelected();
 	mD2ModelWidget->setSensorVisible(port, false);
@@ -412,7 +414,6 @@ void D2RobotModel::startInit()
 void D2RobotModel::startInterpretation()
 {
 	startInit();
-
 	mPos = QPointF(0,0);
 	VK_mMass = 1000;
 	VK_mAngularVelocity = 0;
@@ -487,8 +488,8 @@ QLineF D2RobotModel::VK_nearRobotLine(WallItem& wall, QPointF p) // Возвра
 	{
 		QLineF l;
 		l= wall.VK_getLine(i);
-		QPointF normPoint = VK_normalPoint(l.x1(), l.y1(), l.x2(), l.y2(), p.rx(),p.ry());
-		QLineF k (p.rx(), p.ry(), normPoint.rx(),normPoint.ry());
+		QPointF normPoint = VK_normalPoint(l.p1(), l.p2(), p);
+		QLineF k (p, normPoint);
 		len.push_back( k.length());
 		if (min == 0){
 			min = k.length();
@@ -501,9 +502,9 @@ QLineF D2RobotModel::VK_nearRobotLine(WallItem& wall, QPointF p) // Возвра
 	return wall.VK_getLine(j);
 }
 
-QPointF D2RobotModel::VK_normalPoint(qreal x1, qreal y1, qreal x2, qreal y2, qreal x3, qreal y3) // Возвращает точку прямой, в которую опустится перпендикуляр из заданной точки
-
+QPointF D2RobotModel::VK_normalPoint(QPointF A, QPointF B, QPointF C)
 {
+	qreal x1 = A.rx(), y1 = A.ry(), x2 = B.rx(), y2 = B.ry(), x3 = C.rx(), y3 = C.ry();
 	if (x1 == x2) return QPointF(x2, y3);
 	qreal x0 = (x1*(y2-y1)*(y2-y1) + x3*(x2-x1)*(x2-x1) + (x2-x1)*(y2-y1)*(y3-y1))/((y2-y1)*(y2-y1) + (x2-x1)*(x2-x1));
 	qreal y0 = ((y2-y1)*(x0-x1)/(x2-x1))+y1;
@@ -541,59 +542,47 @@ bool D2RobotModel::VK_isRobotWallCollision(WallItem &wall)
 	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
 	return boundingRegion.intersects(wall.VK_mWallPath);
 }
-/*
-bool D2RobotModel::VK_isRobotWallCollision(WallItem &wall)
+
+bool D2RobotModel::wallContainsRobotPoints(WallItem &wall)
 {
-
-
 	return ((wall.contains(VK_mP[0]))||(wall.contains(VK_mP[1]))||(wall.contains(VK_mP[2]))||(wall.contains(VK_mP[3])));
 }
-*/
+
 void D2RobotModel::VK_checkCollision(WallItem& wall) // Проверяет коллизии
 {
 	VK_mEdP.clear();
 	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
-	if (VK_isRobotWallCollision(wall)){
-
+	if (VK_isRobotWallCollision(wall)) {
 		if (wall.isCircle()) {
-
-			if ((wall.contains(VK_mP[0]))||(wall.contains(VK_mP[1]))||(wall.contains(VK_mP[2]))||(wall.contains(VK_mP[3]))) {
-				for(int i = 0; i < 4; i++)
-				{
+			if (wallContainsRobotPoints(wall)) {
+				for(int i = 0; i < 4; i++) {
 					if (wall.contains(VK_mP[i])) {
 						QLineF border = VK_tangentLine(wall); // добавить функц
-						QPointF normPoint = VK_normalPoint(border.x1(), border.y1(), border.x2(), border.y2(), VK_mP[i].rx(), VK_mP[i].ry());
-						QVector2D n (-normPoint.rx() + VK_mP[i].rx(), -normPoint.ry() + VK_mP[i].ry());
+						QPointF normPoint = VK_normalPoint(border.p1(), border.p2(), VK_mP[i]);
+						QVector2D n (VK_mP[i] - normPoint);
 						n = n.normalized();
-						if (!(n.length() < 1.e-10)) {
-							QVector2D V = VK_getV();
-							qreal k = VK_scalarProduct(V, n);
-							QVector2D V1 (V - n * k);
-							VK_setV(V1);
-						}
+						//if (!(n.length() < 1.e-10)) {
+						QVector2D V = VK_getV();
+						qreal k = VK_scalarProduct(V, n);
+						QVector2D V1 (V - n * k);
+						VK_setV(V1);
+						//}
 						VK_setWall(i, &wall);
 					}
-
 				}
-
 			} else {
 				QLineF border = VK_interWallLine(wall); // добавить функц
-				QPointF normPoint = VK_normalPoint(border.x1(), border.y1(), border.x2(), border.y2(), wall.VK_mCenter.rx(), wall.VK_mCenter.ry());
+				QPointF normPoint = VK_normalPoint(border.p1(), border.p2(), wall.VK_mCenter);
 				//QPointF p = wall.VK_getPoint(i); //
-
-				QVector2D n (normPoint.rx() - wall.VK_mCenter.rx(), normPoint.ry() - wall.VK_mCenter.ry());
+				QVector2D n (normPoint - wall.VK_mCenter);
 				n = n.normalized();
-
 				QPointF p = QPointF(wall.VK_mCenter + n.toPointF() * wall.width());
-
 				QVector2D V1 (0,0);
 				VK_setV(V1);
 				VK_mEdP.push_back(p);
 				VK_mAngularVelocity=0;
 				VK_setEdgeWall(0, &wall);//костыль
 			}
-
-
 		} else {
 			for(int i = 0; i < 4; i++)
 			{
@@ -601,9 +590,8 @@ void D2RobotModel::VK_checkCollision(WallItem& wall) // Проверяет ко�
 				if (wall.VK_mWallPath.contains(new_p)) {
 					if(VK_mRobotWalls[i] == NULL) {
 						QLineF border = VK_interRobotLine(wall);
-						QPointF normPoint = VK_normalPoint(border.x1(), border.y1(), border.x2(), border.y2(), VK_mP[i].rx(), VK_mP[i].ry());
-
-						QVector2D n (-normPoint.rx() + VK_mP[i].rx(), -normPoint.ry() + VK_mP[i].ry());
+						QPointF normPoint = VK_normalPoint(border.p1(), border.p2(), VK_mP[i]);
+						QVector2D n (VK_mP[i] - normPoint);
 						n = n.normalized();
 						if (!(n.length() < 1.e-10)) {
 							QVector2D V = VK_getV();
@@ -617,14 +605,11 @@ void D2RobotModel::VK_checkCollision(WallItem& wall) // Проверяет ко�
 					if (VK_mRobotWalls[i] == &wall){
 						VK_setWall(i, NULL);
 					}
-
-
-
 					QPointF p = wall.VK_getPoint(i);
 					if (boundingRegion.contains(p)) {
 						QLineF border = VK_interWallLine(wall);
-						QPointF normPoint = VK_normalPoint(border.x1(), border.y1(), border.x2(), border.y2(), p.rx(), p.ry());
-						QVector2D n (-normPoint.rx() + p.rx(), -normPoint.ry() + p.ry());
+						QPointF normPoint = VK_normalPoint(border.p1(), border.p2(), VK_mP[i]);
+						QVector2D n (p - normPoint);
 						n = n.normalized();
 						QVector2D V1 (0,0);
 						VK_setV(V1);
@@ -683,31 +668,27 @@ void D2RobotModel::countNewCoord()
 	qreal rotationalFricFactor = VK_getV().length()*1500;
 	qreal angularVelocityFricFactor = fabs(VK_mAngularVelocity*1000);
 
-
-
-
-
-
-
-
 	QVector2D napr (cos(mAngle * M_PI / 180), sin (mAngle * M_PI / 180));
 
-	qreal VA = VK_getFullSpeedA();
-	qreal VB = VK_getFullSpeedB();
+	//qreal VA = VK_getFullSpeedA();
+	//qreal VB = VK_getFullSpeedB();
 	qreal V0 = VK_getFullSpeed();
-	qreal scalProdA = VK_scalarProduct(VK_getVA(), napr);
-	qreal scalProdB = VK_scalarProduct(VK_getVB(), napr);
-	qreal scalProd = VK_scalarProduct(VK_getV(), napr);
-	qreal tmpA = ( VA - scalProdA) * mMotorB->VK_mMotorFactor;
-	qreal tmpB = ( VB - scalProdB) * mMotorC->VK_mMotorFactor;
-	qreal tmp2 = ( V0 - scalProd) * mMotorA->VK_mMotorFactor;
-	QVector2D F_engine = napr*tmp2;
+	//qreal scalProdA = VK_scalarProduct(VK_getVA(), napr);
+	//qreal scalProdB = VK_scalarProduct(VK_getVB(), napr);
+	//qreal scalProd = VK_scalarProduct(VK_getV(), napr);
+	qreal tmpA = ( VK_getFullSpeedA() - VK_scalarProduct(VK_getVA(), napr)) * mMotorB->VK_mMotorFactor;
+	qreal tmpB = ( VK_getFullSpeedB() - VK_scalarProduct(VK_getVB(), napr)) * mMotorC->VK_mMotorFactor;
+	qreal tmp2 = ( V0 - VK_scalarProduct(VK_getV(), napr)) * mMotorA->VK_mMotorFactor;
+	//QVector2D F_engine = napr*tmp2;
 	QPointF p0 (mPos.rx() + 25, mPos.ry() + 25);
-	VK_mForce = F_engine;
+	VK_mForce = napr*tmp2;
 
 
-	QVector2D tmpAr(VK_mP[0].rx() - p0.rx(), VK_mP[0].ry() - p0.ry());
-	QVector2D tmpBr(VK_mP[1].rx() - p0.rx(), VK_mP[1].ry() - p0.ry());
+	//QVector2D tmpAr(VK_mP[0] - p0);
+	//QVector2D tmpBr(VK_mP[1] - p0);
+
+
+
 
 	QVector2D F_engine_A = napr*tmpA;
 	QVector2D F_engine_B = napr*tmpB;
@@ -718,84 +699,21 @@ void D2RobotModel::countNewCoord()
 
 
 
-	qreal mForceMomentA = VK_vectorProduct(F_engine_A, tmpAr);
-	qreal mForceMomentB = VK_vectorProduct(F_engine_B, tmpBr);
+	qreal mForceMomentA = VK_vectorProduct(F_engine_A, QVector2D(VK_mP[0] - p0));
+	qreal mForceMomentB = VK_vectorProduct(F_engine_B, QVector2D(VK_mP[1] - p0));
 	VK_mForceMoment -= mForceMomentA;
 	VK_mForceMoment -= mForceMomentB;
 
-	for (int i = 0; i < 4; i++) {
-		if (VK_mRobotEdgeWalls[i] != NULL){
-			for (int j = 0; j < VK_mEdP.length(); j++) {
-				QVector2D tmp(VK_mEdP.at(j) - p0);
-				QVector2D F_norm = VK_mForce;
-				F_norm *= -1;
-				qreal a = VK_vectorProduct(F_norm, tmp);
-				VK_mForceMoment -= a;
-			}
-		}
-	}
+	calculateForceMoment();
 
-	for (int i = 0; i < 4; i++) {
-		if (VK_mRobotWalls[i] != NULL){
-
-			QVector2D tmp(VK_mP[i] - p0);
-
-			QLineF bord = VK_nearRobotLine(*VK_mRobotWalls[i], VK_mP[i]);
-			qreal ang = bord.angle();
-
-			QVector2D vectorParalStene;
-			if (ang == 90) {
-				vectorParalStene = QVector2D(0, -1);
-			} else {
-				vectorParalStene = QVector2D(cos(ang*M_PI/180),-sin(ang*M_PI/180));
-			}
-
-			qreal scpr = VK_scalarProduct(vectorParalStene, napr);
-			if (!(scpr == 0)) {
-				if (scpr < 0) {
-					vectorParalStene *= (-1);
-				}
-				vectorParalStene = vectorParalStene.normalized();
-
-				QVector2D F_norm = VK_mForce;
-
-				double sc1 = VK_scalarProduct(VK_mForce, vectorParalStene);
-				F_norm -= vectorParalStene* sc1;
-
-				F_norm *= -1;
-				QVector2D F_fr_wall;
-
-				vectorParalStene *= -1;
-
-				F_fr_wall = vectorParalStene;
-				F_fr_wall *= F_norm.length() * 0.2;
-
-				VK_mForce += F_norm;
-				VK_mForce += F_fr_wall;
-
-				qreal a = VK_vectorProduct(F_fr_wall, tmp);
-				qreal b = VK_vectorProduct(F_norm , tmp);
-
-				VK_setForceMoment(VK_mForceMoment - a);
-				VK_setForceMoment(VK_mForceMoment - b);
-
-			} else {
-				VK_setForceMoment(0);
-				VK_mForce = QVector2D(0, 0);
-			}
-		}
-	}
-
-	QVector2D V = VK_getV();
-	QVector2D V1 = V + VK_mForce / VK_mMass * Timeline::timeInterval;
-	VK_setV(V1);// /////////////////
+	//QVector2D V = VK_getV();
+	QVector2D V1 = VK_getV() + VK_mForce / VK_mMass * Timeline::timeInterval;
+	VK_setV(V1);
 
 	qreal momentI = VK_getInertiaMoment();
-	VK_mAngularVelocity += VK_mForceMoment /  momentI * Timeline::timeInterval;
 
+	VK_mAngularVelocity += VK_mForceMoment /  momentI * Timeline::timeInterval;
 	qreal fric = angularVelocityFricFactor /  momentI * Timeline::timeInterval;
-	//qreal fric = VK_mAngularVelocity * 0.2;
-	//if (fric < 0.05) fric = 0.05;
 
 	qreal tmpAngVel = VK_mAngularVelocity;
 	if (VK_mAngularVelocity > 0) {
@@ -806,10 +724,6 @@ void D2RobotModel::countNewCoord()
 	if (tmpAngVel * VK_mAngularVelocity <= 0) {
 		VK_mAngularVelocity = 0;
 	}
-
-	//qreal timeInterval = Timeline::timeInterval;
-	//mAngle += VK_mAngularVelocity * timeInterval;
-
 
 	QVector2D rotationalFrictionF (-napr.y(), napr.x());
 
@@ -823,29 +737,83 @@ void D2RobotModel::countNewCoord()
 
 	rotationalFrictionF = rotationalFrictionF *(sinus * rotationalFricFactor);
 
-	V = VK_getV();
-	if (VK_scalarProduct(rotationalFrictionF, V) > 0) {
+	//V = VK_getV();
+	if (VK_scalarProduct(rotationalFrictionF, VK_getV()) > 0) {
 		rotationalFrictionF = -rotationalFrictionF;
 	}
 
-	QVector2D newV = V + rotationalFrictionF / VK_mMass * Timeline::timeInterval;
+	QVector2D newV = VK_getV() + rotationalFrictionF / VK_mMass * Timeline::timeInterval;
 	qreal sc_1 = VK_scalarProduct(newV, rotationalFrictionF);
 	if (sc_1 > 0) {
-		qreal sc_2 = -VK_scalarProduct(V, rotationalFrictionF);
+		qreal sc_2 = -VK_scalarProduct(VK_getV(), rotationalFrictionF);
 		qreal dt_tmp = Timeline::timeInterval *sc_2/(sc_2 + sc_1);
-		QVector2D V1 = V + rotationalFrictionF / VK_mMass * dt_tmp;
+		QVector2D V1 = VK_getV() + rotationalFrictionF / VK_mMass * dt_tmp;
 		VK_setV(V1);
 
 	}  else {
 		VK_setV(newV);
 	}
-	V = VK_getV();
-	if ( V.length() > V0){
-		newV = V.normalized() * V0;
+	//V = VK_getV();
+	if ( VK_getV().length() > V0){
+		newV = VK_getV().normalized() * V0;
 		VK_setV(newV);
 	}
+}
 
 
+void D2RobotModel::calculateForceMoment()
+{
+	QPointF p0 (mPos.rx() + 25, mPos.ry() + 25);
+	QVector2D napr (cos(mAngle * M_PI / 180), sin (mAngle * M_PI / 180));
+	for (int i = 0; i < 4; i++) {
+		if (VK_mRobotEdgeWalls[i] != NULL) {
+			for (int j = 0; j < VK_mEdP.length(); j++) {
+				QVector2D tmp(VK_mEdP.at(j) - p0);
+				QVector2D F_norm = VK_mForce;
+				F_norm *= -1;
+				qreal a = VK_vectorProduct(F_norm, tmp);
+				VK_mForceMoment -= a;
+			}
+		}
+	}
+
+	for (int i = 0; i < 4; i++) {
+		if (VK_mRobotWalls[i] != NULL){
+			QVector2D tmp(VK_mP[i] - p0);
+			QLineF bord = VK_nearRobotLine(*VK_mRobotWalls[i], VK_mP[i]);
+			qreal ang = bord.angle();
+			QVector2D vectorParalStene;
+			vectorParalStene = QVector2D(cos(ang*M_PI/180),-sin(ang*M_PI/180));
+			qreal scpr = VK_scalarProduct(vectorParalStene, napr);
+
+			if (scpr < 0) {
+				vectorParalStene *= (-1);
+			}
+			vectorParalStene = vectorParalStene.normalized();
+
+			QVector2D F_norm = VK_mForce;
+
+			double sc1 = VK_scalarProduct(VK_mForce, vectorParalStene);
+			F_norm -= vectorParalStene* sc1;
+
+			F_norm *= -1;
+			QVector2D F_fr_wall;
+
+			vectorParalStene *= -1;
+
+			F_fr_wall = vectorParalStene;
+			F_fr_wall *= F_norm.length() * 0.2;
+
+			VK_mForce += F_norm;
+			VK_mForce += F_fr_wall;
+
+			qreal a = VK_vectorProduct(F_fr_wall, tmp);
+			qreal b = VK_vectorProduct(F_norm , tmp);
+
+			VK_setForceMoment(VK_mForceMoment - a);
+			VK_setForceMoment(VK_mForceMoment - b);
+		}
+	}
 
 }
 
@@ -857,31 +825,24 @@ void D2RobotModel::VK_getRobotFromWall(WallItem& wall, int index)
 			for (int i = 0; i < 4; i++) {
 				if (wall.VK_mWallPath.contains(VK_mP[i])) {
 					QVector2D n(robotPos() - wall.VK_mCenter);
-					QLineF lineN(robotPos(),  wall.VK_mCenter);
 					n = n.normalized();
 					QPointF pntInter = wall.VK_mCenter + n.toPointF()*wall.width();
-
 					QPointF p(pntInter - VK_mP[i]);
 					mPos = (robotPos() + p);
 					return;
 				}
 			}
-			QLineF border = VK_interWallLine(wall); // добавить функц
-			QPointF normPoint = VK_normalPoint(border.x1(), border.y1(), border.x2(), border.y2(), wall.VK_mCenter.rx(), wall.VK_mCenter.ry());
-			//QPointF p = wall.VK_getPoint(i); //
-
-			QVector2D n (normPoint.rx() - wall.VK_mCenter.rx(), normPoint.ry() - wall.VK_mCenter.ry());
+			QLineF border = VK_interWallLine(wall);
+			QPointF normPoint = VK_normalPoint(border.p1(), border.p2(), wall.VK_mCenter);
+			QVector2D n (normPoint - wall.VK_mCenter);
 			n = n.normalized();
-
 			QPointF p = QPointF(wall.VK_mCenter + n.toPointF() * wall.width());
-
 			mPos = robotPos() + p - normPoint;
 		} else {
-
 			if (boundingRegion.intersects(wall.VK_mWallPath)){
 				QPointF p = VK_mP[index];
 				QLineF border = VK_nearRobotLine(wall, p);
-				QPointF pntIntersect = VK_normalPoint(border.x1(), border.y1(), border.x2(), border.y2(), p.rx(), p.ry());
+				QPointF pntIntersect = VK_normalPoint(border.p1(), border.p2(), p);
 				QPointF k;
 				k = pntIntersect -= p;
 				QPointF curPos = robotPos();
@@ -891,27 +852,19 @@ void D2RobotModel::VK_getRobotFromWall(WallItem& wall, int index)
 		}
 	}
 
-
-
-	if (VK_isRobotWallCollision(wall))
-	{
-		qreal a = 0;
-		a = a+1;
-	}
-
 }
 
 void D2RobotModel::VK_getEdgeRobotFromWall(WallItem& wall, int index)
 {
 	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
 
-	if (boundingRegion.intersects(wall.VK_mWallPath)){
+	if (boundingRegion.intersects(wall.VK_mWallPath)) {
 		if (wall.isCircle()) {
 			QLineF l = VK_interWallLine(wall);
 			QLineF l2 = VK_intersectRobotLine(wall);
 
-			QPointF pntIntersect = VK_normalPoint(l.x1(), l.y1(), l.x2(), l.y2(), wall.VK_mCenter.rx(), wall.VK_mCenter.ry());
-			QPointF pntIntersect2 = VK_normalPoint(l2.x1(), l2.y1(), l2.x2(), l2.y2(), wall.VK_mCenter.rx(), wall.VK_mCenter.ry());
+			QPointF pntIntersect = VK_normalPoint(l.p1(), l.p2(), wall.VK_mCenter);
+			QPointF pntIntersect2 = VK_normalPoint(l2.p1(), l2.p2(), wall.VK_mCenter);
 
 
 			QVector2D n(pntIntersect - wall.VK_mCenter);
@@ -928,8 +881,8 @@ void D2RobotModel::VK_getEdgeRobotFromWall(WallItem& wall, int index)
 			{
 				QPointF p = wall.VK_getPoint(i);
 				if (boundingRegion.contains(p)){
-					QPointF pntIntersect = VK_normalPoint(l.x1(), l.y1(), l.x2(), l.y2(), p.rx(), p.ry());
-					QPointF k (p.rx() - pntIntersect.rx(),p.ry() - pntIntersect.ry());
+					QPointF pntIntersect = VK_normalPoint(l.p1(), l.p2(), p);
+					QPointF k (p - pntIntersect);
 					QPointF curPos = robotPos();
 					mPos = (curPos+=k);
 					VK_updateCoord();
@@ -954,90 +907,21 @@ QLineF D2RobotModel::VK_tangentLine(WallItem& wall)
 QLineF D2RobotModel::VK_interRobotLine(WallItem& wall)
 {
 	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
-
-
-
-
-
-
-	/*
-		for(int i = 0; i < 4; i++)
-		{
-			if (wall.VK_mWallPath.contains(VK_mP[i])) {
-				QLineF line1;
-				QLineF line2;
-				if (i == 0) {
-					line1 = VK_mL[0];
-					line2 =	VK_mL[3];
-				} else if (i == 1) {
-					line1 = VK_mL[0];
-					line2 =	VK_mL[1];
-				} else if (i == 2) {
-					line1 = VK_mL[2];
-					line2 =	VK_mL[1];
-				} else if (i == 3) {
-					line1 = VK_mL[2];
-					line2 =	VK_mL[3];
-				}
-
-				line2.
-
-
-
-
-				if ((i == 0)||(i == 1)) {
-					QLineF l = VK_mL[0];
-				} else {
-					QLineF l = VK_mL[2];
-				}
-
-
-				QLineF l1 = VK_mL[0];
-				QLineF l2 = VK_mL[2];
-
-				QPointF pnt1 = VK_normalPoint(l1.x1(), l1.y1(), l1.x2(), l1.y2(), wall.VK_mCenter.rx(), wall.VK_mCenter.ry());
-				QPointF pnt2 = VK_normalPoint(l2.x1(), l2.y1(), l2.x2(), l2.y2(), wall.VK_mCenter.rx(), wall.VK_mCenter.ry());
-
-				QLineF len1 (wall.VK_mCenter, pnt1);
-				QLineF len2 (wall.VK_mCenter, pnt2);
-
-
-
-
-				QLineF l;
-				if (len1 < len2) {
-					l = len1;
-				} else {
-					l = len2;
-				}
-
-				QVector2D n(l.p2() - l.p1());
-				QVector2D n2 = n.normalized() * wall.width();
-			}
-		}
-		*/
-
-
-
 	QLineF tmpLine;
-	for(int i = 0; i<4; i++)
-	{
+	for(int i = 0; i<4; i++) {
 		QLineF l = wall.VK_getLine(i);
 		QPainterPath p(l.p1());
 		p.lineTo(l.p2());
-
-		if (boundingRegion.intersects(p)){
+		if (boundingRegion.intersects(p)) {
 			tmpLine = l;
 		}
 	}
 	return tmpLine;
-
 }
 
 QLineF D2RobotModel::VK_intersectRobotLine(WallItem& wall)
 {
-	for(int i = 0; i < 4; i++)
-	{
+	for(int i = 0; i < 4; i++) {
 		QPainterPath p(VK_mL[i].p1());
 		p.lineTo(VK_mL[i].p2());
 		if (wall.VK_mWallPath.intersects(p)) {
@@ -1054,7 +938,7 @@ QLineF D2RobotModel::VK_interWallLine(WallItem& wall)
 			p.lineTo(VK_mL[i].p2());
 			if (wall.VK_mWallPath.intersects(p)) {
 				QLineF l = VK_mL[i];
-				QPointF pntIntersect = VK_normalPoint(l.x1(), l.y1(), l.x2(), l.y2(), wall.VK_mCenter.rx(), wall.VK_mCenter.ry());
+				QPointF pntIntersect = VK_normalPoint(l.p1(), l.p2(), wall.VK_mCenter);
 				QVector2D n(pntIntersect - wall.VK_mCenter);
 				QLineF lineN(pntIntersect , wall.VK_mCenter);
 				n = n.normalized();
@@ -1109,8 +993,7 @@ void D2RobotModel::recalculateParams()
 		return;
 	}
 	synchronizePositions();
-	for (int i = 0; i < 4; i++)
-	{
+	for (int i = 0; i < 4; i++) {
 		VK_setWall(i, NULL);
 		VK_setEdgeWall(i, NULL);
 	}
@@ -1135,7 +1018,7 @@ void D2RobotModel::recalculateParams()
 
 void D2RobotModel::getFromWalls()
 {
-	for (int i = 0; i < 4; i++){ // Вытаскиваем из стен
+	for (int i = 0; i < 4; i++) { // Вытаскиваем из стен
 		for (int j = 0; j < mWorldModel.mWalls.length(); j++) {
 			if (VK_isCollision(*(mWorldModel.mWalls[j]), i)) {
 				VK_getRobotFromWall(*(mWorldModel.mWalls[j]), i);

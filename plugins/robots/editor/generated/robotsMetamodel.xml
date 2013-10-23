@@ -354,6 +354,7 @@
 			<edge displayedName="Линия соединения" name="ControlFlow" description="Для того, чтобы создать связь между двумя элементами A и B, можно навести курсор на элемент A, нажать правую кнопку мыши и, не отпуская ее, провести линию до элемента B, либо 'вытащить' связь из кружочка справа от элемента">
 				<graphics>
 					<lineType type="solidLine"/>
+					<shape type="broken"/>
 					<labels>
 						<label textBinded="Guard" hard="true"/>
 					</labels>
@@ -1031,7 +1032,9 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Цвет" type="Color" name="Color"/>
+						<property displayedName="Цвет" type="Color" name="Color">
+							<default>Красный</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="SensorBlock"/>

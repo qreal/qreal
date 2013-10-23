@@ -9,6 +9,7 @@ namespace qReal {
 /// Performs mouse events handling, link rendering and everything connected to laying the link out, reconnecting
 /// and adjusting of the link to adjacent nodes and grid.
 /// Apart of that, LineHandler's subclass may add extra actions to link's context menu.
+/// To support undo-redo for custom context actions use connectAction() function instead of QObject::connect().
 class LineHandler : public QObject
 {
 	Q_OBJECT
@@ -49,7 +50,7 @@ public:
 	virtual void drawLine(QPainter *painter, bool drawSavedLine);
 
 	/// Draw link points one by one with the given painter
-	void drawPorts(QPainter *painter);
+	virtual void drawPorts(QPainter *painter);
 
 	/// @return link shape (depending on a link type, default implementation returns link's line() polygon)
 	virtual QPainterPath shape() const;
@@ -63,9 +64,18 @@ public:
 	/// @return List of context menu actions available for a particular link type
 	virtual QList<ContextMenuAction *> extraActions(QPointF const &pos);
 
+	/// Provide undo-redo support for context actions
+	void connectAction(ContextMenuAction *action, QObject *receiver, char const *slot) const;
+
 protected slots:
 	/// Remove all intermediate points
 	void minimize();
+
+	/// Start tracking edge changes
+	void startReshape();
+
+	/// Execute and reset reshape command
+	void endReshape();
 
 protected:
 	/// Reimplement this method in subclass to make type-dependent actions when lay out
@@ -88,9 +98,6 @@ protected:
 	/// @return index of the point, that is not contained in link's src/dst, while the previous point is
 	int firstOutsidePoint(bool startFromSrc) const;
 
-	/// Execute and reset reshape command
-	void endReshape();
-
 	void connectAndArrange(bool reconnectSrc, bool reconnectDst);
 
 	/// @return Number of point under position pos (if there is no such point, return -1)
@@ -102,17 +109,25 @@ protected:
 	/// Should be redefined in subclasses to handle mouse move events. Default implementation does nothing.
 	virtual void handleEdgeMove(QPointF const &pos);
 
+	/// Highlight ports of node under link's end
+	void highlightPorts(bool isStart);
+
+	/// Clear highlights
+	void dehighlightPorts();
+
 	/// Draw a port with a given portNumber
 	virtual void drawPort(QPainter *painter, int portNumber);
 
 	/// Helper function for sorting edges on linear ports
 	QPointF portArrangePoint(NodeElement const *node) const;
 
-	EdgeElement *mEdge;
+	EdgeElement *mEdge; // Doesn't take ownership
 
 	QPolygonF mSavedLine;
 	int mDragType;
 	QPointF mDragStartPoint;
+
+	NodeElement *mNodeWithHighlightedPorts; // Doesn't take ownership
 
 	commands::ReshapeEdgeCommand *mReshapeCommand;
 	bool mReshapeStarted;

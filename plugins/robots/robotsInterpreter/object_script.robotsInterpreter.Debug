@@ -15,6 +15,7 @@ INPUT(
 ./.obj\sensorsConfigurationWidget.o
 ./.obj\thread.o
 ./.obj\tracer.o
+./.obj\textExpressionProcessor.o
 ./.obj\bluetoothRobotCommunicationThread.o
 ./.obj\usbRobotCommunicationThread.o
 ./.obj\robotCommunicator.o

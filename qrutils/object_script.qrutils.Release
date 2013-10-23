@@ -8,9 +8,11 @@ INPUT(
 ./.obj\scalableCoordinate.o
 ./.obj\nameNormalizer.o
 ./.obj\fileSystemUtils.o
+./.obj\stringUtils.o
 ./.obj\abstractGenerator.o
 ./.obj\expressionsParser.o
 ./.obj\number.o
+./.obj\textExpressionProcessorBase.o
 ./.obj\abstractItem.o
 ./.obj\lineImpl.o
 ./.obj\abstractScene.o
@@ -25,6 +27,7 @@ INPUT(
 ./.obj\painterInterface.o
 ./.obj\baseGraphTransformationUnit.o
 ./.obj\tree.o
+./.obj\deepFirstSearcher.o
 ./.obj\progress.o
 ./.obj\longOperation.o
 ./.obj\functorOperation.o

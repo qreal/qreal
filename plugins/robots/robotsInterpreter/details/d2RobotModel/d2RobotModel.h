@@ -105,7 +105,10 @@ private:
     QLineF VK_interWallLine(WallItem& wall);
 	QLineF VK_tangentLine(WallItem& wall);
 	QLineF VK_nearRobotLine(WallItem& wall, QPointF p);
+	bool wallContainsRobotPoints(WallItem& wall);
 	QPointF VK_normalPoint(qreal x1, qreal y1, qreal x2, qreal y2, qreal x3, qreal y3);
+	QPointF VK_normalPoint(QPointF A, QPointF B, QPointF C);
+	void calculateForceMoment();
 
 
 	void setSpeedFactor(qreal speedMul);

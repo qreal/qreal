@@ -1,5 +1,6 @@
 #include "printTextBlock.h"
 #include "../robotParts/robotModel.h"
+#include "details/textExpressionProcessor.h"
 
 using namespace qReal;
 using namespace interpreters::robots;
@@ -14,7 +15,8 @@ void PrintTextBlock::run()
 {
 	int const x = evaluate("XCoordinateText").toInt();
 	int const y = evaluate("YCoordinateText").toInt();
-	QString const text = stringProperty("PrintText");
+	QString const rawText = stringProperty("PrintText");
+	QString const text = TextExpressionProcessor(*mParser->getVariables()).processExpression(rawText);
 
 	mDisplay.printText(x, y, text);
 	emit done(mNextBlock);

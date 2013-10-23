@@ -3,9 +3,12 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	editor \
 	robotsInterpreter \
-	robotsGenerator \
+	robotsGeneratorBase \
+	nxtGenerator \
 	trikGenerator \
 	qextserialport \
 
 qextserialport.file = thirdparty/qextserialport/qextserialport.pro
 robotsInterpreter.depends = qextserialport
+nxtGenerator.depends = robotsGeneratorBase
+trikGenerator.depends = robotsGeneratorBase
