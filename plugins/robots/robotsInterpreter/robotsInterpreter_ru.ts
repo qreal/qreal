@@ -422,6 +422,13 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>QCoreApplication</name>
+    <message>
+        <source>Blue</source>
+        <translation type="obsolete">Синий</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="customizer.cpp" line="8"/>
@@ -1016,7 +1023,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="details/blocks/loopBlock.cpp" line="31"/>
         <source>There must be an outgoing link with property &lt;b&gt;Guard&lt;/b&gt; set as &lt;b&gt;iteration&lt;/b&gt;. See help, chapter &lt;i&gt;Programming&lt;/i&gt;</source>
-        <translation>Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Программирование&lt;/i&gt;</translation>
+        <translation>Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="details/blocks/loopBlock.cpp" line="36"/>
@@ -1056,7 +1063,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::PrintTextBlock</name>
     <message>
-        <location filename="details/blocks/printTextBlock.cpp" line="25"/>
+        <location filename="details/blocks/printTextBlock.cpp" line="27"/>
         <source>Display</source>
         <translation>Дисплей</translation>
     </message>
@@ -1213,6 +1220,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="97"/>
         <source>Black</source>
+        <oldsource>Blackkkk</oldsource>
         <translation>Чёрный</translation>
     </message>
     <message>

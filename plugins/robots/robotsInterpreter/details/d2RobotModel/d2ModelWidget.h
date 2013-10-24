@@ -57,7 +57,8 @@ enum CursorType
 
 }
 
-class D2ModelWidget : public QWidget {
+class D2ModelWidget : public QWidget
+{
 	Q_OBJECT
 
 public:
