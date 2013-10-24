@@ -11,7 +11,7 @@
 using namespace qReal;
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
-	: QDialog(parent)
+	: QRealDialog("PreferencesDialog", parent)
 	, ui(new Ui::PreferencesDialog)
 {
 	ui->setupUi(this);
@@ -92,7 +92,7 @@ void PreferencesDialog::changeEvent(QEvent *e)
 void PreferencesDialog::showEvent(QShowEvent *e)
 {
 	restoreSettings();
-	QDialog::showEvent(e);
+	QRealDialog::showEvent(e);
 }
 
 void PreferencesDialog::saveAndClose()

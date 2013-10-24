@@ -22,7 +22,7 @@ QSize const displaySize(200, 300);
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
 	, NxtDisplay *nxtDisplay, QWidget *parent)
-		: QWidget(parent)
+		: QRealDialog("D2ModelWindow", parent)
 		, mUi(new Ui::D2Form)
 		, mScene(NULL)
 		, mRobot(NULL)
@@ -285,9 +285,11 @@ void D2ModelWidget::changeEvent(QEvent *e)
 void D2ModelWidget::showEvent(QShowEvent *e)
 {
 	e->accept();
+	QRealDialog::showEvent(e);
 	if (mFirstShow) {
 		onFirstShow();
 	}
+
 	mFirstShow = false;
 }
 
@@ -1013,6 +1015,7 @@ void D2ModelWidget::disableRunStopButtons()
 void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
+	serializeParameters();
 	emit d2WasClosed();
 }
 

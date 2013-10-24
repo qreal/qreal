@@ -9,6 +9,9 @@
 #include <QtGui/QPolygonF>
 #include <QtCore/QSignalMapper>
 
+#include <qrutils/qRealDialog.h>
+#include <qrutils/graphicsUtils/lineImpl.h>
+
 #include "lineItem.h"
 #include "stylusItem.h"
 #include "ellipseItem.h"
@@ -19,7 +22,6 @@
 #include "rotater.h"
 #include "timeline.h"
 #include "../nxtDisplay.h"
-#include "../../../../../qrutils/graphicsUtils/lineImpl.h"
 
 namespace Ui {
 class D2Form;
@@ -57,7 +59,7 @@ enum CursorType
 
 }
 
-class D2ModelWidget : public QWidget
+class D2ModelWidget : public utils::QRealDialog
 {
 	Q_OBJECT
 
