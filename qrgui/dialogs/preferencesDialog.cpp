@@ -65,6 +65,7 @@ void PreferencesDialog::applyChanges()
 		page->save();
 	}
 
+	SettingsManager::instance()->saveData();
 	emit settingsApplied();
 }
 
