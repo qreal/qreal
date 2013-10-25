@@ -53,15 +53,6 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 		addPreAction(mCreateCommand);
 	}
 
-//	NodeElement * const newNode = new NodeElement(
-//			mScene->mainWindow()->editorManager().elementImpl(resultId)
-//			, resultId
-//			, *mMVIface->graphicalAssistApi()
-//			, *mMVIface->logicalAssistApi()
-//			);
-
-//	newNode->setController(mScene->mainWindow()->controller());
-
 	return resultId;
 }
 
