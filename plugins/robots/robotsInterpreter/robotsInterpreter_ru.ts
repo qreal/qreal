@@ -1220,7 +1220,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="97"/>
         <source>Black</source>
-        <oldsource>Blackkkk</oldsource>
         <translation>Чёрный</translation>
     </message>
     <message>
@@ -1244,18 +1243,18 @@ p, li { white-space: pre-wrap; }
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="743"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="745"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="743"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="762"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="745"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="764"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="762"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="764"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>
