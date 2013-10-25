@@ -22,7 +22,7 @@ void WidgetsHelper::initLayoutFactoryPropertyEditor()
 	if (!mElement) {
 		return;
 	}
-	layouts::NodeElementLayoutFactory *factory = mElement->layoutFactory();
+	qReal::layouts::NodeElementLayoutFactory *factory = mElement->layoutFactory();
 	if (!factory->binding().isEmpty()) {
 		mPropertyEditors.insertMulti(factory->binding(), factory);
 	}

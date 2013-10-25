@@ -3,6 +3,7 @@
 #include <QtWidgets/QGraphicsProxyWidget>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QAction>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>

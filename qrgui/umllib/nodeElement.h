@@ -22,11 +22,13 @@
 #include "umllib/private/sceneGridHandler.h"
 #include "umllib/private/umlPortHandler.h"
 #include "umllib/private/portHandler.h"
+#include "umllib/private/nodeElementLayoutFactory.h"
+#include "umllib/private/widgetsHelper.h"
 
 #include "umllib/serializationData.h"
 
 namespace qReal {
-class WidgetsHelper;
+//class WidgetsHelper;
 
 namespace commands {
 class ResizeCommand;
@@ -137,7 +139,7 @@ public:
 	bool isFolded() const;
 	QGraphicsRectItem* placeholder() const;
 
-	layouts::NodeElementLayoutFactory *layoutFactory() const;
+	qReal::layouts::NodeElementLayoutFactory *layoutFactory() const;
 
 	QList<EdgeElement *> const edgeList() const;
 	QList<NodeElement *> const childNodes() const;
@@ -297,7 +299,7 @@ private:
 
 	NodeData mData;
 
-	layouts::NodeElementLayoutFactory *mLayoutFactory;
+	qReal::layouts::NodeElementLayoutFactory *mLayoutFactory;
 	WidgetsHelper *mWidgetsHelper;
 
 	int mTimeOfUpdate;

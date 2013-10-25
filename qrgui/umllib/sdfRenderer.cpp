@@ -59,6 +59,7 @@ void SdfRenderer::load(QDomDocument const &document)
 {
 	mDoc = document;
 	initFirstSizes();
+	return true;
 }
 
 void SdfRenderer::initFirstSizes()

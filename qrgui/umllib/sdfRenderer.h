@@ -27,7 +27,7 @@ public:
 	SdfRenderer(QDomDocument const &document);
 	~SdfRenderer();
 
-	bool load (QString const &filename);
+	bool load(QString const &filename);
 	bool load(QDomDocument const &document);
 	void render(QPainter *painter, QRectF const &bounds, bool isIcon = false);
 	void noScale();
