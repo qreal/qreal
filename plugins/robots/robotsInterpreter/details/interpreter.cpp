@@ -158,7 +158,7 @@ void Interpreter::showD2ModelWidget(bool isVisible)
 	mD2ModelWidget->init(isVisible);
 	if (isVisible) {
 		mD2ModelWidget->activateWindow();
-		mD2ModelWidget->showNormal();
+		mD2ModelWidget->show();
 	}
 }
 

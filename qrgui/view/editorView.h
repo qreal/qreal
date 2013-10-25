@@ -30,7 +30,6 @@ public:
 
 public slots:
 	void toggleAntialiasing(bool);
-	void toggleOpenGL(bool);
 	void zoomIn();
 	void zoomOut();
 	void zoom(qreal const zoomFactor);

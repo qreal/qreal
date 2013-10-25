@@ -8,7 +8,7 @@ using namespace interpreters::robots;
 using namespace interpreters::robots::details;
 
 Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
-Id const oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
+Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
@@ -188,7 +188,7 @@ void RobotsPlugin::closeNeededWidget()
 void RobotsPlugin::activeTabChanged(Id const &rootElementId)
 {
 	updateEnabledActions();
-	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 	mInterpreter.onTabChanged(rootElementId, enabled);
 }
 
@@ -232,7 +232,7 @@ void RobotsPlugin::updateTitlesVisibility()
 void RobotsPlugin::updateEnabledActions()
 {
 	Id const &rootElementId = mMainWindowInterpretersInterface->activeDiagram();
-	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 
 	foreach (ActionInfo const &actionInfo, mActionInfos) {
 		actionInfo.action()->setEnabled(enabled);
