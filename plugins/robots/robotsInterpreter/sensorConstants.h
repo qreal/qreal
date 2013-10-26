@@ -58,7 +58,7 @@ class SensorEnumerator
 public:
 
 	static QStringList sensorNamesList();
-	static QString sensorName(sensorType::SensorTypeEnum const &sensor);
+	static QString sensorName(enums::sensorType::SensorTypeEnum const &sensor);
 };
 
 }

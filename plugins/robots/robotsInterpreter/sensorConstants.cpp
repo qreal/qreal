@@ -14,11 +14,13 @@ QStringList SensorEnumerator::sensorNamesList()
 			<< QObject::tr("Color sensor (red)")
 			<< QObject::tr("Color sensor (green)")
 			<< QObject::tr("Color sensor (blue)")
-			<< QObject::tr("Color sensor (passive)");
+			<< QObject::tr("Color sensor (passive)")
+			<< QObject::tr("Sound sensor")
+			<< QObject::tr("Gyroscope");
 	return sensorNames;
 }
 
-QString SensorEnumerator::sensorName(sensorType::SensorTypeEnum const &sensor)
+QString SensorEnumerator::sensorName(enums::sensorType::SensorTypeEnum const &sensor)
 {
 	return sensorNamesList().at(sensor);
 }

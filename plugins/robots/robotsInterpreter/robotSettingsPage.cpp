@@ -71,16 +71,6 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	QVBoxLayout *sensorsLayout = new QVBoxLayout;
 	sensorsLayout->addWidget(mSensorsWidget);
 	mUi->sensorsSettingsGroupBox->setLayout(sensorsLayout);
-
-	enums::robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
-	initRobotModelType(typeOfRobotModel);
-
-	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
-	initTypeOfCommunication(typeOfCommunication);
-
-	mUi->textVisibleCheckBox->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
-	mUi->tcpServerLineEdit->setText(SettingsManager::value("tcpServer").toString());
-	mUi->tcpPortSpinBox->setValue(SettingsManager::value("tcpPort").toInt());
 }
 
 PreferencesRobotSettingsPage::~PreferencesRobotSettingsPage()
@@ -160,6 +150,7 @@ void PreferencesRobotSettingsPage::refreshValuesOnUi()
 	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
 	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
 	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
+
 	mUi->sensorUpdateSpinBox->setValue(
 			SettingsManager::value("sensorUpdateInterval"
 					, utils::sensorsGraph::SensorsGraph::readSensorDefaultInterval).toInt()
@@ -173,13 +164,15 @@ void PreferencesRobotSettingsPage::refreshValuesOnUi()
 					, utils::sensorsGraph::SensorsGraph::textUpdateDefault).toInt()
 	);
 
-	robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	enums::robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	initRobotModelType(typeOfRobotModel);
 
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
 	initTypeOfCommunication(typeOfCommunication);
 
 	mUi->textVisibleCheckBox->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
+	mUi->tcpServerLineEdit->setText(SettingsManager::value("tcpServer").toString());
+	mUi->tcpPortSpinBox->setValue(SettingsManager::value("tcpPort").toInt());
 }
 
 int PreferencesRobotSettingsPage::approximationLevel() const
@@ -303,18 +296,7 @@ void PreferencesRobotSettingsPage::save()
 
 void PreferencesRobotSettingsPage::restoreSettings()
 {
-	mUi->manualComPortCheckbox->setChecked(SettingsManager::value("manualComPortCheckboxChecked").toBool());
-	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
-	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
-	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
-
-	enums::robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
-	initRobotModelType(typeOfRobotModel);
-
-	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
-	initTypeOfCommunication(typeOfCommunication);
-
-	mUi->textVisibleCheckBox->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
+	refreshValuesOnUi();
 }
 
 void PreferencesRobotSettingsPage::refreshPorts()

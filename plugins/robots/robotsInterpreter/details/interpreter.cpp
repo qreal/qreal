@@ -11,6 +11,8 @@
 #include "details/tracer.h"
 #include "details/debugHelper.h"
 
+#include "../sensorConstants.h"
+
 using namespace qReal;
 using namespace interpreters::robots;
 using namespace interpreters::robots::details;
@@ -616,16 +618,16 @@ void Interpreter::connectSensorConfigurer(details::SensorsConfigurationWidget *c
 void Interpreter::updateGraphicWatchSensorsList()
 {
 	mGraphicsWatch->addTrackingObject(0, QString("Sensor1")
-			, SensorEnumerator::sensorName(static_cast<sensorType::SensorTypeEnum>
+			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
 					(SettingsManager::instance()->value("port1SensorType").toInt())));
 	mGraphicsWatch->addTrackingObject(1, QString("Sensor2")
-			, SensorEnumerator::sensorName(static_cast<sensorType::SensorTypeEnum>
+			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
 					(SettingsManager::instance()->value("port2SensorType").toInt())));
 	mGraphicsWatch->addTrackingObject(2, QString("Sensor3")
-			, SensorEnumerator::sensorName(static_cast<sensorType::SensorTypeEnum>
+			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
 					(SettingsManager::instance()->value("port3SensorType").toInt())));
 	mGraphicsWatch->addTrackingObject(3, QString("Sensor4")
-			, SensorEnumerator::sensorName(static_cast<sensorType::SensorTypeEnum>
+			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
 					(SettingsManager::instance()->value("port4SensorType").toInt())));
 }
 

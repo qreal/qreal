@@ -54,6 +54,7 @@ SOURCES += \
 	details/thread.cpp \
 	details/tracer.cpp \
 	details/textExpressionProcessor.cpp \
+    sensorConstants.cpp
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \

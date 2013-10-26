@@ -152,19 +152,6 @@
      </layout>
     </widget>
    </item>
-   <item row="8" column="0" colspan="2">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="2" column="0" colspan="2">
     <widget class="QGroupBox" name="sensorsSettingsGroupBox">
      <property name="title">
@@ -172,7 +159,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="0" colspan="2">
+   <item row="7" column="0" colspan="2">
     <widget class="QGroupBox" name="elementsGroupBox">
      <property name="title">
       <string>Elements</string>
@@ -293,8 +280,21 @@
      </layout>
     </widget>
    </item>
-   <item row="8" column="0" colspan="2">
+   <item row="9" column="0" colspan="2">
     <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="9" column="0" colspan="2">
+    <spacer name="verticalSpacer_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
@@ -309,7 +309,7 @@
      </property>
     </spacer>
    </item>
-   <item row="6" column="0" rowspan="2" colspan="2">
+   <item row="6" column="0" colspan="2">
     <widget class="QGroupBox" name="graphicsWatcherBox">
      <property name="title">
       <string>Graphics Watcher update intervals</string>
