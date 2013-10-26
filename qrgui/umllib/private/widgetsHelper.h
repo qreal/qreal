@@ -8,6 +8,7 @@
 #include "../../editorPluginInterface/sdfRendererInterface.h"
 #include "../../editorPluginInterface/propertyEditorInterface.h"
 
+namespace qReal {
 class WidgetsHelper : public WidgetsHelperInterface
 {
 	Q_OBJECT
@@ -26,7 +27,7 @@ public:
 	void onElementGeometryChanged();
 
 private:
-	void initEnumEditors();
+//	void initEnumEditors();
 	void initLayoutFactoryPropertyEditor();
 
 	NodeElement *mElement;
@@ -62,4 +63,4 @@ private:
 	WidgetsHelper *mHelper;
 	QMap<QString, QPixmap> mLoadedIcons;
 };
-
+}

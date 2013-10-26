@@ -40,7 +40,7 @@ private:
 	int upperMargin(int const baseMargin) const;
 
 	QString mBinding;
-	int mForestallingSize;
+	QVector<int> mForestallingSize;
 };
 
 }

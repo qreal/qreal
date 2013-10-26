@@ -28,7 +28,7 @@
 #include "umllib/serializationData.h"
 
 namespace qReal {
-//class WidgetsHelper;
+class WidgetsHelper;
 
 namespace commands {
 class ResizeCommand;

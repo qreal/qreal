@@ -5,6 +5,7 @@
 #include "umllib/nodeElement.h"
 #include "elementEditor/widgetsEdit/widgetsEditor.h"
 #include "elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.h"
+#include "qrgui/pluginManager/editorManager.h"
 
 WidgetsHelper::WidgetsHelper(NodeElement * const element)
 	: mElement(element), mEditorManager(NULL), mWidget(NULL)
@@ -77,14 +78,16 @@ QMap<QString, PropertyEditorInterface *> WidgetsHelper::propertyEditors() const
 void WidgetsHelper::setEditorManager(EditorManager const *editorManager)
 {
 	mEditorManager = editorManager;
-	initEnumEditors();
+//	initEnumEditors();
 }
 
 void WidgetsHelper::onIdChanged() {
 	mElement->updateData();
-	initEnumEditors();
+//	initEnumEditors();
 }
 
+/*
+ *TODO EFIM
 void WidgetsHelper::initEnumEditors()
 {
 	if (!mElement || mElement->id() == Id() || !mEditorManager) {
@@ -98,7 +101,7 @@ void WidgetsHelper::initEnumEditors()
 			editor->setEnumValues(values);
 		}
 	}
-}
+}*/
 
 QWidget *WidgetsHelper::widget() const
 {

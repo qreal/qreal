@@ -2,8 +2,8 @@
 
 #include <QtGui/QPainter>
 
-#include "mainwindow/shapeEdit/item.h"
-#include "mainwindow/shapeEdit/path.h"
+#include "elementEditor/shapeEdit/item.h"
+#include "elementEditor/shapeEdit/path.h"
 
 class Curve : public Path
 {

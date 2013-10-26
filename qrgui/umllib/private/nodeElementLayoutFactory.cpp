@@ -6,7 +6,7 @@ NodeElementLayoutFactory::NodeElementLayoutFactory(const QString &bindingTarget
 		, QGraphicsWidget *layoutHost)
 	: LayoutHandlerFactory(layoutHost)
 	, mBinding(bindingTarget)
-	, mForestallingSize(0)
+	, mForestallingSize(4, 0)
 {
 }
 
@@ -35,7 +35,7 @@ void NodeElementLayoutFactory::configure(ElementImpl *const impl)
 		forceChindrenSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	}
 	mForestallingSize = impl->sizeOfForestalling();
-	int const outerMargin = impl->sizeOfForestalling();
+	int const outerMargin = mForestallingSize[0];//left forestalling was implicated by old 'forestalling'?
 	int const innerMargin = impl->sizeOfChildrenForestalling();
 	if (outerMargin) {
 		setOuterMargin(outerMargin, upperMargin(outerMargin)
@@ -64,7 +64,9 @@ LayoutType NodeElementLayoutFactory::stringToType(QString const &stringType)
 
 void NodeElementLayoutFactory::processBeforeFirstPlacing(QGraphicsItem *element)
 {
-	element->setPos(mForestallingSize, upperMargin(mForestallingSize));
+	//TODO ask what was meant by old forestalling???
+	int legacyForstallingGuess = mForestallingSize[0];
+	element->setPos(legacyForstallingGuess, upperMargin(legacyForstallingGuess));
 }
 
 int NodeElementLayoutFactory::upperMargin(int const baseMargin) const

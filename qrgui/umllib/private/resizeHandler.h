@@ -30,6 +30,12 @@ private:
 	static int const mMinSize = 10;
 
 	/**
+	* Sorts child items in case node has
+	* sortChildren container property.
+	*/
+	void sortChildrenIfNeeded() const;
+
+	/**
 	 * Returns maximum of child item widths.
 	 * @return Maximum of child widths.
 	 */
@@ -79,7 +85,7 @@ private:
 	 * @param contents It will be used for place holder bounding calculating.
 	 * @return Bounding rectangle for childItem.
 	 */
-	QRectF childBoundingRect(const QGraphicsItem * const childItem) const;
+	QRectF childBoundingRect(const QGraphicsItem * const childItem, QRectF const &contents) const;
 
 	/**
 	 * Expands contents according to child configuration.

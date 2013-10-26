@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mainwindow/shapeEdit/text.h"
+#include "elementEditor/shapeEdit/text.h"
 
 class TextPicture : public Text
 {

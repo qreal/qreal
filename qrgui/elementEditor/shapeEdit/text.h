@@ -5,7 +5,7 @@
 #include <QtGui/QPainter>
 #include <QtGui/QFont>
 
-#include "mainwindow/shapeEdit/item.h"
+#include "elementEditor/shapeEdit/item.h"
 
 class Text : public Item
 {

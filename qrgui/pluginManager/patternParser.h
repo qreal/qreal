@@ -5,10 +5,9 @@
 
 #include <qrkernel/ids.h>
 
-#include "pluginManager/pattern.h"
-
 namespace qReal {
 class EditorManager;
+class Pattern;
 class PatternParser
 {
 public:

@@ -211,7 +211,7 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 	}
 }
 
-QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem) const
+QRectF ResizeHandler::childBoundingRect(const QGraphicsItem * const childItem, QRectF const &contents) const
 {
 	QRectF boundingRect;
 

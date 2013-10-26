@@ -1205,10 +1205,10 @@ void NodeElement::resize(QRectF const &newContents)
 	resize(newContents, pos());
 }
 
-void NodeElement::resize(const QRectF &newContents, const QPointF &newPos)
+void NodeElement::resize(const QRectF &newContents, const QPointF &newPos, bool needResizeParent)
 {
-	ResizeHandler handler(this, mElementImpl);
-	handler.resize(newContents, newPos);
+	ResizeHandler handler(this);
+	handler.resize(newContents, newPos, needResizeParent);
 	// It must be called here to avoid ifinite update loop
 	mWidgetsHelper->onElementGeometryChanged();
 }

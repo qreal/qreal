@@ -4,8 +4,8 @@
 
 #include <qrutils/graphicsUtils/stylusImpl.h>
 
-#include "mainwindow/shapeEdit/item.h"
-#include "mainwindow/shapeEdit/line.h"
+#include "elementEditor/shapeEdit/item.h"
+#include "elementEditor/shapeEdit/line.h"
 
 class Stylus : public Item
 {
