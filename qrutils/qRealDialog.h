@@ -2,11 +2,13 @@
 
 #include <QtWidgets/QDialog>
 
+#include "utilsDeclSpec.h"
+
 namespace utils {
 
-/// A base class for all system dilogs. Provides such tools like automatic
+/// A base class for all system dialogs. Provides such tools like automatic
 /// serialization of dialog`s position and size
-class QRealDialog : public QDialog
+class QRUTILS_EXPORT QRealDialog : public QDialog
 {
 	Q_OBJECT
 

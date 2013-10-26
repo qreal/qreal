@@ -30,14 +30,11 @@ void QRealDialog::serializeParameters()
 	SettingsManager::setValue(sizeKey(), size());
 }
 
-#include <QDebug>
 void QRealDialog::deserializeParameters()
 {
 	if (SettingsManager::value(maximizedKey()).toBool()) {
 		setWindowState(windowState() | Qt::WindowMaximized);
 	} else {
-		qDebug() << SettingsManager::value(positionKey()).toPoint();
-		qDebug() << SettingsManager::value(sizeKey()).toSize();
 		move(SettingsManager::value(positionKey()).toPoint());
 		resize(SettingsManager::value(sizeKey()).toSize());
 	}
