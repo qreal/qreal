@@ -50,9 +50,9 @@ QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
 	return QList<ContextMenuAction*>();
 }
 
-QVariant Element::logicalProperty(QString const &roleName) const
+QString Element::logicalProperty(QString const &roleName) const
 {
-	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName);
+	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
 }
 
 void Element::setLogicalProperty(QString const &roleName, QString const &value, bool withUndoRedo)

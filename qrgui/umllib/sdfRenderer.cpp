@@ -55,7 +55,7 @@ bool SdfRenderer::load(const QString &filename)
 	return true;
 }
 
-void SdfRenderer::load(QDomDocument const &document)
+bool SdfRenderer::load(QDomDocument const &document)
 {
 	mDoc = document;
 	initFirstSizes();
@@ -72,16 +72,6 @@ void SdfRenderer::initFirstSizes()
 void SdfRenderer::initWorkingDir()
 {
 	mWorkingDirName = SettingsManager::value("workingDir").toString();
-}
-
-bool SdfRenderer::load(QDomDocument const &document)
-{
-	doc = document;
-	QDomElement const docElem = doc.firstChildElement("picture");
-	first_size_x = docElem.attribute("sizex").toInt();
-	first_size_y = docElem.attribute("sizey").toInt();
-
-	return true;
 }
 
 void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo){

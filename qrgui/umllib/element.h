@@ -62,7 +62,7 @@ public:
 
 	virtual void setLogicalProperty(QString const &roleName, QString const &value
 			, bool withUndoRedo = false);
-	QVariant logicalProperty(QString const &roleName) const;
+	QString logicalProperty(QString const &roleName) const;
 
 	virtual void setColorRect(bool bl) = 0;
 

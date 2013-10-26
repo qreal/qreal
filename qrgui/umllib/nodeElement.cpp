@@ -89,6 +89,7 @@ NodeElement::NodeElement(ElementImpl *impl
 	mGrid = new SceneGridHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
 
+	mWidgetsHelper->onIdChanged();
 
 	connect(this, SIGNAL(geometryChanged()), this, SLOT(synchronizeGeometries()));
 	mLayoutFactory->configure(impl);
@@ -130,12 +131,6 @@ NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
 {
 	CopyHandler copyHandler(*this, mGraphicalAssistApi);
 	return copyHandler.clone(toCursorPos, searchForParents);
-}
-
-void NodeElement::setId(Id &id)
-{
-	Element::setId(id);
-	mWidgetsHelper->onIdChanged();
 }
 
 NodeElement* NodeElement::copyAndPlaceOnDiagram(QPointF const &offset)
@@ -542,6 +537,8 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	if (!isPort() && (flags() & ItemIsMovable)) {
 		if (mHighlightedNode) {
 			NodeElement *newParent = mHighlightedNode;
+			Element *insertBefore = mHighlightedNode->getPlaceholderNextElement();
+			mHighlightedNode->erasePlaceholder(false);
 
 			QPointF newPos = mapToItem(newParent, mapFromScene(scenePos()));
 			AbstractCommand *parentCommand = changeParentCommand(newParent->id(), newPos);
@@ -837,7 +834,7 @@ void NodeElement::setPortsVisible(QStringList const &types)
 	}
 }
 
-void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *)
+void NodeElement::paint(QPainter *painter, QStyleOptionGraphicsItem const *style, QWidget *w)
 {
 	QGraphicsProxyWidget::paint(painter, style, w);
 	mElementImpl->paint(painter, mContents);

@@ -2,7 +2,7 @@
 
 using namespace qReal::widgetsEdit;
 
-Label::Label(ToolController *controller)
+qReal::widgetsEdit::Label::Label(ToolController *controller)
 	: Frame(new LabelWidget("label"), controller)
 {
 	mLabel = dynamic_cast<LabelWidget *>(widget());
