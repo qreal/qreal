@@ -26,7 +26,6 @@ public:
 	void forReleaseResize(QGraphicsSceneMouseEvent *event, QRectF const &rect);
 	void reshapeItem(QGraphicsSceneMouseEvent *event, QRectF const &rect);
 	void drawBackground(QPainter *painter, QRectF const &rect);
-	void VK_add(qreal a, qreal b);
 
 public slots:
 	void updateGrid();

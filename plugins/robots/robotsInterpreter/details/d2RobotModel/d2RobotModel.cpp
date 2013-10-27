@@ -41,11 +41,15 @@ D2RobotModel::D2RobotModel(QObject *parent)
 	, mNeedSync(false)
 	, mNeedSensorNoise(SettingsManager::value("enableNoiseOfSensors").toBool())
 	, mNeedMotorNoise(SettingsManager::value("enableNoiseOfMotors").toBool())
+	, mAngle(0)
+	, mMomentI(100)
+	, mPos(QPointF(0,0))
+	, mFric(0)
+	, mMass(1000)
+	, mAngularVelocity(0)
+	, mForceMoment(0)
 {
-	mAngle = 0;
-	mMomentI = 100;
-	mPos = QPointF(0,0);
-	mFric = 0;
+
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
 	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()), Qt::UniqueConnection);
@@ -402,23 +406,15 @@ uint D2RobotModel::spoilLight(uint const color) const
 	return color;
 }
 
-
 void D2RobotModel::startInit()
 {
 	initPosition();
-	mPos = QPointF (0, 0);
-	mAngle = 0;
 	mTimeline->start();
 }
 
 void D2RobotModel::startInterpretation()
 {
 	startInit();
-	mPos = QPointF(0,0);
-	mMass = 1000;
-	mAngularVelocity = 0;
-	mForceMoment = 0;
-	updateCoord();
 	mD2ModelWidget->startTimelineListening();
 }
 
@@ -527,7 +523,6 @@ void D2RobotModel::updateCoord()
 	for (int i = 0; i < 3; i++) {
 		mL[i] = QLineF(mP[i], mP[i+1]);
 	}
-
 	mL[3] = QLineF(mP[3], mP[0]);
 }
 
@@ -768,7 +763,6 @@ void D2RobotModel::calculateForceMoment()
 			setForceMoment(mForceMoment - vectorProduct(F_norm , tmp));
 		}
 	}
-
 }
 
 void D2RobotModel::getRobotFromWall(WallItem& wall, int index)
@@ -805,7 +799,6 @@ void D2RobotModel::getRobotFromWall(WallItem& wall, int index)
 			}
 		}
 	}
-
 }
 
 void D2RobotModel::getEdgeRobotFromWall(WallItem& wall, int index)

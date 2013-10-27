@@ -17,6 +17,7 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	, mImage(":/icons/2d_wall.png")
 	, mOldX1(0)
 	, mOldY1(0)
+	, mIsCircle(false)
 {
 	setPrivateData();
 	setAcceptDrops(true);
@@ -25,7 +26,7 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 void WallItem::setWallPath()
 {
 	QPainterPath wallPath;
-	if ((this->mX1 == this->mX2)&&(this->mY1 == this->mY2)) {
+	if ((mX1 == mX2)&&(mY1 == mY2)) {
 		wallPath.addEllipse(mX1, mY1, 10, 10);
 		mCenter = QPointF(mX1, mY1);
 		mIsCircle = true;
@@ -136,7 +137,6 @@ void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 	QGraphicsItem::mouseReleaseEvent(event);
 	mDragged = false;
-
 }
 
 QDomElement WallItem::serialize(QDomDocument &document, QPoint const &topLeftPicture)
@@ -167,10 +167,10 @@ void WallItem::setLines()
 {
 	linesList.clear();
 
-	qreal x1 = begin().rx();// mX1;// + scenePos().rx();
-	qreal x2 = end().rx();// mX2;// + scenePos().rx();
-	qreal y1 = begin().ry();// mY1;// + scenePos().ry();
-	qreal y2 = end().ry();// mY2;// + scenePos().ry();
+	qreal x1 = begin().rx();
+	qreal x2 = end().rx();
+	qreal y1 = begin().ry();
+	qreal y2 = end().ry();
 
 	qreal deltx = x2 - x1;
 	qreal delty = y2 - y1;
@@ -182,17 +182,12 @@ void WallItem::setLines()
 
 	QVector2D norm (y1 - y2, x2 - x1);
 	norm = norm.normalized();
-	norm.operator *=(mPen.widthF()/2); //= norm*mPen.widthF();
+	norm.operator *=(mPen.widthF()/2);
 
 	mP[0] = QPointF(x1 - deltx + norm.x(), y1 - delty + norm.y());
     mP[1] = QPointF(x1 - deltx - norm.x(), y1 - delty - norm.y());
     mP[2] = QPointF(x2 + deltx - norm.x(), y2 + delty - norm.y());
     mP[3] = QPointF(x2 + deltx + norm.x(), y2 + delty + norm.y());
-
-	//mP[0] += scenePos();
-	//mP[1] += scenePos();
-	//mP[2] += scenePos();
-	//mP[3] += scenePos();
 
 	linesList.push_back(QLineF(mP[0],mP[1]));
     linesList.push_back(QLineF(mP[1],mP[2]));

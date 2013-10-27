@@ -66,7 +66,7 @@ protected:
 	virtual void setPrivateData();
 
 private:
-	bool mIsCircle = false;
+	bool mIsCircle;
 	bool mDragged;
 	bool mOverlappedWithRobot;
 	QImage mImage;
