@@ -1,4 +1,4 @@
-DESTDIR = ../bin/qrUpdater
+DESTDIR = ../bin
 
 QT       += core network
 

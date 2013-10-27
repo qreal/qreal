@@ -9,7 +9,7 @@ QRealUpdater::QRealUpdater(char *applicationPath)
 	, mQRealPath(applicationPath)
 
 {
-	mUpdaterPath = QFileInfo(mQRealPath).absolutePath() + "/qrUpdater/";
+	mUpdaterPath = QFileInfo(mQRealPath).absolutePath();
 }
 
 bool QRealUpdater::hasUpdates()
@@ -29,7 +29,7 @@ void QRealUpdater::startUpdater()
 
 void QRealUpdater::executeUpdater()
 {
-	QString const programPath = mUpdaterPath + "qrUpdater";
+	QString const programPath = mUpdaterPath + "/qrUpdater";
 	QStringList arguments;
 	arguments << "-unit" << "windows"
 			<< "-version" << SettingsManager::value("version").toString()
