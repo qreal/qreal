@@ -1,4 +1,6 @@
-#pragma once
+﻿#pragma once
+
+#include <QtCore/QStringList>
 
 namespace qReal {
 namespace interpreters {
@@ -50,6 +52,14 @@ enum robotModelTypeEnum {
 };
 }
 }
+
+class SensorEnumerator
+{
+public:
+
+	static QStringList sensorNamesList();
+	static QString sensorName(enums::sensorType::SensorTypeEnum const &sensor);
+};
 
 }
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QtCore/QObject>
 
@@ -19,7 +19,8 @@ public:
 	virtual QString aboutText() const;
 	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface);
 
-	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
+	void placeSensorsConfig(QWidget *sensorsWidget);
+	void placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch);
 	virtual bool showInterpeterButton() const;
 
 	virtual QString userPaletteTitle() const;
