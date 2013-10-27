@@ -8,6 +8,8 @@
 *.orig
 *.rej
 *.so
+*.release
+*.debug
 .#*
 *.*#
 moc_*.cpp
