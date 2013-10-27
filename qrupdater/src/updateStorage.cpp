@@ -18,10 +18,10 @@ UpdateStorage::~UpdateStorage()
 	}
 }
 
-void UpdateStorage::saveInfoFromParser(DetailsParser const *parser)
+void UpdateStorage::saveUpdateInfo(DetailsParser const *parser, QString const savedFilePath)
 {
 	mUpdateInfo->beginGroup(parser->currentUnit());
-	mUpdateInfo->setValue("fileName", parser->currentUpdate()->filePath());
+	mUpdateInfo->setValue("fileName", savedFilePath);
 	mUpdateInfo->setValue("version", parser->currentUpdate()->version());
 	mUpdateInfo->setValue("args", parser->currentUpdate()->arguments());
 	mUpdateInfo->endGroup();
@@ -35,9 +35,11 @@ void UpdateStorage::saveFileForLater(DetailsParser const *parser, QString const 
 		QFile::remove(mUpdatesFolder + QFileInfo(filePath).fileName());
 	}
 
-	QFile::rename(filePath, mUpdatesFolder + QFileInfo(filePath).fileName());
+	QString const endFilePath = mUpdatesFolder + QFileInfo(filePath).fileName();
 
-	saveInfoFromParser(parser);
+	QFile::rename(filePath, endFilePath);
+
+	saveUpdateInfo(parser, endFilePath);
 }
 
 void UpdateStorage::removePreparedUpdate()

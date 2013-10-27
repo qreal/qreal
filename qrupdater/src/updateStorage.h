@@ -30,7 +30,7 @@ public:
 	Update* preparedUpdate();
 
 protected:
-	void saveInfoFromParser(DetailsParser const *parser);
+	void saveUpdateInfo(DetailsParser const *parser, QString const savedFilePath);
 
 	Update *mPreparedUpdate;
 	QString const mUpdatesFolder;
