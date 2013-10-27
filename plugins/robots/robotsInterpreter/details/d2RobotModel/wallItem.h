@@ -53,7 +53,6 @@ public:
     }
 	QPainterPath mWallPath;
 
-	//void setLines(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
 	void setLines();
 	void setWallPath();
 	QPointF mP[4];

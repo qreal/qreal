@@ -1,10 +1,10 @@
  <picture sizex="204" sizey="204">
-  <line stroke="#000000" fill-style="none" fill="#000000" y1="2" y2="2" x1="22" stroke-style="solid" x2="182" stroke-width="0"/>
-  <line stroke="#000000" fill-style="none" fill="#000000" y1="202" y2="202" x1="22" stroke-style="solid" x2="182" stroke-width="0"/>
-  <line stroke="#000000" fill-style="none" fill="#000000" y1="22" y2="182" x1="2" stroke-style="solid" x2="2" stroke-width="0"/>
-  <line stroke="#000000" fill-style="none" fill="#000000" y1="22" y2="182" x1="202" stroke-style="solid" x2="202" stroke-width="0"/>
-  <arc spanAngle="1440" startAngle="1440" y1="2" y2="42" x1="2" x2="42"/>
-  <arc spanAngle="1440" startAngle="0" y1="2" y2="42" x1="162" x2="202"/>
-  <arc spanAngle="1440" startAngle="2880" y1="162" y2="202" x1="2" x2="42"/>
-  <arc spanAngle="-1440" startAngle="0" y1="162" y2="202" x1="162" x2="202"/>
+  <line stroke-style="solid" y1="2" stroke-width="0" y2="2" fill-style="none" x1="22" fill="#000000" x2="182" stroke="#000000"/>
+  <line stroke-style="solid" y1="202" stroke-width="0" y2="202" fill-style="none" x1="22" fill="#000000" x2="182" stroke="#000000"/>
+  <line stroke-style="solid" y1="22" stroke-width="0" y2="182" fill-style="none" x1="2" fill="#000000" x2="2" stroke="#000000"/>
+  <line stroke-style="solid" y1="22" stroke-width="0" y2="182" fill-style="none" x1="202" fill="#000000" x2="202" stroke="#000000"/>
+  <arc spanAngle="1440" y1="2" startAngle="1440" y2="42" x1="2" x2="42"/>
+  <arc spanAngle="1440" y1="2" startAngle="0" y2="42" x1="162" x2="202"/>
+  <arc spanAngle="1440" y1="162" startAngle="2880" y2="202" x1="2" x2="42"/>
+  <arc spanAngle="-1440" y1="162" startAngle="0" y2="202" x1="162" x2="202"/>
  </picture>

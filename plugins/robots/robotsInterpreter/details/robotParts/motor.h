@@ -19,8 +19,6 @@ class Motor : public QObject
 public:
 	Motor(int const port, robotImplementations::motorImplementations::AbstractMotorImplementation *motorImpl);
 	~Motor();
-	//qreal mMotorFactor;
-	//qreal mFullSpeed;
 	virtual void on(int speed, bool breakMode = true);
 	virtual void on(int speed, long unsigned int degrees, bool breakMode = true);
 	virtual void stop(bool breakMode = true);

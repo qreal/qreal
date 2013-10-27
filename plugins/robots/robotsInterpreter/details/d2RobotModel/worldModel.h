@@ -47,7 +47,6 @@ private:
 	bool checkSonarDistance(int const distance, QPointF const &position
 			, qreal const direction, QPainterPath const &wallPath) const;
 
-//	QList<WallItem *> mWalls;
 	QList<ColorFieldItem *> mColorFields;
 	QMap<robots::enums::inputPort::InputPortEnum, QPointF> mTouchSensorPositionOld;
 	QMap<robots::enums::inputPort::InputPortEnum, qreal> mTouchSensorDirectionOld;
