@@ -1,9 +1,0 @@
- <picture sizex="50" sizey="50">
-  <image name="images/enginesBackwardBlock.png" y1="0" y2="50" x1="0" x2="50"/>
-  <rectangle stroke-style="none" y1="0" stroke-width="1" fill-style="solid" y2="10" x1="0" fill="#7cfc00" x2="10" stroke="#000000">
-   <showIf sign="=" value="скользить" property="Mode"/>
-  </rectangle>
-  <rectangle stroke-style="none" y1="0" stroke-width="1" fill-style="solid" y2="10" x1="0" fill="#ff0000" x2="10" stroke="#ffa500">
-   <showIf sign="=" value="тормозить" property="Mode"/>
-  </rectangle>
- </picture>

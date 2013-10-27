@@ -23,3 +23,4 @@ bin/*
 *.Debug
 *.Release
 *.prf
+*/generated/*
