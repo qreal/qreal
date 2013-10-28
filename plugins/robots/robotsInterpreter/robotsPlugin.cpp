@@ -25,8 +25,8 @@ RobotsPlugin::RobotsPlugin()
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
 
-	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 	mInterpreter = new details::Interpreter();
+	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
 	connect(mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
 	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
@@ -38,6 +38,7 @@ RobotsPlugin::RobotsPlugin()
 RobotsPlugin::~RobotsPlugin()
 {
 	delete mAppTranslator;
+	delete mInterpreter;
 }
 
 void RobotsPlugin::initActions()
