@@ -14,13 +14,15 @@ public:
 	ColorListEditor(QWidget *widget = 0);
 
 public:
-        void setColorList(QStringList const &ColorList);
+	void setColorList(QStringList const &colorList, QStringList const &translatedColorList = QStringList());
 	QColor color() const;
+	QColor colorByIndex(int index) const;
 	void setColor(QColor c);
 
 private:
 	QColor mColor;
-        QStringList mColorList;
+	QStringList mColorList;
+	QStringList mTranslatedColorList;
 	void populateList();
 };
 }
