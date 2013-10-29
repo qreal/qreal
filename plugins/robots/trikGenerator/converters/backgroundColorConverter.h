@@ -11,7 +11,7 @@ namespace converters {
 class BackgroundColorConverter : public EnumConverterBase
 {
 public:
-	BackgroundColorConverter(QString const &pathToTemplates);
+	explicit BackgroundColorConverter(QString const &pathToTemplates);
 };
 
 }

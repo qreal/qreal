@@ -11,7 +11,7 @@ namespace converters {
 class LedColorConverter : public EnumConverterBase
 {
 public:
-	LedColorConverter(QString const &pathToTemplates);
+	explicit LedColorConverter(QString const &pathToTemplates);
 };
 
 }
