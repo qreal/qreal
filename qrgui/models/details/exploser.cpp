@@ -37,18 +37,19 @@ void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &dia
 	descriptions[mUserGroupTitle] = mUserGroupDescription;
 
 	IdList const childTypes = mApi.editorManagerInterface().elements(diagram);
+
 	foreach (Id const &child, childTypes) {
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(child);
+
 		foreach (Explosion const &explosion, explosions) {
 			if (!explosion.isReusable()) {
 				continue;
 			}
+
 			Id const target = explosion.target();
 			IdList const allTargets = mApi.logicalRepoApi().elementsByType(target.element(), true);
 			foreach (Id const &targetInstance, allTargets) {
-				if (mApi.isLogicalId(targetInstance) &&
-						!mApi.logicalRepoApi().incomingExplosions(targetInstance).isEmpty())
-				{
+				if (mApi.isLogicalId(targetInstance)) {
 					groups[mUserGroupTitle] << gui::PaletteElement(child
 							, mApi.logicalRepoApi().name(targetInstance)
 							, QString(), mApi.editorManagerInterface().icon(child)

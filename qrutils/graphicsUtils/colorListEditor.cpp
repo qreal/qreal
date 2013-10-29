@@ -1,9 +1,9 @@
-#include <QtWidgets>
-#include "colorlisteditor.h"
+#include "colorListEditor.h"
 
 using namespace graphicsUtils;
 
-ColorListEditor::ColorListEditor(QWidget *widget) : QComboBox(widget)
+ColorListEditor::ColorListEditor(QWidget *widget)
+	: QComboBox(widget)
 {
 }
 
@@ -24,7 +24,7 @@ QColor ColorListEditor::colorByIndex(int index) const
 	return itemData(index, Qt::DecorationRole).value<QColor>();
 }
 
-void ColorListEditor::setColor(QColor color)
+void ColorListEditor::setColor(QColor const &color)
 {
 	setCurrentIndex(findData(color, int(Qt::DecorationRole)));
 }
@@ -33,7 +33,7 @@ void ColorListEditor::populateList()
 {
 	QStringList colorNames = mColorList;
 	for (int i = 0; i < colorNames.size(); ++i) {
-		QColor color(colorNames[i]);
+		QColor const color(colorNames[i]);
 		insertItem(i, mTranslatedColorList[i]);
 		setItemData(i, color, Qt::DecorationRole);
 	}

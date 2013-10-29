@@ -78,6 +78,7 @@ private:
 	struct Motor {
 		int radius;
 		int speed;
+		int spoiledSpeed;
 		int degrees;
 		ATime activeTimeType;
 		bool isUsed;
