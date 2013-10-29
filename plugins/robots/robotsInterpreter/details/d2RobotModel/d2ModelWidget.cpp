@@ -22,7 +22,7 @@ QSize const displaySize(200, 300);
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
 	, NxtDisplay *nxtDisplay, QWidget *parent)
-		: QWidget(parent)
+		: QRealDialog("D2ModelWindow", parent)
 		, mUi(new Ui::D2Form)
 		, mScene(NULL)
 		, mRobot(NULL)
@@ -93,14 +93,12 @@ void D2ModelWidget::initWidget()
 
 	mUi->penWidthSpinBox->setRange(1, 30);
 
-	QStringList colorNames;
-	colorNames.push_back("Black");
-	colorNames.push_back("Blue");
-	colorNames.push_back("Green");
-	colorNames.push_back("Yellow");
-	colorNames.push_back("Red");
-
-	mUi->penColorComboBox->setColorList(colorNames);
+	mUi->penColorComboBox->setColorList(QStringList()
+			<< tr("Black")
+			<< tr("Blue")
+			<< tr("Green")
+			<< tr("Yellow")
+			<< tr("Red"));
 	mUi->penColorComboBox->setColor(QColor("black"));
 
 	initButtonGroups();
@@ -287,9 +285,11 @@ void D2ModelWidget::changeEvent(QEvent *e)
 void D2ModelWidget::showEvent(QShowEvent *e)
 {
 	e->accept();
+	QRealDialog::showEvent(e);
 	if (mFirstShow) {
 		onFirstShow();
 	}
+
 	mFirstShow = false;
 }
 
@@ -1015,6 +1015,7 @@ void D2ModelWidget::disableRunStopButtons()
 void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
+	serializeParameters();
 	emit d2WasClosed();
 }
 
