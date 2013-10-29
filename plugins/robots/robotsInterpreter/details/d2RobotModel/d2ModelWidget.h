@@ -132,6 +132,7 @@ private slots:
 	void addStylus(bool on);
 	void addEllipse(bool on);
 	void clearScene(bool removeRobot = false);
+	void setNoneStatus();
 	void resetButtons();
 
 	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);

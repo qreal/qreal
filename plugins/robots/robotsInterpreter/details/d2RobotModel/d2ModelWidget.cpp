@@ -119,6 +119,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->lineButton, SIGNAL(toggled(bool)), this, SLOT(addLine(bool)));
 	connect(mUi->wallButton, SIGNAL(toggled(bool)), this, SLOT(addWall(bool)));
 	connect(mUi->clearButton, SIGNAL(clicked()), this, SLOT(clearScene()));
+	connect(mUi->noneButton, SIGNAL(clicked()), this, SLOT(setNoneStatus()));
 
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
 	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), this, SLOT(changePenColor(const QString &)));
@@ -379,49 +380,52 @@ QPainterPath const D2ModelWidget::robotBoundingPolygon(QPointF const &coord
 void D2ModelWidget::addWall(bool on)
 {
 	if (!on) {
-		mDrawingAction = enums::drawingAction::none;
-		mMouseClicksCount = 0;
+		setNoneStatus();
 		return;
 	}
 
-	mDrawingAction = enums::drawingAction::wall;
 	setHighlightOneButton(mUi->wallButton);
+	mDrawingAction = enums::drawingAction::wall;
 }
 
 void D2ModelWidget::addLine(bool on)
 {
 	if (!on) {
-		mDrawingAction = enums::drawingAction::none;
-		mMouseClicksCount = 0;
+		setNoneStatus();
 		return;
 	}
 
-	mDrawingAction = enums::drawingAction::line;
 	setHighlightOneButton(mUi->lineButton);
+	mDrawingAction = enums::drawingAction::line;
 }
 
 void D2ModelWidget::addStylus(bool on)
 {
 	if (!on) {
-		mDrawingAction = enums::drawingAction::none;
-		mMouseClicksCount = 0;
+		setNoneStatus();
 		return;
 	}
 
-	mDrawingAction = enums::drawingAction::stylus;
 	setHighlightOneButton(mUi->stylusButton);
+	mDrawingAction = enums::drawingAction::stylus;
 }
 
 void D2ModelWidget::addEllipse(bool on)
 {
 	if (!on) {
-		mDrawingAction = enums::drawingAction::none;
-		mMouseClicksCount = 0;
+		setNoneStatus();
 		return;
 	}
 
-	mDrawingAction = enums::drawingAction::ellipse;
 	setHighlightOneButton(mUi->ellipseButton);
+	mDrawingAction = enums::drawingAction::ellipse;
+}
+
+void D2ModelWidget::setNoneStatus()
+{
+	mDrawingAction = enums::drawingAction::none;
+	mMouseClicksCount = 0;
+	setHighlightOneButton(mUi->noneButton);
 }
 
 void D2ModelWidget::clearScene(bool removeRobot)
@@ -700,28 +704,24 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 		reshapeWall(mouseEvent);
 		mCurrentWall = NULL;
 		mMouseClicksCount = 0;
-		mDrawingAction = enums::drawingAction::none;
 		break;
 	}
 	case enums::drawingAction::line: {
 		reshapeLine(mouseEvent);
 		mCurrentLine = NULL;
 		mMouseClicksCount = 0;
-		mDrawingAction = enums::drawingAction::none;
 		break;
 	}
 	case enums::drawingAction::stylus: {
 		reshapeStylus(mouseEvent);
 		mCurrentStylus = NULL;
 		mMouseClicksCount = 0;
-		mDrawingAction = enums::drawingAction::none;
 		break;
 	}
 	case enums::drawingAction::ellipse: {
 		reshapeEllipse(mouseEvent);
 		mCurrentEllipse = NULL;
 		mMouseClicksCount = 0;
-		mDrawingAction = enums::drawingAction::none;
 		break;
 	}
 	default:
@@ -729,10 +729,6 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	}
 
-	mUi->wallButton->setChecked(false);
-	mUi->lineButton->setChecked(false);
-	mUi->stylusButton->setChecked(false);
-	mUi->ellipseButton->setChecked(false);
 	mScene->setMoveFlag(mouseEvent);
 
 	mScene->update();
