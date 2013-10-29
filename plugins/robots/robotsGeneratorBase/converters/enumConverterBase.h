@@ -11,7 +11,7 @@ namespace converters {
 
 /// A base class for converters that have finite input cases number and
 /// each of them must be mapped to some template
-class EnumConverterBase : public TemplateParametrizedConverter
+class ROBOTS_GENERATOR_EXPORT EnumConverterBase : public TemplateParametrizedConverter
 {
 public:
 	EnumConverterBase(QString const &pathToTemplatesDir

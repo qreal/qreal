@@ -33,9 +33,15 @@ HEADERS += \
 	$$PWD/trikGeneratorCustomizer.h \
 	$$PWD/trikGeneratorFactory.h \
 	$$PWD/parts/trikVariables.h \
+	$$PWD/converters/backgroundColorConverter.h \
+	$$PWD/converters/ledColorConverter.h \
 	$$PWD/converters/trikEnginePortsConverter.h \
+	$$PWD/simpleGenerators/ledGenerator.h \
+	$$PWD/simpleGenerators/sadSmileGenerator.h \
+	$$PWD/simpleGenerators/setBackgroundGenerator.h \
+	$$PWD/simpleGenerators/smileGenerator.h \
 	$$PWD/simpleGenerators/trikEnginesGenerator.h \
-	$$PWD/simpleGenerators/trikEnginesStopGenerator.h
+	$$PWD/simpleGenerators/trikEnginesStopGenerator.h \
 
 SOURCES += \
 	$$PWD/trikGeneratorPlugin.cpp \
@@ -43,7 +49,13 @@ SOURCES += \
 	$$PWD/trikGeneratorCustomizer.cpp \
 	$$PWD/trikGeneratorFactory.cpp \
 	$$PWD/parts/trikVariables.cpp \
+	$$PWD/converters/backgroundColorConverter.cpp \
+	$$PWD/converters/ledColorConverter.cpp \
 	$$PWD/converters/trikEnginePortsConverter.cpp \
+	$$PWD/simpleGenerators/ledGenerator.cpp \
+	$$PWD/simpleGenerators/sadSmileGenerator.cpp \
+	$$PWD/simpleGenerators/setBackgroundGenerator.cpp \
+	$$PWD/simpleGenerators/smileGenerator.cpp \
 	$$PWD/simpleGenerators/trikEnginesGenerator.cpp \
 	$$PWD/simpleGenerators/trikEnginesStopGenerator.cpp \
 
