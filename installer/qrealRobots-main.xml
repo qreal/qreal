@@ -45,6 +45,9 @@
                 <distributionFile>
                     <origin>%1/bin/changelog.txt</origin>
                 </distributionFile>
+                <distributionFile>
+                    <origin>%1/bin/splashscreen.png</origin>
+                </distributionFile>
                 <distributionDirectory>
                     <origin>%1/plugins/robots/editor/images</origin>
                 </distributionDirectory>

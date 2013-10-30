@@ -85,7 +85,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	initSettingsManager();
 	registerMetaTypes();
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
-	splashScreen.setVisible(false);
 	splashScreen.setProgress(5);
 
 	initRecentProjectsMenu();
