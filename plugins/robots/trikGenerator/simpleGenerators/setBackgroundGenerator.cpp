@@ -1,6 +1,6 @@
 #include "setBackgroundGenerator.h"
 
-#include "generatorCustomizer.h"
+#include <generatorCustomizer.h>
 #include "converters/backgroundColorConverter.h"
 
 using namespace qReal::robots::generators::simple;

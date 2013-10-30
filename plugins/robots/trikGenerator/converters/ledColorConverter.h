@@ -1,6 +1,6 @@
 #pragma once
 
-#include "converters/enumConverterBase.h"
+#include <converters/enumConverterBase.h>
 
 namespace qReal {
 namespace robots {

@@ -4,8 +4,8 @@
 #include <QtCore/QStringList>
 
 #include <qrrepo/repoApi.h>
-#include "templateParametrizedEntity.h"
 #include "robotsGeneratorDeclSpec.h"
+#include "templateParametrizedEntity.h"
 
 namespace qReal {
 namespace robots {
