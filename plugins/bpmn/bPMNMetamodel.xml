@@ -77,6 +77,7 @@
                 <value>No Loop</value>
                 <value>Multiple Instances (Parallel)</value>
                 <value>Multiple Instances (Sequential)</value>
+				<value>Standard Loop</value>
             </enum>
             <enum name="TaskType" displayedName="Task Type"/>
         </nonGraphicTypes>
@@ -488,24 +489,39 @@
                             <end endx="45" endy="142"/>
                             <ctrl x="15" y="145"/>
                         </curve>
-                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="70" x2="70">
-                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
-                        </line>
                         <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="80" x2="80">
                             <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
                         </line>
                         <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="90" x2="90">
                             <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
                         </line>
-                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="115" fill="#ffffff" y2="115" stroke="#000000" x1="72" x2="88">
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="100" x2="100">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="115" fill="#ffffff" y2="115" stroke="#000000" x1="82" x2="98">
                             <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
                         </line>
-                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="125" fill="#ffffff" y2="125" stroke="#000000" x1="72" x2="88">
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="125" fill="#ffffff" y2="125" stroke="#000000" x1="82" x2="98">
                             <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
                         </line>
-                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="135" fill="#ffffff" y2="135" stroke="#000000" x1="72" x2="88">
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="135" fill="#ffffff" y2="135" stroke="#000000" x1="82" x2="98">
                             <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
                         </line>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="80" x2="100">
+							<showIf value="Standard Loop" property="loopType" sign="="/>
+						</ellipse>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="136" stroke="#000000" x1="90" x2="86">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="132" stroke="#000000" x1="90" x2="87">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="125" y2="115" y3="135" fill-style="none" x1="110" x2="125" x3="125">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" x1="125" x2="140" x3="140" fill-style="none" y1="125" y2="115" y3="135">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
                     </picture>
                     <labels>
                         <label x="46a" y="55a" textBinded="Text"/>
@@ -532,9 +548,13 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property type="string" name="Text" displayedName="Text"/>
+                        <property type="string" name="text" displayedName="Text"/>
                         <property type="LoopType" name="loopType" displayedName="Loop Type"/>
                         <property type="string" name="Name" displayedName="Name"/>
+						<property type="bool" name="isForCompensation" displayedName="isForCompensation">
+							<default>false</default>
+						</property>
+						<property type="string" name="loopCondition" displayedName="Loop Condition"/>
                     </properties>
                 </logic>
             </node>
@@ -565,6 +585,42 @@
                             <end endx="45" endy="142"/>
                             <ctrl x="15" y="145"/>
                         </curve>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="42" y2="118" fill-style="none" x1="15" x2="15">
+							<showIf value="true" property="transaction" sign="="/>
+						</line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="15" y2="15" fill-style="none" x1="42" x2="168">
+							<showIf value="true" property="transaction" sign="="/>
+						</line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="42" y2="118" fill-style="none" x1="195" x2="195">
+							<showIf value="true" property="transaction" sign="="/>
+						</line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="145" y2="145" fill-style="none" x1="42" x2="168">
+							<showIf value="true" property="transaction" sign="="/>
+						</line>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="15" starty="42"/>
+                            <end endx="42" endy="15"/>
+                            <ctrl x="13" y="13"/>
+							<showIf value="true" property="transaction" sign="="/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="195" starty="45"/>
+                            <end endx="168" endy="15"/>
+                            <ctrl x="197" y="13"/>
+							<showIf value="true" property="transaction" sign="="/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="168" starty="145"/>
+                            <end endx="195" endy="118"/>
+                            <ctrl x="197" y="147"/>
+							<showIf value="true" property="transaction" sign="="/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="15" starty="115"/>
+                            <end endx="42" endy="145"/>
+                            <ctrl x="13" y="147"/>
+							<showIf value="true" property="transaction" sign="="/>
+                        </curve>
                         <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="95" x2="115"/>
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="118" y2="132" fill-style="none" x1="105" x2="105"/>
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="125" y2="125" fill-style="none" x1="98" x2="112"/>
@@ -586,6 +642,33 @@
                         <line stroke-style="solid" fill-style="none" stroke-width="3" y1="135" fill="#ffffff" y2="135" stroke="#000000" x1="72" x2="88">
                             <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
                         </line>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="70" x2="90">
+							<showIf value="Standard Loop" property="loopType" sign="="/>
+						</ellipse>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="136" stroke="#000000" x1="80" x2="76">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="132" stroke="#000000" x1="80" x2="77">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="125" y2="115" y3="135" fill-style="none" x1="120" x2="135" x3="135">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" x1="135" x2="150" x3="150" fill-style="none" y1="125" y2="115" y3="135">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="45" starty="125"/>
+                            <end endx="55" endy="125"/>
+                            <ctrl x="50" y="120"/>
+							<showIf value="true" property="adHoc" sign="="/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="55" starty="125"/>
+                            <end endx="65" endy="125"/>
+                            <ctrl x="60" y="130"/>
+							<showIf value="true" property="adHoc" sign="="/>
+                        </curve>
                     </picture>
                     <labels>
                         <label x="40a" y="145a" textBinded="Text"/>
@@ -617,6 +700,118 @@
                     <properties>
                         <property type="string" name="Text" displayedName="Text"/>
                         <property type="LoopType" name="loopType" displayedName="Loop Type"/>
+						<property type="bool" name="isForCompensation" displayedName="isForCompensation">
+							<default>false</default>
+						</property>
+						<property type="bool" name="adHoc" displayedName="ad Hoc">
+							<default>false</default>
+						</property>
+						<property type="string" name="loopCondition" displayedName="Loop Condition"/>
+						<property type="bool" name="transaction" displayedName="Transaction">
+							<default>false</default>
+						</property>
+                    </properties>
+                </logic>
+            </node>
+            <node name="EventSubprocess" displayedName="Event Subprocess">
+                <graphics>
+                    <picture sizex="210" sizey="160">
+                        <line fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" y1="45" y2="115" fill-style="none" x1="18" x2="18"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" y1="18" y2="18" fill-style="none" x1="45" x2="165"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" y1="45" y2="115" fill-style="none" x1="192" x2="192"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" y1="142" y2="142" fill-style="none" x1="45" x2="165"/>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" fill-style="none">
+                            <start startx="18" starty="45"/>
+                            <end endx="45" endy="18"/>
+                            <ctrl x="15" y="15"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" fill-style="none">
+                            <start startx="192" starty="45"/>
+                            <end endx="165" endy="18"/>
+                            <ctrl x="195" y="15"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" fill-style="none">
+                            <start startx="165" starty="142"/>
+                            <end endx="192" endy="115"/>
+                            <ctrl x="195" y="145"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" fill-style="none">
+                            <start startx="18" starty="115"/>
+                            <end endx="45" endy="142"/>
+                            <ctrl x="15" y="145"/>
+                        </curve>
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="95" x2="115"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="118" y2="132" fill-style="none" x1="105" x2="105"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="125" y2="125" fill-style="none" x1="98" x2="112"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="70" x2="70">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="80" x2="80">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="90" x2="90">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="115" fill="#ffffff" y2="115" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="125" fill="#ffffff" y2="125" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="135" fill="#ffffff" y2="135" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="70" x2="90">
+							<showIf value="Standard Loop" property="loopType" sign="="/>
+						</ellipse>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="136" stroke="#000000" x1="80" x2="76">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="132" stroke="#000000" x1="80" x2="77">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="125" y2="115" y3="135" fill-style="none" x1="120" x2="135" x3="135">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" x1="135" x2="150" x3="150" fill-style="none" y1="125" y2="115" y3="135">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
+                    </picture>
+                    <labels>
+                        <label x="46a" y="55a" textBinded="Text"/>
+                    </labels>
+                    <ports>
+                        <linePort type="ActivityLeft">
+                            <start startx="18" starty="45"/>
+                            <end endx="18" endy="115"/>
+                        </linePort>
+                        <linePort type="ActivityVertical">
+                            <start startx="45" starty="18"/>
+                            <end endx="165" endy="18"/>
+                        </linePort>
+                        <linePort type="ActivityRight">
+                            <start startx="192" starty="45"/>
+                            <end endx="192" endy="115"/>
+                        </linePort>
+                        <linePort type="ActivityVertical">
+                            <start startx="45" starty="142"/>
+                            <end endx="165" endy="142"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo>
+                        <target type="BPMNDiagramNode" makeReusable="false" requireImmediateLinkage="false"/>
+                    </explodesTo>
+                    <properties>
+                        <property type="string" name="text" displayedName="Text"/>
+                        <property type="LoopType" name="loopType" displayedName="Loop Type"/>
+                        <property type="string" name="Name" displayedName="Name"/>
+						<property type="bool" name="isForCompensation" displayedName="isForCompensation">
+							<default>false</default>
+						</property>
+						<property type="string" name="loopCondition" displayedName="Loop Condition"/>
                     </properties>
                 </logic>
             </node>
@@ -846,6 +1041,7 @@
             <group name="Activities">
                 <element name="Task"/>
                 <element name="Subprocess"/>
+				<element name="EventSubprocess"/>
             </group>
             <group name="Flows">
                 <element name="SequenceFlow"/>
