@@ -5,8 +5,7 @@
 #include "../../../../qrutils/graphicsUtils/painterInterface.h"
 #include "../../../../qrutils/graphicsUtils/paintWidget.h"
 
-namespace Ui
-{
+namespace Ui {
 	class NxtDisplay;
 }
 

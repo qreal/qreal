@@ -22,6 +22,7 @@ public:
 	virtual void drawRect(int x, int y, int width, int height);
 	virtual void drawCircle(int x, int y, int radius);
 	virtual void printText(int x, int y, QString const &text);
+	virtual void drawImage(QImage const &image);
 	virtual void clearScreen();
 
 signals:

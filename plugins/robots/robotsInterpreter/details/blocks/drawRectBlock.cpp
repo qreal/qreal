@@ -16,7 +16,7 @@ void DrawRectBlock::run()
 	int const y = evaluate("YCoordinateRect").toInt();
 	int const width = evaluate("WidthRect").toInt();
 	int const height = evaluate("HeightRect").toInt();
-	mDisplay.drawRect(x, y, width, height);
+//	mDisplay.drawRect(x, y, width, height);
 	emit done(mNextBlock);
 }
 

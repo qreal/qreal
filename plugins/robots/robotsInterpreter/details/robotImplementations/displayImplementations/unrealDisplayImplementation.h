@@ -29,23 +29,16 @@ public:
 	virtual ~UnrealDisplayImplementation() {}
 
 	virtual void read();
-	virtual void drawPixel(int x, int y);
-	virtual void drawLine(int x1, int y1, int x2, int y2);
-	virtual void drawRect(int x, int y, int width, int height);
-	virtual void drawCircle(int x, int y, int radius);
-	virtual void printText(int x, int y, QString const &text);
 	virtual void paint(QPainter *painter);
+
+	virtual void drawImage(QImage const &image);
 	virtual void clearScreen();
+
 	void attachToPaintWidget();
 
 protected:
 	d2Model::D2RobotModel *mD2Model;
-	QList<QLine> mLines;
-	QList<QPoint> mPoints;
-	QList<QRect> mCircles;
-	QList<QRect> mRects;
-	QList<QString> mStrings;
-	QList<QPoint> mStringPlaces;
+	QImage mCurrentImage;
 };
 }
 }

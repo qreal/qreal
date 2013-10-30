@@ -21,7 +21,7 @@
 #include "robotItem.h"
 #include "rotater.h"
 #include "timeline.h"
-#include "../nxtDisplay.h"
+#include "../trikDisplay.h"
 
 namespace Ui {
 class D2Form;
@@ -65,7 +65,7 @@ class D2ModelWidget : public utils::QRealDialog
 
 public:
 	D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
-			, NxtDisplay *nxtDisplay, QWidget *parent = 0);
+			, TrikDisplay *display, QWidget *parent = 0);
 	~D2ModelWidget();
 	void init(bool isActive = true);
 	void close();
@@ -245,7 +245,7 @@ private:
 
 	RobotModelInterface *mRobotModel;
 	WorldModel *mWorldModel;
-	NxtDisplay *mNxtDisplay;
+	TrikDisplay *mTrikDisplay;
 
 	/// Current action (toggled button on left panel)
 	enums::drawingAction::DrawingAction mDrawingAction;

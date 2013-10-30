@@ -35,6 +35,7 @@ HEADERS += \
 	details/nullTimer.h \
 	details/nxtDisplay.h \
 	details/textExpressionProcessor.h \
+    details/trikDisplay.h
 
 SOURCES += \
 	customizer.cpp \
@@ -54,12 +55,14 @@ SOURCES += \
 	details/thread.cpp \
 	details/tracer.cpp \
 	details/textExpressionProcessor.cpp \
+    details/trikDisplay.cpp
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
 	details/sensorsConfigurationWidget.ui \
 	details/nxtDisplay.ui \
+    details/trikDisplay.ui
 
 RESOURCES += \
 	robotsInterpreter.qrc \

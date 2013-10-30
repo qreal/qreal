@@ -32,7 +32,7 @@ D2RobotModel::D2RobotModel(QObject *parent)
 		, mMotorA(NULL)
 		, mMotorB(NULL)
 		, mMotorC(NULL)
-		, mDisplay(new NxtDisplay)
+		, mDisplay(new TrikDisplay)
 		, mTimeline(new Timeline(this))
 		, mNoiseGen()
 		, mNeedSync(false)
@@ -586,7 +586,7 @@ Timeline *D2RobotModel::timeline() const
 	return mTimeline;
 }
 
-details::NxtDisplay *D2RobotModel::display()
+details::TrikDisplay *D2RobotModel::display()
 {
 	return mDisplay;
 }

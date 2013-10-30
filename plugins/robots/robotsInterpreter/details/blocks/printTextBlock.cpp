@@ -18,7 +18,7 @@ void PrintTextBlock::run()
 	QString const rawText = stringProperty("PrintText");
 	QString const text = TextExpressionProcessor(*mParser->getVariables()).processExpression(rawText);
 
-	mDisplay.printText(x, y, text);
+//	mDisplay.printText(x, y, text);
 	emit done(mNextBlock);
 }
 

@@ -40,6 +40,11 @@ void RealDisplayImplementation::printText(int x, int y, QString const &text)
 	Q_UNUSED(text)
 }
 
+void RealDisplayImplementation::drawImage(QImage const &image)
+{
+	Q_UNUSED(image)
+}
+
 void RealDisplayImplementation::drawRect(int x, int y, int width, int height)
 {
 	Q_UNUSED(x)

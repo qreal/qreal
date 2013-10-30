@@ -21,7 +21,7 @@ using namespace graphicsUtils;
 QSize const displaySize(200, 300);
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
-	, NxtDisplay *nxtDisplay, QWidget *parent)
+	, TrikDisplay *display, QWidget *parent)
 		: QRealDialog("D2ModelWindow", parent)
 		, mUi(new Ui::D2Form)
 		, mScene(NULL)
@@ -29,7 +29,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
 		, mRobotModel(robotModel)
 		, mWorldModel(worldModel)
-		, mNxtDisplay(nxtDisplay)
+		, mTrikDisplay(display)
 		, mDrawingAction(enums::drawingAction::none)
 		, mMouseClicksCount(0)
 		, mCurrentWall(NULL)
@@ -103,9 +103,9 @@ void D2ModelWidget::initWidget()
 
 	initButtonGroups();
 
-	mNxtDisplay->setMinimumSize(displaySize);
-	mNxtDisplay->setMaximumSize(displaySize);
-	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mNxtDisplay);
+	mTrikDisplay->setMinimumSize(displaySize);
+	mTrikDisplay->setMaximumSize(displaySize);
+	dynamic_cast<QHBoxLayout *>(mUi->displayFrame->layout())->insertWidget(0, mTrikDisplay);
 	setDisplayVisibility(SettingsManager::value("2d_displayVisible").toBool());
 }
 
@@ -1119,12 +1119,12 @@ void D2ModelWidget::onTimelineTick()
 
 void D2ModelWidget::toggleDisplayVisibility()
 {
-	setDisplayVisibility(!mNxtDisplay->isVisible());
+	setDisplayVisibility(!mTrikDisplay->isVisible());
 }
 
 void D2ModelWidget::setDisplayVisibility(bool visible)
 {
-	mNxtDisplay->setVisible(visible);
+	mTrikDisplay->setVisible(visible);
 	QString const direction = visible ? "right" : "left";
 	mUi->displayButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
 	SettingsManager::setValue("2d_displayVisible", visible);

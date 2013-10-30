@@ -15,7 +15,7 @@ void DrawCircleBlock::run()
 	int const x = evaluate("XCoordinateCircle").toInt();
 	int const y = evaluate("YCoordinateCircle").toInt();
 	int const radius = evaluate("CircleRadius").toInt();
-	mDisplay.drawCircle(x, y, radius);
+//	mDisplay.drawCircle(x, y, radius);
 	emit done(mNextBlock);
 }
 
