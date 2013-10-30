@@ -15,9 +15,18 @@
             <port name="GatewayLeft"/>
             <port name="GatewayVertical"/>
             <port name="GatewayRight"/>
-            <port name="ActivityLeft"/>
-            <port name="ActivityVertical"/>
-            <port name="ActivityRight"/>
+            <port name="TaskLeft"/>
+            <port name="TaskVertical"/>
+            <port name="TaskRight"/>
+            <port name="SubprocessLeft"/>
+            <port name="SubprocessVertical"/>
+            <port name="SubprocessRight"/>
+            <port name="EventSubprocessLeft"/>
+            <port name="EventSubprocessVertical"/>
+            <port name="EventSubprocessRight"/>
+            <port name="TaskLeft"/>
+            <port name="TaskVertical"/>
+            <port name="TaskRight"/>
 			<port name="DataLeft"/>
 			<port name="DataVertical"/>
 			<port name="DataRight"/>
@@ -109,6 +118,7 @@
                          <contains type="BPMNDiagram::Gateway"/>
                          <contains type="BPMNDiagram::Task"/>
                          <contains type="BPMNDiagram::Subprocess"/>
+                         <contains type="BPMNDiagram::EventSubprocess"/>
                          <contains type="BPMNDiagram::SequenceFlow"/>
                          <contains type="BPMNDiagram::SignalBoundaryEvent"/>
                          <contains type="BPMNDiagram::TimerBoundaryEvent"/>
@@ -553,19 +563,19 @@
                         <label x="46a" y="55a" textBinded="Text"/>
                     </labels>
                     <ports>
-                        <linePort type="ActivityLeft">
+                        <linePort type="TaskLeft">
                             <start startx="18" starty="45"/>
                             <end endx="18" endy="115"/>
                         </linePort>
-                        <linePort type="ActivityVertical">
+                        <linePort type="TaskVertical">
                             <start startx="45" starty="18"/>
                             <end endx="165" endy="18"/>
                         </linePort>
-                        <linePort type="ActivityRight">
+                        <linePort type="TaskRight">
                             <start startx="192" starty="45"/>
                             <end endx="192" endy="115"/>
                         </linePort>
-                        <linePort type="ActivityVertical">
+                        <linePort type="TaskVertical">
                             <start startx="45" starty="142"/>
                             <end endx="165" endy="142"/>
                         </linePort>
@@ -703,19 +713,19 @@
                         <label x="40a" y="145a" textBinded="Text"/>
                     </labels>
                     <ports>
-                        <linePort type="ActivityLeft">
+                        <linePort type="SubprocessLeft">
                             <start startx="18" starty="45"/>
                             <end endx="18" endy="115"/>
                         </linePort>
-                        <linePort type="ActivityVertical">
+                        <linePort type="SubprocessVertical">
                             <start startx="45" starty="18"/>
                             <end endx="165" endy="18"/>
                         </linePort>
-                        <linePort type="ActivityRight">
+                        <linePort type="SubprocessRight">
                             <start startx="192" starty="45"/>
                             <end endx="192" endy="115"/>
                         </linePort>
-                        <linePort type="ActivityVertical">
+                        <linePort type="SubprocessVertical">
                             <start startx="45" starty="142"/>
                             <end endx="165" endy="142"/>
                         </linePort>
@@ -810,19 +820,19 @@
                         <label x="46a" y="55a" textBinded="Text"/>
                     </labels>
                     <ports>
-                        <linePort type="ActivityLeft">
+                        <linePort type="EventSubprocessLeft">
                             <start startx="18" starty="45"/>
                             <end endx="18" endy="115"/>
                         </linePort>
-                        <linePort type="ActivityVertical">
+                        <linePort type="EventSubprocessVertical">
                             <start startx="45" starty="18"/>
                             <end endx="165" endy="18"/>
                         </linePort>
-                        <linePort type="ActivityRight">
+                        <linePort type="EventSubprocessRight">
                             <start startx="192" starty="45"/>
                             <end endx="192" endy="115"/>
                         </linePort>
-                        <linePort type="ActivityVertical">
+                        <linePort type="EventSubprocessVertical">
                             <start startx="45" starty="142"/>
                             <end endx="165" endy="142"/>
                         </linePort>
@@ -890,6 +900,18 @@
 						<association endName="end" beginName="start"/>
 					</associations>
 					<properties/>
+					<fromPorts>
+						<port type="IntermediateEventVertical"/>
+						<port type="IntermediateEventRight"/>
+						<port type="EndEventVertical"/>
+						<port type="EndEventRight"/>
+					</fromPorts>
+					<toPorts>
+						<port type="IntermediateEventVertical"/>
+						<port type="IntermediateEventLeft"/>
+						<port type="StartEventVertical"/>
+						<port type="StartEventLeft"/>
+					</toPorts>
 				</logic>
 			</edge>
             <edge name="SequenceFlow" displayedName="Sequence Flow">
@@ -915,16 +937,20 @@
                         <port type="StartEventVertical"/>
                         <port type="IntermediateEventVertical"/>
                         <port type="IntermediateEventRight"/>
-                        <port type="ActivityRight"/>
-                        <port type="ActivityVertical"/>
+                        <port type="TaskRight"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessRight"/>
+                        <port type="SubprocessVertical"/>
                         <port type="GatewayVertical"/>
                         <port type="GatewayRight"/>
                     </fromPorts>
                     <toPorts>
                         <port type="IntermediateEventVertical"/>
                         <port type="IntermediateEventLeft"/>
-                        <port type="ActivityLeft"/>
-                        <port type="ActivityVertical"/>
+                        <port type="TaskLeft"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessLeft"/>
+                        <port type="SubprocessVertical"/>
                         <port type="GatewayVertical"/>
                         <port type="GatewayLeft"/>
                         <port type="EndEventLeft"/>
@@ -934,19 +960,28 @@
                         <possibleEdge beginName="StartEventRight" directed="true" endName="IntermediateEventLeft"/>
                         <possibleEdge beginName="StartEventRight" directed="true" endName="EndEventLeft"/>
                         <possibleEdge beginName="StartEventRight" directed="true" endName="GatewayLeft"/>
-                        <possibleEdge beginName="StartEventRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="TaskLeft"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="SubprocessLeft"/>
                         <possibleEdge beginName="IntermediateEventRight" directed="true" endName="IntermediateEventLeft"/>
                         <possibleEdge beginName="IntermediateEventRight" directed="true" endName="EndEventLeft"/>
                         <possibleEdge beginName="IntermediateEventRight" directed="true" endName="GatewayLeft"/>
-                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="ActivityLeft"/>
-                        <possibleEdge beginName="ActivityRight" directed="true" endName="IntermediateEventLeft"/>
-                        <possibleEdge beginName="ActivityRight" directed="true" endName="EndEventLeft"/>
-                        <possibleEdge beginName="ActivityRight" directed="true" endName="GatewayLeft"/>
-                        <possibleEdge beginName="ActivityRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="TaskLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="SubprocessLeft"/>
+                        <possibleEdge beginName="TaskRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="SubprocessRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="TaskRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="SubprocessRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="TaskRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="SubprocessRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="TaskRight" directed="true" endName="TaskLeft"/>
+                        <possibleEdge beginName="SubprocessRight" directed="true" endName="TaskLeft"/>
+                        <possibleEdge beginName="TaskRight" directed="true" endName="SubprocessLeft"/>
+                        <possibleEdge beginName="SubprocessRight" directed="true" endName="SubprocessLeft"/>
                         <possibleEdge beginName="GatewayRight" directed="true" endName="IntermediateEventLeft"/>
                         <possibleEdge beginName="GatewayRight" directed="true" endName="EndEventLeft"/>
                         <possibleEdge beginName="GatewayRight" directed="true" endName="GatewayLeft"/>
-                        <possibleEdge beginName="GatewayRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="TaskLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="SubprocessLeft"/>
                     </possibleEdges>
                 </logic>
             </edge>
@@ -967,12 +1002,14 @@
                     <fromPorts>
                         <port type="IntermediateEventVertical"/>
                         <port type="EndEventVertical"/>
-                        <port type="ActivityVertical"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessVertical"/>
                     </fromPorts>
                     <toPorts>
                         <port type="IntermediateEventVertical"/>
                         <port type="StartEventVertical"/>
-                        <port type="ActivityVertical"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessVertical"/>
                     </toPorts>
                     <possibleEdges/>
                 </logic>
@@ -992,15 +1029,23 @@
                         <property type="string" displayedName="Text" name="Text"/>
                     </properties>
                     <fromPorts>
-                        <port type="ActivityVertical"/>
-                        <port type="ActivityLeft"/>
-                        <port type="ActivityRight"/>
+                        <port type="TaskVertical"/>
+                        <port type="TaskLeft"/>
+                        <port type="TaskRight"/>
+                        <port type="SubprocessVertical"/>
+                        <port type="SubprocessLeft"/>
+                        <port type="SubprocessRight"/>
+                        <port type="EventSubprocessVertical"/>
+                        <port type="EventSubprocessLeft"/>
+                        <port type="EventSubprocessRight"/>
                     </fromPorts>
                     <toPorts>
                         <port type="IntermediateEventVertical"/>
                         <port type="IntermediateEventLeft"/>
-                        <port type="ActivityLeft"/>
-                        <port type="ActivityVertical"/>
+                        <port type="TaskLeft"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessVertical"/>
+                        <port type="SubprocessLeft"/>
                         <port type="GatewayVertical"/>
                         <port type="GatewayLeft"/>
                         <port type="EndEventLeft"/>
@@ -1022,8 +1067,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                      <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="TimerBoundaryEvent" displayedName="Timer (Interrupting)">
@@ -1041,15 +1107,23 @@
                         <property type="string" displayedName="Text" name="Text"/>
                     </properties>
                     <fromPorts>
-                        <port type="ActivityVertical"/>
-                        <port type="ActivityLeft"/>
-                        <port type="ActivityRight"/>
+                        <port type="TaskVertical"/>
+                        <port type="TaskLeft"/>
+                        <port type="TaskRight"/>
+                        <port type="SubprocessVertical"/>
+                        <port type="SubprocessLeft"/>
+                        <port type="SubprocessRight"/>
+                        <port type="EventSubprocessVertical"/>
+                        <port type="EventSubprocessLeft"/>
+                        <port type="EventSubprocessRight"/>
                     </fromPorts>
                     <toPorts>
                         <port type="IntermediateEventVertical"/>
                         <port type="IntermediateEventLeft"/>
-                        <port type="ActivityLeft"/>
-                        <port type="ActivityVertical"/>
+                        <port type="TaskLeft"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessLeft"/>
+                        <port type="SubprocessVertical"/>
                         <port type="GatewayVertical"/>
                         <port type="GatewayLeft"/>
                         <port type="EndEventLeft"/>
@@ -1071,8 +1145,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="MessageBoundaryEvent" displayedName="Message (Interrupting)">
@@ -1089,8 +1184,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="MessageNoninterruptingBoundaryEvent" displayedName="Message (Non-Interrupting)">
@@ -1107,8 +1223,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="ErrorBoundaryEvent" displayedName="Error">
@@ -1125,8 +1262,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="EscalationBoundaryEvent" displayedName="Escalation">
@@ -1143,8 +1301,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="EscalationNoninterruptingBoundaryEvent" displayedName="Escalation (Non-Interrupting)">
@@ -1161,8 +1340,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="CancelBoundaryEvent" displayedName="Cancel">
@@ -1179,13 +1379,28 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="CompensationBoundaryEvent" displayedName="Compensation">
                <graphics>
-                   <lineType type="solidLine"/>
+                   <lineType type="dotLine"/>
                    <labels>
                        <label textBinded="Text"/>
                    </labels>
@@ -1197,8 +1412,23 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="ConditionalBoundaryEvent" displayedName="Conditional (Interrupting)">
@@ -1215,8 +1445,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="ConditionalNoninterruptingBoundaryEvent" displayedName="Conditional (Non-Interrupting)">
@@ -1233,8 +1484,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="MultipleBoundaryEvent" displayedName="Multiple (Interrupting)">
@@ -1251,8 +1523,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="MultipleNoninterruptingBoundaryEvent" displayedName="Multiple (Non-Interrupting)">
@@ -1269,8 +1562,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="ParallelMultipleBoundaryEvent" displayedName="Parallel Multiple (Interrupting)">
@@ -1287,8 +1601,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <edge name="ParallelMultipleNoninterruptingBoundaryEvent" displayedName="Parallel Multiple (Non-Interrupting)">
@@ -1305,8 +1640,29 @@
                    <properties>
                        <property type="string" displayedName="Text" name="Text"/>
                    </properties>
-                   <fromPorts/>
-                   <toPorts/>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
                </logic>
           </edge>
           <node name="Lane" displayedName="Lane">

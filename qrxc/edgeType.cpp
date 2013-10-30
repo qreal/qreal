@@ -405,8 +405,11 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 		}
 
 		out() << "\t\t\tpainter->drawEllipse(-20, 0, 40, 40);\n"
-				"\t\t\tpainter->drawEllipse(-15, 5, 30, 30);\n"
-				"\t\t\tpainter->restore();\n";
+				"\t\t\tpainter->drawEllipse(-15, 5, 30, 30);\n";
+
+		out() << "\t\t\tQPen solidPen = painter->pen();\n"
+				 "\t\t\tsolidPen.setStyle(Qt::SolidLine);\n"
+				 "\t\t\tpainter->setPen(solidPen);\n";
 
 		if (style == "signal") {
 			out() << "\t\t\tstatic const QPointF points[] = {"
@@ -493,6 +496,8 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 					 "\n\t\t\t\tQPointF(-12, 17)\n\t\t\t};\n"
 					 "\t\t\tpainter->drawPolyline(points, 13);\n";
 		}
+
+		out() << "\t\t\tpainter->restore();\n";
 	}
 
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
