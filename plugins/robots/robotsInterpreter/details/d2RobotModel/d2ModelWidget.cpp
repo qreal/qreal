@@ -1094,7 +1094,8 @@ void D2ModelWidget::enableRobotFollowing(bool on)
 
 void D2ModelWidget::setCursorType(enums::cursorType::CursorType cursor)
 {
-	mCursorType = mNoneCursorType = cursor;
+	mNoneCursorType = cursor;
+	mCursorType = mNoneCursorType;
 	qReal::SettingsManager::setValue("2dCursorType", cursor);
 	mUi->graphicsView->setDragMode(cursorTypeToDragType(cursor));
 	mUi->graphicsView->setCursor(cursorTypeToCursor(cursor));
