@@ -47,33 +47,28 @@
 <context>
     <name>qReal::robots::generators::trik::TrikGeneratorPlugin</name>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="40"/>
+        <location filename="trikGeneratorPlugin.cpp" line="33"/>
         <source>Generate TRIK code</source>
         <translation>Генерировать код для ТРИК</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="44"/>
+        <location filename="trikGeneratorPlugin.cpp" line="37"/>
         <source>Upload program</source>
         <translation>Загрузить программу</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="48"/>
+        <location filename="trikGeneratorPlugin.cpp" line="41"/>
         <source>Run program</source>
         <translation>Загрузить и выполнить программу</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="52"/>
+        <location filename="trikGeneratorPlugin.cpp" line="45"/>
         <source>Stop robot</source>
         <translation>Остановить робот</translation>
     </message>
     <message>
-        <location filename="trikGeneratorPlugin.cpp" line="77"/>
-        <source>Generated code</source>
-        <translation>Сгенерированный код</translation>
-    </message>
-    <message>
-        <location filename="trikGeneratorPlugin.cpp" line="89"/>
-        <location filename="trikGeneratorPlugin.cpp" line="113"/>
+        <location filename="trikGeneratorPlugin.cpp" line="66"/>
+        <location filename="trikGeneratorPlugin.cpp" line="90"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом, проверьте настройки, проверьте, включён ли робот</translation>
     </message>

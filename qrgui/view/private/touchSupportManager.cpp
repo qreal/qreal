@@ -10,6 +10,7 @@ using namespace qReal::view::details;
 TouchSupportManager::TouchSupportManager(EditorView *editorView)
 	: mEditorView(editorView)
 	, mGestureIsRunning(false)
+	, mFingersInGesture(0)
 {
 	mEditorView->grabGesture(Qt::TapGesture);
 	mEditorView->grabGesture(Qt::TapAndHoldGesture);
@@ -115,8 +116,10 @@ bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
 	if (gestureEvent->gesture(Qt::TapGesture)) {
 		mScroller.onTap();
 	} else if (QGesture *tapAndHold = gestureEvent->gesture(Qt::TapAndHoldGesture)) {
-		processGestureState(tapAndHold);
-		simulateRightClick(static_cast<QTapAndHoldGesture *>(tapAndHold));
+		if (mFingersInGesture > 0) {
+			processGestureState(tapAndHold);
+			simulateRightClick(static_cast<QTapAndHoldGesture *>(tapAndHold));
+		}
 	} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
 		processGestureState(pan);
 		mScroller.onPan(pan);

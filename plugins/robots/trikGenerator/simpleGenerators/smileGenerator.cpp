@@ -1,6 +1,6 @@
 #include "smileGenerator.h"
 
-#include "base/generatorCustomizer.h"
+#include <generatorCustomizer.h>
 
 using namespace qReal::robots::generators::simple;
 

@@ -1,6 +1,6 @@
 #include "ledGenerator.h"
 
-#include "base/generatorCustomizer.h"
+#include <generatorCustomizer.h>
 #include "converters/ledColorConverter.h"
 
 using namespace qReal::robots::generators::simple;

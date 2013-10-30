@@ -31,6 +31,9 @@ private:
 	/// Makes all letters that start words lower and replaces spaces with underscore,
 	/// for example tranforms "some text" to "some_text".
 	static QString lowerFirst(QString const &string);
+
+	/// Spells given id in translit-style (e.g. 'идентификатор' -> 'identificator')
+	static QString russianTranslit(QString const &russianString);
 };
 
 }

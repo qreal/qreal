@@ -2,7 +2,7 @@
 #include "ui_findReplaceDialog.h"
 
 FindReplaceDialog::FindReplaceDialog(qrRepo::LogicalRepoApi const &logicalRepoApi, QWidget *parent)
-	: QDialog(parent)
+	: QRealDialog("FindReplaceDialog", parent)
 	, mCommonApi(logicalRepoApi)
 	, mUi(new Ui::FindReplaceDialog)
 {

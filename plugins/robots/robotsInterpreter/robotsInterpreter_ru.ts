@@ -280,14 +280,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>GridParameters</name>
-    <message>
-        <source>Show grid1</source>
-        <oldsource>Show grid</oldsource>
-        <translation type="obsolete">Сетка1</translation>
-    </message>
-</context>
-<context>
     <name>NxtDisplay</name>
     <message>
         <location filename="details/nxtDisplay.ui" line="435"/>
@@ -427,6 +419,13 @@ p, li { white-space: pre-wrap; }
         <location filename="robotSettingsPage.ui" line="289"/>
         <source>Enable motor noise</source>
         <translation>Шум моторов</translation>
+    </message>
+</context>
+<context>
+    <name>QCoreApplication</name>
+    <message>
+        <source>Blue</source>
+        <translation type="obsolete">Синий</translation>
     </message>
 </context>
 <context>
@@ -1024,7 +1023,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="details/blocks/loopBlock.cpp" line="31"/>
         <source>There must be an outgoing link with property &lt;b&gt;Guard&lt;/b&gt; set as &lt;b&gt;iteration&lt;/b&gt;. See help, chapter &lt;i&gt;Programming&lt;/i&gt;</source>
-        <translation>Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Программирование&lt;/i&gt;</translation>
+        <translation>Необходима исходящая из блока связь, в которой в значении свойства &lt;b&gt;Условие&lt;/b&gt; установлено в &lt;b&gt;итерация&lt;/b&gt;. Подробности см. в справке в разделе &lt;i&gt;Создание программ&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="details/blocks/loopBlock.cpp" line="36"/>
@@ -1064,7 +1063,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::PrintTextBlock</name>
     <message>
-        <location filename="details/blocks/printTextBlock.cpp" line="25"/>
+        <location filename="details/blocks/printTextBlock.cpp" line="27"/>
         <source>Display</source>
         <translation>Дисплей</translation>
     </message>
@@ -1219,18 +1218,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="741"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="97"/>
+        <source>Black</source>
+        <translation>Чёрный</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="98"/>
+        <source>Blue</source>
+        <translation>Синий</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="99"/>
+        <source>Green</source>
+        <translation>Зелёный</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="100"/>
+        <source>Yellow</source>
+        <translation>Жёлтый</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="101"/>
+        <source>Red</source>
+        <translation>Красный</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="745"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="741"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="760"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="745"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="764"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="760"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="764"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>
@@ -1238,8 +1262,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::GridParameters</name>
     <message>
-        <source>Show grid</source>
-        <oldsource>Show grid223</oldsource>
+        <source>Grid</source>
         <translation type="obsolete">Сетка</translation>
     </message>
 </context>

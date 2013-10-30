@@ -1,5 +1,6 @@
 #include "renameDialog.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QDialogButtonBox>
 
@@ -8,7 +9,7 @@ using namespace qReal::gui;
 RenameDialog::RenameDialog(QString const &initialText, QWidget *parent)
 	: QDialog(parent), mInitialName(initialText)
 {
-	setWindowTitle(tr("Enter new name"));
+	setWindowTitle(QCoreApplication::translate("qReal::gui::RenameDialog", "Enter new name"));
 
 	mTextBox = new QLineEdit(mInitialName);
 	mTextBox->setPlaceholderText(mInitialName);

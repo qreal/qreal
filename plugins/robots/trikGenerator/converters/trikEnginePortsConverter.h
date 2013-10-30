@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base/converters/templateParametrizedMultiConverter.h"
+#include <converters/templateParametrizedMultiConverter.h>
 
 namespace qReal {
 namespace robots {
