@@ -8,7 +8,7 @@ int const border = 5;
 
 RobotItem::RobotItem()
 	: RotateItem()
-	, mImage(QImage(":/icons/trik/wagon.png"))
+	, mImage(QImage(":/icons/trik/wagon.svg"))
 	, mBeepItem(new BeepItem)
 	, mIsOnTheGround(true)
 	, mRotater(NULL)

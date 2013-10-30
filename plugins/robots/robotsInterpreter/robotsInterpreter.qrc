@@ -44,8 +44,8 @@
         <file>icons/trik/controller.png</file>
         <file>icons/trik/icon.png</file>
         <file>icons/trik/installer&amp;splashscreen.svg</file>
-        <file>icons/trik/wagon.png</file>
         <file>icons/trik/button_off.png</file>
         <file>icons/trik/button_on.png</file>
+        <file>icons/trik/wagon.svg</file>
     </qresource>
 </RCC>

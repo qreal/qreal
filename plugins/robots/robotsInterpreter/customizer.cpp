@@ -5,18 +5,18 @@ using namespace qReal::interpreters::robots;
 
 QString Customizer::windowTitle() const
 {
-	return QObject::tr("QReal:Robots") + " " + productVersion();
+	return QObject::tr("Trik Studio") + " " + productVersion();
 }
 
 QIcon Customizer::applicationIcon() const
 {
-	return QIcon(":/icons/kroki.png");
+	return QIcon(":/icons/trik/icon.png");
 }
 
 QString Customizer::productVersion() const
 {
 	// TODO: other storage for it?
-	return "2.4.3 (TRIK)";
+	return "0.0.0";
 }
 
 QString Customizer::aboutText() const
