@@ -1736,7 +1736,7 @@
 			</node>
 
 
-			<node displayedName="Смайлик" name="Smile">
+			<node displayedName="Смайлик" name="Smile" path="161, 71 : 166, 57 :  | 149, 82 : 161, 70 :  | 113, 91 : 149, 83 :  | 67, 91 : 113, 91 :  | 29, 84 : 65, 91 :  | 17, 74 : 28, 83 :  | 12, 59 : 17, 73 :  | 130, 13 : 130, 51 :  | 62, 12 : 62, 51 : ">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/smileBlock.png" x1="0" y2="50" x2="50"/>
@@ -1768,7 +1768,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Грустный смайлик" name="SadSmile">
+			<node displayedName="Грустный смайлик" name="SadSmile" path="156, 91 : 173, 110 :  | 115, 73 : 156, 91 :  | 78, 73 : 114, 73 :  | 33, 85 : 78, 73 :  | 12, 106 : 33, 85 :  | 126, 12 : 126, 48 :  | 63, 12 : 63, 49 : ">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/sadSmileBlock.png" x1="0" y2="50" x2="50"/>
@@ -1841,7 +1841,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Светодиод" name="Led">
+			<node displayedName="Светодиод" name="Led" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : ">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/ledBlock.png" x1="0" y2="50" x2="50"/>
