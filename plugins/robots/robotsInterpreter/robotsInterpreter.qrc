@@ -41,5 +41,10 @@
         <file>icons/leftButton.png</file>
         <file>icons/leftButtonPressed.png</file>
         <file>icons/rightButton.png</file>
+        <file>icons/2d_none.png</file>
+        <file>icons/2d_drawEllipseCursor.png</file>
+        <file>icons/2d_drawLineCursor.png</file>
+        <file>icons/2d_drawStylusCursor.png</file>
+        <file>icons/2d_drawWallCursor.png</file>
     </qresource>
 </RCC>
