@@ -78,30 +78,29 @@ QMap<QString, PropertyEditorInterface *> WidgetsHelper::propertyEditors() const
 void WidgetsHelper::setEditorManager(EditorManager const *editorManager)
 {
 	mEditorManager = editorManager;
-//	initEnumEditors();
+	initEnumEditors();
 }
 
 void WidgetsHelper::onIdChanged() {
 	mElement->updateData();
-//	initEnumEditors();
+	initEnumEditors();
 }
 
-/*
- *TODO EFIM
+
 void WidgetsHelper::initEnumEditors()
 {
 	if (!mElement || mElement->id() == Id() || !mEditorManager) {
 		return;
 	}
 	foreach (QString const &propertyName, mPropertyEditors.keys()) {
-		QStringList const values = mEditorManager->getEnumValues(mElement->id(), propertyName);
+		QStringList const values = mEditorManager->enumValues(mElement->id(), propertyName);
 		foreach (PropertyEditorInterface *editor, mPropertyEditors.values(propertyName)) {
 			// If property is not enum empty list would be given and
 			// will be ignored by property editor
 			editor->setEnumValues(values);
 		}
 	}
-}*/
+}
 
 QWidget *WidgetsHelper::widget() const
 {

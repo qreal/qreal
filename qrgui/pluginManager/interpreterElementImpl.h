@@ -49,7 +49,7 @@ public:
 	InterpreterElementImpl(qrRepo::RepoApi *repo, Id const &metaId);
 	void init(QRectF &contents, PortFactoryInterface const &portFactory, QList<PortInterface *> &ports
 			, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels
-			, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo = 0);
+			, SdfRendererInterface *renderer, WidgetsHelperInterface *widgetsHelper, ElementRepoInterface *elementRepo = 0);
 	void init(LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels);
 	void paint(QPainter *painter, QRectF &contents);
 	void updateData(ElementRepoInterface *repo) const;
@@ -72,6 +72,8 @@ public:
 	bool hasMovableChildren() const;
 	bool minimizesToChildren() const;
 	bool maximizesChildren() const;
+	QString layout() const;
+	QString layoutBinding() const;
 
 	QStringList fromPortTypes() const;
 	QStringList toPortTypes() const;

@@ -131,9 +131,10 @@ void InterpreterElementImpl::initLinePorts(PortFactoryInterface const &factory, 
 
 void InterpreterElementImpl::init(QRectF &contents, PortFactoryInterface const &portFactory
 		, QList<PortInterface *> &ports, LabelFactoryInterface &labelFactory
-		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)
+		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, WidgetsHelperInterface *widgetsHelper, ElementRepoInterface *elementRepo)
 {
 	Q_UNUSED(elementRepo);
+	Q_UNUSED(widgetsHelper);
 	if (mId.element() == "MetaEntityNode") {
 		mGraphics.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
 		QDomDocument classDoc;
@@ -472,6 +473,18 @@ bool InterpreterElementImpl::minimizesToChildren() const
 bool InterpreterElementImpl::maximizesChildren() const
 {
 	return mEditorRepoApi->stringProperty(mId, "maximizeChildren") == "true";
+}
+
+QString layout()
+{
+	//TODO implement
+	return "";
+}
+
+QString layoutBinding()
+{
+	//TODO implement
+	return "";
 }
 
 QStringList InterpreterElementImpl::fromPortTypes() const

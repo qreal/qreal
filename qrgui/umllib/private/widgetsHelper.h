@@ -27,7 +27,7 @@ public:
 	void onElementGeometryChanged();
 
 private:
-//	void initEnumEditors();
+	void initEnumEditors();
 	void initLayoutFactoryPropertyEditor();
 
 	NodeElement *mElement;

@@ -50,8 +50,6 @@ public:
 	void addStylus(bool checked);
 	void addNone(bool checked);
 
-public slots:
-	void clearScene();
 	QList<Item *> selectedSceneItems();
 
 signals:
@@ -83,6 +81,7 @@ private slots:
 	void changeFontUnderline(bool isChecked);
 
 	void deleteItem();
+	void clearScene();
 
 private:
 	enum ItemTypes {
@@ -108,7 +107,6 @@ private:
 
 	void initListSelectedItemsForPaste();
 	QRectF selectedItemsBoundingRect() const;
-	QList<Item *> selectedSceneItems();
 	QList<TextPicture *> selectedTextPictureItems();
 	QPointF setCXandCY(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
