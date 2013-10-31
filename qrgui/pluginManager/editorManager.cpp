@@ -516,7 +516,9 @@ IdList EditorManager::groups(Id const &diagram)
 	}
 
 	foreach (QString const &group, mGroups.keys()) {
-		elements.append(Id(diagram.editor(), diagram.diagram(), group));
+		if (diagram.diagram() == mGroups[group].diagram()) {
+			elements.append(Id(diagram.editor(), diagram.diagram(), group));
+		}
 	}
 
 	return elements;
