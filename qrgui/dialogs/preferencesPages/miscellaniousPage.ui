@@ -40,13 +40,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="openGLCheckBox">
-        <property name="text">
-         <string>OpenGL rendering</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>

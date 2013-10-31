@@ -22,7 +22,7 @@ QSize const displaySize(200, 300);
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
 	, NxtDisplay *nxtDisplay, QWidget *parent)
-		: QWidget(parent)
+		: QRealDialog("D2ModelWindow", parent)
 		, mUi(new Ui::D2Form)
 		, mScene(NULL)
 		, mRobot(NULL)
@@ -93,12 +93,19 @@ void D2ModelWidget::initWidget()
 
 	mUi->penWidthSpinBox->setRange(1, 30);
 
-	mUi->penColorComboBox->setColorList(QStringList()
+	QStringList colorList = QStringList()
+			<< "Black"
+			<< "Blue"
+			<< "Green"
+			<< "Yellow"
+			<< "Red";
+	QStringList translatedColorList = QStringList()
 			<< tr("Black")
 			<< tr("Blue")
 			<< tr("Green")
 			<< tr("Yellow")
-			<< tr("Red"));
+			<< tr("Red");
+	mUi->penColorComboBox->setColorList(colorList, translatedColorList);
 	mUi->penColorComboBox->setColor(QColor("black"));
 
 	initButtonGroups();
@@ -121,7 +128,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->clearButton, SIGNAL(clicked()), this, SLOT(clearScene()));
 
 	connect(mUi->penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(changePenWidth(int)));
-	connect(mUi->penColorComboBox, SIGNAL(activated(const QString &)), this, SLOT(changePenColor(const QString &)));
+	connect(mUi->penColorComboBox, SIGNAL(activated(int)), this, SLOT(changePenColor(int)));
 
 	connect(mUi->saveWorldModelPushButton, SIGNAL(clicked()), this, SLOT(saveWorldModel()));
 	connect(mUi->loadWorldModelPushButton, SIGNAL(clicked()), this, SLOT(loadWorldModel()));
@@ -285,9 +292,11 @@ void D2ModelWidget::changeEvent(QEvent *e)
 void D2ModelWidget::showEvent(QShowEvent *e)
 {
 	e->accept();
+	QRealDialog::showEvent(e);
 	if (mFirstShow) {
 		onFirstShow();
 	}
+
 	mFirstShow = false;
 }
 
@@ -932,8 +941,9 @@ void D2ModelWidget::changePenWidth(int width)
 	mScene->update();
 }
 
-void D2ModelWidget::changePenColor(const QString &text)
+void D2ModelWidget::changePenColor(int textIndex)
 {
+	QString text = mUi->penColorComboBox->colorByIndex(textIndex).name();
 	mScene->setPenColorItems(text);
 	foreach (AbstractItem *item, selectedColorItems()) {
 		item->setPenColor(text);
@@ -1013,6 +1023,7 @@ void D2ModelWidget::disableRunStopButtons()
 void D2ModelWidget::closeEvent(QCloseEvent *event)
 {
 	Q_UNUSED(event)
+	serializeParameters();
 	emit d2WasClosed();
 }
 
