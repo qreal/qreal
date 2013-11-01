@@ -43,9 +43,12 @@ public:
 	virtual void rotate(qreal angle);
 	virtual QRectF rect() const;
 	virtual double rotateAngle() const;
+	void setRotateAngle(double const &angle);
 	virtual void setSelected(bool isSelected);
 	void setRotater(Rotater *rotater);
 	virtual void checkSelection();
+	void setRobotPos(QPointF const &newPos);
+	QPointF robotPos(void);
 
 	virtual QRectF boundingRect() const;
 	virtual QRectF calcNecessaryBoundingRect() const;
