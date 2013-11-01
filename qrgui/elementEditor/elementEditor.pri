@@ -46,7 +46,6 @@ HEADERS += \
 	elementEditor/widgetsEdit/tools/plainTextEdit.h \
 	elementEditor/widgetsEdit/tools/spinBox.h \
 	elementEditor/widgetsEdit/tools/doubleSpinBox.h \
-	elementEditor/widgetsEdit/tools/label.h \
 	elementEditor/widgetsEdit/tools/abstractScrollArea.h \
 	elementEditor/widgetsEdit/tools/abstractSpinBox.h \
 	elementEditor/widgetsEdit/tools/abstractButton.h \
@@ -63,7 +62,8 @@ HEADERS += \
 	elementEditor/elementEditor.h \
 	elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.h \
 	elementEditor/widgetsEdit/private/outerBindingsDialog.h \
-	elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.h
+	elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.h \
+	elementEditor/widgetsEdit/tools/labelTool.h
 
 SOURCES += \
 	elementEditor/common/startPage.cpp \
@@ -113,7 +113,6 @@ SOURCES += \
 	elementEditor/widgetsEdit/tools/plainTextEdit.cpp \
 	elementEditor/widgetsEdit/tools/spinBox.cpp \
 	elementEditor/widgetsEdit/tools/doubleSpinBox.cpp \
-	elementEditor/widgetsEdit/tools/label.cpp \
 	elementEditor/widgetsEdit/tools/abstractScrollArea.cpp \
 	elementEditor/widgetsEdit/tools/abstractSpinBox.cpp \
 	elementEditor/widgetsEdit/tools/abstractButton.cpp \
@@ -129,7 +128,8 @@ SOURCES += \
 	elementEditor/elementEditor.cpp \
 	elementEditor/widgetsEdit/propertyBinding/propertyProxyBase.cpp \
 	elementEditor/widgetsEdit/private/outerBindingsDialog.cpp \
-	elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.cpp
+	elementEditor/widgetsEdit/propertyBinding/metaPropertyBinding.cpp \
+	elementEditor/widgetsEdit/tools/labelTool.cpp
 
 FORMS += \
 	elementEditor/shapeEdit/shapeEdit.ui \

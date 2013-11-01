@@ -76,7 +76,7 @@ Tool *ToolFactory::makeItem(QString const &tag, ToolController *controller)
 		result = new DoubleSpinBox(controller);
 	}
 	if (tag == "Label") {
-		result = new Label(controller);
+		result = new LabelTool(controller);
 	}
 	if (tag == "HorizontalSpacer") {
 		result = new Spacer(Qt::Horizontal, controller);
