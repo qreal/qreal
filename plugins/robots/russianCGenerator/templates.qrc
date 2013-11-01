@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/nxtOSEK">
+    <qresource prefix="/russianC">
         <file>templates/beep.t</file>
         <file>templates/break.t</file>
         <file>templates/continue.t</file>
@@ -67,9 +67,6 @@
         <file>templates/subprograms/implementation.t</file>
         <file>templates/subprograms/implementationsSectionHeader.t</file>
         <file>templates/main.t</file>
-        <file>templates/makefile.t</file>
-        <file>templates/oil.t</file>
-        <file>templates/oilTask.t</file>
         <file>templates/comment.t</file>
         <file>templates/initialization/colorBlue.t</file>
         <file>templates/initialization/colorFull.t</file>
