@@ -1,9 +1,5 @@
 #include "editorView.h"
 
-#ifdef QT_OPENGL_LIB
-#include <QtOpenGL/QGLWidget>
-#endif
-
 #include <QtCore/QTimeLine>
 
 using namespace qReal;
@@ -61,14 +57,6 @@ void EditorView::toggleAntialiasing(bool checked)
 {
 	setRenderHint(QPainter::Antialiasing, checked);
 	setRenderHint(QPainter::SmoothPixmapTransform, checked);
-}
-
-void EditorView::toggleOpenGL(bool checked)
-{
-	Q_UNUSED(checked)
-#ifdef QT_OPENGL_LIB
-			setViewport(checked ? new QGLWidget(QGLFormat(QGL::SampleBuffers)) : new QWidget);
-#endif
 }
 
 void EditorView::zoomIn()

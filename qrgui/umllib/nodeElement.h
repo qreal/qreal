@@ -79,9 +79,7 @@ public:
 	virtual void setName(QString const &name, bool withUndoRedo = false);
 
 	QPointF const portPos(qreal id) const;
-	QPointF const nearestPort(QPointF const &location, QStringList const &types) const;
 	int numberOfPorts() const;
-	static int portNumber(qreal id);
 	qreal portId(QPointF const &location, QStringList const &types) const;
 
 	/// @return List of edges connected to the node

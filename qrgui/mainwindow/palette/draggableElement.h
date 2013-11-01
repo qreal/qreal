@@ -66,7 +66,7 @@ private:
 	PaletteElement const mData;
 	QLabel *mLabel;
 	EditorManagerInterface &mEditorManagerProxy;  // Does not have ownership.
-	MainWindow &mMainWindow;
+	qReal::MainWindow &mMainWindow;
 	Id mDeletedElementId;
 	bool mIsRootDiagramNode;
 };

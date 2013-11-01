@@ -48,7 +48,7 @@ void PropertyProxyBase::setValueInRepo(QString const &property, QVariant const &
 	NodeElement *node = getNode();
 	if (node) {
 		foreach (QString const &target, mOuterBindings.values(property)) {
-			node->setLogicalProperty(target, value);
+			node->setLogicalProperty(target, value.toString());
 		}
 	}
 }

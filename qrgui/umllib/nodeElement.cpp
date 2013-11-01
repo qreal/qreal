@@ -800,11 +800,6 @@ QPointF const NodeElement::portPos(qreal id) const
 	return mPortHandler->portPos(id);
 }
 
-QPointF const NodeElement::nearestPort(QPointF const &location, QStringList const &types) const
-{
-	return mPortHandler->nearestPort(location, types);
-}
-
 bool NodeElement::isContainer() const
 {
 	return mElementImpl->isContainer();
@@ -813,11 +808,6 @@ bool NodeElement::isContainer() const
 int NodeElement::numberOfPorts() const
 {
 	return mPortHandler->numberOfPorts();
-}
-
-int NodeElement::portNumber(qreal id)
-{
-	return PortHandler::portNumber(id);
 }
 
 qreal NodeElement::portId(QPointF const &location, QStringList const &types) const

@@ -37,6 +37,9 @@ class ShapeEdit : public QWidget, public navigation::NavigationPageWithMenu
 
 public:
 	ShapeEdit(bool isIconEditor, QWidget *parent = NULL);
+	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role, bool isIconEditor);
+	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy
+	, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow, EditorView *editorView, bool isIconEditor);
 	~ShapeEdit();
 
 	graphicsUtils::AbstractView *getView();

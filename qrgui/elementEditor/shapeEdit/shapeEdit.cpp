@@ -11,7 +11,7 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
-#include <qrutils/graphicsUtils/colorlisteditor.h>
+#include <qrutils/graphicsUtils/colorListEditor.h>
 
 #include "elementEditor/shapeEdit/xmlLoader.h"
 #include "mainwindow/mainWindow.h"
@@ -25,8 +25,17 @@ ShapeEdit::ShapeEdit(bool isIconEditor, QWidget *parent)
 	, mIsIconEditor(isIconEditor)
 	, mUi(new Ui::ShapeEdit)
 	, mDocumentBuilder(NULL)
+	, mRole(0)
 {
 	init();
+}
+
+ShapeEdit::ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, const int &role, bool isIconEditor)
+	: QWidget(NULL), mUi(new Ui::ShapeEdit), mModel(model), mIndex(index), mRole(role), mIsIconEditor(isIconEditor)
+{
+	init();
+	mUi->saveButton->setEnabled(true);
+	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
 }
 
 ShapeEdit::ShapeEdit(
@@ -35,6 +44,7 @@ ShapeEdit::ShapeEdit(
 		, qrRepo::GraphicalRepoApi const &graphicalRepoApi
 		, MainWindow *mainWindow
 		, EditorView *editorView
+		, bool isIconEditor
 		)
 		: QWidget(NULL)
 		, mUi(new Ui::ShapeEdit)
@@ -43,6 +53,7 @@ ShapeEdit::ShapeEdit(
 		, mEditorManager(editorManager)
 		, mMainWindow(mainWindow)
 		, mEditorView(editorView)
+		, mIsIconEditor(isIconEditor)
 {
 	mGraphicalElements = graphicalRepoApi.graphicalElements(Id(mId.editor(), mId.diagram(), mId.element()));
 	init();

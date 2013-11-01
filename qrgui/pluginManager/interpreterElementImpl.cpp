@@ -22,8 +22,8 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 			!element.isNull();
 			element = element.nextSiblingElement("label"))
 	{
-		ScalableCoordinate const x = utils::ScalableItem::initCoordinate(element.attribute("x"), width);
-		ScalableCoordinate const y = utils::ScalableItem::initCoordinate(element.attribute("y"), height);
+		ScalableCoordinate const x = ScalableItem::initCoordinate(element.attribute("x"), width);
+		ScalableCoordinate const y = ScalableItem::initCoordinate(element.attribute("y"), height);
 		QString const center = element.attribute("center", "false");
 		QString const text = element.attribute("text");
 		QString const textBinded = element.attribute("textBinded");
@@ -33,7 +33,7 @@ void InterpreterElementImpl::initLabels(int const &width, int const &height, Lab
 		if (text.isEmpty() && textBinded.isEmpty()) {
 			qDebug() << "ERROR: can't parse label";
 		} else {
-			LabelInterface *title = NULL;
+			qReal::LabelInterface *title = NULL;
 			if (text.isEmpty()) {
 				// It is a binded label, text for it will be taken from repository.
 				title = factory.createLabel(index, x.value(), y.value(), textBinded, readOnly == "true", rotation);

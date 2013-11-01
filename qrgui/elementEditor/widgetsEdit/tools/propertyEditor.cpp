@@ -40,7 +40,7 @@ void PropertyEditor::setValueInRepo(QVariant const &value)
 {
 	NodeElement *node = getNode();
 	if (node && !propertyName().isEmpty()) {
-		node->setLogicalProperty(propertyName(), value);
+		node->setLogicalProperty(propertyName(), value.toString());
 	}
 }
 

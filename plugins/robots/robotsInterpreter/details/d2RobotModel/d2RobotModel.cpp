@@ -120,7 +120,7 @@ void D2RobotModel::countMotorTurnover()
 {
 	foreach (Motor * const motor, mMotors) {
 		int const port = mMotors.key(motor);
-		qreal const degrees = Timeline::timeInterval * motor->speed * onePercentAngularVelocity;
+		qreal const degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
 		mTurnoverMotors[port] += degrees;
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
 			motor->speed = 0;
@@ -437,11 +437,11 @@ void D2RobotModel::countNewCoord()
 		}
 	}
 
-	int const sspeed1 = mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
-	int const sspeed2 = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
+	motor1->spoiledSpeed= mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
+	motor2->spoiledSpeed = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
 
-	qreal const vSpeed = sspeed1 * 2 * M_PI * motor1->radius * onePercentAngularVelocity / 360;
-	qreal const uSpeed = sspeed2 * 2 * M_PI * motor2->radius * onePercentAngularVelocity / 360;
+	qreal const vSpeed = motor1->spoiledSpeed * 2 * M_PI * motor1->radius * onePercentAngularVelocity / 360;
+	qreal const uSpeed = motor2->spoiledSpeed * 2 * M_PI * motor2->radius * onePercentAngularVelocity / 360;
 
 	qreal deltaY = 0;
 	qreal deltaX = 0;
@@ -450,7 +450,7 @@ void D2RobotModel::countNewCoord()
 	qreal const oldAngle = mAngle;
 	QPointF const oldPosition = mPos;
 
-	if (sspeed1 != sspeed2) {
+	if (motor1->spoiledSpeed != motor2->spoiledSpeed) {
 		qreal const vRadius = vSpeed * robotHeight / (vSpeed - uSpeed);
 		qreal const averageRadius = vRadius - robotHeight / 2;
 		qreal angularSpeed = 0;

@@ -15,14 +15,41 @@
             <port name="GatewayLeft"/>
             <port name="GatewayVertical"/>
             <port name="GatewayRight"/>
-            <port name="ActivityLeft"/>
-            <port name="ActivityVertical"/>
-            <port name="ActivityRight"/>
+            <port name="TaskLeft"/>
+            <port name="TaskVertical"/>
+            <port name="TaskRight"/>
+            <port name="SubprocessLeft"/>
+            <port name="SubprocessVertical"/>
+            <port name="SubprocessRight"/>
+            <port name="EventSubprocessLeft"/>
+            <port name="EventSubprocessVertical"/>
+            <port name="EventSubprocessRight"/>
+            <port name="TaskLeft"/>
+            <port name="TaskVertical"/>
+            <port name="TaskRight"/>
+			<port name="DataLeft"/>
+			<port name="DataVertical"/>
+			<port name="DataRight"/>
             <enum name="StartEventType" displayedName="Start Event Type">
                 <value>None</value>
                 <value>Message</value>
                 <value>Timer</value>
                 <value>Conditional</value>
+				<value>Error</value>
+				<value>Escalation</value>
+				<value>Compensation</value>
+				<value>Signal</value>
+                <value>Multiple</value>
+                <value>Parallel Multiple</value>
+            </enum>
+            <enum name="StartEventNonInterruptingType" displayedName="Non-Interrupting Start Event Type">
+                <value>None</value>
+                <value>Message</value>
+                <value>Timer</value>
+                <value>Conditional</value>
+				<value>Escalation</value>
+				<value>Signal</value>
+                <value>Parallel Multiple</value>
                 <value>Multiple</value>
             </enum>
             <enum name="IntermediateEventType" displayedName="Intermediate Event Type">
@@ -31,12 +58,25 @@
                 <value>Send Message</value>
                 <value>Timer</value>
                 <value>Conditional</value>
-                <value>Multiple</value>
+                <value>Multiple Catch</value>
+                <value>Multiple Throw</value>
+                <value>Catch Signal</value>
+                <value>Throw Signal</value>
+                <value>Catch Link</value>
+                <value>Throw Link</value>
+                <value>Compensation</value>
+                <value>Escalation</value>
+                <value>Parallel Multiple (Catch)</value>
             </enum>
             <enum name="EndEventType" displayedName="End Event Type">
                 <value>None</value>
                 <value>Message</value>
                 <value>Terminate</value>
+                <value>Error</value>
+                <value>Escalation</value>
+                <value>Cancel</value>
+                <value>Compensation</value>
+                <value>Multiple</value>
                 <value>Signal</value>
             </enum>
             <enum name="GatewayType" displayedName="Gateway Type">
@@ -44,13 +84,24 @@
                 <value>Exclusive (Event Based)</value>
                 <value>Inclusive</value>
                 <value>Parallel</value>
+				<value>Complex</value>
             </enum>
             <enum name="LoopType" displayedName="Loop Type">
                 <value>No Loop</value>
                 <value>Multiple Instances (Parallel)</value>
                 <value>Multiple Instances (Sequential)</value>
+				<value>Standard Loop</value>
             </enum>
-            <enum name="TaskType" displayedName="Task Type"/>
+            <enum name="TaskType" displayedName="Task Type">
+				<value>Abstract</value>
+				<value>Service</value>
+				<value>Send</value>
+				<value>Receive</value>
+				<value>User</value>
+				<value>Manual</value>
+				<value>Business Rule</value>
+				<value>Script</value>
+			</enum>
         </nonGraphicTypes>
         <graphicTypes>
             <node name="BPMNDiagramNode" displayedName="BPMN Diagram">
@@ -67,9 +118,11 @@
                          <contains type="BPMNDiagram::Gateway"/>
                          <contains type="BPMNDiagram::Task"/>
                          <contains type="BPMNDiagram::Subprocess"/>
+                         <contains type="BPMNDiagram::EventSubprocess"/>
                          <contains type="BPMNDiagram::SequenceFlow"/>
-                         <contains type="BPMNDiagram::SignalFlow"/>
-                         <contains type="BPMNDiagram::TimerFlow"/>
+                         <contains type="BPMNDiagram::SignalBoundaryEvent"/>
+                         <contains type="BPMNDiagram::TimerBoundaryEvent"/>
+                         <contains type="BPMNDiagram::CompensationBoundaryEvent"/>
                          <contains type="BPMNDiagram::MessageFlow"/>
                          <contains type="BPMNDiagram::Lane"/>
                          <contains type="BPMNDiagram::Pool"/>
@@ -89,21 +142,9 @@
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="30" fill-style="none" x1="50" x2="85">
                             <showIf value="Message" property="Type" sign="="/>
                         </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="25" y2="45" fill-style="none" x1="50" x2="20">
+                        <polygon fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" n="5" y1="25" y2="45" y3="75" y4="75" y5="45" fill-style="none" x1="50" x2="20" x3="35" x4="65" x5="80">
                             <showIf value="Multiple" property="Type" sign="="/>
-                        </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="45" y2="75" fill-style="none" x1="20" x2="35">
-                            <showIf value="Multiple" property="Type" sign="="/>
-                        </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="75" fill-style="none" x1="35" x2="65">
-                            <showIf value="Multiple" property="Type" sign="="/>
-                        </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="45" fill-style="none" x1="65" x2="80">
-                            <showIf value="Multiple" property="Type" sign="="/>
-                        </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="25" y2="45" fill-style="none" x1="50" x2="80">
-                            <showIf value="Multiple" property="Type" sign="="/>
-                        </line>
+                        </polygon>
                         <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="15" y2="85" fill-style="none" x1="15" x2="85">
                             <showIf value="Timer" property="Type" sign="="/>
                         </ellipse>
@@ -125,6 +166,24 @@
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="65" y2="65" fill-style="none" x1="25" x2="75">
                             <showIf value="Conditional" property="Type" sign="="/>
                         </line>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="6" x1="40" y1="50" x2="20" y2="75" x3="35" y3="20" x4="60" y4="50" x5="80" y5="25" x6="65" y6="80" fill-style="none">
+                            <showIf value="Error" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="4" x1="50" x2="30" x3="50" x4="70" fill-style="none" y1="50" y2="70" y3="20" y4="70">
+                            <showIf value="Escalation" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="50" y2="30" y3="70" fill-style="none" x1="20" x2="45" x3="45">
+                            <showIf value="Compensation" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" x1="45" x2="70" x3="70" fill-style="none" y1="50" y2="30" y3="70">
+                            <showIf value="Compensation" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="25" y2="70" y3="70" fill-style="none" x1="50" x2="25" x3="75">
+                            <showIf value="Signal" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="12" x1="15" y1="40" x2="40" y2="40" x3="40" y3="15" x4="60" y4="15" x5="60" y5="40" x6="85" y6="40" x7="85" y7="60" x8="60" y8="60" x9="60" y9="85" x10="40" y10="85" x11="40" y11="60" x12="15" y12="60" fill-style="none">
+                            <showIf value="Parallel Multiple" property="Type" sign="="/>
+                        </polygon>
                     </picture>
                     <labels>
                         <label x="0a" y="100a" textBinded="text"/>
@@ -140,6 +199,73 @@
                     <container/>
                     <properties>
                         <property type="StartEventType" name="Type" displayedName="Type">
+                            <default>None</default>
+                        </property>
+                        <property type="string" name="text" displayedName="Text"/>
+                    </properties>
+                </logic>
+            </node>
+			<node name="NonInterruptingStartEvent" displayedName="Non-Interrupting Start Event">
+                <graphics>
+                    <picture sizex="100" sizey="100">
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" y1="0" y2="100" fill-style="none" x1="0" x2="100"/>
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="30" y2="70" fill-style="none" x1="15" x2="85">
+                            <showIf value="Message" property="Type" sign="="/>
+                        </rectangle>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="30" y2="50" fill-style="none" x1="15" x2="50">
+                            <showIf value="Message" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="30" fill-style="none" x1="50" x2="85">
+                            <showIf value="Message" property="Type" sign="="/>
+                        </line>
+                        <polygon fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" n="5" y1="25" y2="45" y3="75" y4="75" y5="45" fill-style="none" x1="50" x2="20" x3="35" x4="65" x5="80">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </polygon>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="15" y2="85" fill-style="none" x1="15" x2="85">
+                            <showIf value="Timer" property="Type" sign="="/>
+                        </ellipse>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="20" fill-style="none" x1="50" x2="55">
+                            <showIf value="Timer" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="48" fill-style="none" x1="50" x2="75">
+                            <showIf value="Timer" property="Type" sign="="/>
+                        </line>
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="20" y2="80" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </rectangle>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="35" y2="35" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="50" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="65" y2="65" fill-style="none" x1="25" x2="75">
+                            <showIf value="Conditional" property="Type" sign="="/>
+                        </line>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="4" x1="50" x2="30" x3="50" x4="70" fill-style="none" y1="50" y2="70" y3="20" y4="70">
+                            <showIf value="Escalation" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="25" y2="70" y3="70" fill-style="none" x1="50" x2="25" x3="75">
+                            <showIf value="Signal" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="12" x1="15" y1="40" x2="40" y2="40" x3="40" y3="15" x4="60" y4="15" x5="60" y5="40" x6="85" y6="40" x7="85" y7="60" x8="60" y8="60" x9="60" y9="85" x10="40" y10="85" x11="40" y11="60" x12="15" y12="60" fill-style="none">
+                            <showIf value="Parallel Multiple" property="Type" sign="="/>
+                        </polygon>
+                    </picture>
+                    <labels>
+                        <label x="0a" y="100a" textBinded="text"/>
+                    </labels>
+                    <ports>
+                        <pointPort type="StartEventLeft" x="0" y="50"/>
+                        <pointPort type="StartEventVertical" x="50" y="0"/>
+                        <pointPort type="StartEventVertical" x="50" y="100"/>
+                        <pointPort type="StartEventRight" x="100" y="50"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="StartEventNonInterruptingType" name="Type" displayedName="Type">
                             <default>None</default>
                         </property>
                         <property type="string" name="text" displayedName="Text"/>
@@ -178,21 +304,6 @@
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="50" y2="48" fill-style="none" x1="50" x2="75">
                             <showIf value="Timer" property="Type" sign="="/>
                         </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="25" y2="45" fill-style="none" x1="50" x2="20">
-                            <showIf value="Multiple" property="Type" sign="="/>
-                        </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="45" y2="75" fill-style="none" x1="20" x2="35">
-                            <showIf value="Multiple" property="Type" sign="="/>
-                        </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="75" fill-style="none" x1="35" x2="65">
-                            <showIf value="Multiple" property="Type" sign="="/>
-                        </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="75" y2="45" fill-style="none" x1="65" x2="80">
-                            <showIf value="Multiple" property="Type" sign="="/>
-                        </line>
-                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="25" y2="45" fill-style="none" x1="50" x2="80">
-                            <showIf value="Multiple" property="Type" sign="="/>
-                        </line>
                         <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="20" y2="80" fill-style="none" x1="25" x2="75">
                             <showIf value="Conditional" property="Type" sign="="/>
                         </rectangle>
@@ -205,6 +316,36 @@
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="65" y2="65" fill-style="none" x1="25" x2="75">
                             <showIf value="Conditional" property="Type" sign="="/>
                         </line>
+                        <polygon fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" n="5" y1="25" y2="45" y3="75" y4="75" y5="45" fill-style="none" x1="50" x2="20" x3="35" x4="65" x5="80">
+                            <showIf value="Multiple Catch" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="0" n="5" y1="25" y2="45" y3="75" y4="75" y5="45" fill-style="solid" x1="50" x2="20" x3="35" x4="65" x5="80">
+                            <showIf value="Multiple Throw" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="4" x1="50" x2="30" x3="50" x4="70" fill-style="solid" y1="50" y2="70" y3="20" y4="70">
+                            <showIf value="Escalation" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="50" y2="30" y3="70" fill-style="solid" x1="20" x2="45" x3="45">
+                            <showIf value="Compensation" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" x1="45" x2="70" x3="70" fill-style="solid" y1="50" y2="30" y3="70">
+                            <showIf value="Compensation" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="25" y2="70" y3="70" fill-style="none" x1="50" x2="25" x3="75">
+                            <showIf value="Catch Signal" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="25" y2="70" y3="70" fill-style="solid" x1="50" x2="25" x3="75">
+                            <showIf value="Throw Signal" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="7" x1="15" y1="30" x2="70" y2="30" x3="70" y3="20" x4="85" y4="50" x5="70" y5="80" x6="70" y6="70" x7="15" y7="70" fill-style="none">
+                            <showIf value="Catch Link" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="7" x1="15" y1="30" x2="70" y2="30" x3="70" y3="20" x4="85" y4="50" x5="70" y5="80" x6="70" y6="70" x7="15" y7="70" fill-style="solid">
+                            <showIf value="Throw Link" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="12" x1="15" y1="40" x2="40" y2="40" x3="40" y3="15" x4="60" y4="15" x5="60" y5="40" x6="85" y6="40" x7="85" y7="60" x8="60" y8="60" x9="60" y9="85" x10="40" y10="85" x11="40" y11="60" x12="15" y12="60" fill-style="none">
+                            <showIf value="Parallel Multiple (Catch)" property="Type" sign="="/>
+                        </polygon>
                     </picture>
                     <labels>
                         <label x="0a" y="100a" textBinded="text"/>
@@ -242,9 +383,30 @@
                         <ellipse fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" y1="15" y2="85" fill-style="solid" x1="15" x2="85">
                             <showIf value="Terminate" property="Type" sign="="/>
                         </ellipse>
-                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="30" y2="70" y3="70" fill-style="solid" x1="50" x2="20" x3="80">
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="25" y2="70" y3="70" fill-style="solid" x1="50" x2="25" x3="75">
                             <showIf value="Signal" property="Type" sign="="/>
                         </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="0" n="5" y1="25" y2="45" y3="75" y4="75" y5="45" fill-style="solid" x1="50" x2="20" x3="35" x4="65" x5="80">
+                            <showIf value="Multiple" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="4" x1="50" x2="30" x3="50" x4="70" fill-style="solid" y1="50" y2="70" y3="20" y4="70">
+                            <showIf value="Escalation" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="50" y2="30" y3="70" fill-style="solid" x1="20" x2="45" x3="45">
+                            <showIf value="Compensation" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" x1="45" x2="70" x3="70" fill-style="solid" y1="50" y2="30" y3="70">
+                            <showIf value="Compensation" property="Type" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="6" x1="40" y1="50" x2="20" y2="75" x3="35" y3="20" x4="60" y4="50" x5="80" y5="25" x6="65" y6="80" fill-style="solid">
+                            <showIf value="Error" property="Type" sign="="/>
+                        </polygon>
+                        <line fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="10" y1="25" y2="75" fill-style="solid" x1="25" x2="75">
+                            <showIf value="Cancel" property="Type" sign="="/>
+                        </line>
+                        <line fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="10" y1="25" y2="75" fill-style="solid" x1="75" x2="25">
+                            <showIf value="Cancel" property="Type" sign="="/>
+                        </line>
                     </picture>
                     <labels>
                         <label x="0a" y="100a" textBinded="text"/>
@@ -303,6 +465,18 @@
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="6" y1="55" y2="55" fill-style="none" x1="30" x2="80">
                             <showIf value="Parallel" property="Type" sign="="/>
                         </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="6" y1="30" y2="80" fill-style="none" x1="55" x2="55">
+                            <showIf value="Complex" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="6" y1="55" y2="55" fill-style="none" x1="30" x2="80">
+                            <showIf value="Complex" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="6" y1="35" y2="75" fill-style="none" x1="35" x2="75">
+                            <showIf value="Complex" property="Type" sign="="/>
+                        </line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="6" y1="35" y2="75" fill-style="none" x1="75" x2="35">
+                            <showIf value="Complex" property="Type" sign="="/>
+                        </line>
                     </picture>
                     <labels>
                         <label x="0a" y="110a" textBinded="text"/>
@@ -351,42 +525,57 @@
                             <end endx="45" endy="142"/>
                             <ctrl x="15" y="145"/>
                         </curve>
-                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="70" x2="70">
-                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
-                        </line>
                         <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="80" x2="80">
                             <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
                         </line>
                         <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="90" x2="90">
                             <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
                         </line>
-                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="115" fill="#ffffff" y2="115" stroke="#000000" x1="72" x2="88">
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="100" x2="100">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="115" fill="#ffffff" y2="115" stroke="#000000" x1="82" x2="98">
                             <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
                         </line>
-                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="125" fill="#ffffff" y2="125" stroke="#000000" x1="72" x2="88">
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="125" fill="#ffffff" y2="125" stroke="#000000" x1="82" x2="98">
                             <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
                         </line>
-                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="135" fill="#ffffff" y2="135" stroke="#000000" x1="72" x2="88">
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="135" fill="#ffffff" y2="135" stroke="#000000" x1="82" x2="98">
                             <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
                         </line>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="80" x2="100">
+							<showIf value="Standard Loop" property="loopType" sign="="/>
+						</ellipse>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="136" stroke="#000000" x1="90" x2="86">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="132" stroke="#000000" x1="90" x2="87">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="125" y2="115" y3="135" fill-style="none" x1="110" x2="125" x3="125">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" x1="125" x2="140" x3="140" fill-style="none" y1="125" y2="115" y3="135">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
                     </picture>
                     <labels>
                         <label x="46a" y="55a" textBinded="Text"/>
                     </labels>
                     <ports>
-                        <linePort type="ActivityLeft">
+                        <linePort type="TaskLeft">
                             <start startx="18" starty="45"/>
                             <end endx="18" endy="115"/>
                         </linePort>
-                        <linePort type="ActivityVertical">
+                        <linePort type="TaskVertical">
                             <start startx="45" starty="18"/>
                             <end endx="165" endy="18"/>
                         </linePort>
-                        <linePort type="ActivityRight">
+                        <linePort type="TaskRight">
                             <start startx="192" starty="45"/>
                             <end endx="192" endy="115"/>
                         </linePort>
-                        <linePort type="ActivityVertical">
+                        <linePort type="TaskVertical">
                             <start startx="45" starty="142"/>
                             <end endx="165" endy="142"/>
                         </linePort>
@@ -395,9 +584,16 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property type="string" name="Text" displayedName="Text"/>
+                        <property type="string" name="text" displayedName="Text"/>
                         <property type="LoopType" name="loopType" displayedName="Loop Type"/>
                         <property type="string" name="Name" displayedName="Name"/>
+						<property type="bool" name="isForCompensation" displayedName="isForCompensation">
+							<default>false</default>
+						</property>
+						<property type="string" name="loopCondition" displayedName="Loop Condition"/>
+						<property type="TaskType" name="taskType" displayedName="Task Type">
+							<default>Abstract</default>
+						</property>
                     </properties>
                 </logic>
             </node>
@@ -428,6 +624,42 @@
                             <end endx="45" endy="142"/>
                             <ctrl x="15" y="145"/>
                         </curve>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="42" y2="118" fill-style="none" x1="15" x2="15">
+							<showIf value="true" property="transaction" sign="="/>
+						</line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="15" y2="15" fill-style="none" x1="42" x2="168">
+							<showIf value="true" property="transaction" sign="="/>
+						</line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="42" y2="118" fill-style="none" x1="195" x2="195">
+							<showIf value="true" property="transaction" sign="="/>
+						</line>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="145" y2="145" fill-style="none" x1="42" x2="168">
+							<showIf value="true" property="transaction" sign="="/>
+						</line>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="15" starty="42"/>
+                            <end endx="42" endy="15"/>
+                            <ctrl x="13" y="13"/>
+							<showIf value="true" property="transaction" sign="="/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="195" starty="45"/>
+                            <end endx="168" endy="15"/>
+                            <ctrl x="197" y="13"/>
+							<showIf value="true" property="transaction" sign="="/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="168" starty="145"/>
+                            <end endx="195" endy="118"/>
+                            <ctrl x="197" y="147"/>
+							<showIf value="true" property="transaction" sign="="/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="15" starty="115"/>
+                            <end endx="42" endy="145"/>
+                            <ctrl x="13" y="147"/>
+							<showIf value="true" property="transaction" sign="="/>
+                        </curve>
                         <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="95" x2="115"/>
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="118" y2="132" fill-style="none" x1="105" x2="105"/>
                         <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="125" y2="125" fill-style="none" x1="98" x2="112"/>
@@ -449,24 +681,51 @@
                         <line stroke-style="solid" fill-style="none" stroke-width="3" y1="135" fill="#ffffff" y2="135" stroke="#000000" x1="72" x2="88">
                             <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
                         </line>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="70" x2="90">
+							<showIf value="Standard Loop" property="loopType" sign="="/>
+						</ellipse>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="136" stroke="#000000" x1="80" x2="76">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="132" stroke="#000000" x1="80" x2="77">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="125" y2="115" y3="135" fill-style="none" x1="120" x2="135" x3="135">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" x1="135" x2="150" x3="150" fill-style="none" y1="125" y2="115" y3="135">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="45" starty="125"/>
+                            <end endx="55" endy="125"/>
+                            <ctrl x="50" y="120"/>
+							<showIf value="true" property="adHoc" sign="="/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" fill-style="none">
+                            <start startx="55" starty="125"/>
+                            <end endx="65" endy="125"/>
+                            <ctrl x="60" y="130"/>
+							<showIf value="true" property="adHoc" sign="="/>
+                        </curve>
                     </picture>
                     <labels>
                         <label x="40a" y="145a" textBinded="Text"/>
                     </labels>
                     <ports>
-                        <linePort type="ActivityLeft">
+                        <linePort type="SubprocessLeft">
                             <start startx="18" starty="45"/>
                             <end endx="18" endy="115"/>
                         </linePort>
-                        <linePort type="ActivityVertical">
+                        <linePort type="SubprocessVertical">
                             <start startx="45" starty="18"/>
                             <end endx="165" endy="18"/>
                         </linePort>
-                        <linePort type="ActivityRight">
+                        <linePort type="SubprocessRight">
                             <start startx="192" starty="45"/>
                             <end endx="192" endy="115"/>
                         </linePort>
-                        <linePort type="ActivityVertical">
+                        <linePort type="SubprocessVertical">
                             <start startx="45" starty="142"/>
                             <end endx="165" endy="142"/>
                         </linePort>
@@ -480,9 +739,181 @@
                     <properties>
                         <property type="string" name="Text" displayedName="Text"/>
                         <property type="LoopType" name="loopType" displayedName="Loop Type"/>
+						<property type="bool" name="isForCompensation" displayedName="isForCompensation">
+							<default>false</default>
+						</property>
+						<property type="bool" name="adHoc" displayedName="ad Hoc">
+							<default>false</default>
+						</property>
+						<property type="string" name="loopCondition" displayedName="Loop Condition"/>
+						<property type="bool" name="transaction" displayedName="Transaction">
+							<default>false</default>
+						</property>
                     </properties>
                 </logic>
             </node>
+            <node name="EventSubprocess" displayedName="Event Subprocess">
+                <graphics>
+                    <picture sizex="210" sizey="160">
+                        <line fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" y1="45" y2="115" fill-style="none" x1="18" x2="18"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" y1="18" y2="18" fill-style="none" x1="45" x2="165"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" y1="45" y2="115" fill-style="none" x1="192" x2="192"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" y1="142" y2="142" fill-style="none" x1="45" x2="165"/>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" fill-style="none">
+                            <start startx="18" starty="45"/>
+                            <end endx="45" endy="18"/>
+                            <ctrl x="15" y="15"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" fill-style="none">
+                            <start startx="192" starty="45"/>
+                            <end endx="165" endy="18"/>
+                            <ctrl x="195" y="15"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" fill-style="none">
+                            <start startx="165" starty="142"/>
+                            <end endx="192" endy="115"/>
+                            <ctrl x="195" y="145"/>
+                        </curve>
+                        <curve fill="#ffffff" stroke="#000000" stroke-style="dash" stroke-width="0" fill-style="none">
+                            <start startx="18" starty="115"/>
+                            <end endx="45" endy="142"/>
+                            <ctrl x="15" y="145"/>
+                        </curve>
+                        <rectangle fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="95" x2="115"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="118" y2="132" fill-style="none" x1="105" x2="105"/>
+                        <line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="125" y2="125" fill-style="none" x1="98" x2="112"/>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="70" x2="70">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="80" x2="80">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="117" fill="#ffffff" y2="133" stroke="#000000" x1="90" x2="90">
+                            <showIf value="Multiple Instances (Parallel)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="115" fill="#ffffff" y2="115" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="125" fill="#ffffff" y2="125" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="3" y1="135" fill="#ffffff" y2="135" stroke="#000000" x1="72" x2="88">
+                            <showIf value="Multiple Instances (Sequential)" property="loopType" sign="="/>
+                        </line>
+                        <ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="115" y2="135" fill-style="none" x1="70" x2="90">
+							<showIf value="Standard Loop" property="loopType" sign="="/>
+						</ellipse>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="136" stroke="#000000" x1="80" x2="76">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <line stroke-style="solid" fill-style="none" stroke-width="0" y1="135" fill="#ffffff" y2="132" stroke="#000000" x1="80" x2="77">
+                            <showIf value="Standard Loop" property="loopType" sign="="/>
+                        </line>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" y1="125" y2="115" y3="135" fill-style="none" x1="120" x2="135" x3="135">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
+                        <polygon fill="#000000" stroke="#000000" stroke-style="solid" stroke-width="1" n="3" x1="135" x2="150" x3="150" fill-style="none" y1="125" y2="115" y3="135">
+                            <showIf value="true" property="isForCompensation" sign="="/>
+                        </polygon>
+                    </picture>
+                    <labels>
+                        <label x="46a" y="55a" textBinded="Text"/>
+                    </labels>
+                    <ports>
+                        <linePort type="EventSubprocessLeft">
+                            <start startx="18" starty="45"/>
+                            <end endx="18" endy="115"/>
+                        </linePort>
+                        <linePort type="EventSubprocessVertical">
+                            <start startx="45" starty="18"/>
+                            <end endx="165" endy="18"/>
+                        </linePort>
+                        <linePort type="EventSubprocessRight">
+                            <start startx="192" starty="45"/>
+                            <end endx="192" endy="115"/>
+                        </linePort>
+                        <linePort type="EventSubprocessVertical">
+                            <start startx="45" starty="142"/>
+                            <end endx="165" endy="142"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo>
+                        <target type="BPMNDiagramNode" makeReusable="false" requireImmediateLinkage="false"/>
+                    </explodesTo>
+                    <properties>
+                        <property type="string" name="text" displayedName="Text"/>
+                        <property type="LoopType" name="loopType" displayedName="Loop Type"/>
+                        <property type="string" name="Name" displayedName="Name"/>
+						<property type="bool" name="isForCompensation" displayedName="isForCompensation">
+							<default>false</default>
+						</property>
+						<property type="string" name="loopCondition" displayedName="Loop Condition"/>
+                    </properties>
+                </logic>
+            </node>
+			<node name="DataObject" displayedName="Data Object">
+				<graphics>
+					<picture sizex="50" sizey="80">
+						<polygon fill="#000000" stroke="#000000" stroke-style="solid" fill-style="none" stroke-width="1" n="5" x1="0" y1="0" x2="40" y2="0" x3="50" y3="10" x4="50" y4="80" x5="0" y5="80"/>
+						<line fill="#000000" stroke="#000000" stroke-style="solid" fill-style="none" stroke-width="1" x1="40" y1="0" x2="40" y2="10"/>
+						<line fill="#000000" stroke="#000000" stroke-style="solid" fill-style="none" stroke-width="1" x1="40" y1="10" x2="50" y2="10"/>
+					</picture>
+					<labels>
+						<label x="1a" y="81a" textBinded="Text"/>
+					</labels>
+					<ports>
+						<linePort type="DataVertical">
+							<start startx="3" starty="0"/>
+							<end endx="47" endy="0"/>
+						</linePort>
+						<linePort type="DataVertical">
+							<start startx="3" starty="80"/>
+							<end endx="47" endy="80"/>
+						</linePort>
+						<linePort type="DataLeft">
+							<start startx="0" starty="3"/>
+							<end endx="0" endy="77"/>
+						</linePort>
+						<linePort type="DataRight">
+							<start startx="50" starty="3"/>
+							<end endx="50" endy="77"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property type="string" name="Text" displayedName="Text"/>
+					</properties>
+				</logic>
+			</node>
+     		<edge name="DataAssociation" displayedName="Data Association">
+				<graphics>
+					<lineType type="dotLine"/>
+					<labels/>
+				</graphics>
+				<logic>
+					<associations endType="open_arrow" beginType="no_arrow">
+						<association endName="end" beginName="start"/>
+					</associations>
+					<properties/>
+					<fromPorts>
+						<port type="IntermediateEventVertical"/>
+						<port type="IntermediateEventRight"/>
+						<port type="EndEventVertical"/>
+						<port type="EndEventRight"/>
+					</fromPorts>
+					<toPorts>
+						<port type="IntermediateEventVertical"/>
+						<port type="IntermediateEventLeft"/>
+						<port type="StartEventVertical"/>
+						<port type="StartEventLeft"/>
+					</toPorts>
+				</logic>
+			</edge>
             <edge name="SequenceFlow" displayedName="Sequence Flow">
                 <graphics>
                     <lineType type="solidLine"/>
@@ -498,22 +929,28 @@
                     <properties>
                         <property type="string" displayedName="Text" name="Text"/>
                         <property type="string" displayedName="Name" name="Name"/>
+						<property type="bool" displayedName="Default" name="default"/>
+						<property type="string" displayedName="Condition" name="condition"/>
                     </properties>
                     <fromPorts>
                         <port type="StartEventRight"/>
                         <port type="StartEventVertical"/>
                         <port type="IntermediateEventVertical"/>
                         <port type="IntermediateEventRight"/>
-                        <port type="ActivityRight"/>
-                        <port type="ActivityVertical"/>
+                        <port type="TaskRight"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessRight"/>
+                        <port type="SubprocessVertical"/>
                         <port type="GatewayVertical"/>
                         <port type="GatewayRight"/>
                     </fromPorts>
                     <toPorts>
                         <port type="IntermediateEventVertical"/>
                         <port type="IntermediateEventLeft"/>
-                        <port type="ActivityLeft"/>
-                        <port type="ActivityVertical"/>
+                        <port type="TaskLeft"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessLeft"/>
+                        <port type="SubprocessVertical"/>
                         <port type="GatewayVertical"/>
                         <port type="GatewayLeft"/>
                         <port type="EndEventLeft"/>
@@ -523,85 +960,32 @@
                         <possibleEdge beginName="StartEventRight" directed="true" endName="IntermediateEventLeft"/>
                         <possibleEdge beginName="StartEventRight" directed="true" endName="EndEventLeft"/>
                         <possibleEdge beginName="StartEventRight" directed="true" endName="GatewayLeft"/>
-                        <possibleEdge beginName="StartEventRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="TaskLeft"/>
+                        <possibleEdge beginName="StartEventRight" directed="true" endName="SubprocessLeft"/>
                         <possibleEdge beginName="IntermediateEventRight" directed="true" endName="IntermediateEventLeft"/>
                         <possibleEdge beginName="IntermediateEventRight" directed="true" endName="EndEventLeft"/>
                         <possibleEdge beginName="IntermediateEventRight" directed="true" endName="GatewayLeft"/>
-                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="ActivityLeft"/>
-                        <possibleEdge beginName="ActivityRight" directed="true" endName="IntermediateEventLeft"/>
-                        <possibleEdge beginName="ActivityRight" directed="true" endName="EndEventLeft"/>
-                        <possibleEdge beginName="ActivityRight" directed="true" endName="GatewayLeft"/>
-                        <possibleEdge beginName="ActivityRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="TaskLeft"/>
+                        <possibleEdge beginName="IntermediateEventRight" directed="true" endName="SubprocessLeft"/>
+                        <possibleEdge beginName="TaskRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="SubprocessRight" directed="true" endName="IntermediateEventLeft"/>
+                        <possibleEdge beginName="TaskRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="SubprocessRight" directed="true" endName="EndEventLeft"/>
+                        <possibleEdge beginName="TaskRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="SubprocessRight" directed="true" endName="GatewayLeft"/>
+                        <possibleEdge beginName="TaskRight" directed="true" endName="TaskLeft"/>
+                        <possibleEdge beginName="SubprocessRight" directed="true" endName="TaskLeft"/>
+                        <possibleEdge beginName="TaskRight" directed="true" endName="SubprocessLeft"/>
+                        <possibleEdge beginName="SubprocessRight" directed="true" endName="SubprocessLeft"/>
                         <possibleEdge beginName="GatewayRight" directed="true" endName="IntermediateEventLeft"/>
                         <possibleEdge beginName="GatewayRight" directed="true" endName="EndEventLeft"/>
                         <possibleEdge beginName="GatewayRight" directed="true" endName="GatewayLeft"/>
-                        <possibleEdge beginName="GatewayRight" directed="true" endName="ActivityLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="TaskLeft"/>
+                        <possibleEdge beginName="GatewayRight" directed="true" endName="SubprocessLeft"/>
                     </possibleEdges>
                 </logic>
             </edge>
-            <edge name="SignalFlow" displayedName="Signal Flow">
-                <graphics>
-                    <lineType type="solidLine"/>
-                    <labels>
-                        <label textBinded="Text"/>
-                    </labels>
-                </graphics>
-                <logic>
-                    <associations endType="filled_arrow" beginType="signal">
-                        <association endName="end" beginName="start"/>
-                    </associations>
-                    <properties>
-                        <property type="string" displayedName="Text" name="Text"/>
-                    </properties>
-                    <fromPorts>
-                        <port type="ActivityVertical"/>
-                        <port type="ActivityLeft"/>
-                        <port type="ActivityRight"/>
-                    </fromPorts>
-                    <toPorts>
-                        <port type="IntermediateEventVertical"/>
-                        <port type="IntermediateEventLeft"/>
-                        <port type="ActivityLeft"/>
-                        <port type="ActivityVertical"/>
-                        <port type="GatewayVertical"/>
-                        <port type="GatewayLeft"/>
-                        <port type="EndEventLeft"/>
-                        <port type="EndEventVertical"/>
-                    </toPorts>
-                </logic>
-          </edge>
-          <edge name="TimerFlow" displayedName="Timer Flow">
-                <graphics>
-                    <lineType type="solidLine"/>
-                    <labels>
-                        <label textBinded="Text"/>
-                    </labels>
-                </graphics>
-                <logic>
-                    <associations endType="filled_arrow" beginType="timer">
-                        <association endName="end" beginName="start"/>
-                    </associations>
-                    <properties>
-                        <property type="string" displayedName="Text" name="Text"/>
-                    </properties>
-                    <fromPorts>
-                        <port type="ActivityVertical"/>
-                        <port type="ActivityLeft"/>
-                        <port type="ActivityRight"/>
-                    </fromPorts>
-                    <toPorts>
-                        <port type="IntermediateEventVertical"/>
-                        <port type="IntermediateEventLeft"/>
-                        <port type="ActivityLeft"/>
-                        <port type="ActivityVertical"/>
-                        <port type="GatewayVertical"/>
-                        <port type="GatewayLeft"/>
-                        <port type="EndEventLeft"/>
-                        <port type="EndEventVertical"/>
-                    </toPorts>
-                </logic>
-          </edge>
-          <edge name="MessageFlow" displayedName="Message Flow">
+	       <edge name="MessageFlow" displayedName="Message Flow">
                 <graphics>
                     <lineType type="dashLine"/>
                     <labels>
@@ -618,17 +1002,670 @@
                     <fromPorts>
                         <port type="IntermediateEventVertical"/>
                         <port type="EndEventVertical"/>
-                        <port type="ActivityVertical"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessVertical"/>
                     </fromPorts>
                     <toPorts>
                         <port type="IntermediateEventVertical"/>
                         <port type="StartEventVertical"/>
-                        <port type="ActivityVertical"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessVertical"/>
                     </toPorts>
                     <possibleEdges/>
                 </logic>
             </edge>
-            <node name="Lane" displayedName="Lane">
+            <edge name="SignalBoundaryEvent" displayedName="Signal (Interrupting)">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label textBinded="Text"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="filled_arrow" beginType="signal">
+                        <association endName="end" beginName="start"/>
+                    </associations>
+                    <properties>
+                        <property type="string" displayedName="Text" name="Text"/>
+                    </properties>
+                    <fromPorts>
+                        <port type="TaskVertical"/>
+                        <port type="TaskLeft"/>
+                        <port type="TaskRight"/>
+                        <port type="SubprocessVertical"/>
+                        <port type="SubprocessLeft"/>
+                        <port type="SubprocessRight"/>
+                        <port type="EventSubprocessVertical"/>
+                        <port type="EventSubprocessLeft"/>
+                        <port type="EventSubprocessRight"/>
+                    </fromPorts>
+                    <toPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="IntermediateEventLeft"/>
+                        <port type="TaskLeft"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessVertical"/>
+                        <port type="SubprocessLeft"/>
+                        <port type="GatewayVertical"/>
+                        <port type="GatewayLeft"/>
+                        <port type="EndEventLeft"/>
+                        <port type="EndEventVertical"/>
+                    </toPorts>
+                </logic>
+          </edge>
+          <edge name="SignalNoninterruptingBoundaryEvent" displayedName="Signal (Non-Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="signal_noninterrupting">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                      <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="TimerBoundaryEvent" displayedName="Timer (Interrupting)">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <labels>
+                        <label textBinded="Text"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <associations endType="filled_arrow" beginType="timer">
+                        <association endName="end" beginName="start"/>
+                    </associations>
+                    <properties>
+                        <property type="string" displayedName="Text" name="Text"/>
+                    </properties>
+                    <fromPorts>
+                        <port type="TaskVertical"/>
+                        <port type="TaskLeft"/>
+                        <port type="TaskRight"/>
+                        <port type="SubprocessVertical"/>
+                        <port type="SubprocessLeft"/>
+                        <port type="SubprocessRight"/>
+                        <port type="EventSubprocessVertical"/>
+                        <port type="EventSubprocessLeft"/>
+                        <port type="EventSubprocessRight"/>
+                    </fromPorts>
+                    <toPorts>
+                        <port type="IntermediateEventVertical"/>
+                        <port type="IntermediateEventLeft"/>
+                        <port type="TaskLeft"/>
+                        <port type="TaskVertical"/>
+                        <port type="SubprocessLeft"/>
+                        <port type="SubprocessVertical"/>
+                        <port type="GatewayVertical"/>
+                        <port type="GatewayLeft"/>
+                        <port type="EndEventLeft"/>
+                        <port type="EndEventVertical"/>
+                    </toPorts>
+                </logic>
+          </edge>
+          <edge name="TimerNoninterruptingBoundaryEvent" displayedName="Timer (Non-Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="timer_noninterrupting">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="MessageBoundaryEvent" displayedName="Message (Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="message">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="MessageNoninterruptingBoundaryEvent" displayedName="Message (Non-Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="message_noninterrupting">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="ErrorBoundaryEvent" displayedName="Error">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="error">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="EscalationBoundaryEvent" displayedName="Escalation">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="escalation">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="EscalationNoninterruptingBoundaryEvent" displayedName="Escalation (Non-Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="escalation_noninterrupting">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="CancelBoundaryEvent" displayedName="Cancel">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="cancel">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="CompensationBoundaryEvent" displayedName="Compensation">
+               <graphics>
+                   <lineType type="dotLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="compensation">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="ConditionalBoundaryEvent" displayedName="Conditional (Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="conditional">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="ConditionalNoninterruptingBoundaryEvent" displayedName="Conditional (Non-Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="conditional_noninterrupting">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="MultipleBoundaryEvent" displayedName="Multiple (Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="multiple">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="MultipleNoninterruptingBoundaryEvent" displayedName="Multiple (Non-Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="multiple_noninterrupting">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="ParallelMultipleBoundaryEvent" displayedName="Parallel Multiple (Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="parallel_multiple">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <edge name="ParallelMultipleNoninterruptingBoundaryEvent" displayedName="Parallel Multiple (Non-Interrupting)">
+               <graphics>
+                   <lineType type="solidLine"/>
+                   <labels>
+                       <label textBinded="Text"/>
+                   </labels>
+               </graphics>
+               <logic>
+                   <associations endType="filled_arrow" beginType="parallel_multiple_noninterrupting">
+                       <association endName="end" beginName="start"/>
+                   </associations>
+                   <properties>
+                       <property type="string" displayedName="Text" name="Text"/>
+                   </properties>
+                   <fromPorts>
+                       <port type="TaskVertical"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskRight"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessRight"/>
+                       <port type="EventSubprocessVertical"/>
+                       <port type="EventSubprocessLeft"/>
+                       <port type="EventSubprocessRight"/>
+                   </fromPorts>
+                   <toPorts>
+                       <port type="IntermediateEventVertical"/>
+                       <port type="IntermediateEventLeft"/>
+                       <port type="TaskLeft"/>
+                       <port type="TaskVertical"/>
+                       <port type="SubprocessLeft"/>
+                       <port type="SubprocessVertical"/>
+                       <port type="GatewayVertical"/>
+                       <port type="GatewayLeft"/>
+                       <port type="EndEventLeft"/>
+                       <port type="EndEventVertical"/>
+                   </toPorts>
+               </logic>
+          </edge>
+          <node name="Lane" displayedName="Lane">
                 <graphics>
                     <picture sizex="450" sizey="150">
                         <rectangle stroke-style="solid" fill-style="none" stroke-width="0" y1="0" y2="150" fill="#ffffff" x1="0" stroke="#000000" x2="450"/>
@@ -699,6 +1736,7 @@
             </group>
             <group name="Events">
                 <element name="StartEvent"/>
+                <element name="NonInterruptingStartEvent"/>
                 <element name="IntermediateEvent"/>
                 <element name="EndEvent"/>
             </group>
@@ -708,13 +1746,35 @@
             <group name="Activities">
                 <element name="Task"/>
                 <element name="Subprocess"/>
+				<element name="EventSubprocess"/>
             </group>
             <group name="Flows">
                 <element name="SequenceFlow"/>
                 <element name="MessageFlow"/>
-                <element name="SignalFlow"/>
-                <element name="TimerFlow"/>
+			</group>
+			<group name="Boundary Events">
+                <element name="SignalBoundaryEvent"/>
+                <element name="SignalNoninterruptingBoundaryEvent"/>
+                <element name="TimerBoundaryEvent"/>
+                <element name="TimerNoninterruptingBoundaryEvent"/>
+                <element name="CompensationBoundaryEvent"/>
+                <element name="ErrorBoundaryEvent"/>
+                <element name="CancelBoundaryEvent"/>
+                <element name="EscalationBoundaryEvent"/>
+                <element name="EscalationNoninterruptingBoundaryEvent"/>
+                <element name="ConditionalBoundaryEvent"/>
+                <element name="ConditionalNoninterruptingBoundaryEvent"/>
+                <element name="MultipleBoundaryEvent"/>
+                <element name="MultipleNoninterruptingBoundaryEvent"/>
+                <element name="ParallelMultipleBoundaryEvent"/>
+                <element name="ParallelMultipleNoninterruptingBoundaryEvent"/>
+                <element name="MessageBoundaryEvent"/>
+                <element name="MessageNoninterruptingBoundaryEvent"/>
             </group>
+			<group name="Artifacts">
+				<element name="DataObject"/>
+				<element name="DataAssociation"/>
+			</group>
         </palette>
     </diagram>
 </metamodel>
