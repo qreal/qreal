@@ -26,8 +26,18 @@ ShapeEdit::ShapeEdit(QWidget *parent)
 	connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
 }
 
-ShapeEdit::ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, const int &role)
-		: QWidget(NULL), mUi(new Ui::ShapeEdit), mModel(model), mIndex(index), mRole(role)
+ShapeEdit::ShapeEdit(
+		qReal::models::details::LogicalModel *model
+		, QPersistentModelIndex const &index
+		, const int &role
+		, bool useTypedPorts
+		)
+		: QWidget(NULL)
+		, mUi(new Ui::ShapeEdit)
+		, mModel(model)
+		, mIndex(index)
+		, mRole(role)
+		, mUseTypedPorts(useTypedPorts)
 {
 	init();
 	mUi->saveButton->setEnabled(true);
@@ -40,6 +50,7 @@ ShapeEdit::ShapeEdit(
 		, qrRepo::GraphicalRepoApi const &graphicalRepoApi
 		, MainWindow *mainWindow
 		, EditorView *editorView
+		, bool useTypedPorts
 		)
 		: QWidget(NULL)
 		, mUi(new Ui::ShapeEdit)
@@ -48,6 +59,7 @@ ShapeEdit::ShapeEdit(
 		, mEditorManager(editorManager)
 		, mMainWindow(mainWindow)
 		, mEditorView(editorView)
+		, mUseTypedPorts(useTypedPorts)
 {
 	mGraphicalElements = graphicalRepoApi.graphicalElements(Id(mId.editor(), mId.diagram(), mId.element()));
 	init();
@@ -648,11 +660,13 @@ QStringList ShapeEdit::getPortTypes() const
 	QStringList result;
 	result << "NonTyped";
 
-	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
-	if (repoApi) {
-		foreach (qReal::Id const &port, repoApi->elementsByType("MetaEntityPort")) {
-			if (repoApi->isLogicalElement(port)) {
-				result << repoApi->name(port);
+	if (mUseTypedPorts) {
+		qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
+		if (repoApi) {
+			foreach (qReal::Id const &port, repoApi->elementsByType("MetaEntityPort")) {
+				if (repoApi->isLogicalElement(port)) {
+					result << repoApi->name(port);
+				}
 			}
 		}
 	}
