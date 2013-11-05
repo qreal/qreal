@@ -80,6 +80,9 @@
                 <distributionFile>
                     <origin>%1/plugins/robots/examples/alongTheLineTrik.qrs</origin>
                 </distributionFile>
+                <distributionFile>
+                    <origin>%1/plugins/robots/examples/smiles.qrs</origin>
+                </distributionFile>
             </distributionFileList>
         </folder>
         <folder>
