@@ -1896,9 +1896,9 @@
 				<element name="EnginesStop"/>
 				<element name="Function"/>
 <!--			</group> -->
-<!--			<group name="Рисование на дисплее">
+<!--			<group name="Рисование на дисплее"> -->
 				<element name="ClearScreen"/>
-				<element name="DrawRect"/>
+<!--				<element name="DrawRect"/>
 				<element name="DrawPixel"/>
 				<element name="DrawLine"/>
 				<element name="DrawCircle"/>

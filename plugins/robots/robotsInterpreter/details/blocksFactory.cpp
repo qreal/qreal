@@ -29,6 +29,9 @@
 #include "blocks/drawCircleBlock.h"
 #include "blocks/printTextBlock.h"
 
+#include "blocks/smileBlock.h"
+#include "blocks/sadSmileBlock.h"
+
 #include "blocks/waitForTouchSensorBlock.h"
 #include "blocks/waitForSonarDistanceBlock.h"
 #include "blocks/waitForColorBlock.h"
@@ -128,6 +131,10 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new DrawRectBlock(mRobotModel->display());
 	} else if (elementMetatypeIs(element, "ClearScreen")) {
 		newBlock = new ClearScreenBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "Smile")) {
+		newBlock = new SmileBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "SadSmile")) {
+		newBlock = new SadSmileBlock(mRobotModel->display());
 	} else {
 		newBlock = new DummyBlock();
 	}

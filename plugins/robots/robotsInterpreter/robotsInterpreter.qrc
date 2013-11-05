@@ -46,5 +46,7 @@
         <file>icons/trik/button_off.png</file>
         <file>icons/trik/button_on.png</file>
         <file>icons/trik/wagon.svg</file>
+        <file>icons/trik/sadSmile.png</file>
+        <file>icons/trik/smile.png</file>
     </qresource>
 </RCC>

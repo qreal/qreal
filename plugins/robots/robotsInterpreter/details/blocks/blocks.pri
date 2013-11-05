@@ -36,6 +36,9 @@ HEADERS += \
 	details/blocks/drawRectBlock.h \
 	details/blocks/clearScreenBlock.h \
 	details/blocks/subprogramBlock.h \
+	details/blocks/smileBlockBase.h \
+	details/blocks/smileBlock.h \
+	details/blocks/sadSmileBlock.h \
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -75,3 +78,6 @@ SOURCES +=\
 	details/blocks/drawRectBlock.cpp \
 	details/blocks/clearScreenBlock.cpp \
 	details/blocks/subprogramBlock.cpp \
+	details/blocks/smileBlockBase.cpp \
+	details/blocks/smileBlock.cpp \
+	details/blocks/sadSmileBlock.cpp \

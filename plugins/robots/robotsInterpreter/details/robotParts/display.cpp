@@ -21,6 +21,11 @@ void Display::read()
 	mDisplayImpl->read();
 }
 
+void Display::drawImage(QImage const &image)
+{
+	mDisplayImpl->drawImage(image);
+}
+
 void Display::clearScreen()
 {
 	mDisplayImpl->clearScreen();

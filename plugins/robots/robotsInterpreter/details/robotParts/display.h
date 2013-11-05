@@ -17,6 +17,7 @@ public:
 	virtual ~Display();
 
 	virtual void read();
+	virtual void drawImage(QImage const &image);
 	virtual void clearScreen();
 	robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl();
 	void setImplementation(robotImplementations::displayImplementations::AbstractDisplayImplementation *displayImpl);

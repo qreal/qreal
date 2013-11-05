@@ -12,10 +12,10 @@ DrawRectBlock::DrawRectBlock(robotParts::Display &display)
 
 void DrawRectBlock::run()
 {
-	int const x = evaluate("XCoordinateRect").toInt();
-	int const y = evaluate("YCoordinateRect").toInt();
-	int const width = evaluate("WidthRect").toInt();
-	int const height = evaluate("HeightRect").toInt();
+//	int const x = evaluate("XCoordinateRect").toInt();
+//	int const y = evaluate("YCoordinateRect").toInt();
+//	int const width = evaluate("WidthRect").toInt();
+//	int const height = evaluate("HeightRect").toInt();
 //	mDisplay.drawRect(x, y, width, height);
 	emit done(mNextBlock);
 }
