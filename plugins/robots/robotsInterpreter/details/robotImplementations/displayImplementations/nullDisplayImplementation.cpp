@@ -45,6 +45,11 @@ void NullDisplayImplementation::drawImage(QImage const &image)
 	Q_UNUSED(image)
 }
 
+void NullDisplayImplementation::setBackground(QColor const &color)
+{
+	Q_UNUSED(color)
+}
+
 void NullDisplayImplementation::drawRect(int x, int y, int width, int height)
 {
 	Q_UNUSED(x)

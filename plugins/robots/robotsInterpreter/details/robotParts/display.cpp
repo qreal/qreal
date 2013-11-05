@@ -26,6 +26,11 @@ void Display::drawImage(QImage const &image)
 	mDisplayImpl->drawImage(image);
 }
 
+void Display::setBackground(QColor const &color)
+{
+	mDisplayImpl->setBackground(color);
+}
+
 void Display::clearScreen()
 {
 	mDisplayImpl->clearScreen();

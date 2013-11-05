@@ -7,6 +7,7 @@ using namespace graphicsUtils;
 
 UnrealDisplayImplementation::UnrealDisplayImplementation(d2Model::D2RobotModel *d2Model)
 	: mD2Model(d2Model)
+	, mBackground(Qt::transparent)
 {
 }
 
@@ -29,13 +30,26 @@ void UnrealDisplayImplementation::drawImage(QImage const &image)
 	mD2Model->display()->repaintDisplay();
 }
 
+void UnrealDisplayImplementation::setBackground(QColor const &color)
+{
+	mBackground = color;
+	mD2Model->display()->repaintDisplay();
+}
+
 void UnrealDisplayImplementation::clearScreen()
 {
 	mCurrentImage = QImage();
+	mBackground = Qt::transparent;
 	mD2Model->display()->repaintDisplay();
 }
 
 void UnrealDisplayImplementation::paint(QPainter *painter)
 {
-	painter->drawImage(QRect(QPoint(), mD2Model->display()->displaySize()), mCurrentImage);
+	QRect const displayRect(QPoint(), mD2Model->display()->displaySize());
+	painter->save();
+	painter->setPen(mBackground);
+	painter->setBrush(mBackground);
+	painter->drawRect(displayRect);
+	painter->drawImage(displayRect, mCurrentImage);
+	painter->restore();
 }

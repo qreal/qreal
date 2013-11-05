@@ -18,6 +18,7 @@ public:
 
 	virtual void read() = 0;
 	virtual void drawImage(QImage const &image) = 0;
+	virtual void setBackground(QColor const &color) = 0;
 	virtual void clearScreen() = 0;
 
 signals:

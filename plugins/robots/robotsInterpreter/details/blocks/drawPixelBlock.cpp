@@ -12,8 +12,8 @@ DrawPixelBlock::DrawPixelBlock(robotParts::Display &display)
 
 void DrawPixelBlock::run()
 {
-	int const x = evaluate("XCoordinatePix").toInt();
-	int const y = evaluate("YCoordinatePix").toInt();
+//	int const x = evaluate("XCoordinatePix").toInt();
+//	int const y = evaluate("YCoordinatePix").toInt();
 //	mDisplay.drawPixel(x, y);
 	emit done(mNextBlock);
 }

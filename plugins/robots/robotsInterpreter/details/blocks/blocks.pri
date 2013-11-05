@@ -39,6 +39,7 @@ HEADERS += \
 	details/blocks/smileBlockBase.h \
 	details/blocks/smileBlock.h \
 	details/blocks/sadSmileBlock.h \
+	details/blocks/setBackgroundBlock.h \
 
 SOURCES +=\
 	details/blocks/block.cpp \
@@ -81,3 +82,4 @@ SOURCES +=\
 	details/blocks/smileBlockBase.cpp \
 	details/blocks/smileBlock.cpp \
 	details/blocks/sadSmileBlock.cpp \
+	details/blocks/setBackgroundBlock.cpp \

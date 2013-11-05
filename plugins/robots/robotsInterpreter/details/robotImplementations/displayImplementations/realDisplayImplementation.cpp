@@ -45,6 +45,11 @@ void RealDisplayImplementation::drawImage(QImage const &image)
 	Q_UNUSED(image)
 }
 
+void RealDisplayImplementation::setBackground(QColor const &color)
+{
+	Q_UNUSED(color)
+}
+
 void RealDisplayImplementation::drawRect(int x, int y, int width, int height)
 {
 	Q_UNUSED(x)

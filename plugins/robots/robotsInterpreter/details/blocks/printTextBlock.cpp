@@ -13,10 +13,10 @@ PrintTextBlock::PrintTextBlock(robotParts::Display &display)
 
 void PrintTextBlock::run()
 {
-	int const x = evaluate("XCoordinateText").toInt();
-	int const y = evaluate("YCoordinateText").toInt();
-	QString const rawText = stringProperty("PrintText");
-	QString const text = TextExpressionProcessor(*mParser->getVariables()).processExpression(rawText);
+//	int const x = evaluate("XCoordinateText").toInt();
+//	int const y = evaluate("YCoordinateText").toInt();
+//	QString const rawText = stringProperty("PrintText");
+//	QString const text = TextExpressionProcessor(*mParser->getVariables()).processExpression(rawText);
 
 //	mDisplay.printText(x, y, text);
 	emit done(mNextBlock);

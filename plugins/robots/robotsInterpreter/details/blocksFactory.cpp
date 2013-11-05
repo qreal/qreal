@@ -31,6 +31,7 @@
 
 #include "blocks/smileBlock.h"
 #include "blocks/sadSmileBlock.h"
+#include "blocks/setBackgroundBlock.h"
 
 #include "blocks/waitForTouchSensorBlock.h"
 #include "blocks/waitForSonarDistanceBlock.h"
@@ -135,6 +136,8 @@ Block *BlocksFactory::block(Id const &element)
 		newBlock = new SmileBlock(mRobotModel->display());
 	} else if (elementMetatypeIs(element, "SadSmile")) {
 		newBlock = new SadSmileBlock(mRobotModel->display());
+	} else if (elementMetatypeIs(element, "SetBackground")) {
+		newBlock = new SetBackgroundBlock(mRobotModel->display());
 	} else {
 		newBlock = new DummyBlock();
 	}

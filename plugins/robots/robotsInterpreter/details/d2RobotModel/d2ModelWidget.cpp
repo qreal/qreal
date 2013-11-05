@@ -18,7 +18,7 @@ using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
-QSize const displaySize(200, 300);
+QSize const displaySize(200, 330);
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
 	, TrikDisplay *display, QWidget *parent)
