@@ -35,8 +35,10 @@ void QRealDialog::deserializeParameters()
 	if (SettingsManager::value(maximizedKey()).toBool()) {
 		setWindowState(windowState() | Qt::WindowMaximized);
 	} else {
-		move(SettingsManager::value(positionKey()).toPoint());
-		resize(SettingsManager::value(sizeKey()).toSize());
+		if (!SettingsManager::value(sizeKey(), QSize).isNull()) {
+			move(SettingsManager::value(positionKey()).toPoint());
+			resize(SettingsManager::value(sizeKey()).toSize());
+		}
 	}
 }
 
