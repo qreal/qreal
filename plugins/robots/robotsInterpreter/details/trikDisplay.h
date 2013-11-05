@@ -27,6 +27,14 @@ public:
 
 	void repaintDisplay();
 
+	bool leftButtonIsDown() const;
+	bool rightButtonIsDown() const;
+	bool upButtonIsDown() const;
+	bool downButtonIsDown() const;
+	bool downLeftButtonIsDown() const;
+	bool attachButtonIsDown() const;
+	bool onButtonIsDown() const;
+
 private:
 	Ui::TrikDisplay *mUi;
 };

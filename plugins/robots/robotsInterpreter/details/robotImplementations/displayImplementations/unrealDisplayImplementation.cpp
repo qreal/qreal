@@ -18,10 +18,13 @@ void UnrealDisplayImplementation::attachToPaintWidget()
 
 void UnrealDisplayImplementation::read()
 {
-//	emit response(mD2Model->display()->leftButtonIsDown()
-//		, mD2Model->display()->rightButtonIsDown()
-//		, mD2Model->display()->centralButtonIsDown()
-//		, mD2Model->display()->bottomButtonIsDown());
+	emit response(mD2Model->display()->leftButtonIsDown()
+		, mD2Model->display()->rightButtonIsDown()
+			, mD2Model->display()->upButtonIsDown()
+			, mD2Model->display()->downButtonIsDown()
+			, mD2Model->display()->downLeftButtonIsDown()
+			, mD2Model->display()->attachButtonIsDown()
+			, mD2Model->display()->onButtonIsDown());
 }
 
 void UnrealDisplayImplementation::drawImage(QImage const &image)

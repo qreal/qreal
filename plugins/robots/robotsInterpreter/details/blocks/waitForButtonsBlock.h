@@ -26,7 +26,10 @@ protected:
 	virtual QString name() const;
 
 protected slots:
-	virtual void responseSlot(bool leftIsDown, bool rightIsDown, bool centralIsDown, bool bottomIsDown);
+	virtual void responseSlot(bool leftIsDown, bool rightIsDown
+			, bool upIsDown, bool downIsDown, bool downLeftIsDown
+			, bool attachIsDown, bool onIsDown);
+
 	virtual void timerTimeout();
 
 private:
@@ -34,13 +37,20 @@ private:
 
 	int mLeftButtonClicks;
 	int mRightButtonClicks;
-	int mCentralButtonClicks;
-	int mBottomButtonClicks;
+	int mUpButtonClicks;
+	int mDownButtonClicks;
+	int mDownLeftButtonClicks;
+	int mAttachButtonClicks;
+	int mOnButtonClicks;
+
 
 	bool mLeftWasDown;
 	bool mRightWasDown;
-	bool mCentralWasDown;
-	bool mBottomWasDown;
+	bool mUpWasDown;
+	bool mDownWasDown;
+	bool mDownLeftWasDown;
+	bool mAttachWasDown;
+	bool mOnWasDown;
 
 	robotParts::Display &mDisplay;
 };

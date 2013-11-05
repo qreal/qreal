@@ -23,7 +23,8 @@ public:
 
 signals:
 	void response(bool leftIsPressed, bool rightIsPressed
-			, bool centralIsPressed, bool bottomIsPressed);
+			, bool upIsPressed, bool downIsPressed, bool downLeftIsPressed
+			, bool attachIsPressed, bool onIsPressed);
 };
 
 }
