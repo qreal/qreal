@@ -149,7 +149,7 @@ private slots:
 	void loadWorldModel();
 
 	void changePenWidth(int width);
-	void changePenColor(const QString &text);
+	void changePenColor(int textIndex);
 	void changePalette();
 
 	void changeSpeed(int curIndex);
