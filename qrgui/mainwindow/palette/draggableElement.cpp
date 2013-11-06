@@ -194,7 +194,6 @@ void DraggableElement::checkElementForChildren()
 	}
 }
 
-#include<QDebug>
 bool DraggableElement::event(QEvent *event)
 {
 	QTouchEvent *touchEvent = dynamic_cast<QTouchEvent *>(event);
@@ -202,20 +201,18 @@ bool DraggableElement::event(QEvent *event)
 		return QWidget::event(event);
 	}
 
-    QPoint const pos(touchEvent->touchPoints()[0].pos().toPoint());
+	QPoint const pos(touchEvent->touchPoints()[0].pos().toPoint());
 
 	switch(event->type()) {
 	case QEvent::TouchBegin: {
-        qDebug() << "touch begin";
 		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonPress, pos
 				, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
 		QApplication::postEvent(touchEvent->target(), mouseEvent);
 		break;
 	}
 	case QEvent::TouchEnd: {
-        qDebug() << "touch end";
-        QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonRelease, pos
-                , Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonRelease, pos
+				, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 		QApplication::postEvent(touchEvent->target(), mouseEvent);
 		break;
 	}
@@ -227,8 +224,7 @@ bool DraggableElement::event(QEvent *event)
 		break;
 	}
 
-//    event->accept();
-    return true;
+	return true;
 }
 
 void DraggableElement::mousePressEvent(QMouseEvent *event)
@@ -291,9 +287,6 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			drag->setPixmap(pixmap);
 		}
 
-        qDebug() << "before start";
-        drag->exec(Qt::CopyAction);
-
-        qDebug() << "after start";
-    }
+		drag->exec(Qt::CopyAction);
+	}
 }
