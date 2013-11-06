@@ -182,19 +182,7 @@ void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<Lab
 			labels.append(title);
 			mEdgeLabels.append(EdgeLabel(labelText, labelType, title));
 		}
-		initEdgePorts(mFromPorts, "fromPorts");
-		initEdgePorts(mToPorts, "toPorts");
 	}
-}
-
-void InterpreterElementImpl::initEdgePorts(QStringList &ports, QString const &direction) const
-{
-	QStringList const ids = mEditorRepoApi->stringProperty(mId, direction).split(',', QString::SkipEmptyParts);
-	foreach (QString const &strId, ids) {
-		Id const id = Id::loadFromString(strId);
-		ports << mEditorRepoApi->name(id);
-	}
-	ports << "NonTyped";
 }
 
 void InterpreterElementImpl::paint(QPainter *painter, QRectF &contents)
@@ -476,12 +464,12 @@ bool InterpreterElementImpl::maximizesChildren() const
 
 QStringList InterpreterElementImpl::fromPortTypes() const
 {
-	return mFromPorts;
+	return QStringList("NonTyped");
 }
 
 QStringList InterpreterElementImpl::toPortTypes() const
 {
-	return mToPorts;
+	return QStringList("NonTyped");
 }
 
 enums::linkShape::LinkShape InterpreterElementImpl::shapeType() const
@@ -512,7 +500,11 @@ bool InterpreterElementImpl::hasPin() const
 
 bool InterpreterElementImpl::createChildrenFromMenu() const
 {
-	return mEditorRepoApi->stringProperty(mId, "createChildrenFromMenu") == "true";
+	if (mEditorRepoApi->hasProperty(mId, "createChildrenFromMenu"))
+	{
+		return mEditorRepoApi->stringProperty(mId, "createChildrenFromMenu") == "true";
+	}
+	return false;
 }
 
 QList<double> InterpreterElementImpl::border() const

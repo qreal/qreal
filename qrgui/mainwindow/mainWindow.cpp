@@ -963,10 +963,10 @@ void MainWindow::setSceneFont()
 }
 
 // TODO: Unify overloads.
-void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue)
+void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue, bool useTypedPorts)
 {
 	ShapeEdit *shapeEdit = new ShapeEdit(dynamic_cast<models::details::LogicalModel *>(mModels->logicalModel())
-			, index, role);
+			, index, role, useTypedPorts);
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
 	}
@@ -983,9 +983,11 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 }
 
 // This method is for Interpreter.
-void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy)
+void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
+	, bool useTypedPorts)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab());
+	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab()
+		, useTypedPorts);
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
 	}

@@ -25,8 +25,16 @@ void Exploser::addUserPalette(gui::PaletteTreeWidget * const tree, Id const &dia
 
 void Exploser::refreshAllPalettes()
 {
-	foreach (Id const &diagram, mUserPalettes.keys()) {
-		refreshPalette(mUserPalettes[diagram], diagram);
+	if (mApi.editorManagerInterface().isInterpretationMode())
+	{
+		Id interperterDiagram = mUserPalettes.keys().last();
+		refreshPalette(mUserPalettes[interperterDiagram], interperterDiagram);
+	}
+	else
+	{
+		foreach (Id const &diagram, mUserPalettes.keys()) {
+			refreshPalette(mUserPalettes[diagram], diagram);
+		}
 	}
 }
 

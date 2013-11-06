@@ -6,6 +6,7 @@
 #include "view/editorViewScene.h"
 #include "controller/commands/createElementCommand.h"
 #include "umllib/private/expandCommand.h"
+#include "../dialogs/metamodelingOnFly/propertiesDialog.h"
 
 using namespace qReal;
 using namespace view::details;
@@ -99,6 +100,16 @@ void ExploserView::createExpandAction(Element const * const element, QMenu &cont
 
 void ExploserView::createConnectionSubmenus(QMenu &contextMenu, Element const * const element) const
 {
+	if (mMainWindow->editorManager().isInterpretationMode()) {
+		contextMenu.addSeparator();
+		QAction * const changePropertiesAction = contextMenu.addAction(tr("Change Properties"));
+		connect(changePropertiesAction, SIGNAL(triggered()), SLOT(changePropertiesActionTriggered()));
+		changePropertiesAction->setData(element->id().toVariant());
+		QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
+		connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearanceActionTriggered()));
+		changeAppearancePaletteAction->setData(element->id().toVariant());
+	}
+
 	QList<Explosion> const explosions = mMainWindow->editorManager().explosions(element->id().type());
 	if (explosions.isEmpty() || (explosions.count() == 1 && explosions[0].requiresImmediateLinkage())) {
 		return;
@@ -114,16 +125,6 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, Element const * 
 
 	createExpandAction(element, contextMenu
 			, mLogicalApi->logicalRepoApi().outgoingExplosion(element->logicalId()));
-
-	if (mMainWindow->editorManager().isInterpretationMode()) {
-		contextMenu.addSeparator();
-		QAction * const changePropertiesAction = contextMenu.addAction(tr("Change Properties"));
-		connect(changePropertiesAction, SIGNAL(triggered()), SLOT(changePropertiesActionTriggered()));
-		changePropertiesAction->setData(element->id().toVariant());
-		QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
-		connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearanceActionTriggered()));
-		changeAppearancePaletteAction->setData(element->id().toVariant());
-	}
 }
 
 void ExploserView::handleDoubleClick(Id const &id)
@@ -207,4 +208,21 @@ void ExploserView::expandExplosionActionTriggered()
 	if (node) {
 		mMainWindow->controller()->execute(new qReal::commands::ExpandCommand(node));
 	}
+}
+
+void ExploserView::changePropertiesActionTriggered()
+{
+	QAction const * const action = static_cast<QAction const *>(sender());
+	Id const id = action->data().value<Id>();
+	qReal::gui::PropertiesDialog * const propertiesDialog = new qReal::gui::PropertiesDialog(*mMainWindow, mMainWindow->editorManager(), id);
+	propertiesDialog->setModal(true);
+	propertiesDialog->show();
+}
+
+void ExploserView::changeAppearanceActionTriggered()
+{
+	QAction const * const action = static_cast<QAction const *>(sender());
+	Id const id = action->data().value<Id>();
+	QString const propertyValue = mMainWindow->editorManager().shape(id);
+	mMainWindow->openShapeEditor(id, propertyValue, &(mMainWindow->editorManager()), false);
 }

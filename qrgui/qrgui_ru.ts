@@ -3726,24 +3726,24 @@
 <context>
     <name>qReal::EditorViewScene</name>
     <message>
-        <location filename="view/editorViewScene.cpp" line="331"/>
-        <location filename="view/editorViewScene.cpp" line="402"/>
+        <location filename="view/editorViewScene.cpp" line="330"/>
+        <location filename="view/editorViewScene.cpp" line="401"/>
         <source>Discard</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="334"/>
+        <location filename="view/editorViewScene.cpp" line="333"/>
         <source>Create new element</source>
         <translation>Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="393"/>
-        <location filename="view/editorViewScene.cpp" line="403"/>
+        <location filename="view/editorViewScene.cpp" line="392"/>
+        <location filename="view/editorViewScene.cpp" line="402"/>
         <source>Connect with the current item</source>
         <translation>Соединить с данным элементом</translation>
     </message>
     <message>
-        <location filename="view/editorViewScene.cpp" line="924"/>
+        <location filename="view/editorViewScene.cpp" line="923"/>
         <source>Add child</source>
         <translation>Добавить элемент</translation>
     </message>
@@ -3918,79 +3918,79 @@
         <translation type="obsolete">Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1012"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1014"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1290"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1292"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1291"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1293"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1292"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1294"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1293"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1295"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1294"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1296"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1295"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1297"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1296"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1298"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1297"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1299"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1298"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1300"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1299"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1301"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1300"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1302"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1301"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1303"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1302"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1304"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.cpp" line="980"/>
-        <location filename="mainwindow/mainWindow.cpp" line="993"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1020"/>
+        <location filename="mainwindow/mainWindow.cpp" line="995"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1022"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -3999,17 +3999,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1957"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1959"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1987"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1989"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1987"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1989"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -4030,7 +4030,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1514"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1516"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -4238,7 +4238,7 @@
 <context>
     <name>qReal::ShapeEdit</name>
     <message>
-        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="328"/>
+        <location filename="mainwindow/shapeEdit/shapeEdit.cpp" line="340"/>
         <source>Saving</source>
         <translation>Сохранение</translation>
     </message>
@@ -4411,7 +4411,7 @@
     <message>
         <location filename="mainwindow/palette/draggableElement.cpp" line="110"/>
         <source>Do you really want to delete this item and all its graphicalrepresentation from the scene and from the palette?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите удалить данный элемент  и все его графические представления со сцены и из палитры?</translation>
     </message>
     <message>
         <location filename="mainwindow/palette/draggableElement.cpp" line="118"/>
@@ -4456,7 +4456,7 @@
     <message>
         <location filename="mainwindow/palette/draggableElement.cpp" line="179"/>
         <source>If you delete it, its properties will be removed fromthe elements-inheritors. Continue to delete?</source>
-        <translation type="unfinished"></translation>
+        <translation>Если вы удалите его, то все унаследованные свойства будут удалены у его потомков. Продолжить удаление?</translation>
     </message>
     <message>
         <location filename="mainwindow/palette/draggableElement.cpp" line="256"/>
@@ -4555,7 +4555,7 @@
     <message>
         <location filename="dialogs/metamodelingOnFly/propertiesDialog.cpp" line="115"/>
         <source>For adding a new property from the scene and from the explorer of logical modelshould be removed all the elements of the object and its inheritors!</source>
-        <translation type="unfinished"></translation>
+        <translation>Для добавления нового свойства со сцены и обозревателя логической модели должны быть удалены все элементы данного объекта и его наследников!</translation>
     </message>
     <message>
         <source>For adding a new property from the scene and from the explorer of logical model should be removed all the elements of the object and its inheritors!</source>
@@ -4565,7 +4565,7 @@
 <context>
     <name>qReal::gui::RenameDialog</name>
     <message>
-        <location filename="dialogs/renameDialog.cpp" line="11"/>
+        <location filename="dialogs/renameDialog.cpp" line="12"/>
         <source>Enter new name</source>
         <translation>Введите имя</translation>
     </message>
@@ -4858,18 +4858,18 @@
 <context>
     <name>qReal::view::details::ExploserView</name>
     <message>
-        <location filename="view/private/exploserView.cpp" line="54"/>
-        <location filename="view/private/exploserView.cpp" line="173"/>
+        <location filename="view/private/exploserView.cpp" line="55"/>
+        <location filename="view/private/exploserView.cpp" line="174"/>
         <source>New </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="view/private/exploserView.cpp" line="120"/>
+        <location filename="view/private/exploserView.cpp" line="105"/>
         <source>Change Properties</source>
         <translation type="unfinished">Изменить свойства</translation>
     </message>
     <message>
-        <location filename="view/private/exploserView.cpp" line="123"/>
+        <location filename="view/private/exploserView.cpp" line="108"/>
         <source>Change Appearance</source>
         <translation type="unfinished">Изменить внешний вид</translation>
     </message>
