@@ -1253,7 +1253,7 @@ void EditorViewScene::changeAppearanceActionTriggered()
 	QAction const * const action = static_cast<QAction const *>(sender());
 	Id const id = action->data().value<Id>();
 	QString const propertyValue = mWindow->editorManager().shape(id);
-	mWindow->openShapeEditor(id, propertyValue, &(mWindow->editorManager()));
+	mWindow->openShapeEditor(id, propertyValue, &(mWindow->editorManager()), false);
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)

@@ -20,6 +20,8 @@ HEADERS += \
 	elementEditor/shapeEdit/textPicture.h \
 	elementEditor/shapeEdit/path.h \
 	elementEditor/shapeEdit/image.h \
+	elementEditor/shapeEdit/visibilityConditionsDialog.h \
+	elementEditor/shapeEdit/visibilityValueWidget.h \
 	elementEditor/widgetsEdit/widgetsEditor.h \
 	elementEditor/widgetsEdit/private/toolFactory.h \
 	elementEditor/widgetsEdit/private/toolList.h \
@@ -87,6 +89,8 @@ SOURCES += \
 	elementEditor/shapeEdit/view.cpp \
 	elementEditor/shapeEdit/textPicture.cpp \
 	elementEditor/shapeEdit/image.cpp \
+	elementEditor/shapeEdit/visibilityConditionsDialog.cpp \
+	elementEditor/shapeEdit/visibilityValueWidget.cpp \
 	elementEditor/widgetsEdit/widgetsEditor.cpp \
 	elementEditor/widgetsEdit/private/toolFactory.cpp \
 	elementEditor/widgetsEdit/private/toolList.cpp \
@@ -133,5 +137,6 @@ SOURCES += \
 
 FORMS += \
 	elementEditor/shapeEdit/shapeEdit.ui \
+	elementEditor/shapeEdit/visibilityConditionsDialog.ui \
 	elementEditor/widgetsEdit/widgetsEditor.ui \
 	elementEditor/widgetsEdit/private/outerBindongsDialog.ui

@@ -22,7 +22,7 @@
 // TODO: lolwut?
 #include "models/details/logicalModel.h"
 
-#include "mainwindow/shapeEdit/visibilityConditionsDialog.h"
+#include "elementEditor/shapeEdit/visibilityConditionsDialog.h"
 #include "view/editorView.h"
 
 namespace Ui {

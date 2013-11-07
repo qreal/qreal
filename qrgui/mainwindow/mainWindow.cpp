@@ -985,19 +985,20 @@ void MainWindow::openElementEditor(QPersistentModelIndex const &index
 	setConnectActionZoomTo(elementEditor);
 }
 
-// TODO: unify element editor with conditional visibility in shape editor
-//// This method is for Interpreter.
-//void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy)
-//{
-//	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab());
-//	if (!propertyValue.isEmpty()) {
-//		shapeEdit->load(propertyValue);
-//	}
+/// TODO: unify element editor with conditional visibility in shape editor
+// EFIM why was it commented?
+// This method is for Interpreter.
+void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy, bool isIconEditor)
+{
+	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab(), isIconEditor);
+	if (!propertyValue.isEmpty()) {
+		shapeEdit->load(propertyValue);
+	}
 
-//	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
-//	mUi->tabs->setCurrentWidget(shapeEdit);
-//	setConnectActionZoomTo(shapeEdit);
-//}
+	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
+	mUi->tabs->setCurrentWidget(shapeEdit);
+	setConnectActionZoomTo(shapeEdit);
+}
 
 void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, int const role
 		, QString const &propertyValue)

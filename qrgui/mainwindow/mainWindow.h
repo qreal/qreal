@@ -97,7 +97,7 @@ public:
 	virtual Id activeDiagram();
 	void openElementEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue);
 	void openQscintillaTextEditor(QPersistentModelIndex const &index, int const role, QString const &propertyValue);
-	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy);
+	void openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy, bool isIconEditor);
 	void showAndEditPropertyInTextEditor(QString const &title, QString const &text, QPersistentModelIndex const &index
 			, int const &role);
 	void openReferenceList(QPersistentModelIndex const &index, QString const &referenceType, QString const &propertyValue

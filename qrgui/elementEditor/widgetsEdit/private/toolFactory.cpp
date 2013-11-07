@@ -12,7 +12,7 @@
 #include "../tools/plainTextEdit.h"
 #include "../tools/spinBox.h"
 #include "../tools/doubleSpinBox.h"
-#include "../tools/label.h"
+#include "../tools/labelTool.h"
 #include "../tools/spacer.h"
 #include "../tools/trigger.h"
 #include "../tools/triggerWidget.h"

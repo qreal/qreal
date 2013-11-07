@@ -475,13 +475,13 @@ bool InterpreterElementImpl::maximizesChildren() const
 	return mEditorRepoApi->stringProperty(mId, "maximizeChildren") == "true";
 }
 
-QString layout()
+QString InterpreterElementImpl::layout() const
 {
 	//TODO implement
 	return "";
 }
 
-QString layoutBinding()
+QString InterpreterElementImpl::layoutBinding() const
 {
 	//TODO implement
 	return "";
