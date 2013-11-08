@@ -227,7 +227,7 @@ QString InterpreterElementImpl::getResultStr(QStringList const &list, ElementRep
 		if (list.first() == "name") {
 			resultStr = repo->name();
 		} else {
-			resultStr = repo->logicalProperty(list.first());
+			resultStr = repo->logicalProperty(list.first()).toString();
 		}
 	} else {
 		int counter = 1;
@@ -237,7 +237,7 @@ QString InterpreterElementImpl::getResultStr(QStringList const &list, ElementRep
 				if (listElement == "name") {
 					field = repo->name();
 				} else {
-					field = repo->logicalProperty(listElement);
+					field = repo->logicalProperty(listElement).toString();
 				}
 			} else {
 				field = listElement;
