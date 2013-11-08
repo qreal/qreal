@@ -41,8 +41,6 @@ public:
 
 	virtual ~Element() {}
 
-	virtual void setId(qReal::Id &id);
-
 	void initEmbeddedControls();
 
 	virtual void updateData();

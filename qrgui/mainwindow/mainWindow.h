@@ -263,7 +263,6 @@ private slots:
 
 	void setData(QString const &data, QPersistentModelIndex const &index, int const &role);
 	void setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role);
-	void openShapeEditor();
 
 	void updatePaletteIcons();
 
