@@ -1,7 +1,7 @@
 <project>
     <!-- Setting basic installer properties -->
-    <shortName>QRealRobots</shortName>
-    <fullName>QReal Robots</fullName>
+    <shortName>QRealTRIKStudio</shortName>
+    <fullName>QReal - TRIK Studio</fullName>
     <version>%version%</version>
     <licenseFile>%1/installer/gpl-3.0.txt</licenseFile>
     <leftImage>%1/installer/left.png</leftImage>
@@ -20,9 +20,9 @@
         <directoryParameter>
             <name>installdir</name>
             <description>Installer.Parameter.installdir.description</description>
-            <explanation>Пожалуйста, укажите каталог, в который QReal:Robots будет установлен. ВНИМАНИЕ: путь до каталога не должен содержать пробелов, русских букв и скобок!</explanation>
+            <explanation>Пожалуйста, укажите каталог, в который TRIK Studio будет установлен. ВНИМАНИЕ: путь до каталога не должен содержать пробелов, русских букв и скобок!</explanation>
             <value></value>
-            <default>C:/${product_shortname}</default>
+            <default>C:/TRIKStudio</default>
             <allowEmptyValue>0</allowEmptyValue>
             <cliOptionName>prefix</cliOptionName>
             <mustBeWritable>1</mustBeWritable>
@@ -83,17 +83,11 @@
     </componentList>
     
     <postInstallationActionList>
-        <!-- Adding desktop shortcut -->
-        <copyFile>
-            <destination>${windows_folder_desktopdirectory}/QReal-Robots.lnk</destination>
-            <origin>${installdir}/QReal-Robots.lnk</origin>
-        </copyFile>
-
         <!-- Associating file extension -->
         <associateWindowsFileExtension>
             <extensions>.qrs</extensions>
-            <progID>QReal.Project.2</progID>
-            <friendlyName>QReal project</friendlyName>
+            <progID>TRIKStudio.Project.2</progID>
+            <friendlyName>TRIKStudio project</friendlyName>
             <icon>${installdir}\icon.ico</icon>
             <mimeType>application/octet-stream</mimeType>
             <commandList>
@@ -125,11 +119,11 @@
     <postUninstallationActionList>
         <!-- Removing shortcut -->
         <deleteFile>
-            <path>${windows_folder_desktopdirectory}/QReal-Robots.lnk</path>
+            <path>${windows_folder_desktopdirectory}/TRIKStudio.lnk</path>
         </deleteFile>
         
         <!-- Removing program folder and all its contents if needed -->
-        <showQuestion text="Вы хотите удалить всё содержимое папки QReal:Robots?" variable="remove_folder" />
+        <showQuestion text="Вы хотите удалить всё содержимое папки TRIK Studio?" variable="remove_folder" />
         <deleteFile>
             <path>${installdir}/*</path>
             <ruleList>
@@ -154,12 +148,12 @@
         </deleteFile>
     </postUninstallationActionList>
     
-    <!-- Proposing to launch QReal:Robots -->
+    <!-- Proposing to launch TRIK Studio -->
     <finalPageActionList>
         <runProgram>
             <program>${installdir}/qrgui.exe</program>
             <programArguments></programArguments>
-            <progressText>Запустить QReal:Robots</progressText>
+            <progressText>Запустить TRIK Studio</progressText>
         </runProgram>
     </finalPageActionList>
 </project>

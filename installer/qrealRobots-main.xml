@@ -1,6 +1,6 @@
 <component>
     <name>default</name>
-    <description>QReal:Robots</description>
+    <description>TRIKStudio</description>
     <canBeEdited>1</canBeEdited>
     <selected>1</selected>
     <show>1</show>
@@ -15,7 +15,7 @@
                     <comment>Uninstall</comment>
                     <exec>${installdir}/${uninstallerName}</exec>
                     <icon></icon>
-                    <name>Uninstall QReal-Robots</name>
+                    <name>Uninstall TRIKStudio</name>
                     <path>${installdir}</path>
                     <platforms>windows</platforms>
                     <runAsAdmin>0</runAsAdmin>
@@ -23,6 +23,17 @@
                     <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
                     <windowsExecArgs></windowsExecArgs>
                     <windowsIcon></windowsIcon>
+                    <windowsPath>${installdir}</windowsPath>
+                </shortcut>
+                <shortcut>
+                    <comment>TRIK Studio</comment>
+                    <icon>${installdir}/icon.ico</icon>
+                    <name>TRIKStudio</name>
+                    <platforms>windows</platforms>
+                    <runAsAdmin>0</runAsAdmin>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/qrgui.exe</windowsExec>
+                    <windowsIcon>${installdir}/icon.ico</windowsIcon>
                     <windowsPath>${installdir}</windowsPath>
                 </shortcut>
             </shortcutList>
@@ -52,22 +63,6 @@
                     <origin>%1/plugins/robots/editor/images</origin>
                 </distributionDirectory>
             </distributionFileList>
-            <shortcutList>
-                <shortcut>
-                    <comment></comment>
-                    <exec></exec>
-                    <icon>${installdir}/icon.ico</icon>
-                    <name>QReal-Robots</name>
-                    <path></path>
-                    <platforms>windows</platforms>
-                    <runAsAdmin>0</runAsAdmin>
-                    <runInTerminal>0</runInTerminal>
-                    <windowsExec>${installdir}/qrgui.exe</windowsExec>
-                    <windowsExecArgs></windowsExecArgs>
-                    <windowsIcon>${installdir}/icon.ico</windowsIcon>
-                    <windowsPath>${installdir}</windowsPath>
-                </shortcut>
-            </shortcutList>
         </folder>
         <folder>
             <destination>${installdir}/examples</destination>
@@ -107,8 +102,8 @@
     </folderList>
     <startMenuShortcutList>
         <startMenuShortcut>
-            <comment>Uninstall QReal:Robots</comment>
-            <name>Uninstall QReal-Robots</name>
+            <comment>Uninstall TRIKStudio</comment>
+            <name>Uninstall TRIKStudio</name>
             <runAsAdmin>1</runAsAdmin>
             <runInTerminal>0</runInTerminal>
             <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
@@ -117,8 +112,8 @@
             <windowsPath>${installdir}/</windowsPath>
         </startMenuShortcut>
         <startMenuShortcut>
-            <comment>QReal:Robots</comment>
-            <name>QReal-Robots</name>
+            <comment>TRIK Studio</comment>
+            <name>TRIKStudio</name>
             <runAsAdmin>0</runAsAdmin>
             <runInTerminal>0</runInTerminal>
             <windowsExec>${installdir}/qrgui.exe</windowsExec>
@@ -127,4 +122,17 @@
             <windowsPath></windowsPath>
         </startMenuShortcut>
     </startMenuShortcutList>
+    <desktopShortcutList>
+        <shortcut>
+            <comment>TRIK Studio</comment>
+            <icon>${installdir}/icon.ico</icon>
+            <name>TRIKStudio</name>
+            <platforms>windows</platforms>
+            <runAsAdmin>0</runAsAdmin>
+            <runInTerminal>0</runInTerminal>
+            <windowsExec>${installdir}/qrgui.exe</windowsExec>
+            <windowsIcon>${installdir}/icon.ico</windowsIcon>
+            <windowsPath>${installdir}</windowsPath>
+        </shortcut>
+    </desktopShortcutList>
 </component>
