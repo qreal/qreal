@@ -194,6 +194,7 @@ bool GraphicType::initBonusContextMenuFields()
 
 bool GraphicType::initContainerProperties()
 {
+	mContainerProperties = new ContainerProperties();
 	QDomElement const containerElement = mLogic.firstChildElement("container");
 	if (containerElement.isNull()) {
 		return true;

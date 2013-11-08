@@ -458,7 +458,7 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\tQStringList mBonusContextMenuFields;\n";
 	}
 	if (hasSdf) {
-		out() << "\t\tSdfRendererInterface *mRenderer;\n";
+		out() << "\t\tqReal::SdfRendererInterface *mRenderer;\n";
 	}
 	if (hasWtf) {
 		out() << "\t\tWidgetsHelperInterface *mWidgetsHelper;\n";
