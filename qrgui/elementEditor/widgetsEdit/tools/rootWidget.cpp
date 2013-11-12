@@ -21,6 +21,11 @@ QDomDocument RootWidget::shapeDocument() const
 	return mShape;
 }
 
+void RootWidget::setElementRepo(qReal::ElementRepoInterface *repo)
+{
+	mRenderer->setElementRepo(repo);
+}
+
 void RootWidget::paintEvent(QPaintEvent *event)
 {
 	if (mRenderer) {

@@ -279,14 +279,6 @@ void NodeType::generateCode(OutFile &out)
 				"\t\t\tmRenderer->load(QString(\":/generated/shapes/" << className << "Class.sdf\"));\n"
 				<< "\t\t\tmRenderer->setElementRepo(elementRepo);\n";
 		hasSdf = true;
-	} else {
-		out() << "\t\t\tQ_UNUSED(portRenderer);\n";
-	}
-
-	sdfFile.setFileName("generated/shapes/" + className + "Ports.sdf");
-	if (sdfFile.exists()) {
-		out() << "\t\t\tportRenderer->load(QString(\":/generated/shapes/" << className << "Ports.sdf\"));\n";
-		hasPorts = true;
 	}
 
 	QFile wtfFile("generated/shapes/" + className + "Class.wtf");
@@ -333,8 +325,11 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
 	<< "\t\tvoid drawEndArrow(QPainter *) const {}\n\n"
 
-	<< "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n"
-	<< "\t\t\tmRenderer->setElementRepo(repo);\n";
+	<< "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n";
+
+	if (hasSdf) {
+		out() << "\t\t\tmRenderer->setElementRepo(repo);\n";
+	}
 
 	if (mLabels.isEmpty() && !hasWtf) {
 		out() << "\t\t\tQ_UNUSED(repo);\n";

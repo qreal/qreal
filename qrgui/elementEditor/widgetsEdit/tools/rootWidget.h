@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
+#include <qrgui/editorPluginInterface/elementRepoInterface.h>
 
 #include "../umllib/sdfRenderer.h"
 
@@ -17,6 +18,7 @@ class RootWidget : public QWidget
 public:
 	RootWidget();
 	void setShape(QDomDocument const &shape);
+	void setElementRepo(ElementRepoInterface *repo);
 	QDomDocument shapeDocument() const;
 
 protected:

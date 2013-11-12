@@ -39,6 +39,9 @@ bool WidgetsHelper::initWidget(QString const &filename)
 	initLayoutFactoryPropertyEditor();
 	QList<PropertyEditorInterface *> editors;
 	mWidget = qReal::widgetsEdit::WidgetsEditor::deserializeWidget(document, editors);
+	if (dynamic_cast<qReal::widgetsEdit::RootWidget *>(mWidget)) {
+		dynamic_cast<qReal::widgetsEdit::RootWidget *>(mWidget)->setElementRepo(mElement);
+	}
 	if (!mWidget) {
 		return false;
 	}
