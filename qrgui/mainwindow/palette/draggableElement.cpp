@@ -194,6 +194,14 @@ void DraggableElement::checkElementForChildren()
 	}
 }
 
+void DraggableElement::hackTouchDrag()
+{
+#ifdef Q_OS_WIN
+	HackTouchDragThread *thread = new HackTouchDragThread(this);
+	thread->start(QThread::LowestPriority);
+#endif
+}
+
 bool DraggableElement::event(QEvent *event)
 {
 	QTouchEvent *touchEvent = dynamic_cast<QTouchEvent *>(event);
@@ -205,15 +213,20 @@ bool DraggableElement::event(QEvent *event)
 
 	switch(event->type()) {
 	case QEvent::TouchBegin: {
+		QCursor::setPos(mapToGlobal(pos));
 		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonPress, pos
 				, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
 		QApplication::postEvent(touchEvent->target(), mouseEvent);
+		hackTouchDrag();
 		break;
 	}
 	case QEvent::TouchEnd: {
 		QMouseEvent* mouseEvent = new QMouseEvent(QEvent::MouseButtonRelease, pos
 				, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 		QApplication::postEvent(touchEvent->target(), mouseEvent);
+#ifdef Q_OS_WIN
+		HackTouchDragThread::simulateSystemRelease();
+#endif
 		break;
 	}
 	case QEvent::TouchUpdate: {
@@ -290,3 +303,41 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		drag->exec(Qt::CopyAction);
 	}
 }
+
+#ifdef Q_OS_WIN
+
+#include <winuser.h>
+
+DraggableElement::HackTouchDragThread::HackTouchDragThread(QObject *parent)
+	: QThread(parent)
+{
+}
+
+void DraggableElement::HackTouchDragThread::simulateSystemPress()
+{
+	mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+}
+
+void DraggableElement::HackTouchDragThread::simulateSystemMove()
+{
+	mouse_event(MOUSEEVENTF_MOVE, -1, -1, 0, 0);
+}
+
+void DraggableElement::HackTouchDragThread::simulateSystemRelease()
+{
+	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+}
+
+void DraggableElement::HackTouchDragThread::run()
+{
+	// Simulating press for windows drag manager not to terminate drag as inconsistent
+	// when it would be unfrozen
+	simulateSystemPress();
+	// Actually sheduller can move mouse till the drag is started so repeating it for sufficient times
+	for (int i = 0; i < 10; ++i) {
+		// This will unfreeze windows drag manager when drag instance is created but mouse didn`t move
+		simulateSystemMove();
+		QThread::msleep(3);
+	}
+}
+#endif
