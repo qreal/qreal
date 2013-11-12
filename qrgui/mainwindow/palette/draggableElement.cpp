@@ -242,25 +242,12 @@ bool DraggableElement::event(QEvent *event)
 
 void DraggableElement::mousePressEvent(QMouseEvent *event)
 {
-	QWidget *atMouse = childAt(event->pos());
-	if (!atMouse || atMouse == this) {
-		return;
-	}
-
-	DraggableElement *child = dynamic_cast<DraggableElement *>(atMouse->parent());
-	if (!child) {
-		child = dynamic_cast<DraggableElement *>(atMouse);
-	}
-	if (!child) {
-		return;
-	}
-
-	Q_ASSERT(child->id().idSize() == 3);  // it should be element type
+	Q_ASSERT(id().idSize() == 3);  // it should be element type
 
 	// new element's ID is being generated here
 	// may this epic event should take place in some more appropriate place
 
-	Id elementId(child->id(), QUuid::createUuid().toString());
+	Id elementId(id(), QUuid::createUuid().toString());
 
 	if (event->button() == Qt::RightButton) {
 		if (mEditorManagerProxy.isInterpretationMode()) {
@@ -283,7 +270,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		QDataStream stream(&itemData, QIODevice::WriteOnly);
 		stream << elementId.toString();  // uuid
 		stream << Id::rootId().toString();  // pathToItem
-		stream << QString("(" + child->text() + ")");
+		stream << QString("(" + text() + ")");
 		stream << QPointF(0, 0);
 		stream << isFromLogicalModel;
 		stream << mData.explosionTarget().toString();
@@ -294,7 +281,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		QDrag *drag = new QDrag(this);
 		drag->setMimeData(mimeData);
 
-		QPixmap const pixmap = child->icon().pixmap(mData.preferredSize());
+		QPixmap const pixmap = icon().pixmap(mData.preferredSize());
 
 		if (!pixmap.isNull()) {
 			drag->setPixmap(pixmap);
