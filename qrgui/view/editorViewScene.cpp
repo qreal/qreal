@@ -110,7 +110,7 @@ void EditorViewScene::printElementsOfRootDiagram()
 
 void EditorViewScene::initMouseMoveManager()
 {
-	if (!mMVIface || !mMVIface->graphicalAssistApi()) {
+	if (!mMVIface || !mMVIface->graphicalAssistApi() || mMouseMovementManager) {
 		return;
 	}
 
