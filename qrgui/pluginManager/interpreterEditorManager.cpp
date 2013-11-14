@@ -499,18 +499,8 @@ QStringList InterpreterEditorManager::propertyNames(Id const &id) const
 
 QStringList InterpreterEditorManager::portTypes(Id const &id) const
 {
-	QSet<QString> result;
-
-	QDomDocument shape;
-	shape.setContent(repoAndMetaId(id).first->stringProperty(id, "shape"));
-
-	QDomElement portsElement = shape.firstChildElement("graphics").firstChildElement("ports");
-	for (int i = 0; i < portsElement.childNodes().size(); i++) {
-		QDomElement port = portsElement.childNodes().at(i).toElement();
-		result.insert(port.attribute("type", "NonTyped"));
-	}
-
-	return result.toList();
+	Q_UNUSED(id);
+	return QStringList("NonTyped");
 }
 
 QStringList InterpreterEditorManager::propertiesWithDefaultValues(Id const &id) const
@@ -889,6 +879,7 @@ void InterpreterEditorManager::addNodeElement(Id const &diagram, QString const &
 	repo->setProperty(nodeId, "isPin", "false");
 	repo->setProperty(nodeId, "isAction", "false");
 	repo->setProperty(nodeId, "links", IdListHelper::toVariant(IdList()));
+	repo->setProperty(nodeId, "createChildrenFromMenu", "false");
 	foreach (Id const &elem, repo->children(diag)) {
 		if (repo->name(elem) == "AbstractNode" && repo->isLogicalElement(elem)) {
 			Id const inheritanceLink("MetaEditor", "MetaEditor", "Inheritance", QUuid::createUuid().toString());
@@ -921,6 +912,7 @@ void InterpreterEditorManager::addEdgeElement(Id const &diagram, QString const &
 	repo->setProperty(edgeId, "labelType", labelType);
 	repo->setProperty(edgeId, "lineType", lineType);
 	repo->setProperty(edgeId, "links", "");
+	repo->setProperty(edgeId, "shape", "broken");
 
 	repo->setProperty(associationId, "name", name + "Association");
 	repo->setProperty(associationId, "beginType", beginType);
