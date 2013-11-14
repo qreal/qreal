@@ -151,6 +151,7 @@ void D2ModelWidget::connectUiButtons()
 	connect(mUi->handCursorButton, SIGNAL(toggled(bool)), this, SLOT(onHandCursorButtonToggled(bool)));
 	connect(mUi->multiselectionCursorButton, SIGNAL(toggled(bool)), this, SLOT(onMultiselectionCursorButtonToggled(bool)));
 
+	connect(mUi->initialStateButton, SIGNAL(clicked()), this, SLOT(setInitialRobotBeforeRun()));
 	connect(mUi->displayButton, SIGNAL(clicked()), this, SLOT(toggleDisplayVisibility()));
 }
 
@@ -218,8 +219,22 @@ void D2ModelWidget::init(bool isActive)
 void D2ModelWidget::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
 {
 	connect(mUi->runButton, SIGNAL(clicked()), runAction, SIGNAL(triggered()), Qt::UniqueConnection);
+	connect(mUi->runButton, SIGNAL(clicked()), this, SLOT(saveInitialRobotBeforeRun()), Qt::UniqueConnection);
 	connect(mUi->stopButton, SIGNAL(clicked()), stopAction, SIGNAL(triggered()), Qt::UniqueConnection);
 	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTimelineListening()));
+}
+
+void D2ModelWidget::saveInitialRobotBeforeRun()
+{
+	mInitialRobotBeforeRun.pos = mRobot->robotPos();
+	mInitialRobotBeforeRun.rotation = mRobot->rotateAngle();
+}
+
+void D2ModelWidget::setInitialRobotBeforeRun()
+{
+	mRobot->setRobotPos(mInitialRobotBeforeRun.pos);
+	mRobot->setRotateAngle(mInitialRobotBeforeRun.rotation);
+	mScene->update();
 }
 
 void D2ModelWidget::drawInitialRobot()

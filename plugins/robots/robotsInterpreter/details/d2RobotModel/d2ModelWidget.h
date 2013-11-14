@@ -107,6 +107,8 @@ public slots:
 	void startTimelineListening();
 	/// Stops 2D model time counter
 	void stopTimelineListening();
+	void saveInitialRobotBeforeRun();
+	void setInitialRobotBeforeRun();
 
 signals:
 	void d2WasClosed();
@@ -176,6 +178,11 @@ private:
 	static const int indexOfColorSensor = 2;
 	static const int indexOfSonarSensor = 3;
 	static const int indexOfLightSensor = 4;
+
+	struct RobotState {
+		QPointF pos;
+		double rotation;
+	};
 
 	void connectUiButtons();
 	void initButtonGroups();
@@ -287,6 +294,8 @@ private:
 
 	bool mFirstShow;
 	Timeline const * mTimeline;
+
+	RobotState mInitialRobotBeforeRun;
 };
 
 }
