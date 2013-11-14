@@ -20,44 +20,9 @@
       <string>Tools</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="1">
-       <widget class="QPushButton" name="wallButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>75</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Wall (W)</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../robotsInterpreter.qrc">
-          <normaloff>:/icons/2d_wall.png</normaloff>:/icons/2d_wall.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="shortcut">
-         <string>W</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
+      <property name="horizontalSpacing">
+       <number>9</number>
+      </property>
       <item row="0" column="0">
        <widget class="QPushButton" name="lineButton">
         <property name="sizePolicy">
@@ -99,8 +64,8 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="ellipseButton">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="wallButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -114,14 +79,14 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Ellipse (E)</string>
+         <string>Wall (W)</string>
         </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset resource="../../robotsInterpreter.qrc">
-          <normaloff>:/icons/2d_ellipse.png</normaloff>:/icons/2d_ellipse.png</iconset>
+          <normaloff>:/icons/2d_wall.png</normaloff>:/icons/2d_wall.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -130,7 +95,7 @@
          </size>
         </property>
         <property name="shortcut">
-         <string>E</string>
+         <string>W</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
@@ -175,6 +140,44 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="ellipseButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>75</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Ellipse (E)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../robotsInterpreter.qrc">
+          <normaloff>:/icons/2d_ellipse.png</normaloff>:/icons/2d_ellipse.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="shortcut">
+         <string>E</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QPushButton" name="clearButton">
         <property name="sizePolicy">
@@ -198,6 +201,41 @@
         <property name="icon">
          <iconset resource="../../robotsInterpreter.qrc">
           <normaloff>:/icons/2d_clear.png</normaloff>:/icons/2d_clear.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="noneButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>75</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>None</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../robotsInterpreter.qrc">
+          <normaloff>:/icons/2d_none.png</normaloff>:/icons/2d_none.png</iconset>
         </property>
         <property name="iconSize">
          <size>
