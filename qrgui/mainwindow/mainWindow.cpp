@@ -963,7 +963,12 @@ void MainWindow::setSceneFont()
 }
 
 // TODO: Unify overloads.
-void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue, bool useTypedPorts)
+void MainWindow::openShapeEditor(
+		QPersistentModelIndex const &index
+		, int role
+		, QString const &propertyValue
+		, bool useTypedPorts
+		)
 {
 	ShapeEdit *shapeEdit = new ShapeEdit(dynamic_cast<models::details::LogicalModel *>(mModels->logicalModel())
 			, index, role, useTypedPorts);
