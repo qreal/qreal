@@ -834,8 +834,18 @@ p, li { white-space: pre-wrap; }
        <height>16777215</height>
       </size>
      </property>
+     <property name="toolTip">
+      <string>Return a robot to initial position</string>
+     </property>
      <property name="text">
-      <string>InitState</string>
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../robotsInterpreter.qrc">
+       <normaloff>:/icons/2d_robot_back.png</normaloff>:/icons/2d_robot_back.png</iconset>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
