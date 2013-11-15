@@ -84,9 +84,11 @@ QPainterPath WorldModel::sonarScanningRegion(QPointF const &position, qreal dire
 
 bool WorldModel::checkCollision(QPainterPath const &robotPath, int stroke) const
 {
+
 	QPainterPathStroker robotPathStroker;
-	robotPathStroker.setWidth(stroke);
-	QPainterPath const robotStrokedPath = stroke
+	int stroke2 = 0;
+	robotPathStroker.setWidth(stroke2);
+	QPainterPath const robotStrokedPath = stroke2
 			? robotPathStroker.createStroke(robotPath)
 			: robotPath;
 
@@ -120,6 +122,16 @@ QList<ColorFieldItem *> const &WorldModel::colorFields() const
 	return mColorFields;
 }
 
+int WorldModel::wallsCount() const
+{
+	return mWalls.count();
+}
+
+WallItem *WorldModel::wallAt(int index)
+{
+	return mWalls[index];
+}
+
 void WorldModel::addColorField(ColorFieldItem *colorField)
 {
 	mColorFields.append(colorField);
@@ -144,6 +156,7 @@ QPainterPath WorldModel::buildWallPath() const
 	foreach (WallItem* wall, mWalls) {
 		wallPath.moveTo(wall->begin());
 		wallPath.lineTo(wall->end());
+
 	}
 	return wallPath;
 }

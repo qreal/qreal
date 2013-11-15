@@ -27,7 +27,7 @@ class D2RobotModel : public QObject, public RobotModelInterface
 	Q_OBJECT
 
 public:
-	D2RobotModel(QObject *parent = 0);
+	explicit D2RobotModel(QObject *parent = 0);
 	~D2RobotModel();
 	virtual void clear();
 	void startInit();
@@ -83,12 +83,32 @@ private:
 		int degrees;
 		ATime activeTimeType;
 		bool isUsed;
+		qreal mMotorFactor;
 	};
 
 	struct Beep {
 		unsigned freq;
 		int time;
 	};
+
+	void findCollision(WallItem &wall);
+	bool isRobotWallCollision(WallItem &wall);
+	void setWall(int index, WallItem* wall){mRobotWalls[index] = wall;}
+	bool isCollision(WallItem &wall, int i);
+	bool isEdgeCollision(WallItem &wall, int i);
+	void getRobotFromWall(WallItem& wall, int index);
+    void getEdgeRobotFromWall(WallItem& wall, int index);
+	void getFromWalls();
+	void setEdgeWall(int index, WallItem* wall){mRobotEdgeWalls[index] = wall;}
+    void updateCoord();
+	QLineF interRobotLine(WallItem& wall);
+	QLineF intersectRobotLine(WallItem& wall);
+    QLineF interWallLine(WallItem& wall);
+	QLineF tangentLine(WallItem& wall);
+	QLineF nearRobotLine(WallItem& wall, QPointF p);
+	bool wallContainsRobotPoints(WallItem& wall);
+	QPointF normalPoint(QPointF A, QPointF B, QPointF C);
+	void calculateForceMoment();
 
 	void setSpeedFactor(qreal speedMul);
 	void initPosition();
@@ -133,6 +153,109 @@ private:
 	bool mNeedSync;
 	bool mNeedSensorNoise;
 	bool mNeedMotorNoise;
+
+	QVector2D mForce;//vector
+    qreal mForceMoment;
+	qreal mFric;
+    QVector2D mV; //velocity vector
+	QVector2D mVA;
+	QVector2D mVB;
+
+	void updateRegion()
+	{
+		mBoundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
+	}
+
+	QPainterPath mBoundingRegion;
+
+
+    qreal mMass;
+    qreal mSize;
+	qreal mMomentI;
+	QVector2D getVA() const;
+	QVector2D getVB() const;
+	QVector2D getV() const;
+
+    void nextStep();
+
+    qreal mFullSpeed;
+	qreal mFullSpeedA;
+	qreal mFullSpeedB;
+
+	qreal scalarProduct(QVector2D vector1, QVector2D vector2);
+    qreal vectorProduct(QVector2D vector1, QVector2D vector2);
+
+	void setV(QVector2D &V);
+
+	qreal getAngle()
+    {
+        return mAngle;
+    }
+    qreal getMass()
+    {
+        return mMass;
+    }
+    qreal getSize()
+    {
+        return mSize;
+    }
+
+  //  qreal getFullSpeed()
+  //  {
+    //    return mFullSpeed;
+  //  }
+    qreal getInertiaMoment()
+    {
+        return mMomentI;
+    }
+
+    qreal getAngularVelocity()
+    {
+        return mAngularVelocity;
+    }
+    QVector2D getForce()
+    {
+        return mForce;
+    }
+    qreal getForceMoment()
+    {
+        return mForceMoment;
+    }
+    void setForce(QVector2D force)
+    {
+        mForce = force;
+    }
+    void setForceMoment(qreal forceMoment)
+    {
+        mForceMoment = forceMoment;
+    }
+
+	qreal getFullSpeed()
+    {
+        return mFullSpeed;
+    }
+	qreal getFullSpeedA()
+    {
+        return mFullSpeedA;
+    }
+	qreal getFullSpeedB()
+    {
+        return mFullSpeedB;
+    }
+
+
+    qreal mAngularVelocity;
+
+	WallItem* mRobotWalls[4]; // Массив вершин, хранящих указатели на стены
+    WallItem* mRobotEdgeWalls[4]; // Массив ребер, хранящих указатели на стены
+
+	QList<QPointF> mEdP; // Массив вершин(стен), которые попали внутрь робота
+    QPointF mP[4]; // Массив вершин робота
+    QLineF mL[4]; // Массив ребер робота
+
+
+
+
 };
 
 }
