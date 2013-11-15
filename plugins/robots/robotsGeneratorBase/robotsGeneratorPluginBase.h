@@ -27,10 +27,15 @@ protected slots:
 	/// Calls code generator. Returns true if operation was successful.
 	virtual bool generateCode();
 
+	/// Changes path to code source file and regenerate necessary extra files.
 	void regenerateCode(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo);
 
+	/// Adds new path to another code source file for chosen diagram
 	void addNewCode(qReal::Id const &diagram, QFileInfo const &fileInfo);
+
+	/// Remove diagram with paths to code source files.
 	void removeDiagram(qReal::Id const &diagram);
+
 	void removeCode(QFileInfo const &fileInfo);
 
 protected:
@@ -40,9 +45,9 @@ protected:
 
 	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo) = 0;
 	QFileInfo srcPath();
-	virtual QFileInfo defaultFilePath(QString const projectName) = 0;
-	virtual QString extension() = 0;
-	virtual QString extDescrition() = 0;
+	virtual QFileInfo defaultFilePath(QString const &projectName) const;
+	virtual QString extension() const;
+	virtual QString extDescrition() const;
 	QFileInfo currentSource();
 
 	/// Interface of MainWindow
@@ -58,7 +63,7 @@ protected:
 	QTranslator mAppTranslator;
 
 	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
-	qReal::SystemEventsInterface *mSystemEvents;
+	qReal::SystemEventsInterface *mSystemEvents; // Does not have ownership
 	qReal::TextManagerInterface *mTextManager;
 	int mCurrentCodeNumber;
 	QMultiHash<qReal::Id, QFileInfo> mCodePath;

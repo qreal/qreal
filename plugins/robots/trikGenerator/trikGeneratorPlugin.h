@@ -24,9 +24,9 @@ public:
 protected:
 	virtual MasterGeneratorBase *masterGenerator();
 	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
-	virtual QFileInfo defaultFilePath(QString const projectName);
-	virtual QString extension();
-	virtual QString extDescrition();
+	virtual QFileInfo defaultFilePath(QString const &projectName) const;
+	virtual QString extension() const;
+	virtual QString extDescrition() const;
 
 private slots:
 

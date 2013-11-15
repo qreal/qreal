@@ -2,17 +2,18 @@
 
 #include <QtCore/QObject>
 
-#include "../mainwindow/qscintillaTextEdit.h"
-#include "../view/editorView.h"
+#include "mainwindow/qscintillaTextEdit.h"
+#include "view/editorView.h"
 
-namespace qReal
-{
+namespace qReal {
 
 class TextManagerInterface : public QObject
 {
 	Q_OBJECT
 
 public:
+	virtual ~TextManagerInterface() {}
+
 	virtual bool openFile(QString const &filePath) = 0;
 	virtual bool closeFile(QString const &filePath) = 0;
 	virtual	void changeFilePath(QString const &from, QString const &to) = 0;
@@ -29,9 +30,11 @@ public:
 	virtual bool isModifiedEver(QString const &path) = 0;
 	virtual void addExtension(QString const &ext, QString const &description) = 0;
 	virtual QString extDescription(QString const &ext) = 0;
+	virtual void showInTextEditor(QFileInfo const &fileInfo) = 0;
+	virtual bool saveText(bool saveAs) = 0;
 
 signals:
-	void textChanged();
+	void textChanged(bool changed);
 
 private slots:
 	virtual void setModified(gui::QScintillaTextEdit *code) = 0;

@@ -1,7 +1,7 @@
 #include "robotsGeneratorPluginBase.h"
 
 #include <qrutils/inFile.h>
-#include "qrgui/mainwindow/qscintillaTextEdit.h"
+#include <qrgui/mainwindow/qscintillaTextEdit.h>
 
 using namespace qReal::robots::generators;
 using namespace gui;
@@ -12,27 +12,43 @@ RobotsGeneratorPluginBase::RobotsGeneratorPluginBase()
 	QApplication::installTranslator(&mAppTranslator);
 }
 
+QFileInfo RobotsGeneratorPluginBase::defaultFilePath(QString const &projectName) const
+{
+	Q_UNUSED(projectName);
+	return QFileInfo();
+}
+
+QString RobotsGeneratorPluginBase::extension() const
+{
+	return "";
+}
+
+QString RobotsGeneratorPluginBase::extDescrition() const
+{
+	return "";
+}
+
 QFileInfo RobotsGeneratorPluginBase::srcPath()
 {
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
 	QString const projectName = "example" + QString::number(mCurrentCodeNumber);
 	QFileInfo fileInfo = defaultFilePath(projectName);
-	QList<QFileInfo> pathsList = mCodePath.values(activeDiagram);
+	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 	bool newCode = true;
 
 	if (!pathsList.isEmpty()) {
-			QString const ext = extension();
+		QString const ext = extension();
 
-			foreach(QFileInfo const &path, pathsList) {
-					if (mTextManager->isDefaultPath(path.absoluteFilePath())
-					&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
-					&& !path.completeSuffix().compare(ext)) {
-							fileInfo = path;
-							newCode = false;
-							break;
-					}
+		foreach (QFileInfo const &path, pathsList) {
+			if (mTextManager->isDefaultPath(path.absoluteFilePath())
+				&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
+				&& !path.completeSuffix().compare(ext)) {
+				fileInfo = path;
+				newCode = false;
+				break;
 			}
+		}
 	}
 
 	if (newCode) {
@@ -47,24 +63,24 @@ QFileInfo RobotsGeneratorPluginBase::currentSource()
 	QFileInfo fileInfo;
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
 
-	if (activeDiagram != Id()) {
-			if (generateCode()) {
-					QString const ext = extension();
+	if (!activeDiagram.isNull()) {
+		if (generateCode()) {
+			QString const ext = extension();
 
-					foreach(QFileInfo const &path, mCodePath.values(activeDiagram)) {
-						if (mTextManager->isDefaultPath(path.absoluteFilePath())
-						&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
-						&& !path.completeSuffix().compare(ext)) {
-									fileInfo = path;
-									break;
-							}
-					}
-			} else {
-					return QFileInfo();
+			foreach (QFileInfo const &path, mCodePath.values(activeDiagram)) {
+				if (mTextManager->isDefaultPath(path.absoluteFilePath())
+					&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
+					&& !path.completeSuffix().compare(ext)) {
+					fileInfo = path;
+					break;
+				}
 			}
+		} else {
+			return QFileInfo();
+		}
 	} else {
-			QScintillaTextEdit *code = static_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab());
-			fileInfo = QFileInfo(mTextManager->path(code));
+		QScintillaTextEdit *code = static_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab());
+		fileInfo = QFileInfo(mTextManager->path(code));
 	}
 
 	return fileInfo;
@@ -96,7 +112,7 @@ bool RobotsGeneratorPluginBase::generateCode()
 	mMainWindowInterface->errorReporter()->clearErrors();
 
 	MasterGeneratorBase * const generator = masterGenerator();
-	QFileInfo path = srcPath();
+	QFileInfo const path = srcPath();
 
 	generator->initialize();
 	generator->setProjectDir(path);
@@ -110,22 +126,21 @@ bool RobotsGeneratorPluginBase::generateCode()
 
 	QString const generatedCode = utils::InFile::readAll(generatedSrcPath);
 	if (!generatedCode.isEmpty()) {
-		mMainWindowInterface->showInTextEditor(path);
+		mTextManager->showInTextEditor(path);
 	}
 
 	delete generator;
 	return true;
 }
 
-void RobotsGeneratorPluginBase::regenerateCode(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo)
+void RobotsGeneratorPluginBase::regenerateCode(qReal::Id const &diagram
+	, QFileInfo const &oldFileInfo
+	, QFileInfo const &newFileInfo)
 {
 	if (!oldFileInfo.completeSuffix().compare(extension())) {
 		mTextManager->changeFilePath(oldFileInfo.absoluteFilePath(), newFileInfo.absoluteFilePath());
-
 		mCodePath.remove(diagram, oldFileInfo);
-
 		mCodePath.insert(diagram, newFileInfo);
-
 		regenerateExtraFiles(newFileInfo);
 	}
 }
@@ -143,6 +158,5 @@ void RobotsGeneratorPluginBase::removeDiagram(qReal::Id const &diagram)
 void RobotsGeneratorPluginBase::removeCode(QFileInfo const &fileInfo)
 {
 	Id const &diagram = mCodePath.key(fileInfo);
-
 	mCodePath.remove(diagram, fileInfo);
 }

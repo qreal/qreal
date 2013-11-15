@@ -14,8 +14,9 @@
 
 using namespace qReal;
 
-ProjectManager::ProjectManager(MainWindow *mainWindow)
+ProjectManager::ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager)
 	: mMainWindow(mainWindow)
+	, mTextManager(textManager)
 	, mAutosaver(new Autosaver(this))
 	, mUnsavedIndicator(false)
 	, mSomeProjectOpened(false)
@@ -292,14 +293,9 @@ bool ProjectManager::restoreIncorrectlyTerminated()
 	return mAutosaver->checkTempFile();
 }
 
-MainWindow *ProjectManager::mainWindow() const
-{
-	return mMainWindow;
-}
-
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
-	if (mMainWindow->saveGeneratedCode(false)) {
+	if (mTextManager->saveText(false)) {
 		return true;
 	}
 
@@ -313,7 +309,7 @@ bool ProjectManager::saveOrSuggestToSaveAs()
 
 bool ProjectManager::suggestToSaveAs()
 {
-	if (mMainWindow->saveGeneratedCode(true)) {
+	if (mTextManager->saveText(true)) {
 		return true;
 	}
 

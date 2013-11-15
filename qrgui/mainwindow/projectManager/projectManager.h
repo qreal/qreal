@@ -3,6 +3,7 @@
 #include <QtCore/QFileInfo>
 
 #include "mainwindow/projectManager/projectManagementInterface.h"
+#include "textEditor/textManagerInterface.h"
 
 namespace qReal {
 
@@ -14,7 +15,7 @@ class ProjectManager : public ProjectManagementInterface
 	Q_OBJECT
 
 public:
-	explicit ProjectManager(MainWindow *mainWindow);
+	explicit ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager);
 
 public slots:
 	bool openExisting(QString const &fileName);
@@ -48,8 +49,6 @@ public:
 	/// and returns yes if he agrees. Otherwise returns false
 	bool restoreIncorrectlyTerminated();
 
-	MainWindow *mainWindow() const;
-
 private:
 	bool import(QString const &fileName);
 	bool saveFileExists(QString const &fileName);
@@ -69,6 +68,7 @@ private:
 	void fileNotFoundMessage(QString const &fileName) const;
 
 	MainWindow *mMainWindow;
+	TextManagerInterface *mTextManager;
 	Autosaver *mAutosaver;
 	bool mUnsavedIndicator;
 	QString mSaveFilePath;

@@ -3,11 +3,11 @@
 #include <QtCore/QTranslator>
 #include <QtCore/QMultiHash>
 
-#include "qrgui/toolPluginInterface/toolPluginInterface.h"
-#include "qrgui/toolPluginInterface/pluginConfigurator.h"
-#include "qrgui/toolPluginInterface/hotKeyActionInfo.h"
-#include "qrgui/toolPluginInterface/systemEventsInterface.h"
-#include "qrgui/textEditor/textManagerInterface.h"
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
+#include <qrgui/toolPluginInterface/systemEventsInterface.h>
+#include <qrgui/textEditor/textManagerInterface.h>
 #include <robotsGeneratorPluginBase.h>
 #include "nxtFlashTool.h"
 
@@ -35,9 +35,9 @@ public:
 protected:
 	virtual MasterGeneratorBase *masterGenerator();
 	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
-	virtual QFileInfo defaultFilePath(QString const projectName);
-	virtual QString extension();
-	virtual QString extDescrition();
+	virtual QFileInfo defaultFilePath(QString const &projectName) const;
+	virtual QString extension() const;
+	virtual QString extDescrition() const;
 
 private slots:
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.

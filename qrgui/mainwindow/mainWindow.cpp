@@ -7,7 +7,6 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QListWidget>
-#include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 #include <QtPrintSupport/QPrintDialog>
 #include <QtWidgets/QProgressBar>
@@ -52,8 +51,8 @@
 
 #include "hotKeyManager/hotKeyManager.h"
 
-#include "../../../../qrutils/outFile.h"
-#include "../toolPluginInterface/systemEvents.h"
+#include "qrutils/outFile.h"
+#include "toolPluginInterface/systemEvents.h"
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 
 using namespace qReal;
@@ -72,7 +71,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(NULL)
 		, mSystemEvents(new SystemEvents())
-		, mTextManager(new TextManager())
+		, mTextManager(new TextManager(mSystemEvents, this))
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(NULL)
 		, mIsFullscreen(false)
@@ -80,7 +79,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mPreferencesDialog(this)
 		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
-		, mProjectManager(new ProjectManager(this))
+		, mProjectManager(new ProjectManager(this, mTextManager))
 		, mStartDialog(new StartDialog(*this, *mProjectManager))
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
@@ -212,7 +211,7 @@ void MainWindow::connectActions()
 
 
 	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeWindowTitle(int)));
-	connect(mTextManager, SIGNAL(textChanged()), this, SLOT(setTextChanged()));
+	connect(mTextManager, SIGNAL(textChanged(bool)), this, SLOT(setTextChanged(bool)));
 
 	connect(mProjectManager, SIGNAL(afterOpen(QString))
 			, &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
@@ -558,7 +557,10 @@ QWidget *MainWindow::currentTab()
 
 void MainWindow::openTab(QWidget *tab, const QString &title)
 {
-	mUi->tabs->addTab(tab, title);
+	if (mUi->tabs->indexOf(tab) == -1) {
+		mUi->tabs->addTab(tab, title);
+	}
+
 	mUi->tabs->setCurrentWidget(tab);
 }
 
@@ -668,7 +670,7 @@ void MainWindow::changeWindowTitle(int index)
 	QString const windowTitle = mToolManager.customizer()->windowTitle();
 
 	if (index != -1) {
-		if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
+		if (dynamic_cast<EditorView *>(getCurrentTab())) {
 			setWindowTitle(windowTitle + " " + mProjectManager->saveFilePath());
 		} else {
 			QScintillaTextEdit *area = static_cast<QScintillaTextEdit *>(currentTab());
@@ -681,19 +683,15 @@ void MainWindow::changeWindowTitle(int index)
 	}
 }
 
-void MainWindow::setTextChanged()
+void MainWindow::setTextChanged(bool changed)
 {
 	QScintillaTextEdit *area = static_cast<QScintillaTextEdit *>(currentTab());
-
 	QString const windowTitle = mToolManager.customizer()->windowTitle();
-
 	QString const filePath = mTextManager->path(area);
-
-	setWindowTitle(windowTitle + " *" + filePath);
-
+	QString const chIndicator = changed ? "*" : "";
+	setWindowTitle(windowTitle + " " + chIndicator + filePath);
 	int const index = mUi->tabs->currentIndex();
-
-	mUi->tabs->setTabText(index, mUi->tabs->tabText(index) + "*");
+	mUi->tabs->setTabText(index, mUi->tabs->tabText(index).remove(QChar('*'), Qt::CaseInsensitive) + chIndicator);
 }
 
 void MainWindow::removeReferences(Id const &id)
@@ -1356,8 +1354,6 @@ void MainWindow::currentTabChanged(int newIndex)
 	bool const isShape = isCurrentTabShapeEdit();
 
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
-	// TODO: implement printing for text tabs
-	//mUi->actionPrint->setEnabled(isEditorTab);
 
 	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
 	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);
@@ -1826,8 +1822,8 @@ void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMen
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
-										 , mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
-										 , *mSystemEvents, *mTextManager));
+		, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
+		, *mSystemEvents, *mTextManager));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
@@ -1886,26 +1882,6 @@ bool MainWindow::showConnectionRelatedMenus() const
 bool MainWindow::showUsagesRelatedMenus() const
 {
 	return mToolManager.customizer()->showUsagesRelatedMenus();
-}
-
-void MainWindow::showInTextEditor(QFileInfo const &fileInfo)
-{
-	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
-		QString const filePath = fileInfo.absoluteFilePath();
-
-		if (!mTextManager->contains(filePath)) {
-			mTextManager->openFile(filePath);
-			QScintillaTextEdit * const area = mTextManager->code(filePath);
-			area->show();
-			mTextManager->bindCode(getCurrentTab(), filePath);
-			mSystemEvents->emitNewCodeAppeared(activeDiagram(), QFileInfo(filePath));
-			mUi->tabs->addTab(area, fileInfo.fileName());
-			mUi->tabs->setCurrentWidget(area);
-		} else {
-			QScintillaTextEdit * const area = mTextManager->code(filePath);
-			mUi->tabs->setCurrentWidget(area);
-		}
-	}
 }
 
 void MainWindow::reinitModels()
@@ -2135,43 +2111,13 @@ QListIterator<EditorView *> MainWindow::openedEditorViews() const
 	return QListIterator<EditorView *>(views);
 }
 
-bool MainWindow::saveGeneratedCode(bool saveAs)
+void MainWindow::setTabText(QWidget *tab, QString const &text)
 {
-	if (dynamic_cast<EditorView *>(getCurrentTab()) == NULL) {
-		QScintillaTextEdit * const area = dynamic_cast<QScintillaTextEdit *>(mUi->tabs->currentWidget());
+	int const index = mUi->tabs->indexOf(tab);
 
-		QFileInfo fileInfo;
-		bool const defaultPath = mTextManager->isDefaultPath(mTextManager->path(area));
-		QString const ext = QFileInfo(mTextManager->path(area)).completeSuffix();
-
-		if (saveAs) {
-			fileInfo = QFileInfo(QFileDialog::getSaveFileName(this, tr("Save generated code"), "", mTextManager->extDescription(ext)));
-		} else {
-			fileInfo = mTextManager->path(area);
-		}
-
-		if (fileInfo.fileName() != "") {
-			mUi->tabs->setTabText(mUi->tabs->currentIndex(), fileInfo.fileName());
-
-			utils::OutFile out(fileInfo.absoluteFilePath());
-
-			out() << area->text();
-
-			if (saveAs) {
-				mSystemEvents->emitCodePathChanged(mTextManager->diagram(area)->mvIface()->rootId(), mTextManager->path(area), fileInfo);
-			}
-
-			if (defaultPath) {
-				mTextManager->changeFilePath(fileInfo.absoluteFilePath(), fileInfo.absoluteFilePath());
-			}
-
-			changeWindowTitle(0);
-		}
-
-		return true;
+	if (index != -1) {
+		mUi->tabs->setTabText(index, text);
 	}
-
-	return false;
 }
 
 void MainWindow::setVersion(QString const &version)

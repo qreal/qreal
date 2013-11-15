@@ -7,8 +7,6 @@
 
 namespace qReal {
 
-class Id;
-
 class SystemEvents : public SystemEventsInterface
 {
 public:

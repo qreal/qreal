@@ -15,7 +15,6 @@ void NxtOsekMasterGenerator::generateOilAndMakeFiles()
 	afterGeneration();
 }
 
-
 qReal::robots::generators::GeneratorCustomizer *NxtOsekMasterGenerator::createCustomizer()
 {
 	return new NxtOsekGeneratorCustomizer(mRepo, mErrorReporter);
@@ -51,7 +50,7 @@ void NxtOsekMasterGenerator::createProjectDir(QString const &projectDir)
 void NxtOsekMasterGenerator::generateOilFile(QString const &projectName
 		, QString const &projectDir)
 {
-	QString const taskNumber = QString::number(mCurInitialNodeNumber);
+	QString const taskNumber = "0";
 	QString const task = readTemplate("oilTask.t").replace("@@NUMBER@@", taskNumber);
 	QString const resultOil = readTemplate("oil.t").replace("@@TASK@@", task);
 	outputCode(projectDir + "/" + projectName + ".oil", resultOil);

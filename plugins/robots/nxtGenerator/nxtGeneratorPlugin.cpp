@@ -1,12 +1,9 @@
 #include "nxtGeneratorPlugin.h"
 
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QMessageBox>
-
-#include "qrgui/mainwindow/qscintillaTextEdit.h"
-
 #include <QtCore/QDir>
 
+#include "qrgui/mainwindow/qscintillaTextEdit.h"
 #include <nxtOsekMasterGenerator.h>
 
 
@@ -31,17 +28,17 @@ NxtGeneratorPlugin::~NxtGeneratorPlugin()
 	delete mFlashTool;
 }
 
-QFileInfo NxtGeneratorPlugin::defaultFilePath(QString const projectName)
+QFileInfo NxtGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-	return QFileInfo("nxt-tools/" + projectName + "/" + projectName + ".c");
+	return QFileInfo(QString("nxt-tools/%1/%1.c").arg(projectName));
 }
 
-QString NxtGeneratorPlugin::extension()
+QString NxtGeneratorPlugin::extension() const
 {
 	return "c";
 }
 
-QString NxtGeneratorPlugin::extDescrition()
+QString NxtGeneratorPlugin::extDescrition() const
 {
 	return tr("Lego NXT Source File");
 }
@@ -100,8 +97,8 @@ MasterGeneratorBase *NxtGeneratorPlugin::masterGenerator()
 void NxtGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 {
 	nxtOsek::NxtOsekMasterGenerator * const generator = new nxtOsek::NxtOsekMasterGenerator(*mRepo
-																			, *mMainWindowInterface->errorReporter()
-																			, mMainWindowInterface->activeDiagram());
+		, *mMainWindowInterface->errorReporter()
+		, mMainWindowInterface->activeDiagram());
 	generator->initialize();
 	generator->setProjectDir(newFileInfo);
 	generator->generateOilAndMakeFiles();
@@ -127,16 +124,15 @@ void NxtGeneratorPlugin::flashRobot()
 void NxtGeneratorPlugin::uploadProgram()
 {
 	if (!mNxtToolsPresent) {
-					mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
+		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-			QFileInfo const fileInfo = currentSource();
+		QFileInfo const fileInfo = currentSource();
 
-			if (fileInfo != QFileInfo()) {
-				mFlashTool->uploadProgram(fileInfo);
-			}
+		if (fileInfo != QFileInfo()) {
+			mFlashTool->uploadProgram(fileInfo);
+		}
 	}
 }
-
 
 void NxtGeneratorPlugin::checkNxtTools()
 {

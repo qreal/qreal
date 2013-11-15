@@ -40,6 +40,7 @@ private slots:
 	void titlesVisibilityChecked(bool checked);
 	void updateSettings();
 	void closeNeededWidget();
+
 	/// Overriden to enable/disable related actions. For example, we can't run
 	/// a diagram which is not related to a plugin.
 	void activeTabChanged(Id const &rootElementId);

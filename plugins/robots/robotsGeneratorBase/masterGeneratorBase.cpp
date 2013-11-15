@@ -2,7 +2,7 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
-#include "readableControlFlowGenerator.h"
+#include <readableControlFlowGenerator.h>
 
 using namespace qReal::robots::generators;
 

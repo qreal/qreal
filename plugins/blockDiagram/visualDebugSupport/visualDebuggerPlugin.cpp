@@ -1,7 +1,7 @@
 #include <QtWidgets/QApplication>
 
 #include "visualDebuggerPlugin.h"
-#include "../toolPluginInterface/systemEvents.h"
+#include "toolPluginInterface/systemEvents.h"
 
 using namespace qReal;
 using namespace visualDebugger;

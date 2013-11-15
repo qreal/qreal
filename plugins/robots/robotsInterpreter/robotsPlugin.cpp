@@ -2,7 +2,7 @@
 #include "robotsPlugin.h"
 #include "details/tracer.h"
 #include "details/nxtDisplay.h"
-#include "../../../qrgui/toolPluginInterface/systemEvents.h"
+#include "qrgui/toolPluginInterface/systemEvents.h"
 
 using namespace qReal;
 using namespace interpreters::robots;

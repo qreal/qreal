@@ -1,6 +1,8 @@
 #include "qscintillaTextEdit.h"
+#include <QDebug>
 
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpython.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexercpp.h>
 
 using namespace qReal;
 using namespace gui;
@@ -32,8 +34,8 @@ void QScintillaTextEdit::setPythonLexer()
 
 void QScintillaTextEdit::setCppLexer()
 {
-	//QsciLexerCPP *lexCpp = new QsciLexerCPP(this);
-	//setLexer(lexCpp);
+	QsciLexerCPP *lexCpp = new QsciLexerCPP();
+	setLexer(lexCpp);
 }
 
 void QScintillaTextEdit::emitTexWasModified()

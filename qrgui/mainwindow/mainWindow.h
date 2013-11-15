@@ -113,7 +113,7 @@ public:
 	bool showConnectionRelatedMenus() const;
 	bool showUsagesRelatedMenus() const;
 
-	virtual void showInTextEditor(QFileInfo const &fileInfo);
+	//virtual void showInTextEditor(QFileInfo const &fileInfo);
 	virtual void reinitModels();
 
 	virtual QWidget *windowWidget();
@@ -162,7 +162,7 @@ public:
 
 	QListIterator<EditorView *> openedEditorViews() const;
 
-	bool saveGeneratedCode(bool saveAs);
+	void setTabText(QWidget *tab, QString const &text);
 
 signals:
 	void gesturesShowed();
@@ -190,6 +190,7 @@ public slots:
 
 	void openFirstDiagram();
 	void closeTabsWithRemovedRootElements();
+	void changeWindowTitle(int index);
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
@@ -274,9 +275,7 @@ private slots:
 	void openShapeEditor();
 
 	void updatePaletteIcons();
-
-	void changeWindowTitle(int index);
-	void setTextChanged();
+	void setTextChanged(bool changed);
 
 private:
 	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;

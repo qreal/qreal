@@ -57,20 +57,20 @@ MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()
 
 void TrikGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 {
-
+	Q_UNUSED(newFileInfo);
 }
 
-QFileInfo TrikGeneratorPlugin::defaultFilePath(QString const projectName)
+QFileInfo TrikGeneratorPlugin::defaultFilePath(QString const &projectName) const
 {
-	return QFileInfo("trik/" + projectName + "/" + projectName + ".qts");
+	return QFileInfo(QString("trik/%1/%1.qts").arg(projectName));
 }
 
-QString TrikGeneratorPlugin::extension()
+QString TrikGeneratorPlugin::extension() const
 {
 	return "qts";
 }
 
-QString TrikGeneratorPlugin::extDescrition()
+QString TrikGeneratorPlugin::extDescrition() const
 {
 	return tr("TRIK Source File");
 }
