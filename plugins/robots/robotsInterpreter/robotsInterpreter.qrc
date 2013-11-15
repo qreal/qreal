@@ -23,6 +23,7 @@
         <file>icons/2d_ruler.png</file>
         <file>icons/2d_save.png</file>
         <file>icons/2d_target.png</file>
+        <file>icons/2d_robot_back.png</file>
         <file>icons/sensors/2d_light.png</file>
         <file>icons/sensors/2d_sonar.png</file>
         <file>icons/sensors/2d_touch.png</file>
@@ -41,6 +42,11 @@
         <file>icons/leftButton.png</file>
         <file>icons/leftButtonPressed.png</file>
         <file>icons/rightButton.png</file>
+        <file>icons/2d_none.png</file>
+        <file>icons/2d_drawEllipseCursor.png</file>
+        <file>icons/2d_drawLineCursor.png</file>
+        <file>icons/2d_drawStylusCursor.png</file>
+        <file>icons/2d_drawWallCursor.png</file>
         <file>icons/trik/controller.png</file>
         <file>icons/trik/icon.png</file>
         <file>icons/trik/button_off.png</file>

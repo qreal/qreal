@@ -39,6 +39,8 @@ private slots:
 	void goToActionTriggered();
 	void removeExplosionActionTriggered();
 	void expandExplosionActionTriggered();
+	void changePropertiesActionTriggered();
+	void changeAppearanceActionTriggered();
 
 private:
 	void createAddExplosionMenu(Element const * const element

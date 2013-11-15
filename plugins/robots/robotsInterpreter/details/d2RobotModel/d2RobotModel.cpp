@@ -551,6 +551,12 @@ void D2RobotModel::setSpeedFactor(qreal speedMul)
 	mTimeline->setSpeedFactor(speedMul);
 }
 
+void D2RobotModel::setRobotPos(QPointF const &newPos)
+{
+	mPos = newPos;
+	mD2ModelWidget->draw(mPos, mAngle);
+}
+
 QPointF D2RobotModel::robotPos()
 {
 	return mPos;

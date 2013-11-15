@@ -52,6 +52,7 @@ public:
 	virtual void setRotation(qreal angle);
 	virtual double rotateAngle() const;
 
+	void setRobotPos(QPointF const &newPos);
 	QPointF robotPos();
 
 	virtual void serialize(QDomDocument &target);

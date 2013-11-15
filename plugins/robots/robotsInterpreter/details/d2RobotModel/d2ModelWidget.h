@@ -54,6 +54,10 @@ enum CursorType
 	NoDrag = 0
 	, hand
 	, multiselection
+	, drawWall
+	, drawLine
+	, drawStylus
+	, drawEllipse
 };
 }
 
@@ -107,6 +111,8 @@ public slots:
 	void startTimelineListening();
 	/// Stops 2D model time counter
 	void stopTimelineListening();
+	void saveInitialRobotBeforeRun();
+	void setInitialRobotBeforeRun();
 
 signals:
 	void d2WasClosed();
@@ -132,6 +138,7 @@ private slots:
 	void addStylus(bool on);
 	void addEllipse(bool on);
 	void clearScene(bool removeRobot = false);
+	void setNoneButton();
 	void resetButtons();
 
 	void mousePressed(QGraphicsSceneMouseEvent *mouseEvent);
@@ -149,7 +156,7 @@ private slots:
 	void loadWorldModel();
 
 	void changePenWidth(int width);
-	void changePenColor(const QString &text);
+	void changePenColor(int textIndex);
 	void changePalette();
 
 	void changeSpeed(int curIndex);
@@ -176,6 +183,11 @@ private:
 	static const int indexOfColorSensor = 2;
 	static const int indexOfSonarSensor = 3;
 	static const int indexOfLightSensor = 4;
+
+	struct RobotState {
+		QPointF pos;
+		double rotation;
+	};
 
 	void connectUiButtons();
 	void initButtonGroups();
@@ -219,6 +231,9 @@ private:
 	void setItemPalette(QPen const &penItem, QBrush const &brushItem);
 	void setNoPalette();
 
+	void setNoneStatus();
+	void setCursorTypeForDrawing(enums::cursorType::CursorType type);
+
 	void initWidget();
 	QList<graphicsUtils::AbstractItem *> selectedColorItems();
 	bool isColorItem(graphicsUtils::AbstractItem *item);
@@ -227,8 +242,8 @@ private:
 
 	void centerOnRobot();
 	QGraphicsView::DragMode cursorTypeToDragType(enums::cursorType::CursorType type) const;
-	Qt::CursorShape cursorTypeToShape(enums::cursorType::CursorType type) const;
-	void processDragMode(int mode);
+	QCursor cursorTypeToCursor(enums::cursorType::CursorType type) const;
+	void processDragMode();
 	void syncCursorButtons();
 
 	void onFirstShow();
@@ -282,11 +297,14 @@ private:
 	QButtonGroup mButtonGroup;
 	QButtonGroup mCursorButtonGroup;
 
-	enums::cursorType::CursorType mCursorType;
+	enums::cursorType::CursorType mNoneCursorType; // cursorType for noneStatus
+	enums::cursorType::CursorType mCursorType; // current cursorType
 	bool mFollowRobot;
 
 	bool mFirstShow;
 	Timeline const * mTimeline;
+
+	RobotState mInitialRobotBeforeRun;
 };
 
 }
