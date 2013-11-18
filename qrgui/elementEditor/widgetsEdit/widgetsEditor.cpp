@@ -97,7 +97,6 @@ void WidgetsEditor::initComponents()
 	initControlButtons();
 	initScene();
 	loadTools();
-	initPropertyBrowser();
 	initRoot();
 	initEmptyCase();
 }
@@ -113,6 +112,7 @@ void WidgetsEditor::initController()
 	connect(mController, SIGNAL(savePressed()), this, SLOT(save()));
 	connect(mController, SIGNAL(saveAsPressed()), this, SLOT(saveToDisk()));
 	connect(mController, SIGNAL(openPressed()), this, SLOT(loadFromDisk()));
+	initPropertyBrowser();
 }
 
 void WidgetsEditor::initLayoutButtons()
