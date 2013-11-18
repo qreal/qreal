@@ -6,14 +6,24 @@ using namespace qReal::elementEdit;
 using namespace navigation;
 
 ElementEditor::ElementEditor(const QPersistentModelIndex &index
-		, const int &role, QWidget *parent)
-	: NavigationView(QMap<NavigationPageInterface*, QWidget *>()
-			, new NavigationController(new NavigationState), parent)
-	, mIndex(index), mRole(role), mWidgetsEditor(NULL), mShapeEditor(NULL)
-	, mIconWidgetsEditor(NULL), mIconShapeEditor(NULL), mDocumentBuilder(NULL)
+		, const int &role
+		, models::details::LogicalModel *model
+		, bool useTypedPorts
+		, QWidget *parent)
+		: NavigationView(QMap<NavigationPageInterface*, QWidget *>()
+	, new NavigationController(new NavigationState), parent)
+	, mIndex(index)
+	, mRole(role)
+	, mModel(model)
+	, shapeEditorUseTypedPorts(useTypedPorts)
+	, mWidgetsEditor(NULL)
+	, mShapeEditor(NULL)
+	, mIconWidgetsEditor(NULL)
+	, mIconShapeEditor(NULL)
+	, mDocumentBuilder(NULL)
 {
 	enableMenuSupport();
-    qReal::elementEdit::StartPage *startPage = new qReal::elementEdit::StartPage;
+	qReal::elementEdit::StartPage *startPage = new qReal::elementEdit::StartPage;
 	initStartPageInteraction(startPage);
 	mPages.insert(startPage, startPage);
 	mController->switchTo(startPage);
@@ -59,7 +69,7 @@ void ElementEditor::initRegularWidgetsEditor()
 
 void ElementEditor::initRegularShapeEditor()
 {
-	mShapeEditor = new ShapeEdit(false);
+	mShapeEditor = new ShapeEdit(mModel, mIndex, mRole, false, shapeEditorUseTypedPorts);
 	mPages.insert(mShapeEditor, mShapeEditor);
 	initControlButtonsInteraction(mShapeEditor->controlButtons());
 	connect(mShapeEditor, SIGNAL(shapeSaved()), this, SLOT(onShapeSaved()));

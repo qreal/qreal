@@ -36,10 +36,13 @@ class ShapeEdit : public QWidget, public navigation::NavigationPageWithMenu
 	Q_OBJECT
 
 public:
-	ShapeEdit(bool isIconEditor, QWidget *parent = NULL);
-	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role, bool isIconEditor);
+
+	explicit ShapeEdit(bool isIconEditor, QWidget *parent = NULL);
+	ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, int const &role
+		, bool isIconEditor, bool useTypedPorts);
 	ShapeEdit(Id const &id, EditorManagerInterface *editorManagerProxy
-	, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow, EditorView *editorView, bool isIconEditor);
+		, qrRepo::GraphicalRepoApi const &graphicalRepoApi, MainWindow *mainWindow
+		, EditorView *editorView, bool isIconEditor, bool useTypedPorts);
 	~ShapeEdit();
 
 	graphicsUtils::AbstractView *getView();
@@ -137,6 +140,8 @@ private:
 	IdList mGraphicalElements;
 	MainWindow *mMainWindow;  // Doesn't have ownership.
 	EditorView *mEditorView;  // Doesn't have ownership.
+
+	bool mUseTypedPorts;
 
 	qReal::elementEdit::ControlButtons *mControlButtons;
 	qReal::elementEdit::TemplateDocumentBuilder *mDocumentBuilder;

@@ -183,19 +183,7 @@ void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<Lab
 			labels.append(title);
 			mEdgeLabels.append(EdgeLabel(labelText, labelType, title));
 		}
-		initEdgePorts(mFromPorts, "fromPorts");
-		initEdgePorts(mToPorts, "toPorts");
 	}
-}
-
-void InterpreterElementImpl::initEdgePorts(QStringList &ports, QString const &direction) const
-{
-	QStringList const ids = mEditorRepoApi->stringProperty(mId, direction).split(',', QString::SkipEmptyParts);
-	foreach (QString const &strId, ids) {
-		Id const id = Id::loadFromString(strId);
-		ports << mEditorRepoApi->name(id);
-	}
-	ports << "NonTyped";
 }
 
 void InterpreterElementImpl::paint(QPainter *painter, QRectF &contents)
@@ -242,6 +230,7 @@ QString InterpreterElementImpl::getResultStr(QStringList const &list, ElementRep
 			} else {
 				field = listElement;
 			}
+
 			resultStr += field;
 			counter++;
 		}
@@ -257,6 +246,7 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 				// Static label
 				return;
 			}
+
 			QStringList const list = getListOfStr(edgeLabel.labelText);
 			QString const resultStr = getResultStr(list, repo);
 			edgeLabel.title->setHtml(QString("<center>%1</center>").arg(resultStr).replace("\n", "<br>"));
@@ -270,6 +260,7 @@ void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
 				Q_UNUSED(repo);
 				return;
 			}
+
 			QStringList const list = getListOfStr(nodeLabel.textBinded);
 			QString const resultStr = getResultStr(list, repo);
 			nodeLabel.title->setHtml(QString(nodeLabel.center == "true"
@@ -288,6 +279,7 @@ bool InterpreterElementImpl::isResizeable() const
 	if (mId.element() == "MetaEntityNode") {
 		return mEditorRepoApi->stringProperty(mId, "isResizeable") == "true";
 	}
+
 	return true;
 }
 
@@ -353,47 +345,49 @@ QColor InterpreterElementImpl::getPenColor() const
 
 void InterpreterElementImpl::drawArrow(QPainter *painter, QString const &type) const
 {
-	if (mId.element() == "MetaEntityEdge") {
-		QString style = "";
-		foreach (Id const &edgeChild, mEditorRepoApi->children(mId)) {
-			if (edgeChild.element() == "MetaEntityAssociation") {
-				 style = mEditorRepoApi->stringProperty(edgeChild, type);
-			}
-		}
-
-		if (style.isEmpty()) {
-			style = "filled_arrow";
-		}
-
-		QBrush const oldBrush = painter->brush();
-		QBrush brush;
-		brush.setStyle(Qt::SolidPattern);
-
-		if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow") {
-			brush.setColor(Qt::white);
-		} else if (style == "filled_arrow" || style == "filled_rhomb") {
-			brush.setColor(Qt::black);
-		}
-
-		painter->setBrush(brush);
-
-		if (style == "empty_arrow" || style == "filled_arrow") {
-			static const QPointF points[] = {QPointF(0, 0), QPointF(-5, 10), QPointF(5, 10)};
-			painter->drawPolygon(points, 3);
-		} else if (style == "empty_rhomb" || style == "filled_rhomb") {
-			static const QPointF points[] = {QPointF(0, 0), QPointF(-5, 10), QPointF(0, 20), QPointF(5, 10)};
-			painter->drawPolygon(points, 4);
-		} else if (style == "open_arrow") {
-			static const QPointF points[] = {QPointF(-5, 10), QPointF(0, 0), QPointF(5, 10)};
-			painter->drawPolyline(points, 3);
-		} else if (style == "complex_arrow") {
-			static const QPointF points[] = {QPointF(-15, 30), QPointF(-10, 10), QPointF(0, 0), QPointF(10, 10)
-					, QPointF(15, 30), QPointF(0, 23), QPointF(-15, 30)};
-			painter->drawPolyline(points, 7);
-		}
-
-		painter->setBrush(oldBrush);
+	if (mId.element() != "MetaEntityEdge") {
+		return;
 	}
+
+	QString style = "";
+	foreach (Id const &edgeChild, mEditorRepoApi->children(mId)) {
+		if (edgeChild.element() == "MetaEntityAssociation") {
+			 style = mEditorRepoApi->stringProperty(edgeChild, type);
+		}
+	}
+
+	if (style.isEmpty()) {
+		style = "filled_arrow";
+	}
+
+	QBrush const oldBrush = painter->brush();
+	QBrush brush;
+	brush.setStyle(Qt::SolidPattern);
+
+	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow") {
+		brush.setColor(Qt::white);
+	} else if (style == "filled_arrow" || style == "filled_rhomb") {
+		brush.setColor(Qt::black);
+	}
+
+	painter->setBrush(brush);
+
+	if (style == "empty_arrow" || style == "filled_arrow") {
+		static const QPointF points[] = {QPointF(0, 0), QPointF(-5, 10), QPointF(5, 10)};
+		painter->drawPolygon(points, 3);
+	} else if (style == "empty_rhomb" || style == "filled_rhomb") {
+		static const QPointF points[] = {QPointF(0, 0), QPointF(-5, 10), QPointF(0, 20), QPointF(5, 10)};
+		painter->drawPolygon(points, 4);
+	} else if (style == "open_arrow") {
+		static const QPointF points[] = {QPointF(-5, 10), QPointF(0, 0), QPointF(5, 10)};
+		painter->drawPolyline(points, 3);
+	} else if (style == "complex_arrow") {
+		static const QPointF points[] = {QPointF(-15, 30), QPointF(-10, 10), QPointF(0, 0), QPointF(10, 10)
+				, QPointF(15, 30), QPointF(0, 23), QPointF(-15, 30)};
+		painter->drawPolyline(points, 7);
+	}
+
+	painter->setBrush(oldBrush);
 }
 
 void InterpreterElementImpl::drawStartArrow(QPainter *painter) const
@@ -415,6 +409,7 @@ bool InterpreterElementImpl::hasContainerProperty(QString const &property) const
 {
 	QDomElement const propertiesElement =
 			mGraphics.firstChildElement("logic").firstChildElement("container").firstChildElement("properties");
+
 	if (propertiesElement.hasChildNodes()) {
 		if (!propertiesElement.firstChildElement(property).isNull()) {
 			return true;
@@ -489,12 +484,12 @@ QString InterpreterElementImpl::layoutBinding() const
 
 QStringList InterpreterElementImpl::fromPortTypes() const
 {
-	return mFromPorts;
+	return QStringList("NonTyped");
 }
 
 QStringList InterpreterElementImpl::toPortTypes() const
 {
-	return mToPorts;
+	return QStringList("NonTyped");
 }
 
 enums::linkShape::LinkShape InterpreterElementImpl::shapeType() const
@@ -525,7 +520,11 @@ bool InterpreterElementImpl::hasPin() const
 
 bool InterpreterElementImpl::createChildrenFromMenu() const
 {
-	return mEditorRepoApi->stringProperty(mId, "createChildrenFromMenu") == "true";
+	if (mEditorRepoApi->hasProperty(mId, "createChildrenFromMenu")) {
+		return mEditorRepoApi->stringProperty(mId, "createChildrenFromMenu") == "true";
+	}
+
+	return false;
 }
 
 QList<double> InterpreterElementImpl::border() const
@@ -536,6 +535,7 @@ QList<double> InterpreterElementImpl::border() const
 	} else {
 		list << 0 << 0 << 0 << 0;
 	}
+
 	return list;
 }
 

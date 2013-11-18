@@ -95,7 +95,6 @@ private:
 			, int const &width, int const &height);
 	void initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
 			, int const &width, int const &height);
-	void initEdgePorts(QStringList &ports, QString const &direction) const;
 	void initLabels(int const &width, int const &height, LabelFactoryInterface &factory, QList<LabelInterface*> &titles);
 	QVector<int> getSizeOfContainerProperty(QString const &property) const;
 	QStringList getListOfStr(QString const &labelText) const;
@@ -110,9 +109,6 @@ private:
 	QDomDocument mGraphics;
 	QList<NodeLabel> mNodeLabels;
 	QList<EdgeLabel> mEdgeLabels;
-
-	QStringList mFromPorts;
-	QStringList mToPorts;
 };
 }
 

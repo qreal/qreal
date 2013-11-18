@@ -9,7 +9,6 @@
 
 #include "view/editorView.h"
 #include "mainwindow/mainWindow.h"
-#include "dialogs/metamodelingOnFly/propertiesDialog.h"
 
 #include "controller/commands/createElementCommand.h"
 #include "controller/commands/createGroupCommand.h"
@@ -111,7 +110,7 @@ void EditorViewScene::printElementsOfRootDiagram()
 
 void EditorViewScene::initMouseMoveManager()
 {
-	if (!mMVIface || !mMVIface->graphicalAssistApi()) {
+	if (!mMVIface || !mMVIface->graphicalAssistApi() || mMouseMovementManager) {
 		return;
 	}
 
@@ -221,17 +220,17 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 
 	if (!node) {
 		if (mHighlightNode) {
-			mHighlightNode->layoutFactory()->handleDragLeave();
+			mHighlightNode->erasePlaceholder(true);
 		}
 		return;
 	}
 
 	NodeElement *prevHighlighted = mHighlightNode;
-	QPointF const parentPos = node->mapFromScene(event->scenePos());
-	node->layoutFactory()->handleDragMove(NULL, parentPos);
+	QGraphicsRectItem *placeholder = getPlaceholder();
+	node->drawPlaceholder(placeholder, event->scenePos());
 	mHighlightNode = node;
 	if (prevHighlighted != mHighlightNode && prevHighlighted != NULL) {
-		prevHighlighted->layoutFactory()->handleDragLeave();
+		prevHighlighted->erasePlaceholder(true);
 	}
 }
 
@@ -286,7 +285,7 @@ void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
 	Q_UNUSED(event);
 	if (mHighlightNode) {
-		mHighlightNode->layoutFactory()->handleDragLeave();
+		mHighlightNode->erasePlaceholder(true);
 		mHighlightNode = NULL;
 	}
 }
@@ -303,7 +302,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode) {
-		mHighlightNode->layoutFactory()->handleDragLeave();
+		mHighlightNode->erasePlaceholder(true);
 		mHighlightNode = NULL;
 	}
 }
@@ -708,8 +707,7 @@ Element *EditorViewScene::getLastCreated()
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
 {
-	if (dynamic_cast<QGraphicsTextItem*>(focusItem())
-			|| isInputWidgetFocused()) {
+	if (dynamic_cast<QGraphicsTextItem*>(focusItem())) {
 		// Forward event to text editor
 		QGraphicsScene::keyPressEvent(event);
 	} else if (event->key() == Qt::Key_Delete) {
@@ -731,13 +729,6 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 inline bool EditorViewScene::isArrow(int key)
 {
 	return key == Qt::Key_Left || key == Qt::Key_Right || key == Qt::Key_Down || key == Qt::Key_Up;
-}
-
-bool EditorViewScene::isInputWidgetFocused() const
-{
-	QGraphicsProxyWidget *proxy = dynamic_cast<QGraphicsProxyWidget *>(focusItem());
-	return proxy && proxy->widget() && QApplication::focusWidget()
-		&& QApplication::focusWidget()->testAttribute(Qt::WA_InputMethodEnabled);
 }
 
 void EditorViewScene::moveSelectedItems(int direction)
@@ -1237,23 +1228,6 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 qReal::MainWindow *EditorViewScene::mainWindow() const
 {
 	return mWindow;
-}
-
-void EditorViewScene::changePropertiesActionTriggered()
-{
-	QAction const * const action = static_cast<QAction const *>(sender());
-	Id const id = action->data().value<Id>();
-	PropertiesDialog * const propertiesDialog = new PropertiesDialog(*mWindow, mWindow->editorManager(), id);
-	propertiesDialog->setModal(true);
-	propertiesDialog->show();
-}
-
-void EditorViewScene::changeAppearanceActionTriggered()
-{
-	QAction const * const action = static_cast<QAction const *>(sender());
-	Id const id = action->data().value<Id>();
-	QString const propertyValue = mWindow->editorManager().shape(id);
-	mWindow->openShapeEditor(id, propertyValue, &(mWindow->editorManager()), false);
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)

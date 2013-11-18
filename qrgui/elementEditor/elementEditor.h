@@ -8,6 +8,8 @@
 #include "shapeEdit/shapeEdit.h"
 #include "widgetsEdit/widgetsEditor.h"
 
+#include "models/details/logicalModel.h"
+
 namespace qReal
 {
 
@@ -19,8 +21,12 @@ public:
 	/// Creates new element editior instance binded to specified model item
 	/// @param index Metamodel elements`s template property index
 	/// @param role Internal system`s role value. @see qrkernel/roles.h
-	ElementEditor(QPersistentModelIndex const &index
-		, int const &role, QWidget *parent = 0);
+	ElementEditor(
+		QPersistentModelIndex const &index
+		, int const &role
+		, qReal::models::details::LogicalModel *model
+		, bool useTypedPorts
+		, QWidget *parent = 0);
 	virtual ~ElementEditor();
 
 	/// Returns shape editor instance
@@ -72,6 +78,9 @@ private:
 
 	bool isEditingIcon() const;
 
+	bool shapeEditorUseTypedPorts;
+
+	qReal::models::details::LogicalModel *mModel;
 	QPersistentModelIndex mIndex;
 	int mRole;
 	widgetsEdit::WidgetsEditor *mWidgetsEditor;

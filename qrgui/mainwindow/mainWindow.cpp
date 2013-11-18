@@ -964,10 +964,16 @@ void MainWindow::setSceneFont()
 	}
 }
 
-void MainWindow::openElementEditor(QPersistentModelIndex const &index
-		, int role, QString const &propertyValue)
+void MainWindow::openElementEditor(
+		QPersistentModelIndex const &index
+		, int role
+		, QString const &propertyValue
+		, bool useTypedPorts)
 {
-	ElementEditor *elementEditor = new ElementEditor(index, role);
+	ElementEditor *elementEditor = new ElementEditor(index, role
+			, dynamic_cast<models::details::LogicalModel *>(mModels->logicalModel())
+			, useTypedPorts);
+
 	if (!propertyValue.isEmpty()) {
 		elementEditor->load(propertyValue);
 	}
@@ -988,9 +994,11 @@ void MainWindow::openElementEditor(QPersistentModelIndex const &index
 /// TODO: unify element editor with conditional visibility in shape editor
 // EFIM why was it commented?
 // This method is for Interpreter.
-void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy, bool isIconEditor)
+void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
+	, bool isIconEditor, bool useTypedPorts)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab(), isIconEditor);
+	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab()
+		, isIconEditor, useTypedPorts);
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
 	}

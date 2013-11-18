@@ -77,7 +77,7 @@ void Thread::stepInto(Id const &diagram)
 	Id const initialNode = findStartingElement(diagram);
 	blocks::Block *block = mBlocksTable.block(initialNode);
 
-	if (!block) {
+	if (initialNode.isNull() || !block) {
 		error(tr("No entry point found, please add Initial Node to a diagram"), diagram);
 		return;
 	}
