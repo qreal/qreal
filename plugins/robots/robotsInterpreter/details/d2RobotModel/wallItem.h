@@ -40,11 +40,7 @@ public:
 	QPointF center() const;
 	QLineF line(int i) const;
 	QPointF point(int i) const;
-
-	QPainterPath mWallPath;
-
-	void recalculateBorders();
-	void setWallPath();
+	QPainterPath path() const;
 
 signals:
 	void wallDragged(WallItem *item, QPainterPath const &shape, QPointF const& oldPos);
@@ -53,6 +49,9 @@ protected:
 	virtual void setPrivateData();
 
 private:
+	void recalculateBorders();
+	void setWallPath();
+
 	bool mDragged;
 	bool mOverlappedWithRobot;
 	QImage mImage;
@@ -64,6 +63,8 @@ private:
 
 	int mOldX1;
 	int mOldY1;
+
+	QPainterPath mPath;
 
 	QList<QLineF> mLines;
 };

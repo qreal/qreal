@@ -91,22 +91,26 @@ private:
 		int time;
 	};
 
-	void findCollision(WallItem &wall);
-	bool isRobotWallCollision(WallItem &wall);
-	void setWall(int index, WallItem* wall){mRobotWalls[index] = wall;}
-	bool isCollision(WallItem &wall, int i);
-	bool isEdgeCollision(WallItem &wall, int i);
-	void getRobotFromWall(WallItem& wall, int index);
-	void getEdgeRobotFromWall(WallItem& wall, int index);
+	void findCollision(WallItem const &wall);
+
+	bool isRobotWallCollision(WallItem const &wall);
+	bool isCollision(WallItem const &wall, int i);
+	bool isEdgeCollision(WallItem const &wall, int i);
+
+	void getRobotFromWall(WallItem const &wall, int index);
+	void getEdgeRobotFromWall(WallItem const &wall, int index);
 	void getFromWalls();
-	void setEdgeWall(int index, WallItem* wall){mRobotEdgeWalls[index] = wall;}
+
+	void setWall(int index, WallItem const *wall);
+	void setEdgeWall(int index, WallItem const *wall);
+
 	void updateCoord();
-	QLineF interRobotLine(WallItem& wall);
-	QLineF intersectRobotLine(WallItem& wall);
-	QLineF interWallLine(WallItem& wall);
-	QLineF tangentLine(WallItem& wall);
-	QLineF nearRobotLine(WallItem& wall, QPointF p);
-	bool wallContainsRobotPoints(WallItem& wall);
+	QLineF interRobotLine(WallItem const &wall);
+	QLineF intersectRobotLine(WallItem const &wall);
+	QLineF interWallLine(WallItem const &wall);
+	QLineF tangentLine(WallItem const &wall);
+	QLineF nearRobotLine(WallItem const &wall, QPointF const &p);
+	bool wallContainsRobotPoints(WallItem const &wall);
 	QPointF normalPoint(QPointF const &A, QPointF const &B, QPointF const &C);
 	void calculateForceMoment();
 
@@ -175,15 +179,15 @@ private:
 
 	qreal mAngularVelocity;
 	QVector2D mVelocity;
-	QVector2D mVA;
-	QVector2D mVB;
+	QVector2D mVelocityA;
+	QVector2D mVelocityB;
 
 	qreal mFullSpeed;
 	qreal mFullSpeedA;
 	qreal mFullSpeedB;
 
-	WallItem *mRobotWalls[4];
-	WallItem *mRobotEdgeWalls[4];
+	WallItem const *mRobotWalls[4];
+	WallItem const *mRobotEdgeWalls[4];
 
 	QList<QPointF> mInsidePoints; // An array of wall`s vertices that got inside the robot
 	QPointF mVertices[4]; // Robot rect`s corners

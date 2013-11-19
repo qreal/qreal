@@ -37,7 +37,7 @@ void WallItem::setWallPath()
 		wallPath.lineTo(mPoints[2]);
 		wallPath.lineTo(mPoints[3]);
 		wallPath.lineTo(mPoints[0]);
-		mWallPath = wallPath;
+		mPath = wallPath;
 		mIsCircle = false;
 	}
 }
@@ -175,6 +175,11 @@ QLineF WallItem::line(int i) const
 QPointF WallItem::point(int i) const
 {
 	return mPoints[i];
+}
+
+QPainterPath WallItem::path() const
+{
+	return mPath;
 }
 
 void WallItem::recalculateBorders()
