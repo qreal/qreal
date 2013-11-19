@@ -136,11 +136,7 @@ private:
 
 	void nextStep();
 
-	QVector2D va() const;
-	QVector2D vb() const;
-	QVector2D v() const;
-	void setV(QVector2D &V);
-
+	void setVelocity(QVector2D const &velocity);
 	void setForce(QVector2D const &force);
 	void setForceMoment(qreal forceMoment);
 
@@ -156,8 +152,6 @@ private:
 	Motor *mMotorC;
 	Beep mBeep;
 	details::NxtDisplay *mDisplay;
-	qreal mAngle;
-	QPointF mPos;
 	QPointF mRotatePoint;
 	QHash<int, Motor*> mMotors;  // TODO: Arrays are not enough here?
 	QHash<int, qreal> mTurnoverMotors;  // stores how many degrees the motor rotated on
@@ -170,22 +164,23 @@ private:
 	bool mNeedSensorNoise;
 	bool mNeedMotorNoise;
 
-	QVector2D mForce;//vector
-	qreal mForceMoment;
+	QPointF mPos;
+	qreal mAngle;
+
+	qreal mInertialMoment;
 	qreal mFric;
-	QVector2D mV; //velocity vector
+	QVector2D mForce;
+	qreal mForceMoment;
+	qreal mMass;
+
+	qreal mAngularVelocity;
+	QVector2D mVelocity;
 	QVector2D mVA;
 	QVector2D mVB;
-
-	qreal mMass;
-	qreal mInertialMoment;
 
 	qreal mFullSpeed;
 	qreal mFullSpeedA;
 	qreal mFullSpeedB;
-
-
-	qreal mAngularVelocity;
 
 	WallItem* mRobotWalls[4]; // Массив вершин, хранящих указатели на стены
 	WallItem* mRobotEdgeWalls[4]; // Массив ребер, хранящих указатели на стены

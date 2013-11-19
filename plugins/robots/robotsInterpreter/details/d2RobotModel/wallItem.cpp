@@ -1,11 +1,12 @@
+#include "wallItem.h"
+
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 
-#include "wallItem.h"
-
-#include "../../../../../qrkernel/settingsManager.h"
-#include "d2ModelScene.h"
 #include <math.h>
+#include <qrkernel/settingsManager.h>
+
+#include "d2ModelScene.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
@@ -15,9 +16,9 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	: LineItem(begin, end)
 	, mDragged(false)
 	, mImage(":/icons/2d_wall.png")
+	, mIsCircle(false)
 	, mOldX1(0)
 	, mOldY1(0)
-	, mIsCircle(false)
 {
 	setPrivateData();
 	setAcceptDrops(true);
@@ -26,16 +27,16 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 void WallItem::setWallPath()
 {
 	QPainterPath wallPath;
-	if ((mX1 == mX2)&&(mY1 == mY2)) {
+	if (mX1 == mX2 && mY1 == mY2) {
 		wallPath.addEllipse(mX1, mY1, 10, 10);
 		mCenter = QPointF(mX1, mY1);
 		mIsCircle = true;
 	} else {
-		wallPath.moveTo(mP[0]);
-		wallPath.lineTo(mP[1]);
-		wallPath.lineTo(mP[2]);
-		wallPath.lineTo(mP[3]);
-		wallPath.lineTo(mP[0]);
+		wallPath.moveTo(mPoints[0]);
+		wallPath.lineTo(mPoints[1]);
+		wallPath.lineTo(mPoints[2]);
+		wallPath.lineTo(mPoints[3]);
+		wallPath.lineTo(mPoints[0]);
 		mWallPath = wallPath;
 		mIsCircle = false;
 	}
@@ -65,8 +66,6 @@ QPointF WallItem::end()
 	return QPointF(mX2, mY2) + scenePos();
 
 }
-
-
 
 void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
@@ -127,10 +126,19 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 }
 
-bool WallItem::isDragged()
+bool WallItem::isDragged() const
 {
 	return mDragged;
+}
 
+bool WallItem::isCircle() const
+{
+	return mIsCircle;
+}
+
+qreal WallItem::width() const
+{
+	return mPen.width();
 }
 
 void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
@@ -163,9 +171,24 @@ void WallItem::onOverlappedWithRobot(bool overlapped)
 
 }
 
+QPointF WallItem::center() const
+{
+	return mCenter;
+}
+
+QLineF WallItem::line(int i) const
+{
+	return mLines[i];
+}
+
+QPointF WallItem::point(int i) const
+{
+	return mPoints[i];
+}
+
 void WallItem::setLines()
 {
-	linesList.clear();
+	mLines.clear();
 
 	qreal x1 = begin().rx();
 	qreal x2 = end().rx();
@@ -184,13 +207,13 @@ void WallItem::setLines()
 	norm = norm.normalized();
 	norm.operator *=(mPen.widthF()/2);
 
-	mP[0] = QPointF(x1 - deltx + norm.x(), y1 - delty + norm.y());
-    mP[1] = QPointF(x1 - deltx - norm.x(), y1 - delty - norm.y());
-    mP[2] = QPointF(x2 + deltx - norm.x(), y2 + delty - norm.y());
-    mP[3] = QPointF(x2 + deltx + norm.x(), y2 + delty + norm.y());
+	mPoints[0] = QPointF(x1 - deltx + norm.x(), y1 - delty + norm.y());
+	mPoints[1] = QPointF(x1 - deltx - norm.x(), y1 - delty - norm.y());
+	mPoints[2] = QPointF(x2 + deltx - norm.x(), y2 + delty - norm.y());
+	mPoints[3] = QPointF(x2 + deltx + norm.x(), y2 + delty + norm.y());
 
-	linesList.push_back(QLineF(mP[0],mP[1]));
-    linesList.push_back(QLineF(mP[1],mP[2]));
-    linesList.push_back(QLineF(mP[2],mP[3]));
-    linesList.push_back(QLineF(mP[3],mP[0]));
+	mLines.push_back(QLineF(mPoints[0],mPoints[1]));
+	mLines.push_back(QLineF(mPoints[1],mPoints[2]));
+	mLines.push_back(QLineF(mPoints[2],mPoints[3]));
+	mLines.push_back(QLineF(mPoints[3],mPoints[0]));
 }
