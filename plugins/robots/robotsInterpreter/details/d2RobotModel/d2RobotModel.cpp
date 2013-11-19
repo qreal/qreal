@@ -1,22 +1,22 @@
 #include "d2RobotModel.h"
 #include "../tracer.h"
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../../../qrutils/mathUtils/gaussNoise.h"
+#include <qrkernel/settingsManager.h>
+#include <qrutils/mathUtils/gaussNoise.h>
+#include <qrutils/mathUtils/vectorUtils.h>
 
 using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace d2Model;
 using namespace mathUtils;
 
-unsigned long const black   = 0xFF000000;
-unsigned long const white   = 0xFFFFFFFF;
-unsigned long const red     = 0xFFFF0000;
-unsigned long const green   = 0xFF008000;
-unsigned long const blue    = 0xFF0000FF;
-unsigned long const yellow  = 0xFFFFFF00;
-unsigned long const cyan    = 0xFF00FFFF;
-unsigned long const magenta = 0xFFFF00FF;
-
+uint const black   = 0xFF000000;
+uint const white   = 0xFFFFFFFF;
+uint const red     = 0xFFFF0000;
+uint const green   = 0xFF008000;
+uint const blue    = 0xFF0000FF;
+uint const yellow  = 0xFFFFFF00;
+uint const cyan    = 0xFF00FFFF;
+uint const magenta = 0xFFFF00FF;
 
 unsigned const touchSensorPressedSignal = 1;
 unsigned const touchSensorNotPressedSignal = 0;
@@ -40,14 +40,13 @@ D2RobotModel::D2RobotModel(QObject *parent)
 	, mNeedSensorNoise(SettingsManager::value("enableNoiseOfSensors").toBool())
 	, mNeedMotorNoise(SettingsManager::value("enableNoiseOfMotors").toBool())
 	, mAngle(0)
-	, mMomentI(100)
+	, mInertialMoment(100)
 	, mPos(QPointF(0,0))
 	, mFric(0)
 	, mMass(1000)
 	, mAngularVelocity(0)
 	, mForceMoment(0)
 {
-
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
 	connect(mTimeline, SIGNAL(tick()), this, SLOT(recalculateParams()), Qt::UniqueConnection);
 	connect(mTimeline, SIGNAL(nextFrame()), this, SLOT(nextFragment()), Qt::UniqueConnection);
@@ -86,7 +85,7 @@ void D2RobotModel::clear()
 D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed)
 {
 	Motor *motor = new Motor();
-	motor->mMotorFactor = 0;
+	motor->motorFactor = 0;
 	motor->radius = radius;
 	motor->speed = speed;
 	motor->degrees = degrees;
@@ -117,7 +116,10 @@ void D2RobotModel::setNewMotor(int speed, uint degrees, const int port)
 	} else {
 		mMotors[port]->activeTimeType = DoByLimit;
 	}
-	if (speed != 0) mMotors[port]->mMotorFactor = 0.5;
+
+	if (speed) {
+		mMotors[port]->motorFactor = 0.5;
+	}
 }
 
 int D2RobotModel::varySpeed(int const speed) const
@@ -181,10 +183,10 @@ int D2RobotModel::readTouchSensor(robots::enums::inputPort::InputPortEnum const 
 	QPointF sensorPosition(neededPosDir.first);
 	qreal const width = sensorWidth / 2.0;
 	QRectF const scanningRect = QRectF(
-				sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
-				, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
-				, 2 * width + touchSensorStrokeIncrement
-				, 2 * width + touchSensorStrokeIncrement);
+			sensorPosition.x() - width - touchSensorStrokeIncrement / 2.0
+			, sensorPosition.y() - width - touchSensorStrokeIncrement / 2.0
+			, 2 * width + touchSensorStrokeIncrement
+			, 2 * width + touchSensorStrokeIncrement);
 
 	QPainterPath sensorPath;
 	sensorPath.addRect(scanningRect);
@@ -204,9 +206,9 @@ int D2RobotModel::readSonarSensor(robots::enums::inputPort::InputPortEnum const 
 int D2RobotModel::spoilSonarReading(int const distance) const
 {
 	qreal const ran = mNoiseGen.generate(
-				mNoiseGen.approximationLevel()
-				, spoilSonarDispersion
-				);
+			mNoiseGen.approximationLevel()
+			, spoilSonarDispersion
+			);
 
 	return truncateToInterval(0, 255, round(distance + ran));
 }
@@ -242,9 +244,9 @@ int D2RobotModel::readColorSensor(robots::enums::inputPort::InputPortEnum const 
 uint D2RobotModel::spoilColor(uint const color) const
 {
 	qreal const ran = mNoiseGen.generate(
-				mNoiseGen.approximationLevel()
-				, spoilColorDispersion
-				);
+			mNoiseGen.approximationLevel()
+			, spoilColorDispersion
+			);
 
 	int r = round(((color >> 16) & 0xFF) + ran);
 	int g = round(((color >> 8) & 0xFF) + ran);
@@ -267,8 +269,8 @@ QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum co
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
 	qreal const width = sensorWidth / 2.0;
-	QRectF const scanningRect = QRectF(position.x() -  width, position.y() - width
-									   , 2 * width, 2 * width);
+	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width
+			, 2 * width, 2 * width);
 
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
@@ -391,9 +393,9 @@ int D2RobotModel::readLightSensor(robots::enums::inputPort::InputPortEnum const 
 uint D2RobotModel::spoilLight(uint const color) const
 {
 	qreal const ran = mNoiseGen.generate(
-				mNoiseGen.approximationLevel()
-				, spoilLightDispersion
-				);
+			mNoiseGen.approximationLevel()
+			, spoilLightDispersion
+			);
 
 	if (ran > (1.0 - percentSaltPepperNoise / 100.0)) {
 		return white;
@@ -434,16 +436,6 @@ void D2RobotModel::countBeep()
 	}
 }
 
-qreal D2RobotModel::vectorProduct(QVector2D vector1, QVector2D vector2)
-{
-	return  vector1.x()*vector2.y() - vector1.y()*vector2.x();
-}
-
-qreal D2RobotModel::scalarProduct(QVector2D vector1, QVector2D vector2)
-{
-	return vector1.x()*vector2.x() + vector1.y()*vector2.y();
-}
-
 QVector2D D2RobotModel::getVA()const
 {
 	return mVA;
@@ -461,9 +453,9 @@ QVector2D D2RobotModel::getV()const
 }
 void D2RobotModel::setV(QVector2D& V)
 {
-	qreal V0 = getFullSpeed();
-	qreal V0A = getFullSpeedA();
-	qreal V0B = getFullSpeedB();
+	qreal V0 = fullSpeed();
+	qreal V0A = fullSpeedA();
+	qreal V0B = fullSpeedB();
 	qreal V0_ = V0 > (V0A +V0B)/2. ? V0 : (V0A +V0B)/2.;
 	V0_ = V0;
 	if(V.length() > V0_)
@@ -472,6 +464,36 @@ void D2RobotModel::setV(QVector2D& V)
 		V *= x;
 	}
 	mV = V;
+}
+
+qreal D2RobotModel::inertialMoment() const
+{
+	return mInertialMoment;
+}
+
+void D2RobotModel::setForce(QVector2D const &force)
+{
+	mForce = force;
+}
+
+void D2RobotModel::setForceMoment(qreal forceMoment)
+{
+	mForceMoment = forceMoment;
+}
+
+qreal D2RobotModel::fullSpeed() const
+{
+	return mFullSpeed;
+}
+
+qreal D2RobotModel::fullSpeedA() const
+{
+	return mFullSpeedA;
+}
+
+qreal D2RobotModel::fullSpeedB() const
+{
+	return mFullSpeedB;
 }
 
 QLineF D2RobotModel::nearRobotLine(WallItem& wall, QPointF p)
@@ -549,7 +571,7 @@ void D2RobotModel::findCollision(WallItem& wall) // Проверяет колл�
 						QVector2D n (mP[i] - normPoint);
 						n = n.normalized();
 						QVector2D V = getV();
-						qreal k = scalarProduct(V, n);
+						qreal k = mathUtils::VectorUtils::scalarProduct(V, n);
 						QVector2D V1 (V - n * k);
 						setV(V1);
 						setWall(i, &wall);
@@ -585,7 +607,7 @@ void D2RobotModel::findCollision(WallItem& wall) // Проверяет колл�
 						QVector2D n (mP[i] - normPoint);
 						n = n.normalized();
 						QVector2D V = getV();
-						qreal k = scalarProduct(V, n);
+						qreal k = mathUtils::VectorUtils::scalarProduct(V, n);
 						QVector2D V1 (V - n * k);
 						setV(V1);
 					}
@@ -651,50 +673,20 @@ void D2RobotModel::countNewCoord()
 	qreal rotationalFricFactor = getV().length()*1500;
 	qreal angularVelocityFricFactor = fabs(mAngularVelocity*1000);
 	QVector2D napr (cos(mAngle * M_PI / 180), sin (mAngle * M_PI / 180));
-	qreal V0 = getFullSpeed();
+	qreal V0 = fullSpeed();
 
-	qreal tmpA = ( getFullSpeedA() - scalarProduct(getVA(), napr)) * mMotorB->mMotorFactor;
-	qreal tmpB = ( getFullSpeedB() - scalarProduct(getVB(), napr)) * mMotorC->mMotorFactor;
-	qreal tmp2 = ( V0 - scalarProduct(getV(), napr)) * mMotorA->mMotorFactor;
+	qreal tmpA = ( fullSpeedA() - mathUtils::VectorUtils::scalarProduct(getVA(), napr)) * mMotorB->motorFactor;
+	qreal tmpB = ( fullSpeedB() - mathUtils::VectorUtils::scalarProduct(getVB(), napr)) * mMotorC->motorFactor;
+	qreal tmp2 = ( V0 - mathUtils::VectorUtils::scalarProduct(getV(), napr)) * mMotorA->motorFactor;
 
-//<<<<<<< HEAD
-//	if (motor1->spoiledSpeed != motor2->spoiledSpeed) {
-//		qreal const vRadius = vSpeed * robotHeight / (vSpeed - uSpeed);
-//		qreal const averageRadius = vRadius - robotHeight / 2;
-//		qreal angularSpeed = 0;
-//		qreal actualRadius = 0;
-//		if (vSpeed == -uSpeed) {
-//			angularSpeed = vSpeed / vRadius;
-//			actualRadius = 0;  // Radius is relative to the center of the robot.
-//		} else {
-//			angularSpeed = averageSpeed / averageRadius;
-//			actualRadius = averageRadius;
-//		}
-//		qreal const gammaRadians = Timeline::timeInterval * angularSpeed;
-//		qreal const gammaDegrees = gammaRadians * 180 / M_PI;
-
-//		QTransform map;
-//		map.rotate(mAngle);
-//		// TODO: robotWidth / 2 shall actually be a distance between robot center and
-//		// centers of the wheels by x axis.
-//		map.translate(robotWidth / 2, actualRadius);
-//		map.rotate(gammaDegrees);
-//		map.translate(-robotWidth / 2, -actualRadius);
-
-//		QPointF newStart = map.map(QPointF(0, 0));
-//		deltaX = newStart.x();
-//		deltaY = newStart.y();
-
-//		mAngle += gammaDegrees;
-//=======
 	QPointF p0 (mPos.rx() + 25, mPos.ry() + 25);
 
 	mForce = napr*tmp2;
 	mForce  += napr*tmpA;
 	mForce  += napr*tmpB;
 
-	qreal mForceMomentA = vectorProduct(napr*tmpA, QVector2D(mP[0] - p0));
-	qreal mForceMomentB = vectorProduct(napr*tmpB, QVector2D(mP[1] - p0));
+	qreal mForceMomentA = mathUtils::VectorUtils::vectorProduct(napr*tmpA, QVector2D(mP[0] - p0));
+	qreal mForceMomentB = mathUtils::VectorUtils::vectorProduct(napr*tmpB, QVector2D(mP[1] - p0));
 
 	mForceMoment -= mForceMomentA;
 	mForceMoment -= mForceMomentB;
@@ -703,13 +695,12 @@ void D2RobotModel::countNewCoord()
 
 	QVector2D V1 = getV() + mForce / mMass * Timeline::timeInterval;
 	setV(V1);
-	mAngularVelocity += mForceMoment /  getInertiaMoment() * Timeline::timeInterval;
-	qreal fric = angularVelocityFricFactor /  getInertiaMoment() * Timeline::timeInterval;
+	mAngularVelocity += mForceMoment /  inertialMoment() * Timeline::timeInterval;
+	qreal fric = angularVelocityFricFactor /  inertialMoment() * Timeline::timeInterval;
 	qreal tmpAngVel = mAngularVelocity;
 
 	if (mAngularVelocity > 0) {
 		mAngularVelocity -= fric;
-//>>>>>>> kalit/phys
 	} else {
 		mAngularVelocity += fric;
 	}
@@ -725,16 +716,16 @@ void D2RobotModel::countNewCoord()
 		tmpV = tmpV.normalized();
 	}
 
-	qreal sinus = vectorProduct(tmpV, rotationalFrictionF);
+	qreal sinus = mathUtils::VectorUtils::vectorProduct(tmpV, rotationalFrictionF);
 	rotationalFrictionF = rotationalFrictionF *(sinus * rotationalFricFactor);
-	if (scalarProduct(rotationalFrictionF, getV()) > 0) {
+	if (mathUtils::VectorUtils::scalarProduct(rotationalFrictionF, getV()) > 0) {
 		rotationalFrictionF = -rotationalFrictionF;
 	}
 
 	QVector2D newV = getV() + rotationalFrictionF / mMass * Timeline::timeInterval;
-	qreal sc_1 = scalarProduct(newV, rotationalFrictionF);
+	qreal sc_1 = mathUtils::VectorUtils::scalarProduct(newV, rotationalFrictionF);
 	if (sc_1 > 0) {
-		qreal sc_2 = -scalarProduct(getV(), rotationalFrictionF);
+		qreal sc_2 = -mathUtils::VectorUtils::scalarProduct(getV(), rotationalFrictionF);
 		qreal dt_tmp = Timeline::timeInterval *sc_2/(sc_2 + sc_1);
 		QVector2D V1 = getV() + rotationalFrictionF / mMass * dt_tmp;
 		setV(V1);
@@ -759,7 +750,7 @@ void D2RobotModel::calculateForceMoment()
 				QVector2D tmp(mEdP.at(j) - p0);
 				QVector2D F_norm = mForce;
 				F_norm *= -1;
-				qreal a = vectorProduct(F_norm, tmp);
+				qreal a = mathUtils::VectorUtils::vectorProduct(F_norm, tmp);
 				mForceMoment -= a;
 			}
 		}
@@ -772,14 +763,14 @@ void D2RobotModel::calculateForceMoment()
 			qreal ang = bord.angle();
 			QVector2D vectorParalStene;
 			vectorParalStene = QVector2D(cos(ang*M_PI/180),-sin(ang*M_PI/180));
-			qreal scpr = scalarProduct(vectorParalStene, napr);
+			qreal scpr = mathUtils::VectorUtils::scalarProduct(vectorParalStene, napr);
 			if (scpr < 0) {
 				vectorParalStene *= (-1);
 			}
 
 			vectorParalStene = vectorParalStene.normalized();
 			QVector2D F_norm = mForce;
-			double sc1 = scalarProduct(mForce, vectorParalStene);
+			double sc1 = mathUtils::VectorUtils::scalarProduct(mForce, vectorParalStene);
 			F_norm -= vectorParalStene * sc1;
 			F_norm *= -1;
 			QVector2D F_fr_wall;
@@ -788,8 +779,8 @@ void D2RobotModel::calculateForceMoment()
 			F_fr_wall *= F_norm.length() * 0.2;
 			mForce += F_norm;
 			mForce += F_fr_wall;
-			setForceMoment(mForceMoment - vectorProduct(F_fr_wall, tmp));
-			setForceMoment(mForceMoment - vectorProduct(F_norm , tmp));
+			setForceMoment(mForceMoment - mathUtils::VectorUtils::vectorProduct(F_fr_wall, tmp));
+			setForceMoment(mForceMoment - mathUtils::VectorUtils::vectorProduct(F_norm , tmp));
 		}
 	}
 }
@@ -967,8 +958,8 @@ void D2RobotModel::recalculateParams()
 		setEdgeWall(i, NULL);
 	}
 
-	for (int i = 0; i < mWorldModel.mWalls.length(); i++) {
-		findCollision(*(mWorldModel.mWalls[i]));
+	for (int i = 0; i < mWorldModel.wallsCount(); i++) {
+		findCollision(*(mWorldModel.wallAt(i)));
 		updateCoord();
 	}
 	countNewCoord();
@@ -980,13 +971,14 @@ void D2RobotModel::recalculateParams()
 void D2RobotModel::getFromWalls()
 {
 	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < mWorldModel.mWalls.length(); j++) {
-			if (isCollision(*(mWorldModel.mWalls[j]), i)) {
-				getRobotFromWall(*(mWorldModel.mWalls[j]), i);
+		for (int j = 0; j < mWorldModel.wallsCount(); j++) {
+			if (isCollision(*(mWorldModel.wallAt(j)), i)) {
+				getRobotFromWall(*(mWorldModel.wallAt(j)), i);
 			}
-			if (isEdgeCollision(*(mWorldModel.mWalls[j]), i)) {
-				if (mRobotEdgeWalls[i] != NULL) {
-					getEdgeRobotFromWall(*(mWorldModel.mWalls[j]), i);
+
+			if (isEdgeCollision(*(mWorldModel.wallAt(j)), i)) {
+				if (mRobotEdgeWalls[i]) {
+					getEdgeRobotFromWall(*(mWorldModel.wallAt(j)), i);
 				}
 			}
 		}
