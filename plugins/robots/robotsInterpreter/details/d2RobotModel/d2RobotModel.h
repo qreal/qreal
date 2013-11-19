@@ -107,7 +107,7 @@ private:
 	QLineF tangentLine(WallItem& wall);
 	QLineF nearRobotLine(WallItem& wall, QPointF p);
 	bool wallContainsRobotPoints(WallItem& wall);
-	QPointF normalPoint(QPointF A, QPointF B, QPointF C);
+	QPointF normalPoint(QPointF const &A, QPointF const &B, QPointF const &C);
 	void calculateForceMoment();
 
 	void setSpeedFactor(qreal speedMul);
@@ -182,16 +182,12 @@ private:
 	qreal mFullSpeedA;
 	qreal mFullSpeedB;
 
-	WallItem* mRobotWalls[4]; // Массив вершин, хранящих указатели на стены
-	WallItem* mRobotEdgeWalls[4]; // Массив ребер, хранящих указатели на стены
+	WallItem *mRobotWalls[4];
+	WallItem *mRobotEdgeWalls[4];
 
-	QList<QPointF> mEdP; // Массив вершин(стен), которые попали внутрь робота
-	QPointF mP[4]; // Массив вершин робота
-	QLineF mL[4]; // Массив ребер робота
-
-
-
-
+	QList<QPointF> mInsidePoints; // An array of wall`s vertices that got inside the robot
+	QPointF mVertices[4]; // Robot rect`s corners
+	QLineF mBorders[4]; // Robot rect`s borders
 };
 
 }

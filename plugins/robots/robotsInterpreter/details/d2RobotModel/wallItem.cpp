@@ -42,8 +42,6 @@ void WallItem::setWallPath()
 	}
 }
 
-
-
 void WallItem::setPrivateData()
 {
 	setZValue(1);
@@ -58,13 +56,11 @@ void WallItem::setPrivateData()
 QPointF WallItem::begin()
 {
 	return QPointF(mX1, mY1) + scenePos();
-
 }
 
 QPointF WallItem::end()
 {
 	return QPointF(mX2, mY2) + scenePos();
-
 }
 
 void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -72,7 +68,7 @@ void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* optio
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	painter->drawPath(shape());
-	setLines();
+	recalculateBorders();
 	setWallPath();
 }
 
@@ -85,7 +81,6 @@ void WallItem::drawExtractionForItem(QPainter *painter)
 	painter->setPen(QPen(Qt::green));
 	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, drift);
 	mLineImpl.drawFieldForResizeItem(painter, resizeDrift, mX1, mY1, mX2, mY2);
-
 }
 
 void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
@@ -94,7 +89,6 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
 	mOldX1 = qAbs(mX1 - event->scenePos().x());
 	mOldY1 = qAbs(mY1 - event->scenePos().y());
-
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -109,13 +103,14 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		mY1 = pos.y() - mOldY1;
 		reshapeBeginWithGrid(indexGrid);
 		setDraggedEndWithGrid(deltaX, deltaY);
-		mCellNumbX1 = mX1/indexGrid;
-		mCellNumbY1 = mY1/indexGrid;
-		mCellNumbX2 = mX2/indexGrid;
-		mCellNumbY2 = mY2/indexGrid;
+		mCellNumbX1 = mX1 / indexGrid;
+		mCellNumbY1 = mY1 / indexGrid;
+		mCellNumbX2 = mX2 / indexGrid;
+		mCellNumbY2 = mY2 / indexGrid;
 	} else if (mDragged) {
 		QGraphicsItem::mouseMoveEvent(event);
 	}
+
 	// Items under cursor cannot be dragged when adding new item,
 	// but it mustn`t confuse the case when item is unmovable
 	// because overapped with robot
@@ -123,7 +118,6 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		emit wallDragged(this, realShape(), oldPos);
 	}
 	event->accept();
-
 }
 
 bool WallItem::isDragged() const
@@ -155,20 +149,17 @@ QDomElement WallItem::serialize(QDomDocument &document, QPoint const &topLeftPic
 	wallNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
 			+ ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
 	return wallNode;
-
 }
 
 void WallItem::deserializePenBrush(QDomElement const &element)
 {
 	Q_UNUSED(element)
 	setPrivateData();
-
 }
 
 void WallItem::onOverlappedWithRobot(bool overlapped)
 {
 	mOverlappedWithRobot = overlapped;
-
 }
 
 QPointF WallItem::center() const
@@ -186,34 +177,34 @@ QPointF WallItem::point(int i) const
 	return mPoints[i];
 }
 
-void WallItem::setLines()
+void WallItem::recalculateBorders()
 {
 	mLines.clear();
 
-	qreal x1 = begin().rx();
-	qreal x2 = end().rx();
-	qreal y1 = begin().ry();
-	qreal y2 = end().ry();
+	qreal const x1 = begin().rx();
+	qreal const x2 = end().rx();
+	qreal const y1 = begin().ry();
+	qreal const y2 = end().ry();
 
-	qreal deltx = x2 - x1;
-	qreal delty = y2 - y1;
-	qreal len = sqrt(deltx*deltx + delty*delty);
-	deltx /= len;
-	delty /= len;
-	deltx *= 5;
-	delty *= 5;
+	qreal dx = (x2 - x1);
+	qreal dy = y2 - y1;
+	qreal const len = sqrt(dx * dx + dy * dy);
+	dx /= len;
+	dy /= len;
+	dx *= 5;
+	dy *= 5;
 
-	QVector2D norm (y1 - y2, x2 - x1);
-	norm = norm.normalized();
-	norm.operator *=(mPen.widthF()/2);
+	QVector2D norm(y1 - y2, x2 - x1);
+	norm.normalize();
+	norm *= mPen.widthF() / 2;
 
-	mPoints[0] = QPointF(x1 - deltx + norm.x(), y1 - delty + norm.y());
-	mPoints[1] = QPointF(x1 - deltx - norm.x(), y1 - delty - norm.y());
-	mPoints[2] = QPointF(x2 + deltx - norm.x(), y2 + delty - norm.y());
-	mPoints[3] = QPointF(x2 + deltx + norm.x(), y2 + delty + norm.y());
+	mPoints[0] = QPointF(x1 - dx + norm.x(), y1 - dy + norm.y());
+	mPoints[1] = QPointF(x1 - dx - norm.x(), y1 - dy - norm.y());
+	mPoints[2] = QPointF(x2 + dx - norm.x(), y2 + dy - norm.y());
+	mPoints[3] = QPointF(x2 + dx + norm.x(), y2 + dy + norm.y());
 
-	mLines.push_back(QLineF(mPoints[0],mPoints[1]));
-	mLines.push_back(QLineF(mPoints[1],mPoints[2]));
-	mLines.push_back(QLineF(mPoints[2],mPoints[3]));
-	mLines.push_back(QLineF(mPoints[3],mPoints[0]));
+	mLines << QLineF(mPoints[0],mPoints[1])
+			<< QLineF(mPoints[1],mPoints[2])
+			<< QLineF(mPoints[2],mPoints[3])
+			<< QLineF(mPoints[3],mPoints[0]);
 }

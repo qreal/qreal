@@ -43,7 +43,7 @@ public:
 
 	QPainterPath mWallPath;
 
-	void setLines();
+	void recalculateBorders();
 	void setWallPath();
 
 signals:

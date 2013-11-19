@@ -5,7 +5,6 @@ using namespace details::d2Model;
 using namespace graphicsUtils;
 
 int const border = 0;
-//int const border = 5;
 
 RobotItem::RobotItem()
 	: RotateItem()
