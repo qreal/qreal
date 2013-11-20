@@ -93,9 +93,9 @@ private:
 
 	void findCollision(WallItem const &wall);
 
-	bool isRobotWallCollision(WallItem const &wall);
-	bool isCollision(WallItem const &wall, int i);
-	bool isEdgeCollision(WallItem const &wall, int i);
+	bool isRobotWallCollision(WallItem const &wall) const;
+	bool isCollision(WallItem const &wall, int i) const;
+	bool isEdgeCollision(WallItem const &wall, int i) const;
 
 	void getRobotFromWall(WallItem const &wall, int index);
 	void getEdgeRobotFromWall(WallItem const &wall, int index);
@@ -104,10 +104,12 @@ private:
 	void setWall(int index, WallItem const *wall);
 	void setEdgeWall(int index, WallItem const *wall);
 
+	/// Recalculates robot`s vertices and borders due to current position
 	void updateCoord();
-	QLineF interRobotLine(WallItem const &wall);
-	QLineF interWallLine(WallItem const &wall);
-	QLineF nearRobotLine(WallItem const &wall, QPointF const &p);
+	/// Returns the first wall border that intersects robot polygon
+	QLineF intersectedByRobotWallBorder(WallItem const &wall) const;
+	/// Returns a closest to a given point border of the given wall
+	QLineF closestWallBorder(WallItem const &wall, QPointF const &point) const;
 	void calculateForceMoment();
 
 	void setSpeedFactor(qreal speedMul);
@@ -169,7 +171,7 @@ private:
 
 	qreal mInertialMoment;
 	qreal mFric;
-	QVector2D mForce;
+	QVector2D mTractionForce;
 	qreal mForceMoment;
 	qreal mMass;
 

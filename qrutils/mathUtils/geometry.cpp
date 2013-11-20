@@ -13,6 +13,13 @@ qreal Geometry::scalarProduct(QVector2D const &vector1, QVector2D const &vector2
 	return vector1.x() * vector2.x() + vector1.y() * vector2.y();
 }
 
+QVector2D Geometry::projection(QVector2D const &projected, QVector2D const &target)
+{
+	QVector2D const normalizedTarget = target.normalized();
+	// Scalar product is a projection lenght
+	return normalizedTarget * scalarProduct(normalizedTarget, projected);
+}
+
 QPointF Geometry::normalPoint(QLineF const &line, QPointF const &point)
 {
 	qreal const x1 = line.p1().x();
@@ -41,4 +48,11 @@ QLineF Geometry::normalLine(QLineF const &line, QPointF const &point)
 qreal Geometry::distance(QLineF const &line, QPointF const &point)
 {
 	return normalLine(line, point).length();
+}
+
+bool Geometry::intersects(QLineF const &line, QPainterPath const &path)
+{
+	QPainterPath linePath(line.p1());
+	linePath.lineTo(line.p2());
+	return path.intersects(linePath);
 }
