@@ -12,12 +12,6 @@ public:
 	static int sqr(int x);
 	static qreal sqr(qreal x);
 
-	static int min(int x, int y);
-	static qreal min(qreal x, qreal y);
-
-	static int max(int x, int y);
-	static qreal max(qreal x, qreal y);
-
 	static int sign(qreal x);
 };
 

@@ -106,12 +106,8 @@ private:
 
 	void updateCoord();
 	QLineF interRobotLine(WallItem const &wall);
-	QLineF intersectRobotLine(WallItem const &wall);
 	QLineF interWallLine(WallItem const &wall);
-	QLineF tangentLine(WallItem const &wall);
 	QLineF nearRobotLine(WallItem const &wall, QPointF const &p);
-	bool wallContainsRobotPoints(WallItem const &wall);
-	QPointF normalPoint(QPointF const &A, QPointF const &B, QPointF const &C);
 	void calculateForceMoment();
 
 	void setSpeedFactor(qreal speedMul);

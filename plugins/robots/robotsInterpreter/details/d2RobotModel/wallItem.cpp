@@ -16,7 +16,6 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 	: LineItem(begin, end)
 	, mDragged(false)
 	, mImage(":/icons/2d_wall.png")
-	, mIsCircle(false)
 	, mOldX1(0)
 	, mOldY1(0)
 {
@@ -30,7 +29,6 @@ void WallItem::setWallPath()
 	if (mX1 == mX2 && mY1 == mY2) {
 		wallPath.addEllipse(mX1, mY1, 10, 10);
 		mCenter = QPointF(mX1, mY1);
-		mIsCircle = true;
 	} else {
 		wallPath.moveTo(mPoints[0]);
 		wallPath.lineTo(mPoints[1]);
@@ -38,7 +36,6 @@ void WallItem::setWallPath()
 		wallPath.lineTo(mPoints[3]);
 		wallPath.lineTo(mPoints[0]);
 		mPath = wallPath;
-		mIsCircle = false;
 	}
 }
 
@@ -123,11 +120,6 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 bool WallItem::isDragged() const
 {
 	return mDragged;
-}
-
-bool WallItem::isCircle() const
-{
-	return mIsCircle;
 }
 
 qreal WallItem::width() const

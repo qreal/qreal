@@ -21,7 +21,6 @@ public:
 	QPointF begin();
 	QPointF end();
 	bool isDragged() const;
-	bool isCircle() const;
 	qreal width() const;
 
 	/// Draws selection rect around sensorBoundingBox
@@ -55,8 +54,6 @@ private:
 	bool mDragged;
 	bool mOverlappedWithRobot;
 	QImage mImage;
-
-	bool mIsCircle;
 
 	QPointF mPoints[4];
 	QPointF mCenter;

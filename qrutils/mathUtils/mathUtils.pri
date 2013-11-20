@@ -1,9 +1,9 @@
 HEADERS += \
 	$$PWD/math.h \
 	$$PWD/gaussNoise.h \
-	$$PWD/vectorUtils.h \
+	$$PWD/geometry.h \
 
 SOURCES += \
 	$$PWD/math.cpp \
 	$$PWD/gaussNoise.cpp \
-	$$PWD/vectorUtils.cpp \
+	$$PWD/geometry.cpp \
