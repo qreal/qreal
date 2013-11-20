@@ -84,6 +84,7 @@ HEADERS = \
 	../lexlib/PropSetSimple.h \
 	../lexlib/StyleContext.h \
 	../lexlib/WordList.h \
+	../lexlib/SubStyles.h \
 	../src/AutoComplete.h \
 	../src/CallTip.h \
 	../src/Catalogue.h \
