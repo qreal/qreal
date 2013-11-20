@@ -107,7 +107,7 @@ private:
 	/// Recalculates robot`s vertices and borders due to current position
 	void updateCoord();
 	/// Returns the first wall border that intersects robot polygon
-	QLineF intersectedByRobotWallBorder(WallItem const &wall) const;
+	QLineF wallBorderIntersectedByRobot(WallItem const &wall) const;
 	/// Returns a closest to a given point border of the given wall
 	QLineF closestWallBorder(WallItem const &wall, QPointF const &point) const;
 	void calculateForceMoment();
@@ -177,8 +177,6 @@ private:
 
 	qreal mAngularVelocity;
 	QVector2D mVelocity;
-	QVector2D mVelocityA;
-	QVector2D mVelocityB;
 
 	qreal mFullSpeed;
 	qreal mFullSpeedA;
