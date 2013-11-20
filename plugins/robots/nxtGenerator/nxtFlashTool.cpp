@@ -2,6 +2,7 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
+#include <QtWidgets/QMessageBox>
 
 using namespace qReal;
 using namespace qReal::robots::generators;
@@ -16,6 +17,7 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 	environment.insert("DISPLAY", ":0.0");
 	mFlashProcess.setProcessEnvironment(environment);
 	mUploadProcess.setProcessEnvironment(environment);
+	mRunProcess.setProcessEnvironment(environment);
 
 	connect(&mFlashProcess, SIGNAL(readyRead()), this, SLOT(readNxtFlashData()));
 	connect(&mFlashProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
@@ -24,6 +26,8 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 	connect(&mUploadProcess, SIGNAL(readyRead()), this, SLOT(readNxtUploadData()));
 	connect(&mUploadProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
 	connect(&mUploadProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(nxtUploadingFinished(int, QProcess::ExitStatus)));
+
+	connect(&mRunProcess, SIGNAL(error(QProcess::ProcessError)), this, SLOT(error(QProcess::ProcessError)));
 }
 
 void NxtFlashTool::flashRobot()
@@ -37,6 +41,15 @@ void NxtFlashTool::flashRobot()
 #endif
 
 	mErrorReporter->addInformation(tr("Firmware flash started. Please don't disconnect robot during the process"));
+}
+
+void NxtFlashTool::runProgram(QFileInfo const &fileInfo)
+{
+	mSource = fileInfo;
+	mRunProcess.setEnvironment(QProcess::systemEnvironment());
+	mRunProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
+	mRunProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/nexttool/NexTTool.exe /COM=usb -run="
+					+ QString("%1/%2_OSEK.rxe").arg(mSource.absolutePath(),mSource.baseName()));
 }
 
 void NxtFlashTool::error(QProcess::ProcessError error)
@@ -54,6 +67,15 @@ void NxtFlashTool::nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitSt
 		mErrorReporter->addError(tr("flash.sh not found. Make sure it is present in QReal installation directory"));
 	} else if (exitCode == 139) {
 		mErrorReporter->addError(tr("QReal requires superuser privileges to flash NXT robot"));
+	} else if (exitCode == 0) {
+		askToRun();
+	}
+}
+
+void NxtFlashTool::askToRun()
+{
+	if (QMessageBox::question(0, tr("Do you want to run it?"), tr("The program has been uploaded.")) == QMessageBox::Ok) {
+		runProgram(mSource);
 	}
 }
 

@@ -15,6 +15,7 @@ NxtGeneratorPlugin::NxtGeneratorPlugin()
 	: mGenerateCodeAction(NULL)
 	, mFlashRobotAction(NULL)
 	, mUploadProgramAction(NULL)
+	, mRunProgramAction(NULL)
 	, mNxtToolsPresent(false)
 {
 	mAppTranslator.load(":/nxtGenerator_" + QLocale::system().name());
@@ -65,10 +66,14 @@ QList<ActionInfo> NxtGeneratorPlugin::actions()
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
 	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
+	mRunProgramAction.setText(tr("Run program"));
+	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
+	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()));
+
 	checkNxtTools();
 
 	return QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo
-			<< uploadProgramActionInfo;
+			<< uploadProgramActionInfo << runProgramActionInfo;
 }
 
 void NxtGeneratorPlugin::initHotKeyActions()
@@ -80,6 +85,19 @@ void NxtGeneratorPlugin::initHotKeyActions()
 	HotKeyActionInfo uploadActionInfo("Generator.Upload", tr("Upload program to robot"), &mUploadProgramAction);
 
 	mHotKeyActionInfos << generateActionInfo << uploadActionInfo;
+}
+
+void NxtGeneratorPlugin::runProgram()
+{
+	if (!mNxtToolsPresent) {
+		mMainWindowInterface->errorReporter()->addError(tr("NextTool not found. Make sure it is present in QReal installation directory"));
+	} else {
+		QFileInfo const fileInfo = currentSource();
+
+		if (fileInfo != QFileInfo()) {
+			mFlashTool->runProgram(fileInfo);
+		}
+	}
 }
 
 QList<HotKeyActionInfo> NxtGeneratorPlugin::hotKeyActions()
@@ -107,7 +125,7 @@ void NxtGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
 void NxtGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
 {
 	foreach (ActionInfo const &actionInfo, info) {
-			actionInfo.action()->setEnabled(trigger);
+		actionInfo.action()->setEnabled(trigger);
 	}
 }
 
