@@ -15,20 +15,18 @@ void UnrealMotorImplementation::on(int speed, bool breakMode)
 
 void UnrealMotorImplementation::on(int speed, long unsigned int degrees, bool breakMode)
 {
-	Q_UNUSED(breakMode)
-	mD2Model->setNewMotor(speed, degrees, mPort);
+	mD2Model->setNewMotor(speed, degrees, mPort, breakMode);
 	connect(mD2Model, SIGNAL(d2MotorTimeout()), this, SIGNAL(motorImplTimeout()));
 }
 
 void UnrealMotorImplementation::stop(bool breakMode)
 {
-	Q_UNUSED(breakMode)
-	mD2Model->setNewMotor(0, 0, mPort);
+	mD2Model->setNewMotor(0, 0, mPort, breakMode);
 }
 
 void UnrealMotorImplementation::off()
 {
-	mD2Model->setNewMotor(0, 0, mPort);
+	mD2Model->setNewMotor(0, 0, mPort, true);
 }
 
 void UnrealMotorImplementation::resetMotorPosition(bool relative)

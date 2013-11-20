@@ -28,14 +28,15 @@ qreal const spoilSonarDispersion = 1.5;
 qreal const varySpeedDispersion = 0.0125;
 qreal const percentSaltPepperNoise = 20.0;
 
-qreal const frictionCoefficient = 0.2;
+qreal const floorFrictionCoefficient = 0.3;
+qreal const wallFrictionCoefficient = 0.2;
 
 D2RobotModel::D2RobotModel(QObject *parent)
 	: QObject(parent)
 	, mD2ModelWidget(NULL)
-	, mMotorA(NULL)
-	, mMotorB(NULL)
-	, mMotorC(NULL)
+	, mEngineA(NULL)
+	, mEngineB(NULL)
+	, mEngineC(NULL)
 	, mDisplay(new NxtDisplay)
 	, mTimeline(new Timeline(this))
 	, mNoiseGen()
@@ -45,7 +46,6 @@ D2RobotModel::D2RobotModel(QObject *parent)
 	, mPos(QPointF(0,0))
 	, mAngle(0)
 	, mInertialMoment(100)
-	, mFric(0)
 	, mForceMoment(0)
 	, mMass(1000)
 	, mAngularVelocity(0)
@@ -62,18 +62,19 @@ D2RobotModel::~D2RobotModel()
 
 void D2RobotModel::initPosition()
 {
-	if (mMotorA) {
-		delete mMotorA;
+	if (mEngineA) {
+		delete mEngineA;
 	}
-	if (mMotorB) {
-		delete mMotorB;
+	if (mEngineB) {
+		delete mEngineB;
 	}
-	if (mMotorC) {
-		delete mMotorC;
+	if (mEngineC) {
+		delete mEngineC;
 	}
-	mMotorA = initMotor(robotWheelDiameterInPx / 2, 0, 0, 0, false);
-	mMotorB = initMotor(robotWheelDiameterInPx / 2, 0, 0, 1, false);
-	mMotorC = initMotor(robotWheelDiameterInPx / 2, 0, 0, 2, false);
+
+	mEngineA = initEngine(robotWheelDiameterInPx / 2, 0, 0, 0, false);
+	mEngineB = initEngine(robotWheelDiameterInPx / 2, 0, 0, 1, false);
+	mEngineC = initEngine(robotWheelDiameterInPx / 2, 0, 0, 2, false);
 	setBeep(0, 0);
 	mPos = mD2ModelWidget ? mD2ModelWidget->robotPos() : QPointF(0, 0);
 }
@@ -85,22 +86,24 @@ void D2RobotModel::clear()
 	mPos = QPointF(0,0);
 }
 
-D2RobotModel::Motor* D2RobotModel::initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed)
+D2RobotModel::Engine *D2RobotModel::initEngine(int radius, int speed, long unsigned int degrees, int port, bool isUsed)
 {
-	Motor *motor = new Motor();
-	motor->motorFactor = 0;
-	motor->radius = radius;
-	motor->speed = speed;
-	motor->degrees = degrees;
-	motor->isUsed = isUsed;
+	Engine *engine = new Engine();
+	engine->motorFactor = 0;
+	engine->radius = radius;
+	engine->speed = speed;
+	engine->degrees = degrees;
+	engine->isUsed = isUsed;
+	engine->breakMode = true;
 	if (degrees == 0) {
-		motor->activeTimeType = DoInf;
+		engine->activeTimeType = DoInf;
 	} else {
-		motor->activeTimeType = DoByLimit;
+		engine->activeTimeType = DoByLimit;
 	}
-	mMotors[port] = motor;
-	mTurnoverMotors[port] = 0;
-	return motor;
+
+	mEngines[port] = engine;
+	mTurnoverEngines[port] = 0;
+	return engine;
 }
 
 void D2RobotModel::setBeep(unsigned freq, unsigned time)
@@ -109,19 +112,20 @@ void D2RobotModel::setBeep(unsigned freq, unsigned time)
 	mBeep.time = time;
 }
 
-void D2RobotModel::setNewMotor(int speed, uint degrees, const int port)
+void D2RobotModel::setNewMotor(int speed, uint degrees, int port, bool breakMode)
 {
-	mMotors[port]->speed = speed;
-	mMotors[port]->degrees = degrees;
-	mMotors[port]->isUsed = true;
+	mEngines[port]->speed = speed;
+	mEngines[port]->degrees = degrees;
+	mEngines[port]->isUsed = true;
+	mEngines[port]->breakMode = breakMode;
 	if (degrees) {
-		mMotors[port]->activeTimeType = DoByLimit;
+		mEngines[port]->activeTimeType = DoByLimit;
 	} else {
-		mMotors[port]->activeTimeType = DoInf;
+		mEngines[port]->activeTimeType = DoInf;
 	}
 
 	if (speed) {
-		mMotors[port]->motorFactor = 0.5;
+		mEngines[port]->motorFactor = 0.5;
 	}
 }
 
@@ -133,11 +137,11 @@ int D2RobotModel::varySpeed(int const speed) const
 
 void D2RobotModel::countMotorTurnover()
 {
-	foreach (Motor * const motor, mMotors) {
-		int const port = mMotors.key(motor);
+	foreach (Engine * const motor, mEngines) {
+		int const port = mEngines.key(motor);
 		qreal const degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
-		mTurnoverMotors[port] += degrees;
-		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
+		mTurnoverEngines[port] += degrees;
+		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverEngines[port] >= motor->degrees)) {
 			motor->speed = 0;
 			motor->activeTimeType = End;
 			emit d2MotorTimeout();
@@ -147,12 +151,12 @@ void D2RobotModel::countMotorTurnover()
 
 int D2RobotModel::readEncoder(int/*inputPort::InputPortEnum*/ const port) const
 {
-	return mTurnoverMotors[port];
+	return mTurnoverEngines[port];
 }
 
 void D2RobotModel::resetEncoder(int/*inputPort::InputPortEnum*/ const port)
 {
-	mTurnoverMotors[port] = 0;
+	mTurnoverEngines[port] = 0;
 }
 
 SensorsConfiguration &D2RobotModel::configuration()
@@ -422,9 +426,12 @@ void D2RobotModel::startInterpretation()
 
 void D2RobotModel::stopRobot()
 {
-	mMotorA->speed = 0;
-	mMotorB->speed = 0;
-	mMotorC->speed = 0;
+	mEngineA->speed = 0;
+	mEngineA->breakMode = true;
+	mEngineB->speed = 0;
+	mEngineB->breakMode = true;
+	mEngineC->speed = 0;
+	mEngineC->breakMode = true;
 	mD2ModelWidget->stopTimelineListening();
 }
 
@@ -441,40 +448,15 @@ void D2RobotModel::countBeep()
 void D2RobotModel::setVelocity(QVector2D const &velocity)
 {
 	mVelocity = velocity;
-	qreal const oldVelocity = fullSpeed();
-	if (mVelocity.length() > oldVelocity) {
-		mVelocity *= oldVelocity / mVelocity.length();
-	}
+//	qreal const oldVelocity = fullSpeed();
+//	if (mVelocity.length() > oldVelocity) {
+//		mVelocity *= oldVelocity / mVelocity.length();
+//	}
 }
 
 qreal D2RobotModel::inertialMoment() const
 {
 	return mInertialMoment;
-}
-
-void D2RobotModel::setForce(QVector2D const &force)
-{
-	mTractionForce = force;
-}
-
-void D2RobotModel::setForceMoment(qreal forceMoment)
-{
-	mForceMoment = forceMoment;
-}
-
-qreal D2RobotModel::fullSpeed() const
-{
-	return mFullSpeed;
-}
-
-qreal D2RobotModel::fullSpeedA() const
-{
-	return mFullSpeedA;
-}
-
-qreal D2RobotModel::fullSpeedB() const
-{
-	return mFullSpeedB;
 }
 
 QLineF D2RobotModel::closestWallBorder(WallItem const &wall, QPointF const &point) const
@@ -565,52 +547,30 @@ void D2RobotModel::countNewCoord()
 {
 	updateCoord();
 
-	Motor const *motor1 = mMotorA;
-	Motor const *motor2 = mMotorB;
-	Motor const *motor3 = mMotorC;
+	Engine *engine1 = mEngineA;
+	Engine *engine2 = mEngineB;
 
-	if (mMotorC->isUsed) {
-		if (!mMotorA->isUsed) {
-			motor1 = mMotorC;
-		} else if (!mMotorB->isUsed) {
-			motor2 = mMotorC;
+	if (mEngineC->isUsed) {
+		if (!mEngineA->isUsed) {
+			engine1 = mEngineC;
+		} else if (!mEngineB->isUsed) {
+			engine2 = mEngineC;
 		}
 	}
 
-	motor1->spoiledSpeed= mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
-	motor2->spoiledSpeed = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
+	engine1->spoiledSpeed= mNeedMotorNoise ? varySpeed(engine1->speed) : engine1->speed;
+	engine2->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine2->speed) : engine2->speed;
 
-	mFullSpeedA = motor1->spoiledSpeed * 2 * M_PI * motor1->radius * onePercentAngularVelocity / 360;
-	mFullSpeedB = motor2->spoiledSpeed * 2 * M_PI * motor2->radius * onePercentAngularVelocity / 360;
-	mFullSpeed = motor3->speed * 2 * M_PI * motor3->radius * onePercentAngularVelocity / 360;
+	qreal const speed1 = engine1->spoiledSpeed * 2 * M_PI * engine1->radius * onePercentAngularVelocity / 360 * engine1->motorFactor;
+	qreal const speed2 = engine2->spoiledSpeed * 2 * M_PI * engine2->radius * onePercentAngularVelocity / 360 * engine2->motorFactor;
 
-	setForce(QVector2D());
-	setForceMoment(0);
-	qreal rotationalFricFactor = mVelocity.length() * 1500;
-	qreal angularVelocityFricFactor = fabs(mAngularVelocity * 1000);
-	QVector2D direction(cos(mAngle * M_PI / 180), sin(mAngle * M_PI / 180));
-	qreal const oldVelocityModule = fullSpeed();
+	qreal const rotationalFricFactor = mVelocity.length() * 1500;
+	qreal const angularVelocityFricFactor = fabs(mAngularVelocity * 1000);
+	QVector2D const direction = robotDirectionVector(); ;
 
-	qreal tmpA = fullSpeedA() * mMotorB->motorFactor;
-	qreal tmpB = fullSpeedB() * mMotorC->motorFactor;
-	qreal tmp2 = (oldVelocityModule - Geometry::scalarProduct(mVelocity, direction)) * mMotorA->motorFactor;
+	countTractionForceAndItsMoment(speed1, speed2, engine1->breakMode || engine2->breakMode);
 
-	QPointF p0 (mPos.rx() + 25, mPos.ry() + 25);
-
-	mTractionForce = direction * tmp2;
-	mTractionForce += direction * tmpA;
-	mTractionForce += direction * tmpB;
-
-	qreal const forceMomentA = Geometry::vectorProduct(direction * tmpA, QVector2D(mVertices[0] - p0));
-	qreal const forceMomentB = Geometry::vectorProduct(direction * tmpB, QVector2D(mVertices[1] - p0));
-
-	mForceMoment -= forceMomentA;
-	mForceMoment -= forceMomentB;
-
-	calculateForceMoment();
-
-	QVector2D V1 = mVelocity + mTractionForce / mMass * Timeline::timeInterval;
-	setVelocity(V1);
+	mVelocity += mTractionForce / mMass * Timeline::timeInterval;
 	mAngularVelocity += mForceMoment /  inertialMoment() * Timeline::timeInterval;
 	qreal fric = angularVelocityFricFactor /  inertialMoment() * Timeline::timeInterval;
 	qreal tmpAngVel = mAngularVelocity;
@@ -623,13 +583,9 @@ void D2RobotModel::countNewCoord()
 
 	QVector2D rotationalFrictionF(-direction.y(), direction.x());
 	rotationalFrictionF.normalize();
-	QVector2D normalizedVelocity = mVelocity;
-	if (!normalizedVelocity.isNull()) {
-		normalizedVelocity.normalize();
-	}
 
-	qreal const sinus = Geometry::vectorProduct(normalizedVelocity, rotationalFrictionF);
-	rotationalFrictionF = rotationalFrictionF *(sinus * rotationalFricFactor);
+	qreal const sinus = Geometry::vectorProduct(mVelocity.normalized(), rotationalFrictionF);
+	rotationalFrictionF *= sinus * rotationalFricFactor;
 	if (Geometry::scalarProduct(rotationalFrictionF, mVelocity) > 0) {
 		rotationalFrictionF = -rotationalFrictionF;
 	}
@@ -645,20 +601,41 @@ void D2RobotModel::countNewCoord()
 		setVelocity(newV);
 	}
 
-	if (mVelocity.length() > oldVelocityModule) {
-		newV = mVelocity.normalized() * oldVelocityModule;
-		setVelocity(newV);
-	}
+//	if (mVelocity.length() > oldVelocityModule) {
+//		newV = mVelocity.normalized() * oldVelocityModule;
+//		setVelocity(newV);
+//	}
 }
 
-
-void D2RobotModel::calculateForceMoment()
+void D2RobotModel::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode)
 {
-	QPointF const p0(mPos.x() + 25, mPos.y() + 25);
+	if (Math::eq(speed1, 0) && Math::eq(speed2, 0)) {
+		qreal const realFrictionFactor = breakMode
+				? 5 // large value for practically immediate stop
+				: floorFrictionCoefficient;
+		mTractionForce = -realFrictionFactor * mVelocity;
+		mForceMoment = 0;
+		return;
+	}
+
+	QVector2D const direction = robotDirectionVector();
+	QPointF const currentRotationCenter = mPos + rotatePoint;
+
+	QVector2D const traction1Force = direction * speed1 + QVector2D(mVertices[0]);
+	QVector2D const traction2Force = direction * speed2 + QVector2D(mVertices[1]);
+	QVector2D const rotationPointVector(currentRotationCenter);
+	// Parallelogram rule
+	mTractionForce = (traction1Force + traction2Force - 2 * rotationPointVector) / 1000;
+	mTractionForce -= floorFrictionCoefficient * mVelocity;
+
+	qreal const forceMomentA = Geometry::vectorProduct(direction * speed1, QVector2D(mVertices[0] - currentRotationCenter));
+	qreal const forceMomentB = Geometry::vectorProduct(direction * speed2, QVector2D(mVertices[1] - currentRotationCenter));
+	mForceMoment = -forceMomentA - forceMomentB;
+
 	for (int i = 0; i < 4; ++i) {
 		if (mRobotEdgeWalls[i]) {
 			for (int j = 0; j < mInsidePoints.length(); j++) {
-				QVector2D tmp(mInsidePoints.at(j) - p0);
+				QVector2D tmp(mInsidePoints.at(j) - currentRotationCenter);
 				QVector2D const reactionForce = -mTractionForce;
 				mForceMoment -= Geometry::vectorProduct(reactionForce, tmp);
 			}
@@ -667,16 +644,21 @@ void D2RobotModel::calculateForceMoment()
 
 	for (int i = 0; i < 4; ++i) {
 		if (mRobotWalls[i]) {
-			QVector2D tmp(mVertices[i] - p0);
+			QVector2D tmp(mVertices[i] - currentRotationCenter);
 			QLineF const border = closestWallBorder(*mRobotWalls[i], mVertices[i]);
 			QVector2D const wallDirectionVector(cos(border.angle() * M_PI / 180), -sin(border.angle() * M_PI / 180));
 			QVector2D const reactionForce = -(mTractionForce - Geometry::projection(mTractionForce, wallDirectionVector));
-			QVector2D const frictionForce = -wallDirectionVector.normalized() * reactionForce.length() * frictionCoefficient;
+			QVector2D const frictionForce = -wallDirectionVector.normalized() * reactionForce.length() * wallFrictionCoefficient;
 			mTractionForce += reactionForce + frictionForce;
-			setForceMoment(mForceMoment - Geometry::vectorProduct(frictionForce, tmp));
-			setForceMoment(mForceMoment - Geometry::vectorProduct(reactionForce , tmp));
+			mForceMoment -= Geometry::vectorProduct(frictionForce, tmp);
+			mForceMoment -= Geometry::vectorProduct(reactionForce , tmp);
 		}
 	}
+}
+
+QVector2D D2RobotModel::robotDirectionVector() const
+{
+	return QVector2D(cos(mAngle * M_PI / 180), sin(mAngle * M_PI / 180));
 }
 
 void D2RobotModel::getRobotFromWall(WallItem const &wall, int index)

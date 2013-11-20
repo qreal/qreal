@@ -34,7 +34,7 @@ public:
 	void startInterpretation();
 	void stopRobot();
 	void setBeep(unsigned freq, unsigned time);
-	void setNewMotor(int speed, uint degrees, int const port);
+	void setNewMotor(int speed, uint degrees, int port, bool breakMode);
 	virtual SensorsConfiguration &configuration();
 	D2ModelWidget *createModelWidget();
 	int readEncoder(int const port) const;
@@ -76,7 +76,8 @@ private slots:
 	void nextFragment();
 
 private:
-	struct Motor {
+	struct Engine
+	{
 		int radius;
 		int speed;
 		int spoiledSpeed;
@@ -84,12 +85,19 @@ private:
 		ATime activeTimeType;
 		bool isUsed;
 		qreal motorFactor;
+		bool breakMode;
 	};
 
-	struct Beep {
+	struct Beep
+	{
 		unsigned freq;
 		int time;
 	};
+
+	/// Counts and returns traction force vector taking into consideration engines speed and placement
+	void countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode);
+
+	QVector2D robotDirectionVector() const;
 
 	void findCollision(WallItem const &wall);
 
@@ -110,11 +118,10 @@ private:
 	QLineF wallBorderIntersectedByRobot(WallItem const &wall) const;
 	/// Returns a closest to a given point border of the given wall
 	QLineF closestWallBorder(WallItem const &wall, QPointF const &point) const;
-	void calculateForceMoment();
 
 	void setSpeedFactor(qreal speedMul);
 	void initPosition();
-	Motor* initMotor(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
+	Engine *initEngine(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
 	void countNewCoord();
 	void countBeep();
 
@@ -139,24 +146,18 @@ private:
 	void nextStep();
 
 	void setVelocity(QVector2D const &velocity);
-	void setForce(QVector2D const &force);
-	void setForceMoment(qreal forceMoment);
 
 	qreal inertialMoment() const;
 
-	qreal fullSpeed() const;
-	qreal fullSpeedA() const;
-	qreal fullSpeedB() const;
-
 	D2ModelWidget *mD2ModelWidget;
-	Motor *mMotorA;
-	Motor *mMotorB;
-	Motor *mMotorC;
+	Engine *mEngineA;
+	Engine *mEngineB;
+	Engine *mEngineC;
 	Beep mBeep;
 	details::NxtDisplay *mDisplay;
 	QPointF mRotatePoint;
-	QHash<int, Motor*> mMotors;  // TODO: Arrays are not enough here?
-	QHash<int, qreal> mTurnoverMotors;  // stores how many degrees the motor rotated on
+	QHash<int, Engine*> mEngines;  // TODO: Arrays are not enough here?
+	QHash<int, qreal> mTurnoverEngines;  // stores how many degrees the motor rotated on
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
 	Timeline *mTimeline;
@@ -170,17 +171,12 @@ private:
 	qreal mAngle;
 
 	qreal mInertialMoment;
-	qreal mFric;
 	QVector2D mTractionForce;
 	qreal mForceMoment;
 	qreal mMass;
 
 	qreal mAngularVelocity;
 	QVector2D mVelocity;
-
-	qreal mFullSpeed;
-	qreal mFullSpeedA;
-	qreal mFullSpeedB;
 
 	WallItem const *mRobotWalls[4];
 	WallItem const *mRobotEdgeWalls[4];
