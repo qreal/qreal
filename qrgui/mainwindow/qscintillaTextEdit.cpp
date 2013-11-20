@@ -11,8 +11,8 @@ QScintillaTextEdit::QScintillaTextEdit()
 	:mRole(0)
 {
 	connect(this, SIGNAL(textChanged()), this, SLOT(emitTexWasModified()));
-	setUtf8(true);
 	setCppLexer();
+	setPythonEditorProperties();
 }
 
 QScintillaTextEdit::QScintillaTextEdit(QPersistentModelIndex const &index
@@ -28,8 +28,8 @@ QScintillaTextEdit::~QScintillaTextEdit()
 
 void QScintillaTextEdit::setPythonLexer()
 {
-	QsciLexerPython *lexer = new QsciLexerPython();
-	setLexer(lexer);
+	QsciLexerPython *lexPython = new QsciLexerPython();
+	setLexer(lexPython);
 }
 
 void QScintillaTextEdit::setCppLexer()

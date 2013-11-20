@@ -84,7 +84,6 @@ HEADERS = \
 	../lexlib/PropSetSimple.h \
 	../lexlib/StyleContext.h \
 	../lexlib/WordList.h \
-	../lexlib/SubStyles.h \
 	../src/AutoComplete.h \
 	../src/CallTip.h \
 	../src/Catalogue.h \
@@ -111,7 +110,7 @@ HEADERS = \
 	../src/SVector.h \
 	../src/UniConversion.h \
 	../src/ViewStyle.h \
-        ../src/XPM.h
+        ../src/XPM.h \
 
 SOURCES = \
 	qsciscintilla.cpp \
@@ -167,7 +166,7 @@ SOURCES = \
 	../src/Style.cpp \
 	../src/UniConversion.cpp \
 	../src/ViewStyle.cpp \
-	../src/XPM.cpp
+        ../src/XPM.cpp \
 
 TRANSLATIONS = \
 	qscintilla_ru.ts \

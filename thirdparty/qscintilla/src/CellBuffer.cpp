@@ -68,7 +68,7 @@ int LineVector::LineFromPosition(int pos) const {
 	return starts.PartitionFromPosition(pos);
 }
 
-UserAction::UserAction() {
+Action::Action() {
 	at = startAction;
 	position = 0;
 	data = 0;
@@ -76,11 +76,11 @@ UserAction::UserAction() {
 	mayCoalesce = false;
 }
 
-UserAction::~UserAction() {
+Action::~Action() {
 	Destroy();
 }
 
-void UserAction::Create(actionType at_, int position_, char *data_, int lenData_, bool mayCoalesce_) {
+void Action::Create(actionType at_, int position_, char *data_, int lenData_, bool mayCoalesce_) {
 	delete []data;
 	position = position_;
 	at = at_;
@@ -89,12 +89,12 @@ void UserAction::Create(actionType at_, int position_, char *data_, int lenData_
 	mayCoalesce = mayCoalesce_;
 }
 
-void UserAction::Destroy() {
+void Action::Destroy() {
 	delete []data;
 	data = 0;
 }
 
-void UserAction::Grab(UserAction *source) {
+void Action::Grab(Action *source) {
 	delete []data;
 
 	position = source->position;
@@ -132,7 +132,7 @@ void UserAction::Grab(UserAction *source) {
 UndoHistory::UndoHistory() {
 
 	lenActions = 100;
-	actions = new UserAction[lenActions];
+	actions = new Action[lenActions];
 	maxAction = 0;
 	currentAction = 0;
 	undoSequenceDepth = 0;
@@ -152,7 +152,7 @@ void UndoHistory::EnsureUndoRoom() {
 	if (currentAction >= (lenActions - 2)) {
 		// Run out of undo nodes so extend the array
 		int lenActionsNew = lenActions * 2;
-		UserAction *actionsNew = new UserAction[lenActionsNew];
+		Action *actionsNew = new Action[lenActionsNew];
 		for (int act = 0; act <= currentAction; act++)
 			actionsNew[act].Grab(&actions[act]);
 		delete []actions;
@@ -175,7 +175,7 @@ void UndoHistory::AppendAction(actionType at, int position, char *data, int leng
 		if (0 == undoSequenceDepth) {
 			// Top level actions may not always be coalesced
 			int targetAct = -1;
-			const UserAction *actPrevious = &(actions[currentAction + targetAct]);
+			const Action *actPrevious = &(actions[currentAction + targetAct]);
 			// Container actions may forward the coalesce state of Scintilla Actions.
 			while ((actPrevious->at == containerAction) && actPrevious->mayCoalesce) {
 				targetAct--;
@@ -296,7 +296,7 @@ int UndoHistory::StartUndo() {
 	return currentAction - act;
 }
 
-const UserAction &UndoHistory::GetUndoStep() const {
+const Action &UndoHistory::GetUndoStep() const {
 	return actions[currentAction];
 }
 
@@ -321,7 +321,7 @@ int UndoHistory::StartRedo() {
 	return act - currentAction;
 }
 
-const UserAction &UndoHistory::GetRedoStep() const {
+const Action &UndoHistory::GetRedoStep() const {
 	return actions[currentAction];
 }
 
@@ -373,6 +373,14 @@ void CellBuffer::GetStyleRange(unsigned char *buffer, int position, int lengthRe
 
 const char *CellBuffer::BufferPointer() {
 	return substance.BufferPointer();
+}
+
+const char *CellBuffer::RangePointer(int position, int rangeLength) {
+	return substance.RangePointer(position, rangeLength);
+}
+
+int CellBuffer::GapPosition() const {
+	return substance.GapPosition();
 }
 
 // The char* returned is to an allocation owned by the undo history
@@ -628,12 +636,12 @@ int CellBuffer::StartUndo() {
 	return uh.StartUndo();
 }
 
-const UserAction &CellBuffer::GetUndoStep() const {
+const Action &CellBuffer::GetUndoStep() const {
 	return uh.GetUndoStep();
 }
 
 void CellBuffer::PerformUndoStep() {
-	const UserAction &actionStep = uh.GetUndoStep();
+	const Action &actionStep = uh.GetUndoStep();
 	if (actionStep.at == insertAction) {
 		BasicDeleteChars(actionStep.position, actionStep.lenData);
 	} else if (actionStep.at == removeAction) {
@@ -650,12 +658,12 @@ int CellBuffer::StartRedo() {
 	return uh.StartRedo();
 }
 
-const UserAction &CellBuffer::GetRedoStep() const {
+const Action &CellBuffer::GetRedoStep() const {
 	return uh.GetRedoStep();
 }
 
 void CellBuffer::PerformRedoStep() {
-	const UserAction &actionStep = uh.GetRedoStep();
+	const Action &actionStep = uh.GetRedoStep();
 	if (actionStep.at == insertAction) {
 		BasicInsertString(actionStep.position, actionStep.data, actionStep.lenData);
 	} else if (actionStep.at == removeAction) {

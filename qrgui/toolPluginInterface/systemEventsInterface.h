@@ -4,11 +4,12 @@
 #include <QtCore/QFileInfo>
 #include <QtWidgets/QPlainTextEdit>
 
+#include <qrkernel/ids.h>
+
 namespace qReal
 {
 
-class Id;
-
+/// Provides global singnals
 class SystemEventsInterface : public QObject
 {
 	Q_OBJECT

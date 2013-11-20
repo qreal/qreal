@@ -51,7 +51,7 @@
 
 #include "hotKeyManager/hotKeyManager.h"
 
-#include "qrutils/outFile.h"
+#include <qrutils/outFile.h>
 #include "toolPluginInterface/systemEvents.h"
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 

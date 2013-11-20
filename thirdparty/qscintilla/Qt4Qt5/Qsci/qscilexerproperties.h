@@ -32,8 +32,8 @@ extern "C++" {
 
 #include <qobject.h>
 
-#include "qsciglobal.h"
-#include "qscilexer.h"
+#include <Qsci/qsciglobal.h>
+#include <Qsci/qscilexer.h>
 
 
 //! \brief The QsciLexerProperties class encapsulates the Scintilla
