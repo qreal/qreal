@@ -29,6 +29,9 @@ public:
 
 	/// Returns if given line intersects given painter path
 	static bool intersects(QLineF const &line, QPainterPath const &path);
+
+	/// Returns radius-vector with given rotation angle in degrees
+	static QVector2D directionVector(qreal angleInDegrees);
 };
 
 }

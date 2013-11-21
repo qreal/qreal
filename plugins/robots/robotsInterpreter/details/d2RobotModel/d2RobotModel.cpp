@@ -47,7 +47,7 @@ D2RobotModel::D2RobotModel(QObject *parent)
 	, mAngle(0)
 	, mInertialMoment(100)
 	, mForceMoment(0)
-	, mMass(1000)
+	, mMass(500)
 	, mAngularVelocity(0)
 {
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
@@ -445,20 +445,6 @@ void D2RobotModel::countBeep()
 	}
 }
 
-void D2RobotModel::setVelocity(QVector2D const &velocity)
-{
-	mVelocity = velocity;
-//	qreal const oldVelocity = fullSpeed();
-//	if (mVelocity.length() > oldVelocity) {
-//		mVelocity *= oldVelocity / mVelocity.length();
-//	}
-}
-
-qreal D2RobotModel::inertialMoment() const
-{
-	return mInertialMoment;
-}
-
 QLineF D2RobotModel::closestWallBorder(WallItem const &wall, QPointF const &point) const
 {
 	QLineF closestLine;
@@ -477,11 +463,11 @@ QLineF D2RobotModel::closestWallBorder(WallItem const &wall, QPointF const &poin
 
 void D2RobotModel::updateCoord()
 {
-	int const size = 50;
-	qreal const x = mPos.x() + size / 2;
-	qreal const y = mPos.y() + size / 2;
-	qreal const dx = cos(mAngle * M_PI / 180) * (size / 2);
-	qreal const dy = sin(mAngle * M_PI / 180) * (size / 2);
+	qreal const x = mPos.x() + robotWidth / 2;
+	qreal const y = mPos.y() + robotHeight / 2;
+	QVector2D const directionVector = robotDirectionVector();
+	qreal const dx = directionVector.x() * (robotWidth / 2);
+	qreal const dy = directionVector.y() * (robotHeight / 2);
 
 	mVertices[0] = QPointF(x + dx + dy, y + dy - dx);
 	mVertices[1] = QPointF(x + dx - dy, y + dy + dx);
@@ -520,7 +506,7 @@ void D2RobotModel::findCollision(WallItem const &wall)
 				QLineF const border = wallBorderIntersectedByRobot(wall);
 				QPointF const normalPoint = Geometry::normalPoint(border, mVertices[i]);
 				QVector2D const normalVector(mVertices[i] - normalPoint);
-				setVelocity(mVelocity - Geometry::projection(mVelocity, normalVector));
+				mVelocity -= Geometry::projection(mVelocity, normalVector);
 			}
 
 			setWall(i, &wall);
@@ -531,7 +517,7 @@ void D2RobotModel::findCollision(WallItem const &wall)
 
 			QPointF const currentWallVertex = wall.point(i);
 			if (boundingRegion.contains(currentWallVertex)) {
-				setVelocity(QVector2D());
+				mVelocity = QVector2D();
 				mInsidePoints << currentWallVertex;
 				mAngularVelocity = 0;
 			} else {
@@ -543,7 +529,7 @@ void D2RobotModel::findCollision(WallItem const &wall)
 	}
 }
 
-void D2RobotModel::countNewCoord()
+void D2RobotModel::countNewForces()
 {
 	updateCoord();
 
@@ -564,47 +550,9 @@ void D2RobotModel::countNewCoord()
 	qreal const speed1 = engine1->spoiledSpeed * 2 * M_PI * engine1->radius * onePercentAngularVelocity / 360 * engine1->motorFactor;
 	qreal const speed2 = engine2->spoiledSpeed * 2 * M_PI * engine2->radius * onePercentAngularVelocity / 360 * engine2->motorFactor;
 
-	qreal const rotationalFricFactor = mVelocity.length() * 1500;
-	qreal const angularVelocityFricFactor = fabs(mAngularVelocity * 1000);
-	QVector2D const direction = robotDirectionVector(); ;
-
 	countTractionForceAndItsMoment(speed1, speed2, engine1->breakMode || engine2->breakMode);
-
-	mVelocity += mTractionForce / mMass * Timeline::timeInterval;
-	mAngularVelocity += mForceMoment /  inertialMoment() * Timeline::timeInterval;
-	qreal fric = angularVelocityFricFactor /  inertialMoment() * Timeline::timeInterval;
-	qreal tmpAngVel = mAngularVelocity;
-
-	mAngularVelocity -= fric * Math::sign(mAngularVelocity);
-
-	if (tmpAngVel * mAngularVelocity <= 0) {
-		mAngularVelocity = 0;
-	}
-
-	QVector2D rotationalFrictionF(-direction.y(), direction.x());
-	rotationalFrictionF.normalize();
-
-	qreal const sinus = Geometry::vectorProduct(mVelocity.normalized(), rotationalFrictionF);
-	rotationalFrictionF *= sinus * rotationalFricFactor;
-	if (Geometry::scalarProduct(rotationalFrictionF, mVelocity) > 0) {
-		rotationalFrictionF = -rotationalFrictionF;
-	}
-
-	QVector2D newV = mVelocity + rotationalFrictionF / mMass * Timeline::timeInterval;
-	qreal sc_1 = Geometry::scalarProduct(newV, rotationalFrictionF);
-	if (sc_1 > 0) {
-		qreal sc_2 = -Geometry::scalarProduct(mVelocity, rotationalFrictionF);
-		qreal dt_tmp = Timeline::timeInterval *sc_2/(sc_2 + sc_1);
-		QVector2D V1 = mVelocity + rotationalFrictionF / mMass * dt_tmp;
-		setVelocity(V1);
-	}  else {
-		setVelocity(newV);
-	}
-
-//	if (mVelocity.length() > oldVelocityModule) {
-//		newV = mVelocity.normalized() * oldVelocityModule;
-//		setVelocity(newV);
-//	}
+	recalculateVelocity();
+	applyRotationalFrictionForce();
 }
 
 void D2RobotModel::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode)
@@ -635,9 +583,8 @@ void D2RobotModel::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bo
 	for (int i = 0; i < 4; ++i) {
 		if (mRobotEdgeWalls[i]) {
 			for (int j = 0; j < mInsidePoints.length(); j++) {
-				QVector2D tmp(mInsidePoints.at(j) - currentRotationCenter);
 				QVector2D const reactionForce = -mTractionForce;
-				mForceMoment -= Geometry::vectorProduct(reactionForce, tmp);
+				mForceMoment -= Geometry::vectorProduct(reactionForce, QVector2D(mInsidePoints.at(j) - currentRotationCenter));
 			}
 		}
 	}
@@ -646,7 +593,7 @@ void D2RobotModel::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bo
 		if (mRobotWalls[i]) {
 			QVector2D tmp(mVertices[i] - currentRotationCenter);
 			QLineF const border = closestWallBorder(*mRobotWalls[i], mVertices[i]);
-			QVector2D const wallDirectionVector(cos(border.angle() * M_PI / 180), -sin(border.angle() * M_PI / 180));
+			QVector2D const wallDirectionVector = Geometry::directionVector(border.angle());
 			QVector2D const reactionForce = -(mTractionForce - Geometry::projection(mTractionForce, wallDirectionVector));
 			QVector2D const frictionForce = -wallDirectionVector.normalized() * reactionForce.length() * wallFrictionCoefficient;
 			mTractionForce += reactionForce + frictionForce;
@@ -656,9 +603,50 @@ void D2RobotModel::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bo
 	}
 }
 
+void D2RobotModel::recalculateVelocity()
+{
+	qreal const angularVelocityFrictionFactor = fabs(mAngularVelocity * 1000);
+
+	mVelocity += mTractionForce / mMass * Timeline::timeInterval;
+	mAngularVelocity += mForceMoment / mInertialMoment * Timeline::timeInterval;
+	qreal const angularFriction = angularVelocityFrictionFactor / mInertialMoment * Timeline::timeInterval;
+	qreal const oldAngularVelocity = mAngularVelocity;
+
+	mAngularVelocity -= angularFriction * Math::sign(mAngularVelocity);
+
+	if (oldAngularVelocity * mAngularVelocity <= 0) {
+		mAngularVelocity = 0;
+	}
+}
+
+void D2RobotModel::applyRotationalFrictionForce()
+{
+	QVector2D const direction = robotDirectionVector();
+	QVector2D rotationalFrictionForce(-direction.y(), direction.x());
+	rotationalFrictionForce.normalize();
+
+	qreal const sinus = Geometry::vectorProduct(mVelocity.normalized(), rotationalFrictionForce);
+	qreal const rotationalFrictionFactor = mVelocity.length() * 1500;
+	rotationalFrictionForce *= sinus * rotationalFrictionFactor;
+
+	if (Geometry::scalarProduct(rotationalFrictionForce, mVelocity) > 0) {
+		rotationalFrictionForce = -rotationalFrictionForce;
+	}
+
+	QVector2D const newVelocity = mVelocity + rotationalFrictionForce / mMass * Timeline::timeInterval;
+	qreal const newProjection = Geometry::scalarProduct(newVelocity, rotationalFrictionForce);
+	if (newProjection > 0) {
+		qreal const oldProjection = -Geometry::scalarProduct(mVelocity, rotationalFrictionForce);
+		qreal const incrementFactor = oldProjection / (oldProjection + newProjection);
+		mVelocity += rotationalFrictionForce / mMass * Timeline::timeInterval * incrementFactor;
+	} else {
+		mVelocity = newVelocity;
+	}
+}
+
 QVector2D D2RobotModel::robotDirectionVector() const
 {
-	return QVector2D(cos(mAngle * M_PI / 180), sin(mAngle * M_PI / 180));
+	return Geometry::directionVector(mAngle);
 }
 
 void D2RobotModel::getRobotFromWall(WallItem const &wall, int index)
@@ -738,7 +726,7 @@ void D2RobotModel::recalculateParams()
 		updateCoord();
 	}
 
-	countNewCoord();
+	countNewForces();
 	getFromWalls();
 	nextStep();
 	countMotorTurnover();

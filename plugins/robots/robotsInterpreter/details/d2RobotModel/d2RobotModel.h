@@ -96,6 +96,8 @@ private:
 
 	/// Counts and returns traction force vector taking into consideration engines speed and placement
 	void countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode);
+	void recalculateVelocity();
+	void applyRotationalFrictionForce();
 
 	QVector2D robotDirectionVector() const;
 
@@ -144,10 +146,6 @@ private:
 	int truncateToInterval(int const a, int const b, int const res) const;
 
 	void nextStep();
-
-	void setVelocity(QVector2D const &velocity);
-
-	qreal inertialMoment() const;
 
 	D2ModelWidget *mD2ModelWidget;
 	Engine *mEngineA;

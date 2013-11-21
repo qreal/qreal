@@ -1,5 +1,6 @@
 #include "geometry.h"
 #include "math.h"
+#include <math.h>
 
 using namespace mathUtils;
 
@@ -55,4 +56,9 @@ bool Geometry::intersects(QLineF const &line, QPainterPath const &path)
 	QPainterPath linePath(line.p1());
 	linePath.lineTo(line.p2());
 	return path.intersects(linePath);
+}
+
+QVector2D Geometry::directionVector(qreal angleInDegrees)
+{
+	return QVector2D(cos(angleInDegrees * M_PI / 180), sin(angleInDegrees * M_PI / 180));
 }
