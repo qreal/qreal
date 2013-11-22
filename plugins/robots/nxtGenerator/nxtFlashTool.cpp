@@ -49,7 +49,7 @@ void NxtFlashTool::runProgram(QFileInfo const &fileInfo)
 	mRunProcess.setEnvironment(QProcess::systemEnvironment());
 	mRunProcess.setWorkingDirectory(qApp->applicationDirPath() + "/nxt-tools/");
 	mRunProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/nexttool/NexTTool.exe /COM=usb -run="
-					+ QString("%1/%2_OSEK.rxe").arg(mSource.absolutePath(),mSource.baseName()));
+					+ QString("%1_OSEK.rxe").arg(mSource.baseName()));
 }
 
 void NxtFlashTool::error(QProcess::ProcessError error)
