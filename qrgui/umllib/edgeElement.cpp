@@ -622,7 +622,8 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 {
 	QPainterPath circlePath;
-	circlePath.addEllipse(mapToScene(position), 12, 12);
+	int const searchAreaRadius = SettingsManager::value("IndexGrid", 25).toInt() / 2;
+	circlePath.addEllipse(mapToScene(position), searchAreaRadius, searchAreaRadius);
 	QList<QGraphicsItem*> items = scene()->items(circlePath);
 
 	if (isStart && items.contains(mSrc)) {

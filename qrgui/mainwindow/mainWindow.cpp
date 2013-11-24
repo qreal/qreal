@@ -1005,10 +1005,15 @@ void MainWindow::setSceneFont()
 }
 
 // TODO: Unify overloads.
-void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, QString const &propertyValue)
+void MainWindow::openShapeEditor(
+		QPersistentModelIndex const &index
+		, int role
+		, QString const &propertyValue
+		, bool useTypedPorts
+		)
 {
 	ShapeEdit *shapeEdit = new ShapeEdit(dynamic_cast<models::details::LogicalModel *>(mModels->logicalModel())
-			, index, role);
+			, index, role, useTypedPorts);
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
 	}
@@ -1025,9 +1030,11 @@ void MainWindow::openShapeEditor(QPersistentModelIndex const &index, int role, Q
 }
 
 // This method is for Interpreter.
-void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy)
+void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
+	, bool useTypedPorts)
 {
-	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab());
+	ShapeEdit *shapeEdit = new ShapeEdit(id, editorManagerProxy, mModels->graphicalRepoApi(), this, getCurrentTab()
+		, useTypedPorts);
 	if (!propertyValue.isEmpty()) {
 		shapeEdit->load(propertyValue);
 	}
@@ -1272,7 +1279,6 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	// Connect after setModel etc. because of signal selectionChanged was sent when there were old indexes
 	connect(tab->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChanged()));
 	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), tab, SLOT(toggleAntialiasing(bool)));
-	connect(mUi->actionOpenGL_Renderer, SIGNAL(toggled(bool)), tab, SLOT(toggleOpenGL(bool)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, tab->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(mModels->graphicalModel(), SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int))
@@ -1844,10 +1850,6 @@ void MainWindow::initToolPlugins()
 		} else if (action.menuName() == "settings") {
 			addActionOrSubmenu(mUi->menuSettings, action);
 		}
-	}
-
-	if (mUi->parsersToolbar->actions().isEmpty()) {
-		mUi->parsersToolbar->hide();
 	}
 
 	if (mUi->generatorsToolbar->actions().isEmpty()) {

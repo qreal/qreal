@@ -6,6 +6,7 @@
 #include <QtWidgets/QFileDialog>
 
 #include <qrkernel/settingsManager.h>
+#include <qrutils/qRealDialog.h>
 
 #include "dialogs/preferencesPages/preferencesPage.h"
 
@@ -13,7 +14,7 @@ namespace Ui {
 	class PreferencesDialog;
 }
 
-class PreferencesDialog : public QDialog
+class PreferencesDialog : public utils::QRealDialog
 {
 	Q_OBJECT
 
