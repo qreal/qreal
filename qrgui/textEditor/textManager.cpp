@@ -23,6 +23,7 @@ bool TextManager::openFile(QString const &filePath, QString const &genName)
 
 	if (!file.isOpen() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		inStream = new QTextStream(&file);
+		inStream->setCodec(QTextCodec::codecForName("UTF-8"));
 
 		QScintillaTextEdit *area = new QScintillaTextEdit();
 
