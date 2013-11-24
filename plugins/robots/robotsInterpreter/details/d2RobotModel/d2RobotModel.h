@@ -124,7 +124,7 @@ private:
 	void setSpeedFactor(qreal speedMul);
 	void initPosition();
 	Engine *initEngine(int radius, int speed, long unsigned int degrees, int port, bool isUsed);
-	void countNewCoord();
+	void countNewForces();
 	void countBeep();
 
 	QPair<QPointF, qreal> countPositionAndDirection(

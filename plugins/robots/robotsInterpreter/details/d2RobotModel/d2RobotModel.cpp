@@ -591,14 +591,14 @@ void D2RobotModel::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bo
 
 	for (int i = 0; i < 4; ++i) {
 		if (mRobotWalls[i]) {
-			QVector2D tmp(mVertices[i] - currentRotationCenter);
+			QVector2D const radiusVector(mVertices[i] - currentRotationCenter);
 			QLineF const border = closestWallBorder(*mRobotWalls[i], mVertices[i]);
-			QVector2D const wallDirectionVector = Geometry::directionVector(border.angle());
+			QVector2D const wallDirectionVector = Geometry::directionVector(-border.angle());
 			QVector2D const reactionForce = -(mTractionForce - Geometry::projection(mTractionForce, wallDirectionVector));
 			QVector2D const frictionForce = -wallDirectionVector.normalized() * reactionForce.length() * wallFrictionCoefficient;
 			mTractionForce += reactionForce + frictionForce;
-			mForceMoment -= Geometry::vectorProduct(frictionForce, tmp);
-			mForceMoment -= Geometry::vectorProduct(reactionForce , tmp);
+			mForceMoment -= Geometry::vectorProduct(frictionForce, radiusVector);
+			mForceMoment -= Geometry::vectorProduct(reactionForce , radiusVector);
 		}
 	}
 }
@@ -651,7 +651,7 @@ QVector2D D2RobotModel::robotDirectionVector() const
 
 void D2RobotModel::getRobotFromWall(WallItem const &wall, int index)
 {
-	QPainterPath boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
+	QPainterPath const boundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
 	if (isRobotWallCollision(wall)) {
 		if (boundingRegion.intersects(wall.path())){
 			QPointF const currentVertex = mVertices[index];
