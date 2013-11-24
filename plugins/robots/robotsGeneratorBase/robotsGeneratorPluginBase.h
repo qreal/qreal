@@ -49,6 +49,7 @@ protected:
 	virtual QString extension() const;
 	virtual QString extDescrition() const;
 	QFileInfo currentSource();
+	virtual QString generatorName() const;
 
 	/// Interface of MainWindow
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership

@@ -28,6 +28,11 @@ QString RobotsGeneratorPluginBase::extDescrition() const
 	return "";
 }
 
+QString RobotsGeneratorPluginBase::generatorName() const
+{
+	return "";
+}
+
 QFileInfo RobotsGeneratorPluginBase::srcPath()
 {
 	Id const &activeDiagram = mMainWindowInterface->activeDiagram();
@@ -38,12 +43,10 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	bool newCode = true;
 
 	if (!pathsList.isEmpty()) {
-		QString const ext = extension();
-
 		foreach (QFileInfo const &path, pathsList) {
 			if (mTextManager->isDefaultPath(path.absoluteFilePath())
 				&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
-				&& !path.completeSuffix().compare(ext)) {
+				&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName())) {
 				fileInfo = path;
 				newCode = false;
 				break;
@@ -65,12 +68,10 @@ QFileInfo RobotsGeneratorPluginBase::currentSource()
 
 	if (!activeDiagram.isNull()) {
 		if (generateCode()) {
-			QString const ext = extension();
-
 			foreach (QFileInfo const &path, mCodePath.values(activeDiagram)) {
 				if (mTextManager->isDefaultPath(path.absoluteFilePath())
 					&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
-					&& !path.completeSuffix().compare(ext)) {
+					&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName())) {
 					fileInfo = path;
 					break;
 				}
@@ -97,7 +98,7 @@ void RobotsGeneratorPluginBase::init(PluginConfigurator const &configurator)
 	mRepo = dynamic_cast<qrRepo::RepoApi const *>(&configurator.logicalModelApi().logicalRepoApi());
 	mProjectManager = &configurator.projectManager();
 
-	mTextManager->addExtension(extension(), extDescrition());
+	mTextManager->addExtension(generatorName(), QString("%1 (*.%2)").arg(extDescrition(), extension()));
 
 	connect(mSystemEvents, SIGNAL(codePathChanged(qReal::Id, QFileInfo, QFileInfo))
 			, this, SLOT(regenerateCode(qReal::Id, QFileInfo, QFileInfo)));
@@ -118,6 +119,7 @@ bool RobotsGeneratorPluginBase::generateCode()
 	generator->setProjectDir(path);
 
 	QString const generatedSrcPath = generator->generate();
+
 	if (mMainWindowInterface->errorReporter()->wereErrors()) {
 		delete generator;
 		return false;
@@ -126,7 +128,7 @@ bool RobotsGeneratorPluginBase::generateCode()
 
 	QString const generatedCode = utils::InFile::readAll(generatedSrcPath);
 	if (!generatedCode.isEmpty()) {
-		mTextManager->showInTextEditor(path);
+		mTextManager->showInTextEditor(path, generatorName());
 	}
 
 	delete generator;

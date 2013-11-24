@@ -44,6 +44,11 @@ QString NxtGeneratorPlugin::extDescrition() const
 	return tr("Lego NXT Source File");
 }
 
+QString NxtGeneratorPlugin::generatorName() const
+{
+	return "nxtOsek";
+}
+
 void NxtGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	RobotsGeneratorPluginBase::init(configurator);

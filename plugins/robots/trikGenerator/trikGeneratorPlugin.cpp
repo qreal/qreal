@@ -75,6 +75,11 @@ QString TrikGeneratorPlugin::extDescrition() const
 	return tr("TRIK Source File");
 }
 
+QString TrikGeneratorPlugin::generatorName() const
+{
+	return "Trik";
+}
+
 bool TrikGeneratorPlugin::uploadProgram()
 {
 	QFileInfo const fileInfo = currentSource();

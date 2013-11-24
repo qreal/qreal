@@ -14,7 +14,7 @@ class TextManagerInterface : public QObject
 public:
 	virtual ~TextManagerInterface() {}
 
-	virtual bool openFile(QString const &filePath) = 0;
+	virtual bool openFile(QString const &filePath, QString const &genName) = 0;
 	virtual bool closeFile(QString const &filePath) = 0;
 	virtual	void changeFilePath(QString const &from, QString const &to) = 0;
 	virtual bool bindCode(EditorView *diagram,  QString const &filePath) = 0;
@@ -28,10 +28,11 @@ public:
 	virtual bool isDefaultPath(QString const &path) = 0;
 	virtual bool isModified(QString const &path) = 0;
 	virtual bool isModifiedEver(QString const &path) = 0;
-	virtual void addExtension(QString const &ext, QString const &description) = 0;
-	virtual QString extDescription(QString const &ext) = 0;
-	virtual void showInTextEditor(QFileInfo const &fileInfo) = 0;
+	virtual void addExtension(QString const &name, QString const &description) = 0;
+	virtual QString extDescription(QString const &name) = 0;
+	virtual void showInTextEditor(QFileInfo const &fileInfo, QString const &genName) = 0;
 	virtual bool saveText(bool saveAs) = 0;
+	virtual QString generatorName(QString const &filepath) = 0;
 
 signals:
 	void textChanged(bool changed);

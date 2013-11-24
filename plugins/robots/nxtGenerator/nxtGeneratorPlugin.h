@@ -38,6 +38,7 @@ protected:
 	virtual QFileInfo defaultFilePath(QString const &projectName) const;
 	virtual QString extension() const;
 	virtual QString extDescrition() const;
+	virtual QString generatorName() const;
 
 private slots:
 	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.

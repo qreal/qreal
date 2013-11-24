@@ -27,6 +27,7 @@ protected:
 	virtual QFileInfo defaultFilePath(QString const &projectName) const;
 	virtual QString extension() const;
 	virtual QString extDescrition() const;
+	virtual QString generatorName() const;
 
 private slots:
 
