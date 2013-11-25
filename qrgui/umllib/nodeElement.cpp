@@ -88,7 +88,6 @@ NodeElement::NodeElement(ElementImpl *impl
 
 	mGrid = new SceneGridHandler(this);
 	switchGrid(SettingsManager::value("ActivateGrid").toBool());
-
 	mWidgetsHelper->onIdChanged();
 
 	connect(this, SIGNAL(geometryChanged()), this, SLOT(synchronizeGeometries()));
@@ -175,7 +174,7 @@ void NodeElement::setGeom(QRectF const &realGeom)
 	mTransform.scale(mContents.width(), mContents.height());
 	adjustLinks();
 
-	QGraphicsProxyWidget::setGeometry(realGeom);
+	QGraphicsProxyWidget::setGeometry(mContents.translated(mPos));
 }
 
 void NodeElement::setPos(QPointF const &pos)
@@ -1397,6 +1396,7 @@ layouts::NodeElementLayoutFactory *NodeElement::layoutFactory() const
 
 void NodeElement::synchronizeGeometries()
 {
+	QRectF a = geometry();
 	if (mContents != geometry()) {
 		setGeom(geometry());
 	}
