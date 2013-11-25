@@ -3,8 +3,8 @@
 #include <QtWidgets/QTabWidget>
 
 #include "mainwindow/mainWindow.h"
-#include "dialogs/startDialog/suggestToCreateDiagramWidget.h"
-#include "dialogs/startDialog/recentProjectsListWidget.h"
+#include "mainwindow/startWidget/suggestToCreateDiagramWidget.h"
+#include "mainwindow/startWidget/recentProjectsListWidget.h"
 
 using namespace qReal;
 
