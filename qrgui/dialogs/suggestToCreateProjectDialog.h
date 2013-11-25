@@ -1,7 +1,8 @@
 #pragma once
 
 #include "dialogs/managedClosableDialog.h"
-#include "dialogs/startDialog/suggestToCreateDiagramWidget.h"
+#include "mainwindow/startWidget/suggestToCreateDiagramWidget.h"
+
 
 namespace qReal {
 
