@@ -29,11 +29,6 @@ HEADERS += \
         $$PWD/mainwindow/startWidget/recentProjectsListWidget.h \
         $$PWD/mainwindow/startWidget/recentProjectItem.h \
         $$PWD/mainwindow/startWidget/listWidget.h \
-    mainwindow/startWidget/suggestToCreateDiagramWidget.h \
-    mainwindow/startWidget/startwidget.h \
-    mainwindow/startWidget/recentProjectsListWidget.h \
-    mainwindow/startWidget/recentProjectItem.h \
-    mainwindow/startWidget/listWidget.h
 
 SOURCES += \
 	$$PWD/mainWindow.cpp \
@@ -61,11 +56,6 @@ SOURCES += \
         $$PWD/mainwindow/startWidget/recentProjectsListWidget.cpp \
         $$PWD/mainwindow/startWidget/recentProjectItem.cpp \
         $$PWD/mainwindow/startWidget/listWidget.cpp \
-    mainwindow/startWidget/suggestToCreateDiagramWidget.cpp \
-    mainwindow/startWidget/startWidget.cpp \
-    mainwindow/startWidget/recentProjectsListWidget.cpp \
-    mainwindow/startWidget/recentProjectItem.cpp \
-    mainwindow/startWidget/listWidget.cpp
 
 win32 {
 	HEADERS += \
