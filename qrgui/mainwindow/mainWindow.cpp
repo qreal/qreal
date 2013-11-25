@@ -26,6 +26,7 @@
 
 #include "mainwindow/shapeEdit/shapeEdit.h"
 #include "mainwindow/propertyEditorProxyModel.h"
+#include "mainwindow/startWidget/startwidget.h"
 #include "dialogs/gesturesShow/gesturesWidget.h"
 
 #include "models/models.h"
@@ -42,7 +43,6 @@
 #include "mainwindow/referenceList.h"
 
 #include "mainwindow/splashScreen.h"
-#include "dialogs/startDialog/startDialog.h"
 #include "dialogs/suggestToCreateProjectDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
 
@@ -75,7 +75,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this))
-		, mStartDialog(new StartDialog(*this, *mProjectManager))
+        , mStartWidget(new StartWidget(this, mProjectManager))
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
 {
@@ -142,7 +142,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// here then we have some problems with correct main window initialization
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
-	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));
+    QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
 }
 
 void MainWindow::connectActions()
@@ -274,7 +274,6 @@ MainWindow::~MainWindow()
 	delete mFindReplaceDialog;
 	delete mFindHelper;
 	delete mProjectManager;
-	delete mStartDialog;
 	delete mSceneCustomizer;
 }
 
@@ -1762,17 +1761,15 @@ Id MainWindow::activeDiagram()
 	return getCurrentTab() && getCurrentTab()->mvIface() ? getCurrentTab()->mvIface()->rootId() : Id();
 }
 
-void MainWindow::initPluginsAndStartDialog()
+void MainWindow::initPluginsAndStartWidget()
 {
-	initToolPlugins();
-	if (!mProjectManager->restoreIncorrectlyTerminated() &&
-			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
-	{
-		mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
-		// Centering dialog inside main window
-		mStartDialog->move(geometry().center() - mStartDialog->rect().center());
-		mStartDialog->exec();
-	}
+    initToolPlugins();
+    if (!mProjectManager->restoreIncorrectlyTerminated() &&
+            (mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
+    {
+        openStartTab();
+        mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
+    }
 }
 
 void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMenu)
@@ -2096,3 +2093,34 @@ void MainWindow::setVersion(QString const &version)
 	// TODO: update title
 	SettingsManager::setValue("version", version);
 }
+
+void MainWindow::closeStartTab(int index)
+{
+    //return;
+    QWidget *widget = mUi->tabs->widget(index);
+    CodeArea *possibleCodeTab = static_cast<CodeArea *>(widget);
+    EditorView * deletingCodeTab = NULL;
+    foreach (EditorView *diagram, mCodeTabManager->keys()) {
+        if (mCodeTabManager->value(diagram) == possibleCodeTab) {
+            deletingCodeTab = diagram;
+        }
+    }
+    if (deletingCodeTab) {
+        mCodeTabManager->remove(deletingCodeTab);
+    }
+
+    EditorView *editorView = dynamic_cast<EditorView *>(mUi->tabs->widget(index));
+    if (editorView) {
+        Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(mRootIndex);
+        mController->diagramClosed(diagramId);
+    }
+
+    mUi->tabs->removeTab(index);
+}
+
+void MainWindow::openStartTab()
+{
+    connect(mStartWidget, SIGNAL(closeStartTab(int)), this, SLOT(closeStartTab(int)));
+    mUi->tabs->addTab(mStartWidget, tr("GettingStarted"));
+}
+
