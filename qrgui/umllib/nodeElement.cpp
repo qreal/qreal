@@ -1396,7 +1396,6 @@ layouts::NodeElementLayoutFactory *NodeElement::layoutFactory() const
 
 void NodeElement::synchronizeGeometries()
 {
-	QRectF a = geometry();
 	if (mContents != geometry()) {
 		setGeom(geometry());
 	}

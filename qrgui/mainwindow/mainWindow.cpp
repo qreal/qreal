@@ -992,7 +992,6 @@ void MainWindow::openElementEditor(
 }
 
 /// TODO: unify element editor with conditional visibility in shape editor
-// EFIM why was it commented?
 // This method is for Interpreter.
 void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
 	, bool isIconEditor, bool useTypedPorts)

@@ -23,7 +23,10 @@ using namespace qReal::widgetsEdit;
 WidgetsEditor::WidgetsEditor(bool isIconEditor, QWidget *parent)
 	: QWidget(parent), NavigationPageWithMenu()
 	, mIsIconEditor(isIconEditor)
-	, mUi(new Ui::WidgetsEditor), mController(NULL)
+	, mUi(new Ui::WidgetsEditor)
+	, mController(NULL)
+	, mProbertyBrowser(NULL)
+	, mPropertyBrowserController(NULL)
 {
 	initComponents();
 }
@@ -156,10 +159,24 @@ void WidgetsEditor::loadTools()
 
 void WidgetsEditor::initPropertyBrowser()
 {
+	if (mProbertyBrowser) {
+		mUi->toolFrame->layout()->removeWidget(mProbertyBrowser);
+		delete mProbertyBrowser;
+	}
+	if (mPropertyBrowserController) {
+		delete mPropertyBrowserController;
+	}
+
 	QtTreePropertyBrowser *browser = new QtTreePropertyBrowser;
 	browser->setAlternatingRowColors(true);
+
+	mProbertyBrowser = browser;
 	mUi->toolFrame->layout()->addWidget(browser);
+
+
 	PropertyBrowserController *controller = new PropertyBrowserController(browser);
+
+	mPropertyBrowserController = controller;
 	mController->setPropertyBrowserController(controller);
 }
 

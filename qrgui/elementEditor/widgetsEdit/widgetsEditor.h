@@ -102,6 +102,8 @@ private:
 	Root *mRoot;
 	qReal::elementEdit::TemplateDocumentBuilder *mDocumentBuilder;
 	QDomDocument mEmptyCaseWtf;
+	QtTreePropertyBrowser *mProbertyBrowser;
+	PropertyBrowserController *mPropertyBrowserController;
 };
 
 }
