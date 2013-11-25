@@ -143,9 +143,13 @@ QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &elem
 		childElement = childElement.nextSiblingElement();
 	}
 	QWidget *result = tool->widget();
+	QPointF a = tool->pos();
+	tool->setWidget(NULL);
 	if (parent) {
 		result->setParent(parent);
+		result->move(a.toPoint());
 	}
+	result->show();
 
 	PropertyEditorInterface *iface = dynamic_cast<PropertyEditorInterface *>(result);
 	if (iface && !iface->binding().isEmpty()) {
@@ -153,7 +157,6 @@ QWidget *ToolFactory::deserializeWidget(QWidget *parent, const QDomElement &elem
 	}
 
 	// Returning ownership to us
-	tool->setWidget(NULL);
 	delete tool;
 	return result;
 }
