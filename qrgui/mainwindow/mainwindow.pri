@@ -24,36 +24,11 @@ HEADERS += \
 	$$PWD/palette/draggableElement.h \
 	$$PWD/palette/paletteTreeWidgets.h \
 	$$PWD/palette/paletteElement.h \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.h \
-        $$PWD/mainwindow/startWidget/startwidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectItem.h \
-        $$PWD/mainwindow/startWidget/listWidget.h \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.h \
-        $$PWD/mainwindow/startWidget/startwidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectItem.h \
-        $$PWD/mainwindow/startWidget/listWidget.h \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.h \
-        $$PWD/mainwindow/startWidget/startwidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectItem.h \
-        $$PWD/mainwindow/startWidget/listWidget.h \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.h \
-        $$PWD/mainwindow/startWidget/startwidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectItem.h \
-        $$PWD/mainwindow/startWidget/listWidget.h \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.h \
-        $$PWD/mainwindow/startWidget/startwidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectItem.h \
-        $$PWD/mainwindow/startWidget/listWidget.h \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.h \
-        $$PWD/mainwindow/startWidget/startwidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.h \
-        $$PWD/mainwindow/startWidget/recentProjectItem.h \
-        $$PWD/mainwindow/startWidget/listWidget.h
+        $$PWD/startWidget/suggestToCreateDiagramWidget.h \
+        $$PWD/startWidget/startwidget.h \
+        $$PWD/startWidget/recentProjectsListWidget.h \
+        $$PWD/startWidget/recentProjectItem.h \
+        $$PWD/startWidget/listWidget.h \
 
 SOURCES += \
 	$$PWD/mainWindow.cpp \
@@ -76,36 +51,11 @@ SOURCES += \
 	$$PWD/palette/draggableElement.cpp \
 	$$PWD/palette/paletteTreeWidgets.cpp \
 	$$PWD/palette/paletteElement.cpp \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.cpp \
-        $$PWD/mainwindow/startWidget/startWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectItem.cpp \
-        $$PWD/mainwindow/startWidget/listWidget.cpp \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.cpp \
-        $$PWD/mainwindow/startWidget/startWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectItem.cpp \
-        $$PWD/mainwindow/startWidget/listWidget.cpp \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.cpp \
-        $$PWD/mainwindow/startWidget/startWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectItem.cpp \
-        $$PWD/mainwindow/startWidget/listWidget.cpp \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.cpp \
-        $$PWD/mainwindow/startWidget/startWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectItem.cpp \
-        $$PWD/mainwindow/startWidget/listWidget.cpp \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.cpp \
-        $$PWD/mainwindow/startWidget/startWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectItem.cpp \
-        $$PWD/mainwindow/startWidget/listWidget.cpp \
-        $$PWD/mainwindow/startWidget/suggestToCreateDiagramWidget.cpp \
-        $$PWD/mainwindow/startWidget/startWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectsListWidget.cpp \
-        $$PWD/mainwindow/startWidget/recentProjectItem.cpp \
-        $$PWD/mainwindow/startWidget/listWidget.cpp
+        $$PWD/startWidget/suggestToCreateDiagramWidget.cpp \
+        $$PWD/startWidget/startWidget.cpp \
+        $$PWD/startWidget/recentProjectsListWidget.cpp \
+        $$PWD/startWidget/recentProjectItem.cpp \
+        $$PWD/startWidget/listWidget.cpp \
 
 win32 {
 	HEADERS += \
