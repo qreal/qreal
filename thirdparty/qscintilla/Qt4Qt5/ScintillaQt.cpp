@@ -558,7 +558,7 @@ sptr_t QsciScintillaQt::DirectFunction(QsciScintillaQt *sciThis, unsigned int iM
 // Draw the contents of the widget.
 void QsciScintillaQt::paintEvent(QPaintEvent *e)
 {
-    QSCI_SCI_NAMESPACE(Surface) *sw = QSCI_SCI_NAMESPACE(Surface)::Allocate();
+    QSCI_SCI_NAMESPACE(Surface) *sw = QSCI_SCI_NAMESPACE(Surface)::Allocate(SC_TECHNOLOGY_DEFAULT);
 
     if (!sw)
         return;

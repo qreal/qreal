@@ -33,7 +33,6 @@ public:
 
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
-	virtual void activeTabChanged(qReal::Id const &rootElementId);
 
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 
@@ -88,6 +87,8 @@ private slots:
 	/// Show watch list with all declared variables and its values. List updates
 	/// dynamically
 	void showWatchList();
+
+	void activeTabChanged(qReal::Id const &rootElementId);
 
 private:
 	qReal::VisualDebugger *mVisualDebugger;

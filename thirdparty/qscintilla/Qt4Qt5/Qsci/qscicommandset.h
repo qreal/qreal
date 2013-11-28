@@ -34,8 +34,8 @@ extern "C++" {
 
 #include <QList>
 
-#include "qsciglobal.h"
-#include "qscicommand.h"
+#include <Qsci/qsciglobal.h>
+#include <Qsci/qscicommand.h>
 
 
 QT_BEGIN_NAMESPACE

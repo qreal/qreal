@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 
-#include "textEditor/codeArea.h"
+#include "mainwindow/qscintillaTextEdit.h"
 
 namespace qReal {
 namespace gui {
@@ -17,7 +17,7 @@ class CodeEditor : public QMainWindow {
 		void setHighlightedLineNumbers(const QList<int>& lineNumbers);
 
 	private:
-		CodeArea mCodeArea;
+		QScintillaTextEdit mCodeArea;
 };
 
 }

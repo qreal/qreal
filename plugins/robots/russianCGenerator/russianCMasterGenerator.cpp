@@ -22,10 +22,6 @@ QString RussianCMasterGenerator::targetPath()
 
 void RussianCMasterGenerator::beforeGeneration()
 {
-	// TODO: increment it or smth...
-	mCurInitialNodeNumber = 0;
-	mProjectName = "example" + QString::number(mCurInitialNodeNumber);
-	mProjectDir = "russianC/" + mProjectName;
 	createProjectDir(mProjectDir);
 }
 

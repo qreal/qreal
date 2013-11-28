@@ -29,8 +29,6 @@ private:
 	void saveImages(QString const &projectDir);
 
 	int mCurInitialNodeNumber;
-	QString mProjectName;
-	QString mProjectDir;
 };
 
 }
