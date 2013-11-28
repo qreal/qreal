@@ -25,7 +25,7 @@ HEADERS += \
 	$$PWD/palette/paletteTreeWidgets.h \
 	$$PWD/palette/paletteElement.h \
         $$PWD/startWidget/suggestToCreateDiagramWidget.h \
-        $$PWD/startWidget/startwidget.h \
+        $$PWD/startWidget/startWidget.h \
         $$PWD/startWidget/recentProjectsListWidget.h \
         $$PWD/startWidget/recentProjectItem.h \
         $$PWD/startWidget/listWidget.h \
