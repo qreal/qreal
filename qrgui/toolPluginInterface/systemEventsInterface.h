@@ -23,7 +23,9 @@ public:
 
 	virtual void emitSettingsUpdated() = 0;
 
-	virtual void emitCodePathChanged(qReal::Id const &diagram, QFileInfo const &oldFileInfo, QFileInfo const &newFileInfo) = 0;
+	virtual void emitCodePathChanged(qReal::Id const &diagram
+									 , QFileInfo const &oldFileInfo
+									 , QFileInfo const &newFileInfo) = 0;
 
 	virtual void emitNewCodeAppeared(qReal::Id const &diagram, QFileInfo const &fileInfo) = 0;
 
