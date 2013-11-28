@@ -3,7 +3,6 @@
 #include "dialogs/managedClosableDialog.h"
 #include "mainwindow/startWidget/suggestToCreateDiagramWidget.h"
 
-
 namespace qReal {
 
 class MainWindow;
