@@ -62,8 +62,7 @@ bool UpdateProcessor::hasNewUpdates(QString const newVersion)
 void UpdateProcessor::startSetupProcess(Update *update)
 {
 	mCommunicator->writeQuitMessage();
-	connect(update, SIGNAL(installFinished(bool)), this, SLOT(updateFinished(bool)));
-	update->installUpdate();
+
 }
 
 void UpdateProcessor::checkoutPreparedUpdates()
@@ -120,15 +119,7 @@ void UpdateProcessor::fileReady(QString const filePath)
 
 void UpdateProcessor::updateFinished(bool hasSuccess)
 {
-	if (hasSuccess) {
-		if (mUpdateInfo->preparedUpdate()->isInstalled()) {
-			mParams.insert("-version", mUpdateInfo->preparedUpdate()->version());
-			mUpdateInfo->removePreparedUpdate();
-		} else {
-			mParams.insert("-version", mParser->currentUpdate()->version());
-			mParser->currentUpdate()->clear();
-		}
-	}
+
 
 	restartMainApplication();
 }

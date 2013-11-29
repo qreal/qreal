@@ -51,7 +51,6 @@ protected:
 	QString mUpdatesFolder;
 	QTimer mRetryTimer;
 	ArgsParser mArgsParser;
-	QQueue<Update *>
 	Communicator *mCommunicator;
 	Downloader *mDownloader;
 	DetailsParser *mParser;
