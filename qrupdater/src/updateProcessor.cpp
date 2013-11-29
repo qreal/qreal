@@ -29,7 +29,7 @@ void UpdateProcessor::startUpdateControl()
 
 	checkoutPreparedUpdates();
 
-	if (!mUpdateInfo->preparedUpdate()->isInstalling()) {
+	if (mUpdatesInstaller.isEmpty()) {
 		mCommunicator->writeResumeMessage();
 		startDownloadingProcess();
 	}
@@ -47,9 +47,11 @@ void UpdateProcessor::startDownloadingProcess()
 void UpdateProcessor::initConnections()
 {
 	connect(&mRetryTimer, SIGNAL(timeout()), this, SLOT(startDownloadingProcess()));
+	connect(&mUpdatesInstaller, SIGNAL(installsFinished(bool)), this, SLOT(installingFinished(bool)));
 	connect(mDownloader, SIGNAL(detailsLoadError(QString)), this, SLOT(downloadErrors(QString)));
 	connect(mDownloader, SIGNAL(updatesLoadError(QString)), this, SLOT(downloadErrors(QString)));
-	connect(mDownloader, SIGNAL(updatesDownloaded(QString)), this, SLOT(fileReady(QString)));
+	connect(mDownloader, SIGNAL(updateDownloaded(QUrl,QString)), this, SLOT(fileReady(QUrl,QString)));
+	connect(mDownloader, SIGNAL(downloadingFinished()), this, SLOT(downloadingFinished()));
 	connect(mDownloader, SIGNAL(detailsDownloaded(QIODevice*)), mParser, SLOT(parseDevice(QIODevice*)));
 	connect(mParser, SIGNAL(parseFinished()), this, SLOT(detailsChanged()));
 }
@@ -59,25 +61,24 @@ bool UpdateProcessor::hasNewUpdates(QString const newVersion)
 	return newVersion > mArgsParser.version();
 }
 
-void UpdateProcessor::startSetupProcess(Update *update)
-{
-	mCommunicator->writeQuitMessage();
-
-}
-
 void UpdateProcessor::checkoutPreparedUpdates()
 {
 	if (!mUpdateInfo->hasPreparedUpdatesInfo()) {
 		return;
 	}
 
-	mUpdateInfo->loadUpdateInfo(mArgsParser.units().first());
-	if (!hasNewUpdates(mUpdateInfo->preparedUpdate()->version()) || mUpdateInfo->preparedUpdate()->isEmpty()) {
-		return;
+	mUpdateInfo->loadUpdatesInfo(mArgsParser.units());
+	foreach (Update *update, mUpdateInfo->preparedUpdates()) {
+		if (hasNewUpdates(update->version())) {
+			mUpdatesInstaller << update;
+		}
 	}
 
-
-	startSetupProcess(mUpdateInfo->preparedUpdate());
+	if (mUpdatesInstaller.isEmpty()) {
+		return;
+	}
+	mCommunicator->writeQuitMessage();
+	mUpdatesInstaller.startInstalling();
 }
 
 void UpdateProcessor::restartMainApplication()
@@ -97,31 +98,40 @@ void UpdateProcessor::detailsChanged()
 		return;
 	}
 
-	mParser->changeUnit(mArgsParser.units().first());
-	if (!hasNewUpdates(mParser->currentUpdate()->version())) {
+	QList<QUrl> filesUrl;
+	foreach (Update *update, mParser->updatesParsed()) {
+		if (hasNewUpdates(update->version())) {
+			filesUrl << update->url();
+		}
+	}
+
+	if (!filesUrl.isEmpty()) {
+		mDownloader->getUpdateFiles(filesUrl);
+	} else {
 		jobDoneQuit();
 	}
-
-	mDownloader->getUpdate(mParser->currentUpdate()->url());
 }
 
-void UpdateProcessor::fileReady(QString const filePath)
+void UpdateProcessor::fileReady(QUrl url, QString const filePath)
+{
+	mUpdateInfo->saveFileForLater(mParser->update(url), filePath);
+}
+
+void UpdateProcessor::downloadingFinished()
 {
 	if (mHardUpdate) {
-		startSetupProcess(mParser->currentUpdate());
-		return;
+		mUpdatesInstaller << mParser->updatesParsed();
+		mUpdatesInstaller.startInstalling();
+	} else {
+		jobDoneQuit();
 	}
-
-	mParser->changeUnit(mArgsParser.units().first());
-	mUpdateInfo->saveFileForLater(mParser, filePath);
-	jobDoneQuit();
 }
 
-void UpdateProcessor::updateFinished(bool hasSuccess)
+void UpdateProcessor::installingFinished(bool hasSuccess)
 {
-
-
 	restartMainApplication();
+	jobDoneQuit();
+	Q_UNUSED(hasSuccess);
 }
 
 void UpdateProcessor::downloadErrors(QString error)

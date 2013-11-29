@@ -35,8 +35,6 @@ protected:
 	//! @param newVersion
 	//! @return True if new version is newer than current
 	bool hasNewUpdates(QString const newVersion);
-	//! update install
-	void startSetupProcess(Update *update);
 	//! loads prepared update and installs it
 	void checkoutPreparedUpdates();
 	//! restart main application after install finished
@@ -51,6 +49,7 @@ protected:
 	QString mUpdatesFolder;
 	QTimer mRetryTimer;
 	ArgsParser mArgsParser;
+	UpdatesInstaller mUpdatesInstaller;
 	Communicator *mCommunicator;
 	Downloader *mDownloader;
 	DetailsParser *mParser;
@@ -58,8 +57,9 @@ protected:
 
 protected slots:
 	void detailsChanged();
-	void fileReady(QString const filePath);
-	void updateFinished(bool hasSuccess);
+	void fileReady(QUrl url, QString const filePath);
+	void downloadingFinished();
+	void installingFinished(bool hasSuccess);
 	void downloadErrors(QString error = QString());
 	void jobDoneQuit();
 };

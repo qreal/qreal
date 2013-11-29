@@ -17,19 +17,24 @@ public:
 	//! downloads lightweight data and emits signal with IODevice
 	void getUpdateDetails(QUrl const url);
 	//! downloads to file, emits filepath
-	void getUpdate(QUrl const url) throw(CreateFileException);
+	void getUpdateFiles(QList<QUrl> const urls);
 
 signals:
 	void detailsDownloaded(QIODevice *reply);
-	void updatesDownloaded(QString filePath);
+	void updateDownloaded(QUrl url, QString filePath);
+	void downloadingFinished();
 	void detailsLoadError(QString error);
 	void updatesLoadError(QString error);
 
 protected:
 	void sendRequest(QUrl const url);
+	void getUpdate(QUrl const url) throw(CreateFileException);
 	void startFileDownloading(QUrl const url);
+	void downloadNext();
 
+	int mLoadedFileIndex;
 	QNetworkAccessManager mManager;
+	QList<QUrl> mFilesToDownload;
 	QNetworkReply *mReply;
 	QFile *mFile;
 

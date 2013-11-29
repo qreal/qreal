@@ -2,7 +2,9 @@
 
 Downloader::Downloader(QObject *parent)
 	: QObject(parent)
+	, mLoadedFileIndex(0)
 	, mReply(NULL)
+	, mFile(NULL)
 {
 }
 
@@ -16,7 +18,7 @@ void Downloader::getUpdate(QUrl const url) throw(CreateFileException)
 {
 	QString fileName = QFileInfo(url.path()).fileName();
 	if (fileName.isEmpty())
-		fileName = "update";
+		fileName = "update" + QString::number(mLoadedFileIndex++);
 
 	if (QFile::exists(fileName)) {
 		QFile::remove(fileName);
@@ -30,6 +32,12 @@ void Downloader::getUpdate(QUrl const url) throw(CreateFileException)
 	}
 
 	startFileDownloading(url);
+}
+
+void Downloader::getUpdateFiles(QList<QUrl> const urls)
+{
+	mFilesToDownload = urls;
+	downloadNext();
 }
 
 void Downloader::detailsFileDownloaded(QNetworkReply *reply)
@@ -51,12 +59,13 @@ void Downloader::updatesFileDownloaded(QNetworkReply *reply)
 	} else {
 		mFile->flush();
 		mFile->close();
-		emit updatesDownloaded(QFileInfo(*mFile).filePath());
+		emit updateDownloaded(reply->request().url(), QFileInfo(*mFile).filePath());
 	}
 
 	mReply->deleteLater();
 	mReply = 0;
 	delete mFile;
+	downloadNext();
 }
 
 void Downloader::fileReadyRead()
@@ -72,9 +81,19 @@ void Downloader::sendRequest(QUrl const url)
 	mReply = mManager.get(request);
 }
 
-void Downloader::startFileDownloading(const QUrl url)
+void Downloader::startFileDownloading(QUrl const url)
 {
 	connect(&mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(updatesFileDownloaded(QNetworkReply*)));
 	sendRequest(url);
 	connect(mReply, SIGNAL(readyRead()), this, SLOT(fileReadyRead()));
+}
+
+void Downloader::downloadNext()
+{
+	if (mFilesToDownload.isEmpty()) {
+		emit downloadingFinished();
+		return;
+	}
+
+	getUpdate(mFilesToDownload.takeFirst());
 }
