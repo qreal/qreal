@@ -993,6 +993,7 @@ void MainWindow::openElementEditor(
 
 /// TODO: unify element editor with conditional visibility in shape editor
 // This method is for Interpreter.
+//Does this methon need new elementEditor instead of shapeEdit?
 void MainWindow::openShapeEditor(Id const &id, QString const &propertyValue, EditorManagerInterface *editorManagerProxy
 	, bool isIconEditor, bool useTypedPorts)
 {
