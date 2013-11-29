@@ -9,12 +9,12 @@ UpdatesInstaller::UpdatesInstaller()
 {
 }
 
-UpdatesInstaller::operator<<(Update *update)
+void UpdatesInstaller::operator<<(Update *update)
 {
 	mUpdatesQueue.append(update);
 }
 
-UpdatesInstaller::operator<<(QList<Update *> updates)
+void UpdatesInstaller::operator<<(QList<Update *> updates)
 {
 	mUpdatesQueue.append(updates);
 }

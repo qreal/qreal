@@ -19,7 +19,8 @@ public:
 
 	//! @param unit module name
 	//! @returns Update from list or NULL if does not exist
-	virtual Update* update(QString const unit);
+	Update* update(QString const unit);
+	Update* update(QUrl const url);
 
 	//! @return true in case input is invalid
 	virtual bool hasErrors() const = 0;

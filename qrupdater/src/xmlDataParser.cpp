@@ -14,13 +14,12 @@ XmlDataParser::~XmlDataParser()
 	}
 }
 
-void XmlDataParser::processDevice(QIODevice *device)
+void XmlDataParser::parseDevice(QIODevice *device)
 {
 	mHasInvalidFile = false;
 	mXml = new QXmlStreamReader(device);
 	try {
 		readXml();
-		changeUnit(mFileUrls.keys().first());
 	} catch(ReadError &) {
 		mHasInvalidFile = true;
 	}

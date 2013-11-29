@@ -13,7 +13,7 @@ public:
 
 	XmlDataParser();
 	virtual ~XmlDataParser();
-	virtual void processDevice(QIODevice *device);
+	virtual void parseDevice(QIODevice *device);
 	virtual bool hasErrors() const;
 
 protected:

@@ -4,10 +4,20 @@ DetailsParser::DetailsParser()
 {
 }
 
-Update* DetailsParser::udpate(QString const unit)
+Update *DetailsParser::update(QString const unit)
 {
 	for (int i = 0; i < mUpdates.size(); i++) {
 		if (mUpdates.at(i)->unit() == unit) {
+			return mUpdates.at(i);
+		}
+	}
+	return NULL;
+}
+
+Update *DetailsParser::update(QUrl const url)
+{
+	for (int i = 0; i < mUpdates.size(); i++) {
+		if (mUpdates.at(i)->url() == url) {
 			return mUpdates.at(i);
 		}
 	}

@@ -6,7 +6,7 @@ ArgsParser::ArgsParser()
 	mKeywords << "-unit" << "-version" << "-url";
 }
 
-void ArgsParser::parse() throw BadArguments
+void ArgsParser::parse() throw (BadArguments)
 {
 	QStringList arguments = QCoreApplication::arguments();
 

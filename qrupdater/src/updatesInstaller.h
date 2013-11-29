@@ -13,8 +13,8 @@ class UpdatesInstaller : public QObject
 public:
 	explicit UpdatesInstaller(QList<Update *> updates);
 	UpdatesInstaller();
-	operator<< (Update *update);
-	operator<< (QList<Update *> updates);
+	void operator<< (Update *update);
+	void operator<< (QList<Update *> updates);
 
 	//! installes all of updates in queue
 	void startInstalling();
