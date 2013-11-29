@@ -17,7 +17,9 @@ SOURCES += src/main.cpp\
     src/communicator.cpp \
     src/update.cpp \
     src/updateProcessor.cpp \
-    src/updateStorage.cpp
+    src/updateStorage.cpp \
+    src/argsParser.cpp \
+    src/updatesInstaller.cpp
 
 OBJECTS_DIR = .obj
 UI_DIR = .ui
@@ -32,5 +34,7 @@ HEADERS  += \
     src/communicator.h \
     src/update.h \
     src/updateProcessor.h \
-    src/updateStorage.h
+    src/updateStorage.h \
+    src/argsParser.h \
+    src/updatesInstaller.h
 

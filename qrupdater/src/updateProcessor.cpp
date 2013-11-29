@@ -9,7 +9,9 @@ UpdateProcessor::UpdateProcessor()
 	mDownloader = new Downloader(this);
 	mParser = new XmlDataParser();
 	mUpdateInfo = new UpdateStorage(mUpdatesFolder, this);
-	if (!parseParams()) {
+	try {
+		mArgsParser.parse();
+	} catch(ArgsParser::BadArguments const &) {
 		mCommunicator->writeHelpMessage();
 	}
 
@@ -39,7 +41,7 @@ void UpdateProcessor::startDownloadingProcess()
 		mRetryTimer.stop();
 	}
 	mCurAttempt++;
-	mDownloader->getUpdateDetails(mParams.value("-url"));
+	mDownloader->getUpdateDetails(mArgsParser.detailsUrl());
 }
 
 void UpdateProcessor::initConnections()
@@ -52,31 +54,9 @@ void UpdateProcessor::initConnections()
 	connect(mParser, SIGNAL(parseFinished()), this, SLOT(detailsChanged()));
 }
 
-bool UpdateProcessor::parseParams()
-{
-	int const criticalParamsCount = 3;
-	int const argsCount = QCoreApplication::arguments().size();
-	if (argsCount - 1 < criticalParamsCount * 2) {
-		return false;
-	}
-
-	mHardUpdate = QCoreApplication::arguments().contains("-hard", Qt::CaseInsensitive);
-	QStringList params;
-	params << "-unit" << "-version" << "-url";
-	foreach (QString param, params) {
-		int index = QCoreApplication::arguments().indexOf(param);
-		if (index == -1 || index + 1 >= argsCount)
-			return false;
-
-		mParams.insert(param, QCoreApplication::arguments().at(index + 1));
-	}
-
-	return true;
-}
-
 bool UpdateProcessor::hasNewUpdates(QString const newVersion)
 {
-	return newVersion > mParams.value("-version");
+	return newVersion > mArgsParser.version();
 }
 
 void UpdateProcessor::startSetupProcess(Update *update)
@@ -92,10 +72,11 @@ void UpdateProcessor::checkoutPreparedUpdates()
 		return;
 	}
 
-	mUpdateInfo->loadUpdateInfo(mParams.value("-unit"));
+	mUpdateInfo->loadUpdateInfo(mArgsParser.units().first());
 	if (!hasNewUpdates(mUpdateInfo->preparedUpdate()->version()) || mUpdateInfo->preparedUpdate()->isEmpty()) {
 		return;
 	}
+
 
 	startSetupProcess(mUpdateInfo->preparedUpdate());
 }
@@ -117,7 +98,7 @@ void UpdateProcessor::detailsChanged()
 		return;
 	}
 
-	mParser->changeUnit(mParams.value("-unit"));
+	mParser->changeUnit(mArgsParser.units().first());
 	if (!hasNewUpdates(mParser->currentUpdate()->version())) {
 		jobDoneQuit();
 	}
@@ -132,7 +113,7 @@ void UpdateProcessor::fileReady(QString const filePath)
 		return;
 	}
 
-	mParser->changeUnit(mParams.value("-unit"));
+	mParser->changeUnit(mArgsParser.units().first());
 	mUpdateInfo->saveFileForLater(mParser, filePath);
 	jobDoneQuit();
 }
