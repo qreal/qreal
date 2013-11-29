@@ -14,7 +14,7 @@ XmlDataParser::~XmlDataParser()
 	}
 }
 
-void XmlDataParser::parseDevice(QIODevice *device)
+void XmlDataParser::processDevice(QIODevice *device)
 {
 	mHasInvalidFile = false;
 	mXml = new QXmlStreamReader(device);

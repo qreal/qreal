@@ -17,29 +17,29 @@ public:
 	DetailsParser();
 	virtual ~DetailsParser(){}
 
-	//! switch to other result of parsing
-	//! @param unit other module name
-	virtual void changeUnit(QString const unit);
+	//! @param unit module name
+	//! @returns Update from list or NULL if does not exist
+	virtual Update* update(QString const unit);
 
 	//! @return true in case input is invalid
 	virtual bool hasErrors() const = 0;
 
-	//! @return Update - result of parsing
-	Update* currentUpdate() const;
-
 	//! @return all units saved in options-file
 	QStringList units() const;
-	QString currentUnit() const;
+	QList<Update *> updatesParsed() const;
 
 signals:
 	void parseFinished();
 
 public slots:
 	//! starts parsing
-	virtual void parseDevice(QIODevice *device) = 0;
+	virtual void processDevice(QIODevice *device);
 
 protected:
-	Update *mCurrentUpdate;
+	virtual void parseDevice(QIODevice *device) = 0;
+
+	QList<Update *> mUpdates;
+
 	//! unit <-> url
 	QMap<QString, QUrl> mFileUrls;
 	QMap<QString, QString> mParamStrings;
