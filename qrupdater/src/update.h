@@ -17,6 +17,7 @@ public:
 
 	void setUrl(QUrl const link);
 	void setUnitName(QString const unit);
+	void setFilePath(QString const path);
 	void setData(QString const filePath, QStringList const args, QString const version, QUrl const link = QUrl());
 	//! removes update-file and clears all information
 	void clear();

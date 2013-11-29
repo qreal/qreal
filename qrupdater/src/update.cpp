@@ -25,6 +25,11 @@ void Update::setUnitName(const QString unit)
 	mModule = unit;
 }
 
+void Update::setFilePath(const QString path)
+{
+	mFilePath = path;
+}
+
 void Update::setData(const QString filePath, const QStringList args, const QString version, const QUrl link)
 {
 	mFilePath = filePath;

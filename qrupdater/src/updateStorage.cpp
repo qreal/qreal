@@ -5,7 +5,6 @@ UpdateStorage::UpdateStorage(QString updatesFolder, QObject *parent)
 	, mUpdatesFolder(updatesFolder)
 	, settingsFile(updatesFolder + "updateInfo.ini")
 {
-	mPreparedUpdate = new Update(this);
 	mUpdateInfo = new QSettings(settingsFile, QSettings::IniFormat, parent);
 }
 
@@ -18,16 +17,16 @@ UpdateStorage::~UpdateStorage()
 	}
 }
 
-void UpdateStorage::saveUpdateInfo(DetailsParser const *parser, QString const savedFilePath)
+void UpdateStorage::saveUpdateInfo(Update *update)
 {
-	mUpdateInfo->beginGroup(parser->currentUnit());
-	mUpdateInfo->setValue("fileName", savedFilePath);
-	mUpdateInfo->setValue("version", parser->currentUpdate()->version());
-	mUpdateInfo->setValue("args", parser->currentUpdate()->arguments());
+	mUpdateInfo->beginGroup(update->unit());
+	mUpdateInfo->setValue("fileName", update->filePath());
+	mUpdateInfo->setValue("version", update->version());
+	mUpdateInfo->setValue("args", update->arguments());
 	mUpdateInfo->endGroup();
 }
 
-void UpdateStorage::saveFileForLater(DetailsParser const *parser, QString const filePath)
+void UpdateStorage::saveFileForLater(Update *concreteUpdate, QString const filePath)
 {
 	QDir().mkdir(mUpdatesFolder);
 
@@ -39,13 +38,16 @@ void UpdateStorage::saveFileForLater(DetailsParser const *parser, QString const 
 
 	QFile::rename(filePath, endFilePath);
 
-	saveUpdateInfo(parser, endFilePath);
+	concreteUpdate->setFilePath(endFilePath);
+	mPreparedUpdates << concreteUpdate;
+	saveUpdateInfo(concreteUpdate);
 }
 
-void UpdateStorage::removePreparedUpdate()
+void UpdateStorage::removeUpdate(Update *update)
 {
-	mUpdateInfo->remove(mPreparedUpdate->unit());
-	mPreparedUpdate->clear();
+	mUpdateInfo->remove(update->unit());
+	update->clear();
+	mPreparedUpdates.removeOne(update);
 }
 
 bool UpdateStorage::hasPreparedUpdatesInfo()
@@ -53,24 +55,34 @@ bool UpdateStorage::hasPreparedUpdatesInfo()
 	return QDir(mUpdatesFolder).exists() && QFile::exists(settingsFile);
 }
 
-void UpdateStorage::loadUpdateInfo(QString const unit)
+void UpdateStorage::loadUpdatesInfo(QStringList const units)
 {
 	if (!hasPreparedUpdatesInfo()) {
 		return;
 	}
 
-	mUpdateInfo->beginGroup(unit);
-	mPreparedUpdate->setData(
-			mUpdatesFolder + mUpdateInfo->value("fileName").toString()
-			, mUpdateInfo->value("args").toStringList()
-			, mUpdateInfo->value("version").toString()
-	);
-	mPreparedUpdate->setUnitName(unit);
-	mUpdateInfo->endGroup();
+	foreach (QString const unit, units) {
+		Update *newUpdate = new Update(this);
+
+		mUpdateInfo->beginGroup(unit);
+		newUpdate->setData(
+				mUpdatesFolder + mUpdateInfo->value("fileName").toString()
+				, mUpdateInfo->value("args").toStringList()
+				, mUpdateInfo->value("version").toString()
+		);
+		newUpdate->setUnitName(unit);
+		mUpdateInfo->endGroup();
+
+		if (!newUpdate->isEmpty()) {
+			mPreparedUpdates << newUpdate;
+		} else {
+			delete newUpdate;
+		}
+	}
 }
 
-Update *UpdateStorage::preparedUpdate()
+QList<Update *> UpdateStorage::preparedUpdates() const
 {
-	return mPreparedUpdate;
+	return mPreparedUpdates;
 }
 

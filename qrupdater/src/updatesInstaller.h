@@ -20,6 +20,7 @@ public:
 	void startInstalling();
 
 	bool hasNoErrors() const;
+	bool isEmpty() const;
 
 signals:
 	void installsFinished(bool hasNoErrors);

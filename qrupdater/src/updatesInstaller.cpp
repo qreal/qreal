@@ -32,6 +32,11 @@ bool UpdatesInstaller::hasNoErrors() const
 	return mHasNoErrors;
 }
 
+bool UpdatesInstaller::isEmpty() const
+{
+	return mUpdatesQueue.isEmpty();
+}
+
 void UpdatesInstaller::installNext()
 {
 	connect(mUpdatesQueue.first(), SIGNAL(installFinished(bool)), this, SLOT(singleInstallFinished(bool)));
@@ -43,12 +48,11 @@ void UpdatesInstaller::singleInstallFinished(bool hasNoErrors)
 	if (hasNoErrors) {
 		if (mUpdatesQueue.first()->isInstalled()) {
 			mUpdatesQueue.first()->clear();
-
-			//? delete update?
 		} else {
 			mHasNoErrors = false;
 		}
 	}
+
 	mUpdatesQueue.takeFirst();
 	if (!mUpdatesQueue.isEmpty()) {
 		installNext();

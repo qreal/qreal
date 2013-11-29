@@ -2,7 +2,6 @@
 
 DetailsParser::DetailsParser()
 {
-	mCurrentUpdate = new Update(this);
 }
 
 Update* DetailsParser::udpate(QString const unit)
@@ -30,7 +29,7 @@ void DetailsParser::processDevice(QIODevice *device)
 	parseDevice(device);
 
 	foreach (QString const unit, units()) {
-		Update *newUpdate = new Update();
+		Update *newUpdate = new Update(this);
 		newUpdate->setUnitName(unit);
 		newUpdate->setData(
 				QFileInfo(mFileUrls.value(unit).toString()).fileName()
