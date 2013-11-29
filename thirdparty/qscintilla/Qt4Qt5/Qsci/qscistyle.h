@@ -34,7 +34,7 @@ extern "C++" {
 #include <qfont.h>
 #include <qstring.h>
 
-#include "qsciglobal.h"
+#include <Qsci/qsciglobal.h>
 
 
 class QsciScintillaBase;

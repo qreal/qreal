@@ -3,15 +3,19 @@
 #include <QtWidgets/QApplication>
 #include <QtCore/QDir>
 
+#include "qrgui/mainwindow/qscintillaTextEdit.h"
 #include <nxtOsekMasterGenerator.h>
+
 
 using namespace qReal;
 using namespace qReal::robots::generators;
+using namespace gui;
 
 NxtGeneratorPlugin::NxtGeneratorPlugin()
 	: mGenerateCodeAction(NULL)
 	, mFlashRobotAction(NULL)
 	, mUploadProgramAction(NULL)
+	, mRunProgramAction(NULL)
 	, mNxtToolsPresent(false)
 {
 	mAppTranslator.load(":/nxtGenerator_" + QLocale::system().name());
@@ -25,9 +29,30 @@ NxtGeneratorPlugin::~NxtGeneratorPlugin()
 	delete mFlashTool;
 }
 
+QFileInfo NxtGeneratorPlugin::defaultFilePath(QString const &projectName) const
+{
+	return QFileInfo(QString("nxt-tools/%1/%1.c").arg(projectName));
+}
+
+QString NxtGeneratorPlugin::extension() const
+{
+	return "c";
+}
+
+QString NxtGeneratorPlugin::extDescrition() const
+{
+	return tr("Lego NXT Source File");
+}
+
+QString NxtGeneratorPlugin::generatorName() const
+{
+	return "nxtOsek";
+}
+
 void NxtGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	RobotsGeneratorPluginBase::init(configurator);
+
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
 }
 
@@ -46,10 +71,14 @@ QList<ActionInfo> NxtGeneratorPlugin::actions()
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
 	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
+	mRunProgramAction.setText(tr("Run program"));
+	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
+	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()));
+
 	checkNxtTools();
 
 	return QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo
-			<< uploadProgramActionInfo;
+			<< uploadProgramActionInfo << runProgramActionInfo;
 }
 
 void NxtGeneratorPlugin::initHotKeyActions()
@@ -61,6 +90,19 @@ void NxtGeneratorPlugin::initHotKeyActions()
 	HotKeyActionInfo uploadActionInfo("Generator.Upload", tr("Upload program to robot"), &mUploadProgramAction);
 
 	mHotKeyActionInfos << generateActionInfo << uploadActionInfo;
+}
+
+void NxtGeneratorPlugin::runProgram()
+{
+	if (!mNxtToolsPresent) {
+		mMainWindowInterface->errorReporter()->addError(tr("NextTool not found. Make sure it is present in QReal installation directory"));
+	} else {
+		QFileInfo const fileInfo = currentSource();
+
+		if (fileInfo != QFileInfo()) {
+			mFlashTool->runProgram(fileInfo);
+		}
+	}
 }
 
 QList<HotKeyActionInfo> NxtGeneratorPlugin::hotKeyActions()
@@ -75,10 +117,20 @@ MasterGeneratorBase *NxtGeneratorPlugin::masterGenerator()
 			, mMainWindowInterface->activeDiagram());
 }
 
+void NxtGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
+{
+	nxtOsek::NxtOsekMasterGenerator * const generator = new nxtOsek::NxtOsekMasterGenerator(*mRepo
+		, *mMainWindowInterface->errorReporter()
+		, mMainWindowInterface->activeDiagram());
+	generator->initialize();
+	generator->setProjectDir(newFileInfo);
+	generator->generateOilAndMakeFiles();
+}
+
 void NxtGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool const &trigger)
 {
 	foreach (ActionInfo const &actionInfo, info) {
-			actionInfo.action()->setEnabled(trigger);
+		actionInfo.action()->setEnabled(trigger);
 	}
 }
 
@@ -95,11 +147,12 @@ void NxtGeneratorPlugin::flashRobot()
 void NxtGeneratorPlugin::uploadProgram()
 {
 	if (!mNxtToolsPresent) {
-		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found."\
-				" Make sure it is present in QReal installation directory"));
+		mMainWindowInterface->errorReporter()->addError(tr("upload.sh not found. Make sure it is present in QReal installation directory"));
 	} else {
-		if (generateCode()) {
-			mFlashTool->uploadProgram();
+		QFileInfo const fileInfo = currentSource();
+
+		if (fileInfo != QFileInfo()) {
+			mFlashTool->uploadProgram(fileInfo);
 		}
 	}
 }

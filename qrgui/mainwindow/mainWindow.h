@@ -37,9 +37,12 @@
 #include "dialogs/gesturesShow/gesturesWidget.h"
 
 #include "textEditor/codeEditor.h"
+#include "textEditor/textManager.h"
 
 #include "dialogs/suggestToCreateDiagramDialog.h"
 #include "mainwindow/tabWidget.h"
+#include "mainwindow/qscintillaTextEdit.h"
+#include "toolPluginInterface/systemEvents.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -113,7 +116,7 @@ public:
 	bool showConnectionRelatedMenus() const;
 	bool showUsagesRelatedMenus() const;
 
-	virtual void showInTextEditor(QString const &title, QString const &text);
+	//virtual void showInTextEditor(QFileInfo const &fileInfo);
 	virtual void reinitModels();
 
 	virtual QWidget *windowWidget();
@@ -129,16 +132,19 @@ public:
 	virtual void deleteElementFromDiagram(Id const &id);
 
 	virtual void reportOperation(invocation::LongOperation *operation);
+	virtual QWidget *currentTab();
+	virtual void openTab(QWidget *tab, QString const &title);
+	virtual void closeTab(QWidget *tab);
+
+	/// Closes tab having given id as root id. If there is no such tab, does nothing.
+	/// @param id Id of a diagram (root element) that we want to close.
+	void closeDiagramTab(Id const &id);
 
 	/// Returns editor manager proxy, which allows to change editor manager implementation.
 	ProxyEditorManager &editorManagerProxy();
 
 	/// Loads (or reloads) available editor plugins and reinits palette.
 	void loadPlugins();
-
-	/// Closes tab having given id as root id. If there is no such tab, does nothing.
-	/// @param id Id of a diagram (root element) that we want to close.
-	void closeDiagramTab(Id const &id);
 
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();
@@ -158,6 +164,8 @@ public:
 	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
 
 	QListIterator<EditorView *> openedEditorViews() const;
+
+	void setTabText(QWidget *tab, QString const &text);
 
 signals:
 	void gesturesShowed();
@@ -185,6 +193,7 @@ public slots:
 
 	void openFirstDiagram();
 	void closeTabsWithRemovedRootElements();
+	void changeWindowTitle(int index);
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
@@ -268,9 +277,10 @@ private slots:
 	void setReference(QStringList const &data, QPersistentModelIndex const &index, int const &role);
 
 	void updatePaletteIcons();
+	void setTextChanged(bool changed);
 
 private:
-	QHash<EditorView*, QPair<CodeArea *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
+	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
 
 	/// Initializes a tab if it is a diagram --- sets its logical and graphical
 	/// models, connects to various main window actions and so on
@@ -292,8 +302,6 @@ private:
 
 	void deleteFromExplorer(bool isLogicalModel);
 	void deleteItems(IdList &itemsToDelete, bool global = false);
-
-	void keyPressEvent(QKeyEvent *event);
 
 	QString getSaveFileName(QString const &dialogWindowTitle);
 	QString getOpenFileName(QString const &dialogWindowTitle);
@@ -359,7 +367,7 @@ private:
 	FindReplaceDialog *mFindReplaceDialog;
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
-	QMap<EditorView*, CodeArea*> *mCodeTabManager;
+	QMap<EditorView*, gui::QScintillaTextEdit*> *mCodeTabManager;
 
 	models::Models *mModels;
 	Controller *mController;
@@ -368,6 +376,8 @@ private:
 	ListenerManager *mListenerManager;
 	PropertyEditorModel mPropertyModel;
 	gestures::GesturesWidget *mGesturesWidget;
+	SystemEvents *mSystemEvents;
+	TextManager *mTextManager;
 
 	QVector<bool> mSaveListChecked;
 
