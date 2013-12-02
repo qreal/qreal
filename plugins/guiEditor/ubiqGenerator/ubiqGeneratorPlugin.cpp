@@ -7,7 +7,7 @@
 #include <QDesktopWidget>
 #include <QDebug>
 
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 using namespace ubiq::generator;
 using namespace qReal;

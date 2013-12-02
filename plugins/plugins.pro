@@ -7,7 +7,8 @@ SUBDIRS	= \
 #	hascol/hascol.pro \
 	metaEditor/metaEditor.pro \
 	requirements/requirements.pro \
-#	guiEditor/ubiqEditor.pro \
+	guiEditor/ubiqEditor.pro \
+	gameEditor/gameEditorMetamodel/gameMetamodel.pro \
 
 
 # tool plugins
