@@ -25,7 +25,6 @@ void XmlDataParser::parseDevice(QIODevice *device)
 	}
 
 	device->deleteLater();
-	emit parseFinished();
 }
 
 bool XmlDataParser::hasErrors() const

@@ -1,8 +1,11 @@
 #pragma once
 
-#include <QtCore/QObject>
+#include <QtCore/QDir>
+#include <QtCore/QMap>
+#include <QtCore/QTimer>
 #include <QtCore/QQueue>
 #include <QtCore/QProcess>
+#include <QtCore/QCoreApplication>
 
 #include "update.h"
 
@@ -17,7 +20,7 @@ public:
 	void operator<< (QList<Update *> updates);
 
 	//! installes all of updates in queue
-	void startInstalling();
+	void installAll();
 
 	bool hasNoErrors() const;
 	bool isEmpty() const;
@@ -25,15 +28,18 @@ public:
 signals:
 	void installsFinished(bool hasNoErrors);
 
-
 protected:
 	void installNext();
+	void replaceExpressions(Update *update);
+	static QString getInstallDir();
 
 	bool mHasNoErrors;
+	//! Time for main program could fully unload resources
+	static int const delay = 1000;
 	QQueue<Update *> mUpdatesQueue;
 
 protected slots:
 	void singleInstallFinished(bool hasNoErrors);
-
+	void startInstallation();
 };
 

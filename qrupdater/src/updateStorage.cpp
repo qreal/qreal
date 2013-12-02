@@ -10,6 +10,11 @@ UpdateStorage::UpdateStorage(QString updatesFolder, QObject *parent)
 
 UpdateStorage::~UpdateStorage()
 {
+	foreach (Update *update, mPreparedUpdates) {
+		if (update->isEmpty()) {
+			mUpdateInfo->remove(update->unit());
+		}
+	}
 	mUpdateInfo->sync();
 	if (QDir(mUpdatesFolder).exists() && QFile::exists(settingsFile) && QFile(settingsFile).size() == 0) {
 		QFile::remove(settingsFile);
@@ -66,7 +71,7 @@ void UpdateStorage::loadUpdatesInfo(QStringList const units)
 
 		mUpdateInfo->beginGroup(unit);
 		newUpdate->setData(
-				mUpdatesFolder + mUpdateInfo->value("fileName").toString()
+				mUpdateInfo->value("fileName").toString()
 				, mUpdateInfo->value("args").toStringList()
 				, mUpdateInfo->value("version").toString()
 		);

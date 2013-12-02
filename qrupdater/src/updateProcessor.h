@@ -40,8 +40,6 @@ protected:
 	//! restart main application after install finished
 	void restartMainApplication();
 
-	void processNextUpdate();
-
 	static int const retryTimerout = 5 * 60 * 1000;
 	static int const maxAttemptsCount = 3;
 	int mCurAttempt;

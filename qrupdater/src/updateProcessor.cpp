@@ -52,7 +52,7 @@ void UpdateProcessor::initConnections()
 	connect(mDownloader, SIGNAL(updatesLoadError(QString)), this, SLOT(downloadErrors(QString)));
 	connect(mDownloader, SIGNAL(updateDownloaded(QUrl,QString)), this, SLOT(fileReady(QUrl,QString)));
 	connect(mDownloader, SIGNAL(downloadingFinished()), this, SLOT(downloadingFinished()));
-	connect(mDownloader, SIGNAL(detailsDownloaded(QIODevice*)), mParser, SLOT(parseDevice(QIODevice*)));
+	connect(mDownloader, SIGNAL(detailsDownloaded(QIODevice*)), mParser, SLOT(processDevice(QIODevice*)));
 	connect(mParser, SIGNAL(parseFinished()), this, SLOT(detailsChanged()));
 }
 
@@ -78,7 +78,7 @@ void UpdateProcessor::checkoutPreparedUpdates()
 		return;
 	}
 	mCommunicator->writeQuitMessage();
-	mUpdatesInstaller.startInstalling();
+	mUpdatesInstaller.installAll();
 }
 
 void UpdateProcessor::restartMainApplication()
@@ -100,7 +100,7 @@ void UpdateProcessor::detailsChanged()
 
 	QList<QUrl> filesUrl;
 	foreach (Update *update, mParser->updatesParsed()) {
-		if (hasNewUpdates(update->version())) {
+		if (mArgsParser.units().contains(update->unit()) && hasNewUpdates(update->version())) {
 			filesUrl << update->url();
 		}
 	}
@@ -121,7 +121,7 @@ void UpdateProcessor::downloadingFinished()
 {
 	if (mHardUpdate) {
 		mUpdatesInstaller << mParser->updatesParsed();
-		mUpdatesInstaller.startInstalling();
+		mUpdatesInstaller.installAll();
 	} else {
 		jobDoneQuit();
 	}

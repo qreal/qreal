@@ -9,7 +9,7 @@ QRealUpdater::QRealUpdater(char *applicationPath)
 	, mQRealPath(applicationPath)
 
 {
-	mUpdaterPath = QFileInfo(mQRealPath).absolutePath();
+	mUpdaterPath = QFileInfo(mQRealPath).absolutePath() + "/qrUpdater";
 }
 
 bool QRealUpdater::hasUpdates()

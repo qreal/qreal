@@ -102,7 +102,7 @@ QString Update::version() const
 	return mVersion;
 }
 
-QStringList Update::arguments() const
+QStringList& Update::arguments()
 {
 	return mArguments;
 }

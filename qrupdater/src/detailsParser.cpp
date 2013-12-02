@@ -43,12 +43,14 @@ void DetailsParser::processDevice(QIODevice *device)
 		newUpdate->setUnitName(unit);
 		newUpdate->setData(
 				QFileInfo(mFileUrls.value(unit).toString()).fileName()
-				, mParamStrings.value(unit).split(" ")
+				, mParamStrings.value(unit).split(" ", QString::SkipEmptyParts)
 				, mVersions.value(unit)
 				, mFileUrls.value(unit)
 		);
 
 		mUpdates << newUpdate;
 	}
+
+	emit parseFinished();
 }
 

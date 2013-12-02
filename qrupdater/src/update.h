@@ -34,7 +34,7 @@ public:
 	QString filePath() const;
 	QString fileName() const;
 	QString version() const;
-	QStringList arguments() const;
+	QStringList& arguments();
 
 signals:
 	//! @return True if process finished correctly
