@@ -1,4 +1,4 @@
-#include "ubiqGeneratorPlugin.h"
+#include "gameGeneratorPlugin.h"
 #include <QMessageBox>
 #include <QProgressBar>
 #include <QtCore/QProcess>
@@ -9,39 +9,39 @@
 
 #include <qrkernel/settingsManager.h>
 
-using namespace ubiq::generator;
+using namespace game::generator;
 using namespace qReal;
 
-UbiqGeneratorPlugin::UbiqGeneratorPlugin()
+GameGeneratorPlugin::GameGeneratorPlugin()
 {
 }
 
-UbiqGeneratorPlugin::~UbiqGeneratorPlugin()
+GameGeneratorPlugin::~GameGeneratorPlugin()
 {
 }
 
-void UbiqGeneratorPlugin::init(PluginConfigurator const &configurator)
+void GameGeneratorPlugin::init(PluginConfigurator const &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mLogicalModel = &configurator.logicalModelApi();
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
-    mGraphicalModel = &configurator.graphicalModelApi();
+	mGraphicalModel = &configurator.graphicalModelApi();
 }
 
-QList<ActionInfo> UbiqGeneratorPlugin::actions()
+QList<ActionInfo> GameGeneratorPlugin::actions()
 {
-    QAction * const generateAction = new QAction(QObject::tr("Generate UbiqProgram"), NULL);
+	QAction * const generateAction = new QAction(QObject::tr("Generate program"), NULL);
 	ActionInfo generateActionInfo(generateAction, "interpreters", "tools");
 	QObject::connect(generateAction, SIGNAL(triggered()), this, SLOT(generate()));
 
 	return QList<ActionInfo>() << generateActionInfo;
 }
 
-void UbiqGeneratorPlugin::generate()
+void GameGeneratorPlugin::generate()
 {
 //		QString programName = mLogicalModel->logicalRepoApi().property(diagram, "programName").toString();
 //		QString pathToGenerate = mLogicalModel->logicalRepoApi().property(diagram, "pathToGenerate").toString();
 
-        mGenerator = new Generator("./pathToGenerate", "programName", *mLogicalModel, *mGraphicalModel, *mErrorReporter);
-        mGenerator->generate();
+	mGenerator = new Generator("./pathToGenerate", "programName", *mLogicalModel, *mGraphicalModel, *mErrorReporter);
+	mGenerator->generate();
 }

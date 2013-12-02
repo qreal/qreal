@@ -4,18 +4,18 @@
 #include "../../../qrgui/toolPluginInterface/toolPluginInterface.h"
 #include "generator.h"
 
-namespace ubiq {
+namespace game {
 namespace generator {
 
-class UbiqGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
+class GameGeneratorPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
     Q_PLUGIN_METADATA(IID "qReal.ubiq.generator.UbiqGeneratorPlugin")
 
 public:
-    UbiqGeneratorPlugin();
-    virtual ~UbiqGeneratorPlugin();
+	GameGeneratorPlugin();
+	virtual ~GameGeneratorPlugin();
 
 	/// Initializes generator with ref to logical model.
 	virtual void init(qReal::PluginConfigurator const &configurator);

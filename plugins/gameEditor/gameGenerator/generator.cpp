@@ -4,7 +4,7 @@
 #include <QtCore/QDebug>
 #include <QMessageBox>
 
-using namespace ubiq::generator;
+using namespace game::generator;
 using namespace qReal;
 using namespace utils;
 
@@ -14,14 +14,16 @@ QString const templateFileNameTest = "testFile.cs";
 /// Generation target file
 
 Generator::Generator(QString const &outputDirPath
-        , QString const &programName
-        , qReal::LogicalModelAssistInterface const &logicalModel
-        , qReal::GraphicalModelAssistInterface const &graphicalModel
-        , qReal::ErrorReporterInterface &errorReporter
-        )
-    : AbstractGenerator(templateDir, QString("C:\\Users\\efimw_000\\Documents\\study\\").replace("\\", "/"), logicalModel, errorReporter)
-    , mGraphicalModel(graphicalModel)
+		, QString const &programName
+		, qReal::LogicalModelAssistInterface const &logicalModel
+		, qReal::GraphicalModelAssistInterface const &graphicalModel
+		, qReal::ErrorReporterInterface &errorReporter
+		)
+	: AbstractGenerator(templateDir, QString("C:\\Users\\efimw_000\\Documents\\study\\").replace("\\", "/"), logicalModel, errorReporter)
+	, mGraphicalModel(graphicalModel)
 {
+	Q_UNUSED(programName);
+	Q_UNUSED(outputDirPath);
 }
 
 Generator::~Generator()
@@ -31,89 +33,89 @@ Generator::~Generator()
 void Generator::generate()
 {
 
-    initGeneratingFiles();
+	initGeneratingFiles();
 
-    generateMainSwitch();
+	generateMainSwitch();
 
-    saveGeneratedFiles();
+	saveGeneratedFiles();
 }
 
 void Generator::initGeneratingFiles()
 {
-    loadTemplateFromFile(templateFileNameTest, mResultTestFile);
+	loadTemplateFromFile(templateFileNameTest, mResultTestFile);
 }
 
 void Generator::saveGeneratedFiles()
 {
-    QString outputFileName = "test.cs";
+	QString outputFileName = "test.cs";
 
-    saveOutputFile(outputFileName, mResultTestFile);
+	saveOutputFile(outputFileName, mResultTestFile);
 }
 
 void Generator::generateMainSwitch()
 {
-    IdList toGenerate;
-    toGenerate << mApi.elementsByType("Frame");
+	IdList toGenerate;
+	toGenerate << mApi.elementsByType("Frame");
 
-    QString outerSwitchBody = "";
-    foreach (Id const &curFrame, toGenerate) {
-        if (!mApi.isLogicalElement(curFrame)) {
-            continue;
-        }
+	QString outerSwitchBody = "";
+	foreach (Id const &curFrame, toGenerate) {
+		if (!mApi.isLogicalElement(curFrame)) {
+			continue;
+		}
 
-        QString currentFrameCase = mTemplateUtils["@@eachFrameSwitchBody@@"];
+		QString currentFrameCase = mTemplateUtils["@@eachFrameSwitchBody@@"];
 
-        QString currentFrameName = mApi.property(curFrame, "name").toString();
+		QString currentFrameName = mApi.property(curFrame, "name").toString();
 
-        QString innerSwitch = generateFrameRelatedSwitch(curFrame);
+		QString innerSwitch = generateFrameRelatedSwitch(curFrame);
 
 
-        currentFrameCase.replace("@@frameName@@", currentFrameName);
-        currentFrameCase.replace("@@caseForConnectedFrame@@", innerSwitch);
+		currentFrameCase.replace("@@frameName@@", currentFrameName);
+		currentFrameCase.replace("@@caseForConnectedFrame@@", innerSwitch);
 
-        outerSwitchBody += currentFrameCase;
-    }
+	outerSwitchBody += currentFrameCase;
+	}
 
-    mResultTestFile.replace("@@eachFrameSwitches@@", outerSwitchBody);
+	mResultTestFile.replace("@@eachFrameSwitches@@", outerSwitchBody);
 }
 
 QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 {
-/*    QMessageBox msgBox;
-    msgBox.setText("The document has been modified.");
-    msgBox.setInformativeText("Do you want to save your changes?");
-    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Save);
-    int ret = msgBox.exec();
+/*	QMessageBox msgBox;
+	msgBox.setText("The document has been modified.");
+	msgBox.setInformativeText("Do you want to save your changes?");
+	msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+	msgBox.setDefaultButton(QMessageBox::Save);
+	int ret = msgBox.exec();
 */
 
-    QString frameSwitch = "";
+	QString frameSwitch = "";
 
-    IdList edges = mApi.elementsByType("screenFlow");
-\
-    foreach (Id const &edge, edges) {
-        if (mApi.isLogicalElement(edge)) {
-            continue;
-        }
+	IdList edges = mApi.elementsByType("ScreenTransition");
 
-        //IdList const &graphicalEdges = mGraphicalModel.graphicalIdsByLogicalId(edge);
-        Id from = mGraphicalModel.from(edge);
+	foreach (Id const &edge, edges) {
+		if (mApi.isLogicalElement(edge)) {
+			continue;
+		}
 
-        if (from != currentFrame) {
-            continue;
-        }
+		//IdList const &graphicalEdges = mGraphicalModel.graphicalIdsByLogicalId(edge);
+		Id from = mGraphicalModel.from(edge);
 
-        QString linkCase = mTemplateUtils["@@outconnectedFrameCase@@"];
+		if (from != currentFrame) {
+			continue;
+		}
 
-        Id rightHandFrame = mGraphicalModel.to(edge);
+		QString linkCase = mTemplateUtils["@@outconnectedFrameCase@@"];
 
-        QString rightHandFrameName = mApi.property(rightHandFrame, "name").toString();
+		Id rightHandFrame = mGraphicalModel.to(edge);
 
-        linkCase.replace("rightHandFrameName", rightHandFrameName);
-        frameSwitch += linkCase;
-    }
+		QString rightHandFrameName = mApi.property(rightHandFrame, "name").toString();
 
-    return frameSwitch;
+		linkCase.replace("rightHandFrameName", rightHandFrameName);
+		frameSwitch += linkCase;
+	}
+
+	return frameSwitch;
 }
 
 

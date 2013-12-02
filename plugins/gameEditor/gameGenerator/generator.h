@@ -7,7 +7,7 @@
 
 
 
-namespace ubiq {
+namespace game {
 namespace generator {
 
 class Generator : public utils::AbstractGenerator
@@ -19,11 +19,11 @@ public:
 	  @param logicalModel Logical model reference.
 	  @param errorReporter Object to return errors to.
 	  */
-    Generator(QString const &outputDirPath
+	Generator(QString const &outputDirPath
 			, QString const &programName
 			, qReal::LogicalModelAssistInterface const &logicalModel
-            , qReal::GraphicalModelAssistInterface const &graphicalModel
-            , qReal::ErrorReporterInterface &errorReporter\
+			, qReal::GraphicalModelAssistInterface const &graphicalModel
+			, qReal::ErrorReporterInterface &errorReporter\
 			);
 
 	virtual ~Generator();
