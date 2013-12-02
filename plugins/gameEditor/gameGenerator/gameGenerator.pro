@@ -14,11 +14,11 @@ INCLUDEPATH += \
 	$$PWD/../../../qrgui/ \
 
 HEADERS = \
-    ubiqGeneratorPlugin.h \
+    gameGeneratorPlugin.h \
     generator.h
 
 SOURCES = \
-    ubiqGeneratorPlugin.cpp \
+    gameGeneratorPlugin.cpp \
     generator.cpp
 
 win32 {

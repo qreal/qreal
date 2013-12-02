@@ -1,0 +1,14 @@
+@@eachFrameSwitchBody@@
+	case: @@frameName@@
+		string screenFlowTo = "";
+		switch (screenFlowTo)
+		{
+			@@caseForConnectedFrame@@
+		}
+		break;
+==========
+@@outconnectedFrameCase@@
+			case @@rightHandFrameName@@:
+				curState = @@rightHandFrameName@@;
+				brake;
+==========
