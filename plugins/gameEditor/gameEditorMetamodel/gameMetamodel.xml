@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
     <namespace>UML 2.0</namespace>
-    <diagram name="ScreenFlowDiagram" displayedName="Screen Flow Diagram" nodeName="ScreenFlowDiagramNode">
+    <diagram displayedName="Screen Flow Diagram" name="ScreenFlowEditor" nodeName="ScreenFlowDiagramNode">
         <graphicTypes>
-            <node name="ScreenFlowDiagramNode" displayedName="Screen Flow Diagram">
+            <node displayedName="Screen Flow Diagram" name="ScreenFlowDiagramNode">
                 <graphics>
                     <picture sizex="166" sizey="119">
-                        <rectangle stroke-style="solid" stroke="#000000" stroke-width="0" y1="0" y2="117" fill="#ffffff" x1="0" x2="164" fill-style="none"/>
-                        <ellipse stroke-style="solid" stroke="#000000" stroke-width="0" y1="25" y2="54" fill="#ffffff" x1="18" x2="56" fill-style="none"/>
-                        <rectangle stroke-style="solid" stroke="#000000" stroke-width="0" y1="43" y2="62" fill="#ffffff" x1="80" x2="105" fill-style="none"/>
-                        <line stroke-style="solid" stroke="#000000" stroke-width="0" y1="100a" y2="87" fill="#ffffff" x1="33" x2="46a" fill-style="none"/>
-                        <line stroke-style="solid" stroke="#000000" stroke-width="0" y1="103" y2="87" fill="#ffffff" x1="58" x2="46" fill-style="none"/>
-                        <line stroke-style="solid" stroke="#000000" stroke-width="0" y1="102" y2="106" fill="#ffffff" x1="32" x2="60" fill-style="none"/>
+                        <rectangle fill-style="none" fill="#ffffff" y1="0" stroke-style="solid" y2="117" stroke="#000000" x1="0" stroke-width="0" x2="164"/>
+                        <ellipse fill-style="none" fill="#ffffff" y1="25" stroke-style="solid" y2="54" stroke="#000000" x1="18" stroke-width="0" x2="56"/>
+                        <rectangle fill-style="none" fill="#ffffff" y1="43" stroke-style="solid" y2="62" stroke="#000000" x1="80" stroke-width="0" x2="105"/>
+                        <line fill-style="none" fill="#ffffff" y1="100a" stroke-style="solid" y2="87" stroke="#000000" x1="33" stroke-width="0" x2="46a"/>
+                        <line fill-style="none" fill="#ffffff" y1="103" stroke-style="solid" y2="87" stroke="#000000" x1="58" stroke-width="0" x2="46"/>
+                        <line fill-style="none" fill="#ffffff" y1="102" stroke-style="solid" y2="106" stroke="#000000" x1="32" stroke-width="0" x2="60"/>
                     </picture>
                     <labels/>
                     <ports/>
@@ -21,79 +21,79 @@
                     <explodesTo/>
                 </logic>
             </node>
-            <node name="Frame" displayedName="Frame">
+            <node displayedName="Frame" name="Frame">
                 <graphics>
                     <widget-template>
                         <Root layout="NoLayout">
-                            <property width="16777215" height="16777215" type="Size" propertyName="maximumSize"/>
-                            <property width="0" height="0" type="Size" propertyName="minimumSize"/>
-                            <property width="0" height="0" type="Size" propertyName="sizeIncrement"/>
-                            <property value="false" type="Bool" propertyName="transparent"/>
-                            <property value="" type="String" propertyName="toolTip"/>
-                            <property verticalStretch="0" verticalPolicy="5" horizontalPolicy="5" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0"/>
-                            <property value="3" type="Int" propertyName="layoutLeftMargin"/>
-                            <property value="3" type="Int" propertyName="layoutRightMargin"/>
-                            <property value="3" type="Int" propertyName="layoutTopMargin"/>
-                            <property value="3" type="Int" propertyName="layoutBottomMargin"/>
-                            <property value="&lt;picture sizex=&quot;236&quot; sizey=&quot;302&quot;/>&#xa;" type="String" propertyName="shapeXml"/>
-                            <property value="true" type="Bool" propertyName="enabled"/>
-                            <property x="0" width="236" y="0" height="302" type="Rect" propertyName="geometry"/>
+                            <property height="16777215" type="Size" propertyName="maximumSize" width="16777215"/>
+                            <property height="0" type="Size" propertyName="minimumSize" width="0"/>
+                            <property height="0" type="Size" propertyName="sizeIncrement" width="0"/>
+                            <property type="Bool" propertyName="transparent" value="false"/>
+                            <property type="String" propertyName="toolTip" value=""/>
+                            <property verticalStretch="0" verticalPolicy="5" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0" horizontalPolicy="5"/>
+                            <property type="Int" propertyName="layoutLeftMargin" value="3"/>
+                            <property type="Int" propertyName="layoutRightMargin" value="3"/>
+                            <property type="Int" propertyName="layoutTopMargin" value="3"/>
+                            <property type="Int" propertyName="layoutBottomMargin" value="3"/>
+                            <property type="String" propertyName="shapeXml" value="&lt;picture sizex=&quot;236&quot; sizey=&quot;302&quot;/>&#xa;"/>
+                            <property type="Bool" propertyName="enabled" value="true"/>
+                            <property height="302" x="0" type="Rect" y="0" propertyName="geometry" width="236"/>
                         </Root>
                     </widget-template>
                     <labels/>
                     <ports>
-                        <pointPort x="115" y="2" type="NonTyped"/>
-                        <pointPort x="116" y="299" type="NonTyped"/>
-                        <pointPort x="2" y="139" type="NonTyped"/>
-                        <pointPort x="233" y="142" type="NonTyped"/>
+                        <pointPort x="115" type="NonTyped" y="2"/>
+                        <pointPort x="116" type="NonTyped" y="299"/>
+                        <pointPort x="2" type="NonTyped" y="139"/>
+                        <pointPort x="233" type="NonTyped" y="142"/>
                     </ports>
                 </graphics>
                 <logic>
                     <container>
-                        <contains type="Button"/>
-                        <contains type="Label"/>
                         <contains type="Field"/>
+                        <contains type="Label"/>
+                        <contains type="Button"/>
                     </container>
                     <explodesTo/>
                 </logic>
             </node>
-            <node name="Button" displayedName="Button">
+            <node displayedName="Button" name="Button">
                 <graphics>
                     <widget-template>
                         <Root layout="Vertical">
                             <PushButton>
-                                <property value="false" propertyName="flat" type="Bool"/>
-                                <property value="pushButton" propertyName="text" type="String">
+                                <property propertyName="flat" type="Bool" value="false"/>
+                                <property propertyName="text" type="String" value="pushButton">
                                     <outerBinding target="TextProperty"/>
                                 </property>
-                                <property value="true" propertyName="enabled" type="Bool"/>
-                                <property x="3" y="3" width="75" height="23" propertyName="geometry" type="Rect"/>
-                                <property width="16777215" height="16777215" propertyName="maximumSize" type="Size"/>
-                                <property width="0" height="0" propertyName="minimumSize" type="Size"/>
-                                <property width="0" height="0" propertyName="sizeIncrement" type="Size"/>
-                                <property value="" propertyName="toolTip" type="String"/>
-                                <property value="true" propertyName="transparent" type="Bool"/>
-                                <property value="false" propertyName="autoRepeat" type="Bool"/>
-                                <property value="300" propertyName="autoRepeatDelay" type="Int"/>
-                                <property verticalStretch="0" verticalPolicy="0" horizontalPolicy="1" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0"/>
-                                <property value="100" propertyName="autoRepeatInterval" type="Int"/>
+                                <property propertyName="enabled" type="Bool" value="true"/>
+                                <property height="23" x="3" y="3" propertyName="geometry" type="Rect" width="75"/>
+                                <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                                <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                                <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                                <property propertyName="toolTip" type="String" value=""/>
+                                <property propertyName="transparent" type="Bool" value="true"/>
+                                <property propertyName="autoRepeat" type="Bool" value="false"/>
+                                <property propertyName="autoRepeatDelay" type="Int" value="300"/>
+                                <property verticalStretch="0" verticalPolicy="0" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="1"/>
+                                <property propertyName="autoRepeatInterval" type="Int" value="100"/>
                                 <layoutAttachedProperty index="0"/>
                             </PushButton>
-                            <property value="true" propertyName="enabled" type="Bool"/>
-                            <property x="0" y="0" width="81" height="21" propertyName="geometry" type="Rect">
+                            <property propertyName="enabled" type="Bool" value="true"/>
+                            <property height="21" x="0" y="0" propertyName="geometry" type="Rect" width="81">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="0" height="0" propertyName="minimumSize" type="Size"/>
-                            <property width="16777215" height="16777215" propertyName="maximumSize" type="Size"/>
-                            <property value="true" propertyName="transparent" type="Bool"/>
-                            <property width="0" height="0" propertyName="sizeIncrement" type="Size"/>
-                            <property value="" propertyName="toolTip" type="String"/>
-                            <property value="3" propertyName="layoutRightMargin" type="Int"/>
-                            <property verticalStretch="0" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0"/>
-                            <property value="3" propertyName="layoutTopMargin" type="Int"/>
-                            <property value="3" propertyName="layoutLeftMargin" type="Int"/>
-                            <property value="3" propertyName="layoutBottomMargin" type="Int"/>
-                            <property value="&lt;picture sizex=&quot;81&quot; sizey=&quot;21&quot;/>&#xa;" propertyName="shapeXml" type="String"/>
+                            <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                            <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                            <property propertyName="transparent" type="Bool" value="true"/>
+                            <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                            <property propertyName="toolTip" type="String" value=""/>
+                            <property propertyName="layoutRightMargin" type="Int" value="3"/>
+                            <property verticalStretch="0" verticalPolicy="5" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="5"/>
+                            <property propertyName="layoutTopMargin" type="Int" value="3"/>
+                            <property propertyName="layoutLeftMargin" type="Int" value="3"/>
+                            <property propertyName="layoutBottomMargin" type="Int" value="3"/>
+                            <property propertyName="shapeXml" type="String" value="&lt;picture sizex=&quot;81&quot; sizey=&quot;21&quot;/>&#xa;"/>
                         </Root>
                     </widget-template>
                     <labels/>
@@ -107,69 +107,69 @@
                 <logic>
                     <container/>
                     <properties>
-                        <property name="TextProperty" displayedName="Button Text" type="String">
+                        <property type="String" displayedName="Button Text" name="TextProperty">
                             <default>Button</default>
                         </property>
                     </properties>
                     <explodesTo/>
                 </logic>
             </node>
-            <node name="Label" displayedName="Label">
+            <node displayedName="Label" name="Label">
                 <graphics>
                     <widget-template>
                         <Root layout="Vertical">
                             <Label layout="NoLayout">
-                                <property value="false" propertyName="wordWrap" type="Bool"/>
-                                <property value="129" propertyName="alignment" type="Int"/>
-                                <property value="0" propertyName="margin" type="Int"/>
-                                <property value="-1" propertyName="indent" type="Int"/>
-                                <property value="" propertyName="binding" type="String"/>
-                                <property value="2" propertyName="textFormat" type="enum"/>
-                                <property value="label" propertyName="text" type="String">
+                                <property propertyName="wordWrap" type="Bool" value="false"/>
+                                <property propertyName="alignment" type="Int" value="129"/>
+                                <property propertyName="margin" type="Int" value="0"/>
+                                <property propertyName="indent" type="Int" value="-1"/>
+                                <property propertyName="binding" type="String" value=""/>
+                                <property propertyName="textFormat" type="enum" value="2"/>
+                                <property propertyName="text" type="String" value="label">
                                     <outerBinding target="TextProperty"/>
                                 </property>
-                                <property value="false" propertyName="scaledContents" type="Bool"/>
-                                <property value="false" propertyName="openExternalLinks" type="Bool"/>
-                                <property width="10" height="10" propertyName="minimumSize" type="Size"/>
-                                <property width="0" height="0" propertyName="sizeIncrement" type="Size"/>
-                                <property value="" propertyName="toolTip" type="String"/>
-                                <property value="true" propertyName="transparent" type="Bool"/>
-                                <property value="3" propertyName="layoutRightMargin" type="Int"/>
-                                <property value="3" propertyName="layoutLeftMargin" type="Int"/>
-                                <property value="3" propertyName="layoutTopMargin" type="Int"/>
-                                <property verticalStretch="0" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0"/>
-                                <property value="1" propertyName="lineWidth" type="Int"/>
-                                <property value="0" propertyName="frameShape" type="enum"/>
-                                <property value="3" propertyName="layoutBottomMargin" type="Int"/>
-                                <property value="16" propertyName="frameShadow" type="enum"/>
-                                <property value="0" propertyName="midLineWidth" type="Int"/>
-                                <property value="true" propertyName="enabled" type="Bool"/>
-                                <property x="3" width="137" y="3" height="33" propertyName="geometry" type="Rect"/>
-                                <property width="16777215" height="16777215" propertyName="maximumSize" type="Size"/>
+                                <property propertyName="scaledContents" type="Bool" value="false"/>
+                                <property propertyName="openExternalLinks" type="Bool" value="false"/>
+                                <property height="10" propertyName="minimumSize" type="Size" width="10"/>
+                                <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                                <property propertyName="toolTip" type="String" value=""/>
+                                <property propertyName="transparent" type="Bool" value="true"/>
+                                <property propertyName="layoutRightMargin" type="Int" value="3"/>
+                                <property propertyName="layoutLeftMargin" type="Int" value="3"/>
+                                <property propertyName="layoutTopMargin" type="Int" value="3"/>
+                                <property verticalStretch="0" verticalPolicy="5" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="5"/>
+                                <property propertyName="lineWidth" type="Int" value="1"/>
+                                <property propertyName="frameShape" type="enum" value="0"/>
+                                <property propertyName="layoutBottomMargin" type="Int" value="3"/>
+                                <property propertyName="frameShadow" type="enum" value="16"/>
+                                <property propertyName="midLineWidth" type="Int" value="0"/>
+                                <property propertyName="enabled" type="Bool" value="true"/>
+                                <property height="33" x="3" propertyName="geometry" y="3" type="Rect" width="137"/>
+                                <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
                                 <layoutAttachedProperty index="0"/>
                             </Label>
-                            <property value="true" propertyName="enabled" type="Bool"/>
-                            <property x="0" width="143" y="0" height="39" propertyName="geometry" type="Rect">
+                            <property propertyName="enabled" type="Bool" value="true"/>
+                            <property height="39" x="0" propertyName="geometry" y="0" type="Rect" width="143">
                                 <outerBinding target="GeometryProperty"/>
                             </property>
-                            <property width="16777215" height="16777215" propertyName="maximumSize" type="Size"/>
-                            <property width="0" height="0" propertyName="sizeIncrement" type="Size"/>
-                            <property width="0" height="0" propertyName="minimumSize" type="Size"/>
-                            <property value="" propertyName="toolTip" type="String"/>
-                            <property verticalStretch="0" verticalPolicy="5" horizontalPolicy="5" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0"/>
-                            <property value="true" propertyName="transparent" type="Bool"/>
-                            <property value="3" propertyName="layoutRightMargin" type="Int"/>
-                            <property value="" propertyName="shapeXml" type="String"/>
-                            <property value="3" propertyName="layoutLeftMargin" type="Int"/>
-                            <property value="3" propertyName="layoutTopMargin" type="Int"/>
-                            <property value="3" propertyName="layoutBottomMargin" type="Int"/>
+                            <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                            <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                            <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                            <property propertyName="toolTip" type="String" value=""/>
+                            <property verticalStretch="0" verticalPolicy="5" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="5"/>
+                            <property propertyName="transparent" type="Bool" value="true"/>
+                            <property propertyName="layoutRightMargin" type="Int" value="3"/>
+                            <property propertyName="shapeXml" type="String" value=""/>
+                            <property propertyName="layoutLeftMargin" type="Int" value="3"/>
+                            <property propertyName="layoutTopMargin" type="Int" value="3"/>
+                            <property propertyName="layoutBottomMargin" type="Int" value="3"/>
                         </Root>
                     </widget-template>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property name="TextProperty" displayedName="Label Text" type="String">
+                        <property type="String" displayedName="Label Text" name="TextProperty">
                             <default>Label</default>
                         </property>
                     </properties>
@@ -185,182 +185,373 @@
                     </labels>
                 </graphics>
                 <logic>
-                    <associations endType="empty_arrow" beginType="no_arrow">
+                    <associations beginType="no_arrow" endType="empty_arrow">
                         <association beginName="from" endName="to"/>
                     </associations>
                     <properties>
-                        <property name="TextProperty" displayedName="Transition Label" type="String">
+                        <property type="String" displayedName="Transition Label" name="TextProperty">
                             <default>label</default>
                         </property>
                     </properties>
                     <fromPorts/>
                     <toPorts/>
-                    <explodesTo/>
+                    <explodesTo>
+                        <target makeReusable="" type="LogicEditorDiagram" requireImmediateLinkage=""/>
+                    </explodesTo>
                 </logic>
             </edge>
-            <node name="Field" displayedName="Game Field">
+            <node displayedName="Game Field" name="Field">
                 <graphics>
                     <widget-template>
                         <Root layout="Grid">
                             <PushButton>
-                                <property value="true" type="Bool" propertyName="enabled"/>
-                                <property x="3" width="84" y="56" height="23" type="Rect" propertyName="geometry"/>
-                                <property width="0" height="0" type="Size" propertyName="minimumSize"/>
-                                <property width="16777215" height="16777215" type="Size" propertyName="maximumSize"/>
-                                <property value="" type="String" propertyName="toolTip"/>
-                                <property width="0" height="0" type="Size" propertyName="sizeIncrement"/>
-                                <property value="true" type="Bool" propertyName="transparent"/>
-                                <property value="300" type="Int" propertyName="autoRepeatDelay"/>
-                                <property value="false" type="Bool" propertyName="autoRepeat"/>
-                                <property value="100" type="Int" propertyName="autoRepeatInterval"/>
-                                <property verticalStretch="0" verticalPolicy="0" horizontalPolicy="1" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0"/>
-                                <property value="false" type="Bool" propertyName="flat"/>
-                                <property value="" type="String" propertyName="text"/>
-                                <layoutAttachedProperty column="0" row="1"/>
+                                <property height="23" x="3" propertyName="geometry" type="Rect" y="47" width="84"/>
+                                <property propertyName="enabled" type="Bool" value="true"/>
+                                <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                                <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                                <property propertyName="transparent" type="Bool" value="true"/>
+                                <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                                <property propertyName="toolTip" type="String" value=""/>
+                                <property propertyName="autoRepeatInterval" type="Int" value="100"/>
+                                <property propertyName="autoRepeatDelay" type="Int" value="300"/>
+                                <property verticalStretch="0" verticalPolicy="0" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="1"/>
+                                <property propertyName="autoRepeat" type="Bool" value="false"/>
+                                <property propertyName="text" type="String" value=""/>
+                                <property propertyName="flat" type="Bool" value="false"/>
+                                <layoutAttachedProperty row="1" column="0"/>
                             </PushButton>
                             <PushButton>
-                                <property value="true" type="Bool" propertyName="transparent"/>
-                                <property width="0" height="0" type="Size" propertyName="minimumSize"/>
-                                <property width="0" height="0" type="Size" propertyName="sizeIncrement"/>
-                                <property value="" type="String" propertyName="toolTip"/>
-                                <property verticalStretch="0" verticalPolicy="0" horizontalPolicy="1" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0"/>
-                                <property value="100" type="Int" propertyName="autoRepeatInterval"/>
-                                <property value="false" type="Bool" propertyName="flat"/>
-                                <property value="" type="String" propertyName="text"/>
-                                <property value="300" type="Int" propertyName="autoRepeatDelay"/>
-                                <property value="false" type="Bool" propertyName="autoRepeat"/>
-                                <property value="true" type="Bool" propertyName="enabled"/>
-                                <property width="16777215" height="16777215" type="Size" propertyName="maximumSize"/>
-                                <property x="3" width="84" y="101" height="23" type="Rect" propertyName="geometry"/>
-                                <layoutAttachedProperty column="0" row="2"/>
+                                <property verticalStretch="0" verticalPolicy="0" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="1"/>
+                                <property propertyName="autoRepeatInterval" type="Int" value="100"/>
+                                <property propertyName="text" type="String" value=""/>
+                                <property propertyName="autoRepeatDelay" type="Int" value="300"/>
+                                <property propertyName="autoRepeat" type="Bool" value="false"/>
+                                <property propertyName="flat" type="Bool" value="false"/>
+                                <property height="23" x="3" propertyName="geometry" type="Rect" y="87" width="84"/>
+                                <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                                <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                                <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                                <property propertyName="toolTip" type="String" value=""/>
+                                <property propertyName="transparent" type="Bool" value="true"/>
+                                <property propertyName="enabled" type="Bool" value="true"/>
+                                <layoutAttachedProperty row="2" column="0"/>
                             </PushButton>
                             <PushButton>
-                                <property value="true" type="Bool" propertyName="enabled"/>
-                                <property width="16777215" height="16777215" type="Size" propertyName="maximumSize"/>
-                                <property x="93" width="84" y="56" height="23" type="Rect" propertyName="geometry"/>
-                                <property width="0" height="0" type="Size" propertyName="minimumSize"/>
-                                <property value="false" type="Bool" propertyName="flat"/>
-                                <property width="0" height="0" type="Size" propertyName="sizeIncrement"/>
-                                <property value="true" type="Bool" propertyName="transparent"/>
-                                <property value="" type="String" propertyName="toolTip"/>
-                                <property value="false" type="Bool" propertyName="autoRepeat"/>
-                                <property verticalStretch="0" verticalPolicy="0" horizontalPolicy="1" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0"/>
-                                <property value="300" type="Int" propertyName="autoRepeatDelay"/>
-                                <property value="100" type="Int" propertyName="autoRepeatInterval"/>
-                                <property value="" type="String" propertyName="text"/>
-                                <layoutAttachedProperty column="1" row="1"/>
+                                <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                                <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                                <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                                <property propertyName="autoRepeatInterval" type="Int" value="100"/>
+                                <property propertyName="flat" type="Bool" value="false"/>
+                                <property propertyName="text" type="String" value=""/>
+                                <property propertyName="enabled" type="Bool" value="true"/>
+                                <property height="23" x="93" propertyName="geometry" type="Rect" y="47" width="84"/>
+                                <property verticalStretch="0" verticalPolicy="0" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="1"/>
+                                <property propertyName="toolTip" type="String" value=""/>
+                                <property propertyName="transparent" type="Bool" value="true"/>
+                                <property propertyName="autoRepeat" type="Bool" value="false"/>
+                                <property propertyName="autoRepeatDelay" type="Int" value="300"/>
+                                <layoutAttachedProperty row="1" column="1"/>
                             </PushButton>
                             <PushButton>
-                                <property value="true" type="Bool" propertyName="enabled"/>
-                                <property x="93" width="84" y="101" height="23" type="Rect" propertyName="geometry"/>
-                                <property value="false" type="Bool" propertyName="autoRepeat"/>
-                                <property value="" type="String" propertyName="text"/>
-                                <property value="300" type="Int" propertyName="autoRepeatDelay"/>
-                                <property value="100" type="Int" propertyName="autoRepeatInterval"/>
-                                <property value="false" type="Bool" propertyName="flat"/>
-                                <property width="0" height="0" type="Size" propertyName="sizeIncrement"/>
-                                <property value="" type="String" propertyName="toolTip"/>
-                                <property value="true" type="Bool" propertyName="transparent"/>
-                                <property verticalStretch="0" verticalPolicy="0" horizontalPolicy="1" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0"/>
-                                <property width="16777215" height="16777215" type="Size" propertyName="maximumSize"/>
-                                <property width="0" height="0" type="Size" propertyName="minimumSize"/>
-                                <layoutAttachedProperty column="1" row="2"/>
+                                <property propertyName="enabled" type="Bool" value="true"/>
+                                <property height="23" x="93" propertyName="geometry" type="Rect" y="87" width="84"/>
+                                <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                                <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                                <property propertyName="toolTip" type="String" value=""/>
+                                <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                                <property propertyName="transparent" type="Bool" value="true"/>
+                                <property verticalStretch="0" verticalPolicy="0" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="1"/>
+                                <property propertyName="text" type="String" value=""/>
+                                <property propertyName="autoRepeatInterval" type="Int" value="100"/>
+                                <property propertyName="autoRepeatDelay" type="Int" value="300"/>
+                                <property propertyName="flat" type="Bool" value="false"/>
+                                <property propertyName="autoRepeat" type="Bool" value="false"/>
+                                <layoutAttachedProperty row="2" column="1"/>
                             </PushButton>
                             <PushButton>
-                                <property width="0" height="0" type="Size" propertyName="minimumSize"/>
-                                <property value="" type="String" propertyName="toolTip"/>
-                                <property width="0" height="0" type="Size" propertyName="sizeIncrement"/>
-                                <property value="true" type="Bool" propertyName="transparent"/>
-                                <property x="3" width="84" y="146" height="23" type="Rect" propertyName="geometry"/>
-                                <property width="16777215" height="16777215" type="Size" propertyName="maximumSize"/>
-                                <property value="true" type="Bool" propertyName="enabled"/>
-                                <property value="false" type="Bool" propertyName="autoRepeat"/>
-                                <property value="300" type="Int" propertyName="autoRepeatDelay"/>
-                                <property verticalStretch="0" verticalPolicy="0" horizontalPolicy="1" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0"/>
-                                <property value="100" type="Int" propertyName="autoRepeatInterval"/>
-                                <property value="false" type="Bool" propertyName="flat"/>
-                                <property value="" type="String" propertyName="text"/>
-                                <layoutAttachedProperty column="0" row="3"/>
+                                <property propertyName="enabled" type="Bool" value="true"/>
+                                <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                                <property height="23" x="3" propertyName="geometry" type="Rect" y="126" width="84"/>
+                                <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                                <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                                <property propertyName="toolTip" type="String" value=""/>
+                                <property propertyName="transparent" type="Bool" value="true"/>
+                                <property verticalStretch="0" verticalPolicy="0" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="1"/>
+                                <property propertyName="autoRepeatDelay" type="Int" value="300"/>
+                                <property propertyName="autoRepeat" type="Bool" value="false"/>
+                                <property propertyName="autoRepeatInterval" type="Int" value="100"/>
+                                <property propertyName="flat" type="Bool" value="false"/>
+                                <property propertyName="text" type="String" value=""/>
+                                <layoutAttachedProperty row="3" column="0"/>
                             </PushButton>
                             <PushButton>
-                                <property width="0" height="0" type="Size" propertyName="minimumSize"/>
-                                <property value="true" type="Bool" propertyName="enabled"/>
-                                <property width="16777215" height="16777215" type="Size" propertyName="maximumSize"/>
-                                <property x="93" width="84" y="146" height="23" type="Rect" propertyName="geometry"/>
-                                <property value="" type="String" propertyName="toolTip"/>
-                                <property value="true" type="Bool" propertyName="transparent"/>
-                                <property width="0" height="0" type="Size" propertyName="sizeIncrement"/>
-                                <property value="" type="String" propertyName="text"/>
-                                <property verticalStretch="0" verticalPolicy="0" horizontalPolicy="1" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0"/>
-                                <property value="false" type="Bool" propertyName="flat"/>
-                                <property value="false" type="Bool" propertyName="autoRepeat"/>
-                                <property value="300" type="Int" propertyName="autoRepeatDelay"/>
-                                <property value="100" type="Int" propertyName="autoRepeatInterval"/>
-                                <layoutAttachedProperty column="1" row="3"/>
+                                <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                                <property propertyName="enabled" type="Bool" value="true"/>
+                                <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                                <property height="23" x="93" propertyName="geometry" type="Rect" y="126" width="84"/>
+                                <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                                <property propertyName="toolTip" type="String" value=""/>
+                                <property propertyName="transparent" type="Bool" value="true"/>
+                                <property verticalStretch="0" verticalPolicy="0" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="1"/>
+                                <property propertyName="autoRepeat" type="Bool" value="false"/>
+                                <property propertyName="autoRepeatDelay" type="Int" value="300"/>
+                                <property propertyName="text" type="String" value=""/>
+                                <property propertyName="autoRepeatInterval" type="Int" value="100"/>
+                                <property propertyName="flat" type="Bool" value="false"/>
+                                <layoutAttachedProperty row="3" column="1"/>
                             </PushButton>
                             <PushButton>
-                                <property value="true" type="Bool" propertyName="enabled"/>
-                                <property width="16777215" height="16777215" type="Size" propertyName="maximumSize"/>
-                                <property x="3" width="84" y="11" height="23" type="Rect" propertyName="geometry"/>
-                                <property width="0" height="0" type="Size" propertyName="sizeIncrement"/>
-                                <property width="0" height="0" type="Size" propertyName="minimumSize"/>
-                                <property value="" type="String" propertyName="toolTip"/>
-                                <property value="false" type="Bool" propertyName="autoRepeat"/>
-                                <property value="true" type="Bool" propertyName="transparent"/>
-                                <property verticalStretch="0" verticalPolicy="0" horizontalPolicy="1" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0"/>
-                                <property value="100" type="Int" propertyName="autoRepeatInterval"/>
-                                <property value="false" type="Bool" propertyName="flat"/>
-                                <property value="300" type="Int" propertyName="autoRepeatDelay"/>
-                                <property value="" type="String" propertyName="text"/>
-                                <layoutAttachedProperty column="0" row="0"/>
+                                <property height="23" x="3" propertyName="geometry" type="Rect" y="8" width="84"/>
+                                <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                                <property propertyName="toolTip" type="String" value=""/>
+                                <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                                <property propertyName="transparent" type="Bool" value="true"/>
+                                <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                                <property propertyName="autoRepeatDelay" type="Int" value="300"/>
+                                <property propertyName="autoRepeatInterval" type="Int" value="100"/>
+                                <property propertyName="autoRepeat" type="Bool" value="false"/>
+                                <property verticalStretch="0" verticalPolicy="0" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="1"/>
+                                <property propertyName="flat" type="Bool" value="false"/>
+                                <property propertyName="text" type="String" value=""/>
+                                <property propertyName="enabled" type="Bool" value="true"/>
+                                <layoutAttachedProperty row="0" column="0"/>
                             </PushButton>
                             <PushButton>
-                                <property value="true" type="Bool" propertyName="enabled"/>
-                                <property width="16777215" height="16777215" type="Size" propertyName="maximumSize"/>
-                                <property x="93" width="84" y="11" height="23" type="Rect" propertyName="geometry"/>
-                                <property width="0" height="0" type="Size" propertyName="sizeIncrement"/>
-                                <property value="" type="String" propertyName="toolTip"/>
-                                <property value="true" type="Bool" propertyName="transparent"/>
-                                <property width="0" height="0" type="Size" propertyName="minimumSize"/>
-                                <property value="false" type="Bool" propertyName="autoRepeat"/>
-                                <property verticalStretch="0" verticalPolicy="0" horizontalPolicy="1" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0"/>
-                                <property value="300" type="Int" propertyName="autoRepeatDelay"/>
-                                <property value="false" type="Bool" propertyName="flat"/>
-                                <property value="100" type="Int" propertyName="autoRepeatInterval"/>
-                                <property value="" type="String" propertyName="text"/>
-                                <layoutAttachedProperty column="1" row="0"/>
+                                <property propertyName="text" type="String" value=""/>
+                                <property verticalStretch="0" verticalPolicy="0" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="1"/>
+                                <property propertyName="autoRepeatDelay" type="Int" value="300"/>
+                                <property propertyName="autoRepeatInterval" type="Int" value="100"/>
+                                <property propertyName="autoRepeat" type="Bool" value="false"/>
+                                <property propertyName="flat" type="Bool" value="false"/>
+                                <property propertyName="enabled" type="Bool" value="true"/>
+                                <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                                <property height="23" x="93" propertyName="geometry" type="Rect" y="8" width="84"/>
+                                <property propertyName="transparent" type="Bool" value="true"/>
+                                <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                                <property propertyName="toolTip" type="String" value=""/>
+                                <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                                <layoutAttachedProperty row="0" column="1"/>
                             </PushButton>
-                            <property value="true" type="Bool" propertyName="enabled"/>
-                            <property x="0" width="180" y="0" height="180" type="Rect" propertyName="geometry"/>
-                            <property width="16777215" height="16777215" type="Size" propertyName="maximumSize"/>
-                            <property width="0" height="0" type="Size" propertyName="sizeIncrement"/>
-                            <property value="" type="String" propertyName="toolTip"/>
-                            <property value="false" type="Bool" propertyName="transparent"/>
-                            <property width="0" height="0" type="Size" propertyName="minimumSize"/>
-                            <property verticalStretch="0" verticalPolicy="5" horizontalPolicy="5" type="SizePolicy" propertyName="sizePolicy" horizontalStretch="0"/>
-                            <property value="3" type="Int" propertyName="layoutLeftMargin"/>
-                            <property value="3" type="Int" propertyName="layoutRightMargin"/>
-                            <property value="&lt;picture sizex=&quot;221&quot; sizey=&quot;176&quot;/>&#xa;" type="String" propertyName="shapeXml"/>
-                            <property value="3" type="Int" propertyName="layoutTopMargin"/>
-                            <property value="3" type="Int" propertyName="layoutBottomMargin"/>
+                            <property propertyName="enabled" type="Bool" value="true"/>
+                            <property height="157" x="0" propertyName="geometry" type="Rect" y="0" width="180"/>
+                            <property height="16777215" propertyName="maximumSize" type="Size" width="16777215"/>
+                            <property height="0" propertyName="minimumSize" type="Size" width="0"/>
+                            <property propertyName="transparent" type="Bool" value="false"/>
+                            <property height="0" propertyName="sizeIncrement" type="Size" width="0"/>
+                            <property propertyName="toolTip" type="String" value=""/>
+                            <property propertyName="layoutLeftMargin" type="Int" value="3"/>
+                            <property propertyName="layoutRightMargin" type="Int" value="3"/>
+                            <property verticalStretch="0" verticalPolicy="5" propertyName="sizePolicy" type="SizePolicy" horizontalStretch="0" horizontalPolicy="5"/>
+                            <property propertyName="shapeXml" type="String" value="&lt;picture sizex=&quot;180&quot; sizey=&quot;157&quot;/>&#xa;"/>
+                            <property propertyName="layoutTopMargin" type="Int" value="3"/>
+                            <property propertyName="layoutBottomMargin" type="Int" value="3"/>
                         </Root>
                     </widget-template>
                     <labels/>
                     <ports>
-                        <pointPort x="106" y="2" type="NonTyped"/>
-                        <pointPort x="103" y="173" type="NonTyped"/>
-                        <pointPort x="2" y="86" type="NonTyped"/>
-                        <pointPort x="218" y="83" type="NonTyped"/>
+                        <pointPort x="91" type="NonTyped" y="2"/>
+                        <pointPort x="95" type="NonTyped" y="154"/>
+                        <pointPort x="2" type="NonTyped" y="79"/>
+                        <pointPort x="177" type="NonTyped" y="76"/>
                     </ports>
                 </graphics>
                 <logic>
                     <container/>
                     <properties>
-                        <property name="Rows" displayedName="Number of rows" type="Integer">
+                        <property type="Integer" displayedName="Number of rows" name="Rows">
                             <default>10</default>
                         </property>
-                        <property name="Cols" displayedName="Number of columns" type="Integer">
+                        <property type="Integer" displayedName="Number of columns" name="Cols">
                             <default>10</default>
+                        </property>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+        </graphicTypes>
+    </diagram>
+    <diagram displayedName="Logic Diagram" name="LogicEditor" nodeName="LogicEditorDiagram">
+        <graphicTypes>
+            <node name="LogicEditorDiagram">
+                <graphics>
+                    <picture sizex="173" sizey="129">
+                        <rectangle fill-style="none" fill="#ffffff" y1="0" stroke-style="solid" y2="127a" stroke="#000000" x1="0" stroke-width="0" x2="171a"/>
+                        <rectangle fill-style="none" fill="#ffffff" y1="18" stroke-style="solid" y2="34" stroke="#000000" x1="44" stroke-width="0" x2="94"/>
+                        <line fill-style="none" fill="#ffffff" y1="36" stroke-style="solid" y2="48" stroke="#000000" x1="67" stroke-width="0" x2="68"/>
+                        <ellipse fill-style="none" fill="#ffffff" y1="48" stroke-style="solid" y2="64" stroke="#000000" x1="57" stroke-width="0" x2="76"/>
+                        <line fill-style="none" fill="#ffffff" y1="66" stroke-style="solid" y2="81" stroke="#000000" x1="69" stroke-width="0" x2="69"/>
+                        <rectangle fill-style="none" fill="#ffffff" y1="81" stroke-style="solid" y2="103" stroke="#000000" x1="56" stroke-width="0" x2="80"/>
+                    </picture>
+                    <labels/>
+                    <ports/>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node displayedName="SignalRecieved" name="SingalRecieved">
+                <graphics>
+                    <picture sizex="118" sizey="58">
+                        <line fill-style="none" fill="#ffffff" y1="1" y2="1" stroke-style="solid" stroke="#000000" x1="112" x2="1" stroke-width="0"/>
+                        <line fill-style="none" fill="#ffffff" y1="2" y2="56" stroke-style="solid" stroke="#000000" x1="1" x2="1" stroke-width="0"/>
+                        <line fill-style="none" fill="#ffffff" y1="55" y2="55" stroke-style="solid" stroke="#000000" x1="1" x2="116" stroke-width="0"/>
+                        <line fill-style="none" fill="#ffffff" y1="27" y2="55" stroke-style="solid" stroke="#000000" x1="95" x2="117" stroke-width="0"/>
+                        <line fill-style="none" fill="#ffffff" y1="27" y2="2" stroke-style="solid" stroke="#000000" x1="95" x2="114" stroke-width="0"/>
+                    </picture>
+                    <labels>
+                        <label x="10" y="20" textBinded="SignalName"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="50" y="2" type="NonTyped"/>
+                        <pointPort x="51" y="55" type="NonTyped"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" displayedName="Signal Name" name="SignalName">
+                            <default>signal</default>
+                        </property>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="SignalSend">
+                <graphics>
+                    <picture sizex="182" sizey="59">
+                        <line fill-style="none" fill="#ffffff" y1="2" y2="2" stroke-style="solid" stroke="#000000" x1="1" x2="150" stroke-width="0"/>
+                        <line fill-style="none" fill="#ffffff" y1="3" y2="56" stroke-style="solid" stroke="#000000" x1="0" x2="1" stroke-width="0"/>
+                        <line fill-style="none" fill="#ffffff" y1="55" y2="56" stroke-style="solid" stroke="#000000" x1="0" x2="149" stroke-width="0"/>
+                        <line fill-style="none" fill="#ffffff" y1="3" y2="25" stroke-style="solid" stroke="#000000" x1="150" x2="181" stroke-width="0"/>
+                        <line fill-style="none" fill="#ffffff" y1="26" y2="55" stroke-style="solid" stroke="#000000" x1="180" x2="151" stroke-width="0"/>
+                    </picture>
+                    <labels>
+                        <label x="8" y="20" textBinded="SignalName"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="74" y="2" type="NonTyped"/>
+                        <pointPort x="75" y="56" type="NonTyped"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" displayedName="Signal Name" name="SignalName">
+                            <default>signal</default>
+                        </property>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="CodeArea">
+                <graphics>
+                    <picture sizex="221" sizey="166">
+                        <rectangle fill-style="none" fill="#ffffff" y1="1" y2="162" stroke-style="solid" stroke="#000000" x1="0" x2="219" stroke-width="0"/>
+                    </picture>
+                    <labels>
+                        <label x="11" y="16" textBinded="Code"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="102" y="2" type="NonTyped"/>
+                        <pointPort x="105" y="163" type="NonTyped"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" displayedName="Code" name="Code"/>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node name="Terminate">
+                <graphics>
+                    <picture sizex="84" sizey="74">
+                        <ellipse fill-style="none" fill="#ffffff" y1="2" y2="72" stroke-style="solid" stroke="#000000" x1="2" x2="82" stroke-width="0"/>
+                        <line fill-style="none" fill="#ffffff" y1="14" y2="63" stroke-style="solid" stroke="#000000" x1="12" x2="74" stroke-width="0"/>
+                        <line fill-style="none" fill="#ffffff" y1="61" y2="15" stroke-style="solid" stroke="#000000" x1="13" x2="73" stroke-width="0"/>
+                    </picture>
+                    <labels/>
+                    <ports>
+                        <pointPort x="41" y="2" type="NonTyped"/>
+                        <pointPort x="2" y="39" type="NonTyped"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <edge displayedName="Edge" name="Edge">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <shape type="square"/>
+                </graphics>
+                <logic>
+                    <associations beginType="no_arrow" endType="open_arrow">
+                        <association beginName="from" endName="to"/>
+                    </associations>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+            <node name="Guard">
+                <graphics>
+                    <picture sizex="202" sizey="151">
+                        <line fill-style="none" fill="#ffffff" y1="2" stroke-style="solid" y2="68" stroke="#000000" x1="85" stroke-width="0" x2="174"/>
+                        <line fill-style="none" fill="#ffffff" y1="3" stroke-style="solid" y2="71" stroke="#000000" x1="84" stroke-width="0" x2="1"/>
+                        <line fill-style="none" fill="#ffffff" y1="70" stroke-style="solid" y2="137" stroke="#000000" x1="0" stroke-width="0" x2="79"/>
+                        <line fill-style="none" fill="#ffffff" y1="137" stroke-style="solid" y2="70" stroke="#000000" x1="80" stroke-width="0" x2="173"/>
+                    </picture>
+                    <labels>
+                        <label x="41" y="59" textBinded="Predicate"/>
+                        <label text="False" x="169" y="47"/>
+                        <label text="True" x="43a" y="129"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="80" type="NonTyped" y="138"/>
+                        <pointPort x="173" type="NonTyped" y="69"/>
+                        <pointPort x="85" type="NonTyped" y="2"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" displayedName="Predicate" name="Predicate"/>
+                    </properties>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node displayedName="End State" name="EndState">
+                <graphics>
+                    <picture sizex="207" sizey="93">
+                        <line fill-style="none" fill="#ffffff" y1="15" stroke-style="solid" y2="16" stroke="#000000" x1="39" stroke-width="0" x2="166"/>
+                        <line fill-style="none" fill="#ffffff" y1="76" stroke-style="solid" y2="76" stroke="#000000" x1="42" stroke-width="0" x2="164"/>
+                        <curve fill-style="none" fill="#ffffff" stroke-style="solid" stroke="#000000" stroke-width="0">
+                            <start startx="38" starty="17"/>
+                            <end endx="42" endy="77"/>
+                            <ctrl x="15" y="46"/>
+                        </curve>
+                        <curve fill-style="none" fill="#ffffff" stroke-style="solid" stroke="#000000" stroke-width="0">
+                            <start startx="166" starty="15"/>
+                            <end endx="165" endy="75"/>
+                            <ctrl x="191" y="47"/>
+                        </curve>
+                    </picture>
+                    <labels>
+                        <label x="43" y="39" textBinded="StateName"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="103" y="16" type="NonTyped"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <properties>
+                        <property type="String" displayedName="End State Name" name="StateName">
+                            <default>EndState</default>
                         </property>
                     </properties>
                     <explodesTo/>
