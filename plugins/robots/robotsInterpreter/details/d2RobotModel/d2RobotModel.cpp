@@ -28,7 +28,7 @@ qreal const spoilSonarDispersion = 1.5;
 qreal const varySpeedDispersion = 0.0125;
 qreal const percentSaltPepperNoise = 20.0;
 
-qreal const floorFrictionCoefficient = 0.3;
+qreal const floorFrictionCoefficient = 0.2;
 qreal const wallFrictionCoefficient = 0.2;
 
 D2RobotModel::D2RobotModel(QObject *parent)
@@ -47,7 +47,7 @@ D2RobotModel::D2RobotModel(QObject *parent)
 	, mAngle(0)
 	, mInertialMoment(100)
 	, mForceMoment(0)
-	, mMass(500)
+	, mMass(200)
 	, mAngularVelocity(0)
 {
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
@@ -585,12 +585,16 @@ void D2RobotModel::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bo
 	QPointF const engine1Point = QPointF(x + dx + dy, y + dy - dx);
 	QPointF const engine2Point = QPointF(x + dx - dy, y + dy + dx);
 
-	QVector2D const traction1Force = direction * speed1 + QVector2D(engine1Point);
-	QVector2D const traction2Force = direction * speed2 + QVector2D(engine2Point);
-	QVector2D const rotationPointVector(currentRotationCenter);
+	QVector2D const traction1Force = direction * speed1;
+	QVector2D const traction2Force = direction * speed2;
+
+	QVector2D const radiusVector1 = QVector2D(engine1Point - currentRotationCenter);
+	QVector2D const radiusVector2 = QVector2D(engine2Point - currentRotationCenter);
+	QVector2D const realTractionForce1 = Geometry::projection(traction1Force, radiusVector1);
+	QVector2D const realTractionForce2 = Geometry::projection(traction2Force, radiusVector2);
 
 	// Parallelogram rule
-	mTractionForce = (traction1Force + traction2Force - 2 * rotationPointVector) / 1000;
+	mTractionForce = realTractionForce1 + realTractionForce2;
 	mTractionForce -= floorFrictionCoefficient * mVelocity;
 
 	qreal const forceMomentA = Geometry::vectorProduct(direction * speed1
@@ -788,4 +792,3 @@ int D2RobotModel::truncateToInterval(int const a, int const b, int const res) co
 {
 	return (res >= a && res <= b) ? res : (res < a ? a : b);
 }
-
