@@ -1,7 +1,7 @@
 <xml>
 	<qmake>qmake</qmake>
 	<make>mingw32-make</make>
-	<configuration>debug</configuration>
+	<configuration>release</configuration>
 	<pluginExtension>dll</pluginExtension>
 	<prefix></prefix>
 </xml>
