@@ -33,13 +33,14 @@ public:
 
 private:
 
-    void initGeneratingFiles();
-    void saveGeneratedFiles();
-    void generateMainSwitch();
-    QString generateFrameRelatedSwitch(const qReal::Id &currentFrame);
+	void initGeneratingFiles();
+	void saveGeneratedFiles();
+	void generateMainSwitch();
+	QString generateFrameRelatedSwitch(const qReal::Id &currentFrame);
 
-    qReal::GraphicalModelAssistInterface const &mGraphicalModel;
-    QString mResultTestFile;
+	qReal::GraphicalModelAssistInterface const &mGraphicalModel;
+	QString mProgramName;
+	QString mResultTestFile;
 };
 
 }

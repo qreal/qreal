@@ -21,8 +21,8 @@ Generator::Generator(QString const &outputDirPath
 		)
 	: AbstractGenerator(templateDir, QString("C:\\Users\\efimw_000\\Documents\\study\\").replace("\\", "/"), logicalModel, errorReporter)
 	, mGraphicalModel(graphicalModel)
+	, mProgramName(programName)
 {
-	Q_UNUSED(programName);
 	Q_UNUSED(outputDirPath);
 }
 
@@ -47,7 +47,7 @@ void Generator::initGeneratingFiles()
 
 void Generator::saveGeneratedFiles()
 {
-	QString outputFileName = "test.cs";
+	QString outputFileName = mProgramName + ".cs";
 
 	saveOutputFile(outputFileName, mResultTestFile);
 }
@@ -91,8 +91,6 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 
 	QString frameSwitch = "";
 
-	frameSwitch += "for (;;;) {\n";
-
 	IdList edges = mApi.elementsByType("ScreenTransition");
 
 	foreach (Id const &edge, edges) {
@@ -104,7 +102,9 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 		Id from = mGraphicalModel.from(edge);
 
 		if (from != currentFrame) {
-			continue;
+			from = mGraphicalModel.graphicalRepoApi().parent(from);
+			if (from != currentFrame)
+				continue;
 		}
 
 		QString linkCase = mTemplateUtils["@@outconnectedFrameCase@@"];
@@ -116,9 +116,6 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 		linkCase.replace("@@rightHandFrameName@@", rightHandFrameName);
 		frameSwitch += linkCase;
 	}
-
-	frameSwitch += "		break;\n";
-	frameSwitch += "		}\n";
 
 	return frameSwitch;
 }
