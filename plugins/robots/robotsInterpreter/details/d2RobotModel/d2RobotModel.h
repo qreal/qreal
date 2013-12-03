@@ -52,6 +52,7 @@ public:
 	virtual void setRotation(qreal angle);
 	virtual double rotateAngle() const;
 
+	void setRobotPos(QPointF const &newPos);
 	QPointF robotPos();
 
 	virtual void serialize(QDomDocument &target);
@@ -78,6 +79,7 @@ private:
 	struct Motor {
 		int radius;
 		int speed;
+		int spoiledSpeed;
 		int degrees;
 		ATime activeTimeType;
 		bool isUsed;

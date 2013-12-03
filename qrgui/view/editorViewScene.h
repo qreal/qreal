@@ -153,8 +153,6 @@ protected:
 	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
-	void changePropertiesActionTriggered();
-	void changeAppearanceActionTriggered();
 	void printElementsOfRootDiagram();
 	void drawIdealGesture();
 	void initMouseMoveManager();
@@ -190,6 +188,8 @@ private:
 	inline bool isArrow(int key);
 
 	void moveSelectedItems(int direction);
+	bool moveNodes();
+	void moveEdges();
 	QPointF offsetByDirection(int direction);
 
 	Element *mLastCreatedWithEdge;
@@ -241,10 +241,12 @@ private:
 	QGraphicsRectItem *mBottomRightCorner;
 
 	/** @brief list of selected items for additional selection */
-	QList<QGraphicsItem* >* mSelectList;
+	QList<QGraphicsItem* > mSelectList;
 
 	bool mIsSelectEvent;
 	bool mTitlesVisible;
+
+	QMenu mContextMenu;
 
 	view::details::ExploserView *mExploser; // Takes ownership
 

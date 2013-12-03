@@ -91,7 +91,7 @@ QComboBox* PaletteTree::comboBox() const
 	return mComboBox;
 }
 
-QVector<QString> PaletteTree::editorsNames() const
+QList<QString> PaletteTree::editorsNames() const
 {
 	return mEditorsNames;
 }
@@ -105,8 +105,8 @@ void PaletteTree::deleteEditor(Id const &id)
 		}
 
 		mComboBox->removeItem(mCategories[id]);
-		mEditorsNames.remove(mCategories[id]);
-		mEditorsTrees.remove(mCategories[id]);
+		mEditorsNames.removeAt(mCategories[id]);
+		mEditorsTrees.removeAt(mCategories[id]);
 
 		delete tree;
 		mCategories.remove(id);
@@ -155,9 +155,10 @@ void PaletteTree::createPaletteTree()
 	mLayout->addLayout(hLayout);
 
 	mTree = new PaletteTreeWidgets(*this, mMainWindow, *mEditorManager);
+	mTree->setMinimumHeight(0);
 
 	mLayout->addWidget(mTree);
-	setMinimumWidth(200);
+	setMinimumSize(200, 100);
 }
 
 void PaletteTree::deletePaletteTree()
@@ -166,6 +167,11 @@ void PaletteTree::deletePaletteTree()
 	delete mChangeRepresentation;
 	delete mComboBox;
 	delete mLayout;
+	if (mTree) {
+		mEditorsTrees.removeAll(mTree);
+		delete mTree;
+	}
+
 	qDeleteAll(mEditorsTrees);
 	mEditorsTrees.clear();
 	mEditorsNames.clear();
@@ -273,7 +279,6 @@ void PaletteTree::initMainWindow(MainWindow *mainWindow)
 {
 	mMainWindow = mainWindow;
 }
-
 
 void PaletteTree::changeExpansionState()
 {

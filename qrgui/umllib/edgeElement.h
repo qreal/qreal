@@ -11,6 +11,8 @@
 namespace qReal {
 
 class NodeElement;
+
+class LineFactory;
 class LineHandler;
 
 /** @class EdgeElement
@@ -94,6 +96,9 @@ public:
 	void placeEndTo(QPointF const &place);
 	void moveConnection(NodeElement *node, qreal const portId);
 
+	/// Resort edges connected to linear ports of adjacent nodes
+	void arrangeLinearPorts();
+
 	virtual void connectToPort();
 
 	virtual QList<ContextMenuAction*> contextMenuActions(QPointF const &pos);
@@ -111,7 +116,7 @@ public:
 	EdgeData& data();
 
 	/// Change link type and redraw it
-	void changeLineType();
+	void changeShapeType(enums::linkShape::LinkShape const shapeType);
 
 	/// Save link position to the repo
 	void setGraphicApiPos();
@@ -131,7 +136,7 @@ public:
 	NodeElement *getNodeAt(QPointF const &position, bool isStart);
 
 	/// Determine on which side of a node (top, bottom, right or left) the link's end is placed
-	NodeSide defineNodePortSide(bool isStart);
+	NodeSide defineNodePortSide(bool isStart) const;
 
 	/// Align link's intermediate points to grid
 	void alignToGrid();
@@ -154,6 +159,7 @@ private slots:
 
 private:
 	void initLineHandler();
+	void updateShapeType();
 
 	int indentReductCoeff();
 
@@ -186,10 +192,13 @@ private:
 	NodeElement *mSrc;
 	NodeElement *mDst;
 
-	LineHandler *mHandler;
+	LineFactory *mLineFactory; // Takes ownership
+	LineHandler *mHandler; // Takes ownership
 
 	qreal mPortFrom;
 	qreal mPortTo;
+
+	enums::linkShape::LinkShape mShapeType;
 
 	int mDragType; // is a number of mLine's point we're trying to drag
 
@@ -199,6 +208,7 @@ private:
 	QColor mColor;
 
 	ContextMenuAction mReverseAction;
+	ContextMenuAction mChangeShapeAction;
 
 	bool mBreakPointPressed;
 

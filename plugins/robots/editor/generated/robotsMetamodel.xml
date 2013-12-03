@@ -90,6 +90,34 @@
 					</properties>
 				</logic>
 			</node>
+			<node displayedName="Подпрограмма" name="SubprogramDiagram">
+				<graphics>
+					<picture sizex="204" sizey="204">
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="2" stroke-width="0" x1="22" y2="2" fill-style="none" x2="182"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="202" stroke-width="0" x1="22" y2="202" fill-style="none" x2="182"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="22" stroke-width="0" x1="2" y2="182" fill-style="none" x2="2"/>
+						<line fill="#000000" stroke-style="solid" stroke="#000000" y1="22" stroke-width="0" x1="202" y2="182" fill-style="none" x2="202"/>
+						<arc spanAngle="1440" startAngle="1440" y1="2" x1="2" y2="42" x2="42"/>
+						<arc spanAngle="1440" startAngle="0" y1="2" x1="162" y2="42" x2="202"/>
+						<arc spanAngle="1440" startAngle="2880" y1="162" x1="2" y2="202" x2="42"/>
+						<arc spanAngle="-1440" startAngle="0" y1="162" x1="162" y2="202" x2="202"/>
+					</picture>
+					<labels>
+						<label x="42" y="12" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="2" y="102"/>
+						<pointPort x="102" y="2"/>
+						<pointPort x="202" y="102"/>
+						<pointPort x="102" y="202"/>
+					</ports>
+				</graphics>
+				<logic>
+					<container>
+						<contains type="AbstractNode"/>
+					</container>
+				</logic>
+			</node>
 			<node displayedName="Конец" name="FinalNode" path="13, 200 : 198, 15 :  | 12, 12 : 198, 198 : " description="Конец программы. Если программа состоит из нескольких параллельных участков выполнения, достижение этого блока завершает соответствующий участок выполнения. У данного блока не может быть исходящих связей.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -354,6 +382,7 @@
 			<edge displayedName="Линия соединения" name="ControlFlow" description="Для того, чтобы создать связь между двумя элементами A и B, можно навести курсор на элемент A, нажать правую кнопку мыши и, не отпуская ее, провести линию до элемента B, либо 'вытащить' связь из кружочка справа от элемента">
 				<graphics>
 					<lineType type="solidLine"/>
+					<shape type="broken"/>
 					<labels>
 						<label textBinded="Guard" hard="true"/>
 					</labels>
@@ -1031,7 +1060,9 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Цвет" type="Color" name="Color"/>
+						<property displayedName="Цвет" type="Color" name="Color">
+							<default>Красный</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="SensorBlock"/>
@@ -1687,7 +1718,7 @@
 						<parent parentName="AbstractNode"/>
 					</generalizations>
 					<explodesTo>
-						<target type="RobotsDiagramNode" makeReusable="true" requireImmediateLinkage="true"/>
+						<target type="SubprogramDiagram" makeReusable="true" requireImmediateLinkage="true"/>
 					</explodesTo>
 				</logic>
 			</node>

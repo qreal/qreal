@@ -1,0 +1,89 @@
+#pragma once
+
+#include <QtCore/QTranslator>
+#include <QtCore/QMultiHash>
+
+#include <qrgui/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
+#include <qrgui/toolPluginInterface/systemEventsInterface.h>
+#include <qrgui/textEditor/textManagerInterface.h>
+#include <robotsGeneratorPluginBase.h>
+#include "nxtFlashTool.h"
+
+namespace qReal {
+namespace robots {
+namespace generators {
+
+/// Main plugin class for NXT code generator. Provides generator that generates
+/// C code for nxtOSEK from robot diagrams, and interface for standalone nxt-tools
+/// toolset, used to compile generated sources and flash them to robot, or
+/// install nxtOSEK on a robot.
+class NxtGeneratorPlugin : public RobotsGeneratorPluginBase
+{
+	Q_OBJECT
+	Q_PLUGIN_METADATA(IID "qReal.robots.generator.NxtGeneratorPlugin")
+
+public:
+	NxtGeneratorPlugin();
+	virtual ~NxtGeneratorPlugin();
+
+	virtual void init(qReal::PluginConfigurator const &configurator);
+	virtual QList<qReal::ActionInfo> actions();
+	virtual QList<qReal::HotKeyActionInfo> hotKeyActions();
+
+protected:
+	virtual MasterGeneratorBase *masterGenerator();
+	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
+	virtual QFileInfo defaultFilePath(QString const &projectName) const;
+	virtual QString extension() const;
+	virtual QString extDescrition() const;
+	virtual QString generatorName() const;
+
+private slots:
+	/// Uploads and installs nxtOSEK on a robot. Requires nxt-tools.
+	void flashRobot();
+
+	/// Compiles and uploads program to a robot. Program then can be launched manually.
+	/// Requires nxt-tools
+	void uploadProgram();
+
+	/// Requires nxt-tools
+	void runProgram();
+
+private:
+	/// Method that checks presense of nxt-tools (shall be installed to nxt-tools
+	/// subfolder of QReal installation), and sets mNxtToolsPresent flag.
+	void checkNxtTools();
+
+	/// Disable/enable tab in QList<ActionInfo> info
+	void changeActiveTab(QList<qReal::ActionInfo> const &info, bool const &trigger);
+
+	void initHotKeyActions();
+
+	/// Action that launches code generator
+	QAction mGenerateCodeAction;
+
+	/// Action that uploads nxtOSEK on a robot
+	QAction mFlashRobotAction;
+
+	/// Action that compiles and uploads program on a robot
+	QAction mUploadProgramAction;
+
+	/// Action that runs latest uploaded program on a robot
+	QAction mRunProgramAction;
+
+	/// When true, nxt-tools are found by QReal and flashing and uploading is possible
+	bool mNxtToolsPresent;
+
+	/// Flasher object
+	NxtFlashTool *mFlashTool;  // Has ownership
+
+	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
+
+	QTranslator mAppTranslator;
+};
+
+}
+}
+}

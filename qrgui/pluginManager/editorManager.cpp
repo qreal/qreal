@@ -217,7 +217,11 @@ QString EditorManager::friendlyName(const Id &id) const
 		if (mGroups.keys().contains(id.element())) {
 			return id.element();
 		} else {
-			return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
+			if (isDiagramNode(id)) {
+				return mPluginIface[id.editor()]->diagramNodeName(id.diagram());
+			} else {
+				return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
+			}
 		}
 	default:
 		Q_ASSERT(!"Malformed Id");
@@ -544,7 +548,9 @@ IdList EditorManager::groups(Id const &diagram)
 	}
 
 	foreach (QString const &group, mGroups.keys()) {
-		elements.append(Id(diagram.editor(), diagram.diagram(), group));
+		if (diagram.diagram() == mGroups[group].diagram()) {
+			elements.append(Id(diagram.editor(), diagram.diagram(), group));
+		}
 	}
 
 	return elements;

@@ -49,7 +49,7 @@ public:
 
     virtual void SetFont(QSCI_SCI_NAMESPACE(Font) &font);
     virtual void Create(QSCI_SCI_NAMESPACE(Window) &parent, int,
-            QSCI_SCI_NAMESPACE(Point), int, bool unicodeMode);
+            QSCI_SCI_NAMESPACE(Point), int, bool unicodeMode, int);
     virtual void SetAverageCharWidth(int);
     virtual void SetVisibleRows(int);
     virtual int GetVisibleRows() const;

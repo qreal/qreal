@@ -120,7 +120,7 @@ void D2RobotModel::countMotorTurnover()
 {
 	foreach (Motor * const motor, mMotors) {
 		int const port = mMotors.key(motor);
-		qreal const degrees = Timeline::timeInterval * motor->speed * onePercentAngularVelocity;
+		qreal const degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
 		mTurnoverMotors[port] += degrees;
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit) && (mTurnoverMotors[port] >= motor->degrees)) {
 			motor->speed = 0;
@@ -253,10 +253,11 @@ QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum co
 	if (mSensorsConfiguration.type(port) == robots::enums::sensorType::unused) {
 		return QImage();
 	}
+
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	QPointF const position = neededPosDir.first;
 	qreal const width = sensorWidth / 2.0;
-	QRectF const scanningRect = QRectF(position.x() -  width, position.y() - width
+	QRectF const scanningRect = QRectF(position.x() - width, position.y() - width
 			, 2 * width, 2 * width);
 
 	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
@@ -265,8 +266,8 @@ QImage D2RobotModel::printColorSensor(robots::enums::inputPort::InputPortEnum co
 	QBrush brush(Qt::SolidPattern);
 	brush.setColor(Qt::white);
 	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::black));
-	painter.drawRect(mD2ModelWidget->scene()->itemsBoundingRect().adjusted(-width, -width, width, width));
+	painter.setPen(QPen(Qt::white));
+	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
 
 	bool const wasSelected = mD2ModelWidget->sensorItems()[port]->isSelected();
 	mD2ModelWidget->setSensorVisible(port, false);
@@ -436,11 +437,11 @@ void D2RobotModel::countNewCoord()
 		}
 	}
 
-	int const sspeed1 = mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
-	int const sspeed2 = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
+	motor1->spoiledSpeed= mNeedMotorNoise ? varySpeed(motor1->speed) : motor1->speed;
+	motor2->spoiledSpeed = mNeedMotorNoise ? varySpeed(motor2->speed) : motor2->speed;
 
-	qreal const vSpeed = sspeed1 * 2 * M_PI * motor1->radius * onePercentAngularVelocity / 360;
-	qreal const uSpeed = sspeed2 * 2 * M_PI * motor2->radius * onePercentAngularVelocity / 360;
+	qreal const vSpeed = motor1->spoiledSpeed * 2 * M_PI * motor1->radius * onePercentAngularVelocity / 360;
+	qreal const uSpeed = motor2->spoiledSpeed * 2 * M_PI * motor2->radius * onePercentAngularVelocity / 360;
 
 	qreal deltaY = 0;
 	qreal deltaX = 0;
@@ -449,7 +450,7 @@ void D2RobotModel::countNewCoord()
 	qreal const oldAngle = mAngle;
 	QPointF const oldPosition = mPos;
 
-	if (sspeed1 != sspeed2) {
+	if (motor1->spoiledSpeed != motor2->spoiledSpeed) {
 		qreal const vRadius = vSpeed * robotHeight / (vSpeed - uSpeed);
 		qreal const averageRadius = vRadius - robotHeight / 2;
 		qreal angularSpeed = 0;
@@ -548,6 +549,12 @@ void D2RobotModel::setSpeedFactor(qreal speedMul)
 {
 	mSpeedFactor = speedMul;
 	mTimeline->setSpeedFactor(speedMul);
+}
+
+void D2RobotModel::setRobotPos(QPointF const &newPos)
+{
+	mPos = newPos;
+	mD2ModelWidget->draw(mPos, mAngle);
 }
 
 QPointF D2RobotModel::robotPos()

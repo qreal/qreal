@@ -90,6 +90,11 @@
 			return QStringList("NonTyped");
 		}
 
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}
+
 		QStringList toPortTypes() const
 		{
 			return QStringList("NonTyped");

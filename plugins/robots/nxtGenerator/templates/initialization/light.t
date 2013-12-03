@@ -1,0 +1,1 @@
+ecrobot_set_light_sensor_active(@@PORT@@);

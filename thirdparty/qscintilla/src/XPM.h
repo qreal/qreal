@@ -29,8 +29,8 @@ public:
     XPM(const char *const *linesForm);
     ~XPM() {}
 
-    void RefreshColourPalette(Palette &pal, bool want) {}
     void Draw(Surface *surface, PRectangle &rc);
+    int GetHeight() const {return qpm.height();}
 
     const QPixmap &Pixmap() const {return qpm;}
 #else
@@ -41,12 +41,12 @@ public:
 	char *data;
 	char codeTransparent;
 	char *codes;
-	ColourPair *colours;
+	ColourDesired *colours;
 	ColourDesired ColourDesiredFromCode(int ch) const;
-	ColourAllocated ColourFromCode(int ch) const;
+	ColourDesired ColourFromCode(int ch) const;
 	void FillRun(Surface *surface, int code, int startX, int y, int x);
 	char **lines;
-	ColourPair *colourCodeTable[256];
+	ColourDesired *colourCodeTable[256];
 public:
 	XPM(const char *textForm);
 	XPM(const char *const *linesForm);
@@ -54,10 +54,6 @@ public:
 	void Init(const char *textForm);
 	void Init(const char *const *linesForm);
 	void Clear();
-	/// Similar to same named method in ViewStyle:
-	void RefreshColourPalette(Palette &pal, bool want);
-	/// No palette used, so just copy the desired colours to the allocated colours
-	void CopyDesiredColours();
 	/// Decompose image into runs and use FillRectangle for each run
 	void Draw(Surface *surface, PRectangle &rc);
 	char **InLinesForm() { return lines; }
@@ -107,17 +103,21 @@ class RGBAImage {
 	RGBAImage &operator=(const RGBAImage &);
 	int height;
 	int width;
+	float scale;
 #if defined(PLAT_QT)
     QImage *qim;
 #else
 	std::vector<unsigned char> pixelBytes;
 #endif
 public:
-	RGBAImage(int width_, int height_, const unsigned char *pixels_);
+	RGBAImage(int width_, int height_, float scale_, const unsigned char *pixels_);
 	RGBAImage(const XPM &xpm);
 	virtual ~RGBAImage();
 	int GetHeight() const { return height; }
 	int GetWidth() const { return width; }
+	float GetScale() const { return scale; }
+	float GetScaledHeight() const { return height / scale; }
+	float GetScaledWidth() const { return width / scale; }
 #if !defined(PLAT_QT)
 	int CountBytes() const;
 #endif

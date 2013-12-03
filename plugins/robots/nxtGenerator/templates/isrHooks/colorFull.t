@@ -1,0 +1,1 @@
+ecrobot_process_bg_nxtcolorsensor();

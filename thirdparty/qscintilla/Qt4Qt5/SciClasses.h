@@ -30,7 +30,7 @@
 #include <qglobal.h>
 #include <qwidget.h>
 
-#include "Qsci/qsciglobal.h"
+#include <Qsci/qsciglobal.h>
 
 
 QT_BEGIN_NAMESPACE

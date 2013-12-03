@@ -1,6 +1,7 @@
 #include <QtWidgets/QApplication>
 
 #include "visualDebuggerPlugin.h"
+#include "toolPluginInterface/systemEvents.h"
 
 using namespace qReal;
 using namespace visualDebugger;
@@ -36,6 +37,8 @@ void VisualDebuggerPlugin::init(PluginConfigurator const &configurator)
 	);
 
 	mDebuggerConnector = new DebuggerConnector(this);
+
+	connect(&configurator.systemEvents(), SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(qReal::Id)));
 }
 
 QPair<QString, PreferencesPage *> VisualDebuggerPlugin::preferencesPage()

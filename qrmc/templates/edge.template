@@ -42,6 +42,12 @@
 			result << "NonTyped";
 			return result;
 		}
+
+		enums::linkShape::LinkShape shapeType() const
+		{
+			return enums::linkShape::square;
+		}		
+
 		bool createChildrenFromMenu() const { return false; }
 		bool isPort() const { return false; }
 		bool hasPin() const { return false; }

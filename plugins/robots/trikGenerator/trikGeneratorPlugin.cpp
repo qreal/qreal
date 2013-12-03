@@ -6,17 +6,17 @@
 #include <QtCore/QDebug>
 
 #include "robotCommunication/tcpRobotCommunicator.h"
-#include "generator/trikRobotGenerator.h"
+#include "trikMasterGenerator.h"
 
 using namespace qReal;
-using namespace robots::trikGenerator;
-
-QString const scriptExtension = ".qts";
+using namespace qReal::robots::generators;
+using namespace trik;
 
 TrikGeneratorPlugin::TrikGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
 		, mUploadProgramAction(NULL)
 		, mRunProgramAction(NULL)
+		, mStopRobotAction(NULL)
 {
 	mAppTranslator.load(":/trikGenerator_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -24,13 +24,6 @@ TrikGeneratorPlugin::TrikGeneratorPlugin()
 
 TrikGeneratorPlugin::~TrikGeneratorPlugin()
 {
-}
-
-void TrikGeneratorPlugin::init(PluginConfigurator const &configurator)
-{
-	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
-	mRepoControlApi = &configurator.repoControlInterface();
-	mProjectManager = &configurator.projectManager();
 }
 
 QList<ActionInfo> TrikGeneratorPlugin::actions()
@@ -47,44 +40,58 @@ QList<ActionInfo> TrikGeneratorPlugin::actions()
 	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
 	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()));
 
+	mStopRobotAction.setText(tr("Stop robot"));
+	ActionInfo stopRobotActionInfo(&mStopRobotAction, "generators", "tools");
+	connect(&mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()));
+
 	return QList<ActionInfo>() << generateCodeActionInfo << uploadProgramActionInfo
-			<< runProgramActionInfo;
+			<< runProgramActionInfo << stopRobotActionInfo;
 }
 
-bool TrikGeneratorPlugin::generateCode()
+MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()
 {
-	mProjectManager->save();
-
-	TrikRobotGenerator generator(mMainWindowInterface->activeDiagram()
-			, *mRepoControlApi
+	return new TrikMasterGenerator(*mRepo
 			, *mMainWindowInterface->errorReporter()
-			);
+			, mMainWindowInterface->activeDiagram());
+}
 
-	mMainWindowInterface->errorReporter()->clearErrors();
-	generator.generate(currentProgramName());
+void TrikGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
+{
+	Q_UNUSED(newFileInfo);
+}
 
-	if (mMainWindowInterface->errorReporter()->wereErrors()) {
-		return false;
-	}
+QFileInfo TrikGeneratorPlugin::defaultFilePath(QString const &projectName) const
+{
+	return QFileInfo(QString("trik/%1/%1.qts").arg(projectName));
+}
 
-	QTextStream *inStream = NULL;
-	QFile inFile(currentProgramName());
-	if (!inFile.isOpen() && inFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		inStream = new QTextStream(&inFile);
-	}
+QString TrikGeneratorPlugin::extension() const
+{
+	return "qts";
+}
 
-	if (inStream) {
-		mMainWindowInterface->showInTextEditor(currentProgramName(), inStream->readAll());
-	}
+QString TrikGeneratorPlugin::extDescrition() const
+{
+	return tr("TRIK Source File");
+}
 
-	return true;
+QString TrikGeneratorPlugin::generatorName() const
+{
+	return "Trik";
 }
 
 bool TrikGeneratorPlugin::uploadProgram()
 {
-	if (generateCode()) {
+	QFileInfo const fileInfo = currentSource();
+
+	if (fileInfo != QFileInfo()) {
 		TcpRobotCommunicator communicator;
-		return communicator.uploadProgram(currentProgramName());
+		bool const result = communicator.uploadProgram(fileInfo.absoluteFilePath());
+		if (!result) {
+			mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
+		}
+
+		return result;
 	} else {
 		qDebug() << "Code generation failed, aborting";
 		return false;
@@ -95,15 +102,17 @@ void TrikGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
 		TcpRobotCommunicator communicator;
-		communicator.runProgram(currentProgramName());
+		QFileInfo const fileInfo = currentSource();
+		communicator.runProgram(fileInfo.absoluteFilePath());
 	} else {
 		qDebug() << "Program upload failed, aborting";
 	}
 }
 
-QString TrikGeneratorPlugin::currentProgramName() const
+void TrikGeneratorPlugin::stopRobot()
 {
-	QString const saveFileName = mRepoControlApi->workingFile();
-	QFileInfo const fileInfo(saveFileName);
-	return fileInfo.baseName() + scriptExtension;
+	TcpRobotCommunicator communicator;
+	if (!communicator.stopRobot()) {
+		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
+	}
 }

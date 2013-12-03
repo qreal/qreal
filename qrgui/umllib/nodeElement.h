@@ -76,13 +76,16 @@ public:
 	//void shift(QPointF const &pos, EdgeElement* called);
 
 	QPointF const portPos(qreal id) const;
-	QPointF const nearestPort(QPointF const &location, QStringList const &types) const;
 	int numberOfPorts() const;
-	static int portNumber(qreal id);
 	qreal portId(QPointF const &location, QStringList const &types) const;
 
-	QList<EdgeElement *> getEdges();
+	/// @return List of edges connected to the node
+	QList<EdgeElement *> getEdges() const;
+
+	/// Add edge to node's edge list, rearrange linear ports
 	void addEdge(EdgeElement *edge);
+
+	/// Remove edge from node's edge list, rearrange linear ports
 	void delEdge(EdgeElement *edge);
 
 	NodeData& data();
@@ -90,7 +93,8 @@ public:
 	virtual bool initPossibleEdges();
 	QList<PossibleEdge> getPossibleEdges();
 
-	void setPortsVisible(bool value);
+	/// Make ports of specified types visible, hide other ports
+	void setPortsVisible(QStringList const &types);
 
 	bool isPort() const;
 	bool canHavePorts();
@@ -124,8 +128,6 @@ public:
 	*/
 	Element *getPlaceholderNextElement();
 
-	void highlightEdges();
-
 	void changeExpanded();
 	bool isExpanded() const;
 
@@ -148,6 +150,12 @@ public:
 	 * newContents equals to current shape (mContents).
 	 */
 	void resize();
+
+	/// Create resize command and start tracking resize
+	void startResize();
+
+	/// Stop tracking resize, execute resize command
+	void endResize();
 
 	/**
 	 * @brief sortedChildren
@@ -202,6 +210,8 @@ private:
 	void delUnusedLines();
 	QSet<ElementPair> elementsForPossibleEdge(StringPossibleEdge const &edge);
 
+	void initPortsVisibility();
+
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -212,6 +222,7 @@ private:
 	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
 	void paint(QPainter *p, QStyleOptionGraphicsItem const *opt);
+	void drawPorts(QPainter *painter, bool mouseOver);
 
 	/**
 	 * Recalculates mHighlightedNode according to current mouse scene position.
@@ -235,7 +246,7 @@ private:
 
 	ContextMenuAction mSwitchGridAction;
 
-	bool mPortsVisible;
+	QMap<QString, bool> mPortsVisibility;
 
 	QRectF mContents;
 	QList<EdgeElement *> mEdgeList;

@@ -24,6 +24,7 @@ private:
 	QString mBeginType;
 	QString mEndType;
 	QString mLineType;
+	QString mShapeType;
 	QColor mLineColor;
 	int mLineWidth;
 	QString mIsDividable;

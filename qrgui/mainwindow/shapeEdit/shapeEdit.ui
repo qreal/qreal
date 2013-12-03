@@ -1090,7 +1090,7 @@
   <customwidget>
    <class>graphicsUtils::ColorListEditor</class>
    <extends>QComboBox</extends>
-   <header>qrutils/graphicsUtils/colorlisteditor.h</header>
+   <header>qrutils/graphicsUtils/colorListEditor.h</header>
   </customwidget>
  </customwidgets>
  <resources>

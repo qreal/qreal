@@ -40,6 +40,7 @@
 
 #include <qdesktopwidget.h>
 #include <qpolygon.h>
+#include <qtextlayout.h>
 
 #include "SciNamespace.h"
 
@@ -79,35 +80,6 @@ Point Point::FromLong(long lpoint)
 }
 
 
-// Colour palette management.  The Qt interface to colours means this class
-// doesn't have to do anything.
-Palette::Palette()
-{
-    used = 0;
-    allowRealization = false;
-}
-
-Palette::~Palette()
-{
-    Release();
-}
-
-void Palette::Release()
-{
-    used = 0;
-}
-
-void Palette::WantFind(ColourPair &cp, bool want)
-{
-    if (!want)
-        cp.allocated.Set(cp.desired.AsLong());
-}
-
-void Palette::Allocate(Window &)
-{
-}
-
-
 // Font management.
 Font::Font() : fid(0)
 {
@@ -117,8 +89,7 @@ Font::~Font()
 {
 }
 
-void Font::Create(const char *faceName, int, int size, bool bold, bool italic,
-        int flags)
+void Font::Create(const FontParameters &fp)
 {
     Release();
 
@@ -126,7 +97,7 @@ void Font::Create(const char *faceName, int, int size, bool bold, bool italic,
 
     QFont::StyleStrategy strategy;
 
-    switch (flags & SC_EFF_QUALITY_MASK)
+    switch (fp.extraFontFlag & SC_EFF_QUALITY_MASK)
     {
     case SC_EFF_QUALITY_NON_ANTIALIASED:
         strategy = QFont::NoAntialias;
@@ -140,7 +111,7 @@ void Font::Create(const char *faceName, int, int size, bool bold, bool italic,
         strategy = QFont::PreferDefault;
     }
 
-#if defined(Q_WS_MAC)
+#if defined(Q_OS_MAC)
 #if QT_VERSION >= 0x040700
     strategy = static_cast<QFont::StyleStrategy>(strategy | QFont::ForceIntegerMetrics);
 #else
@@ -151,16 +122,36 @@ void Font::Create(const char *faceName, int, int size, bool bold, bool italic,
     f->setStyleStrategy(strategy);
 
     // If name of the font begins with a '-', assume, that it is an XLFD.
-    if (faceName[0] == '-')
+    if (fp.faceName[0] == '-')
     {
-        f->setRawName(faceName);
+        f->setRawName(fp.faceName);
     }
     else
     {
-        f->setFamily(faceName);
-        f->setPointSize(size);
-        f->setBold(bold);
-        f->setItalic(italic);
+        f->setFamily(fp.faceName);
+        f->setPointSize(fp.size);
+
+        // See if the Qt weight has been passed via the back door.   Otherwise
+        // map Scintilla weights to Qt weights ensuring that the SC_WEIGHT_*
+        // values get mapped to the correct QFont::Weight values.
+        int qt_weight;
+
+        if (fp.weight < 0)
+            qt_weight = -fp.weight;
+        else if (fp.weight <= 200)
+            qt_weight = QFont::Light;
+        else if (fp.weight <= QsciScintillaBase::SC_WEIGHT_NORMAL)
+            qt_weight = QFont::Normal;
+        else if (fp.weight <= 600)
+            qt_weight = QFont::DemiBold;
+        else if (fp.weight <= 850)
+            qt_weight = QFont::Bold;
+        else
+            qt_weight = QFont::Black;
+
+        f->setWeight(qt_weight);
+
+        f->setItalic(fp.italic);
     }
 
     fid = f;
@@ -190,43 +181,43 @@ public:
 
     void Release();
     bool Initialised() {return painter;}
-    void PenColour(ColourAllocated fore);
+    void PenColour(ColourDesired fore);
     int LogPixelsY() {return 72;}
     int DeviceHeightFont(int points) {return points;}
     void MoveTo(int x_,int y_);
     void LineTo(int x_,int y_);
-    void Polygon(Point *pts, int npts, ColourAllocated fore,
-            ColourAllocated back);
-    void RectangleDraw(PRectangle rc, ColourAllocated fore,
-            ColourAllocated back);
-    void FillRectangle(PRectangle rc, ColourAllocated back);
+    void Polygon(Point *pts, int npts, ColourDesired fore,
+            ColourDesired back);
+    void RectangleDraw(PRectangle rc, ColourDesired fore,
+            ColourDesired back);
+    void FillRectangle(PRectangle rc, ColourDesired back);
     void FillRectangle(PRectangle rc, Surface &surfacePattern);
-    void RoundedRectangle(PRectangle rc, ColourAllocated fore,
-            ColourAllocated back);
-    void AlphaRectangle(PRectangle rc, int cornerSize, ColourAllocated fill,
-            int alphaFill, ColourAllocated outline, int alphaOutline,
+    void RoundedRectangle(PRectangle rc, ColourDesired fore,
+            ColourDesired back);
+    void AlphaRectangle(PRectangle rc, int cornerSize, ColourDesired fill,
+            int alphaFill, ColourDesired outline, int alphaOutline,
             int flags);
     void DrawRGBAImage(PRectangle rc, int width, int height, const unsigned char *pixelsImage);
-    void Ellipse(PRectangle rc, ColourAllocated fore, ColourAllocated back);
+    void Ellipse(PRectangle rc, ColourDesired fore, ColourDesired back);
     void Copy(PRectangle rc, Point from, Surface &surfaceSource);
 
-    void DrawTextNoClip(PRectangle rc, Font &font_, int ybase, const char *s,
-            int len, ColourAllocated fore, ColourAllocated back);
-    void DrawTextClipped(PRectangle rc, Font &font_, int ybase, const char *s,
-            int len, ColourAllocated fore, ColourAllocated back);
-    void DrawTextTransparent(PRectangle rc, Font &font_, int ybase,
-            const char *s, int len, ColourAllocated fore);
-    void MeasureWidths(Font &font_, const char *s, int len, int *positions);
-    int WidthText(Font &font_, const char *s, int len);
-    int WidthChar(Font &font_, char ch);
-    int Ascent(Font &font_);
-    int Descent(Font &font_);
-    int InternalLeading(Font &font_) {return 0;}
-    int ExternalLeading(Font &font_);
-    int Height(Font &font_);
-    int AverageCharWidth(Font &font_) {return WidthChar(font_, 'n');}
+    void DrawTextNoClip(PRectangle rc, Font &font_, XYPOSITION ybase,
+            const char *s, int len, ColourDesired fore, ColourDesired back);
+    void DrawTextClipped(PRectangle rc, Font &font_, XYPOSITION ybase,
+            const char *s, int len, ColourDesired fore, ColourDesired back);
+    void DrawTextTransparent(PRectangle rc, Font &font_, XYPOSITION ybase,
+            const char *s, int len, ColourDesired fore);
+    void MeasureWidths(Font &font_, const char *s, int len,
+            XYPOSITION *positions);
+    XYPOSITION WidthText(Font &font_, const char *s, int len);
+    XYPOSITION WidthChar(Font &font_, char ch);
+    XYPOSITION Ascent(Font &font_);
+    XYPOSITION Descent(Font &font_);
+    XYPOSITION InternalLeading(Font &font_) {return 0;}
+    XYPOSITION ExternalLeading(Font &font_);
+    XYPOSITION Height(Font &font_);
+    XYPOSITION AverageCharWidth(Font &font_);
 
-    int SetPalette(Palette *, bool) {return 0;}
     void SetClip(PRectangle rc);
     void FlushCachedState();
 
@@ -236,11 +227,13 @@ public:
     void DrawXPM(PRectangle rc, const XPM *xpm);
 
 private:
-    void drawText(PRectangle rc, Font &font_, int ybase, const char *s,
-            int len, ColourAllocated fore);
-    QFontMetrics metrics(Font &font_);
+    void drawRect(const PRectangle &rc);
+    void drawText(const PRectangle &rc, Font &font_, XYPOSITION ybase,
+            const char *s, int len, ColourDesired fore);
+    static QFont convertQFont(Font &font);
+    QFontMetricsF metrics(Font &font_);
     QString convertText(const char *s, int len);
-    static QColor convertQColor(const ColourAllocated &col,
+    static QColor convertQColor(const ColourDesired &col,
             unsigned alpha = 255);
 
     bool unicodeMode;
@@ -250,7 +243,7 @@ private:
     int pen_x, pen_y;
 };
 
-Surface *Surface::Allocate()
+Surface *Surface::Allocate(int)
 {
     return new SurfaceImpl;
 }
@@ -338,46 +331,45 @@ void SurfaceImpl::LineTo(int x_, int y_)
     pen_y = y_;
 }
 
-void SurfaceImpl::PenColour(ColourAllocated fore)
+void SurfaceImpl::PenColour(ColourDesired fore)
 {
     Q_ASSERT(painter);
 
     painter->setPen(convertQColor(fore));
 }
 
-void SurfaceImpl::Polygon(Point *pts, int npts, ColourAllocated fore,
-        ColourAllocated back)
+void SurfaceImpl::Polygon(Point *pts, int npts, ColourDesired fore,
+        ColourDesired back)
 {
     Q_ASSERT(painter);
 
-    QPolygon qpts(npts);
+    QPolygonF qpts(npts);
 
     for (int i = 0; i < npts; ++i)
-        qpts.setPoint(i, pts[i].x, pts[i].y);
+        qpts[i] = QPointF(pts[i].x, pts[i].y);
 
     painter->setPen(convertQColor(fore));
     painter->setBrush(convertQColor(back));
     painter->drawPolygon(qpts);
 }
 
-void SurfaceImpl::RectangleDraw(PRectangle rc, ColourAllocated fore,
-        ColourAllocated back)
+void SurfaceImpl::RectangleDraw(PRectangle rc, ColourDesired fore,
+        ColourDesired back)
 {
     Q_ASSERT(painter);
 
     painter->setPen(convertQColor(fore));
     painter->setBrush(convertQColor(back));
-    painter->drawRect(rc.left, rc.top, rc.right - rc.left - 1,
-            rc.bottom - rc.top - 1);
+    drawRect(rc);
 }
 
-void SurfaceImpl::FillRectangle(PRectangle rc, ColourAllocated back)
+void SurfaceImpl::FillRectangle(PRectangle rc, ColourDesired back)
 {
     Q_ASSERT(painter);
 
     painter->setPen(Qt::NoPen);
     painter->setBrush(convertQColor(back));
-    painter->drawRect(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+    drawRect(rc);
 }
 
 void SurfaceImpl::FillRectangle(PRectangle rc, Surface &surfacePattern)
@@ -393,52 +385,54 @@ void SurfaceImpl::FillRectangle(PRectangle rc, Surface &surfacePattern)
 
         painter->setPen(Qt::NoPen);
         painter->setBrush(brsh);
-        painter->drawRect(rc.left, rc.top, rc.right - rc.left,
-                rc.bottom - rc.top);
+        drawRect(rc);
     }
     else
-        FillRectangle(rc, ColourAllocated(0));
+    {
+        FillRectangle(rc, ColourDesired(0));
+    }
 }
 
-void SurfaceImpl::RoundedRectangle(PRectangle rc, ColourAllocated fore,
-        ColourAllocated back)
+void SurfaceImpl::RoundedRectangle(PRectangle rc, ColourDesired fore,
+        ColourDesired back)
 {
     Q_ASSERT(painter);
 
     painter->setPen(convertQColor(fore));
     painter->setBrush(convertQColor(back));
-    painter->drawRoundRect(rc.left, rc.top, rc.right - rc.left,
-            rc.bottom - rc.top);
+    painter->drawRoundRect(
+            QRectF(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top));
 }
 
 void SurfaceImpl::AlphaRectangle(PRectangle rc, int cornerSize,
-        ColourAllocated fill, int alphaFill, ColourAllocated outline,
+        ColourDesired fill, int alphaFill, ColourDesired outline,
         int alphaOutline, int)
 {
     Q_ASSERT(painter);
 
-    int w = rc.right - rc.left;
-    int h = rc.bottom - rc.top;
-
-    // Assume that "cornerSize" means outline width.
-    if (cornerSize > 0)
-        painter->setPen(QPen(convertQColor(outline, alphaOutline), cornerSize));
-    else
-        painter->setPen(Qt::NoPen);
+    const int radius = (cornerSize ? 25 : 0);
 
     painter->setBrush(convertQColor(fill, alphaFill));
-    painter->drawRect(rc.left, rc.top, w, h);
+    painter->drawRoundRect(
+            QRectF(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top),
+            radius, radius);
 }
 
-void SurfaceImpl::Ellipse(PRectangle rc, ColourAllocated fore,
-        ColourAllocated back)
+void SurfaceImpl::drawRect(const PRectangle &rc)
+{
+    painter->drawRect(
+            QRectF(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top));
+}
+
+void SurfaceImpl::Ellipse(PRectangle rc, ColourDesired fore,
+        ColourDesired back)
 {
     Q_ASSERT(painter);
 
     painter->setPen(convertQColor(fore));
     painter->setBrush(convertQColor(back));
-    painter->drawEllipse(rc.left, rc.top, rc.right - rc.left,
-            rc.bottom - rc.top);
+    painter->drawEllipse(
+            QRectF(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top));
 }
 
 void SurfaceImpl::Copy(PRectangle rc, Point from, Surface &surfaceSource)
@@ -451,13 +445,13 @@ void SurfaceImpl::Copy(PRectangle rc, Point from, Surface &surfaceSource)
     {
         QPixmap *pm = static_cast<QPixmap *>(si.pd);
 
-        painter->drawPixmap(rc.left, rc.top, *pm, from.x, from.y,
-                rc.right - rc.left, rc.bottom - rc.top);
+        painter->drawPixmap(QPointF(rc.left, rc.top), *pm,
+                QRectF(from.x, from.y, rc.right - rc.left, rc.bottom - rc.top));
     }
 }
 
-void SurfaceImpl::DrawTextNoClip(PRectangle rc, Font &font_, int ybase,
-        const char *s, int len,ColourAllocated fore, ColourAllocated back)
+void SurfaceImpl::DrawTextNoClip(PRectangle rc, Font &font_, XYPOSITION ybase,
+        const char *s, int len, ColourDesired fore, ColourDesired back)
 {
     Q_ASSERT(painter);
 
@@ -465,8 +459,8 @@ void SurfaceImpl::DrawTextNoClip(PRectangle rc, Font &font_, int ybase,
     drawText(rc, font_, ybase, s, len, fore);
 }
 
-void SurfaceImpl::DrawTextClipped(PRectangle rc, Font &font_, int ybase,
-        const char *s, int len, ColourAllocated fore, ColourAllocated back)
+void SurfaceImpl::DrawTextClipped(PRectangle rc, Font &font_, XYPOSITION ybase,
+        const char *s, int len, ColourDesired fore, ColourDesired back)
 {
     Q_ASSERT(painter);
 
@@ -475,8 +469,8 @@ void SurfaceImpl::DrawTextClipped(PRectangle rc, Font &font_, int ybase,
     painter->setClipping(false);
 }
 
-void SurfaceImpl::DrawTextTransparent(PRectangle rc, Font &font_, int ybase,
-        const char *s, int len, ColourAllocated fore)
+void SurfaceImpl::DrawTextTransparent(PRectangle rc, Font &font_,
+        XYPOSITION ybase, const char *s, int len, ColourDesired fore)
 {
     // Only draw if there is a non-space.
     for (int i = 0; i < len; ++i)
@@ -487,8 +481,8 @@ void SurfaceImpl::DrawTextTransparent(PRectangle rc, Font &font_, int ybase,
         }
 }
 
-void SurfaceImpl::drawText(PRectangle rc, Font &font_, int ybase,
-        const char *s, int len, ColourAllocated fore)
+void SurfaceImpl::drawText(const PRectangle &rc, Font &font_, XYPOSITION ybase,
+        const char *s, int len, ColourDesired fore)
 {
     QString qs = convertText(s, len);
 
@@ -498,20 +492,20 @@ void SurfaceImpl::drawText(PRectangle rc, Font &font_, int ybase,
         painter->setFont(*f);
 
     painter->setPen(convertQColor(fore));
-    painter->drawText(rc.left, ybase, qs);
+    painter->drawText(QPointF(rc.left, ybase), qs);
 }
 
 void SurfaceImpl::DrawXPM(PRectangle rc, const XPM *xpm)
 {
     Q_ASSERT(painter);
 
-    int x, y;
+    XYPOSITION x, y;
     const QPixmap &qpm = xpm->Pixmap();
 
-    x = rc.left + (rc.Width() - qpm.width()) / 2;
-    y = rc.top + (rc.Height() - qpm.height()) / 2;
+    x = rc.left + (rc.Width() - qpm.width()) / 2.0;
+    y = rc.top + (rc.Height() - qpm.height()) / 2.0;
 
-    painter->drawPixmap(x, y, qpm);
+    painter->drawPixmap(QPointF(x, y), qpm);
 }
 
 void SurfaceImpl::DrawRGBAImage(PRectangle rc, int width, int height,
@@ -519,61 +513,87 @@ void SurfaceImpl::DrawRGBAImage(PRectangle rc, int width, int height,
 {
     Q_ASSERT(painter);
 
-    int x, y;
     const QImage *qim = reinterpret_cast<const QImage *>(pixelsImage);
 
-    x = rc.left + (rc.Width() - width) / 2;
-    y = rc.top + (rc.Height() - height) / 2;
-
-    painter->drawImage(x, y, *qim);
+    painter->drawImage(QPointF(rc.left, rc.top), *qim);
 }
 
 void SurfaceImpl::MeasureWidths(Font &font_, const char *s, int len,
-        int *positions)
+        XYPOSITION *positions)
 {
-    QFontMetrics fm = metrics(font_);
     QString qs = convertText(s, len);
+    QTextLayout text_layout(qs, convertQFont(font_), pd);
 
-    // The position for each byte of a character is the offset from the start
-    // where the following character should be drawn.
-    int i_byte = 0;
+    text_layout.beginLayout();
+    QTextLine text_line = text_layout.createLine();
+    text_layout.endLayout();
 
-    for (int i_char = 0; i_char < qs.length(); ++i_char)
+    if (unicodeMode)
     {
-        // We can't just add the individual character widths together because
-        // of kerning.
-        int width = fm.width(qs.left(i_char + 1));
+        int i_char = 0, i_byte = 0;;
 
-        if (unicodeMode)
+        while (i_char < qs.size())
         {
-            // Set the same position for each byte of the character.
-            int nbytes = qs.mid(i_char, 1).toUtf8().length();
+            unsigned char byte = s[i_byte];
+            int nbytes, code_units;
 
-            while (nbytes--)
-                positions[i_byte++] = width;
+            // Work out character sizes by looking at the byte stream.
+            if (byte >= 0xf0)
+            {
+                nbytes = 4;
+                code_units = 2;
+            }
+            else
+            {
+                if (byte >= 0xe0)
+                    nbytes = 3;
+                else if (byte >= 0x80)
+                    nbytes = 2;
+                else
+                    nbytes = 1;
+
+                code_units = 1;
+            }
+
+            XYPOSITION position = text_line.cursorToX(i_char + code_units);
+
+            // Set the same position for each byte of the character.
+            for (int i = 0; i < nbytes && i_byte < len; ++i)
+                positions[i_byte++] = position;
+
+            i_char += code_units;
         }
-        else
-            positions[i_byte++] = width;
+
+        // This shouldn't be necessary...
+        XYPOSITION last_position = ((i_byte > 0) ? positions[i_byte - 1] : 0);
+
+        while (i_byte < len)
+            positions[i_byte++] = last_position;
+    }
+    else
+    {
+        for (int i = 0; i < len; ++i)
+            positions[i] = text_line.cursorToX(i + 1);
     }
 }
 
-int SurfaceImpl::WidthText(Font &font_, const char *s, int len)
+XYPOSITION SurfaceImpl::WidthText(Font &font_, const char *s, int len)
 {
     return metrics(font_).width(convertText(s, len));
 
 }
 
-int SurfaceImpl::WidthChar(Font &font_, char ch)
+XYPOSITION SurfaceImpl::WidthChar(Font &font_, char ch)
 {
     return metrics(font_).width(ch);
 }
 
-int SurfaceImpl::Ascent(Font &font_)
+XYPOSITION SurfaceImpl::Ascent(Font &font_)
 {
     return metrics(font_).ascent();
 }
 
-int SurfaceImpl::Descent(Font &font_)
+XYPOSITION SurfaceImpl::Descent(Font &font_)
 {
     // Qt doesn't include the baseline in the descent, so add it.  Note that
     // a descent from Qt4 always seems to be 2 pixels larger (irrespective of
@@ -583,41 +603,56 @@ int SurfaceImpl::Descent(Font &font_)
     return metrics(font_).descent() + 1;
 }
 
-int SurfaceImpl::ExternalLeading(Font &font_)
+XYPOSITION SurfaceImpl::ExternalLeading(Font &font_)
 {
     // Scintilla doesn't use this at the moment, which is good because Qt4 can
     // return a negative value.
     return metrics(font_).leading();
 }
 
-int SurfaceImpl::Height(Font &font_)
+XYPOSITION SurfaceImpl::Height(Font &font_)
 {
     return metrics(font_).height();
+}
+
+XYPOSITION SurfaceImpl::AverageCharWidth(Font &font_)
+{
+#if QT_VERSION >= 0x040200
+    return metrics(font_).averageCharWidth();
+#else
+    return WidthChar(font_, 'n');
+#endif
 }
 
 void SurfaceImpl::SetClip(PRectangle rc)
 {
     Q_ASSERT(painter);
 
-    painter->setClipRect(rc.left, rc.top, rc.right - rc.left,
-            rc.bottom - rc.top);
+    painter->setClipRect(
+            QRectF(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top));
 }
 
 void SurfaceImpl::FlushCachedState()
 {
 }
 
-// Get the metrics for a font.
-QFontMetrics SurfaceImpl::metrics(Font &font_)
+// Return the QFont for a Font.
+QFont SurfaceImpl::convertQFont(Font &font)
 {
-    QFont *f = PFont(font_.GetID()), fnt;
+    QFont *f = PFont(font.GetID());
 
     if (f)
-        fnt = *f;
-    else
-        fnt = QApplication::font();
+        return *f;
 
-    return QFontMetrics(fnt, pd);
+    return QApplication::font();
+}
+
+// Get the metrics for a font.
+QFontMetricsF SurfaceImpl::metrics(Font &font_)
+{
+    QFont fnt = convertQFont(font_);
+
+    return QFontMetricsF(fnt, pd);
 }
 
 // Convert a Scintilla string to a Qt Unicode string.
@@ -631,7 +666,7 @@ QString SurfaceImpl::convertText(const char *s, int len)
 
 
 // Convert a Scintilla colour, and alpha component, to a Qt QColor.
-QColor SurfaceImpl::convertQColor(const ColourAllocated &col, unsigned alpha)
+QColor SurfaceImpl::convertQColor(const ColourDesired &col, unsigned alpha)
 {
     long c = col.AsLong();
 

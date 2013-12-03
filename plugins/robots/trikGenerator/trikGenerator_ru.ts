@@ -4,149 +4,174 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="100"/>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="190"/>
         <source>There is nothing to generate, diagram doesn&apos;t have Initial Node</source>
-        <translation>Генерация невозможна, на диаграмме нет начальных блоков</translation>
+        <translation type="obsolete">Генерация невозможна, на диаграмме нет начальных блоков</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/simpleElementGenerator.cpp" line="48"/>
+        <source>Too many initial nodes, generation aborted</source>
+        <translation type="obsolete">Слишком много начальных узлов, генерация невозможна</translation>
+    </message>
+    <message>
         <source>There is no outgoing connected element with no final node!</source>
-        <translation>Отсутствует исходящий элемент!</translation>
+        <translation type="obsolete">Отсутствует исходящий элемент!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/simpleElementGenerator.cpp" line="75"/>
         <source>There are more than 1 outgoing connected elements with simple robot element!</source>
-        <translation>Обнаружено более 1 исходящей связи!</translation>
+        <translation type="obsolete">Обнаружено более 1 исходящей связи!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtOSEKRobotGenerator.cpp" line="155"/>
         <source>There is no opened diagram</source>
-        <translation>Сначала откройте диаграмму </translation>
+        <translation type="obsolete">Сначала откройте диаграмму </translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/commentElementGenerator.cpp" line="27"/>
         <source>The comment block with incomming liks detected!</source>
-        <translation>Блок коментария не может иметь входящих связей!</translation>
+        <translation type="obsolete">Блок коментария не может иметь входящих связей!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="169"/>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="176"/>
         <source>If block </source>
-        <translation>У условного блока </translation>
+        <translation type="obsolete">У условного блока </translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="169"/>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="176"/>
         <source> has no 2 correct branches! May be you need to connect one of them to some diagram element.</source>
-        <translation> найдены не присоединенные ветки!</translation>
+        <translation type="obsolete"> найдены не присоединенные ветки!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="209"/>
         <source>This diagram isn&apos;t structed diagram, because there are IF block with 2 back arrows!</source>
-        <translation>Диаграмма не структурная т.к. существует условный блок с двумя обратными стрелками!</translation>
+        <translation type="obsolete">Диаграмма не структурная т.к. существует условный блок с двумя обратными стрелками!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/generators/ifElementGenerator.cpp" line="213"/>
         <source>Generator JUST does not work in this case.</source>
-        <translation>Данная диаграмма слишком сложна для генерации.</translation>
+        <translation type="obsolete">Данная диаграмма слишком сложна для генерации.</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::robots::generators::trik::TrikGeneratorPlugin</name>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="33"/>
+        <source>Generate TRIK code</source>
+        <translation>Генерировать код для ТРИК</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="37"/>
+        <source>Upload program</source>
+        <translation>Загрузить программу</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="41"/>
+        <source>Run program</source>
+        <translation>Загрузить и выполнить программу</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="45"/>
+        <source>Stop robot</source>
+        <translation>Остановить робот</translation>
+    </message>
+    <message>
+        <location filename="trikGeneratorPlugin.cpp" line="66"/>
+        <location filename="trikGeneratorPlugin.cpp" line="90"/>
+        <source>No connection to robot</source>
+        <translation>Нет соединения с роботом, проверьте настройки, проверьте, включён ли робот</translation>
     </message>
 </context>
 <context>
     <name>robots::generator::NxtFlashTool</name>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="37"/>
         <source>Firmware flash started. Please don&apos;t disconnect robot during the process</source>
-        <translation>Начат процесс загрузки прошивки в робота. Пожалуйста, не отсоединяйте робота, пока процесс не будет завершен</translation>
+        <translation type="obsolete">Начат процесс загрузки прошивки в робота. Пожалуйста, не отсоединяйте робота, пока процесс не будет завершен</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="43"/>
         <source>Some error occured. Make sure you are running QReal with superuser privileges</source>
-        <translation>Ошибка. Убедитесь, что QReal:Robots запущен с правами администратора</translation>
+        <translation type="obsolete">Ошибка. Убедитесь, что QReal:Robots запущен с правами администратора</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="50"/>
         <source>Flashing process completed.</source>
-        <translation>Процесс загрузки программы завершен.</translation>
+        <translation type="obsolete">Процесс загрузки программы завершен.</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="52"/>
         <source>flash.sh not found. Make sure it is present in QReal installation directory</source>
-        <translation>Не найден скрипт flash.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
+        <translation type="obsolete">Не найден скрипт flash.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="54"/>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="95"/>
         <source>QReal requires superuser privileges to flash NXT robot</source>
-        <translation>Для загрузки прошивки в робота требуется запустить QReal:Robots с правами администратора</translation>
+        <translation type="obsolete">Для загрузки прошивки в робота требуется запустить QReal:Robots с правами администратора</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="67"/>
         <source>NXT not found. Check USB connection and make sure the robot is ON</source>
-        <translation>Соединение с роботом не обнаружено. Проверьте USB-соединение и убедитесь, что робот включен</translation>
+        <translation type="obsolete">Соединение с роботом не обнаружено. Проверьте USB-соединение и убедитесь, что робот включен</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="69"/>
         <source>NXT is not in reset mode. Please reset your NXT manually and try again</source>
-        <translation>Робот находится в неправильном режиме. Переведите робота в режим перепрошивки</translation>
+        <translation type="obsolete">Робот находится в неправильном режиме. Переведите робота в режим перепрошивки</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="71"/>
         <source>Firmware flash complete!</source>
-        <translation>Процесс загрузки прошивки в робота завершен!</translation>
+        <translation type="obsolete">Процесс загрузки прошивки в робота завершен!</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="86"/>
         <source>Uploading program started. Please don&apos;t disconnect robot during the process</source>
-        <translation>Начат процесс загрузки программы в робота. Пожалуйста, не отсоединяйте робота, пока процесс не будет завершен</translation>
+        <translation type="obsolete">Начат процесс загрузки программы в робота. Пожалуйста, не отсоединяйте робота, пока процесс не будет завершен</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="93"/>
         <source>Uploading failed. Make sure that X-server allows root to run GUI applications</source>
-        <translation>Не удалось загрузить программу в робота. Убедитесь, что QReal:Robots запущен с нужными правами</translation>
+        <translation type="obsolete">Не удалось загрузить программу в робота. Убедитесь, что QReal:Robots запущен с нужными правами</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="120"/>
         <source>Could not upload program. Make sure the robot is connected and ON</source>
-        <translation>Не удалось загрузить программу в робота. Убедитесь, что робот включен и подсоединен к компьютеру</translation>
+        <translation type="obsolete">Не удалось загрузить программу в робота. Убедитесь, что робот включен и подсоединен к компьютеру</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="122"/>
         <source>Uploading completed successfully</source>
-        <translation>Загрузка программы завершена успешно</translation>
+        <translation type="obsolete">Загрузка программы завершена успешно</translation>
     </message>
     <message>
-        <location filename="nxtOSEK/nxtFlashTool.cpp" line="126"/>
         <source>QReal requires superuser privileges to upload programs on NXT robot</source>
-        <translation>Для загрузки программ в робота требуется запустить QReal:Robots с правами администратора</translation>
+        <translation type="obsolete">Для загрузки программ в робота требуется запустить QReal:Robots с правами администратора</translation>
     </message>
 </context>
 <context>
     <name>robots::generator::RobotsGeneratorPlugin</name>
     <message>
-        <location filename="robotsGeneratorPlugin.cpp" line="36"/>
         <source>Generate code</source>
-        <translation>Генерировать код</translation>
+        <translation type="obsolete">Генерировать код</translation>
     </message>
     <message>
-        <location filename="robotsGeneratorPlugin.cpp" line="41"/>
         <source>Flash robot</source>
-        <translation>Прошить</translation>
+        <translation type="obsolete">Прошить</translation>
     </message>
     <message>
-        <location filename="robotsGeneratorPlugin.cpp" line="45"/>
         <source>Upload program</source>
-        <translation>Загрузить программу</translation>
+        <translation type="obsolete">Загрузить программу</translation>
     </message>
     <message>
-        <location filename="robotsGeneratorPlugin.cpp" line="96"/>
         <source>flash.sh not found. Make sure it is present in QReal installation directory</source>
-        <translation>Не найден скрипт flash.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
+        <translation type="obsolete">Не найден скрипт flash.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
     </message>
     <message>
-        <location filename="robotsGeneratorPlugin.cpp" line="105"/>
         <source>upload.sh not found. Make sure it is present in QReal installation directory</source>
-        <translation>Не найден скрипт upload.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
+        <translation type="obsolete">Не найден скрипт upload.sh. Убедитесь, что пакет nxt-tools установлен корректно</translation>
+    </message>
+</context>
+<context>
+    <name>robots::trikGenerator::TrikGeneratorPlugin</name>
+    <message>
+        <source>Generate TRIK code</source>
+        <translation type="obsolete">Генерировать код для ТРИК</translation>
+    </message>
+    <message>
+        <source>Upload program</source>
+        <translation type="obsolete">Загрузить программу</translation>
+    </message>
+    <message>
+        <source>Run program</source>
+        <translation type="obsolete">Загрузить и выполнить программу</translation>
+    </message>
+    <message>
+        <source>Stop robot</source>
+        <translation type="obsolete">Остановить робот</translation>
+    </message>
+    <message>
+        <source>No connection to robot</source>
+        <translation type="obsolete">Нет соединения с роботом, проверьте настройки, проверьте, включён ли робот</translation>
     </message>
 </context>
 </TS>

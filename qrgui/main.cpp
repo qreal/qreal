@@ -34,9 +34,9 @@ int main(int argc, char *argv[])
 			clearConfig();
 			return 0;
 		} else {
-			int setIndex = app.arguments().indexOf("--config");
+			int const setIndex = app.arguments().indexOf("--config");
 			if (setIndex > -1) {
-				QString settingsFileName = app.arguments().at(setIndex + 1);
+				QString const settingsFileName = app.arguments().at(setIndex + 1);
 				SettingsManager::instance()->loadSettings(settingsFileName);
 			}
 			for (int i = 0; i < argc; i++) {

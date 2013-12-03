@@ -76,6 +76,8 @@ public:
 	QStringList fromPortTypes() const;
 	QStringList toPortTypes() const;
 
+	enums::linkShape::LinkShape shapeType() const;
+
 	bool isPort() const;
 	bool hasPin() const;
 
@@ -91,12 +93,13 @@ private:
 			, int const &width, int const &height);
 	void initLinePorts(PortFactoryInterface const &factory, QList<PortInterface *> &ports
 			, int const &width, int const &height);
-	void initEdgePorts(QStringList &ports, QString const &direction) const;
 	void initLabels(int const &width, int const &height, LabelFactoryInterface &factory, QList<LabelInterface*> &titles);
 	QVector<int> getSizeOfContainerProperty(QString const &property) const;
 	QStringList getListOfStr(QString const &labelText) const;
 	QString getResultStr(QStringList const &list, ElementRepoInterface *repo) const;
 	void drawArrow(QPainter *painter, QString const &type) const;
+
+	enums::linkShape::LinkShape shapeTypeByString(QString const &type) const;
 
 	qrRepo::RepoApi *mEditorRepoApi;  // Doesn't have ownership.
 	Id mId;
@@ -104,9 +107,6 @@ private:
 	QDomDocument mGraphics;
 	QList<NodeLabel> mNodeLabels;
 	QList<EdgeLabel> mEdgeLabels;
-
-	QStringList mFromPorts;
-	QStringList mToPorts;
 };
 }
 
