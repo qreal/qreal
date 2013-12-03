@@ -1,5 +1,7 @@
 #include "argsParser.h"
 
+using namespace qrUpdater;
+
 ArgsParser::ArgsParser()
 	: hasHardUpdateParam(false)
 {
@@ -63,3 +65,4 @@ bool ArgsParser::hasEmptyArgs() const
 	}
 	return false;
 }
+

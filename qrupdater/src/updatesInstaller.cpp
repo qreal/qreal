@@ -1,5 +1,7 @@
 #include "updatesInstaller.h"
 
+using namespace qrUpdater;
+
 UpdatesInstaller::UpdatesInstaller(QList<Update *> updates)
 {
 	mUpdatesQueue.append(updates);
@@ -39,6 +41,9 @@ void UpdatesInstaller::installNext()
 	connect(mUpdatesQueue.first(), SIGNAL(installFinished(bool)), this, SLOT(singleInstallFinished(bool)));
 	replaceExpressions(mUpdatesQueue.first());
 	mUpdatesQueue.first()->installUpdate();
+	if (mUpdatesQueue.first()->hasSelfInstallMarker()) {
+		emit selfInstalling();
+	}
 }
 
 void UpdatesInstaller::replaceExpressions(Update *update)

@@ -1,5 +1,11 @@
 #include "update.h"
 
+namespace markers {
+static QString const selfInstalling = "qru::self";
+}
+
+using namespace qrUpdater;
+
 Update::Update(QObject *parent)
 	: QObject(parent)
 	, mIsInstalled(false)
@@ -75,6 +81,11 @@ bool Update::isInstalling() const
 bool Update::isInstalled() const
 {
 	return mIsInstalled;
+}
+
+bool Update::hasSelfInstallMarker() const
+{
+	return unit() == markers::selfInstalling;
 }
 
 QUrl Update::url() const

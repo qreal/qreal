@@ -1,5 +1,7 @@
 #include "downloader.h"
 
+using namespace qrUpdater;
+
 Downloader::Downloader(QObject *parent)
 	: QObject(parent)
 	, mLoadedFileIndex(0)

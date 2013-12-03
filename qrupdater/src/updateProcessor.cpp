@@ -1,5 +1,7 @@
 #include "updateProcessor.h"
 
+using namespace qrUpdater;
+
 UpdateProcessor::UpdateProcessor()
 	: mCurAttempt(0)
 	, mHardUpdate(false)
@@ -48,6 +50,7 @@ void UpdateProcessor::initConnections()
 {
 	connect(&mRetryTimer, SIGNAL(timeout()), this, SLOT(startDownloadingProcess()));
 	connect(&mUpdatesInstaller, SIGNAL(installsFinished(bool)), this, SLOT(installingFinished(bool)));
+	connect(&mUpdatesInstaller, SIGNAL(selfInstalling()), this, SLOT(jobDoneQuit()));
 	connect(mDownloader, SIGNAL(detailsLoadError(QString)), this, SLOT(downloadErrors(QString)));
 	connect(mDownloader, SIGNAL(updatesLoadError(QString)), this, SLOT(downloadErrors(QString)));
 	connect(mDownloader, SIGNAL(updateDownloaded(QUrl,QString)), this, SLOT(fileReady(QUrl,QString)));

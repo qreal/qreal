@@ -5,6 +5,7 @@
 
 #include "detailsParser.h"
 
+namespace qrUpdater {
 class XmlDataParser : public DetailsParser
 {
 	Q_OBJECT
@@ -24,3 +25,4 @@ protected:
 	bool mHasInvalidFile;
 };
 
+}

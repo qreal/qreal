@@ -3,6 +3,8 @@
 #include <QtCore/QObject>
 #include <stdio.h>
 
+namespace qrUpdater {
+
 //!
 //! @brief The Communicator class
 //! provides simple IO methods with saving information
@@ -26,3 +28,4 @@ protected:
 	QString mParentAppPath;
 };
 
+}

@@ -9,6 +9,7 @@
 
 #include "update.h"
 
+namespace qrUpdater {
 //! @class UpdatesInstaller installs queue of updates
 class UpdatesInstaller : public QObject
 {
@@ -27,6 +28,7 @@ public:
 
 signals:
 	void installsFinished(bool hasNoErrors);
+	void selfInstalling();
 
 protected:
 	void installNext();
@@ -43,3 +45,4 @@ protected slots:
 	void startInstallation();
 };
 
+}

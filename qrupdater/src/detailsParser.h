@@ -7,6 +7,7 @@
 
 #include "update.h"
 
+namespace qrUpdater {
 //!
 //! @brief The DetailsParser class
 //! reads received file and provides fast access to main params
@@ -47,3 +48,4 @@ protected:
 	QMap<QString, QString> mVersions;
 };
 
+}

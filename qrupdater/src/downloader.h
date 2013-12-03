@@ -4,6 +4,7 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtCore/QFileInfo>
 
+namespace qrUpdater {
 //!
 //! @brief The Downloader class
 //! provides two-way of downloading: to IODevice and to file
@@ -43,4 +44,4 @@ protected slots:
 	void updatesFileDownloaded(QNetworkReply *reply);
 	void fileReadyRead();
 };
-
+}

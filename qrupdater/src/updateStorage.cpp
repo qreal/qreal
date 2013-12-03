@@ -1,5 +1,13 @@
 #include "updateStorage.h"
 
+namespace keys {
+static QString const filePath = "fileName";
+static QString const version = "version";
+static QString const arguments = "args";
+}
+
+using namespace qrUpdater;
+
 UpdateStorage::UpdateStorage(QString updatesFolder, QObject *parent)
 	: QObject(parent)
 	, mUpdatesFolder(updatesFolder)
@@ -25,9 +33,9 @@ UpdateStorage::~UpdateStorage()
 void UpdateStorage::saveUpdateInfo(Update *update)
 {
 	mUpdateInfo->beginGroup(update->unit());
-	mUpdateInfo->setValue("fileName", update->filePath());
-	mUpdateInfo->setValue("version", update->version());
-	mUpdateInfo->setValue("args", update->arguments());
+	mUpdateInfo->setValue(keys::filePath, update->filePath());
+	mUpdateInfo->setValue(keys::version, update->version());
+	mUpdateInfo->setValue(keys::arguments, update->arguments());
 	mUpdateInfo->endGroup();
 }
 
@@ -71,9 +79,9 @@ void UpdateStorage::loadUpdatesInfo(QStringList const units)
 
 		mUpdateInfo->beginGroup(unit);
 		newUpdate->setData(
-				mUpdateInfo->value("fileName").toString()
-				, mUpdateInfo->value("args").toStringList()
-				, mUpdateInfo->value("version").toString()
+				mUpdateInfo->value(keys::filePath).toString()
+				, mUpdateInfo->value(keys::arguments).toStringList()
+				, mUpdateInfo->value(keys::version).toString()
 		);
 		newUpdate->setUnitName(unit);
 		mUpdateInfo->endGroup();

@@ -1,5 +1,7 @@
 #include "xmlDataParser.h"
 
+using namespace qrUpdater;
+
 XmlDataParser::XmlDataParser()
 	: DetailsParser()
 	, mXml(NULL)

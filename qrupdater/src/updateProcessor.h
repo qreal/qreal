@@ -12,6 +12,7 @@
 #include "updatesInstaller.h"
 #include "communicator.h"
 
+namespace qrUpdater {
 //!
 //! @brief The UpdateProcessor class
 //! Logic of update process, makes updates
@@ -61,4 +62,6 @@ protected slots:
 	void downloadErrors(QString error = QString());
 	void jobDoneQuit();
 };
+
+}
 

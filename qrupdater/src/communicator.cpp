@@ -1,5 +1,7 @@
 #include "communicator.h"
 
+using namespace qrUpdater;
+
 Communicator::Communicator(QObject *parent)
 	: QObject(parent)
 {

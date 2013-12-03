@@ -4,6 +4,8 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMultiMap>
 
+namespace qrUpdater {
+
 //! @class ArgsParser parses arguments of command line
 //! determine what of modules to update
 class ArgsParser
@@ -28,4 +30,6 @@ protected:
 	QMultiMap<QString, QString> mParams;
 	bool hasHardUpdateParam;
 };
+
+}
 

@@ -7,6 +7,7 @@
 
 #include "detailsParser.h"
 
+namespace qrUpdater {
 //!
 //! @brief The UpdateStorage class
 //! Saving updates for later usage and loading this information back
@@ -39,3 +40,4 @@ protected:
 	QSettings *mUpdateInfo;
 };
 
+}

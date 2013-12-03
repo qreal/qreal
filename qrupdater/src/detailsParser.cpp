@@ -1,5 +1,7 @@
 #include "detailsParser.h"
 
+using namespace qrUpdater;
+
 DetailsParser::DetailsParser()
 {
 }
