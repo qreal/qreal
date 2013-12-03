@@ -1,5 +1,7 @@
 string curState = "";
-switch (curState)
-{
-@@eachFrameSwitches@@
+for (;;;) {
+	switch (curState)
+	{
+	@@eachFrameSwitches@@
+	}
 }

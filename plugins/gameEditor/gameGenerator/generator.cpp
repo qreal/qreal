@@ -59,7 +59,7 @@ void Generator::generateMainSwitch()
 
 	QString outerSwitchBody = "";
 	foreach (Id const &curFrame, toGenerate) {
-		if (!mApi.isLogicalElement(curFrame)) {
+		if (mApi.isLogicalElement(curFrame)) {
 			continue;
 		}
 
@@ -91,6 +91,8 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 
 	QString frameSwitch = "";
 
+	frameSwitch += "for (;;;) {\n";
+
 	IdList edges = mApi.elementsByType("ScreenTransition");
 
 	foreach (Id const &edge, edges) {
@@ -111,9 +113,12 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 
 		QString rightHandFrameName = mApi.property(rightHandFrame, "name").toString();
 
-		linkCase.replace("rightHandFrameName", rightHandFrameName);
+		linkCase.replace("@@rightHandFrameName@@", rightHandFrameName);
 		frameSwitch += linkCase;
 	}
+
+	frameSwitch += "		break;\n";
+	frameSwitch += "		}\n";
 
 	return frameSwitch;
 }

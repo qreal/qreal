@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-#	gameMetamodel \
+	gameMetamodel \
 	gameGenerator \

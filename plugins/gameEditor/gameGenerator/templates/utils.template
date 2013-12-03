@@ -3,12 +3,12 @@
 		string screenFlowTo = "";
 		switch (screenFlowTo)
 		{
-			@@caseForConnectedFrame@@
+		@@caseForConnectedFrame@@
 		}
 		break;
 ==========
 @@outconnectedFrameCase@@
 			case @@rightHandFrameName@@:
 				curState = @@rightHandFrameName@@;
-				brake;
+				break;
 ==========
