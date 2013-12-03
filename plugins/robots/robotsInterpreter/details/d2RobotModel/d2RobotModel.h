@@ -99,25 +99,12 @@ private:
 	void recalculateVelocity();
 	void applyRotationalFrictionForce();
 
+	QPointF rotationCenter() const;
 	QVector2D robotDirectionVector() const;
 
 	void findCollision(WallItem const &wall);
-
-	bool isRobotWallCollision(WallItem const &wall) const;
-	bool isCollision(WallItem const &wall, int i) const;
-	bool isEdgeCollision(WallItem const &wall, int i) const;
-
-	void getRobotFromWall(WallItem const &wall, int index);
-	void getEdgeRobotFromWall(WallItem const &wall, int index);
 	void getFromWalls();
 
-	void setWall(int index, WallItem const *wall);
-	void setEdgeWall(int index, WallItem const *wall);
-
-	/// Recalculates robot`s vertices and borders due to current position
-	void updateCoord();
-	/// Returns the first wall border that intersects robot polygon
-	QLineF wallBorderIntersectedByRobot(WallItem const &wall) const;
 	/// Returns a closest to a given point border of the given wall
 	QLineF closestWallBorder(WallItem const &wall, QPointF const &point) const;
 
@@ -170,18 +157,15 @@ private:
 
 	qreal mInertialMoment;
 	QVector2D mTractionForce;
+	QVector2D mReactionForce;
+	QVector2D mWallsFrictionForce;
+	QVector2D mGettingOutVector;
+	qreal mForceMomentDecrement;
 	qreal mForceMoment;
 	qreal mMass;
 
 	qreal mAngularVelocity;
 	QVector2D mVelocity;
-
-	WallItem const *mRobotWalls[4];
-	WallItem const *mRobotEdgeWalls[4];
-
-	QList<QPointF> mInsidePoints; // An array of wall`s vertices that got inside the robot
-	QPointF mVertices[4]; // Robot rect`s corners
-	QLineF mBorders[4]; // Robot rect`s borders
 };
 
 }

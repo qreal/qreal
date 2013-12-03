@@ -1,3 +1,4 @@
+
 #include "wallItem.h"
 
 #include <QtWidgets/QGraphicsSceneMouseEvent>
@@ -47,7 +48,6 @@ void WallItem::setPrivateData()
 	mBrush.setStyle(Qt::SolidPattern);
 	mBrush.setTextureImage(mImage);
 	mSerializeName = "wall";
-
 }
 
 QPointF WallItem::begin()
@@ -178,12 +178,12 @@ void WallItem::recalculateBorders()
 {
 	mLines.clear();
 
-	qreal const x1 = begin().rx();
-	qreal const x2 = end().rx();
-	qreal const y1 = begin().ry();
-	qreal const y2 = end().ry();
+	qreal const x1 = begin().x();
+	qreal const x2 = end().x();
+	qreal const y1 = begin().y();
+	qreal const y2 = end().y();
 
-	qreal dx = (x2 - x1);
+	qreal dx = x2 - x1;
 	qreal dy = y2 - y1;
 	qreal const len = sqrt(dx * dx + dy * dy);
 	dx /= len;

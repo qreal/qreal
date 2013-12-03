@@ -200,7 +200,7 @@ void RobotItem::recoverDragStartPosition()
 void RobotItem::addSensorsShapes(QPainterPath &target)
 {
 	foreach (SensorItem *const sensor, mSensors) {
-		target.addEllipse(QRectF(sensor->pos() - QPointF(sensorWidth / 2, sensorWidth / 2)
+		target.addRect(QRectF(sensor->pos() - QPointF(sensorWidth / 2, sensorWidth / 2)
 				, QSizeF(sensorWidth, sensorWidth)));
 	}
 }

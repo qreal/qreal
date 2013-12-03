@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QLineF>
+#include <QtCore/QList>
 #include <QtGui/QVector2D>
 #include <QtGui/QPainterPath>
 
@@ -27,11 +28,48 @@ public:
 	/// Returns a distance from a given point to a given line
 	static qreal distance(QLineF const &line, QPointF const &point);
 
+	/// Returns a distance between two points
+	static qreal distance(QPointF const &point1, QPointF const &point2);
+
 	/// Returns if given line intersects given painter path
 	static bool intersects(QLineF const &line, QPainterPath const &path);
 
 	/// Returns radius-vector with given rotation angle in degrees
 	static QVector2D directionVector(qreal angleInDegrees);
+
+	/// Returns radius-vector with given rotation angle in radians
+	static QVector2D directionVectorRad(qreal angleInRadians);
+
+	/// Returns a tangent line slope
+	static qreal tangentLineAt(QPainterPath const &path, QPointF const &point);
+
+	/// Returns a percentage on a given path for a given point
+	static qreal percentageAt(QPainterPath const &path, QPointF const &point);
+
+	/// Checks if given path consists of points (very short lines) and if
+	/// it is returns this points list
+	static QList<QPointF> pathToPoints(QPainterPath const &path);
+
+	/// Calculates a square of given polygon. Complexity is O(n)
+	static qreal square(QPolygonF const &polygon);
+
+	/// Returns QLineF instance with very big length for simulating the real line
+	static QLineF veryLongLine(QPointF const &pointOnLine, QVector2D const &directionVector);
+
+	/// Returns a list of points in whitch the given line intersects the given path
+	static QList<QPointF> intersection(QLineF const &line, QPainterPath const &path);
+
+	/// Returns the point in the given list that is closest to the given point
+	static QPointF closestPointTo(QList<QPointF> const &points, QPointF const &point);
+
+	/// Returns if the given point belongs to the given segment.
+	static bool belongs(QPointF const &point, QLineF const &segment);
+
+	/// Returns if the given point belongs to the given path.
+	static bool belongs(QPointF const &point, QPainterPath const &path);
+
+	/// Returns if the given line belongs to the given path.
+	static bool belongs(QLineF const &, QPainterPath const &path);
 };
 
 }
