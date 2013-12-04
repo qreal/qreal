@@ -128,7 +128,7 @@ QRectF RobotItem::rect() const
 	return boundingRect();
 }
 
-double RobotItem::rotateAngle() const
+qreal RobotItem::rotateAngle() const
 {
 	return mRobotModel->rotateAngle();
 }

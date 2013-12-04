@@ -434,7 +434,8 @@ void D2RobotModel::findCollision(WallItem const &wall)
 	}
 
 	QPainterPath const intersectionRegion = robotsBoundingRegion.intersected(wall.path()).simplified();
-	QPointF startPoint, endPoint;
+	QPointF startPoint;
+	QPointF endPoint;
 	qreal const lengthAtom = 1;
 
 	QVector2D longestVector;
@@ -697,7 +698,7 @@ void D2RobotModel::setRotation(qreal angle)
 	mD2ModelWidget->draw(mPos, mAngle);
 }
 
-double D2RobotModel::rotateAngle() const
+qreal D2RobotModel::rotateAngle() const
 {
 	return mAngle;
 }

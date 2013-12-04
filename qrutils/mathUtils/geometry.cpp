@@ -148,7 +148,8 @@ QLineF Geometry::veryLongLine(QPointF const &pointOnLine, QVector2D const &direc
 QList<QPointF> Geometry::intersection(QLineF const &line, QPainterPath const &path)
 {
 	QList<QPointF> result;
-	QPointF startPoint, endPoint;
+	QPointF startPoint;
+	QPointF endPoint;
 
 	for (int i = 0; i < path.elementCount(); ++i) {
 		QPainterPath::Element const element = path.elementAt(i);
@@ -192,7 +193,8 @@ QPointF Geometry::closestPointTo(QList<QPointF> const &points, QPointF const &po
 bool Geometry::belongs(QPointF const &point, QLineF const &segment)
 {
 	if (!Math::between(segment.x1(), segment.x2(), point.x())
-			|| !Math::between(segment.y1(), segment.y2(), point.y())) {
+			|| !Math::between(segment.y1(), segment.y2(), point.y()))
+	{
 		return false;
 	}
 
@@ -205,7 +207,8 @@ bool Geometry::belongs(QPointF const &point, QLineF const &segment)
 
 bool Geometry::belongs(QPointF const &point, QPainterPath const &path)
 {
-	QPointF startPoint, endPoint;
+	QPointF startPoint;
+	QPointF endPoint;
 
 	for (int i = 0; i < path.elementCount(); ++i) {
 		QPainterPath::Element const element = path.elementAt(i);

@@ -104,6 +104,7 @@ void NxtFlashTool::uploadProgram(QFileInfo const &fileInfo)
 	mUploadProcess.start("cmd", QStringList() << "/c" << qApp->applicationDirPath() + "/nxt-tools/upload.bat " + fileInfo.baseName()
 						 + " " + fileInfo.absolutePath());
 #else
+	Q_UNUSED(fileInfo)
 	mUploadProcess.start("sh", QStringList() << qApp->applicationDirPath() + "/nxt-tools/upload.sh");
 #endif
 

@@ -36,7 +36,7 @@ public:
 
 	virtual void rotate(qreal angle);
 	virtual QRectF rect() const;
-	virtual double rotateAngle() const;
+	virtual qreal rotateAngle() const;
 	void setRotateAngle(double const &angle);
 	virtual void setSelected(bool isSelected);
 	void setRotater(Rotater *rotater);
