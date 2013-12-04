@@ -66,6 +66,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	syncCursorButtons();
 	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
+	mUi->noneButton->setChecked(true);
 
 	drawInitialRobot();
 	syncronizeSensors();
@@ -163,18 +164,23 @@ void D2ModelWidget::initButtonGroups()
 	mButtonGroup.addButton(mUi->wallButton);
 	mButtonGroup.addButton(mUi->stylusButton);
 	mButtonGroup.addButton(mUi->ellipseButton);
+	mButtonGroup.addButton(mUi->noneButton);
 
 	mCursorButtonGroup.setExclusive(true);
 	mCursorButtonGroup.addButton(mUi->handCursorButton);
 	mCursorButtonGroup.addButton(mUi->multiselectionCursorButton);
 }
 
-void D2ModelWidget::setHighlightOneButton(QAbstractButton const *oneButton)
+void D2ModelWidget::setHighlightOneButton(QAbstractButton * const oneButton)
 {
 	foreach (QAbstractButton * const button, mButtonGroup.buttons()) {
 		if (button != oneButton) {
 			button->setChecked(false);
 		}
+	}
+
+	if (!oneButton->isChecked()) {
+		oneButton->setChecked(true);
 	}
 }
 
@@ -242,6 +248,7 @@ void D2ModelWidget::drawInitialRobot()
 {
 	mRobot = new RobotItem();
 	connect(mRobot, SIGNAL(changedPosition()), this, SLOT(handleNewRobotPosition()));
+	connect(mRobot, SIGNAL(mousePressed()), this, SLOT(setNoneButton()));
 	mScene->addItem(mRobot);
 
 	Rotater * const rotater = new Rotater();
@@ -1271,4 +1278,3 @@ void D2ModelWidget::alignWalls()
 		}
 	}
 }
-
