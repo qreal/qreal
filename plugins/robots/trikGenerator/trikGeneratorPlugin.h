@@ -23,6 +23,11 @@ public:
 
 protected:
 	virtual MasterGeneratorBase *masterGenerator();
+	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
+	virtual QFileInfo defaultFilePath(QString const &projectName) const;
+	virtual QString extension() const;
+	virtual QString extDescrition() const;
+	virtual QString generatorName() const;
 
 private slots:
 
@@ -39,9 +44,6 @@ private slots:
 	void stopRobot();
 
 private:
-	/// Returns filename of a currently generated program.
-	QString currentProgramName() const;
-
 	/// Action that launches code generator
 	QAction mGenerateCodeAction;
 

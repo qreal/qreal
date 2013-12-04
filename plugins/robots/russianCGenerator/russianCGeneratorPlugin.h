@@ -21,6 +21,11 @@ public:
 
 protected:
 	virtual MasterGeneratorBase *masterGenerator();
+	virtual void regenerateExtraFiles(QFileInfo const &newFileInfo);
+	virtual QFileInfo defaultFilePath(QString const &projectName) const;
+	virtual QString extension() const;
+	virtual QString extDescrition() const;
+	virtual QString generatorName() const;
 
 private:
 	/// Disable/enable tab in QList<ActionInfo> info

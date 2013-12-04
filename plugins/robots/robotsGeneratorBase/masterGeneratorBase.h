@@ -23,6 +23,8 @@ public:
 			, ErrorReporterInterface &errorReporter
 			, Id const &diagramId);
 
+	void setProjectDir(QFileInfo const &fileInfo);
+
 	/// @warning This method mustn`t be called from constructor. Otherwise
 	/// there will be segfault due to pure virtual method call in constructor
 	virtual void initialize();
@@ -50,6 +52,9 @@ protected:
 	Id const mDiagram;
 	GeneratorCustomizer *mCustomizer;
 	ControlFlowGeneratorBase *mReadableControlFlowGenerator;
+	QString mProjectName;
+	QString mProjectDir;
+	int mCurInitialNodeNumber;
 };
 
 }

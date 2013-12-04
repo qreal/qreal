@@ -7,7 +7,6 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QListWidget>
-#include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 #include <QtPrintSupport/QPrintDialog>
 #include <QtWidgets/QProgressBar>
@@ -15,7 +14,6 @@
 #include <QtCore/QPluginLoader>
 #include <QtCore/QMetaType>
 #include <QtSvg/QSvgGenerator>
-#include <QtCore/QDebug>
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
@@ -53,20 +51,27 @@
 
 #include "hotKeyManager/hotKeyManager.h"
 
+#include <qrutils/outFile.h>
+#include "toolPluginInterface/systemEvents.h"
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
+
 using namespace qReal;
 using namespace qReal::commands;
+using namespace gui;
 
 QString const unsavedDir = "unsaved";
 
 MainWindow::MainWindow(QString const &fileToOpen)
 		: mUi(new Ui::MainWindowUi)
-		, mCodeTabManager(new QMap<EditorView*, CodeArea*>())
+		, mCodeTabManager(new QMap<EditorView*, QScintillaTextEdit*>())
 		, mModels(NULL)
 		, mController(new Controller)
 		, mEditorManagerProxy(new EditorManager())
 		, mListenerManager(NULL)
 		, mPropertyModel(mEditorManagerProxy)
 		, mGesturesWidget(NULL)
+		, mSystemEvents(new SystemEvents())
+		, mTextManager(new TextManager(mSystemEvents, this))
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(NULL)
 		, mIsFullscreen(false)
@@ -74,7 +79,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mPreferencesDialog(this)
 		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
-		, mProjectManager(new ProjectManager(this))
+		, mProjectManager(new ProjectManager(this, mTextManager))
 		, mStartDialog(new StartDialog(*this, *mProjectManager))
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
@@ -132,6 +137,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		showMaximized();
 	}
 	splashScreen.close();
+
+	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
 
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
@@ -202,6 +209,10 @@ void MainWindow::connectActions()
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(modifiedChanged(bool)), mProjectManager, SLOT(setUnsavedIndicator(bool)));
 
+
+	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(changeWindowTitle(int)));
+	connect(mTextManager, SIGNAL(textChanged(bool)), this, SLOT(setTextChanged(bool)));
+
 	connect(mProjectManager, SIGNAL(afterOpen(QString))
 			, &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
 	connect(mProjectManager, SIGNAL(closed()), &mModels->logicalModelAssistApi().exploser(), SLOT(refreshAllPalettes()));
@@ -237,28 +248,6 @@ QModelIndex MainWindow::rootIndex() const
 	return mRootIndex;
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *keyEvent)
-{
-	if (keyEvent->modifiers() == Qt::AltModifier && keyEvent->key() == Qt::Key_X) {
-		close();
-	} else if (keyEvent->key() == Qt::Key_F2
-			|| (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_S))
-	{
-		CodeArea *area = dynamic_cast<CodeArea*>(mUi->tabs->currentWidget());
-		if (area != NULL) {
-			mProjectManager->saveGenCode(area->toPlainText());
-		}
-		mProjectManager->saveOrSuggestToSaveAs();
-	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_W) {
-		closeTab(mUi->tabs->currentIndex());
-	} else if (keyEvent->key() == Qt::Key_F1) {
-		showHelp();
-	} else if (keyEvent->modifiers() == Qt::ControlModifier && keyEvent->key() == Qt::Key_F) {
-		mFindReplaceDialog->stateClear();
-		mFindReplaceDialog->show();
-	}
-}
-
 MainWindow::~MainWindow()
 {
 	QDir().rmdir(mTempDir);
@@ -276,6 +265,8 @@ MainWindow::~MainWindow()
 	delete mProjectManager;
 	delete mStartDialog;
 	delete mSceneCustomizer;
+	delete mTextManager;
+	delete mSystemEvents;
 }
 
 EditorManagerInterface& MainWindow::editorManager()
@@ -285,10 +276,7 @@ EditorManagerInterface& MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	QList<ToolPluginInterface *> toolPlugins = mToolManager.getPlugins();
-	foreach (ToolPluginInterface *toolPlugin, toolPlugins) {
-		toolPlugin->closeNeededWidget();
-	}
+	mSystemEvents->emitCloseMainWindow();
 
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
@@ -306,21 +294,6 @@ void MainWindow::loadPlugins()
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
 			, &mEditorManagerProxy);
-}
-
-void MainWindow::closeDiagramTab(Id const &id)
-{
-	IdList const graphicalIds = mModels->graphicalRepoApi().graphicalElements(id.type());
-	if (!graphicalIds.isEmpty()) {
-		// TODO: Why only for first graphical element?
-		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(graphicalIds[0]);
-		for (int i = 0; i < mUi->tabs->count(); i++) {
-			EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
-			if (tab != NULL && tab->mvIface()->rootIndex() == index) {
-				mUi->tabs->removeTab(i);
-			}
-		}
-	}
 }
 
 void MainWindow::clearSelectionOnTabs()
@@ -525,11 +498,22 @@ void MainWindow::setData(QString const &data, QPersistentModelIndex const &index
 
 void MainWindow::print()
 {
-	QPrinter printer(QPrinter::HighResolution);
-	QPrintDialog dialog(&printer, this);
-	if (dialog.exec() == QDialog::Accepted) {
-		QPainter painter(&printer);
-		getCurrentTab()->scene()->render(&painter);
+	bool const isEditorTab = getCurrentTab() != NULL;
+
+	if (isEditorTab) {
+		QPrinter printer(QPrinter::HighResolution);
+		QPrintDialog dialog(&printer, this);
+		if (dialog.exec() == QDialog::Accepted) {
+			QPainter painter(&printer);
+			getCurrentTab()->scene()->render(&painter);
+		}
+	} else {
+		QScintillaTextEdit *textTab = static_cast<QScintillaTextEdit *> (currentTab());
+		QsciPrinter printer(QPrinter::HighResolution);
+		QPrintDialog dialog(&printer, this);
+		if (dialog.exec() == QDialog::Accepted) {
+			printer.printRange(textTab);
+		}
 	}
 }
 
@@ -564,6 +548,40 @@ void MainWindow::reportOperation(invocation::LongOperation *operation)
 {
 	ProgressDialog *progressDialog = new ProgressDialog(this);
 	progressDialog->connectOperation(operation);
+}
+
+QWidget *MainWindow::currentTab()
+{
+	return mUi->tabs->currentWidget();
+}
+
+void MainWindow::openTab(QWidget *tab, const QString &title)
+{
+	if (mUi->tabs->indexOf(tab) == -1) {
+		mUi->tabs->addTab(tab, title);
+	}
+
+	mUi->tabs->setCurrentWidget(tab);
+}
+
+void MainWindow::closeTab(QWidget *tab)
+{
+	mUi->tabs->removeTab(mUi->tabs->indexOf(tab));
+}
+
+void MainWindow::closeDiagramTab(Id const &id)
+{
+	IdList const graphicalIds = mModels->graphicalRepoApi().graphicalElements(id.type());
+	if (!graphicalIds.isEmpty()) {
+		// TODO: Why only for first graphical element?
+		QModelIndex const index = mModels->graphicalModelAssistApi().indexById(graphicalIds[0]);
+		for (int i = 0; i < mUi->tabs->count(); i++) {
+			EditorView const * const tab = dynamic_cast<EditorView const *>(mUi->tabs->widget(i));
+			if (tab != NULL && tab->mvIface()->rootIndex() == index) {
+				mUi->tabs->removeTab(i);
+			}
+		}
+	}
 }
 
 void MainWindow::deleteFromExplorer(bool isLogicalModel)
@@ -645,6 +663,35 @@ void MainWindow::addEdgesToBeDeleted(IdList &itemsToDelete)
 			}
 		}
 	}
+}
+
+void MainWindow::changeWindowTitle(int index)
+{
+	QString const windowTitle = mToolManager.customizer()->windowTitle();
+
+	if (index != -1) {
+		if (dynamic_cast<EditorView *>(getCurrentTab())) {
+			setWindowTitle(windowTitle + " " + mProjectManager->saveFilePath());
+		} else {
+			QScintillaTextEdit *area = static_cast<QScintillaTextEdit *>(currentTab());
+			QString const filePath = mTextManager->path(area);
+
+			setWindowTitle(windowTitle + " " + filePath);
+		}
+	} else {
+		setWindowTitle(windowTitle);
+	}
+}
+
+void MainWindow::setTextChanged(bool changed)
+{
+	QScintillaTextEdit *area = static_cast<QScintillaTextEdit *>(currentTab());
+	QString const windowTitle = mToolManager.customizer()->windowTitle();
+	QString const filePath = mTextManager->path(area);
+	QString const chIndicator = changed ? "*" : "";
+	setWindowTitle(windowTitle + " " + chIndicator + filePath);
+	int const index = mUi->tabs->currentIndex();
+	mUi->tabs->setTabText(index, mUi->tabs->tabText(index).remove(QChar('*'), Qt::CaseInsensitive) + chIndicator);
 }
 
 void MainWindow::removeReferences(Id const &id)
@@ -898,21 +945,16 @@ void MainWindow::closeCurrentTab()
 void MainWindow::closeTab(int index)
 {
 	QWidget *widget = mUi->tabs->widget(index);
-	CodeArea *possibleCodeTab = static_cast<CodeArea *>(widget);
-	EditorView * deletingCodeTab = NULL;
-	foreach (EditorView *diagram, mCodeTabManager->keys()) {
-		if (mCodeTabManager->value(diagram) == possibleCodeTab) {
-			deletingCodeTab = diagram;
-		}
-	}
-	if (deletingCodeTab) {
-		mCodeTabManager->remove(deletingCodeTab);
-	}
+	QScintillaTextEdit *possibleCodeTab = static_cast<QScintillaTextEdit *>(widget);
 
-	EditorView *editorView = dynamic_cast<EditorView *>(mUi->tabs->widget(index));
-	if (editorView) {
+	QString const path = mTextManager->path(possibleCodeTab);
+
+	if (!mTextManager->unbindCode(possibleCodeTab)) {
 		Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(mRootIndex);
 		mController->diagramClosed(diagramId);
+		mSystemEvents->emitDiagramClosed(diagramId);
+	} else {
+		mSystemEvents->emitCodeTabClosed(QFileInfo(path));
 	}
 
 	mUi->tabs->removeTab(index);
@@ -1006,6 +1048,7 @@ void MainWindow::openQscintillaTextEditor(QPersistentModelIndex const &index, in
 		, QString const &propertyValue)
 {
 	gui::QScintillaTextEdit *textEdit = new gui::QScintillaTextEdit(index, role);
+
 	if (!propertyValue.isEmpty()) {
 		textEdit->setText(propertyValue.toUtf8());
 	}
@@ -1317,8 +1360,6 @@ void MainWindow::currentTabChanged(int newIndex)
 	bool const isShape = isCurrentTabShapeEdit();
 
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
-	// TODO: implement printing for text tabs
-	mUi->actionPrint->setEnabled(isEditorTab);
 
 	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
 	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);
@@ -1787,7 +1828,8 @@ void MainWindow::addActionOrSubmenu(QMenu *target, ActionInfo const &actionOrMen
 void MainWindow::initToolPlugins()
 {
 	mToolManager.init(PluginConfigurator(mModels->repoControlApi(), mModels->graphicalModelAssistApi()
-			, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer));
+		, mModels->logicalModelAssistApi(), *this, *mProjectManager, *mSceneCustomizer
+		, *mSystemEvents, *mTextManager));
 
 	QList<ActionInfo> const actions = mToolManager.actions();
 	foreach (ActionInfo const action, actions) {
@@ -1842,26 +1884,6 @@ bool MainWindow::showConnectionRelatedMenus() const
 bool MainWindow::showUsagesRelatedMenus() const
 {
 	return mToolManager.customizer()->showUsagesRelatedMenus();
-}
-
-void MainWindow::showInTextEditor(QString const &title, QString const &text)
-{
-	if (dynamic_cast<EditorView *>(getCurrentTab()) != NULL) {
-		if (!mCodeTabManager->contains(getCurrentTab())) {
-			CodeArea * const area = new CodeArea();
-			area->document()->setPlainText(text);
-			area->show();
-			mCodeTabManager->insert(getCurrentTab(), area);
-
-			mUi->tabs->addTab(area, title);
-			mUi->tabs->setCurrentWidget(area);
-		} else {
-			CodeArea * const area = mCodeTabManager->value(getCurrentTab());
-			area->document()->setPlainText(text);
-			area->show();
-			mUi->tabs->setCurrentWidget(area);
-		}
-	}
 }
 
 void MainWindow::reinitModels()
@@ -2089,6 +2111,15 @@ QListIterator<EditorView *> MainWindow::openedEditorViews() const
 		}
 	}
 	return QListIterator<EditorView *>(views);
+}
+
+void MainWindow::setTabText(QWidget *tab, QString const &text)
+{
+	int const index = mUi->tabs->indexOf(tab);
+
+	if (index != -1) {
+		mUi->tabs->setTabText(index, text);
+	}
 }
 
 void MainWindow::setVersion(QString const &version)

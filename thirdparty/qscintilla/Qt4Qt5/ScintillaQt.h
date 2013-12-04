@@ -30,7 +30,7 @@
 #include <qtimer.h>
 #include <qclipboard.h>
 
-#include "Qsci/qsciglobal.h"
+#include <Qsci/qsciglobal.h>
 
 #include "SciNamespace.h"
 
