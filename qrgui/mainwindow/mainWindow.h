@@ -192,7 +192,7 @@ private slots:
 	void createProject();
 
 	/// Diagram opening must happen after plugins initialization
-    void initPluginsAndStartWidget();
+	void initPluginsAndStartWidget();
 	void initToolPlugins();
 
 	/// handler for menu 'button find' pressed
@@ -238,7 +238,7 @@ private slots:
 	void closeCurrentTab();
 	void closeTab(int index);
 
-    void closeStartTab(int index);
+	void closeStartTab(int index);
 
 	/// Closes the appropriate tab if the specified index corresponds to the diagram on one of the tabs
 	/// @return true if one of the tabs was closed
@@ -349,7 +349,7 @@ private:
 	void initDocks();
 	void initExplorers();
 	void initRecentProjectsMenu();
-    void openStartTab();
+	void openStartTab();
 
 	void setVersion(QString const &version);
 
@@ -377,7 +377,7 @@ private:
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
 
-	gui::ErrorReporter *mErrorReporter;  // Has ownership
+	gui::ErrorReporter *mErrorReporter;// Has ownership
 
 	/// Fullscreen mode flag
 	bool mIsFullscreen;
@@ -394,7 +394,7 @@ private:
 
 	FindManager *mFindHelper;
 	ProjectManager *mProjectManager;
-    StartWidget *mStartWidget;
+	StartWidget *mStartWidget;
 
 	SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;

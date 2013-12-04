@@ -39,7 +39,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 
 	recentProjectsLayout->addWidget(recentProjects);
 	recentProjectsLayout->addLayout(mProjectsLayout);
-    recentProjectsLayout->addStretch(0);
+	recentProjectsLayout->addStretch(0);
 
 	mainLayout->addLayout(sessionsLayout);
 	QWidget *horizontalLineWidget = new QWidget;
@@ -56,55 +56,55 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	this->setAutoFillBackground(true);
 	this->setPalette(Pal);
 
-    Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
-    if (theOnlyDiagram.isNull()) {
-            mProjectManager->suggestToCreateDiagram();
-    }
-    sessionsLayout->addWidget(createCommandButton(tr("Open existing project")
-                            , this, SLOT(openExistingProject()), QKeySequence::Open));
+	Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
+	if (theOnlyDiagram.isNull()) {
+			mProjectManager->suggestToCreateDiagram();
+	}
+	sessionsLayout->addWidget(createCommandButton(tr("Open existing project")
+							, this, SLOT(openExistingProject()), QKeySequence::Open));
 
-    QCommandLinkButton *openIDLink = new QCommandLinkButton(tr("&Open interpreted diagram"));
-    QCommandLinkButton *createIDLink = new QCommandLinkButton(tr("&Create interpreted diagram"));
+	QCommandLinkButton *openIDLink = new QCommandLinkButton(tr("&Open interpreted diagram"));
+	QCommandLinkButton *createIDLink = new QCommandLinkButton(tr("&Create interpreted diagram"));
 
-    mInterpreterButton = openIDLink;
-    mCreateInterpreterButton = createIDLink;
+	mInterpreterButton = openIDLink;
+	mCreateInterpreterButton = createIDLink;
 
-    sessionsLayout->addWidget(mCreateInterpreterButton);
-    sessionsLayout->addWidget(mInterpreterButton);
+	sessionsLayout->addWidget(mCreateInterpreterButton);
+	sessionsLayout->addWidget(mInterpreterButton);
 
-    if (theOnlyDiagram != Id()) {
-        Id const editor = mMainWindow->editorManager().editors()[0];
-        QString const diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
+	if (theOnlyDiagram != Id()) {
+		Id const editor = mMainWindow->editorManager().editors()[0];
+		QString const diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
-        QSignalMapper *newProjectMapper = new QSignalMapper(this);
-        QCommandLinkButton *newLink = createCommandButton(tr("New project")
-            , newProjectMapper, SLOT(map()), QKeySequence::New);
-        newProjectMapper->setMapping(newLink, diagramIdString);
-        connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
-        sessionsLayout->addWidget(newLink);
-    }
-    sessionsLayout->addStretch(0);
+		QSignalMapper *newProjectMapper = new QSignalMapper(this);
+		QCommandLinkButton *newLink = createCommandButton(tr("New project")
+			, newProjectMapper, SLOT(map()), QKeySequence::New);
+		newProjectMapper->setMapping(newLink, diagramIdString);
+		connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
+		sessionsLayout->addWidget(newLink);
+	}
+	sessionsLayout->addStretch(0);
 }
 
 void StartWidget::openRecentProject(QString const &fileName)
 {
-    if(mProjectManager->open(fileName)){
+	if(mProjectManager->open(fileName)){
 		emit closeStartTab(0);
 	}
 }
 
 void StartWidget::openExistingProject()
 {
-    if(mProjectManager->suggestToOpenExisting()){
+	if(mProjectManager->suggestToOpenExisting()){
 		emit closeStartTab(0);
 	}
 }
 
 void StartWidget::createProjectWithDiagram(QString const &idString)
 {
-    if(mMainWindow->createProject(idString)){
-        emit closeStartTab(0);
-    }
+	if(mMainWindow->createProject(idString)){
+		emit closeStartTab(0);
+	}
 }
 
 void StartWidget::initRecentProjects()
@@ -130,78 +130,78 @@ void StartWidget::initRecentProjects()
 
 void StartWidget::openInterpretedDiagram()
 {
-        hide();
-        QString const fileName = mProjectManager->openFileName(tr("Select file with metamodel to open"));
-        ProxyEditorManager &editorManagerProxy = mMainWindow->editorManagerProxy();
+	hide();
+	QString const fileName = mProjectManager->openFileName(tr("Select file with metamodel to open"));
+	ProxyEditorManager &editorManagerProxy = mMainWindow->editorManagerProxy();
 
-        if (!fileName.isEmpty() && mProjectManager->open(fileName)) {
-                editorManagerProxy.setProxyManager(new InterpreterEditorManager(fileName));
-                QStringList interpreterDiagramsList;
-                foreach (Id const &editor, editorManagerProxy.editors()) {
-                        foreach (Id const &diagram, editorManagerProxy.diagrams(editor)) {
-                                QString const diagramNodeName = editorManagerProxy.diagramNodeName(editor.editor(), diagram.diagram());
-                                if (diagramNodeName.isEmpty()) {
-                                        continue;
-                                }
+	if (!fileName.isEmpty() && mProjectManager->open(fileName)) {
+			editorManagerProxy.setProxyManager(new InterpreterEditorManager(fileName));
+			QStringList interpreterDiagramsList;
+			foreach (Id const &editor, editorManagerProxy.editors()) {
+					foreach (Id const &diagram, editorManagerProxy.diagrams(editor)) {
+							QString const diagramNodeName = editorManagerProxy.diagramNodeName(editor.editor(), diagram.diagram());
+							if (diagramNodeName.isEmpty()) {
+									continue;
+							}
 
-                                interpreterDiagramsList.append("qrm:/" + editor.editor() + "/"
-                                                + diagram.diagram() + "/" + diagramNodeName);
-                        }
-                }
+							interpreterDiagramsList.append("qrm:/" + editor.editor() + "/"
+											+ diagram.diagram() + "/" + diagramNodeName);
+					}
+			}
 
-                foreach (QString const &interpreterIdString, interpreterDiagramsList) {
-                        // TODO: ???
-                        mMainWindow->models()->repoControlApi().exterminate();
-                        mMainWindow->models()->reinit();
-                        mMainWindow->loadPlugins();
-                        mMainWindow->createDiagram(interpreterIdString);
-                }
-        } else {
-                show();
-                editorManagerProxy.setProxyManager(new EditorManager());
-        }
+			foreach (QString const &interpreterIdString, interpreterDiagramsList) {
+					// TODO: ???
+					mMainWindow->models()->repoControlApi().exterminate();
+					mMainWindow->models()->reinit();
+					mMainWindow->loadPlugins();
+					mMainWindow->createDiagram(interpreterIdString);
+			}
+	} else {
+			show();
+			editorManagerProxy.setProxyManager(new EditorManager());
+	}
 }
 
 void StartWidget::createInterpretedDiagram()
 {
-        hide();
-        ProxyEditorManager &editorManagerProxy = mMainWindow->editorManagerProxy();
-        editorManagerProxy.setProxyManager(new InterpreterEditorManager(""));
-        bool ok = false;
-        QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
-                        , QLineEdit::Normal, "", &ok);
-        while (ok && name.isEmpty()) {
-                name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
-                                , QLineEdit::Normal, "", &ok);
-        }
+	hide();
+	ProxyEditorManager &editorManagerProxy = mMainWindow->editorManagerProxy();
+	editorManagerProxy.setProxyManager(new InterpreterEditorManager(""));
+	bool ok = false;
+	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
+					, QLineEdit::Normal, "", &ok);
+	while (ok && name.isEmpty()) {
+			name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
+							, QLineEdit::Normal, "", &ok);
+	}
 
-        if (ok) {
-                QPair<Id, Id> editorAndDiagram = editorManagerProxy.createEditorAndDiagram(name);
-                mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
-                mMainWindow->models()->repoControlApi().exterminate();
-                mMainWindow->models()->reinit();
-                mMainWindow->loadPlugins();
-        } else {
-                show();
-                editorManagerProxy.setProxyManager(new EditorManager());
-        }
+	if (ok) {
+			QPair<Id, Id> editorAndDiagram = editorManagerProxy.createEditorAndDiagram(name);
+			mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
+			mMainWindow->models()->repoControlApi().exterminate();
+			mMainWindow->models()->reinit();
+			mMainWindow->loadPlugins();
+	} else {
+			show();
+			editorManagerProxy.setProxyManager(new EditorManager());
+	}
 }
 
 QCommandLinkButton *StartWidget::createCommandButton(QString const &text
-                , QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey)
+			, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey)
 {
-        QCommandLinkButton * const result = new QCommandLinkButton(text);
-        connect(result, SIGNAL(clicked()), reciever, slot);
-        QAction * const buttonAction = new QAction(this);
-        buttonAction->setShortcuts(standartHotkey);
-        connect(buttonAction, SIGNAL(triggered()), result, SLOT(animateClick()));
-        addAction(buttonAction);
-        result->setToolTip(QKeySequence(standartHotkey).toString());
-        return result;
+	QCommandLinkButton * const result = new QCommandLinkButton(text);
+	connect(result, SIGNAL(clicked()), reciever, slot);
+	QAction * const buttonAction = new QAction(this);
+	buttonAction->setShortcuts(standartHotkey);
+	connect(buttonAction, SIGNAL(triggered()), result, SLOT(animateClick()));
+	addAction(buttonAction);
+	result->setToolTip(QKeySequence(standartHotkey).toString());
+	return result;
 }
 
 void StartWidget::setVisibleForInterpreterButton(bool const visible)
 {
-        mInterpreterButton->setVisible(visible);
-        mCreateInterpreterButton->setVisible(visible);
+	mInterpreterButton->setVisible(visible);
+	mCreateInterpreterButton->setVisible(visible);
 }
