@@ -1,4 +1,5 @@
 #include "robotItem.h"
+#include "constants.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;

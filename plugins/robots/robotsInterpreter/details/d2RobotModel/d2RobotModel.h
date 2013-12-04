@@ -17,11 +17,6 @@ namespace robots {
 namespace details {
 namespace d2Model {
 
-qreal const onePercentAngularVelocity = 0.0055;
-int const touchSensorWallStrokeIncrement = 10;
-int const touchSensorStrokeIncrement = 5;
-int const maxLightSensorValur = 1023;
-
 class D2RobotModel : public QObject, public RobotModelInterface
 {
 	Q_OBJECT
@@ -155,14 +150,12 @@ private:
 	QPointF mPos;
 	qreal mAngle;
 
-	qreal mInertialMoment;
 	QVector2D mTractionForce;
 	QVector2D mReactionForce;
 	QVector2D mWallsFrictionForce;
 	QVector2D mGettingOutVector;
 	qreal mForceMomentDecrement;
 	qreal mForceMoment;
-	qreal mMass;
 
 	qreal mAngularVelocity;
 	QVector2D mVelocity;

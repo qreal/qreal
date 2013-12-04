@@ -1,35 +1,17 @@
 #include "d2RobotModel.h"
-#include "../tracer.h"
+
 #include <qrkernel/settingsManager.h>
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 #include <qrutils/mathUtils/gaussNoise.h>
 
+#include "constants.h"
+#include "../tracer.h"
+
 using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace d2Model;
 using namespace mathUtils;
-
-uint const black   = 0xFF000000;
-uint const white   = 0xFFFFFFFF;
-uint const red     = 0xFFFF0000;
-uint const green   = 0xFF008000;
-uint const blue    = 0xFF0000FF;
-uint const yellow  = 0xFFFFFF00;
-uint const cyan    = 0xFF00FFFF;
-uint const magenta = 0xFFFF00FF;
-
-unsigned const touchSensorPressedSignal = 1;
-unsigned const touchSensorNotPressedSignal = 0;
-
-qreal const spoilColorDispersion = 2.0;
-qreal const spoilLightDispersion = 1.0;
-qreal const spoilSonarDispersion = 1.5;
-qreal const varySpeedDispersion = 0.0125;
-qreal const percentSaltPepperNoise = 20.0;
-
-qreal const floorFrictionCoefficient = 0.2;
-qreal const wallFrictionCoefficient = 0.2;
 
 D2RobotModel::D2RobotModel(QObject *parent)
 	: QObject(parent)
@@ -45,9 +27,7 @@ D2RobotModel::D2RobotModel(QObject *parent)
 	, mNeedMotorNoise(SettingsManager::value("enableNoiseOfMotors").toBool())
 	, mPos(QPointF(0,0))
 	, mAngle(0)
-	, mInertialMoment(100)
 	, mForceMoment(0)
-	, mMass(200)
 	, mAngularVelocity(0)
 {
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());
@@ -611,9 +591,9 @@ void D2RobotModel::recalculateVelocity()
 {
 	qreal const angularVelocityFrictionFactor = fabs(mAngularVelocity * 200);
 
-	mVelocity += mTractionForce / mMass * Timeline::timeInterval;
-	mAngularVelocity += mForceMoment / mInertialMoment * Timeline::timeInterval;
-	qreal const angularFriction = angularVelocityFrictionFactor / mInertialMoment * Timeline::timeInterval;
+	mVelocity += mTractionForce / robotMass * Timeline::timeInterval;
+	mAngularVelocity += mForceMoment / robotInertialMoment * Timeline::timeInterval;
+	qreal const angularFriction = angularVelocityFrictionFactor / robotInertialMoment * Timeline::timeInterval;
 	qreal const oldAngularVelocity = mAngularVelocity;
 
 	mAngularVelocity -= angularFriction * Math::sign(mAngularVelocity);
@@ -630,19 +610,18 @@ void D2RobotModel::applyRotationalFrictionForce()
 	rotationalFrictionForce.normalize();
 
 	qreal const sinus = Geometry::vectorProduct(mVelocity.normalized(), rotationalFrictionForce);
-	qreal const rotationalFrictionFactor = mVelocity.length() * 1500;
-	rotationalFrictionForce *= sinus * rotationalFrictionFactor;
+	rotationalFrictionForce *= sinus * mVelocity.length() * rotationalFrictionFactor;
 
 	if (Geometry::scalarProduct(rotationalFrictionForce, mVelocity) > 0) {
 		rotationalFrictionForce = -rotationalFrictionForce;
 	}
 
-	QVector2D const newVelocity = mVelocity + rotationalFrictionForce / mMass * Timeline::timeInterval;
+	QVector2D const newVelocity = mVelocity + rotationalFrictionForce / robotMass * Timeline::timeInterval;
 	qreal const newProjection = Geometry::scalarProduct(newVelocity, rotationalFrictionForce);
 	if (newProjection > 0) {
 		qreal const oldProjection = -Geometry::scalarProduct(mVelocity, rotationalFrictionForce);
 		qreal const incrementFactor = oldProjection / (oldProjection + newProjection);
-		mVelocity += rotationalFrictionForce / mMass * Timeline::timeInterval * incrementFactor;
+		mVelocity += rotationalFrictionForce / robotMass * Timeline::timeInterval * incrementFactor;
 	} else {
 		mVelocity = newVelocity;
 	}
