@@ -5,10 +5,12 @@
 #include <QtGui/QVector2D>
 #include <QtGui/QPainterPath>
 
+#include <qrutils/utilsDeclSpec.h>
+
 namespace mathUtils {
 
 /// Contains some useful methods for working with vectors, lines, pathes, etc.
-class Geometry
+class QRUTILS_EXPORT Geometry
 {
 public:
 	/// Returns a scalar product of two given vectors
