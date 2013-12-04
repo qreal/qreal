@@ -44,7 +44,7 @@ RCC_DIR = .moc
 
 # Comment this in if you want the internal Scintilla classes to be placed in a
 # Scintilla namespace rather than pollute the global namespace.
-#DEFINES += SCI_NAMESPACE
+DEFINES += SCI_NAMESPACE
 
 HEADERS = \
 	ListBoxQt.h \
@@ -110,7 +110,7 @@ HEADERS = \
 	../src/SVector.h \
 	../src/UniConversion.h \
 	../src/ViewStyle.h \
-        ../src/XPM.h \
+	../src/XPM.h \
 
 SOURCES = \
 	qsciscintilla.cpp \
@@ -166,7 +166,7 @@ SOURCES = \
 	../src/Style.cpp \
 	../src/UniConversion.cpp \
 	../src/ViewStyle.cpp \
-        ../src/XPM.cpp \
+	../src/XPM.cpp \
 
 TRANSLATIONS = \
 	qscintilla_ru.ts \
