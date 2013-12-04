@@ -36,6 +36,7 @@ qreal const floorFrictionCoefficient = 0.2;
 qreal const wallFrictionCoefficient = 0.2;
 qreal const rotationalFrictionFactor = 1500;
 qreal const angularVelocityFrictionFactor = 200;
+qreal const reactionForceStabilisationCoefficient = 5;
 
 qreal const onePercentAngularVelocity = 0.0055;
 int const touchSensorWallStrokeIncrement = 10;
