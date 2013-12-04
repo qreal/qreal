@@ -40,7 +40,6 @@
         <file>templates/functions/random.t</file>
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>
-        <file>templates/wait/buttons.t</file>
         <file>templates/wait/color.t</file>
         <file>templates/wait/colorIntensity.t</file>
         <file>templates/wait/encoder.t</file>

@@ -1,0 +1,1 @@
+бибикнуть(@@FREQUENCY@@, @@DURATION@@, @@VOLUME@@);

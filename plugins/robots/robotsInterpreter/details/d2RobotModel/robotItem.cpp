@@ -132,6 +132,21 @@ double RobotItem::rotateAngle() const
 	return mRobotModel->rotateAngle();
 }
 
+void RobotItem::setRotateAngle(double const &angle)
+{
+	mRobotModel->setRotation(angle);
+}
+
+void RobotItem::setRobotPos(QPointF const &newPos)
+{
+	mRobotModel->setRobotPos(newPos);
+}
+
+QPointF RobotItem::robotPos(void)
+{
+	return mRobotModel->robotPos();
+}
+
 void RobotItem::setSelected(bool isSelected)
 {
 	QGraphicsItem::setSelected(isSelected);

@@ -19,9 +19,7 @@
         <file>templates/engines/engineC.t</file>
         <file>templates/engines/enginesBackward.t</file>
         <file>templates/engines/enginesForward.t</file>
-        <file>templates/engines/enginesInitialization.t</file>
         <file>templates/engines/enginesStop.t</file>
-        <file>templates/engines/enginesTermination.t</file>
         <file>templates/signs/equals.t</file>
         <file>templates/signs/greater.t</file>
         <file>templates/signs/less.t</file>
@@ -55,7 +53,6 @@
         <file>templates/functions/randomize.t</file>
         <file>templates/types/cast.t</file>
         <file>templates/engines/nullifyEncoder.t</file>
-        <file>templates/wait/buttons.t</file>
         <file>templates/wait/color.t</file>
         <file>templates/wait/colorIntensity.t</file>
         <file>templates/wait/encoder.t</file>
