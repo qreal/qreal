@@ -2,8 +2,8 @@
 
 #include <QtWidgets/QWidget>
 
-#include "../../../../qrutils/graphicsUtils/painterInterface.h"
-#include "../../../../qrutils/graphicsUtils/paintWidget.h"
+#include <qrutils/graphicsUtils/painterInterface.h>
+#include <qrutils/graphicsUtils/paintWidget.h>
 
 namespace Ui
 {

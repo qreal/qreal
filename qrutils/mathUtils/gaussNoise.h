@@ -2,10 +2,9 @@
 
 #include <QtCore/QtGlobal>
 
-#include "../utilsDeclSpec.h"
+#include <qrutils/utilsDeclSpec.h>
 
-namespace mathUtils
-{
+namespace mathUtils {
 
 qreal const mu = 0.5;
 qreal const var = 0.083; // 1/12
