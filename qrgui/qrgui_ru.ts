@@ -3989,7 +3989,7 @@
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2124"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2123"/>
         <source>GettingStarted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4341,54 +4341,58 @@
 <context>
     <name>qReal::StartWidget</name>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="26"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="22"/>
         <source>&lt;font size = 14&gt;Sessions&lt;/font&gt;</source>
         <translation>&lt;font size = 14&gt;Сессии&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="27"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="23"/>
         <source>&lt;font size = 14&gt;Recent projects&lt;/font&gt;</source>
         <translation>&lt;font size = 14&gt;Недавние проекты&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="63"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="59"/>
         <source>Open existing project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="66"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="62"/>
         <source>&amp;Open interpreted diagram</source>
         <translation>Открыть интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="67"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="63"/>
         <source>&amp;Create interpreted diagram</source>
         <translation>&amp;Создать интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="80"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="76"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="117"/>
-        <source>&lt;font color=&apos;black&apos;&gt;•  default (current session)&lt;/font&gt;</source>
-        <translation>&lt;font color=&apos;black&apos;&gt;• default (последняя сессия))&lt;/font&gt;</translation>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="114"/>
+        <source>&lt;font color=&apos;black&apos;&gt;â¢  default (current session)&lt;/font&gt;</source>
+        <translation>&lt;font color=&apos;black&apos;&gt;â¢  default (последняя сессия)&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="134"/>
+        <source>&lt;font color=&apos;black&apos;&gt;•  default (current session)&lt;/font&gt;</source>
+        <translation type="obsolete">&lt;font color=&apos;black&apos;&gt;• default (последняя сессия))&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="132"/>
         <source>Select file with metamodel to open</source>
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="171"/>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="174"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="169"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="172"/>
         <source>Enter the diagram name:</source>
         <translation>Введите имя диаграммы:</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="171"/>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="174"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="169"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="172"/>
         <source>diagram name:</source>
         <translation>имя диаграммы:</translation>
     </message>
@@ -4404,12 +4408,12 @@
 <context>
     <name>qReal::SuggestToCreateDiagramWidget</name>
     <message>
-        <location filename="mainwindow/startWidget/suggestToCreateDiagramWidget.cpp" line="31"/>
+        <location filename="mainwindow/startWidget/suggestToCreateDiagramWidget.cpp" line="32"/>
         <source>editor: </source>
         <translation>редактор: </translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/suggestToCreateDiagramWidget.cpp" line="31"/>
+        <location filename="mainwindow/startWidget/suggestToCreateDiagramWidget.cpp" line="32"/>
         <source>, diagram: </source>
         <translation>, диаграмма: </translation>
     </message>
