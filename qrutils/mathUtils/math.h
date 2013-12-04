@@ -2,9 +2,11 @@
 
 #include <QtCore/QtGlobal>
 
+#include <qrutils/utilsDeclSpec.h>
+
 namespace mathUtils {
 
-class Math
+class QRUTILS_EXPORT Math
 {
 public:
 	static const qreal EPS = 0.00001;
