@@ -122,8 +122,8 @@ SOURCES = \
 	qscidocument.cpp \
 	qscilexer.cpp \
 	qscilexercustom.cpp \
-        qscilexerproperties.cpp \
-        qscilexerpython.cpp \
+	qscilexerproperties.cpp \
+	qscilexerpython.cpp \
 	qscilexercpp.cpp \
 	qscimacro.cpp \
 	qsciprinter.cpp \
