@@ -351,35 +351,47 @@ QStringList QsciAPIs::positionOrigin(const QStringList &context, QString &path)
         int start_new = old_context.count();
         int end_new = new_context.count() - 1;
 
-        QString fixed = *origin;
-        fixed.truncate(origin_len);
-
-        path = fixed;
-
-        while (start_new < end_new)
+        if (start_new == end_new)
         {
-            // Add this word to the current path.
-            path.append(wsep);
-            path.append(new_context[start_new]);
+            path = old_context.join(wsep);
             origin_len = path.length();
-
-            // Skip entries in the current origin that don't match the path.
-            while (origin != prep->raw_apis.end())
-            {
-                // See if the current origin has come to an end.
-                if (!originStartsWith(fixed, wsep))
-                    origin = prep->raw_apis.end();
-                else if (originStartsWith(path, wsep))
-                    break;
-                else
-                    ++origin;
-            }
-
-            if (origin == prep->raw_apis.end())
-                break;
-
-            ++start_new;
         }
+        else
+        {
+            QString fixed = *origin;
+            fixed.truncate(origin_len);
+
+            path = fixed;
+
+            while (start_new < end_new)
+            {
+                // Add this word to the current path.
+                path.append(wsep);
+                path.append(new_context[start_new]);
+                origin_len = path.length();
+
+                // Skip entries in the current origin that don't match the
+                // path.
+                while (origin != prep->raw_apis.end())
+                {
+                    // See if the current origin has come to an end.
+                    if (!originStartsWith(fixed, wsep))
+                        origin = prep->raw_apis.end();
+                    else if (originStartsWith(path, wsep))
+                        break;
+                    else
+                        ++origin;
+                }
+
+                if (origin == prep->raw_apis.end())
+                    break;
+
+                ++start_new;
+            }
+        }
+
+        // Terminate the path.
+        path.append(wsep);
 
         // If the new text wasn't recognised then reset the origin.
         if (origin == prep->raw_apis.end())

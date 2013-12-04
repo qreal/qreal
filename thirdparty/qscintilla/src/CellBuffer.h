@@ -70,7 +70,7 @@ enum actionType { insertAction, removeAction, startAction, containerAction };
 /**
  * Actions are used to store all the information required to perform one undo/redo step.
  */
-class UserAction {
+class Action {
 public:
 	actionType at;
 	int position;
@@ -78,18 +78,18 @@ public:
 	int lenData;
 	bool mayCoalesce;
 
-	UserAction();
-	~UserAction();
+	Action();
+	~Action();
 	void Create(actionType at_, int position_=0, char *data_=0, int lenData_=0, bool mayCoalesce_=true);
 	void Destroy();
-	void Grab(UserAction *source);
+	void Grab(Action *source);
 };
 
 /**
  *
  */
 class UndoHistory {
-	UserAction *actions;
+	Action *actions;
 	int lenActions;
 	int maxAction;
 	int currentAction;
@@ -118,11 +118,11 @@ public:
 	/// called that many times. Similarly for redo.
 	bool CanUndo() const;
 	int StartUndo();
-	const UserAction &GetUndoStep() const;
+	const Action &GetUndoStep() const;
 	void CompletedUndoStep();
 	bool CanRedo() const;
 	int StartRedo();
-	const UserAction &GetRedoStep() const;
+	const Action &GetRedoStep() const;
 	void CompletedRedoStep();
 };
 
@@ -157,6 +157,8 @@ public:
 	char StyleAt(int position) const;
 	void GetStyleRange(unsigned char *buffer, int position, int lengthRetrieve) const;
 	const char *BufferPointer();
+	const char *RangePointer(int position, int rangeLength);
+	int GapPosition() const;
 
 	int Length() const;
 	void Allocate(int newSize);
@@ -194,11 +196,11 @@ public:
 	/// called that many times. Similarly for redo.
 	bool CanUndo();
 	int StartUndo();
-	const UserAction &GetUndoStep() const;
+	const Action &GetUndoStep() const;
 	void PerformUndoStep();
 	bool CanRedo();
 	int StartRedo();
-	const UserAction &GetRedoStep() const;
+	const Action &GetRedoStep() const;
 	void PerformRedoStep();
 };
 

@@ -35,8 +35,8 @@ extern "C++" {
 
 #include <QList>
 
-#include "qsciglobal.h"
-#include "qsciscintilla.h"
+#include <Qsci/qsciglobal.h>
+#include <Qsci/qsciscintilla.h>
 
 
 class QsciLexer;

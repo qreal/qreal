@@ -100,8 +100,11 @@ void QsciStyle::apply(QsciScintillaBase *sci) const
             style_font.family().toLatin1().data());
     sci->SendScintilla(QsciScintillaBase::SCI_STYLESETSIZE, style_nr,
             style_font.pointSize());
-    sci->SendScintilla(QsciScintillaBase::SCI_STYLESETBOLD, style_nr,
-            style_font.bold());
+
+    // Pass the Qt weight via the back door.
+    sci->SendScintilla(QsciScintillaBase::SCI_STYLESETWEIGHT, style_nr,
+            -style_font.weight());
+
     sci->SendScintilla(QsciScintillaBase::SCI_STYLESETITALIC, style_nr,
             style_font.italic());
     sci->SendScintilla(QsciScintillaBase::SCI_STYLESETUNDERLINE, style_nr,

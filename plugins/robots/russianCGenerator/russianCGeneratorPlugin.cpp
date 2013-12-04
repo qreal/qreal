@@ -15,6 +15,26 @@ RussianCGeneratorPlugin::RussianCGeneratorPlugin()
 	QApplication::installTranslator(&mAppTranslator);
 }
 
+QFileInfo RussianCGeneratorPlugin::defaultFilePath(QString const &projectName) const
+{
+	return QFileInfo(QString("russianC/%1/%1.c").arg(projectName));
+}
+
+QString RussianCGeneratorPlugin::extension() const
+{
+	return "c";
+}
+
+QString RussianCGeneratorPlugin::extDescrition() const
+{
+	return tr("RussianC Source File");
+}
+
+QString RussianCGeneratorPlugin::generatorName() const
+{
+	return "RussianC";
+}
+
 RussianCGeneratorPlugin::~RussianCGeneratorPlugin()
 {
 }
@@ -39,6 +59,13 @@ MasterGeneratorBase *RussianCGeneratorPlugin::masterGenerator()
 			, *mMainWindowInterface->errorReporter()
 			, mMainWindowInterface->activeDiagram());
 }
+
+
+void RussianCGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
+{
+	Q_UNUSED(newFileInfo);
+}
+
 
 void RussianCGeneratorPlugin::changeActiveTab(QList<ActionInfo> const &info, bool trigger)
 {

@@ -12,8 +12,6 @@ using namespace qReal;
 using namespace qReal::robots::generators;
 using namespace trik;
 
-QString const scriptExtension = ".qts";
-
 TrikGeneratorPlugin::TrikGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
 		, mUploadProgramAction(NULL)
@@ -57,11 +55,38 @@ MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()
 			, mMainWindowInterface->activeDiagram());
 }
 
+void TrikGeneratorPlugin::regenerateExtraFiles(QFileInfo const &newFileInfo)
+{
+	Q_UNUSED(newFileInfo);
+}
+
+QFileInfo TrikGeneratorPlugin::defaultFilePath(QString const &projectName) const
+{
+	return QFileInfo(QString("trik/%1/%1.qts").arg(projectName));
+}
+
+QString TrikGeneratorPlugin::extension() const
+{
+	return "qts";
+}
+
+QString TrikGeneratorPlugin::extDescrition() const
+{
+	return tr("TRIK Source File");
+}
+
+QString TrikGeneratorPlugin::generatorName() const
+{
+	return "Trik";
+}
+
 bool TrikGeneratorPlugin::uploadProgram()
 {
-	if (generateCode()) {
+	QFileInfo const fileInfo = currentSource();
+
+	if (fileInfo != QFileInfo()) {
 		TcpRobotCommunicator communicator;
-		bool const result = communicator.uploadProgram(currentProgramName());
+		bool const result = communicator.uploadProgram(fileInfo.absoluteFilePath());
 		if (!result) {
 			mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 		}
@@ -77,7 +102,8 @@ void TrikGeneratorPlugin::runProgram()
 {
 	if (uploadProgram()) {
 		TcpRobotCommunicator communicator;
-		communicator.runProgram(currentProgramName());
+		QFileInfo const fileInfo = currentSource();
+		communicator.runProgram(fileInfo.absoluteFilePath());
 	} else {
 		qDebug() << "Program upload failed, aborting";
 	}
@@ -89,11 +115,4 @@ void TrikGeneratorPlugin::stopRobot()
 	if (!communicator.stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
-}
-
-QString TrikGeneratorPlugin::currentProgramName() const
-{
-	QString const saveFileName = mRepo->workingFile();
-	QFileInfo const fileInfo(saveFileName);
-	return fileInfo.baseName() + scriptExtension;
 }

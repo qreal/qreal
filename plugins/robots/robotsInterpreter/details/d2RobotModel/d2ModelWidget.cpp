@@ -1,24 +1,24 @@
+#include "d2ModelWidget.h"
+#include "ui_d2Form.h"
+
 #include <QtCore/qmath.h>
 #include <QtWidgets/QFileDialog>
 #include <QtGui/QRegion>
 
-#include "d2ModelWidget.h"
-#include "d2RobotModel.h"
-#include "ui_d2Form.h"
+#include <qrutils/outFile.h>
+#include <qrutils/xmlUtils.h>
+#include <qrkernel/settingsManager.h>
 
+#include "d2RobotModel.h"
+#include "constants.h"
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
 #include "rotater.h"
 #include "timeline.h"
-#include "../../../../../qrutils/outFile.h"
-#include "../../../../../qrutils/xmlUtils.h"
-#include "../../../../../qrkernel/settingsManager.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
-
-QSize const displaySize(200, 300);
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
 	, NxtDisplay *nxtDisplay, QWidget *parent)

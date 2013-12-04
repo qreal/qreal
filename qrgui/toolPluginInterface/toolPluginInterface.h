@@ -31,12 +31,6 @@ public:
 		return NULL;
 	}
 
-	/// Shall be overriden in plugin to react on application settings changes.
-	/// Called when user clicks Ok or Apply in preferences dialog, for example.
-	virtual void updateSettings()
-	{
-	}
-
 	/// Shall be overriden to return QAction or QMenu objects along with where to put them in
 	/// main window. Menus can contains more actions. These actions shall be connected
 	/// to slots of a plugin, so when user clicks on an action, some code in plugin gets executed
@@ -65,21 +59,6 @@ public:
 	{
 		return QList<HotKeyActionInfo>();
 	}
-
-	/// Shall be overriden if plugin needs to do some action on closing of main window,
-	/// like closing its own windows.
-	// TODO: Properly rename it or remove at all.
-	virtual void closeNeededWidget()
-	{
-	}
-
-	/// Event that is sent to a plugin by GUI when user switches or closes a tab
-	/// @param rootElementId Id of the root element of a new tab, whose diagram is shown
-	virtual void activeTabChanged(Id const & rootElementId)
-	{
-		Q_UNUSED(rootElementId);
-	}
-
 };
 
 }
