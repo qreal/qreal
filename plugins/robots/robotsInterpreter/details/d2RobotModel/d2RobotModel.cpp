@@ -440,7 +440,7 @@ void D2RobotModel::findCollision(WallItem const &wall)
 
 	QVector2D longestVector;
 	QPointF mostFarPointOnRobot;
-	qreal longestVectorNormalSlope;
+	qreal longestVectorNormalSlope = 0.0;
 
 	for (int i = 0; i < intersectionRegion.elementCount(); ++i) {
 		QPainterPath::Element const element = intersectionRegion.elementAt(i);
