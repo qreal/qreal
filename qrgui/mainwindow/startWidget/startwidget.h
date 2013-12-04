@@ -31,20 +31,20 @@ signals:
 private slots:
 	void openRecentProject(QString const &fileName);
 	void openExistingProject();
-    void createProjectWithDiagram(QString const &idString);
-    void openInterpretedDiagram();
-    void createInterpretedDiagram();
+	void createProjectWithDiagram(QString const &idString);
+	void openInterpretedDiagram();
+	void createInterpretedDiagram();
 
 private:
 	QCommandLinkButton *createCommandButton(QString const &text
 							, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey);
 	void initRecentProjects();
 
-    MainWindow *mMainWindow;
-    ProjectManager *mProjectManager;
+	MainWindow *mMainWindow;
+	ProjectManager *mProjectManager;
 	int mProjectListSize;
-	QVBoxLayout *mProjectsLayout;
-	QHBoxLayout *mSessionsLayout;
+	QVBoxLayout *mStartWidgetProjectsLayout;
+	QHBoxLayout *mStartWidgetSessionsLayout;
 
 	QCommandLinkButton *mInterpreterButton;  // Has ownership.
 	QCommandLinkButton *mCreateInterpreterButton;  // Has ownership.

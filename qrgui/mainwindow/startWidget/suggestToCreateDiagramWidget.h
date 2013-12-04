@@ -1,7 +1,7 @@
 #pragma once
 #include <QtWidgets/QListWidget>
 
-#include "../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
 #include "listWidget.h"
 
 namespace qReal {
@@ -20,7 +20,6 @@ class SuggestToCreateDiagramWidget : public ListWidget
 
 public:
 	explicit SuggestToCreateDiagramWidget(MainWindow *mainWindow, QWidget *parent = 0);
-	QString itemAt(int row);
 
 private:
 	void addItem(Id const &editor, Id const &diagram);

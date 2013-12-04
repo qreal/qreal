@@ -30,11 +30,9 @@ private slots:
 	void doubleClickHandler(QListWidgetItem *item);
 
 private:
-
 	QString userData(QListWidgetItem *item);
 
 protected:
-
 	QListWidget *mListWidget;
 };
 

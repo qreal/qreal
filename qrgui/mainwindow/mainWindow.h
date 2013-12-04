@@ -377,7 +377,7 @@ private:
 	QStringList mDiagramsList;
 	QModelIndex mRootIndex;
 
-	gui::ErrorReporter *mErrorReporter;// Has ownership
+	gui::ErrorReporter *mErrorReporter; // Has ownership
 
 	/// Fullscreen mode flag
 	bool mIsFullscreen;

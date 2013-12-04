@@ -1,4 +1,3 @@
-#include <QtWidgets/QVBoxLayout>
 #include "listWidget.h"
 
 using namespace qReal;

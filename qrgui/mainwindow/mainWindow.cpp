@@ -2096,10 +2096,9 @@ void MainWindow::setVersion(QString const &version)
 
 void MainWindow::closeStartTab(int index)
 {
-	//return;
 	QWidget *widget = mUi->tabs->widget(index);
 	CodeArea *possibleCodeTab = static_cast<CodeArea *>(widget);
-	EditorView * deletingCodeTab = NULL;
+	EditorView *deletingCodeTab = NULL;
 	foreach (EditorView *diagram, mCodeTabManager->keys()) {
 		if (mCodeTabManager->value(diagram) == possibleCodeTab) {
 			deletingCodeTab = diagram;

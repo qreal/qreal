@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QString>
 #include <QWidget>
 
@@ -10,9 +11,5 @@ class RecentProjectItem : public QWidget
 
 public:
 	explicit RecentProjectItem(QWidget *parent, QString const &projectName, QString const &projectFullName);
-
-	QString getData();
-
-	QString mFullName;
 };
 }
