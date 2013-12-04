@@ -1,4 +1,3 @@
-
 #include "wallItem.h"
 
 #include <QtWidgets/QGraphicsSceneMouseEvent>
@@ -22,22 +21,6 @@ WallItem::WallItem(QPointF const &begin, QPointF const &end)
 {
 	setPrivateData();
 	setAcceptDrops(true);
-}
-
-void WallItem::setWallPath()
-{
-	QPainterPath wallPath;
-	if (mX1 == mX2 && mY1 == mY2) {
-		wallPath.addEllipse(mX1, mY1, 10, 10);
-		mCenter = QPointF(mX1, mY1);
-	} else {
-		wallPath.moveTo(mPoints[0]);
-		wallPath.lineTo(mPoints[1]);
-		wallPath.lineTo(mPoints[2]);
-		wallPath.lineTo(mPoints[3]);
-		wallPath.lineTo(mPoints[0]);
-		mPath = wallPath;
-	}
 }
 
 void WallItem::setPrivateData()
@@ -66,7 +49,6 @@ void WallItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* optio
 	Q_UNUSED(widget);
 	painter->drawPath(shape());
 	recalculateBorders();
-	setWallPath();
 }
 
 void WallItem::drawExtractionForItem(QPainter *painter)
@@ -154,21 +136,6 @@ void WallItem::onOverlappedWithRobot(bool overlapped)
 	mOverlappedWithRobot = overlapped;
 }
 
-QPointF WallItem::center() const
-{
-	return mCenter;
-}
-
-QLineF WallItem::line(int i) const
-{
-	return mLines[i];
-}
-
-QPointF WallItem::point(int i) const
-{
-	return mPoints[i];
-}
-
 QPainterPath WallItem::path() const
 {
 	return mPath;
@@ -176,8 +143,6 @@ QPainterPath WallItem::path() const
 
 void WallItem::recalculateBorders()
 {
-	mLines.clear();
-
 	qreal const x1 = begin().x();
 	qreal const x2 = end().x();
 	qreal const y1 = begin().y();
@@ -195,13 +160,17 @@ void WallItem::recalculateBorders()
 	norm.normalize();
 	norm *= mPen.widthF() / 2;
 
-	mPoints[0] = QPointF(x1 - dx + norm.x(), y1 - dy + norm.y());
-	mPoints[1] = QPointF(x1 - dx - norm.x(), y1 - dy - norm.y());
-	mPoints[2] = QPointF(x2 + dx - norm.x(), y2 + dy - norm.y());
-	mPoints[3] = QPointF(x2 + dx + norm.x(), y2 + dy + norm.y());
+	QPointF const point1 = QPointF(x1 - dx + norm.x(), y1 - dy + norm.y());
+	QPointF const point2 = QPointF(x1 - dx - norm.x(), y1 - dy - norm.y());
+	QPointF const point3 = QPointF(x2 + dx - norm.x(), y2 + dy - norm.y());
+	QPointF const point4 = QPointF(x2 + dx + norm.x(), y2 + dy + norm.y());
 
-	mLines << QLineF(mPoints[0],mPoints[1])
-			<< QLineF(mPoints[1],mPoints[2])
-			<< QLineF(mPoints[2],mPoints[3])
-			<< QLineF(mPoints[3],mPoints[0]);
+	QPainterPath wallPath;
+	wallPath.moveTo(point1);
+	wallPath.lineTo(point2);
+	wallPath.lineTo(point3);
+	wallPath.lineTo(point4);
+	wallPath.lineTo(point1);
+
+	mPath = wallPath;
 }

@@ -89,19 +89,21 @@ private:
 		int time;
 	};
 
-	/// Counts and returns traction force vector taking into consideration engines speed and placement
-	void countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode);
-	void recalculateVelocity();
-	void applyRotationalFrictionForce();
-
 	QPointF rotationCenter() const;
 	QVector2D robotDirectionVector() const;
 
-	void findCollision(WallItem const &wall);
-	void getFromWalls();
+	/// Counts and returns traction force vector taking into consideration engines speed and placement
+	void countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode);
 
-	/// Returns a closest to a given point border of the given wall
-	QLineF closestWallBorder(WallItem const &wall, QPointF const &point) const;
+	/// Applies all forces currently acting on robot
+	void recalculateVelocity();
+	void applyRotationalFrictionForce();
+
+	/// Calculates forces and force moments acting on the robot from the walls
+	void findCollision(WallItem const &wall);
+
+	/// Returns robot to a point where it must be if it is currently in the wall
+	void getFromWalls();
 
 	void setSpeedFactor(qreal speedMul);
 	void initPosition();

@@ -7,6 +7,7 @@
 
 namespace mathUtils {
 
+/// Contains some useful methods for working with vectors, lines, pathes, etc.
 class Geometry
 {
 public:

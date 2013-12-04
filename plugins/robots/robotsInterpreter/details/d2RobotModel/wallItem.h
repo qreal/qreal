@@ -36,9 +36,6 @@ public:
 
 	void onOverlappedWithRobot(bool overlapped = true);
 
-	QPointF center() const;
-	QLineF line(int i) const;
-	QPointF point(int i) const;
 	QPainterPath path() const;
 
 signals:
@@ -49,21 +46,15 @@ protected:
 
 private:
 	void recalculateBorders();
-	void setWallPath();
 
 	bool mDragged;
 	bool mOverlappedWithRobot;
 	QImage mImage;
 
-	QPointF mPoints[4];
-	QPointF mCenter;
-
 	int mOldX1;
 	int mOldY1;
 
 	QPainterPath mPath;
-
-	QList<QLineF> mLines;
 };
 
 }

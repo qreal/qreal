@@ -425,22 +425,6 @@ void D2RobotModel::countBeep()
 	}
 }
 
-QLineF D2RobotModel::closestWallBorder(WallItem const &wall, QPointF const &point) const
-{
-	QLineF closestLine;
-	qreal minimum = 10e10;
-	for (int i = 0; i < 4; ++i) {
-		QLineF const currentLine = wall.line(i);
-		qreal const currentDistance = Geometry::distance(currentLine, point);
-		if (currentDistance < minimum) {
-			minimum = currentDistance;
-			closestLine = currentLine;
-		}
-	}
-
-	return closestLine;
-}
-
 void D2RobotModel::findCollision(WallItem const &wall)
 {
 	QPainterPath const robotsBoundingRegion = mD2ModelWidget->robotBoundingPolygon(mPos, mAngle);
@@ -459,7 +443,8 @@ void D2RobotModel::findCollision(WallItem const &wall)
 
 	for (int i = 0; i < intersectionRegion.elementCount(); ++i) {
 		QPainterPath::Element const element = intersectionRegion.elementAt(i);
-		// Checking that element belongs to the wall path
+
+		// Walking through the segments...
 		if (element.isMoveTo()) {
 			endPoint = QPointF(element.x, element.y);
 			continue;
@@ -469,6 +454,7 @@ void D2RobotModel::findCollision(WallItem const &wall)
 		endPoint = QPointF(element.x, element.y);
 		QLineF const currentLine(startPoint, endPoint);
 
+		// Checking that current segment belongs to the wall path, not the robot one
 		if (!Geometry::belongs(currentLine, wallBoundingRegion)) {
 			continue;
 		}
@@ -478,6 +464,8 @@ void D2RobotModel::findCollision(WallItem const &wall)
 
 		qreal const length = Geometry::distance(startPoint, endPoint);
 		int const fragmentsCount = ceil(length / lengthAtom);
+
+		// If current line is too long then dividing it into small segments
 		for (int j = 0; j <= fragmentsCount; ++j) {
 			QPointF const currentSegmentationPoint = j == fragmentsCount
 					? endPoint
@@ -488,6 +476,7 @@ void D2RobotModel::findCollision(WallItem const &wall)
 
 			QLineF const normalLine = Geometry::veryLongLine(currentSegmentationPoint, orthogonalDirectionVector);
 
+			// For each point on that segments calculating reaction force vector acting from that point
 			QList<QPointF> const intersectionsWithRobot = Geometry::intersection(normalLine, robotsBoundingRegion);
 			QList<QPointF> intersectionsWithRobotAndWall;
 			foreach (QPointF const &point, intersectionsWithRobot) {
@@ -498,6 +487,8 @@ void D2RobotModel::findCollision(WallItem const &wall)
 
 			QPointF const currentMostFarPointOnRobot = Geometry::closestPointTo(intersectionsWithRobotAndWall, currentSegmentationPoint);
 			QVector2D const currentReactionForce = QVector2D(currentSegmentationPoint - currentMostFarPointOnRobot);
+
+			// The result reaction force is maximal vector from obtained ones
 			if (!currentMostFarPointOnRobot.isNull() && currentReactionForce.length() > longestVector.length()) {
 				longestVector = currentReactionForce;
 				mostFarPointOnRobot = currentMostFarPointOnRobot;
