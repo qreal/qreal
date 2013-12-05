@@ -456,7 +456,7 @@ void D2RobotModel::findCollision(WallItem const &wall)
 		QLineF const currentLine(startPoint, endPoint);
 
 		// Checking that current segment belongs to the wall path, not the robot one
-		if (!Geometry::belongs(currentLine, wallBoundingRegion)) {
+		if (!Geometry::belongs(currentLine, wallBoundingRegion, lowPresision), false) {
 			continue;
 		}
 
@@ -483,10 +483,10 @@ void D2RobotModel::findCollision(WallItem const &wall)
 			QLineF const normalLine = Geometry::veryLongLine(currentSegmentationPoint, orthogonalDirectionVector);
 
 			// For each point on that segments calculating reaction force vector acting from that point
-			QList<QPointF> const intersectionsWithRobot = Geometry::intersection(normalLine, robotsBoundingRegion);
+			QList<QPointF> const intersectionsWithRobot = Geometry::intersection(normalLine, robotsBoundingRegion, lowPresision);
 			QList<QPointF> intersectionsWithRobotAndWall;
 			foreach (QPointF const &point, intersectionsWithRobot) {
-				if (Geometry::belongs(point, intersectionRegion)) {
+				if (Geometry::belongs(point, intersectionRegion, lowPresision)) {
 					intersectionsWithRobotAndWall << point;
 				}
 			}
