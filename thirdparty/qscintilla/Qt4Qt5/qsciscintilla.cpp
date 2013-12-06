@@ -71,9 +71,9 @@ QsciScintilla::QsciScintilla(QWidget *parent)
       allocatedMarkers(0), allocatedIndicators(7), oldPos(-1), selText(false),
       fold(NoFoldStyle), foldmargin(2), autoInd(false),
       braceMode(NoBraceMatch), acSource(AcsNone), acThresh(-1),
-      wchars(defaultWordChars), call_tips_style(CallTipsNoContext),
-      maxCallTips(-1), use_single(AcusNever), explicit_fillups(""),
-      fillups_enabled(false)
+      wchars(defaultWordChars), call_tips_position(CallTipsBelowText),
+      call_tips_style(CallTipsNoContext), maxCallTips(-1),
+      use_single(AcusNever), explicit_fillups(""), fillups_enabled(false)
 {
     connect(this,SIGNAL(SCN_MODIFYATTEMPTRO()),
              SIGNAL(modificationAttempted()));
@@ -115,9 +115,8 @@ QsciScintilla::QsciScintilla(QWidget *parent)
 
 #if defined(Q_OS_WIN)
     setEolMode(EolWindows);
-#elif defined(Q_OS_MAC)
-    setEolMode(EolMac);
 #else
+    // Note that EolMac is pre-OS/X.
     setEolMode(EolUnix);
 #endif
 
@@ -134,6 +133,10 @@ QsciScintilla::QsciScintilla(QWidget *parent)
     // Set the visible policy.  These are the same as SciTE's defaults
     // which, presumably, are sensible.
     SendScintilla(SCI_SETVISIBLEPOLICY, VISIBLE_STRICT | VISIBLE_SLOP, 4);
+
+    // The default behaviour is unexpected.
+    SendScintilla(SCI_AUTOCSETCASEINSENSITIVEBEHAVIOUR,
+            SC_CASEINSENSITIVEBEHAVIOUR_IGNORECASE);
 
     // Create the standard command set.
     stdCmds = new QsciCommandSet(this);
@@ -170,6 +173,20 @@ void QsciScintilla::setColor(const QColor &c)
         SendScintilla(SCI_STYLESETFORE, 0, c);
         nl_text_colour = c;
     }
+}
+
+
+// Return the overwrite mode.
+bool QsciScintilla::overwriteMode() const
+{
+    return SendScintilla(SCI_GETOVERTYPE);
+}
+
+
+// Set the overwrite mode.
+void QsciScintilla::setOverwriteMode(bool overwrite)
+{
+    SendScintilla(SCI_SETOVERTYPE, overwrite);
 }
 
 
@@ -1224,21 +1241,37 @@ void QsciScintilla::setWrapVisualFlags(WrapVisualFlag endFlag,
     int flags = SC_WRAPVISUALFLAG_NONE;
     int loc = SC_WRAPVISUALFLAGLOC_DEFAULT;
 
-    if (endFlag == WrapFlagByText)
+    switch (endFlag)
     {
+    case WrapFlagByText:
         flags |= SC_WRAPVISUALFLAG_END;
         loc |= SC_WRAPVISUALFLAGLOC_END_BY_TEXT;
-    }
-    else if (endFlag == WrapFlagByBorder)
-        flags |= SC_WRAPVISUALFLAG_END;
+        break;
 
-    if (startFlag == WrapFlagByText)
+    case WrapFlagByBorder:
+        flags |= SC_WRAPVISUALFLAG_END;
+        break;
+
+    case WrapFlagInMargin:
+        flags |= SC_WRAPVISUALFLAG_MARGIN;
+        break;
+    }
+
+    switch (startFlag)
     {
+    case WrapFlagByText:
         flags |= SC_WRAPVISUALFLAG_START;
         loc |= SC_WRAPVISUALFLAGLOC_START_BY_TEXT;
-    }
-    else if (startFlag == WrapFlagByBorder)
+        break;
+
+    case WrapFlagByBorder:
         flags |= SC_WRAPVISUALFLAG_START;
+        break;
+
+    case WrapFlagInMargin:
+        flags |= SC_WRAPVISUALFLAG_MARGIN;
+        break;
+    }
 
     SendScintilla(SCI_SETWRAPVISUALFLAGS, flags);
     SendScintilla(SCI_SETWRAPVISUALFLAGSLOCATION, loc);
@@ -1630,11 +1663,13 @@ void QsciScintilla::zoomTo(int size)
 bool QsciScintilla::findFirst(const QString &expr, bool re, bool cs, bool wo,
         bool wrap, bool forward, int line, int index, bool show, bool posix)
 {
-    findState.inProgress = false;
-
     if (expr.isEmpty())
+    {
+        findState.status = FindState::Idle;
         return false;
+    }
 
+    findState.status = FindState::Finding;
     findState.expr = expr;
     findState.wrap = wrap;
     findState.forward = forward;
@@ -1661,17 +1696,58 @@ bool QsciScintilla::findFirst(const QString &expr, bool re, bool cs, bool wo,
 }
 
 
+// Find the first occurrence of a string in the current selection.
+bool QsciScintilla::findFirstInSelection(const QString &expr, bool re, bool cs,
+        bool wo, bool forward, bool show, bool posix)
+{
+    if (expr.isEmpty())
+    {
+        findState.status = FindState::Idle;
+        return false;
+    }
+
+    findState.status = FindState::FindingInSelection;
+    findState.expr = expr;
+    findState.wrap = false;
+    findState.forward = forward;
+
+    findState.flags =
+        (cs ? SCFIND_MATCHCASE : 0) |
+        (wo ? SCFIND_WHOLEWORD : 0) |
+        (re ? SCFIND_REGEXP : 0) |
+        (posix ? SCFIND_POSIX : 0);
+
+    findState.startpos_orig = SendScintilla(SCI_GETSELECTIONSTART);
+    findState.endpos_orig = SendScintilla(SCI_GETSELECTIONEND);
+
+    if (forward)
+    {
+        findState.startpos = findState.startpos_orig;
+        findState.endpos = findState.endpos_orig;
+    }
+    else
+    {
+        findState.startpos = findState.endpos_orig;
+        findState.endpos = findState.startpos_orig;
+    }
+
+    findState.show = show;
+
+    return doFind();
+}
+
+
 // Find the next occurrence of a string.
 bool QsciScintilla::findNext()
 {
-    if (!findState.inProgress)
+    if (findState.status == FindState::Idle)
         return false;
 
     return doFind();
 }
 
 
-// Do the hard work of findFirst() and findNext().
+// Do the hard work of the find methods.
 bool QsciScintilla::doFind()
 {
     SendScintilla(SCI_SETSEARCHFLAGS, findState.flags);
@@ -1697,7 +1773,12 @@ bool QsciScintilla::doFind()
 
     if (pos == -1)
     {
-        findState.inProgress = false;
+        // Restore the original selection.
+        if (findState.status == FindState::FindingInSelection)
+            SendScintilla(SCI_SETSEL, findState.startpos_orig,
+                    findState.endpos_orig);
+
+        findState.status = FindState::Idle;
         return false;
     }
 
@@ -1725,7 +1806,6 @@ bool QsciScintilla::doFind()
     else if ((findState.startpos = targstart - 1) < 0)
         findState.startpos = 0;
 
-    findState.inProgress = true;
     return true;
 }
 
@@ -1746,13 +1826,14 @@ int QsciScintilla::simpleFind()
 }
 
 
-// Replace the text found with the previous findFirst() or findNext().
+// Replace the text found with the previous find method.
 void QsciScintilla::replace(const QString &replaceStr)
 {
-    if (!findState.inProgress)
+    if (findState.status == FindState::Idle)
         return;
 
     long start = SendScintilla(SCI_GETSELECTIONSTART);
+    long orig_len = SendScintilla(SCI_GETSELECTIONEND) - start;
 
     SendScintilla(SCI_TARGETFROMSELECTION);
 
@@ -1764,6 +1845,9 @@ void QsciScintilla::replace(const QString &replaceStr)
     // Reset the selection.
     SendScintilla(SCI_SETSELECTIONSTART, start);
     SendScintilla(SCI_SETSELECTIONEND, start + len);
+
+    // Fix the original selection.
+    findState.endpos_orig += (len - orig_len);
 
     if (findState.forward)
         findState.startpos = start + len;
@@ -3201,7 +3285,10 @@ void QsciScintilla::setStylesFont(const QFont &f, int style)
 {
     SendScintilla(SCI_STYLESETFONT, style, f.family().toLatin1().data());
     SendScintilla(SCI_STYLESETSIZE, style, f.pointSize());
-    SendScintilla(SCI_STYLESETBOLD, style, f.bold());
+
+    // Pass the Qt weight via the back door.
+    SendScintilla(SCI_STYLESETWEIGHT, style, -f.weight());
+
     SendScintilla(SCI_STYLESETITALIC, style, f.italic());
     SendScintilla(SCI_STYLESETUNDERLINE, style, f.underline());
 
@@ -3665,6 +3752,14 @@ bool QsciScintilla::autoCompletionShowSingle() const
 }
 
 
+// Set current call tip position.
+void QsciScintilla::setCallTipsPosition(CallTipsPosition position)
+{
+    SendScintilla(SCI_CALLTIPSETPOSITION, (position == CallTipsAboveText));
+    call_tips_position = position;
+}
+
+
 // Set current call tip style.
 void QsciScintilla::setCallTipsStyle(CallTipsStyle style)
 {
@@ -3864,17 +3959,31 @@ bool QsciScintilla::write(QIODevice *io) const
 }
 
 
-// Return the word at the given cooridinates.
+// Return the word at the given coordinates.
+QString QsciScintilla::wordAtLineIndex(int line, int index) const
+{
+    return wordAtPosition(positionFromLineIndex(line, index));
+}
+
+
+// Return the word at the given coordinates.
 QString QsciScintilla::wordAtPoint(const QPoint &point) const
 {
     long close_pos = SendScintilla(SCI_POSITIONFROMPOINTCLOSE, point.x(),
             point.y());
 
-    if (close_pos < 0)
+    return wordAtPosition(close_pos);
+}
+
+
+// Return the word at the given position.
+QString QsciScintilla::wordAtPosition(int position) const
+{
+    if (position < 0)
         return QString();
 
-    long start_pos = SendScintilla(SCI_WORDSTARTPOSITION, close_pos, true);
-    long end_pos = SendScintilla(SCI_WORDENDPOSITION, close_pos, true);
+    long start_pos = SendScintilla(SCI_WORDSTARTPOSITION, position, true);
+    long end_pos = SendScintilla(SCI_WORDENDPOSITION, position, true);
     int word_len = end_pos - start_pos;
 
     if (word_len <= 0)
@@ -3900,6 +4009,7 @@ QsciScintilla::AnnotationDisplay QsciScintilla::annotationDisplay() const
 void QsciScintilla::setAnnotationDisplay(QsciScintilla::AnnotationDisplay display)
 {
     SendScintilla(SCI_ANNOTATIONSETVISIBLE, display);
+    setScrollBars();
 }
 
 
@@ -3910,6 +4020,8 @@ void QsciScintilla::clearAnnotations(int line)
         SendScintilla(SCI_ANNOTATIONSETTEXT, line, (const char *)0);
     else
         SendScintilla(SCI_ANNOTATIONCLEARALL);
+
+    setScrollBars();
 }
 
 
@@ -3922,6 +4034,8 @@ void QsciScintilla::annotate(int line, const QString &text, int style)
 
     SendScintilla(SCI_ANNOTATIONSETTEXT, line, ScintillaStringData(s));
     SendScintilla(SCI_ANNOTATIONSETSTYLE, line, style - style_offset);
+
+    setScrollBars();
 }
 
 

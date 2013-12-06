@@ -1,9 +1,19 @@
 #include "qscintillaTextEdit.h"
+#include <QDebug>
 
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpython.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexercpp.h>
 
 using namespace qReal;
 using namespace gui;
+
+QScintillaTextEdit::QScintillaTextEdit()
+	:mRole(0)
+{
+	connect(this, SIGNAL(textChanged()), this, SLOT(emitTexWasModified()));
+	setCppLexer();
+	setPythonEditorProperties();
+}
 
 QScintillaTextEdit::QScintillaTextEdit(QPersistentModelIndex const &index
 		, int const &role)
@@ -18,8 +28,19 @@ QScintillaTextEdit::~QScintillaTextEdit()
 
 void QScintillaTextEdit::setPythonLexer()
 {
-	QsciLexerPython *lexer = new QsciLexerPython();
-	setLexer(lexer);
+	QsciLexerPython *lexPython = new QsciLexerPython();
+	setLexer(lexPython);
+}
+
+void QScintillaTextEdit::setCppLexer()
+{
+	QsciLexerCPP *lexCpp = new QsciLexerCPP();
+	setLexer(lexCpp);
+}
+
+void QScintillaTextEdit::emitTexWasModified()
+{
+	emit textWasModified(this);
 }
 
 void QScintillaTextEdit::setPythonEditorProperties()
