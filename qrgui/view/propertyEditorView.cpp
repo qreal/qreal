@@ -1,4 +1,4 @@
-#include "propertyEditorView.h"
+	#include "propertyEditorView.h"
 
 #include "mainwindow/mainWindow.h"
 #include "controller/commands/changePropertyCommand.h"
@@ -225,4 +225,10 @@ int PropertyEditorView::enumPropertyIndexOf(QModelIndex const &index, QString co
 
 void PropertyEditorView::resizeEvent(QResizeEvent *event ) {
 	mPropertyEditor->resize(event->size());
+}
+
+void PropertyEditorView::installEventFilter(QObject *obj)
+{
+  QWidget::installEventFilter(obj);
+  mPropertyEditor->window()->installEventFilter(obj);
 }

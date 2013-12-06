@@ -6,6 +6,7 @@
 #include <QtCore/QVariant>
 
 #include "kernelDeclSpec.h"
+#include "uxInfoInterface.h"
 
 namespace qReal {
 
@@ -33,6 +34,8 @@ public:
 	/// @param value Parameter value.
 	static void setValue(QString const &key, QVariant const &value);
 
+ 	static void setUXInfo(UXInfoInterface *uxInfo);
+
 	/// Removes all entries in persistent external storage
 	static void clearSettings();
 
@@ -58,6 +61,9 @@ private:
 	void set(QString const &name, QVariant const &value);
 	QVariant get(QString const &key, QVariant const &defaultValue = QVariant()) const;
 
+        void setUXInfoInterface(UXInfoInterface *uxInfo);
+	void reportValueSetting(QString const &name, QVariant const &oldValue, QVariant const &newValue);
+
 	void initDefaultValues();
 
 	//QMap<QString, QVariant> mDefaultValues;
@@ -70,6 +76,7 @@ private:
 	QHash<QString, QVariant> mDefaultValues;
 	/// Persistent settings storage.
 	QSettings mSettings;
+	UXInfoInterface *mUXInfoInterface;
 };
 
 }

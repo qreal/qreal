@@ -3,6 +3,10 @@
 
 #include "mainwindow/mainWindow.h"
 #include "thirdparty/windowsmodernstyle.h"
+#include "../qrutils/uxInfo/uxInfo.h"
+
+#include <QtCore/QtPlugin>
+#include "qrealApplication.h"
 
 using namespace qReal;
 
@@ -14,7 +18,8 @@ void clearConfig()
 
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
+    QDateTime const startedTime = QDateTime::currentDateTime();
+    QRealApplication app(argc, argv);
 
 	QTranslator guiTranslator;
 	QTranslator utilsTranslator;
@@ -53,9 +58,13 @@ int main(int argc, char *argv[])
 #endif
 
 	MainWindow window(fileToOpen);
-	if (window.isVisible()) {
-		return app.exec();
-	} else {  // The window decided to not show itself, exiting now.
-		return 0;
-	}
+    int exitCode = 0; // The window decided to not show itself, exiting now.
+    if (window.isVisible()) {
+        exitCode = app.exec();
+    }
+    QDateTime const currentTime = QDateTime::currentDateTime();
+    QString const totalTime = QString::number(static_cast<qlonglong>(startedTime.msecsTo(currentTime)));
+    utils::UXInfo::reportTotalTime(totalTime, exitCode);
+    delete utils::UXInfo::instance();
+    return exitCode;
 }

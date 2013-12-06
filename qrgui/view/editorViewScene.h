@@ -14,6 +14,8 @@
 #include "view/private/editorViewMVIface.h"
 #include "view/private/exploserView.h"
 
+#include "../../qrutils/uxInfo/uxInfo.h"
+
 namespace qReal {
 
 const int arrowMoveOffset = 5;

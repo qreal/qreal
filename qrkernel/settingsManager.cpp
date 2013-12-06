@@ -18,8 +18,15 @@ SettingsManager::SettingsManager()
 
 void SettingsManager::setValue(QString const &name, QVariant const &value)
 {
+	instance()->reportValueSetting(name, instance()->value(name), value);
 	instance()->set(name, value);
 }
+
+void SettingsManager::setUXInfo(UXInfoInterface *uxInfo)
+{
+  instance()->setUXInfoInterface(uxInfo);
+}
+
 
 QVariant SettingsManager::value(QString const &key)
 {
@@ -53,6 +60,19 @@ QVariant SettingsManager::get(QString const &name, QVariant const &defaultValue)
 		return mDefaultValues[name];
 	}
 	return defaultValue;
+}
+
+void SettingsManager::setUXInfoInterface(UXInfoInterface *uxInfo)
+{
+  mUXInfoInterface = uxInfo;
+}
+
+void SettingsManager::reportValueSetting(const QString &name, const QVariant &oldValue, const QVariant &newValue)
+{
+  if (oldValue == newValue) {
+    return;
+  }
+  mUXInfoInterface->reportSettingsChanges(name, oldValue, newValue);
 }
 
 void SettingsManager::saveData()
