@@ -7,6 +7,7 @@
 #include <QtWidgets/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
+#include <QtCore/QFileInfo>
 
 using namespace qReal;
 
@@ -300,9 +301,17 @@ void SdfRenderer::image_draw(QDomElement &element)
 		fileName = QApplication::applicationDirPath() + "/" + fileName;
 	}
 
+	// HACK: Trying to load SVG version first, and use default file name as fallback. It is needed to test SVG images.
+	if (!fileName.endsWith("svg")) {
+		QFileInfo const svgVersion(QString(fileName).replace(fileName.size() - 3, 3, "svg"));
+		if (svgVersion.exists()) {
+			fileName = svgVersion.filePath();
+		}
+	}
+
 	QPixmap pixmap;
 
-	if(mMapFileImage.contains(fileName)) {
+	if (mMapFileImage.contains(fileName)) {
 		pixmap = mMapFileImage.value(fileName);
 	} else {
 		pixmap = QPixmap(fileName);
