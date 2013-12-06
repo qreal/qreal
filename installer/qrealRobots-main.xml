@@ -86,9 +86,6 @@
             <platforms>windows</platforms>
             <distributionFileList>
                 <distributionFile>
-                    <origin>%1/bin/plugins/nxtGenerator.dll</origin>
-                </distributionFile>
-                <distributionFile>
                     <origin>%1/bin/plugins/trikGenerator.dll</origin>
                 </distributionFile>
                 <distributionFile>
