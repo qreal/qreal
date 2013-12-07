@@ -33,6 +33,7 @@ signals:
 protected:
 	void installNext();
 	void replaceExpressions(Update *update);
+	void sortQueue();
 	static QString getInstallDir();
 
 	bool mHasNoErrors;

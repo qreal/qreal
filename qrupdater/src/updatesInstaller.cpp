@@ -24,6 +24,7 @@ void UpdatesInstaller::operator<<(QList<Update *> updates)
 void UpdatesInstaller::installAll()
 {
 	QTimer::singleShot(delay, this, SLOT(startInstallation()));
+	sortQueue();
 }
 
 bool UpdatesInstaller::hasNoErrors() const
@@ -42,6 +43,7 @@ void UpdatesInstaller::installNext()
 	replaceExpressions(mUpdatesQueue.first());
 	mUpdatesQueue.first()->installUpdate();
 	if (mUpdatesQueue.first()->hasSelfInstallMarker()) {
+		QTimer::singleShot(delay, this, SLOT(startInstallation()));
 		emit selfInstalling();
 	}
 }
@@ -58,6 +60,20 @@ void UpdatesInstaller::replaceExpressions(Update *update)
 		foreach (QString mask, replacement.keys()) {
 			QString curKey = iterator.value();
 			iterator.setValue(curKey.replace(mask, replacement.value(mask)()));
+		}
+	}
+}
+
+void UpdatesInstaller::sortQueue()
+{
+	int const listSize = mUpdatesQueue.size();
+	for (int i = listSize - 1; i >= 0; i--) {
+		for (int j = listSize - 2; j >= 0; j--) {
+			if (mUpdatesQueue.at(j)->hasSelfInstallMarker() && !mUpdatesQueue.at(j + 1)->hasSelfInstallMarker()) {
+				Update *temp = mUpdatesQueue.at(j);
+				mUpdatesQueue[j] = mUpdatesQueue.at(j + 1);
+				mUpdatesQueue[j + 1] = temp;
+			}
 		}
 	}
 }
