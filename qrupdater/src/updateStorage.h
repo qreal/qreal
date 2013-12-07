@@ -5,7 +5,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QDir>
 
-#include "detailsParser.h"
+#include "update.h"
 
 namespace qrUpdater {
 //!

@@ -31,7 +31,7 @@ void QRealUpdater::executeUpdater()
 {
 	QString const programPath = mUpdaterPath + "/qrUpdater";
 	QStringList arguments;
-	arguments << "-unit" << "windows"
+	arguments << "-unit" << "windows" << "windows-qru::self"
 			<< "-version" << SettingsManager::value("version").toString()
 			<< "-url" << "http://localhost/updates.xml";
 

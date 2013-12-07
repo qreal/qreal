@@ -85,7 +85,7 @@ bool Update::isInstalled() const
 
 bool Update::hasSelfInstallMarker() const
 {
-	return unit() == markers::selfInstalling;
+	return unit().contains(markers::selfInstalling);
 }
 
 QUrl Update::url() const

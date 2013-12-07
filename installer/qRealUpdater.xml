@@ -1,0 +1,47 @@
+<component>
+    <name>qRealUpdater</name>
+    <description>QReal autoupdater</description>
+    <canBeEdited>1</canBeEdited>
+    <selected>1</selected>
+    <show>0</show>
+    <folderList>
+        <folder>
+            <description>Program Files</description>
+            <destination>${installdir}/qrUpdater</destination>
+            <name>qrupdaterwindows</name>
+            <platforms>windows</platforms>
+            <distributionFileList>
+                <distributionFile>
+                    <origin>%1/bin/qrUpdater/qrUpdater.exe</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%2/Qt5Network.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%2/Qt5Core.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%2/icuin51.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%2/libgcc_s_dw2-1.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%2/libeay32.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%2/libwinpthread-1.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%2/libstdc++-6.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%2/icuuc51.dll</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%2/icudt51.dll</origin>
+                </distributionFile>
+            </distributionFileList>
+        </folder>
+    </folderList>
+</component>
