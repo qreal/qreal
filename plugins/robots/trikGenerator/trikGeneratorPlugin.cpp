@@ -103,7 +103,7 @@ void TrikGeneratorPlugin::runProgram()
 	if (uploadProgram()) {
 		TcpRobotCommunicator communicator;
 		QFileInfo const fileInfo = currentSource();
-		communicator.runProgram(fileInfo.absoluteFilePath());
+		communicator.runProgram(fileInfo.fileName());
 	} else {
 		qDebug() << "Program upload failed, aborting";
 	}

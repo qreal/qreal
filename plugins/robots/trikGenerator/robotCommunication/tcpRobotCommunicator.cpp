@@ -1,6 +1,7 @@
 #include "tcpRobotCommunicator.h"
 
 #include <QtNetwork/QHostAddress>
+#include <QtCore/QFileInfo>
 
 #include <QtCore/QDebug>
 
@@ -26,7 +27,9 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 		return false;
 	}
 
-	QString const command = "file:" + programName + ":" + fileContents;
+	QString const &fileNameOnARobot = QFileInfo(programName).fileName();
+
+	QString const command = "file:" + fileNameOnARobot + ":" + fileContents;
 	mSocket.write(command.toLatin1());
 	mSocket.waitForBytesWritten();
 
