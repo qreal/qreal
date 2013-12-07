@@ -16,20 +16,6 @@ UpdateStorage::UpdateStorage(QString updatesFolder, QObject *parent)
 	mUpdateInfo = new QSettings(settingsFile, QSettings::IniFormat, parent);
 }
 
-UpdateStorage::~UpdateStorage()
-{
-	foreach (Update *update, mPreparedUpdates) {
-		if (update->isEmpty()) {
-			mUpdateInfo->remove(update->unit());
-		}
-	}
-	mUpdateInfo->sync();
-	if (QDir(mUpdatesFolder).exists() && QFile::exists(settingsFile) && QFile(settingsFile).size() == 0) {
-		QFile::remove(settingsFile);
-		QDir(mUpdatesFolder).removeRecursively();
-	}
-}
-
 void UpdateStorage::saveUpdateInfo(Update *update)
 {
 	mUpdateInfo->beginGroup(update->unit());
@@ -91,6 +77,20 @@ void UpdateStorage::loadUpdatesInfo(QStringList const units)
 		} else {
 			delete newUpdate;
 		}
+	}
+}
+
+void UpdateStorage::sync()
+{
+	foreach (Update *update, mPreparedUpdates) {
+		if (update->isEmpty()) {
+			mUpdateInfo->remove(update->unit());
+		}
+	}
+	mUpdateInfo->sync();
+	if (QDir(mUpdatesFolder).exists() && QFile::exists(settingsFile) && QFile(settingsFile).size() == 0) {
+		QFile::remove(settingsFile);
+		QDir(mUpdatesFolder).removeRecursively();
 	}
 }
 

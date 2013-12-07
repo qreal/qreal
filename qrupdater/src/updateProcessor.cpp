@@ -54,7 +54,7 @@ void UpdateProcessor::initConnections()
 	connect(mDownloader, SIGNAL(detailsLoadError(QString)), this, SLOT(downloadErrors(QString)));
 	connect(mDownloader, SIGNAL(updatesLoadError(QString)), this, SLOT(downloadErrors(QString)));
 	connect(mDownloader, SIGNAL(updateDownloaded(QUrl,QString)), this, SLOT(fileReady(QUrl,QString)));
-	connect(mDownloader, SIGNAL(downloadingFinished()), this, SLOT(downloadingFinished()));
+	connect(mDownloader, SIGNAL(downloadingFinished()), this, SLOT(downloadingFinished()), Qt::QueuedConnection);
 	connect(mDownloader, SIGNAL(detailsDownloaded(QIODevice*)), mParser, SLOT(processDevice(QIODevice*)));
 	connect(mParser, SIGNAL(parseFinished()), this, SLOT(detailsChanged()));
 }
@@ -150,6 +150,7 @@ void UpdateProcessor::downloadErrors(QString error)
 
 void UpdateProcessor::jobDoneQuit()
 {
+	mUpdateInfo->sync();
 	QCoreApplication::quit();
 }
 

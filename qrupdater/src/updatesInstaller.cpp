@@ -43,7 +43,6 @@ void UpdatesInstaller::installNext()
 	replaceExpressions(mUpdatesQueue.first());
 	mUpdatesQueue.first()->installUpdate();
 	if (mUpdatesQueue.first()->hasSelfInstallMarker()) {
-		QTimer::singleShot(delay, this, SLOT(startInstallation()));
 		emit selfInstalling();
 	}
 }

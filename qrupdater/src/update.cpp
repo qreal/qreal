@@ -65,7 +65,11 @@ void Update::installUpdate()
 	mProcess = new QProcess(this);
 	connect(mProcess, SIGNAL(finished(int, QProcess::ExitStatus))
 			, this , SLOT(installingFinished(int, QProcess::ExitStatus)));
-	mProcess->start(mFilePath, mArguments);
+	if (!hasSelfInstallMarker()) {
+		mProcess->start(mFilePath, mArguments);
+	} else {
+		mProcess->startDetached(mFilePath, mArguments);
+	}
 }
 
 bool Update::isEmpty() const

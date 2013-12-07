@@ -17,7 +17,6 @@ class UpdateStorage : public QObject
 	Q_OBJECT
 public:
 	UpdateStorage(QString updatesFolder, QObject *parent);
-	~UpdateStorage();
 
 	//! saves all info of current unit in parser, moves setup-file to storage folder
 	void saveFileForLater(Update *concreteUpdate, QString const filePath);
@@ -28,6 +27,7 @@ public:
 	bool hasPreparedUpdatesInfo();
 	//! loads mPreparedUpdates
 	void loadUpdatesInfo(QStringList const units);
+	void sync();
 
 	QList<Update *> preparedUpdates() const;
 
