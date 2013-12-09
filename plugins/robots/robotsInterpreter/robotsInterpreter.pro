@@ -60,7 +60,7 @@ FORMS += \
 	details/d2RobotModel/d2Form.ui \
 	robotSettingsPage.ui \
 	details/sensorsConfigurationWidget.ui \
-	details/nxtDisplay.ui
+	details/nxtDisplay.ui \
 
 RESOURCES += \
 	robotsInterpreter.qrc \

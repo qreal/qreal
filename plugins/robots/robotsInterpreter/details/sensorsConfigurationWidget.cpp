@@ -32,7 +32,7 @@ void SensorsConfigurationWidget::startChangesListening()
 
 void SensorsConfigurationWidget::reinitValues()
 {
-	QStringList sensorNames = SensorEnumerator::sensorNamesList();
+	QStringList const sensorNames = SensorEnumerator::sensorNamesList();
 
 	mUi->port1ComboBox->clear();
 	mUi->port2ComboBox->clear();

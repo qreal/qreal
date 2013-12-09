@@ -4,8 +4,8 @@ using namespace qReal::interpreters::robots;
 
 QStringList SensorEnumerator::sensorNamesList()
 {
-	QStringList sensorNames;
-	sensorNames << QObject::tr("Unused")
+	return QStringList()
+			<< QObject::tr("Unused")
 			<< QObject::tr("Touch sensor (boolean value)")
 			<< QObject::tr("Touch sensor (raw value)")
 			<< QObject::tr("Sonar sensor")
@@ -17,10 +17,9 @@ QStringList SensorEnumerator::sensorNamesList()
 			<< QObject::tr("Color sensor (passive)")
 			<< QObject::tr("Sound sensor")
 			<< QObject::tr("Gyroscope");
-	return sensorNames;
 }
 
-QString SensorEnumerator::sensorName(enums::sensorType::SensorTypeEnum const &sensor)
+QString SensorEnumerator::sensorName(enums::sensorType::SensorTypeEnum sensor)
 {
 	return sensorNamesList().at(sensor);
 }

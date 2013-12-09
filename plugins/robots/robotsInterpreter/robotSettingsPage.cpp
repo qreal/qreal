@@ -1,10 +1,10 @@
-﻿#include "robotSettingsPage.h"
+﻿#include "robotSettingsPage.h"+
 #include "ui_robotSettingsPage.h"
 
-#include "../../../qrkernel/settingsManager.h"
-#include "../../../qrkernel/exception/exception.h"
-#include "../../../plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h"
-#include "../../../qrutils/graphicsWatcher/sensorsGraph.h"
+#include <qrkernel/settingsManager.h>
+#include <qrkernel/exception/exception.h>
+#include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
+#include <qrutils/graphicsWatcher/sensorsGraph.h>
 
 using namespace qReal::interpreters::robots;
 

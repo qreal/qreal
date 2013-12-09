@@ -11,7 +11,7 @@
 #include "details/tracer.h"
 #include "details/debugHelper.h"
 
-#include "../sensorConstants.h"
+#include "sensorConstants.h"
 
 using namespace qReal;
 using namespace interpreters::robots;

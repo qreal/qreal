@@ -2,7 +2,10 @@
 
 #include <QtCore/QObject>
 
-#include "../../../qrkernel/ids.h"
+#include <qrkernel/ids.h>
+#include <qrutils/watchListWindow.h>
+#include <qrutils/graphicsWatcher/sensorsGraph.h>
+#include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
 
 #include "details/robotCommunication/robotCommunicator.h"
 #include "sensorConstants.h"
@@ -10,12 +13,6 @@
 #include "details/thread.h"
 #include "details/blocksTable.h"
 #include "details/d2RobotModel/d2RobotModel.h"
-
-#include "../../../qrutils/watchListWindow.h"
-#include "../../../qrutils/graphicsWatcher/sensorsGraph.h"
-#include "../../../qrgui/mainwindow/projectManager/projectManagementInterface.h"
-
-
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 #include "details/sensorsConfigurationWidget.h"
