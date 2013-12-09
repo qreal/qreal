@@ -19,6 +19,7 @@ HEADERS += \
 	customizer.h \
 	robotSettingsPage.h \
 	robotsPlugin.h \
+	sensorConstants.h \
 	details/interpreter.h \
 	details/thread.h \
 	details/blocksFactory.h \
@@ -33,13 +34,13 @@ HEADERS += \
 	details/sensorsConfigurationWidget.h \
 	details/nullTimer.h \
 	details/nxtDisplay.h \
-	sensorConstants.h
 	details/textExpressionProcessor.h \
 
 SOURCES += \
 	customizer.cpp \
 	robotSettingsPage.cpp \
 	robotsPlugin.cpp \
+	sensorConstants.cpp \
 	details/abstractTimer.cpp \
 	details/autoconfigurer.cpp \
 	details/blocksTable.cpp \
@@ -54,7 +55,6 @@ SOURCES += \
 	details/thread.cpp \
 	details/tracer.cpp \
 	details/textExpressionProcessor.cpp \
-    sensorConstants.cpp
 
 FORMS += \
 	details/d2RobotModel/d2Form.ui \
