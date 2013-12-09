@@ -180,7 +180,7 @@
      <property name="title">
       <string>TCP Settings</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
        <widget class="QLineEdit" name="tcpServerLineEdit">
         <property name="placeholderText">
@@ -314,7 +314,7 @@
      <property name="title">
       <string>Graphics Watcher update intervals</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+	 <layout class="QHBoxLayout" name="horizontalLayout1">
       <item>
        <widget class="QGroupBox" name="sensorUpdateBox">
         <property name="title">
