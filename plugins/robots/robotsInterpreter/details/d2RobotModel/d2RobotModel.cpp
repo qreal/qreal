@@ -438,9 +438,11 @@ void D2RobotModel::findCollision(WallItem const &wall)
 	QPointF endPoint;
 	qreal const lengthAtom = 1;
 
-	QVector2D longestVector;
+	qreal longestProjection = 0.0;
 	QPointF mostFarPointOnRobot;
 	qreal longestVectorNormalSlope = 0.0;
+	QVector2D sumReaction;
+	int contributorsCount = 0;
 
 	for (int i = 0; i < intersectionRegion.elementCount(); ++i) {
 		QPainterPath::Element const element = intersectionRegion.elementAt(i);
@@ -494,17 +496,22 @@ void D2RobotModel::findCollision(WallItem const &wall)
 			QPointF const currentMostFarPointOnRobot =
 					Geometry::closestPointTo(intersectionsWithRobotAndWall, currentSegmentationPoint);
 			QVector2D const currentReactionForce = QVector2D(currentSegmentationPoint - currentMostFarPointOnRobot);
+			QVector2D const currentProjection = Geometry::projection(currentReactionForce, mVelocity);
+
+			sumReaction += currentReactionForce;
+			++contributorsCount;
 
 			// The result reaction force is maximal vector from obtained ones
-			if (!currentMostFarPointOnRobot.isNull() && currentReactionForce.length() > longestVector.length()) {
-				longestVector = currentReactionForce;
+			if (!currentMostFarPointOnRobot.isNull() && currentProjection.length() > longestProjection) {
+				longestProjection = currentProjection.length();
 				mostFarPointOnRobot = currentMostFarPointOnRobot;
 				longestVectorNormalSlope = currentAngle;
 			}
 		}
 	}
 
-	QVector2D const currentReactionForce = longestVector / reactionForceStabilisationCoefficient;
+	// Reaction force is an average between all reaction forces from small wall parts
+	QVector2D const currentReactionForce = contributorsCount ? sumReaction / contributorsCount : QVector2D();
 	QVector2D const frictionForceDirection = Geometry::directionVector(-longestVectorNormalSlope);
 	QVector2D const currentFrictionForce = wallFrictionCoefficient
 			 * frictionForceDirection * currentReactionForce.length();
@@ -514,7 +521,7 @@ void D2RobotModel::findCollision(WallItem const &wall)
 	mWallsFrictionForce += currentFrictionForce;
 	mForceMomentDecrement += Geometry::vectorProduct(currentReactionForce, radiusVector);
 	mForceMomentDecrement += Geometry::vectorProduct(currentFrictionForce, radiusVector);
-	mGettingOutVector += longestVector;
+	mGettingOutVector += currentReactionForce;
 }
 
 void D2RobotModel::countNewForces()
