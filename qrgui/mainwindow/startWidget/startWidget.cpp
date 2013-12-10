@@ -77,6 +77,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 			, newProjectMapper, SLOT(map()), QKeySequence::New);
 		newProjectMapper->setMapping(newLink, diagramIdString);
 		connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
+
 		sessionsLayout->addWidget(newLink);
 	}
 
@@ -99,7 +100,7 @@ void StartWidget::openExistingProject()
 
 void StartWidget::createProjectWithDiagram(QString const &idString)
 {
-	if(mMainWindow->createProject(idString)){
+	if (mMainWindow->createProject(idString)){
 		emit closeStartTab(0);
 	}
 }

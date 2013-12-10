@@ -7,7 +7,7 @@ SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindo
 		: ListWidget(parent)
 		, mMainWindow(mainWindow)
 {
-	foreach(Id const &editor, mMainWindow->editorManager().editors()) {
+	foreach (Id const &editor, mMainWindow->editorManager().editors()) {
 		Id editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
 		foreach (Id const &diagram, mMainWindow->editorManager().diagrams(editorTmpId)) {
 			addItem(editor, diagram);
