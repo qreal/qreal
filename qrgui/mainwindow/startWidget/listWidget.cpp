@@ -1,4 +1,3 @@
-#include <QtWidgets>
 #include "listWidget.h"
 
 using namespace qReal;

@@ -2097,18 +2097,19 @@ void MainWindow::setVersion(QString const &version)
 void MainWindow::closeStartTab(int index)
 {
 	QWidget *widget = mUi->tabs->widget(index);
-	CodeArea *possibleCodeTab = static_cast<CodeArea *>(widget);
+	CodeArea const *possibleCodeTab = static_cast<CodeArea *>(widget);
 	EditorView *deletingCodeTab = NULL;
 	foreach (EditorView *diagram, mCodeTabManager->keys()) {
 		if (mCodeTabManager->value(diagram) == possibleCodeTab) {
 			deletingCodeTab = diagram;
 		}
 	}
+
 	if (deletingCodeTab) {
 		mCodeTabManager->remove(deletingCodeTab);
 	}
 
-	EditorView *editorView = dynamic_cast<EditorView *>(mUi->tabs->widget(index));
+	EditorView const *editorView = dynamic_cast<EditorView *>(mUi->tabs->widget(index));
 	if (editorView) {
 		Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(mRootIndex);
 		mController->diagramClosed(diagramId);

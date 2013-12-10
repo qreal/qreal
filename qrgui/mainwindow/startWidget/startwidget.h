@@ -1,10 +1,9 @@
 #pragma once
 
-#include <QWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QCommandLinkButton>
 
-#include "../projectManager/projectManager.h"
+#include "mainwindow/projectManager/projectManager.h"
 
 namespace qReal {
 
@@ -23,7 +22,7 @@ class StartWidget : public QWidget
 
 public:
 	explicit StartWidget(MainWindow *mainWindow, ProjectManager *projectManager);
-	void setVisibleForInterpreterButton(bool const visible);
+	void setVisibleForInterpreterButton(bool const visible); //Show/hide Interpreted buttons
 
 signals:
 	void closeStartTab(int index);

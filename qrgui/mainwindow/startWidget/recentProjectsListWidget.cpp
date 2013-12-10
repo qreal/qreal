@@ -6,9 +6,10 @@ using namespace qReal;
 RecentProjectsListWidget::RecentProjectsListWidget(QWidget *parent)
 		: ListWidget(parent)
 {
-	QString recentProjects = SettingsManager::value("recentProjects").toString();
+	QString const recentProjects = SettingsManager::value("recentProjects").toString();
 	foreach (QString const &project, recentProjects.split(";", QString::SkipEmptyParts)) {
 		addItem(project.split("/").last().split("\\").last(), project, project);
 	}
+
 	highlightFirstItem();
 }

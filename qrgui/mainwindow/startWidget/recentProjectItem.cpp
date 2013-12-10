@@ -7,7 +7,7 @@ using namespace qReal;
 RecentProjectItem::RecentProjectItem(QWidget *parent, QString const &projectName, QString const &projectFullName)
 	: QWidget(parent)
 {
-	QString nameText = QString("<a href='%1'><font color='black'>•  %2</font></a>").arg(projectFullName,projectName);
+	QString const nameText = QString("<a href='%1'><font color='black'>•  %2</font></a>").arg(projectFullName,projectName);
 	QLabel *name = new QLabel(nameText);
 	QLabel *fullName = new QLabel(projectFullName);
 	QVBoxLayout *recentProject = new QVBoxLayout();

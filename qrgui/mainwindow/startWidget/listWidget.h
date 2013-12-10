@@ -1,4 +1,5 @@
 #pragma once
+#include <QtWidgets>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QPushButton>

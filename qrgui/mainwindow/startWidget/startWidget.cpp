@@ -37,7 +37,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	recentProjectsLayout->addStretch(0);
 
 	mainLayout->addLayout(sessionsLayout);
-	QWidget *horizontalLineWidget = new QWidget;
+	QWidget *horizontalLineWidget = new QWidget();
 	horizontalLineWidget->setFixedWidth(1);
 	horizontalLineWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	horizontalLineWidget->setStyleSheet(QString("background-color: #c0c0c0;"));
@@ -46,7 +46,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 
 	setLayout(mainLayout);
 	QPalette pal(palette());
-	QColor color = QColor::fromHsl (180, 50, 240, 255);
+	QColor const color = QColor::fromHsl (180, 50, 240, 255);
 	pal.setColor(QPalette::Background, color);
 	setAutoFillBackground(true);
 	setPalette(pal);
@@ -70,7 +70,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 
 	if (!theOnlyDiagram.isNull()) {
 		Id const editor = mMainWindow->editorManager().editors()[0];
-		QString const diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
+		QString diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
 		QCommandLinkButton *newLink = createCommandButton(tr("New project")
@@ -108,7 +108,7 @@ void StartWidget::createProjectWithDiagram(QString const &idString)
 void StartWidget::initRecentProjects()
 {
 	int i = 0;
-	QString recentProjects = SettingsManager::value("recentProjects").toString();
+	QString const recentProjects = SettingsManager::value("recentProjects").toString();
 	foreach (QString const &project, recentProjects.split(";", QString::SkipEmptyParts)) {
 		QString const name = project.split("/").last().split("\\").last();
 		if ("autosave.qrs"== name) {
@@ -118,9 +118,11 @@ void StartWidget::initRecentProjects()
 			mStartWidgetSessionsLayout->addWidget(currentProjectLabel);
 		} else {
 			RecentProjectItem *projectWidget = new RecentProjectItem(this, name, project);
-			 mStartWidgetProjectsLayout->addWidget(projectWidget);
+							 mStartWidgetProjectsLayout->addWidget(projectWidget);
+
 			++i;
-			if (i == mProjectListSize){
+
+			if (i == mProjectListSize) {
 				break;
 			}
 		}
@@ -170,19 +172,19 @@ void StartWidget::createInterpretedDiagram()
 	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
 					, QLineEdit::Normal, "", &ok);
 	while (ok && name.isEmpty()) {
-			name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
-							, QLineEdit::Normal, "", &ok);
+		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
+						, QLineEdit::Normal, "", &ok);
 	}
 
 	if (ok) {
-			QPair<Id, Id> editorAndDiagram = editorManagerProxy.createEditorAndDiagram(name);
-			mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
-			mMainWindow->models()->repoControlApi().exterminate();
-			mMainWindow->models()->reinit();
-			mMainWindow->loadPlugins();
+		QPair<Id, Id> editorAndDiagram = editorManagerProxy.createEditorAndDiagram(name);
+		mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
+		mMainWindow->models()->repoControlApi().exterminate();
+		mMainWindow->models()->reinit();
+		mMainWindow->loadPlugins();
 	} else {
-			show();
-			editorManagerProxy.setProxyManager(new EditorManager());
+		show();
+		editorManagerProxy.setProxyManager(new EditorManager());
 	}
 }
 

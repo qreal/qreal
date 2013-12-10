@@ -1,7 +1,6 @@
 #pragma once
 
-#include <QString>
-#include <QWidget>
+#include <QtWidgets>
 
 namespace qReal {
 
