@@ -9,7 +9,7 @@ namespace robots {
 namespace details {
 namespace d2Model {
 
-qreal const lowPresision = 0.00001;
+qreal const lowPrecision = 0.00001;
 
 qreal const robotWidth = 50;
 qreal const robotHeight = 50;

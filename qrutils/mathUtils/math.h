@@ -7,15 +7,12 @@
 namespace mathUtils {
 
 // Default precision for all floating point numbers comparison methods
-#define EPS 0.0000000001
+qreal const EPS = 0.0000000001;
 
 /// Contains useful methods for using in some mathematical expressions
 class QRUTILS_EXPORT Math
 {
 public:
-	/// Default precision for all
-	static qreal eps();
-
 	/// Compares given numbers with given precision
 	static bool eq(qreal x, qreal y, qreal eps = EPS);
 

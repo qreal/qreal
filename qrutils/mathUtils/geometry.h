@@ -14,7 +14,7 @@ namespace mathUtils {
 class QRUTILS_EXPORT Geometry
 {
 public:
-	/// Compares given points with the given presision
+	/// Compares given points with the given precision
 	static bool eq(QPointF const &point1, QPointF const &point2, qreal eps = EPS);
 
 	/// Returns a scalar product of two given vectors
@@ -63,19 +63,19 @@ public:
 	/// Returns QLineF instance with very big length for simulating the real line
 	static QLineF veryLongLine(QPointF const &pointOnLine, QVector2D const &directionVector);
 
-	/// Returns a list of points in whitch the given line intersects the given path with the given presision
+	/// Returns a list of points in whitch the given line intersects the given path with the given precision
 	static QList<QPointF> intersection(QLineF const &line, QPainterPath const &path, qreal eps = EPS);
 
 	/// Returns the point in the given list that is closest to the given point
 	static QPointF closestPointTo(QList<QPointF> const &points, QPointF const &point);
 
-	/// Returns if the given point belongs to the given segment with the given presision.
+	/// Returns if the given point belongs to the given segment with the given precision.
 	static bool belongs(QPointF const &point, QLineF const &segment, qreal eps = EPS);
 
-	/// Returns if the given point belongs to the given path with the given presision.
+	/// Returns if the given point belongs to the given path with the given precision.
 	static bool belongs(QPointF const &point, QPainterPath const &path, qreal eps = EPS);
 
-	/// Returns if the given line belongs to the given path with the given presision.
+	/// Returns if the given line belongs to the given path with the given precision.
 	static bool belongs(QLineF const &line, QPainterPath const &path, qreal eps = EPS);
 };
 
