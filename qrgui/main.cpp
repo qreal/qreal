@@ -65,6 +65,5 @@ int main(int argc, char *argv[])
 	QDateTime const currentTime = QDateTime::currentDateTime();
 	QString const totalTime = QString::number(static_cast<qlonglong>(startedTime.msecsTo(currentTime)));
 	utils::UXInfo::reportTotalTime(totalTime, exitCode);
-	delete utils::UXInfo::instance();
 	return exitCode;
 }
