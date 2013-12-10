@@ -6,7 +6,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtCore/QTimer>
 
-#include "expressionsParser/expressionsParser.h"
+#include <qrutils/expressionsParser/expressionsParser.h>
 #include "sensorViewer.h"
 
 namespace Ui {
