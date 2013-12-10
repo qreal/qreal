@@ -79,6 +79,45 @@ void Generator::generateMainSwitch()
 	mResultTestFile.replace("@@eachFrameSwitches@@", outerSwitchBody);
 }
 
+QString Generator::generateScreenSwitchArrow(const Id &edge)
+{
+	Id diagram = mApi.LogicalRepoApi.outgoingExplosion(edge);
+	IdList elements = mApi.LogicalRepoApi.children(diagram);
+	Id start = Id();
+	QString result = "";
+
+	foreach (Id element, elements) {
+		if (mApi.isLogicalElement(element) &&
+				0 == mApi.incomingLinks(element).length())
+			start = element;
+	}
+	if (Id() == start) {
+		return ("	//The diagram of"
+				+ mApi.property(edge, "TextProperty")
+				+ "is not proper");
+	}
+
+	for (Id elem = start; mApi.outgoingLinks(elem).length() != 0; elem = mApi.outgoingLinks(elem).at(0)){
+		QString lineTemplate = "";
+		switch (elem.element()) {
+		case "CodeArea" :
+			lineTemplate = mTemplateUtils["@@CodeArea@@"];
+			QString inlineCode = mApi.property(elem, "Code");
+			lineTemplate.replace("@@inlineCode@@", inlineCode);
+			break;
+		case "EndState":
+			lineTemplate = mTemplateUtils["@@EndState@@"];
+			QString endStateName = mApi.property(elem, "StateName");
+			lineTemplate.replace("@@StateName@@", endStateName);
+			break;
+		}
+		result += lineTemplate;
+	}
+
+
+	return result;
+}
+
 QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 {
 /*	QMessageBox msgBox;
@@ -97,6 +136,8 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 		if (mApi.isLogicalElement(edge)) {
 			continue;
 		}
+
+
 
 		//IdList const &graphicalEdges = mGraphicalModel.graphicalIdsByLogicalId(edge);
 		Id from = mGraphicalModel.from(edge);

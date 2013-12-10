@@ -36,6 +36,7 @@ private:
 	void initGeneratingFiles();
 	void saveGeneratedFiles();
 	void generateMainSwitch();
+	QString generateScreenSwitchArrow(const qReal::Id &edge);
 	QString generateFrameRelatedSwitch(const qReal::Id &currentFrame);
 
 	qReal::GraphicalModelAssistInterface const &mGraphicalModel;

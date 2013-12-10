@@ -12,3 +12,12 @@
 				curState = @@rightHandFrameName@@;
 				break;
 ==========
+@@codeArea@@
+	@@inlineCode@@
+==========
+@@Terminate@@
+
+==========
+@@EndState@@
+	curState=@@StateName@@;
+==========

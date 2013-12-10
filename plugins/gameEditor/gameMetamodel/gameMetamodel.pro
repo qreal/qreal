@@ -1,5 +1,5 @@
 QREAL_XML = gameMetamodel.xml
-QREAL_EDITOR_PATH = /../../../../../study/qreal-old/qreal/plugins/gameEditor/gameMetamodel
-ROOT = /../../../../../../../study/qreal-old/qreal
+QREAL_EDITOR_PATH = /../../../../../study/qqqreal/qreal/plugins/gameEditor/gameMetamodel
+ROOT = /../../../../../../../study/qqqreal/qreal
 
-include (/../../../../../../../study/qreal-old/qreal/plugins/editorsSdk/editorsCommon.pri)
+include (/../../../../../../../study/qqqreal/qreal/plugins/editorsSdk/editorsCommon.pri)
