@@ -1,4 +1,4 @@
-﻿#include "robotSettingsPage.h"+
+﻿#include "robotSettingsPage.h"
 #include "ui_robotSettingsPage.h"
 
 #include <qrkernel/settingsManager.h>
