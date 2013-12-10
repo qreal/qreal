@@ -1,5 +1,10 @@
 #include "math.h"
 
+qreal mathUtils::Math::eps()
+{
+	return EPS;
+}
+
 int mathUtils::Math::sign(qreal x, qreal eps)
 {
 	return x > eps ? 1 : (x < -eps? -1 : 0);
