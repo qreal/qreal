@@ -511,7 +511,8 @@ void D2RobotModel::findCollision(WallItem const &wall)
 	}
 
 	// Reaction force is an average between all reaction forces from small wall parts
-	QVector2D const currentReactionForce = contributorsCount ? sumReaction / contributorsCount : QVector2D();
+	QVector2D const rawCurrentReactionForce = contributorsCount ? sumReaction / contributorsCount : QVector2D();
+	QVector2D const currentReactionForce = rawCurrentReactionForce / reactionForceStabilizationCoefficient;
 	QVector2D const frictionForceDirection = Geometry::directionVector(-longestVectorNormalSlope);
 	QVector2D const currentFrictionForce = wallFrictionCoefficient
 			 * frictionForceDirection * currentReactionForce.length();
@@ -521,7 +522,7 @@ void D2RobotModel::findCollision(WallItem const &wall)
 	mWallsFrictionForce += currentFrictionForce;
 	mForceMomentDecrement += Geometry::vectorProduct(currentReactionForce, radiusVector);
 	mForceMomentDecrement += Geometry::vectorProduct(currentFrictionForce, radiusVector);
-	mGettingOutVector += currentReactionForce;
+	mGettingOutVector += rawCurrentReactionForce;
 }
 
 void D2RobotModel::countNewForces()
@@ -596,11 +597,11 @@ void D2RobotModel::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bo
 
 void D2RobotModel::recalculateVelocity()
 {
-	qreal const angularVelocityFrictionFactor = fabs(mAngularVelocity * 200);
+	qreal const realAngularVelocityFrictionFactor = fabs(mAngularVelocity * angularVelocityFrictionFactor);
 
 	mVelocity += mTractionForce / robotMass * Timeline::timeInterval;
 	mAngularVelocity += mForceMoment / robotInertialMoment * Timeline::timeInterval;
-	qreal const angularFriction = angularVelocityFrictionFactor / robotInertialMoment * Timeline::timeInterval;
+	qreal const angularFriction = realAngularVelocityFrictionFactor / robotInertialMoment * Timeline::timeInterval;
 	qreal const oldAngularVelocity = mAngularVelocity;
 
 	mAngularVelocity -= angularFriction * Math::sign(mAngularVelocity);
