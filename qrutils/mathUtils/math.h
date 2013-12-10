@@ -11,7 +11,7 @@ class QRUTILS_EXPORT Math
 {
 public:
 	/// Default precision for all
-	static qreal const QRUTILS_EXPORT EPS = 0.00001;
+	static qreal eps();
 
 	/// Compares given numbers with default precision
 	static bool eq(qreal x, qreal y);
