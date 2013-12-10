@@ -160,10 +160,10 @@ void WallItem::recalculateBorders()
 	norm.normalize();
 	norm *= mPen.widthF() / 2;
 
-	QPointF const point1 = QPointF(x1 - dx + norm.x(), y1 - dy + norm.y());
-	QPointF const point2 = QPointF(x1 - dx - norm.x(), y1 - dy - norm.y());
-	QPointF const point3 = QPointF(x2 + dx - norm.x(), y2 + dy - norm.y());
-	QPointF const point4 = QPointF(x2 + dx + norm.x(), y2 + dy + norm.y());
+	QPointF const point1(x1 - dx + norm.x(), y1 - dy + norm.y());
+	QPointF const point2(x1 - dx - norm.x(), y1 - dy - norm.y());
+	QPointF const point3(x2 + dx - norm.x(), y2 + dy - norm.y());
+	QPointF const point4(x2 + dx + norm.x(), y2 + dy + norm.y());
 
 	QPainterPath wallPath;
 	wallPath.moveTo(point1);
