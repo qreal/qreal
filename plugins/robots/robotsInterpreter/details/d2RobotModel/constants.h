@@ -33,7 +33,7 @@ qreal const varySpeedDispersion = 0.0125;
 qreal const percentSaltPepperNoise = 20.0;
 
 qreal const robotMass = 200;
-qreal const robotInertialMoment = 100;
+qreal const robotInertialMoment = 20;
 qreal const floorFrictionCoefficient = 0.2;
 qreal const wallFrictionCoefficient = 0.2;
 qreal const rotationalFrictionFactor = 1500;

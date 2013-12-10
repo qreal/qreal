@@ -572,6 +572,8 @@ void D2RobotModel::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bo
 
 	QVector2D const traction1Force = direction * speed1;
 	QVector2D const traction2Force = direction * speed2;
+	QVector2D const friction1Force = -direction * speed1 * floorFrictionCoefficient;
+	QVector2D const friction2Force = -direction * speed2 * floorFrictionCoefficient;
 
 	QVector2D const radiusVector1 = QVector2D(engine1Point - currentRotationCenter);
 	QVector2D const radiusVector2 = QVector2D(engine2Point - currentRotationCenter);
@@ -582,11 +584,11 @@ void D2RobotModel::countTractionForceAndItsMoment(qreal speed1, qreal speed2, bo
 	mTractionForce = realTractionForce1 + realTractionForce2;
 	mTractionForce -= floorFrictionCoefficient * mVelocity;
 
-	qreal const forceMomentA = Geometry::vectorProduct(direction * speed1
-			, QVector2D(engine1Point - currentRotationCenter));
-	qreal const forceMomentB = Geometry::vectorProduct(direction * speed2
-			, QVector2D(engine2Point - currentRotationCenter));
-	mForceMoment = -forceMomentA - forceMomentB;
+	qreal const tractionForceMoment1 = Geometry::vectorProduct(traction1Force, radiusVector1);
+	qreal const tractionForceMoment2 = Geometry::vectorProduct(traction2Force, radiusVector2);
+	qreal const frictionForceMoment1 = Geometry::vectorProduct(friction1Force, radiusVector1);
+	qreal const frictionForceMoment2 = Geometry::vectorProduct(friction2Force, radiusVector2);
+	mForceMoment = -tractionForceMoment1 - tractionForceMoment2 - frictionForceMoment1 - frictionForceMoment2;
 
 	mTractionForce += mReactionForce + mWallsFrictionForce;
 	mForceMoment -= mForceMomentDecrement;
