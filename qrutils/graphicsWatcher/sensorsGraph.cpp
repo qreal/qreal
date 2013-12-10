@@ -50,7 +50,7 @@ SensorsGraph::~SensorsGraph()
 	delete mUi;
 }
 
-void SensorsGraph::addTrackingObject(int const index , QString const &inParserName, QString const &displayName)
+void SensorsGraph::addTrackingObject(int const index, QString const &inParserName, QString const &displayName)
 {
 	TrackObject newObject(index, inParserName, displayName);
 	if (mWatchList.contains(newObject)) {

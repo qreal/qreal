@@ -12,6 +12,7 @@
 namespace utils {
 namespace sensorsGraph {
 
+/// An area with real time plotting
 class SensorViewer : public QGraphicsView
 {
 	Q_OBJECT
@@ -20,7 +21,7 @@ public:
 	explicit SensorViewer(QWidget *parent = 0);
 	~SensorViewer();
 
-	//! all intervals in ms
+	/// @note All intervals in ms
 	void configureUserOptions(int const &fpsDelay, int const &autoScaleDelay, int const &textInfoUpdateDelay);
 
 	void resizeEvent(QResizeEvent *event = 0);
@@ -37,7 +38,7 @@ public slots:
 protected:
 	void drawNextFrame();
 	void drawBackground(QPainter *painter, const QRectF &rect);
-	//! renders hint with value under cursor
+	/// Renders hint with value under cursor
 	void mouseMoveEvent(QMouseEvent *event);
 	void leaveEvent(QEvent *);
 	void mouseDoubleClickEvent(QMouseEvent *event);
@@ -55,15 +56,15 @@ private:
 	PointsQueueProcessor *mPointsDataProcessor;
 	QBrush mPenBrush;
 
-	//! output update delay in ms
+	/// Output update delay in ms
 	int mFpsInterval;
-	//! @variable autoScaleInterval time in milliseconds
+	/// Time in milliseconds
 	int mAutoScaleInterval;
-	//! update interval of current value
+	/// Update interval of current value
 	int mUpdateTextInfoInterval;
-	//! shift in pixels each frame
+	/// Shift in pixels each frame
 	static int const stepSize = 2;
-	//! zoom coefficent
+	/// Zoom coefficent
 	static int const zoomRate = 2;
 
 	int mScaleCoefficient;

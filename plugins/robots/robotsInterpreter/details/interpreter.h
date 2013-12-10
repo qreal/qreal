@@ -142,9 +142,9 @@ private:
 
 	robots::enums::robotModelType::robotModelTypeEnum mImplementationType;
 
-	utils::WatchListWindow *mWatchListWindow;
+	utils::WatchListWindow *mWatchListWindow;  // Doesn`t have ownership
 
-	utils::sensorsGraph::SensorsGraph *mGraphicsWatch;
+	utils::sensorsGraph::SensorsGraph *mGraphicsWatch;  // Doesn`t have ownership
 
 	/// Action responsible for the connection to the robot
 	QAction *mActionConnectToRobot;

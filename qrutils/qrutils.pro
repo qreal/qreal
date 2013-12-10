@@ -8,6 +8,4 @@ RCC_DIR = .moc
 
 TRANSLATIONS = $$PWD/qrutils_ru.ts
 
-# Real-time plot
-include(graphicsWatcher/sensorsGraph.pri)
 include(qrutils.pri)

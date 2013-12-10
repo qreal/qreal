@@ -6,7 +6,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtCore/QTimer>
 
-#include "../expressionsParser/expressionsParser.h"
+#include "expressionsParser/expressionsParser.h"
 #include "sensorViewer.h"
 
 namespace Ui {
@@ -16,23 +16,23 @@ class SensorsGraph;
 namespace utils {
 namespace sensorsGraph {
 
-//! @class SensorsGraph is widget to show sensors state
+/// @class SensorsGraph is widget to show sensors state
 class QRUTILS_EXPORT SensorsGraph : public QWidget
 {
 	Q_OBJECT
 
 public:
-	SensorsGraph(ExpressionsParser const *parser, QWidget *parent = 0);
+	explicit SensorsGraph(ExpressionsParser const *parser, QWidget *parent = 0);
 	~SensorsGraph();
 
-	//! add new element to watch list
-	//! @param index is like slot number
-	//! @param inParserName how to find value in expressionsParser
-	//! @param displayName will be shown in ComboBox
+	/// add new element to watch list
+	/// @param index is like slot number
+	/// @param inParserName how to find value in expressionsParser
+	/// @param displayName will be shown in ComboBox
 	void addTrackingObject(int const index, QString const &inParserName, QString const &displayName);
 	void removeTracking(int const index);
 
-	//! paintEvent makes resize operations
+	/// paintEvent makes resize operations
 	void paintEvent(QPaintEvent *event = 0);
 
 	static int const readSensorDefaultInterval = 50;
@@ -46,10 +46,10 @@ public slots:
 	void stopJob();
 	void resetAll();
 
-	//! user settings
-	//! @arg fpsDelay is interval in ms for frame update
-	//! @arg autoScaleDelay is interval on ms for autoscaling the plot
-	//! @arg textInfoUpdateDelay is interval in ms for info
+	/// user settings
+	/// @arg fpsDelay is interval in ms for frame update
+	/// @arg autoScaleDelay is interval on ms for autoscaling the plot
+	/// @arg textInfoUpdateDelay is interval in ms for info
 	void configureUpdateIntervals(
 			int const &readSensorsInterval
 			, int const &autoScaleInterval
@@ -80,7 +80,7 @@ private:
 	struct TrackObject;
 	QList<TrackObject> mWatchList;
 
-	//! update sensors value interval in ms
+	/// update sensors value interval in ms
 	int const mUpdateInterval;
 	int mCurrentSlot;
 };

@@ -87,6 +87,7 @@ void SensorViewer::clear()
 		if (curLine == NULL) {
 			continue;
 		}
+
 		mScene->removeItem(curLine);
 	}
 
@@ -112,6 +113,7 @@ void SensorViewer::drawNextFrame()
 		if (curLine == NULL) {
 			continue;
 		}
+
 		delete curLine;
 	}
 
@@ -131,6 +133,7 @@ void SensorViewer::visualTimerEvent()
 		mAutoScaleTimer = 0;
 		mPointsDataProcessor->checkPeaks();
 	}
+
 	if (++mUpdateCurrValueTimer * mFpsInterval >= mUpdateTextInfoInterval) {
 		mUpdateCurrValueTimer = 0;
 		mOutputValue = mPointsDataProcessor->latestValue();
@@ -201,6 +204,7 @@ void SensorViewer::zoomIn()
 	if (mScaleCoefficient > maxZoomDegree) {
 		return;
 	}
+
 	QMatrix outputMatrix = matrix();
 	outputMatrix.scale(zoomRate, zoomRate);
 	setMatrix(outputMatrix);
@@ -213,10 +217,11 @@ void SensorViewer::zoomOut()
 	if (mScaleCoefficient == noZoom) {
 		return;
 	}
+
 	QMatrix outputMatrix = matrix();
-	outputMatrix.scale(1 / ((qreal)zoomRate), 1 / ((qreal)zoomRate));
+	outputMatrix.scale(1 / (zoomRate * 1.0), 1 / (zoomRate * 1.0));
 	setMatrix(outputMatrix);
-	mScaleCoefficient--;
+	--mScaleCoefficient;
 }
 
 void SensorViewer::onSensorChange()

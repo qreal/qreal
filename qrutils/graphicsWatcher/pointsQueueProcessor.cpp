@@ -22,6 +22,7 @@ void PointsQueueProcessor::addNewValue(qreal const newValue)
 	if (newValue > mMaxCurrent) {
 		mMaxCurrent = newValue;
 	}
+
 	if (newValue < mMinCurrent) {
 		mMinCurrent = newValue;
 	}
@@ -143,9 +144,11 @@ QPointF PointsQueueProcessor::pointOfVerticalIntersection(QPointF const &positio
 		if (qAbs(result.x() - position.x()) < diameter * accuracyCoefficient) {
 			break;
 		}
+
 		if (position.x() < result.x()) {
 			rightBound = middleIndex - 1;
 		}
+
 		if (position.x() > result.x()) {
 			leftBound = middleIndex + 1;
 		}
