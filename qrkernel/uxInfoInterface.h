@@ -7,8 +7,8 @@ namespace qReal {
 class UXInfoInterface {
 
 public:
-  virtual ~UXInfoInterface() {}
+	virtual ~UXInfoInterface() {}
 
-  virtual void reportSettingsChanges(QString const &name, QVariant const &oldValue, QVariant const &newValue) = 0;
+	virtual void reportSettingsChanges(QString const &name, QVariant const &oldValue, QVariant const &newValue) = 0;
 };
 }

@@ -14,7 +14,7 @@
 #include "view/private/editorViewMVIface.h"
 #include "view/private/exploserView.h"
 
-#include "../../qrutils/uxInfo/uxInfo.h"
+#include "qrutils/uxInfo/uxInfo.h"
 
 namespace qReal {
 

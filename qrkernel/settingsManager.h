@@ -34,7 +34,7 @@ public:
 	/// @param value Parameter value.
 	static void setValue(QString const &key, QVariant const &value);
 
- 	static void setUXInfo(UXInfoInterface *uxInfo);
+	static void setUXInfo(UXInfoInterface *uxInfo);
 
 	/// Removes all entries in persistent external storage
 	static void clearSettings();
@@ -61,7 +61,7 @@ private:
 	void set(QString const &name, QVariant const &value);
 	QVariant get(QString const &key, QVariant const &defaultValue = QVariant()) const;
 
-        void setUXInfoInterface(UXInfoInterface *uxInfo);
+	void setUXInfoInterface(UXInfoInterface *uxInfo);
 	void reportValueSetting(QString const &name, QVariant const &oldValue, QVariant const &newValue);
 
 	void initDefaultValues();

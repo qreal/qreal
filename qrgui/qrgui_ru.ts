@@ -3932,12 +3932,12 @@
     <message>
         <location filename="mainwindow/mainWindow.cpp" line="156"/>
         <source>Start test</source>
-        <translation type="unfinished"></translation>
+        <translation>Начать тест</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.cpp" line="159"/>
         <source>Finish test</source>
-        <translation type="unfinished"></translation>
+        <translation>Завершить тест</translation>
     </message>
     <message>
         <location filename="mainwindow/mainWindow.cpp" line="1103"/>

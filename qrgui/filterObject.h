@@ -4,17 +4,17 @@
 
 class FilterObject : public QObject
 {
-  Q_OBJECT
+	Q_OBJECT
 public:
-  explicit FilterObject(QObject *parent = 0);
+	explicit FilterObject(QObject *parent = 0);
 
 signals:
 
 public slots:
-  bool eventFilter(QObject *object, QEvent *event);
-  void triggeredActionActivated();
-  void toggledActionActivated(bool status);
-  void setStatusCollectUsabilityStatistics(bool status);
-  void reportTestStarted();
-  void reportTestFinished();
+	bool eventFilter(QObject *object, QEvent *event);
+	void triggeredActionActivated();
+	void toggledActionActivated(bool status);
+	void setStatusCollectUsabilityStatistics(bool status);
+	void reportTestStarted();
+	void reportTestFinished();
 };

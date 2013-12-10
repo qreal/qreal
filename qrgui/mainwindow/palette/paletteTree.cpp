@@ -304,6 +304,7 @@ void PaletteTree::setExpansionButtonAppearance()
 
 void PaletteTree::installEventFilter(QObject *obj)
 {
-  QWidget::installEventFilter(obj);
-  comboBox()->installEventFilter(obj);
- }
+	QWidget::installEventFilter(obj);
+	comboBox()->installEventFilter(obj);
+}
+

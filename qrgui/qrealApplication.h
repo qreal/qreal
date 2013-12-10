@@ -5,8 +5,8 @@
 class QRealApplication : public QApplication
 {
 public:
-  QRealApplication(int & argc, char ** argv);
+	QRealApplication(int & argc, char ** argv);
 
 protected:
-  bool notify(QObject *, QEvent *);
+	bool notify(QObject *, QEvent *);
 };

@@ -229,6 +229,6 @@ void PropertyEditorView::resizeEvent(QResizeEvent *event ) {
 
 void PropertyEditorView::installEventFilter(QObject *obj)
 {
-  QWidget::installEventFilter(obj);
-  mPropertyEditor->window()->installEventFilter(obj);
+	QWidget::installEventFilter(obj);
+	mPropertyEditor->window()->installEventFilter(obj);
 }

@@ -43,7 +43,7 @@
 #include "mainwindow/tabWidget.h"
 #include "mainwindow/qscintillaTextEdit.h"
 #include "toolPluginInterface/systemEvents.h"
-#include "../filterObject.h"
+#include "filterObject.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -406,9 +406,9 @@ private:
 	QMenu *mRecentProjectsMenu;
 
 	FindManager *mFindHelper;
-    ProjectManager *mProjectManager;
+	ProjectManager *mProjectManager;
 	StartDialog *mStartDialog;
-        
+
 	FilterObject *mFilterObject;
 	SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;

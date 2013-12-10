@@ -31,254 +31,255 @@ QString const settingChangesFileName = "/settingChanges.txt";
 
 UXInfo::UXInfo()
 {
-  QDir dir(".");
+	QDir dir(".");
 
-  ///create and open all files
-  mElementOnSceneCreationFile.setFileName(dir.absolutePath() + elementCreationFileName);
-  if (mElementOnSceneCreationFile.open(QFile::WriteOnly | QFile::Truncate)) {
-    elementOnSceneCreationStream.setDevice(&mElementOnSceneCreationFile);
-  }
-  creationNumber = 1;
+	///create and open all files
+	mElementOnSceneCreationFile.setFileName(dir.absolutePath() + elementCreationFileName);
+	if (mElementOnSceneCreationFile.open(QFile::WriteOnly | QFile::Truncate)) {
+		elementOnSceneCreationStream.setDevice(&mElementOnSceneCreationFile);
+	}
+	creationNumber = 1;
 
-  mErrorReporterFile.setFileName(dir.absolutePath() + errorReporterFileName);
-  if (mErrorReporterFile.open(QFile::WriteOnly | QFile::Truncate)) {
-    errorReporterStream.setDevice(&mErrorReporterFile);
-  }
-  errorReporterNumber = 1;
+	mErrorReporterFile.setFileName(dir.absolutePath() + errorReporterFileName);
+	if (mErrorReporterFile.open(QFile::WriteOnly | QFile::Truncate)) {
+		errorReporterStream.setDevice(&mErrorReporterFile);
+	}
+	errorReporterNumber = 1;
 
-  mTotalTimeFile.setFileName(dir.absolutePath() + totalTimeFileName);
-  if (mTotalTimeFile.open(QFile::WriteOnly | QFile::Truncate)) {
-    totalTimeStream.setDevice(&mTotalTimeFile);
-  }
+	mTotalTimeFile.setFileName(dir.absolutePath() + totalTimeFileName);
+	if (mTotalTimeFile.open(QFile::WriteOnly | QFile::Truncate)) {
+		totalTimeStream.setDevice(&mTotalTimeFile);
+	}
 
-  mMenuElementUsingFile.setFileName(dir.absolutePath() + menuElementUsingFileName);
-  if (mMenuElementUsingFile.open(QFile::WriteOnly | QFile::Truncate)) {
-    menuElementUsingStream.setDevice(&mMenuElementUsingFile);
-  }
-  menuElementUsingNumber = 1;
+	mMenuElementUsingFile.setFileName(dir.absolutePath() + menuElementUsingFileName);
+	if (mMenuElementUsingFile.open(QFile::WriteOnly | QFile::Truncate)) {
+		menuElementUsingStream.setDevice(&mMenuElementUsingFile);
+	}
+	menuElementUsingNumber = 1;
 
-  mMouseClickPositionFile.setFileName(dir.absolutePath() + mouseClickPositionFileName);
-  if (mMouseClickPositionFile.open(QFile::WriteOnly | QFile::Truncate)) {
-    mouseClickPositionStream.setDevice(&mMouseClickPositionFile);
-  }
-  mouseClickPositionNumber = 1;
+	mMouseClickPositionFile.setFileName(dir.absolutePath() + mouseClickPositionFileName);
+	if (mMouseClickPositionFile.open(QFile::WriteOnly | QFile::Truncate)) {
+		mouseClickPositionStream.setDevice(&mMouseClickPositionFile);
+	}
+	mouseClickPositionNumber = 1;
 
-  mSettingChangesFile.setFileName(dir.absolutePath() + settingChangesFileName);
-  if (mSettingChangesFile.open(QFile::WriteOnly | QFile::Truncate)) {
-    settingChangesStream.setDevice(&mSettingChangesFile);
-  }
-  settingChangesNumber = 1;
+	mSettingChangesFile.setFileName(dir.absolutePath() + settingChangesFileName);
+	if (mSettingChangesFile.open(QFile::WriteOnly | QFile::Truncate)) {
+		settingChangesStream.setDevice(&mSettingChangesFile);
+	}
+	settingChangesNumber = 1;
 
-  testNumber = 1;
+	testNumber = 1;
 }
 
 void UXInfo::reportCreationOfElements(const QString &editorName, const QString elementName)
 {
-  if (!mStatus)
-    return;
+	if (!mStatus)
+		return;
 
-  elementOnSceneCreationStream << creationNumber << " "
-      << editorName << " "
-      << elementName << " "
-      << currentDateTime() << "\n";
-  creationNumber++;
+	elementOnSceneCreationStream << creationNumber << " "
+								 << editorName << " "
+								 << elementName << " "
+								 << currentDateTime() << "\n";
+	creationNumber++;
 }
 
 void UXInfo::reportErrorsOfElements(const QString &type, const QString &editorName, const QString &elementName, const QString &message)
 {
-  if (!mStatus)
-    return;
+	if (!mStatus)
+		return;
 
-  errorReporterStream << errorReporterNumber << " "
-      << type << " "
-      << editorName << " "
-      << elementName << " "
-      << message << " "
-      << currentDateTime() << "\n";
-  errorReporterNumber++;
+	errorReporterStream << errorReporterNumber << " "
+						<< type << " "
+						<< editorName << " "
+						<< elementName << " "
+						<< message << " "
+						<< currentDateTime() << "\n";
+	errorReporterNumber++;
 }
 
 void UXInfo::reportTotalTimeOfExec(const QString &totalTime, const int &exitCode)
 {
-  if (!mStatus)
-    return;
+	if (!mStatus)
+		return;
 
-  totalTimeStream << "TotalSessionTime: "
-      << totalTime << " msecs Exit code:"
-      << exitCode << "\n";
+	totalTimeStream << "TotalSessionTime: "
+					<< totalTime << " msecs Exit code:"
+					<< exitCode << "\n";
 }
 
 void UXInfo::reportMenuElementsUsing(const QString &elementName, const QString &status)
 {
-  if (!mStatus)
-    return;
+	if (!mStatus)
+		return;
 
-  QString const statusText = (status == "none") ? "" : status + " ";
-  menuElementUsingStream << menuElementUsingNumber << " "
-      << elementName << " "
-      << statusText
-      << currentDateTime() << "\n";
-  menuElementUsingNumber++;
+	QString const statusText = (status == "none") ? "" : status + " ";
+	menuElementUsingStream << menuElementUsingNumber << " "
+						   << elementName << " "
+						   << statusText
+						   << currentDateTime() << "\n";
+	menuElementUsingNumber++;
 }
 
 void UXInfo::reportMouseClickPosition(const QPoint &pos)
 {
-  if (!mStatus)
-    return;
+	if (!mStatus)
+		return;
 
-  mouseClickPositionStream << mouseClickPositionNumber << " ("
-      << QString::number(pos.x()) << ", "
-      << QString::number(pos.y()) << ") "
-      << currentDateTime() << "\n";
-  mouseClickPositionNumber++;
+	mouseClickPositionStream << mouseClickPositionNumber << " ("
+							 << QString::number(pos.x()) << ", "
+							 << QString::number(pos.y()) << ") "
+							 << currentDateTime() << "\n";
+	mouseClickPositionNumber++;
 }
 
 void UXInfo::reportSettingsChangesInfo(const QString &name, const QString &oldValue, const QString &newValue)
 {
-  if (!mStatus)
-    return;
+	if (!mStatus)
+		return;
 
-  settingChangesStream << settingChangesNumber << " "
-      << name << " "
-      << oldValue << " "
-      << newValue << " "
-      << currentDateTime() << "\n";
-  settingChangesNumber++;
+	settingChangesStream << settingChangesNumber << " "
+						 << name << " "
+						 << oldValue << " "
+						 << newValue << " "
+						 << currentDateTime() << "\n";
+	settingChangesNumber++;
 }
 
 void UXInfo::setActualStatus(bool status)
 {
-  mStatus = status;
+	mStatus = status;
 }
 
 void UXInfo::reportTestStartedInfo()
 {
-  QList<QTextStream *> streamList;
-  streamList << &elementOnSceneCreationStream << &errorReporterStream << &totalTimeStream
-      << &menuElementUsingStream << &mouseClickPositionStream << &settingChangesStream;
-  QString const now = currentDateTime();
-  for (int i = 0; i < streamList.length(); ++i) {
-    *(streamList[i]) << "Test " << testNumber << " started at " << now << "\n";
-  }
+	QList<QTextStream *> streamList;
+	streamList << &elementOnSceneCreationStream << &errorReporterStream << &totalTimeStream
+			   << &menuElementUsingStream << &mouseClickPositionStream << &settingChangesStream;
+	QString const now = currentDateTime();
+	for (int i = 0; i < streamList.length(); ++i) {
+		*(streamList[i]) << "Test " << testNumber << " started at " << now << "\n";
+	}
 }
 
 void UXInfo::reportTestFinishedInfo()
 {
-  QList<QTextStream *> streamList;
-  streamList << &elementOnSceneCreationStream << &errorReporterStream << &totalTimeStream
-      << &menuElementUsingStream << &mouseClickPositionStream << &settingChangesStream;
-  QString const now = currentDateTime();
-  for (int i = 0; i < streamList.length(); ++i) {
-    *(streamList[i]) << "Test " << testNumber << " finished at " << now << "\n";
-  }
-  testNumber++;
+	QList<QTextStream *> streamList;
+	streamList << &elementOnSceneCreationStream << &errorReporterStream << &totalTimeStream
+			   << &menuElementUsingStream << &mouseClickPositionStream << &settingChangesStream;
+	QString const now = currentDateTime();
+	for (int i = 0; i < streamList.length(); ++i) {
+		*(streamList[i]) << "Test " << testNumber << " finished at " << now << "\n";
+	}
+	testNumber++;
 }
 
 QString UXInfo::currentDateTime()
 {
-  return QDateTime::currentDateTime().toString("yyyy.MM.dd_hh.mm.ss.zzz");
+	return QDateTime::currentDateTime().toString("yyyy.MM.dd_hh.mm.ss.zzz");
 }
 
 UXInfo *UXInfo::instance()
 {
-  if (object == NULL) {
-    object = new UXInfo();
-  }
-  return object;
+	if (object == NULL) {
+		object = new UXInfo();
+	}
+	return object;
 }
 
 UXInfo::~UXInfo()
 {
-  mElementOnSceneCreationFile.close();
-  mErrorReporterFile.close();
-  mTotalTimeFile.close();
-  mMenuElementUsingFile.close();
-  mMouseClickPositionFile.close();
-  mSettingChangesFile.close();
+	mElementOnSceneCreationFile.close();
+	mErrorReporterFile.close();
+	mTotalTimeFile.close();
+	mMenuElementUsingFile.close();
+	mMouseClickPositionFile.close();
+	mSettingChangesFile.close();
 
-  if (!mStatus)
-    return;
+	if (!mStatus)
+		return;
 
-  QDir dir(".");
-  QString const newDirName = currentDateTime();
-  QString const oldElementOnSceneCreationName = mElementOnSceneCreationFile.fileName();
-  QString const oldErrorReporterName = mErrorReporterFile.fileName();
-  QString const oldTotalTimeName = mTotalTimeFile.fileName();
-  QString const oldMenuElementUsingName = mMenuElementUsingFile.fileName();
-  QString const oldMouseClickPositionName = mMouseClickPositionFile.fileName();
-  QString const oldSettingChangesName = mSettingChangesFile.fileName();
+	QDir dir(".");
+	QString const newDirName = currentDateTime();
+	QString const oldElementOnSceneCreationName = mElementOnSceneCreationFile.fileName();
+	QString const oldErrorReporterName = mErrorReporterFile.fileName();
+	QString const oldTotalTimeName = mTotalTimeFile.fileName();
+	QString const oldMenuElementUsingName = mMenuElementUsingFile.fileName();
+	QString const oldMouseClickPositionName = mMouseClickPositionFile.fileName();
+	QString const oldSettingChangesName = mSettingChangesFile.fileName();
 
-  QString const newFileElementOnSceneCreationName = newDirName + elementCreationFileName;
-  QString const newFileErrorReporterName = newDirName + errorReporterFileName;
-  QString const newFileTotalTimeName = newDirName + totalTimeFileName;
-  QString const newFileMenuElementUsingName = newDirName + menuElementUsingFileName;
-  QString const newFileMouseClickPositionName = newDirName + mouseClickPositionFileName;
-  QString const newFileSettingChangesName = newDirName + settingChangesFileName;
+	QString const newFileElementOnSceneCreationName = newDirName + elementCreationFileName;
+	QString const newFileErrorReporterName = newDirName + errorReporterFileName;
+	QString const newFileTotalTimeName = newDirName + totalTimeFileName;
+	QString const newFileMenuElementUsingName = newDirName + menuElementUsingFileName;
+	QString const newFileMouseClickPositionName = newDirName + mouseClickPositionFileName;
+	QString const newFileSettingChangesName = newDirName + settingChangesFileName;
 
-  if (dir.cdUp()) {
-    if (!dir.exists("usabilityFiles"))
-      dir.mkdir("usabilityFiles");
-    dir.cd("usabilityFiles");
-    QString const dirAbsolutePathName = dir.absolutePath() + "/";
-    QString const newElementOnSceneCreationName = dirAbsolutePathName + newFileElementOnSceneCreationName;
-    QString const newErrorReporterName = dirAbsolutePathName + newFileErrorReporterName;
-    QString const newTotalTimeName = dirAbsolutePathName + newFileTotalTimeName;
-    QString const newMenuElementUsingName = dirAbsolutePathName + newFileMenuElementUsingName;
-    QString const newMouseClickPositionName = dirAbsolutePathName + newFileMouseClickPositionName;
-    QString const newSettingChangesName = dirAbsolutePathName + newFileSettingChangesName;
+	if (dir.cdUp()) {
+		if (!dir.exists("usabilityFiles"))
+			dir.mkdir("usabilityFiles");
+		dir.cd("usabilityFiles");
+		QString const dirAbsolutePathName = dir.absolutePath() + "/";
+		QString const newElementOnSceneCreationName = dirAbsolutePathName + newFileElementOnSceneCreationName;
+		QString const newErrorReporterName = dirAbsolutePathName + newFileErrorReporterName;
+		QString const newTotalTimeName = dirAbsolutePathName + newFileTotalTimeName;
+		QString const newMenuElementUsingName = dirAbsolutePathName + newFileMenuElementUsingName;
+		QString const newMouseClickPositionName = dirAbsolutePathName + newFileMouseClickPositionName;
+		QString const newSettingChangesName = dirAbsolutePathName + newFileSettingChangesName;
 
-    dir.mkdir(newDirName);
-    QFile::copy(oldElementOnSceneCreationName, newElementOnSceneCreationName);
-    QFile::copy(oldErrorReporterName, newErrorReporterName);
-    QFile::copy(oldTotalTimeName, newTotalTimeName);
-    QFile::copy(oldMenuElementUsingName, newMenuElementUsingName);
-    QFile::copy(oldMouseClickPositionName, newMouseClickPositionName);
-    QFile::copy(oldSettingChangesName, newSettingChangesName);
-  }
-  //close all files and move to usabilbity files folder
+		dir.mkdir(newDirName);
+		QFile::copy(oldElementOnSceneCreationName, newElementOnSceneCreationName);
+		QFile::copy(oldErrorReporterName, newErrorReporterName);
+		QFile::copy(oldTotalTimeName, newTotalTimeName);
+		QFile::copy(oldMenuElementUsingName, newMenuElementUsingName);
+		QFile::copy(oldMouseClickPositionName, newMouseClickPositionName);
+		QFile::copy(oldSettingChangesName, newSettingChangesName);
+	}
+	//close all files and move to usabilbity files folder
 }
 
 void UXInfo::reportCreation(const QString &editorName, const QString elementName)
 {
-  instance()->reportCreationOfElements(editorName, elementName);
+	instance()->reportCreationOfElements(editorName, elementName);
 }
 
-void UXInfo::reportErrors(const QString &type, const QString &editorName, const QString &elementName, const QString &message)
+void UXInfo::reportErrors(const QString &type, const QString &editorName, const QString &elementName,
+		const QString &message)
 {
-  instance()->reportErrorsOfElements(type, editorName, elementName, message);
+	instance()->reportErrorsOfElements(type, editorName, elementName, message);
 }
 
 void UXInfo::reportTotalTime(QString const &totalTime, int const &exitCode)
 {
-  instance()->reportTotalTimeOfExec(totalTime, exitCode);
+	instance()->reportTotalTimeOfExec(totalTime, exitCode);
 }
 
 void UXInfo::reportMenuElements(const QString &elementName, const QString &status)
 {
-  instance()->reportMenuElementsUsing(elementName, status);
+	instance()->reportMenuElementsUsing(elementName, status);
 }
 
 void UXInfo::reportMouseClick(const QPoint &pos)
 {
-  instance()->reportMouseClickPosition(pos);
+	instance()->reportMouseClickPosition(pos);
 }
 
 void UXInfo::reportSettingsChanges(const QString &name, const QVariant &oldValue, const QVariant &newValue)
 {
-  instance()->reportSettingsChangesInfo(name, oldValue.toString(), newValue.toString());
+	instance()->reportSettingsChangesInfo(name, oldValue.toString(), newValue.toString());
 }
 
 void UXInfo::setStatus(bool status)
 {
-  instance()->setActualStatus(status);
+	instance()->setActualStatus(status);
 }
 
 void UXInfo::reportTestStarted()
 {
-  instance()->reportTestStartedInfo();
+	instance()->reportTestStartedInfo();
 }
 
 void UXInfo::reportTestFinished()
 {
-  instance()->reportTestFinishedInfo();
+	instance()->reportTestFinishedInfo();
 }

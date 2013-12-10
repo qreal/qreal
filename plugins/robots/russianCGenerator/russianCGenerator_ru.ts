@@ -4,7 +4,12 @@
 <context>
     <name>qReal::robots::generators::RussianCGeneratorPlugin</name>
     <message>
-        <location filename="russianCGeneratorPlugin.cpp" line="29"/>
+        <location filename="russianCGeneratorPlugin.cpp" line="30"/>
+        <source>RussianC Source File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="russianCGeneratorPlugin.cpp" line="49"/>
         <source>Generate to Russian C</source>
         <translation>Генерировать в русский С</translation>
     </message>
