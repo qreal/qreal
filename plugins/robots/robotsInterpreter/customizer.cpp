@@ -1,5 +1,6 @@
-﻿#include "customizer.h"
-#include "../../../qrkernel/settingsManager.h"
+#include "customizer.h"
+
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal::interpreters::robots;
 
@@ -16,7 +17,7 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	// TODO: other storage for it?
-	return "2.4.3";
+	return "2.5.0 RC1";
 }
 
 QString Customizer::aboutText() const
