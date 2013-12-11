@@ -120,17 +120,17 @@
         <translation type="obsolete">Данная диаграмма слишком сложна для генерации.</translation>
     </message>
     <message>
-        <location filename="parts/subprograms.cpp" line="48"/>
+        <location filename="parts/subprograms.cpp" line="53"/>
         <source>Graphical diagram instance not found</source>
         <translation>Графическая модель диаграммы с подпрограммой не найдена</translation>
     </message>
     <message>
-        <location filename="parts/subprograms.cpp" line="123"/>
+        <location filename="parts/subprograms.cpp" line="135"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Введите корректный идентификатор подпрограммы &quot;</translation>
     </message>
     <message>
-        <location filename="parts/subprograms.cpp" line="129"/>
+        <location filename="parts/subprograms.cpp" line="141"/>
         <source>Duplicate identifier: </source>
         <translation>Такой идентификатор уже используется: </translation>
     </message>
@@ -146,7 +146,7 @@
 <context>
     <name>qReal::robots::generators::RobotsGeneratorPluginBase</name>
     <message>
-        <location filename="robotsGeneratorPluginBase.cpp" line="35"/>
+        <location filename="robotsGeneratorPluginBase.cpp" line="36"/>
         <source>Generated code</source>
         <translation>Сгенерированный код</translation>
     </message>
