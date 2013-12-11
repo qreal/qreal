@@ -324,7 +324,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Реальный робот</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="171"/>
+        <location filename="robotSettingsPage.ui" line="158"/>
         <source>Sensors Settings</source>
         <translation>Настройки сенсоров</translation>
     </message>
@@ -396,44 +396,64 @@ p, li { white-space: pre-wrap; }
         <translation>TCP</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="178"/>
+        <location filename="robotSettingsPage.ui" line="165"/>
         <source>Elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="184"/>
+        <location filename="robotSettingsPage.ui" line="171"/>
         <source>Text visible</source>
         <translation>Показывать текст под пиктограммой</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="194"/>
+        <location filename="robotSettingsPage.ui" line="181"/>
         <source>TCP Settings</source>
         <translation>Настройки TCP</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="200"/>
+        <location filename="robotSettingsPage.ui" line="187"/>
         <source>Enter server address here</source>
         <translation>IP-адрес сервера</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="235"/>
+        <location filename="robotSettingsPage.ui" line="222"/>
         <source>Noise</source>
         <translation>Шум</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="256"/>
+        <location filename="robotSettingsPage.ui" line="243"/>
         <source>Enable sensor noise</source>
         <translation>Шум сенсоров</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="263"/>
+        <location filename="robotSettingsPage.ui" line="250"/>
         <source>Approximation level</source>
         <translation>Уровень приближения</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="289"/>
+        <location filename="robotSettingsPage.ui" line="276"/>
         <source>Enable motor noise</source>
         <translation>Шум моторов</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="315"/>
+        <source>Graphics Watcher update intervals</source>
+        <translation>Интервалы обновления графиков</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="321"/>
+        <source>Sensors  (ms)</source>
+        <translation>Сенсоры  (мс)</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="343"/>
+        <source>Autoscaling  (ms)</source>
+        <translation>Масштабирование  (мс)</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="365"/>
+        <source>Text info (ms)</source>
+        <translation>Тестовая информация  (мс)</translation>
     </message>
 </context>
 <context>
@@ -446,22 +466,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="customizer.cpp" line="8"/>
+        <location filename="customizer.cpp" line="9"/>
         <source>QReal:Robots</source>
         <translation>QReal:Robots</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="44"/>
+        <location filename="customizer.cpp" line="43"/>
         <source>Configure sensors</source>
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="57"/>
+        <location filename="customizer.cpp" line="51"/>
+        <source>Sensors state</source>
+        <translation>Графики</translation>
+    </message>
+    <message>
+        <location filename="customizer.cpp" line="66"/>
         <source>Subprograms</source>
         <translation>Подпрограммы</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="62"/>
+        <location filename="customizer.cpp" line="71"/>
         <source>The list of all declared subprograms in the project</source>
         <translation>Список всех объявленных в проекте подпрограмм</translation>
     </message>
@@ -534,7 +559,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="144"/>
+        <location filename="robotsPlugin.cpp" line="146"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -582,6 +607,66 @@ p, li { white-space: pre-wrap; }
         <source>Show grid</source>
         <translation type="obsolete">Сетка</translation>
     </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="8"/>
+        <source>Unused</source>
+        <translation>Не используется</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="9"/>
+        <source>Touch sensor (boolean value)</source>
+        <translation>Сенсор касания</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="10"/>
+        <source>Touch sensor (raw value)</source>
+        <translation>Сенсор касания (сырое значение)</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="11"/>
+        <source>Sonar sensor</source>
+        <translation>Сенсор расстояния</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="12"/>
+        <source>Light sensor</source>
+        <translation>Сенсор света</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="13"/>
+        <source>Color sensor (full colors)</source>
+        <translation>Сенсор цвета (распознавание цветов)</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="14"/>
+        <source>Color sensor (red)</source>
+        <translation>Сенсор цвета (красный)</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="15"/>
+        <source>Color sensor (green)</source>
+        <translation>Сенсор цвета (зелёный)</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="16"/>
+        <source>Color sensor (blue)</source>
+        <translation>Сенсор цвета (синий)</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="17"/>
+        <source>Color sensor (passive)</source>
+        <translation>Сенсор цвета (пассивный)</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="18"/>
+        <source>Sound sensor</source>
+        <translation>Звуковой сенсор</translation>
+    </message>
+    <message>
+        <location filename="sensorConstants.cpp" line="19"/>
+        <source>Gyroscope</source>
+        <translation>Гироскоп</translation>
+    </message>
 </context>
 <context>
     <name>SensorsConfigurationWidget</name>
@@ -618,7 +703,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Элементы</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="37"/>
+        <location filename="customizer.cpp" line="38"/>
         <source>Blocks</source>
         <translation>Блоки</translation>
     </message>
@@ -736,7 +821,7 @@ p, li { white-space: pre-wrap; }
         <translation>Показать/скрыть встроенные редакторы свойств</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="149"/>
+        <location filename="robotsPlugin.cpp" line="151"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -755,27 +840,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::Interpreter</name>
     <message>
-        <location filename="details/interpreter.cpp" line="91"/>
+        <location filename="details/interpreter.cpp" line="96"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="95"/>
+        <location filename="details/interpreter.cpp" line="100"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="197"/>
+        <location filename="details/interpreter.cpp" line="212"/>
         <source>Connected successfully</source>
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="201"/>
+        <location filename="details/interpreter.cpp" line="216"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="details/interpreter.cpp" line="266"/>
+        <location filename="details/interpreter.cpp" line="283"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
@@ -783,64 +868,52 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::SensorsConfigurationWidget</name>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="36"/>
         <source>Unused</source>
-        <translation>Не используется</translation>
+        <translation type="obsolete">Не используется</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="37"/>
         <source>Touch sensor (boolean value)</source>
-        <translation>Сенсор касания</translation>
+        <translation type="obsolete">Сенсор касания</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="38"/>
         <source>Touch sensor (raw value)</source>
-        <translation>Сенсор касания (сырое значение)</translation>
+        <translation type="obsolete">Сенсор касания (сырое значение)</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="39"/>
         <source>Sonar sensor</source>
-        <translation>Сенсор расстояния</translation>
+        <translation type="obsolete">Сенсор расстояния</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="40"/>
         <source>Light sensor</source>
-        <translation>Сенсор света</translation>
+        <translation type="obsolete">Сенсор света</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="41"/>
         <source>Color sensor (full colors)</source>
-        <translation>Сенсор цвета (распознавание цветов)</translation>
+        <translation type="obsolete">Сенсор цвета (распознавание цветов)</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="42"/>
         <source>Color sensor (red)</source>
-        <translation>Сенсор цвета (красный)</translation>
+        <translation type="obsolete">Сенсор цвета (красный)</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="43"/>
         <source>Color sensor (green)</source>
-        <translation>Сенсор цвета (зелёный)</translation>
+        <translation type="obsolete">Сенсор цвета (зелёный)</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="44"/>
         <source>Color sensor (blue)</source>
-        <translation>Сенсор цвета (синий)</translation>
+        <translation type="obsolete">Сенсор цвета (синий)</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="45"/>
         <source>Color sensor (passive)</source>
-        <translation>Сенсор цвета (пассивный)</translation>
+        <translation type="obsolete">Сенсор цвета (пассивный)</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="46"/>
         <source>Sound sensor</source>
-        <translation>Звуковой сенсор</translation>
+        <translation type="obsolete">Звуковой сенсор</translation>
     </message>
     <message>
-        <location filename="details/sensorsConfigurationWidget.cpp" line="47"/>
         <source>Gyroscope</source>
-        <translation>Гироскоп</translation>
+        <translation type="obsolete">Гироскоп</translation>
     </message>
     <message>
         <source>Encoder</source>
@@ -1174,8 +1247,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForGyroscopeSensorBlock</name>
     <message>
+        <location filename="details/blocks/waitForGyroscopeSensorBlock.cpp" line="31"/>
         <source>Gyroscope</source>
-        <translation type="obsolete">Гироскоп</translation>
+        <translation>Гироскоп</translation>
     </message>
 </context>
 <context>
@@ -1233,43 +1307,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="103"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="104"/>
         <source>Black</source>
         <translation>Чёрный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="104"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="105"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="105"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="106"/>
         <source>Green</source>
         <translation>Зелёный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="106"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="107"/>
         <source>Yellow</source>
         <translation>Жёлтый</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="107"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="108"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="781"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="783"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="781"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="800"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="783"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="802"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="800"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="802"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>

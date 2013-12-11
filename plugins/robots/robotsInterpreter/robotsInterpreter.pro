@@ -40,6 +40,7 @@ SOURCES += \
 	customizer.cpp \
 	robotSettingsPage.cpp \
 	robotsPlugin.cpp \
+	sensorConstants.cpp \
 	details/abstractTimer.cpp \
 	details/autoconfigurer.cpp \
 	details/blocksTable.cpp \

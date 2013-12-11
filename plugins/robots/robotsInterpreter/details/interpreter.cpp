@@ -11,6 +11,8 @@
 #include "details/tracer.h"
 #include "details/debugHelper.h"
 
+#include "sensorConstants.h"
+
 using namespace qReal;
 using namespace interpreters::robots;
 using namespace interpreters::robots::details;
@@ -53,7 +55,8 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	mInterpretersInterface = &interpretersInterface;
 
 	mParser = new RobotsBlockParser(mInterpretersInterface->errorReporter());
-	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel, mInterpretersInterface->errorReporter(), mParser);
+	mBlocksTable = new BlocksTable(graphicalModelApi, logicalModelApi, mRobotModel
+			, mInterpretersInterface->errorReporter(), mParser);
 
 	connect(&projectManager, SIGNAL(beforeOpen(QString)), this, SLOT(stopRobot()));
 
@@ -69,6 +72,8 @@ void Interpreter::init(GraphicalModelAssistInterface const &graphicalModelApi
 	setRobotImplementation(modelType);
 
 	mWatchListWindow = new utils::WatchListWindow(mParser, mInterpretersInterface->windowWidget());
+
+	mGraphicsWatch = new utils::sensorsGraph::SensorsGraph(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
@@ -104,6 +109,8 @@ void Interpreter::interpret()
 	if (!configurer.configure(currentDiagramId)) {
 		return;
 	}
+
+	mGraphicsWatch->startJob();
 }
 
 void Interpreter::stopRobot()
@@ -116,11 +123,15 @@ void Interpreter::stopRobot()
 		mThreads.removeAll(thread);
 	}
 	mBlocksTable->setFailure();
+
+	mGraphicsWatch->stopJob();
 }
 
 void Interpreter::showWatchList()
 {
 	mWatchListWindow->show();
+
+	mGraphicsWatch->show();
 }
 
 void Interpreter::onTabChanged(Id const &diagramId, bool enabled)
@@ -143,6 +154,10 @@ void Interpreter::closeWatchList()
 {
 	if (mWatchListWindow) {
 		mWatchListWindow->setVisible(false);
+	}
+
+	if (mGraphicsWatch) {
+		mGraphicsWatch->setVisible(false);
 	}
 }
 
@@ -258,6 +273,8 @@ void Interpreter::configureSensors(
 	if (mConnected) {
 		mRobotModel->configureSensors(port1, port2, port3, port4);
 	}
+
+	updateGraphicWatchSensorsList();
 }
 
 void Interpreter::addThread(details::Thread * const thread)
@@ -366,12 +383,18 @@ void Interpreter::runTimer()
 				);
 	}
 
-	connect(mRobotModel->encoderA().encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlotA(int)), Qt::UniqueConnection);
-	connect(mRobotModel->encoderA().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
-	connect(mRobotModel->encoderB().encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlotB(int)), Qt::UniqueConnection);
-	connect(mRobotModel->encoderB().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
-	connect(mRobotModel->encoderC().encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlotC(int)), Qt::UniqueConnection);
-	connect(mRobotModel->encoderC().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
+	connect(mRobotModel->encoderA().encoderImpl(), SIGNAL(response(int))
+			, this, SLOT(responseSlotA(int)), Qt::UniqueConnection);
+	connect(mRobotModel->encoderA().encoderImpl(), SIGNAL(failure())
+			, this, SLOT(slotFailure()), Qt::UniqueConnection);
+	connect(mRobotModel->encoderB().encoderImpl(), SIGNAL(response(int))
+			, this, SLOT(responseSlotB(int)), Qt::UniqueConnection);
+	connect(mRobotModel->encoderB().encoderImpl(), SIGNAL(failure())
+			, this, SLOT(slotFailure()), Qt::UniqueConnection);
+	connect(mRobotModel->encoderC().encoderImpl(), SIGNAL(response(int))
+			, this, SLOT(responseSlotC(int)), Qt::UniqueConnection);
+	connect(mRobotModel->encoderC().encoderImpl(), SIGNAL(failure())
+			, this, SLOT(slotFailure()), Qt::UniqueConnection);
 
 	mRobotModel->nullifySensors();
 	if (!mTimer.isActive()) {
@@ -590,4 +613,25 @@ utils::WatchListWindow *Interpreter::watchWindow() const
 void Interpreter::connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const
 {
 	connect(configurer, SIGNAL(saved()), mD2ModelWidget, SLOT(syncronizeSensors()));
+}
+
+void Interpreter::updateGraphicWatchSensorsList()
+{
+	mGraphicsWatch->addTrackingObject(0, QString("Sensor1")
+			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
+					(SettingsManager::instance()->value("port1SensorType").toInt())));
+	mGraphicsWatch->addTrackingObject(1, QString("Sensor2")
+			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
+					(SettingsManager::instance()->value("port2SensorType").toInt())));
+	mGraphicsWatch->addTrackingObject(2, QString("Sensor3")
+			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
+					(SettingsManager::instance()->value("port3SensorType").toInt())));
+	mGraphicsWatch->addTrackingObject(3, QString("Sensor4")
+			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
+					(SettingsManager::instance()->value("port4SensorType").toInt())));
+}
+
+utils::sensorsGraph::SensorsGraph *Interpreter::graphicsWatchWindow() const
+{
+	return mGraphicsWatch;
 }
