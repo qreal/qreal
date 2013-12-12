@@ -46,18 +46,13 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 
 	setLayout(mainLayout);
 	QPalette pal(palette());
-	QColor const color = QColor::fromHsl (180, 50, 240, 255);
+	QColor const color = QColor::fromHsl(180, 50, 240, 255);
 	pal.setColor(QPalette::Background, color);
 	setAutoFillBackground(true);
 	setPalette(pal);
 
-	Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
-	if (theOnlyDiagram.isNull()) {
-			mProjectManager->suggestToCreateDiagram();
-	}
-
 	sessionsLayout->addWidget(createCommandButton(tr("Open existing project")
-							, this, SLOT(openExistingProject()), QKeySequence::Open));
+			, this, SLOT(openExistingProject()), QKeySequence::Open));
 
 	QCommandLinkButton *openIDLink = new QCommandLinkButton(tr("&Open interpreted diagram"));
 	QCommandLinkButton *createIDLink = new QCommandLinkButton(tr("&Create interpreted diagram"));
@@ -68,6 +63,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	sessionsLayout->addWidget(mCreateInterpreterButton);
 	sessionsLayout->addWidget(mInterpreterButton);
 
+	Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
 	if (!theOnlyDiagram.isNull()) {
 		Id const editor = mMainWindow->editorManager().editors()[0];
 		QString diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
@@ -118,7 +114,7 @@ void StartWidget::initRecentProjects()
 			mStartWidgetSessionsLayout->addWidget(currentProjectLabel);
 		} else {
 			RecentProjectItem *projectWidget = new RecentProjectItem(this, name, project);
-							 mStartWidgetProjectsLayout->addWidget(projectWidget);
+					mStartWidgetProjectsLayout->addWidget(projectWidget);
 
 			++i;
 

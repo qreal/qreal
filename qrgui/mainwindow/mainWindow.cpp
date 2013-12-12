@@ -18,42 +18,35 @@
 #include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
 
+#include <qrutils/outFile.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrkernel/settingsManager.h>
 
-#include "mainwindow/errorReporter.h"
+#include "toolPluginInterface/systemEvents.h"
+#include "models/models.h"
+#include "view/editorView.h"
+#include "hotKeyManager/hotKeyManager.h"
+#include "umllib/element.h"
+#include "pluginManager/listenerManager.h"
+#include "view/sceneCustomizer.h"
 
+#include "mainwindow/errorReporter.h"
 #include "mainwindow/shapeEdit/shapeEdit.h"
 #include "mainwindow/propertyEditorProxyModel.h"
 #include "mainwindow/startWidget/startWidget.h"
-#include "dialogs/gesturesShow/gesturesWidget.h"
-
-#include "models/models.h"
-#include "view/editorView.h"
+#include "mainwindow/referenceList.h"
+#include "mainwindow/splashScreen.h"
+#include "mainwindow/dotRunner.h"
+#include "mainwindow/qscintillaTextEdit.h"
 
 #include "controller/commands/removeElementCommand.h"
 #include "controller/commands/doNothingCommand.h"
 #include "controller/commands/arrangeLinksCommand.h"
 #include "controller/commands/updateElementCommand.h"
 
-#include "umllib/element.h"
-#include "pluginManager/listenerManager.h"
-
-#include "mainwindow/referenceList.h"
-
-#include "mainwindow/splashScreen.h"
 #include "dialogs/suggestToCreateProjectDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
-
-#include "mainwindow/qscintillaTextEdit.h"
-
-#include "mainwindow/dotRunner.h"
-#include "view/sceneCustomizer.h"
-
-#include "hotKeyManager/hotKeyManager.h"
-
-#include <qrutils/outFile.h>
-#include "toolPluginInterface/systemEvents.h"
-#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
+#include "dialogs/gesturesShow/gesturesWidget.h"
 
 using namespace qReal;
 using namespace qReal::commands;
