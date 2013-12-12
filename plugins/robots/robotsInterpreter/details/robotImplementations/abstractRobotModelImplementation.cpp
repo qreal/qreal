@@ -85,9 +85,9 @@ void AbstractRobotModelImplementation::configureSensor(
 		, robots::enums::inputPort::InputPortEnum const port
 		)
 {
+	nullifySensor(port);
 	switch (sensorType) {
 	case robots::enums::sensorType::unused:
-		nullifySensor(port);
 		break;
 	case robots::enums::sensorType::touchBoolean:
 		addTouchSensor(port);
