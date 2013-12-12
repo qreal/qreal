@@ -25,9 +25,12 @@ public:
 	static void setStatus(bool status);
 	static void reportTestStarted();
 	static void reportTestFinished();
+	void closeUXInfo();
+
 private:
 	UXInfo();
 
+	bool writeData(QTextStream const &stream);
 	void reportCreationOfElements(QString const &editorName, QString const elementName);
 	void reportErrorsOfElements(QString const &type, QString const &editorName, QString const &elementName,
 			QString const &message);
@@ -38,10 +41,12 @@ private:
 	void setActualStatus(bool status);
 	void reportTestStartedInfo();
 	void reportTestFinishedInfo();
+	void closeUXFiles();
 	QString currentDateTime();
 
 	static UXInfo* object;
 	bool mStatus;
+	bool mNotEnoughDiskSpace;
 
 	QFile mElementOnSceneCreationFile;
 	static QTextStream elementOnSceneCreationStream;

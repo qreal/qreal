@@ -1,5 +1,4 @@
 #include <QtCore/QDir>
-#include <QtCore/QDebug>
 #include <QPointF>
 
 #include "uxInfo.h"
@@ -28,6 +27,7 @@ QString const totalTimeFileName = "/totalTime.txt";
 QString const menuElementUsingFileName = "/menuElementUsing.txt";
 QString const mouseClickPositionFileName = "/mouseClickPosition.txt";
 QString const settingChangesFileName = "/settingChanges.txt";
+QString const uxInfoDirName = "usabilityFiles";
 
 UXInfo::UXInfo()
 {
@@ -70,12 +70,27 @@ UXInfo::UXInfo()
 	settingChangesNumber = 1;
 
 	testNumber = 1;
+	mNotEnoughDiskSpace = false;
+}
+
+bool UXInfo::writeData(QTextStream const &stream)
+{
+	if (!mStatus || mNotEnoughDiskSpace) {
+		return false;
+	}
+
+	if (stream.status() == QTextStream::WriteFailed) {
+		mNotEnoughDiskSpace = true;
+		return false;
+	}
+	return true;
 }
 
 void UXInfo::reportCreationOfElements(const QString &editorName, const QString elementName)
 {
-	if (!mStatus)
+	if (!writeData(elementOnSceneCreationStream)) {
 		return;
+	}
 
 	elementOnSceneCreationStream << creationNumber << " "
 								 << editorName << " "
@@ -86,8 +101,9 @@ void UXInfo::reportCreationOfElements(const QString &editorName, const QString e
 
 void UXInfo::reportErrorsOfElements(const QString &type, const QString &editorName, const QString &elementName, const QString &message)
 {
-	if (!mStatus)
+	if (!writeData(errorReporterStream)) {
 		return;
+	}
 
 	errorReporterStream << errorReporterNumber << " "
 						<< type << " "
@@ -100,8 +116,9 @@ void UXInfo::reportErrorsOfElements(const QString &type, const QString &editorNa
 
 void UXInfo::reportTotalTimeOfExec(const QString &totalTime, const int &exitCode)
 {
-	if (!mStatus)
+	if (!writeData(totalTimeStream)) {
 		return;
+	}
 
 	totalTimeStream << "TotalSessionTime: "
 					<< totalTime << " msecs Exit code:"
@@ -110,8 +127,9 @@ void UXInfo::reportTotalTimeOfExec(const QString &totalTime, const int &exitCode
 
 void UXInfo::reportMenuElementsUsing(const QString &elementName, const QString &status)
 {
-	if (!mStatus)
+	if (!writeData(menuElementUsingStream)) {
 		return;
+	}
 
 	QString const statusText = (status == "none") ? "" : status + " ";
 	menuElementUsingStream << menuElementUsingNumber << " "
@@ -123,8 +141,9 @@ void UXInfo::reportMenuElementsUsing(const QString &elementName, const QString &
 
 void UXInfo::reportMouseClickPosition(const QPoint &pos)
 {
-	if (!mStatus)
+	if (!writeData(mouseClickPositionStream)) {
 		return;
+	}
 
 	mouseClickPositionStream << mouseClickPositionNumber << " ("
 							 << QString::number(pos.x()) << ", "
@@ -135,8 +154,9 @@ void UXInfo::reportMouseClickPosition(const QPoint &pos)
 
 void UXInfo::reportSettingsChangesInfo(const QString &name, const QString &oldValue, const QString &newValue)
 {
-	if (!mStatus)
+	if (!writeData(settingChangesStream)) {
 		return;
+	}
 
 	settingChangesStream << settingChangesNumber << " "
 						 << name << " "
@@ -153,6 +173,10 @@ void UXInfo::setActualStatus(bool status)
 
 void UXInfo::reportTestStartedInfo()
 {
+	if (!writeData(settingChangesStream)) {
+		return;
+	}
+
 	QList<QTextStream *> streamList;
 	streamList << &elementOnSceneCreationStream << &errorReporterStream << &totalTimeStream
 			   << &menuElementUsingStream << &mouseClickPositionStream << &settingChangesStream;
@@ -164,6 +188,10 @@ void UXInfo::reportTestStartedInfo()
 
 void UXInfo::reportTestFinishedInfo()
 {
+	if (!writeData(settingChangesStream)) {
+		return;
+	}
+
 	QList<QTextStream *> streamList;
 	streamList << &elementOnSceneCreationStream << &errorReporterStream << &totalTimeStream
 			   << &menuElementUsingStream << &mouseClickPositionStream << &settingChangesStream;
@@ -172,6 +200,16 @@ void UXInfo::reportTestFinishedInfo()
 		*(streamList[i]) << "Test " << testNumber << " finished at " << now << "\n";
 	}
 	testNumber++;
+}
+
+void UXInfo::closeUXFiles()
+{
+	mElementOnSceneCreationFile.close();
+	mErrorReporterFile.close();
+	mTotalTimeFile.close();
+	mMenuElementUsingFile.close();
+	mMouseClickPositionFile.close();
+	mSettingChangesFile.close();
 }
 
 QString UXInfo::currentDateTime()
@@ -187,14 +225,9 @@ UXInfo *UXInfo::instance()
 	return object;
 }
 
-UXInfo::~UXInfo()
+void UXInfo::closeUXInfo()
 {
-	mElementOnSceneCreationFile.close();
-	mErrorReporterFile.close();
-	mTotalTimeFile.close();
-	mMenuElementUsingFile.close();
-	mMouseClickPositionFile.close();
-	mSettingChangesFile.close();
+	closeUXFiles();
 
 	if (!mStatus)
 		return;
@@ -216,9 +249,9 @@ UXInfo::~UXInfo()
 	QString const newFileSettingChangesName = newDirName + settingChangesFileName;
 
 	if (dir.cdUp()) {
-		if (!dir.exists("usabilityFiles"))
-			dir.mkdir("usabilityFiles");
-		dir.cd("usabilityFiles");
+		if (!dir.exists(uxInfoDirName))
+			dir.mkdir(uxInfoDirName);
+		dir.cd(uxInfoDirName);
 		QString const dirAbsolutePathName = dir.absolutePath() + "/";
 		QString const newElementOnSceneCreationName = dirAbsolutePathName + newFileElementOnSceneCreationName;
 		QString const newErrorReporterName = dirAbsolutePathName + newFileErrorReporterName;
@@ -282,4 +315,8 @@ void UXInfo::reportTestStarted()
 void UXInfo::reportTestFinished()
 {
 	instance()->reportTestFinishedInfo();
+}
+
+UXInfo::~UXInfo()
+{
 }

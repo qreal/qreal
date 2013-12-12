@@ -289,6 +289,7 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
+	utils::UXInfo::instance()->closeUXInfo();
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
