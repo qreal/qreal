@@ -39,6 +39,7 @@ public:
 private:
 	QString mWorkingDirName;
 	QMap<QString, QPixmap> mMapFileImage;
+	QMap<QString, QByteArray> mMapSvgFileImage;
 	int first_size_x;
 	int first_size_y;
 	int current_size_x;

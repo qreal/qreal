@@ -8,6 +8,7 @@
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
 #include <QtCore/QFileInfo>
+#include <QtSvg/QSvgRenderer>
 
 using namespace qReal;
 
@@ -309,16 +310,33 @@ void SdfRenderer::image_draw(QDomElement &element)
 		}
 	}
 
-	QPixmap pixmap;
+	QRect rect(x1, y1, x2 - x1, y2 - y1);
 
-	if (mMapFileImage.contains(fileName)) {
-		pixmap = mMapFileImage.value(fileName);
+	if (fileName.endsWith("svg")) {
+		if (!mMapSvgFileImage.contains(fileName)) {
+			QFile file(fileName);
+			if (!file.open(QIODevice::ReadOnly)) {
+				// TODO: Use backup icon.
+				return;
+			}
+
+			mMapSvgFileImage.insert(fileName, file.readAll());
+		}
+
+		QSvgRenderer renderer(mMapSvgFileImage.value(fileName));
+		renderer.render(painter, rect);
 	} else {
-		pixmap = QPixmap(fileName);
-		mMapFileImage.insert(fileName, pixmap);
+		QPixmap pixmap;
+
+		if (mMapFileImage.contains(fileName)) {
+			pixmap = mMapFileImage.value(fileName);
+		} else {
+			pixmap = QPixmap(fileName);
+			mMapFileImage.insert(fileName, pixmap);
+		}
+
+		painter->drawPixmap(rect, pixmap);
 	}
-	QRect rect(x1, y1, x2-x1, y2-y1);
-	painter->drawPixmap(rect, pixmap);
 }
 
 void SdfRenderer::point(QDomElement &element)
