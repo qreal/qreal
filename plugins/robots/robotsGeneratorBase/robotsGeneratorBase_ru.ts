@@ -73,7 +73,7 @@
         <translation type="obsolete">Обнаружено более 1 исходящей связи!</translation>
     </message>
     <message>
-        <location filename="masterGeneratorBase.cpp" line="37"/>
+        <location filename="masterGeneratorBase.cpp" line="30"/>
         <source>There is no opened diagram</source>
         <translation>Сначала откройте диаграмму </translation>
     </message>
@@ -120,17 +120,17 @@
         <translation type="obsolete">Данная диаграмма слишком сложна для генерации.</translation>
     </message>
     <message>
-        <location filename="parts/subprograms.cpp" line="53"/>
+        <location filename="parts/subprograms.cpp" line="48"/>
         <source>Graphical diagram instance not found</source>
         <translation>Графическая модель диаграммы с подпрограммой не найдена</translation>
     </message>
     <message>
-        <location filename="parts/subprograms.cpp" line="135"/>
+        <location filename="parts/subprograms.cpp" line="123"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Введите корректный идентификатор подпрограммы &quot;</translation>
     </message>
     <message>
-        <location filename="parts/subprograms.cpp" line="141"/>
+        <location filename="parts/subprograms.cpp" line="129"/>
         <source>Duplicate identifier: </source>
         <translation>Такой идентификатор уже используется: </translation>
     </message>
@@ -146,8 +146,9 @@
 <context>
     <name>qReal::robots::generators::RobotsGeneratorPluginBase</name>
     <message>
+        <location filename="robotsGeneratorPluginBase.cpp" line="35"/>
         <source>Generated code</source>
-        <translation type="obsolete">Сгенерированный код</translation>
+        <translation>Сгенерированный код</translation>
     </message>
 </context>
 <context>

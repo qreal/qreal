@@ -32,12 +32,12 @@
     <message>
         <location filename="nxtFlashTool.cpp" line="77"/>
         <source>Do you want to run it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Хотите ли Вы запустить эту программу?</translation>
     </message>
     <message>
         <location filename="nxtFlashTool.cpp" line="77"/>
         <source>The program has been uploaded.</source>
-        <translation type="unfinished"></translation>
+        <translation>Программа была загружена</translation>
     </message>
     <message>
         <location filename="nxtFlashTool.cpp" line="91"/>
@@ -90,7 +90,7 @@
     <message>
         <location filename="nxtGeneratorPlugin.cpp" line="44"/>
         <source>Lego NXT Source File</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл исходного кода Lego NXT</translation>
     </message>
     <message>
         <location filename="nxtGeneratorPlugin.cpp" line="61"/>
@@ -111,7 +111,7 @@
     <message>
         <location filename="nxtGeneratorPlugin.cpp" line="74"/>
         <source>Run program</source>
-        <translation type="unfinished"></translation>
+        <translation>Запустить программу</translation>
     </message>
     <message>
         <location filename="nxtGeneratorPlugin.cpp" line="90"/>
