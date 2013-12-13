@@ -4,8 +4,8 @@
 #include "outerBindingsDialog.h"
 #include "ui_outerBindongsDialog.h"
 
-#include "../../../../qrutils/outFile.h"
-#include "../../../../qrutils/inFile.h"
+#include <qrutils/outFile.h>
+#include <qrutils/inFile.h>
 
 using namespace qReal::widgetsEdit;
 

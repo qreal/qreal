@@ -2,7 +2,7 @@
 
 #include <QtCore/QMetaProperty>
 
-#include "../../../editorPluginInterface/propertyEditorInterface.h"
+#include <qrgui/editorPluginInterface/propertyEditorInterface.h>
 
 namespace qReal
 {

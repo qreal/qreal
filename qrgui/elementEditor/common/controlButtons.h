@@ -4,7 +4,7 @@
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QPushButton>
 
-#include "../../../qrutils/navigationUtils/navigationMenu.h"
+#include <qrutils/navigationUtils/navigationMenu.h>
 
 namespace qReal
 {

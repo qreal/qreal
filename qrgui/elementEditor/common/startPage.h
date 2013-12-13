@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QWidget>
 
-#include "../../../qrutils/navigationUtils/navigationPageInterface.h"
+#include <qrutils/navigationUtils/navigationPageInterface.h>
 
 namespace qReal
 {

@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QWidget>
 
-#include "../../qrutils/navigationUtils/navigationView.h"
+#include <qrutils/navigationUtils/navigationView.h>
 #include "common/templateDocumentBuilder.h"
 #include "common/startPage.h"
 #include "shapeEdit/shapeEdit.h"

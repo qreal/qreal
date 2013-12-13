@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../umllib/nodeElement.h"
-#include "../../../editorPluginInterface/propertyEditorInterface.h"
+#include <qrgui/umllib/nodeElement.h>
+#include <qrgui/editorPluginInterface/propertyEditorInterface.h>
 
 namespace qReal
 {
