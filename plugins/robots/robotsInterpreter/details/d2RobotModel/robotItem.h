@@ -16,12 +16,6 @@ namespace robots {
 namespace details {
 namespace d2Model {
 
-const qreal robotWidth = 50;
-const qreal robotHeight = 50;
-const QPointF rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
-
-const qreal beepWavesSize = 120;
-
 class BeepItem : public QGraphicsItem
 {
 protected:
@@ -42,7 +36,7 @@ public:
 
 	virtual void rotate(qreal angle);
 	virtual QRectF rect() const;
-	virtual double rotateAngle() const;
+	virtual qreal rotateAngle() const;
 	void setRotateAngle(double const &angle);
 	virtual void setSelected(bool isSelected);
 	void setRotater(Rotater *rotater);
@@ -84,6 +78,7 @@ protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 signals:
+	void mousePressed();
 	void changedPosition();
 
 private:

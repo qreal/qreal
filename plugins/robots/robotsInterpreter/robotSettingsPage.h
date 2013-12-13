@@ -53,10 +53,14 @@ private:
 	enums::sensorType::SensorTypeEnum selectedPort3Sensor() const;
 	enums::sensorType::SensorTypeEnum selectedPort4Sensor() const;
 	enums::robotModelType::robotModelTypeEnum selectedRobotModel() const;
+	void refreshValuesOnUi();
 	bool textVisible() const;
 	bool enableSensorNoise() const;
 	bool enableMotorNoise() const;
 	int approximationLevel() const;
+	int sensorUpdateInterval() const;
+	int autoscalingInterval() const;
+	int textUpdateInterval() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 	details::SensorsConfigurationWidget *mSensorsWidget;

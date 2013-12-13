@@ -36,6 +36,7 @@ private slots:
 	void showRobotSettings();
 	void show2dModel();
 	void rereadSettings();
+	void setGraphWatcherSettings();
 	void titlesVisibilityCheckedInPlugin(bool checked);
 	void titlesVisibilityChecked(bool checked);
 	void updateSettings();

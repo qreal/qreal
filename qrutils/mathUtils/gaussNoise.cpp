@@ -1,7 +1,7 @@
 #include <QtCore/QTime>
 #include <QtCore/QtGlobal>
 
-#include "math.h"
+#include <math.h>
 #include "time.h"
 
 #include "gaussNoise.h"

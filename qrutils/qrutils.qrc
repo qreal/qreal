@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>qrutils_ru.qm</file>
+        <file>graphicsWatcher/icons/stop_btn.png</file>
+        <file>graphicsWatcher/icons/start_btn.png</file>
+        <file>graphicsWatcher/icons/zoomOut_btn.png</file>
+        <file>graphicsWatcher/icons/zoomIn_btn.png</file>
+        <file>graphicsWatcher/icons/reset_btn.png</file>
     </qresource>
 </RCC>

@@ -174,10 +174,10 @@ qreal LineItem::alignedCoordinate(qreal coord, int coef, int const indexGrid) co
 {
 	int const coefSign = coef ? coef / qAbs(coef) : 0;
 
-	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid) {
+	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid / 2) {
 		return coef * indexGrid;
-	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) < indexGrid) {
-		return (coef * coefSign) * indexGrid;
+	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) <= indexGrid / 2) {
+		return (coef + coefSign) * indexGrid;
 	}
 
 	return coord;
