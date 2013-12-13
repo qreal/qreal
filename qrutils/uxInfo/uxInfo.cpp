@@ -268,7 +268,6 @@ void UXInfo::closeUXInfo()
 		QFile::copy(oldMouseClickPositionName, newMouseClickPositionName);
 		QFile::copy(oldSettingChangesName, newSettingChangesName);
 	}
-	//close all files and move to usabilbity files folder
 }
 
 void UXInfo::reportCreation(const QString &editorName, const QString elementName)

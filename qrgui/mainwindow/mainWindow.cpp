@@ -289,7 +289,6 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
-	utils::UXInfo::instance()->closeUXInfo();
 	QDir().rmdir(mTempDir);
 	delete mListenerManager;
 	delete mErrorReporter;
@@ -307,6 +306,7 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 	delete mTextManager;
 	delete mSystemEvents;
+	utils::UXInfo::instance()->closeUXInfo();
 }
 
 EditorManagerInterface& MainWindow::editorManager()

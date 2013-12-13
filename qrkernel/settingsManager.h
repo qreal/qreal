@@ -60,7 +60,7 @@ private:
 	SettingsManager();
 	void set(QString const &name, QVariant const &value);
 	QVariant get(QString const &key, QVariant const &defaultValue = QVariant()) const;
-
+	/// Initialization of UXInfoInterface.
 	void setUXInfoInterface(UXInfoInterface *uxInfo);
 	void reportValueSetting(QString const &name, QVariant const &oldValue, QVariant const &newValue);
 
