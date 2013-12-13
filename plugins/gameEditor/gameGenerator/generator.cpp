@@ -81,8 +81,17 @@ void Generator::generateMainSwitch()
 
 QString Generator::generateScreenSwitchArrow(const Id &edge)
 {
-	Id diagram = mApi.LogicalRepoApi.outgoingExplosion(edge);
-	IdList elements = mApi.LogicalRepoApi.children(diagram);
+	Id diagram = mApi.outgoingExplosion(edge);
+
+	if (Id() == diagram) {
+/*		return ("	//The diagram of"
+				+ mApi.property(edge, "TextProperty")
+				+ "does not exist");*/
+		return "";
+	}
+
+
+	IdList elements = mApi.children(diagram);
 	Id start = Id();
 	QString result = "";
 
@@ -91,25 +100,18 @@ QString Generator::generateScreenSwitchArrow(const Id &edge)
 				0 == mApi.incomingLinks(element).length())
 			start = element;
 	}
-	if (Id() == start) {
-		return ("	//The diagram of"
-				+ mApi.property(edge, "TextProperty")
-				+ "is not proper");
-	}
 
 	for (Id elem = start; mApi.outgoingLinks(elem).length() != 0; elem = mApi.outgoingLinks(elem).at(0)){
 		QString lineTemplate = "";
-		switch (elem.element()) {
-		case "CodeArea" :
+		if (elem.element() == "CodeArea") {
 			lineTemplate = mTemplateUtils["@@CodeArea@@"];
-			QString inlineCode = mApi.property(elem, "Code");
+			QString inlineCode = mApi.property(elem, "Code").toString();
 			lineTemplate.replace("@@inlineCode@@", inlineCode);
-			break;
-		case "EndState":
+		}
+		if (elem.element() == "EndState") {
 			lineTemplate = mTemplateUtils["@@EndState@@"];
-			QString endStateName = mApi.property(elem, "StateName");
+			QString endStateName = mApi.property(elem, "StateName").toString();
 			lineTemplate.replace("@@StateName@@", endStateName);
-			break;
 		}
 		result += lineTemplate;
 	}
@@ -152,9 +154,17 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 
 		Id rightHandFrame = mGraphicalModel.to(edge);
 
+		QString edgeName = mApi.property(edge, "name").toString();
+
+		Id outgoingExpl = mApi.outgoingExplosion(edge);
+		IdList ingoingExpl = mApi.incomingExplosions(edge);
+		QString edgeCode = "";//generateScreenSwitchArrow(edge);
+
 		QString rightHandFrameName = mApi.property(rightHandFrame, "name").toString();
 
+		linkCase.replace("@@edgeName@@", edgeName);
 		linkCase.replace("@@rightHandFrameName@@", rightHandFrameName);
+		linkCase.replace("@@codeTemplate@@", edgeCode);
 		frameSwitch += linkCase;
 	}
 

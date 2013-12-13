@@ -8,7 +8,8 @@
 		break;
 ==========
 @@outconnectedFrameCase@@
-			case @@rightHandFrameName@@:
+			case @@edgeName@@:
+				@@codeTemplate@@
 				curState = @@rightHandFrameName@@;
 				break;
 ==========
