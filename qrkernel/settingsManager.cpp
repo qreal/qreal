@@ -10,7 +10,8 @@ using namespace qReal;
 SettingsManager* SettingsManager::mInstance = NULL;
 
 SettingsManager::SettingsManager()
-		: mSettings("SPbSU", "QReal")
+	: mSettings("SPbSU", "QReal")
+	, mUXInfoInterface(NULL)
 {
 	initDefaultValues();
 	load();
