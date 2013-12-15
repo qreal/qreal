@@ -1,6 +1,6 @@
 #include "geometry.h"
 
-qreal const M_PI = 3.14159265358979323846;  // There's no such thing in math.h in C++11
+qreal const pi = 3.14159265358979323846;  // There's no such thing in math.h in C++11
 
 using namespace mathUtils;
 
@@ -70,7 +70,7 @@ bool Geometry::intersects(QLineF const &line, QPainterPath const &path)
 
 QVector2D Geometry::directionVector(qreal angleInDegrees)
 {
-	return directionVectorRad(angleInDegrees * M_PI / 180);
+	return directionVectorRad(angleInDegrees * pi / 180);
 }
 
 QVector2D Geometry::directionVectorRad(qreal angleInRadians)
