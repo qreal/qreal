@@ -1,5 +1,6 @@
 #include "geometry.h"
-#include <math.h>
+
+qreal const M_PI = 3.14159265358979323846;  // There's no such thing in math.h in C++11
 
 using namespace mathUtils;
 
