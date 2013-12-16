@@ -1,7 +1,5 @@
 #include "geometry.h"
 
-qreal const pi = 3.14159265358979323846;  // There's no such thing in math.h in C++11
-
 using namespace mathUtils;
 
 bool Geometry::eq(QPointF const &point1, QPointF const &point2, qreal eps)
