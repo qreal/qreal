@@ -51,13 +51,13 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	setAutoFillBackground(true);
 	setPalette(pal);
 
-	sessionsLayout->addWidget(createCommandButton(tr("Open existing project")
+	sessionsLayout->addWidget(createCommandButton(tr("&Open existing project")
 			, this, SLOT(openExistingProject()), QKeySequence::Open));
 
 	QSignalMapper *closeTabMapper = new QSignalMapper(this);
 	connect(closeTabMapper, SIGNAL(mapped(int)), this, SIGNAL(closeStartTab(int)), Qt::QueuedConnection);
 
-	QCommandLinkButton *openIDLink = new QCommandLinkButton(tr("&Open interpreted diagram"));
+	QCommandLinkButton *openIDLink = new QCommandLinkButton(tr("Open &interpreted diagram"));
 	QCommandLinkButton *createIDLink = new QCommandLinkButton(tr("&Create interpreted diagram"));
 	connect(openIDLink, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
 	connect(createIDLink, SIGNAL(clicked()), this, SLOT(createInterpretedDiagram()));
@@ -76,7 +76,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 		QString diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
-		QCommandLinkButton *newLink = createCommandButton(tr("New project")
+		QCommandLinkButton *newLink = createCommandButton(tr("&New project")
 			, newProjectMapper, SLOT(map()), QKeySequence::New);
 		newProjectMapper->setMapping(newLink, diagramIdString);
 		connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
