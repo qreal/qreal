@@ -1,8 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-#	editor \
-#	robotsInterpreter \
+	editor \
+	robotsInterpreter \
 	robotsGeneratorBase \
 	nxtGenerator \
 	trikGenerator \
