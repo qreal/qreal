@@ -94,7 +94,7 @@ public:
 
 private:
 	/// Value for determing ID of nonexistent port.
-	static qreal const mNonexistentPortId = -1; // just smth negative
+	static int const mNonexistentPortId = -1; // just smth negative
 
 	/**
 	 * Maximum fraction part value of line port ID.
