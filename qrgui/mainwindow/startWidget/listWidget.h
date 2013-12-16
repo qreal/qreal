@@ -1,8 +1,7 @@
 #pragma once
-#include <QtWidgets>
+
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QListWidget>
-#include <QtWidgets/QPushButton>
 
 namespace qReal {
 
@@ -21,7 +20,6 @@ public:
 	/// @param userData Associated with item the string data
 	/// @param toolTip Item tooltip
 	void addItem(QString const &text, QString const &userData, QString const &toolTip = "");
-	int count();
 	void highlightFirstItem();
 
 signals:

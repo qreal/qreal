@@ -1,5 +1,8 @@
 #include "listWidget.h"
 
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
+
 using namespace qReal;
 
 ListWidget::ListWidget(QWidget *parent)
@@ -8,10 +11,9 @@ ListWidget::ListWidget(QWidget *parent)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(mListWidget);
-
 	setLayout(mainLayout);
 
-	connect(mListWidget, SIGNAL(itemClicked(QListWidgetItem*))
+	connect(mListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*))
 			, this, SLOT(doubleClickHandler(QListWidgetItem*)));
 }
 
@@ -23,17 +25,11 @@ void ListWidget::addItem(QString const &text, QString const &userData, QString c
 	mListWidget->addItem(currentItem);
 }
 
-int ListWidget::count()
-{
-	return mListWidget->count();
-}
-
 void ListWidget::highlightFirstItem()
 {
-	if (count() == 0) {
-		return;
+	if (mListWidget->count()) {
+		mListWidget->setCurrentRow(0);
 	}
-	mListWidget->setCurrentRow(0);
 }
 
 void ListWidget::doubleClickHandler(QListWidgetItem *item)
