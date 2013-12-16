@@ -32,7 +32,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	sessionsLayout->addLayout(mStartWidgetSessionsLayout);
 
 	recentProjectsLayout->addWidget(recentProjects);
-	recentProjectsLayout->addLayout( mStartWidgetProjectsLayout);
+	recentProjectsLayout->addLayout(mStartWidgetProjectsLayout);
 
 	recentProjectsLayout->addStretch(0);
 
@@ -54,8 +54,15 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	sessionsLayout->addWidget(createCommandButton(tr("Open existing project")
 			, this, SLOT(openExistingProject()), QKeySequence::Open));
 
+	QSignalMapper *closeTabMapper = new QSignalMapper(this);
+	connect(closeTabMapper, SIGNAL(mapped(int)), this, SIGNAL(closeStartTab(int)), Qt::QueuedConnection);
+
 	QCommandLinkButton *openIDLink = new QCommandLinkButton(tr("&Open interpreted diagram"));
 	QCommandLinkButton *createIDLink = new QCommandLinkButton(tr("&Create interpreted diagram"));
+	connect(openIDLink, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
+	connect(createIDLink, SIGNAL(clicked()), this, SLOT(createInterpretedDiagram()));
+	connect(openIDLink, SIGNAL(clicked()), closeTabMapper, SLOT(map()));
+	connect(createIDLink, SIGNAL(clicked()), closeTabMapper, SLOT(map()));
 
 	mInterpreterButton = openIDLink;
 	mCreateInterpreterButton = createIDLink;
@@ -75,6 +82,12 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 		connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
 
 		sessionsLayout->addWidget(newLink);
+	} else {
+		SuggestToCreateDiagramWidget *suggestWidget = new SuggestToCreateDiagramWidget(mainWindow, this);
+		closeTabMapper->setMapping(suggestWidget, 0);
+		connect(suggestWidget, SIGNAL(userDataSelected(QString)), mainWindow, SLOT(createDiagram(QString)));
+		connect(suggestWidget, SIGNAL(userDataSelected(QString)), closeTabMapper, SLOT(map()));
+		sessionsLayout->insertWidget(1 /* after header */, suggestWidget);
 	}
 
 	sessionsLayout->addStretch(0);
