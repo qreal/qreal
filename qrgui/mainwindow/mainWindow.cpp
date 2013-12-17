@@ -938,15 +938,18 @@ void MainWindow::closeTab(int index)
 {
 	QWidget *widget = mUi->tabs->widget(index);
 	QScintillaTextEdit *possibleCodeTab = static_cast<QScintillaTextEdit *>(widget);
+	bool const isDiagram = dynamic_cast<EditorView *>(widget);
 
 	QString const path = mTextManager->path(possibleCodeTab);
 
-	if (!mTextManager->unbindCode(possibleCodeTab)) {
+	if (isDiagram) {
 		Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(mRootIndex);
 		mController->diagramClosed(diagramId);
 		mSystemEvents->emitDiagramClosed(diagramId);
-	} else {
+	} else if (mTextManager->unbindCode(possibleCodeTab)) {
 		mSystemEvents->emitCodeTabClosed(QFileInfo(path));
+	} else {
+		// TODO: process other tabs (for example, start tab)
 	}
 
 	mUi->tabs->removeTab(index);
