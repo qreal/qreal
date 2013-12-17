@@ -18,42 +18,35 @@
 #include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
 
+#include <qrutils/outFile.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrkernel/settingsManager.h>
 
-#include "mainwindow/errorReporter.h"
-
-#include "mainwindow/shapeEdit/shapeEdit.h"
-#include "mainwindow/propertyEditorProxyModel.h"
-#include "dialogs/gesturesShow/gesturesWidget.h"
-
+#include "toolPluginInterface/systemEvents.h"
 #include "models/models.h"
 #include "view/editorView.h"
+#include "hotKeyManager/hotKeyManager.h"
+#include "umllib/element.h"
+#include "pluginManager/listenerManager.h"
+#include "view/sceneCustomizer.h"
+
+#include "mainwindow/errorReporter.h"
+#include "mainwindow/shapeEdit/shapeEdit.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "mainwindow/startWidget/startWidget.h"
+#include "mainwindow/referenceList.h"
+#include "mainwindow/splashScreen.h"
+#include "mainwindow/dotRunner.h"
+#include "mainwindow/qscintillaTextEdit.h"
 
 #include "controller/commands/removeElementCommand.h"
 #include "controller/commands/doNothingCommand.h"
 #include "controller/commands/arrangeLinksCommand.h"
 #include "controller/commands/updateElementCommand.h"
 
-#include "umllib/element.h"
-#include "pluginManager/listenerManager.h"
-
-#include "mainwindow/referenceList.h"
-
-#include "mainwindow/splashScreen.h"
-#include "dialogs/startDialog/startDialog.h"
 #include "dialogs/suggestToCreateProjectDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
-
-#include "mainwindow/qscintillaTextEdit.h"
-
-#include "mainwindow/dotRunner.h"
-#include "view/sceneCustomizer.h"
-
-#include "hotKeyManager/hotKeyManager.h"
-
-#include <qrutils/outFile.h>
-#include "toolPluginInterface/systemEvents.h"
-#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
+#include "dialogs/gesturesShow/gesturesWidget.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -80,7 +73,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this, mTextManager))
-		, mStartDialog(new StartDialog(*this, *mProjectManager))
+		, mStartWidget(new StartWidget(this, mProjectManager))
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
 {
@@ -149,7 +142,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// here then we have some problems with correct main window initialization
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
-	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));
+	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
 }
 
 void MainWindow::connectActions()
@@ -263,7 +256,6 @@ MainWindow::~MainWindow()
 	delete mFindReplaceDialog;
 	delete mFindHelper;
 	delete mProjectManager;
-	delete mStartDialog;
 	delete mSceneCustomizer;
 	delete mTextManager;
 	delete mSystemEvents;
@@ -1803,16 +1795,14 @@ Id MainWindow::activeDiagram()
 	return getCurrentTab() && getCurrentTab()->mvIface() ? getCurrentTab()->mvIface()->rootId() : Id();
 }
 
-void MainWindow::initPluginsAndStartDialog()
+void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
 	if (!mProjectManager->restoreIncorrectlyTerminated() &&
 			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
 	{
-		mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
-		// Centering dialog inside main window
-		mStartDialog->move(geometry().center() - mStartDialog->rect().center());
-		mStartDialog->exec();
+		openStartTab();
+		mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 	}
 }
 
@@ -2127,3 +2117,10 @@ void MainWindow::setVersion(QString const &version)
 	// TODO: update title
 	SettingsManager::setValue("version", version);
 }
+
+void MainWindow::openStartTab()
+{
+	connect(mStartWidget, SIGNAL(closeStartTab(int)), this, SLOT(closeTab(int)));
+	mUi->tabs->addTab(mStartWidget, tr("GettingStarted"));
+}
+
