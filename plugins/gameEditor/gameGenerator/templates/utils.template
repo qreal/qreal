@@ -16,9 +16,9 @@
 @@codeArea@@
 	@@inlineCode@@
 ==========
-@@Terminate@@
+@@terminate@@
 
 ==========
-@@EndState@@
-	curState=@@StateName@@;
+@@endState@@
+	curState=@@stateName@@;
 ==========

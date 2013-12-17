@@ -170,14 +170,14 @@ QString Generator::generateScreenSwitchArrow(const Id &edge)
 	for ( ; ; ){
 		QString lineTemplate = "";
 		if (elem.element() == "CodeArea") {
-			lineTemplate = mTemplateUtils["@@CodeArea@@"];
-			QString inlineCode = mApi.property(elem, "Code").toString();
+			lineTemplate = mTemplateUtils["@@codeArea@@"];
+			QString inlineCode = mApi.property(mGraphicalModel.logicalId(elem), "Code").toString();
 			lineTemplate.replace("@@inlineCode@@", inlineCode);
 		}
 		if (elem.element() == "EndState") {
-			lineTemplate = mTemplateUtils["@@EndState@@"];
-			QString endStateName = mApi.property(elem, "StateName").toString();
-			lineTemplate.replace("@@StateName@@", endStateName);
+			lineTemplate = mTemplateUtils["@@endState@@"];
+			QString endStateName = mApi.property(mGraphicalModel.logicalId(elem), "StateName").toString();
+			lineTemplate.replace("@@stateName@@", endStateName);
 		}
 		result += lineTemplate;
 
@@ -186,7 +186,10 @@ QString Generator::generateScreenSwitchArrow(const Id &edge)
 		}
 
 		IdList links = mApi.outgoingLinks(elem);
-		elem = links.at(0);
+		//it will definetly will not generate IF block that way
+		Id link = links.at(0);
+		Id newElem = mGraphicalModel.graphicalRepoApi().otherEntityFromLink(link, elem);
+		elem = newElem;
 	}
 
 
