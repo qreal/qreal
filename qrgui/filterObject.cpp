@@ -1,11 +1,11 @@
 #include "filterObject.h"
-#include <QEvent>
-#include <QAction>
+#include <QtCore/QEvent>
+#include <QtWidgets/QAction>
 
 #include "qrutils/uxInfo/uxInfo.h"
 
-FilterObject::FilterObject(QObject *parent) :
-	QObject(parent)
+FilterObject::FilterObject(QObject *parent)
+	: QObject(parent)
 {
 }
 
@@ -18,7 +18,7 @@ bool FilterObject::eventFilter(QObject *object, QEvent *event)
 
 void FilterObject::triggeredActionActivated()
 {
-	QAction* action = static_cast<QAction*>(sender());
+	QAction* const action = static_cast<QAction* const>(sender());
 	if (action) {
 		utils::UXInfo::reportMenuElements(action->text());
 	}
@@ -26,8 +26,8 @@ void FilterObject::triggeredActionActivated()
 
 void FilterObject::toggledActionActivated(bool status)
 {
-	QString statusText = (status) ? "checked" : "unchecked";
-	QAction* action = static_cast<QAction*>(sender());
+	QString const statusText = status ? "checked" : "unchecked";
+	QAction* const action = static_cast<QAction* const>(sender());
 	if (action) {
 		QString const statusForUStatistics = "status change on: " + statusText;
 		utils::UXInfo::reportMenuElements(action->text(), statusForUStatistics);

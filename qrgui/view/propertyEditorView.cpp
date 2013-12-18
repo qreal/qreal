@@ -1,4 +1,4 @@
-	#include "propertyEditorView.h"
+#include "propertyEditorView.h"
 
 #include "mainwindow/mainWindow.h"
 #include "controller/commands/changePropertyCommand.h"

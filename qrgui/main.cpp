@@ -3,9 +3,8 @@
 
 #include "mainwindow/mainWindow.h"
 #include "thirdparty/windowsmodernstyle.h"
-#include "qrutils/uxInfo/uxInfo.h"
+#include <qrutils/uxInfo/uxInfo.h>
 
-#include <QtCore/QtPlugin>
 #include "qrealApplication.h"
 
 using namespace qReal;
@@ -59,9 +58,11 @@ int main(int argc, char *argv[])
 
 	MainWindow window(fileToOpen);
 	int exitCode = 0; // The window decided to not show itself, exiting now.
+
 	if (window.isVisible()) {
 		exitCode = app.exec();
 	}
+
 	QDateTime const currentTime = QDateTime::currentDateTime();
 	QString const totalTime = QString::number(static_cast<qlonglong>(startedTime.msecsTo(currentTime)));
 	utils::UXInfo::reportTotalTime(totalTime, exitCode);

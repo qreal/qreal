@@ -409,16 +409,16 @@ private:
 	ProjectManager *mProjectManager;
 	StartDialog *mStartDialog;
 
-	FilterObject *mFilterObject;
+	FilterObject *mFilterObject; // Has ownership
 	SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
 
-	QToolBar *mUsabilityTestingToolbar;
-	QAction *mStartTest;
-	QAction *mFinishTest;
+	QToolBar *mUsabilityTestingToolbar; // Has ownership
+	QAction *mStartTest; // Has ownership
+	QAction *mFinishTest; // Has ownership
 };
 
 }

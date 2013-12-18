@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QObject>
+#include <QtCore/QObject>
 
 /// Class for user experience information about
 /// using menu elements and setting usability

@@ -29,6 +29,6 @@ private slots:
 
 private:
 	Ui::PreferencesBehaviourPage *mUi;
-	FilterObject *mFilterObject;
+	FilterObject mFilterObject;
 	bool mUsabilityTestingMode;
 };

@@ -4,8 +4,8 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QDateTime>
 
-#include "qrutils/utilsDeclSpec.h"
-#include "qrkernel/uxInfoInterface.h"
+#include <qrutils/utilsDeclSpec.h>
+#include <qrkernel/uxInfoInterface.h>
 
 namespace utils {
 

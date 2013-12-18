@@ -1,5 +1,5 @@
 #include <QtCore/QDir>
-#include <QPointF>
+#include <QtCore/QPointF>
 
 #include "uxInfo.h"
 
@@ -38,12 +38,14 @@ UXInfo::UXInfo()
 	if (mElementOnSceneCreationFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		elementOnSceneCreationStream.setDevice(&mElementOnSceneCreationFile);
 	}
+
 	creationNumber = 1;
 
 	mErrorReporterFile.setFileName(dir.absolutePath() + errorReporterFileName);
 	if (mErrorReporterFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		errorReporterStream.setDevice(&mErrorReporterFile);
 	}
+
 	errorReporterNumber = 1;
 
 	mTotalTimeFile.setFileName(dir.absolutePath() + totalTimeFileName);
@@ -55,18 +57,21 @@ UXInfo::UXInfo()
 	if (mMenuElementUsingFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		menuElementUsingStream.setDevice(&mMenuElementUsingFile);
 	}
+
 	menuElementUsingNumber = 1;
 
 	mMouseClickPositionFile.setFileName(dir.absolutePath() + mouseClickPositionFileName);
 	if (mMouseClickPositionFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		mouseClickPositionStream.setDevice(&mMouseClickPositionFile);
 	}
+
 	mouseClickPositionNumber = 1;
 
 	mSettingChangesFile.setFileName(dir.absolutePath() + settingChangesFileName);
 	if (mSettingChangesFile.open(QFile::WriteOnly | QFile::Truncate)) {
 		settingChangesStream.setDevice(&mSettingChangesFile);
 	}
+
 	settingChangesNumber = 1;
 
 	testNumber = 1;
@@ -93,9 +98,9 @@ void UXInfo::reportCreationOfElements(const QString &editorName, const QString e
 	}
 
 	elementOnSceneCreationStream << creationNumber << " "
-								 << editorName << " "
-								 << elementName << " "
-								 << currentDateTime() << "\n";
+			<< editorName << " "
+			<< elementName << " "
+			<< currentDateTime() << "\n";
 	creationNumber++;
 }
 
@@ -106,11 +111,11 @@ void UXInfo::reportErrorsOfElements(const QString &type, const QString &editorNa
 	}
 
 	errorReporterStream << errorReporterNumber << " "
-						<< type << " "
-						<< editorName << " "
-						<< elementName << " "
-						<< message << " "
-						<< currentDateTime() << "\n";
+			<< type << " "
+			<< editorName << " "
+			<< elementName << " "
+			<< message << " "
+			<< currentDateTime() << "\n";
 	errorReporterNumber++;
 }
 
@@ -121,8 +126,8 @@ void UXInfo::reportTotalTimeOfExec(const QString &totalTime, const int &exitCode
 	}
 
 	totalTimeStream << "TotalSessionTime: "
-					<< totalTime << " msecs Exit code:"
-					<< exitCode << "\n";
+			<< totalTime << " msecs Exit code:"
+			<< exitCode << "\n";
 }
 
 void UXInfo::reportMenuElementsUsing(const QString &elementName, const QString &status)
@@ -133,9 +138,9 @@ void UXInfo::reportMenuElementsUsing(const QString &elementName, const QString &
 
 	QString const statusText = (status == "none") ? "" : status + " ";
 	menuElementUsingStream << menuElementUsingNumber << " "
-						   << elementName << " "
-						   << statusText
-						   << currentDateTime() << "\n";
+			<< elementName << " "
+			<< statusText
+			<< currentDateTime() << "\n";
 	menuElementUsingNumber++;
 }
 
@@ -146,9 +151,9 @@ void UXInfo::reportMouseClickPosition(const QPoint &pos)
 	}
 
 	mouseClickPositionStream << mouseClickPositionNumber << " ("
-							 << QString::number(pos.x()) << ", "
-							 << QString::number(pos.y()) << ") "
-							 << currentDateTime() << "\n";
+			<< QString::number(pos.x()) << ", "
+			<< QString::number(pos.y()) << ") "
+			<< currentDateTime() << "\n";
 	mouseClickPositionNumber++;
 }
 
@@ -159,10 +164,10 @@ void UXInfo::reportSettingsChangesInfo(const QString &name, const QString &oldVa
 	}
 
 	settingChangesStream << settingChangesNumber << " "
-						 << name << " "
-						 << oldValue << " "
-						 << newValue << " "
-						 << currentDateTime() << "\n";
+			<< name << " "
+			<< oldValue << " "
+			<< newValue << " "
+			<< currentDateTime() << "\n";
 	settingChangesNumber++;
 }
 
@@ -179,7 +184,7 @@ void UXInfo::reportTestStartedInfo()
 
 	QList<QTextStream *> streamList;
 	streamList << &elementOnSceneCreationStream << &errorReporterStream << &totalTimeStream
-			   << &menuElementUsingStream << &mouseClickPositionStream << &settingChangesStream;
+			<< &menuElementUsingStream << &mouseClickPositionStream << &settingChangesStream;
 	QString const now = currentDateTime();
 	for (int i = 0; i < streamList.length(); ++i) {
 		*(streamList[i]) << "Test " << testNumber << " started at " << now << "\n";
@@ -194,7 +199,7 @@ void UXInfo::reportTestFinishedInfo()
 
 	QList<QTextStream *> streamList;
 	streamList << &elementOnSceneCreationStream << &errorReporterStream << &totalTimeStream
-			   << &menuElementUsingStream << &mouseClickPositionStream << &settingChangesStream;
+			<< &menuElementUsingStream << &mouseClickPositionStream << &settingChangesStream;
 	QString const now = currentDateTime();
 	for (int i = 0; i < streamList.length(); ++i) {
 		*(streamList[i]) << "Test " << testNumber << " finished at " << now << "\n";
@@ -229,8 +234,9 @@ void UXInfo::closeUXInfo()
 {
 	closeUXFiles();
 
-	if (!mStatus)
+	if (!mStatus) {
 		return;
+	}
 
 	QDir dir(".");
 	QString const newDirName = currentDateTime();
@@ -249,8 +255,9 @@ void UXInfo::closeUXInfo()
 	QString const newFileSettingChangesName = newDirName + settingChangesFileName;
 
 	if (dir.cdUp()) {
-		if (!dir.exists(uxInfoDirName))
+		if (!dir.exists(uxInfoDirName)) {
 			dir.mkdir(uxInfoDirName);
+		}
 		dir.cd(uxInfoDirName);
 		QString const dirAbsolutePathName = dir.absolutePath() + "/";
 		QString const newElementOnSceneCreationName = dirAbsolutePathName + newFileElementOnSceneCreationName;

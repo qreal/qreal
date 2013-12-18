@@ -73,6 +73,7 @@ void SettingsManager::reportValueSetting(const QString &name, const QVariant &ol
 	if (oldValue == newValue) {
 		return;
 	}
+
 	if (mUXInfoInterface) {
 		mUXInfoInterface->reportSettingsChanges(name, oldValue, newValue);
 	}

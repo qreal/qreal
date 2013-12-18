@@ -104,9 +104,9 @@
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QCheckBox" name="collectArgonomicalValuesCheckBox">
+       <widget class="QCheckBox" name="collectErgonomicValuesCheckBox">
         <property name="text">
-         <string>Collect argonomical values</string>
+         <string>Collect ergonomic values</string>
         </property>
         <property name="checked">
          <bool>true</bool>

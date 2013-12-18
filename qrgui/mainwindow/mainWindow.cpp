@@ -177,8 +177,8 @@ void MainWindow::connectActionsForUXInfo()
 			<< mUi->actionAbout << mUi->actionAboutQt << mUi->actionShow
 			<< mUi->actionFullscreen << mUi->actionFind;
 
-	foreach (QAction* action, triggeredActions) {
-		connect (action, SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
+	foreach (QAction* const action, triggeredActions) {
+		connect(action, SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
 	}
 
 	QList<QAction*> toggledActions;
@@ -186,8 +186,8 @@ void MainWindow::connectActionsForUXInfo()
 			<< mUi->actionShow_alignment << mUi->actionSwitch_on_grid
 			<< mUi->actionSwitch_on_alignment;
 
-	foreach (QAction* action, toggledActions) {
-		connect (action, SIGNAL(toggled(bool)), mFilterObject, SLOT(toggledActionActivated(bool)));
+	foreach (QAction* const action, toggledActions) {
+		connect(action, SIGNAL(toggled(bool)), mFilterObject, SLOT(toggledActionActivated(bool)));
 	}
 }
 
@@ -306,6 +306,10 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 	delete mTextManager;
 	delete mSystemEvents;
+	delete mFilterObject;
+	delete mStartTest;
+	delete mFinishTest;
+	delete mUsabilityTestingToolbar;
 	utils::UXInfo::instance()->closeUXInfo();
 }
 

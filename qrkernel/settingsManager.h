@@ -34,6 +34,8 @@ public:
 	/// @param value Parameter value.
 	static void setValue(QString const &key, QVariant const &value);
 
+	/// Set UXInfo for saving settings changers.
+	/// @param uxInfo UXInfo interface
 	static void setUXInfo(UXInfoInterface *uxInfo);
 
 	/// Removes all entries in persistent external storage
@@ -76,7 +78,7 @@ private:
 	QHash<QString, QVariant> mDefaultValues;
 	/// Persistent settings storage.
 	QSettings mSettings;
-	UXInfoInterface *mUXInfoInterface;
+	UXInfoInterface* mUXInfoInterface; // Has ownership
 };
 
 }
