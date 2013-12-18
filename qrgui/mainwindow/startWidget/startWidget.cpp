@@ -1,11 +1,9 @@
-#include <QtWidgets>
-#include <QtCore>
+#include "startWidget.h"
 
 #include <qrkernel/settingsManager.h>
 
 #include "dialogs/suggestToCreateDiagramDialog.h"
 #include "mainwindow/mainWindow.h"
-#include "startWidget.h"
 #include "suggestToCreateDiagramWidget.h"
 #include "recentProjectsListWidget.h"
 #include "recentProjectItem.h"
@@ -29,7 +27,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	QVBoxLayout *sessionsLayout = new QVBoxLayout;
 
 	mainLayout->addLayout(sessionsLayout);
-	QWidget *verticalLineWidget = new QWidget();
+	QWidget *verticalLineWidget = new QWidget;
 	verticalLineWidget->setFixedWidth(1);
 	verticalLineWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	verticalLineWidget->setStyleSheet(QString("background-color: #c0c0c0;"));
@@ -65,7 +63,7 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
 	if (!theOnlyDiagram.isNull()) {
 		Id const editor = mMainWindow->editorManager().editors()[0];
-		QString diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
+		QString const diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
 		QPushButton *newProjectButton = createCommandButton(tr("&New project"));
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
@@ -112,10 +110,11 @@ void StartWidget::createProjectWithDiagram(QString const &idString)
 
 QLayout *StartWidget::initRecentProjects(QString const &recentProjects)
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout;
-	QVBoxLayout *recentProjectsLayout = new QVBoxLayout;
+	QVBoxLayout * const mainLayout = new QVBoxLayout;
+	QVBoxLayout * const recentProjectsLayout = new QVBoxLayout;
 
-	QLabel *recentProjectsLabel = new QLabel(tr("Recent projects"));
+	QLabel * const recentProjectsLabel = new QLabel(tr("Recent projects"));
+	recentProjectsLabel->setWordWrap(true);
 	recentProjectsLabel->setStyleSheet(BrandManager::styles()->headerLevel1Style());
 
 	mainLayout->addWidget(recentProjectsLabel);

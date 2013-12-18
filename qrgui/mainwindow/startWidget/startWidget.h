@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QCommandLinkButton>
+#include <QtWidgets/QPushButton>
 
 #include "mainwindow/projectManager/projectManager.h"
 
