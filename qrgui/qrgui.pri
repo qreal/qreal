@@ -9,6 +9,12 @@ LIBS += -L$$PWD/../bin/thirdparty -lqscintilla2
 
 RESOURCES = $$PWD/qrgui.qrc
 
+HEADERS += \
+	$$PWD/qrealApplication.h \
+
+SOURCES += \
+	$$PWD/qrealApplication.cpp \
+
 unix:DEFINES   = _TTY_POSIX_
 win32:DEFINES  = _TTY_WIN_
 

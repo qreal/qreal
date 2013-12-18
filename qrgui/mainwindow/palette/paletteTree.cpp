@@ -301,3 +301,10 @@ void PaletteTree::setExpansionButtonAppearance()
 		mChangeExpansionState->setToolTip(tr("Expand all"));
 	}
 }
+
+void PaletteTree::installEventFilter(QObject *obj)
+{
+	QWidget::installEventFilter(obj);
+	comboBox()->installEventFilter(obj);
+}
+
