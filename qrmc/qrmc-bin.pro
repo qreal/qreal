@@ -1,5 +1,7 @@
 QT += xml
 
+CONFIG += c++11
+
 CONFIG += console
 TARGET = qrmc
 

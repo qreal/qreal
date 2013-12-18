@@ -1,6 +1,8 @@
 TEMPLATE = lib
 QT += xml
 
+CONFIG += c++11
+
 TARGET = qrmc
 
 DEPENDPATH += . \

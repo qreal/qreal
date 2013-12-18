@@ -1,5 +1,7 @@
 DEFINES += QRKERNEL_LIBRARY
 
+CONFIG += c++11
+
 INCLUDEPATH += \
 	$$PWD/..
 
