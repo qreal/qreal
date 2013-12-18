@@ -121,7 +121,8 @@ void StartWidget::initRecentProjects()
 	foreach (QString const &project, recentProjects.split(";", QString::SkipEmptyParts)) {
 		QString const name = project.split("/").last().split("\\").last();
 		if ("autosave.qrs"== name) {
-			QString currentProject = QString("<a href='%2'>%1</a>").arg(tr("<font color='black'>•  default (current session)</font>"), project);
+			QString currentProject = QString("<a href='%2'>%1</a>").arg(
+					tr("<font color='black'>•  default (current session)</font>"), project);
 			QLabel *currentProjectLabel = new QLabel(currentProject, this);
 			mStartWidgetSessionsLayout->addSpacing(25);
 			mStartWidgetSessionsLayout->addWidget(currentProjectLabel);
