@@ -32,8 +32,8 @@ private slots:
 	void createInterpretedDiagram();
 
 private:
-	QCommandLinkButton *createCommandButton(QString const &text
-							, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey);
+	QPushButton *createCommandButton(QString const &text
+			, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey);
 	void initRecentProjects();
 
 	MainWindow *mMainWindow;
@@ -42,8 +42,8 @@ private:
 	QVBoxLayout *mStartWidgetProjectsLayout;
 	QHBoxLayout *mStartWidgetSessionsLayout;
 
-	QCommandLinkButton *mInterpreterButton;  // Has ownership.
-	QCommandLinkButton *mCreateInterpreterButton;  // Has ownership.
+	QPushButton *mInterpreterButton;  // Has ownership.
+	QPushButton *mCreateInterpreterButton;  // Has ownership.
 };
 
 }

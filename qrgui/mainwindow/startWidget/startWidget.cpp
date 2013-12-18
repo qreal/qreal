@@ -2,12 +2,14 @@
 #include <QtCore>
 
 #include <qrkernel/settingsManager.h>
+
 #include "dialogs/suggestToCreateDiagramDialog.h"
 #include "mainwindow/mainWindow.h"
 #include "startWidget.h"
 #include "suggestToCreateDiagramWidget.h"
 #include "recentProjectsListWidget.h"
 #include "recentProjectItem.h"
+#include "brandManager/brandManager.h"
 
 using namespace qReal;
 
@@ -19,7 +21,6 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	, mStartWidgetProjectsLayout(new QVBoxLayout())
 	, mStartWidgetSessionsLayout(new QHBoxLayout())
 {
-	QLabel *sessions = new QLabel(tr("<font size = 14>Sessions</font>"));
 	QLabel *recentProjects = new QLabel(tr("<font size = 14>Recent projects</font>"));
 
 	initRecentProjects();
@@ -28,7 +29,6 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	QVBoxLayout *recentProjectsLayout = new QVBoxLayout();
 	QHBoxLayout *mainLayout = new QHBoxLayout();
 
-	sessionsLayout->addWidget(sessions);
 	sessionsLayout->addLayout(mStartWidgetSessionsLayout);
 
 	recentProjectsLayout->addWidget(recentProjects);
@@ -51,8 +51,9 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	setAutoFillBackground(true);
 	setPalette(pal);
 
-	sessionsLayout->addWidget(createCommandButton(tr("&Open existing project")
-			, this, SLOT(openExistingProject()), QKeySequence::Open));
+	QPushButton * const openButton = createCommandButton(tr("&Open existing project")
+			, this, SLOT(openExistingProject()), QKeySequence::Open);
+	sessionsLayout->addWidget(openButton);
 
 	QSignalMapper *closeTabMapper = new QSignalMapper(this);
 	connect(closeTabMapper, SIGNAL(mapped(int)), this, SIGNAL(closeStartTab(int)), Qt::QueuedConnection);
@@ -76,18 +77,22 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 		QString diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
-		QCommandLinkButton *newLink = createCommandButton(tr("&New project")
+		QPushButton *newLink = createCommandButton(tr("&New project")
 			, newProjectMapper, SLOT(map()), QKeySequence::New);
 		newProjectMapper->setMapping(newLink, diagramIdString);
 		connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
 
 		sessionsLayout->addWidget(newLink);
 	} else {
-		SuggestToCreateDiagramWidget *suggestWidget = new SuggestToCreateDiagramWidget(mainWindow, this);
-		closeTabMapper->setMapping(suggestWidget, 0);
-		connect(suggestWidget, SIGNAL(userDataSelected(QString)), mainWindow, SLOT(createDiagram(QString)));
-		connect(suggestWidget, SIGNAL(userDataSelected(QString)), closeTabMapper, SLOT(map()));
-		sessionsLayout->insertWidget(1 /* after header */, suggestWidget);
+		if (!mMainWindow->editorManager().editors().isEmpty()) {
+			SuggestToCreateDiagramWidget *suggestWidget = new SuggestToCreateDiagramWidget(mainWindow, this);
+			closeTabMapper->setMapping(suggestWidget, 0);
+			connect(suggestWidget, SIGNAL(userDataSelected(QString)), mainWindow, SLOT(createDiagram(QString)));
+			connect(suggestWidget, SIGNAL(userDataSelected(QString)), closeTabMapper, SLOT(map()));
+			sessionsLayout->insertWidget(0, suggestWidget);
+		} else {
+			openButton->hide();
+		}
 	}
 
 	sessionsLayout->addStretch(0);
@@ -120,7 +125,7 @@ void StartWidget::initRecentProjects()
 	QString const recentProjects = SettingsManager::value("recentProjects").toString();
 	foreach (QString const &project, recentProjects.split(";", QString::SkipEmptyParts)) {
 		QString const name = project.split("/").last().split("\\").last();
-		if ("autosave.qrs"== name) {
+		if ("autosave.qrs" == name) {
 			QString currentProject = QString("<a href='%2'>%1</a>").arg(
 					tr("<font color='black'>•  default (current session)</font>"), project);
 			QLabel *currentProjectLabel = new QLabel(currentProject, this);
@@ -198,10 +203,11 @@ void StartWidget::createInterpretedDiagram()
 	}
 }
 
-QCommandLinkButton *StartWidget::createCommandButton(QString const &text
+QPushButton *StartWidget::createCommandButton(QString const &text
 			, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey)
 {
-	QCommandLinkButton * const result = new QCommandLinkButton(text);
+	QPushButton * const result = new QPushButton(text);
+	this->setStyleSheet(BrandManager::styles()->commandButtonStyle());
 	connect(result, SIGNAL(clicked()), reciever, slot);
 	QAction * const buttonAction = new QAction(this);
 	buttonAction->setShortcuts(standartHotkey);
