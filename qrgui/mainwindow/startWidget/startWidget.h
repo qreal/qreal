@@ -18,8 +18,10 @@ class StartWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit StartWidget(MainWindow *mainWindow, ProjectManager *projectManager);
-	void setVisibleForInterpreterButton(bool const visible); //Show/hide Interpreted buttons
+	StartWidget(MainWindow *mainWindow, ProjectManager *projectManager);
+
+	/// Shows or hides interpreter buttons
+	void setVisibleForInterpreterButton(bool const visible);
 
 signals:
 	void closeStartTab(int index);
@@ -32,17 +34,14 @@ private slots:
 	void createInterpretedDiagram();
 
 private:
-	QPushButton *createCommandButton(QString const &text
-			, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey);
-	void initRecentProjects();
+	QPushButton *createCommandButton(QString const &text);
+	QLayout *initRecentProjects(QString const &recentProjects);
 
 	MainWindow *mMainWindow;
 	ProjectManager *mProjectManager;
 	int mProjectListSize;
-	QVBoxLayout *mStartWidgetProjectsLayout;
-	QHBoxLayout *mStartWidgetSessionsLayout;
 
-	QPushButton *mInterpreterButton;  // Has ownership.
+	QPushButton *mOpenInterpreterButton;  // Has ownership.
 	QPushButton *mCreateInterpreterButton;  // Has ownership.
 };
 

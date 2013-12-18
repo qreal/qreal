@@ -31,7 +31,14 @@ public:
 		return ":/fonts/Pfennig.ttf";
 	}
 
+	/// Returns a path to a font for a text on styled command buttons
 	virtual QString commandButtonsFont() const
+	{
+		return ":/fonts/Pfennig.ttf";
+	}
+
+	/// Returns a path to a font for a styled text, non-regular one
+	virtual QString styledTextFont() const
 	{
 		return ":/fonts/Pfennig.ttf";
 	}

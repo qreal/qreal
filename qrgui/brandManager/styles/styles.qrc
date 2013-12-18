@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/styles">
         <file>commandButton.js</file>
+        <file>headerLevel1.js</file>
+        <file>headerLevel2.js</file>
+        <file>headerLevel3.js</file>
+        <file>headerLevel4.js</file>
     </qresource>
 </RCC>
