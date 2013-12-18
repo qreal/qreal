@@ -10,9 +10,11 @@ QPushButton {
     min-width: 10em;
     padding: 6px;
 }
+
 QPushButton:hover {
     background-color: rgb(178, 223, 238);
 }
+
 QPushButton:pressed {
     background-color: rgb(154, 192, 205);
     border-style: inset;

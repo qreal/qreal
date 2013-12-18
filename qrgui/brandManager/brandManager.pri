@@ -7,5 +7,5 @@ SOURCES += \
 	$$PWD/brandManager.cpp \
 
 RESOURCES += \
-	$$PWD/fonts.qrc \
-	$$PWD/styles.qrc \
+	$$PWD/fonts/fonts.qrc \
+	$$PWD/styles/styles.qrc \

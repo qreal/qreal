@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/styles">
-        <file>styles/commandButton.js</file>
+        <file>commandButton.js</file>
     </qresource>
 </RCC>

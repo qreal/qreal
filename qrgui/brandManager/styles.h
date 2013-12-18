@@ -26,7 +26,7 @@ public:
 
 	virtual QString commandButtonStyle() const
 	{
-		return utils::InFile::readAll(commandButtonStyle()).replace("@@FONT@@", mFonts.commandButtonsFont());
+		return utils::InFile::readAll(commandButtonStylePath()).replace("@@FONT@@", mFonts.commandButtonsFont());
 	}
 
 protected:

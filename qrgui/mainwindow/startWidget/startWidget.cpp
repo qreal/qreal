@@ -207,7 +207,7 @@ QPushButton *StartWidget::createCommandButton(QString const &text
 			, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey)
 {
 	QPushButton * const result = new QPushButton(text);
-	this->setStyleSheet(BrandManager::styles()->commandButtonStyle());
+	result->setStyleSheet(BrandManager::styles()->commandButtonStyle());
 	connect(result, SIGNAL(clicked()), reciever, slot);
 	QAction * const buttonAction = new QAction(this);
 	buttonAction->setShortcuts(standartHotkey);
