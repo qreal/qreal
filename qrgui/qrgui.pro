@@ -1,5 +1,7 @@
 DESTDIR = ../bin
 
+CONFIG += c++11
+
 CONFIG += rpath_libdirs
 macx {
 	CONFIG -= app_bundle

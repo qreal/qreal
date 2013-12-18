@@ -9,6 +9,9 @@ namespace mathUtils {
 // Default precision for all floating point numbers comparison methods
 qreal const EPS = 0.0000000001;
 
+// There's no such thing in standard math.h in C++11
+qreal const pi = 3.14159265358979323846;
+
 /// Contains useful methods for using in some mathematical expressions
 class QRUTILS_EXPORT Math
 {
