@@ -43,7 +43,7 @@
 #include "mainwindow/tabWidget.h"
 #include "mainwindow/qscintillaTextEdit.h"
 #include "toolPluginInterface/systemEvents.h"
-#include "filterObject.h"
+#include "mainwindow/filterObject.h"
 
 namespace Ui {
 class MainWindowUi;

@@ -84,28 +84,28 @@ private:
 	bool mNotEnoughDiskSpace;
 
 	QFile mElementOnSceneCreationFile;
-	static QTextStream elementOnSceneCreationStream;
-	static int creationNumber;
+	QTextStream mElementOnSceneCreationStream;
+	int mCreationNumber;
 
 	QFile mErrorReporterFile;
-	static QTextStream errorReporterStream;
-	static int errorReporterNumber;
+	QTextStream mErrorReporterStream;
+	int mErrorReporterNumber;
 
 	QFile mTotalTimeFile;
-	static QTextStream totalTimeStream;
+	QTextStream mTotalTimeStream;
 
 	QFile mMenuElementUsingFile;
-	static QTextStream menuElementUsingStream;
-	static int menuElementUsingNumber;
+	QTextStream mMenuElementUsingStream;
+	int mMenuElementUsingNumber;
 
 	QFile mMouseClickPositionFile;
-	static QTextStream mouseClickPositionStream;
-	static int mouseClickPositionNumber;
+	QTextStream mMouseClickPositionStream;
+	int mMouseClickPositionNumber;
 
 	QFile mSettingChangesFile;
-	static QTextStream settingChangesStream;
-	static int settingChangesNumber;
+	QTextStream mSettingChangesStream;
+	int mSettingChangesNumber;
 
-	static int testNumber;
+	int mTestNumber;
 };
 }

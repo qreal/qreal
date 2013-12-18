@@ -10,11 +10,9 @@ LIBS += -L$$PWD/../bin/thirdparty -lqscintilla2
 RESOURCES = $$PWD/qrgui.qrc
 
 HEADERS += \
-	$$PWD/filterObject.h \
 	$$PWD/qrealApplication.h \
 
 SOURCES += \
-	$$PWD/filterObject.cpp \
 	$$PWD/qrealApplication.cpp \
 
 unix:DEFINES   = _TTY_POSIX_

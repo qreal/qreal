@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 	}
 
 	QDateTime const currentTime = QDateTime::currentDateTime();
-	QString const totalTime = QString::number(static_cast<qlonglong>(startedTime.msecsTo(currentTime)));
+	QString const totalTime = QString::number(static_cast<qlonglong>(startedTime.secsTo(currentTime)));
 	utils::UXInfo::reportTotalTime(totalTime, exitCode);
 	return exitCode;
 }
