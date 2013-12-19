@@ -5,5 +5,8 @@
         <file>headerLevel2.js</file>
         <file>headerLevel3.js</file>
         <file>headerLevel4.js</file>
+        <file>createDiagramButton.js</file>
+        <file>recentProjectButton.js</file>
+        <file>startTabBackround.js</file>
     </qresource>
 </RCC>

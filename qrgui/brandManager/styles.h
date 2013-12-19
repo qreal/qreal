@@ -79,6 +79,42 @@ public:
 		return utils::InFile::readAll(headerLevel4StylePath()).replace("@@FONT@@", mFonts.styledTextFont());
 	}
 
+	/// Returns a path to a file with json stylesheet for recent project button on start tab
+	virtual QString recentProjectButtonStylePath() const
+	{
+		return ":/styles/recentProjectButton.js";
+	}
+
+	/// Returns json stylesheet for recent project button on start tab
+	virtual QString recentProjectButtonStyle() const
+	{
+		return utils::InFile::readAll(recentProjectButtonStylePath()).replace("@@FONT@@", mFonts.styledTextFont());
+	}
+
+	/// Returns a path to a file with json stylesheet for create diagram button on start tab
+	virtual QString createDiagramButtonStylePath() const
+	{
+		return ":/styles/createDiagramButton.js";
+	}
+
+	/// Returns json stylesheet for create diagram button on start tab
+	virtual QString createDiagramButtonStyle() const
+	{
+		return utils::InFile::readAll(createDiagramButtonStylePath()).replace("@@FONT@@", mFonts.styledTextFont());
+	}
+
+	/// Returns a path to a file with json stylesheet for start tab background
+	virtual QString startTabBackroundStylePath() const
+	{
+		return ":/styles/startTabBackround.js";
+	}
+
+	/// Returns json stylesheet for start tab background
+	virtual QString startTabBackroundStyle() const
+	{
+		return utils::InFile::readAll(startTabBackroundStylePath()).replace("@@FONT@@", mFonts.styledTextFont());
+	}
+
 protected:
 	Fonts const &mFonts;
 };

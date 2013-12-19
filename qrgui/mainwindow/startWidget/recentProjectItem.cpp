@@ -16,6 +16,7 @@ RecentProjectItem::RecentProjectItem(QWidget *parent, QString const &projectName
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	setFlat(true);
 	setFocusPolicy(Qt::NoFocus);
+	setStyleSheet(BrandManager::styles()->recentProjectButtonStyle());
 
 	QString const nameText = QString("•  %1").arg(projectName);
 	QLabel * const name = new QLabel(nameText);

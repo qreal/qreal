@@ -14,13 +14,10 @@ using namespace qReal;
 StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	: mMainWindow(mainWindow)
 	, mProjectManager(projectManager)
-	, mProjectListSize(5)
+	, mProjectListSize(5)  // TODO: Why 5?
 {
-	QPalette pal(palette());
-	QColor const color = QColor::fromHsl(180, 50, 240, 255);
-	pal.setColor(QPalette::Background, color);
-	setAutoFillBackground(true);
-	setPalette(pal);
+	setStyleSheet(BrandManager::styles()->startTabBackroundStyle());
+
 
 	QHBoxLayout *mainLayout = new QHBoxLayout;
 	QVBoxLayout *projectsManagementLayout = new QVBoxLayout;
@@ -37,6 +34,9 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 		mainLayout->addLayout(createRecentProjectsList(recentProjects));
 	}
 
+	mainLayout->setStretch(0, 20);
+	mainLayout->setStretch(1, 0);
+	mainLayout->setStretch(2, 10);
 	setLayout(mainLayout);
 
 	QPushButton * const openProjectButton = createCommandButton(tr("&Open existing project"));
@@ -150,19 +150,23 @@ QWidget *StartWidget::createPluginsList() const
 		Id const editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
 		foreach (Id const &diagram, mMainWindow->editorManager().diagrams(editorTmpId)) {
 			QWidget * const pluginWidget = createPluginButton(editor, diagram);
-			pluginWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 			mainLayout->addWidget(pluginWidget);
 		}
 	}
-	static_cast<QPushButton *>(mainLayout->itemAt(0)->widget())->setDefault(true);
+
+	mainLayout->addStretch();
 
 	QWidget *innerWidget = new QWidget;
 	innerWidget->setLayout(mainLayout);
+
 	QScrollArea *parentArea = new QScrollArea;
+	parentArea->setFrameShape(QFrame::Panel);
+	parentArea->setFrameShadow(QFrame::Sunken);
 	parentArea->setWidgetResizable(true);
 	parentArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	parentArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	parentArea->setWidget(innerWidget);
+
 	return parentArea;
 }
 
@@ -179,7 +183,7 @@ QWidget *StartWidget::createPluginButton(Id const &editor, Id const &diagram) co
 
 	QPushButton *result = new QPushButton(diagramName);
 	result->setFocusPolicy(Qt::StrongFocus);
-	result->setStyleSheet(BrandManager::styles()->headerLevel2Style());
+	result->setStyleSheet(BrandManager::styles()->createDiagramButtonStyle());
 	result->setFlat(true);
 	result->setToolTip(tr("Editor: ") + editor.editor() + tr("; Diagram: ") + diagram.diagram());
 
@@ -262,4 +266,14 @@ void StartWidget::setVisibleForInterpreterButton(bool const visible)
 	mInterpreterButtonsSeparator->setVisible(visible);
 	mOpenInterpreterButton->setVisible(visible);
 	mCreateInterpreterButton->setVisible(visible);
+}
+
+void StartWidget::paintEvent(QPaintEvent *event)
+{
+	Q_UNUSED(event);
+
+	QStyleOption styleOption;
+	styleOption.initFrom(this);
+	QPainter painter(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &styleOption, &painter, this);
 }

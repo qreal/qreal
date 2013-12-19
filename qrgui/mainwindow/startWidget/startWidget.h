@@ -39,8 +39,10 @@ private:
 	QWidget *createPluginsList() const;
 	QWidget *createPluginButton(Id const &editor, Id const &diagram) const;
 
-	MainWindow *mMainWindow;
-	ProjectManager *mProjectManager;
+	virtual void paintEvent(QPaintEvent *event) override;
+
+	MainWindow *mMainWindow;  // Doesn't have ownership.
+	ProjectManager *mProjectManager;  // Doesn't have ownership.
 	int mProjectListSize;
 
 	QFrame *mInterpreterButtonsSeparator;  // Has ownership.
