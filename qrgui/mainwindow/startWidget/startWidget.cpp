@@ -1,96 +1,96 @@
-#include <QtWidgets>
-#include <QtCore>
+#include "startWidget.h"
 
 #include <qrkernel/settingsManager.h>
+
 #include "dialogs/suggestToCreateDiagramDialog.h"
 #include "mainwindow/mainWindow.h"
-#include "startWidget.h"
 #include "suggestToCreateDiagramWidget.h"
 #include "recentProjectsListWidget.h"
 #include "recentProjectItem.h"
+#include "brandManager/brandManager.h"
 
 using namespace qReal;
 
 StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
-	: QWidget()
-	, mMainWindow(mainWindow)
+	: mMainWindow(mainWindow)
 	, mProjectManager(projectManager)
 	, mProjectListSize(5)
-	, mStartWidgetProjectsLayout(new QVBoxLayout())
-	, mStartWidgetSessionsLayout(new QHBoxLayout())
 {
-	QLabel *sessions = new QLabel(tr("<font size = 14>Sessions</font>"));
-	QLabel *recentProjects = new QLabel(tr("<font size = 14>Recent projects</font>"));
-
-	initRecentProjects();
-
-	QVBoxLayout *sessionsLayout = new QVBoxLayout();
-	QVBoxLayout *recentProjectsLayout = new QVBoxLayout();
-	QHBoxLayout *mainLayout = new QHBoxLayout();
-
-	sessionsLayout->addWidget(sessions);
-	sessionsLayout->addLayout(mStartWidgetSessionsLayout);
-
-	recentProjectsLayout->addWidget(recentProjects);
-	recentProjectsLayout->addLayout(mStartWidgetProjectsLayout);
-
-	recentProjectsLayout->addStretch(0);
-
-	mainLayout->addLayout(sessionsLayout);
-	QWidget *horizontalLineWidget = new QWidget();
-	horizontalLineWidget->setFixedWidth(1);
-	horizontalLineWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-	horizontalLineWidget->setStyleSheet(QString("background-color: #c0c0c0;"));
-	mainLayout->addWidget(horizontalLineWidget);
-	mainLayout->addLayout(recentProjectsLayout);
-
-	setLayout(mainLayout);
 	QPalette pal(palette());
 	QColor const color = QColor::fromHsl(180, 50, 240, 255);
 	pal.setColor(QPalette::Background, color);
 	setAutoFillBackground(true);
 	setPalette(pal);
 
-	sessionsLayout->addWidget(createCommandButton(tr("&Open existing project")
-			, this, SLOT(openExistingProject()), QKeySequence::Open));
+	QHBoxLayout *mainLayout = new QHBoxLayout;
+	QVBoxLayout *projectsManagementLayout = new QVBoxLayout;
+
+	mainLayout->addLayout(projectsManagementLayout);
+
+	QString const recentProjects = SettingsManager::value("recentProjects").toString();
+	if (!recentProjects.isEmpty() && !mMainWindow->editorManager().editors().isEmpty()) {
+		QFrame *verticalLine = new QFrame;
+		verticalLine->setFrameShape(QFrame::VLine);
+		verticalLine->setFrameShadow(QFrame::Sunken);
+		verticalLine->setLineWidth(5);
+		mainLayout->addWidget(verticalLine);
+		mainLayout->addLayout(createRecentProjectsList(recentProjects));
+	}
+
+	setLayout(mainLayout);
+
+	QPushButton * const openProjectButton = createCommandButton(tr("&Open existing project"));
+	connect(openProjectButton, &QPushButton::clicked, this, &StartWidget::openExistingProject);
+	projectsManagementLayout->addWidget(openProjectButton);
 
 	QSignalMapper *closeTabMapper = new QSignalMapper(this);
 	connect(closeTabMapper, SIGNAL(mapped(int)), this, SIGNAL(closeStartTab(int)), Qt::QueuedConnection);
 
-	QCommandLinkButton *openIDLink = new QCommandLinkButton(tr("Open &interpreted diagram"));
-	QCommandLinkButton *createIDLink = new QCommandLinkButton(tr("&Create interpreted diagram"));
-	connect(openIDLink, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
-	connect(createIDLink, SIGNAL(clicked()), this, SLOT(createInterpretedDiagram()));
-	connect(openIDLink, SIGNAL(clicked()), closeTabMapper, SLOT(map()));
-	connect(createIDLink, SIGNAL(clicked()), closeTabMapper, SLOT(map()));
+	mInterpreterButtonsSeparator = new QFrame;
+	mInterpreterButtonsSeparator->setFrameShape(QFrame::HLine);
+	mInterpreterButtonsSeparator->setFrameShadow(QFrame::Sunken);
+	mInterpreterButtonsSeparator->setLineWidth(3);
+	mOpenInterpreterButton = createCommandButton(tr("Open &interpreted\n diagram"));
+	mCreateInterpreterButton = createCommandButton(tr("&Create interpreted\n diagram"));
+	connect(mOpenInterpreterButton , SIGNAL(clicked()), closeTabMapper, SLOT(map()));
+	connect(mCreateInterpreterButton, SIGNAL(clicked()), closeTabMapper, SLOT(map()));
+	connect(mOpenInterpreterButton , SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
+	connect(mCreateInterpreterButton, SIGNAL(clicked()), this, SLOT(createInterpretedDiagram()));
 
-	mInterpreterButton = openIDLink;
-	mCreateInterpreterButton = createIDLink;
-
-	sessionsLayout->addWidget(mCreateInterpreterButton);
-	sessionsLayout->addWidget(mInterpreterButton);
+	projectsManagementLayout->addWidget(mInterpreterButtonsSeparator);
+	projectsManagementLayout->addWidget(mCreateInterpreterButton);
+	projectsManagementLayout->addWidget(mOpenInterpreterButton);
 
 	Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
 	if (!theOnlyDiagram.isNull()) {
 		Id const editor = mMainWindow->editorManager().editors()[0];
-		QString diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
+		QString const diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
+
+		QPushButton *newProjectButton = createCommandButton(tr("&New project"));
+		projectsManagementLayout->addWidget(newProjectButton);
+
+		newProjectButton->setDefault(true);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
-		QCommandLinkButton *newLink = createCommandButton(tr("&New project")
-			, newProjectMapper, SLOT(map()), QKeySequence::New);
-		newProjectMapper->setMapping(newLink, diagramIdString);
+		newProjectMapper->setMapping(newProjectButton, diagramIdString);
+		connect(newProjectButton, SIGNAL(clicked()), newProjectMapper, SLOT(map()));
 		connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
 
-		sessionsLayout->addWidget(newLink);
 	} else {
-		SuggestToCreateDiagramWidget *suggestWidget = new SuggestToCreateDiagramWidget(mainWindow, this);
-		closeTabMapper->setMapping(suggestWidget, 0);
-		connect(suggestWidget, SIGNAL(userDataSelected(QString)), mainWindow, SLOT(createDiagram(QString)));
-		connect(suggestWidget, SIGNAL(userDataSelected(QString)), closeTabMapper, SLOT(map()));
-		sessionsLayout->insertWidget(1 /* after header */, suggestWidget);
+		if (!mMainWindow->editorManager().editors().isEmpty()) {
+			QLabel *createProjectLabel = new QLabel(tr("New project:"));
+			createProjectLabel->setStyleSheet(BrandManager::styles()->headerLevel1Style());
+
+			QWidget * const pluginsWidget = createPluginsList();
+
+			projectsManagementLayout->insertWidget(0, createProjectLabel);
+			projectsManagementLayout->insertWidget(1, pluginsWidget);
+		} else {
+			openProjectButton->hide();
+		}
 	}
 
-	sessionsLayout->addStretch(0);
+	projectsManagementLayout->addStretch(0);
 }
 
 void StartWidget::openRecentProject(QString const &fileName)
@@ -114,29 +114,81 @@ void StartWidget::createProjectWithDiagram(QString const &idString)
 	}
 }
 
-void StartWidget::initRecentProjects()
+QLayout *StartWidget::createRecentProjectsList(QString const &recentProjects)
 {
+	QVBoxLayout * const mainLayout = new QVBoxLayout;
+	QVBoxLayout * const recentProjectsLayout = new QVBoxLayout;
+
+	QLabel * const recentProjectsLabel = new QLabel(tr("Recent projects"));
+	recentProjectsLabel->setWordWrap(true);
+	recentProjectsLabel->setStyleSheet(BrandManager::styles()->headerLevel1Style());
+
+	mainLayout->addWidget(recentProjectsLabel);
+	mainLayout->addLayout(recentProjectsLayout);
+
+	mainLayout->addStretch(0);
+
 	int i = 0;
-	QString const recentProjects = SettingsManager::value("recentProjects").toString();
-	foreach (QString const &project, recentProjects.split(";", QString::SkipEmptyParts)) {
+	for (QString const &project : recentProjects.split(";", QString::SkipEmptyParts)) {
 		QString const name = project.split("/").last().split("\\").last();
-		if ("autosave.qrs"== name) {
-			QString currentProject = QString("<a href='%2'>%1</a>").arg(
-					tr("<font color='black'>•  default (current session)</font>"), project);
-			QLabel *currentProjectLabel = new QLabel(currentProject, this);
-			mStartWidgetSessionsLayout->addSpacing(25);
-			mStartWidgetSessionsLayout->addWidget(currentProjectLabel);
-		} else {
-			RecentProjectItem *projectWidget = new RecentProjectItem(this, name, project);
-					mStartWidgetProjectsLayout->addWidget(projectWidget);
+		RecentProjectItem *projectWidget = new RecentProjectItem(this, name, project);
+		recentProjectsLayout->addWidget(projectWidget);
 
-			++i;
-
-			if (i == mProjectListSize) {
-				break;
-			}
+		++i;
+		if (i >= mProjectListSize) {
+			break;
 		}
 	}
+
+	return mainLayout;
+}
+
+QWidget *StartWidget::createPluginsList() const
+{
+	QVBoxLayout *mainLayout = new QVBoxLayout;
+	foreach (Id const &editor, mMainWindow->editorManager().editors()) {
+		Id const editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
+		foreach (Id const &diagram, mMainWindow->editorManager().diagrams(editorTmpId)) {
+			QWidget * const pluginWidget = createPluginButton(editor, diagram);
+			pluginWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+			mainLayout->addWidget(pluginWidget);
+		}
+	}
+	static_cast<QPushButton *>(mainLayout->itemAt(0)->widget())->setDefault(true);
+
+	QWidget *innerWidget = new QWidget;
+	innerWidget->setLayout(mainLayout);
+	QScrollArea *parentArea = new QScrollArea;
+	parentArea->setWidgetResizable(true);
+	parentArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	parentArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	parentArea->setWidget(innerWidget);
+	return parentArea;
+}
+
+QWidget *StartWidget::createPluginButton(Id const &editor, Id const &diagram) const
+{
+	EditorManagerInterface const &editorManagerInterface = mMainWindow->editorManager();
+
+	QString const diagramName = editorManagerInterface.diagramName(editor.editor(), diagram.diagram());
+	QString const diagramNodeName = editorManagerInterface.diagramNodeName(editor.editor(), diagram.diagram());
+
+	if (diagramNodeName.isEmpty()) {
+		return nullptr;
+	}
+
+	QPushButton *result = new QPushButton(diagramName);
+	result->setFocusPolicy(Qt::StrongFocus);
+	result->setStyleSheet(BrandManager::styles()->headerLevel2Style());
+	result->setFlat(true);
+	result->setToolTip(tr("Editor: ") + editor.editor() + tr("; Diagram: ") + diagram.diagram());
+
+	QSignalMapper *pluginMapper = new QSignalMapper(result);
+	pluginMapper->setMapping(result, "qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
+	connect(result, SIGNAL(clicked()), pluginMapper, SLOT(map()));
+	connect(pluginMapper, SIGNAL(mapped(QString)), mMainWindow, SLOT(createDiagram(QString)));
+
+	return result;
 }
 
 void StartWidget::openInterpretedDiagram()
@@ -198,21 +250,16 @@ void StartWidget::createInterpretedDiagram()
 	}
 }
 
-QCommandLinkButton *StartWidget::createCommandButton(QString const &text
-			, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey)
+QPushButton *StartWidget::createCommandButton(QString const &text)
 {
-	QCommandLinkButton * const result = new QCommandLinkButton(text);
-	connect(result, SIGNAL(clicked()), reciever, slot);
-	QAction * const buttonAction = new QAction(this);
-	buttonAction->setShortcuts(standartHotkey);
-	connect(buttonAction, SIGNAL(triggered()), result, SLOT(animateClick()));
-	addAction(buttonAction);
-	result->setToolTip(QKeySequence(standartHotkey).toString());
+	QPushButton * const result = new QPushButton(text);
+	result->setStyleSheet(BrandManager::styles()->commandButtonStyle());
 	return result;
 }
 
 void StartWidget::setVisibleForInterpreterButton(bool const visible)
 {
-	mInterpreterButton->setVisible(visible);
+	mInterpreterButtonsSeparator->setVisible(visible);
+	mOpenInterpreterButton->setVisible(visible);
 	mCreateInterpreterButton->setVisible(visible);
 }

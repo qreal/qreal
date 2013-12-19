@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fonts">
+        <file>Pfennig.ttf</file>
+    </qresource>
+</RCC>

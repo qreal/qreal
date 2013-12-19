@@ -3919,84 +3919,84 @@
         <translation type="obsolete">Обработка завершена</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1054"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1057"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1331"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1334"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1332"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1335"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1333"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1336"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1334"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1337"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1335"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1338"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1336"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1339"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1337"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1340"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1338"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1341"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1339"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1342"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1340"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1343"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1341"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1344"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1342"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1345"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1343"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1346"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2124"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2127"/>
         <source>GettingStarted</source>
         <translation>Добро пожаловать!</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1019"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1034"/>
-        <location filename="mainwindow/mainWindow.cpp" line="1062"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1022"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1037"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1065"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
@@ -4005,17 +4005,17 @@
         <translation type="obsolete">Выберите файл для сохранения</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1971"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1974"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2001"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2004"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="2001"/>
+        <location filename="mainwindow/mainWindow.cpp" line="2004"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
@@ -4036,7 +4036,7 @@
         <translation type="obsolete">Выберите Hascol-файл для импорта</translation>
     </message>
     <message>
-        <location filename="mainwindow/mainWindow.cpp" line="1553"/>
+        <location filename="mainwindow/mainWindow.cpp" line="1556"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
@@ -4341,14 +4341,12 @@
 <context>
     <name>qReal::StartWidget</name>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="22"/>
         <source>&lt;font size = 14&gt;Sessions&lt;/font&gt;</source>
-        <translation>&lt;font size = 14&gt;Сессии&lt;/font&gt;</translation>
+        <translation type="obsolete">&lt;font size = 14&gt;Сессии&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="23"/>
         <source>&lt;font size = 14&gt;Recent projects&lt;/font&gt;</source>
-        <translation>&lt;font size = 14&gt;Недавние проекты&lt;/font&gt;</translation>
+        <translation type="obsolete">&lt;font size = 14&gt;Недавние проекты&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Open existing project</source>
@@ -4359,9 +4357,13 @@
         <translation type="obsolete">Открыть интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="61"/>
-        <source>&amp;Create interpreted diagram</source>
-        <translation>&amp;Создать интерпретируемую диаграмму</translation>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="54"/>
+        <source>&amp;Create interpreted
+ diagram</source>
+        <oldsource>&amp;Create interpreted diagram</oldsource>
+        <translation>&amp;Создать
+ интерпретируемую
+ диаграмму</translation>
     </message>
     <message>
         <source>New project</source>
@@ -4372,39 +4374,62 @@
         <translation type="obsolete">&lt;font color=&apos;black&apos;&gt;â¢  default (последняя сессия)&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="54"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="119"/>
+        <source>Recent projects</source>
+        <translation>Недавние проекты</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="42"/>
         <source>&amp;Open existing project</source>
         <translation>&amp;Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="60"/>
-        <source>Open &amp;interpreted diagram</source>
-        <translation>Открыть &amp;интерпретируемую диаграмму</translation>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="53"/>
+        <source>Open &amp;interpreted
+ diagram</source>
+        <oldsource>Open &amp;interpreted diagram</oldsource>
+        <translation>Открыть
+ &amp;интерпретируемую
+ диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="79"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="69"/>
         <source>&amp;New project</source>
         <translation>&amp;Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="124"/>
-        <source>&lt;font color=&apos;black&apos;&gt;•  default (current session)&lt;/font&gt;</source>
-        <translation>&lt;font color=&apos;black&apos;&gt;• default (последняя сессия))&lt;/font&gt;</translation>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="78"/>
+        <source>New project:</source>
+        <translation>Создать проект:</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="144"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="179"/>
+        <source>Editor: </source>
+        <translation>Редактор: </translation>
+    </message>
+    <message>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="179"/>
+        <source>; Diagram: </source>
+        <translation>; Диаграмма: </translation>
+    </message>
+    <message>
+        <source>&lt;font color=&apos;black&apos;&gt;•  default (current session)&lt;/font&gt;</source>
+        <translation type="obsolete">&lt;font color=&apos;black&apos;&gt;• default (последняя сессия))&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="192"/>
         <source>Select file with metamodel to open</source>
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="181"/>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="184"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="229"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="232"/>
         <source>Enter the diagram name:</source>
         <translation>Введите имя диаграммы:</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="181"/>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="184"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="229"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="232"/>
         <source>diagram name:</source>
         <translation>имя диаграммы:</translation>
     </message>

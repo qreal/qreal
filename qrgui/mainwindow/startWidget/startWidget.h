@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QCommandLinkButton>
+#include <QtWidgets/QPushButton>
 
 #include "mainwindow/projectManager/projectManager.h"
 
@@ -18,8 +18,10 @@ class StartWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit StartWidget(MainWindow *mainWindow, ProjectManager *projectManager);
-	void setVisibleForInterpreterButton(bool const visible); //Show/hide Interpreted buttons
+	StartWidget(MainWindow *mainWindow, ProjectManager *projectManager);
+
+	/// Shows or hides interpreter buttons
+	void setVisibleForInterpreterButton(bool const visible);
 
 signals:
 	void closeStartTab(int index);
@@ -32,18 +34,18 @@ private slots:
 	void createInterpretedDiagram();
 
 private:
-	QCommandLinkButton *createCommandButton(QString const &text
-							, QObject const *reciever, char const *slot, QKeySequence::StandardKey standartHotkey);
-	void initRecentProjects();
+	QPushButton *createCommandButton(QString const &text);
+	QLayout *createRecentProjectsList(QString const &recentProjects);
+	QWidget *createPluginsList() const;
+	QWidget *createPluginButton(Id const &editor, Id const &diagram) const;
 
 	MainWindow *mMainWindow;
 	ProjectManager *mProjectManager;
 	int mProjectListSize;
-	QVBoxLayout *mStartWidgetProjectsLayout;
-	QHBoxLayout *mStartWidgetSessionsLayout;
 
-	QCommandLinkButton *mInterpreterButton;  // Has ownership.
-	QCommandLinkButton *mCreateInterpreterButton;  // Has ownership.
+	QFrame *mInterpreterButtonsSeparator;  // Has ownership.
+	QPushButton *mOpenInterpreterButton;  // Has ownership.
+	QPushButton *mCreateInterpreterButton;  // Has ownership.
 };
 
 }

@@ -18,13 +18,6 @@ TRANSLATIONS = qrgui_ru.ts
 	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/thirdparty/
 }
 
-win32 {
-	QMAKE_POST_LINK = "xcopy Pfennig.ttf ..\\bin /q /y"
-}
-else {
-	QMAKE_POST_LINK = "cp Pfennig.ttf ../bin/"
-}
-
 OBJECTS_DIR = .obj
 UI_DIR = .ui
 MOC_DIR = .moc
