@@ -2,25 +2,40 @@
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QCommandLinkButton>
 
 #include <qrutils/textElider.h>
+#include "brandManager/brandManager.h"
 
 using namespace qReal;
 using namespace utils;
 
 RecentProjectItem::RecentProjectItem(QWidget *parent, QString const &projectName, QString const &projectFullName)
-	: QWidget(parent)
+	: QPushButton(parent)
 {
-	QString const nameText = QString("<a href='%1'><font color='black'>•  %2</font></a>").arg(projectFullName, projectName);
+	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	setFlat(true);
+	setFocusPolicy(Qt::NoFocus);
+
+	QString const nameText = QString("•  %1").arg(projectName);
 	QLabel * const name = new QLabel(nameText);
-	QLabel * const fullName = new QLabel(projectFullName);
+	name->setStyleSheet(BrandManager::styles()->headerLevel3Style());
 	name->setWordWrap(true);
+	name->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+	QLabel * const fullName = new QLabel(projectFullName);
+	fullName->setStyleSheet(BrandManager::styles()->headerLevel4Style());
 	fullName->setWordWrap(true);
-	QVBoxLayout * const recentProject = new QVBoxLayout;
+	fullName->setAttribute(Qt::WA_TransparentForMouseEvents);
 
-	recentProject->addWidget(name);
-	recentProject->addWidget(fullName);
-	setLayout(recentProject);
+	QVBoxLayout * const resultingLayout = new QVBoxLayout;
 
-	connect(name, SIGNAL(linkActivated(QString)), parent, SLOT(openRecentProject(QString)));
+	resultingLayout->addWidget(name);
+	resultingLayout->addWidget(fullName);
+	setLayout(resultingLayout);
+
+	QSignalMapper * const mapper = new QSignalMapper(this);
+	mapper->setMapping(this, projectFullName);
+	connect(this, SIGNAL(clicked()), mapper, SLOT(map()));
+	connect(mapper, SIGNAL(mapped(QString)), parent, SLOT(openRecentProject(QString)));
 }

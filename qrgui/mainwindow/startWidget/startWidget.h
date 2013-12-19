@@ -35,12 +35,15 @@ private slots:
 
 private:
 	QPushButton *createCommandButton(QString const &text);
-	QLayout *initRecentProjects(QString const &recentProjects);
+	QLayout *createRecentProjectsList(QString const &recentProjects);
+	QWidget *createPluginsList() const;
+	QWidget *createPluginButton(Id const &editor, Id const &diagram) const;
 
 	MainWindow *mMainWindow;
 	ProjectManager *mProjectManager;
 	int mProjectListSize;
 
+	QFrame *mInterpreterButtonsSeparator;  // Has ownership.
 	QPushButton *mOpenInterpreterButton;  // Has ownership.
 	QPushButton *mCreateInterpreterButton;  // Has ownership.
 };

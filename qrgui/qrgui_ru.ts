@@ -4357,9 +4357,13 @@
         <translation type="obsolete">Открыть интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="63"/>
-        <source>&amp;Create interpreted diagram</source>
-        <translation>&amp;Создать интерпретируемую диаграмму</translation>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="54"/>
+        <source>&amp;Create interpreted
+ diagram</source>
+        <oldsource>&amp;Create interpreted diagram</oldsource>
+        <translation>&amp;Создать
+ интерпретируемую
+ диаграмму</translation>
     </message>
     <message>
         <source>New project</source>
@@ -4370,44 +4374,62 @@
         <translation type="obsolete">&lt;font color=&apos;black&apos;&gt;â¢  default (последняя сессия)&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="24"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="119"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="55"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="42"/>
         <source>&amp;Open existing project</source>
         <translation>&amp;Открыть проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="62"/>
-        <source>Open &amp;interpreted diagram</source>
-        <translation>Открыть &amp;интерпретируемую диаграмму</translation>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="53"/>
+        <source>Open &amp;interpreted
+ diagram</source>
+        <oldsource>Open &amp;interpreted diagram</oldsource>
+        <translation>Открыть
+ &amp;интерпретируемую
+ диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="80"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="69"/>
         <source>&amp;New project</source>
         <translation>&amp;Создать проект</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="131"/>
-        <source>&lt;font color=&apos;black&apos;&gt;•  default (current session)&lt;/font&gt;</source>
-        <translation>&lt;font color=&apos;black&apos;&gt;• default (последняя сессия))&lt;/font&gt;</translation>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="78"/>
+        <source>New project:</source>
+        <translation>Создать проект:</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="151"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="179"/>
+        <source>Editor: </source>
+        <translation>Редактор: </translation>
+    </message>
+    <message>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="179"/>
+        <source>; Diagram: </source>
+        <translation>; Диаграмма: </translation>
+    </message>
+    <message>
+        <source>&lt;font color=&apos;black&apos;&gt;•  default (current session)&lt;/font&gt;</source>
+        <translation type="obsolete">&lt;font color=&apos;black&apos;&gt;• default (последняя сессия))&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="192"/>
         <source>Select file with metamodel to open</source>
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="188"/>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="191"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="229"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="232"/>
         <source>Enter the diagram name:</source>
         <translation>Введите имя диаграммы:</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="188"/>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="191"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="229"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="232"/>
         <source>diagram name:</source>
         <translation>имя диаграммы:</translation>
     </message>

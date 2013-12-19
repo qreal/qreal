@@ -1,2 +1,2 @@
 font-family:url(@@FONT@@);
-font: bold 10px;
+font: italic 13px;

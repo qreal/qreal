@@ -6,8 +6,8 @@
 using namespace qReal;
 
 ListWidget::ListWidget(QWidget *parent)
-		: QWidget(parent)
-		, mListWidget(new QListWidget())
+	: QWidget(parent)
+	, mListWidget(new QListWidget())
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(mListWidget);
