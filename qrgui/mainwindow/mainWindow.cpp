@@ -670,12 +670,9 @@ void MainWindow::changeWindowTitle(int index)
 	QString const windowTitle = mToolManager.customizer()->windowTitle();
 
 	if (index != -1) {
-		if (dynamic_cast<EditorView *>(getCurrentTab())) {
-			setWindowTitle(windowTitle + " " + mProjectManager->saveFilePath());
-		} else {
-			QScintillaTextEdit *area = static_cast<QScintillaTextEdit *>(currentTab());
+		QScintillaTextEdit *area = dynamic_cast<QScintillaTextEdit *>(currentTab());
+		if (area) {
 			QString const filePath = mTextManager->path(area);
-
 			setWindowTitle(windowTitle + " " + filePath);
 		}
 	} else {
