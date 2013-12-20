@@ -93,7 +93,7 @@ QWidget *StartWidget::createProjectsManagementWidget()
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
 		newProjectMapper->setMapping(newProjectButton, diagramIdString);
-		connect(newProjectButton, SIGNAL(linkActivated(QString)), newProjectMapper, SLOT(map()));
+		connect(newProjectButton, SIGNAL(clicked()), newProjectMapper, SLOT(map()));
 		connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
 	} else {
 		if (!mMainWindow->editorManager().editors().isEmpty()) {
