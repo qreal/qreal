@@ -115,12 +115,12 @@ protected:
 		// TODO: uncomment one of the next scenarious
 
 		// Scenario one: use it for releases
-		// return resourceUrl;
+		return resourceUrl;
 
 		// Scenario two: use it for debugging
-		QString choppedString = resourceUrl;
-		choppedString.remove(0, 1);
-		return QApplication::applicationDirPath() + "/../qrgui/brandManager" + choppedString;
+		// QString choppedString = resourceUrl;
+		// choppedString.remove(0, 1);
+		// return QApplication::applicationDirPath() + "/../qrgui/brandManager" + choppedString;
 	}
 
 	Fonts const &mFonts;
