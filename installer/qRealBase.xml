@@ -68,6 +68,9 @@
                 <distributionFile>
                     <origin>%1/installer/icon.ico</origin>
                 </distributionFile>
+                <distributionFile>
+                    <origin>%1/thirdparty/qscintilla/include/License.txt</origin>
+                </distributionFile>
             </distributionFileList>
         </folder>
         <folder>
@@ -77,6 +80,16 @@
             <distributionFileList>
                 <distributionFile>
                     <origin>%2/../plugins/platforms/qwindows.dll</origin>
+                </distributionFile>
+            </distributionFileList>
+        </folder>
+        <folder>
+            <destination>${installdir}/imageformats</destination>
+            <name>imageformatswindows</name>
+            <platforms>windows</platforms>
+            <distributionFileList>
+                <distributionFile>
+                    <origin>%2/../plugins/imageformats/qsvg.dll</origin>
                 </distributionFile>
             </distributionFileList>
         </folder>

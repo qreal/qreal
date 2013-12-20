@@ -44,7 +44,7 @@ RobotsPlugin::~RobotsPlugin()
 
 void RobotsPlugin::initActions()
 {
-	m2dModelAction = new QAction(QIcon(":/icons/kcron.png"), QObject::tr("2d model"), NULL);
+	m2dModelAction = new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), NULL);
 	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
 	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
