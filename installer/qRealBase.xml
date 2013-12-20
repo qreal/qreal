@@ -68,9 +68,6 @@
                 <distributionFile>
                     <origin>%1/installer/icon.ico</origin>
                 </distributionFile>
-                <distributionFile>
-                    <origin>%1/bin/Pfennig.ttf</origin>
-                </distributionFile>
             </distributionFileList>
         </folder>
         <folder>
