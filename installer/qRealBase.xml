@@ -83,5 +83,15 @@
                 </distributionFile>
             </distributionFileList>
         </folder>
+        <folder>
+            <destination>${installdir}/imageformats</destination>
+            <name>imageformatswindows</name>
+            <platforms>windows</platforms>
+            <distributionFileList>
+                <distributionFile>
+                    <origin>%2/../plugins/imageformats/qsvg.dll</origin>
+                </distributionFile>
+            </distributionFileList>
+        </folder>
     </folderList>
 </component>
