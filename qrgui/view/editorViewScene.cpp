@@ -1036,8 +1036,8 @@ void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
 
 void EditorViewScene::createEdge(QString const &idStr)
 {
-	QPointF start = mMouseMovementManager->firstPoint();
-	QPointF end = mMouseMovementManager->lastPoint();
+	QPointF const start = mMouseMovementManager->firstPoint();
+	QPointF const end = mMouseMovementManager->lastPoint();
 	CreateElementCommand *createCommand;
 	Id const id = createElement(idStr, start, true, &createCommand);
 	Element *edgeElement = getElem(id);
@@ -1045,6 +1045,8 @@ void EditorViewScene::createEdge(QString const &idStr)
 	edge->setSrc(NULL);
 	edge->setDst(NULL);
 
+	edge->setPos(start);
+	edge->placeStartTo(QPointF());
 	edge->placeEndTo(edge->mapFromScene(end));
 	edge->connectToPort();
 	if (edge->dst()) {
