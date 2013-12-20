@@ -71,6 +71,9 @@
                 <distributionFile>
                     <origin>%1/bin/Pfennig.ttf</origin>
                 </distributionFile>
+                <distributionFile>
+                    <origin>%1/thirdparty/qscintilla/include/License.txt</origin>
+                </distributionFile>
             </distributionFileList>
         </folder>
         <folder>
