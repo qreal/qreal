@@ -27,7 +27,6 @@ HEADERS += \
 	$$PWD/startWidget/suggestToCreateDiagramWidget.h \
 	$$PWD/startWidget/startWidget.h \
 	$$PWD/startWidget/recentProjectsListWidget.h \
-	$$PWD/startWidget/recentProjectItem.h \
 	$$PWD/startWidget/listWidget.h \
 
 SOURCES += \
@@ -54,7 +53,6 @@ SOURCES += \
 	$$PWD/startWidget/suggestToCreateDiagramWidget.cpp \
 	$$PWD/startWidget/startWidget.cpp \
 	$$PWD/startWidget/recentProjectsListWidget.cpp \
-	$$PWD/startWidget/recentProjectItem.cpp \
 	$$PWD/startWidget/listWidget.cpp \
 
 win32 {

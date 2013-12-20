@@ -29,6 +29,7 @@
 #include "umllib/element.h"
 #include "pluginManager/listenerManager.h"
 #include "view/sceneCustomizer.h"
+#include "brandManager/brandManager.h"
 
 #include "mainwindow/errorReporter.h"
 #include "mainwindow/shapeEdit/shapeEdit.h"
@@ -57,23 +58,23 @@ QString const unsavedDir = "unsaved";
 MainWindow::MainWindow(QString const &fileToOpen)
 		: mUi(new Ui::MainWindowUi)
 		, mCodeTabManager(new QMap<EditorView*, QScintillaTextEdit*>())
-		, mModels(NULL)
+		, mModels(nullptr)
 		, mController(new Controller)
 		, mEditorManagerProxy(new EditorManager())
-		, mListenerManager(NULL)
+		, mListenerManager(nullptr)
 		, mPropertyModel(mEditorManagerProxy)
-		, mGesturesWidget(NULL)
+		, mGesturesWidget(nullptr)
 		, mSystemEvents(new SystemEvents())
 		, mTextManager(new TextManager(mSystemEvents, this))
 		, mRootIndex(QModelIndex())
-		, mErrorReporter(NULL)
+		, mErrorReporter(nullptr)
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
 		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this, mTextManager))
-		, mStartWidget(new StartWidget(this, mProjectManager))
+		, mStartWidget(nullptr)
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
 {
@@ -559,6 +560,16 @@ void MainWindow::openTab(QWidget *tab, const QString &title)
 void MainWindow::closeTab(QWidget *tab)
 {
 	mUi->tabs->removeTab(mUi->tabs->indexOf(tab));
+}
+
+void MainWindow::closeStartTab()
+{
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
+		StartWidget const * widget = dynamic_cast<StartWidget *>(mUi->tabs->widget(i));
+		if (widget) {
+			mUi->tabs->removeTab(i);
+		}
+	}
 }
 
 void MainWindow::closeDiagramTab(Id const &id)
@@ -1571,6 +1582,7 @@ ProxyEditorManager &MainWindow::editorManagerProxy()
 
 void MainWindow::createDiagram(QString const &idString)
 {
+	closeStartTab();
 	Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
 	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
 	mUi->graphicalModelExplorer->setCurrentIndex(index);
@@ -1801,11 +1813,11 @@ Id MainWindow::activeDiagram()
 void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
+	BrandManager::configure(&mToolManager);
 	if (!mProjectManager->restoreIncorrectlyTerminated() &&
 			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
 	{
 		openStartTab();
-		mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 	}
 }
 
@@ -2123,7 +2135,8 @@ void MainWindow::setVersion(QString const &version)
 
 void MainWindow::openStartTab()
 {
-	connect(mStartWidget, SIGNAL(closeStartTab(int)), this, SLOT(closeTab(int)));
-	mUi->tabs->addTab(mStartWidget, tr("GettingStarted"));
+	mStartWidget = new StartWidget(this, mProjectManager);
+	int const index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
+	mUi->tabs->setTabUnclosable(index);
+	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 }
-

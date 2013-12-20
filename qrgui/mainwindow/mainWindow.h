@@ -184,6 +184,7 @@ public slots:
 	void showErrors(gui::ErrorReporter const * const errorReporter);
 
 	void changePaletteRepresentation();
+	void closeStartTab();
 	void closeAllTabs();
 	void refreshRecentProjectsList(QString const &fileName);
 	void createDiagram(QString const &idString);

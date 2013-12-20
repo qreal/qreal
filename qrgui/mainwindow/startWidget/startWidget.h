@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QLabel>
 
 #include "mainwindow/projectManager/projectManager.h"
 
@@ -23,9 +24,6 @@ public:
 	/// Shows or hides interpreter buttons
 	void setVisibleForInterpreterButton(bool const visible);
 
-signals:
-	void closeStartTab(int index);
-
 private slots:
 	void openRecentProject(QString const &fileName);
 	void openExistingProject();
@@ -34,10 +32,15 @@ private slots:
 	void createInterpretedDiagram();
 
 private:
+	QWidget *createHeader();
+	QWidget *createRecentProjectsWidget();
+	QWidget *createProjectsManagementWidget();
+
 	QPushButton *createCommandButton(QString const &text);
 	QLayout *createRecentProjectsList(QString const &recentProjects);
-	QWidget *createPluginsList() const;
-	QWidget *createPluginButton(Id const &editor, Id const &diagram) const;
+	QWidget *createPluginsList();
+	QWidget *createPluginButton(Id const &editor, Id const &diagram);
+	QWidget *createSpacer();
 
 	virtual void paintEvent(QPaintEvent *event) override;
 
@@ -45,7 +48,6 @@ private:
 	ProjectManager *mProjectManager;  // Doesn't have ownership.
 	int mProjectListSize;
 
-	QFrame *mInterpreterButtonsSeparator;  // Has ownership.
 	QPushButton *mOpenInterpreterButton;  // Has ownership.
 	QPushButton *mCreateInterpreterButton;  // Has ownership.
 };
