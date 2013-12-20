@@ -109,7 +109,7 @@ void StartWidget::openExistingProject()
 
 void StartWidget::createProjectWithDiagram(QString const &idString)
 {
-	if (mMainWindow->createProject(idString)){
+	if (mMainWindow->createProject(idString)) {
 		emit closeStartTab(0);
 	}
 }
@@ -202,30 +202,30 @@ void StartWidget::openInterpretedDiagram()
 	ProxyEditorManager &editorManagerProxy = mMainWindow->editorManagerProxy();
 
 	if (!fileName.isEmpty() && mProjectManager->open(fileName)) {
-			editorManagerProxy.setProxyManager(new InterpreterEditorManager(fileName));
-			QStringList interpreterDiagramsList;
-			foreach (Id const &editor, editorManagerProxy.editors()) {
-					foreach (Id const &diagram, editorManagerProxy.diagrams(editor)) {
-							QString const diagramNodeName = editorManagerProxy.diagramNodeName(editor.editor(), diagram.diagram());
-							if (diagramNodeName.isEmpty()) {
-									continue;
-							}
+		editorManagerProxy.setProxyManager(new InterpreterEditorManager(fileName));
+		QStringList interpreterDiagramsList;
+		foreach (Id const &editor, editorManagerProxy.editors()) {
+			foreach (Id const &diagram, editorManagerProxy.diagrams(editor)) {
+				QString const diagramNodeName = editorManagerProxy.diagramNodeName(editor.editor(), diagram.diagram());
+				if (diagramNodeName.isEmpty()) {
+					continue;
+				}
 
-							interpreterDiagramsList.append("qrm:/" + editor.editor() + "/"
-											+ diagram.diagram() + "/" + diagramNodeName);
-					}
+				interpreterDiagramsList.append("qrm:/" + editor.editor() + "/"
+						+ diagram.diagram() + "/" + diagramNodeName);
 			}
+		}
 
-			foreach (QString const &interpreterIdString, interpreterDiagramsList) {
-					// TODO: ???
-					mMainWindow->models()->repoControlApi().exterminate();
-					mMainWindow->models()->reinit();
-					mMainWindow->loadPlugins();
-					mMainWindow->createDiagram(interpreterIdString);
-			}
+		foreach (QString const &interpreterIdString, interpreterDiagramsList) {
+			// TODO: ???
+			mMainWindow->models()->repoControlApi().exterminate();
+			mMainWindow->models()->reinit();
+			mMainWindow->loadPlugins();
+			mMainWindow->createDiagram(interpreterIdString);
+		}
 	} else {
-			show();
-			editorManagerProxy.setProxyManager(new EditorManager());
+		show();
+		editorManagerProxy.setProxyManager(new EditorManager());
 	}
 }
 
@@ -236,10 +236,10 @@ void StartWidget::createInterpretedDiagram()
 	editorManagerProxy.setProxyManager(new InterpreterEditorManager(""));
 	bool ok = false;
 	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
-					, QLineEdit::Normal, "", &ok);
+			, QLineEdit::Normal, "", &ok);
 	while (ok && name.isEmpty()) {
 		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
-						, QLineEdit::Normal, "", &ok);
+				, QLineEdit::Normal, "", &ok);
 	}
 
 	if (ok) {
