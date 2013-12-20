@@ -1,16 +1,15 @@
 #include "suggestToCreateDiagramWidget.h"
-
 #include "mainwindow/mainWindow.h"
 
 using namespace qReal;
 
-SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindow, QDialog *parent)
+SuggestToCreateDiagramWidget::SuggestToCreateDiagramWidget(MainWindow *mainWindow, QWidget *parent)
 		: ListWidget(parent)
 		, mMainWindow(mainWindow)
 {
 	foreach (Id const &editor, mMainWindow->editorManager().editors()) {
 		Id editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
-		foreach(Id const &diagram, mMainWindow->editorManager().diagrams(editorTmpId)) {
+		foreach (Id const &diagram, mMainWindow->editorManager().diagrams(editorTmpId)) {
 			addItem(editor, diagram);
 		}
 	}

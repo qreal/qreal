@@ -12,6 +12,8 @@ namespace qReal {
 
 class TextManager : public TextManagerInterface
 {
+	Q_OBJECT
+
 public:
 	TextManager(SystemEventsInterface *systemEvents, MainWindow *mainWindow);
 

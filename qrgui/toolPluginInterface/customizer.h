@@ -20,13 +20,19 @@ public:
 	/// Allows to customize main window's title from plugin
 	virtual QString windowTitle() const
 	{
-		return "";
+		return "QReal";
 	}
 
 	/// Customizes QReal's icon
 	virtual QIcon applicationIcon() const
 	{
 		return QIcon();
+	}
+
+	/// Customizes QReal`s logo in large format
+	virtual QImage applicationLogo() const
+	{
+		return QImage(":/icons/kroki6.png");
 	}
 
 	/// Customizes product version
