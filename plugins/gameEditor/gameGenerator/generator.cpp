@@ -79,47 +79,6 @@ void Generator::generateMainSwitch()
 	mResultTestFile.replace("@@eachFrameSwitches@@", outerSwitchBody);
 }
 
-QString Generator::generateScreenSwitchArrow(const Id &edge)
-{
-	Id diagram = mApi.outgoingExplosion(edge);
-
-	if (Id() == diagram) {
-/*		return ("	//The diagram of"
-				+ mApi.property(edge, "TextProperty")
-				+ "does not exist");*/
-		return "";
-	}
-
-
-	IdList elements = mApi.children(diagram);
-	Id start = Id();
-	QString result = "";
-
-	foreach (Id element, elements) {
-		if (mApi.isLogicalElement(element) &&
-				0 == mApi.incomingLinks(element).length())
-			start = element;
-	}
-
-	for (Id elem = start; mApi.outgoingLinks(elem).length() != 0; elem = mApi.outgoingLinks(elem).at(0)){
-		QString lineTemplate = "";
-		if (elem.element() == "CodeArea") {
-			lineTemplate = mTemplateUtils["@@CodeArea@@"];
-			QString inlineCode = mApi.property(elem, "Code").toString();
-			lineTemplate.replace("@@inlineCode@@", inlineCode);
-		}
-		if (elem.element() == "EndState") {
-			lineTemplate = mTemplateUtils["@@EndState@@"];
-			QString endStateName = mApi.property(elem, "StateName").toString();
-			lineTemplate.replace("@@StateName@@", endStateName);
-		}
-		result += lineTemplate;
-	}
-
-
-	return result;
-}
-
 QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 {
 /*	QMessageBox msgBox;
@@ -156,9 +115,7 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 
 		QString edgeName = mApi.property(edge, "name").toString();
 
-		Id outgoingExpl = mApi.outgoingExplosion(edge);
-		IdList ingoingExpl = mApi.incomingExplosions(edge);
-		QString edgeCode = "";//generateScreenSwitchArrow(edge);
+		QString edgeCode = generateScreenSwitchArrow(edge);
 
 		QString rightHandFrameName = mApi.property(rightHandFrame, "name").toString();
 
@@ -171,4 +128,70 @@ QString Generator::generateFrameRelatedSwitch(Id const &currentFrame)
 	return frameSwitch;
 }
 
+QString Generator::generateScreenSwitchArrow(const Id &edge)
+{
+	Id logicalDiagram;
+	if (mApi.isLogicalElement(edge)) {
+		logicalDiagram = mApi.outgoingExplosion(edge);
+	} else {
+		logicalDiagram = mApi.outgoingExplosion(mGraphicalModel.logicalId(edge));
+	}
 
+	if (Id() == logicalDiagram) {
+/*		return ("	//The diagram of"
+				+ mApi.property(edge, "TextProperty")
+				+ "does not exist");*/
+		return "";
+	}
+
+	Id diagram = mGraphicalModel.graphicalIdsByLogicalId(logicalDiagram).at(0);
+
+
+	IdList elements = mApi.children(diagram);
+	Id start = Id();
+	QString result = "";
+
+	//put breakpoint here
+	foreach (Id element, elements) {
+		IdList inc = mApi.incomingLinks(element);
+		IdList out = mApi.outgoingLinks(element);
+	}
+
+	foreach (Id element, elements) {
+		if (0 == mApi.incomingLinks(element).length()
+				&& element.type().element() != "edge"
+				&& element.type().element() != "Edge")
+			start = element;
+	}
+
+
+
+	Id elem = start;
+	for ( ; ; ){
+		QString lineTemplate = "";
+		if (elem.element() == "CodeArea") {
+			lineTemplate = mTemplateUtils["@@codeArea@@"];
+			QString inlineCode = mApi.property(mGraphicalModel.logicalId(elem), "Code").toString();
+			lineTemplate.replace("@@inlineCode@@", inlineCode);
+		}
+		if (elem.element() == "EndState") {
+			lineTemplate = mTemplateUtils["@@endState@@"];
+			QString endStateName = mApi.property(mGraphicalModel.logicalId(elem), "StateName").toString();
+			lineTemplate.replace("@@stateName@@", endStateName);
+		}
+		result += lineTemplate;
+
+		if (mApi.outgoingLinks(elem).length() == 0) {
+			break;
+		}
+
+		IdList links = mApi.outgoingLinks(elem);
+		//it will definetly will not generate IF block that way
+		Id link = links.at(0);
+		Id newElem = mGraphicalModel.graphicalRepoApi().otherEntityFromLink(link, elem);
+		elem = newElem;
+	}
+
+
+	return result;
+}
