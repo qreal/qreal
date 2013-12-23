@@ -91,7 +91,7 @@
     <property name="title">
      <string>&amp;Tools</string>
     </property>
-    <addaction name="actionShow"/>
+    <addaction name="actionGesturesShow"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -577,7 +577,7 @@
     <string>Switch on grid</string>
    </property>
   </action>
-  <action name="actionShow">
+  <action name="actionGesturesShow">
    <property name="text">
     <string>Mouse gestures</string>
    </property>
