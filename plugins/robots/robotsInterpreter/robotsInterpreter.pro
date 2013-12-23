@@ -2,6 +2,8 @@ QT += xml widgets network
 
 TEMPLATE = lib
 CONFIG += plugin
+CONFIG += c++11
+
 DESTDIR = ../../../bin/plugins/
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
@@ -40,6 +42,7 @@ SOURCES += \
 	customizer.cpp \
 	robotSettingsPage.cpp \
 	robotsPlugin.cpp \
+	sensorConstants.cpp \
 	details/abstractTimer.cpp \
 	details/autoconfigurer.cpp \
 	details/blocksTable.cpp \

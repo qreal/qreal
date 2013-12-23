@@ -1,10 +1,11 @@
 #include "robotItem.h"
+#include "constants.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
 
-int const border = 5;
+int const border = 0;
 
 RobotItem::RobotItem()
 	: RotateItem()
@@ -55,6 +56,7 @@ QRectF RobotItem::calcNecessaryBoundingRect() const
 
 void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+	emit mousePressed();
 	AbstractItem::mousePressEvent(event);
 	mIsOnTheGround = false;
 	mDragStart = scenePos();
@@ -127,7 +129,7 @@ QRectF RobotItem::rect() const
 	return boundingRect();
 }
 
-double RobotItem::rotateAngle() const
+qreal RobotItem::rotateAngle() const
 {
 	return mRobotModel->rotateAngle();
 }
@@ -200,7 +202,7 @@ void RobotItem::recoverDragStartPosition()
 void RobotItem::addSensorsShapes(QPainterPath &target)
 {
 	foreach (SensorItem *const sensor, mSensors) {
-		target.addEllipse(QRectF(sensor->pos() - QPointF(sensorWidth / 2, sensorWidth / 2)
+		target.addRect(QRectF(sensor->pos() - QPointF(sensorWidth / 2, sensorWidth / 2)
 				, QSizeF(sensorWidth, sensorWidth)));
 	}
 }

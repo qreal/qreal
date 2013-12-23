@@ -44,7 +44,7 @@ RobotsPlugin::~RobotsPlugin()
 
 void RobotsPlugin::initActions()
 {
-	m2dModelAction = new QAction(QIcon(":/icons/kcron.png"), QObject::tr("2d model"), NULL);
+	m2dModelAction = new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), NULL);
 	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
 	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
@@ -109,12 +109,14 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();
 	SettingsManager::setValue("IndexGrid", gridWidth);
-	mCustomizer.placePluginWindows(mInterpreter->watchWindow(), produceSensorsConfigurer());
+	mCustomizer.placeSensorsConfig(produceSensorsConfigurer());
+	mCustomizer.placeWatchPlugins(mInterpreter->watchWindow(), mInterpreter->graphicsWatchWindow());
 	rereadSettings();
+	setGraphWatcherSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
+	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(setGraphWatcherSettings()));
 
 	SystemEventsInterface const *systemEvents = &configurator.systemEvents();
-
 	connect(systemEvents, SIGNAL(settingsUpdated()), this, SLOT(updateSettings()));
 	connect(systemEvents, SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(Id)));
 	connect(systemEvents, SIGNAL(closedMainWindow()), this, SLOT(closeNeededWidget()));
@@ -210,6 +212,7 @@ interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produce
 	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
 	connect(result, SIGNAL(saved()), mInterpreter, SLOT(saveSensorConfiguration()));
 	connect(mInterpreter, SIGNAL(sensorsConfigurationChanged()), result, SLOT(refresh()));
+	connect(result, SIGNAL(saved()), mInterpreter, SLOT(updateGraphicWatchSensorsList()));
 	mInterpreter->connectSensorConfigurer(result);
 	return result;
 }
@@ -218,6 +221,18 @@ void RobotsPlugin::rereadSettings()
 {
 	updateTitlesVisibility();
 	mInterpreter->setNoiseSettings();
+}
+
+void RobotsPlugin::setGraphWatcherSettings()
+{
+	mInterpreter->graphicsWatchWindow()->configureUpdateIntervals(
+			SettingsManager::value("sensorUpdateInterval"
+					, utils::sensorsGraph::SensorsGraph::readSensorDefaultInterval).toInt()
+			, SettingsManager::value("autoscalingInterval"
+					, utils::sensorsGraph::SensorsGraph::autoscalingDefault).toInt()
+			, SettingsManager::value("textUpdateInterval"
+					, utils::sensorsGraph::SensorsGraph::textUpdateDefault).toInt()
+	);
 }
 
 void RobotsPlugin::titlesVisibilityChecked(bool checked)

@@ -15,7 +15,7 @@ public:
 	virtual SensorsConfiguration &configuration() = 0;
 	virtual void clear() = 0;
 	virtual void setRotation(double angle) = 0;
-	virtual double rotateAngle() const = 0;
+	virtual qreal rotateAngle() const = 0;
 	virtual void setSpeedFactor(qreal speedMul) = 0;
 	virtual QPointF robotPos() = 0;
 	virtual void setRobotPos(QPointF const& newPos) = 0;

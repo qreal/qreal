@@ -1,3 +1,3 @@
 do {
 @@BODY@@
-} while (@@CONDITION);
+} while (@@CONDITION@@);

@@ -1,24 +1,24 @@
+#include "d2ModelWidget.h"
+#include "ui_d2Form.h"
+
 #include <QtCore/qmath.h>
 #include <QtWidgets/QFileDialog>
 #include <QtGui/QRegion>
 
-#include "d2ModelWidget.h"
-#include "d2RobotModel.h"
-#include "ui_d2Form.h"
+#include <qrutils/outFile.h>
+#include <qrutils/xmlUtils.h>
+#include <qrkernel/settingsManager.h>
 
+#include "d2RobotModel.h"
+#include "constants.h"
 #include "sensorItem.h"
 #include "sonarSensorItem.h"
 #include "rotater.h"
 #include "timeline.h"
-#include "../../../../../qrutils/outFile.h"
-#include "../../../../../qrutils/xmlUtils.h"
-#include "../../../../../qrkernel/settingsManager.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
-
-QSize const displaySize(200, 300);
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
 	, NxtDisplay *nxtDisplay, QWidget *parent)
@@ -43,7 +43,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mFirstShow(true)
 		, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
 {
-	setWindowIcon(QIcon(":/icons/kcron.png"));
+	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
 	initWidget();
 
@@ -66,6 +66,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	syncCursorButtons();
 	enableRobotFollowing(SettingsManager::value("2dFollowingRobot").toBool());
 	mUi->autoCenteringButton->setChecked(mFollowRobot);
+	mUi->noneButton->setChecked(true);
 
 	drawInitialRobot();
 	syncronizeSensors();
@@ -163,18 +164,23 @@ void D2ModelWidget::initButtonGroups()
 	mButtonGroup.addButton(mUi->wallButton);
 	mButtonGroup.addButton(mUi->stylusButton);
 	mButtonGroup.addButton(mUi->ellipseButton);
+	mButtonGroup.addButton(mUi->noneButton);
 
 	mCursorButtonGroup.setExclusive(true);
 	mCursorButtonGroup.addButton(mUi->handCursorButton);
 	mCursorButtonGroup.addButton(mUi->multiselectionCursorButton);
 }
 
-void D2ModelWidget::setHighlightOneButton(QAbstractButton const *oneButton)
+void D2ModelWidget::setHighlightOneButton(QAbstractButton * const oneButton)
 {
 	foreach (QAbstractButton * const button, mButtonGroup.buttons()) {
 		if (button != oneButton) {
 			button->setChecked(false);
 		}
+	}
+
+	if (!oneButton->isChecked()) {
+		oneButton->setChecked(true);
 	}
 }
 
@@ -242,6 +248,7 @@ void D2ModelWidget::drawInitialRobot()
 {
 	mRobot = new RobotItem();
 	connect(mRobot, SIGNAL(changedPosition()), this, SLOT(handleNewRobotPosition()));
+	connect(mRobot, SIGNAL(mousePressed()), this, SLOT(setNoneButton()));
 	mScene->addItem(mRobot);
 
 	Rotater * const rotater = new Rotater();
@@ -1271,4 +1278,3 @@ void D2ModelWidget::alignWalls()
 		}
 	}
 }
-
