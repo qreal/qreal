@@ -41,6 +41,7 @@
         <file>icons/redo.png</file>
         <file>icons/hotkeys.png</file>
         <file>icons/kroki6.png</file>
+        <file>icons/question.svg</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>
