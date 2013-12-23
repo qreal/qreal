@@ -2,6 +2,8 @@
 
 #include <QtCore/QTimeLine>
 
+#include <qrutils/mathUtils/math.h>
+
 using namespace qReal;
 
 int const zoomAnimationInterval = 20;
@@ -257,26 +259,18 @@ void EditorView::animFinished()
 void EditorView::zoom(qreal const zoomFactor)
 {
 	qreal const oldScale = transform().m11();
+	qreal const maxScale = SettingsManager::value("maxZoom").toReal();
+	qreal const minScale = SettingsManager::value("minZoom").toReal();
+	if ((zoomFactor > 1 && mathUtils::Math::geq(oldScale, maxScale)) ||
+			(zoomFactor < 1 && mathUtils::Math::leq(oldScale, minScale))) {
+		return;
+	}
 
 	setSceneRect(mScene->sceneRect());
 	scale(zoomFactor, zoomFactor);
 
-	qreal const currentScale = transform().m11();
-	qreal const maxScale = SettingsManager::value("maxZoom").toReal();
-	qreal const minScale = SettingsManager::value("minZoom").toReal();
-
-	if (currentScale > maxScale) {
-		qreal const scaleNormalizer = maxScale / currentScale;
-		scale(scaleNormalizer, scaleNormalizer);
-	}
-
-	if (currentScale < minScale) {
-		qreal const scaleNormalizer = minScale / currentScale;
-		scale(scaleNormalizer, scaleNormalizer);
-	}
-
 	if (SettingsManager::value("ShowGrid").toBool()) {
-		mScene->setRealIndexGrid(mScene->realIndexGrid() * transform().m11() / oldScale);
+		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
 	}
 
 	checkGrid();
