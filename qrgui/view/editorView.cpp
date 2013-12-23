@@ -11,7 +11,6 @@ EditorView::EditorView(QWidget *parent)
 	: QGraphicsView(parent)
 	, mMouseOldPosition()
 	, mWheelPressed(false)
-	, mZoom(0)
 	, mTouchManager(this)
 {
 	setRenderHint(QPainter::Antialiasing, true);
@@ -61,22 +60,16 @@ void EditorView::toggleAntialiasing(bool checked)
 
 void EditorView::zoomIn()
 {
-	if (mWheelPressed || mZoom >= SettingsManager::value("maxZoom").toInt()) {
-		return;
+	if (!mWheelPressed) {
+		startAnimation(SLOT(zoomInTime()));
 	}
-
-	startAnimation(SLOT(zoomInTime()));
-	++mZoom;
 }
 
 void EditorView::zoomOut()
 {
-	if (mWheelPressed || mZoom <= SettingsManager::value("minZoom").toInt()) {
-		return;
+	if (!mWheelPressed) {
+		startAnimation(SLOT(zoomOutTime()));
 	}
-
-	startAnimation(SLOT(zoomOutTime()));
-	--mZoom;
 }
 
 void EditorView::checkGrid()
@@ -111,10 +104,12 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 {
 	if (mWheelPressed) {
 		if (mMouseOldPosition != QPointF()) {
-			qreal const dx = (event->localPos().x() - mMouseOldPosition.x());
-			qreal const dy = (event->localPos().y() - mMouseOldPosition.y());
+			qreal const scaleFactor = transform().m11();
+			qreal const dx = (event->localPos().x() - mMouseOldPosition.x()) / scaleFactor;
+			qreal const dy = (event->localPos().y() - mMouseOldPosition.y()) / scaleFactor;
 			viewport()->scroll(dx, dy);
 		}
+
 		mMouseOldPosition = event->localPos();
 	}
 
@@ -244,13 +239,13 @@ void EditorView::setTitlesVisible(bool visible)
 
 void EditorView::zoomInTime()
 {
-	qreal const zoomFactor = static_cast<qreal>(SettingsManager::value("zoomFactor").toInt()) / (10 + 15) + 1;
+	qreal const zoomFactor = SettingsManager::value("zoomFactor").toReal();
 	zoom(zoomFactor);
 }
 
 void EditorView::zoomOutTime()
 {
-	qreal const zoomFactor = 1 / (static_cast<qreal>(SettingsManager::value("zoomFactor").toInt()) / (10 + 15) + 1);
+	qreal const zoomFactor = 1 / SettingsManager::value("zoomFactor").toReal();
 	zoom(zoomFactor);
 }
 
@@ -261,11 +256,28 @@ void EditorView::animFinished()
 
 void EditorView::zoom(qreal const zoomFactor)
 {
+	qreal const oldScale = transform().m11();
+
 	setSceneRect(mScene->sceneRect());
 	scale(zoomFactor, zoomFactor);
 
-	if (SettingsManager::value("ShowGrid").toBool()) {
-		mScene->setRealIndexGrid(mScene->realIndexGrid() * zoomFactor);
+	qreal const currentScale = transform().m11();
+	qreal const maxScale = SettingsManager::value("maxZoom").toReal();
+	qreal const minScale = SettingsManager::value("minZoom").toReal();
+
+	if (currentScale > maxScale) {
+		qreal const scaleNormalizer = maxScale / currentScale;
+		scale(scaleNormalizer, scaleNormalizer);
 	}
+
+	if (currentScale < minScale) {
+		qreal const scaleNormalizer = minScale / currentScale;
+		scale(scaleNormalizer, scaleNormalizer);
+	}
+
+	if (SettingsManager::value("ShowGrid").toBool()) {
+		mScene->setRealIndexGrid(mScene->realIndexGrid() * transform().m11() / oldScale);
+	}
+
 	checkGrid();
 }
