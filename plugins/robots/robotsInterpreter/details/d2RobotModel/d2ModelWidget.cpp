@@ -43,7 +43,7 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 		, mFirstShow(true)
 		, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
 {
-	setWindowIcon(QIcon(":/icons/kcron.png"));
+	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
 	initWidget();
 

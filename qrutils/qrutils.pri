@@ -1,5 +1,7 @@
 QT += xml widgets
 
+CONFIG += c++11
+
 INCLUDEPATH += \
 	$$PWD \
 	$$PWD/.. \
@@ -24,6 +26,7 @@ HEADERS += \
 	$$PWD/fileSystemUtils.h \
 	$$PWD/stringUtils.h \
 	$$PWD/qRealDialog.h \
+	$$PWD/textElider.h\
 	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \
@@ -38,6 +41,7 @@ SOURCES += \
 	$$PWD/fileSystemUtils.cpp \
 	$$PWD/stringUtils.cpp \
 	$$PWD/qRealDialog.cpp \
+	$$PWD/textElider.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
 
 FORMS += \

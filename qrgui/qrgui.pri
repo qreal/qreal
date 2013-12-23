@@ -48,5 +48,8 @@ include(textEditor/textEditor.pri)
 # Hot Key Manager
 include(hotKeyManager/hotKeyManager.pri)
 
+# Manges styles, colors, fonts and so on
+include(brandManager/brandManager.pri)
+
 # Shape & widget editors
 include (elementEditor/elementEditor.pri)

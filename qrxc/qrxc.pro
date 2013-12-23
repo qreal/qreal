@@ -1,6 +1,7 @@
 TEMPLATE = app
 QT += xml gui
 CONFIG += console
+CONFIG += c++11
 
 macx {
 	CONFIG -= app_bundle

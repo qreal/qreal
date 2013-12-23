@@ -2,7 +2,6 @@
 
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QListWidget>
-#include <QtWidgets/QPushButton>
 
 namespace qReal {
 
@@ -21,24 +20,19 @@ public:
 	/// @param userData Associated with item the string data
 	/// @param toolTip Item tooltip
 	void addItem(QString const &text, QString const &userData, QString const &toolTip = "");
-	int count();
 	void highlightFirstItem();
 
 signals:
 	void userDataSelected(QString const &userData);
 
 private slots:
-	void okActivate();
-	void okButtonHandler();
 	void doubleClickHandler(QListWidgetItem *item);
 
 private:
 	QString userData(QListWidgetItem *item);
 
-	static int const mOkButtonMinimumHeight = 32;
-
+protected:
 	QListWidget *mListWidget;
-	QPushButton *mOkButton;
 };
 
 }

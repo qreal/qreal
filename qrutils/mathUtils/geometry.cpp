@@ -1,5 +1,4 @@
 #include "geometry.h"
-#include <math.h>
 
 using namespace mathUtils;
 
@@ -69,7 +68,7 @@ bool Geometry::intersects(QLineF const &line, QPainterPath const &path)
 
 QVector2D Geometry::directionVector(qreal angleInDegrees)
 {
-	return directionVectorRad(angleInDegrees * M_PI / 180);
+	return directionVectorRad(angleInDegrees * pi / 180);
 }
 
 QVector2D Geometry::directionVectorRad(qreal angleInRadians)
