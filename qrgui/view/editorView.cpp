@@ -111,16 +111,13 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 {
 	if (mWheelPressed) {
 		if (mMouseOldPosition != QPointF()) {
-			QRectF rect = sceneRect();
-			qreal dx = (event->localPos().x() - mMouseOldPosition.x());
-			qreal dy = (event->localPos().y() - mMouseOldPosition.y());
-			rect.moveLeft(rect.left() - dx);
-			rect.moveTop(rect.top() - dy);
-			setSceneRect(rect);
-			translate(dx, dy);
+			qreal const dx = (event->localPos().x() - mMouseOldPosition.x());
+			qreal const dy = (event->localPos().y() - mMouseOldPosition.y());
+			viewport()->scroll(dx, dy);
 		}
 		mMouseOldPosition = event->localPos();
 	}
+
 	QGraphicsView::mouseMoveEvent(event);
 	if (event->buttons() & Qt::RightButton) {
 		setDragMode(NoDrag);
@@ -139,8 +136,10 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 			}
 		}
 	}
-	if (mScene->getNeedDrawGrid())
+
+	if (mScene->getNeedDrawGrid()) {
 		mScene->invalidate();
+	}
 }
 
 void EditorView::mouseReleaseEvent(QMouseEvent *event)
