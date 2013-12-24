@@ -162,6 +162,11 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 	if (!mWheelPressed) {
 		QGraphicsView::mousePressEvent(event);
 	}
+
+	if (event->buttons() == Qt::RightButton) {
+		setDragMode(NoDrag);
+	}
+
 	if (event->buttons() & Qt::LeftButton) {
 		if (!(event->buttons() & Qt::RightButton) && !mTouchManager.isGestureRunning()
 				&& !itemAt(event->pos())) {
