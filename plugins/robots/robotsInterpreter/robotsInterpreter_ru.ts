@@ -127,13 +127,13 @@
     </message>
     <message>
         <location filename="details/d2RobotModel/d2Form.ui" line="612"/>
-        <source>Enable sensor noise</source>
-        <translation>Шум сенсоров</translation>
+        <source>Realistic sensors</source>
+        <oldsource>Enable sensor noise</oldsource>
+        <translation>Реалистичные сенсоры</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="619"/>
         <source>Enable motor noise</source>
-        <translation>Шум моторов</translation>
+        <translation type="obsolete">Шум моторов</translation>
     </message>
     <message>
         <location filename="details/d2RobotModel/d2Form.ui" line="879"/>
@@ -217,6 +217,11 @@ p, li { white-space: pre-wrap; }
         <location filename="details/d2RobotModel/d2Form.ui" line="486"/>
         <source>High</source>
         <translation>Высокая</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2Form.ui" line="619"/>
+        <source>Realistic engines</source>
+        <translation>Реалистичные моторы</translation>
     </message>
     <message>
         <location filename="details/d2RobotModel/d2Form.ui" line="725"/>
@@ -422,36 +427,46 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="robotSettingsPage.ui" line="243"/>
-        <source>Enable sensor noise</source>
-        <translation>Шум сенсоров</translation>
+        <source>Realistic sensors</source>
+        <oldsource>Enable sensor noise</oldsource>
+        <translation>Реалистичные сенсоры</translation>
     </message>
     <message>
         <location filename="robotSettingsPage.ui" line="250"/>
+        <source>For higher value the behaviour is closer to realistic but performance is lower.</source>
+        <translation>Для больших значений поведение сенсоров и моторов ближе к реальному, но при этом производительность падает больше.</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="253"/>
         <source>Approximation level</source>
         <translation>Уровень приближения</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="276"/>
-        <source>Enable motor noise</source>
-        <translation>Шум моторов</translation>
+        <location filename="robotSettingsPage.ui" line="279"/>
+        <source>Realistic engines</source>
+        <translation>Реалистичные моторы</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="315"/>
+        <source>Enable motor noise</source>
+        <translation type="obsolete">Шум моторов</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="318"/>
         <source>Graphics Watcher update intervals</source>
         <translation>Интервалы обновления графиков</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="321"/>
+        <location filename="robotSettingsPage.ui" line="324"/>
         <source>Sensors  (ms)</source>
         <translation>Сенсоры  (мс)</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="343"/>
+        <location filename="robotSettingsPage.ui" line="346"/>
         <source>Autoscaling  (ms)</source>
         <translation>Масштабирование  (мс)</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="365"/>
+        <location filename="robotSettingsPage.ui" line="368"/>
         <source>Text info (ms)</source>
         <translation>Тестовая информация  (мс)</translation>
     </message>
@@ -564,42 +579,42 @@ p, li { white-space: pre-wrap; }
         <translation>Роботы</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="63"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="69"/>
         <source>Add connection</source>
         <translation>Соединить с</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="68"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="74"/>
         <source>Connect to other</source>
         <translation>Пересоединить</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="73"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="79"/>
         <source>Disconnect</source>
         <translation>Отсоединить</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="78"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="84"/>
         <source>Go to connected element</source>
         <translation>Перейти к элементу по ссылке</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="88"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="94"/>
         <source>Expand explosion</source>
         <translation>Раскрыть эксплозию</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="93"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="99"/>
         <source>Collapse explosion</source>
         <translation>Схлопнуть эксплозию</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="98"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="104"/>
         <source>Existing connections</source>
         <translation>Существующие соединения</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="103"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="109"/>
         <source>Elements from this group exist for reusing all created connections</source>
         <translation>Элементы этой группы существуют для переиспользования всех существующих соединений</translation>
     </message>
@@ -1247,9 +1262,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForGyroscopeSensorBlock</name>
     <message>
-        <location filename="details/blocks/waitForGyroscopeSensorBlock.cpp" line="31"/>
         <source>Gyroscope</source>
-        <translation>Гироскоп</translation>
+        <translation type="obsolete">Гироскоп</translation>
     </message>
 </context>
 <context>
