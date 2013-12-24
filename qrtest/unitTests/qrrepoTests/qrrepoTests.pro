@@ -1,5 +1,7 @@
 TARGET = qrrepo_unittests
 
+CONFIG += c++11
+
 include(../common.pri)
 
 include(../../../qrrepo/qrrepo.pri)
