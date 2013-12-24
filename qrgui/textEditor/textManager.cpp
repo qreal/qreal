@@ -1,10 +1,11 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QFile>
-#include <QtWidgets/QFileDialog>
+
+#include <qrutils/outFile.h>
+#include <qrutils/qRealFileDialog.h>
 
 #include "textManager.h"
 #include "mainwindow/mainWindow.h"
-#include "qrutils/outFile.h"
 
 using namespace qReal;
 using namespace gui;
@@ -199,7 +200,8 @@ bool TextManager::saveText(bool saveAs)
 		QString const extDescr = genName == "" ? tr("All files (*.*)") : extDescription(genName);
 
 		if (saveAs) {
-			fileInfo = QFileInfo(QFileDialog::getSaveFileName(mMainWindow, tr("Save generated code"), "", extDescr));
+			fileInfo = QFileInfo(utils::QRealFileDialog::getSaveFileName("SaveTextFromTextManager"
+					, mMainWindow, tr("Save generated code"), "", extDescr));
 		} else {
 			fileInfo = path(area);
 		}

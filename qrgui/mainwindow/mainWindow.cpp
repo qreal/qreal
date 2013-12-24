@@ -18,9 +18,10 @@
 #include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
 
-#include <qrutils/outFile.h>
-#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrkernel/settingsManager.h>
+#include <qrutils/outFile.h>
+#include <qrutils/qRealFileDialog.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 
 #include "toolPluginInterface/systemEvents.h"
 #include "models/models.h"
@@ -514,7 +515,7 @@ void MainWindow::makeSvg()
 {
 	QSvgGenerator newSvg;
 
-	QString fileName = QFileDialog::getSaveFileName(this);
+	QString fileName = utils::QRealFileDialog::getSaveFileName("SaveDiagramAsSvg", this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -2010,7 +2011,8 @@ void MainWindow::saveDiagramAsAPictureToFile(QString const &fileName)
 void MainWindow::saveDiagramAsAPicture()
 {
 	if (getCurrentTab()) {
-		QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
+		QString const fileName = utils::QRealFileDialog::getSaveFileName("SaveDiagramAsPicture", this
+				, tr("Save File"), "", tr("Images (*.png *.jpg)"));
 		saveDiagramAsAPictureToFile(fileName);
 	}
 }
