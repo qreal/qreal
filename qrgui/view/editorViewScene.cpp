@@ -1089,6 +1089,11 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (!(mLeftButtonPressed && event->button() == Qt::RightButton)) {
 		QGraphicsScene::mouseReleaseEvent(event);
+		QGraphicsItem * const item = itemAt(event->scenePos(), QTransform());
+		Label * const label = dynamic_cast<Label *>(item);
+		if (label) {
+			sendEvent(label, event);
+		}
 	}
 
 	Element *element = getElemAt(event->scenePos());
