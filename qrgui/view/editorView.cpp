@@ -19,6 +19,8 @@ EditorView::EditorView(QWidget *parent)
 	mScene = new EditorViewScene(this);
 	connect(mScene, SIGNAL(zoomIn()), this, SLOT(zoomIn()));
 	connect(mScene, SIGNAL(zoomOut()), this, SLOT(zoomOut()));
+	connect(mScene, &EditorViewScene::sceneRectChanged, this
+			, static_cast<void (EditorView::*)(QRectF const &)>(&EditorView::setSceneRect));
 
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	setResizeAnchor(QGraphicsView::AnchorUnderMouse);
