@@ -609,14 +609,14 @@ p, li { white-space: pre-wrap; }
       <item>
        <widget class="QCheckBox" name="enableSensorNoiseCheckBox">
         <property name="text">
-         <string>Enable sensor noise</string>
+         <string>Realistic sensors</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QCheckBox" name="enableMotorNoiseCheckBox">
         <property name="text">
-         <string>Enable motor noise</string>
+         <string>Realistic engines</string>
         </property>
        </widget>
       </item>

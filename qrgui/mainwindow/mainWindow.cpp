@@ -288,6 +288,7 @@ void MainWindow::loadPlugins()
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
 			, &mEditorManagerProxy);
+	SettingsManager::setValue("EditorsLoadedCount", mEditorManagerProxy.editors().count());
 }
 
 void MainWindow::clearSelectionOnTabs()

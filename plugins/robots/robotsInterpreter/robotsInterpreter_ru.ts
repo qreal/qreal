@@ -127,13 +127,13 @@
     </message>
     <message>
         <location filename="details/d2RobotModel/d2Form.ui" line="612"/>
-        <source>Enable sensor noise</source>
-        <translation>Шум сенсоров</translation>
+        <source>Realistic sensors</source>
+        <oldsource>Enable sensor noise</oldsource>
+        <translation>Реалистичные сенсоры</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="619"/>
         <source>Enable motor noise</source>
-        <translation>Шум моторов</translation>
+        <translation type="obsolete">Шум моторов</translation>
     </message>
     <message>
         <location filename="details/d2RobotModel/d2Form.ui" line="879"/>
@@ -217,6 +217,11 @@ p, li { white-space: pre-wrap; }
         <location filename="details/d2RobotModel/d2Form.ui" line="486"/>
         <source>High</source>
         <translation>Высокая</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2Form.ui" line="619"/>
+        <source>Realistic engines</source>
+        <translation>Реалистичные моторы</translation>
     </message>
     <message>
         <location filename="details/d2RobotModel/d2Form.ui" line="725"/>
@@ -305,17 +310,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PreferencesRobotSettingsPage</name>
     <message>
-        <location filename="robotSettingsPage.ui" line="17"/>
+        <location filename="robotSettingsPage.ui" line="128"/>
         <source>Type of Robot Model</source>
         <translation>Тип модели робота</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="23"/>
+        <location filename="robotSettingsPage.ui" line="134"/>
         <source>Null model</source>
         <translation>Пустая модель</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="30"/>
+        <location filename="robotSettingsPage.ui" line="141"/>
         <source>2D robot model</source>
         <translation>Двухмерная модель</translation>
     </message>
@@ -324,7 +329,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Реальный робот</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="158"/>
+        <location filename="robotSettingsPage.ui" line="373"/>
         <source>Sensors Settings</source>
         <translation>Настройки сенсоров</translation>
     </message>
@@ -345,113 +350,148 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Порт 4:</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="40"/>
+        <location filename="robotSettingsPage.ui" line="151"/>
         <source>Lego NXT</source>
         <translation>Лего NXT</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="50"/>
+        <location filename="robotSettingsPage.ui" line="161"/>
         <source>TRIK</source>
         <translation>ТРИК</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="76"/>
+        <location filename="robotSettingsPage.ui" line="46"/>
         <source>Bluetooth Settings</source>
         <translation>Настройки Bluetooth</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="82"/>
-        <location filename="robotSettingsPage.ui" line="92"/>
+        <location filename="robotSettingsPage.ui" line="52"/>
+        <location filename="robotSettingsPage.ui" line="62"/>
         <source>COM Port:</source>
         <translation>COM-порт:</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="102"/>
+        <location filename="robotSettingsPage.ui" line="72"/>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
         <translation>COM-порты не найдены. Если установлено Bluetooth-соединение с активным COM-портом, пожалуйста, укажите его имя. Пример: COM3</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="112"/>
+        <location filename="robotSettingsPage.ui" line="82"/>
         <source>Specify COM port manually</source>
         <translation>Указать COM-порт вручную</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="122"/>
+        <location filename="robotSettingsPage.ui" line="92"/>
         <source>Type of Communication</source>
         <translation>Тип связи</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="131"/>
+        <location filename="robotSettingsPage.ui" line="101"/>
         <source>Bluetooth</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="141"/>
+        <location filename="robotSettingsPage.ui" line="111"/>
         <source>USB</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="148"/>
+        <location filename="robotSettingsPage.ui" line="118"/>
         <source>TCP</source>
         <translation>TCP</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="165"/>
+        <location filename="robotSettingsPage.ui" line="249"/>
         <source>Elements</source>
         <translation>Элементы</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="171"/>
+        <location filename="robotSettingsPage.ui" line="255"/>
         <source>Text visible</source>
         <translation>Показывать текст под пиктограммой</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="181"/>
+        <location filename="robotSettingsPage.ui" line="265"/>
         <source>TCP Settings</source>
         <translation>Настройки TCP</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="187"/>
+        <location filename="robotSettingsPage.ui" line="271"/>
         <source>Enter server address here</source>
         <translation>IP-адрес сервера</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="222"/>
+        <location filename="robotSettingsPage.ui" line="306"/>
         <source>Noise</source>
         <translation>Шум</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="243"/>
-        <source>Enable sensor noise</source>
-        <translation>Шум сенсоров</translation>
+        <location filename="robotSettingsPage.ui" line="327"/>
+        <source>Realistic sensors</source>
+        <oldsource>Enable sensor noise</oldsource>
+        <translation>Реалистичные сенсоры</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="250"/>
+        <location filename="robotSettingsPage.ui" line="334"/>
+        <source>For higher value the behaviour is closer to realistic but performance is lower.</source>
+        <translation>Для больших значений поведение сенсоров и моторов ближе к реальному, но при этом производительность падает больше.</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="337"/>
         <source>Approximation level</source>
         <translation>Уровень приближения</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="276"/>
-        <source>Enable motor noise</source>
-        <translation>Шум моторов</translation>
+        <location filename="robotSettingsPage.ui" line="363"/>
+        <source>Realistic engines</source>
+        <translation>Реалистичные моторы</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="315"/>
+        <location filename="robotSettingsPage.ui" line="380"/>
+        <source>Uploading &amp;&amp; Running</source>
+        <translation>Загрузка и запуск программ</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="386"/>
+        <source>Running after uploading:</source>
+        <translation>Запуск после загрузки:</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="394"/>
+        <source>Ask</source>
+        <translation>Спрашивать</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="399"/>
+        <source>Always run</source>
+        <translation>Всегда запускать</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="404"/>
+        <source>Never run</source>
+        <translation>Никогда не запускать</translation>
+    </message>
+    <message>
+        <source>Enable motor noise</source>
+        <translation type="obsolete">Шум моторов</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="174"/>
         <source>Graphics Watcher update intervals</source>
         <translation>Интервалы обновления графиков</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="321"/>
+        <location filename="robotSettingsPage.ui" line="180"/>
         <source>Sensors  (ms)</source>
         <translation>Сенсоры  (мс)</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="343"/>
+        <location filename="robotSettingsPage.ui" line="202"/>
         <source>Autoscaling  (ms)</source>
         <translation>Масштабирование  (мс)</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="365"/>
+        <location filename="robotSettingsPage.ui" line="224"/>
         <source>Text info (ms)</source>
         <translation>Тестовая информация  (мс)</translation>
     </message>
@@ -564,42 +604,42 @@ p, li { white-space: pre-wrap; }
         <translation>Роботы</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="63"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="69"/>
         <source>Add connection</source>
         <translation>Соединить с</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="68"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="74"/>
         <source>Connect to other</source>
         <translation>Пересоединить</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="73"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="79"/>
         <source>Disconnect</source>
         <translation>Отсоединить</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="78"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="84"/>
         <source>Go to connected element</source>
         <translation>Перейти к элементу по ссылке</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="88"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="94"/>
         <source>Expand explosion</source>
         <translation>Раскрыть эксплозию</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="93"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="99"/>
         <source>Collapse explosion</source>
         <translation>Схлопнуть эксплозию</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="98"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="104"/>
         <source>Existing connections</source>
         <translation>Существующие соединения</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="103"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="109"/>
         <source>Elements from this group exist for reusing all created connections</source>
         <translation>Элементы этой группы существуют для переиспользования всех существующих соединений</translation>
     </message>
@@ -1307,43 +1347,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="104"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="105"/>
         <source>Black</source>
         <translation>Чёрный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="105"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="106"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="106"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="107"/>
         <source>Green</source>
         <translation>Зелёный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="107"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="108"/>
         <source>Yellow</source>
         <translation>Жёлтый</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="108"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="109"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="783"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="786"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="783"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="802"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="786"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="806"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="802"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="806"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>
