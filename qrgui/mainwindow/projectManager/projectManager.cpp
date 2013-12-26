@@ -342,8 +342,12 @@ bool ProjectManager::saveAs(QString const &fileName)
 
 QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 {
+	QString const pathToExamples = mMainWindow->toolManager().customizer()->examplesDirectory();
+	QString const defaultDirectory = pathToExamples.isEmpty()
+			? QFileInfo(mSaveFilePath).absoluteDir().absolutePath()
+			: pathToExamples;
 	QString fileName = QRealFileDialog::getOpenFileName("OpenQRSProject", mMainWindow, dialogWindowTitle
-			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
+			, defaultDirectory, tr("QReal Save File(*.qrs)"));
 
 	if (!fileName.isEmpty() && !QFile::exists(fileName)) {
 		fileNotFoundMessage(fileName);

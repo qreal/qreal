@@ -47,6 +47,13 @@ public:
 		return "<b>QReal<b><br><br><a href=\"http://qreal.ru/\">http://qreal.ru/</a>";
 	}
 
+	/// Customizes default examples directory for current system.
+	/// Empty string as result means that the system doesn`t have examples
+	virtual QString examplesDirectory() const
+	{
+		return QString();
+	}
+
 	/// Tells if we should show trace connections menu or not
 	virtual bool showConnectionRelatedMenus() const
 	{
