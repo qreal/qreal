@@ -164,7 +164,8 @@ void PreferencesRobotSettingsPage::refreshValuesOnUi()
 					, utils::sensorsGraph::SensorsGraph::textUpdateDefault).toInt()
 	);
 
-	enums::robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	enums::robotModelType::robotModelTypeEnum typeOfRobotModel =
+			static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	initRobotModelType(typeOfRobotModel);
 
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();

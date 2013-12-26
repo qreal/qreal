@@ -481,27 +481,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="customizer.cpp" line="9"/>
+        <location filename="customizer.cpp" line="11"/>
         <source>QReal:Robots</source>
         <translation>QReal:Robots</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="43"/>
+        <location filename="customizer.cpp" line="50"/>
         <source>Configure sensors</source>
         <translation>Настройки сенсоров</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="51"/>
+        <location filename="customizer.cpp" line="58"/>
         <source>Sensors state</source>
         <translation>Графики</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="66"/>
+        <location filename="customizer.cpp" line="73"/>
         <source>Subprograms</source>
         <translation>Подпрограммы</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="71"/>
+        <location filename="customizer.cpp" line="78"/>
         <source>The list of all declared subprograms in the project</source>
         <translation>Список всех объявленных в проекте подпрограмм</translation>
     </message>
@@ -541,12 +541,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Сенсор4</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="47"/>
+        <location filename="robotsPlugin.cpp" line="49"/>
         <source>2d model</source>
         <translation>2D модель</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="51"/>
+        <location filename="robotsPlugin.cpp" line="53"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
@@ -555,17 +555,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Прервать выполнение</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="55"/>
+        <location filename="robotsPlugin.cpp" line="57"/>
         <source>Stop robot</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="59"/>
+        <location filename="robotsPlugin.cpp" line="62"/>
         <source>Connect to robot</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="65"/>
+        <location filename="robotsPlugin.cpp" line="73"/>
+        <source>Switch to 2d model</source>
+        <translation>Переключиться в режим 2D-модели</translation>
+    </message>
+    <message>
+        <location filename="robotsPlugin.cpp" line="78"/>
+        <source>Switch to Lego NXT mode</source>
+        <translation>Переключиться в режим Lego NXT</translation>
+    </message>
+    <message>
+        <location filename="robotsPlugin.cpp" line="83"/>
+        <source>Switch to TRIK mode</source>
+        <translation>Переключиться в режим TRIK</translation>
+    </message>
+    <message>
+        <location filename="robotsPlugin.cpp" line="102"/>
         <source>Robot settings</source>
         <translation>Настройки</translation>
     </message>
@@ -574,47 +589,47 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Список переменных</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="146"/>
+        <location filename="robotsPlugin.cpp" line="181"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="69"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="76"/>
         <source>Add connection</source>
         <translation>Соединить с</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="74"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="81"/>
         <source>Connect to other</source>
         <translation>Пересоединить</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="79"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="86"/>
         <source>Disconnect</source>
         <translation>Отсоединить</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="84"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="91"/>
         <source>Go to connected element</source>
         <translation>Перейти к элементу по ссылке</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="94"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="101"/>
         <source>Expand explosion</source>
         <translation>Раскрыть эксплозию</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="99"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="106"/>
         <source>Collapse explosion</source>
         <translation>Схлопнуть эксплозию</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="104"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="111"/>
         <source>Existing connections</source>
         <translation>Существующие соединения</translation>
     </message>
     <message>
-        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="109"/>
+        <location filename="../../../qrgui/toolPluginInterface/customizer.h" line="116"/>
         <source>Elements from this group exist for reusing all created connections</source>
         <translation>Элементы этой группы существуют для переиспользования всех существующих соединений</translation>
     </message>
@@ -718,7 +733,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Элементы</translation>
     </message>
     <message>
-        <location filename="customizer.cpp" line="38"/>
+        <location filename="customizer.cpp" line="45"/>
         <source>Blocks</source>
         <translation>Блоки</translation>
     </message>
@@ -811,32 +826,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::RobotsPlugin</name>
     <message>
-        <location filename="robotsPlugin.cpp" line="69"/>
+        <location filename="robotsPlugin.cpp" line="106"/>
         <source>Text under pictogram</source>
         <translation>Текст под пиктограммами</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="92"/>
+        <location filename="robotsPlugin.cpp" line="127"/>
         <source>Show 2d model</source>
         <translation>Открыть окно 2D модели</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="93"/>
+        <location filename="robotsPlugin.cpp" line="128"/>
         <source>Run interpreter</source>
         <translation>Запуск интерпретации</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="94"/>
+        <location filename="robotsPlugin.cpp" line="129"/>
         <source>Stop interpreter</source>
         <translation>Остановить интерпретацию</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="96"/>
+        <location filename="robotsPlugin.cpp" line="131"/>
         <source>Toggle titles visibility</source>
         <translation>Показать/скрыть встроенные редакторы свойств</translation>
     </message>
     <message>
-        <location filename="robotsPlugin.cpp" line="151"/>
+        <location filename="robotsPlugin.cpp" line="186"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
@@ -1262,8 +1277,9 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::blocks::WaitForGyroscopeSensorBlock</name>
     <message>
+        <location filename="details/blocks/waitForGyroscopeSensorBlock.cpp" line="31"/>
         <source>Gyroscope</source>
-        <translation type="obsolete">Гироскоп</translation>
+        <translation>Гироскоп</translation>
     </message>
 </context>
 <context>
@@ -1321,43 +1337,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="104"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="105"/>
         <source>Black</source>
         <translation>Чёрный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="105"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="106"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="106"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="107"/>
         <source>Green</source>
         <translation>Зелёный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="107"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="108"/>
         <source>Yellow</source>
         <translation>Жёлтый</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="108"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="109"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="783"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="786"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="783"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="802"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="786"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="806"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="802"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="806"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>
