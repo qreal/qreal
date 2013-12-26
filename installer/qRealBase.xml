@@ -71,6 +71,12 @@
                 <distributionFile>
                     <origin>%1/thirdparty/qscintilla/include/License.txt</origin>
                 </distributionFile>
+                <distributionFile>
+                    <origin>acknowledgements.txt</origin>
+                </distributionFile>
+                <distributionDirectory>
+                    <origin>licenses</origin>
+                </distributionDirectory>
             </distributionFileList>
         </folder>
         <folder>

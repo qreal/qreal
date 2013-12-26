@@ -2,7 +2,7 @@
     <shortName>QReal</shortName>
     <fullName>QReal</fullName>
     <version>%version%</version>
-    <licenseFile>gpl-3.0.txt</licenseFile>
+    <licenseFile>licenses/gpl-3.0.txt</licenseFile>
     <leftImage>left.png</leftImage>
     <logoImage>logo.png</logoImage>
     <defaultLanguage>en</defaultLanguage>
