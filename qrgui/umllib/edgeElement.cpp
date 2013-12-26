@@ -49,6 +49,7 @@ EdgeElement::EdgeElement(
 		, mLongPart(0)
 		, mReverseAction(tr("Reverse"), this)
 		, mChangeShapeAction(tr("Change shape type"), this)
+		, mBreakPointPressed(false)
 		, mModelUpdateIsCalled(false)
 		, mIsLoop(false)
 {

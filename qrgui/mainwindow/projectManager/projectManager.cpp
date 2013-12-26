@@ -120,6 +120,8 @@ bool ProjectManager::open(QString const &fileName)
 		mSomeProjectOpened = open(mSaveFilePath);
 		return false;
 	}
+
+	mMainWindow->closeStartTab();
 	mMainWindow->propertyModel().setSourceModels(mMainWindow->models()->logicalModel()
 			, mMainWindow->models()->graphicalModel());
 	mMainWindow->graphicalModelExplorer()->setModel(mMainWindow->models()->graphicalModel());

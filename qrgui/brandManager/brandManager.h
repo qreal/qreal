@@ -23,7 +23,14 @@ public:
 	/// Returns information about all json stylesheets in system
 	static Styles const *styles();
 
-	// TODO: Add here some appearance methods from customizer
+	/// Returns application`s name and probably version
+	static QString applicationName();
+
+	/// Returns application`s logo image in wide format
+	static QImage const applicationLogo();
+
+	/// Returns small application`s icon
+	static QIcon const applicationIcon();
 
 private:
 	BrandManager();

@@ -10,6 +10,11 @@ TabWidget::TabWidget(QWidget *parent)
 {
 }
 
+void TabWidget::setTabUnclosable(int index)
+{
+	tabBar()->tabButton(index, QTabBar::RightSide)->resize(0, 0);
+}
+
 void TabWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::MiddleButton && tabBar()->tabAt(event->pos()) > -1) {

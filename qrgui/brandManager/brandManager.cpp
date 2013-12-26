@@ -34,3 +34,18 @@ Styles const *BrandManager::styles()
 {
 	return instance().mStyles;
 }
+
+QString BrandManager::applicationName()
+{
+	return instance().mCustomizer->windowTitle();
+}
+
+const QImage BrandManager::applicationLogo()
+{
+	return instance().mCustomizer->applicationLogo();
+}
+
+const QIcon BrandManager::applicationIcon()
+{
+	return instance().mCustomizer->applicationIcon();
+}

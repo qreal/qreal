@@ -970,10 +970,15 @@ bool EditorViewScene::isEmptyClipboard()
 void EditorViewScene::getObjectByGesture()
 {
 	mTimer->stop();
-	qReal::Id id = mMouseMovementManager->getObject();
+	Id const id = mMouseMovementManager->getObject();
 	if (!id.element().isEmpty()) {
-		createElement(id.toString(), mMouseMovementManager->pos());
+		// Creating element with its center in the center of gesture (see #1086)
+		QSize const elementSize = mWindow->editorManager().iconSize(id);
+		QPointF const gestureCenter = mMouseMovementManager->pos();
+		QPointF const elementCenter(elementSize.width() / 2.0, elementSize.height() / 2.0);
+		createElement(id.toString(), gestureCenter - elementCenter);
 	}
+
 	deleteGesture();
 }
 

@@ -52,10 +52,14 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionNewProject"/>
+    <addaction name="actionNew_Diagram"/>
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
+    <addaction name="separator"/>
     <addaction name="actionSave_diagram_as_a_picture"/>
+    <addaction name="actionPrint"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -63,6 +67,8 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <addaction name="actionFullscreen"/>
+    <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
     <addaction name="separator"/>
