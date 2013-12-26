@@ -109,8 +109,8 @@ void RobotsPlugin::initActions()
 	connect(mTitlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 	ActionInfo titlesActionInfo(mTitlesAction, "", "settings");
 
-	mActionInfos << d2ModelActionInfo << runActionInfo
-			<< stopRobotActionInfo << connectToRobotActionInfo
+	mActionInfos << d2ModelActionInfo << connectToRobotActionInfo
+			<< runActionInfo << stopRobotActionInfo
 			<< separator1ActionInfo << switchTo2DModelActionInfo
 			<< switchToNxtModelActionInfo << switchToTrikModelActionInfo
 			<< separator2ActionInfo << robotSettingsActionInfo
