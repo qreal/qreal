@@ -3,7 +3,8 @@
 #include <QtWidgets/QApplication>
 #include <QtCore/QDir>
 
-#include "qrgui/mainwindow/qscintillaTextEdit.h"
+#include <qrkernel/settingsManager.h>
+#include <qrgui/mainwindow/qscintillaTextEdit.h>
 #include <nxtOsekMasterGenerator.h>
 
 
@@ -12,10 +13,9 @@ using namespace qReal::robots::generators;
 using namespace gui;
 
 NxtGeneratorPlugin::NxtGeneratorPlugin()
-	: mGenerateCodeAction(NULL)
-	, mFlashRobotAction(NULL)
-	, mUploadProgramAction(NULL)
-	, mRunProgramAction(NULL)
+	: mGenerateCodeAction(nullptr)
+	, mFlashRobotAction(nullptr)
+	, mUploadProgramAction(nullptr)
 	, mNxtToolsPresent(false)
 {
 	mAppTranslator.load(":/nxtGenerator_" + QLocale::system().name());
@@ -54,6 +54,7 @@ void NxtGeneratorPlugin::init(PluginConfigurator const &configurator)
 	RobotsGeneratorPluginBase::init(configurator);
 
 	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
+	connect(mFlashTool, &NxtFlashTool::uploadingComplete, this, &NxtGeneratorPlugin::onUploadingComplete);
 }
 
 QList<ActionInfo> NxtGeneratorPlugin::actions()
@@ -71,14 +72,11 @@ QList<ActionInfo> NxtGeneratorPlugin::actions()
 	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
 	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
-	mRunProgramAction.setText(tr("Run program"));
-	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
-	connect(&mRunProgramAction, SIGNAL(triggered()), this, SLOT(runProgram()));
-
 	checkNxtTools();
 
-	return QList<ActionInfo>() << generateCodeActionInfo << flashRobotActionInfo
-			<< uploadProgramActionInfo << runProgramActionInfo;
+	return QList<ActionInfo>() << generateCodeActionInfo
+			<< flashRobotActionInfo
+			<< uploadProgramActionInfo;
 }
 
 void NxtGeneratorPlugin::initHotKeyActions()
@@ -92,16 +90,26 @@ void NxtGeneratorPlugin::initHotKeyActions()
 	mHotKeyActionInfos << generateActionInfo << uploadActionInfo;
 }
 
-void NxtGeneratorPlugin::runProgram()
+void NxtGeneratorPlugin::onUploadingComplete(bool success)
 {
-	if (!mNxtToolsPresent) {
-		mMainWindowInterface->errorReporter()->addError(tr("NextTool not found. Make sure it is present in QReal installation directory"));
-	} else {
-		QFileInfo const fileInfo = currentSource();
+	if (!success) {
+		return;
+	}
 
-		if (fileInfo != QFileInfo()) {
-			mFlashTool->runProgram(fileInfo);
+	NxtFlashTool::RunPolicy const runPolicy = static_cast<NxtFlashTool::RunPolicy>(
+			SettingsManager::value("nxtFlashToolRunPolicy").toInt());
+
+	switch (runPolicy) {
+	case NxtFlashTool::Ask:
+		if (mFlashTool->askToRun(mMainWindowInterface->windowWidget())) {
+			mFlashTool->runLastProgram();
 		}
+		break;
+	case NxtFlashTool::AlwaysRun:
+		mFlashTool->runLastProgram();
+		break;
+	default:
+		break;
 	}
 }
 
