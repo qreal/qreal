@@ -315,7 +315,7 @@ void SdfRenderer::image_draw(QDomElement &element)
 		mMapFileImage.insert(fileName, rawImage);
 	}
 
-	QRect const rect(x1, y1, x2-x1, y2-y1);
+	QRect const rect(x1, y1, x2 - x1, y2 - y1);
 
 	if (fileName.endsWith(".svg")) {
 		QSvgRenderer renderer(rawImage);
