@@ -3,7 +3,6 @@
 #include <QtCore/QModelIndex>
 #include <QtWidgets/QDialog>
 #include <QtCore/QSettings>
-#include <QtWidgets/QFileDialog>
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/qRealDialog.h>

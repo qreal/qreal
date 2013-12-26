@@ -1,6 +1,7 @@
 #include "projectManager.h"
 
 #include <qrutils/outFile.h>
+#include <qrutils/qRealFileDialog.h>
 
 #include "mainwindow/mainWindow.h"
 
@@ -13,6 +14,7 @@
 #include "dialogs/suggestToCreateDiagramDialog.h"
 
 using namespace qReal;
+using namespace utils;
 
 ProjectManager::ProjectManager(MainWindow *mainWindow, TextManagerInterface *textManager)
 	: mMainWindow(mainWindow)
@@ -340,7 +342,7 @@ bool ProjectManager::saveAs(QString const &fileName)
 
 QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 {
-	QString fileName = QFileDialog::getOpenFileName(mMainWindow, dialogWindowTitle
+	QString fileName = QRealFileDialog::getOpenFileName("OpenQRSProject", mMainWindow, dialogWindowTitle
 			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
 
 	if (!fileName.isEmpty() && !QFile::exists(fileName)) {
@@ -352,7 +354,7 @@ QString ProjectManager::openFileName(QString const &dialogWindowTitle) const
 
 QString ProjectManager::getSaveFileName(QString const &dialogWindowTitle)
 {
-	QString fileName = QFileDialog::getSaveFileName(mMainWindow, dialogWindowTitle
+	QString fileName = QRealFileDialog::getSaveFileName("SaveQRSProject", mMainWindow, dialogWindowTitle
 			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
 
 	if (!fileName.isEmpty() && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
