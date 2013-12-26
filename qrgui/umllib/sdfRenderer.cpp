@@ -794,7 +794,7 @@ QByteArray SdfRenderer::loadPixmap(QString &filePath)
 	}
 
 	// Our file does not exist, falling back to system-scoped default icon, we are pretty sure in its existance
-	filePath = QString(":/icons/question.svg");
+	filePath = QString(":/icons/default.svg");
 	return loadPixmapFromExistingFile(filePath);
 }
 
