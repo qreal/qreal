@@ -457,17 +457,17 @@ p, li { white-space: pre-wrap; }
         <translation>Запуск после загрузки:</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="425"/>
+        <location filename="robotSettingsPage.ui" line="394"/>
         <source>Ask</source>
         <translation>Спрашивать</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="430"/>
+        <location filename="robotSettingsPage.ui" line="399"/>
         <source>Always run</source>
         <translation>Всегда запускать</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="435"/>
+        <location filename="robotSettingsPage.ui" line="404"/>
         <source>Never run</source>
         <translation>Никогда не запускать</translation>
     </message>
@@ -482,13 +482,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="robotSettingsPage.ui" line="180"/>
-        <location filename="robotSettingsPage.ui" line="395"/>
         <source>Sensors  (ms)</source>
         <translation>Сенсоры  (мс)</translation>
     </message>
     <message>
         <location filename="robotSettingsPage.ui" line="202"/>
-        <location filename="robotSettingsPage.ui" line="417"/>
         <source>Autoscaling  (ms)</source>
         <translation>Масштабирование  (мс)</translation>
     </message>
