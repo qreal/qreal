@@ -1,9 +1,8 @@
 #include "miscellaniousPage.h"
 #include "ui_miscellaniousPage.h"
 
-#include <QtWidgets/QFileDialog>
-
 #include <qrkernel/settingsManager.h>
+#include <qrutils/qRealFileDialog.h>
 
 using namespace qReal;
 
@@ -39,7 +38,7 @@ void PreferencesMiscellaniousPage::changeEvent(QEvent *e)
 
 void PreferencesMiscellaniousPage::browseImagesPath()
 {
-	QString path = QFileDialog::getExistingDirectory(this, "Open Directory");
+	QString path = utils::QRealFileDialog::getExistingDirectory("OpenImagesOnMiscellaniousPage", this, "Open Directory");
 	if (!path.isEmpty()) {
 		mUi->imagesPathEdit->setText(path.replace("\\", "/"));
 	}
