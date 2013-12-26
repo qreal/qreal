@@ -75,8 +75,6 @@ public:
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);
 	void reverseOldResizingItem(QPointF begin, QPointF end);
 
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent);
-
 	//for save to xml
 	virtual void setXandY(QDomElement& dom, QRectF const &rect);
 	QDomElement setPenBrushToDoc(QDomDocument &document, QString const &domName);

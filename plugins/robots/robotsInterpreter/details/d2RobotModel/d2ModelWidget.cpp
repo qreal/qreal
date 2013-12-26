@@ -723,6 +723,7 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		}
 		break;
 	}
+
 	if (needUpdate) {
 		mScene->update();
 	}
