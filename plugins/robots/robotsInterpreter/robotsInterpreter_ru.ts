@@ -127,13 +127,13 @@
     </message>
     <message>
         <location filename="details/d2RobotModel/d2Form.ui" line="612"/>
-        <source>Enable sensor noise</source>
-        <translation>Шум сенсоров</translation>
+        <source>Realistic sensors</source>
+        <oldsource>Enable sensor noise</oldsource>
+        <translation>Реалистичные сенсоры</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2Form.ui" line="619"/>
         <source>Enable motor noise</source>
-        <translation>Шум моторов</translation>
+        <translation type="obsolete">Шум моторов</translation>
     </message>
     <message>
         <location filename="details/d2RobotModel/d2Form.ui" line="879"/>
@@ -217,6 +217,11 @@ p, li { white-space: pre-wrap; }
         <location filename="details/d2RobotModel/d2Form.ui" line="486"/>
         <source>High</source>
         <translation>Высокая</translation>
+    </message>
+    <message>
+        <location filename="details/d2RobotModel/d2Form.ui" line="619"/>
+        <source>Realistic engines</source>
+        <translation>Реалистичные моторы</translation>
     </message>
     <message>
         <location filename="details/d2RobotModel/d2Form.ui" line="725"/>
@@ -324,7 +329,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Реальный робот</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="370"/>
+        <location filename="robotSettingsPage.ui" line="373"/>
         <source>Sensors Settings</source>
         <translation>Настройки сенсоров</translation>
     </message>
@@ -422,43 +427,53 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="robotSettingsPage.ui" line="327"/>
-        <source>Enable sensor noise</source>
-        <translation>Шум сенсоров</translation>
+        <source>Realistic sensors</source>
+        <oldsource>Enable sensor noise</oldsource>
+        <translation>Реалистичные сенсоры</translation>
     </message>
     <message>
         <location filename="robotSettingsPage.ui" line="334"/>
+        <source>For higher value the behaviour is closer to realistic but performance is lower.</source>
+        <translation>Для больших значений поведение сенсоров и моторов ближе к реальному, но при этом производительность падает больше.</translation>
+    </message>
+    <message>
+        <location filename="robotSettingsPage.ui" line="337"/>
         <source>Approximation level</source>
         <translation>Уровень приближения</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="360"/>
-        <source>Enable motor noise</source>
-        <translation>Шум моторов</translation>
+        <location filename="robotSettingsPage.ui" line="363"/>
+        <source>Realistic engines</source>
+        <translation>Реалистичные моторы</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="377"/>
+        <location filename="robotSettingsPage.ui" line="380"/>
         <source>Uploading &amp;&amp; Running</source>
         <translation>Загрузка и запуск программ</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="383"/>
+        <location filename="robotSettingsPage.ui" line="386"/>
         <source>Running after uploading:</source>
         <translation>Запуск после загрузки:</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="391"/>
+        <location filename="robotSettingsPage.ui" line="425"/>
         <source>Ask</source>
         <translation>Спрашивать</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="396"/>
+        <location filename="robotSettingsPage.ui" line="430"/>
         <source>Always run</source>
         <translation>Всегда запускать</translation>
     </message>
     <message>
-        <location filename="robotSettingsPage.ui" line="401"/>
+        <location filename="robotSettingsPage.ui" line="435"/>
         <source>Never run</source>
         <translation>Никогда не запускать</translation>
+    </message>
+    <message>
+        <source>Enable motor noise</source>
+        <translation type="obsolete">Шум моторов</translation>
     </message>
     <message>
         <location filename="robotSettingsPage.ui" line="174"/>
@@ -467,11 +482,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="robotSettingsPage.ui" line="180"/>
+        <location filename="robotSettingsPage.ui" line="395"/>
         <source>Sensors  (ms)</source>
         <translation>Сенсоры  (мс)</translation>
     </message>
     <message>
         <location filename="robotSettingsPage.ui" line="202"/>
+        <location filename="robotSettingsPage.ui" line="417"/>
         <source>Autoscaling  (ms)</source>
         <translation>Масштабирование  (мс)</translation>
     </message>
@@ -1332,43 +1349,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>qReal::interpreters::robots::details::d2Model::D2ModelWidget</name>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="104"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="105"/>
         <source>Black</source>
         <translation>Чёрный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="105"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="106"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="106"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="107"/>
         <source>Green</source>
         <translation>Зелёный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="107"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="108"/>
         <source>Yellow</source>
         <translation>Жёлтый</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="108"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="109"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="783"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="786"/>
         <source>Saving world and robot model</source>
         <translation>Сохранение модели робота и модели мира</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="783"/>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="802"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="786"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="806"/>
         <source>2D model saves (*.xml)</source>
         <translation>Файлы 2D-модели (*.xml)</translation>
     </message>
     <message>
-        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="802"/>
+        <location filename="details/d2RobotModel/d2ModelWidget.cpp" line="806"/>
         <source>Loading world and robot model</source>
         <translation>Загрузка модели робота и модели мира</translation>
     </message>

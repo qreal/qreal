@@ -49,6 +49,8 @@ void PreferencesBehaviourPage::restoreSettings()
 	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
 
 	showAutoSaveBox(mUi->autoSaveCheckBox->isChecked());
+	int const editorsLoadedCount = SettingsManager::value("EditorsLoadedCount").toInt();
+	mUi->paletteTabCheckBox->setVisible(editorsLoadedCount != 1);
 }
 
 void PreferencesBehaviourPage::showAutoSaveBox(bool show)

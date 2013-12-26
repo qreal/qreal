@@ -1,16 +1,20 @@
+#include "rotater.h"
+
 #include <QtGui/QCursor>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <qmath.h>
 
-#include "rotater.h"
+#include <qrutils/mathUtils/math.h>
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
 using namespace graphicsUtils;
+using namespace mathUtils;
 
 Rotater::Rotater() : AbstractItem()
 {
-	setFlags(ItemIsSelectable | ItemIsMovable);
+	setFlag(ItemIsSelectable);
+	setFlag(ItemIsMovable, false);
 
 	setAcceptHoverEvents(true);
 	setAcceptDrops(true);
@@ -89,7 +93,6 @@ QRectF Rotater::boundingRect() const
 
 void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 {
-	qreal const eps = 0.000000001;
 	QPointF const masterCenter(mMaster->mapToScene(mMaster->rect().center()));
 	QPointF const zeroRotationVector(mLength, 0);
 
@@ -101,7 +104,7 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal const vectorProduct = zeroRotationVector.x() * mouseY
 			- zeroRotationVector.y() * mouseX;
 	qreal const mouseVectorLength = sqrt(mouseX * mouseX + mouseY * mouseY);
-	if (mouseVectorLength < eps) {
+	if (mouseVectorLength < EPS) {
 		return;
 	}
 
@@ -115,21 +118,24 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 	qreal const angleInWrongQuarter = asin(sin);
 	qreal const angle = cosIsNegative ? M_PI - angleInWrongQuarter : angleInWrongQuarter;
 
+	qreal const masterAngleCompensation = mMaster->parentItem()
+			? mMaster->parentItem()->rotation()
+			: 0.0;
+
 	if (event->modifiers() & Qt::ShiftModifier) {
 		qreal roundedAngle = (angle - fmod(angle, M_PI_4));
 		if (qAbs(roundedAngle - angle) > qAbs(roundedAngle + M_PI_4 - angle)) {
 			roundedAngle += M_PI_4;
 		}
-		mMaster->rotate(roundedAngle * 180 / M_PI);
+		mMaster->rotate(roundedAngle * 180 / M_PI - masterAngleCompensation);
 	} else {
-		mMaster->rotate(angle * 180 / M_PI);
+		mMaster->rotate(angle * 180 / M_PI - masterAngleCompensation);
 	}
 }
 
 void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)
 {
 	if (mDragState == BottomRight) {
-		setFlag(ItemIsMovable, false);
 		AbstractItem::resizeItem(event);
 	}
 }
@@ -142,11 +148,15 @@ void Rotater::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void Rotater::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-	AbstractItem::mouseMoveEvent(event);
-	mMaster->setSelected(true);
+	if (mDragState == BottomRight) {
+		AbstractItem::resizeItem(event);
+		mMaster->setSelected(true);
+	}
 }
 
 void Rotater::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-	AbstractItem::mouseReleaseEvent(event);
+	if (mDragState == BottomRight) {
+		AbstractItem::mouseReleaseEvent(event);
+	}
 }

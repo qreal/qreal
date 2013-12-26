@@ -26,6 +26,7 @@ HEADERS += \
 	$$PWD/fileSystemUtils.h \
 	$$PWD/stringUtils.h \
 	$$PWD/qRealDialog.h \
+	$$PWD/qRealFileDialog.h \
 	$$PWD/textElider.h\
 	$$PWD/generator/abstractGenerator.h \
 
@@ -41,6 +42,7 @@ SOURCES += \
 	$$PWD/fileSystemUtils.cpp \
 	$$PWD/stringUtils.cpp \
 	$$PWD/qRealDialog.cpp \
+	$$PWD/qRealFileDialog.cpp \
 	$$PWD/textElider.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
 

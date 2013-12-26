@@ -2,12 +2,12 @@
 #include "ui_d2Form.h"
 
 #include <QtCore/qmath.h>
-#include <QtWidgets/QFileDialog>
 #include <QtGui/QRegion>
 
+#include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
-#include <qrkernel/settingsManager.h>
+#include <qrutils/qRealFileDialog.h>
 
 #include "d2RobotModel.h"
 #include "constants.h"
@@ -18,6 +18,7 @@
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
+using namespace utils;
 using namespace graphicsUtils;
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
@@ -723,6 +724,7 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		}
 		break;
 	}
+
 	if (needUpdate) {
 		mScene->update();
 	}
@@ -780,7 +782,8 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelWidget::saveWorldModel()
 {
 	// Saves world and robot models simultaneously, for now.
-	QString saveFileName = QFileDialog::getSaveFileName(this, tr("Saving world and robot model"), ".", tr("2D model saves (*.xml)"));
+	QString saveFileName = QRealFileDialog::getSaveFileName("Save2DModelWidget", this
+			, tr("Saving world and robot model"), ".", tr("2D model saves (*.xml)"));
 	if (saveFileName.isEmpty()) {
 		return;
 	}
@@ -799,7 +802,8 @@ void D2ModelWidget::saveWorldModel()
 void D2ModelWidget::loadWorldModel()
 {
 	// Loads world and robot models simultaneously.
-	QString const loadFileName = QFileDialog::getOpenFileName(this, tr("Loading world and robot model"), ".", tr("2D model saves (*.xml)"));
+	QString const loadFileName = QRealFileDialog::getOpenFileName("Open2DModelWidget", this
+			, tr("Loading world and robot model"), ".", tr("2D model saves (*.xml)"));
 	if (loadFileName.isEmpty()) {
 		return;
 	}
