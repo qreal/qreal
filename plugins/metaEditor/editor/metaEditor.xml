@@ -3,6 +3,9 @@
 	<include>../../commonMetamodels/kernelMetamodel.xml</include>
 	<namespace>UML 2.0</namespace>
 	<diagram name="MetaEditor" nodeName="MetamodelDiagram" displayedName="Meta Editor">
+		<diagramNames>
+			<diagram name="PackageDiagram"/>
+		</diagramNames>
 		<nonGraphicTypes>
 			<enum name="associationTypes" displayedName="associationTypes">
 				<value>no_arrow</value>

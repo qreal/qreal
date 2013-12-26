@@ -207,6 +207,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual QString editorName() const;\n"
 		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
 		<< "\tvirtual QString diagramNodeName(QString const &diagram) const;\n"
+		<< "\tvirtual QStringList diagramNodeNames(QString const &diagram) const;\n"
 		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString elementDescription(QString const &diagram, QString const &element) const;\n"
 		<< "\tvirtual QString propertyDescription(QString const &diagram, QString const &element, QString const "
@@ -228,6 +229,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QIcon> mIconMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNameMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNodeNameMap;\n"
+		<< "\tQMap<QString, QStringList> mDiagramNamesMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > mPropertyTypes;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > mPropertyDefault;\n"
 		<< "\tQMap<QString, QMap<QString, QString> > mElementsNameMap;\n"
@@ -323,7 +325,16 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 		out() << "\tmDiagramNameMap[\"" << diagramName << "\"] = QString::fromUtf8(\""
 				<< diagram->displayedName() << "\");\n";
 		out() << "\tmDiagramNodeNameMap[\"" << diagramName << "\"] = \"" << diagram->nodeName() << "\"" << ";\n";
-		out() << "\n";
+		out() << "\tmDiagramNamesMap[\"" << diagramName << "\"] = (QString::fromUtf8(\"";
+		QStringList names = diagram->subDiagramNames();
+		QString last = "";
+		if (!names.isEmpty())
+			last = names.takeLast();
+		foreach (QString const & name, names) {
+			out() << name << ',';
+		}
+
+		out() << last << "\")).split(\',\');\n";
 	}
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
@@ -521,6 +532,10 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 		<< "QString " << mPluginName << "Plugin::diagramName(QString const &diagram) const\n{\n"
 		<< "\treturn mDiagramNameMap[diagram];\n"
+		<< "}\n\n"
+
+		<< "QStringList " << mPluginName << "Plugin::diagramNodeNames(QString const &diagram) const\n{\n"
+		<< "\treturn mDiagramNamesMap[diagram];\n"
 		<< "}\n\n"
 
 		<< "QString " << mPluginName << "Plugin::diagramNodeName(QString const &diagram) const\n{\n"

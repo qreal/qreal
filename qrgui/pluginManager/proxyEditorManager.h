@@ -80,6 +80,7 @@ public:
 			, QString const &childDiagram, QString const &childElement) const;
 	QString diagramName(QString const &editor, QString const &diagram) const;
 	QString diagramNodeName(QString const &editor, QString const &diagram) const;
+	QStringList diagramNodeNames(QString const &editor, QString const &diagram) const;
 
 	// Takes ownership.
 	void setProxyManager(EditorManagerInterface *editorManagerInterface);
