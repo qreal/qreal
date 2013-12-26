@@ -160,7 +160,7 @@ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (!mShouldMove) {
 		QGraphicsTextItem::mousePressEvent(event);
-		event->accept();
+		event->ignore();
 		return;
 	}
 
@@ -208,6 +208,7 @@ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	updateData();
 
 	QGraphicsTextItem::mouseReleaseEvent(event);
+	setSelected(true);
 }
 
 void Label::init(QRectF const &contents)
