@@ -184,7 +184,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
+	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
@@ -1359,16 +1359,25 @@ void MainWindow::currentTabChanged(int newIndex)
 	switchToTab(newIndex);
 	mUi->minimapView->changeSource(newIndex);
 
-	bool const isEditorTab = getCurrentTab() != NULL;
+	bool const isEditorTab = getCurrentTab();
 	bool const isShape = isCurrentTabShapeEdit();
+	bool const isStartTab = dynamic_cast<StartWidget *>(mUi->tabs->widget(newIndex));
+	bool const isGesturesTab = dynamic_cast<gestures::GesturesWidget *>(mUi->tabs->widget(newIndex));
+	bool const isDecorativeTab = isStartTab || isGesturesTab;
 
+	mUi->actionSave->setEnabled(!isDecorativeTab);
+	mUi->actionSave_as->setEnabled(!isDecorativeTab);
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
+	mUi->actionPrint->setEnabled(!isDecorativeTab);
 
-	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
-	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);
+	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape && !isDecorativeTab);
+	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape && !isDecorativeTab);
+	mUi->actionFind->setEnabled(!isDecorativeTab);
 
 	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
 	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
+
+	mUi->actionGesturesShow->setEnabled(isEditorTab);
 
 	if (!isEditorTab) {
 		mToolManager.activeTabChanged(Id());
