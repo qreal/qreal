@@ -60,7 +60,6 @@ private:
 	EditorViewScene *mScene;
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
-	int mZoom;
 	view::details::TouchSupportManager mTouchManager;
 };
 
