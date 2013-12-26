@@ -1,5 +1,7 @@
 include (qreal.pri)
 
+CONFIG += c++11
+
 SUBDIRS += \
 	qrtest \
 

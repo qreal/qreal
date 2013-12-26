@@ -39,16 +39,17 @@ EdgeElement::EdgeElement(
 		, mPenStyle(Qt::SolidLine)
 		, mPenWidth(1)
 		, mPenColor(Qt::black)
-		, mSrc(NULL)
-		, mDst(NULL)
+		, mSrc(nullptr)
+		, mDst(nullptr)
 		, mLineFactory(new LineFactory(this))
-		, mHandler(NULL)
+		, mHandler(nullptr)
 		, mPortFrom(0)
 		, mPortTo(0)
 		, mDragType(noPort)
 		, mLongPart(0)
 		, mReverseAction(tr("Reverse"), this)
 		, mChangeShapeAction(tr("Change shape type"), this)
+		, mBreakPointPressed(false)
 		, mModelUpdateIsCalled(false)
 		, mIsLoop(false)
 {
@@ -295,9 +296,6 @@ void EdgeElement::updateLongestPart()
 		x -= title->boundingRect().width() / 2;
 		y -= title->boundingRect().height() / 2;
 		title->setPos(x, y);
-
-		QLineF longest(mLine[maxIdx], mLine[mLongPart + 1]);
-
 	}
 }
 
@@ -321,12 +319,12 @@ void EdgeElement::connectToPort()
 
 	if (mSrc) {
 		mSrc->delEdge(this);
-		mSrc = NULL;
+		mSrc = nullptr;
 	}
 
 	if (mDst) {
 		mDst->delEdge(this);
-		mDst = NULL;
+		mDst = nullptr;
 	}
 
 	if (mPortFrom >= -epsilon) {
@@ -624,24 +622,26 @@ NodeElement *EdgeElement::getNodeAt(QPointF const &position, bool isStart)
 	QPainterPath circlePath;
 	int const searchAreaRadius = SettingsManager::value("IndexGrid", 25).toInt() / 2;
 	circlePath.addEllipse(mapToScene(position), searchAreaRadius, searchAreaRadius);
-	QList<QGraphicsItem*> items = scene()->items(circlePath);
+	QList<QGraphicsItem*> const items = scene()->items(circlePath);
 
-	if (isStart && items.contains(mSrc)) {
-		return innermostChild(items, mSrc);
-	} else if (!isStart && items.contains(mDst)) {
-		return innermostChild(items, mDst);
-	}
+	qreal minimalDistance = 10e10;  // Very large number
+	NodeElement *closestNode = nullptr;
 
-	foreach (QGraphicsItem * const item, items) {
-		NodeElement * const e = dynamic_cast<NodeElement *>(item);
-		if (e) {
-			NodeElement * const innerChild = innermostChild(items, e);
-			if (innerChild) {
-				return innerChild;
+	// Searching for the node with closest port to our point
+	for (QGraphicsItem * const item : items) {
+		NodeElement * const currentNode = dynamic_cast<NodeElement *>(item);
+		if (currentNode) {
+			QPointF const positionInSceneCoordinates = mapToScene(position);
+			qreal const currentDistance = currentNode->shortestDistanceToPort(positionInSceneCoordinates
+					, isStart ? fromPortTypes() : toPortTypes());
+			if (currentDistance < minimalDistance) {
+				minimalDistance = currentDistance;
+				closestNode = currentNode;
 			}
 		}
 	}
-	return NULL;
+
+	return closestNode;
 }
 
 NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, NodeElement * const element) const
@@ -659,7 +659,7 @@ NodeElement *EdgeElement::innermostChild(QList<QGraphicsItem *> const &items, No
 		return element;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 QList<ContextMenuAction*> EdgeElement::contextMenuActions(QPointF const &pos)
@@ -714,8 +714,8 @@ void EdgeElement::reversingReconnectToPorts(NodeElement *newSrc, NodeElement *ne
 	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first()), fromPortTypes()) : -1.0;
 	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last()), toPortTypes()) : -1.0;
 
-	setSrc(NULL);
-	setDst(NULL);
+	setSrc(nullptr);
+	setDst(nullptr);
 
 	if (mPortFrom >= -epsilon) {
 		mSrc = newSrc;
@@ -923,11 +923,11 @@ void EdgeElement::updateData()
 void EdgeElement::removeLink(NodeElement const *from)
 {
 	if (mSrc == from) {
-		mSrc = NULL;
+		mSrc = nullptr;
 	}
 
 	if (mDst == from) {
-		mDst = NULL;
+		mDst = nullptr;
 	}
 
 	mIsLoop = false;
