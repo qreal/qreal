@@ -28,6 +28,7 @@ HEADERS += \
 	$$PWD/startWidget/startWidget.h \
 	$$PWD/startWidget/recentProjectsListWidget.h \
 	$$PWD/startWidget/listWidget.h \
+    mainwindow/startWidget/circleWidget.h
 
 SOURCES += \
 	$$PWD/mainWindow.cpp \
@@ -54,6 +55,7 @@ SOURCES += \
 	$$PWD/startWidget/startWidget.cpp \
 	$$PWD/startWidget/recentProjectsListWidget.cpp \
 	$$PWD/startWidget/listWidget.cpp \
+    mainwindow/startWidget/circleWidget.cpp
 
 win32 {
 	HEADERS += \

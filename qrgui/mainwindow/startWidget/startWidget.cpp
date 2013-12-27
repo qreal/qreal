@@ -6,6 +6,7 @@
 #include "mainwindow/mainWindow.h"
 #include "suggestToCreateDiagramWidget.h"
 #include "recentProjectsListWidget.h"
+#include "circleWidget.h"
 #include "brandManager/brandManager.h"
 
 using namespace qReal;
@@ -320,28 +321,14 @@ QPushButton *StartWidget::createCommandButton(QString const &text
 	QPushButton * const result = new QPushButton;
 	result->setFlat(true);
 	result->setStyleSheet(BrandManager::styles()->startTabButtonStyle());
-	result->setFixedHeight(icon.isEmpty() ? 40 : 80);
+	result->setFixedHeight(icon.isEmpty() ? 40 : 90);
 	result->setLayout(layout);
 	return result;
 }
 
 QWidget *StartWidget::createCircle(QWidget * const innerWidget)
 {
-	QWidget * const result = new QWidget;
-	QRect rect(0, 0, 70, 70);
-	QRegion circleRegion(rect, QRegion::Ellipse);
-	result->setMask(circleRegion);
-	result->setFixedSize(rect.width(), rect.height());
-
-	QVBoxLayout * const circleLayout = new QVBoxLayout;
-	circleLayout->setContentsMargins(0, 0, 0, 0);
-	circleLayout->setSpacing(0);
-	circleLayout->setMargin(0);
-	circleLayout->addWidget(innerWidget, 0, Qt::AlignCenter);
-
-	result->setLayout(circleLayout);
-	result->setStyleSheet("background-color: white");
-	return result;
+	return new CircleWidget(QSize(70, 70), innerWidget);
 }
 
 void StartWidget::setVisibleForInterpreterButton(bool const visible)

@@ -11,7 +11,7 @@ QPushButton {
     border-color: beige;
 }
 
-QPushButton:hover {
+QPushButtun:hover > QLabel {
     color: rgb(110, 70, 156);
 }
 
