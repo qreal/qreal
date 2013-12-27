@@ -493,7 +493,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="robotSettingsPage.ui" line="224"/>
         <source>Text info (ms)</source>
-        <translation>Тестовая информация  (мс)</translation>
+        <translation>Текстовая информация (мс)</translation>
     </message>
 </context>
 <context>

@@ -27,13 +27,13 @@ QMenu * LineFactory::shapeTypeMenu() const
 {
 	QMenu * const menu = new QMenu();
 
-	QAction * const brokenLine = menu->addAction("Broken");
+	QAction * const brokenLine = menu->addAction(tr("Broken"));
 	connect(brokenLine, SIGNAL(triggered()), this, SLOT(setBrokenLine()));
 
-	QAction * const squareLine = menu->addAction("Square");
+	QAction * const squareLine = menu->addAction(tr("Square"));
 	connect(squareLine, SIGNAL(triggered()), this, SLOT(setSquareLine()));
 
-	QAction * const curveLine = menu->addAction("Curve");
+	QAction * const curveLine = menu->addAction(tr("Curve"));
 	connect(curveLine, SIGNAL(triggered()), this, SLOT(setCurveLine()));
 
 	return menu;
