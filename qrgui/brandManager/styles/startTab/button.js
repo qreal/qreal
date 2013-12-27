@@ -1,18 +1,21 @@
-QPushButton {
+* {
     background-color: transparent;
-    color: black;
     font-family:url(@@FONT@@);
-    border-radius: 5px;
-    border-color: beige;
+    color: black;
     font: bold 20px;
     text-align: left;
 }
 
+QPushButton {
+    border-radius: 5px;
+    border-color: beige;
+}
+
 QPushButton:hover {
-    color: rgb(52, 140, 68);
+    color: rgb(110, 70, 156);
 }
 
 QPushButton:pressed {
-    color: rgb(52, 140, 68);
+    color: rgb(110, 70, 156);
     text-decoration: underline;
 }
