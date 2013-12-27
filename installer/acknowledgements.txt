@@ -1,5 +1,6 @@
 This software may use following third-party components:
 * QScintilla by Riverbank Computing Limited, licensed under GNU GPL v3. Copy of this license can be found in licenses/gpl-3.0.txt.
+  It uses Scintilla component by Neil Hodgson, license for it can be found in licenses/Scintilla-license.txt.
 * QtPropertyBrowser by Digia Plc, licensed under BSD License. Copy of this license can be found in licenses/QtPropertyBrowser-license.txt.
 * QsKineticScroller by Razvan Petru, licensed under BSD License. Copy of this license can be found in licenses/QsKineticScroller-license.txt.
 * WindowsModernStyle by Michał Męciński, licensed under BSD License. Copy of this license can be found in licenses/WindowsModernStyle-license.txt.
