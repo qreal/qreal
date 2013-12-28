@@ -8,20 +8,14 @@ using namespace qReal;
 CircleWidget::CircleWidget(QSize const &size, QWidget *innerWidget, QWidget *parent)
 	: QWidget(parent)
 {
-	QRect const rect(QPoint(), size);
-	QRegion const circleRegion(rect, QRegion::Ellipse);
-	setMask(circleRegion);
-	setFixedSize(size);
-
 	QVBoxLayout * const circleLayout = new QVBoxLayout;
 	circleLayout->setContentsMargins(0, 0, 0, 0);
 	circleLayout->setSpacing(0);
 	circleLayout->setMargin(0);
 	circleLayout->addWidget(innerWidget, 0, Qt::AlignCenter);
 
+	setFixedSize(size);
 	setLayout(circleLayout);
-	// TODO: move it into brand manager styles
-	setStyleSheet("background-color: white");
 }
 
 void CircleWidget::paintEvent(QPaintEvent *event)
@@ -29,8 +23,11 @@ void CircleWidget::paintEvent(QPaintEvent *event)
 	QWidget::paintEvent(event);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
-	QPen borderPen(Qt::black);
-	borderPen.setWidth(6);
+
+	QPen borderPen(palette().foreground().color());
+	borderPen.setWidth(3);
+	QBrush const backgroundBrush(Qt::white);
+	painter.setBrush(backgroundBrush);
 	painter.setPen(borderPen);
-	painter.drawEllipse(QRect(QPoint(), size()));
+	painter.drawEllipse(QRect(QPoint(2, 2), size() - QSize(4, 4)));
 }

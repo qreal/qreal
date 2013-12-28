@@ -28,7 +28,8 @@ HEADERS += \
 	$$PWD/startWidget/startWidget.h \
 	$$PWD/startWidget/recentProjectsListWidget.h \
 	$$PWD/startWidget/listWidget.h \
-    mainwindow/startWidget/circleWidget.h
+	$$PWD/startWidget/circleWidget.h \
+	$$PWD/startWidget/styledButton.h \
 
 SOURCES += \
 	$$PWD/mainWindow.cpp \
@@ -55,7 +56,8 @@ SOURCES += \
 	$$PWD/startWidget/startWidget.cpp \
 	$$PWD/startWidget/recentProjectsListWidget.cpp \
 	$$PWD/startWidget/listWidget.cpp \
-    mainwindow/startWidget/circleWidget.cpp
+	$$PWD/startWidget/circleWidget.cpp \
+	$$PWD/startWidget/styledButton.cpp \
 
 win32 {
 	HEADERS += \

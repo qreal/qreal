@@ -39,7 +39,6 @@ private:
 
 	QPushButton *createCommandButton(QString const &text, QString const &icon = QString()
 			, QBoxLayout::Direction direction = QBoxLayout::LeftToRight);
-	QWidget *createCircle(QWidget * const innerWidget);
 
 	QLayout *createRecentProjectsList(QString const &recentProjects);
 	QWidget *createPluginsList();

@@ -6,7 +6,7 @@
 #include "mainwindow/mainWindow.h"
 #include "suggestToCreateDiagramWidget.h"
 #include "recentProjectsListWidget.h"
-#include "circleWidget.h"
+#include "styledButton.h"
 #include "brandManager/brandManager.h"
 
 using namespace qReal;
@@ -88,7 +88,7 @@ QWidget *StartWidget::createProjectsManagementWidget()
 {
 	QVBoxLayout * const projectsManagementLayout = new QVBoxLayout;
 
-	QPushButton * const openProjectButton = createCommandButton(tr("&Open existing project"), ":icons/startTab/open.svg");
+	QPushButton * const openProjectButton = createCommandButton(tr("Open existing project"), ":icons/startTab/open.svg");
 	connect(openProjectButton, &QPushButton::clicked, this, &StartWidget::openExistingProject);
 	projectsManagementLayout->addWidget(openProjectButton);
 	projectsManagementLayout->addWidget(createSpacer());
@@ -98,7 +98,7 @@ QWidget *StartWidget::createProjectsManagementWidget()
 		Id const editor = mMainWindow->editorManager().editors()[0];
 		QString const diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
-		QPushButton * const newProjectButton = createCommandButton(tr("&New project"), ":icons/startTab/open.svg");
+		QPushButton * const newProjectButton = createCommandButton(tr("New project"), ":icons/startTab/open.svg");
 		projectsManagementLayout->addWidget(newProjectButton);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
@@ -305,30 +305,7 @@ void StartWidget::createInterpretedDiagram()
 QPushButton *StartWidget::createCommandButton(QString const &text
 		, QString const &icon, QBoxLayout::Direction direction)
 {
-	QBoxLayout * const layout = new QBoxLayout(direction);
-	if (!icon.isEmpty()) {
-		QSize const iconSize(50, 40);
-		QLabel * const iconLabel = new QLabel;
-		iconLabel->setPixmap(QPixmap(icon));
-		iconLabel->setScaledContents(true);
-		iconLabel->setFixedSize(iconSize);
-		layout->addWidget(createCircle(iconLabel));
-	}
-
-	QLabel * const textLabel = new QLabel(text);
-	layout->addWidget(textLabel);
-
-	QPushButton * const result = new QPushButton;
-	result->setFlat(true);
-	result->setStyleSheet(BrandManager::styles()->startTabButtonStyle());
-	result->setFixedHeight(icon.isEmpty() ? 40 : 90);
-	result->setLayout(layout);
-	return result;
-}
-
-QWidget *StartWidget::createCircle(QWidget * const innerWidget)
-{
-	return new CircleWidget(QSize(70, 70), innerWidget);
+	return new StyledButton(text, icon, direction);
 }
 
 void StartWidget::setVisibleForInterpreterButton(bool const visible)

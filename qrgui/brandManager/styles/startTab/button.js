@@ -11,11 +11,15 @@ QPushButton {
     border-color: beige;
 }
 
-QPushButtun:hover > QLabel {
+QPushButton:hover {
     color: rgb(110, 70, 156);
 }
 
 QPushButton:pressed {
     color: rgb(110, 70, 156);
     text-decoration: underline;
+}
+
+QWidget[enabled="true"] {
+    color: rgb(110, 70, 156);
 }
