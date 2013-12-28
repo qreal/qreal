@@ -8,7 +8,7 @@ namespace qReal {
 class CircleWidget : public QWidget
 {
 public:
-	CircleWidget(QSize const &size, QWidget *innerWidget, QWidget *parent = 0);
+	CircleWidget(QSize const &size, QString const &icon, QWidget *parent = 0);
 
 protected:
 	virtual void paintEvent(QPaintEvent *) override;

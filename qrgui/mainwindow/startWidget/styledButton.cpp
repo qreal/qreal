@@ -14,29 +14,30 @@ StyledButton::StyledButton(QString const &text, QString const &icon
 	setMouseTracking(true);
 
 	QBoxLayout * const layout = new QBoxLayout(direction);
+	layout->setMargin(2);
 	if (!icon.isEmpty()) {
-		QSize const iconSize(50, 40);
-		QLabel * const iconLabel = new QLabel;
-		iconLabel->setPixmap(QPixmap(icon));
-		iconLabel->setScaledContents(true);
-		iconLabel->setFixedSize(iconSize);
-
-		QWidget * const circleWidget = new CircleWidget(QSize(70, 70), iconLabel);
-		circleWidget->setProperty("enabled", false);
+		QWidget * const circleWidget = new CircleWidget(QSize(70, 70), icon);
 		layout->addWidget(circleWidget);
-		mChildren << circleWidget;
+		bindHighlightedOnHover(circleWidget);
 	}
 
 	QLabel * const textLabel = new QLabel(text);
+	textLabel->setWordWrap(true);
 	textLabel->setAttribute(Qt::WA_Hover);
-	textLabel->setProperty("enabled", false);
 	layout->addWidget(textLabel);
-	mChildren << textLabel;
+	bindHighlightedOnHover(textLabel);
 
 	setFlat(true);
 	setStyleSheet(BrandManager::styles()->startTabButtonStyle());
-	setFixedHeight(icon.isEmpty() ? 40 : 90);
+	//setFixedHeight(icon.isEmpty() ? 40 : 90);
+	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	setLayout(layout);
+}
+
+void StyledButton::bindHighlightedOnHover(QWidget * const widget)
+{
+	widget->setProperty("enabled", false);
+	mChildren << widget;
 }
 
 void StyledButton::enterEvent(QEvent *event)

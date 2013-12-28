@@ -7,6 +7,7 @@
 #include "suggestToCreateDiagramWidget.h"
 #include "recentProjectsListWidget.h"
 #include "styledButton.h"
+#include "circleWidget.h"
 #include "brandManager/brandManager.h"
 
 using namespace qReal;
@@ -15,14 +16,18 @@ StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	: mMainWindow(mainWindow)
 	, mProjectManager(projectManager)
 	, mProjectListSize(5)  // TODO: Why 5?
+	, mNewProjectButton(nullptr)
+	, mOpenProjectButton(nullptr)
+	, mOpenInterpreterButton(nullptr)
+	, mCreateInterpreterButton(nullptr)
 {
 	setStyleSheet(BrandManager::styles()->startTabSubstrateBackgroundStyle());
 	QWidget * const mainWidget = createMainWidget();
 
 	QHBoxLayout * const mainLayout = new QHBoxLayout;
-	mainLayout->addStretch();
-	mainLayout->addWidget(mainWidget);
-	mainLayout->addStretch();
+	mainLayout->addStretch(1);
+	mainLayout->addWidget(mainWidget, 10);
+	mainLayout->addStretch(1);
 	setLayout(mainLayout);
 }
 
@@ -32,7 +37,7 @@ QWidget *StartWidget::createMainWidget()
 	result->setStyleSheet(BrandManager::styles()->startTabBackgroundStyle());
 
 	QWidget * const header = createHeader();
-	QWidget * const recentProjects = createRecentProjectsWidget();
+	mRecentProjectsWidget = createRecentProjectsWidget();
 	QWidget * const projectsManagement = createProjectsManagementWidget();
 
 	QVBoxLayout * mainLayout = new QVBoxLayout;
@@ -40,12 +45,17 @@ QWidget *StartWidget::createMainWidget()
 
 	mainLayout->addWidget(header);
 	mainLayout->addLayout(contentsLayout);
-	contentsLayout->addWidget(recentProjects);
+	mainLayout->setStretch(1, 10);
+	if (mRecentProjectsWidget) {
+		contentsLayout->addWidget(mRecentProjectsWidget);
+	}
+
 	contentsLayout->addWidget(projectsManagement);
 	contentsLayout->setStretch(0, 10);
 	contentsLayout->setStretch(1, 20);
 
 	result->setLayout(mainLayout);
+	result->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
 	return result;
 }
 
@@ -86,48 +96,48 @@ QWidget *StartWidget::createRecentProjectsWidget()
 
 QWidget *StartWidget::createProjectsManagementWidget()
 {
-	QVBoxLayout * const projectsManagementLayout = new QVBoxLayout;
+	mProjectsManagementLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+	mProjectsManagementLayout->addStretch();
 
-	QPushButton * const openProjectButton = createCommandButton(tr("Open existing project"), ":icons/startTab/open.svg");
-	connect(openProjectButton, &QPushButton::clicked, this, &StartWidget::openExistingProject);
-	projectsManagementLayout->addWidget(openProjectButton);
-	projectsManagementLayout->addWidget(createSpacer());
+	mOpenProjectButton = new StyledButton(tr("Open existing project")
+			, ":icons/startTab/open.svg");
+	connect(mOpenProjectButton, &QPushButton::clicked, this, &StartWidget::openExistingProject);
+	mProjectsManagementLayout->addWidget(mOpenProjectButton);
 
 	Id const theOnlyDiagram = mMainWindow->editorManager().theOnlyDiagram();
 	if (!theOnlyDiagram.isNull()) {
 		Id const editor = mMainWindow->editorManager().editors()[0];
 		QString const diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
-		QPushButton * const newProjectButton = createCommandButton(tr("New project"), ":icons/startTab/open.svg");
-		projectsManagementLayout->addWidget(newProjectButton);
+		mNewProjectButton = new StyledButton(tr("New project"), ":icons/startTab/open.svg");
+		mProjectsManagementLayout->addWidget(mNewProjectButton);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
-		newProjectMapper->setMapping(newProjectButton, diagramIdString);
-		connect(newProjectButton, SIGNAL(clicked()), newProjectMapper, SLOT(map()));
+		newProjectMapper->setMapping(mNewProjectButton, diagramIdString);
+		connect(mNewProjectButton, SIGNAL(clicked()), newProjectMapper, SLOT(map()));
 		connect(newProjectMapper, SIGNAL(mapped(QString)), this, SLOT(createProjectWithDiagram(QString)));
 	} else {
 		if (!mMainWindow->editorManager().editors().isEmpty()) {
 			QWidget * const pluginsWidget = createPluginsList();
-
-			projectsManagementLayout->addWidget(pluginsWidget);
+			mProjectsManagementLayout->addWidget(pluginsWidget, 1);
 		} else {
-			openProjectButton->hide();
+			mOpenProjectButton->hide();
 		}
 	}
 
-	mOpenInterpreterButton = createCommandButton(tr("Open &interpreted diagram")
+	mOpenInterpreterButton = new StyledButton(tr("Open interpreted diagram")
 			, ":icons/startTab/openInterpreted.svg");
-	mCreateInterpreterButton = createCommandButton(tr("&Create interpreted diagram")
+	mCreateInterpreterButton = new StyledButton(tr("Create interpreted diagram")
 			, ":icons/startTab/createInterpreted.svg");
 	connect(mOpenInterpreterButton, SIGNAL(clicked()), this, SLOT(openInterpretedDiagram()));
 	connect(mCreateInterpreterButton, SIGNAL(clicked()), this, SLOT(createInterpretedDiagram()));
 
-	projectsManagementLayout->addWidget(createSpacer());
-	projectsManagementLayout->addWidget(mCreateInterpreterButton);
-	projectsManagementLayout->addWidget(mOpenInterpreterButton);
+	mProjectsManagementLayout->addWidget(mCreateInterpreterButton);
+	mProjectsManagementLayout->addWidget(mOpenInterpreterButton);
+	mProjectsManagementLayout->addStretch();
 
 	QWidget * const result = new QWidget;
-	result->setLayout(projectsManagementLayout);
+	result->setLayout(mProjectsManagementLayout);
 	result->setStyleSheet(BrandManager::styles()->startTabProjectsManagementBackgroundStyle());
 	return result;
 }
@@ -158,7 +168,6 @@ QLayout *StartWidget::createRecentProjectsList(QString const &recentProjects)
 	recentProjectsLabel->setStyleSheet(BrandManager::styles()->startTabLabelLevel2Style());
 
 	mainLayout->addWidget(recentProjectsLabel);
-	mainLayout->addWidget(createSpacer());
 	mainLayout->addLayout(recentProjectsLayout);
 
 	mainLayout->addStretch(0);
@@ -169,7 +178,7 @@ QLayout *StartWidget::createRecentProjectsList(QString const &recentProjects)
 	int i = 0;
 	for (QString const &project : recentProjects.split(";", QString::SkipEmptyParts)) {
 		QString const name = project.split("/").last().split("\\").last();
-		QPushButton * const projectItem = createCommandButton(name);
+		QPushButton * const projectItem = new StyledButton(name);
 		projectItem->setToolTip(project);
 		recentProjectsLayout->addWidget(projectItem);
 
@@ -187,32 +196,47 @@ QLayout *StartWidget::createRecentProjectsList(QString const &recentProjects)
 
 QWidget *StartWidget::createPluginsList()
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout;
+	QWidget * const circleWidget = new CircleWidget(QSize(70, 70), ":/icons/startTab/new.svg");
+	circleWidget->setStyleSheet(BrandManager::styles()->startTabButtonStyle());
+
+	QVBoxLayout * const innerLayout = new QVBoxLayout;
 	foreach (Id const &editor, mMainWindow->editorManager().editors()) {
 		Id const editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
 		foreach (Id const &diagram, mMainWindow->editorManager().diagrams(editorTmpId)) {
-			QWidget * const pluginWidget = createPluginButton(editor, diagram);
-			mainLayout->addWidget(pluginWidget);
+			QWidget * const pluginWidget = createPluginButton(editor, diagram, circleWidget);
+			innerLayout->addWidget(pluginWidget);
 		}
 	}
 
-	mainLayout->addStretch();
-	mainLayout->setContentsMargins(0, 0, 0, 0);
+	innerLayout->addStretch();
+	innerLayout->setContentsMargins(0, 0, 0, 0);
+	innerLayout->setMargin(0);
+	innerLayout->setSpacing(0);
 
 	QWidget *innerWidget = new QWidget;
-	innerWidget->setLayout(mainLayout);
+	innerWidget->setLayout(innerLayout);
 
-	QScrollArea *parentArea = new QScrollArea;
-	parentArea->setFrameShape(QFrame::NoFrame);
-	parentArea->setWidgetResizable(true);
-	parentArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	parentArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	parentArea->setWidget(innerWidget);
+	QScrollArea *scrollArea = new QScrollArea;
+	scrollArea->setFrameShape(QFrame::NoFrame);
+	scrollArea->setWidgetResizable(true);
+	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	scrollArea->setWidget(innerWidget);
 
-	return parentArea;
+	QHBoxLayout * const mainLayout = new QHBoxLayout;
+	mainLayout->addWidget(circleWidget, Qt::AlignCenter);
+	mainLayout->addWidget(scrollArea);
+	mainLayout->setStretch(0, 0);
+	mainLayout->setStretch(1, 10);
+	mainLayout->setMargin(0);
+
+	QWidget * const result = new QWidget;
+	result->setLayout(mainLayout);
+
+	return result;
 }
 
-QWidget *StartWidget::createPluginButton(Id const &editor, Id const &diagram)
+QWidget *StartWidget::createPluginButton(Id const &editor, Id const &diagram, QWidget * const bindedImage)
 {
 	EditorManagerInterface const &editorManagerInterface = mMainWindow->editorManager();
 
@@ -223,7 +247,8 @@ QWidget *StartWidget::createPluginButton(Id const &editor, Id const &diagram)
 		return nullptr;
 	}
 
-	QPushButton * const result = createCommandButton(tr("Create ") + diagramName);
+	StyledButton * const result = new StyledButton(tr("Create ") + diagramName);
+	result->bindHighlightedOnHover(bindedImage);
 	result->setFocusPolicy(Qt::StrongFocus);
 	result->setStyleSheet(BrandManager::styles()->startTabButtonStyle());
 	result->setToolTip(tr("Editor: ") + editor.editor() + tr("; Diagram: ") + diagram.diagram());
@@ -233,13 +258,6 @@ QWidget *StartWidget::createPluginButton(Id const &editor, Id const &diagram)
 	connect(result, SIGNAL(clicked()), pluginMapper, SLOT(map()));
 	connect(pluginMapper, SIGNAL(mapped(QString)), mMainWindow, SLOT(createDiagram(QString)));
 
-	return result;
-}
-
-QWidget *StartWidget::createSpacer()
-{
-	QWidget * const result = new QWidget;
-	result->setFixedHeight(30);
 	return result;
 }
 
@@ -302,16 +320,51 @@ void StartWidget::createInterpretedDiagram()
 	}
 }
 
-QPushButton *StartWidget::createCommandButton(QString const &text
-		, QString const &icon, QBoxLayout::Direction direction)
-{
-	return new StyledButton(text, icon, direction);
-}
-
 void StartWidget::setVisibleForInterpreterButton(bool const visible)
 {
 	mOpenInterpreterButton->setVisible(visible);
 	mCreateInterpreterButton->setVisible(visible);
+
+	int const editorsCount = mMainWindow->editorManager().editors().count();
+	QList<QPushButton *> toCentralize;
+	bool needLayoutHorizontal;
+	if (visible) {
+		needLayoutHorizontal = editorsCount == 0;
+		toCentralize << mCreateInterpreterButton << mOpenInterpreterButton;
+	} else {
+		needLayoutHorizontal = editorsCount == 1 && !mRecentProjectsWidget;
+		toCentralize << mNewProjectButton << mOpenProjectButton;
+	}
+
+	if (needLayoutHorizontal) {
+		for (QPushButton * const button : toCentralize) {
+			centralizeButton(button);
+		}
+
+		mProjectsManagementLayout->setDirection(QBoxLayout::LeftToRight);
+	}
+}
+
+void StartWidget::centralizeButton(QPushButton * const styledButton)
+{
+	if (!styledButton) {
+		return;
+	}
+
+	QBoxLayout * const layout = static_cast<QBoxLayout *>(styledButton->layout());
+	layout->setDirection(QBoxLayout::TopToBottom);
+	QWidget * const icon = layout->itemAt(0)->widget();
+	QLabel * const label = static_cast<QLabel *>(layout->itemAt(1)->widget());
+	label->setAlignment(Qt::AlignHCenter);
+	layout->setAlignment(icon, Qt::AlignHCenter | Qt::AlignBottom);
+	layout->setAlignment(label, Qt::AlignHCenter | Qt::AlignTop);
+	layout->activate();
+	layout->update();
+	styledButton->update();
+
+	mProjectsManagementLayout->setAlignment(styledButton, Qt::AlignVCenter);
+	int const index = mProjectsManagementLayout->indexOf(styledButton);
+	mProjectsManagementLayout->setStretch(index, 10000);
 }
 
 void StartWidget::paintEvent(QPaintEvent *event)

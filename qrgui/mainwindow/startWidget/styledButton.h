@@ -13,6 +13,9 @@ public:
 	StyledButton(QString const &text, QString const &icon = QString()
 			, QBoxLayout::Direction direction = QBoxLayout::LeftToRight, QWidget *parent = 0);
 
+	/// Widget passed to this method will be highlighted on mouse hover over this button
+	void bindHighlightedOnHover(QWidget * const widget);
+
 protected:
 	virtual void enterEvent(QEvent *event) override;
 	virtual void leaveEvent(QEvent *event) override;
