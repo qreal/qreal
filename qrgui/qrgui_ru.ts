@@ -4371,8 +4371,9 @@
         <translation type="obsolete">&lt;font size = 14&gt;Недавние проекты&lt;/font&gt;</translation>
     </message>
     <message>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="102"/>
         <source>Open existing project</source>
-        <translation type="obsolete">Открыть проект</translation>
+        <translation>Открыть проект</translation>
     </message>
     <message>
         <source>&amp;Open interpreted diagram</source>
@@ -4387,22 +4388,22 @@
  диаграмму</translation>
     </message>
     <message>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="112"/>
         <source>New project</source>
-        <translation type="obsolete">Создать проект</translation>
+        <translation>Создать проект</translation>
     </message>
     <message>
         <source>&lt;font color=&apos;black&apos;&gt;â¢  default (current session)&lt;/font&gt;</source>
         <translation type="obsolete">&lt;font color=&apos;black&apos;&gt;â¢  default (последняя сессия)&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="146"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="166"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="81"/>
         <source>&amp;Open existing project</source>
-        <translation>&amp;Открыть проект</translation>
+        <translation type="obsolete">&amp;Открыть проект</translation>
     </message>
     <message>
         <source>Open &amp;interpreted
@@ -4413,21 +4414,20 @@
  диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="91"/>
         <source>&amp;New project</source>
-        <translation>&amp;Создать проект</translation>
+        <translation type="obsolete">&amp;Создать проект</translation>
     </message>
     <message>
         <source>New project:</source>
         <translation type="obsolete">Создать проект:</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="219"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="254"/>
         <source>Editor: </source>
         <translation>Редактор: </translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="219"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="254"/>
         <source>; Diagram: </source>
         <translation>; Диаграмма: </translation>
     </message>
@@ -4436,39 +4436,46 @@
         <translation type="obsolete">&lt;font color=&apos;black&apos;&gt;• default (последняя сессия))&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="76"/>
         <source>Getting started</source>
-        <translation>Начало работы</translation>
+        <translation type="obsolete">Начало работы</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="108"/>
         <source>Open &amp;interpreted diagram</source>
-        <translation>Открыть интерпретируемую &amp;диаграмму</translation>
+        <translation type="obsolete">Открыть интерпретируемую &amp;диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="109"/>
         <source>&amp;Create interpreted diagram</source>
-        <translation>&amp;Создать интерпретируемую диаграмму</translation>
+        <translation type="obsolete">&amp;Создать интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="216"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="128"/>
+        <source>Open interpreted diagram</source>
+        <translation>Открыть интерпретируемую диаграмму</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="130"/>
+        <source>Create interpreted diagram</source>
+        <translation>Создать интерпретируемую диаграмму</translation>
+    </message>
+    <message>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="250"/>
         <source>Create </source>
         <translation>Создать </translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="239"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="267"/>
         <source>Select file with metamodel to open</source>
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="276"/>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="279"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="304"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="307"/>
         <source>Enter the diagram name:</source>
         <translation>Введите имя диаграммы:</translation>
     </message>
     <message>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="276"/>
-        <location filename="mainwindow/startWidget/startWidget.cpp" line="279"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="304"/>
+        <location filename="mainwindow/startWidget/startWidget.cpp" line="307"/>
         <source>diagram name:</source>
         <translation>имя диаграммы:</translation>
     </message>

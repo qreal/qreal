@@ -32,15 +32,16 @@ private slots:
 	void createInterpretedDiagram();
 
 private:
+	QWidget *createMainWidget();
 	QWidget *createHeader();
 	QWidget *createRecentProjectsWidget();
 	QWidget *createProjectsManagementWidget();
 
-	QPushButton *createCommandButton(QString const &text);
 	QLayout *createRecentProjectsList(QString const &recentProjects);
 	QWidget *createPluginsList();
-	QWidget *createPluginButton(Id const &editor, Id const &diagram);
-	QWidget *createSpacer();
+	QWidget *createPluginButton(Id const &editor, Id const &diagram, QWidget * const bindedImage);
+
+	void centralizeButton(QPushButton * const styledButton);
 
 	virtual void paintEvent(QPaintEvent *event) override;
 
@@ -48,6 +49,10 @@ private:
 	ProjectManager *mProjectManager;  // Doesn't have ownership.
 	int mProjectListSize;
 
+	QBoxLayout *mProjectsManagementLayout;  // Has ownership.
+	QWidget *mRecentProjectsWidget;  // Has ownership.
+	QPushButton *mNewProjectButton;  // Has ownership.
+	QPushButton *mOpenProjectButton;  // Has ownership.
 	QPushButton *mOpenInterpreterButton;  // Has ownership.
 	QPushButton *mCreateInterpreterButton;  // Has ownership.
 };
