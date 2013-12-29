@@ -42,6 +42,10 @@
         <file>icons/hotkeys.png</file>
         <file>icons/kroki6.png</file>
         <file>icons/default.svg</file>
+        <file>icons/startTab/new.svg</file>
+        <file>icons/startTab/open.svg</file>
+        <file>icons/startTab/createInterpreted.svg</file>
+        <file>icons/startTab/openInterpreted.svg</file>
     </qresource>
     <qresource prefix="/images">
         <file>icons/slavery.jpg</file>
