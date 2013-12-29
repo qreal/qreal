@@ -5,6 +5,8 @@
 
 namespace qReal {
 
+/// Represents styled push button on the start tab. Contains label and an icon in the circle.
+/// Style can be customized from corresponding brand manager stylesheet
 class StyledButton : public QPushButton
 {
 	Q_OBJECT
