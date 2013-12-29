@@ -167,7 +167,11 @@ QLayout *StartWidget::createRecentProjectsList(QString const &recentProjects)
 	recentProjectsLabel->setWordWrap(true);
 	recentProjectsLabel->setStyleSheet(BrandManager::styles()->startTabLabelLevel2Style());
 
+	QWidget * const spacer = new QWidget;
+	spacer->setFixedHeight(10);
+
 	mainLayout->addWidget(recentProjectsLabel);
+	mainLayout->addWidget(spacer);
 	mainLayout->addLayout(recentProjectsLayout);
 
 	mainLayout->addStretch(0);
