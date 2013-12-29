@@ -160,6 +160,13 @@
                 </ruleGroup>
             </ruleList>
         </deleteFile>
+
+	<!-- Deassociating file extension -->
+	<removeWindowsFileAssociation>
+		<extensions>.qrs</extensions>
+		<progID>QReal.Project.2</progID>
+		<mimeType>application/octet-stream</mimeType>
+	</removeWindowsFileAssociation>
     </postUninstallationActionList>
     
     <!-- Proposing to launch QReal:Robots -->
