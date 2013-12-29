@@ -4,10 +4,11 @@
 #include <QtCore/QTime>
 #include <QtCore/QDebug>
 #include <QtCore/QRegExp>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
 #include <QtWidgets/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
-#include <QtCore/QFileInfo>
 #include <QtSvg/QSvgRenderer>
 
 using namespace qReal;
@@ -302,39 +303,26 @@ void SdfRenderer::image_draw(QDomElement &element)
 		fileName = QApplication::applicationDirPath() + "/" + fileName;
 	}
 
-	// HACK: Trying to load SVG version first, and use default file name as fallback. It is needed to test SVG images.
-	if (!fileName.endsWith("svg")) {
-		QFileInfo const svgVersion(QString(fileName).replace(fileName.size() - 3, 3, "svg"));
-		if (svgVersion.exists()) {
-			fileName = svgVersion.filePath();
-		}
+	QByteArray rawImage;
+
+	if (mMapFileImage.contains(fileName)) {
+		rawImage = mMapFileImage.value(fileName);
+		fileName = mReallyUsedFiles[fileName];
+	} else {
+		QString const oldFileName = fileName;
+		rawImage = loadPixmap(fileName);
+		mReallyUsedFiles[oldFileName] = oldFileName;
+		mMapFileImage.insert(fileName, rawImage);
 	}
 
-	QRect rect(x1, y1, x2 - x1, y2 - y1);
+	QRect const rect(x1, y1, x2-x1, y2-y1);
 
-	if (fileName.endsWith("svg")) {
-		if (!mMapSvgFileImage.contains(fileName)) {
-			QFile file(fileName);
-			if (!file.open(QIODevice::ReadOnly)) {
-				// TODO: Use backup icon.
-				return;
-			}
-
-			mMapSvgFileImage.insert(fileName, file.readAll());
-		}
-
-		QSvgRenderer renderer(mMapSvgFileImage.value(fileName));
+	if (fileName.endsWith(".svg")) {
+		QSvgRenderer renderer(rawImage);
 		renderer.render(painter, rect);
 	} else {
 		QPixmap pixmap;
-
-		if (mMapFileImage.contains(fileName)) {
-			pixmap = mMapFileImage.value(fileName);
-		} else {
-			pixmap = QPixmap(fileName);
-			mMapFileImage.insert(fileName, pixmap);
-		}
-
+		pixmap.loadFromData(rawImage);
 		painter->drawPixmap(rect, pixmap);
 	}
 }
@@ -785,6 +773,47 @@ void SdfRenderer::logger(QString path, QString string)
 	logtext.setDevice(&log);
 	logtext << string << "\n";
 	log.close();
+}
+
+QByteArray SdfRenderer::loadPixmap(QString &filePath)
+{
+	QFileInfo const fileInfo(filePath);
+	if (fileInfo.exists()) {
+		return loadPixmapFromExistingFile(filePath);
+	}
+
+	// Our file does not exist, falling back to 'default.svg' or 'default.png' from this directory
+	QString const defaultImagePath = fileInfo.absoluteDir().path() + "/default.";
+	QString const defaultPngPath = defaultImagePath + "png";
+	QString const defaultSvgPath = defaultImagePath + "svg";
+	QFileInfo const defaultPngInfo(defaultPngPath);
+	QFileInfo const defaultSvgInfo(defaultSvgPath);
+	if (defaultSvgInfo.exists() || defaultPngInfo.exists()) {
+		filePath = defaultPngPath;
+		return loadPixmapFromExistingFile(filePath);
+	}
+
+	// Our file does not exist, falling back to system-scoped default icon, we are pretty sure in its existance
+	filePath = QString(":/icons/default.svg");
+	return loadPixmapFromExistingFile(filePath);
+}
+
+QByteArray SdfRenderer::loadPixmapFromExistingFile(QString &filePath)
+{
+	// HACK: Trying to load SVG version first, and use default file name as fallback. It is needed to test SVG images.
+	if (!filePath.endsWith("svg")) {
+		QFileInfo const svgVersion(QString(filePath).replace(filePath.size() - 3, 3, "svg"));
+		if (svgVersion.exists()) {
+			filePath = svgVersion.filePath();
+		}
+	}
+
+	QFile file(filePath);
+	if (!file.open(QIODevice::ReadOnly)) {
+		return QByteArray();
+	}
+
+	return file.readAll();
 }
 
 void SdfRenderer::noScale()

@@ -1,6 +1,8 @@
 #include "preferencesDialog.h"
 #include "ui_preferencesDialog.h"
 
+#include <qrutils/qRealFileDialog.h>
+
 #include "dialogs/preferencesPages/behaviourPage.h"
 #include "dialogs/preferencesPages/debuggerPage.h"
 #include "dialogs/preferencesPages/editorPage.h"
@@ -9,6 +11,7 @@
 #include "hotKeyManager/hotKeyManagerPage.h"
 
 using namespace qReal;
+using namespace utils;
 
 PreferencesDialog::PreferencesDialog(QWidget *parent)
 	: QRealDialog("PreferencesDialog", parent)
@@ -137,7 +140,8 @@ void PreferencesDialog::changePaletteParameters()
 
 void PreferencesDialog::exportSettings()
 {
-	QString fileNameForExport = QFileDialog::getSaveFileName(this, tr("Save File"),"/mySettings",tr("*.ini"));
+	QString fileNameForExport = QRealFileDialog::getSaveFileName("SaveEnginePreferences", this
+			, tr("Save File"),"/mySettings",tr("*.ini"));
 	if (!fileNameForExport.endsWith(".ini")) {
 		fileNameForExport += ".ini";
 	}
@@ -146,6 +150,7 @@ void PreferencesDialog::exportSettings()
 
 void PreferencesDialog::importSettings()
 {
-	QString fileNameForImport = QFileDialog::getOpenFileName(this, tr("Open File"),"/mySettings",tr("*.ini"));
+	QString fileNameForImport = QRealFileDialog::getOpenFileName("OpenEnginePreferences", this
+			, tr("Open File"),"/mySettings",tr("*.ini"));
 	SettingsManager::instance()->loadSettings(fileNameForImport);
 }

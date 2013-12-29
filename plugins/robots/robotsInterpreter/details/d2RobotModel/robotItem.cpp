@@ -56,6 +56,7 @@ QRectF RobotItem::calcNecessaryBoundingRect() const
 
 void RobotItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+	emit mousePressed();
 	AbstractItem::mousePressEvent(event);
 	mIsOnTheGround = false;
 	mDragStart = scenePos();

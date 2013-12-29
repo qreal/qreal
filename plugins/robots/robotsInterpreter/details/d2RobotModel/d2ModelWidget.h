@@ -191,7 +191,7 @@ private:
 
 	void connectUiButtons();
 	void initButtonGroups();
-	void setHighlightOneButton(QAbstractButton const *oneButton);
+	void setHighlightOneButton(QAbstractButton * const oneButton);
 
 	void drawWalls();
 	void drawColorFields();

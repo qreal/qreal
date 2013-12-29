@@ -78,6 +78,7 @@ protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
 signals:
+	void mousePressed();
 	void changedPosition();
 
 private:

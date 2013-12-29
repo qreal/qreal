@@ -7,7 +7,7 @@
 
 using namespace qReal;
 
-SettingsManager* SettingsManager::mInstance = NULL;
+SettingsManager* SettingsManager::mInstance = nullptr;
 
 SettingsManager::SettingsManager()
 		: mSettings("SPbSU", "QReal")
@@ -33,7 +33,7 @@ QVariant SettingsManager::value(QString const &key, QVariant const &defaultValue
 
 SettingsManager* SettingsManager::instance()
 {
-	if (mInstance == NULL) {
+	if (mInstance == nullptr) {
 		mInstance = new SettingsManager();
 	}
 	return mInstance;

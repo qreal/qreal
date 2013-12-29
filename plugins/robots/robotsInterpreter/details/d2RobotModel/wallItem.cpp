@@ -66,14 +66,15 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
-	mOldX1 = qAbs(mX1 - event->scenePos().x());
-	mOldY1 = qAbs(mY1 - event->scenePos().y());
+	mOldX1 = event->scenePos().x() - mX1;
+	mOldY1 = event->scenePos().y() - mY1;
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	QPointF const oldPos = pos();
-	if (SettingsManager::value("2dShowGrid").toBool() && mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)){
+	if (SettingsManager::value("2dShowGrid").toBool() && mDragged
+			&& ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		QPointF const pos = event->scenePos();
 		int const indexGrid = SettingsManager::value("2dGridCellSize").toInt();
 		qreal const deltaX = (mX1 - mX2);
@@ -160,10 +161,10 @@ void WallItem::recalculateBorders()
 	norm.normalize();
 	norm *= mPen.widthF() / 2;
 
-	QPointF const point1 = QPointF(x1 - dx + norm.x(), y1 - dy + norm.y());
-	QPointF const point2 = QPointF(x1 - dx - norm.x(), y1 - dy - norm.y());
-	QPointF const point3 = QPointF(x2 + dx - norm.x(), y2 + dy - norm.y());
-	QPointF const point4 = QPointF(x2 + dx + norm.x(), y2 + dy + norm.y());
+	QPointF const point1(x1 - dx + norm.x(), y1 - dy + norm.y());
+	QPointF const point2(x1 - dx - norm.x(), y1 - dy - norm.y());
+	QPointF const point3(x2 + dx - norm.x(), y2 + dy - norm.y());
+	QPointF const point4(x2 + dx + norm.x(), y2 + dy + norm.y());
 
 	QPainterPath wallPath;
 	wallPath.moveTo(point1);

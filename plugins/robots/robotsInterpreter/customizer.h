@@ -1,8 +1,8 @@
-#pragma once
+﻿#pragma once
 
 #include <QtCore/QObject>
 
-#include "../../../qrgui/toolPluginInterface/customizer.h"
+#include <qrgui/toolPluginInterface/customizer.h>
 
 namespace qReal {
 namespace interpreters {
@@ -17,9 +17,12 @@ public:
 	virtual QIcon applicationIcon() const;
 	virtual QString productVersion() const;
 	virtual QString aboutText() const;
-	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface);
+	virtual QString examplesDirectory() const;
 
-	void placePluginWindows(QDockWidget *watchWindow, QWidget *sensorsWidget);
+	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface);
+	void placeSensorsConfig(QWidget *sensorsWidget);
+	void placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch);
+
 	virtual bool showInterpeterButton() const;
 
 	virtual QString userPaletteTitle() const;

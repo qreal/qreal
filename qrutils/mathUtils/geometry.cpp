@@ -1,17 +1,20 @@
 #include "geometry.h"
-#include "math.h"
-#include <math.h>
 
 using namespace mathUtils;
 
-qreal Geometry::vectorProduct(QVector2D const &vector1, QVector2D const &vector2)
+bool Geometry::eq(QPointF const &point1, QPointF const &point2, qreal eps)
 {
-	return vector1.x() * vector2.y() - vector1.y() * vector2.x();
+	return Math::eq(point1.x(), point2.x(), eps) && Math::eq(point1.y(), point2.y(), eps);
 }
 
 qreal Geometry::scalarProduct(QVector2D const &vector1, QVector2D const &vector2)
 {
 	return vector1.x() * vector2.x() + vector1.y() * vector2.y();
+}
+
+qreal Geometry::vectorProduct(QVector2D const &vector1, QVector2D const &vector2)
+{
+	return vector1.x() * vector2.y() - vector1.y() * vector2.x();
 }
 
 QVector2D Geometry::projection(QVector2D const &projected, QVector2D const &target)
@@ -65,7 +68,7 @@ bool Geometry::intersects(QLineF const &line, QPainterPath const &path)
 
 QVector2D Geometry::directionVector(qreal angleInDegrees)
 {
-	return directionVectorRad(angleInDegrees * M_PI / 180);
+	return directionVectorRad(angleInDegrees * pi / 180);
 }
 
 QVector2D Geometry::directionVectorRad(qreal angleInRadians)
@@ -142,10 +145,10 @@ QLineF Geometry::veryLongLine(QPointF const &pointOnLine, QVector2D const &direc
 {
 	qreal const halfLength = 10000;
 	return QLineF(pointOnLine + halfLength * directionVector.toPointF()
-				  , pointOnLine - halfLength * directionVector.toPointF());
+			, pointOnLine - halfLength * directionVector.toPointF());
 }
 
-QList<QPointF> Geometry::intersection(QLineF const &line, QPainterPath const &path)
+QList<QPointF> Geometry::intersection(QLineF const &line, QPainterPath const &path, qreal eps)
 {
 	QList<QPointF> result;
 	QPointF startPoint;
@@ -166,7 +169,7 @@ QList<QPointF> Geometry::intersection(QLineF const &line, QPainterPath const &pa
 		QPointF intersectionPoint;
 		// TODO: consider curve cases
 		if (line.intersect(currentLine, &intersectionPoint) != QLineF::NoIntersection
-				&& belongs(intersectionPoint, currentLine))
+				&& belongs(intersectionPoint, currentLine, eps))
 		{
 			result << intersectionPoint;
 		}
@@ -190,22 +193,26 @@ QPointF Geometry::closestPointTo(QList<QPointF> const &points, QPointF const &po
 	return closestPoint;
 }
 
-bool Geometry::belongs(QPointF const &point, QLineF const &segment)
+bool Geometry::belongs(QPointF const &point, QLineF const &segment, qreal eps)
 {
-	if (!Math::between(segment.x1(), segment.x2(), point.x())
-			|| !Math::between(segment.y1(), segment.y2(), point.y()))
+	if (!Math::between(segment.x1(), segment.x2(), point.x(), eps)
+			|| !Math::between(segment.y1(), segment.y2(), point.y(), eps))
 	{
 		return false;
 	}
 
-	if (Math::eq(segment.x1(), segment.x2())) {
-		return Math::eq(point.x(), segment.x1());
+	if (eq(point, segment.p1(), eps) || eq(point, segment.p2(), eps)) {
+		return true;
 	}
 
-	return Math::eq(QLineF(segment.p1(), point).angle(), QLineF(point, segment.p2()).angle());
+	if (Math::eq(segment.x1(), segment.x2(), eps)) {
+		return Math::eq(point.x(), segment.x1(), eps);
+	}
+
+	return Math::eq(QLineF(segment.p1(), point).angle(), QLineF(point, segment.p2()).angle(), eps);
 }
 
-bool Geometry::belongs(QPointF const &point, QPainterPath const &path)
+bool Geometry::belongs(QPointF const &point, QPainterPath const &path, qreal eps)
 {
 	QPointF startPoint;
 	QPointF endPoint;
@@ -222,7 +229,7 @@ bool Geometry::belongs(QPointF const &point, QPainterPath const &path)
 		startPoint = endPoint;
 		endPoint = QPointF(element.x, element.y);
 		// TODO: consider curve cases
-		if (belongs(point, QLineF(startPoint, endPoint))) {
+		if (belongs(point, QLineF(startPoint, endPoint)), eps) {
 			return true;
 		}
 	}
@@ -230,12 +237,12 @@ bool Geometry::belongs(QPointF const &point, QPainterPath const &path)
 	return false;
 }
 
-bool Geometry::belongs(QLineF const &line, QPainterPath const &path)
+bool Geometry::belongs(QLineF const &line, QPainterPath const &path, qreal eps)
 {
 	int const pointsToCheck = 5;
 	QVector2D const shift = QVector2D(line.p2() - line.p1()) / (pointsToCheck - 1);
 	for (int i = 0; i < pointsToCheck; ++i) {
-		if (!belongs(line.p1() + i * shift.toPointF(), path)) {
+		if (!belongs(line.p1() + i * shift.toPointF(), path), eps) {
 			return false;
 		}
 	}

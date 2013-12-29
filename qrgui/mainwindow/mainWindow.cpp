@@ -19,41 +19,36 @@
 #include <QtGui/QKeySequence>
 
 #include <qrkernel/settingsManager.h>
+#include <qrutils/outFile.h>
+#include <qrutils/qRealFileDialog.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 
-#include "mainwindow/errorReporter.h"
-
-#include "mainwindow/shapeEdit/shapeEdit.h"
-#include "mainwindow/propertyEditorProxyModel.h"
-#include "dialogs/gesturesShow/gesturesWidget.h"
-
+#include "toolPluginInterface/systemEvents.h"
 #include "models/models.h"
 #include "view/editorView.h"
+#include "hotKeyManager/hotKeyManager.h"
+#include "umllib/element.h"
+#include "pluginManager/listenerManager.h"
+#include "view/sceneCustomizer.h"
+#include "brandManager/brandManager.h"
+
+#include "mainwindow/errorReporter.h"
+#include "mainwindow/shapeEdit/shapeEdit.h"
+#include "mainwindow/propertyEditorProxyModel.h"
+#include "mainwindow/startWidget/startWidget.h"
+#include "mainwindow/referenceList.h"
+#include "mainwindow/splashScreen.h"
+#include "mainwindow/dotRunner.h"
+#include "mainwindow/qscintillaTextEdit.h"
 
 #include "controller/commands/removeElementCommand.h"
 #include "controller/commands/doNothingCommand.h"
 #include "controller/commands/arrangeLinksCommand.h"
 #include "controller/commands/updateElementCommand.h"
 
-#include "umllib/element.h"
-#include "pluginManager/listenerManager.h"
-
-#include "mainwindow/referenceList.h"
-
-#include "mainwindow/splashScreen.h"
-#include "dialogs/startDialog/startDialog.h"
 #include "dialogs/suggestToCreateProjectDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
-
-#include "mainwindow/qscintillaTextEdit.h"
-
-#include "mainwindow/dotRunner.h"
-#include "view/sceneCustomizer.h"
-
-#include "hotKeyManager/hotKeyManager.h"
-
-#include <qrutils/outFile.h>
-#include "toolPluginInterface/systemEvents.h"
-#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
+#include "dialogs/gesturesShow/gesturesWidget.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -64,23 +59,23 @@ QString const unsavedDir = "unsaved";
 MainWindow::MainWindow(QString const &fileToOpen)
 		: mUi(new Ui::MainWindowUi)
 		, mCodeTabManager(new QMap<EditorView*, QScintillaTextEdit*>())
-		, mModels(NULL)
+		, mModels(nullptr)
 		, mController(new Controller)
 		, mEditorManagerProxy(new EditorManager())
-		, mListenerManager(NULL)
+		, mListenerManager(nullptr)
 		, mPropertyModel(mEditorManagerProxy)
-		, mGesturesWidget(NULL)
+		, mGesturesWidget(nullptr)
 		, mSystemEvents(new SystemEvents())
 		, mTextManager(new TextManager(mSystemEvents, this))
 		, mRootIndex(QModelIndex())
-		, mErrorReporter(NULL)
+		, mErrorReporter(nullptr)
 		, mIsFullscreen(false)
 		, mTempDir(qApp->applicationDirPath() + "/" + unsavedDir)
 		, mPreferencesDialog(this)
 		, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 		, mRecentProjectsMapper(new QSignalMapper())
 		, mProjectManager(new ProjectManager(this, mTextManager))
-		, mStartDialog(new StartDialog(*this, *mProjectManager))
+		, mStartWidget(nullptr)
 		, mSceneCustomizer(new SceneCustomizer(this))
 		, mInitialFileToOpen(fileToOpen)
 {
@@ -148,7 +143,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// here then we have some problems with correct main window initialization
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
-	QTimer::singleShot(50, this, SLOT(initPluginsAndStartDialog()));
+	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
 }
 
 void MainWindow::connectActions()
@@ -189,7 +184,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
+	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
@@ -262,7 +257,6 @@ MainWindow::~MainWindow()
 	delete mFindReplaceDialog;
 	delete mFindHelper;
 	delete mProjectManager;
-	delete mStartDialog;
 	delete mSceneCustomizer;
 	delete mTextManager;
 	delete mSystemEvents;
@@ -293,6 +287,7 @@ void MainWindow::loadPlugins()
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
 			, &mEditorManagerProxy);
+	SettingsManager::setValue("EditorsLoadedCount", mEditorManagerProxy.editors().count());
 }
 
 void MainWindow::clearSelectionOnTabs()
@@ -520,7 +515,7 @@ void MainWindow::makeSvg()
 {
 	QSvgGenerator newSvg;
 
-	QString fileName = QFileDialog::getSaveFileName(this);
+	QString fileName = utils::QRealFileDialog::getSaveFileName("SaveDiagramAsSvg", this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -566,6 +561,16 @@ void MainWindow::openTab(QWidget *tab, const QString &title)
 void MainWindow::closeTab(QWidget *tab)
 {
 	mUi->tabs->removeTab(mUi->tabs->indexOf(tab));
+}
+
+void MainWindow::closeStartTab()
+{
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
+		StartWidget const * widget = dynamic_cast<StartWidget *>(mUi->tabs->widget(i));
+		if (widget) {
+			mUi->tabs->removeTab(i);
+		}
+	}
 }
 
 void MainWindow::closeDiagramTab(Id const &id)
@@ -669,12 +674,9 @@ void MainWindow::changeWindowTitle(int index)
 	QString const windowTitle = mToolManager.customizer()->windowTitle();
 
 	if (index != -1) {
-		if (dynamic_cast<EditorView *>(getCurrentTab())) {
-			setWindowTitle(windowTitle + " " + mProjectManager->saveFilePath());
-		} else {
-			QScintillaTextEdit *area = static_cast<QScintillaTextEdit *>(currentTab());
+		QScintillaTextEdit *area = dynamic_cast<QScintillaTextEdit *>(currentTab());
+		if (area) {
 			QString const filePath = mTextManager->path(area);
-
 			setWindowTitle(windowTitle + " " + filePath);
 		}
 	} else {
@@ -945,15 +947,18 @@ void MainWindow::closeTab(int index)
 {
 	QWidget *widget = mUi->tabs->widget(index);
 	QScintillaTextEdit *possibleCodeTab = static_cast<QScintillaTextEdit *>(widget);
+	bool const isDiagram = dynamic_cast<EditorView *>(widget);
 
 	QString const path = mTextManager->path(possibleCodeTab);
 
-	if (!mTextManager->unbindCode(possibleCodeTab)) {
+	if (isDiagram) {
 		Id const diagramId = mModels->graphicalModelAssistApi().idByIndex(mRootIndex);
 		mController->diagramClosed(diagramId);
 		mSystemEvents->emitDiagramClosed(diagramId);
-	} else {
+	} else if (mTextManager->unbindCode(possibleCodeTab)) {
 		mSystemEvents->emitCodeTabClosed(QFileInfo(path));
+	} else {
+		// TODO: process other tabs (for example, start tab)
 	}
 
 	mUi->tabs->removeTab(index);
@@ -1355,16 +1360,25 @@ void MainWindow::currentTabChanged(int newIndex)
 	switchToTab(newIndex);
 	mUi->minimapView->changeSource(newIndex);
 
-	bool const isEditorTab = getCurrentTab() != NULL;
+	bool const isEditorTab = getCurrentTab();
 	bool const isShape = isCurrentTabShapeEdit();
+	bool const isStartTab = dynamic_cast<StartWidget *>(mUi->tabs->widget(newIndex));
+	bool const isGesturesTab = dynamic_cast<gestures::GesturesWidget *>(mUi->tabs->widget(newIndex));
+	bool const isDecorativeTab = isStartTab || isGesturesTab;
 
+	mUi->actionSave->setEnabled(!isDecorativeTab);
+	mUi->actionSave_as->setEnabled(!isDecorativeTab);
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
+	mUi->actionPrint->setEnabled(!isDecorativeTab);
 
-	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
-	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);
+	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape && !isDecorativeTab);
+	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape && !isDecorativeTab);
+	mUi->actionFind->setEnabled(!isDecorativeTab);
 
 	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
 	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
+
+	mUi->actionGesturesShow->setEnabled(isEditorTab);
 
 	if (!isEditorTab) {
 		mToolManager.activeTabChanged(Id());
@@ -1575,6 +1589,7 @@ ProxyEditorManager &MainWindow::editorManagerProxy()
 
 void MainWindow::createDiagram(QString const &idString)
 {
+	closeStartTab();
 	Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
 	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
 	mUi->graphicalModelExplorer->setCurrentIndex(index);
@@ -1802,16 +1817,14 @@ Id MainWindow::activeDiagram()
 	return getCurrentTab() && getCurrentTab()->mvIface() ? getCurrentTab()->mvIface()->rootId() : Id();
 }
 
-void MainWindow::initPluginsAndStartDialog()
+void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
+	BrandManager::configure(&mToolManager);
 	if (!mProjectManager->restoreIncorrectlyTerminated() &&
 			(mInitialFileToOpen.isEmpty() || !mProjectManager->open(mInitialFileToOpen)))
 	{
-		mStartDialog->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
-		// Centering dialog inside main window
-		mStartDialog->move(geometry().center() - mStartDialog->rect().center());
-		mStartDialog->exec();
+		openStartTab();
 	}
 }
 
@@ -1997,7 +2010,8 @@ void MainWindow::saveDiagramAsAPictureToFile(QString const &fileName)
 void MainWindow::saveDiagramAsAPicture()
 {
 	if (getCurrentTab()) {
-		QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
+		QString const fileName = utils::QRealFileDialog::getSaveFileName("SaveDiagramAsPicture", this
+				, tr("Save File"), "", tr("Images (*.png *.jpg)"));
 		saveDiagramAsAPictureToFile(fileName);
 	}
 }
@@ -2115,4 +2129,12 @@ void MainWindow::setVersion(QString const &version)
 {
 	// TODO: update title
 	SettingsManager::setValue("version", version);
+}
+
+void MainWindow::openStartTab()
+{
+	mStartWidget = new StartWidget(this, mProjectManager);
+	int const index = mUi->tabs->addTab(mStartWidget, tr("Getting Started"));
+	mUi->tabs->setTabUnclosable(index);
+	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
 }
