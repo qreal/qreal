@@ -331,16 +331,16 @@ void StartWidget::setVisibleForInterpreterButton(bool const visible)
 
 	int const editorsCount = mMainWindow->editorManager().editors().count();
 	QList<QPushButton *> toCentralize;
-	bool needLayoutHorizontal;
+	bool needLayoutHorizontally = false;
 	if (visible) {
-		needLayoutHorizontal = editorsCount == 0;
+		needLayoutHorizontally = editorsCount == 0;
 		toCentralize << mCreateInterpreterButton << mOpenInterpreterButton;
 	} else {
-		needLayoutHorizontal = editorsCount == 1 && !mRecentProjectsWidget;
+		needLayoutHorizontally = editorsCount == 1 && !mRecentProjectsWidget;
 		toCentralize << mNewProjectButton << mOpenProjectButton;
 	}
 
-	if (needLayoutHorizontal) {
+	if (needLayoutHorizontally) {
 		for (QPushButton * const button : toCentralize) {
 			centralizeButton(button);
 		}

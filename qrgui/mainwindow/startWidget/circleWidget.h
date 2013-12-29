@@ -4,7 +4,8 @@
 
 namespace qReal {
 
-/// Represents a circle with the border a some widget inside
+/// Represents a circle with the border and some icon inside. Border color can be specified
+/// with palette foreground color (manually or through brand manager stylesheet)
 class CircleWidget : public QWidget
 {
 public:
