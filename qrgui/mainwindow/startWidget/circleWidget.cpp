@@ -28,8 +28,7 @@ CircleWidget::CircleWidget(QSize const &size, QString const &icon, QWidget *pare
 				+ (targetWidth - targetHeight * pictureWidth / pictureHeight) / 2);
 		resultingRect.setRight(iconRect.right()
 				- (targetWidth - targetHeight * pictureWidth / pictureHeight) / 2);
-	}
-	if (targetHeight * pictureWidth > pictureHeight * targetWidth) {
+	} else if (targetHeight * pictureWidth > pictureHeight * targetWidth) {
 		resultingRect.setTop(iconRect.top() + (targetHeight
 				- targetWidth * pictureHeight / pictureWidth) / 2);
 		resultingRect.setBottom(iconRect.bottom()

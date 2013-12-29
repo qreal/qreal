@@ -29,7 +29,6 @@ StyledButton::StyledButton(QString const &text, QString const &icon
 
 	setFlat(true);
 	setStyleSheet(BrandManager::styles()->startTabButtonStyle());
-	//setFixedHeight(icon.isEmpty() ? 40 : 90);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 	setLayout(layout);
 }
