@@ -20,6 +20,7 @@
 using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui;
+using namespace utils;
 
 EditorViewScene::EditorViewScene(QObject *parent)
 		: QGraphicsScene(parent)
@@ -469,6 +470,9 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	inStream >> explosionTargetUuid;
 
 	Id const id = Id::loadFromString(uuid);
+	
+	utils::UXInfo::reportCreation(id.editor(), id.element());
+	
 	Id const explosionTarget = explosionTargetUuid.isEmpty()
 			? Id()
 			: Id::loadFromString(explosionTargetUuid);

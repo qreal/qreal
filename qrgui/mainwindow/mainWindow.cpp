@@ -83,6 +83,7 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
 	initSettingsManager();
+	mStartDialog = new StartDialog(*this, *mProjectManager);
 	registerMetaTypes();
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setVisible(false);
@@ -137,6 +138,8 @@ MainWindow::MainWindow(QString const &fileToOpen)
 
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
+	mFilterObject = new FilterObject();
+	connectActionsForUXInfo();
 	connectActions();
 	initExplorers();
 
@@ -145,6 +148,43 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
+	mUsabilityTestingToolbar = new QToolBar();
+	mStartTest = new QAction(tr("Start test"), NULL);
+	mStartTest->setEnabled(true);
+	connect(mStartTest, SIGNAL(triggered()), this, SLOT(startUsabilityTest()));
+	mFinishTest = new QAction(tr("Finish test"), NULL);
+	mFinishTest->setEnabled(false);
+	connect(mFinishTest, SIGNAL(triggered()), this, SLOT(finishUsabilityTest()));
+	mUsabilityTestingToolbar->addAction(mStartTest);
+	mUsabilityTestingToolbar->addAction(mFinishTest);
+	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
+	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
+}
+
+void MainWindow::connectActionsForUXInfo()
+{
+	QList<QAction*> triggeredActions;
+	triggeredActions << mUi->actionQuit << mUi->actionOpen << mUi->actionSave
+			<< mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
+			<< mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
+			<< mUi->actionDeleteFromDiagram << mUi->actionCopyElementsOnDiagram
+			<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
+			<< mUi->actionPreferences << mUi->actionHelp
+			<< mUi->actionAbout << mUi->actionAboutQt << mUi->actionShow
+			<< mUi->actionFullscreen << mUi->actionFind;
+
+	foreach (QAction* const action, triggeredActions) {
+		connect(action, SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
+	}
+
+	QList<QAction*> toggledActions;
+	toggledActions << mUi->actionShowSplash << mUi->actionShow_grid
+			<< mUi->actionShow_alignment << mUi->actionSwitch_on_grid
+			<< mUi->actionSwitch_on_alignment;
+
+	foreach (QAction* const action, toggledActions) {
+		connect(action, SIGNAL(toggled(bool)), mFilterObject, SLOT(toggledActionActivated(bool)));
+	}
 }
 
 void MainWindow::connectActions()
@@ -261,6 +301,11 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 	delete mTextManager;
 	delete mSystemEvents;
+	delete mFilterObject;
+	delete mStartTest;
+	delete mFinishTest;
+	delete mUsabilityTestingToolbar;
+	utils::UXInfo::instance()->closeUXInfo();
 }
 
 EditorManagerInterface& MainWindow::editorManager()
@@ -975,6 +1020,7 @@ void MainWindow::showPreferencesDialog()
 		connect(&mPreferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
 		connect(&mPreferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
 	}
+	connect(&mPreferencesDialog, SIGNAL(usabilityTestingModeChanged(bool)), this, SLOT(setUsabilityMode(bool)));
 	mPreferencesDialog.exec();
 	mToolManager.updateSettings();
 	mProjectManager->reinitAutosaver();
@@ -982,6 +1028,7 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::initSettingsManager()
 {
+	SettingsManager::setUXInfo(utils::UXInfo::instance());
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir)) {
@@ -1727,6 +1774,29 @@ void MainWindow::updatePaletteIcons()
 	mUi->paletteTree->setComboBox(currentId);
 }
 
+void MainWindow::setUsabilityMode(bool mode)
+{
+	if (mode) {
+		mUsabilityTestingToolbar->show();
+	} else {
+		mUsabilityTestingToolbar->hide();
+	}
+}
+
+void MainWindow::startUsabilityTest()
+{
+	mStartTest->setEnabled(false);
+	mFinishTest->setEnabled(true);
+	mFilterObject->reportTestStarted();
+}
+
+void MainWindow::finishUsabilityTest()
+{
+	mFinishTest->setEnabled(false);
+	mStartTest->setEnabled(true);
+	mFilterObject->reportTestFinished();
+}
+
 void MainWindow::applySettings()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
@@ -1854,6 +1924,7 @@ void MainWindow::initToolPlugins()
 			} else if (action.toolbarName() == "generators") {
 				mUi->generatorsToolbar->addAction(action.action());
 			}
+		connect(action.action(), SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
 		}
 	}
 

@@ -16,6 +16,7 @@ HEADERS += \
 	$$PWD/referenceList.h \
 	$$PWD/externBrowser.h \
 	$$PWD/qscintillaTextEdit.h \
+	$$PWD/filterObject.h \
 	$$PWD/projectManager/autosaver.h \
 	$$PWD/projectManager/projectManagementInterface.h \
 	$$PWD/projectManager/projectManager.h \
@@ -45,6 +46,7 @@ SOURCES += \
 	$$PWD/modelExplorer.cpp \
 	$$PWD/referenceList.cpp \
 	$$PWD/qscintillaTextEdit.cpp \
+	$$PWD/filterObject.cpp \
 	$$PWD/projectManager/autosaver.cpp \
 	$$PWD/projectManager/projectManager.cpp \
 	$$PWD/palette/paletteTree.cpp \
