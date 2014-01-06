@@ -22,6 +22,7 @@ bool QRealApplication::notify(QObject *obj, QEvent *e)
 		for (; widget; widget = dynamic_cast<QWidget*>(widget->parent())) {
 			pos += widget->pos();
 		}
+
 		utils::UXInfo::reportMouseClick(mouseEvent->pos() + pos);
 	}
 

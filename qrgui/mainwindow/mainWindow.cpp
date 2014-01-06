@@ -22,6 +22,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
+#include <qrutils/uxInfo/uxInfo.h>
 
 #include "toolPluginInterface/systemEvents.h"
 #include "models/models.h"
@@ -83,7 +84,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
 	initSettingsManager();
-	mStartDialog = new StartDialog(*this, *mProjectManager);
 	registerMetaTypes();
 	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
 	splashScreen.setVisible(false);
@@ -170,7 +170,7 @@ void MainWindow::connectActionsForUXInfo()
 			<< mUi->actionDeleteFromDiagram << mUi->actionCopyElementsOnDiagram
 			<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
 			<< mUi->actionPreferences << mUi->actionHelp
-			<< mUi->actionAbout << mUi->actionAboutQt << mUi->actionShow
+			<< mUi->actionAbout << mUi->actionAboutQt 
 			<< mUi->actionFullscreen << mUi->actionFind;
 
 	foreach (QAction* const action, triggeredActions) {
@@ -1924,7 +1924,7 @@ void MainWindow::initToolPlugins()
 			} else if (action.toolbarName() == "generators") {
 				mUi->generatorsToolbar->addAction(action.action());
 			}
-		connect(action.action(), SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
+			connect(action.action(), SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
 		}
 	}
 

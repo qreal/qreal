@@ -1,4 +1,5 @@
 #include "filterObject.h"
+
 #include <QtCore/QEvent>
 #include <QtWidgets/QAction>
 

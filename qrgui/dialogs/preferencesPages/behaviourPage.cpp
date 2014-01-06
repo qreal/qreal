@@ -48,6 +48,7 @@ void PreferencesBehaviourPage::save()
 		if (usabilityTestingMode) {
 			mUi->collectErgonomicValuesCheckBox->setChecked(true);
 		}
+
 		mUsabilityTestingMode = usabilityTestingMode;
 		emit usabilityTestingModeChanged(mUsabilityTestingMode);
 	}

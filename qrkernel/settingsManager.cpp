@@ -68,7 +68,7 @@ void SettingsManager::setUXInfoInterface(UXInfoInterface *uxInfo)
 	mUXInfoInterface = uxInfo;
 }
 
-void SettingsManager::reportValueSetting(const QString &name, const QVariant &oldValue, const QVariant &newValue)
+void SettingsManager::reportValueSetting(QString const &name, QVariant const &oldValue, QVariant const &newValue)
 {
 	if (oldValue == newValue) {
 		return;

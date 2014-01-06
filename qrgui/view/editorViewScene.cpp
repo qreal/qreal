@@ -17,10 +17,11 @@
 #include "controller/commands/insertIntoEdgeCommand.h"
 #include "umllib/private/expandCommand.h"
 
+#include "qrutils/uxInfo/uxInfo.h"
+
 using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui;
-using namespace utils;
 
 EditorViewScene::EditorViewScene(QObject *parent)
 		: QGraphicsScene(parent)

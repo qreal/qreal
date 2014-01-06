@@ -87,6 +87,7 @@ void UXInfo::reportCreationOfElements(const QString &editorName, const QString e
 			<< editorName << " "
 			<< elementName << " "
 			<< currentDateTime() << "\n";
+
 	mCreationNumber++;
 }
 
@@ -102,6 +103,7 @@ void UXInfo::reportErrorsOfElements(const QString &type, const QString &editorNa
 			<< elementName << " "
 			<< message << " "
 			<< currentDateTime() << "\n";
+
 	mErrorReporterNumber++;
 }
 
@@ -127,6 +129,7 @@ void UXInfo::reportMenuElementsUsing(const QString &elementName, const QString &
 			<< elementName << " "
 			<< statusText
 			<< currentDateTime() << "\n";
+
 	mMenuElementUsingNumber++;
 }
 
@@ -140,6 +143,7 @@ void UXInfo::reportMouseClickPosition(const QPoint &pos)
 			<< QString::number(pos.x()) << ", "
 			<< QString::number(pos.y()) << ") "
 			<< currentDateTime() << "\n";
+
 	mMouseClickPositionNumber++;
 }
 
@@ -154,6 +158,7 @@ void UXInfo::reportSettingsChangesInfo(const QString &name, const QString &oldVa
 			<< oldValue << " "
 			<< newValue << " "
 			<< currentDateTime() << "\n";
+
 	mSettingChangesNumber++;
 }
 
@@ -171,6 +176,7 @@ void UXInfo::reportTestStartedInfo()
 	QList<QTextStream *> streamList;
 	streamList << &mElementOnSceneCreationStream << &mErrorReporterStream << &mTotalTimeStream
 			<< &mMenuElementUsingStream << &mMouseClickPositionStream << &mSettingChangesStream;
+
 	QString const now = currentDateTime();
 	for (int i = 0; i < streamList.length(); ++i) {
 		*(streamList[i]) << "Test " << mTestNumber << " started at " << now << "\n";
@@ -186,6 +192,7 @@ void UXInfo::reportTestFinishedInfo()
 	QList<QTextStream *> streamList;
 	streamList << &mElementOnSceneCreationStream << &mErrorReporterStream << &mTotalTimeStream
 			<< &mMenuElementUsingStream << &mMouseClickPositionStream << &mSettingChangesStream;
+
 	QString const now = currentDateTime();
 	for (int i = 0; i < streamList.length(); ++i) {
 		*(streamList[i]) << "Test " << mTestNumber << " finished at " << now << "\n";
@@ -213,6 +220,7 @@ UXInfo *UXInfo::instance()
 	if (object == NULL) {
 		object = new UXInfo();
 	}
+
 	return object;
 }
 
@@ -244,6 +252,7 @@ void UXInfo::closeUXInfo()
 		if (!dir.exists(uxInfoDirName)) {
 			dir.mkdir(uxInfoDirName);
 		}
+
 		dir.cd(uxInfoDirName);
 		QString const dirAbsolutePathName = dir.absolutePath() + "/";
 		QString const newElementOnSceneCreationName = dirAbsolutePathName + newFileElementOnSceneCreationName;
