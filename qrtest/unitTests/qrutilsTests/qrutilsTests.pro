@@ -1,5 +1,7 @@
 TARGET = qrutils_unittests
 
+CONFIG += c++11
+
 include(../common.pri)
 
 include(../../../qrutils/qrutils.pri)

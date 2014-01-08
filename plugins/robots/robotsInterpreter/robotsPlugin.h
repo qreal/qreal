@@ -36,6 +36,7 @@ private slots:
 	void showRobotSettings();
 	void show2dModel();
 	void rereadSettings();
+	void setModelType(int type);
 	void setGraphWatcherSettings();
 	void titlesVisibilityCheckedInPlugin(bool checked);
 	void titlesVisibilityChecked(bool checked);
@@ -57,6 +58,8 @@ private:
 	/// Updates "enabled" status of interpreter actions taking into account current tab,
 	/// selected robot model and so on.
 	void updateEnabledActions();
+
+	void reinitModelType();
 
 	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 
@@ -88,6 +91,15 @@ private:
 
 	/// Action that shows robots tab in settings dialog
 	QAction *mRobotSettingsAction;
+
+	/// Action that switches current robot model to unreal one
+	QAction *mSwitchTo2DModelAction;
+
+	/// Action that switches current robot model to nxt one
+	QAction *mSwitchToNxtModelAction;
+
+	/// Action that switches current robot model to trik one
+	QAction *mSwitchToTrikModelAction;
 
 	/// Action that shows or hides titles on diagram
 	QAction *mTitlesAction;

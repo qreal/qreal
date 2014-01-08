@@ -13,13 +13,13 @@ Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "Subprog
 int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
-		: mMainWindowInterpretersInterface(NULL)
-		, m2dModelAction(NULL)
-		, mRunAction(NULL)
-		, mStopRobotAction(NULL)
-		, mConnectToRobotAction(NULL)
-		, mRobotSettingsAction(NULL)
-		, mTitlesAction(NULL)
+		: mMainWindowInterpretersInterface(nullptr)
+		, m2dModelAction(nullptr)
+		, mRunAction(nullptr)
+		, mStopRobotAction(nullptr)
+		, mConnectToRobotAction(nullptr)
+		, mRobotSettingsAction(nullptr)
+		, mTitlesAction(nullptr)
 		, mAppTranslator(new QTranslator())
 {
 	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
@@ -44,41 +44,76 @@ RobotsPlugin::~RobotsPlugin()
 
 void RobotsPlugin::initActions()
 {
-	m2dModelAction = new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), NULL);
+	bool const enableTrik = SettingsManager::value("enableTrik", false).toBool();
+
+	m2dModelAction = new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr);
 	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
 	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
-	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), NULL);
+	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), nullptr);
 	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
 	QObject::connect(mRunAction, SIGNAL(triggered()), mInterpreter, SLOT(interpret()));
 
-	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), NULL);
+	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), nullptr);
 	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
 	QObject::connect(mStopRobotAction, SIGNAL(triggered()), mInterpreter, SLOT(stopRobot()));
 
-	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), NULL);
+	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png")
+			, QObject::tr("Connect to robot"), nullptr);
 	mConnectToRobotAction->setCheckable(true);
 	ActionInfo connectToRobotActionInfo(mConnectToRobotAction, "interpreters", "tools");
 	mInterpreter->setConnectRobotAction(mConnectToRobotAction);
 	QObject::connect(mConnectToRobotAction, SIGNAL(triggered()), mInterpreter, SLOT(connectToRobot()));
 
-	mRobotSettingsAction = new QAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), NULL);
+	QAction * const separator1 = new QAction(nullptr);
+	separator1->setSeparator(true);
+	ActionInfo separator1ActionInfo(separator1, "interpreters", "tools");
+
+	mSwitchTo2DModelAction = new QAction(QIcon(":/icons/switch-2d.svg")
+			, QObject::tr("Switch to 2d model"), nullptr);
+	mSwitchTo2DModelAction->setCheckable(true);
+	ActionInfo switchTo2DModelActionInfo(mSwitchTo2DModelAction, "interpreters", "tools");
+
+	mSwitchToNxtModelAction = new QAction(QIcon(":/icons/switch-real-nxt.svg")
+			, QObject::tr("Switch to Lego NXT mode"), nullptr);
+	mSwitchToNxtModelAction->setCheckable(true);
+	ActionInfo switchToNxtModelActionInfo(mSwitchToNxtModelAction, "interpreters", "tools");
+
+	mSwitchToTrikModelAction = new QAction(QIcon(":/icons/switch-real-trik.svg")
+			, QObject::tr("Switch to TRIK mode"), nullptr);
+	mSwitchToTrikModelAction->setCheckable(true);
+	mSwitchToTrikModelAction->setVisible(enableTrik);
+	ActionInfo switchToTrikModelActionInfo(mSwitchToTrikModelAction, "interpreters", "tools");
+
+	QSignalMapper * const modelTypeMapper = new QSignalMapper(this);
+	modelTypeMapper->setMapping(mSwitchTo2DModelAction, enums::robotModelType::twoD);
+	modelTypeMapper->setMapping(mSwitchToNxtModelAction, enums::robotModelType::nxt);
+	modelTypeMapper->setMapping(mSwitchToTrikModelAction, enums::robotModelType::trik);
+	connect(modelTypeMapper, SIGNAL(mapped(int)), this, SLOT(setModelType(int)));
+	connect(mSwitchTo2DModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
+	connect(mSwitchToNxtModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
+	connect(mSwitchToTrikModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
+
+	QAction * const separator2 = new QAction(nullptr);
+	ActionInfo separator2ActionInfo(separator2, "interpreters", "tools");
+	separator2->setSeparator(true);
+
+	mRobotSettingsAction = new QAction(QIcon(":/icons/robots_settings.png")
+			, QObject::tr("Robot settings"), nullptr);
 	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools");
 	QObject::connect(mRobotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
 
-	mTitlesAction = new QAction(tr("Text under pictogram"), NULL);
+	mTitlesAction = new QAction(tr("Text under pictogram"), nullptr);
 	mTitlesAction->setCheckable(true);
 	mTitlesAction->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
 	connect(mTitlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 	ActionInfo titlesActionInfo(mTitlesAction, "", "settings");
 
-	QAction *separator = new QAction(NULL);
-	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
-	separator->setSeparator(true);
-
-	mActionInfos << d2ModelActionInfo << runActionInfo
-			<< stopRobotActionInfo << connectToRobotActionInfo
-			<< separatorActionInfo << robotSettingsActionInfo
+	mActionInfos << d2ModelActionInfo << connectToRobotActionInfo
+			<< runActionInfo << stopRobotActionInfo
+			<< separator1ActionInfo << switchTo2DModelActionInfo
+			<< switchToNxtModelActionInfo << switchToTrikModelActionInfo
+			<< separator2ActionInfo << robotSettingsActionInfo
 			<< titlesActionInfo;
 }
 
@@ -221,6 +256,38 @@ void RobotsPlugin::rereadSettings()
 {
 	updateTitlesVisibility();
 	mInterpreter->setNoiseSettings();
+	reinitModelType();
+}
+
+void RobotsPlugin::setModelType(int type)
+{
+	SettingsManager::setValue("robotModel", type);
+	reinitModelType();
+	updateSettings();
+}
+
+void RobotsPlugin::reinitModelType()
+{
+	mSwitchTo2DModelAction->setChecked(false);
+	mSwitchToNxtModelAction->setChecked(false);
+	mSwitchToTrikModelAction->setChecked(false);
+
+	// Reinitting model type...
+	enums::robotModelType::robotModelTypeEnum typeOfRobotModel =
+			static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	switch (typeOfRobotModel) {
+	case enums::robotModelType::twoD:
+		mSwitchTo2DModelAction->setChecked(true);
+		break;
+	case enums::robotModelType::nxt:
+		mSwitchToNxtModelAction->setChecked(true);
+		break;
+	case enums::robotModelType::trik:
+		mSwitchToTrikModelAction->setChecked(true);
+		break;
+	default:
+		break;
+	}
 }
 
 void RobotsPlugin::setGraphWatcherSettings()

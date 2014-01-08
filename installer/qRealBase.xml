@@ -69,8 +69,11 @@
                     <origin>%1/installer/icon.ico</origin>
                 </distributionFile>
                 <distributionFile>
-                    <origin>%1/thirdparty/qscintilla/include/License.txt</origin>
+                    <origin>acknowledgements.txt</origin>
                 </distributionFile>
+                <distributionDirectory>
+                    <origin>licenses</origin>
+                </distributionDirectory>
             </distributionFileList>
         </folder>
         <folder>
