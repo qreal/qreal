@@ -36,8 +36,8 @@ private slots:
 	void showRobotSettings();
 //	void show2dModel();
 	void rereadSettings();
-	void setModelType(int type);
-	void setGraphWatcherSettings();
+//	void setModelType(int type);
+//	void setGraphWatcherSettings();
 	void titlesVisibilityCheckedInPlugin(bool checked);
 	void titlesVisibilityChecked(bool checked);
 	void updateSettings();
@@ -59,9 +59,9 @@ private:
 	/// selected robot model and so on.
 	void updateEnabledActions();
 
-	void reinitModelType();
+//	void reinitModelType();
 
-	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
+//	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 
 	/// Disables/hides unsupported by current plugin blocks on a palette.
 	void updateBlocksOnPalette();

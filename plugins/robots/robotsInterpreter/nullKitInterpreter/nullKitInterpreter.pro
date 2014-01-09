@@ -1,5 +1,7 @@
 TEMPLATE = lib
 CONFIG += plugin
+CONFIG += c++11
+
 DESTDIR = ../../../../bin/plugins/kitPlugins/
 
 QT += widgets

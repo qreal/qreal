@@ -85,13 +85,13 @@ void RobotsPlugin::initActions()
 	mSwitchToTrikModelAction = new QAction(QIcon(":/icons/switch-real-trik.svg")
 			, QObject::tr("Switch to TRIK mode"), nullptr);
 	mSwitchToTrikModelAction->setCheckable(true);
-	mSwitchToTrikModelAction->setVisible(enableTrik);
+//	mSwitchToTrikModelAction->setVisible(enableTrik);
 	ActionInfo switchToTrikModelActionInfo(mSwitchToTrikModelAction, "interpreters", "tools");
 
 	QSignalMapper * const modelTypeMapper = new QSignalMapper(this);
-	modelTypeMapper->setMapping(mSwitchTo2DModelAction, enums::robotModelType::twoD);
-	modelTypeMapper->setMapping(mSwitchToNxtModelAction, enums::robotModelType::nxt);
-	modelTypeMapper->setMapping(mSwitchToTrikModelAction, enums::robotModelType::trik);
+//	modelTypeMapper->setMapping(mSwitchTo2DModelAction, enums::robotModelType::twoD);
+//	modelTypeMapper->setMapping(mSwitchToNxtModelAction, enums::robotModelType::nxt);
+//	modelTypeMapper->setMapping(mSwitchToTrikModelAction, enums::robotModelType::trik);
 	connect(modelTypeMapper, SIGNAL(mapped(int)), this, SLOT(setModelType(int)));
 	connect(mSwitchTo2DModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
 	connect(mSwitchToNxtModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
@@ -112,11 +112,17 @@ void RobotsPlugin::initActions()
 	connect(mTitlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 	ActionInfo titlesActionInfo(mTitlesAction, "", "settings");
 
-	mActionInfos << d2ModelActionInfo << connectToRobotActionInfo
-			<< runActionInfo << stopRobotActionInfo
-			<< separator1ActionInfo << switchTo2DModelActionInfo
-			<< switchToNxtModelActionInfo << switchToTrikModelActionInfo
-			<< separator2ActionInfo << robotSettingsActionInfo
+	mActionInfos
+//			<< d2ModelActionInfo
+//			<< connectToRobotActionInfo
+			<< runActionInfo
+//			<< stopRobotActionInfo
+			<< separator1ActionInfo
+			<< switchTo2DModelActionInfo
+			<< switchToNxtModelActionInfo
+			<< switchToTrikModelActionInfo
+			<< separator2ActionInfo
+			<< robotSettingsActionInfo
 			<< titlesActionInfo
 			;
 }
@@ -297,7 +303,7 @@ void RobotsPlugin::rereadSettings()
 	updateTitlesVisibility();
 //	mInterpreter.setNoiseSettings();
 	updateBlocksOnPalette();
-	reinitModelType();
+//	reinitModelType();
 }
 
 //void RobotsPlugin::setModelType(int type)
@@ -365,7 +371,7 @@ void RobotsPlugin::updateTitlesVisibility()
 void RobotsPlugin::updateEnabledActions()
 {
 	Id const &rootElementId = mMainWindowInterpretersInterface->activeDiagram();
-	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
+	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 
 	foreach (ActionInfo const &actionInfo, mActionInfos) {
 		actionInfo.action()->setEnabled(enabled);

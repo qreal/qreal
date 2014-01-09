@@ -15,7 +15,7 @@ public:
 	virtual QString aboutText() const;
 	virtual QString examplesDirectory() const;
 
-	virtual void customizeDocks(gui::MainWindowDockInterface *dockInterface);
+	virtual void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface);
 	void placeSensorsConfig(QWidget *sensorsWidget);
 	void placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch);
 
