@@ -1,5 +1,7 @@
 QT += xml widgets
 
+CONFIG += c++11
+
 INCLUDEPATH += \
 	$$PWD \
 	$$PWD/.. \
@@ -22,6 +24,10 @@ HEADERS += \
 	$$PWD/scalableCoordinate.h \
 	$$PWD/nameNormalizer.h \
 	$$PWD/fileSystemUtils.h \
+	$$PWD/stringUtils.h \
+	$$PWD/qRealDialog.h \
+	$$PWD/qRealFileDialog.h \
+	$$PWD/textElider.h\
 	$$PWD/generator/abstractGenerator.h \
 
 SOURCES += \
@@ -34,6 +40,10 @@ SOURCES += \
 	$$PWD/scalableCoordinate.cpp \
 	$$PWD/nameNormalizer.cpp \
 	$$PWD/fileSystemUtils.cpp \
+	$$PWD/stringUtils.cpp \
+	$$PWD/qRealDialog.cpp \
+	$$PWD/qRealFileDialog.cpp \
+	$$PWD/textElider.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
 
 FORMS += \
@@ -53,3 +63,9 @@ include($$PWD/invocationUtils/invocationUtils.pri)
 
 # Math Utils
 include($$PWD/mathUtils/mathUtils.pri)
+
+# UXInfo Utils
+include($$PWD/uxInfo/uxInfo.pri)
+
+# Real-time plot
+include($$PWD/graphicsWatcher/sensorsGraph.pri)

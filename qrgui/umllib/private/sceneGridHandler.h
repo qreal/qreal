@@ -74,6 +74,15 @@ private:
 	bool mSwitchAlignment;
 
 	QPen mGuidesPen;
+
+	/** @brief radius of guides appearing */
+	static int const radius = 20;
+	/** @brief minimum distance to approach to jump to the guide */
+	static int const radiusJump = 10;
+	/** @brief spacing between element and guide */
+	static int const spacing = 0;
+	/** @brief guides that have distance equal or less will be represented by only one of them */
+	static int const indistinguishabilitySpace = 10;
 };
 
 }

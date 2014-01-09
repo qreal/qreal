@@ -3,6 +3,9 @@
 #include <QtCore/QObject>
 
 #include <qrkernel/ids.h>
+//#include <qrutils/watchListWindow.h>
+//#include <qrutils/graphicsWatcher/sensorsGraph.h>
+#include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
 
 //#include "details/robotCommunication/robotCommunicator.h"
 //#include "sensorConstants.h"
@@ -11,8 +14,6 @@
 #include "details/blocksTable.h"
 //#include "details/d2RobotModel/d2RobotModel.h"
 
-//#include "../../../qrutils/watchListWindow.h"
-#include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
 
 //#include "details/robotsBlockParser.h"
 //#include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
@@ -72,6 +73,7 @@ public:
 
 //	utils::WatchListWindow *watchWindow() const;
 //	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
+//	utils::sensorsGraph::SensorsGraph *graphicsWatchWindow() const;
 
 	qReal::IdList providedBlocks() const;
 
@@ -89,6 +91,7 @@ public slots:
 //	void showWatchList();
 //	void onTabChanged(Id const &diagramId, bool enabled);
 //	void saveSensorConfiguration();
+//	void updateGraphicWatchSensorsList();
 
 //private slots:
 //	void threadStopped();
@@ -146,7 +149,9 @@ private:
 
 //	robots::enums::robotModelType::robotModelTypeEnum mImplementationType;
 
-//	utils::WatchListWindow *mWatchListWindow;
+//	utils::WatchListWindow *mWatchListWindow;  // Doesn`t have ownership
+
+//	utils::sensorsGraph::SensorsGraph *mGraphicsWatch;  // Doesn`t have ownership
 
 //	/// Action responsible for the connection to the robot
 //	QAction *mActionConnectToRobot;

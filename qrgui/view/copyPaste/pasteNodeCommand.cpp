@@ -23,7 +23,7 @@ Id PasteNodeCommand::pasteNewInstance()
 	Id resultId = mResult;
 	if (!mCreateCommand) {
 		Id const typeId = mNodeData.id.type();
-		resultId = mScene->createElement(typeId.toString(), getNewPos(), true, &mCreateCommand, false
+		resultId = mScene->createElement(typeId.toString(), newPos(), true, &mCreateCommand, false
 				, vectorFromContainer());
 		mCreateCommand->redo();
 		mCopiedIds->insert(mNodeData.id, resultId);
@@ -44,7 +44,7 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 			, mNodeData.logicalId
 			, true
 			, mMVIface->graphicalAssistApi()->name(mNodeData.id)
-			, getNewGraphicalPos()
+			, newGraphicalPos()
 			);
 
 		mCreateCommand->redo();
@@ -53,40 +53,32 @@ Id PasteNodeCommand::pasteGraphicalCopy()
 		addPreAction(mCreateCommand);
 	}
 
-	NodeElement * const newNode = new NodeElement(
-			mScene->mainWindow()->editorManager().elementImpl(resultId)
-			, resultId
-			, *mMVIface->graphicalAssistApi()
-			, *mMVIface->logicalAssistApi()
-			);
-
-	newNode->setController(mScene->mainWindow()->controller());
-
 	return resultId;
 }
 
 void PasteNodeCommand::restoreElement()
 {
-	Id const logicalId = mMVIface->graphicalAssistApi()->logicalId(mResult);
+	Id const logicalId = mMVIface->graphicalAssistApi()->logicalId(mCreateCommand->result());
 	mMVIface->graphicalAssistApi()->setProperties(logicalId, mNodeData.logicalProperties);
 	mMVIface->graphicalAssistApi()->setProperties(mResult, mNodeData.graphicalProperties);
-	mMVIface->graphicalAssistApi()->setPosition(mResult, getNewGraphicalPos());
+	mMVIface->graphicalAssistApi()->setPosition(mResult, newGraphicalPos());
 	if (mCopiedIds->contains(mNodeData.parentId)) {
-		mMVIface->graphicalAssistApi()->changeParent(mResult, mCopiedIds->value(mNodeData.parentId), getNewPos());
+		mMVIface->graphicalAssistApi()->changeParent(mResult, mCopiedIds->value(mNodeData.parentId), newPos());
 	}
+
 	NodeElement *element = mScene->getNodeById(mResult);
 	if (element) {
 		element->updateData();
 	}
 }
 
-QPointF PasteNodeCommand::getNewPos() const
+QPointF PasteNodeCommand::newPos() const
 {
 	return mNodeData.pos + (mCopiedIds->contains(mNodeData.parentId) ?
 			mMVIface->graphicalAssistApi()->position(mCopiedIds->value(mNodeData.parentId)) : mOffset);
 }
 
-QPointF PasteNodeCommand::getNewGraphicalPos() const
+QPointF PasteNodeCommand::newGraphicalPos() const
 {
 	return mNodeData.pos + (mCopiedIds->contains(mNodeData.parentId) ?
 			QPointF() : mOffset);

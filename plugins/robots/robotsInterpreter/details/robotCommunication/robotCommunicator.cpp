@@ -11,7 +11,8 @@ using namespace qReal::interpreters::robots::details;
 RobotCommunicator::RobotCommunicator()
 		: mRobotCommunicationThreadObject(NULL)
 {
-	qRegisterMetaType<robots::enums::inputPort::InputPortEnum>("inputPort::InputPortEnum");
+	qRegisterMetaType<qReal::interpreters::robots::enums::inputPort::InputPortEnum>(
+			"robots::enums::inputPort::InputPortEnum");
 }
 
 RobotCommunicator::~RobotCommunicator()

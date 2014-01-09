@@ -13,6 +13,8 @@
 //#include "details/tracer.h"
 //#include "details/debugHelper.h"
 
+//#include "sensorConstants.h"
+
 using namespace qReal;
 using namespace robotsInterpreterCore::interpreter;
 
@@ -73,6 +75,8 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	mRobotModel->init();
 
 //	mWatchListWindow = new utils::WatchListWindow(mParser, mInterpretersInterface->windowWidget());
+
+//	mGraphicsWatch = new utils::sensorsGraph::SensorsGraph(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
@@ -120,6 +124,8 @@ void Interpreter::interpret()
 		return;
 	}
 
+//	mGraphicsWatch->startJob();
+
 //	mRobotModel->configureSensors(
 //			sensorConfiguration[0]
 //			, sensorConfiguration[1]
@@ -138,11 +144,13 @@ void Interpreter::interpret()
 //		mThreads.removeAll(thread);
 //	}
 //	mBlocksTable->setFailure();
+//	mGraphicsWatch->stopJob();
 //}
 
 //void Interpreter::showWatchList()
 //{
 //	mWatchListWindow->show();
+//	mGraphicsWatch->show();
 //}
 
 //void Interpreter::onTabChanged(Id const &diagramId, bool enabled)
@@ -166,6 +174,9 @@ void Interpreter::interpret()
 //	if (mWatchListWindow) {
 //		mWatchListWindow->setVisible(false);
 //	}
+//	if (mGraphicsWatch) {
+//		mGraphicsWatch->setVisible(false);
+//	}
 //}
 
 //void Interpreter::closeD2ModelWidget()
@@ -180,7 +191,7 @@ void Interpreter::interpret()
 //	mD2ModelWidget->init(isVisible);
 //	if (isVisible) {
 //		mD2ModelWidget->activateWindow();
-//		mD2ModelWidget->showNormal();
+//		mD2ModelWidget->show();
 //	}
 //}
 
@@ -282,6 +293,8 @@ void Interpreter::newThread(Id const &startBlockId)
 //	if (mConnected) {
 //		mRobotModel->configureSensors(port1, port2, port3, port4);
 //	}
+//
+//	updateGraphicWatchSensorsList();
 //}
 
 void Interpreter::addThread(details::Thread * const thread)
@@ -624,3 +637,24 @@ qReal::IdList Interpreter::providedBlocks() const
 {
 	return mBlocksTable->providedBlocks();
 }
+
+//void Interpreter::updateGraphicWatchSensorsList()
+//{
+//	mGraphicsWatch->addTrackingObject(0, QString("Sensor1")
+//			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
+//					(SettingsManager::instance()->value("port1SensorType").toInt())));
+//	mGraphicsWatch->addTrackingObject(1, QString("Sensor2")
+//			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
+//					(SettingsManager::instance()->value("port2SensorType").toInt())));
+//	mGraphicsWatch->addTrackingObject(2, QString("Sensor3")
+//			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
+//					(SettingsManager::instance()->value("port3SensorType").toInt())));
+//	mGraphicsWatch->addTrackingObject(3, QString("Sensor4")
+//			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
+//					(SettingsManager::instance()->value("port4SensorType").toInt())));
+//}
+
+//utils::sensorsGraph::SensorsGraph *Interpreter::graphicsWatchWindow() const
+//{
+//	return mGraphicsWatch;
+//}

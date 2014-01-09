@@ -18,7 +18,6 @@ HEADERS += \
 	$$PWD/private/resizeCommand.h \
 	$$PWD/private/foldCommand.h \
 	$$PWD/private/reshapeEdgeCommand.h \
-	$$PWD/private/fontCache.h \
 	$$PWD/private/expandCommand.h \
 	$$PWD/ports/portFactory.h \
 	$$PWD/ports/statLine.h \
@@ -50,7 +49,6 @@ SOURCES += \
 	$$PWD/private/resizeCommand.cpp \
 	$$PWD/private/foldCommand.cpp \
 	$$PWD/private/reshapeEdgeCommand.cpp \
-	$$PWD/private/fontCache.cpp \
 	$$PWD/private/expandCommand.cpp \
 	$$PWD/ports/portFactory.cpp \
 	$$PWD/ports/statLine.cpp \

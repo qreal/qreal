@@ -9,11 +9,13 @@
 //#include "details/tracer.h"
 //#include "details/nxtDisplay.h"
 
+//#include <qrgui/toolPluginInterface/systemEvents.h>
+
 using namespace qReal;
 using namespace robotsInterpreterCore;
 
 Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
-Id const oldRobotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "DiagramNode");
+Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
@@ -32,20 +34,23 @@ RobotsPlugin::RobotsPlugin()
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
 
+//	mInterpreter = new details::Interpreter();
+
 	mRobotSettingsPage = new RobotsSettingsPage(mKitPluginManager);
 
-//	connect(&mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
+//	connect(mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
 //	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 }
 
 RobotsPlugin::~RobotsPlugin()
 {
 	delete mAppTranslator;
+	delete mInterpreter;
 }
 
 void RobotsPlugin::initActions()
 {
-//	m2dModelAction = new QAction(QIcon(":/icons/kcron.png"), QObject::tr("2d model"), NULL);
+//	m2dModelAction = new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), NULL);
 //	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
 //	QObject::connect(m2dModelAction, SIGNAL(triggered()), this, SLOT(show2dModel()));
 
@@ -63,27 +68,55 @@ void RobotsPlugin::initActions()
 //	mInterpreter.setConnectRobotAction(mConnectToRobotAction);
 //	QObject::connect(mConnectToRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(connectToRobot()));
 
-	mRobotSettingsAction = new QAction(QIcon(":/icons/robots_settings.png"), QObject::tr("Robot settings"), NULL);
+	QAction * const separator1 = new QAction(nullptr);
+	separator1->setSeparator(true);
+	ActionInfo separator1ActionInfo(separator1, "interpreters", "tools");
+
+	mSwitchTo2DModelAction = new QAction(QIcon(":/icons/switch-2d.svg")
+			, QObject::tr("Switch to 2d model"), nullptr);
+	mSwitchTo2DModelAction->setCheckable(true);
+	ActionInfo switchTo2DModelActionInfo(mSwitchTo2DModelAction, "interpreters", "tools");
+
+	mSwitchToNxtModelAction = new QAction(QIcon(":/icons/switch-real-nxt.svg")
+			, QObject::tr("Switch to Lego NXT mode"), nullptr);
+	mSwitchToNxtModelAction->setCheckable(true);
+	ActionInfo switchToNxtModelActionInfo(mSwitchToNxtModelAction, "interpreters", "tools");
+
+	mSwitchToTrikModelAction = new QAction(QIcon(":/icons/switch-real-trik.svg")
+			, QObject::tr("Switch to TRIK mode"), nullptr);
+	mSwitchToTrikModelAction->setCheckable(true);
+	mSwitchToTrikModelAction->setVisible(enableTrik);
+	ActionInfo switchToTrikModelActionInfo(mSwitchToTrikModelAction, "interpreters", "tools");
+
+	QSignalMapper * const modelTypeMapper = new QSignalMapper(this);
+	modelTypeMapper->setMapping(mSwitchTo2DModelAction, enums::robotModelType::twoD);
+	modelTypeMapper->setMapping(mSwitchToNxtModelAction, enums::robotModelType::nxt);
+	modelTypeMapper->setMapping(mSwitchToTrikModelAction, enums::robotModelType::trik);
+	connect(modelTypeMapper, SIGNAL(mapped(int)), this, SLOT(setModelType(int)));
+	connect(mSwitchTo2DModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
+	connect(mSwitchToNxtModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
+	connect(mSwitchToTrikModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
+
+	QAction * const separator2 = new QAction(nullptr);
+	ActionInfo separator2ActionInfo(separator2, "interpreters", "tools");
+	separator2->setSeparator(true);
+
+	mRobotSettingsAction = new QAction(QIcon(":/icons/robots_settings.png")
+			, QObject::tr("Robot settings"), nullptr);
 	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools");
 	QObject::connect(mRobotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
 
-	mTitlesAction = new QAction(tr("Text under pictogram"), NULL);
+	mTitlesAction = new QAction(tr("Text under pictogram"), nullptr);
 	mTitlesAction->setCheckable(true);
 	mTitlesAction->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
 	connect(mTitlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 	ActionInfo titlesActionInfo(mTitlesAction, "", "settings");
 
-	QAction *separator = new QAction(NULL);
-	ActionInfo separatorActionInfo(separator, "interpreters", "tools");
-	separator->setSeparator(true);
-
-	mActionInfos
-//			<< d2ModelActionInfo
-			<< runActionInfo
-//			<< stopRobotActionInfo
-//			<< connectToRobotActionInfo
-			<< separatorActionInfo
-			<< robotSettingsActionInfo
+	mActionInfos << d2ModelActionInfo << connectToRobotActionInfo
+			<< runActionInfo << stopRobotActionInfo
+			<< separator1ActionInfo << switchTo2DModelActionInfo
+			<< switchToNxtModelActionInfo << switchToTrikModelActionInfo
+			<< separator2ActionInfo << robotSettingsActionInfo
 			<< titlesActionInfo
 			;
 }
@@ -145,14 +178,25 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();
 	SettingsManager::setValue("IndexGrid", gridWidth);
-//	mCustomizer.placePluginWindows(mInterpreter.watchWindow(), produceSensorsConfigurer());
+//	mCustomizer.placeSensorsConfig(produceSensorsConfigurer());
+//	mCustomizer.placeWatchPlugins(mInterpreter.watchWindow(), mInterpreter.graphicsWatchWindow());
 
 	initActions();
 	initHotKeyActions();
 
 	rereadSettings();
+
+//	setGraphWatcherSettings();
 	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
+//	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(setGraphWatcherSettings()));
 	updateEnabledActions();
+
+//	SystemEventsInterface const *systemEvents = &configurator.systemEvents();
+
+//	connect(systemEvents, SIGNAL(settingsUpdated()), this, SLOT(updateSettings()));
+//	connect(systemEvents, SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(Id)));
+//	connect(systemEvents, SIGNAL(closedMainWindow()), this, SLOT(closeNeededWidget()));
+
 //	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing done");
 }
 
@@ -231,7 +275,7 @@ void RobotsPlugin::closeNeededWidget()
 void RobotsPlugin::activeTabChanged(Id const &rootElementId)
 {
 	updateEnabledActions();
-//	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == oldRobotDiagramType;
+//	bool const enabled = rootElementId.type() == robotDiagramType || rootElementId.type() == subprogramDiagramType;
 //	mInterpreter.onTabChanged(rootElementId, enabled);
 }
 
@@ -243,6 +287,7 @@ void RobotsPlugin::activeTabChanged(Id const &rootElementId)
 //	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
 //	connect(result, SIGNAL(saved()), &mInterpreter, SLOT(saveSensorConfiguration()));
 //	connect(&mInterpreter, SIGNAL(sensorsConfigurationChanged()), result, SLOT(refresh()));
+//	connect(result, SIGNAL(saved()), &mInterpreter, SLOT(updateGraphicWatchSensorsList()));
 //	mInterpreter.connectSensorConfigurer(result);
 //	return result;
 //}
@@ -252,7 +297,51 @@ void RobotsPlugin::rereadSettings()
 	updateTitlesVisibility();
 //	mInterpreter.setNoiseSettings();
 	updateBlocksOnPalette();
+	reinitModelType();
 }
+
+//void RobotsPlugin::setModelType(int type)
+//{
+//	SettingsManager::setValue("robotModel", type);
+//	reinitModelType();
+//	updateSettings();
+//}
+
+//void RobotsPlugin::reinitModelType()
+//{
+//	mSwitchTo2DModelAction->setChecked(false);
+//	mSwitchToNxtModelAction->setChecked(false);
+//	mSwitchToTrikModelAction->setChecked(false);
+
+//	// Reinitting model type...
+//	enums::robotModelType::robotModelTypeEnum typeOfRobotModel =
+//			static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+//	switch (typeOfRobotModel) {
+//	case enums::robotModelType::twoD:
+//		mSwitchTo2DModelAction->setChecked(true);
+//		break;
+//	case enums::robotModelType::nxt:
+//		mSwitchToNxtModelAction->setChecked(true);
+//		break;
+//	case enums::robotModelType::trik:
+//		mSwitchToTrikModelAction->setChecked(true);
+//		break;
+//	default:
+//		break;
+//	}
+//}
+
+//void RobotsPlugin::setGraphWatcherSettings()
+//{
+//	mInterpreter.graphicsWatchWindow()->configureUpdateIntervals(
+//			SettingsManager::value("sensorUpdateInterval"
+//					, utils::sensorsGraph::SensorsGraph::readSensorDefaultInterval).toInt()
+//			, SettingsManager::value("autoscalingInterval"
+//					, utils::sensorsGraph::SensorsGraph::autoscalingDefault).toInt()
+//			, SettingsManager::value("textUpdateInterval"
+//					, utils::sensorsGraph::SensorsGraph::textUpdateDefault).toInt()
+//	);
+//}
 
 void RobotsPlugin::titlesVisibilityChecked(bool checked)
 {

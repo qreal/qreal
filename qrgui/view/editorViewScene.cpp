@@ -9,7 +9,6 @@
 
 #include "view/editorView.h"
 #include "mainwindow/mainWindow.h"
-#include "dialogs/metamodelingOnFly/propertiesDialog.h"
 
 #include "controller/commands/createElementCommand.h"
 #include "controller/commands/createGroupCommand.h"
@@ -17,6 +16,8 @@
 #include "umllib/private/resizeCommand.h"
 #include "controller/commands/insertIntoEdgeCommand.h"
 #include "umllib/private/expandCommand.h"
+
+#include "qrutils/uxInfo/uxInfo.h"
 
 using namespace qReal;
 using namespace qReal::commands;
@@ -111,7 +112,7 @@ void EditorViewScene::printElementsOfRootDiagram()
 
 void EditorViewScene::initMouseMoveManager()
 {
-	if (!mMVIface || !mMVIface->graphicalAssistApi()) {
+	if (!mMVIface || !mMVIface->graphicalAssistApi() || mMouseMovementManager) {
 		return;
 	}
 
@@ -470,6 +471,9 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	inStream >> explosionTargetUuid;
 
 	Id const id = Id::loadFromString(uuid);
+	
+	utils::UXInfo::reportCreation(id.editor(), id.element());
+	
 	Id const explosionTarget = explosionTargetUuid.isEmpty()
 			? Id()
 			: Id::loadFromString(explosionTargetUuid);
@@ -574,7 +578,7 @@ EdgeElement * EditorViewScene::edgeForInsertion(QPointF const &scenePos)
 			QSizeF portSize(kvadratik, kvadratik);
 			QRectF startPort(edge->mapToScene(edge->line().first()) - QPointF(kvadratik / 2, kvadratik / 2), portSize);
 			QRectF endPort(edge->mapToScene(edge->line().last()) - QPointF(kvadratik / 2, kvadratik / 2), portSize);
-			if (startPort.contains(scenePos) || endPort.contains(scenePos)) {
+			if (!startPort.contains(scenePos) && !endPort.contains(scenePos)) {
 				return edge;
 			}
 		}
@@ -632,13 +636,11 @@ void EditorViewScene::returnElementsToOldPositions(const QMap<Id, QPointF> &shif
 
 void EditorViewScene::reConnectLink(EdgeElement * edgeElem)
 {
-	if (edgeElem->src()) {
-		arrangeNodeLinks(edgeElem->src());
-	}
-	if (edgeElem->dst()) {
-		arrangeNodeLinks(edgeElem->dst());
-	}
 	edgeElem->connectToPort();
+	QPolygonF line;
+	line << edgeElem->line()[0] << edgeElem->line().last();
+	edgeElem->setLine(line);
+	edgeElem->layOut();
 }
 
 void EditorViewScene::arrangeNodeLinks(NodeElement* node) const
@@ -897,22 +899,25 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 {
-	QMenu menu;
+	if (mContextMenu.isVisible()) {
+		mContextMenu.close();
+	}
 
 	disableActions(e);
-	menu.addActions(mContextMenuActions);
+	mContextMenu.clear();
+	mContextMenu.addActions(mContextMenuActions);
 
 	QSignalMapper *createChildMapper = NULL;
 	if (e) {
 		QList<ContextMenuAction*> elementActions = e->contextMenuActions(e->mapFromScene(pos));
 
 		if (!elementActions.isEmpty()) {
-			menu.addSeparator();
+			mContextMenu.addSeparator();
 		}
 
 		foreach (ContextMenuAction* action, elementActions) {
 			action->setEventPos(e->mapFromScene(pos));
-			menu.addAction(action);
+			mContextMenu.addAction(action);
 
 			connect(action, SIGNAL(triggered()), mActionSignalMapper, SLOT(map()), Qt::UniqueConnection);
 			mActionSignalMapper->setMapping(action, action->text() + "###" + e->id().toString());
@@ -920,7 +925,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 		if (e->createChildrenFromMenu() && !mWindow->editorManager().containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
-			QMenu *createChildMenu = menu.addMenu(tr("Add child"));
+			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
 			createChildMapper = new QSignalMapper();
 			foreach (Id const &type, mWindow->editorManager().containedTypes(e->id().type())) {
 				QAction *createAction = createChildMenu->addAction(mWindow->editorManager().friendlyName(type));
@@ -930,11 +935,11 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 			}
 		}
 
-		menu.addSeparator();
-		mExploser->createConnectionSubmenus(menu, e);
+		mContextMenu.addSeparator();
+		mExploser->createConnectionSubmenus(mContextMenu, e);
 	}
 
-	menu.exec(QCursor::pos());
+	mContextMenu.exec(QCursor::pos());
 
 	enableActions();
 	delete createChildMapper;
@@ -970,10 +975,15 @@ bool EditorViewScene::isEmptyClipboard()
 void EditorViewScene::getObjectByGesture()
 {
 	mTimer->stop();
-	qReal::Id id = mMouseMovementManager->getObject();
+	Id const id = mMouseMovementManager->getObject();
 	if (!id.element().isEmpty()) {
-		createElement(id.toString(), mMouseMovementManager->pos());
+		// Creating element with its center in the center of gesture (see #1086)
+		QSize const elementSize = mWindow->editorManager().iconSize(id);
+		QPointF const gestureCenter = mMouseMovementManager->pos();
+		QPointF const elementCenter(elementSize.width() / 2.0, elementSize.height() / 2.0);
+		createElement(id.toString(), gestureCenter - elementCenter);
 	}
+
 	deleteGesture();
 }
 
@@ -1036,8 +1046,8 @@ void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
 
 void EditorViewScene::createEdge(QString const &idStr)
 {
-	QPointF start = mMouseMovementManager->firstPoint();
-	QPointF end = mMouseMovementManager->lastPoint();
+	QPointF const start = mMouseMovementManager->firstPoint();
+	QPointF const end = mMouseMovementManager->lastPoint();
 	CreateElementCommand *createCommand;
 	Id const id = createElement(idStr, start, true, &createCommand);
 	Element *edgeElement = getElem(id);
@@ -1045,6 +1055,8 @@ void EditorViewScene::createEdge(QString const &idStr)
 	edge->setSrc(NULL);
 	edge->setDst(NULL);
 
+	edge->setPos(start);
+	edge->placeStartTo(QPointF());
 	edge->placeEndTo(edge->mapFromScene(end));
 	edge->connectToPort();
 	if (edge->dst()) {
@@ -1089,6 +1101,11 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	if (!(mLeftButtonPressed && event->button() == Qt::RightButton)) {
 		QGraphicsScene::mouseReleaseEvent(event);
+		QGraphicsItem * const item = itemAt(event->scenePos(), QTransform());
+		Label * const label = dynamic_cast<Label *>(item);
+		if (label) {
+			sendEvent(label, event);
+		}
 	}
 
 	Element *element = getElemAt(event->scenePos());
@@ -1189,8 +1206,7 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 				title->startTextInteraction();
 				return;
 			}
-		}
-		else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
+		} else if (NodeElement *element = dynamic_cast<NodeElement*>(itemAt(event->scenePos(), QTransform()))) {
 			event->accept();
 			mExploser->handleDoubleClick(element->logicalId());
 		}
@@ -1229,23 +1245,6 @@ void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 qReal::MainWindow *EditorViewScene::mainWindow() const
 {
 	return mWindow;
-}
-
-void EditorViewScene::changePropertiesActionTriggered()
-{
-	QAction const * const action = static_cast<QAction const *>(sender());
-	Id const id = action->data().value<Id>();
-	PropertiesDialog * const propertiesDialog = new PropertiesDialog(*mWindow, mWindow->editorManager(), id);
-	propertiesDialog->setModal(true);
-	propertiesDialog->show();
-}
-
-void EditorViewScene::changeAppearanceActionTriggered()
-{
-	QAction const * const action = static_cast<QAction const *>(sender());
-	Id const id = action->data().value<Id>();
-	QString const propertyValue = mWindow->editorManager().shape(id);
-	mWindow->openShapeEditor(id, propertyValue, &(mWindow->editorManager()));
 }
 
 void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)

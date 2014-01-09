@@ -1,5 +1,7 @@
 DESTDIR = ../bin
 
+CONFIG += c++11
+
 CONFIG += rpath_libdirs
 macx {
 	CONFIG -= app_bundle
@@ -14,13 +16,6 @@ TRANSLATIONS = qrgui_ru.ts
 !macx {
 	QMAKE_LFLAGS += -Wl,-O1,-rpath,$$PWD/../bin/
 	QMAKE_LFLAGS += -Wl,-rpath,$$PWD/../bin/thirdparty/
-}
-
-win32 {
-	QMAKE_POST_LINK = "xcopy Pfennig.ttf ..\\bin /q /y"
-}
-else {
-	QMAKE_POST_LINK = "cp Pfennig.ttf ../bin/"
 }
 
 OBJECTS_DIR = .obj

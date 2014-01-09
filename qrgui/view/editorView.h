@@ -30,7 +30,6 @@ public:
 
 public slots:
 	void toggleAntialiasing(bool);
-	void toggleOpenGL(bool);
 	void zoomIn();
 	void zoomOut();
 	void zoom(qreal const zoomFactor);
@@ -61,7 +60,6 @@ private:
 	EditorViewScene *mScene;
 	QPointF mMouseOldPosition;
 	bool mWheelPressed;
-	int mZoom;
 	view::details::TouchSupportManager mTouchManager;
 };
 

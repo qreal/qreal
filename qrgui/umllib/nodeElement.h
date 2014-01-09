@@ -75,11 +75,23 @@ public:
 	virtual void setName(QString const &name, bool withUndoRedo = false);
 	//void shift(QPointF const &pos, EdgeElement* called);
 
+	/// Returns port position relative to the top left corner of NodeElement
+	/// (position of NodeElement).
+	/// @param id Id that position is returned by this method.
+	/// @return Port position relative to the top left corner of NodeElement.
 	QPointF const portPos(qreal id) const;
-	QPointF const nearestPort(QPointF const &location, QStringList const &types) const;
+
+	/// Returns a total number of line and point ports on element.
 	int numberOfPorts() const;
-	static int portNumber(qreal id);
+
+	/// Returns port ID in terms of described in 'Useful information' in PortHandler class.
+	/// @param location For this point port will be seen. Location is assumed to be in LOCAL NodeElement coordinates!
+	/// @return Port ID in terms of described in 'Useful information' in PortHandler class.
 	qreal portId(QPointF const &location, QStringList const &types) const;
+
+	/// Returns a distance to a closest from the given point port (line or point) on this element.
+	/// Location is assumed to be in SCENE coordinates!
+	qreal shortestDistanceToPort(QPointF const &location, QStringList const &types) const;
 
 	/// @return List of edges connected to the node
 	QList<EdgeElement *> getEdges() const;

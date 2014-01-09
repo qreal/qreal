@@ -49,6 +49,7 @@ void PaletteTreeWidget::addGroups(QMap<QString, QList<PaletteElement> > &groups
 			expandItem(item);
 		}
 	}
+
 	if (expandedCount == 0) {
 		expand();
 	}
@@ -72,8 +73,10 @@ void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWid
 		foreach (PaletteElement const &element, items) {
 			addItemType(element, parent);
 		}
+
 		return;
 	}
+
 	for (QList<PaletteElement>::ConstIterator it = items.begin(); it != items.end();) {
 		QWidget *field = new QWidget;
 		QHBoxLayout *layout = new QHBoxLayout;
@@ -83,6 +86,7 @@ void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWid
 			element->setToolTip((*it).description());
 			layout->addWidget(element, count > 0 ? 50 : 0);
 		}
+
 		field->setLayout(layout);
 		field->setMinimumHeight(80);
 		QTreeWidgetItem *leaf = new QTreeWidgetItem;
@@ -90,6 +94,7 @@ void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWid
 		if (mEditable) {
 			leaf->setFlags(leaf->flags() | Qt::ItemIsEditable);
 		}
+
 		setItemWidget(leaf, 0, field);
 	}
 }
@@ -147,6 +152,7 @@ void PaletteTreeWidget::expandChildren(QTreeWidgetItem *item)
 			expandChildren(item->child(i));
 		}
 	}
+
 	item->treeWidget()->expandItem(item);
 }
 
@@ -166,6 +172,7 @@ void PaletteTreeWidget::collapseChildren(QTreeWidgetItem *item)
 			collapseChildren(item->child(i));
 		}
 	}
+
 	item->treeWidget()->collapseItem(item);
 }
 

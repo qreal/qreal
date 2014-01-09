@@ -38,7 +38,8 @@ public:
 
 private:
 	QString mWorkingDirName;
-	QMap<QString, QPixmap> mMapFileImage;
+	QMap<QString, QString> mReallyUsedFiles;
+	QMap<QString, QByteArray> mMapFileImage;
 	int first_size_x;
 	int first_size_y;
 	int current_size_x;
@@ -88,6 +89,11 @@ private:
 	float y2_def(QDomElement &element);
 	float coord_def(QDomElement &element, QString coordName, int current_size, int first_size);
 	void logger(QString path, QString string);
+
+	/// Reads byte array from the file that is obtained by inner rules from the given one.
+	/// Specified file path may be modified with storing into it really read file path.
+	QByteArray loadPixmap(QString &filePath);
+	QByteArray loadPixmapFromExistingFile(QString &filePath);
 
 	/** @brief checks that str[i] is not L, C, M or Z*/
 	bool isNotLCMZ(QString str, int i);

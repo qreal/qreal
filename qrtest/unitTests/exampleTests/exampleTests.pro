@@ -1,5 +1,7 @@
 TARGET = exampleTests
 
+CONFIG += c++11
+
 include(../common.pri)
 
 LIBS += -L../../../bin -lqrkernel -lqrutils

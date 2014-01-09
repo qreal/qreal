@@ -154,8 +154,6 @@ protected:
 	virtual void drawBackground(QPainter *painter, QRectF const &rect);
 
 private slots:
-	void changePropertiesActionTriggered();
-	void changeAppearanceActionTriggered();
 	void printElementsOfRootDiagram();
 	void drawIdealGesture();
 	void initMouseMoveManager();
@@ -248,6 +246,8 @@ private:
 
 	bool mIsSelectEvent;
 	bool mTitlesVisible;
+
+	QMenu mContextMenu;
 
 	view::details::ExploserView *mExploser; // Takes ownership
 

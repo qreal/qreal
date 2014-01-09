@@ -1,5 +1,7 @@
 #include "propertyEditorView.h"
 
+#include <qrutils/qRealFileDialog.h>
+
 #include "mainwindow/mainWindow.h"
 #include "controller/commands/changePropertyCommand.h"
 
@@ -158,7 +160,7 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 	// there are only four types of buttons: shape, reference, text and directory path
 	if (name == "shape") {
-		mMainWindow->openShapeEditor(actualIndex, role, propertyValue);
+		mMainWindow->openShapeEditor(actualIndex, role, propertyValue, false);
 	} else {
 		QString const typeName = mModel->typeName(index).toLower();
 		if (typeName == "code") {
@@ -170,7 +172,8 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 			} else {
 				startPath = propertyValue;
 			}
-			QString const location = QFileDialog::getExistingDirectory(this, tr("Specify directory:"), startPath);
+			QString const location = utils::QRealFileDialog::getExistingDirectory("OpenDirectoryForPropertyEditor"
+					, this, tr("Specify directory:"), startPath);
 			mModel->setData(index, location);
 		} else {
 			mMainWindow->openReferenceList(actualIndex, typeName, propertyValue, role);
@@ -225,4 +228,10 @@ int PropertyEditorView::enumPropertyIndexOf(QModelIndex const &index, QString co
 
 void PropertyEditorView::resizeEvent(QResizeEvent *event ) {
 	mPropertyEditor->resize(event->size());
+}
+
+void PropertyEditorView::installEventFilter(QObject *obj)
+{
+	QWidget::installEventFilter(obj);
+	mPropertyEditor->window()->installEventFilter(obj);
 }

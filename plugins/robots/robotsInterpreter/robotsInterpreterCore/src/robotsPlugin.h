@@ -31,19 +31,21 @@ public:
 	virtual QList<qReal::HotKeyActionInfo> hotKeyActions();
 	virtual QPair<QString, PreferencesPage *> preferencesPage();
 	virtual qReal::Customizer* customizationInterface();
-	virtual void updateSettings();
-	virtual void closeNeededWidget();
-
-	/// Overriden to enable/disable related actions. For example, we can't run
-	/// a diagram which is not related to a plugin.
-	virtual void activeTabChanged(qReal::Id const &rootElementId);
 
 private slots:
 	void showRobotSettings();
 //	void show2dModel();
 	void rereadSettings();
+	void setModelType(int type);
+	void setGraphWatcherSettings();
 	void titlesVisibilityCheckedInPlugin(bool checked);
 	void titlesVisibilityChecked(bool checked);
+	void updateSettings();
+	void closeNeededWidget();
+
+	/// Overriden to enable/disable related actions. For example, we can't run
+	/// a diagram which is not related to a plugin.
+	void activeTabChanged(Id const &rootElementId);
 
 private:
 	/// Initializes and connects actions, fills action info list
@@ -56,6 +58,10 @@ private:
 	/// Updates "enabled" status of interpreter actions taking into account current tab,
 	/// selected robot model and so on.
 	void updateEnabledActions();
+
+	void reinitModelType();
+
+	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
 
 	/// Disables/hides unsupported by current plugin blocks on a palette.
 	void updateBlocksOnPalette();
@@ -90,6 +96,15 @@ private:
 
 	/// Action that shows robots tab in settings dialog
 	QAction *mRobotSettingsAction;
+
+	/// Action that switches current robot model to unreal one
+	QAction *mSwitchTo2DModelAction;
+
+	/// Action that switches current robot model to nxt one
+	QAction *mSwitchToNxtModelAction;
+
+	/// Action that switches current robot model to trik one
+	QAction *mSwitchToTrikModelAction;
 
 	/// Action that shows or hides titles on diagram
 	QAction *mTitlesAction;

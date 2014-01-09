@@ -333,12 +333,18 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 		style = "filled_arrow";
 	}
 
+	QStringList bpmnEdges;
+	bpmnEdges << "signal" << "timer" << "message" << "error" << "escalation" << "cancel" << "compensation"
+			<< "conditional" << "multiple" << "parallel_multiple" << "message_noninterrupting"
+			<< "timer_noninterrupting" << "escalation_noninterrupting" << "conditional_noninterrupting"
+			<< "signal_noninterrupting" << "multiple_noninterrupting" << "parallel_multiple_noninterrupting";
+
 	out() << "\t\t\tQBrush old = painter->brush();\n"
-	"\t\t\tQBrush brush;\n"
-	"\t\t\tbrush.setStyle(Qt::SolidPattern);\n";
+	"\t\t\tQBrush brush;\n";
+	out() << "\t\t\tbrush.setStyle(Qt::SolidPattern);\n";
 
 	if (style == "empty_arrow" || style == "empty_rhomb" || style == "complex_arrow" || style == "empty_circle"
-			|| style == "signal" || style=="timer") {
+			|| bpmnEdges.contains(style)) {
 		out() << "\t\t\tbrush.setColor(Qt::white);\n";
 	}
 
@@ -387,26 +393,111 @@ void EdgeType::generateEdgeStyle(QString const &styleString, OutFile &out)
 		out() << "\t\t\tpainter->drawEllipse(-5, 0, 10, 10);\n";
 	}
 
-	if (style == "signal") {
-		out() << "\t\t\tpainter->drawEllipse(-20, 0, 40, 40);\n"
-		"\t\t\tpainter->drawEllipse(-15, 5, 30, 30);\n"
-		"\t\t\tstatic const QPointF points[] = {"
-		"\n\t\t\t\tQPointF(10, 20),\n\t\t\t\tQPointF(-7, 10),"
-		"\n\t\t\t\tQPointF(-7, 30),\n\t\t\t\tQPointF(10, 20)\n\t\t\t};\n"
-		"\t\t\tpainter->drawPolyline(points, 4);\n";
-	}
+	if (bpmnEdges.contains(style)) {
+		QStringList parts = style.split('_');
+		out() << "\t\t\tpainter->save();\n";
+		if (parts.last() == "noninterrupting") {
+			out() << "\t\t\tQPen dashPen = painter->pen();\n"
+					 "\t\t\tdashPen.setStyle(Qt::DashLine);\n"
+					 "\t\t\tpainter->setPen(dashPen);\n";
+			parts.removeLast();
+			style = parts.join('_');
+		}
 
-	if (style == "timer") {
 		out() << "\t\t\tpainter->drawEllipse(-20, 0, 40, 40);\n"
-		"\t\t\tpainter->drawEllipse(-15, 5, 30, 30);\n"
-		"\t\t\tpainter->drawEllipse(-10, 10, 20, 20);\n"
-		"\t\t\tpainter->save();\n"
-		"\t\t\tQPen pen = painter->pen();\n"
-		"\t\t\tpen.setWidth(1);\n"
-		"\t\t\tpainter->setPen(pen);"
-		"\t\t\tpainter->drawLine(0, 20, 0, 15);\n"
-		"\t\t\tpainter->drawLine(0, 20, 10, 20);\n"
-		"\t\t\tpainter->restore();\n";
+				"\t\t\tpainter->drawEllipse(-15, 5, 30, 30);\n";
+
+		out() << "\t\t\tQPen solidPen = painter->pen();\n"
+				 "\t\t\tsolidPen.setStyle(Qt::SolidLine);\n"
+				 "\t\t\tpainter->setPen(solidPen);\n";
+
+		if (style == "signal") {
+			out() << "\t\t\tstatic const QPointF points[] = {"
+					 "\n\t\t\t\tQPointF(0, 10),\n\t\t\t\tQPointF(-10, 27),"
+					 "\n\t\t\t\tQPointF(10, 27),\n\t\t\t\tQPointF(0, 10)\n\t\t\t};\n"
+					 "\t\t\tpainter->drawPolyline(points, 4);\n";
+		}
+
+		if (style == "timer") {
+			out() << "\t\t\tpainter->drawEllipse(-10, 10, 20, 20);\n"
+					 "\t\t\tpainter->drawLine(0, 20, 0, 15);\n"
+					 "\t\t\tpainter->drawLine(0, 20, 10, 20);\n";
+		}
+
+		if (style == "message") {
+			out() << "\t\t\tpainter->drawRect(-10, 15, 20, 11);\n"
+					 "\t\t\tpainter->drawLine(-9, 16, -1, 19);\n"
+					 "\t\t\tpainter->drawLine(9, 16, 1, 19);\n";
+		}
+
+		if (style == "error") {
+			out() << "\t\t\tstatic const QPointF points[] = {"
+					 "\n\t\t\t\tQPointF(-10, 28),\n\t\t\t\tQPointF(-4, 10),"
+					 "\n\t\t\t\tQPointF(3, 20),\n\t\t\t\tQPointF(10, 12),"
+					 "\n\t\t\t\tQPointF(4, 30),\n\t\t\t\tQPointF(-3, 20),"
+					 "\n\t\t\t\tQPointF(-10, 28)\n\t\t\t};\n"
+					 "\t\t\tpainter->drawPolyline(points, 7);\n";
+		}
+
+		if (style == "escalation") {
+			out() << "\t\t\tstatic const QPointF points[] = {"
+					 "\n\t\t\t\tQPointF(0, 22),\n\t\t\t\tQPointF(-6, 30),"
+					 "\n\t\t\t\tQPointF(0, 10),\n\t\t\t\tQPointF(6, 30),"
+					 "\n\t\t\t\tQPointF(0, 22)\n\t\t\t};\n"
+					 "\t\t\tpainter->drawPolyline(points, 5);\n";
+		}
+
+		if (style == "cancel") {
+			out() << "\t\t\tstatic const QPointF points[] = {"
+					 "\n\t\t\t\tQPointF(-12, 12),\n\t\t\t\tQPointF(-8, 8),"
+					 "\n\t\t\t\tQPointF(0, 17),\n\t\t\t\tQPointF(8, 8),"
+					 "\n\t\t\t\tQPointF(12, 12),\n\t\t\t\tQPointF(3, 20),"
+					 "\n\t\t\t\tQPointF(12, 28),\n\t\t\t\tQPointF(8, 32),"
+					 "\n\t\t\t\tQPointF(0, 23),\n\t\t\t\tQPointF(-8, 32),"
+					 "\n\t\t\t\tQPointF(-12, 28),\n\t\t\t\tQPointF(-3, 20),"
+					 "\n\t\t\t\tQPointF(-12, 12)\n\t\t\t};\n"
+					 "\t\t\tpainter->drawPolyline(points, 13);\n";
+		}
+
+		if (style == "compensation") {
+			out() << "\t\t\tstatic const QPointF points1[] = {"
+					 "\n\t\t\t\tQPointF(-12, 20),\n\t\t\t\tQPointF(-2, 10),"
+					 "\n\t\t\t\tQPointF(-2, 30),\n\t\t\t\tQPointF(-12, 20)\n\t\t\t};\n"
+					 "\t\t\tpainter->drawPolyline(points1, 4);\n";
+			out() << "\t\t\tstatic const QPointF points2[] = {"
+					 "\n\t\t\t\tQPointF(-2, 20),\n\t\t\t\tQPointF(8, 10),"
+					 "\n\t\t\t\tQPointF(8, 30),\n\t\t\t\tQPointF(-2, 20)\n\t\t\t};\n"
+					 "\t\t\tpainter->drawPolyline(points2, 4);\n";
+		}
+
+		if (style == "conditional") {
+			out() << "\t\t\tpainter->drawRect(-8, 10, 16, 20);\n"
+					 "\t\t\tpainter->drawLine(-6, 14, 6, 14);\n"
+					 "\t\t\tpainter->drawLine(-6, 20, 6, 20);\n"
+					 "\t\t\tpainter->drawLine(-6, 26, 6, 26);\n";
+		}
+
+		if (style == "multiple") {
+			out() << "\t\t\tstatic const QPointF points[] = {"
+					 "\n\t\t\t\tQPointF(0, 11),\n\t\t\t\tQPointF(10, 17),"
+					 "\n\t\t\t\tQPointF(7, 29),\n\t\t\t\tQPointF(-7, 29),"
+					 "\n\t\t\t\tQPointF(-10, 17),\n\t\t\t\tQPointF(0, 11)\n\t\t\t};\n"
+					 "\t\t\tpainter->drawPolyline(points, 6);\n";
+		}
+
+		if (style == "parallel_multiple") {
+			out() << "\t\t\tstatic const QPointF points[] = {"
+					 "\n\t\t\t\tQPointF(-12, 17),\n\t\t\t\tQPointF(-3, 17),"
+					 "\n\t\t\t\tQPointF(-3, 8),\n\t\t\t\tQPointF(3, 8),"
+					 "\n\t\t\t\tQPointF(3, 17),\n\t\t\t\tQPointF(12, 17),"
+					 "\n\t\t\t\tQPointF(12, 23),\n\t\t\t\tQPointF(3, 23),"
+					 "\n\t\t\t\tQPointF(3, 32),\n\t\t\t\tQPointF(-3, 32),"
+					 "\n\t\t\t\tQPointF(-3, 23),\n\t\t\t\tQPointF(-12, 23),"
+					 "\n\t\t\t\tQPointF(-12, 17)\n\t\t\t};\n"
+					 "\t\t\tpainter->drawPolyline(points, 13);\n";
+		}
+
+		out() << "\t\t\tpainter->restore();\n";
 	}
 
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";

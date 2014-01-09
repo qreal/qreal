@@ -1,7 +1,6 @@
 #include "shapeEdit.h"
 #include "ui_shapeEdit.h"
 
-#include <QtWidgets/QFileDialog>
 #include <QtWidgets/QGraphicsItem>
 #include <QtCore/QList>
 #include <QtWidgets/QComboBox>
@@ -11,7 +10,8 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
-#include <qrutils/graphicsUtils/colorlisteditor.h>
+#include <qrutils/qRealFileDialog.h>
+#include <qrutils/graphicsUtils/colorListEditor.h>
 
 #include "mainwindow/shapeEdit/xmlLoader.h"
 #include "mainwindow/mainWindow.h"
@@ -26,8 +26,18 @@ ShapeEdit::ShapeEdit(QWidget *parent)
 	connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
 }
 
-ShapeEdit::ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentModelIndex const &index, const int &role)
-		: QWidget(NULL), mUi(new Ui::ShapeEdit), mModel(model), mIndex(index), mRole(role)
+ShapeEdit::ShapeEdit(
+	qReal::models::details::LogicalModel *model
+	, QPersistentModelIndex const &index
+	, const int &role
+	, bool useTypedPorts
+	)
+	: QWidget(NULL)
+	, mUi(new Ui::ShapeEdit)
+	, mModel(model)
+	, mIndex(index)
+	, mRole(role)
+	, mUseTypedPorts(useTypedPorts)
 {
 	init();
 	mUi->saveButton->setEnabled(true);
@@ -35,19 +45,21 @@ ShapeEdit::ShapeEdit(qReal::models::details::LogicalModel *model, QPersistentMod
 }
 
 ShapeEdit::ShapeEdit(
-		Id const &id
-		, EditorManagerInterface *editorManager
-		, qrRepo::GraphicalRepoApi const &graphicalRepoApi
-		, MainWindow *mainWindow
-		, EditorView *editorView
-		)
-		: QWidget(NULL)
-		, mUi(new Ui::ShapeEdit)
-		, mRole(0)
-		, mId(id)
-		, mEditorManager(editorManager)
-		, mMainWindow(mainWindow)
-		, mEditorView(editorView)
+	Id const &id
+	, EditorManagerInterface *editorManager
+	, qrRepo::GraphicalRepoApi const &graphicalRepoApi
+	, MainWindow *mainWindow
+	, EditorView *editorView
+	, bool useTypedPorts
+	)
+	: QWidget(NULL)
+	, mUi(new Ui::ShapeEdit)
+	, mRole(0)
+	, mId(id)
+	, mEditorManager(editorManager)
+	, mMainWindow(mainWindow)
+	, mEditorView(editorView)
+	, mUseTypedPorts(useTypedPorts)
 {
 	mGraphicalElements = graphicalRepoApi.graphicalElements(Id(mId.editor(), mId.diagram(), mId.element()));
 	init();
@@ -296,7 +308,7 @@ void ShapeEdit::exportToXml(QString const &fileName)
 void ShapeEdit::saveToXml()
 {
 	mDocument.clear();
-	QString fileName = QFileDialog::getSaveFileName(this);
+	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorXml", this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -331,7 +343,7 @@ void ShapeEdit::save()
 
 void ShapeEdit::savePicture()
 {
-	QString fileName = QFileDialog::getSaveFileName(this);
+	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorPicture", this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -353,7 +365,7 @@ void ShapeEdit::savePicture()
 void ShapeEdit::open()
 {
 	mDocument.clear();
-	QString fileName = QFileDialog::getOpenFileName(this);
+	QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorXml", this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -376,7 +388,7 @@ void ShapeEdit::addImage(bool checked)
 {
 	if (checked) {
 		setHighlightOneButton(mUi->addImageButton);
-		QString fileName = QFileDialog::getOpenFileName(this);
+		QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorImage", this);
 		if (fileName.isEmpty()) {
 			return;
 		}
@@ -648,11 +660,13 @@ QStringList ShapeEdit::getPortTypes() const
 	QStringList result;
 	result << "NonTyped";
 
-	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
-	if (repoApi) {
-		foreach (qReal::Id const &port, repoApi->elementsByType("MetaEntityPort")) {
-			if (repoApi->isLogicalElement(port)) {
-				result << repoApi->name(port);
+	if (mUseTypedPorts) {
+		qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
+		if (repoApi) {
+			foreach (qReal::Id const &port, repoApi->elementsByType("MetaEntityPort")) {
+				if (repoApi->isLogicalElement(port)) {
+					result << repoApi->name(port);
+				}
 			}
 		}
 	}

@@ -15,8 +15,6 @@ BluetoothRobotCommunicationThread::BluetoothRobotCommunicationThread()
 		: mPort(NULL)
 		, mKeepAliveTimer(new QTimer(this))
 {
-	qRegisterMetaType<qReal::interpreters::robots::enums::inputPort::InputPortEnum>("details::inputPort::InputPortEnum");
-
 	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 }
 

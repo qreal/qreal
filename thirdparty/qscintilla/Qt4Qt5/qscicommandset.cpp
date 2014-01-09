@@ -35,7 +35,7 @@
 // Starting with QScintilla v2.7 the standard OS/X keyboard shortcuts are used
 // where possible.  In order to restore the behaviour of earlier versions then
 // #define DONT_USE_OSX_KEYS here or add it to the qmake project (.pro) file.
-#if defined(Q_WS_MAC) && !defined(DONT_USE_OSX_KEYS)
+#if defined(Q_OS_MAC) && !defined(DONT_USE_OSX_KEYS)
 #define USING_OSX_KEYS
 #else
 #undef  USING_OSX_KEYS
