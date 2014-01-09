@@ -35,7 +35,7 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface *errorReporter)
 void NxtFlashTool::flashRobot()
 {
 	if (mIsFlashing) {
-		mErrorReporter->addInformation(tr("Robot is already beeing flashed"));
+		mErrorReporter->addInformation(tr("Robot is already being flashed"));
 		return;
 	}
 

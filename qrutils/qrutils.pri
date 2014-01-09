@@ -64,5 +64,8 @@ include($$PWD/invocationUtils/invocationUtils.pri)
 # Math Utils
 include($$PWD/mathUtils/mathUtils.pri)
 
+# UXInfo Utils
+include($$PWD/uxInfo/uxInfo.pri)
+
 # Real-time plot
 include($$PWD/graphicsWatcher/sensorsGraph.pri)

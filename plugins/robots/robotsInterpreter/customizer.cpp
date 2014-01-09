@@ -1,5 +1,7 @@
 #include "customizer.h"
 
+#include <QtWidgets/QApplication>
+
 #include <qrkernel/settingsManager.h>
 
 using namespace qReal::interpreters::robots;
@@ -17,12 +19,17 @@ QIcon Customizer::applicationIcon() const
 QString Customizer::productVersion() const
 {
 	// TODO: other storage for it?
-	return "2.5.0";
+	return "2.5.1";
 }
 
 QString Customizer::aboutText() const
 {
 	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://robots.qreal.ru/\">http://robots.qreal.ru/</a>";
+}
+
+QString Customizer::examplesDirectory() const
+{
+	return QApplication::applicationDirPath() + "/examples";
 }
 
 bool Customizer::showInterpeterButton() const

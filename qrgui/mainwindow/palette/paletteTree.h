@@ -69,6 +69,7 @@ public:
 	*/
 	void loadPalette(bool isIconsView, int itemsCount, EditorManagerInterface *editorManagerProxy);
 	void initMainWindow(MainWindow *mainWindow);
+	void installEventFilter(QObject *obj);
 
 signals:
 	void paletteParametersChanged();

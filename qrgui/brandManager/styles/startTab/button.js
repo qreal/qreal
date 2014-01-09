@@ -1,18 +1,20 @@
-QPushButton {
+* {
     background-color: transparent;
-    color: black;
     font-family:url(@@FONT@@);
-    border-radius: 5px;
-    border-color: beige;
+    color: black;
     font: bold 20px;
     text-align: left;
 }
 
-QPushButton:hover {
-    color: rgb(52, 140, 68);
+QPushButton {
+    border-radius: 5px;
+    border-color: beige;
 }
 
-QPushButton:pressed {
-    color: rgb(52, 140, 68);
-    text-decoration: underline;
+QPushButton:hover, QPushButton:pressed {
+    color: rgb(110, 70, 156);
+}
+
+QWidget[enabled="true"] {
+    color: rgb(110, 70, 156);
 }

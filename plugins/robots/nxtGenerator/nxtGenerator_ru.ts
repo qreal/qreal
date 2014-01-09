@@ -45,7 +45,8 @@
     </message>
     <message>
         <location filename="nxtFlashTool.cpp" line="38"/>
-        <source>Robot is already beeing flashed</source>
+        <source>Robot is already being flashed</source>
+        <oldsource>Robot is already beeing flashed</oldsource>
         <translation>Робот уже прошивается</translation>
     </message>
     <message>
@@ -89,7 +90,7 @@
         <translation>Загрузка программы завершена успешно</translation>
     </message>
     <message>
-        <location filename="nxtFlashTool.cpp" line="179"/>
+        <location filename="nxtFlashTool.cpp" line="180"/>
         <source>Compilation error occured. Please check your function blocks syntax. If you sure in their validness contact developers</source>
         <translation>Произошла ошибка компиляции. Проверьте синтаксис выражений внутри блоков &quot;Функция&quot;;. Если Вы уверены в их корректности, обратитесь к разработчикам</translation>
     </message>
