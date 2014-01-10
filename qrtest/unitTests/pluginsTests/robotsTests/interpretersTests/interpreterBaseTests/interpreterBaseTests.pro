@@ -9,7 +9,7 @@ INCLUDEPATH += \
 
 # Tests
 HEADERS += \
-	robotModelTests/robotModelTest.h \
+    robotModelTests/defaultRobotModelTest.h
 
 SOURCES += \
-	robotModelTests/robotModelTest.cpp \
+    robotModelTests/defaultRobotModelTest.cpp

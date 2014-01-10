@@ -1,4 +1,6 @@
-#include <interpreterBase/robotModel/robotModel.h>
+#include "interpreterBase/robotModel/commonRobotModel.h"
+
+#include "interpreterBase/robotModel/abstractConfiguration.h"
 
 using namespace interpreterBase::robotModel;
 
@@ -8,7 +10,7 @@ using namespace interpreterBase::robotModel;
 //using namespace details;
 //using namespace robotImplementations;
 
-RobotModel::RobotModel()
+CommonRobotModel::CommonRobotModel()
 //	: mRobotImpl(new NullRobotModelImplementation)
 //	, mBrick(&mRobotImpl->brick())
 //	, mDisplay(&mRobotImpl->display())
@@ -24,7 +26,7 @@ RobotModel::RobotModel()
 //	connect(mRobotImpl, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
 }
 
-RobotModel::~RobotModel()
+CommonRobotModel::~CommonRobotModel()
 {
 //	delete mRobotImpl;
 //	for (int i = 0; i < 4; ++i) {
@@ -169,7 +171,7 @@ RobotModel::~RobotModel()
 //	emit sensorsConfigured();
 //}
 
-bool RobotModel::needsConnection() const
+bool CommonRobotModel::needsConnection() const
 {
 //	return mRobotImpl->needsConnection();
 	return false;
@@ -195,22 +197,22 @@ bool RobotModel::needsConnection() const
 //	emit connected(success);
 //}
 
-void RobotModel::init()
+void CommonRobotModel::init()
 {
 	// TODO: Remove this sh~.
 	emit connected(true);
-	emit sensorsConfigured();
+//	emit sensorsConfigured();
 
 //	Tracer::debug(tracer::enums::initialization, "RobotModel::init", "Initializing robot model");
 //	mRobotImpl->init();
 }
 
-void RobotModel::stopRobot()
+void CommonRobotModel::stopRobot()
 {
 //	mRobotImpl->stopRobot();
 }
 
-void RobotModel::disconnectFromRobot()
+void CommonRobotModel::disconnectFromRobot()
 {
 //	mRobotImpl->disconnectFromRobot();
 }
@@ -295,3 +297,24 @@ void RobotModel::disconnectFromRobot()
 //{
 //	return mRobotImpl->produceTimer();
 //}
+
+ConfigurationInterface &CommonRobotModel::configuration()
+{
+	// TODO: Implement
+	AbstractConfiguration configuration;
+	return configuration;
+}
+
+robotParts::Brick &CommonRobotModel::brick()
+{
+	// TODO: Implement
+	robotParts::Brick brick;
+	return brick;
+}
+
+robotParts::Display &CommonRobotModel::display()
+{
+	// TODO: Implement
+	robotParts::Display display;
+	return display;
+}
