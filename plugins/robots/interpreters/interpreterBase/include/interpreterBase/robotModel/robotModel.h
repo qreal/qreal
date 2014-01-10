@@ -1,11 +1,12 @@
 #pragma once
 
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include "interpreterBase/robotModel/robotModelInterface.h"
+#include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {
 namespace robotModel {
 
-class RobotModel : public RobotModelInterface {
+class ROBOTS_INTERPRETER_BASE_EXPORT RobotModel : public RobotModelInterface {
 	Q_OBJECT
 
 public:
