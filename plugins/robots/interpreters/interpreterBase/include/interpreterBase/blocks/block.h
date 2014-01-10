@@ -19,7 +19,7 @@ namespace interpreterBase {
 namespace blocks {
 
 /// Base class for all blocks implementations used in interpreter
-class Block : public BlockInterface
+class ROBOTS_INTERPRETER_BASE_EXPORT Block : public BlockInterface
 {
 	Q_OBJECT
 

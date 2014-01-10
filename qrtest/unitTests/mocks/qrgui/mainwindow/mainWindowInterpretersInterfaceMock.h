@@ -8,7 +8,7 @@
 
 namespace qrTest {
 
-class MainWindowInterpretersInterfaceMock : public qReal::gui::MainWindowInterpretersInterface 
+class MainWindowInterpretersInterfaceMock : public qReal::gui::MainWindowInterpretersInterface
 {
 public:
 	MOCK_METHOD1(selectItem, void(qReal::Id const &graphicalId));
@@ -19,7 +19,6 @@ public:
 	MOCK_METHOD0(errorReporter, qReal::ErrorReporterInterface *());
 	MOCK_METHOD0(activeDiagram, qReal::Id());
 	MOCK_METHOD1(openSettingsDialog, void(QString const &tab));
-	MOCK_METHOD2(showInTextEditor, void(QString const &title, QString const &text));
 	MOCK_METHOD0(reinitModels, void());
 	MOCK_METHOD0(windowWidget, QWidget *());
 	MOCK_METHOD1(unloadPlugin, bool(QString const &pluginName));
@@ -32,6 +31,9 @@ public:
 	MOCK_METHOD0(updateActiveDiagram, void());
 	MOCK_METHOD1(deleteElementFromDiagram, void(qReal::Id const &id));
 	MOCK_METHOD1(reportOperation, void(invocation::LongOperation *operation));
+	MOCK_METHOD0(currentTab, QWidget *());
+	MOCK_METHOD2(openTab, void(QWidget *tab, QString const &title));
+	MOCK_METHOD1(closeTab, void(QWidget *tab));
 	MOCK_METHOD2(setElementInPaletteVisible, void(qReal::Id const &metatype, bool visible));
 	MOCK_METHOD1(setVisibleForAllElementsInPalette, void(bool visible));
 	MOCK_METHOD2(setElementInPaletteEnabled, void(qReal::Id const &metatype, bool enabled));

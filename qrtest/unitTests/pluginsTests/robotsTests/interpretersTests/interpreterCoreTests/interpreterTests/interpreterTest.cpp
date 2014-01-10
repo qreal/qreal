@@ -2,9 +2,9 @@
 
 #include <src/interpreter/interpreter.h>
 
-using namespace qrTest::robotsInterpreterCoreTests;
+using namespace qrTest::robotsTests::interpreterCoreTests;
 
-using namespace robotsInterpreterCore::interpreter;
+using namespace interpreterCore::interpreter;
 using namespace ::testing;
 
 void InterpreterTest::SetUp()

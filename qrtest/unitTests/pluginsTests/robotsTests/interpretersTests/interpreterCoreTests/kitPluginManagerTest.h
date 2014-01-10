@@ -3,10 +3,12 @@
 #include <gtest/gtest.h>
 
 namespace qrTest {
-namespace robotsInterpreterCoreTests {
+namespace robotsTests {
+namespace interpreterCoreTests {
 
 class KitPluginManagerTest : public testing::Test {
 };
 
+}
 }
 }

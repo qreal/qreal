@@ -9,7 +9,7 @@
 
 namespace interpreterCore {
 
-/// Loads kit plugins and provides interface to access them for the rest of RobotsInterpreterCore.
+/// Loads kit plugins and provides interface to access them for the rest of interpreterCore.
 class KitPluginManager
 {
 public:

@@ -2,8 +2,8 @@
 
 #include <src/kitPluginManager.h>
 
-using namespace qrTest::robotsInterpreterCoreTests;
-using namespace robotsInterpreterCore;
+using namespace qrTest::robotsTests::interpreterCoreTests;
+using namespace interpreterCore;
 
 TEST_F(KitPluginManagerTest, pluginsLoadingTest)
 {

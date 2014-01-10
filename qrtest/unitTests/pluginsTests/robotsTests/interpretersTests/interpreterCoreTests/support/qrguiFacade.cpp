@@ -1,6 +1,6 @@
 #include "qrguiFacade.h"
 
-using namespace qrTest::robotsInterpreterCoreTests;
+using namespace qrTest::robotsTests::interpreterCoreTests;
 using namespace ::testing;
 
 QrguiFacade::QrguiFacade(QString const &modelName)

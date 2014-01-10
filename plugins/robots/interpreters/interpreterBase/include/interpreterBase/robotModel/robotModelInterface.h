@@ -2,10 +2,12 @@
 
 #include <QtCore/QObject>
 
+#include "interpreterBase/interpreterBaseDeclSpec.h"
+
 namespace interpreterBase {
 namespace robotModel {
 
-class RobotModelInterface : public QObject
+class ROBOTS_INTERPRETER_BASE_EXPORT RobotModelInterface : public QObject
 {
 	Q_OBJECT
 

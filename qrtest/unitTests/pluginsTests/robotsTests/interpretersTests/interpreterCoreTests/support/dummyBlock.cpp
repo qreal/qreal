@@ -1,6 +1,6 @@
 #include "dummyBlock.h"
 
-using namespace qrTest::robotsInterpreterCoreTests;
+using namespace qrTest::robotsTests::interpreterCoreTests;
 
 using namespace qReal;
 

@@ -2,15 +2,15 @@
 
 #include <QtCore/QObject>
 
-#include <robotsInterpreterCore/kitPluginInterface.h>
+#include <interpreterBase/kitPluginInterface.h>
 
 namespace qrTest {
 namespace mockKitPlugin1 {
 
-class MockKitPlugin1Interface : public QObject, public robotsInterpreterCore::KitPluginInterface
+class MockKitPlugin1Interface : public QObject, public interpreterBase::KitPluginInterface
 {
 	Q_OBJECT
-	Q_INTERFACES(robotsInterpreterCore::KitPluginInterface)
+	Q_INTERFACES(interpreterBase::KitPluginInterface)
 	Q_PLUGIN_METADATA(IID "mockKitPlugin1.MockKitPlugin1Interface")
 
 public:

@@ -11,7 +11,8 @@
 #include <mocks/qrgui/view/sceneCustomizationInterfaceMock.h>
 
 namespace qrTest {
-namespace robotsInterpreterCoreTests {
+namespace robotsTests {
+namespace interpreterCoreTests {
 
 class QrguiFacade
 {
@@ -51,5 +52,6 @@ private:
 	qrTest::ErrorReporterMock mErrorReporterMock;
 };
 
+}
 }
 }

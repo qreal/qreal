@@ -1,12 +1,12 @@
 #pragma once
 
-#include <robotsInterpreterCore/robotModel/robotModelInterface.h>
+#include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include <gmock/gmock.h>
 
 namespace qrTest {
 
-class RobotModelInterfaceMock : public robotsInterpreterCore::robotModel::RobotModelInterface
+class RobotModelInterfaceMock : public interpreterBase::robotModel::RobotModelInterface
 {
 public:
 	MOCK_METHOD0(init, void());
