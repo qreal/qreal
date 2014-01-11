@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtCore/QObject.h>
+#include <QtCore/QObject>
 
 #include "interpreterBase/robotModel/portInfo.h"
 #include "interpreterBase/robotModel/robotParts/pluggableDevice.h"

@@ -5,7 +5,6 @@
 #include <QtWidgets/QWidget>
 
 #include <interpreterBase/blocks/block.h>
-#include <interpreterBase/robotModel/robotModel.h>
 
 namespace interpreterBase {
 

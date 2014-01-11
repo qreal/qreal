@@ -23,13 +23,13 @@ Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalMod
 {
 }
 
-QVector<SensorId> Autoconfigurer::configure(Id const &diagram, bool *success)
-{
-	if (!success) {
-		throw Exception("Pass correct pointer to boolean as 'success' parameter");
-	}
+//QVector<SensorId> Autoconfigurer::configure(Id const &diagram, bool *success)
+//{
+//	if (!success) {
+//		throw Exception("Pass correct pointer to boolean as 'success' parameter");
+//	}
 
-	*success = true;
+//	*success = true;
 
 //	mUsedSensors[0] = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt());
 //	mUsedSensors[1] = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt());
@@ -62,5 +62,5 @@ QVector<SensorId> Autoconfigurer::configure(Id const &diagram, bool *success)
 //			);
 //	}
 
-	return QVector<SensorId>();
-}
+//	return QVector<SensorId>();
+//}

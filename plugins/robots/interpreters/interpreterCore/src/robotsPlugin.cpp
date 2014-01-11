@@ -160,7 +160,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	mKitPluginManager.selectKit(SettingsManager::value("kitId").toString());
 
 	//	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
-	interpreterBase::robotModel::RobotModelInterface * const robotModel = new interpreterBase::robotModel::RobotModel();
+//	interpreterBase::robotModel::RobotModelInterface * const robotModel = new interpreterBase::robotModel::RobotModel();
 
 //	interpreterBase::blocks::BlocksFactoryInterface * const blocksFactory = new interpreterBase::blocks::BlocksFactory(
 //			configurator.graphicalModelApi()

@@ -118,8 +118,8 @@ void Interpreter::interpret()
 	details::Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
 
 	bool configurationSucceeded = false;
-	QVector<interpreterBase::robotModel::SensorId> const sensorConfiguration
-			= configurer.configure(currentDiagramId, &configurationSucceeded);
+//	QVector<interpreterBase::robotModel::SensorId> const sensorConfiguration
+//			= configurer.configure(currentDiagramId, &configurationSucceeded);
 
 	if (!configurationSucceeded) {
 		return;

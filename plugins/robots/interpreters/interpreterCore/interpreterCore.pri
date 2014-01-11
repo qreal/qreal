@@ -26,7 +26,6 @@ SOURCES += \
 	$$PWD/src/kitPluginManager.cpp \
 	$$PWD/src/robotsPlugin.cpp \
 	$$PWD/src/robotsSettingsPage.cpp \
-	$$PWD/src/sensorId.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \
