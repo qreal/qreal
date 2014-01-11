@@ -47,7 +47,7 @@ RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager, QWidg
 	mKitPluginManager.selectKit(kitNames[0]);
 
 	QWidget * const extensionWidget = mKitPluginManager.selectedKit().settingsWidget();
-	if (extensionWidget != NULL) {
+	if (extensionWidget) {
 		static_cast<QVBoxLayout *>(mUi->settingsExtensionFrame->layout())->insertWidget(0, extensionWidget);
 	}
 }

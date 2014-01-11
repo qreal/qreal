@@ -3,7 +3,6 @@
 #include <gtest/gtest.h>
 
 #include <src/interpreter/interpreterInterface.h>
-#include <interpreterBase/robotModel/robotModel.h>
 #include <interpreterBase/robotModel/robotModelInterfaceMock.h>
 
 #include "support/qrguiFacade.h"

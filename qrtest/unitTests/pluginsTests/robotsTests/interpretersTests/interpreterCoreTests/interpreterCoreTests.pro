@@ -40,5 +40,5 @@ win32 {
 	QMAKE_POST_LINK = "cmd /C "xcopy ..\\support\\testData ..\\..\\..\\..\\..\\..\\bin\\unittests /s /e /q /y /i""
 }
 else {
-	QMAKE_POST_LINK = "cp ../support/testData/* ../../../../../../bin/unittests/"
+	QMAKE_POST_LINK = "cp -r ../support/testData/* ../../../../../../bin/unittests/"
 }
