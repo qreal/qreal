@@ -268,8 +268,8 @@ void EditorView::zoom(qreal const zoomFactor)
 	qreal const oldScale = transform().m11();
 	qreal const maxScale = SettingsManager::value("maxZoom").toReal();
 	qreal const minScale = SettingsManager::value("minZoom").toReal();
-	if ((zoomFactor > 1 && mathUtils::Math::geq(oldScale, maxScale)) ||
-			(zoomFactor < 1 && mathUtils::Math::leq(oldScale, minScale))) {
+	if ((zoomFactor > 1 && utils::Math::geq(oldScale, maxScale)) ||
+			(zoomFactor < 1 && utils::Math::leq(oldScale, minScale))) {
 		return;
 	}
 

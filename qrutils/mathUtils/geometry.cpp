@@ -1,6 +1,6 @@
 #include "geometry.h"
 
-using namespace mathUtils;
+using namespace utils;
 
 bool Geometry::eq(QPointF const &point1, QPointF const &point2, qreal eps)
 {
