@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
+    <width>423</width>
     <height>693</height>
    </rect>
   </property>
@@ -14,7 +14,7 @@
    <item row="2" column="0" colspan="2">
     <widget class="QGroupBox" name="sensorsSettingsGroupBox">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -27,7 +27,7 @@
    <item row="5" column="0" colspan="2">
     <widget class="QGroupBox" name="graphicsWatcherBox">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -39,7 +39,7 @@
       <item>
        <widget class="QGroupBox" name="sensorUpdateBox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -67,7 +67,7 @@
       <item>
        <widget class="QGroupBox" name="autoScalingBox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -95,7 +95,7 @@
       <item>
        <widget class="QGroupBox" name="textUpdateBox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -126,7 +126,7 @@
    <item row="3" column="0" colspan="2">
     <widget class="QGroupBox" name="uploadingRunningGroupBox">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -167,7 +167,7 @@
    <item row="1" column="0" colspan="2">
     <widget class="QFrame" name="settingsExtensionFrame">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -178,7 +178,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="constructorKitGroupBox">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -192,7 +192,7 @@
    <item row="0" column="1">
     <widget class="QGroupBox" name="typeOfModelGroupBox">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -206,7 +206,7 @@
    <item row="4" column="0" colspan="2">
     <widget class="QGroupBox" name="noiseSensorsGroupBox">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -214,73 +214,51 @@
      <property name="title">
       <string>Noise</string>
      </property>
-     <widget class="QCheckBox" name="enableSensorNoiseCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>12</x>
-        <y>29</y>
-        <width>130</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Realistic sensors</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="approximationLabel">
-      <property name="geometry">
-       <rect>
-        <x>12</x>
-        <y>73</y>
-        <width>121</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>For higher value the behaviour is closer to realistic but performance is lower.</string>
-      </property>
-      <property name="text">
-       <string>Approximation level</string>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="approximationLevelSpinBox">
-      <property name="geometry">
-       <rect>
-        <x>150</x>
-        <y>70</y>
-        <width>56</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimum">
-       <number>12</number>
-      </property>
-      <property name="maximum">
-       <number>100</number>
-      </property>
-      <property name="singleStep">
-       <number>4</number>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="enableMotorNoiseCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>148</x>
-        <y>29</y>
-        <width>130</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Realistic engines</string>
-      </property>
-     </widget>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="enableEnginesNoiseCheckBox">
+        <property name="text">
+         <string>Realistic engines</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="approximationLabel">
+        <property name="toolTip">
+         <string>For higher value the behaviour is closer to realistic but performance is lower.</string>
+        </property>
+        <property name="text">
+         <string>Approximation level</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="enableSensorNoiseCheckBox">
+        <property name="text">
+         <string>Realistic sensors</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <widget class="QSpinBox" name="approximationLevelSpinBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimum">
+         <number>12</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>4</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item row="6" column="0" colspan="2">

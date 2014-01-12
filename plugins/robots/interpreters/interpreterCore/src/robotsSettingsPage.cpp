@@ -5,6 +5,7 @@
 #include <QtWidgets/QRadioButton>
 
 #include <qrkernel/settingsManager.h>
+#include <qrutils/graphicsWatcher/sensorsGraph.h>
 
 using namespace interpreterCore;
 using namespace qReal;
@@ -30,16 +31,7 @@ RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager, QWidg
 	if (kitNames.count() == 1) {
 		mUi->constructorKitGroupBox->setVisible(false);
 	} else {
-		foreach (QString const &kitName, mKitPluginManager.kitIds()) {
-			QRadioButton * const kitRadioButton = new QRadioButton();
-			kitRadioButton->setText(kitName);
-			if (mUi->constructorKitGroupBox->layout()->count() == 1) {
-				kitRadioButton->setChecked(true);
-			}
-
-			static_cast<QVBoxLayout *>(mUi->constructorKitGroupBox->layout())->insertWidget(
-					mUi->constructorKitGroupBox->layout()->count() - 1, kitRadioButton);
-		}
+		initMultipleRadioButtons();
 	}
 
 	mUi->typeOfModelGroupBox->setVisible(false);
@@ -60,13 +52,40 @@ RobotsSettingsPage::~RobotsSettingsPage()
 void RobotsSettingsPage::save()
 {
 	SettingsManager::setValue("kitId", selectedKit());
+	// SettingsManager::setValue("bluetoothPortName", selectedPortName());
+	// SettingsManager::setValue("valueOfCommunication", selectedCommunication());
+	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->isChecked());
+	SettingsManager::setValue("enableNoiseOfEngines", mUi->enableEnginesNoiseCheckBox->isChecked());
+	SettingsManager::setValue("approximationLevel", mUi->approximationLevelSpinBox->value());
+	SettingsManager::setValue("sensorUpdateInterval", mUi->sensorUpdateSpinBox->value());
+	SettingsManager::setValue("autoscalingInterval", mUi->autoScalingSpinBox->value());
+	SettingsManager::setValue("textUpdateInterval", mUi->textUpdaterSpinBox->value());
+	SettingsManager::setValue("nxtFlashToolRunPolicy", mUi->runningAfterUploadingComboBox->currentIndex());
+//	mSensorsWidget->save();
 	emit saved();
 }
 
 void RobotsSettingsPage::restoreSettings()
 {
-//	enums::robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+//	enums::robotModelType::robotModelTypeEnum typeOfRobotModel =
+//			static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 //	initRobotModelType(typeOfRobotModel);
+
+//	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
+//	initTypeOfCommunication(typeOfCommunication);
+
+	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
+	mUi->enableEnginesNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfEngines").toBool());
+	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
+
+	int const sensorsUpdateDefault = utils::sensorsGraph::SensorsGraph::readSensorDefaultInterval;
+	int const autoscalingDefault = utils::sensorsGraph::SensorsGraph::autoscalingDefault;
+	int const textUpdateDefault = utils::sensorsGraph::SensorsGraph::textUpdateDefault;
+	mUi->sensorUpdateSpinBox->setValue(SettingsManager::value("sensorUpdateInterval", sensorsUpdateDefault).toInt());
+	mUi->autoScalingSpinBox->setValue(SettingsManager::value("autoscalingInterval", autoscalingDefault).toInt());
+	mUi->textUpdaterSpinBox->setValue(SettingsManager::value("textUpdateInterval", textUpdateDefault).toInt());
+
+	mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("nxtFlashToolRunPolicy").toInt());
 }
 
 void RobotsSettingsPage::changeEvent(QEvent *e)
@@ -78,6 +97,21 @@ void RobotsSettingsPage::changeEvent(QEvent *e)
 	}
 	default:
 		break;
+	}
+}
+
+void RobotsSettingsPage::initMultipleRadioButtons()
+{
+	for (QString const &kitName : mKitPluginManager.kitIds()) {
+		QRadioButton * const kitRadioButton = new QRadioButton;
+		kitRadioButton->setText(kitName);
+		if (mUi->constructorKitGroupBox->layout()->count() == 1) {
+			kitRadioButton->setChecked(true);
+		}
+
+		static_cast<QVBoxLayout *>(mUi->constructorKitGroupBox->layout())->insertWidget(
+				mUi->constructorKitGroupBox->layout()->count() - 1, kitRadioButton);
+		mKitRadioButtons->addButton(kitRadioButton);
 	}
 }
 

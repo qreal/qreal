@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtWidgets/QButtonGroup>
+
 #include <qrgui/dialogs/preferencesPages/preferencesPage.h>
 
 //#include "sensorConstants.h"
@@ -32,10 +34,13 @@ protected:
 	void changeEvent(QEvent *e);
 
 private:
+	void initMultipleRadioButtons();
+
 	QString selectedKit() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 	KitPluginManager &mKitPluginManager;
+	QButtonGroup *mKitRadioButtons;  // Takes ownership
 };
 
 }
