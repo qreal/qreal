@@ -26,9 +26,6 @@ public:
 	/// List of tool widgets specific to this plugin which will be added as dock windows to an interface.
 //	virtual QList<QWidget *> toolWidgets() const = 0;
 
-	/// Unique identifiers of sensors supported by this plugin.
-//	virtual QList<SensorId> sensorIds() const = 0;
-
 	/// A list of additional blocks whose implementations are provided by this plugin or shall override defaults.
 //	virtual qReal::IdList specificBlocks() const = 0;
 

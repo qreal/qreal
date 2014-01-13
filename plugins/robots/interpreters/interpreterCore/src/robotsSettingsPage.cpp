@@ -14,6 +14,7 @@ RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager, QWidg
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesRobotSettingsPage)
 		, mKitPluginManager(kitPluginManager)
+		, mKitRadioButtons(new QButtonGroup(this))
 {
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);

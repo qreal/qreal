@@ -9,7 +9,7 @@ QString NullKitInterpreterInterface::kitId() const
 
 QWidget *NullKitInterpreterInterface::settingsWidget() const
 {
-	return NULL;
+	return nullptr;
 }
 
 //QList<QWidget *> NullKitInterpreterInterface::toolWidgets() const

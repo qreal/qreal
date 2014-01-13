@@ -25,9 +25,6 @@ public:
 //	virtual QList<QWidget *> toolWidgets() const;
 
 	// Override.
-//	virtual QList<robotsInterpreterCore::SensorId> sensorIds() const;
-
-	// Override.
 	virtual qReal::IdList specificBlocks() const;
 
 	// Override.
