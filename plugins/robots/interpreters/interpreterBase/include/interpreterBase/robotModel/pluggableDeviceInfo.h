@@ -20,7 +20,8 @@ public:
 		// This line performs Q_OBJECT macro checking in the given type declaration.
 		// Without Q_OBJECT macro incorrect metaObject will be passed and it will lead
 		// to invalid isA() method work.
-		reinterpret_cast<T *>(0)->qt_check_for_QOBJECT_macro(*reinterpret_cast<T *>(0));
+		static_assert(HasQObjectMacro<T>::Value,
+				"No Q_OBJECT macro in the class that is passed into a template");
 		return PluggableDeviceInfo(&T::staticMetaObject, friendlyName);
 	}
 
@@ -31,6 +32,15 @@ public:
 	QString friendlyName() const;
 
 private:
+	/// Trait that tells if the Object has a Q_OBJECT macro.
+	template <typename Object>
+	struct HasQObjectMacro {
+		template <typename T>
+		static char test(int (T::*)(QMetaObject::Call, int, void **));
+		static int test(int (Object::*)(QMetaObject::Call, int, void **));
+		enum { Value = sizeof(test(&Object::qt_metacall)) == sizeof(int) };
+	};
+
 	friend bool operator ==(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2);
 	friend bool operator !=(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2);
 
