@@ -3,6 +3,7 @@
 #include <QtCore/QObject>
 
 #include <interpreterBase/kitPluginInterface.h>
+#include <interpreterBase/robotModel/commonRobotModel.h>
 
 namespace qrTest {
 namespace mockKitPlugin2 {
@@ -11,18 +12,22 @@ class MockKitPlugin2Interface : public QObject, public interpreterBase::KitPlugi
 {
 	Q_OBJECT
 	Q_INTERFACES(interpreterBase::KitPluginInterface)
-	Q_PLUGIN_METADATA(IID "mockKitPlugin2.MockKitPlugin1Interface")
+	Q_PLUGIN_METADATA(IID "mockKitPlugin2.MockKitPlugin2Interface")
 
 public:
-	// Override.
-	virtual QString kitId() const;
+	QString kitId() const override;
 
-	// Override.
+	QString friendlyKitName() const override;
+
+	virtual interpreterBase::robotModel::RobotModelInterface &robotModel() override;
+
 	// Transfers ownership.
-	virtual QWidget *settingsWidget() const;
+	QWidget *settingsWidget() const override;
 
-	// Override.
-	virtual qReal::IdList unsupportedBlocks() const;
+	qReal::IdList unsupportedBlocks() const override;
+
+private:
+	interpreterBase::robotModel::CommonRobotModel mRobotModel;
 };
 
 }

@@ -17,17 +17,18 @@ QList<PortInfo> NxtRobotModelBase::availablePorts() const
 
 QList<PluggableDeviceInfo> NxtRobotModelBase::supportedSensors() const
 {
+	// TODO: use kit name from common place
 	return QList<PluggableDeviceInfo>()
-		<< PluggableDeviceInfo("touchBool", tr("Touch sensor (boolean value)"))
-		<< PluggableDeviceInfo("touchRaw", tr("Touch sensor (raw value)"))
-		<< PluggableDeviceInfo("sonar", tr("Sonar sensor"))
-		<< PluggableDeviceInfo("loght", tr("Light sensor"))
-		<< PluggableDeviceInfo("colorFull", tr("Color sensor (full colors)"))
-		<< PluggableDeviceInfo("colorRed", tr("Color sensor (red)"))
-		<< PluggableDeviceInfo("colorGreen", tr("Color sensor (green)"))
-		<< PluggableDeviceInfo("colorBlue", tr("Color sensor (blue)"))
-		<< PluggableDeviceInfo("colorPassive", tr("Color sensor (passive)"))
-		<< PluggableDeviceInfo("sound", tr("Sound sensor"))
-		<< PluggableDeviceInfo("gyroscope", tr("Gyroscope"));
+		<< PluggableDeviceInfo("nxtKit", "touchBool", tr("Touch sensor (boolean value)"))
+		<< PluggableDeviceInfo("nxtKit", "touchRaw", tr("Touch sensor (raw value)"))
+		<< PluggableDeviceInfo("nxtKit", "sonar", tr("Sonar sensor"))
+		<< PluggableDeviceInfo("nxtKit", "light", tr("Light sensor"))
+		<< PluggableDeviceInfo("nxtKit", "colorFull", tr("Color sensor (full colors)"))
+		<< PluggableDeviceInfo("nxtKit", "colorRed", tr("Color sensor (red)"))
+		<< PluggableDeviceInfo("nxtKit", "colorGreen", tr("Color sensor (green)"))
+		<< PluggableDeviceInfo("nxtKit", "colorBlue", tr("Color sensor (blue)"))
+		<< PluggableDeviceInfo("nxtKit", "colorPassive", tr("Color sensor (passive)"))
+		<< PluggableDeviceInfo("nxtKit", "sound", tr("Sound sensor"))
+		<< PluggableDeviceInfo("nxtKit", "gyroscope", tr("Gyroscope"));
 		// << PluggableDeviceInfo("accelerometer", tr("Accelerometer"));
 }

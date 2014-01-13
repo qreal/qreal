@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += plugin
+CONFIG += plugin c++11
 DESTDIR = ../../../../../../../bin/plugins/unittests/
 
 QT += widgets

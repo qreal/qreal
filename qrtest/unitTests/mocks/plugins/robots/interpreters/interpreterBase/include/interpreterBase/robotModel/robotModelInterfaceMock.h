@@ -1,7 +1,7 @@
 #pragma once
 
 #include <interpreterBase/robotModel/robotModelInterface.h>
-#include <interpreterBase/robotModel/abstractConfiguration.h>
+#include <interpreterBase/robotModel/configuration.h>
 
 #include <gmock/gmock.h>
 
