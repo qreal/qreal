@@ -20,5 +20,12 @@ private:
 	QString const mFriendlyName;
 };
 
+inline bool operator ==(PluggableDeviceInfo const &left, PluggableDeviceInfo const &right)
+{
+	return left.id() == right.id()
+			&& left.friendlyName() == right.friendlyName()
+			;
+}
+
 }
 }
