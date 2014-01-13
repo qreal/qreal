@@ -25,7 +25,7 @@
 #include "controller/commands/changeParentCommand.h"
 #include "controller/commands/renameCommand.h"
 #include "controller/commands/insertIntoEdgeCommand.h"
-#include "../controller/commands/renameCommand.h"
+#include "controller/commands/renameCommand.h"
 
 using namespace qReal;
 using namespace qReal::commands;
