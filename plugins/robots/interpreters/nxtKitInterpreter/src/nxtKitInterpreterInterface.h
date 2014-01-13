@@ -8,7 +8,7 @@ class NxtKitInterpreterInterface : public QObject, public interpreterBase::KitPl
 {
 	Q_OBJECT
 	Q_INTERFACES(interpreterBase::KitPluginInterface)
-	Q_PLUGIN_METADATA(IID "nullKitInterpreter.NxtKitInterpreterInterface")
+	Q_PLUGIN_METADATA(IID "nxtKitInterpreter.NxtKitInterpreterInterface")
 
 public:
 	// Override.
