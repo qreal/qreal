@@ -21,16 +21,24 @@ public:
 		, output
 	};
 
+	virtual ~ConfigurationInterface() {}
+
 	virtual void configureDevice(robotParts::PluggableDevice const &device, PortInfo const &port) = 0;
 
-	virtual robotParts::PluggableDevice &pluggableDevice(
+	virtual void lockConfiguring() = 0;
+	virtual void unlockConfiguring() = 0;
+
+	/// Returns configured device on a given port or NULL if no device is configured there.
+	virtual robotParts::PluggableDevice *pluggableDevice(
 			PortInfo const &port
-			, PortDirection direction = defaultDirection) = 0;
+			, PortDirection direction = defaultDirection) const = 0;
 
 	// TODO: Implement some convenience methods that cast generic PluggableDevice to desired sensor/motor type.
 
+	virtual void clearDevice(PortInfo const &port) = 0;
+
 signals:
-	void sensorsConfigured();
+	void allDevicesConfigured();
 };
 
 }
