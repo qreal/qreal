@@ -6,8 +6,9 @@ using namespace interpreterBase::robotModel::robotParts;
 /// Timeout (in milliseconds) for sensor configuration.
 static int const configurationTimeout = 5000;
 
-PluggableDevice::PluggableDevice(PortInfo const &port)
-	: mPort(port)
+PluggableDevice::PluggableDevice(PluggableDeviceInfo const &info, PortInfo const &port)
+	: mInfo(info)
+	, mPort(port)
 {
 	mConfigurationTimeoutTimer.setSingleShot(true);
 	mConfigurationTimeoutTimer.setInterval(configurationTimeout);
@@ -25,7 +26,7 @@ PortInfo const &PluggableDevice::port() const
 
 PluggableDeviceInfo const &PluggableDevice::deviceInfo() const
 {
-	return PluggableDeviceInfo::create(*this);
+	return mInfo;
 }
 
 void PluggableDevice::configure()

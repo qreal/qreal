@@ -21,7 +21,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT PluggableDevice : public QObject
 public:
 	/// Constructor.
 	/// @param port - port on which this device shall be configured.
-	explicit PluggableDevice(PortInfo const &port);
+	explicit PluggableDevice(PluggableDeviceInfo const &info, PortInfo const &port);
 
 	virtual ~PluggableDevice();
 
@@ -56,6 +56,7 @@ private slots:
 	void configurationTimerTimeoutSlot();
 
 private:
+	PluggableDeviceInfo const &mInfo;
 	PortInfo mPort;
 	QTimer mConfigurationTimeoutTimer;
 };

@@ -4,7 +4,7 @@ using namespace qrTest::robotsTests::interpreterBaseTests;
 using namespace interpreterBase::robotModel;
 
 DummyPluggableDevice::DummyPluggableDevice(interpreterBase::robotModel::PortInfo const &port)
-	: PluggableDevice(port)
+	: PluggableDevice(PluggableDeviceInfo::create<DummyPluggableDevice>(), port)
 {
 }
 
