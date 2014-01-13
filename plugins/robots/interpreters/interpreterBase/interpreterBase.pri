@@ -14,19 +14,18 @@ HEADERS += \
 	$$PWD/src/blocks/details/finalBlock.h \
 	$$PWD/src/blocks/details/initialBlock.h \
 	$$PWD/src/robotModel/details/defaultRobotModel.h \
-	$$PWD/src/robotModel/details/defaultConfiguration.h \
 
 SOURCES += \
 	$$PWD/src/blocks/block.cpp \
 	$$PWD/src/blocks/blocksFactory.cpp \
 	$$PWD/src/blocks/details/finalBlock.cpp \
 	$$PWD/src/blocks/details/initialBlock.cpp \
-	$$PWD/src/robotModel/abstractConfiguration.cpp \
+	$$PWD/src/robotModel/configuration.cpp \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/portInfo.cpp \
 	$$PWD/src/robotModel/proxyRobotModel.cpp \
 	$$PWD/src/robotModel/details/defaultRobotModel.cpp \
-	$$PWD/src/robotModel/details/defaultConfiguration.cpp \
+	$$PWD/src/robotModel/robotParts/pluggableDevice.cpp \
 
 HEADERS += \
 	$$PWD/include/interpreterBase/interpreterBaseDeclSpec.h \
@@ -36,7 +35,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/blocks/blockParserInterface.h \
 	$$PWD/include/interpreterBase/blocks/blocksTableInterface.h \
 	$$PWD/include/interpreterBase/blocks/blocksFactoryInterface.h \
-	$$PWD/include/interpreterBase/robotModel/abstractConfiguration.h \
+	$$PWD/include/interpreterBase/robotModel/configuration.h \
 	$$PWD/include/interpreterBase/robotModel/commonRobotModel.h \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \
 	$$PWD/include/interpreterBase/robotModel/portInfo.h \

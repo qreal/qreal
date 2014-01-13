@@ -1,6 +1,6 @@
 #include "interpreterBase/robotModel/commonRobotModel.h"
 
-#include "interpreterBase/robotModel/abstractConfiguration.h"
+#include "interpreterBase/robotModel/configuration.h"
 
 using namespace interpreterBase::robotModel;
 
@@ -301,7 +301,7 @@ void CommonRobotModel::disconnectFromRobot()
 ConfigurationInterface &CommonRobotModel::configuration()
 {
 	// TODO: Implement
-	AbstractConfiguration configuration;
+	Configuration configuration;
 	return configuration;
 }
 

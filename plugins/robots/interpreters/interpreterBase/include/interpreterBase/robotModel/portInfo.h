@@ -2,6 +2,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QStringList>
+#include <QtCore/QHash>
 
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
@@ -30,6 +31,23 @@ private:
 	QStringList const mNameAliases;
 	Direction const mDirection;
 };
+
+inline bool operator ==(PortInfo const &left, PortInfo const &right)
+{
+	return left.direction() == right.direction()
+			&& left.name() == right.name()
+			&& left.nameAliases() == right.nameAliases();
+}
+
+inline bool operator !=(PortInfo const &left, PortInfo const &right)
+{
+	return !(left == right);
+}
+
+inline uint qHash(PortInfo const &key)
+{
+	return key.direction() ^ qHash(key.name());
+}
 
 }
 }
