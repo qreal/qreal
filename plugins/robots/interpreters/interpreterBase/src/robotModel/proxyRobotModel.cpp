@@ -36,3 +36,13 @@ robotParts::Display &ProxyRobotModel::display()
 {
 	return mProxiedModel->display();
 }
+
+QList<PortInfo> ProxyRobotModel::availablePorts() const
+{
+	return mProxiedModel->availablePorts();
+}
+
+QList<PluggableDeviceInfo> ProxyRobotModel::supportedSensors() const
+{
+	return mProxiedModel->supportedSensors();
+}

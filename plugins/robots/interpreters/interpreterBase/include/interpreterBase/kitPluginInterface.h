@@ -5,6 +5,7 @@
 #include <QtWidgets/QWidget>
 
 #include <interpreterBase/blocks/block.h>
+#include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace interpreterBase {
 
@@ -19,6 +20,11 @@ public:
 
 	/// String that will be displayed to users as the name of the kit.
 	virtual QString friendlyKitName() const = 0;
+
+	/// Returns a robot model of the kit. The returned pointer is memorised so robot model switching
+	/// should be handled through the ProxyRobotModel class.
+	/// @see ProxyRobotModel
+	virtual robotModel::RobotModelInterface &robotModel() = 0;
 
 	// Transfers ownership.
 	/// Widget with specific settings for a plugin.

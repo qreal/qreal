@@ -16,8 +16,8 @@ public:
 	QString friendlyName() const;
 
 private:
-	QString const mId;
-	QString const mFriendlyName;
+	QString mId;
+	QString mFriendlyName;
 };
 
 inline bool operator ==(PluggableDeviceInfo const &left, PluggableDeviceInfo const &right)
