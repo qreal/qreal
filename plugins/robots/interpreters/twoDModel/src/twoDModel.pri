@@ -8,6 +8,9 @@ INCLUDEPATH += \
 LIBS += -L$$PWD/../../../../../bin/ -lqrkernel -lqrutils
 
 HEADERS += \
+	$$PWD/../include/configurer.h \
+
+HEADERS += \
 	$$PWD/d2ModelWidget.h \
 	$$PWD/d2ModelScene.h \
 	$$PWD/d2RobotModel.h \

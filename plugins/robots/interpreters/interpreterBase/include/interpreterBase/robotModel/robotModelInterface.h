@@ -7,6 +7,7 @@
 #include "interpreterBase/robotModel/robotParts/pluggableDevice.h"
 #include "interpreterBase/robotModel/robotParts/brick.h"
 #include "interpreterBase/robotModel/robotParts/display.h"
+#include "interpreterBase/robotModel/pluggableDeviceInfo.h"
 
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
@@ -28,6 +29,9 @@ public:
 
 	virtual robotParts::Brick &brick() = 0;
 	virtual robotParts::Display &display() = 0;
+
+	virtual QList<PortInfo> availablePorts() const = 0;
+	virtual QList<PluggableDeviceInfo> supportedSensors() const = 0;
 
 signals:
 	void connected(bool success);

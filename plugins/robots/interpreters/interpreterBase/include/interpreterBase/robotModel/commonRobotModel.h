@@ -23,6 +23,9 @@ public:
 
 	robotParts::Brick &brick() override;
 	robotParts::Display &display() override;
+
+	virtual QList<PortInfo> availablePorts() const override;
+	virtual QList<PluggableDeviceInfo> supportedSensors() const override;
 };
 
 }

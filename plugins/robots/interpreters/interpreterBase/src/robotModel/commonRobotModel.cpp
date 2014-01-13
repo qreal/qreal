@@ -318,3 +318,14 @@ robotParts::Display &CommonRobotModel::display()
 	robotParts::Display display;
 	return display;
 }
+
+QList<PortInfo> CommonRobotModel::availablePorts() const
+{
+	return QList<PortInfo>();
+}
+
+QList<PluggableDeviceInfo> CommonRobotModel::supportedSensors() const
+{
+	return QList<PluggableDeviceInfo>();
+}
+
