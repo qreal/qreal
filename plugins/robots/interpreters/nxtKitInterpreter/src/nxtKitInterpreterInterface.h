@@ -1,7 +1,6 @@
 #pragma once
 
 #include <interpreterBase/kitPluginInterface.h>
-#include <interpreterBase/robotModel/proxyRobotModel.h>
 
 namespace nxtKitInterpreter {
 
@@ -12,27 +11,21 @@ class NxtKitInterpreterInterface : public QObject, public interpreterBase::KitPl
 	Q_PLUGIN_METADATA(IID "nxtKitInterpreter.NxtKitInterpreterInterface")
 
 public:
-	// Override.
-	virtual QString kitId() const override;
+	QString kitId() const override;
 
-	// Override.
-	virtual QString friendlyKitName() const override;
+	QString friendlyKitName() const override;
 
-	// Override
-	virtual interpreterBase::robotModel::RobotModelInterface &robotModel() override;
+	interpreterBase::robotModel::RobotModelInterface *realRobotModel() override;
 
-	// Override.
+	interpreterBase::robotModel::RobotModelInterface *twoDRobotModel() override;
+
 	// Transfers ownership.
-	virtual QWidget *settingsWidget() const override;
+	QWidget *settingsWidget() const override;
+
+//	qReal::IdList specificBlocks() const override;
 
 	// Override.
-	virtual qReal::IdList specificBlocks() const;
-
-	// Override.
-	virtual qReal::IdList unsupportedBlocks() const;
-
-private:
-	interpreterBase::robotModel::ProxyRobotModel mRobotModel;
+	qReal::IdList unsupportedBlocks() const override;
 };
 
 }

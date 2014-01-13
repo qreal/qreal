@@ -14,7 +14,7 @@ class PluggableDeviceInfo
 public:
 	/// Creates a new instance of a PluggableDevice descriptor. The resulting object will
 	/// correspond to a given type only if Q_OBJECT macro is used inside its declaration.
-	template<typename T>
+	template <typename T>
 	static PluggableDeviceInfo create(QString const &friendlyName = QString())
 	{
 		// This line performs Q_OBJECT macro checking in the given type declaration.

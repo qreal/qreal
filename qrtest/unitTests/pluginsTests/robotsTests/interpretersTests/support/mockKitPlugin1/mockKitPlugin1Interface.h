@@ -15,19 +15,19 @@ class MockKitPlugin1Interface : public QObject, public interpreterBase::KitPlugi
 	Q_PLUGIN_METADATA(IID "mockKitPlugin1.MockKitPlugin1Interface")
 
 public:
-	virtual QString kitId() const override;
+	QString kitId() const override;
 
-	virtual QString friendlyKitName() const override;
+	QString friendlyKitName() const override;
 
-	virtual interpreterBase::robotModel::RobotModelInterface &robotModel() override;
-
-	// Transfers ownership.
-	virtual QWidget *settingsWidget() const override;
-
-	virtual qReal::IdList unsupportedBlocks() const override;
+	interpreterBase::robotModel::RobotModelInterface *realRobotModel() override;
 
 	// Transfers ownership.
-//	virtual QList<QWidget *> toolWidgets() const;
+	QWidget *settingsWidget() const override;
+
+	qReal::IdList unsupportedBlocks() const override;
+
+	// Transfers ownership.
+	// QList<QWidget *> toolWidgets() const override;
 
 private:
 	interpreterBase::robotModel::CommonRobotModel mRobotModel;

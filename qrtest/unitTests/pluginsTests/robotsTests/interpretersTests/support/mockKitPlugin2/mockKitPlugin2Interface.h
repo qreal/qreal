@@ -19,7 +19,7 @@ public:
 
 	QString friendlyKitName() const override;
 
-	virtual interpreterBase::robotModel::RobotModelInterface &robotModel() override;
+	interpreterBase::robotModel::RobotModelInterface *realRobotModel() override;
 
 	// Transfers ownership.
 	QWidget *settingsWidget() const override;

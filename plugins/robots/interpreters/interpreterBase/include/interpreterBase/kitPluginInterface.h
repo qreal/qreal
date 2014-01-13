@@ -21,10 +21,19 @@ public:
 	/// String that will be displayed to users as the name of the kit.
 	virtual QString friendlyKitName() const = 0;
 
-	/// Returns a robot model of the kit. The returned pointer is memorised so robot model switching
-	/// should be handled through the ProxyRobotModel class.
-	/// @see ProxyRobotModel
-	virtual robotModel::RobotModelInterface &robotModel() = 0;
+	/// Returns a model that communicates with the real robot. Nullptr as result (default behaviour)
+	/// means that this kit plugin does not provide real robot communication.
+	virtual robotModel::RobotModelInterface *realRobotModel()
+	{
+		return nullptr;
+	}
+
+	/// Returns a model that communicates with the 2D model emulator. Nullptr as result (default behaviour)
+	/// means that this kit plugin does not provide 2D model robot communication.
+	virtual robotModel::RobotModelInterface *twoDRobotModel()
+	{
+		return nullptr;
+	}
 
 	// Transfers ownership.
 	/// Widget with specific settings for a plugin.

@@ -14,28 +14,21 @@ class NullKitInterpreterInterface : public QObject, public interpreterBase::KitP
 	Q_PLUGIN_METADATA(IID "nullKitInterpreter.NullKitInterpreterInterface")
 
 public:
-	// Override.
-	virtual QString kitId() const;
+	QString kitId() const override;
 
-	// Override.
-	virtual QString friendlyKitName() const override;
+	QString friendlyKitName() const override;
 
-	// Override
-	virtual interpreterBase::robotModel::RobotModelInterface &robotModel() override;
+	interpreterBase::robotModel::RobotModelInterface *realRobotModel() override;
 
-	// Override.
 	// Transfers ownership.
-	virtual QWidget *settingsWidget() const;
+	QWidget *settingsWidget() const override;
 
-	// Override.
 	// Transfers ownership.
 //	virtual QList<QWidget *> toolWidgets() const;
 
-	// Override.
-	virtual qReal::IdList specificBlocks() const;
+//	qReal::IdList specificBlocks() const override;
 
-	// Override.
-	virtual qReal::IdList unsupportedBlocks() const;
+	qReal::IdList unsupportedBlocks() const override;
 
 private:
 	NullRobotModel mRobotModel;
