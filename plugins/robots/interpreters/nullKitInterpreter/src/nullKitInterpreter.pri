@@ -1,11 +1,11 @@
 QT += widgets
 
 INCLUDEPATH += \
-	../interpreterBase/include \
-	../../../../ \
-	$$PWD/../../../../qrgui/ \
+	$$PWD/../../interpreterBase/include \
+	$$PWD/../../../../../ \
+	$$PWD/../../../../../qrgui/ \
 
-LIBS += -L../../../../bin -linterpreterBase
+LIBS += -L$$PWD/../../../../../bin -linterpreterBase
 
 
 HEADERS += \
