@@ -13,6 +13,7 @@ public:
 	template<typename T>
 	static PluggableDeviceInfo create(QString const &friendlyName = QString())
 	{
+		reinterpret_cast<T *>(0)->qt_check_for_QOBJECT_macro(*reinterpret_cast<T *>(0));
 		return PluggableDeviceInfo(&T::staticMetaObject, friendlyName);
 	}
 
