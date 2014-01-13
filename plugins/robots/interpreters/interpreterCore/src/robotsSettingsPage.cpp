@@ -14,6 +14,7 @@ RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager, QWidg
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesRobotSettingsPage)
 		, mKitPluginManager(kitPluginManager)
+		, mKitRadioButtons(new QButtonGroup(this))
 {
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
@@ -102,9 +103,10 @@ void RobotsSettingsPage::changeEvent(QEvent *e)
 
 void RobotsSettingsPage::initMultipleRadioButtons()
 {
-	for (QString const &kitName : mKitPluginManager.kitIds()) {
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		interpreterBase::KitPluginInterface const &kit = mKitPluginManager.kitById(kitId);
 		QRadioButton * const kitRadioButton = new QRadioButton;
-		kitRadioButton->setText(kitName);
+		kitRadioButton->setText(kit.friendlyKitName());
 		if (mUi->constructorKitGroupBox->layout()->count() == 1) {
 			kitRadioButton->setChecked(true);
 		}

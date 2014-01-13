@@ -810,7 +810,7 @@ qreal NodeElement::portId(QPointF const &location, QStringList const &types) con
 qreal NodeElement::shortestDistanceToPort(QPointF const &location, QStringList const &types) const
 {
 	QPointF const nearestPortPoint = mPortHandler->nearestPort(location, types);
-	return mathUtils::Geometry::distance(location, mapToScene(nearestPortPoint));
+	return utils::Geometry::distance(location, mapToScene(nearestPortPoint));
 }
 
 void NodeElement::setPortsVisible(QStringList const &types)

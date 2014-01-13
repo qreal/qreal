@@ -4,8 +4,13 @@ SUBDIRS = \
 	interpreterCore \
 	interpreterBase \
 	nullKitInterpreter \
-#	nxtRobotsInterpreter \
+	nxtKitInterpreter \
+	twoDModel \
+	utils \
 
 interpreterCore.depends = interpreterBase
 nullKitInterpreter.depends = interpreterBase
-#nxtRobotsInterpreter.depends = interpreterBase
+nxtKitInterpreter.depends = interpreterBase
+nxtKitInterpreter.depends = twoDModel
+interpretersBase.depends = utils
+twoDModel.depends = utils

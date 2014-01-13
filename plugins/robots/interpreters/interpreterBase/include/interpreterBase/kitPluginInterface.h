@@ -17,6 +17,9 @@ public:
 	/// Unique identifier of constructor kit.
 	virtual QString kitId() const = 0;
 
+	/// String that will be displayed to users as the name of the kit.
+	virtual QString friendlyKitName() const = 0;
+
 	// Transfers ownership.
 	/// Widget with specific settings for a plugin.
 	// TODO: It actually is PreferencesPage, because it needs to save and load settings.
@@ -25,9 +28,6 @@ public:
 	// Transfers ownership.
 	/// List of tool widgets specific to this plugin which will be added as dock windows to an interface.
 //	virtual QList<QWidget *> toolWidgets() const = 0;
-
-	/// Unique identifiers of sensors supported by this plugin.
-//	virtual QList<SensorId> sensorIds() const = 0;
 
 	/// A list of additional blocks whose implementations are provided by this plugin or shall override defaults.
 //	virtual qReal::IdList specificBlocks() const = 0;

@@ -17,15 +17,15 @@ public:
 	virtual QString kitId() const;
 
 	// Override.
+	virtual QString friendlyKitName() const override;
+
+	// Override.
 	// Transfers ownership.
 	virtual QWidget *settingsWidget() const;
 
 	// Override.
 	// Transfers ownership.
 //	virtual QList<QWidget *> toolWidgets() const;
-
-	// Override.
-//	virtual QList<robotsInterpreterCore::SensorId> sensorIds() const;
 
 	// Override.
 	virtual qReal::IdList specificBlocks() const;

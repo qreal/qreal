@@ -18,8 +18,6 @@ HEADERS += \
 	$$PWD/src/interpreter/details/blocksTable.h \
 	$$PWD/src/interpreter/details/robotsBlockParser.h \
 	$$PWD/src/interpreter/details/thread.h \
-	$$PWD/src/utils/tracer.h \
-	$$PWD/src/utils/debugHelper.h \
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
@@ -31,8 +29,6 @@ SOURCES += \
 	$$PWD/src/interpreter/details/blocksTable.cpp \
 	$$PWD/src/interpreter/details/robotsBlockParser.cpp \
 	$$PWD/src/interpreter/details/thread.cpp \
-	$$PWD/src/utils/tracer.cpp \
-	$$PWD/src/utils/debugHelper.cpp \
 
 FORMS += \
 	$$PWD/src/robotsSettingsPage.ui \
