@@ -48,6 +48,15 @@ QList<QString> KitPluginManager::kitIds() const
 	return mPluginInterfaces.keys();
 }
 
+interpreterBase::KitPluginInterface &KitPluginManager::kitById(QString const &kitId)
+{
+	if (!mPluginInterfaces.contains(kitId)) {
+		throw qReal::Exception("Requesting non-existing kit plugin");
+	}
+
+	return *mPluginInterfaces[kitId];
+}
+
 void KitPluginManager::selectKit(QString const &kitId)
 {
 	if (!mPluginInterfaces.contains(kitId)) {

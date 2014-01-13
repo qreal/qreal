@@ -7,6 +7,11 @@ QString NullKitInterpreterInterface::kitId() const
 	return "nullKit";
 }
 
+QString NullKitInterpreterInterface::friendlyKitName() const
+{
+	return tr("Lego NXT");
+}
+
 QWidget *NullKitInterpreterInterface::settingsWidget() const
 {
 	return nullptr;

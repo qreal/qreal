@@ -7,6 +7,11 @@ QString NxtKitInterpreterInterface::kitId() const
 	return "nxtKit";
 }
 
+QString NxtKitInterpreterInterface::friendlyKitName() const
+{
+	return tr("Empty Kit");
+}
+
 QWidget *NxtKitInterpreterInterface::settingsWidget() const
 {
 	return nullptr;

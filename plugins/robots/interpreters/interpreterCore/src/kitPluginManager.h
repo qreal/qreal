@@ -21,9 +21,11 @@ public:
 
 	QList<QString> kitIds() const;
 
-	void selectKit(QString const &kitId);
+	interpreterBase::KitPluginInterface &kitById(QString const &kitId);
 
 	interpreterBase::KitPluginInterface &selectedKit();
+
+	void selectKit(QString const &kitId);
 
 private:
 	/// Maps kit plugin name to corresponding plugin interface.

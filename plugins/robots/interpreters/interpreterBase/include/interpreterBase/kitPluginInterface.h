@@ -17,6 +17,9 @@ public:
 	/// Unique identifier of constructor kit.
 	virtual QString kitId() const = 0;
 
+	/// String that will be displayed to users as the name of the kit.
+	virtual QString friendlyKitName() const = 0;
+
 	// Transfers ownership.
 	/// Widget with specific settings for a plugin.
 	// TODO: It actually is PreferencesPage, because it needs to save and load settings.

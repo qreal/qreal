@@ -17,6 +17,9 @@ public:
 	virtual QString kitId() const;
 
 	// Override.
+	virtual QString friendlyKitName() const override;
+
+	// Override.
 	// Transfers ownership.
 	virtual QWidget *settingsWidget() const;
 
