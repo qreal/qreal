@@ -3,6 +3,7 @@
 #include <QtCore/QObject>
 
 #include <interpreterBase/kitPluginInterface.h>
+#include "nullRobotModel.h"
 
 namespace nullKitInterpreter {
 
@@ -19,6 +20,9 @@ public:
 	// Override.
 	virtual QString friendlyKitName() const override;
 
+	// Override
+	virtual interpreterBase::robotModel::RobotModelInterface &robotModel() override;
+
 	// Override.
 	// Transfers ownership.
 	virtual QWidget *settingsWidget() const;
@@ -32,6 +36,9 @@ public:
 
 	// Override.
 	virtual qReal::IdList unsupportedBlocks() const;
+
+private:
+	NullRobotModel mRobotModel;
 };
 
 }

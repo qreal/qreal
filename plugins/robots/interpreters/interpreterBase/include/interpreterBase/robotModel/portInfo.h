@@ -12,23 +12,23 @@ class ROBOTS_INTERPRETER_BASE_EXPORT PortInfo
 {
 public:
 	enum Direction {
-		input
+		input = 0
 		, output
 		, inOut
 	};
 
-	PortInfo(QString const &name, QStringList const &nameAliases, Direction direction);
+	PortInfo(QString const &name, Direction direction, QStringList const &nameAliases = QStringList());
 
-	QString const &name() const;
-
-	QStringList const &nameAliases() const;
+	QString name() const;
 
 	Direction direction() const;
 
+	QStringList nameAliases() const;
+
 private:
-	QString const mName;
-	QStringList const mNameAliases;
-	Direction const mDirection;
+	QString mName;
+	Direction mDirection;
+	QStringList mNameAliases;
 };
 
 }

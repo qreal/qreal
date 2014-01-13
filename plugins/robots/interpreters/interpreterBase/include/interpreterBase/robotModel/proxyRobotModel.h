@@ -23,6 +23,9 @@ public:
 	robotParts::Brick &brick() override;
 	robotParts::Display &display() override;
 
+	virtual QList<interpreterBase::robotModel::PortInfo> availablePorts() const override;
+	virtual QList<interpreterBase::robotModel::PluggableDeviceInfo> supportedSensors() const override;
+
 private:
 	QScopedPointer<RobotModelInterface> mProxiedModel;
 };

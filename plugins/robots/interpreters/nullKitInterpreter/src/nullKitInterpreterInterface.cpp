@@ -12,6 +12,11 @@ QString NullKitInterpreterInterface::friendlyKitName() const
 	return tr("Lego NXT");
 }
 
+interpreterBase::robotModel::RobotModelInterface &NullKitInterpreterInterface::robotModel()
+{
+	return mRobotModel;
+}
+
 QWidget *NullKitInterpreterInterface::settingsWidget() const
 {
 	return nullptr;

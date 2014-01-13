@@ -6,7 +6,8 @@
 namespace interpreterBase {
 namespace robotModel {
 
-class ROBOTS_INTERPRETER_BASE_EXPORT CommonRobotModel : public RobotModelInterface {
+class ROBOTS_INTERPRETER_BASE_EXPORT CommonRobotModel : public RobotModelInterface
+{
 	Q_OBJECT
 
 public:

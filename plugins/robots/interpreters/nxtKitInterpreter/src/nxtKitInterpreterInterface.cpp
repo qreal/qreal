@@ -12,6 +12,11 @@ QString NxtKitInterpreterInterface::friendlyKitName() const
 	return tr("Empty Kit");
 }
 
+interpreterBase::robotModel::RobotModelInterface &NxtKitInterpreterInterface::robotModel()
+{
+	return mRobotModel;
+}
+
 QWidget *NxtKitInterpreterInterface::settingsWidget() const
 {
 	return nullptr;
