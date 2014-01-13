@@ -9,7 +9,7 @@ using namespace interpreterBase::robotModel::robotParts;
 
 TEST_F(PluggableDeviceTest, portTest)
 {
-	PortInfo port("JM1", {"A"}, PortInfo::output);
+	PortInfo port("JM1", PortInfo::output, {"A"});
 	DummyPluggableDevice device(port);
 
 	PortInfo result = device.port();
