@@ -14,9 +14,11 @@ public:
 	MOCK_METHOD0(stopRobot, void());
 	MOCK_METHOD0(disconnectFromRobot, void());
 	MOCK_CONST_METHOD0(needsConnection, bool());
-	MOCK_METHOD0(configuration, interpreterBase::robotModel::AbstractConfiguration&());
+	MOCK_METHOD0(configuration, interpreterBase::robotModel::Configuration&());
 	MOCK_METHOD0(brick, interpreterBase::robotModel::robotParts::Brick&());
 	MOCK_METHOD0(display, interpreterBase::robotModel::robotParts::Display&());
+	MOCK_CONST_METHOD0(availablePorts, QList<interpreterBase::robotModel::PortInfo>());
+	MOCK_CONST_METHOD0(supportedSensors, QList<interpreterBase::robotModel::PluggableDeviceInfo>());
 };
 
 }

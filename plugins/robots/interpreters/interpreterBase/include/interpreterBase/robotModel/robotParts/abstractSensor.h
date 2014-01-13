@@ -9,6 +9,8 @@ namespace robotParts {
 
 class ROBOTS_INTERPRETER_BASE_EXPORT AbstractSensor : public PluggableDevice
 {
+	Q_OBJECT
+
 public:
 	virtual ~AbstractSensor() {}
 

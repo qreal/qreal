@@ -23,7 +23,7 @@ public:
 
 	virtual ~ConfigurationInterface() {}
 
-	virtual void configureDevice(robotParts::PluggableDevice const &device, PortInfo const &port) = 0;
+	virtual void configureDevice(robotParts::PluggableDevice * const device) = 0;
 
 	virtual void lockConfiguring() = 0;
 	virtual void unlockConfiguring() = 0;

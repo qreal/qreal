@@ -2,21 +2,20 @@
 
 using namespace interpreterBase::robotModel;
 
-PluggableDeviceInfo::PluggableDeviceInfo(QString const &kitId, QString const &id, QString const &friendlyName)
-	: mKitId(kitId)
-	, mId(id)
+PluggableDeviceInfo::PluggableDeviceInfo(QMetaObject const *deviceType, QString const &friendlyName)
+	: mDeviceType(deviceType)
 	, mFriendlyName(friendlyName)
 {
 }
 
-QString PluggableDeviceInfo::kitId() const
+bool PluggableDeviceInfo::isA(PluggableDeviceInfo const &parent) const
 {
-	return mKitId;
-}
+	QMetaObject const *currentParent = mDeviceType;
+	while (currentParent && QString(parent.mDeviceType->className()) != QString(currentParent->className())) {
+		currentParent = currentParent->superClass();
+	}
 
-QString PluggableDeviceInfo::id() const
-{
-	return mId;
+	return currentParent != nullptr;
 }
 
 QString PluggableDeviceInfo::friendlyName() const

@@ -1,20 +1,23 @@
 #include "pluggableDeviceInfoTest.h"
 
 #include <interpreterBase/robotModel/pluggableDeviceInfo.h>
+#include <interpreterBase/robotModel/robotParts/abstractSensor.h>
+#include <interpreterBase/robotModel/robotParts/motor.h>
 
 using namespace qrTest::robotsTests::interpreterBaseTests;
 using namespace interpreterBase::robotModel;
+using namespace interpreterBase::robotModel::robotParts;
 
 TEST_F(PluggableDeviceInfoTest, equalityTest)
 {
-	PluggableDeviceInfo const nxtTouchSensor1("nxtKit", "touch", "Friendly Name Is Ignored");
-	PluggableDeviceInfo const nxtTouchSensor2("nxtKit", "touch", "Touch Sensor With Other Friendly Name");
-	PluggableDeviceInfo const nxtGyroscope("nxtKit", "gyro", "Gyroscope");
-	PluggableDeviceInfo const trikTouchSensor1("trik", "touch", "Trik Touch Sensor");
-	PluggableDeviceInfo const emptyDevice("", "", "");
+	PluggableDeviceInfo const pluggableDevice = PluggableDeviceInfo::create<PluggableDevice>();
+	PluggableDeviceInfo const sensor1 = PluggableDeviceInfo::create<AbstractSensor>();
+	PluggableDeviceInfo const sensor2 = PluggableDeviceInfo::create<AbstractSensor>();
+	PluggableDeviceInfo const motor = PluggableDeviceInfo::create<Motor>();
 
-	ASSERT_EQ(nxtTouchSensor1, nxtTouchSensor2);
-	ASSERT_NE(nxtTouchSensor1, nxtGyroscope);
-	ASSERT_NE(nxtTouchSensor1, trikTouchSensor1);
-	ASSERT_NE(trikTouchSensor1, emptyDevice);
+	ASSERT_EQ(sensor1, sensor2);
+	ASSERT_TRUE(sensor1.isA(sensor1));
+	ASSERT_TRUE(sensor1.isA(pluggableDevice));
+	ASSERT_FALSE(pluggableDevice.isA(sensor1));
+	ASSERT_FALSE(motor.isA(sensor1));
 }

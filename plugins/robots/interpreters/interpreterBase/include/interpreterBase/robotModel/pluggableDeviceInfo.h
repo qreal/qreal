@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QMetaObject>
 
 namespace interpreterBase {
 namespace robotModel {
@@ -9,24 +10,35 @@ namespace robotModel {
 class PluggableDeviceInfo
 {
 public:
-	PluggableDeviceInfo(QString const &kitId, QString const &id, QString const &friendlyName);
+	template<typename T>
+	static PluggableDeviceInfo create(QString const &friendlyName = QString())
+	{
+		return PluggableDeviceInfo(&T::staticMetaObject, friendlyName);
+	}
 
-	QString kitId() const;
-	QString id() const;
+	template<typename T>
+	static PluggableDeviceInfo create(T const &deviceInstance)
+	{
+		return PluggableDeviceInfo(deviceInstance.metaObject(), QString());//deviceInstance.friendlyName());
+	}
+
+	bool isA(PluggableDeviceInfo const &parent) const;
+
 	QString friendlyName() const;
 
 private:
-	friend bool operator ==(PluggableDeviceInfo const &, PluggableDeviceInfo const &device2);
+	friend bool operator ==(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2);
 	friend bool operator !=(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2);
 
-	QString mKitId;
-	QString mId;
+	explicit PluggableDeviceInfo(QMetaObject const *deviceType, QString const &friendlyName);
+
+	QMetaObject const *mDeviceType;
 	QString mFriendlyName;
 };
 
 inline bool operator ==(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2)
 {
-	return device1.mKitId == device2.mKitId && device1.mId == device2.mId;
+	return QString(device1.mDeviceType->className()) == QString(device2.mDeviceType->className());
 }
 
 inline bool operator !=(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2)
