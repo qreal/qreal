@@ -12,9 +12,9 @@ QString MockKitPlugin2Interface::friendlyKitName() const
 	return "Mock Kit Plugin 2";
 }
 
-interpreterBase::robotModel::RobotModelInterface *MockKitPlugin2Interface::realRobotModel()
+QList<interpreterBase::robotModel::RobotModelInterface *> MockKitPlugin2Interface::robotModels()
 {
-	return &mRobotModel;
+	return QList<interpreterBase::robotModel::RobotModelInterface *>() << &mRobotModel;
 }
 
 QWidget *MockKitPlugin2Interface::settingsWidget() const
