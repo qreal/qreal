@@ -32,6 +32,8 @@ script:
   - git clean -dfx
   - qmake qrealTest.pro CONFIG+=debug
   - make 
+  - qmake qrealRobotsTest.pro CONFIG+=debug
+  - make 
   - cd ./bin
   - ls -A
   - ./exampleTests
