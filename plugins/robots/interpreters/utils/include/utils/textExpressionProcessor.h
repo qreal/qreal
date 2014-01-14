@@ -5,9 +5,11 @@
 #include <qrutils/expressionsParser/textExpressionProcessorBase.h>
 #include <qrutils/expressionsParser/number.h>
 
+#include "utilsDeclSpec.h"
+
 namespace utils {
 
-class TextExpressionProcessor : public utils::TextExpressionProcessorBase
+class ROBOTS_UTILS_EXPORT TextExpressionProcessor : public utils::TextExpressionProcessorBase
 {
 public:
 	explicit TextExpressionProcessor(QMap<QString, utils::Number> const &variables);

@@ -2,11 +2,13 @@
 
 #include <QtCore/QTimer>
 
-#include <utils/abstractTimer.h>
+#include "utils/abstractTimer.h"
+
+#include "utilsDeclSpec.h"
 
 namespace utils {
 
-class RealTimer : public AbstractTimer
+class ROBOTS_UTILS_EXPORT RealTimer : public AbstractTimer
 {
 public:
 	RealTimer();

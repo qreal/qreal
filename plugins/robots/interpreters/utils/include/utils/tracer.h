@@ -3,9 +3,11 @@
 #include <QtCore/QVector>
 #include <QtCore/QString>
 
+#include "utilsDeclSpec.h"
+
 namespace utils {
 
-class Tracer
+class ROBOTS_UTILS_EXPORT Tracer
 {
 public:
 	enum TracerEnum {

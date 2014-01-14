@@ -98,10 +98,10 @@ void SensorsConfiguration::deserialize(QDomElement const &element)
 }
 
 
-//SensorsConfiguration::SensorInfo::SensorInfo()
-//	: mDirection(0), mSensorType(robots::enums::sensorType::unused)
-//{
-//}
+SensorsConfiguration::SensorInfo::SensorInfo()
+	: mDirection(0)  //, mSensorType(robots::enums::sensorType::unused)
+{
+}
 
 //SensorsConfiguration::SensorInfo::SensorInfo(QPointF const &position
 //		, qreal direction

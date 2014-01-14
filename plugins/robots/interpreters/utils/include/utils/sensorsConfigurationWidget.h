@@ -4,10 +4,12 @@
 
 //#include "../sensorConstants.h"
 
+#include "utilsDeclSpec.h"
+
 namespace utils {
 
 /// A number of combo boxes for sensors selection
-class SensorsConfigurationWidget : public QWidget
+class ROBOTS_UTILS_EXPORT SensorsConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 

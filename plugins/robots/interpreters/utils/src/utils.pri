@@ -7,6 +7,8 @@ INCLUDEPATH += \
 
 LIBS += -L$$PWD/../../../../../bin/ -lqrkernel -lqrutils
 
+DEFINES += ROBOTS_UTILS_LIBRARY
+
 HEADERS += \
 	$$PWD/../include/utils/abstractTimer.h \
 	$$PWD/../include/utils/debugHelper.h \

@@ -2,9 +2,11 @@
 
 #include <QtCore/QObject>
 
+#include "utilsDeclSpec.h"
+
 namespace utils {
 
-class AbstractTimer : public QObject
+class ROBOTS_UTILS_EXPORT AbstractTimer : public QObject
 {
 	Q_OBJECT
 
