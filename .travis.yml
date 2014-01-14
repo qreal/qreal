@@ -36,8 +36,11 @@ script:
   - ls -A
   - ./exampleTests
   - ./qrgui_unittests
+  - ./qrkernel_unittests
   - ./qrrepo_unittests
   - ./qrutils_unittests
+  - ./robots_interpreterBase_unittests
+  - ./robots_interpreterCore_unittests
   - ./visualDebugSupport_unittests
 
 notifications:

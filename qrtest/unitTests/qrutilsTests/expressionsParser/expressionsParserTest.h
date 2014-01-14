@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../../../qrutils/expressionsParser/expressionsParser.h"
-#include "../../mocks/grgui/toolPluginInterface/usedInterface/errorReporterMock.h"
+#include <../qrutils/expressionsParser/expressionsParser.h>
+#include <mocks/qrgui/toolPluginInterface/usedInterface/errorReporterMock.h>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 namespace qrTest {
 
