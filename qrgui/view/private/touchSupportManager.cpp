@@ -162,6 +162,7 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 {
 	switch(event->type()) {
 	case QEvent::TouchBegin: {
+		QCursor::setPos(mEditorView->viewport()->mapToGlobal(event->touchPoints()[0].pos().toPoint()));
 		mEditorView->scene()->clearSelection();
 		bool const elementUnder = isElementUnder(event->touchPoints()[0].pos());
 
