@@ -205,6 +205,15 @@ void EdgeElement::paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *o
 	if ((option->state & (QStyle::State_Selected | QStyle::State_MouseOver)) && !drawSavedLine) {
 		painter->setBrush(Qt::SolidPattern);
 		mHandler->drawPorts(painter);
+		painter->save();
+		QPen pen;
+		pen.setColor(Qt::gray);
+		pen.setStyle(Qt::DashLine);
+		pen.setWidth(1);
+		painter->setPen(pen);
+		painter->setBrush(Qt::NoBrush);
+		painter->drawPath(shape());
+		painter->restore();
 	}
 
 	painter->restore();
@@ -264,13 +273,13 @@ QPainterPath EdgeElement::shape() const
 	path.addPath(mHandler->shape());
 
 	QPainterPathStroker ps;
-	ps.setWidth(kvadratik - 2.5);
+	ps.setWidth(stripeWidth);
 
 	path = ps.createStroke(path);
 
 	foreach (QPointF const &point, mLine) {
-		path.addRect(QRectF(point - QPointF(kvadratik / 2, kvadratik / 2)
-				, QSizeF(kvadratik, kvadratik)).adjusted(1, 1, -1, -1));
+		path.addRect(QRectF(point - QPointF(stripeWidth / 2, stripeWidth / 2)
+				, QSizeF(stripeWidth, stripeWidth)).adjusted(1, 1, -1, -1));
 	}
 
 	return path;
