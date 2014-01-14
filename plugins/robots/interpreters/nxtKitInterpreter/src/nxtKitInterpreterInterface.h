@@ -15,9 +15,7 @@ public:
 
 	QString friendlyKitName() const override;
 
-	interpreterBase::robotModel::RobotModelInterface *realRobotModel() override;
-
-	interpreterBase::robotModel::RobotModelInterface *twoDRobotModel() override;
+	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
 
 	// Transfers ownership.
 	QWidget *settingsWidget() const override;

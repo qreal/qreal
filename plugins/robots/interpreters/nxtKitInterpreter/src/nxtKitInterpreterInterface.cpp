@@ -12,14 +12,9 @@ QString NxtKitInterpreterInterface::friendlyKitName() const
 	return tr("Empty Kit");
 }
 
-interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterInterface::realRobotModel()
+QList<interpreterBase::robotModel::RobotModelInterface *> NxtKitInterpreterInterface::robotModels()
 {
-	return nullptr;
-}
-
-interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterInterface::twoDRobotModel()
-{
-	return nullptr;
+	return QList<interpreterBase::robotModel::RobotModelInterface *>();
 }
 
 QWidget *NxtKitInterpreterInterface::settingsWidget() const

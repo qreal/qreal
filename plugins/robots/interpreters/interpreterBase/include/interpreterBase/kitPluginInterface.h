@@ -21,19 +21,8 @@ public:
 	/// String that will be displayed to users as the name of the kit.
 	virtual QString friendlyKitName() const = 0;
 
-	/// Returns a model that communicates with the real robot. Nullptr as result (default behaviour)
-	/// means that this kit plugin does not provide real robot communication.
-	virtual robotModel::RobotModelInterface *realRobotModel()
-	{
-		return nullptr;
-	}
-
-	/// Returns a model that communicates with the 2D model emulator. Nullptr as result (default behaviour)
-	/// means that this kit plugin does not provide 2D model robot communication.
-	virtual robotModel::RobotModelInterface *twoDRobotModel()
-	{
-		return nullptr;
-	}
+	/// Returns a list of robot models supported by this kit plugin.
+	virtual QList<robotModel::RobotModelInterface *> robotModels() = 0;
 
 	// Transfers ownership.
 	/// Widget with specific settings for a plugin.
