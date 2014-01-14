@@ -42,7 +42,7 @@ private:
 		static char returnIntIfHasQObjectMacro(int (T::*)(QMetaObject::Call, int, void **));
 		static int returnIntIfHasQObjectMacro(int (Object::*)(QMetaObject::Call, int, void **));
 
-		// Enum is used for forcing compiller evaluating below expression on compile-time
+		// Enum is used for forcing compiler evaluating below expression on compile-time
 		enum { Value = sizeof(returnIntIfHasQObjectMacro(&Object::qt_metacall)) == sizeof(int) };
 	};
 
