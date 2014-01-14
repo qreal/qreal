@@ -17,6 +17,8 @@
 #include "controller/commands/insertIntoEdgeCommand.h"
 #include "umllib/private/expandCommand.h"
 
+#include "qrutils/uxInfo/uxInfo.h"
+
 using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui;
@@ -469,6 +471,9 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 	inStream >> explosionTargetUuid;
 
 	Id const id = Id::loadFromString(uuid);
+	
+	utils::UXInfo::reportCreation(id.editor(), id.element());
+	
 	Id const explosionTarget = explosionTargetUuid.isEmpty()
 			? Id()
 			: Id::loadFromString(explosionTargetUuid);

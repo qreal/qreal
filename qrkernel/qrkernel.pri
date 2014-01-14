@@ -13,6 +13,7 @@ HEADERS += \
 	$$PWD/settingsManager.h \
 	$$PWD/kernelDeclSpec.h \
 	$$PWD/timeMeasurer.h \
+	$$PWD/uxInfoInterface.h \
 
 SOURCES += \
 	$$PWD/ids.cpp \
