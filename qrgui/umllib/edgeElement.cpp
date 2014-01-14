@@ -205,15 +205,6 @@ void EdgeElement::paintEdge(QPainter *painter, QStyleOptionGraphicsItem const *o
 	if ((option->state & (QStyle::State_Selected | QStyle::State_MouseOver)) && !drawSavedLine) {
 		painter->setBrush(Qt::SolidPattern);
 		mHandler->drawPorts(painter);
-		painter->save();
-		QPen pen;
-		pen.setColor(Qt::gray);
-		pen.setStyle(Qt::DashLine);
-		pen.setWidth(1);
-		painter->setPen(pen);
-		painter->setBrush(Qt::NoBrush);
-		painter->drawPath(shape());
-		painter->restore();
 	}
 
 	painter->restore();
