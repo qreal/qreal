@@ -1900,6 +1900,84 @@
 				</logic>
 			</node>
 
+			<node displayedName="Сказать" name="Say">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="NONE" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-15" y="-25" text="Текст:" hard="true"/>
+						<label x="35" y="-25" textBinded="Text" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Текст" type="string" name="Text" />
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Системный вызов" name="System">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="NONE" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-15" y="-25" text="Команда:" hard="true"/>
+						<label x="55" y="-25" textBinded="Command" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Команда" type="string" name="Command" />
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 
 		</graphicTypes>
 		<palette>
@@ -1908,10 +1986,12 @@
 <!--				<element name="Fork"/> -->
 				<element name="Beep"/>
 				<element name="PlayTone"/>
+				<element name="Say"/>
 				<element name="EnginesForward"/>
 				<element name="EnginesBackward"/>
 				<element name="EnginesStop"/>
 				<element name="Function"/>
+				<element name="System"/>
 <!--			</group> -->
 <!--			<group name="Рисование на дисплее"> -->
 				<element name="ClearScreen"/>
@@ -1934,7 +2014,7 @@
 				<element name="WaitForButtons"/>
 <!--			</group> -->
 <!--			<group name="Алгоритмы"> -->
-<!--				<element name="IfBlock"/> -->
+				<element name="IfBlock"/> 
 				<element name="ControlFlow"/>
 <!--				<element name="Loop"/> -->
 				<element name="CommentBlock"/>

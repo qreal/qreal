@@ -2,8 +2,10 @@
 #include "converters/trikEnginePortsConverter.h"
 #include "simpleGenerators/ledGenerator.h"
 #include "simpleGenerators/sadSmileGenerator.h"
+#include "simpleGenerators/sayGenerator.h"
 #include "simpleGenerators/setBackgroundGenerator.h"
 #include "simpleGenerators/smileGenerator.h"
+#include "simpleGenerators/systemGenerator.h"
 #include "simpleGenerators/trikEnginesGenerator.h"
 #include "simpleGenerators/trikEnginesStopGenerator.h"
 #include "parts/trikVariables.h"
@@ -34,8 +36,12 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new SmileGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "SadSmile") {
 		return new SadSmileGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Say") {
+		return new SayGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "SetBackground") {
 		return new SetBackgroundGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "System") {
+		return new SystemGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Led") {
 		return new LedGenerator(mRepo, customizer, id, this);
 	}
