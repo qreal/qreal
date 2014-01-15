@@ -14,6 +14,8 @@ public:
 	CommonRobotModel();
 	virtual ~CommonRobotModel();
 
+	QString name() const override;
+
 	void init() override;
 	void stopRobot() override;
 	void disconnectFromRobot() override;

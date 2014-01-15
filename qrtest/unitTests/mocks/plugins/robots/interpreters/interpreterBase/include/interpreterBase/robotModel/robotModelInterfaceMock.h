@@ -10,6 +10,7 @@ namespace qrTest {
 class RobotModelInterfaceMock : public interpreterBase::robotModel::RobotModelInterface
 {
 public:
+	MOCK_CONST_METHOD0(name, QString());
 	MOCK_METHOD0(init, void());
 	MOCK_METHOD0(stopRobot, void());
 	MOCK_METHOD0(disconnectFromRobot, void());

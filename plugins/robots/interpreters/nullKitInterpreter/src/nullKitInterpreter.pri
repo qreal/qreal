@@ -9,9 +9,9 @@ LIBS += -L$$PWD/../../../../../bin -linterpreterBase
 
 
 HEADERS += \
-	$$PWD/nullKitInterpreterInterface.h \
+	$$PWD/nullKitInterpreterPlugin.h \
 	$$PWD/nullRobotModel.h \
 
 SOURCES += \
-	$$PWD/nullKitInterpreterInterface.cpp \
+	$$PWD/nullKitInterpreterPlugin.cpp \
 	$$PWD/nullRobotModel.cpp \

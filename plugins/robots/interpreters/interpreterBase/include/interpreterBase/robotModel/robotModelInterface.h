@@ -19,6 +19,8 @@ class ROBOTS_INTERPRETER_BASE_EXPORT RobotModelInterface : public QObject
 	Q_OBJECT
 
 public:
+	virtual QString name() const = 0;
+
 	virtual void init() = 0;
 	virtual void stopRobot() = 0;
 	virtual void disconnectFromRobot() = 0;

@@ -1,23 +1,23 @@
-#include "nullKitInterpreterInterface.h"
+#include "nullKitInterpreterPlugin.h"
 
 using namespace nullKitInterpreter;
 
-QString NullKitInterpreterInterface::kitId() const
+QString NullKitInterpreterPlugin::kitId() const
 {
 	return "nullKit";
 }
 
-QString NullKitInterpreterInterface::friendlyKitName() const
+QString NullKitInterpreterPlugin::friendlyKitName() const
 {
 	return tr("Lego NXT");
 }
 
-QList<interpreterBase::robotModel::RobotModelInterface *> NullKitInterpreterInterface::robotModels()
+QList<interpreterBase::robotModel::RobotModelInterface *> NullKitInterpreterPlugin::robotModels()
 {
 	return QList<interpreterBase::robotModel::RobotModelInterface *>() << &mRobotModel;
 }
 
-QWidget *NullKitInterpreterInterface::settingsWidget() const
+QWidget *NullKitInterpreterPlugin::settingsWidget() const
 {
 	return nullptr;
 }
@@ -37,7 +37,7 @@ QWidget *NullKitInterpreterInterface::settingsWidget() const
 //	return qReal::IdList();
 //}
 
-qReal::IdList NullKitInterpreterInterface::unsupportedBlocks() const
+qReal::IdList NullKitInterpreterPlugin::unsupportedBlocks() const
 {
 	return qReal::IdList();
 }

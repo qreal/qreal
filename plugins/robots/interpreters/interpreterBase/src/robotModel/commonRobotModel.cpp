@@ -31,7 +31,12 @@ CommonRobotModel::~CommonRobotModel()
 //	delete mRobotImpl;
 //	for (int i = 0; i < 4; ++i) {
 //		delete mSensors[i];
-//	}
+	//	}
+}
+
+QString CommonRobotModel::name() const
+{
+	return QString();
 }
 
 //robotParts::Brick &RobotModel::brick()

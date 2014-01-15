@@ -7,11 +7,11 @@
 
 namespace nullKitInterpreter {
 
-class NullKitInterpreterInterface : public QObject, public interpreterBase::KitPluginInterface
+class NullKitInterpreterPlugin : public QObject, public interpreterBase::KitPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(interpreterBase::KitPluginInterface)
-	Q_PLUGIN_METADATA(IID "nullKitInterpreter.NullKitInterpreterInterface")
+	Q_PLUGIN_METADATA(IID "nullKitInterpreter.NullKitInterpreterPlugin")
 
 public:
 	QString kitId() const override;
