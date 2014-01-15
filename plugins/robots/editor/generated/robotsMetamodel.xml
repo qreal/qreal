@@ -1751,12 +1751,10 @@
 					</explodesTo>
 				</logic>
 			</node>
-
-
 			<node displayedName="Смайлик" name="Smile" path="161, 71 : 166, 57 :  | 149, 82 : 161, 70 :  | 113, 91 : 149, 83 :  | 67, 91 : 113, 91 :  | 29, 84 : 65, 91 :  | 17, 74 : 28, 83 :  | 12, 59 : 17, 73 :  | 130, 13 : 130, 51 :  | 62, 12 : 62, 51 : ">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/smileBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/smileBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<ports>
 						<linePort>
@@ -1942,7 +1940,7 @@
 			<node displayedName="Системный вызов" name="System">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="NONE" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/system.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
 						<label x="-15" y="-25" text="Команда:" hard="true"/>
