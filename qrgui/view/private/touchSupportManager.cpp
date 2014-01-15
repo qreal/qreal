@@ -66,6 +66,11 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 	return false;
 }
 
+void TouchSupportManager::grabTapAndHold()
+{
+	mEditorView->grabGesture(Qt::TapAndHoldGesture);
+}
+
 void TouchSupportManager::simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos
 		, Qt::MouseButtons buttons)
 {
@@ -149,6 +154,7 @@ bool TouchSupportManager::processTouchEvent(QTouchEvent *event)
 	if (mFingersInGesture == 1) {
 		handleOneFingerTouch(event);
 	}
+
 	return true;
 }
 
@@ -156,10 +162,15 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 {
 	switch(event->type()) {
 	case QEvent::TouchBegin: {
+		QCursor::setPos(mEditorView->viewport()->mapToGlobal(event->touchPoints()[0].pos().toPoint()));
 		mEditorView->scene()->clearSelection();
 		bool const elementUnder = isElementUnder(event->touchPoints()[0].pos());
 
 		if (QDateTime::currentMSecsSinceEpoch() - mLastTapTimestamp <= QApplication::doubleClickInterval()) {
+			// Double tap occured. We don`t want to show context menu after double tap so disabling
+			// corresponding gesture event with enabling it later
+			mEditorView->ungrabGesture(Qt::TapAndHoldGesture);
+
 			if (elementUnder) {
 				// Simulating regular left button click
 				simulatePress(event);
@@ -167,6 +178,9 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 				// Simulating double-click
 				simulateDoubleClick(event);
 			}
+
+			// For some reason grabbing tap & hold back right now still generates gesture event
+			QTimer::singleShot(30, this, SLOT(grabTapAndHold()));
 		} else {
 			if (elementUnder) {
 				// Simulating right button click for links gesture
