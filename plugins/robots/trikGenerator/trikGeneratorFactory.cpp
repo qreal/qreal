@@ -1,6 +1,7 @@
 #include "trikGeneratorFactory.h"
 #include "converters/trikEnginePortsConverter.h"
 #include "simpleGenerators/ledGenerator.h"
+#include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/sadSmileGenerator.h"
 #include "simpleGenerators/sayGenerator.h"
 #include "simpleGenerators/setBackgroundGenerator.h"
@@ -32,6 +33,8 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(qReal::Id const &
 		return new TrikEnginesGenerator(mRepo, customizer, id, elementType, this);
 	} else if (elementType == "EnginesStop") {
 		return new TrikEnginesStopGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "PlayTone") {
+		return new PlayToneGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Smile") {
 		return new SmileGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "SadSmile") {

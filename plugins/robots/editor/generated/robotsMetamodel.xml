@@ -883,14 +883,14 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Играть звук" name="PlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Проиграть на роботе звук с заданной частотой и длительностью. Аналогичен блоку 'Гудок', но позволяет задавать параметры звука. Имеется параметр, определяющий, ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку.">
+			<node displayedName="Играть файл" name="PlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Проиграть на роботе музыкальный файл в формате .wav. Файл должен быть предварительно загружен на робот.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-25" text="Файл:" hard="true"/>
-						<label x="40" y="-25" textBinded="FileName" hard="true"/>
+						<label x="-30" y="-25" text="Файл:" hard="true"/>
+						<label x="30" y="-25" textBinded="FileName" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -916,7 +916,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Файл" type="string" name="FileName">
-							<default>media/beep.mp3</default>
+							<default>media/beep.wav</default>
 						</property>
 					</properties>
 					<generalizations>
