@@ -70,4 +70,5 @@ nodesStateButtonExpands=true
 recentProjectsLimit=5
 dragArea = 12
 robotsInterpreterStackSize=4000
-nxtFlashToolRunPolicy=0
+usabilityTestingMode=false
+collectErgonomicValues=truenxtFlashToolRunPolicy=0

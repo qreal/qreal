@@ -264,13 +264,13 @@ QPainterPath EdgeElement::shape() const
 	path.addPath(mHandler->shape());
 
 	QPainterPathStroker ps;
-	ps.setWidth(kvadratik - 2.5);
+	ps.setWidth(stripeWidth);
 
 	path = ps.createStroke(path);
 
 	foreach (QPointF const &point, mLine) {
-		path.addRect(QRectF(point - QPointF(kvadratik / 2, kvadratik / 2)
-				, QSizeF(kvadratik, kvadratik)).adjusted(1, 1, -1, -1));
+		path.addRect(QRectF(point - QPointF(stripeWidth / 2, stripeWidth / 2)
+				, QSizeF(stripeWidth, stripeWidth)).adjusted(1, 1, -1, -1));
 	}
 
 	return path;
