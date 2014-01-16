@@ -33,6 +33,8 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten();
 
+	disconnect();
+
 	return true;
 }
 
@@ -47,6 +49,8 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten();
 
+	disconnect();
+
 	return true;
 }
 
@@ -60,6 +64,8 @@ bool TcpRobotCommunicator::stopRobot()
 	QString const command = "stop";
 	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten();
+
+	disconnect();
 
 	return true;
 }
