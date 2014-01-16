@@ -1,10 +1,10 @@
 
 
 //qrxc and interpreter
-editors
-diagrams
-elements(Id)
-elements(QString, QString)
+//editors
+//diagrams
+//elements(Id)
+//elements(QString, QString)
 
 mouseGestures
 friendlyName
@@ -18,17 +18,17 @@ enumValues
 typeName
 //allChildrenTypesOf
 
-isEditor
+//isEditor
 isDiagram
 isElement
 
 propertyNames
 portTypes
 defaultPropertyValues
-propertiesWithDefaultValues
+//propertiesWithDefaultValues
 
 hasElement
-findElementByType
+//findElementByType
 //isGraphicalElement
 
 isNodeOrEdge

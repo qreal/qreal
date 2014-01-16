@@ -1,4 +1,4 @@
-QT += xml widgets
+QT += xml widgets svg
 
 CONFIG += console
 TARGET = editorPluginTestFramework
