@@ -30,7 +30,7 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 	QString const &fileNameOnARobot = QFileInfo(programName).fileName();
 
 	QString const command = "file:" + fileNameOnARobot + ":" + fileContents;
-	mSocket.write(command.toLatin1());
+	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten();
 
 	return true;
@@ -44,7 +44,7 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 	}
 
 	QString const command = "run:" + programName;
-	mSocket.write(command.toLatin1());
+	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten();
 
 	return true;
@@ -58,7 +58,7 @@ bool TcpRobotCommunicator::stopRobot()
 	}
 
 	QString const command = "stop";
-	mSocket.write(command.toLatin1());
+	mSocket.write(command.toUtf8());
 	mSocket.waitForBytesWritten();
 
 	return true;

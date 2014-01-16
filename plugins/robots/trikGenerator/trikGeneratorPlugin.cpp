@@ -14,7 +14,7 @@ using namespace trik;
 
 TrikGeneratorPlugin::TrikGeneratorPlugin()
 		: mGenerateCodeAction(NULL)
-		, mUploadProgramAction(NULL)
+//		, mUploadProgramAction(NULL)
 		, mRunProgramAction(NULL)
 		, mStopRobotAction(NULL)
 {
@@ -32,9 +32,9 @@ QList<ActionInfo> TrikGeneratorPlugin::actions()
 	ActionInfo generateCodeActionInfo(&mGenerateCodeAction, "generators", "tools");
 	connect(&mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 
-	mUploadProgramAction.setText(tr("Upload program"));
-	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
-	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
+//	mUploadProgramAction.setText(tr("Upload program"));
+//	ActionInfo uploadProgramActionInfo(&mUploadProgramAction, "generators", "tools");
+//	connect(&mUploadProgramAction, SIGNAL(triggered()), this, SLOT(uploadProgram()));
 
 	mRunProgramAction.setText(tr("Run program"));
 	ActionInfo runProgramActionInfo(&mRunProgramAction, "generators", "tools");
@@ -44,8 +44,12 @@ QList<ActionInfo> TrikGeneratorPlugin::actions()
 	ActionInfo stopRobotActionInfo(&mStopRobotAction, "generators", "tools");
 	connect(&mStopRobotAction, SIGNAL(triggered()), this, SLOT(stopRobot()));
 
-	return QList<ActionInfo>() << generateCodeActionInfo << uploadProgramActionInfo
-			<< runProgramActionInfo << stopRobotActionInfo;
+	return QList<ActionInfo>()
+			<< generateCodeActionInfo
+//			<< uploadProgramActionInfo
+			<< runProgramActionInfo
+			<< stopRobotActionInfo
+			;
 }
 
 MasterGeneratorBase *TrikGeneratorPlugin::masterGenerator()
