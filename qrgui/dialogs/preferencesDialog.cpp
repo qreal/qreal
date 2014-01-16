@@ -10,6 +10,8 @@
 #include "dialogs/preferencesPages/featuresPage.h"
 #include "hotKeyManager/hotKeyManagerPage.h"
 
+#include <QtCore/QDebug>
+
 using namespace qReal;
 using namespace utils;
 
@@ -128,7 +130,14 @@ void PreferencesDialog::registerPage(QString const &pageName, PreferencesPage * 
 void PreferencesDialog::switchCurrentTab(QString const &tabName)
 {
 	if (mCustomPages.contains(tabName)) {
-		int const currentIndex = mCustomPages.keys().indexOf(tabName);
+		QList<QListWidgetItem *> items = ui->listWidget->findItems(tabName, Qt::MatchFixedString);
+		if (items.count() != 1) {
+			qDebug() << "Something is wrong with preferences tabs";
+			return;
+		}
+
+		int const currentIndex = ui->listWidget->row(items.first());
+
 		ui->listWidget->setCurrentRow(currentIndex);
 		ui->pageContentWigdet->setCurrentIndex(currentIndex + 1);
 	}
