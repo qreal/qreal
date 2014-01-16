@@ -80,6 +80,7 @@ QFileInfo RobotsGeneratorPluginBase::currentSource()
 			return QFileInfo();
 		}
 	} else {
+		mProjectManager->saveOrSuggestToSaveAs();
 		QScintillaTextEdit *code = static_cast<QScintillaTextEdit *>(mMainWindowInterface->currentTab());
 		fileInfo = QFileInfo(mTextManager->path(code));
 	}
