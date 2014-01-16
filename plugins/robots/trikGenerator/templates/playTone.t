@@ -1,1 +1,1 @@
-
+brick.playSound("@@FILENAME@@");

@@ -20,7 +20,9 @@ void BrokenLine::handleEdgeMove(QPointF const &pos)
 	}
 
 	QPolygonF line = mEdge->line();
-	line[mDragType] = SettingsManager::value("ActivateGrid").toBool() ? alignedPoint(pos) : pos;
+	if (mDragType >= 0) {
+		line[mDragType] = SettingsManager::value("ActivateGrid").toBool() ? alignedPoint(pos) : pos;
+	}
 	mEdge->setLine(line);
 }
 
@@ -162,8 +164,10 @@ void BrokenLine::deleteSegment(QPointF const &pos)
 {
 	if (delSegmentActionIsPossible(pos)) {
 		int const segmentNumber = defineSegment(pos);
-		deletePoint(mEdge->line()[segmentNumber]);
-		deletePoint(mEdge->line()[segmentNumber]);
+		if (segmentNumber >= 0) {
+			deletePoint(mEdge->line()[segmentNumber]);
+			deletePoint(mEdge->line()[segmentNumber]);
+		}
 	}
 }
 

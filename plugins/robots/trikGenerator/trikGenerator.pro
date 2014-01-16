@@ -37,7 +37,10 @@ HEADERS += \
 	$$PWD/converters/ledColorConverter.h \
 	$$PWD/converters/trikEnginePortsConverter.h \
 	$$PWD/simpleGenerators/ledGenerator.h \
+	$$PWD/simpleGenerators/playToneGenerator.h \
 	$$PWD/simpleGenerators/sadSmileGenerator.h \
+	$$PWD/simpleGenerators/sayGenerator.h \
+	$$PWD/simpleGenerators/systemGenerator.h \
 	$$PWD/simpleGenerators/setBackgroundGenerator.h \
 	$$PWD/simpleGenerators/smileGenerator.h \
 	$$PWD/simpleGenerators/trikEnginesGenerator.h \
@@ -53,7 +56,10 @@ SOURCES += \
 	$$PWD/converters/ledColorConverter.cpp \
 	$$PWD/converters/trikEnginePortsConverter.cpp \
 	$$PWD/simpleGenerators/ledGenerator.cpp \
+	$$PWD/simpleGenerators/playToneGenerator.cpp \
 	$$PWD/simpleGenerators/sadSmileGenerator.cpp \
+	$$PWD/simpleGenerators/sayGenerator.cpp \
+	$$PWD/simpleGenerators/systemGenerator.cpp \
 	$$PWD/simpleGenerators/setBackgroundGenerator.cpp \
 	$$PWD/simpleGenerators/smileGenerator.cpp \
 	$$PWD/simpleGenerators/trikEnginesGenerator.cpp \

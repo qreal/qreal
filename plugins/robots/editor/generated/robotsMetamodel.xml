@@ -883,14 +883,14 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Играть звук" name="PlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Проиграть на роботе звук с заданной частотой и длительностью. Аналогичен блоку 'Гудок', но позволяет задавать параметры звука. Имеется параметр, определяющий, ждать ли завершения проигрывания звука или сразу же перейти к следующему блоку.">
+			<node displayedName="Играть файл" name="PlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Проиграть на роботе музыкальный файл в формате .wav. Файл должен быть предварительно загружен на робот.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-25" text="Файл:" hard="true"/>
-						<label x="40" y="-25" textBinded="FileName" hard="true"/>
+						<label x="-30" y="-25" text="Файл:" hard="true"/>
+						<label x="30" y="-25" textBinded="FileName" hard="true"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -916,7 +916,7 @@
 					<container/>
 					<properties>
 						<property displayedName="Файл" type="string" name="FileName">
-							<default>media/beep.mp3</default>
+							<default>media/beep.wav</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1751,12 +1751,10 @@
 					</explodesTo>
 				</logic>
 			</node>
-
-
 			<node displayedName="Смайлик" name="Smile" path="161, 71 : 166, 57 :  | 149, 82 : 161, 70 :  | 113, 91 : 149, 83 :  | 67, 91 : 113, 91 :  | 29, 84 : 65, 91 :  | 17, 74 : 28, 83 :  | 12, 59 : 17, 73 :  | 130, 13 : 130, 51 :  | 62, 12 : 62, 51 : ">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/smileBlock.png" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/smileBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<ports>
 						<linePort>
@@ -1900,6 +1898,84 @@
 				</logic>
 			</node>
 
+			<node displayedName="Сказать" name="Say">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="NONE" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-15" y="-25" text="Текст:" hard="true"/>
+						<label x="35" y="-25" textBinded="Text" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Текст" type="string" name="Text" />
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Системный вызов" name="System">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/system.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-15" y="-25" text="Команда:" hard="true"/>
+						<label x="55" y="-25" textBinded="Command" hard="true"/>
+					</labels>
+					<ports>
+						<linePort>
+							<start startx="0" starty="5"/>
+							 <end endx="0" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="0"/>
+							<end endx="45" endy="0"/>
+						</linePort>
+						<linePort>
+							<start startx="50" starty="5"/>
+							<end endx="50" endy="45"/>
+						</linePort>
+						<linePort>
+							<start startx="5" starty="50"/>
+							<end endx="45" endy="50"/>
+						</linePort>
+					</ports>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Команда" type="string" name="Command" />
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 
 		</graphicTypes>
 		<palette>
@@ -1908,10 +1984,12 @@
 <!--				<element name="Fork"/> -->
 				<element name="Beep"/>
 				<element name="PlayTone"/>
+				<element name="Say"/>
 				<element name="EnginesForward"/>
 				<element name="EnginesBackward"/>
 				<element name="EnginesStop"/>
 				<element name="Function"/>
+				<element name="System"/>
 <!--			</group> -->
 <!--			<group name="Рисование на дисплее"> -->
 				<element name="ClearScreen"/>
@@ -1934,7 +2012,7 @@
 				<element name="WaitForButtons"/>
 <!--			</group> -->
 <!--			<group name="Алгоритмы"> -->
-<!--				<element name="IfBlock"/> -->
+				<element name="IfBlock"/> 
 				<element name="ControlFlow"/>
 <!--				<element name="Loop"/> -->
 				<element name="CommentBlock"/>

@@ -44,7 +44,7 @@ RobotsPlugin::~RobotsPlugin()
 
 void RobotsPlugin::initActions()
 {
-	bool const enableTrik = SettingsManager::value("enableTrik", false).toBool();
+	bool const enableTrik = true;  // SettingsManager::value("enableTrik", false).toBool();
 
 	m2dModelAction = new QAction(QIcon(":/icons/2d-model.svg"), QObject::tr("2d model"), nullptr);
 	ActionInfo d2ModelActionInfo(m2dModelAction, "interpreters", "tools");
