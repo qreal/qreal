@@ -8,6 +8,8 @@
 #include "constants.h"
 #include "../tracer.h"
 
+#include <QtCore/QDebug>
+
 using namespace qReal::interpreters::robots;
 using namespace details;
 using namespace d2Model;
@@ -605,6 +607,12 @@ void D2RobotModel::recalculateVelocity()
 	qreal const oldAngularVelocity = mAngularVelocity;
 
 	mAngularVelocity -= angularFriction * Math::sign(mAngularVelocity);
+
+	if (mAngularVelocity != 0.0) {
+		qDebug() << "mAngularVelocity" << mAngularVelocity;
+		qDebug() << "angularFriction" << angularFriction;
+		qDebug() << "mForceMoment" << mForceMoment;
+	}
 
 	if (oldAngularVelocity * mAngularVelocity <= 0) {
 		mAngularVelocity = 0;

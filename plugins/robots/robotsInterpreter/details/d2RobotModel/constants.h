@@ -33,14 +33,14 @@ qreal const varySpeedDispersion = 0.0125;
 qreal const percentSaltPepperNoise = 20.0;
 
 qreal const robotMass = 200;
-qreal const robotInertialMoment = 20;
+qreal const robotInertialMoment = 45;
 qreal const reactionForceStabilizationCoefficient = 20;
 qreal const floorFrictionCoefficient = 0.2;
 qreal const wallFrictionCoefficient = 0.2;
 qreal const rotationalFrictionFactor = 1500;
-qreal const angularVelocityFrictionFactor = 200;
+qreal const angularVelocityFrictionFactor = 100;
 
-qreal const onePercentAngularVelocity = 0.0055;
+qreal const onePercentAngularVelocity = 0.0075;
 int const touchSensorWallStrokeIncrement = 10;
 int const touchSensorStrokeIncrement = 5;
 int const maxLightSensorValur = 1023;
