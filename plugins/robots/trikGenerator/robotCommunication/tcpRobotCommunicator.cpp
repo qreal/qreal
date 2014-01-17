@@ -54,6 +54,22 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 	return true;
 }
 
+bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
+{
+	connect();
+	if (!mSocket.isValid()) {
+		return false;
+	}
+
+	QString const command = "direct:" + directCommand;
+	mSocket.write(command.toUtf8());
+	mSocket.waitForBytesWritten();
+
+	disconnect();
+
+	return true;
+}
+
 bool TcpRobotCommunicator::stopRobot()
 {
 	connect();

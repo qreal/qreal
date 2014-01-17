@@ -119,4 +119,5 @@ void TrikGeneratorPlugin::stopRobot()
 	if (!communicator.stopRobot()) {
 		mMainWindowInterface->errorReporter()->addError(tr("No connection to robot"));
 	}
+	communicator.runDirectCommand("brick.system(\"killall aplay\")");
 }

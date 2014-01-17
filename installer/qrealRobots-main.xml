@@ -78,6 +78,15 @@
                 <distributionFile>
                     <origin>%1/plugins/robots/examples/smiles.qrs</origin>
                 </distributionFile>
+                <distributionFile>
+                    <origin>%1/plugins/robots/examples/sayExample.qrs</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/plugins/robots/examples/simpleSayExample.qrs</origin>
+                </distributionFile>
+                <distributionFile>
+                    <origin>%1/plugins/robots/examples/valkyries.qrs</origin>
+                </distributionFile>
             </distributionFileList>
         </folder>
         <folder>
