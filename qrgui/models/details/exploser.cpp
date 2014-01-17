@@ -57,7 +57,7 @@ void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &dia
 			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
 				target = targetNodeOrGroup;
 			} else {
-				Pattern const pattern = mApi.editorManagerInterface().getPatternByName(target.element());
+				Pattern const pattern = mApi.editorManagerInterface().getPatternByName(targetNodeOrGroup.element());
 				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
 			}
 
@@ -104,7 +104,7 @@ void Exploser::handleRemoveCommand(Id const &logicalId, AbstractCommand * const 
 {
 	Id const outgoing = mApi.logicalRepoApi().outgoingExplosion(logicalId);
 	if (!outgoing.isNull()) {
-		command->addPreAction(new ExplosionCommand(mApi, NULL, logicalId, outgoing, false));
+		command->addPreAction(new ExplosionCommand(mApi, nullptr, logicalId, outgoing, false));
 	}
 
 	Id const targetType = logicalId.type();
@@ -113,7 +113,7 @@ void Exploser::handleRemoveCommand(Id const &logicalId, AbstractCommand * const 
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(incoming.type());
 		foreach (Explosion const &explosion, explosions) {
 			if (explosion.target() == targetType && !explosion.requiresImmediateLinkage()) {
-				command->addPreAction(new ExplosionCommand(mApi, NULL, incoming, logicalId, false));
+				command->addPreAction(new ExplosionCommand(mApi, nullptr, incoming, logicalId, false));
 			}
 		}
 	}
@@ -163,16 +163,20 @@ AbstractCommand *Exploser::addExplosionCommand(Id const &source, Id const &targe
 		, GraphicalModelAssistApi *graphicalApi)
 {
 	AbstractCommand *result = new ExplosionCommand(mApi, graphicalApi, source, target, true);
-	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()));
-	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()));
+	// Do not remove Qt::QueuedConnection flag.
+	// Immediate refreshing may cause segfault because of deletting drag source.
+	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
+	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
 	return result;
 }
 
 AbstractCommand *Exploser::removeExplosionCommand(Id const &source, Id const &target)
 {
-	AbstractCommand *result = new ExplosionCommand(mApi, NULL, source, target, false);
-	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()));
-	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()));
+	AbstractCommand *result = new ExplosionCommand(mApi, nullptr, source, target, false);
+	// Do not remove Qt::QueuedConnection flag.
+	// Immediate refreshing may cause segfault because of deletting drag source.
+	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
+	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
 	return result;
 }
 
@@ -186,8 +190,10 @@ AbstractCommand *Exploser::renameCommands(Id const &oneOfIds, QString const &new
 	}
 
 	if (!idsToRename.isEmpty()) {
-		connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()));
-		connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()));
+		// Do not remove Qt::QueuedConnection flag.
+		// Immediate refreshing may cause segfault because of deletting drag source.
+		connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
+		connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
 	}
 	return result;
 }

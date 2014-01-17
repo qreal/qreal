@@ -135,8 +135,6 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	}
 	splashScreen.close();
 
-	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
-
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
 	mFilterObject = new FilterObject();
