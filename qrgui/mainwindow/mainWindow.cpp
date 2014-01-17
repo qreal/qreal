@@ -46,6 +46,7 @@
 #include "controller/commands/doNothingCommand.h"
 #include "controller/commands/arrangeLinksCommand.h"
 #include "controller/commands/updateElementCommand.h"
+#include "controller/commands/createGroupCommand.h"
 
 #include "dialogs/suggestToCreateProjectDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
@@ -1638,12 +1639,29 @@ ProxyEditorManager &MainWindow::editorManagerProxy()
 void MainWindow::createDiagram(QString const &idString)
 {
 	closeStartTab();
-	Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
+	Id const id = Id::loadFromString(idString);
+	Id created;
+	if (mEditorManagerProxy.isNodeOrEdge(id.editor(), id.element())) {
+		created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), id);
+	} else {
+		// It is a group
+		CreateGroupCommand createGroupCommand(nullptr, mModels->logicalModelAssistApi()
+				, mModels->graphicalModelAssistApi(), Id::rootId(), Id::rootId()
+				, id, false, QPointF());
+		createGroupCommand.redo();
+		created = createGroupCommand.rootId();
+	}
+
+	if (created.isNull()) {
+		return;
+	}
+
 	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
 	mUi->graphicalModelExplorer->setCurrentIndex(index);
 	Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);
 	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
 	mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
+
 	openNewTab(index);
 }
 

@@ -6,6 +6,7 @@
 #include "controller/commands/explosionCommand.h"
 #include "controller/commands/renameCommand.h"
 #include "controller/commands/createElementCommand.h"
+#include "controller/commands/createGroupCommand.h"
 #include "controller/commands/renameExplosionCommand.h"
 
 using namespace qReal;
@@ -51,7 +52,15 @@ void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &dia
 				continue;
 			}
 
-			Id const target = explosion.target();
+			Id const targetNodeOrGroup = explosion.target();
+			Id target;
+			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
+				target = targetNodeOrGroup;
+			} else {
+				Pattern const pattern = mApi.editorManagerInterface().getPatternByName(target.element());
+				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
+			}
+
 			IdList const allTargets = mApi.logicalRepoApi().elementsByType(target.element(), true);
 			foreach (Id const &targetInstance, allTargets) {
 				if (mApi.isLogicalId(targetInstance)) {
@@ -113,10 +122,18 @@ void Exploser::handleRemoveCommand(Id const &logicalId, AbstractCommand * const 
 AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(Id const &source
 		, Id const &targetType, GraphicalModelAssistApi *graphicalApi)
 {
-	QString const friendlyTargetName = mApi.editorManagerInterface().friendlyName(targetType);
-	Id const newElementId(targetType, QUuid::createUuid().toString());
-	AbstractCommand *result = new CreateElementCommand(mApi, *graphicalApi, Id::rootId()
-			, Id::rootId(), newElementId, false, friendlyTargetName, QPointF());
+	AbstractCommand *result = nullptr;
+	Id newElementId;
+	if (mApi.editorManagerInterface().isNodeOrEdge(targetType.editor(), targetType.element())) {
+		QString const friendlyTargetName = mApi.editorManagerInterface().friendlyName(targetType);
+		newElementId = Id(targetType, QUuid::createUuid().toString());
+		result = new CreateElementCommand(mApi, *graphicalApi, Id::rootId()
+				, Id::rootId(), newElementId, false, friendlyTargetName, QPointF());
+	} else {
+		result = new CreateGroupCommand(nullptr, mApi, *graphicalApi, Id::rootId()
+				, Id::rootId(), targetType, false, QPointF());
+		newElementId = static_cast<CreateGroupCommand *>(result)->rootId();
+	}
 
 	result->addPostAction(addExplosionCommand(source, newElementId, graphicalApi));
 	result->addPostAction(new RenameExplosionCommand(mApi, graphicalApi, newElementId));

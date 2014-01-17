@@ -4,7 +4,7 @@
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
 	<namespace>UML 2.0</namespace>
-	<diagram displayedName="Диаграмма поведения робота" nodeName="RobotsDiagramNode" name="RobotsDiagram">
+	<diagram displayedName="Диаграмма поведения робота" nodeName="RobotsDiagramGroup" name="RobotsDiagram">
 		<nonGraphicTypes>
 			<enum name="SensorPort">
 				<value>1</value>
@@ -43,6 +43,16 @@
 				<value>тормозить</value>
 				<value>скользить</value>
 			</enum>
+			<groups>
+				<group name="RobotsDiagramGroup" rootNode="diagram">
+					<groupNode type="RobotsDiagramNode" name="diagram" xPosition="0" yPosition="0"/>
+					<groupNode type="InitialNode" name="initialNode" xPosition="50" yPosition="300" parent="diagram"/>
+				</group>
+				<group name="SubprogramDiagramGroup" rootNode="diagram">
+					<groupNode type="SubprogramDiagram" name="diagram" xPosition="0" yPosition="0"/>
+					<groupNode type="InitialNode" name="initialNode" xPosition="50" yPosition="300" parent="diagram"/>
+				</group>
+			</groups>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<node displayedName="Диаграмма поведения робота"  name="RobotsDiagramNode">
@@ -1720,7 +1730,7 @@
 						<parent parentName="AbstractNode"/>
 					</generalizations>
 					<explodesTo>
-						<target type="SubprogramDiagram" makeReusable="true" requireImmediateLinkage="true"/>
+						<target type="SubprogramDiagramGroup" makeReusable="true" requireImmediateLinkage="true"/>
 					</explodesTo>
 				</logic>
 			</node>

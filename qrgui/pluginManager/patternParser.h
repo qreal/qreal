@@ -15,7 +15,7 @@ public:
 	PatternParser();
 	void loadXml(QString const &xml);
 	void parseGroups(EditorManager *editorManager, QString const &editor, const QString &diagram);
-	QList<Pattern> getPatterns();
+	QList<Pattern> patterns() const;
 
 private:
 	void parseGroup(QDomElement const &group);

@@ -480,7 +480,7 @@ void EditorViewScene::createElement(QMimeData const *mimeData, QPointF const &sc
 
 	if (mMVIface->graphicalAssistApi()->editorManagerInterface().getPatternNames().contains(id.element())) {
 		CreateGroupCommand *createGroupCommand = new CreateGroupCommand(
-				*this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi()
+				this, *mMVIface->logicalAssistApi(), *mMVIface->graphicalAssistApi()
 				, mMVIface->rootId(), mMVIface->rootId(), id, isFromLogicalModel, scenePos);
 		if (executeImmediately) {
 			mController->execute(createGroupCommand);
