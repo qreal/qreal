@@ -24,6 +24,8 @@ class EdgeElement : public Element
 	Q_OBJECT
 
 public:
+	static const int stripeWidth = 25;
+
 	enum DragType {
 		wholeEdge = -2
 		, noPort = -1

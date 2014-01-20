@@ -27,6 +27,9 @@ signals:
 protected:
 	virtual bool eventFilter(QObject* object, QEvent* event);
 
+private slots:
+	void grabTapAndHold();
+
 private:
 	bool handleGesture(QGestureEvent *gestureEvent);
 	void processGestureState(QGesture *gesture);
