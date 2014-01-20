@@ -43,7 +43,6 @@ void RenameExplosionCommand::promptUserToEnterNewName()
 {
 	ensureLogicalId();
 	mOldName = mLogicalApi.name(mTarget);
-	mLogicalApi.name(mTarget);
 	mNewName = gui::RenameDialog::selectNewName(mOldName);
 	// Adding real renaming commands; they will be executed just after this
 	// command so the sequence is ok

@@ -39,7 +39,7 @@ Id CreateRemoveCommandImplementation::create()
 		mGraphicalApi.setProperties(logicalId, mLogicalPropertiesSnapshot);
 	}
 
-	mLogicalApi.exploser().refreshAllPalettes();
+	refreshAllPalettes();
 	return mId;
 }
 
@@ -60,7 +60,7 @@ void CreateRemoveCommandImplementation::remove()
 		Id const logicalId = mGraphicalApi.logicalId(mId);
 		if (!mLogicalApi.logicalRepoApi().exist(logicalId)) {
 			mGraphicalApi.removeElement(mId);
-			mLogicalApi.exploser().refreshAllPalettes();
+			refreshAllPalettes();
 			return;
 		}
 
@@ -77,7 +77,7 @@ void CreateRemoveCommandImplementation::remove()
 		}
 	}
 
-	mLogicalApi.exploser().refreshAllPalettes();
+	refreshAllPalettes();
 }
 
 bool CreateRemoveCommandImplementation::equals(CreateRemoveCommandImplementation const &other) const
@@ -89,4 +89,10 @@ bool CreateRemoveCommandImplementation::equals(CreateRemoveCommandImplementation
 			&& mName == other.mName
 			&& mPosition == other.mPosition
 			;
+}
+
+void CreateRemoveCommandImplementation::refreshAllPalettes()
+{
+	// Calling refreshing immideately may cause segfault because of deletting drag source
+	QTimer::singleShot(0, &mLogicalApi.exploser(), SLOT(refreshAllPalettes()));
 }
