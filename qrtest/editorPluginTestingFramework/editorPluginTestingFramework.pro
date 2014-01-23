@@ -1,6 +1,6 @@
 QT += xml widgets svg
 
-CONFIG += console
+CONFIG += console c++11
 TARGET = editorPluginTestFramework
 
 INCLUDEPATH += \

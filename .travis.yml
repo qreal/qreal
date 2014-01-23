@@ -10,6 +10,7 @@ env:
   - CONFIG=release PROJECT=qrealBP     VERA=false TESTS=true
   - CONFIG=debug   PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
   - CONFIG=release PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
+  - CONFIG=release PROJECT=testTool    VERA=false TESTS=true
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
@@ -36,12 +37,6 @@ script:
   - if [ "$VERA" = "true" ]; then vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params; fi
   - qmake $PROJECT.pro CONFIG+=$CONFIG
   - make -j2
-  - cd ./qrtest/editorPluginTestingFramework
-  - qmake editorPluginTestingFramework.pro
-  - make -j2
-  - cd ../../bin
-  - ./editorPluginTestFramework testMetamodel.qrs 1
-  - cd ../
   - cd ./bin
   - ls -A
   - sh -c "$TESTS"
