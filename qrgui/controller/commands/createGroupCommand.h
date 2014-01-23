@@ -10,7 +10,7 @@ namespace commands {
 class CreateGroupCommand : public AbstractCommand
 {
 public:
-	CreateGroupCommand(EditorViewScene &scene
+	CreateGroupCommand(EditorViewScene * const scene
 			, models::LogicalModelAssistApi &logicalApi
 			, models::GraphicalModelAssistApi &graphicalApi
 			, Id const &logicalParent
@@ -19,12 +19,15 @@ public:
 			, bool isFromLogicalModel
 			, QPointF const &position);
 
+	Id rootId() const;
+
 protected:
 	virtual bool execute();
 	virtual bool restoreState();
 
 private:
-	EditorViewScene &mScene;
+
+	EditorViewScene *mScene;
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	Id const mLogicalParent;
@@ -33,8 +36,9 @@ private:
 	bool const mIsFromLogicalModel;
 	QPointF const mPosition;
 	Pattern const mPattern;
-	QList<CreateElementCommand *> mNodeCommands;
+	QMap<QString, CreateElementCommand *> mNodeCommands;
 	QList<CreateElementCommand *> mEdgeCommands;
+	Id mRootId;
 };
 
 }

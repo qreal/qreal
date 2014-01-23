@@ -9,8 +9,8 @@ LineHandler::LineHandler(EdgeElement *edge)
 		: mEdge(edge)
 		, mSavedLine(mEdge->line())
 		, mDragType(EdgeElement::noPort)
-		, mNodeWithHighlightedPorts(NULL)
-		, mReshapeCommand(NULL)
+		, mNodeWithHighlightedPorts(nullptr)
+		, mReshapeCommand(nullptr)
 		, mReshapeStarted(false)
 {
 }
@@ -29,7 +29,7 @@ int LineHandler::startMovingEdge(QPointF const &pos)
 void LineHandler::rejectMovingEdge()
 {
 	delete mReshapeCommand;
-	mReshapeCommand = NULL;
+	mReshapeCommand = nullptr;
 	mReshapeStarted = false;
 	mDragType = EdgeElement::noPort;
 	dehighlightPorts();
@@ -91,7 +91,7 @@ void LineHandler::endReshape()
 		} else {
 			delete mReshapeCommand;
 		}
-		mReshapeCommand = NULL;
+		mReshapeCommand = nullptr;
 	}
 
 	mReshapeStarted = false;
@@ -112,7 +112,7 @@ void LineHandler::dehighlightPorts()
 {
 	if (mNodeWithHighlightedPorts) {
 		mNodeWithHighlightedPorts->setPortsVisible(QStringList());
-		mNodeWithHighlightedPorts = NULL;
+		mNodeWithHighlightedPorts = nullptr;
 	}
 }
 
@@ -226,7 +226,8 @@ int LineHandler::definePoint(QPointF const &pos) const
 {
 	QPolygonF const line = mEdge->line();
 	for (int i = 0; i < line.size(); ++i)
-		if (QRectF(line[i] - QPointF(kvadratik / 2, kvadratik / 2), QSizeF(kvadratik, kvadratik)).contains(pos))
+		if (QRectF(line[i] - QPointF(EdgeElement::stripeWidth / 2, EdgeElement::stripeWidth / 2)
+				, QSizeF(EdgeElement::stripeWidth, EdgeElement::stripeWidth)).contains(pos))
 			return i;
 
 	return -1;
@@ -234,11 +235,10 @@ int LineHandler::definePoint(QPointF const &pos) const
 
 int LineHandler::defineSegment(QPointF const &pos) const
 {
-	QPainterPath path;
 	QPainterPathStroker ps;
-	ps.setWidth(kvadratik);
+	ps.setWidth(EdgeElement::stripeWidth);
 	for (int i = 0; i < mSavedLine.size() - 1; ++i) {
-		path.moveTo(mSavedLine[i]);
+		QPainterPath path(mSavedLine[i]);
 		path.lineTo(mSavedLine[i + 1]);
 		if (ps.createStroke(path).contains(pos)) {
 			return i;

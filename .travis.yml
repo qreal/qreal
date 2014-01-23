@@ -1,5 +1,16 @@
 language: cpp
 compiler: gcc
+
+env:
+  - CONFIG=debug   PROJECT=qreal       VERA=true  TESTS=true
+  - CONFIG=release PROJECT=qreal       VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealRobots VERA=false TESTS=true
+  - CONFIG=release PROJECT=qrealRobots VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealBP     VERA=false TESTS=true
+  - CONFIG=release PROJECT=qrealBP     VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
+  - CONFIG=release PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
+
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
   - if [ "$CXX" = "g++" ]; then sudo apt-get update -qq; fi
@@ -21,9 +32,9 @@ install:
 
 script:
   - gcc --version
-  - tclsh buildScripts/vera++/generatePaths.tcl
-  - vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params
-  - qmake qreal.pro
+  - if [ "$VERA" = "true" ]; then tclsh buildScripts/vera++/generatePaths.tcl; fi
+  - if [ "$VERA" = "true" ]; then vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params; fi
+  - qmake $PROJECT.pro CONFIG+=$CONFIG
   - make -j2
   - cd ./qrtest/editorPluginTestingFramework
   - qmake editorPluginTestingFramework.pro
@@ -31,20 +42,9 @@ script:
   - cd ../../bin
   - ./editorPluginTestFramework testMetamodel.qrs 1
   - cd ../
-  - qmake qrealRobots.pro
-  - make -j2
-  - qmake qrealBP.pro
-  - make -j2
-  - git clean -dfx
-  - qmake qrealTest.pro CONFIG+=debug
-  - make 
   - cd ./bin
   - ls -A
-  - ./exampleTests
-  - ./qrgui_unittests
-  - ./qrrepo_unittests
-  - ./qrutils_unittests
-  - ./visualDebugSupport_unittests
+  - sh -c "$TESTS"
 
 notifications:
   email:
