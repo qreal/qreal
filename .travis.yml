@@ -2,12 +2,12 @@ language: cpp
 compiler: gcc
 
 env:
-  - CONFIG=debug   PROJECT=qreal       VERA=true  TESTS=
-  - CONFIG=release PROJECT=qreal       VERA=false TESTS=
-  - CONFIG=debug   PROJECT=qrealRobots VERA=false TESTS=
-  - CONFIG=release PROJECT=qrealRobots VERA=false TESTS=
-  - CONFIG=debug   PROJECT=qrealBP     VERA=false TESTS=
-  - CONFIG=release PROJECT=qrealBP     VERA=false TESTS=
+  - CONFIG=debug   PROJECT=qreal       VERA=true  TESTS=true
+  - CONFIG=release PROJECT=qreal       VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealRobots VERA=false TESTS=true
+  - CONFIG=release PROJECT=qrealRobots VERA=false TESTS=true
+  - CONFIG=debug   PROJECT=qrealBP     VERA=false TESTS=true
+  - CONFIG=release PROJECT=qrealBP     VERA=false TESTS=true
   - CONFIG=debug   PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
   - CONFIG=release PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
 
@@ -38,7 +38,7 @@ script:
   - make -j2
   - cd ./bin
   - ls -A
-  - sh -c "true && $TESTS"
+  - sh -c "$TESTS"
 
 notifications:
   email:
