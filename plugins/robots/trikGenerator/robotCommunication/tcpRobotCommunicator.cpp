@@ -10,6 +10,8 @@
 
 using namespace qReal::robots::generators::trik;
 
+static uint const port = 8888;
+
 TcpRobotCommunicator::TcpRobotCommunicator()
 {
 }
@@ -23,7 +25,7 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 {
 	QString const fileContents = utils::InFile::readAll(programName);
 	connect();
-	if (!mSocket.isValid()) {
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
 	}
 
@@ -41,7 +43,7 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 bool TcpRobotCommunicator::runProgram(QString const &programName)
 {
 	connect();
-	if (!mSocket.isValid()) {
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
 	}
 
@@ -57,7 +59,7 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
 {
 	connect();
-	if (!mSocket.isValid()) {
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
 	}
 
@@ -73,7 +75,7 @@ bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
 bool TcpRobotCommunicator::stopRobot()
 {
 	connect();
-	if (!mSocket.isValid()) {
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
 	}
 
@@ -89,7 +91,6 @@ bool TcpRobotCommunicator::stopRobot()
 void TcpRobotCommunicator::connect()
 {
 	QString const server = qReal::SettingsManager::value("tcpServer").toString();
-	uint const port = qReal::SettingsManager::value("tcpPort").toUInt();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
 		qDebug() << "Unable to resolve host. Check server address and try again";

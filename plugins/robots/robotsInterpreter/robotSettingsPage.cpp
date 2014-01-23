@@ -174,7 +174,6 @@ void PreferencesRobotSettingsPage::refreshValuesOnUi()
 
 	mUi->textVisibleCheckBox->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
 	mUi->tcpServerLineEdit->setText(SettingsManager::value("tcpServer").toString());
-	mUi->tcpPortSpinBox->setValue(SettingsManager::value("tcpPort").toInt());
 	mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("nxtFlashToolRunPolicy").toInt());
 }
 
@@ -292,7 +291,6 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("autoscalingInterval", autoscalingInterval());
 	SettingsManager::setValue("textUpdateInterval", textUpdateInterval());
 	SettingsManager::setValue("tcpServer", mUi->tcpServerLineEdit->text());
-	SettingsManager::setValue("tcpPort", mUi->tcpPortSpinBox->value());
 	SettingsManager::setValue("nxtFlashToolRunPolicy", mUi->runningAfterUploadingComboBox->currentIndex());
 	mSensorsWidget->save();
 	emit saved();

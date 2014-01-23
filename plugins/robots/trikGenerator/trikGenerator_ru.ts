@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>qReal::robots::generators::trik::TrikGeneratorPlugin</name>
     <message>
@@ -27,7 +27,7 @@
         <location filename="trikGeneratorPlugin.cpp" line="66"/>
         <location filename="trikGeneratorPlugin.cpp" line="90"/>
         <source>No connection to robot</source>
-        <translation>Нет соединения с роботом, проверьте настройки, проверьте, включён ли робот</translation>
+        <translation>Нет соединения с роботом, проверьте настройки (меню &quot;Настройки&quot; -&gt; &quot;Настройки...&quot; -&gt; &quot;Роботы&quot;), проверьте, включён ли робот</translation>
     </message>
 </context>
 </TS>

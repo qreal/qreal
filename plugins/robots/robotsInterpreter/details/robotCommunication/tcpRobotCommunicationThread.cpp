@@ -5,6 +5,8 @@
 
 using namespace qReal::interpreters::robots::details;
 
+static uint const port = 8888;
+
 TcpRobotCommunicationThread::TcpRobotCommunicationThread()
 {
 }
@@ -37,7 +39,6 @@ void TcpRobotCommunicationThread::sendI2C(QObject *addressee, QByteArray const &
 void TcpRobotCommunicationThread::connect()
 {
 	QString const server = SettingsManager::value("tcpServer").toString();
-	uint const port = SettingsManager::value("tcpPort").toUInt();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
 		QString const message = tr("Unable to resolve %1. Check server address anfd try again");
