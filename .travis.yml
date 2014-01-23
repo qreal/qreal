@@ -2,13 +2,14 @@ language: cpp
 compiler: gcc
 
 env:
-  - CONFIG=debug
-  - CONFIG=release 
-env:
-  - PROJECT=qreal       VERA=true  TESTS=
-  - PROJECT=qrealRobots VERA=false TESTS=
-  - PROJECT=qrealBP     VERA=false TESTS=
-  - PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
+  - CONFIG=debug   PROJECT=qreal       VERA=true  TESTS=
+  - CONFIG=release PROJECT=qreal       VERA=true  TESTS=
+  - CONFIG=debug   PROJECT=qrealRobots VERA=false TESTS=
+  - CONFIG=release PROJECT=qrealRobots VERA=false TESTS=
+  - CONFIG=debug   PROJECT=qrealBP     VERA=false TESTS=
+  - CONFIG=release PROJECT=qrealBP     VERA=false TESTS=
+  - CONFIG=debug   PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
+  - CONFIG=release PROJECT=qrealTest   VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests"
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
