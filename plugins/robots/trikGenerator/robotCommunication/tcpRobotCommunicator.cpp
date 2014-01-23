@@ -10,6 +10,8 @@
 
 using namespace qReal::robots::generators::trik;
 
+static uint const port = 8888;
+
 TcpRobotCommunicator::TcpRobotCommunicator()
 {
 }
@@ -89,7 +91,6 @@ bool TcpRobotCommunicator::stopRobot()
 void TcpRobotCommunicator::connect()
 {
 	QString const server = qReal::SettingsManager::value("tcpServer").toString();
-	uint const port = qReal::SettingsManager::value("tcpPort").toUInt();
 	QHostAddress hostAddress(server);
 	if (hostAddress.isNull()) {
 		qDebug() << "Unable to resolve host. Check server address and try again";
