@@ -93,8 +93,8 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 		!element.isNull();
 		element = element.nextSiblingElement())
 	{
-		mGroupsXML = "";
 		if (element.nodeName() == "groups") {
+			mGroupsXML = "";
 			QString xml;
 			QTextStream stream(&xml);
 			element.save(stream, 1);
