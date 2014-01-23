@@ -25,7 +25,7 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 {
 	QString const fileContents = utils::InFile::readAll(programName);
 	connect();
-	if (!mSocket.isValid()) {
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
 	}
 
@@ -43,7 +43,7 @@ bool TcpRobotCommunicator::uploadProgram(QString const &programName)
 bool TcpRobotCommunicator::runProgram(QString const &programName)
 {
 	connect();
-	if (!mSocket.isValid()) {
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
 	}
 
@@ -59,7 +59,7 @@ bool TcpRobotCommunicator::runProgram(QString const &programName)
 bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
 {
 	connect();
-	if (!mSocket.isValid()) {
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
 	}
 
@@ -75,7 +75,7 @@ bool TcpRobotCommunicator::runDirectCommand(QString const &directCommand)
 bool TcpRobotCommunicator::stopRobot()
 {
 	connect();
-	if (!mSocket.isValid()) {
+	if (mSocket.state() != QAbstractSocket::ConnectedState) {
 		return false;
 	}
 
