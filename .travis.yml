@@ -3,7 +3,7 @@ compiler: gcc
 
 env:
   - CONFIG=debug   PROJECT=qreal       VERA=true  TESTS=
-  - CONFIG=release PROJECT=qreal       VERA=true  TESTS=
+  - CONFIG=release PROJECT=qreal       VERA=false TESTS=
   - CONFIG=debug   PROJECT=qrealRobots VERA=false TESTS=
   - CONFIG=release PROJECT=qrealRobots VERA=false TESTS=
   - CONFIG=debug   PROJECT=qrealBP     VERA=false TESTS=
