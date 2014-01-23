@@ -38,7 +38,7 @@ script:
   - make -j2
   - cd ./bin
   - ls -A
-  - $TESTS
+  - sh -c $TESTS
 
 notifications:
   email:
