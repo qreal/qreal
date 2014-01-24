@@ -751,24 +751,28 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	switch (mDrawingAction){
 	case enums::drawingAction::wall: {
 		reshapeWall(mouseEvent);
+		mCurrentWall->setSelected(true);
 		mCurrentWall = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::line: {
 		reshapeLine(mouseEvent);
+		mCurrentLine->setSelected(true);
 		mCurrentLine = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::stylus: {
 		reshapeStylus(mouseEvent);
+		mCurrentStylus->setSelected(true);
 		mCurrentStylus = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::ellipse: {
 		reshapeEllipse(mouseEvent);
+		mCurrentEllipse->setSelected(true);
 		mCurrentEllipse = nullptr;
 		mMouseClicksCount = 0;
 		break;
