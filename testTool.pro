@@ -8,13 +8,14 @@ SUBDIRS += \
 	qrrepo \
 	qrkernel \
 	qrutils \
-	qrtest/editorPluginTestingFramework \
+	editorPluginTestingFramework \
 
 qrutils.depends = qrkernel
 qrrepo.depends = qrkernel qrutils
 qrxc.depends = qrutils
 qrmc.depends = qrrepo
 qrmc.file = qrmc/qrmc-lib.pro
+editorPluginTestingFramework.file = qrtest/editorPluginTestingFramework/editorPluginTestingFramework.pro
 
 editorPluginTestingFramework.depends = \
 	qrmc \
