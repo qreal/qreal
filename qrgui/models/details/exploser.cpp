@@ -38,16 +38,16 @@ void Exploser::refreshAllPalettes()
 
 void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram)
 {
-	QMap<QString, QList<gui::PaletteElement> > groups;
+	QList<QPair<QString, QList<gui::PaletteElement>>> groups;
 	QMap<QString, QString> descriptions;
 	descriptions[mUserGroupTitle] = mUserGroupDescription;
 
 	IdList const childTypes = mApi.editorManagerInterface().elements(diagram);
 
-	foreach (Id const &child, childTypes) {
+	for (Id const &child : childTypes) {
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(child);
 
-		foreach (Explosion const &explosion, explosions) {
+		for (Explosion const &explosion : explosions) {
 			if (!explosion.isReusable()) {
 				continue;
 			}
@@ -62,19 +62,24 @@ void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &dia
 			}
 
 			IdList const allTargets = mApi.logicalRepoApi().elementsByType(target.element(), true);
-			foreach (Id const &targetInstance, allTargets) {
+			QList<gui::PaletteElement> groupElements;
+			for (Id const &targetInstance : allTargets) {
 				if (mApi.isLogicalId(targetInstance)) {
-					groups[mUserGroupTitle] << gui::PaletteElement(child
+					groupElements << gui::PaletteElement(child
 							, mApi.logicalRepoApi().name(targetInstance)
 							, QString(), mApi.editorManagerInterface().icon(child)
 							, mApi.editorManagerInterface().iconSize(child)
 							, targetInstance);
 				}
 			}
+
+			if (!groupElements.isEmpty()) {
+				groups << qMakePair(mUserGroupTitle, groupElements);
+			}
 		}
 	}
 
-	tree->addGroups(groups, descriptions, true, mApi.editorManagerInterface().friendlyName(diagram));
+	tree->addGroups(groups, descriptions, true, mApi.editorManagerInterface().friendlyName(diagram), true);
 }
 
 void Exploser::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)

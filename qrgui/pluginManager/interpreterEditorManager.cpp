@@ -993,6 +993,12 @@ QString InterpreterEditorManager::paletteGroupDescription(Id const &editor, cons
 	return "";
 }
 
+bool InterpreterEditorManager::shallPaletteBeSorted(const Id &editor, Id const &diagram) const
+{
+	Q_UNUSED(editor);
+	return true;
+}
+
 IdList InterpreterEditorManager::groups(Id const &diagram)
 {
 	Q_UNUSED(diagram);
