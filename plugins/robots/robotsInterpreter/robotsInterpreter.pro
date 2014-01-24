@@ -33,6 +33,8 @@ HEADERS += \
 	details/debugHelper.h \
 	details/abstractTimer.h \
 	details/realTimer.h \
+	details/sensorsConfigurationManager.h \
+	details/sensorsConfigurationProvider.h \
 	details/sensorsConfigurationWidget.h \
 	details/nullTimer.h \
 	details/nxtDisplay.h \
@@ -53,6 +55,8 @@ SOURCES += \
 	details/nxtDisplay.cpp \
 	details/realTimer.cpp \
 	details/robotsBlockParser.cpp \
+	details/sensorsConfigurationManager.cpp \
+	details/sensorsConfigurationProvider.cpp \
 	details/sensorsConfigurationWidget.cpp \
 	details/thread.cpp \
 	details/tracer.cpp \

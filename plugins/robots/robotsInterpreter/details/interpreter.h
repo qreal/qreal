@@ -16,6 +16,7 @@
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 #include "details/sensorsConfigurationWidget.h"
+#include "details/sensorsConfigurationProvider.h"
 #include "details/nxtDisplay.h"
 
 namespace qReal {
@@ -23,7 +24,7 @@ namespace interpreters {
 namespace robots {
 namespace details {
 
-class Interpreter : public QObject
+class Interpreter : public QObject, public SensorsConfigurationProvider
 {
 	Q_OBJECT
 
@@ -73,8 +74,6 @@ public:
 signals:
 	void noiseSettingsChanged();
 	void noiseSettingsChangedBy2DModelWidget();
-
-	void sensorsConfigurationChanged();
 
 public slots:
 	void connectToRobot();

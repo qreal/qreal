@@ -33,6 +33,8 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 
 	connect(mUi->manualComPortCheckbox, SIGNAL(toggled(bool)), this, SLOT(manualComPortCheckboxChecked(bool)));
 
+	mSensorsWidget->connectSensorsConfigurationProvider(this);
+
 	connect(mUi->textVisibleCheckBox, SIGNAL(toggled(bool)), this, SIGNAL(textVisibleChanged(bool)));
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
 	QString const defaultPortName = SettingsManager::value("bluetoothPortName").toString();
@@ -300,9 +302,4 @@ void PreferencesRobotSettingsPage::save()
 void PreferencesRobotSettingsPage::restoreSettings()
 {
 	refreshValuesOnUi();
-}
-
-void PreferencesRobotSettingsPage::refreshPorts()
-{
-	mSensorsWidget->refresh();
 }

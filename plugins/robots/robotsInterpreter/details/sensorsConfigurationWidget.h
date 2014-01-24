@@ -3,11 +3,14 @@
 #include <QtWidgets/QWidget>
 
 #include "../sensorConstants.h"
+#include "sensorsConfigurationProvider.h"
 
 namespace Ui
 {
 	class SensorsConfigurationWidget;
 }
+
+class QComboBox;
 
 namespace qReal {
 namespace interpreters {
@@ -15,7 +18,7 @@ namespace robots {
 namespace details {
 
 /// A number of combo boxes for sensors selection
-class SensorsConfigurationWidget : public QWidget
+class SensorsConfigurationWidget : public QWidget, public SensorsConfigurationProvider
 {
 	Q_OBJECT
 
@@ -28,24 +31,22 @@ public:
 	void reinitValues();
 	void retranslateUi();
 
-signals:
-	void saved();
-
 public slots:
-	void refresh();
 	void save();
 
 protected:
 	void changeEvent(QEvent *e);
 
 private:
-	void startChangesListening();
-	robots::enums::sensorType::SensorTypeEnum selectedPort1Sensor() const;
-	robots::enums::sensorType::SensorTypeEnum selectedPort2Sensor() const;
-	robots::enums::sensorType::SensorTypeEnum selectedPort3Sensor() const;
-	robots::enums::sensorType::SensorTypeEnum selectedPort4Sensor() const;
+	void onSensorConfigurationChanged(
+			robots::enums::inputPort::InputPortEnum port
+			, robots::enums::sensorType::SensorTypeEnum type
+			) override;
 
-	Ui::SensorsConfigurationWidget *mUi;
+	void startChangesListening();
+	robots::enums::sensorType::SensorTypeEnum selectedPortSensor(QComboBox const &comboBox) const;
+
+	Ui::SensorsConfigurationWidget *mUi;  // Has ownership.
 };
 
 }

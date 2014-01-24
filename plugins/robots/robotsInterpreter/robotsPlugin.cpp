@@ -239,16 +239,23 @@ void RobotsPlugin::activeTabChanged(Id const &rootElementId)
 	mInterpreter->onTabChanged(rootElementId, enabled);
 }
 
-interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produceSensorsConfigurer() const
+interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produceSensorsConfigurer()
 {
 	interpreters::robots::details::SensorsConfigurationWidget *result =
 			new interpreters::robots::details::SensorsConfigurationWidget;
-	connect(mRobotSettingsPage, SIGNAL(saved()), result, SLOT(refresh()));
-	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
-	connect(result, SIGNAL(saved()), mInterpreter, SLOT(saveSensorConfiguration()));
-	connect(mInterpreter, SIGNAL(sensorsConfigurationChanged()), result, SLOT(refresh()));
-	connect(result, SIGNAL(saved()), mInterpreter, SLOT(updateGraphicWatchSensorsList()));
-	mInterpreter->connectSensorConfigurer(result);
+
+	mSensorsConfigurationManager.connectSensorsConfigurationProvider(result);
+	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mRobotSettingsPage);
+	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mInterpreter);
+
+	mSensorsConfigurationManager.refresh();
+
+//	connect(mRobotSettingsPage, SIGNAL(saved()), result, SLOT(refresh()));
+//	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
+//	connect(result, SIGNAL(saved()), mInterpreter, SLOT(saveSensorConfiguration()));
+//	connect(mInterpreter, SIGNAL(sensorsConfigurationChanged()), result, SLOT(refresh()));
+//	connect(result, SIGNAL(saved()), mInterpreter, SLOT(updateGraphicWatchSensorsList()));
+//	mInterpreter->connectSensorConfigurer(result);
 	return result;
 }
 

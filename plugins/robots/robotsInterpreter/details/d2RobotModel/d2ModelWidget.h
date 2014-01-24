@@ -22,6 +22,7 @@
 #include "rotater.h"
 #include "timeline.h"
 #include "../nxtDisplay.h"
+#include "details/sensorsConfigurationProvider.h"
 
 namespace Ui {
 class D2Form;
@@ -63,7 +64,7 @@ enum CursorType
 
 }
 
-class D2ModelWidget : public utils::QRealDialog
+class D2ModelWidget : public utils::QRealDialog, public details::SensorsConfigurationProvider
 {
 	Q_OBJECT
 
@@ -103,21 +104,28 @@ public:
 public slots:
 	void update();
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
-	/// Places in 2D model same sensors as selected in QReal settings
-	void syncronizeSensors();
+
 	/// Synchronizes noise settings in 2D model window with global ones
 	void rereadNoiseSettings();
+
 	/// Starts 2D model time counter
 	void startTimelineListening();
+
 	/// Stops 2D model time counter
 	void stopTimelineListening();
 	void saveInitialRobotBeforeRun();
 	void setInitialRobotBeforeRun();
 
+	void onSensorConfigurationChanged(
+			robots::enums::inputPort::InputPortEnum port
+			, robots::enums::sensorType::SensorTypeEnum type
+			) override;
+
 signals:
 	void d2WasClosed();
 
 	void robotWasIntersectedByWall(bool isNeedStop, QPointF const& oldPos);
+
 	/// Emitted when such features as motor or sensor noise were
 	///enabled or disabled by user
 	void noiseSettingsChanged();
@@ -125,6 +133,9 @@ signals:
 	/// Emitted each time when some user actions lead to world model modifications
 	/// @param xml World model description in xml format
 	void modelChanged(QDomDocument const &xml);
+
+	/// Emitted when sensor settings are changed in 2d model widget.
+	void sensorChanged(int port, robots::enums::sensorType::SensorTypeEnum type);
 
 protected:
 	virtual void changeEvent(QEvent *e);
