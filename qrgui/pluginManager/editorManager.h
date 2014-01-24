@@ -31,85 +31,86 @@ public:
 
 	~EditorManager();
 
-	virtual IdList editors() const;
-	virtual IdList diagrams(Id const &editor) const;
-	virtual IdList groups(Id const &diagram);
-	virtual Pattern getPatternByName (QString const &str) const;
-	virtual QList<QString> getPatternNames() const;
-	virtual QStringList paletteGroups(Id const &editor, Id const &diagram) const;
-	virtual QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const;
-	virtual QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const;
-	virtual IdList elements(Id const &diagram) const;
-	virtual bool loadPlugin(QString const &pluginName);
-	virtual bool unloadPlugin(QString const &pluginName);
+	IdList editors() const override;
+	IdList diagrams(Id const &editor) const override;
+	IdList groups(Id const &diagram) override;
+	Pattern getPatternByName (QString const &str) const override;
+	QList<QString> getPatternNames() const override;
+	QStringList paletteGroups(Id const &editor, Id const &diagram) const override;
+	QStringList paletteGroupList(Id const &editor,Id const &diagram, QString const &group) const override;
+	QString paletteGroupDescription(Id const &editor, const Id &diagram, const QString &group) const override;
+	bool shallPaletteBeSorted(Id const &editor, Id const &diagram) const override;
+	IdList elements(Id const &diagram) const override;
+	bool loadPlugin(QString const &pluginName) override;
+	bool unloadPlugin(QString const &pluginName) override;
 
-	virtual QString mouseGesture(Id const &id) const;
-	virtual QString friendlyName(Id const &id) const;
-	virtual QString description(Id const &id) const;
-	virtual QString propertyDescription(Id const &id, QString const &propertyName) const;
-	virtual QString propertyDisplayedName(Id const &id, QString const &propertyName) const;
-	virtual QIcon icon(Id const &id) const;
-	virtual QSize iconSize(Id const &id) const;
-	virtual ElementImpl* elementImpl(Id const &id) const;
+	QString mouseGesture(Id const &id) const override;
+	QString friendlyName(Id const &id) const override;
+	QString description(Id const &id) const override;
+	QString propertyDescription(Id const &id, QString const &propertyName) const override;
+	QString propertyDisplayedName(Id const &id, QString const &propertyName) const override;
+	QIcon icon(Id const &id) const override;
+	QSize iconSize(Id const &id) const override;
+	ElementImpl* elementImpl(Id const &id) const override;
 
-	virtual IdList containedTypes(const Id &id) const;
-	virtual QList<Explosion> explosions(Id const &source) const;
-	virtual QStringList enumValues(Id const &id, const QString &name) const;
-	virtual QString typeName(Id const &id, const QString &name) const;
-	virtual QStringList allChildrenTypesOf(Id const &parent) const;
+	IdList containedTypes(const Id &id) const override;
+	QList<Explosion> explosions(Id const &source) const override;
+	QStringList enumValues(Id const &id, const QString &name) const override;
+	QString typeName(Id const &id, const QString &name) const override;
+	QStringList allChildrenTypesOf(Id const &parent) const override;
 
-	virtual bool isEditor(Id const &id) const;
-	virtual bool isDiagram(Id const &id) const;
-	virtual bool isElement(Id const &id) const;
+	bool isEditor(Id const &id) const override;
+	bool isDiagram(Id const &id) const override;
+	bool isElement(Id const &id) const override;
 
-	virtual QStringList propertyNames(Id const &id) const;
-	virtual QStringList portTypes(Id const &id) const;
-	virtual QStringList referenceProperties(Id const &id) const;
-	virtual QString defaultPropertyValue(Id const &id, QString name) const;
-	virtual QStringList propertiesWithDefaultValues(Id const &id) const;
+	QStringList propertyNames(Id const &id) const override;
+	QStringList portTypes(Id const &id) const override;
+	QStringList referenceProperties(Id const &id) const override;
+	QString defaultPropertyValue(Id const &id, QString name) const override;
+	QStringList propertiesWithDefaultValues(Id const &id) const override;
 
-	virtual IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
-			, qrRepo::GraphicalRepoApi const &graphicalApi) const;
-	virtual bool hasElement(Id const &element) const;
+	IdList checkNeededPlugins(qrRepo::LogicalRepoApi const &logicalApi
+			, qrRepo::GraphicalRepoApi const &graphicalApi) const override;
+	bool hasElement(Id const &element) const override;
 
-	virtual Id findElementByType(QString const &type) const;
-	virtual QList<ListenerInterface *> listeners() const;
+	Id findElementByType(QString const &type) const override;
+	QList<ListenerInterface *> listeners() const override;
 
-	virtual bool isDiagramNode(Id const &id) const;
+	bool isDiagramNode(Id const &id) const override;
 
-	virtual bool isParentOf(Id const &child, Id const &parent) const;
-	virtual bool isGraphicalElementNode(const Id &id) const;
+	bool isParentOf(Id const &child, Id const &parent) const override;
+	bool isGraphicalElementNode(const Id &id) const override;
 
 	/// Returns diagram id if only one diagram loaded or Id() otherwise
-	virtual Id theOnlyDiagram() const;
-	virtual QString diagramNodeNameString(Id const &editor, Id const &diagram) const;
+	Id theOnlyDiagram() const override;
+	QString diagramNodeNameString(Id const &editor, Id const &diagram) const override;
 
-	virtual QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const;
-	virtual QStringList elements(QString const &editor, QString const &diagram) const;
-	virtual int isNodeOrEdge(QString const &editor, QString const &element) const;
-	virtual bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement
-			, QString const &childDiagram, QString const &childElement) const;
-	virtual QString diagramName(QString const &editor, QString const &diagram) const;
-	virtual QString diagramNodeName(QString const &editor, QString const &diagram) const;
-	virtual bool isInterpretationMode() const;
-	virtual bool isParentProperty(Id const &id, QString const &propertyName) const;
-	virtual void deleteProperty(QString const &propDisplayedName) const;
-	virtual void addProperty(Id const &id, QString const &propDisplayedName) const;
-	virtual void updateProperties(Id const &id, QString const &property, QString const &propertyType
-			, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const;
-	virtual QString propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const;
-	virtual IdList children(Id const &parent) const;
-	virtual QString shape(Id const &id) const;
-	virtual void updateShape(Id const &id, QString const &graphics) const;
-	virtual void deleteElement(MainWindow *mainWindow, Id const &id) const;
-	virtual bool isRootDiagramNode(Id const &id) const;
-	virtual void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const;
-	virtual void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
+	QList<StringPossibleEdge> possibleEdges(QString const &editor, QString const &element) const override;
+	QStringList elements(QString const &editor, QString const &diagram) const override;
+	int isNodeOrEdge(QString const &editor, QString const &element) const override;
+	bool isParentOf(QString const &editor, QString const &parentDiagram, QString const &parentElement
+			, QString const &childDiagram, QString const &childElement) const override;
+	QString diagramName(QString const &editor, QString const &diagram) const override;
+	QString diagramNodeName(QString const &editor, QString const &diagram) const override;
+	bool isInterpretationMode() const override;
+	bool isParentProperty(Id const &id, QString const &propertyName) const override;
+	void deleteProperty(QString const &propDisplayedName) const override;
+	void addProperty(Id const &id, QString const &propDisplayedName) const override;
+	void updateProperties(Id const &id, QString const &property, QString const &propertyType
+			, QString const &propertyDefaultValue, QString const &propertyDisplayedName) const override;
+	QString propertyNameByDisplayedName(Id const &id, QString const &displayedPropertyName) const override;
+	IdList children(Id const &parent) const override;
+	QString shape(Id const &id) const override;
+	void updateShape(Id const &id, QString const &graphics) const override;
+	void deleteElement(MainWindow *mainWindow, Id const &id) const override;
+	bool isRootDiagramNode(Id const &id) const override;
+	void addNodeElement(Id const &diagram, QString const &name, bool isRootDiagramNode) const override;
+	void addEdgeElement(Id const &diagram, QString const &name, QString const &labelText
 			, QString const &labelType, QString const &lineType, QString const &beginType
-			, QString const &endType) const;
-	virtual QPair<Id, Id> createEditorAndDiagram(QString const &name) const;
-	virtual void saveMetamodel(QString const &newMetamodelFileName);
-	virtual QString saveMetamodelFilePath() const;
+			, QString const &endType) const override;
+	QPair<Id, Id> createEditorAndDiagram(QString const &name) const override;
+	void saveMetamodel(QString const &newMetamodelFileName) override;
+	QString saveMetamodelFilePath() const override;
 
 private:
 	QStringList mPluginsLoaded;

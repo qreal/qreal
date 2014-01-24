@@ -1735,7 +1735,7 @@
 				</logic>
 			</node>
 		</graphicTypes>
-		<palette>
+		<palette sorted="true">
 			<group name="Действия">
 				<element name="Fork"/>
 				<element name="Beep"/>
