@@ -1988,10 +1988,12 @@
 			</node>
 
 		</graphicTypes>
-		<palette>
+		<palette sorted="false">
 			<group name="ТРИК">
 <!--			<group name="Действия"> -->
 <!--				<element name="Fork"/> -->
+				<element name="InitialNode"/>
+				<element name="FinalNode"/>
 				<element name="Beep"/>
 				<element name="PlayTone"/>
 				<element name="Say"/>
@@ -2029,8 +2031,6 @@
 <!--				<element name="Subprogram"/> -->
 <!--			</group> -->
 <!--			<group name="Инициализация"> -->
-				<element name="InitialNode"/>
-				<element name="FinalNode"/>
 				<element name="Smile"/>
 				<element name="SadSmile"/>
 				<element name="SetBackground"/>
