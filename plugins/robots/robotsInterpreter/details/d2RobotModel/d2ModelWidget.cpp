@@ -540,7 +540,7 @@ void D2ModelWidget::addPort(int const port)
 
 	QPointF const sensorPos = mSensors[port]
 			? mSensors[port]->scenePos()
-			: mRobot->mapToScene(mRobot->boundingRect().center());
+			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
 	mCurrentPort = static_cast<robots::enums::inputPort::InputPortEnum>(port);
 
 	switch (currentComboBox()->currentIndex()){
@@ -550,19 +550,22 @@ void D2ModelWidget::addPort(int const port)
 	case 1:
 		mCurrentSensorType = robots::enums::sensorType::touchBoolean;
 		break;
-	case 2: {
-		QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
-		robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
-		mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
-		if (mCurrentSensorType != robots::enums::sensorType::colorFull
-					&& mCurrentSensorType != robots::enums::sensorType::colorBlue
-					&& mCurrentSensorType != robots::enums::sensorType::colorGreen
-					&& mCurrentSensorType != robots::enums::sensorType::colorRed
-					&& mCurrentSensorType != robots::enums::sensorType::colorNone) {
-			mCurrentSensorType = defaultValue;
+	case 2:
+		{
+			QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
+			robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
+			mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
+			if (mCurrentSensorType != robots::enums::sensorType::colorFull
+						&& mCurrentSensorType != robots::enums::sensorType::colorBlue
+						&& mCurrentSensorType != robots::enums::sensorType::colorGreen
+						&& mCurrentSensorType != robots::enums::sensorType::colorRed
+						&& mCurrentSensorType != robots::enums::sensorType::colorNone)
+			{
+				mCurrentSensorType = defaultValue;
+			}
+
+			break;
 		}
-	}
-		break;
 	case 3:
 		mCurrentSensorType = robots::enums::sensorType::sonar;
 		break;
