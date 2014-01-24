@@ -86,6 +86,8 @@ D2ModelWidget::~D2ModelWidget()
 
 void D2ModelWidget::initWidget()
 {
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+
 	mUi->setupUi(this);
 	mSensors.resize(4);
 
