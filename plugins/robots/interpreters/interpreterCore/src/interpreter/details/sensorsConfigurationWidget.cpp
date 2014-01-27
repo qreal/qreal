@@ -1,40 +1,46 @@
-#include <utils/sensorsConfigurationWidget.h>
+#include "sensorsConfigurationWidget.h"
+
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLabel>
+
 #include <qrkernel/settingsManager.h>
 
-using namespace utils;
+using namespace interpreterCore::interpreter::details;
 
 SensorsConfigurationWidget::SensorsConfigurationWidget(bool autosaveMode, QWidget *parent)
 	: QWidget(parent)
+	, mAutosaveMode(autosaveMode)
 {
-	reinitValues();
 	refresh();
-	if (autosaveMode) {
-		startChangesListening();
+}
+
+void SensorsConfigurationWidget::loadKit(QStringList const &ports, QStringList const &sensors)
+{
+	if (layout()) {
+		delete layout();
+		setLayout(nullptr);
+	}
+
+	QVBoxLayout * const layout = new QVBoxLayout;
+	setLayout(layout);
+	for (QString const &port : ports) {
+		layout->addLayout(initPort(port, sensors));
 	}
 }
 
-void SensorsConfigurationWidget::startChangesListening()
+QLayout *SensorsConfigurationWidget::initPort(QString const &port, QStringList const &sensors)
 {
-//	connect(mUi->port1ComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(save()));
-//	connect(mUi->port2ComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(save()));
-//	connect(mUi->port3ComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(save()));
-//	connect(mUi->port4ComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(save()));
+	QHBoxLayout * const layout = new QHBoxLayout;
+	QLabel * const portLabel = new QLabel(port + ":", this);
+	QComboBox * const comboBox = new QComboBox(this);
+	layout->addWidget(portLabel);
+	layout->addWidget(comboBox);
+	comboBox->addItems(sensors);
+	if (mAutosaveMode) {
+		connect(comboBox, &QComboBox::currentTextChanged, this, &SensorsConfigurationWidget::save);
+	}
 }
-
-void SensorsConfigurationWidget::reinitValues()
-{
-//	QStringList const sensorNames = SensorEnumerator::sensorNamesList();
-
-//	mUi->port1ComboBox->clear();
-//	mUi->port2ComboBox->clear();
-//	mUi->port3ComboBox->clear();
-//	mUi->port4ComboBox->clear();
-//	mUi->port1ComboBox->addItems(sensorNames);
-//	mUi->port2ComboBox->addItems(sensorNames);
-//	mUi->port3ComboBox->addItems(sensorNames);
-//	mUi->port4ComboBox->addItems(sensorNames);
-}
-
 
 void SensorsConfigurationWidget::refresh()
 {

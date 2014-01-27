@@ -21,6 +21,5 @@ SOURCES += \
 	$$PWD/abstractTimer.cpp \
 	$$PWD/debugHelper.cpp \
 	$$PWD/realTimer.cpp \
-	$$PWD/sensorsConfigurationWidget.cpp \
 	$$PWD/textExpressionProcessor.cpp \
 	$$PWD/tracer.cpp \

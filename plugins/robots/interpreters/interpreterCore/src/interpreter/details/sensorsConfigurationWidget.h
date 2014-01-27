@@ -2,14 +2,12 @@
 
 #include <QtWidgets/QWidget>
 
-//#include "../sensorConstants.h"
-
-#include "utilsDeclSpec.h"
-
-namespace utils {
+namespace interpreterCore {
+namespace interpreter {
+namespace details {
 
 /// A number of combo boxes for sensors selection
-class ROBOTS_UTILS_EXPORT SensorsConfigurationWidget : public QWidget
+class SensorsConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -18,7 +16,7 @@ public:
 	/// be called manually
 	explicit SensorsConfigurationWidget(bool autosaveMode = true, QWidget *parent = 0);
 
-	void reinitValues();
+	void loadKit(QStringList const &ports, QStringList const &sensors);
 
 signals:
 	void saved();
@@ -28,11 +26,16 @@ public slots:
 	void save();
 
 private:
-	void startChangesListening();
+	QLayout *initPort(QString const &port, QStringList const &sensors);
+
 //	robots::enums::sensorType::SensorTypeEnum selectedPort1Sensor() const;
 //	robots::enums::sensorType::SensorTypeEnum selectedPort2Sensor() const;
 //	robots::enums::sensorType::SensorTypeEnum selectedPort3Sensor() const;
 //	robots::enums::sensorType::SensorTypeEnum selectedPort4Sensor() const;
+
+	bool mAutosaveMode;
 };
 
+}
+}
 }
