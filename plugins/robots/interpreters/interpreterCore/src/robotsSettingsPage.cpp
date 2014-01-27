@@ -14,30 +14,16 @@ RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager, QWidg
 		: PreferencesPage(parent)
 		, mUi(new Ui::PreferencesRobotSettingsPage)
 		, mKitPluginManager(kitPluginManager)
-		, mKitRadioButtons(new QButtonGroup(this))
 {
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
 
+
+//	mUi->typeOfModelGroupBox->setVisible(false);
+
 	QList<QString> const kitNames = mKitPluginManager.kitIds();
-
-	if (kitNames.isEmpty()) {
-		QLabel * const label = new QLabel();
-		label->setText(tr("No constructor kit plugins loaded"));
-		static_cast<QVBoxLayout *>(mUi->constructorKitGroupBox->layout())->insertWidget(0, label);
-		mUi->typeOfModelGroupBox->setVisible(false);
-		return;
-	}
-
-	if (kitNames.count() == 1) {
-		mUi->constructorKitGroupBox->setVisible(false);
-	} else {
-		initMultipleRadioButtons();
-	}
-
-	mUi->typeOfModelGroupBox->setVisible(false);
-
 	mKitPluginManager.selectKit(kitNames[0]);
+	initializeKitRadioButtons();
 
 	QWidget * const extensionWidget = mKitPluginManager.selectedKit().settingsWidget();
 	if (extensionWidget) {
@@ -101,19 +87,91 @@ void RobotsSettingsPage::changeEvent(QEvent *e)
 	}
 }
 
-void RobotsSettingsPage::initMultipleRadioButtons()
+void RobotsSettingsPage::onKitRadioButtonToggled(bool checked)
 {
-	for (QString const &kitId : mKitPluginManager.kitIds()) {
-		interpreterBase::KitPluginInterface const &kit = mKitPluginManager.kitById(kitId);
-		QRadioButton * const kitRadioButton = new QRadioButton;
-		kitRadioButton->setText(kit.friendlyKitName());
-		if (mUi->constructorKitGroupBox->layout()->count() == 1) {
-			kitRadioButton->setChecked(true);
+	if (!checked) {
+		return;
+	}
+
+	QAbstractButton * const kitButton = static_cast<QAbstractButton *>(sender());
+	showRadioButtonGroup(mUi->typeOfModelGroupBox, mKitRobotModels[kitButton]);
+}
+
+void RobotsSettingsPage::onRobotModelRadioButtonToggled(bool checked)
+{
+	if (!checked) {
+		return;
+	}
+}
+
+void RobotsSettingsPage::clearLayout(QLayout *layout)
+{
+	QLayoutItem *item;
+	while ((item = layout->takeAt(0))) {
+		if (item->layout()) {
+			clearLayout(item->layout());
 		}
 
-		static_cast<QVBoxLayout *>(mUi->constructorKitGroupBox->layout())->insertWidget(
-				mUi->constructorKitGroupBox->layout()->count() - 1, kitRadioButton);
-		mKitRadioButtons->addButton(kitRadioButton);
+		layout->removeItem(item);
+	}
+}
+
+void RobotsSettingsPage::initializeKitRadioButtons()
+{
+	QLabel * const emptyCaseLabel = new QLabel(tr("No constructor kit plugins loaded"), this);
+	QButtonGroup * const kitRadioButtons = new QButtonGroup(this);
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		interpreterBase::KitPluginInterface const &kit = mKitPluginManager.kitById(kitId);
+		QRadioButton * const kitRadioButton = new QRadioButton(kit.friendlyKitName());
+		kitRadioButtons->addButton(kitRadioButton);
+		connect(kitRadioButton, SIGNAL(toggled(bool)), this, SLOT(onKitRadioButtonToggled(bool)));
+		mKitRobotModels[kitRadioButton] = initializeRobotModelsButtons(kitId, kitRadioButton);
+	}
+
+	showRadioButtonGroup(mUi->constructorKitGroupBox, kitRadioButtons, emptyCaseLabel);
+}
+
+QButtonGroup *RobotsSettingsPage::initializeRobotModelsButtons(QString const &kitId, QRadioButton * const kitButton)
+{
+	QButtonGroup * const result = new QButtonGroup(kitButton);
+	for (auto &robotModel : mKitPluginManager.kitById(kitId).robotModels()) {
+		QString const name = robotModel->name();
+		QRadioButton * const button = new QRadioButton(name);
+		mButtonsToRobotModelsMapping[button] = robotModel;
+		connect(button, &QRadioButton::toggled, this, &RobotsSettingsPage::onRobotModelRadioButtonToggled);
+		result->addButton(button);
+	}
+
+	return result;
+}
+
+void RobotsSettingsPage::showRadioButtonGroup(QWidget * const container, QButtonGroup * const radioButtons
+		, QWidget * const emptyCaseWidget)
+{
+	if (emptyCaseWidget) {
+		emptyCaseWidget->setVisible(false);
+	}
+
+	clearLayout(container->layout());
+	if (radioButtons->buttons().isEmpty()) {
+		container->setVisible(emptyCaseWidget != nullptr);
+		if (emptyCaseWidget) {
+			container->layout()->addWidget(emptyCaseWidget);
+			emptyCaseWidget->setVisible(true);
+		}
+
+		return;
+	}
+
+	if (radioButtons->buttons().count() == 1) {
+		container->setVisible(false);
+		//radioButtons->buttons()[0]->setChecked(true);
+		return;
+	}
+
+	for (QAbstractButton * const button : radioButtons->buttons()) {
+		container->layout()->addWidget(button);
+		container->setVisible(true);
 	}
 }
 

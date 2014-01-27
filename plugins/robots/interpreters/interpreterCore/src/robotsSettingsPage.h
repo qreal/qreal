@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QRadioButton>
 
 #include <qrgui/dialogs/preferencesPages/preferencesPage.h>
 
@@ -33,14 +34,24 @@ signals:
 protected:
 	void changeEvent(QEvent *e);
 
+private slots:
+	void onKitRadioButtonToggled(bool checked);
+	void onRobotModelRadioButtonToggled(bool checked);
+
 private:
-	void initMultipleRadioButtons();
+	void clearLayout(QLayout *layout);
+	void initializeKitRadioButtons();
+	QButtonGroup *initializeRobotModelsButtons(QString const &kitId, QRadioButton * const kitButton);
+	void showRadioButtonGroup(QWidget * const container
+			, QButtonGroup * const radioButtons
+			, QWidget * const emptyCaseWidget = nullptr);
 
 	QString selectedKit() const;
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 	KitPluginManager &mKitPluginManager;
-	QButtonGroup *mKitRadioButtons;  // Takes ownership
+	QMap<QAbstractButton *, QButtonGroup *> mKitRobotModels;
+	QMap<QAbstractButton *, interpreterBase::robotModel::RobotModelInterface *> mButtonsToRobotModelsMapping;
 };
 
 }
