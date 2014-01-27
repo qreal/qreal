@@ -18,9 +18,6 @@ public:
 	Configuration();
 	~Configuration() override;
 
-	/// Adds device to robot configuration and initializes process of its configuring on a port device is bound to.
-	/// Device configuration can be deferred until unlockConfiguring is called.
-	/// @param device - device to be added to configuration. Transfers ownership.
 	void configureDevice(robotParts::PluggableDevice * const device) override;
 
 	void lockConfiguring() override;
