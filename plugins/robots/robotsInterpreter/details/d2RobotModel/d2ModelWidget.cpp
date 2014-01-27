@@ -22,27 +22,28 @@ using namespace utils;
 using namespace graphicsUtils;
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
-	, NxtDisplay *nxtDisplay, QWidget *parent)
-		: QRealDialog("D2ModelWindow", parent)
-		, mUi(new Ui::D2Form)
-		, mScene(nullptr)
-		, mRobot(nullptr)
-		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
-		, mRobotModel(robotModel)
-		, mWorldModel(worldModel)
-		, mNxtDisplay(nxtDisplay)
-		, mDrawingAction(enums::drawingAction::none)
-		, mMouseClicksCount(0)
-		, mCurrentWall(nullptr)
-		, mCurrentLine(nullptr)
-		, mCurrentStylus(nullptr)
-		, mCurrentEllipse(nullptr)
-		, mCurrentPort(robots::enums::inputPort::none)
-		, mCurrentSensorType(robots::enums::sensorType::unused)
-		, mWidth(defaultPenWidth)
-		, mClearing(false)
-		, mFirstShow(true)
-		, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
+		, NxtDisplay *nxtDisplay, QWidget *parent)
+	: QRealDialog("D2ModelWindow", parent)
+	, details::SensorsConfigurationProvider("D2ModelWidget")
+	, mUi(new Ui::D2Form)
+	, mScene(nullptr)
+	, mRobot(nullptr)
+	, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
+	, mRobotModel(robotModel)
+	, mWorldModel(worldModel)
+	, mNxtDisplay(nxtDisplay)
+	, mDrawingAction(enums::drawingAction::none)
+	, mMouseClicksCount(0)
+	, mCurrentWall(nullptr)
+	, mCurrentLine(nullptr)
+	, mCurrentStylus(nullptr)
+	, mCurrentEllipse(nullptr)
+	, mCurrentPort(robots::enums::inputPort::none)
+	, mCurrentSensorType(robots::enums::sensorType::unused)
+	, mWidth(defaultPenWidth)
+	, mClearing(false)
+	, mFirstShow(true)
+	, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -319,15 +320,15 @@ void D2ModelWidget::showEvent(QShowEvent *e)
 	e->accept();
 	QRealDialog::showEvent(e);
 	if (mFirstShow) {
+		mFirstShow = false;
 		onFirstShow();
 	}
-
-	mFirstShow = false;
 }
 
 void D2ModelWidget::onFirstShow()
 {
 	mUi->speedComboBox->setCurrentIndex(1); // Normal speed
+	refreshSensorsConfiguration();
 }
 
 void D2ModelWidget::rereadNoiseSettings()
@@ -541,6 +542,7 @@ void D2ModelWidget::addPort(int const port)
 	QPointF const sensorPos = mSensors[port]
 			? mSensors[port]->scenePos()
 			: mRobot->mapToScene(mRobot->boundingRect().center());
+
 	mCurrentPort = static_cast<robots::enums::inputPort::InputPortEnum>(port);
 
 	switch (currentComboBox()->currentIndex()){
@@ -550,19 +552,21 @@ void D2ModelWidget::addPort(int const port)
 	case 1:
 		mCurrentSensorType = robots::enums::sensorType::touchBoolean;
 		break;
-	case 2: {
+	case 2:
+	{
 		QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
 		robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
 		mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
 		if (mCurrentSensorType != robots::enums::sensorType::colorFull
-					&& mCurrentSensorType != robots::enums::sensorType::colorBlue
-					&& mCurrentSensorType != robots::enums::sensorType::colorGreen
-					&& mCurrentSensorType != robots::enums::sensorType::colorRed
-					&& mCurrentSensorType != robots::enums::sensorType::colorNone) {
+				&& mCurrentSensorType != robots::enums::sensorType::colorBlue
+				&& mCurrentSensorType != robots::enums::sensorType::colorGreen
+				&& mCurrentSensorType != robots::enums::sensorType::colorRed
+				&& mCurrentSensorType != robots::enums::sensorType::colorNone) {
 			mCurrentSensorType = defaultValue;
 		}
-	}
+
 		break;
+	}
 	case 3:
 		mCurrentSensorType = robots::enums::sensorType::sonar;
 		break;

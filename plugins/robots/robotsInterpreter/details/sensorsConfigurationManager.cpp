@@ -2,9 +2,16 @@
 
 #include <qrkernel/settingsManager.h>
 
+#include <QtCore/QDebug>
+
 using namespace qReal::interpreters::robots::details;
 
-void SensorsConfigurationManager::refresh()
+SensorsConfigurationManager::SensorsConfigurationManager()
+	: SensorsConfigurationProvider("SensorsConfigurationManager")
+{
+}
+
+void SensorsConfigurationManager::load()
 {
 	sensorConfigurationChanged(
 			enums::inputPort::port1
@@ -52,6 +59,7 @@ QString SensorsConfigurationManager::portToSettingsKey(enums::inputPort::InputPo
 		return "port4SensorType";
 	default:
 		// TODO: Report error somehow.
+		qDebug() << "SensorsConfigurationManager::portToSettingsKey: invalid port" << port;
 		return "";
 	}
 }

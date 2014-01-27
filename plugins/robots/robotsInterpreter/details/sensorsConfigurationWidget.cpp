@@ -1,12 +1,15 @@
 #include "sensorsConfigurationWidget.h"
 #include "ui_sensorsConfigurationWidget.h"
-#include "../../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
+
+#include <QtCore/QDebug>
 
 using namespace qReal::interpreters::robots;
 using namespace qReal::interpreters::robots::details;
 
 SensorsConfigurationWidget::SensorsConfigurationWidget(bool autosaveMode, QWidget *parent)
 	: QWidget(parent)
+	, SensorsConfigurationProvider("SensorsConfigurationWidget")
 	, mUi(new Ui::SensorsConfigurationWidget)
 {
 	mUi->setupUi(this);
@@ -63,7 +66,6 @@ void SensorsConfigurationWidget::save()
 			, static_cast<robots::enums::sensorType::SensorTypeEnum>(selectedPortSensor(*mUi->port1ComboBox))
 			);
 
-
 	sensorConfigurationChanged(
 			enums::inputPort::port2
 			, static_cast<robots::enums::sensorType::SensorTypeEnum>(selectedPortSensor(*mUi->port2ComboBox))
@@ -88,12 +90,19 @@ void SensorsConfigurationWidget::onSensorConfigurationChanged(
 	switch (port) {
 	case enums::inputPort::port1:
 		mUi->port1ComboBox->setCurrentIndex(type);
+		break;
 	case enums::inputPort::port2:
-		mUi->port1ComboBox->setCurrentIndex(type);
+		mUi->port2ComboBox->setCurrentIndex(type);
+		break;
 	case enums::inputPort::port3:
-		mUi->port1ComboBox->setCurrentIndex(type);
+		mUi->port3ComboBox->setCurrentIndex(type);
+		break;
 	case enums::inputPort::port4:
-		mUi->port1ComboBox->setCurrentIndex(type);
+		mUi->port4ComboBox->setCurrentIndex(type);
+		break;
+	default:
+		qDebug() << "SensorsConfigurationWidget::onSensorConfigurationChanged, incorrect port type";
+		break;
 	}
 }
 

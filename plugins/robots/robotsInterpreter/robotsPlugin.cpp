@@ -248,14 +248,8 @@ interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produce
 	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mRobotSettingsPage);
 	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mInterpreter);
 
-	mSensorsConfigurationManager.refresh();
+	mSensorsConfigurationManager.load();
 
-//	connect(mRobotSettingsPage, SIGNAL(saved()), result, SLOT(refresh()));
-//	connect(result, SIGNAL(saved()), mRobotSettingsPage, SLOT(refreshPorts()));
-//	connect(result, SIGNAL(saved()), mInterpreter, SLOT(saveSensorConfiguration()));
-//	connect(mInterpreter, SIGNAL(sensorsConfigurationChanged()), result, SLOT(refresh()));
-//	connect(result, SIGNAL(saved()), mInterpreter, SLOT(updateGraphicWatchSensorsList()));
-//	mInterpreter->connectSensorConfigurer(result);
 	return result;
 }
 

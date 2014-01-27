@@ -15,7 +15,9 @@ namespace details {
 class SensorsConfigurationProvider
 {
 public:
-	SensorsConfigurationProvider();
+	/// Constructor.
+	/// @param name - name of an instance of provider, which can be used in debug output.
+	SensorsConfigurationProvider(QString const &name);
 
 	virtual ~SensorsConfigurationProvider();
 
@@ -33,6 +35,10 @@ protected:
 			, qReal::interpreters::robots::enums::sensorType::SensorTypeEnum type
 			);
 
+	/// Calls onSensorConfigurationChanged on every port, so provider can synchronize its internal data with sensors
+	/// configuration if it was not able to do so for some reason.
+	void refreshSensorsConfiguration();
+
 private:
 	/// Must be implemented in descendants to react to sensor configuration changes and refresh their internal data.
 	/// Symmetric to sensorConfigurationChanged. Default implementation does nothing.
@@ -46,6 +52,9 @@ private:
 	/// Redundant current sensor configuration to keep track of loops in provider network: if configuration is not
 	/// changed by incoming message, it is not broadcasted.
 	QVector<qReal::interpreters::robots::enums::sensorType::SensorTypeEnum> mCurrentConfiguration;
+
+	/// Name of the provider, which can be used in debug output.
+	QString mName;
 };
 
 }

@@ -10,6 +10,7 @@ using namespace qReal::interpreters::robots;
 
 PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 		: PreferencesPage(parent)
+		, details::SensorsConfigurationProvider("PreferencesRobotSettingsPage")
 		, mUi(new Ui::PreferencesRobotSettingsPage)
 		, mSensorsWidget(new details::SensorsConfigurationWidget(false))
 {

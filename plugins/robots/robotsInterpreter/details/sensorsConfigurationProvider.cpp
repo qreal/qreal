@@ -2,7 +2,8 @@
 
 using namespace qReal::interpreters::robots::details;
 
-SensorsConfigurationProvider::SensorsConfigurationProvider()
+SensorsConfigurationProvider::SensorsConfigurationProvider(QString const &name)
+	: mName(name)
 {
 	mCurrentConfiguration.resize(4);
 	for (int i = 0; i < 4; ++i) {
@@ -30,6 +31,8 @@ void SensorsConfigurationProvider::sensorConfigurationChanged(
 		)
 {
 	if (mCurrentConfiguration[port] != type) {
+		mCurrentConfiguration[port] = type;
+
 		for (SensorsConfigurationProvider * const provider : mConnectedProviders) {
 			// Allow connected providers to react on configuration change.
 			provider->onSensorConfigurationChanged(port, type);
@@ -37,9 +40,15 @@ void SensorsConfigurationProvider::sensorConfigurationChanged(
 			// Broadcast change.
 			provider->sensorConfigurationChanged(port, type);
 		}
-
-		mCurrentConfiguration[port] = type;
 	}
+}
+
+void SensorsConfigurationProvider::refreshSensorsConfiguration()
+{
+	onSensorConfigurationChanged(enums::inputPort::port1, mCurrentConfiguration[enums::inputPort::port1]);
+	onSensorConfigurationChanged(enums::inputPort::port2, mCurrentConfiguration[enums::inputPort::port2]);
+	onSensorConfigurationChanged(enums::inputPort::port3, mCurrentConfiguration[enums::inputPort::port3]);
+	onSensorConfigurationChanged(enums::inputPort::port4, mCurrentConfiguration[enums::inputPort::port4]);
 }
 
 void SensorsConfigurationProvider::onSensorConfigurationChanged(

@@ -20,7 +20,8 @@ using namespace interpreters::robots::details;
 int const maxThreadsCount = 100;
 
 Interpreter::Interpreter()
-	: mGraphicalModelApi(NULL)
+	: SensorsConfigurationProvider("Interpreter")
+	, mGraphicalModelApi(NULL)
 	, mLogicalModelApi(NULL)
 	, mInterpretersInterface(NULL)
 	, mState(idle)
@@ -614,11 +615,6 @@ utils::WatchListWindow *Interpreter::watchWindow() const
 	return mWatchListWindow;
 }
 
-void Interpreter::connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const
-{
-	connect(configurer, SIGNAL(saved()), mD2ModelWidget, SLOT(syncronizeSensors()));
-}
-
 void Interpreter::updateGraphicWatchSensorsList()
 {
 	mGraphicsWatch->addTrackingObject(0, QString("Sensor1")
@@ -633,6 +629,18 @@ void Interpreter::updateGraphicWatchSensorsList()
 	mGraphicsWatch->addTrackingObject(3, QString("Sensor4")
 			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
 					(SettingsManager::instance()->value("port4SensorType").toInt())));
+}
+
+void Interpreter::onSensorConfigurationChanged(
+		robots::enums::inputPort::InputPortEnum port
+		, robots::enums::sensorType::SensorTypeEnum type
+		)
+{
+	Q_UNUSED(port);
+	Q_UNUSED(type);
+
+	saveSensorConfiguration();
+	updateGraphicWatchSensorsList();
 }
 
 utils::sensorsGraph::SensorsGraph *Interpreter::graphicsWatchWindow() const

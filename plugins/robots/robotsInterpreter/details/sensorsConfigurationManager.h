@@ -25,9 +25,11 @@ namespace details {
 class SensorsConfigurationManager : public SensorsConfigurationProvider
 {
 public:
+	SensorsConfigurationManager();
+
 	/// Sends sensorConfigurationChanged on all ports taking sensor types from registry to all clients
 	/// to initialize them.
-	void refresh();
+	void load();
 
 private:
 	static QString portToSettingsKey(qReal::interpreters::robots::enums::inputPort::InputPortEnum port);

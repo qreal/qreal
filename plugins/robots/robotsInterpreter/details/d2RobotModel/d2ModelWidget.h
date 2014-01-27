@@ -116,11 +116,6 @@ public slots:
 	void saveInitialRobotBeforeRun();
 	void setInitialRobotBeforeRun();
 
-	void onSensorConfigurationChanged(
-			robots::enums::inputPort::InputPortEnum port
-			, robots::enums::sensorType::SensorTypeEnum type
-			) override;
-
 signals:
 	void d2WasClosed();
 
@@ -141,7 +136,6 @@ protected:
 	virtual void changeEvent(QEvent *e);
 	virtual void showEvent(QShowEvent *e);
 	virtual void keyPressEvent(QKeyEvent *event);
-
 
 private slots:
 	void addWall(bool on);
@@ -199,6 +193,11 @@ private:
 		QPointF pos;
 		double rotation;
 	};
+
+	void onSensorConfigurationChanged(
+			robots::enums::inputPort::InputPortEnum port
+			, robots::enums::sensorType::SensorTypeEnum type
+			) override;
 
 	void connectUiButtons();
 	void initButtonGroups();
