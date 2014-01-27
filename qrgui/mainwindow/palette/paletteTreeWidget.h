@@ -21,10 +21,11 @@ public:
 			, EditorManagerInterface &editorManagerProxy
 			, bool editable);
 
-	void addGroups(QMap<QString, QList<PaletteElement> > &groups
+	void addGroups(QList<QPair<QString, QList<PaletteElement>>> &groups
 			, QMap<QString, QString> const &descriptions
 			, bool hideIfEmpty
-			, QString const &diagramFriendlyName);
+			, QString const &diagramFriendlyName
+			, bool sort);
 
 	/// Collapses all nodes of all current trees.
 	void collapse();

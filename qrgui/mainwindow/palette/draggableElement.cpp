@@ -270,7 +270,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 		QDataStream stream(&itemData, QIODevice::WriteOnly);
 		stream << elementId.toString();  // uuid
 		stream << Id::rootId().toString();  // pathToItem
-		stream << QString("(" + text() + ")");
+		stream << QString(text());
 		stream << QPointF(0, 0);
 		stream << isFromLogicalModel;
 		stream << mData.explosionTarget().toString();

@@ -86,6 +86,8 @@ D2ModelWidget::~D2ModelWidget()
 
 void D2ModelWidget::initWidget()
 {
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+
 	mUi->setupUi(this);
 	mSensors.resize(4);
 
@@ -540,7 +542,7 @@ void D2ModelWidget::addPort(int const port)
 
 	QPointF const sensorPos = mSensors[port]
 			? mSensors[port]->scenePos()
-			: mRobot->mapToScene(mRobot->boundingRect().center());
+			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
 //	mCurrentPort = static_cast<robots::enums::inputPort::InputPortEnum>(port);
 
 	switch (currentComboBox()->currentIndex()) {
@@ -550,19 +552,22 @@ void D2ModelWidget::addPort(int const port)
 	case 1:
 //		mCurrentSensorType = robots::enums::sensorType::touchBoolean;
 		break;
-	case 2: {
-//		QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
-//		robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
-//		mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
-//		if (mCurrentSensorType != robots::enums::sensorType::colorFull
-//					&& mCurrentSensorType != robots::enums::sensorType::colorBlue
-//					&& mCurrentSensorType != robots::enums::sensorType::colorGreen
-//					&& mCurrentSensorType != robots::enums::sensorType::colorRed
-//					&& mCurrentSensorType != robots::enums::sensorType::colorNone) {
-//			mCurrentSensorType = defaultValue;
-//		}
-	}
-		break;
+	case 2:
+		{
+//			QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
+//			robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
+//			mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
+//			if (mCurrentSensorType != robots::enums::sensorType::colorFull
+//						&& mCurrentSensorType != robots::enums::sensorType::colorBlue
+//						&& mCurrentSensorType != robots::enums::sensorType::colorGreen
+//						&& mCurrentSensorType != robots::enums::sensorType::colorRed
+//						&& mCurrentSensorType != robots::enums::sensorType::colorNone)
+//			{
+//				mCurrentSensorType = defaultValue;
+//			}
+
+			break;
+		}
 	case 3:
 //		mCurrentSensorType = robots::enums::sensorType::sonar;
 		break;
@@ -747,24 +752,28 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	switch (mDrawingAction){
 	case enums::drawingAction::wall: {
 		reshapeWall(mouseEvent);
+		mCurrentWall->setSelected(true);
 		mCurrentWall = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::line: {
 		reshapeLine(mouseEvent);
+		mCurrentLine->setSelected(true);
 		mCurrentLine = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::stylus: {
 		reshapeStylus(mouseEvent);
+		mCurrentStylus->setSelected(true);
 		mCurrentStylus = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::ellipse: {
 		reshapeEllipse(mouseEvent);
+		mCurrentEllipse->setSelected(true);
 		mCurrentEllipse = nullptr;
 		mMouseClicksCount = 0;
 		break;

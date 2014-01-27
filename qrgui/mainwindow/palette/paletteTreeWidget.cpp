@@ -21,10 +21,11 @@ PaletteTreeWidget::PaletteTreeWidget(PaletteTree &palette, MainWindow &mainWindo
 	mEditorManager = &editorManagerProxy;
 }
 
-void PaletteTreeWidget::addGroups(QMap<QString, QList<PaletteElement> > &groups
+void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &groups
 		, QMap<QString, QString> const &descriptions
 		, bool hideIfEmpty
-		, QString const &diagramFriendlyName)
+		, QString const &diagramFriendlyName
+		, bool sort)
 {
 	if (groups.isEmpty() && hideIfEmpty) {
 		hide();
@@ -34,17 +35,30 @@ void PaletteTreeWidget::addGroups(QMap<QString, QList<PaletteElement> > &groups
 	clear();
 	show();
 
-	int expandedCount = 0;
-	foreach (QString const &group, groups.keys()) {
-		QTreeWidgetItem *item = new QTreeWidgetItem;
-		item->setText(0, group);
-		item->setToolTip(0, descriptions[group]);
+	if (sort) {
+		qSort(groups.begin(), groups.end()
+				, [](QPair<QString, QList<PaletteElement>> const &e1
+						, QPair<QString, QList<PaletteElement>> const &e2)
+					{
+						return e1.first < e2.first;
+					}
+				);
+	}
 
-		sortByFriendlyName(groups[group]);
-		addItemsRow(groups[group], item);
+	int expandedCount = 0;
+	for (auto &group : groups) {
+		QTreeWidgetItem * const item = new QTreeWidgetItem;
+		item->setText(0, group.first);
+		item->setToolTip(0, descriptions[group.first]);
+
+		if (sort) {
+			sortByFriendlyName(group.second);
+		}
+
+		addItemsRow(group.second, item);
 		addTopLevelItem(item);
 
-		if (SettingsManager::value(diagramFriendlyName + group, 0).toBool()) {
+		if (SettingsManager::value(diagramFriendlyName + group.first, 0).toBool()) {
 			++expandedCount;
 			expandItem(item);
 		}

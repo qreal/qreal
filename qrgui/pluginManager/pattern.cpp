@@ -7,13 +7,14 @@
 #include "pluginManager/editorManager.h"
 
 using namespace qReal;
-GroupNode::GroupNode(QString const &typeArg, QString const &idArg, QPointF const &positionArg)
-		: type(typeArg), id(idArg), position(positionArg)
+
+GroupNode::GroupNode(QString const &type, QString const &id, QPointF const &position, QString const &parent)
+	: type(type), id(id), position(position), parent(parent)
 {
 }
 
-GroupEdge::GroupEdge(QString const &typeArg, QString const &fromArg, QString const &toArg)
-		: type(typeArg), from(fromArg), to(toArg)
+GroupEdge::GroupEdge(QString const &type, QString const &from, QString const &to)
+	: type(type), from(from), to(to)
 {
 }
 
@@ -22,8 +23,9 @@ Pattern::Pattern()
 }
 
 Pattern::Pattern(QString const &editor, QString const &diagram, QString const &name
-		, QString const &inNode, QString const &outNode)
-		: mEditor(editor), mDiagram(diagram), mGroupName(name), mInNode(inNode), mOutNode(outNode)
+		, QString const &inNode, QString const &outNode, QString const &rootNode)
+	: mEditor(editor), mDiagram(diagram), mGroupName(name)
+	, mInNode(inNode), mOutNode(outNode), mRootNode(rootNode)
 {
 }
 
@@ -57,9 +59,9 @@ QString Pattern::name() const
 	return mGroupName;
 }
 
-void Pattern::addNode(QString const &type, QString const &id, QPointF const &pos)
+void Pattern::addNode(QString const &type, QString const &id, QPointF const &pos, QString const &parent)
 {
-	GroupNode newNode(type, id, pos);
+	GroupNode newNode(type, id, pos, parent);
 	mNodes.append(newNode);
 }
 
@@ -89,6 +91,27 @@ void Pattern::setOutNode(QString const &id)
 	mOutNode = id;
 }
 
+QString Pattern::rootNode() const
+{
+	return mRootNode;
+}
+
+QString Pattern::rootType() const
+{
+	for (GroupNode const &node : mNodes) {
+		if (node.id == mRootNode) {
+			return node.type;
+		}
+	}
+
+	return QString();
+}
+
+void Pattern::setRootNode(QString const &rootId)
+{
+	mRootNode = rootId;
+}
+
 QString Pattern::inNode() const
 {
 	return mInNode;
@@ -105,10 +128,9 @@ void Pattern::countSize(EditorManager *editorManager)
 	qreal maxY = 0;
 	qreal minX = 0;
 	qreal maxX = 0;
-	foreach (GroupNode const &node, mNodes)
-	{
+	for (GroupNode const &node : mNodes) {
 		Id const element(mEditor, mDiagram, node.type, "");
-		QSize size = editorManager->iconSize(element);
+		QSize const size = editorManager->iconSize(element);
 		if (minY > node.position.y()) {
 			minY = node.position.y();
 		}
@@ -122,7 +144,8 @@ void Pattern::countSize(EditorManager *editorManager)
 			maxX = node.position.x() + size.width();
 		}
 	}
-	mSize = QPointF(maxX-minX, maxY-minY);
+
+	mSize = QPointF(maxX - minX, maxY - minY);
 }
 
 QPointF Pattern::size() const

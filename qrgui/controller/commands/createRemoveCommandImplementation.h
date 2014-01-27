@@ -26,6 +26,8 @@ public:
 	bool equals(CreateRemoveCommandImplementation const &other) const;
 
 private:
+	void refreshAllPalettes();
+
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	Id const mLogicalParent;

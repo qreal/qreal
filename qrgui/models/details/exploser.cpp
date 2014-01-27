@@ -6,6 +6,7 @@
 #include "controller/commands/explosionCommand.h"
 #include "controller/commands/renameCommand.h"
 #include "controller/commands/createElementCommand.h"
+#include "controller/commands/createGroupCommand.h"
 #include "controller/commands/renameExplosionCommand.h"
 
 using namespace qReal;
@@ -37,35 +38,48 @@ void Exploser::refreshAllPalettes()
 
 void Exploser::refreshPalette(gui::PaletteTreeWidget * const tree, Id const &diagram)
 {
-	QMap<QString, QList<gui::PaletteElement> > groups;
+	QList<QPair<QString, QList<gui::PaletteElement>>> groups;
 	QMap<QString, QString> descriptions;
 	descriptions[mUserGroupTitle] = mUserGroupDescription;
 
 	IdList const childTypes = mApi.editorManagerInterface().elements(diagram);
 
-	foreach (Id const &child, childTypes) {
+	for (Id const &child : childTypes) {
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(child);
 
-		foreach (Explosion const &explosion, explosions) {
+		for (Explosion const &explosion : explosions) {
 			if (!explosion.isReusable()) {
 				continue;
 			}
 
-			Id const target = explosion.target();
+			Id const targetNodeOrGroup = explosion.target();
+			Id target;
+			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
+				target = targetNodeOrGroup;
+			} else {
+				Pattern const pattern = mApi.editorManagerInterface().getPatternByName(targetNodeOrGroup.element());
+				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
+			}
+
 			IdList const allTargets = mApi.logicalRepoApi().elementsByType(target.element(), true);
-			foreach (Id const &targetInstance, allTargets) {
+			QList<gui::PaletteElement> groupElements;
+			for (Id const &targetInstance : allTargets) {
 				if (mApi.isLogicalId(targetInstance)) {
-					groups[mUserGroupTitle] << gui::PaletteElement(child
+					groupElements << gui::PaletteElement(child
 							, mApi.logicalRepoApi().name(targetInstance)
 							, QString(), mApi.editorManagerInterface().icon(child)
 							, mApi.editorManagerInterface().iconSize(child)
 							, targetInstance);
 				}
 			}
+
+			if (!groupElements.isEmpty()) {
+				groups << qMakePair(mUserGroupTitle, groupElements);
+			}
 		}
 	}
 
-	tree->addGroups(groups, descriptions, true, mApi.editorManagerInterface().friendlyName(diagram));
+	tree->addGroups(groups, descriptions, true, mApi.editorManagerInterface().friendlyName(diagram), true);
 }
 
 void Exploser::customizeExplosionTitles(QString const &userGroupTitle, QString const &userGroupDescription)
@@ -95,7 +109,7 @@ void Exploser::handleRemoveCommand(Id const &logicalId, AbstractCommand * const 
 {
 	Id const outgoing = mApi.logicalRepoApi().outgoingExplosion(logicalId);
 	if (!outgoing.isNull()) {
-		command->addPreAction(new ExplosionCommand(mApi, NULL, logicalId, outgoing, false));
+		command->addPreAction(new ExplosionCommand(mApi, nullptr, logicalId, outgoing, false));
 	}
 
 	Id const targetType = logicalId.type();
@@ -104,7 +118,7 @@ void Exploser::handleRemoveCommand(Id const &logicalId, AbstractCommand * const 
 		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(incoming.type());
 		foreach (Explosion const &explosion, explosions) {
 			if (explosion.target() == targetType && !explosion.requiresImmediateLinkage()) {
-				command->addPreAction(new ExplosionCommand(mApi, NULL, incoming, logicalId, false));
+				command->addPreAction(new ExplosionCommand(mApi, nullptr, incoming, logicalId, false));
 			}
 		}
 	}
@@ -113,10 +127,18 @@ void Exploser::handleRemoveCommand(Id const &logicalId, AbstractCommand * const 
 AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(Id const &source
 		, Id const &targetType, GraphicalModelAssistApi *graphicalApi)
 {
-	QString const friendlyTargetName = mApi.editorManagerInterface().friendlyName(targetType);
-	Id const newElementId(targetType, QUuid::createUuid().toString());
-	AbstractCommand *result = new CreateElementCommand(mApi, *graphicalApi, Id::rootId()
-			, Id::rootId(), newElementId, false, friendlyTargetName, QPointF());
+	AbstractCommand *result = nullptr;
+	Id newElementId;
+	if (mApi.editorManagerInterface().isNodeOrEdge(targetType.editor(), targetType.element())) {
+		QString const friendlyTargetName = mApi.editorManagerInterface().friendlyName(targetType);
+		newElementId = Id(targetType, QUuid::createUuid().toString());
+		result = new CreateElementCommand(mApi, *graphicalApi, Id::rootId()
+				, Id::rootId(), newElementId, false, friendlyTargetName, QPointF());
+	} else {
+		result = new CreateGroupCommand(nullptr, mApi, *graphicalApi, Id::rootId()
+				, Id::rootId(), targetType, false, QPointF());
+		newElementId = static_cast<CreateGroupCommand *>(result)->rootId();
+	}
 
 	result->addPostAction(addExplosionCommand(source, newElementId, graphicalApi));
 	result->addPostAction(new RenameExplosionCommand(mApi, graphicalApi, newElementId));
@@ -146,16 +168,20 @@ AbstractCommand *Exploser::addExplosionCommand(Id const &source, Id const &targe
 		, GraphicalModelAssistApi *graphicalApi)
 {
 	AbstractCommand *result = new ExplosionCommand(mApi, graphicalApi, source, target, true);
-	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()));
-	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()));
+	// Do not remove Qt::QueuedConnection flag.
+	// Immediate refreshing may cause segfault because of deletting drag source.
+	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
+	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
 	return result;
 }
 
 AbstractCommand *Exploser::removeExplosionCommand(Id const &source, Id const &target)
 {
-	AbstractCommand *result = new ExplosionCommand(mApi, NULL, source, target, false);
-	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()));
-	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()));
+	AbstractCommand *result = new ExplosionCommand(mApi, nullptr, source, target, false);
+	// Do not remove Qt::QueuedConnection flag.
+	// Immediate refreshing may cause segfault because of deletting drag source.
+	connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
+	connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
 	return result;
 }
 
@@ -169,8 +195,10 @@ AbstractCommand *Exploser::renameCommands(Id const &oneOfIds, QString const &new
 	}
 
 	if (!idsToRename.isEmpty()) {
-		connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()));
-		connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()));
+		// Do not remove Qt::QueuedConnection flag.
+		// Immediate refreshing may cause segfault because of deletting drag source.
+		connect(result, SIGNAL(undoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
+		connect(result, SIGNAL(redoComplete(bool)), this, SLOT(refreshAllPalettes()), Qt::QueuedConnection);
 	}
 	return result;
 }

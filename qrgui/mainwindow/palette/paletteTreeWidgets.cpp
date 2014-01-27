@@ -51,28 +51,33 @@ void PaletteTreeWidgets::initWidget(PaletteTreeWidget * const tree)
 void PaletteTreeWidgets::initEditorTree()
 {
 	IdList elements = mEditorManager->elements(mDiagram) + mEditorManager->groups(mDiagram);
-	PaletteTreeWidget::sortByFriendlyName(elements);
+	bool const sort = mEditorManager->shallPaletteBeSorted(mEditor, mDiagram);
+	if (sort) {
+		PaletteTreeWidget::sortByFriendlyName(elements);
+	}
 
 	if (!mEditorManager->paletteGroups(mEditor, mDiagram).empty()) {
-		QMap<QString, QList<PaletteElement> > groups;
+		QList<QPair<QString, QList<PaletteElement>>> groups;
 		QMap<QString, QString> descriptions;
-		foreach (QString const &group, mEditorManager->paletteGroups(mEditor, mDiagram)) {
+		for (QString const &group : mEditorManager->paletteGroups(mEditor, mDiagram)) {
 			QStringList const paletteGroup = mEditorManager->paletteGroupList(mEditor, mDiagram, group);
-			foreach (QString const &name, paletteGroup) {
-				foreach (Id const &element, elements) {
+			QList<PaletteElement> groupElements;
+			for (QString const &name : paletteGroup) {
+				for (Id const &element : elements) {
 					if (element.element() == name) {
-						groups[group] << PaletteElement(*mEditorManager, element);
+						groupElements << PaletteElement(*mEditorManager, element);
 						break;
 					}
 				}
 			}
 
+			groups << qMakePair(group, groupElements);
 			descriptions[group] = mEditorManager->paletteGroupDescription(mEditor, mDiagram, group);
 		}
 
-		mEditorTree->addGroups(groups, descriptions, false, mEditorManager->friendlyName(mDiagram));
+		mEditorTree->addGroups(groups, descriptions, false, mEditorManager->friendlyName(mDiagram), sort);
 	} else {
-		foreach (Id const &element, elements) {
+		for (Id const &element : elements) {
 			addTopItemType(PaletteElement(*mEditorManager, element), mEditorTree);
 		}
 	}

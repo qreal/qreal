@@ -52,6 +52,7 @@ private:
 	void generatePropertyDefaultsRequests(utils::OutFile &out);
 	void generatePaletteGroupsLists(utils::OutFile &out);
 	void generatePaletteGroupsDescriptions(utils::OutFile &out);
+	void generateShallPaletteBeSorted(utils::OutFile &out);
 
 	class ListMethodGenerator;
 	class PropertiesGenerator;

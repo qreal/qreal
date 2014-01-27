@@ -6,7 +6,7 @@
 using namespace twoDModel;
 using namespace graphicsUtils;
 
-int const selectionDrift = 3;
+int const selectionDrift = 7;
 
 //SensorItem::SensorItem(SensorsConfiguration &configuration
 //		, robots::enums::inputPort::InputPortEnum port)
@@ -15,7 +15,7 @@ int const selectionDrift = 3;
 //	, mPort(port)
 //	, mDragged(false)
 //	, mPointImpl()
-//	, mRotater(NULL)
+//	, mRotater(nullptr)
 //	, mImageRect(imageRect())
 //	, mBoundingRect(mImageRect.adjusted(-selectionDrift, -selectionDrift
 //			, selectionDrift, selectionDrift))
