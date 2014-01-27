@@ -86,6 +86,8 @@ D2ModelWidget::~D2ModelWidget()
 
 void D2ModelWidget::initWidget()
 {
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+
 	mUi->setupUi(this);
 	mSensors.resize(4);
 
@@ -541,7 +543,7 @@ void D2ModelWidget::addPort(int const port)
 
 	QPointF const sensorPos = mSensors[port]
 			? mSensors[port]->scenePos()
-			: mRobot->mapToScene(mRobot->boundingRect().center());
+			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
 
 	mCurrentPort = static_cast<robots::enums::inputPort::InputPortEnum>(port);
 
@@ -561,7 +563,8 @@ void D2ModelWidget::addPort(int const port)
 				&& mCurrentSensorType != robots::enums::sensorType::colorBlue
 				&& mCurrentSensorType != robots::enums::sensorType::colorGreen
 				&& mCurrentSensorType != robots::enums::sensorType::colorRed
-				&& mCurrentSensorType != robots::enums::sensorType::colorNone) {
+				&& mCurrentSensorType != robots::enums::sensorType::colorNone) 
+		{
 			mCurrentSensorType = defaultValue;
 		}
 
@@ -754,24 +757,28 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	switch (mDrawingAction){
 	case enums::drawingAction::wall: {
 		reshapeWall(mouseEvent);
+		mCurrentWall->setSelected(true);
 		mCurrentWall = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::line: {
 		reshapeLine(mouseEvent);
+		mCurrentLine->setSelected(true);
 		mCurrentLine = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::stylus: {
 		reshapeStylus(mouseEvent);
+		mCurrentStylus->setSelected(true);
 		mCurrentStylus = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::ellipse: {
 		reshapeEllipse(mouseEvent);
+		mCurrentEllipse->setSelected(true);
 		mCurrentEllipse = nullptr;
 		mMouseClicksCount = 0;
 		break;

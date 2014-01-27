@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../sensorConstants.h"
+#include "sensorConstants.h"
 
 #include <QtCore/QList>
 #include <QtCore/QVector>

@@ -149,7 +149,6 @@ void Interpreter::onTabChanged(Id const &diagramId, bool enabled)
 		loadSensorConfiguration(logicalId);
 		enableD2ModelWidgetRunStopButtons();
 	} else {
-		mD2ModelWidget->loadXml(QDomDocument());
 		disableD2ModelWidgetRunStopButtons();
 	}
 }

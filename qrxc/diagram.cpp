@@ -12,16 +12,17 @@
 #include <QtCore/QDebug>
 
 Diagram::Diagram(QString const &name, QString const &nodeName, QString const &displayedName, Editor *editor)
-		: mDiagramName(name), mDiagramNodeName(nodeName), mDiagramDisplayedName(displayedName), mEditor(editor)
-{}
+	: mDiagramName(name)
+	, mDiagramNodeName(nodeName)
+	, mDiagramDisplayedName(displayedName)
+	, mEditor(editor)
+	, mShallPaletteBeSorted(true)
+{
+}
 
 Diagram::~Diagram()
 {
-	foreach(Type *type, mTypes.values()) {
-		if (type) {
-			delete type;
-		}
-	}
+	qDeleteAll(mTypes);
 }
 
 bool Diagram::init(QDomElement const &diagramElement)
@@ -39,7 +40,7 @@ bool Diagram::init(QDomElement const &diagramElement)
 				return false;
 			}
 		} else if (element.nodeName() == "palette") {
-			initPaletteGroups(element);
+			initPalette(element);
 		} else {
 			qDebug() << "ERROR: unknown tag" << element.nodeName();
 		}
@@ -94,8 +95,7 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 		element = element.nextSiblingElement())
 	{
 		if (element.nodeName() == "groups") {
-			mGroupsXML = "";
-			QString xml;
+			mGroupsXML = "";			QString xml;
 			QTextStream stream(&xml);
 			element.save(stream, 1);
 			xml.replace("\"", "\\\"");
@@ -142,9 +142,11 @@ bool Diagram::initNonGraphicTypes(QDomElement const &nonGraphicTypesElement)
 	return true;
 }
 
-void Diagram::initPaletteGroups(const QDomElement &paletteGroupsElement)
+void Diagram::initPalette(QDomElement const &paletteElement)
 {
-	for (QDomElement element = paletteGroupsElement.firstChildElement("group");
+	mShallPaletteBeSorted = paletteElement.attribute("sorted", "true") == "true";
+
+	for (QDomElement element = paletteElement.firstChildElement("group");
 		!element.isNull();
 		element = element.nextSiblingElement("group"))
 	{
@@ -152,15 +154,17 @@ void Diagram::initPaletteGroups(const QDomElement &paletteGroupsElement)
 		QString description = element.attribute("description", "");
 		mPaletteGroupsDescriptions[name] = description;
 
+		QStringList groupElements;
 		for (QDomElement groupElement = element.firstChildElement("element");
 			!groupElement.isNull();
 			groupElement = groupElement.nextSiblingElement("element"))
 		{
-			mPaletteGroups[name].append(groupElement.attribute("name"));
+			groupElements << groupElement.attribute("name");
 		}
+
+		mPaletteGroups << qMakePair(name, groupElements);
 	}
 }
-
 
 bool Diagram::resolve()
 {
@@ -221,7 +225,7 @@ QString Diagram::displayedName() const
 	return mDiagramDisplayedName;
 }
 
-QMap<QString, QStringList> Diagram::paletteGroups() const
+QList<QPair<QString, QStringList>> Diagram::paletteGroups() const
 {
 	return mPaletteGroups;
 }
@@ -229,6 +233,11 @@ QMap<QString, QStringList> Diagram::paletteGroups() const
 QMap<QString, QString> Diagram::paletteGroupsDescriptions() const
 {
 	return mPaletteGroupsDescriptions;
+}
+
+bool Diagram::shallPaletteBeSorted() const
+{
+	return mShallPaletteBeSorted;
 }
 
 QString Diagram::getGroupsXML() const

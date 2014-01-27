@@ -42,6 +42,8 @@ private:
 	void simulateDoubleClick(QTouchEvent *event);
 	void simulateRightClick(QTapAndHoldGesture *gesture);
 
+	void moveCursor(QTouchEvent *event);
+
 	bool isElementUnder(QPointF const &pos);
 
 	EditorView *mEditorView;

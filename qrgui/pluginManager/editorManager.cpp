@@ -143,14 +143,20 @@ QString EditorManager::paletteGroupDescription(Id const &editor, const Id &diagr
 	return mPluginIface[editor.editor()]->diagramPaletteGroupDescription(diagram.diagram(), group);
 }
 
+bool EditorManager::shallPaletteBeSorted(Id const &editor, Id const &diagram) const
+{
+	return mPluginIface[editor.editor()]->shallPaletteBeSorted(diagram.diagram());
+}
+
 IdList EditorManager::elements(Id const &diagram) const
 {
 	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-	foreach (QString const &e, mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
+	for (QString const &e : mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
 		elements.append(Id(diagram.editor(), diagram.diagram(), e));
 	}
+
 	return elements;
 }
 
