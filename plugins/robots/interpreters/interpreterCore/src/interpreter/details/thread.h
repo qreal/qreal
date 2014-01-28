@@ -6,6 +6,7 @@
 
 #include <qrkernel/ids.h>
 #include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 
 #include <interpreterBase/baseBlocks/blockInterface.h>
 

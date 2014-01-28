@@ -32,21 +32,14 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, mInterpretersInterface(&interpretersInterface)
 		, mState(idle)
 		, mRobotModel(robotModel)
-		, mBlocksTable(NULL)
+		, mBlocksTable(nullptr)
 		, mParser(new details::RobotsBlockParser(interpretersInterface.errorReporter()))
 	//	, mRobotCommunication(new RobotCommunicator())
 	//	, mImplementationType(robots::enums::robotModelType::null)
 	//	, mWatchListWindow(NULL)
 	//	, mActionConnectToRobot(NULL)
 {
-	mBlocksTable = new details::BlocksTable(
-			graphicalModelApi
-			, logicalModelApi
-			, robotModel
-			, mInterpretersInterface->errorReporter()
-			, mParser
-			, blocksFactory
-			);
+	mBlocksTable = new details::BlocksTable(blocksFactory);
 
 //	mD2RobotModel = new d2Model::D2RobotModel();
 //	mD2ModelWidget = mD2RobotModel->createModelWidget();
@@ -55,8 +48,21 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 //	connect(mD2ModelWidget, SIGNAL(noiseSettingsChanged()), this, SIGNAL(noiseSettingsChangedBy2DModelWidget()));
 //	connect(this, SIGNAL(noiseSettingsChanged()), mD2ModelWidget, SLOT(rereadNoiseSettings()));
 //	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
-	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
-	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
+
+	connect(
+			&mRobotModel->configuration()
+			, &interpreterBase::robotModel::ConfigurationInterface::allDevicesConfigured
+			, this
+			, &Interpreter::sensorsConfiguredSlot
+			);
+
+	connect(
+			mRobotModel
+			, &interpreterBase::robotModel::RobotModelInterface::connected
+			, this
+			, &Interpreter::connectedSlot
+			);
+
 //	connect(mD2ModelWidget, SIGNAL(d2WasClosed()), this, SLOT(stopRobot()));
 //	connect(mRobotCommunication, SIGNAL(errorOccured(QString)), this, SLOT(reportError(QString)));
 
@@ -113,7 +119,6 @@ void Interpreter::interpret()
 
 	mBlocksTable->clear();
 	mState = waitingForSensorsConfiguredToLaunch;
-	mBlocksTable->setIdleForBlocks();
 
 	details::Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
 

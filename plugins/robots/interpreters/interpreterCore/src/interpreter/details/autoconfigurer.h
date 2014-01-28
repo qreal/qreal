@@ -2,6 +2,8 @@
 
 //#include <interpreterBase/robotModel/sensorId.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "blocksTable.h"
 

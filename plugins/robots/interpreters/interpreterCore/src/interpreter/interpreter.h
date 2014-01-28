@@ -7,6 +7,8 @@
 //#include <qrutils/graphicsWatcher/sensorsGraph.h>
 #include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
 
+#include <interpreterBase/robotModel/robotModelInterface.h>
+
 //#include "details/robotCommunication/robotCommunicator.h"
 //#include "sensorConstants.h"
 //#include "details/robotParts/robotModel.h"
@@ -15,7 +17,7 @@
 //#include "details/d2RobotModel/d2RobotModel.h"
 
 
-//#include "details/robotsBlockParser.h"
+#include "details/robotsBlockParser.h"
 //#include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 //#include "details/sensorsConfigurationWidget.h"
 //#include "details/nxtDisplay.h"
@@ -42,7 +44,7 @@ public:
 
 	virtual interpreterBase::baseBlocks::BlockParserInterface &parser() const;
 
-	qReal::IdList providedBlocks() const;
+	qReal::IdList providedBlocks() const override;
 
 public slots:
 //	void connectToRobot();

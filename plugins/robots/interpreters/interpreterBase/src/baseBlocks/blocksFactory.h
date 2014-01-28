@@ -20,13 +20,13 @@ public:
 			, qReal::ErrorReporterInterface * const errorReporter
 			);
 
-	virtual BlockInterface *block(qReal::Id const &element);
+	BlockInterface *block(qReal::Id const &element) override;
 
-	virtual void setParser(BlockParserInterface * const parser);
+	void setParser(BlockParserInterface * const parser) override;
 
 //	RobotsBlockParser * getParser();
 
-	virtual qReal::IdList providedBlocks() const;
+	qReal::IdList providedBlocks() const override;
 
 private:
 	static bool elementMetatypeIs(qReal::Id const &element, QString const &metatype);
@@ -36,7 +36,7 @@ private:
 	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface const &mLogicalModelApi;
 	qReal::ErrorReporterInterface * const mErrorReporter;  // Doesn't have ownership
-	BlockParserInterface * mParser;
+	BlockParserInterface *mParser;
 };
 
 }

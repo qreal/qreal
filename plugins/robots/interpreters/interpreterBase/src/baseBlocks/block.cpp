@@ -16,7 +16,7 @@ Block::Block()
 	, mState(idle)
 	, mErrorReporter(NULL)
 {
-	connect(this, SIGNAL(done(Block * const)), this, SLOT(finishedRunning()));
+	connect(this, &BlockInterface::done, this, &Block::finishedRunning);
 }
 
 Block::~Block()

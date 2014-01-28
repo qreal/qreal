@@ -26,19 +26,17 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Block : public BlockInterface
 public:
 //	typedef QPair<robots::enums::sensorType::SensorTypeEnum, int> SensorPortPair;
 
-	virtual ~Block();
+	~Block() override;
 
-	// Override.
-	void interpret();
+	void interpret() override;
 
-	virtual void setFailedStatus();
-	virtual void setIdleStatus();
+	void setFailedStatus() override;
+	void setIdleStatus() override;
 	virtual qReal::Id const id() const;
 
 //	virtual QList<SensorPortPair> usedSensors() const;
 
-	// Override.
-	virtual void finishedSteppingInto();
+	void finishedSteppingInto() override;
 
 protected:
 	Block();

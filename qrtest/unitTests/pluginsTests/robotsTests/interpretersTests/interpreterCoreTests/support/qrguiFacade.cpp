@@ -17,9 +17,14 @@ QrguiFacade::QrguiFacade(QString const &modelName)
 				)
 			);
 
+	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, errorReporter()).Times(AtLeast(0));
+	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, activeDiagram()).Times(AtLeast(0));
+
 	EXPECT_CALL(mErrorReporterMock, addInformation(_, _)).Times(0);
 	EXPECT_CALL(mErrorReporterMock, addWarning(_, _)).Times(0);
 	EXPECT_CALL(mErrorReporterMock, addError(_, _)).Times(0);
+
+	EXPECT_CALL(mErrorReporterMock, clear()).Times(AtLeast(0));
 }
 
 qReal::gui::MainWindowInterpretersInterface &QrguiFacade::mainWindowInterpretersInterface()

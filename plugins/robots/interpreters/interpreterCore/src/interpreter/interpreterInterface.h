@@ -21,6 +21,7 @@ class InterpreterInterface : public QObject
 public:
 	virtual ~InterpreterInterface() {}
 
+	// TODO: What it is doing here?
 	virtual qReal::IdList providedBlocks() const = 0;
 
 	// TODO: Unneeded.

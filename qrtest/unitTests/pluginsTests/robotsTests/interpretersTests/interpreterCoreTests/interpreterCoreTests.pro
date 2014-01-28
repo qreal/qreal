@@ -14,10 +14,12 @@ INCLUDEPATH += \
 HEADERS += \
 	kitPluginManagerTest.h \
 	interpreterTests/interpreterTest.h \
+	interpreterTests/detailsTests/blocksTableTest.h \
 
 SOURCES += \
 	kitPluginManagerTest.cpp \
 	interpreterTests/interpreterTest.cpp \
+	interpreterTests/detailsTests/blocksTableTest.cpp \
 
 # Mocks
 include(mocks.pri)
