@@ -4,7 +4,7 @@
 #include <QtCore/QList>
 #include <QtWidgets/QWidget>
 
-#include <interpreterBase/blocks/block.h>
+#include <interpreterBase/baseBlocks/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace interpreterBase {

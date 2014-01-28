@@ -1,9 +1,9 @@
 #pragma once
 
-#include <interpreterBase/blocks/block.h>
+#include <interpreterBase/baseBlocks/block.h>
 
 namespace interpreterBase {
-namespace blocks {
+namespace baseBlocks {
 namespace details {
 
 class FinalBlock : public Block

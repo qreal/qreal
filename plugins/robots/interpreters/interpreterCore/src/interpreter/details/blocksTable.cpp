@@ -2,7 +2,7 @@
 
 using namespace qReal;
 using namespace interpreterBase::robotModel;
-using namespace interpreterBase::blocks;
+using namespace interpreterBase::baseBlocks;
 using namespace interpreterCore::interpreter::details;
 
 BlocksTable::BlocksTable(GraphicalModelAssistInterface const &graphicalModelApi
@@ -10,7 +10,7 @@ BlocksTable::BlocksTable(GraphicalModelAssistInterface const &graphicalModelApi
 		, RobotModelInterface * const robotModel
 		, ErrorReporterInterface * const errorReporter
 		, RobotsBlockParser * const parser
-		, interpreterBase::blocks::BlocksFactoryInterface * const blocksFactory
+		, interpreterBase::baseBlocks::BlocksFactoryInterface * const blocksFactory
 		)
 		: mBlocksFactory(blocksFactory)
 {

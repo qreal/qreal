@@ -34,54 +34,15 @@ public:
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
-			, interpreterBase::blocks::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
+			, interpreterBase::baseBlocks::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
 			, interpreterBase::robotModel::RobotModelInterface * const robotModel  // Does not take ownership.
 			);
 
 	virtual ~Interpreter();
 
-	virtual interpreterBase::blocks::BlockParserInterface &parser() const;
-
-//	details::RobotModel *robotModel();
-//	void setRobotModel(details::RobotModel * const robotModel);
-
-//	void configureSensors(
-//			robots::enums::sensorType::SensorTypeEnum const &port1
-//			, robots::enums::sensorType::SensorTypeEnum const &port2
-//			, robots::enums::sensorType::SensorTypeEnum const &port3
-//			, robots::enums::sensorType::SensorTypeEnum const &port4
-//			);
-
-//	void setRobotImplementation(robots::enums::robotModelType::robotModelTypeEnum implementationType);
-
-//	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
-//	void closeD2ModelWidget();
-//	void closeWatchList();
-//	void setRobotModelType(robots::enums::robotModelType::robotModelTypeEnum robotModelType);
-//	void setCommunicator(QString const &valueOfCommunication);
-
-//	/// Assigning a value to the field mActionConnectToRobot
-//	void setConnectRobotAction(QAction *actionConnect);
-
-//	void setNoiseSettings();
-
-//	/// Enable Run and Stop buttons on 2d model widget
-//	void enableD2ModelWidgetRunStopButtons();
-
-//	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
-//	void disableD2ModelWidgetRunStopButtons();
-
-//	utils::WatchListWindow *watchWindow() const;
-//	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
-//	utils::sensorsGraph::SensorsGraph *graphicsWatchWindow() const;
+	virtual interpreterBase::baseBlocks::BlockParserInterface &parser() const;
 
 	qReal::IdList providedBlocks() const;
-
-//signals:
-//	void noiseSettingsChanged();
-//	void noiseSettingsChangedBy2DModelWidget();
-
-//	void sensorsConfigurationChanged();
 
 public slots:
 //	void connectToRobot();

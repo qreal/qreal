@@ -1,11 +1,11 @@
 #pragma once
 
-#include <interpreterBase/blocks/blockInterface.h>
-#include <interpreterBase/blocks/blockParserInterface.h>
+#include <interpreterBase/baseBlocks/blockInterface.h>
+#include <interpreterBase/baseBlocks/blockParserInterface.h>
 #include <qrkernel/ids.h>
 
 namespace interpreterBase {
-namespace blocks {
+namespace baseBlocks {
 
 class BlocksFactoryInterface
 {

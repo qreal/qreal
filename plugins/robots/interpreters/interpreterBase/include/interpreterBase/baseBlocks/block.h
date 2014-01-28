@@ -7,16 +7,16 @@
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-#include <interpreterBase/blocks/blockInterface.h>
-#include <interpreterBase/blocks/blockParserInterface.h>
-#include <interpreterBase/blocks/blocksTableInterface.h>
+#include <interpreterBase/baseBlocks/blockInterface.h>
+#include <interpreterBase/baseBlocks/blockParserInterface.h>
+#include <interpreterBase/baseBlocks/blocksTableInterface.h>
 
 //#include "../blocksTable.h"
 
 //#include "../robotsBlockParser.h"
 
 namespace interpreterBase {
-namespace blocks {
+namespace baseBlocks {
 
 /// Base class for all blocks implementations used in interpreter
 class ROBOTS_INTERPRETER_BASE_EXPORT Block : public BlockInterface

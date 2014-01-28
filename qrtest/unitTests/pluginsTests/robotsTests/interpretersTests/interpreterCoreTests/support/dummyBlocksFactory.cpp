@@ -4,11 +4,11 @@ using namespace qrTest::robotsTests::interpreterCoreTests;
 
 using namespace qReal;
 
-void DummyBlockFactory::setParser(interpreterBase::blocks::BlockParserInterface * const parser)
+void DummyBlockFactory::setParser(interpreterBase::baseBlocks::BlockParserInterface * const parser)
 {
 }
 
-interpreterBase::blocks::BlockInterface *DummyBlockFactory::block(Id const &element)
+interpreterBase::baseBlocks::BlockInterface *DummyBlockFactory::block(Id const &element)
 {
 	return nullptr;
 }

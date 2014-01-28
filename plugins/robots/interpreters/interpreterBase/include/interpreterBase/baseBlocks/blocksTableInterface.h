@@ -1,9 +1,9 @@
 #pragma once
 
-#include <interpreterBase/blocks/blockInterface.h>
+#include <interpreterBase/baseBlocks/blockInterface.h>
 
 namespace interpreterBase {
-namespace blocks {
+namespace baseBlocks {
 
 class BlocksTableInterface
 {

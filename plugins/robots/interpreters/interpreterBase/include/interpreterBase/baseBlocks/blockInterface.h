@@ -6,7 +6,7 @@
 #include <interpreterBase/interpreterBaseDeclSpec.h>
 
 namespace interpreterBase {
-namespace blocks {
+namespace baseBlocks {
 
 class ROBOTS_INTERPRETER_BASE_EXPORT BlockInterface : public QObject
 {

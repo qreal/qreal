@@ -7,9 +7,9 @@
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-#include <interpreterBase/blocks/blocksFactoryInterface.h>
-#include <interpreterBase/blocks/blocksTableInterface.h>
-#include <interpreterBase/blocks/blockInterface.h>
+#include <interpreterBase/baseBlocks/blocksFactoryInterface.h>
+#include <interpreterBase/baseBlocks/blocksTableInterface.h>
+#include <interpreterBase/baseBlocks/blockInterface.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include "robotsBlockParser.h"
@@ -18,7 +18,7 @@ namespace interpreterCore {
 namespace interpreter {
 namespace details {
 
-class BlocksTable : public interpreterBase::blocks::BlocksTableInterface
+class BlocksTable : public interpreterBase::baseBlocks::BlocksTableInterface
 {
 public:
 	BlocksTable(qReal::GraphicalModelAssistInterface const &graphicalModelApi
@@ -26,24 +26,24 @@ public:
 			, interpreterBase::robotModel::RobotModelInterface * const robotModel
 			, qReal::ErrorReporterInterface * const errorReporter
 			, RobotsBlockParser * const parser
-			, interpreterBase::blocks::BlocksFactoryInterface * const blocksFactory
+			, interpreterBase::baseBlocks::BlocksFactoryInterface * const blocksFactory
 			);
 
 	~BlocksTable();
 
 	// Override.
-	virtual interpreterBase::blocks::BlockInterface *block(qReal::Id const &element);
+	virtual interpreterBase::baseBlocks::BlockInterface *block(qReal::Id const &element);
 
 	void clear();
-	void addBlock(qReal::Id const &element, interpreterBase::blocks::BlockInterface *block);
+	void addBlock(qReal::Id const &element, interpreterBase::baseBlocks::BlockInterface *block);
 	void setFailure();
 	void setIdleForBlocks();
 
 	qReal::IdList providedBlocks() const;
 
 private:
-	QHash<qReal::Id, interpreterBase::blocks::BlockInterface *> mBlocks;  // Has ownership
-	interpreterBase::blocks::BlocksFactoryInterface *mBlocksFactory;  // Has ownership
+	QHash<qReal::Id, interpreterBase::baseBlocks::BlockInterface *> mBlocks;  // Has ownership
+	interpreterBase::baseBlocks::BlocksFactoryInterface *mBlocksFactory;  // Has ownership
 };
 
 }
