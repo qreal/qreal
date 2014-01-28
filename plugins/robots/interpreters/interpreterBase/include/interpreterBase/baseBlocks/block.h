@@ -65,7 +65,7 @@ protected:
 	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
 
 	qReal::Id mGraphicalId;
-	BlockParserInterface * mParser;
+	BlockParserInterface * mParser;  // Does not have ownership
 
 private slots:
 	void finishedRunning();
