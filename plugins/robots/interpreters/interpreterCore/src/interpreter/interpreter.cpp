@@ -26,23 +26,18 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::ProjectManagementInterface const &projectManager
 		, interpreterBase::baseBlocks::BlocksFactoryInterface * const blocksFactory
 		, interpreterBase::robotModel::RobotModelInterface * const robotModel
+		, QAction &connectToRobotAction
 		)
-		: mGraphicalModelApi(&graphicalModelApi)
-		, mLogicalModelApi(&logicalModelApi)
-		, mInterpretersInterface(&interpretersInterface)
-		, mState(idle)
-		, mRobotModel(robotModel)
-		, mBlocksTable(nullptr)
-		, mParser(new details::RobotsBlockParser(interpretersInterface.errorReporter()))
-	//	, mRobotCommunication(new RobotCommunicator())
-	//	, mImplementationType(robots::enums::robotModelType::null)
-	//	, mWatchListWindow(NULL)
-	//	, mActionConnectToRobot(NULL)
+	: mGraphicalModelApi(&graphicalModelApi)
+	, mLogicalModelApi(&logicalModelApi)
+	, mInterpretersInterface(&interpretersInterface)
+	, mState(idle)
+	, mRobotModel(robotModel)
+	, mBlocksTable(nullptr)
+	, mParser(new details::RobotsBlockParser(interpretersInterface.errorReporter()))
+	, mActionConnectToRobot(connectToRobotAction)
 {
 	mBlocksTable = new details::BlocksTable(blocksFactory);
-
-//	mD2RobotModel = new d2Model::D2RobotModel();
-//	mD2ModelWidget = mD2RobotModel->createModelWidget();
 
 //	connect(mD2ModelWidget, SIGNAL(modelChanged(QDomDocument)), this, SLOT(on2dModelChanged(QDomDocument)));
 //	connect(mD2ModelWidget, SIGNAL(noiseSettingsChanged()), this, SIGNAL(noiseSettingsChangedBy2DModelWidget()));
@@ -66,7 +61,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 //	connect(mD2ModelWidget, SIGNAL(d2WasClosed()), this, SLOT(stopRobot()));
 //	connect(mRobotCommunication, SIGNAL(errorOccured(QString)), this, SLOT(reportError(QString)));
 
-//	connect(&projectManager, SIGNAL(beforeOpen(QString)), this, SLOT(stopRobot()));
+	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::stopRobot);
 
 //	robots::enums::robotModelType::robotModelTypeEnum const modelType
 //			= static_cast<robots::enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
@@ -140,18 +135,19 @@ void Interpreter::interpret()
 //			);
 }
 
-//void Interpreter::stopRobot()
-//{
+void Interpreter::stopRobot()
+{
 //	mTimer.stop();
-//	mRobotModel->stopRobot();
-//	mState = idle;
+	mRobotModel->stopRobot();
+	mState = idle;
 //	foreach (Thread * const thread, mThreads) {
 //		delete thread;
 //		mThreads.removeAll(thread);
 //	}
-//	mBlocksTable->setFailure();
+
+	mBlocksTable->setFailure();
 //	mGraphicsWatch->stopJob();
-//}
+}
 
 //void Interpreter::showWatchList()
 //{

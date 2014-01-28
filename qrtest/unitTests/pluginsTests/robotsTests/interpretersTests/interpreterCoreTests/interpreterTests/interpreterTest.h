@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include <gtest/gtest.h>
 
 #include <src/interpreter/interpreterInterface.h>
@@ -15,13 +17,10 @@ namespace interpreterCoreTests {
 class InterpreterTest : public testing::Test
 {
 protected:
-	virtual void SetUp();
+	void SetUp() override;
 
-	virtual void TearDown();
-
-	interpreterCore::interpreter::InterpreterInterface *mInterpreter;  // Has ownership.
-	QrguiFacade *mQrguiFacade;  // Has ownership.
-	DummyBlockFactory *mBlocksFactory;  // Does not have ownership.
+	QScopedPointer<interpreterCore::interpreter::InterpreterInterface> mInterpreter;
+	QScopedPointer<QrguiFacade> mQrguiFacade;
 	qrTest::RobotModelInterfaceMock mModel;
 };
 

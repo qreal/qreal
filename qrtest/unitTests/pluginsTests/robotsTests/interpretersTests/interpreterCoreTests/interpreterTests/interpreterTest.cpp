@@ -11,9 +11,9 @@ using namespace ::testing;
 
 void InterpreterTest::SetUp()
 {
-	mBlocksFactory = new DummyBlockFactory();
+	DummyBlockFactory *blocksFactory = new DummyBlockFactory();
 
-	mQrguiFacade = new QrguiFacade("unittests/testModel.qrs");
+	mQrguiFacade.reset(new QrguiFacade("unittests/testModel.qrs"));
 
 	ConfigurationInterfaceMock configurationInterfaceMock;
 
@@ -30,27 +30,28 @@ void InterpreterTest::SetUp()
 	EXPECT_CALL(mModel, needsConnection()).Times(AtLeast(1));
 	EXPECT_CALL(mModel, init()).Times(AtLeast(1));
 
-	mInterpreter = new Interpreter(
+	QAction fakeConnectToRobotAction(nullptr);
+
+	mInterpreter.reset(new Interpreter(
 			mQrguiFacade->graphicalModelAssistInterface()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mQrguiFacade->mainWindowInterpretersInterface()
 			, mQrguiFacade->projectManagementInterface()
-			, mBlocksFactory
+			, blocksFactory
 			, &mModel
-			);
-}
-
-void InterpreterTest::TearDown()
-{
-	delete mInterpreter;
-	delete mQrguiFacade;
-}
-
-TEST_F(InterpreterTest, sanityCheck)
-{
+			, fakeConnectToRobotAction
+			));
 }
 
 TEST_F(InterpreterTest, interpret)
 {
 	mInterpreter->interpret();
+}
+
+TEST_F(InterpreterTest, stopRobot)
+{
+	EXPECT_CALL(mModel, stopRobot()).Times(1);
+
+	mInterpreter->interpret();
+	mInterpreter->stopRobot();
 }

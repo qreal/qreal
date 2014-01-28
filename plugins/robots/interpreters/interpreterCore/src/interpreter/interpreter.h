@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtWidgets/QAction>
 
 #include <qrkernel/ids.h>
 //#include <qrutils/watchListWindow.h>
@@ -38,7 +39,7 @@ public:
 			, qReal::ProjectManagementInterface const &projectManager
 			, interpreterBase::baseBlocks::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
 			, interpreterBase::robotModel::RobotModelInterface * const robotModel  // Does not take ownership.
-			);
+			, QAction &connectToRobotAction);
 
 	virtual ~Interpreter();
 
@@ -48,15 +49,15 @@ public:
 
 public slots:
 //	void connectToRobot();
-	virtual void interpret();
-//	void stopRobot();
+	void interpret() override;
+	void stopRobot() override;
 //	void showD2ModelWidget(bool isVisible);
 //	void showWatchList();
 //	void onTabChanged(Id const &diagramId, bool enabled);
 //	void saveSensorConfiguration();
 //	void updateGraphicWatchSensorsList();
 
-//private slots:
+private slots:
 //	void threadStopped();
 	void newThread(qReal::Id const &startBlockId);
 //	void runTimer();
@@ -95,12 +96,12 @@ private:
 	};
 
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
-	qReal::LogicalModelAssistInterface *mLogicalModelApi;
-	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
+	qReal::LogicalModelAssistInterface *mLogicalModelApi;  // Does not have ownership
+	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;  // Does not have ownership
 
 	InterpreterState mState;
 	QList<details::Thread *> mThreads;  // Has ownership
-	interpreterBase::robotModel::RobotModelInterface *mRobotModel;
+	interpreterBase::robotModel::RobotModelInterface *mRobotModel;  // Does not have ownership
 	details::BlocksTable *mBlocksTable;  // Has ownership
 	details::RobotsBlockParser *mParser;
 //	QTimer mTimer;
@@ -116,8 +117,8 @@ private:
 
 //	utils::sensorsGraph::SensorsGraph *mGraphicsWatch;  // Doesn`t have ownership
 
-//	/// Action responsible for the connection to the robot
-//	QAction *mActionConnectToRobot;
+	/// Action responsible for the connection to the robot
+	QAction &mActionConnectToRobot;
 
 //	QString mLastCommunicationValue;
 };
