@@ -21,8 +21,8 @@ RobotsPlugin::RobotsPlugin()
 		, mMainWindowInterpretersInterface(nullptr)
 //		, m2dModelAction(nullptr)
 		, mRunAction(nullptr)
-//		, mStopRobotAction(nullptr)
-//		, mConnectToRobotAction(nullptr)
+		, mStopRobotAction(nullptr)
+		, mConnectToRobotAction(nullptr)
 		, mRobotSettingsAction(nullptr)
 		, mTitlesAction(nullptr)
 		, mAppTranslator(new QTranslator())
@@ -56,15 +56,15 @@ void RobotsPlugin::initActions()
 	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
 	QObject::connect(mRunAction, SIGNAL(triggered()), mInterpreter, SLOT(interpret()));
 
-//	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), NULL);
-//	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
-//	QObject::connect(mStopRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(stopRobot()));
+	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), nullptr);
+	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
+	QObject::connect(mStopRobotAction, SIGNAL(triggered()), mInterpreter, SLOT(stopRobot()));
 
-//	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), NULL);
-//	mConnectToRobotAction->setCheckable(true);
-//	ActionInfo connectToRobotActionInfo(mConnectToRobotAction, "interpreters", "tools");
-//	mInterpreter.setConnectRobotAction(mConnectToRobotAction);
-//	QObject::connect(mConnectToRobotAction, SIGNAL(triggered()), &mInterpreter, SLOT(connectToRobot()));
+	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), NULL);
+	mConnectToRobotAction->setCheckable(true);
+	ActionInfo connectToRobotActionInfo(mConnectToRobotAction, "interpreters", "tools");
+//	mInterpreter->setConnectRobotAction(mConnectToRobotAction);
+	QObject::connect(mConnectToRobotAction, SIGNAL(triggered()), mInterpreter, SLOT(connectToRobot()));
 
 	QAction * const separator1 = new QAction(nullptr);
 	separator1->setSeparator(true);
@@ -112,9 +112,9 @@ void RobotsPlugin::initActions()
 
 	mActionInfos
 //			<< d2ModelActionInfo
-//			<< connectToRobotActionInfo
+			<< connectToRobotActionInfo
 			<< runActionInfo
-//			<< stopRobotActionInfo
+			<< stopRobotActionInfo
 			<< separator1ActionInfo
 			<< switchTo2DModelActionInfo
 			<< switchToNxtModelActionInfo
@@ -127,21 +127,21 @@ void RobotsPlugin::initActions()
 
 void RobotsPlugin::initHotKeyActions()
 {
-//	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
+	mStopRobotAction->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F5));
 	mRunAction->setShortcut(QKeySequence(Qt::Key_F5));
 //	m2dModelAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_2));
 	mTitlesAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_T));
 
 //	HotKeyActionInfo d2ModelActionInfo("Interpreter.Show2dModel", tr("Show 2d model"), m2dModelAction);
 	HotKeyActionInfo runActionInfo("Interpreter.Run", tr("Run interpreter"), mRunAction);
-//	HotKeyActionInfo stopRobotActionInfo("Interpreter.Stop", tr("Stop interpreter"), mStopRobotAction);
+	HotKeyActionInfo stopRobotActionInfo("Interpreter.Stop", tr("Stop interpreter"), mStopRobotAction);
 	// TODO: move it into engine
 	HotKeyActionInfo titlesActionInfo("Editor.ToggleTitles", tr("Toggle titles visibility"), mTitlesAction);
 
 	mHotKeyActionInfos
 //			<< d2ModelActionInfo
 			<< runActionInfo
-//			<< stopRobotActionInfo
+			<< stopRobotActionInfo
 			<< titlesActionInfo
 			;
 }

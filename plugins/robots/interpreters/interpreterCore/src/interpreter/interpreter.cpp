@@ -6,14 +6,8 @@
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include "details/autoconfigurer.h"
-//#include "details/robotImplementations/unrealRobotModelImplementation.h"
-//#include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
-//#include "details/robotCommunication/usbRobotCommunicationThread.h"
-//#include "details/robotCommunication/tcpRobotCommunicationThread.h"
 //#include "details/tracer.h"
 //#include "details/debugHelper.h"
-
-//#include "sensorConstants.h"
 
 using namespace qReal;
 using namespace interpreterCore::interpreter;
@@ -39,11 +33,6 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 {
 	mBlocksTable = new details::BlocksTable(blocksFactory);
 
-//	connect(mD2ModelWidget, SIGNAL(modelChanged(QDomDocument)), this, SLOT(on2dModelChanged(QDomDocument)));
-//	connect(mD2ModelWidget, SIGNAL(noiseSettingsChanged()), this, SIGNAL(noiseSettingsChangedBy2DModelWidget()));
-//	connect(this, SIGNAL(noiseSettingsChanged()), mD2ModelWidget, SLOT(rereadNoiseSettings()));
-//	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
-
 	connect(
 			&mRobotModel->configuration()
 			, &interpreterBase::robotModel::ConfigurationInterface::allDevicesConfigured
@@ -58,34 +47,14 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 			, &Interpreter::connectedSlot
 			);
 
-//	connect(mD2ModelWidget, SIGNAL(d2WasClosed()), this, SLOT(stopRobot()));
-//	connect(mRobotCommunication, SIGNAL(errorOccured(QString)), this, SLOT(reportError(QString)));
-
 	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::stopRobot);
 
-//	robots::enums::robotModelType::robotModelTypeEnum const modelType
-//			= static_cast<robots::enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
-
-//	Tracer::debug(
-//			tracer::enums::initialization
-//			, "Interpreter::init"
-//			, "Going to set robot implementation, model type is " + DebugHelper::toString(modelType)
-//			);
-
-//	setRobotImplementation(modelType);
 	mRobotModel->init();
-
-//	mWatchListWindow = new utils::WatchListWindow(mParser, mInterpretersInterface->windowWidget());
-
-//	mGraphicsWatch = new utils::sensorsGraph::SensorsGraph(mParser, mInterpretersInterface->windowWidget());
 }
 
 Interpreter::~Interpreter()
 {
-	foreach (details::Thread * const thread, mThreads) {
-		delete thread;
-	}
-
+	qDeleteAll(mThreads);
 	delete mBlocksTable;
 }
 
@@ -125,8 +94,6 @@ void Interpreter::interpret()
 		return;
 	}
 
-//	mGraphicsWatch->startJob();
-
 //	mRobotModel->configureSensors(
 //			sensorConfiguration[0]
 //			, sensorConfiguration[1]
@@ -137,93 +104,12 @@ void Interpreter::interpret()
 
 void Interpreter::stopRobot()
 {
-//	mTimer.stop();
 	mRobotModel->stopRobot();
 	mState = idle;
-//	foreach (Thread * const thread, mThreads) {
-//		delete thread;
-//		mThreads.removeAll(thread);
-//	}
-
+	qDeleteAll(mThreads);
+	mThreads.clear();
 	mBlocksTable->setFailure();
-//	mGraphicsWatch->stopJob();
 }
-
-//void Interpreter::showWatchList()
-//{
-//	mWatchListWindow->show();
-//	mGraphicsWatch->show();
-//}
-
-//void Interpreter::onTabChanged(Id const &diagramId, bool enabled)
-//{
-//	if (enabled) {
-//		Id const logicalId = mGraphicalModelApi->logicalId(diagramId);
-//		QString const xml = mLogicalModelApi->propertyByRoleName(logicalId, "worldModel").toString();
-//		QDomDocument worldModel;
-//		worldModel.setContent(xml);
-//		mD2ModelWidget->loadXml(worldModel);
-//		loadSensorConfiguration(logicalId);
-//		enableD2ModelWidgetRunStopButtons();
-//	} else {
-//		mD2ModelWidget->loadXml(QDomDocument());
-//		disableD2ModelWidgetRunStopButtons();
-//	}
-//}
-
-//void Interpreter::closeWatchList()
-//{
-//	if (mWatchListWindow) {
-//		mWatchListWindow->setVisible(false);
-//	}
-//	if (mGraphicsWatch) {
-//		mGraphicsWatch->setVisible(false);
-//	}
-//}
-
-//void Interpreter::closeD2ModelWidget()
-//{
-//	if (mD2ModelWidget) {
-//		mD2ModelWidget->close();
-//	}
-//}
-
-//void Interpreter::showD2ModelWidget(bool isVisible)
-//{
-//	mD2ModelWidget->init(isVisible);
-//	if (isVisible) {
-//		mD2ModelWidget->activateWindow();
-//		mD2ModelWidget->show();
-//	}
-//}
-
-//void Interpreter::setD2ModelWidgetActions(QAction *runAction, QAction *stopAction)
-//{
-//	mD2ModelWidget->setD2ModelWidgetActions(runAction, stopAction);
-//}
-
-//void Interpreter::enableD2ModelWidgetRunStopButtons()
-//{
-//	mD2ModelWidget->enableRunStopButtons();
-//}
-
-//void Interpreter::disableD2ModelWidgetRunStopButtons()
-//{
-//	mD2ModelWidget->disableRunStopButtons();
-//}
-
-//void Interpreter::setRobotImplementation(robots::enums::robotModelType::robotModelTypeEnum implementationType)
-//{
-//	mConnected = false;
-//	mActionConnectToRobot->setChecked(false);
-//	robotImplementations::AbstractRobotModelImplementation *robotImpl
-//			= robotImplementations::AbstractRobotModelImplementation::robotModel(implementationType, mRobotCommunication, mD2RobotModel);
-//	setRobotImplementation(robotImpl);
-//	mImplementationType = implementationType;
-//	if (mImplementationType != robots::enums::robotModelType::nxt) {
-//		mRobotModel->init();
-//	}
-//}
 
 void Interpreter::connectedSlot(bool success)
 {
@@ -237,7 +123,7 @@ void Interpreter::connectedSlot(bool success)
 	}
 
 	mConnected = success;
-//	mActionConnectToRobot->setChecked(success);
+	mActionConnectToRobot.setChecked(success);
 }
 
 void Interpreter::sensorsConfiguredSlot()
@@ -245,7 +131,7 @@ void Interpreter::sensorsConfiguredSlot()
 //	Tracer::debug(tracer::enums::initialization, "Interpreter::sensorsConfiguredSlot", "Sensors are configured");
 
 	mConnected = true;
-//	mActionConnectToRobot->setChecked(mConnected);
+	mActionConnectToRobot.setChecked(mConnected);
 
 //	resetVariables();
 
@@ -260,23 +146,25 @@ void Interpreter::sensorsConfiguredSlot()
 //		mRobotModel->startInterpretation();
 
 		Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
+
 		details::Thread * const initialThread = new details::Thread(mGraphicalModelApi
 				, *mInterpretersInterface, currentDiagramId, *mBlocksTable);
+
 		addThread(initialThread);
 	}
 }
 
-//void Interpreter::threadStopped()
-//{
-//	Thread *thread = static_cast<Thread *>(sender());
+void Interpreter::threadStopped()
+{
+	details::Thread * const thread = static_cast<details::Thread *>(sender());
 
-//	mThreads.removeAll(thread);
-//	delete thread;
+	mThreads.removeAll(thread);
+	delete thread;
 
-//	if (mThreads.isEmpty()) {
-//		stopRobot();
-//	}
-//}
+	if (mThreads.isEmpty()) {
+		stopRobot();
+	}
+}
 
 void Interpreter::newThread(Id const &startBlockId)
 {
@@ -507,30 +395,32 @@ void Interpreter::addThread(details::Thread * const thread)
 //	responseSlot4(resetValue);
 //}
 
-//void Interpreter::connectToRobot()
-//{
-//	if (mState == interpreting) {
-//		return;
-//	}
-//	if (mConnected) {
-//		mRobotModel->stopRobot();
-//		mRobotModel->disconnectFromRobot();
-//	} else {
-//		mRobotModel->init();
+void Interpreter::connectToRobot()
+{
+	if (mState == interpreting) {
+		return;
+	}
+
+	if (mConnected) {
+		mRobotModel->stopRobot();
+		mRobotModel->disconnectFromRobot();
+	} else {
+		mRobotModel->init();
 //		configureSensors(
 //				  static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
 //				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
 //				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port3SensorType").toInt())
 //				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port4SensorType").toInt()));
-//	}
-//	mActionConnectToRobot->setChecked(mConnected);
-//}
+	}
 
-//void Interpreter::disconnectSlot()
-//{
-//	mActionConnectToRobot->setChecked(false);
-//	mConnected = false;
-//}
+	mActionConnectToRobot.setChecked(mConnected);
+}
+
+void Interpreter::disconnectSlot()
+{
+	mActionConnectToRobot.setChecked(false);
+	mConnected = false;
+}
 
 //void Interpreter::setRobotModelType(robots::enums::robotModelType::robotModelTypeEnum robotModelType)
 //{

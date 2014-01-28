@@ -30,6 +30,7 @@ public:
 public slots:
 	virtual void interpret() = 0;
 	virtual void stopRobot() = 0;
+	virtual void connectToRobot() = 0;
 };
 
 }

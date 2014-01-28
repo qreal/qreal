@@ -39,16 +39,17 @@ public:
 			, qReal::ProjectManagementInterface const &projectManager
 			, interpreterBase::baseBlocks::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
 			, interpreterBase::robotModel::RobotModelInterface * const robotModel  // Does not take ownership.
-			, QAction &connectToRobotAction);
+			, QAction &connectToRobotAction
+			);
 
-	virtual ~Interpreter();
+	~Interpreter() override;
 
 	virtual interpreterBase::baseBlocks::BlockParserInterface &parser() const;
 
 	qReal::IdList providedBlocks() const override;
 
 public slots:
-//	void connectToRobot();
+	void connectToRobot() override;
 	void interpret() override;
 	void stopRobot() override;
 //	void showD2ModelWidget(bool isVisible);
@@ -58,7 +59,7 @@ public slots:
 //	void updateGraphicWatchSensorsList();
 
 private slots:
-//	void threadStopped();
+	void threadStopped();
 	void newThread(qReal::Id const &startBlockId);
 //	void runTimer();
 //	void readSensorValues();
@@ -75,8 +76,8 @@ private slots:
 	void connectedSlot(bool success);
 	void sensorsConfiguredSlot();
 
-//	/// actions when robot disconnect
-//	void disconnectSlot();
+	/// Actions when robot disconnect
+	void disconnectSlot();
 
 //	void reportError(QString const &message);
 
