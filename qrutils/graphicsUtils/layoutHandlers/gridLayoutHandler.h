@@ -27,7 +27,7 @@ protected:
 	virtual void placeChildrenWithoutLayout();
 
 private:
-	static qreal const veryLargeNumber = 1e10;
+	static qreal constexpr veryLargeNumber = 1e10;
 
 	int rowToAdd(QPointF const &position) const;
 

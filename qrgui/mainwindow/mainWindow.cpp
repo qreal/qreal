@@ -31,12 +31,9 @@
 #include "view/sceneCustomizer.h"
 #include "brandManager/brandManager.h"
 
-<<<<<<< HEAD
 #include "elementEditor/elementEditor.h"
-=======
 #include "mainwindow/errorReporter.h"
-#include "mainwindow/shapeEdit/shapeEdit.h"
->>>>>>> 39b7e4d03edf60f3771fd04cf331320f7989e5af
+#include "elementEditor/shapeEdit/shapeEdit.h"
 #include "mainwindow/propertyEditorProxyModel.h"
 #include "mainwindow/startWidget/startWidget.h"
 #include "mainwindow/referenceList.h"
