@@ -39,19 +39,20 @@ private slots:
 	void onRobotModelRadioButtonToggled(bool checked);
 
 private:
-	void clearLayout(QLayout *layout);
 	void initializeKitRadioButtons();
 	QButtonGroup *initializeRobotModelsButtons(QString const &kitId, QRadioButton * const kitButton);
 	void showRadioButtonGroup(QWidget * const container
 			, QButtonGroup * const radioButtons
 			, QWidget * const emptyCaseWidget = nullptr);
 
-	QString selectedKit() const;
+	void saveSelectedRobotModel();
+	void checkSelectedRobotModelButtonFor(QAbstractButton * const kitButton);
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 	KitPluginManager &mKitPluginManager;
-	QMap<QAbstractButton *, QButtonGroup *> mKitRobotModels;
-	QMap<QAbstractButton *, interpreterBase::robotModel::RobotModelInterface *> mButtonsToRobotModelsMapping;
+	QButtonGroup *mKitButtons;
+	QHash<QAbstractButton *, QButtonGroup *> mKitRobotModels;
+	QHash<QAbstractButton *, interpreterBase::robotModel::RobotModelInterface *> mButtonsToRobotModelsMapping;
 };
 
 }

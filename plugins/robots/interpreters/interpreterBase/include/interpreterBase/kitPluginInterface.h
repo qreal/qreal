@@ -24,6 +24,12 @@ public:
 	/// Returns a list of robot models supported by this kit plugin.
 	virtual QList<robotModel::RobotModelInterface *> robotModels() = 0;
 
+	/// If overrided and returns some model as value that model will be used as default selected model for this kit
+	virtual robotModel::RobotModelInterface *defaultRobotModel()
+	{
+		return nullptr;
+	}
+
 	// Transfers ownership.
 	/// Widget with specific settings for a plugin.
 	// TODO: It actually is PreferencesPage, because it needs to save and load settings.

@@ -12,6 +12,11 @@ namespace robotModel {
 class ROBOTS_INTERPRETER_BASE_EXPORT ProxyRobotModel : public RobotModelInterface
 {
 public:
+	RobotModelInterface *proxiedModel() const;
+	void setProxiedModel(RobotModelInterface * const robotModel);
+
+	QString name() const override;
+
 	void init() override;
 	void stopRobot() override;
 	void disconnectFromRobot() override;
@@ -27,7 +32,7 @@ public:
 	virtual QList<interpreterBase::robotModel::PluggableDeviceInfo> supportedSensors() const override;
 
 private:
-	QScopedPointer<RobotModelInterface> mProxiedModel;
+	RobotModelInterface *mProxiedModel;  // Does not take ownership
 };
 
 }

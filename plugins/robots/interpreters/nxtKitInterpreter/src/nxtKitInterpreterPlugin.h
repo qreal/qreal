@@ -19,6 +19,8 @@ public:
 
 	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
 
+	interpreterBase::robotModel::RobotModelInterface *defaultRobotModel() override;
+
 	// Transfers ownership.
 	QWidget *settingsWidget() const override;
 

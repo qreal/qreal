@@ -148,8 +148,10 @@ void RobotsPlugin::initHotKeyActions()
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
-	if (SettingsManager::value("kitId").toString().isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
-		SettingsManager::setValue("kitId", mKitPluginManager.kitIds()[0]);
+	// TODO: reinit it each time when robot model changes
+	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
+	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
+		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
 	} else if (mKitPluginManager.kitIds().isEmpty()) {
 		mMainWindowInterpretersInterface->setEnabledForAllElementsInPalette(false);
 
@@ -157,7 +159,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 		return;
 	}
 
-	mKitPluginManager.selectKit(SettingsManager::value("kitId").toString());
+	mKitPluginManager.selectKit(selectedKit);
 
 	//	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
 //	interpreterBase::robotModel::RobotModelInterface * const robotModel = new interpreterBase::robotModel::RobotModel();

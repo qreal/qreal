@@ -2,6 +2,21 @@
 
 using namespace interpreterBase::robotModel;
 
+RobotModelInterface *ProxyRobotModel::proxiedModel() const
+{
+	return mProxiedModel;
+}
+
+void ProxyRobotModel::setProxiedModel(RobotModelInterface * const robotModel)
+{
+	mProxiedModel = robotModel;
+}
+
+QString ProxyRobotModel::name() const
+{
+	return mProxiedModel->name();
+}
+
 void ProxyRobotModel::init()
 {
 	mProxiedModel->init();

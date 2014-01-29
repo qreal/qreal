@@ -9,6 +9,8 @@ namespace robotParts {
 
 class ROBOTS_INTERPRETER_BASE_EXPORT ColorSensor : public AbstractSensor
 {
+	Q_OBJECT
+
 public:
 };
 

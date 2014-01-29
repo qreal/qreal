@@ -26,7 +26,7 @@ SOURCES += \
 	$$PWD/src/robotModel/pluggableDeviceInfo.cpp \
 	$$PWD/src/robotModel/proxyRobotModel.cpp \
 	$$PWD/src/robotModel/details/defaultRobotModel.cpp \
-	$$PWD/src/robotModel/robotParts/pluggableDevice.cpp \
+	$$PWD/src/robotModel/robotParts/pluggableDevice.cpp
 
 HEADERS += \
 	$$PWD/include/interpreterBase/interpreterBaseDeclSpec.h \
@@ -48,6 +48,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/robotParts/abstractSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/display.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/accelerometerSensor.h \
+	$$PWD/include/interpreterBase/robotModel/robotParts/sonarSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/colorSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/encoderSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/gyroscopeSensor.h \

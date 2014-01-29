@@ -11,10 +11,14 @@ SettingsManager* SettingsManager::mInstance = nullptr;
 
 SettingsManager::SettingsManager()
 	: mSettings("SPbSU", "QReal")
-	, mUXInfoInterface(NULL)
+	, mUXInfoInterface(nullptr)
 {
 	initDefaultValues();
 	load();
+}
+
+SettingsManager::~SettingsManager()
+{
 }
 
 void SettingsManager::setValue(QString const &name, QVariant const &value)

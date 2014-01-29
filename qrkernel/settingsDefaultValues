@@ -72,3 +72,4 @@ dragArea = 12
 robotsInterpreterStackSize=4000
 usabilityTestingMode=false
 collectErgonomicValues=truenxtFlashToolRunPolicy=0
+SelectedRobotKit=nxtKit

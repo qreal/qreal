@@ -9,7 +9,7 @@ QString NullKitInterpreterPlugin::kitId() const
 
 QString NullKitInterpreterPlugin::friendlyKitName() const
 {
-	return tr("Lego NXT");
+	return tr("Empty Kit");
 }
 
 QList<interpreterBase::robotModel::RobotModelInterface *> NullKitInterpreterPlugin::robotModels()

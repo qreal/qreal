@@ -12,6 +12,7 @@ HEADERS += \
 	$$PWD/src/kitPluginManager.h \
 	$$PWD/src/robotsPlugin.h \
 	$$PWD/src/robotsSettingsPage.h \
+	$$PWD/src/robotModelManager.h \
 	$$PWD/src/interpreter/interpreter.h \
 	$$PWD/src/interpreter/interpreterInterface.h \
 	$$PWD/src/interpreter/details/autoconfigurer.h \
@@ -25,6 +26,7 @@ SOURCES += \
 	$$PWD/src/kitPluginManager.cpp \
 	$$PWD/src/robotsPlugin.cpp \
 	$$PWD/src/robotsSettingsPage.cpp \
+	$$PWD/src/robotModelManager.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \

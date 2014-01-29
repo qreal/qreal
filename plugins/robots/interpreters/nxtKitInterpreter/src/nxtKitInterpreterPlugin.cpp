@@ -9,13 +9,18 @@ QString NxtKitInterpreterPlugin::kitId() const
 
 QString NxtKitInterpreterPlugin::friendlyKitName() const
 {
-	return tr("Empty Kit");
+	return tr("Lego NXT");
 }
 
 QList<interpreterBase::robotModel::RobotModelInterface *> NxtKitInterpreterPlugin::robotModels()
 {
 	return QList<interpreterBase::robotModel::RobotModelInterface *>()
 			<< &mRealRobotModel << &mTwoDRobotModel;
+}
+
+interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defaultRobotModel()
+{
+	return &mTwoDRobotModel;
 }
 
 QWidget *NxtKitInterpreterPlugin::settingsWidget() const
