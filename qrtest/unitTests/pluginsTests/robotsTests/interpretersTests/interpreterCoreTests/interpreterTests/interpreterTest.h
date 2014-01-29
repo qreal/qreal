@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QScopedPointer>
+#include <QtWidgets/QAction>
 
 #include <gtest/gtest.h>
 
@@ -22,6 +23,7 @@ protected:
 	QScopedPointer<interpreterCore::interpreter::InterpreterInterface> mInterpreter;
 	QScopedPointer<QrguiFacade> mQrguiFacade;
 	qrTest::RobotModelInterfaceMock mModel;
+	QScopedPointer<QAction> mFakeConnectToRobotAction;
 };
 
 }
