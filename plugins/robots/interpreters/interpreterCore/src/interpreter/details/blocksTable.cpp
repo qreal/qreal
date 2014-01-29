@@ -1,7 +1,7 @@
 #include "blocksTable.h"
 
 using namespace qReal;
-using namespace interpreterBase::baseBlocks;
+using namespace interpreterBase::blocksBase;
 using namespace interpreterCore::interpreter::details;
 
 BlocksTable::BlocksTable(BlocksFactoryInterface *blocksFactory)

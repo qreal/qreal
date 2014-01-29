@@ -9,7 +9,7 @@
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 
-#include <interpreterBase/baseBlocks/blockParserInterface.h>
+#include <interpreterBase/blocksBase/blockParserInterface.h>
 
 namespace interpreterCore {
 namespace interpreter {
@@ -25,7 +25,7 @@ public:
 	virtual qReal::IdList providedBlocks() const = 0;
 
 	// TODO: Unneeded.
-	virtual interpreterBase::baseBlocks::BlockParserInterface &parser() const = 0;
+	virtual interpreterBase::blocksBase::BlockParserInterface &parser() const = 0;
 
 public slots:
 	virtual void interpret() = 0;

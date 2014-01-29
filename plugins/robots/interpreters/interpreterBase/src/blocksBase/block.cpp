@@ -1,9 +1,9 @@
-#include <interpreterBase/baseBlocks/block.h>
+#include <interpreterBase/blocksBase/block.h>
 
 //#include <QtCore/QDebug>
 //#include "../robotsBlockParser.h"
 
-using namespace interpreterBase::baseBlocks;
+using namespace interpreterBase::blocksBase;
 using namespace qReal;
 
 Block::Block()

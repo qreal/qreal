@@ -6,7 +6,7 @@
 using namespace interpreterCore::interpreter::details;
 
 using namespace qReal;
-using namespace interpreterBase::baseBlocks;
+using namespace interpreterBase::blocksBase;
 
 Id const startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 int const blocksCountTillProcessingEvents = 100;
@@ -42,7 +42,7 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 
 Thread::~Thread()
 {
-	foreach (interpreterBase::baseBlocks::BlockInterface const * const block, mStack) {
+	foreach (interpreterBase::blocksBase::BlockInterface const * const block, mStack) {
 		if (block) {
 			mInterpretersInterface.dehighlight(block->id());
 		}
@@ -130,7 +130,7 @@ Id Thread::findStartingElement(Id const &diagram) const
 	return Id();
 }
 
-void Thread::turnOn(interpreterBase::baseBlocks::BlockInterface * const block)
+void Thread::turnOn(interpreterBase::blocksBase::BlockInterface * const block)
 {
 	mCurrentBlock = block;
 	if (!mCurrentBlock) {
@@ -139,10 +139,10 @@ void Thread::turnOn(interpreterBase::baseBlocks::BlockInterface * const block)
 	}
 
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
-	connect(mCurrentBlock, SIGNAL(done(blocks::Block * const)), this, SLOT(nextBlock(blocks::Block * const)));
-	connect(mCurrentBlock, SIGNAL(newThread(details::blocks::Block*const)), this, SIGNAL(newThread(details::blocks::Block*const)));
-	connect(mCurrentBlock, SIGNAL(failure()), this, SLOT(failure()));
-	connect(mCurrentBlock, SIGNAL(stepInto(Id const &)), this, SLOT(stepInto(Id const &)));
+//	connect(mCurrentBlock, SIGNAL(done(blocks::Block * const)), this, SLOT(nextBlock(blocks::Block * const)));
+//	connect(mCurrentBlock, SIGNAL(newThread(details::blocks::Block*const)), this, SIGNAL(newThread(details::blocks::Block*const)));
+//	connect(mCurrentBlock, SIGNAL(failure()), this, SLOT(failure()));
+//	connect(mCurrentBlock, SIGNAL(stepInto(Id const &)), this, SLOT(stepInto(Id const &)));
 
 	mStack.push(mCurrentBlock);
 

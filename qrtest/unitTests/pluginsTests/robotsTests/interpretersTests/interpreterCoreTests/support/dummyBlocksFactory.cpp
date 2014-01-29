@@ -6,12 +6,12 @@ using namespace qrTest::robotsTests::interpreterCoreTests;
 
 using namespace qReal;
 
-void DummyBlockFactory::setParser(interpreterBase::baseBlocks::BlockParserInterface * const parser)
+void DummyBlockFactory::setParser(interpreterBase::blocksBase::BlockParserInterface * const parser)
 {
 	Q_UNUSED(parser);
 }
 
-interpreterBase::baseBlocks::BlockInterface *DummyBlockFactory::block(Id const &element)
+interpreterBase::blocksBase::BlockInterface *DummyBlockFactory::block(Id const &element)
 {
 	Q_UNUSED(element);
 

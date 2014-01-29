@@ -1,6 +1,6 @@
 #include "finalBlock.h"
 
-using namespace interpreterBase::baseBlocks::details;
+using namespace interpreterCore::coreBlocks::details;
 
 void FinalBlock::run()
 {
