@@ -1,6 +1,7 @@
 #include "shapeEdit.h"
 #include "ui_shapeEdit.h"
 
+#include <QtWidgets/QFileDialog>
 #include <QtWidgets/QGraphicsItem>
 #include <QtCore/QList>
 #include <QtWidgets/QComboBox>
@@ -10,7 +11,6 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
-#include <qrutils/qRealFileDialog.h>
 #include <qrutils/graphicsUtils/colorListEditor.h>
 
 #include "elementEditor/shapeEdit/xmlLoader.h"
@@ -19,17 +19,23 @@
 using namespace qReal;
 using namespace utils;
 
-ShapeEdit::ShapeEdit(QWidget *parent)
-		: QWidget(parent), mUi(new Ui::ShapeEdit), mRole(0)
+ShapeEdit::ShapeEdit(bool isIconEditor, QWidget *parent)
+	: QWidget(parent)
+	, navigation::NavigationPageWithMenu()
+	, mIsIconEditor(isIconEditor)
+	, mUi(new Ui::ShapeEdit)
+	, mDocumentBuilder(NULL)
+	, mRole(0)
 {
 	init();
-	connect(this, SIGNAL(saveSignal()), this, SLOT(saveToXml()));
 }
+
 
 ShapeEdit::ShapeEdit(
 	qReal::models::details::LogicalModel *model
 	, QPersistentModelIndex const &index
 	, const int &role
+	, bool isIconEditor
 	, bool useTypedPorts
 	)
 	: QWidget(NULL)
@@ -37,6 +43,7 @@ ShapeEdit::ShapeEdit(
 	, mModel(model)
 	, mIndex(index)
 	, mRole(role)
+	, mIsIconEditor(isIconEditor)
 	, mUseTypedPorts(useTypedPorts)
 {
 	init();
@@ -50,6 +57,7 @@ ShapeEdit::ShapeEdit(
 	, qrRepo::GraphicalRepoApi const &graphicalRepoApi
 	, MainWindow *mainWindow
 	, EditorView *editorView
+	, bool isIconEditor
 	, bool useTypedPorts
 	)
 	: QWidget(NULL)
@@ -59,12 +67,26 @@ ShapeEdit::ShapeEdit(
 	, mEditorManager(editorManager)
 	, mMainWindow(mainWindow)
 	, mEditorView(editorView)
+	, mIsIconEditor(isIconEditor)
 	, mUseTypedPorts(useTypedPorts)
 {
 	mGraphicalElements = graphicalRepoApi.graphicalElements(Id(mId.editor(), mId.diagram(), mId.element()));
 	init();
 	mUi->saveButton->setEnabled(true);
 	connect(this, SIGNAL(saveSignal()), this, SLOT(save()));
+}
+
+ShapeEdit::~ShapeEdit()
+{
+	delete mScene;
+	delete mUi;
+}
+
+void ShapeEdit::onShown(navigation::NavigationState *state)
+{
+	NavigationPageWithMenu::onShown(state);
+	mDocumentBuilder = state->state<qReal::elementEdit::TemplateDocumentBuilder *>();
+	load(mIsIconEditor ? mDocumentBuilder->iconShape() : mDocumentBuilder->shape());
 }
 
 void ShapeEdit::init()
@@ -93,6 +115,7 @@ void ShapeEdit::init()
 	initFontPalette();
 
 	initButtonGroup();
+	initControlButtons();
 	connect(mUi->drawLineButton, SIGNAL(clicked(bool)), this, SLOT(drawLine(bool)));
 	connect(mUi->drawEllipseButton, SIGNAL(clicked(bool)), this, SLOT(drawEllipse(bool)));
 	connect(mUi->drawCurveButton, SIGNAL(clicked(bool)), this, SLOT(drawCurve(bool)));
@@ -128,11 +151,7 @@ void ShapeEdit::init()
 	connect(mUi->deleteItemButton, SIGNAL(clicked()), mScene, SLOT(deleteItem()));
 	connect(mUi->graphicsView, SIGNAL(deleteItem()), mScene, SLOT(deleteItem()));
 	connect(mUi->clearButton, SIGNAL(clicked()), mScene, SLOT(clearScene()));
-	connect(mUi->saveAsPictureButton, SIGNAL(clicked()), this, SLOT(savePicture()));
-	connect(mUi->saveToXmlButton, SIGNAL(clicked()), this, SLOT(saveToXml()));
 	connect(this, SIGNAL(saveToXmlSignal()), this, SLOT(saveToXml()));
-	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(save()));
-	connect(mUi->openButton, SIGNAL(clicked()), this, SLOT(open()));
 	connect(this, SIGNAL(openSignal()), this, SLOT(open()));
 
 	connect(mScene, SIGNAL(noSelectedItems()), this, SLOT(setNoPalette()));
@@ -144,6 +163,18 @@ void ShapeEdit::init()
 			, this, SLOT(setItemFontPalette(QPen const&, QFont const&, QString const &)));
 	connect(mScene, SIGNAL(noSelectedPortItems()), this, SLOT(setNoPortType()));
 	connect(mScene, SIGNAL(existSelectedPortItems(QString const &)), this, SLOT(setPortType(QString const &)));
+}
+
+void ShapeEdit::initControlButtons()
+{
+	mControlButtons = new qReal::elementEdit::ControlButtons(true, mIsIconEditor);
+	connect(mControlButtons, SIGNAL(saveAsImageClicked()), this, SLOT(savePicture()));
+	connect(mControlButtons, SIGNAL(saveToDiskClicked()), this, SLOT(saveToXml()));
+	connect(mControlButtons, SIGNAL(saveClicked()), this, SLOT(save()));
+	connect(mControlButtons, SIGNAL(loadFromDiskClicked()), this, SLOT(open()));
+	connect(mControlButtons, SIGNAL(widgetClicked()), this, SLOT(save()));
+	connect(mControlButtons, SIGNAL(iconAccepted()), this, SLOT(save()));
+	setMenuContent(mControlButtons);
 }
 
 void ShapeEdit::resetHighlightAllButtons()
@@ -202,12 +233,6 @@ void ShapeEdit::initFontPalette()
 	mUi->underlineCheckBox->setChecked(false);
 }
 
-ShapeEdit::~ShapeEdit()
-{
-	delete mScene;
-	delete mUi;
-}
-
 graphicsUtils::AbstractView* ShapeEdit::getView()
 {
 	return mUi->graphicsView;
@@ -232,9 +257,9 @@ void ShapeEdit::keyPressEvent(QKeyEvent *event)
 		emit saveToXmlSignal();
 	} else if (event->key() == Qt::Key_F2) {
 		emit saveSignal();
-	} if (event->matches(QKeySequence::Open)) {
+	} else if (event->matches(QKeySequence::Open)) {
 		emit openSignal();
-	} if (event->matches(QKeySequence::ZoomIn)) {
+	} else if (event->matches(QKeySequence::ZoomIn)) {
 		mScene->mainView()->zoomIn();
 	} else if (event->matches(QKeySequence::ZoomOut)) {
 		mScene->mainView()->zoomOut();
@@ -247,17 +272,17 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 	QDomElement label = mDocument.createElement("labels");
 	QDomElement ports = mDocument.createElement("ports");
 
-	QRect sceneBoundingRect = mScene->realItemsBoundingRect();
+	QRect const sceneBoundingRect = mScene->realItemsBoundingRect();
 	mTopLeftPicture = sceneBoundingRect.topLeft();
 
-	QList<QGraphicsItem *> list = mScene->items();
+	QList<QGraphicsItem *> const list = mScene->items();
 	foreach (QGraphicsItem *graphicsItem, list) {
 
 		Item* item = dynamic_cast<Item*>(graphicsItem);
 		if (item != NULL) {
 			QPair<QDomElement, Item::DomElementTypes> genItem = item->generateDom(mDocument, mTopLeftPicture);
 			QDomElement domItem = genItem.first;
-			Item::DomElementTypes domType = genItem.second;
+			Item::DomElementTypes const domType = genItem.second;
 			switch (domType) {
 			case Item::pictureType:
 				picture.appendChild(domItem);
@@ -287,11 +312,12 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 
 void ShapeEdit::generateDom()
 {
+	mDocument.clear();
 	QDomElement graphics = mDocument.createElement("graphics");
 	mDocument.appendChild(graphics);
 
-	QList<QDomElement> list = generateGraphics();
-	foreach (QDomElement domItem, list) {
+	QList<QDomElement> const list = generateGraphics();
+	foreach (QDomElement const &domItem, list) {
 		graphics.appendChild(domItem);
 	}
 }
@@ -308,42 +334,30 @@ void ShapeEdit::exportToXml(QString const &fileName)
 void ShapeEdit::saveToXml()
 {
 	mDocument.clear();
-	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorXml", this);
+	QString const fileName = QFileDialog::getSaveFileName(this);
 	if (fileName.isEmpty()) {
 		return;
 	}
 
 	exportToXml(fileName);
+	QMessageBox::information(this, tr("Saving"), tr("Saved successfully"));
 }
 
 void ShapeEdit::save()
 {
 	generateDom();
-	if (mIndex.isValid()) {
-		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
+	if (mIsIconEditor) {
+		mDocumentBuilder->mergeIconShapeGraphics(mDocument);
 	} else {
-		mEditorManager->updateShape(mId, mDocument.toString(4));
-		foreach (Id const graphicalElement, mGraphicalElements) {
-			mEditorManager->updateShape(graphicalElement, mDocument.toString(4));
-			EditorViewScene *editorViewScene = mEditorView->editorViewScene();
-			foreach (QGraphicsItem * const item, editorViewScene->items()) {
-				NodeElement * const element = dynamic_cast<NodeElement *>(item);
-				if (element && element->id().type() == mId.type()) {
-					element->updateShape(mDocument.toString(4));
-				}
-			}
-		}
-
-		mMainWindow->loadPlugins();
+		mDocumentBuilder->mergeShapeGraphics(mDocument);
 	}
 
-	QMessageBox::information(this, tr("Saving"), "Saved successfully");
-	mDocument.clear();
+	emit shapeSaved();
 }
 
 void ShapeEdit::savePicture()
 {
-	QString fileName = QRealFileDialog::getSaveFileName("SaveShapeEditorPicture", this);
+	QString const fileName = QFileDialog::getSaveFileName(this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -360,12 +374,13 @@ void ShapeEdit::savePicture()
 
 	mScene->render(&painter);
 	image.save(fileName);
+	QMessageBox::information(this, tr("Saving"), tr("Saved successfully"));
 }
 
 void ShapeEdit::open()
 {
 	mDocument.clear();
-	QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorXml", this);
+	QString const fileName = QFileDialog::getOpenFileName(this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -376,19 +391,28 @@ void ShapeEdit::open()
 
 void ShapeEdit::load(QString const &text)
 {
-	if (text.isEmpty()) {
+	QDomDocument document;
+	document.setContent(text);
+	load(document);
+}
+
+void ShapeEdit::load(QDomDocument const &document)
+{
+	mScene->clearScene();
+	if (document.isNull()) {
 		return;
 	}
 
 	XmlLoader loader(mScene);
-	loader.readString(text);
+	loader.readDocument(document);
+	mDocumentBuilder->mergeDocument(document);
 }
 
 void ShapeEdit::addImage(bool checked)
 {
 	if (checked) {
 		setHighlightOneButton(mUi->addImageButton);
-		QString fileName = QRealFileDialog::getOpenFileName("OpenShapeEditorImage", this);
+		QString const fileName = QFileDialog::getOpenFileName(this);
 		if (fileName.isEmpty()) {
 			return;
 		}
@@ -397,7 +421,7 @@ void ShapeEdit::addImage(bool checked)
 	}
 }
 
-void ShapeEdit::setValuePenStyleComboBox(Qt::PenStyle penStyle)
+void ShapeEdit::setValuePenStyleComboBox(const Qt::PenStyle penStyle)
 {
 	if (penStyle == Qt::SolidLine) {
 		mUi->penStyleComboBox->setCurrentIndex(0);
@@ -433,7 +457,7 @@ void ShapeEdit::setValuePenWidthSpinBox(int width)
 	mUi->penWidthSpinBox->setValue(width);
 }
 
-void ShapeEdit::setValueBrushColorComboBox(QColor brushColor)
+void ShapeEdit::setValueBrushColorComboBox(const QColor &brushColor)
 {
 	mUi->brushColorComboBox->setColor(brushColor);
 }
@@ -518,7 +542,7 @@ void ShapeEdit::setPortType(QString const &type)
 
 void ShapeEdit::changeTextName()
 {
-	QString newName = mUi->textEditField->toPlainText();
+	QString const newName = mUi->textEditField->toPlainText();
 	mScene->changeTextName(newName);
 }
 
@@ -601,6 +625,23 @@ void ShapeEdit::addStylus(bool checked)
 	if (checked) {
 		setHighlightOneButton(mUi->stylusButton);
 	}
+}
+
+void ShapeEdit::switchToWidgets()
+{
+	generateDom();
+	emit switchToWidgetsEditor(mDocument);
+}
+
+QDomDocument ShapeEdit::currentShape()
+{
+	generateDom();
+	return mDocument;
+}
+
+qReal::elementEdit::ControlButtons *ShapeEdit::controlButtons() const
+{
+	return mControlButtons;
 }
 
 void ShapeEdit::visibilityButtonClicked()
