@@ -1,7 +1,7 @@
 #include "blocksFactory.h"
 
-#include "details/finalBlock.h"
-#include "details/initialBlock.h"
+//#include "details/finalBlock.h"
+//#include "details/initialBlock.h"
 //#include "details/timerBlock.h"
 //#include "details/beepBlock.h"
 //#include "details/nullificationEncoderBlock.h"
@@ -40,7 +40,7 @@
 //#include "details/waitForEncoderBlock.h"
 //#include "details/waitForButtonsBlock.h"
 
-using namespace interpreterBase::baseBlocks;
+using namespace interpreterBase::blocksBase;
 
 using namespace qReal;
 using namespace interpreterBase::robotModel;
@@ -71,11 +71,11 @@ void BlocksFactory::setParser(BlockParserInterface * const parser)
 
 BlockInterface *BlocksFactory::block(Id const &element)
 {
-	Block * newBlock = NULL;
-	if (elementMetatypeIs(element, "InitialNode")) {
-		newBlock = new details::InitialBlock(*mRobotModel);
-	} else if (elementMetatypeIs(element, "FinalNode")) {
-		newBlock = new details::FinalBlock();
+	Block * newBlock = nullptr;
+//	if (elementMetatypeIs(element, "InitialNode")) {
+//		newBlock = new details::InitialBlock(*mRobotModel);
+//	} else if (elementMetatypeIs(element, "FinalNode")) {
+//		newBlock = new details::FinalBlock();
 //	} else if (elementMetatypeIs(element, "Beep")) {
 //		newBlock = new BeepBlock(mRobotModel->brick(), mRobotModel->produceTimer());
 //	} else if (elementMetatypeIs(element, "Timer")) {
@@ -136,7 +136,7 @@ BlockInterface *BlocksFactory::block(Id const &element)
 //		newBlock = new ClearScreenBlock(mRobotModel->display());
 //	} else {
 //		newBlock = new DummyBlock();
-	}
+//	}
 
 	newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, mErrorReporter, mParser);
 	return newBlock;

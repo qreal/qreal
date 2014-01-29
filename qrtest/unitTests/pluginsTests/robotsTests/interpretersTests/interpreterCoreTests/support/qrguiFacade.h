@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QtCore/QString>
-#include <QtWidgets/QApplication>
 
 #include <qrgui/models/models.h>
 #include <qrgui/pluginManager/editorManager.h>
@@ -26,25 +25,6 @@ public:
 	qReal::ProjectManagementInterface &projectManagementInterface();
 
 private:
-	class AppContainer {
-	public:
-		AppContainer()
-		{
-			int argc = 0;
-			char *argv[] = {new char[1]{0}, new char[1]{0}};
-			mApp = new QApplication(argc, argv);
-		}
-
-		~AppContainer()
-		{
-			delete mApp;
-		}
-
-	private:
-		QApplication *mApp;  // Has ownership.
-	};
-
-	AppContainer mAppContainer;  // Used for RAII only.
 	qReal::EditorManager mEditorManager;
 	qReal::models::Models mModels;
 	qrTest::MainWindowInterpretersInterfaceMock mMainWindowInterpretersInterfaceMock;

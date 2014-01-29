@@ -1,6 +1,6 @@
 #include "initialBlock.h"
 
-using namespace interpreterBase::baseBlocks::details;
+using namespace interpreterCore::coreBlocks::details;
 
 using namespace interpreterBase::robotModel;
 

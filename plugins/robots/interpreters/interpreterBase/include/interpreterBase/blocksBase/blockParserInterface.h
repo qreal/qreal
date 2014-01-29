@@ -4,7 +4,7 @@
 #include <qrutils/expressionsParser/number.h>
 
 namespace interpreterBase {
-namespace baseBlocks {
+namespace blocksBase {
 
 class BlockParserInterface
 {

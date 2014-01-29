@@ -5,9 +5,9 @@
 
 #include <qrkernel/ids.h>
 
-#include <interpreterBase/baseBlocks/blocksFactoryInterface.h>
-#include <interpreterBase/baseBlocks/blocksTableInterface.h>
-#include <interpreterBase/baseBlocks/blockInterface.h>
+#include <interpreterBase/blocksBase/blocksFactoryInterface.h>
+#include <interpreterBase/blocksBase/blocksTableInterface.h>
+#include <interpreterBase/blocksBase/blockInterface.h>
 
 namespace interpreterCore {
 namespace interpreter {
@@ -18,16 +18,16 @@ namespace details {
 /// clients can simply request a block by given id, and a block table will do the rest.
 /// Also supports operations that shall be performed on all blocks in a system, such as setting failure or idle flags.
 /// and objects implementing logic of that blocks.
-class BlocksTable : public interpreterBase::baseBlocks::BlocksTableInterface
+class BlocksTable : public interpreterBase::blocksBase::BlocksTableInterface
 {
 public:
 	/// Constructor.
 	/// @param blocksFactory - a factory that is used to create new blocks when needed. BlocksTable takes ownership.
-	BlocksTable(interpreterBase::baseBlocks::BlocksFactoryInterface *blocksFactory);
+	BlocksTable(interpreterBase::blocksBase::BlocksFactoryInterface *blocksFactory);
 
 	~BlocksTable() override;
 
-	interpreterBase::baseBlocks::BlockInterface *block(qReal::Id const &element) override;
+	interpreterBase::blocksBase::BlockInterface *block(qReal::Id const &element) override;
 
 	/// Clears blocks table.
 	void clear();
@@ -45,8 +45,8 @@ public:
 	qReal::IdList providedBlocks() const;
 
 private:
-	QHash<qReal::Id, interpreterBase::baseBlocks::BlockInterface *> mBlocks;  // Has ownership
-	QScopedPointer<interpreterBase::baseBlocks::BlocksFactoryInterface> mBlocksFactory;
+	QHash<qReal::Id, interpreterBase::blocksBase::BlockInterface *> mBlocks;  // Has ownership
+	QScopedPointer<interpreterBase::blocksBase::BlocksFactoryInterface> mBlocksFactory;
 };
 
 }

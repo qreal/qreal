@@ -2,13 +2,13 @@
 
 #include <qrutils/expressionsParser/expressionsParser.h>
 
-#include <interpreterBase/baseBlocks/blockParserInterface.h>
+#include <interpreterBase/blocksBase/blockParserInterface.h>
 
 namespace interpreterCore {
 namespace interpreter {
 namespace details {
 
-class RobotsBlockParser : public utils::ExpressionsParser, public interpreterBase::baseBlocks::BlockParserInterface
+class RobotsBlockParser : public utils::ExpressionsParser, public interpreterBase::blocksBase::BlockParserInterface
 {
 public:
 	explicit RobotsBlockParser(qReal::ErrorReporterInterface* errorReporter);

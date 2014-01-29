@@ -103,11 +103,6 @@ TEST_F(GraphicalPartModelTest, removeRowsTest)
 
 TEST_F(GraphicalPartModelTest, viewTest)
 {
-	int argc = 0;
-	char *argv[] = {"", ""};
-	QApplication app(argc, argv);
-	Q_UNUSED(app)
-
 	helpers::GraphicalPartViewMock viewMock;
 
 	delete mGraphicalPartModel;

@@ -13,6 +13,9 @@ HEADERS += \
 	$$PWD/src/robotsPlugin.h \
 	$$PWD/src/robotsSettingsPage.h \
 	$$PWD/src/robotModelManager.h \
+	$$PWD/src/coreBlocks/coreBlocksFactory.h \
+	$$PWD/src/coreBlocks/details/finalBlock.h \
+	$$PWD/src/coreBlocks/details/initialBlock.h \
 	$$PWD/src/interpreter/interpreter.h \
 	$$PWD/src/interpreter/interpreterInterface.h \
 	$$PWD/src/interpreter/details/autoconfigurer.h \
@@ -27,6 +30,9 @@ SOURCES += \
 	$$PWD/src/robotsPlugin.cpp \
 	$$PWD/src/robotsSettingsPage.cpp \
 	$$PWD/src/robotModelManager.cpp \
+	$$PWD/src/coreBlocks/coreBlocksFactory.cpp \
+	$$PWD/src/coreBlocks/details/finalBlock.cpp \
+	$$PWD/src/coreBlocks/details/initialBlock.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \

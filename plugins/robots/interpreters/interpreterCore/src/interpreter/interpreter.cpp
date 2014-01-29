@@ -18,7 +18,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface &logicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, qReal::ProjectManagementInterface const &projectManager
-		, interpreterBase::baseBlocks::BlocksFactoryInterface * const blocksFactory
+		, interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory
 		, interpreterBase::robotModel::RobotModelInterface * const robotModel
 		, QAction &connectToRobotAction
 		)
@@ -58,7 +58,7 @@ Interpreter::~Interpreter()
 	delete mBlocksTable;
 }
 
-interpreterBase::baseBlocks::BlockParserInterface &Interpreter::parser() const
+interpreterBase::blocksBase::BlockParserInterface &Interpreter::parser() const
 {
 	return *mParser;
 }

@@ -2,11 +2,11 @@
 
 #include <interpreterBase/blocksBase/block.h>
 
-namespace qrTest {
-namespace robotsTests {
-namespace interpreterCoreTests {
+namespace interpreterCore {
+namespace coreBlocks {
+namespace details {
 
-class DummyBlock : public interpreterBase::blocksBase::Block
+class FinalBlock : public interpreterBase::blocksBase::Block
 {
 	Q_OBJECT
 

@@ -8,7 +8,7 @@
 #include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 
-#include <interpreterBase/baseBlocks/blockInterface.h>
+#include <interpreterBase/blocksBase/blockInterface.h>
 
 #include "blocksTable.h"
 
@@ -58,14 +58,14 @@ private:
 	qReal::Id findStartingElement(qReal::Id const &diagram) const;
 	void error(QString const &message, qReal::Id const &source = qReal::Id());
 
-	void turnOn(interpreterBase::baseBlocks::BlockInterface * const block);
-	void turnOff(interpreterBase::baseBlocks::BlockInterface * const block);
+	void turnOn(interpreterBase::blocksBase::BlockInterface * const block);
+	void turnOff(interpreterBase::blocksBase::BlockInterface * const block);
 
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Doesn't have ownership
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	BlocksTable &mBlocksTable;
-	interpreterBase::baseBlocks::BlockInterface *mCurrentBlock;  // Doesn't have ownership
-	QStack<interpreterBase::baseBlocks::BlockInterface *> mStack;
+	interpreterBase::blocksBase::BlockInterface *mCurrentBlock;  // Doesn't have ownership
+	QStack<interpreterBase::blocksBase::BlockInterface *> mStack;
 	qReal::Id const mInitialDiagram;
 	int mBlocksSincePreviousEventsProcessing;
 	QTimer *mProcessEventsTimer;  // Has ownership

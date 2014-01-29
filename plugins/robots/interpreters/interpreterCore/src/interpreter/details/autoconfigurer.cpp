@@ -2,7 +2,7 @@
 
 #include <qrkernel/exception/exception.h>
 
-#include <interpreterBase/baseBlocks/block.h>
+#include <interpreterBase/blocksBase/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 //#include "tracer.h"
 
@@ -16,10 +16,10 @@ Autoconfigurer::Autoconfigurer(GraphicalModelAssistInterface const &graphicalMod
 		, ErrorReporterInterface * const errorReporter
 		, RobotModelInterface *robotModel
 		)
-		: mGraphicalModelApi(&graphicalModelApi)
-		, mBlocksTable(blocksTable)
-		, mErrorReporter(errorReporter)
-		, mRobotModel(robotModel)
+	: mGraphicalModelApi(&graphicalModelApi)
+	, mBlocksTable(blocksTable)
+	, mErrorReporter(errorReporter)
+	, mRobotModel(robotModel)
 {
 }
 

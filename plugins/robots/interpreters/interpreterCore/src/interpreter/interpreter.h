@@ -37,14 +37,14 @@ public:
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
-			, interpreterBase::baseBlocks::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
+			, interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
 			, interpreterBase::robotModel::RobotModelInterface * const robotModel  // Does not take ownership.
 			, QAction &connectToRobotAction
 			);
 
 	~Interpreter() override;
 
-	virtual interpreterBase::baseBlocks::BlockParserInterface &parser() const;
+	virtual interpreterBase::blocksBase::BlockParserInterface &parser() const;
 
 	qReal::IdList providedBlocks() const override;
 
