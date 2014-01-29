@@ -1,17 +1,17 @@
 #pragma once
 
-#include <interpreterBase/blocks/blocksFactoryInterface.h>
+#include <interpreterBase/baseBlocks/blocksFactoryInterface.h>
 
 namespace qrTest {
 namespace robotsTests {
 namespace interpreterCoreTests {
 
-class DummyBlockFactory : public interpreterBase::blocks::BlocksFactoryInterface
+class DummyBlockFactory : public interpreterBase::baseBlocks::BlocksFactoryInterface
 {
 public:
-	void setParser(interpreterBase::blocks::BlockParserInterface * const parser);
-	interpreterBase::blocks::BlockInterface *block(qReal::Id const &element);
-	qReal::IdList providedBlocks() const;
+	void setParser(interpreterBase::baseBlocks::BlockParserInterface * const parser) override;
+	interpreterBase::baseBlocks::BlockInterface *block(qReal::Id const &element) override;
+	qReal::IdList providedBlocks() const override;
 };
 
 }

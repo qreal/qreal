@@ -1,9 +1,9 @@
-#include <interpreterBase/blocks/block.h>
+#include <interpreterBase/baseBlocks/block.h>
 
 //#include <QtCore/QDebug>
 //#include "../robotsBlockParser.h"
 
-using namespace interpreterBase::blocks;
+using namespace interpreterBase::baseBlocks;
 using namespace qReal;
 
 Block::Block()
@@ -16,7 +16,7 @@ Block::Block()
 	, mState(idle)
 	, mErrorReporter(NULL)
 {
-	connect(this, SIGNAL(done(Block * const)), this, SLOT(finishedRunning()));
+	connect(this, &BlockInterface::done, this, &Block::finishedRunning);
 }
 
 Block::~Block()

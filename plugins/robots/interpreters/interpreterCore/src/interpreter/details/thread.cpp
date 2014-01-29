@@ -6,7 +6,7 @@
 using namespace interpreterCore::interpreter::details;
 
 using namespace qReal;
-using namespace interpreterBase::blocks;
+using namespace interpreterBase::baseBlocks;
 
 Id const startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 int const blocksCountTillProcessingEvents = 100;
@@ -42,7 +42,7 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 
 Thread::~Thread()
 {
-	foreach (interpreterBase::blocks::BlockInterface const * const block, mStack) {
+	foreach (interpreterBase::baseBlocks::BlockInterface const * const block, mStack) {
 		if (block) {
 			mInterpretersInterface.dehighlight(block->id());
 		}
@@ -130,7 +130,7 @@ Id Thread::findStartingElement(Id const &diagram) const
 	return Id();
 }
 
-void Thread::turnOn(interpreterBase::blocks::BlockInterface * const block)
+void Thread::turnOn(interpreterBase::baseBlocks::BlockInterface * const block)
 {
 	mCurrentBlock = block;
 	if (!mCurrentBlock) {

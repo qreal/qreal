@@ -1,49 +1,52 @@
 #pragma once
 
 #include <QtCore/QHash>
+#include <QtCore/QScopedPointer>
 
 #include <qrkernel/ids.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-#include <interpreterBase/blocks/blocksFactoryInterface.h>
-#include <interpreterBase/blocks/blocksTableInterface.h>
-#include <interpreterBase/blocks/blockInterface.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
-
-#include "robotsBlockParser.h"
+#include <interpreterBase/baseBlocks/blocksFactoryInterface.h>
+#include <interpreterBase/baseBlocks/blocksTableInterface.h>
+#include <interpreterBase/baseBlocks/blockInterface.h>
 
 namespace interpreterCore {
 namespace interpreter {
 namespace details {
 
-class BlocksTable : public interpreterBase::blocks::BlocksTableInterface
+/// Implementation of blocks table functionality required by InterpreterBase.
+/// Provides mapping from block ids to objects that implement logic of block, also creates blocks when needed, so
+/// clients can simply request a block by given id, and a block table will do the rest.
+/// Also supports operations that shall be performed on all blocks in a system, such as setting failure or idle flags.
+/// and objects implementing logic of that blocks.
+class BlocksTable : public interpreterBase::baseBlocks::BlocksTableInterface
 {
 public:
-	BlocksTable(qReal::GraphicalModelAssistInterface const &graphicalModelApi
-			, qReal::LogicalModelAssistInterface const &logicalModelApi
-			, interpreterBase::robotModel::RobotModelInterface * const robotModel
-			, qReal::ErrorReporterInterface * const errorReporter
-			, RobotsBlockParser * const parser
-			, interpreterBase::blocks::BlocksFactoryInterface * const blocksFactory
-			);
+	/// Constructor.
+	/// @param blocksFactory - a factory that is used to create new blocks when needed. BlocksTable takes ownership.
+	BlocksTable(interpreterBase::baseBlocks::BlocksFactoryInterface *blocksFactory);
 
-	~BlocksTable();
+	~BlocksTable() override;
 
-	// Override.
-	virtual interpreterBase::blocks::BlockInterface *block(qReal::Id const &element);
+	interpreterBase::baseBlocks::BlockInterface *block(qReal::Id const &element) override;
 
+	/// Clears blocks table.
 	void clear();
-	void addBlock(qReal::Id const &element, interpreterBase::blocks::BlockInterface *block);
+
+	/// Sets "failure" state for all blocks, which allows to abort program execution: if block is failed, it will not
+	/// invoke next block.
 	void setFailure();
+
+	/// Sets "idle" state for all blocks, thus preparing them for another execution.
+	// TODO: possibly unneeded. It will not clean existing connections and pending signals, so it is safer to delete
+	// and re-create all blocks before another run of a program.
 	void setIdleForBlocks();
 
+	/// Returns a list of blocks that can be created by this blocks table.
 	qReal::IdList providedBlocks() const;
 
 private:
-	QHash<qReal::Id, interpreterBase::blocks::BlockInterface *> mBlocks;  // Has ownership
-	interpreterBase::blocks::BlocksFactoryInterface *mBlocksFactory;  // Has ownership
+	QHash<qReal::Id, interpreterBase::baseBlocks::BlockInterface *> mBlocks;  // Has ownership
+	QScopedPointer<interpreterBase::baseBlocks::BlocksFactoryInterface> mBlocksFactory;
 };
 
 }

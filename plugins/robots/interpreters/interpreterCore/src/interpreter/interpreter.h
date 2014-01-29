@@ -1,11 +1,14 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtWidgets/QAction>
 
 #include <qrkernel/ids.h>
 //#include <qrutils/watchListWindow.h>
 //#include <qrutils/graphicsWatcher/sensorsGraph.h>
 #include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
+
+#include <interpreterBase/robotModel/robotModelInterface.h>
 
 //#include "details/robotCommunication/robotCommunicator.h"
 //#include "sensorConstants.h"
@@ -15,7 +18,7 @@
 //#include "details/d2RobotModel/d2RobotModel.h"
 
 
-//#include "details/robotsBlockParser.h"
+#include "details/robotsBlockParser.h"
 //#include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
 //#include "details/sensorsConfigurationWidget.h"
 //#include "details/nxtDisplay.h"
@@ -34,67 +37,29 @@ public:
 			, qReal::LogicalModelAssistInterface &logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
-			, interpreterBase::blocks::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
+			, interpreterBase::baseBlocks::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
 			, interpreterBase::robotModel::RobotModelInterface * const robotModel  // Does not take ownership.
+			, QAction &connectToRobotAction
 			);
 
-	virtual ~Interpreter();
+	~Interpreter() override;
 
-	virtual interpreterBase::blocks::BlockParserInterface &parser() const;
+	virtual interpreterBase::baseBlocks::BlockParserInterface &parser() const;
 
-//	details::RobotModel *robotModel();
-//	void setRobotModel(details::RobotModel * const robotModel);
-
-//	void configureSensors(
-//			robots::enums::sensorType::SensorTypeEnum const &port1
-//			, robots::enums::sensorType::SensorTypeEnum const &port2
-//			, robots::enums::sensorType::SensorTypeEnum const &port3
-//			, robots::enums::sensorType::SensorTypeEnum const &port4
-//			);
-
-//	void setRobotImplementation(robots::enums::robotModelType::robotModelTypeEnum implementationType);
-
-//	void setD2ModelWidgetActions(QAction *runAction, QAction *stopAction);
-//	void closeD2ModelWidget();
-//	void closeWatchList();
-//	void setRobotModelType(robots::enums::robotModelType::robotModelTypeEnum robotModelType);
-//	void setCommunicator(QString const &valueOfCommunication);
-
-//	/// Assigning a value to the field mActionConnectToRobot
-//	void setConnectRobotAction(QAction *actionConnect);
-
-//	void setNoiseSettings();
-
-//	/// Enable Run and Stop buttons on 2d model widget
-//	void enableD2ModelWidgetRunStopButtons();
-
-//	/// Disable Run and Stop buttons on 2d model widget, when running current diagram is impossible
-//	void disableD2ModelWidgetRunStopButtons();
-
-//	utils::WatchListWindow *watchWindow() const;
-//	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
-//	utils::sensorsGraph::SensorsGraph *graphicsWatchWindow() const;
-
-	qReal::IdList providedBlocks() const;
-
-//signals:
-//	void noiseSettingsChanged();
-//	void noiseSettingsChangedBy2DModelWidget();
-
-//	void sensorsConfigurationChanged();
+	qReal::IdList providedBlocks() const override;
 
 public slots:
-//	void connectToRobot();
-	virtual void interpret();
-//	void stopRobot();
+	void connectToRobot() override;
+	void interpret() override;
+	void stopRobot() override;
 //	void showD2ModelWidget(bool isVisible);
 //	void showWatchList();
 //	void onTabChanged(Id const &diagramId, bool enabled);
 //	void saveSensorConfiguration();
 //	void updateGraphicWatchSensorsList();
 
-//private slots:
-//	void threadStopped();
+private slots:
+	void threadStopped();
 	void newThread(qReal::Id const &startBlockId);
 //	void runTimer();
 //	void readSensorValues();
@@ -111,8 +76,8 @@ public slots:
 	void connectedSlot(bool success);
 	void sensorsConfiguredSlot();
 
-//	/// actions when robot disconnect
-//	void disconnectSlot();
+	/// Actions when robot disconnect
+	void disconnectSlot();
 
 //	void reportError(QString const &message);
 
@@ -132,12 +97,12 @@ private:
 	};
 
 	qReal::GraphicalModelAssistInterface const *mGraphicalModelApi;  // Does not have ownership
-	qReal::LogicalModelAssistInterface *mLogicalModelApi;
-	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;
+	qReal::LogicalModelAssistInterface *mLogicalModelApi;  // Does not have ownership
+	qReal::gui::MainWindowInterpretersInterface *mInterpretersInterface;  // Does not have ownership
 
 	InterpreterState mState;
 	QList<details::Thread *> mThreads;  // Has ownership
-	interpreterBase::robotModel::RobotModelInterface *mRobotModel;
+	interpreterBase::robotModel::RobotModelInterface *mRobotModel;  // Does not have ownership
 	details::BlocksTable *mBlocksTable;  // Has ownership
 	details::RobotsBlockParser *mParser;
 //	QTimer mTimer;
@@ -153,8 +118,8 @@ private:
 
 //	utils::sensorsGraph::SensorsGraph *mGraphicsWatch;  // Doesn`t have ownership
 
-//	/// Action responsible for the connection to the robot
-//	QAction *mActionConnectToRobot;
+	/// Action responsible for the connection to the robot
+	QAction &mActionConnectToRobot;
 
 //	QString mLastCommunicationValue;
 };

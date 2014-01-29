@@ -2,14 +2,14 @@
 
 #include <qrkernel/ids.h>
 
-#include <interpreterBase/blocks/block.h>
-#include <interpreterBase/blocks/blockParserInterface.h>
-#include <interpreterBase/blocks/blocksTableInterface.h>
-#include <interpreterBase/blocks/blocksFactoryInterface.h>
+#include <interpreterBase/baseBlocks/block.h>
+#include <interpreterBase/baseBlocks/blockParserInterface.h>
+#include <interpreterBase/baseBlocks/blocksTableInterface.h>
+#include <interpreterBase/baseBlocks/blocksFactoryInterface.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace interpreterBase {
-namespace blocks {
+namespace baseBlocks {
 
 class BlocksFactory : public BlocksFactoryInterface
 {
@@ -20,13 +20,13 @@ public:
 			, qReal::ErrorReporterInterface * const errorReporter
 			);
 
-	virtual BlockInterface *block(qReal::Id const &element);
+	BlockInterface *block(qReal::Id const &element) override;
 
-	virtual void setParser(BlockParserInterface * const parser);
+	void setParser(BlockParserInterface * const parser) override;
 
 //	RobotsBlockParser * getParser();
 
-	virtual qReal::IdList providedBlocks() const;
+	qReal::IdList providedBlocks() const override;
 
 private:
 	static bool elementMetatypeIs(qReal::Id const &element, QString const &metatype);
@@ -36,7 +36,7 @@ private:
 	qReal::GraphicalModelAssistInterface const &mGraphicalModelApi;
 	qReal::LogicalModelAssistInterface const &mLogicalModelApi;
 	qReal::ErrorReporterInterface * const mErrorReporter;  // Doesn't have ownership
-	BlockParserInterface * mParser;
+	BlockParserInterface *mParser;
 };
 
 }

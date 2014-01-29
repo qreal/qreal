@@ -88,11 +88,11 @@ private:
 	QAction *mRunAction;
 
 	/// Action that stops program and also stops robot motors
-//	QAction *mStopRobotAction;
+	QAction *mStopRobotAction;
 
 	/// Checkable action that establishes connection to robot. If successful,
 	/// action will be checked, if connection lost, it will uncheck
-//	QAction *mConnectToRobotAction;
+	QAction *mConnectToRobotAction;
 
 	/// Action that shows robots tab in settings dialog
 	QAction *mRobotSettingsAction;

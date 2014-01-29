@@ -14,10 +14,12 @@ INCLUDEPATH += \
 HEADERS += \
 	kitPluginManagerTest.h \
 	interpreterTests/interpreterTest.h \
+	interpreterTests/detailsTests/blocksTableTest.h \
 
 SOURCES += \
 	kitPluginManagerTest.cpp \
 	interpreterTests/interpreterTest.cpp \
+	interpreterTests/detailsTests/blocksTableTest.cpp \
 
 # Mocks
 include(mocks.pri)
@@ -40,5 +42,5 @@ win32 {
 	QMAKE_POST_LINK = "cmd /C "xcopy ..\\support\\testData ..\\..\\..\\..\\..\\..\\bin\\unittests /s /e /q /y /i""
 }
 else {
-	QMAKE_POST_LINK = "cp -r ../support/testData/* ../../../../../../bin/unittests/"
+	QMAKE_POST_LINK = "mkdir ../../../../../../bin/unittests && cp -r ../support/testData/* ../../../../../../bin/unittests/"
 }

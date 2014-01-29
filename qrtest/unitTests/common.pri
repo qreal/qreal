@@ -20,6 +20,7 @@ RCC_DIR = .moc
 
 if (equals(QMAKE_CXX, "g++") : !macx) {
 	QMAKE_LFLAGS += -Wl,-E
+	QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
 }
 
 INCLUDEPATH += \

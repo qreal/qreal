@@ -1,11 +1,11 @@
 #pragma once
 
-#include <interpreterBase/blocks/blockInterface.h>
-#include <interpreterBase/blocks/blockParserInterface.h>
+#include <interpreterBase/baseBlocks/blockInterface.h>
+#include <interpreterBase/baseBlocks/blockParserInterface.h>
 #include <qrkernel/ids.h>
 
 namespace interpreterBase {
-namespace blocks {
+namespace baseBlocks {
 
 class BlocksFactoryInterface
 {
@@ -15,6 +15,7 @@ public:
 	// TODO: Unneeded, we can supply a parser to a block when we execute it.
 	virtual void setParser(BlockParserInterface * const parser) = 0;
 
+	/// Transfers block ownership to caller.
 	virtual BlockInterface *block(qReal::Id const &element) = 0;
 	virtual qReal::IdList providedBlocks() const = 0;
 

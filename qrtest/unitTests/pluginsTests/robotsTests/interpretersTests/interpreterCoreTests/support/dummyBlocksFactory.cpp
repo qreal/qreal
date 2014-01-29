@@ -1,16 +1,21 @@
 #include "dummyBlocksFactory.h"
 
+#include "dummyBlock.h"
+
 using namespace qrTest::robotsTests::interpreterCoreTests;
 
 using namespace qReal;
 
-void DummyBlockFactory::setParser(interpreterBase::blocks::BlockParserInterface * const parser)
+void DummyBlockFactory::setParser(interpreterBase::baseBlocks::BlockParserInterface * const parser)
 {
+	Q_UNUSED(parser);
 }
 
-interpreterBase::blocks::BlockInterface *DummyBlockFactory::block(Id const &element)
+interpreterBase::baseBlocks::BlockInterface *DummyBlockFactory::block(Id const &element)
 {
-	return nullptr;
+	Q_UNUSED(element);
+
+	return new DummyBlock();
 }
 
 IdList DummyBlockFactory::providedBlocks() const

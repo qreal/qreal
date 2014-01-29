@@ -40,7 +40,7 @@
 //#include "details/waitForEncoderBlock.h"
 //#include "details/waitForButtonsBlock.h"
 
-using namespace interpreterBase::blocks;
+using namespace interpreterBase::baseBlocks;
 
 using namespace qReal;
 using namespace interpreterBase::robotModel;

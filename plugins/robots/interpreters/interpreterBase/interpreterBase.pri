@@ -10,16 +10,16 @@ LIBS += -L$$PWD/../../../../bin/ -lqrkernel
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 
 HEADERS += \
-	$$PWD/src/blocks/blocksFactory.h \
-	$$PWD/src/blocks/details/finalBlock.h \
-	$$PWD/src/blocks/details/initialBlock.h \
+	$$PWD/src/baseBlocks/blocksFactory.h \
+	$$PWD/src/baseBlocks/details/finalBlock.h \
+	$$PWD/src/baseBlocks/details/initialBlock.h \
 	$$PWD/src/robotModel/details/defaultRobotModel.h \
 
 SOURCES += \
-	$$PWD/src/blocks/block.cpp \
-	$$PWD/src/blocks/blocksFactory.cpp \
-	$$PWD/src/blocks/details/finalBlock.cpp \
-	$$PWD/src/blocks/details/initialBlock.cpp \
+	$$PWD/src/baseBlocks/block.cpp \
+	$$PWD/src/baseBlocks/blocksFactory.cpp \
+	$$PWD/src/baseBlocks/details/finalBlock.cpp \
+	$$PWD/src/baseBlocks/details/initialBlock.cpp \
 	$$PWD/src/robotModel/configuration.cpp \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/portInfo.cpp \
@@ -31,11 +31,11 @@ SOURCES += \
 HEADERS += \
 	$$PWD/include/interpreterBase/interpreterBaseDeclSpec.h \
 	$$PWD/include/interpreterBase/kitPluginInterface.h \
-	$$PWD/include/interpreterBase/blocks/block.h \
-	$$PWD/include/interpreterBase/blocks/blockInterface.h \
-	$$PWD/include/interpreterBase/blocks/blockParserInterface.h \
-	$$PWD/include/interpreterBase/blocks/blocksTableInterface.h \
-	$$PWD/include/interpreterBase/blocks/blocksFactoryInterface.h \
+	$$PWD/include/interpreterBase/baseBlocks/block.h \
+	$$PWD/include/interpreterBase/baseBlocks/blockInterface.h \
+	$$PWD/include/interpreterBase/baseBlocks/blockParserInterface.h \
+	$$PWD/include/interpreterBase/baseBlocks/blocksTableInterface.h \
+	$$PWD/include/interpreterBase/baseBlocks/blocksFactoryInterface.h \
 	$$PWD/include/interpreterBase/robotModel/configuration.h \
 	$$PWD/include/interpreterBase/robotModel/commonRobotModel.h \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \

@@ -2,11 +2,11 @@
 
 #include <QtCore/QObject>
 
-#include <interpreterBase/blocks/block.h>
+#include <interpreterBase/baseBlocks/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace interpreterBase {
-namespace blocks {
+namespace baseBlocks {
 namespace details {
 
 class InitialBlock : public Block

@@ -1,12 +1,12 @@
 #pragma once
 
-#include <interpreterBase/blocks/block.h>
+#include <interpreterBase/baseBlocks/block.h>
 
 namespace qrTest {
 namespace robotsTests {
 namespace interpreterCoreTests {
 
-class DummyBlock : public interpreterBase::blocks::Block
+class DummyBlock : public interpreterBase::baseBlocks::Block
 {
 	Q_OBJECT
 

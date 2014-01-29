@@ -2,7 +2,7 @@
 
 #include <qrkernel/exception/exception.h>
 
-#include <interpreterBase/blocks/block.h>
+#include <interpreterBase/baseBlocks/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 //#include "tracer.h"
 

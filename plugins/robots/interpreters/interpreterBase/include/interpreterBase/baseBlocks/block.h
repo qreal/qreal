@@ -7,16 +7,16 @@
 #include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-#include <interpreterBase/blocks/blockInterface.h>
-#include <interpreterBase/blocks/blockParserInterface.h>
-#include <interpreterBase/blocks/blocksTableInterface.h>
+#include <interpreterBase/baseBlocks/blockInterface.h>
+#include <interpreterBase/baseBlocks/blockParserInterface.h>
+#include <interpreterBase/baseBlocks/blocksTableInterface.h>
 
 //#include "../blocksTable.h"
 
 //#include "../robotsBlockParser.h"
 
 namespace interpreterBase {
-namespace blocks {
+namespace baseBlocks {
 
 /// Base class for all blocks implementations used in interpreter
 class ROBOTS_INTERPRETER_BASE_EXPORT Block : public BlockInterface
@@ -26,19 +26,17 @@ class ROBOTS_INTERPRETER_BASE_EXPORT Block : public BlockInterface
 public:
 //	typedef QPair<robots::enums::sensorType::SensorTypeEnum, int> SensorPortPair;
 
-	virtual ~Block();
+	~Block() override;
 
-	// Override.
-	void interpret();
+	void interpret() override;
 
-	virtual void setFailedStatus();
-	virtual void setIdleStatus();
+	void setFailedStatus() override;
+	void setIdleStatus() override;
 	virtual qReal::Id const id() const;
 
 //	virtual QList<SensorPortPair> usedSensors() const;
 
-	// Override.
-	virtual void finishedSteppingInto();
+	void finishedSteppingInto() override;
 
 protected:
 	Block();
@@ -65,7 +63,7 @@ protected:
 	qReal::LogicalModelAssistInterface const *mLogicalModelApi;  // Does not have ownership
 
 	qReal::Id mGraphicalId;
-	BlockParserInterface * mParser;
+	BlockParserInterface * mParser;  // Does not have ownership
 
 private slots:
 	void finishedRunning();
