@@ -2,6 +2,8 @@ TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = ../../../bin/plugins/
 
+CONFIG += c++11
+
 LIBS += -L../../../bin -lqrkernel -lqrutils
 
 TRANSLATIONS = ains_ru.ts

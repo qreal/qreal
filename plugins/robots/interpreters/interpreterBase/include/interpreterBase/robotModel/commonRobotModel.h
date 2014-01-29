@@ -12,7 +12,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT CommonRobotModel : public RobotModelInterfa
 
 public:
 	CommonRobotModel();
-	virtual ~CommonRobotModel();
+	~CommonRobotModel() override;
 
 	QString name() const override;
 
