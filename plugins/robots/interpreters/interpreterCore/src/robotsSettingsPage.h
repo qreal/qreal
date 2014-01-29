@@ -39,8 +39,11 @@ private slots:
 	void onRobotModelRadioButtonToggled(bool checked);
 
 private:
+	void initializeAdditionalWidgets();
 	void initializeKitRadioButtons();
 	QButtonGroup *initializeRobotModelsButtons(QString const &kitId, QRadioButton * const kitButton);
+
+	void showAdditionalPreferences(QString const &kitId);
 	void showRadioButtonGroup(QWidget * const container
 			, QButtonGroup * const radioButtons
 			, QWidget * const emptyCaseWidget = nullptr);

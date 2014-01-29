@@ -4,6 +4,7 @@
 #include <QtCore/QList>
 #include <QtWidgets/QWidget>
 
+#include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/baseBlocks/block.h>
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
@@ -31,9 +32,10 @@ public:
 	}
 
 	// Transfers ownership.
-	/// Widget with specific settings for a plugin.
-	// TODO: It actually is PreferencesPage, because it needs to save and load settings.
-	virtual QWidget *settingsWidget() const = 0;
+	/// Widget with specific settings for a plugin. save() method is called when user saves all settings,
+	/// restoreSettings() - each time when used selects other robot model for this kit. If nullptr is
+	/// returned no widget is added on settings tab
+	virtual AdditionalPreferences *settingsWidget() = 0;
 
 	// Transfers ownership.
 	/// List of tool widgets specific to this plugin which will be added as dock windows to an interface.

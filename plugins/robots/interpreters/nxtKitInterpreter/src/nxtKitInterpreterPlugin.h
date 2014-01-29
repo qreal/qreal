@@ -1,6 +1,7 @@
 #pragma once
 
 #include <interpreterBase/kitPluginInterface.h>
+#include "nxtAdditionalPreferences.h"
 #include "robotModel/real/realRobotModel.h"
 #include "robotModel/twoD/twoDRobotModel.h"
 
@@ -13,6 +14,8 @@ class NxtKitInterpreterPlugin : public QObject, public interpreterBase::KitPlugi
 	Q_PLUGIN_METADATA(IID "nxtKitInterpreter.NxtKitInterpreterPlugin")
 
 public:
+	NxtKitInterpreterPlugin();
+
 	QString kitId() const override;
 
 	QString friendlyKitName() const override;
@@ -22,7 +25,7 @@ public:
 	interpreterBase::robotModel::RobotModelInterface *defaultRobotModel() override;
 
 	// Transfers ownership.
-	QWidget *settingsWidget() const override;
+	interpreterBase::AdditionalPreferences *settingsWidget() override;
 
 //	qReal::IdList specificBlocks() const override;
 
@@ -32,6 +35,7 @@ public:
 private:
 	robotModel::real::RealRobotModel mRealRobotModel;
 	robotModel::real::TwoDRobotModel mTwoDRobotModel;
+	NxtAdditionalPreferences *mAdditionalPreferences;  // Transfers ownership
 };
 
 }

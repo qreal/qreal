@@ -2,6 +2,11 @@
 
 using namespace nxtKitInterpreter;
 
+NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
+	: mAdditionalPreferences(new NxtAdditionalPreferences(mRealRobotModel.name()))
+{
+}
+
 QString NxtKitInterpreterPlugin::kitId() const
 {
 	return "nxtKit";
@@ -23,9 +28,9 @@ interpreterBase::robotModel::RobotModelInterface *NxtKitInterpreterPlugin::defau
 	return &mTwoDRobotModel;
 }
 
-QWidget *NxtKitInterpreterPlugin::settingsWidget() const
+interpreterBase::AdditionalPreferences *NxtKitInterpreterPlugin::settingsWidget()
 {
-	return nullptr;
+	return mAdditionalPreferences;
 }
 
 //qReal::IdList NxtKitInterpreterInterface::specificBlocks() const

@@ -6,9 +6,11 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsWatcher/sensorsGraph.h>
+#include <interpreterBase/additionalPreferences.h>
 #include "robotModelManager.h"
 
 using namespace interpreterCore;
+using namespace interpreterBase;
 using namespace qReal;
 
 RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager, QWidget *parent)
@@ -21,6 +23,7 @@ RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager, QWidg
 
 	// TODO: remove it
 //	mKitPluginManager.selectKit(mKitPluginManager.kitIds()[0]);
+	initializeAdditionalWidgets();
 	initializeKitRadioButtons();
 
 //	QWidget * const extensionWidget = mKitPluginManager.selectedKit().settingsWidget();
@@ -37,6 +40,49 @@ RobotsSettingsPage::~RobotsSettingsPage()
 	delete mUi;
 }
 
+void RobotsSettingsPage::initializeAdditionalWidgets()
+{
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
+		if (kitPreferences) {
+			mUi->settingsExtensionFrame->layout()->addWidget(kitPreferences);
+		}
+	}
+}
+
+void RobotsSettingsPage::initializeKitRadioButtons()
+{
+	QLabel * const emptyCaseLabel = new QLabel(tr("No constructor kit plugins loaded"), this);
+	mKitButtons = new QButtonGroup(this);
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		KitPluginInterface const &kit = mKitPluginManager.kitById(kitId);
+		QRadioButton * const kitRadioButton = new QRadioButton(kit.friendlyKitName(), this);
+		kitRadioButton->hide();
+		kitRadioButton->setObjectName(kitId);
+		mKitButtons->addButton(kitRadioButton);
+		connect(kitRadioButton, &QRadioButton::toggled, this, &RobotsSettingsPage::onKitRadioButtonToggled);
+		mKitRobotModels[kitRadioButton] = initializeRobotModelsButtons(kitId, kitRadioButton);
+	}
+
+	showRadioButtonGroup(mUi->constructorKitGroupBox, mKitButtons, emptyCaseLabel);
+}
+
+QButtonGroup *RobotsSettingsPage::initializeRobotModelsButtons(QString const &kitId, QRadioButton * const kitButton)
+{
+	QButtonGroup * const result = new QButtonGroup(kitButton);
+	for (auto &robotModel : mKitPluginManager.kitById(kitId).robotModels()) {
+		QString const name = robotModel->name();
+		QRadioButton * const button = new QRadioButton(name, this);
+		button->setObjectName(kitId + name);
+		button->hide();
+		mButtonsToRobotModelsMapping[button] = robotModel;
+		connect(button, &QRadioButton::toggled, this, &RobotsSettingsPage::onRobotModelRadioButtonToggled);
+		result->addButton(button);
+	}
+
+	return result;
+}
+
 void RobotsSettingsPage::save()
 {
 	saveSelectedRobotModel();
@@ -49,7 +95,16 @@ void RobotsSettingsPage::save()
 	SettingsManager::setValue("autoscalingInterval", mUi->autoScalingSpinBox->value());
 	SettingsManager::setValue("textUpdateInterval", mUi->textUpdaterSpinBox->value());
 	SettingsManager::setValue("nxtFlashToolRunPolicy", mUi->runningAfterUploadingComboBox->currentIndex());
-//	mSensorsWidget->save();
+
+	//	mSensorsWidget->save();
+
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
+		if (kitPreferences) {
+			kitPreferences->save();
+		}
+	}
+
 	emit saved();
 }
 
@@ -84,6 +139,13 @@ void RobotsSettingsPage::restoreSettings()
 	mUi->textUpdaterSpinBox->setValue(SettingsManager::value("textUpdateInterval", textUpdateDefault).toInt());
 
 	mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("nxtFlashToolRunPolicy").toInt());
+
+	for (QString const &kitId : mKitPluginManager.kitIds()) {
+		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
+		if (kitPreferences) {
+			kitPreferences->restoreSettings();
+		}
+	}
 }
 
 void RobotsSettingsPage::changeEvent(QEvent *e)
@@ -109,6 +171,7 @@ void RobotsSettingsPage::onKitRadioButtonToggled(bool checked)
 	showRadioButtonGroup(mUi->typeOfModelGroupBox, mKitRobotModels[kitButton], emptyCaseLabel);
 
 	checkSelectedRobotModelButtonFor(kitButton);
+	showAdditionalPreferences(kitButton->objectName());
 }
 
 void RobotsSettingsPage::checkSelectedRobotModelButtonFor(QAbstractButton * const kitButton)
@@ -118,7 +181,7 @@ void RobotsSettingsPage::checkSelectedRobotModelButtonFor(QAbstractButton * cons
 	QString selectedRobotModel = SettingsManager::value(key).toString();
 	if (selectedRobotModel.isEmpty()) {
 		// Robot model for this kit was never selected. Falling back to default one
-		interpreterBase::robotModel::RobotModelInterface *defaultRobotModel
+		robotModel::RobotModelInterface *defaultRobotModel
 				= mKitPluginManager.kitById(kitId).defaultRobotModel();
 		selectedRobotModel = defaultRobotModel ? defaultRobotModel->name() : QString();
 	}
@@ -143,40 +206,28 @@ void RobotsSettingsPage::onRobotModelRadioButtonToggled(bool checked)
 		return;
 	}
 
-	// TODO: notify plugins
+	QString const selectedKit = mKitButtons->checkedButton()->objectName();
+	QAbstractButton * const robotModelButton = static_cast<QAbstractButton *>(sender());
+	robotModel::RobotModelInterface * const selectedRobotModel = mButtonsToRobotModelsMapping[robotModelButton];
+	AdditionalPreferences * const selectedKitPreferences = mKitPluginManager.kitById(selectedKit).settingsWidget();
+	if (selectedKitPreferences) {
+		selectedKitPreferences->onRobotModelChanged(selectedRobotModel);
+	}
 }
 
-void RobotsSettingsPage::initializeKitRadioButtons()
+void RobotsSettingsPage::showAdditionalPreferences(QString const &kitId)
 {
-	QLabel * const emptyCaseLabel = new QLabel(tr("No constructor kit plugins loaded"), this);
-	mKitButtons = new QButtonGroup(this);
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
-		interpreterBase::KitPluginInterface const &kit = mKitPluginManager.kitById(kitId);
-		QRadioButton * const kitRadioButton = new QRadioButton(kit.friendlyKitName(), this);
-		kitRadioButton->hide();
-		kitRadioButton->setObjectName(kitId);
-		mKitButtons->addButton(kitRadioButton);
-		connect(kitRadioButton, &QRadioButton::toggled, this, &RobotsSettingsPage::onKitRadioButtonToggled);
-		mKitRobotModels[kitRadioButton] = initializeRobotModelsButtons(kitId, kitRadioButton);
+		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
+		if (kitPreferences) {
+			kitPreferences->hide();
+		}
 	}
 
-	showRadioButtonGroup(mUi->constructorKitGroupBox, mKitButtons, emptyCaseLabel);
-}
-
-QButtonGroup *RobotsSettingsPage::initializeRobotModelsButtons(QString const &kitId, QRadioButton * const kitButton)
-{
-	QButtonGroup * const result = new QButtonGroup(kitButton);
-	for (auto &robotModel : mKitPluginManager.kitById(kitId).robotModels()) {
-		QString const name = robotModel->name();
-		QRadioButton * const button = new QRadioButton(name, this);
-		button->setObjectName(kitId + name);
-		button->hide();
-		mButtonsToRobotModelsMapping[button] = robotModel;
-		connect(button, &QRadioButton::toggled, this, &RobotsSettingsPage::onRobotModelRadioButtonToggled);
-		result->addButton(button);
+	AdditionalPreferences * const selectedKitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
+	if (selectedKitPreferences) {
+		selectedKitPreferences->show();
 	}
-
-	return result;
 }
 
 void RobotsSettingsPage::showRadioButtonGroup(QWidget * const container, QButtonGroup * const radioButtons

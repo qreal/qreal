@@ -21,7 +21,7 @@ public:
 	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
 
 	// Transfers ownership.
-	QWidget *settingsWidget() const override;
+	interpreterBase::AdditionalPreferences *settingsWidget() override;
 
 	// Transfers ownership.
 //	virtual QList<QWidget *> toolWidgets() const;

@@ -17,7 +17,7 @@ QList<interpreterBase::robotModel::RobotModelInterface *> NullKitInterpreterPlug
 	return QList<interpreterBase::robotModel::RobotModelInterface *>() << &mRobotModel;
 }
 
-QWidget *NullKitInterpreterPlugin::settingsWidget() const
+interpreterBase::AdditionalPreferences *NullKitInterpreterPlugin::settingsWidget()
 {
 	return nullptr;
 }

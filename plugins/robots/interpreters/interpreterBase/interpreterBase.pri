@@ -31,6 +31,7 @@ SOURCES += \
 HEADERS += \
 	$$PWD/include/interpreterBase/interpreterBaseDeclSpec.h \
 	$$PWD/include/interpreterBase/kitPluginInterface.h \
+	$$PWD/include/interpreterBase/additionalPreferences.h \
 	$$PWD/include/interpreterBase/baseBlocks/block.h \
 	$$PWD/include/interpreterBase/baseBlocks/blockInterface.h \
 	$$PWD/include/interpreterBase/baseBlocks/blockParserInterface.h \
