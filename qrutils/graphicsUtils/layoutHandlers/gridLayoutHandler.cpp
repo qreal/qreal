@@ -42,7 +42,7 @@ void GridLayoutHandler::addItemTo(QGraphicsLayoutItem *item, QPointF const &pos)
 		return;
 	}
 
-	qreal minDistance = veryLargeNumber;
+	qreal minDistance = veryLargeNumber();
 	int closestRow, closestColumn;
 
 	for (int row = firstOccupiedRow; row < mLayout->rowCount(); ++row) {
@@ -126,6 +126,11 @@ void GridLayoutHandler::placeChildrenWithoutLayout()
 	}
 	QList<QGraphicsLayoutItem *> childrenToPlace = childrenWithoutLayout();
 	GridApproximizer::placeItems(mLayout, childrenToPlace);
+}
+
+qreal GridLayoutHandler::veryLargeNumber() const
+{
+	return 1e10;
 }
 
 bool GridLayoutHandler::isCellFree(int row, int column) const

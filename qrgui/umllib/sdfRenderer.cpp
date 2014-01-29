@@ -310,11 +310,11 @@ void SdfRenderer::image_draw(QDomElement &element)
 
 	if (fileName.endsWith(".svg")) {
 		QSvgRenderer renderer(rawImage);
-		renderer.render(painter, rect);
+		renderer.render(mPainter, rect);
 	} else {
 		QPixmap pixmap;
 		pixmap.loadFromData(rawImage);
-		painter->drawPixmap(rect, pixmap);
+		mPainter->drawPixmap(rect, pixmap);
 	}
 }
 

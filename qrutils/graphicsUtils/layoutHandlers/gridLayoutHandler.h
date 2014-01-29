@@ -27,9 +27,7 @@ protected:
 	virtual void placeChildrenWithoutLayout();
 
 private:
-	static qreal constexpr veryLargeNumber = 1e10;
-
-	int rowToAdd(QPointF const &position) const;
+	qreal veryLargeNumber() const;
 
 	bool isCellFree(int row, int column) const;
 	bool isRowEmpty(int row) const;
