@@ -164,7 +164,8 @@ void PreferencesRobotSettingsPage::refreshValuesOnUi()
 					, utils::sensorsGraph::SensorsGraph::textUpdateDefault).toInt()
 	);
 
-	enums::robotModelType::robotModelTypeEnum typeOfRobotModel = static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
+	enums::robotModelType::robotModelTypeEnum typeOfRobotModel =
+			static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
 	initRobotModelType(typeOfRobotModel);
 
 	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
@@ -173,6 +174,7 @@ void PreferencesRobotSettingsPage::refreshValuesOnUi()
 	mUi->textVisibleCheckBox->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
 	mUi->tcpServerLineEdit->setText(SettingsManager::value("tcpServer").toString());
 	mUi->tcpPortSpinBox->setValue(SettingsManager::value("tcpPort").toInt());
+	mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("nxtFlashToolRunPolicy").toInt());
 }
 
 int PreferencesRobotSettingsPage::approximationLevel() const
@@ -290,6 +292,7 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("textUpdateInterval", textUpdateInterval());
 	SettingsManager::setValue("tcpServer", mUi->tcpServerLineEdit->text());
 	SettingsManager::setValue("tcpPort", mUi->tcpPortSpinBox->value());
+	SettingsManager::setValue("nxtFlashToolRunPolicy", mUi->runningAfterUploadingComboBox->currentIndex());
 	mSensorsWidget->save();
 	emit saved();
 }

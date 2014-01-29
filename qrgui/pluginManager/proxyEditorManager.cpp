@@ -312,7 +312,12 @@ QString ProxyEditorManager::paletteGroupDescription(Id const &editor, const Id &
 	return mProxiedEditorManager->paletteGroupDescription(editor, diagram, group);
 }
 
-QStringList ProxyEditorManager::referenceProperties(const Id &id) const
+bool ProxyEditorManager::shallPaletteBeSorted(Id const &editor, Id const &diagram) const
+{
+	return mProxiedEditorManager->shallPaletteBeSorted(editor, diagram);
+}
+
+QStringList ProxyEditorManager::referenceProperties(Id const &id) const
 {
 	return mProxiedEditorManager->referenceProperties(id);
 }

@@ -66,6 +66,11 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 	return false;
 }
 
+void TouchSupportManager::grabTapAndHold()
+{
+	mEditorView->grabGesture(Qt::TapAndHoldGesture);
+}
+
 void TouchSupportManager::simulateMouse(QObject *reciever, QEvent::Type event, QPointF const &pos
 		, Qt::MouseButtons buttons)
 {
@@ -98,9 +103,11 @@ void TouchSupportManager::simulateDoubleClick(QTouchEvent *event)
 void TouchSupportManager::simulateRightClick(QTapAndHoldGesture *gesture)
 {
 	QPointF const position(mEditorView->viewport()->mapFromGlobal(gesture->position().toPoint()));
+
 	mButton = Qt::LeftButton;
 	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonPress, position, Qt::LeftButton);
 	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonRelease, position, Qt::NoButton);
+
 	mButton = Qt::RightButton;
 	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonPress, position, Qt::RightButton);
 	simulateMouse(mEditorView->viewport(), QEvent::MouseButtonRelease, position, Qt::NoButton);
@@ -116,18 +123,24 @@ bool TouchSupportManager::handleGesture(QGestureEvent *gestureEvent)
 	if (gestureEvent->gesture(Qt::TapGesture)) {
 		mScroller.onTap();
 	} else if (QGesture *tapAndHold = gestureEvent->gesture(Qt::TapAndHoldGesture)) {
+		// Filters out tap & hold with mouse
 		if (mFingersInGesture > 0) {
 			processGestureState(tapAndHold);
 			simulateRightClick(static_cast<QTapAndHoldGesture *>(tapAndHold));
 		}
 	} else if (QGesture *pan = gestureEvent->gesture(Qt::PanGesture)) {
 		processGestureState(pan);
-		mScroller.onPan(pan);
+		if (mFingersInGesture > 2) {
+			mScroller.onPan(pan);
+		}
 	} else if (QGesture *pinch = gestureEvent->gesture(Qt::PinchGesture)) {
 		processGestureState(pinch);
 		QPinchGesture *pinchGesture = static_cast<QPinchGesture *>(pinch);
+		mEditorView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 		mEditorView->zoom(pinchGesture->scaleFactor());
+		mEditorView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	}
+
 	return true;
 }
 
@@ -149,6 +162,7 @@ bool TouchSupportManager::processTouchEvent(QTouchEvent *event)
 	if (mFingersInGesture == 1) {
 		handleOneFingerTouch(event);
 	}
+
 	return true;
 }
 
@@ -158,8 +172,12 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 	case QEvent::TouchBegin: {
 		mEditorView->scene()->clearSelection();
 		bool const elementUnder = isElementUnder(event->touchPoints()[0].pos());
-
+		moveCursor(event);
 		if (QDateTime::currentMSecsSinceEpoch() - mLastTapTimestamp <= QApplication::doubleClickInterval()) {
+			// Double tap occured. We don`t want to show context menu after double tap so disabling
+			// corresponding gesture event with enabling it later
+			mEditorView->ungrabGesture(Qt::TapAndHoldGesture);
+
 			if (elementUnder) {
 				// Simulating regular left button click
 				simulatePress(event);
@@ -167,6 +185,9 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 				// Simulating double-click
 				simulateDoubleClick(event);
 			}
+
+			// For some reason grabbing tap & hold back right now still generates gesture event
+			QTimer::singleShot(30, this, SLOT(grabTapAndHold()));
 		} else {
 			if (elementUnder) {
 				// Simulating right button click for links gesture
@@ -198,4 +219,9 @@ void TouchSupportManager::handleOneFingerTouch(QTouchEvent *event)
 	default:
 		break;
 	}
+}
+
+void TouchSupportManager::moveCursor(QTouchEvent *event)
+{
+	QCursor::setPos(mEditorView->viewport()->mapToGlobal(event->touchPoints()[0].pos().toPoint()));
 }

@@ -1,8 +1,3 @@
-#include <QtCore/QFile>
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
-#include <QtCore/QDebug>
-
 #include "xmlCompiler.h"
 
 #include <QtCore/QFile>
@@ -17,8 +12,6 @@
 #include "nameNormalizer.h"
 #include "diagram.h"
 #include "type.h"
-#include "documentLoader.h"
-
 #include "edgeType.h"
 #include "nodeType.h"
 #include "portType.h"
@@ -65,10 +58,10 @@ bool XmlCompiler::compile(QString const &inputXmlFileName, QString const &source
 
 Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXmlFileName)
 {
-	QFileInfo const fileInfo(inputXmlFileName);
+	QFileInfo fileInfo(inputXmlFileName);
 	Q_ASSERT(fileInfo.fileName() == inputXmlFileName);
 
-	QString const fullFileName = currentDir.absolutePath() + "/" + inputXmlFileName;
+	QString fullFileName = currentDir.absolutePath() + "/" + inputXmlFileName;
 	qDebug() << "Loading file started: " << fullFileName;
 
 	if (mEditors.contains(fullFileName)) {
@@ -81,10 +74,7 @@ Editor* XmlCompiler::loadXmlFile(QDir const &currentDir, QString const &inputXml
 			return NULL;
 		}
 	} else {
-		DocumentLoader *loader = new DocumentLoader;
-		QDomDocument inputXmlDomDocument = loader->load(QFileInfo(fullFileName));
-		delete loader;
-
+		QDomDocument inputXmlDomDocument = xmlUtils::loadDocument(fullFileName);
 		Editor *editor = new Editor(inputXmlDomDocument, this);
 		if (!editor->load(currentDir)) {
 			qDebug() << "ERROR: Failed to load file";
@@ -122,9 +112,8 @@ void XmlCompiler::generateCode()
 
 void XmlCompiler::addResource(QString const &resourceName)
 {
-	if (!mResources.contains(resourceName)) {
+	if (!mResources.contains(resourceName))
 		mResources += resourceName;
-	}
 }
 
 void XmlCompiler::generateElementClasses()
@@ -137,7 +126,6 @@ void XmlCompiler::generateElementClasses()
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/elementRepoInterface.h\"\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelFactoryInterface.h\"\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/labelInterface.h\"\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/SdfRendererInterface.h\"\n"
 		<< "#include \"ports.h\"\n\n"
 		;
 
@@ -158,7 +146,7 @@ void XmlCompiler::generateElementClasses()
 
 void XmlCompiler::generatePluginHeader()
 {
-	QString const fileName = "generated/pluginInterface.h";// mPluginName
+	QString fileName = "generated/pluginInterface.h";// mPluginName
 
 	OutFile out(fileName);
 
@@ -167,7 +155,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtCore/QStringList>\n"
 		<< "#include <QtCore/QMap>\n"
 		<< "#include <QtGui/QIcon>\n"
-		<< "#include <QPair>"
+		<< "#include <QtCore/QPair>"
 		<< "\n"
 		<< "#include \"../" << mSourcesRootFolder << "/qrgui/editorPluginInterface/editorInterface.h\"\n"
 		<< "\n"
@@ -179,6 +167,54 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\t" << mPluginName << "Plugin();\n"
 		<< "\n"
+		<< "\tQString id() const { return \"" << mPluginName << "\"; }\n"
+		<< "\n"
+		<< "\tQStringList diagrams() const override;\n"
+		<< "\tQStringList elements(QString const &diagram) const override;\n"
+		<< "\tQStringList getPropertiesWithDefaultValues(QString const &element) const override;\n"
+		<< "\n"
+		<< "\tQStringList getTypesContainedBy(QString const &element) const override;\n"
+		<< "\tQList<QPair<QPair<QString, QString>, QPair<bool, QString>>> getPossibleEdges(QString "
+				"const &element) const override;\n"
+		<< "\tQList<qReal::EditorInterface::ExplosionData> explosions(QString const &diagram, QString "
+				"const &element) const override;\n"
+		<< "\n"
+		<< "\tint isNodeOrEdge(QString const &element) const override;\n"
+		<< "\n"
+		<< "\tQIcon getIcon(qReal::SdfIconEngineV2Interface *engine) const override;\n"
+		<< "\tqReal::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const override;\n"
+		<< "\tQString getPropertyType(QString const &element, QString const &property) const override;\n"
+		<< "\tQString getPropertyDefaultValue(QString const &element, QString const &property) const override;\n"
+		<< "\tQStringList getPropertyNames(QString const &diagram, QString const &element) const override;\n"
+		<< "\tQStringList getPortTypes(QString const &diagram, QString const &element) const override;\n"
+		<< "\tQStringList getReferenceProperties(QString const &diagram, QString const &element) const override;\n"
+		<< "\tQStringList getEnumValues(QString name) const override;\n"
+		<< "\tQString getGroupsXML() const override;\n"
+		<< "\tQList<QPair<QString, QString>> getParentsOf(QString const &diagram, QString const &element) "
+				"const override;\n"
+		<< "\n"
+		<< "\tQString editorName() const override;\n"
+		<< "\tQString diagramName(QString const &diagram) const override;\n"
+		<< "\tQString diagramNodeName(QString const &diagram) const override;\n"
+		<< "\tQString elementName(QString const &diagram, QString const &element) const override;\n"
+		<< "\tQString elementDescription(QString const &diagram, QString const &element) const override;\n"
+		<< "\tQString propertyDescription(QString const &diagram, QString const &element, QString const "
+				"&property) const override;\n"
+		<< "\tQString propertyDisplayedName(QString const &diagram, QString const &element, QString const "
+				"&property) const override;\n"
+		<< "\tQString elementMouseGesture(QString const &digram, QString const &element) const override;\n"
+		<< "\n"
+		<< "\tQList<qReal::ListenerInterface*> listeners() const override;\n"
+		<< "\n"
+		<< "\tbool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const "
+				"&childDiagram, QString const &childElement) const override;\n"
+		<< "\n"
+		<< "\tQStringList diagramPaletteGroups(QString const &diagram) const override;\n"
+		<< "\tQStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const override;\n"
+		<< "\tQString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const override;\n"
+		<< "\tbool shallPaletteBeSorted(QString const &diagram) const override;\n"
+		<< "\n"
+		<< "private:\n"
 		<< "\tvirtual void initPlugin();\n"
 		<< "\tvirtual void initMouseGestureMap();\n"
 		<< "\tvirtual void initNameMap();\n"
@@ -188,78 +224,33 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initParentsMap();\n"
 		<< "\tvirtual void initPaletteGroupsMap();\n"
 		<< "\tvirtual void initPaletteGroupsDescriptionMap();\n"
+		<< "\tvirtual void initShallPaletteBeSortedMap();\n"
 		<< "\tvirtual void initExplosionsMap();\n"
 		<< "\n"
-		<< "\tvirtual QString id() const { return \"" << mPluginName << "\"; }\n"
-		<< "\n"
-		<< "\tvirtual QStringList diagrams() const;\n"
-		<< "\tvirtual QStringList elements(QString const &diagram) const;\n"
-		<< "\tvirtual QStringList getPropertiesWithDefaultValues(QString const &element) const;\n"
-		<< "\n"
-		<< "\tvirtual QStringList getTypesContainedBy(QString const &element) const;\n"
-		<< "\tvirtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString "
-				"const &element) const;\n"
-		<< "\tvirtual QList<qReal::EditorInterface::ExplosionData> explosions(QString const &diagram, QString "
-				"const &element) const;\n"
-		<< "\n"
-		<< "\tvirtual int isNodeOrEdge(QString const &element) const; \n"
-		<< "\n"
-		<< "\tvirtual QIcon getIcon(qReal::SdfIconEngineV2Interface *engine) const;\n"
-		<< "\tvirtual qReal::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const;\n"
-		<< "\tvirtual QString getPropertyType(QString const &element, QString const &property) const;\n"
-		<< "\tvirtual QString getPropertyDefaultValue(QString const &element, QString const &property) const;\n"
-		<< "\tvirtual QStringList getPropertyNames(QString const &diagram, QString const &element) const;\n"
-		<< "\tvirtual QStringList getPortTypes(QString const &diagram, QString const &element) const;\n"
-		<< "\tvirtual QStringList getReferenceProperties(QString const &diagram, QString const &element) const;\n"
-		<< "\tvirtual QStringList getEnumValues(QString name) const;\n"
-		<< "\tvirtual QString getGroupsXML() const;\n"
-		<< "\tvirtual QList<QPair<QString, QString> > getParentsOf(QString const &diagram, QString const &element) "
-				"const;\n"
-		<< "\n"
-		<< "\tvirtual QString editorName() const;\n"
-		<< "\tvirtual QString diagramName(QString const &diagram) const;\n"
-		<< "\tvirtual QString diagramNodeName(QString const &diagram) const;\n"
-		<< "\tvirtual QString elementName(QString const &diagram, QString const &element) const;\n"
-		<< "\tvirtual QString elementDescription(QString const &diagram, QString const &element) const;\n"
-		<< "\tvirtual QString propertyDescription(QString const &diagram, QString const &element, QString const "
-				"&property) const;\n"
-		<< "\tvirtual QString propertyDisplayedName(QString const &diagram, QString const &element, QString const "
-				"&property) const;\n"
-		<< "\tvirtual QString elementMouseGesture(QString const &digram, QString const &element) const;\n"
-		<< "\n"
-		<< "\tvirtual QList<qReal::ListenerInterface*> listeners() const;\n"
-		<< "\n"
-		<< "\tvirtual bool isParentOf(QString const &parentDiagram, QString const &parentElement, QString const "
-				"&childDiagram, QString const &childElement) const;\n"
-		<< "\n"
-		<< "\tvirtual QStringList diagramPaletteGroups(QString const &diagram) const;\n"
-		<< "\tvirtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const;\n"
-		<< "\tvirtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const;\n"
-		<< "\n"
-		<< "private:\n"
 		<< "\tQMap<QString, QIcon> mIconMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNameMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNodeNameMap;\n"
-		<< "\tQMap<QString, QMap<QString, QString> > mPropertyTypes;\n"
-		<< "\tQMap<QString, QMap<QString, QString> > mPropertyDefault;\n"
-		<< "\tQMap<QString, QMap<QString, QString> > mElementsNameMap;\n"
-		<< "\tQMap<QString, QMap<QString, QString> > mElementsDescriptionMap;\n"
-		<< "\tQMap<QString, QMap<QString, QMap<QString, QString> > > mPropertiesDescriptionMap;\n"
-		<< "\tQMap<QString, QMap<QString, QMap<QString, QString> > > mPropertiesDisplayedNamesMap;\n"
-		<< "\tQMap<QString, QMap<QString, QString> > mElementMouseGesturesMap;\n"
-		<< "\tQMap<QString, QMap<QString, QList<QPair<QString, QString> > > > mParentsMap;  // Maps diagram and element"
+		<< "\tQMap<QString, QMap<QString, QString>> mPropertyTypes;\n"
+		<< "\tQMap<QString, QMap<QString, QString>> mPropertyDefault;\n"
+		<< "\tQMap<QString, QMap<QString, QString>> mElementsNameMap;\n"
+		<< "\tQMap<QString, QMap<QString, QString>> mElementsDescriptionMap;\n"
+		<< "\tQMap<QString, QMap<QString, QMap<QString, QString>>> mPropertiesDescriptionMap;\n"
+		<< "\tQMap<QString, QMap<QString, QMap<QString, QString>>> mPropertiesDisplayedNamesMap;\n"
+		<< "\tQMap<QString, QMap<QString, QString>> mElementMouseGesturesMap;\n"
+		<< "\tQMap<QString, QMap<QString, QList<QPair<QString, QString>>>> mParentsMap;  // Maps diagram and element"
 				" to a list of diagram-element pairs of parents (generalization relation).\n"
-		<< "\tQMap<QString, QMap<QString, QStringList > > mPaletteGroupsMap;  // Maps element`s lists of all "
+		<< "\tQMap<QString, QList<QPair<QString, QStringList>>> mPaletteGroupsMap;  // Maps element`s lists of all "
 				"palette groups.\n"
-		<< "\tQMap<QString, QMap<QString, QString > > mPaletteGroupsDescriptionMap; \n"
-		<< "\tQMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData> > > mExplosionsMap;\n"
+		<< "\tQMap<QString, QMap<QString, QString>> mPaletteGroupsDescriptionMap;\n"
+		<< "\tQMap<QString, bool> mShallPaletteBeSortedMap;\n"
+		<< "\tQMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;\n"
 		<< "};\n"
 		<< "\n";
 }
 
 void XmlCompiler::generatePluginSource()
 {
-	QString const fileName = "generated/pluginInterface.cpp"; //mPluginName
+	QString fileName = "generated/pluginInterface.cpp"; //mPluginName
 
 	OutFile out(fileName);
 
@@ -312,6 +303,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\tinitParentsMap();\n"
 		<< "\tinitPaletteGroupsMap();\n"
 		<< "\tinitPaletteGroupsDescriptionMap();\n"
+		<< "\tinitShallPaletteBeSortedMap();\n"
 		<< "\tinitExplosionsMap();\n"
 		<< "}\n\n";
 
@@ -323,6 +315,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 	generatePropertyDefaultsMap(out);
 	generateDescriptionMappings(out);
 	generateParentsMappings(out);
+	generateShallPaletteBeSorted(out);
 	generateExplosionsMappings(out);
 }
 
@@ -360,17 +353,24 @@ void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPaletteGroupsMap()\n{\n";
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
-		QString const diagramName = NameNormalizer::normalize(diagram->name());
-		QMap<QString, QStringList > paletteGroups = diagram->paletteGroups();
-		foreach (QList<QString> const &list , paletteGroups) {
-			QString groupName = paletteGroups.key(list);
-			foreach (QString name, list) {
-				out() << "\tmPaletteGroupsMap[QString::fromUtf8(\""
-					<< diagramName << "\")][QString::fromUtf8(\""
-					<< groupName << "\")].append(QString::fromUtf8(\""
-					<< NameNormalizer::normalize(name) << "\"));\n";
+	for (Diagram *diagram : mEditors[mCurrentEditor]->diagrams().values()) {
+		QString diagramName = NameNormalizer::normalize(diagram->name());
+		QList<QPair<QString, QStringList>> paletteGroups = diagram->paletteGroups();
+		for (QPair<QString, QStringList> const &group: paletteGroups) {
+			QString const groupName = group.first;
+
+			out() << "\t{\n";
+			out() << "\t\tQStringList groupElements;\n";
+
+			for (QString const &name : group.second) {
+				out() << "\t\tgroupElements << QString::fromUtf8(\"" << NameNormalizer::normalize(name) << "\");\n";
 			}
+
+			out() << "\t\tmPaletteGroupsMap[QString::fromUtf8(\""
+				<< diagramName << "\")].append(qMakePair(QString::fromUtf8(\""
+				<< groupName << "\"), groupElements));\n";
+
+			out() << "\t}\n";
 		}
 	}
 	out() << "}\n\n";
@@ -382,9 +382,9 @@ void XmlCompiler::generatePaletteGroupsDescriptions(utils::OutFile &out)
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		QString diagramName = NameNormalizer::normalize(diagram->name());
-		QMap<QString, QString > paletteGroupsDescriptions = diagram->paletteGroupsDescriptions();
-		foreach (QString groupName, paletteGroupsDescriptions.keys()) {
-			QString descriptionName = paletteGroupsDescriptions[groupName];
+		QMap<QString, QString> paletteGroupsDescriptions = diagram->paletteGroupsDescriptions();
+		foreach (QString const &groupName, paletteGroupsDescriptions.keys()) {
+			QString const descriptionName = paletteGroupsDescriptions[groupName];
 			if (!descriptionName.isEmpty()) {
 				out() << "\tmPaletteGroupsDescriptionMap[QString::fromUtf8(\""
 					<< diagramName << "\")][QString::fromUtf8(\""
@@ -396,27 +396,37 @@ void XmlCompiler::generatePaletteGroupsDescriptions(utils::OutFile &out)
 	out() << "}\n\n";
 }
 
+void XmlCompiler::generateShallPaletteBeSorted(utils::OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initShallPaletteBeSortedMap()\n{\n";
+
+	for (Diagram const * const diagram : mEditors[mCurrentEditor]->diagrams().values()) {
+		QString const diagramName = NameNormalizer::normalize(diagram->name());
+		out() << "\tmShallPaletteBeSortedMap[QString::fromUtf8(\""
+			<< diagramName << "\")] = " << (diagram->shallPaletteBeSorted() ? "true" : "false") << ";\n";
+	}
+	out() << "}\n\n";
+}
+
 void XmlCompiler::generateDescriptionMappings(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initDescriptionMap()\n{\n";
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values()) {
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
 			if (obj) {
 				obj->generateDescriptionMapping(out);
 			}
 		}
-	}
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values()) {
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
 			if (obj) {
 				obj->generatePropertyDescriptionMapping(out);
 			}
 		}
-	}
 
 	out() << "}\n\n";
 }
@@ -426,14 +436,13 @@ void XmlCompiler::generateParentsMappings(OutFile &out)
 	out() << "void " << mPluginName << "Plugin::initParentsMap()\n"
 		<< "{\n";
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type *type, diagram->types().values()) {
 			GraphicType *obj = dynamic_cast<GraphicType *>(type);
 			if (obj) {
 				obj->generateParentsMapping(out);
 			}
 		}
-	}
 
 	out() << "}\n\n";
 }
@@ -505,17 +514,33 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "}\n\n"
 
 		<< "QStringList " << mPluginName << "Plugin::diagramPaletteGroups(QString const &diagram) const\n{\n"
-		<< "\treturn mPaletteGroupsMap[diagram].keys();\n"
+
+		<< "\tQStringList result;\n"
+		<< "\tfor (QPair<QString, QStringList> const &group : mPaletteGroupsMap[diagram]) {\n"
+		<< "\t\tresult << group.first;\n"
+		<< "\t}\n"
+		<< "\n"
+		<< "\treturn result;\n"
 		<< "}\n\n"
 
 		<< "QStringList " << mPluginName << "Plugin::diagramPaletteGroupList(QString const &diagram, "
 		<< "QString const &group) const\n{\n"
-		<< "\treturn mPaletteGroupsMap[diagram][group];\n"
+		<< "\tfor (QPair<QString, QStringList> const &ourGroup : mPaletteGroupsMap[diagram]) {\n"
+		<< "\t\tif (ourGroup.first == group) {\n"
+		<< "\t\t\treturn ourGroup.second;\n"
+		<< "\t\t}\n"
+		<< "\t}\n"
+		<< "\n"
+		<< "\treturn QStringList();\n"
 		<< "}\n\n"
 
 		<< "QString " << mPluginName << "Plugin::diagramPaletteGroupDescription(QString const &diagram, "
 		<< "QString const &group) const\n{\n"
 		<< "\treturn mPaletteGroupsDescriptionMap[diagram][group];\n"
+		<< "}\n\n"
+
+		<< "bool " << mPluginName << "Plugin::shallPaletteBeSorted(QString const &diagram) const\n{\n"
+		<< "\treturn mShallPaletteBeSortedMap[diagram];\n"
 		<< "}\n\n"
 
 		<< "QStringList " << mPluginName << "Plugin::elements(QString const &diagram) const\n{\n"
@@ -579,11 +604,9 @@ void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 
 	bool isNotFirst = false;
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
-		foreach (Type *type, diagram->types().values()) {
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values())
 			isNotFirst |= type->generateObjectRequestString(out, isNotFirst);
-		}
-	}
 
 	if (isNotFirst) {
 		out() << "	else {\n"
@@ -694,15 +717,12 @@ void XmlCompiler::generateListMethod(OutFile &out, QString const &signature, Lis
 
 	bool isNotFirst = false;
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
-		foreach (Type *type, diagram->types().values()) {
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values())
 			isNotFirst |= generator.generate(type, out, isNotFirst);
-		}
-	}
 
-	if (!isNotFirst) {
+	if (!isNotFirst)
 		out() << "\tQ_UNUSED(element);\n";
-	}
 	out() << "\treturn result;\n"
 		<< "}\n\n";
 }
@@ -716,16 +736,13 @@ void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
 			<< "\tQList<QPair<QPair<QString,QString>,QPair<bool,QString> > > result;\n";
 	bool isNotFirst = false;
 
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
-		foreach (Type *type, diagram->types().values()) {
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
+		foreach (Type *type, diagram->types().values())
 			isNotFirst |= generator.generate(type, out, isNotFirst);
-		}
-	}
 
-	if (!isNotFirst) {
+	if (!isNotFirst)
 		out() << "\tQ_UNUSED(element);\n";
-	}
-	out() << "\treturn result;\n"
+		out() << "\treturn result;\n"
 		<< "}\n\n";
 }
 
@@ -735,20 +752,19 @@ void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 	out() << "int " << mPluginName << "Plugin::isNodeOrEdge(QString const &element) const\n"
 		<< "{\n";
 	bool isFirst = true;
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
+	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
 		foreach (Type* type, diagram->types().values()) {
 			int result = 0;
 			EdgeType* edge = dynamic_cast<EdgeType*>(type);
 			NodeType* node = dynamic_cast<NodeType*>(type);
-			if (edge) {
+			if (edge)
 				result = (-1);
-			} else if (node) {
+			else if (node)
 				result = 1;
-			}
 
-			if (!isFirst) {
+			if (!isFirst)
 				out() << "\telse ";
-			} else {
+			else {
 				isFirst = false;
 				out() << "\t";
 			}
@@ -757,7 +773,6 @@ void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 				<< "\")\n"
 				<< "\t\treturn " << result << ";\n";
 		}
-	}
 	out() << "\treturn 0;\n}\n";
 }
 
@@ -811,13 +826,11 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 	EnumValuesGenerator generator;
 	bool isNotFirst = false;
 
-	foreach (EnumType *type, mEditors[mCurrentEditor]->getAllEnumTypes()) {
+	foreach (EnumType *type, mEditors[mCurrentEditor]->getAllEnumTypes())
 		isNotFirst |= generator.generate(type, out, isNotFirst);
-	}
 
-	if (!isNotFirst) {
+	if (!isNotFirst)
 		out() << "\tQ_UNUSED(name);\n";
-	}
 	out() << "\treturn result;\n"
 		<< "}\n\n";
 }

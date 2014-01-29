@@ -18,9 +18,11 @@
 #include <QtWidgets/QAction>
 #include <QtGui/QKeySequence>
 
-#include <qrutils/outFile.h>
-#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <qrkernel/settingsManager.h>
+#include <qrutils/outFile.h>
+#include <qrutils/qRealFileDialog.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
+#include <qrutils/uxInfo/uxInfo.h>
 
 #include "toolPluginInterface/systemEvents.h"
 #include "models/models.h"
@@ -45,6 +47,7 @@
 #include "controller/commands/doNothingCommand.h"
 #include "controller/commands/arrangeLinksCommand.h"
 #include "controller/commands/updateElementCommand.h"
+#include "controller/commands/createGroupCommand.h"
 
 #include "dialogs/suggestToCreateProjectDialog.h"
 #include "dialogs/progressDialog/progressDialog.h"
@@ -133,10 +136,10 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	}
 	splashScreen.close();
 
-	mModels = new models::Models(mProjectManager->saveFilePath(), mEditorManagerProxy);
-
 	mFindReplaceDialog = new FindReplaceDialog(mModels->logicalRepoApi(), this);
 	mFindHelper = new FindManager(mModels->repoControlApi(), mModels->mutableLogicalRepoApi(), this, mFindReplaceDialog);
+	mFilterObject = new FilterObject();
+	connectActionsForUXInfo();
 	connectActions();
 	initExplorers();
 
@@ -145,6 +148,43 @@ MainWindow::MainWindow(QString const &fileToOpen)
 	// beacuse of total event loop blocking by plugins. So waiting for main
 	// window initialization complete and then loading plugins.
 	QTimer::singleShot(50, this, SLOT(initPluginsAndStartWidget()));
+	mUsabilityTestingToolbar = new QToolBar();
+	mStartTest = new QAction(tr("Start test"), NULL);
+	mStartTest->setEnabled(true);
+	connect(mStartTest, SIGNAL(triggered()), this, SLOT(startUsabilityTest()));
+	mFinishTest = new QAction(tr("Finish test"), NULL);
+	mFinishTest->setEnabled(false);
+	connect(mFinishTest, SIGNAL(triggered()), this, SLOT(finishUsabilityTest()));
+	mUsabilityTestingToolbar->addAction(mStartTest);
+	mUsabilityTestingToolbar->addAction(mFinishTest);
+	addToolBar(Qt::TopToolBarArea, mUsabilityTestingToolbar);
+	setUsabilityMode(SettingsManager::value("usabilityTestingMode").toBool());
+}
+
+void MainWindow::connectActionsForUXInfo()
+{
+	QList<QAction*> triggeredActions;
+	triggeredActions << mUi->actionQuit << mUi->actionOpen << mUi->actionSave
+			<< mUi->actionSave_as << mUi->actionSave_diagram_as_a_picture
+			<< mUi->actionPrint << mUi->actionMakeSvg << mUi->actionImport
+			<< mUi->actionDeleteFromDiagram << mUi->actionCopyElementsOnDiagram
+			<< mUi->actionPasteOnDiagram << mUi->actionPasteReference
+			<< mUi->actionPreferences << mUi->actionHelp
+			<< mUi->actionAbout << mUi->actionAboutQt 
+			<< mUi->actionFullscreen << mUi->actionFind;
+
+	foreach (QAction* const action, triggeredActions) {
+		connect(action, SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
+	}
+
+	QList<QAction*> toggledActions;
+	toggledActions << mUi->actionShowSplash << mUi->actionShow_grid
+			<< mUi->actionShow_alignment << mUi->actionSwitch_on_grid
+			<< mUi->actionSwitch_on_alignment;
+
+	foreach (QAction* const action, toggledActions) {
+		connect(action, SIGNAL(toggled(bool)), mFilterObject, SLOT(toggledActionActivated(bool)));
+	}
 }
 
 void MainWindow::connectActions()
@@ -185,7 +225,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-	connect(mUi->actionShow, SIGNAL(triggered()), this, SLOT(showGestures()));
+	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
 
@@ -261,6 +301,11 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 	delete mTextManager;
 	delete mSystemEvents;
+	delete mFilterObject;
+	delete mStartTest;
+	delete mFinishTest;
+	delete mUsabilityTestingToolbar;
+	utils::UXInfo::instance()->closeUXInfo();
 }
 
 EditorManagerInterface& MainWindow::editorManager()
@@ -288,6 +333,7 @@ void MainWindow::loadPlugins()
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
 			, &mEditorManagerProxy);
+	SettingsManager::setValue("EditorsLoadedCount", mEditorManagerProxy.editors().count());
 }
 
 void MainWindow::clearSelectionOnTabs()
@@ -517,7 +563,7 @@ void MainWindow::makeSvg()
 {
 	QSvgGenerator newSvg;
 
-	QString fileName = QFileDialog::getSaveFileName(this);
+	QString fileName = utils::QRealFileDialog::getSaveFileName("SaveDiagramAsSvg", this);
 	if (fileName.isEmpty()) {
 		return;
 	}
@@ -976,6 +1022,7 @@ void MainWindow::showPreferencesDialog()
 		connect(&mPreferencesDialog, SIGNAL(settingsApplied()), this, SLOT(applySettings()));
 		connect(&mPreferencesDialog, SIGNAL(fontChanged()), this, SLOT(setSceneFont()));
 	}
+	connect(&mPreferencesDialog, SIGNAL(usabilityTestingModeChanged(bool)), this, SLOT(setUsabilityMode(bool)));
 	mPreferencesDialog.exec();
 	mToolManager.updateSettings();
 	mProjectManager->reinitAutosaver();
@@ -983,6 +1030,7 @@ void MainWindow::showPreferencesDialog()
 
 void MainWindow::initSettingsManager()
 {
+	SettingsManager::setUXInfo(utils::UXInfo::instance());
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
 	if (!dir.cd(mTempDir)) {
@@ -1358,16 +1406,25 @@ void MainWindow::currentTabChanged(int newIndex)
 	switchToTab(newIndex);
 	mUi->minimapView->changeSource(newIndex);
 
-	bool const isEditorTab = getCurrentTab() != NULL;
+	bool const isEditorTab = getCurrentTab();
 	bool const isShape = isCurrentTabShapeEdit();
+	bool const isStartTab = dynamic_cast<StartWidget *>(mUi->tabs->widget(newIndex));
+	bool const isGesturesTab = dynamic_cast<gestures::GesturesWidget *>(mUi->tabs->widget(newIndex));
+	bool const isDecorativeTab = isStartTab || isGesturesTab;
 
+	mUi->actionSave->setEnabled(!isDecorativeTab);
+	mUi->actionSave_as->setEnabled(!isDecorativeTab);
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
+	mUi->actionPrint->setEnabled(!isDecorativeTab);
 
-	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape);
-	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape);
+	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape && !isDecorativeTab);
+	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape && !isDecorativeTab);
+	mUi->actionFind->setEnabled(!isDecorativeTab);
 
 	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
 	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
+
+	mUi->actionGesturesShow->setEnabled(isEditorTab);
 
 	if (!isEditorTab) {
 		mToolManager.activeTabChanged(Id());
@@ -1578,12 +1635,29 @@ ProxyEditorManager &MainWindow::editorManagerProxy()
 void MainWindow::createDiagram(QString const &idString)
 {
 	closeStartTab();
-	Id const created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), Id::loadFromString(idString));
+	Id const id = Id::loadFromString(idString);
+	Id created;
+	if (mEditorManagerProxy.isNodeOrEdge(id.editor(), id.element())) {
+		created = mModels->graphicalModelAssistApi().createElement(Id::rootId(), id);
+	} else {
+		// It is a group
+		CreateGroupCommand createGroupCommand(nullptr, mModels->logicalModelAssistApi()
+				, mModels->graphicalModelAssistApi(), Id::rootId(), Id::rootId()
+				, id, false, QPointF());
+		createGroupCommand.redo();
+		created = createGroupCommand.rootId();
+	}
+
+	if (created.isNull()) {
+		return;
+	}
+
 	QModelIndex const index = mModels->graphicalModelAssistApi().indexById(created);
 	mUi->graphicalModelExplorer->setCurrentIndex(index);
 	Id const logicalIdCreated = mModels->graphicalModelAssistApi().logicalId(created);
 	QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalIdCreated);
 	mUi->logicalModelExplorer->setCurrentIndex(logicalIndex);
+
 	openNewTab(index);
 }
 
@@ -1714,6 +1788,29 @@ void MainWindow::updatePaletteIcons()
 	mUi->paletteTree->setComboBox(currentId);
 }
 
+void MainWindow::setUsabilityMode(bool mode)
+{
+	if (mode) {
+		mUsabilityTestingToolbar->show();
+	} else {
+		mUsabilityTestingToolbar->hide();
+	}
+}
+
+void MainWindow::startUsabilityTest()
+{
+	mStartTest->setEnabled(false);
+	mFinishTest->setEnabled(true);
+	mFilterObject->reportTestStarted();
+}
+
+void MainWindow::finishUsabilityTest()
+{
+	mFinishTest->setEnabled(false);
+	mStartTest->setEnabled(true);
+	mFilterObject->reportTestFinished();
+}
+
 void MainWindow::applySettings()
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
@@ -1841,6 +1938,7 @@ void MainWindow::initToolPlugins()
 			} else if (action.toolbarName() == "generators") {
 				mUi->generatorsToolbar->addAction(action.action());
 			}
+			connect(action.action(), SIGNAL(triggered()), mFilterObject, SLOT(triggeredActionActivated()));
 		}
 	}
 
@@ -2008,7 +2106,8 @@ void MainWindow::saveDiagramAsAPictureToFile(QString const &fileName)
 void MainWindow::saveDiagramAsAPicture()
 {
 	if (getCurrentTab()) {
-		QString const fileName = QFileDialog::getSaveFileName(this,  tr("Save File"), "", tr("Images (*.png *.jpg)"));
+		QString const fileName = utils::QRealFileDialog::getSaveFileName("SaveDiagramAsPicture", this
+				, tr("Save File"), "", tr("Images (*.png *.jpg)"));
 		saveDiagramAsAPictureToFile(fileName);
 	}
 }

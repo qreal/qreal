@@ -2,12 +2,12 @@
 #include "ui_d2Form.h"
 
 #include <QtCore/qmath.h>
-#include <QtWidgets/QFileDialog>
 #include <QtGui/QRegion>
 
+#include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
-#include <qrkernel/settingsManager.h>
+#include <qrutils/qRealFileDialog.h>
 
 #include "d2RobotModel.h"
 #include "constants.h"
@@ -18,24 +18,25 @@
 
 using namespace qReal::interpreters::robots;
 using namespace details::d2Model;
+using namespace utils;
 using namespace graphicsUtils;
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
 	, NxtDisplay *nxtDisplay, QWidget *parent)
 		: QRealDialog("D2ModelWindow", parent)
 		, mUi(new Ui::D2Form)
-		, mScene(NULL)
-		, mRobot(NULL)
+		, mScene(nullptr)
+		, mRobot(nullptr)
 		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
 		, mRobotModel(robotModel)
 		, mWorldModel(worldModel)
 		, mNxtDisplay(nxtDisplay)
 		, mDrawingAction(enums::drawingAction::none)
 		, mMouseClicksCount(0)
-		, mCurrentWall(NULL)
-		, mCurrentLine(NULL)
-		, mCurrentStylus(NULL)
-		, mCurrentEllipse(NULL)
+		, mCurrentWall(nullptr)
+		, mCurrentLine(nullptr)
+		, mCurrentStylus(nullptr)
+		, mCurrentEllipse(nullptr)
 		, mCurrentPort(robots::enums::inputPort::none)
 		, mCurrentSensorType(robots::enums::sensorType::unused)
 		, mWidth(defaultPenWidth)
@@ -85,6 +86,8 @@ D2ModelWidget::~D2ModelWidget()
 
 void D2ModelWidget::initWidget()
 {
+	setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
+
 	mUi->setupUi(this);
 	mSensors.resize(4);
 
@@ -507,9 +510,9 @@ void D2ModelWidget::clearScene(bool removeRobot)
 
 void D2ModelWidget::resetButtons()
 {
-	mCurrentWall = NULL;
-	mCurrentLine = NULL;
-	mCurrentStylus = NULL;
+	mCurrentWall = nullptr;
+	mCurrentLine = nullptr;
+	mCurrentStylus = nullptr;
 	mMouseClicksCount = 0;
 	mDrawingAction = enums::drawingAction::none;
 }
@@ -528,7 +531,7 @@ QComboBox *D2ModelWidget::currentComboBox()
 	case robots::enums::inputPort::none:
 		break;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void D2ModelWidget::addPort(int const port)
@@ -539,7 +542,7 @@ void D2ModelWidget::addPort(int const port)
 
 	QPointF const sensorPos = mSensors[port]
 			? mSensors[port]->scenePos()
-			: mRobot->mapToScene(mRobot->boundingRect().center());
+			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
 	mCurrentPort = static_cast<robots::enums::inputPort::InputPortEnum>(port);
 
 	switch (currentComboBox()->currentIndex()){
@@ -549,19 +552,22 @@ void D2ModelWidget::addPort(int const port)
 	case 1:
 		mCurrentSensorType = robots::enums::sensorType::touchBoolean;
 		break;
-	case 2: {
-		QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
-		robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
-		mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
-		if (mCurrentSensorType != robots::enums::sensorType::colorFull
-					&& mCurrentSensorType != robots::enums::sensorType::colorBlue
-					&& mCurrentSensorType != robots::enums::sensorType::colorGreen
-					&& mCurrentSensorType != robots::enums::sensorType::colorRed
-					&& mCurrentSensorType != robots::enums::sensorType::colorNone) {
-			mCurrentSensorType = defaultValue;
+	case 2:
+		{
+			QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
+			robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
+			mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
+			if (mCurrentSensorType != robots::enums::sensorType::colorFull
+						&& mCurrentSensorType != robots::enums::sensorType::colorBlue
+						&& mCurrentSensorType != robots::enums::sensorType::colorGreen
+						&& mCurrentSensorType != robots::enums::sensorType::colorRed
+						&& mCurrentSensorType != robots::enums::sensorType::colorNone)
+			{
+				mCurrentSensorType = defaultValue;
+			}
+
+			break;
 		}
-	}
-		break;
 	case 3:
 		mCurrentSensorType = robots::enums::sensorType::sonar;
 		break;
@@ -723,6 +729,7 @@ void D2ModelWidget::mouseMoved(QGraphicsSceneMouseEvent *mouseEvent)
 		}
 		break;
 	}
+
 	if (needUpdate) {
 		mScene->update();
 	}
@@ -744,25 +751,29 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 	switch (mDrawingAction){
 	case enums::drawingAction::wall: {
 		reshapeWall(mouseEvent);
-		mCurrentWall = NULL;
+		mCurrentWall->setSelected(true);
+		mCurrentWall = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::line: {
 		reshapeLine(mouseEvent);
-		mCurrentLine = NULL;
+		mCurrentLine->setSelected(true);
+		mCurrentLine = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::stylus: {
 		reshapeStylus(mouseEvent);
-		mCurrentStylus = NULL;
+		mCurrentStylus->setSelected(true);
+		mCurrentStylus = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
 	case enums::drawingAction::ellipse: {
 		reshapeEllipse(mouseEvent);
-		mCurrentEllipse = NULL;
+		mCurrentEllipse->setSelected(true);
+		mCurrentEllipse = nullptr;
 		mMouseClicksCount = 0;
 		break;
 	}
@@ -780,7 +791,8 @@ void D2ModelWidget::mouseReleased(QGraphicsSceneMouseEvent *mouseEvent)
 void D2ModelWidget::saveWorldModel()
 {
 	// Saves world and robot models simultaneously, for now.
-	QString saveFileName = QFileDialog::getSaveFileName(this, tr("Saving world and robot model"), ".", tr("2D model saves (*.xml)"));
+	QString saveFileName = QRealFileDialog::getSaveFileName("Save2DModelWidget", this
+			, tr("Saving world and robot model"), ".", tr("2D model saves (*.xml)"));
 	if (saveFileName.isEmpty()) {
 		return;
 	}
@@ -799,7 +811,8 @@ void D2ModelWidget::saveWorldModel()
 void D2ModelWidget::loadWorldModel()
 {
 	// Loads world and robot models simultaneously.
-	QString const loadFileName = QFileDialog::getOpenFileName(this, tr("Loading world and robot model"), ".", tr("2D model saves (*.xml)"));
+	QString const loadFileName = QRealFileDialog::getOpenFileName("Open2DModelWidget", this
+			, tr("Loading world and robot model"), ".", tr("2D model saves (*.xml)"));
 	if (loadFileName.isEmpty()) {
 		return;
 	}
@@ -832,7 +845,7 @@ void D2ModelWidget::removeSensor(robots::enums::inputPort::InputPortEnum port)
 	mRobot->removeSensor(mSensors[port]);
 	mScene->removeItem(mSensors[port]);
 	delete mSensors[port];
-	mSensors[port] = NULL;
+	mSensors[port] = nullptr;
 
 	changeSensorType(port, robots::enums::sensorType::unused);
 }
@@ -1102,17 +1115,17 @@ void D2ModelWidget::loadXml(QDomDocument const &worldModel)
 }
 
 void D2ModelWidget::worldWallDragged(WallItem *wall, const QPainterPath &shape
-		, const QPointF &oldPos)
+		, QPointF const &oldPos)
 {
 	bool const isNeedStop = shape.intersects(mRobot->realBoundingRect());
 	wall->onOverlappedWithRobot(isNeedStop);
 	if (wall->isDragged() && ((mDrawingAction == enums::drawingAction::none) ||
 			(mDrawingAction == enums::drawingAction::wall && mCurrentWall == wall)))
 	{
+		wall->setFlag(QGraphicsItem::ItemIsMovable, !isNeedStop);
 		if (isNeedStop) {
 			wall->setPos(oldPos);
 		}
-		wall->setFlag(QGraphicsItem::ItemIsMovable, !isNeedStop);
 	}
 }
 

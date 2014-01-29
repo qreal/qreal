@@ -26,6 +26,12 @@ public:
 		return utils::InFile::readAll(startTabBackgroundStylePath());
 	}
 
+	/// Returns json stylesheet for start tab substrate background
+	virtual QString startTabSubstrateBackgroundStyle() const
+	{
+		return utils::InFile::readAll(startTabSubstrateBackgroundStylePath());
+	}
+
 	/// Returns json stylesheet for start tab header background
 	virtual QString startTabHeaderBackgroundStyle() const
 	{
@@ -70,6 +76,12 @@ protected:
 	virtual QString startTabBackgroundStylePath() const
 	{
 		return processUrl(":/styles/startTab/background.js");
+	}
+
+	/// Returns a path to a file with json stylesheet for start tab substrate background
+	virtual QString startTabSubstrateBackgroundStylePath() const
+	{
+		return processUrl(":/styles/startTab/substrate.js");
 	}
 
 	/// Returns a path to a file with json stylesheet for start tab header background

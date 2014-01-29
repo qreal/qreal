@@ -66,14 +66,15 @@ void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 	AbstractItem::mousePressEvent(event);
 	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
-	mOldX1 = qAbs(mX1 - event->scenePos().x());
-	mOldY1 = qAbs(mY1 - event->scenePos().y());
+	mOldX1 = event->scenePos().x() - mX1;
+	mOldY1 = event->scenePos().y() - mY1;
 }
 
 void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
 	QPointF const oldPos = pos();
-	if (SettingsManager::value("2dShowGrid").toBool() && mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)){
+	if (SettingsManager::value("2dShowGrid").toBool() && mDragged
+			&& ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		QPointF const pos = event->scenePos();
 		int const indexGrid = SettingsManager::value("2dGridCellSize").toInt();
 		qreal const deltaX = (mX1 - mX2);

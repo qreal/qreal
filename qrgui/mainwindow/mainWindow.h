@@ -43,6 +43,7 @@
 #include "mainwindow/tabWidget.h"
 #include "mainwindow/qscintillaTextEdit.h"
 #include "toolPluginInterface/systemEvents.h"
+#include "mainwindow/filterObject.h"
 
 namespace Ui {
 class MainWindowUi;
@@ -258,6 +259,7 @@ private slots:
 	void initSettingsManager();
 	void connectActions();
 	void initActionsFromSettings();
+	void connectActionsForUXInfo();
 
 	void centerOn(Id const &id);
 	void graphicalModelExplorerClicked(const QModelIndex &index);
@@ -279,6 +281,10 @@ private slots:
 
 	void updatePaletteIcons();
 	void setTextChanged(bool changed);
+
+	void setUsabilityMode(bool mode);
+	void startUsabilityTest();
+	void finishUsabilityTest();
 
 private:
 	QHash<EditorView*, QPair<gui::QScintillaTextEdit *, QPair<QPersistentModelIndex, int> > > *mOpenedTabsWithEditor;
@@ -405,11 +411,16 @@ private:
 	ProjectManager *mProjectManager;
 	StartWidget *mStartWidget;
 
+	FilterObject *mFilterObject; // Has ownership
 	SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
+
+	QToolBar *mUsabilityTestingToolbar; // Has ownership
+	QAction *mStartTest; // Has ownership
+	QAction *mFinishTest; // Has ownership
 };
 
 }

@@ -29,7 +29,7 @@ public:
 		, PaletteElement const &paletteElement
 		, bool iconsOnly
 		, EditorManagerInterface &editorManagerProxy
-		, QWidget *parent = NULL
+		, QWidget *parent = nullptr
 		);
 
 	/// Icon of an element on palette.

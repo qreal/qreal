@@ -42,7 +42,8 @@ private:
 	void initFirstSizes();
 
 	QString mWorkingDirName;
-	QMap<QString, QPixmap> mMapFileImage;
+	QMap<QString, QString> mReallyUsedFiles;
+	QMap<QString, QByteArray> mMapFileImage;
 	int first_size_x;
 	int first_size_y;
 	int current_size_x;
@@ -98,6 +99,11 @@ private:
 	qreal coord_def(QDomElement &element, QString const &coordName
 		, int current_size, int first_size);
 	void logger(QString const &path, QString const &string);
+
+	/// Reads byte array from the file that is obtained by inner rules from the given one.
+	/// Specified file path may be modified with storing into it really read file path.
+	QByteArray loadPixmap(QString &filePath);
+	QByteArray loadPixmapFromExistingFile(QString &filePath);
 
 	/** @brief checks that str[i] is not L, C, M or Z*/
 	bool isNotLCMZ(QString const &str, int i);

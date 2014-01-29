@@ -48,8 +48,8 @@ private slots:
 	/// Requires nxt-tools
 	void uploadProgram();
 
-	/// Requires nxt-tools
-	void runProgram();
+	/// Runs program if it is allowed in settings
+	void onUploadingComplete(bool success);
 
 private:
 	/// Method that checks presense of nxt-tools (shall be installed to nxt-tools
@@ -69,9 +69,6 @@ private:
 
 	/// Action that compiles and uploads program on a robot
 	QAction mUploadProgramAction;
-
-	/// Action that runs latest uploaded program on a robot
-	QAction mRunProgramAction;
 
 	/// When true, nxt-tools are found by QReal and flashing and uploading is possible
 	bool mNxtToolsPresent;
