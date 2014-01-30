@@ -37,7 +37,12 @@ bool ProxyRobotModel::needsConnection() const
 	return mProxiedModel->needsConnection();
 }
 
-ConfigurationInterface &ProxyRobotModel::configuration()
+ConfigurationInterface &ProxyRobotModel::mutableConfiguration()
+{
+	return mProxiedModel->mutableConfiguration();
+}
+
+ConfigurationInterface const &ProxyRobotModel::configuration() const
 {
 	return mProxiedModel->configuration();
 }

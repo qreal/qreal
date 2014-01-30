@@ -40,7 +40,8 @@ public:
 signals:
 	/// Emitted when device finished its configuration, successfully or by failure. Note that configuration can be
 	/// synchronous or asynchronous for various devices (configure() can be in a stack when this signal is emitted).
-	/// Shall not be emitted directly from descendants, use configurationCompleted() instead.
+	/// Shall not be emitted directly from descendants, use configurationCompleted() instead due to timeout handling
+	/// performed by PluggableDevice class.
 	void configured(bool success);
 
 protected:

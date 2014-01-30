@@ -23,7 +23,8 @@ public:
 
 	bool needsConnection() const override;
 
-	ConfigurationInterface &configuration() override;
+	ConfigurationInterface const &configuration() const override;
+	ConfigurationInterface &mutableConfiguration() override;
 
 	robotParts::Brick &brick() override;
 	robotParts::Display &display() override;

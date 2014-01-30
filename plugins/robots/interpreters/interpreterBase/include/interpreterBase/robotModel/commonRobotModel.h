@@ -22,7 +22,8 @@ public:
 
 	bool needsConnection() const override;
 
-	ConfigurationInterface &configuration() override;  // TODO: Don't like this, breaks incapsulation.
+	ConfigurationInterface &mutableConfiguration() override;  // TODO: Don't like this, breaks incapsulation.
+	ConfigurationInterface const &configuration() const override;  // TODO: Don't like this, breaks incapsulation.
 
 	robotParts::Brick &brick() override;
 	robotParts::Display &display() override;

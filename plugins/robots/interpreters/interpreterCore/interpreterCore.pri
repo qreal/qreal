@@ -23,6 +23,7 @@ HEADERS += \
 	$$PWD/src/interpreter/details/robotsBlockParser.h \
 	$$PWD/src/interpreter/details/thread.h \
 	$$PWD/src/interpreter/details/sensorsConfigurationWidget.h \
+	$$PWD/src/interpreter/details/sensorVariablesUpdater.h \
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
 	$$PWD/src/interpreter/details/robotsBlockParser.cpp \
 	$$PWD/src/interpreter/details/thread.cpp \
 	$$PWD/src/interpreter/details/sensorsConfigurationWidget.cpp \
+	$$PWD/src/interpreter/details/sensorVariablesUpdater.cpp \
 
 FORMS += \
 	$$PWD/src/robotsSettingsPage.ui \

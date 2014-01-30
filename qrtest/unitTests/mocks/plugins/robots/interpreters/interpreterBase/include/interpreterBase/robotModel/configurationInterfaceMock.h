@@ -18,6 +18,10 @@ public:
 			, interpreterBase::robotModel::ConfigurationInterface::PortDirection direction)
 			);
 
+	MOCK_CONST_METHOD1(pluggableDevices, QList<interpreterBase::robotModel::robotParts::PluggableDevice *> (
+			PortDirection direction)
+			);
+
 	MOCK_METHOD1(clearDevice, void(interpreterBase::robotModel::PortInfo const &port));
 };
 

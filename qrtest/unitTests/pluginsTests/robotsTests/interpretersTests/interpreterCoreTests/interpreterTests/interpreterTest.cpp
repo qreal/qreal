@@ -20,17 +20,20 @@ void InterpreterTest::SetUp()
 	ConfigurationInterfaceMock configurationInterfaceMock;
 
 	ON_CALL(mModel, needsConnection()).WillByDefault(Return(false));
+	EXPECT_CALL(mModel, needsConnection()).Times(AtLeast(1));
 
 	ON_CALL(mModel, init()).WillByDefault(Invoke([&] {
 		QMetaObject::invokeMethod(&mModel, "connected", Q_ARG(bool, true));
-		QMetaObject::invokeMethod(&mModel.configuration(), "allDevicesConfigured");
+		QMetaObject::invokeMethod(&mModel.mutableConfiguration(), "allDevicesConfigured");
 	}));
+	EXPECT_CALL(mModel, init()).Times(AtLeast(1));
 
 	ON_CALL(mModel, configuration()).WillByDefault(ReturnRef(configurationInterfaceMock));
-
 	EXPECT_CALL(mModel, configuration()).Times(AtLeast(1));
-	EXPECT_CALL(mModel, needsConnection()).Times(AtLeast(1));
-	EXPECT_CALL(mModel, init()).Times(AtLeast(1));
+
+	ON_CALL(mModel, mutableConfiguration()).WillByDefault(ReturnRef(configurationInterfaceMock));
+	EXPECT_CALL(mModel, mutableConfiguration()).Times(AtLeast(1));
+
 
 	mInterpreter.reset(new Interpreter(
 			mQrguiFacade->graphicalModelAssistInterface()
