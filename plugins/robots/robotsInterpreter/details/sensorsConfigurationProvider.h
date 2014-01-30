@@ -17,7 +17,7 @@ class SensorsConfigurationProvider
 public:
 	/// Constructor.
 	/// @param name - name of an instance of provider, which can be used in debug output.
-	SensorsConfigurationProvider(QString const &name);
+	explicit SensorsConfigurationProvider(QString const &name);
 
 	virtual ~SensorsConfigurationProvider();
 

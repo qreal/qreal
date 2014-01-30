@@ -2,8 +2,6 @@
 #include "ui_sensorsConfigurationWidget.h"
 #include <qrkernel/settingsManager.h>
 
-#include <QtCore/QDebug>
-
 using namespace qReal::interpreters::robots;
 using namespace qReal::interpreters::robots::details;
 
@@ -101,7 +99,6 @@ void SensorsConfigurationWidget::onSensorConfigurationChanged(
 		mUi->port4ComboBox->setCurrentIndex(type);
 		break;
 	default:
-		qDebug() << "SensorsConfigurationWidget::onSensorConfigurationChanged, incorrect port type";
 		break;
 	}
 }

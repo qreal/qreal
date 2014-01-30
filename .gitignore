@@ -21,4 +21,3 @@ bin/*
 *.Debug
 *.Release
 *.prf
-*.txt
