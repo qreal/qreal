@@ -2,6 +2,7 @@
 
 #include <QtCore/QObject>
 
+#include <interpreterBase/additionalPreferences.h>
 #include <interpreterBase/kitPluginInterface.h>
 #include <interpreterBase/robotModel/commonRobotModel.h>
 
@@ -22,7 +23,7 @@ public:
 	QList<interpreterBase::robotModel::RobotModelInterface *> robotModels() override;
 
 	// Transfers ownership.
-	QWidget *settingsWidget() const override;
+	interpreterBase::AdditionalPreferences *settingsWidget() override;
 
 	qReal::IdList unsupportedBlocks() const override;
 
