@@ -17,7 +17,7 @@ QList<interpreterBase::robotModel::RobotModelInterface *> MockKitPlugin2Interfac
 	return QList<interpreterBase::robotModel::RobotModelInterface *>() << &mRobotModel;
 }
 
-QWidget *MockKitPlugin2Interface::settingsWidget() const
+interpreterBase::AdditionalPreferences *MockKitPlugin2Interface::settingsWidget()
 {
 	return nullptr;
 }
