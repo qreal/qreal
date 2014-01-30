@@ -22,27 +22,28 @@ using namespace utils;
 using namespace graphicsUtils;
 
 D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldModel
-	, NxtDisplay *nxtDisplay, QWidget *parent)
-		: QRealDialog("D2ModelWindow", parent)
-		, mUi(new Ui::D2Form)
-		, mScene(nullptr)
-		, mRobot(nullptr)
-		, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
-		, mRobotModel(robotModel)
-		, mWorldModel(worldModel)
-		, mNxtDisplay(nxtDisplay)
-		, mDrawingAction(enums::drawingAction::none)
-		, mMouseClicksCount(0)
-		, mCurrentWall(nullptr)
-		, mCurrentLine(nullptr)
-		, mCurrentStylus(nullptr)
-		, mCurrentEllipse(nullptr)
-		, mCurrentPort(robots::enums::inputPort::none)
-		, mCurrentSensorType(robots::enums::sensorType::unused)
-		, mWidth(defaultPenWidth)
-		, mClearing(false)
-		, mFirstShow(true)
-		, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
+		, NxtDisplay *nxtDisplay, QWidget *parent)
+	: QRealDialog("D2ModelWindow", parent)
+	, details::SensorsConfigurationProvider("D2ModelWidget")
+	, mUi(new Ui::D2Form)
+	, mScene(nullptr)
+	, mRobot(nullptr)
+	, mMaxDrawCyclesBetweenPathElements(SettingsManager::value("drawCyclesBetweenPathElements").toInt())
+	, mRobotModel(robotModel)
+	, mWorldModel(worldModel)
+	, mNxtDisplay(nxtDisplay)
+	, mDrawingAction(enums::drawingAction::none)
+	, mMouseClicksCount(0)
+	, mCurrentWall(nullptr)
+	, mCurrentLine(nullptr)
+	, mCurrentStylus(nullptr)
+	, mCurrentEllipse(nullptr)
+	, mCurrentPort(robots::enums::inputPort::none)
+	, mCurrentSensorType(robots::enums::sensorType::unused)
+	, mWidth(defaultPenWidth)
+	, mClearing(false)
+	, mFirstShow(true)
+	, mTimeline(dynamic_cast<D2RobotModel *>(robotModel)->timeline())
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -70,7 +71,6 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 	mUi->noneButton->setChecked(true);
 
 	drawInitialRobot();
-	syncronizeSensors();
 
 	setFocus();
 
@@ -223,6 +223,7 @@ void D2ModelWidget::init(bool isActive)
 	if (!isActiveWindow()) {
 		activateWindow();
 	}
+
 	update();
 }
 
@@ -280,7 +281,7 @@ void D2ModelWidget::keyPressEvent(QKeyEvent *event)
 
 QPointF D2ModelWidget::robotPos() const
 {
-	return mRobot ? mRobot->pos() : QPointF(0,0);
+	return mRobot ? mRobot->pos() : QPointF(0, 0);
 }
 
 void D2ModelWidget::close()
@@ -292,6 +293,7 @@ void D2ModelWidget::close()
 		mScene->clear();
 		mRobot = NULL;
 	}
+
 	mUi->graphicsView->setVisible(false);
 	setVisible(false);
 }
@@ -320,16 +322,15 @@ void D2ModelWidget::showEvent(QShowEvent *e)
 	e->accept();
 	QRealDialog::showEvent(e);
 	if (mFirstShow) {
+		mFirstShow = false;
 		onFirstShow();
 	}
-
-	mFirstShow = false;
 }
 
 void D2ModelWidget::onFirstShow()
 {
-	syncronizeSensors();
 	mUi->speedComboBox->setCurrentIndex(1); // Normal speed
+	refreshSensorsConfiguration();
 }
 
 void D2ModelWidget::rereadNoiseSettings()
@@ -543,6 +544,7 @@ void D2ModelWidget::addPort(int const port)
 	QPointF const sensorPos = mSensors[port]
 			? mSensors[port]->scenePos()
 			: mRobot->mapToScene(mRobot->boundingRect().center() + QPoint(mRobot->boundingRect().width(), 0));
+
 	mCurrentPort = static_cast<robots::enums::inputPort::InputPortEnum>(port);
 
 	switch (currentComboBox()->currentIndex()){
@@ -553,21 +555,21 @@ void D2ModelWidget::addPort(int const port)
 		mCurrentSensorType = robots::enums::sensorType::touchBoolean;
 		break;
 	case 2:
+	{
+		QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
+		robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
+		mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
+		if (mCurrentSensorType != robots::enums::sensorType::colorFull
+				&& mCurrentSensorType != robots::enums::sensorType::colorBlue
+				&& mCurrentSensorType != robots::enums::sensorType::colorGreen
+				&& mCurrentSensorType != robots::enums::sensorType::colorRed
+				&& mCurrentSensorType != robots::enums::sensorType::colorNone) 
 		{
-			QString const settingsKey = "port" + QString::number(port + 1) + "SensorType";
-			robots::enums::sensorType::SensorTypeEnum const defaultValue = robots::enums::sensorType::colorFull;
-			mCurrentSensorType = static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value(settingsKey, defaultValue).toInt());
-			if (mCurrentSensorType != robots::enums::sensorType::colorFull
-						&& mCurrentSensorType != robots::enums::sensorType::colorBlue
-						&& mCurrentSensorType != robots::enums::sensorType::colorGreen
-						&& mCurrentSensorType != robots::enums::sensorType::colorRed
-						&& mCurrentSensorType != robots::enums::sensorType::colorNone)
-			{
-				mCurrentSensorType = defaultValue;
-			}
-
-			break;
+			mCurrentSensorType = defaultValue;
 		}
+
+		break;
+	}
 	case 3:
 		mCurrentSensorType = robots::enums::sensorType::sonar;
 		break;
@@ -578,6 +580,10 @@ void D2ModelWidget::addPort(int const port)
 	if (mCurrentSensorType != mRobotModel->configuration().type(mCurrentPort)) {
 		mRobotModel->configuration().setSensor(mCurrentPort, mCurrentSensorType, sensorPos.toPoint(), 0);
 		reinitSensor(mCurrentPort);
+		sensorConfigurationChanged(
+				static_cast<robots::enums::inputPort::InputPortEnum>(port)
+				, static_cast<robots::enums::sensorType::SensorTypeEnum>(mCurrentSensorType)
+				);
 	}
 
 	resetButtons();
@@ -970,6 +976,7 @@ QList<AbstractItem *> D2ModelWidget::selectedColorItems()
 			resList.push_back(item);
 		}
 	}
+
 	qSort(resList.begin(), resList.end(), mScene->compareItems);
 	return resList;
 }
@@ -1258,30 +1265,6 @@ void D2ModelWidget::syncCursorButtons()
 	}
 }
 
-void D2ModelWidget::syncronizeSensors()
-{
-	robots::enums::sensorType::SensorTypeEnum const port1
-			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port1SensorType").toInt());
-
-	robots::enums::sensorType::SensorTypeEnum const port2
-			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port2SensorType").toInt());
-
-	robots::enums::sensorType::SensorTypeEnum const port3
-			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port3SensorType").toInt());
-
-	robots::enums::sensorType::SensorTypeEnum const port4
-			= static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::value("port4SensorType").toInt());
-
-	changeSensorType(robots::enums::inputPort::port1, port1);
-	addPort(0);
-	changeSensorType(robots::enums::inputPort::port2, port2);
-	addPort(1);
-	changeSensorType(robots::enums::inputPort::port3, port3);
-	addPort(2);
-	changeSensorType(robots::enums::inputPort::port4, port4);
-	addPort(3);
-}
-
 void D2ModelWidget::alignWalls()
 {
 	foreach (WallItem * const wall, mWorldModel->walls()) {
@@ -1290,4 +1273,13 @@ void D2ModelWidget::alignWalls()
 			wall->setEndCoordinatesWithGrid(SettingsManager::value("2dGridCellSize").toInt());
 		}
 	}
+}
+
+void D2ModelWidget::onSensorConfigurationChanged(
+		robots::enums::inputPort::InputPortEnum port
+		, robots::enums::sensorType::SensorTypeEnum type
+		)
+{
+	changeSensorType(port, type);
+	addPort(port);
 }
