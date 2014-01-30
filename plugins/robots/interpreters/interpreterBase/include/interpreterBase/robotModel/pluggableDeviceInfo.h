@@ -3,13 +3,15 @@
 #include <QtCore/QString>
 #include <QtCore/QMetaObject>
 
+#include "interpreterBase/interpreterBaseDeclSpec.h"
+
 namespace interpreterBase {
 namespace robotModel {
 
 /// Describes a type of a pluggable device, not a concrete instance of it.
 /// Given a set of PluggableDeviceInfo corresponding to some pluggable devices
 /// hierarchy original inheritance relations can be recovered with isA() method.
-class PluggableDeviceInfo
+class ROBOTS_INTERPRETER_BASE_EXPORT PluggableDeviceInfo
 {
 public:
 	/// Creates a new instance of a PluggableDevice descriptor. The resulting object will

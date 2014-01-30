@@ -25,3 +25,5 @@ SOURCES += \
 
 FORMS += \
 	$$PWD/nxtAdditionalPreferences.ui \
+
+include($$PWD/../qrguiIncludes.pri)
