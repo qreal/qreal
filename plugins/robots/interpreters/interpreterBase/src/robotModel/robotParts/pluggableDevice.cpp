@@ -29,6 +29,12 @@ PluggableDeviceInfo const &PluggableDevice::deviceInfo() const
 	return mInfo;
 }
 
+bool PluggableDevice::ready() const
+{
+	// TODO: Implement.
+	return true;
+}
+
 void PluggableDevice::configure()
 {
 	mConfigurationTimeoutTimer.start();

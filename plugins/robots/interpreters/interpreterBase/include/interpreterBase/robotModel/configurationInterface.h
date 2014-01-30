@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QHash>
 
 #include "interpreterBase/robotModel/portInfo.h"
 #include "interpreterBase/robotModel/robotParts/pluggableDevice.h"
@@ -31,7 +32,11 @@ public:
 	virtual void lockConfiguring() = 0;
 	virtual void unlockConfiguring() = 0;
 
-	/// Returns configured device on a given port or NULL if no device is configured there.
+	/// Returns all configured devices with given port direction. Allows to enumerate configured devices.
+	virtual QList<robotParts::PluggableDevice *> pluggableDevices(
+			PortDirection direction = defaultDirection) const = 0;
+
+	/// Returns configured device on a given port or nullptr if no device is configured there.
 	virtual robotParts::PluggableDevice *pluggableDevice(
 			PortInfo const &port
 			, PortDirection direction = defaultDirection) const = 0;

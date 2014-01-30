@@ -23,6 +23,8 @@ public:
 	void lockConfiguring() override;
 	void unlockConfiguring() override;
 
+	QList<robotParts::PluggableDevice *> pluggableDevices(PortDirection direction = defaultDirection) const override;
+
 	robotParts::PluggableDevice *pluggableDevice(
 			PortInfo const &port
 			, PortDirection direction = defaultDirection) const override;

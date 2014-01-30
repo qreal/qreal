@@ -45,7 +45,6 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/robotParts/abstractSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/display.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/accelerometerSensor.h \
-	$$PWD/include/interpreterBase/robotModel/robotParts/sonarSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/colorSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/encoderSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/gyroscopeSensor.h \
