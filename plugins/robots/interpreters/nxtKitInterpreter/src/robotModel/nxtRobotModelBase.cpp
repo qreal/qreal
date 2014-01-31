@@ -1,6 +1,6 @@
 #include "nxtRobotModelBase.h"
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
-#include <interpreterBase/robotModel/robotParts/sonarSensor.h>
+#include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>
 #include <interpreterBase/robotModel/robotParts/colorSensor.h>
 #include <interpreterBase/robotModel/robotParts/soundSensor.h>
@@ -53,7 +53,7 @@ PluggableDeviceInfo NxtRobotModelBase::touchSensorInfo() const
 
 PluggableDeviceInfo NxtRobotModelBase::sonarSensorInfo() const
 {
-	return PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::SonarSensor>(tr("Sonar sensor"));
+	return PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::RangeSensor>(tr("Sonar sensor"));
 }
 
 PluggableDeviceInfo NxtRobotModelBase::lightSensorInfo() const

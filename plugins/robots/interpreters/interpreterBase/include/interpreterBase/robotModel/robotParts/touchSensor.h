@@ -1,6 +1,7 @@
 #pragma once
 
 #include "scalarSensor.h"
+
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {

@@ -10,6 +10,8 @@ namespace robotParts {
 
 class ROBOTS_INTERPRETER_BASE_EXPORT RangeSensor : public ScalarSensor
 {
+	Q_OBJECT
+
 public:
 };
 
