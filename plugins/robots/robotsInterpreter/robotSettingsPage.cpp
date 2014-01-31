@@ -91,12 +91,6 @@ void PreferencesRobotSettingsPage::changeEvent(QEvent *e)
 	}
 }
 
-void PreferencesRobotSettingsPage::rereadNoiseSettings()
-{
-	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
-	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
-}
-
 void PreferencesRobotSettingsPage::initRobotModelType(enums::robotModelType::robotModelTypeEnum type)
 {
 	switch (type)
@@ -147,9 +141,6 @@ enums::robotModelType::robotModelTypeEnum PreferencesRobotSettingsPage::selected
 void PreferencesRobotSettingsPage::refreshValuesOnUi()
 {
 	mUi->manualComPortCheckbox->setChecked(SettingsManager::value("manualComPortCheckboxChecked").toBool());
-	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
-	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
-	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
 
 	mUi->sensorUpdateSpinBox->setValue(
 			SettingsManager::value("sensorUpdateInterval"
@@ -177,11 +168,6 @@ void PreferencesRobotSettingsPage::refreshValuesOnUi()
 	mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("nxtFlashToolRunPolicy").toInt());
 }
 
-int PreferencesRobotSettingsPage::approximationLevel() const
-{
-	return mUi->approximationLevelSpinBox->value();
-}
-
 int PreferencesRobotSettingsPage::sensorUpdateInterval() const
 {
 	return mUi->sensorUpdateSpinBox->value();
@@ -195,16 +181,6 @@ int PreferencesRobotSettingsPage::autoscalingInterval() const
 int PreferencesRobotSettingsPage::textUpdateInterval() const
 {
 	return mUi->textUpdaterSpinBox->value();
-}
-
-bool PreferencesRobotSettingsPage::enableSensorNoise() const
-{
-	return mUi->enableSensorNoiseCheckBox->checkState() == Qt::Checked;
-}
-
-bool PreferencesRobotSettingsPage::enableMotorNoise() const
-{
-	return mUi->enableMotorNoiseCheckBox->checkState() == Qt::Checked;
 }
 
 bool PreferencesRobotSettingsPage::textVisible() const
@@ -284,9 +260,6 @@ void PreferencesRobotSettingsPage::save()
 	SettingsManager::setValue("bluetoothPortName", selectedPortName());
 	SettingsManager::setValue("valueOfCommunication", selectedCommunication());
 	SettingsManager::setValue("showTitlesForRobots", textVisible());
-	SettingsManager::setValue("enableNoiseOfSensors", enableSensorNoise());
-	SettingsManager::setValue("enableNoiseOfMotors", enableMotorNoise());
-	SettingsManager::setValue("approximationLevel", approximationLevel());
 	SettingsManager::setValue("sensorUpdateInterval", sensorUpdateInterval());
 	SettingsManager::setValue("autoscalingInterval", autoscalingInterval());
 	SettingsManager::setValue("textUpdateInterval", textUpdateInterval());

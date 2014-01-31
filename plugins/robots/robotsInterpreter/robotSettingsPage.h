@@ -36,9 +36,6 @@ signals:
 protected:
 	void changeEvent(QEvent *e);
 
-public slots:
-	void rereadNoiseSettings();
-
 private slots:
 	void onSomethingChanged();
 	void manualComPortCheckboxChecked(bool state);
@@ -55,9 +52,6 @@ private:
 	enums::robotModelType::robotModelTypeEnum selectedRobotModel() const;
 	void refreshValuesOnUi();
 	bool textVisible() const;
-	bool enableSensorNoise() const;
-	bool enableMotorNoise() const;
-	int approximationLevel() const;
 	int sensorUpdateInterval() const;
 	int autoscalingInterval() const;
 	int textUpdateInterval() const;

@@ -29,7 +29,6 @@ RobotsPlugin::RobotsPlugin()
 	mInterpreter = new details::Interpreter();
 	mRobotSettingsPage = new PreferencesRobotSettingsPage();
 
-	connect(mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
 	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 
 	initActions();
@@ -255,7 +254,6 @@ interpreters::robots::details::SensorsConfigurationWidget *RobotsPlugin::produce
 void RobotsPlugin::rereadSettings()
 {
 	updateTitlesVisibility();
-	mInterpreter->setNoiseSettings();
 	reinitModelType();
 }
 

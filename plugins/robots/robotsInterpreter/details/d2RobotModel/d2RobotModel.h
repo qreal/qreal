@@ -137,6 +137,7 @@ private:
 	qreal mSpeedFactor;
 	mathUtils::GaussNoise mNoiseGen;
 	bool mNeedSync;
+	bool mIsRealisticPhysics;
 	bool mNeedSensorNoise;
 	bool mNeedMotorNoise;
 

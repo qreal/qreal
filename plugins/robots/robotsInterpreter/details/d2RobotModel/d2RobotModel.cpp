@@ -18,12 +18,10 @@ D2RobotModel::D2RobotModel(QObject *parent)
 	, mEngineB(nullptr)
 	, mEngineC(nullptr)
 	, mDisplay(new NxtDisplay)
-	, mPhysicsEngine(new physics::RealisticPhysicsEngine(mWorldModel))
+	, mPhysicsEngine(nullptr)
 	, mTimeline(new Timeline(this))
 	, mNoiseGen()
 	, mNeedSync(false)
-	, mNeedSensorNoise(SettingsManager::value("enableNoiseOfSensors").toBool())
-	, mNeedMotorNoise(SettingsManager::value("enableNoiseOfMotors").toBool())
 	, mPos(QPointF(0,0))
 	, mAngle(0)
 {
@@ -432,7 +430,7 @@ void D2RobotModel::nextStep()
 void D2RobotModel::recalculateParams()
 {
 	// do nothing until robot gets back on the ground
-	if (!mD2ModelWidget->isRobotOnTheGround()) {
+	if (!mD2ModelWidget->isRobotOnTheGround() || !mPhysicsEngine) {
 		mNeedSync = true;
 		return;
 	}
@@ -552,6 +550,21 @@ details::NxtDisplay *D2RobotModel::display()
 
 void D2RobotModel::setNoiseSettings()
 {
+	bool const oldPhysics = mIsRealisticPhysics;
+	mIsRealisticPhysics = SettingsManager::value("2DModelRealisticPhysics").toBool();
+	if (oldPhysics != mIsRealisticPhysics || !mPhysicsEngine) {
+		physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
+		if (mIsRealisticPhysics) {
+			mPhysicsEngine = new physics::RealisticPhysicsEngine(mWorldModel);
+		} else {
+			mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel);
+		}
+
+		if (oldEngine) {
+			delete oldEngine;
+		}
+	}
+
 	mNeedSensorNoise = SettingsManager::value("enableNoiseOfSensors").toBool();
 	mNeedMotorNoise = SettingsManager::value("enableNoiseOfMotors").toBool();
 	mNoiseGen.setApproximationLevel(SettingsManager::value("approximationLevel").toUInt());

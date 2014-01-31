@@ -105,8 +105,6 @@ public slots:
 	void worldWallDragged(WallItem *wall, QPainterPath const &shape, QPointF const& oldPos);
 	/// Places in 2D model same sensors as selected in QReal settings
 	void syncronizeSensors();
-	/// Synchronizes noise settings in 2D model window with global ones
-	void rereadNoiseSettings();
 	/// Starts 2D model time counter
 	void startTimelineListening();
 	/// Stops 2D model time counter
@@ -169,7 +167,7 @@ private slots:
 	void setCursorType(enums::cursorType::CursorType cursor);
 
 	void alignWalls();
-	void changeNoiseSettings();
+	void changePhysicsSettings();
 
 	void onTimelineTick();
 

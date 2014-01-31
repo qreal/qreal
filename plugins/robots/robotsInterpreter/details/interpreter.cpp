@@ -20,24 +20,22 @@ using namespace interpreters::robots::details;
 int const maxThreadsCount = 100;
 
 Interpreter::Interpreter()
-	: mGraphicalModelApi(NULL)
-	, mLogicalModelApi(NULL)
-	, mInterpretersInterface(NULL)
+	: mGraphicalModelApi(nullptr)
+	, mLogicalModelApi(nullptr)
+	, mInterpretersInterface(nullptr)
 	, mState(idle)
 	, mRobotModel(new RobotModel())
-	, mBlocksTable(NULL)
-	, mParser(NULL)
+	, mBlocksTable(nullptr)
+	, mParser(nullptr)
 	, mRobotCommunication(new RobotCommunicator())
 	, mImplementationType(robots::enums::robotModelType::null)
-	, mWatchListWindow(NULL)
-	, mActionConnectToRobot(NULL)
+	, mWatchListWindow(nullptr)
+	, mActionConnectToRobot(nullptr)
 {
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
 
 	connect(mD2ModelWidget, SIGNAL(modelChanged(QDomDocument)), this, SLOT(on2dModelChanged(QDomDocument)));
-	connect(mD2ModelWidget, SIGNAL(noiseSettingsChanged()), this, SIGNAL(noiseSettingsChangedBy2DModelWidget()));
-	connect(this, SIGNAL(noiseSettingsChanged()), mD2ModelWidget, SLOT(rereadNoiseSettings()));
 	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
 	connect(mRobotModel, SIGNAL(sensorsConfigured()), this, SLOT(sensorsConfiguredSlot()));
 	connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(connectedSlot(bool)));
@@ -539,12 +537,6 @@ void Interpreter::setCommunicator(QString const &valueOfCommunication)
 void Interpreter::setConnectRobotAction(QAction *actionConnect)
 {
 	mActionConnectToRobot = actionConnect;
-}
-
-void Interpreter::setNoiseSettings()
-{
-	mD2RobotModel->setNoiseSettings();
-	emit noiseSettingsChanged();
 }
 
 void Interpreter::reportError(QString const &message)
