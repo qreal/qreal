@@ -34,7 +34,7 @@ public:
 	QList<ColorFieldItem *> const &colorFields() const;
 
 	int wallsCount() const;
-	WallItem *wallAt(int index);
+	WallItem *wallAt(int index) const;
 	void addWall(WallItem* wall);
 	void removeWall(WallItem* wall);
 
