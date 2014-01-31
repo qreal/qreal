@@ -272,19 +272,16 @@ QString EditorManager::mouseGesture(const Id &id) const
 	return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
 }
 
-QIcon EditorManager::icon(const Id &id) const
+QIcon EditorManager::icon(Id const &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
-	// QIcon will take ownership of engine, no need for us to delete
-	return mPluginIface[id.editor()]->getIcon(engine);
+	return SdfIconLoader::iconOf(":/generated/shapes/" + id.element() + "Class.sdf");
 }
 
 QSize EditorManager::iconSize(Id const &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	SdfIconEngineV2 *engine = new SdfIconEngineV2(":/generated/shapes/" + id.element() + "Class.sdf");
-	return engine->preferedSize();
+	return SdfIconLoader::preferedSizeOf(":/generated/shapes/" + id.element() + "Class.sdf");
 }
 
 ElementImpl *EditorManager::elementImpl(const Id &id) const

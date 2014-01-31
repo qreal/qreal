@@ -10,6 +10,7 @@ using namespace qReal::interpreters::robots;
 
 PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 		: PreferencesPage(parent)
+		, details::SensorsConfigurationProvider("PreferencesRobotSettingsPage")
 		, mUi(new Ui::PreferencesRobotSettingsPage)
 		, mSensorsWidget(new details::SensorsConfigurationWidget(false))
 {
@@ -32,6 +33,8 @@ PreferencesRobotSettingsPage::PreferencesRobotSettingsPage(QWidget *parent)
 	connect(mUi->tcpRadioButton, SIGNAL(toggled(bool)), this, SLOT(onSomethingChanged()));
 
 	connect(mUi->manualComPortCheckbox, SIGNAL(toggled(bool)), this, SLOT(manualComPortCheckboxChecked(bool)));
+
+	mSensorsWidget->connectSensorsConfigurationProvider(this);
 
 	connect(mUi->textVisibleCheckBox, SIGNAL(toggled(bool)), this, SIGNAL(textVisibleChanged(bool)));
 	QList<QextPortInfo> ports = QextSerialEnumerator::getPorts();
@@ -300,9 +303,4 @@ void PreferencesRobotSettingsPage::save()
 void PreferencesRobotSettingsPage::restoreSettings()
 {
 	refreshValuesOnUi();
-}
-
-void PreferencesRobotSettingsPage::refreshPorts()
-{
-	mSensorsWidget->refresh();
 }

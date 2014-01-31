@@ -181,7 +181,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tint isNodeOrEdge(QString const &element) const override;\n"
 		<< "\n"
-		<< "\tQIcon getIcon(qReal::SdfIconEngineV2Interface *engine) const override;\n"
 		<< "\tqReal::ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const override;\n"
 		<< "\tQString getPropertyType(QString const &element, QString const &property) const override;\n"
 		<< "\tQString getPropertyDefaultValue(QString const &element, QString const &property) const override;\n"
@@ -549,10 +548,6 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 		<< "QStringList " << mPluginName << "Plugin::getPropertiesWithDefaultValues(QString const &element) const\n{\n"
 		<< "\treturn mPropertyDefault[element].keys();\n"
-		<< "}\n\n"
-
-		<< "QIcon " << mPluginName << "Plugin::getIcon(qReal::SdfIconEngineV2Interface *engine) const\n{\n"
-		<< "\treturn QIcon(engine);\n"
 		<< "}\n\n"
 
 		<< "QString " << mPluginName << "Plugin::editorName() const\n{\n"

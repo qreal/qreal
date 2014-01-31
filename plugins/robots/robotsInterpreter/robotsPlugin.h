@@ -10,6 +10,7 @@
 #include "customizer.h"
 #include "details/interpreter.h"
 #include "details/sensorsConfigurationWidget.h"
+#include "details/sensorsConfigurationManager.h"
 #include "details/nxtDisplay.h"
 
 namespace qReal {
@@ -61,7 +62,7 @@ private:
 
 	void reinitModelType();
 
-	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
+	details::SensorsConfigurationWidget *produceSensorsConfigurer();
 
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
@@ -114,6 +115,8 @@ private:
 	QTranslator *mAppTranslator;  // Has ownership
 
 	SceneCustomizationInterface *mSceneCustomizer;  // Does not have ownership
+
+	details::SensorsConfigurationManager mSensorsConfigurationManager;
 };
 
 }
