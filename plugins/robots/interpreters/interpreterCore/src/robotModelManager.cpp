@@ -19,7 +19,6 @@ void RobotModelManager::setRobotModel(interpreterBase::robotModel::RobotModelInt
 {
 	// TODO: assign default robotModel if null passed
 	// TODO: move DefaultRobotModel class into interpreterCore
-	// TODO: remove proxy model?
 	if (instance()->mRobotModel != robotModel) {
 		// TODO: implement hierarchical structure in settings manager
 		QString const selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();

@@ -20,7 +20,6 @@ SOURCES += \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/portInfo.cpp \
 	$$PWD/src/robotModel/pluggableDeviceInfo.cpp \
-	$$PWD/src/robotModel/proxyRobotModel.cpp \
 	$$PWD/src/robotModel/details/defaultRobotModel.cpp \
 	$$PWD/src/robotModel/robotParts/pluggableDevice.cpp
 
@@ -38,7 +37,6 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \
 	$$PWD/include/interpreterBase/robotModel/portInfo.h \
 	$$PWD/include/interpreterBase/robotModel/pluggableDeviceInfo.h \
-	$$PWD/include/interpreterBase/robotModel/proxyRobotModel.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelInterface.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/brick.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/motor.h \
