@@ -20,7 +20,8 @@ using namespace interpreters::robots::details;
 int const maxThreadsCount = 100;
 
 Interpreter::Interpreter()
-	: mGraphicalModelApi(nullptr)
+	: SensorsConfigurationProvider("Interpreter")
+	, mGraphicalModelApi(nullptr)
 	, mLogicalModelApi(nullptr)
 	, mInterpretersInterface(nullptr)
 	, mState(idle)
@@ -34,6 +35,7 @@ Interpreter::Interpreter()
 {
 	mD2RobotModel = new d2Model::D2RobotModel();
 	mD2ModelWidget = mD2RobotModel->createModelWidget();
+	mD2ModelWidget->connectSensorsConfigurationProvider(this);
 
 	connect(mD2ModelWidget, SIGNAL(modelChanged(QDomDocument)), this, SLOT(on2dModelChanged(QDomDocument)));
 	connect(mRobotModel, SIGNAL(disconnected()), this, SLOT(disconnectSlot()));
@@ -571,39 +573,35 @@ void Interpreter::saveSensorConfiguration()
 
 void Interpreter::loadSensorConfiguration(Id const &diagramId)
 {
-	int const oldSensor1Value = SettingsManager::value("port1SensorType").toInt();
-	int const oldSensor2Value = SettingsManager::value("port2SensorType").toInt();
-	int const oldSensor3Value = SettingsManager::value("port3SensorType").toInt();
-	int const oldSensor4Value = SettingsManager::value("port4SensorType").toInt();
-
 	int const sensor1Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor1Value").toInt();
 	int const sensor2Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor2Value").toInt();
 	int const sensor3Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor3Value").toInt();
 	int const sensor4Value = mLogicalModelApi->propertyByRoleName(diagramId, "sensor4Value").toInt();
 
-	bool const somethingChanged = oldSensor1Value != sensor1Value
-			|| oldSensor2Value != sensor2Value
-			|| oldSensor3Value != sensor3Value
-			|| oldSensor4Value != sensor4Value;
+	sensorConfigurationChanged(
+			robots::enums::inputPort::port1
+			, static_cast<robots::enums::sensorType::SensorTypeEnum>(sensor1Value)
+			);
 
-	SettingsManager::setValue("port1SensorType", sensor1Value);
-	SettingsManager::setValue("port2SensorType", sensor2Value);
-	SettingsManager::setValue("port3SensorType", sensor3Value);
-	SettingsManager::setValue("port4SensorType", sensor4Value);
+	sensorConfigurationChanged(
+			robots::enums::inputPort::port2
+			, static_cast<robots::enums::sensorType::SensorTypeEnum>(sensor2Value)
+			);
 
-	if (somethingChanged) {
-		emit sensorsConfigurationChanged();
-	}
+	sensorConfigurationChanged(
+			robots::enums::inputPort::port3
+			, static_cast<robots::enums::sensorType::SensorTypeEnum>(sensor3Value)
+			);
+
+	sensorConfigurationChanged(
+			robots::enums::inputPort::port4
+			, static_cast<robots::enums::sensorType::SensorTypeEnum>(sensor4Value)
+			);
 }
 
 utils::WatchListWindow *Interpreter::watchWindow() const
 {
 	return mWatchListWindow;
-}
-
-void Interpreter::connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const
-{
-	connect(configurer, SIGNAL(saved()), mD2ModelWidget, SLOT(syncronizeSensors()));
 }
 
 void Interpreter::updateGraphicWatchSensorsList()
@@ -620,6 +618,18 @@ void Interpreter::updateGraphicWatchSensorsList()
 	mGraphicsWatch->addTrackingObject(3, QString("Sensor4")
 			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
 					(SettingsManager::instance()->value("port4SensorType").toInt())));
+}
+
+void Interpreter::onSensorConfigurationChanged(
+		robots::enums::inputPort::InputPortEnum port
+		, robots::enums::sensorType::SensorTypeEnum type
+		)
+{
+	Q_UNUSED(port);
+	Q_UNUSED(type);
+
+	saveSensorConfiguration();
+	updateGraphicWatchSensorsList();
 }
 
 utils::sensorsGraph::SensorsGraph *Interpreter::graphicsWatchWindow() const

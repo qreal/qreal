@@ -15,7 +15,7 @@
 #include "details/d2RobotModel/d2RobotModel.h"
 #include "details/robotsBlockParser.h"
 #include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
-#include "details/sensorsConfigurationWidget.h"
+#include "details/sensorsConfigurationProvider.h"
 #include "details/nxtDisplay.h"
 
 namespace qReal {
@@ -23,7 +23,7 @@ namespace interpreters {
 namespace robots {
 namespace details {
 
-class Interpreter : public QObject
+class Interpreter : public QObject, public SensorsConfigurationProvider
 {
 	Q_OBJECT
 
@@ -65,11 +65,7 @@ public:
 	void disableD2ModelWidgetRunStopButtons();
 
 	utils::WatchListWindow *watchWindow() const;
-	void connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const;
 	utils::sensorsGraph::SensorsGraph *graphicsWatchWindow() const;
-
-signals:
-	void sensorsConfigurationChanged();
 
 public slots:
 	void connectToRobot();
@@ -78,8 +74,6 @@ public slots:
 	void showD2ModelWidget(bool isVisible);
 	void showWatchList();
 	void onTabChanged(Id const &diagramId, bool enabled);
-	void saveSensorConfiguration();
-	void updateGraphicWatchSensorsList();
 
 private slots:
 	void threadStopped();
@@ -108,16 +102,23 @@ private slots:
 	void loadSensorConfiguration(Id const &diagramId);
 
 private:
-	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
-	void addThread(details::Thread * const thread);
-	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
-	void resetVariables();
-
 	enum InterpreterState {
 		interpreting
 		, waitingForSensorsConfiguredToLaunch
 		, idle
 	};
+
+	void setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl);
+	void addThread(details::Thread * const thread);
+	void updateSensorValues(QString const &sensorVariableName, int sensorValue);
+	void resetVariables();
+	void saveSensorConfiguration();
+	void updateGraphicWatchSensorsList();
+
+	void onSensorConfigurationChanged(
+			qReal::interpreters::robots::enums::inputPort::InputPortEnum port
+			, qReal::interpreters::robots::enums::sensorType::SensorTypeEnum type
+			) override;
 
 	GraphicalModelAssistInterface const *mGraphicalModelApi;
 	LogicalModelAssistInterface *mLogicalModelApi;
