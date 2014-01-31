@@ -51,8 +51,10 @@ D2ModelWidget::D2ModelWidget(RobotModelInterface *robotModel, WorldModel *worldM
 
 	connectUiButtons();
 
+	mUi->realisticPhysicsCheckBox->setChecked(SettingsManager::value("2DModelRealisticPhysics").toBool());
 	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
 	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
+	changePhysicsSettings();
 
 	connect(mScene, SIGNAL(mousePressed(QGraphicsSceneMouseEvent *)), this, SLOT(mousePressed(QGraphicsSceneMouseEvent*)));
 	connect(mScene, SIGNAL(mouseMoved(QGraphicsSceneMouseEvent*)), this, SLOT(mouseMoved(QGraphicsSceneMouseEvent*)));
@@ -122,8 +124,9 @@ void D2ModelWidget::initWidget()
 
 void D2ModelWidget::connectUiButtons()
 {
-	connect(mUi->enableMotorNoiseCheckBox, SIGNAL(toggled(bool)), this, SLOT(changeNoiseSettings()));
-	connect(mUi->enableSensorNoiseCheckBox, SIGNAL(toggled(bool)), this, SLOT(changeNoiseSettings()));
+	connect(mUi->realisticPhysicsCheckBox, SIGNAL(toggled(bool)), this, SLOT(changePhysicsSettings()));
+	connect(mUi->enableMotorNoiseCheckBox, SIGNAL(toggled(bool)), this, SLOT(changePhysicsSettings()));
+	connect(mUi->enableSensorNoiseCheckBox, SIGNAL(toggled(bool)), this, SLOT(changePhysicsSettings()));
 
 	connect(mUi->ellipseButton, SIGNAL(toggled(bool)), this, SLOT(addEllipse(bool)));
 	connect(mUi->stylusButton, SIGNAL(toggled(bool)), this, SLOT(addStylus(bool)));
@@ -333,12 +336,6 @@ void D2ModelWidget::onFirstShow()
 	refreshSensorsConfiguration();
 }
 
-void D2ModelWidget::rereadNoiseSettings()
-{
-	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
-	mUi->enableMotorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfMotors").toBool());
-}
-
 bool D2ModelWidget::isRobotOnTheGround()
 {
 	return mRobot && mRobot->isOnTheGround();
@@ -520,7 +517,7 @@ void D2ModelWidget::resetButtons()
 
 QComboBox *D2ModelWidget::currentComboBox()
 {
-	switch (mCurrentPort){
+	switch (mCurrentPort) {
 	case robots::enums::inputPort::port1:
 		return mUi->port1Box;
 	case robots::enums::inputPort::port2:
@@ -1151,14 +1148,13 @@ void D2ModelWidget::setCursorType(enums::cursorType::CursorType cursor)
 	mUi->graphicsView->setCursor(cursorTypeToCursor(cursor));
 }
 
-void D2ModelWidget::changeNoiseSettings()
+void D2ModelWidget::changePhysicsSettings()
 {
-	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->checkState() == Qt::Checked);
-	SettingsManager::setValue("enableNoiseOfMotors", mUi->enableMotorNoiseCheckBox->checkState() == Qt::Checked);
+	SettingsManager::setValue("2DModelRealisticPhysics", mUi->realisticPhysicsCheckBox->isChecked());
+	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->isChecked());
+	SettingsManager::setValue("enableNoiseOfMotors", mUi->enableMotorNoiseCheckBox->isChecked());
 
 	static_cast<D2RobotModel *>(mRobotModel)->setNoiseSettings();
-
-	emit noiseSettingsChanged();
 }
 
 void D2ModelWidget::startTimelineListening()
