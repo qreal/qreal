@@ -11,7 +11,6 @@ DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 
 HEADERS += \
 	$$PWD/src/blocksBase/blocksFactory.h \
-	$$PWD/src/robotModel/details/defaultRobotModel.h \
 
 SOURCES += \
 	$$PWD/src/blocksBase/block.cpp \
@@ -20,7 +19,6 @@ SOURCES += \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/portInfo.cpp \
 	$$PWD/src/robotModel/pluggableDeviceInfo.cpp \
-	$$PWD/src/robotModel/details/defaultRobotModel.cpp \
 	$$PWD/src/robotModel/robotParts/pluggableDevice.cpp
 
 HEADERS += \

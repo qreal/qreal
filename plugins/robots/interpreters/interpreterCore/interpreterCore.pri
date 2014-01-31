@@ -9,6 +9,7 @@ LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase
 
 HEADERS += \
 	$$PWD/src/customizer.h \
+	$$PWD/src/defaultRobotModel.h \
 	$$PWD/src/kitPluginManager.h \
 	$$PWD/src/robotsPlugin.h \
 	$$PWD/src/robotsSettingsPage.h \
@@ -27,6 +28,7 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
+	$$PWD/src/defaultRobotModel.cpp \
 	$$PWD/src/kitPluginManager.cpp \
 	$$PWD/src/robotsPlugin.cpp \
 	$$PWD/src/robotsSettingsPage.cpp \
