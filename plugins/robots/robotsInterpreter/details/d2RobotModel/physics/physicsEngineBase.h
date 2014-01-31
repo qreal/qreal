@@ -31,7 +31,7 @@ public:
 	/// Counts robot`s parameters modifications for the given time interval
 	virtual void recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 			, bool engine1Break, bool engine2Break
-			, QPointF const &rotationCenter, QVector2D const &direction
+			, QPointF const &rotationCenter, qreal robotAngle
 			, QPainterPath const &robotBoundingPath) = 0;
 
 protected:

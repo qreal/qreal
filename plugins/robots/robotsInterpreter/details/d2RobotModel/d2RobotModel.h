@@ -83,7 +83,6 @@ private:
 		int degrees;
 		ATime activeTimeType;
 		bool isUsed;
-		qreal motorFactor;
 		bool breakMode;
 	};
 

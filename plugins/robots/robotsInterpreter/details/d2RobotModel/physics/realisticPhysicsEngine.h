@@ -9,9 +9,7 @@ namespace details {
 namespace d2Model {
 namespace physics {
 
-/// An interface for 2D model physical engine strategy. Calling recalculateParams() method
-/// counts position shift and angle modification for the given time interval that can be get
-/// with shift() and rotation() methods correspondingly.
+/// An implementation of 2D model physical engine with some realistic effects (like friction emulation)
 class RealisticPhysicsEngine : public PhysicsEngineBase
 {
 public:
@@ -19,7 +17,7 @@ public:
 
 	void recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 			, bool engine1Break, bool engine2Break
-			, QPointF const &rotationCenter, QVector2D const &direction
+			, QPointF const &rotationCenter, qreal robotAngle
 			, QPainterPath const &robotBoundingPath) override;
 
 private:

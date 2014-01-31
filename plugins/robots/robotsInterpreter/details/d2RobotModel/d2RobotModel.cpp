@@ -1,13 +1,11 @@
 #include "d2RobotModel.h"
 
 #include <qrkernel/settingsManager.h>
-#include <qrutils/mathUtils/math.h>
-#include <qrutils/mathUtils/geometry.h>
-#include <qrutils/mathUtils/gaussNoise.h>
 
 #include "constants.h"
 #include "details/tracer.h"
 #include "physics/realisticPhysicsEngine.h"
+#include "physics/simplePhysicsEngine.h"
 
 using namespace qReal::interpreters::robots;
 using namespace details;
@@ -69,7 +67,6 @@ void D2RobotModel::clear()
 D2RobotModel::Engine *D2RobotModel::initEngine(int radius, int speed, long unsigned int degrees, int port, bool isUsed)
 {
 	Engine *engine = new Engine();
-	engine->motorFactor = 0;
 	engine->radius = radius;
 	engine->speed = speed;
 	engine->degrees = degrees;
@@ -102,10 +99,6 @@ void D2RobotModel::setNewMotor(int speed, uint degrees, int port, bool breakMode
 		mEngines[port]->activeTimeType = DoByLimit;
 	} else {
 		mEngines[port]->activeTimeType = DoInf;
-	}
-
-	if (speed) {
-		mEngines[port]->motorFactor = 0.5;
 	}
 }
 
@@ -430,11 +423,6 @@ QPointF D2RobotModel::rotationCenter() const
 	return QPointF(mPos.x() + robotWidth / 2, mPos.y() + robotHeight / 2);
 }
 
-QVector2D D2RobotModel::robotDirectionVector() const
-{
-	return mathUtils::Geometry::directionVector(mAngle);
-}
-
 void D2RobotModel::nextStep()
 {
 	mPos += mPhysicsEngine->shift().toPointF();
@@ -465,12 +453,12 @@ void D2RobotModel::recalculateParams()
 	engine1->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine1->speed) : engine1->speed;
 	engine2->spoiledSpeed = mNeedMotorNoise ? varySpeed(engine2->speed) : engine2->speed;
 
-	qreal const speed1 = engine1->spoiledSpeed * 2 * M_PI * engine1->radius * onePercentAngularVelocity / 360 * engine1->motorFactor;
-	qreal const speed2 = engine2->spoiledSpeed * 2 * M_PI * engine2->radius * onePercentAngularVelocity / 360 * engine2->motorFactor;
+	qreal const speed1 = engine1->spoiledSpeed * 2 * M_PI * engine1->radius * onePercentAngularVelocity / 360;
+	qreal const speed2 = engine2->spoiledSpeed * 2 * M_PI * engine2->radius * onePercentAngularVelocity / 360;
 
 	mPhysicsEngine->recalculateParams(Timeline::timeInterval, speed1, speed2
 			, engine1->breakMode, engine2->breakMode
-			, rotationCenter(), robotDirectionVector()
+			, rotationCenter(), mAngle
 			, mD2ModelWidget->robotBoundingPolygon(mPos, mAngle));
 	nextStep();
 	countMotorTurnover();

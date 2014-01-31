@@ -19,9 +19,11 @@ RealisticPhysicsEngine::RealisticPhysicsEngine(WorldModel const &worldModel)
 
 void RealisticPhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 		, bool engine1Break, bool engine2Break
-		, QPointF const &rotationCenter, QVector2D const &direction
+		, QPointF const &rotationCenter, qreal robotAngle
 		, QPainterPath const &robotBoundingPath)
 {
+	QVector2D const direction = Geometry::directionVector(robotAngle);
+
 	mReactionForce = QVector2D();
 	mWallsFrictionForce = QVector2D();
 	mForceMomentDecrement = 0;
