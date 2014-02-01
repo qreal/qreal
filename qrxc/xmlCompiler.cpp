@@ -1,4 +1,4 @@
-﻿#include "xmlCompiler.h"
+#include "xmlCompiler.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QDir>
