@@ -16,15 +16,6 @@ public:
 
 	@@MetamodelName@@Plugin();
 
-	virtual void initPlugin();
-	virtual void initMouseGestureMap();
-	virtual void initNameMap();
-	virtual void initPropertyMap();
-	virtual void initPropertyDefaultsMap();
-	virtual void initParentsMap();
-	virtual void initDescriptionMap();
-	virtual void initExplosionsMap();
-
 	virtual QString id() const { return "@@MetamodelName@@"; }
 
 	virtual QStringList diagrams() const;
@@ -38,6 +29,7 @@ public:
 	virtual QStringList diagramPaletteGroupList(QString const &diagram, QString const &group) const;
 	virtual QString diagramPaletteGroupDescription(QString const &diagram, QString const &group) const;
 	virtual QStringList getPropertiesWithDefaultValues(QString const &element) const;
+	virtual bool shallPaletteBeSorted(QString const &diagram) const;
 
 	virtual QStringList getTypesContainedBy(QString const &element) const;
 	virtual QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > getPossibleEdges(QString const &element) const;
@@ -64,6 +56,16 @@ public:
 	virtual QList<qReal::ListenerInterface*> listeners() const;
 
 private:
+	virtual void initPlugin();
+	virtual void initMouseGestureMap();
+	virtual void initNameMap();
+	virtual void initPropertyMap();
+	virtual void initPropertyDefaultsMap();
+	virtual void initParentsMap();
+	virtual void initDescriptionMap();
+	virtual void initExplosionsMap();
+	virtual void initShallPaletteBeSortedMap();
+
 	QMap<QString, QIcon> iconMap;
 	QMap<QString, QString> diagramNameMap;
 	QMap<QString, QString> diagramNodeNameMap;
@@ -76,6 +78,7 @@ private:
 	QMap<QString, QMap<QString, QMap<QString, QString> > > propertiesDisplayedNamesMap;
 	QMap<QString, QMap<QString, QList<QPair<QString, QString> > > > parentsMap;
 	QMap<QString, QMap<QString, QStringList > > paletteGroupsMap;
+	QMap<QString, bool> mShallPaletteBeSortedMap;
 	QMap<QString, QMap<QString, QString > > paletteGroupsDescriptionMap;
 };
 

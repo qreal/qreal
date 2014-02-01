@@ -16,6 +16,7 @@ void @@MetamodelName@@Plugin::initPlugin()
 	initPropertyDefaultsMap();
 	initParentsMap();
 	initDescriptionMap();
+	initShallPaletteBeSortedMap();
 }
 
 void @@MetamodelName@@Plugin::initNameMap()
@@ -45,6 +46,12 @@ void @@MetamodelName@@Plugin::initParentsMap()
 {
 @@InitParentsMapLine@@
 }
+
+void TestMetamodelPlugin::initShallPaletteBeSortedMap()
+{
+	//TODO: realize
+}
+
 
 void @@MetamodelName@@Plugin::initDescriptionMap()
 {
@@ -116,6 +123,11 @@ QStringList @@MetamodelName@@Plugin::getPropertiesWithDefaultValues(QString cons
 QString @@MetamodelName@@Plugin::diagramPaletteGroupDescription(QString const &diagram, QString const &group) const
 {
 	return paletteGroupsDescriptionMap[diagram][group];
+}
+
+bool TestMetamodelPlugin::shallPaletteBeSorted(QString const &diagram) const
+{
+	return mShallPaletteBeSortedMap[diagram];
 }
 
 QIcon @@MetamodelName@@Plugin::getIcon(qReal::SdfIconEngineV2Interface *engine) const
