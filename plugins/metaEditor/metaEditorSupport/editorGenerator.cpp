@@ -41,8 +41,8 @@ QHash<Id, QString > EditorGenerator::getMetamodelList(QString const &pathToQReal
 				pathToQRealRoot = pathToQRealSources;
 			}
 			if (!directoryName.isEmpty() && !pathToQRealRoot.isEmpty()) {
-					QString savingData = directoryName;
-					metamodelList.insert(key, savingData);
+				QString savingData = directoryName;
+				metamodelList.insert(key, savingData);
 			} else {
 				mErrorReporter.addError(
 						QObject::tr("no directory to generated code or path to QReal Source Files"), key);

@@ -166,7 +166,6 @@ bool GraphicType::resolve()
 			parentName = NameNormalizer::normalize(parentName);
 		}
 		QString const qualifiedParentName = nativeContext() + "::" + parentName;
-		//bydlo-code :(
 
 		Type *parent = mDiagram->findType(qualifiedParentName);
 		if (parent == NULL) {
@@ -227,7 +226,7 @@ bool GraphicType::isGraphicalType() const
 	return mIsVisible;
 }
 
-QString GraphicType::generateProperties(const QString &lineTemplate) const
+QString GraphicType::generateProperties(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -248,7 +247,7 @@ QString GraphicType::generateProperties(const QString &lineTemplate) const
 	return propertiesString;
 }
 
-QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
+QString GraphicType::generatePropertyDefaults(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -261,7 +260,7 @@ QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
 	return defaultsString;
 }
 
-QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate) const
+QString GraphicType::generatePropertyDisplayedNames(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -290,7 +289,7 @@ QString GraphicType::generateDescriptions(QString const &lineTemplate) const
 	return "";
 }
 
-QString GraphicType::generateReferenceProperties(const QString &lineTemplate) const
+QString GraphicType::generateReferenceProperties(QString const &lineTemplate) const
 {
 	if (!mIsVisible)
 		return "";
@@ -321,7 +320,7 @@ QString GraphicType::generateParents(QString const &lineTemplate) const
 	return parentsMapString;
 }
 
-QString GraphicType::generateContainers(const QString &lineTemplate) const
+QString GraphicType::generateContainers(QString const &lineTemplate) const
 {
 	if (!isGraphicalType() || mContains.isEmpty())
 		return "";
@@ -336,7 +335,7 @@ QString GraphicType::generateContainers(const QString &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateConnections(const QString &lineTemplate) const
+QString GraphicType::generateConnections(QString const &lineTemplate) const
 {
 	if (!isGraphicalType() || mConnections.isEmpty())
 		return "";
@@ -349,7 +348,7 @@ QString GraphicType::generateConnections(const QString &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateUsages(const QString &lineTemplate) const
+QString GraphicType::generateUsages(QString const &lineTemplate) const
 {
 	if (!isGraphicalType() || mUsages.isEmpty())
 		return "";
@@ -362,13 +361,13 @@ QString GraphicType::generateUsages(const QString &lineTemplate) const
 	return line;
 }
 
-QString GraphicType::generateEnums(const QString &lineTemplate) const
+QString GraphicType::generateEnums(QString const &lineTemplate) const
 {
 	Q_UNUSED(lineTemplate);
 	return "";
 }
 
-QString GraphicType::generatePossibleEdges(const QString &lineTemplate) const
+QString GraphicType::generatePossibleEdges(QString const &lineTemplate) const
 {
 	if (mPossibleEdges.isEmpty())
 		return "";
