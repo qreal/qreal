@@ -35,6 +35,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/configurationInterface.h \
 	$$PWD/include/interpreterBase/robotModel/portInfo.h \
 	$$PWD/include/interpreterBase/robotModel/pluggableDeviceInfo.h \
+	$$PWD/include/interpreterBase/robotModel/robotModelManagerInterface.h \
 	$$PWD/include/interpreterBase/robotModel/robotModelInterface.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/brick.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/motor.h \
