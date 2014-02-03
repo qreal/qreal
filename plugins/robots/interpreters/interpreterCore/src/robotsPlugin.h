@@ -121,6 +121,8 @@ private:
 	qReal::SceneCustomizationInterface *mSceneCustomizer;  // Does not have ownership
 
 	KitPluginManager mKitPluginManager;
+
+//	details::SensorsConfigurationManager mSensorsConfigurationManager;
 };
 
 }

@@ -13,6 +13,10 @@
 
 namespace twoDModel {
 
+namespace physics {
+class PhysicsEngineBase;
+}
+
 class D2RobotModel : public QObject, public RobotModelInterface
 {
 	Q_OBJECT
@@ -75,7 +79,6 @@ private:
 		int degrees;
 		ATime activeTimeType;
 		bool isUsed;
-		qreal motorFactor;
 		bool breakMode;
 	};
 
@@ -87,19 +90,6 @@ private:
 
 	QPointF rotationCenter() const;
 	QVector2D robotDirectionVector() const;
-
-	/// Counts and returns traction force vector taking into consideration engines speed and placement
-	void countTractionForceAndItsMoment(qreal speed1, qreal speed2, bool breakMode);
-
-	/// Applies all forces currently acting on robot
-	void recalculateVelocity();
-	void applyRotationalFrictionForce();
-
-	/// Calculates forces and force moments acting on the robot from the walls
-	void findCollision(WallItem const &wall);
-
-	/// Returns robot to a point where it must be if it is currently in the wall
-	void getFromWalls();
 
 	void setSpeedFactor(qreal speedMul);
 	void initPosition();
@@ -138,25 +128,17 @@ private:
 	QHash<int, qreal> mTurnoverEngines;  // stores how many degrees the motor rotated on
 	SensorsConfiguration mSensorsConfiguration;
 	WorldModel mWorldModel;
+	physics::PhysicsEngineBase *mPhysicsEngine;
 	Timeline *mTimeline;
 	qreal mSpeedFactor;
 	utils::GaussNoise mNoiseGen;
 	bool mNeedSync;
+	bool mIsRealisticPhysics;
 	bool mNeedSensorNoise;
 	bool mNeedMotorNoise;
 
 	QPointF mPos;
 	qreal mAngle;
-
-	QVector2D mTractionForce;
-	QVector2D mReactionForce;
-	QVector2D mWallsFrictionForce;
-	QVector2D mGettingOutVector;
-	qreal mForceMomentDecrement;
-	qreal mForceMoment;
-
-	qreal mAngularVelocity;
-	QVector2D mVelocity;
 };
 
 }

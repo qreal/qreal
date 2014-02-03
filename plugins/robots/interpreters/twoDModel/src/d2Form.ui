@@ -601,11 +601,18 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item row="6" column="0" colspan="2">
-    <widget class="QGroupBox" name="noiseGroupBox">
+    <widget class="QGroupBox" name="physicsGroupBox">
      <property name="title">
-      <string>Noise</string>
+      <string>Physics</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="realisticPhysicsCheckBox">
+        <property name="text">
+         <string>Realistic physics</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QCheckBox" name="enableSensorNoiseCheckBox">
         <property name="text">

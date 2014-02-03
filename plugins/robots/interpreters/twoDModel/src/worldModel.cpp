@@ -119,7 +119,7 @@ int WorldModel::wallsCount() const
 	return mWalls.count();
 }
 
-WallItem *WorldModel::wallAt(int index)
+WallItem *WorldModel::wallAt(int index) const
 {
 	return mWalls[index];
 }

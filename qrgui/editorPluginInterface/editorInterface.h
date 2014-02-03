@@ -48,7 +48,6 @@ public:
 
 	virtual int isNodeOrEdge(QString const &element) const = 0;
 
-	virtual QIcon getIcon(SdfIconEngineV2Interface *engine) const = 0;
 	virtual ElementImpl* getGraphicalObject(QString const &diagram, QString const &element) const = 0;
 	virtual QStringList getPropertyNames(QString const &diagram, QString const &element) const = 0;
 	virtual QStringList getPortTypes(QString const &diagram, QString const &element) const = 0;

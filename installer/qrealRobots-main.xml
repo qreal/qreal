@@ -85,6 +85,9 @@
                     <origin>%1/bin/plugins/nxtGenerator.dll</origin>
                 </distributionFile>
                 <distributionFile>
+                    <origin>%1/bin/plugins/russianCGenerator.dll</origin>
+                </distributionFile>
+                <distributionFile>
                     <origin>%1/bin/plugins/robotsInterpreter.dll</origin>
                 </distributionFile>
                 <distributionFile>

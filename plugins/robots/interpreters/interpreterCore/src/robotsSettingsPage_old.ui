@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>423</width>
-    <height>711</height>
+    <height>774</height>
    </rect>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="10" column="0" colspan="2">
+   <item row="9" column="0" colspan="2">
     <spacer name="verticalSpacer_3">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -27,7 +27,7 @@
      </property>
     </spacer>
    </item>
-   <item row="10" column="0" colspan="2">
+   <item row="9" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -168,7 +168,7 @@
      </layout>
     </widget>
    </item>
-   <item row="7" column="0" colspan="2">
+   <item row="6" column="0" colspan="2">
     <widget class="QGroupBox" name="graphicsWatcherBox">
      <property name="title">
       <string>Graphics Watcher update intervals</string>
@@ -243,7 +243,7 @@
      </layout>
     </widget>
    </item>
-   <item row="8" column="0" colspan="2">
+   <item row="7" column="0" colspan="2">
     <widget class="QGroupBox" name="elementsGroupBox">
      <property name="title">
       <string>Elements</string>
@@ -294,73 +294,6 @@
         </property>
         <property name="value">
          <number>4000</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="5" column="0" colspan="2">
-    <widget class="QGroupBox" name="noiseSensorsGroupBox">
-     <property name="title">
-      <string>Noise</string>
-     </property>
-     <layout class="QFormLayout" name="formLayout">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-      </property>
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
-       <number>9</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="enableSensorNoiseCheckBox">
-        <property name="text">
-         <string>Realistic sensors</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="approximationLabel">
-        <property name="toolTip">
-         <string>For higher value the behaviour is closer to realistic but performance is lower.</string>
-        </property>
-        <property name="text">
-         <string>Approximation level</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QSpinBox" name="approximationLevelSpinBox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimum">
-         <number>12</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="singleStep">
-         <number>4</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="enableMotorNoiseCheckBox">
-        <property name="text">
-         <string>Realistic engines</string>
         </property>
        </widget>
       </item>

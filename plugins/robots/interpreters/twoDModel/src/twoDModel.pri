@@ -30,6 +30,9 @@ HEADERS += \
 	$$PWD/d2ModelTimer.h \
 	$$PWD/gridParameters.h \
 	$$PWD/constants.h \
+	$$PWD/physics/physicsEngineBase.h \
+	$$PWD/physics/simplePhysicsEngine.h \
+	$$PWD/physics/realisticPhysicsEngine.h \
 
 SOURCES += \
 	$$PWD/d2ModelWidget.cpp \
@@ -49,6 +52,9 @@ SOURCES += \
 	$$PWD/timeline.cpp \
 	$$PWD/d2ModelTimer.cpp \
 	$$PWD/gridParameters.cpp \
+	$$PWD/physics/physicsEngineBase.cpp \
+	$$PWD/physics/simplePhysicsEngine.cpp \
+	$$PWD/physics/realisticPhysicsEngine.cpp \
 
 FORMS += \
 	$$PWD/d2Form.ui \
