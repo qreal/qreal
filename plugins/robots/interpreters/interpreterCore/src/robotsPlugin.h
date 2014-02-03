@@ -8,15 +8,16 @@
 
 #include "robotsSettingsPage.h"
 #include "customizer.h"
-#include "kitPluginManager.h"
-#include "interpreter/interpreter.h"
-#include "robotModelManager.h"
+
+#include "robotsPluginFacade.h"
 
 //#include "details/sensorsConfigurationWidget.h"
 //#include "details/nxtDisplay.h"
 
 namespace interpreterCore {
 
+/// Provides entry points to robots plugin. Responsible for implementation of ToolPluginInterface and for
+/// interaction with QReal, like providing actions and hotkeys for user interface, reacting to actions.
 class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
@@ -25,13 +26,13 @@ class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 
 public:
 	RobotsPlugin();
-	virtual ~RobotsPlugin();
+	~RobotsPlugin() override;
 
-	virtual void init(qReal::PluginConfigurator const &configurator);
-	virtual QList<qReal::ActionInfo> actions();
-	virtual QList<qReal::HotKeyActionInfo> hotKeyActions();
-	virtual QPair<QString, PreferencesPage *> preferencesPage();
-	virtual qReal::Customizer* customizationInterface();
+	void init(qReal::PluginConfigurator const &configurator) override;
+	virtual QList<qReal::ActionInfo> actions() override;
+	virtual QList<qReal::HotKeyActionInfo> hotKeyActions() override;
+	virtual QPair<QString, PreferencesPage *> preferencesPage() override;
+	virtual qReal::Customizer* customizationInterface() override;
 
 private slots:
 	void showRobotSettings();
@@ -71,9 +72,6 @@ private:
 
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
-
-	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
-	interpreter::InterpreterInterface *mInterpreter;  // Has ownership
 
 	/// Page with plugin settings. Created here, but then ownership is passed to
 	/// a caller of preferencesPage().
@@ -121,11 +119,7 @@ private:
 
 	qReal::SceneCustomizationInterface *mSceneCustomizer;  // Does not have ownership
 
-	KitPluginManager mKitPluginManager;
-
-	RobotModelManager mRobotModelManager;
-
-//	details::SensorsConfigurationManager mSensorsConfigurationManager;
+	RobotsPluginFacade mRobotsPluginFacade;
 };
 
 }

@@ -12,6 +12,7 @@ HEADERS += \
 	$$PWD/src/defaultRobotModel.h \
 	$$PWD/src/kitPluginManager.h \
 	$$PWD/src/robotsPlugin.h \
+	$$PWD/src/robotsPluginFacade.h \
 	$$PWD/src/robotsSettingsPage.h \
 	$$PWD/src/robotModelManager.h \
 	$$PWD/src/coreBlocks/coreBlocksFactory.h \
@@ -31,6 +32,7 @@ SOURCES += \
 	$$PWD/src/defaultRobotModel.cpp \
 	$$PWD/src/kitPluginManager.cpp \
 	$$PWD/src/robotsPlugin.cpp \
+	$$PWD/src/robotsPluginFacade.cpp \
 	$$PWD/src/robotsSettingsPage.cpp \
 	$$PWD/src/robotModelManager.cpp \
 	$$PWD/src/coreBlocks/coreBlocksFactory.cpp \
