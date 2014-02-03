@@ -3,33 +3,30 @@
 #include <QtCore/QObject>
 
 #include <interpreterBase/robotModel/robotModelInterface.h>
+#include <interpreterBase/robotModel/robotModelManagerInterface.h>
+
+#include "src/defaultRobotModel.h"
 
 namespace interpreterCore {
 
-/// Manages selected robot models providing
-class RobotModelManager : public QObject
+/// Contains a reference to currently selected robot model and provides a notification when it changes.
+/// This is the only place that has a valid up-to-date information about robot model, all other components shall
+/// use it as a reference.
+class RobotModelManager : public interpreterBase::robotModel::RobotModelManagerInterface
 {
 	Q_OBJECT
 
 public:
-	/// Returns single instance of the robot model manager
-	static RobotModelManager *instance();
+	RobotModelManager();
 
-	/// Returns current selected robot model
-	static interpreterBase::robotModel::RobotModelInterface *selectedModel();
+	interpreterBase::robotModel::RobotModelInterface &model() const override;
 
-	/// Must be called every time when user selects other robot model by robot model selector itself
-	static void setRobotModel(interpreterBase::robotModel::RobotModelInterface * const robotModel);
-
-signals:
-	/// Emitted every time when user selected other robot model
-	void robotModelChanged();
+	/// Changes currently selected robot model and notifies all about change by robotModelChanged signal.
+	void setModel(interpreterBase::robotModel::RobotModelInterface * const robotModel);
 
 private:
-	RobotModelManager();
-	~RobotModelManager();
-
-	interpreterBase::robotModel::RobotModelInterface *mRobotModel;  // Does not take ownership
+	interpreterBase::robotModel::RobotModelInterface *mRobotModel;  // Does not have ownership.
+	DefaultRobotModel mDefaultRobotModel;
 };
 
 }

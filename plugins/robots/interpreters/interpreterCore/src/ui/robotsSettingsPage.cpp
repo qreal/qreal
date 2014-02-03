@@ -13,10 +13,14 @@ using namespace interpreterCore::ui;
 using namespace interpreterBase;
 using namespace qReal;
 
-RobotsSettingsPage::RobotsSettingsPage(KitPluginManager &kitPluginManager, QWidget *parent)
-		: PreferencesPage(parent)
-		, mUi(new Ui::PreferencesRobotSettingsPage)
-		, mKitPluginManager(kitPluginManager)
+RobotsSettingsPage::RobotsSettingsPage(
+		KitPluginManager &kitPluginManager
+		, RobotModelManager &robotModelManager
+		, QWidget *parent)
+	: PreferencesPage(parent)
+	, mUi(new Ui::PreferencesRobotSettingsPage)
+	, mKitPluginManager(kitPluginManager)
+	, mRobotModelManager(robotModelManager)
 {
 	mIcon = QIcon(":/icons/preferences/robot.png");
 	mUi->setupUi(this);
@@ -279,5 +283,5 @@ void RobotsSettingsPage::saveSelectedRobotModel()
 	SettingsManager::setValue("SelectedRobotKit", selectedKitButton->objectName());
 	QAbstractButton * const selectedRobotModelButton = mKitRobotModels[selectedKitButton]->checkedButton();
 	// If null passed there default model will be used so it`s ok
-	RobotModelManager::setRobotModel(mButtonsToRobotModelsMapping[selectedRobotModelButton]);
+	mRobotModelManager.setModel(mButtonsToRobotModelsMapping[selectedRobotModelButton]);
 }

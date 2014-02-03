@@ -10,6 +10,7 @@
 #include "customizer.h"
 #include "kitPluginManager.h"
 #include "interpreter/interpreter.h"
+#include "robotModelManager.h"
 
 //#include "details/sensorsConfigurationWidget.h"
 //#include "details/nxtDisplay.h"
@@ -121,6 +122,10 @@ private:
 	qReal::SceneCustomizationInterface *mSceneCustomizer;  // Does not have ownership
 
 	KitPluginManager mKitPluginManager;
+
+	RobotModelManager mRobotModelManager;
+
+//	details::SensorsConfigurationManager mSensorsConfigurationManager;
 };
 
 }

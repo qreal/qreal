@@ -1,13 +1,13 @@
 #pragma once
 
-#include "abstractSensor.h"
+#include "vectorSensor.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {
 namespace robotModel {
 namespace robotParts {
 
-class ROBOTS_INTERPRETER_BASE_EXPORT AccelerometerSensor : public AbstractSensor
+class ROBOTS_INTERPRETER_BASE_EXPORT AccelerometerSensor : public VectorSensor
 {
 	Q_OBJECT
 

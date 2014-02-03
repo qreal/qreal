@@ -14,7 +14,8 @@ Block::Block()
 	, mGraphicalId(Id())
 //	, mParser(NULL)
 	, mState(idle)
-	, mErrorReporter(NULL)
+	, mErrorReporter(nullptr)
+	, mRobotModelManager(nullptr)
 {
 	connect(this, &BlockInterface::done, this, &Block::finishedRunning);
 }
@@ -27,13 +28,16 @@ void Block::init(Id const &graphicalId
 		, GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
 		, ErrorReporterInterface * const errorReporter
-		, BlockParserInterface * const parser)
+		, BlockParserInterface * const parser
+		, robotModel::RobotModelManagerInterface const &robotModelManager
+		)
 {
 	mGraphicalId = graphicalId;
 	mGraphicalModelApi = &graphicalModelApi;
 	mLogicalModelApi = &logicalModelApi;
 	mErrorReporter = errorReporter;
 	mParser = parser;
+	mRobotModelManager = &robotModelManager;
 //	additionalInit();
 }
 
@@ -176,6 +180,11 @@ bool Block::evaluateBool(QString const &propertyName)
 //	}
 //	return value;
 	return "";
+}
+
+interpreterBase::robotModel::RobotModelInterface &Block::model()
+{
+	return mRobotModelManager->model();
 }
 
 //QVector<bool> Block::parseEnginePorts() const

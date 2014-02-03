@@ -10,6 +10,7 @@
 #include <interpreterBase/blocksBase/blockInterface.h>
 #include <interpreterBase/blocksBase/blockParserInterface.h>
 #include <interpreterBase/blocksBase/blocksTableInterface.h>
+#include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 namespace interpreterBase {
 namespace blocksBase {
@@ -52,6 +53,8 @@ protected:
 	QVariant evaluate(QString const &propertyName);
 	bool evaluateBool(QString const &propertyName);
 
+	robotModel::RobotModelInterface &model();
+
 //	QVector<bool> parseEnginePorts() const;
 
 	qReal::Id mNextBlockId;
@@ -71,6 +74,7 @@ private:
 			, qReal::LogicalModelAssistInterface const &logicalModelApi
 			, qReal::ErrorReporterInterface * const errorReporter
 			, BlockParserInterface * const parser
+			, robotModel::RobotModelManagerInterface const &robotModelManager
 			);
 
 private:
@@ -80,12 +84,13 @@ private:
 		,failed
 	};
 
-	State mState;
-	qReal::ErrorReporterInterface * mErrorReporter;  // Doesn't have ownership.
-
 	virtual bool initNextBlocks();
 	virtual void additionalInit();
 	virtual void run() = 0;
+
+	State mState;
+	qReal::ErrorReporterInterface * mErrorReporter;  // Doesn't have ownership.
+	robotModel::RobotModelManagerInterface const *mRobotModelManager; // Doesn't have ownership.
 };
 
 }

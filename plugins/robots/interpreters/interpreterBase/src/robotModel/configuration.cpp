@@ -59,8 +59,18 @@ robotParts::PluggableDevice *Configuration::pluggableDevice(
 		PortInfo const &port
 		, PortDirection direction) const
 {
+	Q_UNUSED(direction);
+
 	// TODO: implement getting device by port direction
 	return mConfiguredDevices.value(port, nullptr);
+}
+
+QList<robotParts::PluggableDevice *> Configuration::pluggableDevices(PortDirection direction) const
+{
+	Q_UNUSED(direction);
+
+	// TODO: implement port direction
+	return mConfiguredDevices.values();
 }
 
 void Configuration::clearDevice(PortInfo const &port)

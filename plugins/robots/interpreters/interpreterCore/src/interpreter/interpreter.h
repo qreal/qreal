@@ -4,24 +4,14 @@
 #include <QtWidgets/QAction>
 
 #include <qrkernel/ids.h>
-//#include <qrutils/watchListWindow.h>
-//#include <qrutils/graphicsWatcher/sensorsGraph.h>
 #include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
 
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
-//#include "details/robotCommunication/robotCommunicator.h"
-//#include "sensorConstants.h"
-//#include "details/robotParts/robotModel.h"
 #include "details/thread.h"
 #include "details/blocksTable.h"
-//#include "details/d2RobotModel/d2RobotModel.h"
-
-
+#include "details/sensorVariablesUpdater.h"
 #include "details/robotsBlockParser.h"
-//#include "details/robotCommunication/bluetoothRobotCommunicationThread.h"
-//#include "details/sensorsConfigurationWidget.h"
-//#include "details/nxtDisplay.h"
 
 #include "interpreterInterface.h"
 
@@ -38,7 +28,7 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
 			, interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
-			, interpreterBase::robotModel::RobotModelInterface * const robotModel  // Does not take ownership.
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, QAction &connectToRobotAction
 			);
 
@@ -61,17 +51,6 @@ public slots:
 private slots:
 	void threadStopped();
 	void newThread(qReal::Id const &startBlockId);
-//	void runTimer();
-//	void readSensorValues();
-//	void slotFailure();
-
-//	void responseSlot1(int sensorValue);
-//	void responseSlot2(int sensorValue);
-//	void responseSlot3(int sensorValue);
-//	void responseSlot4(int sensorValue);
-//	void responseSlotA(int encoderValue);
-//	void responseSlotB(int encoderValue);
-//	void responseSlotC(int encoderValue);
 
 	void connectedSlot(bool success);
 	void sensorsConfiguredSlot();
@@ -102,13 +81,9 @@ private:
 
 	InterpreterState mState;
 	QList<details::Thread *> mThreads;  // Has ownership
-	interpreterBase::robotModel::RobotModelInterface *mRobotModel;  // Does not have ownership
+	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
-	details::RobotsBlockParser *mParser;
-//	QTimer mTimer;
-//	details::d2Model::D2ModelWidget *mD2ModelWidget;
-//	details::d2Model::D2RobotModel *mD2RobotModel;
-//	details::RobotCommunicator* const mRobotCommunication;
+	details::RobotsBlockParser *mParser;  // Has ownership
 
 	bool mConnected;
 
@@ -120,6 +95,8 @@ private:
 
 	/// Action responsible for the connection to the robot
 	QAction &mActionConnectToRobot;
+
+	details::SensorVariablesUpdater mSensorVariablesUpdater;
 
 //	QString mLastCommunicationValue;
 };

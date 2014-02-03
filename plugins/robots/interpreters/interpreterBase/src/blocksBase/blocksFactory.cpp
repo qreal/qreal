@@ -47,14 +47,14 @@ using namespace interpreterBase::robotModel;
 
 BlocksFactory::BlocksFactory(GraphicalModelAssistInterface const &graphicalModelApi
 		, LogicalModelAssistInterface const &logicalModelApi
-		, RobotModelInterface * const robotModel
+		, robotModel::RobotModelManagerInterface const &robotModelManager
 		, ErrorReporterInterface * const errorReporter
 		)
-		: mRobotModel(robotModel)
-		, mGraphicalModelApi(graphicalModelApi)
-		, mLogicalModelApi(logicalModelApi)
-		, mErrorReporter(errorReporter)
-		, mParser(NULL)
+	: mRobotModelManager(robotModelManager)
+	, mGraphicalModelApi(graphicalModelApi)
+	, mLogicalModelApi(logicalModelApi)
+	, mErrorReporter(errorReporter)
+	, mParser(nullptr)
 {
 }
 
@@ -138,7 +138,7 @@ BlockInterface *BlocksFactory::block(Id const &element)
 //		newBlock = new DummyBlock();
 //	}
 
-	newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, mErrorReporter, mParser);
+	newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, mErrorReporter, mParser, mRobotModelManager);
 	return newBlock;
 }
 

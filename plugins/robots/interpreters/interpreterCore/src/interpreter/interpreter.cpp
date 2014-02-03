@@ -19,29 +19,30 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, qReal::ProjectManagementInterface const &projectManager
 		, interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory
-		, interpreterBase::robotModel::RobotModelInterface * const robotModel
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, QAction &connectToRobotAction
 		)
 	: mGraphicalModelApi(&graphicalModelApi)
 	, mLogicalModelApi(&logicalModelApi)
 	, mInterpretersInterface(&interpretersInterface)
 	, mState(idle)
-	, mRobotModel(robotModel)
+	, mRobotModelManager(robotModelManager)
 	, mBlocksTable(nullptr)
 	, mParser(new details::RobotsBlockParser(interpretersInterface.errorReporter()))
 	, mActionConnectToRobot(connectToRobotAction)
+	, mSensorVariablesUpdater(robotModelManager, *mParser)
 {
 	mBlocksTable = new details::BlocksTable(blocksFactory);
 
 	connect(
-			&mRobotModel->configuration()
+			&mRobotModelManager.model().configuration()
 			, &interpreterBase::robotModel::ConfigurationInterface::allDevicesConfigured
 			, this
 			, &Interpreter::sensorsConfiguredSlot
 			);
 
 	connect(
-			mRobotModel
+			&mRobotModelManager.model()
 			, &interpreterBase::robotModel::RobotModelInterface::connected
 			, this
 			, &Interpreter::connectedSlot
@@ -49,7 +50,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 
 	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::stopRobot);
 
-	mRobotModel->init();
+	mRobotModelManager.model().init();
 }
 
 Interpreter::~Interpreter()
@@ -69,7 +70,7 @@ void Interpreter::interpret()
 
 	mInterpretersInterface->errorReporter()->clear();
 
-	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
+//	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
 
 	if (!mConnected) {
 		mInterpretersInterface->errorReporter()->addInformation(tr("No connection to robot"));
@@ -84,7 +85,12 @@ void Interpreter::interpret()
 	mBlocksTable->clear();
 	mState = waitingForSensorsConfiguredToLaunch;
 
-	details::Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
+	details::Autoconfigurer configurer(
+				*mGraphicalModelApi
+				, mBlocksTable
+				, mInterpretersInterface->errorReporter()
+				, &mRobotModelManager.model()
+				);
 
 	bool configurationSucceeded = false;
 //	QVector<interpreterBase::robotModel::SensorId> const sensorConfiguration
@@ -104,7 +110,7 @@ void Interpreter::interpret()
 
 void Interpreter::stopRobot()
 {
-	mRobotModel->stopRobot();
+	mRobotModelManager.model().stopRobot();
 	mState = idle;
 	qDeleteAll(mThreads);
 	mThreads.clear();
@@ -114,7 +120,7 @@ void Interpreter::stopRobot()
 void Interpreter::connectedSlot(bool success)
 {
 	if (success) {
-		if (mRobotModel->needsConnection()) {
+		if (mRobotModelManager.model().needsConnection()) {
 			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
 		}
 	} else {
@@ -133,14 +139,12 @@ void Interpreter::sensorsConfiguredSlot()
 	mConnected = true;
 	mActionConnectToRobot.setChecked(mConnected);
 
-//	resetVariables();
-
 //	mRobotModel->nextBlockAfterInitial(mConnected);
 
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;
 
-//		runTimer();
+		mSensorVariablesUpdater.run();
 
 //		Tracer::debug(tracer::enums::initialization, "Interpreter::sensorsConfiguredSlot", "Starting interpretation");
 //		mRobotModel->startInterpretation();
@@ -184,14 +188,13 @@ void Interpreter::newThread(Id const &startBlockId)
 //		mRobotModel->configureSensors(port1, port2, port3, port4);
 //	}
 //
-//	updateGraphicWatchSensorsList();
 //}
 
 void Interpreter::addThread(details::Thread * const thread)
 {
 	if (mThreads.count() >= maxThreadsCount) {
 //		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
-//		stopRobot();
+		stopRobot();
 	}
 
 	mThreads.append(thread);
@@ -208,193 +211,6 @@ void Interpreter::addThread(details::Thread * const thread)
 	}
 }
 
-//interpreters::robots::details::RobotModel *Interpreter::robotModel()
-//{
-//	return mRobotModel;
-//}
-
-//void Interpreter::setRobotModel(details::RobotModel * const robotModel)
-//{
-//	mRobotModel = robotModel;
-//}
-
-//void Interpreter::setRobotImplementation(details::robotImplementations::AbstractRobotModelImplementation *robotImpl)
-//{
-//	mRobotModel->setRobotImplementation(robotImpl);
-//	if (robotImpl) {
-//		connect(mRobotModel, SIGNAL(connected(bool)), this, SLOT(runTimer()));
-//	}
-//}
-
-//void Interpreter::runTimer()
-//{
-//	if (mRobotModel->sensor(robots::enums::inputPort::port1)) {
-//		connect(
-//				mRobotModel->sensor(robots::enums::inputPort::port1)->sensorImpl()
-//				, SIGNAL(response(int))
-//				, this
-//				, SLOT(responseSlot1(int))
-//				, Qt::UniqueConnection
-//				);
-
-//		connect(
-//				mRobotModel->sensor(robots::enums::inputPort::port1)->sensorImpl()
-//				, SIGNAL(failure())
-//				, this
-//				, SLOT(slotFailure())
-//				, Qt::UniqueConnection
-//				);
-//	}
-//	if (mRobotModel->sensor(robots::enums::inputPort::port2)) {
-//		connect(
-//				mRobotModel->sensor(robots::enums::inputPort::port2)->sensorImpl()
-//				, SIGNAL(response(int))
-//				, this
-//				, SLOT(responseSlot2(int))
-//				, Qt::UniqueConnection
-//				);
-
-//		connect(
-//				mRobotModel->sensor(robots::enums::inputPort::port2)->sensorImpl()
-//				, SIGNAL(failure())
-//				, this
-//				, SLOT(slotFailure())
-//				, Qt::UniqueConnection
-//				);
-//	}
-//	if (mRobotModel->sensor(robots::enums::inputPort::port3)) {
-//		connect(
-//				mRobotModel->sensor(robots::enums::inputPort::port3)->sensorImpl()
-//				, SIGNAL(response(int))
-//				, this
-//				, SLOT(responseSlot3(int))
-//				, Qt::UniqueConnection
-//				);
-
-//		connect(
-//				mRobotModel->sensor(robots::enums::inputPort::port3)->sensorImpl()
-//				, SIGNAL(failure())
-//				, this
-//				, SLOT(slotFailure())
-//				, Qt::UniqueConnection
-//				);
-//	}
-//	if (mRobotModel->sensor(robots::enums::inputPort::port4)) {
-//		connect(
-//				mRobotModel->sensor(robots::enums::inputPort::port4)->sensorImpl()
-//				, SIGNAL(response(int))
-//				, this
-//				, SLOT(responseSlot4(int))
-//				, Qt::UniqueConnection
-//				);
-
-//		connect(
-//				mRobotModel->sensor(robots::enums::inputPort::port4)->sensorImpl()
-//				, SIGNAL(failure())
-//				, this
-//				, SLOT(slotFailure())
-//				, Qt::UniqueConnection
-//				);
-//	}
-
-//	connect(mRobotModel->encoderA().encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlotA(int)), Qt::UniqueConnection);
-//	connect(mRobotModel->encoderA().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
-//	connect(mRobotModel->encoderB().encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlotB(int)), Qt::UniqueConnection);
-//	connect(mRobotModel->encoderB().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
-//	connect(mRobotModel->encoderC().encoderImpl(), SIGNAL(response(int)), this, SLOT(responseSlotC(int)), Qt::UniqueConnection);
-//	connect(mRobotModel->encoderC().encoderImpl(), SIGNAL(failure()), this, SLOT(slotFailure()), Qt::UniqueConnection);
-
-//	mRobotModel->nullifySensors();
-//	if (!mTimer.isActive()) {
-//		readSensorValues();
-//		mTimer.start(25);
-//		connect(&mTimer, SIGNAL(timeout()), this, SLOT(readSensorValues()), Qt::UniqueConnection);
-//	}
-//}
-
-//void Interpreter::readSensorValues()
-//{
-//	if (mState == idle) {
-//		return;
-//	}
-
-//	if (mRobotModel->sensor(robots::enums::inputPort::port1)) {
-//		mRobotModel->sensor(robots::enums::inputPort::port1)->read();
-//	}
-//	if (mRobotModel->sensor(robots::enums::inputPort::port2)) {
-//		mRobotModel->sensor(robots::enums::inputPort::port2)->read();
-//	}
-//	if (mRobotModel->sensor(robots::enums::inputPort::port3)) {
-//		mRobotModel->sensor(robots::enums::inputPort::port3)->read();
-//	}
-//	if (mRobotModel->sensor(robots::enums::inputPort::port4)) {
-//		mRobotModel->sensor(robots::enums::inputPort::port4)->read();
-//	}
-
-//	mRobotModel->encoderA().read();
-//	mRobotModel->encoderB().read();
-//	mRobotModel->encoderC().read();
-//}
-
-//void Interpreter::slotFailure()
-//{
-//	Tracer::debug(tracer::enums::autoupdatedSensorValues, "Interpreter::slotFailure", "");
-//}
-
-//void Interpreter::responseSlot1(int sensorValue)
-//{
-//	updateSensorValues("Sensor1", sensorValue);
-//}
-
-//void Interpreter::responseSlot2(int sensorValue)
-//{
-//	updateSensorValues("Sensor2", sensorValue);
-//}
-
-//void Interpreter::responseSlot3(int sensorValue)
-//{
-//	updateSensorValues("Sensor3", sensorValue);
-//}
-
-//void Interpreter::responseSlot4(int sensorValue)
-//{
-//	updateSensorValues("Sensor4", sensorValue);
-//}
-
-//void Interpreter::responseSlotA(int encoderValue)
-//{
-//	updateSensorValues("EncoderA", encoderValue);
-//}
-
-//void Interpreter::responseSlotB(int encoderValue)
-//{
-//	updateSensorValues("EncoderB", encoderValue);
-//}
-
-//void Interpreter::responseSlotC(int encoderValue)
-//{
-//	updateSensorValues("EncoderC", encoderValue);
-//}
-
-//void Interpreter::updateSensorValues(QString const &sensorVariableName, int sensorValue)
-//{
-//	(*(mParser->getVariables()))[sensorVariableName] = utils::Number(sensorValue, utils::Number::intType);
-//	Tracer::debug(
-//			tracer::enums::autoupdatedSensorValues
-//			, "Interpreter::updateSensorValues"
-//			, sensorVariableName + QString::number(sensorValue)
-//			);
-//}
-
-//void Interpreter::resetVariables()
-//{
-//	int const resetValue = 0;
-//	responseSlot1(resetValue);
-//	responseSlot2(resetValue);
-//	responseSlot3(resetValue);
-//	responseSlot4(resetValue);
-//}
-
 void Interpreter::connectToRobot()
 {
 	if (mState == interpreting) {
@@ -402,10 +218,10 @@ void Interpreter::connectToRobot()
 	}
 
 	if (mConnected) {
-		mRobotModel->stopRobot();
-		mRobotModel->disconnectFromRobot();
+		mRobotModelManager.model().stopRobot();
+		mRobotModelManager.model().disconnectFromRobot();
 	} else {
-		mRobotModel->init();
+		mRobotModelManager.model().init();
 //		configureSensors(
 //				  static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
 //				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())
@@ -427,49 +243,9 @@ void Interpreter::disconnectSlot()
 //	setRobotImplementation(robotModelType);
 //}
 
-//void Interpreter::setCommunicator(QString const &valueOfCommunication)
-//{
-//	if (valueOfCommunication == mLastCommunicationValue) {
-//		return;
-//	}
-
-//	RobotCommunicationThreadInterface *communicator = NULL;
-//	if (valueOfCommunication == "bluetooth") {
-//		communicator = new BluetoothRobotCommunicationThread();
-//	} else if (valueOfCommunication == "usb") {
-//		communicator = new UsbRobotCommunicationThread();
-//	} else {
-//		communicator = new TcpRobotCommunicationThread();
-//	}
-
-//	mLastCommunicationValue = valueOfCommunication;
-
-//	mRobotCommunication->setRobotCommunicationThreadObject(communicator);
-//}
-
-//void Interpreter::setConnectRobotAction(QAction *actionConnect)
-//{
-//	mActionConnectToRobot = actionConnect;
-//}
-
-//void Interpreter::setNoiseSettings()
-//{
-//	mD2RobotModel->setNoiseSettings();
-//	emit noiseSettingsChanged();
-//}
-
 //void Interpreter::reportError(QString const &message)
 //{
 //	mInterpretersInterface->errorReporter()->addError(message);
-//}
-
-//void Interpreter::on2dModelChanged(QDomDocument const &xml)
-//{
-//	Id const currentDiagramId = mInterpretersInterface->activeDiagram();
-//	Id const logicalId = mGraphicalModelApi->logicalId(currentDiagramId);
-//	if (logicalId != Id() && logicalId != Id::rootId()) {
-//		mLogicalModelApi->setPropertyByRoleName(logicalId, xml.toString(4), "worldModel");
-//	}
 //}
 
 //void Interpreter::saveSensorConfiguration()
@@ -515,38 +291,7 @@ void Interpreter::disconnectSlot()
 //	}
 //}
 
-//utils::WatchListWindow *Interpreter::watchWindow() const
-//{
-//	return mWatchListWindow;
-//}
-
-//void Interpreter::connectSensorConfigurer(details::SensorsConfigurationWidget *configurer) const
-//{
-//	connect(configurer, SIGNAL(saved()), mD2ModelWidget, SLOT(syncronizeSensors()));
-//}
-
 qReal::IdList Interpreter::providedBlocks() const
 {
 	return mBlocksTable->providedBlocks();
 }
-
-//void Interpreter::updateGraphicWatchSensorsList()
-//{
-//	mGraphicsWatch->addTrackingObject(0, QString("Sensor1")
-//			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
-//					(SettingsManager::instance()->value("port1SensorType").toInt())));
-//	mGraphicsWatch->addTrackingObject(1, QString("Sensor2")
-//			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
-//					(SettingsManager::instance()->value("port2SensorType").toInt())));
-//	mGraphicsWatch->addTrackingObject(2, QString("Sensor3")
-//			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
-//					(SettingsManager::instance()->value("port3SensorType").toInt())));
-//	mGraphicsWatch->addTrackingObject(3, QString("Sensor4")
-//			, SensorEnumerator::sensorName(static_cast<robots::enums::sensorType::SensorTypeEnum>
-//					(SettingsManager::instance()->value("port4SensorType").toInt())));
-//}
-
-//utils::sensorsGraph::SensorsGraph *Interpreter::graphicsWatchWindow() const
-//{
-//	return mGraphicsWatch;
-//}

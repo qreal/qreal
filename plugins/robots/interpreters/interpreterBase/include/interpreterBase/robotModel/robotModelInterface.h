@@ -28,7 +28,8 @@ public:
 
 	virtual bool needsConnection() const = 0;
 
-	virtual ConfigurationInterface &configuration() = 0;  // TODO: Don't like this, breaks incapsulation.
+	virtual ConfigurationInterface const &configuration() const = 0;  // TODO: Don't like this, breaks incapsulation.
+	virtual ConfigurationInterface &mutableConfiguration() = 0;  // TODO: Don't like this, breaks incapsulation.
 
 	virtual robotParts::Brick &brick() = 0;
 	virtual robotParts::Display &display() = 0;

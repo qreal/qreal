@@ -99,20 +99,40 @@ private:
 	bool isNotLCMZ(QString str, int i);
 };
 
-class SdfIconEngineV2: public SdfIconEngineV2Interface
+/// Constructs QIcon instance by a given sdf description
+class SdfIconEngineV2 : public SdfIconEngineV2Interface
 {
 public:
-	SdfIconEngineV2(QString const &file);
-	SdfIconEngineV2(QDomDocument const &document);
+	explicit SdfIconEngineV2(QString const &file);
+	explicit SdfIconEngineV2(QDomDocument const &document);
 	QSize preferedSize() const;
 	virtual void paint(QPainter *painter, QRect const &rect, QIcon::Mode mode, QIcon::State state);
-	virtual QIconEngine *clone() const
-	{
-		return NULL;
-	}
+	virtual QIconEngine *clone() const;
+
 private:
 	SdfRenderer mRenderer;
 	QSize mSize;
+};
+
+/// Caches sdf-descripted icons
+class SdfIconLoader
+{
+public:
+	/// Returns a pixmap of element in specified sdf-file
+	static QIcon iconOf(QString const &fileName);
+
+	/// Returns a size of the pixmap of element in specified sdf-file
+	static QSize preferedSizeOf(QString const &fileName);
+
+private:
+	static SdfIconLoader *instance();
+	static QIcon loadPixmap(QString const &fileName);
+
+	SdfIconLoader();
+	~SdfIconLoader();
+
+	QMap<QString, QIcon> mLoadedIcons;
+	QMap<QString, QSize> mPreferedSizes;
 };
 
 }

@@ -862,7 +862,51 @@ void SdfIconEngineV2::paint(QPainter *painter, QRect const &rect, QIcon::Mode mo
 	mRenderer.render(painter, resRect, true);
 }
 
+QIconEngine *SdfIconEngineV2::clone() const
+{
+	return nullptr;
+}
+
 QSize SdfIconEngineV2::preferedSize() const
 {
 	return mSize;
+}
+
+
+QIcon SdfIconLoader::iconOf(QString const &fileName)
+{
+	return loadPixmap(fileName);
+}
+
+QSize SdfIconLoader::preferedSizeOf(QString const &fileName)
+{
+	loadPixmap(fileName);
+	return instance()->mPreferedSizes[fileName];
+}
+
+SdfIconLoader *SdfIconLoader::instance()
+{
+	static SdfIconLoader instance;
+	return &instance;
+}
+
+SdfIconLoader::SdfIconLoader()
+{
+}
+
+SdfIconLoader::~SdfIconLoader()
+{
+}
+
+QIcon SdfIconLoader::loadPixmap(QString const &fileName)
+{
+	if (!instance()->mLoadedIcons.contains(fileName)) {
+		SdfIconEngineV2 * const engine = new SdfIconEngineV2(fileName);
+		// QIcon takes ownership over SdfIconEngineV2
+		QIcon icon(engine);
+		instance()->mLoadedIcons[fileName] = icon;
+		instance()->mPreferedSizes[fileName] = engine->preferedSize();
+	}
+
+	return instance()->mLoadedIcons[fileName];
 }

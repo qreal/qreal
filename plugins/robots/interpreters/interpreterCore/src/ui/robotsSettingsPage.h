@@ -8,6 +8,7 @@
 //#include "sensorConstants.h"
 //#include "details/sensorsConfigurationWidget.h"
 #include "kitPluginManager.h"
+#include "robotModelManager.h"
 
 namespace Ui {
 class PreferencesRobotSettingsPage;
@@ -23,11 +24,16 @@ class RobotsSettingsPage : public PreferencesPage
 	Q_OBJECT
 
 public:
-	explicit RobotsSettingsPage(KitPluginManager &kitPluginManager, QWidget *parent = 0);
-	~RobotsSettingsPage();
+	explicit RobotsSettingsPage(
+			KitPluginManager &kitPluginManager
+			, RobotModelManager &robotModelManager
+			, QWidget *parent = nullptr
+			);
 
-	virtual void save();
-	virtual void restoreSettings();
+	~RobotsSettingsPage() override;
+
+	void save() override;
+	void restoreSettings() override;
 
 signals:
 	void saved();
@@ -54,6 +60,7 @@ private:
 
 	Ui::PreferencesRobotSettingsPage *mUi;
 	KitPluginManager &mKitPluginManager;
+	RobotModelManager &mRobotModelManager;
 	QButtonGroup *mKitButtons;
 	QHash<QAbstractButton *, QButtonGroup *> mKitRobotModels;
 	QHash<QAbstractButton *, interpreterBase::robotModel::RobotModelInterface *> mButtonsToRobotModelsMapping;

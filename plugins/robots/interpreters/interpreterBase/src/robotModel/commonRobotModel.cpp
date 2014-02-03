@@ -308,7 +308,14 @@ void CommonRobotModel::disconnectFromRobot()
 //	return mRobotImpl->produceTimer();
 //}
 
-ConfigurationInterface &CommonRobotModel::configuration()
+ConfigurationInterface &CommonRobotModel::mutableConfiguration()
+{
+	// TODO: Implement
+	Configuration configuration;
+	return configuration;
+}
+
+ConfigurationInterface const &CommonRobotModel::configuration() const
 {
 	// TODO: Implement
 	Configuration configuration;
