@@ -19,7 +19,7 @@ class RobotModelManager : public interpreterBase::robotModel::RobotModelManagerI
 public:
 	RobotModelManager();
 
-	interpreterBase::robotModel::RobotModelInterface *model() const override;
+	interpreterBase::robotModel::RobotModelInterface &model() const override;
 
 	/// Changes currently selected robot model and notifies all about change by robotModelChanged signal.
 	void setModel(interpreterBase::robotModel::RobotModelInterface * const robotModel);

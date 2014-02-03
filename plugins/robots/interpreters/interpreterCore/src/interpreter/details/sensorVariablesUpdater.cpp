@@ -8,10 +8,10 @@ using namespace interpreterCore::interpreter::details;
 using namespace interpreterBase::robotModel;
 
 SensorVariablesUpdater::SensorVariablesUpdater(
-		RobotModelInterface const &robotModel
+		RobotModelManagerInterface const &robotModelManager
 		, utils::ExpressionsParser &parser
 		)
-	: mModel(robotModel)
+	: mRobotModelManager(robotModelManager)
 	, mParser(parser)
 {
 	mUpdateTimer.setInterval(variableUpdateIntervalMs);
@@ -23,7 +23,7 @@ void SensorVariablesUpdater::run()
 	resetVariables();
 
 	for (robotParts::PluggableDevice * const device
-		 : mModel.configuration().pluggableDevices(ConfigurationInterface::input))
+		 : mRobotModelManager.model().configuration().pluggableDevices(ConfigurationInterface::input))
 	{
 		robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 		if (scalarSensor) {
@@ -75,7 +75,7 @@ void SensorVariablesUpdater::onScalarSensorResponse(int reading)
 void SensorVariablesUpdater::onTimerTimeout()
 {
 	for (robotParts::PluggableDevice * const device
-		 : mModel.configuration().pluggableDevices(ConfigurationInterface::input))
+		 : mRobotModelManager.model().configuration().pluggableDevices(ConfigurationInterface::input))
 	{
 		robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 		if (scalarSensor) {
@@ -119,7 +119,7 @@ void SensorVariablesUpdater::updateScalarSensorVariable(QString const &variable,
 void SensorVariablesUpdater::resetVariables()
 {
 	for (robotParts::PluggableDevice * const device
-		 : mModel.configuration().pluggableDevices(ConfigurationInterface::input))
+		 : mRobotModelManager.model().configuration().pluggableDevices(ConfigurationInterface::input))
 	{
 		robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 		if (scalarSensor) {

@@ -9,9 +9,9 @@ RobotModelManager::RobotModelManager()
 {
 }
 
-interpreterBase::robotModel::RobotModelInterface *RobotModelManager::model() const
+interpreterBase::robotModel::RobotModelInterface &RobotModelManager::model() const
 {
-	return mRobotModel;
+	return *mRobotModel;
 }
 
 void RobotModelManager::setModel(interpreterBase::robotModel::RobotModelInterface * const robotModel)

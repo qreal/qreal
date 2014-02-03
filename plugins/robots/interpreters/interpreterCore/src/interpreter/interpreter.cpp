@@ -19,30 +19,30 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, qReal::ProjectManagementInterface const &projectManager
 		, interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory
-		, interpreterBase::robotModel::RobotModelInterface * const robotModel
+		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 		, QAction &connectToRobotAction
 		)
 	: mGraphicalModelApi(&graphicalModelApi)
 	, mLogicalModelApi(&logicalModelApi)
 	, mInterpretersInterface(&interpretersInterface)
 	, mState(idle)
-	, mRobotModel(robotModel)
+	, mRobotModelManager(robotModelManager)
 	, mBlocksTable(nullptr)
 	, mParser(new details::RobotsBlockParser(interpretersInterface.errorReporter()))
 	, mActionConnectToRobot(connectToRobotAction)
-	, mSensorVariablesUpdater(*robotModel, *mParser)
+	, mSensorVariablesUpdater(robotModelManager, *mParser)
 {
 	mBlocksTable = new details::BlocksTable(blocksFactory);
 
 	connect(
-			&mRobotModel->configuration()
+			&mRobotModelManager.model()->configuration()
 			, &interpreterBase::robotModel::ConfigurationInterface::allDevicesConfigured
 			, this
 			, &Interpreter::sensorsConfiguredSlot
 			);
 
 	connect(
-			mRobotModel
+			mRobotModelManager.model()
 			, &interpreterBase::robotModel::RobotModelInterface::connected
 			, this
 			, &Interpreter::connectedSlot
@@ -50,7 +50,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 
 	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::stopRobot);
 
-	mRobotModel->init();
+	mRobotModelManager.model()->init();
 }
 
 Interpreter::~Interpreter()
@@ -85,7 +85,12 @@ void Interpreter::interpret()
 	mBlocksTable->clear();
 	mState = waitingForSensorsConfiguredToLaunch;
 
-	details::Autoconfigurer configurer(*mGraphicalModelApi, mBlocksTable, mInterpretersInterface->errorReporter(), mRobotModel);
+	details::Autoconfigurer configurer(
+				*mGraphicalModelApi
+				, mBlocksTable
+				, mInterpretersInterface->errorReporter()
+				, mRobotModelManager.model()
+				);
 
 	bool configurationSucceeded = false;
 //	QVector<interpreterBase::robotModel::SensorId> const sensorConfiguration
@@ -105,7 +110,7 @@ void Interpreter::interpret()
 
 void Interpreter::stopRobot()
 {
-	mRobotModel->stopRobot();
+	mRobotModelManager.model()->stopRobot();
 	mState = idle;
 	qDeleteAll(mThreads);
 	mThreads.clear();
@@ -115,7 +120,7 @@ void Interpreter::stopRobot()
 void Interpreter::connectedSlot(bool success)
 {
 	if (success) {
-		if (mRobotModel->needsConnection()) {
+		if (mRobotModelManager.model()->needsConnection()) {
 			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
 		}
 	} else {
@@ -213,10 +218,10 @@ void Interpreter::connectToRobot()
 	}
 
 	if (mConnected) {
-		mRobotModel->stopRobot();
-		mRobotModel->disconnectFromRobot();
+		mRobotModelManager.model()->stopRobot();
+		mRobotModelManager.model()->disconnectFromRobot();
 	} else {
-		mRobotModel->init();
+		mRobotModelManager.model()->init();
 //		configureSensors(
 //				  static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
 //				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())

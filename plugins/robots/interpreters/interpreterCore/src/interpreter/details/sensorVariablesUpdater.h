@@ -3,7 +3,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
 
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include <interpreterBase/robotModel/robotModelManagerInterface.h>
 #include <qrutils/expressionsParser/expressionsParser.h>
 
 namespace interpreterCore {
@@ -18,7 +18,7 @@ class SensorVariablesUpdater : public QObject
 
 public:
 	SensorVariablesUpdater(
-			interpreterBase::robotModel::RobotModelInterface const &model
+			interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, utils::ExpressionsParser &parser  // TODO: direct dependency from ExpressionsParser shall be removed.
 			);
 
@@ -36,7 +36,7 @@ private:
 	void resetVariables();
 
 	QTimer mUpdateTimer;
-	interpreterBase::robotModel::RobotModelInterface const &mModel;
+	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	utils::ExpressionsParser &mParser;
 };
 

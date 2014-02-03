@@ -6,7 +6,7 @@
 #include <qrkernel/ids.h>
 #include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
 
-#include <interpreterBase/robotModel/robotModelInterface.h>
+#include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 #include "details/thread.h"
 #include "details/blocksTable.h"
@@ -28,7 +28,7 @@ public:
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, qReal::ProjectManagementInterface const &projectManager
 			, interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
-			, interpreterBase::robotModel::RobotModelInterface * const robotModel  // Does not take ownership.
+			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
 			, QAction &connectToRobotAction
 			);
 
@@ -81,7 +81,7 @@ private:
 
 	InterpreterState mState;
 	QList<details::Thread *> mThreads;  // Has ownership
-	interpreterBase::robotModel::RobotModelInterface *mRobotModel;  // Does not have ownership
+	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
 	details::RobotsBlockParser *mParser;  // Has ownership
 
