@@ -2,21 +2,24 @@
 
 using namespace interpreterBase::robotModel;
 
-PortInfo::PortInfo(QString const &name, Direction direction, QStringList const &nameAliases)
+PortInfo::PortInfo()
+{
+}
+
+PortInfo::PortInfo(QString const &name, QStringList const &nameAliases)
 	: mName(name)
-	, mDirection(direction)
 	, mNameAliases(nameAliases)
 {
+}
+
+bool PortInfo::isValid() const
+{
+	return !mName.isEmpty();
 }
 
 QString PortInfo::name() const
 {
 	return mName;
-}
-
-PortInfo::Direction PortInfo::direction() const
-{
-	return mDirection;
 }
 
 QStringList PortInfo::nameAliases() const

@@ -186,7 +186,12 @@
      <property name="title">
       <string>Sensors Settings</string>
      </property>
-    </widget>
+	 <layout class="QVBoxLayout" name="sensorsConfiguratorLayout">
+	  <item>
+	   <widget class="interpreterCore::ui::SensorsConfigurationWidget" name="sensorsConfigurator"/>
+	  </item>
+	 </layout>
+	</widget>
    </item>
    <item row="5" column="0" colspan="2">
     <widget class="QGroupBox" name="noiseSensorsGroupBox">
@@ -307,6 +312,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>interpreterCore::ui::SensorsConfigurationWidget</class>
+   <extends>QWidget</extends>
+   <header>ui/sensorsConfigurationWidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

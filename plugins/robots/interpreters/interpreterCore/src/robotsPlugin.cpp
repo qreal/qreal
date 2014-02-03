@@ -34,7 +34,7 @@ RobotsPlugin::RobotsPlugin()
 
 //	mInterpreter = new details::Interpreter();
 
-	mRobotSettingsPage = new RobotsSettingsPage(mKitPluginManager);
+	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager);
 
 //	connect(mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
 //	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));

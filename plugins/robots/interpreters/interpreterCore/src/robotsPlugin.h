@@ -6,7 +6,7 @@
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
 #include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
 
-#include "robotsSettingsPage.h"
+#include "ui/robotsSettingsPage.h"
 #include "customizer.h"
 #include "kitPluginManager.h"
 #include "interpreter/interpreter.h"
@@ -76,7 +76,7 @@ private:
 
 	/// Page with plugin settings. Created here, but then ownership is passed to
 	/// a caller of preferencesPage().
-	RobotsSettingsPage *mRobotSettingsPage;  // Does not have ownership
+	ui::RobotsSettingsPage *mRobotSettingsPage;  // Does not have ownership
 
 	/// Main window interface object, used to call GUI functionality
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership

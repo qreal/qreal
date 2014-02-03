@@ -1,6 +1,7 @@
 QT += xml widgets
 
 INCLUDEPATH += \
+	$$PWD/src/ \
 	$$PWD/../interpreterBase/include/ \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
@@ -11,7 +12,6 @@ HEADERS += \
 	$$PWD/src/customizer.h \
 	$$PWD/src/kitPluginManager.h \
 	$$PWD/src/robotsPlugin.h \
-	$$PWD/src/robotsSettingsPage.h \
 	$$PWD/src/robotModelManager.h \
 	$$PWD/src/coreBlocks/coreBlocksFactory.h \
 	$$PWD/src/coreBlocks/details/finalBlock.h \
@@ -22,13 +22,13 @@ HEADERS += \
 	$$PWD/src/interpreter/details/blocksTable.h \
 	$$PWD/src/interpreter/details/robotsBlockParser.h \
 	$$PWD/src/interpreter/details/thread.h \
-	$$PWD/src/interpreter/details/sensorsConfigurationWidget.h \
+	$$PWD/src/ui/robotsSettingsPage.h \
+	$$PWD/src/ui/sensorsConfigurationWidget.h \
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
 	$$PWD/src/kitPluginManager.cpp \
 	$$PWD/src/robotsPlugin.cpp \
-	$$PWD/src/robotsSettingsPage.cpp \
 	$$PWD/src/robotModelManager.cpp \
 	$$PWD/src/coreBlocks/coreBlocksFactory.cpp \
 	$$PWD/src/coreBlocks/details/finalBlock.cpp \
@@ -38,10 +38,11 @@ SOURCES += \
 	$$PWD/src/interpreter/details/blocksTable.cpp \
 	$$PWD/src/interpreter/details/robotsBlockParser.cpp \
 	$$PWD/src/interpreter/details/thread.cpp \
-	$$PWD/src/interpreter/details/sensorsConfigurationWidget.cpp \
+	$$PWD/src/ui/robotsSettingsPage.cpp \
+	$$PWD/src/ui/sensorsConfigurationWidget.cpp \
 
 FORMS += \
-	$$PWD/src/robotsSettingsPage.ui \
+	$$PWD/src/ui/robotsSettingsPage.ui \
 
 TRANSLATIONS += $$PWD/interpreterCore_ru.ts
 

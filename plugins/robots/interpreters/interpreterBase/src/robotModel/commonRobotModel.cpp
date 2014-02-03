@@ -39,6 +39,11 @@ QString CommonRobotModel::name() const
 	return QString();
 }
 
+QString CommonRobotModel::friendlyName() const
+{
+	return name();
+}
+
 //robotParts::Brick &RobotModel::brick()
 //{
 //	return mBrick;
@@ -326,11 +331,15 @@ robotParts::Display &CommonRobotModel::display()
 
 QList<PortInfo> CommonRobotModel::availablePorts() const
 {
-	return QList<PortInfo>();
+	return mAllowedConnections.keys();
 }
 
-QList<PluggableDeviceInfo> CommonRobotModel::supportedSensors() const
+QList<PortInfo> CommonRobotModel::configurablePorts() const
 {
-	return QList<PluggableDeviceInfo>();
+	return availablePorts();
 }
 
+QList<PluggableDeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port) const
+{
+	return mAllowedConnections[port];
+}

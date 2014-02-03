@@ -10,8 +10,9 @@ class NxtRobotModelBase : public interpreterBase::robotModel::CommonRobotModel
 	Q_OBJECT
 
 public:
-	virtual QList<interpreterBase::robotModel::PortInfo> availablePorts() const override;
-	virtual QList<interpreterBase::robotModel::PluggableDeviceInfo> supportedSensors() const override;
+	NxtRobotModelBase();
+
+	virtual QList<interpreterBase::robotModel::PortInfo> configurablePorts() const override;
 
 protected:
 	virtual interpreterBase::robotModel::PluggableDeviceInfo touchSensorInfo() const;

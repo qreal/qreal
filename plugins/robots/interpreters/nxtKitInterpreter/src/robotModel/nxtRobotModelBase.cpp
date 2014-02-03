@@ -10,21 +10,10 @@
 using namespace nxtKitInterpreter::robotModel;
 using namespace interpreterBase::robotModel;
 
-QList<PortInfo> NxtRobotModelBase::availablePorts() const
+NxtRobotModelBase::NxtRobotModelBase()
 {
-	return QList<PortInfo>()
-			<< PortInfo("A", PortInfo::inOut)
-			<< PortInfo("B", PortInfo::inOut)
-			<< PortInfo("C", PortInfo::inOut)
-			<< PortInfo("1", PortInfo::input)
-			<< PortInfo("2", PortInfo::input)
-			<< PortInfo("3", PortInfo::input)
-			<< PortInfo("4", PortInfo::input);
-}
-
-QList<PluggableDeviceInfo> NxtRobotModelBase::supportedSensors() const
-{
-	return QList<PluggableDeviceInfo>()
+	QList<PluggableDeviceInfo> const outputPortConnections; // TODO
+	QList<PluggableDeviceInfo> const inputPortConnections = QList<PluggableDeviceInfo>()
 			<< touchSensorInfo()
 			<< sonarSensorInfo()
 			<< lightSensorInfo()
@@ -32,52 +21,55 @@ QList<PluggableDeviceInfo> NxtRobotModelBase::supportedSensors() const
 			<< soundSensorInfo()
 			<< gyroscopeSensorInfo()
 			<< accelerometerSensorInfo();
-//		<< PluggableDeviceInfo("nxtKit", "touchBool", tr("Touch sensor (boolean value)"))
-//		<< PluggableDeviceInfo("nxtKit", "touchRaw", tr("Touch sensor (raw value)"))
-//		<< PluggableDeviceInfo("nxtKit", "sonar", tr("Sonar sensor"))
-//		<< PluggableDeviceInfo("nxtKit", "light", tr("Light sensor"))
-//		<< PluggableDeviceInfo("nxtKit", "colorFull", tr("Color sensor (full colors)"))
-//		<< PluggableDeviceInfo("nxtKit", "colorRed", tr("Color sensor (red)"))
-//		<< PluggableDeviceInfo("nxtKit", "colorGreen", tr("Color sensor (green)"))
-//		<< PluggableDeviceInfo("nxtKit", "colorBlue", tr("Color sensor (blue)"))
-//		<< PluggableDeviceInfo("nxtKit", "colorPassive", tr("Color sensor (passive)"))
-//		<< PluggableDeviceInfo("nxtKit", "sound", tr("Sound sensor"))
-//		<< PluggableDeviceInfo("nxtKit", "gyroscope", tr("Gyroscope"));
-	// << PluggableDeviceInfo("accelerometer", tr("Accelerometer"));
+	mAllowedConnections[PortInfo("A")] = outputPortConnections;
+	mAllowedConnections[PortInfo("B")] = outputPortConnections;
+	mAllowedConnections[PortInfo("C")] = outputPortConnections;
+	mAllowedConnections[PortInfo("1")] = inputPortConnections;
+	mAllowedConnections[PortInfo("2")] = inputPortConnections;
+	mAllowedConnections[PortInfo("3")] = inputPortConnections;
+	mAllowedConnections[PortInfo("4")] = inputPortConnections;
+}
+
+QList<PortInfo> NxtRobotModelBase::configurablePorts() const
+{
+	return QList<PortInfo>()
+			<< PortInfo("1")
+			<< PortInfo("2")
+			<< PortInfo("3")
+			<< PortInfo("4");
 }
 
 PluggableDeviceInfo NxtRobotModelBase::touchSensorInfo() const
 {
-	return PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::ColorSensor>(tr("Touch sensor"));
+	return PluggableDeviceInfo::create<robotParts::TouchSensor>(tr("Touch sensor"));
 }
 
 PluggableDeviceInfo NxtRobotModelBase::sonarSensorInfo() const
 {
-	return PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::SonarSensor>(tr("Sonar sensor"));
+	return PluggableDeviceInfo::create<robotParts::SonarSensor>(tr("Sonar sensor"));
 }
 
 PluggableDeviceInfo NxtRobotModelBase::lightSensorInfo() const
 {
-	return PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::LightSensor>(tr("Light sensor"));
+	return PluggableDeviceInfo::create<robotParts::LightSensor>(tr("Light sensor"));
 }
 
 PluggableDeviceInfo NxtRobotModelBase::colorSensorInfo() const
 {
-	return PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::ColorSensor>(tr("Color sensor"));
+	return PluggableDeviceInfo::create<robotParts::ColorSensor>(tr("Color sensor"));
 }
 
 PluggableDeviceInfo NxtRobotModelBase::soundSensorInfo() const
 {
-	return PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::SoundSensor>(tr("Sound sensor"));
+	return PluggableDeviceInfo::create<robotParts::SoundSensor>(tr("Sound sensor"));
 }
 
 PluggableDeviceInfo NxtRobotModelBase::gyroscopeSensorInfo() const
 {
-	return PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::GyroscopeSensor>(tr("Gyroscope"));
+	return PluggableDeviceInfo::create<robotParts::GyroscopeSensor>(tr("Gyroscope"));
 }
 
 PluggableDeviceInfo NxtRobotModelBase::accelerometerSensorInfo() const
 {
-	return PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::AccelerometerSensor>(
-			tr("Accelerometer"));
+	return PluggableDeviceInfo::create<robotParts::AccelerometerSensor>(tr("Accelerometer"));
 }

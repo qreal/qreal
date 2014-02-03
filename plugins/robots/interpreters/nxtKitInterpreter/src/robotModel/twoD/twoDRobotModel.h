@@ -12,6 +12,7 @@ class TwoDRobotModel : public NxtRobotModelBase
 
 public:
 	QString name() const override;
+	QString friendlyName() const override;
 };
 
 }

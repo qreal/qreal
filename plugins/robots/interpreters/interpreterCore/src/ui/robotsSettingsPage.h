@@ -14,6 +14,7 @@ class PreferencesRobotSettingsPage;
 }
 
 namespace interpreterCore {
+namespace ui {
 
 /// Preferences page for robots interpreter plugin. Contains constructor kit selector and a placeholder for
 /// kit-specific settings.
@@ -58,4 +59,5 @@ private:
 	QHash<QAbstractButton *, interpreterBase::robotModel::RobotModelInterface *> mButtonsToRobotModelsMapping;
 };
 
+}
 }

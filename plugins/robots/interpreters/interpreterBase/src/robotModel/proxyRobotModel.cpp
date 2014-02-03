@@ -17,6 +17,11 @@ QString ProxyRobotModel::name() const
 	return mProxiedModel->name();
 }
 
+QString ProxyRobotModel::friendlyName() const
+{
+	return mProxiedModel->friendlyName();
+}
+
 void ProxyRobotModel::init()
 {
 	mProxiedModel->init();
@@ -57,7 +62,12 @@ QList<PortInfo> ProxyRobotModel::availablePorts() const
 	return mProxiedModel->availablePorts();
 }
 
-QList<PluggableDeviceInfo> ProxyRobotModel::supportedSensors() const
+QList<PortInfo> ProxyRobotModel::configurablePorts() const
 {
-	return mProxiedModel->supportedSensors();
+	return mProxiedModel->configurablePorts();
+}
+
+QList<PluggableDeviceInfo> ProxyRobotModel::allowedDevices(PortInfo const &port) const
+{
+	return mProxiedModel->allowedDevices(port);
 }

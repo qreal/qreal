@@ -16,6 +16,7 @@ public:
 	void setProxiedModel(RobotModelInterface * const robotModel);
 
 	QString name() const override;
+	QString friendlyName() const override;
 
 	void init() override;
 	void stopRobot() override;
@@ -28,8 +29,9 @@ public:
 	robotParts::Brick &brick() override;
 	robotParts::Display &display() override;
 
-	virtual QList<interpreterBase::robotModel::PortInfo> availablePorts() const override;
-	virtual QList<interpreterBase::robotModel::PluggableDeviceInfo> supportedSensors() const override;
+	QList<PortInfo> availablePorts() const override;
+	QList<PortInfo> configurablePorts() const override;
+	QList<PluggableDeviceInfo> allowedDevices(PortInfo const &port) const override;
 
 private:
 	RobotModelInterface *mProxiedModel;  // Does not take ownership
