@@ -48,7 +48,7 @@ private:
 	QAction mGenerateCodeAction;
 
 	/// Action that generates and uploads program on a robot
-//	QAction mUploadProgramAction;
+	QAction mUploadProgramAction;
 
 	/// Action that generates and uploads program on a robot
 	QAction mRunProgramAction;
