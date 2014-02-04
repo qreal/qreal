@@ -4,9 +4,6 @@
 
 #include <qrkernel/settingsManager.h>
 
-//#include "details/tracer.h"
-//#include "details/nxtDisplay.h"
-
 //#include <qrgui/toolPluginInterface/systemEvents.h>
 
 using namespace qReal;
@@ -17,8 +14,7 @@ Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "Subprog
 int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
-		: mInterpreter(nullptr)
-		, mMainWindowInterpretersInterface(nullptr)
+		: mMainWindowInterpretersInterface(nullptr)
 //		, m2dModelAction(nullptr)
 		, mRunAction(nullptr)
 		, mStopRobotAction(nullptr)
@@ -26,24 +22,16 @@ RobotsPlugin::RobotsPlugin()
 		, mRobotSettingsAction(nullptr)
 		, mTitlesAction(nullptr)
 		, mAppTranslator(new QTranslator())
-		, mKitPluginManager("plugins/kitPlugins")
+
 {
 //	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::RobotsPlugin", "Plugin constructor");
 	mAppTranslator->load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(mAppTranslator);
-
-//	mInterpreter = new details::Interpreter();
-
-	mRobotSettingsPage = new RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
-
-//	connect(mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
-//	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 }
 
 RobotsPlugin::~RobotsPlugin()
 {
 	delete mAppTranslator;
-	delete mInterpreter;
 }
 
 void RobotsPlugin::initActions()
@@ -54,17 +42,32 @@ void RobotsPlugin::initActions()
 
 	mRunAction = new QAction(QIcon(":/icons/robots_run.png"), QObject::tr("Run"), nullptr);
 	ActionInfo runActionInfo(mRunAction, "interpreters", "tools");
-	QObject::connect(mRunAction, SIGNAL(triggered()), mInterpreter, SLOT(interpret()));
+	connect(
+			mRunAction
+			, &QAction::triggered
+			, mRobotsPluginFacade.interpreter()
+			, &interpreter::InterpreterInterface::interpret
+			);
 
 	mStopRobotAction = new QAction(QIcon(":/icons/robots_stop.png"), QObject::tr("Stop robot"), nullptr);
 	ActionInfo stopRobotActionInfo(mStopRobotAction, "interpreters", "tools");
-	QObject::connect(mStopRobotAction, SIGNAL(triggered()), mInterpreter, SLOT(stopRobot()));
+	connect(
+			mStopRobotAction
+			, &QAction::triggered
+			, mRobotsPluginFacade.interpreter()
+			, &interpreter::InterpreterInterface::stopRobot
+			);
 
-	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), NULL);
+	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr);
 	mConnectToRobotAction->setCheckable(true);
 	ActionInfo connectToRobotActionInfo(mConnectToRobotAction, "interpreters", "tools");
 //	mInterpreter->setConnectRobotAction(mConnectToRobotAction);
-	QObject::connect(mConnectToRobotAction, SIGNAL(triggered()), mInterpreter, SLOT(connectToRobot()));
+	connect(
+			mConnectToRobotAction
+			, &QAction::triggered
+			, mRobotsPluginFacade.interpreter()
+			, &interpreter::InterpreterInterface::connectToRobot
+			);
 
 	QAction * const separator1 = new QAction(nullptr);
 	separator1->setSeparator(true);
@@ -86,14 +89,33 @@ void RobotsPlugin::initActions()
 //	mSwitchToTrikModelAction->setVisible(enableTrik);
 	ActionInfo switchToTrikModelActionInfo(mSwitchToTrikModelAction, "interpreters", "tools");
 
-	QSignalMapper * const modelTypeMapper = new QSignalMapper(this);
+//	QSignalMapper * const modelTypeMapper = new QSignalMapper(this);
 //	modelTypeMapper->setMapping(mSwitchTo2DModelAction, enums::robotModelType::twoD);
 //	modelTypeMapper->setMapping(mSwitchToNxtModelAction, enums::robotModelType::nxt);
 //	modelTypeMapper->setMapping(mSwitchToTrikModelAction, enums::robotModelType::trik);
+//	connect(
+//			mSwitchTo2DModelAction
+//			, &QAction::triggered
+//			, modelTypeMapper,
+//			, &QSignalMapper::map
+//			);
+
+//	connect(
+//			mSwitchToNxtModelAction
+//			, &QAction::triggered
+//			, modelTypeMapper,
+//			, &QSignalMapper::map
+//			);
+
+//	connect(
+//			mSwitchToTrikModelAction
+//			, &QAction::triggered
+//			, modelTypeMapper,
+//			, &QSignalMapper::map
+//			);
+//
 //	connect(modelTypeMapper, SIGNAL(mapped(int)), this, SLOT(setModelType(int)));
-	connect(mSwitchTo2DModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
-	connect(mSwitchToNxtModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
-	connect(mSwitchToTrikModelAction, SIGNAL(triggered()), modelTypeMapper, SLOT(map()));
+
 
 	QAction * const separator2 = new QAction(nullptr);
 	ActionInfo separator2ActionInfo(separator2, "interpreters", "tools");
@@ -102,13 +124,23 @@ void RobotsPlugin::initActions()
 	mRobotSettingsAction = new QAction(QIcon(":/icons/robots_settings.png")
 			, QObject::tr("Robot settings"), nullptr);
 	ActionInfo robotSettingsActionInfo(mRobotSettingsAction, "interpreters", "tools");
-	QObject::connect(mRobotSettingsAction, SIGNAL(triggered()), this, SLOT(showRobotSettings()));
+	connect(
+			mRobotSettingsAction
+			, &QAction::triggered
+			, this
+			, &RobotsPlugin::showRobotSettings
+			);
 
 	mTitlesAction = new QAction(tr("Text under pictogram"), nullptr);
 	mTitlesAction->setCheckable(true);
 	mTitlesAction->setChecked(SettingsManager::value("showTitlesForRobots").toBool());
-	connect(mTitlesAction, SIGNAL(toggled(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 	ActionInfo titlesActionInfo(mTitlesAction, "", "settings");
+	connect(
+			mTitlesAction
+			, &QAction::toggled
+			, this
+			, &RobotsPlugin::titlesVisibilityCheckedInPlugin
+			);
 
 	mActionInfos
 //			<< d2ModelActionInfo

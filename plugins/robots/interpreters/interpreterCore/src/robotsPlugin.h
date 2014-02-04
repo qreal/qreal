@@ -17,7 +17,7 @@
 namespace interpreterCore {
 
 /// Provides entry points to robots plugin. Responsible for implementation of ToolPluginInterface and for
-/// interaction with QReal, like providing actions and hotkeys for user interface, reacting to actions.
+/// interaction with QReal, providing actions and hotkeys for user interface, reacting to actions.
 class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
@@ -25,7 +25,9 @@ class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 	Q_PLUGIN_METADATA(IID "qRealRobots.RobotsPlugin")
 
 public:
+	/// Constructor. Creates plugin in uninitialized state, "init" shall be called before plugin can do anything useful.
 	RobotsPlugin();
+
 	~RobotsPlugin() override;
 
 	void init(qReal::PluginConfigurator const &configurator) override;
@@ -68,14 +70,8 @@ private:
 	/// Disables/hides unsupported by current plugin blocks on a palette.
 	void updateBlocksOnPalette();
 
-	// details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
-
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
-
-	/// Page with plugin settings. Created here, but then ownership is passed to
-	/// a caller of preferencesPage().
-	RobotsSettingsPage *mRobotSettingsPage;  // Does not have ownership
 
 	/// Main window interface object, used to call GUI functionality
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership
