@@ -19,7 +19,7 @@ RobotsPluginFacade::~RobotsPluginFacade()
 	delete mInterpreter;
 }
 
-void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurator)
+void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 {
 	//	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
 
@@ -28,7 +28,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurator)
 	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
 		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
 	} else if (mKitPluginManager.kitIds().isEmpty()) {
-		configurator.mainWindowInterpretersInterface()->setEnabledForAllElementsInPalette(false);
+		configurer.mainWindowInterpretersInterface().setEnabledForAllElementsInPalette(false);
 
 		// TODO: Correctly handle unselected kit.
 		return;
@@ -55,21 +55,21 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurator)
 
 //	blocksFactory->setParser(&mInterpreter->parser());
 
-	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
-	mSceneCustomizer = &configurator.sceneCustomizer();
-	SettingsManager::setValue("IndexGrid", gridWidth);
+//	mMainWindowInterpretersInterface = &configurer.mainWindowInterpretersInterface();
+//	mSceneCustomizer = &configurer.sceneCustomizer();
+//	SettingsManager::setValue("IndexGrid", gridWidth);
 //	mCustomizer.placeSensorsConfig(produceSensorsConfigurer());
 //	mCustomizer.placeWatchPlugins(mInterpreter.watchWindow(), mInterpreter.graphicsWatchWindow());
 
-	initActions();
-	initHotKeyActions();
+//	initActions();
+//	initHotKeyActions();
 
-	rereadSettings();
+//	rereadSettings();
 
 //	setGraphWatcherSettings();
-	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
+//	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
 //	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(setGraphWatcherSettings()));
-	updateEnabledActions();
+//	updateEnabledActions();
 
 //	SystemEventsInterface const *systemEvents = &configurator.systemEvents();
 
@@ -78,4 +78,14 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurator)
 //	connect(systemEvents, SIGNAL(closedMainWindow()), this, SLOT(closeNeededWidget()));
 
 //	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing done");
+}
+
+interpreter::InterpreterInterface &RobotsPluginFacade::interpreter()
+{
+	return *mInterpreter;
+}
+
+PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
+{
+	return static_cast<PreferencesPage*>(mRobotSettingsPage);
 }

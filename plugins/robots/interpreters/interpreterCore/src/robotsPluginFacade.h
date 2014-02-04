@@ -21,9 +21,11 @@ public:
 
 	~RobotsPluginFacade() override;
 
-	void init(qReal::PluginConfigurator const &configurator);
+	void init(qReal::PluginConfigurator const &configurer);
 
 	interpreter::InterpreterInterface &interpreter();
+
+	PreferencesPage *robotsSettingsPage() const;
 
 private:
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.

@@ -35,14 +35,14 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	mBlocksTable = new details::BlocksTable(blocksFactory);
 
 	connect(
-			&mRobotModelManager.model()->configuration()
+			&mRobotModelManager.model().configuration()
 			, &interpreterBase::robotModel::ConfigurationInterface::allDevicesConfigured
 			, this
 			, &Interpreter::sensorsConfiguredSlot
 			);
 
 	connect(
-			mRobotModelManager.model()
+			&mRobotModelManager.model()
 			, &interpreterBase::robotModel::RobotModelInterface::connected
 			, this
 			, &Interpreter::connectedSlot
@@ -50,7 +50,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 
 	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::stopRobot);
 
-	mRobotModelManager.model()->init();
+	mRobotModelManager.model().init();
 }
 
 Interpreter::~Interpreter()
@@ -89,7 +89,7 @@ void Interpreter::interpret()
 				*mGraphicalModelApi
 				, mBlocksTable
 				, mInterpretersInterface->errorReporter()
-				, mRobotModelManager.model()
+				, &mRobotModelManager.model()
 				);
 
 	bool configurationSucceeded = false;
@@ -110,7 +110,7 @@ void Interpreter::interpret()
 
 void Interpreter::stopRobot()
 {
-	mRobotModelManager.model()->stopRobot();
+	mRobotModelManager.model().stopRobot();
 	mState = idle;
 	qDeleteAll(mThreads);
 	mThreads.clear();
@@ -120,7 +120,7 @@ void Interpreter::stopRobot()
 void Interpreter::connectedSlot(bool success)
 {
 	if (success) {
-		if (mRobotModelManager.model()->needsConnection()) {
+		if (mRobotModelManager.model().needsConnection()) {
 			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
 		}
 	} else {
@@ -218,10 +218,10 @@ void Interpreter::connectToRobot()
 	}
 
 	if (mConnected) {
-		mRobotModelManager.model()->stopRobot();
-		mRobotModelManager.model()->disconnectFromRobot();
+		mRobotModelManager.model().stopRobot();
+		mRobotModelManager.model().disconnectFromRobot();
 	} else {
-		mRobotModelManager.model()->init();
+		mRobotModelManager.model().init();
 //		configureSensors(
 //				  static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port1SensorType").toInt())
 //				, static_cast<robots::enums::sensorType::SensorTypeEnum>(SettingsManager::instance()->value("port2SensorType").toInt())

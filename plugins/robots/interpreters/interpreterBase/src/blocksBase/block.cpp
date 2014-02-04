@@ -184,7 +184,7 @@ bool Block::evaluateBool(QString const &propertyName)
 
 interpreterBase::robotModel::RobotModelInterface &Block::model()
 {
-	return *mRobotModelManager->model();
+	return mRobotModelManager->model();
 }
 
 //QVector<bool> Block::parseEnginePorts() const

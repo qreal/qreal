@@ -40,6 +40,8 @@ QLayout *SensorsConfigurationWidget::initPort(QString const &port, QStringList c
 	if (mAutosaveMode) {
 		connect(comboBox, &QComboBox::currentTextChanged, this, &SensorsConfigurationWidget::save);
 	}
+
+	return layout;
 }
 
 void SensorsConfigurationWidget::refresh()

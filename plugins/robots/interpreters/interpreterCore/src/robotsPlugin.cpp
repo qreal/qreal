@@ -45,7 +45,7 @@ void RobotsPlugin::initActions()
 	connect(
 			mRunAction
 			, &QAction::triggered
-			, mRobotsPluginFacade.interpreter()
+			, &mRobotsPluginFacade.interpreter()
 			, &interpreter::InterpreterInterface::interpret
 			);
 
@@ -54,7 +54,7 @@ void RobotsPlugin::initActions()
 	connect(
 			mStopRobotAction
 			, &QAction::triggered
-			, mRobotsPluginFacade.interpreter()
+			, &mRobotsPluginFacade.interpreter()
 			, &interpreter::InterpreterInterface::stopRobot
 			);
 
@@ -65,7 +65,7 @@ void RobotsPlugin::initActions()
 	connect(
 			mConnectToRobotAction
 			, &QAction::triggered
-			, mRobotsPluginFacade.interpreter()
+			, &mRobotsPluginFacade.interpreter()
 			, &interpreter::InterpreterInterface::connectToRobot
 			);
 
@@ -180,38 +180,7 @@ void RobotsPlugin::initHotKeyActions()
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
-	// TODO: reinit it each time when robot model changes
-	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
-	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
-		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
-	} else if (mKitPluginManager.kitIds().isEmpty()) {
-		mMainWindowInterpretersInterface->setEnabledForAllElementsInPalette(false);
-
-		// TODO: Correctly handle unselected kit.
-		return;
-	}
-
-	mKitPluginManager.selectKit(selectedKit);
-
-	//	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
-//	interpreterBase::robotModel::RobotModelInterface * const robotModel = new interpreterBase::robotModel::RobotModel();
-
-//	interpreterBase::blocks::BlocksFactoryInterface * const blocksFactory = new interpreterBase::blocks::BlocksFactory(
-//			configurator.graphicalModelApi()
-//			, configurator.logicalModelApi()
-//			, robotModel
-//			, configurator.mainWindowInterpretersInterface().errorReporter()
-//			);
-
-//	mInterpreter = new interpreter::Interpreter(configurator.graphicalModelApi()
-//			, configurator.logicalModelApi()
-//			, configurator.mainWindowInterpretersInterface()
-//			, configurator.projectManager()
-//			, blocksFactory
-//			, robotModel
-//			);
-
-//	blocksFactory->setParser(&mInterpreter->parser());
+	mRobotsPluginFacade.init(configurator);
 
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();
@@ -222,18 +191,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 	initActions();
 	initHotKeyActions();
 
-	rereadSettings();
-
-//	setGraphWatcherSettings();
-	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
-//	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(setGraphWatcherSettings()));
 	updateEnabledActions();
-
-//	SystemEventsInterface const *systemEvents = &configurator.systemEvents();
-
-//	connect(systemEvents, SIGNAL(settingsUpdated()), this, SLOT(updateSettings()));
-//	connect(systemEvents, SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(Id)));
-//	connect(systemEvents, SIGNAL(closedMainWindow()), this, SLOT(closeNeededWidget()));
 
 //	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing done");
 }
@@ -256,7 +214,7 @@ QList<HotKeyActionInfo> RobotsPlugin::hotKeyActions()
 
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
 {
-	return qMakePair(QObject::tr("Robots"), static_cast<PreferencesPage*>(mRobotSettingsPage));
+	return qMakePair(QObject::tr("Robots"), mRobotsPluginFacade.robotsSettingsPage());
 }
 
 void RobotsPlugin::showRobotSettings()
@@ -337,49 +295,6 @@ void RobotsPlugin::rereadSettings()
 	updateBlocksOnPalette();
 //	reinitModelType();
 }
-
-//void RobotsPlugin::setModelType(int type)
-//{
-//	SettingsManager::setValue("robotModel", type);
-//	reinitModelType();
-//	updateSettings();
-//}
-
-//void RobotsPlugin::reinitModelType()
-//{
-//	mSwitchTo2DModelAction->setChecked(false);
-//	mSwitchToNxtModelAction->setChecked(false);
-//	mSwitchToTrikModelAction->setChecked(false);
-
-//	// Reinitting model type...
-//	enums::robotModelType::robotModelTypeEnum typeOfRobotModel =
-//			static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
-//	switch (typeOfRobotModel) {
-//	case enums::robotModelType::twoD:
-//		mSwitchTo2DModelAction->setChecked(true);
-//		break;
-//	case enums::robotModelType::nxt:
-//		mSwitchToNxtModelAction->setChecked(true);
-//		break;
-//	case enums::robotModelType::trik:
-//		mSwitchToTrikModelAction->setChecked(true);
-//		break;
-//	default:
-//		break;
-//	}
-//}
-
-//void RobotsPlugin::setGraphWatcherSettings()
-//{
-//	mInterpreter.graphicsWatchWindow()->configureUpdateIntervals(
-//			SettingsManager::value("sensorUpdateInterval"
-//					, utils::sensorsGraph::SensorsGraph::readSensorDefaultInterval).toInt()
-//			, SettingsManager::value("autoscalingInterval"
-//					, utils::sensorsGraph::SensorsGraph::autoscalingDefault).toInt()
-//			, SettingsManager::value("textUpdateInterval"
-//					, utils::sensorsGraph::SensorsGraph::textUpdateDefault).toInt()
-//	);
-//}
 
 void RobotsPlugin::titlesVisibilityChecked(bool checked)
 {

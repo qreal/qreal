@@ -7,6 +7,7 @@
 
 #include <src/interpreter/interpreterInterface.h>
 #include <interpreterBase/robotModel/robotModelInterfaceMock.h>
+#include <interpreterBase/robotModel/robotModelManagerInterfaceMock.h>
 
 #include "support/qrguiFacade.h"
 #include "support/dummyBlocksFactory.h"
@@ -23,6 +24,7 @@ protected:
 	QScopedPointer<interpreterCore::interpreter::InterpreterInterface> mInterpreter;
 	QScopedPointer<QrguiFacade> mQrguiFacade;
 	qrTest::RobotModelInterfaceMock mModel;
+	qrTest::RobotModelManagerInterfaceMock mModelManager;
 	QScopedPointer<QAction> mFakeConnectToRobotAction;
 };
 
