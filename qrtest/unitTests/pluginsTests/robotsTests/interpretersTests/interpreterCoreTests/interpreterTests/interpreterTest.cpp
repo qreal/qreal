@@ -31,9 +31,11 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, configuration()).WillByDefault(ReturnRef(configurationInterfaceMock));
 	EXPECT_CALL(mModel, configuration()).Times(AtLeast(1));
 
+	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
+	EXPECT_CALL(mModelManager, model()).Times(AtLeast(1));
+
 	ON_CALL(mModel, mutableConfiguration()).WillByDefault(ReturnRef(configurationInterfaceMock));
 	EXPECT_CALL(mModel, mutableConfiguration()).Times(AtLeast(1));
-
 
 	mInterpreter.reset(new Interpreter(
 			mQrguiFacade->graphicalModelAssistInterface()
@@ -41,7 +43,7 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->mainWindowInterpretersInterface()
 			, mQrguiFacade->projectManagementInterface()
 			, blocksFactory
-			, &mModel
+			, mModelManager
 			, *mFakeConnectToRobotAction
 			));
 }

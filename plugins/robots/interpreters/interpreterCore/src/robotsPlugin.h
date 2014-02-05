@@ -8,15 +8,15 @@
 
 #include "ui/robotsSettingsPage.h"
 #include "customizer.h"
-#include "kitPluginManager.h"
-#include "interpreter/interpreter.h"
-#include "robotModelManager.h"
 
-//#include "details/sensorsConfigurationWidget.h"
-//#include "details/nxtDisplay.h"
+#include "robotsPluginFacade.h"
+#include "actionsManager.h"
 
 namespace interpreterCore {
 
+/// Provides entry points to robots plugin. Responsible for implementation of ToolPluginInterface and for
+/// interaction with QReal, including ActionInfo objects and other stuff that has nothing to do with plugin logic,
+/// but is required by QReal. It also does some basic reaction to actions like "open robot settings page".
 class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
@@ -24,14 +24,14 @@ class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 	Q_PLUGIN_METADATA(IID "qRealRobots.RobotsPlugin")
 
 public:
+	/// Constructor. Creates plugin in uninitialized state, "init" shall be called before plugin can do anything useful.
 	RobotsPlugin();
-	virtual ~RobotsPlugin();
 
-	virtual void init(qReal::PluginConfigurator const &configurator);
-	virtual QList<qReal::ActionInfo> actions();
-	virtual QList<qReal::HotKeyActionInfo> hotKeyActions();
-	virtual QPair<QString, PreferencesPage *> preferencesPage();
-	virtual qReal::Customizer* customizationInterface();
+	void init(qReal::PluginConfigurator const &configurator) override;
+	virtual QList<qReal::ActionInfo> actions() override;  // Does not transfer ownership of QAction objects.
+	virtual QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
+	virtual QPair<QString, PreferencesPage *> preferencesPage() override;  // Transfers ownership.
+	virtual qReal::Customizer* customizationInterface() override;  // Does not transfer ownership.
 
 private slots:
 	void showRobotSettings();
@@ -49,83 +49,21 @@ private slots:
 	void activeTabChanged(Id const &rootElementId);
 
 private:
-	/// Initializes and connects actions, fills action info list
-	void initActions();
-
-	void initHotKeyActions();
-
-	void updateTitlesVisibility();
-
-	/// Updates "enabled" status of interpreter actions taking into account current tab,
-	/// selected robot model and so on.
-	void updateEnabledActions();
-
-//	void reinitModelType();
-
-//	details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
-
-	/// Disables/hides unsupported by current plugin blocks on a palette.
-	void updateBlocksOnPalette();
-
-	// details::SensorsConfigurationWidget *produceSensorsConfigurer() const;
-
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
-
-	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
-	interpreter::InterpreterInterface *mInterpreter;  // Has ownership
-
-	/// Page with plugin settings. Created here, but then ownership is passed to
-	/// a caller of preferencesPage().
-	ui::RobotsSettingsPage *mRobotSettingsPage;  // Does not have ownership
 
 	/// Main window interface object, used to call GUI functionality
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership
 
-	/// Action that shows 2d model widget
-//	QAction *m2dModelAction;
-
-	/// Action that runs program
-	QAction *mRunAction;
-
-	/// Action that stops program and also stops robot motors
-	QAction *mStopRobotAction;
-
-	/// Checkable action that establishes connection to robot. If successful,
-	/// action will be checked, if connection lost, it will uncheck
-	QAction *mConnectToRobotAction;
-
-	/// Action that shows robots tab in settings dialog
-	QAction *mRobotSettingsAction;
-
-	/// Action that switches current robot model to unreal one
-	QAction *mSwitchTo2DModelAction;
-
-	/// Action that switches current robot model to nxt one
-	QAction *mSwitchToNxtModelAction;
-
-	/// Action that switches current robot model to trik one
-	QAction *mSwitchToTrikModelAction;
-
-	/// Action that shows or hides titles on diagram
-	QAction *mTitlesAction;
-
-	/// List of action infos with plugin actions, for convenient initialization.
-	/// Contains all actions which already present as fields.
-	QList<qReal::ActionInfo> mActionInfos;
-
-	QList<qReal::HotKeyActionInfo> mHotKeyActionInfos;
-
 	/// Plugin translator object
-	QTranslator *mAppTranslator;  // Has ownership
+	QTranslator mAppTranslator;
 
 	qReal::SceneCustomizationInterface *mSceneCustomizer;  // Does not have ownership
 
-	KitPluginManager mKitPluginManager;
+	RobotsPluginFacade mRobotsPluginFacade;
 
-	RobotModelManager mRobotModelManager;
-
-//	details::SensorsConfigurationManager mSensorsConfigurationManager;
+	/// \todo Move it to RobotsPluginFacade?
+	ActionsManager mActionsManager;
 };
 
 }

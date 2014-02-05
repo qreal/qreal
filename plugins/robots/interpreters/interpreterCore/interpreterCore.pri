@@ -9,10 +9,12 @@ INCLUDEPATH += \
 LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase
 
 HEADERS += \
+	$$PWD/src/actionsManager.h \
 	$$PWD/src/customizer.h \
 	$$PWD/src/defaultRobotModel.h \
 	$$PWD/src/kitPluginManager.h \
 	$$PWD/src/robotsPlugin.h \
+	$$PWD/src/robotsPluginFacade.h \
 	$$PWD/src/robotModelManager.h \
 	$$PWD/src/sensorsConfigurationManager.h \
 	$$PWD/src/coreBlocks/coreBlocksFactory.h \
@@ -29,10 +31,12 @@ HEADERS += \
 	$$PWD/src/ui/sensorsConfigurationWidget.h \
 
 SOURCES += \
+	$$PWD/src/actionsManager.cpp \
 	$$PWD/src/customizer.cpp \
 	$$PWD/src/defaultRobotModel.cpp \
 	$$PWD/src/kitPluginManager.cpp \
 	$$PWD/src/robotsPlugin.cpp \
+	$$PWD/src/robotsPluginFacade.cpp \
 	$$PWD/src/robotModelManager.cpp \
 	$$PWD/src/sensorsConfigurationManager.cpp \
 	$$PWD/src/coreBlocks/coreBlocksFactory.cpp \
