@@ -40,7 +40,7 @@ public:
 	virtual QList<PortInfo> configurablePorts() const = 0;
 
 	/// Returns a list of devices that are allowed to be connected on a given port
-	virtual QList<PluggableDeviceInfo> allowedDevices(PortInfo const &port) const = 0;
+	virtual QList<PluggableDeviceInfo> allownDevices(PortInfo const &port) const = 0;
 
 signals:
 	void connected(bool success);

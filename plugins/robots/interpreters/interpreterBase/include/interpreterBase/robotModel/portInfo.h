@@ -9,18 +9,31 @@
 namespace interpreterBase {
 namespace robotModel {
 
+/// A class describing a port on the robot where different devices can be plugged.
 class ROBOTS_INTERPRETER_BASE_EXPORT PortInfo
 {
 public:
-	/// Constructs invalid PortInfo instance
+	/// Deserializes PortInfo instance from the string obtained by toString() method.
+	static PortInfo fromString(QString const &string);
+
+	/// Constructs invalid PortInfo instance.
 	PortInfo();
+
+	/// Constructs new PortInfo instance. If name is empty then the port is considered to be invalid.
 	explicit PortInfo(QString const &name, QStringList const &nameAliases = QStringList());
 
+	/// Returns true if this PortInfo is non-empty (i.e. really describes some port)
 	bool isValid() const;
 
+	/// Returns the name of the port.
 	QString name() const;
 
+	/// Returns a list of names that will be treated as corresponding to the same port as name() does.
+	/// Useful for compability of diagrams for the different robot models (e.g. '1' for TRIK and 'A' for NXT).
 	QStringList nameAliases() const;
+
+	/// Serializes this PortInfo instance into the inner string representation.
+	QString toString() const;
 
 private:
 	QString mName;

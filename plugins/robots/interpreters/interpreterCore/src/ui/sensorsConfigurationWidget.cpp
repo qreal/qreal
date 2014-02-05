@@ -36,7 +36,7 @@ void SensorsConfigurationWidget::loadRobotModel(RobotModelInterface * const robo
 	setLayout(layout);
 	QList<PortInfo> const configurablePorts = robotModel->configurablePorts();
 	for (PortInfo const &port : configurablePorts) {
-		layout->addLayout(initPort(port, robotModel->allowedDevices(port)));
+		layout->addLayout(initPort(port, robotModel->allownDevices(port)));
 	}
 
 	refresh();

@@ -1,14 +1,11 @@
 #pragma once
 
-#include "sensorConstants.h"
+#include "robotModel/portInfo.h"
+#include "robotModel/pluggableDeviceInfo.h"
 
-#include <QtCore/QList>
-#include <QtCore/QVector>
+#include <QtCore/QHash>
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
-namespace details {
+namespace interpreterBase {
 
 /// Mixin abstract class that shall be inherited by anyone who wants to change sensor configuration
 /// or keep in sync with various places where sensor configuration can be changed.
@@ -17,7 +14,7 @@ class SensorsConfigurationProvider
 public:
 	/// Constructor.
 	/// @param name - name of an instance of provider, which can be used in debug output.
-	explicit SensorsConfigurationProvider(QString const &name);
+	explicit SensorsConfigurationProvider(QString const &name = QString());
 
 	virtual ~SensorsConfigurationProvider();
 
@@ -30,34 +27,28 @@ protected:
 	/// through entire graph of connected providers.
 	/// @param port - input port on which sensor has changed.
 	/// @param type - new type of a sensor on a given port.
-	void sensorConfigurationChanged(
-			qReal::interpreters::robots::enums::inputPort::InputPortEnum port
-			, qReal::interpreters::robots::enums::sensorType::SensorTypeEnum type
-			);
+	void sensorConfigurationChanged(QString const &robotModel
+			, robotModel::PortInfo const &port
+			, robotModel::PluggableDeviceInfo const &sensor);
 
 	/// Calls onSensorConfigurationChanged on every port, so provider can synchronize its internal data with sensors
 	/// configuration if it was not able to do so for some reason.
 	void refreshSensorsConfiguration();
 
-private:
 	/// Must be implemented in descendants to react to sensor configuration changes and refresh their internal data.
 	/// Symmetric to sensorConfigurationChanged. Default implementation does nothing.
-	virtual void onSensorConfigurationChanged(
-			qReal::interpreters::robots::enums::inputPort::InputPortEnum port
-			, qReal::interpreters::robots::enums::sensorType::SensorTypeEnum type
-			);
+	virtual void onSensorConfigurationChanged(QString const &robotModel
+			, robotModel::PortInfo const &port
+			, robotModel::PluggableDeviceInfo const &sensor);
 
 	QList<SensorsConfigurationProvider *> mConnectedProviders;  // Doesn't have ownership.
 
 	/// Redundant current sensor configuration to keep track of loops in provider network: if configuration is not
 	/// changed by incoming message, it is not broadcasted.
-	QVector<qReal::interpreters::robots::enums::sensorType::SensorTypeEnum> mCurrentConfiguration;
+	QHash<QString, QHash<robotModel::PortInfo, robotModel::PluggableDeviceInfo>> mCurrentConfiguration;
 
 	/// Name of the provider, which can be used in debug output.
 	QString mName;
 };
 
-}
-}
-}
 }

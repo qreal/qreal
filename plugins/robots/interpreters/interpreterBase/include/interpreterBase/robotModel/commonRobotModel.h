@@ -31,7 +31,7 @@ public:
 
 	QList<PortInfo> availablePorts() const override;
 	QList<PortInfo> configurablePorts() const override;
-	QList<PluggableDeviceInfo> allowedDevices(PortInfo const &port) const override;
+	QList<PluggableDeviceInfo> allownDevices(PortInfo const &port) const override;
 
 protected:
 	QHash<interpreterBase::robotModel::PortInfo

@@ -346,7 +346,7 @@ QList<PortInfo> CommonRobotModel::configurablePorts() const
 	return availablePorts();
 }
 
-QList<PluggableDeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port) const
+QList<PluggableDeviceInfo> CommonRobotModel::allownDevices(PortInfo const &port) const
 {
 	return mAllowedConnections[port];
 }

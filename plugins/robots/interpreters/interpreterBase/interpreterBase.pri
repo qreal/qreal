@@ -13,6 +13,7 @@ HEADERS += \
 	$$PWD/src/blocksBase/blocksFactory.h \
 
 SOURCES += \
+	$$PWD/src/sensorsConfigurationProvider.cpp \
 	$$PWD/src/blocksBase/block.cpp \
 	$$PWD/src/blocksBase/blocksFactory.cpp \
 	$$PWD/src/robotModel/configuration.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/interpreterBaseDeclSpec.h \
 	$$PWD/include/interpreterBase/kitPluginInterface.h \
 	$$PWD/include/interpreterBase/additionalPreferences.h \
+	$$PWD/include/interpreterBase/sensorsConfigurationProvider.h \
 	$$PWD/include/interpreterBase/blocksBase/block.h \
 	$$PWD/include/interpreterBase/blocksBase/blockInterface.h \
 	$$PWD/include/interpreterBase/blocksBase/blockParserInterface.h \
