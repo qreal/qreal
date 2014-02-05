@@ -92,5 +92,5 @@ void SensorsConfigurationWidget::save()
 		SettingsManager::setValue(key, box->itemData(box->currentIndex()));
 	}
 
-	emit saved();
+	refreshSensorsConfiguration();
 }

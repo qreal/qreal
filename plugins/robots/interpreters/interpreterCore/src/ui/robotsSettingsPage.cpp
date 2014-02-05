@@ -30,10 +30,7 @@ RobotsSettingsPage::RobotsSettingsPage(
 	initializeAdditionalWidgets();
 	initializeKitRadioButtons();
 
-//	QWidget * const extensionWidget = mKitPluginManager.selectedKit().settingsWidget();
-//	if (extensionWidget) {
-//		static_cast<QVBoxLayout *>(mUi->settingsExtensionFrame->layout())->insertWidget(0, extensionWidget);
-//	}
+	mUi->sensorsConfigurator->connectSensorsConfigurationProvider(this);
 
 	restoreSettings();
 	saveSelectedRobotModel();

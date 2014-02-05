@@ -3,6 +3,7 @@
 #include <QtCore/QMap>
 #include <QtWidgets/QWidget>
 
+#include <interpreterBase/sensorsConfigurationProvider.h>
 #include <interpreterBase/robotModel/portInfo.h>
 #include <interpreterBase/robotModel/pluggableDeviceInfo.h>
 
@@ -18,7 +19,7 @@ namespace interpreterCore {
 namespace ui {
 
 /// A number of combo boxes for sensors selection
-class SensorsConfigurationWidget : public QWidget
+class SensorsConfigurationWidget : public QWidget, public interpreterBase::SensorsConfigurationProvider
 {
 	Q_OBJECT
 
@@ -30,9 +31,6 @@ public:
 	/// Reinits current widget for the given robot model
 	void loadRobotModel(interpreterBase::robotModel::RobotModelInterface * const robotModel);
 
-signals:
-	void saved();
-
 public slots:
 	void refresh();
 	void save();
@@ -42,11 +40,6 @@ private:
 			, QList<interpreterBase::robotModel::PluggableDeviceInfo> const &sensors);
 
 	QString settingsKey(interpreterBase::robotModel::PortInfo const &port) const;
-
-//	robots::enums::sensorType::SensorTypeEnum selectedPort1Sensor() const;
-//	robots::enums::sensorType::SensorTypeEnum selectedPort2Sensor() const;
-//	robots::enums::sensorType::SensorTypeEnum selectedPort3Sensor() const;
-//	robots::enums::sensorType::SensorTypeEnum selectedPort4Sensor() const;
 
 	bool mAutosaveMode;
 	QString mRobotModelId;
