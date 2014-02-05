@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QScopedPointer>
 
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
 
@@ -8,6 +9,8 @@
 #include "interpreter/interpreter.h"
 #include "robotModelManager.h"
 #include "robotsSettingsPage.h"
+#include "titlesVisibilityManager.h"
+#include "actionsManager.h"
 
 namespace interpreterCore {
 
@@ -22,14 +25,11 @@ public:
 
 	~RobotsPluginFacade() override;
 
-	/// \todo Remove connectToRobotAction, use signals instead.
-	void init(qReal::PluginConfigurator const &configurer, QAction &connectToRobotAction);
+	void init(qReal::PluginConfigurator const &configurer);
 
-	interpreter::InterpreterInterface &interpreter();
+	PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
 
-	PreferencesPage *robotsSettingsPage() const;
-
-	KitPluginManager &kitPluginManager();
+	ActionsManager &actionsManager();
 
 private:
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
@@ -42,6 +42,10 @@ private:
 	KitPluginManager mKitPluginManager;
 
 	RobotModelManager mRobotModelManager;
+
+	ActionsManager mActionsManager;
+
+	QScopedPointer<TitlesVisibilityManager> mTitlesVisibilityManager;
 
 //	details::SensorsConfigurationManager mSensorsConfigurationManager;
 

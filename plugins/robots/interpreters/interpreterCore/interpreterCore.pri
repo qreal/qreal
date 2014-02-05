@@ -16,6 +16,7 @@ HEADERS += \
 	$$PWD/src/robotsPluginFacade.h \
 	$$PWD/src/robotsSettingsPage.h \
 	$$PWD/src/robotModelManager.h \
+	$$PWD/src/titlesVisibilityManager.h \
 	$$PWD/src/coreBlocks/coreBlocksFactory.h \
 	$$PWD/src/coreBlocks/details/finalBlock.h \
 	$$PWD/src/coreBlocks/details/initialBlock.h \
@@ -37,6 +38,7 @@ SOURCES += \
 	$$PWD/src/robotsPluginFacade.cpp \
 	$$PWD/src/robotsSettingsPage.cpp \
 	$$PWD/src/robotModelManager.cpp \
+	$$PWD/src/titlesVisibilityManager.cpp \
 	$$PWD/src/coreBlocks/coreBlocksFactory.cpp \
 	$$PWD/src/coreBlocks/details/finalBlock.cpp \
 	$$PWD/src/coreBlocks/details/initialBlock.cpp \

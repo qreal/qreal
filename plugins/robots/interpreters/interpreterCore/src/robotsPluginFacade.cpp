@@ -7,6 +7,7 @@ using namespace interpreterCore;
 RobotsPluginFacade::RobotsPluginFacade()
 	: mInterpreter(nullptr)
 	, mKitPluginManager("plugins/kitPlugins")
+	, mActionsManager(mKitPluginManager)
 {
 	mRobotSettingsPage = new RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
 }
@@ -16,24 +17,25 @@ RobotsPluginFacade::~RobotsPluginFacade()
 	delete mInterpreter;
 }
 
-void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer, QAction &connectToRobotAction)
+void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 {
-	/// \todo reinit it each time when robot model changes
-	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
-	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
-		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
-	} else if (mKitPluginManager.kitIds().isEmpty()) {
-		configurer.mainWindowInterpretersInterface().setEnabledForAllElementsInPalette(false);
+	mTitlesVisibilityManager.reset(
+			new TitlesVisibilityManager(mActionsManager.titlesVisibilityAction(), configurer.sceneCustomizer())
+			);
 
-		/// \todo Correctly handle unselected kit.
-		return;
-	}
+	connect(
+			mTitlesVisibilityManager.data()
+			, &TitlesVisibilityManager::titlesVisibilityChanged
+			, mRobotSettingsPage
+			, &RobotsSettingsPage::onTextVisibleChanged
+			);
 
-	mKitPluginManager.selectKit(selectedKit);
-
-	/// \todo Load currently selected model from registry.
-	/// \todo Create default model in case when there is no kit.
-	mRobotModelManager.setModel(mKitPluginManager.selectedKit().defaultRobotModel());
+	connect(
+			mRobotSettingsPage
+			, &RobotsSettingsPage::textVisibleChanged
+			, mTitlesVisibilityManager.data()
+			, &TitlesVisibilityManager::onTitlesVisibilityChanged
+			);
 
 	interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory =
 			new coreBlocks::CoreBlocksFactory(
@@ -50,15 +52,27 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer, QActi
 			, configurer.projectManager()
 			, blocksFactory
 			, mRobotModelManager
-			, connectToRobotAction
+			, mActionsManager.connectToRobotAction()
 			);
 
 	blocksFactory->setParser(&mInterpreter->parser());
-}
 
-interpreter::InterpreterInterface &RobotsPluginFacade::interpreter()
-{
-	return *mInterpreter;
+	/// \todo reinit it each time when robot model changes
+	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
+	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
+		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
+	} else if (mKitPluginManager.kitIds().isEmpty()) {
+		configurer.mainWindowInterpretersInterface().setEnabledForAllElementsInPalette(false);
+
+		/// \todo Correctly handle unselected kit.
+		return;
+	}
+
+	mKitPluginManager.selectKit(selectedKit);
+
+	/// \todo Load currently selected model from registry.
+	/// \todo Create default model in case when there is no kit.
+	mRobotModelManager.setModel(mKitPluginManager.selectedKit().defaultRobotModel());
 }
 
 PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
@@ -66,7 +80,7 @@ PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
 	return static_cast<PreferencesPage*>(mRobotSettingsPage);
 }
 
-KitPluginManager &RobotsPluginFacade::kitPluginManager()
+ActionsManager &RobotsPluginFacade::actionsManager()
 {
-	return mKitPluginManager;
+	return mActionsManager;
 }

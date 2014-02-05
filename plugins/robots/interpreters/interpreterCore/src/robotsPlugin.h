@@ -39,8 +39,6 @@ private slots:
 	void rereadSettings();
 //	void setModelType(int type);
 //	void setGraphWatcherSettings();
-	void titlesVisibilityCheckedInPlugin(bool checked);
-	void titlesVisibilityChecked(bool checked);
 	void updateSettings();
 	void closeNeededWidget();
 
@@ -58,12 +56,7 @@ private:
 	/// Plugin translator object
 	QTranslator mAppTranslator;
 
-	qReal::SceneCustomizationInterface *mSceneCustomizer;  // Does not have ownership
-
 	RobotsPluginFacade mRobotsPluginFacade;
-
-	/// \todo Move it to RobotsPluginFacade?
-	ActionsManager mActionsManager;
 };
 
 }

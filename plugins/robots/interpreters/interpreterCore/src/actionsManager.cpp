@@ -95,6 +95,11 @@ void ActionsManager::init(qReal::gui::MainWindowInterpretersInterface *mainWindo
 	updateEnabledActions();
 }
 
+QAction &ActionsManager::titlesVisibilityAction()
+{
+	return mTitlesAction;
+}
+
 void ActionsManager::updateEnabledActions()
 {
 	qReal::Id const &rootElementId = mMainWindowInterpretersInterface->activeDiagram();

@@ -152,6 +152,11 @@ void RobotsSettingsPage::restoreSettings()
 	}
 }
 
+void RobotsSettingsPage::onTextVisibleChanged(bool isChecked)
+{
+	Q_UNUSED(isChecked);
+}
+
 void RobotsSettingsPage::changeEvent(QEvent *e)
 {
 	switch (e->type()) {

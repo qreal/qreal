@@ -11,7 +11,6 @@ static int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
 	: mMainWindowInterpretersInterface(nullptr)
-	, mActionsManager(mRobotsPluginFacade.kitPluginManager())
 {
 	mAppTranslator.load(":/robotsInterpreter_" + QLocale::system().name());
 	QApplication::installTranslator(&mAppTranslator);
@@ -19,10 +18,8 @@ RobotsPlugin::RobotsPlugin()
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
-	mRobotsPluginFacade.init(configurator, mActionsManager.connectToRobotAction());
+	mRobotsPluginFacade.init(configurator);
 
-	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
-	mSceneCustomizer = &configurator.sceneCustomizer();
 	SettingsManager::setValue("IndexGrid", gridWidth);
 //	mCustomizer.placeSensorsConfig(produceSensorsConfigurer());
 //	mCustomizer.placeWatchPlugins(mInterpreter.watchWindow(), mInterpreter.graphicsWatchWindow());
@@ -38,12 +35,12 @@ qReal::Customizer *RobotsPlugin::customizationInterface()
 
 QList<ActionInfo> RobotsPlugin::actions()
 {
-	return mActionsManager.actions();
+	return mRobotsPluginFacade.actionsManager().actions();
 }
 
 QList<HotKeyActionInfo> RobotsPlugin::hotKeyActions()
 {
-	return mActionsManager.hotKeyActionInfos();
+	return mRobotsPluginFacade.actionsManager().hotKeyActionInfos();
 }
 
 QPair<QString, PreferencesPage *> RobotsPlugin::preferencesPage()
@@ -124,25 +121,6 @@ void RobotsPlugin::rereadSettings()
 //	updateBlocksOnPalette();
 //	reinitModelType();
 }
-
-void RobotsPlugin::titlesVisibilityChecked(bool checked)
-{
-//	mTitlesAction->setChecked(checked);
-}
-
-void RobotsPlugin::titlesVisibilityCheckedInPlugin(bool checked)
-{
-//	titlesVisibilityChecked(checked);
-//	SettingsManager::setValue("showTitlesForRobots", checked);
-//	updateTitlesVisibility();
-//	mRobotSettingsPage->changeTextVisibleOnSettingPage(checked);
-}
-
-//void RobotsPlugin::updateTitlesVisibility()
-//{
-//	bool const titlesVisible = SettingsManager::value("showTitlesForRobots").toBool();
-//	mSceneCustomizer->setTitlesVisible(titlesVisible);
-//}
 
 //void RobotsPlugin::updateBlocksOnPalette()
 //{
