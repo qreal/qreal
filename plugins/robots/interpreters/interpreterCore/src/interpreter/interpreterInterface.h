@@ -24,9 +24,6 @@ public:
 	// TODO: What it is doing here?
 	virtual qReal::IdList providedBlocks() const = 0;
 
-	// TODO: Unneeded.
-	virtual interpreterBase::blocksBase::BlockParserInterface &parser() const = 0;
-
 public slots:
 	virtual void interpret() = 0;
 	virtual void stopRobot() = 0;

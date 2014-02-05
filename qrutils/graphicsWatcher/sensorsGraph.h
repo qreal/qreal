@@ -32,6 +32,9 @@ public:
 	void addTrackingObject(int const index, QString const &inParserName, QString const &displayName);
 	void removeTracking(int const index);
 
+	/// Removes all tracking objects
+	void clearTrackingObjects();
+
 	/// paintEvent makes resize operations
 	void paintEvent(QPaintEvent *event = 0);
 

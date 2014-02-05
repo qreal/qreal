@@ -8,6 +8,8 @@ RobotsPluginFacade::RobotsPluginFacade()
 	: mInterpreter(nullptr)
 	, mKitPluginManager("plugins/kitPlugins")
 	, mActionsManager(mKitPluginManager)
+	, mDockSensorsConfigurer(nullptr)
+	, mGraphicsWatcherManager(nullptr)
 {
 	mRobotSettingsPage = new ui::RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
 }
@@ -15,6 +17,7 @@ RobotsPluginFacade::RobotsPluginFacade()
 RobotsPluginFacade::~RobotsPluginFacade()
 {
 	delete mInterpreter;
+	delete mParser;
 }
 
 void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
@@ -45,6 +48,8 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 //			, configurer.mainWindowInterpretersInterface().errorReporter()
 			);
 
+	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter());
+
 	mInterpreter = new interpreter::Interpreter(
 			configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
@@ -52,10 +57,11 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, configurer.projectManager()
 			, blocksFactory
 			, mRobotModelManager
+			, *mParser
 			, mActionsManager.connectToRobotAction()
 			);
 
-	blocksFactory->setParser(&mInterpreter->parser());
+	blocksFactory->setParser(mParser);
 
 	/// \todo reinit it each time when robot model changes
 	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
@@ -70,21 +76,30 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	mKitPluginManager.selectKit(selectedKit);
 
+	mDockSensorsConfigurer = new ui::SensorsConfigurationWidget(nullptr, true);
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, mDockSensorsConfigurer, &ui::SensorsConfigurationWidget::loadRobotModel);
+
+	mWatchListWindow = new utils::WatchListWindow(mParser);
+	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
+
+	mCustomizer.placeSensorsConfig(mDockSensorsConfigurer);
+	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
+
+	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mRobotSettingsPage);
+	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mDockSensorsConfigurer);
+	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mGraphicsWatcherManager);
+	// TODO: connect 2d model
+	// TODO: connect configuration serialization/deserialization into repository
+
 	/// \todo Load currently selected model from registry.
 	/// \todo Create default model in case when there is no kit.
 	mRobotModelManager.setModel(mKitPluginManager.selectedKit().defaultRobotModel());
-
-	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mRobotSettingsPage);
-	// TODO: connect other
-	// sensors configurer on dock
-	// graphics watcher
-	// 2d model;
-	// configuration serialization/deserialization
 }
 
 PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
 {
-	return static_cast<PreferencesPage*>(mRobotSettingsPage);
+	return static_cast<PreferencesPage*>(mRobotSettingsPage); // TODO: what for this cast?
 }
 
 interpreterCore::Customizer &RobotsPluginFacade::customizer()

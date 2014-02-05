@@ -18,9 +18,9 @@ SensorsConfigurationWidget::SensorsConfigurationWidget(QWidget *parent, bool aut
 	refresh();
 }
 
-void SensorsConfigurationWidget::loadRobotModel(RobotModelInterface * const robotModel)
+void SensorsConfigurationWidget::loadRobotModel(RobotModelInterface &robotModel)
 {
-	QString const robotModelId = robotModel->name();
+	QString const robotModelId = robotModel.name();
 	if (robotModelId == mRobotModelId) {
 		return;
 	}
@@ -34,9 +34,9 @@ void SensorsConfigurationWidget::loadRobotModel(RobotModelInterface * const robo
 
 	QVBoxLayout * const layout = new QVBoxLayout;
 	setLayout(layout);
-	QList<PortInfo> const configurablePorts = robotModel->configurablePorts();
+	QList<PortInfo> const configurablePorts = robotModel.configurablePorts();
 	for (PortInfo const &port : configurablePorts) {
-		layout->addLayout(initPort(port, robotModel->allownDevices(port)));
+		layout->addLayout(initPort(port, robotModel.allownDevices(port)));
 	}
 
 	refresh();

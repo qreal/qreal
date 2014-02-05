@@ -5,13 +5,13 @@
 
 #include <qrkernel/ids.h>
 #include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
+#include <qrutils/watchListWindow.h>
 
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
 #include "details/thread.h"
 #include "details/blocksTable.h"
 #include "details/sensorVariablesUpdater.h"
-#include "details/robotsBlockParser.h"
 
 #include "interpreterInterface.h"
 
@@ -29,12 +29,11 @@ public:
 			, qReal::ProjectManagementInterface const &projectManager
 			, interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory  // Takes ownership.
 			, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+			, utils::ExpressionsParser &parser
 			, QAction &connectToRobotAction
 			);
 
 	~Interpreter() override;
-
-	virtual interpreterBase::blocksBase::BlockParserInterface &parser() const;
 
 	qReal::IdList providedBlocks() const override;
 
@@ -83,7 +82,6 @@ private:
 	QList<details::Thread *> mThreads;  // Has ownership
 	interpreterBase::robotModel::RobotModelManagerInterface const &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
-	details::RobotsBlockParser *mParser;  // Has ownership
 
 	bool mConnected;
 

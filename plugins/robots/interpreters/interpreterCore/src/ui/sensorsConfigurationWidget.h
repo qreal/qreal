@@ -29,7 +29,7 @@ public:
 	explicit SensorsConfigurationWidget(QWidget *parent = 0, bool autosaveMode = false);
 
 	/// Reinits current widget for the given robot model
-	void loadRobotModel(interpreterBase::robotModel::RobotModelInterface * const robotModel);
+	void loadRobotModel(interpreterBase::robotModel::RobotModelInterface &robotModel);
 
 public slots:
 	void refresh();

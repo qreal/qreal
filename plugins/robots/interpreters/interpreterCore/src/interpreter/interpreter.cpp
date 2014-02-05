@@ -20,6 +20,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 		, qReal::ProjectManagementInterface const &projectManager
 		, interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory
 		, interpreterBase::robotModel::RobotModelManagerInterface const &robotModelManager
+		, utils::ExpressionsParser &parser  // TODO: direct dependency from ExpressionsParser shall be removed.
 		, QAction &connectToRobotAction
 		)
 	: mGraphicalModelApi(&graphicalModelApi)
@@ -28,9 +29,8 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 	, mState(idle)
 	, mRobotModelManager(robotModelManager)
 	, mBlocksTable(nullptr)
-	, mParser(new details::RobotsBlockParser(interpretersInterface.errorReporter()))
 	, mActionConnectToRobot(connectToRobotAction)
-	, mSensorVariablesUpdater(robotModelManager, *mParser)
+	, mSensorVariablesUpdater(robotModelManager, parser)
 {
 	mBlocksTable = new details::BlocksTable(blocksFactory);
 
@@ -57,11 +57,6 @@ Interpreter::~Interpreter()
 {
 	qDeleteAll(mThreads);
 	delete mBlocksTable;
-}
-
-interpreterBase::blocksBase::BlockParserInterface &Interpreter::parser() const
-{
-	return *mParser;
 }
 
 void Interpreter::interpret()

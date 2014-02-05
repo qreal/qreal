@@ -208,7 +208,7 @@ void RobotsSettingsPage::onRobotModelRadioButtonToggled(bool checked)
 	QString const selectedKit = mKitButtons->checkedButton()->objectName();
 	QAbstractButton * const robotModelButton = static_cast<QAbstractButton *>(sender());
 	robotModel::RobotModelInterface * const selectedRobotModel = mButtonsToRobotModelsMapping[robotModelButton];
-	mUi->sensorsConfigurator->loadRobotModel(selectedRobotModel);
+	mUi->sensorsConfigurator->loadRobotModel(*selectedRobotModel);
 	AdditionalPreferences * const selectedKitPreferences = mKitPluginManager.kitById(selectedKit).settingsWidget();
 	if (selectedKitPreferences) {
 		selectedKitPreferences->onRobotModelChanged(selectedRobotModel);

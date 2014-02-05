@@ -18,6 +18,7 @@ HEADERS += \
 	$$PWD/src/managers/robotModelManager.h \
 	$$PWD/src/managers/sensorsConfigurationManager.h \
 	$$PWD/src/managers/titlesVisibilityManager.h \
+	$$PWD/src/managers/graphicsWatcherManager.h \
 	$$PWD/src/coreBlocks/coreBlocksFactory.h \
 	$$PWD/src/coreBlocks/details/finalBlock.h \
 	$$PWD/src/coreBlocks/details/initialBlock.h \
@@ -25,11 +26,11 @@ HEADERS += \
 	$$PWD/src/interpreter/interpreterInterface.h \
 	$$PWD/src/interpreter/details/autoconfigurer.h \
 	$$PWD/src/interpreter/details/blocksTable.h \
-	$$PWD/src/interpreter/details/robotsBlockParser.h \
 	$$PWD/src/interpreter/details/thread.h \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
 	$$PWD/src/ui/sensorsConfigurationWidget.h \
+	$$PWD/src/textLanguage/robotsBlockParser.h \
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
@@ -41,17 +42,18 @@ SOURCES += \
 	$$PWD/src/managers/robotModelManager.cpp \
 	$$PWD/src/managers/sensorsConfigurationManager.cpp \
 	$$PWD/src/managers/titlesVisibilityManager.cpp \
+	$$PWD/src/managers/graphicsWatcherManager.cpp \
 	$$PWD/src/coreBlocks/coreBlocksFactory.cpp \
 	$$PWD/src/coreBlocks/details/finalBlock.cpp \
 	$$PWD/src/coreBlocks/details/initialBlock.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \
-	$$PWD/src/interpreter/details/robotsBlockParser.cpp \
 	$$PWD/src/interpreter/details/thread.cpp \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
 	$$PWD/src/ui/sensorsConfigurationWidget.cpp \
+	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \

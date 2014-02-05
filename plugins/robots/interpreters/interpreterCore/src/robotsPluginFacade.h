@@ -11,8 +11,11 @@
 #include "managers/titlesVisibilityManager.h"
 #include "managers/actionsManager.h"
 #include "managers/sensorsConfigurationManager.h"
+#include "managers/graphicsWatcherManager.h"
 #include "interpreter/interpreter.h"
+#include "textLanguage/robotsBlockParser.h"
 #include "ui/robotsSettingsPage.h"
+#include "ui/sensorsConfigurationWidget.h"
 
 namespace interpreterCore {
 
@@ -39,6 +42,8 @@ private:
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
 
+	textLanguage::RobotsBlockParser *mParser;  // Has ownership
+
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
 	interpreter::InterpreterInterface *mInterpreter;  // Has ownership
 
@@ -47,15 +52,14 @@ private:
 	ui::RobotsSettingsPage *mRobotSettingsPage;  // Does not have ownership
 
 	KitPluginManager mKitPluginManager;
-
 	RobotModelManager mRobotModelManager;
-
 	ActionsManager mActionsManager;
-
 	QScopedPointer<TitlesVisibilityManager> mTitlesVisibilityManager;
-
 	SensorsConfigurationManager mSensorsConfigurationManager;
 
+	ui::SensorsConfigurationWidget *mDockSensorsConfigurer;  // Does not have ownership
+	utils::WatchListWindow *mWatchListWindow;  // Does not have ownership
+	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
 };
 
 }

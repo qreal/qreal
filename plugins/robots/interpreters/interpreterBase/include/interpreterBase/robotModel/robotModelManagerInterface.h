@@ -17,11 +17,11 @@ class ROBOTS_INTERPRETER_BASE_EXPORT RobotModelManagerInterface : public QObject
 
 public:
 	/// Returns current selected robot model
-	virtual interpreterBase::robotModel::RobotModelInterface &model() const = 0;
+	virtual RobotModelInterface &model() const = 0;
 
 signals:
 	/// Emitted every time when user selected other robot model
-	void robotModelChanged();
+	void robotModelChanged(RobotModelInterface &model);
 };
 
 }
