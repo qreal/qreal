@@ -29,6 +29,8 @@ public:
 
 	PreferencesPage *robotsSettingsPage() const;
 
+	KitPluginManager &kitPluginManager();
+
 private:
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
 	interpreter::InterpreterInterface *mInterpreter;  // Has ownership

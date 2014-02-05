@@ -8,6 +8,7 @@ INCLUDEPATH += \
 LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase
 
 HEADERS += \
+	$$PWD/src/actionsManager.h \
 	$$PWD/src/customizer.h \
 	$$PWD/src/defaultRobotModel.h \
 	$$PWD/src/kitPluginManager.h \
@@ -28,6 +29,7 @@ HEADERS += \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.h \
 
 SOURCES += \
+	$$PWD/src/actionsManager.cpp \
 	$$PWD/src/customizer.cpp \
 	$$PWD/src/defaultRobotModel.cpp \
 	$$PWD/src/kitPluginManager.cpp \

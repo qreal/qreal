@@ -65,3 +65,8 @@ PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
 {
 	return static_cast<PreferencesPage*>(mRobotSettingsPage);
 }
+
+KitPluginManager &RobotsPluginFacade::kitPluginManager()
+{
+	return mKitPluginManager;
+}
