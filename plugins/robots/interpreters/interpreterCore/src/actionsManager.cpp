@@ -95,6 +95,30 @@ void ActionsManager::init(qReal::gui::MainWindowInterpretersInterface *mainWindo
 	updateEnabledActions();
 }
 
+void ActionsManager::connectInterpreter(interpreter::InterpreterInterface const &interpreter)
+{
+	QObject::connect(
+			&mRunAction
+			, &QAction::triggered
+			, &interpreter
+			, &interpreter::InterpreterInterface::interpret
+			);
+
+	QObject::connect(
+			&mStopRobotAction
+			, &QAction::triggered
+			, &interpreter
+			, &interpreter::InterpreterInterface::stopRobot
+			);
+
+	QObject::connect(
+			&mConnectToRobotAction
+			, &QAction::triggered
+			, &interpreter
+			, &interpreter::InterpreterInterface::connectToRobot
+			);
+}
+
 QAction &ActionsManager::titlesVisibilityAction()
 {
 	return mTitlesAction;

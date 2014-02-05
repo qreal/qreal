@@ -15,13 +15,8 @@ class TitlesVisibilityManager : public QObject
 public:
 	TitlesVisibilityManager(QAction &titlesVisibilityAction, qReal::SceneCustomizationInterface &sceneCustomizer);
 
-	void loadTitlesVisibility();
-
-public slots:
+private slots:
 	void onTitlesVisibilityChanged(bool checked);
-
-signals:
-	void titlesVisibilityChanged(bool checked);
 
 private:
 	QAction &mTitlesVisibilityAction;

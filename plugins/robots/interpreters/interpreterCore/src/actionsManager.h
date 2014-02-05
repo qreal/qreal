@@ -7,6 +7,7 @@
 #include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 
 #include "kitPluginManager.h"
+#include "interpreter/interpreterInterface.h"
 
 namespace interpreterCore {
 
@@ -25,6 +26,8 @@ public:
 	QAction &titlesVisibilityAction();
 
 	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
+
+	void connectInterpreter(interpreter::InterpreterInterface const &interpreter);
 
 private:
 	/// Updates "enabled" status of plugin actions taking into account current tab, selected robot model and so on.
