@@ -11,7 +11,8 @@
 
 namespace interpreterCore {
 
-/// Responsible for initialization, interconnecting and keeping in sync various plugin subsystems.
+/// Responsible for initialization, interconnecting and keeping in sync core plugin subsystems.
+/// \todo Document this.
 class RobotsPluginFacade : public QObject
 {
 	Q_OBJECT
@@ -21,7 +22,8 @@ public:
 
 	~RobotsPluginFacade() override;
 
-	void init(qReal::PluginConfigurator const &configurer);
+	/// \todo Remove connectToRobotAction, use signals instead.
+	void init(qReal::PluginConfigurator const &configurer, QAction &connectToRobotAction);
 
 	interpreter::InterpreterInterface &interpreter();
 

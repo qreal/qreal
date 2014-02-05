@@ -4,14 +4,12 @@
 
 #include <qrkernel/settingsManager.h>
 
-//#include <qrgui/toolPluginInterface/systemEvents.h>
-
 using namespace qReal;
 using namespace interpreterCore;
 
-Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
-Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
-int const gridWidth = 25; // Half of element size
+static Id const robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
+static Id const subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
+static int const gridWidth = 25; // Half of element size
 
 RobotsPlugin::RobotsPlugin()
 		: mMainWindowInterpretersInterface(nullptr)
@@ -58,7 +56,6 @@ void RobotsPlugin::initActions()
 			, &interpreter::InterpreterInterface::stopRobot
 			);
 
-	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr);
 	mConnectToRobotAction->setCheckable(true);
 	ActionInfo connectToRobotActionInfo(mConnectToRobotAction, "interpreters", "tools");
 //	mInterpreter->setConnectRobotAction(mConnectToRobotAction);
@@ -180,7 +177,9 @@ void RobotsPlugin::initHotKeyActions()
 
 void RobotsPlugin::init(PluginConfigurator const &configurator)
 {
-	mRobotsPluginFacade.init(configurator);
+	mConnectToRobotAction = new QAction(QIcon(":/icons/robots_connect.png"), QObject::tr("Connect to robot"), nullptr);
+
+	mRobotsPluginFacade.init(configurator, *mConnectToRobotAction);
 
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mSceneCustomizer = &configurator.sceneCustomizer();

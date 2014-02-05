@@ -17,7 +17,7 @@
 namespace interpreterCore {
 
 /// Provides entry points to robots plugin. Responsible for implementation of ToolPluginInterface and for
-/// interaction with QReal, providing actions and hotkeys for user interface, reacting to actions.
+/// interaction with QReal, providing actions and hotkeys for user interface and keeping actions updated.
 class RobotsPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT

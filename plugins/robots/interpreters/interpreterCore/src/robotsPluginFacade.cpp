@@ -1,5 +1,7 @@
 #include "robotsPluginFacade.h"
 
+#include "src/coreBlocks/coreBlocksFactory.h"
+
 using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
@@ -7,11 +9,6 @@ RobotsPluginFacade::RobotsPluginFacade()
 	, mKitPluginManager("plugins/kitPlugins")
 {
 	mRobotSettingsPage = new RobotsSettingsPage(mKitPluginManager, mRobotModelManager);
-
-	//	mInterpreter = new details::Interpreter();
-
-	//	connect(mInterpreter, SIGNAL(noiseSettingsChangedBy2DModelWidget()), mRobotSettingsPage, SLOT(rereadNoiseSettings()));
-	//	connect(mRobotSettingsPage, SIGNAL(textVisibleChanged(bool)), this, SLOT(titlesVisibilityCheckedInPlugin(bool)));
 }
 
 RobotsPluginFacade::~RobotsPluginFacade()
@@ -19,65 +16,44 @@ RobotsPluginFacade::~RobotsPluginFacade()
 	delete mInterpreter;
 }
 
-void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
+void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer, QAction &connectToRobotAction)
 {
-	//	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing plugin");
-
-	// TODO: reinit it each time when robot model changes
+	/// \todo reinit it each time when robot model changes
 	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
 	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
 		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
 	} else if (mKitPluginManager.kitIds().isEmpty()) {
 		configurer.mainWindowInterpretersInterface().setEnabledForAllElementsInPalette(false);
 
-		// TODO: Correctly handle unselected kit.
+		/// \todo Correctly handle unselected kit.
 		return;
 	}
 
 	mKitPluginManager.selectKit(selectedKit);
 
-//	interpreterBase::robotModel::RobotModelInterface * const robotModel = new interpreterBase::robotModel::RobotModel();
+	/// \todo Load currently selected model from registry.
+	/// \todo Create default model in case when there is no kit.
+	mRobotModelManager.setModel(mKitPluginManager.selectedKit().defaultRobotModel());
 
-//	interpreterBase::blocks::BlocksFactoryInterface * const blocksFactory = new interpreterBase::blocks::BlocksFactory(
-//			configurator.graphicalModelApi()
-//			, configurator.logicalModelApi()
+	interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory =
+			new coreBlocks::CoreBlocksFactory(
+//			configurer.graphicalModelApi()
+//			, configurer.logicalModelApi()
 //			, robotModel
-//			, configurator.mainWindowInterpretersInterface().errorReporter()
-//			);
+//			, configurer.mainWindowInterpretersInterface().errorReporter()
+			);
 
-//	mInterpreter = new interpreter::Interpreter(configurator.graphicalModelApi()
-//			, configurator.logicalModelApi()
-//			, configurator.mainWindowInterpretersInterface()
-//			, configurator.projectManager()
-//			, blocksFactory
-//			, robotModel
-//			);
+	mInterpreter = new interpreter::Interpreter(
+			configurer.graphicalModelApi()
+			, configurer.logicalModelApi()
+			, configurer.mainWindowInterpretersInterface()
+			, configurer.projectManager()
+			, blocksFactory
+			, mRobotModelManager
+			, connectToRobotAction
+			);
 
-//	blocksFactory->setParser(&mInterpreter->parser());
-
-//	mMainWindowInterpretersInterface = &configurer.mainWindowInterpretersInterface();
-//	mSceneCustomizer = &configurer.sceneCustomizer();
-//	SettingsManager::setValue("IndexGrid", gridWidth);
-//	mCustomizer.placeSensorsConfig(produceSensorsConfigurer());
-//	mCustomizer.placeWatchPlugins(mInterpreter.watchWindow(), mInterpreter.graphicsWatchWindow());
-
-//	initActions();
-//	initHotKeyActions();
-
-//	rereadSettings();
-
-//	setGraphWatcherSettings();
-//	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(rereadSettings()));
-//	connect(mRobotSettingsPage, SIGNAL(saved()), this, SLOT(setGraphWatcherSettings()));
-//	updateEnabledActions();
-
-//	SystemEventsInterface const *systemEvents = &configurator.systemEvents();
-
-//	connect(systemEvents, SIGNAL(settingsUpdated()), this, SLOT(updateSettings()));
-//	connect(systemEvents, SIGNAL(activeTabChanged(Id)), this, SLOT(activeTabChanged(Id)));
-//	connect(systemEvents, SIGNAL(closedMainWindow()), this, SLOT(closeNeededWidget()));
-
-//	details::Tracer::debug(details::tracer::enums::initialization, "RobotsPlugin::init", "Initializing done");
+	blocksFactory->setParser(&mInterpreter->parser());
 }
 
 interpreter::InterpreterInterface &RobotsPluginFacade::interpreter()
