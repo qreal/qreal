@@ -29,3 +29,9 @@ usabilityFiles/*
 **/generated/pluginInterface.cpp
 **/generated/ports.h
 plugin.qrc
+
+# Doxygen
+**/doxygen/html/*
+
+# Visual Paradigm temporaries
+umlDocumentation/*\~*
