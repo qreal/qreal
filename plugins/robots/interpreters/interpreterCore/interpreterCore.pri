@@ -9,14 +9,15 @@ INCLUDEPATH += \
 LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrrepo -lqrutils -linterpreterBase
 
 HEADERS += \
-	$$PWD/src/actionsManager.h \
 	$$PWD/src/customizer.h \
 	$$PWD/src/defaultRobotModel.h \
-	$$PWD/src/kitPluginManager.h \
 	$$PWD/src/robotsPlugin.h \
 	$$PWD/src/robotsPluginFacade.h \
-	$$PWD/src/robotModelManager.h \
-	$$PWD/src/sensorsConfigurationManager.h \
+	$$PWD/src/managers/actionsManager.h \
+	$$PWD/src/managers/kitPluginManager.h \
+	$$PWD/src/managers/robotModelManager.h \
+	$$PWD/src/managers/sensorsConfigurationManager.h \
+	$$PWD/src/managers/titlesVisibilityManager.h \
 	$$PWD/src/coreBlocks/coreBlocksFactory.h \
 	$$PWD/src/coreBlocks/details/finalBlock.h \
 	$$PWD/src/coreBlocks/details/initialBlock.h \
@@ -31,14 +32,15 @@ HEADERS += \
 	$$PWD/src/ui/sensorsConfigurationWidget.h \
 
 SOURCES += \
-	$$PWD/src/actionsManager.cpp \
 	$$PWD/src/customizer.cpp \
 	$$PWD/src/defaultRobotModel.cpp \
-	$$PWD/src/kitPluginManager.cpp \
 	$$PWD/src/robotsPlugin.cpp \
 	$$PWD/src/robotsPluginFacade.cpp \
-	$$PWD/src/robotModelManager.cpp \
-	$$PWD/src/sensorsConfigurationManager.cpp \
+	$$PWD/src/managers/actionsManager.cpp \
+	$$PWD/src/managers/kitPluginManager.cpp \
+	$$PWD/src/managers/robotModelManager.cpp \
+	$$PWD/src/managers/sensorsConfigurationManager.cpp \
+	$$PWD/src/managers/titlesVisibilityManager.cpp \
 	$$PWD/src/coreBlocks/coreBlocksFactory.cpp \
 	$$PWD/src/coreBlocks/details/finalBlock.cpp \
 	$$PWD/src/coreBlocks/details/initialBlock.cpp \

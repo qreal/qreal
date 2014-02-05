@@ -1,6 +1,7 @@
 #pragma once
 
 #include "interpreterBase/robotModel/robotModelInterface.h"
+#include "interpreterBase/robotModel/configuration.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {
@@ -36,6 +37,9 @@ public:
 protected:
 	QHash<interpreterBase::robotModel::PortInfo
 			, QList<interpreterBase::robotModel::PluggableDeviceInfo> > mAllowedConnections;
+
+	// TODO: implement
+	Configuration mConfiguration;
 
 };
 

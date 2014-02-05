@@ -1,12 +1,17 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QScopedPointer>
 
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
 
-#include "kitPluginManager.h"
+#include "customizer.h"
+#include "managers/kitPluginManager.h"
+#include "managers/robotModelManager.h"
+#include "managers/titlesVisibilityManager.h"
+#include "managers/actionsManager.h"
+#include "managers/sensorsConfigurationManager.h"
 #include "interpreter/interpreter.h"
-#include "robotModelManager.h"
 #include "ui/robotsSettingsPage.h"
 
 namespace interpreterCore {
@@ -22,16 +27,18 @@ public:
 
 	~RobotsPluginFacade() override;
 
-	/// \todo Remove connectToRobotAction, use signals instead.
-	void init(qReal::PluginConfigurator const &configurer, QAction &connectToRobotAction);
+	void init(qReal::PluginConfigurator const &configurer);
 
-	interpreter::InterpreterInterface &interpreter();
+	PreferencesPage *robotsSettingsPage() const;  // Transfers ownership.
 
-	PreferencesPage *robotsSettingsPage() const;
+	interpreterCore::Customizer &customizer();
 
-	KitPluginManager &kitPluginManager();
+	ActionsManager &actionsManager();
 
 private:
+	/// Customizer object for this plugin
+	Customizer mCustomizer;
+
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
 	interpreter::InterpreterInterface *mInterpreter;  // Has ownership
 
@@ -43,7 +50,11 @@ private:
 
 	RobotModelManager mRobotModelManager;
 
-//	details::SensorsConfigurationManager mSensorsConfigurationManager;
+	ActionsManager mActionsManager;
+
+	QScopedPointer<TitlesVisibilityManager> mTitlesVisibilityManager;
+
+	SensorsConfigurationManager mSensorsConfigurationManager;
 
 };
 

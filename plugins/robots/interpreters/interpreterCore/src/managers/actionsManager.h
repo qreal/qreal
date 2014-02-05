@@ -22,6 +22,8 @@ public:
 	/// \todo Remove this.
 	QAction &connectToRobotAction();
 
+	QAction &titlesVisibilityAction();
+
 	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
 
 private:
@@ -50,9 +52,8 @@ private:
 	QAction mSeparator1;
 	QAction mSeparator2;
 
-	/// List of action infos with plugin actions, for convenient initialization.
-	/// Contains all actions which already present as fields.
-	QList<QAction *> mActions;
+	/// List of plugin actions, for convenient initialization. Contains all actions which already present as fields.
+	QList<QAction *> mActions;  // Does not have ownership (actions already present as fields).
 
 	KitPluginManager const &mKitPluginManager;
 

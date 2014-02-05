@@ -1,7 +1,5 @@
 #include "interpreterBase/robotModel/commonRobotModel.h"
 
-#include "interpreterBase/robotModel/configuration.h"
-
 using namespace interpreterBase::robotModel;
 
 //#include "../tracer.h"
@@ -311,15 +309,13 @@ void CommonRobotModel::disconnectFromRobot()
 ConfigurationInterface &CommonRobotModel::mutableConfiguration()
 {
 	// TODO: Implement
-	Configuration configuration;
-	return configuration;
+	return mConfiguration;
 }
 
 ConfigurationInterface const &CommonRobotModel::configuration() const
 {
 	// TODO: Implement
-	Configuration configuration;
-	return configuration;
+	return mConfiguration;
 }
 
 robotParts::Brick &CommonRobotModel::brick()

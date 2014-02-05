@@ -8,8 +8,8 @@
 
 //#include "sensorConstants.h"
 //#include "details/sensorsConfigurationWidget.h"
-#include "kitPluginManager.h"
-#include "robotModelManager.h"
+#include "managers/kitPluginManager.h"
+#include "managers/robotModelManager.h"
 
 namespace Ui {
 class PreferencesRobotSettingsPage;
@@ -38,6 +38,13 @@ public:
 
 signals:
 	void saved();
+
+	/// \todo Support text visibility or remove it completely from here
+	void textVisibleChanged(bool isChecked);
+
+public slots:
+	/// \todo Support text visibility or remove it completely from here
+	void onTextVisibleChanged(bool isChecked);
 
 protected:
 	void changeEvent(QEvent *e);

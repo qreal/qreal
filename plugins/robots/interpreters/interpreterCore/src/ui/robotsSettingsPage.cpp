@@ -7,7 +7,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsWatcher/sensorsGraph.h>
 #include <interpreterBase/additionalPreferences.h>
-#include "robotModelManager.h"
+#include "managers/robotModelManager.h"
 
 using namespace interpreterCore::ui;
 using namespace interpreterBase;
@@ -140,6 +140,11 @@ void RobotsSettingsPage::restoreSettings()
 			kitPreferences->restoreSettings();
 		}
 	}
+}
+
+void RobotsSettingsPage::onTextVisibleChanged(bool isChecked)
+{
+	Q_UNUSED(isChecked);
 }
 
 void RobotsSettingsPage::changeEvent(QEvent *e)
