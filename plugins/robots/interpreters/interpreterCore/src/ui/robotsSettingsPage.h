@@ -39,13 +39,6 @@ public:
 signals:
 	void saved();
 
-	/// \todo Support text visibility or remove it completely from here
-	void textVisibleChanged(bool isChecked);
-
-public slots:
-	/// \todo Support text visibility or remove it completely from here
-	void onTextVisibleChanged(bool isChecked);
-
 protected:
 	void changeEvent(QEvent *e);
 

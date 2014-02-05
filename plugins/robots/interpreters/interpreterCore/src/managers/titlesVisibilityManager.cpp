@@ -10,20 +10,19 @@ TitlesVisibilityManager::TitlesVisibilityManager(
 	: mTitlesVisibilityAction(titlesVisibilityAction)
 	, mSceneCustomizer(sceneCustomizer)
 {
-}
-
-void TitlesVisibilityManager::loadTitlesVisibility()
-{
 	bool const titlesVisible = qReal::SettingsManager::value("showTitlesForRobots").toBool();
 	onTitlesVisibilityChanged(titlesVisible);
+
+	QObject::connect(
+			&mTitlesVisibilityAction
+			, &QAction::triggered
+			, this
+			, &TitlesVisibilityManager::onTitlesVisibilityChanged
+			);
 }
 
 void TitlesVisibilityManager::onTitlesVisibilityChanged(bool checked)
 {
-	if (mTitlesVisibilityAction.isChecked() != checked) {
-		mTitlesVisibilityAction.setChecked(checked);
-		qReal::SettingsManager::setValue("showTitlesForRobots", checked);
-		mSceneCustomizer.setTitlesVisible(checked);
-		emit titlesVisibilityChanged(checked);
-	}
+	qReal::SettingsManager::setValue("showTitlesForRobots", checked);
+	mSceneCustomizer.setTitlesVisible(checked);
 }

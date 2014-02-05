@@ -26,20 +26,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			new TitlesVisibilityManager(mActionsManager.titlesVisibilityAction(), configurer.sceneCustomizer())
 			);
 
-	connect(
-			mTitlesVisibilityManager.data()
-			, &TitlesVisibilityManager::titlesVisibilityChanged
-			, mRobotSettingsPage
-			, &ui::RobotsSettingsPage::onTextVisibleChanged
-			);
-
-	connect(
-			mRobotSettingsPage
-			, &ui::RobotsSettingsPage::textVisibleChanged
-			, mTitlesVisibilityManager.data()
-			, &TitlesVisibilityManager::onTitlesVisibilityChanged
-			);
-
 	interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory =
 			new coreBlocks::CoreBlocksFactory(
 //			configurer.graphicalModelApi()
@@ -60,6 +46,8 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			, *mParser
 			, mActionsManager.connectToRobotAction()
 			);
+
+	mActionsManager.connectInterpreter(*mInterpreter);
 
 	blocksFactory->setParser(mParser);
 
