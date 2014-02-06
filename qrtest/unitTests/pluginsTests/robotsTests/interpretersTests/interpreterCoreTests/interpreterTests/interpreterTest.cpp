@@ -4,6 +4,8 @@
 
 #include <interpreterBase/robotModel/configurationInterfaceMock.h>
 
+#include <src/textLanguage/robotsBlockParser.h>
+
 using namespace qrTest::robotsTests::interpreterCoreTests;
 
 using namespace interpreterCore::interpreter;
@@ -37,6 +39,11 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, mutableConfiguration()).WillByDefault(ReturnRef(configurationInterfaceMock));
 	EXPECT_CALL(mModel, mutableConfiguration()).Times(AtLeast(1));
 
+	/// \todo Don't like it.
+	interpreterCore::textLanguage::RobotsBlockParser parser(
+			mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
+			);
+
 	mInterpreter.reset(new Interpreter(
 			mQrguiFacade->graphicalModelAssistInterface()
 			, mQrguiFacade->logicalModelAssistInterface()
@@ -44,6 +51,7 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->projectManagementInterface()
 			, blocksFactory
 			, mModelManager
+			, parser
 			, *mFakeConnectToRobotAction
 			));
 }

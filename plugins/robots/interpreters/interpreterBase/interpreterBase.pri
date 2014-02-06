@@ -54,3 +54,7 @@ HEADERS += \
 	$$PWD/include/interpreterBase/robotModel/robotParts/soundSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/touchSensor.h \
 	$$PWD/include/interpreterBase/robotModel/robotParts/vectorSensor.h \
+
+# qrgui code
+HEADERS += \
+	$$PWD/../../../../qrgui/dialogs/preferencesPages/preferencesPage.h \
