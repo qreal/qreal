@@ -31,19 +31,25 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 //			, configurer.mainWindowInterpretersInterface().errorReporter()
 			);
 
-	mInterpreter = new interpreter::Interpreter(
-			configurer.graphicalModelApi()
-			, configurer.logicalModelApi()
-			, configurer.mainWindowInterpretersInterface()
-			, configurer.projectManager()
-			, blocksFactory
-			, mRobotModelManager
-			, mActionsManager.connectToRobotAction()
+//	mInterpreter = new interpreter::Interpreter(
+//			configurer.graphicalModelApi()
+//			, configurer.logicalModelApi()
+//			, configurer.mainWindowInterpretersInterface()
+//			, configurer.projectManager()
+//			, blocksFactory
+//			, mRobotModelManager
+//			, mActionsManager.connectToRobotAction()
+//			);
+
+//	mActionsManager.connectInterpreter(*mInterpreter);
+
+	connect(
+			&mActionsManager.robotSettingsAction()
+			, &QAction::triggered
+			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); }
 			);
 
-	mActionsManager.connectInterpreter(*mInterpreter);
-
-	blocksFactory->setParser(&mInterpreter->parser());
+//	blocksFactory->setParser(&mInterpreter->parser());
 
 	/// \todo reinit it each time when robot model changes
 	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();

@@ -25,6 +25,8 @@ public:
 
 	QAction &titlesVisibilityAction();
 
+	QAction &robotSettingsAction();
+
 	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
 
 	void connectInterpreter(interpreter::InterpreterInterface const &interpreter);

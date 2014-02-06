@@ -124,6 +124,11 @@ QAction &ActionsManager::titlesVisibilityAction()
 	return mTitlesAction;
 }
 
+QAction &ActionsManager::robotSettingsAction()
+{
+	return mRobotSettingsAction;
+}
+
 void ActionsManager::updateEnabledActions()
 {
 	qReal::Id const &rootElementId = mMainWindowInterpretersInterface->activeDiagram();
