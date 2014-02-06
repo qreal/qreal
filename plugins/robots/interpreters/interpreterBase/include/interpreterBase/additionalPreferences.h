@@ -6,7 +6,7 @@
 namespace interpreterBase {
 
 /// A base class for additional widget on the robots settings page. Can be subclassed in concrete plugins.
-class AdditionalPreferences : public PreferencesPage
+class ROBOTS_INTERPRETER_BASE_EXPORT AdditionalPreferences : public PreferencesPage
 {
 public:
 	explicit AdditionalPreferences(QWidget *parent = 0)

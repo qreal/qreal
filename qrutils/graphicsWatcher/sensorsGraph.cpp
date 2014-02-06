@@ -68,6 +68,13 @@ void SensorsGraph::removeTracking(const int index)
 	watchListChanged();
 }
 
+void SensorsGraph::clearTrackingObjects()
+{
+	for (int i = 0; i < mWatchList.count(); ++i) {
+		removeTracking(i);
+	}
+}
+
 void SensorsGraph::paintEvent(QPaintEvent *event)
 {
 	Q_UNUSED(event);

@@ -1,7 +1,5 @@
 #include "interpreterBase/robotModel/commonRobotModel.h"
 
-#include "interpreterBase/robotModel/configuration.h"
-
 using namespace interpreterBase::robotModel;
 
 //#include "../tracer.h"
@@ -37,6 +35,11 @@ CommonRobotModel::~CommonRobotModel()
 QString CommonRobotModel::name() const
 {
 	return QString();
+}
+
+QString CommonRobotModel::friendlyName() const
+{
+	return name();
 }
 
 //robotParts::Brick &RobotModel::brick()
@@ -306,15 +309,13 @@ void CommonRobotModel::disconnectFromRobot()
 ConfigurationInterface &CommonRobotModel::mutableConfiguration()
 {
 	// TODO: Implement
-	Configuration configuration;
-	return configuration;
+	return mConfiguration;
 }
 
 ConfigurationInterface const &CommonRobotModel::configuration() const
 {
 	// TODO: Implement
-	Configuration configuration;
-	return configuration;
+	return mConfiguration;
 }
 
 robotParts::Brick &CommonRobotModel::brick()
@@ -333,11 +334,15 @@ robotParts::Display &CommonRobotModel::display()
 
 QList<PortInfo> CommonRobotModel::availablePorts() const
 {
-	return QList<PortInfo>();
+	return mAllowedConnections.keys();
 }
 
-QList<PluggableDeviceInfo> CommonRobotModel::supportedSensors() const
+QList<PortInfo> CommonRobotModel::configurablePorts() const
 {
-	return QList<PluggableDeviceInfo>();
+	return availablePorts();
 }
 
+QList<PluggableDeviceInfo> CommonRobotModel::allownDevices(PortInfo const &port) const
+{
+	return mAllowedConnections[port];
+}

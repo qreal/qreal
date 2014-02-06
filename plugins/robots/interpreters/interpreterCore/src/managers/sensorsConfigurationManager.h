@@ -1,12 +1,8 @@
 #pragma once
 
-#include "sensorConstants.h"
-#include "details/sensorsConfigurationProvider.h"
+#include <interpreterBase/sensorsConfigurationProvider.h>
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
-namespace details {
+namespace interpreterCore {
 
 /// A class that stores sensor configuration information in a registry and is responsible for synchronizing this
 /// information between various places where it can be changed.
@@ -22,25 +18,23 @@ namespace details {
 ///
 /// Initialization is also centralized, SensorsSettingsManager::refresh() shall be called after all clients are
 /// connected and this will initialize everything.
-class SensorsConfigurationManager : public SensorsConfigurationProvider
+class SensorsConfigurationManager : public interpreterBase::SensorsConfigurationProvider
 {
 public:
 	SensorsConfigurationManager();
 
-	/// Sends sensorConfigurationChanged on all ports taking sensor types from registry to all clients
-	/// to initialize them.
-	void load();
+	/// Serializes current sensors configuration into inner string representation.
+	QString save() const;
+
+	/// Parses given sensors configuration serialized by save() method and broadcasts it to all connected providers.
+	void load(QString const &configuration);
 
 private:
-	static QString portToSettingsKey(qReal::interpreters::robots::enums::inputPort::InputPortEnum port);
+	static QString portToSettingsKey(interpreterBase::robotModel::PortInfo const &port);
 
-	void onSensorConfigurationChanged(
-			qReal::interpreters::robots::enums::inputPort::InputPortEnum port
-			, qReal::interpreters::robots::enums::sensorType::SensorTypeEnum type
-			) override;
+	void onSensorConfigurationChanged(QString const &robotModel
+			, interpreterBase::robotModel::PortInfo const &port
+			, interpreterBase::robotModel::PluggableDeviceInfo const &sensor) override;
 };
 
-}
-}
-}
 }

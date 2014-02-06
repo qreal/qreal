@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QMap>
 #include <QtCore/QMetaObject>
 
 #include "interpreterBase/interpreterBaseDeclSpec.h"
@@ -22,10 +23,21 @@ public:
 		// This line performs Q_OBJECT macro checking in the given type declaration.
 		// Without Q_OBJECT macro incorrect metaObject will be passed and it will lead
 		// to invalid isA() method work.
-		static_assert(HasQObjectMacro<T>::Value,
-				"No Q_OBJECT macro in the class that is passed into a template");
-		return PluggableDeviceInfo(&T::staticMetaObject, friendlyName);
+		static_assert(HasQObjectMacro<T>::Value, "No Q_OBJECT macro in the class that is passed into a template");
+		QMetaObject const *metaObject = &T::staticMetaObject;
+		PluggableDeviceInfo result(metaObject, friendlyName);
+		mCreatedInfos[QString(metaObject->className())] = result;
+		return result;
 	}
+
+	/// Deserializes inner string representation obtained by toString()
+	static PluggableDeviceInfo fromString(QString const &string);
+
+	/// Constructs invalid PluggableDeviceInfo instance
+	PluggableDeviceInfo();
+
+	/// Serializes given pluggable device info into inner string representation
+	QString toString() const;
 
 	/// Returns if the device corresponding to 'this' inherits a 'parent' one or they are the devices of the same type.
 	bool isA(PluggableDeviceInfo const &parent) const;
@@ -52,6 +64,8 @@ private:
 	friend bool operator !=(PluggableDeviceInfo const &device1, PluggableDeviceInfo const &device2);
 
 	explicit PluggableDeviceInfo(QMetaObject const *deviceType, QString const &friendlyName);
+
+	static QMap<QString, PluggableDeviceInfo> mCreatedInfos;
 
 	QMetaObject const *mDeviceType;
 	QString mFriendlyName;

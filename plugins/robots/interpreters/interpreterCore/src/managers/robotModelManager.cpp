@@ -24,6 +24,6 @@ void RobotModelManager::setModel(interpreterBase::robotModel::RobotModelInterfac
 		QString const key = "SelectedModelFor" + selectedKit;
 		qReal::SettingsManager::setValue(key, actualModel->name());
 		mRobotModel = actualModel;
-		emit robotModelChanged();
+		emit robotModelChanged(*mRobotModel);
 	}
 }

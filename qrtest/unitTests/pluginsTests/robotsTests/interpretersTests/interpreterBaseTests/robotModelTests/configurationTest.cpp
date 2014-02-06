@@ -12,13 +12,13 @@ TEST_F(ConfigurationTest, configureTest)
 	Configuration configuration;
 	ConfigurationInterface &configurationInterface = configuration;
 
-	PortInfo portA("A", PortInfo::output);
-	PortInfo port1("1", PortInfo::input);
+	PortInfo portA("A");
+	PortInfo port1("1");
 
 	configurationInterface.configureDevice(new DummyPluggableDevice(portA));
 	configurationInterface.configureDevice(new DummyPluggableDevice(port1));
 
-	PortInfo unknownPort("unknown", PortInfo::inOut);
+	PortInfo unknownPort("unknown");
 
 	// Devices are pending for configuration, so they are not configured yet.
 	ASSERT_EQ(nullptr, configurationInterface.pluggableDevice(portA));

@@ -4,21 +4,23 @@
 #include <QtWidgets/QRadioButton>
 
 #include <qrgui/dialogs/preferencesPages/preferencesPage.h>
+#include <interpreterBase/sensorsConfigurationProvider.h>
 
 //#include "sensorConstants.h"
 //#include "details/sensorsConfigurationWidget.h"
-#include "kitPluginManager.h"
-#include "robotModelManager.h"
+#include "managers/kitPluginManager.h"
+#include "managers/robotModelManager.h"
 
 namespace Ui {
 class PreferencesRobotSettingsPage;
 }
 
 namespace interpreterCore {
+namespace ui {
 
 /// Preferences page for robots interpreter plugin. Contains constructor kit selector and a placeholder for
 /// kit-specific settings.
-class RobotsSettingsPage : public PreferencesPage
+class RobotsSettingsPage : public PreferencesPage, public interpreterBase::SensorsConfigurationProvider
 {
 	Q_OBJECT
 
@@ -65,4 +67,5 @@ private:
 	QHash<QAbstractButton *, interpreterBase::robotModel::RobotModelInterface *> mButtonsToRobotModelsMapping;
 };
 
+}
 }

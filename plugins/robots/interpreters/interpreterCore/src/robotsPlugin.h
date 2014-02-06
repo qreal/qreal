@@ -6,11 +6,10 @@
 #include <qrgui/toolPluginInterface/pluginConfigurator.h>
 #include <qrgui/toolPluginInterface/hotKeyActionInfo.h>
 
-#include "robotsSettingsPage.h"
-#include "customizer.h"
+#include "ui/robotsSettingsPage.h"
 
 #include "robotsPluginFacade.h"
-#include "actionsManager.h"
+#include "managers/actionsManager.h"
 
 namespace interpreterCore {
 
@@ -31,7 +30,7 @@ public:
 	virtual QList<qReal::ActionInfo> actions() override;  // Does not transfer ownership of QAction objects.
 	virtual QList<qReal::HotKeyActionInfo> hotKeyActions() override;  // Does not transfer ownership of QAction objects.
 	virtual QPair<QString, PreferencesPage *> preferencesPage() override;  // Transfers ownership.
-	virtual qReal::Customizer* customizationInterface() override;  // Does not transfer ownership.
+	virtual qReal::Customizer *customizationInterface() override;  // Does not transfer ownership.
 
 private slots:
 	void showRobotSettings();
@@ -47,9 +46,6 @@ private slots:
 	void activeTabChanged(Id const &rootElementId);
 
 private:
-	/// Customizer object for this plugin
-	Customizer mCustomizer;
-
 	/// Main window interface object, used to call GUI functionality
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface;  // Does not have ownership
 

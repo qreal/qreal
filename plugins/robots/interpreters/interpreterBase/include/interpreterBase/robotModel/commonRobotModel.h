@@ -1,6 +1,7 @@
 #pragma once
 
 #include "interpreterBase/robotModel/robotModelInterface.h"
+#include "interpreterBase/robotModel/configuration.h"
 #include "interpreterBase/interpreterBaseDeclSpec.h"
 
 namespace interpreterBase {
@@ -15,6 +16,7 @@ public:
 	~CommonRobotModel() override;
 
 	QString name() const override;
+	QString friendlyName() const override;
 
 	void init() override;
 	void stopRobot() override;
@@ -28,8 +30,17 @@ public:
 	robotParts::Brick &brick() override;
 	robotParts::Display &display() override;
 
-	virtual QList<PortInfo> availablePorts() const override;
-	virtual QList<PluggableDeviceInfo> supportedSensors() const override;
+	QList<PortInfo> availablePorts() const override;
+	QList<PortInfo> configurablePorts() const override;
+	QList<PluggableDeviceInfo> allownDevices(PortInfo const &port) const override;
+
+protected:
+	QHash<interpreterBase::robotModel::PortInfo
+			, QList<interpreterBase::robotModel::PluggableDeviceInfo> > mAllowedConnections;
+
+	// TODO: implement
+	Configuration mConfiguration;
+
 };
 
 }

@@ -20,6 +20,7 @@ class ROBOTS_INTERPRETER_BASE_EXPORT RobotModelInterface : public QObject
 
 public:
 	virtual QString name() const = 0;
+	virtual QString friendlyName() const = 0;
 
 	virtual void init() = 0;
 	virtual void stopRobot() = 0;
@@ -34,7 +35,12 @@ public:
 	virtual robotParts::Display &display() = 0;
 
 	virtual QList<PortInfo> availablePorts() const = 0;
-	virtual QList<PluggableDeviceInfo> supportedSensors() const = 0;
+
+	/// Returns a list of ports that are allowed to be configured by user
+	virtual QList<PortInfo> configurablePorts() const = 0;
+
+	/// Returns a list of devices that are allowed to be connected on a given port
+	virtual QList<PluggableDeviceInfo> allownDevices(PortInfo const &port) const = 0;
 
 signals:
 	void connected(bool success);

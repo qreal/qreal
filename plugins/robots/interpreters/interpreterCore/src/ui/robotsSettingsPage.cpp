@@ -7,9 +7,9 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsWatcher/sensorsGraph.h>
 #include <interpreterBase/additionalPreferences.h>
-#include "robotModelManager.h"
+#include "managers/robotModelManager.h"
 
-using namespace interpreterCore;
+using namespace interpreterCore::ui;
 using namespace interpreterBase;
 using namespace qReal;
 
@@ -30,10 +30,7 @@ RobotsSettingsPage::RobotsSettingsPage(
 	initializeAdditionalWidgets();
 	initializeKitRadioButtons();
 
-//	QWidget * const extensionWidget = mKitPluginManager.selectedKit().settingsWidget();
-//	if (extensionWidget) {
-//		static_cast<QVBoxLayout *>(mUi->settingsExtensionFrame->layout())->insertWidget(0, extensionWidget);
-//	}
+	mUi->sensorsConfigurator->connectSensorsConfigurationProvider(this);
 
 	restoreSettings();
 	saveSelectedRobotModel();
@@ -76,8 +73,8 @@ QButtonGroup *RobotsSettingsPage::initializeRobotModelsButtons(QString const &ki
 	QButtonGroup * const result = new QButtonGroup(kitButton);
 	for (auto &robotModel : mKitPluginManager.kitById(kitId).robotModels()) {
 		QString const name = robotModel->name();
-		QRadioButton * const button = new QRadioButton(name, this);
-		button->setObjectName(kitId + name);
+		QRadioButton * const button = new QRadioButton(robotModel->friendlyName(), this);
+		button->setObjectName(kitId + robotModel->name());
 		button->hide();
 		mButtonsToRobotModelsMapping[button] = robotModel;
 		connect(button, &QRadioButton::toggled, this, &RobotsSettingsPage::onRobotModelRadioButtonToggled);
@@ -90,8 +87,6 @@ QButtonGroup *RobotsSettingsPage::initializeRobotModelsButtons(QString const &ki
 void RobotsSettingsPage::save()
 {
 	saveSelectedRobotModel();
-	// SettingsManager::setValue("bluetoothPortName", selectedPortName());
-	// SettingsManager::setValue("valueOfCommunication", selectedCommunication());
 	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->isChecked());
 	SettingsManager::setValue("enableNoiseOfEngines", mUi->enableEnginesNoiseCheckBox->isChecked());
 	SettingsManager::setValue("approximationLevel", mUi->approximationLevelSpinBox->value());
@@ -100,7 +95,7 @@ void RobotsSettingsPage::save()
 	SettingsManager::setValue("textUpdateInterval", mUi->textUpdaterSpinBox->value());
 	SettingsManager::setValue("nxtFlashToolRunPolicy", mUi->runningAfterUploadingComboBox->currentIndex());
 
-	//	mSensorsWidget->save();
+	mUi->sensorsConfigurator->save();
 
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
 		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
@@ -124,13 +119,6 @@ void RobotsSettingsPage::restoreSettings()
 	if (selectedKitButton) {
 		selectedKitButton->setChecked(true);
 	}
-//	enums::robotModelType::robotModelTypeEnum typeOfRobotModel =
-//			static_cast<enums::robotModelType::robotModelTypeEnum>(SettingsManager::value("robotModel").toInt());
-//	initRobotModelType(typeOfRobotModel);
-
-//	QString const typeOfCommunication = SettingsManager::value("valueOfCommunication").toString();
-//	initTypeOfCommunication(typeOfCommunication);
-
 	mUi->enableSensorNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfSensors").toBool());
 	mUi->enableEnginesNoiseCheckBox->setChecked(SettingsManager::value("enableNoiseOfEngines").toBool());
 	mUi->approximationLevelSpinBox->setValue(SettingsManager::value("approximationLevel").toInt());
@@ -143,6 +131,8 @@ void RobotsSettingsPage::restoreSettings()
 	mUi->textUpdaterSpinBox->setValue(SettingsManager::value("textUpdateInterval", textUpdateDefault).toInt());
 
 	mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("nxtFlashToolRunPolicy").toInt());
+
+	mUi->sensorsConfigurator->refresh();
 
 	for (QString const &kitId : mKitPluginManager.kitIds()) {
 		AdditionalPreferences * const kitPreferences = mKitPluginManager.kitById(kitId).settingsWidget();
@@ -185,7 +175,7 @@ void RobotsSettingsPage::checkSelectedRobotModelButtonFor(QAbstractButton * cons
 	QString selectedRobotModel = SettingsManager::value(key).toString();
 	if (selectedRobotModel.isEmpty()) {
 		// Robot model for this kit was never selected. Falling back to default one
-		robotModel::RobotModelInterface *defaultRobotModel
+		robotModel::RobotModelInterface * const defaultRobotModel
 				= mKitPluginManager.kitById(kitId).defaultRobotModel();
 		selectedRobotModel = defaultRobotModel ? defaultRobotModel->name() : QString();
 	}
@@ -213,6 +203,7 @@ void RobotsSettingsPage::onRobotModelRadioButtonToggled(bool checked)
 	QString const selectedKit = mKitButtons->checkedButton()->objectName();
 	QAbstractButton * const robotModelButton = static_cast<QAbstractButton *>(sender());
 	robotModel::RobotModelInterface * const selectedRobotModel = mButtonsToRobotModelsMapping[robotModelButton];
+	mUi->sensorsConfigurator->loadRobotModel(*selectedRobotModel);
 	AdditionalPreferences * const selectedKitPreferences = mKitPluginManager.kitById(selectedKit).settingsWidget();
 	if (selectedKitPreferences) {
 		selectedKitPreferences->onRobotModelChanged(selectedRobotModel);

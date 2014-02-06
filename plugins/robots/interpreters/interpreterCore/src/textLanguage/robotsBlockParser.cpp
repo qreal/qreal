@@ -1,13 +1,13 @@
 #include "robotsBlockParser.h"
 
 using namespace qReal;
-using namespace interpreterCore::interpreter::details;
+using namespace interpreterCore::textLanguage;
 using namespace utils;
 
 QString const sensorVariablePerfix = QObject::tr("Sensor");
 QString const encoderVariablePerfix = QObject::tr("Encoder");
 
-RobotsBlockParser::RobotsBlockParser(ErrorReporterInterface *errorReporter)
+RobotsBlockParser::RobotsBlockParser(ErrorReporterInterface * const errorReporter)
 	: ExpressionsParser(errorReporter)
 {
 	setReservedVariables();

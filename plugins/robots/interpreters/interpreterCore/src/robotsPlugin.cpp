@@ -30,7 +30,7 @@ void RobotsPlugin::init(PluginConfigurator const &configurator)
 
 qReal::Customizer *RobotsPlugin::customizationInterface()
 {
-	return &mCustomizer;
+	return &mRobotsPluginFacade.customizer();
 }
 
 QList<ActionInfo> RobotsPlugin::actions()
