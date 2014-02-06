@@ -36,25 +36,24 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter());
 
-//	mInterpreter = new interpreter::Interpreter(
-//			configurer.graphicalModelApi()
-//			, configurer.logicalModelApi()
-//			, configurer.mainWindowInterpretersInterface()
-//			, configurer.projectManager()
-//			, blocksFactory
-//			, mRobotModelManager
-//			, mActionsManager.connectToRobotAction()
-//			);
+	mInterpreter = new interpreter::Interpreter(
+			configurer.graphicalModelApi()
+			, configurer.logicalModelApi()
+			, configurer.mainWindowInterpretersInterface()
+			, configurer.projectManager()
+			, blocksFactory
+			, mRobotModelManager
+			, *mParser
+			, mActionsManager.connectToRobotAction()
+			);
 
-//	connectInterpreterToActions();
+	connectInterpreterToActions();
 
 	connect(
 			&mActionsManager.robotSettingsAction()
 			, &QAction::triggered
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); }
 			);
-
-//	blocksFactory->setParser(&mInterpreter->parser());
 
 	blocksFactory->setParser(mParser);
 

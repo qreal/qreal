@@ -44,6 +44,7 @@ private:
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
 
+	/// \todo What it is doing here?
 	textLanguage::RobotsBlockParser *mParser;  // Has ownership
 
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
