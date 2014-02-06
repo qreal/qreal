@@ -26,6 +26,21 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 			new TitlesVisibilityManager(mActionsManager.titlesVisibilityAction(), configurer.sceneCustomizer())
 			);
 
+	if (!selectKit(configurer)) {
+		/// @todo Correctly handle unselected kit.
+		return;
+	}
+
+	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter());
+
+	initSensorWidgets();
+	/// @todo connect 2d model
+	/// @todo connect configuration serialization/deserialization into repository
+
+	/// @todo Load currently selected model from registry.
+	/// @todo Pass nullptr here in case when there is no kit.
+	mRobotModelManager.setModel(mKitPluginManager.selectedKit().defaultRobotModel());
+
 	interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory =
 			new coreBlocks::CoreBlocksFactory(
 //			configurer.graphicalModelApi()
@@ -33,8 +48,6 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 //			, robotModel
 //			, configurer.mainWindowInterpretersInterface().errorReporter()
 			);
-
-	mParser = new textLanguage::RobotsBlockParser(configurer.mainWindowInterpretersInterface().errorReporter());
 
 	mInterpreter = new interpreter::Interpreter(
 			configurer.graphicalModelApi()
@@ -49,51 +62,15 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	connectInterpreterToActions();
 
-	connect(
-			&mActionsManager.robotSettingsAction()
-			, &QAction::triggered
-			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); }
-			);
+	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
+			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
 
 	blocksFactory->setParser(mParser);
-
-	/// \todo reinit it each time when robot model changes
-	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
-	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
-		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
-	} else if (mKitPluginManager.kitIds().isEmpty()) {
-		configurer.mainWindowInterpretersInterface().setEnabledForAllElementsInPalette(false);
-
-		/// \todo Correctly handle unselected kit.
-		return;
-	}
-
-	mKitPluginManager.selectKit(selectedKit);
-
-	mDockSensorsConfigurer = new ui::SensorsConfigurationWidget(nullptr, true);
-	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, mDockSensorsConfigurer, &ui::SensorsConfigurationWidget::loadRobotModel);
-
-	mWatchListWindow = new utils::WatchListWindow(mParser);
-	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
-
-	mCustomizer.placeSensorsConfig(mDockSensorsConfigurer);
-	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
-
-	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mRobotSettingsPage);
-	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mDockSensorsConfigurer);
-	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mGraphicsWatcherManager);
-	/// \todo connect 2d model
-	/// \todo connect configuration serialization/deserialization into repository
-
-	/// \todo Load currently selected model from registry.
-	/// \todo Create default model in case when there is no kit.
-	mRobotModelManager.setModel(mKitPluginManager.selectedKit().defaultRobotModel());
 }
 
 PreferencesPage *RobotsPluginFacade::robotsSettingsPage() const
 {
-	return static_cast<PreferencesPage*>(mRobotSettingsPage); // TODO: what for this cast?
+	return mRobotSettingsPage;
 }
 
 interpreterCore::Customizer &RobotsPluginFacade::customizer()
@@ -128,4 +105,38 @@ void RobotsPluginFacade::connectInterpreterToActions()
 			, mInterpreter
 			, &interpreter::InterpreterInterface::connectToRobot
 			);
+}
+
+bool RobotsPluginFacade::selectKit(PluginConfigurator const &configurer)
+{
+	/// @todo reinit it each time when robot model changes
+	QString const selectedKit = SettingsManager::value("SelectedRobotKit").toString();
+	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
+		SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
+	} else if (mKitPluginManager.kitIds().isEmpty()) {
+		configurer.mainWindowInterpretersInterface().setEnabledForAllElementsInPalette(false);
+
+		/// @todo Correctly handle unselected kit.
+		return false;
+	}
+
+	mKitPluginManager.selectKit(selectedKit);
+	return true;
+}
+
+void RobotsPluginFacade::initSensorWidgets()
+{
+	mDockSensorsConfigurer = new ui::SensorsConfigurationWidget(nullptr, true);
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, mDockSensorsConfigurer, &ui::SensorsConfigurationWidget::loadRobotModel);
+
+	mWatchListWindow = new utils::WatchListWindow(mParser);
+	mGraphicsWatcherManager = new GraphicsWatcherManager(mParser, this);
+
+	mCustomizer.placeSensorsConfig(mDockSensorsConfigurer);
+	mCustomizer.placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
+
+	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mRobotSettingsPage);
+	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mDockSensorsConfigurer);
+	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mGraphicsWatcherManager);
 }

@@ -54,7 +54,7 @@ QList<qReal::ActionInfo> ActionsManager::actions()
 			<< qReal::ActionInfo(&mConnectToRobotAction, "interpreters", "tools")
 			<< qReal::ActionInfo(&mConnectToRobotAction, "interpreters", "tools")
 			<< qReal::ActionInfo(&mSeparator1, "interpreters", "tools")
-			/// \todo Actions for quick changing of a model shall go here.
+			/// @todo Actions for quick changing of a model shall go here.
 			<< qReal::ActionInfo(&mSeparator2, "interpreters", "tools")
 			<< qReal::ActionInfo(&mRobotSettingsAction, "interpreters", "tools")
 			<< qReal::ActionInfo(&mTitlesAction, "", "settings")
@@ -76,7 +76,7 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 			<< qReal::HotKeyActionInfo("Interpreter.Run", QObject::tr("Run interpreter"), &mRunAction)
 			<< qReal::HotKeyActionInfo("Interpreter.Stop", QObject::tr("Stop interpreter"), &mStopRobotAction)
 
-			/// \todo Move it into engine
+			/// @todo Move it into engine
 			<< qReal::HotKeyActionInfo("Editor.ToggleTitles", QObject::tr("Toggle titles visibility"), &mTitlesAction)
 			;
 

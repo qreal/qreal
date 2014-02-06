@@ -18,9 +18,9 @@ void RobotModelManager::setModel(interpreterBase::robotModel::RobotModelInterfac
 {
 	if (mRobotModel != robotModel) {
 		auto const actualModel = robotModel ? robotModel : &mDefaultRobotModel;
-		// TODO: implement hierarchical structure in settings manager
+		/// @todo implement hierarchical structure in settings manager
 		QString const selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
-		// TODO: select kit here if needed
+		/// @todo select kit here if needed
 		QString const key = "SelectedModelFor" + selectedKit;
 		qReal::SettingsManager::setValue(key, actualModel->name());
 		mRobotModel = actualModel;

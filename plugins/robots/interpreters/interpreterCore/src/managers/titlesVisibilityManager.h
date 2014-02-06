@@ -6,7 +6,7 @@
 
 namespace interpreterCore {
 
-/// \todo Comment
+/// @todo Comment
 /// Depends on "showTitlesForRobots" registry setting.
 class TitlesVisibilityManager : public QObject
 {

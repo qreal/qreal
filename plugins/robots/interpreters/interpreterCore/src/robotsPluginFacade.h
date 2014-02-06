@@ -20,7 +20,7 @@
 namespace interpreterCore {
 
 /// Responsible for initialization, interconnecting and keeping in sync core plugin subsystems.
-/// \todo Document this.
+/// @todo Document this.
 class RobotsPluginFacade : public QObject
 {
 	Q_OBJECT
@@ -41,10 +41,15 @@ public:
 private:
 	void connectInterpreterToActions();
 
+	/// @returns true, if kit selection successful, false when no kit plugins are loaded.
+	bool selectKit(qReal::PluginConfigurator const &configurer);
+
+	void initSensorWidgets();
+
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
 
-	/// \todo What it is doing here?
+	/// @todo What it is doing here?
 	textLanguage::RobotsBlockParser *mParser;  // Has ownership
 
 	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.

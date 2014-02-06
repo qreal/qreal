@@ -22,7 +22,7 @@ public:
 	MOCK_METHOD0(display, interpreterBase::robotModel::robotParts::Display&());
 	MOCK_CONST_METHOD0(availablePorts, QList<interpreterBase::robotModel::PortInfo>());
 	MOCK_CONST_METHOD0(configurablePorts, QList<interpreterBase::robotModel::PortInfo>());
-	MOCK_CONST_METHOD1(allownDevices, QList<interpreterBase::robotModel::PluggableDeviceInfo>(
+	MOCK_CONST_METHOD1(allowedDevices, QList<interpreterBase::robotModel::PluggableDeviceInfo>(
 			interpreterBase::robotModel::PortInfo const &port));
 };
 

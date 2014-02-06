@@ -34,6 +34,7 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 {
 	mBlocksTable = new details::BlocksTable(blocksFactory);
 
+	/// @todo Reinit those connects when model changes, or add these slots to RobotModelManager and connect to them.
 	connect(
 			&mRobotModelManager.model().configuration()
 			, &interpreterBase::robotModel::ConfigurationInterface::allDevicesConfigured

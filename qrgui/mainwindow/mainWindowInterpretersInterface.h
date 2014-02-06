@@ -26,7 +26,7 @@ public:
 
 	/// Gets graphical Id of diagram currently opened in editor.
 	/// @returns Id of opened diagram, empty Id if there is none.
-	/// \todo Make it const if possible.
+	/// @todo Make it const if possible.
 	virtual Id activeDiagram() = 0;
 
 	virtual void openSettingsDialog(QString const &tab) = 0;

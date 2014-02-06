@@ -41,11 +41,12 @@ public:
 			PortInfo const &port
 			, PortDirection direction = defaultDirection) const = 0;
 
-	// TODO: Implement some convenience methods that cast generic PluggableDevice to desired sensor/motor type.
+	/// \todo Implement some convenience methods that cast generic PluggableDevice to desired sensor/motor type.
 
 	virtual void clearDevice(PortInfo const &port) = 0;
 
 signals:
+	/// Emitted when all devices are configured (or failed to configure) and model is ready to work.
 	void allDevicesConfigured();
 };
 

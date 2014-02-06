@@ -15,32 +15,29 @@ public:
 	CommonRobotModel();
 	~CommonRobotModel() override;
 
-	QString name() const override;
-	QString friendlyName() const override;
-
 	void init() override;
 	void stopRobot() override;
 	void disconnectFromRobot() override;
 
-	bool needsConnection() const override;
-
-	ConfigurationInterface &mutableConfiguration() override;  // TODO: Don't like this, breaks incapsulation.
-	ConfigurationInterface const &configuration() const override;  // TODO: Don't like this, breaks incapsulation.
+	ConfigurationInterface &mutableConfiguration() override;
+	ConfigurationInterface const &configuration() const override;
 
 	robotParts::Brick &brick() override;
 	robotParts::Display &display() override;
 
 	QList<PortInfo> availablePorts() const override;
 	QList<PortInfo> configurablePorts() const override;
-	QList<PluggableDeviceInfo> allownDevices(PortInfo const &port) const override;
+	QList<PluggableDeviceInfo> allowedDevices(PortInfo const &port) const override;
 
 protected:
-	QHash<interpreterBase::robotModel::PortInfo
-			, QList<interpreterBase::robotModel::PluggableDeviceInfo> > mAllowedConnections;
+	QHash<PortInfo, QList<PluggableDeviceInfo>> mAllowedConnections;
 
-	// TODO: implement
+	robotParts::Brick mBrick;
+
+	robotParts::Display mDisplay;
+
+	/// \todo implement
 	Configuration mConfiguration;
-
 };
 
 }
