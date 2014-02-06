@@ -46,7 +46,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 //			, mActionsManager.connectToRobotAction()
 //			);
 
-//	mActionsManager.connectInterpreter(*mInterpreter);
+//	connectInterpreterToActions();
 
 	connect(
 			&mActionsManager.robotSettingsAction()
@@ -84,8 +84,8 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mRobotSettingsPage);
 	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mDockSensorsConfigurer);
 	mSensorsConfigurationManager.connectSensorsConfigurationProvider(mGraphicsWatcherManager);
-	// TODO: connect 2d model
-	// TODO: connect configuration serialization/deserialization into repository
+	/// \todo connect 2d model
+	/// \todo connect configuration serialization/deserialization into repository
 
 	/// \todo Load currently selected model from registry.
 	/// \todo Create default model in case when there is no kit.
@@ -105,4 +105,28 @@ interpreterCore::Customizer &RobotsPluginFacade::customizer()
 ActionsManager &RobotsPluginFacade::actionsManager()
 {
 	return mActionsManager;
+}
+
+void RobotsPluginFacade::connectInterpreterToActions()
+{
+	QObject::connect(
+			&mActionsManager.runAction()
+			, &QAction::triggered
+			, mInterpreter
+			, &interpreter::InterpreterInterface::interpret
+			);
+
+	QObject::connect(
+			&mActionsManager.stopRobotAction()
+			, &QAction::triggered
+			, mInterpreter
+			, &interpreter::InterpreterInterface::stopRobot
+			);
+
+	QObject::connect(
+			&mActionsManager.connectToRobotAction()
+			, &QAction::triggered
+			, mInterpreter
+			, &interpreter::InterpreterInterface::connectToRobot
+			);
 }

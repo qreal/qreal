@@ -7,7 +7,6 @@
 #include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
 
 #include "kitPluginManager.h"
-#include "interpreter/interpreterInterface.h"
 
 namespace interpreterCore {
 
@@ -17,19 +16,20 @@ class ActionsManager
 public:
 	explicit ActionsManager(KitPluginManager const &kitPluginManager);
 
+	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
+
 	QList<qReal::ActionInfo> actions();
 	QList<qReal::HotKeyActionInfo> hotKeyActionInfos();
 
-	/// \todo Remove this.
+	QAction &runAction();
+
+	QAction &stopRobotAction();
+
 	QAction &connectToRobotAction();
 
 	QAction &titlesVisibilityAction();
 
 	QAction &robotSettingsAction();
-
-	void init(qReal::gui::MainWindowInterpretersInterface *mainWindowInterpretersInterface);
-
-	void connectInterpreter(interpreter::InterpreterInterface const &interpreter);
 
 private:
 	/// Updates "enabled" status of plugin actions taking into account current tab, selected robot model and so on.

@@ -83,6 +83,16 @@ QList<qReal::HotKeyActionInfo> ActionsManager::hotKeyActionInfos()
 	return result;
 }
 
+QAction &ActionsManager::runAction()
+{
+	return mRunAction;
+}
+
+QAction &ActionsManager::stopRobotAction()
+{
+	return mStopRobotAction;
+}
+
 QAction &ActionsManager::connectToRobotAction()
 {
 	return mConnectToRobotAction;
@@ -93,30 +103,6 @@ void ActionsManager::init(qReal::gui::MainWindowInterpretersInterface *mainWindo
 	mMainWindowInterpretersInterface = mainWindowInterpretersInterface;
 
 	updateEnabledActions();
-}
-
-void ActionsManager::connectInterpreter(interpreter::InterpreterInterface const &interpreter)
-{
-	QObject::connect(
-			&mRunAction
-			, &QAction::triggered
-			, &interpreter
-			, &interpreter::InterpreterInterface::interpret
-			);
-
-	QObject::connect(
-			&mStopRobotAction
-			, &QAction::triggered
-			, &interpreter
-			, &interpreter::InterpreterInterface::stopRobot
-			);
-
-	QObject::connect(
-			&mConnectToRobotAction
-			, &QAction::triggered
-			, &interpreter
-			, &interpreter::InterpreterInterface::connectToRobot
-			);
 }
 
 QAction &ActionsManager::titlesVisibilityAction()

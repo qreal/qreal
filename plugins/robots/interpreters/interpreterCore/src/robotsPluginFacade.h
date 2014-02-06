@@ -39,6 +39,8 @@ public:
 	ActionsManager &actionsManager();
 
 private:
+	void connectInterpreterToActions();
+
 	/// Customizer object for this plugin
 	Customizer mCustomizer;
 
