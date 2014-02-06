@@ -172,7 +172,6 @@
 	  <palette>
 		  <group name="Элементы">
 			  <element name="ConditionNode"/>
-			  <element name="BlockDiagramNode"/>
 			  <element name="ActionElement"/>
 			  <element name="InitialNode"/>
 			  <element name="ConditionControlFlow"/>
