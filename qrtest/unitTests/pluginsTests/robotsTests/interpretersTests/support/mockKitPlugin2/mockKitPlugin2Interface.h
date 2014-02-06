@@ -25,9 +25,6 @@ public:
 	interpreterBase::AdditionalPreferences *settingsWidget() override;
 
 	qReal::IdList unsupportedBlocks() const override;
-
-private:
-	interpreterBase::robotModel::CommonRobotModel mRobotModel;
 };
 
 }

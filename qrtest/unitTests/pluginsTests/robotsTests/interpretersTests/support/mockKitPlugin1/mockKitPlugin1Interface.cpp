@@ -14,7 +14,7 @@ QString MockKitPlugin1Interface::friendlyKitName() const
 
 QList<interpreterBase::robotModel::RobotModelInterface *> MockKitPlugin1Interface::robotModels()
 {
-	return QList<interpreterBase::robotModel::RobotModelInterface *>() << &mRobotModel;
+	return QList<interpreterBase::robotModel::RobotModelInterface *>();
 }
 
 interpreterBase::AdditionalPreferences *MockKitPlugin1Interface::settingsWidget()

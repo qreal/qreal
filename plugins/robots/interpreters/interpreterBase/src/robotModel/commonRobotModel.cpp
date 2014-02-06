@@ -3,17 +3,21 @@
 using namespace interpreterBase::robotModel;
 
 CommonRobotModel::CommonRobotModel()
+	: mBrick(new robotParts::Brick())
+	, mDisplay(new robotParts::Display())
 {
 }
 
 CommonRobotModel::~CommonRobotModel()
 {
+	stopRobot();
 }
 
 void CommonRobotModel::init()
 {
-	/// @todo Remove this sh~.
-	emit connected(true);
+	mConfiguration.lockConfiguring();
+	connectToRobot();
+	configureKnownDevices();
 }
 
 void CommonRobotModel::stopRobot()
@@ -36,12 +40,12 @@ ConfigurationInterface const &CommonRobotModel::configuration() const
 
 robotParts::Brick &CommonRobotModel::brick()
 {
-	return mBrick;
+	return *mBrick;
 }
 
 robotParts::Display &CommonRobotModel::display()
 {
-	return mDisplay;
+	return *mDisplay;
 }
 
 QList<PortInfo> CommonRobotModel::availablePorts() const
@@ -57,4 +61,28 @@ QList<PortInfo> CommonRobotModel::configurablePorts() const
 QList<PluggableDeviceInfo> CommonRobotModel::allowedDevices(PortInfo const &port) const
 {
 	return mAllowedConnections[port];
+}
+
+void CommonRobotModel::setBrick(robotParts::Brick *brick)
+{
+	mBrick.reset(brick);
+}
+
+void CommonRobotModel::setDisplay(robotParts::Display *display)
+{
+	mDisplay.reset(display);
+}
+
+void CommonRobotModel::addAllowedConnection(PortInfo const &port, QList<PluggableDeviceInfo> const &devices)
+{
+	mAllowedConnections[port].append(devices);
+}
+
+void CommonRobotModel::connectToRobot()
+{
+	emit connected(true);
+}
+
+void CommonRobotModel::configureKnownDevices()
+{
 }

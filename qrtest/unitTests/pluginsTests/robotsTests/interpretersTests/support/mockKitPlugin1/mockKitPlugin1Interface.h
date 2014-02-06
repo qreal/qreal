@@ -29,9 +29,6 @@ public:
 
 	// Transfers ownership.
 	// QList<QWidget *> toolWidgets() const override;
-
-private:
-	interpreterBase::robotModel::CommonRobotModel mRobotModel;
 };
 
 }

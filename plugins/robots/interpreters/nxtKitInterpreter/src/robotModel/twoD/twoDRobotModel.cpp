@@ -11,3 +11,8 @@ QString TwoDRobotModel::friendlyName() const
 {
 	return tr("2D Model");
 }
+
+bool TwoDRobotModel::needsConnection() const
+{
+	return false;
+}

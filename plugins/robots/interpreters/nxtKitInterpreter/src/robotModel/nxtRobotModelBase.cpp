@@ -12,7 +12,8 @@ using namespace interpreterBase::robotModel;
 
 NxtRobotModelBase::NxtRobotModelBase()
 {
-	QList<PluggableDeviceInfo> const outputPortConnections; // TODO
+	/// @todo Implement.
+	QList<PluggableDeviceInfo> const outputPortConnections;
 	QList<PluggableDeviceInfo> const inputPortConnections = QList<PluggableDeviceInfo>()
 			<< touchSensorInfo()
 			<< sonarSensorInfo()
@@ -21,13 +22,15 @@ NxtRobotModelBase::NxtRobotModelBase()
 			<< soundSensorInfo()
 			<< gyroscopeSensorInfo()
 			<< accelerometerSensorInfo();
-	mAllowedConnections[PortInfo("A")] = outputPortConnections;
-	mAllowedConnections[PortInfo("B")] = outputPortConnections;
-	mAllowedConnections[PortInfo("C")] = outputPortConnections;
-	mAllowedConnections[PortInfo("1")] = inputPortConnections;
-	mAllowedConnections[PortInfo("2")] = inputPortConnections;
-	mAllowedConnections[PortInfo("3")] = inputPortConnections;
-	mAllowedConnections[PortInfo("4")] = inputPortConnections;
+
+	addAllowedConnection(PortInfo("A"), outputPortConnections);
+	addAllowedConnection(PortInfo("A"), outputPortConnections);
+	addAllowedConnection(PortInfo("B"), outputPortConnections);
+	addAllowedConnection(PortInfo("C"), outputPortConnections);
+	addAllowedConnection(PortInfo("1"), inputPortConnections);
+	addAllowedConnection(PortInfo("2"), inputPortConnections);
+	addAllowedConnection(PortInfo("3"), inputPortConnections);
+	addAllowedConnection(PortInfo("4"), inputPortConnections);
 }
 
 QList<PortInfo> NxtRobotModelBase::configurablePorts() const

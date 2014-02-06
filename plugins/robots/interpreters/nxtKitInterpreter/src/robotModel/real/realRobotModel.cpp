@@ -11,3 +11,8 @@ QString RealRobotModel::friendlyName() const
 {
 	return tr("Real Robot");
 }
+
+bool RealRobotModel::needsConnection() const
+{
+	return true;
+}
