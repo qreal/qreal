@@ -872,8 +872,14 @@
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="-35" y="-25" text="Файл:" hard="true"/>
-						<label x="40" y="-25" textBinded="FileName" hard="true"/>
+						<label x="-35" y="-25" text="Частота (Гц):" hard="true"/>
+						<label x="-35" y="60" text="Громкость (%):"/>
+						<label x="-68" y="80" text="Длительность (мс):"/>
+						<label x="-68" y="100" text="Ждать завершения:"/>
+						<label x="50" y="-25" textBinded="Frequency" hard="true"/>
+						<label x="60" y="60" textBinded="Volume"/>
+						<label x="60" y="80" textBinded="Duration"/>
+						<label x="60" y="100" textBinded="WaitForCompletion"/>
 					</labels>
 					<ports>
 						<linePort>
@@ -898,8 +904,17 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Файл" type="string" name="FileName">
-							<default>media/beep.mp3</default>
+						<property displayedName="Частота" type="string" name="Frequency">
+							<default>1000</default>
+						</property>
+						<property displayedName="Громкость" type="string" name="Volume">
+							<default>50</default>
+						</property>
+						<property displayedName="Длительность" type="string" name="Duration">
+							<default>1000</default>
+						</property>
+						<property displayedName="Ждать завершения" type="bool" name="WaitForCompletion">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1721,27 +1736,26 @@
 			</node>
 		</graphicTypes>
 		<palette sorted="true">
-			<group name="ТРИК">
-<!--			<group name="Действия"> -->
-<!--				<element name="Fork"/> -->
+			<group name="Действия">
+				<element name="Fork"/>
 				<element name="Beep"/>
 				<element name="PlayTone"/>
 				<element name="EnginesForward"/>
 				<element name="EnginesBackward"/>
 				<element name="EnginesStop"/>
 				<element name="Function"/>
-<!--			</group> -->
-<!--			<group name="Рисование на дисплее">
+			</group>
+			<group name="Рисование на дисплее">
 				<element name="ClearScreen"/>
 				<element name="DrawRect"/>
 				<element name="DrawPixel"/>
 				<element name="DrawLine"/>
 				<element name="DrawCircle"/>
 				<element name="PrintText"/>
-			</group> -->
-<!--			<group name="Ожидания"> -->
+			</group>
+			<group name="Ожидания">
 				<element name="Timer"/>
-<!--				<element name="WaitForTouchSensor"/>
+				<element name="WaitForTouchSensor"/>
 				<element name="WaitForSonarDistance"/>
 				<element name="WaitForColor"/>
 				<element name="WaitForEncoder"/>
@@ -1749,25 +1763,24 @@
 				<element name="WaitForLight"/>
 				<element name="WaitForSound"/>
 				<element name="WaitForGyroscope"/>
-				<element name="WaitForButtons"/>  -->
-<!--			</group> -->
-<!--			<group name="Алгоритмы"> -->
-<!--				<element name="IfBlock"/> -->
+				<element name="WaitForButtons"/>
+			</group>
+			<group name="Алгоритмы">
+				<element name="IfBlock"/>
 				<element name="ControlFlow"/>
-<!--				<element name="Loop"/> -->
+				<element name="Loop"/>
 				<element name="CommentBlock"/>
-<!--				<element name="Subprogram"/> -->
-<!--			</group> -->
-<!--			<group name="Инициализация"> -->
+				<element name="Subprogram"/>
+			</group>
+			<group name="Инициализация">
 				<element name="InitialNode"/>
 				<element name="FinalNode"/>
-<!--				<element name="NullificationEncoder"/> -->
-<!--			</group> -->
+				<element name="NullificationEncoder"/>
+			</group>
 <!--			<group name="Сегвей">
 				<element name="Balance"/>
 				<element name="BalanceInit"/>
 			</group> -->
-			</group>
 		</palette>
 	</diagram>
 </metamodel>
