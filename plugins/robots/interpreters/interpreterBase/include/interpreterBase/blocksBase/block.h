@@ -9,6 +9,7 @@
 
 #include <interpreterBase/blocksBase/blockInterface.h>
 #include <interpreterBase/blocksBase/blockParserInterface.h>
+#include <interpreterBase/blocksBase/blocksFactoryInterface.h>
 #include <interpreterBase/blocksBase/blocksTableInterface.h>
 #include <interpreterBase/robotModel/robotModelManagerInterface.h>
 
@@ -34,6 +35,15 @@ public:
 //	virtual QList<SensorPortPair> usedSensors() const;
 
 	void finishedSteppingInto() override;
+
+	/// @todo Not good.
+	void init(qReal::Id const &graphicalId
+			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
+			, qReal::LogicalModelAssistInterface const &logicalModelApi
+			, qReal::ErrorReporterInterface * const errorReporter
+			, BlockParserInterface * const parser
+			, robotModel::RobotModelManagerInterface const &robotModelManager
+			);
 
 protected:
 	Block();
@@ -66,16 +76,6 @@ protected:
 
 private slots:
 	void finishedRunning();
-
-private:
-	friend class BlocksFactory;
-	void init(qReal::Id const &graphicalId
-			, qReal::GraphicalModelAssistInterface const &graphicalModelApi
-			, qReal::LogicalModelAssistInterface const &logicalModelApi
-			, qReal::ErrorReporterInterface * const errorReporter
-			, BlockParserInterface * const parser
-			, robotModel::RobotModelManagerInterface const &robotModelManager
-			);
 
 private:
 	enum State {

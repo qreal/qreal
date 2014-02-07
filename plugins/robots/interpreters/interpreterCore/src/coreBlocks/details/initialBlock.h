@@ -1,7 +1,6 @@
 #pragma once
 
 #include <interpreterBase/blocksBase/block.h>
-#include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace interpreterCore {
 namespace coreBlocks {

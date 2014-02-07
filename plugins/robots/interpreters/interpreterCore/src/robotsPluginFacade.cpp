@@ -43,10 +43,10 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory =
 			new coreBlocks::CoreBlocksFactory(
-//			configurer.graphicalModelApi()
-//			, configurer.logicalModelApi()
-//			, robotModel
-//			, configurer.mainWindowInterpretersInterface().errorReporter()
+			configurer.graphicalModelApi()
+			, configurer.logicalModelApi()
+			, mRobotModelManager
+			, *configurer.mainWindowInterpretersInterface().errorReporter()
 			);
 
 	mBlocksFactoryManager.addFactory(blocksFactory);
