@@ -17,6 +17,9 @@ class ROBOTS_INTERPRETER_BASE_EXPORT AbstractSensor : public PluggableDevice
 	Q_OBJECT
 
 public:
+	explicit AbstractSensor(PluggableDeviceInfo const &info, PortInfo const &port)
+			: PluggableDevice(info, port) {}
+
 	virtual ~AbstractSensor() {}
 
 	/// Ask sensor to provide new readings. Returns immediately. When reading is done, sensor emits "newData" signal

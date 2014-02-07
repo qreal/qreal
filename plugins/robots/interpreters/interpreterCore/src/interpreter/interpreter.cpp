@@ -2,12 +2,17 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtWidgets/QAction>
+#include <QtCore/QDebug>
 
 #include <interpreterBase/robotModel/robotModelInterface.h>
 
 #include "details/autoconfigurer.h"
 //#include "details/tracer.h"
 //#include "details/debugHelper.h"
+
+
+/// @todo Temporary
+#include <interpreterBase/robotModel/robotParts/touchSensor.h>
 
 using namespace qReal;
 using namespace interpreterCore::interpreter;
@@ -52,6 +57,8 @@ Interpreter::Interpreter(GraphicalModelAssistInterface const &graphicalModelApi
 
 	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::stopRobot);
 
+	qDebug() << "mRobotModelManager.model().init()";
+
 	mRobotModelManager.model().init();
 }
 
@@ -63,6 +70,8 @@ Interpreter::~Interpreter()
 
 void Interpreter::interpret()
 {
+	qDebug() << "Interpreter::interpret()";
+
 	mInterpretersInterface->errorReporter()->clear();
 
 //	Id const &currentDiagramId = mInterpretersInterface->activeDiagram();
@@ -91,6 +100,9 @@ void Interpreter::interpret()
 			mRobotModelManager.model().configureDevice(port, deviceInfo);
 		}
 	}
+
+	mRobotModelManager.model().configureDevice(PortInfo("1")
+			, PluggableDeviceInfo::create<interpreterBase::robotModel::robotParts::TouchSensor>());
 
 	mRobotModelManager.model().mutableConfiguration().unlockConfiguring();
 
@@ -131,6 +143,8 @@ void Interpreter::stopRobot()
 
 void Interpreter::connectedSlot(bool success)
 {
+	qDebug() << "Interpreter::connectedSlot";
+
 	if (success) {
 		if (mRobotModelManager.model().needsConnection()) {
 			mInterpretersInterface->errorReporter()->addInformation(tr("Connected successfully"));
@@ -148,10 +162,14 @@ void Interpreter::sensorsConfiguredSlot()
 {
 //	Tracer::debug(tracer::enums::initialization, "Interpreter::sensorsConfiguredSlot", "Sensors are configured");
 
-	mConnected = true;
-	mActionConnectToRobot.setChecked(mConnected);
+	qDebug() << "Interpreter::sensorsConfiguredSlot";
 
 //	mRobotModel->nextBlockAfterInitial(mConnected);
+
+	/// @todo ???
+	if (!mConnected) {
+		return;
+	}
 
 	if (mState == waitingForSensorsConfiguredToLaunch) {
 		mState = interpreting;

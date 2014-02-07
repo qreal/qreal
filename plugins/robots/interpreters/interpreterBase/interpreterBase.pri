@@ -21,7 +21,8 @@ SOURCES += \
 	$$PWD/src/robotModel/portInfo.cpp \
 	$$PWD/src/robotModel/pluggableDeviceInfo.cpp \
 	$$PWD/src/robotModel/robotParts/motor.cpp \
-	$$PWD/src/robotModel/robotParts/pluggableDevice.cpp
+	$$PWD/src/robotModel/robotParts/pluggableDevice.cpp \
+	$$PWD/src/robotModel/robotParts/touchSensor.cpp \
 
 HEADERS += \
 	$$PWD/include/interpreterBase/interpreterBaseDeclSpec.h \
