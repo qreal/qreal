@@ -20,6 +20,9 @@ public:
 	void restoreSettings() override;
 	void onRobotModelChanged(interpreterBase::robotModel::RobotModelInterface * const robotModel) override;
 
+signals:
+	void settingsChanged();
+
 private slots:
 	void manualComPortCheckboxChecked(bool state);
 
