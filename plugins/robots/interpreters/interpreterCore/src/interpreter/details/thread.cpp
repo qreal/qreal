@@ -72,7 +72,7 @@ void Thread::interpret()
 void Thread::nextBlock(Id const &blockId)
 {
 	turnOff(mCurrentBlock);
-	BlockInterface *const block = mBlocksTable.block(blockId);
+	BlockInterface *const block = blockId == Id() ? nullptr : mBlocksTable.block(blockId);
 	turnOn(block);
 }
 

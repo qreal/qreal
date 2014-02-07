@@ -130,7 +130,12 @@ interpreterBase::blocksBase::BlockInterface *CoreBlocksFactory::block(qReal::Id 
 //		newBlock = new DummyBlock();
 	}
 
-	newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, &mErrorReporter, mParser, mRobotModelManager);
+	if (newBlock) {
+		newBlock->init(element, mGraphicalModelApi, mLogicalModelApi, &mErrorReporter, mParser, mRobotModelManager);
+	} else {
+		qDebug() << element;
+	}
+
 	return newBlock;
 }
 
