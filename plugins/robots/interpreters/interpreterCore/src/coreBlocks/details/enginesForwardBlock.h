@@ -13,7 +13,7 @@ class EnginesForwardBlock : public EngineCommandBlock
 	Q_OBJECT
 
 public:
-	EnginesForwardBlock(/*robotParts::Motor &motor1, robotParts::Motor &motor2, robotParts::Motor &motor3*/);
+	EnginesForwardBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 	void run() override;
 };
 

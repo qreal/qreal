@@ -5,7 +5,7 @@ INCLUDEPATH += \
 	$$PWD/../../../../ \
 	$$PWD/../../../../qrgui/ \
 
-LIBS += -L$$PWD/../../../../bin/ -lqrkernel
+LIBS += -L$$PWD/../../../../bin/ -lqrkernel -lqrutils
 
 DEFINES += ROBOTS_INTERPRETER_BASE_LIBRARY
 
@@ -20,6 +20,7 @@ SOURCES += \
 	$$PWD/src/robotModel/commonRobotModel.cpp \
 	$$PWD/src/robotModel/portInfo.cpp \
 	$$PWD/src/robotModel/pluggableDeviceInfo.cpp \
+	$$PWD/src/robotModel/robotParts/motor.cpp \
 	$$PWD/src/robotModel/robotParts/pluggableDevice.cpp
 
 HEADERS += \

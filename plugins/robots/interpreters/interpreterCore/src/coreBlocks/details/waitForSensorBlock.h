@@ -12,7 +12,7 @@ class WaitForSensorBlock : public WaitBlock
 	Q_OBJECT
 
 public:
-	WaitForSensorBlock(interpreterBase::robotModel::RobotModelInterface * const robotModel
+	WaitForSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel
 //			, robots::enums::sensorType::SensorTypeEnum type
 			);
 
@@ -32,7 +32,7 @@ protected:
 	virtual void stop();
 
 //	robots::enums::sensorType::SensorTypeEnum mType;
-//	robots::enums::inputPort::InputPortEnum mPort;
+	interpreterBase::robotModel::PortInfo mPort;
 };
 
 }

@@ -4,7 +4,7 @@
 #include <QtCore/QVector>
 
 #include <interpreterBase/blocksBase/block.h>
-#include <interpreterBase/robotModel/robotParts/motor.h>
+#include <interpreterBase/robotModel/robotModelInterface.h>
 
 namespace interpreterCore {
 namespace coreBlocks {
@@ -16,14 +16,14 @@ class EngineCommandBlock : public interpreterBase::blocksBase::Block
 	Q_OBJECT
 
 public:
-	EngineCommandBlock(/*robotParts::Motor &motor1, robotParts::Motor &motor2, robotParts::Motor &motor3*/);
+	EngineCommandBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 	virtual void run() = 0;
 
 protected slots:
 	void timeout();
 
 protected:
-//	QVector<robotParts::Motor *> mMotors;  // Doesn't have ownership.
+	interpreterBase::robotModel::RobotModelInterface &mRobotModel;
 };
 
 }

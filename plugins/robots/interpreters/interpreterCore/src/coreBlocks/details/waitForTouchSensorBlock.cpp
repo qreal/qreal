@@ -4,8 +4,8 @@
 
 using namespace interpreterCore::coreBlocks::details;
 
-WaitForTouchSensorBlock::WaitForTouchSensorBlock(interpreterBase::robotModel::RobotModelInterface * const robotModel)
-	: WaitForSensorBlock(robotModel/*, robots::enums::sensorType::touchBoolean*/)
+WaitForTouchSensorBlock::WaitForTouchSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+	: WaitForSensorBlock(robotModel)
 {
 }
 

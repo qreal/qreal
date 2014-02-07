@@ -2,11 +2,9 @@
 
 using namespace interpreterCore::coreBlocks::details;
 
-EngineCommandBlock::EngineCommandBlock(/*robotParts::Motor &motor1, robotParts::Motor &motor2, robotParts::Motor &motor3*/)
+EngineCommandBlock::EngineCommandBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
+	: mRobotModel(robotModel)
 {
-//	mMotors.append(&motor1);
-//	mMotors.append(&motor2);
-//	mMotors.append(&motor3);
 }
 
 void EngineCommandBlock::timeout()

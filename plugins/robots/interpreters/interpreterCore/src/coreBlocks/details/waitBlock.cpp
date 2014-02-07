@@ -2,11 +2,15 @@
 
 using namespace interpreterCore::coreBlocks::details;
 
-WaitBlock::WaitBlock(interpreterBase::robotModel::RobotModelInterface * const robotModel)
+WaitBlock::WaitBlock(interpreterBase::robotModel::RobotModelInterface &robotModel)
 	: mRobotModel(robotModel)
 {
 	mActiveWaitingTimer.setInterval(20);
 	connect(&mActiveWaitingTimer, &QTimer::timeout, this, &WaitBlock::timerTimeout);
+}
+
+WaitBlock::~WaitBlock()
+{
 }
 
 void WaitBlock::setFailedStatus()

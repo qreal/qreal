@@ -127,9 +127,8 @@ bool Block::boolProperty(QString const &propertyName) const
 
 QVariant Block::property(Id const &id, QString const &propertyName) const
 {
-//	Id const logicalId = mGraphicalModelApi->logicalId(id);
-//	return mLogicalModelApi->propertyByRoleName(logicalId, propertyName);
-	return "";
+	Id const logicalId = mGraphicalModelApi->logicalId(id);
+	return mLogicalModelApi->propertyByRoleName(logicalId, propertyName);
 }
 
 QString Block::stringProperty(Id const &id, QString const &propertyName) const
@@ -160,14 +159,14 @@ void Block::error(QString const &message)
 
 QVariant Block::evaluate(QString const &propertyName)
 {
-//	int position = 0;
-//	QVariant value = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId).property("Number");
+	int position = 0;
+	QVariant value = mParser->standartBlockParseProcess(stringProperty(propertyName), position, mGraphicalId).property("Number");
 //	if (mParser->hasErrors()) {
 //		mParser->deselect();
 //		emit failure();
 //	}
-//	return value;
-	return "";
+
+	return value;
 }
 
 bool Block::evaluateBool(QString const &propertyName)

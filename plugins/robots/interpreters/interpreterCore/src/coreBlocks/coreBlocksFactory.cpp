@@ -73,13 +73,13 @@ interpreterBase::blocksBase::BlockInterface *CoreBlocksFactory::block(qReal::Id 
 	} else if (elementMetatypeIs(element, "Timer")) {
 		newBlock = new details::TimerBlock(/*mRobotModel->produceTimer()*/);
 	} else if (elementMetatypeIs(element, "WaitForTouchSensor")) {
-		newBlock = new details::WaitForTouchSensorBlock(&mRobotModelManager.model());
+		newBlock = new details::WaitForTouchSensorBlock(mRobotModelManager.model());
 //	} else if (elementMetatypeIs(element, "WaitForSonarDistance")) {
 //		newBlock = new WaitForSonarDistanceBlock(mRobotModel);
 	} else if (elementMetatypeIs(element, "EnginesForward")) {
-		newBlock = new details::EnginesForwardBlock(/*mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC()*/);
+		newBlock = new details::EnginesForwardBlock(mRobotModelManager.model());
 	} else if (elementMetatypeIs(element, "EnginesBackward")) {
-		newBlock = new details::EnginesBackwardBlock(/*mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC()*/);
+		newBlock = new details::EnginesBackwardBlock(mRobotModelManager.model());
 //	} else if (elementMetatypeIs(element, "EnginesStop")) {
 //		newBlock = new EnginesStopBlock(mRobotModel->motorA(), mRobotModel->motorB(), mRobotModel->motorC());
 //	} else if (elementMetatypeIs(element, "Loop")) {

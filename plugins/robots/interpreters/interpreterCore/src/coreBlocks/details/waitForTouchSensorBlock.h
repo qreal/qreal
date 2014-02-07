@@ -14,7 +14,7 @@ class WaitForTouchSensorBlock : public WaitForSensorBlock
 	Q_OBJECT
 
 public:
-	explicit WaitForTouchSensorBlock(interpreterBase::robotModel::RobotModelInterface * const robotModel);
+	explicit WaitForTouchSensorBlock(interpreterBase::robotModel::RobotModelInterface &robotModel);
 	~WaitForTouchSensorBlock() override;
 
 protected slots:
