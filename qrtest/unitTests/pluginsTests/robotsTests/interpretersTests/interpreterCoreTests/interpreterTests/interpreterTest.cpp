@@ -39,6 +39,21 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, mutableConfiguration()).WillByDefault(ReturnRef(configurationInterfaceMock));
 	EXPECT_CALL(mModel, mutableConfiguration()).Times(AtLeast(1));
 
+	ON_CALL(mBlocksFactoryManager, addFactory(_)).WillByDefault(Return());
+	EXPECT_CALL(mBlocksFactoryManager, addFactory(_)).Times(0);
+
+	ON_CALL(mBlocksFactoryManager, block(_)).WillByDefault(
+			Invoke([&] (qReal::Id const &id) { return blocksFactory->block(id); } )
+			);
+	EXPECT_CALL(mBlocksFactoryManager, block(_)).Times(AtLeast(0));
+
+	ON_CALL(mBlocksFactoryManager, providedBlocks()).WillByDefault(
+			Invoke([&] { return blocksFactory->providedBlocks(); } )
+			);
+	EXPECT_CALL(mBlocksFactoryManager, providedBlocks()).Times(0);
+
+//	ON_CALL(configurationInterfaceMock, lock)
+
 	/// \todo Don't like it.
 	interpreterCore::textLanguage::RobotsBlockParser parser(
 			mQrguiFacade->mainWindowInterpretersInterface().errorReporter()
@@ -49,7 +64,7 @@ void InterpreterTest::SetUp()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mQrguiFacade->mainWindowInterpretersInterface()
 			, mQrguiFacade->projectManagementInterface()
-			, blocksFactory
+			, mBlocksFactoryManager
 			, mModelManager
 			, parser
 			, *mFakeConnectToRobotAction

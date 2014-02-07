@@ -4,13 +4,6 @@
 
 #include <qrkernel/ids.h>
 
-#include <qrgui/mainwindow/projectManager/projectManagementInterface.h>
-#include <qrgui/mainwindow/mainWindowInterpretersInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
-#include <qrgui/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-
-#include <interpreterBase/blocksBase/blockParserInterface.h>
-
 namespace interpreterCore {
 namespace interpreter {
 

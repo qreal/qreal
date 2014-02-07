@@ -6,9 +6,11 @@ include(../../../../../../plugins/robots/interpreters/interpreterCore/interprete
 include(../../../../../../qrgui/qrgui.pri)
 
 INCLUDEPATH += \
+	../../../../../../plugins/robots/interpreters \
 	../../../../../../plugins/robots/interpreters/interpreterCore \
 	../../../../../../plugins/robots/interpreters/interpreterBase/include/ \
 	../../../../mocks/plugins/robots/interpreters/interpreterBase/include \
+	../../../../mocks/plugins/robots/interpreters \
 
 # Tests
 HEADERS += \

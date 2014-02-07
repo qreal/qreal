@@ -34,6 +34,11 @@ public:
 	QList<PortInfo> configurablePorts() const override;
 	QList<PluggableDeviceInfo> allowedDevices(PortInfo const &port) const override;
 
+	/// @todo Device configuration for common devices from interpreterBase::robotModel::robotParts can be done here,
+	///       in CommonRobotModel. Actual usage of a model as devices factory shall be revised. Maybe separate
+	///       hierarchy of device factories is needed, maybe not, if it will be main responsibility of a model.
+	void configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo) override;
+
 protected:
 	void setBrick(robotParts::Brick *brick);  // Takes ownership.
 	void setDisplay(robotParts::Display *display);  // Takes ownership.
@@ -48,6 +53,8 @@ private:
 	/// Shall be implemented in descendants to add to configuration devices that can not be changed by user
 	/// and shall be in a model every time (like Lego motors). Default implementation does nothing.
 	virtual void configureKnownDevices();
+
+	virtual robotParts::PluggableDevice * createDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo);
 
 	QHash<PortInfo, QList<PluggableDeviceInfo>> mAllowedConnections;
 

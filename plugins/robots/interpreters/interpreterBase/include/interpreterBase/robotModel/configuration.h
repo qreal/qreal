@@ -31,11 +31,15 @@ public:
 
 	void clearDevice(PortInfo const &port) override;
 
+	void configure() override;
+
 private slots:
 	void deviceConfiguredSlot(bool success);
 
 private:
 	void reconfigureDevices();
+
+	void checkAllDevicesConfigured();
 
 	/// Contains currently configured and ready devices.
 	QHash<PortInfo, robotParts::PluggableDevice *> mConfiguredDevices;  // Has ownership.
@@ -50,6 +54,10 @@ private:
 
 	/// True if configuration is deferred now. All configuration requests are queued.
 	bool mLocked;
+
+	/// Flag that is true when there was configuration requests to which we not responded with allDevicesConfigured yet.
+	/// @todo Not needed?
+	bool mWasConfigurationRequest;
 };
 
 }

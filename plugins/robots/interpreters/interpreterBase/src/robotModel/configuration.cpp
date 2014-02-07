@@ -4,6 +4,7 @@ using namespace interpreterBase::robotModel;
 
 Configuration::Configuration()
 	: mLocked(true)
+	, mWasConfigurationRequest(false)
 {
 }
 
@@ -16,6 +17,8 @@ Configuration::~Configuration()
 void Configuration::configureDevice(robotParts::PluggableDevice * const device)
 {
 	Q_ASSERT(device);
+
+	mWasConfigurationRequest = true;
 
 	if (mConfiguredDevices.contains(device->port())
 			&& mConfiguredDevices.value(device->port())->deviceInfo() == device->deviceInfo())
@@ -61,7 +64,7 @@ robotParts::PluggableDevice *Configuration::pluggableDevice(
 {
 	Q_UNUSED(direction);
 
-	// TODO: implement getting device by port direction
+	/// @todo Implement getting device by port direction.
 	return mConfiguredDevices.value(port, nullptr);
 }
 
@@ -69,7 +72,7 @@ QList<robotParts::PluggableDevice *> Configuration::pluggableDevices(PortDirecti
 {
 	Q_UNUSED(direction);
 
-	// TODO: implement port direction
+	/// @todo implement port direction
 	return mConfiguredDevices.values();
 }
 
@@ -89,11 +92,20 @@ void Configuration::clearDevice(PortInfo const &port)
 	mConfigurationInProgress.remove(port);
 }
 
+void Configuration::configure()
+{
+	mWasConfigurationRequest = true;
+	checkAllDevicesConfigured();
+}
+
 void Configuration::deviceConfiguredSlot(bool success)
 {
+	/// @todo Do something with failure of configuration.
+	Q_UNUSED(success);
+
 	robotParts::PluggableDevice *device = dynamic_cast<robotParts::PluggableDevice *>(sender());
 	if (!device) {
-		// TODO: Implement more adequate assertions mechanism.
+		/// @todo Implement more adequate assertions mechanism.
 		throw "Incorrect device configuration";
 	}
 
@@ -105,6 +117,8 @@ void Configuration::deviceConfiguredSlot(bool success)
 	}
 
 	mConfiguredDevices.insert(device->port(), device);
+
+	checkAllDevicesConfigured();
 }
 
 void Configuration::reconfigureDevices()
@@ -113,11 +127,21 @@ void Configuration::reconfigureDevices()
 		return;
 	}
 
+	checkAllDevicesConfigured();
+
 	for (robotParts::PluggableDevice * const device : mPendingDevices.values()) {
 		if (!mConfigurationInProgress.contains(device->port())) {
 			connect(device, &robotParts::PluggableDevice::configured, this, &Configuration::deviceConfiguredSlot);
 			mConfigurationInProgress.insert(device->port());
 			device->configure();
 		}
+	}
+}
+
+void Configuration::checkAllDevicesConfigured()
+{
+	if (mPendingDevices.isEmpty() && mConfigurationInProgress.isEmpty() && mWasConfigurationRequest) {
+		mWasConfigurationRequest = false;
+		emit allDevicesConfigured();
 	}
 }

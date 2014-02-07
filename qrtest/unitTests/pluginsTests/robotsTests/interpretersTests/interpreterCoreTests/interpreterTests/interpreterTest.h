@@ -9,6 +9,9 @@
 #include <interpreterBase/robotModel/robotModelInterfaceMock.h>
 #include <interpreterBase/robotModel/robotModelManagerInterfaceMock.h>
 
+/// @todo /src/managers
+#include <interpreterCore/managers/blocksFactoryManagerInterfaceMock.h>
+
 #include "support/qrguiFacade.h"
 #include "support/dummyBlocksFactory.h"
 
@@ -26,6 +29,7 @@ protected:
 	qrTest::RobotModelInterfaceMock mModel;
 	qrTest::RobotModelManagerInterfaceMock mModelManager;
 	QScopedPointer<QAction> mFakeConnectToRobotAction;
+	qrTest::BlocksFactoryManagerInterfaceMock mBlocksFactoryManager;
 };
 
 }

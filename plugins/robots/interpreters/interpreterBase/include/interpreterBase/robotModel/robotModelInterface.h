@@ -47,6 +47,8 @@ public:
 	/// Returns a list of devices that are allowed to be connected on a given port.
 	virtual QList<PluggableDeviceInfo> allowedDevices(PortInfo const &port) const = 0;
 
+	virtual void configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo) = 0;
+
 signals:
 	/// Emitted when model is connected to a robot. If there is no need to connect (for example, 2d model), emitted
 	/// immediately after init() call.

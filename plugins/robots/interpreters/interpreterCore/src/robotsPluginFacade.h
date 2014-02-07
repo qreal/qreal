@@ -12,6 +12,7 @@
 #include "managers/actionsManager.h"
 #include "managers/sensorsConfigurationManager.h"
 #include "managers/graphicsWatcherManager.h"
+#include "managers/blocksFactoryManager.h"
 #include "interpreter/interpreter.h"
 #include "textLanguage/robotsBlockParser.h"
 #include "ui/robotsSettingsPage.h"
@@ -68,6 +69,8 @@ private:
 	ui::SensorsConfigurationWidget *mDockSensorsConfigurer;  // Does not have ownership
 	utils::WatchListWindow *mWatchListWindow;  // Does not have ownership
 	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
+
+	BlocksFactoryManager mBlocksFactoryManager;
 };
 
 }

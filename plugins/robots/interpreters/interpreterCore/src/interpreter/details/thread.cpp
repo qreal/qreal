@@ -31,7 +31,7 @@ Thread::Thread(GraphicalModelAssistInterface const *graphicalModelApi
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mBlocksTable(blocksTable)
-	, mCurrentBlock(NULL)
+	, mCurrentBlock(nullptr)
 	, mInitialDiagram(diagramToInterpret)
 	, mBlocksSincePreviousEventsProcessing(0)
 	, mProcessEventsTimer(new QTimer(this))
@@ -139,10 +139,10 @@ void Thread::turnOn(interpreterBase::blocksBase::BlockInterface * const block)
 	}
 
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
-//	connect(mCurrentBlock, SIGNAL(done(blocks::Block * const)), this, SLOT(nextBlock(blocks::Block * const)));
-//	connect(mCurrentBlock, SIGNAL(newThread(details::blocks::Block*const)), this, SIGNAL(newThread(details::blocks::Block*const)));
-//	connect(mCurrentBlock, SIGNAL(failure()), this, SLOT(failure()));
-//	connect(mCurrentBlock, SIGNAL(stepInto(Id const &)), this, SLOT(stepInto(Id const &)));
+	connect(mCurrentBlock, &interpreterBase::blocksBase::BlockInterface::done, this, &Thread::nextBlock);
+	connect(mCurrentBlock, &interpreterBase::blocksBase::BlockInterface::newThread, this, &Thread::newThread);
+	connect(mCurrentBlock, &interpreterBase::blocksBase::BlockInterface::failure, this, &Thread::failure);
+	connect(mCurrentBlock, &interpreterBase::blocksBase::BlockInterface::stepInto, this, &Thread::stepInto);
 
 	mStack.push(mCurrentBlock);
 
