@@ -20,6 +20,8 @@ public slots:
 	void rereadSettings() override;
 
 private:
+	void configureKnownDevices() override;
+
 	utils::robotCommunication::RobotCommunicator mRobotCommunicator;
 	QString mLastCommunicationValue;
 };

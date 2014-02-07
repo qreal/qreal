@@ -8,7 +8,7 @@
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
 #include <utils/tracer.h>
 
-#include "communicationConstants.h"
+#include "commandConstants.h"
 
 using namespace nxtKitInterpreter::communication;
 

@@ -5,7 +5,10 @@
 #include "communication/bluetoothRobotCommunicationThread.h"
 #include "communication/usbRobotCommunicationThread.h"
 
+#include "parts/motor.h"
+
 using namespace nxtKitInterpreter::robotModel::real;
+using namespace interpreterBase::robotModel;
 
 QString RealRobotModel::name() const
 {
@@ -38,4 +41,13 @@ void RealRobotModel::rereadSettings()
 	}
 
 	mRobotCommunicator.setRobotCommunicationThreadObject(communicator);
+}
+
+void RealRobotModel::configureKnownDevices()
+{
+	PluggableDeviceInfo motorInfo = PluggableDeviceInfo::create<parts::Motor>(tr("Motor"));
+
+	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("A"), &mRobotCommunicator));
+	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("B"), &mRobotCommunicator));
+	mutableConfiguration().configureDevice(new parts::Motor(motorInfo, PortInfo("C"), &mRobotCommunicator));
 }

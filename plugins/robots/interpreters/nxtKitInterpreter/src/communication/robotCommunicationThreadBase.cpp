@@ -1,8 +1,9 @@
+#include "robotCommunicationThreadBase.h"
+
 #include <time.h>
 
 #include <utils/tracer.h>
-#include "robotCommunicationThreadBase.h"
-#include "communicationConstants.h"
+#include "commandConstants.h"
 
 using namespace nxtKitInterpreter::communication;
 

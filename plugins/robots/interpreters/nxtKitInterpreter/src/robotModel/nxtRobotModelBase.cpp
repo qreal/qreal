@@ -1,4 +1,5 @@
 #include "nxtRobotModelBase.h"
+
 #include <interpreterBase/robotModel/robotParts/touchSensor.h>
 #include <interpreterBase/robotModel/robotParts/rangeSensor.h>
 #include <interpreterBase/robotModel/robotParts/lightSensor.h>

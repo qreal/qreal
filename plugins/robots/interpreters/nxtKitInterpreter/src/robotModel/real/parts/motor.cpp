@@ -77,3 +77,10 @@ void Motor::resetMotorPosition(bool relative)
 	command[4] = relative;
 	mRobotCommunicator->send(this, command, 3);
 }
+
+
+void Motor::doConfiguration()
+{
+	/// @todo Remove this to base class.
+	configurationCompleted(true);
+}

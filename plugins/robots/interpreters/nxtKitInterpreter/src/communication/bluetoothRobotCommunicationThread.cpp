@@ -7,7 +7,7 @@
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
 #include <utils/tracer.h>
 
-#include "communicationConstants.h"
+#include "commandConstants.h"
 
 unsigned const keepAliveResponseSize = 9;
 unsigned const getFirmwareVersionResponseSize = 9;
