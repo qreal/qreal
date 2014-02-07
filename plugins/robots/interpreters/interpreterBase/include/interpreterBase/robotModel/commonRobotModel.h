@@ -40,7 +40,7 @@ public:
 	void configureDevice(PortInfo const &port, PluggableDeviceInfo const &deviceInfo) override;
 
 public slots:
-	void rereadSettings() override;
+	virtual void rereadSettings();
 
 protected:
 	void setBrick(robotParts::Brick *brick);  // Takes ownership.

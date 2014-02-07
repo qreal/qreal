@@ -39,7 +39,7 @@ void RobotsPluginFacade::init(qReal::PluginConfigurator const &configurer)
 
 	/// @todo Load currently selected model from registry.
 	/// @todo Pass nullptr here in case when there is no kit.
-	mRobotModelManager.setModel(mKitPluginManager.selectedKit().defaultRobotModel());
+//	mRobotModelManager.setModel(mKitPluginManager.selectedKit().defaultRobotModel());
 
 	interpreterBase::blocksBase::BlocksFactoryInterface * const blocksFactory =
 			new coreBlocks::CoreBlocksFactory(

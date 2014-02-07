@@ -10,7 +10,6 @@ CommonRobotModel::CommonRobotModel()
 	: mBrick(new robotParts::Brick())
 	, mDisplay(new robotParts::Display())
 {
-	rereadSettings();
 }
 
 CommonRobotModel::~CommonRobotModel()
@@ -21,6 +20,7 @@ CommonRobotModel::~CommonRobotModel()
 void CommonRobotModel::init()
 {
 	mConfiguration.lockConfiguring();
+	rereadSettings();
 	connectToRobot();
 	configureKnownDevices();
 }
