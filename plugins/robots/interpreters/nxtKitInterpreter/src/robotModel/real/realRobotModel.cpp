@@ -8,7 +8,14 @@
 #include "parts/motor.h"
 
 using namespace nxtKitInterpreter::robotModel::real;
+using namespace utils::robotCommunication;
 using namespace interpreterBase::robotModel;
+
+RealRobotModel::RealRobotModel()
+{
+	connect(&mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
+	connect(&mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
+}
 
 QString RealRobotModel::name() const
 {
@@ -41,6 +48,16 @@ void RealRobotModel::rereadSettings()
 	}
 
 	mRobotCommunicator.setRobotCommunicationThreadObject(communicator);
+}
+
+void RealRobotModel::connectToRobot()
+{
+	mRobotCommunicator.connect();
+}
+
+void RealRobotModel::disconnectFromRobot()
+{
+	mRobotCommunicator.disconnect();
 }
 
 void RealRobotModel::configureKnownDevices()
