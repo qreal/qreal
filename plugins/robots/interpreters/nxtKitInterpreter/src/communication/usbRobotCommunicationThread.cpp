@@ -1,20 +1,22 @@
+#include "usbRobotCommunicationThread.h"
+
 #include <QtCore/QDebug>
 #include <time.h>
 
-#include "usbRobotCommunicationThread.h"
+#include <qrkernel/settingsManager.h>
+#include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
+#include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
+#include <utils/tracer.h>
 
-#include "../../thirdparty/qextserialport/src/qextserialenumerator.h"
-#include "../../thirdparty/qextserialport/src/qextserialport.h"
-#include "../tracer.h"
-#include "../../../../qrkernel/settingsManager.h"
+#include "communicationConstants.h"
 
-using namespace qReal::interpreters::robots;
-using namespace details;
+using namespace nxtKitInterpreter::communication;
 
 unsigned const packetHeaderSize = 3;
 
 UsbRobotCommunicationThread::UsbRobotCommunicationThread()
-	: mActive(false), mNXTHandle(0)
+	: mActive(false)
+	, mNXTHandle(0)
 	, mKeepAliveTimer(new QTimer(this))
 	, mStopped(false)
 {
@@ -85,7 +87,7 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 void UsbRobotCommunicationThread::send(QByteArray const &buffer
 		, unsigned const responseSize, QByteArray &outputBuffer)
 {
-	Tracer::debug(tracer::enums::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
+	utils::Tracer::debug(utils::Tracer::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
 
 	int status = 0;
 	QByteArray newBuffer;
@@ -94,7 +96,7 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer
 	}
 
 	if (!isResponseNeeded(buffer)) {
-		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), NULL, 0, status);
+		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), nullptr, 0, status);
 	} else {
 		unsigned const temporaryOutputBufferSize = 200;
 		char *outputBufferPtr2 = new char[temporaryOutputBufferSize];
@@ -117,7 +119,8 @@ void UsbRobotCommunicationThread::send(QByteArray const &buffer
 			mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, command, 2, outputBufferPtr2, 2, status);
 		}
 
-		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newBuffer, newBuffer.length(), outputBufferPtr2, responseSize - 3, status);
+		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newBuffer
+				, newBuffer.length(), outputBufferPtr2, responseSize - 3, status);
 
 		outputBuffer[0] = responseSize - 2;
 		outputBuffer[1] = 0;
@@ -159,7 +162,8 @@ void UsbRobotCommunicationThread::debugPrint(QByteArray const &buffer, bool out)
 		tmp += QString::number(static_cast<unsigned char>(buffer[i]));
 		tmp += " ";
 	}
-	Tracer::debug(tracer::enums::robotCommunication, "UsbRobotCommunicationThread::debugPrint", (out ? ">" : "<") + tmp);
+	utils::Tracer::debug(utils::Tracer::robotCommunication, "UsbRobotCommunicationThread::debugPrint"
+			, (out ? ">" : "<") + tmp);
 }
 
 void UsbRobotCommunicationThread::checkForConnection()
@@ -187,9 +191,13 @@ bool UsbRobotCommunicationThread::isResponseNeeded(QByteArray const &buffer)
 
 void UsbRobotCommunicationThread::checkConsistency()
 {
-	robots::enums::robotModelType::robotModelTypeEnum const typeOfRobotModel =
-			static_cast<robots::enums::robotModelType::robotModelTypeEnum>(SettingsManager::instance()->value("robotModel").toInt());
-	if (typeOfRobotModel != robots::enums::robotModelType::nxt) {
+	QString const selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
+	if (selectedKit != "nxtKit") {
+		return;
+	}
+
+	QString const selectedRobotModel = qReal::SettingsManager::value("SelectedModelFor" + selectedKit).toString();
+	if (selectedRobotModel != "NxtRealRobotModel") {
 		return;
 	}
 
@@ -197,7 +205,8 @@ void UsbRobotCommunicationThread::checkConsistency()
 		QString const fantomDownloadLink = qReal::SettingsManager::value("fantomDownloadLink").toString();
 		QString errorMessage = tr("Fantom Driver is unavailable. Usb connection to robot is impossible.");
 		if (!fantomDownloadLink.isEmpty()) {
-			errorMessage += tr(" You can download Fantom Driver on <a href='%1'>Lego website</a>").arg(fantomDownloadLink);
+			errorMessage += tr(" You can download Fantom Driver on <a href='%1'>Lego website</a>")
+					.arg(fantomDownloadLink);
 		}
 
 		emit errorOccured(errorMessage);

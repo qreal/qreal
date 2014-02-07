@@ -4,6 +4,7 @@ INCLUDEPATH += \
 	$$PWD \
 	$$PWD/../../interpreterBase/include \
 	$$PWD/../../twoDModel/include \
+	$$PWD/../../../utils/include \
 	$$PWD/../../../../../ \
 	$$PWD/../../../../../qrgui/ \
 
@@ -27,3 +28,4 @@ FORMS += \
 	$$PWD/nxtAdditionalPreferences.ui \
 
 include($$PWD/../qrguiIncludes.pri)
+include($$PWD/communication/communication.pri)

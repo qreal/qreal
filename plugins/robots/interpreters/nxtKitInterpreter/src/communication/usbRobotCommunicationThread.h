@@ -5,15 +5,12 @@
 #include <QtCore/QTimer>
 
 #include "robotCommunicationThreadBase.h"
-#include "../robotCommandConstants.h"
 #include "fantom.h"
 
 class QextSerialPort;
 
-namespace qReal {
-namespace interpreters {
-namespace robots {
-namespace details {
+namespace nxtKitInterpreter {
+namespace communication {
 
 class UsbRobotCommunicationThread : public RobotCommunicationThreadBase
 {
@@ -58,7 +55,5 @@ private:
 	bool mStopped;
 };
 
-}
-}
 }
 }

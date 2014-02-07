@@ -2,7 +2,7 @@ QT += widgets xml
 
 INCLUDEPATH += \
 	$$PWD/../include/ \
-	$$PWD/../../utils/include/ \
+	$$PWD/../../../utils/include/ \
 	$$PWD/../../../../../ \
 
 LIBS += -L$$PWD/../../../../../bin/ -lqrkernel -lqrutils -lutils
